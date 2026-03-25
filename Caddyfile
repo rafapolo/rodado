@@ -1,8 +1,7 @@
 :8080 {
-    basicauth /* {
-        # user: admin | pwd: 2/e+h<L9\V6;
-        # regenerate: htpasswd -nbB -C 10 admin NEWPWD | cut -d: -f2 | base64
-        admin JDJ5JDEwJHlaV2tLUzBQL2ZsSndBL2g4WDZBNk9NdEZtTnVqcThOOHZ2aXNGRVVMWHhJUDB0WHhNanZD
+    basic_auth /* {
+        # Set BASIC_AUTH_HASH on the server: caddy hash-password --plaintext 'YOUR_PWD'
+        admin {env.BASIC_AUTH_HASH}
     }
     reverse_proxy localhost:4213
 }
