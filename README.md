@@ -101,6 +101,51 @@ duckdb --ui basedosdados.duckdb
 python gera_schemas.py  # gera schemas.json e file_tree.md (~21 MB de egress)
 ```
 
+## Servidor com UI protegida por senha
+
+Para expor o DuckDB UI num servidor com HTTPS e autenticação básica, use o [Caddy](https://caddyserver.com/) como reverse proxy.
+
+**Pré-requisitos no servidor:** `caddy`, `htpasswd` (pacote `apache2-utils`), `duckdb`
+
+**1. Instalar o serviço DuckDB UI**
+
+Edite `duckdb-ui.service` com o usuário e caminho corretos e copie para o systemd:
+
+```bash
+# edite User= e WorkingDirectory= e EnvironmentFile= no arquivo
+cp duckdb-ui.service /etc/systemd/system/
+systemctl daemon-reload
+systemctl enable --now duckdb-ui
+```
+
+**2. Configurar o Caddy**
+
+Edite `Caddyfile` substituindo `your.domain.com` pelo domínio real, depois:
+
+```bash
+cp Caddyfile /etc/caddy/Caddyfile
+systemctl reload caddy
+```
+
+O Caddy obtém o certificado TLS via Let's Encrypt automaticamente (portas 80 e 443 abertas no firewall).
+
+**Trocar a senha:**
+
+```bash
+htpasswd -nbB -C 10 admin NOVA_SENHA | cut -d: -f2 | base64
+# cole o resultado no Caddyfile no lugar do hash atual, depois:
+systemctl reload caddy
+```
+
+**Arquivos relevantes:**
+
+| Arquivo | Função |
+|---|---|
+| `Caddyfile` | Config do Caddy: HTTPS + basicauth → proxy para localhost:4213 |
+| `duckdb-ui.service` | Serviço systemd que sobe o DuckDB UI em background |
+
+---
+
 ### `--gcloud-run`
 
 Cria uma VM `e2-standard-4` Debian 12 em `us-central1-a`, copia o script e o `.env`, instala as dependências e executa via SSH. Variáveis opcionais:
