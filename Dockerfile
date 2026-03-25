@@ -14,7 +14,7 @@ RUN apt-get update -qq && \
 
 WORKDIR /app
 
-COPY basedosdados3.duckdb Caddyfile start.sh ./
+COPY basedosdados.duckdb Caddyfile start.sh ./
 RUN chmod +x start.sh
 
 EXPOSE 8080
