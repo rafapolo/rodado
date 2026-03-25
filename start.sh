@@ -17,4 +17,4 @@ echo "[start] Starting Caddy..."
 caddy start --config /app/Caddyfile --adapter caddyfile
 
 echo "[start] Starting DuckDB UI..."
-exec duckdb --ui -init "$INIT" basedosdados3.duckdb
+exec duckdb --ui -init "$INIT" basedosdados.duckdb
