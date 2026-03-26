@@ -83,36 +83,57 @@ python prepara_db.py  # cria basedosdados.duckdb com views para todas as tabelas
 duckdb basedosdados.duckdb
 ```
 
-## Acesso web — https://db.xn--2dk.xyz
+## Acesso remoto — https://db.xn--2dk.xyz
 
-Container Docker com Caddy + ttyd expondo um shell DuckDB no browser, protegido por senha.
+Container Docker (Caddy + ttyd) com shell DuckDB acessível via browser ou curl, protegido por senha.
 
-### Shell interativo
+### Shell no browser
 
-Acesse https://db.xn--2dk.xyz → autentique com a senha → shell DuckDB direto no browser.
+Acesse https://db.xn--2dk.xyz → autentique com a senha → shell DuckDB interativo direto no browser.
 
-### API HTTP (curl)
+### SQL via curl
+
+Endpoint `POST /query` — aceita SQL no body, retorna output como texto plano.
+Autenticação via header `X-Password`.
 
 ```bash
-# Query simples
-curl -X POST https://db.xn--2dk.xyz/query \
+# Query inline
+curl -s -X POST https://db.xn--2dk.xyz/query \
   -H "X-Password: <senha>" \
   --data-binary "SELECT count(*) FROM br_anatel_banda_larga_fixa.densidade_brasil"
 
-# De um arquivo SQL
-curl -X POST https://db.xn--2dk.xyz/query \
+# A partir de um arquivo .sql
+curl -s -X POST https://db.xn--2dk.xyz/query \
   -H "X-Password: <senha>" \
-  --data-binary @query.sql >> result.csv
+  --data-binary @minha_query.sql
 
-# Inline com heredoc
-curl -X POST https://db.xn--2dk.xyz/query \
+# Heredoc (útil em scripts)
+curl -s -X POST https://db.xn--2dk.xyz/query \
   -H "X-Password: <senha>" \
-  --data-binary @- << 'EOF'
+  --data-binary @- << 'SQL'
 SELECT sigla_uf, sum(densidade) AS total
 FROM br_anatel_banda_larga_fixa.densidade_uf
 WHERE ano = 2023
-GROUP BY 1 ORDER BY 2 DESC
-EOF
+GROUP BY 1
+ORDER BY 2 DESC
+SQL
+
+# Salvar resultado
+curl -s -X POST https://db.xn--2dk.xyz/query \
+  -H "X-Password: <senha>" \
+  --data-binary @query.sql > resultado.csv
+```
+
+O DuckDB suporta saída em CSV e JSON nativamente:
+
+```sql
+-- CSV com header
+COPY (SELECT * FROM br_ibge_censo2022.municipios LIMIT 100)
+TO '/dev/stdout' (FORMAT csv, HEADER true);
+
+-- JSON
+SELECT * FROM br_ibge_censo2022.municipios LIMIT 10
+FORMAT JSON;
 ```
 
 ### Deploy
