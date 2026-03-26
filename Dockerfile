@@ -2,19 +2,30 @@ FROM debian:12-slim
 
 RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends \
-        curl ca-certificates unzip && \
-    curl -fsSL https://caddyserver.com/install.sh | bash && \
+        curl ca-certificates unzip bsdmainutils python3 \
+        less ncurses-bin && \
     curl -fsSL \
-        "https://github.com/duckdb/duckdb/releases/latest/download/duckdb_cli-linux-amd64.zip" \
+        "https://github.com/caddyserver/caddy/releases/download/v2.9.1/caddy_2.9.1_linux_amd64.tar.gz" \
+        | tar -xz -C /usr/local/bin caddy && \
+    chmod +x /usr/local/bin/caddy && \
+    curl -fsSL \
+        "https://github.com/duckdb/duckdb/releases/download/v1.5.1/duckdb_cli-linux-amd64.zip" \
         -o /tmp/duckdb.zip && \
     unzip /tmp/duckdb.zip -d /usr/local/bin && \
     chmod +x /usr/local/bin/duckdb && \
     rm /tmp/duckdb.zip && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    duckdb :memory: "INSTALL httpfs;" && \
+    curl -fsSL "https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.x86_64" \
+        -o /usr/local/bin/ttyd && \
+    chmod +x /usr/local/bin/ttyd
+
+ENV LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8
 
 WORKDIR /app
 
-COPY basedosdados.duckdb Caddyfile start.sh ./
+COPY basedosdados.duckdb Caddyfile start.sh auth.py ./
 RUN chmod +x start.sh
 
 EXPOSE 8080
