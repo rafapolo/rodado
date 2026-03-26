@@ -1,8 +1,12 @@
 name: basedosdados
-server: haloy.datative.xn--2dk.digital
+server: haloy.xn--2dk.xyz
+api_token:
+  from:
+    env: HALOY_TOKEN
 domains:
   - domain: db.xn--2dk.xyz
 port: 8080
+health_check_path: /health
 env:
   - name: HETZNER_S3_ENDPOINT
     from:
@@ -13,6 +17,9 @@ env:
   - name: AWS_SECRET_ACCESS_KEY
     from:
       env: AWS_SECRET_ACCESS_KEY
-  - name: BASIC_AUTH_HASH
+  - name: BASIC_AUTH_PASSWORD
     from:
-      env: BASIC_AUTH_HASH
+      env: BASIC_AUTH_PASSWORD
+  - name: BUCKET_REGION
+    from:
+      env: BUCKET_REGION

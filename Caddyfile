@@ -1,7 +1,24 @@
 :8080 {
-    basic_auth /* {
-        # Set BASIC_AUTH_HASH on the server: caddy hash-password --plaintext 'YOUR_PWD'
-        admin {env.BASIC_AUTH_HASH}
+    handle /health {
+        respond 200
     }
-    reverse_proxy localhost:4213
+
+    handle /login {
+        reverse_proxy 127.0.0.1:8081
+    }
+
+    handle /query {
+        reverse_proxy 127.0.0.1:8081
+    }
+
+    handle {
+        forward_auth 127.0.0.1:8081 {
+            uri /auth
+            copy_headers Cookie
+        }
+        reverse_proxy localhost:7681 {
+            flush_interval -1
+        }
+    }
+
 }
