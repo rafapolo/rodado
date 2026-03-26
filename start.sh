@@ -1,20 +1,28 @@
 #!/bin/bash
 set -euo pipefail
 
-# DuckDB init: load S3 credentials from env at session start
-INIT=$(mktemp /tmp/duckdb_init_XXXX.sql)
 S3_ENDPOINT="${HETZNER_S3_ENDPOINT#https://}"
 S3_ENDPOINT="${S3_ENDPOINT#http://}"
-cat > "$INIT" <<SQL
-INSTALL httpfs; LOAD httpfs;
+
+# Init SQL para o terminal web (credenciais não ficam expostas como env vars)
+cat > /app/ssh_init.sql <<SQL
+LOAD httpfs;
 SET s3_endpoint='${S3_ENDPOINT}';
 SET s3_access_key_id='${AWS_ACCESS_KEY_ID}';
 SET s3_secret_access_key='${AWS_SECRET_ACCESS_KEY}';
+SET s3_region='${BUCKET_REGION}';
 SET s3_url_style='path';
+SET enable_object_cache=true;
+SET threads=4;
+SET memory_limit='4GB';
 SQL
+chmod 600 /app/ssh_init.sql
+
+echo "[start] Starting ttyd terminal..."
+ttyd --port 7681 --writable duckdb -readonly --init /app/ssh_init.sql /app/basedosdados.duckdb &
+
+echo "[start] Starting auth service..."
+python3 /app/auth.py &
 
 echo "[start] Starting Caddy..."
-caddy start --config /app/Caddyfile --adapter caddyfile
-
-echo "[start] Starting DuckDB UI..."
-exec duckdb --ui -init "$INIT" basedosdados.duckdb
+exec caddy run --config /app/Caddyfile --adapter caddyfile
