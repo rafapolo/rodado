@@ -1,14 +1,15 @@
 use anyhow::{Context, Result};
 use crossterm::{
     event::{
-        DisableBracketedPaste, DisableMouseCapture, EnableBracketedPaste,
-        EnableMouseCapture, Event, KeyCode, KeyEventKind, KeyModifiers, MouseEventKind,
+        DisableBracketedPaste, DisableMouseCapture, EnableBracketedPaste, EnableMouseCapture,
+        Event, KeyCode, KeyEventKind, KeyModifiers, MouseEventKind,
     },
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
 use duckdb::Connection;
 use ratatui::{
+    buffer::Buffer,
     layout::{Constraint, Direction, Layout, Rect},
     style::{Color, Modifier, Style},
     text::{Line, Span},
@@ -124,6 +125,42 @@ fn fmt_timer(d: Duration) -> String {
     format!("{:02}:{:02}s", d.as_secs() / 60, d.as_secs() % 60)
 }
 
+fn wrap_text(text: &str, max_width: usize) -> Vec<String> {
+    if max_width == 0 {
+        return vec![text.to_string()];
+    }
+    let mut lines = Vec::new();
+    for paragraph in text.split('\n') {
+        if paragraph.is_empty() {
+            lines.push(String::new());
+            continue;
+        }
+        let mut current_line = String::new();
+        for word in paragraph.split_whitespace() {
+            let test_line = if current_line.is_empty() {
+                word.to_string()
+            } else {
+                format!("{} {}", current_line, word)
+            };
+            if test_line.chars().count() > max_width {
+                if !current_line.is_empty() {
+                    lines.push(current_line.clone());
+                }
+                current_line = word.to_string();
+            } else {
+                current_line = test_line;
+            }
+        }
+        if !current_line.is_empty() {
+            lines.push(current_line);
+        }
+    }
+    if lines.is_empty() {
+        lines.push(String::new());
+    }
+    lines
+}
+
 fn build_textarea() -> TextArea<'static> {
     let mut ta = TextArea::default();
     ta.set_block(
@@ -150,11 +187,7 @@ fn highlight_sql_lines(sql: &str) -> Vec<Line<'static>> {
             let spans: Vec<Span<'static>> = ranges
                 .iter()
                 .map(|(style, text)| {
-                    let fg = Color::Rgb(
-                        style.foreground.r,
-                        style.foreground.g,
-                        style.foreground.b,
-                    );
+                    let fg = Color::Rgb(style.foreground.r, style.foreground.g, style.foreground.b);
                     Span::styled(text.to_string(), Style::default().fg(fg))
                 })
                 .collect();
@@ -173,8 +206,8 @@ fn spawn_worker(
     db_file: String,
 ) -> mpsc::Receiver<WorkerMsg> {
     let (tx, rx) = mpsc::channel::<WorkerMsg>();
-    std::thread::spawn(move || {
-        match ask_model(&question, &schema, &model, &prompt_file) {
+    std::thread::spawn(
+        move || match ask_model(&question, &schema, &model, &prompt_file) {
             Err(e) => {
                 tx.send(WorkerMsg::SqlError(format!("{:#}", e))).ok();
             }
@@ -189,8 +222,8 @@ fn spawn_worker(
                     }
                 }
             }
-        }
-    });
+        },
+    );
     rx
 }
 
@@ -378,7 +411,9 @@ impl App {
             } => self.clear(),
 
             // Enter — submit
-            Input { key: Key::Enter, .. } if !self.is_loading() => self.submit(),
+            Input {
+                key: Key::Enter, ..
+            } if !self.is_loading() => self.submit(),
 
             // ↑↓ — scroll table (Done) or history (Input)
             Input { key: Key::Up, .. } if !self.is_loading() => {
@@ -388,9 +423,7 @@ impl App {
                     self.navigate_history(-1);
                 }
             }
-            Input {
-                key: Key::Down, ..
-            } if !self.is_loading() => {
+            Input { key: Key::Down, .. } if !self.is_loading() => {
                 if matches!(self.phase, Phase::Done { .. }) {
                     self.scroll_table(1);
                 } else {
@@ -412,8 +445,8 @@ impl App {
         if self.history.is_empty() {
             return;
         }
-        let new_index = (self.history_index as i32 + dir)
-            .clamp(0, self.history.len() as i32) as usize;
+        let new_index =
+            (self.history_index as i32 + dir).clamp(0, self.history.len() as i32) as usize;
         if new_index == self.history_index {
             return;
         }
@@ -641,53 +674,182 @@ fn draw_content(f: &mut Frame, app: &mut App, area: Rect) {
                 chunks[1],
             );
 
-            // Results table
+            // Results table with wrapped content
             let col_count = cols.len();
-            let col_widths: Vec<Constraint> = if col_count == 0 {
-                vec![]
+            if col_count == 0 {
+                let empty = Paragraph::new("(nenhuma coluna)")
+                    .style(Style::default().fg(Color::DarkGray))
+                    .block(Block::default().borders(Borders::ALL).title(" Resultados "));
+                f.render_widget(empty, chunks[2]);
             } else {
-                let w = (chunks[2]
-                    .width
-                    .saturating_sub(col_count as u16 + 3))
-                    / col_count as u16;
-                cols.iter()
-                    .map(|_| Constraint::Min(w.max(8)))
-                    .collect()
-            };
+                let available_width = chunks[2].width.saturating_sub(col_count as u16 + 3);
+                let min_col_width = 8u16;
 
-            let header = Row::new(cols.iter().map(|c| c.as_str())).style(
-                Style::default()
-                    .fg(Color::Yellow)
-                    .add_modifier(Modifier::BOLD),
-            );
+                let col_max_widths: Vec<usize> = (0..col_count)
+                    .map(|i| {
+                        let header_len = cols[i].len();
+                        let data_len = rows.iter().filter_map(|r| r.get(i)).map(|c| c.len()).max().unwrap_or(0);
+                        (header_len.max(data_len)).max(min_col_width as usize)
+                    })
+                    .collect();
 
-            let data_rows: Vec<Row> = rows
-                .iter()
-                .map(|r| Row::new(r.iter().map(|c| c.as_str())))
-                .collect();
+                let total_needed: usize = col_max_widths.iter().sum();
+                let use_wrap = total_needed > available_width as usize;
 
-            let selected_idx = table_state.selected().unwrap_or(0);
-            let table_title = format!(
-                " Resultados  ({}/{}) ",
-                selected_idx + 1,
-                n
-            );
+                if use_wrap {
+                    let wrap_width = (available_width as usize / col_count).max(min_col_width as usize);
+                    let header_lines: Vec<Line> = cols.iter()
+                        .enumerate()
+                        .map(|(i, c)| {
+                            let wrapped = wrap_text(c, wrap_width);
+                            Line::from(wrapped)
+                        })
+                        .collect();
 
-            let table = Table::new(data_rows, col_widths)
-                .header(header)
-                .block(
-                    Block::default()
+                    let max_header_lines = header_lines.iter().map(|l| l.len()).max().unwrap_or(1);
+
+                    let mut all_row_lines: Vec<Vec<Line>> = Vec::new();
+                    for row in rows {
+                        let row_lines: Vec<Line> = (0..col_count)
+                            .map(|i| {
+                                let cell = row.get(i).map(|s| s.as_str()).unwrap_or("");
+                                let wrapped = wrap_text(cell, wrap_width);
+                                Line::from(wrapped)
+                            })
+                            .collect();
+                        let max_lines = row_lines.iter().map(|l| l.len()).max().unwrap_or(1);
+                        all_row_lines.push(row_lines);
+                    }
+
+                    let selected_idx = table_state.selected().unwrap_or(0);
+                    let table_title = format!(" Resultados  ({}/{}) ", selected_idx + 1, n);
+
+                    let block = Block::default()
                         .borders(Borders::ALL)
-                        .title(table_title),
-                )
-                .row_highlight_style(
-                    Style::default()
-                        .bg(Color::DarkGray)
-                        .add_modifier(Modifier::BOLD),
-                )
-                .highlight_symbol("▶ ");
+                        .title(table_title);
 
-            f.render_stateful_widget(table, chunks[2], table_state);
+                    let area = chunks[2];
+                    f.render_widget(block, area);
+
+                    let inner_area = Rect {
+                        x: area.x + 1,
+                        y: area.y + 1,
+                        width: area.width.saturating_sub(2),
+                        height: area.height.saturating_sub(2),
+                    };
+
+                    let row_height = max_header_lines.max(1) as u16;
+                    let visible_rows = inner_area.height / row_height;
+
+                    let start_row = if n > visible_rows as usize {
+                        let scroll = selected_idx as i32 - visible_rows as i32 / 2;
+                        scroll.max(0) as usize.min(n.saturating_sub(visible_rows as usize))
+                    } else {
+                        0
+                    };
+
+                    let header_bg = Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD);
+                    for (col_idx, header_line) in header_lines.iter().enumerate() {
+                        let col_x = inner_area.x + (col_idx as u16) * (wrap_width as u16 + 1);
+                        let col_width = wrap_width as u16;
+                        for (line_idx, line) in header_line.iter().enumerate() {
+                            let y = inner_area.y + line_idx as u16;
+                            if y >= inner_area.y + inner_area.height {
+                                break;
+                            }
+                            let spans: Vec<Span> = line.spans.iter().map(|s| {
+                                Span::styled(s.content.clone(), header_bg)
+                            }).collect();
+                            f.render_widget(Paragraph::new(Line::from(spans)), Rect {
+                                x: col_x,
+                                y,
+                                width: col_width,
+                                height: 1,
+                            });
+                        }
+                    }
+
+                    for (row_offset, row_idx) in (start_row..n).enumerate() {
+                        let y = inner_area.y + max_header_lines as u16 + row_offset as u16;
+                        if y >= inner_area.y + inner_area.height {
+                            break;
+                        }
+                        let is_selected = row_idx == selected_idx;
+                        let row_style = if is_selected {
+                            Style::default().bg(Color::DarkGray).add_modifier(Modifier::BOLD)
+                        } else {
+                            Style::default()
+                        };
+                        let row_lines = &all_row_lines[row_idx];
+
+                        for (col_idx, cell_lines) in row_lines.iter().enumerate() {
+                            let col_x = inner_area.x + (col_idx as u16) * (wrap_width as u16 + 1);
+                            let col_width = wrap_width as u16;
+                            for (line_idx, line) in cell_lines.iter().enumerate() {
+                                let cell_y = y + line_idx as u16;
+                                if cell_y >= inner_area.y + inner_area.height {
+                                    break;
+                                }
+                                let spans: Vec<Span> = line.spans.iter().map(|s| {
+                                    Span::styled(s.content.clone(), row_style)
+                                }).collect();
+                                f.render_widget(Paragraph::new(Line::from(spans)), Rect {
+                                    x: col_x,
+                                    y: cell_y,
+                                    width: col_width,
+                                    height: 1,
+                                });
+                            }
+                        }
+
+                        if is_selected {
+                            f.render_widget(
+                                Paragraph::new("▶ ").style(Style::default().fg(Color::Cyan)),
+                                Rect {
+                                    x: inner_area.x,
+                                    y,
+                                    width: 2,
+                                    height: 1,
+                                },
+                            );
+                        }
+                    }
+                } else {
+                    let col_widths: Vec<Constraint> = cols.iter()
+                        .enumerate()
+                        .map(|(i, _)| {
+                            let w = col_max_widths[i] as u16;
+                            Constraint::Length(w)
+                        })
+                        .collect();
+
+                    let header = Row::new(cols.iter().map(|c| c.as_str())).style(
+                        Style::default()
+                            .fg(Color::Yellow)
+                            .add_modifier(Modifier::BOLD),
+                    );
+
+                    let data_rows: Vec<Row> = rows
+                        .iter()
+                        .map(|r| Row::new(r.iter().map(|c| c.as_str())))
+                        .collect();
+
+                    let selected_idx = table_state.selected().unwrap_or(0);
+                    let table_title = format!(" Resultados  ({}/{}) ", selected_idx + 1, n);
+
+                    let table = Table::new(data_rows, col_widths)
+                        .header(header)
+                        .block(Block::default().borders(Borders::ALL).title(table_title))
+                        .row_highlight_style(
+                            Style::default()
+                                .bg(Color::DarkGray)
+                                .add_modifier(Modifier::BOLD),
+                        )
+                        .highlight_symbol("▶ ");
+
+                    f.render_stateful_widget(table, chunks[2], table_state);
+                }
+            }
         }
 
         Phase::Error { message } => {
@@ -864,7 +1026,9 @@ fn ask_openrouter(question: &str, system_prompt: &str, model: &str) -> Result<St
         .send()
         .context("Requisição HTTP ao OpenRouter falhou")?;
     let status = resp.status();
-    let body: Value = resp.json().context("Falha ao parsear resposta do OpenRouter")?;
+    let body: Value = resp
+        .json()
+        .context("Falha ao parsear resposta do OpenRouter")?;
     if !status.is_success() {
         anyhow::bail!("OpenRouter API error {}: {}", status, body);
     }
@@ -915,8 +1079,8 @@ fn regex_strip_think(s: &str) -> String {
 fn ensure_sql(s: &str) -> String {
     let upper = s.trim_start().to_uppercase();
     let sql_starts = [
-        "SELECT", "WITH", "INSERT", "UPDATE", "DELETE", "CREATE", "DROP",
-        "ALTER", "SHOW", "EXPLAIN", "DESCRIBE", "PRAGMA", "CALL", "ATTACH",
+        "SELECT", "WITH", "INSERT", "UPDATE", "DELETE", "CREATE", "DROP", "ALTER", "SHOW",
+        "EXPLAIN", "DESCRIBE", "PRAGMA", "CALL", "ATTACH",
     ];
     if sql_starts.iter().any(|kw| upper.starts_with(kw)) {
         s.to_string()
@@ -933,9 +1097,7 @@ fn run_query(db_file: &str, sql: &str) -> Result<(Vec<String>, Vec<Vec<String>>)
     let mut meta = conn
         .prepare(&meta_sql)
         .context("Failed to prepare metadata query")?;
-    let _ = meta
-        .query([])
-        .context("Failed to execute metadata query")?;
+    let _ = meta.query([]).context("Failed to execute metadata query")?;
     let col_count = meta.column_count();
     let cols: Vec<String> = (0..col_count)
         .map(|i| meta.column_name(i).map_or("?", |v| v).to_string())
@@ -1119,13 +1281,13 @@ VARIÁVEIS DE AMBIENTE
         std::process::exit(0);
     }
 
-    let model = model_override
-        .unwrap_or_else(|| env::var("GEMINI_MODEL").unwrap_or_else(|_| "gemini-flash-latest".into()));
+    let model = model_override.unwrap_or_else(|| {
+        env::var("GEMINI_MODEL").unwrap_or_else(|_| "gemini-flash-latest".into())
+    });
     let schema_file =
         env::var("SCHEMA_FILE").unwrap_or_else(|_| "context/schema_compact_inline.txt".into());
     let db_file = env::var("DB_FILE").unwrap_or_else(|_| "basedosdados.duckdb".into());
-    let prompt_file =
-        env::var("PROMPT_FILE").unwrap_or_else(|_| "ask/system_prompt.md".into());
+    let prompt_file = env::var("PROMPT_FILE").unwrap_or_else(|_| "ask/system_prompt.md".into());
     let schema = fs::read_to_string(&schema_file)
         .with_context(|| format!("Não foi possível ler o schema: {}", schema_file))?;
 
