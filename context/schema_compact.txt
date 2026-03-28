@@ -1,0 +1,531 @@
+# Base dos Dados — Compact Schema
+# Legend: V=VARCHAR I=INT D=DOUBLE Dt=DATE B=BOOLEAN Dec=DECIMAL Ts=TIMESTAMP Ti=TIME
+# Format: dataset.table: col:TYPE ... [+N more if truncated]
+
+br_anatel_banda_larga_fixa.densidade_brasil: ano:I mes:I densidade:D
+br_anatel_banda_larga_fixa.densidade_municipio: ano:I mes:I sigla_uf:V id_municipio:V densidade:D
+br_anatel_banda_larga_fixa.densidade_uf: ano:I mes:I sigla_uf:V densidade:D
+br_anatel_banda_larga_fixa.microdados: ano:I mes:I sigla_uf:V id_municipio:V cnpj:V empresa:V porte_empresa:V tecnologia:V transmissao:V velocidade:V produto:V acessos:I
+br_anatel_indice_brasileiro_conectividade.municipio: ano:I sigla_uf:V id_municipio:V ibc:D cobertura_pop_4g5g:D fibra:V densidade_smp:D hhi_smp:I densidade_scm:D hhi_scm:I adensamento_estacoes:D
+br_anp_precos_combustiveis.microdados: ano:I sigla_uf:V id_municipio:V bairro_revenda:V cep_revenda:V endereco_revenda:V cnpj_revenda:V nome_estabelecimento:V bandeira_revenda:V data_coleta:Dt produto:V +3
+br_ans_beneficiario.informacao_consolidada: ano:I mes:I sigla_uf:V id_municipio:V cnpj:V codigo_operadora:V razao_social:V modalidade_operadora:V sexo:V faixa_etaria:V faixa_etaria_reajuste:V codigo_plano:V tipo_vigencia_plano:V +9
+br_bcb_estban.agencia: ano:I mes:I sigla_uf:V id_municipio:V cnpj_basico:V instituicao:V cnpj_agencia:V id_verbete:V valor:D
+br_bcb_estban.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_bcb_estban.municipio: ano:I mes:I sigla_uf:V id_municipio:V cnpj_basico:V instituicao:V agencias_esperadas:I agencias_processadas:I id_verbete:V valor:D
+br_bcb_sicor.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_bcb_sicor.empreendimento: id_empreendimento:V data_inicio:Dt data_fim:Dt finalidade:V atividade:V modalidade:V produto:V variedade:V +7
+br_bcb_sicor.liberacao: ano:I mes:I ano_emissao:I mes_emissao:I data_liberacao:Dt id_referencia_bacen:V numero_ordem:V valor_liberado:D
+br_bcb_sicor.operacao: sigla_uf:V ano_emissao:I mes_emissao:I ano_safra_emissao:V data_emissao:Dt ano_vencimento:I mes_vencimento:I ano_safra_vencimento:V data_vencimento:Dt +44
+br_bcb_sicor.operacoes_desclassificadas: ano_emissao:I mes_emissao:I data_desclassificacao:Dt id_referencia_bacen:V numero_ordem:V id_motivo_desclassificacao:V valor_desclassificado:D tipo_desclassificacao:V
+br_bcb_sicor.recurso_publico_complemento_operacao: id_municipio:V ano_emissao:I mes_emissao:I id_referencia_bacen:V numero_ordem:V id_referencia_bacen_efetivo:V cnpj_agencia:V numero_cedula:V
+br_bcb_sicor.recurso_publico_cooperado: cpf:V cnpj_basico:V ano_emissao:I mes_emissao:I id_referencia_bacen:V numero_ordem:V id_programa:V tipo_pessoa:V valor_parcela:D
+br_bcb_sicor.recurso_publico_gleba: ano_emissao:I mes_emissao:I id_referencia_bacen:V numero_ordem:V indice_gleba:V geometria_original:V
+br_bcb_sicor.recurso_publico_mutuario: cpf:V cnpj:V cnpj_basico:V ano_emissao:I mes_emissao:I id_referencia_bacen:V id_dap:V tipo_beneficiario:V primeiro_mutuario:V sexo:V
+br_bcb_sicor.recurso_publico_propriedade: cpf:V cnpj_basico:V ano_emissao:I mes_emissao:I id_referencia_bacen:V numero_ordem:V id_sncr:V id_nirf:V id_car:V
+br_bcb_sicor.saldo: ano:I mes:I ano_emissao:I mes_emissao:I id_referencia_bacen:V numero_ordem:V id_situacao_operacao:V valor_medio_diario:D valor_medio_diario_vincendo:D valor_ultimo_dia:D
+br_bd_diretorios_brasil.area_conhecimento: especialidade:V descricao_especialidade:V subarea:V descricao_subarea:V area:V descricao_area:V grande_area:V descricao_grande_area:V
+br_bd_diretorios_brasil.cbo_1994: cbo_1994:V descricao:V
+br_bd_diretorios_brasil.cbo_2002: cbo_2002:V descricao:V familia:V descricao_familia:V subgrupo:V descricao_subgrupo:V subgrupo_principal:V descricao_subgrupo_principal:V grande_grupo:V +2
+br_bd_diretorios_brasil.cep: cep:V id_municipio:V nome_municipio:V sigla_uf:V logradouro:V localidade:V estabelecimentos:V
+br_bd_diretorios_brasil.cid_10: subcategoria:V descricao_subcategoria:V categoria:V descricao_categoria:V capitulo:V descricao_capitulo:V causa_violencia:I causa_overdose:I +1
+br_bd_diretorios_brasil.cid_9: categoria:V descricao:V
+br_bd_diretorios_brasil.cnae_1: cnae_1:V descricao:V grupo:V descricao_grupo:V divisao:V descricao_divisao:V secao:V descricao_secao:V
+br_bd_diretorios_brasil.cnae_2: subclasse:V descricao_subclasse:V classe:V descricao_classe:V grupo:V descricao_grupo:V divisao:V descricao_divisao:V +6
+br_bd_diretorios_brasil.curso_superior: id_curso:V nome_curso:V id_area:V nome_area:V grau_academico:V
+br_bd_diretorios_brasil.distrito_1991: id_distrito:V id_municipio:V sigla_uf:V nome:V
+br_bd_diretorios_brasil.distrito_2000: id_distrito:V id_municipio:V sigla_uf:V nome:V
+br_bd_diretorios_brasil.distrito_2010: id_distrito:V id_municipio:V sigla_uf:V nome:V
+br_bd_diretorios_brasil.empresa: cnpj:V cnpj_basico:V cep:V id_municipio:V sigla_uf:V cnpj_ordem:V cnpj_dv:V razao_social:V nome_fantasia:V natureza_juridica:V ente_federativo:V cnae_fiscal_principal:V cnae_fiscal_secundaria:V +19
+br_bd_diretorios_brasil.escola: id_escola:V id_municipio:V sigla_uf:V nome:V restricao_atendimento:V localizacao:V localidade_diferenciada:V categoria_administrativa:V endereco:V telefone:V dependencia_administrativa:V +8
+br_bd_diretorios_brasil.etnia_indigena: id_etnia_indigena:V nome:V
+br_bd_diretorios_brasil.instituicao_ensino_superior: id_municipio:V sigla_uf:V id_ies:V nome:V tipo_instituicao:V rede:V situacao_funcionamento:V
+br_bd_diretorios_brasil.municipio: id_municipio:V id_municipio_tse:V id_microrregiao:V id_mesorregiao:V id_uf:V sigla_uf:V id_municipio_6:V id_municipio_rf:V id_municipio_bcb:V nome:V capital_uf:I id_comarca:V id_regiao_saude:V nome_regiao_saude:V +12
+br_bd_diretorios_brasil.natureza_juridica: id_natureza_juridica:V descricao:V escopo:V
+br_bd_diretorios_brasil.regiao: sigla:V nome:V
+br_bd_diretorios_brasil.setor_censitario_2010: id_setor_censitario:V id_municipio:V nome_municipio:V id_distrito:V id_subdistrito:V sigla_uf:V id_regiao_metropolitana:V nome_regiao_metropolitana:V nome_distrito:V nome_subdistrito:V id_bairro:V nome_bairro:V situacao_setor:V tipo_setor:V
+br_bd_diretorios_brasil.setor_censitario_2022: id_setor_censitario:V id_regiao:V id_uf:V id_municipio:V nome_municipio:V id_distrito:V id_subdistrito:V id_microrregiao:V id_mesorregiao:V nome_regiao:V nome_uf:V nome_distrito:V nome_subdistrito:V nome_microrregiao:V nome_mesorregiao:V id_regiao_imediata:V nome_regiao_imediata:V +5
+br_bd_diretorios_brasil.subatividade_ibge: id_subatividade:V descricao:V
+br_bd_diretorios_brasil.uf: id_uf:V sigla:V nome:V regiao:V
+br_bd_diretorios_mundo.continente: sigla:V nome_pt:V nome_en:V
+br_bd_diretorios_mundo.nomenclatura_comum_mercosul: id_ncm:V id_unidade:V id_sh6:V id_ppe:V id_ppi:V id_fator_agregado_ncm:V id_cgce_n3:V id_isic_classe:V +6
+br_bd_diretorios_mundo.pais: id_pais_m49:V id_pais_fao:V id_pais_gaul:V sigla_pais_iso3:V sigla_pais_iso2:V sigla_pais_pnud:V sigla_pais_coi:V sigla_pais_fifa:V +5
+br_bd_diretorios_mundo.sistema_harmonizado: id_sh6:V id_sh4:V id_sh2:V id_ncm_secrom:V nome_sh6_portugues:V nome_sh4_portugues:V nome_sh2_portugues:V nome_sec_portugues:V +8
+br_camara_dados_abertos.deputado: nome:V nome_civil:V data_nascimento:Dt data_falecimento:Dt id_municipio_nascimento:V sigla_uf_nascimento:V id_deputado:V sexo:V +4
+br_camara_dados_abertos.deputado_ocupacao: sigla_uf:V id_deputado:V ano_inicio:I ano_fim:I entidade:V titulo:V
+br_camara_dados_abertos.deputado_profissao: data:Dt id_deputado:V horario:Ti id_profissao:V titulo:V
+br_camara_dados_abertos.despesa: cpf:V sigla_uf:V nome_parlamentar:V id_deputado:V ano_legislatura:I sigla_partido:V id_legislatura:V categoria_despesa:V subcategoria_despesa:V fornecedor:V +15
+br_camara_dados_abertos.evento: id_evento:V url_documento_pauta:V data_inicio:Dt horario_inicio:Ti data_final:Dt horario_final:Ti situacao:V descricao:V +3
+br_camara_dados_abertos.evento_orgao: id_orgao:V id_evento:V sigla_orgao:V
+br_camara_dados_abertos.evento_presenca_deputado: id_evento:V data_inicio:Dt horario_inicio:Ti id_deputado:V
+br_camara_dados_abertos.evento_requerimento: id_evento:V titulo_requerimento:V id_proposicao:V
+br_camara_dados_abertos.frente: id_frente:V titulo:V data_criacao:Dt id_legislatura:V telefone:V situacao:V url_documento:V id_coordenador:V +2
+br_camara_dados_abertos.frente_deputado: id_frente:V titulo_deputado:V id_deputado:V nome_deputado:V url_foto_deputado:V
+br_camara_dados_abertos.funcionario: nome:V cargo:V funcao:V data_inicio_historico:Dt data_nomeacao:Dt data_publicacao_nomeacao:Dt grupo:V ponto:V +2
+br_camara_dados_abertos.legislatura: ano:I id:V url:V data_inicio:Dt data_final:Dt
+br_camara_dados_abertos.legislatura_mesa: id_orgao:V sigla_uf:V id:V data_inicio:Ts data_final:Ts url_orgao:V sigla_orgao:V nome_orgao:V id_deputado:V nome_deputado:V +3
+br_camara_dados_abertos.licitacao: ano_licitacao:I id_licitacao:V ano_processo:I id_processo:V objeto:V modalidade:V tipo:V situacao:V +10
+br_camara_dados_abertos.licitacao_contrato: ano_licitacao:I id_licitacao:V ano_contrato:I id_contrato:V tipo_contrato:V situacao_contrato:V descricao:V data_assinatura:Dt +11
+br_camara_dados_abertos.licitacao_item: ano_licitacao:I id_licitacao:V id_item:V id_sub_item:V descricao:V especificacao:V unidade:V quantidade_licitada:I +13
+br_camara_dados_abertos.licitacao_pedido: id_orgao:V ano_licitacao:I id_licitacao:V tipo_registo:V ano_pedido:I id_pedido:V data_cadastro:Dt horario_cadastro:Ti orgao:V +2
+br_camara_dados_abertos.licitacao_proposta: ano:I id_licitacao:V descricao:V quantidade_unidade_licitacao:I valor_estimado:I id_proposta:V unidade_proposta:I valor_proposta:I marca_proposta:V +4
+br_camara_dados_abertos.orgao: id_orgao:V nome:V apelido:V sigla:V tipo_orgao:V data_inicio:Dt data_instalacao:Dt data_final:Dt situacao:V +2
+br_camara_dados_abertos.orgao_deputado: id_orgao:V sigla_uf:V nome:V sigla:V nome_deputado:V cargo:V data_inicio:Dt data_final:Dt sigla_partido:V
+br_camara_dados_abertos.proposicao_autor: id_proposicao:V id_deputado:V tipo_autor:V nome_autor:V sigla_partido:V sigla_uf_autor:V ordem_assinatura:V proponente:V
+br_camara_dados_abertos.proposicao_microdados: ano:I data:Dt horario:Ti id_proposicao:V url:V numero:V sigla:V tipo:V ementa:V ementa_detalhada:V +15
+br_camara_dados_abertos.proposicao_tema: ano:I id_proposicao:V tipo_proposicao:V numero:V tema:V relevancia:I
+br_camara_dados_abertos.votacao: data:Dt id_orgao:V id_votacao:V data_registro:Dt horario_registro:Ti sigla_orgao:V id_evento:V aprovacao:I voto_sim:I voto_nao:I +7
+br_camara_dados_abertos.votacao_objeto: data:Dt id_votacao:V descricao:V id_proposicao:V ano_proposicao:I ementa:V codigo_tipo:V sigla_tipo:V numero:V +1
+br_camara_dados_abertos.votacao_orientacao_bancada: id_votacao:V sigla_orgao:V descricao:V sigla_bancada:V orientacao:V
+br_camara_dados_abertos.votacao_parlamentar: data:Dt sigla_uf:V id_votacao:V horario:Ti voto:V id_deputado:V nome:V sigla_partido:V id_legislatura:V
+br_camara_dados_abertos.votacao_proposicao: data:Dt id_votacao:V descricao:V id_proposicao:V ano_proposicao:I titulo:V ementa:V codigo_tipo:V sigla_tipo:V +1
+br_ce_fortaleza_sefin_iptu.face_quadra: ano:I id_face_quadra:V logradouro:V metrica:V pavimentacao:V indicador_agua:B indicador_esgoto:B indicador_galeria_pluvial:B indicador_sarjeta:B +3
+br_cgu_beneficios_cidadao.auxilio_brasil: id_municipio:V sigla_uf:V ano_competencia:I mes_competencia:I ano_referencia:I mes_referencia:I cpf_favorecido:V nis_favorecido:V nome_favorecido:V valor_parcela:D
+br_cgu_beneficios_cidadao.auxilio_emergencial: ano:I mes:I sigla_uf:V id_municipio:V nis_beneficiario:V cpf_beneficiario:V nome_beneficiario:V nis_responsavel:V cpf_responsavel:V nome_responsavel:V enquadramento:V parcela:V +2
+br_cgu_beneficios_cidadao.bolsa_familia_pagamento: id_municipio:V sigla_uf:V ano_competencia:I mes_competencia:I ano_referencia:I mes_referencia:I cpf_favorecido:V nis_favorecido:V nome_favorecido:V valor_parcela:D
+br_cgu_beneficios_cidadao.bpc: id_municipio:V sigla_uf:V ano_competencia:I mes_competencia:I ano_referencia:I mes_referencia:I nis_favorecido:V cpf_favorecido:V nome_favorecido:V nis_representante:V +5
+br_cgu_beneficios_cidadao.garantia_safra: id_municipio:V sigla_uf:V ano_referencia:I mes_referencia:I nis_favorecido:V nome_favorecido:V valor_parcela:D
+br_cgu_beneficios_cidadao.novo_bolsa_familia: id_municipio:V sigla_uf:V ano_competencia:I mes_competencia:I ano_referencia:I mes_referencia:I cpf_favorecido:V nis_favorecido:V nome_favorecido:V valor_parcela:D
+br_cgu_cartao_pagamento.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_cgu_cartao_pagamento.microdados_compras_centralizadas: ano_extrato:I mes_extrato:I codigo_orgao_superior:V nome_orgao_superior:V codigo_orgao:V nome_orgao:V codigo_unidade_gestora:V nome_unidade_gestora:V +6
+br_cgu_cartao_pagamento.microdados_defesa_civil: ano_extrato:I mes_extrato:I codigo_orgao_superior:V nome_orgao_superior:V codigo_orgao:V nome_orgao:V codigo_unidade_gestora:V nome_unidade_gestora:V +12
+br_cgu_cartao_pagamento.microdados_governo_federal: ano_extrato:I mes_extrato:I codigo_orgao_superior:V nome_orgao_superior:V codigo_orgao:V nome_orgao:V codigo_unidade_gestora:V nome_unidade_gestora:V +7
+br_cgu_dados_abertos.conjunto: id:V nome:V nome_tokenizado:V descricao:V mantenedor:V email_mantenedor:V id_organizacao_responsavel:V organizacao_responsavel:V +5
+br_cgu_dados_abertos.organizacao: sigla_uf:V id_municipio:V id:V nome:V nome_tokenizado:V descricao:V tipo_esfera_administrativa:V quantidade_seguidores:I quantidade_conjuntos:I
+br_cgu_dados_abertos.recurso: id:V id_conjunto:V nome:V descricao:V tipo:V formato:V tamanho_bytes:I url_download:V +3
+br_cgu_emendas_parlamentares.microdados: ano_emenda:I id_emenda:V numero_emenda:V tipo_emenda:V id_autor_emenda:V nome_autor_emenda:V localidade:V sigla_uf_gasto:V +17
+br_cgu_licitacao_contrato.contrato_apostilamento: ano:I mes:I id_orgao:V id_unidade_gestora:V id_contrato:V id_orgao_superior:V nome_orgao_superior:V nome_orgao:V nome_unidade_gestora:V id_apostilamento:V descricao_apostilamento:V situacao_apostilamento:V +2
+br_cgu_licitacao_contrato.contrato_compra: ano:I mes:I id_orgao:V id_unidade_gestora:V id_contrato:V objeto:V fundamento_legal:V modalidade:V situacao_contrato:V id_orgao_superior:V nome_orgao_superior:V nome_orgao:V +14
+br_cgu_licitacao_contrato.contrato_item: ano:I mes:I id_orgao:V id_contrato:V nome_orgao:V id_ug:V nome_ug:V id_item:V descricao_item:V descricao_complementar_item:V quantidade_item:I +1
+br_cgu_licitacao_contrato.contrato_termo_aditivo: ano:I mes:I id_orgao:V id_contrato:V id_orgao_superior:V nome_orgao_superior:V nome_orgao:V id_ug:V nome_ug:V id_termo_aditivo:V data_publicacao_dou:Dt +1
+br_cgu_licitacao_contrato.licitacao: ano:I mes:I sigla_uf:V id_municipio:V id_unidade_gestora:V id_orgao:V id_licitacao:V nome_unidade_gestora:V id_modalidade_compra:V modalidade_compra:V numero_processo:V objeto:V situacao_licitacao:V id_orgao_superior:V +5
+br_cgu_licitacao_contrato.licitacao_empenho: ano:I mes:I id_unidade_gestora:V id_processo:V id_licitacao:V nome_unidade_gestora:V id_modalidade:V modalidade:V observacao:V id_empenho:V data_emissao:Dt +1
+br_cgu_licitacao_contrato.licitacao_item: ano:I mes:I id_unidade_gestora:V id_orgao:V id_licitacao:V nome_unidade_gestora:V id_modalidade:V modalidade:V numero_processo:V nome_orgao:V cpf_cnpj_vencedor:V nome_vencedor:V +4
+br_cgu_licitacao_contrato.licitacao_participante: ano:I mes:I id_unidade_gestora:V id_orgao:V id_licitacao:V nome_unidade_gestora:V id_modalidade_compra:V modalidade_compra:V numero_processo:V nome_orgao:V id_item_compra:V descricao_item_compra:V +3
+br_cgu_orcamento_publico.orcamento: ano_exercicio:I id_orgao_superior:V nome_orgao_superior:V id_orgao_subordinado:V nome_orgao_subordinado:V id_unidade_orcamentaria:V nome_unidade_orcamentaria:V id_funcao:V +18
+br_cgu_receitas_publicas.receitas: id_orgao:V ano_exercicio:I data_lancamento:Dt id_orgao_superior:V nome_orgao_superior:V nome_orgao:V codigo_unidade_gestora:V nome_unidade_gestora:V categoria_economica:V +7
+br_cgu_servidores_executivo_federal.afastamentos: ano:I mes:I cpf:V id_servidor:V nome:V data_inicio:Dt data_final:Dt origem:V
+br_cgu_servidores_executivo_federal.cadastro_aposentados: ano:I mes:I cpf:V id_servidor:V nome:V matricula:V id_tipo_aposentadoria:V tipo_aposentadoria:V data_aposentadoria:Dt descricao_cargo:V id_uorg_lotacao:V +19
+br_cgu_servidores_executivo_federal.cadastro_pensionistas: ano:I mes:I cpf:V id_servidor:V nome:V matricula:V cpf_representante_legal:V nome_representante_legal:V cpf_instituidor_pensao:V nome_instituidor_pensao:V id_tipo_pensao:V +23
+br_cgu_servidores_executivo_federal.cadastro_reserva_reforma_militares: ano:I mes:I cpf:V id_servidor:V nome:V matricula:V id_tipo_aposentadoria:V tipo_aposentadoria:V data_aposentadoria:Dt descricao_cargo:V id_uorg_lotacao:V +18
+br_cgu_servidores_executivo_federal.cadastro_servidores: ano:I mes:I cpf:V sigla_uf:V id_servidor:V nome:V matricula:V descricao_cargo:V classe_cargo:V referencia_cargo:V padrao_cargo:V nivel_cargo:V +34
+br_cgu_servidores_executivo_federal.observacoes: ano:I mes:I cpf:V id_servidor:V nome:V observacao:V origem:V
+br_cgu_servidores_executivo_federal.remuneracao: ano:I mes:I cpf:V id_servidor:V nome:V remuneracao_bruta_brl:D remuneracao_bruta_usd:D abate_teto_brl:D abate_teto_usd:D gratificao_natalina_brl:D gratificao_natalina_usd:D +29
+br_cnj_improbidade_administrativa.condenacao: sigla_uf:V nome:V numero_processo:V id_condenacao:V id_processo:V tipo_pessoa:V id_pessoa:V sexo:V funcionario_publico:B +54
+br_cnpq_bolsas.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_cnpq_bolsas.microdados: ano:I processo:V data_inicio_processo:Dt data_fim_processo:Dt beneficiario:V titulo_projeto:V palavra_chave:V linha_fomento:V modalidade:V +22
+br_cvm_administradores_carteira.pessoa_fisica: nome:V data_registro:Dt data_cancelamento:Dt motivo_cancelamento:V situacao:V data_inicio_situacao:Dt categoria_registro:V
+br_cvm_administradores_carteira.pessoa_juridica: cnpj:V sigla_uf:V cep:V denominacao_social:V denominacao_comercial:V data_registro:Dt data_cancelamento:Dt motivo_cancelamento:V situacao:V data_inicio_situacao:Dt categoria_registro:V +13
+br_cvm_administradores_carteira.responsavel: cnpj:V nome:V tipo:V
+br_cvm_oferta_publica_distribuicao.dia: numero_processo:V numero_registro_oferta:V tipo_oferta:V tipo_componente_oferta_mista:V tipo_ativo:V cnpj_emissor:V nome_emissor:V cnpj_lider:V +36
+br_datahackers_state_data.microdados: p0:V p1_a:I p1_a_1:V p1_b:V p1_c:V p1_d:V p1_e:V p1_f:V +345
+br_fbsp_absp.uf: ano:I sigla_uf:V quantidade_cvli:I quantidade_feminicidio:I quantidade_ocorrencia_homicidio_doloso:I quantidade_vitima_homicidio_doloso:I quantidade_latrocinio:I quantidade_lesao_corporal_seguida_de_morte:I quantidade_morte_a_esclarecer:I quantidade_morte_intervencao_policial_civil_servico:I +19
+br_fbsp_absp.violencia_escola: ano:I uf:V tema:V item:V quantidade_escola:D
+br_fgv_igp.igp_10_mes: ano:I mes:I indice:D variacao_mensal:D variacao_12_meses:D variacao_acumulada_ano:D indice_fechamento_mensal:D
+br_fgv_igp.igp_di_ano: ano:I indice_medio:D indice:D variacao_anual:D indice_fechamento_anual:D
+br_fgv_igp.igp_di_mes: ano:I mes:I indice:D variacao_mensal:D variacao_12_meses:D variacao_acumulada_ano:D indice_fechamento_mensal:D
+br_fgv_igp.igp_m_ano: ano:I indice_medio:D indice:D variacao_anual:D indice_fechamento_anual:D
+br_fgv_igp.igp_m_mes: ano:I mes:I indice:D variacao_mensal:D variacao_12_meses:D variacao_primeiro_decendio:D variacao_segundo_decendio:D variacao_acumulada_ano:D indice_fechamento_mensal:D
+br_fgv_igp.igp_og_ano: ano:I indice_medio:D indice:D variacao_anual:D indice_fechamento_anual:D
+br_fgv_igp.igp_og_mes: ano:I mes:I indice:D var_mensal:D variacao_12_meses:D variacao_acumulada_ano:D indice_fechamento_mensal:D
+br_geobr_mapas.area_minima_comparavel_2010: id_municipio:V id_amc:V
+br_geobr_mapas.area_risco_desastre: id_municipio:V sigla_uf:V geocodigo_bater:V origem:V acuracia:V observacao:V quantidade_poligono:I
+br_geobr_mapas.arranjo_populacional: id_municipio:V sigla_uf:V id_arranjo_populacional:V arranjo_populacional:V populacao_urbana_2010:I populacao_rural_2010:I populacao_2010:I
+br_geobr_mapas.bioma: ano:I id_bioma:V nome_bioma:V
+br_geobr_mapas.concentracao_urbana: id_municipio:V sigla_uf:V id_concentracao_urbana:V concentracao_urbana:V populacao_urbana_2010:I populacao_rural_2010:I populacao_2010:I
+br_geobr_mapas.escola: sigla_uf:V id_escola:V
+br_geobr_mapas.estabelecimentos_saude: ano:I sigla_uf:V id_municipio:V id_cnes:V
+br_geobr_mapas.limite_vizinhanca: id_uf:V sigla_uf:V id_municipio:V nome_municipio:V id_distrito:V id_subdistrito:V nome_distrito:V nome_subdistrito:V id_vizinhanca:V nome_vizinhanca:V referencia_geometria:V
+br_geobr_mapas.mesorregiao: id_uf:V sigla_uf:V id_mesorregiao:V
+br_geobr_mapas.microrregiao: id_uf:V sigla_uf:V id_microrregiao:V
+br_geobr_mapas.municipio: id_municipio:V sigla_uf:V
+br_geobr_mapas.pegada_urbana: id_municipio:V id_pegada_urbana:V densidade:V tipo:V area:D
+br_geobr_mapas.regiao: id_regiao:V nome_regiao:V
+br_geobr_mapas.regiao_imediata: id_uf:V sigla_uf:V id_regiao_imediata:V
+br_geobr_mapas.regiao_intermediaria: id_uf:V sigla_uf:V id_regiao_intermediaria:V
+br_geobr_mapas.regiao_metropolitana_2017: id_municipio:V sigla_uf:V nome_regiao_metropolitana:V tipo:V subcategoria_metropolitana:V legislacao:V data_legislacao:Dt
+br_geobr_mapas.saude: id_uf:V sigla_uf:V id_regiao_saude:V
+br_geobr_mapas.sede_municipal: ano:I id_municipio:V nome_municipio:V id_uf:V sigla_uf:V id_regiao:V regiao:V
+br_geobr_mapas.semiarido: id_municipio:V sigla_uf:V
+br_geobr_mapas.setor_censitario_2010: id_uf:V sigla_uf:V id_municipio:V nome_municipio:V id_distrito:V id_subdistrito:V id_setor_censitario:V nome_distrito:V nome_subdistrito:V nome_vizinhanca:V id_vizinhanca:V zona:V
+br_geobr_mapas.terra_indigena: nome_municipio:V sigla_uf:V id_geografico:V id_terra_indigena:V terra_indigena:V etnia:V area:D fase:V modalidade:V reestudo:V +4
+br_geobr_mapas.uf: id_uf:V sigla_uf:V
+br_geobr_mapas.unidade_conservacao: id_unidade_conservacao:V unidade_conservacao:V id_unidade_conservacao_wcmc:V id_cnuc:V id_geografico:V organizacao_orgao:V categoria:V sigla_grupo:V +5
+br_ibge_censo_2022.alfabetizacao_grupo_idade_sexo_raca: id_municipio:V cor_raca:V sexo:V grupo_idade:V alfabetizacao:V populacao:I
+br_ibge_censo_2022.cadastro_enderecos: sigla_uf:V id_municipio:V id_distrito:V id_subdistrito:V id_setor_censitario:V cep:V id_endereco:V numero_quadra:V numero_face:V localidade:V tipo_segmento_logradouro:V titulo_segmento_logradouro:V nome_logradouro:V numero_logradouro:V +20
+br_ibge_censo_2022.caracteristica_domicilio_grupo_idade_raca_destino_lixo: ano:I id_municipio:V tipo_destino_lixo:V grupo_idade:V cor_raca:V populacao:I
+br_ibge_censo_2022.caracteristica_domicilio_grupo_idade_raca_esgotamento_sanitario: ano:I id_municipio:V tipo_esgotamento_sanitario:V grupo_idade:V cor_raca:V populacao:I
+br_ibge_censo_2022.caracteristica_domicilio_grupo_idade_raca_ligacao_abastecimento_agua: ano:I id_municipio:V tipo_ligacao_rede_geral:V grupo_idade:V cor_raca:V populacao:I
+br_ibge_censo_2022.caracteristica_domicilio_grupo_idade_raca_tipo_domicilio: ano:I id_municipio:V tipo_domicilio:V grupo_idade:V cor_raca:V populacao:I
+br_ibge_censo_2022.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_ibge_censo_2022.domicilio_recenseado: id_municipio:V especie:V domicilios:I
+br_ibge_censo_2022.indice_envelhecimento_raca: ano:I id_municipio:V cor_raca:V indice_envelhecimento:D idade_mediana:I razao_sexo:D
+br_ibge_censo_2022.municipio: id_municipio:V sigla_uf:V domicilios:I populacao:I area:I taxa_alfabetizacao:D idade_mediana:D razao_sexo:D indice_envelhecimento:D populacao_indigena:I +3
+br_ibge_censo_2022.populacao_grupo_idade_sexo_raca: ano:I id_municipio:V grupo_idade:V sexo:V cor_raca:V populacao:I
+br_ibge_censo_2022.populacao_grupo_idade_uf: sigla_uf:V grupo_idade:V populacao:I
+br_ibge_censo_2022.populacao_idade_sexo: id_municipio:V forma_declaracao_idade:V sexo:V idade:V idade_anos:D grupo_idade:V populacao:I
+br_ibge_censo_2022.setor_censitario: id_uf:V id_municipio:V id_setor_censitario:V area:D pessoas:I domicilios:I domicilios_particulares:I domicilios_coletivos:I media_moradores_domicilios:D porcentagem_domicilios_imputados:D domicilios_particulares_ocupados:I +1411
+br_ibge_censo_2022.terra_indigena: sigla_uf:V id_terra_indigena:V terra_indigena:V domicilios:I populacao:I populacao_indigena:I
+br_ibge_censo_2022.territorio_quilombola: sigla_uf:V id_territorio_quilombola:V territorio_quilombola:V domicilios:V populacao:I populacao_quilombola:I
+br_ibge_censo_demografico.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_ibge_censo_demografico.microdados_domicilio_1970: sigla_uf:V id_municipio:V id_domicilio:V numero_familia:I v001:V v002:V v003:V v004:V v005:I v006:V +16
+br_ibge_censo_demografico.microdados_domicilio_1980: sigla_uf:V id_municipio:V id_distrito:V v201:V v202:V v203:V v204:V v205:V v206:V v207:V v208:V +15
+br_ibge_censo_demografico.microdados_domicilio_1991: sigla_uf:V id_municipio:V id_questionario:V peso_amostral:D v0109:V v1061:V v7003:V v0111:I v0112:V v0201:V +33
+br_ibge_censo_demografico.microdados_domicilio_2000: id_regiao:V sigla_uf:V id_mesorregiao:V id_microrregiao:V id_municipio:V id_distrito:V id_subdistrito:V id_regiao_metropolitana:V controle:I situacao_setor:I situacao_domicilio:I tipo_setor:V peso_amostral:D area_ponderacao:I v0110:I +41
+br_ibge_censo_demografico.microdados_domicilio_2010: id_regiao:V sigla_uf:V id_mesorregiao:V id_microrregiao:V id_municipio:V id_regiao_metropolitana:V situacao_setor:I situacao_domicilio:I controle:I peso_amostral:D area_ponderacao:I v4001:V v4002:V +63
+br_ibge_censo_demografico.microdados_pessoa_1970: sigla_uf:V id_municipio:V id_domicilio:V numero_familia:I ordem:V v001:V v002:V v003:V v022:V v023:V +31
+br_ibge_censo_demografico.microdados_pessoa_1980: sigla_uf:V id_municipio:V numero_ordem:I v211:I v604:I v598:V v501:V v503:V v504:V v505:V +54
+br_ibge_censo_demografico.microdados_pessoa_1991: sigla_uf:V id_municipio:V id_questionario:V numero_ordem:I v0301:V v0302:V v0303:V v0304:V v2011:V v3041:I +90
+br_ibge_censo_demografico.microdados_pessoa_2000: sigla_uf:V id_mesorregiao:V id_microrregiao:V id_municipio:V id_distrito:V id_subdistrito:V id_regiao_metropolitana:V controle:I serie:I area_ponderacao:I v1001:V v1005:V v1006:V v1007:V +96
+br_ibge_censo_demografico.microdados_pessoa_2010: id_regiao:V sigla_uf:V id_mesorregiao:V id_microrregiao:V id_municipio:V id_regiao_metropolitana:V area_ponderacao:I situacao_setor:I situacao_domicilio:I controle:I numero_ordem:I peso_amostral:D v0502:V +231
+br_ibge_censo_demografico.setor_censitario_alfabetizacao_homens_mulheres_2010: id_setor_censitario:V sigla_uf:V v086:I v087:I v088:I v089:I v090:I v091:I v092:I v093:I +162
+br_ibge_censo_demografico.setor_censitario_alfabetizacao_total_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +77
+br_ibge_censo_demografico.setor_censitario_basico_2010: id_setor_censitario:V sigla_uf:V v001:D v002:D v003:D v004:D v005:D v006:D v007:D v008:D +4
+br_ibge_censo_demografico.setor_censitario_domicilio_caracteristicas_gerais_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +233
+br_ibge_censo_demografico.setor_censitario_domicilio_moradores_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +124
+br_ibge_censo_demografico.setor_censitario_domicilio_renda_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +6
+br_ibge_censo_demografico.setor_censitario_entorno_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +1054
+br_ibge_censo_demografico.setor_censitario_idade_homens_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +126
+br_ibge_censo_demografico.setor_censitario_idade_mulheres_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +126
+br_ibge_censo_demografico.setor_censitario_idade_total_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +126
+br_ibge_censo_demografico.setor_censitario_pessoa_renda_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +124
+br_ibge_censo_demografico.setor_censitario_raca_alfabetizacao_idade_genero_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +147
+br_ibge_censo_demografico.setor_censitario_raca_idade_0_4_genero_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +2
+br_ibge_censo_demografico.setor_censitario_raca_idade_genero_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +243
+br_ibge_censo_demografico.setor_censitario_registro_civil_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I
+br_ibge_censo_demografico.setor_censitario_relacao_parentesco_conjuges_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +205
+br_ibge_censo_demografico.setor_censitario_relacao_parentesco_filhos_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +196
+br_ibge_censo_demografico.setor_censitario_relacao_parentesco_filhos_enteados_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +246
+br_ibge_censo_demografico.setor_censitario_relacao_parentesco_outros_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +232
+br_ibge_censo_demografico.setor_censitario_responsavel_domicilios_homens_total_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +208
+br_ibge_censo_demografico.setor_censitario_responsavel_domicilios_mulheres_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +100
+br_ibge_censo_demografico.setor_censitario_responsavel_renda_2010: id_setor_censitario:V sigla_uf:V v001:I v002:I v003:I v004:I v005:I v006:I v007:I v008:I +124
+br_ibge_estadic.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_ibge_inpc.mes_brasil: ano:I mes:I indice:D variacao_mensal:D variacao_trimestral:D variacao_semestral:D variacao_anual:D variacao_doze_meses:D
+br_ibge_inpc.mes_categoria_brasil: ano:I mes:I id_categoria:V categoria:V peso_mensal:D variacao_mensal:D variacao_anual:D variacao_doze_meses:D
+br_ibge_inpc.mes_categoria_municipio: ano:I mes:I id_municipio:V sigla_uf:V id_categoria:V categoria:V peso_mensal:D variacao_mensal:D variacao_anual:D variacao_doze_meses:D
+br_ibge_inpc.mes_categoria_rm: ano:I mes:I sigla_uf:V regiao_metropolitana:V id_categoria:V categoria:V peso_mensal:D variacao_mensal:D variacao_anual:D variacao_doze_meses:D
+br_ibge_ipca.mes_brasil: ano:I mes:I indice:D variacao_mensal:D variacao_trimestral:D variacao_semestral:D variacao_anual:D variacao_doze_meses:D
+br_ibge_ipca.mes_categoria_brasil: ano:I mes:I id_categoria:V categoria:V peso_mensal:D variacao_mensal:D variacao_anual:D variacao_doze_meses:D
+br_ibge_ipca.mes_categoria_municipio: ano:I mes:I id_municipio:V sigla_uf:V id_categoria:V categoria:V peso_mensal:D variacao_mensal:D variacao_anual:D variacao_doze_meses:D
+br_ibge_ipca.mes_categoria_rm: ano:I mes:I sigla_uf:V regiao_metropolitana:V id_categoria:V categoria:V peso_mensal:D variacao_mensal:D variacao_anual:D variacao_doze_meses:D
+br_ibge_ipca15.mes_brasil: ano:I mes:I indice:D variacao_mensal:D variacao_trimestral:D variacao_semestral:D variacao_anual:D variacao_doze_meses:D
+br_ibge_ipca15.mes_categoria_brasil: ano:I mes:I id_categoria:V categoria:V peso_mensal:D variacao_mensal:D variacao_anual:D variacao_doze_meses:D
+br_ibge_ipca15.mes_categoria_municipio: ano:I mes:I id_municipio:V sigla_uf:V id_categoria:V categoria:V peso_mensal:D variacao_mensal:D variacao_anual:D variacao_doze_meses:D
+br_ibge_ipca15.mes_categoria_rm: ano:I mes:I sigla_uf:V regiao_metropolitana:V id_categoria:V categoria:V peso_mensal:D variacao_mensal:D variacao_anual:D variacao_doze_meses:D
+br_ibge_pam.lavoura_permanente: ano:I sigla_uf:V id_municipio:V produto:V area_destinada_colheita:I area_colhida:I quantidade_produzida:D rendimento_medio_producao:D valor_producao:D
+br_ibge_pam.lavoura_temporaria: ano:I sigla_uf:V id_municipio:V produto:V area_plantada:I area_colhida:I quantidade_produzida:D rendimento_medio_producao:D valor_producao:D
+br_ibge_pevs.producao_extracao_vegetal: ano:I id_municipio:V tipo_produto:V produto:V unidade:V quantidade:I valor:D
+br_ibge_pevs.producao_silvicultura: ano:I id_municipio:V categoria_produto:V tipo_produto:V subtipo_produto:V produto:V unidade:V quantidade:I valor:D
+br_ibge_pib.gini: id_uf:V ano:I gini_pib:D gini_va_agro:D gini_va_industria:D gini_va_servicos:D gini_va_adespss:D
+br_ibge_pib.municipio: id_municipio:V ano:I pib:I impostos_liquidos:I va:I va_agropecuaria:I va_industria:I va_servicos:I va_adespss:I
+br_ibge_pnad.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_ibge_pnad.microdados_compatibilizados_domicilio: ano:I id_regiao:V id_uf:V sigla_uf:V id_domicilio:V regiao_metropolitana:I zona_urbana:V tipo_zona_domicilio:V total_pessoas:I total_pessoas_10_mais:I especie_domicilio:V tipo_domicilio:V +27
+br_ibge_pnad.microdados_compatibilizados_pessoa: ano:I id_regiao:V id_uf:V sigla_uf:V id_domicilio:V regiao_metropolitana:V numero_familia:I ordem:I condicao_domicilio:V condicao_familia:V numero_membros_familia:I sexo:V +58
+br_ibge_pnad_covid.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_ibge_pnadc.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_ibge_pnadc.educacao: ano:I trimestre:I id_uf:V sigla_uf:V capital:V rm_ride:V id_upa:V id_estrato:V id_domicilio:V id_pessoa:V v1008:V v1014:V +267
+br_ibge_pnadc.microdados: ano:I trimestre:I id_uf:V sigla_uf:V capital:V rm_ride:V id_upa:V id_estrato:V id_domicilio:V id_pessoa:V V1008:V V1014:V +412
+br_ibge_pnadc.rendimentos_outras_fontes: ano:I trimestre:I id_uf:V sigla_uf:V capital:V rm_ride:V id_upa:V id_estrato:V id_domicilio:V id_pessoa:V V1008:V V1014:V +281
+br_ibge_pof.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_ibge_populacao.brasil: ano:I populacao:I
+br_ibge_populacao.municipio: ano:I sigla_uf:V id_municipio:V populacao:I
+br_ibge_populacao.uf: ano:I sigla_uf:V populacao:I
+br_ibge_ppm.efetivo_rebanhos: ano:I sigla_uf:V id_municipio:V tipo_rebanho:V quantidade:I
+br_ibge_ppm.producao_aquicultura: ano:I sigla_uf:V id_municipio:V produto:V quantidade:I valor:I
+br_ibge_ppm.producao_origem_animal: ano:I sigla_uf:V id_municipio:V produto:V unidade:V quantidade:I valor:I
+br_ibge_ppm.producao_pecuaria: ano:I sigla_uf:V id_municipio:V ovinos_tosquiados:I vacas_ordenhadas:I
+br_inep_ana.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_inep_avaliacao_alfabetizacao.alunos: ano:I id_municipio:V id_escola:V id_aluno:V caderno:V serie:V rede:V presenca:V preenchimento_caderno:V alfabetizado:V proficiencia:D +1
+br_inep_avaliacao_alfabetizacao.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_inep_avaliacao_alfabetizacao.meta_alfabetizacao_brasil: ano:I rede:V taxa_alfabetizacao:D meta_alfabetizacao_2024:D meta_alfabetizacao_2025:D meta_alfabetizacao_2026:D meta_alfabetizacao_2027:D meta_alfabetizacao_2028:D meta_alfabetizacao_2029:D +2
+br_inep_avaliacao_alfabetizacao.meta_alfabetizacao_municipio: ano:I id_municipio:V rede:V taxa_alfabetizacao:D meta_alfabetizacao_2024:D meta_alfabetizacao_2025:D meta_alfabetizacao_2026:D meta_alfabetizacao_2027:D meta_alfabetizacao_2028:D meta_alfabetizacao_2029:D +3
+br_inep_avaliacao_alfabetizacao.meta_alfabetizacao_uf: ano:I sigla_uf:V rede:V taxa_alfabetizacao:D meta_alfabetizacao_2024:D meta_alfabetizacao_2025:D meta_alfabetizacao_2026:D meta_alfabetizacao_2027:D meta_alfabetizacao_2028:D meta_alfabetizacao_2029:D +2
+br_inep_avaliacao_alfabetizacao.municipio: ano:I id_municipio:V serie:V rede:V taxa_alfabetizacao:D media_portugues:D proporcao_aluno_nivel_0:D proporcao_aluno_nivel_1:D proporcao_aluno_nivel_2:D proporcao_aluno_nivel_3:D +5
+br_inep_avaliacao_alfabetizacao.uf: ano:I sigla_uf:V serie:V rede:V taxa_alfabetizacao:D media_portugues:D proporcao_aluno_nivel_0:D proporcao_aluno_nivel_1:D proporcao_aluno_nivel_2:D proporcao_aluno_nivel_3:D +5
+br_inep_censo_educacao_superior.curso: ano:I sigla_uf:V id_municipio:V tipo_dimensao:V tipo_organizacao_academica:V tipo_organizacao_administrativa:V rede:V id_ies:V nome_curso:V id_curso:V nome_curso_cine:V +182
+br_inep_censo_educacao_superior.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_inep_censo_educacao_superior.ies: ano:I sigla_uf:V id_municipio:V cep:V tipo_organizacao_academica:V tipo_categoria_administrativa:V nome_mantenedora:V id_mantenedora:V id_ies:V nome:V sigla:V endereco:V +59
+br_inep_censo_escolar.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_inep_censo_escolar.escola: ano:I sigla_uf:V id_municipio:V id_escola:V rede:V tipo_categoria_escola_privada:V tipo_localizacao:V tipo_localizacao_diferenciada:V tipo_situacao_funcionamento:V id_orgao_regional:V data_ano_letivo_inicio:Dt data_ano_letivo_termino:Dt +443
+br_inep_censo_escolar.turma: ano:I sigla_uf:V id_municipio:V id_escola:V rede:V id_turma:V etapa_ensino:V tipo_turma:V hora_inicial:I minuto_inicial:I dia_semana_domingo:I dia_semana_segunda:I +64
+br_inep_educacao_especial.brasil_distorcao_idade_serie: ano:I etapa_ensino:V tdi:D
+br_inep_educacao_especial.brasil_taxa_rendimento: ano:I etapa_ensino:V taxa_aprovacao:D taxa_reprovacao:D taxa_abandono:D
+br_inep_educacao_especial.distorcao_idade_serie: ano:I sigla_uf:V etapa_ensino:V tdi:Dec
+br_inep_educacao_especial.docente_aee: ano:I sigla_uf:V id_municipio:V quantidade_docente_regente:Dec quantidade_docente_aee:Dec quantidade_docente_regente_formacao_continuada:I quantidade_docente_aee_formacao_continuada:I
+br_inep_educacao_especial.docente_formacao: ano:I sigla_uf:V id_municipio:V rede:V quantidade_docente_formacao_continuada:Dec
+br_inep_educacao_especial.etapa_ensino: ano:I sigla_uf:V id_municipio:V tipo_classe:V etapa_ensino:V quantidade_matricula:Dec
+br_inep_educacao_especial.faixa_etaria: ano:I sigla_uf:V id_municipio:V tipo_classe:V faixa_etaria:V quantidade_matricula:Dec
+br_inep_educacao_especial.localizacao: ano:I sigla_uf:V id_municipio:V tipo_classe:V rede:V localizacao:V quantidade_matricula:Dec
+br_inep_educacao_especial.matricula_aee: ano:I sigla_uf:V rede:V quantidade_matricula:Dec quantidade_matricula_aee:Dec
+br_inep_educacao_especial.sexo_raca_cor: ano:I sigla_uf:V id_municipio:V tipo_classe:V sexo:V raca_cor:V quantidade_matricula:Dec
+br_inep_educacao_especial.taxa_rendimento: ano:I sigla_uf:V etapa_ensino:V taxa_aprovacao:Dec taxa_reprovacao:Dec taxa_abandono:Dec
+br_inep_educacao_especial.tempo_ensino: ano:I sigla_uf:V id_municipio:V tipo_classe:V rede:V tempo_ensino:V quantidade_matricula:Dec
+br_inep_educacao_especial.tipo_deficiencia: ano:I sigla_uf:V id_municipio:V tipo_classe:V tipo_deficiencia:V quantidade_matricula:Dec
+br_inep_educacao_especial.uf_distorcao_idade_serie: ano:I sigla_uf:V etapa_ensino:V tdi:D
+br_inep_educacao_especial.uf_taxa_rendimento: ano:I sigla_uf:V etapa_ensino:V taxa_aprovacao:D taxa_reprovacao:D taxa_abandono:D
+br_inep_enem.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_inep_enem.microdados: ano:I id_inscricao:V faixa_etaria:V sexo:V id_municipio_residencia:V sigla_uf_residencia:V estado_civil:V cor_raca:V nacionalidade:V situacao_conclusao:V +53
+br_inep_enem.questionario_socioeconomico_1998: id_inscricao:V Q1:V Q2:V Q3:V Q4:V Q5:V Q6:V Q7:V Q8:V +129
+br_inep_enem.questionario_socioeconomico_1999: id_inscricao:V Q1:V Q2:V Q3:V Q4:V Q5:V Q6:V Q7:V Q8:V +121
+br_inep_enem.questionario_socioeconomico_2000: id_inscricao:V Q1:V Q2:V Q3:V Q4:V Q5:V Q6:V Q7:V Q8:V +119
+br_inep_enem.questionario_socioeconomico_2001: id_inscricao:V Q1:V Q2:V Q3:V Q4:V Q5:V Q6_1:V Q6_2:V Q6_3:V +234
+br_inep_enem.questionario_socioeconomico_2002: id_inscricao:V Q1:V Q2:V Q3:V Q4:V Q5:V Q6_1:V Q6_2:V Q6_3:V +211
+br_inep_enem.questionario_socioeconomico_2003: id_inscricao:V Q1:V Q2:V Q3:V Q4:V Q5:V Q6:V Q7:V Q8:V +180
+br_inep_enem.questionario_socioeconomico_2004: id_inscricao:V Q1:V Q2:V Q3:V Q4:V Q5:V Q6:V Q7:V Q8:V +197
+br_inep_enem.questionario_socioeconomico_2005: id_inscricao:V Q1:V Q2:V Q3:V Q4:V Q5:V Q6:V Q7:V Q8:V +215
+br_inep_enem.questionario_socioeconomico_2006: id_inscricao:V Q1:V Q2:V Q3:V Q4:V Q5:V Q6:V Q7:V Q8:V +215
+br_inep_enem.questionario_socioeconomico_2007: id_inscricao:V Q1:V Q2:V Q3:V Q4:V Q5:V Q6:V Q7:V Q8:V +215
+br_inep_enem.questionario_socioeconomico_2008: id_inscricao:V Q1:V Q2:V Q3:V Q4:V Q5:V Q6:V Q7:V Q8:V +215
+br_inep_enem.questionario_socioeconomico_2009: id_inscricao:V Q1:V Q2:V Q3:V Q4:V Q5:V Q6:V Q7:V Q8:V +285
+br_inep_enem.questionario_socioeconomico_2010: id_inscricao:V Q01:V Q02:V Q03:V Q04:V Q05:V Q06:V Q07:V Q08:V +49
+br_inep_enem.questionario_socioeconomico_2011: id_inscricao:V Q001:V Q002:V Q003:V Q004:V Q005:V Q006:V Q007:V Q008:V +67
+br_inep_enem.questionario_socioeconomico_2012: id_inscricao:V Q001:V Q002:V Q003:V Q004:V Q005:V Q006:V Q007:V Q008:V +54
+br_inep_enem.questionario_socioeconomico_2013: id_inscricao:V Q001:V Q002:V Q003:V Q004:V Q005:V Q006:V Q007:V Q008:V +68
+br_inep_enem.questionario_socioeconomico_2014: id_inscricao:V Q001:V Q002:V Q003:V Q004:V Q005:V Q006:V Q007:V Q008:V +68
+br_inep_enem.questionario_socioeconomico_2015: id_inscricao:V Q001:V Q002:V Q003:V Q004:V Q005:V Q006:V Q007:V Q008:V +42
+br_inep_enem.questionario_socioeconomico_2016: id_inscricao:V Q001:V Q002:V Q003:V Q004:V Q005:V Q006:V Q007:V Q008:V +42
+br_inep_enem.questionario_socioeconomico_2017: id_inscricao:V Q001:V Q002:V Q003:V Q004:V Q005:V Q006:V Q007:V Q008:V +19
+br_inep_enem.questionario_socioeconomico_2018: id_inscricao:V Q001:V Q002:V Q003:V Q004:V Q005:V Q006:V Q007:V Q008:V +19
+br_inep_enem.questionario_socioeconomico_2019: id_inscricao:V Q001:V Q002:V Q003:V Q004:V Q005:V Q006:V Q007:V Q008:V +17
+br_inep_enem.questionario_socioeconomico_2020: id_inscricao:V Q001:V Q002:V Q003:V Q004:V Q005:V Q006:V Q007:V Q008:V +17
+br_inep_enem.questionario_socioeconomico_2021: id_inscricao:V Q001:V Q002:V Q003:V Q004:V Q005:V Q006:V Q007:V Q008:V +17
+br_inep_enem.questionario_socioeconomico_2022: id_inscricao:V Q001:V Q002:V Q003:V Q004:V Q005:V Q006:V Q007:V Q008:V +17
+br_inep_enem.questionario_socioeconomico_2023: id_inscricao:V q001:V q002:V q003:V q004:V q005:V q006:V q007:V q008:V +17
+br_inep_formacao_docente.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_inep_ideb.brasil: ano:I rede:V ensino:V anos_escolares:V taxa_aprovacao:D indicador_rendimento:D nota_saeb_matematica:D nota_saeb_lingua_portuguesa:D nota_saeb_media_padronizada:D +2
+br_inep_ideb.escola: ano:I sigla_uf:V id_municipio:V id_escola:V rede:V ensino:V anos_escolares:V taxa_aprovacao:D indicador_rendimento:D nota_saeb_matematica:D nota_saeb_lingua_portuguesa:D nota_saeb_media_padronizada:D +2
+br_inep_ideb.municipio: ano:I sigla_uf:V id_municipio:V rede:V ensino:V anos_escolares:V taxa_aprovacao:D indicador_rendimento:D nota_saeb_matematica:D nota_saeb_lingua_portuguesa:D nota_saeb_media_padronizada:D +2
+br_inep_ideb.regiao: ano:I regiao:V rede:V ensino:V anos_escolares:V taxa_aprovacao:D indicador_rendimento:D nota_saeb_matematica:D nota_saeb_lingua_portuguesa:D +3
+br_inep_ideb.uf: ano:I sigla_uf:V rede:V ensino:V anos_escolares:V taxa_aprovacao:D indicador_rendimento:D nota_saeb_matematica:D nota_saeb_lingua_portuguesa:D nota_saeb_media_padronizada:D +2
+br_inep_indicador_nivel_socioeconomico.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_inep_indicador_nivel_socioeconomico.escola: ano:I sigla_uf:V id_municipio:V id_escola:V area:V rede:V tipo_localizacao:V quantidade_alunos_inse:I inse:D percentual_nivel_1:D percentual_nivel_2:D percentual_nivel_3:D +6
+br_inep_indicadores_educacionais.brasil: ano:I localizacao:V rede:V atu_ei:D atu_ei_creche:D atu_ei_pre_escola:D atu_ef:D atu_ef_anos_iniciais:D atu_ef_anos_finais:D +205
+br_inep_indicadores_educacionais.brasil_remuneracao_docentes: ano:I rede:V escolaridade:V numero_docentes:I prop_docentes_rais:D rem_bruta_rais_1_quartil:D rem_bruta_rais_mediana:D rem_bruta_rais_media:D rem_bruta_rais_3_quartil:D +3
+br_inep_indicadores_educacionais.brasil_taxa_transicao: ano:I localizacao:V rede:V taxa_promocao_ef:D taxa_promocao_ef_anos_iniciais:D taxa_promocao_ef_anos_finais:D taxa_promocao_ef_1_ano:D taxa_promocao_ef_2_ano:D taxa_promocao_ef_3_ano:D +58
+br_inep_indicadores_educacionais.escola: ano:I id_municipio:V id_escola:V localizacao:V rede:V atu_ei:D atu_ei_creche:D atu_ei_pre_escola:D atu_ef:D atu_ef_anos_iniciais:D atu_ef_anos_finais:D +197
+br_inep_indicadores_educacionais.municipio: ano:I id_municipio:V localizacao:V rede:V atu_ei:D atu_ei_creche:D atu_ei_pre_escola:D atu_ef:D atu_ef_anos_iniciais:D atu_ef_anos_finais:D +205
+br_inep_indicadores_educacionais.municipio_taxa_transicao: ano:I id_municipio:V localizacao:V rede:V taxa_evasao_ef:D taxa_evasao_ef_1_ano:D taxa_evasao_ef_2_ano:D taxa_evasao_ef_3_ano:D taxa_evasao_ef_4_ano:D taxa_evasao_ef_5_ano:D +58
+br_inep_indicadores_educacionais.regiao: ano:I regiao:V localizacao:V rede:V atu_ei:D atu_ei_creche:D atu_ei_pre_escola:D atu_ef:D atu_ef_anos_iniciais:D +206
+br_inep_indicadores_educacionais.regiao_taxa_transicao: ano:I regiao:V localizacao:V rede:V taxa_promocao_ef:D taxa_promocao_ef_anos_iniciais:D taxa_promocao_ef_anos_finais:D taxa_promocao_ef_1_ano:D taxa_promocao_ef_2_ano:D +59
+br_inep_indicadores_educacionais.uf: ano:I sigla_uf:V localizacao:V rede:V atu_ei:D atu_ei_creche:D atu_ei_pre_escola:D atu_ef:D atu_ef_anos_iniciais:D atu_ef_anos_finais:D +205
+br_inep_indicadores_educacionais.uf_remuneracao_docentes: ano:I sigla_uf:V rede:V escolaridade:V numero_docentes:I prop_docentes_rais:D rem_bruta_rais_1_quartil:D rem_bruta_rais_mediana:D rem_bruta_rais_media:D rem_bruta_rais_3_quartil:D +3
+br_inep_indicadores_educacionais.uf_taxa_transicao: ano:I sigla_uf:V localizacao:V rede:V taxa_promocao_ef:D taxa_promocao_ef_anos_iniciais:D taxa_promocao_ef_anos_finais:D taxa_promocao_ef_1_ano:D taxa_promocao_ef_2_ano:D taxa_promocao_ef_3_ano:D +58
+br_inep_saeb.aluno_ef_2ano: ano:I id_regiao:V sigla_uf:V id_municipio:V id_escola:V area:V rede:V localizacao:V id_turma:V turno:V serie:I id_aluno:V situacao_censo:I +25
+br_inep_saeb.aluno_ef_5ano: ano:I sigla_uf:V id_regiao:V id_municipio:V id_escola:V area:V mascara:V ano_mascara:I rede:V escola_publica:V localizacao:V id_turma:V turno:V +230
+br_inep_saeb.aluno_ef_9ano: ano:I sigla_uf:V id_regiao:V id_municipio:V id_escola:V area:V mascara:V ano_mascara:I rede:V escola_publica:I localizacao:V id_turma:V turno:V +254
+br_inep_saeb.aluno_em_34ano: ano:I id_regiao:V sigla_uf:V id_municipio:V id_escola:V area:V escola_publica:V localizacao:V id_turma:V serie:V id_aluno:V situacao_censo:V preenchimento_caderno:V +92
+br_inep_saeb.brasil: ano:I rede:V localizacao:V disciplina:V serie:I media:D nivel_0:D nivel_1:D nivel_2:D +8
+br_inep_saeb.brasil_taxa_alfabetizacao: ano:I rede:V localizacao:V area:V taxa_alfabetizacao:D
+br_inep_saeb.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_inep_saeb.municipio: ano:I sigla_uf:V id_municipio:V rede:V localizacao:V disciplina:V serie:I media:D nivel_0:D nivel_1:D nivel_2:D +8
+br_inep_saeb.proficiencia: ano:I sigla_uf:V id_regiao:V id_municipio:V id_escola:V rede:V localizacao:V serie:I turno:V disciplina:V id_turma:V id_aluno:V sexo:V +8
+br_inep_saeb.uf: ano:I sigla_uf:V rede:V localizacao:V disciplina:V serie:I media:D nivel_0:D nivel_1:D nivel_2:D +8
+br_inep_saeb.uf_taxa_alfabetizacao: ano:I sigla_uf:V rede:V localizacao:V area:V taxa_alfabetizacao:D
+br_inep_sinopse_estatistica_educacao_basica.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_inep_sinopse_estatistica_educacao_basica.docente_deficiencia: ano:I sigla_uf:V id_municipio:V etapa_ensino:V deficiencia:V quantidade_docente:I
+br_inep_sinopse_estatistica_educacao_basica.docente_escolaridade: ano:I sigla_uf:V id_municipio:V etapa_ensino:V escolaridade:V quantidade_docente:I
+br_inep_sinopse_estatistica_educacao_basica.docente_etapa_ensino: ano:I sigla_uf:V id_municipio:V etapa_ensino:V tipo_classe:V rede:V quantidade_docente:I
+br_inep_sinopse_estatistica_educacao_basica.docente_faixa_etaria_sexo: ano:I sigla_uf:V id_municipio:V etapa_ensino:V faixa_etaria:V sexo:V quantidade_docente:I
+br_inep_sinopse_estatistica_educacao_basica.docente_localizacao: ano:I sigla_uf:V id_municipio:V etapa_ensino:V rede:V localizacao:V quantidade_docente:I
+br_inep_sinopse_estatistica_educacao_basica.docente_regime_contrato: ano:I sigla_uf:V id_municipio:V etapa_ensino:V rede:V regime_contrato:V quantidade_docente:I
+br_inep_sinopse_estatistica_educacao_basica.educacao_especial_etapa_ensino: ano:I sigla_uf:V id_municipio:V tipo_classe:V etapa_ensino:V quantidade_matricula:Dec
+br_inep_sinopse_estatistica_educacao_basica.educacao_especial_faixa_etaria: ano:I sigla_uf:V id_municipio:V tipo_classe:V faixa_etaria:V quantidade_matricula:Dec
+br_inep_sinopse_estatistica_educacao_basica.educacao_especial_localizacao: ano:I sigla_uf:V id_municipio:V tipo_classe:V rede:V localizacao:V quantidade_matricula:Dec
+br_inep_sinopse_estatistica_educacao_basica.educacao_especial_sexo_raca_cor: ano:I sigla_uf:V id_municipio:V tipo_classe:V sexo:V raca_cor:V quantidade_matricula:Dec
+br_inep_sinopse_estatistica_educacao_basica.educacao_especial_tempo_ensino: ano:I sigla_uf:V id_municipio:V tipo_classe:V rede:V tempo_ensino:V quantidade_matricula:Dec
+br_inep_sinopse_estatistica_educacao_basica.educacao_especial_tipo_deficiencia: ano:I sigla_uf:V id_municipio:V tipo_classe:V tipo_deficiencia:V quantidade_matricula:Dec
+br_inep_sinopse_estatistica_educacao_basica.etapa_ensino_serie: ano:I sigla_uf:V id_municipio:V rede:V etapa_ensino:V serie:V quantidade_matricula:I
+br_inep_sinopse_estatistica_educacao_basica.faixa_etaria: ano:I sigla_uf:V id_municipio:V etapa_ensino:V faixa_etaria:V quantidade_matricula:I
+br_inep_sinopse_estatistica_educacao_basica.localizacao: ano:I sigla_uf:V id_municipio:V rede:V etapa_ensino:V localizacao:V quantidade_matricula:I
+br_inep_sinopse_estatistica_educacao_basica.sexo_raca_cor: ano:I sigla_uf:V id_municipio:V etapa_ensino:V sexo:V raca_cor:V quantidade_matricula:I
+br_inep_sinopse_estatistica_educacao_basica.tempo_ensino: ano:I sigla_uf:V id_municipio:V rede:V tempo_ensino:V etapa_ensino:V quantidade_matricula:I
+br_inmet_bdmep.microdados: ano:I mes:I data:Dt hora:Ti id_estacao:V precipitacao_total:D pressao_atm_hora:D pressao_atm_max:D pressao_atm_min:D radiacao_global:D temperatura_bulbo_hora:D +11
+br_inpe_prodes.municipio_bioma: ano:I id_municipio:V bioma:V area_total:D desmatado:D vegetacao_natural:D nao_vegetacao_natural:D hidrografia:D
+br_inpe_queimadas.microdados: ano:I mes:I sigla_uf:V id_municipio:V data_hora:Ts bioma:V latitude:D longitude:D satelite:V dias_sem_chuva:D precipitacao:D risco_fogo:D +1
+br_inpe_sisam.microdados: ano:I sigla_uf:V id_municipio:V data_hora:Ts co_ppb:D no2_ppb:D o3_ppb:D pm25_ugm3:D so2_ugm3:D precipitacao_dia:D temperatura:D +3
+br_ipea_avs.municipio: ano:I sigla_uf:V id_municipio:V raca_cor:V sexo:V localizacao:V ivs:D ivs_infraestrutura_urbana:D ivs_capital_humano:D ivs_renda_trabalho:D udh:V +81
+br_mdr_snis.municipio_agua_esgoto: ano:I id_municipio:V sigla_uf:V populacao_atendida_agua:I populacao_atentida_esgoto:I populacao_urbana:I populacao_urbana_residente_agua:I populacao_urbana_atendida_agua:I populacao_urbana_atendida_agua_ibge:I populacao_urbana_residente_esgoto:I populacao_urbana_atendida_esgoto:I +122
+br_mdr_snis.prestador_agua_esgoto: ano:I id_municipio:V sigla_uf:V id_prestador:V prestador:V sigla_prestador:V abrangencia:V tipo_servico:V natureza_juridica:V populacao_atendida_agua:I populacao_atentida_esgoto:I +133
+br_me_caged.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_me_caged.microdados_movimentacao: ano:I mes:I sigla_uf:V id_municipio:V cnae_2_subclasse:V cbo_2002:V cnae_2_secao:V saldo_movimentacao:I categoria:V grau_instrucao:V idade:I horas_contratuais:D raca_cor:V sexo:V +11
+br_me_caged.microdados_movimentacao_excluida: ano:I mes:I sigla_uf:V id_municipio:V cnae_2_subclasse:V cbo_2002:V ano_competencia_movimentacao:I mes_competencia_movimentacao:I ano_declaracao_movimentacao:I mes_declaracao_movimentacao:I cnae_2_secao:V saldo_movimentacao:I categoria:V grau_instrucao:V +16
+br_me_caged.microdados_movimentacao_fora_prazo: ano:I mes:I sigla_uf:V id_municipio:V cnae_2_subclasse:V cbo_2002:V ano_competencia_movimentacao:I mes_competencia_movimentacao:I cnae_2_secao:V saldo_movimentacao:I categoria:V grau_instrucao:V idade:I horas_contratuais:D +13
+br_me_cno.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_me_cnpj.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_me_cnpj.empresas: ano:I mes:I data:Dt cnpj_basico:V razao_social:V natureza_juridica:V qualificacao_responsavel:V capital_social:D porte:V ente_federativo:V
+br_me_cnpj.estabelecimentos: ano:I mes:I data:Dt cnpj:V cnpj_basico:V sigla_uf:V id_municipio:V cep:V cnpj_ordem:V cnpj_dv:V identificador_matriz_filial:V nome_fantasia:V situacao_cadastral:V data_situacao_cadastral:Dt motivo_situacao_cadastral:V nome_cidade_exterior:V +19
+br_me_cnpj.simples: cnpj_basico:V opcao_simples:I data_opcao_simples:Dt data_exclusao_simples:Dt opcao_mei:I data_opcao_mei:Dt data_exclusao_mei:Dt
+br_me_cnpj.socios: ano:I mes:I data:Dt cnpj_basico:V tipo:V nome:V documento:V qualificacao:V data_entrada_sociedade:Dt id_pais:V cpf_representante_legal:V nome_representante_legal:V +2
+br_me_comex_stat.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_me_comex_stat.municipio_exportacao: ano:I mes:I sigla_uf:V id_municipio:V id_sh4:V id_pais:V sigla_pais_iso3:V peso_liquido_kg:I valor_fob_dolar:I
+br_me_comex_stat.municipio_importacao: ano:I mes:I sigla_uf:V id_municipio:V id_sh4:V id_pais:V sigla_pais_iso3:V peso_liquido_kg:I valor_fob_dolar:I
+br_me_comex_stat.ncm_exportacao: ano:I mes:I id_ncm:V id_unidade:V id_pais:V sigla_pais_iso3:V sigla_uf_ncm:V id_via:V id_urf:V quantidade_estatistica:I +2
+br_me_comex_stat.ncm_importacao: ano:I mes:I id_ncm:V id_unidade:V id_pais:V sigla_pais_iso3:V sigla_uf_ncm:V id_via:V id_urf:V quantidade_estatistica:D +4
+br_me_rais.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_me_rais.microdados_estabelecimentos: ano:I sigla_uf:V id_municipio:V cnae_2_subclasse:V cep:V quantidade_vinculos_ativos:I quantidade_vinculos_clt:I quantidade_vinculos_estatutarios:I natureza_estabelecimento:V natureza_juridica:V tamanho_estabelecimento:V tipo_estabelecimento:V indicador_cei_vinculado:I +13
+br_me_rais.microdados_vinculos: ano:I sigla_uf:V id_municipio:V cbo_2002:V cnae_2_subclasse:V tipo_vinculo:V vinculo_ativo_3112:V tipo_admissao:V mes_admissao:I mes_desligamento:I motivo_desligamento:V causa_desligamento_1:V causa_desligamento_2:V +53
+br_me_sic.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_me_sic.transferencia: ano:I mes:I id_esfera_orcamentaria:V nome_esfera_orcamentaria:V id_natureza_juridica:V nome_natureza_juridica:V id_resultado_primario:V nome_resultado_primario:V id_unidade_organizacional_nivel_0:V nome_unidade_organizacional_nivel_0:V +7
+br_me_siconfi.municipio_balanco_patrimonial: ano:I sigla_uf:V id_municipio:V portaria:V conta:V id_conta_bd:V conta_bd:V valor:D
+br_me_siconfi.municipio_despesas_funcao: ano:I sigla_uf:V id_municipio:V estagio:V portaria:V conta:V estagio_bd:V id_conta_bd:V conta_bd:V valor:D
+br_me_siconfi.municipio_despesas_orcamentarias: ano:I sigla_uf:V id_municipio:V estagio:V portaria:V conta:V estagio_bd:V id_conta_bd:V conta_bd:V valor:D
+br_me_siconfi.municipio_receitas_orcamentarias: ano:I sigla_uf:V id_municipio:V estagio:V portaria:V conta:V estagio_bd:V id_conta_bd:V conta_bd:V valor:D
+br_me_siconfi.uf_despesas_funcao: ano:I sigla_uf:V id_uf:V estagio:V portaria:V conta:V estagio_bd:V id_conta_bd:V conta_bd:V valor:D
+br_me_siconfi.uf_despesas_orcamentarias: ano:I sigla_uf:V id_uf:V estagio:V portaria:V conta:V estagio_bd:V id_conta_bd:V conta_bd:V valor:D
+br_me_siconfi.uf_receitas_orcamentarias: ano:I sigla_uf:V id_uf:V estagio:V portaria:V conta:V estagio_bd:V id_conta_bd:V conta_bd:V valor:D
+br_mec_prouni.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_mec_sisu.microdados: ano:I semestre:V cpf:V etapa:V sigla_uf_ies:V id_ies:V sigla_ies:V sigla_uf_campus:V id_municipio_campus:V id_campus:V campus:V +41
+br_mg_belohorizonte_smfa_iptu.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_mg_belohorizonte_smfa_iptu.iptu: ano:I mes:I cep:V indice_cadastral:V lote:V zoneamento:V zona_homogenea:V endereco:V tipo_construtivo:V tipo_ocupacao:V padrao_acabamento:V +14
+br_mme_consumo_energia_eletrica.uf: ano:I mes:I sigla_uf:V tipo_consumo:V numero_consumidores:I consumo:I
+br_mp_pep.cargos_funcoes: ano:I mes:I sigla_uf:V funcao:V natureza_juridica:V orgao_superior:V escolaridade_servidor:V orgao:V regiao:V sexo:V nivel_funcao:V +5
+br_ms_cnes.dados_complementares: ano:I mes:I sigla_uf:V id_municipio:V id_estabelecimento_cnes:V cns_medico_responsavel_administrador_responsavel_tecnico:V cns_medico_responsavel_oncologista_pediatrico:V cns_medico_responsavel_cirurgia_oncologica:V cns_medico_responsavel_oncologista_clinico:V cns_medico_responsavel_radioterapeuta:V cns_medico_responsavel_fisico_nuclear:V cns_medico_responsavel_nefrologista:V cns_medico_responsavel_hemoterapeuta:V +81
+br_ms_cnes.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_ms_cnes.equipamento: ano:I mes:I sigla_uf:V id_municipio:V id_estabelecimento_cnes:V id_equipamento:V tipo_equipamento:V quantidade_equipamentos:V quantidade_equipamentos_ativos:V indicador_equipamento_disponivel_sus:I indicador_equipamento_indisponivel_sus:I
+br_ms_cnes.equipe: ano:I mes:I sigla_uf:V id_municipio:V id_estabelecimento_cnes:V id_equipe:V tipo_equipe:V equipe:V area:V id_segmento:V tipo_segmento:V descricao_segmento:V ano_ativacao_equipe:I +11
+br_ms_cnes.estabelecimento: ano:I mes:I sigla_uf:V id_municipio:V cep:V id_estabelecimento_cnes:V ano_atualizacao:I mes_atualizacao:I id_municipio_6:V id_regiao_saude:V id_microrregiao_saude:V id_distrito_sanitario:V id_distrito_administrativo:V tipo_pessoa:V +190
+br_ms_cnes.estabelecimento_ensino: ano:I mes:I sigla_uf:V id_municipio:V id_estabelecimento_cnes:V ano_competencia_inicial:I mes_competencia_inicial:I ano_competencia_final:I mes_competencia_final:I tipo_habilitacao:V portaria:V data_portaria:Dt ano_portaria:I +1
+br_ms_cnes.estabelecimento_filantropico: ano:I mes:I sigla_uf:V id_municipio:V id_estabelecimento_cnes:V ano_competencia_inicial:I mes_competencia_inicial:I ano_competencia_final:I mes_competencia_final:I tipo_habilitacao:V portaria:V data_portaria:Dt ano_portaria:I +1
+br_ms_cnes.gestao_metas: ano:I mes:I sigla_uf:V id_municipio:V id_estabelecimento_cnes:V ano_competencia_inicial:I mes_competencia_inicial:I ano_competencia_final:I mes_competencia_final:I tipo_habilitacao:V tipo_gestao_metas:V portaria:V data_portaria:Dt +2
+br_ms_cnes.habilitacao: ano:I mes:I sigla_uf:V id_municipio:V id_estabelecimento_cnes:V quantidade_leitos:I ano_competencia_inicial:I mes_competencia_inicial:I ano_competencia_final:I mes_competencia_final:I tipo_habilitacao:V nivel_habilitacao:V portaria:V +3
+br_ms_cnes.incentivos: ano:I mes:I sigla_uf:V id_municipio:V id_estabelecimento_cnes:V ano_competencia_inicial:I mes_competencia_inicial:I ano_competencia_final:I mes_competencia_final:I tipo_habilitacao:V tipo_incentivo:V portaria:V data_portaria:Dt +2
+br_ms_cnes.leito: ano:I mes:I sigla_uf:V id_municipio:V id_estabelecimento_cnes:V tipo_especialidade_leito:V tipo_leito:V quantidade_total:I quantidade_contratado:I quantidade_sus:I
+br_ms_cnes.profissional: ano:I mes:I sigla_uf:V id_municipio:V id_estabelecimento_cnes:V cbo_2002:V id_municipio_6_residencia:V nome:V tipo_vinculo:V id_registro_conselho:V tipo_conselho:V cartao_nacional_saude:V cbo_2002_original:V cbo_1994:V +9
+br_ms_cnes.regra_contratual: ano:I mes:I sigla_uf:V id_municipio:V id_estabelecimento_cnes:V ano_competencia_inicial:I mes_competencia_inicial:I ano_competencia_final:I mes_competencia_final:I tipo_habilitacao:V tipo_regra_contratual:V portaria:V data_portaria:Dt +2
+br_ms_cnes.servico_especializado: ano:I mes:I sigla_uf:V id_municipio:V id_estabelecimento_cnes:V tipo_servico_especializado:V subtipo_servico_especializado:V tipo_servico_especializado_unico:V tipo_caracterizacao:V indicador_servico_ambulatorial_sus:I indicador_servico_nao_sus:I indicador_servico_hospitalar_nao_sus:I indicador_servico_hospitalar_sus:I +2
+br_ms_pns.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_ms_pns.microdados_2013: sigla_uf:V v0024:V upa_pns:V v0006_pns:V upa:V v0015:V v0020:I v0022:I v0026:V +991
+br_ms_pns.microdados_2019: sigla_uf:V v0024:V upa_pns:V v0006_pns:V v0015:V v0020:I v0022:I v0026:V v0031:V +1078
+br_ms_populacao.municipio: ano:I id_municipio:V sexo:V grupo_idade:V populacao:I
+br_ms_sia.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_ms_sia.producao_ambulatorial: ano:I mes:I sigla_uf:V id_municipio:V id_estabelecimento_cnes:V tipo_regra_contratual:V id_equipe:V id_servico_especializado:V id_processamento_ambulatorial:V id_cns_executante:V id_cbo_2002:V codigo_autorizacao_apac:V codigo_ocorrencia:V +46
+br_ms_sia.psicossocial: ano:I mes:I sigla_uf:V id_municipio:V id_estabelecimento_cnes:V id_estabelecimento_cnes_familia:V id_procedimento_ambulatorial:V id_servico_especializado:V id_classificacao_servico:V data_inicio_atendimento:Dt data_termino_atendimento:Dt permanencia_atendimento:V motivo_saida_permanencia:V +28
+br_ms_sih.aihs_reduzidas: ano:I mes:I sigla_uf:I id_estabelecimento_cnes:V id_aih:V tipo_aih:V motivo_autorizacao_aih:V sequencial_aih:V especialidade_leito:V motivo_saida:V tipo_uti:V tipo_uci:V +97
+br_ms_sih.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_ms_sih.servicos_profissionais: ano:I mes:I sigla_uf:V id_estabelecimento_cnes:V ano_internacao:I mes_internacao:I data_entrada_internacao:Dt data_saida_iternacao:Dt id_municipio_estabelecimento_aih:V id_municipio_paciente:V id_gestor:V id_aih:V +25
+br_ms_sim.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_ms_sim.microdados: ano:I sigla_uf:V sequencial_obito:V tipo_obito:V causa_basica:V data_obito:Dt hora_obito:Ti naturalidade:V data_nascimento:Dt idade:D +82
+br_ms_sinan.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_ms_sinan.microdados_dengue: ano:I tipo_notificacao:V id_agravo:V data_notificacao:Dt semana_notificacao:V sigla_uf_notificacao:V id_regional_saude_notificacao:V id_municipio_notificacao:V id_estabelecimento:V +142
+br_ms_sinan.microdados_influenza_srag: ano:I sigla_uf:V id_estabelecimento_cnes:V data_notificacao:Dt id_municipio_notificacao:V id_municipio_6_notificacao:V sistema:V semana_notificacao:I data_primeiros_sintomas:Dt semana_sintomas:I paciente_estrangeiro:V +194
+br_ms_sinasc.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_ms_sinasc.microdados: ano:I sigla_uf:V sequencial_nascimento:V id_municipio_nascimento:V local_nascimento:V codigo_estabelecimento:V data_nascimento:Dt hora_nascimento:Ti sexo:V peso:I +56
+br_ms_sisvan.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_ms_sisvan.microdados: ano:I mes:I sigla_uf:V id_municipio:V acompanhamento:V id_individuo:V cnes:V idade:I fase_vida:V sexo:V raca_cor:V povo_comunidade:V +16
+br_ms_vacinacao_covid19.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_poder360_pesquisas.microdados: ano:I sigla_uf:V nome_municipio:V data:Dt id_pesquisa:V cargo:V data_referencia:V instituto:V contratante:V orgao_registro:V numero_registro:V quantidade_entrevistas:D +12
+br_rf_arrecadacao.cnae: ano:I mes:I secao_sigla:V imposto_importacao:D imposto_exportacao:D ipi:D irpf:D irpj:D irrf:D iof:D +10
+br_rf_arrecadacao.ir_ipi: ano:I mes:I tributo:V decendio:V arrecadacao_bruta:D retificacao:D compensacao:D restituicao:D outros:D arrecadacao_liquida:D
+br_rf_arrecadacao.itr: ano:I mes:I sigla_uf:V id_municipio:V valor_arrecadado:D
+br_rf_arrecadacao.natureza_juridica: ano:I mes:I natureza_juridica_codigo:V imposto_importacao:D imposto_exportacao:D ipi:D irpf:D irpj:D irrf:D iof:D +10
+br_rf_arrecadacao.uf: ano:I mes:I sigla_uf:V imposto_importacao:D imposto_exportacao:D ipi_fumo:D ipi_bebidas:D ipi_automoveis:D ipi_importacoes:D ipi_outros:D irpf:D +34
+br_rf_cafir.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_rf_cafir.imoveis_rurais: cep:V id_municipio:V sigla_uf:V data_referencia:Dt data_inscricao:Dt id_imovel_receita_federal:V id_imovel_incra:V nome:V area:D status_sncr:V tipo_itr:V +3
+br_rf_cno.areas: data_extracao:Dt id_cno:V categoria:V destinacao:V tipo_obra:V tipo_area:V tipo_area_complementar:V metragem:D
+br_rf_cno.cnaes: cnae_2_subclasse:V data_extracao:Dt data_registro:Dt id_cno:V
+br_rf_cno.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_rf_cno.microdados: sigla_uf:V id_municipio:V cep:V data_extracao:Dt data_situacao:Dt data_registro:Dt data_inicio:Dt data_inicio_responsabilidade:Dt id_pais:V nome_pais:V id_cno:V +14
+br_rf_cno.vinculos: data_extracao:Dt data_registro:Dt data_inicio:Dt data_fim:Dt id_cno:V id_responsavel:V qualificacao_contribuinte:V
+br_rj_isp_estatisticas_seguranca.armas_apreendidas_mensal: ano:I mes:I id_cisp:V id_aisp:V id_risp:V quantidade_arma_fabricacao_caseira:I quantidade_carabina:I quantidade_espingarda:I quantidade_fuzil:I quantidade_garrucha:I +32
+br_rj_isp_estatisticas_seguranca.armas_fogo_apreendidas_mensal: ano:I mes:I id_municipio:V id_cisp:V id_aisp:V id_risp:V quantidade_arma_fogo_apreendida:I
+br_rj_isp_estatisticas_seguranca.evolucao_mensal_cisp: ano:I mes:I id_municipio:V id_cisp:V id_aisp:V id_risp:V regiao:V quantidade_homicidio_doloso:I quantidade_latrocinio:I quantidade_lesao_corporal_morte:I quantidade_crimes_violentos_letais_intencionais:I +50
+br_rj_isp_estatisticas_seguranca.evolucao_mensal_municipio: ano:I mes:I id_municipio:V regiao:V quantidade_homicidio_doloso:I quantidade_latrocinio:I quantidade_lesao_corporal_morte:I quantidade_crimes_violentos_letais_intencionais:I quantidade_homicidio_intervencao_policial:I quantidade_letalidade_violenta:I quantidade_tentativa_homicidio:I +47
+br_rj_isp_estatisticas_seguranca.evolucao_mensal_uf: ano:I mes:I quantidade_homicidio_doloso:I quantidade_latrocinio:I quantidade_lesao_corporal_morte:I quantidade_crimes_violentos_letais_intencionais:I quantidade_homicidio_intervencao_policial:I quantidade_letalidade_violenta:I quantidade_tentativa_homicidio:I quantidade_lesao_corporal_dolosa:I +46
+br_rj_isp_estatisticas_seguranca.evolucao_mensal_upp: ano:I mes:I id_upp:V nome:V quantidade_homicidio_doloso:I quantidade_latrocinio:I quantidade_lesao_corporal_morte:I quantidade_homicidio_intervencao_policial:I quantidade_tentativa_homicidio:I quantidade_lesao_corporal_dolosa:I +28
+br_rj_isp_estatisticas_seguranca.evolucao_policial_morto_servico_mensal: ano:I mes:I id_cisp:V quantidade_policial_militar_morto_servico:I quantidade_policial_civil_morto_servico:I
+br_rj_isp_estatisticas_seguranca.feminicidio_mensal_cisp: ano:I mes:I id_municipio:V id_cisp:V id_aisp:V id_risp:V quantidade_morte_feminicidio:I quantidade_tentativa_feminicidio:I tipo_fase:V
+br_rj_isp_estatisticas_seguranca.relacao_cisp_aisp_risp: id_municipio:V id_risp:V id_aisp:V id_cisp:V unidade_territorial:V regiao:V
+br_rj_isp_estatisticas_seguranca.taxa_evolucao_anual_municipio: ano:I id_municipio:V regiao:V taxa_homicidio_doloso:D taxa_latrocinio:D taxa_lesao_corporal_morte:D taxa_crimes_violentos_letais_intencionais:D taxa_homicidio_intervencao_policial:D taxa_letalidade_violenta:D taxa_tentativa_homicidio:D +46
+br_rj_isp_estatisticas_seguranca.taxa_evolucao_anual_uf: ano:I taxa_homicidio_doloso:D taxa_latrocinio:D taxa_lesao_corporal_morte:D taxa_crimes_violentos_letais_intencionais:D taxa_homicidio_intervencao_policial:D taxa_letalidade_violenta:D taxa_tentativa_homicidio:D taxa_lesao_corporal_dolosa:D +46
+br_rj_isp_estatisticas_seguranca.taxa_evolucao_mensal_municipio: ano:I mes:I id_municipio:V regiao:V taxa_homicidio_doloso:D taxa_latrocinio:D taxa_lesao_corporal_morte:D taxa_crimes_violentos_letais_intencionais:D taxa_homicidio_intervencao_policial:D taxa_letalidade_violenta:D taxa_tentativa_homicidio:D +47
+br_rj_isp_estatisticas_seguranca.taxa_evolucao_mensal_uf: ano:I mes:I taxa_homicidio_doloso:D taxa_latrocinio:D taxa_lesao_corporal_morte:D taxa_crimes_violentos_letais_intencionais:D taxa_homicidio_intervencao_policial:D taxa_letalidade_violenta:D taxa_tentativa_homicidio:D taxa_lesao_corporal_dolosa:D +46
+br_rj_isp_estatisticas_seguranca.taxa_letalidade: ano:I regiao:V delito:V contagem_delito:D populacao:I taxa_cem_mil_habitantes:D
+br_seeg_emissoes.dicionario: tabela:V coluna:V chave:V cobertura_temporal:V valor:V
+br_seeg_emissoes.municipio: ano:I sigla_uf:V id_municipio:V bioma:V gas:V tipo:V recorte:V setor:V atividade_economica:V categoria:V subcategoria:V +6
+br_seeg_emissoes.uf: ano:I sigla_uf:V bioma:V gas:V tipo:V recorte:V setor:V atividade_economica:V categoria:V subcategoria:V +3
+br_sfb_sicar.area_imovel: sigla_uf:V id_municipio:V data_extracao:Dt data_atualizacao_car:Dt id_imovel:V modulos_fiscais:V area:D status:V tipo:V condicao:V
+br_sfb_sicar.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_simet_educacao_conectada.escola: sigla_uf:V id_municipio:V id_escola:V ano_censo:I id_setor:V rede:V localizacao:V porte_escola:V tipo_rede_local:V tipo_energia:V tipo_tecnologia:V +42
+br_sp_saopaulo_geosampa_iptu.iptu: ano:I cep:V data_cadastramento:Dt numero_notificacao:V numero_contribuinte:V ano_inicio_vida_contribuinte:I mes_inicio_vida_contribuinte:I logradouro:V numero_imovel:I numero_condominio:V +17
+br_stf_corte_aberta.decisoes: ano:I classe:V numero:V relator:V link:V subgrupo_andamento:V andamento:V observacao_andamento_decisao:V modalidade_julgamento:V +8
+br_stf_corte_aberta.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_trase_supply_chain.beef: year:I biome:V country_production_iso3_id:V state_production:V municipality_name_production:V municipality_id_production:V municipality_name_logistics_hub:V municipality_id_logistics_hub:V exporter_name:V +13
+br_trase_supply_chain.beef_slaughterhouses: geom_id:V cartodb_id:V geom_webmercator_id:V municipality_id:V state:V address:V slaugtherhouse_id:V company:V +10
+br_trase_supply_chain.soy_beans: year:I biome:V country_production_iso3_id:V state_production:V municipality_name_production:V municipality_id_production:V municipality_name_logistics_hub:V municipality_id_logistics_hub:V export_port:V +16
+br_trase_supply_chain.soy_beans_crushing_facilities: year:I cnpj:V geom_id:V cartodb_id:V geom_webmercator_id:V municipality_id:V state:V crushing_facility_Id:V company:V capacity:I +2
+br_trase_supply_chain.soy_beans_refining_facilities: year:I geom_id:V cartodb_id:V geom_webmercator_id:V municipality_id:V state:V company:V capacity:I
+br_trase_supply_chain.soy_beans_storage_facilities: geom_id:V cartodb_id:V geom_webmercator_id:V municipality_id:V state:V cnpj_cpf:V company:V capacity:I +3
+br_tse_eleicoes.bens_candidato: ano:I sigla_uf:V id_eleicao:V tipo_eleicao:V data_eleicao:Dt titulo_eleitoral_candidato:V sequencial_candidato:V tipo_item:V descricao_item:V valor_item:D
+br_tse_eleicoes.candidatos: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V cpf:V id_eleicao:V tipo_eleicao:V data_eleicao:Dt titulo_eleitoral:V sequencial:V numero:V nome:V nome_urna:V +15
+br_tse_eleicoes.despesas_candidato: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V turno:I id_eleicao:V tipo_eleicao:V data_eleicao:Dt titulo_eleitoral_candidato:V sequencial_candidato:V numero_candidato:V cnpj_candidato:V +33
+br_tse_eleicoes.detalhes_votacao_municipio: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V turno:I id_eleicao:V tipo_eleicao:V data_eleicao:Dt cargo:V aptos:I secoes:I secoes_agregadas:I +13
+br_tse_eleicoes.detalhes_votacao_municipio_zona: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V turno:I id_eleicao:V tipo_eleicao:V data_eleicao:Dt zona:V cargo:V aptos:I secoes:I +14
+br_tse_eleicoes.detalhes_votacao_secao: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V turno:I id_eleicao:V tipo_eleicao:V data_eleicao:Dt zona:V secao:V cargo:V aptos:I +12
+br_tse_eleicoes.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+br_tse_eleicoes.partidos: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V turno:I id_eleicao:V tipo_eleicao:V data_eleicao:V cargo:V numero:V sigla:V nome:V +9
+br_tse_eleicoes.perfil_eleitorado_local_votacao: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V cep:V turno:I zona:V secao:V tipo_secao_agregada:V numero:V nome:V tipo:V endereco:V +10
+br_tse_eleicoes.perfil_eleitorado_municipio_zona: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V situacao_biometria:V zona:V genero:V estado_civil:V grupo_idade:V instrucao:V eleitores:V eleitores_biometria:V +1
+br_tse_eleicoes.perfil_eleitorado_secao: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V situacao_biometria:V zona:V secao:V genero:V estado_civil:V grupo_idade:V instrucao:V eleitores:V +3
+br_tse_eleicoes.receitas_candidato: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V turno:I id_eleicao:V tipo_eleicao:V data_eleicao:Dt titulo_eleitoral_candidato:V sequencial_candidato:V numero_candidato:V cnpj_candidato:V +43
+br_tse_eleicoes.receitas_comite: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V tipo_eleicao:V tipo_comite:V sequencial_comite:V numero_partido:V sigla_partido:V data_receita:Dt origem_receita:V fonte_receita:V +24
+br_tse_eleicoes.receitas_orgao_partidario: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V tipo_eleicao:V esfera_partidaria:V tipo_diretorio:V sequencial_diretorio:V numero_partido:V sigla_partido:V nome_partido:V numero_recibo_eleitoral:V +38
+br_tse_eleicoes.resultados_candidato: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V turno:I id_eleicao:V tipo_eleicao:V data_eleicao:Dt cargo:V numero_partido:V sigla_partido:V titulo_eleitoral_candidato:V +4
+br_tse_eleicoes.resultados_candidato_municipio: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V turno:I id_eleicao:V tipo_eleicao:V data_eleicao:Dt cargo:V numero_partido:V sigla_partido:V titulo_eleitoral_candidato:V +4
+br_tse_eleicoes.resultados_candidato_municipio_zona: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V turno:I id_eleicao:V tipo_eleicao:V data_eleicao:Dt zona:V cargo:V numero_partido:V sigla_partido:V +5
+br_tse_eleicoes.resultados_candidato_secao: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V turno:I id_eleicao:V tipo_eleicao:V data_eleicao:Dt zona:V secao:V cargo:V numero_partido:V +5
+br_tse_eleicoes.resultados_partido_municipio: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V turno:I id_eleicao:V tipo_eleicao:V data_eleicao:Dt cargo:V numero_partido:V sigla_partido:V votos_nominais:I +1
+br_tse_eleicoes.resultados_partido_municipio_zona: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V turno:I id_eleicao:V tipo_eleicao:V data_eleicao:Dt zona:V cargo:V numero_partido:V sigla_partido:V +2
+br_tse_eleicoes.resultados_partido_secao: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V turno:I id_eleicao:V tipo_eleicao:V data_eleicao:Dt zona:V secao:V cargo:V numero_partido:V +3
+br_tse_eleicoes.vagas: ano:I sigla_uf:V id_municipio:V id_municipio_tse:V id_eleicao:V tipo_eleicao:V data_eleicao:Dt cargo:V vagas:I
+br_tse_filiacao_partidaria.microdados: sigla_uf:V id_municipio:V id_municipio_tse:V cpf:V registro_filiacao:V sigla_partido:V zona:V secao:V titulo_eleitor:V nome:V nome_social:V sexo:V +10
+br_tse_filiacao_partidaria.microdados_antigos: sigla_uf:V id_municipio:V id_municipio_tse:V sigla_partido:V zona:I secao:I titulo_eleitoral:V nome:V data_filiacao:Dt situacao_registro:V tipo_registro:V +5
+dataset_new_arch.tabela_new_arch: ano:I equipe_dados:V github:V idade:I sexo:V
+mundo_transfermarkt_competicoes.brasileirao_serie_a: data:Dt ano_campeonato:I rodada:I estadio:V arbitro:V publico:I publico_max:I time_mandante:V time_visitante:V +26
+mundo_transfermarkt_competicoes.copa_brasil: data:Dt ano_campeonato:I horario:Ti fase:V tipo_fase:V estadio:V arbitro:V publico:I publico_max:I +29
+mundo_transfermarkt_competicoes_internacionais.champions_league: data:Dt temporada:V horario:Ti fase:V tipo_fase:V estadio:V arbitro:V publico:I publico_max:I +46
+test_dataset.test_table: ano:I github:V idade:I sexo:V
+us_harvard_ned.parliamentary_elections: year:I country_id:V month:I type:V date:Dt source:V total_seats:I party_1:V seats_1:I +229
+us_harvard_ned.presidential_elections: year:I country_id:V month:I type:V date:Dt source:V candidate_1:V party_1:V votes1_1:I +316
+world_ampas_oscar.winner_demographics: name:V birth_year:I birth_date:Dt birthplace:V race_ethnicity:V religion:V sexual_orientation:V year_edition:I +2
+world_iea_pirls.dictionary: table_id:V column_name:V key:V temporal_coverage:V value:V
+world_iea_pirls.home_context: country_iso3_code:V country_id:V population_id:V standardized_grade_id:V grade_id:V student_wave_indicator:V school_id:V class_id:V +112
+world_iea_pirls.school_context: country_iso3_code:V country_id:V population_id:V standardized_grade_id:V grade_id:V school_id:V language_school_questionnaire:V locale_school_questionnaire_id:V +95
+world_iea_pirls.student_achievement: country_iso3_code:V country_id:V population_id:V standardized_grade_id:V grade_id:V student_wave_indicator:V school_id:V class_id:V +856
+world_iea_pirls.student_context: country_iso3_code:V country_id:V population_id:V standardized_grade_id:V grade_id:V student_wave_indicator:V school_id:V class_id:V +149
+world_iea_pirls.student_teacher_link: country_iso3_code:V country_id:V population_id:V standardized_grade_id:V grade_id:V student_wave_indicator:V school_id:V class_id:V +43
+world_iea_pirls.teacher_context: country_iso3_code:V country_id:V population_id:V standardized_grade_id:V grade_id:V school_id:V teacher_id:V teacher_link_number:V +178
+world_iea_pirls.within_country_scoring_reliability: country_iso3_code:V country_id:V population_id:V standardized_grade_id:V grade_id:V student_wave_indicator:V school_id:V class_id:V +1049
+world_iea_timss.dictionary: table_id:V column_name:V key:V temporal_coverage:V value:V
+world_iea_timss.home_context_grade_4: year:I country_m49:V country_id:V grade_id:V school_id:V class_id:V student_id:V language_school_questionnaire:V locale_school_questionnaire:V +105
+world_iea_timss.school_context_grade_4: year:I country_id:V country_m49:V grade_id:V school_id:V language_school_questionnaire:V locale_school_questionnaire:V acbg03a:V acbg03b:V +102
+world_iea_timss.school_context_grade_8: year:I country_m49:V country_id:V grade_id:V school_id:V language_school_questionnaire:V locale_school_questionnaire:V bcbg03a:V bcbg03b:V +94
+world_iea_timss.student_achievement_grade_4: year:I country_id:V country_m49:V grade_id:V school_id:V class_id:V student_id:V sex_students:V age_student:D +101
+world_iea_timss.student_achievement_grade_8: year:I country_m49:V country_id:V grade_id:V school_id:V class_id:V student_id:V student_sex:V student_age:D +126
+world_iea_timss.student_context_grade_4: year:I country_id:V country_m49:V grade_id:V school_id:V class_id:V student_id:V student_sex:V student_age:D +118
+world_iea_timss.student_context_grade_8: year:I country_m49:V country_id:V grade_id:V school_id:V class_id:V student_id:V student_sex:V student_age:D +106
+world_iea_timss.teacher_context_grade_4: year:I country_id:V country_m49:V grade_id:V school_id:V teacher_id:V link_id:V tealin_id:V course:V +78
+world_iea_timss.teacher_mathematics_grade_8: year:V country_m49:V country_id:V grade_id:V school_id:V teach_id:I link_id:I tealin_id:I course:I +159
+world_iea_timss.teacher_science_grade_8: year:V country_m49:V country_id:V grade_id:V school_id:V teach_id:V link_id:I tealin_id:I course:I +208
+world_imdb_movies.top_movies_per_year: year:I id:V title:V link:V duration:V rating_mpa:V rating_imdb:D vote:I budget:D +14
+world_oecd_pisa.student: year:I country_id_iso_3:V country_id_m49:V school_id:V student_id:V assessment_type:V national_centre_code:V stratum:V subregion:V +241
+world_oecd_public_finance.country: year:I country:V revenue_personal_income_tax:D revenue_social_security_contribution:D revenue_corporate_tax:D revenue_environmental_tax:D revenue_other_consumption_tax:D revenue_immovable_property_tax:D revenue_other_property_tax:D +154
+world_olympedia_olympics.athlete_bio: athlete_id:V name:V sex:V birth_date:Dt birth_year:I height:D weight:D country:V +3
+world_olympedia_olympics.athlete_event_result: edition:V edition_id:V country_noc:V sport:V event:V result_id:V athlete:V athlete_id:V +3
+world_olympedia_olympics.country: noc:V name:V
+world_olympedia_olympics.game: year:I edition:V edition_id:V city:V country_flag_url:V country_noc:V start_date:Dt end_date:Dt competition_date:V +1
+world_olympedia_olympics.game_medal_tally: year:I edition:V edition_id:V country:V country_noc:V gold:I silver:I bronze:I total:I
+world_olympedia_olympics.result: result_id:V event_title:V edition:V edition_id:V sport:V result_date:V result_location:V result_participants:V +3
+world_sofascore_competicoes_futebol.brasileirao_serie_a: ano:I data:Dt id_partida:V hora:Ti temporada:V rodada:V tempo:V time_mandante:V time_visitante:V gols_mandante:I +75
+world_sofascore_competicoes_futebol.uefa_champions_league: ano:I data:Dt id_partida:V hora:Ti temporada:V rodada:V tempo:V time_mandante:V time_visitante:V gols_mandante:I +75
+world_wb_mides.dicionario: id_tabela:V nome_coluna:V chave:V cobertura_temporal:V valor:V
+world_wb_mides.empenho: ano:I mes:I data:Dt sigla_uf:V id_municipio:V id_unidade_gestora:V orgao:V id_licitacao_bd:V id_licitacao:V modalidade_licitacao:V id_empenho_bd:V id_empenho:V numero:V descricao:V +11
+world_wb_mides.licitacao: ano:I mes:I sigla_uf:V id_municipio:V id_unidade_gestora:V orgao:V id_licitacao_bd:V id_licitacao:V id_dispensa:V ano_processo:I data_abertura:Dt data_edital:Dt data_homologacao:Dt +19
+world_wb_mides.licitacao_item: ano:I sigla_uf:V id_municipio:V id_unidade_gestora:V orgao:V id_licitacao_bd:V id_licitacao:V id_dispensa:V id_item_bd:V id_item:V descricao:V numero:I +12
+world_wb_mides.licitacao_participante: ano:I sigla_uf:V id_municipio:V id_unidade_gestora:V cep:V orgao:V id_licitacao_bd:V id_licitacao:V id_dispensa:V razao_social:V documento:V habilitado:I classificado:I +4
+world_wb_mides.liquidacao: ano:I mes:I data:Dt sigla_uf:V id_municipio:V id_unidade_gestora:V orgao:V id_empenho_bd:V id_empenho:V numero_empenho:V id_liquidacao_bd:V id_liquidacao:V numero:V nome_responsavel:V +6
+world_wb_mides.orgao_unidade_gestora: ano:V sigla_uf:V id_municipio:V id_unidade_gestora:V orgao:V nome_orgao:V nome_unidade_gestora:V esfera:V
+world_wb_mides.pagamento: ano:I mes:I data:Dt sigla_uf:V id_municipio:V id_unidade_gestora:V orgao:V id_empenho_bd:V id_empenho:V numero_empenho:V id_liquidacao_bd:V id_liquidacao:V numero_liquidacao:V id_pagamento_bd:V +11
+world_wb_mides.relacionamentos: ano:I sigla_uf:V id_municipio:V id_empenho:V id_licitacao:V
+world_wwf_hydrosheds.basins_atlas: level:V hybas_id:V next_down:V next_sink:V main_bas:V dist_sink:D dist_main:D sub_area:D +287
+world_wwf_hydrosheds.lakes_atlas: region:V hylak_id:V lake_name:V country:V continent:V poly_src:V lake_type:V grand_id:V +298
+world_wwf_hydrosheds.rivers_atlas: region:V hyriv_id:I next_down:I main_riv:I length_km:D dist_dn_km:D dist_up_km:D catch_skm:D +288
