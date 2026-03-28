@@ -695,7 +695,7 @@ fn draw_content(f: &mut Frame, app: &mut App, area: Rect) {
             // Status bar
             f.render_widget(
                 Paragraph::new(format!(
-                    "✓ gen: {}   consulta: {}   {} linha(s)",
+                    "✓ gerar SQL: {}   consulta: {}   {} resultado(s)",
                     gen_s, run_s, n
                 ))
                 .style(Style::default().fg(Color::Green)),
