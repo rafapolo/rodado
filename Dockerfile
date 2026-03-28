@@ -28,14 +28,8 @@ ENV PATH="/root/.cargo/bin:${PATH}" \
 
 WORKDIR /app
 
-COPY basedosdados.duckdb Caddyfile start.sh auth.py ./
-COPY ask/ ./ask/
-RUN cd ask && /root/.cargo/bin/cargo build --release && \
-    mv target/release/ask /app/ask && \
-    rm -rf target && \
-    file /app/ask && \
-    ldd /app/ask || true
-RUN chmod +x start.sh /app/ask
+COPY basedosdados.duckdb Caddyfile start.sh auth.py ask.py ./
+RUN chmod +x start.sh
 
 EXPOSE 8080
 
