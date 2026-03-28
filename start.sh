@@ -18,8 +18,11 @@ SET memory_limit='4GB';
 SQL
 chmod 600 /app/ssh_init.sql
 
-echo "[start] Starting ttyd terminal..."
+echo "[start] Starting ttyd terminal (db)..."
 ttyd --port 7681 --writable duckdb -readonly --init /app/ssh_init.sql /app/basedosdados.duckdb &
+
+echo "[start] Starting ttyd terminal (ask)..."
+ttyd --port 7682 --writable /app/ask &
 
 echo "[start] Starting auth service..."
 python3 /app/auth.py &

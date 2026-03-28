@@ -86,7 +86,68 @@ python prepara_db.py   # gera basedosdados.duckdb com views apontando para o S3
 duckdb basedosdados.duckdb
 ```
 
-Requer as credenciais do S3 no `.env` (veja seção de configuração abaixo).
+As queries são executadas diretamente sobre os arquivos Parquet no S3 — não há download de dados. O DuckDB lê os arquivos remotos sob demanda via `httpfs`.
+
+---
+
+## Ask: linguagem natural → SQL
+
+Interface TUI que permite fazer perguntas em português e obter SQL automaticamente.
+
+### No browser
+
+Acesse **https://ask.xn--2dk.xyz** → autentique → digite sua pergunta em português.
+
+### Local
+
+```bash
+cd ask
+cargo build --release
+./target/release/ask                    # modo interativo
+./target/release/ask "Quantos municípios tem SP?"  # modo CLI
+```
+
+### Variáveis de ambiente
+
+| Variável | Descrição |
+|---|---|
+| `GEMINI_API_KEY` | Chave da API Gemini (obrigatória para usar modelos Gemini) |
+| `OPENROUTER_API_KEY` | Chave para usar modelos via OpenRouter |
+| `GEMINI_MODEL` | Modelo a usar (padrão: `gemini-flash-latest`) |
+| `SCHEMA_FILE` | Arquivo de schema (padrão: `context/schema_compact_inline.txt`) |
+| `DB_FILE` | Arquivo DuckDB (padrão: `basedosdados.duckdb`) |
+
+---
+
+## Arquivos de schema
+
+O diretório `context/` contém artefatos gerados automaticamente para contexto do LLM e descoberta de tabelas:
+
+| Arquivo | Descrição |
+|---|---|
+| `schema_compact_inline.txt` | Schema condensado para contexto do LLM |
+| `schema_compact.txt` | Schema mais verboso |
+| `schema_ddl.sql` | DDL das views DuckDB |
+| `join_graph.json` | Relacionamentos entre tabelas |
+| `file_tree.md` | Estrutura de arquivos no S3 com tamanhos |
+| `schemas.json` | Schema raw do BigQuery |
+
+---
+
+## Descobrindo tabelas
+
+```sql
+-- listar todos os datasets (schemas)
+SHOW SCHEMAS;
+
+-- listar tabelas de um dataset
+SHOW TABLES IN br_anatel_banda_larga_fixa;
+
+-- ver colunas de uma tabela
+DESCRIBE br_anatel_banda_larga_fixa.densidade_brasil;
+```
+
+No shell do browser, `.tables` lista tudo de uma vez. Para descoberta programática, use os arquivos em `context/`.
 
 ---
 
@@ -130,6 +191,7 @@ Resume automático: se interrompido, basta rodar novamente.
 | `AWS_ACCESS_KEY_ID` | Access key do Hetzner Object Storage |
 | `AWS_SECRET_ACCESS_KEY` | Secret key do Hetzner Object Storage |
 | `BASIC_AUTH_PASSWORD` | Senha do shell web e endpoint `/query` |
+| `GEMINI_API_KEY` | Chave da API Gemini para o ask |
 
 ### Executando
 
