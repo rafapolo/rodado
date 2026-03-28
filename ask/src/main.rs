@@ -16,6 +16,7 @@ use ratatui::{
     widgets::{Block, Borders, Gauge, Paragraph, Row, Table, TableState, Wrap},
     Frame, Terminal,
 };
+use chrono::Utc;
 use serde_json::{json, Value};
 use std::{
     env, fs,
@@ -125,6 +126,35 @@ fn fmt_timer(d: Duration) -> String {
     format!("{:02}:{:02}s", d.as_secs() / 60, d.as_secs() % 60)
 }
 
+fn log_question(question: &str, sql: &str, success: bool, error: Option<&str>) {
+    let log_dir = std::path::Path::new("logs");
+    if !log_dir.exists() {
+        std::fs::create_dir_all(log_dir).ok();
+    }
+    let log_file = log_dir.join("log.json");
+
+    let timestamp = Utc::now().format("%Y-%m-%dT%H:%M:%SZ").to_string();
+
+    let entry = serde_json::json!({
+        "timestamp": timestamp,
+        "question": question,
+        "sql": sql,
+        "success": success,
+        "error": error,
+    });
+
+    let mut entries: Vec<Value> = if log_file.exists() {
+        let content = std::fs::read_to_string(&log_file).unwrap_or_else(|_| "[]".to_string());
+        serde_json::from_str(&content).unwrap_or_else(|_| vec![])
+    } else {
+        vec![]
+    };
+
+    entries.push(entry);
+    let json = serde_json::to_string_pretty(&entries).unwrap_or_else(|_| "[]".to_string());
+    std::fs::write(&log_file, json).ok();
+}
+
 fn wrap_text(text: &str, max_width: usize) -> Vec<String> {
     if max_width == 0 {
         return vec![text.to_string()];
@@ -209,16 +239,21 @@ fn spawn_worker(
     std::thread::spawn(
         move || match ask_model(&question, &schema, &model, &prompt_file) {
             Err(e) => {
-                tx.send(WorkerMsg::SqlError(format!("{:#}", e))).ok();
+                let err = format!("{:#}", e);
+                log_question(&question, "", false, Some(&err));
+                tx.send(WorkerMsg::SqlError(err)).ok();
             }
             Ok(sql) => {
                 tx.send(WorkerMsg::SqlReady(sql.clone())).ok();
                 match run_query(&db_file, &sql) {
                     Ok((cols, rows)) => {
+                        log_question(&question, &sql, true, None);
                         tx.send(WorkerMsg::QueryOk(cols, rows)).ok();
                     }
                     Err(e) => {
-                        tx.send(WorkerMsg::QueryError(format!("{:#}", e))).ok();
+                        let err = format!("{:#}", e);
+                        log_question(&question, &sql, false, Some(&err));
+                        tx.send(WorkerMsg::QueryError(err)).ok();
                     }
                 }
             }
