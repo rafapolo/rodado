@@ -1,0 +1,19 @@
+[package]
+name = "ask"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "ask"
+path = "src/main.rs"
+
+[dependencies]
+reqwest    = { version = "0.12", features = ["blocking", "rustls-tls", "json"], default-features = false }
+serde_json = "1"
+duckdb     = { version = "1", features = ["bundled"] }
+dotenvy    = "0.15"
+anyhow     = "1"
+syntect    = "5"
+ratatui    = "0.29"
+crossterm  = { version = "0.28", features = ["event-stream"] }
+tui-textarea = "0.7"
