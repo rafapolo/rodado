@@ -1,4 +1,13 @@
+http://ask.xn--2dk.xyz {
+    handle / {
+        reverse_proxy localhost:7682 {
+            flush_interval -1
+        }
+    }
+}
+
 https://ask.xn--2dk.xyz {
+    tls admin@xn--2dk.xyz
     handle / {
         reverse_proxy localhost:7682 {
             flush_interval -1
