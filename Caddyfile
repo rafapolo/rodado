@@ -7,14 +7,9 @@
     @ask_host {
         host ask.xn--2dk.xyz
     }
-    @ask_websocket {
+    @ask_ws {
         header Connection *Upgrade*
         header Upgrade websocket
-    }
-    handle @ask_host @ask_websocket {
-        reverse_proxy localhost:7682 {
-            flush_interval -1
-        }
     }
     handle @ask_host {
         reverse_proxy localhost:7682 {
