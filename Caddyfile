@@ -4,22 +4,21 @@
     }
 
     # ask.xn--2dk.xyz - Natural language to SQL TUI
-    ask.xn--2dk.xyz {
-        @websocket {
-            header Connection *Upgrade*
-            header Upgrade websocket
+    @ask_host {
+        host ask.xn--2dk.xyz
+    }
+    @ask_websocket {
+        header Connection *Upgrade*
+        header Upgrade websocket
+    }
+    handle @ask_host @ask_websocket {
+        reverse_proxy localhost:7682 {
+            flush_interval -1
         }
-
-        handle @websocket {
-            reverse_proxy localhost:7682 {
-                flush_interval -1
-            }
-        }
-
-        handle {
-            reverse_proxy localhost:7682 {
-                flush_interval -1
-            }
+    }
+    handle @ask_host {
+        reverse_proxy localhost:7682 {
+            flush_interval -1
         }
     }
 
