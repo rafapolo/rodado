@@ -26,7 +26,8 @@ ENV LANG=C.UTF-8 \
 WORKDIR /app
 
 COPY basedosdados.duckdb Caddyfile start.sh auth.py ./
-RUN chmod +x start.sh
+COPY ask/target/release/ask /app/ask
+RUN chmod +x start.sh /app/ask
 
 EXPOSE 8080
 
