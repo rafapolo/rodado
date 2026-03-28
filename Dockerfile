@@ -3,7 +3,7 @@ FROM debian:12-slim
 RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends \
         curl ca-certificates unzip bsdmainutils python3 \
-        less ncurses-bin && \
+        less ncurses-bin build-essential pkg-config libssl-dev && \
     curl -fsSL \
         "https://github.com/caddyserver/caddy/releases/download/v2.9.1/caddy_2.9.1_linux_amd64.tar.gz" \
         | tar -xz -C /usr/local/bin caddy && \
@@ -14,19 +14,25 @@ RUN apt-get update -qq && \
     unzip /tmp/duckdb.zip -d /usr/local/bin && \
     chmod +x /usr/local/bin/duckdb && \
     rm /tmp/duckdb.zip && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* && \
     duckdb :memory: "INSTALL httpfs;" && \
     curl -fsSL "https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.x86_64" \
         -o /usr/local/bin/ttyd && \
     chmod +x /usr/local/bin/ttyd
 
-ENV LANG=C.UTF-8 \
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+ENV PATH="/root/.cargo/bin:${PATH}" \
+    LANG=C.UTF-8 \
     LC_ALL=C.UTF-8
 
 WORKDIR /app
 
 COPY basedosdados.duckdb Caddyfile start.sh auth.py ./
-COPY ask/target/release/ask /app/ask
+COPY ask/ ./ask/
+RUN cd ask && ~/.cargo/bin/cargo build --release && \
+    mv target/release/ask /app/ask && \
+    rm -rf target
 RUN chmod +x start.sh /app/ask
 
 EXPOSE 8080
