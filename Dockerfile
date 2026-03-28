@@ -30,9 +30,11 @@ WORKDIR /app
 
 COPY basedosdados.duckdb Caddyfile start.sh auth.py ./
 COPY ask/ ./ask/
-RUN cd ask && ~/.cargo/bin/cargo build --release && \
+RUN cd ask && /root/.cargo/bin/cargo build --release && \
     mv target/release/ask /app/ask && \
-    rm -rf target
+    rm -rf target && \
+    file /app/ask && \
+    ldd /app/ask || true
 RUN chmod +x start.sh /app/ask
 
 EXPOSE 8080
