@@ -8,11 +8,13 @@ Os dados foram exportados do BigQuery para o Hetzner Object Storage (Helsinki) n
 
 ## Consultando os dados
 
-Acesso via browser ou curl, protegido por senha. Peça a senha para o administrador.
+Acesso via browser ou curl, protegido por senha - peça!
 
 ### Shell no browser
 
-Acesse **https://db.xn--2dk.xyz** → autentique → shell DuckDB interativo direto no browser.
+Acesse **https://db.ミ.xyz** → autentique → shell DuckDB interativo direto no browser.
+
+Use `.tables` para listar os datasets.
 
 ### SQL via curl
 
@@ -46,35 +48,6 @@ curl -s -X POST https://db.xn--2dk.xyz/query \
   --data-binary @query.sql > resultado.csv
 ```
 
-### Descobrindo tabelas
-
-```sql
--- listar todos os datasets (schemas)
-SHOW SCHEMAS;
-
--- listar tabelas de um dataset
-SHOW TABLES IN br_anatel_banda_larga_fixa;
-
--- ver colunas de uma tabela
-DESCRIBE br_anatel_banda_larga_fixa.densidade_brasil;
-```
-
-No shell do browser, `.tables` lista tudo de uma vez.
-
-### Exportar em CSV ou JSON
-
-O DuckDB permite formatar a saída diretamente na query:
-
-```sql
--- CSV com header (pipe para arquivo via curl)
-COPY (SELECT * FROM br_ibge_censo2022.municipios LIMIT 1000)
-TO '/dev/stdout' (FORMAT csv, HEADER true);
-
--- JSON
-SELECT * FROM br_ibge_censo2022.municipios LIMIT 10
-FORMAT JSON;
-```
-
 ---
 
 ## Exploração local
@@ -82,11 +55,11 @@ FORMAT JSON;
 Para rodar as queries na sua própria máquina com DuckDB instalado:
 
 ```bash
-python prepara_db.py   # gera basedosdados.duckdb com views apontando para o S3
-duckdb basedosdados.duckdb
+duckdb data/basedosdados.duckdb
 ```
 
 As queries são executadas diretamente sobre os arquivos Parquet no S3 — não há download de dados. O DuckDB lê os arquivos remotos sob demanda via `httpfs`.
+Precisa da credencial da .env - peça!
 
 ---
 
@@ -94,62 +67,52 @@ As queries são executadas diretamente sobre os arquivos Parquet no S3 — não 
 
 Interface TUI que permite fazer perguntas em português e obter SQL automaticamente.
 
+### Arquitetura
+
+```
+Pergunta → [schema filtrado] → LLM local (sqlcoder) ou API externa
+         → SQL
+```
+
+1. **Schema filtrado**: As tabelas relevantes são filtradas e enviadas ao LLM
+2. **Geração SQL**: Modelo local (sqlcoder via Ollama) ou API externa (Gemini/OpenRouter)
+
 ### No browser
 
-Acesse **https://ask.xn--2dk.xyz** → autentique → digite sua pergunta em português.
+Acesse **https://ask.ミ.xyz** → autentique → digite sua pergunta em português.
 
 ### Local
 
 ```bash
+# Compilar
 cd ask
 cargo build --release
-./target/release/ask                    # modo interativo
-./target/release/ask "Quantos municípios tem SP?"  # modo CLI
+
+# Modo interativo (TUI)
+./target/release/ask
+
+# Modo CLI
+./target/release/ask "Quantos municípios tem SP?"
 ```
 
 ### Variáveis de ambiente
 
-| Variável | Descrição |
-|---|---|
-| `GEMINI_API_KEY` | Chave da API Gemini (obrigatória para usar modelos Gemini) |
-| `OPENROUTER_API_KEY` | Chave para usar modelos via OpenRouter |
-| `GEMINI_MODEL` | Modelo a usar (padrão: `gemini-flash-latest`) |
-| `SCHEMA_FILE` | Arquivo de schema (padrão: `context/schema_compact_inline.txt`) |
-| `DB_FILE` | Arquivo DuckDB (padrão: `basedosdados.duckdb`) |
+| Variável | Padrão | Descrição |
+|---|---|---|
+| `SQL_GENERATOR` | `gemini` | Generator: `sqlcoder`, `gemini`, ou `openrouter` |
+| `GEMINI_API_KEY` | — | Chave API Gemini (obrigatória se usar gemini) |
+| `OPENROUTER_API_KEY` | — | Chave API OpenRouter (obrigatória se usar openrouter) |
+| `GEMINI_MODEL` | `gemini-flash-lash` | Modelo Gemini |
+| `OPENROUTER_MODEL` | `openai/gpt-4o-mini` | Modelo OpenRouter |
+| `OLLAMA_MODEL` | `sqlcoder` | Modelo Ollama (sqlcoder ou sqlcoder:14b) |
+| `OLLAMA_HOST` | `http://localhost:11434` | Host Ollama |
+| `TOP_K_TABLES` | `5` | Número de tabelas a selecionar |
+| `SCHEMA_FILE` | `context/schema_compact_inline.txt` | Schema texto para fallback |
+| `SCHEMA_JSON` | `context/basedosdados-schema.json` | Schema JSON completo |
+| `DB_FILE` | `data/basedosdados.duckdb` | Arquivo DuckDB |
 
 ---
 
-## Arquivos de schema
-
-O diretório `context/` contém artefatos gerados automaticamente para contexto do LLM e descoberta de tabelas:
-
-| Arquivo | Descrição |
-|---|---|
-| `schema_compact_inline.txt` | Schema condensado para contexto do LLM |
-| `schema_compact.txt` | Schema mais verboso |
-| `schema_ddl.sql` | DDL das views DuckDB |
-| `join_graph.json` | Relacionamentos entre tabelas |
-| `file_tree.md` | Estrutura de arquivos no S3 com tamanhos |
-| `schemas.json` | Schema raw do BigQuery |
-
----
-
-## Descobrindo tabelas
-
-```sql
--- listar todos os datasets (schemas)
-SHOW SCHEMAS;
-
--- listar tabelas de um dataset
-SHOW TABLES IN br_anatel_banda_larga_fixa;
-
--- ver colunas de uma tabela
-DESCRIBE br_anatel_banda_larga_fixa.densidade_brasil;
-```
-
-No shell do browser, `.tables` lista tudo de uma vez. Para descoberta programática, use os arquivos em `context/`.
-
----
 
 ## Pipeline de exportação
 
@@ -172,8 +135,8 @@ Resume automático: se interrompido, basta rodar novamente.
 
 | Script | Função |
 |---|---|
-| `roda.sh` | Pipeline principal de exportação |
-| `prepara_db.py` | Gera `basedosdados.duckdb` com views para todas as tabelas |
+| `scripts/roda.sh` | Pipeline principal de exportação |
+| `scripts/prepara_db.py` | Gera `data/basedosdados.duckdb` com views para todas as tabelas |
 
 ### Configuração (`.env`)
 
@@ -196,10 +159,10 @@ Resume automático: se interrompido, basta rodar novamente.
 ### Executando
 
 ```bash
-chmod +x roda.sh
-./roda.sh --dry-run    # estima tamanho e custo
-./roda.sh              # execução local
-./roda.sh --gcloud-run # cria VM no GCP, roda lá e deleta ao final
+chmod +x scripts/roda.sh
+./scripts/roda.sh --dry-run    # estima tamanho e custo
+./scripts/roda.sh              # execução local
+./scripts/roda.sh --gcloud-run # cria VM no GCP, roda lá e deleta ao final
 ```
 
 Autenticação GCP necessária antes da primeira exportação:
@@ -219,8 +182,8 @@ Cria uma VM `e2-standard-4` Debian 12 em `us-central1-a`, copia o script e o `.e
 | `GCP_VM_NAME` | `bd-export-vm` | Nome da instância |
 | `GCP_VM_ZONE` | `us-central1-a` | Zona do Compute Engine |
 
-### Deploy do servidor
+### Deploy do servidor para serviços de db e ask
 
 ```bash
-haloy deploy
+haloy deploy -f shell/haloy.yml
 ```

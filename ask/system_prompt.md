@@ -147,3 +147,68 @@ LIMIT 30
     if the question requires tables not in the provided DDL, OR
       If you cant generate a valid SQL, 
         answer as a JSON {error: "#{reason}"}
+
+
+## Common SQL Pitfalls & Debugging Strategy
+
+### 1. Column Propagation in CTEs (Most Common Error!)
+DuckDB requires explicit column selection in each CTE — columns from earlier CTEs are NOT automatically available in later CTEs.
+
+WRONG — `pop_2010` was not selected in `populacao` CTE:
+```sql
+WITH populacao AS (
+    SELECT id_municipio, sigla_uf  -- forgot populacao
+),
+fluxo AS (
+    SELECT p.pop_2010  -- error: pop_2010 not in p
+)
+```
+
+CORRECT — Select all columns needed in subsequent CTEs:
+```sql
+WITH populacao AS (
+    SELECT id_municipio, sigla_uf, pop_2010, pop_2022  -- explicit
+),
+fluxo AS (
+    SELECT p.pop_2010  -- works
+)
+```
+
+### 2. ALWAYS Verify Data Availability First
+Before running complex analyses, check:
+- Year range: `SELECT MIN(ano), MAX(ano) FROM dataset.table`
+- Record count: `SELECT COUNT(*) FROM dataset.table`
+- ID format compatibility between tables before JOIN
+
+### 3. Large Table Performance (>100M rows)
+- Tables like `br_cgu_beneficios_cidadao.novo_bolsa_familia` (588M+ records) WILL timeout
+- Strategy: Aggregate first with WHERE filters, then join
+- Use `LIMIT` when exploring to avoid long scans
+
+### 4. Lock Conflicts
+Multiple concurrent DuckDB queries on the same `.duckdb` file cause lock errors.
+- Wait between queries or use read-only mode
+
+### 5. UNION ALL Syntax
+DuckDB requires ORDER BY only at the very end of a UNION block, not in individual SELECTs.
+
+WRONG:
+```sql
+SELECT ... LIMIT 5
+ORDER BY x
+UNION ALL
+SELECT ... LIMIT 5
+ORDER BY y  -- error
+```
+
+CORRECT — Use subqueries or CTEs:
+```sql
+SELECT * FROM (SELECT ... ORDER BY x LIMIT 5) a
+UNION ALL
+SELECT * FROM (SELECT ... ORDER BY y LIMIT 5) b
+```
+
+### 6. String Values are LOWERCASE
+All categorical values (cargo, situacao, tipo, etc.) are stored in lowercase.
+Always use: `WHERE cargo = 'deputado federal'` not `'DEPUTADO FEDERAL'`
+
