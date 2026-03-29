@@ -143,11 +143,36 @@ Sources from https://github.com/jxnxts/mcp-brasil not in `basedosdados.duckdb`.
 | INPE | `inpe` | none | `https://terrabrasilis.dpi.inpe.br/queimadas/bdqueimadas-data-service` | JSON |
 | Tabua Mares | `tabua_mares` | none | `https://tabuademares.com/api/v2` | JSON |
 
-## Basedosdados.org — Not in basedosdados.duckdb (232 tables)
+## Basedosdados.org — Not in basedosdados.duckdb
 
-Basedosdados.org has **765 tables** on BigQuery, but only **533** are on S3 (and thus in your duckdb). The following datasets have **zero or partial** tables in duckdb.
+Basedosdados.org has **765 tables** on BigQuery, **~533** on S3. The remaining gap:
 
-### Full datasets — no tables in duckdb
+- **2 TABLEs** need `bq extract` → GCS → S3 (waiting on GCP billing restore)
+- **~230 are VIEWs** → need `bq query` to materialize, then `bq extract` (or streaming write to S3)
+- **3 tables MISSING** from BQ entirely (br_bcb_sicor microdados_* don't exist)
+
+### Need export — 2 TABLEs blocked on GCP billing
+
+| Dataset | Table | BQ Type | Notes |
+|---------|-------|---------|-------|
+| `br_bcb_taxa_cambio` | taxa_cambio | TABLE | ✅ `bq extract` works |
+| `br_bcb_taxa_selic` | taxa_selic | TABLE | ✅ `bq extract` works |
+
+### Already on S3 (no action needed)
+
+| Dataset | Tables |
+|---------|--------|
+| `br_bd_metadados` | bigquery_tables, prefect_flow_runs |
+| `br_fbsp_absp` | uf, violencia_escola |
+| `br_ibge_estadic` | dicionario |
+| `br_camara_dados_abertos` | all 33 tables (222 parquet files) |
+| `br_me_rais` | dicionario, microdados_estabelecimentos, microdados_vinculos |
+
+### ~230 VIEWs — need bq query materialization pipeline
+
+Cannot `bq extract` directly. Need to: (1) materialize via `bq query --destination_table`, or (2) stream via Python Arrow → S3 directly.
+
+#### Full datasets (all VIEWs)
 
 | Dataset | Tables missing | Notes |
 |---------|----------------|-------|
@@ -157,7 +182,7 @@ Basedosdados.org has **765 tables** on BigQuery, but only **533** are on S3 (and
 | `br_anvisa_medicamentos_industrializados` | microdados | |
 | `br_ba_feiradesantana_camara_leis` | microdados | |
 | `br_bd_diretorios_data_tempo` | tempo, data, ano, mes, dia, hora, bimestre, trimestre, semestre, minuto, segundo | Directory of time dimensions |
-| `br_bd_metadados` | external_links, information_requests, organizations, prefect_flows, resources, tables | BD metadata catalog |
+| `br_bd_metadados` | external_links, information_requests, organizations, resources, tables | |
 | `br_bd_vizinhanca` | municipio, uf | |
 | `br_caixa_sorteios` | megasena | |
 | `br_camara_dados_abertos` | sigla_partido | |
@@ -179,7 +204,7 @@ Basedosdados.org has **765 tables** on BigQuery, but only **533** are on S3 (and
 | `br_ieps_saude` | brasil, macrorregiao, municipio, regiao_saude, uf | |
 | `br_imprensa_nacional_dou` | secao_1, secao_2, secao_3 | Official gazette sections |
 | `br_ipea_acesso_oportunidades` | estatisticas_2019, indicadores_2019 | |
-| `br_mapbiomas_estatisticas` | classe, cobertura_municipio_classe, cobertura_uf_classe, transicao_municipio_de_para_anual/decenal/quinquenal, transicao_uf_de_para_anual/decenal/quinquenal | |
+| `br_mapbiomas_estatisticas` | classe, cobertura_municipio_classe, cobertura_uf_classe, transicao_*(anual/decenal/quinquenal) | |
 | `br_mc_indicadores` | transferencias_municipio | |
 | `br_me_clima_organizacional` | microdados | |
 | `br_me_estoque_divida_publica` | microdados | |
@@ -188,7 +213,7 @@ Basedosdados.org has **765 tables** on BigQuery, but only **533** are on S3 (and
 | `br_me_siape` | servidores_executivo_federal | |
 | `br_me_siorg` | remuneracao | |
 | `br_mma_extincao` | fauna_ameacada, flora_ameacada | |
-| `br_mobilidados_indicadores` | 11 tables (comprometimento_renda_tarifa_transp_publico, proporcao_*, taxa_motorizacao, etc.) | |
+| `br_mobilidados_indicadores` | 11 tables | |
 | `br_ms_atencao_basica` | municipio | |
 | `br_ms_imunizacoes` | municipio | |
 | `br_ons_energia_armazenada` | subsistemas | |
@@ -219,18 +244,16 @@ Basedosdados.org has **765 tables** on BigQuery, but only **533** are on S3 (and
 | `world_ti_corruption_perception` | country | |
 | `world_wb_wwbi` | country_finance, country_indicators | |
 
-### Partial datasets — some tables in duckdb, some missing
+#### Partial datasets — missing tables (all VIEWs, except where noted)
 
 | Dataset | Missing tables | In duckdb |
 |---------|----------------|-----------|
 | `br_anatel_banda_larga_fixa` | backhaul, pble | densidade_*, microdados |
-| `br_bcb_sicor` | microdados_liberacao, microdados_operacao, microdados_saldo | dicionario, liberacao, operacao, saldo, recurso_publico_* |
-| `br_bcb_taxa_cambio` | taxa_cambio | — (ACCESS_DENIED) |
-| `br_bcb_taxa_selic` | taxa_selic | — (ACCESS_DENIED) |
+| `br_bcb_sicor` | microdados_liberacao, microdados_operacao, microdados_saldo | dicionario, liberacao, operacao, saldo, + 5 more TABLEs |
 | `br_ibge_pib` | brasil_antigo, municipio_antigo, regiao_antigo, uf, uf_antigo | gini, municipio |
 | `br_ibge_pnad_covid` | microdados | dicionario |
-| `br_ibge_pnadc` | ano_brasil_grupo_idade, ano_brasil_raca_cor, ano_municipio_*, ano_regiao_*, ano_uf_* (cross-tabs) | dicionario, educacao, microdados, rendimentos_outras_fontes |
-| `br_ibge_pof` | all 17 tables (morador, domicilio, despesa_*, consumo_*, etc.) | none |
+| `br_ibge_pnadc` | 10 cross-tab tables (ano_*) | dicionario, educacao, microdados, rendimentos_outras_fontes |
+| `br_ibge_pof` | all 17 tables (morador_*, domicilio_*, despesa_*, consumo_*, etc.) | none |
 | `br_inep_ana` | aluno, escola, prova | dicionario |
 | `br_inep_censo_escolar` | docente, matricula | dicionario, escola, turma |
 | `br_inep_formacao_docente` | brasil, escola, municipio, regiao, uf | dicionario |
@@ -238,8 +261,7 @@ Basedosdados.org has **765 tables** on BigQuery, but only **533** are on S3 (and
 | `br_inep_indicadores_educacionais` | escola_nivel_socioeconomico, fluxo_educacao_superior | all others |
 | `br_inmet_bdmep` | estacao | microdados |
 | `br_me_caged` | microdados_antigos, microdados_antigos_ajustes | dicionario, microdados_movimentacao* |
-| `br_me_cno` | microdados, microdados_cnae, microdados_vinculo | dicionario, microdados |
-| `br_me_rais` | all tables | dicionario, microdados_estabelecimentos, microdados_vinculos |
+| `br_me_cno` | microdados_cnae, microdados_vinculo | dicionario, microdados |
 | `br_mec_prouni` | microdados | dicionario |
 | `br_ms_sim` | municipio, municipio_causa, municipio_causa_idade, municipio_causa_idade_sexo_raca | dicionario, microdados |
 | `br_ms_sinan` | microdados_violencia | dicionario, microdados_dengue, microdados_influenza_srag |
@@ -247,3 +269,13 @@ Basedosdados.org has **765 tables** on BigQuery, but only **533** are on S3 (and
 | `br_seeg_emissoes` | brasil | dicionario, municipio, uf |
 | `br_tse_eleicoes` | local_secao | all others |
 | `world_oecd_pisa` | dictionary, school_summary, student_summary | student |
+
+### Tables that don't exist in BigQuery (3)
+
+These were listed in datasets_to_scrap but actually don't exist in `basedosdados`:
+
+| Dataset | Table |
+|---------|-------|
+| `br_bcb_sicor` | microdados_liberacao |
+| `br_bcb_sicor` | microdados_operacao |
+| `br_bcb_sicor` | microdados_saldo |

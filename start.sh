@@ -19,13 +19,13 @@ SQL
 chmod 600 /app/ssh_init.sql
 
 echo "[start] Starting ttyd terminal (db)..."
-ttyd --port 7681 --writable duckdb -readonly --init /app/ssh_init.sql /app/basedosdados.duckdb &
+ttyd --port 7681 --writable duckdb -readonly --init /app/ssh_init.sql /app/data/basedosdados.duckdb &
 
 echo "[start] Starting ttyd terminal (ask)..."
-ttyd --port 7682 --writable python3 /app/ask.py &
+ttyd --port 7682 --writable /app/ask &
 
 echo "[start] Starting auth service..."
-python3 /app/auth.py &
+python3 /app/shell/auth.py &
 
 echo "[start] Starting Caddy..."
 exec caddy run --config /app/Caddyfile --adapter caddyfile
