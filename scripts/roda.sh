@@ -62,7 +62,8 @@ if $GCLOUD_RUN; then
       exit 1
     fi
   done
-else
+elif ! $SYNC_RUN; then
+  # Only require heavy GCP tools for the main export (not for --sync)
   for cmd in bq gcloud gsutil parallel rclone flock; do
     if ! command -v "$cmd" &>/dev/null; then
       log_err "'$cmd' not found. Install google-cloud-sdk, GNU parallel, and rclone."
@@ -164,8 +165,8 @@ echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.clou
   | sudo tee /etc/apt/sources.list.d/google-cloud-sdk.list >/dev/null
 sudo apt-get update -qq
 sudo apt-get install -y google-cloud-cli
-chmod +x ~/roda.sh
-echo "Dependencies installed."
+  chmod +x ~/roda.sh
+  echo "Dependencies installed."
 REMOTE_SETUP
   log "  Dependencies ready."
 
@@ -194,6 +195,121 @@ REMOTE_SETUP
     log "  gcloud compute instances delete $VM_NAME --zone=$VM_ZONE --project=$YOUR_PROJECT"
   fi
 
+  exit 0
+fi
+
+# =============================================================================
+# VM EXPORT — use existing bd-export-vm to export specific tables to GCS → S3
+# =============================================================================
+if [[ "${1:-}" == "--vm-export" ]]; then
+  VM_NAME="${GCP_VM_NAME:-bd-export-vm}"
+  VM_ZONE="${GCP_VM_ZONE:-us-central1-a}"
+  VM_PROJECT="${GCP_VM_PROJECT:-raspa-491716}"
+  TABLE_LIST="${2:-missing_tables.txt}"
+
+  log "=============================="
+  log " VM EXPORT MODE"
+  log "  VM: $VM_NAME ($VM_ZONE)"
+  log "  Tables: $TABLE_LIST"
+  log "=============================="
+
+  if [[ ! -f "$TABLE_LIST" ]]; then
+    log_err "Table list not found: $TABLE_LIST"
+    exit 1
+  fi
+
+  log "[1/5] Syncing files to VM..."
+  gcloud compute scp \
+    "$(dirname "$0")/roda.sh" \
+    "$(dirname "$0")/.env" \
+    "$(realpath "$TABLE_LIST")" \
+    "$VM_NAME:~/" \
+    --zone="$VM_ZONE" \
+    --project="$VM_PROJECT"
+
+  log "[2/5] Ensuring GCS bucket exists..."
+  if ! gsutil ls "gs://$BUCKET_NAME" &>/dev/null; then
+    gsutil mb -p "$VM_PROJECT" -l "$BUCKET_REGION" -b on "gs://$BUCKET_NAME"
+    log "  Bucket created: gs://$BUCKET_NAME"
+  else
+    log "  Bucket already exists."
+  fi
+
+  log "[3/5] Running export on VM (bq extract + rclone)..."
+  gcloud compute ssh "$VM_NAME" \
+    --zone="$VM_ZONE" \
+    --project="$VM_PROJECT" \
+    --command="bash -s" <<'REMOTE_EXPORT'
+set -euo pipefail
+export DEBIAN_FRONTEND=noninteractive
+cd ~
+set -a
+# shellcheck source=.env
+source .env
+set +a
+source ~/.bashrc 2>/dev/null || true
+
+export RCLONE_CONFIG_BD_TYPE="google cloud storage"
+export RCLONE_CONFIG_BD_BUCKET_POLICY_ONLY="true"
+export RCLONE_CONFIG_HZ_TYPE="s3"
+export RCLONE_CONFIG_HZ_PROVIDER="Other"
+export RCLONE_CONFIG_HZ_ENDPOINT="$HETZNER_S3_ENDPOINT"
+export RCLONE_CONFIG_HZ_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID"
+export RCLONE_CONFIG_HZ_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY"
+
+echo "[BQ EXTRACT] Starting export of missing tables..."
+
+extract_table() {
+  local table="$1"
+  local dataset table_id gcs_prefix
+  dataset=$(echo "$table" | cut -d. -f1)
+  table_id=$(echo "$table" | cut -d. -f2)
+  gcs_prefix="gs://$BUCKET_NAME/$dataset/$table_id"
+
+  echo "[EXTRACT] $table"
+  bq extract \
+    --project_id="$YOUR_PROJECT" \
+    --destination_format=PARQUET \
+    --compression=ZSTD \
+    --location=US \
+    "${SOURCE_PROJECT}:${dataset}.${table_id}" \
+    "${gcs_prefix}/*.parquet" 2>&1 \
+    || echo "[FAIL] $table"
+}
+
+export -f extract_table
+export BUCKET_NAME SOURCE_PROJECT
+
+cat missing_tables.txt | parallel -j8 --bar extract_table {}
+
+echo "[TRANSFER] GCS → Hetzner S3..."
+datasets=$(gsutil ls "gs://$BUCKET_NAME/" 2>/dev/null | sed 's|gs://[^/]*/||;s|/$||' | grep -v '^$' | sort -u)
+for ds in $datasets; do
+  echo "[TRANSFER] $ds"
+  rclone copy "bd:$BUCKET_NAME/$ds/" "hz:$HETZNER_S3_BUCKET/$ds/" \
+    --transfers 32 --s3-upload-concurrency 32 --progress 2>&1 \
+    || echo "[FAIL_TRANSFER] $ds"
+done
+
+echo "[DONE] Export complete."
+REMOTE_EXPORT
+
+  log "[4/5] Verifying transfer..."
+  S3_COUNT=$(gcloud compute ssh "$VM_NAME" \
+    --zone="$VM_ZONE" \
+    --project="$VM_PROJECT" \
+    --command="source .env && rclone ls hz:\$HETZNER_S3_BUCKET 2>/dev/null | grep -c '\.parquet\$' || echo 0" 2>/dev/null)
+  log "  S3 parquet files: $S3_COUNT"
+
+  log "[5/5] Cleaning up GCS bucket..."
+  read -rp "Delete GCS bucket gs://$BUCKET_NAME? [y/N] " confirm
+  if [[ "$confirm" =~ ^[Yy]$ ]]; then
+    gsutil -m rm -r "gs://$BUCKET_NAME"
+    gsutil rb "gs://$BUCKET_NAME"
+    log "  Bucket deleted."
+  fi
+
+  log "VM export complete."
   exit 0
 fi
 
