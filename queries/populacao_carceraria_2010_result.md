@@ -198,63 +198,85 @@ São Paulo concentra o maior contingente (1.181), seguido por MT e MG. Estados c
 
 ---
 
+## Menores de 18 Anos — Investigação dos 503 Registros
+
+### Achado 1: Nem todos os 503 são presos
+
+A variável `v0502` ("condição no domicílio") permite separar duas populações distintas dentro dos 503 registros de menores de 18 anos:
+
+- **349 pessoas (69,4%)** têm `v0502 = '20'` — classificadas como "Individual em domicílio coletivo". Esta é a designação do IBGE para moradores de domicílios coletivos sem vínculo de parentesco com o responsável. Inclui prisioneiros, pacientes, hóspedes de hotel, etc.
+- **154 pessoas (30,6%)** têm `v0502 ≠ '20'` — com vínculo de parentesco registrado (filhos, enteados, netos, cônjuges, outros parentes). São provavelmente filhos de funcionários do estabelecimento, cônjuges de presos, ou outros familiares.
+
+### Achado 2: Dos 349 prováveis presos, 278 têm 15-17 anos
+
+A distribuição por idade dos "prováveis presos" (v0502='20') revela:
+
+| Faixa | Total | Observação |
+|---|---|---|
+| 1-9 anos | 30 | Muito provavelmente erro de classificação ou situação excepcional |
+| 10-14 anos | 41 | Faixa ambígua — pode incluir adolescentes em unidades wrongfully classificadas |
+| 15-17 anos | **278** | Adolescentes presos efetiva e potencialmente em unidades para adultos |
+
+Os 278 adolescentes de 15-17 anos representam violação direta do ECA, que proíbe menores de 18 anos em presídios para adultos. No entanto, é possível que parte seja composta por adolescentes em unidades de internação que foram erroneamente classificadas como "domicílio coletivo" em vez de "unidade de internação".
+
+### Achado 3: Paraná concentra quase um terço dos menores presos
+
+Dos 349 prováveis presos menores, **117 estão no Paraná (33,5%)** — proporção impressionantemente alta. Os estados com mais menores presos são:
+
+| UF | Total | % do total |
+|---|---|---|
+| PR | 117 | 33,5% |
+| SP | 53 | 15,2% |
+| MG | 48 | 13,8% |
+| BA | 33 | 9,5% |
+| MT | 26 | 7,4% |
+| RS | 12 | 3,4% |
+
+Essa concentração no Paraná pode indicar: (a) política de encarceramento mais agressiva no estado; (b) melhores condições de recenseamento do IBGE em prisões paranaenses; (c) característica específica do sistema prisional do PR.
+
+### Achado 4: 98,2% dos adolescentes presos nunca frequentaram escola antes da prisão
+
+Dos adolescentes de 15-17 anos classificados como "individual em domicílio coletivo", 98,2% registram `v0637 = '3'` ("Não, nunca viveu") — ou seja, nunca haviam frequentado escola antes da data de referência do censo (31/jul/2010).
+
+No entanto, 79,5% estavam frequentando escola (`v0636 = '1'` — "Neste município") no momento do recenseamento. Isso sugere que **a prisão foi o gatilho para a primeira matrícula escolar** de centenas de adolescentes — uma consequência involuntária positiva do encarceramento, mas também evidência kuat da exclusão escolar prévio à prisão.
+
+### Achado 5: 154 crianças e adolescentes dependentes vivem no perímetro de estabelecimentos prisionais
+
+Os 154 menores com vínculo de parentesco registrado (não-prisioneiros) vivem em domicílios coletivos classificados como presídios. Possibilidades:
+
+- Filhos de funcionários que residem no estabelecimento
+- Cônjuges de presos (adolescentes casadas)
+- Outros familiares de prisioneiros
+
+A distribuição racial desses dependentes (59,1% pardos, 33,1% brancos, 7,1% pretos) é mais parda que a dos presos menores (39,8% pardos, 45,3% brancos, 13,2% pretos). E 51,9% são mulheres — contrastando com apenas 29,2% entre os presos menores.
+
+### Achado 6: Entre os adolescentes presos, mulheres representam 29,2%
+
+Das 349 pessoas menores classificadas como "individual em domicílio coletivo", 102 (29,2%) são mulheres. Essa proporção de mulheres é quase o dobro da observada na população prisional adulta geral (15,5%). A prisão de adolescentes mulheres pode estar associada a contextos específicos: cumprimento de medida socioeducativa em unidade feminina, ou acompanhamento de responsável presa com filhos adolescentes.
+
+### Achado 7: Composição racial dos menores presos é mais branca que a dos adultos
+
+| Cor/Raça | Menores presos | Adultos presos |
+|---|---|---|
+| Branca | 45,3% | 34,9% |
+| Parda | 39,8% | 49,1% |
+| Preta | 13,2% | 12,5% |
+
+A proporção de brancos entre os menores presos (45,3%) é significativamente maior que entre os adultos (34,9%). Uma hipótese: a composição racial da população prisional se torna progressivamente mais negra com a idade, indicando que o sistema penal tem efeito cumulativo de racialização — quanto mais velho, maior a sobrerepresentação de pessoas negras.
+
+### Achado 8: 30 crianças de 1-9 anos classificadas como "individual em domicílio coletivo"
+
+Este é o dado mais problemático. Crianças de 1 a 9 anos classificadas como "individual em domicílio coletivo" (v0502='20') não são prisoners. As explicações possíveis:
+
+- Erro de preenchimento do questionário pelo recenseador
+- Classificação automática por sistema de imputação
+- Crianças que moram em estabelecimento coletivo sem vínculo de parentesco (órfãos em orfanatos classificados como "presídio"?)
+- Acompanhamento de mãe presa (recém-nascidos e crianças pequenas)
+
+Sem acesso ao cadastro de endereços do IBGE para verificar o tipo real de cada domicílio, não é possível determinar a causa com certeza.
+
+---
+
 ## Queries Úteis Adicionais
 
-```sql
--- Perfil racial por gênero na prisão
-SELECT v0601, v0606, COUNT(*) as total
-FROM br_ibge_censo_demografico.microdados_pessoa_2010 p
-JOIN br_ibge_censo_demografico.microdados_domicilio_2010 d
-    ON p.controle = d.controle
-WHERE d.v4002 = '63'
-GROUP BY v0601, v0606
-ORDER BY v0601, total DESC;
-
--- Idade média por cor/raça (18+)
-SELECT
-    CASE v0606
-        WHEN '1' THEN 'Branca' WHEN '2' THEN 'Preta'
-        WHEN '4' THEN 'Parda' ELSE 'Outros'
-    END as cor_raca,
-    ROUND(AVG(v6033::DOUBLE), 1) as idade_media,
-    COUNT(*) as total
-FROM br_ibge_censo_demografico.microdados_pessoa_2010 p
-JOIN br_ibge_censo_demografico.microdados_domicilio_2010 d
-    ON p.controle = d.controle
-WHERE d.v4002 = '63'
-  AND v6033 BETWEEN 18 AND 100
-GROUP BY v0606
-ORDER BY idade_media;
-
--- Escolaridade por cor/raça (18+)
-SELECT
-    CASE v0606
-        WHEN '1' THEN 'Branca' WHEN '2' THEN 'Preta'
-        WHEN '4' THEN 'Parda' ELSE 'Outros'
-    END as cor_raca,
-    CASE v6400
-        WHEN '1' THEN 'Baixa'
-        WHEN '2' THEN 'Média-baixa'
-        WHEN '3' THEN 'Média-alta'
-        WHEN '4' THEN 'Alta'
-    END as nivel,
-    COUNT(*) as total
-FROM br_ibge_censo_demografico.microdados_pessoa_2010 p
-JOIN br_ibge_censo_demografico.microdados_domicilio_2010 d
-    ON p.controle = d.controle
-WHERE d.v4002 = '63' AND v6033 >= 18
-GROUP BY v0606, v6400
-ORDER BY v0606, v6400;
-
--- UF com maior proporção de baixa escolaridade
-SELECT
-    p.sigla_uf,
-    COUNT(*) as total,
-    ROUND(100.0 * SUM(CASE WHEN v6400 = '1' THEN 1 ELSE 0 END) / COUNT(*), 1) as pct_baixa_escolaridade
-FROM br_ibge_censo_demografico.microdados_pessoa_2010 p
-JOIN br_ibge_censo_demografico.microdados_domicilio_2010 d
-    ON p.controle = d.controle
-WHERE d.v4002 = '63' AND v6033 >= 18 AND v6033 <= 100
-GROUP BY p.sigla_uf
-ORDER BY pct_baixa_escolaridade DESC;
-```
+As queries SQL para reproduzir as análises deste relatório estão disponíveis em `queries/populacao_carceraria_2010.sql`.
