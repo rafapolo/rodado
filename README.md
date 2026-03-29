@@ -81,6 +81,8 @@ Pergunta → [schema filtrado] → LLM local (sqlcoder) ou API externa
 
 Acesse **https://ask.ミ.xyz** → autentique → digite sua pergunta em português.
 
+![ask interface](ask/ask.jpg)
+
 ### Local
 
 ```bash
@@ -185,5 +187,5 @@ Cria uma VM `e2-standard-4` Debian 12 em `us-central1-a`, copia o script e o `.e
 ### Deploy do servidor para serviços de db e ask
 
 ```bash
-haloy deploy -f shell/haloy.yml
+haloy deploy -f haloy.yml
 ```
