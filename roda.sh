@@ -31,10 +31,13 @@ fi
 
 DRY_RUN=false
 GCLOUD_RUN=false
+SYNC_RUN=false
 if [[ "${1:-}" == "--dry-run" ]]; then
   DRY_RUN=true
 elif [[ "${1:-}" == "--gcloud-run" ]]; then
   GCLOUD_RUN=true
+elif [[ "${1:-}" == "--sync" ]]; then
+  SYNC_RUN=true
 fi
 
 # -----------------------------------------------------------------------------
@@ -72,6 +75,18 @@ fi
 if [[ -z "${AWS_ACCESS_KEY_ID:-}" || -z "${AWS_SECRET_ACCESS_KEY:-}" ]]; then
   log_err "Credenciais S3 não encontradas. Preencha o .env com AWS_ACCESS_KEY_ID e AWS_SECRET_ACCESS_KEY."
   exit 1
+fi
+
+# Validate GCP project (needed for --sync)
+if [[ -z "${GCP_PROJECT:-}" ]]; then
+  if $SYNC_RUN; then
+    if [[ -z "${YOUR_PROJECT:-}" ]]; then
+      log_err "GCP_PROJECT não encontrado no .env. Adicione GCP_PROJECT ou YOUR_PROJECT."
+      exit 1
+    fi
+    log "GCP_PROJECT not set, using YOUR_PROJECT: $YOUR_PROJECT"
+    export GCP_PROJECT="$YOUR_PROJECT"
+  fi
 fi
 
 # Configure rclone remotes via env vars — no rclone.conf or inline credentials needed.
@@ -180,6 +195,54 @@ REMOTE_SETUP
   fi
 
   exit 0
+fi
+
+# =============================================================================
+# SYNC — BigQuery → S3 direct (no GCS intermediary)
+# =============================================================================
+if $SYNC_RUN; then
+  log "=============================="
+  log " SYNC MODE — BigQuery → S3"
+  log "=============================="
+
+  # Check dependencies
+  for cmd in python3; do
+    if ! command -v "$cmd" &>/dev/null; then
+      log_err "'$cmd' not found."
+      exit 1
+    fi
+  done
+
+  # Check Python dependencies (import name vs pip package name differs)
+  PYTHON_CHECKS="google.cloud.bigquery:boto3:pandas:pyarrow"
+  for check in $(echo "$PYTHON_CHECKS" | tr ':' '\n'); do
+    module="${check}"
+    if ! python3 -c "import ${module}" 2>/dev/null; then
+      pip_pkg="${module}"
+      log_err "Missing Python package: ${pip_pkg}. Run: pip install google-cloud-bigquery boto3 pandas pyarrow"
+      exit 1
+    fi
+  done
+
+  # Set GCP_PROJECT for the Python script
+  export GCP_PROJECT="${GCP_PROJECT:-${YOUR_PROJECT}}"
+
+  log "GCP project: $GCP_PROJECT"
+  log "S3 bucket:   $HETZNER_S3_BUCKET"
+  log "S3 endpoint: $HETZNER_S3_ENDPOINT"
+  log ""
+
+  if $DRY_RUN; then
+    log "DRY RUN — listing tables only, no data will be transferred"
+  fi
+
+  # Run the sync script, filtering out --sync (roda.sh flag)
+  SYNC_ARGS=()
+  for arg in "$@"; do
+    [[ "$arg" != "--sync" ]] && SYNC_ARGS+=("$arg")
+  done
+  python3 sync_bq_to_local.py "${SYNC_ARGS[@]+"${SYNC_ARGS[@]}"}"
+  exit $?
 fi
 
 # -----------------------------------------------------------------------------
