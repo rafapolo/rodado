@@ -1,4 +1,9 @@
+mod schema_filter;
+mod sql_generator;
+mod table_selector;
+
 use anyhow::{Context, Result};
+use chrono::Utc;
 use crossterm::{
     event::{
         DisableBracketedPaste, DisableMouseCapture, EnableBracketedPaste, EnableMouseCapture,
@@ -9,14 +14,12 @@ use crossterm::{
 };
 use duckdb::Connection;
 use ratatui::{
-    buffer::Buffer,
     layout::{Constraint, Direction, Layout, Rect},
     style::{Color, Modifier, Style},
     text::{Line, Span},
     widgets::{Block, Borders, Gauge, Paragraph, Row, Table, TableState, Wrap},
     Frame, Terminal,
 };
-use chrono::Utc;
 use serde_json::{json, Value};
 use std::{
     env, fs,
@@ -43,6 +46,10 @@ struct Config {
     schema: String,
     db_file: String,
     prompt_file: String,
+    use_table_selection: bool,
+    embeddings_file: String,
+    schema_json: String,
+    similarity_threshold: f32,
 }
 
 enum Phase {
@@ -234,10 +241,23 @@ fn spawn_worker(
     model: String,
     prompt_file: String,
     db_file: String,
+    use_table_selection: bool,
+    embeddings_file: String,
+    schema_json: String,
+    similarity_threshold: f32,
 ) -> mpsc::Receiver<WorkerMsg> {
     let (tx, rx) = mpsc::channel::<WorkerMsg>();
-    std::thread::spawn(
-        move || match ask_model(&question, &schema, &model, &prompt_file) {
+    std::thread::spawn(move || {
+        match ask_model_with_selection(
+            &question,
+            &schema,
+            &model,
+            &prompt_file,
+            use_table_selection,
+            &embeddings_file,
+            &schema_json,
+            similarity_threshold,
+        ) {
             Err(e) => {
                 let err = format!("{:#}", e);
                 log_question(&question, "", false, Some(&err));
@@ -257,8 +277,8 @@ fn spawn_worker(
                     }
                 }
             }
-        },
-    );
+        }
+    });
     rx
 }
 
@@ -270,6 +290,10 @@ fn spawn_retry_worker(
     model: String,
     prompt_file: String,
     db_file: String,
+    use_table_selection: bool,
+    embeddings_file: String,
+    schema_json: String,
+    similarity_threshold: f32,
 ) -> mpsc::Receiver<WorkerMsg> {
     let retry_q = format!(
         "{}\n\nO SQL que você gerou falhou com este erro DuckDB:\n```\n{}\n```\n\n\
@@ -277,7 +301,17 @@ fn spawn_retry_worker(
          Corrija o SQL. Retorne APENAS o SQL corrigido, sem explicação.",
         question, error, failed_sql
     );
-    spawn_worker(retry_q, schema, model, prompt_file, db_file)
+    spawn_worker(
+        retry_q,
+        schema,
+        model,
+        prompt_file,
+        db_file,
+        use_table_selection,
+        embeddings_file,
+        schema_json,
+        similarity_threshold,
+    )
 }
 
 // ── event handling ────────────────────────────────────────────────────────────
@@ -327,6 +361,10 @@ impl App {
             self.config.model.clone(),
             self.config.prompt_file.clone(),
             self.config.db_file.clone(),
+            self.config.use_table_selection,
+            self.config.embeddings_file.clone(),
+            self.config.schema_json.clone(),
+            self.config.similarity_threshold,
         ));
     }
 
@@ -398,6 +436,10 @@ impl App {
                         self.config.model.clone(),
                         self.config.prompt_file.clone(),
                         self.config.db_file.clone(),
+                        self.config.use_table_selection,
+                        self.config.embeddings_file.clone(),
+                        self.config.schema_json.clone(),
+                        self.config.similarity_threshold,
                     ));
                     self.last_sql.clear();
                 } else {
@@ -723,7 +765,12 @@ fn draw_content(f: &mut Frame, app: &mut App, area: Rect) {
                 let col_max_widths: Vec<usize> = (0..col_count)
                     .map(|i| {
                         let header_len = cols[i].len();
-                        let data_len = rows.iter().filter_map(|r| r.get(i)).map(|c| c.len()).max().unwrap_or(0);
+                        let data_len = rows
+                            .iter()
+                            .filter_map(|r| r.get(i))
+                            .map(|c| c.len())
+                            .max()
+                            .unwrap_or(0);
                         (header_len.max(data_len)).max(min_col_width as usize)
                     })
                     .collect();
@@ -732,16 +779,24 @@ fn draw_content(f: &mut Frame, app: &mut App, area: Rect) {
                 let use_wrap = total_needed > available_width as usize;
 
                 if use_wrap {
-                    let wrap_width = (available_width as usize / col_count).max(min_col_width as usize);
-                    let header_lines: Vec<Line> = cols.iter()
+                    let wrap_width =
+                        (available_width as usize / col_count).max(min_col_width as usize);
+                    let header_lines: Vec<Line> = cols
+                        .iter()
                         .enumerate()
                         .map(|(i, c)| {
                             let wrapped = wrap_text(c, wrap_width);
-                            Line::from(wrapped)
+                            let spans: Vec<Span> =
+                                wrapped.into_iter().map(|s| Span::raw(s)).collect();
+                            Line::from(spans)
                         })
                         .collect();
 
-                    let max_header_lines = header_lines.iter().map(|l| l.len()).max().unwrap_or(1);
+                    let max_header_lines = header_lines
+                        .iter()
+                        .map(|l| l.spans.len())
+                        .max()
+                        .unwrap_or(1);
 
                     let mut all_row_lines: Vec<Vec<Line>> = Vec::new();
                     for row in rows {
@@ -749,19 +804,19 @@ fn draw_content(f: &mut Frame, app: &mut App, area: Rect) {
                             .map(|i| {
                                 let cell = row.get(i).map(|s| s.as_str()).unwrap_or("");
                                 let wrapped = wrap_text(cell, wrap_width);
-                                Line::from(wrapped)
+                                let spans: Vec<Span> =
+                                    wrapped.into_iter().map(|s| Span::raw(s)).collect();
+                                Line::from(spans)
                             })
                             .collect();
-                        let max_lines = row_lines.iter().map(|l| l.len()).max().unwrap_or(1);
+                        let max_lines = row_lines.iter().map(|l| l.spans.len()).max().unwrap_or(1);
                         all_row_lines.push(row_lines);
                     }
 
                     let selected_idx = table_state.selected().unwrap_or(0);
                     let table_title = format!(" Resultados  ({}/{}) ", selected_idx + 1, n);
 
-                    let block = Block::default()
-                        .borders(Borders::ALL)
-                        .title(table_title);
+                    let block = Block::default().borders(Borders::ALL).title(table_title);
 
                     let area = chunks[2];
                     f.render_widget(block, area);
@@ -778,29 +833,32 @@ fn draw_content(f: &mut Frame, app: &mut App, area: Rect) {
 
                     let start_row = if n > visible_rows as usize {
                         let scroll = selected_idx as i32 - visible_rows as i32 / 2;
-                        scroll.max(0) as usize.min(n.saturating_sub(visible_rows as usize))
+                        (scroll.max(0) as usize).min(n.saturating_sub(visible_rows as usize))
                     } else {
                         0
                     };
 
-                    let header_bg = Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD);
+                    let header_bg = Style::default()
+                        .fg(Color::Yellow)
+                        .add_modifier(Modifier::BOLD);
                     for (col_idx, header_line) in header_lines.iter().enumerate() {
                         let col_x = inner_area.x + (col_idx as u16) * (wrap_width as u16 + 1);
                         let col_width = wrap_width as u16;
-                        for (line_idx, line) in header_line.iter().enumerate() {
+                        for (line_idx, span) in header_line.spans.iter().enumerate() {
                             let y = inner_area.y + line_idx as u16;
                             if y >= inner_area.y + inner_area.height {
                                 break;
                             }
-                            let spans: Vec<Span> = line.spans.iter().map(|s| {
-                                Span::styled(s.content.clone(), header_bg)
-                            }).collect();
-                            f.render_widget(Paragraph::new(Line::from(spans)), Rect {
-                                x: col_x,
-                                y,
-                                width: col_width,
-                                height: 1,
-                            });
+                            let styled_span = Span::styled(span.content.clone(), header_bg);
+                            f.render_widget(
+                                Paragraph::new(Line::from(styled_span)),
+                                Rect {
+                                    x: col_x,
+                                    y,
+                                    width: col_width,
+                                    height: 1,
+                                },
+                            );
                         }
                     }
 
@@ -811,7 +869,9 @@ fn draw_content(f: &mut Frame, app: &mut App, area: Rect) {
                         }
                         let is_selected = row_idx == selected_idx;
                         let row_style = if is_selected {
-                            Style::default().bg(Color::DarkGray).add_modifier(Modifier::BOLD)
+                            Style::default()
+                                .bg(Color::DarkGray)
+                                .add_modifier(Modifier::BOLD)
                         } else {
                             Style::default()
                         };
@@ -820,20 +880,21 @@ fn draw_content(f: &mut Frame, app: &mut App, area: Rect) {
                         for (col_idx, cell_lines) in row_lines.iter().enumerate() {
                             let col_x = inner_area.x + (col_idx as u16) * (wrap_width as u16 + 1);
                             let col_width = wrap_width as u16;
-                            for (line_idx, line) in cell_lines.iter().enumerate() {
+                            for (line_idx, span) in cell_lines.spans.iter().enumerate() {
                                 let cell_y = y + line_idx as u16;
                                 if cell_y >= inner_area.y + inner_area.height {
                                     break;
                                 }
-                                let spans: Vec<Span> = line.spans.iter().map(|s| {
-                                    Span::styled(s.content.clone(), row_style)
-                                }).collect();
-                                f.render_widget(Paragraph::new(Line::from(spans)), Rect {
-                                    x: col_x,
-                                    y: cell_y,
-                                    width: col_width,
-                                    height: 1,
-                                });
+                                let styled_span = Span::styled(span.content.clone(), row_style);
+                                f.render_widget(
+                                    Paragraph::new(Line::from(styled_span)),
+                                    Rect {
+                                        x: col_x,
+                                        y: cell_y,
+                                        width: col_width,
+                                        height: 1,
+                                    },
+                                );
                             }
                         }
 
@@ -850,7 +911,8 @@ fn draw_content(f: &mut Frame, app: &mut App, area: Rect) {
                         }
                     }
                 } else {
-                    let col_widths: Vec<Constraint> = cols.iter()
+                    let col_widths: Vec<Constraint> = cols
+                        .iter()
                         .enumerate()
                         .map(|(i, _)| {
                             let w = col_max_widths[i] as u16;
@@ -1004,6 +1066,55 @@ fn ask_model(question: &str, schema: &str, model: &str, prompt_file: &str) -> Re
     } else {
         ask_gemini(question, &system_prompt, model)?
     };
+
+    Ok(ensure_sql(&sql))
+}
+
+fn ask_model_with_selection(
+    question: &str,
+    _full_schema: &str,
+    model: &str,
+    prompt_file: &str,
+    use_selection: bool,
+    embeddings_file: &str,
+    schema_json: &str,
+    similarity_threshold: f32,
+) -> Result<String> {
+    let prompt_template = fs::read_to_string(prompt_file)
+        .with_context(|| format!("Não foi possível ler o prompt: {}", prompt_file))?;
+
+    let (schema_to_use, selected_tables) = if use_selection {
+        match table_selector::select_tables_from_question(
+            question,
+            embeddings_file,
+            similarity_threshold,
+        ) {
+            Ok(table_ids) => {
+                eprintln!(
+                    "=> Selecionadas {} tables relevantes: {:?}",
+                    table_ids.len(),
+                    table_ids
+                );
+                let schema_filter = schema_filter::SchemaFilter::new(schema_json)?;
+                let filtered_schema = schema_filter.filter_tables(&table_ids);
+                (filtered_schema, Some(table_ids))
+            }
+            Err(e) => {
+                eprintln!(
+                    "=> Aviso: falha na seleção de tables ({}), usando schema completo",
+                    e
+                );
+                let schema_filter = schema_filter::SchemaFilter::new(schema_json)?;
+                (schema_filter.full_schema_text(), None)
+            }
+        }
+    } else {
+        let schema_filter = schema_filter::SchemaFilter::new(schema_json)?;
+        (schema_filter.full_schema_text(), None)
+    };
+
+    let generator = sql_generator::create_sql_generator()?;
+    let sql = generator.generate(question, &schema_to_use, &prompt_template)?;
 
     Ok(ensure_sql(&sql))
 }
@@ -1309,6 +1420,12 @@ VARIÁVEIS DE AMBIENTE
   OPENROUTER_API_KEY   necessária para modelos OpenRouter
   GEMINI_MODEL         modelo padrão (sobrescrito por --model)
   SCHEMA_FILE          DDL do schema  [context/schema_compact_inline.txt]
+  SCHEMA_JSON          full schema JSON  [context/basedosdados-schema.json]
+  EMBEDDINGS_FILE      table embeddings  [context/table_embeddings.json]
+  TOP_K_TABLES         número de tables a selecionar  [5]
+  SQL_GENERATOR        sql generator: sqlcoder|gemini|openrouter  [gemini]
+  OLLAMA_MODEL         modelo ollama  [sqlcoder]
+  OLLAMA_HOST          host ollama  [http://localhost:11434]
   PROMPT_FILE          prompt do sistema  [ask/system_prompt.md]
   DB_FILE              banco DuckDB  [basedosdados.duckdb]
 "#
@@ -1321,7 +1438,18 @@ VARIÁVEIS DE AMBIENTE
     });
     let schema_file =
         env::var("SCHEMA_FILE").unwrap_or_else(|_| "context/schema_compact_inline.txt".into());
-    let db_file = env::var("DB_FILE").unwrap_or_else(|_| "basedosdados.duckdb".into());
+    let schema_json =
+        env::var("SCHEMA_JSON").unwrap_or_else(|_| "context/basedosdados-schema.json".into());
+    let embeddings_file =
+        env::var("EMBEDDINGS_FILE").unwrap_or_else(|_| "context/table_embeddings.json".into());
+    let similarity_threshold = env::var("SIMILARITY_THRESHOLD")
+        .ok()
+        .and_then(|v| v.parse().ok())
+        .unwrap_or(0.35);
+    let use_table_selection = env::var("USE_TABLE_SELECTION")
+        .map(|v| v != "false" && v != "0")
+        .unwrap_or(true);
+    let db_file = env::var("DB_FILE").unwrap_or_else(|_| "data/basedosdados.duckdb".into());
     let prompt_file = env::var("PROMPT_FILE").unwrap_or_else(|_| "ask/system_prompt.md".into());
     let schema = fs::read_to_string(&schema_file)
         .with_context(|| format!("Não foi possível ler o schema: {}", schema_file))?;
@@ -1333,6 +1461,10 @@ VARIÁVEIS DE AMBIENTE
             schema,
             db_file,
             prompt_file,
+            use_table_selection,
+            embeddings_file,
+            schema_json,
+            similarity_threshold,
         });
     }
 
@@ -1341,7 +1473,16 @@ VARIÁVEIS DE AMBIENTE
     eprintln!("\nModel:    {}\nPergunta: {}\n", model, question);
 
     let t0 = Instant::now();
-    let sql = ask_model(&question, &schema, &model, &prompt_file)?;
+    let sql = ask_model_with_selection(
+        &question,
+        &schema,
+        &model,
+        &prompt_file,
+        use_table_selection,
+        &embeddings_file,
+        &schema_json,
+        similarity_threshold,
+    )?;
     eprintln!("=> SQL gerado em {}", fmt_duration(t0.elapsed()));
     print_sql_box(&sql);
 
