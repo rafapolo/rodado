@@ -24,9 +24,17 @@ use serde_json::{json, Value};
 use std::{
     env, fs,
     io::{stdout, IsTerminal, Write},
+    path::PathBuf,
     sync::mpsc,
     time::{Duration, Instant},
 };
+
+fn project_path(rel: &str) -> PathBuf {
+    match env::var("CARGO_MANIFEST_DIR") {
+        Ok(manifest_dir) => PathBuf::from(manifest_dir).join("..").join(rel),
+        Err(_) => PathBuf::from(rel),
+    }
+}
 use syntect::easy::HighlightLines;
 use syntect::highlighting::ThemeSet;
 use syntect::parsing::SyntaxSet;
@@ -1436,12 +1444,21 @@ VARIÁVEIS DE AMBIENTE
     let model = model_override.unwrap_or_else(|| {
         env::var("GEMINI_MODEL").unwrap_or_else(|_| "gemini-flash-latest".into())
     });
-    let schema_file =
-        env::var("SCHEMA_FILE").unwrap_or_else(|_| "context/schema_compact_inline.txt".into());
-    let schema_json =
-        env::var("SCHEMA_JSON").unwrap_or_else(|_| "context/basedosdados-schema.json".into());
-    let embeddings_file =
-        env::var("EMBEDDINGS_FILE").unwrap_or_else(|_| "context/table_embeddings.json".into());
+    let schema_file = env::var("SCHEMA_FILE").unwrap_or_else(|_| {
+        project_path("context/schema_compact_inline.txt")
+            .to_string_lossy()
+            .into()
+    });
+    let schema_json = env::var("SCHEMA_JSON").unwrap_or_else(|_| {
+        project_path("context/basedosdados-schema.json")
+            .to_string_lossy()
+            .into()
+    });
+    let embeddings_file = env::var("EMBEDDINGS_FILE").unwrap_or_else(|_| {
+        project_path("context/table_embeddings.json")
+            .to_string_lossy()
+            .into()
+    });
     let similarity_threshold = env::var("SIMILARITY_THRESHOLD")
         .ok()
         .and_then(|v| v.parse().ok())
@@ -1449,8 +1466,16 @@ VARIÁVEIS DE AMBIENTE
     let use_table_selection = env::var("USE_TABLE_SELECTION")
         .map(|v| v != "false" && v != "0")
         .unwrap_or(true);
-    let db_file = env::var("DB_FILE").unwrap_or_else(|_| "data/basedosdados.duckdb".into());
-    let prompt_file = env::var("PROMPT_FILE").unwrap_or_else(|_| "ask/system_prompt.md".into());
+    let db_file = env::var("DB_FILE").unwrap_or_else(|_| {
+        project_path("data/basedosdados.duckdb")
+            .to_string_lossy()
+            .into()
+    });
+    let prompt_file = env::var("PROMPT_FILE").unwrap_or_else(|_| {
+        project_path("ask/system_prompt.md")
+            .to_string_lossy()
+            .into()
+    });
     let schema = fs::read_to_string(&schema_file)
         .with_context(|| format!("Não foi possível ler o schema: {}", schema_file))?;
 

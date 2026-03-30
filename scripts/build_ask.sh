@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
 echo "=== Building ask binary for Linux x86_64 ==="
 echo "Using Debian x86_64 container for native build..."
@@ -14,7 +14,7 @@ docker build \
     -t ask-builder \
     --build-arg BUILDKIT_INLINE_CACHE=1 \
     -f - ask/ <<'EOF'
-FROM rust:1.85-slim
+FROM rust:latest
 
 RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends \
