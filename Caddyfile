@@ -8,8 +8,37 @@
     }
 
     handle @ask {
-        reverse_proxy localhost:7682 {
-            flush_interval -1
+        handle /health {
+            respond 200
+        }
+
+        handle /login {
+            reverse_proxy 127.0.0.1:8081
+        }
+
+        handle /query {
+            reverse_proxy 127.0.0.1:8081
+        }
+
+        @websocket {
+            header Connection *Upgrade*
+            header Upgrade websocket
+        }
+
+        handle @websocket {
+            reverse_proxy localhost:7682 {
+                flush_interval -1
+            }
+        }
+
+        handle {
+            forward_auth 127.0.0.1:8081 {
+                uri /auth
+                copy_headers Cookie
+            }
+            reverse_proxy localhost:7682 {
+                flush_interval -1
+            }
         }
     }
 
