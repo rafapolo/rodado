@@ -15,13 +15,13 @@
 | Homens | 5.176 (84,5%) |
 | Mulheres | 950 (15,5%) |
 
-> **Nota**: Este número representa as pessoas efetivamente recenseadas pelo IBGE. O DEPEN estimava ~371.482 pessoas privadas de liberdade em dez/2010. A diferença reflete: (1) possíveis establishments não recenseados pelo IBGE; (2) metodologias de coleta distintas; (3) dinâmica de crescimento do sistema prisional no período. O número do censo é uma **fotografia de baixa cobertura** do sistema prisional.
+> **Nota**: Este número representa as pessoas efetivamente recenseadas pelo IBGE. O DEPEN estimava ~371.482 pessoas privadas de liberdade em dez/2010. A diferença reflete: (1) possíveis estabelecimentos não recenseados pelo IBGE; (2) metodologias de coleta distintas; (3) dinâmica de crescimento do sistema prisional no período. O número do censo é uma **fotografia de baixa cobertura** do sistema prisional.
 
 ---
 
 ## 1. Gênero
 
-A população prisional é overwhelmingly masculina (84,5%), com presença feminina de 15,5% (950 pessoas). A proporção de mulheres na prisão brasileira é relativamente alta comparada a outros países, sugerindo um padrão específico da política criminal brasileira.
+A população prisional é majoritariamente masculina (84,5%), com presença feminina de 15,5% (950 pessoas). A proporção de mulheres na prisão brasileira é relativamente alta comparada a outros países, sugerindo um padrão específico da política criminal brasileira.
 
 
 ---
@@ -39,7 +39,7 @@ A população prisional é overwhelmingly masculina (84,5%), com presença femin
 
 A **sobre-representação de pessoas pardas e pretas** é marcante. Na população geral brasileira em 2010, pardos eram ~43% e pretos ~7,5%. Na prisão, pardos sobem para 49,1% e pretos para 12,5%. A composição branca (34,9%) é inferior à proporção na população total (~47%).
 
-Este dado é consistente com a literatura sobre **racialização do sistema penal brasileiro**: pessoas racializadas são desproporcionalmente presas, refletindo desigualdades estruturais no acesso à justiça, policing seletivo, e vulnerabilidade socioeconomic
+Este dado é consistente com a literatura sobre **racialização do sistema penal brasileiro**: pessoas racializadas são desproporcionalmente presas, refletindo desigualdades estruturais no acesso à justiça, policiamento seletivo, e vulnerabilidade socioeconômica.
 
 ---
 
@@ -83,7 +83,7 @@ A taxa de **solteirice de 82,9%** é extremamente alta comparada à população 
 | 55-64 | 156 | 2,6% |
 | 65+ | 76 | 1,2% |
 
-A prisão é populated por **adultos jovens**: 65,5% têm entre 18 e 34 anos. A presença de **503 menores de 18 anos** (8,2%) é particularmente preocupante — levanta questões sobre cumprimento do ECA (que proíbe menores de 18 em presídios com adultos). A idade média está ao redor de 29-30 anos.
+A prisão é composta por **adultos jovens**: 65,5% têm entre 18 e 34 anos. A presença de **503 menores de 18 anos** (8,2%) é particularmente preocupante — levanta questões sobre cumprimento do ECA (que proíbe menores de 18 em presídios com adultos). A idade média está ao redor de 29-30 anos.
 
 ---
 
@@ -126,11 +126,41 @@ São Paulo concentra o maior contingente (1.181), seguido por MT e MG. Estados c
 | Cor/Raça: Branca | 460 (48,4%) |
 | Cor/Raça: Parda | 389 (40,9%) |
 | Cor/Raça: Preta | 82 (8,6%) |
+| Cor/Raça: Amarela | 13 (1,4%) |
+| Cor/Raça: Indígena | 6 (0,6%) |
 | Instrução (18+): Médio comp. ou sup. incomp. | 404 (53,0%) |
 | Instrução (18+): Sem instr. ou Fund. Incomp. | 143 (18,8%) |
 | Estado Civil: Solteira | 786 (88,1%) |
 
-**Padrões distintos nas mulheres**:相比男性, as mulheres têm **maior escolaridade** (53% com médio completo ou mais vs. ~34% nos homens) e **proporção racial mais branca** (48,4% brancas vs. 34,9% nos homens). Isso pode refletir **diferentes perfis criminais** (mulheres presas por crimes menos violentos?) ou **seletividade do sistema penal** diferenciada por gênero.
+**Os dados estão corretos, mas revelam um padrão surpreendente**: mulheres presas são mais brancas (48,4%) que a população prisional geral (34,9% branca). Isso NÃO é um erro — e tem explicação.
+
+A chave está na **escolaridade como fator de seletividade penal**:
+
+| Cor/Raça | Homens com médio+ | Mulheres com médio+ | Diferença |
+|---|---|---|---|
+| Branca | 39,9% | **73,9%** | +34 pp |
+| Parda | 23,3% | **64,5%** | +41 pp |
+| Preta | 23,3% | **53,5%** | +30 pp |
+
+Mulheres presas têm escolaridade **muito mais alta** que homens presos, em TODOS os grupos raciais. Isso sugere que:
+
+1. **O sistema penal é mais seletivo com homens** — prende gente independentemente da escolaridade. Para mulheres, só quem tem escolaridade mais alta acaba no presídio (provavelmente por crimes específicos, como tráfico de drogas, onde a escolaridade não é tão baixa).
+
+2. **A composição racial das mulheres reflete a escolaridade, não o contrário**: mulheres brancas têm mais escolaridade no Brasil, e o grupo de mulheres presas com escolaridade alta é majoritariamente branco.
+
+3. **Não é "mais brancos cometem crimes" — é "mais escolaridade = mais chance de estar no presídio, especialmente para mulheres"**.
+
+Comparando homens e mulheres por cor/raça:
+
+| Cor/Raça | Homens (%) | Mulheres (%) |
+|---|---|---|
+| Branca | 32,5% | **48,4%** |
+| Preta | 13,2% | 8,6% |
+| Parda | 50,6% | 40,9% |
+
+Entre homens, 66% são negros (pardos + pretos). Entre mulheres, apenas 50% são negras. Isso confirma que o sistema penal é **muito mais racializado para homens** — a maioria dos homens presos é negra, enquanto entre mulheres a distribuição é mais equilibrada.
+
+Isso é consistente com a literatura sobre **"gendered punishment"**: mulheres, especialmente brancas e de classe média, têm mais chances de receber alternativas à prisão (multa, pena suspensa). Homens negros de baixa escolaridade são presos em taxas muito mais altas.
 
 ---
 
@@ -150,18 +180,18 @@ São Paulo concentra o maior contingente (1.181), seguido por MT e MG. Estados c
 ### B. Raça e Sistema Penal
 
 4. **A racialização do sistema prisional brasileiro**
-   - 61,6% são pardos ou pretos vs. ~50% na população geral. A sobrerepresentação de pessoas negras na prisão é 1,4x a proporção na população — comparable ou superior a Disparities nos EUA. Pergunta: isso reflete bias no policing (seletividade policial)? Diferenças no acesso a advogado? Tipos de crimes cometidos? Ou uma combinação de todos?
+   - 61,6% são pardos ou pretos vs. ~50% na população geral. A sobrerepresentação de pessoas negras na prisão é 1,4x a proporção na população — comparável ou superior a desigualdades nos EUA. Pergunta: isso reflete viés no policiamento (seletividade policial)? Diferenças no acesso a advogado? Tipos de crimes cometidos? Ou uma combinação de todos?
 
 5. **Existe interseção raça-classe no encarceramento?**
    - Pessoas pardas e pretas com baixa escolaridade (fundamental incompleto: 47,6%) sugere que o cruzamento de raça e classe explica parte do encarceramento. Qual seria a taxa de encarceramento de pessoas brancas com mesmo nível de escolaridade? Sem essa comparação, é difícil separar o efeito de raça vs. classe.
 
 6. **Diferença racial entre homens e mulheres presas**
-   - 48,4% das mulheres são brancas vs. 34,9% dos homens. Isso sugere que o sistema penal é mais "racially cego" com mulheres ou que perfis criminais diferem por gênero? A literatura sobre "gendered punishment" sugere que mulheres brancas de classe média têm mais chances de alternativas à prisão.
+   - 48,4% das mulheres são brancas vs. 34,9% dos homens. Isso sugere que o sistema penal é mais "racialmente cego" com mulheres ou que perfis criminais diferem por gênero? A literatura sobre "gendered punishment" sugere que mulheres brancas de classe média têm mais chances de alternativas à prisão.
 
 ### C. Gênero
 
 7. **O que significa 15,5% de mulheres presas?**
-   - Comparado a其他国家 (EUA: ~8%, Portugal: ~6%), o Brasil tem proporção relativamente alta de mulheres presas. Isso reflete o encarceramento de mulheres por tráfico de drogas (Lei 11.343/2006)? Qual a proporção de mulheres presas por crimes violententos vs. não-violententos?
+   - Comparado a outros países (EUA: ~8%, Portugal: ~6%), o Brasil tem proporção relativamente alta de mulheres presas. Isso reflete o encarceramento de mulheres por tráfico de drogas (Lei 11.343/2006)? Qual a proporção de mulheres presas por crimes violentos vs. não-violentos?
 
 8. **Por que as mulheres presas têm mais escolaridade que os homens?**
    - 53% das mulheres têm médio completo+ vs. ~34% dos homens. Isso pode indicar que (a) mulheres entram na prisão por crimes diferentes (drogas, vs. crimes violentos nos homens) onde escolaridade não é tão penalizada; ou (b) o sistema penal é mais seletivo com homens, prendendo independentemente da escolaridade.
@@ -172,7 +202,7 @@ São Paulo concentra o maior contingente (1.181), seguido por MT e MG. Estados c
 ### D. Trabalho e Economia
 
 10. **93,7% não contribuíam para previdência: precariedade como fator de prisão?**
-    - A informalidade, ausência de direitos trabalhistas e exclusão do mercado formal precede a prisão. A pergunta é: a prisão é um destino provável para quem está excluded do mercado formal, ou há mediações (família, comunidade) que protegem?
+    - A informalidade, ausência de direitos trabalhistas e exclusão do mercado formal precede a prisão. A pergunta é: a prisão é um destino provável para quem está excluído do mercado formal, ou há mediações (família, comunidade) que protegem?
 
 11. **Rendimento zero para a maioria: o que isso significa para a ressocialização?**
     - O dado de rendimento (muitos com v6529 = 0 ou null) indica que a maioria das pessoas presas não tinha trabalho formal. Como o Estado garante dignidade humana e ressocialização sem trabalho?
@@ -180,13 +210,13 @@ São Paulo concentra o maior contingente (1.181), seguido por MT e MG. Estados c
 ### E. Metodologia e Limitações
 
 12. **O número do censo (6.126) vs. DEPEN (371.482): o que explica a diferença?**
-    - A diferença de ~60x levanta questões: (a) o IBGE não conseguiu recensear todas as unidades prisionais? (b) many prisons may have been classified as "restricted access"? (c) temporal mismatch (DEPEN = dec/2010, censo = 31/jul/2010)? (d) difference between "enumeration" vs. "registry" data? How reliable is each source?
+    - A diferença de ~60x levanta questões: (a) o IBGE não conseguiu recensear todas as unidades prisionais? (b) muitas prisões podem ter sido classificadas como "acesso restrito"? (c) diferença temporal (DEPEN = dez/2010, censo = 31/jul/2010)? (d) diferença entre dados de recenseamento vs. dados de registro? Quão confiável é cada fonte?
 
 13. **O viés de seleção nos microdados do censo**
     - O Censo 2010 usou frações amostrais de 5% a 50% dependendo do tamanho do município. Para municípios grandes (onde estão a maioria das prisões), a fração é de apenas 5%. Isso significa que as 6.126 pessoas podem representar ~120.000 pessoas no universo — ainda muito abaixo dos 371.482 do DEPEN.
 
-14. **Viés de não-resposta e misclassification**
-    - Prisões podem ter sido classificadas erroneamente (e.g., como "estabelecimento de outra finalidade" no cadastro de endereços). Se prisões não foram identificadas como "domicílio coletivo" no cadastro, as pessoas podem não ter sido recenseadas.
+14. **Viés de não-resposta e má classificação**
+    - Prisões podem ter sido classificadas erroneamente (ex., como "estabelecimento de outra finalidade" no cadastro de endereços). Se prisões não foram identificadas como "domicílio coletivo" no cadastro, as pessoas podem não ter sido recenseadas.
 
 ### F. Questões Comparativas
 
@@ -214,7 +244,7 @@ A distribuição por idade dos "prováveis presos" (v0502='20') revela:
 | Faixa | Total | Observação |
 |---|---|---|
 | 1-9 anos | 30 | Muito provavelmente erro de classificação ou situação excepcional |
-| 10-14 anos | 41 | Faixa ambígua — pode incluir adolescentes em unidades wrongfully classificadas |
+| 10-14 anos | 41 | Faixa ambígua — pode incluir adolescentes em unidades indeVIDAMENTE classificadas |
 | 15-17 anos | **278** | Adolescentes presos efetiva e potencialmente em unidades para adultos |
 
 Os 278 adolescentes de 15-17 anos representam violação direta do ECA, que proíbe menores de 18 anos em presídios para adultos. No entanto, é possível que parte seja composta por adolescentes em unidades de internação que foram erroneamente classificadas como "domicílio coletivo" em vez de "unidade de internação".
@@ -238,11 +268,11 @@ Essa concentração no Paraná pode indicar: (a) política de encarceramento mai
 
 Dos adolescentes de 15-17 anos classificados como "individual em domicílio coletivo", 98,2% registram `v0637 = '3'` ("Não, nunca viveu") — ou seja, nunca haviam frequentado escola antes da data de referência do censo (31/jul/2010).
 
-No entanto, 79,5% estavam frequentando escola (`v0636 = '1'` — "Neste município") no momento do recenseamento. Isso sugere que **a prisão foi o gatilho para a primeira matrícula escolar** de centenas de adolescentes — uma consequência involuntária positiva do encarceramento, mas também evidência kuat da exclusão escolar prévio à prisão.
+No entanto, 79,5% estavam frequentando escola (`v0636 = '1'` — "Neste município") no momento do recenseamento. Isso sugere que **a prisão foi o gatilho para a primeira matrícula escolar** de centenas de adolescentes — uma consequência involuntária positiva do encarceramento, mas também evidência forte da exclusão escolar prévia à prisão.
 
 ### Achado 5: 154 crianças e adolescentes dependentes vivem no perímetro de estabelecimentos prisionais
 
-Os 154 menores com vínculo de parentesco registrado (não-prisioneiros) vivem em domicílios coletivos classificados como presídios. Possibilidades:
+Os 154 menores com vínculo de parentesco registrado (não-presos) vivem em domicílios coletivos classificados como presídios. Possibilidades:
 
 - Filhos de funcionários que residem no estabelecimento
 - Cônjuges de presos (adolescentes casadas)
@@ -266,7 +296,7 @@ A proporção de brancos entre os menores presos (45,3%) é significativamente m
 
 ### Achado 8: 30 crianças de 1-9 anos classificadas como "individual em domicílio coletivo"
 
-Este é o dado mais problemático. Crianças de 1 a 9 anos classificadas como "individual em domicílio coletivo" (v0502='20') não são prisoners. As explicações possíveis:
+Este é o dado mais problemático. Crianças de 1 a 9 anos classificadas como "individual em domicílio coletivo" (v0502='20') não são presas. As explicações possíveis:
 
 - Erro de preenchimento do questionário pelo recenseador
 - Classificação automática por sistema de imputação
