@@ -4,7 +4,7 @@
 
 O SICOR em `br_bcb_sicor.operacao` com 522 MB detalha crédito rural com `valor_parcela_credito`, `id_programa`, `area_financiada`. O ESTBAN em `br_bcb_estban.municipio` com 894 MB revela desert bancário.
 
-## Dados Tabu — Economia Brasileira
+## Revelações Importantes — Economia Brasileira
 
 ### 1. O PIB é concentrado em poucos municípios
 

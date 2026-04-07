@@ -4,7 +4,7 @@
 
 Os dados do SINASC em `br_ms_sinasc.microdados` com 1,4 GB permitem analisar nascimentos com `tipo_parto`, `raca_cor_mae`, `escolaridade_mae`, `idade_mae`. O CAGED detalha mercado por gênero.
 
-## Dados Tabu — Gênero e Família
+## Revelações Importantes — Gênero e Família
 
 ### 1. Mães adolescentes: 143.583 crianças tendo filhos
 

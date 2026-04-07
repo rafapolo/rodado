@@ -4,7 +4,7 @@
 
 Os dados do ENEM em `br_inep_enem.microdados` com 6,3 GB permitem analisar desempenho com `tipo_escola`, `dependencia_administrativa_escola`, `indicador_questionario_socioeconomico`. O IDEB oferece proficiência municipal.
 
-## Dados Tabu — Educação no Brasil
+## Revelações Importantes — Educação no Brasil
 
 ### 1. A desigualdade escandalosa: privadas vs públicas
 

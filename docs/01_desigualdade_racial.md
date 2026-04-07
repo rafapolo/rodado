@@ -4,7 +4,7 @@
 
 Os dados da RAIS em `br_me_rais.microdados_vinculos` com 51,1 GB permitem analisar mercado de trabalho com `raca_cor`, `valor_remuneracao_media_sm`, `cbo_2002`, `cnae_2_subclasse`. O SIM em `br_ms_sim.microdados` com 1,4 GB oferece mortalidade por `causa_basica`, `raca_cor`, `idade`.
 
-## Dados Tabu — Desigualdade Racial
+## Revelações Importantes — Desigualdade Racial
 
 ### 1. Quem ganha acima do teto? (99 SM = +R$ 120 mil/mês)
 
