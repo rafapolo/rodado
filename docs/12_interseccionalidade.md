@@ -4,7 +4,7 @@
 
 A RAIS em `br_me_rais.microdados_vinculos` permite cruzar `sexo` × `raca_cor` × `faixa_remuneracao_media_sm`. O SINASC em `br_ms_sinasc.microdados` cruza saúde reprodutiva com raça.
 
-## Dados Tabu — Interseccionalidade
+## Revelações Importantes — Interseccionalidade
 
 ### 1. A mulher negra no topo da pirâmide de baixo
 

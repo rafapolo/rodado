@@ -4,7 +4,7 @@
 
 O SIM em `br_ms_sim.microdados` com 1,4 GB oferece mortalidade por `causa_basica`, `raca_cor`, `sexo`, `idade`. O ISP do RJ em `br_rj_isp_estatisticas_seguranca` detalha criminalidade.
 
-## Dados Tabu — Violência no Brasil
+## Revelações Importantes — Violência no Brasil
 
 ### 1. Mortes por armas de fogo: jovens de 15-29 anos (2021)
 

@@ -4,7 +4,7 @@
 
 O PRODES em `br_inpe_prodes.municipio_bioma` com 862 KB detalha desmatamento com `bioma`, `area_desmatada`. O SEEG em `br_seeg_emissoes` mede emissões de GEE. O CAR em `br_sfb_sicar.area_imovel` detalha propriedades rurais.
 
-## Dados Tabu — Meio Ambiente
+## Revelações Importantes — Meio Ambiente
 
 ### 1. Desmatamento: quem destrói mais?
 
