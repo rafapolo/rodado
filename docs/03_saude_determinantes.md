@@ -4,7 +4,7 @@
 
 Os dados do SINASC em `br_ms_sinasc.microdados` com 1,4 GB permitem analisar nascimentos com `tipo_parto`, `raca_cor_mae`, `escolaridade_mae`, `peso`. O SIM em `br_ms_sim.microdados` com 1,4 GB oferece mortalidade. O Bolsa Família em `br_cgu_beneficios_cidadao.bolsa_familia_pagamento` com 25,8 GB detalha transfers sociais.
 
-## Dados Tabu — Saúde no Brasil
+## Revelações Importantes — Saúde no Brasil
 
 ### 1. Cesariana: a vergonha nacional
 

@@ -4,7 +4,7 @@
 
 O SNIS em `br_mdr_snis.municipio_agua_esgoto` com 31,3 MB detalha saneamento. A ANATEL em `br_anatel_indice_brasileiro_conectividade.municipio` revela conectividade.
 
-## Dados Tabu — Infraestrutura
+## Revelações Importantes — Infraestrutura
 
 ### 1. Saneamento: a vergonha brasileira
 

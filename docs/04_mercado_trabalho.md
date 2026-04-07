@@ -4,7 +4,7 @@
 
 Os dados da RAIS em `br_me_rais.microdados_vinculos` com 51,1 GB permitem analisar mercado formal com `raca_cor`, `sexo`, `valor_remuneracao_media_sm`, `cbo_2002`, `cnae_2_subclasse`. O CAGED em `br_me_caged.microdados_movimentacao` com 1,5 GB detalha admissões/desligamentos.
 
-## Dados Tabu — Salários no Brasil
+## Revelações Importantes — Salários no Brasil
 
 ### 1. Banqueiros vs Professores: 10x de diferença
 
