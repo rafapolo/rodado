@@ -89,6 +89,7 @@ Sources from https://github.com/jxnxts/mcp-brasil not in `basedosdados.duckdb`.
 | Câmara | `camara` | none | `https://dadosabertos.camara.leg.br/api/v2` | JSON |
 | Senado | `senado` | none | `https://legis.senado.leg.br/dadosabertos` | JSON |
 | TSE | `tse` | none | `https://divulgacandcontas.tse.jus.br/divulga/rest/v1` | JSON |
+| Biblioteca de Anúncios Meta | `anuncios_eleitorais` | token | `https://graph.facebook.com/v21.0/ads_archive` | JSON |
 
 ### Justice
 
@@ -120,6 +121,7 @@ Sources from https://github.com/jxnxts/mcp-brasil not in `basedosdados.duckdb`.
 | Transparência | `transparencia` | api_key | `https://api.portaldatransparencia.gov.br/api-de-dados` | JSON |
 | TransfereGov | `transferegov` | none | `https://api.transferegov.gestao.gov.br` | JSON (PostgREST) |
 | Diário Oficial | `diario_oficial` | none | `https://queridodiario.ok.org.br/api/docs` | JSON |
+| TCU | `tcu` | none | `https://dadosabertos.apps.tcu.gov.br/api` | JSON |
 
 ### TCEs
 
@@ -142,6 +144,20 @@ Sources from https://github.com/jxnxts/mcp-brasil not in `basedosdados.duckdb`.
 |--------|------------|------|------------|--------|
 | INPE | `inpe` | none | `https://terrabrasilis.dpi.inpe.br/queimadas/bdqueimadas-data-service` | JSON |
 | Tabua Mares | `tabua_mares` | none | `https://tabuademares.com/api/v2` | JSON |
+| ANA | `ana` | none | `https://telemetriaws1.ana.gov.br/ServiceANA.asmx` | JSON/XML |
+
+### Compras Públicas
+
+| Source | mcp-brasil | Auth | Source URL | Format |
+|--------|------------|------|------------|--------|
+| PNCP + ComprasNet + Contratos.gov.br | `compras` | none | `https://pncp.gov.br/api/consulta/v1`, `https://dadosabertos.compras.gov.br`, `https://contratos.comprasnet.gov.br/api` | JSON |
+
+### Utilities
+
+| Source | mcp-brasil | Auth | Source URL | Format |
+|--------|------------|------|------------|--------|
+| BrasilAPI | `brasilapi` | none | `https://brasilapi.com.br/api` | JSON |
+| Dados Abertos (dados.gov.br) | `dados_abertos` | none | `https://dados.gov.br/api/3/action` | JSON (CKAN) |
 
 ## Basedosdados.org — Not in basedosdados.duckdb
 
@@ -279,3 +295,12 @@ These were listed in datasets_to_scrap but actually don't exist in `basedosdados
 | `br_bcb_sicor` | microdados_liberacao |
 | `br_bcb_sicor` | microdados_operacao |
 | `br_bcb_sicor` | microdados_saldo |
+
+## Pending Data Integrations
+
+| Task | Description | Source | Format |
+|------|-------------|--------|--------|
+| microdados_2022 | Adicionar microdados 2022 ao banco | IBGE | CSV/Parquet |
+| aglomerados_subnormais | Integrar shapefiles de aglomerados subnormais | IBGE/MUIC | Shapefile/GeoJSON |
+| areas_risco | Integrar dados de áreas de risco | ANA, CEMAVE, etc. | CSV/GeoJSON |
+| census_agropecuario | Adicionar Census Agropecuário (concentração fundiária) | IBGE | CSV/Parquet |
