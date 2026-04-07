@@ -4,7 +4,7 @@
 
 O Bolsa Família em `br_cgu_beneficios_cidadao.bolsa_familia_pagamento` com 25,8 GB detalha transferências com `valor_parcela`, `id_municipio`. O SICONFI em `br_me_siconfi` revela execução orçamentária.
 
-## Dados Tabu — Transferências Sociais
+## Revelações Importantes — Transferências Sociais
 
 ### 1. Bolsa Família: quanto chega nos pobres?
 
