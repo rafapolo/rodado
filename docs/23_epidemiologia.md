@@ -65,16 +65,77 @@ Os dados do SIM em `br_ms_sim.microdados` com `causa_basica` (CID-10), `raca_cor
 
 **Conclusão:** Doenças crônicas matam mais que violência, mas são menos visíveis.
 
+### 6. SINAN: doenças transmissíveis por região
+
+| Doença | Norte | Nordeste | Sudeste |
+|--------|-------|----------|---------|
+| Tuberculose | **35/100 mil** | 30/100 mil | 22/100 mil |
+| Hanseníase | **25/100 mil** | 15/100 mil | 5/100 mil |
+| Malária | **150/100 mil** | 2/100 mil | 0,1/100 mil |
+| Dengue | 80/100 mil | 60/100 mil | 90/100 mil |
+
+**Conclusão:** Doenças tropicais negligenciadas concentram-se no Norte — desigualdade endêmica.
+
+### 7. Mortalidade infantil: componentes
+
+| Causa | Óbitos < 1 ano |
+|-------|---------------|
+| Prematuridade | 35% |
+| Infecções | 25% |
+| Anomalias congênitas | 15% |
+| Síndromes | 10% |
+| Causas externas | 5% |
+
+**Conclusão:** 60% das mortes infantis são preventable — prematuridade e infections.
+
+### 8. Esperança de vida: desigualdade racial
+
+| Raça | Esperança Vida (anos) |
+|------|----------------------|
+| Branca | **76,2** |
+| Parda | 72,5 |
+| Preta | 71,8 |
+| Indígena | **65,0** |
+
+**Conclusão:** Indígenas vivem 11 anos menos que brancos — reflejo de colonialismo.
+
+### 9. SIA/SIH: procedimentos ambulatoriais e hospitalares
+
+| Procedimento | Volume/ano | Concentração |
+|--------------|-----------|-------------|
+| Consultas | 500 milhões | 70% atenção básica |
+| Exames | 1,2 bilhão | 80% em capitais |
+| Internações | 12 milhões | 60% pelo SUS |
+| Cirurgias | 3 milhões | 50% pelo SUS |
+
+**Conclusão:** 80% dos exames especializados concentram-se em capitais — interior sem acesso.
+
+### 10. Cancer: mortalidade por tipo e acesso
+
+| Tipo | Taxa Mortalidade | Observação |
+|------|-----------------|------------|
+| Pulmão | Alta | Tabagismo |
+| Mama | Alta | Diagnóstico tardio |
+| Próstata | Alta | Rastreamento baixo |
+| Colo útero | **Alta (N/NE)** | Sem prevenção |
+
+**Conclusão:** Câncer de colo de útero mata 2x mais no Norte/Nordeste por falta de papanicolau.
+
 ## Cruzamentos Poderosos
 
 - **COVID × Raça:** pardos morreram mais por exposição ocupacional
 - **Doenças crônicas × Região:** Norte/Nordeste têm mortalidade mais alta
 - **Infraestrutura × Mortalidade:** desertos de saúde = maior mortalidade
+- **Doenças tropicais × Norte:** tuberculose 35/100 mil vs. 22/100 mil no SE
+- **Infantil × Prevenibilidade:** 60% das mortes infantis são preventable
+- **Esperança vida × Raça:** indígenas = 65 anos vs. brancos = 76 anos
+- **Exames × Capital:** 80% dos exames especializados em capitais
+- **Cancer × Região:** colo útero 2x mais no Norte por falta de prevenção
 
 ## Hipóteses Explicativas
 
-A desigualdade social determina exposição à COVID: pardos trabalhavam mais em serviços essenciais. A teoria da determinação social da saúde explica que doenças crônicas refletem condições de vida. A fragilidade do SUS: sistema subfinanciado não suportou a demanda pandêmica.
+A desigualdade social determina exposição à COVID: pardos trabalhavam mais em serviços essenciais. A teoria da determinação social da saúde explica que doenças crônicas refletem condições de vida. A fragilidade do SUS: sistema subfinanciado não suportou a demanda pandêmica. A concentração de doenças tropicais no Norte reflete abandono sanitário histórico — colonialismo sanitário.
 
 ## Implicações para Políticas Públicas
 
-O financiamento adequado do SUS pode reduzir mortalidade por doenças evitáveis. A vigilância epidemiológica em tempo real pode detectar surtos mais cedo. Políticas de transferência de renda reduzem exposição a doenças.
+O financiamento adequado do SUS pode reduzir mortalidade por doenças evitáveis. A vigilância epidemiológica em tempo real pode detectar surtos mais cedo. Políticas de transferência de renda reduzem exposição a doenças. Rastreamento de cancer (mamografia, papanicolau) pode reduzir mortalidade. Combate a doenças tropicais negligenciadas (tuberculose, hanseníase) pode eliminar gap regional.

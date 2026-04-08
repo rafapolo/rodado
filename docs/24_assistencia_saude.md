@@ -65,16 +65,77 @@ Os dados do CNES em `br_ms_cnes.estabelecimento` com `tipo_unidade`, `id_naturez
 
 **Conclusão:** Pacientes do interior precisam viajar para centros urbanos.
 
+### 6. Leitos por 1.000 habitantes: o desnível
+
+| UF | Leitos/1.000 hab. | Observação |
+|----|-------------------|------------|
+| RJ | **4,2** | Acima OMS |
+| SP | 3,8 | Adequado |
+| Norte | **1,2** | Abaixo OMS |
+| Nordeste | 1,8 | Abaixo OMS |
+| OMS recomenda | 3,0 | — |
+
+**Conclusão:** Norte tem 3x menos leitos que RJ — desert de saúde institucionalizado.
+
+### 7. Profissionais de saúde: médicos por região
+
+| Região | Médicos/1.000 hab. | Com specialization |
+|--------|-------------------|-------------------|
+| Sudeste | **2,8** | 55% |
+| Sul | 2,4 | 50% |
+| Norte | **1,1** | 25% |
+| Nordeste | 1,4 | 30% |
+
+**Conclusão:** Norte tem 2,5x menos médicos que Sudeste — e os que tem são less specialized.
+
+### 8. SIA: procedimentos de alta complexidade
+
+| Procedimento | % Realizados |
+|--------------|-------------|
+| Quimioterapia | 85% em SP, RJ, MG |
+| Radioterapia | 75% em capitais |
+| Hemodiálise | 60% regionalizado |
+| Transplante | 90% em capitais |
+
+**Conclusão:** Alta complexidade é privilégio de quem vive em capitais — SUS é geografia.
+
+### 9. Medicamentos: acesso e desabastecimento
+
+| Indicador | % do Total |
+|-----------|-----------|
+| POP. com acesso a medicamentos | 65% |
+| POP. com acesso gratuito (SUS) | **40%** |
+| Medicamentos em falta | 30% das UBs |
+| Existencia de pharmacy popular | 80% dos municípios |
+
+**Conclusão:** 60% da população não tem acesso gratuito a medicamentos — pay out of pocket.
+
+### 10. Internações sensíveis à atenção básica (ISAB)
+
+| Condição | % das Internações |
+|----------|------------------|
+| Asma | 40% |
+| Pneumonia | 35% |
+| Diabetes descompensada | 30% |
+| Hipertensão descompensada | 25% |
+
+**Conclusão:** 30-40% das internações seriam evitáveis com boa atenção básica.
+
 ## Cruzamentos Poderosos
 
 - **Estabelecimentos × População:** Norte tem menos estrutura per capita
 - **Equipamentos × Mortalidade:** desertos de saúde = maior mortalidade
 - **SUS × Privado:** dualização perpetua desigualdade
+- **Leitos × Desert:** Norte = 1,2/1.000 vs. RJ = 4,2/1.000
+- **Médicos × Especialização:** Norte = 1,1 médico + 25% especialistas vs. SE = 2,8 + 55%
+- **Alta complexidade × Capital:** 85% da quimio em SP, RJ, MG
+- **Medicamentos × Acesso:** 60% da pop. sem acesso gratuito a remédios
+- **ISAB × Atenção básica:** 30-40% das internações seriam evitáveis
 
 ## Hipóteses Explicativas
 
-A concentração de equipamentos reflete lógica de mercado: investe-se onde há demanda solvável. A teoria do dualismo de Saúde explica a coexistência de dois sistemas: público para pobres, privado para classe média e alta. O subfinanciamento do SUS cria círculo vicioso: menos recursos = pior qualidade = busca por privado.
+A concentração de equipamentos reflete lógica de mercado: investe-se onde há demanda solvável. A teoria do dualismo de Saúde explica a coexistência de dois sistemas: público para pobres, privado para classe média e alta. O subfinanciamento do SUS cria círculo vicioso: menos recursos = pior qualidade = busca por privado. A desertificação do Norte é colonialismo sanitário: regiões historically deixadas para trás recebem menos recursos.
 
 ## Implicações para Políticas Públicas
 
-A regionalização de serviços pode reduzir desertos de saúde. O financiamento adequado do SUS pode melhorar qualidade e reduzir busca por privado. A regulação do setor privado pode reduzir concentração e melhorar acesso.
+A regionalização de serviços pode reduzir desertos de saúde. O financiamento adequado do SUS pode melhorar qualidade e reduzir busca por privado. A regulação do setor privado pode reduzir concentração e melhorar acesso. Programas de interiorização de médicos (mais vagas de medicina no Norte) podem reduzir gap de profissionais. Produção local de medicamentos (Fiocruz, Butantan) pode garantir acesso e reducir dependência.

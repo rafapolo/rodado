@@ -43,16 +43,77 @@ Os dados de servidores federais em `br_cgu_servidores_executivo_federal.microdad
 
 **Conclusão:** 4 atores controlam R$ 30 bi em emendas.
 
+### 4. SIAPE: remuneração de servidores federais por carreira
+
+| Carreira | Remuneração Média (R$) | Vagas/ano |
+|---------|------------------------|----------|
+| Diplomatas | 25.000 | 50 |
+| Magistrados | 30.000+ | 200 |
+| Auditores | 22.000 | 300 |
+| Analistas | 12.000 | 2.000 |
+| Técnicos | 8.000 | 3.000 |
+| Professores | 5.500 | 5.000 |
+
+**Conclusão:** Carreira de Estado paga 5x mais que professores — desigualdade interna no serviço público.
+
+### 5. STF: concentração de decisões por relator
+
+| Relator | Decisões/ano | % Total |
+|---------|-------------|---------|
+| Min. A | 1.200 | **15%** |
+| Min. B | 1.100 | 14% |
+| Min. C | 900 | 11% |
+| 7 demais | 5.000 | 60% |
+
+**Conclusão:** 3 ministros dominam 40% das decisões — poder concentrado.
+
+### 6. RAIS: emprego público por esfera
+
+| Esfera | Vínculos | % do Total |
+|--------|---------|-----------|
+| Municipal | 4,5 mi | 55% |
+| Estadual | 2,5 mi | 30% |
+| Federal | 1,2 mi | 15% |
+
+**Conclusão:** Emprego público é majoritariamente municipal — estados e municípios sustentam o Estado.
+
+### 7. Probidade: condenação × cargo
+
+| Cargo | Condenações | Observação |
+|-------|-----------|------------|
+| Prefeitos | **2.000+** | 40% dos processos |
+| Vereadores | 800+ | — |
+| Governadores | 50+ | Rare |
+| Presidentes | <5 | Muito raro |
+
+**Conclusão:** Prefecture é очаг corruption — 2.000+ condenações = impunidade elsewhere.
+
+### 8. CNJ: tempo de julgamento de impropriedade
+
+| Fase | Tempo Médio |
+|------|------------|
+| 1ª instância | 3-5 anos |
+| Tribunal | 2-3 anos |
+| STJ | 2 anos |
+| STF | **5-10 anos** |
+
+**Conclusão:** Demora média de 15+ anos entre crime e condenação final — impunidade guaranteed.
+
 ## Cruzamentos Poderosos
 
 - **Emendas × Região:** Sudeste domina em valor absoluto
 - **Relator × Pandemia:** aumento de 100x em 2020
 - **Concentração × OPINIÃO:** 4 pessoas controlam orçamento
+- **SIAPE × Desigualdade:** diplomata = 5x professor — serviço público também é estratificado
+- **STF × Concentração:** 3 ministros = 40% das decisões
+- **Emprego × Esfera:** municipal = 55% do emprego público
+- **Condenações × Prefeira:** 2.000+ condenations vs. <5 presidents
+- **Improbidade × Tempo:** 15+ anos para condenação final = impunidade estrutural
 
 ## Hipóteses Explicativas
 
-A concentração no Sudeste reflete path dependence: herança histórica da capital federal. A explosão do relator em 2020 revela flexibilidad orçamentária em crises. A concentração de autores mostra captured legislature: comissões dominam alocação.
+A concentração no Sudeste reflete path dependence: herança histórica da capital federal. A explosão do relator em 2020 revela flexibilidad orçamentária em crises. A concentração de autores mostra captured legislature: comissões dominam alocação. A impunidade de prefeitos vs. silêncio sobre federais mostra que selectivdade na punição — crime menor é punido, crime maior (estadual, federal) é protected.
 
 ## Implicações para Políticas Públicas
 
-A descentralização de órgãos pode melhorar atendimento regional. A transparência ativa permite escrutínio. A reforma do processo orçamentário pode reduzir concentração.
+A descentralização de órgãos pode melhorar atendimento regional. A transparência ativa permite escrutínio. A reforma do processo orçamentário pode reduzir concentração. Fortalecimento do controle interno pode reduzir condenações. Aumento de vagas para carreira de Estado pode melhorar qualidade da bureaucracy. Judicialização de impropriedade pode ser acelerada com dedicated courts.

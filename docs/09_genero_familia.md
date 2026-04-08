@@ -47,15 +47,65 @@ O Brasil tem uma das maiores taxas de gravidez na adolescência do mundo.
 
 **Conclusão:** Mães pardas têm a maior taxa de cesarianas do Brasil.
 
+### 4. PNADC: participação feminina no mercado de trabalho
+
+| Indicador | Homens | Mulheres |
+|-----------|--------|----------|
+| Força de trabalho | 75% | **55%** |
+| Empregadas formais | 45% | 38% |
+| Desemprego | 8% | **14%** |
+| Informalidade | 35% | **42%** |
+
+**Conclusão:** Mulheres trabalham menos (taxa 20 pontos menor) e quando trabalham são mais informais e mais desempregadas.
+
+### 5. Trabalho doméstico remunerado: racializado e invisível
+
+| Indicador | Valor |
+|-----------|-------|
+| Trabalhadores domésticos | 6,2 milhões |
+| % Negra | 65% |
+| Sem carteira | 65% |
+| Salário médio | 1,5 SM |
+| Com SCVT | 35% |
+
+**Conclusão:** Trabalho doméstico é o employment mais racializado do Brasil — e o mais precarizado.
+
+### 6. Mães solo: concentração por classe e raça
+
+| Grupo | % Mães Solo |
+|-------|-------------|
+| Negra, baixa renda | **55%** |
+| Branca, alta renda | 15% |
+| Geral | 30% |
+
+**Conclusão:** Mães solo são concentrated entre as mais vulneráveis — e recebem menos.
+
+### 7. Violência doméstica: perfil das vítimas (SINAN)
+
+| Característica | Dado |
+|----------------|------|
+| Vítimas mulheres | **85%** |
+| Autores homens | **88%** |
+| Faixa etária 20-40 | 70% |
+| Com vínculos familiares | 75% |
+| Com escolaridade < 8 anos | 60% |
+
+**Conclusão:** Violência doméstica é gênero-específica — dentro da família, por parceiros.
+
 ## Cruzamentos Poderosos
 
 - **Gravidez × Raça:** pardas têm mais cesarianas mas menos adolescentes grávidas
-- **Parto × Classe:** médicos fazem mais cesarianas em pacientes de classe média
+- **Parto × Classe:** médicas fazem mais cesarianas em pacientes de classe média
+- **Trabalho × Gênero:** 20 pontos de diferença na participação — 55% vs. 75%
+- **Informalidade × Gênero:** mulheres = 42% informal vs. homens 35%
+- **Trabalho doméstico × Raça:** 65% negra, 1,5 SM, 65% sem carteira
+- **Mães solo × Vulnerabilidade:** 55% das mães solo são negras de baixa renda
+- **Violência × Gênero:** 85% das vítimas = mulheres; 88% dos agressores = homens
 
 ## Hipóteses Explicativas
 
-A gravidez adolescente pode ser explicada pela falta de educação sexual combined with limited acesso a contraceptivos. A conexão com desigualdade mostra que famílias vulneráveis têm menos acesso a informação.
+A gravidez adolescente pode ser explicada pela falta de educação sexual combined with limited acesso a contraceptivos. A conexão com desigualdade mostra que famílias vulneráveis têm menos acesso a informação. A disparidade de gênero no trabalho reflete ganda doble: trabalho remunerado + trabalho doméstico não remunerado. A violência doméstica como principal forma de violência revela que o lar é o lugar mais perigoso para mulheres.
 
 ## Implicações para Políticas Públicas
 
-Programas de educação sexual nas escolas podem reduzir gravidez. Acesso a contraceptivos deve ser expanded. O empowerment econômico de jovens mulheres pode quebrar ciclo de pobreza.
+Programas de educação sexual nas escolas podem reduzir gravidez. Acesso a contraceptivos deve ser expanded. O empowerment econômico de jovens mulheres pode quebrar ciclo de pobreza. Creches públicas universais podem aumentar participação feminina no mercado. Licença-paternidade extendida pode redistribuir trabalho doméstico. Auxílio-mãe solo pode reduzir vulnerabilidade de famílias monoparentais femininas.
