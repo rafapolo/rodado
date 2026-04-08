@@ -69,16 +69,74 @@ Os dados do Tesouro em `br_stn_tesouro_orcamento.despesa_ug` com execução orç
 
 **Conclusão:** IRPJ (empresa) é 3-5x maior que IRPF (trabalhador).
 
+### 6. Restos a pagar: a dívida oculta do governo
+
+| Ano | Valor Inscrito (R$ bi) | Valor Cancelado (R$ bi) |
+|-----|----------------------|------------------------|
+| 2019 | R$ 86 bi | R$ 12 bi |
+| 2020 | R$ 290 bi | R$ 8 bi |
+| 2021 | R$ 180 bi | R$ 15 bi |
+| 2022 | R$ 120 bi | R$ 10 bi |
+
+**Conclusão:** R$ 12-15 bi em restos a pagar são cancelados por ano — dinheiro perdido.
+
+### 7. Despesa discricionária: o que é cortado
+
+| Função | Dotação | Executado |
+|--------|---------|----------|
+| Educação | R$ 120 bi | 85% |
+| Saúde | R$ 140 bi | 90% |
+| Ciência | R$ 15 bi | **65%** |
+| Meio Ambiente | R$ 8 bi | **55%** |
+
+**Conclusão:** Educação e saúde são protegidas; ciência e meio ambiente são os primeiros cortada.
+
+### 8. Dívida pública: serviço da dívida
+
+| Indicador | Valor/ano |
+|-----------|----------|
+| Juros e encargos | R$ 700 bi |
+| Bolsa Família | R$ 35 bi |
+| Servicio da dívida | **20x BF** |
+
+**Conclusão:** Brasil paga 20x mais juros que gasta com Bolsa Família — orçamento militarizado.
+
+### 9. Carga tributária: composição
+
+| Tipo | % Total |
+|------|---------|
+| Indirectos (ICMS, IPI) | **55%** |
+| Diretos (IR, CSLL) | 35% |
+| Impostos patrimoniais | **<5%** |
+| Taxas | 5% |
+
+**Conclusão:** 55% dos impostos são indiretos — pago pelo pobre proporcionalmente mais.
+
+### 10. Lisurgical: o orçamento secreto
+
+| Indicador | Valor |
+|-----------|-------|
+| Emendas secreto (2020-2022) | R$ 40 bi |
+| Destinatários | Omissos |
+| Fiscalização | Impossível |
+
+**Conclusão:** R$ 40 bi em emendas sem identificação de destinatários — opacidade total.
+
 ## Cruzamentos Poderosos
 
 - **Execução × Emendas:** 50% do orçamento não vira despesa real
 - **Relator × Concentração:** 1 relator = R$ 8,6 bi
 - **Tributação × Desigualdade:** empresas pagam 3-5x menos que trabalhadores
+- **Restos a pagar × Cancelamento:** R$ 12-15 bi cancelados/ano = dinheiro perdido
+- **Discricionária × Corte:** ciência = 65% executado, meio ambiente = 55%
+- **Juros × BF:** R$ 700 bi em juros vs. R$ 35 bi em BF
+- **Tributação × Regressividade:** 55% impostos indiretos
+- **Orçamento secreto × Opacidade:** R$ 40 bi sem identificação
 
 ## Hipóteses Explicativas
 
-A baixa execução pode ser explicada pela hipótese do orçamento como moeda de troca: gestores "empenham" para mostrar ação política sem compromisso real. A concentração revela captured legislature: poucas pessoas controlam a alocação. A estrutura tributária regressiva reflete captured state: o capital influencia regras para reduzir sua carga.
+A baixa execução pode ser explicada pela hipótese do orçamento como moeda de troca: gestores "empenham" para mostrar ação política sem compromisso real. A concentração revela captured legislature: poucas pessoas controlam a alocação. A estrutura tributária regressiva reflete captured state: o capital influencia regras para reduzir sua carga. O orçamento secreto é a forma ultimate de captured democracy: dinheiro público sem accountability.
 
 ## Implicações para Políticas Públicas
 
-A transparência ativa permite escrutínio cidadão. A vinculação de emendas a execução pode melhorar entrega. A progressividade tributária pode corrigir a distorção.
+A transparência ativa permite escrutínio cidadão. A vinculação de emendas a execução pode melhorar entrega. A progressividade tributária pode corrigir a distorção. Abolição do orçamento secreto pode restaurar accountability. Redução da dívida pública pode liberar R$ 700 bi para políticas sociais. Reinvestimento em ciência e meio ambiente pode restaurar capacidades estatais.

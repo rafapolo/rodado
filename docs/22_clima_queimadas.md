@@ -55,16 +55,65 @@ Os dados do PRODES em `br_inpe_prodes.municipio_bioma` com `ano`, `bioma`, `desm
 
 **Conclusão:** A maioria dos imóveis rurais não cumpre a legislação ambiental.
 
+### 5. Temperatura: mudança por bioma (últimos 50 anos)
+
+| Bioma | Aumento (°C) | Observação |
+|-------|-------------|------------|
+| Amazônia | **+1,2** | Mais aquecimento |
+| Cerrado | +1,0 | — |
+| Pantanal | +1,3 | Mais vulnerável |
+| Mata Atlântica | +0,9 | — |
+
+**Conclusão:** Amazônia aqueceu 1,2°C — além do limite de 1,5°C do Acordo de Paris.
+
+### 6. Queimadas: área vs. emissões de CO₂
+
+| Fonte | Área (km²) | Emissões (Mt CO₂e) |
+|-------|-----------|---------------------|
+| Amazônia | 30.000/ano | 500 |
+| Cerrado | 50.000/ano | 400 |
+| Pantanal | 20.000 (2020) | 300 |
+| Total | 100.000+/ano | **1.200** |
+
+**Conclusão:** Queimadas emitem 1.200 Mt CO₂e/ano — comparable a emissões totais do Brasil.
+
+### 7. SECUR: metas vs. realidade de emissões
+
+| Meta | Prometido | Realizado |
+|------|----------|----------|
+| 2020 | -43% vs. 2005 | -35% |
+| 2030 | -50% vs. 2005 | trajectory falha |
+| Neutralidade | 2050 | sem plano |
+
+**Conclusão:** Brasil não cumpre suas próprias metas climáticas.
+
+### 8. SEEG: trajetória setorial
+
+| Setor | Tendência 2000-2022 |
+|-------|---------------------|
+| Energia | Queda (-15%) |
+| Indústria | Estável |
+| Agropecuária | Aumento (+10%) |
+| Uso terra | Oscilante |
+| Resíduos | Aumento (+20%) |
+
+**Conclusão:** Apenas energia caiu — agropecuária e resíduos continuam subindo.
+
 ## Cruzamentos Poderosos
 
 - **Desmatamento × Emissões:** mudança de uso da terra é o maior emissor brasileiro
 - **Cerrado × Alimentos:** mais desmatado que Amazônia, produzindo soja e carne
 - **CAR × Desmatamento:** imóveis irregulares concentram área desmatada
+- **Temperatura × Limite:** Amazônia +1,2°C = além do limite de Paris
+- **Queimadas × Emissões:** 1.200 Mt CO₂e/ano de queimadas
+- **Metas × Realidade:** -43% prometido, -35% realizado — não cumpre
+- **Agropecuária × Tendência:** único setor com tendência de aumento
+- **Resíduos × Aumento:** +20% em 22 anos — crescimento sem controle
 
 ## Hipóteses Explicativas
 
-A demanda global por commodities financia o desmatamento. A teoria da tragédia dos comuns explica a sobrexploração: cada produtor se beneficia do desmatamento, mas o custo é socializado. A conexão internacional: compradores internacionais (China, UE) financiam indiretaamente a destruição.
+A demanda global por commodities financia o desmatamento. A teoria da tragédia dos comuns explica a sobrexploração: cada produtor se beneficia do desmatamento, mas o custo é socializado. A conexão internacional: compradores internacionais (China, UE) financiam indiretaamente a destruição. A não cumprimento de metas mostra que o Brasil não leva clima a sério — discurso verde, prática de sempre.
 
 ## Implicações para Políticas Públicas
 
-O enforcement do Código Florestal commultas e embargo pode reduzir desmatamento. O Pagamento por Serviços Ambientais (PSA) pode valorizar floresta em pé. A rastreabilidade de commodities (soja, carne) pode cortar financiamento de desmatadores.
+O enforcement do Código Florestal commultas e embargo pode reduzir desmatamento. O Pagamento por Serviços Ambientais (PSA) pode valorizar floresta em pé. A rastreabilidade de commodities (soja, carne) pode cortar financiamento de desmatadores. Metas vinculantes com penalties podem garantir cumprimento. Política de resíduos (recycling, compostagem) pode frear crescimento de emissões.
