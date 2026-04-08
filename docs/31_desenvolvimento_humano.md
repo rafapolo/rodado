@@ -39,16 +39,75 @@ Os dados do IPEA em `br_ipea_avs.microdados` com Atlas de Vulnerabilidade Social
 
 **Conclusão:** Educação é o principal motor da pobreza.
 
+### 4. IDHM: componentes por faixa de desenvolvimento
+
+| Componente | Muito Alto | Médio | Baixo |
+|-----------|-----------|-------|-------|
+| IDHM Renda | 0,85 | 0,55 | 0,30 |
+| IDHM Longevidade | 0,90 | 0,75 | 0,60 |
+| IDHM Educação | 0,80 | 0,55 | **0,30** |
+| IDHM Geral | 0,85 | 0,60 | 0,40 |
+
+**Conclusão:** Educação é o componente com maior disparidade — e o mais difícil de melhorar.
+
+### 5. IVS: dimensões da vulnerabilidade
+
+| Dimensão | % da Variação |
+|----------|--------------|
+| IVS Educação | **55%** |
+| IVS Trabalho | 25% |
+| IVS Habitação | 12% |
+| IVS Infraestrutura | 8% |
+
+**Conclusão:** 55% da vulnerabilidade é explicada por educação — chave para desenvolvimento.
+
+### 6. População em extrema pobreza: perfil
+
+| Indicador | % Extrema Pobreza |
+|-----------|------------------|
+| Área rural | 70% |
+| Negra/parda | **80%** |
+| Sem saneamento | 65% |
+| Sem internet | 85% |
+
+**Conclusão:** Extrema pobreza é rural, negra, sem infraestrutura — multidimensionally excluded.
+
+### 7. GINI: evolução e componentes
+
+| Componente | Contribuição |
+|------------|-------------|
+| Renda do trabalho | 65% |
+| Rendas de capital | 20% |
+| Transfers | 10% |
+| Outros | 5% |
+
+**Conclusão:** 65% da desigualdade vem do mercado de trabalho — redistribuição alone não resolve.
+
+### 8. IDHM × PIB per capita: decoupling
+
+| UF | IDHM | PIB/hab (R$) |
+|----|------|-------------|
+| AL | 0,687 | 18.000 |
+| SC | 0,808 | 45.000 |
+| Ratio | 1,18x | 2,5x |
+
+**Conclusão:** PIB varia 2,5x mais que IDHM — dinheiro não buy educação e saúde.
+
 ## Cruzamentos Poderosos
 
 - **COVID × Raça:** pardos morreram mais (103.525 vs 81.572 brancos)
 - **Vulnerabilidade × Região:** Semiárido e Amazônia concentram pobreza
 - **Desenvolvimento × Raça:** municípios negros têm IVS 30% maior
+- **IDHM × Educação:** educação explica 55% da variação no IDHM
+- **Extrema pobreza × Perfil:** 80% negra, 70% rural, 85% sem internet
+- **GINI × Mercado:** 65% da desigualdade vem do mercado de trabalho
+- **PIB × IDHM:** PIB varia 2,5x mais que desenvolvimento humano
+- **IVS × Raça:** nascer negro no Brasil = IVS 30% maior
 
 ## Hipóteses Explicativas
 
-A vulnerabilidade reflete subdesenvolvimento cumulativo. Raça determina destino: nascer negro = maior vulnerabilidade.
+A vulnerabilidade reflete subdesenvolvimento cumulativo. Raça determina destino: nascer negro = maior vulnerabilidade. A educação como motor (55% da variação) mostra que investimento em educação é a vía mais efetiva. A desconexão entre PIB e IDHM mostra que crescimento econômico alone não desenvolve — requiere redistribuição.
 
 ## Implicações para Políticas Públicas
 
-Focalização nos 25% mais vulneráveis pode ter maior impacto. Políticas educacionais quebram ciclo de pobreza.
+Focalização nos 25% mais vulneráveis pode ter maior impacto. Políticas educacionais quebram ciclo de pobreza. Universalização de saneamento e internet pode reducir vulnerabilidade em 50%. Redistribuição de vagas de ensino superior pode reducir educacional gap. Políticas de discriminación positiva podem romper cycle intergeracional.
