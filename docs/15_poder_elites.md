@@ -4,7 +4,7 @@
 
 A Câmara em `br_camara_dados_abertos.deputado` com 7.880 deputados revela perfil. O TSE em `br_tse_eleicoes.candidatos` mostra 26.289 candidatos.
 
-## Dados Tabu — Poder
+## Revelações Importantes — Poder
 
 ### 1. A elite que governa: 4,4% são mulheres
 

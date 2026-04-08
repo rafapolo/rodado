@@ -4,7 +4,7 @@
 
 O CAR em `br_sfb_sicar.area_imovel` com 3,5 GB detalha propriedades rurais. O SICOR em `br_bcb_sicor.operacao` revela crédito rural.
 
-## Dados Tabu — Agro
+## Revelações Importantes — Agro
 
 ### 1. Concentração fundiária: a mais desigual do mundo
 

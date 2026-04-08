@@ -4,7 +4,7 @@
 
 O IPCA em `br_ibge_ipca.mes_categoria_municipio` com 49.356 registros detalha inflação por categoria. A ANP em `br_anp_precos_combustiveis.microdados` revela preços de combustíveis.
 
-## Dados Tabu — Consumo
+## Revelações Importantes — Consumo
 
 ### 1. Inflação: pobre paga mais
 
