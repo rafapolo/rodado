@@ -4,7 +4,7 @@
 
 O COMEX em `br_me_comex_stat.ncm_8` detalha exportação. O TRASE rastreia cadeias de soja e carne.
 
-## Dados Tabu — Comércio Exterior
+## Revelações Importantes — Comércio Exterior
 
 ### 1. Dependência de commodities
 
