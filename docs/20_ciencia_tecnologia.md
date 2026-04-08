@@ -4,7 +4,7 @@
 
 O CNPq em `br_cnpq_bolsas.microdados` com 227.257 bolsas detalha CT&I. O PISA avalia desempenho educacional.
 
-## Dados Tabu — Ciência e Tecnologia
+## Revelações Importantes — Ciência e Tecnologia
 
 ### 1. O Brasil no PISA: sempre no fundo
 

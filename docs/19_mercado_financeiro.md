@@ -4,7 +4,7 @@
 
 O CNPq em `br_cnpq_bolsas.microdados` com 227.257 bolsas detalha investimento em ciência. O IBC em `br_anatel_indice_brasileiro_conectividade.municipio` revela conectividade.
 
-## Dados Tabu — Mercado Financeiro
+## Revelações Importantes — Mercado Financeiro
 
 ### 1. Bolsas de estudo: quanto investimos?
 

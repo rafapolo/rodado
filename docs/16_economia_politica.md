@@ -4,7 +4,7 @@
 
 A Receita Federal em `br_rf_arrecadacao.uf` com 1,7 MB detalha arrecadação com `irpf`, `irpj`, `cofins`, `pis`. O SICONFI revela execução orçamentária.
 
-## Dados Tabu — Economia Política
+## Revelações Importantes — Economia Política
 
 ### 1. Quem paga imposto? Trabalhadores, não empresas
 
