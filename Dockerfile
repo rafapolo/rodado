@@ -13,16 +13,25 @@ RUN apt-get update -qq && \
     rm /tmp/libduckdb.zip && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /build
+WORKDIR /build/ask
 COPY ask/Cargo.toml ask/Cargo.lock ./
 COPY ask/src ./src
 
 RUN rustup target add x86_64-unknown-linux-musl && \
-    mkdir -p /build/.cargo && \
-    printf '[target.x86_64-unknown-linux-musl]\nlinker = "gcc"\n' > /build/.cargo/config.toml && \
-    printf 'rustflags = ["-L", "/usr/local/lib", "-C", "target-feature=+crt-static"]\n' >> /build/.cargo/config.toml && \
+    mkdir -p /build/ask/.cargo && \
+    printf '[target.x86_64-unknown-linux-musl]\nlinker = "gcc"\n' > /build/ask/.cargo/config.toml && \
+    printf 'rustflags = ["-L", "/usr/local/lib", "-C", "target-feature=+crt-static"]\n' >> /build/ask/.cargo/config.toml && \
     sed -i 's/features = \["bundled"\]/default-features = false/' Cargo.toml && \
     rm -f Cargo.lock && \
+    cargo build --release --target x86_64-unknown-linux-musl
+
+WORKDIR /build/dbquery
+COPY dbquery/Cargo.toml dbquery/Cargo.lock* ./
+COPY dbquery/src ./src
+
+RUN mkdir -p /build/dbquery/.cargo && \
+    printf '[target.x86_64-unknown-linux-musl]\nlinker = "gcc"\n' > /build/dbquery/.cargo/config.toml && \
+    printf 'rustflags = ["-C", "target-feature=+crt-static"]\n' >> /build/dbquery/.cargo/config.toml && \
     cargo build --release --target x86_64-unknown-linux-musl
 
 FROM --platform=linux/amd64 debian:12-slim
@@ -54,7 +63,8 @@ RUN apt-get update -qq && \
 
 WORKDIR /app
 
-COPY --from=builder /build/target/x86_64-unknown-linux-musl/release/ask ./ask
+COPY --from=builder /build/ask/target/x86_64-unknown-linux-musl/release/ask ./ask
+COPY --from=builder /build/dbquery/target/x86_64-unknown-linux-musl/release/dbquery ./dbquery
 COPY ask/system_prompt.md ./system_prompt.md
 COPY data/basedosdados.duckdb ./data/
 COPY context ./context/
@@ -62,7 +72,7 @@ COPY auth.py ./
 COPY start.sh ./
 COPY Caddyfile ./
 
-RUN chmod +x start.sh ask
+RUN chmod +x start.sh ask dbquery
 
 EXPOSE 8080
 

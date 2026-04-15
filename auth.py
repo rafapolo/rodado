@@ -1,10 +1,32 @@
 #!/usr/bin/env python3
 """Minimal cookie-session auth gate for DuckDB shell."""
-import hmac, hashlib, os, secrets, subprocess, time
+import hmac, hashlib, json, os, secrets, subprocess, time
 from http.server import HTTPServer, BaseHTTPRequestHandler
+from socketserver import ThreadingMixIn
 from urllib.parse import parse_qs
 
 PASSWORD = os.environ.get('BASIC_AUTH_PASSWORD', '').encode()
+
+_INIT_SQL = None
+
+def _run_query(sql, json_mode=True):
+    global _INIT_SQL
+    if _INIT_SQL is None:
+        with open('/app/ssh_init.sql') as f:
+            _INIT_SQL = f.read()
+    if json_mode:
+        sql = '.mode json\n' + sql
+    try:
+        r = subprocess.run(
+            ['duckdb', '-readonly', '/app/data/basedosdados.duckdb'],
+            input=_INIT_SQL + '\n' + sql, capture_output=True, text=True, timeout=120
+        )
+        if r.stdout.strip().startswith('['):
+            return r.stdout.encode()
+        err = (r.stderr or r.stdout or 'unknown DuckDB error').strip()
+        return json.dumps({'error': err}).encode()
+    except subprocess.TimeoutExpired:
+        return json.dumps({'error': 'query timed out after 120s'}).encode()
 _SECRET  = secrets.token_bytes(32)
 
 def _make_token():
@@ -51,6 +73,18 @@ class H(BaseHTTPRequestHandler):
                 self.send_response(302)
                 self.send_header('Location', '/login')
                 self.end_headers()
+        elif self.path.startswith('/query'):
+            from urllib.parse import urlparse, parse_qs
+            pwd = self.headers.get('X-Password', '').encode()
+            if not hmac.compare_digest(pwd, PASSWORD):
+                self._resp(401, b'Unauthorized\n')
+                return
+            qs = parse_qs(urlparse(self.path).query)
+            sql = qs.get('q', [''])[0]
+            if not sql:
+                self._resp(400, b'missing ?q=\n')
+                return
+            self._resp(200, _run_query(sql), 'application/json')
         else:
             self._resp(200, LOGIN_HTML, 'text/html; charset=utf-8')
 
@@ -61,15 +95,7 @@ class H(BaseHTTPRequestHandler):
                 self._resp(401, b'Unauthorized\n')
                 return
             sql = self.rfile.read(int(self.headers.get('Content-Length', 0))).decode(errors='replace')
-            try:
-                r = subprocess.run(
-                    ['duckdb', '-readonly', '--init', '/app/ssh_init.sql', '/app/basedosdados.duckdb'],
-                    input=sql, capture_output=True, text=True, timeout=120
-                )
-                out = (r.stdout + r.stderr).encode()
-            except subprocess.TimeoutExpired:
-                out = b'timeout\n'
-            self._resp(200, out, 'text/plain; charset=utf-8')
+            self._resp(200, _run_query(sql), 'application/json')
             return
         body = self.rfile.read(int(self.headers.get('Content-Length', 0))).decode(errors='replace')
         pwd  = parse_qs(body).get('password', [''])[0].encode()
@@ -80,6 +106,10 @@ class H(BaseHTTPRequestHandler):
             self.end_headers()
         else:
             self._resp(200, LOGIN_HTML, 'text/html; charset=utf-8')
+
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self.end_headers()
 
     def _resp(self, code, body=b'', ct='text/plain'):
         self.send_response(code)
@@ -93,4 +123,7 @@ class H(BaseHTTPRequestHandler):
     def log_message(self, *_):
         pass
 
-HTTPServer(('127.0.0.1', 8081), H).serve_forever()
+class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+    daemon_threads = True
+
+ThreadedHTTPServer(('127.0.0.1', 8081), H).serve_forever()

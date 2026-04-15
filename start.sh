@@ -6,6 +6,7 @@ S3_ENDPOINT="${S3_ENDPOINT#http://}"
 
 # Init SQL para o terminal web (credenciais não ficam expostas como env vars)
 cat > /app/ssh_init.sql <<SQL
+INSTALL httpfs;
 LOAD httpfs;
 SET s3_endpoint='${S3_ENDPOINT}';
 SET s3_access_key_id='${AWS_ACCESS_KEY_ID}';
