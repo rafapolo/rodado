@@ -1,4 +1,37 @@
 # Mercado de Trabalho, Informalidade e Estratificação
+```mermaid
+erDiagram
+    rais_microdados_vinculos {
+        int ano
+        string sigla_uf
+        string id_municipio
+        string raca_cor
+        string sexo
+        float valor_remuneracao_media_sm
+        string faixa_remuneracao_media_sm
+        string cbo_2002
+        string cnae_2_subclasse
+        string tipo_vinculo
+        string vinculo_ativo_3112
+        int quantidade_horas_contratadas
+    }
+    caged_microdados_movimentacao {
+        int ano
+        int mes
+        string sigla_uf
+        string id_municipio
+        string raca_cor
+        string sexo
+        int saldo_movimentacao
+        float salario_mensal
+        string cbo_2002
+        string cnae_2_subclasse
+        string grau_instrucao
+        string tipo_movimentacao
+    }
+    rais_microdados_vinculos ||--o{ caged_microdados_movimentacao : "cbo_2002 / cnae_2_subclasse"
+```
+
 
 ## Contexto e Síntese dos Dados
 

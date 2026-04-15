@@ -1,4 +1,39 @@
 # Dados Internacionais Comparativos e Rankings Globais
+```mermaid
+erDiagram
+    pisa_microdados {
+        string country
+        int year
+        float score_matematica
+        float score_ciencias
+        float score_leitura
+        int rank_matematica
+        int rank_ciencias
+        int rank_leitura
+    }
+    world_bank_rd {
+        string country
+        int year
+        string indicador
+        float value
+    }
+    oe_indicadores_orcamentarios {
+        string country
+        int year
+        string indicador
+        float value
+    }
+    fbsp_atlas_violencia {
+        string country
+        string id_municipio
+        int ano
+        float taxa_homicidio
+    }
+    pisa_microdados ||--o{ world_bank_rd : "country + year"
+    pisa_microdados ||--o{ oe_indicadores_orcamentarios : "country + year"
+    world_bank_rd ||--o{ fbsp_atlas_violencia : "country"
+```
+
 
 ## Contexto e Síntese dos Dados
 

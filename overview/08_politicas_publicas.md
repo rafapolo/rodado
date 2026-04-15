@@ -1,4 +1,30 @@
 # Políticas Públicas, Transferências e Proteção Social
+```mermaid
+erDiagram
+    bolsa_familia_pagamento {
+        int ano_competencia
+        int mes_competencia
+        int ano_referencia
+        int mes_referencia
+        string id_municipio
+        string sigla_uf
+        string nis_favorecido
+        string nome_favorecido
+        float valor_parcela
+    }
+    siconfi_orcamento {
+        int ano
+        string sigla_uf
+        string id_municipio
+        float valor_empenhado
+        float valor_liquidado
+        float valor_pago
+        string conta
+        string funcao
+    }
+    bolsa_familia_pagamento ||--o{ siconfi_orcamento : "id_municipio / sigla_uf"
+```
+
 
 ## Contexto e Síntese dos Dados
 

@@ -1,4 +1,33 @@
 # Consumo, Preços e Estratificação de Classe
+```mermaid
+erDiagram
+    ipca_mes_categoria_municipio {
+        int ano
+        int mes
+        string id_municipio
+        string sigla_uf
+        string id_categoria
+        string categoria
+        float peso_mensal
+        float variacao_mensal
+        float variacao_anual
+        float variacao_doze_meses
+    }
+    anp_precos_combustiveis {
+        int ano
+        string sigla_uf
+        string id_municipio
+        date data_coleta
+        string produto
+        string unidade_medida
+        float preco_compra
+        float preco_venda
+        string cnpj_revenda
+        string bandeira_revenda
+    }
+    ipca_mes_categoria_municipio ||--o{ anp_precos_combustiveis : "id_municipio + mes"
+```
+
 
 ## Contexto e Síntese dos Dados
 

@@ -1,4 +1,48 @@
 # Desenvolvimento Humano, Vulnerabilidade Social e Índices Compostos
+```mermaid
+erDiagram
+    ipea_avs_microdados {
+        int ano
+        string id_municipio
+        string sigla_uf
+        float ivs
+        float ivs_renda
+        float ivs_trabalho
+        float ivs_educacao
+        float ivs_habitacional
+        float ivs_infraestrutura
+        float ivs_fragilidade_familiar
+        float ivs_baixa_resistencia
+    }
+    ipea_idhm {
+        int ano
+        string id_municipio
+        float idhm
+        float idhm_longevidade
+        float idhm_educacao
+        float idhm_renda
+    }
+    censo_populacao_raca {
+        int ano
+        string id_municipio
+        string grupo_idade
+        string sexo
+        string cor_raca
+        int populacao
+    }
+    bolsa_familia_pagamento {
+        int ano_competencia
+        int mes_competencia
+        string id_municipio
+        string sigla_uf
+        string nis_favorecido
+        float valor_parcela
+    }
+    ipea_avs_microdados ||--|| ipea_idhm : "id_municipio + ano"
+    ipea_avs_microdados ||--o{ censo_populacao_raca : "id_municipio"
+    ipea_avs_microdados ||--o{ bolsa_familia_pagamento : "id_municipio"
+```
+
 
 ## Contexto e Síntese dos Dados
 

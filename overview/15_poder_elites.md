@@ -1,4 +1,46 @@
 # Poder, Elite e Reprodução Social
+```mermaid
+erDiagram
+    camara_deputado {
+        string id_deputado
+        string nome
+        string nome_civil
+        string sexo
+        date data_nascimento
+        date data_falecimento
+        string sigla_uf_nascimento
+        string id_municipio_nascimento
+    }
+    tse_candidatos {
+        int ano
+        string sigla_uf
+        string id_municipio
+        string sequencial
+        string nome
+        string sigla_partido
+        string cargo
+        string genero
+        string raca
+        string instrucao
+        string ocupacao
+        string situacao
+        int idade
+    }
+    tse_despesas_candidato {
+        int ano
+        string sigla_uf
+        string sequencial_candidato
+        string sigla_partido
+        string cargo
+        float valor_documento
+        string tipo_documento
+        string nome_fornecedor
+        string tipo_prestacao_contas
+    }
+    camara_deputado ||--o{ tse_candidatos : "sigla_uf"
+    tse_candidatos ||--o{ tse_despesas_candidato : "sequencial + sigla_partido"
+```
+
 
 ## Contexto e Síntese dos Dados
 
