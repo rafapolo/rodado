@@ -1,4 +1,30 @@
 # Migração, Urbanização e Transformações Espaciais
+```mermaid
+erDiagram
+    caged_microdados_movimentacao {
+        int ano
+        int mes
+        string sigla_uf
+        string id_municipio
+        int saldo_movimentacao
+        string cbo_2002
+        string cnae_2_subclasse
+        int idade
+        string sexo
+        string grau_instrucao
+        float salario_mensal
+        string tipo_movimentacao
+    }
+    anatel_ibc_municipio {
+        int ano
+        string sigla_uf
+        string id_municipio
+        float ibc
+        float cobertura_pop_4g5g
+    }
+    caged_microdados_movimentacao ||--o{ anatel_ibc_municipio : "id_municipio"
+```
+
 
 ## Contexto e Síntese dos Dados
 

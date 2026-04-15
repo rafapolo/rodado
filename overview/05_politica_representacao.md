@@ -1,4 +1,46 @@
 # Política, Representação e Comportamento Eleitoral
+```mermaid
+erDiagram
+    tse_candidatos {
+        int ano
+        string sigla_uf
+        string id_municipio
+        string sequencial
+        string nome
+        string sigla_partido
+        string cargo
+        string genero
+        string raca
+        string instrucao
+        string ocupacao
+        string situacao
+        int idade
+        date data_nascimento
+    }
+    tse_resultados_candidato_municipio {
+        int ano
+        string sigla_uf
+        string id_municipio
+        string sequencial_candidato
+        string sigla_partido
+        string cargo
+        string resultado
+        int votos
+    }
+    camara_deputado {
+        string id_deputado
+        string nome
+        string nome_civil
+        string sexo
+        date data_nascimento
+        string sigla_uf_nascimento
+        string id_municipio_nascimento
+        string sigla_partido
+    }
+    tse_candidatos ||--o{ tse_resultados_candidato_municipio : "sequencial / ano / sigla_uf"
+    tse_candidatos ||--o{ camara_deputado : "sigla_partido / sigla_uf"
+```
+
 
 ## Contexto e Síntese dos Dados
 

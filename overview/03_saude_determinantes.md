@@ -1,4 +1,40 @@
 # Saúde, Acesso a Serviços e Determinantes Sociais
+```mermaid
+erDiagram
+    sinasc_microdados {
+        int ano
+        string sigla_uf
+        string id_municipio_nascimento
+        string tipo_parto
+        string raca_cor
+        string raca_cor_mae
+        string escolaridade_mae
+        int idade_mae
+        int peso
+        int semana_gestacao
+    }
+    sim_microdados {
+        int ano
+        string sigla_uf
+        string id_municipio_ocorrencia
+        string causa_basica
+        float idade
+        string sexo
+        string raca_cor
+        string escolaridade
+    }
+    bolsa_familia_pagamento {
+        int ano_competencia
+        int mes_competencia
+        string id_municipio
+        string sigla_uf
+        string nis_favorecido
+        float valor_parcela
+    }
+    sinasc_microdados ||--o{ sim_microdados : "id_municipio / raca_cor"
+    sim_microdados ||--o{ bolsa_familia_pagamento : "id_municipio"
+```
+
 
 ## Contexto e Síntese dos Dados
 

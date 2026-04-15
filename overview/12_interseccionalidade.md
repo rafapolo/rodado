@@ -1,4 +1,31 @@
 # Interseccionalidade e Desigualdades Complexas
+```mermaid
+erDiagram
+    rais_microdados_vinculos {
+        int ano
+        string sigla_uf
+        string id_municipio
+        string sexo
+        string raca_cor
+        string faixa_remuneracao_media_sm
+        float valor_remuneracao_media_sm
+        string cbo_2002
+        string cnae_2_subclasse
+    }
+    sinasc_microdados {
+        int ano
+        string sigla_uf
+        string id_municipio_nascimento
+        string raca_cor_mae
+        string escolaridade_mae
+        int idade_mae
+        string tipo_parto
+        int peso
+        int semana_gestacao
+    }
+    rais_microdados_vinculos ||--o{ sinasc_microdados : "sigla_uf / raca_cor"
+```
+
 
 ## Contexto e Síntese dos Dados
 

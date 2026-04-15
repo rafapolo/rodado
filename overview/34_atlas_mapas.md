@@ -1,4 +1,59 @@
 # Atlas, Mapas Georreferenciados e Bases Territoriais
+```mermaid
+erDiagram
+    geobr_terra_indigena {
+        string id_terra_indigena
+        string terra_indigena
+        string etnia
+        string sigla_uf
+        float area
+        string fase
+        string modalidade
+        string id_unidade_administrativa
+    }
+    geobr_unidade_conservacao {
+        string id_unidade_conservacao
+        string unidade_conservacao
+        string categoria
+        string sigla_grupo
+        string esfera
+        int ano_criacao
+    }
+    geobr_bioma {
+        int ano
+        string id_bioma
+        string nome_bioma
+    }
+    geobr_concentracao_urbana {
+        string id_concentracao_urbana
+        string concentracao_urbana
+        int populacao_urbana_2010
+        int populacao_rural_2010
+        string id_municipio
+        string sigla_uf
+    }
+    censo_terra_indigena {
+        string id_terra_indigena
+        string terra_indigena
+        string sigla_uf
+        int domicilios
+        int populacao
+        int populacao_indigena
+    }
+    censo_territorio_quilombola {
+        string id_territorio_quilombola
+        string territorio_quilombola
+        string sigla_uf
+        string domicilios
+        int populacao
+        int populacao_quilombola
+    }
+    geobr_terra_indigena ||--|| censo_terra_indigena : "id_terra_indigena"
+    geobr_terra_indigena ||--o{ geobr_concentracao_urbana : "sigla_uf"
+    geobr_unidade_conservacao ||--o{ geobr_bioma : "bioma"
+    geobr_concentracao_urbana ||--o{ censo_territorio_quilombola : "sigla_uf"
+```
+
 
 ## Contexto e Síntese dos Dados
 

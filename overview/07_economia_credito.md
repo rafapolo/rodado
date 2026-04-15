@@ -1,4 +1,31 @@
 # Economia, Crédito e Desenvolvimento Regional
+```mermaid
+erDiagram
+    bcb_sicor_operacao {
+        int ano
+        string sigla_uf
+        string id_municipio
+        string id_programa
+        float valor_parcela_credito
+        float area_financiada
+        string tipo_produtor
+        string tipo_financiamento
+    }
+    bcb_estban_municipio {
+        int ano
+        int mes
+        string sigla_uf
+        string id_municipio
+        string cnpj_basico
+        string instituicao
+        int agencias_esperadas
+        int agencias_processadas
+        string id_verbete
+        float valor
+    }
+    bcb_sicor_operacao ||--o{ bcb_estban_municipio : "id_municipio"
+```
+
 
 ## Contexto e Síntese dos Dados
 

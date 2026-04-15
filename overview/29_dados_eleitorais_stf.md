@@ -1,4 +1,65 @@
 # Dados Eleitorais Detalhados, Judicialização e Supremo Tribunal Federal
+```mermaid
+erDiagram
+    stf_corte_aberta {
+        string numero_processo
+        date data_julgamento
+        date data_publicacao
+        string relator
+        string tema
+        string tese
+        string resultado
+        string partes
+        string classe
+    }
+    tse_candidatos {
+        int ano
+        string sigla_uf
+        string id_municipio
+        string sequencial
+        string sigla_partido
+        string cargo
+        string genero
+        string raca
+        string instrucao
+        string situacao
+        int idade
+    }
+    tse_resultados_candidato {
+        int ano
+        string sigla_uf
+        string id_municipio
+        string sequencial_candidato
+        string sigla_partido
+        string cargo
+        string resultado
+        int votos
+    }
+    tse_despesas_candidato {
+        int ano
+        string sigla_uf
+        string sequencial_candidato
+        string sigla_partido
+        string cargo
+        float valor_documento
+        string tipo_documento
+        string nome_fornecedor
+        string tipo_prestacao_contas
+    }
+    cnj_improbidade_microdados {
+        string tipo_poder
+        string orgao
+        string sigla_uf
+        string tipo_acao
+        string situacao_processo
+        int ano
+    }
+    tse_candidatos ||--o{ tse_resultados_candidato : "sequencial + sigla_uf + ano"
+    tse_candidatos ||--o{ tse_despesas_candidato : "sequencial + sigla_uf + ano"
+    stf_corte_aberta ||--o{ cnj_improbidade_microdados : "tipo_poder"
+    tse_resultados_candidato ||--o{ cnj_improbidade_microdados : "sigla_uf"
+```
+
 
 ## Contexto e Síntese dos Dados
 

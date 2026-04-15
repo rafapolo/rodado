@@ -1,4 +1,49 @@
 # Estrutura Produtiva, Empresas, MPEs e Dinâmica Competitiva
+```mermaid
+erDiagram
+    pia_empresa {
+        int ano
+        string cnae_3_subclasse
+        float valor_faturamento
+        float valor_faturamento_bruto
+        int numero_pessoal_ocupado
+        float custo_insumos
+        string id_municipio
+    }
+    cnpj_estabelecimento {
+        int ano
+        int mes
+        string cnpj_basico
+        string situacao_cadastral
+        string cnae_fiscal_principal
+        string id_municipio
+        string natureza_juridica
+        string porte
+        date data_inicio_atividade
+    }
+    cnpj_empresa {
+        int ano
+        int mes
+        string cnpj_basico
+        float capital_social
+        string natureza_juridica
+        string qualificacao_socio
+    }
+    cnpj_socios {
+        int ano
+        int mes
+        string cnpj_basico
+        string tipo
+        string nome
+        string qualificacao
+        date data_entrada_sociedade
+        string faixa_etaria
+    }
+    pia_empresa ||--o{ cnpj_estabelecimento : "cnae_3_subclasse / id_municipio"
+    cnpj_empresa ||--o{ cnpj_estabelecimento : "cnpj_basico"
+    cnpj_empresa ||--o{ cnpj_socios : "cnpj_basico"
+```
+
 
 ## Contexto e Síntese dos Dados
 

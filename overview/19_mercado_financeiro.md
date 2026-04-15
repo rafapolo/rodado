@@ -1,4 +1,34 @@
 # Mercado Financeiro, Fundos de Investimento e Estrutura de Capital
+```mermaid
+erDiagram
+    cnpq_bolsas_microdados {
+        int ano
+        string processo
+        date data_inicio_processo
+        date data_fim_processo
+        string beneficiario
+        string modalidade
+        string categoria_nivel
+        string grande_area_conhecimento
+        string area_conhecimento
+        string sigla_uf_origem
+        string sigla_uf_destino
+        float valor
+    }
+    anatel_ibc_municipio {
+        int ano
+        string sigla_uf
+        string id_municipio
+        float ibc
+        float cobertura_pop_4g5g
+        string fibra
+        int hhi_smp
+        int hhi_scm
+        float adensamento_estacoes
+    }
+    cnpq_bolsas_microdados ||--o{ anatel_ibc_municipio : "sigla_uf_destino / sigla_uf"
+```
+
 
 ## Contexto e Síntese dos Dados
 

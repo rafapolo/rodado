@@ -1,4 +1,34 @@
 # Desigualdade Racial e Estratificação Social
+```mermaid
+erDiagram
+    rais_microdados_vinculos {
+        int ano
+        string sigla_uf
+        string id_municipio
+        string raca_cor
+        string sexo
+        float valor_remuneracao_media_sm
+        string faixa_remuneracao_media_sm
+        string cbo_2002
+        string cnae_2_subclasse
+        string natureza_juridica
+        string vinculo_ativo_3112
+    }
+    sim_microdados {
+        int ano
+        string sigla_uf
+        string id_municipio_ocorrencia
+        string id_municipio_residencia
+        string causa_basica
+        float idade
+        string sexo
+        string raca_cor
+        string escolaridade
+        string ocupacao
+    }
+    rais_microdados_vinculos ||--o{ sim_microdados : "id_municipio / raca_cor"
+```
+
 
 ## Contexto e Síntese dos Dados
 

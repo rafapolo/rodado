@@ -1,4 +1,44 @@
 # Pesquisas de Opinião, Percepção Pública e Comportamento Político
+```mermaid
+erDiagram
+    poder360_pesquisas {
+        string id_pesquisa
+        int ano
+        string sigla_uf
+        string cargo
+        date data
+        string instituto
+        string contratante
+        float quantidade_entrevistas
+        float margem_mais
+        float margem_menos
+        string tipo
+        int turno
+        string nome_candidato
+        string sigla_partido
+        float percentual
+    }
+    tse_resultados_candidato {
+        int ano
+        string sigla_uf
+        string id_municipio
+        string sequencial_candidato
+        string sigla_partido
+        string cargo
+        string resultado
+        int votos
+    }
+    pnadc_microdados {
+        int ano
+        int trimestre
+        string sigla_uf
+        string id_uf
+        string capital
+    }
+    poder360_pesquisas ||--o{ tse_resultados_candidato : "sigla_partido + sigla_uf + ano"
+    poder360_pesquisas ||--o{ pnadc_microdados : "sigla_uf + ano"
+```
+
 
 ## Contexto e Síntese dos Dados
 

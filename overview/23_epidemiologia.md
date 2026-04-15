@@ -1,4 +1,43 @@
 # Epidemiologia, Doenças Infecciosas e Vigilância em Saúde
+```mermaid
+erDiagram
+    sim_microdados {
+        int ano
+        string sigla_uf
+        string id_municipio_ocorrencia
+        string id_municipio_residencia
+        string causa_basica
+        float idade
+        string sexo
+        string raca_cor
+        string escolaridade
+        string ocupacao
+    }
+    sinasc_microdados {
+        int ano
+        string sigla_uf
+        string id_municipio_nascimento
+        int peso
+        string raca_cor_mae
+        string escolaridade_mae
+        int semana_gestacao
+        string tipo_parto
+        int idade_mae
+    }
+    cnes_estabelecimento {
+        int ano
+        int mes
+        string sigla_uf
+        string id_municipio
+        string id_estabelecimento_cnes
+        string tipo_unidade
+        string id_natureza_juridica
+    }
+    sim_microdados ||--o{ cnes_estabelecimento : "id_municipio_ocorrencia"
+    sinasc_microdados ||--o{ cnes_estabelecimento : "id_municipio_nascimento"
+    sim_microdados ||--o{ sinasc_microdados : "id_municipio / ano"
+```
+
 
 ## Contexto e Síntese dos Dados
 
