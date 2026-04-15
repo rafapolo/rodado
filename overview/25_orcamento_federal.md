@@ -1,4 +1,51 @@
 # Orçamento Federal, Emendas Parlamentares e Execução Orçamentária
+```mermaid
+erDiagram
+    tesouro_despesa_ug {
+        int ano
+        string sigla_uf
+        string id_acao
+        string id_elemento_despesa
+        float valor_empenhado
+        float valor_liquidado
+        float valor_pago
+        float valor_restos_pagar_inscritos
+    }
+    cgu_emendas_parlamentares {
+        int ano_emenda
+        string id_emenda
+        string tipo_emenda
+        string nome_autor_emenda
+        string sigla_uf_gasto
+        string id_municipio_gasto
+        string nome_funcao
+        string nome_acao
+        float valor_empenhado
+        float valor_liquidado
+        float valor_pago
+    }
+    rf_arrecadacao_uf {
+        int ano
+        int mes
+        string sigla_uf
+        float irpf
+        float irpj_entidades_financeiras
+        float irpj_demais_empresas
+        float cofins
+        float pis_pasep
+    }
+    bcb_sicor_operacao {
+        int ano
+        string sigla_uf
+        string id_municipio
+        string id_programa
+        float valor_parcela_credito
+    }
+    tesouro_despesa_ug ||--o{ cgu_emendas_parlamentares : "sigla_uf + ano"
+    tesouro_despesa_ug ||--|| rf_arrecadacao_uf : "sigla_uf + ano"
+    tesouro_despesa_ug ||--o{ bcb_sicor_operacao : "sigla_uf + ano"
+```
+
 
 ## Contexto e Síntese dos Dados
 

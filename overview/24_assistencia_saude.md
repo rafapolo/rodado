@@ -1,4 +1,42 @@
 # Assistência Ambulatorial, Hospitalar e Procedimentos do SUS
+```mermaid
+erDiagram
+    cnes_estabelecimento {
+        int ano
+        int mes
+        string sigla_uf
+        string id_municipio
+        string id_estabelecimento_cnes
+        string tipo_unidade
+        string id_natureza_juridica
+    }
+    cnes_profissional {
+        int ano
+        int mes
+        string sigla_uf
+        string id_municipio
+        string id_estabelecimento_cnes
+        string cbo_2002_original
+        string cbo_2002
+        string tipo_vinculo
+        string tipo_conselho
+    }
+    cnes_equipamento {
+        int ano
+        int mes
+        string sigla_uf
+        string id_municipio
+        string id_estabelecimento_cnes
+        string id_equipamento
+        string tipo_equipamento
+        string quantidade_equipamentos
+        string quantidade_equipamentos_ativos
+        int indicador_equipamento_disponivel_sus
+    }
+    cnes_estabelecimento ||--o{ cnes_profissional : "id_estabelecimento_cnes"
+    cnes_estabelecimento ||--o{ cnes_equipamento : "id_estabelecimento_cnes"
+```
+
 
 ## Contexto e Síntese dos Dados
 

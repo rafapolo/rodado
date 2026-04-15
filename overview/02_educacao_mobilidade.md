@@ -1,4 +1,34 @@
 # Educação, Mobilidade Social e Desigualdade
+```mermaid
+erDiagram
+    enem_microdados {
+        int ano
+        string id_municipio_residencia
+        string id_municipio_escola
+        string sigla_uf_residencia
+        string cor_raca
+        string sexo
+        string tipo_escola
+        string dependencia_administrativa_escola
+        float nota_matematica
+        float nota_redacao
+        float nota_ciencias_natureza
+        float nota_ciencias_humanas
+        boolean indicador_treineiro
+    }
+    ideb_escola {
+        int ano
+        string sigla_uf
+        string id_municipio
+        string id_escola
+        string rede
+        float ideb
+        float nota_matematica
+        float nota_portugues
+    }
+    enem_microdados ||--o{ ideb_escola : "id_municipio_escola"
+```
+
 
 ## Contexto e Síntese dos Dados
 

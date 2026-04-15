@@ -1,4 +1,35 @@
 # Gênero, Família e Dinâmicas Demográficas
+```mermaid
+erDiagram
+    sinasc_microdados {
+        int ano
+        string sigla_uf
+        string id_municipio_nascimento
+        string sexo
+        int peso
+        string raca_cor
+        string raca_cor_mae
+        string escolaridade_mae
+        int idade_mae
+        int semana_gestacao
+        string tipo_parto
+    }
+    caged_microdados_movimentacao {
+        int ano
+        int mes
+        string sigla_uf
+        string id_municipio
+        string sexo
+        string raca_cor
+        string cbo_2002
+        string cnae_2_subclasse
+        int saldo_movimentacao
+        float salario_mensal
+        string grau_instrucao
+    }
+    sinasc_microdados ||--o{ caged_microdados_movimentacao : "sigla_uf / id_municipio"
+```
+
 
 ## Contexto e Síntese dos Dados
 

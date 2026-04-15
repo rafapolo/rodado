@@ -1,4 +1,34 @@
 # Infraestrutura, Serviços e Qualidade de Vida
+```mermaid
+erDiagram
+    snis_municipio_agua_esgoto {
+        int ano
+        string id_municipio
+        string sigla_uf
+        int populacao_atendida_agua
+        int populacao_atentida_esgoto
+        float volume_agua_produzido
+        float volume_esgoto_coletado
+        float volume_esgoto_tratado
+        float indice_coleta_esgoto
+        float indice_tratamento_esgoto
+    }
+    anatel_ibc_municipio {
+        int ano
+        string sigla_uf
+        string id_municipio
+        float ibc
+        float cobertura_pop_4g5g
+        string fibra
+        float densidade_smp
+        int hhi_smp
+        float densidade_scm
+        int hhi_scm
+        float adensamento_estacoes
+    }
+    snis_municipio_agua_esgoto ||--|| anatel_ibc_municipio : "id_municipio + ano"
+```
+
 
 ## Contexto e Síntese dos Dados
 

@@ -1,4 +1,31 @@
 # Crime, Violência e Segurança Pública
+```mermaid
+erDiagram
+    sim_microdados {
+        int ano
+        string sigla_uf
+        string id_municipio_ocorrencia
+        string causa_basica
+        float idade
+        string sexo
+        string raca_cor
+        string escolaridade
+    }
+    isp_taxa_evolucao_mensal_municipio {
+        int ano
+        int mes
+        string id_municipio
+        string regiao
+        float taxa_homicidio_doloso
+        float taxa_homicidio_intervencao_policial
+        float taxa_letalidade_violenta
+        float taxa_estupro
+        float taxa_roubo_veiculo
+        float taxa_crimes_violentos_letais_intencionais
+    }
+    sim_microdados ||--o{ isp_taxa_evolucao_mensal_municipio : "id_municipio"
+```
+
 
 ## Contexto e Síntese dos Dados
 

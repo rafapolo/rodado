@@ -1,4 +1,48 @@
 # Conectividade, Educação Digital e Infraestrutura de Telecomunicações
+```mermaid
+erDiagram
+    simet_educacao_conectada {
+        int ano
+        string id_escola
+        string id_municipio
+        string dependencia_administrativa
+        string localizacao
+        float velocidade_download
+        float velocidade_upload
+        float latencia
+        string tecnologia
+    }
+    anatel_banda_larga_densidade_municipio {
+        int ano
+        int mes
+        string sigla_uf
+        string id_municipio
+        float densidade
+    }
+    anatel_ibc_municipio {
+        int ano
+        string sigla_uf
+        string id_municipio
+        float ibc
+        float cobertura_pop_4g5g
+        string fibra
+        int hhi_smp
+        int hhi_scm
+        float adensamento_estacoes
+    }
+    enem_microdados {
+        int ano
+        string id_municipio_escola
+        string tipo_escola
+        string dependencia_administrativa_escola
+        float nota_matematica
+        float nota_redacao
+    }
+    simet_educacao_conectada ||--o{ anatel_ibc_municipio : "id_municipio"
+    anatel_banda_larga_densidade_municipio ||--|| anatel_ibc_municipio : "id_municipio + ano"
+    anatel_ibc_municipio ||--o{ enem_microdados : "id_municipio"
+```
+
 
 ## Contexto e Síntese dos Dados
 

@@ -1,4 +1,35 @@
 # Ciência, Tecnologia, Bolsas de Estudo e Produção Acadêmica
+```mermaid
+erDiagram
+    cnpq_bolsas_microdados {
+        int ano
+        string processo
+        date data_inicio_processo
+        date data_fim_processo
+        string modalidade
+        string categoria_nivel
+        string programa_cnpq
+        string grande_area_conhecimento
+        string area_conhecimento
+        string sigla_uf_origem
+        string sigla_uf_destino
+        string instituicao_destino
+        float valor
+    }
+    enem_microdados {
+        int ano
+        string id_municipio_escola
+        string sigla_uf_residencia
+        string tipo_escola
+        string dependencia_administrativa_escola
+        string cor_raca
+        float nota_matematica
+        float nota_ciencias_natureza
+        float nota_redacao
+    }
+    cnpq_bolsas_microdados ||--o{ enem_microdados : "sigla_uf_destino"
+```
+
 
 ## Contexto e Síntese dos Dados
 

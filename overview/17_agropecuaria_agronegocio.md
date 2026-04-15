@@ -1,4 +1,31 @@
 # Agropecuária, Estrutura Fundiária e Agronegócio
+```mermaid
+erDiagram
+    sicar_area_imovel {
+        date data_extracao
+        date data_atualizacao_car
+        string sigla_uf
+        string id_municipio
+        string id_imovel
+        string modulos_fiscais
+        float area
+        string status
+        string tipo
+        string condicao
+    }
+    bcb_sicor_operacao {
+        int ano
+        string sigla_uf
+        string id_municipio
+        string id_programa
+        float valor_parcela_credito
+        float area_financiada
+        string tipo_produtor
+        string tipo_financiamento
+    }
+    sicar_area_imovel ||--o{ bcb_sicor_operacao : "id_municipio"
+```
+
 
 ## Contexto e Síntese dos Dados
 

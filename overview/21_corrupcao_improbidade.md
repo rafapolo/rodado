@@ -1,4 +1,46 @@
 # Corrupção, Improbidade Administrativa e Controle Público
+```mermaid
+erDiagram
+    cgu_emendas_parlamentares {
+        int ano_emenda
+        string id_emenda
+        string tipo_emenda
+        string nome_autor_emenda
+        string sigla_uf_gasto
+        string id_municipio_gasto
+        string nome_funcao
+        string nome_subfuncao
+        string nome_programa
+        string nome_acao
+        float valor_empenhado
+        float valor_liquidado
+        float valor_pago
+        float valor_resto_pagar_inscrito
+    }
+    rf_arrecadacao_uf {
+        int ano
+        int mes
+        string sigla_uf
+        float irpf
+        float irpj_entidades_financeiras
+        float irpj_demais_empresas
+        float irrf_rendimentos_trabalho
+        float cofins
+        float pis_pasep
+        float csll
+    }
+    cnj_improbidade_microdados {
+        string tipo_poder
+        string orgao
+        string sigla_uf
+        string tipo_acao
+        string situacao_processo
+        int ano
+    }
+    cgu_emendas_parlamentares ||--o{ rf_arrecadacao_uf : "sigla_uf_gasto + ano_emenda"
+    cgu_emendas_parlamentares ||--o{ cnj_improbidade_microdados : "sigla_uf_gasto"
+```
+
 
 ## Contexto e Síntese dos Dados
 

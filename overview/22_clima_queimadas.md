@@ -1,4 +1,45 @@
 # Clima, Queimadas e Variação de Temperatura
+```mermaid
+erDiagram
+    prodes_municipio_bioma {
+        int ano
+        string id_municipio
+        string bioma
+        float area_total
+        float desmatado
+        float vegetacao_natural
+        float nao_vegetacao_natural
+        float hidrografia
+    }
+    seeg_emissoes_municipio {
+        int ano
+        string sigla_uf
+        string id_municipio
+        string bioma
+        string gas
+        string setor
+        string atividade_economica
+        string categoria
+        float emissao_ar2
+        float emissao_ar4
+        float emissao_ar5
+        float emissao_ar6
+    }
+    sicar_area_imovel {
+        date data_extracao
+        string sigla_uf
+        string id_municipio
+        string id_imovel
+        float area
+        string status
+        string tipo
+        string condicao
+    }
+    prodes_municipio_bioma ||--o{ seeg_emissoes_municipio : "id_municipio + bioma + ano"
+    prodes_municipio_bioma ||--o{ sicar_area_imovel : "id_municipio"
+    seeg_emissoes_municipio ||--o{ sicar_area_imovel : "id_municipio"
+```
+
 
 ## Contexto e Síntese dos Dados
 

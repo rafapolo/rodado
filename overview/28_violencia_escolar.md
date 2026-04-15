@@ -1,4 +1,64 @@
 # Violência Escolar, Segurança Educacional e Ambiente de Aprendizagem
+```mermaid
+erDiagram
+    fbsp_violencia_escolar {
+        string id_municipio
+        string sigla_uf
+        string tipo_ocorrencia
+        int quantidade_ocorrencias
+        int populacao_15_17
+        float taxa_ocorrencia
+        string dependencia_administrativa
+        string localizacao
+        string rede
+    }
+    saeb_aluno_em_34ano {
+        int ano
+        string sigla_uf
+        string id_municipio
+        string id_escola
+        string escola_publica
+        string localizacao
+        string serie
+        string disciplina
+        float proficiencia
+        string professor_aborda_bullying_violencia
+        string aluno_sente_seguranca_escola
+    }
+    censo_escolar_escola {
+        int ano
+        string sigla_uf
+        string id_municipio
+        string id_escola
+        string rede
+        string tipo_localizacao
+        string tipo_situacao_funcionamento
+        int vinculo_secretaria_educacao
+        int vinculo_seguranca_publica
+    }
+    sinan_microdados_violencia {
+        int ano
+        date data_notificacao
+        string id_municipio_notificacao
+        string id_municipio_ocorrencia
+        string id_categoria_cid10
+        string tipo_notificacao
+        date data_ocorrencia
+    }
+    isp_taxa_evolucao_mensal_municipio {
+        int ano
+        int mes
+        string id_municipio
+        float taxa_homicidio_doloso
+        float taxa_letalidade_violenta
+    }
+    fbsp_violencia_escolar ||--o{ saeb_aluno_em_34ano : "id_municipio"
+    fbsp_violencia_escolar ||--o{ censo_escolar_escola : "id_municipio"
+    fbsp_violencia_escolar ||--o{ sinan_microdados_violencia : "id_municipio"
+    fbsp_violencia_escolar ||--o{ isp_taxa_evolucao_mensal_municipio : "id_municipio"
+    saeb_aluno_em_34ano ||--|| censo_escolar_escola : "id_escola"
+```
+
 
 ## Contexto e Síntese dos Dados
 
