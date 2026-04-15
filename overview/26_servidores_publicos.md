@@ -1,4 +1,49 @@
 # Servidores Públicos, Gestão de Pessoal e Elites do Estado
+```mermaid
+erDiagram
+    servidores_executivo_federal {
+        int ano
+        string id_servidor
+        string orgao_lotacao
+        string sigla_uf_exercicio
+        string cargo
+        string classe
+        string padrao
+        string nivel
+        float valor_remuneracao
+        float valor_vantagens
+        float valor_deducoes
+    }
+    stf_corte_aberta {
+        string numero_processo
+        date data_julgamento
+        string relator
+        string tema
+        string resultado
+        string partes
+        string classe
+    }
+    cnj_improbidade_microdados {
+        string tipo_poder
+        string orgao
+        string sigla_uf
+        string tipo_acao
+        string situacao_processo
+        int ano
+    }
+    rais_microdados_vinculos {
+        int ano
+        string sigla_uf
+        string id_municipio
+        string natureza_juridica
+        float valor_remuneracao_media_sm
+        string cbo_2002
+    }
+    servidores_executivo_federal ||--o{ cnj_improbidade_microdados : "orgao"
+    servidores_executivo_federal ||--o{ rais_microdados_vinculos : "natureza_juridica"
+    stf_corte_aberta ||--o{ cnj_improbidade_microdados : "tipo_poder"
+```
+
 
 ## Contexto e Síntese dos Dados
 

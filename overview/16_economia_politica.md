@@ -1,4 +1,31 @@
 # Economia Política e Desenvolvimento
+```mermaid
+erDiagram
+    rf_arrecadacao_uf {
+        int ano
+        int mes
+        string sigla_uf
+        float irpf
+        float irpj_entidades_financeiras
+        float irpj_demais_empresas
+        float irrf_rendimentos_trabalho
+        float cofins
+        float pis_pasep
+        float csll
+    }
+    siconfi_orcamento {
+        int ano
+        string sigla_uf
+        string id_municipio
+        float valor_empenhado
+        float valor_liquidado
+        float valor_pago
+        string funcao
+        string conta
+    }
+    rf_arrecadacao_uf ||--|| siconfi_orcamento : "sigla_uf + ano"
+```
+
 
 ## Contexto e Síntese dos Dados
 

@@ -1,4 +1,35 @@
 # Comércio Exterior, Integração Global e Cadeias de Valor
+```mermaid
+erDiagram
+    comex_stat_ncm_8 {
+        int ano
+        int mes
+        string sigla_uf
+        string id_municipio
+        string co_ncm
+        string co_pais
+        string co_via
+        string co_urf
+        float vl_fob
+        float kg_liquido
+        string tipo_operacao
+    }
+    comex_pais {
+        string co_pais
+        string no_pais
+        string regiao
+        string bloco
+    }
+    comex_ncm {
+        string co_ncm
+        string no_ncm
+        string setor
+        string nivel_agregacao
+    }
+    comex_stat_ncm_8 ||--|| comex_pais : "co_pais"
+    comex_stat_ncm_8 ||--|| comex_ncm : "co_ncm"
+```
+
 
 ## Contexto e Síntese dos Dados
 
