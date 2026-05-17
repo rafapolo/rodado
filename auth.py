@@ -75,7 +75,7 @@ def _warm_cache():
     for t in hot_tables:
         try:
             with _lock:
-                _con.execute(f"SELECT COUNT(*) FROM basedosdados.{t}")
+                _con.execute(f"FROM basedosdados.{t} LIMIT 1")
         except Exception:
             pass
 
