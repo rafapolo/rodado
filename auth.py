@@ -23,7 +23,10 @@ def _init_db():
         SET s3_url_style='path';
         SET enable_object_cache=true;
         SET threads=4;
-        SET memory_limit='4GB';
+        SET memory_limit='6GB';
+        SET preserve_insertion_order=false;
+        SET http_keep_alive=true;
+        SET http_retries=3;
     """)
     _con.execute("ATTACH '/app/data/basedosdados.duckdb' AS basedosdados (READ_ONLY)")
 
