@@ -29,6 +29,20 @@ def _init_db():
         SET http_retries=3;
     """)
     _con.execute("ATTACH '/app/data/basedosdados.duckdb' AS basedosdados (READ_ONLY)")
+    threading.Thread(target=_warm_cache, daemon=True).start()
+
+def _warm_cache():
+    hot_tables = [
+        "br_tse_eleicoes.candidatos",
+        "br_tse_eleicoes.despesas_candidato",
+        "br_tse_eleicoes.resultados_candidato",
+    ]
+    for t in hot_tables:
+        try:
+            with _lock:
+                _con.execute(f"SELECT COUNT(*) FROM basedosdados.{t}")
+        except Exception:
+            pass
 
 def _json_default(obj):
     if isinstance(obj, decimal.Decimal): return float(obj)
