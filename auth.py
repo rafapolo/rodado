@@ -27,15 +27,50 @@ def _init_db():
         SET preserve_insertion_order=false;
         SET http_keep_alive=true;
         SET http_retries=3;
+        SET http_retry_wait_ms=10;
     """)
     _con.execute("ATTACH '/app/data/basedosdados.duckdb' AS basedosdados (READ_ONLY)")
     threading.Thread(target=_warm_cache, daemon=True).start()
 
 def _warm_cache():
     hot_tables = [
+        # TSE elections — most queried
         "br_tse_eleicoes.candidatos",
         "br_tse_eleicoes.despesas_candidato",
         "br_tse_eleicoes.resultados_candidato",
+        "br_tse_eleicoes.receitas_candidato",
+        "br_tse_eleicoes.bens_candidato",
+        "br_tse_eleicoes.resultados_candidato_municipio",
+        # CNPJ company registry
+        "br_me_cnpj.empresas",
+        "br_me_cnpj.socios",
+        "br_me_cnpj.estabelecimentos",
+        "br_me_cnpj.simples",
+        # CGU procurement & contracts
+        "br_cgu_licitacao_contrato.licitacao_item",
+        "br_cgu_licitacao_contrato.contrato_item",
+        "br_cgu_licitacao_contrato.licitacao",
+        # CGU social benefits
+        "br_cgu_beneficios_cidadao.novo_bolsa_familia",
+        "br_cgu_beneficios_cidadao.bolsa_familia_pagamento",
+        # CGU federal servants
+        "br_cgu_servidores_executivo_federal.cadastro_servidores",
+        "br_cgu_servidores_executivo_federal.remuneracao",
+        # Câmara federal
+        "br_camara_dados_abertos.deputado",
+        "br_camara_dados_abertos.despesa",
+        "br_camara_dados_abertos.votacao_parlamentar",
+        # Reference directories
+        "br_bd_diretorios_brasil.municipio",
+        "br_bd_diretorios_brasil.cnae_2",
+        # IBGE
+        "br_ibge_censo_2022.municipio",
+        "br_ibge_populacao.municipio",
+        # Employment
+        "br_me_caged.microdados_movimentacao",
+        "br_me_rais.microdados_vinculos",
+        # Education
+        "br_inep_enem.microdados",
     ]
     for t in hot_tables:
         try:
