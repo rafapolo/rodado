@@ -38,7 +38,7 @@ FROM --platform=linux/amd64 debian:12-slim
 
 RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends \
-        curl ca-certificates unzip bsdmainutils python3 \
+        curl ca-certificates unzip bsdmainutils python3 python3-pip \
         less ncurses-bin && \
     curl -fsSL \
         "https://github.com/caddyserver/caddy/releases/download/v2.9.1/caddy_2.9.1_linux_amd64.tar.gz" \
@@ -59,7 +59,8 @@ RUN apt-get update -qq && \
     cp /usr/local/libduckdb.so /usr/local/lib/ && \
     ldconfig && \
     rm /tmp/libduckdb.zip && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    pip3 install --no-cache-dir --break-system-packages duckdb==1.5.1
 
 WORKDIR /app
 
