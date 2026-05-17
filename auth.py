@@ -1,33 +1,48 @@
 #!/usr/bin/env python3
 """Minimal cookie-session auth gate for DuckDB shell."""
-import hmac, hashlib, json, os, secrets, subprocess, time
+import decimal, datetime, duckdb, hmac, hashlib, json, os, secrets, threading, time
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
 from urllib.parse import parse_qs
 
 PASSWORD = os.environ.get('BASIC_AUTH_PASSWORD', '').encode()
 
-_INIT_SQL = None
+_con  = None
+_lock = threading.Lock()
+
+def _init_db():
+    global _con
+    endpoint = os.environ.get('HETZNER_S3_ENDPOINT', '').removeprefix('https://').removeprefix('http://')
+    _con = duckdb.connect(':memory:')
+    _con.execute("INSTALL httpfs; LOAD httpfs;")
+    _con.execute(f"""
+        SET s3_endpoint='{endpoint}';
+        SET s3_access_key_id='{os.environ.get("AWS_ACCESS_KEY_ID", "")}';
+        SET s3_secret_access_key='{os.environ.get("AWS_SECRET_ACCESS_KEY", "")}';
+        SET s3_region='{os.environ.get("BUCKET_REGION", "")}';
+        SET s3_url_style='path';
+        SET enable_object_cache=true;
+        SET threads=4;
+        SET memory_limit='4GB';
+    """)
+    _con.execute("ATTACH '/app/data/basedosdados.duckdb' AS basedosdados (READ_ONLY)")
+
+def _json_default(obj):
+    if isinstance(obj, decimal.Decimal): return float(obj)
+    if isinstance(obj, (datetime.date, datetime.datetime)): return obj.isoformat()
+    return str(obj)
 
 def _run_query(sql, json_mode=True):
-    global _INIT_SQL
-    if _INIT_SQL is None:
-        with open('/app/ssh_init.sql') as f:
-            _INIT_SQL = f.read()
-    if json_mode:
-        sql = '.mode json\n' + sql
-    try:
-        r = subprocess.run(
-            ['duckdb', '-readonly', '/app/data/basedosdados.duckdb'],
-            input=_INIT_SQL + '\n' + sql, capture_output=True, text=True, timeout=120
-        )
-        if r.stdout.strip().startswith('['):
-            return r.stdout.encode()
-        err = (r.stderr or r.stdout or 'unknown DuckDB error').strip()
-        return json.dumps({'error': err}).encode()
-    except subprocess.TimeoutExpired:
-        return json.dumps({'error': 'query timed out after 120s'}).encode()
-_SECRET  = secrets.token_bytes(32)
+    with _lock:
+        try:
+            rel = _con.execute(sql)
+            cols = [d[0] for d in rel.description]
+            rows = [{cols[i]: row[i] for i in range(len(cols))} for row in rel.fetchall()]
+            return json.dumps(rows, default=_json_default).encode()
+        except Exception as e:
+            return json.dumps({'error': str(e)}).encode()
+
+_SECRET = secrets.token_bytes(32)
 
 def _make_token():
     day = str(int(time.time()) // 86400)
@@ -126,4 +141,5 @@ class H(BaseHTTPRequestHandler):
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     daemon_threads = True
 
+_init_db()
 ThreadedHTTPServer(('127.0.0.1', 8081), H).serve_forever()
