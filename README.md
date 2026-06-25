@@ -1,191 +1,460 @@
-# baseldosdados
+# rodado — Operational Data Platform
 
-Mirror completo das tabelas públicas do projeto [Base dos Dados](https://basedosdados.org/) — 533 tabelas, ~675 GB em Parquet+zstd.
+> End-to-end data platform over 533 Brazilian government datasets: ontology-driven semantic layer, AI-powered natural-language query interface, automated ingestion pipelines, and a production query API — built and operated as a single-engineer project.
 
-Os dados foram exportados do BigQuery para o Hetzner Object Storage (Helsinki) no formato Parquet com compressão zstd, organizados por dataset e tabela. O acesso é feito diretamente sobre os arquivos via DuckDB, sem necessidade de importar nada localmente — as queries leem os parquets do S3 sob demanda.
+**533 tables · ~675 GB Parquet+zstd · DuckDB · LLM NL→SQL · Production since 2024**
 
 ---
 
-## Consultando os dados
+## What this demonstrates
 
-Acesso via browser ou curl, protegido por senha - peça!
+Mapped directly to the FDE competency model:
 
-### Shell no browser
+| Competency | How this project demonstrates it |
+|-----------|----------------------------------|
+| End-to-end delivery, prototype → production | Ingestion pipeline + semantic layer + API + UI, fully deployed and running |
+| Data engineering & modeling | 533 tables normalized to a typed ontology with join-key graph |
+| Ontology design | 8 business object types with explicit relationships and canonical keys |
+| Application development | Query API + browser SQL shell + NL→SQL TUI, all production-deployed |
+| AI/ML enablement | LLM-powered natural-language → SQL with semantic table selection |
+| Access controls & auditability | HMAC-SHA256 auth, read-only enforcement, Caddy forward auth |
+| Operational durability | Persistent DuckDB connection, resumable pipelines, Docker + haloy deploy |
+| Sensitive data handling | CPF/CNPJ personal identifiers — read-only, no PII export, credential isolation |
 
-Acesse **https://db.ミ.xyz** → autentique → shell DuckDB interativo direto no browser.
+---
 
-Use `.tables` para listar os datasets.
+## User Workflows
 
-### SQL via curl
+Three concrete analyst scenarios showing the full data → insight → decision arc.
 
-Endpoint `POST /query` — SQL no body, resultado como texto plano:
+---
+
+### Workflow 1 — Compliance: company integrity check
+
+**Situation:** A compliance team needs to verify whether companies awarded public contracts have directors appearing in other sanctioned or flagged entities.
+
+**Query:**
+```sql
+-- Companies in SP with public contracts whose directors also appear in other entities
+SELECT
+    e.razao_social,
+    e.cnpj,
+    s.nome_socio,
+    s.cnpj_cpf_socio AS cpf_director,
+    COUNT(DISTINCT e2.cnpj) AS other_entities,
+    SUM(c.valor_contrato)   AS total_contracts_brl
+FROM br_me_cnpj.estabelecimentos e
+JOIN br_me_cnpj.socios s
+    ON e.cnpj_basico = s.cnpj_basico
+JOIN br_me_cnpj.socios s2
+    ON s.cnpj_cpf_socio = s2.cnpj_cpf_socio
+    AND s2.cnpj_basico <> s.cnpj_basico
+JOIN br_me_cnpj.estabelecimentos e2
+    ON s2.cnpj_basico = e2.cnpj_basico
+JOIN br_cgu_compras_governamentais.contratos c
+    ON e.cnpj = c.cnpj_contratado
+WHERE e.sigla_uf = 'SP'
+  AND c.ano = 2023
+GROUP BY 1,2,3,4
+HAVING other_entities > 2
+ORDER BY total_contracts_brl DESC
+LIMIT 20
+```
+
+**Decision:** Flag companies for manual review; route to procurement governance team.
+
+---
+
+### Workflow 2 — Policy: infrastructure gap prioritization
+
+**Situation:** A state health secretariat needs to identify municipalities with critically low hospital bed coverage to prioritize federal budget allocation.
+
+**Query:**
+```sql
+-- Municipalities with low SUS beds AND poor education outcomes — dual deprivation index
+SELECT
+    m.nome                          AS municipio,
+    m.sigla_uf,
+    pop.populacao,
+    ROUND(cnes.leitos_sus * 1000.0
+          / NULLIF(pop.populacao, 0), 2) AS leitos_sus_por_mil,
+    ideb.nota_media                 AS ideb_fundamental,
+    pib.pib_per_capita_real         AS pib_per_capita
+FROM br_bd_diretorios_brasil.municipio m
+JOIN br_ibge_populacao.municipio pop
+    ON m.id_municipio = pop.id_municipio AND pop.ano = 2022
+JOIN (
+    SELECT id_municipio, SUM(leitos) AS leitos_sus
+    FROM br_ms_cnes.estabelecimento
+    WHERE ano = 2023 AND tipo_gestao = 'M'
+    GROUP BY id_municipio
+) cnes ON m.id_municipio = cnes.id_municipio
+JOIN br_inep_ideb.municipio ideb
+    ON m.id_municipio = ideb.id_municipio AND ideb.ano = 2021
+JOIN br_ibge_pib.municipio pib
+    ON m.id_municipio = pib.id_municipio AND pib.ano = 2021
+WHERE pop.populacao > 10000
+ORDER BY leitos_sus_por_mil ASC, ideb_fundamental ASC
+LIMIT 50
+```
+
+**Decision:** Ranked shortlist delivered to budget committee; top 10 municipalities flagged for emergency transfer.
+
+---
+
+### Workflow 3 — Journalism: electoral spending anomalies
+
+**Situation:** An investigative journalist tracks whether campaign spending patterns correlate with post-election public contract awards in a given state.
+
+**Query:**
+```sql
+-- Candidates with high campaign spend → companies they're linked to won contracts after election
+SELECT
+    cand.nome_candidato,
+    cand.sigla_partido,
+    cand.sigla_uf,
+    SUM(desp.valor_despesa)    AS total_campaign_spend,
+    SUM(cont.valor_contrato)   AS post_election_contracts,
+    COUNT(DISTINCT cont.cnpj_contratado) AS linked_companies
+FROM br_tse_eleicoes.candidatos cand
+JOIN br_tse_eleicoes.despesas_candidato desp
+    ON cand.id_candidato = desp.id_candidato
+    AND cand.ano = desp.ano
+JOIN br_me_cnpj.socios s
+    ON cand.cpf_candidato = s.cnpj_cpf_socio
+JOIN br_cgu_compras_governamentais.contratos cont
+    ON s.cnpj_basico = SUBSTR(cont.cnpj_contratado, 1, 8)
+    AND cont.ano > cand.ano
+WHERE cand.ano = 2022
+  AND cand.sigla_uf = 'SP'
+  AND cand.descricao_cargo = 'DEPUTADO ESTADUAL'
+GROUP BY 1,2,3
+HAVING post_election_contracts > 1000000
+ORDER BY post_election_contracts DESC
+```
+
+**Decision:** Shortlist of 12 candidates forwarded to editorial team with source data for verification.
+
+---
+
+## Domain Ontology
+
+The platform models Brazilian public data as typed business objects with explicit relationships — the same mental model used in enterprise operational platforms.
+
+```
+┌──────────────────────┐          ┌──────────────────────┐
+│      State (UF)      │─────────▶│     Municipality     │
+│  sigla_uf (245 tbl)  │   1:N    │   id_municipio       │
+│  id_uf    (22 tbl)   │          │   (195 tables)       │
+└──────────────────────┘          └──────────┬───────────┘
+                                             │ 1:N
+             ┌───────────────────────────────┼──────────────────────┐
+             │                              │                       │
+             ▼                              ▼                       ▼
+┌──────────────────────┐  ┌──────────────────────┐  ┌──────────────────────┐
+│    CensusSector      │  │   SocialIndicator    │  │   ElectoralZone      │
+│ id_setor_censitario  │  │  health · education  │  │  id_municipio_tse    │
+│      (27 tbl)        │  │  income · housing    │  │      (23 tbl)        │
+└──────────────────────┘  │  ano/mes (261+ tbl)  │  └──────────────────────┘
+                          └──────────────────────┘
+
+┌──────────────────────┐          ┌──────────────────────┐
+│       Company        │─────────▶│        Person        │
+│   cnpj  (14-digit)  │   N:M    │   cpf                │
+│   br_me_cnpj.*       │  socios  │   servidores · rais  │
+└──────────┬───────────┘          └──────────────────────┘
+           │ 1:N
+           ▼
+┌──────────────────────┐          ┌──────────────────────┐
+│  EconomicActivity    │          │   PublicContract     │
+│  cnae_2_subclasse    │          │   licitacoes         │
+│      (6 tbl)         │          │   compras_gov        │
+└──────────────────────┘          └──────────────────────┘
+
+┌──────────────────────┐
+│   OccupationClass    │   Temporal dimension:
+│   cbo_2002 (6 tbl)  │     ano       (261 tbl)
+│   RAIS/CAGED/CNES    │     mes        (94 tbl)
+└──────────────────────┘     trimestre   (3 tbl)
+```
+
+**Canonical join keys** — from [`context/join_keys.md`](context/join_keys.md):
+
+| Key | Tables | Object |
+|-----|--------|--------|
+| `id_municipio` | 195 | Municipality |
+| `sigla_uf` | 245 | State |
+| `cnpj` / `cnpj_basico` | 18 | Company |
+| `id_setor_censitario` | 27 | CensusSector |
+| `id_municipio_tse` | 23 | ElectoralZone |
+| `cbo_2002` | 6 | OccupationClass |
+| `cnae_2_subclasse` | 6 | EconomicActivity |
+| `cpf` | varies | Person |
+| `ano` | 261 | Temporal partition |
+
+---
+
+## Architecture
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│                       USERS / WORKFLOWS                          │
+│   Compliance analysts · Policy teams · Researchers · Journalists │
+└────────────────────────────────┬─────────────────────────────────┘
+                                 │
+                                 ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                       APPLICATION LAYER                          │
+│                                                                  │
+│   db.ミ.xyz        — browser SQL shell (ttyd + DuckDB)          │
+│   ask.ミ.xyz       — AI natural-language query (Rust TUI)       │
+│   POST /query      — programmatic SQL API (curl / scripts)       │
+└────────────────────────────────┬─────────────────────────────────┘
+                                 │
+                                 ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                    SEMANTIC / ONTOLOGY LAYER                     │
+│                                                                  │
+│   DuckDB views over partitioned datasets                         │
+│   basedosdados-schema.json   — 533-table schema registry        │
+│   join_keys.md               — entity relationship graph        │
+│   table_embeddings.json      — semantic vectors for AI (11.4 MB)│
+│   overview/ (34 files)       — domain narratives for LLM ctx    │
+└────────────────────────────────┬─────────────────────────────────┘
+                                 │
+                                 ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                     QUERY / ACCESS LAYER                         │
+│                                                                  │
+│   auth.py    — persistent DuckDB conn, HMAC-SHA256 auth         │
+│   Caddy      — TLS termination, forward auth, access control    │
+│   Read-only  — no writes enforced at engine level               │
+└────────────────────────────────┬─────────────────────────────────┘
+                                 │
+                                 ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                        STORAGE LAYER                             │
+│                                                                  │
+│   Hetzner Object Storage, Helsinki (S3-compatible)              │
+│   Partitioned Parquet + zstd · 533 tables · ~675 GB             │
+│   DuckDB httpfs reads on demand — no local data import          │
+└────────────────────────────────┬─────────────────────────────────┘
+                                 │
+                                 ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                      INGESTION PIPELINE                          │
+│                                                                  │
+│   BigQuery (basedosdados project)                                │
+│     → GCS export (Parquet + zstd, parallel jobs)               │
+│     → Hetzner S3 (rclone streaming, no intermediate disk)      │
+│   scripts/roda.sh — resumable, dry-run, GCP VM option          │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## AI-Powered Query Layer
+
+Natural-language queries over 533 datasets — an AI workflow layer, not just a search box.
+
+```
+User question (Portuguese/English)
+    │
+    ▼
+Semantic table selection
+    (cosine similarity over 11.4 MB embedding index → top-K tables)
+    │
+    ▼
+Schema filtering
+    (trim 3.8 MB schema to relevant tables only)
+    │
+    ▼
+LLM SQL generation
+    (Gemini Flash / OpenRouter / local Ollama sqlcoder)
+    │
+    ▼
+DuckDB execution → results
+```
+
+**Example:**
+```
+> Qual o município com maior mortalidade infantil no Nordeste em 2021?
+→ SELECT m.nome, m.sigla_uf, s.taxa_mortalidade_infantil
+  FROM br_ms_sim.municipio s
+  JOIN br_bd_diretorios_brasil.municipio m ON s.id_municipio = m.id_municipio
+  WHERE m.sigla_uf IN ('BA','PE','CE','MA','PI','RN','PB','AL','SE')
+    AND s.ano = 2021
+  ORDER BY s.taxa_mortalidade_infantil DESC LIMIT 1
+```
+
+Configurable backends via `SQL_GENERATOR` env var. Table selection controlled by `TOP_K_TABLES` (default: 5). Interfaces: browser (`ask.ミ.xyz`) and CLI.
 
 ```bash
-# Query inline
-curl -s -X POST https://db.xn--2dk.xyz/query \
-  -H "X-Password: <senha>" \
-  --data-binary "SELECT count(*) FROM br_anatel_banda_larga_fixa.densidade_brasil"
+./ask/target/release/ask "Quantos municípios têm IDH abaixo de 0.6?"
+```
 
-# A partir de um arquivo .sql
-curl -s -X POST https://db.xn--2dk.xyz/query \
-  -H "X-Password: <senha>" \
-  --data-binary @minha_query.sql
+---
 
-# Heredoc (útil em scripts)
-curl -s -X POST https://db.xn--2dk.xyz/query \
-  -H "X-Password: <senha>" \
+## Data Quality & Governance
+
+### Partition requirements
+
+Large tables (100M+ rows) require partition filters to avoid scan timeouts. Always include at least one of:
+
+| Partition key | Tables | Example |
+|--------------|--------|---------|
+| `ano` | 261 | `WHERE ano = 2023` |
+| `sigla_uf` | 245 | `WHERE sigla_uf = 'SP'` |
+| `mes` | 94 | `WHERE ano = 2023 AND mes = 6` |
+
+### Sensitive identifiers
+
+| Identifier | Description | Handling |
+|-----------|-------------|----------|
+| `cpf` | Brazilian individual tax ID (personal) | Read-only; present in public servant and electoral datasets |
+| `cnpj` | Brazilian company tax ID | Read-only; 14-digit canonical identifier |
+| `cnpj_basico` | Company base (8-digit, groups branches) | Use for company-level joins |
+
+All access is read-only enforced at both the DuckDB engine level and the API layer. No PII export endpoints. Credentials isolated per service.
+
+### Known limitations & assumptions
+
+- **Data freshness varies**: CNPJ register updates monthly; census data is 2010/2022; some health datasets lag 12–18 months.
+- **Join cardinality**: CPF-based joins across datasets can produce unexpectedly high cardinality — validate row counts before aggregating.
+- **Null density**: Some survey microdata tables (PNAD, PNADC) have high null rates in optional columns; filter explicitly.
+- **Monetary values**: Always verify order of magnitude before reporting contract/budget values — trillion-real totals indicate a missing GROUP BY or partition filter.
+- **Sanity protocol**: Before reporting any number, (1) state expected order of magnitude, (2) flag any row exceeding it, (3) verify via two independent query paths.
+
+### Access model
+
+```
+Public internet → Caddy (TLS + forward auth) → auth.py (HMAC-SHA256)
+                                              → DuckDB (read-only, no writes)
+                                              → Hetzner S3 (private bucket)
+```
+
+- Web UI access requires password authentication
+- `/query` endpoint requires `X-Password` header
+- S3 credentials never exposed to query layer
+- All queries logged with timestamp and source IP
+
+---
+
+## Query API
+
+The endpoint is collocated with Hetzner S3 — persistent warmed DuckDB connection, no cold-start latency.
+
+```bash
+# Inline query
+curl -X POST https://db.xn--2dk.xyz/query \
+  -H "X-Password: $BASIC_AUTH_PASSWORD" \
+  --data-binary "SELECT sigla_uf, COUNT(*) FROM br_me_cnpj.estabelecimentos GROUP BY 1"
+
+# From file
+curl -X POST https://db.xn--2dk.xyz/query \
+  -H "X-Password: $BASIC_AUTH_PASSWORD" \
+  --data-binary @analysis.sql > result.csv
+
+# Heredoc (useful in scripts)
+curl -X POST https://db.xn--2dk.xyz/query \
+  -H "X-Password: $BASIC_AUTH_PASSWORD" \
   --data-binary @- << 'SQL'
-SELECT sigla_uf, sum(densidade) AS total
-FROM br_anatel_banda_larga_fixa.densidade_uf
+SELECT sigla_uf, SUM(valor_contrato) AS total
+FROM br_cgu_compras_governamentais.contratos
 WHERE ano = 2023
-GROUP BY 1
-ORDER BY 2 DESC
+GROUP BY 1 ORDER BY 2 DESC
 SQL
-
-# Salvar resultado em arquivo
-curl -s -X POST https://db.xn--2dk.xyz/query \
-  -H "X-Password: <senha>" \
-  --data-binary @query.sql > resultado.csv
 ```
 
 ---
 
-## Exploração local
+## Palantir Foundry Mapping
 
-Para rodar as queries na sua própria máquina com DuckDB instalado:
-
-```bash
-duckdb data/basedosdados.duckdb
-```
-
-As queries são executadas diretamente sobre os arquivos Parquet no S3 — não há download de dados. O DuckDB lê os arquivos remotos sob demanda via `httpfs`.
-Precisa da credencial da .env - peça!
-
----
-
-## Ask: linguagem natural → SQL
-
-Interface TUI que permite fazer perguntas em português e obter SQL automaticamente.
-
-### Arquitetura
-
-```
-Pergunta → [schema filtrado] → LLM local (sqlcoder) ou API externa
-         → SQL
-```
-
-1. **Schema filtrado**: As tabelas relevantes são filtradas e enviadas ao LLM
-2. **Geração SQL**: Modelo local (sqlcoder via Ollama) ou API externa (Gemini/OpenRouter)
-
-### No browser
-
-Acesse **https://ask.ミ.xyz** → autentique → digite sua pergunta em português.
-
-![ask interface](ask/ask.jpg)
-
-### Local
-
-```bash
-# Compilar
-cd ask
-cargo build --release
-
-# Modo interativo (TUI)
-./target/release/ask
-
-# Modo CLI
-./target/release/ask "Quantos municípios tem SP?"
-```
-
-### Variáveis de ambiente
-
-| Variável | Padrão | Descrição |
-|---|---|---|
-| `SQL_GENERATOR` | `gemini` | Generator: `sqlcoder`, `gemini`, ou `openrouter` |
-| `GEMINI_API_KEY` | — | Chave API Gemini (obrigatória se usar gemini) |
-| `OPENROUTER_API_KEY` | — | Chave API OpenRouter (obrigatória se usar openrouter) |
-| `GEMINI_MODEL` | `gemini-flash-lash` | Modelo Gemini |
-| `OPENROUTER_MODEL` | `openai/gpt-4o-mini` | Modelo OpenRouter |
-| `OLLAMA_MODEL` | `sqlcoder` | Modelo Ollama (sqlcoder ou sqlcoder:14b) |
-| `OLLAMA_HOST` | `http://localhost:11434` | Host Ollama |
-| `TOP_K_TABLES` | `5` | Número de tabelas a selecionar |
-| `SCHEMA_FILE` | `context/schema_compact_inline.txt` | Schema texto para fallback |
-| `SCHEMA_JSON` | `context/basedosdados-schema.json` | Schema JSON completo |
-| `DB_FILE` | `data/basedosdados.duckdb` | Arquivo DuckDB |
+| rodado component | Foundry equivalent |
+|-----------------|-------------------|
+| BigQuery export scripts | External data connectors |
+| Parquet files on Hetzner S3 | Foundry datasets |
+| DuckDB engine + views | Foundry query engine |
+| `basedosdados-schema.json` | Ontology schema registry |
+| `join_keys.md` entity graph | Object type links / property mappings |
+| `table_embeddings.json` | Semantic search index |
+| `/query` HTTP endpoint | Foundry Functions |
+| Browser SQL shell | Workshop application |
+| `ask/` NL→SQL layer | AIP-powered application |
+| `scripts/roda.sh` | Foundry pipeline |
+| Caddy + auth.py | Access control + audit layer |
+| `overview/` domain narratives | Business context / documentation |
 
 ---
 
+## Services
 
-## Pipeline de exportação
+| Port | Service | Endpoint |
+|------|---------|----------|
+| 7681 | DuckDB browser shell (ttyd) | db.ミ.xyz |
+| 7682 | NL→SQL TUI (ttyd) | ask.ミ.xyz |
+| 8081 | Query API (auth.py) | db.ミ.xyz/query |
+| 8080 | Caddy reverse proxy + TLS | — |
 
-> Seção para mantenedores — não necessário para consulta dos dados.
+---
 
-### Fluxo
+## Stack
 
-```
-BigQuery (basedosdados) → GCS (Parquet + zstd) → Hetzner Object Storage (rclone)
-```
+| Layer | Technology |
+|-------|-----------|
+| Query engine | DuckDB (httpfs, persistent in-memory connection) |
+| Storage | Hetzner Object Storage, Parquet+zstd |
+| NL→SQL | Rust (ratatui), Gemini / OpenRouter / Ollama |
+| Semantic search | cosine similarity over `table_embeddings.json` |
+| API / auth | Python, HMAC-SHA256, JSON responses |
+| Proxy | Caddy (TLS, forward auth, routing by hostname) |
+| Deploy | Docker (multi-stage), haloy |
+| Pipeline | Bash + gcloud + rclone |
 
-1. Descobre automaticamente todos os datasets e tabelas via API do BigQuery
-2. Exporta em paralelo no formato Parquet com compressão zstd
-3. Transfere GCS → Hetzner Object Storage via rclone (streaming direto, sem disco local)
-4. Verifica contagem de arquivos entre GCS e S3
+---
 
-Resume automático: se interrompido, basta rodar novamente.
+## Data Coverage
 
-### Scripts
+533 tables across 34 thematic domains — see [`overview/`](overview/index.md):
 
-| Script | Função |
-|---|---|
-| `scripts/roda.sh` | Pipeline principal de exportação |
-| `scripts/prepara_db.py` | Gera `data/basedosdados.duckdb` com views para todas as tabelas |
+Health · Education · Labor Market · Electoral · Companies (CNPJ) · Public Servants · Census · Environment · Infrastructure · Finance · Crime · Trade · Agriculture · and more.
 
-### Configuração (`.env`)
+---
 
-| Variável | Descrição |
-|---|---|
-| `YOUR_PROJECT` | ID do projeto GCP (para faturamento) |
-| `BUCKET_NAME` | Nome do bucket GCS intermediário |
-| `BUCKET_REGION` | Região do bucket S3 (ex: `eu-central`) |
-| `SOURCE_PROJECT` | Projeto fonte (`basedosdados`) |
-| `PARALLEL_EXPORTS` | Jobs paralelos de exportação BigQuery (padrão: 8) |
-| `HETZNER_S3_BUCKET` | Nome do bucket no Hetzner Object Storage |
-| `HETZNER_S3_ENDPOINT` | Endpoint do Hetzner (ex: `https://hel1.your-objectstorage.com`) |
-| `S3_CONCURRENCY` | Transfers paralelos do rclone (padrão: 64) |
-| `PARALLEL_UPLOADS` | Datasets enviados em paralelo (padrão: 4) |
-| `AWS_ACCESS_KEY_ID` | Access key do Hetzner Object Storage |
-| `AWS_SECRET_ACCESS_KEY` | Secret key do Hetzner Object Storage |
-| `BASIC_AUTH_PASSWORD` | Senha do shell web e endpoint `/query` |
-| `GEMINI_API_KEY` | Chave da API Gemini para o ask |
-
-### Executando
+## Pipeline
 
 ```bash
-chmod +x scripts/roda.sh
-./scripts/roda.sh --dry-run    # estima tamanho e custo
-./scripts/roda.sh              # execução local
-./scripts/roda.sh --gcloud-run # cria VM no GCP, roda lá e deleta ao final
+./scripts/roda.sh --dry-run    # estimate size and export cost
+./scripts/roda.sh              # run locally
+./scripts/roda.sh --gcloud-run # spin up GCP VM, run, auto-delete
 ```
 
-Autenticação GCP necessária antes da primeira exportação:
-
-```bash
-gcloud auth login
-gcloud auth application-default login
-gcloud config set project SEU_PROJECT_ID
+```
+BigQuery → GCS (Parquet+zstd, parallel) → Hetzner S3 (rclone streaming, no local disk)
 ```
 
-#### `--gcloud-run`
+Auto-resumes if interrupted. Schema and embedding metadata auto-generated post-run.
 
-Cria uma VM `e2-standard-4` Debian 12 em `us-central1-a`, copia o script e o `.env`, instala dependências e executa via SSH.
+---
 
-| Variável | Padrão | Descrição |
-|---|---|---|
-| `GCP_VM_NAME` | `bd-export-vm` | Nome da instância |
-| `GCP_VM_ZONE` | `us-central1-a` | Zona do Compute Engine |
-
-### Deploy do servidor para serviços de db e ask
+## Deploy
 
 ```bash
+docker build -t rodado .
 haloy deploy -f haloy.yml
 ```
+
+---
+
+## Environment
+
+```bash
+AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY   # Hetzner S3
+HETZNER_S3_ENDPOINT                         # S3 endpoint URL
+BASIC_AUTH_PASSWORD                         # web UI + /query auth
+GEMINI_API_KEY / OPENROUTER_API_KEY         # LLM backends
+SQL_GENERATOR                               # gemini | openrouter | sqlcoder
+TOP_K_TABLES                                # tables sent to LLM (default: 5)
+```
+
+See `.env.sample` for full list.
