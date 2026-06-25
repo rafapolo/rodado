@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>rodado — Operational Data Platform</title>
+  <meta name="description" content="End-to-end data platform over 533 Brazilian government datasets: ontology-driven semantic layer, AI-powered NL→SQL, automated pipelines, and a production query API.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d1117;
+      --surface:  #161b22;
+      --border:   #21262d;
+      --text:     #e6edf3;
+      --muted:    #8b949e;
+      --accent:   #1f6feb;
+      --accent2:  #388bfd;
+      --green:    #3fb950;
+      --orange:   #d29922;
+      --purple:   #8957e5;
+      --red:      #f85149;
+      --font:     -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --mono:     'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    a { color: var(--accent2); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout ── */
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 0;
+    }
+    nav .container {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .nav-brand {
+      font-weight: 700; font-size: 17px; color: var(--text);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-brand span { color: var(--accent2); }
+    .nav-links { display: flex; gap: 20px; font-size: 13px; color: var(--muted); }
+    .nav-links a { color: var(--muted); }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 72px 0 56px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-eyebrow {
+      font-size: 12px; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--accent2);
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 800; line-height: 1.15;
+      letter-spacing: -.02em;
+      margin-bottom: 20px;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent2); }
+    .hero-desc {
+      font-size: 17px; color: var(--muted); max-width: 640px;
+      margin-bottom: 32px; line-height: 1.7;
+    }
+    .stats {
+      display: flex; flex-wrap: wrap; gap: 24px;
+      margin-bottom: 36px;
+    }
+    .stat { display: flex; flex-direction: column; gap: 2px; }
+    .stat-value { font-size: 26px; font-weight: 700; color: var(--text); }
+    .stat-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 18px; border-radius: 6px;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: opacity .15s;
+    }
+    .btn:hover { opacity: .85; text-decoration: none; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+
+    /* ── Sections ── */
+    section { padding: 60px 0; border-bottom: 1px solid var(--border); }
+    section:last-child { border-bottom: none; }
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--accent2);
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-size: 26px; font-weight: 700; margin-bottom: 8px;
+      letter-spacing: -.01em;
+    }
+    .section-desc { color: var(--muted); margin-bottom: 32px; max-width: 560px; }
+
+    /* ── Competency table ── */
+    .competency-grid {
+      display: grid; gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+    .competency-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+    }
+    .competency-card .label {
+      font-size: 12px; font-weight: 600; color: var(--accent2);
+      text-transform: uppercase; letter-spacing: .06em;
+      margin-bottom: 6px;
+    }
+    .competency-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+    /* ── Workflow cards ── */
+    .workflow-cards { display: flex; flex-direction: column; gap: 20px; }
+    .workflow-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .workflow-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .workflow-tag {
+      font-size: 11px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
+    }
+    .tag-compliance { background: rgba(248,81,73,.15); color: var(--red); }
+    .tag-policy     { background: rgba(63,185,80,.15);  color: var(--green); }
+    .tag-journalism { background: rgba(137,87,229,.15); color: var(--purple); }
+    .workflow-title { font-weight: 600; font-size: 15px; }
+    .workflow-body { padding: 18px 20px; }
+    .workflow-situation {
+      font-size: 13px; color: var(--muted);
+      margin-bottom: 14px; line-height: 1.55;
+    }
+    pre {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.6;
+      color: #cdd9e5;
+      margin-bottom: 14px;
+    }
+    .workflow-decision {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 13px; color: var(--muted);
+    }
+    .workflow-decision::before {
+      content: "→"; color: var(--green); font-weight: 700; flex-shrink: 0;
+    }
+
+    /* ── Architecture ── */
+    .arch-stack { display: flex; flex-direction: column; gap: 0; }
+    .arch-layer {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0; padding: 18px 22px;
+      display: flex; align-items: flex-start; gap: 18px;
+    }
+    .arch-layer:first-child { border-radius: 10px 10px 0 0; }
+    .arch-layer:last-child  { border-radius: 0 0 10px 10px; }
+    .arch-layer + .arch-layer { border-top: none; }
+    .arch-arrow {
+      text-align: center; color: var(--muted);
+      font-size: 18px; padding: 2px 0; line-height: 1;
+    }
+    .arch-layer-name {
+      font-size: 11px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--accent2);
+      min-width: 140px; padding-top: 2px;
+    }
+    .arch-layer-items {
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .arch-item {
+      font-size: 12px; color: var(--muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .arch-item strong { color: var(--text); font-weight: 500; }
+
+    /* ── Ontology ── */
+    .ontology-objects {
+      display: grid; gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      margin-bottom: 28px;
+    }
+    .ontology-object {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .object-name {
+      font-size: 13px; font-weight: 700; color: var(--text);
+      margin-bottom: 4px;
+    }
+    .object-key {
+      font-family: var(--mono); font-size: 11px; color: var(--accent2);
+      margin-bottom: 6px;
+    }
+    .object-count { font-size: 11px; color: var(--muted); }
+    .join-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .join-table th {
+      text-align: left; padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted); font-weight: 600; font-size: 11px;
+      text-transform: uppercase; letter-spacing: .06em;
+    }
+    .join-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+    .join-table tr:last-child td { border-bottom: none; }
+    .join-table td:first-child { font-family: var(--mono); font-size: 12px; color: var(--accent2); }
+    .join-table td:nth-child(2) { color: var(--muted); }
+
+    /* ── AI layer ── */
+    .ai-pipeline {
+      display: flex; align-items: center; flex-wrap: wrap;
+      gap: 0; margin-bottom: 28px;
+    }
+    .ai-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 13px;
+    }
+    .ai-step .step-label {
+      font-size: 10px; text-transform: uppercase; letter-spacing: .08em;
+      color: var(--muted); margin-bottom: 2px;
+    }
+    .ai-step .step-value { font-weight: 600; color: var(--text); }
+    .ai-arrow {
+      color: var(--muted); padding: 0 8px; font-size: 16px;
+    }
+
+    /* ── Foundry mapping ── */
+    .mapping-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .mapping-table th {
+      text-align: left; padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted); font-weight: 600; font-size: 11px;
+      text-transform: uppercase; letter-spacing: .06em;
+    }
+    .mapping-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+    .mapping-table tr:last-child td { border-bottom: none; }
+    .mapping-table td:first-child { font-family: var(--mono); font-size: 12px; color: var(--text); }
+    .mapping-table td:last-child { color: var(--accent2); }
+
+    /* ── Governance ── */
+    .governance-grid {
+      display: grid; gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+    .gov-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .gov-card h4 {
+      font-size: 13px; font-weight: 700; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .gov-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .gov-card li { font-size: 13px; color: var(--muted); display: flex; gap: 6px; align-items: flex-start; }
+    .gov-card li::before { content: "·"; color: var(--accent2); flex-shrink: 0; }
+
+    /* ── Stack pills ── */
+    .stack-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      font-size: 12px; font-weight: 500;
+      padding: 5px 12px; border-radius: 20px;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    footer .container {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .ai-pipeline { flex-direction: column; align-items: flex-start; }
+      .ai-arrow { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="nav-brand">rodado <span>·</span> operational data platform</div>
+    <div class="nav-links">
+      <a href="#workflows">Workflows</a>
+      <a href="#ontology">Ontology</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#ai">AI Layer</a>
+      <a href="#foundry">Foundry Map</a>
+      <a href="#governance">Governance</a>
+    </div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">Open-source portfolio project</div>
+    <h1>Turn 533 government<br>datasets into <em>operational workflows</em></h1>
+    <p class="hero-desc">
+      Production data platform over Brazilian public data — ontology-driven semantic layer,
+      AI-powered natural-language query interface, automated ingestion pipelines,
+      and a persistent SQL API. Built and operated end-to-end as a single-engineer project.
+    </p>
+    <div class="stats">
+      <div class="stat"><span class="stat-value">533</span><span class="stat-label">tables</span></div>
+      <div class="stat"><span class="stat-value">~675 GB</span><span class="stat-label">Parquet+zstd</span></div>
+      <div class="stat"><span class="stat-value">34</span><span class="stat-label">domains</span></div>
+      <div class="stat"><span class="stat-value">8</span><span class="stat-label">ontology objects</span></div>
+      <div class="stat"><span class="stat-value">261+</span><span class="stat-label">time-series tables</span></div>
+    </div>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://github.com/rafapolo/rodado">View on GitHub</a>
+      <a class="btn btn-secondary" href="https://db.xn--2dk.xyz">Live Query Shell</a>
+    </div>
+  </div>
+</div>
+
+<!-- Competencies -->
+<section>
+  <div class="container">
+    <div class="section-label">FDE competency map</div>
+    <h2>What this project demonstrates</h2>
+    <p class="section-desc">Each FDE core competency mapped to a concrete deliverable in this project.</p>
+    <div class="competency-grid">
+      <div class="competency-card">
+        <div class="label">End-to-end delivery</div>
+        <p>Ingestion pipeline + semantic layer + API + browser UI — fully deployed and running in production since 2024.</p>
+      </div>
+      <div class="competency-card">
+        <div class="label">Data engineering</div>
+        <p>533 tables normalized to a typed ontology with a canonical join-key graph and partition-aware query patterns.</p>
+      </div>
+      <div class="competency-card">
+        <div class="label">Ontology design</div>
+        <p>8 business object types (Municipality, Company, Person, Contract…) with typed relationships and explicit cardinalities.</p>
+      </div>
+      <div class="competency-card">
+        <div class="label">Application development</div>
+        <p>SQL query API + browser DuckDB shell + Rust NL→SQL TUI — all production-deployed behind Caddy + auth.</p>
+      </div>
+      <div class="competency-card">
+        <div class="label">AI / ML enablement</div>
+        <p>LLM-powered NL→SQL with semantic table selection over 11.4 MB embedding index. Backends: Gemini, OpenRouter, Ollama.</p>
+      </div>
+      <div class="competency-card">
+        <div class="label">Access controls</div>
+        <p>HMAC-SHA256 auth, Caddy forward auth, read-only DuckDB enforcement. CPF/CNPJ handled as sensitive identifiers.</p>
+      </div>
+      <div class="competency-card">
+        <div class="label">Operational durability</div>
+        <p>Persistent DuckDB connection collocated with S3. Resumable pipeline. Docker + haloy deploy. Automated schema generation.</p>
+      </div>
+      <div class="competency-card">
+        <div class="label">Sensitive data handling</div>
+        <p>CPF (individual) and CNPJ (company) tax IDs — read-only access, no PII export endpoints, credential isolation per service.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Workflows -->
+<section id="workflows">
+  <div class="container">
+    <div class="section-label">User workflows</div>
+    <h2>Data → insight → decision</h2>
+    <p class="section-desc">Three analyst scenarios showing the full operational arc — the same pattern FDEs build for domain teams.</p>
+    <div class="workflow-cards">
+
+      <div class="workflow-card">
+        <div class="workflow-header">
+          <span class="workflow-tag tag-compliance">Compliance</span>
+          <span class="workflow-title">Company integrity check</span>
+        </div>
+        <div class="workflow-body">
+          <p class="workflow-situation">A compliance team verifies whether companies awarded public contracts have directors appearing in other sanctioned or flagged entities.</p>
+          <pre>SELECT e.razao_social, e.cnpj, s.nome_socio,
+       COUNT(DISTINCT e2.cnpj) AS other_entities,
+       SUM(c.valor_contrato)   AS total_contracts_brl
+FROM br_me_cnpj.estabelecimentos e
+JOIN br_me_cnpj.socios s     ON e.cnpj_basico = s.cnpj_basico
+JOIN br_me_cnpj.socios s2    ON s.cnpj_cpf_socio = s2.cnpj_cpf_socio
+                             AND s2.cnpj_basico &lt;&gt; s.cnpj_basico
+JOIN br_me_cnpj.estabelecimentos e2 ON s2.cnpj_basico = e2.cnpj_basico
+JOIN br_cgu_compras_governamentais.contratos c ON e.cnpj = c.cnpj_contratado
+WHERE e.sigla_uf = 'SP' AND c.ano = 2023
+GROUP BY 1,2,3 HAVING other_entities &gt; 2
+ORDER BY total_contracts_brl DESC</pre>
+          <div class="workflow-decision">Flag companies for manual review; route to procurement governance team.</div>
+        </div>
+      </div>
+
+      <div class="workflow-card">
+        <div class="workflow-header">
+          <span class="workflow-tag tag-policy">Policy</span>
+          <span class="workflow-title">Infrastructure gap prioritization</span>
+        </div>
+        <div class="workflow-body">
+          <p class="workflow-situation">A state health secretariat identifies municipalities with critically low hospital bed coverage to prioritize federal budget allocation.</p>
+          <pre>SELECT m.nome, m.sigla_uf, pop.populacao,
+       ROUND(cnes.leitos_sus * 1000.0 / NULLIF(pop.populacao,0), 2) AS leitos_por_mil,
+       ideb.nota_media  AS ideb_fundamental
+FROM br_bd_diretorios_brasil.municipio m
+JOIN br_ibge_populacao.municipio pop  ON m.id_municipio = pop.id_municipio  AND pop.ano  = 2022
+JOIN ( SELECT id_municipio, SUM(leitos) AS leitos_sus
+       FROM br_ms_cnes.estabelecimento WHERE ano = 2023
+       GROUP BY id_municipio ) cnes   ON m.id_municipio = cnes.id_municipio
+JOIN br_inep_ideb.municipio ideb      ON m.id_municipio = ideb.id_municipio AND ideb.ano = 2021
+WHERE pop.populacao &gt; 10000
+ORDER BY leitos_por_mil ASC, ideb_fundamental ASC
+LIMIT 50</pre>
+          <div class="workflow-decision">Top 50 ranked shortlist delivered to budget committee; top 10 flagged for emergency transfer.</div>
+        </div>
+      </div>
+
+      <div class="workflow-card">
+        <div class="workflow-header">
+          <span class="workflow-tag tag-journalism">Investigation</span>
+          <span class="workflow-title">Electoral spending anomalies</span>
+        </div>
+        <div class="workflow-body">
+          <p class="workflow-situation">An investigative journalist tracks whether campaign spending correlates with post-election public contract awards for companies linked to the same candidate.</p>
+          <pre>SELECT cand.nome_candidato, cand.sigla_partido,
+       SUM(desp.valor_despesa)          AS campaign_spend,
+       SUM(cont.valor_contrato)         AS post_election_contracts,
+       COUNT(DISTINCT cont.cnpj_contratado) AS linked_companies
+FROM br_tse_eleicoes.candidatos cand
+JOIN br_tse_eleicoes.despesas_candidato desp ON cand.id_candidato = desp.id_candidato
+JOIN br_me_cnpj.socios s     ON cand.cpf_candidato = s.cnpj_cpf_socio
+JOIN br_cgu_compras_governamentais.contratos cont
+     ON s.cnpj_basico = SUBSTR(cont.cnpj_contratado,1,8) AND cont.ano &gt; cand.ano
+WHERE cand.ano = 2022 AND cand.sigla_uf = 'SP'
+GROUP BY 1,2 HAVING post_election_contracts &gt; 1000000
+ORDER BY post_election_contracts DESC</pre>
+          <div class="workflow-decision">Shortlist of 12 candidates forwarded to editorial team with source data for verification.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Ontology -->
+<section id="ontology">
+  <div class="container">
+    <div class="section-label">Domain ontology</div>
+    <h2>Business objects &amp; relationships</h2>
+    <p class="section-desc">Brazilian public data modeled as typed entities with explicit join keys — the same mental model as enterprise ontology platforms.</p>
+    <div class="ontology-objects">
+      <div class="ontology-object">
+        <div class="object-name">Municipality</div>
+        <div class="object-key">id_municipio</div>
+        <div class="object-count">195 tables · canonical ref: br_bd_diretorios_brasil.municipio</div>
+      </div>
+      <div class="ontology-object">
+        <div class="object-name">State</div>
+        <div class="object-key">sigla_uf</div>
+        <div class="object-count">245 tables · 2-letter abbreviation</div>
+      </div>
+      <div class="ontology-object">
+        <div class="object-name">Company</div>
+        <div class="object-key">cnpj / cnpj_basico</div>
+        <div class="object-count">18 tables · br_me_cnpj.*</div>
+      </div>
+      <div class="ontology-object">
+        <div class="object-name">Person</div>
+        <div class="object-key">cpf</div>
+        <div class="object-count">servidores · socios · rais · candidatos</div>
+      </div>
+      <div class="ontology-object">
+        <div class="object-name">PublicContract</div>
+        <div class="object-key">cnpj_contratado</div>
+        <div class="object-count">br_cgu_compras_governamentais.*</div>
+      </div>
+      <div class="ontology-object">
+        <div class="object-name">CensusSector</div>
+        <div class="object-key">id_setor_censitario</div>
+        <div class="object-count">27 tables · 15-digit IBGE code</div>
+      </div>
+      <div class="ontology-object">
+        <div class="object-name">ElectoralZone</div>
+        <div class="object-key">id_municipio_tse</div>
+        <div class="object-count">23 tables · br_tse_eleicoes.*</div>
+      </div>
+      <div class="ontology-object">
+        <div class="object-name">SocialIndicator</div>
+        <div class="object-key">id_municipio + ano</div>
+        <div class="object-count">261+ time-series tables</div>
+      </div>
+    </div>
+    <table class="join-table">
+      <thead><tr><th>Join key</th><th>Tables</th><th>Object</th></tr></thead>
+      <tbody>
+        <tr><td>id_municipio</td><td>195</td><td>Municipality</td></tr>
+        <tr><td>sigla_uf</td><td>245</td><td>State</td></tr>
+        <tr><td>cnpj / cnpj_basico</td><td>18</td><td>Company</td></tr>
+        <tr><td>id_setor_censitario</td><td>27</td><td>CensusSector</td></tr>
+        <tr><td>id_municipio_tse</td><td>23</td><td>ElectoralZone</td></tr>
+        <tr><td>cbo_2002</td><td>6</td><td>OccupationClass</td></tr>
+        <tr><td>cnae_2_subclasse</td><td>6</td><td>EconomicActivity</td></tr>
+        <tr><td>ano</td><td>261</td><td>Temporal partition</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Architecture -->
+<section id="architecture">
+  <div class="container">
+    <div class="section-label">System architecture</div>
+    <h2>Layered, ontology-centric design</h2>
+    <p class="section-desc">Data → semantic model → access control → application → users. Each layer independently deployable.</p>
+    <div class="arch-stack">
+      <div class="arch-layer">
+        <div class="arch-layer-name">Users</div>
+        <div class="arch-layer-items">
+          <div class="arch-item">Analysts</div>
+          <div class="arch-item">Policy teams</div>
+          <div class="arch-item">Researchers</div>
+          <div class="arch-item">Journalists</div>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-layer-name">Application</div>
+        <div class="arch-layer-items">
+          <div class="arch-item"><strong>db.ミ.xyz</strong> — browser SQL shell</div>
+          <div class="arch-item"><strong>ask.ミ.xyz</strong> — AI NL→SQL TUI</div>
+          <div class="arch-item"><strong>POST /query</strong> — SQL API</div>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-layer-name">Semantic</div>
+        <div class="arch-layer-items">
+          <div class="arch-item">DuckDB views</div>
+          <div class="arch-item">schema.json (533 tables)</div>
+          <div class="arch-item">join_keys.md (entity graph)</div>
+          <div class="arch-item">table_embeddings.json (11.4 MB)</div>
+          <div class="arch-item">overview/ (34 domain narratives)</div>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-layer-name">Access</div>
+        <div class="arch-layer-items">
+          <div class="arch-item">auth.py (HMAC-SHA256)</div>
+          <div class="arch-item">Caddy (TLS + forward auth)</div>
+          <div class="arch-item">Read-only enforcement</div>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-layer-name">Storage</div>
+        <div class="arch-layer-items">
+          <div class="arch-item">Hetzner Object Storage</div>
+          <div class="arch-item">Parquet + zstd</div>
+          <div class="arch-item">533 tables · ~675 GB</div>
+          <div class="arch-item">httpfs on-demand reads</div>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-layer-name">Pipeline</div>
+        <div class="arch-layer-items">
+          <div class="arch-item">BigQuery export</div>
+          <div class="arch-item">GCS → Hetzner (rclone)</div>
+          <div class="arch-item">Resumable · dry-run · GCP VM option</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI Layer -->
+<section id="ai">
+  <div class="container">
+    <div class="section-label">AI-powered query layer</div>
+    <h2>Natural language → SQL → results</h2>
+    <p class="section-desc">An AIP-style workflow layer over 533 datasets. Semantic table selection prevents hallucination on large schema.</p>
+    <div class="ai-pipeline">
+      <div class="ai-step"><div class="step-label">Input</div><div class="step-value">Natural language question</div></div>
+      <div class="ai-arrow">→</div>
+      <div class="ai-step"><div class="step-label">Semantic search</div><div class="step-value">Top-K table selection</div></div>
+      <div class="ai-arrow">→</div>
+      <div class="ai-step"><div class="step-label">Schema filter</div><div class="step-value">Trim 3.8 MB → relevant tables</div></div>
+      <div class="ai-arrow">→</div>
+      <div class="ai-step"><div class="step-label">LLM</div><div class="step-value">Gemini / OpenRouter / Ollama</div></div>
+      <div class="ai-arrow">→</div>
+      <div class="ai-step"><div class="step-label">Execute</div><div class="step-value">DuckDB → results</div></div>
+    </div>
+    <pre>$ ask "Qual o município com maior mortalidade infantil no Nordeste em 2021?"
+
+→ SELECT m.nome, m.sigla_uf, s.taxa_mortalidade_infantil
+  FROM br_ms_sim.municipio s
+  JOIN br_bd_diretorios_brasil.municipio m ON s.id_municipio = m.id_municipio
+  WHERE m.sigla_uf IN ('BA','PE','CE','MA','PI','RN','PB','AL','SE')
+    AND s.ano = 2021
+  ORDER BY s.taxa_mortalidade_infantil DESC
+  LIMIT 1</pre>
+    <div class="stack-pills">
+      <span class="pill">Rust (ratatui)</span>
+      <span class="pill">Gemini Flash</span>
+      <span class="pill">OpenRouter</span>
+      <span class="pill">Ollama sqlcoder</span>
+      <span class="pill">cosine similarity</span>
+      <span class="pill">11.4 MB embeddings</span>
+    </div>
+  </div>
+</section>
+
+<!-- Foundry Mapping -->
+<section id="foundry">
+  <div class="container">
+    <div class="section-label">Palantir Foundry mapping</div>
+    <h2>Open-source analog of a Foundry stack</h2>
+    <p class="section-desc">This system reproduces the Foundry architecture pattern without the platform — same layers, same mental model.</p>
+    <table class="mapping-table">
+      <thead><tr><th>rodado component</th><th>Foundry equivalent</th></tr></thead>
+      <tbody>
+        <tr><td>BigQuery export scripts</td><td>External data connectors</td></tr>
+        <tr><td>Parquet files on Hetzner S3</td><td>Foundry datasets</td></tr>
+        <tr><td>DuckDB engine + views</td><td>Foundry query engine</td></tr>
+        <tr><td>basedosdados-schema.json</td><td>Ontology schema registry</td></tr>
+        <tr><td>join_keys.md entity graph</td><td>Object type links / property mappings</td></tr>
+        <tr><td>table_embeddings.json</td><td>Semantic search index</td></tr>
+        <tr><td>POST /query endpoint</td><td>Foundry Functions</td></tr>
+        <tr><td>Browser SQL shell</td><td>Workshop application</td></tr>
+        <tr><td>ask/ NL→SQL layer</td><td>AIP-powered application</td></tr>
+        <tr><td>scripts/roda.sh</td><td>Foundry pipeline</td></tr>
+        <tr><td>Caddy + auth.py</td><td>Access control + audit layer</td></tr>
+        <tr><td>overview/ domain narratives</td><td>Business context documentation</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Governance -->
+<section id="governance">
+  <div class="container">
+    <div class="section-label">Data quality &amp; governance</div>
+    <h2>Fit for operational use</h2>
+    <p class="section-desc">Documented assumptions, sensitive identifier handling, and query safety patterns — production-grade data discipline.</p>
+    <div class="governance-grid">
+      <div class="gov-card">
+        <h4>Partition requirements</h4>
+        <ul>
+          <li>Large tables (100M+ rows) require <code>ano</code>, <code>sigla_uf</code>, or <code>mes</code> filter to avoid scan timeouts</li>
+          <li>261 tables partitioned by <code>ano</code></li>
+          <li>245 tables partitioned by <code>sigla_uf</code></li>
+          <li>Always filter before aggregating on microdata</li>
+        </ul>
+      </div>
+      <div class="gov-card">
+        <h4>Sensitive identifiers</h4>
+        <ul>
+          <li><code>cpf</code> — individual tax ID (personal identifier)</li>
+          <li><code>cnpj</code> — company tax ID (14-digit)</li>
+          <li>Read-only access enforced at engine level</li>
+          <li>No PII export endpoints</li>
+          <li>Credentials isolated per service</li>
+        </ul>
+      </div>
+      <div class="gov-card">
+        <h4>Known limitations</h4>
+        <ul>
+          <li>Data freshness varies: CNPJ monthly, census 2010/2022, health 12–18 month lag</li>
+          <li>CPF joins can produce high cardinality — validate row counts</li>
+          <li>Survey microdata has high null rates in optional columns</li>
+          <li>Monetary totals require partition filters to avoid trillion-real artifacts</li>
+        </ul>
+      </div>
+      <div class="gov-card">
+        <h4>Sanity protocol</h4>
+        <ul>
+          <li>State expected order of magnitude before querying</li>
+          <li>Flag any result row exceeding it</li>
+          <li>Verify count via two independent query paths</li>
+          <li>Only report numbers that pass all three checks</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stack -->
+<section>
+  <div class="container">
+    <div class="section-label">Stack</div>
+    <h2>Technologies</h2>
+    <p class="section-desc" style="margin-bottom:20px;">Built across data, application, and infrastructure layers — no managed platform dependencies.</p>
+    <div class="stack-pills">
+      <span class="pill">DuckDB</span>
+      <span class="pill">Rust</span>
+      <span class="pill">Python</span>
+      <span class="pill">Parquet + zstd</span>
+      <span class="pill">Hetzner S3</span>
+      <span class="pill">rclone</span>
+      <span class="pill">Caddy</span>
+      <span class="pill">Docker</span>
+      <span class="pill">haloy</span>
+      <span class="pill">ratatui</span>
+      <span class="pill">Gemini</span>
+      <span class="pill">OpenRouter</span>
+      <span class="pill">Ollama</span>
+      <span class="pill">ttyd</span>
+      <span class="pill">HMAC-SHA256</span>
+      <span class="pill">httpfs</span>
+      <span class="pill">BigQuery export</span>
+      <span class="pill">gcloud</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <span>rodado — operational data platform · <a href="https://github.com/rafapolo/rodado">github.com/rafapolo/rodado</a></span>
+    <span>533 tables · ~675 GB · production since 2024</span>
+  </div>
+</footer>
+
+</body>
+</html>

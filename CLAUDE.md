@@ -97,6 +97,19 @@ BigQuery → Google Cloud Storage (Parquet) → Hetzner S3 (via `scripts/roda.sh
 | `BUCKET_REGION` | auth.py | S3 bucket region |
 | `OLLAMA_HOST` / `OLLAMA_MODEL` | ask | Local Ollama config |
 
+## Data Querying (DuckDB/CNPJ datasets)
+
+- Always include partition filters on large S3-backed tables to avoid timeouts.
+- Validate query results against sanity bounds (e.g., contract values, row counts) before reporting; flag anomalies like trillion-real totals.
+- Prefer name-based filtering combined with CPF when CPF joins alone produce implausible cardinality.
+- Before presenting query results: (1) state the expected order of magnitude, (2) flag any row that exceeds it, (3) verify the count two independent ways. Only report numbers that pass all three checks.
+
+## ⚠️ REGRA CRÍTICA — SEM EXCEÇÕES
+
+**NUNCA usar BigQuery, GCP ou `bq` CLI. JAMAIS. Toda consulta de dados vai pelo DuckDB remoto (`https://db.xn--2dk.xyz/query`) ou pelo binário `dbquery`. Não importa o tamanho da tabela, a complexidade do join ou se "é mais fácil" no BigQuery — DuckDB único.**
+
+---
+
 ## Key Conventions
 
 - **Never use GCP, BigQuery, or `bq` CLI for queries** — all data access goes through DuckDB only.
