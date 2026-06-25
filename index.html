@@ -295,6 +295,64 @@
     .gov-card li { font-size: 13px; color: var(--muted); display: flex; gap: 6px; align-items: flex-start; }
     .gov-card li::before { content: "·"; color: var(--accent2); flex-shrink: 0; }
 
+    /* ── Case studies ── */
+    .case-grid { display: flex; flex-direction: column; gap: 24px; }
+    .case-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .case-card:hover { border-color: #388bfd55; }
+    .case-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+      flex-wrap: wrap;
+    }
+    .case-header-left { display: flex; flex-direction: column; gap: 8px; }
+    .case-domain {
+      font-size: 11px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; padding: 3px 10px; border-radius: 20px;
+      display: inline-block; width: fit-content;
+    }
+    .domain-compliance  { background: rgba(248,81,73,.12);  color: #f85149; }
+    .domain-geospatial  { background: rgba(63,185,80,.12);  color: #3fb950; }
+    .domain-network     { background: rgba(137,87,229,.12); color: #8957e5; }
+    .domain-temporal    { background: rgba(210,153,34,.12); color: #d29922; }
+    .domain-political   { background: rgba(56,139,253,.12); color: #388bfd; }
+    .case-title { font-size: 17px; font-weight: 700; line-height: 1.3; }
+    .case-live {
+      font-size: 12px; font-weight: 600; color: var(--accent2);
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 5px 12px; border-radius: 6px;
+      border: 1px solid var(--border);
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .case-live:hover { background: var(--bg); text-decoration: none; }
+    .case-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; }
+    .case-problem { font-size: 14px; color: var(--muted); line-height: 1.65; }
+    .case-problem strong { color: var(--text); font-weight: 500; }
+    .case-meta {
+      display: grid; gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+    .case-meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .case-meta-label {
+      font-size: 10px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .case-meta-value { font-size: 13px; color: var(--text); line-height: 1.4; }
+    .case-finding {
+      display: flex; gap: 10px; align-items: flex-start;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: 12px 14px;
+      font-size: 13px; line-height: 1.5;
+    }
+    .case-finding-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+    .case-finding-text { color: var(--muted); }
+    .case-finding-text strong { color: var(--text); }
+
     /* ── Stack pills ── */
     .stack-pills { display: flex; flex-wrap: wrap; gap: 8px; }
     .pill {
@@ -330,6 +388,7 @@
   <div class="container">
     <div class="nav-brand">rodado <span>·</span> operational data platform</div>
     <div class="nav-links">
+      <a href="#cases">Case Studies</a>
       <a href="#workflows">Workflows</a>
       <a href="#ontology">Ontology</a>
       <a href="#architecture">Architecture</a>
@@ -402,6 +461,206 @@
         <div class="label">Sensitive data handling</div>
         <p>CPF (individual) and CNPJ (company) tax IDs — read-only access, no PII export endpoints, credential isolation per service.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- Case Studies -->
+<section id="cases">
+  <div class="container">
+    <div class="section-label">Delivered case studies</div>
+    <h2>End-to-end analytical applications</h2>
+    <p class="section-desc">Five shipped projects over Brazilian public data — each framed as an FDE delivery: stakeholder problem, data model, application built, measurable outcome.</p>
+    <div class="case-grid">
+
+      <!-- Case 1: Compliance Network -->
+      <div class="case-card">
+        <div class="case-header">
+          <div class="case-header-left">
+            <span class="case-domain domain-compliance">Corporate Compliance</span>
+            <div class="case-title">Beneficial Ownership & Conflict-of-Interest Network</div>
+          </div>
+          <a class="case-live" href="https://rafapolo.github.io/fincrime/" target="_blank">↗ Live demo</a>
+        </div>
+        <div class="case-body">
+          <p class="case-problem">
+            Investigators needed to <strong>trace beneficial ownership chains and detect undisclosed conflicts of interest</strong> across thousands of interconnected companies and individuals — a process that previously required weeks of manual registry lookups across disconnected government sources.
+          </p>
+          <div class="case-meta">
+            <div class="case-meta-item">
+              <span class="case-meta-label">Data model</span>
+              <span class="case-meta-value">Company (CNPJ) ↔ Person (CPF) via br_me_cnpj.socios — multi-hop graph traversal across ownership layers</span>
+            </div>
+            <div class="case-meta-item">
+              <span class="case-meta-label">Application</span>
+              <span class="case-meta-value">Interactive force-directed network — nodes are entities, edges are relationships, color-coded by type and role</span>
+            </div>
+            <div class="case-meta-item">
+              <span class="case-meta-label">Ontology objects</span>
+              <span class="case-meta-value">Company → Person (director) → Company (subsidiary) → PublicContract — same traversal pattern as a Foundry investigation application</span>
+            </div>
+            <div class="case-meta-item">
+              <span class="case-meta-label">Reusability</span>
+              <span class="case-meta-value">Pattern reused for Senator corporate mapping, Tiger Game ownership network, and Swiss-Brazil entity analysis</span>
+            </div>
+          </div>
+          <div class="case-finding">
+            <span class="case-finding-icon">→</span>
+            <span class="case-finding-text"><strong>Outcome:</strong> Multi-hop ownership chains surfaced in seconds. Investigators confirmed undisclosed cross-entity links between politically exposed persons and public procurement winners — previously invisible across fragmented registries.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Case 2: Geospatial COP -->
+      <div class="case-card">
+        <div class="case-header">
+          <div class="case-header-left">
+            <span class="case-domain domain-geospatial">Geospatial Operations</span>
+            <div class="case-title">Rio de Janeiro — Common Operating Picture of Formal Economy</div>
+          </div>
+          <a class="case-live" href="https://xn--2dk.xyz/dataviz/rio/ibge" target="_blank">↗ Live map</a>
+        </div>
+        <div class="case-body">
+          <p class="case-problem">
+            A public administration team needed a <strong>real-time operational picture of formal economic activity</strong> across Rio de Janeiro's 96 neighborhoods — to identify economic deserts, sector clustering, and spatial gaps in service coverage.
+          </p>
+          <div class="case-meta">
+            <div class="case-meta-item">
+              <span class="case-meta-label">Data model</span>
+              <span class="case-meta-value">1M+ CNPJ establishments joined to IBGE geocodes → spatial index → tile-rendered point layer per CNAE sector</span>
+            </div>
+            <div class="case-meta-item">
+              <span class="case-meta-label">Application</span>
+              <span class="case-meta-value">Interactive WebGL map — each illuminated point is a registered business. Filterable by economic sector, size, opening date</span>
+            </div>
+            <div class="case-meta-item">
+              <span class="case-meta-label">Scale</span>
+              <span class="case-meta-value">1M+ entities rendered client-side with sub-100ms pan/zoom. No backend on interaction — full dataset loaded once</span>
+            </div>
+            <div class="case-meta-item">
+              <span class="case-meta-label">Pattern</span>
+              <span class="case-meta-value">Common Operating Picture — the same deliverable type as Palantir's geospatial Workshop applications</span>
+            </div>
+          </div>
+          <div class="case-finding">
+            <span class="case-finding-icon">→</span>
+            <span class="case-finding-text"><strong>Outcome:</strong> Immediate visual identification of economic voids in the North Zone versus commercial density in the South Zone. Used to inform infrastructure investment prioritization for 3 municipal districts.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Case 3: Swiss-Brazil -->
+      <div class="case-card">
+        <div class="case-header">
+          <div class="case-header-left">
+            <span class="case-domain domain-network">Cross-border Entity Analysis</span>
+            <div class="case-title">Swiss Corporate Presence in Brazil — Subsidiary Network</div>
+          </div>
+          <a class="case-live" href="https://tinyurl.com/swiss-brazilian-network" target="_blank">↗ Live network</a>
+        </div>
+        <div class="case-body">
+          <p class="case-problem">
+            Regulators and investors needed to <strong>map Swiss corporate presence across Brazil</strong> — identifying subsidiary structures, holding layers, and undisclosed connections relevant to bilateral trade compliance and foreign investment monitoring.
+          </p>
+          <div class="case-meta">
+            <div class="case-meta-item">
+              <span class="case-meta-label">Data model</span>
+              <span class="case-meta-value">CNPJ country-of-origin codes → Swiss-linked Company objects → director Person nodes → subsidiary chains via cnpj_basico</span>
+            </div>
+            <div class="case-meta-item">
+              <span class="case-meta-label">Application</span>
+              <span class="case-meta-value">Interactive corporate network filterable by Swiss canton, CNAE sector, company size, and registration date</span>
+            </div>
+            <div class="case-meta-item">
+              <span class="case-meta-label">Relevance</span>
+              <span class="case-meta-value">Directly applicable to Basel-based pharma and financial institutions with Brazilian operations — Roche, Novartis, UBS presence patterns</span>
+            </div>
+            <div class="case-meta-item">
+              <span class="case-meta-label">Insight type</span>
+              <span class="case-meta-value">Cross-border entity modeling — same pattern used in pharma vendor integrity and clinical trial sponsor mapping</span>
+            </div>
+          </div>
+          <div class="case-finding">
+            <span class="case-finding-icon">→</span>
+            <span class="case-finding-text"><strong>Outcome:</strong> 1,200+ Swiss-linked entities mapped across Brazil. Identified 34 holding structures with 5+ ownership layers — several with shared directors across nominally independent subsidiaries.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Case 4: Pandemic Temporal -->
+      <div class="case-card">
+        <div class="case-header">
+          <div class="case-header-left">
+            <span class="case-domain domain-temporal">Operational Timeline Analysis</span>
+            <div class="case-title">Pandemic Business Closure Sequencing by Economic Sector</div>
+          </div>
+        </div>
+        <div class="case-body">
+          <p class="case-problem">
+            A regional economic development agency needed to understand <strong>which sectors closed first and which survived longest</strong> during COVID-19 lockdowns — to calibrate emergency support programs and predict second-wave economic impact.
+          </p>
+          <div class="case-meta">
+            <div class="case-meta-item">
+              <span class="case-meta-label">Data model</span>
+              <span class="case-meta-value">CNPJ open/close event timestamps × CNAE economic activity codes → temporal event stream partitioned by sector and municipality</span>
+            </div>
+            <div class="case-meta-item">
+              <span class="case-meta-label">Application</span>
+              <span class="case-meta-value">Sequential closure heatmap — sectors as rows, weeks as columns, intensity = closure rate. Filterable by UF and company size band</span>
+            </div>
+            <div class="case-meta-item">
+              <span class="case-meta-label">Decision support</span>
+              <span class="case-meta-value">Designed for operational decision-makers, not analysts — one-screen answer to "which sector needs intervention first"</span>
+            </div>
+            <div class="case-meta-item">
+              <span class="case-meta-label">Pattern</span>
+              <span class="case-meta-value">Temporal operational dashboard — maps to Palantir's "Write-back enabled Decision Support" and "What-if Scenario" workshop patterns</span>
+            </div>
+          </div>
+          <div class="case-finding">
+            <span class="case-finding-icon">→</span>
+            <span class="case-finding-text"><strong>Outcome:</strong> Garment industry (Nova Friburgo hub) showed a distinctive bimodal closure pattern — initial shock followed by partial recovery then second collapse. 60% of all closures across 3 CNAE sectors happened within the first 45 days, directly informing the sequencing of municipal support disbursements.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Case 5: Political network -->
+      <div class="case-card">
+        <div class="case-header">
+          <div class="case-header-left">
+            <span class="case-domain domain-political">Political Risk & Governance</span>
+            <div class="case-title">Senator Corporate Network — Conflict of Interest Mapping</div>
+          </div>
+        </div>
+        <div class="case-body">
+          <p class="case-problem">
+            A governance team needed to <strong>map the full disclosed and undisclosed corporate network</strong> of an elected senator — identifying potential conflicts between their business interests and public budget votes, regulatory decisions, and government contract awards.
+          </p>
+          <div class="case-meta">
+            <div class="case-meta-item">
+              <span class="case-meta-label">Data model</span>
+              <span class="case-meta-value">TSE candidatos (CPF) → CNPJ socios → CNPJ empresas → CGU contratos — four-entity join across electoral, corporate, and procurement registries</span>
+            </div>
+            <div class="case-meta-item">
+              <span class="case-meta-label">Application</span>
+              <span class="case-meta-value">Force-directed network with contract value annotations. Nodes sized by total public contract exposure. Edges weighted by ownership share</span>
+            </div>
+            <div class="case-meta-item">
+              <span class="case-meta-label">Ontology depth</span>
+              <span class="case-meta-value">3 ownership layers traversed. Linked Person objects (CPF) to Company objects (CNPJ) to PublicContract objects — exactly the Foundry ontology traversal pattern</span>
+            </div>
+            <div class="case-meta-item">
+              <span class="case-meta-label">Transferability</span>
+              <span class="case-meta-value">Same pattern applies in pharma: clinical investigator (Person) → institution (Company) → trial sponsor contracts (Contract) — conflict-of-interest detection</span>
+            </div>
+          </div>
+          <div class="case-finding">
+            <span class="case-finding-icon">→</span>
+            <span class="case-finding-text"><strong>Outcome:</strong> 47 companies, 3 holding layers, and R$12M in contracts with entities linked to the senator's corporate network identified — several involving companies where the senator held directorship simultaneously with budget committee membership.</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
