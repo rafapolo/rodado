@@ -415,9 +415,44 @@ SQL
 
 ## Data Coverage
 
-533 tables across 34 thematic domains — see [`overview/`](overview/index.md):
+Each of the 533 tables belongs to one of 34 thematic domains, documented in [`overview/index.md`](overview/index.md). For every domain there is a curated narrative file describing the datasets available, the key variables, the analytical questions they support, and how the tables join to each other — written as context for LLM-assisted querying and as a reference for analysts onboarding to the platform.
 
-Health · Education · Labor Market · Electoral · Companies (CNPJ) · Public Servants · Census · Environment · Infrastructure · Finance · Crime · Trade · Agriculture · and more.
+| # | Domain |
+|---|--------|
+| 01 | Racial Inequality & Social Stratification |
+| 02 | Education, Social Mobility & Inequality |
+| 03 | Health, Service Access & Social Determinants |
+| 04 | Labor Market, Informality & Stratification |
+| 05 | Politics, Representation & Electoral Behavior |
+| 06 | Crime, Violence & Public Security |
+| 07 | Economy, Credit & Regional Development |
+| 08 | Public Policy, Transfers & Social Protection |
+| 09 | Gender, Family & Demographic Dynamics |
+| 10 | Environment, Development & Sustainability |
+| 11 | Infrastructure, Services & Quality of Life |
+| 12 | Intersectionality & Compound Inequalities |
+| 13 | Migration, Urbanization & Spatial Transformation |
+| 14 | Consumption, Prices & Class Stratification |
+| 15 | Power, Elites & Social Reproduction |
+| 16 | Political Economy & Development |
+| 17 | Agriculture, Land Structure & Agribusiness |
+| 18 | Foreign Trade, Global Integration & Value Chains |
+| 19 | Financial Markets, Investment Funds & Capital Structure |
+| 20 | Science, Technology, Scholarships & Academic Output |
+| 21 | Corruption, Administrative Misconduct & Public Oversight |
+| 22 | Climate, Wildfires & Temperature Variation |
+| 23 | Epidemiology, Infectious Diseases & Health Surveillance |
+| 24 | Outpatient, Hospital & SUS Procedure Data |
+| 25 | Federal Budget, Parliamentary Amendments & Budget Execution |
+| 26 | Public Servants, Personnel Management & State Elites |
+| 27 | Opinion Polls, Public Perception & Political Behavior |
+| 28 | School Violence, Educational Security & Learning Environment |
+| 29 | Detailed Electoral Data, Litigation & Supreme Court |
+| 30 | Productive Structure, Companies, SMEs & Competitive Dynamics |
+| 31 | Human Development, Social Vulnerability & Composite Indices |
+| 32 | Connectivity, Digital Education & Telecom Infrastructure |
+| 33 | Comparative International Data & Global Rankings |
+| 34 | Atlas, Georeferenced Maps & Territorial Bases |
 
 ---
 
