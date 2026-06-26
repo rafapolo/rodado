@@ -8,7 +8,7 @@
 
 ## Data Coverage
 
-Each of the 533 tables belongs to one of 34 thematic domains, documented in [`overview/index.md`](overview/index.md). For every domain there is a curated narrative file describing the datasets available, the key variables, the analytical questions they support, and how the tables join to each other — written as context for LLM-assisted querying and as a reference for analysts onboarding to the platform.
+Each of the 533 tables belongs to one of 34 thematic domains, documented in [`overview/index-en.md`](overview/index-en.md). For every domain there is a curated narrative file describing the datasets available, the key variables, the analytical questions they support, and how the tables join to each other — written as context for LLM-assisted querying and as a reference for analysts onboarding to the platform.
 
 | # | Domain |
 |---|--------|
