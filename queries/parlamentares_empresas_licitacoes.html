@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parlamentares Eleitos com Empresas Vencedoras de Licitações Federais</title>
+<link href="https://fonts.googleapis.com/css2?family=Monda:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Monda", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #e6edf3;
+    background: #0d1117;
+    margin: 0;
+    padding: 0;
+  }
+  .markdown-body {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+  h1, h2, h3 { font-weight: 700; line-height: 1.25; margin-top: 24px; margin-bottom: 16px; padding-bottom: 0.3em; border-bottom: 1px solid #30363d; }
+  h1 { font-size: 2em; color: #e6edf3; }
+  h2 { font-size: 1.5em; color: #e6edf3; }
+  h3 { font-size: 1.25em; color: #e6edf3; }
+  p { margin-top: 0; margin-bottom: 16px; }
+  ul, ol { margin-top: 0; margin-bottom: 16px; padding-left: 2em; }
+  li { margin-top: 0.25em; }
+  strong { font-weight: 700; color: #e6edf3; }
+  code {
+    font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 85%;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 0.2em 0.4em;
+    color: #e6edf3;
+  }
+  hr {
+    height: 0.25em;
+    padding: 0;
+    margin: 24px 0;
+    background-color: #30363d;
+    border: 0;
+  }
+  blockquote {
+    margin: 0 0 16px 0;
+    padding: 0 1em;
+    color: #848d97;
+    border-left: 0.25em solid #3d444d;
+  }
+  blockquote p { margin-bottom: 0; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 16px;
+    display: table;
+  }
+  th, td {
+    padding: 6px 13px;
+    border: 1px solid #3d444d;
+    font-size: 14px;
+  }
+  th {
+    font-weight: 700;
+    background: #161b22;
+    white-space: nowrap;
+    color: #e6edf3;
+  }
+  tr:nth-child(even) td { background: #161b22; }
+  tr:hover td { background: #1c2128; }
+  td:nth-child(8), td:nth-child(9) { white-space: nowrap; }
+  td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+  th:last-child { text-align: right; }
+  .value-high { color: #f85149; font-weight: 700; }
+  .value-mid  { color: #d29922; }
+</style>
+</head>
+<body>
+<article class="markdown-body">
+
+<h1>Parlamentares Eleitos com Empresas Vencedoras de Licitações Federais</h1>
+
+<p>Cruzamento entre:</p>
+<ul>
+  <li><strong>TSE</strong> (<code>br_tse_eleicoes.candidatos</code> + <code>resultados_candidato</code>) — parlamentares eleitos com CPF</li>
+  <li><strong>CNPJ/ME</strong> (<code>br_me_cnpj.socios</code>) — quadro societário das empresas vencedoras</li>
+  <li><strong>CGU</strong> (<code>br_cgu_licitacao_contrato.licitacao_item</code>) — itens de licitação &gt; R$10k</li>
+</ul>
+
+<p><strong>Join</strong>: nome exato (case-insensitive) + 6 dígitos centrais do CPF mascarado (<code>***XXXXXX**</code>).<br>
+<strong>Filtro</strong>: <code>valor_item</code> entre R$10.001 e R$500M; CNPJ vencedor válido (14 dígitos numéricos); empresas públicas federais conhecidas excluídas manualmente.</p>
+
+<hr>
+
+<h2>Resultados (ordenados por valor total)</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parlamentar</th>
+      <th>Cargo</th>
+      <th>Partido</th>
+      <th>UF</th>
+      <th>Último mandato</th>
+      <th>Empresa</th>
+      <th>CNPJ</th>
+      <th>Primeiro contrato</th>
+      <th>Último contrato</th>
+      <th>Itens</th>
+      <th>Valor Total (R$)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>VITTORIO MEDIOLI</td><td>Dep. Federal / Prefeito</td><td>PSDB → PSD</td><td>MG</td><td>2020</td><td>DEVA VEICULOS LTDA</td><td>23762552000302</td><td>2017</td><td>2023</td><td>270</td><td class="value-high">1.872.266.982</td></tr>
+    <tr><td>MANOEL SALVIANO SOBRINHO</td><td>Dep. Federal</td><td>PSDB</td><td>CE</td><td>2010</td><td>FARMACE – IND. QUIM.-FARM. CEARENSE LTDA</td><td>06628333000146</td><td>2013</td><td>2023</td><td>8.283</td><td class="value-high">1.108.154.974</td></tr>
+    <tr><td>WALDOMIRO LUIZ SOSTER</td><td>Dep. Estadual</td><td>PSDB</td><td>AC</td><td>1998</td><td>M. S. M. INDUSTRIAL LTDA</td><td>05394853000179</td><td>2015</td><td>2023</td><td>74</td><td class="value-high">791.602.773</td></tr>
+    <tr><td>STELLA ALVES BRANCO ROMANOS</td><td>Prefeita / Vice-prefeita</td><td>PDT / PHS</td><td>RJ</td><td>2004</td><td>INSTITUTO VITAL BRAZIL S/A¹</td><td>30064034000100</td><td>2014</td><td>2022</td><td>50</td><td class="value-high">754.366.936</td></tr>
+    <tr><td>CARLOS RONALDO VIEIRA FERNANDES</td><td>Vereador</td><td>PT</td><td>RS</td><td>2000</td><td>CEEE-D (COMPANHIA ESTADUAL DE DIST. ENERGIA)¹</td><td>08467115000100</td><td>2013</td><td>2023</td><td>451</td><td class="value-high">753.170.033</td></tr>
+    <tr><td>RUBEM MEDINA</td><td>Dep. Federal</td><td>PFL</td><td>RJ</td><td>1998</td><td>ARTPLAN COMUNICACAO S/A</td><td>33673286000478</td><td>2013</td><td>2017</td><td>4</td><td class="value-high">398.000.000²</td></tr>
+    <tr><td>MARIA HELENA TEIXEIRA LIMA</td><td>Dep. Federal</td><td>MDB</td><td>RR</td><td>2022</td><td>VOARE TAXI AEREO LTDA</td><td>00581615000159</td><td>2013</td><td>2023</td><td>57</td><td class="value-mid">301.817.731</td></tr>
+    <tr><td>REGINA VERA NOGUEIRA LEMOS</td><td>Vereadora</td><td>PTN</td><td>SP</td><td>2004</td><td>POWERTECH ENGENHARIA SERV. E LOCACOES</td><td>12302292000104</td><td>2016</td><td>2017</td><td>4</td><td class="value-mid">278.077.027</td></tr>
+    <tr><td>CARLOS AVALONE JUNIOR</td><td>Dep. Estadual</td><td>PSDB</td><td>MT</td><td>2022</td><td>FRATELLO ENGENHARIA LTDA</td><td>22451088000109</td><td>2016</td><td>2019</td><td>13</td><td class="value-mid">240.612.157</td></tr>
+    <tr><td>ANTONIO ELIAS DE OLIVEIRA</td><td>Prefeito</td><td>PMDB</td><td>PA</td><td>2008</td><td>CONSTRUTORA JUMBO LTDA</td><td>07630228000104</td><td>2023</td><td>2023</td><td>4</td><td class="value-mid">196.475.734</td></tr>
+    <tr><td>EDMILSON PEDRO PELIZARI</td><td>Prefeito / Vice-prefeito</td><td>PP</td><td>RS</td><td>2016</td><td>ASSOC RIOGR EMPR ASSIST TEC E EXT. RURAL</td><td>89161475000173</td><td>2013</td><td>2018</td><td>192</td><td class="value-mid">185.532.591</td></tr>
+    <tr><td>ANSELMO GUEDES DE CASTILHO</td><td>Vereador</td><td>PT</td><td>PB</td><td>2000</td><td>FUNDACAO FUNETEC PB</td><td>02168943000153</td><td>2013</td><td>2023</td><td>43</td><td class="value-mid">145.263.270</td></tr>
+    <tr><td>FRANCISCO BELLO GALINDO FILHO</td><td>Dep. Estadual</td><td>PTB</td><td>MT</td><td>2006</td><td>UNIDAS CONSTRUTORA LTDA</td><td>01865426000170</td><td>2013</td><td>2018</td><td>11</td><td class="value-mid">170.824.189</td></tr>
+    <tr><td>MARCOS LEITE FRANCO SOBRINHO</td><td>Dep. Estadual</td><td>PMDB</td><td>SE</td><td>2002</td><td>SERGIPE IND. TEXTIL LTDA (em rec. judicial)</td><td>13006218000286</td><td>2013</td><td>2020</td><td>64</td><td class="value-mid">134.846.234</td></tr>
+    <tr><td>MARCIO GAMBIN</td><td>Vereador</td><td>PT</td><td>RS</td><td>2000</td><td>LICITARE PRODUTOS, MAT. E SERVICOS LTDA</td><td>18641075000117</td><td>2013</td><td>2023</td><td>2.812</td><td class="value-mid">111.541.070</td></tr>
+    <tr><td>TARCIZO MESSIAS DOS SANTOS</td><td>Prefeito</td><td>PSDB</td><td>PR</td><td>2000</td><td>FRANGOS PIONEIRO IND. ALIMENTOS LTDA</td><td>00974731000642</td><td>2013</td><td>2023</td><td>102</td><td class="value-mid">113.637.682</td></tr>
+    <tr><td>FRANCISCO LIMA LEITE</td><td>Vereador</td><td>PR</td><td>PE</td><td>2012</td><td>S N SINALIZADORA NACIONAL E SERVICOS LTDA</td><td>08439201000100</td><td>2018</td><td>2022</td><td>19</td><td>103.573.686</td></tr>
+    <tr><td>JOAQUIM FRANCISCO DE PAULA</td><td>Prefeito / Vereador</td><td>PSDC</td><td>SP</td><td>2004</td><td>HOSPIMETAL IND. METAL. EQUIP. HOSP. LTDA</td><td>54178983000180</td><td>2013</td><td>2021</td><td>98</td><td>88.256.950</td></tr>
+    <tr><td>MARCUS ANTONIO D ARRIGO</td><td>Vereador</td><td>PSDB</td><td>RS</td><td>2004</td><td>INTRAL SA IND. MATERIAIS ELETRICOS</td><td>88611264000122</td><td>2014</td><td>2023</td><td>57</td><td>87.609.908</td></tr>
+  </tbody>
+</table>
+
+<blockquote>
+  <p>¹ Possível falso positivo: empresa com controle público estadual (Vital Brazil = empresa pública do RJ; CEEE-D = empresa pública do RS).<br>
+  ² Rubem Medina aparece com dois CNPJs da Artplan: R$298M (CNPJ ...000478) + R$100M (CNPJ ...000125) = R$398M total.</p>
+</blockquote>
+
+<hr>
+
+<h2>Órgãos contratantes mais recorrentes</h2>
+
+<ul>
+  <li><strong>DNIT</strong> — infraestrutura rodoviária (Waldomiro Soster/M.S.M., Carlos Avalone/Fratello, Francisco Bello/Unidas)</li>
+  <li><strong>CODEVASF</strong> — irrigação e desenvolvimento regional (Vittorio Medioli/Deva Veículos)</li>
+  <li><strong>EBSERH</strong> — hospitais universitários federais (Manoel Salviano/Farmace)</li>
+  <li><strong>Ministério da Saúde</strong> — compras de saúde (Maria Helena/Voare)</li>
+  <li><strong>Presidência da República</strong> — comunicação (Rubem Medina/Artplan)</li>
+</ul>
+
+<hr>
+
+<h2>Metodologia e Limitações</h2>
+
+<ul>
+  <li><strong>Tabelas</strong>: <code>br_tse_eleicoes.candidatos</code>, <code>br_tse_eleicoes.resultados_candidato</code>, <code>br_me_cnpj.socios</code>, <code>br_cgu_licitacao_contrato.licitacao_item</code></li>
+  <li><strong>Chave de join sócio→parlamentar</strong>: <code>SUBSTR(cpf_mascarado, 4, 6) = SUBSTR(cpf_tse, 4, 6) AND UPPER(nome_socio) = UPPER(nome_candidato)</code></li>
+  <li><strong>Limitações</strong>:
+    <ol>
+      <li>CPF mascarado na Receita Federal — apenas 6 de 11 dígitos visíveis; o nome mitiga mas não elimina falsos positivos</li>
+      <li>Quadro societário é histórico — o sócio pode ter entrado/saído antes ou depois dos contratos</li>
+      <li>Não cruzamos data do mandato com data do contrato — alguns contratos podem ser posteriores ao último mandato listado</li>
+      <li>Valor filtrado entre R$10.001 e R$500M por item (58 registros com valores &gt; R$500M foram removidos por erro na fonte)</li>
+      <li>Empresas públicas federais óbvias foram excluídas (SERPRO, Caixa, BNDES, Correios, Petrobras), mas algumas mistas podem permanecer</li>
+    </ol>
+  </li>
+</ul>
+
+</article>
+</body>
+</html>
