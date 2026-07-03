@@ -47,4 +47,4 @@ This project provides an integrated view of the **Base dos Dados Brasil** ecosys
 
 ## Additional References
 
-- [schema.md](schema.md) — Complete index of all tables and variables
+- [schema.md](../docs/schema.md) — Complete index of all tables and variables

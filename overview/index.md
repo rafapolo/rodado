@@ -47,4 +47,4 @@ Este projeto oferece uma visão integrada do ecossistema de dados da **Base dos 
 
 ## Referências Adicionais
 
-- [schema.md](schema.md) — Índice completo de todas as tabelas e variáveis
+- [schema.md](../docs/schema.md) — Índice completo de todas as tabelas e variáveis
