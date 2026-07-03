@@ -1,0 +1,289 @@
+/* rodado — sistema visual editorial (pt-br) */
+
+:root {
+  --bg: #f6f2ea;
+  --bg-raised: #efe9dd;
+  --ink: #201d18;
+  --ink-soft: #4a443a;
+  --ink-faint: #77705f;
+  --rule: #d9d0bd;
+  --accent: #9c3b2e;
+  --accent-soft: #c9573f;
+  --serif: Charter, "Iowan Old Style", "Palatino Linotype", Georgia, "Times New Roman", serif;
+  --sans: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --measure: 700px;
+}
+
+:root[data-theme="dark"] {
+  --bg: #1b1811;
+  --bg-raised: #242017;
+  --ink: #ece6d8;
+  --ink-soft: #c7bfab;
+  --ink-faint: #8f8672;
+  --rule: #3a3427;
+  --accent: #e08468;
+  --accent-soft: #c9573f;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1b1811;
+    --bg-raised: #242017;
+    --ink: #ece6d8;
+    --ink-soft: #c7bfab;
+    --ink-faint: #8f8672;
+    --rule: #3a3427;
+    --accent: #e08468;
+    --accent-soft: #c9573f;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 19px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:hover { color: var(--accent-soft); }
+
+/* ── topo ── */
+
+.site-nav {
+  border-bottom: 1px solid var(--rule);
+  padding: 1.1rem 1.5rem;
+}
+
+.site-nav .nav-inner {
+  max-width: 920px;
+  margin: 0 auto;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--sans);
+}
+
+.site-nav .brand {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.site-nav .links { display: flex; gap: 1.25rem; font-size: 0.86rem; }
+.site-nav .links a { color: var(--ink-soft); text-decoration: none; }
+.site-nav .links a:hover { color: var(--accent); }
+
+/* ── conteúdo ── */
+
+main { max-width: var(--measure); margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+.wide { max-width: 920px; }
+
+.eyebrow {
+  font-family: var(--sans);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-size: 0.78rem;
+  color: var(--accent);
+  font-weight: 600;
+  margin: 0 0 0.9rem;
+}
+
+h1 {
+  font-size: 2.3rem;
+  line-height: 1.2;
+  margin: 0 0 0.6rem;
+  font-weight: 700;
+}
+
+.dek {
+  font-size: 1.15rem;
+  color: var(--ink-soft);
+  margin: 0 0 2.2rem;
+  line-height: 1.55;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin: 3rem 0 1rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--rule);
+}
+
+h3 {
+  font-size: 1.15rem;
+  margin: 2.2rem 0 0.7rem;
+  color: var(--ink);
+}
+
+p { margin: 0 0 1.25rem; }
+
+.lede { font-size: 1.1rem; }
+
+.pull {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--accent);
+  border-left: 3px solid var(--accent);
+  padding: 0.2rem 0 0.2rem 1.1rem;
+  margin: 1.1rem 0 1.6rem;
+}
+
+/* ── tabelas ── */
+
+.data-table-wrap { overflow-x: auto; margin: 0 0 1.8rem; }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 0.88rem;
+}
+
+caption {
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+  margin-bottom: 0.4rem;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.5rem 0.9rem 0.5rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+th {
+  font-weight: 600;
+  color: var(--ink-soft);
+  border-bottom: 2px solid var(--ink-soft);
+}
+
+tr:last-child td { border-bottom: 1px solid var(--rule); }
+
+/* ── blocos ── */
+
+.callout {
+  background: var(--bg-raised);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 1.3rem 1.5rem;
+  margin: 1.8rem 0;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+}
+
+.callout h3 { margin-top: 0; font-family: var(--sans); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-faint); }
+
+.callout ul { margin: 0.4rem 0 0; padding-left: 1.2rem; }
+.callout li { margin-bottom: 0.5rem; }
+
+/* ── grade de temas (landing) ── */
+
+.tema-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin: 2rem 0;
+}
+
+.tema-card {
+  background: var(--bg);
+  padding: 1.4rem 1.5rem;
+  text-decoration: none;
+  color: var(--ink);
+  display: block;
+}
+
+.tema-card:hover { background: var(--bg-raised); }
+
+.tema-card .num {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.05em;
+}
+
+.tema-card .titulo {
+  font-weight: 700;
+  margin: 0.3rem 0 0.35rem;
+  line-height: 1.3;
+}
+
+.tema-card .gancho {
+  font-family: var(--sans);
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+/* ── pager tema anterior/próximo ── */
+
+.pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--sans);
+  font-size: 0.9rem;
+}
+
+.pager a { text-decoration: none; color: var(--ink-soft); }
+.pager a:hover { color: var(--accent); }
+.pager .dir { display: block; font-size: 0.75rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.2rem; }
+.pager .next { text-align: right; margin-left: auto; }
+
+.voltar {
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+  text-decoration: none;
+  color: var(--ink-faint);
+}
+.voltar:hover { color: var(--accent); }
+
+/* ── rodapé ── */
+
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 2.2rem 1.5rem 3rem;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--ink-faint);
+}
+
+footer .footer-inner {
+  max-width: 920px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.2rem;
+}
+
+footer a { color: var(--ink-faint); }
+footer a:hover { color: var(--accent); }
+
+@media (max-width: 600px) {
+  body { font-size: 17px; }
+  h1 { font-size: 1.8rem; }
+  main { padding: 2rem 1.2rem 3.5rem; }
+}

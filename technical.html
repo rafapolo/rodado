@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Technical appendix — rodado</title>
+<meta name="description" content="Engineering architecture behind rodado: ontology, pipeline, AI query layer, and an explicit Palantir Foundry component mapping.">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  /* extensão do design system só para o conteúdo técnico denso desta página */
+  .grid-cards { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); margin: 0 0 2rem; }
+  .card { background: var(--bg-raised); border: 1px solid var(--rule); border-radius: 4px; padding: 1.1rem 1.3rem; font-family: var(--sans); }
+  .card .label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); margin-bottom: 0.4rem; }
+  .card p { font-size: 0.86rem; color: var(--ink-soft); margin: 0; line-height: 1.5; }
+  pre { background: var(--bg-raised); border: 1px solid var(--rule); border-radius: 4px; padding: 0.9rem 1.1rem; overflow-x: auto; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.82rem; line-height: 1.6; margin: 0 0 1.2rem; }
+  .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1rem; font-family: var(--sans); }
+  .pill { font-size: 0.78rem; padding: 0.25rem 0.7rem; border-radius: 20px; background: var(--bg-raised); border: 1px solid var(--rule); color: var(--ink-soft); }
+  .case { border: 1px solid var(--rule); border-radius: 4px; margin-bottom: 1.5rem; overflow: hidden; }
+  .case-head { padding: 1rem 1.3rem; border-bottom: 1px solid var(--rule); font-family: var(--sans); }
+  .case-head .domain { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); display: block; margin-bottom: 0.3rem; }
+  .case-head .title { font-weight: 700; font-family: var(--serif); font-size: 1.05rem; }
+  .case-body { padding: 1.1rem 1.3rem; font-family: var(--sans); font-size: 0.9rem; }
+  .case-body p { font-size: 0.9rem; }
+  .outcome { background: var(--bg); border-left: 3px solid var(--accent); padding: 0.6rem 0.9rem; font-size: 0.86rem; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">rodado</a>
+    <div class="links">
+      <a href="index.html">Temas</a>
+      <a href="en.html">EN</a>
+      <a href="https://github.com/rafapolo/rodado">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wide">
+  <a class="voltar" href="index.html">&larr; voltar ao índice</a>
+
+  <p class="eyebrow">Technical appendix</p>
+  <h1>Engineering behind rodado</h1>
+  <p class="dek">The public-facing site is a sociological reading of Brazilian public data. This page is the engineering appendix for readers interested in how the platform behind it is built — ingestion, ontology, AI query layer, and a direct comparison to how the same architecture maps onto Palantir Foundry.</p>
+
+  <h2>Engineering competencies demonstrated</h2>
+  <p>Each capability below is backed by a concrete, deployed piece of this project — not a claim, a running system.</p>
+  <div class="grid-cards">
+    <div class="card"><div class="label">End-to-end delivery</div><p>Ingestion pipeline + semantic layer + API + browser UI — fully deployed and running end-to-end as a single-engineer project.</p></div>
+    <div class="card"><div class="label">Data engineering</div><p>533 tables normalized to a typed ontology with a canonical join-key graph and partition-aware query patterns.</p></div>
+    <div class="card"><div class="label">Ontology design</div><p>8 business object types (Municipality, Company, Person, Contract…) with typed relationships and explicit cardinalities.</p></div>
+    <div class="card"><div class="label">Application development</div><p>SQL query API + browser DuckDB shell + Rust NL→SQL TUI — all production-deployed behind Caddy + auth.</p></div>
+    <div class="card"><div class="label">AI / ML enablement</div><p>LLM-powered NL→SQL with semantic table selection over an 11.4 MB embedding index. Backends: Gemini, OpenRouter, Ollama.</p></div>
+    <div class="card"><div class="label">Access controls</div><p>HMAC-SHA256 auth, Caddy forward auth, read-only DuckDB enforcement. CPF/CNPJ handled as sensitive identifiers.</p></div>
+    <div class="card"><div class="label">Operational durability</div><p>Persistent DuckDB connection collocated with S3. Resumable pipeline. Docker + haloy deploy. Automated schema generation.</p></div>
+    <div class="card"><div class="label">Sensitive data handling</div><p>CPF (individual) and CNPJ (company) tax IDs — read-only access, no PII export endpoints, credential isolation per service.</p></div>
+  </div>
+
+  <h2>Delivered case studies</h2>
+  <p>Five shipped applications over Brazilian public data — each with a stakeholder problem, a data model, an application built, and a measurable outcome.</p>
+
+  <div class="case">
+    <div class="case-head"><span class="domain">Corporate compliance</span><span class="title">Beneficial ownership & conflict-of-interest network</span></div>
+    <div class="case-body">
+      <p>Investigators needed to trace beneficial ownership chains and detect undisclosed conflicts of interest across thousands of interconnected companies and individuals — previously weeks of manual registry lookups. <a href="https://rafapolo.github.io/fincrime/" target="_blank">Live demo ↗</a></p>
+      <p><strong>Data model:</strong> Company (CNPJ) ↔ Person (CPF) via <code>br_me_cnpj.socios</code> — multi-hop graph traversal across ownership layers. <strong>Application:</strong> interactive force-directed network, nodes as entities, edges as relationships.</p>
+      <div class="outcome">Outcome: multi-hop ownership chains surfaced in seconds; undisclosed cross-entity links between politically exposed persons and public procurement winners confirmed.</div>
+    </div>
+  </div>
+
+  <div class="case">
+    <div class="case-head"><span class="domain">Geospatial operations</span><span class="title">Rio de Janeiro — common operating picture of formal economy</span></div>
+    <div class="case-body">
+      <p>A public administration team needed a real-time operational picture of formal economic activity across Rio's 96 neighborhoods. <a href="https://xn--2dk.xyz/dataviz/rio/ibge" target="_blank">Live map ↗</a></p>
+      <p><strong>Data model:</strong> 1M+ CNPJ establishments joined to IBGE geocodes → spatial index → tile-rendered point layer per CNAE sector. Rendered client-side with sub-100ms pan/zoom.</p>
+      <div class="outcome">Outcome: immediate visual identification of economic voids in the North Zone vs. commercial density in the South Zone; used to prioritize infrastructure investment in 3 municipal districts.</div>
+    </div>
+  </div>
+
+  <div class="case">
+    <div class="case-head"><span class="domain">Cross-border entity analysis</span><span class="title">Swiss corporate presence in Brazil</span></div>
+    <div class="case-body">
+      <p>Regulators and investors needed to map Swiss corporate presence across Brazil — subsidiary structures, holding layers, undisclosed connections. <a href="https://tinyurl.com/swiss-brazilian-network" target="_blank">Live network ↗</a></p>
+      <p><strong>Data model:</strong> CNPJ country-of-origin codes → Swiss-linked Company objects → director Person nodes → subsidiary chains via <code>cnpj_basico</code>.</p>
+      <div class="outcome">Outcome: 1,200+ Swiss-linked entities mapped; 34 holding structures with 5+ ownership layers identified, several with shared directors across nominally independent subsidiaries.</div>
+    </div>
+  </div>
+
+  <div class="case">
+    <div class="case-head"><span class="domain">Operational timeline analysis</span><span class="title">Pandemic business closure sequencing by sector</span></div>
+    <div class="case-body">
+      <p>A regional economic development agency needed to know which sectors closed first and which survived longest during COVID-19 lockdowns.</p>
+      <p><strong>Data model:</strong> CNPJ open/close event timestamps × CNAE codes → temporal event stream partitioned by sector and municipality. <strong>Application:</strong> sequential closure heatmap.</p>
+      <div class="outcome">Outcome: garment industry (Nova Friburgo hub) showed a bimodal closure pattern; 60% of closures across 3 CNAE sectors happened within the first 45 days, informing municipal support disbursement sequencing.</div>
+    </div>
+  </div>
+
+  <div class="case">
+    <div class="case-head"><span class="domain">Political risk & governance</span><span class="title">Senator corporate network — conflict of interest mapping</span></div>
+    <div class="case-body">
+      <p>A governance team needed to map a senator's full corporate network to identify conflicts between business interests and public budget votes, regulatory decisions, and contract awards.</p>
+      <p><strong>Data model:</strong> TSE <code>candidatos</code> (CPF) → CNPJ <code>socios</code> → CNPJ empresas → CGU <code>contratos</code> — four-entity join across electoral, corporate, and procurement registries.</p>
+      <div class="outcome">Outcome: 47 companies, 3 holding layers, and R$12M in contracts with entities linked to the senator's network identified — several involving simultaneous directorship and budget committee membership.</div>
+    </div>
+  </div>
+
+  <h2>User workflows</h2>
+  <p>Three analyst scenarios showing the full data → insight → decision arc.</p>
+
+  <h3>Compliance — company integrity check</h3>
+  <p>A compliance team verifies whether companies awarded public contracts have directors appearing in other sanctioned or flagged entities.</p>
+  <pre>SELECT e.razao_social, e.cnpj, s.nome_socio,
+       COUNT(DISTINCT e2.cnpj) AS other_entities,
+       SUM(c.valor_contrato)   AS total_contracts_brl
+FROM br_me_cnpj.estabelecimentos e
+JOIN br_me_cnpj.socios s     ON e.cnpj_basico = s.cnpj_basico
+JOIN br_me_cnpj.socios s2    ON s.cnpj_cpf_socio = s2.cnpj_cpf_socio
+                             AND s2.cnpj_basico &lt;&gt; s.cnpj_basico
+JOIN br_me_cnpj.estabelecimentos e2 ON s2.cnpj_basico = e2.cnpj_basico
+JOIN br_cgu_compras_governamentais.contratos c ON e.cnpj = c.cnpj_contratado
+WHERE e.sigla_uf = 'SP' AND c.ano = 2023
+GROUP BY 1,2,3 HAVING other_entities &gt; 2
+ORDER BY total_contracts_brl DESC</pre>
+  <p>Decision: flag companies for manual review; route to procurement governance team.</p>
+
+  <h3>Policy — infrastructure gap prioritization</h3>
+  <p>A state health secretariat identifies municipalities with critically low hospital bed coverage to prioritize federal budget allocation.</p>
+  <pre>SELECT m.nome, m.sigla_uf, pop.populacao,
+       ROUND(cnes.leitos_sus * 1000.0 / NULLIF(pop.populacao,0), 2) AS leitos_por_mil,
+       ideb.nota_media  AS ideb_fundamental
+FROM br_bd_diretorios_brasil.municipio m
+JOIN br_ibge_populacao.municipio pop  ON m.id_municipio = pop.id_municipio  AND pop.ano  = 2022
+JOIN ( SELECT id_municipio, SUM(leitos) AS leitos_sus
+       FROM br_ms_cnes.estabelecimento WHERE ano = 2023
+       GROUP BY id_municipio ) cnes   ON m.id_municipio = cnes.id_municipio
+JOIN br_inep_ideb.municipio ideb      ON m.id_municipio = ideb.id_municipio AND ideb.ano = 2021
+WHERE pop.populacao &gt; 10000
+ORDER BY leitos_por_mil ASC, ideb_fundamental ASC
+LIMIT 50</pre>
+  <p>Decision: top 50 ranked shortlist delivered to budget committee; top 10 flagged for emergency transfer.</p>
+
+  <h3>Investigation — electoral spending anomalies</h3>
+  <p>An investigative journalist tracks whether campaign spending correlates with post-election public contract awards for companies linked to the same candidate.</p>
+  <pre>SELECT cand.nome_candidato, cand.sigla_partido,
+       SUM(desp.valor_despesa)          AS campaign_spend,
+       SUM(cont.valor_contrato)         AS post_election_contracts,
+       COUNT(DISTINCT cont.cnpj_contratado) AS linked_companies
+FROM br_tse_eleicoes.candidatos cand
+JOIN br_tse_eleicoes.despesas_candidato desp ON cand.id_candidato = desp.id_candidato
+JOIN br_me_cnpj.socios s     ON cand.cpf_candidato = s.cnpj_cpf_socio
+JOIN br_cgu_compras_governamentais.contratos cont
+     ON s.cnpj_basico = SUBSTR(cont.cnpj_contratado,1,8) AND cont.ano &gt; cand.ano
+WHERE cand.ano = 2022 AND cand.sigla_uf = 'SP'
+GROUP BY 1,2 HAVING post_election_contracts &gt; 1000000
+ORDER BY post_election_contracts DESC</pre>
+  <p>Decision: shortlist of 12 candidates forwarded to editorial team with source data for verification.</p>
+
+  <h2>Domain ontology</h2>
+  <p>Brazilian public data modeled as typed entities with explicit join keys.</p>
+  <div class="data-table-wrap">
+    <table>
+      <thead><tr><th>Join key</th><th>Tables</th><th>Object</th></tr></thead>
+      <tbody>
+        <tr><td><code>id_municipio</code></td><td>195</td><td>Municipality</td></tr>
+        <tr><td><code>sigla_uf</code></td><td>245</td><td>State</td></tr>
+        <tr><td><code>cnpj</code> / <code>cnpj_basico</code></td><td>18</td><td>Company</td></tr>
+        <tr><td><code>id_setor_censitario</code></td><td>27</td><td>CensusSector</td></tr>
+        <tr><td><code>id_municipio_tse</code></td><td>23</td><td>ElectoralZone</td></tr>
+        <tr><td><code>cbo_2002</code></td><td>6</td><td>OccupationClass</td></tr>
+        <tr><td><code>cnae_2_subclasse</code></td><td>6</td><td>EconomicActivity</td></tr>
+        <tr><td><code>ano</code></td><td>261</td><td>Temporal partition</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Architecture</h2>
+  <p>Data → semantic model → access control → application → users. Each layer independently deployable.</p>
+  <div class="grid-cards">
+    <div class="card"><div class="label">Users</div><p>Analysts · policy teams · researchers · journalists</p></div>
+    <div class="card"><div class="label">Application</div><p><code>db.ミ.xyz</code> browser SQL shell · <code>ask.ミ.xyz</code> AI NL→SQL TUI · <code>POST /query</code> SQL API</p></div>
+    <div class="card"><div class="label">Semantic</div><p>DuckDB views · schema.json (533 tables) · join_keys.md · table_embeddings.json (11.4 MB) · overview/ (34 domain narratives)</p></div>
+    <div class="card"><div class="label">Access</div><p>auth.py (HMAC-SHA256) · Caddy (TLS + forward auth) · read-only enforcement</p></div>
+    <div class="card"><div class="label">Storage</div><p>Hetzner Object Storage · Parquet + zstd · 533 tables · ~675 GB · httpfs on-demand reads</p></div>
+    <div class="card"><div class="label">Pipeline</div><p>BigQuery export → GCS → Hetzner (rclone) · resumable, dry-run, GCP VM option</p></div>
+  </div>
+
+  <h2>AI-powered query layer</h2>
+  <p>Semantic table selection over 533 datasets prevents hallucination on a large schema.</p>
+  <pre>$ ask "Qual o município com maior mortalidade infantil no Nordeste em 2021?"
+
+→ SELECT m.nome, m.sigla_uf, s.taxa_mortalidade_infantil
+  FROM br_ms_sim.municipio s
+  JOIN br_bd_diretorios_brasil.municipio m ON s.id_municipio = m.id_municipio
+  WHERE m.sigla_uf IN ('BA','PE','CE','MA','PI','RN','PB','AL','SE')
+    AND s.ano = 2021
+  ORDER BY s.taxa_mortalidade_infantil DESC
+  LIMIT 1</pre>
+  <div class="pills">
+    <span class="pill">Rust (ratatui)</span>
+    <span class="pill">Gemini Flash</span>
+    <span class="pill">OpenRouter</span>
+    <span class="pill">Ollama sqlcoder</span>
+    <span class="pill">cosine similarity</span>
+    <span class="pill">11.4 MB embeddings</span>
+  </div>
+
+  <h2>Palantir Foundry mapping</h2>
+  <p>This is not a Foundry deployment — it's an open-source system that reproduces the same architectural layers and mental model, for readers who know Foundry and want a quick translation.</p>
+  <div class="data-table-wrap">
+    <table>
+      <thead><tr><th>rodado component</th><th>Foundry equivalent</th></tr></thead>
+      <tbody>
+        <tr><td>BigQuery export scripts</td><td>External data connectors</td></tr>
+        <tr><td>Parquet files on Hetzner S3</td><td>Foundry datasets</td></tr>
+        <tr><td>DuckDB engine + views</td><td>Foundry query engine</td></tr>
+        <tr><td>basedosdados-schema.json</td><td>Ontology schema registry</td></tr>
+        <tr><td>join_keys.md entity graph</td><td>Object type links / property mappings</td></tr>
+        <tr><td>table_embeddings.json</td><td>Semantic search index</td></tr>
+        <tr><td>POST /query endpoint</td><td>Foundry Functions</td></tr>
+        <tr><td>Browser SQL shell</td><td>Workshop application</td></tr>
+        <tr><td>ask/ NL→SQL layer</td><td>AIP-powered application</td></tr>
+        <tr><td>scripts/roda.sh</td><td>Foundry pipeline</td></tr>
+        <tr><td>Caddy + auth.py</td><td>Access control + audit layer</td></tr>
+        <tr><td>overview/ domain narratives</td><td>Business context documentation</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Data quality & governance</h2>
+  <div class="grid-cards">
+    <div class="card"><div class="label">Partition requirements</div><p>Large tables (100M+ rows) require <code>ano</code>, <code>sigla_uf</code>, or <code>mes</code> filters. 261 tables partitioned by <code>ano</code>, 245 by <code>sigla_uf</code>.</p></div>
+    <div class="card"><div class="label">Sensitive identifiers</div><p><code>cpf</code> (individual), <code>cnpj</code> (company) — read-only, no PII export endpoints, credentials isolated per service.</p></div>
+    <div class="card"><div class="label">Known limitations</div><p>Data freshness varies (CNPJ monthly, census 2010/2022, health 12–18 month lag). CPF joins can produce high cardinality.</p></div>
+    <div class="card"><div class="label">Sanity protocol</div><p>State expected order of magnitude, flag outliers, verify counts two independent ways before reporting.</p></div>
+  </div>
+
+  <h2>Stack</h2>
+  <div class="pills">
+    <span class="pill">DuckDB</span><span class="pill">Rust</span><span class="pill">Python</span>
+    <span class="pill">Parquet + zstd</span><span class="pill">Hetzner S3</span><span class="pill">rclone</span>
+    <span class="pill">Caddy</span><span class="pill">Docker</span><span class="pill">haloy</span>
+    <span class="pill">ratatui</span><span class="pill">Gemini</span><span class="pill">OpenRouter</span>
+    <span class="pill">Ollama</span><span class="pill">ttyd</span><span class="pill">HMAC-SHA256</span>
+    <span class="pill">httpfs</span><span class="pill">BigQuery export</span><span class="pill">gcloud</span>
+  </div>
+
+  <p>Full engineering reference (environment variables, deploy, services, pipeline commands): see <a href="https://github.com/rafapolo/rodado/blob/main/TECHNICAL.md">TECHNICAL.md</a> in the repository.</p>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a href="index.html">Índice temático</a>
+    <a href="https://github.com/rafapolo/rodado">Repositório</a>
+    <span>533 tables · ~675 GB · DuckDB + Parquet</span>
+  </div>
+</footer>
+
+</body>
+</html>

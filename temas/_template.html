@@ -1,0 +1,78 @@
+<!--
+  TEMPLATE — não é servido publicamente, é a referência de estrutura
+  para autorar cada temas/NN-slug.html. Copie o miolo abaixo e preencha
+  os placeholders {{...}}. Mantenha nav/rodapé idênticos em todas as páginas.
+-->
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITULO}} — rodado</title>
+<meta name="description" content="{{GANCHO}}">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">rodado</a>
+    <div class="links">
+      <a href="../index.html">Temas</a>
+      <a href="../en.html">EN</a>
+      <a href="https://github.com/rafapolo/rodado">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <a class="voltar" href="../index.html">&larr; voltar ao índice</a>
+
+  <p class="eyebrow">Tema {{NN}} de 34</p>
+  <h1>{{TITULO}}</h1>
+  <p class="dek">{{GANCHO — uma frase de efeito resumindo o achado central do tema}}</p>
+
+  <!-- Contexto e Síntese dos Dados → prosa de abertura -->
+  <p class="lede">{{PARAGRAFO_ABERTURA}}</p>
+
+  <h2>{{ACHADO_1_TITULO}}</h2>
+  <p>{{ACHADO_1_PROSA}}</p>
+  <div class="data-table-wrap">
+    <table>
+      <!-- tabela original, valores intactos -->
+    </table>
+  </div>
+  <p class="pull">{{ACHADO_1_CONCLUSAO}}</p>
+
+  <!-- repetir H2/prosa/tabela/pull para cada achado -->
+
+  <div class="callout">
+    <h3>Cruzamentos poderosos</h3>
+    <ul>
+      <li>{{CRUZAMENTO}}</li>
+    </ul>
+  </div>
+
+  <h2>Hipóteses explicativas</h2>
+  <p>{{HIPOTESES_PROSA}}</p>
+
+  <h2>Implicações para políticas públicas</h2>
+  <p>{{IMPLICACOES_PROSA}}</p>
+
+  <div class="pager">
+    <a class="prev" href="{{SLUG_ANTERIOR}}.html"><span class="dir">&larr; anterior</span>{{TITULO_ANTERIOR}}</a>
+    <a class="next" href="{{SLUG_PROXIMO}}.html"><span class="dir">próximo &rarr;</span>{{TITULO_PROXIMO}}</a>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a href="../index.html">Índice temático</a>
+    <a href="../technical.html">Detalhes técnicos</a>
+    <a href="https://github.com/rafapolo/rodado">Repositório</a>
+    <span>Dados: Base dos Dados / DuckDB</span>
+  </div>
+</footer>
+
+</body>
+</html>
