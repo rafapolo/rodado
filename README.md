@@ -14,7 +14,7 @@ Cada tema no site publicado combina uma narrativa em prosa com as tabelas de evi
 
 ## Cobertura de dados
 
-Os 533 tabelas cobrem 34 domínios temáticos, cada um documentado em [`overview/`](overview/index.md) e publicado como uma página própria no site. Essas narrativas servem tanto de leitura para o público quanto de contexto para a camada de IA que converte perguntas em linguagem natural para SQL.
+Os 533 tabelas cobrem 34 domínios temáticos, cada um documentado em [`overview/`](docs/overview/index.md) e publicado como uma página própria no site. Essas narrativas servem tanto de leitura para o público quanto de contexto para a camada de IA que converte perguntas em linguagem natural para SQL.
 
 | # | Tema |
 |---|------|
@@ -59,5 +59,5 @@ Os dados vêm da [Base dos Dados](https://basedosdados.org), que mantém um espe
 
 ## Leia também
 
-- [`overview/`](overview/index.md) — os 34 arquivos-fonte em markdown por trás de cada página do site, usados também como contexto para a camada de IA que traduz perguntas em português para SQL.
+- [`overview/`](docs/overview/index.md) — os 34 arquivos-fonte em markdown por trás de cada página do site, usados também como contexto para a camada de IA que traduz perguntas em português para SQL.
 - [`TECHNICAL.md`](TECHNICAL.md) — arquitetura de engenharia, pipeline de dados, API de consulta, stack e deploy, para quem quiser entender como a plataforma por trás do site funciona.
