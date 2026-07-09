@@ -2,8 +2,6 @@
 
 > Um espelho de 533 tabelas públicas brasileiras — RAIS, SIM, TSE, CGU, IBGE, INEP, CNES e outras fontes oficiais — lido a partir de uma pergunta sociológica, não de uma vitrine técnica: o que esses registros, cruzados, revelam sobre desigualdade, poder e estratificação social no Brasil?
 
-> Site: [rafapolo.github.io/rodado](https://rafapolo.github.io/rodado) · Repositório: [github.com/rafapolo/rodado](https://github.com/rafapolo/rodado)
-
 ---
 
 ## Sobre o projeto
