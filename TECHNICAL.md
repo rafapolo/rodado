@@ -164,7 +164,7 @@ The platform models Brazilian public data as typed business objects with explici
 └──────────────────────┘     trimestre   (3 tbl)
 ```
 
-**Canonical join keys** — from [`context/join_keys.md`](context/join_keys.md):
+**Canonical join keys** — from [`context/join_keys.md`](docs/context/join_keys.md):
 
 | Key | Tables | Object |
 |-----|--------|--------|
