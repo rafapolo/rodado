@@ -8,14 +8,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-### Rust (`ask/` and `dbquery/`)
+### Rust (`ask/`)
 ```bash
 cd ask && cargo build --release        # build TUI
 cd ask && cargo build                  # dev build
 cd ask && cargo test                   # run tests
 ./ask/target/release/ask               # interactive TUI
 ./ask/target/release/ask "Quantos municípios tem SP?"  # CLI mode
-cd dbquery && cargo build --release
 ```
 
 ### Python services
@@ -69,7 +68,7 @@ Caddy routes by hostname: `ask.xn--2dk.xyz` → port 7682, `db.xn--2dk.xyz` → 
 - `src/table_selector.rs` — semantic table selection from embeddings before prompting
 - `src/schema_filter.rs` — trims schema to relevant tables (controlled by `TOP_K_TABLES`)
 
-LLM backend is selected by `SQL_GENERATOR` env var (`gemini`/`openrouter`/`sqlcoder`). Schema metadata lives in `context/`.
+LLM backend is selected by `SQL_GENERATOR` env var (`gemini`/`openrouter`/`sqlcoder`). Schema metadata lives in `docs/context/`.
 
 ### `auth.py` — Auth & Query Service
 HMAC-SHA256 cookie auth. Holds a **persistent DuckDB Python connection** (in-memory + ATTACH read-only) initialized once at startup with S3 credentials and httpfs. Returns JSON. Use `X-Password` header matching `BASIC_AUTH_PASSWORD`.
@@ -77,7 +76,7 @@ HMAC-SHA256 cookie auth. Holds a **persistent DuckDB Python connection** (in-mem
 ### Data flow
 BigQuery → Google Cloud Storage (Parquet) → Hetzner S3 (via `scripts/roda.sh` + rclone) → DuckDB httpfs reads on query.
 
-### `context/` — Schema metadata
+### `docs/context/` — Schema metadata
 - `basedosdados-schema.json` — full schema (3.8 MB), used by `ask`
 - `schema_compact.txt` — text format for prompting
 - `table_embeddings.json` — semantic vectors for table selection (11.4 MB)
@@ -106,7 +105,13 @@ BigQuery → Google Cloud Storage (Parquet) → Hetzner S3 (via `scripts/roda.sh
 
 ## ⚠️ REGRA CRÍTICA — SEM EXCEÇÕES
 
-**NUNCA usar BigQuery, GCP ou `bq` CLI. JAMAIS. Toda consulta de dados vai pelo DuckDB remoto (`https://db.xn--2dk.xyz/query`) ou pelo binário `dbquery`. Não importa o tamanho da tabela, a complexidade do join ou se "é mais fácil" no BigQuery — DuckDB único.**
+**NUNCA usar BigQuery, GCP ou `bq` CLI. JAMAIS. Toda consulta de dados vai pelo DuckDB remoto (`https://db.xn--2dk.xyz/query`). Não importa o tamanho da tabela, a complexidade do join ou se "é mais fácil" no BigQuery — DuckDB único.**
+
+Essa regra é sobre **servir consultas de dado ao vivo/produção** (`ask`, `auth.py`, DuckDB) — nunca usar BigQuery pra isso, sem exceção.
+
+Existe uma **única exceção, estritamente escopada**: manutenção do mirror do beelink (`scripts/sync-with-source.md`), usando **somente `bq query` em modo Sandbox gratuito** (sem conta de billing, cota mensal ~900GB/1TB), nunca `bq extract` nem qualquer operação que dependa de billing ativo. Essa exceção existe só porque o Sandbox sem billing tem custo zero garantido.
+
+**Se billing for ativado em qualquer projeto GCP usado aqui, essa exceção acaba imediatamente — volta a ser JAMAIS, sem exceção nenhuma**, já que o que torna o uso pontual de BigQuery seguro hoje é justamente a impossibilidade de gerar custo.
 
 ---
 
@@ -117,5 +122,5 @@ BigQuery → Google Cloud Storage (Parquet) → Hetzner S3 (via `scripts/roda.sh
 - DuckDB always runs read-only; no writes to the database from queries.
 - Queries on large tables must filter on partition columns (`ano`, `mes`, `sigla_uf`) — this is enforced in prompts.
 - SQL dialect is DuckDB; BigQuery syntax does not apply.
-- `overview/` contains per-dataset markdown summaries used as LLM context.
-- `queries/` contains example SQL and CNAE audit analysis files.
+- `docs/overview/` contains per-dataset markdown summaries used as LLM context.
+- `docs/queries/` contains example SQL and CNAE audit analysis files.

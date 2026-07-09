@@ -161,134 +161,119 @@ Sources from https://github.com/jxnxts/mcp-brasil not in `basedosdados.duckdb`.
 
 ## Basedosdados.org — Not in basedosdados.duckdb
 
-Basedosdados.org has **765 tables** on BigQuery, **~533** on S3. The remaining gap:
+> **⚠️ Audit note (2026-07-09):** everything below this point was written before the
+> beelink sync push documented in `scripts/sync-with-source.md` (693/793 tables done as of
+> today). Checked every row in this section directly against
+> `ssh beelink "find ~/rodado -mindepth 2 -maxdepth 2 -type d"` (692 dataset/table dirs).
+> **97 of the 191 checkable table entries below were already stale** — marked missing here
+> but actually present on beelink — because this doc predates that sync work finishing.
+> Goal is to get everything onto beelink (not S3 — S3/"already on S3" framing below is also
+> outdated; beelink is the current mirror target). Rewritten to reflect only what's
+> genuinely still missing.
 
-- **2 TABLEs** need `bq extract` → GCS → S3 (waiting on GCP billing restore)
-- **~230 are VIEWs** → need `bq query` to materialize, then `bq extract` (or streaming write to S3)
-- **3 tables MISSING** from BQ entirely (br_bcb_sicor microdados_* don't exist)
+Basedosdados.org has **765 tables** on BigQuery. Of the original ~230 VIEWs + 2 TABLEs
++ 3 nonexistent tables tracked here, **93 table entries are still genuinely absent from
+beelink** (below), 3 are confirmed not to exist in BigQuery at all, and the rest are done.
 
-### Need export — 2 TABLEs blocked on GCP billing
+**All 93 are BigQuery VIEWs, not physical TABLEs — and per an explicit 2026-07-09 decision,
+views are never synced to beelink, full stop** (`bq show` reports `"type": "VIEW"`,
+`numRows: 0` always; views recompute their query on every read, which is why several of
+these timed out or looked access-denied — e.g. `br_inep_ana.aluno` is 5.4M *computed* rows,
+~49s just to `COUNT(*)`). So the list below is **not a to-do backlog** — it's the same kind
+of permanent dead end as the 3-table "doesn't exist in BigQuery" list right after it. Before
+ever attempting to sync a "missing" table again, run `bq show --project_id=basedosdados
+<dataset>.<table>` first — if `type` is `VIEW`, it's permanently out of scope, not a retry
+candidate.
 
-| Dataset | Table | BQ Type | Notes |
-|---------|-------|---------|-------|
-| `br_bcb_taxa_cambio` | taxa_cambio | TABLE | ✅ `bq extract` works |
-| `br_bcb_taxa_selic` | taxa_selic | TABLE | ✅ `bq extract` works |
+### Quick win — 2 small TABLEs, no longer actually blocked
 
-### Already on S3 (no action needed)
+The old "blocked on GCP billing" framing assumed `bq extract`. The `bq query` (Sandbox,
+free) pivot in `scripts/sync-with-source.md` bypasses that — these are tiny reference
+tables (exchange rate / Selic rate series), trivial to pull with the same `bq query →
+beelink` pipeline already used for the VIEW backlog. Confirmed still absent from beelink:
 
-| Dataset | Tables |
-|---------|--------|
-| `br_bd_metadados` | bigquery_tables, prefect_flow_runs |
-| `br_fbsp_absp` | uf, violencia_escola |
-| `br_ibge_estadic` | dicionario |
-| `br_camara_dados_abertos` | all 33 tables (222 parquet files) |
-| `br_me_rais` | dicionario, microdados_estabelecimentos, microdados_vinculos |
+| Dataset | Table | BQ Type |
+|---------|-------|---------|
+| `br_bcb_taxa_cambio` | taxa_cambio | TABLE |
+| `br_bcb_taxa_selic` | taxa_selic | TABLE |
 
-### ~230 VIEWs — need bq query materialization pipeline
+### Out of scope — confirmed BigQuery VIEWs (93 table entries, verified 2026-07-09)
 
-Cannot `bq extract` directly. Need to: (1) materialize via `bq query --destination_table`, or (2) stream via Python Arrow → S3 directly.
+Everything not listed here from the original ~230-VIEW backlog (Câmara, CGU licitação/
+cartão/emendas/servidores/EBT/FEF, most of IBGE PNAD/PNADC/PIB/estadic/CBO, INEP ANA/
+indicador_nivel_socioeconomico partially, ANVISA, MapBiomas classe/cobertura_uf/transição,
+BD metadados/vizinhança/diretórios_data_tempo, and more) is **already on beelink** — no
+action needed, don't re-sync. What remains below is permanently out of scope (views), kept
+only for reference so nobody re-attempts them.
 
-#### Full datasets (all VIEWs)
+| Dataset | Missing tables |
+|---------|-----------------|
+| `br_anatel_banda_larga_fixa` | backhaul, pble |
+| `br_cgu_pessoal_executivo_federal` | terceirizados |
+| `br_ibge_pnad_covid` | microdados |
+| `br_imprensa_nacional_dou` | secao_1, secao_2, secao_3 |
+| `br_inep_ana` | aluno |
+| `br_inep_censo_escolar` | docente, matricula |
+| `br_inep_formacao_docente` | escola, municipio |
+| `br_inep_indicadores_educacionais` | fluxo_educacao_superior |
+| `br_ipea_acesso_oportunidades` | indicadores_2019 |
+| `br_mapbiomas_estatisticas` | cobertura_municipio_classe |
+| `br_me_caged` | microdados_antigos, microdados_antigos_ajustes |
+| `br_me_exportadoras_importadoras` | estabelecimentos |
+| `br_me_pensionistas` | microdados |
+| `br_mec_prouni` | microdados |
+| `br_ms_sim` | municipio_causa, municipio_causa_idade, municipio_causa_idade_sexo_raca |
+| `br_ms_sinan` | microdados_violencia |
+| `br_ms_vacinacao_covid19` | microdados, microdados_paciente, microdados_vacinacao |
+| `br_ons_energia_armazenada` | subsistemas |
+| `br_rj_rio_de_janeiro_ipp_ips` | dimensoes_componentes, indicadores |
+| `br_rj_tce_iegm` | indicadores |
+| `br_seeg_emissoes` | brasil |
+| `br_senado_cpipandemia` | discursos |
+| `br_sgp_informacao` | despesas_cartao_corporativo |
+| `br_sp_alesp` | assessores_lideranca, assessores_parlamentares, deputados, despesas_gabinete, despesas_gabinete_atual |
+| `br_sp_gov_orcamento` | despesa, receita_arrecadada, receita_prevista |
+| `br_sp_gov_ssp` | ocorrencias_registradas, produtividade_policial |
+| `br_sp_saopaulo_dieese_icv` | ano |
+| `br_sp_seduc_fluxo_escolar` | escola, municipio |
+| `br_sp_seduc_idesp` | diretoria, escola, uf |
+| `br_sp_seduc_inse` | escola |
+| `br_tpe_classificacao_saeb` | categoria |
+| `br_tse_eleicoes` | local_secao |
+| `eu_fra_lgbt` | consciencia_direitos, cotidiano, discriminacao, especifico_transgenero, violencia_abuso |
+| `mundo_bm_learning_poverty` | pais |
+| `mundo_kaggle_olimpiadas` | microdados |
+| `mundo_onu_adh` | brasil, municipio, uf |
+| `mundo_transrespect_transphobia` | causa_obito, local, pais |
+| `nl_ug_pwt` | microdados |
+| `world_fao_production` | country_group, crop_livestock, dictionary, element, item, item_group, production_indices, value_agricultural_production |
+| `world_fifa_women_world_cup` | matches |
+| `world_fifa_worldcup` | award_winners, matches, players, teams, tournaments |
+| `world_gsps_consortium_gsps` | global_indicators |
+| `world_oecd_pisa` | dictionary, school_summary, student_summary |
+| `world_slave_voyages_consortium_slave_trade` | transatlantic |
+| `world_spi_spi` | global_indicators |
+| `world_ti_corruption_perception` | country |
+| `world_wb_wwbi` | country_finance, country_indicators |
 
-| Dataset | Tables missing | Notes |
-|---------|----------------|-------|
-| `br_abrinq_oca` | municipio_primeira_infancia | |
-| `br_ana_atlas_esgotos` | municipio | |
-| `br_ana_reservatorios` | sin | |
-| `br_anvisa_medicamentos_industrializados` | microdados | |
-| `br_ba_feiradesantana_camara_leis` | microdados | |
-| `br_bd_diretorios_data_tempo` | tempo, data, ano, mes, dia, hora, bimestre, trimestre, semestre, minuto, segundo | Directory of time dimensions |
-| `br_bd_metadados` | external_links, information_requests, organizations, resources, tables | |
-| `br_bd_vizinhanca` | municipio, uf | |
-| `br_caixa_sorteios` | megasena | |
-| `br_camara_dados_abertos` | sigla_partido | |
-| `br_capes_bolsas` | mobilidade_internacional | |
-| `br_cgu_ebt` | municipio, uf | |
-| `br_cgu_fef` | microdados, municipios_sorteados, sorteio | |
-| `br_cgu_pessoal_executivo_federal` | terceirizados | |
-| `br_clp_ranking_competitividade` | nota_geral_municipio, nota_geral_uf | |
-| `br_cnj_estatisticas_poder_judiciario` | recursos_financeiros | |
-| `br_fbsp_absp` | municipio | |
-| `br_firjan_ifgf` | ranking | |
-| `br_ggb_relatorio_lgbtqi` | brasil, causa_obito, grupo_lgbtqia, local, raca_cor | |
-| `br_ibge_amc` | municipio_de_para | |
-| `br_ibge_cbo_2002` | perfil_ocupacional, sinonimo | |
-| `br_ibge_estadic` | comunicacao_informatica, educacao, governanca, indicadores_perfil_gestor, indicadores_quantidade_vinculo, politica_mulher, recursos_humanos | |
-| `br_ibge_ipp` | mes_categoria_economica, mes_grupo_industrial, mes_industria_atividade, mes_industria_extrativa, mes_industria_geral, mes_industria_transformacao | |
-| `br_ibge_munic` | indicadores_perfil_gestor, indicadores_quantidade_vinculo | |
-| `br_ibge_nomes_brasil` | quantidade_municipio_nome_2010 | |
-| `br_ieps_saude` | brasil, macrorregiao, municipio, regiao_saude, uf | |
-| `br_imprensa_nacional_dou` | secao_1, secao_2, secao_3 | Official gazette sections |
-| `br_ipea_acesso_oportunidades` | estatisticas_2019, indicadores_2019 | |
-| `br_mapbiomas_estatisticas` | classe, cobertura_municipio_classe, cobertura_uf_classe, transicao_*(anual/decenal/quinquenal) | |
-| `br_mc_indicadores` | transferencias_municipio | |
-| `br_me_clima_organizacional` | microdados | |
-| `br_me_estoque_divida_publica` | microdados | |
-| `br_me_exportadoras_importadoras` | dicionario, estabelecimentos | |
-| `br_me_pensionistas` | microdados | |
-| `br_me_siape` | servidores_executivo_federal | |
-| `br_me_siorg` | remuneracao | |
-| `br_mma_extincao` | fauna_ameacada, flora_ameacada | |
-| `br_mobilidados_indicadores` | 11 tables | |
-| `br_ms_atencao_basica` | municipio | |
-| `br_ms_imunizacoes` | municipio | |
-| `br_ons_energia_armazenada` | subsistemas | |
-| `br_rj_rio_de_janeiro_ipp_ips` | dimensoes_componentes, indicadores | |
-| `br_rj_tce_iegm` | indicadores | |
-| `br_senado_cpipandemia` | discursos | |
-| `br_sgp_informacao` | despesas_cartao_corporativo | |
-| `br_sp_alesp` | assessores_lideranca, assessores_parlamentares, deputados, despesas_gabinete, despesas_gabinete_atual | |
-| `br_sp_gov_orcamento` | despesa, receita_arrecadada, receita_prevista | |
-| `br_sp_gov_ssp` | ocorrencias_registradas, produtividade_policial | |
-| `br_sp_saopaulo_dieese_icv` | ano | |
-| `br_sp_seduc_fluxo_escolar` | escola, municipio | |
-| `br_sp_seduc_idesp` | diretoria, escola, uf | |
-| `br_sp_seduc_inse` | escola | |
-| `br_tpe_classificacao_saeb` | categoria | |
-| `eu_fra_lgbt` | consciencia_direitos, cotidiano, discriminacao, especifico_transgenero, violencia_abuso | |
-| `mundo_bm_learning_poverty` | pais | |
-| `mundo_kaggle_olimpiadas` | microdados | |
-| `mundo_onu_adh` | brasil, municipio, uf | |
-| `mundo_transrespect_transphobia` | causa_obito, local, pais | |
-| `nl_ug_pwt` | microdados | |
-| `world_fao_production` | country_group, crop_livestock, dictionary, element, item, item_group, production_indices, value_agricultural_production | |
-| `world_fifa_women_world_cup` | matches | |
-| `world_fifa_worldcup` | award_winners, matches, players, teams, tournaments | |
-| `world_gsps_consortium_gsps` | global_indicators | |
-| `world_slave_voyages_consortium_slave_trade` | transatlantic | |
-| `world_spi_spi` | global_indicators | |
-| `world_ti_corruption_perception` | country | |
-| `world_wb_wwbi` | country_finance, country_indicators | |
+Note: the entire `mundo_*`/`world_*`/`eu_fra_*`/`nl_ug_*` international-data group is 100%
+absent from beelink — not because the sync push skipped it, but because (per the pattern
+above) these are almost certainly views too and were never in scope to begin with.
 
-#### Partial datasets — missing tables (all VIEWs, except where noted)
+#### Needs a recount, not fully verified
 
-| Dataset | Missing tables | In duckdb |
-|---------|----------------|-----------|
-| `br_anatel_banda_larga_fixa` | backhaul, pble | densidade_*, microdados |
-| `br_bcb_sicor` | microdados_liberacao, microdados_operacao, microdados_saldo | dicionario, liberacao, operacao, saldo, + 5 more TABLEs |
-| `br_ibge_pib` | brasil_antigo, municipio_antigo, regiao_antigo, uf, uf_antigo | gini, municipio |
-| `br_ibge_pnad_covid` | microdados | dicionario |
-| `br_ibge_pnadc` | 10 cross-tab tables (ano_*) | dicionario, educacao, microdados, rendimentos_outras_fontes |
-| `br_ibge_pof` | all 17 tables (morador_*, domicilio_*, despesa_*, consumo_*, etc.) | none |
-| `br_inep_ana` | aluno, escola, prova | dicionario |
-| `br_inep_censo_escolar` | docente, matricula | dicionario, escola, turma |
-| `br_inep_formacao_docente` | brasil, escola, municipio, regiao, uf | dicionario |
-| `br_inep_indicador_nivel_socioeconomico` | brasil, municipio, uf | dicionario, escola |
-| `br_inep_indicadores_educacionais` | escola_nivel_socioeconomico, fluxo_educacao_superior | all others |
-| `br_inmet_bdmep` | estacao | microdados |
-| `br_me_caged` | microdados_antigos, microdados_antigos_ajustes | dicionario, microdados_movimentacao* |
-| `br_me_cno` | microdados_cnae, microdados_vinculo | dicionario, microdados |
-| `br_mec_prouni` | microdados | dicionario |
-| `br_ms_sim` | municipio, municipio_causa, municipio_causa_idade, municipio_causa_idade_sexo_raca | dicionario, microdados |
-| `br_ms_sinan` | microdados_violencia | dicionario, microdados_dengue, microdados_influenza_srag |
-| `br_ms_vacinacao_covid19` | microdados, microdados_estabelecimento, microdados_paciente, microdados_vacinacao | dicionario |
-| `br_seeg_emissoes` | brasil | dicionario, municipio, uf |
-| `br_tse_eleicoes` | local_secao | all others |
-| `world_oecd_pisa` | dictionary, school_summary, student_summary | student |
+These are the same kind of out-of-scope view gaps as above — not a to-do list, just
+incompletely diffed because the doc originally listed them as wildcard/count claims ("11
+tables", "10 cross-tab tables", "all 17 tables") rather than exact names, so precision was
+lost:
 
-### Tables that don't exist in BigQuery (3)
+| Dataset | Original claim | beelink reality (2026-07-09) |
+|---------|-----------------|-------------------------------|
+| `br_ibge_pnadc` | 10 cross-tab tables (ano_*) missing | **All 10 `ano_*` dirs present** — appears fully done, but worth a `bq show` recount if precision matters |
+| `br_ibge_pof` | all 17 tables missing | **14 tables present** (aluguel_estimado, cadastro_de_produtos, caracteristicas_dieta, condicoes_vida, despesa_coletiva, dicionario, domicilio, inventario, morador, outros_rendimentos, rendimento_trabalho, restricao_saude, servico_nao_monetario_pof2/pof4, all `_2017`); no `consumo_*` tables found — likely the remaining gap |
+| `br_mobilidados_indicadores` | 11 tables missing | **10 present**; 1 short of the claimed 11 — which one is missing is unconfirmed without a BQ schema check |
 
-These were listed in datasets_to_scrap but actually don't exist in `basedosdados`:
+### Tables that don't exist in BigQuery (3) — confirmed dead end, no action possible
 
 | Dataset | Table |
 |---------|-------|
