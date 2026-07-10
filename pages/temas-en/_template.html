@@ -1,0 +1,97 @@
+<!--
+  TEMPLATE — not served publicly, structural reference for authoring each
+  temas-en/NN-slug.html. Copy the body below and fill in the {{...}}
+  placeholders. Keep nav/footer identical across all pages. Mirrors
+  ../temas/_template.html but in English, one-to-one with the pt-br essay
+  of the same NN-slug.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}} — rodado</title>
+<meta name="description" content="{{HOOK}}">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="../assets/mcp-theme.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="../en.html">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="../en.html#themes">Topics</a>
+        <a href="../mcp-en.html">MCP</a>
+        <a href="https://xn--2dk.xyz/dataviz/">DataViz Hub</a>
+        <a href="https://github.com/rafapolo/rodado">GitHub</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <a href="../temas/{{SLUG}}.html" class="lang-link">PT</a>
+          <span class="lang-sep">/</span>
+          <span class="lang-current">EN</span>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <a class="voltar" href="../en.html">&larr; back to overview</a>
+
+  <!-- copy the tema-icon-lg <svg> exactly as-is from the pt source, unchanged -->
+  <p class="eyebrow">Theme {{NN}} of 34</p>
+  <h1>{{TITLE}}</h1>
+  <p class="dek">{{HOOK — punchy one-sentence summary of the theme's central finding}}</p>
+
+  <p class="lede">{{OPENING_PARAGRAPH}}</p>
+
+  <h2>{{FINDING_1_TITLE}}</h2>
+  <p>{{FINDING_1_PROSE}}</p>
+  <div class="data-table-wrap">
+    <table>
+      <!-- same table as the pt source: translate caption/headers/row labels, keep numbers, dataset ids, codes untouched -->
+    </table>
+  </div>
+  <p class="pull">{{FINDING_1_TAKEAWAY}}</p>
+
+  <!-- repeat H2/prose/table/pull for each finding, same count and order as the pt source -->
+
+  <div class="callout">
+    <h3>Powerful cross-references</h3>
+    <ul>
+      <li>{{CROSS_REFERENCE}}</li>
+    </ul>
+  </div>
+
+  <h2>Explanatory hypotheses</h2>
+  <p>{{HYPOTHESES_PROSE}}</p>
+
+  <h2>Policy implications</h2>
+  <p>{{IMPLICATIONS_PROSE}}</p>
+
+  <div class="pager">
+    <a class="prev" href="{{PREV_SLUG}}.html"><span class="dir">&larr; previous</span>{{PREV_TITLE}}</a>
+    <a class="next" href="{{NEXT_SLUG}}.html"><span class="dir">next &rarr;</span>{{NEXT_TITLE}}</a>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a href="../en.html">Thematic index</a>
+    <a href="../technical.html">Technical appendix</a>
+    <a href="https://github.com/rafapolo/rodado">Repository</a>
+    <span>Data: Base dos Dados / DuckDB</span>
+  </div>
+</footer>
+
+<script src="../assets/theme-toggle.js"></script>
+</body>
+</html>

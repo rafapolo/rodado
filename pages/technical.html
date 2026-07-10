@@ -6,6 +6,11 @@
 <title>Technical appendix — rodado</title>
 <meta name="description" content="Engineering architecture behind rodado: ontology, pipeline, AI query layer, and an explicit Palantir Foundry component mapping.">
 <link rel="stylesheet" href="assets/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="assets/mcp-theme.css">
 <style>
   /* extensão do design system só para o conteúdo técnico denso desta página */
   .grid-cards { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); margin: 0 0 2rem; }
@@ -29,10 +34,21 @@
 <nav class="site-nav">
   <div class="nav-inner">
     <a class="brand" href="index.html">rodado</a>
-    <div class="links">
-      <a href="index.html">Temas</a>
-      <a href="en.html">EN</a>
-      <a href="https://github.com/rafapolo/rodado">GitHub</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="en.html">Topics</a>
+        <a href="mcp-en.html">MCP</a>
+        <a href="https://xn--2dk.xyz/dataviz/">DataViz Hub</a>
+        <a href="https://github.com/rafapolo/rodado">GitHub</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <a href="index.html" class="lang-link">PT</a>
+          <span class="lang-sep">/</span>
+          <span class="lang-current">EN</span>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
     </div>
   </div>
 </nav>
@@ -256,5 +272,6 @@ ORDER BY post_election_contracts DESC</pre>
   </div>
 </footer>
 
+<script src="assets/theme-toggle.js"></script>
 </body>
 </html>

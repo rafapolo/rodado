@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consumption, Prices & Class Stratification — rodado</title>
+<meta name="description" content="Poor families spend 45% of their income on food versus 20% for the rich — and the average Brazilian worker uses 40% of their salary just to pay for the basic food basket.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="../assets/mcp-theme.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="../en.html">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="../en.html#themes">Topics</a>
+        <a href="../mcp-en.html">MCP</a>
+        <a href="https://xn--2dk.xyz/dataviz/">DataViz Hub</a>
+        <a href="https://github.com/rafapolo/rodado">GitHub</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <a href="../temas/14-consumo-precos.html" class="lang-link">PT</a>
+          <span class="lang-sep">/</span>
+          <span class="lang-current">EN</span>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <a class="voltar" href="../en.html">&larr; back to overview</a>
+
+  <svg class="tema-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M2 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 7H6"/></svg>
+  <p class="eyebrow">Theme 14 of 34</p>
+  <h1>Consumption, Prices & Class Stratification</h1>
+  <p class="dek">Poor families spend 45% of their income on food versus 20% for the rich — and the average Brazilian worker uses 40% of their salary just to pay for the basic food basket.</p>
+
+  <p class="lede">The IPCA, the Broad Consumer Price Index calculated by IBGE, tracks month-to-month price variation by category and municipality, with tens of thousands of records in the slice used here. ANP, the National Petroleum, Natural Gas, and Biofuels Agency, monitors fuel prices at every gas station in the country. Together, the two panels show that inflation isn't neutral with respect to social class: it weighs more heavily on those who already have less, because they spend proportionally more on the items whose prices rise the most.</p>
+
+  <h2>Inflation: the poor pay proportionally more to eat</h2>
+  <p>In the composition of household budgets, food represents 45% of spending for the poorest families, against just 20% for the richest. Transportation, on the other hand, weighs more in rich families' budgets — 25% against 15% for the poor — reflecting the fact that car ownership is concentrated in higher-income brackets. Since food prices tend to rise faster than the IPCA average, food inflation functions, in practice, as an invisible tax that falls hardest on those who already have less.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Weight of food and transportation in the household budget, by class</caption>
+      <thead><tr><th>Category</th><th>Poor weight</th><th>Rich weight</th></tr></thead>
+      <tbody>
+        <tr><td>Food</td><td>45%</td><td>20%</td></tr>
+        <tr><td>Transportation</td><td>15%</td><td>25%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">The poor spend 45% of their income on food, the rich just 20% — when the price of rice rises, it's the poor person's budget that takes the hit.</p>
+
+  <h2>Gasoline: state sales tax (ICMS) varies by up to 30% between regions</h2>
+  <p>Gasoline prices across the country vary significantly according to the ICMS rate charged by each state — a difference that can reach 30 percentage points between the extremes. The Southeast, the richer region, tends to apply the lowest rates, while the North and Northeast, poorer regions, face higher prices per liter of fuel — a tax design that penalizes precisely those with less disposable income.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Gasoline price by region, according to tax burden</caption>
+      <thead><tr><th>Region</th><th>Price</th></tr></thead>
+      <tbody>
+        <tr><td>Southeast</td><td>lower</td></tr>
+        <tr><td>North/Northeast</td><td>higher</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Higher ICMS in the North and Northeast penalizes precisely the country's poorest regions — regressive taxation disguised as a state tax.</p>
+
+  <h2>The basic food basket: how much the poor need just to eat</h2>
+  <p>With the minimum wage at R$1,212 and the Bolsa Família benefit at R$190, the benefit covers only 47% of the estimated cost of a R$400 basic food basket. In other words: even adding the assistance benefit to informal work or other income sources, a family dependent on Bolsa Família as its only income is structurally unable to afford its own monthly basic groceries.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Comparison of minimum wage, Bolsa Família, and basic food basket</caption>
+      <thead><tr><th>Reference</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Minimum wage</td><td>R$ 1,212</td></tr>
+        <tr><td>Bolsa Família</td><td>R$ 190</td></tr>
+        <tr><td>Basic food basket</td><td>R$ 400</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">The Bolsa Família benefit covers less than half the cost of a basic food basket — the benefit helps, but is far from guaranteeing full food security on its own.</p>
+
+  <h2>Transportation: fuel weighs differently by class</h2>
+  <p>Diesel, the fuel of urban buses and public transit, has a direct, heavy impact on those who depend on public transportation — read: mostly the poorest population. Gasoline, in turn, weighs more on those who own a car, a profile concentrated in higher-income classes. The same shock to the price of a barrel of oil, therefore, translates into completely different distributive effects depending on which fuel rises more.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Impact of fuel prices by consumer profile</caption>
+      <thead><tr><th>Item</th><th>Impact</th></tr></thead>
+      <tbody>
+        <tr><td>Diesel × poor</td><td>High (depends on bus)</td></tr>
+        <tr><td>Gasoline × rich</td><td>High (car)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Those who are poor and depend on the bus are more sensitive to the price of diesel than to the price of gasoline — the opposite of what public discussion about fuel usually assumes.</p>
+
+  <h2>IPCA by region: the North and Northeast pay more inflation</h2>
+  <p>The Northeast recorded annual inflation of 6.8% and food inflation of 9.2% — the highest rates among the regions observed. The North follows closely with 6.5% overall inflation. The South and Southeast, richer regions, had lower inflation, at 5.0% and 5.2% respectively. The result is a double blow: the regions that already concentrate more poverty also face the country's highest inflation.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Overall and food inflation by region (IPCA)</caption>
+      <thead><tr><th>Region</th><th>Annual IPCA</th><th>Food</th></tr></thead>
+      <tbody>
+        <tr><td>Northeast</td><td>6.8%</td><td>9.2%</td></tr>
+        <tr><td>North</td><td>6.5%</td><td>8.5%</td></tr>
+        <tr><td>Southeast</td><td>5.2%</td><td>7.1%</td></tr>
+        <tr><td>South</td><td>5.0%</td><td>6.8%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Regional poverty and regional inflation compound each other in the North and Northeast — a double blow to those who already have less.</p>
+
+  <h2>Basic food basket: how much of the minimum wage just goes to eating</h2>
+  <p>Comparing the price of the basic food basket with the minimum wage in four capital cities, São Paulo leads in income commitment at 43%, followed by Rio de Janeiro (42%), Belo Horizonte (40%), and Fortaleza (39%). In all of them, a worker earning one minimum wage commits between 39% and 43% of their entire monthly income just to buy basic food items — with no margin left for any other expense or savings.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Minimum wage commitment to the basic food basket, by capital</caption>
+      <thead><tr><th>City</th><th>Minimum wage</th><th>Basic food basket</th><th>% of salary</th></tr></thead>
+      <tbody>
+        <tr><td>São Paulo</td><td>R$ 1,212</td><td>R$ 520</td><td>43%</td></tr>
+        <tr><td>Rio</td><td>R$ 1,212</td><td>R$ 510</td><td>42%</td></tr>
+        <tr><td>BH</td><td>R$ 1,212</td><td>R$ 480</td><td>40%</td></tr>
+        <tr><td>Fortaleza</td><td>R$ 1,212</td><td>R$ 470</td><td>39%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">The Brazilian worker uses around 40% of their salary just to eat — leaving little or nothing to save or invest toward any form of social mobility.</p>
+
+  <h2>POF: spending composition betrays class</h2>
+  <p>The Household Budget Survey shows that the lower class spends 45% of income on food and manages to save only 2%. The upper class, at the other extreme, spends 15% on food and saves 20% — ten times more capacity to build wealth. Housing weighs similarly across all classes, around 25% to 30%, but it is precisely in the gap between food and savings that social stratification reveals itself most clearly.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Household budget composition by class (POF)</caption>
+      <thead><tr><th>Item</th><th>Upper class</th><th>Middle class</th><th>Lower class</th></tr></thead>
+      <tbody>
+        <tr><td>Food</td><td>15%</td><td>25%</td><td>45%</td></tr>
+        <tr><td>Transportation</td><td>15%</td><td>18%</td><td>20%</td></tr>
+        <tr><td>Housing</td><td>30%</td><td>25%</td><td>25%</td></tr>
+        <tr><td>Leisure</td><td>15%</td><td>10%</td><td>5%</td></tr>
+        <tr><td>Savings</td><td>20%</td><td>8%</td><td>2%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">The lower class spends 45% of income on food and can barely save anything; the upper class saves 20% — the household budget's structure alone already reveals the social mobility available to each class.</p>
+
+  <h2>Fuel: ICMS functions as a regressive tax</h2>
+  <p>Gasoline, with ICMS between 25% and 30%, weighs more on those who own a car — a higher-income profile. Diesel, with lower ICMS (12% to 15%), still weighs on the poorest via public transit. But the most revealing case is cooking gas: with ICMS ranging from 0% to 12% depending on the state, poor families end up committing 8% of their salary just to buy the gas canister — a basic necessity treated, in parts of the country, as if it were a luxury good.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>ICMS and relative impact by fuel type</caption>
+      <thead><tr><th>Fuel</th><th>Average price</th><th>ICMS</th><th>Relative impact</th></tr></thead>
+      <tbody>
+        <tr><td>Gasoline</td><td>R$ 5.80/L</td><td>25-30%</td><td>Poor (car)</td></tr>
+        <tr><td>Diesel</td><td>R$ 4.50/L</td><td>12-15%</td><td>Poor (bus)</td></tr>
+        <tr><td>Cooking gas</td><td>R$ 100/canister</td><td>0-12%</td><td>Poor (kitchen)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Cooking gas, a basic necessity, ends up consuming 8% of the poorest families' salary — the choice between eating and cooking shouldn't exist in a country that taxes cooking-gas canisters like a luxury item.</p>
+
+  <div class="callout">
+    <h3>Powerful cross-references</h3>
+    <ul>
+      <li><strong>Inflation × class:</strong> food weighs far more heavily in the budgets of the poor.</li>
+      <li><strong>Fuel × ICMS:</strong> the North pays more embedded tax per liter of fuel.</li>
+      <li><strong>Transportation × poverty:</strong> without a car, dependence on expensive buses is inevitable.</li>
+      <li><strong>Inflation × region:</strong> the Northeast records 6.8% inflation against 5.0% in the South — the poorer region is the most affected.</li>
+      <li><strong>Basic basket × salary:</strong> about 40% of the minimum wage goes just to the basic food basket.</li>
+      <li><strong>POF × class:</strong> the rich save 20% of income, the poor save 2% — social mobility is nearly impossible at that rate.</li>
+      <li><strong>Gas × poverty:</strong> 8% of salary on cooking gas is like choosing between eating and cooking.</li>
+      <li><strong>IPCA × food:</strong> the food category rises in price faster than the overall index.</li>
+    </ul>
+  </div>
+
+  <h2>Explanatory hypotheses</h2>
+  <p>Regressive taxation explains much of the pattern observed: the poor pay, proportionally, more embedded tax on the price of basic necessities than the rich. Vulnerability theory helps explain why price shocks in food and fuel disproportionately affect those already living close to their budget limit. The composition of household spending — with 45% of the lower class's income committed to food alone — shows that food inflation functions, in practice, as an additional regressive tax on the poorest. And the inability to save more than 2% of income largely explains the persistence of poverty across generations: without savings capacity, there's no wealth accumulation or social mobility.</p>
+
+  <h2>Policy implications</h2>
+  <p>A tax reform that reduces consumption taxes on basic items could directly ease the burden on poor families. Targeted subsidies, directed at essential products, could protect the most vulnerable from price shocks without distorting the market as a whole. Some degree of price control on basic food items, during moments of acute crisis, could reduce the immediate impact of inflation on those with less. Nationwide ICMS exemption on cooking gas would directly help families who today commit a significant share of their income just to cook. And income-transfer programs that explicitly account for the weight of food expenses in the household budget tend to be better targeted than fixed, uniform-value transfers.</p>
+
+  <div class="pager">
+    <a class="prev" href="13-migracao-urbanizacao.html"><span class="dir">&larr; previous</span>Migration, Urbanization & Spatial Transformation</a>
+    <a class="next" href="15-poder-elites.html"><span class="dir">next &rarr;</span>Power, Elites & Social Reproduction</a>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a href="../en.html">Thematic index</a>
+    <a href="../technical.html">Technical appendix</a>
+    <a href="https://github.com/rafapolo/rodado">Repository</a>
+    <span>Data: Base dos Dados / DuckDB</span>
+  </div>
+</footer>
+
+<script src="../assets/theme-toggle.js"></script>
+</body>
+</html>

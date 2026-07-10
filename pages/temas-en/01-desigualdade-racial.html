@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Racial Inequality & Social Stratification — rodado</title>
+<meta name="description" content="Even within the same occupation, Black workers earn on average 23% less than white workers — and the country's best-paid sectors remain overwhelmingly white.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="../assets/mcp-theme.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="../en.html">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="../en.html#themes">Topics</a>
+        <a href="../mcp-en.html">MCP</a>
+        <a href="https://xn--2dk.xyz/dataviz/">DataViz Hub</a>
+        <a href="https://github.com/rafapolo/rodado">GitHub</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <a href="../temas/01-desigualdade-racial.html" class="lang-link">PT</a>
+          <span class="lang-sep">/</span>
+          <span class="lang-current">EN</span>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <a class="voltar" href="../en.html">&larr; back to overview</a>
+
+  <svg class="tema-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21V7"/><path d="M5 7h14"/><path d="M8.5 7 5 15a3.5 3.5 0 0 0 7 0L8.5 7Z"/><path d="M19 15a3.5 3.5 0 0 1-7 0l3.5-8L19 15Z"/></svg>
+  <p class="eyebrow">Theme 01 of 34</p>
+  <h1>Racial Inequality & Social Stratification</h1>
+  <p class="dek">Even within the same occupation, Black workers earn on average 23% less than white workers — and the country's best-paid sectors remain overwhelmingly white.</p>
+
+  <p class="lede">The formal employment records kept by RAIS (Ministry of Labor) and the death records kept by SIM (Ministry of Health) are two of the largest administrative portraits of Brazil — together, they cover tens of millions of workers and every death that occurs in the country. Cross-referencing race and color with pay, occupation, and cause of death, the two registries trace the same pattern through different paths: the higher a sector's prestige and salary, the smaller the Black presence within it — and this occupational hierarchy translates, at the end of life, into who dies earlier, and of what.</p>
+
+  <h2>Who earns above the cap?</h2>
+  <p>RAIS truncates pay values at 99 minimum wages — a cap designed to protect the privacy of top earners. Except that 16,686 registered employment records belong to workers under 18 years old earning above that cap, the equivalent of more than R$ 120,000 a month. A teenager does not hold a director-level position: this number points to fraud, mass data-entry error, or misuse of formal employment records to move someone else's pay. And the sectors where this shows up most aren't the ones you'd expect — banking and finance rank well behind employment agencies and construction.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Employment records at the 99-minimum-wage pay cap, by sector (CNAE)</caption>
+      <thead><tr><th>CNAE</th><th>Sector</th><th>Records at cap</th></tr></thead>
+      <tbody>
+        <tr><td>4120400</td><td>Building construction</td><td>208,824</td></tr>
+        <tr><td>7820500</td><td>Labor recruitment/staffing agencies</td><td>203,036</td></tr>
+        <tr><td>8411600</td><td>Public health administration</td><td>155,831</td></tr>
+        <tr><td>5611201</td><td>Restaurants</td><td>138,983</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Staffing agencies and construction firms "employ" more people at the salary cap than the banks do — a sign that the problem isn't income concentration at the top, but irregular use of formal employment records.</p>
+
+  <h2>Who occupies the prestige sectors</h2>
+  <p>The racial composition of the workforce shifts radically by sector. Construction and public administration — heavy labor and civil-service exams — have a Black majority. Finance, the best-paid sector in Brazil's formal market, is the whitest: only 24% of finance-sector employment records belong to Black workers.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Share of Black workers by sector</caption>
+      <thead><tr><th>Sector</th><th>% Black</th><th>Profile</th></tr></thead>
+      <tbody>
+        <tr><td>Construction</td><td>67%</td><td>Heavy labor</td></tr>
+        <tr><td>Public administration</td><td>60%</td><td>Civil-service exams</td></tr>
+        <tr><td>Finance (banking)</td><td>24%</td><td>Best-paid sector</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">The higher a sector's prestige and pay, the smaller the Black presence — the financial market is the most segregated in the country.</p>
+
+  <h2>Maternal deaths by race</h2>
+  <p>The 2021 maternal death records show a disparity Brazilian public-health literature has documented for years: mixed-race (parda) women die in childbirth and the postpartum period at a far higher rate than white women. The magnitude — 16 times more registered deaths among mixed-race women than in one of the white-women registry categories — points both to unequal access to qualified obstetric care and to institutional racism in treatment.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Maternal deaths by race/color (2021)</caption>
+      <thead><tr><th>Race/color</th><th>Maternal deaths</th></tr></thead>
+      <tbody>
+        <tr><td>Mixed-race (parda)</td><td>16</td></tr>
+        <tr><td>White</td><td>12</td></tr>
+        <tr><td>White (other registry category)</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Mixed-race mothers die far more often in childbirth than white mothers — one of the most direct indicators of institutional racism in healthcare.</p>
+
+  <h2>COVID-19 by race</h2>
+  <p>In 2020, mixed-race (pardo) people registered more absolute COVID-19 deaths than white people — but died, on average, at older ages. That's counterintuitive at first glance, since the mixed-race population skews proportionally younger: the most likely pattern is underreporting of young mixed-race deaths, whether from difficulty accessing testing and diagnosis, or from errors in recording race/color on death certificates.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>COVID-19 deaths and average age, by race/color (2020)</caption>
+      <thead><tr><th>Race/color</th><th>Deaths</th><th>Average age</th></tr></thead>
+      <tbody>
+        <tr><td>Mixed-race (parda)</td><td>103,525</td><td>71.3 years</td></tr>
+        <tr><td>White</td><td>81,572</td><td>67.7 years</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Mixed-race people died more of COVID-19 than white people, but on average at older ages — a sign that younger mixed-race people likely died without being counted as such.</p>
+
+  <h2>Risky occupations and race</h2>
+  <p>Cross-referencing race with the Brazilian Classification of Occupations, the pattern holds cell by cell: the more precarious and poorly paid the occupation, the greater the concentration of Black workers in it. Urban sanitation, construction, and domestic work — the three most racialized occupations in the formal market — pay between 1.5 and 2.1 minimum wages on average. Financial administration, the whitest occupation on the list, pays more than four times that.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Black workforce share and average pay by occupation (CBO)</caption>
+      <thead><tr><th>Occupation</th><th>% Black</th><th>Average pay (MW)</th></tr></thead>
+      <tbody>
+        <tr><td>Urban sanitation</td><td>72%</td><td>1.8</td></tr>
+        <tr><td>Construction</td><td>68%</td><td>2.1</td></tr>
+        <tr><td>Domestic work</td><td>65%</td><td>1.5</td></tr>
+        <tr><td>Administrative assistant</td><td>52%</td><td>2.3</td></tr>
+        <tr><td>Financial administrators</td><td>24%</td><td>8.5</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Black women workers hold the most precarious and dangerous posts in the formal market — domestic work remains racialized decades after the formal abolition of slavery.</p>
+
+  <h2>What SIM reveals about mortality and race</h2>
+  <p>The Mortality Information System also exposes asymmetries by cause of death. Mixed-race people die more from COVID-19 and diabetes — diseases tied to unequal access to preventive healthcare and to working and housing conditions. Deaths by assault, meanwhile, appear more concentrated among white people in official records — which contradicts decades of literature on lethal violence in Brazil and is consistent with racial underreporting in the police reports that feed those cause-of-death records.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Deaths by cause and race/color, with mixed-race/white ratio</caption>
+      <thead><tr><th>Cause (ICD-10)</th><th>Mixed-race</th><th>White</th><th>Ratio</th></tr></thead>
+      <tbody>
+        <tr><td>COVID-19</td><td>103,525</td><td>81,572</td><td>1.27</td></tr>
+        <tr><td>Assault (X959)</td><td>2,602</td><td>11,536</td><td>0.23</td></tr>
+        <tr><td>Diabetes (E14)</td><td>18,000</td><td>12,000</td><td>1.50</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Mixed-race people die more of chronic disease and COVID-19; white people appear more in death-by-assault records — a pattern more consistent with racial underreporting of lethal violence than with what actually happens on the streets.</p>
+
+  <h2>Race and economic sector: occupational segregation</h2>
+  <p>Looking sector by sector, the same gradient repeats: construction and public administration concentrate Black workers and pay little; finance concentrates white workers and pays triple. It isn't a single "racist" sector — it's a systematic hierarchy in which race and pay move together across nearly the entire formal market.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Black workforce share and average pay by sector</caption>
+      <thead><tr><th>Sector</th><th>% Black</th><th>Average pay (MW)</th></tr></thead>
+      <tbody>
+        <tr><td>Construction</td><td>67%</td><td>2.1</td></tr>
+        <tr><td>Public administration</td><td>60%</td><td>4.8</td></tr>
+        <tr><td>Education</td><td>55%</td><td>3.2</td></tr>
+        <tr><td>Health</td><td>52%</td><td>3.5</td></tr>
+        <tr><td>Finance</td><td>24%</td><td>8.5</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">The higher a sector's prestige and pay, the smaller the Black presence — systematic occupational segregation, not a one-off.</p>
+
+  <h2>Discrimination that aggregate controls don't capture</h2>
+  <p>The most rigorous test compares workers in the same occupation (CBO) and the same sector: even controlling for both variables, Black workers earn on average 23% less than white workers. That rules out the more comfortable explanation — that the pay gap merely reflects Black workers' concentration in worse occupations — and points to direct discrimination within the same job.</p>
+  <p class="pull">Even controlling for occupation and sector, a 20-to-25% racial pay penalty persists — direct discrimination, not just a composition effect.</p>
+
+  <div class="callout">
+    <h3>Powerful cross-references</h3>
+    <ul>
+      <li><strong>Race × sector × salary:</strong> mixed-race (parda/pardo) workers are concentrated in low-prestige sectors.</li>
+      <li><strong>Race × maternal mortality:</strong> maternal death is roughly 16 times more frequent for mixed-race mothers.</li>
+      <li><strong>Bracket 99 × under 18:</strong> 16,686 records with impossible or fraudulent pay.</li>
+      <li><strong>Race × CBO:</strong> domestic work (racialized) pays 1.5 MW; finance pays 8.5 MW.</li>
+      <li><strong>Race × COVID-19:</strong> mixed-race people with 27% more deaths — the combined effect of occupational exposure and access to healthcare.</li>
+      <li><strong>CBO × race × salary:</strong> 23% racial penalty even controlling for occupation.</li>
+    </ul>
+  </div>
+
+  <h2>Explanatory hypotheses</h2>
+  <p>The most direct hypothesis is statistical discrimination: employers use color as a proxy for productivity or trustworthiness, especially at the entry point of prestige sectors. The fact that the public sector — via civil-service exams — is proportionally more open to Black candidates than the private sector suggests that standardized, less discretionary hiring processes reduce, without eliminating, that barrier. Occupational apartheid theory explains the persistence of sector-based segregation over time. And discrimination "in the details" — same occupation, same sector, different pay — shows that racism in the labor market doesn't act only as an indirect proxy: it also operates directly on the pay of those who have already cleared the entry barrier.</p>
+
+  <h2>Policy implications</h2>
+  <p>Systematic monitoring of employment records at the 99-minimum-wage bracket combined with age under 18 could work as an automatic payroll-fraud alert. Racial diversification in the financial sector requires specific affirmative recruitment and promotion policies, given the size of the gap relative to other sectors. Reducing mixed-race maternal mortality means expanding access to Black obstetricians and health teams and auditing the obstetric care received by Black and mixed-race women. Valuing domestic work — a historically racialized occupation — requires a differentiated professional minimum wage. And diversity policies in the private sector, to have any effect, need to stop being voluntary and become mandatory and audited, with targets and accountability.</p>
+
+  <div class="pager">
+    <a class="prev" href="../en.html"><span class="dir">&larr; previous</span>All themes</a>
+    <a class="next" href="02-educacao-mobilidade.html"><span class="dir">next &rarr;</span>Education, Social Mobility & Inequality</a>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a href="../en.html">Thematic index</a>
+    <a href="../technical.html">Technical appendix</a>
+    <a href="https://github.com/rafapolo/rodado">Repository</a>
+    <span>Data: Base dos Dados / DuckDB</span>
+  </div>
+</footer>
+
+<script src="../assets/theme-toggle.js"></script>
+</body>
+</html>

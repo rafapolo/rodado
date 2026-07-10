@@ -6,16 +6,32 @@
 <title>Atlas, Mapas Georreferenciados e Bases Territoriais — rodado</title>
 <meta name="description" content="O Brasil protege formalmente 25% do próprio território em unidades de conservação e terras indígenas — mas o Cerrado já perdeu mais floresta que a Amazônia.">
 <link rel="stylesheet" href="../assets/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="../assets/mcp-theme.css">
 </head>
 <body>
 
 <nav class="site-nav">
   <div class="nav-inner">
     <a class="brand" href="../index.html">rodado</a>
-    <div class="links">
-      <a href="../index.html">Temas</a>
-      <a href="../en.html">EN</a>
-      <a href="https://github.com/rafapolo/rodado">GitHub</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="../index.html#temas">Temas</a>
+        <a href="../mcp.html">MCP</a>
+        <a href="https://xn--2dk.xyz/">DataViz Hub</a>
+        <a href="https://github.com/rafapolo/rodado">GitHub</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <span class="lang-current">PT</span>
+          <span class="lang-sep">/</span>
+          <a href="../en.html" class="lang-link">EN</a>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema claro/escuro" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
     </div>
   </div>
 </nav>
@@ -207,5 +223,6 @@
   </div>
 </footer>
 
+<script src="../assets/theme-toggle.js"></script>
 </body>
 </html>

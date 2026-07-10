@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>rodado — English summary</title>
-<meta name="description" content="A sociological reading of Brazilian public microdata, in Portuguese — this page is a short English summary with links to the full pt-br essays.">
+<meta name="description" content="A sociological reading of Brazilian public microdata — this page is a short English summary with links to full English translations of all 34 essays.">
 <link rel="stylesheet" href="assets/site.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,66 +17,75 @@
 <nav class="site-nav">
   <div class="nav-inner">
     <a class="brand" href="index.html">rodado</a>
-    <div class="links">
-      <a href="index.html">Temas (pt-br)</a>
-      <a href="mcp-en.html">MCP</a>
-      <a href="https://xn--2dk.xyz/dataviz/">DataViz Hub</a>
-      <a href="https://github.com/rafapolo/rodado">GitHub</a>
-      <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" type="button"><i class="fa-solid fa-moon"></i></button>
+    <div class="nav-right">
+      <div class="links">
+        <a href="#themes">Topics</a>
+        <a href="mcp-en.html">MCP</a>
+        <a href="https://xn--2dk.xyz/dataviz/">DataViz Hub</a>
+        <a href="https://github.com/rafapolo/rodado">GitHub</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <a href="index.html" class="lang-link">PT</a>
+          <span class="lang-sep">/</span>
+          <span class="lang-current">EN</span>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
     </div>
   </div>
 </nav>
 
-<main>
+<main class="wide">
   <a class="voltar" href="index.html">&larr; back to index</a>
 
   <p class="eyebrow">English summary</p>
   <h1>A sociological reading of Brazil, in data</h1>
   <p class="dek">This project mirrors 533 public datasets from Base dos Dados — Brazil's civic BigQuery mirror — and reads them through a sociological, investigative lens rather than a technical one.</p>
 
-  <p class="lede">The full site is written in Portuguese, on purpose: it's a project about Brazil, sourced from Brazilian public institutions (RAIS, SIM, TSE, CGU, IBGE, INEP, CNES, and others), aimed first at Brazilian readers, researchers, and journalists. This page is a short summary for readers who don't read Portuguese, with direct links into the 34 thematic essays — each one pairs a data-driven narrative with the tables behind it. The technical architecture behind the site (DuckDB, Parquet on object storage, an LLM natural-language-to-SQL layer) is documented separately for engineers: see the <a href="technical.html">technical appendix</a> and <a href="https://github.com/rafapolo/rodado/blob/main/TECHNICAL.md">TECHNICAL.md</a>.</p>
+  <p class="lede">The site was written in Portuguese first: it's a project about Brazil, sourced from Brazilian public institutions (RAIS, SIM, TSE, CGU, IBGE, INEP, CNES, and others), aimed first at Brazilian readers, researchers, and journalists. This page is a short English summary with direct links into full English translations of all 34 thematic essays — each one pairs a data-driven narrative with the tables behind it; the original pt-br essays remain available from each page's language switcher. The technical architecture behind the site (DuckDB, Parquet on object storage, an LLM natural-language-to-SQL layer) is documented separately for engineers: see the <a href="technical.html">technical appendix</a> and <a href="https://github.com/rafapolo/rodado/blob/main/TECHNICAL.md">TECHNICAL.md</a>.</p>
 
   <p>Each essay covers one domain — racial inequality, education, health, labor, politics, crime, the economy, the environment, public budgets, and more — built from linked microdata across ministries and public agencies. Findings are stated directly, with the supporting numbers shown alongside, in the tradition of data journalism rather than hedged academic writing.</p>
 
-  <h2>The 34 themes (pt-br)</h2>
+  <h2 id="themes">The 34 themes</h2>
   <div class="data-table-wrap">
     <table>
       <thead><tr><th>#</th><th>Theme</th></tr></thead>
       <tbody>
-        <tr><td>01</td><td><a href="temas/01-desigualdade-racial.html">Racial Inequality & Social Stratification</a></td></tr>
-        <tr><td>02</td><td><a href="temas/02-educacao-mobilidade.html">Education, Social Mobility & Inequality</a></td></tr>
-        <tr><td>03</td><td><a href="temas/03-saude-determinantes.html">Health, Service Access & Social Determinants</a></td></tr>
-        <tr><td>04</td><td><a href="temas/04-mercado-trabalho.html">Labor Market, Informality & Stratification</a></td></tr>
-        <tr><td>05</td><td><a href="temas/05-politica-representacao.html">Politics, Representation & Electoral Behavior</a></td></tr>
-        <tr><td>06</td><td><a href="temas/06-crime-violencia.html">Crime, Violence & Public Security</a></td></tr>
-        <tr><td>07</td><td><a href="temas/07-economia-credito.html">Economy, Credit & Regional Development</a></td></tr>
-        <tr><td>08</td><td><a href="temas/08-politicas-publicas.html">Public Policy, Transfers & Social Protection</a></td></tr>
-        <tr><td>09</td><td><a href="temas/09-genero-familia.html">Gender, Family & Demographic Dynamics</a></td></tr>
-        <tr><td>10</td><td><a href="temas/10-meio-ambiente.html">Environment, Development & Sustainability</a></td></tr>
-        <tr><td>11</td><td><a href="temas/11-infraestrutura.html">Infrastructure, Services & Quality of Life</a></td></tr>
-        <tr><td>12</td><td><a href="temas/12-interseccionalidade.html">Intersectionality & Compound Inequalities</a></td></tr>
-        <tr><td>13</td><td><a href="temas/13-migracao-urbanizacao.html">Migration, Urbanization & Spatial Transformation</a></td></tr>
-        <tr><td>14</td><td><a href="temas/14-consumo-precos.html">Consumption, Prices & Class Stratification</a></td></tr>
-        <tr><td>15</td><td><a href="temas/15-poder-elites.html">Power, Elites & Social Reproduction</a></td></tr>
-        <tr><td>16</td><td><a href="temas/16-economia-politica.html">Political Economy & Development</a></td></tr>
-        <tr><td>17</td><td><a href="temas/17-agropecuaria-agronegocio.html">Agriculture, Land Structure & Agribusiness</a></td></tr>
-        <tr><td>18</td><td><a href="temas/18-comercio-exterior.html">Foreign Trade, Global Integration & Value Chains</a></td></tr>
-        <tr><td>19</td><td><a href="temas/19-mercado-financeiro.html">Financial Markets, Investment Funds & Capital Structure</a></td></tr>
-        <tr><td>20</td><td><a href="temas/20-ciencia-tecnologia.html">Science, Technology, Scholarships & Academic Output</a></td></tr>
-        <tr><td>21</td><td><a href="temas/21-corrupcao-improbidade.html">Corruption, Administrative Misconduct & Public Oversight</a></td></tr>
-        <tr><td>22</td><td><a href="temas/22-clima-queimadas.html">Climate, Wildfires & Temperature Variation</a></td></tr>
-        <tr><td>23</td><td><a href="temas/23-epidemiologia.html">Epidemiology, Infectious Diseases & Health Surveillance</a></td></tr>
-        <tr><td>24</td><td><a href="temas/24-assistencia-saude.html">Outpatient, Hospital & SUS Procedure Data</a></td></tr>
-        <tr><td>25</td><td><a href="temas/25-orcamento-federal.html">Federal Budget, Parliamentary Amendments & Budget Execution</a></td></tr>
-        <tr><td>26</td><td><a href="temas/26-servidores-publicos.html">Public Servants, Personnel Management & State Elites</a></td></tr>
-        <tr><td>27</td><td><a href="temas/27-pesquisas-opiniao.html">Opinion Polls, Public Perception & Political Behavior</a></td></tr>
-        <tr><td>28</td><td><a href="temas/28-violencia-escolar.html">School Violence, Educational Security & Learning Environment</a></td></tr>
-        <tr><td>29</td><td><a href="temas/29-dados-eleitorais-stf.html">Detailed Electoral Data, Litigation & Supreme Court</a></td></tr>
-        <tr><td>30</td><td><a href="temas/30-estrutura-produtiva.html">Productive Structure, Companies, SMEs & Competitive Dynamics</a></td></tr>
-        <tr><td>31</td><td><a href="temas/31-desenvolvimento-humano.html">Human Development, Social Vulnerability & Composite Indices</a></td></tr>
-        <tr><td>32</td><td><a href="temas/32-conectividade.html">Connectivity, Digital Education & Telecom Infrastructure</a></td></tr>
-        <tr><td>33</td><td><a href="temas/33-dados-internacionais.html">Comparative International Data & Global Rankings</a></td></tr>
-        <tr><td>34</td><td><a href="temas/34-atlas-mapas.html">Atlas, Georeferenced Maps & Territorial Bases</a></td></tr>
+        <tr><td>01</td><td><a href="temas-en/01-desigualdade-racial.html">Racial Inequality & Social Stratification</a></td></tr>
+        <tr><td>02</td><td><a href="temas-en/02-educacao-mobilidade.html">Education, Social Mobility & Inequality</a></td></tr>
+        <tr><td>03</td><td><a href="temas-en/03-saude-determinantes.html">Health, Service Access & Social Determinants</a></td></tr>
+        <tr><td>04</td><td><a href="temas-en/04-mercado-trabalho.html">Labor Market, Informality & Stratification</a></td></tr>
+        <tr><td>05</td><td><a href="temas-en/05-politica-representacao.html">Politics, Representation & Electoral Behavior</a></td></tr>
+        <tr><td>06</td><td><a href="temas-en/06-crime-violencia.html">Crime, Violence & Public Security</a></td></tr>
+        <tr><td>07</td><td><a href="temas-en/07-economia-credito.html">Economy, Credit & Regional Development</a></td></tr>
+        <tr><td>08</td><td><a href="temas-en/08-politicas-publicas.html">Public Policy, Transfers & Social Protection</a></td></tr>
+        <tr><td>09</td><td><a href="temas-en/09-genero-familia.html">Gender, Family & Demographic Dynamics</a></td></tr>
+        <tr><td>10</td><td><a href="temas-en/10-meio-ambiente.html">Environment, Development & Sustainability</a></td></tr>
+        <tr><td>11</td><td><a href="temas-en/11-infraestrutura.html">Infrastructure, Services & Quality of Life</a></td></tr>
+        <tr><td>12</td><td><a href="temas-en/12-interseccionalidade.html">Intersectionality & Compound Inequalities</a></td></tr>
+        <tr><td>13</td><td><a href="temas-en/13-migracao-urbanizacao.html">Migration, Urbanization & Spatial Transformation</a></td></tr>
+        <tr><td>14</td><td><a href="temas-en/14-consumo-precos.html">Consumption, Prices & Class Stratification</a></td></tr>
+        <tr><td>15</td><td><a href="temas-en/15-poder-elites.html">Power, Elites & Social Reproduction</a></td></tr>
+        <tr><td>16</td><td><a href="temas-en/16-economia-politica.html">Political Economy & Development</a></td></tr>
+        <tr><td>17</td><td><a href="temas-en/17-agropecuaria-agronegocio.html">Agriculture, Land Structure & Agribusiness</a></td></tr>
+        <tr><td>18</td><td><a href="temas-en/18-comercio-exterior.html">Foreign Trade, Global Integration & Value Chains</a></td></tr>
+        <tr><td>19</td><td><a href="temas-en/19-mercado-financeiro.html">Financial Markets, Investment Funds & Capital Structure</a></td></tr>
+        <tr><td>20</td><td><a href="temas-en/20-ciencia-tecnologia.html">Science, Technology, Scholarships & Academic Output</a></td></tr>
+        <tr><td>21</td><td><a href="temas-en/21-corrupcao-improbidade.html">Corruption, Administrative Misconduct & Public Oversight</a></td></tr>
+        <tr><td>22</td><td><a href="temas-en/22-clima-queimadas.html">Climate, Wildfires & Temperature Variation</a></td></tr>
+        <tr><td>23</td><td><a href="temas-en/23-epidemiologia.html">Epidemiology, Infectious Diseases & Health Surveillance</a></td></tr>
+        <tr><td>24</td><td><a href="temas-en/24-assistencia-saude.html">Outpatient, Hospital & SUS Procedure Data</a></td></tr>
+        <tr><td>25</td><td><a href="temas-en/25-orcamento-federal.html">Federal Budget, Parliamentary Amendments & Budget Execution</a></td></tr>
+        <tr><td>26</td><td><a href="temas-en/26-servidores-publicos.html">Public Servants, Personnel Management & State Elites</a></td></tr>
+        <tr><td>27</td><td><a href="temas-en/27-pesquisas-opiniao.html">Opinion Polls, Public Perception & Political Behavior</a></td></tr>
+        <tr><td>28</td><td><a href="temas-en/28-violencia-escolar.html">School Violence, Educational Security & Learning Environment</a></td></tr>
+        <tr><td>29</td><td><a href="temas-en/29-dados-eleitorais-stf.html">Detailed Electoral Data, Litigation & Supreme Court</a></td></tr>
+        <tr><td>30</td><td><a href="temas-en/30-estrutura-produtiva.html">Productive Structure, Companies, SMEs & Competitive Dynamics</a></td></tr>
+        <tr><td>31</td><td><a href="temas-en/31-desenvolvimento-humano.html">Human Development, Social Vulnerability & Composite Indices</a></td></tr>
+        <tr><td>32</td><td><a href="temas-en/32-conectividade.html">Connectivity, Digital Education & Telecom Infrastructure</a></td></tr>
+        <tr><td>33</td><td><a href="temas-en/33-dados-internacionais.html">Comparative International Data & Global Rankings</a></td></tr>
+        <tr><td>34</td><td><a href="temas-en/34-atlas-mapas.html">Atlas, Georeferenced Maps & Territorial Bases</a></td></tr>
       </tbody>
     </table>
   </div>
