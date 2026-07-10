@@ -155,10 +155,15 @@ def _check_read_only(sql: str) -> str | None:
 
 def _run_sql_ssh(sql: str) -> dict:
     remote_cmd = f"{BEELINK_DUCKDB_BIN} -json {BEELINK_DUCKDB_PATH}"
+    # beelink's ~/.duckdbrc sets enable_progress_bar=true, which prints a
+    # progress meter to stdout for any query past the render threshold
+    # (~2s) and corrupts -json output. Disable it for this session only —
+    # doesn't touch the on-disk .duckdbrc.
+    stdin_payload = f"SET enable_progress_bar=false;\n{sql}"
     try:
         proc = subprocess.run(
             ["ssh", BEELINK_HOST, remote_cmd],
-            input=sql.encode("utf-8"),
+            input=stdin_payload.encode("utf-8"),
             capture_output=True,
             timeout=120,
         )
@@ -336,6 +341,102 @@ def run_sql(sql: str, max_rows: int = 500) -> dict:
             "total": len(rows),
         }
     return {"rows": rows, "truncated": False}
+
+
+# ---------------------------------------------------------------------------
+# Friendly per-theme tools — thin wrappers over data already on beelink or a
+# single well-known live API, for callers who don't want to write SQL
+# ---------------------------------------------------------------------------
+
+_CNPJ_BASE = "~/rodado/br_me_cnpj"
+
+
+def _only_digits(s: str) -> str:
+    return re.sub(r"\D", "", s or "")
+
+
+@mcp.tool()
+def consultar_cnpj(cnpj: str) -> dict:
+    """Look up a Brazilian company by CNPJ against the full registry already
+    mirrored on beelink (br_me_cnpj — empresas/estabelecimentos/socios) —
+    no external API call, just SQL over local data already on this server.
+    Accepts a full 14-digit CNPJ or an 8-digit CNPJ básico; punctuation
+    (dots/slash/dash) is stripped automatically.
+
+    Returns company info (razão social, natureza jurídica, capital social),
+    all matriz/filial establishments (up to 50), and registered sócios (up
+    to 50).
+    """
+    digits = _only_digits(cnpj)
+    if len(digits) not in (8, 14):
+        return {"error": f"'{cnpj}' isn't a valid CNPJ (need 8 or 14 digits, got {len(digits)})."}
+    basico = digits[:8]
+
+    empresa = _run_sql_ssh(
+        f"SELECT cnpj_basico, razao_social, natureza_juridica, "
+        f"qualificacao_responsavel, capital_social "
+        f"FROM read_parquet('{_CNPJ_BASE}/empresas/*.parquet') "
+        f"WHERE cnpj_basico = '{basico}' LIMIT 1"
+    )
+    if "error" in empresa:
+        return empresa
+    if not empresa["rows"]:
+        return {"error": f"No company found for cnpj_basico '{basico}'."}
+
+    estabelecimentos = _run_sql_ssh(
+        f"SELECT cnpj, identificador_matriz_filial, nome_fantasia, "
+        f"situacao_cadastral, data_situacao_cadastral, sigla_uf, cep "
+        f"FROM read_parquet('{_CNPJ_BASE}/estabelecimentos/*.parquet') "
+        f"WHERE cnpj_basico = '{basico}' LIMIT 50"
+    )
+    socios = _run_sql_ssh(
+        f"SELECT nome, documento, qualificacao, data "
+        f"FROM read_parquet('{_CNPJ_BASE}/socios/*.parquet') "
+        f"WHERE cnpj_basico = '{basico}' LIMIT 50"
+    )
+
+    return {
+        "cnpj_basico": basico,
+        "empresa": empresa["rows"][0],
+        "estabelecimentos": estabelecimentos.get("rows", []),
+        "socios": socios.get("rows", []),
+    }
+
+
+@mcp.tool()
+def consultar_cep(cep: str) -> dict:
+    """Look up a Brazilian address by CEP via ViaCEP.
+
+    There's no bulk-downloadable CEP database to mirror (Correios only sells
+    that commercially), so this is a genuine live external lookup — but kept
+    consistent with this server's single-execution-path design: it shells
+    out through `ssh beelink` (curl there) rather than making an HTTP call
+    from this process directly.
+    """
+    digits = _only_digits(cep)
+    if len(digits) != 8:
+        return {"error": f"'{cep}' isn't a valid CEP (need 8 digits, got {len(digits)})."}
+
+    cmd = f"curl -s --max-time 10 https://viacep.com.br/ws/{digits}/json/"
+    try:
+        proc = subprocess.run(
+            ["ssh", BEELINK_HOST, cmd], capture_output=True, timeout=15
+        )
+    except subprocess.TimeoutExpired:
+        return {"error": "Query timed out after 15s (ssh beelink -> viacep.com.br)."}
+
+    if proc.returncode != 0:
+        return {"error": proc.stderr.decode("utf-8", errors="replace").strip() or "ssh/curl failed"}
+
+    stdout = proc.stdout.decode("utf-8", errors="replace").strip()
+    try:
+        data = json.loads(stdout)
+    except json.JSONDecodeError:
+        return {"error": f"Non-JSON response from ViaCEP: {stdout[:500]}"}
+
+    if data.get("erro"):
+        return {"error": f"CEP '{digits}' not found."}
+    return data
 
 
 if __name__ == "__main__":
