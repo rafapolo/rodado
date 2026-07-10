@@ -1,8 +1,9 @@
-"""Tests for mcp_server.py — catalog tools, SQL guard, and HTTP client.
+"""Tests for mcp_server.py — catalog tools, SQL guard, and the beelink SSH client.
 
-Network calls and the embedding model are mocked; the real docs/context/
+The ssh subprocess and the embedding model are mocked; the real docs/context/
 catalog files are used so tests double as a schema-shape regression check.
 """
+import json
 import sys
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -11,6 +12,44 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import mcp_server as m
+
+
+# ---------------------------------------------------------------------------
+# Config — env var defaults and overrides (module-level, so re-import fresh)
+# ---------------------------------------------------------------------------
+
+def test_config_defaults():
+    assert m.BEELINK_HOST == "beelink"
+    assert m.BEELINK_DUCKDB_BIN == "~/bin/duckdb"
+    assert m.BEELINK_DUCKDB_PATH == "~/rodado/basedosdados.duckdb"
+    assert m.SEARCH_THRESHOLD == 0.35
+
+
+def test_config_env_overrides(monkeypatch):
+    monkeypatch.setenv("MCP_BEELINK_HOST", "other-host")
+    monkeypatch.setenv("MCP_BEELINK_DUCKDB_BIN", "/usr/bin/duckdb")
+    monkeypatch.setenv("MCP_BEELINK_DUCKDB_PATH", "/data/db.duckdb")
+    monkeypatch.setenv("MCP_SEARCH_THRESHOLD", "0.5")
+
+    import importlib
+    reloaded = importlib.reload(m)
+    try:
+        assert reloaded.BEELINK_HOST == "other-host"
+        assert reloaded.BEELINK_DUCKDB_BIN == "/usr/bin/duckdb"
+        assert reloaded.BEELINK_DUCKDB_PATH == "/data/db.duckdb"
+        assert reloaded.SEARCH_THRESHOLD == 0.5
+    finally:
+        monkeypatch.undo()
+        importlib.reload(m)  # restore module-level state for later tests
+
+
+def test_run_sql_uses_configured_beelink_target():
+    with patch("mcp_server.subprocess.run") as run:
+        run.return_value = _mock_completed_process(stdout="[]")
+        m.run_sql("SELECT 1")
+    remote_cmd = run.call_args.args[0][2]
+    assert m.BEELINK_DUCKDB_BIN in remote_cmd
+    assert m.BEELINK_DUCKDB_PATH in remote_cmd
 
 
 # ---------------------------------------------------------------------------
@@ -125,76 +164,64 @@ def test_strip_sql_comments():
 
 
 # ---------------------------------------------------------------------------
-# run_sql — HTTP client behavior (mocked, no real network calls)
+# run_sql — SSH-to-beelink client behavior (mocked, no real network calls)
 # ---------------------------------------------------------------------------
 
-def _mock_response(status_code=200, json_data=None, text=""):
-    resp = MagicMock()
-    resp.status_code = status_code
-    resp.text = text
-    if json_data is not None:
-        resp.json.return_value = json_data
-    else:
-        resp.json.side_effect = ValueError("no json")
-    return resp
+_BANNER = "\x1b[90m-- Loading resources from /home/polo/.duckdbrc\n\x1b[00m"
 
 
-def test_run_sql_rejects_before_any_network_call():
-    with patch("mcp_server.requests.get") as get, patch("mcp_server.requests.post") as post:
+def _mock_completed_process(returncode=0, stdout="", stderr=_BANNER):
+    proc = MagicMock()
+    proc.returncode = returncode
+    proc.stdout = stdout.encode("utf-8")
+    proc.stderr = stderr.encode("utf-8")
+    return proc
+
+
+def test_run_sql_rejects_before_any_ssh_call():
+    with patch("mcp_server.subprocess.run") as run:
         result = m.run_sql("DROP TABLE foo")
     assert "error" in result
-    get.assert_not_called()
-    post.assert_not_called()
+    run.assert_not_called()
 
 
-def test_run_sql_requires_password(monkeypatch):
-    monkeypatch.delenv("BASIC_AUTH_PASSWORD", raising=False)
-    result = m.run_sql("SELECT 1")
-    assert "error" in result
-    assert "BASIC_AUTH_PASSWORD" in result["error"]
-
-
-def test_run_sql_success(monkeypatch):
-    monkeypatch.setenv("BASIC_AUTH_PASSWORD", "secret")
-    with patch("mcp_server.requests.post") as post:
-        post.return_value = _mock_response(200, [{"n": 42}])
-        result = m.run_sql("SELECT 42 AS n", method="post")
+def test_run_sql_success():
+    with patch("mcp_server.subprocess.run") as run:
+        run.return_value = _mock_completed_process(stdout='[{"n":42}]')
+        result = m.run_sql("SELECT 42 AS n")
     assert result == {"rows": [{"n": 42}], "truncated": False}
-    assert post.call_args.kwargs["headers"]["X-Password"] == "secret"
+    args = run.call_args.args[0]
+    assert args[0] == "ssh"
+    assert args[1] == m.BEELINK_HOST
+    assert run.call_args.kwargs["input"] == b"SELECT 42 AS n"
 
 
-def test_run_sql_uses_get_method(monkeypatch):
-    monkeypatch.setenv("BASIC_AUTH_PASSWORD", "secret")
-    with patch("mcp_server.requests.get") as get:
-        get.return_value = _mock_response(200, [{"n": 1}])
-        result = m.run_sql("SELECT 1 AS n", method="get")
-    assert result == {"rows": [{"n": 1}], "truncated": False}
-    get.assert_called_once()
+def test_run_sql_empty_result():
+    with patch("mcp_server.subprocess.run") as run:
+        run.return_value = _mock_completed_process(stdout="")
+        result = m.run_sql("SELECT 1 WHERE FALSE")
+    assert result == {"rows": [], "truncated": False}
 
 
-def test_run_sql_surfaces_sql_error_despite_http_200(monkeypatch):
-    """auth.py returns HTTP 200 even on SQL errors — must check the body."""
-    monkeypatch.setenv("BASIC_AUTH_PASSWORD", "secret")
-    with patch("mcp_server.requests.post") as post:
-        post.return_value = _mock_response(200, {"error": "Binder Error: no such column"})
+def test_run_sql_surfaces_sql_error_and_strips_banner():
+    stderr = _BANNER + "Catalog Error: Table with name foo does not exist!"
+    with patch("mcp_server.subprocess.run") as run:
+        run.return_value = _mock_completed_process(returncode=1, stderr=stderr)
         result = m.run_sql("SELECT nope FROM foo")
-    assert result == {"error": "Binder Error: no such column"}
+    assert result == {"error": "Catalog Error: Table with name foo does not exist!"}
 
 
-def test_run_sql_surfaces_http_error(monkeypatch):
-    monkeypatch.setenv("BASIC_AUTH_PASSWORD", "secret")
-    with patch("mcp_server.requests.post") as post:
-        post.return_value = _mock_response(401, text="Unauthorized")
+def test_run_sql_surfaces_timeout():
+    with patch("mcp_server.subprocess.run", side_effect=m.subprocess.TimeoutExpired("ssh", 120)):
         result = m.run_sql("SELECT 1")
     assert "error" in result
-    assert "401" in result["error"]
+    assert "timed out" in result["error"].lower()
 
 
-def test_run_sql_truncates_rows(monkeypatch):
-    monkeypatch.setenv("BASIC_AUTH_PASSWORD", "secret")
+def test_run_sql_truncates_rows():
     rows = [{"n": i} for i in range(10)]
-    with patch("mcp_server.requests.post") as post:
-        post.return_value = _mock_response(200, rows)
+    with patch("mcp_server.subprocess.run") as run:
+        run.return_value = _mock_completed_process(stdout=json.dumps(rows))
         result = m.run_sql("SELECT n FROM x", max_rows=3)
     assert result["truncated"] is True
     assert result["returned"] == 3

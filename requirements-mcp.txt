@@ -1,9 +1,8 @@
 # Deps for mcp_server.py — documentation only, since these are already
 # present in the ambient interpreter used by this project.
-# Deliberately no `duckdb`: the server must never touch DuckDB directly,
-# it only calls the existing https://db.xn--2dk.xyz/query HTTP endpoint.
+# Deliberately no `duckdb`/`requests`: the server never touches DuckDB or
+# HTTP directly, it shells out to `ssh beelink` for every query.
 mcp>=1.28.1
 sentence-transformers>=5.6.0
 torch>=2.13.0
-requests>=2.34.0
 pytest>=9.1.1  # dev only — tests/test_mcp_server.py
