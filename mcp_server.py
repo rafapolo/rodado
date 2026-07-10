@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 """MCP server exposing the Base dos Dados catalog (docs/context/) and the
-remote DuckDB query endpoint as tools for Claude Desktop/Claude Code.
+beelink DuckDB mirror as tools for Claude Desktop/Claude Code.
 
-Never opens its own DuckDB connection — all SQL execution goes through the
-existing HTTP endpoint (same contract as auth.py / dbquery), per this
-project's hard rule that all query paths are DuckDB-only via that endpoint.
+Never opens its own DuckDB connection locally — all SQL execution is
+delegated to the DuckDB CLI on beelink over SSH (the project's official data
+source as of 2026-07-09: fresher than the S3-backed remote endpoint and the
+only place newly-scraped datasets land first).
 """
 import difflib
 import json
 import os
 import re
+import subprocess
 import threading
 from pathlib import Path
 
-import requests
 from mcp.server.fastmcp import FastMCP
 
 # ---------------------------------------------------------------------------
@@ -22,7 +23,9 @@ from mcp.server.fastmcp import FastMCP
 
 REPO_ROOT = Path(__file__).resolve().parent
 CONTEXT_DIR = Path(os.environ.get("MCP_CONTEXT_DIR", REPO_ROOT / "docs" / "context"))
-QUERY_URL = os.environ.get("MCP_QUERY_URL", "https://db.xn--2dk.xyz/query")
+BEELINK_HOST = os.environ.get("MCP_BEELINK_HOST", "beelink")
+BEELINK_DUCKDB_BIN = os.environ.get("MCP_BEELINK_DUCKDB_BIN", "~/bin/duckdb")
+BEELINK_DUCKDB_PATH = os.environ.get("MCP_BEELINK_DUCKDB_PATH", "~/rodado/basedosdados.duckdb")
 SEARCH_THRESHOLD = float(os.environ.get("MCP_SEARCH_THRESHOLD", "0.35"))
 
 SCHEMA_PATH = CONTEXT_DIR / "basedosdados-schema.json"
@@ -150,27 +153,35 @@ def _check_read_only(sql: str) -> str | None:
     return None
 
 
-def _run_sql_http(sql: str, method: str) -> dict:
-    password = os.environ.get("BASIC_AUTH_PASSWORD", "")
-    headers = {"X-Password": password}
-    if method == "get":
-        resp = requests.get(QUERY_URL, params={"q": sql}, headers=headers, timeout=120)
-    else:
-        resp = requests.post(QUERY_URL, data=sql.encode("utf-8"), headers=headers, timeout=120)
+def _run_sql_ssh(sql: str) -> dict:
+    remote_cmd = f"{BEELINK_DUCKDB_BIN} -json {BEELINK_DUCKDB_PATH}"
+    try:
+        proc = subprocess.run(
+            ["ssh", BEELINK_HOST, remote_cmd],
+            input=sql.encode("utf-8"),
+            capture_output=True,
+            timeout=120,
+        )
+    except subprocess.TimeoutExpired:
+        return {"error": "Query timed out after 120s (ssh beelink)."}
+    except FileNotFoundError:
+        return {"error": "ssh not found on PATH — cannot reach beelink."}
 
-    if resp.status_code != 200:
-        return {"error": f"HTTP {resp.status_code}: {resp.text[:2000]}"}
+    if proc.returncode != 0:
+        stderr = proc.stderr.decode("utf-8", errors="replace")
+        stderr = re.sub(r"\x1b\[[0-9;]*m", "", stderr)  # strip ANSI color codes
+        # Strip the duckdbrc-load banner line the CLI prints on every invocation.
+        stderr = re.sub(r"^.*Loading resources from.*\n?", "", stderr, flags=re.MULTILINE)
+        return {"error": stderr.strip() or f"ssh beelink exited with status {proc.returncode}"}
+
+    stdout = proc.stdout.decode("utf-8", errors="replace").strip()
+    if not stdout:
+        return {"rows": []}
 
     try:
-        data = resp.json()
-    except ValueError:
-        return {"error": f"Non-JSON response: {resp.text[:2000]}"}
-
-    # auth.py returns HTTP 200 even on a SQL error — only {"error": ...} tells us.
-    if isinstance(data, dict) and "error" in data:
-        return {"error": data["error"]}
-
-    return {"rows": data}
+        return {"rows": json.loads(stdout)}
+    except json.JSONDecodeError:
+        return {"error": f"Non-JSON response from beelink: {stdout[:2000]}"}
 
 
 # ---------------------------------------------------------------------------
@@ -288,30 +299,31 @@ def get_join_keys(column: str | None = None) -> dict:
 
 
 @mcp.tool()
-def run_sql(sql: str, method: str = "post", max_rows: int = 500) -> dict:
-    """Run a read-only SQL query against the DuckDB mirror over the existing
-    HTTP endpoint (same contract as auth.py / dbquery — this server never
-    opens its own DuckDB connection).
+def run_sql(sql: str, max_rows: int = 500) -> dict:
+    """Run a read-only SQL query against beelink's DuckDB mirror over SSH —
+    the project's official data source (fresher than the S3-backed remote
+    endpoint, and where newly-scraped datasets land first). This server
+    never opens its own DuckDB connection.
 
     Only SELECT/WITH queries are allowed; everything else is rejected before
-    any network call. Results are truncated client-side to `max_rows` (the
-    endpoint has no server-side pagination).
+    any SSH call. Results are truncated client-side to `max_rows`.
 
     Query discipline (per this project's conventions):
-    - Always filter large S3-backed tables on partition columns
-      (ano, mes, sigla_uf) to avoid timeouts.
+    - Always filter large tables on partition columns (ano, mes, sigla_uf)
+      to avoid timeouts.
     - Before reporting results: state the expected order of magnitude,
       flag any row that exceeds it, and verify counts two independent ways.
     - SQL dialect is DuckDB, not BigQuery.
+    - Some views in beelink's basedosdados.duckdb are stale and still point
+      at s3://; if a query on a view looks wrong, check
+      `SELECT sql FROM duckdb_views() WHERE view_name='...'` and fall back to
+      `read_parquet('~/rodado/<dataset>/<table>/*.parquet')` directly.
     """
     error = _check_read_only(sql)
     if error:
         return {"error": error}
 
-    if not os.environ.get("BASIC_AUTH_PASSWORD"):
-        return {"error": "BASIC_AUTH_PASSWORD is not set in the server environment."}
-
-    result = _run_sql_http(sql, method.lower())
+    result = _run_sql_ssh(sql)
     if "error" in result:
         return result
 

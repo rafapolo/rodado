@@ -1,5 +1,14 @@
 # Build a real MCP server for the Base dos Dados catalog
 
+> **Update 2026-07-10 — superseded on one point:** `run_sql` was shipped as planned below
+> (HTTP `/query` endpoint), then switched to `ssh beelink` for query execution once
+> beelink was confirmed as the project's official data source (see
+> [[feedback-local-duckdb-only]] / TECHNICAL.md's "MCP server" section) — fresher than
+> the S3-backed endpoint, and where newly-scraped datasets in `tasks/datasets_to_scrap.md`
+> land first. Everything else below (catalog tools, read-only guard, config) shipped as
+> designed. Treat the `run_sql`/registration details below as historical intent, not
+> current behavior — TECHNICAL.md is the source of truth for what's actually running.
+
 ## Context
 
 `mcp.html`/`mcp-en.html` present the 533-table catalog with "MCP-style" card UI, but there is no actual Model Context Protocol server behind it — confirmed by grepping the repo for `mcp`/`jsonrpc`/`stdio` (only the marketing pages match). The goal is a real MCP server so Claude Desktop/Claude Code can browse the catalog and run read-only queries as first-class tools, instead of hand-copying table IDs out of the static pages.
