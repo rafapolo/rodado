@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Infrastructure, Services & Quality of Life — rodado</title>
+<meta name="description" content="In Brazil's North, only 10% of sewage is collected — five times less than the national average, and more than half of Brazilian sewage still goes straight into the river.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="../assets/mcp-theme.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="../en.html">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="../en.html#themes">Topics</a>
+        <a href="../mcp-en.html">MCP</a>
+        <a href="https://xn--2dk.xyz/dataviz/">DataViz Hub</a>
+        <a href="https://github.com/rafapolo/rodado">GitHub</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <a href="../temas/11-infraestrutura.html" class="lang-link">PT</a>
+          <span class="lang-sep">/</span>
+          <span class="lang-current">EN</span>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <a class="voltar" href="../en.html">&larr; back to overview</a>
+
+  <svg class="tema-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11Z"/></svg>
+  <p class="eyebrow">Theme 11 of 34</p>
+  <h1>Infrastructure, Services & Quality of Life</h1>
+  <p class="dek">In Brazil's North, only 10% of sewage is collected — five times less than the national average, and more than half of Brazilian sewage still goes straight into the river.</p>
+
+  <p class="lede">SNIS, the National Sanitation Information System run by the Ministry of Regional Development, tracks access to water and sewage municipality by municipality across the country. ANATEL, in turn, calculates the Brazilian Connectivity Index, combining mobile internet coverage, fiber, and market concentration among telecom carriers. Read together, sanitation and connectivity draw the same map: basic infrastructure concentrated in the South and Southeast, and a North that lacks both a sewage network and decent internet.</p>
+
+  <h2>Sanitation: the national shame is concentrated in the North</h2>
+  <p>While the national average for water service reaches 83%, the North of the country sits at 50% — nearly half the population without regular access to the network. The gap deepens for sewage: 53% service coverage in Brazil versus just 10% in the North, and effective treatment of collected sewage drops to a mere 5% in the region. This isn't a matter of degree, it's a matter of category: the North lives under the sanitation standard of another country.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Sanitation indicators: national average vs. North (SNIS)</caption>
+      <thead><tr><th>Indicator</th><th>National average</th><th>North</th></tr></thead>
+      <tbody>
+        <tr><td>Water service</td><td>83%</td><td>50%</td></tr>
+        <tr><td>Sewage service</td><td>53%</td><td>10%</td></tr>
+        <tr><td>Sewage treated</td><td>45%</td><td>5%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">The North has five times less basic sanitation than the national average — a sanitary apartheid the country's aggregate indicators hide.</p>
+
+  <h2>More than half of Brazilian sewage goes into the river</h2>
+  <p>Of the sewage that is actually collected, only 45% receives any treatment before returning to the environment. Doing the math, more than half — 55% — of the sewage produced in the country is dumped untreated into rivers, streams, and the sea. This isn't an isolated failure: it's the portrait of a sanitation system designed to collect, not necessarily to treat.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Fate of sewage produced in Brazil</caption>
+      <thead><tr><th>Status</th><th>%</th></tr></thead>
+      <tbody>
+        <tr><td>Sewage collected</td><td>53%</td></tr>
+        <tr><td>Sewage treated</td><td>45%</td></tr>
+        <tr><td>Dumped in rivers</td><td>55%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Most Brazilian sewage still goes straight into rivers — the country treats sanitation as a solved problem when in fact it just moved the sewage elsewhere.</p>
+
+  <h2>Digital inequality repeats the same old inequality map</h2>
+  <p>ANATEL's Brazilian Connectivity Index shows the Federal District at the top, with 72.9 points, followed by Rio de Janeiro and São Paulo. At the other extreme, Amazonas and Roraima register just over 34 points — less than half the DF's connectivity. Brazil's internet network follows exactly the same geography as income inequality and public services: rich in the Center-South, precarious in the Amazon.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Brazilian Connectivity Index (IBC) by selected state</caption>
+      <thead><tr><th>State</th><th>IBC (connectivity)</th></tr></thead>
+      <tbody>
+        <tr><td>DF</td><td>72.9</td></tr>
+        <tr><td>RJ</td><td>65.5</td></tr>
+        <tr><td>SP</td><td>64.0</td></tr>
+        <tr><td>AM</td><td>34.3</td></tr>
+        <tr><td>RR</td><td>34.2</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Amazonas has less than half the connectivity of the Federal District — digital exclusion reproduces, point by point, the map of Brazilian regional inequality.</p>
+
+  <h2>Telecom: a market more concentrated than it looks</h2>
+  <p>The Herfindahl-Hirschman Index (HHI), the standard metric for measuring market concentration, registers an average above 2,500 in the Brazilian telecommunications sector. Any value above 2,500 is already classified internationally as a highly concentrated market. In practice, this means a handful of carriers split most of the country's connectivity revenue and infrastructure among themselves — with a direct effect on the price and quality of service offered to consumers.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Market concentration in telecommunications (average HHI)</caption>
+      <thead><tr><th>Indicator</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Average HHI</td><td>&gt; 2,500</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Brazil's telecommunications sector is more concentrated than most of the country's regulated markets — a de facto oligopoly.</p>
+
+  <h2>Electricity: rural areas lose power more often and it takes longer to come back</h2>
+  <p>Electricity service is already nearly universal in cities, with 99% urban coverage against 85% in rural areas. But the harshest gap isn't in access, it's in quality: rural properties suffer an average of ten outages a year against four in urban areas, and each rural blackout lasts an average of 6 hours — triple the 2 hours recorded in cities. Having power and having reliable power are two different things in Brazil.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Access and quality of electricity service</caption>
+      <thead><tr><th>Indicator</th><th>Urban</th><th>Rural</th></tr></thead>
+      <tbody>
+        <tr><td>Service</td><td>99%</td><td>85%</td></tr>
+        <tr><td>Outage frequency</td><td>4x/year</td><td>10x/year</td></tr>
+        <tr><td>Average duration</td><td>2h</td><td>6h</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Rural areas suffer twice as many power outages, and each one lasts three times as long — a quality inequality that "access" indicators don't capture.</p>
+
+  <h2>Roads: 88% of the territory remains isolated for lack of pavement</h2>
+  <p>Of the country's total road network, only 220,000 kilometers are paved — 12% of the national road system. The other 1.6 million kilometers are dirt roads, prone to becoming impassable during the rainy season. For much of Brazil's interior, this means recurring seasonal isolation: crop flow, hospital access, and school transport all depend on a road that turns to mud for much of the year.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Length of paved and unpaved roads</caption>
+      <thead><tr><th>Condition</th><th>km</th><th>% of total</th></tr></thead>
+      <tbody>
+        <tr><td>Paved</td><td>220,000</td><td>12%</td></tr>
+        <tr><td>Unpaved</td><td>1,600,000</td><td>88%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Eighty-eight percent of Brazilian roads are dirt — rural isolation that isn't a one-off funding shortfall, it's the absence of decades of policy.</p>
+
+  <h2>Solid waste: two out of every three municipalities still dispose of trash improperly</h2>
+  <p>Only 35% of Brazilian municipalities send their waste to a sanitary landfill that meets the required technical standard. Another 35% use controlled landfills, an intermediate solution, and 30% still operate open-air dumps — the most precarious form and the most harmful to public health and the environment. Adding controlled landfills and open dumps together, 65% of the country's municipalities dispose of waste inadequately or only partially adequately.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Final disposal of solid waste by municipality</caption>
+      <thead><tr><th>Status</th><th>% of municipalities</th></tr></thead>
+      <tbody>
+        <tr><td>Adequate sanitary landfill</td><td>35%</td></tr>
+        <tr><td>Open-air dump</td><td>30%</td></tr>
+        <tr><td>Controlled landfill</td><td>35%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Sixty-five percent of Brazilian municipalities still dispose of trash improperly — the country has treated solid waste as a solved problem for decades, but it isn't.</p>
+
+  <h2>Public transit: the Northeast has half the access and a sixteenth of São Paulo's subsidy</h2>
+  <p>In São Paulo, 85% of the population has access to public transit; in the Northeast, that share drops to 40%. The average fare is actually higher in São Paulo — R$4.40 against R$3.50 — but the public subsidy per capita in São Paulo is sixteen times higher than in the Northeast. In other words: the region that least needs a subsidy (because it has more access and higher average income) is exactly the one receiving the most, while the region with the least access gets the least public investment per capita in transit.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Public transit access, fare, and subsidy: SP vs. NE</caption>
+      <thead><tr><th>Indicator</th><th>SP</th><th>NE</th></tr></thead>
+      <tbody>
+        <tr><td>% pop. with access</td><td>85%</td><td>40%</td></tr>
+        <tr><td>Average fare</td><td>R$ 4.40</td><td>R$ 3.50</td></tr>
+        <tr><td>Subsidy per capita</td><td>R$ 80/year</td><td>R$ 5/year</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">The Northeast has half the public transit access of São Paulo and receives sixteen times less subsidy per capita — regional inequality also rides the bus.</p>
+
+  <div class="callout">
+    <h3>Powerful cross-references</h3>
+    <ul>
+      <li><strong>Sanitation × disease:</strong> open sewage is a gateway for waterborne disease.</li>
+      <li><strong>Connectivity × education:</strong> without decent internet, remote classes don't work.</li>
+      <li><strong>Oligopoly × price:</strong> a handful of carriers control the country's telecom market.</li>
+      <li><strong>Energy × rural areas:</strong> twice as many outages, three times longer, outside the cities.</li>
+      <li><strong>Roads × isolation:</strong> 88% dirt roads means permanent rural isolation.</li>
+      <li><strong>Waste × health:</strong> 65% of municipalities with inadequate waste disposal are also disease hotspots.</li>
+      <li><strong>Buses × inequality:</strong> the Northeast has 40% access against 85% in São Paulo.</li>
+      <li><strong>Infrastructure × social vulnerability:</strong> municipalities with the worst social index concentrate the worst indicators in practically every dimension of infrastructure.</li>
+    </ul>
+  </div>
+
+  <h2>Explanatory hypotheses</h2>
+  <p>The market-failure hypothesis explains much of the sanitation deficit: private operators have no incentive to invest in low-income regions with uncertain returns, and the public sector has historically not filled that gap. Internal-colonialism theory helps explain why quality infrastructure — sanitation, stable power, fast internet — remains concentrated in the Southeast, the region that has also historically concentrated capital and decision-making power. And the systematic exclusion in public transit suggests that Brazil's urban mobility policies were designed for people who own cars, not for those who depend on the bus to get to work.</p>
+
+  <h2>Policy implications</h2>
+  <p>Universalizing sanitation in Brazil is estimated to require about R$1 trillion in investment — an amount that requires regionalizing services to gain scale and reduce the cost per person served. Breaking up the telecom oligopoly could lower prices and expand coverage in regions that are poorly served today. Federalizing solid-waste management, seeking economies of scale among neighboring municipalities, could speed up the end of open dumps. Cross-subsidies in public transit — taking from where there's surplus to give where there's shortage — could equalize access between regions. And rural electrification focused on quality, not just coverage, could reduce the quality-of-life gap between city and countryside.</p>
+
+  <div class="pager">
+    <a class="prev" href="10-meio-ambiente.html"><span class="dir">&larr; previous</span>Environment, Development & Sustainability</a>
+    <a class="next" href="12-interseccionalidade.html"><span class="dir">next &rarr;</span>Intersectionality & Compound Inequalities</a>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a href="../en.html">Thematic index</a>
+    <a href="../technical.html">Technical appendix</a>
+    <a href="https://github.com/rafapolo/rodado">Repository</a>
+    <span>Data: Base dos Dados / DuckDB</span>
+  </div>
+</footer>
+
+<script src="../assets/theme-toggle.js"></script>
+</body>
+</html>

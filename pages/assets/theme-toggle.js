@@ -4,8 +4,7 @@
   var stored = localStorage.getItem('rodado-theme');
 
   function effectiveTheme() {
-    if (stored) return stored;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    return stored || 'light';
   }
 
   function applyIcon(theme) {

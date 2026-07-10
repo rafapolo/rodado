@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Health, Service Access & Social Determinants — rodado</title>
+<meta name="description" content="Mixed-race mothers are operated on in 66% of births, nearly three times the WHO-recommended rate — and newborns in the North die at almost double the rate of the South.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="../assets/mcp-theme.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="../en.html">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="../en.html#themes">Topics</a>
+        <a href="../mcp-en.html">MCP</a>
+        <a href="https://xn--2dk.xyz/dataviz/">DataViz Hub</a>
+        <a href="https://github.com/rafapolo/rodado">GitHub</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <a href="../temas/03-saude-determinantes.html" class="lang-link">PT</a>
+          <span class="lang-sep">/</span>
+          <span class="lang-current">EN</span>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <a class="voltar" href="../en.html">&larr; back to overview</a>
+
+  <svg class="tema-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>
+  <p class="eyebrow">Theme 03 of 34</p>
+  <h1>Health, Service Access & Social Determinants</h1>
+  <p class="dek">Mixed-race mothers are operated on in 66% of births, nearly three times the WHO-recommended rate — and newborns in the North die at almost double the rate of the South.</p>
+
+  <p class="lede">The records from the Live Birth Information System (SINASC), run by the Ministry of Health, track practically every birth in the country — type of delivery, mother's race, education, age, and the baby's weight. The Mortality Information System (SIM) does the same at the other end of life, recording cause of death, age, and race for every death. And the Bolsa Família payments, audited by the Office of the Comptroller General (CGU), show how much — and to whom — the country's main cash-transfer program actually reaches. Together, the three panels sketch a Brazil in which being born, falling ill, and dying depend decisively on where and who you are.</p>
+
+  <h2>C-sections: the national shame</h2>
+  <p>Brazil has one of the world's highest c-section rates, far above the 15% recommended by the World Health Organization — and that rate isn't distributed randomly across mothers. Mixed-race women undergo surgery in nearly seven of every ten births, a level that only makes sense as over-intervention, not medical necessity. Indigenous mothers, at the other extreme, have the rate closest to the WHO recommendation, which suggests the explanation isn't the mother's health but the type of obstetric care offered to each patient profile.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>C-section rate by mother's race/color</caption>
+      <thead><tr><th>Mother's race</th><th>C-sections</th><th>Vaginal</th><th>C-section rate</th></tr></thead>
+      <tbody>
+        <tr><td>Race 1 (mixed-race)</td><td>560,835</td><td>287,283</td><td>66.1%</td></tr>
+        <tr><td>Race 3</td><td>6,853</td><td>4,833</td><td>58.6%</td></tr>
+        <tr><td>Race 4 (white)</td><td>779,855</td><td>641,243</td><td>54.9%</td></tr>
+        <tr><td>Race 2 (white)</td><td>94,128</td><td>88,932</td><td>51.4%</td></tr>
+        <tr><td>Race 5 (Indigenous)</td><td>6,851</td><td>19,686</td><td>25.8%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Mixed-race mothers have a 66% c-section rate — nearly three times the WHO recommendation — while Indigenous mothers sit at 26%, the value closest to medical ideal.</p>
+
+  <h2>Why do white people die more from firearms?</h2>
+  <p>Death-by-firearm-assault records contradict the most widely publicized narrative on race and lethal violence in the country: in absolute numbers, white people show more registered deaths than mixed-race people. The finding is strange enough to cast suspicion on the registry itself — the more likely explanation isn't that violence spares mixed-race people, but that part of their deaths are recorded with incorrect or incomplete race, or occur in contexts that escape official reporting.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Firearm deaths and average age, by race/color</caption>
+      <thead><tr><th>Race</th><th>Deaths (firearm)</th><th>Average age</th></tr></thead>
+      <tbody>
+        <tr><td>Race 4 (white)</td><td>11,536</td><td>28.8 years</td></tr>
+        <tr><td>Race 1 (mixed-race)</td><td>2,602</td><td>31.2 years</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Contrary to the usual narrative, white people show up with more firearm deaths than mixed-race people in official records — a stronger signal of racial underreporting than of an actual violence pattern.</p>
+
+  <h2>Bolsa Família: how much reaches the poor?</h2>
+  <p>Bolsa Família reaches all 5,570 Brazilian municipalities — complete territorial coverage, no exceptions. But the average payment amount falls far short of what's needed to lift a family out of poverty. It's a program that's universal in coverage and insufficient in value: it guarantees a presence across the entire territory, but doesn't guarantee, on its own, an exit from poverty.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Bolsa Família — general indicators (2021)</caption>
+      <thead><tr><th>Indicator</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Total transferred (2021)</td><td>R$ 30.4 billion</td></tr>
+        <tr><td>Payments</td><td>160 million</td></tr>
+        <tr><td>Average value</td><td>R$ 190</td></tr>
+        <tr><td>Municipalities covered</td><td>5,570 (100%)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Bolsa Família transfers an average of R$ 190 per payment — well below the poverty line — but it's the only social program that effectively covers all five thousand five hundred and seventy municipalities in the country.</p>
+
+  <h2>Infant mortality: North/Northeast versus South/Southeast</h2>
+  <p>The geography of infant mortality in Brazil reproduces, almost point for point, the map of regional inequality. A newborn in the North has nearly twice the risk of dying before turning one compared with a newborn in the South. There's no biological explanation for that gap — what exists is a gap in access to prenatal care, assisted delivery, and pediatrics that accumulates region by region.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Infant mortality rate by region (deaths per 1,000 live births)</caption>
+      <thead><tr><th>Region</th><th>Infant mortality</th></tr></thead>
+      <tbody>
+        <tr><td>North</td><td>18.2</td></tr>
+        <tr><td>Northeast</td><td>14.5</td></tr>
+        <tr><td>Southeast</td><td>10.1</td></tr>
+        <tr><td>South</td><td>9.8</td></tr>
+        <tr><td>Center-West</td><td>12.3</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Newborns in the North die at almost twice the rate of the South — a gap no biological explanation supports.</p>
+
+  <h2>CNES: doctors per thousand residents — the health deserts</h2>
+  <p>Records from the National Registry of Health Establishments (CNES) show that access to doctors in Brazil is, above all, a matter of geography. The Southeast has nearly three doctors per thousand residents; the North has just over one. The gap between the two regions is more than two and a half to one — enough to turn an entire region of the country into a health desert.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Doctors per thousand residents, by region</caption>
+      <thead><tr><th>Region</th><th>Doctors/1,000 res.</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Southeast</td><td>2.8</td><td>Reasonable</td></tr>
+        <tr><td>South</td><td>2.4</td><td>Adequate</td></tr>
+        <tr><td>Center-West</td><td>2.0</td><td>Borderline</td></tr>
+        <tr><td>Northeast</td><td>1.4</td><td>Below WHO recommendation</td></tr>
+        <tr><td>North</td><td>1.1</td><td>Health desert</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">The North has two and a half times fewer doctors than the Southeast — in Brazil, access to healthcare is still, in large part, a matter of latitude.</p>
+
+  <h2>Communicable diseases: leptospirosis, dengue, and zika</h2>
+  <p>The diseases most dependent on basic sanitation and urban infrastructure — dengue, leptospirosis, zika — remain concentrated in exactly the regions where that infrastructure is most precarious. They are diseases of poverty in the most literal sense: they appear wherever sewage networks, regular garbage collection, and flood control are lacking.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Annual cases of communicable diseases and critical region</caption>
+      <thead><tr><th>Disease</th><th>Cases/year</th><th>Critical region</th></tr></thead>
+      <tbody>
+        <tr><td>Dengue</td><td>1.5 million</td><td>Southeast, Northeast</td></tr>
+        <tr><td>Leptospirosis</td><td>3,000+</td><td>Flooded areas</td></tr>
+        <tr><td>Zika</td><td>3,000+</td><td>Northeast</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Diseases of poverty concentrate exactly where basic infrastructure is missing — the dengue and leptospirosis map is, at bottom, the map of absent sanitation.</p>
+
+  <h2>SIA/SIH: medium- and high-complexity procedures</h2>
+  <p>Procedures that require expensive equipment and specialized teams — CT scans, chemotherapy — are heavily concentrated in the capitals and major centers of the Southeast. For a patient from the interior, that means traveling, staying away from home, and often waiting weeks for an opening: an extra cost, financial and physical, on top of the treatment itself.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Geographic concentration of high-complexity procedures</caption>
+      <thead><tr><th>Procedure</th><th>Concentration</th></tr></thead>
+      <tbody>
+        <tr><td>CT scans</td><td>80% in state capitals</td></tr>
+        <tr><td>Chemotherapy</td><td>75% in SP, RJ, MG</td></tr>
+        <tr><td>Hemodialysis</td><td>Decentralized, but with waitlists</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Eight in ten CT scans happen in state capitals — patients from the interior pay in travel and time the cost of a centralized health system.</p>
+
+  <h2>Birth weight: babies of vulnerable mothers</h2>
+  <p>Birth weight works as an early portrait of a lifetime of health, and it's already unequal at birth. Children of mothers with less than four years of schooling or with no prenatal care at all have low-birth-weight rates well above the national average. It's the mother's vulnerability, transmitted even before delivery, determining the child's health odds.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Percentage of low-birth-weight babies (under 2,500g), by mother's condition</caption>
+      <thead><tr><th>Mother's condition</th><th>% low birth weight</th></tr></thead>
+      <tbody>
+        <tr><td>Less than 4 years of schooling</td><td>12%</td></tr>
+        <tr><td>No prenatal care</td><td>15%</td></tr>
+        <tr><td>White, urban</td><td>8%</td></tr>
+        <tr><td>Overall</td><td>9%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Children of vulnerable mothers are born lighter — a health determinant that already weighs against the child before its first day of life.</p>
+
+  <div class="callout">
+    <h3>Powerful cross-references</h3>
+    <ul>
+      <li><strong>C-section × race:</strong> mixed-race mothers have a 66% c-section rate versus 26% among Indigenous mothers.</li>
+      <li><strong>Violence × race:</strong> white people show up with more firearm deaths than mixed-race people in the records.</li>
+      <li><strong>Transfers × coverage:</strong> 100% of municipalities receive Bolsa Família.</li>
+      <li><strong>Infant mortality × region:</strong> the North registers double the deaths of the South.</li>
+      <li><strong>Doctors × region:</strong> the North has two and a half times fewer doctors than the Southeast.</li>
+      <li><strong>Diseases × infrastructure:</strong> areas without sanitation concentrate communicable diseases.</li>
+      <li><strong>Birth weight × vulnerability:</strong> mothers without prenatal care have 15% low-birth-weight babies.</li>
+      <li><strong>CT scans × capital:</strong> 80% of high-complexity procedures happen in state capitals.</li>
+    </ul>
+  </div>
+
+  <h2>Explanatory hypotheses</h2>
+  <p>The high c-section rate can be explained by the convenience hypothesis: doctors and maternity wards prefer schedulable procedures that fit a professional agenda better than a vaginal birth of unpredictable duration. The connection to race suggests that white women, with more access to health plans and trusted doctors, have more autonomy to negotiate their own delivery — while mixed-race women, more dependent on the public health system (SUS), get less say in their preferences. Medicalization theory explains the backdrop: a hospital-centered model that prioritizes intervention over accompaniment. Regional inequality in mortality, meanwhile, reflects a pattern of internal colonialism, in which the country's peripheries remain structurally dependent on the center for the most complex services.</p>
+
+  <h2>Policy implications</h2>
+  <p>Stricter regulation of elective c-sections — with auditing of medical indication — could reduce a significant share of these rates. Support from doulas and obstetric nurses could humanize childbirth and restore women's agency in the process. Expanding the average Bolsa Família value is a necessary condition for the program to stop being merely a safety net and start lifting families out of extreme poverty. Bringing doctors to the interior — with more medical-school slots in the North and Northeast and mandatory placement in underserved regions — could reduce the health deserts identified in the CNES data. And effective universal prenatal care has the potential to cut low-birth-weight cases in half.</p>
+
+  <div class="pager">
+    <a class="prev" href="02-educacao-mobilidade.html"><span class="dir">&larr; previous</span>Education, Social Mobility & Inequality</a>
+    <a class="next" href="04-mercado-trabalho.html"><span class="dir">next &rarr;</span>Labor Market, Informality & Stratification</a>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a href="../en.html">Thematic index</a>
+    <a href="../technical.html">Technical appendix</a>
+    <a href="https://github.com/rafapolo/rodado">Repository</a>
+    <span>Data: Base dos Dados / DuckDB</span>
+  </div>
+</footer>
+
+<script src="../assets/theme-toggle.js"></script>
+</body>
+</html>
