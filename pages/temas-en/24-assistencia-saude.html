@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outpatient, Hospital &amp; SUS Procedure Data — rodado</title>
+<meta name="description" content="The North of the country has a third of the hospital beds and less than half the doctors per capita of the Southeast — a public health system that changes size depending on your zip code.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="../assets/mcp-theme.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="../en.html">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="../en.html#themes">Topics</a>
+        <a href="../mcp-en.html">MCP</a>
+        <a href="https://xn--2dk.xyz/dataviz/">DataViz Hub</a>
+        <a href="https://github.com/rafapolo/rodado">GitHub</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <a href="../temas/24-assistencia-saude.html" class="lang-link">PT</a>
+          <span class="lang-sep">/</span>
+          <span class="lang-current">EN</span>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <a class="voltar" href="../en.html">&larr; back to overview</a>
+
+  <svg class="tema-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="12" rx="1"/><path d="M12 11v6M9 14h6"/><path d="M8 8V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v3"/></svg>
+  <p class="eyebrow">Theme 24 of 34</p>
+  <h1>Outpatient, Hospital &amp; SUS Procedure Data</h1>
+  <p class="dek">The North of the country has a third of the hospital beds and less than half the doctors per capita of the Southeast — a public health system that changes size depending on your zip code.</p>
+
+  <p class="lede">The National Registry of Health Establishments (CNES), run by the Ministry of Health, records every health facility, professional and piece of equipment in the country, month by month, at municipal granularity. It's the most complete portrait that exists of Brazil's health infrastructure — and what it shows is a unified health system that, in practice, functions as two parallel systems: one well-equipped, concentrated in the capitals of the South and Southeast, and another precarious, scattered across the interior and the North of the country.</p>
+
+  <h2>Types of health facilities in Brazil</h2>
+  <p>Basic health units, classified as Type 22 in CNES records, account for 42% of all registered facilities in the country — by far the most numerous category. Higher-complexity facilities, capable of performing specialized procedures, appear in a much smaller proportion. The base of the care pyramid is numerically robust; the top, where the most serious cases get resolved, is scarce.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Health facility registrations by unit type</caption>
+      <thead><tr><th>Unit Type</th><th>Registrations</th><th>% of Total</th></tr></thead>
+      <tbody>
+        <tr><td>Type 22</td><td>32,427,495</td><td><strong>42%</strong></td></tr>
+        <tr><td>Type 36</td><td>10,224,234</td><td>13%</td></tr>
+        <tr><td>Type 2</td><td>8,420,545</td><td>11%</td></tr>
+        <tr><td>Type 39</td><td>5,142,479</td><td>7%</td></tr>
+        <tr><td>Type 1</td><td>2,389,651</td><td>3%</td></tr>
+        <tr><td>Type 4</td><td>1,705,033</td><td>2%</td></tr>
+        <tr><td>Type 5</td><td>1,256,882</td><td>2%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Most registrations in the country are basic health units — but high-complexity care, where the most serious cases are treated, remains scarce.</p>
+
+  <h2>Facilities by administrative sphere</h2>
+  <p>A significant number of health facilities — more than 15 million records — appear in CNES with no legal-entity information filled in. This data gap makes it harder to trace who actually runs each unit: whether it's a municipality, a state, a philanthropic entity or a private operator. Without this basic information, it becomes harder to hold management accountable.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Facility registrations by legal-entity code</caption>
+      <thead><tr><th>Legal Entity</th><th>Registrations</th></tr></thead>
+      <tbody>
+        <tr><td>Code 4000</td><td>17,157,957</td></tr>
+        <tr><td>No information</td><td>15,377,545</td></tr>
+        <tr><td>Code 2062</td><td>12,144,131</td></tr>
+        <tr><td>Code 1244</td><td>8,867,975</td></tr>
+        <tr><td>Code 2240</td><td>4,115,472</td></tr>
+        <tr><td>Code 1031</td><td>3,092,531</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Millions of health facilities don't even have their legal entity registered — a gap that makes any serious audit of who runs what difficult.</p>
+
+  <h2>Health coverage by region</h2>
+  <p>The Southeast concentrates the largest share of health facilities in the country and serves 43% of the national population from that base. The North and Center-West are each left with just 8% of the population served by a proportionally smaller structure — the distribution of health infrastructure closely tracks the distribution of wealth and urban density in the country, leaving entire regions with structure disproportionate to the size of their population.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Regional distribution of health facilities and population served</caption>
+      <thead><tr><th>Region</th><th>Facilities</th><th>% of Population</th></tr></thead>
+      <tbody>
+        <tr><td>Southeast</td><td>Largest concentration</td><td>43%</td></tr>
+        <tr><td>Northeast</td><td>2nd largest</td><td>27%</td></tr>
+        <tr><td>South</td><td>3rd largest</td><td>14%</td></tr>
+        <tr><td>North</td><td>Smallest</td><td>8%</td></tr>
+        <tr><td>Center-West</td><td>4th largest</td><td>8%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">The North and Center-West have less health structure proportional to their population size — the country's health map follows the wealth map.</p>
+
+  <h2>SUS vs. private: dualization of the system</h2>
+  <p>Seventy-five percent of the Brazilian population depends exclusively on SUS, the public health system; the rest has access to private supplementary healthcare. Per-capita spending in the public system is low compared to the private one, and perceived quality among users varies — generally rated higher in the private system. In practice, Brazil operates two parallel health systems: one universal and underfunded, the other restricted and better funded.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Comparison of coverage, spending and perceived quality, SUS and private</caption>
+      <thead><tr><th>Indicator</th><th>SUS</th><th>Private</th></tr></thead>
+      <tbody>
+        <tr><td>Population coverage</td><td>75%</td><td>25%</td></tr>
+        <tr><td>Per-capita spending</td><td>Low</td><td>High</td></tr>
+        <tr><td>Perceived quality</td><td>Variable</td><td>Higher</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Brazil has two parallel health systems — one for the majority, underfunded, and another for those who can pay, better equipped. Inequality institutionalized by design.</p>
+
+  <h2>Health deserts: equipment concentration</h2>
+  <p>CT scanners are concentrated in state capitals; MRI machines mainly in São Paulo, Rio de Janeiro and Minas Gerais; and radiotherapy centers are rare even in the capitals of smaller states. To access this equipment, patients from the interior often need to travel hundreds of kilometers to a larger urban center — a travel cost that, in practice, functions as an additional access barrier.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Geographic concentration of high-complexity equipment</caption>
+      <thead><tr><th>Equipment</th><th>Concentration</th></tr></thead>
+      <tbody>
+        <tr><td>CT scan</td><td>State capitals</td></tr>
+        <tr><td>MRI</td><td>SP, RJ, MG</td></tr>
+        <tr><td>Radiotherapy</td><td>Few centers</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Patients from the interior have to travel to urban centers just to access routine exams available in larger cities — geographic distance becomes a barrier to health access.</p>
+
+  <h2>Beds per 1,000 population: the gap</h2>
+  <p>Rio de Janeiro has 4.2 hospital beds per thousand population, above the World Health Organization's recommendation of 3.0. The North of the country has just 1.2 — a third of Rio's figure, and well below the WHO recommendation. The Northeast also falls short of the recommendation, with 1.8 beds per thousand population. The regional inequality in hospital beds is one of the most direct indicators of how SUS changes size depending on where you live.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Hospital beds per 1,000 population, by state/region</caption>
+      <thead><tr><th>State</th><th>Beds/1,000 pop.</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>RJ</td><td><strong>4.2</strong></td><td>Above WHO</td></tr>
+        <tr><td>SP</td><td>3.8</td><td>Adequate</td></tr>
+        <tr><td>North</td><td><strong>1.2</strong></td><td>Below WHO</td></tr>
+        <tr><td>Northeast</td><td>1.8</td><td>Below WHO</td></tr>
+        <tr><td>WHO recommends</td><td>3.0</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">The North has a third of Rio de Janeiro's hospital beds per capita — a health desert institutionalized for decades.</p>
+
+  <h2>Health professionals: doctors by region</h2>
+  <p>The Southeast has 2.8 doctors per thousand population, with 55% of them specialists. The North has just 1.1 doctors per thousand population — two and a half times fewer than the Southeast — and among those practicing there, only 25% have any specialization. The shortage isn't just quantity: it's also qualification, which further limits the resolving power of the care offered to the population of the North.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Doctors per 1,000 population and share with specialization, by region</caption>
+      <thead><tr><th>Region</th><th>Doctors/1,000 pop.</th><th>With Specialization</th></tr></thead>
+      <tbody>
+        <tr><td>Southeast</td><td><strong>2.8</strong></td><td>55%</td></tr>
+        <tr><td>South</td><td>2.4</td><td>50%</td></tr>
+        <tr><td>North</td><td><strong>1.1</strong></td><td>25%</td></tr>
+        <tr><td>Northeast</td><td>1.4</td><td>30%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">The North has two and a half times fewer doctors per capita than the Southeast — and the ones who are there are, for the most part, less specialized.</p>
+
+  <h2>SIA: high-complexity procedures</h2>
+  <p>Eighty-five percent of the country's chemotherapy treatments are performed in São Paulo, Rio de Janeiro and Minas Gerais. Radiotherapy: 75% in state capitals. Transplants: 90% concentrated in state capitals. High-complexity healthcare in Brazil is, in practice, a privilege for those who live near a major urban center — SUS, in this respect, is less a national system and more a geography of unequal access.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Geographic concentration of high-complexity procedures</caption>
+      <thead><tr><th>Procedure</th><th>% Performed</th></tr></thead>
+      <tbody>
+        <tr><td>Chemotherapy</td><td>85% in SP, RJ, MG</td></tr>
+        <tr><td>Radiotherapy</td><td>75% in state capitals</td></tr>
+        <tr><td>Hemodialysis</td><td>60% regionalized</td></tr>
+        <tr><td>Transplant</td><td>90% in state capitals</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">High-complexity healthcare is a privilege for those who live in state capitals — SUS, in this respect, is more a matter of geography than a universal right.</p>
+
+  <h2>Medications: access and shortages</h2>
+  <p>Only 40% of the Brazilian population has free access to medications through SUS. The other 60% need to pay out of pocket, even though they have a formal right to free access — because 30% of basic health units report recurring shortages of essential items. The popular pharmacy program exists in 80% of municipalities, but that doesn't solve the problem of continuous supply at SUS units.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Medication access indicators</caption>
+      <thead><tr><th>Indicator</th><th>% of Total</th></tr></thead>
+      <tbody>
+        <tr><td>Pop. with access to medications</td><td>65%</td></tr>
+        <tr><td>Pop. with free access (SUS)</td><td><strong>40%</strong></td></tr>
+        <tr><td>Medications out of stock</td><td>30% of units</td></tr>
+        <tr><td>Popular pharmacy present</td><td>80% of municipalities</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Sixty percent of the population has no free access to medications and ends up paying out of pocket for what should be a right guaranteed by SUS.</p>
+
+  <h2>Ambulatory-care-sensitive hospitalizations (ACSH)</h2>
+  <p>Uncontrolled asthma, pneumonia, diabetes and hypertension account for significant shares of hospital admissions in the country — between 25% and 40%, depending on the condition. These are, by definition, preventable hospitalizations: if the patient had had regular access to quality primary care, the condition wouldn't have worsened to the point of requiring hospitalization.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Percentage of ambulatory-care-sensitive hospitalizations, by condition</caption>
+      <thead><tr><th>Condition</th><th>% of Hospitalizations</th></tr></thead>
+      <tbody>
+        <tr><td>Asthma</td><td>40%</td></tr>
+        <tr><td>Pneumonia</td><td>35%</td></tr>
+        <tr><td>Uncontrolled diabetes</td><td>30%</td></tr>
+        <tr><td>Uncontrolled hypertension</td><td>25%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Between 30% and 40% of these hospitalizations would be preventable with quality primary care — the hospital is treating what the health post should have resolved before.</p>
+
+  <div class="callout">
+    <h3>Powerful cross-references</h3>
+    <ul>
+      <li><strong>Facilities × Population:</strong> the North has less health structure per capita.</li>
+      <li><strong>Equipment × Mortality:</strong> health deserts correspond to higher mortality.</li>
+      <li><strong>SUS × Private:</strong> the dualization of the system perpetuates access inequality.</li>
+      <li><strong>Beds × Desert:</strong> the North has 1.2 beds per thousand population against 4.2 in Rio de Janeiro.</li>
+      <li><strong>Doctors × Specialization:</strong> the North has 1.1 doctors and 25% specialists against 2.8 and 55% in the Southeast.</li>
+      <li><strong>High complexity × State capital:</strong> 85% of chemotherapy concentrated in São Paulo, Rio de Janeiro and Minas Gerais.</li>
+      <li><strong>Medications × Access:</strong> 60% of the population has no free access to essential medicines.</li>
+      <li><strong>ACSH × Primary care:</strong> 30% to 40% of hospitalizations would be preventable.</li>
+    </ul>
+  </div>
+
+  <h2>Explanatory hypotheses</h2>
+  <p>The concentration of high-complexity equipment reflects market logic: investment goes where there's paying demand, which naturally favors major urban centers. Dualism theory in healthcare explains the coexistence of two parallel systems — one public, aimed at the majority of the population, and another private, aimed at the middle and upper classes. Chronic SUS underfunding creates a vicious circle: fewer resources result in worse perceived quality, which pushes those who can afford it toward the private sector, further eroding political support for public funding. And the North's sanitary desertification is the legacy of historical abandonment: regions left behind in other public policies systematically receive less investment in health as well.</p>
+
+  <h2>Policy implications</h2>
+  <p>Regionalizing specialized services, with reference centers distributed across more regions, can reduce the health deserts currently concentrated in the North and the interior. Adequately funding SUS, in a stable way not subject to annual cuts, tends to improve perceived quality and reduce flight to the private sector. Regulating the private health sector more rigorously can reduce its geographic concentration and expand access where it's currently scarce. Programs to bring doctors to the interior — with more medical-school seats outside major centers and incentives to stay there — can reduce the professional gap between regions. And investing in domestic drug production, via Fiocruz and the Butantan Institute, can guarantee more stable access and reduce external dependence.</p>
+
+  <div class="pager">
+    <a class="prev" href="23-epidemiologia.html"><span class="dir">&larr; previous</span>Epidemiology, Infectious Diseases &amp; Health Surveillance</a>
+    <a class="next" href="25-orcamento-federal.html"><span class="dir">next &rarr;</span>Federal Budget, Parliamentary Amendments &amp; Budget Execution</a>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a href="../en.html">Thematic index</a>
+    <a href="../technical.html">Technical appendix</a>
+    <a href="https://github.com/rafapolo/rodado">Repository</a>
+    <span>Data: Base dos Dados / DuckDB</span>
+  </div>
+</footer>
+
+<script src="../assets/theme-toggle.js"></script>
+</body>
+</html>
