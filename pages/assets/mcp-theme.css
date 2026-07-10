@@ -1,0 +1,69 @@
+/* rodado — reskin de index.html / en.html na estética do mcp.html (fontes, tamanhos, cores) */
+
+:root {
+  --bg: oklch(0.98 0.004 95);
+  --bg-raised: oklch(0.96 0.006 260);
+  --ink: oklch(0.24 0.012 260);
+  --ink-soft: oklch(0.44 0.012 260);
+  --ink-faint: oklch(0.58 0.02 260);
+  --rule: oklch(0.91 0.008 260);
+  --accent: oklch(0.4 0.06 250);
+  --accent-soft: oklch(0.52 0.08 250);
+  --serif: 'Public Sans', system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sans: 'Public Sans', system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+:root[data-theme="dark"] {
+  --bg: oklch(0.2 0.01 260);
+  --bg-raised: oklch(0.26 0.014 260);
+  --ink: oklch(0.93 0.006 95);
+  --ink-soft: oklch(0.76 0.012 260);
+  --ink-faint: oklch(0.6 0.02 260);
+  --rule: oklch(0.34 0.014 260);
+  --accent: oklch(0.74 0.09 250);
+  --accent-soft: oklch(0.82 0.07 250);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: oklch(0.2 0.01 260);
+    --bg-raised: oklch(0.26 0.014 260);
+    --ink: oklch(0.93 0.006 95);
+    --ink-soft: oklch(0.76 0.012 260);
+    --ink-faint: oklch(0.6 0.02 260);
+    --rule: oklch(0.34 0.014 260);
+    --accent: oklch(0.74 0.09 250);
+    --accent-soft: oklch(0.82 0.07 250);
+  }
+}
+
+body { font-size: 17px; -webkit-font-smoothing: antialiased; }
+code { font-family: 'IBM Plex Mono', monospace; }
+
+.site-nav .brand { font-weight: 800; letter-spacing: -0.01em; }
+.site-nav .links { align-items: center; }
+
+.eyebrow { letter-spacing: 0.14em; }
+
+h1 { font-size: clamp(28px, 4.2vw, 46px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.08; }
+h2 { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.01em; }
+h3 { font-weight: 700; }
+
+/* ── alternador de tema (sol/lua) ── */
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--bg-raised);
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
