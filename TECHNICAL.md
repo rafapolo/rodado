@@ -354,6 +354,28 @@ SQL
 
 ---
 
+## MCP server
+
+`mcp_server.py` exposes the catalog and query API as [MCP](https://modelcontextprotocol.io) tools for Claude Desktop/Claude Code, over stdio. It never opens its own DuckDB connection — `run_sql` calls the same `/query` HTTP endpoint above, guarded client-side to read-only (`SELECT`/`WITH` only, single statement, mutating keywords rejected before any network call).
+
+| Tool | Purpose |
+|------|---------|
+| `list_datasets` | All datasets with table counts |
+| `list_tables(dataset)` | Tables in one dataset, with close-match suggestions on a miss |
+| `describe_table(table)` | Columns (name/type/description) for `dataset.table` |
+| `search_tables(query)` | Semantic search over table descriptions (`all-MiniLM-L6-v2`, lazy-loaded) |
+| `get_join_keys(column?)` | Foreign-key join columns shared across tables |
+| `run_sql(sql)` | Read-only query via the `/query` endpoint |
+
+```bash
+pip install -r requirements-mcp.txt
+claude mcp add rodado -e BASIC_AUTH_PASSWORD="$BASIC_AUTH_PASSWORD" -- python3 mcp_server.py
+```
+
+Tests: `pytest tests/test_mcp_server.py` (HTTP calls and the embedding model are mocked — no network, no model download).
+
+---
+
 ## Palantir Foundry mapping
 
 Not a Foundry deployment — an open-source system that reproduces the same architectural layers, documented here for readers who know Foundry and want a quick translation.
@@ -367,6 +389,7 @@ Not a Foundry deployment — an open-source system that reproduces the same arch
 | `join_keys.md` entity graph | Object type links / property mappings |
 | `table_embeddings.json` | Semantic search index |
 | `/query` HTTP endpoint | Foundry Functions |
+| `mcp_server.py` | AIP Agent tool actions |
 | Browser SQL shell | Workshop application |
 | `ask/` NL→SQL layer | AIP-powered application |
 | `scripts/roda.sh` | Foundry pipeline |

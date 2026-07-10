@@ -60,4 +60,4 @@ Os dados vêm da [Base dos Dados](https://basedosdados.org), que mantém um espe
 ## Leia também
 
 - [`overview/`](docs/overview/index.md) — os 34 arquivos-fonte em markdown por trás de cada página do site, usados também como contexto para a camada de IA que traduz perguntas em português para SQL.
-- [`TECHNICAL.md`](TECHNICAL.md) — arquitetura de engenharia, pipeline de dados, API de consulta, stack e deploy, para quem quiser entender como a plataforma por trás do site funciona.
+- [`TECHNICAL.md`](TECHNICAL.md) — arquitetura de engenharia, pipeline de dados, API de consulta, servidor MCP, stack e deploy, para quem quiser entender como a plataforma por trás do site funciona.
