@@ -354,6 +354,30 @@ SQL
 
 ---
 
+## MCP server
+
+`mcp_server.py` exposes the catalog and query API as [MCP](https://modelcontextprotocol.io) tools for Claude Desktop/Claude Code, over stdio. It never opens its own DuckDB connection — `run_sql` shells out to `ssh beelink '~/bin/duckdb -json ~/rodado/basedosdados.duckdb'` (SQL piped over stdin), guarded client-side to read-only (`SELECT`/`WITH` only, single statement, mutating keywords rejected before any SSH call). beelink is the project's official data source (fresher than the S3-backed `/query` endpoint, and where newly-scraped datasets in `tasks/datasets_to_scrap.md` land first) — requires SSH access to `beelink`, so this only works from machines with that configured, not as a public service.
+
+| Tool | Purpose |
+|------|---------|
+| `list_datasets` | All datasets with table counts |
+| `list_tables(dataset)` | Tables in one dataset, with close-match suggestions on a miss |
+| `describe_table(table)` | Columns (name/type/description) for `dataset.table` |
+| `search_tables(query)` | Semantic search over table descriptions (`all-MiniLM-L6-v2`, lazy-loaded) |
+| `get_join_keys(column?)` | Foreign-key join columns shared across tables |
+| `run_sql(sql)` | Read-only query against beelink's DuckDB mirror over SSH |
+
+```bash
+pip install -r requirements-mcp.txt
+claude mcp add rodado -- python3 mcp_server.py
+```
+
+Some views in beelink's `basedosdados.duckdb` are stale and still point at a dead `s3://` bucket — if a query on a view looks wrong or 404s, check `SELECT sql FROM duckdb_views() WHERE view_name='...'` and fall back to `read_parquet('~/rodado/<dataset>/<table>/*.parquet')` directly.
+
+Tests: `pytest tests/test_mcp_server.py` (the ssh subprocess and the embedding model are mocked — no network, no model download).
+
+---
+
 ## Palantir Foundry mapping
 
 Not a Foundry deployment — an open-source system that reproduces the same architectural layers, documented here for readers who know Foundry and want a quick translation.
@@ -367,6 +391,7 @@ Not a Foundry deployment — an open-source system that reproduces the same arch
 | `join_keys.md` entity graph | Object type links / property mappings |
 | `table_embeddings.json` | Semantic search index |
 | `/query` HTTP endpoint | Foundry Functions |
+| `mcp_server.py` | AIP Agent tool actions |
 | Browser SQL shell | Workshop application |
 | `ask/` NL→SQL layer | AIP-powered application |
 | `scripts/roda.sh` | Foundry pipeline |
