@@ -193,7 +193,7 @@ def test_run_sql_success():
     args = run.call_args.args[0]
     assert args[0] == "ssh"
     assert args[1] == m.BEELINK_HOST
-    assert run.call_args.kwargs["input"] == b"SELECT 42 AS n"
+    assert run.call_args.kwargs["input"] == b"SET enable_progress_bar=false;\nSELECT 42 AS n"
 
 
 def test_run_sql_empty_result():
@@ -256,3 +256,67 @@ def test_cosine_similarity_orthogonal_and_identical():
     assert m._cosine_similarity([1, 0], [0, 1]) == 0.0
     assert m._cosine_similarity([1, 0], [1, 0]) == 1.0
     assert m._cosine_similarity([0, 0], [1, 0]) == 0.0
+
+
+# ---------------------------------------------------------------------------
+# consultar_cnpj / consultar_cep — friendly per-theme tools
+# ---------------------------------------------------------------------------
+
+def test_only_digits():
+    assert m._only_digits("09.944.413/0001-00") == "09944413000100"
+    assert m._only_digits("") == ""
+    assert m._only_digits(None) == ""
+
+
+def test_consultar_cnpj_invalid_length():
+    result = m.consultar_cnpj("123")
+    assert "error" in result
+    assert "8 or 14 digits" in result["error"]
+
+
+def test_consultar_cnpj_not_found():
+    with patch("mcp_server.subprocess.run") as run:
+        run.return_value = _mock_completed_process(stdout="[]")
+        result = m.consultar_cnpj("09944413")
+    assert result == {"error": "No company found for cnpj_basico '09944413'."}
+
+
+def test_consultar_cnpj_success():
+    responses = [
+        '[{"cnpj_basico":"09944413","razao_social":"ARSENAL DE GUERRA DO RIO"}]',
+        '[{"cnpj":"09944413000100","identificador_matriz_filial":"1"}]',
+        '[{"nome":"FULANO DE TAL","documento":"***123456**"}]',
+    ]
+    with patch("mcp_server.subprocess.run") as run:
+        run.side_effect = [_mock_completed_process(stdout=r) for r in responses]
+        result = m.consultar_cnpj("09.944.413/0001-00")
+    assert result["cnpj_basico"] == "09944413"
+    assert result["empresa"]["razao_social"] == "ARSENAL DE GUERRA DO RIO"
+    assert len(result["estabelecimentos"]) == 1
+    assert len(result["socios"]) == 1
+    assert run.call_count == 3
+
+
+def test_consultar_cep_invalid_length():
+    result = m.consultar_cep("123")
+    assert "error" in result
+    assert "8 digits" in result["error"]
+
+
+def test_consultar_cep_success():
+    payload = json.dumps({"cep": "01310-100", "logradouro": "Avenida Paulista", "uf": "SP"})
+    with patch("mcp_server.subprocess.run") as run:
+        run.return_value = _mock_completed_process(stdout=payload)
+        result = m.consultar_cep("01310-100")
+    assert result["logradouro"] == "Avenida Paulista"
+    args = run.call_args.args[0]
+    assert args[0] == "ssh"
+    assert args[1] == m.BEELINK_HOST
+    assert "viacep.com.br/ws/01310100/json" in args[2]
+
+
+def test_consultar_cep_not_found():
+    with patch("mcp_server.subprocess.run") as run:
+        run.return_value = _mock_completed_process(stdout='{"erro": true}')
+        result = m.consultar_cep("00000000")
+    assert result == {"error": "CEP '00000000' not found."}
