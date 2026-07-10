@@ -6,6 +6,11 @@
 <title>rodado — English summary</title>
 <meta name="description" content="A sociological reading of Brazilian public microdata, in Portuguese — this page is a short English summary with links to the full pt-br essays.">
 <link rel="stylesheet" href="assets/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="assets/mcp-theme.css">
 </head>
 <body>
 
@@ -15,7 +20,9 @@
     <div class="links">
       <a href="index.html">Temas (pt-br)</a>
       <a href="mcp-en.html">MCP</a>
+      <a href="https://xn--2dk.xyz/dataviz/">DataViz Hub</a>
       <a href="https://github.com/rafapolo/rodado">GitHub</a>
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" type="button"><i class="fa-solid fa-moon"></i></button>
     </div>
   </div>
 </nav>
@@ -27,11 +34,9 @@
   <h1>A sociological reading of Brazil, in data</h1>
   <p class="dek">This project mirrors 533 public datasets from Base dos Dados — Brazil's civic BigQuery mirror — and reads them through a sociological, investigative lens rather than a technical one.</p>
 
-  <p class="lede">The full site is written in Portuguese, on purpose: it's a project about Brazil, sourced from Brazilian public institutions (RAIS, SIM, TSE, CGU, IBGE, INEP, CNES, and others), aimed first at Brazilian readers, researchers, and journalists. This page is a short summary for readers who don't read Portuguese, with direct links into the 34 thematic essays — each one pairs a data-driven narrative with the tables behind it.</p>
+  <p class="lede">The full site is written in Portuguese, on purpose: it's a project about Brazil, sourced from Brazilian public institutions (RAIS, SIM, TSE, CGU, IBGE, INEP, CNES, and others), aimed first at Brazilian readers, researchers, and journalists. This page is a short summary for readers who don't read Portuguese, with direct links into the 34 thematic essays — each one pairs a data-driven narrative with the tables behind it. The technical architecture behind the site (DuckDB, Parquet on object storage, an LLM natural-language-to-SQL layer) is documented separately for engineers: see the <a href="technical.html">technical appendix</a> and <a href="https://github.com/rafapolo/rodado/blob/main/TECHNICAL.md">TECHNICAL.md</a>.</p>
 
   <p>Each essay covers one domain — racial inequality, education, health, labor, politics, crime, the economy, the environment, public budgets, and more — built from linked microdata across ministries and public agencies. Findings are stated directly, with the supporting numbers shown alongside, in the tradition of data journalism rather than hedged academic writing.</p>
-
-  <p>The technical architecture behind the site (DuckDB, Parquet on object storage, an LLM natural-language-to-SQL layer) is documented separately for engineers: see the <a href="technical.html">technical appendix</a> and <a href="https://github.com/rafapolo/rodado/blob/main/TECHNICAL.md">TECHNICAL.md</a>.</p>
 
   <h2>The 34 themes (pt-br)</h2>
   <div class="data-table-wrap">
@@ -85,5 +90,6 @@
   </div>
 </footer>
 
+<script src="assets/theme-toggle.js"></script>
 </body>
 </html>
