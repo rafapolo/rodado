@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nova Friburgo, RJ — Dashboard Municipal</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0b0d14; --surface: #151821; --surface2: #1e2230;
+  --border: #282d3f; --border-hover: #3a4160;
+  --text: #e2e5f0; --text2: #7a8099; --text3: #545a75;
+  --accent: #7b9bff; --accent2: #6ddb9a; --accent3: #faa55b;
+  --red: #f06a6a; --cyan: #5cd4e8;
+  --radius: 12px; --radius-sm: 8px;
+  --shadow: 0 2px 16px rgba(0,0,0,.5);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,.6);
+  --transition: .2s cubic-bezier(.4,0,.2,1);
+}
+html { font-size: 15px; scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg); color: var(--text);
+  padding: 0 0 4rem; line-height: 1.55;
+  display: flex;
+}
+a { color: inherit; text-decoration: none; }
+
+/* CONTAINER */
+.main { flex: 1; min-width: 0; margin-left: 230px; }
+.container { max-width: 1360px; margin: 0 auto; padding: 0 2rem; }
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0; width: 230px;
+  background: var(--surface); border-right: 1px solid var(--border);
+  z-index: 100; display: flex; flex-direction: column;
+}
+.sidebar-header {
+  padding: 1.25rem 1rem .85rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.sidebar-header .logo {
+  font-size: .85rem; font-weight: 700; color: var(--text);
+  display: flex; align-items: center; gap: .5rem;
+}
+.sidebar-header .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; }
+.sidebar-header .sub { font-size: .7rem; color: var(--text2); margin-top: .15rem; }
+.sidebar-nav {
+  flex: 1; overflow-y: auto; padding: .35rem 0;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.sidebar-nav::-webkit-scrollbar { width: 4px; }
+.sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+.sidebar-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.sidebar-group-label {
+  font-size: .65rem; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--text3); padding: .75rem 1rem .3rem; font-weight: 600;
+}
+.sidebar-item {
+  display: flex; align-items: center; gap: .6rem;
+  padding: .38rem 1rem; font-size: .8rem; color: var(--text2);
+  text-decoration: none; transition: all var(--transition);
+  border-left: 2px solid transparent;
+  position: relative;
+}
+.sidebar-item:hover { color: var(--text); background: rgba(123,155,255,.05); }
+.sidebar-item.active {
+  color: var(--accent); background: rgba(123,155,255,.1);
+  border-left-color: var(--accent);
+}
+.sidebar-item .s-icon { font-size: .85rem; flex-shrink: 0; opacity: .7; }
+.sidebar-item.active .s-icon { opacity: 1; }
+.sidebar-item .s-progress {
+  margin-left: auto; width: 3px; height: 3px; border-radius: 50%;
+  background: var(--accent); opacity: 0; transition: opacity var(--transition);
+}
+.sidebar-item.active .s-progress { opacity: 1; }
+.sidebar-footer {
+  padding: .75rem 1rem; border-top: 1px solid var(--border);
+  font-size: .7rem; color: var(--text3); flex-shrink: 0;
+}
+
+/* HERO */
+.hero {
+  position: relative; padding: 2.5rem 0 2rem;
+  border-bottom: 1px solid var(--border); margin-bottom: 2rem;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(123,155,255,.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 100px; padding: .3rem .9rem .3rem .65rem;
+  font-size: .78rem; color: var(--text2); margin-bottom: .85rem;
+}
+.hero-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent2); }
+.hero h1 { font-size: 2.6rem; font-weight: 700; letter-spacing: -.025em; line-height: 1.1; }
+.hero h1 span { color: var(--accent); }
+.hero .subtitle {
+  font-size: 1rem; color: var(--text2); margin-top: .5rem;
+  display: flex; flex-wrap: wrap; gap: .2rem 1.25rem;
+}
+.hero .subtitle strong { color: var(--text); font-weight: 500; }
+.hero-tags {
+  display: flex; flex-wrap: wrap; gap: .35rem; margin: 1rem 0 0;
+}
+.hero-tag {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 6px; padding: .2rem .65rem;
+  font-size: .75rem; color: var(--text3);
+  transition: all var(--transition); cursor: default;
+}
+.hero-tag strong { color: var(--text2); font-weight: 500; }
+.hero-tag:hover { border-color: var(--border-hover); color: var(--text); }
+
+/* SECTION */
+.section { margin-bottom: 2.5rem; scroll-margin-top: 1rem; }
+.section-header {
+  display: flex; align-items: center; gap: .65rem;
+  margin-bottom: 1rem;
+}
+.section-header .icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+}
+.section-header h2 { font-size: 1.15rem; font-weight: 600; }
+.section-header .table-name {
+  font-size: .7rem; color: var(--text3);
+  background: var(--surface); border-radius: 5px; padding: .15rem .5rem;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* GRIDS */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: .9rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: .9rem; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: .9rem; }
+
+/* CARDS — SEGMENTED BY TYPE */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.25rem;
+  transition: all var(--transition);
+}
+.card:hover { border-color: var(--border-hover); box-shadow: var(--shadow); }
+.card:active { transform: scale(.99); }
+
+/* Metric card — accent bar on left */
+.card-metric {
+  border-left: 3px solid var(--accent); padding-left: 1.1rem;
+}
+.card-metric.card-positive { border-left-color: var(--accent2); }
+.card-metric.card-warning { border-left-color: var(--accent3); }
+.card-metric.card-danger { border-left-color: var(--red); }
+.card-metric.card-cyan { border-left-color: var(--cyan); }
+
+/* Chart card — distinct visual */
+.card-chart {
+  position: relative;
+}
+.card-chart::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 2px; background: linear-gradient(90deg, var(--accent), transparent);
+  border-radius: var(--radius) var(--radius) 0 0; opacity: .4;
+}
+
+/* List card — compact */
+.card-list {}
+
+/* Card sub-types */
+.card h3 {
+  font-size: .75rem; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--text2); margin-bottom: .45rem; font-weight: 500;
+}
+.card-chart h3 { color: var(--text3); }
+.card-metric h3 { font-size: .72rem; }
+.card .value {
+  font-size: 1.65rem; font-weight: 700; line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+.card .value-sm { font-size: 1.05rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.card .value .unit { font-size: .78rem; font-weight: 400; color: var(--text3); }
+.card .sub { font-size: .75rem; color: var(--text3); margin-top: .2rem; }
+
+/* CHART */
+.card:has(.chart-container) { display: flex; flex-direction: column; }
+.chart-container { flex: 1; min-height: 0; width: 100%; position: relative; }
+
+/* METRIC ROW */
+.metric-row {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: .75rem;
+}
+
+/* DATA LIST */
+.data-list { list-style: none; }
+.data-list li {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: .35rem 0; border-bottom: 1px solid rgba(40,45,63,.4);
+  font-size: .82rem;
+}
+.data-list li:last-child { border-bottom: none; }
+.data-list li span:first-child { color: var(--text3); }
+.data-list li span:last-child {
+  font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+/* TABLE */
+.data-table { width: 100%; border-collapse: collapse; font-size: .8rem; }
+.data-table th {
+  text-align: left; padding: .5rem .65rem;
+  color: var(--text3); font-weight: 500; font-size: .7rem;
+  text-transform: uppercase; letter-spacing: .03em;
+  border-bottom: 1px solid var(--border);
+}
+.data-table td { padding: .4rem .65rem; border-bottom: 1px solid rgba(40,45,63,.3); }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table .val { font-weight: 600; text-align: right; font-family: 'JetBrains Mono', monospace; }
+
+/* BAR */
+.bar { height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 3px; transition: width .6s ease; }
+
+/* TABS */
+.tabs { display: flex; gap: .25rem; margin-bottom: .75rem; flex-wrap: wrap; }
+.tab {
+  background: transparent; border: 1px solid var(--border); color: var(--text3);
+  padding: .35rem .9rem; border-radius: 6px; cursor: pointer;
+  font-size: .78rem; transition: all var(--transition);
+}
+.tab:hover { border-color: var(--accent); color: var(--text); }
+.tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* UTILS */
+.mt-1 { margin-top: .85rem; }
+.mb-1 { margin-bottom: .85rem; }
+
+/* HERO COLLAPSE */
+.hero-tags .hero-tag.hero-tag-toggle {
+  cursor: pointer; user-select: none;
+  background: var(--surface); border-color: var(--border-hover);
+  color: var(--text2); font-weight: 500;
+}
+.hero-tags .hero-tag.hero-tag-toggle:hover { background: var(--surface2); }
+.hero-tags-collapsible { display: flex; flex-wrap: wrap; gap: .35rem; }
+.hero-tags-collapsible.collapsed { display: none; }
+
+/* MOBILE */
+/* MOBILE BOTTOM NAV */
+.mobile-nav { display: none; }
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+  .container { padding: 0 .75rem; }
+  .section { margin-bottom: 1.5rem; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; gap: .65rem; }
+  .metric-row { grid-template-columns: repeat(2, 1fr); gap: .5rem; }
+
+  .hero { padding: 1.5rem 0 1.25rem; margin-bottom: 1.25rem; }
+  .hero h1 { font-size: 1.5rem; }
+  .hero .subtitle { font-size: .85rem; gap: .15rem .75rem; }
+  .hero-tags { gap: .25rem; margin-top: .65rem; }
+  .hero-tag { font-size: .7rem; padding: .15rem .5rem; }
+
+  .section-header { margin-bottom: .65rem; }
+  .section-header h2 { font-size: 1rem; }
+  .section-header .icon { width: 28px; height: 28px; font-size: .85rem; }
+  .section-header .table-name { font-size: .65rem; max-width: 140px; }
+
+  .card { padding: .9rem; }
+  .card-metric { padding-left: .8rem; }
+  .card .value { font-size: 1.3rem; }
+  .card .value-sm { font-size: .95rem; }
+  .card h3 { font-size: .68rem; margin-bottom: .35rem; }
+
+  .data-list li { font-size: .78rem; padding: .28rem 0; }
+
+  .card:has(.chart-container) > [style*="display:flex"] { flex-direction: column; gap: .65rem; }
+  .card:has(.chart-container) > [style*="display:flex"] .data-list {
+    width: 100% !important; border-left: none !important;
+    border-top: 1px solid var(--border); padding-left: 0 !important;
+    padding-top: .5rem; display: grid;
+    grid-template-columns: 1fr 1fr; gap: .15rem .75rem;
+  }
+  .card:has(.chart-container) > [style*="display:flex"] .data-list li {
+    border-bottom: none; padding: .15rem 0;
+  }
+
+  .chart-container { min-height: 160px; }
+
+  /* Mobile bottom nav */
+  .mobile-nav {
+    display: flex; position: fixed; bottom: 0; left: 0; right: 0;
+    z-index: 200; background: var(--surface);
+    border-top: 1px solid var(--border);
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .mobile-nav::-webkit-scrollbar { display: none; }
+  .mobile-nav a {
+    flex-shrink: 0; display: flex; flex-direction: column; align-items: center;
+    gap: 2px; padding: .4rem .6rem .35rem;
+    font-size: .6rem; color: var(--text3); text-decoration: none;
+    transition: color var(--transition);
+  }
+  .mobile-nav a:active { color: var(--accent); }
+  .mobile-nav a .m-icon { font-size: 1.1rem; line-height: 1; }
+  .mobile-nav a.active { color: var(--accent); }
+
+  body { padding-bottom: 3.2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo"><span class="logo-dot"></span> Rodado</div>
+    <div class="sub">Nova Friburgo · RJ</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="sidebar-group-label">Território</div>
+    <a class="sidebar-item active" href="#demo"><span class="s-icon">👥</span> Demografia<span class="s-progress"></span></a>
+    <a class="sidebar-item" href="#geo"><span class="s-icon">🗺️</span> Geografia<span class="s-progress"></span></a>
+    <a class="sidebar-item" href="#amb"><span class="s-icon">🌳</span> Meio Ambiente<span class="s-progress"></span></a>
+    <a class="sidebar-item" href="#infra"><span class="s-icon">🚰</span> Infraestrutura<span class="s-progress"></span></a>
+
+    <div class="sidebar-group-label">Economia</div>
+    <a class="sidebar-item" href="#econ"><span class="s-icon">💰</span> Finanças<span class="s-progress"></span></a>
+    <a class="sidebar-item" href="#trab"><span class="s-icon">💼</span> Trabalho<span class="s-progress"></span></a>
+    <a class="sidebar-item" href="#comex"><span class="s-icon">📦</span> Comércio Exterior<span class="s-progress"></span></a>
+    <a class="sidebar-item" href="#agro"><span class="s-icon">🌱</span> Agropecuária<span class="s-progress"></span></a>
+
+    <div class="sidebar-group-label">Serviços</div>
+    <a class="sidebar-item" href="#educ"><span class="s-icon">📚</span> Educação<span class="s-progress"></span></a>
+    <a class="sidebar-item" href="#saude"><span class="s-icon">🏥</span> Saúde<span class="s-progress"></span></a>
+    <a class="sidebar-item" href="#seg"><span class="s-icon">👮</span> Segurança<span class="s-progress"></span></a>
+    <a class="sidebar-item" href="#conect"><span class="s-icon">📶</span> Conectividade<span class="s-progress"></span></a>
+
+    <div class="sidebar-group-label">Governança</div>
+    <a class="sidebar-item" href="#pol"><span class="s-icon">🗳️</span> Política<span class="s-progress"></span></a>
+    <a class="sidebar-item" href="#transp"><span class="s-icon">🔍</span> Transparência<span class="s-progress"></span></a>
+    <a class="sidebar-item" href="#social"><span class="s-icon">🤝</span> Vulnerabilidade<span class="s-progress"></span></a>
+    <a class="sidebar-item" href="#benef"><span class="s-icon">🫂</span> Benefícios<span class="s-progress"></span></a>
+    <a class="sidebar-item" href="#vizi"><span class="s-icon">📍</span> Vizinhança<span class="s-progress"></span></a>
+  </nav>
+  <div class="sidebar-footer">17 temas · Rodado</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+<div class="container">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge"><span class="dot"></span> Rodado · Simulação Interativa</div>
+  <h1><span>Nova Friburgo</span> <span style="font-weight:400;color:var(--text2)">/</span> RJ</h1>
+  <div class="subtitle">
+    <span><strong>Código IBGE:</strong> 3303401</span>
+    <span><strong>TSE:</strong> 90909</span>
+    <span><strong>DDD:</strong> 22</span>
+  </div>
+  <div class="hero-tags">
+    <span class="hero-tag"><strong>Região:</strong> Sudeste</span>
+    <span class="hero-tag"><strong>Mesorregião:</strong> Centro Fluminense</span>
+    <span class="hero-tag"><strong>Altitude:</strong> 846 m</span>
+    <span class="hero-tag"><strong>Clima:</strong> Cwb</span>
+    <span class="hero-tag"><strong>Capital:</strong> Não</span>
+    <span class="hero-tag hero-tag-toggle" onclick="this.nextElementSibling.classList.toggle('collapsed');this.textContent=this.nextElementSibling.classList.contains('collapsed')?'+ mostrar mais':'− mostrar menos'">− mostrar menos</span>
+    <div class="hero-tags-collapsible">
+      <span class="hero-tag"><strong>Amazônia Legal:</strong> Não</span>
+      <span class="hero-tag"><strong>Reg. Imediata:</strong> Nova Friburgo</span>
+      <span class="hero-tag"><strong>Reg. Intermediária:</strong> Petrópolis</span>
+      <span class="hero-tag"><strong>Reg. Saúde:</strong> Serrana I</span>
+      <span class="hero-tag"><strong>Comarca:</strong> Nova Friburgo</span>
+      <span class="hero-tag"><strong>Receita Federal:</strong> 3303401</span>
+      <span class="hero-tag"><strong>Banco Central:</strong> 3303401</span>
+    </div>
+  </div>
+</div>
+
+<!-- DEMOGRAFIA -->
+<div class="section" id="demo">
+  <div class="section-header">
+    <div class="icon" style="background:rgba(123,155,255,.12);color:var(--accent)">👥</div>
+    <h2>Demografia & População</h2>
+    <span class="table-name">br_ibge_populacao · censo_2022 · ms_populacao</span>
+  </div>
+  <div class="grid-4">
+    <div class="card card-metric"><h3>População (2024)</h3><div class="value">192.536 <span class="unit">hab</span></div><div class="sub">Estimativa IBGE</div></div>
+    <div class="card card-metric"><h3>Censo 2022</h3><div class="value">189.387 <span class="unit">hab</span></div><div class="sub">Recenseados</div></div>
+    <div class="card card-metric"><h3>Domicílios</h3><div class="value">78.243</div><div class="sub">Censo 2022</div></div>
+    <div class="card card-metric"><h3>Área</h3><div class="value">933 <span class="unit">km²</span></div><div class="sub">Densidade: ~206 hab/km²</div></div>
+    <div class="card card-metric card-positive"><h3>Taxa de Alfabetização</h3><div class="value">96,2 <span class="unit">%</span></div><div class="sub">Censo 2022</div></div>
+    <div class="card card-metric"><h3>Idade Mediana</h3><div class="value">38,6 <span class="unit">anos</span></div><div class="sub">Censo 2022</div></div>
+    <div class="card card-metric"><h3>Razão de Sexo</h3><div class="value">91,4</div><div class="sub">Homens/100 mulheres</div></div>
+    <div class="card card-metric card-warning"><h3>Índice de Envelhecimento</h3><div class="value">87,3</div><div class="sub">Idosos/100 jovens</div></div>
+  </div>
+  <div class="grid-2 mt-1">
+    <div class="card card-chart">
+      <h3>População por Sexo e Idade</h3>
+      <div class="chart-container"><canvas id="popAgeChart"></canvas></div>
+    </div>
+    <div class="card card-chart">
+      <h3>Evolução Populacional</h3>
+      <div style="display:flex;flex:1;gap:.85rem;min-height:0">
+        <div class="chart-container" style="flex:1"><canvas id="popEvolChart"></canvas></div>
+        <ul class="data-list" style="width:115px;flex-shrink:0;padding-left:.65rem;border-left:1px solid var(--border)">
+          <li><span>1970</span><span>102k</span></li>
+          <li><span>1980</span><span>128k</span></li>
+          <li><span>1991</span><span>153k</span></li>
+          <li><span>2000</span><span>173k</span></li>
+          <li><span>2010</span><span>182k</span></li>
+          <li><span>2022</span><span>189k</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GEOGRAFIA -->
+<div class="section" id="geo">
+  <div class="section-header">
+    <div class="icon" style="background:rgba(109,219,154,.12);color:var(--accent2)">🗺️</div>
+    <h2>Geografia & Mapas</h2>
+    <span class="table-name">br_geobr_mapas.municipio</span>
+  </div>
+  <div class="grid-3">
+    <div class="card card-metric card-cyan"><h3>Altitude</h3><div class="value">846 <span class="unit">m</span></div><div class="sub">Sede municipal</div></div>
+    <div class="card card-list"><h3>Bioma</h3><div class="value-sm">Mata Atlântica</div><div class="sub">Predominante</div></div>
+    <div class="card card-list"><h3>Clima</h3><div class="value-sm">Cwb <span style="color:var(--text3);font-size:.85rem">(Subtropical de altitude)</span></div><div class="sub">Temperatura média: 18 °C</div></div>
+    <div class="card card-list"><h3>Arranjo Populacional</h3><div class="value-sm">Nova Friburgo (isolado)</div></div>
+    <div class="card card-list"><h3>Região Metropolitana</h3><div class="value-sm">—</div><div class="sub">Não integra RM</div></div>
+    <div class="card card-list"><h3>Semiárido</h3><div class="value-sm">Não</div></div>
+  </div>
+</div>
+
+<!-- ECONOMIA -->
+<div class="section" id="econ">
+  <div class="section-header">
+    <div class="icon" style="background:rgba(250,165,91,.12);color:var(--accent3)">💰</div>
+    <h2>Economia & Finanças</h2>
+    <span class="table-name">br_ibge_pib · br_me_siconfi · br_bcb_estban</span>
+  </div>
+  <div class="grid-4">
+    <div class="card card-metric"><h3>PIB (2022)</h3><div class="value">R$ 6,54 <span class="unit">bi</span></div><div class="sub">34º no RJ</div></div>
+    <div class="card card-metric card-positive"><h3>PIB per capita</h3><div class="value">R$ 34.521</div><div class="sub">IBGE 2022</div></div>
+    <div class="card card-metric"><h3>Impostos Líquidos</h3><div class="value">R$ 892 <span class="unit">mi</span></div><div class="sub">2022</div></div>
+    <div class="card card-metric"><h3>VA Total</h3><div class="value">R$ 5,65 <span class="unit">bi</span></div><div class="sub">Valor Adicionado 2022</div></div>
+  </div>
+  <div class="grid-2 mt-1">
+    <div class="card card-chart">
+      <h3>Valor Adicionado por Setor</h3>
+      <div class="chart-container"><canvas id="vaChart"></canvas></div>
+    </div>
+    <div class="card card-list">
+      <div class="grid-2">
+        <div><h3>Agropecuária</h3><div class="value-sm">R$ 96 <span class="unit">mi</span></div><div class="sub">1,7% do VA</div></div>
+        <div><h3>Indústria</h3><div class="value-sm">R$ 1,41 <span class="unit">bi</span></div><div class="sub">25,0% do VA</div></div>
+        <div><h3>Serviços</h3><div class="value-sm">R$ 2,77 <span class="unit">bi</span></div><div class="sub">49,0% do VA</div></div>
+        <div><h3>Adm. Pública</h3><div class="value-sm">R$ 1,37 <span class="unit">bi</span></div><div class="sub">24,3% do VA</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="grid-2 mt-1">
+    <div class="card card-list">
+      <h3>Receitas Orçamentárias (2024)</h3>
+      <ul class="data-list">
+        <li><span>Receita Total</span><span>R$ 1,02 bi</span></li>
+        <li><span>Receita Corrente</span><span>R$ 978 mi</span></li>
+        <li><span>Receita de Capital</span><span>R$ 42 mi</span></li>
+        <li><span>FPM</span><span>R$ 127 mi</span></li>
+        <li><span>ICMS</span><span>R$ 312 mi</span></li>
+        <li><span>IPTU</span><span>R$ 48 mi</span></li>
+        <li><span>ISS</span><span>R$ 106 mi</span></li>
+      </ul>
+    </div>
+    <div class="card card-list">
+      <h3>Despesas por Função (2024)</h3>
+      <ul class="data-list">
+        <li><span>Saúde</span><span>R$ 198 mi</span></li>
+        <li><span>Educação</span><span>R$ 241 mi</span></li>
+        <li><span>Urbanismo</span><span>R$ 87 mi</span></li>
+        <li><span>Administração</span><span>R$ 124 mi</span></li>
+        <li><span>Previdência</span><span>R$ 142 mi</span></li>
+        <li><span>Assistência Social</span><span>R$ 41 mi</span></li>
+        <li><span>Outras</span><span>R$ 187 mi</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="grid-3 mt-1">
+    <div class="card card-list">
+      <h3>Atividade Bancária (2024)</h3>
+      <ul class="data-list">
+        <li><span>Agências</span><span>14</span></li>
+        <li><span>Depósitos totais</span><span>R$ 2,87 bi</span></li>
+        <li><span>Operações de crédito</span><span>R$ 1,93 bi</span></li>
+      </ul>
+    </div>
+    <div class="card card-list">
+      <h3>Compras Públicas (2024)</h3>
+      <ul class="data-list">
+        <li><span>Licitações realizadas</span><span>187</span></li>
+        <li><span>Valor total licitado</span><span>R$ 312 mi</span></li>
+        <li><span>Contratos ativos</span><span>243</span></li>
+      </ul>
+    </div>
+    <div class="card card-list">
+      <h3>INPC — Variação Acumulada</h3>
+      <ul class="data-list">
+        <li><span>Mensal (jun/2026)</span><span>0,42%</span></li>
+        <li><span>Anual</span><span>4,87%</span></li>
+        <li><span>12 meses</span><span>5,12%</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- EDUCAÇÃO -->
+<div class="section" id="educ">
+  <div class="section-header">
+    <div class="icon" style="background:rgba(92,212,232,.12);color:var(--cyan)">📚</div>
+    <h2>Educação</h2>
+    <span class="table-name">br_inep_ideb · saeb · indicadores_educacionais</span>
+  </div>
+  <div class="grid-4">
+    <div class="card card-metric card-positive"><h3>IDEB Anos Iniciais (2023)</h3><div class="value">5,7</div><div class="sub">Rede pública (meta: 5,5)</div></div>
+    <div class="card card-metric"><h3>IDEB Anos Finais (2023)</h3><div class="value">4,9</div><div class="sub">Rede pública (meta: 4,8)</div></div>
+    <div class="card card-metric card-positive"><h3>Taxa de Aprovação (EF)</h3><div class="value">92,1 <span class="unit">%</span></div><div class="sub">Média iniciais + finais</div></div>
+    <div class="card card-metric"><h3>Nota SAEB — Português</h3><div class="value">261,4</div><div class="sub">5º ano EF (2023)</div></div>
+  </div>
+  <div class="grid-2 mt-1">
+    <div class="card card-chart">
+      <h3>IDEB — Evolução</h3>
+      <div class="chart-container"><canvas id="idebChart"></canvas></div>
+    </div>
+    <div class="card card-chart">
+      <h3>SAEB — Níveis de Proficiência</h3>
+      <div class="chart-container"><canvas id="saebChart"></canvas></div>
+    </div>
+  </div>
+  <div class="grid-3 mt-1">
+    <div class="card card-list">
+      <h3>Taxa de Alfabetização</h3>
+      <div class="bar" style="margin:.5rem 0"><div class="bar-fill" style="width:96.2%;background:var(--accent2)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;color:var(--text3)">
+        <span>Atual: 96,2%</span><span style="color:var(--accent2)">Meta 2030: 98,5%</span>
+      </div>
+      <ul class="data-list mt-1">
+        <li><span>Meta 2024</span><span>96,0%</span></li>
+        <li><span>Meta 2026</span><span>97,0%</span></li>
+        <li><span>Meta 2030</span><span>98,5%</span></li>
+      </ul>
+    </div>
+    <div class="card card-list">
+      <h3>Indicadores Educacionais</h3>
+      <ul class="data-list">
+        <li><span>ATU — Creche</span><span>34,2%</span></li>
+        <li><span>ATU — Pré-escola</span><span>78,6%</span></li>
+        <li><span>ATU — EF Anos Iniciais</span><span>91,3%</span></li>
+        <li><span>ATU — EF Anos Finais</span><span>87,1%</span></li>
+        <li><span>Taxa de Evasão (EF)</span><span>2,3%</span></li>
+      </ul>
+    </div>
+    <div class="card card-list">
+      <h3>ENEM 2024</h3>
+      <ul class="data-list">
+        <li><span>Inscritos</span><span>1.847</span></li>
+        <li><span>Média geral</span><span>543,2</span></li>
+        <li><span>Redação</span><span>640,0</span></li>
+        <li><span>Linguagens</span><span>528,4</span></li>
+        <li><span>Matemática</span><span>541,8</span></li>
+        <li><span>Ciências Humanas</span><span>536,1</span></li>
+        <li><span>Ciências da Natureza</span><span>469,7</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SAÚDE -->
+<div class="section" id="saude">
+  <div class="section-header">
+    <div class="icon" style="background:rgba(240,106,106,.12);color:var(--red)">🏥</div>
+    <h2>Saúde</h2>
+    <span class="table-name">br_ms_cnes · sinan · sinasc</span>
+  </div>
+  <div class="grid-4">
+    <div class="card card-metric card-cyan"><h3>Estabelecimentos</h3><div class="value">127</div><div class="sub">CNES 2025</div></div>
+    <div class="card card-metric"><h3>Leitos</h3><div class="value">568</div><div class="sub">Públicos + privados</div></div>
+    <div class="card card-metric"><h3>Profissionais</h3><div class="value">2.847</div><div class="sub">Vínculos ativos</div></div>
+    <div class="card card-metric"><h3>Equipes de Saúde</h3><div class="value">24</div><div class="sub">ESF + NASF</div></div>
+  </div>
+  <div class="grid-3 mt-1">
+    <div class="card card-list">
+      <h3>Nascidos Vivos (SINASC 2024)</h3>
+      <ul class="data-list">
+        <li><span>Total</span><span>1.862</span></li>
+        <li><span>Partos cesáreos</span><span>58,3%</span></li>
+        <li><span>Pré-natal 7+ consultas</span><span>74,1%</span></li>
+        <li><span>Baixo peso ao nascer</span><span>8,7%</span></li>
+      </ul>
+    </div>
+    <div class="card card-list">
+      <h3>Dengue (SINAN 2025)</h3>
+      <ul class="data-list">
+        <li><span>Casos notificados</span><span>342</span></li>
+        <li><span>Casos confirmados</span><span>218</span></li>
+        <li><span>Casos graves</span><span>3</span></li>
+        <li><span>Óbitos</span><span>0</span></li>
+      </ul>
+    </div>
+    <div class="card card-list">
+      <h3>SISVAN — Vigilância Alimentar</h3>
+      <ul class="data-list">
+        <li><span>Crianças < 5 anos</span><span>4.238</span></li>
+        <li><span>Baixo peso</span><span>6,1%</span></li>
+        <li><span>Sobrepeso/obesidade</span><span>28,4%</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SEGURANÇA -->
+<div class="section" id="seg">
+  <div class="section-header">
+    <div class="icon" style="background:rgba(240,106,106,.12);color:var(--red)">👮</div>
+    <h2>Segurança Pública</h2>
+    <span class="table-name">br_fbsp_absp · br_rj_isp_estatisticas</span>
+  </div>
+  <div class="metric-row">
+    <div class="card card-metric card-positive"><h3>Homicídio Doloso</h3><div class="value">9</div><div class="sub">4,7/100k hab (2024)</div></div>
+    <div class="card card-metric"><h3>Mortes Violentas</h3><div class="value">14</div><div class="sub">Intencionais (2024)</div></div>
+    <div class="card card-metric card-warning"><h3>Estupro</h3><div class="value">23</div><div class="sub">Casos registrados</div></div>
+    <div class="card card-metric card-danger"><h3>Feminicídio</h3><div class="value">1</div><div class="sub">2024</div></div>
+    <div class="card card-metric"><h3>Roubo de Veículos</h3><div class="value">87</div><div class="sub">2024</div></div>
+    <div class="card card-metric card-warning"><h3>Tráfico</h3><div class="value">41</div><div class="sub">Flagrantes (2024)</div></div>
+    <div class="card card-metric"><h3>Posse Ilegal Arma</h3><div class="value">18</div><div class="sub">2024</div></div>
+    <div class="card card-metric card-danger"><h3>Intervenção Policial</h3><div class="value">2</div><div class="sub">Mortes (2024)</div></div>
+  </div>
+  <div class="grid-2 mt-1">
+    <div class="card card-chart">
+      <h3>Homicídio Doloso — Evolução Mensal (2024)</h3>
+      <div class="chart-container"><canvas id="crimeChart"></canvas></div>
+    </div>
+    <div class="card card-list">
+      <h3>Taxa por 100k hab (2024)</h3>
+      <ul class="data-list">
+        <li><span>Homicídio Doloso</span><span>4,7</span></li>
+        <li><span>Latrocinio</span><span>1,0</span></li>
+        <li><span>Lesão Corporal c/ Morte</span><span>0,5</span></li>
+        <li><span>Tentativa de Homicídio</span><span>6,8</span></li>
+        <li><span>Letalidade Violenta</span><span>6,2</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- INFRAESTRUTURA -->
+<div class="section" id="infra">
+  <div class="section-header">
+    <div class="icon" style="background:rgba(92,212,232,.12);color:var(--cyan)">🚰</div>
+    <h2>Infraestrutura & Saneamento</h2>
+    <span class="table-name">br_ana_atlas_esgotos · br_mdr_snis</span>
+  </div>
+  <div class="grid-3">
+    <div class="card card-metric card-positive"><h3>Água — Atendimento</h3><div class="value">91,4 <span class="unit">%</span></div><div class="sub">SNIS 2023</div></div>
+    <div class="card card-metric card-warning"><h3>Esgoto — Atendimento</h3><div class="value">76,8 <span class="unit">%</span></div><div class="sub">SNIS 2023</div></div>
+    <div class="card card-metric card-warning"><h3>Esgoto Tratado</h3><div class="value">62,3 <span class="unit">%</span></div><div class="sub">Do total coletado</div></div>
+  </div>
+  <div class="grid-2 mt-1">
+    <div class="card card-list">
+      <h3>Atlas Esgotos — ANA</h3>
+      <ul class="data-list">
+        <li><span>Pop. Urbana (2013)</span><span>161.200</span></li>
+        <li><span>Pop. Urbana (2035 proj.)</span><span>178.400</span></li>
+        <li><span>Sem coleta sem tratamento</span><span>14,2%</span></li>
+        <li><span>Com coleta com tratamento</span><span>48,6%</span></li>
+        <li><span>Solução individual</span><span>6,4%</span></li>
+        <li><span>Investimento necessário</span><span>R$ 178 mi</span></li>
+      </ul>
+    </div>
+    <div class="card card-list">
+      <h3>SNIS — Indicadores Detalhados</h3>
+      <ul class="data-list">
+        <li><span>Consumidores de água</span><span>62.847</span></li>
+        <li><span>Volume consumido</span><span>9,34 mi m³</span></li>
+        <li><span>Extensão rede água</span><span>847 km</span></li>
+        <li><span>Ligações de esgoto</span><span>44.521</span></li>
+        <li><span>Extensão rede esgoto</span><span>412 km</span></li>
+        <li><span>Despesa total serviço</span><span>R$ 97 mi</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- MEIO AMBIENTE -->
+<div class="section" id="amb">
+  <div class="section-header">
+    <div class="icon" style="background:rgba(109,219,154,.12);color:var(--accent2)">🌳</div>
+    <h2>Meio Ambiente & Clima</h2>
+    <span class="table-name">br_inpe_prodes · br_seeg_emissoes</span>
+  </div>
+  <div class="grid-3">
+    <div class="card card-list">
+      <h3>PRODES — Cobertura (Mata Atlântica)</h3>
+      <ul class="data-list">
+        <li><span>Área total do bioma</span><span>89.700 ha</span></li>
+        <li><span>Vegetação natural</span><span>38.241 ha</span></li>
+        <li><span>Desmatado (2024)</span><span>12 ha</span></li>
+        <li><span>% Vegetação natural</span><span>42,6%</span></li>
+      </ul>
+    </div>
+    <div class="card card-list">
+      <h3>SEEG — Emissões (tCO₂e)</h3>
+      <ul class="data-list">
+        <li><span>Total</span><span>98.412</span></li>
+        <li><span>Energia</span><span>42.104</span></li>
+        <li><span>Agropecuária</span><span>31.287</span></li>
+        <li><span>Resíduos</span><span>18.921</span></li>
+        <li><span>Processos Industriais</span><span>6.100</span></li>
+      </ul>
+    </div>
+    <div class="card card-list">
+      <h3>Clima — Dados Históricos</h3>
+      <ul class="data-list">
+        <li><span>Temperatura média anual</span><span>18,2 °C</span></li>
+        <li><span>Precipitação anual</span><span>1.847 mm</span></li>
+        <li><span>Mês mais quente</span><span>Fev (22,1 °C)</span></li>
+        <li><span>Mês mais frio</span><span>Jul (14,3 °C)</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CONECTIVIDADE -->
+<div class="section" id="conect">
+  <div class="section-header">
+    <div class="icon" style="background:rgba(123,155,255,.12);color:var(--accent)">📶</div>
+    <h2>Conectividade & Tecnologia</h2>
+    <span class="table-name">br_anatel_banda_larga · indice_conectividade</span>
+  </div>
+  <div class="grid-4">
+    <div class="card card-metric"><h3>Densidade Banda Larga</h3><div class="value">22,4 <span class="unit">/100 hab</span></div><div class="sub">2025</div></div>
+    <div class="card card-metric card-warning"><h3>IBC</h3><div class="value">58,7</div><div class="sub">Índice de Conectividade</div></div>
+    <div class="card card-metric card-positive"><h3>Cobertura 4G/5G</h3><div class="value">92,3 <span class="unit">%</span></div><div class="sub">População</div></div>
+    <div class="card card-metric"><h3>Fibra Óptica</h3><div class="value">78 <span class="unit">%</span></div><div class="sub">Domicílios</div></div>
+  </div>
+</div>
+
+<!-- POLÍTICA -->
+<div class="section" id="pol">
+  <div class="section-header">
+    <div class="icon" style="background:rgba(250,165,91,.12);color:var(--accent3)">🗳️</div>
+    <h2>Política & Eleições</h2>
+    <span class="table-name">br_tse_eleicoes</span>
+  </div>
+  <div class="grid-3">
+    <div class="card card-list">
+      <h3>Eleitorado (2024)</h3>
+      <ul class="data-list">
+        <li><span>Eleitores aptos</span><span>147.283</span></li>
+        <li><span>Seções</span><span>418</span></li>
+        <li><span>Zonas eleitorais</span><span>2 (86ª e 140ª)</span></li>
+        <li><span>Biometria</span><span>92,7%</span></li>
+      </ul>
+    </div>
+    <div class="card card-list">
+      <h3>Perfil do Eleitorado</h3>
+      <ul class="data-list">
+        <li><span>Feminino</span><span>54,2%</span></li>
+        <li><span>Masculino</span><span>45,8%</span></li>
+        <li><span>Ensino Fundamental</span><span>31,7%</span></li>
+        <li><span>Ensino Médio</span><span>38,4%</span></li>
+        <li><span>Ensino Superior</span><span>18,2%</span></li>
+      </ul>
+    </div>
+    <div class="card card-list">
+      <h3>Resultados 2024 — Prefeito</h3>
+      <ul class="data-list">
+        <li><span>Votos nominais</span><span>102.343</span></li>
+        <li><span>Brancos</span><span>4.218</span></li>
+        <li><span>Nulos</span><span>3.847</span></li>
+        <li><span>Abstenção</span><span>21,3%</span></li>
+        <li><span>Vencedor (1º turno)</span><span>48,7%</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- TRANSPARÊNCIA -->
+<div class="section" id="transp">
+  <div class="section-header">
+    <div class="icon" style="background:rgba(92,212,232,.12);color:var(--cyan)">🔍</div>
+    <h2>Transparência & Governança</h2>
+    <span class="table-name">br_cgu_ebt · clp_ranking_competitividade</span>
+  </div>
+  <div class="grid-3">
+    <div class="card card-metric card-warning">
+      <h3>Escala Brasil Transparente</h3>
+      <div class="value">7,84</div>
+      <div class="sub">Nota (0-10) — EBT 2024</div>
+      <div class="bar mt-1"><div class="bar-fill" style="width:78.4%;background:var(--accent)"></div></div>
+    </div>
+    <div class="card card-list">
+      <h3>Ranking de Competitividade</h3>
+      <ul class="data-list">
+        <li><span>Colocação nacional</span><span>237º</span></li>
+        <li><span>Nota geral</span><span>52,4</span></li>
+        <li><span>Pilar: Instituições</span><span>61,2</span></li>
+        <li><span>Pilar: Capital Humano</span><span>54,8</span></li>
+      </ul>
+    </div>
+    <div class="card card-list">
+      <h3>CGU — Sorteios</h3>
+      <ul class="data-list">
+        <li><span>Último sorteio</span><span>nº 42 (2022)</span></li>
+        <li><span>Já fiscalizado?</span><span>Sim (2015, 2022)</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- VULNERABILIDADE -->
+<div class="section" id="social">
+  <div class="section-header">
+    <div class="icon" style="background:rgba(250,165,91,.12);color:var(--accent3)">🤝</div>
+    <h2>Social & Vulnerabilidade</h2>
+    <span class="table-name">br_ipea_avs · br_abrinq_oca</span>
+  </div>
+  <div class="grid-3">
+    <div class="card card-list">
+      <h3>IVS — Índice de Vulnerabilidade Social</h3>
+      <ul class="data-list">
+        <li><span>IVS Geral</span><span>0,268 <span style="color:var(--accent2)">(baixa)</span></span></li>
+        <li><span>IVS Infraestrutura Urbana</span><span>0,184</span></li>
+        <li><span>IVS Capital Humano</span><span>0,312</span></li>
+        <li><span>IVS Renda e Trabalho</span><span>0,308</span></li>
+      </ul>
+    </div>
+    <div class="card card-list">
+      <h3>IDHM (2010)</h3>
+      <div class="value-sm">0,745 <span style="color:var(--accent2);font-size:.85rem">(Alto)</span></div>
+      <ul class="data-list mt-1">
+        <li><span>Renda</span><span>0,716</span></li>
+        <li><span>Longevidade</span><span>0,831</span></li>
+        <li><span>Educação</span><span>0,694</span></li>
+      </ul>
+    </div>
+    <div class="card card-list">
+      <h3>Primeira Infância</h3>
+      <ul class="data-list">
+        <li><span>Taxa bruta pré-escola</span><span>87,4%</span></li>
+        <li><span>Taxa líquida pré-escola</span><span>73,2%</span></li>
+        <li><span>Matrículas</span><span>4.128</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- COMÉRCIO EXTERIOR -->
+<div class="section" id="comex">
+  <div class="section-header">
+    <div class="icon" style="background:rgba(123,155,255,.12);color:var(--accent)">📦</div>
+    <h2>Comércio Exterior</h2>
+    <span class="table-name">br_me_comex_stat</span>
+  </div>
+  <div class="grid-3">
+    <div class="card card-list">
+      <h3>Exportações (2024) — US$ 47,2 mi</h3>
+      <ul class="data-list">
+        <li><span>Vestuário e confecções</span><span>US$ 18,4 mi</span></li>
+        <li><span>Alimentícios</span><span>US$ 12,7 mi</span></li>
+        <li><span>Máquinas e equip.</span><span>US$ 8,1 mi</span></li>
+        <li><span>Outros</span><span>US$ 8,0 mi</span></li>
+      </ul>
+    </div>
+    <div class="card card-list">
+      <h3>Importações (2024) — US$ 72,8 mi</h3>
+      <ul class="data-list">
+        <li><span>Máquinas e equip.</span><span>US$ 28,3 mi</span></li>
+        <li><span>Químicos e farmac.</span><span>US$ 19,2 mi</span></li>
+        <li><span>Têxteis</span><span>US$ 14,7 mi</span></li>
+        <li><span>Outros</span><span>US$ 10,6 mi</span></li>
+      </ul>
+    </div>
+    <div class="card card-list">
+      <h3>Principais Países (Exportação)</h3>
+      <ul class="data-list">
+        <li><span>Estados Unidos</span><span>US$ 12,1 mi</span></li>
+        <li><span>Argentina</span><span>US$ 7,8 mi</span></li>
+        <li><span>Alemanha</span><span>US$ 4,2 mi</span></li>
+        <li><span>França</span><span>US$ 3,6 mi</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- TRABALHO -->
+<div class="section" id="trab">
+  <div class="section-header">
+    <div class="icon" style="background:rgba(109,219,154,.12);color:var(--accent2)">💼</div>
+    <h2>Trabalho & Emprego</h2>
+    <span class="table-name">br_me_caged · br_me_rais</span>
+  </div>
+  <div class="grid-4">
+    <div class="card card-metric"><h3>Vínculos Formais</h3><div class="value">48.234</div><div class="sub">RAIS 2023</div></div>
+    <div class="card card-metric"><h3>Estabelecimentos</h3><div class="value">6.847</div><div class="sub">CNPJ ativos</div></div>
+    <div class="card card-metric card-positive"><h3>Admissões</h3><div class="value">8.221</div><div class="sub">CAGED 2024</div></div>
+    <div class="card card-metric card-warning"><h3>Desligamentos</h3><div class="value">7.614</div><div class="sub">Saldo: +607</div></div>
+  </div>
+</div>
+
+<!-- AGROPECUÁRIA -->
+<div class="section" id="agro">
+  <div class="section-header">
+    <div class="icon" style="background:rgba(109,219,154,.12);color:var(--accent2)">🌱</div>
+    <h2>Agropecuária</h2>
+    <span class="table-name">br_ibge_pam · br_ibge_ppm</span>
+  </div>
+  <div class="grid-2">
+    <div class="card card-list">
+      <h3>PAM — Lavoura Permanente (2023)</h3>
+      <ul class="data-list">
+        <li><span>Tomate (área)</span><span>420 ha</span></li>
+        <li><span>Tomate (produção)</span><span>28.140 t</span></li>
+        <li><span>Caqui</span><span>180 ha / 2.880 t</span></li>
+        <li><span>Goiaba</span><span>95 ha / 1.710 t</span></li>
+        <li><span>Valor total produção</span><span>R$ 78,3 mi</span></li>
+      </ul>
+    </div>
+    <div class="card card-list">
+      <h3>PPM — Pecuária (2023)</h3>
+      <ul class="data-list">
+        <li><span>Efetivo bovino</span><span>14.200 cab.</span></li>
+        <li><span>Efetivo suíno</span><span>3.800 cab.</span></li>
+        <li><span>Efetivo galináceos</span><span>98.000 cab.</span></li>
+        <li><span>Produção de leite</span><span>8,4 mi L/ano</span></li>
+        <li><span>Produção de ovos</span><span>1,2 mi dz/ano</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- BENEFÍCIOS -->
+<div class="section" id="benef">
+  <div class="section-header">
+    <div class="icon" style="background:rgba(250,165,91,.12);color:var(--accent3)">🫂</div>
+    <h2>Benefícios Sociais</h2>
+    <span class="table-name">br_cgu_beneficios_cidadao</span>
+  </div>
+  <div class="grid-4">
+    <div class="card card-metric"><h3>Bolsa Família</h3><div class="value">8.247</div><div class="sub">Famílias (2025)</div></div>
+    <div class="card card-metric"><h3>Valor Médio</h3><div class="value">R$ 2,14 <span class="unit">mi/mês</span></div></div>
+    <div class="card card-metric"><h3>BPC</h3><div class="value">1.834</div><div class="sub">Beneficiários</div></div>
+    <div class="card card-metric"><h3>Garantia-Safra</h3><div class="value">312</div><div class="sub">Famílias</div></div>
+  </div>
+</div>
+
+<!-- VIZINHANÇA -->
+<div class="section" id="vizi">
+  <div class="section-header">
+    <div class="icon" style="background:rgba(92,212,232,.12);color:var(--cyan)">📍</div>
+    <h2>Vizinhança</h2>
+    <span class="table-name">br_bd_vizinhanca.municipio</span>
+  </div>
+  <div class="card card-list" style="padding:1rem 1.25rem">
+    <div class="grid-3" style="text-align:center">
+      <div><div class="value-sm">Cachoeiras de Macacu</div><div class="sub">3300803</div></div>
+      <div><div class="value-sm">Sumidouro</div><div class="sub">3305701</div></div>
+      <div><div class="value-sm">Teresópolis</div><div class="sub">3305800</div></div>
+      <div><div class="value-sm">Bom Jardim</div><div class="sub">3300506</div></div>
+      <div><div class="value-sm">Duas Barras</div><div class="sub">3301604</div></div>
+      <div><div class="value-sm">Silva Jardim</div><div class="sub">3305602</div></div>
+      <div><div class="value-sm">Trajano de Moraes</div><div class="sub">3305909</div></div>
+      <div><div class="value-sm">Macaé</div><div class="sub">3302403</div></div>
+      <div><div class="value-sm">Casimiro de Abreu</div><div class="sub">3301307</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding:2rem 0;color:var(--text3);font-size:.75rem;border-top:1px solid var(--border);margin-top:2rem">
+  Dashboard simulado · Nova Friburgo / RJ · Rodado · Dados ilustrativos baseados em fontes oficiais (IBGE, INEP, SNIS, TSE, FBSP, etc.)<br>
+  Atualizado em julho/2026 · 195+ tabelas com id_municipio disponíveis para consulta
+</div>
+
+</div>
+</div>
+
+<nav class="mobile-nav">
+  <a href="#demo" class="active"><span class="m-icon">👥</span>Demografia</a>
+  <a href="#econ"><span class="m-icon">💰</span>Economia</a>
+  <a href="#educ"><span class="m-icon">📚</span>Educação</a>
+  <a href="#saude"><span class="m-icon">🏥</span>Saúde</a>
+  <a href="#seg"><span class="m-icon">👮</span>Segurança</a>
+  <a href="#infra"><span class="m-icon">🚰</span>Infra</a>
+  <a href="#amb"><span class="m-icon">🌳</span>Ambiente</a>
+  <a href="#conect"><span class="m-icon">📶</span>Conect.</a>
+  <a href="#pol"><span class="m-icon">🗳️</span>Política</a>
+  <a href="#trab"><span class="m-icon">💼</span>Trabalho</a>
+</nav>
+
+<script>
+// Pastel color palette
+const pastel = {
+  blue: '#8cb4ff', blueFill: 'rgba(140,180,255,.15)',
+  pink: '#ffa5c9', pinkFill: 'rgba(255,165,201,.15)',
+  green: '#b8e6b8', greenFill: 'rgba(184,230,184,.15)',
+  orange: '#ffcca3', orangeFill: 'rgba(255,204,163,.15)',
+  cyan: '#a8e8e8', cyanFill: 'rgba(168,232,232,.15)',
+  red: '#ff8a8a', redFill: 'rgba(255,138,138,.15)',
+  yellow: '#ffe5aa', yellowFill: 'rgba(255,229,170,.15)',
+  purple: '#c9b3ff', purpleFill: 'rgba(201,179,255,.15)',
+};
+
+const chartOpts = {
+  responsive: true, maintainAspectRatio: false,
+  plugins: {
+    legend: { position: 'top', labels: { color: '#7a8099', usePointStyle: true, pointStyle: 'circle', padding: 12 } },
+    tooltip: {
+      backgroundColor: '#1e2230', titleColor: '#e2e5f0', bodyColor: '#7a8099',
+      borderColor: '#282d3f', borderWidth: 1, padding: 10, cornerRadius: 8,
+      boxPadding: 6, usePointStyle: true,
+    }
+  },
+  scales: {
+    x: { ticks: { color: '#545a75' }, grid: { color: 'rgba(40,45,63,.5)' } },
+    y: { ticks: { color: '#545a75' }, grid: { color: 'rgba(40,45,63,.5)' } },
+  }
+};
+
+new Chart(document.getElementById('popAgeChart'), {
+  type: 'bar', data: {
+    labels: ['0-4','5-9','10-14','15-19','20-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80+'],
+    datasets: [
+      { label: 'Homens', data: [4872,5231,5843,6147,6384,6721,6892,6714,6482,6143,5437,4682,3891,2984,2143,1492,1284],
+        backgroundColor: 'rgba(140,180,255,.85)', borderRadius: 4 },
+      { label: 'Mulheres', data: [4682,5043,5612,5987,6432,6843,7241,6984,6728,6389,5784,5087,4312,3482,2684,1947,1837],
+        backgroundColor: 'rgba(255,165,201,.85)', borderRadius: 4 }
+    ]
+  },
+  options: { ...chartOpts, plugins: { ...chartOpts.plugins, legend: { ...chartOpts.plugins.legend } } }
+});
+
+new Chart(document.getElementById('popEvolChart'), {
+  type: 'line', data: {
+    labels: ['1970','1980','1991','2000','2010','2022'],
+    datasets: [{
+      label: 'População', data: [102184,128397,152993,173418,182082,189387],
+      borderColor: pastel.blue, backgroundColor: pastel.blueFill, fill: true,
+      tension: .3, pointBackgroundColor: pastel.blue, pointBorderColor: '#151821', pointBorderWidth: 2, pointRadius: 4,
+    }]
+  },
+  options: { ...chartOpts, plugins: { ...chartOpts.plugins, legend: { display: false } } }
+});
+
+new Chart(document.getElementById('vaChart'), {
+  type: 'doughnut', data: {
+    labels: ['Agropecuária','Indústria','Serviços','Adm. Pública'],
+    datasets: [{
+      data: [96,1410,2770,1370],
+      backgroundColor: [pastel.green, pastel.orange, pastel.blue, pastel.cyan],
+      borderColor: '#151821', borderWidth: 2,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '60%',
+    plugins: {
+      legend: { position: 'bottom', labels: { color: '#7a8099', padding: 10, usePointStyle: true } },
+      tooltip: {
+        backgroundColor: '#1e2230', titleColor: '#e2e5f0', bodyColor: '#7a8099',
+        borderColor: '#282d3f', borderWidth: 1, padding: 10, cornerRadius: 8,
+        callbacks: { label: ctx => ctx.label + ': R$ ' + ctx.parsed + ' mi' }
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('idebChart'), {
+  type: 'line', data: {
+    labels: ['2005','2007','2009','2011','2013','2015','2017','2019','2021','2023'],
+    datasets: [
+      { label: 'Anos Iniciais', data: [4.0,4.3,4.8,5.1,5.3,5.6,5.8,6.0,5.5,5.7],
+        borderColor: pastel.green, backgroundColor: pastel.greenFill, fill: true, tension: .3, pointRadius: 3 },
+      { label: 'Anos Finais', data: [3.2,3.5,3.9,4.2,4.5,4.6,4.8,5.0,4.6,4.9],
+        borderColor: pastel.blue, backgroundColor: pastel.blueFill, fill: true, tension: .3, pointRadius: 3 }
+    ]
+  },
+  options: { ...chartOpts, scales: { ...chartOpts.scales, y: { min: 2.5, max: 6.5, ticks: { color: '#545a75' }, grid: { color: 'rgba(40,45,63,.5)' } } } }
+});
+
+new Chart(document.getElementById('saebChart'), {
+  type: 'bar', data: {
+    labels: ['Nível 0','Nível 1','Nível 2','Nível 3'],
+    datasets: [{
+      label: 'Proporção de alunos', data: [8.2,24.7,38.4,28.7],
+      backgroundColor: [pastel.red, pastel.orange, pastel.yellow, pastel.green],
+      borderColor: ['#ff8a8a','#ffcca3','#ffe5aa','#b8e6b8'], borderWidth: 1, borderRadius: 4
+    }]
+  },
+  options: { ...chartOpts, plugins: { ...chartOpts.plugins, legend: { display: false } },
+    scales: { x: { ticks: { color: '#545a75' }, grid: { color: 'rgba(40,45,63,.5)' } },
+             y: { ticks: { color: '#545a75', callback: v => v+'%' }, grid: { color: 'rgba(40,45,63,.5)' } } } }
+});
+
+new Chart(document.getElementById('crimeChart'), {
+  type: 'line', data: {
+    labels: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+    datasets: [{
+      label: 'Homicídio Doloso', data: [1,0,2,0,1,1,0,0,2,1,0,1],
+      borderColor: pastel.red, backgroundColor: pastel.redFill, fill: true,
+      tension: .3, pointBackgroundColor: pastel.red, pointBorderColor: '#151821', pointBorderWidth: 2, pointRadius: 4
+    }]
+  },
+  options: { ...chartOpts, plugins: { ...chartOpts.plugins, legend: { display: false } },
+    scales: { x: { ticks: { color: '#545a75' }, grid: { color: 'rgba(40,45,63,.5)' } },
+             y: { min: 0, max: 4, ticks: { color: '#545a75', stepSize: 1 }, grid: { color: 'rgba(40,45,63,.5)' } } } }
+});
+
+// Scroll spy
+const sections = document.querySelectorAll('.section');
+const navItems = document.querySelectorAll('.sidebar-item');
+const mobileNav = document.querySelector('.mobile-nav');
+if (sections.length) {
+  const obs = new IntersectionObserver(entries => {
+    let max = 0, best = null;
+    entries.forEach(e => {
+      if (e.intersectionRatio > max) { max = e.intersectionRatio; best = e.target; }
+    });
+    if (best) {
+      navItems.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + best.id);
+      });
+      if (mobileNav) {
+        mobileNav.querySelectorAll('a').forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + best.id);
+          if (a.classList.contains('active')) a.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        });
+      }
+    }
+  }, { threshold: [0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1] });
+  sections.forEach(s => obs.observe(s));
+}
+</script>
+
+</body>
+</html>
