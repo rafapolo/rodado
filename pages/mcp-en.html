@@ -3,39 +3,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>rodado — MCP server for Brazilian public data</title>
-<meta name="description" content="533 Brazilian public tables (RAIS, SIM, TSE, CGU, IBGE, INEP...) organized into 34 thematic domains and exposed as tools on a real MCP server.">
+<meta name="description" content="782 Brazilian public tables across 190 datasets (RAIS, SIM, TSE, CGU, IBGE, INEP...) organized into 34 thematic domains and exposed as tools on a real MCP server.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="assets/site.css">
 <link rel="stylesheet" href="assets/mcp-theme.css">
-<style>
-:root { --card-bg: oklch(1 0 0); --icon-bg: oklch(0.94 0.02 260); }
-:root[data-theme="dark"] { --card-bg: var(--bg-raised); --icon-bg: oklch(0.3 0.05 260); }
-
-* { box-sizing: border-box; } html, body { margin: 0; padding: 0; } body { background: var(--bg); }
-
-.server-card { background:var(--card-bg); border:1px solid var(--rule); border-radius:14px; padding:24px 24px 8px; display:flex; flex-direction:column; }
-.card-head { display:flex; align-items:center; justify-content:space-between; gap:12px; }
-.card-title-wrap { display:flex; align-items:center; gap:10px; min-width:0; }
-.card-icon { flex-shrink:0; display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; background:var(--icon-bg); color:var(--accent); font-size:15px; }
-.card-title { font-size:16px; font-weight:700; letter-spacing:-0.01em; margin:0; }
-.card-title-link { color:inherit; text-decoration:none; }
-.card-title-link:hover { color:var(--accent); text-decoration:underline; }
-.card-num { color:var(--ink-faint); font-weight:600; margin-right:6px; }
-.card-badge { flex-shrink:0; font-size:12px; font-weight:600; color:var(--ink-faint); }
-.card-category { font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-faint); margin-top:8px; }
-.card-id-row { margin-top:14px; }
-.card-id { display:block; font-family:'IBM Plex Mono',monospace; font-size:12px; line-height:1.6; color:var(--accent); background:var(--bg-raised); border:1px solid var(--rule); border-radius:7px; padding:7px 10px; word-break:break-word; }
-.card-desc { font-size:12px; line-height:1.55; color:var(--ink-soft); margin:14px 0 6px; }
-.card-cruz-block { margin-top:4px; padding-top:12px; border-top:1px solid var(--rule); }
-.card-cruz-heading { font-size:12px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:8px; }
-.card-cruz-list { list-style:none; margin:0; padding:0; }
-.card-cruz-item { font-size:12px; line-height:1.55; color:var(--ink-soft); padding:5px 0; display:flex; gap:8px; }
-.card-cruz-icon { font-size:9px; color:var(--accent-soft); margin-top:5px; flex-shrink:0; }
-
-</style>
+<link rel="stylesheet" href="assets/mcp-page.css">
 </head>
 <body>
 
@@ -60,39 +35,37 @@
   </div>
 </nav>
 
-<div style="min-height:100vh; background:var(--bg); color:var(--ink); font-family:'Public Sans',system-ui,sans-serif; -webkit-font-smoothing:antialiased; padding:64px 32px 96px;">
-  <div style="max-width:1180px; margin:0 auto;">
+<div class="page-wrap">
+  <div class="container">
 
-    <header style="border-bottom:1px solid var(--rule); padding-bottom:36px; margin-bottom:44px; margin-top:28px;">
-      <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
-        <span style="display:inline-block; width:26px; height:18px; background:var(--ink-faint); position:relative; border-radius:2px; overflow:hidden;">
-          <span style="position:absolute; top:0; bottom:0; left:8px; width:4px; background:var(--bg);"></span>
-          <span style="position:absolute; left:0; right:0; top:7px; height:4px; background:var(--bg);"></span>
-        </span>
-        <span style="font-size:15px; font-weight:800; letter-spacing:-0.01em; color:var(--ink);">rodado</span>
-        <span style="width:1px; height:14px; background:var(--rule);"></span>
-        <span style="font-size:12px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-faint);">Data Catalog · Brazil</span>
+    <header class="page-header">
+      <div class="brand-row">
+        <span class="brand-flag"></span>
+        <span class="brand-name">rodado</span>
+        <span class="brand-sep"></span>
+        <span class="brand-tag">Data Catalog · Brazil</span>
       </div>
-      <h1 style="font-size:clamp(30px,4.6vw,52px); line-height:1.04; font-weight:800; letter-spacing:-0.02em; margin:0 0 18px; max-width:22ch;">Brazilian public-data catalog, served as an MCP server</h1>
-      <p style="font-size:18px; line-height:1.6; color:var(--ink-soft); max-width:70ch; margin:0;">A thematic index over 533 Brazilian public tables — RAIS, SIM, TSE, CGU, IBGE, INEP and more — mirrored from <strong style="color:var(--ink); font-weight:600;">Base dos Dados</strong> and queryable directly with <strong style="color:var(--ink); font-weight:600;">DuckDB</strong>. Each card below is a research theme; each row inside it is a table you can query.</p>
-      <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:20px; margin-top:32px;">
-        <div style="display:flex; flex-wrap:wrap; gap:32px;">
+      <h1 class="page-title">Brazilian public-data catalog, served as an MCP server</h1>
+      <p class="lead">A thematic index over 782 Brazilian public tables — RAIS, SIM, TSE, CGU, IBGE, INEP and more — mirrored from <strong>Base dos Dados</strong> and queryable directly with <strong>DuckDB</strong>. Each card below is a research theme; each row inside it is a table you can query.</p>
+      <p class="lead-note">The catalog includes a growing set of independently-collected sources that fill gaps Base dos Dados doesn't cover — international sanctions lists (EU, UN, OFAC, OpenSanctions), ICIJ Offshore Leaks, SICAF, SINAN Violência, Consumidor.gov.br, PGFN active debt and state Courts of Accounts — see <a href="https://github.com/rafapolo/rodado/blob/main/tasks/datasets_to_scrap.md">the full catalog of these sources</a>.</p>
+      <div class="header-bottom">
+        <div class="stats">
           <div>
-            <div style="font-size:34px; font-weight:800; letter-spacing:-0.02em; line-height:1;">34</div>
-            <div style="font-size:13px; color:var(--ink-soft); margin-top:6px; letter-spacing:0.02em;">themes</div>
+            <div class="stat-num">34</div>
+            <div class="stat-label">themes</div>
           </div>
           <div>
-            <div style="font-size:34px; font-weight:800; letter-spacing:-0.02em; line-height:1;">533</div>
-            <div style="font-size:13px; color:var(--ink-soft); margin-top:6px; letter-spacing:0.02em;">public tables <span style="opacity:0.7;">· 100 highlighted below</span></div>
+            <div class="stat-num">782</div>
+            <div class="stat-label">tables across 190 datasets <span class="muted">· 100 highlighted below</span></div>
           </div>
           <div>
-            <div style="font-size:34px; font-weight:800; letter-spacing:-0.02em; line-height:1;">Preview</div>
-            <div style="font-size:13px; color:var(--ink-soft); margin-top:6px; letter-spacing:0.02em;">access limited to selected members</div>
+            <div class="stat-num">Restricted</div>
+            <div class="stat-label">access limited to selected members</div>
           </div>
         </div>
-        <div style="display:flex; flex-wrap:wrap; gap:10px;">
-          <input type="search" id="toolSearch" oninput="applyFilters()" placeholder="Search tables, columns…" style="font-family:'Public Sans',system-ui,sans-serif; font-size:15px; color:var(--ink); background:var(--card-bg); border:1px solid var(--rule); border-radius:10px; padding:13px 18px; width:220px;">
-          <select id="categoryFilter" onchange="applyFilters()" style="font-family:'Public Sans',system-ui,sans-serif; font-size:15px; font-weight:600; color:var(--ink); background:var(--card-bg); border:1px solid var(--rule); border-radius:10px; padding:13px 18px;">
+        <div class="filters">
+          <input type="search" id="toolSearch" oninput="applyFilters()" placeholder="Search tables, columns…" class="search-input">
+          <select id="categoryFilter" onchange="applyFilters()" class="category-select">
             <option value="">All categories</option>
             <option value="Inequality &amp; Society">Inequality &amp; Society</option><option value="Education &amp; Science">Education &amp; Science</option><option value="Health">Health</option><option value="Politics, Justice &amp; Security">Politics, Justice &amp; Security</option><option value="State &amp; Public Policy">State &amp; Public Policy</option><option value="Economy &amp; Labor">Economy &amp; Labor</option><option value="Territory &amp; Environment">Territory &amp; Environment</option>
           </select>
@@ -100,7 +73,39 @@
       </div>
     </header>
 
-    <main style="max-width:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:20px; margin-top:36px;">
+    <section class="tools-panel">
+      <div class="tools-head">
+        <span class="card-icon"><i class="fa-solid fa-plug"></i></span>
+        <h2 class="tools-title">The server's tools</h2>
+      </div>
+      <p class="tools-desc">Eight MCP tools expose the catalog and the DuckDB mirror. Catalog table names work directly in SQL: when a table has no view in the database, the query is automatically rewritten against the local Parquet files.</p>
+      <div class="tools-grid">
+        <ul class="tools-list">
+          <li><code>list_datasets()</code> — all 190 datasets with table counts</li>
+          <li><code>list_tables(dataset)</code> — a dataset's tables, with name suggestions</li>
+          <li><code>describe_table(table)</code> — columns, types, descriptions and Parquet path</li>
+          <li><code>search_tables(query)</code> — semantic search over the 782 tables</li>
+          <li><code>get_join_keys(column?)</code> — documented join keys across datasets</li>
+          <li><code>run_sql(sql)</code> — read-only SQL (SELECT/WITH) on the DuckDB mirror</li>
+          <li><code>consultar_cnpj(cnpj)</code> — company, branches and partners from the full registry</li>
+          <li><code>consultar_cep(cep)</code> — address lookup via ViaCEP</li>
+        </ul>
+        <div>
+          <div class="tools-config-label">Connect (Claude Desktop / Claude Code)</div>
+          <pre class="tools-config">{
+  "mcpServers": {
+    "rodado": {
+      "command": "python3",
+      "args": ["/path/to/rodado/mcp_server.py"]
+    }
+  }
+}</pre>
+          <p class="tools-note">Requires SSH access to the data mirror — restricted to selected members. The schema catalog and join keys are public in the repository.</p>
+        </div>
+      </div>
+    </section>
+
+    <main class="cards-grid">
       
         <section class="server-card" data-category="Inequality &amp; Society" data-search="racial inequality &amp; social stratification inequality &amp; society br_me_rais.microdados_vinculos ano sigla_uf id_municipio raca_cor sexo valor_remuneracao_media_sm faixa_remuneracao_media_sm cbo_2002 cnae_2_subclasse natureza_juridica vinculo_ativo_3112 br_ms_sim.microdados ano sigla_uf id_municipio_ocorrencia id_municipio_residencia causa_basica idade sexo raca_cor escolaridade ocupacao race x sector x salary: mixed-race (parda/pardo) workers concentrated in low-prestige sectors race x mortality: maternal death 16x more frequent for mixed-race (parda) women bracket 99 x under 18: 16,686 fraudulent or impossible employment records race x occupation (cbo): domestic work (racialized) = 1.5 mw; finance = 8.5 mw race x covid: mixed-race (pardo) people 27% more deaths, occupational exposure and access to healthcare occupation (cbo) x race x salary: 23% racial penalty even controlling for occupation domestic work x race: 65% black, lowest average salary (1.5 mw)">
           <div class="card-head">
@@ -180,7 +185,7 @@
         <section class="server-card" data-category="Politics, Justice &amp; Security" data-search="crime, violence &amp; public security politics, justice &amp; security br_ms_sim.microdados ano sigla_uf id_municipio_ocorrencia causa_basica idade sexo raca_cor escolaridade isp_taxa_evolucao_mensal_municipio ano mes id_municipio regiao taxa_homicidio_doloso taxa_homicidio_intervencao_policial taxa_letalidade_violenta taxa_estupro taxa_roubo_veiculo taxa_crimes_violentos_letais_intencionais firearms x race: white people die more from firearms than mixed-race (pardo) people age x violence: 80% of firearm deaths affect people aged 15-29 covid x vulnerable groups: covid killed 424 thousand, disproportionately the poor police x race: black men are 8x more likely to die from police lethality domestic violence x gender: 40% of reports involve women state x violence: absence of the state = 10x more homicides sinan x underreporting: 320 thousand reports, estimated at 10x the real figure">
           <div class="card-head">
             <div class="card-title-wrap">
-              <span class="card-icon"><i class="fa-solid fa-landmark"></i></span>
+              <span class="card-icon"><i class="fa-solid fa-shield-halved"></i></span>
               <h2 class="card-title"><a class="card-title-link" href="temas-en/06-crime-violencia.html"><span class="card-num">06</span>Crime, Violence &amp; Public Security</a></h2>
             </div>
             <span class="card-badge">2 tables</span>
@@ -495,7 +500,7 @@
         <section class="server-card" data-category="Politics, Justice &amp; Security" data-search="opinion polls, public perception &amp; political behavior politics, justice &amp; security poder360_pesquisas id_pesquisa ano sigla_uf cargo data instituto contratante quantidade_entrevistas margem_mais margem_menos tipo turno nome_candidato sigla_partido percentual br_tse_eleicoes.resultados_candidato ano sigla_uf id_municipio sequencial_candidato sigla_partido cargo resultado votos br_ibge_pnadc.microdados ano trimestre sigla_uf id_uf capital polls x budget: public opinion doesn't influence allocation amendments x concentration: 4 authors dominate r$ 30 billion execution x public opinion: 50% of the budget becomes carryover spending">
           <div class="card-head">
             <div class="card-title-wrap">
-              <span class="card-icon"><i class="fa-solid fa-landmark"></i></span>
+              <span class="card-icon"><i class="fa-solid fa-square-poll-vertical"></i></span>
               <h2 class="card-title"><a class="card-title-link" href="temas-en/27-pesquisas-opiniao.html"><span class="card-num">27</span>Opinion Polls, Public Perception &amp; Political Behavior</a></h2>
             </div>
             <span class="card-badge">3 tables</span>
@@ -525,7 +530,7 @@
         <section class="server-card" data-category="Politics, Justice &amp; Security" data-search="detailed electoral data, litigation &amp; supreme court politics, justice &amp; security stf_corte_aberta numero_processo data_julgamento data_publicacao relator tema tese resultado partes classe br_tse_eleicoes.candidatos ano sigla_uf id_municipio sequencial sigla_partido cargo genero raca instrucao situacao idade br_tse_eleicoes.resultados_candidato ano sigla_uf id_municipio sequencial_candidato sigla_partido cargo resultado votos br_tse_eleicoes.despesas_candidato ano sigla_uf sequencial_candidato sigla_partido cargo valor_documento tipo_documento nome_fornecedor tipo_prestacao_contas br_cnj_improbidade.microdados tipo_poder orgao sigla_uf tipo_acao situacao_processo ano stf x immunity: judicialization doesn't punish the corrupt amendments x region: the southeast dominates allocation misconduct cases x election: 40% of those charged still get elected cases x success: candidates facing misconduct charges have a 40% win rate (higher than clean candidates) stf x subject matter: social-rights cases lose 84% of appeals votes x concentration: 40% of votes go to 10 candidates appeals x time: 5-10 years at the stf = structural impunity convictions x money: more money = more convictions + more impunity">
           <div class="card-head">
             <div class="card-title-wrap">
-              <span class="card-icon"><i class="fa-solid fa-landmark"></i></span>
+              <span class="card-icon"><i class="fa-solid fa-scale-balanced"></i></span>
               <h2 class="card-title"><a class="card-title-link" href="temas-en/29-dados-eleitorais-stf.html"><span class="card-num">29</span>Detailed Electoral Data, Litigation &amp; Supreme Court</a></h2>
             </div>
             <span class="card-badge">5 tables</span>
@@ -614,31 +619,31 @@
         </section>
     </main>
 
-    <footer style="margin-top:64px; padding-top:32px; border-top:1px solid var(--rule);">
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:28px; margin-bottom:32px;">
+    <footer class="site-footer">
+      <div class="footer-grid">
         <div>
-          <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-            <span style="display:flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:7px; background:var(--icon-bg); color:var(--accent); font-size:12px; flex-shrink:0;"><i class="fa-solid fa-envelope"></i></span>
-            <span style="font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink);">Contact</span>
+          <div class="footer-head">
+            <span class="footer-icon"><i class="fa-solid fa-envelope"></i></span>
+            <span class="footer-title">Contact</span>
           </div>
-          <div style="display:flex; flex-direction:column;"><a href="https://github.com/rafapolo/rodado/issues" target="_blank" rel="noopener" style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--accent); text-decoration:none; padding:4px 0;">Report an issue <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px; color:var(--ink-faint);"></i></a><a href="https://github.com/rafapolo/rodado" target="_blank" rel="noopener" style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--accent); text-decoration:none; padding:4px 0;">View source on GitHub <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px; color:var(--ink-faint);"></i></a></div>
+          <div class="footer-links"><a href="https://github.com/rafapolo/rodado/issues" target="_blank" rel="noopener">Report an issue <i class="fa-solid fa-arrow-up-right-from-square ext"></i></a><a href="https://github.com/rafapolo/rodado" target="_blank" rel="noopener">View source on GitHub <i class="fa-solid fa-arrow-up-right-from-square ext"></i></a></div>
         </div>
         <div>
-          <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-            <span style="display:flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:7px; background:var(--icon-bg); color:var(--accent); font-size:12px; flex-shrink:0;"><i class="fa-solid fa-book"></i></span>
-            <span style="font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink);">Documentation</span>
+          <div class="footer-head">
+            <span class="footer-icon"><i class="fa-solid fa-book"></i></span>
+            <span class="footer-title">Documentation</span>
           </div>
-          <div style="display:flex; flex-direction:column;"><a href="https://github.com/rafapolo/rodado#readme" target="_blank" rel="noopener" style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--accent); text-decoration:none; padding:4px 0;">README</a><a href="https://github.com/rafapolo/rodado/blob/main/context/join_keys.md" target="_blank" rel="noopener" style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--accent); text-decoration:none; padding:4px 0;">join_keys.md</a></div>
+          <div class="footer-links"><a href="https://github.com/rafapolo/rodado#readme" target="_blank" rel="noopener">README</a><a href="https://github.com/rafapolo/rodado/blob/main/docs/context/join_keys.md" target="_blank" rel="noopener">join_keys.md</a></div>
         </div>
         <div>
-          <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-            <span style="display:flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:7px; background:var(--icon-bg); color:var(--accent); font-size:12px; flex-shrink:0;"><i class="fa-solid fa-circle-info"></i></span>
-            <span style="font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink);">About this catalog</span>
+          <div class="footer-head">
+            <span class="footer-icon"><i class="fa-solid fa-circle-info"></i></span>
+            <span class="footer-title">About this catalog</span>
           </div>
-          <div style="display:flex; flex-direction:column;"><a href="mcp.html" style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--accent); text-decoration:none; padding:4px 0;">Portuguese version</a><a href="index.html" style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--accent); text-decoration:none; padding:4px 0;">Full thematic essays</a><a href="en.html" style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--accent); text-decoration:none; padding:4px 0;">English summary</a></div>
+          <div class="footer-links"><a href="mcp.html">Portuguese version</a><a href="index.html">Full thematic essays</a><a href="en.html">English summary</a></div>
         </div>
       </div>
-      <p style="max-width:80ch; margin:0; padding-top:24px; border-top:1px solid var(--bg-raised); font-size:12.5px; line-height:1.6; color:var(--ink-faint);">
+      <p class="footer-note">
         Data mirrored from Base dos Dados (BigQuery public datasets) as Parquet+zstd, queried on-demand with DuckDB. Provided as-is, with no warranties as to accuracy, completeness, or availability.
       </p>
     </footer>
