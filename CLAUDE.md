@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**baseldosdados** mirrors the [Base dos Dados](https://basedosdados.org) project — 533 public BigQuery tables exported as Parquet+zstd to Hetzner Object Storage (S3-compatible). DuckDB queries the data on-demand without local imports. An AI-powered TUI converts Portuguese natural language to SQL.
+**baseldosdados** mirrors the [Base dos Dados](https://basedosdados.org) project — public BigQuery tables exported as Parquet+zstd to Hetzner Object Storage (S3-compatible) — and extends it with independently-scraped sources that fill gaps Base dos Dados doesn't cover (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/datasets_to_scrap.md` for the full catalog and provenance of every source). 759+ tables total as of 2026-07-13. DuckDB queries the data on-demand without local imports. An AI-powered TUI converts Portuguese natural language to SQL.
 
 ## Commands
 
@@ -36,9 +36,15 @@ duckdb data/basedosdados.duckdb       # interactive shell (requires S3 env vars)
 ./scripts/roda.sh --gcloud-run        # spin up GCP VM and run there
 ```
 
-### Querying data (preferred)
+### Querying data
 ```bash
-# Use the remote endpoint — collocated with S3, persistent connection, faster than local
+# Preferred: SSH to beelink (freshest data, no S3 dependency)
+ssh beelink '~/bin/duckdb -json ~/rodado/basedosdados.duckdb' <<'SQL'
+SET enable_progress_bar=false;
+SELECT ...;
+SQL
+
+# Fallback: remote endpoint (if beelink is unavailable)
 curl "https://db.xn--2dk.xyz/query?q=SELECT+..." -H "X-Password: $BASIC_AUTH_PASSWORD"
 # or POST for longer queries
 curl -X POST "https://db.xn--2dk.xyz/query" -H "X-Password: $BASIC_AUTH_PASSWORD" --data-raw "SELECT ..."
@@ -91,8 +97,9 @@ BigQuery → Google Cloud Storage (Parquet) → Hetzner S3 (via `scripts/roda.sh
 | `OPENROUTER_API_KEY` | ask | OpenRouter API key |
 | `TOP_K_TABLES` | ask | Tables passed to LLM (default: 5) |
 | `BASIC_AUTH_PASSWORD` | auth.py, Caddy | Web UI password |
-| `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` | auth.py, duckdb | Hetzner S3 credentials |
-| `HETZNER_S3_ENDPOINT` | auth.py, duckdb | S3 endpoint URL |
+| `BEELINK_HOST` | scripts, mcp_server | SSH hostname for beelink (default: `beelink`) |
+| `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` | auth.py | Hetzner S3 credentials (server-side only) |
+| `HETZNER_S3_ENDPOINT` | auth.py | S3 endpoint URL |
 | `BUCKET_REGION` | auth.py | S3 bucket region |
 | `OLLAMA_HOST` / `OLLAMA_MODEL` | ask | Local Ollama config |
 
@@ -105,7 +112,9 @@ BigQuery → Google Cloud Storage (Parquet) → Hetzner S3 (via `scripts/roda.sh
 
 ## ⚠️ REGRA CRÍTICA — SEM EXCEÇÕES
 
-**NUNCA usar BigQuery, GCP ou `bq` CLI. JAMAIS. Toda consulta de dados vai pelo DuckDB remoto (`https://db.xn--2dk.xyz/query`). Não importa o tamanho da tabela, a complexidade do join ou se "é mais fácil" no BigQuery — DuckDB único.**
+**NUNCA usar BigQuery, GCP ou `bq` CLI. JAMAIS. Toda consulta de dados vai pelo DuckDB no beelink via SSH (`ssh beelink`). Não importa o tamanho da tabela, a complexidade do join ou se "é mais fácil" no BigQuery — DuckDB único.**
+
+**NUNCA usar S3/Hetzner diretamente.** O bucket `s3://baseldosdados` não existe mais — todas as views no DuckDB que referenciam `s3://` estão obsoletas. Para queries em tabelas cujas views apontam para S3, use `read_parquet('~/rodado/<dataset>/<table>/*.parquet')` diretamente com o caminho local do beelink.
 
 Essa regra é sobre **servir consultas de dado ao vivo/produção** (`ask`, `auth.py`, DuckDB) — nunca usar BigQuery pra isso, sem exceção.
 
@@ -118,7 +127,7 @@ Existe uma **única exceção, estritamente escopada**: manutenção do mirror d
 ## Key Conventions
 
 - **Never use GCP, BigQuery, or `bq` CLI for queries** — all data access goes through DuckDB only.
-- **Prefer the remote endpoint** `https://db.xn--2dk.xyz/query` for all SQL queries — it is collocated with Hetzner S3 and has a persistent warmed connection. Local DuckDB is only a fallback when the server is unreachable.
+- **Prefer SSH to beelink** for all SQL queries — `ssh beelink '~/bin/duckdb -json ~/rodado/basedosdados.duckdb'` (SQL piped over stdin, SET enable_progress_bar=false first). beelink is the project's official data source, fresher than the S3-backed endpoint. Set BEELINK_HOST env var if the hostname differs. Use the query endpoint `https://db.xn--2dk.xyz/query` only if beelink is unavailable.
 - DuckDB always runs read-only; no writes to the database from queries.
 - Queries on large tables must filter on partition columns (`ano`, `mes`, `sigla_uf`) — this is enforced in prompts.
 - SQL dialect is DuckDB; BigQuery syntax does not apply.

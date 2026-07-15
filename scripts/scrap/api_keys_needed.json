@@ -1,0 +1,61 @@
+{
+  "_comment": "Credentials manifest for scraped sources currently deferred/blocked on api_key or token. Generated from tasks/datasets_to_scrap.md's Deferred/Excluded sections on 2026-07-10. Fill in `env_var` values in your shell/secrets manager, not in this file — this file only tracks WHICH keys are needed and WHERE to get them, never the key values themselves.",
+  "generated": "2026-07-10",
+  "credentials": [
+    {
+      "id": "portaldatransparencia",
+      "provider": "Portal da Transparência (CGU)",
+      "env_var": "PORTAL_TRANSPARENCIA_API_KEY",
+      "auth_header": "chave-api-dados",
+      "register_url": "https://www.portaldatransparencia.gov.br/api-de-dados",
+      "used_by_pipelines": [
+        "transparencia (PublicOffice angle)",
+        "renuncias (TaxWaiver)",
+        "viagens (GovTravel)",
+        "cepim (BarredNGO)",
+        "ceis (Sanction)",
+        "cnep (Sanction)",
+        "ceaf (Sanction)"
+      ],
+      "status": "not_configured",
+      "notes": "One free key covers all api.portaldatransparencia.gov.br endpoints — highest priority to register since it unblocks 7 pipelines at once, all currently sitting in datasets_to_scrap.md's Deferred section."
+    },
+    {
+      "id": "datajud",
+      "provider": "CNJ DataJud",
+      "env_var": "DATAJUD_API_KEY",
+      "register_url": "https://datajud-wiki.cnj.jus.br/",
+      "used_by_pipelines": ["datajud"],
+      "status": "not_configured",
+      "target": "mcp-live",
+      "notes": "For a live query-on-demand tool in mcp_server.py, NOT a bulk mirror — CNJ Res. 331/2020 & 446/2022 forbid bulk redistribution. Verify current registration process on the wiki before assuming standard self-serve signup; some DataJud docs reference a shared public read key rather than per-user registration, unconfirmed as of 2026-07-10."
+    },
+    {
+      "id": "imunizacao_pni",
+      "provider": "MS/PNI (Programa Nacional de Imunizações)",
+      "env_var": "PNI_API_KEY",
+      "register_url": "https://imunizacao.saude.gov.br",
+      "used_by_pipelines": ["imunizacao"],
+      "status": "not_needed",
+      "notes": "EXCLUDED, not just deferred — source is CC BY-ND 3.0, which forbids derivative works. Don't register this key or build against it; listed here only for completeness so nobody re-derives the same dead end."
+    },
+    {
+      "id": "meta_ads_library",
+      "provider": "Meta (Facebook Ad Library API)",
+      "env_var": "META_ADS_ACCESS_TOKEN",
+      "register_url": "https://www.facebook.com/ads/library/api/",
+      "used_by_pipelines": ["anuncios_eleitorais"],
+      "status": "not_configured",
+      "notes": "Requires a Meta developer account plus identity verification for political/social-issue ad access. Low priority — per 2026 Meta ToS changes, ad coverage for Brazil may already be degraded/unavailable regardless of credentials."
+    },
+    {
+      "id": "brapi_dev",
+      "provider": "brapi.dev (unofficial B3 wrapper)",
+      "env_var": "BRAPI_DEV_API_KEY",
+      "register_url": "https://brapi.dev/dashboard",
+      "used_by_pipelines": ["b3_brapi"],
+      "status": "not_configured",
+      "notes": "Free tier available. Low priority — general finance data, not corruption-relevant, and it's an unofficial third-party wrapper rather than official B3 data."
+    }
+  ]
+}
