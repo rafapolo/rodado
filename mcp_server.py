@@ -41,6 +41,12 @@ with open(SCHEMA_PATH, encoding="utf-8") as f:
 
 _ALL_TABLE_IDS = [f"{ds}.{tbl}" for ds, tables in _SCHEMA.items() for tbl in tables]
 
+# Not every catalog table has a view/schema inside beelink's basedosdados.duckdb
+# (independently-scraped datasets land on disk first) — but every one of them
+# has parquet under ~/rodado/<dataset>/<table>/. This map lets run_sql fall
+# back transparently when the DuckDB catalog misses.
+_PARQUET_GLOBS = {tid: f"~/rodado/{tid.replace('.', '/', 1)}/*.parquet" for tid in _ALL_TABLE_IDS}
+
 # ---------------------------------------------------------------------------
 # Search (embeddings) — lazy-loaded, first call downloads the model (~90MB)
 # ---------------------------------------------------------------------------
@@ -189,6 +195,42 @@ def _run_sql_ssh(sql: str) -> dict:
         return {"error": f"Non-JSON response from beelink: {stdout[:2000]}"}
 
 
+# SQL keywords that can legally follow a table reference — anything else after
+# `FROM dataset.table` is a user alias we must preserve when rewriting.
+_POST_TABLE_KEYWORDS = frozenset(
+    "WHERE GROUP ORDER LIMIT OFFSET JOIN LEFT RIGHT INNER FULL CROSS NATURAL "
+    "ON USING UNION INTERSECT EXCEPT HAVING QUALIFY WINDOW SEMI ANTI "
+    "POSITIONAL ASOF TABLESAMPLE USE AS".split()
+)
+
+
+def _rewrite_to_read_parquet(sql: str) -> tuple[str, list[str]]:
+    """Replace catalog `dataset.table` references with read_parquet() globs.
+
+    Keeps an existing user alias when one follows the reference; otherwise
+    aliases the relation to the bare table name so `table.column` qualifiers
+    keep resolving. Returns (rewritten_sql, list of rewritten table ids).
+    """
+    rewritten: list[str] = []
+    ids_pattern = "|".join(re.escape(tid) for tid in sorted(_PARQUET_GLOBS, key=len, reverse=True))
+    pattern = re.compile(rf"(?<![\w.\"])({ids_pattern})(?![\w.])")
+
+    def _sub(m: re.Match) -> str:
+        tid = m.group(1)
+        rewritten.append(tid)
+        replacement = f"read_parquet('{_PARQUET_GLOBS[tid]}')"
+        rest = sql[m.end():].lstrip()
+        next_token = re.match(r"[A-Za-z_][A-Za-z_0-9]*", rest)
+        has_alias = bool(next_token) and next_token.group(0).upper() not in _POST_TABLE_KEYWORDS
+        if next_token and next_token.group(0).upper() == "AS":
+            has_alias = True
+        if not has_alias:
+            replacement += f' AS "{tid.partition(".")[2]}"'
+        return replacement
+
+    return pattern.sub(_sub, sql), rewritten
+
+
 # ---------------------------------------------------------------------------
 # MCP app + tools
 # ---------------------------------------------------------------------------
@@ -198,11 +240,14 @@ mcp = FastMCP("rodado")
 
 @mcp.tool()
 def list_datasets() -> dict:
-    """List all datasets in the Base dos Dados catalog mirror, with their table counts.
+    """List all datasets in the unified catalog, with their table counts.
 
-    180 datasets, 765 tables total (RAIS, SIM, TSE, CGU, IBGE, INEP and others,
-    mirrored from Base dos Dados). Use this to get oriented before drilling
-    into a specific dataset with list_tables().
+    190 datasets, 782 tables total: the Base dos Dados mirror (RAIS, SIM, TSE,
+    CGU, IBGE, INEP and others) plus independently-scraped sources filling
+    gaps Base dos Dados doesn't cover (SICAF, SINAN Violência, EU/UN
+    Sanctions, Consumidor.gov.br and more — see tasks/datasets_to_scrap.md
+    for provenance). Use this to get oriented before drilling into a
+    specific dataset with list_tables().
     """
     return {
         "count": len(_SCHEMA),
@@ -221,7 +266,11 @@ def list_tables(dataset: str) -> dict:
     instead of an empty result.
     """
     if dataset in _SCHEMA:
-        return {"dataset": dataset, "tables": sorted(_SCHEMA[dataset].keys())}
+        return {
+            "dataset": dataset,
+            "tables": sorted(_SCHEMA[dataset].keys()),
+            "parquet_path": f"~/rodado/{dataset}/<table>/*.parquet",
+        }
 
     suggestions = difflib.get_close_matches(dataset, _SCHEMA.keys(), n=5, cutoff=0.4)
     return {
@@ -246,15 +295,22 @@ def describe_table(table: str) -> dict:
         suggestions = difflib.get_close_matches(table, _ALL_TABLE_IDS, n=5, cutoff=0.4)
         return {"error": f"Unknown table '{table}'.", "suggestions": suggestions}
 
-    return {"table": table, "columns": tables[table_name]}
+    return {
+        "table": table,
+        "columns": tables[table_name],
+        "parquet_path": _PARQUET_GLOBS[table],
+    }
 
 
 @mcp.tool()
 def search_tables(query: str, top_k: int = 10, min_similarity: float = SEARCH_THRESHOLD) -> dict:
-    """Semantic search over all 765 tables by natural-language description.
+    """Semantic search over all 782 tables by natural-language description.
 
     Example: search_tables("gastos de campanha eleitoral") surfaces
     despesas_candidato/receitas_candidato even without exact keyword matches.
+
+    Each result's `text` is truncated to keep responses token-cheap — call
+    describe_table() on a hit for the full column list.
 
     NOTE: the first call in a session downloads the embedding model
     (~90MB from Hugging Face) and is slow; subsequent calls are fast.
@@ -269,8 +325,13 @@ def search_tables(query: str, top_k: int = 10, min_similarity: float = SEARCH_TH
     ]
     scored.sort(key=lambda x: x[0], reverse=True)
 
+    max_text = 280
     results = [
-        {"table": t["id"], "similarity": round(score, 4), "text": t["text"]}
+        {
+            "table": t["id"],
+            "similarity": round(score, 4),
+            "text": t["text"][:max_text] + ("…" if len(t["text"]) > max_text else ""),
+        }
         for score, t in scored
         if score >= min_similarity
     ][:top_k]
@@ -323,12 +384,38 @@ def run_sql(sql: str, max_rows: int = 500) -> dict:
       at s3://; if a query on a view looks wrong, check
       `SELECT sql FROM duckdb_views() WHERE view_name='...'` and fall back to
       `read_parquet('~/rodado/<dataset>/<table>/*.parquet')` directly.
+
+    Not every catalog table has a view inside basedosdados.duckdb (scraped
+    datasets land on disk first). When DuckDB reports a Catalog Error, the
+    query is automatically retried with each known `dataset.table` reference
+    rewritten to its read_parquet() glob, so plain catalog names work either
+    way; the response carries `rewritten_tables` when that happened.
     """
     error = _check_read_only(sql)
     if error:
         return {"error": error}
 
     result = _run_sql_ssh(sql)
+    # Two recoverable failure modes: the table has no view in the DuckDB
+    # catalog (scraped datasets), or the view exists but still points at the
+    # decommissioned s3:// bucket. Both are fixed by querying the local
+    # parquet directly.
+    _recoverable = ("Catalog Error", "NoSuchBucket", "s3://")
+    if "error" in result and any(marker in result["error"] for marker in _recoverable):
+        fallback_sql, rewritten = _rewrite_to_read_parquet(sql)
+        if rewritten:
+            retry = _run_sql_ssh(fallback_sql)
+            if "error" not in retry:
+                retry_rows = retry["rows"]
+                if isinstance(retry_rows, list) and len(retry_rows) > max_rows:
+                    return {
+                        "rows": retry_rows[:max_rows],
+                        "truncated": True,
+                        "returned": max_rows,
+                        "total": len(retry_rows),
+                        "rewritten_tables": rewritten,
+                    }
+                return {"rows": retry_rows, "truncated": False, "rewritten_tables": rewritten}
     if "error" in result:
         return result
 
@@ -356,7 +443,7 @@ def _only_digits(s: str) -> str:
 
 
 @mcp.tool()
-def consultar_cnpj(cnpj: str) -> dict:
+def consultar_cnpj(cnpj: str, max_rows: int = 20) -> dict:
     """Look up a Brazilian company by CNPJ against the full registry already
     mirrored on beelink (br_me_cnpj — empresas/estabelecimentos/socios) —
     no external API call, just SQL over local data already on this server.
@@ -364,8 +451,9 @@ def consultar_cnpj(cnpj: str) -> dict:
     (dots/slash/dash) is stripped automatically.
 
     Returns company info (razão social, natureza jurídica, capital social),
-    all matriz/filial establishments (up to 50), and registered sócios (up
-    to 50).
+    matriz/filial establishments and registered sócios — each list truncated
+    to `max_rows` (default 20, to keep responses token-cheap; raise it when
+    the full picture is needed). `*_truncated: true` flags a cut list.
     """
     digits = _only_digits(cnpj)
     if len(digits) not in (8, 14):
@@ -383,23 +471,28 @@ def consultar_cnpj(cnpj: str) -> dict:
     if not empresa["rows"]:
         return {"error": f"No company found for cnpj_basico '{basico}'."}
 
+    # LIMIT n+1 so a full page signals truncation without a COUNT round-trip.
     estabelecimentos = _run_sql_ssh(
         f"SELECT cnpj, identificador_matriz_filial, nome_fantasia, "
         f"situacao_cadastral, data_situacao_cadastral, sigla_uf, cep "
         f"FROM read_parquet('{_CNPJ_BASE}/estabelecimentos/*.parquet') "
-        f"WHERE cnpj_basico = '{basico}' LIMIT 50"
+        f"WHERE cnpj_basico = '{basico}' LIMIT {max_rows + 1}"
     )
     socios = _run_sql_ssh(
         f"SELECT nome, documento, qualificacao, data "
         f"FROM read_parquet('{_CNPJ_BASE}/socios/*.parquet') "
-        f"WHERE cnpj_basico = '{basico}' LIMIT 50"
+        f"WHERE cnpj_basico = '{basico}' LIMIT {max_rows + 1}"
     )
 
+    estab_rows = estabelecimentos.get("rows", [])
+    socio_rows = socios.get("rows", [])
     return {
         "cnpj_basico": basico,
         "empresa": empresa["rows"][0],
-        "estabelecimentos": estabelecimentos.get("rows", []),
-        "socios": socios.get("rows", []),
+        "estabelecimentos": estab_rows[:max_rows],
+        "estabelecimentos_truncated": len(estab_rows) > max_rows,
+        "socios": socio_rows[:max_rows],
+        "socios_truncated": len(socio_rows) > max_rows,
     }
 
 
