@@ -41,7 +41,7 @@
   <h1>Uma leitura sociológica do Brasil, em dados</h1>
   <p class="dek">Vínculos de emprego, óbitos, contratos públicos, resultados eleitorais, matrículas escolares — os registros que o próprio Estado brasileiro produz para administrar a população, cruzados por raça, classe, gênero e território.</p>
 
-  <p class="lede">Este projeto espelha 533 tabelas da <a href="https://basedosdados.org" target="_blank">Base dos Dados</a> — RAIS, SIM, TSE, CGU, IBGE, INEP, CNES e outras fontes oficiais — e as lê a partir de uma pergunta sociológica, não de uma vitrine técnica: o que esses registros, cruzados, revelam sobre desigualdade e poder no Brasil? Não é pesquisa de opinião nem modelo teórico. É o retrato que o Estado já tem de si mesmo, através de dados administrativos que raramente são lidos lado a lado. A Base dos Dados mantém um espelho público dessas tabelas de instituições brasileiras no BigQuery; este projeto reexporta 533 delas (~675 GB em Parquet+zstd) e as consulta sob demanda via DuckDB, permitindo cruzar bases de ministérios, tribunais e institutos diferentes numa única consulta.</p>
+  <p class="lede">Este projeto reúne 533 tabelas públicas — RAIS, SIM, TSE, CGU, IBGE, INEP, CNES e outras fontes oficiais — e as lê a partir de uma pergunta sociológica, não de uma vitrine técnica: o que esses registros, cruzados, revelam sobre desigualdade e poder no Brasil? Não é pesquisa de opinião nem modelo teórico. É o retrato que o Estado já tem de si mesmo, através de dados administrativos que raramente são lidos lado a lado. As tabelas (~675 GB em Parquet+zstd) são consultadas sob demanda via DuckDB, permitindo cruzar bases de ministérios, tribunais e institutos diferentes numa única consulta.</p>
 
   <p>Cada um dos 34 temas abaixo combina uma narrativa investigativa com as tabelas de evidência por trás dela, para que qualquer afirmação possa ser conferida, não só lida. Os achados são apresentados de forma direta — no tom do jornalismo de dados, não da cautela acadêmica — mas toda tabela vem da fonte oficial citada, sem alteração de valores.</p>
 
@@ -91,7 +91,7 @@
     <a href="technical.html">Detalhes técnicos</a>
     <a href="en.html">English summary</a>
     <a href="https://github.com/rafapolo/rodado">Repositório</a>
-    <span>Dados: Base dos Dados / DuckDB</span>
+    <span>Dados: fontes públicas oficiais / DuckDB</span>
   </div>
 </footer>
 
