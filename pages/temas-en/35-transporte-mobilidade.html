@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transportation and Urban Mobility — rodado</title>
+<meta name="description" content="Dormitory towns on the metro periphery have the worst commute times in the country, and the share of Black victims in traffic accidents more than doubled in 20 years.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="../assets/mcp-theme.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="../en.html">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="../en.html#themes">Topics</a>
+        <a href="../mcp-en.html">MCP</a>
+        <a href="https://xn--2dk.xyz/dataviz/">DataViz Hub</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <a href="../temas/35-transporte-mobilidade.html" class="lang-link">PT</a>
+          <span class="lang-sep">/</span>
+          <span class="lang-current">EN</span>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <a class="voltar" href="../en.html">&larr; back to overview</a>
+
+  <svg class="tema-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20 8 4h1l-1 16"/><path d="M20 20 16 4h-1l1 16"/><path d="M12 4v3"/><path d="M12 10.5v3"/><path d="M12 17v3"/></svg>
+  <p class="eyebrow">Theme 35 of 35</p>
+  <h1>Transportation and Urban Mobility</h1>
+  <p class="dek">Dormitory towns on the metro periphery have the worst commute times in the country, and the share of Black victims in traffic accidents more than doubled in 20 years.</p>
+
+  <p class="lede">Mobilidados, a project by ITDP Brasil, measures urban mobility at the municipal level: motorization rate, home-to-work commute time, income spent on transit fares, proximity to bike lanes and structured transit, fleet emissions, and racial inequality in transport-accident deaths. Brazil's FIPE vehicle price table rounds out the picture with its brand-and-model catalog. Regulated ground transport (ANTT, the land-transport regulator) remains out of reach — blocked by anti-bot protection on the agency's site — so this theme covers municipal urban mobility and the vehicle catalog, not highways or intercity transport.</p>
+
+  <h2>High motorization isn't a proxy for wealth or metro status</h2>
+  <p>The motorization index by state doesn't follow the map of income or urbanization: Minas Gerais leads among states with 2018 data, ahead of Paraná and Goiás — none of the three holds the country's greatest wealth or largest urban population. That suggests high motorization largely reflects the absence of structured transit alternatives, not a lifestyle choice.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Motorization index by state (2018)</caption>
+      <thead><tr><th>State</th><th>Motorization index</th></tr></thead>
+      <tbody>
+        <tr><td>MG</td><td>797.2</td></tr>
+        <tr><td>PR</td><td>754.3</td></tr>
+        <tr><td>GO</td><td>711.0</td></tr>
+        <tr><td>SC</td><td>685.0</td></tr>
+        <tr><td>SP</td><td>653.0</td></tr>
+        <tr><td>MT</td><td>632.7</td></tr>
+        <tr><td>MS</td><td>617.0</td></tr>
+        <tr><td>DF</td><td>583.4</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Minas Gerais leads national motorization — not São Paulo, not the Federal District. High motorization seems to substitute for missing structured transit, not signal wealth.</p>
+
+  <h2>The worst commutes are in dormitory towns, not the capitals</h2>
+  <p>The country's worst home-to-work commute times aren't in São Paulo or Rio de Janeiro — they're in dormitory towns on the metro periphery. In Japeri (RJ) and Francisco Morato (SP), over half the residents spend more than an hour just getting to work. It's the legacy of decades of urban expansion in which low-income housing was pushed to the periphery without medium/high-capacity transit keeping pace.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Municipalities with the worst home-to-work commute times (2010 Census)</caption>
+      <thead><tr><th>Municipality</th><th>State</th><th>Avg. time</th><th>% over 1h</th></tr></thead>
+      <tbody>
+        <tr><td>Japeri</td><td>RJ</td><td>67 min</td><td>53%</td></tr>
+        <tr><td>Francisco Morato</td><td>SP</td><td>66 min</td><td>54%</td></tr>
+        <tr><td>Queimados</td><td>RJ</td><td>60 min</td><td>46%</td></tr>
+        <tr><td>Ferraz de Vasconcelos</td><td>SP</td><td>60 min</td><td>47%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Over half the residents of Japeri and Francisco Morato spend more than 1 hour just getting to work — the cost of living far from jobs without matching structured transit.</p>
+
+  <h2>Racial inequality in traffic deaths more than doubled in 20 years</h2>
+  <p>The share of Black victims in transport accidents rose almost continuously between 2000 and 2019, more than doubling over the period. The indicator doesn't measure relative risk — it isn't normalized by each municipality's Black population — but the two-decade trend is unambiguous, and consistent with already-documented patterns of road segregation: peripheral neighborhoods with larger Black populations tend to have weaker road-safety infrastructure.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>National share of Black victims in transport accidents</caption>
+      <thead><tr><th>Year</th><th>% Black victims</th></tr></thead>
+      <tbody>
+        <tr><td>2000</td><td>9.8%</td></tr>
+        <tr><td>2005</td><td>13.9%</td></tr>
+        <tr><td>2010</td><td>18.8%</td></tr>
+        <tr><td>2015</td><td>21.1%</td></tr>
+        <tr><td>2019</td><td>21.2%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">The share of Black victims in transport accidents more than doubled between 2000 and 2019 — from 9.8% to 21.2% of deaths.</p>
+
+  <h2>Transit fares eat over 1/5 of the minimum wage in the North and South</h2>
+  <p>In states like Amazonas and Santa Catarina, public transit fares consume more than 20% of the minimum wage for regular commuting. The column that would break this spending down for Black households exists in the Mobilidados schema but is empty in most rows — a real data gap, not evidence of absent inequality.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Income share spent on transit fares (2017, % of minimum wage)</caption>
+      <thead><tr><th>State</th><th>% of minimum wage</th></tr></thead>
+      <tbody>
+        <tr><td>AM</td><td>21.6%</td></tr>
+        <tr><td>SC</td><td>20.3%</td></tr>
+        <tr><td>ES</td><td>20.0%</td></tr>
+        <tr><td>RS / TO</td><td>19.2%</td></tr>
+        <tr><td>PA</td><td>18.7%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">In Amazonas, public transit fares eat up more than 1/5 of the minimum wage — an invisible tax on anyone who depends on the bus to get to work.</p>
+
+  <h2>Ceará leads on bike-lane / structured-transit overlap</h2>
+  <p>Nearly half of Ceará's structured-transit stations sit inside bike-lane coverage — the highest share in the country, ahead of even São Paulo, which has the largest bike-lane network in absolute terms but far lower proportional coverage. Multimodal integration doesn't always track scale.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Structured-transit stations within bike-lane coverage (2021)</caption>
+      <thead><tr><th>State</th><th>%</th></tr></thead>
+      <tbody>
+        <tr><td>CE</td><td>48.7%</td></tr>
+        <tr><td>PA / ES</td><td>32.1%</td></tr>
+        <tr><td>DF</td><td>27.9%</td></tr>
+        <tr><td>PE</td><td>27.3%</td></tr>
+        <tr><td>SP</td><td>19.9%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Ceará integrates bike lanes and structured transit better than São Paulo — proof that multimodal integration isn't just a function of network size.</p>
+
+  <h2>Medium/high-capacity transit remains confined to two metro areas</h2>
+  <p>Rio de Janeiro and São Paulo together hold more medium/high-capacity transit infrastructure (metro, BRT, light rail) than Paraná, Minas Gerais, and the Federal District combined. Expected — the country's two largest metro systems are there — but it underscores that quality structured transit remains the privilege of two metro regions, not a national standard.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Medium/high-capacity transit station index by state</caption>
+      <thead><tr><th>State</th><th>Index</th></tr></thead>
+      <tbody>
+        <tr><td>RJ</td><td>107.5</td></tr>
+        <tr><td>SP</td><td>92.9</td></tr>
+        <tr><td>PR</td><td>59.8</td></tr>
+        <tr><td>MG</td><td>26.4</td></tr>
+        <tr><td>DF</td><td>18.9</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">RJ and SP alone outrank PR + MG + DF combined in structured-transit infrastructure — two hubs concentrate what should be a national standard.</p>
+
+  <h2>Particulate matter halved in a decade, CO₂ didn't</h2>
+  <p>Fleet particulate-matter emissions were cut in half between 2007 and 2018, consistent with fleet renewal and tighter emission standards (Proconve). CO₂ shows no comparable decline — it oscillates with no clear trend, expected since the motorized fleet only grew over the period: less soot per vehicle didn't mean less carbon overall.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Annual fleet emissions (municipalities with available data)</caption>
+      <thead><tr><th>Year</th><th>CO₂ (thousand tons)</th><th>Particulate matter (thousand tons)</th></tr></thead>
+      <tbody>
+        <tr><td>2007</td><td>20</td><td>5.0</td></tr>
+        <tr><td>2012</td><td>30</td><td>4.3</td></tr>
+        <tr><td>2018</td><td>20</td><td>2.5</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Particulate matter was cut in half in a decade — but fleet CO₂ didn't follow the same decline.</p>
+
+  <h2>The FIPE catalog covers over 11,000 brand+model combinations</h2>
+  <p>The vehicle catalog behind Brazil's FIPE price table holds 11,289 brand-and-model combinations — cars hold by far the widest variety, reflecting decades of releases in the Brazilian market. Per-model-year prices aren't part of this catalog, which only covers the brand/model registry.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>FIPE catalog by vehicle type</caption>
+      <thead><tr><th>Type</th><th>Brands</th><th>Models</th></tr></thead>
+      <tbody>
+        <tr><td>Cars</td><td>107</td><td>7,322</td></tr>
+        <tr><td>Motorcycles</td><td>102</td><td>1,993</td></tr>
+        <tr><td>Trucks</td><td>29</td><td>1,974</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">7,322 car models in the FIPE catalog alone — decades of Brazilian-market releases condensed into a single table.</p>
+
+  <div class="callout">
+    <h3>Powerful cross-cuts</h3>
+    <ul>
+      <li><strong>Motorization × Structured transit:</strong> high-motorization states (MG, PR, GO) aren't the ones with the most TMA (RJ, SP).</li>
+      <li><strong>Commute time × Metro periphery:</strong> the worst commute times hit dormitory towns, not capitals.</li>
+      <li><strong>Race × Traffic deaths:</strong> the share of Black victims doubled in 20 years.</li>
+      <li><strong>Fare × Income:</strong> the North and South carry the highest fare-to-income burden — a different geography from the one that concentrates TMA.</li>
+    </ul>
+  </div>
+
+  <h2>Explanatory hypotheses</h2>
+  <p>The lack of quality structured transit across most of the country pushes individual motorization as the fallback — hence states without a meaningful metro or BRT leading the motorization index. Dormitory towns concentrate the worst commute times because a history of urban occupation — low-income housing on the periphery, jobs concentrated downtown — was never matched by equivalent medium/high-capacity transit. The rising share of Black victims in accidents is consistent with road segregation: peripheral neighborhoods with larger Black populations tend to have fewer crosswalks, traffic lights, and lighting.</p>
+
+  <h2>Public policy implications</h2>
+  <p>Expanding medium/high-capacity transit beyond the Rio–São Paulo axis could reduce reliance on individual motorization in states with no structural alternative. Income-differentiated fare policy could ease the fare burden in the North and South. Road-safety investment targeted at high-Black-population peripheries could reverse the two-decade trend in accident deaths. Filling the regulated ground-transport data gap — currently blocked by ANTT's anti-bot protection — would allow monitoring of highways and intercity transport, a blind spot in this theme.</p>
+
+  <div class="pager">
+    <a class="prev" href="34-atlas-mapas.html"><span class="dir">&larr; previous</span>Atlas, Georeferenced Maps & Territorial Bases</a>
+    <a class="next" href="../en.html"><span class="dir">next &rarr;</span>Back to overview</a>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a href="../en.html">Thematic index</a>
+    <a href="../technical.html">Technical appendix</a>
+    <a href="https://github.com/rafapolo/rodado">Repository</a>
+  </div>
+</footer>
+
+<script src="../assets/theme-toggle.js"></script>
+</body>
+</html>
