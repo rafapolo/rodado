@@ -175,11 +175,11 @@ ORDER BY 2 DESC
 LIMIT 10
 ```
 
-### `cnpj_basico` — 10 tables
+### `cnpj_basico` — 11 tables
 First 8 digits of CNPJ (company base code, without branch).
 
-**Sample tables (10 of 10):**
-`br_bcb_estban.agencia`, `br_bcb_estban.municipio`, `br_bcb_sicor.recurso_publico_cooperado`, `br_bcb_sicor.recurso_publico_mutuario`, `br_bcb_sicor.recurso_publico_propriedade`, `br_bd_diretorios_brasil.empresa`, `br_me_cnpj.empresas`, `br_me_cnpj.estabelecimentos`, `br_me_cnpj.simples`, `br_me_cnpj.socios`
+**Sample tables (10 of 11):**
+`br_bcb_estban.agencia`, `br_bcb_estban.municipio`, `br_bcb_sicor.recurso_publico_cooperado`, `br_bcb_sicor.recurso_publico_mutuario`, `br_bcb_sicor.recurso_publico_propriedade`, `br_bd_diretorios_brasil.empresa`, `br_me_cnpj.empresas`, `br_me_cnpj.estabelecimentos`, `br_me_cnpj.simples`, `br_me_cnpj.socios`, `br_me_rais_identificada.estabelecimentos`
 
 ### `cpf` — 14 tables
 11-digit Brazilian individual tax ID (CPF). Often masked in public datasets.
