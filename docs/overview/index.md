@@ -1,6 +1,6 @@
 # Base dos Dados Brasil para Pesquisa em Ciências Sociais
 
-Este projeto oferece uma visão integrada do ecossistema de dados da **Base dos Dados Brasil**, conectando 533 tabelas e milhares de variáveis disponíveis para pesquisa em ciências sociais. A versão atual cobre **34 temas temáticos** organizados em seções navegáveis.
+Este projeto oferece uma visão integrada do ecossistema de dados da **Base dos Dados Brasil**, conectando 533 tabelas e milhares de variáveis disponíveis para pesquisa em ciências sociais. A versão atual cobre **35 temas temáticos** organizados em seções navegáveis.
 
 ---
 
@@ -42,6 +42,7 @@ Este projeto oferece uma visão integrada do ecossistema de dados da **Base dos 
 | 32 | [Conectividade, Educação Digital e Infraestrutura de Telecomunicações](32_conectividade.md) |
 | 33 | [Dados Internacionais Comparativos e Rankings Globais](33_dados_internacionais.md) |
 | 34 | [Atlas, Mapas Georreferenciados e Bases Territoriais](34_atlas_mapas.md) |
+| 35 | [Transporte e Mobilidade Urbana](35_transporte_mobilidade.md) |
 
 ---
 
