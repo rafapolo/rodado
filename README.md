@@ -1,12 +1,12 @@
-# rodado — uma leitura sociológica do Brasil em dados
+# rodado — Brasil em números, retratos dos dados oficiais
 
-> Um espelho de 533 tabelas públicas brasileiras — RAIS, SIM, TSE, CGU, IBGE, INEP, CNES e outras fontes oficiais — lido a partir de uma pergunta sociológica, não de uma vitrine técnica: o que esses registros, cruzados, revelam sobre desigualdade, poder e estratificação social no Brasil?
+> 778 tabelas públicas brasileiras — a maior parte espelhada da Base dos Dados (RAIS, SIM, TSE, CGU, IBGE, INEP, CNES e outras fontes oficiais), complementada com mais de 40 fontes raspadas de forma independente — lidas a partir de perguntas investigativas, não de uma vitrine técnica: o que esses registros, cruzados, revelam sobre desigualdade, poder, economia, saúde e violência no Brasil?
 
 ---
 
 ## Sobre o projeto
 
-Cada um dos 34 temas deste projeto parte de dados administrativos reais — vínculos de emprego, óbitos, contratos públicos, resultados eleitorais, matrículas escolares — e pergunta o que eles escondem quando cruzados por raça, classe, gênero, território e ocupação. Não é uma pesquisa de opinião nem um modelo teórico: é o retrato que o próprio Estado brasileiro produziu sobre si mesmo, através dos registros que gera para administrar a população, e que raramente são lidos lado a lado.
+Cada um dos 35 temas deste projeto parte de dados administrativos reais — vínculos de emprego, óbitos, contratos públicos, resultados eleitorais, matrículas escolares — e pergunta o que eles escondem quando cruzados por raça, classe, gênero, território e ocupação. Não é uma pesquisa de opinião nem um modelo teórico: é o retrato que o próprio Estado brasileiro produziu sobre si mesmo, através dos registros que gera para administrar a população, e que raramente são lidos lado a lado.
 
 O projeto nasce de uma aposta simples: que dados administrativos brutos, quando cruzados com cuidado, contam uma história mais direta sobre desigualdade do que a maior parte do debate público — e que essa história vale a pena ser escrita em tom investigativo, não hedgeado.
 
@@ -14,7 +14,7 @@ Cada tema no site publicado combina uma narrativa em prosa com as tabelas de evi
 
 ## Cobertura de dados
 
-Os 533 tabelas cobrem 34 domínios temáticos, cada um documentado em [`overview/`](docs/overview/index.md) e publicado como uma página própria no site. Essas narrativas servem tanto de leitura para o público quanto de contexto para a camada de IA que converte perguntas em linguagem natural para SQL.
+As 778 tabelas cobrem 35 domínios temáticos, cada um documentado em [`overview/`](docs/overview/index.md) e publicado como uma página própria no site. Essas narrativas servem tanto de leitura para o público quanto de contexto para a camada de IA que converte perguntas em linguagem natural para SQL.
 
 | # | Tema |
 |---|------|
@@ -52,12 +52,13 @@ Os 533 tabelas cobrem 34 domínios temáticos, cada um documentado em [`overview
 | 32 | [Conectividade, Educação Digital e Infraestrutura de Telecomunicações](https://rafapolo.github.io/rodado/temas/32-conectividade.html) |
 | 33 | [Dados Internacionais Comparativos e Rankings Globais](https://rafapolo.github.io/rodado/temas/33-dados-internacionais.html) |
 | 34 | [Atlas, Mapas Georreferenciados e Bases Territoriais](https://rafapolo.github.io/rodado/temas/34-atlas-mapas.html) |
+| 35 | [Transporte e Mobilidade Urbana](https://rafapolo.github.io/rodado/temas/35-transporte-mobilidade.html) |
 
 ## Sobre os dados
 
-Os dados vêm da [Base dos Dados](https://basedosdados.org), que mantém um espelho público de centenas de tabelas de instituições brasileiras no BigQuery. Este projeto reexporta 533 dessas tabelas (~675 GB em Parquet+zstd) para armazenamento próprio e as consulta sob demanda via DuckDB, sem precisar importar nada localmente — o que permite cruzar bases de ministérios, tribunais e institutos diferentes numa única consulta SQL.
+Os dados vêm principalmente da [Base dos Dados](https://basedosdados.org), que mantém um espelho público de centenas de tabelas de instituições brasileiras no BigQuery — este projeto reexporta essas tabelas para armazenamento próprio, sem precisar importar nada localmente. Além do espelho, mais de 40 fontes são raspadas de forma independente para cobrir o que a Base dos Dados não tem (sanções nacionais e internacionais, SICAF, SINAN Violência, reclamações de consumidor e mais — ver [`tasks/datasets_to_scrap.md`](tasks/datasets_to_scrap.md)). No total, 778 tabelas (mais de 675 GB em Parquet+zstd) são consultadas sob demanda via DuckDB, o que permite cruzar bases de ministérios, tribunais, institutos e fontes independentes numa única consulta SQL.
 
 ## Leia também
 
-- [`overview/`](docs/overview/index.md) — os 34 arquivos-fonte em markdown por trás de cada página do site, usados também como contexto para a camada de IA que traduz perguntas em português para SQL.
+- [`overview/`](docs/overview/index.md) — os 35 arquivos-fonte em markdown por trás de cada página do site, usados também como contexto para a camada de IA que traduz perguntas em português para SQL.
 - [`TECHNICAL.md`](TECHNICAL.md) — arquitetura de engenharia, pipeline de dados, API de consulta, servidor MCP, stack e deploy, para quem quiser entender como a plataforma por trás do site funciona.
