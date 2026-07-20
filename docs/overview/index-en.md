@@ -1,6 +1,6 @@
 # Brazilian Public Data Platform — Thematic Index
 
-This project provides an integrated view of the **Base dos Dados Brasil** ecosystem, connecting 533 tables and thousands of variables available for social science research and operational analytics. The current version covers **34 thematic domains** organized into navigable sections.
+This project provides an integrated view of the **Base dos Dados Brasil** ecosystem, connecting 533 tables and thousands of variables available for social science research and operational analytics. The current version covers **35 thematic domains** organized into navigable sections.
 
 ---
 
@@ -42,6 +42,7 @@ This project provides an integrated view of the **Base dos Dados Brasil** ecosys
 | 32 | [Connectivity, Digital Education & Telecom Infrastructure](32_conectividade.md) |
 | 33 | [Comparative International Data & Global Rankings](33_dados_internacionais.md) |
 | 34 | [Atlas, Georeferenced Maps & Territorial Bases](34_atlas_mapas.md) |
+| 35 | [Transportation and Urban Mobility](35_transporte_mobilidade.en.md) |
 
 ---
 
