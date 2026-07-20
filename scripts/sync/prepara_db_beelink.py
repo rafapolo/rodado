@@ -4,8 +4,8 @@ import os
 import duckdb
 from collections import defaultdict
 
-BEELINK_MOUNT = "/Volumes/homelab/rodado"
-DB_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "basedosdados.duckdb")
+BEELINK_MOUNT = os.path.expanduser("~/mnt/homelab/rodado")
+DB_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "data", "basedosdados.duckdb")
 
 table_files = defaultdict(lambda: defaultdict(list))
 for dataset in sorted(os.listdir(BEELINK_MOUNT)):
