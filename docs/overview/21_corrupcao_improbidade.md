@@ -112,7 +112,19 @@ Os dados das emendas parlamentares em `br_cgu_emendas_parlamentares.microdados` 
 
 **Conclusão:** Mais da metade das emendas vai para saúde. Assistência social recebe 15x menos que encargos especiais.
 
+### Cartao corporativo: metade do valor e sigilosa
+
+| Orgao superior | Valor | % sigiloso |
+|---|---|---|
+| Presidencia da Republica | R$ 227,8 mi | 98,6% |
+| Ministerio da Justica e Seguranca Publica | R$ 205,1 mi | 86,0% |
+| Ministerio da Educacao | R$ 78,4 mi | 0,0% |
+| Ministerio da Saude | R$ 20,4 mi | 0,0% |
+
+**Conclusao:** 18,9% das transacoes sao sigilosas mas 49,5% do valor — o sigilo cobre as maiores. Fonte: `br_cgu_cartao_pagamento.microdados_governo_federal` (1,67 mi de transacoes, R$ 820,1 mi, 2013-2025).
+
 ## Cruzamentos Poderosos
+- **Cartao corporativo x Sigilo:** 18,9% das transacoes, 49,5% do valor.
 
 - **Emendas × Execução:** 50% do orçamento autorizado nunca vira despesa real
 - **Relator × Concentração:** 3 comissões dominam R$ 30 bi em emendas
