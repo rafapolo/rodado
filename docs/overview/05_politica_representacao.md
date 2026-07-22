@@ -122,7 +122,18 @@ Os dados do TSE em `br_tse_eleicoes.candidatos` com 149 MB permitem analisar per
 
 **Conclusão:** Candidatos de baixa renda são excluídos — dinheiro é pré-requisito.
 
+### Composicao do Senado por sexo (Dados Abertos do Senado)
+
+| Recorte | Mulheres | Homens |
+|---|---|---|
+| Cadeiras | 15 (18,5%) | 66 (81,5%) |
+| Em lideranca | 5 (33,3% delas) | 28 (42,4% deles) |
+| Maior bancada (PL, 16) | 0 | 16 |
+
+**Conclusao:** a barreira esta na entrada, nao na ascensao — 63 pontos de diferenca nas cadeiras contra 9 na lideranca. Fonte: `br_senado_dadosabertos.senadores`.
+
 ## Cruzamentos Poderosos
+- **Senado x Genero:** 18,5% das cadeiras; a maior bancada nao elegeu nenhuma mulher.
 
 - **Raça × Candidatura:** negros = 25% dos candidatos vs. 56% da população
 - **Gênero × Cargo:** mulheres = 4,4% deputadas vs. 52% da população
