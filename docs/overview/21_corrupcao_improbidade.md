@@ -123,8 +123,19 @@ Os dados das emendas parlamentares em `br_cgu_emendas_parlamentares.microdados` 
 
 **Conclusao:** 18,9% das transacoes sao sigilosas mas 49,5% do valor — o sigilo cobre as maiores. Fonte: `br_cgu_cartao_pagamento.microdados_governo_federal` (1,67 mi de transacoes, R$ 820,1 mi, 2013-2025).
 
+### Modalidade de compra federal (2020-2023)
+
+| Modalidade | % processos | % valor |
+|---|---|---|
+| Dispensa de licitacao | 60,5% | 2,1% |
+| Inexigibilidade | 14,6% | 1,8% |
+| Pregao (todas as formas) | 24,3% | 95,3% |
+
+**Conclusao:** 75,1% dos processos dispensam licitacao mas somam 4,0% do dinheiro — auditoria de risco deve olhar valor, nao contagem. Fonte: `br_cgu_licitacao_contrato.licitacao` (1,7 mi de licitacoes).
+
 ## Cruzamentos Poderosos
 - **Cartao corporativo x Sigilo:** 18,9% das transacoes, 49,5% do valor.
+- **Processo x Valor:** 75,1% das compras dispensam licitacao = 4,0% do dinheiro.
 
 - **Emendas × Execução:** 50% do orçamento autorizado nunca vira despesa real
 - **Relator × Concentração:** 3 comissões dominam R$ 30 bi em emendas

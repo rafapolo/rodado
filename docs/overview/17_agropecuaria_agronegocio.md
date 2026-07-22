@@ -121,8 +121,19 @@ O CAR em `br_sfb_sicar.area_imovel` com 3,5 GB detalha propriedades rurais. O SI
 
 **Conclusao:** Bunge e Cargill exportam valor equivalente, mas a Bunge expoe 2,4x mais desmatamento — diferenca de origem do fornecedor. China responde por US$ 18,4 bi (54%) e 236.835 ha (57%). Fonte: `br_trase_supply_chain.soy_beans`.
 
+### Efetivo de rebanhos (PPM/IBGE)
+
+| Rebanho | Cabecas |
+|---|---|
+| Galinaceos (galinhas) | 259.452.999 |
+| Bovino | 234.352.649 |
+| Suino | 44.393.930 |
+
+**Conclusao:** 234 mi de bovinos para ~203 mi de habitantes — 1,15 cabeca por pessoa; pastagem e o principal uso do solo convertido. Fonte: `br_ibge_ppm.efetivo_rebanhos`.
+
 ## Cruzamentos Poderosos
 - **Trader x Desmatamento:** Bunge expoe 2,4x mais que Cargill no mesmo volume.
+- **Rebanho x Populacao:** 1,15 cabeca de gado por brasileiro.
 
 - **Terra × Poder:** concentração fundiária = concentração política
 - **Crédito × Desmatamento:** dinheiro público financia devastação
