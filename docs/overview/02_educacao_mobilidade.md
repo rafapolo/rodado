@@ -112,7 +112,18 @@ A diferença de 100 pontos no ENEM entre privadas e estaduais corresponde a apro
 
 **Conclusão:** 40% das escolas públicas não têm internet — impossível fazer aula digital.
 
+### IDEB 2023: paradoxo de Simpson entre redes
+
+| Recorte | Municipal | Estadual | Vence |
+|---|---|---|---|
+| Agregado | 5,28 | 4,81 | Municipal |
+| Anos iniciais | 5,62 | 5,91 | Estadual |
+| Anos finais | 4,58 | 4,93 | Estadual |
+
+**Conclusao:** a estadual vence nas duas etapas e perde no total — ranking sem controle de etapa mede composicao de matricula. Fonte: `br_inep_ideb.escola`.
+
 ## Cruzamentos Poderosos
+- **IDEB x Etapa:** paradoxo de Simpson entre rede municipal e estadual.
 
 - **Escola × Família:** 93,6% dos alunos dependem de escolas públicas
 - **Profissão × Salário:** professores ganham 10x menos que banqueiros
