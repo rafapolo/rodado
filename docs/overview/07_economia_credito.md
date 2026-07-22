@@ -113,7 +113,18 @@ O SICOR em `br_bcb_sicor.operacao` com 522 MB detalha crédito rural com `valor_
 
 **Conclusão:** Especialização produtiva = vulnerabilidade — crise em um produto = crise regional.
 
+### Concentracao do PIB municipal (2021)
+
+| Recorte | Municipios | % do PIB |
+|---|---|---|
+| 10 maiores | 10 | 23,5% |
+| 1% mais ricos | 55 | 43,6% |
+| Metade inferior | 2.785 | 3,8% |
+
+**Conclusao:** 55 municipios produzem 11x mais que os 2.785 mais pobres somados. Fonte: `br_ibge_pib.municipio`.
+
 ## Cruzamentos Poderosos
+- **PIB x Municipio:** 55 municipios concentram 43,6% do PIB.
 
 - **Crédito × Terra:** grandes produtores com terra captam crédito
 - **Banco × Região:** desertos bancários perpetuam desigualdade

@@ -114,7 +114,18 @@ O SIM em `br_ms_sim.microdados` com 1,4 GB oferece mortalidade por `causa_basica
 
 **Conclusão:** 320.000 notificações/ano — maioria feminina, maioria dentro de casa.
 
+### Homicidios LGBTQI+ (fonte nao estatal)
+
+| Ano | Total noticiado |
+|---|---|
+| 2017 | 445 (pico) |
+| 2018 | 420 |
+| 2019 | 329 |
+
+**Conclusao:** nenhum sistema oficial registra orientacao sexual ou identidade de genero da vitima — o unico numero nacional vem do Grupo Gay da Bahia, medindo homicidios *noticiados* (piso, nao total). Fonte: `br_ggb_relatorio_lgbtqi`.
+
 ## Cruzamentos Poderosos
+- **LGBTQI+ x Ausencia de dado:** o Estado nao coleta; o unico numero e de ONG.
 
 - **Arma de fogo × Raça:** brancos morrem mais que pardos com armas de fogo
 - **Idade × Violência:** 80% das mortes por armas de fogo atingem 15-29 anos
