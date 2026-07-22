@@ -127,8 +127,19 @@ O IPCA em `br_ibge_ipca.mes_categoria_municipio` com 49.356 registros detalha in
 
 **Conclusao:** a inflacao do pobre so supera a media em choque alimentar; alimentacao no domicilio pesa 18,7% no INPC contra 15,2% no IPCA-15.
 
+### IGP-M (aluguel) x IPCA-15 (consumidor)
+
+| Ano | IGP-M | IPP industria | IPCA-15 |
+|---|---|---|---|
+| 2020 | 21,10% | 17,92% | 3,45% |
+| 2021 | 16,58% | 25,45% | 9,96% |
+| 2023 | -0,75% | — | 4,62% |
+
+**Conclusao:** em 2020 o indice que reajusta aluguel subiu 6x a inflacao ao consumidor. NOTA: em `br_fgv_igp.igp_m_mes` as colunas `ano` e `mes` estao trocadas no espelho — ler `mes` como ano. Fontes: `br_fgv_igp`, `br_ibge_ipp`.
+
 ## Cruzamentos Poderosos
 - **INPC x IPCA-15:** diferenca de 1,69 p.p. em 2020, negativa em outros anos.
+- **IGP-M x IPCA-15:** 21,1% contra 3,45% em 2020 — 6x.
 
 - **Inflação × Classe:** alimentação pesa mais para pobre
 - **Combustível × ICMS:** Norte paga mais
