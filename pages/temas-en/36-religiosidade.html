@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Religiosity, Faith Infrastructure and Income Inequality — rodado</title>
+<meta name="description" content="Municipalities with more Spiritists pay 60% higher formal wages than those with fewer — Brazil's religious geography is also a class map.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="../assets/mcp-theme.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="../en.html">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="../en.html#themes">Topics</a>
+        <a href="../mcp-en.html">MCP</a>
+        <a href="https://xn--2dk.xyz/dataviz/">DataViz Hub</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <a href="../temas/36-religiosidade.html" class="lang-link">PT</a>
+          <span class="lang-sep">/</span>
+          <span class="lang-current">EN</span>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <a class="voltar" href="../en.html">&larr; back to overview</a>
+
+  <svg class="tema-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v5"/><path d="M9.5 4.5h5"/><path d="M4 21V10l8-5 8 5v11"/><path d="M9 21v-6h6v6"/></svg>
+  <p class="eyebrow">Theme 36 of 36</p>
+  <h1>Religiosity, Faith Infrastructure and Income Inequality</h1>
+  <p class="dek">Municipalities with more Spiritists pay 60% higher formal wages than those with fewer — Brazil's religious geography is also a class map.</p>
+
+  <p class="lede">Brazil's IBGE Census asks directly which religion a person declares — and comparing 2010 with 2022 shows the country lost its absolute Catholic majority in barely more than a decade. But self-declaration is only half the picture: the National Address Registry (CNEFE) records, address by address, where faith becomes a building — 765,591 religious temples identified from what the census enumerator saw and wrote down in the field, cross-referenced with active business registration (CNPJ, measuring legal formalization) and with RAIS employment records (measuring the average formal wage of those living around them). Together, these four sources — declaration, physical presence, formalization and income — sketch a country where religious distribution is not neutral: it varies systematically with race, region and, more strongly than any other cross-reference, with income.</p>
+
+  <h2>In 12 years, Brazil stopped being comfortably Catholic-majority</h2>
+  <p>Between the 2010 and 2022 Censuses, the share of Catholics fell from 64.6% to 56.8% of the population — a drop of nearly 8 percentage points in just over a decade. Evangelicals grew from 22.2% to 26.9%, and those declaring no religion went from 8.0% to 9.3%. The sharpest change, however, is in Umbanda and Candomblé: it more than tripled, from 0.31% to 1.05% — a jump that likely reflects both real growth and a greater willingness to self-declare as Afro-Brazilian religious, as the historical stigma against these religions loses force.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>National religious composition, population weighted by municipality (IBGE Census)</caption>
+      <thead><tr><th>Religion</th><th>2010</th><th>2022</th><th>Change</th></tr></thead>
+      <tbody>
+        <tr><td>Roman Catholic</td><td>64.6%</td><td>56.8%</td><td>-7.9 p.p.</td></tr>
+        <tr><td>Evangelical</td><td>22.2%</td><td>26.9%</td><td>+4.7 p.p.</td></tr>
+        <tr><td>Spiritist</td><td>2.0%</td><td>1.8%</td><td>-0.2 p.p.</td></tr>
+        <tr><td>Umbanda and Candomblé</td><td>0.3%</td><td>1.1%</td><td>+0.7 p.p.</td></tr>
+        <tr><td>No religion</td><td>8.0%</td><td>9.3%</td><td>+1.2 p.p.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Municipalities where Evangelicals are already an absolute majority jumped from 73 to 245 between 2010 and 2022 — a 3.4x increase — and today hold 11.7 million inhabitants, 6.6% of the national population.</p>
+
+  <h2>765,000 temples — a third with no identifiable denomination</h2>
+  <p>The 2022 Census CNEFE geolocated 570,428 temples that the enumerator personally confirmed in the field as religious establishments, plus 195,163 (25% of the total) that were not officially tagged as religious, but whose name recorded at the address — "Igreja Assembleia de Deus", "Salão do Reino" — makes clear that they are. Classifying each name against the 2010 Census denomination dictionary (more detailed than the 2022 table), Pentecostal Evangelicals dominate the country's built religious landscape, and more than a third of temples have no denomination identifiable from the name alone.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Religious temples in Brazil by branch (CNEFE, 2022 Census)</caption>
+      <thead><tr><th>Branch</th><th>Temples</th><th>% of total</th></tr></thead>
+      <tbody>
+        <tr><td>Evangelical, Pentecostal origin</td><td>245,669</td><td>32.1%</td></tr>
+        <tr><td>Unclassified</td><td>282,505</td><td>36.9%</td></tr>
+        <tr><td>Roman Catholic</td><td>99,680</td><td>13.0%</td></tr>
+        <tr><td>Evangelical, Mission</td><td>60,405</td><td>7.9%</td></tr>
+        <tr><td>Evangelical, undetermined</td><td>37,319</td><td>4.9%</td></tr>
+        <tr><td>Spiritist</td><td>21,521</td><td>2.8%</td></tr>
+        <tr><td>Umbanda and Candomblé</td><td>9,868</td><td>1.3%</td></tr>
+        <tr><td>Jehovah's Witnesses</td><td>7,516</td><td>1.0%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">195,163 temples — 1 in every 4 — only entered the count because the name recorded in the field gave away the religious activity; officially, the Census classified them as "establishments for other purposes".</p>
+
+  <h2>Only 1 in 5 temples has an active business registration</h2>
+  <p>Cross-referencing each temple's address with an active CNPJ under economic activity code 9491-0/00 (religious activities) in the same postal code, only 154,792 temples — 20.2% of the total — have any confirmation of legal formalization. The other 79.8% operate without their own business registration: informal in the legal sense, but no less real on the ground, since their physical presence was confirmed by field GPS, not by tax records. Informality here is not the exception — it is the dominant pattern of Brazilian religious infrastructure.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Legal formalization of religious temples (active CNPJ, activity code 9491-0/00)</caption>
+      <thead><tr><th>Status</th><th>Temples</th><th>% of total</th></tr></thead>
+      <tbody>
+        <tr><td>With confirmed active CNPJ</td><td>154,792</td><td>20.2%</td></tr>
+        <tr><td>Without confirmed CNPJ</td><td>610,799</td><td>79.8%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Nearly 8 in every 10 religious temples in Brazil operate without any business registration of their own — most organized faith in the country runs outside the radar of formal incorporation.</p>
+
+  <h2>Where the Catholic Church recedes, wages rise</h2>
+  <p>Cross-referencing each municipality's religious composition (2022 Census) with the average wage of active formal jobs recorded in RAIS produces the strongest correlation in this entire theme: municipalities in the lowest quartile of Catholic share pay, on average, R$ 4,043 — almost 60% more than the R$ 2,556 of the highest-Catholic quartile. Spiritism shows the most extreme gradient of all: the most Spiritist municipalities pay R$ 4,091 against R$ 2,559 in the least Spiritist, reproducing a pattern already documented in Brazilian sociology — Kardecist Spiritism historically concentrated among urban, more educated and wealthier populations. Evangelicals show the mildest gradient, and in the opposite direction from what class stigma would predict: more Evangelical municipalities pay slightly more (R$ 3,355) than less Evangelical ones (R$ 3,000), a sign that Evangelical growth is no longer — if it ever was — a strictly peripheral phenomenon.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Average formal wage (RAIS 2022) by quartile of municipal religious composition</caption>
+      <thead><tr><th>Religion</th><th>Lowest-share quartile</th><th>Highest-share quartile</th><th>Difference</th></tr></thead>
+      <tbody>
+        <tr><td>Catholic</td><td>R$ 4,043 (3.3 MW)</td><td>R$ 2,556 (2.1 MW)</td><td>-37% low to high</td></tr>
+        <tr><td>Spiritist</td><td>R$ 2,559 (2.1 MW)</td><td>R$ 4,091 (3.4 MW)</td><td>+60% low to high</td></tr>
+        <tr><td>Evangelical</td><td>R$ 3,000 (2.5 MW)</td><td>R$ 3,355 (2.8 MW)</td><td>+12% low to high</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Municipalities with more Spiritists pay 60% higher formal wages than those with fewer — no other cross-reference in this theme has an income gradient this steep.</p>
+
+  <h2>Umbanda is stronger in Rio Grande do Sul than in Bahia</h2>
+  <p>Cross-referencing religion with self-declared race (2022 Census) by state, weighted by population, breaks the most obvious intuition about Afro-Brazilian religiosity: Rio Grande do Sul, with only 21.2% Black population, has the country's highest share of Umbanda and Candomblé (3.19%) — nearly triple that of Bahia (1.00%), a state with 79.7% Black population. The likely explanation is not an absence of Afro-Brazilian syncretism in Bahia (the region has the oldest and most institutionalized tradition in the country), but rather that in Rio Grande do Sul, Umbanda historically consolidated as a destination for Kardecist Spiritists of European descent as well, swelling self-declaration beyond the Afro-descendant population. Race alone does not predict Afro-Brazilian religiosity — geography and regional syncretism history weigh more.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>States with highest % Umbanda/Candomblé vs. % Black population (population-weighted)</caption>
+      <thead><tr><th>State</th><th>% Umbanda/Candomblé</th><th>% Black population</th><th>% Catholic</th></tr></thead>
+      <tbody>
+        <tr><td>Rio Grande do Sul</td><td>3.19%</td><td>21.2%</td><td>60.6%</td></tr>
+        <tr><td>Rio de Janeiro</td><td>2.58%</td><td>57.7%</td><td>38.9%</td></tr>
+        <tr><td>São Paulo</td><td>1.47%</td><td>40.9%</td><td>52.2%</td></tr>
+        <tr><td>Bahia</td><td>1.00%</td><td>79.7%</td><td>57.0%</td></tr>
+        <tr><td>Federal District</td><td>0.85%</td><td>59.4%</td><td>49.7%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">The same pattern appears in Evangelical growth: Piauí (77% Black) has the country's lowest Evangelical share (15.6%), while Acre (75% Black) has the highest (44.4%) — near-identical racial composition, opposite religious trajectories. It is region, not race, that explains the difference.</p>
+
+  <div class="callout">
+    <h3>Powerful cross-references</h3>
+    <ul>
+      <li><strong>Religion × Income:</strong> least-Catholic municipalities pay 58% higher formal wages than the most Catholic.</li>
+      <li><strong>Spiritism × Income:</strong> the theme's strongest gradient — 60% wage difference between extremes of Spiritist share.</li>
+      <li><strong>Umbanda × Race:</strong> Rio Grande do Sul has 3x more Umbanda than Bahia with a third of the Black population — syncretism geography outweighs racial composition.</li>
+      <li><strong>Evangelical × Region:</strong> Piauí and Acre have near-identical racial composition and opposite Evangelical shares (15.6% vs. 44.4%).</li>
+      <li><strong>Temple × CNPJ:</strong> 80% of Brazil's religious temples operate without any formal business registration.</li>
+      <li><strong>Temple × Census:</strong> 1 in every 4 temples is identified only by its name — officially the Census classifies them as "other purposes".</li>
+    </ul>
+  </div>
+
+  <h2>Explanatory hypotheses</h2>
+  <p>The income gradient by religious composition probably does not measure a direct causal effect of faith on earnings — it mainly measures urbanization and secularization moving together: large, wealthy, metropolitan municipalities tend to have a lower Catholic share (more religious diversity, more people with no religion) and a greater Spiritist presence, a profile sociologically associated with higher education ever since Kardecism arrived in Brazil in the 19th century as an urban intellectual elite movement. Evangelical growth, in turn, appears to follow a territorial logic distinct from a racial one: it expands most strongly in the North and Center-West — a recent colonization frontier with a weaker historical Catholic presence — than in the Northeast, where Catholicism has deeper colonial roots, regardless of each region's racial composition. And the low legal formalization of temples (80% without CNPJ) reflects a broader Brazilian associative pattern, not a religious peculiarity: community-based organizations, whether churches, neighborhood associations or cultural collectives, rarely cross the bureaucratic barrier of formal business registration.</p>
+
+  <h2>Public policy implications</h2>
+  <p>The high legal informality of temples (80% without CNPJ) suggests that social assistance, tax exemption or public partnership policies relying on CNPJ as the entry point systematically exclude most of the country's real religious infrastructure — a more inclusive design would recognize field-confirmed physical presence, not just tax registration. The territorial concentration of specific branches (Evangelicals in the North, Spiritists in wealthy municipalities, Umbanda along the RS-RJ-SP axis) also indicates that religious freedom and anti-intolerance policies need regionalized design — the recognition problem an Afro-Brazilian religion faces in Bahia, where it has deep roots but still suffers persecution, differs from what it faces in municipalities where it is a recent and minority presence. And the strong income gradient by religious composition is, at minimum, a reminder that religious distribution is not a neutral variable in inequality research — it carries substantial socioeconomic signal in itself.</p>
+
+  <div class="pager">
+    <a class="prev" href="35-transporte-mobilidade.html"><span class="dir">&larr; previous</span>Transportation and Urban Mobility</a>
+    <a class="next" href="../en.html"><span class="dir">next &rarr;</span>Back to overview</a>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a href="../en.html">Thematic index</a>
+    <a href="../technical.html">Technical appendix</a>
+    <a href="https://github.com/rafapolo/rodado">Repository</a>
+  </div>
+</footer>
+
+<script src="../assets/theme-toggle.js"></script>
+</body>
+</html>

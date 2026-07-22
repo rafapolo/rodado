@@ -6,7 +6,7 @@
 
 ## Sobre o projeto
 
-Cada um dos 35 temas deste projeto parte de dados administrativos reais — vínculos de emprego, óbitos, contratos públicos, resultados eleitorais, matrículas escolares — e pergunta o que eles escondem quando cruzados por raça, classe, gênero, território e ocupação. Não é uma pesquisa de opinião nem um modelo teórico: é o retrato que o próprio Estado brasileiro produziu sobre si mesmo, através dos registros que gera para administrar a população, e que raramente são lidos lado a lado.
+Cada um dos 36 temas deste projeto parte de dados administrativos reais — vínculos de emprego, óbitos, contratos públicos, resultados eleitorais, matrículas escolares — e pergunta o que eles escondem quando cruzados por raça, classe, gênero, território e ocupação. Não é uma pesquisa de opinião nem um modelo teórico: é o retrato que o próprio Estado brasileiro produziu sobre si mesmo, através dos registros que gera para administrar a população, e que raramente são lidos lado a lado.
 
 O projeto nasce de uma aposta simples: que dados administrativos brutos, quando cruzados com cuidado, contam uma história mais direta sobre desigualdade do que a maior parte do debate público — e que essa história vale a pena ser escrita em tom investigativo, não hedgeado.
 
@@ -14,7 +14,7 @@ Cada tema no site publicado combina uma narrativa em prosa com as tabelas de evi
 
 ## Cobertura de dados
 
-As 778 tabelas cobrem 35 domínios temáticos, cada um documentado em [`overview/`](docs/overview/index.md) e publicado como uma página própria no site. Essas narrativas servem tanto de leitura para o público quanto de contexto para a camada de IA que converte perguntas em linguagem natural para SQL.
+As 778 tabelas cobrem 36 domínios temáticos, cada um documentado em [`overview/`](docs/overview/index.md) e publicado como uma página própria no site. Essas narrativas servem tanto de leitura para o público quanto de contexto para a camada de IA que converte perguntas em linguagem natural para SQL.
 
 | # | Tema |
 |---|------|
@@ -53,6 +53,7 @@ As 778 tabelas cobrem 35 domínios temáticos, cada um documentado em [`overview
 | 33 | [Dados Internacionais Comparativos e Rankings Globais](https://rafapolo.github.io/rodado/temas/33-dados-internacionais.html) |
 | 34 | [Atlas, Mapas Georreferenciados e Bases Territoriais](https://rafapolo.github.io/rodado/temas/34-atlas-mapas.html) |
 | 35 | [Transporte e Mobilidade Urbana](https://rafapolo.github.io/rodado/temas/35-transporte-mobilidade.html) |
+| 36 | [Religiosidade, Infraestrutura de Fé e Desigualdade de Renda](https://rafapolo.github.io/rodado/temas/36-religiosidade.html) |
 
 ## Sobre os dados
 
@@ -60,5 +61,5 @@ Os dados vêm principalmente da [Base dos Dados](https://basedosdados.org), que 
 
 ## Leia também
 
-- [`overview/`](docs/overview/index.md) — os 35 arquivos-fonte em markdown por trás de cada página do site, usados também como contexto para a camada de IA que traduz perguntas em português para SQL.
+- [`overview/`](docs/overview/index.md) — os 36 arquivos-fonte em markdown por trás de cada página do site, usados também como contexto para a camada de IA que traduz perguntas em português para SQL.
 - [`TECHNICAL.md`](TECHNICAL.md) — arquitetura de engenharia, pipeline de dados, API de consulta, servidor MCP, stack e deploy, para quem quiser entender como a plataforma por trás do site funciona.
