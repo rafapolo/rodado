@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>rodado — MCP server for Brazilian public data</title>
-<meta name="description" content="782 Brazilian public tables across 190 datasets (RAIS, SIM, TSE, CGU, IBGE, INEP...) organized into 34 thematic domains and exposed as tools on a real MCP server.">
+<meta name="description" content="782 Brazilian public tables across 190 datasets (RAIS, SIM, TSE, CGU, IBGE, INEP...) organized into 36 thematic domains and exposed as tools on a real MCP server.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -50,7 +50,7 @@
       <div class="header-bottom">
         <div class="stats">
           <div>
-            <div class="stat-num">35</div>
+            <div class="stat-num">36</div>
             <div class="stat-label">themes</div>
           </div>
           <div>
@@ -629,6 +629,21 @@
           <p class="card-desc">Mobilidados/ITDP Brasil indicators in <code>br_mobilidados_indicadores.taxa_motorizacao</code> with <code>taxa_motorizacao</code>, <code>id_municipio</code>, <code>sigla_uf</code> allow comparing motorization across states — Minas Gerais leads with 797 points in 2018. <code>tempo_deslocamento_casa_trabalho</code> with <code>tempo_medio_deslocamento</code> and <code>prop_deslocamento_acima_1_hora</code> shows the worst commute times hit dormitory towns like Japeri (RJ) and Francisco Morato (SP), not the capitals. <code>proporcao_mortes_negras_acidente_transporte</code> shows the share of Black victims in transport accidents more than doubling between 2000 and 2019. <code>br_fipe_veiculos.precos</code> with <code>vehicle_type</code>, <code>brand_name</code>, <code>model_name</code> covers the 11,289 brand+model combinations behind Brazil's FIPE price table.</p>          <div class="card-cruz-block">
             <div class="card-cruz-heading">Cross-dataset interactions</div>
             <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Motorization × TMA:</strong> high-motorization states aren't the same as high-structured-transit states</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Commute Time × Periphery:</strong> worst commute times hit dormitory towns, not capitals</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Race × Traffic Deaths:</strong> share of Black victims doubled in 20 years</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Fare × Income:</strong> North and South carry the highest fare-to-income burden</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Bike Lanes × TMA:</strong> Ceará integrates better than São Paulo</span></li></ul>
+          </div>
+        </section>
+        <section class="server-card" data-category="Inequality &amp; Society" data-search="religiosity, faith infrastructure and income inequality inequality &amp; society br_ibge_censo2022_religiao.populacao_religiao nivel id_localidade localidade ano religiao id_religiao_sidra populacao_10_mais br_ibge_censo2022_religiao.cor_raca id_municipio municipio religiao categoria_principal dimensao_principal valor variavel br_ibge_censo_2022.cadastro_enderecos latitude longitude tipo_especie descricao_estabelecimento br_me_cnpj.estabelecimentos cep cnae_fiscal_principal situacao_cadastral br_me_rais.microdados_vinculos valor_remuneracao_media vinculo_ativo_3112 religion × income: least-catholic municipalities pay 58% higher formal wages spiritism × income: 60% gradient between extremes of spiritist share umbanda × race: rs has 3x more umbanda than ba with a third of the black population evangelical × region: pi and ac have identical racial composition and opposite evangelical shares temple × cnpj: 80% of temples operate without formal business registration temple × census: 1 in 4 temples is identified only by its field-recorded name catholic × transition: 7.9 p.p. drop between 2010 and 2022 umbanda × self-declaration: more than tripled between the two censuses">
+          <div class="card-head">
+            <div class="card-title-wrap">
+              <span class="card-icon"><i class="fa-solid fa-place-of-worship"></i></span>
+              <h2 class="card-title"><a class="card-title-link" href="temas-en/36-religiosidade.html"><span class="card-num">36</span>Religiosity, Faith Infrastructure and Income Inequality</a></h2>
+            </div>
+            <span class="card-badge">5 tables</span>
+          </div>
+          <div class="card-category">Inequality &amp; Society</div>
+          <div class="card-id-row"><code class="card-id">br_ibge_censo2022_religiao.populacao_religiao, br_ibge_censo2022_religiao.cor_raca, br_ibge_censo_2022.cadastro_enderecos, br_me_cnpj.estabelecimentos, br_me_rais.microdados_vinculos</code></div>
+          <p class="card-desc">The 2022 Census in <code>br_ibge_censo2022_religiao.populacao_religiao</code> carries declared religion by locality in <code>populacao_10_mais</code> — 56.8% Catholic against 64.6% in 2010 — and <code>cor_raca</code> crosses religion with race by municipality. CNEFE in <code>br_ibge_censo_2022.cadastro_enderecos</code> geolocates the physical infrastructure of faith: 765,591 temples identified via <code>tipo_especie</code> and <code>descricao_estabelecimento</code>, classified by branch through text matching on the name recorded in the field. Cross-referencing <code>br_me_cnpj.estabelecimentos</code> (activity code 9491-0/00) measures legal formalization — only 20% hold an active CNPJ — and <code>br_me_rais.microdados_vinculos</code> (<code>valor_remuneracao_media</code>) measures the income gradient: least-Catholic municipalities pay 58% higher formal wages.</p>          <div class="card-cruz-block">
+            <div class="card-cruz-heading">Cross-dataset interactions</div>
+            <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Religion × Income:</strong> least-Catholic municipalities pay 58% higher formal wages</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Spiritism × Income:</strong> 60% gradient between extremes of Spiritist share</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Umbanda × Race:</strong> RS has 3x more Umbanda than BA with a third of the Black population</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Evangelical × Region:</strong> PI and AC have identical racial composition and opposite Evangelical shares</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Temple × CNPJ:</strong> 80% of temples operate without formal business registration</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Temple × Census:</strong> 1 in 4 temples is identified only by its field-recorded name</span></li></ul>
           </div>
         </section>
     </main>

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Religiosidade, Infraestrutura de Fé e Desigualdade de Renda — rodado</title>
+<meta name="description" content="Municípios com mais espíritas pagam salário formal 60% maior que os com menos espíritas — a geografia religiosa do Brasil também é um mapa de classe.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="../assets/mcp-theme.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="../index.html#temas">Temas</a>
+        <a href="../mcp.html">MCP</a>
+        <a href="https://xn--2dk.xyz/">DataViz Hub</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <span class="lang-current">PT</span>
+          <span class="lang-sep">/</span>
+          <a href="../en.html" class="lang-link">EN</a>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema claro/escuro" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <a class="voltar" href="../index.html">&larr; voltar ao índice</a>
+
+  <svg class="tema-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v5"/><path d="M9.5 4.5h5"/><path d="M4 21V10l8-5 8 5v11"/><path d="M9 21v-6h6v6"/></svg>
+  <p class="eyebrow">Tema 36 de 36</p>
+  <h1>Religiosidade, Infraestrutura de Fé e Desigualdade de Renda</h1>
+  <p class="dek">Municípios com mais espíritas pagam salário formal 60% maior que os com menos espíritas — a geografia religiosa do Brasil também é um mapa de classe.</p>
+
+  <p class="lede">O Censo do IBGE pergunta diretamente qual religião a pessoa declara — e mostra, comparando 2010 com 2022, que o país deixou de ter maioria católica absoluta em pouco mais de uma década. Mas a autodeclaração é só metade do retrato: o Cadastro Nacional de Endereços (CNEFE) registra, endereço por endereço, onde a fé vira prédio — 765.591 templos religiosos identificados a partir do que o recenseador viu e anotou em campo, cruzados com o CNPJ ativo (mede formalização jurídica) e com a RAIS (mede o salário formal médio de quem mora ao redor). Juntas, essas quatro fontes — declaração, presença física, formalização e renda — desenham um país onde a distribuição religiosa não é neutra: ela varia sistematicamente com raça, região e, mais fortemente do que qualquer outro cruzamento, com renda.</p>
+
+  <h2>Em 12 anos, o Brasil deixou de ser maioria católica com folga</h2>
+  <p>Entre os Censos de 2010 e 2022, a proporção de católicos caiu de 64,6% para 56,8% da população — uma queda de quase 8 pontos percentuais em pouco mais de uma década. Evangélicos cresceram de 22,2% para 26,9%, e quem declara não ter religião passou de 8,0% para 9,3%. O dado mais brusco, porém, é o de umbanda e candomblé: mais que triplicou, de 0,31% para 1,05% — um salto que provavelmente reflete tanto crescimento real quanto maior disposição de se autodeclarar afro-religioso, à medida que o estigma histórico contra essas religiões perde força.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Composição religiosa nacional, população ponderada por município (Censo IBGE)</caption>
+      <thead><tr><th>Religião</th><th>2010</th><th>2022</th><th>Variação</th></tr></thead>
+      <tbody>
+        <tr><td>Católica Apostólica Romana</td><td>64,6%</td><td>56,8%</td><td>-7,9 p.p.</td></tr>
+        <tr><td>Evangélicas</td><td>22,2%</td><td>26,9%</td><td>+4,7 p.p.</td></tr>
+        <tr><td>Espírita</td><td>2,0%</td><td>1,8%</td><td>-0,2 p.p.</td></tr>
+        <tr><td>Umbanda e Candomblé</td><td>0,3%</td><td>1,1%</td><td>+0,7 p.p.</td></tr>
+        <tr><td>Sem religião</td><td>8,0%</td><td>9,3%</td><td>+1,2 p.p.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Municípios onde evangélicos já são maioria absoluta saltaram de 73 para 245 entre 2010 e 2022 — um aumento de 3,4x — e hoje somam 11,7 milhões de habitantes, 6,6% da população nacional.</p>
+
+  <h2>765 mil templos — um terço sem denominação identificável</h2>
+  <p>O CNEFE do Censo 2022 geolocalizou 570.428 templos que o próprio recenseador confirmou em campo como estabelecimento religioso, mais 195.163 (25% do total) que não foram marcados como religiosos oficialmente, mas cujo nome anotado no endereço — "Igreja Assembleia de Deus", "Salão do Reino" — deixa claro que são. Classificando o nome de cada um contra o dicionário de denominações do Censo 2010 (mais detalhado que a tabela de 2022), evangélicos pentecostais dominam a paisagem religiosa construída do país, e mais de um terço dos templos não tem denominação identificável a partir do nome sozinho.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Templos religiosos do Brasil por vertente (CNEFE, Censo 2022)</caption>
+      <thead><tr><th>Vertente</th><th>Templos</th><th>% do total</th></tr></thead>
+      <tbody>
+        <tr><td>Evangélica de origem pentecostal</td><td>245.669</td><td>32,1%</td></tr>
+        <tr><td>Não classificado</td><td>282.505</td><td>36,9%</td></tr>
+        <tr><td>Católica Apostólica Romana</td><td>99.680</td><td>13,0%</td></tr>
+        <tr><td>Evangélica de Missão</td><td>60.405</td><td>7,9%</td></tr>
+        <tr><td>Evangélica não determinada</td><td>37.319</td><td>4,9%</td></tr>
+        <tr><td>Espírita</td><td>21.521</td><td>2,8%</td></tr>
+        <tr><td>Umbanda e Candomblé</td><td>9.868</td><td>1,3%</td></tr>
+        <tr><td>Testemunhas de Jeová</td><td>7.516</td><td>1,0%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">195.163 templos — 1 em cada 4 — só entraram na contagem porque o nome anotado em campo denunciava a atividade religiosa; o Censo, oficialmente, os classificou como "estabelecimento de outras finalidades".</p>
+
+  <h2>Só 1 em cada 5 templos tem CNPJ ativo</h2>
+  <p>Cruzando o endereço de cada templo com o CNPJ ativo de CNAE 9491-0/00 (atividades religiosas) no mesmo CEP, apenas 154.792 templos — 20,2% do total — têm alguma confirmação de formalização jurídica. Os outros 79,8% operam sem registro empresarial próprio: informais no sentido legal, mas não menos reais no território, já que sua presença física foi confirmada por GPS de campo, não por cadastro tributário. Informalidade, aqui, não é exceção — é o padrão dominante da infraestrutura religiosa brasileira.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Formalização jurídica dos templos religiosos (CNPJ ativo, CNAE 9491-0/00)</caption>
+      <thead><tr><th>Situação</th><th>Templos</th><th>% do total</th></tr></thead>
+      <tbody>
+        <tr><td>Com CNPJ ativo confirmado</td><td>154.792</td><td>20,2%</td></tr>
+        <tr><td>Sem CNPJ confirmado</td><td>610.799</td><td>79,8%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Quase 8 em cada 10 templos religiosos do Brasil funcionam sem nenhum CNPJ próprio — a maioria da fé organizada no país opera fora do radar da formalização empresarial.</p>
+
+  <h2>Onde a Igreja Católica recua, o salário sobe</h2>
+  <p>Cruzando a composição religiosa de cada município (Censo 2022) com o salário médio dos vínculos formais ativos registrados na RAIS, aparece o cruzamento mais forte de todo o tema: municípios no quartil de menor proporção católica pagam, em média, R$ 4.043 — quase 60% a mais que os R$ 2.556 do quartil de maior proporção católica. Espiritismo mostra o gradiente mais extremo de todos: municípios mais espíritas pagam R$ 4.091 contra R$ 2.559 dos menos espíritas, reproduzindo um padrão sociológico já documentado no Brasil — o espiritismo kardecista historicamente concentrado em público urbano, mais escolarizado e mais rico. Evangélicos mostram o gradiente mais suave e na direção oposta ao esperado por estigma de classe: municípios mais evangélicos pagam levemente mais (R$ 3.355) que os menos evangélicos (R$ 3.000), sinal de que o crescimento evangélico não é mais, se é que já foi, um fenômeno estritamente periférico.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Salário médio formal (RAIS 2022) por quartil de composição religiosa municipal</caption>
+      <thead><tr><th>Religião</th><th>Quartil menor %</th><th>Quartil maior %</th><th>Diferença</th></tr></thead>
+      <tbody>
+        <tr><td>Católica</td><td>R$ 4.043 (3,3 SM)</td><td>R$ 2.556 (2,1 SM)</td><td>-37% do menor pro maior</td></tr>
+        <tr><td>Espírita</td><td>R$ 2.559 (2,1 SM)</td><td>R$ 4.091 (3,4 SM)</td><td>+60% do menor pro maior</td></tr>
+        <tr><td>Evangélica</td><td>R$ 3.000 (2,5 SM)</td><td>R$ 3.355 (2,8 SM)</td><td>+12% do menor pro maior</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Municípios com mais espíritas pagam salário formal 60% maior que os com menos — nenhum outro cruzamento do tema tem gradiente de renda tão acentuado quanto a distribuição espírita.</p>
+
+  <h2>Umbanda é mais forte no Rio Grande do Sul que na Bahia</h2>
+  <p>Cruzar religião com raça autodeclarada (Censo 2022) por UF, ponderado por população, quebra a intuição mais óbvia sobre religiosidade afro-brasileira: o Rio Grande do Sul, com apenas 21,2% de população negra, tem a maior proporção de umbanda e candomblé do país (3,19%) — quase o triplo da Bahia (1,00%), estado com 79,7% de população negra. A explicação provável não é ausência de sincretismo afro-brasileiro na Bahia (a região tem a tradição mais antiga e institucionalizada do país), mas sim que no Rio Grande do Sul a umbanda se consolidou historicamente também como destino de praticantes de espiritismo kardecista de origem europeia, engrossando a autodeclaração para além da população afrodescendente. Raça, isoladamente, não prediz religiosidade afro-brasileira — geografia e história de sincretismo regional pesam mais.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>UFs com maior % de umbanda/candomblé vs. % de população negra (ponderado por população)</caption>
+      <thead><tr><th>UF</th><th>% Umbanda/Candomblé</th><th>% População negra</th><th>% Católica</th></tr></thead>
+      <tbody>
+        <tr><td>Rio Grande do Sul</td><td>3,19%</td><td>21,2%</td><td>60,6%</td></tr>
+        <tr><td>Rio de Janeiro</td><td>2,58%</td><td>57,7%</td><td>38,9%</td></tr>
+        <tr><td>São Paulo</td><td>1,47%</td><td>40,9%</td><td>52,2%</td></tr>
+        <tr><td>Bahia</td><td>1,00%</td><td>79,7%</td><td>57,0%</td></tr>
+        <tr><td>Distrito Federal</td><td>0,85%</td><td>59,4%</td><td>49,7%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">O mesmo padrão aparece no crescimento evangélico: Piauí (77% negro) tem a menor proporção evangélica do país (15,6%), enquanto o Acre (75% negro) tem a maior (44,4%) — composição racial quase idêntica, trajetórias religiosas opostas. É a região, não a raça, que explica a diferença.</p>
+
+  <div class="callout">
+    <h3>Cruzamentos poderosos</h3>
+    <ul>
+      <li><strong>Religião × Renda:</strong> municípios menos católicos pagam salário formal 58% maior que os mais católicos.</li>
+      <li><strong>Espiritismo × Renda:</strong> gradiente mais forte do tema — 60% de diferença salarial entre os extremos de proporção espírita.</li>
+      <li><strong>Umbanda × Raça:</strong> RS tem 3x mais umbanda que BA com um terço da população negra — geografia de sincretismo pesa mais que composição racial.</li>
+      <li><strong>Evangélico × Região:</strong> Piauí e Acre têm composição racial quase idêntica e proporções evangélicas opostas (15,6% vs. 44,4%).</li>
+      <li><strong>Templo × CNPJ:</strong> 80% dos templos religiosos do Brasil operam sem nenhum registro empresarial formal.</li>
+      <li><strong>Templo × Censo:</strong> 1 em cada 4 templos só é identificado pelo nome em campo — o Censo oficial os classifica como "outras finalidades".</li>
+    </ul>
+  </div>
+
+  <h2>Hipóteses explicativas</h2>
+  <p>O gradiente de renda por composição religiosa provavelmente não mede um efeito causal direto da fé sobre o bolso — mede, principalmente, urbanização e secularização andando juntas: municípios grandes, ricos e metropolitanos tendem a ter menor proporção católica (mais diversidade religiosa, mais gente sem religião) e maior presença espírita, um perfil sociologicamente associado a maior escolaridade desde que o kardecismo chegou ao Brasil no século XIX como movimento de elite intelectual urbana. O crescimento evangélico, por sua vez, parece obedecer a uma lógica territorial distinta da lógica racial: ele se expande mais forte no Norte e Centro-Oeste — fronteira de colonização recente, menor presença histórica da Igreja Católica — do que no Nordeste, onde o catolicismo tem raízes coloniais mais profundas, independentemente da composição racial de cada região. E a baixa formalização jurídica dos templos (80% sem CNPJ) reflete um padrão associativo brasileiro mais amplo, não uma peculiaridade religiosa: organizações de base comunitária, sejam elas igrejas, associações de bairro ou coletivos culturais, raramente atravessam a barreira burocrática do registro empresarial formal.</p>
+
+  <h2>Implicações para políticas públicas</h2>
+  <p>A alta informalidade jurídica dos templos (80% sem CNPJ) sugere que políticas de assistência social, isenção fiscal ou parceria pública que dependam de CNPJ como porta de entrada excluem sistematicamente a maioria da infraestrutura religiosa real do país — um desenho mais inclusivo reconheceria a presença física confirmada em campo, não só o registro tributário. A concentração territorial de vertentes específicas (evangélicos no Norte, espíritas em municípios ricos, umbanda no eixo RS-RJ-SP) também indica que políticas de liberdade religiosa e combate à intolerância precisam de desenho regionalizado — o problema de reconhecimento que uma religião afro-brasileira enfrenta na Bahia, onde tem raízes profundas mas ainda sofre perseguição, é diferente do que enfrenta em municípios onde é presença recente e minoritária. E o forte gradiente de renda por composição religiosa é, no mínimo, um lembrete de que a distribuição religiosa não é uma variável neutra em pesquisas sobre desigualdade — ela carrega, ela mesma, sinal socioeconômico substancial.</p>
+
+  <div class="pager">
+    <a class="prev" href="35-transporte-mobilidade.html"><span class="dir">&larr; anterior</span>Transporte e Mobilidade Urbana</a>
+    <a class="next" href="../index.html"><span class="dir">próximo &rarr;</span>Voltar ao índice</a>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a href="../index.html">Índice temático</a>
+    <a href="../technical.html">Detalhes técnicos</a>
+    <a href="https://github.com/rafapolo/rodado">Repositório</a>
+    <span>Dados: fontes públicas oficiais / DuckDB</span>
+  </div>
+</footer>
+
+<script src="../assets/theme-toggle.js"></script>
+</body>
+</html>
