@@ -3,10 +3,17 @@
 
 Every active CNPJ establishment (br_me_cnpj.estabelecimentos, latest monthly
 snapshot) is matched to a real building address in the 2022 census address
-registry (br_ibge_censo_2022.cadastro_enderecos) by exact (cep, street name,
-house number). Establishments with no exact address match are dropped (no
-CEP-centroid fallback) — precision over completeness. Matched establishments
-sharing one building coordinate are collapsed into a single weighted point.
+registry (br_ibge_censo_2022.cadastro_enderecos). Matching, in order:
+  1. Exact (cep, street name, house number) after accent/article normalization.
+  2. Same street, but the house number isn't in CNEFE — interpolate its position
+     between the nearest known numbers below/above on that street (or use the
+     nearest single known edge), trusted only within INTERP_MAX_GAP numbers.
+  3. Street name itself isn't in CNEFE for that CEP — fuzzy-match it (Jaro-Winkler,
+     CEP is trusted as the anchor so a CEP's handful of candidate streets is a safe
+     search space) against CNEFE streets in the same CEP, then interpolate as above.
+Establishments with no address resolvable this way are dropped — no CEP-centroid
+fallback. Matched establishments collapsing onto the same resolved coordinate are
+combined into a single weighted point.
 
 Standalone: pure stdlib, no AI/internet dependency beyond `ssh beelink` (or
 --local against a local DuckDB file) — safe to re-run later via cron.
@@ -22,10 +29,10 @@ Output:
   docs/viz-uf/generate_uf_map.md    # per-UF geolocation coverage stats report
 """
 
+import array
 import gzip
 import json
 import os
-import struct
 import subprocess
 import sys
 from pathlib import Path
@@ -35,7 +42,23 @@ REPORT_PATH = Path("docs/viz-uf/generate_uf_map.md")
 BEELINK = os.environ.get("BEELINK_HOST", "beelink")
 DB_PATH = os.environ.get("DB_PATH", "~/rodado/basedosdados.duckdb")
 
-POINT_STRUCT = struct.Struct("<ffH")  # lng: f32, lat: f32, weight: u16
+# Struct-of-arrays layout, not array-of-structs: all n lngs (f32), then all n
+# lats (f32), then all n weights (u16) — three homogeneous, contiguous, aligned
+# blocks instead of interleaved 10-byte records. Record-level interleaving
+# can't be read back as a zero-copy typed array in JS (10 isn't a multiple of
+# 4, so most records start at a misaligned offset for Float32Array); SoA lets
+# the browser read each block directly as a typed-array view with no parsing
+# loop. `array.array` uses native byte order, which is little-endian on every
+# real deployment target (x86/ARM) and matches the JS side's `true` (little-
+# endian) DataView/TypedArray reads.
+def write_points_soa(path, pontos):
+    lngs = array.array("f", (p["lng"] for p in pontos))
+    lats = array.array("f", (p["lat"] for p in pontos))
+    weights = array.array("H", (min(p["weight"], 65535) for p in pontos))
+    with gzip.open(path, "wb", compresslevel=9) as f:
+        f.write(lngs.tobytes())
+        f.write(lats.tobytes())
+        f.write(weights.tobytes())
 
 
 def ssh_duckdb(sql):
@@ -85,6 +108,9 @@ WHERE sigla_uf = '{uf}'
   AND (ano * 100 + mes) = (SELECT am FROM latest);
 """
 
+FUZZY_SIM_THRESHOLD = 0.70
+INTERP_MAX_GAP = 100  # house numbers; caps both interpolation gaps and edge extrapolation
+
 PONTOS_SQL = """
 SET enable_progress_bar = false;
 WITH latest AS (
@@ -93,7 +119,7 @@ WITH latest AS (
 cnefe AS (
   SELECT
     cep,
-    upper(trim(nome_logradouro)) AS log_norm,
+    trim(regexp_replace(upper(trim(strip_accents(nome_logradouro))), '\\b(DA|DE|DO|DOS|DAS)\\b', '', 'g')) AS log_norm,
     TRY_CAST(regexp_replace(numero_logradouro, '[^0-9]', '') AS INTEGER) AS num_norm,
     AVG(TRY_CAST(latitude AS DOUBLE)) AS lat,
     AVG(TRY_CAST(longitude AS DOUBLE)) AS lng
@@ -102,22 +128,87 @@ cnefe AS (
   GROUP BY 1, 2, 3
   HAVING num_norm IS NOT NULL
 ),
+cnefe_streets AS (
+  SELECT DISTINCT cep, log_norm FROM cnefe
+),
 estab AS (
   SELECT
+    row_number() OVER () AS rid,
     cep,
-    upper(trim(logradouro)) AS log_norm,
+    trim(regexp_replace(upper(trim(strip_accents(logradouro))), '\\b(DA|DE|DO|DOS|DAS)\\b', '', 'g')) AS log_norm,
     TRY_CAST(regexp_replace(numero, '[^0-9]', '') AS INTEGER) AS num_norm
   FROM br_me_cnpj.estabelecimentos
   WHERE sigla_uf = '{uf}'
     AND situacao_cadastral = '2'
     AND (ano * 100 + mes) = (SELECT am FROM latest)
+),
+-- tier 1: street name matches CNEFE exactly (after accent/article normalization)
+street_ok AS (
+  SELECT e.rid, e.cep, e.log_norm AS street_used, e.num_norm
+  FROM estab e JOIN cnefe_streets cs ON e.cep = cs.cep AND e.log_norm = cs.log_norm
+),
+-- tier 2: CEP is trusted, but street name is fuzzy-matched (typos/variants) among
+-- CNEFE streets in that same CEP, since a CEP only has a handful of candidate streets
+street_fuzzy AS (
+  SELECT e.rid, e.cep, cs.log_norm AS street_used, e.num_norm,
+    row_number() OVER (PARTITION BY e.rid ORDER BY jaro_winkler_similarity(e.log_norm, cs.log_norm) DESC) AS rn,
+    jaro_winkler_similarity(e.log_norm, cs.log_norm) AS sim
+  FROM estab e
+  LEFT JOIN street_ok so ON e.rid = so.rid
+  JOIN cnefe_streets cs ON e.cep = cs.cep
+  WHERE so.rid IS NULL
+  QUALIFY rn = 1 AND sim >= {fuzzy_threshold}
+),
+candidates AS (
+  SELECT rid, cep, street_used, num_norm FROM street_ok
+  UNION ALL
+  SELECT rid, cep, street_used, num_norm FROM street_fuzzy
+),
+-- for each candidate, find the nearest known house numbers below and above the
+-- target on that (cep, street) — exact match if the number itself is known
+interp AS (
+  SELECT c.rid, c.num_norm AS target,
+    lo.num_norm AS lo_num, lo.lat AS lo_lat, lo.lng AS lo_lng,
+    hi.num_norm AS hi_num, hi.lat AS hi_lat, hi.lng AS hi_lng
+  FROM candidates c
+  LEFT JOIN LATERAL (
+    SELECT num_norm, lat, lng FROM cnefe cn
+    WHERE cn.cep = c.cep AND cn.log_norm = c.street_used AND cn.num_norm <= c.num_norm
+    ORDER BY cn.num_norm DESC LIMIT 1
+  ) lo ON true
+  LEFT JOIN LATERAL (
+    SELECT num_norm, lat, lng FROM cnefe cn
+    WHERE cn.cep = c.cep AND cn.log_norm = c.street_used AND cn.num_norm >= c.num_norm
+    ORDER BY cn.num_norm ASC LIMIT 1
+  ) hi ON true
+),
+-- linearly interpolate position between the bracketing known numbers (or use the
+-- single known edge point), only trusted within INTERP_MAX_GAP house numbers —
+-- beyond that, house-number spacing is too irregular to assume a straight line
+resolved AS (
+  SELECT rid,
+    CASE
+      WHEN lo_num IS NOT NULL AND hi_num IS NOT NULL AND hi_num != lo_num AND (hi_num - lo_num) <= {interp_max_gap}
+        THEN lo_lat + (hi_lat - lo_lat) * ((target - lo_num)::DOUBLE / (hi_num - lo_num))
+      WHEN lo_num IS NOT NULL AND hi_num IS NOT NULL AND hi_num = lo_num THEN lo_lat
+      WHEN lo_num IS NOT NULL AND (hi_num IS NULL OR hi_num - lo_num > {interp_max_gap}) AND (target - lo_num) <= {interp_max_gap} THEN lo_lat
+      WHEN hi_num IS NOT NULL AND (lo_num IS NULL OR hi_num - lo_num > {interp_max_gap}) AND (hi_num - target) <= {interp_max_gap} THEN hi_lat
+      ELSE NULL
+    END AS lat,
+    CASE
+      WHEN lo_num IS NOT NULL AND hi_num IS NOT NULL AND hi_num != lo_num AND (hi_num - lo_num) <= {interp_max_gap}
+        THEN lo_lng + (hi_lng - lo_lng) * ((target - lo_num)::DOUBLE / (hi_num - lo_num))
+      WHEN lo_num IS NOT NULL AND hi_num IS NOT NULL AND hi_num = lo_num THEN lo_lng
+      WHEN lo_num IS NOT NULL AND (hi_num IS NULL OR hi_num - lo_num > {interp_max_gap}) AND (target - lo_num) <= {interp_max_gap} THEN lo_lng
+      WHEN hi_num IS NOT NULL AND (lo_num IS NULL OR hi_num - lo_num > {interp_max_gap}) AND (hi_num - target) <= {interp_max_gap} THEN hi_lng
+      ELSE NULL
+    END AS lng
+  FROM interp
 )
-SELECT cnefe.lng AS lng, cnefe.lat AS lat, COUNT(*) AS weight
-FROM estab
-JOIN cnefe ON estab.cep = cnefe.cep
-          AND estab.log_norm = cnefe.log_norm
-          AND estab.num_norm = cnefe.num_norm
-GROUP BY cnefe.lng, cnefe.lat;
+SELECT round(lng, 6) AS lng, round(lat, 6) AS lat, COUNT(*) AS weight
+FROM resolved
+WHERE lat IS NOT NULL AND lng IS NOT NULL
+GROUP BY round(lng, 6), round(lat, 6);
 """
 
 
@@ -125,7 +216,8 @@ def extract_uf(uf, use_ssh):
     total_rows = run_query(TOTAL_ATIVOS_SQL.format(uf=uf), use_ssh)
     n_estab_ativos = total_rows[0]["total"] if total_rows else 0
 
-    pontos = run_query(PONTOS_SQL.format(uf=uf), use_ssh)
+    sql = PONTOS_SQL.format(uf=uf, fuzzy_threshold=FUZZY_SIM_THRESHOLD, interp_max_gap=INTERP_MAX_GAP)
+    pontos = run_query(sql, use_ssh)
 
     n_estab_geolocalizados = sum(r["weight"] for r in pontos)
     n_points = len(pontos)
@@ -138,10 +230,12 @@ def extract_uf(uf, use_ssh):
         bbox = None
 
     out_path = DADOS_DIR / f"{uf.lower()}.bin.gz"
-    with gzip.open(out_path, "wb", compresslevel=9) as f:
-        for r in pontos:
-            weight = min(r["weight"], 65535)
-            f.write(POINT_STRUCT.pack(r["lng"], r["lat"], weight))
+    file_size = 0
+    if n_points:
+        write_points_soa(out_path, pontos)
+        file_size = out_path.stat().st_size
+    else:
+        out_path.unlink(missing_ok=True)
 
     match_rate = (n_estab_geolocalizados / n_estab_ativos * 100) if n_estab_ativos else 0.0
 
@@ -152,7 +246,7 @@ def extract_uf(uf, use_ssh):
         "match_rate": match_rate,
         "n_points": n_points,
         "bbox": bbox,
-        "file_size": out_path.stat().st_size,
+        "file_size": file_size,
     }
 
 
