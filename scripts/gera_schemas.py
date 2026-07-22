@@ -43,10 +43,19 @@ def get_schema(parquet_paths):
             break
     return cols
 
+# datasets de infraestrutura/teste que nao sao dado publico: nao entram no
+# catalogo nem na contagem divulgada de tabelas
+SKIP_DATASETS = {
+    "logs",
+    "test_dataset",
+    "dataset_new_arch",
+    "_local_rais_cnpj",
+}
+
 tables = []
 for ds in sorted(os.listdir(ROOT)):
     dspath = os.path.join(ROOT, ds)
-    if not os.path.isdir(dspath) or ds.startswith("."):
+    if not os.path.isdir(dspath) or ds.startswith(".") or ds in SKIP_DATASETS:
         continue
     for tbl in sorted(os.listdir(dspath)):
         tblpath = os.path.join(dspath, tbl)
@@ -124,7 +133,7 @@ def run_local():
     tables = []
     for ds in sorted(os.listdir(LOCAL_MOUNT)):
         dspath = os.path.join(LOCAL_MOUNT, ds)
-        if not os.path.isdir(dspath) or ds.startswith("."):
+        if not os.path.isdir(dspath) or ds.startswith(".") or ds in SKIP_DATASETS:
             continue
         for tbl in sorted(os.listdir(dspath)):
             tblpath = os.path.join(dspath, tbl)

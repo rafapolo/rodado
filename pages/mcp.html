@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>rodado — catálogo de dados públicos brasileiros (servidor MCP)</title>
-<meta name="description" content="782 tabelas públicas brasileiras em 190 datasets — RAIS, SIM, TSE, CGU, IBGE, INEP e outras — organizadas em 36 domínios temáticos e expostas como ferramentas de um servidor MCP real.">
+<meta name="description" content="778 tabelas públicas brasileiras em 187 datasets — RAIS, SIM, TSE, CGU, IBGE, INEP e outras — organizadas em 43 domínios temáticos e expostas como ferramentas de um servidor MCP real.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -45,17 +45,17 @@
         <span class="brand-tag">Catálogo de Dados · Brasil</span>
       </div>
       <h1 class="page-title">Catálogo de dados públicos brasileiros, exposto como servidor MCP</h1>
-      <p class="lead">Um índice temático sobre 782 tabelas públicas brasileiras — RAIS, SIM, TSE, CGU, IBGE, INEP e outras — consultáveis diretamente com <strong>DuckDB</strong>. Cada card abaixo é um tema de pesquisa; cada linha dentro dele é uma tabela consultável.</p>
+      <p class="lead">Um índice temático sobre 778 tabelas públicas brasileiras — RAIS, SIM, TSE, CGU, IBGE, INEP e outras — consultáveis diretamente com <strong>DuckDB</strong>. Cada card abaixo é um tema de pesquisa; cada linha dentro dele é uma tabela consultável.</p>
       <p class="lead-note">O catálogo inclui um conjunto crescente de fontes coletadas independentemente — sanções internacionais (UE, ONU, OFAC, OpenSanctions), ICIJ Offshore Leaks, SICAF, SINAN Violência, Consumidor.gov.br, dívida ativa da PGFN e Tribunais de Contas estaduais — ver <a href="https://github.com/rafapolo/rodado/blob/main/docs/context/schemas.json">o catálogo completo dessas fontes</a>.</p>
       <div class="header-bottom">
         <div class="stats">
           <div>
-            <div class="stat-num">36</div>
+            <div class="stat-num">43</div>
             <div class="stat-label">temas</div>
           </div>
           <div>
-            <div class="stat-num">782</div>
-            <div class="stat-label">tabelas em 190 datasets <span class="muted">· 100 destacadas abaixo</span></div>
+            <div class="stat-num">778</div>
+            <div class="stat-label">tabelas em 187 datasets <span class="muted">· 100 destacadas abaixo</span></div>
           </div>
           <div>
             <div class="stat-num">Restrito</div>
@@ -80,10 +80,10 @@
       <p class="tools-desc">Oito ferramentas MCP expõem o catálogo e o espelho DuckDB. Nomes de tabela do catálogo funcionam direto no SQL: quando não há view no banco, a consulta é reescrita automaticamente para os arquivos Parquet locais.</p>
       <div class="tools-grid">
         <ul class="tools-list">
-          <li><code>list_datasets()</code> — os 190 datasets com contagem de tabelas</li>
+          <li><code>list_datasets()</code> — os 187 datasets com contagem de tabelas</li>
           <li><code>list_tables(dataset)</code> — tabelas de um dataset, com sugestões de nome</li>
           <li><code>describe_table(tabela)</code> — colunas, tipos, descrições e caminho Parquet</li>
-          <li><code>search_tables(consulta)</code> — busca semântica em português sobre as 782 tabelas</li>
+          <li><code>search_tables(consulta)</code> — busca semântica em português sobre as 778 tabelas</li>
           <li><code>get_join_keys(coluna?)</code> — chaves de junção documentadas entre datasets</li>
           <li><code>run_sql(sql)</code> — SQL somente-leitura (SELECT/WITH) no espelho DuckDB</li>
           <li><code>consultar_cnpj(cnpj)</code> — empresa, estabelecimentos e sócios pela base da Receita</li>
@@ -646,6 +646,111 @@
             <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Religião × Renda:</strong> municípios menos católicos pagam 58% mais em salário formal</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Espiritismo × Renda:</strong> gradiente de 60% entre extremos de proporção espírita</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Umbanda × Raça:</strong> RS tem 3x mais umbanda que BA com um terço da população negra</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Evangélico × Região:</strong> PI e AC têm composição racial idêntica e proporções evangélicas opostas</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Templo × CNPJ:</strong> 80% dos templos operam sem registro empresarial formal</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Templo × Censo:</strong> 1 em 4 templos só é identificado pelo nome anotado em campo</span></li></ul>
           </div>
         </section>
+        <section class="server-card" data-category="Desigualdade &amp; Sociedade" data-search="sanções, offshore e arquitetura da impunidade empresarial desigualdade &amp; sociedade global_icij_offshoreleaks.entities  global_opensanctions.entities  br_tcu_inidoneos.empresas  br_comprasgov_sicaf.fornecedores  br_pgfn_dividaativa.divida offshore × jurisdição 70% das estruturas brasileiras em panamá e ilhas virgens britânicas sicaf × tcu 957.885 fornecedores contra 93 empresas banidas — 0,01% fgts × concentração 1% dos devedores responde por 45,8% de r$ 67,7 bilhões dívida × judicialização 35,9% das inscrições nunca viraram ação judicial nevada × caribe um estado dos eua recebe mais offshore brasileira que seicheles">
+          <div class="card-head">
+            <div class="card-title-wrap">
+              <span class="card-icon"><i class="fa-solid fa-scale-balanced"></i></span>
+              <h2 class="card-title"><a class="card-title-link" href="temas/37-sancoes-offshore.html"><span class="card-num">37</span>Sanções, Offshore e Arquitetura da Impunidade Empresarial</a></h2>
+            </div>
+            <span class="card-badge">5 tabelas</span>
+          </div>
+          <div class="card-category">DESIGUALDADE &AMP; SOCIEDADE</div>
+          <div class="card-id-row"><code class="card-id">global_icij_offshoreleaks.entities, global_opensanctions.entities, br_tcu_inidoneos.empresas, br_comprasgov_sicaf.fornecedores, br_pgfn_dividaativa.divida</code></div>
+          <p class="card-desc">O vazamento Offshore Leaks em <code>global_icij_offshoreleaks.entities</code> registra 814.344 entidades, das quais 1.532 com vínculo brasileiro — Panamá e Ilhas Virgens Britânicas concentram 70%. <code>br_comprasgov_sicaf.fornecedores</code> tem 957.885 empresas habilitadas a vender para o Estado contra apenas 93 declaradas inidôneas em <code>br_tcu_inidoneos</code>. E <code>br_pgfn_dividaativa.divida</code> soma R$ 67,7 bilhões de FGTS não pago em 532.707 inscrições, com 45,8% do valor concentrado em 1% dos devedores.</p>          <div class="card-cruz-block">
+            <div class="card-cruz-heading">Cruzamentos e Interações</div>
+            <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Offshore × Jurisdição:</strong> 70% das estruturas brasileiras em Panamá e Ilhas Virgens Britânicas</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>SICAF × TCU:</strong> 957.885 fornecedores contra 93 empresas banidas — 0,01%</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>FGTS × Concentração:</strong> 1% dos devedores responde por 45,8% de R$ 67,7 bilhões</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Dívida × Judicialização:</strong> 35,9% das inscrições nunca viraram ação judicial</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Nevada × Caribe:</strong> um estado dos EUA recebe mais offshore brasileira que Seicheles</span></li></ul>
+          </div>
+        </section>
+        <section class="server-card" data-category="Educação &amp; Ciência" data-search="educação básica, alfabetização e comparação internacional educação &amp; ciência world_oecd_pisa.student  br_inep_avaliacao_alfabetizacao.meta_alfabetizacao_brasil  br_inep_educacao_especial.brasil_taxa_rendimento  world_iea_timss.school_context_grade_4  world_iea_pirls.student_achievement pisa × classe o quartil mais rico do brasil fica abaixo da média da ocde brasil × ocde 87 pontos de defasagem em matemática, cerca de três anos de escolaridade alfabetização × ritmo +10,1 p.p. em dois anos na rede pública educação especial × etapa reprovação de 10,7% na alfabetização contra 3,8% no médio abandono × idade de 1,4% nos anos iniciais para 4,5% no ensino médio">
+          <div class="card-head">
+            <div class="card-title-wrap">
+              <span class="card-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+              <h2 class="card-title"><a class="card-title-link" href="temas/38-educacao-aprendizagem.html"><span class="card-num">38</span>Educação Básica, Alfabetização e Comparação Internacional</a></h2>
+            </div>
+            <span class="card-badge">5 tabelas</span>
+          </div>
+          <div class="card-category">EDUCAÇÃO &AMP; CIÊNCIA</div>
+          <div class="card-id-row"><code class="card-id">world_oecd_pisa.student, br_inep_avaliacao_alfabetizacao.meta_alfabetizacao_brasil, br_inep_educacao_especial.brasil_taxa_rendimento, world_iea_timss.school_context_grade_4, world_iea_pirls.student_achievement</code></div>
+          <p class="card-desc">O PISA em <code>world_oecd_pisa.student</code> permite cruzar <code>plausible_value_1_mathematics</code> com <code>index_economic_social_cultural_status</code>: o quartil mais rico do Brasil tira 425 contra média de 465 da OCDE. <code>br_inep_avaliacao_alfabetizacao</code> mostra a rede pública saindo de 55,9% para 66,0% de crianças alfabetizadas na idade certa entre 2023 e 2025, e <code>br_inep_educacao_especial.brasil_taxa_rendimento</code> revela reprovação de 10,7% na alfabetização contra 3,8% no médio.</p>          <div class="card-cruz-block">
+            <div class="card-cruz-heading">Cruzamentos e Interações</div>
+            <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>PISA × Classe:</strong> o quartil mais rico do Brasil fica abaixo da média da OCDE</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Brasil × OCDE:</strong> 87 pontos de defasagem em matemática, cerca de três anos de escolaridade</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Alfabetização × Ritmo:</strong> +10,1 p.p. em dois anos na rede pública</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Educação especial × Etapa:</strong> reprovação de 10,7% na alfabetização contra 3,8% no médio</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Abandono × Idade:</strong> de 1,4% nos anos iniciais para 4,5% no ensino médio</span></li></ul>
+          </div>
+        </section>
+        <section class="server-card" data-category="Política, Justiça &amp; Segurança" data-search="justiça, tribunais de contas e custo do judiciário política, justiça &amp; segurança br_cnj_estatisticas_poder_judiciario.recursos_financeiros  br_cnj_improbidade_administrativa.improbidade  br_stj_dadosabertos.processos  br_tcu_dadosabertos.acordaos justiça × pessoal 92% da despesa é folha, sobram 8% para todo o resto custo × território r$ 989 por habitante no df contra r$ 143 no ceará — 6,9x magistrado × servidor 13 servidores e 3 terceirizados por magistrado gasto alto × folha alta o maior gasto per capita é o que menos sobra fora da folha (3%) densidade × custo unitário estados pouco povoados custam mais por habitante">
+          <div class="card-head">
+            <div class="card-title-wrap">
+              <span class="card-icon"><i class="fa-solid fa-gavel"></i></span>
+              <h2 class="card-title"><a class="card-title-link" href="temas/39-justica-tribunais.html"><span class="card-num">39</span>Justiça, Tribunais de Contas e Custo do Judiciário</a></h2>
+            </div>
+            <span class="card-badge">4 tabelas</span>
+          </div>
+          <div class="card-category">POLÍTICA, JUSTIÇA &AMP; SEGURANÇA</div>
+          <div class="card-id-row"><code class="card-id">br_cnj_estatisticas_poder_judiciario.recursos_financeiros, br_cnj_improbidade_administrativa.improbidade, br_stj_dadosabertos.processos, br_tcu_dadosabertos.acordaos</code></div>
+          <p class="card-desc">O CNJ em <code>br_cnj_estatisticas_poder_judiciario.recursos_financeiros</code> detalha, tribunal a tribunal, <code>proporcao_despesa_rh_dtj</code> e <code>despesa_total_justica_pc</code>: 92,0% de tudo que a Justiça estadual gasta é folha, e o custo por habitante varia de R$ 143 no Ceará a R$ 989 no Distrito Federal. A estrutura são 41.664 magistrados, 526.770 servidores e 128.498 terceirizados — cerca de 13 servidores por magistrado.</p>          <div class="card-cruz-block">
+            <div class="card-cruz-heading">Cruzamentos e Interações</div>
+            <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Justiça × Pessoal:</strong> 92% da despesa é folha, sobram 8% para todo o resto</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Custo × Território:</strong> R$ 989 por habitante no DF contra R$ 143 no Ceará — 6,9x</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Magistrado × Servidor:</strong> 13 servidores e 3 terceirizados por magistrado</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Gasto alto × Folha alta:</strong> o maior gasto per capita é o que menos sobra fora da folha (3%)</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Densidade × Custo unitário:</strong> estados pouco povoados custam mais por habitante</span></li></ul>
+          </div>
+        </section>
+        <section class="server-card" data-category="Estado &amp; Políticas Públicas" data-search="federalismo fiscal e capacidade financeira dos municípios estado &amp; políticas públicas br_firjan_ifgf.ranking  br_tesouro_capag.municipios  br_tesouro_capag.estados  br_siop_orcamento.despesa  br_transferegov.convenios sc × se 2,4 vezes de diferença na gestão fiscal municipal média ranking × região os oito últimos colocados são todos do norte e nordeste gestão fiscal × pandemia o índice subiu de 0,546 para 0,625 entre 2020 e 2022 escala × custo fixo 5.570 municípios replicam estrutura administrativa mínima transferência × autonomia a melhora fiscal acompanha o repasse federal, não a gestão local">
+          <div class="card-head">
+            <div class="card-title-wrap">
+              <span class="card-icon"><i class="fa-solid fa-building-columns"></i></span>
+              <h2 class="card-title"><a class="card-title-link" href="temas/40-federalismo-fiscal.html"><span class="card-num">40</span>Federalismo Fiscal e Capacidade Financeira dos Municípios</a></h2>
+            </div>
+            <span class="card-badge">5 tabelas</span>
+          </div>
+          <div class="card-category">ESTADO &AMP; POLÍTICAS PÚBLICAS</div>
+          <div class="card-id-row"><code class="card-id">br_firjan_ifgf.ranking, br_tesouro_capag.municipios, br_tesouro_capag.estados, br_siop_orcamento.despesa, br_transferegov.convenios</code></div>
+          <p class="card-desc">O índice Firjan em <code>br_firjan_ifgf.ranking</code> mede <code>indice_firjan_gestao_fiscal</code> nos 5.568 municípios: a média nacional subiu de 0,546 em 2020 para 0,625 em 2022, mas Santa Catarina (0,853) tem gestão 2,4 vezes melhor que Sergipe (0,359), e os oito últimos colocados são todos do Norte e Nordeste. <code>br_tesouro_capag</code> complementa com a classificação de capacidade de pagamento de estados e municípios.</p>          <div class="card-cruz-block">
+            <div class="card-cruz-heading">Cruzamentos e Interações</div>
+            <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>SC × SE:</strong> 2,4 vezes de diferença na gestão fiscal municipal média</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Ranking × Região:</strong> os oito últimos colocados são todos do Norte e Nordeste</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Gestão fiscal × Pandemia:</strong> o índice subiu de 0,546 para 0,625 entre 2020 e 2022</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Escala × Custo fixo:</strong> 5.570 municípios replicam estrutura administrativa mínima</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Transferência × Autonomia:</strong> a melhora fiscal acompanha o repasse federal, não a gestão local</span></li></ul>
+          </div>
+        </section>
+        <section class="server-card" data-category="Saúde" data-search="nutrição, preço de medicamentos e acesso à saúde saúde br_anvisa_cmed.precos  br_ms_sisvan.microdados  br_saude_farmaciapopular.medicamentos  br_saude_bps.compras  br_ibge_pof.caracteristicas_dieta_2017 receita × preço exigir prescrição quase triplica o preço mediano restrição × preço tarja vermelha sob restrição custa 3,9x o remédio de venda livre tarja preta × patente o controle máximo é mais barato que a prescrição comum mercado × prescrição 71,8% das apresentações reguladas exigem receita acesso × consulta a primeira barreira ao remédio é conseguir a receita">
+          <div class="card-head">
+            <div class="card-title-wrap">
+              <span class="card-icon"><i class="fa-solid fa-pills"></i></span>
+              <h2 class="card-title"><a class="card-title-link" href="temas/41-nutricao-medicamentos.html"><span class="card-num">41</span>Nutrição, Preço de Medicamentos e Acesso à Saúde</a></h2>
+            </div>
+            <span class="card-badge">5 tabelas</span>
+          </div>
+          <div class="card-category">SAÚDE</div>
+          <div class="card-id-row"><code class="card-id">br_anvisa_cmed.precos, br_ms_sisvan.microdados, br_saude_farmaciapopular.medicamentos, br_saude_bps.compras, br_ibge_pof.caracteristicas_dieta_2017</code></div>
+          <p class="card-desc">A CMED em <code>br_anvisa_cmed.precos</code> fixa o teto de preço de 51.140 apresentações com <code>tarja</code>, <code>substancia</code> e <code>pmc_0_pct</code>: o remédio de venda livre tem mediana de R$ 36,35 contra R$ 103,76 da tarja vermelha e R$ 143,24 da tarja vermelha sob restrição. Curiosamente a tarja preta, de controle máximo, custa menos (R$ 81,88) que a prescrição comum — o preço segue a patente, não o risco sanitário.</p>          <div class="card-cruz-block">
+            <div class="card-cruz-heading">Cruzamentos e Interações</div>
+            <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Receita × Preço:</strong> exigir prescrição quase triplica o preço mediano</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Restrição × Preço:</strong> tarja vermelha sob restrição custa 3,9x o remédio de venda livre</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Tarja preta × Patente:</strong> o controle máximo é mais barato que a prescrição comum</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Mercado × Prescrição:</strong> 71,8% das apresentações reguladas exigem receita</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Acesso × Consulta:</strong> a primeira barreira ao remédio é conseguir a receita</span></li></ul>
+          </div>
+        </section>
+        <section class="server-card" data-category="Território &amp; Ambiente" data-search="água, clima e biodiversidade ameaçada território &amp; ambiente br_mma_extincao.fauna_ameacada  br_mma_extincao.flora_ameacada  br_ana_reservatorios.reservatorio  br_ana_telemetria.estacao  br_inmet_bdmep.microdados  br_inpe_queimadas.focos flora × fauna 84% das espécies ameaçadas do brasil são plantas peixe × mamífero 388 espécies de peixes ameaçadas contra 103 mamíferos visibilidade × risco os grupos mais ameaçados têm a menor cobertura pública crítico × extinto 322 em perigo crítico e 46 já perdidas ou possivelmente perdidas taxonomia × subestimação não se declara ameaçada a espécie ainda não descrita">
+          <div class="card-head">
+            <div class="card-title-wrap">
+              <span class="card-icon"><i class="fa-solid fa-leaf"></i></span>
+              <h2 class="card-title"><a class="card-title-link" href="temas/42-agua-clima-biodiversidade.html"><span class="card-num">42</span>Água, Clima e Biodiversidade Ameaçada</a></h2>
+            </div>
+            <span class="card-badge">6 tabelas</span>
+          </div>
+          <div class="card-category">TERRITÓRIO &AMP; AMBIENTE</div>
+          <div class="card-id-row"><code class="card-id">br_mma_extincao.fauna_ameacada, br_mma_extincao.flora_ameacada, br_ana_reservatorios.reservatorio, br_ana_telemetria.estacao, br_inmet_bdmep.microdados, br_inpe_queimadas.focos</code></div>
+          <p class="card-desc">A lista oficial em <code>br_mma_extincao</code> reúne 7.676 espécies ameaçadas — 6.418 de flora e 1.258 de fauna, ou cinco plantas para cada animal. Dentro da fauna, <code>grupo</code> mostra peixes liderando com 388 espécies contra apenas 103 mamíferos, e <code>categoria</code> registra 322 em perigo crítico, 6 extintas e 36 possivelmente extintas. <code>br_ana_reservatorios</code> e <code>br_inmet_bdmep</code> completam o monitoramento hídrico e climático.</p>          <div class="card-cruz-block">
+            <div class="card-cruz-heading">Cruzamentos e Interações</div>
+            <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Flora × Fauna:</strong> 84% das espécies ameaçadas do Brasil são plantas</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Peixe × Mamífero:</strong> 388 espécies de peixes ameaçadas contra 103 mamíferos</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Visibilidade × Risco:</strong> os grupos mais ameaçados têm a menor cobertura pública</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Crítico × Extinto:</strong> 322 em perigo crítico e 46 já perdidas ou possivelmente perdidas</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Taxonomia × Subestimação:</strong> não se declara ameaçada a espécie ainda não descrita</span></li></ul>
+          </div>
+        </section>
+        <section class="server-card" data-category="Desigualdade &amp; Sociedade" data-search="cultura, esporte e desempenho internacional desigualdade &amp; sociedade world_olympedia_olympics.game_medal_tally  world_olympedia_olympics.athlete_bio  world_sofascore_competicoes_futebol.partidas  world_imdb_movies.top_movies_per_year  world_ampas_oscar.premios brasil × eua 3.009 medalhas contra 150 — vinte vezes de diferença conversão × ouro o brasil converte 24,7% das medalhas em ouro contra 39,7% dos eua população × pódio frança e itália têm um terço da população e seis vezes mais medalhas talento × estrutura chegar ao pódio depende do atleta; ao ouro, do sistema pib × resultado estar entre as dez maiores economias não se traduz em pódio olimpiadas olimpico olimpicas jogos olimpicos medalhas medalha ouro prata bronze esporte futebol cinema oscar filmes atleta podio">
+          <div class="card-head">
+            <div class="card-title-wrap">
+              <span class="card-icon"><i class="fa-solid fa-medal"></i></span>
+              <h2 class="card-title"><a class="card-title-link" href="temas/43-cultura-esporte.html"><span class="card-num">43</span>Cultura, Esporte e Desempenho Internacional</a></h2>
+            </div>
+            <span class="card-badge">5 tabelas</span>
+          </div>
+          <div class="card-category">DESIGUALDADE &AMP; SOCIEDADE</div>
+          <div class="card-id-row"><code class="card-id">world_olympedia_olympics.game_medal_tally, world_olympedia_olympics.athlete_bio, world_sofascore_competicoes_futebol.partidas, world_imdb_movies.top_movies_per_year, world_ampas_oscar.premios</code></div>
+          <p class="card-desc">O histórico completo em <code>world_olympedia_olympics.game_medal_tally</code> soma <code>gold</code> e <code>total</code> por país desde 1896: o Brasil tem 150 medalhas e 37 ouros contra 3.009 e 1.195 dos Estados Unidos. A taxa de conversão em ouro brasileira é de 24,7%, a menor entre as potências comparadas (EUA 39,7%), e França e Itália, com um terço da população, acumulam seis vezes mais pódios.</p>          <div class="card-cruz-block">
+            <div class="card-cruz-heading">Cruzamentos e Interações</div>
+            <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Brasil × EUA:</strong> 3.009 medalhas contra 150 — vinte vezes de diferença</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Conversão × Ouro:</strong> o Brasil converte 24,7% das medalhas em ouro contra 39,7% dos EUA</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>População × Pódio:</strong> França e Itália têm um terço da população e seis vezes mais medalhas</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Talento × Estrutura:</strong> chegar ao pódio depende do atleta; ao ouro, do sistema</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>PIB × Resultado:</strong> estar entre as dez maiores economias não se traduz em pódio</span></li></ul>
+          </div>
+        </section>
     </main>
 
     <footer class="site-footer">
@@ -680,12 +785,16 @@
   </div>
 </div>
 <script>
+// busca ignora acento: "educacao" e "educação" devem achar os mesmos temas
+function stripAccents(s) {
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
 function applyFilters() {
   const category = document.getElementById('categoryFilter').value;
-  const query = document.getElementById('toolSearch').value.trim().toLowerCase();
+  const query = stripAccents(document.getElementById('toolSearch').value.trim().toLowerCase());
   document.querySelectorAll('.server-card').forEach(card => {
     const matchesCategory = !category || card.dataset.category === category;
-    const matchesSearch = !query || card.dataset.search.includes(query);
+    const matchesSearch = !query || stripAccents(card.dataset.search).includes(query);
     card.style.display = (matchesCategory && matchesSearch) ? '' : 'none';
   });
 }

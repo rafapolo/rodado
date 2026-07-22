@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nutrition, Drug Prices and Access to Health — rodado</title>
+<meta name="description" content="Prescription-only medicines cost three times more than over-the-counter ones — and restricted prescription drugs, almost four times.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="../assets/mcp-theme.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="../en.html">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="../en.html#themes">Topics</a>
+        <a href="../mcp-en.html">MCP</a>
+        <a href="https://xn--2dk.xyz/dataviz/">DataViz Hub</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <a href="../temas/41-nutricao-medicamentos.html" class="lang-link">PT</a>
+          <span class="lang-sep">/</span>
+          <span class="lang-current">EN</span>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <a class="voltar" href="../en.html">&larr; back to overview</a>
+
+  <svg class="tema-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21c-4-2-7-5-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 12c0 4-3 7-7 9Z"/><path d="M12 9V4"/></svg>
+  <p class="eyebrow">Theme 41 of 43</p>
+  <h1>Nutrition, Drug Prices and Access to Health</h1>
+  <p class="dek">Prescription-only medicines cost three times more than over-the-counter ones — and restricted prescription drugs, almost four times.</p>
+
+  <p class="lede">CMED, the chamber regulating drug prices in Brazil, publishes the price ceiling for every presentation sold in the country: 51,140 records with substance, laboratory, therapeutic class and maximum consumer price at each state-VAT band. It is one of the few cases in which the Brazilian state sets the price of a private consumer good, and therefore an unusual portrait of how regulation, prescription requirements and market structure combine to determine what staying healthy costs. Cross-referenced with SISVAN nutritional surveillance data and the Popular Pharmacy programme, the database allows health access to be read through price, not only through service supply.</p>
+
+  <h2>The more restricted the drug, the more expensive it is</h2>
+  <p>Classifying the 51,140 price records by their control band — Brazil's system indicating the degree of sales control — the gradient is sharp and monotonic. Unbanded, over-the-counter medicines have a median ceiling price of R$ 36.35. Red-band drugs, which require a prescription, cost R$ 103.76: 2.9 times more. Red-band drugs under special restriction reach R$ 143.24, nearly four times the counter medicine. The black band, reserved for psychotropics and narcotics under the strictest control, sits at R$ 81.88, below the ordinary red band — a sign that price is a function not only of control but also of molecule age and generic availability.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Maximum consumer price by control band, median (CMED/ANVISA)</caption>
+      <thead><tr><th>Band</th><th>Records</th><th>Median price</th><th>Ratio vs. unbanded</th></tr></thead>
+      <tbody>
+        <tr><td>Unbanded (over the counter)</td><td>3,644</td><td>R$ 36.35</td><td>1.0x</td></tr>
+        <tr><td>Black band</td><td>1,426</td><td>R$ 81.88</td><td>2.3x</td></tr>
+        <tr><td>Red band</td><td>26,296</td><td>R$ 103.76</td><td>2.9x</td></tr>
+        <tr><td>Red band under restriction</td><td>10,450</td><td>R$ 143.24</td><td>3.9x</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Needing a prescription nearly triples the median price of a medicine — and special restriction nearly quadruples it.</p>
+
+  <h2>Half the regulated market is ordinary red band</h2>
+  <p>The distribution of records shows where the volume sits: 26,296 red-band presentations represent 51.4% of everything CMED regulates, against just 3,644 (7.1%) over the counter. Brazil's formal pharmaceutical market is therefore overwhelmingly a prescription market — meaning access depends not only on income but on a prior medical appointment, and therefore on the public system's or insurer's capacity to schedule one. Price is the second barrier; the prescription is the first.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Composition of the regulated market by band</caption>
+      <thead><tr><th>Band</th><th>Records</th><th>% of total</th></tr></thead>
+      <tbody>
+        <tr><td>Red band</td><td>26,296</td><td>51.4%</td></tr>
+        <tr><td>Red band under restriction</td><td>10,450</td><td>20.4%</td></tr>
+        <tr><td>Unclassified</td><td>9,324</td><td>18.2%</td></tr>
+        <tr><td>Unbanded</td><td>3,644</td><td>7.1%</td></tr>
+        <tr><td>Black band</td><td>1,426</td><td>2.8%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Seven of every ten regulated presentations require a prescription — in Brazil, access to medicine runs first through access to a doctor.</p>
+
+  <h2>Black-band drugs are cheaper than red — and that says something about patents</h2>
+  <p>The counterintuitive finding is that the black band, the strictest control level, has a lower median price (R$ 81.88) than the ordinary red band (R$ 103.76). Tighter sanitary control does not translate into higher price because the two variables measure different things: the band measures abuse and dependency risk, while price reflects patent life, development cost and generic competition. Many black-band psychotropics are old molecules with expired patents and multiple generics available; the red band, by contrast, concentrates recent launches still under exclusivity.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Median price and level of sanitary control</caption>
+      <thead><tr><th>Control level</th><th>Band</th><th>Median price</th></tr></thead>
+      <tbody>
+        <tr><td>Maximum (psychotropics)</td><td>Black</td><td>R$ 81.88</td></tr>
+        <tr><td>High (special restriction)</td><td>Restricted red</td><td>R$ 143.24</td></tr>
+        <tr><td>Medium (prescription)</td><td>Red</td><td>R$ 103.76</td></tr>
+        <tr><td>None</td><td>Unbanded</td><td>R$ 36.35</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Brazil's most tightly controlled medicine costs less than an ordinary prescription drug — price follows the patent, not the sanitary risk.</p>
+
+  <div class="callout">
+    <h3>Powerful cross-references</h3>
+    <ul>
+      <li><strong>Prescription × Price:</strong> requiring a prescription nearly triples the median drug price.</li>
+      <li><strong>Restriction × Price:</strong> restricted red band costs 3.9x the over-the-counter medicine.</li>
+      <li><strong>Black band × Patent:</strong> the maximum control level is cheaper than ordinary prescription.</li>
+      <li><strong>Market × Prescription:</strong> 71.8% of regulated presentations require a doctor's prescription.</li>
+      <li><strong>Access × Appointment:</strong> the first barrier to medicine is not price, it is obtaining the prescription.</li>
+      <li><strong>Generic × Old molecule:</strong> cheap psychotropics indicate expired patents, not loose control.</li>
+    </ul>
+  </div>
+
+  <h2>Explanatory hypotheses</h2>
+  <p>The price gradient by band probably measures not the cost of producing the medicine but the competitive structure of each segment: over-the-counter products compete on supermarket and pharmacy shelves, with elastic demand and substitutable brands, while prescription products compete for the doctor's pen, with inelastic demand and substitution limited by the prescription itself. That explains why the black band, dominated by old generic molecules, escapes the pattern. The practical result is that Brazil's regulatory design — tying access to prescription — simultaneously creates real sanitary protection and a cumulative economic barrier: appointment, travel and higher price.</p>
+
+  <h2>Public policy implications</h2>
+  <p>Expanding the list of prescription-exempt medicines to old molecules with well-established safety profiles would reduce the double barrier of appointment plus price, without meaningful sanitary loss. Broadening generic coverage in red-band classes, where most of the market and the largest price premium sit, would have direct distributive effect. And routinely publishing median price by therapeutic class, rather than only the ceiling per presentation, would allow monitoring of whether CMED price regulation actually contains cost or merely ratifies prevailing prices.</p>
+
+  <div class="pager">
+    <a class="prev" href="40-federalismo-fiscal.html"><span class="dir">&larr; previous</span>Fiscal Federalism and Municipal Financial Capacity</a>
+    <a class="next" href="42-agua-clima-biodiversidade.html"><span class="dir">next &rarr;</span>Water, Climate and Threatened Biodiversity</a>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a href="../en.html">Thematic index</a>
+    <a href="../technical.html">Technical appendix</a>
+    <a href="https://github.com/rafapolo/rodado">Repository</a>
+  </div>
+</footer>
+
+<script src="../assets/theme-toggle.js"></script>
+</body>
+</html>
