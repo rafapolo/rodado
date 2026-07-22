@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>rodado — MCP server for Brazilian public data</title>
-<meta name="description" content="782 Brazilian public tables across 190 datasets (RAIS, SIM, TSE, CGU, IBGE, INEP...) organized into 36 thematic domains and exposed as tools on a real MCP server.">
+<meta name="description" content="778 Brazilian public tables across 187 datasets (RAIS, SIM, TSE, CGU, IBGE, INEP...) organized into 43 thematic domains and exposed as tools on a real MCP server.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -45,17 +45,17 @@
         <span class="brand-tag">Data Catalog · Brazil</span>
       </div>
       <h1 class="page-title">Brazilian public-data catalog, served as an MCP server</h1>
-      <p class="lead">A thematic index over 782 Brazilian public tables — RAIS, SIM, TSE, CGU, IBGE, INEP and more — queryable directly with <strong>DuckDB</strong>. Each card below is a research theme; each row inside it is a table you can query.</p>
+      <p class="lead">A thematic index over 778 Brazilian public tables — RAIS, SIM, TSE, CGU, IBGE, INEP and more — queryable directly with <strong>DuckDB</strong>. Each card below is a research theme; each row inside it is a table you can query.</p>
       <p class="lead-note">The catalog includes a growing set of independently-collected sources — international sanctions lists (EU, UN, OFAC, OpenSanctions), ICIJ Offshore Leaks, SICAF, SINAN Violência, Consumidor.gov.br, PGFN active debt and state Courts of Accounts — see <a href="https://github.com/rafapolo/rodado/blob/main/docs/context/schemas.json">the full catalog of these sources</a>.</p>
       <div class="header-bottom">
         <div class="stats">
           <div>
-            <div class="stat-num">36</div>
+            <div class="stat-num">43</div>
             <div class="stat-label">themes</div>
           </div>
           <div>
-            <div class="stat-num">782</div>
-            <div class="stat-label">tables across 190 datasets <span class="muted">· 100 highlighted below</span></div>
+            <div class="stat-num">778</div>
+            <div class="stat-label">tables across 187 datasets <span class="muted">· 100 highlighted below</span></div>
           </div>
           <div>
             <div class="stat-num">Restricted</div>
@@ -80,10 +80,10 @@
       <p class="tools-desc">Eight MCP tools expose the catalog and the DuckDB mirror. Catalog table names work directly in SQL: when a table has no view in the database, the query is automatically rewritten against the local Parquet files.</p>
       <div class="tools-grid">
         <ul class="tools-list">
-          <li><code>list_datasets()</code> — all 190 datasets with table counts</li>
+          <li><code>list_datasets()</code> — all 187 datasets with table counts</li>
           <li><code>list_tables(dataset)</code> — a dataset's tables, with name suggestions</li>
           <li><code>describe_table(table)</code> — columns, types, descriptions and Parquet path</li>
-          <li><code>search_tables(query)</code> — semantic search over the 782 tables</li>
+          <li><code>search_tables(query)</code> — semantic search over the 778 tables</li>
           <li><code>get_join_keys(column?)</code> — documented join keys across datasets</li>
           <li><code>run_sql(sql)</code> — read-only SQL (SELECT/WITH) on the DuckDB mirror</li>
           <li><code>consultar_cnpj(cnpj)</code> — company, branches and partners from the full registry</li>
@@ -646,6 +646,111 @@
             <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Religion × Income:</strong> least-Catholic municipalities pay 58% higher formal wages</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Spiritism × Income:</strong> 60% gradient between extremes of Spiritist share</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Umbanda × Race:</strong> RS has 3x more Umbanda than BA with a third of the Black population</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Evangelical × Region:</strong> PI and AC have identical racial composition and opposite Evangelical shares</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Temple × CNPJ:</strong> 80% of temples operate without formal business registration</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Temple × Census:</strong> 1 in 4 temples is identified only by its field-recorded name</span></li></ul>
           </div>
         </section>
+        <section class="server-card" data-category="Inequality &amp; Society" data-search="sanctions, offshore structures and the architecture of corporate impunity inequality &amp; society global_icij_offshoreleaks.entities  global_opensanctions.entities  br_tcu_inidoneos.empresas  br_comprasgov_sicaf.fornecedores  br_pgfn_dividaativa.divida offshore × jurisdiction 70% of brazilian structures in panama and the british virgin islands sicaf × audit court 957,885 suppliers against 93 debarred companies — 0.01% severance × concentration 1% of debtors hold 45.8% of r$ 67.7 billion debt × litigation 35.9% of filings never became a court case nevada × caribbean a us state hosts more brazilian offshore than the seychelles">
+          <div class="card-head">
+            <div class="card-title-wrap">
+              <span class="card-icon"><i class="fa-solid fa-scale-balanced"></i></span>
+              <h2 class="card-title"><a class="card-title-link" href="temas-en/37-sancoes-offshore.html"><span class="card-num">37</span>Sanctions, Offshore Structures and the Architecture of Corporate Impunity</a></h2>
+            </div>
+            <span class="card-badge">5 tables</span>
+          </div>
+          <div class="card-category">Inequality &amp; Society</div>
+          <div class="card-id-row"><code class="card-id">global_icij_offshoreleaks.entities, global_opensanctions.entities, br_tcu_inidoneos.empresas, br_comprasgov_sicaf.fornecedores, br_pgfn_dividaativa.divida</code></div>
+          <p class="card-desc">The Offshore Leaks database in <code>global_icij_offshoreleaks.entities</code> holds 814,344 entities, 1,532 with Brazilian links — Panama and the British Virgin Islands hold 70%. <code>br_comprasgov_sicaf.fornecedores</code> lists 957,885 companies cleared to sell to the state against just 93 debarred in <code>br_tcu_inidoneos</code>. And <code>br_pgfn_dividaativa.divida</code> totals R$ 67.7 billion in unpaid severance contributions across 532,707 filings, 45.8% of the value in 1% of debtors.</p>          <div class="card-cruz-block">
+            <div class="card-cruz-heading">Cross-dataset interactions</div>
+            <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Offshore × Jurisdiction:</strong> 70% of Brazilian structures in Panama and the British Virgin Islands</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>SICAF × Audit court:</strong> 957,885 suppliers against 93 debarred companies — 0.01%</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Severance × Concentration:</strong> 1% of debtors hold 45.8% of R$ 67.7 billion</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Debt × Litigation:</strong> 35.9% of filings never became a court case</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Nevada × Caribbean:</strong> a US state hosts more Brazilian offshore than the Seychelles</span></li></ul>
+          </div>
+        </section>
+        <section class="server-card" data-category="Education &amp; Science" data-search="basic education, literacy and international comparison education &amp; science world_oecd_pisa.student  br_inep_avaliacao_alfabetizacao.meta_alfabetizacao_brasil  br_inep_educacao_especial.brasil_taxa_rendimento  world_iea_timss.school_context_grade_4  world_iea_pirls.student_achievement pisa × class brazil's richest quartile falls below the oecd average brazil × oecd an 87-point maths gap, roughly three years of schooling literacy × pace +10.1 p.p. in two years in the public network special education × stage 10.7% failure during literacy against 3.8% in secondary dropout × age from 1.4% in early primary to 4.5% in secondary">
+          <div class="card-head">
+            <div class="card-title-wrap">
+              <span class="card-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+              <h2 class="card-title"><a class="card-title-link" href="temas-en/38-educacao-aprendizagem.html"><span class="card-num">38</span>Basic Education, Literacy and International Comparison</a></h2>
+            </div>
+            <span class="card-badge">5 tables</span>
+          </div>
+          <div class="card-category">Education &amp; Science</div>
+          <div class="card-id-row"><code class="card-id">world_oecd_pisa.student, br_inep_avaliacao_alfabetizacao.meta_alfabetizacao_brasil, br_inep_educacao_especial.brasil_taxa_rendimento, world_iea_timss.school_context_grade_4, world_iea_pirls.student_achievement</code></div>
+          <p class="card-desc">PISA in <code>world_oecd_pisa.student</code> allows crossing <code>plausible_value_1_mathematics</code> with <code>index_economic_social_cultural_status</code>: Brazil's richest quartile scores 425 against an OECD average of 465. <code>br_inep_avaliacao_alfabetizacao</code> shows the public network rising from 55.9% to 66.0% of children literate at the right age between 2023 and 2025, and <code>br_inep_educacao_especial.brasil_taxa_rendimento</code> reveals 10.7% failure during literacy against 3.8% in secondary school.</p>          <div class="card-cruz-block">
+            <div class="card-cruz-heading">Cross-dataset interactions</div>
+            <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>PISA × Class:</strong> Brazil's richest quartile falls below the OECD average</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Brazil × OECD:</strong> an 87-point maths gap, roughly three years of schooling</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Literacy × Pace:</strong> +10.1 p.p. in two years in the public network</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Special education × Stage:</strong> 10.7% failure during literacy against 3.8% in secondary</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Dropout × Age:</strong> from 1.4% in early primary to 4.5% in secondary</span></li></ul>
+          </div>
+        </section>
+        <section class="server-card" data-category="Politics, Justice &amp; Security" data-search="justice, audit courts and the cost of the judiciary politics, justice &amp; security br_cnj_estatisticas_poder_judiciario.recursos_financeiros  br_cnj_improbidade_administrativa.improbidade  br_stj_dadosabertos.processos  br_tcu_dadosabertos.acordaos justice × personnel 92% of spending is payroll, 8% left for everything else cost × territory r$ 989 per inhabitant in the federal district against r$ 143 in ceará judge × staff 13 staff and 3 outsourced workers per judge high spending × high payroll the top per-capita spender has 3% left outside payroll density × unit cost sparsely populated states cost more per head">
+          <div class="card-head">
+            <div class="card-title-wrap">
+              <span class="card-icon"><i class="fa-solid fa-gavel"></i></span>
+              <h2 class="card-title"><a class="card-title-link" href="temas-en/39-justica-tribunais.html"><span class="card-num">39</span>Justice, Audit Courts and the Cost of the Judiciary</a></h2>
+            </div>
+            <span class="card-badge">4 tables</span>
+          </div>
+          <div class="card-category">Politics, Justice &amp; Security</div>
+          <div class="card-id-row"><code class="card-id">br_cnj_estatisticas_poder_judiciario.recursos_financeiros, br_cnj_improbidade_administrativa.improbidade, br_stj_dadosabertos.processos, br_tcu_dadosabertos.acordaos</code></div>
+          <p class="card-desc">The justice council in <code>br_cnj_estatisticas_poder_judiciario.recursos_financeiros</code> details, court by court, <code>proporcao_despesa_rh_dtj</code> and <code>despesa_total_justica_pc</code>: 92.0% of state-court spending is payroll, and per-capita cost ranges from R$ 143 in Ceará to R$ 989 in the Federal District. The structure is 41,664 judges, 526,770 staff and 128,498 outsourced workers — roughly 13 staff per judge.</p>          <div class="card-cruz-block">
+            <div class="card-cruz-heading">Cross-dataset interactions</div>
+            <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Justice × Personnel:</strong> 92% of spending is payroll, 8% left for everything else</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Cost × Territory:</strong> R$ 989 per inhabitant in the Federal District against R$ 143 in Ceará</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Judge × Staff:</strong> 13 staff and 3 outsourced workers per judge</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>High spending × High payroll:</strong> the top per-capita spender has 3% left outside payroll</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Density × Unit cost:</strong> sparsely populated states cost more per head</span></li></ul>
+          </div>
+        </section>
+        <section class="server-card" data-category="State &amp; Public Policy" data-search="fiscal federalism and municipal financial capacity state &amp; public policy br_firjan_ifgf.ranking  br_tesouro_capag.municipios  br_tesouro_capag.estados  br_siop_orcamento.despesa  br_transferegov.convenios sc × se a 2.4-fold difference in average municipal fiscal management ranking × region the bottom eight states are all in the north and northeast fiscal management × pandemic the index rose from 0.546 to 0.625 between 2020 and 2022 scale × fixed cost 5,570 municipalities replicate a minimum administrative structure transfers × autonomy fiscal improvement tracks federal transfers, not local management">
+          <div class="card-head">
+            <div class="card-title-wrap">
+              <span class="card-icon"><i class="fa-solid fa-building-columns"></i></span>
+              <h2 class="card-title"><a class="card-title-link" href="temas-en/40-federalismo-fiscal.html"><span class="card-num">40</span>Fiscal Federalism and Municipal Financial Capacity</a></h2>
+            </div>
+            <span class="card-badge">5 tables</span>
+          </div>
+          <div class="card-category">State &amp; Public Policy</div>
+          <div class="card-id-row"><code class="card-id">br_firjan_ifgf.ranking, br_tesouro_capag.municipios, br_tesouro_capag.estados, br_siop_orcamento.despesa, br_transferegov.convenios</code></div>
+          <p class="card-desc">The Firjan index in <code>br_firjan_ifgf.ranking</code> measures <code>indice_firjan_gestao_fiscal</code> across 5,568 municipalities: the national average rose from 0.546 in 2020 to 0.625 in 2022, but Santa Catarina (0.853) manages 2.4 times better than Sergipe (0.359), and the bottom eight states are all in the North and Northeast. <code>br_tesouro_capag</code> adds payment-capacity ratings for states and municipalities.</p>          <div class="card-cruz-block">
+            <div class="card-cruz-heading">Cross-dataset interactions</div>
+            <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>SC × SE:</strong> a 2.4-fold difference in average municipal fiscal management</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Ranking × Region:</strong> the bottom eight states are all in the North and Northeast</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Fiscal management × Pandemic:</strong> the index rose from 0.546 to 0.625 between 2020 and 2022</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Scale × Fixed cost:</strong> 5,570 municipalities replicate a minimum administrative structure</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Transfers × Autonomy:</strong> fiscal improvement tracks federal transfers, not local management</span></li></ul>
+          </div>
+        </section>
+        <section class="server-card" data-category="Health" data-search="nutrition, drug prices and access to health health br_anvisa_cmed.precos  br_ms_sisvan.microdados  br_saude_farmaciapopular.medicamentos  br_saude_bps.compras  br_ibge_pof.caracteristicas_dieta_2017 prescription × price requiring a prescription nearly triples the median price restriction × price restricted red band costs 3.9x the over-the-counter medicine black band × patent maximum control is cheaper than ordinary prescription market × prescription 71.8% of regulated presentations require a prescription access × appointment the first barrier to medicine is obtaining the prescription">
+          <div class="card-head">
+            <div class="card-title-wrap">
+              <span class="card-icon"><i class="fa-solid fa-pills"></i></span>
+              <h2 class="card-title"><a class="card-title-link" href="temas-en/41-nutricao-medicamentos.html"><span class="card-num">41</span>Nutrition, Drug Prices and Access to Health</a></h2>
+            </div>
+            <span class="card-badge">5 tables</span>
+          </div>
+          <div class="card-category">Health</div>
+          <div class="card-id-row"><code class="card-id">br_anvisa_cmed.precos, br_ms_sisvan.microdados, br_saude_farmaciapopular.medicamentos, br_saude_bps.compras, br_ibge_pof.caracteristicas_dieta_2017</code></div>
+          <p class="card-desc">CMED in <code>br_anvisa_cmed.precos</code> sets the ceiling price of 51,140 presentations with <code>tarja</code>, <code>substancia</code> and <code>pmc_0_pct</code>: over-the-counter medicines have a median of R$ 36.35 against R$ 103.76 for red band and R$ 143.24 for restricted red band. Curiously the black band, under maximum control, costs less (R$ 81.88) than ordinary prescription — price follows the patent, not the sanitary risk.</p>          <div class="card-cruz-block">
+            <div class="card-cruz-heading">Cross-dataset interactions</div>
+            <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Prescription × Price:</strong> requiring a prescription nearly triples the median price</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Restriction × Price:</strong> restricted red band costs 3.9x the over-the-counter medicine</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Black band × Patent:</strong> maximum control is cheaper than ordinary prescription</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Market × Prescription:</strong> 71.8% of regulated presentations require a prescription</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Access × Appointment:</strong> the first barrier to medicine is obtaining the prescription</span></li></ul>
+          </div>
+        </section>
+        <section class="server-card" data-category="Territory &amp; Environment" data-search="water, climate and threatened biodiversity territory &amp; environment br_mma_extincao.fauna_ameacada  br_mma_extincao.flora_ameacada  br_ana_reservatorios.reservatorio  br_ana_telemetria.estacao  br_inmet_bdmep.microdados  br_inpe_queimadas.focos flora × fauna 84% of brazil's threatened species are plants fish × mammal 388 threatened fish species against 103 mammals visibility × risk the most threatened groups get the least public coverage critical × extinct 322 critically endangered and 46 already or possibly lost taxonomy × undercount a species not yet described cannot be declared threatened">
+          <div class="card-head">
+            <div class="card-title-wrap">
+              <span class="card-icon"><i class="fa-solid fa-leaf"></i></span>
+              <h2 class="card-title"><a class="card-title-link" href="temas-en/42-agua-clima-biodiversidade.html"><span class="card-num">42</span>Water, Climate and Threatened Biodiversity</a></h2>
+            </div>
+            <span class="card-badge">6 tables</span>
+          </div>
+          <div class="card-category">Territory &amp; Environment</div>
+          <div class="card-id-row"><code class="card-id">br_mma_extincao.fauna_ameacada, br_mma_extincao.flora_ameacada, br_ana_reservatorios.reservatorio, br_ana_telemetria.estacao, br_inmet_bdmep.microdados, br_inpe_queimadas.focos</code></div>
+          <p class="card-desc">The official list in <code>br_mma_extincao</code> holds 7,676 threatened species — 6,418 plants and 1,258 animals, five plants per animal. Within fauna, <code>grupo</code> shows fish leading with 388 species against just 103 mammals, and <code>categoria</code> records 322 critically endangered, 6 extinct and 36 possibly extinct. <code>br_ana_reservatorios</code> and <code>br_inmet_bdmep</code> complete water and climate monitoring.</p>          <div class="card-cruz-block">
+            <div class="card-cruz-heading">Cross-dataset interactions</div>
+            <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Flora × Fauna:</strong> 84% of Brazil's threatened species are plants</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Fish × Mammal:</strong> 388 threatened fish species against 103 mammals</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Visibility × Risk:</strong> the most threatened groups get the least public coverage</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Critical × Extinct:</strong> 322 critically endangered and 46 already or possibly lost</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Taxonomy × Undercount:</strong> a species not yet described cannot be declared threatened</span></li></ul>
+          </div>
+        </section>
+        <section class="server-card" data-category="Inequality &amp; Society" data-search="culture, sport and international performance inequality &amp; society world_olympedia_olympics.game_medal_tally  world_olympedia_olympics.athlete_bio  world_sofascore_competicoes_futebol.partidas  world_imdb_movies.top_movies_per_year  world_ampas_oscar.premios brazil × usa 3,009 medals against 150 — a twentyfold difference conversion × gold brazil converts 24.7% of medals to gold against 39.7% for the usa population × podium france and italy have a third of the population and six times more medals talent × structure reaching the podium depends on the athlete; gold on the system gdp × result ranking among the ten largest economies does not produce podiums olympics olympic games medals medal gold silver bronze sport football cinema oscar movies athlete podium">
+          <div class="card-head">
+            <div class="card-title-wrap">
+              <span class="card-icon"><i class="fa-solid fa-medal"></i></span>
+              <h2 class="card-title"><a class="card-title-link" href="temas-en/43-cultura-esporte.html"><span class="card-num">43</span>Culture, Sport and International Performance</a></h2>
+            </div>
+            <span class="card-badge">5 tables</span>
+          </div>
+          <div class="card-category">Inequality &amp; Society</div>
+          <div class="card-id-row"><code class="card-id">world_olympedia_olympics.game_medal_tally, world_olympedia_olympics.athlete_bio, world_sofascore_competicoes_futebol.partidas, world_imdb_movies.top_movies_per_year, world_ampas_oscar.premios</code></div>
+          <p class="card-desc">The complete record in <code>world_olympedia_olympics.game_medal_tally</code> sums <code>gold</code> and <code>total</code> by country since 1896: Brazil holds 150 medals and 37 golds against 3,009 and 1,195 for the United States. Brazil's gold conversion rate is 24.7%, the lowest among comparable powers (USA 39.7%), and France and Italy, with a third of the population, accumulate six times more podiums.</p>          <div class="card-cruz-block">
+            <div class="card-cruz-heading">Cross-dataset interactions</div>
+            <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Brazil × USA:</strong> 3,009 medals against 150 — a twentyfold difference</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Conversion × Gold:</strong> Brazil converts 24.7% of medals to gold against 39.7% for the USA</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Population × Podium:</strong> France and Italy have a third of the population and six times more medals</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Talent × Structure:</strong> reaching the podium depends on the athlete; gold on the system</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>GDP × Result:</strong> ranking among the ten largest economies does not produce podiums</span></li></ul>
+          </div>
+        </section>
     </main>
 
     <footer class="site-footer">
@@ -680,12 +785,16 @@
   </div>
 </div>
 <script>
+// busca ignora acento: "educacao" e "educação" devem achar os mesmos temas
+function stripAccents(s) {
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
 function applyFilters() {
   const category = document.getElementById('categoryFilter').value;
-  const query = document.getElementById('toolSearch').value.trim().toLowerCase();
+  const query = stripAccents(document.getElementById('toolSearch').value.trim().toLowerCase());
   document.querySelectorAll('.server-card').forEach(card => {
     const matchesCategory = !category || card.dataset.category === category;
-    const matchesSearch = !query || card.dataset.search.includes(query);
+    const matchesSearch = !query || stripAccents(card.dataset.search).includes(query);
     card.style.display = (matchesCategory && matchesSearch) ? '' : 'none';
   });
 }

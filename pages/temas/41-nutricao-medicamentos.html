@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nutrição, Preço de Medicamentos e Acesso à Saúde — rodado</title>
+<meta name="description" content="O remédio que exige receita custa três vezes mais que o de venda livre — e a tarja vermelha sob restrição, quase quatro.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="../assets/mcp-theme.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="../index.html#temas">Temas</a>
+        <a href="../mcp.html">MCP</a>
+        <a href="https://xn--2dk.xyz/">DataViz Hub</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <span class="lang-current">PT</span>
+          <span class="lang-sep">/</span>
+          <a href="../en.html" class="lang-link">EN</a>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema claro/escuro" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <a class="voltar" href="../index.html">&larr; voltar ao índice</a>
+
+  <svg class="tema-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21c-4-2-7-5-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 12c0 4-3 7-7 9Z"/><path d="M12 9V4"/></svg>
+  <p class="eyebrow">Tema 41 de 43</p>
+  <h1>Nutrição, Preço de Medicamentos e Acesso à Saúde</h1>
+  <p class="dek">O remédio que exige receita custa três vezes mais que o de venda livre — e a tarja vermelha sob restrição, quase quatro.</p>
+
+  <p class="lede">A CMED, câmara que regula preços de medicamentos no Brasil, publica o teto de preço de cada apresentação comercializada no país: 51.140 registros com substância, laboratório, classe terapêutica e preço máximo ao consumidor em cada faixa de ICMS. É um dos poucos casos em que o Estado brasileiro fixa preço de um bem de consumo privado, e por isso mesmo um retrato incomum de como regulação, obrigatoriedade de prescrição e estrutura de mercado se combinam para determinar quanto custa ficar saudável. Cruzada com os dados de vigilância nutricional do SISVAN e com o programa Farmácia Popular, a base permite ler o acesso à saúde pelo lado do preço, não apenas pelo da oferta de serviço.</p>
+
+  <h2>Quanto mais restrito o remédio, mais caro ele é</h2>
+  <p>Classificando os 51.140 registros de preço pela tarja — o sistema brasileiro que indica o grau de controle sobre a venda —, o gradiente é nítido e monotônico. Medicamentos sem tarja, de venda livre, têm preço máximo mediano de R$ 36,35. Os de tarja vermelha, que exigem receita, custam R$ 103,76: 2,9 vezes mais. Os de tarja vermelha sob restrição especial chegam a R$ 143,24, quase quatro vezes o valor do remédio de balcão. A tarja preta, reservada a psicotrópicos e entorpecentes de controle mais rígido, aparece em R$ 81,88, abaixo da tarja vermelha comum — sinal de que o preço não é função apenas do controle, mas também da idade da molécula e da existência de genérico.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Preço máximo ao consumidor por tarja, mediana (CMED/ANVISA)</caption>
+      <thead><tr><th>Tarja</th><th>Registros</th><th>Preço mediano</th><th>Razão vs. sem tarja</th></tr></thead>
+      <tbody>
+        <tr><td>Sem tarja (venda livre)</td><td>3.644</td><td>R$ 36,35</td><td>1,0x</td></tr>
+        <tr><td>Tarja preta</td><td>1.426</td><td>R$ 81,88</td><td>2,3x</td></tr>
+        <tr><td>Tarja vermelha</td><td>26.296</td><td>R$ 103,76</td><td>2,9x</td></tr>
+        <tr><td>Tarja vermelha sob restrição</td><td>10.450</td><td>R$ 143,24</td><td>3,9x</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Precisar de receita médica quase triplica o preço mediano do medicamento — e a restrição especial quase o quadruplica.</p>
+
+  <h2>Metade do mercado regulado é tarja vermelha comum</h2>
+  <p>A distribuição dos registros mostra onde está o volume: 26.296 apresentações de tarja vermelha representam 51,4% de tudo que a CMED regula, contra apenas 3.644 (7,1%) de venda livre. O mercado farmacêutico brasileiro formal é, portanto, majoritariamente um mercado de prescrição — o que significa que o acesso depende não só de renda, mas de consulta médica prévia, e portanto da capacidade do SUS ou do plano de saúde de agendar atendimento. O preço é a segunda barreira; a primeira é a receita.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Composição do mercado regulado por tarja</caption>
+      <thead><tr><th>Tarja</th><th>Registros</th><th>% do total</th></tr></thead>
+      <tbody>
+        <tr><td>Tarja vermelha</td><td>26.296</td><td>51,4%</td></tr>
+        <tr><td>Tarja vermelha sob restrição</td><td>10.450</td><td>20,4%</td></tr>
+        <tr><td>Sem classificação</td><td>9.324</td><td>18,2%</td></tr>
+        <tr><td>Sem tarja</td><td>3.644</td><td>7,1%</td></tr>
+        <tr><td>Tarja preta</td><td>1.426</td><td>2,8%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Sete em cada dez apresentações reguladas exigem receita — no Brasil, o acesso ao remédio passa antes pelo acesso ao médico.</p>
+
+  <h2>A tarja preta é mais barata que a vermelha — e isso diz algo sobre patente</h2>
+  <p>O achado contraintuitivo do cruzamento é que a tarja preta, o nível mais rígido de controle, tem preço mediano (R$ 81,88) inferior ao da tarja vermelha comum (R$ 103,76). Controle sanitário mais severo não se traduz em preço maior porque as duas variáveis medem coisas diferentes: a tarja mede risco de abuso e dependência, enquanto o preço reflete tempo de patente, custo de desenvolvimento e concorrência de genéricos. Boa parte dos psicotrópicos de tarja preta são moléculas antigas, com patente vencida e múltiplos genéricos disponíveis; já a tarja vermelha concentra lançamentos recentes ainda sob exclusividade.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Preço mediano e nível de controle sanitário</caption>
+      <thead><tr><th>Nível de controle</th><th>Tarja</th><th>Preço mediano</th></tr></thead>
+      <tbody>
+        <tr><td>Máximo (psicotrópicos)</td><td>Preta</td><td>R$ 81,88</td></tr>
+        <tr><td>Alto (restrição especial)</td><td>Vermelha restrita</td><td>R$ 143,24</td></tr>
+        <tr><td>Médio (prescrição)</td><td>Vermelha</td><td>R$ 103,76</td></tr>
+        <tr><td>Nenhum</td><td>Sem tarja</td><td>R$ 36,35</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">O medicamento mais controlado do Brasil custa menos que o de prescrição comum — o preço segue a patente, não o risco sanitário.</p>
+
+  <div class="callout">
+    <h3>Cruzamentos poderosos</h3>
+    <ul>
+      <li><strong>Receita × Preço:</strong> exigir prescrição quase triplica o preço mediano do medicamento.</li>
+      <li><strong>Restrição × Preço:</strong> tarja vermelha sob restrição custa 3,9x o remédio de venda livre.</li>
+      <li><strong>Tarja preta × Patente:</strong> o nível máximo de controle é mais barato que a prescrição comum.</li>
+      <li><strong>Mercado × Prescrição:</strong> 71,8% das apresentações reguladas exigem receita médica.</li>
+      <li><strong>Acesso × Consulta:</strong> a primeira barreira ao remédio não é o preço, é conseguir a receita.</li>
+      <li><strong>Genérico × Molécula antiga:</strong> psicotrópicos baratos indicam patente vencida, não controle frouxo.</li>
+    </ul>
+  </div>
+
+  <h2>Hipóteses explicativas</h2>
+  <p>O gradiente de preço por tarja provavelmente não mede o custo de produzir o medicamento, mas a estrutura de concorrência de cada segmento: produtos de venda livre competem em gôndola de supermercado e farmácia, com demanda elástica e marca substituível, enquanto os de prescrição competem pela caneta do médico, com demanda inelástica e substituição limitada pelo receituário. Isso explica por que a tarja preta, dominada por moléculas antigas e genéricas, escapa do padrão. O resultado prático é que o desenho regulatório brasileiro — que amarra acesso à prescrição — cria simultaneamente uma proteção sanitária real e uma barreira econômica cumulativa: consulta, deslocamento e preço mais alto.</p>
+
+  <h2>Implicações para políticas públicas</h2>
+  <p>Ampliar a lista de medicamentos isentos de prescrição para moléculas antigas e de perfil de segurança bem estabelecido reduziria a barreira dupla de consulta mais preço, sem perda sanitária relevante. Expandir a cobertura de genéricos nas classes de tarja vermelha, onde está a maior parte do mercado e o maior prêmio de preço, teria efeito distributivo direto. E publicar rotineiramente o preço mediano por classe terapêutica, e não apenas o teto por apresentação, permitiria monitorar se a regulação de preço da CMED está de fato contendo custo ou apenas homologando o praticado.</p>
+
+  <div class="pager">
+    <a class="prev" href="40-federalismo-fiscal.html"><span class="dir">&larr; anterior</span>Federalismo Fiscal e Capacidade Financeira dos Municípios</a>
+    <a class="next" href="42-agua-clima-biodiversidade.html"><span class="dir">próximo &rarr;</span>Água, Clima e Biodiversidade Ameaçada</a>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a href="../index.html">Índice temático</a>
+    <a href="../technical.html">Detalhes técnicos</a>
+    <a href="https://github.com/rafapolo/rodado">Repositório</a>
+    <span>Dados: fontes públicas oficiais / DuckDB</span>
+  </div>
+</footer>
+
+<script src="../assets/theme-toggle.js"></script>
+</body>
+</html>
