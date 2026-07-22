@@ -118,7 +118,20 @@ O Bolsa Família em `br_cgu_beneficios_cidadao.bolsa_familia_pagamento` com 25,8
 
 **Conclusão:** Transferências são bridge, não solution — maioria volta à pobreza.
 
+### Quem gerencia a politica publica municipal
+
+| Area | % mulheres | % preta ou parda | % preta |
+|---|---|---|---|
+| Prefeito(a) | 12,1% | 30,6% | 2,3% |
+| Esporte | 32,4% | 44,0% | 6,3% |
+| Cultura | 47,7% | 41,3% | 6,5% |
+| Saude | 56,5% | 37,3% | 3,5% |
+| Educacao | 69,7% | 40,3% | 5,1% |
+
+**Conclusao:** parede de vidro — mulheres sao 69,7% da gestao de educacao e 12,1% das prefeituras. Fonte: `br_ibge_munic.indicadores_perfil_gestor`.
+
 ## Cruzamentos Poderosos
+- **Genero x Pasta:** 69,7% da gestao de educacao e 12,1% das prefeituras.
 
 - **BF × Região:** Norte/Nordeste recebe mais, mas tem piores indicadores
 - **Emendas × BF:** emendas (políticos) quase = BF (pobres)
