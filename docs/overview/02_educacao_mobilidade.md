@@ -122,8 +122,19 @@ A diferença de 100 pontos no ENEM entre privadas e estaduais corresponde a apro
 
 **Conclusao:** a estadual vence nas duas etapas e perde no total — ranking sem controle de etapa mede composicao de matricula. Fonte: `br_inep_ideb.escola`.
 
+### INSE x IDEB: efeito-origem e efeito-escola (2023)
+
+| Quintil INSE | INSE | IDEB |
+|---|---|---|
+| 1 mais pobre | 4,08 | 4,91 |
+| 5 mais rico | 5,52 | 6,55 |
+| Correlacao | — | 0,544 |
+
+**Conclusao:** origem explica ~30% da variancia; 811 escolas do quintil mais pobre superam a media do mais rico, contra 115 ricas abaixo da media das pobres. Fonte: `br_inep_indicador_nivel_socioeconomico.escola`.
+
 ## Cruzamentos Poderosos
 - **IDEB x Etapa:** paradoxo de Simpson entre rede municipal e estadual.
+- **INSE x IDEB:** origem explica ~30%; 811 escolas pobres superam a media das ricas.
 
 - **Escola × Família:** 93,6% dos alunos dependem de escolas públicas
 - **Profissão × Salário:** professores ganham 10x menos que banqueiros
