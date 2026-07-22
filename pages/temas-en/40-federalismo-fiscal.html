@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiscal Federalism and Municipal Financial Capacity — rodado</title>
+<meta name="description" content="Santa Catarina's fiscal management scores 2.4 times better than Sergipe's — and the map of municipal financial capacity almost exactly reproduces the map of income.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="../assets/mcp-theme.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="../en.html">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="../en.html#themes">Topics</a>
+        <a href="../mcp-en.html">MCP</a>
+        <a href="https://xn--2dk.xyz/dataviz/">DataViz Hub</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <a href="../temas/40-federalismo-fiscal.html" class="lang-link">PT</a>
+          <span class="lang-sep">/</span>
+          <span class="lang-current">EN</span>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <a class="voltar" href="../en.html">&larr; back to overview</a>
+
+  <svg class="tema-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21h16"/><path d="M6 21V10M10 21V10M14 21V10M18 21V10"/><path d="M3 10l9-6 9 6"/></svg>
+  <p class="eyebrow">Theme 40 of 43</p>
+  <h1>Fiscal Federalism and Municipal Financial Capacity</h1>
+  <p class="dek">Santa Catarina's fiscal management scores 2.4 times better than Sergipe's — and the map of municipal financial capacity almost exactly reproduces the map of income.</p>
+
+  <p class="lede">Brazil has 5,570 municipalities with identical constitutional responsibilities — primary healthcare, early and primary education, sanitation, urban transport — and radically different fiscal capacities. The Firjan Fiscal Management Index measures, municipality by municipality, revenue autonomy, payroll burden, liquidity and investment levels; the Treasury's CAPAG rating classifies the payment capacity of states and municipalities; and state audit courts oversee what each does with the money. Cross-referenced, they reveal a federalism in which the assignment of responsibility is uniform and the ability to meet it is not.</p>
+
+  <h2>Fiscal management improved nationwide — including through the pandemic</h2>
+  <p>The national average fiscal management index rose from 0.546 in 2020 to 0.588 in 2021 and 0.625 in 2022, covering 5,568 municipalities. The trajectory defies intuition: the period includes the pandemic, when generalised fiscal deterioration would be expected from falling revenue and exploding health spending. The likely explanation lies in extraordinary federal transfers during the health emergency, which shored up municipal cash, combined with the 2021-2022 revenue recovery. The data suggests municipal fiscal fragility is largely a function of federal transfers — improving when they grow and deteriorating when they recede.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Firjan Fiscal Management Index — national average</caption>
+      <thead><tr><th>Year</th><th>Average index</th><th>Municipalities assessed</th></tr></thead>
+      <tbody>
+        <tr><td>2020</td><td>0.546</td><td>5,568</td></tr>
+        <tr><td>2021</td><td>0.588</td><td>5,568</td></tr>
+        <tr><td>2022</td><td>0.625</td><td>5,568</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Municipal fiscal management improved during and after the pandemic — a sign it depends less on local administration than on the flow of federal transfers.</p>
+
+  <h2>Santa Catarina 0.853; Sergipe 0.359</h2>
+  <p>The state average ranges from 0.853 in Santa Catarina to 0.359 in Sergipe — a 2.4-fold difference. The ranking is almost a reproduction of Brazil's income map: the South and Centre-West occupy the top (SC, MT, SP, ES, PR, RS), while the bottom eight are all from the North and Northeast (SE, MA, PE, AC, PB, PA, RN, BA). The most visible exception is Mato Grosso, in second place, whose revenue was driven by agribusiness expansion.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Municipal fiscal management by state — extremes (Firjan, 2022)</caption>
+      <thead><tr><th>Rank</th><th>State</th><th>Average index</th><th>Municipalities</th></tr></thead>
+      <tbody>
+        <tr><td>1st</td><td>Santa Catarina</td><td>0.853</td><td>295</td></tr>
+        <tr><td>2nd</td><td>Mato Grosso</td><td>0.810</td><td>141</td></tr>
+        <tr><td>3rd</td><td>São Paulo</td><td>0.746</td><td>645</td></tr>
+        <tr><td>4th</td><td>Espírito Santo</td><td>0.744</td><td>78</td></tr>
+        <tr><td>…</td><td>…</td><td>…</td><td>…</td></tr>
+        <tr><td>23rd</td><td>Acre</td><td>0.412</td><td>22</td></tr>
+        <tr><td>24th</td><td>Pernambuco</td><td>0.410</td><td>184</td></tr>
+        <tr><td>25th</td><td>Maranhão</td><td>0.379</td><td>217</td></tr>
+        <tr><td>26th</td><td>Sergipe</td><td>0.359</td><td>75</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">The eight states with the worst municipal fiscal management are all in the North and Northeast — the capacity to manage public money tracks the capacity to raise it.</p>
+
+  <h2>The small-municipality paradox: same duties, minimal revenue</h2>
+  <p>The distribution of municipalities per state reveals the other side of the problem. Minas Gerais has 853 municipalities and São Paulo 645, while Roraima has 15 and Amapá 16. In states with hundreds of small municipalities, each must maintain health, education, public works and internal control departments — replicating fixed administrative costs over minimal revenue bases. It is the same scale problem seen in the judiciary, but here multiplied across 5,570 units with full constitutional autonomy and no obligation to cooperate.</p>
+  <div class="data-table-wrap">
+    <table>
+      <caption>Number of municipalities per state and average fiscal management index</caption>
+      <thead><tr><th>State</th><th>Municipalities</th><th>Average index</th></tr></thead>
+      <tbody>
+        <tr><td>Minas Gerais</td><td>853</td><td>0.700</td></tr>
+        <tr><td>São Paulo</td><td>645</td><td>0.746</td></tr>
+        <tr><td>Rio Grande do Sul</td><td>497</td><td>0.730</td></tr>
+        <tr><td>Bahia</td><td>417</td><td>0.451</td></tr>
+        <tr><td>Paraná</td><td>399</td><td>0.735</td></tr>
+        <tr><td>Amapá</td><td>16</td><td>0.659</td></tr>
+        <tr><td>Roraima</td><td>15</td><td>0.544</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">Each of Brazil's 5,570 municipalities maintains the same minimum administrative structure, whether it raises millions or almost nothing.</p>
+
+  <div class="callout">
+    <h3>Powerful cross-references</h3>
+    <ul>
+      <li><strong>Fiscal management × Pandemic:</strong> the index rose from 0.546 to 0.625 between 2020 and 2022.</li>
+      <li><strong>SC × SE:</strong> a 2.4-fold difference in average municipal fiscal management.</li>
+      <li><strong>Ranking × Region:</strong> the bottom eight states are all in the North and Northeast.</li>
+      <li><strong>Agribusiness × Revenue:</strong> Mato Grosso ranks 2nd, a regional exception driven by soy.</li>
+      <li><strong>Scale × Fixed cost:</strong> 5,570 municipalities replicate a minimum administrative structure.</li>
+      <li><strong>Transfers × Autonomy:</strong> fiscal improvement tracks federal transfers, not local management.</li>
+    </ul>
+  </div>
+
+  <h2>Explanatory hypotheses</h2>
+  <p>The near-perfect correlation between municipal fiscal management and regional income suggests the index measures less local administrative competence than the available economic base: where there is economic activity there is service tax, property tax and a share of state VAT; where there is none, the municipality depends almost entirely on federal revenue-sharing and has little room to manoeuvre. Improvement during the pandemic reinforces that reading, since it came from extraordinary transfers rather than administrative reform. Finally, the proliferation of small municipalities — many created through secession in the 1980s and 1990s — produced a federalism in which the fixed cost of existing as a federal entity consumes a disproportionate share of available revenue.</p>
+
+  <h2>Public policy implications</h2>
+  <p>Inter-municipal consortia for services with scale economies — waste collection, mid-complexity healthcare, public procurement — would reduce replicated fixed costs without requiring constitutional change. Conditioning part of discretionary transfers on fiscal management indicators would create an efficiency incentive where today only political fundraising incentives exist. And since fiscal fragility tracks the economic base, regional development policy has direct fiscal effect: expanding local economic activity is the only structural route to reducing transfer dependency.</p>
+
+  <div class="pager">
+    <a class="prev" href="39-justica-tribunais.html"><span class="dir">&larr; previous</span>Justice, Audit Courts and the Cost of the Judiciary</a>
+    <a class="next" href="41-nutricao-medicamentos.html"><span class="dir">next &rarr;</span>Nutrition, Drug Prices and Access to Health</a>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a href="../en.html">Thematic index</a>
+    <a href="../technical.html">Technical appendix</a>
+    <a href="https://github.com/rafapolo/rodado">Repository</a>
+  </div>
+</footer>
+
+<script src="../assets/theme-toggle.js"></script>
+</body>
+</html>
