@@ -116,7 +116,19 @@ O IPCA em `br_ibge_ipca.mes_categoria_municipio` com 49.356 registros detalha in
 
 **Conclusão:** Gás de cozinha (basic need) tem ICMS variável — famílias pobres gastam 8% do salário só com gás.
 
+### INPC (1-5 salarios) vs IPCA-15 (1-40)
+
+| Ano | INPC | IPCA-15 | Diferenca |
+|---|---|---|---|
+| 2020 | 5,14% | 3,45% | +1,69 p.p. |
+| 2021 | 9,72% | 9,96% | -0,24 p.p. |
+| 2023 | 3,65% | 4,62% | -0,97 p.p. |
+| 2025 | 3,05% | 3,22% | -0,17 p.p. |
+
+**Conclusao:** a inflacao do pobre so supera a media em choque alimentar; alimentacao no domicilio pesa 18,7% no INPC contra 15,2% no IPCA-15.
+
 ## Cruzamentos Poderosos
+- **INPC x IPCA-15:** diferenca de 1,69 p.p. em 2020, negativa em outros anos.
 
 - **Inflação × Classe:** alimentação pesa mais para pobre
 - **Combustível × ICMS:** Norte paga mais

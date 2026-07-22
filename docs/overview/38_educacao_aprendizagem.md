@@ -50,7 +50,19 @@ erDiagram
 
 **Conclusao:** a reprovacao e maxima na alfabetizacao, nao na complexidade do conteudo.
 
+### Formacao docente adequada por rede
+
+| Etapa | Publica | Municipal | Privada |
+|---|---|---|---|
+| Fundamental — anos iniciais | 73,5% | 71,2% | 57,9% |
+| Fundamental — anos finais | 55,7% | 46,7% | 61,4% |
+| Educacao infantil | 64,0% | 64,0% | 46,9% |
+| EJA — fundamental | 32,2% | 27,0% | 22,3% |
+
+**Conclusao:** so 46,7% dos professores municipais dos anos finais tem licenciatura na disciplina — sustenta a hipotese de qualidade media do sistema. Fonte: `br_inep_formacao_docente`.
+
 ## Cruzamentos Poderosos
+- **Formacao docente x Rede:** 46,7% dos professores municipais dos anos finais.
 
 - **PISA x Classe:** o quartil mais rico do Brasil (425) fica abaixo da media da OCDE (465).
 - **Brasil x OCDE:** 87 pontos de defasagem, cerca de tres anos de escolaridade.
