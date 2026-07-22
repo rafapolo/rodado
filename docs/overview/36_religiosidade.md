@@ -92,28 +92,43 @@ Duas famílias de fonte, cruzadas: **autodeclaração** (`br_ibge_censo2022_reli
 
 **Conclusão:** o gradiente espírita (+60%) é o cruzamento de renda mais forte do tema.
 
-### 5. Religião afro-brasileira × raça (por UF)
+### 5. Densidade institucional: fiéis por templo
 
-| UF | % Umbanda/Candomblé | % População negra |
-|---|---|---|
-| RS | 3,19% | 21,2% |
-| RJ | 2,58% | 57,7% |
-| BA | 1,00% | 79,7% |
+| Religião | Fiéis | Templos | Fiéis/templo |
+|---|---|---|---|
+| Católica | 100.216.153 | 99.680 | 1.005 |
+| Umbanda/Candomblé | 1.849.824 | 9.868 | 187 |
+| Espírita | 3.257.455 | 21.521 | 151 |
+| Evangélicas | 47.418.024 | 343.393 | 138 |
 
-**Conclusão:** geografia de sincretismo regional pesa mais que composição racial isolada.
+**Conclusão:** católicos são 56,7% dos fiéis e 13,0% dos templos; evangélicos são 26,9% dos fiéis e 44,9% dos templos — 7,3x de diferença em densidade institucional.
+
+### 6. Religião × cor ou raça (individual, Censo 2022)
+
+| Cor/raça | Católica | Evangélicas | Sem religião | Espírita | Umbanda/Candomblé |
+|---|---|---|---|---|---|
+| Branca | 60,15% | 23,55% | 8,40% | 2,72% | 1,04% |
+| Preta | 49,04% | 30,01% | 12,26% | 1,54% | 2,26% |
+| Parda | 55,56% | 29,35% | 9,32% | 1,08% | 0,77% |
+| Amarela | 51,76% | 14,26% | 16,16% | 3,17% | 0,80% |
+| Indígena | 42,73% | 32,23% | 10,95% | — | 0,64% |
+
+**Conclusão:** por UF o RS lidera em umbanda (3,19%) apesar de 21,2% de população negra, mas por pessoa pretos declaram 2,9x mais que pardos — falácia ecológica. Só 7,65% dos indígenas declaram tradições indígenas contra 75% de religiões cristãs.
 
 ## Cruzamentos Poderosos
 
 - **Religião × Renda:** municípios menos católicos pagam 58% mais em salário formal.
 - **Espiritismo × Renda:** gradiente mais forte do tema — 60% entre extremos.
-- **Umbanda × Raça:** RS tem 3x mais umbanda que BA com 1/3 da população negra.
-- **Evangélico × Região:** PI e AC têm composição racial quase idêntica e proporções evangélicas opostas (15,6% vs. 44,4%).
+- **Fiéis × Templos:** uma igreja católica por 1.005 fiéis contra um templo evangélico por 138 — 7,3x.
+- **Umbanda × Raça × Escala:** por UF o RS lidera; por pessoa pretos declaram 2,9x mais que pardos (falácia ecológica).
+- **Indígena × Cristianismo:** 75% dos indígenas declaram religião cristã, só 7,65% tradições indígenas.
+- **Raça × Secularização:** pretos lideram "sem religião" (12,26%) entre os grandes grupos.
 - **Templo × CNPJ:** 80% dos templos operam sem registro empresarial formal.
 - **Templo × Censo:** 1 em 4 templos só é identificado pelo nome, não pelo campo oficial.
 
 ## Hipóteses Explicativas
 
-O gradiente de renda por composição religiosa reflete sobretudo urbanização e secularização andando juntas, não um efeito causal direto da fé sobre a renda — municípios grandes e ricos tendem a ter menor proporção católica e maior presença espírita, historicamente associada a público urbano escolarizado desde a chegada do kardecismo ao Brasil no século XIX. O crescimento evangélico segue lógica territorial (fronteira de colonização recente no Norte/Centro-Oeste, menor presença histórica católica), não lógica racial. A baixa formalização jurídica dos templos reflete um padrão associativo brasileiro mais amplo, não uma peculiaridade religiosa.
+O gradiente de renda por composição religiosa reflete sobretudo urbanização e secularização andando juntas, não um efeito causal direto da fé sobre a renda — municípios grandes e ricos tendem a ter menor proporção católica e maior presença espírita, historicamente associada a público urbano escolarizado desde a chegada do kardecismo ao Brasil no século XIX. O crescimento evangélico segue menos lógica racial e mais lógica de arquitetura institucional: um templo por 138 fiéis contra um por 1.005 do catolicismo significa barreira de entrada baixa, que preenche vazios territoriais numa velocidade que a estrutura paroquial não acompanha. A baixa formalização jurídica dos templos reflete um padrão associativo brasileiro mais amplo, não uma peculiaridade religiosa.
 
 ## Implicações para Políticas Públicas
 
