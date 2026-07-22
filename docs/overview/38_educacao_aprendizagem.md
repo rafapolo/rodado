@@ -61,8 +61,19 @@ erDiagram
 
 **Conclusao:** so 46,7% dos professores municipais dos anos finais tem licenciatura na disciplina — sustenta a hipotese de qualidade media do sistema. Fonte: `br_inep_formacao_docente`.
 
+### Regime de contrato docente (2024)
+
+| Rede | Concursado | Temporario |
+|---|---|---|
+| Federal | 86,4% | 12,9% |
+| Municipal | 63,2% | 34,4% |
+| Estadual | 49,8% | 48,5% |
+
+**Conclusao:** a rede com mais temporarios e a com pior adequacao de formacao — contratacao emergencial seleciona por disponibilidade, nao por licenciatura. Fonte: `br_inep_sinopse_estatistica_educacao_basica.docente_regime_contrato`.
+
 ## Cruzamentos Poderosos
 - **Formacao docente x Rede:** 46,7% dos professores municipais dos anos finais.
+- **Vinculo x Formacao:** 48,5% dos docentes estaduais sao temporarios.
 
 - **PISA x Classe:** o quartil mais rico do Brasil (425) fica abaixo da media da OCDE (465).
 - **Brasil x OCDE:** 87 pontos de defasagem, cerca de tres anos de escolaridade.
