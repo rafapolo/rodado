@@ -168,8 +168,29 @@ Os dados do CNES em `br_ms_cnes.estabelecimento` com `tipo_unidade`, `id_naturez
 
 **Conclusao:** so 1 em cada 4 internacoes e agendada — sinal de atencao primaria que nao intercepta a tempo. Fonte: `br_ms_sih.aihs_reduzidas` (6,6 mi de internacoes).
 
+### Alcance x entrega: ESF sobe, vacinacao cai (IEPS)
+
+| Ano | Cobertura ESF | Polio | Triplice viral |
+|---|---|---|---|
+| 2013 | 84,2% | 93,8% | 95,5% |
+| 2021 | 89,0% | 77,8% | 79,9% |
+
+**Conclusao:** a rede que aplica a vacina e a mesma que expandiu — a queda nao e falta de acesso. Limiar de imunidade coletiva ~95%. Fonte: `br_ieps_saude.municipio`.
+
+### Complexidade do procedimento por raca, 2023-2025 (SIA)
+
+| Cor/raca | Procedimentos | Alta complexidade |
+|---|---|---|
+| Branca | 626.568.809 | 15,2% |
+| Parda | 662.736.804 | 11,1% |
+| Preta | 115.986.607 | 9,4% |
+
+**Conclusao:** razao branca/preta de 1,61x sobre 1,51 bi de procedimentos. Restrito a 2023+ porque o preenchimento de raca sobe de 18,9% (2008) para 90,5% (2025). Fonte: `br_ms_sia.producao_ambulatorial`.
+
 ## Cruzamentos Poderosos
 - **Internacao x Urgencia:** 72,1% entram pela urgencia.
+- **Alcance x Entrega:** ESF sobe 5 pontos, polio cai 16.
+- **Raca x Complexidade:** brancos recebem alta complexidade a 1,61x a taxa de pretos.
 
 - **Estabelecimentos × População:** Norte tem menos estrutura per capita
 - **Equipamentos × Mortalidade:** desertos de saúde = maior mortalidade
