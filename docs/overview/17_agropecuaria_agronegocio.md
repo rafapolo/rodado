@@ -111,7 +111,18 @@ O CAR em `br_sfb_sicar.area_imovel` com 3,5 GB detalha propriedades rurais. O SI
 
 **Conclusão:** 4 frigoríficos controlam 75% da carne brasileira — oligopsório.
 
+### Soja: exportacao e exposicao a desmatamento por trader (Trase, 2020)
+
+| Trader | US$ bi | Desmat. (ha) | ha por US$ bi |
+|---|---|---|---|
+| Bunge | 4,42 | 60.337 | 13.651 |
+| ADM | 4,11 | 31.196 | 7.590 |
+| Cargill | 4,46 | 25.655 | 5.752 |
+
+**Conclusao:** Bunge e Cargill exportam valor equivalente, mas a Bunge expoe 2,4x mais desmatamento — diferenca de origem do fornecedor. China responde por US$ 18,4 bi (54%) e 236.835 ha (57%). Fonte: `br_trase_supply_chain.soy_beans`.
+
 ## Cruzamentos Poderosos
+- **Trader x Desmatamento:** Bunge expoe 2,4x mais que Cargill no mesmo volume.
 
 - **Terra × Poder:** concentração fundiária = concentração política
 - **Crédito × Desmatamento:** dinheiro público financia devastação

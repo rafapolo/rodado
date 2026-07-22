@@ -159,7 +159,17 @@ Os dados do CNES em `br_ms_cnes.estabelecimento` com `tipo_unidade`, `id_naturez
 
 **Conclusão:** 30-40% das internações seriam evitáveis com boa atenção básica.
 
+### Carater das internacoes no SUS (SIH, 2025)
+
+| Carater | Internacoes | % |
+|---|---|---|
+| Urgencia | 4.758.907 | 72,1% |
+| Eletivo | 1.805.536 | 27,4% |
+
+**Conclusao:** so 1 em cada 4 internacoes e agendada — sinal de atencao primaria que nao intercepta a tempo. Fonte: `br_ms_sih.aihs_reduzidas` (6,6 mi de internacoes).
+
 ## Cruzamentos Poderosos
+- **Internacao x Urgencia:** 72,1% entram pela urgencia.
 
 - **Estabelecimentos × População:** Norte tem menos estrutura per capita
 - **Equipamentos × Mortalidade:** desertos de saúde = maior mortalidade
