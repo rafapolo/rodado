@@ -64,9 +64,8 @@ As 778 tabelas cobrem 43 domínios temáticos, cada um documentado em [`overview
 
 ## Sobre os dados
 
-Os dados vêm principalmente da [Base dos Dados](https://basedosdados.org), que mantém um espelho público de centenas de tabelas de instituições brasileiras no BigQuery — este projeto reexporta essas tabelas para armazenamento próprio, sem precisar importar nada localmente. Além do espelho, mais de 40 fontes são raspadas de forma independente para cobrir o que a Base dos Dados não tem (sanções nacionais e internacionais, SICAF, SINAN Violência, reclamações de consumidor e mais — ver [`tasks/datasets_to_scrap.md`](tasks/datasets_to_scrap.md)). No total, 778 tabelas (mais de 675 GB em Parquet+zstd) são consultadas sob demanda via DuckDB, o que permite cruzar bases de ministérios, tribunais, institutos e fontes independentes numa única consulta SQL.
+Os dados vêm principalmente da [Base dos Dados](https://basedosdados.org), que mantém um espelho público de centenas de tabelas de instituições brasileiras no BigQuery — este projeto reexporta essas tabelas para armazenamento próprio, sem precisar importar nada localmente. Além do espelho, mais de 40 fontes são raspadas de forma independente para cobrir o que a Base dos Dados não tem (sanções nacionais e internacionais, SICAF, SINAN Violência, reclamações de consumidor e mais). No total, 778 tabelas (mais de 675 GB em Parquet+zstd) são consultadas sob demanda via DuckDB, o que permite cruzar bases de ministérios, tribunais, institutos e fontes independentes numa única consulta SQL.
 
 ## Leia também
 
 - [`overview/`](docs/overview/index.md) — os 43 arquivos-fonte em markdown por trás de cada página do site, usados também como contexto para a camada de IA que traduz perguntas em português para SQL.
-- [`TECHNICAL.md`](TECHNICAL.md) — arquitetura de engenharia, pipeline de dados, API de consulta, servidor MCP, stack e deploy, para quem quiser entender como a plataforma por trás do site funciona.
