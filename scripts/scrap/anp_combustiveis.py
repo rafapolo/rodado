@@ -39,6 +39,8 @@ from pathlib import Path
 
 import requests
 
+import uuid
+
 BEELINK_HOST = "beelink"
 BEELINK_PATH = "~/rodado/br_anp_combustiveis/precos"
 
@@ -47,9 +49,7 @@ PAGE_URL = (
     "precos/levantamento-de-precos-de-combustiveis-ultimas-semanas-pesquisadas"
 )
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
-TEMP_DIR = Path(
-    "/private/tmp/claude-501/-Users-polux-Projetos-rodado/c780c9c0-b6b3-44b0-964e-08a3b2f2024c/scratchpad/anp"
-)
+TEMP_DIR = Path(f"/tmp/anp_combustiveis_{uuid.getnode()}")
 
 LINK_RE = re.compile(r'href="(https://www\.gov\.br/anp/[^"]*/revendas_lpc_(\d{4})-[^"]*\.xlsx)"')
 
@@ -126,7 +126,9 @@ def main():
         links = [(url, yr) for url, yr in links if yr == target_year]
         print(f"Filtered to year {target_year}: {len(links)} files")
 
-    all_rows = []
+    subprocess.run(f"ssh {BEELINK_HOST} 'mkdir -p {BEELINK_PATH}'", shell=True, check=False)
+
+    total_rows = 0
     for i, (url, yr) in enumerate(links):
         print(f"[{i + 1}/{len(links)}] Downloading {url} ...")
         resp = session.get(url, timeout=60)
@@ -135,29 +137,24 @@ def main():
             continue
         rows = parse_revendas_xlsx(resp.content)
         print(f"  {len(resp.content) / 1e6:.1f} MB, {len(rows)} rows")
-        all_rows.extend(rows)
+        if not rows:
+            continue
+        batch_path = TEMP_DIR / f"batch_{i:04d}.parquet"
+        pq.write_table(pa.Table.from_pylist(rows), str(batch_path), compression="zstd")
+        subprocess.run(
+            f"rsync -av {batch_path} {BEELINK_HOST}:{BEELINK_PATH}/",
+            shell=True, capture_output=True,
+        )
+        total_rows += len(rows)
+        batch_path.unlink(missing_ok=True)
         time.sleep(0.5)
 
-    print(f"\nTotal rows: {len(all_rows)}")
-    if not all_rows:
-        print("No rows fetched -- aborting, not pushing an empty file.")
+    print(f"\nTotal rows: {total_rows}")
+    if total_rows == 0:
+        print("No rows fetched -- aborting.")
         return 1
 
-    table = pa.Table.from_pylist(all_rows)
-    parquet_path = TEMP_DIR / "precos.parquet"
-    pq.write_table(table, str(parquet_path), compression="zstd")
-    print(f"Wrote {parquet_path} ({parquet_path.stat().st_size / 1e6:.1f} MB, {table.num_rows} rows)")
-
-    subprocess.run(f"ssh {BEELINK_HOST} 'mkdir -p {BEELINK_PATH}'", shell=True, check=True)
-    result = subprocess.run(
-        f"rsync -av {parquet_path} {BEELINK_HOST}:{BEELINK_PATH}/",
-        shell=True,
-    )
-    if result.returncode != 0:
-        print("rsync failed", file=sys.stderr)
-        return 1
-
-    print(f"Pushed to {BEELINK_HOST}:{BEELINK_PATH}/{parquet_path.name}")
+    print(f"All batches pushed to {BEELINK_HOST}:{BEELINK_PATH}/")
     return 0
 
 

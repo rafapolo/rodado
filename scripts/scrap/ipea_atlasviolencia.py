@@ -72,9 +72,8 @@ CMS_BASE = "https://www.ipea.gov.br/cms/api"
 DADOS_BASE = "https://www.ipea.gov.br/dados-api"
 PROJECT_SLUG = "atlasviolencia"
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
-TEMP_DIR = Path(
-    "/private/tmp/claude-501/-Users-polux-Projetos-rodado/c780c9c0-b6b3-44b0-964e-08a3b2f2024c/scratchpad/atlasviolencia"
-)
+import uuid
+TEMP_DIR = Path(f"/tmp/ipea_atlasviolencia_{uuid.getnode()}")
 
 
 def get_json(url: str, timeout: int = 30, retries: int = 2) -> dict:
@@ -215,6 +214,19 @@ def fetch_serie_chart(series_id: int) -> list:
     return rows
 
 
+def beelink_row_count(remote_dir: str) -> int:
+    """Check how many rows already exist on beelink for this table."""
+    result = subprocess.run(
+        ["ssh", BEELINK_HOST, "~/bin/duckdb", "-c",
+         f"SELECT count(*) FROM read_parquet('{remote_dir}/*.parquet', union_by_name=true);"],
+        capture_output=True, text=True, timeout=15,
+    )
+    if result.returncode != 0:
+        return 0
+    match = re.search(r"\|(\d+)\|", result.stdout)
+    return int(match.group(1)) if match else 0
+
+
 def main():
     import pyarrow as pa
     import pyarrow.parquet as pq
@@ -307,6 +319,10 @@ def main():
 
     for table_name, (parquet_path, rows) in written.items():
         remote_dir = f"{DATASET_PATH}/{table_name}"
+        existing = beelink_row_count(remote_dir)
+        if existing > rows:
+            print(f"  ✗ SKIPPING {table_name}: beelink has {existing} rows, this run only got {rows} (regression guard)")
+            continue
         subprocess.run(f"ssh {BEELINK_HOST} 'mkdir -p {remote_dir}'", shell=True, check=True)
         result = subprocess.run(
             f"rsync -av {parquet_path} {BEELINK_HOST}:{remote_dir}/",

@@ -50,9 +50,8 @@ CKAN_BASE = "https://dadosabertos.web.stj.jus.br"
 DATASET_ID = "integras-de-decisoes-terminativas-e-acordaos-do-diario-da-justica"
 REFERER = f"{CKAN_BASE}/dataset/{DATASET_ID}"
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
-TEMP_DIR = Path(
-    "/private/tmp/claude-501/-Users-polux-Projetos-rodado/c780c9c0-b6b3-44b0-964e-08a3b2f2024c/scratchpad/stj"
-)
+import uuid
+TEMP_DIR = Path(f"/tmp/stj_dados_abertos_{uuid.getnode()}")
 WORKERS = 2
 
 
@@ -143,6 +142,24 @@ def save_checkpoint(all_rows, done_names):
     (TEMP_DIR / PROGRESS_FILE_NAME).write_text(json.dumps(sorted(done_names)))
 
 
+def push_to_beelink(all_rows):
+    if not all_rows:
+        return
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+
+    table = pa.Table.from_pylist(all_rows)
+    parquet_path = TEMP_DIR / "documentos.parquet"
+    pq.write_table(table, str(parquet_path), compression="zstd")
+    subprocess.run(f"ssh {BEELINK_HOST} 'mkdir -p {BEELINK_PATH}'", shell=True, check=False)
+    result = subprocess.run(
+        f"rsync -av {parquet_path} {BEELINK_HOST}:{BEELINK_PATH}/",
+        shell=True,
+    )
+    if result.returncode != 0:
+        print("rsync incremental failed", file=sys.stderr)
+
+
 def main():
     import pyarrow as pa
     import pyarrow.parquet as pq
@@ -174,10 +191,12 @@ def main():
                 print(f"  ... {done_count}/{len(remaining)} days fetched, {len(all_rows)} rows so far", flush=True)
             if done_count % 20 == 0:
                 save_checkpoint(all_rows, done_names)
+                push_to_beelink(all_rows)
                 print(f"  [checkpoint] {len(all_rows)} rows / {len(done_names)} days saved to disk", flush=True)
 
     # Final checkpoint save regardless of whether we reached a full multiple of 100
     save_checkpoint(all_rows, done_names)
+    push_to_beelink(all_rows)
 
     print(f"\nTotal unique days fetched so far: {len(done_names)}/{len(resources)}")
     print(f"Total rows fetched: {len(all_rows)}")
@@ -186,25 +205,6 @@ def main():
             f"NOTE: {len(resources) - len(done_names)} days still missing -- "
             f"re-run this script again to continue from the checkpoint."
         )
-    if not all_rows:
-        print("No rows fetched -- aborting, not pushing an empty file.")
-        return 1
-
-    table = pa.Table.from_pylist(all_rows)
-    parquet_path = TEMP_DIR / "documentos.parquet"
-    pq.write_table(table, str(parquet_path), compression="zstd")
-    print(f"Wrote {parquet_path} ({parquet_path.stat().st_size / 1e6:.1f} MB, {table.num_rows} rows)")
-
-    subprocess.run(f"ssh {BEELINK_HOST} 'mkdir -p {BEELINK_PATH}'", shell=True, check=True)
-    result = subprocess.run(
-        f"rsync -av {parquet_path} {BEELINK_HOST}:{BEELINK_PATH}/",
-        shell=True,
-    )
-    if result.returncode != 0:
-        print("rsync failed", file=sys.stderr)
-        return 1
-
-    print(f"Pushed to {BEELINK_HOST}:{BEELINK_PATH}/{parquet_path.name}")
     return 0
 
 

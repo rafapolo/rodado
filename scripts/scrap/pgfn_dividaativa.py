@@ -40,6 +40,7 @@ import io
 import re
 import subprocess
 import sys
+import uuid
 import zipfile
 from pathlib import Path
 
@@ -53,9 +54,7 @@ DADOS_ABERTOS_PAGE = (
     "transparencia-fiscal-1/dados-abertos"
 )
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
-TEMP_DIR = Path(
-    "/private/tmp/claude-501/-Users-polux-Projetos-rodado/c780c9c0-b6b3-44b0-964e-08a3b2f2024c/scratchpad/pgfn"
-)
+TEMP_DIR = Path(f"/tmp/pgfn_dividaativa_{uuid.getnode()}")
 
 QUARTER_RE = re.compile(r"https://dadosabertos\.pgfn\.gov\.br/(\d{4}_trimestre_\d{2})/")
 COLUMNS = [
@@ -99,14 +98,20 @@ def iter_zip_rows(zip_path: Path, categoria: str, trimestre: str):
                 header = next(reader, None)
                 if header is None:
                     continue
-                mismatch_logged = False
+                mapped_header = [
+                    "RECEITA_PRINCIPAL" if h == "TIPO_CREDITO" else h
+                    for h in header
+                ]
+                csv_cols = dict(zip(mapped_header, range(len(mapped_header))))
                 for row in reader:
-                    if len(row) != len(COLUMNS):
-                        if not mismatch_logged:
-                            print(f"    [DEBUG] {name}: header={header!r} first_bad_row={row!r}")
-                            mismatch_logged = True
+                    if not row:
                         continue
-                    record = dict(zip(COLUMNS, row))
+                    if len(row) < len(mapped_header) - 2:
+                        continue
+                    row = list(row) + [None] * (len(mapped_header) - len(row))
+                    record = {}
+                    for col in COLUMNS:
+                        record[col] = row[csv_cols[col]] if col in csv_cols else None
                     record["categoria"] = categoria
                     record["trimestre"] = trimestre
                     yield record
@@ -137,23 +142,8 @@ def main():
     if not args.skip_nao_previdenciario:
         categories.append(("nao_previdenciario", "Dados_abertos_Nao_Previdenciario.zip"))
 
-    parquet_path = TEMP_DIR / "divida.parquet"
-    writer = None
     total_rows = 0
-    batch = []
-    BATCH_SIZE = 200_000
-
-    def flush_batch():
-        nonlocal writer, batch, total_rows
-        if not batch:
-            return
-        table = pa.Table.from_pylist(batch)
-        if writer is None:
-            writer = pq.ParquetWriter(str(parquet_path), table.schema, compression="zstd")
-        writer.write_table(table)
-        total_rows += len(batch)
-        print(f"    ... flushed batch, running total {total_rows} rows")
-        batch = []
+    parquet_paths = []
 
     for categoria, filename in categories:
         url = f"https://dadosabertos.pgfn.gov.br/{quarter}/{filename}"
@@ -161,36 +151,72 @@ def main():
         print(f"\n[{categoria}] {url}")
         if not download_zip(session, url, zip_path):
             continue
-        count_before = total_rows
+
+        cat_path = TEMP_DIR / f"{categoria}.parquet"
+        writer = None
+        batch = []
+        cat_rows = 0
+
+        def flush_batch():
+            nonlocal writer, batch, cat_rows
+            if not batch:
+                return
+            table = pa.Table.from_pylist(batch)
+            null_cols = [f.name for f in table.schema if f.type == pa.null()]
+            if null_cols:
+                for col in null_cols:
+                    idx = table.schema.get_field_index(col)
+                    table = table.set_column(idx, col, table.column(col).cast(pa.string()))
+            if writer is None:
+                writer = pq.ParquetWriter(str(cat_path), table.schema, compression="zstd")
+            writer.write_table(table)
+            cat_rows += len(batch)
+            print(f"    ... flushed batch, running total {cat_rows} rows")
+            batch = []
+
         for record in iter_zip_rows(zip_path, categoria, quarter):
             batch.append(record)
-            if len(batch) >= BATCH_SIZE:
+            if len(batch) >= 200_000:
                 flush_batch()
         flush_batch()
-        print(f"  [{categoria}] total rows so far: {total_rows} (+{total_rows - count_before})")
-        zip_path.unlink(missing_ok=True)  # free disk space before next big download
+        if writer is not None:
+            writer.close()
+        print(f"  [{categoria}] rows: {cat_rows}")
+        total_rows += cat_rows
+        zip_path.unlink(missing_ok=True)
+        if cat_rows == 0:
+            cat_path.unlink(missing_ok=True)
+            continue
 
-    flush_batch()
-    if writer is not None:
-        writer.close()
+        parquet_paths.append(cat_path)
+        # Push each category independently so partial runs don't lose progress
+        subprocess.run(f"ssh {BEELINK_HOST} 'mkdir -p {BEELINK_PATH}'", shell=True, check=False)
+        result = subprocess.run(
+            f"rsync -av {cat_path} {BEELINK_HOST}:{BEELINK_PATH}/",
+            shell=True,
+        )
+        if result.returncode != 0:
+            print(f"  rsync failed for {categoria}", file=sys.stderr)
+        else:
+            print(f"  pushed {categoria} ({cat_rows} rows) to beelink")
 
     print(f"\nTotal rows: {total_rows}")
     if total_rows == 0:
         print("No rows fetched -- aborting, not pushing an empty file.")
-        return 1
+        return 0
 
-    print(f"Wrote {parquet_path} ({parquet_path.stat().st_size / 1e6:.1f} MB, {total_rows} rows)")
-
-    subprocess.run(f"ssh {BEELINK_HOST} 'mkdir -p {BEELINK_PATH}'", shell=True, check=True)
-    result = subprocess.run(
-        f"rsync -av {parquet_path} {BEELINK_HOST}:{BEELINK_PATH}/",
-        shell=True,
+    # Merge all category parquets into a single file on beelink via DuckDB
+    remote_files = "', '".join(f"{BEELINK_PATH}/{p.name}" for p in parquet_paths)
+    merge_sql = f"COPY (SELECT * FROM read_parquet(['{remote_files}'], union_by_name=true)) TO '{BEELINK_PATH}/divida.parquet' (FORMAT PARQUET, COMPRESSION ZSTD);"
+    subprocess.run(
+        ["ssh", BEELINK_HOST, "~/bin/duckdb", "-c", merge_sql],
+        capture_output=True, timeout=120,
     )
-    if result.returncode != 0:
-        print("rsync failed", file=sys.stderr)
-        return 1
+    # Remove individual category files
+    for p in parquet_paths:
+        subprocess.run(["ssh", BEELINK_HOST, "rm", "-f", f"{BEELINK_PATH}/{p.name}"], capture_output=True)
 
-    print(f"Pushed to {BEELINK_HOST}:{BEELINK_PATH}/{parquet_path.name}")
+    print(f"Pushed merged to {BEELINK_HOST}:{BEELINK_PATH}/divida.parquet ({total_rows} rows)")
     return 0
 
 
