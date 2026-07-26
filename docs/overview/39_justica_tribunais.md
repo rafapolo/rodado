@@ -12,12 +12,20 @@ erDiagram
     }
     br_cnj_improbidade { string cpf_cnpj string tipo_condenacao }
     br_tcu_dadosabertos_acordaos { string processo date data }
+    br_stj_dadosabertos_documentos {
+        int SeqDocumento
+        string tipoDocumento
+        string processo
+        string NM_MINISTRO
+        string assuntos
+    }
     br_cnj_recursos_financeiros ||--o{ br_cnj_improbidade : "sigla_uf"
+    br_stj_dadosabertos_documentos ||--o{ br_cnj_improbidade : "processo"
 ```
 
 ## Contexto e Sintese dos Dados
 
-`br_cnj_estatisticas_poder_judiciario.recursos_financeiros` detalha, tribunal a tribunal, a estrutura de gasto do Judiciario: `proporcao_despesa_rh_dtj`, `despesa_total_justica_pc`, contagem de magistrados, servidores e terceirizados. Somado a `br_cnj_improbidade_administrativa`, `br_stj_dadosabertos` e aos tribunais de contas estaduais (`br_tce_rj`, `br_tce_pi`, `br_tce_es`, `br_tce_sp`, `br_tce_to`).
+`br_cnj_estatisticas_poder_judiciario.recursos_financeiros` detalha, tribunal a tribunal, a estrutura de gasto do Judiciario: `proporcao_despesa_rh_dtj`, `despesa_total_justica_pc`, contagem de magistrados, servidores e terceirizados. Somado a `br_cnj_improbidade_administrativa`, `br_stj_dadosabertos` (549.243 documentos processuais do STJ, 2021-01-04 a 2022-01-17, com relator, tipo, processo e assunto), `br_tcu_dadosabertos` (36.499 acordaos 2024-2026) e aos tribunais de contas estaduais (`br_tce_rj` 179.409 rows, `br_tce_pi`, `br_tce_es`, `br_tce_sp`, `br_tce_to`).
 
 ## Revelacoes Importantes
 
