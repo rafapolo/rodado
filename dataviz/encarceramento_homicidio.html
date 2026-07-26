@@ -1,0 +1,330 @@
+<title>Prender mais faz o homicídio cair?</title>
+<style>
+:root {
+  color-scheme: light;
+  --plane:#eef1f5; --surface:#fbfcfd;
+  --ink:#0f1319; --ink-2:#4a5462; --ink-3:#78828f;
+  --blue:#2a78d6; --red:#e34948; --ctx:#98a2ae;
+  --rule:rgba(15,19,25,.13); --grid:#e4e8ed; --axis:#c8cfd7;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --plane:#0c0e12; --surface:#171a1e;
+    --ink:#f2f5f8; --ink-2:#a9b3bf; --ink-3:#78828f;
+    --blue:#3987e5; --red:#e66767; --ctx:#6b7681;
+    --rule:rgba(242,245,248,.14); --grid:#262b31; --axis:#394048;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --plane:#0c0e12; --surface:#171a1e;
+  --ink:#f2f5f8; --ink-2:#a9b3bf; --ink-3:#78828f;
+  --blue:#3987e5; --red:#e66767; --ctx:#6b7681;
+  --rule:rgba(242,245,248,.14); --grid:#262b31; --axis:#394048;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; background:var(--plane); color:var(--ink);
+  font-family:var(--sans); font-size:16px; line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap { max-width:1080px; margin:0 auto; padding:clamp(28px,5vw,68px) clamp(18px,4vw,36px) 96px; }
+.measure { max-width:64ch; }
+.eyebrow {
+  font-family:var(--mono); font-size:.6875rem; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--ink-3); margin:0 0 10px;
+}
+h1 {
+  font-size:clamp(1.9rem,4.4vw,2.9rem); line-height:1.12; letter-spacing:-.022em;
+  font-weight:600; margin:0 0 18px; text-wrap:balance;
+}
+h2 {
+  font-size:clamp(1.2rem,2.4vw,1.5rem); line-height:1.22; letter-spacing:-.015em;
+  font-weight:600; margin:0 0 12px; text-wrap:balance;
+}
+p { margin:0 0 15px; color:var(--ink-2); }
+p.lead { font-size:1.0625rem; color:var(--ink); }
+strong { font-weight:600; color:var(--ink); }
+.src { font-family:var(--mono); font-size:.75rem; line-height:1.6; color:var(--ink-3); }
+section { margin-top:clamp(40px,6vw,72px); }
+hr { border:0; border-top:1px solid var(--rule); margin:0; }
+
+/* stat row */
+.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1px;
+  background:var(--rule); border:1px solid var(--rule); border-radius:4px; overflow:hidden; margin-top:32px; }
+.stat { background:var(--surface); padding:20px 22px 22px; }
+.stat .k { font-family:var(--mono); font-size:.6875rem; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--ink-3); margin:0 0 8px; }
+.stat .v { font-size:2.6rem; line-height:1; font-weight:600; letter-spacing:-.03em; color:var(--ink); }
+.stat .n { font-size:.8125rem; line-height:1.5; color:var(--ink-2); margin:9px 0 0; }
+
+/* chart card */
+figure { margin:24px 0 0; background:var(--surface); border:1px solid var(--rule);
+  border-radius:4px; padding:22px clamp(14px,2.2vw,24px) 18px; }
+figcaption { margin:0 0 4px; }
+figcaption .t { font-size:.9375rem; font-weight:600; color:var(--ink); display:block; }
+figcaption .s { font-family:var(--mono); font-size:.75rem; color:var(--ink-3); display:block; margin-top:4px; }
+.plot { overflow-x:auto; margin-top:14px; }
+.plot svg { display:block; width:100%; height:auto; }
+.plot.wide svg { min-width:720px; }
+.legend { display:flex; flex-wrap:wrap; gap:16px; margin-top:12px;
+  font-family:var(--mono); font-size:.75rem; color:var(--ink-2); }
+.legend i { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px;
+  vertical-align:baseline; }
+
+/* svg */
+.grid { stroke:var(--grid); stroke-width:1; }
+.zero, .zero-v { stroke:var(--axis); stroke-width:1; }
+.tick, .uf { font-family:var(--mono); font-size:11px; fill:var(--ink-3); }
+.uf { font-size:10px; }
+.axtitle { font-family:var(--mono); font-size:11px; fill:var(--ink-3);
+  letter-spacing:.06em; text-transform:uppercase; }
+.panlab { font-family:var(--mono); font-size:11px; fill:var(--ink-2); letter-spacing:.07em; }
+.qnote { font-family:var(--mono); font-size:10px; fill:var(--ink-3); letter-spacing:.05em; }
+.trend { stroke:var(--ink-3); stroke-width:2; stroke-dasharray:7 5; }
+.trend-lab { font-family:var(--mono); font-size:11px; fill:var(--ink-3); }
+.dot { fill:var(--blue); fill-opacity:.72; stroke:var(--surface); stroke-width:2; }
+.dotlab { font-family:var(--mono); font-size:11px; font-weight:600; fill:var(--ink); }
+.ctx { fill:var(--ctx); }
+.down { fill:var(--blue); }
+.up { fill:var(--red); }
+.hit { fill:transparent; cursor:crosshair; outline:none; }
+.hit:focus-visible { stroke:var(--ink); stroke-width:2; }
+
+/* tooltip */
+#tip { position:fixed; z-index:20; pointer-events:none; opacity:0; transform:translateY(3px);
+  transition:opacity .1s ease, transform .1s ease; background:var(--ink); color:var(--surface);
+  font-family:var(--mono); font-size:.75rem; line-height:1.45; padding:7px 10px; border-radius:4px;
+  max-width:280px; }
+#tip.on { opacity:1; transform:translateY(0); }
+@media (prefers-reduced-motion:reduce) { #tip { transition:none; } }
+
+/* caveats */
+ul.notes { margin:0; padding:0; list-style:none; display:grid; gap:14px; }
+ul.notes li { padding-left:18px; position:relative; color:var(--ink-2); font-size:.9375rem; }
+ul.notes li::before { content:""; position:absolute; left:0; top:.62em; width:7px; height:1px;
+  background:var(--ink-3); }
+
+/* table */
+.tablewrap { overflow-x:auto; margin-top:22px; border:1px solid var(--rule);
+  border-radius:4px; background:var(--surface); }
+table { border-collapse:collapse; width:100%; min-width:660px;
+  font-variant-numeric:tabular-nums; font-size:.8125rem; }
+caption { text-align:left; padding:16px 18px 0; font-size:.8125rem; color:var(--ink-3);
+  font-family:var(--mono); }
+th, td { text-align:right; padding:7px 12px; border-bottom:1px solid var(--rule); }
+thead th { font-family:var(--mono); font-size:.6875rem; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--ink-3); font-weight:400; vertical-align:bottom; position:sticky; top:0;
+  background:var(--surface); }
+tbody th { text-align:left; font-family:var(--mono); font-weight:600; color:var(--ink); }
+td { color:var(--ink-2); }
+td.d { font-family:var(--mono); }
+td.d.down { color:var(--blue); }
+td.d.up { color:var(--red); }
+tbody tr:last-child th, tbody tr:last-child td { border-bottom:0; }
+</style>
+
+<div class="wrap">
+
+<header class="measure">
+  <p class="eyebrow">Encarceramento × homicídio · 27 UFs · 2016–2022</p>
+  <h1>Prender mais faz o homicídio cair?</h1>
+  <p class="lead">Entre 2016 e 2022 o Brasil aumentou a população prisional em 18% e viu o
+  homicídio cair 26%. É tentador ler as duas curvas como causa e efeito. Mas quando se
+  olha estado por estado — onde as políticas de fato variam — <strong>a relação
+  praticamente desaparece</strong>.</p>
+  <p>Cada ponto abaixo é uma unidade da federação. O eixo horizontal mede quanto o estado
+  passou a encarcerar; o vertical, o que aconteceu com sua taxa de homicídio no mesmo
+  período. Se prender mais derrubasse o homicídio, os pontos desceriam da esquerda para a
+  direita. Eles não descem.</p>
+</header>
+
+<div class="stats">
+  <div class="stat">
+    <p class="k">Correlação (bruta)</p>
+    <div class="v">−0,18</div>
+    <p class="n">Pearson entre variação do encarceramento e do homicídio, 27 UFs.</p>
+  </div>
+  <div class="stat">
+    <p class="k">Ponderada por população</p>
+    <div class="v">−0,01</div>
+    <p class="n">Dando a cada estado o peso dos seus habitantes, a relação some.</p>
+  </div>
+  <div class="stat">
+    <p class="k">Variância explicada</p>
+    <div class="v">3,4%</div>
+    <p class="n">R². Os outros 96,6% do que aconteceu com o homicídio estão fora deste gráfico.</p>
+  </div>
+</div>
+
+<section>
+  <div class="measure">
+    <p class="eyebrow">O teste</p>
+    <h2>Quem mais encarcerou não foi quem mais reduziu mortes</h2>
+    <p>A nuvem é larga e a linha de tendência, quase plana. Os casos extremos contam a
+    história melhor que a média: <strong>SP</strong> foi o único estado a reduzir a taxa de
+    encarceramento e ainda assim derrubou o homicídio em 34%; <strong>PR</strong> mais que dobrou
+    a sua e caiu 41% — pouco mais que <strong>RJ</strong>, que quase não mexeu no encarceramento
+    e caiu 65%. No outro extremo, <strong>AM</strong> prendeu 24% mais e viu o homicídio
+    <em>subir</em>.</p>
+  </div>
+  <figure>
+    <figcaption>
+      <span class="t">Variação do encarceramento × variação do homicídio, por UF</span>
+      <span class="s">2016 → 2022 · área do círculo = população do estado em 2022</span>
+    </figcaption>
+    <div class="plot wide"><svg viewBox="0 0 960 520" role="img" aria-label="Dispersão: variação do encarceramento contra variação do homicídio, 27 UFs."><line class="grid" x1="64" y1="28.0" x2="932" y2="28.0"/><text class="tick" x="54" y="32.0" text-anchor="end">+15%</text><line class="zero" x1="64" y1="100.0" x2="932" y2="100.0"/><text class="tick" x="54" y="104.0" text-anchor="end">0%</text><line class="grid" x1="64" y1="172.0" x2="932" y2="172.0"/><text class="tick" x="54" y="176.0" text-anchor="end">−15%</text><line class="grid" x1="64" y1="244.0" x2="932" y2="244.0"/><text class="tick" x="54" y="248.0" text-anchor="end">−30%</text><line class="grid" x1="64" y1="316.0" x2="932" y2="316.0"/><text class="tick" x="54" y="320.0" text-anchor="end">−45%</text><line class="grid" x1="64" y1="388.0" x2="932" y2="388.0"/><text class="tick" x="54" y="392.0" text-anchor="end">−60%</text><line class="grid" x1="64" y1="460.0" x2="932" y2="460.0"/><text class="tick" x="54" y="464.0" text-anchor="end">−75%</text><line class="zero-v" x1="195.5" y1="28" x2="195.5" y2="460"/><text class="tick" x="195.5" y="482" text-anchor="middle">0%</text><line class="grid" x1="327.0" y1="28" x2="327.0" y2="460"/><text class="tick" x="327.0" y="482" text-anchor="middle">+25%</text><line class="grid" x1="458.5" y1="28" x2="458.5" y2="460"/><text class="tick" x="458.5" y="482" text-anchor="middle">+50%</text><line class="grid" x1="590.1" y1="28" x2="590.1" y2="460"/><text class="tick" x="590.1" y="482" text-anchor="middle">+75%</text><line class="grid" x1="721.6" y1="28" x2="721.6" y2="460"/><text class="tick" x="721.6" y="482" text-anchor="middle">+100%</text><line class="grid" x1="853.1" y1="28" x2="853.1" y2="460"/><text class="tick" x="853.1" y="482" text-anchor="middle">+125%</text><line class="trend" x1="64.0" y1="223.1" x2="932.0" y2="306.8"/><text class="trend-lab" x="924.0" y="326.8" text-anchor="end">tendência · r = −0,18</text><text class="qnote" x="72" y="44">homicídio subiu</text><text class="qnote" x="72" y="118.0">homicídio caiu</text><circle class="dot" cx="119.2" cy="262.7" r="14.5"/><circle class="hit" cx="119.2" cy="262.7" r="23.5" tabindex="0" role="img" data-tip="SP · encarceramento −14,5% · homicídio −33,9% · 44.411.238 hab." aria-label="SP · encarceramento −14,5% · homicídio −33,9% · 44.411.238 hab."/><circle class="dot" cx="245.0" cy="370.2" r="11.3"/><circle class="hit" cx="245.0" cy="370.2" r="20.3" tabindex="0" role="img" data-tip="MG · encarceramento +9,4% · homicídio −56,3% · 20.539.989 hab." aria-label="MG · encarceramento +9,4% · homicídio −56,3% · 20.539.989 hab."/><circle class="dot" cx="288.1" cy="411.5" r="10.5"/><circle class="hit" cx="288.1" cy="411.5" r="19.5" tabindex="0" role="img" data-tip="RJ · encarceramento +17,6% · homicídio −64,9% · 16.055.174 hab." aria-label="RJ · encarceramento +17,6% · homicídio −64,9% · 16.055.174 hab."/><circle class="dot" cx="359.1" cy="170.1" r="10.1"/><circle class="hit" cx="359.1" cy="170.1" r="19.1" tabindex="0" role="img" data-tip="BA · encarceramento +31,1% · homicídio −14,6% · 14.141.626 hab." aria-label="BA · encarceramento +31,1% · homicídio −14,6% · 14.141.626 hab."/><circle class="dot" cx="893.1" cy="294.4" r="9.6"/><circle class="hit" cx="893.1" cy="294.4" r="18.6" tabindex="0" role="img" data-tip="PR · encarceramento +132,6% · homicídio −40,5% · 11.444.380 hab." aria-label="PR · encarceramento +132,6% · homicídio −40,5% · 11.444.380 hab."/><circle class="dot" cx="286.5" cy="293.4" r="9.4"/><circle class="hit" cx="286.5" cy="293.4" r="18.4" tabindex="0" role="img" data-tip="RS · encarceramento +17,3% · homicídio −40,3% · 10.882.965 hab." aria-label="RS · encarceramento +17,3% · homicídio −40,3% · 10.882.965 hab."/><circle class="dot" cx="265.5" cy="213.8" r="9.0"/><circle class="hit" cx="265.5" cy="213.8" r="18.0" tabindex="0" role="img" data-tip="PE · encarceramento +13,3% · homicídio −23,7% · 9.058.931 hab." aria-label="PE · encarceramento +13,3% · homicídio −23,7% · 9.058.931 hab."/><circle class="dot" cx="478.5" cy="213.3" r="8.9"/><circle class="hit" cx="478.5" cy="213.3" r="17.9" tabindex="0" role="img" data-tip="CE · encarceramento +53,8% · homicídio −23,6% · 8.794.957 hab." aria-label="CE · encarceramento +53,8% · homicídio −23,6% · 8.794.957 hab."/><circle class="dot" cx="379.1" cy="260.3" r="8.8"/><circle class="hit" cx="379.1" cy="260.3" r="17.8" tabindex="0" role="img" data-tip="PA · encarceramento +34,9% · homicídio −33,4% · 8.120.131 hab." aria-label="PA · encarceramento +34,9% · homicídio −33,4% · 8.120.131 hab."/><circle class="dot" cx="297.0" cy="310.7" r="8.6"/><circle class="hit" cx="297.0" cy="310.7" r="17.6" tabindex="0" role="img" data-tip="SC · encarceramento +19,3% · homicídio −43,9% · 7.610.361 hab." aria-label="SC · encarceramento +19,3% · homicídio −43,9% · 7.610.361 hab."/><circle class="dot" cx="385.9" cy="358.7" r="8.5"/><circle class="hit" cx="385.9" cy="358.7" r="17.5" tabindex="0" role="img" data-tip="GO · encarceramento +36,2% · homicídio −53,9% · 7.056.495 hab." aria-label="GO · encarceramento +36,2% · homicídio −53,9% · 7.056.495 hab."/><circle class="dot" cx="501.7" cy="209.0" r="8.4"/><circle class="hit" cx="501.7" cy="209.0" r="17.4" tabindex="0" role="img" data-tip="MA · encarceramento +58,2% · homicídio −22,7% · 6.776.699 hab." aria-label="MA · encarceramento +58,2% · homicídio −22,7% · 6.776.699 hab."/><circle class="dot" cx="222.9" cy="203.2" r="7.5"/><circle class="hit" cx="222.9" cy="203.2" r="16.5" tabindex="0" role="img" data-tip="PB · encarceramento +5,2% · homicídio −21,5% · 3.974.687 hab." aria-label="PB · encarceramento +5,2% · homicídio −21,5% · 3.974.687 hab."/><circle class="dot" cx="320.7" cy="55.4" r="7.5"/><circle class="hit" cx="320.7" cy="55.4" r="16.5" tabindex="0" role="img" data-tip="AM · encarceramento +23,8% · homicídio +9,3% · 3.941.613 hab." aria-label="AM · encarceramento +23,8% · homicídio +9,3% · 3.941.613 hab."/><circle class="dot" cx="306.0" cy="195.5" r="7.4"/><circle class="hit" cx="306.0" cy="195.5" r="16.4" tabindex="0" role="img" data-tip="ES · encarceramento +21,0% · homicídio −19,9% · 3.833.712 hab." aria-label="ES · encarceramento +21,0% · homicídio −19,9% · 3.833.712 hab."/><circle class="dot" cx="479.1" cy="224.8" r="7.4"/><circle class="hit" cx="479.1" cy="224.8" r="16.4" tabindex="0" role="img" data-tip="MT · encarceramento +53,9% · homicídio −26,0% · 3.658.649 hab." aria-label="MT · encarceramento +53,9% · homicídio −26,0% · 3.658.649 hab."/><circle class="dot" cx="684.8" cy="318.9" r="7.2"/><circle class="hit" cx="684.8" cy="318.9" r="16.2" tabindex="0" role="img" data-tip="RN · encarceramento +93,0% · homicídio −45,6% · 3.302.729 hab." aria-label="RN · encarceramento +93,0% · homicídio −45,6% · 3.302.729 hab."/><circle class="dot" cx="387.0" cy="75.5" r="7.2"/><circle class="hit" cx="387.0" cy="75.5" r="16.2" tabindex="0" role="img" data-tip="PI · encarceramento +36,4% · homicídio +5,1% · 3.271.199 hab." aria-label="PI · encarceramento +36,4% · homicídio +5,1% · 3.271.199 hab."/><circle class="dot" cx="625.3" cy="299.7" r="7.2"/><circle class="hit" cx="625.3" cy="299.7" r="16.2" tabindex="0" role="img" data-tip="AL · encarceramento +81,7% · homicídio −41,6% · 3.127.683 hab." aria-label="AL · encarceramento +81,7% · homicídio −41,6% · 3.127.683 hab."/><circle class="dot" cx="683.7" cy="429.3" r="7.0"/><circle class="hit" cx="683.7" cy="429.3" r="16.0" tabindex="0" role="img" data-tip="DF · encarceramento +92,8% · homicídio −68,6% · 2.817.381 hab." aria-label="DF · encarceramento +92,8% · homicídio −68,6% · 2.817.381 hab."/><circle class="dot" cx="275.5" cy="247.4" r="7.0"/><circle class="hit" cx="275.5" cy="247.4" r="16.0" tabindex="0" role="img" data-tip="MS · encarceramento +15,2% · homicídio −30,7% · 2.757.013 hab." aria-label="MS · encarceramento +15,2% · homicídio −30,7% · 2.757.013 hab."/><circle class="dot" cx="399.1" cy="333.3" r="6.7"/><circle class="hit" cx="399.1" cy="333.3" r="15.7" tabindex="0" role="img" data-tip="SE · encarceramento +38,7% · homicídio −48,6% · 2.210.004 hab." aria-label="SE · encarceramento +38,7% · homicídio −48,6% · 2.210.004 hab."/><circle class="dot" cx="403.8" cy="142.2" r="6.4"/><circle class="hit" cx="403.8" cy="142.2" r="15.4" tabindex="0" role="img" data-tip="RO · encarceramento +39,6% · homicídio −8,8% · 1.581.196 hab." aria-label="RO · encarceramento +39,6% · homicídio −8,8% · 1.581.196 hab."/><circle class="dot" cx="304.9" cy="196.5" r="6.3"/><circle class="hit" cx="304.9" cy="196.5" r="15.3" tabindex="0" role="img" data-tip="TO · encarceramento +20,8% · homicídio −20,1% · 1.511.460 hab." aria-label="TO · encarceramento +20,8% · homicídio −20,1% · 1.511.460 hab."/><circle class="dot" cx="173.9" cy="331.4" r="5.9"/><circle class="hit" cx="173.9" cy="331.4" r="14.9" tabindex="0" role="img" data-tip="AC · encarceramento −4,1% · homicídio −48,2% · 830.018 hab." aria-label="AC · encarceramento −4,1% · homicídio −48,2% · 830.018 hab."/><circle class="dot" cx="238.1" cy="203.7" r="5.8"/><circle class="hit" cx="238.1" cy="203.7" r="14.8" tabindex="0" role="img" data-tip="AP · encarceramento +8,1% · homicídio −21,6% · 733.759 hab." aria-label="AP · encarceramento +8,1% · homicídio −21,6% · 733.759 hab."/><circle class="dot" cx="444.3" cy="238.2" r="5.7"/><circle class="hit" cx="444.3" cy="238.2" r="14.7" tabindex="0" role="img" data-tip="RR · encarceramento +47,3% · homicídio −28,8% · 636.707 hab." aria-label="RR · encarceramento +47,3% · homicídio −28,8% · 636.707 hab."/><text class="dotlab" x="140.7" y="266.7" text-anchor="start">SP</text><text class="dotlab" x="186.8" y="335.4" text-anchor="start">AC</text><text class="dotlab" x="226.7" y="374.2" text-anchor="end">MG</text><text class="dotlab" x="305.6" y="415.5" text-anchor="start">RJ</text><text class="dotlab" x="335.2" y="59.4" text-anchor="start">AM</text><text class="dotlab" x="401.2" y="79.5" text-anchor="start">PI</text><text class="dotlab" x="417.2" y="146.2" text-anchor="start">RO</text><text class="dotlab" x="401.4" y="362.7" text-anchor="start">GO</text><text class="dotlab" x="697.7" y="433.3" text-anchor="start">DF</text><text class="dotlab" x="893.1" y="279.4" text-anchor="middle">PR</text><text class="axtitle" x="64" y="512">variação da taxa de encarceramento 2016→2022 →</text></svg></div>
+    <div class="legend">
+      <span><i style="background:var(--blue);opacity:.72"></i>uma UF · círculo maior = mais habitantes</span>
+      <span>eixo vertical: variação da taxa de homicídio por 100 mil</span>
+    </div>
+  </figure>
+</section>
+
+<section>
+  <div class="measure">
+    <p class="eyebrow">A mesma coisa, sem a nuvem</p>
+    <h2>Ordene os estados pelo quanto prenderam. O homicídio não segue a ordem.</h2>
+    <p>Em cima, os 27 estados enfileirados do que menos ao que mais aumentou o encarceramento —
+    uma rampa limpa, por construção. Embaixo, o que aconteceu com o homicídio de cada um,
+    na mesma ordem. Se houvesse relação, a fileira de baixo também teria inclinação.
+    Ela é ruído.</p>
+  </div>
+  <figure>
+    <figcaption>
+      <span class="t">Estados ordenados pelo aumento do encarceramento</span>
+      <span class="s">barras cinza = variação do encarceramento (o critério de ordenação) · barras coloridas = variação do homicídio</span>
+    </figcaption>
+    <div class="plot wide"><svg viewBox="0 0 960 340" role="img" aria-label="Estados ordenados pelo aumento do encarceramento; a variação do homicídio não acompanha a ordem."><text class="panlab" x="64" y="25">variação do ENCARCERAMENTO · critério de ordenação →</text><text class="panlab" x="64" y="173">variação do HOMICÍDIO · mesma ordem de estados</text><line class="grid" x1="64" y1="38.0" x2="932" y2="38.0"/><text class="tick" x="54" y="42.0" text-anchor="end">+140%</text><line class="grid" x1="64" y1="83.5" x2="932" y2="83.5"/><text class="tick" x="54" y="87.5" text-anchor="end">+70%</text><line class="zero" x1="64" y1="129.0" x2="932" y2="129.0"/><text class="tick" x="54" y="133.0" text-anchor="end">0%</text><line class="zero" x1="64" y1="203.3" x2="932" y2="203.3"/><text class="tick" x="54" y="207.3" text-anchor="end">0%</text><line class="grid" x1="64" y1="243.8" x2="932" y2="243.8"/><text class="tick" x="54" y="247.8" text-anchor="end">−35%</text><line class="grid" x1="64" y1="284.2" x2="932" y2="284.2"/><text class="tick" x="54" y="288.2" text-anchor="end">−70%</text><rect class="ctx" x="71.6" y="129.0" width="17" height="9.4" rx="2"/><rect class="down" x="71.6" y="203.3" width="17" height="39.2" rx="2"/><text class="uf" x="80.1" y="312" text-anchor="middle">SP</text><rect class="hit" x="64.0" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="SP · encarceramento −14,5% · homicídio −33,9%" aria-label="SP · encarceramento −14,5% · homicídio −33,9%"/><rect class="ctx" x="103.7" y="129.0" width="17" height="2.7" rx="2"/><rect class="down" x="103.7" y="203.3" width="17" height="55.7" rx="2"/><text class="uf" x="112.2" y="312" text-anchor="middle">AC</text><rect class="hit" x="96.1" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="AC · encarceramento −4,1% · homicídio −48,2%" aria-label="AC · encarceramento −4,1% · homicídio −48,2%"/><rect class="ctx" x="135.9" y="125.6" width="17" height="3.4" rx="2"/><rect class="down" x="135.9" y="203.3" width="17" height="24.8" rx="2"/><text class="uf" x="144.4" y="312" text-anchor="middle">PB</text><rect class="hit" x="128.3" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="PB · encarceramento +5,2% · homicídio −21,5%" aria-label="PB · encarceramento +5,2% · homicídio −21,5%"/><rect class="ctx" x="168.0" y="123.7" width="17" height="5.3" rx="2"/><rect class="down" x="168.0" y="203.3" width="17" height="25.0" rx="2"/><text class="uf" x="176.5" y="312" text-anchor="middle">AP</text><rect class="hit" x="160.4" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="AP · encarceramento +8,1% · homicídio −21,6%" aria-label="AP · encarceramento +8,1% · homicídio −21,6%"/><rect class="ctx" x="200.2" y="122.9" width="17" height="6.1" rx="2"/><rect class="down" x="200.2" y="203.3" width="17" height="65.1" rx="2"/><text class="uf" x="208.7" y="312" text-anchor="middle">MG</text><rect class="hit" x="192.6" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="MG · encarceramento +9,4% · homicídio −56,3%" aria-label="MG · encarceramento +9,4% · homicídio −56,3%"/><rect class="ctx" x="232.3" y="120.4" width="17" height="8.6" rx="2"/><rect class="down" x="232.3" y="203.3" width="17" height="27.4" rx="2"/><text class="uf" x="240.8" y="312" text-anchor="middle">PE</text><rect class="hit" x="224.7" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="PE · encarceramento +13,3% · homicídio −23,7%" aria-label="PE · encarceramento +13,3% · homicídio −23,7%"/><rect class="ctx" x="264.5" y="119.1" width="17" height="9.9" rx="2"/><rect class="down" x="264.5" y="203.3" width="17" height="35.5" rx="2"/><text class="uf" x="273.0" y="312" text-anchor="middle">MS</text><rect class="hit" x="256.9" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="MS · encarceramento +15,2% · homicídio −30,7%" aria-label="MS · encarceramento +15,2% · homicídio −30,7%"/><rect class="ctx" x="296.6" y="117.8" width="17" height="11.2" rx="2"/><rect class="down" x="296.6" y="203.3" width="17" height="46.6" rx="2"/><text class="uf" x="305.1" y="312" text-anchor="middle">RS</text><rect class="hit" x="289.0" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="RS · encarceramento +17,3% · homicídio −40,3%" aria-label="RS · encarceramento +17,3% · homicídio −40,3%"/><rect class="ctx" x="328.8" y="117.6" width="17" height="11.4" rx="2"/><rect class="down" x="328.8" y="203.3" width="17" height="75.0" rx="2"/><text class="uf" x="337.3" y="312" text-anchor="middle">RJ</text><rect class="hit" x="321.2" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="RJ · encarceramento +17,6% · homicídio −64,9%" aria-label="RJ · encarceramento +17,6% · homicídio −64,9%"/><rect class="ctx" x="360.9" y="116.5" width="17" height="12.5" rx="2"/><rect class="down" x="360.9" y="203.3" width="17" height="50.7" rx="2"/><text class="uf" x="369.4" y="312" text-anchor="middle">SC</text><rect class="hit" x="353.3" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="SC · encarceramento +19,3% · homicídio −43,9%" aria-label="SC · encarceramento +19,3% · homicídio −43,9%"/><rect class="ctx" x="393.1" y="115.5" width="17" height="13.5" rx="2"/><rect class="down" x="393.1" y="203.3" width="17" height="23.2" rx="2"/><text class="uf" x="401.6" y="312" text-anchor="middle">TO</text><rect class="hit" x="385.5" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="TO · encarceramento +20,8% · homicídio −20,1%" aria-label="TO · encarceramento +20,8% · homicídio −20,1%"/><rect class="ctx" x="425.2" y="115.4" width="17" height="13.6" rx="2"/><rect class="down" x="425.2" y="203.3" width="17" height="23.0" rx="2"/><text class="uf" x="433.7" y="312" text-anchor="middle">ES</text><rect class="hit" x="417.6" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="ES · encarceramento +21,0% · homicídio −19,9%" aria-label="ES · encarceramento +21,0% · homicídio −19,9%"/><rect class="ctx" x="457.4" y="113.5" width="17" height="15.5" rx="2"/><rect class="up" x="457.4" y="192.6" width="17" height="10.7" rx="2"/><text class="uf" x="465.9" y="312" text-anchor="middle">AM</text><rect class="hit" x="449.8" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="AM · encarceramento +23,8% · homicídio +9,3%" aria-label="AM · encarceramento +23,8% · homicídio +9,3%"/><rect class="ctx" x="489.5" y="108.8" width="17" height="20.2" rx="2"/><rect class="down" x="489.5" y="203.3" width="17" height="16.9" rx="2"/><text class="uf" x="498.0" y="312" text-anchor="middle">BA</text><rect class="hit" x="481.9" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="BA · encarceramento +31,1% · homicídio −14,6%" aria-label="BA · encarceramento +31,1% · homicídio −14,6%"/><rect class="ctx" x="521.6" y="106.3" width="17" height="22.7" rx="2"/><rect class="down" x="521.6" y="203.3" width="17" height="38.6" rx="2"/><text class="uf" x="530.1" y="312" text-anchor="middle">PA</text><rect class="hit" x="514.1" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="PA · encarceramento +34,9% · homicídio −33,4%" aria-label="PA · encarceramento +34,9% · homicídio −33,4%"/><rect class="ctx" x="553.8" y="105.5" width="17" height="23.5" rx="2"/><rect class="down" x="553.8" y="203.3" width="17" height="62.3" rx="2"/><text class="uf" x="562.3" y="312" text-anchor="middle">GO</text><rect class="hit" x="546.2" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="GO · encarceramento +36,2% · homicídio −53,9%" aria-label="GO · encarceramento +36,2% · homicídio −53,9%"/><rect class="ctx" x="585.9" y="105.3" width="17" height="23.7" rx="2"/><rect class="up" x="585.9" y="197.4" width="17" height="5.9" rx="2"/><text class="uf" x="594.4" y="312" text-anchor="middle">PI</text><rect class="hit" x="578.4" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="PI · encarceramento +36,4% · homicídio +5,1%" aria-label="PI · encarceramento +36,4% · homicídio +5,1%"/><rect class="ctx" x="618.1" y="103.8" width="17" height="25.2" rx="2"/><rect class="down" x="618.1" y="203.3" width="17" height="56.2" rx="2"/><text class="uf" x="626.6" y="312" text-anchor="middle">SE</text><rect class="hit" x="610.5" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="SE · encarceramento +38,7% · homicídio −48,6%" aria-label="SE · encarceramento +38,7% · homicídio −48,6%"/><rect class="ctx" x="650.2" y="103.3" width="17" height="25.7" rx="2"/><rect class="down" x="650.2" y="203.3" width="17" height="10.2" rx="2"/><text class="uf" x="658.7" y="312" text-anchor="middle">RO</text><rect class="hit" x="642.7" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="RO · encarceramento +39,6% · homicídio −8,8%" aria-label="RO · encarceramento +39,6% · homicídio −8,8%"/><rect class="ctx" x="682.4" y="98.3" width="17" height="30.7" rx="2"/><rect class="down" x="682.4" y="203.3" width="17" height="33.3" rx="2"/><text class="uf" x="690.9" y="312" text-anchor="middle">RR</text><rect class="hit" x="674.8" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="RR · encarceramento +47,3% · homicídio −28,8%" aria-label="RR · encarceramento +47,3% · homicídio −28,8%"/><rect class="ctx" x="714.5" y="94.0" width="17" height="35.0" rx="2"/><rect class="down" x="714.5" y="203.3" width="17" height="27.3" rx="2"/><text class="uf" x="723.0" y="312" text-anchor="middle">CE</text><rect class="hit" x="707.0" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="CE · encarceramento +53,8% · homicídio −23,6%" aria-label="CE · encarceramento +53,8% · homicídio −23,6%"/><rect class="ctx" x="746.7" y="94.0" width="17" height="35.0" rx="2"/><rect class="down" x="746.7" y="203.3" width="17" height="30.0" rx="2"/><text class="uf" x="755.2" y="312" text-anchor="middle">MT</text><rect class="hit" x="739.1" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="MT · encarceramento +53,9% · homicídio −26,0%" aria-label="MT · encarceramento +53,9% · homicídio −26,0%"/><rect class="ctx" x="778.8" y="91.2" width="17" height="37.8" rx="2"/><rect class="down" x="778.8" y="203.3" width="17" height="26.2" rx="2"/><text class="uf" x="787.3" y="312" text-anchor="middle">MA</text><rect class="hit" x="771.3" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="MA · encarceramento +58,2% · homicídio −22,7%" aria-label="MA · encarceramento +58,2% · homicídio −22,7%"/><rect class="ctx" x="811.0" y="75.9" width="17" height="53.1" rx="2"/><rect class="down" x="811.0" y="203.3" width="17" height="48.1" rx="2"/><text class="uf" x="819.5" y="312" text-anchor="middle">AL</text><rect class="hit" x="803.4" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="AL · encarceramento +81,7% · homicídio −41,6%" aria-label="AL · encarceramento +81,7% · homicídio −41,6%"/><rect class="ctx" x="843.1" y="68.7" width="17" height="60.3" rx="2"/><rect class="down" x="843.1" y="203.3" width="17" height="79.3" rx="2"/><text class="uf" x="851.6" y="312" text-anchor="middle">DF</text><rect class="hit" x="835.6" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="DF · encarceramento +92,8% · homicídio −68,6%" aria-label="DF · encarceramento +92,8% · homicídio −68,6%"/><rect class="ctx" x="875.3" y="68.5" width="17" height="60.5" rx="2"/><rect class="down" x="875.3" y="203.3" width="17" height="52.7" rx="2"/><text class="uf" x="883.8" y="312" text-anchor="middle">RN</text><rect class="hit" x="867.7" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="RN · encarceramento +93,0% · homicídio −45,6%" aria-label="RN · encarceramento +93,0% · homicídio −45,6%"/><rect class="ctx" x="907.4" y="42.8" width="17" height="86.2" rx="2"/><rect class="down" x="907.4" y="203.3" width="17" height="46.8" rx="2"/><text class="uf" x="915.9" y="312" text-anchor="middle">PR</text><rect class="hit" x="899.9" y="32" width="32.1" height="278" tabindex="0" role="img" data-tip="PR · encarceramento +132,6% · homicídio −40,5%" aria-label="PR · encarceramento +132,6% · homicídio −40,5%"/></svg></div>
+    <div class="legend">
+      <span><i style="background:var(--ctx)"></i>variação do encarceramento</span>
+      <span><i style="background:var(--blue)"></i>homicídio caiu (25 UFs)</span>
+      <span><i style="background:var(--red)"></i>homicídio subiu (AM, PI)</span>
+    </div>
+  </figure>
+</section>
+
+<section>
+  <div class="measure">
+    <p class="eyebrow">E o nível, não só a variação</p>
+    <h2>Estados que prendem muito também não são os mais seguros</h2>
+    <p>Talvez o que importe não seja o quanto um estado mudou, mas o quanto ele prende em
+    termos absolutos. Também não: em 2022, a correlação entre taxa de encarceramento e taxa
+    de homicídio é de apenas −0,23. <strong>RO</strong> e <strong>AC</strong> estão entre os
+    que mais prendem no país e seguem com homicídio alto; <strong>BA</strong> prende pouco e
+    também tem homicídio alto; <strong>SP</strong> prende muito e tem a menor taxa. A dispersão
+    é grande em qualquer faixa.</p>
+  </div>
+  <figure>
+    <figcaption>
+      <span class="t">Taxa de encarceramento × taxa de homicídio, 2022</span>
+      <span class="s">ambos por 100 mil habitantes · área do círculo = população</span>
+    </figcaption>
+    <div class="plot wide"><svg viewBox="0 0 960 400" role="img" aria-label="Dispersão: taxa de encarceramento contra taxa de homicídio em 2022, 27 UFs."><line class="grid" x1="64" y1="344.0" x2="932" y2="344.0"/><text class="tick" x="54" y="348.0" text-anchor="end">0</text><line class="grid" x1="64" y1="237.3" x2="932" y2="237.3"/><text class="tick" x="54" y="241.3" text-anchor="end">15</text><line class="grid" x1="64" y1="130.7" x2="932" y2="130.7"/><text class="tick" x="54" y="134.7" text-anchor="end">30</text><line class="grid" x1="64" y1="24.0" x2="932" y2="24.0"/><text class="tick" x="54" y="28.0" text-anchor="end">45</text><line class="grid" x1="100.5" y1="24" x2="100.5" y2="344"/><text class="tick" x="100.5" y="366" text-anchor="middle">100</text><line class="grid" x1="283.3" y1="24" x2="283.3" y2="344"/><text class="tick" x="283.3" y="366" text-anchor="middle">300</text><line class="grid" x1="466.0" y1="24" x2="466.0" y2="344"/><text class="tick" x="466.0" y="366" text-anchor="middle">500</text><line class="grid" x1="648.8" y1="24" x2="648.8" y2="344"/><text class="tick" x="648.8" y="366" text-anchor="middle">700</text><line class="grid" x1="831.5" y1="24" x2="831.5" y2="344"/><text class="tick" x="831.5" y="366" text-anchor="middle">900</text><line class="trend" x1="64.0" y1="138.9" x2="932.0" y2="207.8"/><text class="trend-lab" x="924.0" y="227.8" text-anchor="end">tendência · r = −0,23</text><circle class="dot" cx="411.2" cy="295.6" r="14.5"/><circle class="hit" cx="411.2" cy="295.6" r="23.5" tabindex="0" role="img" data-tip="SP · 440 presos/100 mil · 6,8 homicídios/100 mil" aria-label="SP · 440 presos/100 mil · 6,8 homicídios/100 mil"/><circle class="dot" cx="320.7" cy="275.7" r="11.3"/><circle class="hit" cx="320.7" cy="275.7" r="20.3" tabindex="0" role="img" data-tip="MG · 341 presos/100 mil · 9,6 homicídios/100 mil" aria-label="MG · 341 presos/100 mil · 9,6 homicídios/100 mil"/><circle class="dot" cx="339.0" cy="261.5" r="10.5"/><circle class="hit" cx="339.0" cy="261.5" r="19.5" tabindex="0" role="img" data-tip="RJ · 361 presos/100 mil · 11,6 homicídios/100 mil" aria-label="RJ · 361 presos/100 mil · 11,6 homicídios/100 mil"/><circle class="dot" cx="116.1" cy="73.8" r="10.1"/><circle class="hit" cx="116.1" cy="73.8" r="19.1" tabindex="0" role="img" data-tip="BA · 117 presos/100 mil · 38,0 homicídios/100 mil" aria-label="BA · 117 presos/100 mil · 38,0 homicídios/100 mil"/><circle class="dot" cx="704.5" cy="231.6" r="9.6"/><circle class="hit" cx="704.5" cy="231.6" r="18.6" tabindex="0" role="img" data-tip="PR · 761 presos/100 mil · 15,8 homicídios/100 mil" aria-label="PR · 761 presos/100 mil · 15,8 homicídios/100 mil"/><circle class="dot" cx="346.3" cy="223.8" r="9.4"/><circle class="hit" cx="346.3" cy="223.8" r="18.4" tabindex="0" role="img" data-tip="RS · 369 presos/100 mil · 16,9 homicídios/100 mil" aria-label="RS · 369 presos/100 mil · 16,9 homicídios/100 mil"/><circle class="dot" cx="513.5" cy="88.0" r="9.0"/><circle class="hit" cx="513.5" cy="88.0" r="18.0" tabindex="0" role="img" data-tip="PE · 552 presos/100 mil · 36,0 homicídios/100 mil" aria-label="PE · 552 presos/100 mil · 36,0 homicídios/100 mil"/><circle class="dot" cx="396.6" cy="123.6" r="8.9"/><circle class="hit" cx="396.6" cy="123.6" r="17.9" tabindex="0" role="img" data-tip="CE · 424 presos/100 mil · 31,0 homicídios/100 mil" aria-label="CE · 424 presos/100 mil · 31,0 homicídios/100 mil"/><circle class="dot" cx="231.2" cy="102.2" r="8.8"/><circle class="hit" cx="231.2" cy="102.2" r="17.8" tabindex="0" role="img" data-tip="PA · 243 presos/100 mil · 34,0 homicídios/100 mil" aria-label="PA · 243 presos/100 mil · 34,0 homicídios/100 mil"/><circle class="dot" cx="333.5" cy="288.5" r="8.6"/><circle class="hit" cx="333.5" cy="288.5" r="17.6" tabindex="0" role="img" data-tip="SC · 355 presos/100 mil · 7,8 homicídios/100 mil" aria-label="SC · 355 presos/100 mil · 7,8 homicídios/100 mil"/><circle class="dot" cx="355.5" cy="195.4" r="8.5"/><circle class="hit" cx="355.5" cy="195.4" r="17.5" tabindex="0" role="img" data-tip="GO · 379 presos/100 mil · 20,9 homicídios/100 mil" aria-label="GO · 379 presos/100 mil · 20,9 homicídios/100 mil"/><circle class="dot" cx="179.1" cy="153.4" r="8.4"/><circle class="hit" cx="179.1" cy="153.4" r="17.4" tabindex="0" role="img" data-tip="MA · 186 presos/100 mil · 26,8 homicídios/100 mil" aria-label="MA · 186 presos/100 mil · 26,8 homicídios/100 mil"/><circle class="dot" cx="303.4" cy="154.8" r="7.5"/><circle class="hit" cx="303.4" cy="154.8" r="16.5" tabindex="0" role="img" data-tip="PB · 322 presos/100 mil · 26,6 homicídios/100 mil" aria-label="PB · 322 presos/100 mil · 26,6 homicídios/100 mil"/><circle class="dot" cx="298.8" cy="61.7" r="7.5"/><circle class="hit" cx="298.8" cy="61.7" r="16.5" tabindex="0" role="img" data-tip="AM · 317 presos/100 mil · 39,7 homicídios/100 mil" aria-label="AM · 317 presos/100 mil · 39,7 homicídios/100 mil"/><circle class="dot" cx="561.0" cy="162.7" r="7.4"/><circle class="hit" cx="561.0" cy="162.7" r="16.4" tabindex="0" role="img" data-tip="ES · 604 presos/100 mil · 25,5 homicídios/100 mil" aria-label="ES · 604 presos/100 mil · 25,5 homicídios/100 mil"/><circle class="dot" cx="504.4" cy="156.3" r="7.4"/><circle class="hit" cx="504.4" cy="156.3" r="16.4" tabindex="0" role="img" data-tip="MT · 542 presos/100 mil · 26,4 homicídios/100 mil" aria-label="MT · 542 presos/100 mil · 26,4 homicídios/100 mil"/><circle class="dot" cx="345.4" cy="137.8" r="7.2"/><circle class="hit" cx="345.4" cy="137.8" r="16.2" tabindex="0" role="img" data-tip="RN · 368 presos/100 mil · 29,0 homicídios/100 mil" aria-label="RN · 368 presos/100 mil · 29,0 homicídios/100 mil"/><circle class="dot" cx="173.6" cy="181.2" r="7.2"/><circle class="hit" cx="173.6" cy="181.2" r="16.2" tabindex="0" role="img" data-tip="PI · 180 presos/100 mil · 22,9 homicídios/100 mil" aria-label="PI · 180 presos/100 mil · 22,9 homicídios/100 mil"/><circle class="dot" cx="360.9" cy="118.6" r="7.2"/><circle class="hit" cx="360.9" cy="118.6" r="16.2" tabindex="0" role="img" data-tip="AL · 385 presos/100 mil · 31,7 homicídios/100 mil" aria-label="AL · 385 presos/100 mil · 31,7 homicídios/100 mil"/><circle class="dot" cx="893.6" cy="287.1" r="7.0"/><circle class="hit" cx="893.6" cy="287.1" r="16.0" tabindex="0" role="img" data-tip="DF · 968 presos/100 mil · 8,0 homicídios/100 mil" aria-label="DF · 968 presos/100 mil · 8,0 homicídios/100 mil"/><circle class="dot" cx="728.2" cy="223.8" r="7.0"/><circle class="hit" cx="728.2" cy="223.8" r="16.0" tabindex="0" role="img" data-tip="MS · 787 presos/100 mil · 16,9 homicídios/100 mil" aria-label="MS · 787 presos/100 mil · 16,9 homicídios/100 mil"/><circle class="dot" cx="287.9" cy="107.9" r="6.7"/><circle class="hit" cx="287.9" cy="107.9" r="15.7" tabindex="0" role="img" data-tip="SE · 305 presos/100 mil · 33,2 homicídios/100 mil" aria-label="SE · 305 presos/100 mil · 33,2 homicídios/100 mil"/><circle class="dot" cx="866.2" cy="90.1" r="6.4"/><circle class="hit" cx="866.2" cy="90.1" r="15.4" tabindex="0" role="img" data-tip="RO · 938 presos/100 mil · 35,7 homicídios/100 mil" aria-label="RO · 938 presos/100 mil · 35,7 homicídios/100 mil"/><circle class="dot" cx="257.7" cy="134.2" r="6.3"/><circle class="hit" cx="257.7" cy="134.2" r="15.3" tabindex="0" role="img" data-tip="TO · 272 presos/100 mil · 29,5 homicídios/100 mil" aria-label="TO · 272 presos/100 mil · 29,5 homicídios/100 mil"/><circle class="dot" cx="663.4" cy="180.4" r="5.9"/><circle class="hit" cx="663.4" cy="180.4" r="14.9" tabindex="0" role="img" data-tip="AC · 716 presos/100 mil · 23,0 homicídios/100 mil" aria-label="AC · 716 presos/100 mil · 23,0 homicídios/100 mil"/><circle class="dot" cx="380.1" cy="72.4" r="5.8"/><circle class="hit" cx="380.1" cy="72.4" r="14.8" tabindex="0" role="img" data-tip="AP · 406 presos/100 mil · 38,2 homicídios/100 mil" aria-label="AP · 406 presos/100 mil · 38,2 homicídios/100 mil"/><circle class="dot" cx="664.3" cy="144.2" r="5.7"/><circle class="hit" cx="664.3" cy="144.2" r="14.7" tabindex="0" role="img" data-tip="RR · 717 presos/100 mil · 28,1 homicídios/100 mil" aria-label="RR · 717 presos/100 mil · 28,1 homicídios/100 mil"/><text class="dotlab" x="432.7" y="299.6" text-anchor="start">SP</text><text class="dotlab" x="133.2" y="77.8" text-anchor="start">BA</text><text class="dotlab" x="879.6" y="291.1" text-anchor="end">DF</text><text class="dotlab" x="852.8" y="94.1" text-anchor="end">RO</text><text class="dotlab" x="313.3" y="65.7" text-anchor="start">AM</text><text class="dotlab" x="301.6" y="111.9" text-anchor="start">SE</text><text class="dotlab" x="676.2" y="184.4" text-anchor="start">AC</text><text class="dotlab" x="721.1" y="235.6" text-anchor="start">PR</text><text class="axtitle" x="64" y="392">presos por 100 mil habitantes, 2022 →</text></svg></div>
+    <div class="legend">
+      <span>eixo vertical: homicídios por 100 mil habitantes em 2022</span>
+    </div>
+  </figure>
+</section>
+
+<section>
+  <div class="measure">
+    <p class="eyebrow">Ressalvas</p>
+    <h2>O que este gráfico não prova</h2>
+    <ul class="notes">
+      <li><strong>Ausência de correlação não prova ausência de efeito.</strong> Prova que,
+      no recorte estado-ano, o volume de encarceramento não organiza o que aconteceu com o
+      homicídio. Um efeito real pode existir e estar encoberto por fatores mais fortes —
+      dinâmica de facções, mutações no policiamento, demografia.</li>
+      <li><strong>A relação fraca é também frágil.</strong> Ela cai de −0,18 para
+      −0,01 quando se pondera pela população, e vira +0,01 (troca de sinal) removendo apenas
+      dois pontos de alavancagem, PR e DF. Não é um sinal fraco e estável; é ruído.</li>
+      <li><strong>É uma correlação ecológica.</strong> Vale para estados, não para
+      pessoas: nada aqui diz o que acontece com um indivíduo preso ou solto.</li>
+      <li><strong>Os pontos não têm o mesmo peso.</strong> A correlação bruta trata Roraima
+      (637 mil habitantes) e São Paulo (44,4 milhões) como uma observação cada — por isso a
+      versão ponderada está reportada ao lado dela, e não no lugar dela.</li>
+      <li><strong>As fontes têm limites conhecidos.</strong> O SISDEPEN é autodeclarado pelos
+      próprios estabelecimentos penais. O SIM registra o óbito, não a autoria; a contagem de
+      homicídio usada aqui (CID-10 X85–Y09 mais Y35) inclui mortes por intervenção policial.</li>
+      <li><strong>Os anos não foram escolhidos a dedo.</strong> 2016 é o primeiro ciclo do
+      SISDEPEN com população prisional preenchível e 2022 é o último ano fechado do SIM no
+      espelho local — são as pontas disponíveis, não um recorte conveniente.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="measure">
+    <p class="eyebrow">Dados</p>
+    <h2>Os 27 estados, valores completos</h2>
+    <p>Taxas por 100 mil habitantes. Toda a base está aqui — os gráficos acima não mostram
+    nada que esta tabela não mostre.</p>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <caption>Encarceramento e homicídio por UF, 2016 e 2022</caption>
+      <thead>
+        <tr>
+          <th scope="col">UF</th>
+          <th scope="col">Presos<br>2016</th>
+          <th scope="col">Presos<br>2022</th>
+          <th scope="col">Var.</th>
+          <th scope="col">Homic.<br>2016</th>
+          <th scope="col">Homic.<br>2022</th>
+          <th scope="col">Var.</th>
+          <th scope="col">População<br>2022</th>
+        </tr>
+      </thead>
+      <tbody><tr><th scope="row">AC</th><td>747</td><td>716</td><td class="d">−4,1%</td><td>44,4</td><td>23,0</td><td class="d down">−48,2%</td><td>830.018</td></tr><tr><th scope="row">AL</th><td>212</td><td>385</td><td class="d">+81,7%</td><td>54,2</td><td>31,7</td><td class="d down">−41,6%</td><td>3.127.683</td></tr><tr><th scope="row">AM</th><td>256</td><td>317</td><td class="d">+23,8%</td><td>36,3</td><td>39,7</td><td class="d up">+9,3%</td><td>3.941.613</td></tr><tr><th scope="row">AP</th><td>375</td><td>406</td><td class="d">+8,1%</td><td>48,7</td><td>38,2</td><td class="d down">−21,6%</td><td>733.759</td></tr><tr><th scope="row">BA</th><td>89</td><td>117</td><td class="d">+31,1%</td><td>44,6</td><td>38,0</td><td class="d down">−14,6%</td><td>14.141.626</td></tr><tr><th scope="row">CE</th><td>275</td><td>424</td><td class="d">+53,8%</td><td>40,6</td><td>31,0</td><td class="d down">−23,6%</td><td>8.794.957</td></tr><tr><th scope="row">DF</th><td>502</td><td>968</td><td class="d">+92,8%</td><td>25,5</td><td>8,0</td><td class="d down">−68,6%</td><td>2.817.381</td></tr><tr><th scope="row">ES</th><td>499</td><td>604</td><td class="d">+21,0%</td><td>31,9</td><td>25,5</td><td class="d down">−19,9%</td><td>3.833.712</td></tr><tr><th scope="row">GO</th><td>278</td><td>379</td><td class="d">+36,2%</td><td>45,2</td><td>20,9</td><td class="d down">−53,9%</td><td>7.056.495</td></tr><tr><th scope="row">MA</th><td>118</td><td>186</td><td class="d">+58,2%</td><td>34,6</td><td>26,8</td><td class="d down">−22,7%</td><td>6.776.699</td></tr><tr><th scope="row">MG</th><td>311</td><td>341</td><td class="d">+9,4%</td><td>22,0</td><td>9,6</td><td class="d down">−56,3%</td><td>20.539.989</td></tr><tr><th scope="row">MS</th><td>683</td><td>787</td><td class="d">+15,2%</td><td>24,3</td><td>16,9</td><td class="d down">−30,7%</td><td>2.757.013</td></tr><tr><th scope="row">MT</th><td>352</td><td>542</td><td class="d">+53,9%</td><td>35,7</td><td>26,4</td><td class="d down">−26,0%</td><td>3.658.649</td></tr><tr><th scope="row">PA</th><td>180</td><td>243</td><td class="d">+34,9%</td><td>51,0</td><td>34,0</td><td class="d down">−33,4%</td><td>8.120.131</td></tr><tr><th scope="row">PB</th><td>306</td><td>322</td><td class="d">+5,2%</td><td>33,9</td><td>26,6</td><td class="d down">−21,5%</td><td>3.974.687</td></tr><tr><th scope="row">PE</th><td>488</td><td>552</td><td class="d">+13,3%</td><td>47,2</td><td>36,0</td><td class="d down">−23,7%</td><td>9.058.931</td></tr><tr><th scope="row">PI</th><td>132</td><td>180</td><td class="d">+36,4%</td><td>21,8</td><td>22,9</td><td class="d up">+5,1%</td><td>3.271.199</td></tr><tr><th scope="row">PR</th><td>327</td><td>761</td><td class="d">+132,6%</td><td>26,6</td><td>15,8</td><td class="d down">−40,5%</td><td>11.444.380</td></tr><tr><th scope="row">RJ</th><td>307</td><td>361</td><td class="d">+17,6%</td><td>33,2</td><td>11,6</td><td class="d down">−64,9%</td><td>16.055.174</td></tr><tr><th scope="row">RN</th><td>191</td><td>368</td><td class="d">+93,0%</td><td>53,3</td><td>29,0</td><td class="d down">−45,6%</td><td>3.302.729</td></tr><tr><th scope="row">RO</th><td>672</td><td>938</td><td class="d">+39,6%</td><td>39,2</td><td>35,7</td><td class="d down">−8,8%</td><td>1.581.196</td></tr><tr><th scope="row">RR</th><td>487</td><td>717</td><td class="d">+47,3%</td><td>39,5</td><td>28,1</td><td class="d down">−28,8%</td><td>636.707</td></tr><tr><th scope="row">RS</th><td>314</td><td>369</td><td class="d">+17,3%</td><td>28,2</td><td>16,9</td><td class="d down">−40,3%</td><td>10.882.965</td></tr><tr><th scope="row">SC</th><td>297</td><td>355</td><td class="d">+19,3%</td><td>13,9</td><td>7,8</td><td class="d down">−43,9%</td><td>7.610.361</td></tr><tr><th scope="row">SE</th><td>220</td><td>305</td><td class="d">+38,7%</td><td>64,6</td><td>33,2</td><td class="d down">−48,6%</td><td>2.210.004</td></tr><tr><th scope="row">SP</th><td>514</td><td>440</td><td class="d">−14,5%</td><td>10,3</td><td>6,8</td><td class="d down">−33,9%</td><td>44.411.238</td></tr><tr><th scope="row">TO</th><td>225</td><td>272</td><td class="d">+20,8%</td><td>36,9</td><td>29,5</td><td class="d down">−20,1%</td><td>1.511.460</td></tr></tbody>
+    </table>
+  </div>
+  <p class="src" style="margin-top:20px">
+    Fontes · População prisional: SISDEPEN/SENAPPEN, ciclos 1 (2º sem. 2016) e 13
+    (2º sem. 2022), campo 4.1 &ldquo;população prisional total&rdquo;, agregado por UF a partir do
+    censo por estabelecimento.<br>
+    Homicídios: MS/SVS Sistema de Informações sobre Mortalidade (SIM), causa básica
+    CID-10 X85–Y09 e Y35, por UF de residência.<br>
+    População: IBGE, estimativas por UF.<br>
+    Apurado em 26/07/2026 sobre o espelho local do projeto rodado
+    (<span style="white-space:nowrap">br_mjsp_sisdepen</span>,
+    <span style="white-space:nowrap">br_ms_sim</span>,
+    <span style="white-space:nowrap">br_ibge_populacao</span>).
+  </p>
+</section>
+
+</div>
+
+<div id="tip" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  var tip = document.getElementById('tip');
+  var cur = null;
+  function show(el, x, y) {
+    tip.textContent = el.getAttribute('data-tip');
+    tip.classList.add('on');
+    var r = tip.getBoundingClientRect();
+    var lx = Math.min(Math.max(8, x + 14), window.innerWidth - r.width - 8);
+    var ly = y - r.height - 12;
+    if (ly < 8) ly = y + 20;
+    tip.style.left = lx + 'px';
+    tip.style.top = ly + 'px';
+  }
+  function hide() { tip.classList.remove('on'); cur = null; }
+  document.querySelectorAll('.hit').forEach(function (el) {
+    el.addEventListener('pointerenter', function (e) { cur = el; show(el, e.clientX, e.clientY); });
+    el.addEventListener('pointermove', function (e) { if (cur === el) show(el, e.clientX, e.clientY); });
+    el.addEventListener('pointerleave', hide);
+    el.addEventListener('focus', function () {
+      var b = el.getBoundingClientRect();
+      show(el, b.left + b.width / 2, b.top);
+    });
+    el.addEventListener('blur', hide);
+  });
+  window.addEventListener('scroll', hide, { passive: true });
+})();
+</script>
