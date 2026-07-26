@@ -31,6 +31,12 @@ SEARCH_THRESHOLD = float(os.environ.get("MCP_SEARCH_THRESHOLD", "0.35"))
 # Survey mirrors (SISDEPEN: 3.957 cols) would flood an LLM's context if
 # describe_table returned every column, so wide tables are capped.
 DESCRIBE_MAX_COLS = int(os.environ.get("MCP_DESCRIBE_MAX_COLS", "150"))
+# A row-count cap alone does not bound what run_sql sends back: row width
+# varies by three orders of magnitude across this catalog, so the same
+# `max_rows=500` is 15 tokens on a COUNT(*) and ~2,7M tokens on
+# `SELECT *` over br_inep_censo_escolar.escola (455 columns). Budget the
+# serialized payload too — this is the cap that actually binds.
+RUN_SQL_MAX_CHARS = int(os.environ.get("MCP_RUN_SQL_MAX_CHARS", "60000"))
 
 SCHEMA_PATH = CONTEXT_DIR / "basedosdados-schema.json"
 EMBEDDINGS_PATH = CONTEXT_DIR / "table_embeddings.json"
@@ -206,6 +212,72 @@ _POST_TABLE_KEYWORDS = frozenset(
     "ON USING UNION INTERSECT EXCEPT HAVING QUALIFY WINDOW SEMI ANTI "
     "POSITIONAL ASOF TABLESAMPLE USE AS".split()
 )
+
+
+def _cap_rows(rows: list, max_rows: int) -> dict:
+    """Bound a result set by row count *and* serialized size.
+
+    Returns the response dict run_sql hands back. When even a single row busts
+    the budget, no row is returned: one 1000-column row serializes to ~128k
+    tokens, so handing it back would be the very context blowout this guards
+    against. The caller gets the column names instead — which is what they need
+    to rewrite the query with an explicit projection.
+    """
+    if not isinstance(rows, list):
+        return {"rows": rows, "truncated": False}
+
+    total = len(rows)
+    kept = rows[:max_rows]
+
+    def size(rs: list) -> int:
+        return len(json.dumps(rs, ensure_ascii=False, default=str))
+
+    capped_by = "rows" if total > max_rows else None
+    if kept and size(kept[:1]) > RUN_SQL_MAX_CHARS:
+        names = list(kept[0].keys()) if isinstance(kept[0], dict) else []
+        shown = names[:DESCRIBE_MAX_COLS]
+        return {
+            "rows": [],
+            "truncated": True,
+            "returned": 0,
+            "total": total,
+            "columns": shown,
+            "columns_total": len(names),
+            "note": (
+                f"A single row exceeds {RUN_SQL_MAX_CHARS} characters, so no row is "
+                f"returned — it would flood the context. The row has {len(names)} "
+                f"column(s)"
+                + (f" (first {len(shown)} listed)" if len(names) > len(shown) else "")
+                + ". Re-run selecting only the columns you need, or aggregate in SQL."
+            ),
+        }
+    if kept and size(kept) > RUN_SQL_MAX_CHARS:
+        lo, hi = 1, len(kept)
+        while lo < hi:
+            mid = (lo + hi + 1) // 2
+            if size(kept[:mid]) <= RUN_SQL_MAX_CHARS:
+                lo = mid
+            else:
+                hi = mid - 1
+        kept = kept[:lo]
+        capped_by = "size"
+
+    if capped_by is None:
+        return {"rows": kept, "truncated": False}
+
+    out = {
+        "rows": kept,
+        "truncated": True,
+        "returned": len(kept),
+        "total": total,
+    }
+    if capped_by == "size":
+        out["note"] = (
+            f"Truncated to {len(kept)} of {total} row(s) to stay under "
+            f"{RUN_SQL_MAX_CHARS} characters — the rows are wide. Select the "
+            f"columns you need instead of *, or aggregate in SQL."
+        )
+    return out
 
 
 def _rewrite_to_read_parquet(sql: str) -> tuple[str, list[str]]:
@@ -397,7 +469,14 @@ def run_sql(sql: str, max_rows: int = 500) -> dict:
     never opens its own DuckDB connection.
 
     Only SELECT/WITH queries are allowed; everything else is rejected before
-    any SSH call. Results are truncated client-side to `max_rows`.
+    any SSH call.
+
+    Results are truncated client-side to `max_rows` AND to a serialized-size
+    budget, whichever binds first. The size budget is the one that matters:
+    `SELECT *` on a wide table (455 columns) at the default row cap would
+    otherwise return millions of tokens. When it trips, the reply carries
+    `truncated`, `returned`/`total` and a `note` — project the columns you
+    need or aggregate in SQL rather than raising `max_rows`.
 
     Query discipline (per this project's conventions):
     - Always filter large tables on partition columns (ano, mes, sigla_uf)
@@ -431,28 +510,13 @@ def run_sql(sql: str, max_rows: int = 500) -> dict:
         if rewritten:
             retry = _run_sql_ssh(fallback_sql)
             if "error" not in retry:
-                retry_rows = retry["rows"]
-                if isinstance(retry_rows, list) and len(retry_rows) > max_rows:
-                    return {
-                        "rows": retry_rows[:max_rows],
-                        "truncated": True,
-                        "returned": max_rows,
-                        "total": len(retry_rows),
-                        "rewritten_tables": rewritten,
-                    }
-                return {"rows": retry_rows, "truncated": False, "rewritten_tables": rewritten}
+                out = _cap_rows(retry["rows"], max_rows)
+                out["rewritten_tables"] = rewritten
+                return out
     if "error" in result:
         return result
 
-    rows = result["rows"]
-    if isinstance(rows, list) and len(rows) > max_rows:
-        return {
-            "rows": rows[:max_rows],
-            "truncated": True,
-            "returned": max_rows,
-            "total": len(rows),
-        }
-    return {"rows": rows, "truncated": False}
+    return _cap_rows(result["rows"], max_rows)
 
 
 # ---------------------------------------------------------------------------
