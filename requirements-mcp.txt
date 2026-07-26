@@ -14,3 +14,10 @@ pytest>=9.1.1  # dev only — tests/test_mcp_server.py
 # still pins 2.46.4. Fix is to align the core, not to upgrade pydantic:
 #     python3 -m pip install "pydantic-core==2.46.4"
 pydantic-core==2.46.4
+
+# Same failure mode one layer down, and it only bites at runtime: transformers
+# 5.14.1 requires tokenizers>=0.22.0,<=0.23.0, but 0.23.1 was installed and no
+# 0.23.0 final was ever released — so search_tables() raised ImportError on its
+# first call while every other tool worked. 0.22.2 is the newest in range:
+#     python3 -m pip install "tokenizers==0.22.2"
+tokenizers==0.22.2

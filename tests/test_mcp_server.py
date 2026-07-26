@@ -86,6 +86,25 @@ def test_describe_table_known_table():
     assert all({"name", "type"} <= col.keys() for col in result["columns"])
 
 
+def test_describe_table_caps_wide_tables():
+    """Survey mirrors run to thousands of columns; describe_table must cap them
+    so a single call can't flood an LLM's context."""
+    wide = max(m._ALL_TABLE_IDS, key=lambda t: len(m._SCHEMA[t.split(".", 1)[0]][t.split(".", 1)[1]]))
+    total = len(m._SCHEMA[wide.split(".", 1)[0]][wide.split(".", 1)[1]])
+    assert total > m.DESCRIBE_MAX_COLS, "fixture expects at least one wide table"
+
+    result = m.describe_table(wide)
+    assert len(result["columns"]) == m.DESCRIBE_MAX_COLS
+    assert result["columns_truncated"]["total"] == total
+    assert result["columns_truncated"]["shown"] == m.DESCRIBE_MAX_COLS
+
+
+def test_describe_table_narrow_table_is_not_truncated():
+    narrow = min(m._ALL_TABLE_IDS, key=lambda t: len(m._SCHEMA[t.split(".", 1)[0]][t.split(".", 1)[1]]))
+    result = m.describe_table(narrow)
+    assert "columns_truncated" not in result
+
+
 def test_describe_table_missing_dot():
     result = m.describe_table("no_dot_here")
     assert "error" in result
