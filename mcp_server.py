@@ -282,10 +282,14 @@ def list_tables(dataset: str) -> dict:
 
 @mcp.tool()
 def describe_table(table: str) -> dict:
-    """Describe one table's columns: name, type, and description.
+    """Describe one table's columns: name and type.
 
     `table` must be "dataset.table", e.g. "br_tse_eleicoes.candidatos".
     On a miss, returns close-match suggestions from the full table list.
+
+    Column descriptions are not available: the mirrored schema carries only
+    name and type for all 33.844 columns. Use `search_tables` for semantic
+    lookup and `docs/overview/` for what a dataset actually means.
     """
     if "." not in table:
         return {"error": "table must be in the form 'dataset.table'."}

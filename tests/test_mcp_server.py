@@ -82,7 +82,8 @@ def test_describe_table_known_table():
     result = m.describe_table(table_id)
     assert result["table"] == table_id
     assert isinstance(result["columns"], list)
-    assert all({"name", "type", "description"} <= col.keys() for col in result["columns"])
+    # The mirrored schema carries only name/type — no column descriptions exist.
+    assert all({"name", "type"} <= col.keys() for col in result["columns"])
 
 
 def test_describe_table_missing_dot():
