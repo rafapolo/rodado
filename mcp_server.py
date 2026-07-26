@@ -14,6 +14,7 @@ import re
 import subprocess
 import threading
 from pathlib import Path
+from typing import Optional
 
 from mcp.server.fastmcp import FastMCP
 
@@ -530,6 +531,223 @@ def consultar_cep(cep: str) -> dict:
     if data.get("erro"):
         return {"error": f"CEP '{digits}' not found."}
     return data
+
+
+@mcp.tool()
+def consultar_divida_ativa(
+    cpf_cnpj: str,
+    categoria: Optional[str] = None,
+    max_rows: int = 20,
+) -> dict:
+    """Consult PGFN (Procuradoria-Geral da Fazenda Nacional) active debt
+    registry — 46.6M inscriptions of federal tax debts (FGTS, INSS/previdenciário,
+    non-previdenciário taxes like IRPJ/COFINS/CPMF) against companies and individuals.
+
+    Looks up by CPF or CNPJ (punctuation stripped automatically). Optionally
+    filter by `categoria` ('fgts', 'previdenciario', 'nao_previdenciario').
+
+    Returns debtor info: nome, CPF/CNPJ, valor consolidado (string, formatted
+    like '23337387019.50'), situação (ajuizado/em cobrança/parcelado), categoria.
+    """
+    digits = _only_digits(cpf_cnpj)
+    if len(digits) not in (8, 11, 14):
+        return {"error": f"'{cpf_cnpj}' — need 8/14 digits for CNPJ or 11 for CPF."}
+
+    where_cpfcnpj = f"CPF_CNPJ LIKE '%{digits}%'"
+    cat_filter = f" AND categoria = '{categoria}'" if categoria else ""
+
+    result = _run_sql_ssh(
+        f"SELECT CPF_CNPJ, NOME_DEVEDOR, TIPO_PESSOA, TIPO_DEVEDOR, "
+        f"UF_DEVEDOR, VALOR_CONSOLIDADO, SITUACAO_INSCRICAO, "
+        f"RECEITA_PRINCIPAL, DATA_INSCRICAO, INDICADOR_AJUIZADO, categoria "
+        f"FROM read_parquet('~/rodado/br_pgfn_dividaativa/divida/*.parquet') "
+        f"WHERE {where_cpfcnpj}{cat_filter} "
+        f"ORDER BY CAST(regexp_replace(regexp_replace(VALOR_CONSOLIDADO, '\\.', ''), ',', '.') AS double) DESC "
+        f"LIMIT {max_rows + 1}"
+    )
+    if "error" in result:
+        return result
+
+    rows = result.get("rows", [])
+    return {
+        "cpf_cnpj": cpf_cnpj,
+        "inscricoes": rows[:max_rows],
+        "inscricoes_truncated": len(rows) > max_rows,
+        "total_encontradas": len(rows),
+    }
+
+
+@mcp.tool()
+def consultar_precos_combustivel(
+    municipio: Optional[str] = None,
+    produto: Optional[str] = None,
+    data_inicio: Optional[str] = None,
+    data_fim: Optional[str] = None,
+    max_rows: int = 50,
+) -> dict:
+    """Query ANP weekly fuel resale price survey — 2M+ rows (2022–2026),
+    one row per gas station per fuel product per week, Brazil-wide.
+
+    Filters: municipio (partial match), produto ('GASOLINA', 'ETANOL',
+    'DIESEL', 'GLP', etc), data range (YYYY-MM-DD).
+
+    Returns station info (CNPJ, razão social, bandeira), product, price,
+    collection date. Prices are per-liter in BRL (preco_revenda).
+    """
+    and_clauses = []
+    if municipio:
+        and_clauses.append(f"municipio ILIKE '%{municipio}%'")
+    if produto:
+        and_clauses.append(f"produto ILIKE '%{produto}%'")
+    if data_inicio:
+        and_clauses.append(f"data_coleta >= '{data_inicio}'")
+    if data_fim:
+        and_clauses.append(f"data_coleta <= '{data_fim}'")
+
+    where = " WHERE " + " AND ".join(and_clauses) if and_clauses else ""
+
+    result = _run_sql_ssh(
+        f"SELECT cnpj, razao, municipio, estado, bandeira, produto, "
+        f"preco_revenda, data_coleta "
+        f"FROM read_parquet('~/rodado/br_anp_combustiveis/precos/*.parquet'){where} "
+        f"ORDER BY data_coleta DESC LIMIT {max_rows + 1}"
+    )
+    if "error" in result:
+        return result
+
+    rows = result.get("rows", [])
+    # Summarize available products if no filter
+    if not produto and rows:
+        products = list(dict.fromkeys(r["produto"] for r in rows if r.get("produto")))
+        return {
+            "precos": rows[:max_rows],
+            "truncated": len(rows) > max_rows,
+            "produtos_disponiveis": products[:20],
+        }
+    return {
+        "precos": rows[:max_rows],
+        "truncated": len(rows) > max_rows,
+    }
+
+
+@mcp.tool()
+def consultar_jurisprudencia_stj(
+    processo: Optional[str] = None,
+    ministro: Optional[str] = None,
+    assunto: Optional[str] = None,
+    data_inicio: Optional[str] = None,
+    max_rows: int = 20,
+) -> dict:
+    """Search STJ (Superior Tribunal de Justiça) document metadata —
+    549K decisions/acórdãos from 2021-01-04 onwards, with relator, type,
+    case number, subject, and full text summary.
+
+    Filters by: processo (case number), ministro (relator name, partial match),
+    assunto (subject/law topic), data_inicio (earliest publication date).
+
+    Returns SeqDocumento, dataPublicacao, tipoDocumento, processo,
+    NM_MINISTRO, assuntos, teor (headnote summary).
+    """
+    and_clauses = []
+    if processo:
+        and_clauses.append(f"processo ILIKE '%{processo}%'")
+    if ministro:
+        and_clauses.append(f"NM_MINISTRO ILIKE '%{ministro}%'")
+    if assunto:
+        and_clauses.append(f"assuntos ILIKE '%{assunto}%'")
+    if data_inicio:
+        and_clauses.append(f"dataPublicacao >= '{data_inicio}'")
+
+    where = " WHERE " + " AND ".join(and_clauses) if and_clauses else ""
+
+    result = _run_sql_ssh(
+        f"SELECT SeqDocumento, dataPublicacao, tipoDocumento, processo, "
+        f"NM_MINISTRO, assunto, teor "
+        f"FROM read_parquet('~/rodado/br_stj_dadosabertos/documentos/*.parquet'){where} "
+        f"ORDER BY dataPublicacao DESC LIMIT {max_rows + 1}"
+    )
+    if "error" in result:
+        return result
+
+    rows = result.get("rows", [])
+    return {
+        "documentos": rows[:max_rows],
+        "truncated": len(rows) > max_rows,
+    }
+
+
+@mcp.tool()
+def consultar_populacao_carceraria(
+    uf: Optional[str] = None,
+    ciclo: Optional[str] = None,
+    serie_historica: bool = False,
+    max_rows: int = 40,
+) -> dict:
+    """Query the SISDEPEN prison census — 38K establishment-level records
+    covering 22 semiannual cycles from 2014 to 2025 (successor to INFOPEN).
+
+    Default: one row per UF for the most recent cycle, with prison population,
+    capacity, occupancy rate (>100% = overcrowded) and share held without
+    conviction (presos provisórios).
+
+    Args:
+        uf: filter to one state (e.g. "SP"). Omit for all states.
+        ciclo: cycle id, e.g. "ciclo_13_2022_h2". Defaults to the latest
+            ("ciclo_19_2025_h2"). Cycles run ciclo_01_2016_h2 .. ciclo_19_2025_h2,
+            plus legacy "infopen_2014" / "infopen_2015" (different survey format,
+            population field not filled).
+        serie_historica: if True, return the time series by cycle instead of
+            the per-UF cross-section (national, or for `uf` if given).
+
+    Note: figures are self-reported by each establishment. The `presos` series
+    is comparable across cycles; `vagas` (capacity) is NOT — it jumps from
+    261,601 to 450,411 between 2022_h2 and 2023_h1 on a questionnaire change,
+    not construction. Use occupancy only within a single cycle.
+    """
+    src = "read_parquet('~/rodado/br_mjsp_sisdepen/populacao_carceraria/*.parquet')"
+    pop = 'TRY_CAST("4_1_populacao_prisional_total" AS BIGINT)'
+    cap = ('TRY_CAST("1_3_capacidade_do_estabelecimento_masculino_total" AS BIGINT)'
+           ' + TRY_CAST("1_3_capacidade_do_estabelecimento_feminino_total" AS BIGINT)')
+    prov = ('TRY_CAST("4_1_populacao_prisional_presos_provisorios_sem_condenacao_total"'
+            ' AS BIGINT)')
+
+    if serie_historica:
+        where = " WHERE ciclo_arquivo LIKE 'ciclo%'"
+        if uf:
+            where += f" AND uf = '{uf.strip().upper()}'"
+        result = _run_sql_ssh(
+            f"SELECT ciclo_arquivo AS ciclo, SUM({pop}) AS presos, SUM({cap}) AS vagas, "
+            f"SUM({prov}) AS provisorios FROM {src}{where} "
+            f"GROUP BY 1 ORDER BY 1 LIMIT {max_rows + 1}"
+        )
+        if "error" in result:
+            return result
+        rows = result.get("rows", [])
+        return {
+            "escopo": uf.strip().upper() if uf else "Brasil",
+            "serie": rows[:max_rows],
+            "truncated": len(rows) > max_rows,
+        }
+
+    where = f" WHERE ciclo_arquivo = '{(ciclo or 'ciclo_19_2025_h2').strip()}' AND uf IS NOT NULL"
+    if uf:
+        where += f" AND uf = '{uf.strip().upper()}'"
+    result = _run_sql_ssh(
+        f"SELECT uf, SUM({pop}) AS presos, SUM({cap}) AS vagas, SUM({prov}) AS provisorios, "
+        f"ROUND(SUM({pop}) * 100.0 / NULLIF(SUM({cap}), 0), 1) AS ocupacao_pct, "
+        f"ROUND(SUM({prov}) * 100.0 / NULLIF(SUM({pop}), 0), 1) AS provisorios_pct, "
+        f"COUNT(*) AS estabelecimentos "
+        f"FROM {src}{where} GROUP BY uf ORDER BY presos DESC LIMIT {max_rows + 1}"
+    )
+    if "error" in result:
+        return result
+
+    rows = result.get("rows", [])
+    return {
+        "ciclo": (ciclo or "ciclo_19_2025_h2").strip(),
+        "estados": rows[:max_rows],
+        "truncated": len(rows) > max_rows,
+    }
 
 
 if __name__ == "__main__":
