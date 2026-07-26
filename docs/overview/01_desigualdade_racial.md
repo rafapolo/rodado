@@ -90,15 +90,15 @@ A RAIS tem teto de 99 SM para proteção de privacidade. **16.686 trabalhadores 
 
 **Conclusão:** Negras ocupam os setores mais precários e perigosos — trabalho doméstico ainda é racializado.
 
-### 6. Desigualdade racial na mortalidade: SIM expõe
+### 6. Desigualdade racial na mortalidade: SIM expõe (correção 2026-07-26)
 
-| Causa (CID-10) | Raça 1 (parda) | Raça 4 (branca) | Ratio |
+| Causa (CID-10) | Branca (código 1) | Parda (código 4) | Ratio parda/branca |
 |-----------------|-----------------|------------------|-------|
-| COVID-19 | 103.525 | 81.572 | 1,27 |
-| Agressão (X959) | 2.602 | 11.536 | 0,23 |
-| Diabetes (E14) | 18.000 | 12.000 | 1,50 |
+| COVID-19 | 81.572 | 103.525 | 1,27 |
+| Agressão por arma de fogo (X954) | 2.602 | 11.536 | **4,4** |
+| Diabetes (E14) | 12.000 | 18.000 | 1,50 |
 
-**Conclusão:** Pardos morrem mais de doenças crônicas e COVID; brancos morrem mais de armas — subnotificação de pardos na violência.
+**Correção:** a versão anterior desta tabela trocava os rótulos das colunas (o dicionário oficial do SIM é 1=Branca, 4=Parda, não o contrário) e a coluna de agressão usava o código X959 em vez de X954. Com o mapeamento certo, o padrão se inverte por completo: **pardos morrem 4,4x mais que brancos** por arma de fogo, na mesma direção que COVID e diabetes — não há "subnotificação de pardos", é sobrerrepresentação em toda causa de morte evitável, violenta inclusive. Ver `06_crime_violencia.md` item 12 para o gradiente racial completo (população → presídio → vítima de homicídio → vítima jovem).
 
 ### 7. Raça × setor econômico: o apartheid ocupacional
 
@@ -127,6 +127,7 @@ Analisando CBO idêntico e mesmo setor, negros ganham em média 23% menos que br
 - **Raça × COVID:** pardos 27% mais mortes — exposição ocupacional e acesso a saúde
 - **CBO × Raça × Salário:** 23% de penalidade racial 控制ando ocupação
 - **Trabalho doméstico × Raça:** 65% negra, menor salário médio (1,5 SM)
+- **Raça × Violência letal:** o hiato racial se aprofunda a cada etapa — 56% da população é negra, 70% da população carcerária, 78% das vítimas de homicídio, 83% das vítimas de homicídio jovens (15-24 anos); e o hiato entre vítimas negras e brancas **cresceu** de 2010 (71%) a 2022 (78%) mesmo com o homicídio total caindo 26% no período — ver `06_crime_violencia.md` item 12
 
 ## Hipóteses Explicativas
 
