@@ -6,3 +6,11 @@ mcp>=1.28.1
 sentence-transformers>=5.6.0
 torch>=2.13.0
 pytest>=9.1.1  # dev only — tests/test_mcp_server.py
+
+# pydantic-core must match the installed pydantic exactly or *every* import of
+# pydantic raises SystemError, which takes the whole MCP server down (mcp
+# imports pydantic at module load). Seen 2026-07-26: pydantic-core 2.47.0 had
+# been installed ahead of its pair while pydantic 2.13.4 — the latest release —
+# still pins 2.46.4. Fix is to align the core, not to upgrade pydantic:
+#     python3 -m pip install "pydantic-core==2.46.4"
+pydantic-core==2.46.4
