@@ -105,6 +105,46 @@ def test_describe_table_narrow_table_is_not_truncated():
     assert "columns_truncated" not in result
 
 
+def test_cap_rows_passes_small_results_through():
+    rows = [{"n": i} for i in range(5)]
+    out = m._cap_rows(rows, max_rows=500)
+    assert out["rows"] == rows
+    assert out["truncated"] is False
+
+
+def test_cap_rows_caps_by_row_count():
+    rows = [{"n": i} for i in range(50)]
+    out = m._cap_rows(rows, max_rows=10)
+    assert out["returned"] == 10
+    assert out["total"] == 50
+    assert out["truncated"] is True
+
+
+def test_cap_rows_caps_wide_rows_by_size():
+    """The real hazard: a row-count cap does not bound the payload, because row
+    width varies by orders of magnitude across this catalog."""
+    # ~4 KB per row: wide enough that 500 rows bust the budget, narrow enough
+    # that many still fit — so the cap lands on a real boundary, not on the
+    # keep-at-least-one-row floor exercised by the next test.
+    wide = [{f"col_{i}": "x" * 100 for i in range(40)} for _ in range(500)]
+    out = m._cap_rows(wide, max_rows=500)
+    assert out["truncated"] is True
+    assert out["returned"] < 500
+    assert len(json.dumps(out["rows"], ensure_ascii=False)) <= m.RUN_SQL_MAX_CHARS
+    assert "note" in out
+
+
+def test_cap_rows_returns_column_names_when_one_row_busts_the_budget():
+    """Handing back a single 1000-column row would be the blowout this guards
+    against (~128k tokens), so return the column names to rewrite the query."""
+    monster = [{f"col_{i}": "x" * 500 for i in range(1000)}]
+    out = m._cap_rows(monster, max_rows=500)
+    assert out["rows"] == []
+    assert out["columns_total"] == 1000
+    assert len(out["columns"]) == m.DESCRIBE_MAX_COLS
+    assert len(json.dumps(out, ensure_ascii=False)) < m.RUN_SQL_MAX_CHARS
+
+
 def test_describe_table_missing_dot():
     result = m.describe_table("no_dot_here")
     assert "error" in result
