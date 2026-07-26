@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>rodado — Brasil em números, retratos dos dados oficiais</title>
-<meta name="description" content="778 tabelas de dados oficiais brasileiros cruzadas em 43 investigações sobre desigualdade, poder, economia, saúde e violência — o retrato que o Estado já tem de si mesmo.">
+<meta name="description" content="839 tabelas de dados oficiais brasileiros cruzadas em 43 investigações sobre desigualdade, poder, economia, saúde e violência — o retrato que o Estado já tem de si mesmo.">
 <!-- seo:start (gerado por scripts/gera_seo.py — não editar à mão) -->
 <link rel="canonical" href="https://rodado.xyz/">
 <link rel="alternate" hreflang="pt-br" href="https://rodado.xyz/">
@@ -15,14 +15,14 @@
 <meta property="og:locale" content="pt_BR">
 <meta property="og:url" content="https://rodado.xyz/">
 <meta property="og:title" content="rodado — Brasil em números, retratos dos dados oficiais">
-<meta property="og:description" content="778 tabelas de dados oficiais brasileiros cruzadas em 43 investigações sobre desigualdade, poder, economia, saúde e violência — o retrato que o Estado já tem de si mesmo.">
+<meta property="og:description" content="839 tabelas de dados oficiais brasileiros cruzadas em 43 investigações sobre desigualdade, poder, economia, saúde e violência — o retrato que o Estado já tem de si mesmo.">
 <meta property="og:image" content="https://rodado.xyz/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="rodado — Brasil em números, retratos dos dados oficiais">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="rodado — Brasil em números, retratos dos dados oficiais">
-<meta name="twitter:description" content="778 tabelas de dados oficiais brasileiros cruzadas em 43 investigações sobre desigualdade, poder, economia, saúde e violência — o retrato que o Estado já tem de si mesmo.">
+<meta name="twitter:description" content="839 tabelas de dados oficiais brasileiros cruzadas em 43 investigações sobre desigualdade, poder, economia, saúde e violência — o retrato que o Estado já tem de si mesmo.">
 <meta name="twitter:image" content="https://rodado.xyz/assets/og.png">
 <link rel="icon" href="assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
@@ -31,7 +31,7 @@
 <link rel="manifest" href="https://rodado.xyz/site.webmanifest">
 <meta name="theme-color" content="#9c3b2e">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"rodado","url":"https://rodado.xyz/","description":"778 tabelas de dados oficiais brasileiros cruzadas em 43 investigações sobre desigualdade, poder, economia, saúde e violência — o retrato que o Estado já tem de si mesmo.","inLanguage":"pt-BR"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"rodado","url":"https://rodado.xyz/","description":"839 tabelas de dados oficiais brasileiros cruzadas em 43 investigações sobre desigualdade, poder, economia, saúde e violência — o retrato que o Estado já tem de si mesmo.","inLanguage":"pt-BR"}</script>
 <!-- seo:end -->
 <link rel="stylesheet" href="assets/site.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -64,15 +64,25 @@
 </nav>
 
 <main class="wide">
-  <p class="eyebrow">778 tabelas públicas · 43 temas</p>
+  <p class="eyebrow">839 tabelas públicas · 43 temas</p>
   <h1>Brasil em números, retratos dos dados oficiais</h1>
   <p class="dek">Vínculos de emprego, óbitos, contratos públicos, resultados eleitorais, matrículas escolares — os registros que o próprio Estado brasileiro produz para administrar a população, cruzados por raça, classe, gênero e território.</p>
 
-  <p class="lede">Este projeto reúne 778 tabelas públicas — a maior parte espelhada da Base dos Dados (RAIS, SIM, TSE, CGU, IBGE, INEP, CNES e outras fontes oficiais), complementada com mais de 40 fontes raspadas de forma independente para cobrir o que a Base dos Dados não tem (sanções nacionais e internacionais, SICAF, SINAN Violência, reclamações de consumidor, entre outras) — e as lê a partir de perguntas investigativas, não de uma vitrine técnica: o que esses registros, cruzados, revelam sobre desigualdade, poder, economia, saúde e violência no Brasil? Não é pesquisa de opinião nem modelo teórico. É o retrato que o Estado já tem de si mesmo, através de dados administrativos que raramente são lidos lado a lado. As tabelas (mais de 675 GB em Parquet+zstd) são consultadas sob demanda via DuckDB — sem importar nada localmente — permitindo cruzar bases de ministérios, tribunais, institutos e fontes independentes numa única consulta.</p>
+  <p class="teaser-nota">Os mesmos dados, vistos no mapa: oito explorações cartográficas no <a href="https://xn--2dk.xyz/">DataViz Hub</a>.</p>
+  <div class="teaser">
+    <a class="teaser-tile" href="https://xn--2dk.xyz/"><img src="assets/teaser/cnpj-rio.webp" alt="Mapa escuro do estado do Rio de Janeiro formado por milhões de pontos luminosos, cada um representando um CNPJ ativo" width="640" height="480" loading="lazy"><span>Cada ponto é um CNPJ, no Rio de Janeiro</span></a>
+    <a class="teaser-tile" href="https://xn--2dk.xyz/"><img src="assets/teaser/igrejas-brasil.webp" alt="Mapa do Brasil formado por pontos que marcam cada estabelecimento religioso do país" width="640" height="480" loading="lazy"><span>Todas as igrejas do país</span></a>
+    <a class="teaser-tile" href="https://xn--2dk.xyz/"><img src="assets/teaser/igrejas-rj-3d.webp" alt="Mapa 3D do estado do Rio de Janeiro com espículas verticais marcando a concentração de estabelecimentos religiosos" width="640" height="480" loading="lazy"><span>Densidade religiosa do Rio em três dimensões</span></a>
+    <a class="teaser-tile" href="https://xn--2dk.xyz/"><img src="assets/teaser/perfil-religioso.webp" alt="Mapa do Brasil com municípios coloridos do amarelo (predominância católica) ao roxo (predominância evangélica)" width="640" height="480" loading="lazy"><span>O perfil religioso de cada município</span></a>
+    <a class="teaser-tile" href="https://xn--2dk.xyz/"><img src="assets/teaser/atlas-salarial.webp" alt="Mapa coroplético do Brasil com os municípios coloridos pela remuneração média dos vínculos formais da RAIS" width="640" height="480" loading="lazy"><span>O Atlas Salarial da RAIS</span></a>
+    <a class="teaser-tile" href="https://xn--2dk.xyz/"><img src="assets/teaser/fecundidade-evangelicas.webp" alt="Fecundidade x escolaridade entre denominações evangélicas, Censo 2010" width="640" height="480" loading="lazy"><span>Fecundidade e escolaridade entre evangélicos</span></a>
+    <a class="teaser-tile" href="https://xn--2dk.xyz/"><img src="assets/teaser/escolaridade-idade-mae.webp" alt="Distribuição da idade da mãe por escolaridade, Censo 2010" width="640" height="480" loading="lazy"><span>Quanto mais estudo, mais tarde os filhos</span></a>
+    <a class="teaser-tile" href="https://xn--2dk.xyz/"><img src="assets/teaser/peso-prematuridade-raca.webp" alt="Baixo peso e prematuridade por idade e raça da mãe, SINASC 2022" width="640" height="480" loading="lazy"><span>Raça desloca a curva do risco</span></a>
+  </div>
+
+  <p class="lede">Este projeto reúne 839 tabelas públicas — a maior parte espelhada da Base dos Dados (RAIS, SIM, TSE, CGU, IBGE, INEP, CNES e outras fontes oficiais), complementada com mais de 40 fontes raspadas de forma independente para cobrir o que a Base dos Dados não tem (sanções nacionais e internacionais, SICAF, SINAN Violência, reclamações de consumidor, entre outras) — e as lê a partir de perguntas investigativas, não de uma vitrine técnica: o que esses registros, cruzados, revelam sobre desigualdade, poder, economia, saúde e violência no Brasil? Não é pesquisa de opinião nem modelo teórico. É o retrato que o Estado já tem de si mesmo, através de dados administrativos que raramente são lidos lado a lado. As tabelas (mais de 868 GB em Parquet+zstd) são consultadas sob demanda via DuckDB — sem importar nada localmente — permitindo cruzar bases de ministérios, tribunais, institutos e fontes independentes numa única consulta.</p>
 
   <p>Cada um dos 43 temas abaixo combina uma narrativa investigativa com as tabelas de evidência por trás dela, para que qualquer afirmação possa ser conferida, não só lida. Os achados são apresentados de forma direta — no tom do jornalismo de dados, não da cautela acadêmica — mas toda tabela vem da fonte oficial citada, sem alteração de valores.</p>
-
-  <p>A cobertura de dados, a proveniência institucional e os detalhes técnicos de como a plataforma funciona estão descritos com mais profundidade no <a href="https://github.com/rafapolo/rodado">repositório do projeto</a>.</p>
 
   <h2 id="temas">Os 43 temas</h2>
   <div class="tema-grid">
