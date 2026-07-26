@@ -28,6 +28,9 @@ BEELINK_HOST = os.environ.get("MCP_BEELINK_HOST", "beelink")
 BEELINK_DUCKDB_BIN = os.environ.get("MCP_BEELINK_DUCKDB_BIN", "~/bin/duckdb")
 BEELINK_DUCKDB_PATH = os.environ.get("MCP_BEELINK_DUCKDB_PATH", "~/rodado/basedosdados.duckdb")
 SEARCH_THRESHOLD = float(os.environ.get("MCP_SEARCH_THRESHOLD", "0.35"))
+# Survey mirrors (SISDEPEN: 3.957 cols) would flood an LLM's context if
+# describe_table returned every column, so wide tables are capped.
+DESCRIBE_MAX_COLS = int(os.environ.get("MCP_DESCRIBE_MAX_COLS", "150"))
 
 SCHEMA_PATH = CONTEXT_DIR / "basedosdados-schema.json"
 EMBEDDINGS_PATH = CONTEXT_DIR / "table_embeddings.json"
@@ -288,8 +291,13 @@ def describe_table(table: str) -> dict:
     On a miss, returns close-match suggestions from the full table list.
 
     Column descriptions are not available: the mirrored schema carries only
-    name and type for all 33.844 columns. Use `search_tables` for semantic
-    lookup and `docs/overview/` for what a dataset actually means.
+    name and type. Use `search_tables` for semantic lookup and `docs/overview/`
+    for what a dataset actually means.
+
+    Very wide tables are truncated to the first 150 columns (survey mirrors
+    reach 3.957) — the leading columns are the identifying ones. When that
+    happens the reply carries a `columns_truncated` block with the real total;
+    query `parquet_path` with DESCRIBE via `run_sql` to see the rest.
     """
     if "." not in table:
         return {"error": "table must be in the form 'dataset.table'."}
@@ -300,11 +308,23 @@ def describe_table(table: str) -> dict:
         suggestions = difflib.get_close_matches(table, _ALL_TABLE_IDS, n=5, cutoff=0.4)
         return {"error": f"Unknown table '{table}'.", "suggestions": suggestions}
 
-    return {
+    columns = tables[table_name]
+    result = {
         "table": table,
-        "columns": tables[table_name],
+        "columns": columns[:DESCRIBE_MAX_COLS],
         "parquet_path": _PARQUET_GLOBS[table],
     }
+    if len(columns) > DESCRIBE_MAX_COLS:
+        result["columns_truncated"] = {
+            "shown": DESCRIBE_MAX_COLS,
+            "total": len(columns),
+            "note": (
+                f"Showing the first {DESCRIBE_MAX_COLS} of {len(columns)} columns. "
+                f"Run DESCRIBE SELECT * FROM read_parquet('{_PARQUET_GLOBS[table]}') "
+                f"via run_sql for the full list."
+            ),
+        }
+    return result
 
 
 @mcp.tool()
