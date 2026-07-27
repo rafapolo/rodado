@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Análises — rodado</title>
+<meta name="description" content="Análises de dados públicos brasileiros — cruzamentos e achados a partir do DuckDB / basedosdados.">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="../assets/mcp-theme.css">
+<style>
+  /* markdown renderizado herda o CSS geral; só re-aplicamos a coluna de leitura
+     (site.css só mira `main > *`, e aqui o conteúdo fica dentro de #doc) */
+  #doc > * { max-width: var(--measure); }
+  #doc > .data-table-wrap { max-width: var(--measure); }
+  #doc h1 { margin-top: 0.4rem; }
+  #doc hr { border: 0; border-top: 1px solid var(--rule); margin: 2.4rem 0; max-width: var(--measure); }
+  #doc blockquote { color: var(--ink-soft); }
+  #doc code { font-family: var(--mono, 'IBM Plex Mono', monospace); font-size: 0.86em;
+    background: var(--code-bg, rgba(127,127,127,0.12)); padding: 0.1em 0.35em; border-radius: 4px; }
+  #doc ul, #doc ol { max-width: var(--measure); margin: 0 0 1.25rem; padding-left: 1.3rem; }
+  #doc li { margin-bottom: 0.4rem; }
+  #doc .maps { font-size: 0.95rem; }
+  .idx-list { list-style: none; padding: 0; margin: 1.5rem 0 0; max-width: var(--measure); }
+  .idx-list li { margin: 0 0 1.4rem; padding-bottom: 1.4rem; border-bottom: 1px solid var(--rule); }
+  .idx-list a { font-size: 1.15rem; font-weight: 700; text-decoration: none; }
+  .idx-list .dek { margin: 0.3rem 0 0; color: var(--ink-soft); font-size: 0.95rem; }
+  .idx-list .meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--ink-faint); }
+  .doc-msg { color: var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="../index.html#temas">Temas</a>
+        <a href="./">Análises</a>
+        <a href="../mcp.html">MCP</a>
+        <a href="https://xn--2dk.xyz/dataviz/">DataViz Hub</a>
+      </div>
+      <div class="nav-controls">
+        <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema claro/escuro" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <a class="voltar" href="../index.html">&larr; voltar ao índice</a>
+  <p class="eyebrow" id="eyebrow">Análises</p>
+  <div id="doc"><p class="doc-msg">Carregando…</p></div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a href="../index.html">Índice temático</a>
+    <a href="https://github.com/rafapolo/rodado">Repositório</a>
+    <span>Dados: fontes públicas oficiais / DuckDB</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+<script src="./viewer.js"></script>
+<script src="../assets/theme-toggle.js"></script>
+</body>
+</html>
