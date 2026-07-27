@@ -12,9 +12,13 @@ Fixes the problems found in the v2 pipeline (see tasks/normalization.plan):
    the filename suffix (UF 12, tab3_20), or the table title. Phase A checks
    all three and derives _uf/_municipio/_ano/_tabela_id/_titulo columns.
 3. Grouping in v2 only stripped geography from the filename *suffix*, not
-   the *prefix*, so 52.281 files only collapsed to 51.012 tables. Phase B
-   groups by (folder, tabela_id-or-prefix-with-geo-stripped, column
-   signature) so all UF/GR/BR/municipio variants of the same table merge.
+   the *prefix*, so 52.281 files only collapsed to 51.012 tables. Phase B's
+   primary key is the table's own description with UF and year stripped out
+   (`strip_year_and_uf`) — this merges the same survey question across both
+   geography *and* census/PNAD editions, which a source-spreadsheet-number
+   key never could (numbering gets rescoped release to release). Filename-
+   based keys (`base_key_from_filename`) are only a fallback for files with
+   no usable description.
 4. `sorted(columns)` crashed on float column names (empty Excel header
    cells become NaN) and long titles produced filenames > 255 bytes.
    Both are fixed here (sort by str(), hash-truncate long names).
@@ -188,6 +192,26 @@ def parse_title(title):
     return tabela_id, descricao or None, ano, uf
 
 
+YEAR_OR_RANGE_RE = re.compile(r"\b(19|20)\d{2}(/(19|20)?\d{2,4})?\b")
+
+
+def strip_year_and_uf(descricao):
+    """Reduce a table description to its UF/year-independent semantic core,
+    e.g. "Tratores existentes... - Rondônia - 2006" and "...- São Paulo -
+    2017" both collapse to "tratores_existentes...". This is the real
+    grouping signal — far more reliable than the source spreadsheet's own
+    table numbering, which is rescoped (sometimes renumbered) release to
+    release, so number-based keys can never merge the same survey question
+    across census/PNAD editions the way this can.
+    """
+    t = strip_accents(descricao).lower()
+    t = YEAR_OR_RANGE_RE.sub("", t)
+    for name, _sigla in UF_FULL_NAMES_SORTED:
+        t = re.sub(r"\b" + name.replace(" ", r"\s+") + r"\b", "", t)
+    t = re.sub(r"[-–,]", " ", t)
+    return slugify(t)
+
+
 def is_title_shifted(col0, other_cols):
     if not isinstance(col0, str):
         return False
@@ -279,34 +303,53 @@ def promote_header(df):
     return result, title
 
 
-def coerce_numeric(series):
-    if series.dtype != object:
+def clean_null_tokens(series):
+    """Blank Excel placeholders ('-', '...', 'X', ...) -> None. Safe to run
+    per-file: it only ever turns a string into None, never changes a
+    column's eventual type, so it can't create the cross-file type conflict
+    that numeric coercion can (see coerce_numeric)."""
+    if pd.api.types.is_numeric_dtype(series):
         return series
-    cleaned = series.map(
+    return series.map(
         lambda v: None
         if (v is None or (isinstance(v, str) and v.strip().lower() in NULL_TOKENS))
         else v
     )
-    non_null = cleaned.dropna()
+
+
+def coerce_numeric(series):
+    """Only safe to call on a fully-merged column (post pd.concat across a
+    whole table_key group), never per-file: different source files can each
+    independently clear the 90% numeric threshold or not for "the same"
+    column (e.g. a street-name column that happens to be mostly numbers in
+    one municipality), and merging a coerced-float version of the column
+    from one file with a left-as-string version from another produces a
+    truly mixed-type column that pyarrow refuses to write.
+
+    Vectorized (no per-cell Python calls): some merged groups run to
+    millions of rows (e.g. the national CNEFE address table).
+    """
+    # Not `series.dtype != object`: pandas 3.x reads text columns as its
+    # native "str" dtype, not the legacy numpy "object" — that check silently
+    # skipped every column and left numbers stored as text.
+    if pd.api.types.is_numeric_dtype(series):
+        return series
+    non_null = series.dropna()
     if len(non_null) == 0:
-        return cleaned
+        return series
 
-    def to_num(v):
-        if isinstance(v, (int, float)):
-            return v
-        s = str(v).strip()
-        s = re.sub(r"(?<=\d) (?=\d)", "", s)  # thousand-separator space
-        s = s.replace(",", ".") if s.count(",") == 1 and s.count(".") == 0 else s
-        try:
-            return float(s)
-        except ValueError:
-            return None
+    s = series.astype("string")
+    s = s.str.strip()
+    s = s.str.replace(r"(?<=\d) (?=\d)", "", regex=True)  # thousand-separator space
+    comma_decimal = s.str.count(",").eq(1) & ~s.str.contains(".", regex=False, na=False)
+    s = s.mask(comma_decimal.fillna(False), s.str.replace(",", ".", regex=False))
+    numeric = pd.to_numeric(s, errors="coerce")
 
-    converted = non_null.map(to_num)
-    success = converted.notna().sum()
-    if success / len(non_null) >= 0.9:
-        return cleaned.map(lambda v: to_num(v) if v is not None else None)
-    return cleaned
+    non_null_after = s.notna().sum()
+    success = numeric.notna().sum()
+    if non_null_after and success / non_null_after >= 0.9:
+        return numeric
+    return series
 
 
 def extract_geo(filename, title, folder_name, tab3_uf_map):
@@ -431,7 +474,7 @@ def _clean_one_file_inner(df, filepath, folder_name, tab3_uf_map):
     data_cols = [c for c in new_cols if c not in META_COLS]
 
     for c in data_cols:
-        df[c] = coerce_numeric(df[c])
+        df[c] = clean_null_tokens(df[c])
 
     df.insert(0, "_municipio", municipio)
     df.insert(0, "_uf", uf)
@@ -442,7 +485,17 @@ def _clean_one_file_inner(df, filepath, folder_name, tab3_uf_map):
     if tabela_id:
         df.insert(0, "_tabela_id", tabela_id)
 
-    if tabela_id:
+    # Primary key: the description with UF/year stripped out. This is what
+    # actually merges the same survey question across census/PNAD editions
+    # (source spreadsheet numbering gets rescoped release to release, so it
+    # can't do this). Only fall back to the old filename-based key when
+    # there's no usable description (promote_header never triggered, e.g.
+    # the CNEFE-style files that already had clean headers).
+    title_key = strip_year_and_uf(descricao) if descricao else None
+    loose_merge = bool(title_key)
+    if title_key:
+        table_key = safe_name(title_key, maxlen=100)
+    elif tabela_id:
         prefix_key = base_key_from_filename(filepath.name, uf=uf, municipio=municipio)
         table_key = safe_name(f"{prefix_key}_tabela_{tabela_id}")
     else:
@@ -471,6 +524,7 @@ def _clean_one_file_inner(df, filepath, folder_name, tab3_uf_map):
         "table_key": table_key,
         "cols_sig": cols_sig,
         "n_rows": len(df),
+        "loose_merge": loose_merge,
     }
 
 
@@ -524,18 +578,36 @@ def merge_group(folder_name, table_key, items):
     if not frames:
         return 0, 0
 
+    # reindex adds every missing column in one vectorized shot; doing it via
+    # `f[c] = None` per-column instead (the previous approach) triggers
+    # pandas' "highly fragmented DataFrame" internal reallocation once per
+    # missing column, which turned title-based groups (loose union merges
+    # across many more files/columns than the old strict-overlap groups)
+    # into a multi-minute operation.
     all_cols = sorted({c for f in frames for c in f.columns}, key=str)
-    aligned = []
-    for f in frames:
-        for c in all_cols:
-            if c not in f.columns:
-                f[c] = None
-        aligned.append(f[all_cols])
+    aligned = [f.reindex(columns=all_cols) for f in frames]
 
     merged = pd.concat(aligned, ignore_index=True)
     merged = merged.dropna(how="all")
     if merged.empty:
         return 0, 0
+
+    # IBGE sometimes republishes the exact same table under a different
+    # sheet id (two different source files, identical title, identical
+    # data) — e.g. SP/2017 "Condição legal do produtor..." appears under
+    # both 5615458_TABELA_1.xls and 5616460_TABELA_1.xls. Since the
+    # title-based key merges by content, not by sheet id, that duplication
+    # would otherwise double every value. Drop exact content duplicates,
+    # ignoring only the two provenance columns that are expected to differ.
+    dedup_cols = [c for c in merged.columns if c not in ("_original_file", "_download_date")]
+    before = len(merged)
+    merged = merged.drop_duplicates(subset=dedup_cols, keep="first")
+    if len(merged) < before:
+        log.info(f"  dedup {table_key}: {before} -> {len(merged)} rows")
+
+    data_cols = [c for c in merged.columns if c not in META_COLS and not c.startswith("_")]
+    for c in data_cols:
+        merged[c] = coerce_numeric(merged[c])
 
     try:
         table = pa.Table.from_pandas(merged, preserve_index=False)
@@ -589,7 +661,17 @@ def phase_b(manifest):
         n_tables = 0
         n_rows = 0
         for table_key, items in sorted(groups.items()):
-            clusters = cluster_by_column_overlap(items)
+            # Tried unconditional union merge for title-based keys (skip the
+            # overlap check entirely) — wrong: IBGE sometimes gives two
+            # genuinely different tables (different variable sets) the
+            # *exact same* title text (e.g. "Condição legal do produtor..."
+            # covers both a legal-condition breakdown and an unrelated
+            # cooperative-association breakdown across two source sheets
+            # that only share ~33-36% of columns). Unconditional merge
+            # silently combined them, corrupting sums. The 0.5 threshold
+            # correctly keeps that case split while still merging the same
+            # table across UF/year when columns are substantially the same.
+            clusters = cluster_by_column_overlap(items, threshold=0.5)
             for i, cluster_items in enumerate(clusters):
                 key = table_key if i == 0 else f"{table_key}_v{i + 1}"
                 n_files, n_merged = merge_group(folder_name, key, cluster_items)
@@ -651,6 +733,7 @@ def rebuild_manifest_from_clean(folder_filter=None):
                 "table_key": table_key,
                 "cols_sig": cols_sig,
                 "n_rows": pq.read_metadata(f).num_rows,
+                "loose_merge": "_titulo" in cols,
             })
     return manifest
 
