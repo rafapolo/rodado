@@ -130,8 +130,8 @@ The platform models Brazilian public data as typed business objects with explici
 ```
 ┌──────────────────────┐          ┌──────────────────────┐
 │      State (UF)      │─────────▶│     Municipality     │
-│  sigla_uf (245 tbl)  │   1:N    │   id_municipio       │
-│  id_uf    (22 tbl)   │          │   (195 tables)       │
+│  sigla_uf (322 tbl)  │   1:N    │   id_municipio       │
+│  id_uf    (27 tbl)   │          │   (260 tables)       │
 └──────────────────────┘          └──────────┬───────────┘
                                              │ 1:N
              ┌───────────────────────────────┼──────────────────────┐
@@ -141,7 +141,7 @@ The platform models Brazilian public data as typed business objects with explici
 │    CensusSector      │  │   SocialIndicator    │  │   ElectoralZone      │
 │ id_setor_censitario  │  │  health · education  │  │  id_municipio_tse    │
 │      (27 tbl)        │  │  income · housing    │  │      (23 tbl)        │
-└──────────────────────┘  │  ano/mes (261+ tbl)  │  └──────────────────────┘
+└──────────────────────┘  │  ano/mes (389+ tbl)  │  └──────────────────────┘
                           └──────────────────────┘
 
 ┌──────────────────────┐          ┌──────────────────────┐
@@ -159,24 +159,26 @@ The platform models Brazilian public data as typed business objects with explici
 
 ┌──────────────────────┐
 │   OccupationClass    │   Temporal dimension:
-│   cbo_2002 (6 tbl)  │     ano       (261 tbl)
-│   RAIS/CAGED/CNES    │     mes        (94 tbl)
-└──────────────────────┘     trimestre   (3 tbl)
+│   cbo_2002 (8 tbl)  │     ano       (389 tbl)
+│   RAIS/CAGED/CNES    │     mes       (117 tbl)
+└──────────────────────┘     trimestre   (7 tbl)
 ```
 
-**Canonical join keys** — from [`context/join_keys.md`](docs/context/join_keys.md):
+Full map in [`ERD.md`](ERD.md) — pt-BR, English in [`ERD_EN.md`](ERD_EN.md) — one mermaid diagram per domain covering all 825 tables; join recipes in [`docs/context/join_keys.md`](docs/context/join_keys.md).
+
+**Canonical join keys**:
 
 | Key | Tables | Object |
 |-----|--------|--------|
-| `id_municipio` | 195 | Municipality |
-| `sigla_uf` | 245 | State |
-| `cnpj` / `cnpj_basico` | 18 | Company |
+| `id_municipio` | 260 | Municipality |
+| `sigla_uf` | 322 | State |
+| `cnpj` / `cnpj_basico` | 23 | Company |
 | `id_setor_censitario` | 27 | CensusSector |
 | `id_municipio_tse` | 23 | ElectoralZone |
-| `cbo_2002` | 6 | OccupationClass |
+| `cbo_2002` | 8 | OccupationClass |
 | `cnae_2_subclasse` | 6 | EconomicActivity |
 | `cpf` | varies | Person |
-| `ano` | 261 | Temporal partition |
+| `ano` | 389 | Temporal partition |
 
 ---
 
@@ -203,7 +205,7 @@ The platform models Brazilian public data as typed business objects with explici
 │                                                                  │
 │   DuckDB views over partitioned datasets                         │
 │   basedosdados-schema.json   — 533-table schema registry        │
-│   join_keys.md               — entity relationship graph        │
+│   join_keys.md               — join keys + cross-source bridges │
 │   table_embeddings.json      — semantic vectors for AI (11.4 MB)│
 │   overview/ (34 files)       — domain narratives for LLM ctx    │
 └────────────────────────────────┬─────────────────────────────────┘
