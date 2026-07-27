@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
-"""Injeta metadados de SEO e compartilhamento nas páginas de rodado.xyz.
+"""Injeta metadados de SEO e o <head> comum nas páginas de rodado.xyz.
 
-Para cada página: canonical, Open Graph, Twitter Card, hreflang PT/EN,
-ícones, theme-color e JSON-LD. Também gera robots.txt e sitemap.xml.
+Dois blocos por página, cada um entre sentinelas:
 
-É idempotente: o bloco inserido é delimitado por sentinelas e reescrito
-a cada execução, então rodar de novo não duplica nada.
+- seo:*  — canonical, Open Graph, Twitter Card, hreflang PT/EN, ícones,
+           theme-color e JSON-LD, derivados do título e da descrição da página;
+- head:* — o que toda página carrega igual (fontes, Font Awesome, CSS do site,
+           analytics). Edite a lista COMUM aqui e rode o script: muda em todas.
+
+Também gera robots.txt e sitemap.xml.
+
+É idempotente: os blocos são reescritos a cada execução, então rodar de novo
+não duplica nada.
 """
 
 import html
@@ -18,6 +24,36 @@ PAGES = Path(__file__).resolve().parent.parent / "pages"
 
 OPEN = "<!-- seo:start (gerado por scripts/gera_seo.py — não editar à mão) -->"
 CLOSE = "<!-- seo:end -->"
+
+HEAD_OPEN = "<!-- head:start (gerado por scripts/gera_seo.py — não editar à mão) -->"
+HEAD_CLOSE = "<!-- head:end -->"
+
+# O <head> que toda página compartilha. `{p}` vira "../" nas subpastas.
+# Fonte única: mexa aqui, rode o script, vale para as 94 páginas.
+COMUM = [
+    '<link rel="preconnect" href="https://fonts.googleapis.com">',
+    '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
+    '<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500'
+    '&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">',
+    '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/'
+    '6.5.2/css/all.min.css">',
+    '<link rel="stylesheet" href="{p}assets/site.css">',
+    '<link rel="stylesheet" href="{p}assets/mcp-theme.css">',
+    '<script defer src="https://cloud.umami.is/script.js" '
+    'data-website-id="d2597bf7-73e0-4e7e-b353-1202d9f72b7d"></script>',
+]
+
+# Marcas das linhas absorvidas pelo bloco comum. Servem para recolher as cópias
+# soltas que ainda existam no HTML — o CSS específico de página (mcp-page.css,
+# <style> inline) não casa com nenhuma e continua onde está, depois do bloco.
+MARCAS_COMUNS = (
+    "fonts.googleapis.com",
+    "fonts.gstatic.com",
+    "font-awesome",
+    "assets/site.css",
+    "assets/mcp-theme.css",
+    "cloud.umami.is",
+)
 
 # Descrições reescritas: sem menção a espelhamento, focadas no que o
 # leitor encontra na página.
@@ -195,6 +231,52 @@ def processa(path: Path) -> bool:
     return True
 
 
+def bloco_comum(path: Path) -> str:
+    prefixo = "../" if path.parent != PAGES else ""
+    linhas = [linha.replace("{p}", prefixo) for linha in COMUM]
+    return "\n".join([HEAD_OPEN, *linhas, HEAD_CLOSE])
+
+
+def injeta_comum(path: Path) -> bool:
+    """Substitui as linhas comuns do <head> pelo bloco gerado."""
+    texto = path.read_text(encoding="utf-8")
+
+    m = re.search(r"(?is)(<head[^>]*>)(.*?)(</head>)", texto)
+    if m is None:
+        print(f"  ! sem <head>, ignorado: {path.name}")
+        return False
+
+    # O bloco volta onde já estava (ou, na primeira vez, onde estava a primeira
+    # linha comum) para não passar na frente do CSS específico da página e
+    # inverter a cascata.
+    mantidas: list[str] = []
+    pos: int | None = None
+    dentro = False
+    for linha in m.group(2).split("\n"):
+        if HEAD_OPEN in linha:
+            dentro = True
+        if dentro:
+            if pos is None:
+                pos = len(mantidas)
+            dentro = HEAD_CLOSE not in linha
+            continue
+        if any(marca in linha for marca in MARCAS_COMUNS):
+            if pos is None:
+                pos = len(mantidas)
+            continue
+        mantidas.append(linha)
+
+    if pos is None:  # página nova, ainda sem nenhuma das linhas comuns
+        pos = len(mantidas) - 1 if mantidas and not mantidas[-1].strip() else len(mantidas)
+
+    mantidas.insert(pos, bloco_comum(path))
+    novo = texto[: m.start(2)] + "\n".join(mantidas) + texto[m.end(2) :]
+
+    if novo != texto:
+        path.write_text(novo, encoding="utf-8")
+    return True
+
+
 def alvos() -> list[Path]:
     arquivos = sorted(PAGES.glob("*.html"))
     for sub in ("temas", "temas-en"):
@@ -202,6 +284,12 @@ def alvos() -> list[Path]:
             p for p in (PAGES / sub).glob("*.html") if not p.name.startswith("_")
         )
     return arquivos
+
+
+def alvos_head() -> list[Path]:
+    """Todo HTML de pages/ — inclusive os _template.html e analises/, que ficam
+    fora do SEO mas também carregam o head comum."""
+    return sorted(PAGES.rglob("*.html"))
 
 
 def gera_sitemap(arquivos: list[Path]) -> None:
@@ -246,9 +334,11 @@ def gera_robots() -> None:
 def main() -> None:
     arquivos = alvos()
     n = sum(processa(p) for p in arquivos)
+    c = sum(injeta_comum(p) for p in alvos_head())
     gera_sitemap(arquivos)
     gera_robots()
     print(f"{n} páginas com metadados")
+    print(f"{c} páginas com head comum")
     print(f"sitemap.xml com {len(arquivos)} URLs")
     print("robots.txt")
 
