@@ -2,7 +2,7 @@
 
 O que **6.304 registros amostrais** do Censo 2010 mostram sobre renda, escolaridade, cor
 declarada e geografia da população judaica no Brasil — e o que o dado simplesmente não
-alcança. Microdados do IBGE (`br_ibge_censo_demografico`), consultados em DuckDB.
+alcança. Microdados do Censo Demográfico do IBGE.
 
 ---
 
