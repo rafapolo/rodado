@@ -4,13 +4,6 @@ O que **6.304 registros amostrais** do Censo 2010 mostram sobre renda, escolarid
 declarada e geografia da população judaica no Brasil — e o que o dado simplesmente não
 alcança. Microdados do IBGE (`br_ibge_censo_demografico`), consultados em DuckDB.
 
-> **Nota de escopo.** A análise nasceu de uma afirmação em circulação: a de que judeus no
-> Brasil têm renda e escolaridade maiores que as de brancos cristãos, e que isso
-> demonstraria a inexistência de discriminação estrutural contra eles. A afirmação tem
-> duas partes separáveis. Uma é **empírica**: judeus têm renda e escolaridade maiores?
-> A outra é **inferencial**: vantagem socioeconômica agregada prova ausência de
-> discriminação estrutural? Este documento responde só a primeira.
-
 ---
 
 ## 1. Como identificar judeus no microdado
