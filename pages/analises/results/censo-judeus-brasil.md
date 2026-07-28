@@ -36,6 +36,22 @@ brasileira: São Paulo 48%, Rio 23%, com Rio Grande do Sul, Pernambuco e Pará
 desproporcionalmente representados — as colônias agrícolas gaúchas, Recife, e a comunidade
 marroquina de Belém.
 
+Cada um desses núcleos vem de uma migração distinta, e é essa sobreposição de ondas que
+produz o mapa. **Recife** é o mais antigo e o mais descontínuo: a Kahal Zur Israel, fundada
+por volta de 1636 sob domínio holandês, foi a primeira sinagoga das Américas, e se dispersou
+com a retomada portuguesa de Pernambuco em 1654 — parte daquela comunidade seguiu para Nova
+Amsterdã e originou a primeira congregação judaica da América do Norte. A comunidade
+recifense de hoje não é continuação daquela: é majoritariamente do século XX, sobre um
+substrato colonial de cristãos-novos. O **Rio Grande do Sul** nasce de um projeto dirigido —
+a Jewish Colonization Association, do barão Maurice de Hirsch, assentou judeus do Leste
+Europeu em colônias agrícolas como Philippson (1904) e Quatro Irmãos (1912), cujas famílias
+depois migraram em massa para Porto Alegre. **Belém e Manaus** vêm dos sefarditas marroquinos
+chegados a partir de 1810, tratados na seção 4. E o eixo **São Paulo–Rio**, que hoje
+concentra 71% do total, é sobretudo a grande onda asquenazita do início do século XX, com
+pico nos anos 1920 e 1930, somada a sefarditas do Oriente Médio e a refugiados do pós-guerra.
+Foi também a onda que esbarrou na política imigratória do Estado Novo, incluindo a Circular
+Secreta 1.127, de 1937, que instruía o corpo diplomático brasileiro a negar visto a judeus.
+
 Terceiro, os códigos análogos em censos anteriores reproduzem os totais publicados daqueles
 anos com precisão ainda maior: em 1980 (`v508=7`, peso `v604`) o cálculo dá **91.795**
 contra 91.795 publicados — exato.
