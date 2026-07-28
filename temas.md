@@ -1,53 +1,26 @@
 # Temas — que dados cada investigação usa
 
-Os 43 temas do site e os datasets que cada um cita, 103 dos 195 do espelho.
+Os 43 temas do site e os datasets que cada um cita, 103 dos 195 do espelho. Os temas não se ligam
+entre si diretamente: o que os conecta é chegarem às mesmas
+referências — a aresta leva quantos datasets do tema carregam a chave.
 
 > A origem é o markdown de `docs/overview/`: os datasets que o próprio
 > texto de cada tema nomeia. Não é a lista completa do que a investigação
 > tocou — é o que está registrado. Dataset sem citação não aparece.
 
-Gerado por `scripts/gera_flow.py` a partir de `schemas.json` em 2026-07-28 — não
-edite à mão, regenere.
+Gerado por `scripts/gera_flow.py` a partir de `schemas.json` em 2026-07-28 — não edite à mão, regenere.
 
-- **nó** = dataset; **cápsula** = hub de referência;
-- **seta cheia** (`-->`) = a chave está no dataset com o nome canônico, join direto;
-- **seta pontilhada** (`-.->`) = a chave está com outro nome ou formato, normalize
-  antes — receita em [`docs/context/join_keys.md`](docs/context/join_keys.md);
-- os atributos (a lista de tabelas de cada dataset) ficaram de fora de propósito:
-  é o que faz o mapa inteiro caber num diagrama só. Eles estão no [`ERD.md`](ERD.md).
+- **caixa** = dataset; cada `subgraph` é um tema, e a aresta sai do tema inteiro;
+- **cápsula** = hub de referência, agrupado por família num `subgraph` e
+  repetido em cada diagrama para manter as arestas curtas;
+- **seta cheia** (`-->`) = a chave está lá com o nome canônico, join direto;
+- **seta pontilhada** (`-.->`) = a chave está com outro nome ou formato,
+  normalize antes — receita em [`docs/context/join_keys.md`](docs/context/join_keys.md);
+- a lista de tabelas de cada dataset ficou de fora de propósito; está no
+  [`ERD.md`](ERD.md).
 
 ```mermaid
 flowchart LR
-    subgraph hubs_territ_rio["Território"]
-        direction TB
-        MUNICIPIO(["MUNICIPIO"])
-        UF(["UF"])
-        SETOR_CENSITARIO(["SETOR_CENSITARIO"])
-        CEP(["CEP"])
-    end
-    subgraph hubs_pessoas_e_empresas["Pessoas e empresas"]
-        direction TB
-        EMPRESA_CNPJ(["EMPRESA_CNPJ"])
-        PESSOA_CPF(["PESSOA_CPF"])
-        CNAE(["CNAE"])
-        CBO(["CBO"])
-    end
-    subgraph hubs_equipamentos_p_blicos["Equipamentos públicos"]
-        direction TB
-        ESCOLA(["ESCOLA"])
-        IES(["IES"])
-        CNES(["CNES"])
-        CID10(["CID10"])
-    end
-    subgraph hubs_estado_e_economia["Estado e economia"]
-        direction TB
-        ORGAO(["ORGAO"])
-        UNIDADE_GESTORA(["UNIDADE_GESTORA"])
-        FUNCAO_PROGRAMA(["FUNCAO_PROGRAMA"])
-        PARTIDO(["PARTIDO"])
-        NCM_SH(["NCM_SH"])
-        PAIS(["PAIS"])
-    end
     subgraph tema_01["01 · Desigualdade Racial"]
         direction TB
         t01_br_me_rais["me_rais"]
@@ -78,7 +51,6 @@ flowchart LR
     end
     subgraph tema_06["06 · Crime"]
         direction TB
-        t06_br_ggb_relatorio_lgbtqi["ggb_relatorio_lgbtqi"]
         t06_br_mjsp_sisdepen["mjsp_sisdepen"]
         t06_br_ms_sim["ms_sim"]
         t06_br_rj_isp_estatisticas_seguranca["rj_isp_estatisticas_seguranca"]
@@ -124,9 +96,7 @@ flowchart LR
         direction TB
         t14_br_anp_combustiveis["anp_combustiveis"]
         t14_br_anp_precos_combustiveis["anp_precos_combustiveis"]
-        t14_br_fgv_igp["fgv_igp"]
         t14_br_ibge_ipca["ibge_ipca"]
-        t14_br_ibge_ipp["ibge_ipp"]
     end
     subgraph tema_15["15 · Poder"]
         direction TB
@@ -194,8 +164,6 @@ flowchart LR
         direction TB
         t26_br_cgu_servidores_executivo_federal["cgu_servidores_executivo_federal"]
         t26_br_me_rais["me_rais"]
-        t26_br_me_siape["me_siape"]
-        t26_br_stf_corte_aberta["stf_corte_aberta"]
     end
     subgraph tema_27["27 · Pesquisas de Opinião"]
         direction TB
@@ -215,7 +183,6 @@ flowchart LR
     end
     subgraph tema_29["29 · Dados Eleitorais Detalhados"]
         direction TB
-        t29_br_stf_corte_aberta["stf_corte_aberta"]
         t29_br_tse_eleicoes["tse_eleicoes"]
     end
     subgraph tema_30["30 · Estrutura Produtiva"]
@@ -235,7 +202,7 @@ flowchart LR
         t32_br_inep_enem["inep_enem"]
         t32_br_simet_educacao_conectada["simet_educacao_conectada"]
     end
-    subgraph tema_33["33 · Dados Internacionais Comparativos"]
+    subgraph tema_33["33 · Dados Internacionais Compara"]
         direction TB
         t33_br_fbsp_absp["fbsp_absp"]
     end
@@ -246,9 +213,6 @@ flowchart LR
     end
     subgraph tema_35["35 · Transporte"]
         direction TB
-        t35_br_anac_dadosabertos["anac_dadosabertos"]
-        t35_br_fipe_veiculos["fipe_veiculos"]
-        t35_br_ipea_atlasviolencia["ipea_atlasviolencia"]
         t35_br_mobilidados_indicadores["mobilidados_indicadores"]
     end
     subgraph tema_36["36 · Religiosidade"]
@@ -262,9 +226,6 @@ flowchart LR
         direction TB
         t37_br_pgfn_dividaativa["pgfn_dividaativa"]
         t37_br_tcu_inidoneos["tcu_inidoneos"]
-        t37_global_icij_offshoreleaks["global_icij_offshoreleaks"]
-        t37_global_ofac_sanctions["global_ofac_sanctions"]
-        t37_global_opensanctions["global_opensanctions"]
     end
     subgraph tema_38["38 · Educação Básica"]
         direction TB
@@ -278,13 +239,10 @@ flowchart LR
         direction TB
         t39_br_cnj_estatisticas_poder_judiciario["cnj_estatisticas_poder_judiciario"]
         t39_br_cnj_improbidade_administrativa["cnj_improbidade_administrativa"]
-        t39_br_stj_dadosabertos["stj_dadosabertos"]
         t39_br_tce_es["tce_es"]
         t39_br_tce_pi["tce_pi"]
         t39_br_tce_rj["tce_rj"]
         t39_br_tce_sp["tce_sp"]
-        t39_br_tce_to["tce_to"]
-        t39_br_tcu_dadosabertos["tcu_dadosabertos"]
     end
     subgraph tema_40["40 · Federalismo Fiscal"]
         direction TB
@@ -303,7 +261,6 @@ flowchart LR
     end
     subgraph tema_42["42 · Água"]
         direction TB
-        t42_br_ana_reservatorios["ana_reservatorios"]
         t42_br_ana_telemetria["ana_telemetria"]
         t42_br_inmet_bdmep["inmet_bdmep"]
         t42_br_inpe_queimadas["inpe_queimadas"]
@@ -314,388 +271,245 @@ flowchart LR
     end
     subgraph tema_43["43 · Cultura"]
         direction TB
-        t43_mundo_transfermarkt_competicoes["mundo_transfermarkt_competicoes"]
-        t43_world_ampas_oscar["world_ampas_oscar"]
-        t43_world_imdb_movies["world_imdb_movies"]
         t43_world_olympedia_olympics["world_olympedia_olympics"]
-        t43_world_sofascore_competicoes_futebol["world_sofascore_competicoes_futebol"]
     end
-    t01_br_me_rais -->|"cbo_2002 +1"| CBO
-    t01_br_me_rais -->|"cep"| CEP
-    t01_br_me_rais -->|"cnae_2_subclasse +2"| CNAE
-    t01_br_me_rais -->|"id_municipio +1"| MUNICIPIO
-    t01_br_me_rais -->|"sigla_uf"| UF
-    t01_br_ms_sim -.->|"codigo_estabelecimento"| CNES
-    t01_br_ms_sim -->|"id_municipio +4"| MUNICIPIO
-    t01_br_ms_sim -->|"sigla_uf"| UF
-    t02_br_inep_enem -->|"id_municipio_prova +2"| MUNICIPIO
-    t02_br_inep_enem -->|"sigla_uf_prova +3"| UF
-    t02_br_inep_ideb -->|"id_escola"| ESCOLA
-    t02_br_inep_ideb -->|"id_municipio"| MUNICIPIO
-    t02_br_inep_ideb -->|"sigla_uf"| UF
-    t02_br_inep_indicador_nivel_socioeconomico -->|"id_escola"| ESCOLA
-    t02_br_inep_indicador_nivel_socioeconomico -->|"id_municipio"| MUNICIPIO
-    t02_br_inep_indicador_nivel_socioeconomico -->|"sigla_uf"| UF
-    t03_br_cgu_beneficios_cidadao -->|"id_municipio"| MUNICIPIO
-    t03_br_cgu_beneficios_cidadao -->|"cpf_favorecido +3"| PESSOA_CPF
-    t03_br_cgu_beneficios_cidadao -->|"sigla_uf"| UF
-    t03_br_ms_sim -.->|"codigo_estabelecimento"| CNES
-    t03_br_ms_sim -->|"id_municipio +4"| MUNICIPIO
-    t03_br_ms_sim -->|"sigla_uf"| UF
-    t03_br_ms_sinasc -.->|"codigo_estabelecimento"| CNES
-    t03_br_ms_sinasc -->|"id_municipio_mae +2"| MUNICIPIO
-    t03_br_ms_sinasc -->|"sigla_uf"| UF
-    t04_br_me_caged -->|"cbo_2002"| CBO
-    t04_br_me_caged -.->|"categoria"| CID10
-    t04_br_me_caged -->|"cnae_2_subclasse +1"| CNAE
-    t04_br_me_caged -->|"id_municipio"| MUNICIPIO
-    t04_br_me_caged -->|"sigla_uf"| UF
-    t04_br_me_rais -->|"cbo_2002 +1"| CBO
-    t04_br_me_rais -->|"cep"| CEP
-    t04_br_me_rais -->|"cnae_2_subclasse +2"| CNAE
-    t04_br_me_rais -->|"id_municipio +1"| MUNICIPIO
-    t04_br_me_rais -->|"sigla_uf"| UF
-    t05_br_camara_dados_abertos -->|"cnpj_cpf_fornecedor"| EMPRESA_CNPJ
-    t05_br_camara_dados_abertos -->|"id_municipio_nascimento"| MUNICIPIO
-    t05_br_camara_dados_abertos -->|"sigla_partido"| PARTIDO
-    t05_br_camara_dados_abertos -->|"cpf"| PESSOA_CPF
-    t05_br_camara_dados_abertos -->|"sigla_uf +3"| UF
-    t05_br_senado_dadosabertos -.->|"Sigla +1"| UF
-    t05_br_tse_eleicoes -->|"cep"| CEP
-    t05_br_tse_eleicoes -->|"cnae_2_doador +5"| CNAE
-    t05_br_tse_eleicoes -->|"cnpj_candidato +1"| EMPRESA_CNPJ
-    t05_br_tse_eleicoes -->|"id_municipio +4"| MUNICIPIO
-    t05_br_tse_eleicoes -->|"sigla_partido"| PARTIDO
-    t05_br_tse_eleicoes -->|"cpf +2"| PESSOA_CPF
-    t05_br_tse_eleicoes -->|"sigla_uf +3"| UF
-    t06_br_mjsp_sisdepen -->|"cep"| CEP
-    t06_br_mjsp_sisdepen -.->|"municipio +5"| MUNICIPIO
-    t06_br_mjsp_sisdepen -.->|"uf"| UF
-    t06_br_ms_sim -.->|"codigo_estabelecimento"| CNES
-    t06_br_ms_sim -->|"id_municipio +4"| MUNICIPIO
-    t06_br_ms_sim -->|"sigla_uf"| UF
-    t06_br_rj_isp_estatisticas_seguranca -->|"id_municipio"| MUNICIPIO
-    t07_br_bcb_estban -->|"cnpj_basico +1"| EMPRESA_CNPJ
-    t07_br_bcb_estban -->|"id_municipio"| MUNICIPIO
-    t07_br_bcb_estban -->|"sigla_uf"| UF
-    t07_br_bcb_sicor -->|"cnpj +5"| EMPRESA_CNPJ
-    t07_br_bcb_sicor -->|"id_programa"| FUNCAO_PROGRAMA
-    t07_br_bcb_sicor -->|"id_municipio"| MUNICIPIO
-    t07_br_bcb_sicor -->|"cpf"| PESSOA_CPF
-    t07_br_bcb_sicor -->|"sigla_uf"| UF
-    t07_br_ibge_pib -->|"id_municipio"| MUNICIPIO
-    t07_br_ibge_pib -->|"sigla_uf +1"| UF
-    t08_br_cgu_beneficios_cidadao -->|"id_municipio"| MUNICIPIO
-    t08_br_cgu_beneficios_cidadao -->|"cpf_favorecido +3"| PESSOA_CPF
-    t08_br_cgu_beneficios_cidadao -->|"sigla_uf"| UF
-    t08_br_ibge_munic -->|"id_municipio"| MUNICIPIO
-    t08_br_ibge_munic -->|"sigla_uf"| UF
-    t08_br_me_siconfi -->|"id_municipio"| MUNICIPIO
-    t08_br_me_siconfi -->|"sigla_uf +1"| UF
-    t09_br_me_caged -->|"cbo_2002"| CBO
-    t09_br_me_caged -.->|"categoria"| CID10
-    t09_br_me_caged -->|"cnae_2_subclasse +1"| CNAE
-    t09_br_me_caged -->|"id_municipio"| MUNICIPIO
-    t09_br_me_caged -->|"sigla_uf"| UF
-    t09_br_ms_sinasc -.->|"codigo_estabelecimento"| CNES
-    t09_br_ms_sinasc -->|"id_municipio_mae +2"| MUNICIPIO
-    t09_br_ms_sinasc -->|"sigla_uf"| UF
-    t10_br_inpe_prodes -->|"id_municipio"| MUNICIPIO
-    t10_br_seeg_emissoes -.->|"categoria +1"| CID10
-    t10_br_seeg_emissoes -->|"id_municipio"| MUNICIPIO
-    t10_br_seeg_emissoes -->|"sigla_uf"| UF
-    t10_br_sfb_sicar -->|"id_municipio"| MUNICIPIO
-    t10_br_sfb_sicar -->|"sigla_uf"| UF
-    t11_br_anatel_indice_brasileiro_conectividade -->|"id_municipio"| MUNICIPIO
-    t11_br_anatel_indice_brasileiro_conectividade -->|"sigla_uf"| UF
-    t11_br_mdr_snis -->|"id_municipio"| MUNICIPIO
-    t11_br_mdr_snis -->|"sigla_uf"| UF
-    t12_br_me_rais -->|"cbo_2002 +1"| CBO
-    t12_br_me_rais -->|"cep"| CEP
-    t12_br_me_rais -->|"cnae_2_subclasse +2"| CNAE
-    t12_br_me_rais -->|"id_municipio +1"| MUNICIPIO
-    t12_br_me_rais -->|"sigla_uf"| UF
-    t12_br_ms_sinasc -.->|"codigo_estabelecimento"| CNES
-    t12_br_ms_sinasc -->|"id_municipio_mae +2"| MUNICIPIO
-    t12_br_ms_sinasc -->|"sigla_uf"| UF
-    t13_br_me_caged -->|"cbo_2002"| CBO
-    t13_br_me_caged -.->|"categoria"| CID10
-    t13_br_me_caged -->|"cnae_2_subclasse +1"| CNAE
-    t13_br_me_caged -->|"id_municipio"| MUNICIPIO
-    t13_br_me_caged -->|"sigla_uf"| UF
-    t14_br_anp_combustiveis -->|"cep"| CEP
-    t14_br_anp_combustiveis -->|"cnpj"| EMPRESA_CNPJ
-    t14_br_anp_combustiveis -.->|"municipio"| MUNICIPIO
-    t14_br_anp_combustiveis -.->|"estado"| UF
-    t14_br_anp_precos_combustiveis -->|"cnpj_revenda"| EMPRESA_CNPJ
-    t14_br_anp_precos_combustiveis -->|"id_municipio"| MUNICIPIO
-    t14_br_anp_precos_combustiveis -->|"sigla_uf"| UF
-    t14_br_ibge_ipca -.->|"categoria"| CID10
-    t14_br_ibge_ipca -->|"id_municipio"| MUNICIPIO
-    t14_br_ibge_ipca -->|"sigla_uf"| UF
-    t15_br_camara_dados_abertos -->|"cnpj_cpf_fornecedor"| EMPRESA_CNPJ
-    t15_br_camara_dados_abertos -->|"id_municipio_nascimento"| MUNICIPIO
-    t15_br_camara_dados_abertos -->|"sigla_partido"| PARTIDO
-    t15_br_camara_dados_abertos -->|"cpf"| PESSOA_CPF
-    t15_br_camara_dados_abertos -->|"sigla_uf +3"| UF
-    t15_br_tse_eleicoes -->|"cep"| CEP
-    t15_br_tse_eleicoes -->|"cnae_2_doador +5"| CNAE
-    t15_br_tse_eleicoes -->|"cnpj_candidato +1"| EMPRESA_CNPJ
-    t15_br_tse_eleicoes -->|"id_municipio +4"| MUNICIPIO
-    t15_br_tse_eleicoes -->|"sigla_partido"| PARTIDO
-    t15_br_tse_eleicoes -->|"cpf +2"| PESSOA_CPF
-    t15_br_tse_eleicoes -->|"sigla_uf +3"| UF
-    t16_br_rf_arrecadacao -->|"id_municipio"| MUNICIPIO
-    t16_br_rf_arrecadacao -->|"sigla_uf"| UF
-    t17_br_bcb_sicor -->|"cnpj +5"| EMPRESA_CNPJ
-    t17_br_bcb_sicor -->|"id_programa"| FUNCAO_PROGRAMA
-    t17_br_bcb_sicor -->|"id_municipio"| MUNICIPIO
-    t17_br_bcb_sicor -->|"cpf"| PESSOA_CPF
-    t17_br_bcb_sicor -->|"sigla_uf"| UF
-    t17_br_ibge_ppm -->|"id_municipio"| MUNICIPIO
-    t17_br_ibge_ppm -->|"sigla_uf"| UF
-    t17_br_sfb_sicar -->|"id_municipio"| MUNICIPIO
-    t17_br_sfb_sicar -->|"sigla_uf"| UF
-    t17_br_trase_supply_chain -->|"cnpj +1"| EMPRESA_CNPJ
-    t17_br_trase_supply_chain -.->|"municipality_id +4"| MUNICIPIO
-    t17_br_trase_supply_chain -.->|"cnpj_cpf"| PESSOA_CPF
-    t17_br_trase_supply_chain -.->|"state"| UF
-    t18_br_me_comex_stat -->|"id_municipio"| MUNICIPIO
-    t18_br_me_comex_stat -->|"id_ncm +1"| NCM_SH
-    t18_br_me_comex_stat -->|"sigla_pais_iso3 +1"| PAIS
-    t18_br_me_comex_stat -->|"sigla_uf +1"| UF
-    t19_br_anatel_indice_brasileiro_conectividade -->|"id_municipio"| MUNICIPIO
-    t19_br_anatel_indice_brasileiro_conectividade -->|"sigla_uf"| UF
-    t19_br_cnpq_bolsas -.->|"municipio_destino"| MUNICIPIO
-    t19_br_cnpq_bolsas -->|"sigla_uf_origem +1"| UF
-    t20_br_cnpq_bolsas -.->|"municipio_destino"| MUNICIPIO
-    t20_br_cnpq_bolsas -->|"sigla_uf_origem +1"| UF
-    t20_br_inep_enem -->|"id_municipio_prova +2"| MUNICIPIO
-    t20_br_inep_enem -->|"sigla_uf_prova +3"| UF
-    t21_br_cgu_cartao_pagamento -->|"cnpj_cpf_favorecido"| EMPRESA_CNPJ
-    t21_br_cgu_cartao_pagamento -->|"codigo_orgao +1"| ORGAO
-    t21_br_cgu_cartao_pagamento -->|"cpf_portador"| PESSOA_CPF
-    t21_br_cgu_cartao_pagamento -->|"codigo_unidade_gestora"| UNIDADE_GESTORA
-    t21_br_cgu_emendas_parlamentares -->|"id_funcao +3"| FUNCAO_PROGRAMA
-    t21_br_cgu_emendas_parlamentares -->|"id_municipio_gasto"| MUNICIPIO
-    t21_br_cgu_emendas_parlamentares -->|"sigla_uf_gasto"| UF
-    t21_br_cgu_licitacao_contrato -.->|"cpf_cnpj_vencedor +2"| EMPRESA_CNPJ
-    t21_br_cgu_licitacao_contrato -->|"id_municipio"| MUNICIPIO
-    t21_br_cgu_licitacao_contrato -->|"id_orgao +1"| ORGAO
-    t21_br_cgu_licitacao_contrato -.->|"cpf_cnpj_vencedor +2"| PESSOA_CPF
-    t21_br_cgu_licitacao_contrato -->|"sigla_uf"| UF
-    t21_br_cgu_licitacao_contrato -->|"id_unidade_gestora +1"| UNIDADE_GESTORA
-    t21_br_rf_arrecadacao -->|"id_municipio"| MUNICIPIO
-    t21_br_rf_arrecadacao -->|"sigla_uf"| UF
-    t22_br_inpe_prodes -->|"id_municipio"| MUNICIPIO
-    t22_br_seeg_emissoes -.->|"categoria +1"| CID10
-    t22_br_seeg_emissoes -->|"id_municipio"| MUNICIPIO
-    t22_br_seeg_emissoes -->|"sigla_uf"| UF
-    t22_br_sfb_sicar -->|"id_municipio"| MUNICIPIO
-    t22_br_sfb_sicar -->|"sigla_uf"| UF
-    t23_br_ms_cnes -->|"cbo_2002 +2"| CBO
-    t23_br_ms_cnes -->|"cep"| CEP
-    t23_br_ms_cnes -->|"id_estabelecimento_cnes"| CNES
-    t23_br_ms_cnes -->|"cnpj_mantenedora"| EMPRESA_CNPJ
-    t23_br_ms_cnes -.->|"cnpj_mantenedora"| IES
-    t23_br_ms_cnes -->|"id_municipio +2"| MUNICIPIO
-    t23_br_ms_cnes -.->|"cpf_cnpj"| PESSOA_CPF
-    t23_br_ms_cnes -->|"sigla_uf"| UF
-    t23_br_ms_sim -.->|"codigo_estabelecimento"| CNES
-    t23_br_ms_sim -->|"id_municipio +4"| MUNICIPIO
-    t23_br_ms_sim -->|"sigla_uf"| UF
-    t23_br_ms_sinasc -.->|"codigo_estabelecimento"| CNES
-    t23_br_ms_sinasc -->|"id_municipio_mae +2"| MUNICIPIO
-    t23_br_ms_sinasc -->|"sigla_uf"| UF
-    t24_br_ieps_saude -->|"id_municipio"| MUNICIPIO
-    t24_br_ieps_saude -->|"sigla_uf"| UF
-    t24_br_ms_cnes -->|"cbo_2002 +2"| CBO
-    t24_br_ms_cnes -->|"cep"| CEP
-    t24_br_ms_cnes -->|"id_estabelecimento_cnes"| CNES
-    t24_br_ms_cnes -->|"cnpj_mantenedora"| EMPRESA_CNPJ
-    t24_br_ms_cnes -.->|"cnpj_mantenedora"| IES
-    t24_br_ms_cnes -->|"id_municipio +2"| MUNICIPIO
-    t24_br_ms_cnes -.->|"cpf_cnpj"| PESSOA_CPF
-    t24_br_ms_cnes -->|"sigla_uf"| UF
-    t24_br_ms_sia -->|"cid_principal_categoria +5"| CID10
-    t24_br_ms_sia -->|"id_estabelecimento_cnes +1"| CNES
-    t24_br_ms_sia -->|"id_municipio +1"| MUNICIPIO
-    t24_br_ms_sia -->|"sigla_uf"| UF
-    t24_br_ms_sih -->|"cbo_2002_paciente +1"| CBO
-    t24_br_ms_sih -->|"cid_principal_categoria +27"| CID10
-    t24_br_ms_sih -->|"id_estabelecimento_cnes"| CNES
-    t24_br_ms_sih -->|"cnpj_mantenedora +1"| EMPRESA_CNPJ
-    t24_br_ms_sih -.->|"cnpj_mantenedora"| IES
-    t24_br_ms_sih -->|"id_municipio_gestor +3"| MUNICIPIO
-    t24_br_ms_sih -->|"cpf_gestor"| PESSOA_CPF
-    t24_br_ms_sih -->|"sigla_uf"| UF
-    t25_br_bcb_sicor -->|"cnpj +5"| EMPRESA_CNPJ
-    t25_br_bcb_sicor -->|"id_programa"| FUNCAO_PROGRAMA
-    t25_br_bcb_sicor -->|"id_municipio"| MUNICIPIO
-    t25_br_bcb_sicor -->|"cpf"| PESSOA_CPF
-    t25_br_bcb_sicor -->|"sigla_uf"| UF
-    t25_br_cgu_emendas_parlamentares -->|"id_funcao +3"| FUNCAO_PROGRAMA
-    t25_br_cgu_emendas_parlamentares -->|"id_municipio_gasto"| MUNICIPIO
-    t25_br_cgu_emendas_parlamentares -->|"sigla_uf_gasto"| UF
-    t25_br_rf_arrecadacao -->|"id_municipio"| MUNICIPIO
-    t25_br_rf_arrecadacao -->|"sigla_uf"| UF
-    t26_br_cgu_servidores_executivo_federal -->|"cpf +2"| PESSOA_CPF
-    t26_br_cgu_servidores_executivo_federal -->|"sigla_uf"| UF
-    t26_br_me_rais -->|"cbo_2002 +1"| CBO
-    t26_br_me_rais -->|"cep"| CEP
-    t26_br_me_rais -->|"cnae_2_subclasse +2"| CNAE
-    t26_br_me_rais -->|"id_municipio +1"| MUNICIPIO
-    t26_br_me_rais -->|"sigla_uf"| UF
-    t27_br_ibge_pnadc -->|"id_municipio"| MUNICIPIO
-    t27_br_ibge_pnadc -->|"sigla_uf +1"| UF
-    t27_br_ms_pns -->|"sigla_uf"| UF
-    t27_br_poder360_pesquisas -.->|"nome_municipio"| MUNICIPIO
-    t27_br_poder360_pesquisas -->|"sigla_partido"| PARTIDO
-    t27_br_poder360_pesquisas -->|"sigla_uf"| UF
-    t27_br_tse_eleicoes -->|"cep"| CEP
-    t27_br_tse_eleicoes -->|"cnae_2_doador +5"| CNAE
-    t27_br_tse_eleicoes -->|"cnpj_candidato +1"| EMPRESA_CNPJ
-    t27_br_tse_eleicoes -->|"id_municipio +4"| MUNICIPIO
-    t27_br_tse_eleicoes -->|"sigla_partido"| PARTIDO
-    t27_br_tse_eleicoes -->|"cpf +2"| PESSOA_CPF
-    t27_br_tse_eleicoes -->|"sigla_uf +3"| UF
-    t28_br_fbsp_absp -->|"id_municipio"| MUNICIPIO
-    t28_br_fbsp_absp -->|"sigla_uf"| UF
-    t28_br_inep_censo_escolar -->|"cnpj_mantenedora +1"| EMPRESA_CNPJ
-    t28_br_inep_censo_escolar -->|"id_escola +1"| ESCOLA
-    t28_br_inep_censo_escolar -.->|"cnpj_mantenedora"| IES
-    t28_br_inep_censo_escolar -->|"id_municipio"| MUNICIPIO
-    t28_br_inep_censo_escolar -->|"sigla_uf"| UF
-    t28_br_inep_enem -->|"id_municipio_prova +2"| MUNICIPIO
-    t28_br_inep_enem -->|"sigla_uf_prova +3"| UF
-    t28_br_inep_saeb -->|"id_escola"| ESCOLA
-    t28_br_inep_saeb -->|"id_municipio"| MUNICIPIO
-    t28_br_inep_saeb -->|"sigla_uf"| UF
-    t28_br_ms_sinan -->|"id_estabelecimento_cnes"| CNES
-    t28_br_ms_sinan -->|"id_municipio_infeccao +6"| MUNICIPIO
-    t28_br_ms_sinan -->|"sigla_uf +4"| UF
-    t28_br_rj_isp_estatisticas_seguranca -->|"id_municipio"| MUNICIPIO
-    t29_br_tse_eleicoes -->|"cep"| CEP
-    t29_br_tse_eleicoes -->|"cnae_2_doador +5"| CNAE
-    t29_br_tse_eleicoes -->|"cnpj_candidato +1"| EMPRESA_CNPJ
-    t29_br_tse_eleicoes -->|"id_municipio +4"| MUNICIPIO
-    t29_br_tse_eleicoes -->|"sigla_partido"| PARTIDO
-    t29_br_tse_eleicoes -->|"cpf +2"| PESSOA_CPF
-    t29_br_tse_eleicoes -->|"sigla_uf +3"| UF
-    t30_br_me_cnpj -->|"cep"| CEP
-    t30_br_me_cnpj -->|"cnae_fiscal_principal +1"| CNAE
-    t30_br_me_cnpj -->|"cnpj +3"| EMPRESA_CNPJ
-    t30_br_me_cnpj -->|"id_municipio +1"| MUNICIPIO
-    t30_br_me_cnpj -->|"id_pais"| PAIS
-    t30_br_me_cnpj -->|"cpf_representante_legal"| PESSOA_CPF
-    t30_br_me_cnpj -->|"sigla_uf"| UF
-    t31_br_cgu_beneficios_cidadao -->|"id_municipio"| MUNICIPIO
-    t31_br_cgu_beneficios_cidadao -->|"cpf_favorecido +3"| PESSOA_CPF
-    t31_br_cgu_beneficios_cidadao -->|"sigla_uf"| UF
-    t31_br_ibge_censo_2022 -->|"cep"| CEP
-    t31_br_ibge_censo_2022 -->|"id_municipio"| MUNICIPIO
-    t31_br_ibge_censo_2022 -->|"id_setor_censitario"| SETOR_CENSITARIO
-    t31_br_ibge_censo_2022 -->|"sigla_uf +1"| UF
-    t31_br_ipea_avs -->|"id_municipio"| MUNICIPIO
-    t31_br_ipea_avs -->|"sigla_uf"| UF
-    t32_br_anatel_banda_larga_fixa -->|"cnpj"| EMPRESA_CNPJ
-    t32_br_anatel_banda_larga_fixa -->|"id_municipio"| MUNICIPIO
-    t32_br_anatel_banda_larga_fixa -->|"sigla_uf"| UF
-    t32_br_anatel_indice_brasileiro_conectividade -->|"id_municipio"| MUNICIPIO
-    t32_br_anatel_indice_brasileiro_conectividade -->|"sigla_uf"| UF
-    t32_br_inep_enem -->|"id_municipio_prova +2"| MUNICIPIO
-    t32_br_inep_enem -->|"sigla_uf_prova +3"| UF
-    t32_br_simet_educacao_conectada -->|"id_escola"| ESCOLA
-    t32_br_simet_educacao_conectada -->|"id_municipio"| MUNICIPIO
-    t32_br_simet_educacao_conectada -->|"sigla_uf"| UF
-    t33_br_fbsp_absp -->|"id_municipio"| MUNICIPIO
-    t33_br_fbsp_absp -->|"sigla_uf"| UF
-    t34_br_geobr_mapas -.->|"categoria"| CID10
-    t34_br_geobr_mapas -->|"id_escola"| ESCOLA
-    t34_br_geobr_mapas -->|"id_municipio"| MUNICIPIO
-    t34_br_geobr_mapas -->|"id_setor_censitario"| SETOR_CENSITARIO
-    t34_br_geobr_mapas -->|"sigla_uf +1"| UF
-    t34_br_ibge_censo_2022 -->|"cep"| CEP
-    t34_br_ibge_censo_2022 -->|"id_municipio"| MUNICIPIO
-    t34_br_ibge_censo_2022 -->|"id_setor_censitario"| SETOR_CENSITARIO
-    t34_br_ibge_censo_2022 -->|"sigla_uf +1"| UF
-    t35_br_mobilidados_indicadores -->|"id_municipio"| MUNICIPIO
-    t35_br_mobilidados_indicadores -->|"sigla_uf"| UF
-    t36_br_ibge_censo2022_religiao -->|"id_municipio"| MUNICIPIO
-    t36_br_ibge_censo_2022 -->|"cep"| CEP
-    t36_br_ibge_censo_2022 -->|"id_municipio"| MUNICIPIO
-    t36_br_ibge_censo_2022 -->|"id_setor_censitario"| SETOR_CENSITARIO
-    t36_br_ibge_censo_2022 -->|"sigla_uf +1"| UF
-    t36_br_me_cnpj -->|"cep"| CEP
-    t36_br_me_cnpj -->|"cnae_fiscal_principal +1"| CNAE
-    t36_br_me_cnpj -->|"cnpj +3"| EMPRESA_CNPJ
-    t36_br_me_cnpj -->|"id_municipio +1"| MUNICIPIO
-    t36_br_me_cnpj -->|"id_pais"| PAIS
-    t36_br_me_cnpj -->|"cpf_representante_legal"| PESSOA_CPF
-    t36_br_me_cnpj -->|"sigla_uf"| UF
-    t36_br_me_rais -->|"cbo_2002 +1"| CBO
-    t36_br_me_rais -->|"cep"| CEP
-    t36_br_me_rais -->|"cnae_2_subclasse +2"| CNAE
-    t36_br_me_rais -->|"id_municipio +1"| MUNICIPIO
-    t36_br_me_rais -->|"sigla_uf"| UF
-    t37_br_pgfn_dividaativa -.->|"categoria"| CID10
-    t37_br_pgfn_dividaativa -.->|"CPF_CNPJ"| EMPRESA_CNPJ
-    t37_br_pgfn_dividaativa -.->|"CPF_CNPJ"| PESSOA_CPF
-    t37_br_tcu_inidoneos -.->|"CPF_CNPJ"| EMPRESA_CNPJ
-    t37_br_tcu_inidoneos -.->|"MUNICIPIO"| MUNICIPIO
-    t37_br_tcu_inidoneos -.->|"CPF +1"| PESSOA_CPF
-    t37_br_tcu_inidoneos -.->|"UF"| UF
-    t38_br_inep_avaliacao_alfabetizacao -->|"id_escola"| ESCOLA
-    t38_br_inep_avaliacao_alfabetizacao -->|"id_municipio"| MUNICIPIO
-    t38_br_inep_avaliacao_alfabetizacao -->|"sigla_uf"| UF
-    t38_br_inep_educacao_especial -->|"id_municipio"| MUNICIPIO
-    t38_br_inep_educacao_especial -->|"sigla_uf"| UF
-    t38_br_inep_formacao_docente -->|"sigla_uf"| UF
-    t38_br_inep_sinopse_estatistica_educacao_basica -->|"id_municipio"| MUNICIPIO
-    t38_br_inep_sinopse_estatistica_educacao_basica -->|"sigla_uf"| UF
-    t38_world_oecd_pisa -.->|"wle_intercultural_communication_awareness"| MUNICIPIO
-    t39_br_cnj_estatisticas_poder_judiciario -->|"sigla_uf"| UF
-    t39_br_cnj_improbidade_administrativa -.->|"comunicado_tse"| MUNICIPIO
-    t39_br_cnj_improbidade_administrativa -->|"sigla_uf"| UF
-    t39_br_tce_es -.->|"categoria"| CID10
-    t39_br_tce_es -.->|"EmpresaCNPJ"| EMPRESA_CNPJ
-    t39_br_tce_es -.->|"Municipio"| MUNICIPIO
-    t39_br_tce_pi -.->|"codIBGE +1"| MUNICIPIO
-    t39_br_tce_pi -.->|"sigla"| UF
-    t39_br_tce_rj -.->|"CPFCNPJ +1"| EMPRESA_CNPJ
-    t39_br_tce_rj -.->|"Ente"| MUNICIPIO
-    t39_br_tce_rj -.->|"CPFCNPJ +1"| PESSOA_CPF
-    t39_br_tce_sp -.->|"municipio +1"| MUNICIPIO
-    t40_br_firjan_ifgf -->|"id_municipio"| MUNICIPIO
-    t40_br_firjan_ifgf -->|"sigla_uf"| UF
-    t40_br_siop_orcamento -.->|"MunicÃ­pio"| MUNICIPIO
-    t40_br_siop_orcamento -.->|"UF"| UF
-    t40_br_tesouro_capag -.->|"Nome_Município +1"| MUNICIPIO
-    t40_br_tesouro_capag -.->|"UF"| UF
-    t40_br_transferegov -->|"cnpj_fundo_programa +7"| EMPRESA_CNPJ
-    t40_br_transferegov -->|"id_programa"| FUNCAO_PROGRAMA
-    t40_br_transferegov -->|"id_orgao_superior_programa +1"| ORGAO
-    t40_br_transferegov -->|"id_unidade_gestora_programa"| UNIDADE_GESTORA
-    t41_br_anvisa_cmed -->|"cnpj"| EMPRESA_CNPJ
-    t41_br_ibge_pof -->|"sigla_uf"| UF
-    t41_br_ms_sisvan -->|"id_municipio"| MUNICIPIO
-    t41_br_ms_sisvan -->|"sigla_uf"| UF
-    t41_br_saude_bps -->|"cnpj_do_fabricante +2"| EMPRESA_CNPJ
-    t41_br_saude_bps -.->|"nome_do_munica­pio_da_instituicao"| MUNICIPIO
-    t41_br_saude_farmaciapopular -.->|"numero_cnpj +1"| EMPRESA_CNPJ
-    t41_br_saude_farmaciapopular -.->|"codigo_municipio"| MUNICIPIO
-    t41_br_saude_farmaciapopular -.->|"codigo_uf"| UF
-    t42_br_ana_telemetria -.->|"nmMunicipio +1"| MUNICIPIO
-    t42_br_ana_telemetria -.->|"nmEstado +1"| UF
-    t42_br_inmet_bdmep -->|"id_municipio"| MUNICIPIO
-    t42_br_inpe_queimadas -->|"id_municipio"| MUNICIPIO
-    t42_br_inpe_queimadas -->|"sigla_uf"| UF
-    t42_br_inpe_sisam -->|"id_municipio"| MUNICIPIO
-    t42_br_inpe_sisam -->|"sigla_uf"| UF
-    t42_br_mapbiomas_estatisticas -->|"id_municipio"| MUNICIPIO
-    t42_br_mapbiomas_estatisticas -->|"sigla_uf"| UF
-    t42_br_mma_extincao -.->|"categoria"| CID10
-    t42_world_wwf_hydrosheds -.->|"country"| PAIS
-    t43_world_olympedia_olympics -.->|"city"| MUNICIPIO
-    t43_world_olympedia_olympics -.->|"country"| PAIS
+    subgraph g_territ_rio["Território"]
+        direction TB
+        MUNICIPIO(["MUNICIPIO"])
+        UF(["UF"])
+        SETOR_CENSITARIO(["SETOR_CENSITARIO"])
+        CEP(["CEP"])
+    end
+    subgraph g_pessoas_e_empresas["Pessoas e empresas"]
+        direction TB
+        EMPRESA_CNPJ(["EMPRESA_CNPJ"])
+        PESSOA_CPF(["PESSOA_CPF"])
+        CNAE(["CNAE"])
+        CBO(["CBO"])
+    end
+    subgraph g_equipamentos["Equipamentos"]
+        direction TB
+        ESCOLA(["ESCOLA"])
+        IES(["IES"])
+        CNES(["CNES"])
+        CID10(["CID10"])
+    end
+    subgraph g_estado_e_economia["Estado e economia"]
+        direction TB
+        ORGAO(["ORGAO"])
+        UNIDADE_GESTORA(["UNIDADE_GESTORA"])
+        FUNCAO_PROGRAMA(["FUNCAO_PROGRAMA"])
+        PARTIDO(["PARTIDO"])
+        NCM_SH(["NCM_SH"])
+        PAIS(["PAIS"])
+    end
+    tema_01 -->|"1"| CBO
+    tema_01 -->|"1"| CEP
+    tema_01 -->|"1"| CNAE
+    tema_01 -.->|"1"| CNES
+    tema_01 -->|"2"| MUNICIPIO
+    tema_01 -->|"2"| UF
+    tema_02 -->|"2"| ESCOLA
+    tema_02 -->|"3"| MUNICIPIO
+    tema_02 -->|"3"| UF
+    tema_03 -.->|"2"| CNES
+    tema_03 -->|"3"| MUNICIPIO
+    tema_03 -->|"1"| PESSOA_CPF
+    tema_03 -->|"3"| UF
+    tema_04 -->|"2"| CBO
+    tema_04 -->|"1"| CEP
+    tema_04 -.->|"1"| CID10
+    tema_04 -->|"2"| CNAE
+    tema_04 -->|"2"| MUNICIPIO
+    tema_04 -->|"2"| UF
+    tema_05 -->|"1"| CEP
+    tema_05 -->|"1"| CNAE
+    tema_05 -->|"2"| EMPRESA_CNPJ
+    tema_05 -->|"2"| MUNICIPIO
+    tema_05 -->|"2"| PARTIDO
+    tema_05 -->|"2"| PESSOA_CPF
+    tema_05 -->|"3"| UF
+    tema_06 -->|"1"| CEP
+    tema_06 -.->|"1"| CNES
+    tema_06 -->|"3"| MUNICIPIO
+    tema_06 -->|"2"| UF
+    tema_07 -->|"2"| EMPRESA_CNPJ
+    tema_07 -->|"1"| FUNCAO_PROGRAMA
+    tema_07 -->|"3"| MUNICIPIO
+    tema_07 -->|"1"| PESSOA_CPF
+    tema_07 -->|"3"| UF
+    tema_08 -->|"3"| MUNICIPIO
+    tema_08 -->|"1"| PESSOA_CPF
+    tema_08 -->|"3"| UF
+    tema_09 -->|"1"| CBO
+    tema_09 -.->|"1"| CID10
+    tema_09 -->|"1"| CNAE
+    tema_09 -.->|"1"| CNES
+    tema_09 -->|"2"| MUNICIPIO
+    tema_09 -->|"2"| UF
+    tema_10 -.->|"1"| CID10
+    tema_10 -->|"3"| MUNICIPIO
+    tema_10 -->|"2"| UF
+    tema_11 -->|"2"| MUNICIPIO
+    tema_11 -->|"2"| UF
+    tema_12 -->|"1"| CBO
+    tema_12 -->|"1"| CEP
+    tema_12 -->|"1"| CNAE
+    tema_12 -.->|"1"| CNES
+    tema_12 -->|"2"| MUNICIPIO
+    tema_12 -->|"2"| UF
+    tema_13 -->|"1"| CBO
+    tema_13 -.->|"1"| CID10
+    tema_13 -->|"1"| CNAE
+    tema_13 -->|"1"| MUNICIPIO
+    tema_13 -->|"1"| UF
+    tema_14 -->|"1"| CEP
+    tema_14 -.->|"1"| CID10
+    tema_14 -->|"2"| EMPRESA_CNPJ
+    tema_14 -->|"3"| MUNICIPIO
+    tema_14 -->|"3"| UF
+    tema_15 -->|"1"| CEP
+    tema_15 -->|"1"| CNAE
+    tema_15 -->|"2"| EMPRESA_CNPJ
+    tema_15 -->|"2"| MUNICIPIO
+    tema_15 -->|"2"| PARTIDO
+    tema_15 -->|"2"| PESSOA_CPF
+    tema_15 -->|"2"| UF
+    tema_16 -->|"1"| MUNICIPIO
+    tema_16 -->|"1"| UF
+    tema_17 -->|"2"| EMPRESA_CNPJ
+    tema_17 -->|"1"| FUNCAO_PROGRAMA
+    tema_17 -->|"4"| MUNICIPIO
+    tema_17 -->|"2"| PESSOA_CPF
+    tema_17 -->|"4"| UF
+    tema_18 -->|"1"| MUNICIPIO
+    tema_18 -->|"1"| NCM_SH
+    tema_18 -->|"1"| PAIS
+    tema_18 -->|"1"| UF
+    tema_19 -->|"2"| MUNICIPIO
+    tema_19 -->|"2"| UF
+    tema_20 -->|"2"| MUNICIPIO
+    tema_20 -->|"2"| UF
+    tema_21 -->|"2"| EMPRESA_CNPJ
+    tema_21 -->|"1"| FUNCAO_PROGRAMA
+    tema_21 -->|"3"| MUNICIPIO
+    tema_21 -->|"2"| ORGAO
+    tema_21 -->|"2"| PESSOA_CPF
+    tema_21 -->|"3"| UF
+    tema_21 -->|"2"| UNIDADE_GESTORA
+    tema_22 -.->|"1"| CID10
+    tema_22 -->|"3"| MUNICIPIO
+    tema_22 -->|"2"| UF
+    tema_23 -->|"1"| CBO
+    tema_23 -->|"1"| CEP
+    tema_23 -->|"3"| CNES
+    tema_23 -->|"1"| EMPRESA_CNPJ
+    tema_23 -.->|"1"| IES
+    tema_23 -->|"3"| MUNICIPIO
+    tema_23 -.->|"1"| PESSOA_CPF
+    tema_23 -->|"3"| UF
+    tema_24 -->|"2"| CBO
+    tema_24 -->|"1"| CEP
+    tema_24 -->|"2"| CID10
+    tema_24 -->|"3"| CNES
+    tema_24 -->|"2"| EMPRESA_CNPJ
+    tema_24 -.->|"2"| IES
+    tema_24 -->|"4"| MUNICIPIO
+    tema_24 -->|"2"| PESSOA_CPF
+    tema_24 -->|"4"| UF
+    tema_25 -->|"1"| EMPRESA_CNPJ
+    tema_25 -->|"2"| FUNCAO_PROGRAMA
+    tema_25 -->|"3"| MUNICIPIO
+    tema_25 -->|"1"| PESSOA_CPF
+    tema_25 -->|"3"| UF
+    tema_26 -->|"1"| CBO
+    tema_26 -->|"1"| CEP
+    tema_26 -->|"1"| CNAE
+    tema_26 -->|"1"| MUNICIPIO
+    tema_26 -->|"1"| PESSOA_CPF
+    tema_26 -->|"2"| UF
+    tema_27 -->|"1"| CEP
+    tema_27 -->|"1"| CNAE
+    tema_27 -->|"1"| EMPRESA_CNPJ
+    tema_27 -->|"3"| MUNICIPIO
+    tema_27 -->|"2"| PARTIDO
+    tema_27 -->|"1"| PESSOA_CPF
+    tema_27 -->|"4"| UF
+    tema_28 -->|"1"| CNES
+    tema_28 -->|"1"| EMPRESA_CNPJ
+    tema_28 -->|"2"| ESCOLA
+    tema_28 -.->|"1"| IES
+    tema_28 -->|"6"| MUNICIPIO
+    tema_28 -->|"5"| UF
+    tema_29 -->|"1"| CEP
+    tema_29 -->|"1"| CNAE
+    tema_29 -->|"1"| EMPRESA_CNPJ
+    tema_29 -->|"1"| MUNICIPIO
+    tema_29 -->|"1"| PARTIDO
+    tema_29 -->|"1"| PESSOA_CPF
+    tema_29 -->|"1"| UF
+    tema_30 -->|"1"| CEP
+    tema_30 -->|"1"| CNAE
+    tema_30 -->|"1"| EMPRESA_CNPJ
+    tema_30 -->|"1"| MUNICIPIO
+    tema_30 -->|"1"| PAIS
+    tema_30 -->|"1"| PESSOA_CPF
+    tema_30 -->|"1"| UF
+    tema_31 -->|"1"| CEP
+    tema_31 -->|"3"| MUNICIPIO
+    tema_31 -->|"1"| PESSOA_CPF
+    tema_31 -->|"1"| SETOR_CENSITARIO
+    tema_31 -->|"3"| UF
+    tema_32 -->|"1"| EMPRESA_CNPJ
+    tema_32 -->|"1"| ESCOLA
+    tema_32 -->|"4"| MUNICIPIO
+    tema_32 -->|"4"| UF
+    tema_33 -->|"1"| MUNICIPIO
+    tema_33 -->|"1"| UF
+    tema_34 -->|"1"| CEP
+    tema_34 -.->|"1"| CID10
+    tema_34 -->|"1"| ESCOLA
+    tema_34 -->|"2"| MUNICIPIO
+    tema_34 -->|"2"| SETOR_CENSITARIO
+    tema_34 -->|"2"| UF
+    tema_35 -->|"1"| MUNICIPIO
+    tema_35 -->|"1"| UF
+    tema_36 -->|"1"| CBO
+    tema_36 -->|"3"| CEP
+    tema_36 -->|"2"| CNAE
+    tema_36 -->|"1"| EMPRESA_CNPJ
+    tema_36 -->|"4"| MUNICIPIO
+    tema_36 -->|"1"| PAIS
+    tema_36 -->|"1"| PESSOA_CPF
+    tema_36 -->|"1"| SETOR_CENSITARIO
+    tema_36 -->|"3"| UF
+    tema_37 -.->|"1"| CID10
+    tema_37 -.->|"2"| EMPRESA_CNPJ
+    tema_37 -.->|"1"| MUNICIPIO
+    tema_37 -.->|"2"| PESSOA_CPF
+    tema_37 -.->|"1"| UF
+    tema_38 -->|"1"| ESCOLA
+    tema_38 -->|"4"| MUNICIPIO
+    tema_38 -->|"4"| UF
+    tema_39 -.->|"1"| CID10
+    tema_39 -.->|"2"| EMPRESA_CNPJ
+    tema_39 -.->|"5"| MUNICIPIO
+    tema_39 -.->|"1"| PESSOA_CPF
+    tema_39 -->|"3"| UF
+    tema_40 -->|"1"| EMPRESA_CNPJ
+    tema_40 -->|"1"| FUNCAO_PROGRAMA
+    tema_40 -->|"3"| MUNICIPIO
+    tema_40 -->|"1"| ORGAO
+    tema_40 -->|"3"| UF
+    tema_40 -->|"1"| UNIDADE_GESTORA
+    tema_41 -->|"3"| EMPRESA_CNPJ
+    tema_41 -->|"3"| MUNICIPIO
+    tema_41 -->|"3"| UF
+    tema_42 -.->|"1"| CID10
+    tema_42 -->|"5"| MUNICIPIO
+    tema_42 -.->|"1"| PAIS
+    tema_42 -->|"4"| UF
+    tema_43 -.->|"1"| MUNICIPIO
+    tema_43 -.->|"1"| PAIS
 ```
+
