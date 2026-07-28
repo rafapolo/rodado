@@ -33,9 +33,9 @@ batem com o que o IBGE publicou. Bateram, com erro abaixo de 1% em todas.
 | **Judaísmo** | **106.425** | **107.329** | **0,8%** |
 
 O segundo caminho é geográfico, e é onde a coisa fica interessante. A distribuição que
-aparece no dado reproduz exatamente o mapa histórico da judiaria brasileira: São Paulo com
-48%, Rio com 23%, e então Rio Grande do Sul, Pernambuco e Pará muito acima do que sua
-população justificaria.
+aparece no dado reproduz exatamente o mapa histórico das comunidades judaicas do país: São
+Paulo com 48%, Rio com 23%, e então Rio Grande do Sul, Pernambuco e Pará muito acima do que
+sua população justificaria.
 
 Não é coincidência. Cada um desses núcleos veio de uma migração diferente, e o mapa é a
 soma delas.
@@ -136,7 +136,7 @@ desigualdade dentro do grupo é violenta.
 
 Mesma religião declarada, **renda 3,2 vezes menor**. Para comparar: entre brancos católicos
 e pretos e pardos na população geral, a diferença é de 2,1 vezes. O fosso racial dentro da
-judiaria é maior que o fosso racial do Brasil.
+população judaica é maior que o fosso racial do Brasil.
 
 ### Onde eles estão
 
@@ -224,9 +224,9 @@ fixou famílias em Cametá, Baião, Gurupá, Breves, Macapá, Altamira, Santaré
 Faro, Oriximiná, Itaituba, Boim, Aveiros — e seguiu até Iquitos, no Peru.
 
 Daí vêm as duas marcas que o Censo registra dois séculos depois. A primeira é a **dispersão**:
-comunidades de meia dúzia de famílias espalhadas por dezenas de povoados que nenhuma lista de
-"judiaria brasileira" menciona. A segunda decorre da primeira — núcleos daquele tamanho não
-sustentam casamento interno por gerações. A descendência seguiu se declarando judia sem
+comunidades de meia dúzia de famílias espalhadas por dezenas de povoados que nenhum mapa das
+comunidades judaicas do país costuma registrar. A segunda decorre da primeira — núcleos
+daquele tamanho não sustentam casamento interno por gerações. A descendência seguiu se declarando judia sem
 corresponder à branquitude que o país associa a judeus.
 
 ### O buraco entre a história e o dado
