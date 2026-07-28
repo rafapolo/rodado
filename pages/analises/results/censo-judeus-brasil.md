@@ -159,29 +159,56 @@ direção, não como medida.
 
 O contexto histórico não vem do Censo, mas explica o que ele mede.
 
-A abertura dos portos brasileiros em 1808 e a garantia constitucional de culto privado a
-não católicos, em 1824, coincidiram com um período de dificuldade econômica e instabilidade
-política no norte do Marrocos. A partir de aproximadamente **1810**, judeus sefarditas de
-Tânger, Tetuán, Rabat, Salé e Mogador começaram a chegar a Belém — a primeira imigração
-judaica organizada e duradoura do Brasil independente, quase um século antes da onda
-asquenazita que formaria as comunidades de São Paulo e do Rio.
+**Por que saíram.** No norte do Marrocos, judeus viviam confinados aos *mellahs*, os bairros
+judaicos, sob o estatuto de *dhimmi* — condição legal subordinada, com imposto específico e
+restrições impostas a não muçulmanos. Somem-se pobreza, fome e episódios de violência: a
+guerra hispano-marroquina de 1859-60 atingiu Tetuán diretamente e produziu uma das ondas de
+saída. As comunidades de origem eram Tânger, Tetuán e Casablanca, e também Rabat, Fez e
+Marrakesh.
+
+**Por que o Brasil.** A abertura dos portos em 1808 e a garantia constitucional de culto
+privado a não católicos, em 1824, abriram a porta. Mas o ímã foi econômico: a explosão da
+borracha como matéria-prima industrial, que entre 1879 e 1912 atraiu gente do mundo inteiro
+para a Amazônia. Não foi só refúgio — foi uma economia em expansão oferecendo a mobilidade
+que o Marrocos negava por lei.
+
+**Quantos e quando.** Cerca de **mil famílias entre 1810 e 1910** — um século de fluxo
+contínuo, não uma leva única. A primeira sinagoga da Amazônia, a Essel Avraham, foi
+inaugurada em **Belém em 1824**; o primeiro cemitério judaico da cidade, em **1842**. É a
+primeira imigração judaica organizada e duradoura do Brasil independente, um século antes da
+onda asquenazita que formaria as comunidades de São Paulo e do Rio.
 
 De Belém subiram o rio. Muitos trabalharam como **regatões**, comerciantes itinerantes que
 percorriam o Amazonas e seus afluentes vendendo mercadoria e comprando produto da floresta.
-Esse comércio fixou famílias em Santarém, Óbidos, Cametá, Itacoatiara, Parintins,
-Manaus e, adiante, na Amazônia peruana. O auge da borracha, entre 1870 e 1910, intensificou
-o fluxo e trouxe uma segunda leva.
+O comércio fixou famílias em Cametá, Baião, Gurupá, Breves, Macapá, Altamira, Santarém,
+Óbidos, Alenquer, Faro, Oriximiná, Itaituba, Boim e Aveiros — e adiante, até Iquitos, na
+Amazônia peruana.
 
-Duas consequências aparecem diretamente no Censo de 2010. A primeira é a **miscigenação**:
-homens que viajavam sozinhos pelo rio casaram-se com mulheres locais, e a descendência
+Daí as duas consequências que o Censo de 2010 registra. A primeira é a **dispersão
+ribeirinha**: comunidades de poucas famílias espalhadas por dezenas de povoados que nenhuma
+lista de "judiaria brasileira" costuma mencionar. A segunda é a **miscigenação**, que decorre
+da primeira — núcleos desse tamanho não sustentam endogamia por gerações, e a descendência
 manteve identificação judaica declarada sem corresponder à branquitude que o país associa a
-judeus. A segunda é a **dispersão ribeirinha**: comunidades pequenas espalhadas por cidades
-que nenhuma lista de "judiaria brasileira" costuma mencionar.
+judeus.
 
-É por isso que Belém e Manaus concentram populações judaicas maiores que as de várias
-capitais do Sudeste, e por que nelas quatro em cada dez judeus se declaram pretos ou pardos.
-São comunidades com duzentos anos de presença contínua — mais antigas que a imigração que
-define a imagem pública do judeu no Brasil.
+Há uma lacuna importante entre a história e o dado. Estimativas de divulgação falam em
+dezenas de milhares de descendentes já no fim do século XIX, enquanto o Censo 2010 encontra
+cerca de **3.600 judeus no Pará e Amazonas somados**. Os dois números não se contradizem:
+medem coisas diferentes. O Censo capta quem **declara judaísmo como religião** — a
+descendência que não pratica, ou que se identifica de outro modo, é invisível para ele. É o
+limite da seção 5 em forma concreta, e provavelmente o maior deles neste recorte.
+
+Ainda assim, Belém tem hoje população judaica declarada equivalente à de Belo Horizonte
+(1.346 contra 1.300, diferença dentro do erro amostral), e Manaus vem logo atrás. São
+comunidades com duzentos anos de presença contínua, quatro em cada dez de seus membros
+declarando-se pretos ou pardos — mais antigas que a imigração que define a imagem pública do
+judeu no Brasil.
+
+> Fontes do bloco histórico: [CONIB](https://conib.org.br/noticias/todas-as-noticias/a-historia-dos-mais-de-200-anos-da-imigracao-judaica-na-amazonia.html),
+> [Portal Amazônia](https://portalamazonia.com/historias-da-amazonia/judeus-amazonia-terceira-geracao/),
+> [Morashá](https://www.morasha.com.br/hoje-no-brasil/los-nuestros-os-marroquinos-na-amazonia.html) e
+> [Museu da Inquisição](https://museudainquisicao.org.br/artigos/duzentos-anos-de-miscigenacao-judaica-na-amazonia/).
+> A obra de referência é *Eretz Amazônia: os judeus na Amazônia*, de Samuel Benchimol (1998).
 
 ### O que isso significa para a leitura da renda
 
