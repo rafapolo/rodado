@@ -1,59 +1,75 @@
 # Judeus no Censo Brasileiro
 
-O que **6.304 registros amostrais** do Censo 2010 mostram sobre renda, escolaridade, cor
-declarada e geografia da população judaica no Brasil — e o que o dado simplesmente não
-alcança. Microdados do Censo Demográfico do IBGE.
+Pense num judeu brasileiro. É bem provável que você tenha imaginado alguém branco, morando
+em São Paulo, descendente de europeus que fugiram do nazismo. O Censo 2010 diz que você
+acertou — na maior parte das vezes. Mas erra numa fatia que quase ninguém conhece: **um em
+cada nove judeus do país não se declara branco**, e no Norte eles são quase metade.
+
+Esta é a história do que 6.304 registros do Censo Demográfico do IBGE mostram sobre renda,
+escolaridade, cor e geografia da população judaica brasileira — e de tudo aquilo que esse
+dado, por mais que a gente insista, não consegue responder.
 
 ---
 
-## 1. Como identificar judeus no microdado
+## 1. Procurando 107 mil pessoas que o Censo não nomeia
 
-O Censo pergunta religião, não etnia. No Censo 2010 a variável é `v6121` e o código do
-judaísmo é `710`. O dicionário do dataset **não documenta** essa variável, então a
-identificação foi validada por três vias independentes.
+Aqui começa o primeiro problema. O Censo pergunta religião, não etnia. E nos microdados as
+religiões aparecem numeradas, sem rótulo — uma lista de códigos que ninguém traduziu. Qual
+número corresponde ao judaísmo simplesmente não está documentado.
 
-Primeiro, o esquema geral de códigos bate com totais publicados pelo IBGE:
+A saída foi checar por três caminhos independentes, antes de olhar para qualquer resultado.
 
-| Código | Religião | Calculado | Publicado IBGE | Erro |
-|---|---:|---:|---:|---:|
-| 110 | Católica | 122.682.929 | 123.280.172 | 0,5% |
-| 610 | Espírita | 3.844.732 | 3.848.876 | 0,1% |
-| 620 | Umbanda | 407.354 | 407.331 | 0,0% |
-| 630 | Candomblé | 167.119 | 167.363 | 0,1% |
-| 001 | Agnóstico | 124.300 | 124.436 | 0,1% |
-| 002 | Ateu | 615.242 | 615.096 | 0,0% |
-| **710** | **Judaísmo** | **106.425** | **107.329** | **0,8%** |
+O primeiro é o mais direto: aplicar o mesmo critério a outras religiões e ver se os números
+batem com o que o IBGE publicou. Bateram, com erro abaixo de 1% em todas.
 
-Segundo, a geografia do código 710 reproduz a distribuição histórica conhecida da judiaria
-brasileira: São Paulo 48%, Rio 23%, com Rio Grande do Sul, Pernambuco e Pará
-desproporcionalmente representados — as colônias agrícolas gaúchas, Recife, e a comunidade
-marroquina de Belém.
+| Religião | Calculado | Publicado IBGE | Erro |
+|---|---:|---:|---:|
+| Católica | 122.682.929 | 123.280.172 | 0,5% |
+| Espírita | 3.844.732 | 3.848.876 | 0,1% |
+| Umbanda | 407.354 | 407.331 | 0,0% |
+| Candomblé | 167.119 | 167.363 | 0,1% |
+| Agnóstico | 124.300 | 124.436 | 0,1% |
+| Ateu | 615.242 | 615.096 | 0,0% |
+| **Judaísmo** | **106.425** | **107.329** | **0,8%** |
 
-Cada um desses núcleos vem de uma migração distinta, e é essa sobreposição de ondas que
-produz o mapa. **Recife** é o mais antigo e o mais descontínuo: a Kahal Zur Israel, fundada
-por volta de 1636 sob domínio holandês, foi a primeira sinagoga das Américas, e se dispersou
-com a retomada portuguesa de Pernambuco em 1654 — parte daquela comunidade seguiu para Nova
-Amsterdã e originou a primeira congregação judaica da América do Norte. A comunidade
-recifense de hoje não é continuação daquela: é majoritariamente do século XX, sobre um
-substrato colonial de cristãos-novos. O **Rio Grande do Sul** nasce de um projeto dirigido —
-a Jewish Colonization Association, do barão Maurice de Hirsch, assentou judeus do Leste
-Europeu em colônias agrícolas como Philippson (1904) e Quatro Irmãos (1912), cujas famílias
-depois migraram em massa para Porto Alegre. **Belém e Manaus** vêm dos sefarditas marroquinos
-chegados a partir de 1810, tratados na seção 4. E o eixo **São Paulo–Rio**, que hoje
-concentra 71% do total, é sobretudo a grande onda asquenazita do início do século XX, com
-pico nos anos 1920 e 1930, somada a sefarditas do Oriente Médio e a refugiados do pós-guerra.
-Foi também a onda que esbarrou na política imigratória do Estado Novo, incluindo a Circular
-Secreta 1.127, de 1937, que instruía o corpo diplomático brasileiro a negar visto a judeus.
+O segundo caminho é geográfico, e é onde a coisa fica interessante. A distribuição que
+aparece no dado reproduz exatamente o mapa histórico da judiaria brasileira: São Paulo com
+48%, Rio com 23%, e então Rio Grande do Sul, Pernambuco e Pará muito acima do que sua
+população justificaria.
 
-Terceiro, os códigos análogos em censos anteriores reproduzem os totais publicados daqueles
-anos com precisão ainda maior: em 1980 (`v508=7`, peso `v604`) o cálculo dá **91.795**
-contra 91.795 publicados — exato.
+Não é coincidência. Cada um desses núcleos veio de uma migração diferente, e o mapa é a
+soma delas.
+
+**Recife** é o mais antigo e o mais interrompido. A Kahal Zur Israel, fundada por volta de
+1636 sob domínio holandês, foi a primeira sinagoga das Américas. Durou pouco: com a retomada
+portuguesa de Pernambuco, em 1654, a comunidade se dispersou — e um grupo foi parar em Nova
+Amsterdã, onde fundou a primeira congregação judaica da América do Norte. Traduzindo: a
+comunidade judaica de Nova York começou como refugiada de Recife. A comunidade recifense de
+hoje não é continuação daquela; é do século XX, sobre um substrato colonial de cristãos-novos.
+
+O **Rio Grande do Sul** nasceu de um projeto de mesa. A Jewish Colonization Association, do
+barão Maurice de Hirsch, comprou terras e assentou judeus do Leste Europeu em colônias
+agrícolas — Philippson em 1904, Quatro Irmãos em 1912. Judeus virando lavradores no interior
+gaúcho. A experiência não vingou como agricultura, e as famílias acabaram migrando em massa
+para Porto Alegre.
+
+**Belém e Manaus** são o caso que ocupa metade deste texto. Ficam para a seção 4.
+
+E o eixo **São Paulo–Rio**, que sozinho concentra 71% dos judeus do país, é sobretudo a
+grande onda asquenazita do início do século XX, com pico nos anos 1920 e 1930, somada a
+sefarditas do Oriente Médio e a refugiados do pós-guerra. Foi também a onda que bateu de
+frente com a política imigratória do Estado Novo — inclusive a Circular Secreta 1.127, de
+1937, que instruía o corpo diplomático brasileiro a negar visto a judeus.
+
+O terceiro caminho de checagem foi repetir o procedimento em censos antigos. Em 1980 o
+cálculo dá **91.795** judeus. O número publicado pelo IBGE naquele ano: 91.795. Exato.
 
 ---
 
-## 2. Renda e escolaridade
+## 2. A fama tem base
 
-Valores nominais de 2010, salário mínimo = R$ 510.
+Existe uma afirmação que circula com frequência: judeus brasileiros ganham mais e estudam
+mais que cristãos brancos. O Censo confirma, e a distância não é sutil.
 
 | Grupo | n amostral | Renda pessoal | Renda domiciliar | Per capita (SM) |
 |---|---:|---:|---:|---:|
@@ -63,7 +79,11 @@ Valores nominais de 2010, salário mínimo = R$ 510.
 | Pretos e pardos | 10.603.690 | R$ 586 | R$ 1.818 | 0,97 |
 | Indígenas | 111.816 | R$ 412 | R$ 1.181 | 0,57 |
 
-Escolaridade, pessoas de 25 anos ou mais:
+Valores de 2010, quando o salário mínimo era R$ 510.
+
+Na escolaridade o contraste é ainda mais brutal. Entre pessoas de 25 anos ou mais, **62,1%
+dos judeus têm diploma universitário**. Entre brancos católicos, 16,6%. Entre pretos e
+pardos, 5,6%.
 
 | Grupo | Superior completo | Até fundamental incompleto |
 |---|---:|---:|
@@ -72,17 +92,19 @@ Escolaridade, pessoas de 25 anos ou mais:
 | Brancos evangélicos | 11,0% | 43,7% |
 | Pretos e pardos | 5,6% | 57,1% |
 
-**A premissa factual se confirma.** Judeus declarados têm renda e escolaridade
-substancialmente maiores que as de brancos cristãos no Censo 2010.
+Seis em cada dez de um lado. Um em cada seis do outro.
 
 ---
 
-## 3. A vantagem sobrevive aos controles — reduzida
+## 3. Mas espera: comparando gente parecida
 
-A comparação bruta confunde religião com três outras coisas: idade média mais alta (40,8
-anos contra 34,2 dos brancos católicos), concentração metropolitana e escolaridade.
-Restringindo a São Paulo e Rio, faixa de 25 a 64 anos, e comparando dentro da mesma faixa
-de instrução:
+Aqui vale desconfiar do número fácil. Aquela diferença de 3,76 vezes na renda compara um
+grupo com **idade média de 40,8 anos**, concentrado em regiões metropolitanas ricas e com
+diploma, contra uma população de 34,2 anos espalhada pelo país inteiro. Renda cresce com
+idade. Renda cresce com diploma. Renda cresce em São Paulo.
+
+Então vamos emparelhar: só São Paulo e Rio, só gente de 25 a 64 anos, comparando dentro da
+mesma faixa de escolaridade.
 
 | Grupo | Médio completo | Superior completo |
 |---|---:|---:|
@@ -91,17 +113,18 @@ de instrução:
 | Brancos evangélicos | R$ 1.271 | R$ 3.719 |
 | Pretos e pardos | R$ 1.075 | R$ 3.029 |
 
-A razão judeus/brancos católicos cai de **3,76x** na comparação bruta para **1,51x** entre
-pessoas com superior completo, mesma região e mesma faixa etária. A maior parte do
-diferencial bruto é composição — escolaridade, idade, geografia. Mas sobra um diferencial
-real depois dos controles.
+A vantagem encolhe de **3,76x para 1,51x**. Ou seja: a maior parte daquele abismo inicial
+era composição — idade, cidade, diploma. Mas não tudo. Mesmo comparando dois universitários
+da mesma idade morando na mesma região metropolitana, sobra uma diferença real.
 
 ---
 
-## 4. Os judeus não brancos
+## 4. Os judeus que ninguém imagina
 
-**11,7% dos judeus declarados não se declaram brancos** — cerca de 12,5 mil pessoas. E a
-estratificação interna é severa.
+Agora a parte que costuma surpreender até quem conhece o assunto.
+
+**11,7% dos judeus brasileiros não se declaram brancos.** São cerca de 12,5 mil pessoas. E a
+desigualdade dentro do grupo é violenta.
 
 | Cor/raça | Participação | População | Renda pessoal |
 |---|---:|---:|---:|
@@ -111,12 +134,13 @@ estratificação interna é severa.
 | Amarela | 0,5% | 492 | R$ 3.991 |
 | Indígena | 0,1% | 111 | R$ 269 |
 
-Judeus pardos ganham **3,2x menos** que judeus brancos — abismo maior que o que separa
-brancos católicos de pretos e pardos na população geral (2,1x).
+Mesma religião declarada, **renda 3,2 vezes menor**. Para comparar: entre brancos católicos
+e pretos e pardos na população geral, a diferença é de 2,1 vezes. O fosso racial dentro da
+judiaria é maior que o fosso racial do Brasil.
 
 ### Onde eles estão
 
-As duas populações não convivem: elas ocupam regiões diferentes do país.
+Essas duas populações não dividem o mesmo território.
 
 | UF | Brancos | Pretos e pardos | % não branca |
 |---|---:|---:|---:|
@@ -130,9 +154,9 @@ As duas populações não convivem: elas ocupam regiões diferentes do país.
 | São Paulo | 48.749 | 1.947 | 3,8% |
 | Rio Grande do Sul | 7.373 | 131 | 1,7% |
 
-No eixo Norte-Nordeste a maioria dos judeus **não é branca**. No núcleo São Paulo–Rio–Rio
-Grande do Sul, a população é branca em 94 a 98%. Descendo ao nível municipal, o padrão fica
-mais nítido — e aponta para o rio:
+No Norte e na Bahia, cerca de metade dos judeus é preta ou parda. Em São Paulo, menos de
+quatro em cem. E quando se desce ao nível dos municípios, o padrão aponta para um lugar
+específico: o rio.
 
 | Município | n amostral | Judeus | % não branca |
 |---|---:|---:|---:|
@@ -143,59 +167,82 @@ mais nítido — e aponta para o rio:
 | Santarém (PA) | 9 | 93 | 100% |
 | Tabatinga (AM) | 9 | 92 | 88,9% |
 
-Belém e Manaus são as duas maiores populações judaicas do Norte. Quanto mais interior
-adentro, maior a fração não branca — embora as cidades ribeirinhas apareçam com amostras
-minúsculas, de 9 a 17 registros, e os percentuais delas devam ser lidos como indício de
-direção, não como medida.
+Quanto mais Amazonas adentro, mais escura fica a comunidade. Vale registrar que as cidades
+ribeirinhas aparecem com 9 a 17 registros na amostra — os percentuais delas indicam direção,
+não medida.
+
+### Antes de comemorar o achado: um contra-argumento
+
+Existe uma explicação chata que precisa ser descartada antes de qualquer outra. O Pará
+inteiro é 77% preto e pardo. Se os judeus de lá são 53%, eles não são mais mestiços que o
+entorno — são **mais brancos**.
+
+E isso vale para o Brasil todo:
+
+| UF | População geral | Judeus | Razão |
+|---|---:|---:|---:|
+| Pará | 77,0% | 52,7% | 0,68 |
+| Bahia | 76,4% | 54,8% | 0,72 |
+| Amazonas | 73,1% | 50,9% | 0,70 |
+| Pernambuco | 62,0% | 27,2% | 0,44 |
+| Rio de Janeiro | 51,7% | 5,5% | 0,11 |
+| São Paulo | 34,8% | 3,8% | 0,11 |
+| Rio Grande do Sul | 16,1% | 1,7% | 0,11 |
+
+Em todo estado do país, judeus são mais brancos que seus vizinhos. Sempre.
+
+Mas olhe a última coluna. Em São Paulo, Rio e Rio Grande do Sul, um judeu tem **nove vezes
+menos chance** de se declarar pardo que a pessoa da casa ao lado. No Pará, na Bahia e no
+Amazonas, apenas 1,4 vez menos. Essa é a diferença real, e ela é enorme: a comunidade judaica
+amazônica é demograficamente quase indistinguível do lugar onde vive. A paulista é um mundo à
+parte.
+
+É isso que precisa de explicação. E a explicação tem duzentos anos.
 
 ### Os marroquinos do Amazonas
 
-O contexto histórico não vem do Censo, mas explica o que ele mede.
-
 **Por que saíram.** No norte do Marrocos, judeus viviam confinados aos *mellahs*, os bairros
-judaicos, sob o estatuto de *dhimmi* — condição legal subordinada, com imposto específico e
-restrições impostas a não muçulmanos. Somem-se pobreza, fome e episódios de violência: a
-guerra hispano-marroquina de 1859-60 atingiu Tetuán diretamente e produziu uma das ondas de
-saída. As comunidades de origem eram Tânger, Tetuán e Casablanca, e também Rabat, Fez e
-Marrakesh.
+judaicos, sob o estatuto de *dhimmi* — condição legal subordinada, com imposto próprio e
+restrições impostas a não muçulmanos. Some-se pobreza, fome e violência periódica: a guerra
+hispano-marroquina de 1859-60 atingiu Tetuán em cheio e provocou uma das ondas de saída. Os
+pontos de partida eram Tânger, Tetuán e Casablanca, além de Rabat, Fez e Marrakesh.
 
 **Por que o Brasil.** A abertura dos portos em 1808 e a garantia constitucional de culto
-privado a não católicos, em 1824, abriram a porta. Mas o ímã foi econômico: a explosão da
-borracha como matéria-prima industrial, que entre 1879 e 1912 atraiu gente do mundo inteiro
-para a Amazônia. Não foi só refúgio — foi uma economia em expansão oferecendo a mobilidade
-que o Marrocos negava por lei.
+privado a não católicos, em 1824, destrancaram a porta. Mas o ímã foi outro: a borracha. Entre
+1879 e 1912, a explosão da demanda industrial por látex atraiu gente do mundo inteiro para a
+Amazônia. Não era só fuga — era uma economia em expansão oferecendo a mobilidade que o
+Marrocos negava por lei.
 
-**Quantos e quando.** Cerca de **mil famílias entre 1810 e 1910** — um século de fluxo
-contínuo, não uma leva única. A primeira sinagoga da Amazônia, a Essel Avraham, foi
-inaugurada em **Belém em 1824**; o primeiro cemitério judaico da cidade, em **1842**. É a
-primeira imigração judaica organizada e duradoura do Brasil independente, um século antes da
-onda asquenazita que formaria as comunidades de São Paulo e do Rio.
+**Quantos e quando.** Cerca de **mil famílias entre 1810 e 1910**. Um século de fluxo, não
+uma leva. A primeira sinagoga da Amazônia, a Essel Avraham, foi inaugurada em **Belém, em
+1824**; o primeiro cemitério judaico da cidade, em **1842**. É a mais antiga comunidade
+judaica em atividade contínua no Brasil — um século inteiro antes das comunidades paulistas.
 
-De Belém subiram o rio. Muitos trabalharam como **regatões**, comerciantes itinerantes que
-percorriam o Amazonas e seus afluentes vendendo mercadoria e comprando produto da floresta.
-O comércio fixou famílias em Cametá, Baião, Gurupá, Breves, Macapá, Altamira, Santarém,
-Óbidos, Alenquer, Faro, Oriximiná, Itaituba, Boim e Aveiros — e adiante, até Iquitos, na
-Amazônia peruana.
+De Belém, subiram o rio. Muitos viraram **regatões**: comerciantes itinerantes que percorriam
+o Amazonas e seus afluentes vendendo mercadoria e comprando produto da floresta. O comércio
+fixou famílias em Cametá, Baião, Gurupá, Breves, Macapá, Altamira, Santarém, Óbidos, Alenquer,
+Faro, Oriximiná, Itaituba, Boim, Aveiros — e seguiu até Iquitos, no Peru.
 
-Daí as duas consequências que o Censo de 2010 registra. A primeira é a **dispersão
-ribeirinha**: comunidades de poucas famílias espalhadas por dezenas de povoados que nenhuma
-lista de "judiaria brasileira" costuma mencionar. A segunda é a **miscigenação**, que decorre
-da primeira — núcleos desse tamanho não sustentam endogamia por gerações, e a descendência
-manteve identificação judaica declarada sem corresponder à branquitude que o país associa a
-judeus.
+Daí vêm as duas marcas que o Censo registra dois séculos depois. A primeira é a **dispersão**:
+comunidades de meia dúzia de famílias espalhadas por dezenas de povoados que nenhuma lista de
+"judiaria brasileira" menciona. A segunda decorre da primeira — núcleos daquele tamanho não
+sustentam casamento interno por gerações. A descendência seguiu se declarando judia sem
+corresponder à branquitude que o país associa a judeus.
 
-Há uma lacuna importante entre a história e o dado. Estimativas de divulgação falam em
-dezenas de milhares de descendentes já no fim do século XIX, enquanto o Censo 2010 encontra
-cerca de **3.600 judeus no Pará e Amazonas somados**. Os dois números não se contradizem:
-medem coisas diferentes. O Censo capta quem **declara judaísmo como religião** — a
-descendência que não pratica, ou que se identifica de outro modo, é invisível para ele. É o
-limite da seção 5 em forma concreta, e provavelmente o maior deles neste recorte.
+### O buraco entre a história e o dado
 
-Ainda assim, Belém tem hoje população judaica declarada equivalente à de Belo Horizonte
-(1.346 contra 1.300, diferença dentro do erro amostral), e Manaus vem logo atrás. São
-comunidades com duzentos anos de presença contínua, quatro em cada dez de seus membros
-declarando-se pretos ou pardos — mais antigas que a imigração que define a imagem pública do
-judeu no Brasil.
+Estimativas de divulgação falam em dezenas de milhares de descendentes já no fim do século
+XIX. O Censo 2010 encontra cerca de **3.600 judeus no Pará e no Amazonas somados**.
+
+Os dois números não se contradizem — medem coisas diferentes. O Censo enxerga quem **declara
+judaísmo como religião**. Quem descende, mas não pratica, ou se identifica de outro jeito, é
+invisível para ele. Duzentos anos de miscigenação produziram uma população que a pergunta do
+Censo não alcança.
+
+Ainda assim, Belém tem hoje população judaica declarada equivalente à de Belo Horizonte —
+1.346 contra 1.300, diferença dentro do erro amostral — e Manaus vem logo atrás. Comunidades
+com dois séculos de presença ininterrupta, quatro em cada dez de seus membros se declarando
+pretos ou pardos, mais antigas que a imigração que definiu a imagem pública do judeu no Brasil.
 
 > Fontes do bloco histórico: [CONIB](https://conib.org.br/noticias/todas-as-noticias/a-historia-dos-mais-de-200-anos-da-imigracao-judaica-na-amazonia.html),
 > [Portal Amazônia](https://portalamazonia.com/historias-da-amazonia/judeus-amazonia-terceira-geracao/),
@@ -203,43 +250,47 @@ judeu no Brasil.
 > [Museu da Inquisição](https://museudainquisicao.org.br/artigos/duzentos-anos-de-miscigenacao-judaica-na-amazonia/).
 > A obra de referência é *Eretz Amazônia: os judeus na Amazônia*, de Samuel Benchimol (1998).
 
-### O que isso significa para a leitura da renda
+### E o que isso faz com a renda
 
-A hierarquia racial brasileira opera com força total *dentro* da judiaria: mesma religião
-declarada, renda 3,2x menor. Isso sugere que a posição socioeconômica aqui é governada por
-raça, não por religião — o que enfraquece o uso da renda judaica agregada como medida de
-qualquer coisa relativa a antissemitismo. A média de R$ 4.699 descreve principalmente uma
-população branca, metropolitana e de imigração recente, e apaga uma minoria interna cuja
-renda se parece com a do resto do Norte do país.
+Volte à tabela da seção 2. Aquela média de R$ 4.699 descreve, principalmente, uma população
+branca, metropolitana e de imigração recente. Ela apaga uma minoria interna cuja renda se
+parece com a do resto do Norte do país.
+
+Mesma religião declarada, renda 3,2 vezes menor conforme a cor. O que governa a posição
+socioeconômica aqui, ao que tudo indica, é raça — não religião.
 
 ---
 
-## 5. Limites: o que este dado não pode fazer
+## 5. O que este dado não pode fazer
+
+Toda análise tem um perímetro. Este é o desta.
 
 **Religião declarada não é etnia.** Judeu secular ou cultural que respondeu "sem religião"
-é invisível no Censo. Estimativas comunitárias de judeus étnicos no Brasil, na faixa de 120
-a 150 mil, são maiores que os 107 mil por religião. Há subcontagem de composição
-desconhecida, e não há como saber se os ausentes se parecem com os presentes.
+sumiu da conta. Estimativas comunitárias de judeus étnicos no Brasil ficam entre 120 e 150
+mil, contra os 107 mil por religião. Há subcontagem de tamanho desconhecido, e não dá para
+saber se os ausentes se parecem com os presentes.
 
-**A amostra é pequena onde importa.** São 6.304 registros amostrais, caindo para 1.382 na
-célula-chave — superior completo, regiões metropolitanas de São Paulo e Rio, 25 a 64 anos.
-Os municípios amazônicos do interior aparecem com 9 a 17 registros: suficiente para
-sinalizar um padrão consistente com a história conhecida, insuficiente para quantificá-lo.
+**A amostra é pequena onde mais interessa.** São 6.304 registros, e apenas 1.382 na célula
+que sustenta a seção 3. Os municípios amazônicos do interior aparecem com 9 a 17 registros:
+dá para apontar um padrão coerente com a história conhecida, não para quantificá-lo.
 
-**O código 710 é inferido, não documentado.** A identificação do judaísmo em 2010 foi
-estabelecida por perfil estatístico, batimento com totais publicados e coerência
-geográfica — não por documentação oficial do IBGE.
+**A identificação foi inferida.** Qual código corresponde ao judaísmo em 2010 foi estabelecido
+por batimento com totais publicados e coerência geográfica — não por documentação oficial do
+IBGE. As checagens são fortes, mas são checagens.
 
 **2010 é o dado mais recente possível.** O Censo 2022 dilui o judaísmo dentro de "Outras
-religiosidades", sem desagregação. A tabela de 2000 do acervo não traz variável de religião,
-e a de 1970 não tem coluna de religião identificável. Só 1980, 1991 e 2010 permitem
-identificar judeus, e apenas 2010 traz o conjunto completo de renda, instrução e cor.
+religiosidades", sem desagregação. O de 2000 não traz a pergunta em forma utilizável, e o de
+1970 tampouco. Não há como atualizar nada disso.
 
-**O dado não decide a questão que o motivou.** Renda e escolaridade agregadas medem posição
-socioeconômica. Se posição socioeconômica é ou não um teste válido de discriminação
-estrutural é uma questão conceitual, não estatística — e a literatura sobre minorias
-economicamente dominantes existe justamente porque essa equivalência falha com frequência.
-Este documento estabelece os fatos de renda. Não estabelece o que eles provam.
+**E o principal: renda não decide a questão de fundo.** Renda e escolaridade medem posição
+socioeconômica, e há quem use esse tipo de número para argumentar que um grupo próspero não
+sofre discriminação estrutural. O problema é que a história está cheia de contraexemplos —
+judeus da Europa Central tinham escolaridade e renda acima da média das populações em que
+viviam às vésperas dos pogroms e do genocídio. Vantagem material agregada e ausência de
+perseguição são coisas diferentes, e uma não demonstra a outra.
+
+Este documento estabelece fatos de renda, escolaridade e cor. O que eles provam é outra
+conversa.
 
 ---
 
