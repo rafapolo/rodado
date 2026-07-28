@@ -1,16 +1,25 @@
 #!/usr/bin/env python3
 """Gera os dois mapas em flowchart a partir de `schemas.json`.
 
-Ambos são a mesma informação do `ERD.md` com os atributos jogados fora — sem a
-lista de tabelas de cada dataset, os 825 nós viram 195 e o mapa inteiro cabe num
-diagrama só, que é o que o `subgraph` permite mostrar:
+Ambos são a informação do `ERD.md` com os atributos jogados fora — sem a lista
+de tabelas de cada dataset, sobra só o esqueleto: quem se liga a quê.
 
-- `Flow.md`  — um flowchart, um `subgraph` por domínio (a mesma divisão do ERD);
-- `temas.md` — um flowchart, um `subgraph` por tema dos 43 do site.
+- `Flow.md`  — um diagrama por domínio (a mesma divisão do ERD);
+- `temas.md` — um diagrama só, um `subgraph` por tema, todos ligados aos
+  mesmos hubs: é a referência compartilhada que conecta um tema ao outro.
 
-Nos dois, nó = dataset, aresta = chave de join que chega a um hub de referência
-(sólida = nome canônico, tracejada = precisa normalizar antes). As receitas de
-join continuam em `docs/context/join_keys.md`.
+Nos dois: nó = dataset, cápsula = hub de referência agrupado por família num
+`subgraph`, aresta = chave de join (cheia = nome canônico, pontilhada =
+normalize antes).
+
+No `Flow.md`, um diagrama único com os 195 datasets foi testado e descartado: as arestas
+convergem em 18 hubs compartilhados e atravessam a tela toda, o que dá uma
+imagem de 14.920×17.107px onde nada se lê. Quebrar por domínio derruba cada
+diagrama para ~900px de largura — tamanho natural de leitura numa página — e
+mantém as arestas curtas, porque os hubs são repetidos em cada diagrama em vez
+de compartilhados entre todos. No `temas.md` é o contrário de propósito: os hubs
+são compartilhados, já que a pergunta ali é justamente que temas se encontram na
+mesma referência.
 
 Não edite os .md à mão — regenere.
 """
@@ -37,11 +46,11 @@ DST_FLOW = REPO / "Flow.md"
 DST_TEMAS = REPO / "temas.md"
 OVERVIEW = REPO / "docs" / "overview"
 
-# Os hubs, agrupados como aparecem no diagrama. Mesmos códigos do ERD.
+# Os hubs em famílias — viram um subgraph cada, do lado direito do diagrama.
 HUB_GRUPOS = [
     ("Território", ["MUNICIPIO", "UF", "SETOR_CENSITARIO", "CEP"]),
     ("Pessoas e empresas", ["EMPRESA_CNPJ", "PESSOA_CPF", "CNAE", "CBO"]),
-    ("Equipamentos públicos", ["ESCOLA", "IES", "CNES", "CID10"]),
+    ("Equipamentos", ["ESCOLA", "IES", "CNES", "CID10"]),
     ("Estado e economia", ["ORGAO", "UNIDADE_GESTORA", "FUNCAO_PROGRAMA",
                            "PARTIDO", "NCM_SH", "PAIS"]),
 ]
@@ -91,149 +100,226 @@ def temas(tables):
 # Mermaid
 # ---------------------------------------------------------------------------
 def nid(prefixo, nome):
-    """Id de nó válido em mermaid, único por subgraph."""
     return f"{prefixo}{re.sub(r'[^a-z0-9]', '_', nome.lower())}"
 
 
 def rotulo(dataset):
-    """`br_ms_sinan` vira `ms_sinan` — o prefixo `br_` é ruído, está em todos."""
+    """`br_ms_sinan` vira `ms_sinan` — o prefixo `br_` está em todos, é ruído."""
     return re.sub(r"^br_", "", dataset)
 
 
-def bloco_hubs():
-    linhas = []
-    for titulo, hubs in HUB_GRUPOS:
-        linhas.append(f'    subgraph hubs_{nid("", titulo)}["{titulo}"]')
+def diagrama(datasets, info, prefixo):
+    """Um flowchart: os datasets numa coluna à esquerda, os hubs que eles
+    alcançam agrupados por família em subgraphs à direita, arestas curtas
+    entre os dois.
+
+    `LR` com os hubs à direita é o que mantém a largura em ~900px: os datasets
+    empilham numa coluna só e cada aresta cruza um vão curto.
+
+    Os datasets ficam soltos, sem um subgraph em volta, de propósito: o mermaid
+    ignora o `direction` de um subgraph quando há aresta cruzando a borda dele,
+    e como todo dataset aponta para um hub de fora, a caixa fazia os nós
+    espalharem na horizontal — 8.042px de largura contra 900. Quem nomeia o
+    grupo é o título da seção, que é mais legível que a moldura de qualquer
+    jeito.
+    """
+    usados = {h for ds in datasets for h in info[ds]["hubs"]}
+    linhas = ["flowchart LR"]
+
+    for ds in datasets:
+        linhas.append(f'    {nid(prefixo, ds)}["{rotulo(ds)}"]')
+
+    for nome, hubs in HUB_GRUPOS:
+        presentes = [h for h in hubs if h in usados]
+        if not presentes:
+            continue
+        linhas.append(f'    subgraph {prefixo}g_{nid("", nome)}["{nome}"]')
         linhas.append("        direction TB")
-        for h in hubs:
+        for h in presentes:
+            linhas.append(f'        {prefixo}{h}(["{h}"])')
+        linhas.append("    end")
+
+    for ds in datasets:
+        for hub, (label, dashed) in sorted(info[ds]["hubs"].items()):
+            seta = "-.->" if dashed else "-->"
+            linhas.append(f"    {nid(prefixo, ds)} {seta} {prefixo}{hub}")
+    return "\n".join(linhas)
+
+
+def interconectado(lista, info):
+    """Um diagrama só: cada tema é um subgraph, e todos apontam para os *mesmos*
+    hubs — é o compartilhamento das referências que liga um tema ao outro.
+
+    A aresta sai do subgraph inteiro, não de cada dataset, e leva quantos
+    datasets daquele tema carregam a chave. Isso corta as arestas de 378 para
+    ~170 e, como nenhum nó de dentro tem aresta cruzando a borda, o mermaid
+    respeita o `direction TB` e as caixas ficam compactas.
+    """
+    linhas, arestas, usados = ["flowchart LR"], [], set()
+
+    for num, titulo, datasets in lista:
+        datasets = sorted(d for d in datasets if d in info and info[d]["hubs"])
+        if not datasets:
+            continue
+        curto = titulo.split(",")[0].split(" e ")[0].strip()[:28]
+        linhas.append(f'    subgraph tema_{num}["{num} · {curto}"]')
+        linhas.append("        direction TB")
+        for ds in datasets:
+            linhas.append(f'        {nid(f"t{num}_", ds)}["{rotulo(ds)}"]')
+        linhas.append("    end")
+
+        # agrega por hub: quantos datasets do tema chegam lá, e se algum chega
+        # pelo nome canônico (aí a aresta é cheia)
+        peso, direto = defaultdict(int), defaultdict(bool)
+        for ds in datasets:
+            for hub, (_, dashed) in info[ds]["hubs"].items():
+                peso[hub] += 1
+                direto[hub] |= not dashed
+        for hub, n in sorted(peso.items()):
+            seta = "-->" if direto[hub] else "-.->"
+            arestas.append(f'    tema_{num} {seta}|"{n}"| {hub}')
+            usados.add(hub)
+
+    for nome, hubs in HUB_GRUPOS:
+        presentes = [h for h in hubs if h in usados]
+        if not presentes:
+            continue
+        linhas.append(f'    subgraph g_{nid("", nome)}["{nome}"]')
+        linhas.append("        direction TB")
+        for h in presentes:
             linhas.append(f'        {h}(["{h}"])')
         linhas.append("    end")
-    return linhas
+
+    return "\n".join(linhas + arestas)
 
 
-def arestas(prefixo, dataset, entry, usados):
-    """dataset --> hub, sólida quando a chave está com o nome canônico."""
-    linhas = []
-    for hub, (label, dashed) in sorted(entry["hubs"].items()):
-        seta = "-.->" if dashed else "-->"
-        linhas.append(f'    {nid(prefixo, dataset)} {seta}|"{label}"| {hub}')
-        usados.add(hub)
-    return linhas
+def panorama(info):
+    """Uma aresta por (domínio, hub), rotulada com quantos datasets a usam —
+    o mapa de uma tela só, que o diagrama por dataset não consegue ser."""
+    peso = defaultdict(int)
+    for ds in info:
+        for hub in info[ds]["hubs"]:
+            peso[(domain_of(ds), hub)] += 1
 
+    por_dom = defaultdict(list)
+    for ds in info:
+        por_dom[domain_of(ds)].append(ds)
 
-def render_flow(info):
-    """Um flowchart, um subgraph por domínio."""
-    por_dominio = defaultdict(list)
-    for ds in sorted(info):
-        por_dominio[domain_of(ds)].append(ds)
-
-    corpo, arst, usados = [], [], set()
+    linhas = ["flowchart LR", '    subgraph doms["Domínios"]', "        direction TB"]
     for dom in DOMAIN_ORDER:
-        datasets = por_dominio.get(dom)
-        if not datasets:
+        if dom in por_dom:
+            linhas.append(f'        D_{dom}["{DOMAIN_NAMES[dom]["pt"]}<br/>'
+                          f'{len(por_dom[dom])} datasets"]')
+    linhas.append("    end")
+
+    usados = {h for _, h in peso}
+    for nome, hubs in HUB_GRUPOS:
+        presentes = [h for h in hubs if h in usados]
+        if not presentes:
             continue
-        nome = DOMAIN_NAMES[dom]["pt"]
-        corpo.append(f'    subgraph dom_{dom}["{nome} · {len(datasets)}"]')
-        corpo.append("        direction TB")
-        for ds in datasets:
-            corpo.append(f'        {nid("d_", ds)}["{rotulo(ds)}"]')
-        corpo.append("    end")
-        for ds in datasets:
-            arst += arestas("d_", ds, info[ds], usados)
+        linhas.append(f'    subgraph g_{nid("", nome)}["{nome}"]')
+        linhas.append("        direction TB")
+        for h in presentes:
+            linhas.append(f'        {h}(["{h}"])')
+        linhas.append("    end")
 
-    soltos = sorted(ds for ds in info if not info[ds]["hubs"])
-    return corpo, arst, usados, soltos
-
-
-def render_temas(info, lista):
-    """Um flowchart, um subgraph por tema. O mesmo dataset reaparece em cada
-    tema que o cita — em mermaid um nó só vive num subgraph, e aqui a repetição
-    é o ponto: mostra de que bases cada tema depende."""
-    corpo, arst, usados = [], [], set()
-    for num, titulo, datasets in lista:
-        datasets = sorted(d for d in datasets if d in info)
-        if not datasets:
-            continue
-        curto = titulo.split(",")[0].split(" e ")[0].strip()
-        corpo.append(f'    subgraph tema_{num}["{num} · {curto}"]')
-        corpo.append("        direction TB")
-        for ds in datasets:
-            corpo.append(f'        {nid(f"t{num}_", ds)}["{rotulo(ds)}"]')
-        corpo.append("    end")
-        for ds in datasets:
-            arst += arestas(f"t{num}_", ds, info[ds], usados)
-    return corpo, arst, usados
+    # só as ligações com peso — abaixo de 3 datasets vira ruído visual
+    for (dom, hub), n in sorted(peso.items()):
+        if n >= 3:
+            linhas.append(f'    D_{dom} -->|"{n}"| {hub}')
+    return "\n".join(linhas)
 
 
-CABECALHO = """# {titulo}
-
-{intro}
-
-Gerado por `scripts/gera_flow.py` a partir de `schemas.json` em {data} — não
-edite à mão, regenere.
-
-- **nó** = dataset; **cápsula** = hub de referência;
-- **seta cheia** (`-->`) = a chave está no dataset com o nome canônico, join direto;
-- **seta pontilhada** (`-.->`) = a chave está com outro nome ou formato, normalize
-  antes — receita em [`{doc}`]({doc});
-- os atributos (a lista de tabelas de cada dataset) ficaram de fora de propósito:
-  é o que faz o mapa inteiro caber num diagrama só. Eles estão no [`ERD.md`](ERD.md).
-
+LEGENDA = """- **caixa** = dataset; {agrupador};
+- **cápsula** = hub de referência, agrupado por família num `subgraph` e
+  repetido em cada diagrama para manter as arestas curtas;
+- **seta cheia** (`-->`) = a chave está lá com o nome canônico, join direto;
+- **seta pontilhada** (`-.->`) = a chave está com outro nome ou formato,
+  normalize antes — receita em [`{doc}`]({doc});
+- a lista de tabelas de cada dataset ficou de fora de propósito; está no
+  [`ERD.md`](ERD.md).
 """
 
 
-def escreve(path, titulo, intro, corpo, arst, usados, rodape=""):
-    hubs = [ln for ln in bloco_hubs()
-            if not re.match(r"^\s+[A-Z_]+\(\[", ln) or ln.split("(")[0].strip() in usados]
-    # não deixa subgraph de hub vazio
-    limpo, buf = [], []
-    for ln in hubs:
-        buf.append(ln)
-        if ln.strip() == "end":
-            if any(re.match(r"^\s+[A-Z_]+\(\[", x) for x in buf):
-                limpo += buf
-            buf = []
-    texto = CABECALHO.format(titulo=titulo, intro=intro, data=date.today().isoformat(),
-                             doc=JOIN_KEYS_DOC)
-    texto += "```mermaid\nflowchart LR\n" + "\n".join(limpo + corpo + arst) + "\n```\n"
-    texto += rodape
-    path.write_text(texto, encoding="utf-8")
-    return texto
+def cabecalho(titulo, intro, agrupador):
+    return (f"# {titulo}\n\n{intro}\n\n"
+            f"Gerado por `scripts/gera_flow.py` a partir de `schemas.json` em "
+            f"{date.today().isoformat()} — não edite à mão, regenere.\n\n"
+            + LEGENDA.format(agrupador=agrupador, doc=JOIN_KEYS_DOC) + "\n")
+
+
+def bloco(texto):
+    return f"```mermaid\n{texto}\n```\n\n"
 
 
 def main():
     tables = load_schema()
     info = analyze(tables)
 
-    corpo, arst, usados, soltos = render_flow(info)
-    rodape = ""
-    if soltos:
-        rodape = ("\n## Sem ligação documentada\n\n"
-                  f"{len(soltos)} datasets não têm nenhuma chave que chegue a um hub — "
-                  "estão no espelho, mas nada documentado os liga a mais nada:\n\n"
-                  + "\n".join(f"- `{d}`" for d in soltos) + "\n")
-    escreve(DST_FLOW, "Flow — o espelho por domínio",
-            f"Os {len(info)} datasets do espelho agrupados nos "
-            f"{len({domain_of(d) for d in info})} domínios do `ERD.md`, "
-            "e as chaves com que cada um alcança os hubs de referência.",
-            corpo, arst, usados, rodape)
+    # ---- Flow.md: panorama + um diagrama por domínio
+    por_dom = defaultdict(list)
+    for ds in sorted(info):
+        por_dom[domain_of(ds)].append(ds)
 
+    partes = [cabecalho(
+        "Flow — o espelho por domínio",
+        f"Os {len(info)} datasets do espelho e as chaves com que cada um alcança "
+        f"os hubs de referência, um diagrama por domínio.",
+        "um diagrama por domínio")]
+    partes.append("## Panorama\n\nQuantos datasets de cada domínio chegam a cada "
+                  "hub (ligações de 3 datasets para cima).\n\n")
+    partes.append(bloco(panorama(info)))
+
+    soltos = []
+    for dom in DOMAIN_ORDER:
+        dss = por_dom.get(dom)
+        if not dss:
+            continue
+        nome = DOMAIN_NAMES[dom]["pt"]
+        ligados = [d for d in dss if info[d]["hubs"]]
+        soltos += [d for d in dss if not info[d]["hubs"]]
+        partes.append(f"## {nome}\n\n{len(dss)} datasets"
+                      + (f" · {len(dss) - len(ligados)} sem ligação documentada"
+                         if len(ligados) != len(dss) else "") + "\n\n")
+        if ligados:
+            partes.append(bloco(diagrama(ligados, info, f"{dom}_")))
+
+    if soltos:
+        partes.append("## Sem ligação documentada\n\n"
+                      f"{len(soltos)} datasets não têm nenhuma chave que chegue a "
+                      "um hub — estão no espelho, mas nada documentado os liga a "
+                      "mais nada:\n\n"
+                      + "\n".join(f"- `{d}`" for d in sorted(soltos)) + "\n")
+    DST_FLOW.write_text("".join(partes), encoding="utf-8")
+
+    # ---- temas.md: um diagrama só, interconectado pelos hubs
     lista = temas(tables)
-    corpo, arst, usados = render_temas(info, lista)
-    cobertos = len({d for _, _, ds in lista for d in ds})
-    escreve(DST_TEMAS, "Temas — que dados cada investigação usa",
-            f"Os 43 temas do site e os datasets que cada um cita, "
-            f"{cobertos} dos {len(info)} do espelho.\n\n"
-            "> A origem é o markdown de `docs/overview/`: os datasets que o próprio\n"
-            "> texto de cada tema nomeia. Não é a lista completa do que a investigação\n"
-            "> tocou — é o que está registrado. Dataset sem citação não aparece.",
-            corpo, arst, usados)
+    cobertos = {d for _, _, ds in lista for d in ds}
+    partes = [cabecalho(
+        "Temas — que dados cada investigação usa",
+        f"Os 43 temas do site e os datasets que cada um cita, "
+        f"{len(cobertos)} dos {len(info)} do espelho. Os temas não se ligam\n"
+        f"entre si diretamente: o que os conecta é chegarem às mesmas\n"
+        f"referências — a aresta leva quantos datasets do tema carregam a chave.\n\n"
+        "> A origem é o markdown de `docs/overview/`: os datasets que o próprio\n"
+        "> texto de cada tema nomeia. Não é a lista completa do que a investigação\n"
+        "> tocou — é o que está registrado. Dataset sem citação não aparece.",
+        "cada `subgraph` é um tema, e a aresta sai do tema inteiro")]
+    partes.append(bloco(interconectado(lista, info)))
+
+    orfaos = [(num, titulo) for num, titulo, dss in lista
+              if not [d for d in dss if d in info and info[d]["hubs"]]]
+    if orfaos:
+        partes.append("\n## Temas sem ligação\n\nNenhum dataset citado por estes "
+                      "temas chega a um hub de referência:\n\n"
+                      + "\n".join(f"- {n} · {t}" for n, t in orfaos) + "\n")
+    DST_TEMAS.write_text("".join(partes), encoding="utf-8")
 
     for p in (DST_FLOW, DST_TEMAS):
-        print(f"{p.relative_to(REPO)} — {p.stat().st_size / 1024:.1f} KB")
-    print(f"  datasets : {len(info)}")
-    print(f"  temas    : {len(lista)} ({cobertos} datasets citados)")
-    print(f"  sem hub  : {len(soltos)}")
+        n = p.read_text().count("```mermaid")
+        print(f"{p.relative_to(REPO)} — {n} diagramas, {p.stat().st_size / 1024:.1f} KB")
+    print(f"  datasets : {len(info)} ({len(soltos)} sem hub)")
+    print(f"  temas    : {len(lista)} ({len(cobertos)} datasets citados)")
     return 0
 
 
