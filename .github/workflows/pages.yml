@@ -7,6 +7,10 @@ on:
       - 'pages/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
+  # /analises/shutafut é buscado do repo rafapolo/shutafut a cada deploy;
+  # o cron garante que mudanças lá cheguem aqui mesmo sem push no rodado.
+  schedule:
+    - cron: '17 6 * * *'
 
 permissions:
   contents: read
@@ -26,6 +30,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Checkout shutafut
+        uses: actions/checkout@v4
+        with:
+          repository: rafapolo/shutafut
+          path: pages/analises/shutafut
+      - name: Remove arquivos não-públicos do shutafut
+        run: |
+          cd pages/analises/shutafut
+          rm -rf .git .github node_modules generate.js package.json bun.lock
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
