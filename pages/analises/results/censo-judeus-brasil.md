@@ -294,6 +294,139 @@ conversa.
 
 ---
 
+## 6. Outro dado, outra pergunta: o que essas empresas fazem
+
+O Censo mede pessoas que declaram uma religião. Existe um segundo cadastro público que mede
+outra coisa inteiramente — o CNPJ da Receita Federal, onde é possível localizar 785 empresas
+com vínculo israelense: 394 registradas com país de origem Israel e 391 empresas brasileiras
+com ao menos um sócio israelense. Dados de abril de 2026.
+
+São universos diferentes e não se sobrepõem: um mede religião declarada por indivíduos, o
+outro mede nacionalidade registrada em atos societários. Empresa israelense não é empresa de
+judeu brasileiro, e a esmagadora maioria dos 107 mil judeus do Censo não aparece aqui. Mas o
+segundo cadastro responde uma pergunta que o primeiro não alcança: **em que setores esse
+capital opera.**
+
+### A base se parte em duas
+
+| | Empresas israelenses (ativas) | Empresas BR c/ sócio israelense (ativas) |
+|---|---|---|
+| n | 193 | 223 |
+| CNAE mais frequente | Holdings — **57%** | Holdings — 13,9% |
+| Domicílio | 99% no exterior (UF = "EX") | Brasil |
+| Natureza | veículo societário | operação real |
+
+A leitura muda conforme o lado. As "empresas israelenses" são majoritariamente entidades
+estrangeiras cadastradas na Receita porque figuram como sócias de alguma coisa aqui — não são
+atividade econômica, são estrutura de propriedade. A atividade real está do lado brasileiro.
+
+São 416 empresas ativas ao todo, somando **R$ 1,77 bilhão** de capital social declarado.
+
+### Setores, por empresas ativas
+
+| Setor | Emp. | % | Capital (R$) | % cap |
+|---|---:|---:|---:|---:|
+| Holdings e participações | 161 | 38,7% | 126.399.818 | 7,1% |
+| Comércio (atacado/importação) | 53 | 12,7% | 513.995.339 | 29,0% |
+| TI e software | 48 | 11,5% | 131.832.505 | 7,4% |
+| Serviços profissionais | 44 | 10,6% | 213.855.681 | 12,1% |
+| Imobiliário e construção | 38 | 9,1% | 79.284.785 | 4,5% |
+| Indústria | 32 | 7,7% | 648.615.015 | 36,6% |
+| Saúde e educação | 10 | 2,4% | 7.835.000 | 0,4% |
+| Turismo/alimentação | 8 | 1,9% | 5.469.500 | 0,3% |
+
+As duas colunas de porcentagem discordam, e é aí que está a informação. Holdings são 39% das
+empresas e 7% do capital. Indústria é 8% das empresas e 37% do capital. São dois fenômenos
+distintos empilhados no mesmo cadastro: uma camada larga e rasa de veículos societários, e um
+punhado de operações industriais grandes.
+
+### Os dez CNAEs que concentram o capital
+
+| # | CNAE | Atividade | Emp. | Capital (R$) | % |
+|--:|---|---|---:|---:|---:|
+| 1 | 1099602 | Fabricação de pós alimentícios | 1 | 297.949.004 | 16,8% |
+| 2 | 4681801 | Atacado de álcool carburante, biodiesel, gasolina | 1 | 203.210.000 | 11,5% |
+| 3 | 2833000 | Máquinas e equipamentos para agricultura | 2 | 156.292.468 | 8,8% |
+| 4 | 6462000 | Holdings de instituições não-financeiras | 141 | 111.710.424 | 6,3% |
+| 5 | 2832100 | Equipamentos para irrigação agrícola | 4 | 108.639.776 | 6,1% |
+| 6 | 4643502 | Atacado de bolsas, malas e artigos de viagem | 1 | 95.119.729 | 5,4% |
+| 7 | 7490199 | Outras ativ. profissionais, científicas e técnicas | 3 | 85.012.583 | 4,8% |
+| 8 | 8299799 | Outras ativ. de serviços prestados às empresas | 3 | 77.122.237 | 4,3% |
+| 9 | 4689399 | Atacado de outros produtos intermediários | 3 | 72.702.334 | 4,1% |
+| 10 | 6203100 | Desenvolvimento e licenciamento de software | 12 | 54.381.322 | 3,1% |
+| | | **Soma top 10** | **171** | **1.262.139.877** | **71,2%** |
+| | | Demais 105 CNAEs | 245 | 511.438.447 | 28,8% |
+| | | **Total geral** | **416** | **1.773.578.325** | **100%** |
+
+Dez CNAEs entre 115 concentram 71% do capital — e **quatro empresas sozinhas respondem por
+43% dele**. Os três primeiros lugares são ocupados por uma única empresa cada.
+
+### As maiores
+
+| # | Empresa | UF | Atividade | Capital (R$) |
+|--:|---|:--:|---|---:|
+| 1 | Frutarom do Brasil | MG | Pós alimentícios | 297.949.004 |
+| 2 | International Brazilian Trading | AM | Combustíveis (atacado) | 203.210.000 |
+| 3 | Plasson do Brasil | SC | Máquinas agrícolas | 156.292.468 |
+| 4 | Sestini Mercantil | SP | Bolsas e artigos de viagem | 95.119.729 |
+| 5 | PowerFleet Brasil | SP | Serviços técnicos | 84.972.583 |
+| 6 | Rapyd Brazil Soluções de Pagamento | SP | Serviços às empresas | 77.122.237 |
+| 7 | Verifone do Brasil | SP | Produtos intermediários | 72.045.129 |
+| 8 | Netafim Brasil | SP | Irrigação agrícola | 54.689.734 |
+| 9 | Rivulis Plastro Irrigação | MG | Irrigação agrícola | 53.950.042 |
+| 10 | VM Tecnologia | PR | Software | 41.113.000 |
+
+A Frutarom é a maior da base inteira, 47% acima da segunda. Faz aromas e ingredientes
+industriais — "pós alimentícios", no vocabulário da Receita — e foi comprada pela americana
+IFF em 2018.
+
+### O que essas empresas de fato fazem
+
+**Tecnologia é o maior cluster real por número.** Somando software, TI, atacado de
+informática, componentes eletrônicos e equipamentos de comunicação: **65 empresas ativas,
+R$ 196 milhões**. Não domina nenhum ranking isolado porque aparece fragmentado em seis CNAEs
+diferentes. Rapyd, Verifone, Telit Wireless, RAD, Taranis, VM Tecnologia.
+
+**Agronegócio de precisão: pouca empresa, muito capital.** Quatorze ativas, **R$ 299
+milhões** — média de R$ 21 milhões contra R$ 4,3 milhões da base. É a assinatura mais
+reconhecível: irrigação por gotejamento (Netafim, Rivulis, Bermad, Aquestia), máquinas
+agrícolas (Plasson), fertilizantes (Haifa Química), defensivos (Stockton), nutrição animal
+(Phibro).
+
+**Imobiliário é investimento passivo.** Trinta e sete ativas em aluguel, compra e venda,
+incorporação e administração de imóveis, com capital médio de R$ 2,1 milhões. Perfil de
+alocação patrimonial de pessoa física, não de incorporadora.
+
+**O comércio atacadista é importação das próprias tecnologias**, com duas exceções que
+sozinhas explicam a maior parte dos 29% de capital do setor: a trading de combustíveis no
+Amazonas e a Sestini.
+
+**As holdings não são atividade.** São 141 ativas, mediana de capital **zero** entre todas —
+e R$ 720 mil entre as 31 registradas no Brasil. Veículo societário vazio, não empresa.
+
+Geograficamente, São Paulo tem 156 das 225 empresas ativas domiciliadas no Brasil (69%). O
+resto se espalha por RJ (13), PR (12), SC (10), MG (10), RS (8).
+
+O padrão de conjunto não é imigração empresarial difusa. São subsidiárias de multinacionais
+israelenses em nichos específicos — tecnologia agrícola, pagamentos, telecom — mais uma
+camada grande de holdings e imóveis que é gestão patrimonial familiar, não operação.
+
+### O perímetro deste dado também
+
+**Capital social só existe para o lado brasileiro.** Das 394 empresas israelenses, apenas 2
+têm o campo preenchido. Todas as tabelas de capital acima descrevem, na prática, as empresas
+registradas no Brasil.
+
+**Capital social não é faturamento nem investimento.** É um valor declarado no contrato
+social, que pode estar desatualizado em décadas e não guarda relação necessária com o tamanho
+da operação.
+
+**Nacionalidade no cadastro não é etnia, nem religião.** O código de país 383 identifica
+Israel; identifica um vínculo formal, não a identidade de quem está por trás. Nada aqui se
+conecta, nem deveria, aos 107 mil judeus contados pelo Censo.
+
+---
+
 **Projeto relacionado:**
 
 [![Shutafut — rede de empresas israelenses no Brasil](/analises/shutafut/demo.jpg)](/analises/shutafut/)
