@@ -404,12 +404,49 @@ Amazonas e a Sestini.
 **As holdings não são atividade.** São 141 ativas, mediana de capital **zero** entre todas —
 e R$ 720 mil entre as 31 registradas no Brasil. Veículo societário vazio, não empresa.
 
-Geograficamente, São Paulo tem 156 das 225 empresas ativas domiciliadas no Brasil (69%). O
-resto se espalha por RJ (13), PR (12), SC (10), MG (10), RS (8).
-
 O padrão de conjunto não é imigração empresarial difusa. São subsidiárias de multinacionais
 israelenses em nichos específicos — tecnologia agrícola, pagamentos, telecom — mais uma
 camada grande de holdings e imóveis que é gestão patrimonial familiar, não operação.
+
+### Onde essas empresas estão — e onde não estão
+
+Das 416 ativas, 225 têm domicílio no Brasil (as demais estão no exterior). E a concentração é
+severa:
+
+| UF | Empresas | % | Capital (R$) | % cap |
+|---|---:|---:|---:|---:|
+| São Paulo | 156 | **69,3%** | 918.910.008 | 51,8% |
+| Rio de Janeiro | 13 | 5,8% | 14.114.761 | 0,8% |
+| Paraná | 12 | 5,3% | 56.790.715 | 3,2% |
+| Santa Catarina | 10 | 4,4% | 162.952.308 | 9,2% |
+| Minas Gerais | 10 | 4,4% | 356.940.294 | 20,1% |
+| Rio Grande do Sul | 8 | 3,6% | 14.704.414 | 0,8% |
+| Bahia | 4 | 1,8% | 32.909.205 | 1,9% |
+| Pará | 3 | 1,3% | 8.061.620 | 0,5% |
+| Amazonas | 1 | 0,4% | 203.210.000 | 11,5% |
+| Demais 6 UFs | 8 | 3,6% | 4.985.000 | 0,3% |
+
+Sete em cada dez empresas estão em São Paulo. Minas e Santa Catarina aparecem grandes em
+capital por uma empresa cada — Frutarom e Plasson.
+
+**E aqui é preciso ser explícito para não induzir a leitura errada:** este mapa não tem
+relação com o das seções 4 e 5. **No Norte inteiro há quatro empresas** — uma no Amazonas,
+três no Pará, sendo duas delas holdings e a terceira uma corretora de aluguel de imóveis. O
+capital amazonense da tabela é uma única trading de combustíveis em Manaus, operação de zona
+franca sem qualquer vínculo com as comunidades da região.
+
+Os dois cadastros apontam para direções opostas. O Censo mostra o Norte como o lugar onde a
+população judaica é mais antiga, mais dispersa e majoritariamente parda — herança de dois
+séculos de migração marroquina pelo rio. O CNPJ mostra o Norte como praticamente ausente do
+capital israelense, que é um fenômeno recente, corporativo e paulista.
+
+Compare o eixo Rio–São Paulo e fica ainda mais claro que são coisas diferentes: o Rio tem 23%
+dos judeus do país e **0,8%** do capital israelense. São Paulo tem 48% dos judeus e 69% das
+empresas. Se os dois mapas medissem a mesma coisa, o Rio não desapareceria.
+
+Nada nesta seção descreve empresas de judeus brasileiros. Descreve empresas com vínculo
+societário registrado a Israel — na maioria, subsidiárias de multinacionais que chegaram nas
+últimas décadas ao mercado consumidor e ao agronegócio do Sudeste e do Sul.
 
 ### O perímetro deste dado também
 
