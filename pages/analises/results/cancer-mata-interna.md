@@ -164,6 +164,59 @@ externa identificada — e em boa parte evitável:
 - **Bebida muito quente** — esôfago. A associação com o consumo de chimarrão e chá em
   temperatura elevada ajuda a explicar a força desse tumor no Sul do país.
 
+## Em que idade cada câncer mata
+
+O mesmo registro de óbitos traz a idade de cada morte — e ela separa os tumores de um jeito
+ainda mais brutal do que a razão de internações.
+
+![Amplitude etária das mortes por câncer, por tipo de tumor, Brasil 2022](/analises/img/cancer-idade-amplitude-2022.png)
+
+**Do câncer de testículo se morre aos 33 anos. Do de próstata, aos 78.** Quarenta e cinco anos
+separam as duas pontas da lista. E só três tumores têm mediana antes dos 60: testículo (33),
+linfoma de Hodgkin (53) e colo do útero (55).
+
+A razão é a própria mecânica da doença. Câncer é um acidente de cópia: a cada divisão celular
+existe uma chance pequena de erro no DNA, e é preciso acumular vários erros nos genes certos
+para que uma célula escape do controle. Isso leva tempo — décadas. Some-se o tempo de exposição
+aos carcinógenos, que também é cumulativo: o maço de cigarro de hoje não cobra a conta amanhã,
+cobra em 2050. Por isso os carcinomas, os tumores que nascem do tecido de revestimento dos
+órgãos, são esmagadoramente doença de velho: pulmão, próstata, estômago, cólon, bexiga, pele.
+
+Os que fogem da regra fogem por motivos precisos:
+
+- **Testículo** nasce de células germinativas, que são resquício embrionário e entram em
+  atividade na puberdade. Não precisa de décadas de mutação acumulada — o pico de mortes está
+  entre 25 e 29 anos. É também um dos cânceres mais curáveis que existem, o que explica as 446
+  mortes contra 3.698 internações.
+- **Leucemias e tumores do sistema nervoso central** são os dois grandes cânceres da infância:
+  atingem células que ainda estão se multiplicando muito rápido no corpo em formação.
+- **Colo do útero** é cronometrado pelo HPV. A infecção acontece no início da vida sexual, a
+  lesão leva de dez a vinte anos para virar câncer invasivo, e a morte chega na faixa dos 50.
+  Não é uma doença de envelhecimento — é uma doença de tempo decorrido desde a infecção.
+
+![Mapa de calor: distribuição etária das mortes por câncer, por tipo de tumor, Brasil 2022](/analises/img/cancer-idade-perfil-2022.png)
+
+O mapa de calor mostra o formato, não só a posição. **Leucemia é o tumor que mais mata jovem:
+14,3% das suas mortes acontecem antes dos 25 anos**, contra 0,2% no câncer de pulmão e 0,1% no
+de mama. Testículo é o oposto de tudo — a mancha some depois dos 45. E próstata, bexiga e pele
+não melanoma praticamente não existem antes dos 60.
+
+### Um aviso sobre as idades extremas
+
+As colunas de idade mínima e máxima da tabela abaixo pedem cautela, por duas razões.
+
+A primeira é que **o registro de idade do SIM tem lixo**. Em 2022, 6.528 óbitos (0,44% do total)
+saem com idade impossível — de 116 até 220 anos. Não são supercentenários: a distribuição desses
+registros tem exatamente o formato de uma curva de mortalidade deslocada, o que denuncia erro
+sistemático na codificação do campo, e não idade real. Sem descartá-los, o câncer de próstata
+apareceria matando aos 201 anos, e o de lábio aos 212. Tudo acima de 115 anos ficou de fora
+daqui.
+
+A segunda é que, mesmo depois da limpeza, mínima e máxima são **registros isolados** — uma
+pessoa cada. Algumas continuam clinicamente improváveis, como a morte por câncer de próstata
+registrada com 1 ano de idade. A leitura confiável é a barra grossa dos gráficos, onde estão
+80% das mortes; os extremos dizem só até onde o registro foi, não até onde a doença vai.
+
 ## O que este gráfico não enxerga
 
 Vale explicitar as fronteiras do dado, porque elas mudam a leitura:
@@ -189,39 +242,41 @@ Vale explicitar as fronteiras do dado, porque elas mudam a leitura:
 
 Ordenada da pior para a melhor razão entre internações e mortes.
 
-| Tipo de câncer | Mortes | Internações | Mortes /100 mil | Internações /100 mil | Internações por morte |
-|---|---:|---:|---:|---:|---:|
-| Traqueia, brônquios e pulmão | 28.166 | 26.892 | 13,87 | 13,24 | **0,95** |
-| Fígado e vias biliares | 10.061 | 11.258 | 4,95 | 5,54 | **1,12** |
-| Pâncreas | 11.969 | 16.151 | 5,89 | 7,95 | **1,35** |
-| Vesícula e vias biliares | 3.828 | 6.482 | 1,88 | 3,19 | **1,70** |
-| Cérebro e sistema nervoso | 9.410 | 19.201 | 4,63 | 9,45 | **2,04** |
-| Esôfago | 8.108 | 17.298 | 3,99 | 8,52 | **2,14** |
-| Próstata | 15.382 | 35.065 | 15,61 | 35,59 | **2,28** |
-| Mieloma múltiplo | 3.558 | 8.435 | 1,75 | 4,15 | **2,37** |
-| Estômago | 13.574 | 33.267 | 6,68 | 16,38 | **2,45** |
-| Faringe | 3.656 | 9.959 | 1,80 | 4,90 | **2,72** |
-| Laringe | 4.359 | 12.161 | 2,15 | 5,99 | **2,79** |
-| Rim e vias urinárias | 4.032 | 11.718 | 1,99 | 5,77 | **2,90** |
-| Corpo do útero | 4.018 | 11.827 | 3,84 | 11,31 | **2,95** |
-| Ovário | 3.986 | 13.562 | 3,81 | 12,97 | **3,40** |
-| Lábio e cavidade oral | 3.621 | 13.133 | 1,78 | 6,47 | **3,63** |
-| Colo do útero | 6.601 | 26.261 | 6,31 | 25,12 | **3,98** |
-| Linfoma não Hodgkin | 4.277 | 17.831 | 2,11 | 8,78 | **4,16** |
-| Melanoma de pele | 1.868 | 8.038 | 0,92 | 3,96 | **4,30** |
-| Mama | 18.383 | 79.249 | 17,58 | 75,80 | **4,31** |
-| Bexiga | 4.877 | 21.476 | 2,40 | 10,58 | **4,41** |
-| Cólon | 13.155 | 59.746 | 6,48 | 29,42 | **4,54** |
-| Reto e ânus | 7.960 | 37.836 | 3,92 | 18,63 | **4,75** |
-| Leucemia | 6.715 | 40.052 | 3,31 | 19,72 | **5,96** |
-| Testículo | 446 | 3.698 | 0,45 | 3,75 | **8,33** |
-| Linfoma de Hodgkin | 532 | 5.218 | 0,26 | 2,57 | **9,88** |
-| Tireoide | 808 | 12.315 | 0,40 | 6,06 | **15,15** |
-| Pele não melanoma | 2.947 | 51.519 | 1,45 | 25,37 | **17,50** |
+| Tipo de câncer | Mortes | Internações | Mortes /100 mil | Internações /100 mil | Internações por morte | Idade média | Mais novo | Mais velho |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Traqueia, brônquios e pulmão | 28.166 | 26.892 | 13,87 | 13,24 | **0,95** | 69,5 | 0 | 114 |
+| Fígado e vias biliares | 10.061 | 11.258 | 4,95 | 5,54 | **1,12** | 67,9 | 0 | 115 |
+| Pâncreas | 11.969 | 16.151 | 5,89 | 7,95 | **1,35** | 69,4 | 0 | 115 |
+| Vesícula e vias biliares | 3.828 | 6.482 | 1,88 | 3,19 | **1,70** | 68,8 | 23 | 107 |
+| Cérebro e sistema nervoso | 9.410 | 19.201 | 4,63 | 9,45 | **2,04** | 59,2 | 0 | 114 |
+| Esôfago | 8.108 | 17.298 | 3,99 | 8,52 | **2,14** | 66,0 | 17 | 112 |
+| Próstata | 15.382 | 35.065 | 15,61 | 35,59 | **2,28** | 77,3 | 1 | 115 |
+| Mieloma múltiplo | 3.558 | 8.435 | 1,75 | 4,15 | **2,37** | 69,1 | 10 | 106 |
+| Estômago | 13.574 | 33.267 | 6,68 | 16,38 | **2,45** | 67,2 | 14 | 115 |
+| Faringe | 3.656 | 9.959 | 1,80 | 4,90 | **2,72** | 63,4 | 7 | 114 |
+| Laringe | 4.359 | 12.161 | 2,15 | 5,99 | **2,79** | 66,0 | 4 | 113 |
+| Rim e vias urinárias | 4.032 | 11.718 | 1,99 | 5,77 | **2,90** | 67,5 | 0 | 115 |
+| Corpo do útero | 4.018 | 11.827 | 3,84 | 11,31 | **2,95** | 65,6 | 16 | 105 |
+| Ovário | 3.986 | 13.562 | 3,81 | 12,97 | **3,40** | 63,0 | 14 | 104 |
+| Lábio e cavidade oral | 3.621 | 13.133 | 1,78 | 6,47 | **3,63** | 65,4 | 0 | 110 |
+| Colo do útero | 6.601 | 26.261 | 6,31 | 25,12 | **3,98** | 56,0 | 16 | 113 |
+| Linfoma não Hodgkin | 4.277 | 17.831 | 2,11 | 8,78 | **4,16** | 63,7 | 1 | 112 |
+| Melanoma de pele | 1.868 | 8.038 | 0,92 | 3,96 | **4,30** | 66,9 | 6 | 110 |
+| Mama | 18.383 | 79.249 | 17,58 | 75,80 | **4,31** | 62,7 | 0 | 114 |
+| Bexiga | 4.877 | 21.476 | 2,40 | 10,58 | **4,41** | 75,1 | 12 | 112 |
+| Cólon | 13.155 | 59.746 | 6,48 | 29,42 | **4,54** | 68,5 | 12 | 110 |
+| Reto e ânus | 7.960 | 37.836 | 3,92 | 18,63 | **4,75** | 66,7 | 2 | 109 |
+| Leucemia | 6.715 | 40.052 | 3,31 | 19,72 | **5,96** | 58,4 | 0 | 115 |
+| Testículo | 446 | 3.698 | 0,45 | 3,75 | **8,33** | 38,3 | 4 | 97 |
+| Linfoma de Hodgkin | 532 | 5.218 | 0,26 | 2,57 | **9,88** | 52,3 | 3 | 96 |
+| Tireoide | 808 | 12.315 | 0,40 | 6,06 | **15,15** | 68,9 | 17 | 115 |
+| Pele não melanoma | 2.947 | 51.519 | 1,45 | 25,37 | **17,50** | 77,1 | 1 | 110 |
 
-Tumores de sítio mal definido ou secundário ficam de fora da tabela por não nomearem um
-órgão de origem. Sítios exclusivos de um sexo usam como denominador a população daquele
-sexo.
+Tumores de sítio mal definido ou secundário ficam de fora da tabela por não nomearem um órgão
+de origem. Sítios exclusivos de um sexo usam como denominador a população daquele sexo. As três
+colunas de idade são calculadas só sobre os óbitos com idade válida — de fora ficam os 2,4% sem
+idade preenchida e os 0,44% com idade impossível —, por isso elas descrevem um conjunto
+ligeiramente menor que a coluna de mortes.
 
 ---
 
