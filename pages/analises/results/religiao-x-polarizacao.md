@@ -5,6 +5,14 @@ ponderado pela nota ideológica do partido de cada candidato) com o **perfil rel
 Censo 2022** (IBGE). Junção por `UF + nome normalizado`: **5.546 de 5.557** municípios
 casaram (11 perdidos por grafia).
 
+![Lado a lado: inclinação ideológica do voto para prefeito em 2024 (esquerda) e perfil religioso dos municípios no Censo 2022 (direita)](/analises/img/religiao-x-polarizacao-mapas.jpg)
+
+Os dois mapas lado a lado: à esquerda, cada município colorido pela inclinação ideológica do
+voto para prefeito (vermelho = esquerda, azul = direita); à direita, o mesmo território
+colorido pelo perfil religioso declarado no Censo (amarelo = mais católico, roxo = mais
+evangélico). O Nordeste amarelo-e-avermelhado e o Sul azul são o que sustenta — e o que
+limita — toda a análise abaixo.
+
 **Mapas interativos:**
 [Prefeitos 2024 — Esquerda × Direita](https://xn--2dk.xyz/dataviz/eleicoes) ·
 [Perfil Religioso dos Municípios](https://xn--2dk.xyz/dataviz/religioes) ·
