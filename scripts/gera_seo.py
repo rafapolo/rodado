@@ -75,7 +75,16 @@ SITE_NAME = "rodado"
 
 def rel_url(path: Path) -> str:
     rel = path.relative_to(PAGES).as_posix()
-    return "/" if rel == "index.html" else f"/{rel}"
+    # index.html não aparece na URL: pages/index.html é "/" e
+    # pages/analises/<slug>/index.html é "/analises/<slug>/"
+    if rel.endswith("index.html"):
+        rel = rel[: -len("index.html")]
+    return f"/{rel}"
+
+
+def prefixo_de(path: Path) -> str:
+    """Quantos ../ até pages/. As análises estão dois níveis abaixo."""
+    return "../" * (len(path.relative_to(PAGES).parts) - 1)
 
 
 def contraparte(path: Path) -> Path | None:
@@ -108,11 +117,37 @@ def extrai(pattern: str, texto: str) -> str | None:
     return m.group(1).strip() if m else None
 
 
+def is_analise(path: Path) -> bool:
+    """pages/analises/<slug>/index.html — uma análise com página própria."""
+    return path.parent.parent.name == "analises" and path.name == "index.html"
+
+
+def data_da_analise(slug: str) -> str | None:
+    for item in analises_manifest():
+        if item.get("slug") == slug:
+            return item.get("date")
+    return None
+
+
+def analises_manifest() -> list[dict]:
+    caminho = PAGES / "analises" / "results" / "manifest.json"
+    if not caminho.exists():
+        return []
+    import json
+
+    return json.loads(caminho.read_text(encoding="utf-8"))
+
+
 def bloco(path: Path, titulo: str, descricao: str) -> str:
     en = is_en(path)
     url = BASE + rel_url(path)
-    prefixo = "../" if path.parent != PAGES else ""
-    imagem = f"{BASE}/assets/{'og-en.png' if en else 'og.png'}"
+    prefixo = prefixo_de(path)
+    if is_analise(path):
+        # cada análise tem seu cartão editorial (scripts/gera_og_image.py); sem
+        # isso todas compartilhariam a capa do site no feed
+        imagem = f"{BASE}/analises/img/og-{path.parent.name}.png"
+    else:
+        imagem = f"{BASE}/assets/{'og-en.png' if en else 'og.png'}"
     locale = "en_US" if en else "pt_BR"
     outra = contraparte(path)
 
@@ -139,7 +174,7 @@ def bloco(path: Path, titulo: str, descricao: str) -> str:
 
     linhas += [
         '<meta property="og:type" content="website">' if path.parent == PAGES
-        else '<meta property="og:type" content="article">',
+        and not is_analise(path) else '<meta property="og:type" content="article">',
         f'<meta property="og:site_name" content="{SITE_NAME}">',
         f'<meta property="og:locale" content="{locale}">',
         f'<meta property="og:url" content="{e(url)}">',
@@ -162,7 +197,8 @@ def bloco(path: Path, titulo: str, descricao: str) -> str:
         '<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">',
     ]
 
-    if path.name in ("index.html", "en.html"):
+    # as análises também se chamam index.html, mas são artigos — testar antes
+    if path.parent == PAGES and path.name in ("index.html", "en.html"):
         linhas.append(
             '<script type="application/ld+json">'
             '{"@context":"https://schema.org","@type":"WebSite",'
@@ -178,6 +214,20 @@ def bloco(path: Path, titulo: str, descricao: str) -> str:
             f'"headline":"{e(social)}","description":"{e(descricao)}",'
             f'"url":"{e(url)}","image":"{e(imagem)}",'
             f'"inLanguage":"{"en" if en else "pt-BR"}",'
+            f'"isPartOf":{{"@type":"WebSite","name":"{SITE_NAME}","url":"{BASE}/"}}}}'
+            "</script>"
+        )
+    elif is_analise(path):
+        data = data_da_analise(path.parent.name)
+        # o manifest traz só ano-mês; o schema aceita a precisão que houver
+        publicado = f',"datePublished":"{e(data)}"' if data else ""
+        linhas.append(
+            '<script type="application/ld+json">'
+            '{"@context":"https://schema.org","@type":"Article",'
+            f'"headline":"{e(social)}","description":"{e(descricao)}",'
+            f'"url":"{e(url)}","image":"{e(imagem)}"{publicado},'
+            '"inLanguage":"pt-BR",'
+            f'"author":{{"@type":"Organization","name":"{SITE_NAME}"}},'
             f'"isPartOf":{{"@type":"WebSite","name":"{SITE_NAME}","url":"{BASE}/"}}}}'
             "</script>"
         )
@@ -232,7 +282,7 @@ def processa(path: Path) -> bool:
 
 
 def bloco_comum(path: Path) -> str:
-    prefixo = "../" if path.parent != PAGES else ""
+    prefixo = prefixo_de(path)
     linhas = [linha.replace("{p}", prefixo) for linha in COMUM]
     return "\n".join([HEAD_OPEN, *linhas, HEAD_CLOSE])
 
@@ -283,12 +333,16 @@ def alvos() -> list[Path]:
         arquivos += sorted(
             p for p in (PAGES / sub).glob("*.html") if not p.name.startswith("_")
         )
+    # as páginas por análise (pages/analises/<slug>/index.html), geradas por
+    # scripts/gera_analises.py — o índice analises/index.html fica de fora,
+    # o conteúdo dele é montado por JS e não tem metadados próprios
+    arquivos += sorted((PAGES / "analises").glob("*/index.html"))
     return arquivos
 
 
 def alvos_head() -> list[Path]:
-    """Todo HTML de pages/ — inclusive os _template.html e analises/, que ficam
-    fora do SEO mas também carregam o head comum."""
+    """Todo HTML de pages/ — inclusive os _template.html e o índice de
+    analises/, que fica fora do SEO mas também carrega o head comum."""
     return sorted(PAGES.rglob("*.html"))
 
 
