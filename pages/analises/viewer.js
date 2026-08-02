@@ -1,12 +1,19 @@
 /* Viewer universal de análises: renderiza qualquer .md em analises/results/
-   Uso: analises/?doc=<slug>  → mostra results/<slug>.md
-        analises/            → índice (lê results/manifest.json); se houver só
-                               uma análise, abre direto.
-   Adicionar uma análise = soltar o .md em results/ e uma linha no manifest.json. */
+   Uso: analises/<slug>/      → página própria, com metadados de compartilhamento
+                                (o shell traz data-slug; gerado por gera_analises.py)
+        analises/?doc=<slug>  → mesma coisa, sem metadados próprios; mantido
+                                porque links assim já circulam por aí
+        analises/             → índice (lê results/manifest.json); se houver só
+                                uma análise, abre direto.
+   Adicionar uma análise = soltar o .md em results/, uma linha no manifest.json
+   e rodar scripts/gera_analises.py (que também chama o gera_seo). */
 (function () {
   var docEl = document.getElementById('doc');
   var eyebrow = document.getElementById('eyebrow');
-  var slug = new URLSearchParams(location.search).get('doc') ||
+  // nas páginas próprias o conteúdo fica um nível abaixo de analises/
+  var base = docEl.dataset.base || '';
+  var slug = docEl.dataset.slug ||
+             new URLSearchParams(location.search).get('doc') ||
              (location.hash ? location.hash.slice(1) : '');
 
   marked.setOptions({ gfm: true, breaks: false });
@@ -36,20 +43,20 @@
   }
 
   function renderDoc(name) {
-    return fetchText('results/' + name + '.md').then(function (md) {
+    return fetchText(base + 'results/' + name + '.md').then(function (md) {
       docEl.innerHTML = marked.parse(md);
       enhance();
       var h1 = docEl.querySelector('h1');
       if (h1) {
         document.title = h1.textContent + ' — rodado';
-        eyebrow.innerHTML = '<a href="./" style="color:inherit;text-decoration:none">Análises</a> ／ ' +
-          (new URLSearchParams(location.search).get('doc') || name);
+        eyebrow.innerHTML = '<a href="' + (base || './') + '" ' +
+          'style="color:inherit;text-decoration:none">Análises</a> ／ ' + name;
       }
       window.scrollTo(0, 0);
     }).catch(function () {
       docEl.innerHTML = '<h1>Análise não encontrada</h1>' +
         '<p class="doc-msg">Nenhuma análise com esse nome em <code>results/</code>. ' +
-        '<a href="./">Ver todas &rarr;</a></p>';
+        '<a href="' + (base || './') + '">Ver todas &rarr;</a></p>';
     });
   }
 
@@ -60,7 +67,7 @@
     }
     var html = '<h1>Análises</h1><p class="dek">Cruzamentos e achados a partir de dados públicos.</p><ul class="idx-list">';
     items.forEach(function (it) {
-      html += '<li><a href="?doc=' + encodeURIComponent(it.slug) + '">' + it.title + '</a>' +
+      html += '<li><a href="' + encodeURIComponent(it.slug) + '/">' + it.title + '</a>' +
         (it.date ? ' <span class="meta">· ' + it.date + '</span>' : '') +
         (it.dek ? '<p class="dek">' + it.dek + '</p>' : '') + '</li>';
     });
@@ -68,11 +75,22 @@
     document.title = 'Análises — rodado';
   }
 
-  if (slug) {
+  // ?doc=<slug> é a forma antiga: não tem metadados próprios, então mandamos
+  // para a página da análise. Só depois de confirmar no manifest — assim um
+  // slug inexistente cai na mensagem daqui, e não num 404 do Pages.
+  var legado = !docEl.dataset.slug && slug;
+
+  if (legado) {
+    fetchJSON(base + 'results/manifest.json').then(function (items) {
+      var existe = items.some(function (it) { return it.slug === slug; });
+      if (existe) location.replace(encodeURIComponent(slug) + '/');
+      else renderDoc(slug);
+    });
+  } else if (slug) {
     renderDoc(slug);
   } else {
-    fetchJSON('results/manifest.json').then(function (items) {
-      if (items.length === 1) renderDoc(items[0].slug);
+    fetchJSON(base + 'results/manifest.json').then(function (items) {
+      if (items.length === 1) location.replace(encodeURIComponent(items[0].slug) + '/');
       else renderIndex(items);
     });
   }
