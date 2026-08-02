@@ -60,6 +60,23 @@ Do quintil menos ao mais evangélico, o voto de direita sobe +16pp (34→50%) e 
 **cai pela metade** (24→11%). O efeito é mais um **recuo da esquerda** em território
 evangélico do que uma explosão da direita (que já era maioria em quase todo lugar).
 
+![Heatmap do cruzamento entre % evangélica e inclinação ideológica, com painéis por região](/analises/img/religiao-x-polarizacao-heatmap.png)
+
+O mesmo gradiente visto como distribuição conjunta. **A cor não é contagem de municípios** —
+é o resíduo padronizado, o quanto cada célula foge do esperado se religião e voto fossem
+independentes; um heatmap de densidade crua só mostraria que quase todo município fica entre
+5,5 e 6,5. O número dentro da célula é o dado literal (% da faixa evangélica, cada linha
+soma 100). Células com |z| < 1,3 ficam cinza: é ruído amostral, não associação.
+
+Duas coisas que a tabela acima não mostra. Primeiro, a **assimetria** do §2 aparece na
+intensidade: o canto inferior-esquerdo (pouco evangélico, esquerda dura) é a célula mais
+saturada do painel — z = +9,0, de longe o maior desvio da grade —, enquanto o canto
+direito cresce de forma bem mais modesta. O que a religião prevê com força é a **presença da
+esquerda**, não a da direita. Segundo, os painéis regionais são o §3 renderizado: a diagonal
+sobrevive no **Nordeste** e no **Sudeste** e **some por completo no Sul e no Centro-Oeste**,
+que saem cinza. Os cinco painéis dividem uma escala de cor fixa — um painel sem cor é
+ausência de associação, não falta de dados.
+
 ## 3. Metade disso é geografia (mas não toda)
 
 Confundidor: o **Nordeste** é ao mesmo tempo mais católico e mais à esquerda (redutos do
@@ -150,6 +167,15 @@ acirrada (margem baixa) sem ser ideologicamente polarizada.
 **Capitais polarizam quase o dobro do interior (1,79 vs 0,94)** — e pendem levemente mais à
 esquerda (5,90 vs 6,00). A metrópole racha; o interior consolida.
 
+![Heatmap do cruzamento entre % evangélica e polarização, sem padrão visível](/analises/img/religiao-x-polarizacao-heatmap-nulo.png)
+
+O painel de controle, para o §1: exatamente o mesmo cruzamento e a mesma escala de cor,
+trocando o eixo horizontal de *para onde o município pende* para *o quanto ele está
+dividido*. A diagonal desaparece — sobram células isoladas, sem gradiente e sem canto
+saturado. Vale como leitura negativa da figura do §2: aquela diagonal é sinal, não um
+artefato do método de binagem ou da escala de cor, porque o mesmo método aplicado a uma
+variável sem associação produz cinza.
+
 | capital | inclin. | polariz. | evang. | venceu |
 |---|--:|--:|--:|---|
 | Recife/PE | 4,38 | 1,82 | 28% | PSB |
@@ -210,5 +236,9 @@ evangélico, não estar virando.
 ---
 
 *Fontes: TSE `br_tse_eleicoes.resultados_candidato_municipio` (2024, prefeito, 1º turno);
-IBGE Censo 2022 (perfil religioso); centroides `br_bd_diretorios_brasil.municipio`. Query e
-notas partidárias reprodutíveis em `../dados/query.sql` e `../metodologia.md`.*
+IBGE Censo 2022 (perfil religioso); centroides `br_bd_diretorios_brasil.municipio`.
+[Query](https://github.com/rafapolo/xyz/blob/main/dataviz/eleicoes/dados/query.sql) e
+[notas partidárias](https://github.com/rafapolo/xyz/blob/main/dataviz/eleicoes/metodologia.md)
+reprodutíveis. A junção, as correlações deste relatório e os dois heatmaps saem de
+[`heatmap_religiao_x_lean.py`](https://github.com/rafapolo/xyz/blob/main/dataviz/eleicoes/heatmap_religiao_x_lean.py),
+que imprime os `r` de §1, §3 e §6 para conferência.*
