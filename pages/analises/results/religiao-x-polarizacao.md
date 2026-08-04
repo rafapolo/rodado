@@ -311,6 +311,55 @@ UNIÃO (+9,4) e PL (+10,4). **Saber quem ganhou diz menos sobre o município do 
 contra quem.** É um lembrete de que o partido do prefeito é um resumo pobre: o que localiza
 o município no mapa religioso é a composição da disputa inteira.
 
+## 12. A mesma lógica não sobe para governador — e é aí que ela fica nítida
+
+Vale perguntar por que toda esta análise para no nível municipal. A resposta é que **para
+governador ela é estruturalmente impossível**: a unidade eleitoral é o estado, então
+geografia e unidade de análise coincidem. Não há "excedente regional" a calcular — cada
+governador *é* a sua região — e 27 observações não sustentam nada parecido com o corte por
+partido dos §9 a §11. O que os §9–§11 fazem só é possível porque a eleição de prefeito
+oferece 5.546 unidades.
+
+Mas a eleição de governador oferece em troca algo que a de prefeito não pode dar. A
+`metodologia.md` lista como ressalva que "município ≠ candidato": na disputa municipal cada
+município tem uma oferta de candidatos diferente, e a correlação entre religião e voto
+mistura o **eleitorado** com a **oferta**. Na disputa estadual, todos os municípios de um
+estado escolhem entre os **mesmos** nomes. Comparar municípios dentro de um estado isola o
+eleitorado com os candidatos mantidos constantes.
+
+O resultado corrige a leitura do §1. Nacionalmente, os dois pleitos se parecem — r de
++0,214 com a inclinação da eleição de prefeito, +0,234 com a de governador. Mas *dentro de
+cada estado*, a mediana do r salta de **+0,086 na disputa de prefeito para +0,215 na de
+governador**: mantendo os candidatos constantes, o sinal religioso mais que dobra. Boa parte
+da fraqueza do número nacional era o ruído de 5.546 disputas locais distintas, não ausência
+de relação. O que muda é a **intensidade**, não a abrangência: o número de estados com r
+positivo é praticamente o mesmo (18 de 24, contra 19 na disputa de prefeito). Onde o efeito
+existe ele fica mais forte; onde não existia, fica mais claramente negativo.
+
+O que ele **não** corrige é o §3. Medida com candidatos constantes, a associação continua
+sendo um fenômeno regional, e do mesmo jeito:
+
+| região | mediana do r intraestadual (governador) | UFs |
+|---|---:|---:|
+| Nordeste | **+0,478** | 9 |
+| Norte | +0,269 | 5 |
+| Sudeste | +0,131 | 4 |
+| Sul | +0,079 | 3 |
+| Centro-Oeste | −0,036 | 3 |
+
+Na Bahia (+0,536), no Ceará (+0,621), na Paraíba (+0,520) e em Pernambuco (+0,524) o perfil
+religioso do município prevê bem a inclinação do voto para governador. Em São Paulo
+(−0,104), no Rio Grande do Sul (−0,121) e em Goiás (−0,202) ele prevê o contrário, ou nada.
+Ou seja: o desenho mais limpo torna o efeito **mais forte onde ele já existia** e não o faz
+aparecer onde não existia. "Católico = esquerda" segue sendo um fenômeno nordestino — agora
+com um teste que não pode ser atribuído a quem apareceu na cédula.
+
+*Ressalvas próprias desta seção:* são pleitos de anos e naturezas diferentes — governador em
+2022, ano presidencial e eleição nacionalizada; prefeito em 2024, disputa local. AP, RR e DF
+ficam de fora por terem menos de 20 municípios. E a falácia ecológica continua valendo:
+municípios mais evangélicos votarem mais à direita não é o mesmo que evangélicos votarem
+mais à direita.
+
 ---
 
 ## Síntese
@@ -332,6 +381,11 @@ o município no mapa religioso é a composição da disputa inteira.
    muda 8 a 12 pontos conforme quem foi o segundo colocado — e o par tem correlação maior
    com a religião (+0,73) do que o vencedor sozinho (+0,70). O partido do prefeito é um
    resumo pobre da disputa.
+6. **Com os candidatos constantes, o sinal dobra — mas só onde já havia** (§12). Na eleição
+   de governador, onde todo o estado escolhe entre os mesmos nomes, o r intraestadual mediano
+   sobe de +0,086 para +0,215. O número nacional fraco era em parte ruído das 5.546 disputas
+   locais. Ainda assim, o efeito segue concentrado no Nordeste (+0,478) e ausente no
+   Centro-Oeste (−0,036): o desenho mais limpo reforça o §3 em vez de derrubá-lo.
 
 ## Ressalvas
 
@@ -365,4 +419,6 @@ reprodutíveis. A junção, as correlações deste relatório e os dois heatmaps
 que imprime os `r` de §1, §3 e §6 para conferência. As três figuras de §9 e §10 saem de
 [`perfil_religioso_partidos.py`](https://github.com/rafapolo/xyz/blob/main/dataviz/eleicoes/perfil_religioso_partidos.py),
 que reaproveita aquela junção e imprime a tabela por partido, os dois `r`, as correlações
-intrarregionais e a matriz de confrontos de §11.*
+intrarregionais e a matriz de confrontos de §11. Os números de §12 saem do mesmo script,
+sobre `dados/governador_2022_raw.json`, gerado por
+[`query_governador.sql`](https://github.com/rafapolo/xyz/blob/main/dataviz/eleicoes/dados/query_governador.sql).*
