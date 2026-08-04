@@ -25,7 +25,100 @@
     return fetch(url).then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; });
   }
 
+  // --- lightbox ------------------------------------------------------------
+  // Clicar numa figura abre em tela cheia (ajustada à janela); o clique
+  // seguinte vai pro tamanho real, com pan pelo scroll do palco. Imagens que
+  // já são link (ex.: o teaser do shutafut) seguem sendo link.
+  var box, boxImg, boxCap, boxStage, ultimaFig;
+
+  function montaBox() {
+    box = document.createElement('div');
+    box.className = 'lightbox';
+    box.hidden = true;
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-modal', 'true');
+    box.innerHTML =
+      '<button class="lb-close" type="button" aria-label="Fechar (Esc)">&times;</button>' +
+      '<div class="lb-stage"><img alt=""></div>' +
+      '<p class="lb-cap"></p>';
+    boxStage = box.querySelector('.lb-stage');
+    boxImg = box.querySelector('img');
+    boxCap = box.querySelector('.lb-cap');
+    document.body.appendChild(box);
+
+    box.querySelector('.lb-close').addEventListener('click', fecha);
+    // clique fora da imagem fecha; na imagem, alterna o zoom
+    box.addEventListener('click', function (e) {
+      if (e.target === boxImg) alternaZoom(e.clientX, e.clientY);
+      else if (e.target === boxStage || e.target === box || e.target === boxCap) fecha();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (!box.hidden && (e.key === 'Escape' || e.key === 'Esc')) fecha();
+    });
+  }
+
+  function abre(img) {
+    if (!box) montaBox();
+    ultimaFig = img;
+    box.classList.remove('is-zoomed');
+    boxImg.src = img.currentSrc || img.src;
+    boxImg.alt = img.alt || '';
+    boxCap.textContent = img.alt || '';
+    box.hidden = false;
+    boxStage.scrollTop = boxStage.scrollLeft = 0;
+    document.documentElement.style.overflow = 'hidden';
+    box.querySelector('.lb-close').focus();
+  }
+
+  function fecha() {
+    if (!box || box.hidden) return;
+    box.hidden = true;
+    box.classList.remove('is-zoomed');
+    boxImg.removeAttribute('src');
+    document.documentElement.style.overflow = '';
+    if (ultimaFig) ultimaFig.focus();
+  }
+
+  // ao ampliar, o ponto clicado vira o centro da viewport
+  function alternaZoom(x, y) {
+    if (box.classList.contains('is-zoomed')) {
+      box.classList.remove('is-zoomed');
+      boxStage.scrollTop = boxStage.scrollLeft = 0;
+      return;
+    }
+    var r = boxImg.getBoundingClientRect();
+    var fx = (x - r.left) / r.width, fy = (y - r.top) / r.height;
+    box.classList.add('is-zoomed');
+    boxStage.scrollLeft = fx * boxImg.offsetWidth - boxStage.clientWidth / 2;
+    boxStage.scrollTop = fy * boxImg.offsetHeight - boxStage.clientHeight / 2;
+  }
+
+  function ampliavel(img) {
+    return img && docEl.contains(img) && !img.closest('a');
+  }
+
+  docEl.addEventListener('click', function (e) {
+    var img = e.target.closest ? e.target.closest('img') : null;
+    if (!ampliavel(img)) return;
+    e.preventDefault();
+    abre(img);
+  });
+  docEl.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var img = e.target.closest ? e.target.closest('img') : null;
+    if (!ampliavel(img)) return;
+    e.preventDefault();
+    abre(img);
+  });
+
   function enhance() {
+    // figuras ampliáveis viram alvo de teclado também
+    docEl.querySelectorAll('img').forEach(function (img) {
+      if (!ampliavel(img)) return;
+      img.tabIndex = 0;
+      img.setAttribute('role', 'button');
+      if (img.alt) img.title = img.alt + ' — clique para ampliar';
+    });
     // tabelas responsivas (mesma classe do site)
     docEl.querySelectorAll('table').forEach(function (t) {
       if (t.closest('.data-table-wrap')) return;
