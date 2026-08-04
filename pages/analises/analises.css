@@ -13,8 +13,28 @@
 #doc li { margin-bottom: 0.4rem; }
 #doc .maps { font-size: 0.95rem; }
 #doc img { display: block; width: 100%; height: auto; margin: 0.4rem 0 0.2rem;
-  border: 1px solid var(--rule); border-radius: 6px; }
+  border: 1px solid var(--rule); border-radius: 6px; cursor: zoom-in; }
+#doc a img { cursor: pointer; }
 #doc a:hover img { border-color: var(--ink-soft); }
+#doc img:hover, #doc img:focus-visible { border-color: var(--ink-soft); }
+
+/* lightbox: figura em tela cheia, com um segundo clique indo pro tamanho real */
+.lightbox { position: fixed; inset: 0; z-index: 1000; display: flex; flex-direction: column;
+  background: rgba(0,0,0,0.92); }
+.lightbox[hidden] { display: none; }
+.lb-stage { flex: 1 1 auto; min-height: 0; display: flex; overflow: auto;
+  padding: 1rem; -webkit-overflow-scrolling: touch; }
+.lb-stage img { margin: auto; max-width: 100%; max-height: 100%;
+  width: auto; height: auto; object-fit: contain; cursor: zoom-in; background: #fff; border-radius: 4px; }
+.lightbox.is-zoomed .lb-stage { padding: 0; }
+.lightbox.is-zoomed .lb-stage img { max-width: none; max-height: none; border-radius: 0; cursor: zoom-out; }
+.lb-cap { flex: 0 0 auto; margin: 0; padding: 0.7rem 1rem 1rem; text-align: center;
+  color: rgba(255,255,255,0.72); font-size: 0.85rem; line-height: 1.4; }
+.lb-cap:empty { display: none; }
+.lb-close { position: absolute; top: 0.6rem; right: 0.9rem; z-index: 1; width: 2.2rem; height: 2.2rem;
+  display: flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 50%;
+  background: rgba(255,255,255,0.12); color: #fff; font-size: 1.5rem; line-height: 1; cursor: pointer; }
+.lb-close:hover { background: rgba(255,255,255,0.24); }
 .idx-list { list-style: none; padding: 0; margin: 1.5rem 0 0; max-width: var(--measure); }
 .idx-list li { margin: 0 0 1.4rem; padding-bottom: 1.4rem; border-bottom: 1px solid var(--rule); }
 .idx-list a { font-size: 1.15rem; font-weight: 700; text-decoration: none; }
