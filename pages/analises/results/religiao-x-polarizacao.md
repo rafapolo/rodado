@@ -209,6 +209,110 @@ evangélico, não estar virando.
 
 ---
 
+## 9. O terreno religioso de cada partido
+
+Tudo acima trata a eleição como escalar contínuo (`lean`). Mas o dado tem uma dimensão
+categórica que as figuras anteriores ignoram: **qual partido efetivamente ganhou a
+prefeitura**. Trocando o eixo, a pergunta vira *em que terreno religioso cada sigla vence*.
+
+![Faixa de % evangélica dos municípios onde cada partido elegeu prefeito em 2024, ordenada pela mediana](/analises/img/religiao-x-partido-amplitude.png)
+
+O gradiente é limpo e cobre **dez pontos percentuais**: o PT elege prefeito onde os
+evangélicos são **15,8%** da população; o UNIÃO, onde são **25,9%**. No meio, a ordem
+acompanha de perto a escala esquerda-direita — a correlação entre a nota ideológica do
+partido e a mediana evangélica do seu território é de **+0,70**.
+
+| partido | prefeituras | mediana evangélica | p10–p90 | nota ideológica |
+|---|---:|---:|---:|---:|
+| PT | 252 | 15,8% | 8,6–28,0% | 2,5 |
+| PSB | 312 | 17,0% | 9,4–34,7% | 3,7 |
+| PDT | 151 | 21,0% | 11,9–36,2% | 3,3 |
+| MDB | 860 | 21,1% | 9,4–38,6% | 5,7 |
+| PSD | 884 | 21,2% | 10,7–33,4% | 5,9 |
+| PP | 751 | 21,8% | 9,6–37,3% | 7,0 |
+| PSDB | 275 | 22,5% | 11,2–35,8% | 6,0 |
+| REPUBLICANOS | 437 | 23,6% | 10,8–36,4% | 7,2 |
+| PODE | 126 | 24,4% | 12,6–38,4% | 5,7 |
+| **PL** | 519 | **25,1%** | 11,6–38,9% | 8,5 |
+| **UNIÃO** | 587 | **25,9%** | 12,4–39,4% | 6,9 |
+
+*(as 11 siglas com mais de 100 prefeituras; a figura traz as 18 com 15 ou mais)*
+
+Mas repare na coluna `p10–p90`: as faixas se sobrepõem quase inteiramente. **Nenhum partido
+tem território religioso exclusivo** — todos vencem em municípios de quase todo tipo de
+perfil. A diferença está em onde cada um se concentra.
+
+![Mapa de calor: fatia das prefeituras de cada partido por faixa de % evangélica, cada linha somando 100%](/analises/img/religiao-x-partido-perfil.png)
+
+Normalizando cada linha em 100%, aparece o que a mediana esconde: o que separa as pontas
+não é só a posição da mancha, é a **cauda**. **9,2%** das prefeituras do PL e **8,9%** das
+do UNIÃO estão em municípios com 40% ou mais de evangélicos, contra **2,0%** das do PT.
+
+## 10. E, de novo, é quase tudo geografia
+
+O §3 mostrou que metade da associação municipal entre religião e voto é efeito regional. Com
+o partido no eixo, o diagnóstico é ainda mais duro. Basta trocar a % evangélica bruta pelo
+**excedente regional** — quanto o município tem de evangélicos acima ou abaixo da mediana da
+sua própria região — para o gradiente desabar.
+
+![Excedente regional de evangélicos por partido: % do município menos a mediana da sua região](/analises/img/religiao-x-partido-excedente.png)
+
+O PT ganha onde há poucos evangélicos porque **ganha no Nordeste** (67% das suas
+prefeituras), a região menos evangélica do país — mediana de 15,9%. O UNIÃO ganha onde há
+muitos porque ganha no Norte e no Centro-Oeste (34,2% e 29,7%). Medidos contra os vizinhos,
+os dez pontos de gradiente viram **dois**, e a correlação com a escala ideológica cai de
+**+0,70 para +0,15**.
+
+Não é zero, porém, e não troca de sinal: **dentro de cada uma das cinco regiões** a
+correlação segue positiva — Norte +0,35 · Nordeste +0,48 · Centro-Oeste +0,63 ·
+Sudeste +0,22 · Sul +0,39. E sobra um resíduo nomeável: o **PL é o único partido claramente
+acima da própria região** (+1,9 p.p.) e, entre os grandes, o **PT é o mais abaixo dela**
+(−2,5 p.p.). Os dois partidos que a eleição nacional opõe são também os dois que sobram
+depois do controle geográfico.
+
+O §7 se confirma por este novo corte: a **velocidade** de conversão não separa os partidos.
+A mediana do crescimento evangélico 2010→2022 fica entre 4,7 e 6,4 p.p. em *todos* os 18 —
+o PT (5,4) e o PL (4,9) inclusive. O que distingue é o nível, e mesmo esse é quase todo
+geografia.
+
+## 11. Não é quem vence, é quem estava no páreo
+
+Até aqui o vencedor foi tratado sozinho. Mas cada município produz um *par* — quem ficou em
+1º e quem ficou em 2º. Tomando o par como unidade (não ordenado: interessa quem estava em
+campo, não quem levou), o sinal fica **mais forte** do que com o vencedor isolado.
+
+![Matriz partido × partido: mediana de % evangélica dos municípios onde cada par disputou o 1º e o 2º lugar](/analises/img/religiao-x-partido-confrontos.png)
+
+A correlação entre a **nota ideológica média do par** e o terreno do confronto é de
+**+0,73**, contra +0,70 do vencedor sozinho. E a matriz tem estrutura de canto: **PSB × PT**
+é disputa de município católico (14,0% de evangélicos), **PL × UNIÃO** é disputa de
+município evangélico (30,7%) — 17 pontos entre os dois cantos, contra os 10 pontos que
+separavam os partidos individualmente.
+
+O ponto forte é o seguinte: **fixado o vencedor, o adversário ainda move o terreno em 8 a 12
+pontos**. Lendo a linha do MDB, o adversário ordena o terreno quase perfeitamente pela
+própria nota ideológica:
+
+| MDB vence contra | prefeituras | % evangélica típica |
+|---|---:|---:|
+| PSB | 42 | 16,6% |
+| PT | 81 | 17,0% |
+| PDT | 36 | 17,6% |
+| PSDB | 56 | 18,6% |
+| PSD | 107 | 19,5% |
+| PP | 120 | 19,8% |
+| REPUBLICANOS | 59 | 20,6% |
+| UNIÃO | 92 | 24,9% |
+| PL | 107 | 25,1% |
+
+O mesmo MDB, o mesmo cargo, o mesmo ano — e oito pontos e meio de diferença no perfil
+religioso do município conforme quem ele derrotou. Vale para PSD (+8,9 p.p.), PP (+9,9),
+UNIÃO (+9,4) e PL (+10,4). **Saber quem ganhou diz menos sobre o município do que saber
+contra quem.** É um lembrete de que o partido do prefeito é um resumo pobre: o que localiza
+o município no mapa religioso é a composição da disputa inteira.
+
+---
+
 ## Síntese
 
 1. **Existe** clivagem religião↔política real e na direção esperada (evangélico↔direita,
@@ -220,6 +324,14 @@ evangélico, não estar virando.
 3. **Religião não gera polarização.** Ela desloca o município no espectro; o racha
    ideológico é dirigido por **número de candidatos, população e competitividade** — é um
    fenômeno de **cidade grande**, não de igreja.
+4. **Os partidos vencem em terrenos religiosos distintos** (PT 15,8% de evangélicos, UNIÃO
+   25,9%), mas descontada a região o gradiente encolhe de dez pontos para dois (§10). O
+   partido é sobretudo um marcador de **onde** se ganha. A exceção que resiste ao controle
+   é o **PL**, o único claramente mais evangélico que a própria vizinhança.
+5. **O confronto informa mais que o vencedor** (§11). Fixado quem ganhou, o terreno ainda
+   muda 8 a 12 pontos conforme quem foi o segundo colocado — e o par tem correlação maior
+   com a religião (+0,73) do que o vencedor sozinho (+0,70). O partido do prefeito é um
+   resumo pobre da disputa.
 
 ## Ressalvas
 
@@ -232,6 +344,15 @@ evangélico, não estar virando.
 - **Janelas temporais** próximas mas distintas: Censo 2022, eleição 2024.
 - Correlações são de força **fraca a moderada** (|r| ≤ 0,3); descrevem tendência, não
   poder preditivo forte.
+- **O +0,70 do §9 não é comparável ao +0,214 do §1.** Aquele é a correlação entre **18
+  medianas partidárias**; este, entre 5.546 municípios. Agregar remove ruído e **infla `r`
+  por construção** — tomar o número maior como "efeito mais forte" seria falácia ecológica
+  de segunda ordem. O §10 existe justamente para impedir essa leitura: é o mesmo efeito
+  fraco, só que suavizado pela média, e a maior parte dele é geografia.
+- **Partidos pequenos são anedota.** Siglas com poucas prefeituras (NOVO 18, PC do B 19,
+  MOBILIZA 21) têm percentis instáveis, e no mapa de calor suas linhas parecem mais
+  concentradas só porque cada município vale uma fatia maior. O corte mínimo é de 15
+  prefeituras; leia as siglas grandes.
 
 ---
 
@@ -241,4 +362,7 @@ IBGE Censo 2022 (perfil religioso); centroides `br_bd_diretorios_brasil.municipi
 [notas partidárias](https://github.com/rafapolo/xyz/blob/main/dataviz/eleicoes/metodologia.md)
 reprodutíveis. A junção, as correlações deste relatório e os dois heatmaps saem de
 [`heatmap_religiao_x_lean.py`](https://github.com/rafapolo/xyz/blob/main/dataviz/eleicoes/heatmap_religiao_x_lean.py),
-que imprime os `r` de §1, §3 e §6 para conferência.*
+que imprime os `r` de §1, §3 e §6 para conferência. As três figuras de §9 e §10 saem de
+[`perfil_religioso_partidos.py`](https://github.com/rafapolo/xyz/blob/main/dataviz/eleicoes/perfil_religioso_partidos.py),
+que reaproveita aquela junção e imprime a tabela por partido, os dois `r`, as correlações
+intrarregionais e a matriz de confrontos de §11.*
