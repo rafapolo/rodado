@@ -1,8 +1,15 @@
-# O câncer que mata e o câncer que interna
+# Um quadro geral da saúde
 
-Em 2022 o Brasil enterrou 226.762 pessoas por causa de um câncer — uma em cada sete mortes
-do ano, qualquer que fosse a causa. No mesmo ano, os hospitais públicos registraram 707.675
-internações por câncer. A conta dá pouco mais de três internações para cada morte.
+Em 2022 morreram 1.507.077 pessoas no Brasil. Todas deixaram um registro com a causa, a
+idade, o município e a data — e é possível perguntar a esse registro duas coisas de cada
+doença do país: **quantos ela mata e quantos ela interna**. A razão entre as duas é uma
+radiografia do que o sistema de saúde consegue fazer.
+
+Começa pelo câncer, que é 15,4% dessas mortes, e termina em todo o resto.
+
+226.762 dessas mortes foram por câncer — uma em cada sete. No mesmo ano, os hospitais
+públicos registraram 707.675 internações por tumor: pouco mais de três internações para cada
+morte.
 
 A média, como sempre, esconde o que interessa. Porque existe um câncer no Brasil que quebra
 essa proporção de um jeito assustador: ele mata mais gente do que interna.
@@ -110,26 +117,6 @@ O mesmo raciocínio vale para o **câncer de pele não melanoma (17,50)**, campe
 razão: é o tumor mais comum do país, resolvido quase sempre com uma excisão, e responsável
 por uma fatia mínima das mortes.
 
-## Próstata e mama: um empate escondido pela idade
-
-Reparou que a mama aparece mais à direita que a próstata no gráfico — ou seja, matando
-mais? É verdade em números brutos, e é um bom exemplo de como a idade distorce comparações.
-
-| | Mortes | Taxa bruta /100 mil | Taxa padronizada por idade /100 mil |
-|---|---:|---:|---:|
-| Mama | 18.383 | 17,24 | **12,88** |
-| Próstata | 15.382 | 15,53 | **12,88** |
-
-Padronizadas pela População Padrão Mundial da OMS — o método que neutraliza a estrutura
-etária —, as duas empatam. A explicação está em *quando* cada uma mata: **62,7% das mortes
-por próstata acontecem dos 75 anos em diante** (25,5% só na faixa de 85+), contra 24,4% no
-câncer de mama, que mata espalhado a partir dos 50. Como há muito mais brasileiro de 50 a 70
-anos do que de 85+, a taxa bruta favorece a mama.
-
-Isso também explica a fama do câncer de próstata como "câncer bonzinho". Boa parte dos
-tumores detectados por PSA cresce tão devagar que o homem morre com o tumor, não por causa
-dele. Que é exatamente o mesmo mecanismo de sobrediagnóstico da tireoide, com outro nome.
-
 ## O câncer que não deveria estar neste gráfico
 
 **Colo do útero: 6.601 mortes.**
@@ -150,7 +137,7 @@ Passando o olho na lista inteira, a maioria dos tumores mais letais do país tem
 externa identificada — e em boa parte evitável:
 
 - **Tabaco** — pulmão, laringe, faringe, esôfago, boca, bexiga, rim, pâncreas. É o fator de
-  risco isolado que mais aparece na tabela. O Brasil derrubou o consumo de cigarro de forma
+  risco isolado que mais se repete na lista. O Brasil derrubou o consumo de cigarro de forma
   drástica desde os anos 1980, mas o câncer de pulmão tem latência de duas a três décadas:
   as mortes de hoje refletem o cigarro de ontem, e a queda ainda está por vir.
 - **Álcool** — boca, faringe, laringe, esôfago, fígado, mama e intestino. Combinado com
@@ -201,9 +188,30 @@ O mapa de calor mostra o formato, não só a posição. **Leucemia é o tumor qu
 de mama. Testículo é o oposto de tudo — a mancha some depois dos 45. E próstata, bexiga e pele
 não melanoma praticamente não existem antes dos 60.
 
+### Próstata e mama: um empate escondido pela idade
+
+Reparou que a mama aparece mais à direita que a próstata no gráfico — ou seja, matando
+mais? É verdade em números brutos, e é um bom exemplo de como a idade distorce comparações.
+
+| | Mortes | Taxa bruta /100 mil | Taxa padronizada por idade /100 mil |
+|---|---:|---:|---:|
+| Mama | 18.383 | 17,24 | **12,88** |
+| Próstata | 15.382 | 15,53 | **12,88** |
+
+Padronizadas pela População Padrão Mundial da OMS — o método que neutraliza a estrutura
+etária —, as duas empatam. A explicação está em *quando* cada uma mata: **62,7% das mortes
+por próstata acontecem dos 75 anos em diante** (25,5% só na faixa de 85+), contra 24,4% no
+câncer de mama, que mata espalhado a partir dos 50. Como há muito mais brasileiro de 50 a 70
+anos do que de 85+, a taxa bruta favorece a mama.
+
+Isso também explica a fama do câncer de próstata como "câncer bonzinho". Boa parte dos
+tumores detectados por PSA cresce tão devagar que o homem morre com o tumor, não por causa
+dele. Que é exatamente o mesmo mecanismo de sobrediagnóstico da tireoide, com outro nome.
+
 ### Um aviso sobre as idades extremas
 
-As colunas de idade mínima e máxima da tabela abaixo pedem cautela, por duas razões.
+Os traços finos do gráfico de amplitude — a idade do óbito mais novo e do mais velho de cada
+tumor — pedem cautela, por duas razões.
 
 A primeira é que **o registro de idade do SIM tem lixo**. Em 2022, 6.528 óbitos (0,44% do total)
 saem com idade impossível — de 116 até 220 anos. Não são supercentenários: a distribuição desses
@@ -236,47 +244,14 @@ Vale explicitar as fronteiras do dado, porque elas mudam a leitura:
   É um retrato do que o sistema de saúde faz, não de quantos adoecem.
 - **As taxas do gráfico são brutas.** Comparam-se entre si, porque todos os tumores dividem
   pela mesma população no mesmo ano — mas não se comparam com séries internacionais
-  padronizadas por idade.
-
-## A tabela inteira
-
-Ordenada da pior para a melhor razão entre internações e mortes.
-
-| Tipo de câncer | Mortes | Internações | Mortes /100 mil | Internações /100 mil | Internações por morte | Idade média | Mais novo | Mais velho |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Traqueia, brônquios e pulmão | 28.166 | 26.892 | 13,87 | 13,24 | **0,95** | 69,5 | 0 | 114 |
-| Fígado e vias biliares | 10.061 | 11.258 | 4,95 | 5,54 | **1,12** | 67,9 | 0 | 115 |
-| Pâncreas | 11.969 | 16.151 | 5,89 | 7,95 | **1,35** | 69,4 | 0 | 115 |
-| Vesícula e vias biliares | 3.828 | 6.482 | 1,88 | 3,19 | **1,70** | 68,8 | 23 | 107 |
-| Cérebro e sistema nervoso | 9.410 | 19.201 | 4,63 | 9,45 | **2,04** | 59,2 | 0 | 114 |
-| Esôfago | 8.108 | 17.298 | 3,99 | 8,52 | **2,14** | 66,0 | 17 | 112 |
-| Próstata | 15.382 | 35.065 | 15,61 | 35,59 | **2,28** | 77,3 | 1 | 115 |
-| Mieloma múltiplo | 3.558 | 8.435 | 1,75 | 4,15 | **2,37** | 69,1 | 10 | 106 |
-| Estômago | 13.574 | 33.267 | 6,68 | 16,38 | **2,45** | 67,2 | 14 | 115 |
-| Faringe | 3.656 | 9.959 | 1,80 | 4,90 | **2,72** | 63,4 | 7 | 114 |
-| Laringe | 4.359 | 12.161 | 2,15 | 5,99 | **2,79** | 66,0 | 4 | 113 |
-| Rim e vias urinárias | 4.032 | 11.718 | 1,99 | 5,77 | **2,90** | 67,5 | 0 | 115 |
-| Corpo do útero | 4.018 | 11.827 | 3,84 | 11,31 | **2,95** | 65,6 | 16 | 105 |
-| Ovário | 3.986 | 13.562 | 3,81 | 12,97 | **3,40** | 63,0 | 14 | 104 |
-| Lábio e cavidade oral | 3.621 | 13.133 | 1,78 | 6,47 | **3,63** | 65,4 | 0 | 110 |
-| Colo do útero | 6.601 | 26.261 | 6,31 | 25,12 | **3,98** | 56,0 | 16 | 113 |
-| Linfoma não Hodgkin | 4.277 | 17.831 | 2,11 | 8,78 | **4,16** | 63,7 | 1 | 112 |
-| Melanoma de pele | 1.868 | 8.038 | 0,92 | 3,96 | **4,30** | 66,9 | 6 | 110 |
-| Mama | 18.383 | 79.249 | 17,58 | 75,80 | **4,31** | 62,7 | 0 | 114 |
-| Bexiga | 4.877 | 21.476 | 2,40 | 10,58 | **4,41** | 75,1 | 12 | 112 |
-| Cólon | 13.155 | 59.746 | 6,48 | 29,42 | **4,54** | 68,5 | 12 | 110 |
-| Reto e ânus | 7.960 | 37.836 | 3,92 | 18,63 | **4,75** | 66,7 | 2 | 109 |
-| Leucemia | 6.715 | 40.052 | 3,31 | 19,72 | **5,96** | 58,4 | 0 | 115 |
-| Testículo | 446 | 3.698 | 0,45 | 3,75 | **8,33** | 38,3 | 4 | 97 |
-| Linfoma de Hodgkin | 532 | 5.218 | 0,26 | 2,57 | **9,88** | 52,3 | 3 | 96 |
-| Tireoide | 808 | 12.315 | 0,40 | 6,06 | **15,15** | 68,9 | 17 | 115 |
-| Pele não melanoma | 2.947 | 51.519 | 1,45 | 25,37 | **17,50** | 77,1 | 1 | 110 |
-
-Tumores de sítio mal definido ou secundário ficam de fora da tabela por não nomearem um órgão
-de origem. Sítios exclusivos de um sexo usam como denominador a população daquele sexo. As três
-colunas de idade são calculadas só sobre os óbitos com idade válida — de fora ficam os 2,4% sem
-idade preenchida e os 0,44% com idade impossível —, por isso elas descrevem um conjunto
-ligeiramente menor que a coluna de mortes.
+  padronizadas por idade. Sítios exclusivos de um sexo usam como denominador a população
+  daquele sexo.
+- **Tumores de sítio mal definido ou secundário ficam de fora.** São os códigos que registram
+  metástase sem nomear o órgão de origem, e por isso não cabem numa lista organizada por
+  sítio.
+- **As idades descrevem um conjunto ligeiramente menor que as mortes.** São calculadas só
+  sobre os óbitos com idade válida: de fora ficam os 2,4% sem idade preenchida e os 0,44% com
+  idade impossível.
 
 ## E quando não é câncer
 
