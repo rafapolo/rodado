@@ -146,8 +146,8 @@ fig.text(0.082, 0.928,
 fig.text(0.082, 0.892,
          "253 deputados constam do quadro societário de alguma empresa como sócio ou titular — 933 empresas\n"
          "ao todo, uma média de 3,7 por deputado que tem alguma. Cinquenta e dois deles são sócios de cinco ou\n"
-         "mais. O recordista, um deputado baiano, aparece em 140: uma rede de postos de combustível com uma\n"
-         "holding de participações no topo.",
+         "mais. No topo, sete vezes acima do segundo colocado, o baiano Adalberto Rosa Barreto — o Deputado Dal,\n"
+         "do UNIÃO — aparece em 140: uma rede de postos de combustível com uma holding de participações no topo.",
          ha="left", va="top", fontsize=13.5, color=TXT, linespacing=1.6)
 
 fig.text(0.082, 0.100,
