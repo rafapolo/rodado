@@ -1,0 +1,63 @@
+#!/bin/sh
+# Regenera as páginas das análises antes de cada commit que as toque.
+#
+# Por que existe: o índice, os cartões de compartilhamento, o bloco de SEO e o
+# sitemap.xml não são escritos à mão — saem de scripts/gera_analises.py a partir
+# do manifest.json e dos .md em pages/analises/results/. Quem publica uma análise
+# e esquece de rodar o script sobe um site em que a análise existe mas não está
+# no sitemap, não tem cartão e herda o <title> de outra página. O hook fecha essa
+# porta: se o commit mexe em análise, a pipeline roda e o resultado entra junto.
+#
+# Para ativar neste clone (uma vez):
+#     git config core.hooksPath scripts/hooks
+#
+# Para pular num commit específico (ex.: rebase, merge conflitado):
+#     git commit --no-verify
+
+set -e
+
+RAIZ=$(git rev-parse --show-toplevel)
+cd "$RAIZ"
+
+# só roda se o que está no stage for conteúdo de análise
+TOCOU=$(git diff --cached --name-only --diff-filter=ACMR \
+        -- 'pages/analises/results/*.md' \
+           'pages/analises/results/manifest.json')
+
+[ -z "$TOCOU" ] && exit 0
+
+echo "pre-commit: análise alterada, regenerando páginas e sitemap…"
+
+if ! python3 scripts/gera_analises.py >/tmp/rodado-pre-commit.log 2>&1; then
+    echo "pre-commit: gera_analises.py FALHOU — commit abortado." >&2
+    echo "  log: /tmp/rodado-pre-commit.log" >&2
+    tail -20 /tmp/rodado-pre-commit.log >&2
+    echo "  para commitar assim mesmo: git commit --no-verify" >&2
+    exit 1
+fi
+
+# Traz para o commit só o que pertence ao que está sendo commitado. A pipeline
+# reescreve as seis análises toda vez; adicionar todas arrastaria para dentro do
+# commit a regeneração de uma análise cujo .md ou manifest ainda está pendente
+# no diretório de trabalho de outra pessoa.
+#
+#   manifest.json no stage -> ele governa título e dek de todas: todos os slugs
+#   só um .md no stage     -> apenas o slug daquele .md
+if echo "$TOCOU" | grep -q 'manifest\.json'; then
+    SLUGS=$(python3 - <<'PY'
+import json, pathlib
+m = pathlib.Path("pages/analises/results/manifest.json")
+print("\n".join(a["slug"] for a in json.loads(m.read_text())))
+PY
+)
+else
+    SLUGS=$(echo "$TOCOU" | sed -n 's|^pages/analises/results/\(.*\)\.md$|\1|p')
+fi
+
+git add pages/sitemap.xml pages/robots.txt 2>/dev/null || true
+for slug in $SLUGS; do
+    git add "pages/analises/$slug/index.html" 2>/dev/null || true
+    git add "pages/analises/img/og-$slug.png" 2>/dev/null || true
+done
+
+echo "pre-commit: ok — páginas, cartões e sitemap atualizados."
