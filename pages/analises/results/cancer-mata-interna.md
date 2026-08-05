@@ -278,11 +278,105 @@ colunas de idade são calculadas só sobre os óbitos com idade válida — de f
 idade preenchida e os 0,44% com idade impossível —, por isso elas descrevem um conjunto
 ligeiramente menor que a coluna de mortes.
 
+## E quando não é câncer
+
+Câncer é 15,4% das mortes do Brasil. As outras 1.275.091 de 2022 nunca passaram por este
+recorte — e o mesmo registro de óbitos que produziu tudo acima descreve cada uma delas com a
+mesma precisão. Vale aplicar as três leituras ao resto.
+
+![Barras: mortes por causa não-câncer, Brasil 2022](/analises/img/nao-cancer-quantidades-2022.png)
+
+Quatorze causas isoladas matam mais do que o câncer de pulmão, o tumor mais letal do país.
+**Infarto agudo do miocárdio mata 92.815 pessoas por ano** — três vezes o pulmão, e mais do
+que os cinco piores tumores somados. Depois vêm pneumonia (88.101), diabetes (70.034),
+COVID-19 (63.788) e doença hipertensiva (61.902).
+
+Duas notas sobre a lista. A primeira: **COVID-19 não aparece no código U07 em 2022** — o
+sistema brasileiro registrou a doença em B34.2, no capítulo das infecciosas, e quem procurar
+pelo código internacional não acha nada. A segunda: **Alzheimer está partido em dois
+capítulos da classificação** (as demências vasculares e senis vão para o capítulo dos
+transtornos mentais, a doença de Alzheimer para o do sistema nervoso). Somadas, são 35.704
+mortes — a décima causa do país, e a que mais cresce: eram 14.390 em 2010, um aumento de
+148% em doze anos. No mesmo período o homicídio caiu 26% e o infarto subiu 16%.
+
+### O grupo abaixo da linha
+
+![Dispersão: mortes contra internações no SUS, causas não-câncer, Brasil 2022](/analises/img/nao-cancer-internacao-mortalidade-2022.png)
+
+No gráfico do câncer havia um único ponto abaixo da paridade. Fora do câncer são seis — e
+eles não estão ali por acaso:
+
+| | Internações por morte |
+|---|---:|
+| Doença de Chagas | **0,16** |
+| Parkinson | **0,26** |
+| Alzheimer e demências | **0,48** |
+| Pneumonite por aspiração | **0,48** |
+| Sequelas e outras doenças cerebrovasculares | **0,67** |
+| Doença hipertensiva | **0,97** |
+
+O padrão é diferente do câncer de pulmão. Lá, a razão baixa vinha do diagnóstico tardio: o
+tumor não dava tempo. Aqui vem do contrário — dá tempo demais, e o hospital não é o lugar.
+São doenças crônicas e degenerativas para as quais **não existe cirurgia, não existe ciclo de
+tratamento, não existe alta**. O paciente com Alzheimer avançado morre em casa ou numa
+instituição de longa permanência; internar não muda o desfecho e expõe a infecção. Parkinson
+tem 5.310 mortes e 1.386 internações no ano inteiro do país: quase quatro mortes para cada
+internação. Chagas, doença de quem foi picado décadas atrás e envelheceu com o coração
+comprometido, tem 604 internações para 3.699 mortes.
+
+A pneumonite por aspiração no meio dessa lista é reveladora: ela é, quase sempre, a
+complicação final de quem já tem demência ou sequela de AVC — engasgo, aspiração,
+pneumonia. É o mesmo grupo de pacientes, contado por outro código.
+
+No extremo oposto estão as urgências cirúrgicas e as crises reversíveis: **apendicite, hérnia
+e obstrução internam 47 vezes mais do que matam; asma, 32; diarreia e gastroenterite, 30**.
+Toda vez que existe um procedimento que resolve, a bolha sobe.
+
+### A idade, de 0 a 86
+
+![Mapa de calor: distribuição etária das mortes por causa não-câncer, Brasil 2022](/analises/img/nao-cancer-idade-perfil-2022.png)
+
+O câncer inteiro cabia entre a mediana de 33 anos do testículo e a de 78 da próstata —
+45 anos de amplitude, que já pareciam muitos. Fora dele a amplitude é o dobro:
+
+- **Afecções perinatais e malformações congênitas: mediana 0.** Morrem no primeiro dia.
+- **Homicídio: 30 anos.** Um terço das 38.874 mortes acontece antes dos 25. Só de arma de
+  fogo são 23.626, com mediana de 28 — mais jovem que qualquer câncer, inclusive o de
+  testículo.
+- **Morte materna: 30 anos**, e concentrada como nenhuma outra: 80% entre 20 e 40.
+- **Trânsito e suicídio: 40 anos** cada um.
+- **AIDS: 44.** **Transtornos por álcool: 55.** **Cirrose: 60.** Este é o bloco que mais diz
+  alguma coisa — doenças que não esperam a idade chegar porque não dependem dela. Dependem
+  de exposição, de acesso e de quem a pessoa é.
+- **Infarto: 70. Diabetes: 73. Pneumonia: 80.** O miolo da mortalidade brasileira.
+- **Infecção urinária: 83. Alzheimer: 86.** O fim da fila.
+
+O mapa também mostra uma coisa que a mediana esconde: **a diarreia tem duas idades**. Mata
+bebê e mata idoso, com um vale de cinquenta anos no meio — a mesma forma bimodal que a
+leucemia tinha no gráfico do câncer, por motivo inteiramente diferente. Desnutrição tem o
+mesmo desenho.
+
+### O que não entra em nenhum dos três gráficos
+
+- **91.888 mortes por sintomas e achados mal definidos.** É a sexta maior "causa" do país e
+  não nomeia doença nenhuma — em 57.776 delas o registro diz apenas "outras causas mal
+  definidas e não especificadas". Onde a rede de atenção é mais frágil, essa fatia cresce.
+- **Causas externas entram no gráfico de internação como um bloco só.** O registro de óbito
+  guarda a causa (agressão, queda, acidente); o registro hospitalar guarda a lesão (fratura,
+  ferimento). O campo que ligaria os dois está vazio em 2022, então dá para comparar os
+  totais — 141.944 mortes contra 1.353.446 internações por lesão — mas não dá para separar
+  quanto disso é violência e quanto é acidente.
+- **Gravidez, parto e puerpério ficou fora do gráfico de internação.** As 2,2 milhões de
+  internações do capítulo são quase todas partos normais, não tratamento de doença.
+- **As três figuras cobrem 77,4% das mortes não-câncer.** O resto está em códigos residuais
+  de cada capítulo, doenças raras demais para nomear, e nas mal definidas acima.
+
 ---
 
-*Fontes: Ministério da Saúde — Sistema de Informações sobre Mortalidade (óbitos de 2022 com
-causa básica no capítulo das neoplasias malignas) e Sistema de Informações Hospitalares
-(internações de 2022 com diagnóstico principal no mesmo capítulo). População: IBGE, Censo
-2022. As taxas padronizadas por idade usam a População Padrão Mundial da OMS. O texto
-clínico é contexto médico geral, não recomendação de conduta: rastreamento e tratamento se
-discutem com médico.*
+*Fontes: Ministério da Saúde — Sistema de Informações sobre Mortalidade (óbitos de 2022 por
+causa básica) e Sistema de Informações Hospitalares (internações de 2022 por diagnóstico
+principal). População: IBGE, Censo 2022. As taxas padronizadas por idade usam a População
+Padrão Mundial da OMS. Além dos óbitos sem idade preenchida (2,4%) e dos 0,44% com idade
+impossível, a seção final descarta 1.006 registros com idade negativa. O texto clínico é
+contexto médico geral, não recomendação de conduta: rastreamento e tratamento se discutem
+com médico.*
