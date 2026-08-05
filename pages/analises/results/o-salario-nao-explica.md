@@ -201,13 +201,38 @@ empresa** na condição de proprietário. Somadas, são **933 empresas**, média
 deputado que tem alguma.
 
 A distribuição é desigual como tudo o mais aqui. Oitenta e cinco deputados têm uma empresa só.
-Cento e dezesseis têm de duas a quatro. E **52 são sócios de cinco ou mais** — entre eles, dez
-com mais de dez empresas cada.
+Cento e dezesseis têm de duas a quatro. E **52 são sócios de cinco ou mais**.
 
-O recordista é um deputado baiano que aparece em **140 empresas**: uma rede de postos de
-combustível espalhada pelo interior da Bahia, com uma holding de participações societárias no
-topo da estrutura. Não é anomalia de dado — as razões sociais são internamente coerentes, todas
-do mesmo ramo, o que é justamente o que se espera de um grupo empresarial real.
+No topo, muito acima de todo mundo, está **Deputado Dal** (Adalberto Rosa Barreto, BA · UNIÃO),
+sócio de **140 empresas** — sete vezes o segundo colocado. É uma rede de postos de combustível
+espalhada pelo interior da Bahia — Auto Posto Pioneiro, Rede de Postos Poeirão, Auto Posto
+Chapadão, Nacional Posto de Combustíveis, dezenas de outros — com a **Barreto Participações
+Societárias** no topo da estrutura e uma distribuidora de derivados de petróleo ao lado. Não é
+anomalia de dado: as razões sociais são todas do mesmo ramo e a holding carrega o sobrenome,
+que é exatamente o padrão de um grupo empresarial real.
+
+| # | Deputado | UF · partido | empresas | ramo predominante |
+|---|---|---|---:|---|
+| 1 | **Deputado Dal** (Adalberto Rosa Barreto) | BA · UNIÃO | 140 | postos de combustível, holding |
+| 2 | **Magda Mofatto** | GO · PL | 20 | hotelaria e turismo (grupo Di Roma) |
+| 3 | **Professor Alcides** (Alcides Ribeiro Filho) | GO · PL | 18 | faculdade e combustíveis |
+| 4 | **Misael Varella** | MG · PSD | 15 | grupo Lael Varella |
+| 5 | **Pinheirinho** (Antonio Pinheiro Neto) | MG · PP | 15 | postos e construção |
+| 6 | **Duda Ramos** | RR · MDB | 12 | administradoras, táxi aéreo |
+| 7 | **Glaustin da Fokus** (Glauskston Batista Rios) | GO · PSC | 12 | participações, distribuição |
+| 8 | **Jorge Goetten** | SC · PL | 11 | vigilância e serviços |
+| 9 | **Gutemberg Reis** | RJ · MDB | 11 | construção e locação |
+| 10 | **Félix Mendonça** | BA · PDT | 10 | empreendimentos e agropecuária |
+
+A lista se valida sozinha, e essa é a melhor defesa contra homonímia: em cinco dos dez casos a
+empresa carrega o sobrenome do deputado — Barreto Participações, Lael Varella, Ramos Sete,
+Rios & Rios, Patrimonial São Félix. E o sétimo colocado é eleito com o nome de urna
+**"Glaustin da Fokus"**: Fokus é a marca da distribuidora de que ele é sócio. O parlamentar
+levou o nome da própria empresa para a urna.
+
+Dois nomes dessa tabela já apareceram na primeira metade desta análise por outro motivo: Misael
+Varella e Glaustin da Fokus estão entre os 39 cujo crescimento patrimonial supera o subsídio do
+mandato. Magda Mofatto também.
 
 Uma distinção que muda o número, e que é fácil errar: **ser administrador de uma empresa não é
 ser dono dela**. O cadastro da Receita registra tanto quem detém quotas quanto quem apenas
