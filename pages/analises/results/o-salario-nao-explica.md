@@ -89,8 +89,8 @@ figura financeira específica: não é assalariado, é credor.
 ### Glauskston Batista Rios (GO) — o mesmo devedor, nove vezes maior
 
 O caso mais nítido de padrão, e não de volume. Em 2018 ele declarou um crédito de **R$ 950.000**
-a receber de **Waldir Batista Rios**, CPF 061.456.631-20, descrito como referente à alienação de
-imóveis. Mesmo sobrenome — quase certamente família.
+a receber de **Waldir Batista Rios**, descrito como referente à alienação de imóveis. Mesmo
+sobrenome — quase certamente família.
 
 Em 2022, o crédito contra **a mesma pessoa** aparece de novo, agora reclassificado de "crédito
 decorrente de alienação" para "crédito decorrente de empréstimo", no valor de **R$ 8.769.416**.
@@ -186,6 +186,43 @@ verdade relevante: **R$ 30,7 milhões em créditos a receber** — parlamentares
 mandato, viraram credores de terceiros. É a categoria mais opaca da declaração, porque o bem
 declarado é uma promessa de pagamento de outra pessoa, sem contrato público, sem cartório, sem
 qualquer rastro além da linha que o próprio declarante escreveu.
+
+---
+
+## Metade da Câmara é dona de empresa
+
+Se o crescimento patrimonial de tanta gente não cabe no salário, vale perguntar o óbvio: de onde
+mais vem dinheiro para um deputado federal. A resposta, para metade da Casa, tem CNPJ.
+
+![Cada quadrado é um dos 513 deputados federais eleitos em 2022, colorido pela quantidade de empresas em que é sócio ou titular](/analises/img/deputados-com-empresa.png)
+
+**253 dos 513 deputados eleitos em 2022 — 49,3% — constam do quadro societário de alguma
+empresa** na condição de proprietário. Somadas, são **933 empresas**, média de 3,7 para cada
+deputado que tem alguma.
+
+A distribuição é desigual como tudo o mais aqui. Oitenta e cinco deputados têm uma empresa só.
+Cento e dezesseis têm de duas a quatro. E **52 são sócios de cinco ou mais** — entre eles, dez
+com mais de dez empresas cada.
+
+O recordista é um deputado baiano que aparece em **140 empresas**: uma rede de postos de
+combustível espalhada pelo interior da Bahia, com uma holding de participações societárias no
+topo da estrutura. Não é anomalia de dado — as razões sociais são internamente coerentes, todas
+do mesmo ramo, o que é justamente o que se espera de um grupo empresarial real.
+
+Uma distinção que muda o número, e que é fácil errar: **ser administrador de uma empresa não é
+ser dono dela**. O cadastro da Receita registra tanto quem detém quotas quanto quem apenas
+ocupa cargo de gestão, e os dois aparecem lado a lado no mesmo campo. Aqui entram só as
+qualificações de propriedade — sócio, sócio-administrador, sócio com e sem capital, titular
+pessoa física. Ficam de fora administrador, presidente, diretor e conselheiro, que podem ser
+contratados sem uma quota sequer. A diferença não é pequena: **65 deputados presidem alguma
+pessoa jurídica sem serem donos dela**, e contá-los como empresários inflaria o total em um
+quarto.
+
+Nada disso é irregular. A Constituição não proíbe deputado de ter empresa, e boa parte dessas
+sociedades é anterior ao mandato. O que o número estabelece é o pano de fundo: quando um
+parlamentar cresce mais do que o subsídio explica, na metade dos casos existe ao menos uma
+estrutura empresarial onde essa renda pode legitimamente ter nascido — e que também é onde
+teria de ser procurada, caso não tenha.
 
 ---
 
