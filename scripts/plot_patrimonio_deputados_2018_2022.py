@@ -11,9 +11,21 @@ período, sem descontar imposto, previdência ou qualquer despesa de vida.
              da série pode ser comparado.
   eixo do    crescimento patrimonial declarado dividido pelo subsídio bruto
   gráfico A  acumulado do mandato. 1,0 = o deputado teria de ter poupado cada
-             centavo recebido, por 42 meses, e não gasto nada.
+             centavo recebido, por 42 meses, e não gasto nada. Cada barra vem
+             partida em duas cores: o trecho que o capital social das empresas
+             do próprio deputado já daria conta de explicar, e o que sobra sem
+             nenhuma contrapartida empresarial.
   gráfico B  distribuição desse mesmo múltiplo entre os 472, para situar os
              casos extremos no conjunto.
+
+Sobre a segunda cor: quem é sócio de empresa tem origem de renda fora do
+subsídio, e cobrá-lo pelo salário do cargo seria injusto. A régua usada aqui é
+deliberadamente generosa — soma o capital social **integral** de toda empresa em
+que o deputado consta como sócio ou titular, sem descontar a fração que cabe aos
+demais sócios e sem exigir que o capital tenha virado renda. Se nem essa régua
+cobre o crescimento declarado, o excedente não tem, no dado público, de onde ter
+vindo. Onde ela cobre, o caso deixa de ser anomalia de salário e vira pergunta
+de contabilidade empresarial — outra apuração, com outros documentos.
 
 Subsídio: R$ 39.293,32/mês desde fevereiro de 2019 (Câmara dos Deputados).
 Entre a declaração de 2018 (registro em agosto) e a de 2022 (idem) o eleito
@@ -36,6 +48,14 @@ Consulta (beelink, via SSH — BEELINK_HOST, default 'beelink'):
   br_tse_eleicoes/resultados_candidato_municipio   eleitos de 2018
   br_tse_eleicoes/candidatos                       CPF, nome, UF, partido
   br_tse_eleicoes/bens_candidato                   bens de 2018 e de 2022
+  br_me_cnpj/socios                                quadro societário
+  br_me_cnpj/empresas                              capital social
+
+Casamento com o CNPJ: nome completo (sem acento, em caixa alta) mais os seis
+dígitos centrais do CPF, que a Receita publica sob máscara. Só qualificações de
+propriedade entram — sócio (22), sócio-administrador (49), sócio com e sem
+capital (52, 53) e titular pessoa física (65); administrador, presidente e
+diretor contratados ficam de fora porque não implicam quota alguma.
 
 Ressalva de dado: bens_candidato traz ~1% de linhas byte-idênticas repetidas
 (mesmo candidato, mesmo item, mesmo valor, sem nenhuma coluna que as
@@ -47,7 +67,7 @@ import os
 import subprocess
 
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyBboxPatch
+from matplotlib.patches import FancyBboxPatch, Rectangle
 
 SUBSIDIO = 1_764_767.0   # bruto acumulado do mandato entre as duas declarações
 
@@ -84,10 +104,78 @@ LEFT JOIN b18 ON b18.seq = c18.sequencial
 LEFT JOIN b22 ON b22.seq = c22.sequencial;
 """
 
-host = os.environ.get("BEELINK_HOST", "beelink")
-res = subprocess.run(["ssh", host, "~/bin/duckdb -json"],
-                     input=SQL.encode(), capture_output=True, check=True)
-rows = json.loads(res.stdout)
+# capital social das empresas de quem passou da linha de 1×. Repete os CTEs de
+# patrimônio porque a consulta precisa se bastar: o vínculo com o CNPJ sai do
+# CPF, que não é reproduzido em lugar nenhum — o resultado volta chaveado pelo
+# nome, e os 39 têm nome único entre si.
+SQL_CAPITAL = """SET enable_progress_bar=false;
+WITH bens AS (
+  SELECT DISTINCT ano, sequencial_candidato, tipo_item, descricao_item, valor_item
+  FROM read_parquet('~/rodado/br_tse_eleicoes/bens_candidato/*.parquet')
+  WHERE ano IN (2018, 2022)
+),
+b18 AS (SELECT sequencial_candidato seq, SUM(valor_item) v FROM bens WHERE ano=2018 GROUP BY 1),
+b22 AS (SELECT sequencial_candidato seq, SUM(valor_item) v FROM bens WHERE ano=2022 GROUP BY 1),
+eleitos AS (
+  SELECT DISTINCT sequencial_candidato AS seq18
+  FROM read_parquet('~/rodado/br_tse_eleicoes/resultados_candidato_municipio/*.parquet')
+  WHERE ano=2018 AND cargo='deputado federal'
+    AND resultado IN ('eleito por media','eleito por qp')
+),
+c18 AS (
+  SELECT cpf, sequencial, nome
+  FROM read_parquet('~/rodado/br_tse_eleicoes/candidatos/*.parquet')
+  WHERE ano=2018 AND cargo='deputado federal'
+),
+c22 AS (SELECT cpf, sequencial FROM read_parquet('~/rodado/br_tse_eleicoes/candidatos/*.parquet')
+        WHERE ano=2022),
+alvo AS (
+  SELECT c18.nome, c18.cpf
+  FROM eleitos e
+  JOIN c18 ON c18.sequencial = e.seq18
+  JOIN c22 ON c22.cpf = c18.cpf
+  LEFT JOIN b18 ON b18.seq = c18.sequencial
+  LEFT JOIN b22 ON b22.seq = c22.sequencial
+  WHERE COALESCE(b22.v,0) - COALESCE(b18.v,0) > {subsidio}
+),
+soc AS (
+  SELECT DISTINCT a.nome, a.cpf, s.cnpj_basico
+  FROM alvo a
+  JOIN read_parquet('~/rodado/br_me_cnpj/socios/*.parquet') s
+    ON UPPER(strip_accents(TRIM(s.nome))) = UPPER(strip_accents(TRIM(a.nome)))
+   AND SUBSTR(s.documento,4,6) = SUBSTR(a.cpf,4,6)
+   AND s.qualificacao IN ('22','49','52','53','65')
+),
+-- capital social do retrato mais recente em que a empresa aparece
+ult AS (
+  SELECT cnpj_basico, MAX(ano*100+mes) AS snap
+  FROM read_parquet('~/rodado/br_me_cnpj/empresas/*.parquet')
+  WHERE cnpj_basico IN (SELECT cnpj_basico FROM soc) GROUP BY 1
+),
+cap AS (
+  SELECT e.cnpj_basico, ANY_VALUE(e.capital_social) AS capital
+  FROM read_parquet('~/rodado/br_me_cnpj/empresas/*.parquet') e
+  JOIN ult ON ult.cnpj_basico = e.cnpj_basico AND ult.snap = e.ano*100 + e.mes
+  GROUP BY 1
+)
+SELECT a.nome,
+       COUNT(DISTINCT s.cnpj_basico) AS n_empresas,
+       COALESCE(SUM(cap.capital), 0) AS capital
+FROM alvo a
+LEFT JOIN soc s ON s.cpf = a.cpf
+LEFT JOIN cap ON cap.cnpj_basico = s.cnpj_basico
+GROUP BY 1;
+"""
+
+
+def consulta(sql):
+    host = os.environ.get("BEELINK_HOST", "beelink")
+    res = subprocess.run(["ssh", host, "~/bin/duckdb -json"],
+                         input=sql.encode(), capture_output=True, check=True)
+    return json.loads(res.stdout)
+
+
+rows = consulta(SQL)
 
 for r in rows:
     r["delta"] = r["v22"] - r["v18"]
@@ -97,10 +185,24 @@ rows.sort(key=lambda r: -r["delta"])
 acima = [r for r in rows if r["delta"] > SUBSIDIO]
 print(f"universo: {len(rows)} deputados · acima do teto do subsídio: {len(acima)}")
 
+empresas = {e["nome"]: e for e in
+            consulta(SQL_CAPITAL.format(subsidio=int(SUBSIDIO)))}
+for r in rows:
+    e = empresas.get(r["nome"], {})
+    r["n_empresas"] = e.get("n_empresas", 0)
+    r["capital"] = e.get("capital", 0.0)
+    r["capmult"] = r["capital"] / SUBSIDIO
+
+cobertos = [r for r in acima if r["capital"] >= r["delta"]]
+print(f"capital social das próprias empresas já cobre o crescimento: "
+      f"{len(cobertos)} dos {len(acima)} · sem cobertura: "
+      f"R$ {sum(r['delta'] for r in acima if r not in cobertos)/1e6:.1f} mi")
+
 SURFACE, FIG_BG = "#fcfcfb", "#f7f7f5"
 TXT, TXT2, TXT3 = "#111111", "#555555", "#7b7b76"
 ACENTO, GRID, REF = "#d1453b", "#e6e6e2", "#b6b6ae"
 NEUTRO = "#c8c8c2"
+EMPRESA = "#5d7f88"   # trecho do crescimento que o capital das empresas cobre
 
 
 def brl(v):
@@ -121,11 +223,11 @@ TOP = 20
 dados = rows[:TOP]
 
 fig = plt.figure(figsize=(12.4, 12.9), dpi=200, facecolor=FIG_BG)
-ax = fig.add_axes((0.315, 0.132, 0.645, 0.560))
+ax = fig.add_axes((0.315, 0.158, 0.645, 0.542))
 ax.set_facecolor(SURFACE)
 
 ys = list(range(TOP - 1, -1, -1))
-xmax = max(r["mult"] for r in dados) * 1.15
+xmax = max(r["mult"] for r in dados) * 1.26
 ax.set_xlim(0, xmax)
 ax.set_ylim(-0.75, TOP + 1.15)
 
@@ -138,16 +240,31 @@ ax.set_yticks([])
 ax.set_xticks([0, 5, 10, 15, 20])
 ax.set_xticklabels(["0", "5×", "10×", "15×", "20×"])
 
-# barras com ponta arredondada (4px), ancoradas na linha de base
+# barras com ponta arredondada (4px), ancoradas na linha de base. A barra vem
+# partida: o começo, em azul, é o quanto o capital social das empresas do
+# próprio deputado já explicaria; o resto, em vermelho, é o que não tem
+# contrapartida nenhuma no dado público. Barra inteira azul = a régua generosa
+# cobre o crescimento todo.
 for y, r in zip(ys, dados):
     h = 0.52
+    coberto = min(r["capmult"], r["mult"])
     ax.add_patch(FancyBboxPatch(
         (0, y - h / 2), r["mult"], h,
         boxstyle="round,pad=0,rounding_size=0.055",
         mutation_aspect=xmax / TOP * 0.42,
-        facecolor=ACENTO, edgecolor="none", zorder=3))
-    ax.text(r["mult"] + xmax * 0.014, y, f'{brl(r["delta"])}',
-            va="center", ha="left", fontsize=11.5, color=TXT2, zorder=4)
+        facecolor=EMPRESA if coberto >= r["mult"] else ACENTO,
+        edgecolor="none", zorder=3))
+    if 0 < coberto < r["mult"]:
+        ax.add_patch(Rectangle((0, y - h / 2), coberto, h,
+                               facecolor=EMPRESA, edgecolor="none", zorder=4))
+    ax.text(r["mult"] + xmax * 0.014, y + (0.16 if r["n_empresas"] else 0),
+            f'{brl(r["delta"])}', va="center", ha="left", fontsize=11.5,
+            color=TXT2, zorder=5)
+    if r["n_empresas"]:
+        emp = "1 empresa" if r["n_empresas"] == 1 else f'{r["n_empresas"]} empresas'
+        ax.text(r["mult"] + xmax * 0.014, y - 0.24,
+                f'{emp} · {brl(r["capital"])}', va="center", ha="left",
+                fontsize=9.5, color=EMPRESA, zorder=5)
     rot = f'{primeiro_ultimo(r["nome"])}'
     ax.text(-xmax * 0.020, y + 0.19, rot, va="center", ha="right",
             fontsize=12.5, color=TXT, zorder=4)
@@ -172,14 +289,25 @@ fig.text(0.082, 0.900,
          "de mandato mais três décimos-terceiros, antes de imposto, previdência e de qualquer despesa.\n"
          "José Nelto declarou um crescimento de R$ 40,6 milhões: vinte e três vezes tudo o que o cargo\n"
          "pagou no período. Dos 472 deputados eleitos em 2018 que voltaram a se registrar em 2022, 39\n"
-         "cresceram mais do que o mandato inteiro poderia ter pago.",
+         "cresceram mais do que o mandato inteiro poderia ter pago. Mas quem é sócio de empresa tem\n"
+         "de onde tirar renda além do salário — e a segunda cor desconta isso da conta.",
          ha="left", va="top", fontsize=13.5, color=TXT, linespacing=1.6)
 
-fig.text(0.082, 0.088,
+# legenda das duas cores: identidade nunca só pelo matiz, sempre com o rótulo
+for x, cor, rot in ((0.082, EMPRESA, "cabe no capital social das empresas do próprio deputado"),
+                    (0.560, ACENTO, "não cabe: nem as empresas dele explicam")):
+    fig.patches.append(Rectangle((x, 0.722), 0.017, 0.021,
+                                 transform=fig.transFigure, facecolor=cor,
+                                 edgecolor="none", zorder=4))
+    fig.text(x + 0.026, 0.7325, rot, fontsize=11, color=TXT2,
+             va="center", ha="left")
+
+fig.text(0.082, 0.096,
          "Fonte: Tribunal Superior Eleitoral — declarações de bens nos registros de candidatura de 2018 e 2022. Subsídio: Câmara dos Deputados.\n"
-         "A declaração do TSE segue a regra do imposto de renda e registra bens pelo custo de aquisição, não pelo valor de mercado:\n"
-         "o crescimento é compra nova, não valorização. O excedente não é, por si, indício de ilícito — deputado pode ter renda de empresa,\n"
-         "aluguel, herança, venda de bem ou do cônjuge. O múltiplo mede o que o salário deixa de explicar.",
+         "Capital social: Receita Federal, Cadastro Nacional da Pessoa Jurídica — entra integral, sem descontar a parte dos demais sócios, e conta\n"
+         "toda empresa em que o deputado é sócio ou titular: é o teto do negócio que ele tem, não a renda que tirou dele.\n"
+         "A declaração do TSE segue a regra do imposto de renda e registra bens pelo custo de aquisição, não pelo valor de mercado: o crescimento\n"
+         "é compra nova, não valorização. O múltiplo mede o que o salário deixa de explicar; a segunda cor, o que nem a empresa própria explica.",
          ha="left", va="top", fontsize=9.5, color=TXT3, linespacing=1.6)
 
 out_a = "pages/analises/img/patrimonio-multiplos-subsidio.png"
