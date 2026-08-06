@@ -111,7 +111,43 @@
     abre(img);
   });
 
+  // --- âncoras de capítulo ---------------------------------------------------
+  // Cada título vira alvo de link (#slug-do-titulo), com um "#" clicável ao
+  // lado para copiar o endereço do capítulo. Como o corpo é montado por JS, o
+  // salto nativo do navegador para o hash já passou quando os ids existem —
+  // por isso o rolar à mão em renderDoc().
+  function slugifica(txt) {
+    return txt.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase().replace(/[^a-z0-9]+/g, '-')
+      .slice(0, 60).replace(/^-+|-+$/g, '') || 'secao';
+  }
+
+  function ancoraTitulos() {
+    var usados = {};
+    docEl.querySelectorAll('h2, h3, h4').forEach(function (h) {
+      var id = h.id || slugifica(h.textContent);
+      if (usados[id]) id += '-' + (++usados[id]);
+      else usados[id] = 1;
+      h.id = id;
+      var a = document.createElement('a');
+      a.className = 'anchor';
+      a.href = '#' + id;
+      a.setAttribute('aria-label', 'Link para esta seção');
+      a.textContent = '#';
+      h.appendChild(a);
+    });
+  }
+
+  function vaiProHash() {
+    var alvo = location.hash && location.hash.length > 1
+      ? docEl.querySelector('[id="' + CSS.escape(location.hash.slice(1)) + '"]')
+      : null;
+    if (alvo) alvo.scrollIntoView();
+    return !!alvo;
+  }
+
   function enhance() {
+    ancoraTitulos();
     // figuras ampliáveis viram alvo de teclado também
     docEl.querySelectorAll('img').forEach(function (img) {
       if (!ampliavel(img)) return;
@@ -145,7 +181,8 @@
         eyebrow.innerHTML = '<a href="' + (base || './') + '" ' +
           'style="color:inherit;text-decoration:none">Análises</a> ／ ' + name;
       }
-      window.scrollTo(0, 0);
+      // hash de capítulo manda; sem ele, começa do topo
+      if (!vaiProHash()) window.scrollTo(0, 0);
     }).catch(function () {
       docEl.innerHTML = '<h1>Análise não encontrada</h1>' +
         '<p class="doc-msg">Nenhuma análise com esse nome em <code>results/</code>. ' +
