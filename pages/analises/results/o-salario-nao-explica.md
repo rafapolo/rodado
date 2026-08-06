@@ -38,7 +38,34 @@ consumir um centavo.
 
 ---
 
-![Crescimento patrimonial dos 20 deputados que mais cresceram entre 2018 e 2022, em múltiplos do subsídio bruto do mandato](/analises/img/patrimonio-multiplos-subsidio.png)
+![Crescimento patrimonial dos 20 deputados que mais cresceram entre 2018 e 2022, em múltiplos do subsídio bruto do mandato. Em azul, o trecho de cada barra que o capital social das empresas do próprio deputado já explicaria; em vermelho, o que sobra sem contrapartida empresarial](/analises/img/patrimonio-multiplos-subsidio.png)
+
+## O que a empresa do próprio deputado já explica
+
+Cobrar de um empresário o crescimento pelo salário do cargo seria injusto — ele tem outra fonte
+de renda, e ela é pública. Por isso cada barra do gráfico vem partida em duas cores: **em azul, o
+quanto o capital social das empresas de que o próprio deputado é sócio já daria conta de
+explicar; em vermelho, o que sobra**.
+
+A régua azul é deliberadamente generosa. Soma o capital social **integral** de toda empresa em
+que o parlamentar consta do quadro societário como sócio ou titular — sem descontar a fatia dos
+demais sócios, sem exigir que aquele capital tenha virado renda no bolso dele, e sem cobrar que a
+empresa seja anterior ao mandato. É o teto do negócio que ele tem, não o que tirou de lá.
+
+Mesmo assim, **ela cobre o crescimento de apenas 11 dos 39**. Nos outros 28 sobram **R$ 153,1
+milhões** de patrimônio novo que nem o salário nem a empresa própria explicam.
+
+A separação reorganiza a lista inteira. **Hercílio Araújo Diniz Filho** e **Misael Varella**, 2º e
+3º maiores saltos, ficam azuis do começo ao fim: são sócios de grupos com R$ 505,6 milhões e
+R$ 429,0 milhões de capital social somado. Para eles a pergunta deixa de ser "de onde veio" e
+passa a ser "quanto do grupo é seu" — outra apuração, com outros documentos. O mesmo vale para
+**Glaustin da Fokus** (12 empresas, R$ 33,5 milhões) e **Magda Mofatto** (20 empresas, R$ 64,5
+milhões).
+
+Já o topo da lista continua vermelho. **José Nelto** é sócio de 8 empresas, mas o capital social
+somado delas é de **R$ 2,1 milhões** — 5% do que ele declarou a mais. **Arthur Lira** tem três
+empresas que somam R$ 491 mil, contra R$ 4,2 milhões de crescimento. E **Paulo Abi-Ackel**, com
+R$ 3,6 milhões a mais no período, não consta do quadro societário de empresa nenhuma.
 
 ## A cota parlamentar não entra nessa conta
 
@@ -70,7 +97,10 @@ O resto da declaração de 2022 é um mapa de incorporação imobiliária em Goi
 Viver Bem Empreendimentos Imobiliários (Quirinópolis, Daia, Alexânia), SCP Nova Goianira, JNFC,
 LSJ, Trindade Empreendimentos. Ele é empresário do ramo — o que fornece uma origem plausível de
 renda, e ao mesmo tempo levanta a pergunta que os dados públicos não respondem: uma fazenda de
-R$ 33 milhões saiu de qual negócio, e quando.
+R$ 33 milhões saiu de qual negócio, e quando. As oito empresas em que ele consta como sócio no
+cadastro da Receita somam **R$ 2,1 milhões de capital social** — plausível para incorporação, que
+opera com capital registrado baixo e sociedades de propósito específico, mas longe de fechar a
+conta por si.
 
 ### Hercílio Araújo Diniz Filho (MG) — as cotas e os empréstimos
 
@@ -146,6 +176,52 @@ correção de declaração anterior inflada, baixa de item quitado. Mas a assime
 Quando o patrimônio sobe muito, existe pelo menos um número público para questionar. Quando ele
 some da declaração, não sobra nem isso — e a declaração de bens é justamente o instrumento que
 deveria tornar a trajetória rastreável.
+
+---
+
+## Direita ou esquerda: onde estão os que não fecham a conta
+
+A pergunta é inevitável, e a resposta tem duas partes que apontam para lados diferentes.
+
+Dos 39 que passam da linha do subsídio, **24 são de partidos de direita, 9 de centro e 6 de
+esquerda**. Parece muito. Só que o universo já é assim: dos 472 deputados comparáveis, 235
+(49,8%) estavam em legendas de direita no registro de 2022, 126 no centro e 111 na esquerda. O
+grupo que não fecha a conta é majoritariamente de direita, em boa medida, porque **a Câmara é
+majoritariamente de direita**.
+
+| bloco | no universo | acima de 1× | taxa | encolheram | crescimento mediano |
+|---|---:|---:|---:|---:|---:|
+| esquerda | 111 | 6 | 5,4% | 44 (39,6%) | R$ 67 mil |
+| centro | 126 | 9 | 7,1% | 44 (34,9%) | R$ 129 mil |
+| direita | 235 | 24 | 10,2% | 62 (26,4%) | R$ 277 mil |
+
+Descontado o tamanho de cada bancada, sobra uma diferença na cauda: 10,2% dos deputados de
+direita cruzaram a linha, contra 7,1% do centro e 5,4% da esquerda — quase o dobro. Mas são 39
+casos no total, e uma diferença desse tamanho, nesse número de eventos, ainda cabe dentro do
+acaso. **Com este dado não dá para afirmar que a direita produza proporcionalmente mais casos
+extremos.** A bancada com a maior taxa entre as de porte médio, aliás, é o **PDT — 3 dos 17**,
+que é de esquerda.
+
+Por partido, os 39 se distribuem assim: PL 8 · PP 8 · MDB 3 · UNIÃO 3 · PSDB 3 · PDT 3 · PSD 2 ·
+PT 2 · PSC 2 · REPUBLICANOS 2 · PTB 1 · PSB 1 · CIDADANIA 1. A comparação que interessa é com o
+tamanho de cada bancada no universo: o **PP** põe 8 dos seus 48 acima da linha (16,7%), o **PL**
+8 de 74 (10,8%) e o **PT**, segunda maior bancada do grupo, **2 de 53 (3,8%)**. PSOL, PC do B,
+PV, REDE, NOVO, PODE, PATRIOTA, AVANTE, PROS e SOLIDARIEDADE não têm nenhum.
+
+O contraste que de fato resiste não está na cauda — está no meio da distribuição. O deputado de
+direita mediano declarou **R$ 277 mil a mais** em 2022 do que em 2018; o de esquerda, **R$ 67
+mil** — quatro vezes menos. E encolher é bem mais comum à esquerda: 39,6% dos deputados de
+esquerda declararam em 2022 menos do que tinham, contra 26,4% dos de direita. Aí a separação é
+consistente demais para ser sorteio: **não é que a direita concentre os escândalos, é que a
+Câmara de direita enriqueceu mais, de forma distribuída, ao longo de todo o corpo da bancada.**
+
+Duas ressalvas de método, porque elas mudam a leitura. A classificação por bloco segue a escala
+ideológica dos partidos brasileiros de Bolognesi, Ribeiro e Codato, montada a partir de consulta
+a especialistas — esquerda: PT, PSOL, PC do B, PDT, PSB, PV e REDE; centro: MDB, PSD, PSDB,
+PODE, CIDADANIA, SOLIDARIEDADE, AVANTE e PROS; direita: PL, PP, UNIÃO, REPUBLICANOS, PSC, NOVO,
+PTB e PATRIOTA. E o partido considerado é o do registro de **2022**, não o de 2018: **194 dos 472
+trocaram de sigla entre uma eleição e outra** — 14 deles entre os 39 —, então cada deputado entra
+aqui pela legenda de destino, e não pela de origem.
 
 ---
 
@@ -258,7 +334,8 @@ Ele **não afirma que os 39 cometeram crime**, e a distinção importa.
 Deputado pode ter renda perfeitamente lícita fora do subsídio: lucro de empresa, aluguel,
 herança, venda de bem com ganho de capital, rendimento de aplicação, renda do cônjuge em regime
 de comunhão. Vários dos 39 são empresários declarados desde antes do mandato, e para eles o
-crescimento patrimonial é o resultado esperado do negócio, não do cargo.
+crescimento patrimonial é o resultado esperado do negócio, não do cargo — é exatamente o que a
+segunda cor do gráfico separa, e ela absolve 11 dos 39 já no critério mais generoso possível.
 
 O que o número mede é outra coisa: **quanto da variação o salário deixa de explicar**. É um
 filtro de triagem, não um veredito. Serve para dizer onde a checagem deve começar — e a checagem
