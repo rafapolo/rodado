@@ -18,6 +18,16 @@
 #doc a:hover img { border-color: var(--ink-soft); }
 #doc img:hover, #doc img:focus-visible { border-color: var(--ink-soft); }
 
+/* âncora de capítulo: o "#" só aparece no hover/foco do título, mas segue
+   sempre alcançável pelo teclado (viewer.js põe um em cada h2/h3/h4) */
+#doc h2, #doc h3, #doc h4 { scroll-margin-top: 1.2rem; }
+#doc .anchor { margin-left: 0.4em; font-weight: 400; color: var(--ink-faint);
+  text-decoration: none; opacity: 0; transition: opacity 0.12s ease; }
+#doc h2:hover .anchor, #doc h3:hover .anchor, #doc h4:hover .anchor,
+#doc .anchor:focus-visible { opacity: 1; }
+#doc .anchor:hover { color: var(--accent); }
+@media (hover: none) { #doc .anchor { opacity: 0.35; } }
+
 /* lightbox: figura em tela cheia, com um segundo clique indo pro tamanho real */
 .lightbox { position: fixed; inset: 0; z-index: 1000; display: flex; flex-direction: column;
   background: rgba(0,0,0,0.92); }
