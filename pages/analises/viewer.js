@@ -142,8 +142,23 @@
     var alvo = location.hash && location.hash.length > 1
       ? docEl.querySelector('[id="' + CSS.escape(location.hash.slice(1)) + '"]')
       : null;
-    if (alvo) alvo.scrollIntoView();
-    return !!alvo;
+    if (!alvo) return false;
+    alvo.scrollIntoView();
+    // as figuras entram sem altura declarada: cada uma que termina de carregar
+    // empurra o texto abaixo dela e tira o capítulo de baixo do olho. Reancora
+    // a cada chegada — e larga o leitor assim que ele rolar por conta própria.
+    var solto = false;
+    ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (ev) {
+      window.addEventListener(ev, function () { solto = true; },
+                              { once: true, passive: true });
+    });
+    docEl.querySelectorAll('img').forEach(function (img) {
+      if (img.complete) return;
+      img.addEventListener('load', function () {
+        if (!solto) alvo.scrollIntoView();
+      });
+    });
+    return true;
   }
 
   function enhance() {
