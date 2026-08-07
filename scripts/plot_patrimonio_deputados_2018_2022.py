@@ -27,10 +27,10 @@ cobre o crescimento declarado, o excedente não tem, no dado público, de onde t
 vindo. Onde ela cobre, o caso deixa de ser anomalia de salário e vira pergunta
 de contabilidade empresarial — outra apuração, com outros documentos.
 
-Subsídio: R$ 39.293,32/mês desde fevereiro de 2019 (Câmara dos Deputados).
+Subsídio: R$ 33.763,00/mês (Decreto Legislativo 276/2014, efeitos desde 1º/02/2015).
 Entre a declaração de 2018 (registro em agosto) e a de 2022 (idem) o eleito
 exerceu mandato de fev/2019 a jul/2022 — 42 meses — mais os décimos-terceiros
-de 2019 (proporcional), 2020 e 2021. Total bruto: R$ 1.764.767.
+de 2019 (proporcional), 2020 e 2021. Total bruto: R$ 1.516.521.
 
 Por que a comparação faz sentido: a declaração de bens do TSE segue a regra do
 imposto de renda e registra bens pelo **custo de aquisição**, não pelo valor de
@@ -69,7 +69,14 @@ import subprocess
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch, Rectangle
 
-SUBSIDIO = 1_764_767.0   # bruto acumulado do mandato entre as duas declarações
+SUBSIDIO = 1_516_521.0   # bruto acumulado do mandato entre as duas declarações
+# R$ 33.763,00/mês, fixado pelo Decreto Legislativo 276/2014 com efeitos a
+# partir de 1º/02/2015 e congelado até 31/12/2022 — vigorou, portanto, no
+# mandato inteiro. São 42 meses (fev/2019 a jul/2022) mais os décimos-terceiros
+# de 2019 (proporcional), 2020 e 2021.
+# Antes daqui havia R$ 1.764.767, derivado de R$ 39.293,32/mês "desde fevereiro
+# de 2019". O valor existe, a data não: ele só passou a vigorar em 1º/01/2023,
+# pelo Decreto Legislativo 172/2022. A régua estava 16,4% alta.
 
 SQL = """SET enable_progress_bar=false;
 WITH bens AS (
