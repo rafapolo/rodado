@@ -1,52 +1,53 @@
 # Bens dos candidatos
 
-Toda pessoa que se candidata no Brasil assina uma declaração de bens. Ela é pública, item
-a item, desde 2006. Este painel junta as declarações de **2.347 pessoas que já foram eleitas
-deputado federal** — 8.446 declarações ao todo, de 2006 a 2026 — e as coloca contra uma régua
-só: o subsídio que o próprio cargo depositou na conta delas no mesmo período.
+Toda pessoa que se candidata no Brasil assina uma declaração de bens. Ela é pública, item a
+item. Este painel junta as declarações de **1.025 pessoas que já foram eleitas deputado
+federal** — 4.000 declarações ao todo, de 2010 a 2026 — e as coloca contra uma régua só: o
+subsídio que o próprio cargo depositou na conta delas no mesmo período.
+
+![Dispersão de 900 parlamentares: patrimônio declarado no eixo horizontal, em escala logarítmica de R$ 1 mil a mais de R$ 10 milhões, contra o crescimento patrimonial em múltiplos do subsídio do período no eixo vertical. A massa se concentra em torno de zero e uma pluma sobe à direita; 156 pontos ficam acima da linha tracejada de 1×](/analises/img/panorama-bens-candidatos.png)
 
 **[→ Abrir o painel](https://claude.ai/code/artifact/af80ed4f-4dd3-4a52-9e2a-6330acccb277)**
 
 Dá para procurar qualquer parlamentar pelo nome, ver a trajetória declarada dele eleição por
-eleição, filtrar por partido, estado e espectro, e sobrepor até seis pessoas para comparar.
+eleição, filtrar por partido, estado e espectro, e ampliar qualquer região do gráfico.
 
 ---
 
 ## O que aparece
 
-**A regra é o patrimônio parado.** Entre os eleitos em 2018 que voltaram a se registrar em
-2022, **306 dos 471 — 65%** declararam, ao fim do mandato, possuir menos do que o mandato lhes
-pagou de salário bruto. A mediana da Câmara ficou em 0,69 vez o subsídio do período. E 17
-deputados federais declararam não possuir bem nenhum.
+**A regra é o patrimônio parado.** A mediana do crescimento declarado é **0,24 vez** o subsídio
+do período: o parlamentar típico termina o intervalo entre duas declarações com um quarto do que
+o cargo lhe pagou convertido em bens. Um quarto deles declara crescimento praticamente nulo, e
+metade fica abaixo de 0,7.
 
-Isso não é acusação, é a linha de base: o subsídio é bruto, e depois de imposto e de viver
-sobra pouco para virar patrimônio. É justamente essa forma que torna visível a outra ponta.
+Entre os eleitos em 2018 que voltaram a se registrar em 2022, **306 dos 471 — 65%** declararam,
+ao fim do mandato, possuir menos do que o mandato lhes pagou de salário bruto. E 17 deputados
+federais declararam não possuir bem nenhum.
 
-**A outra ponta são 129 pessoas.** Ao longo de toda a série, 129 parlamentares declararam
-crescimento patrimonial maior do que todo o subsídio que receberam no intervalo entre uma
-declaração e a seguinte. No recorte mais recente, de 2018 a 2022, são 47.
+Isso não é acusação, é a linha de base: o subsídio é bruto, e depois de imposto e de viver sobra
+pouco para virar patrimônio. É justamente essa forma que torna visível a outra ponta.
 
-A conta exclui quem passou poucos meses em mandato federal dentro do intervalo entre duas
-declarações: uma régua de valor ínfimo divide mal e produz múltiplos absurdos. Onde a régua
-acumulada não chega a cerca de um ano de subsídio, o painel diz que não há comparação possível
-em vez de inventar um número — são 554 das 2.347 pessoas.
+**A outra ponta são 156 pessoas.** Elas declararam crescimento patrimonial maior do que todo o
+subsídio recebido no intervalo entre a primeira e a última declaração. No recorte de 2018 a 2022
+isoladamente, são 47.
 
-**O salário ficou parado oito anos.** O subsídio de deputado federal foi fixado em R$ 33.763
-com efeitos a partir de fevereiro de 2015 e só mudou em janeiro de 2023, quando passou a
-R$ 39.293. Ou seja: as legislaturas 2015-2018 e 2019-2022 inteiras correram com o mesmo valor
-nominal. É por isso que a régua deste painel é calculada mês a mês, e não por uma média — e por
-isso ela difere entre quem foi reeleito e quem entrou novo, já que o reeleito passou mais meses
-recebendo dentro da mesma janela.
+**O salário ficou parado oito anos.** O subsídio de deputado federal foi fixado em R$ 33.763 com
+efeitos a partir de fevereiro de 2015 e só mudou em janeiro de 2023, quando passou a R$ 39.293.
+As legislaturas 2015-2018 e 2019-2022 inteiras correram com o mesmo valor nominal. Por isso a
+régua aqui é calculada mês a mês, e não por média — e por isso ela difere entre quem foi
+reeleito e quem entrou novo, já que o reeleito passou mais meses recebendo dentro da mesma
+janela.
 
-**Metade tem empresa.** 1.183 das 2.347 pessoas constam como sócias ou titulares de ao menos
+**Dois terços têm empresa.** 683 das 1.025 pessoas constam como sócias ou titulares de ao menos
 uma empresa nos registros da Receita Federal. Ter empresa é renda fora do salário, e o painel
-mostra isso ao lado do patrimônio justamente para que a comparação com o subsídio não seja
-lida como acusação onde há explicação.
+mostra isso ao lado do patrimônio justamente para que a comparação com o subsídio não seja lida
+como acusação onde há explicação.
 
-**2026 ainda está em aberto.** O prazo de registro de candidatura se encerra em 15 de agosto de
-2026. Quando estes dados foram extraídos, o arquivo público cobria cerca de 28% das candidaturas
-esperadas. Os pontos de 2026 aparecem marcados como parciais: ausência ali não significa ausência
-de bem, significa candidatura ainda não registrada.
+**2026 ainda está em aberto.** O prazo de registro se encerra em 15 de agosto de 2026. Quando
+estes dados foram extraídos, o arquivo público cobria cerca de 28% das candidaturas esperadas.
+Os pontos de 2026 aparecem marcados como parciais: ausência ali não significa ausência de bem,
+significa candidatura ainda não registrada.
 
 ---
 
@@ -57,20 +58,29 @@ mede ilicitude. Parlamentar pode ter empresa, aluguel, herança, venda de bem, g
 ou renda do cônjuge — e a maioria dos casos acima da linha tem alguma dessas explicações
 disponível. O número é onde a checagem começa, não onde ela termina.
 
-Os valores são nominais e estão a custo de aquisição, porque é assim que a declaração de bens
-é preenchida: um imóvel comprado em 1990 continua declarado a preço de 1990. Nada aqui é
-corrigido pela inflação — corrigir introduziria um valor que a declaração não afirma.
+Os valores são nominais e estão a custo de aquisição, porque é assim que a declaração de bens é
+preenchida: um imóvel comprado em 1990 continua declarado a preço de 1990. Nada aqui é corrigido
+pela inflação — corrigir introduziria um valor que a declaração não afirma.
 
 A régua conta apenas os meses de mandato federal. Quando alguém passou parte do intervalo num
 mandato municipal ou estadual, cujo valor não entra nesta conta, o período aparece marcado como
-parcial em vez de ser tratado como se não tivesse havido remuneração alguma.
+parcial em vez de ser tratado como se não tivesse havido remuneração alguma. E quando a régua
+acumulada não chega a cerca de um ano de subsídio, o painel diz que não há comparação possível
+em vez de inventar um número — são 125 das 1.025 pessoas.
+
+**A série começa em 2010, e não antes, por um defeito na fonte.** Nos arquivos de 2006 e 2008 o
+identificador que liga cada candidato aos bens que declarou não é único: há 19.204 registros de
+candidatura para 3.162 identificadores distintos em 2006. Cruzar por ele nesses dois anos
+espalha os bens de uma pessoa por dezenas de outras — o sintoma foi um patrimônio de R$ 132
+milhões aparecendo idêntico em duas pessoas diferentes. De 2010 em diante o identificador é
+único e o cruzamento fecha.
 
 ---
 
-**Fontes:** Tribunal Superior Eleitoral, declarações de bens dos registros de candidatura de
-2006 a 2026; Câmara dos Deputados, decretos legislativos que fixaram o subsídio parlamentar
-(nº 112/2007, nº 805/2010, nº 276/2014 e nº 172/2022); Receita Federal, Cadastro Nacional da
-Pessoa Jurídica, quadro societário.
+**Fontes:** Tribunal Superior Eleitoral, declarações de bens dos registros de candidatura de 2010
+a 2026; Câmara dos Deputados, decretos legislativos que fixaram o subsídio parlamentar (nº
+112/2007, nº 805/2010, nº 276/2014 e nº 172/2022); Receita Federal, Cadastro Nacional da Pessoa
+Jurídica, quadro societário.
 
 Análise relacionada: [O salário não explica](/analises/o-salario-nao-explica/), que examina caso
 a caso os deputados no topo dessa distribuição.
