@@ -110,6 +110,29 @@ Vale lembrar também que os blocos têm tamanhos muito diferentes — 411 à dir
 esquerda —, o que faz a direita concentrar mais casos absolutos acima da linha (82 contra 20)
 simplesmente por ser maior. É por isso que a comparação aqui é sempre proporcional.
 
+**E abaixo da linha, a anomalia é de sinal contrário.** Somar o capital social à régua não muda
+nada para quem já está abaixo — só empurra para mais longe. Mas cruzar os dois dados nesse grupo
+revela outra coisa: gente que **declara possuir menos do que as próprias empresas valem**.
+
+Dos 744 abaixo da linha, 456 (61%) são sócios de alguma empresa. E entre eles:
+
+| | pessoas | |
+|---|---:|---:|
+| Capital social somado maior do que **tudo** o que declaram possuir | 105 | 14% dos 744 |
+| Sócios que não declaram nenhuma participação societária | 211 | 46% dos sócios |
+| As duas coisas ao mesmo tempo | **40** | |
+
+Esses 40 são donos de empresas com R$ 184 milhões de capital social somado e declaram, juntos,
+R$ 21 milhões de patrimônio — sem uma linha de participação societária em nenhuma das
+declarações. A comparação é grosseira de propósito: capital social é o que foi subscrito na
+empresa, não o que cabe à pessoa, e uma cota de 5% numa empresa de R$ 90 milhões não obriga
+ninguém a declarar R$ 90 milhões.
+
+Mas obriga a declarar alguma coisa. E é aí que o grupo abaixo da linha deixa de ser só a
+paisagem normal da Câmara: quem cresce pouco pode estar vivendo do salário, como a maioria, ou
+pode simplesmente não estar contando o que tem. Os dois casos ficam no mesmo lugar do gráfico, e
+o gráfico sozinho não os separa.
+
 **O salário ficou parado oito anos.** O subsídio de deputado federal foi fixado em R$ 33.763 com
 efeitos a partir de fevereiro de 2015 e só mudou em janeiro de 2023, quando passou a R$ 39.293.
 As legislaturas 2015-2018 e 2019-2022 inteiras correram com o mesmo valor nominal. Por isso a
