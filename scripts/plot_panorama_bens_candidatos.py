@@ -64,7 +64,11 @@ def main():
     origem = sys.argv[1] if len(sys.argv) > 1 else "/tmp/patrimonio_dados.json"
     meta, pontos, sem_regua = carrega(origem)
     acima = [p for p in pontos if p["mult"] > 1]
-    print(f"{len(pontos)} com régua · {sem_regua} sem · {len(acima)} acima de 1×")
+    abaixo = [p for p in pontos if p["mult"] <= 1]
+    pct_ab = 100 * len(abaixo) / len(pontos)
+    pct_ac = 100 * len(acima) / len(pontos)
+    print(f"{len(pontos)} com régua · {sem_regua} sem · "
+          f"{len(acima)} acima ({pct_ac:.0f}%) · {len(abaixo)} abaixo ({pct_ab:.0f}%)")
 
     # mesma moldura fixa do painel: ela não muda com o filtro, e é isso que
     # deixa a linha de 1× sempre na mesma altura
@@ -102,9 +106,12 @@ def main():
     ax.axhline(1, color=TXT2, lw=1.4, ls=(0, (5, 3.5)), zorder=5)
     ax.text(1.35e3, 1.18, "1× — cresceu exatamente o que o cargo pagou",
             fontsize=12, color=TXT2, va="bottom", ha="left", zorder=6)
-    ax.text(10 ** 7.85, 7.5,
-            f"{len(acima)} acima da linha", fontsize=11.5, color="#d1453b",
-            va="top", ha="right", zorder=6)
+    ax.text(10 ** 7.85, 7.55,
+            f"{len(acima)} acima da linha — {pct_ac:.0f}%", fontsize=12,
+            color="#d1453b", va="top", ha="right", zorder=6)
+    ax.text(10 ** 7.85, -1.28,
+            f"{len(abaixo)} abaixo — {pct_ab:.0f}% de quem tem régua comparável",
+            fontsize=12, color="#5d7f88", va="bottom", ha="right", zorder=6)
 
     ax.set_xlabel("patrimônio declarado no registro mais recente",
                   fontsize=12.5, color=TXT2, labelpad=11)
@@ -119,12 +126,11 @@ def main():
              ha="left", va="top", fontsize=13, color=TXT2)
     fig.text(0.098, 0.906,
              f"Abaixo da linha tracejada está a Câmara como ela normalmente é: "
-             f"patrimônio que cresce menos do que\no subsídio bruto do período, "
-             f"o que se espera de quem vive do salário e gasta o que ganha. "
-             f"Acima dela estão\n{len(acima)} pessoas cujo crescimento declarado "
-             f"supera tudo o que o mandato depositou — o ponto onde a\n"
-             f"remuneração do cargo para de dar conta da conta, e onde a "
-             f"checagem começa.",
+             f"patrimônio que cresce menos do\nque o subsídio bruto do período — o "
+             f"que se espera de quem vive do salário e gasta o que ganha.\n"
+             f"São {pct_ab:.0f}% de quem tem régua comparável. Os outros {pct_ac:.0f}%, "
+             f"as {len(acima)} pessoas acima da linha,\ndeclararam crescimento maior "
+             f"do que tudo o que o mandato pagou. É onde a checagem começa.",
              ha="left", va="top", fontsize=13.5, color=TXT, linespacing=1.6)
 
     for i, (x, esp) in enumerate(((0.098, 0), (0.248, 1), (0.380, 2), (0.512, -1))):
