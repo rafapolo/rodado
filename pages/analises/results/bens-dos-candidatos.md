@@ -22,9 +22,14 @@ deputados federais declararam não possuir bem nenhum.
 Isso não é acusação, é a linha de base: o subsídio é bruto, e depois de imposto e de viver
 sobra pouco para virar patrimônio. É justamente essa forma que torna visível a outra ponta.
 
-**A outra ponta são 130 pessoas.** Ao longo de toda a série, 130 parlamentares declararam
+**A outra ponta são 129 pessoas.** Ao longo de toda a série, 129 parlamentares declararam
 crescimento patrimonial maior do que todo o subsídio que receberam no intervalo entre uma
 declaração e a seguinte. No recorte mais recente, de 2018 a 2022, são 47.
+
+A conta exclui quem passou poucos meses em mandato federal dentro do intervalo entre duas
+declarações: uma régua de valor ínfimo divide mal e produz múltiplos absurdos. Onde a régua
+acumulada não chega a cerca de um ano de subsídio, o painel diz que não há comparação possível
+em vez de inventar um número — são 554 das 2.347 pessoas.
 
 **O salário ficou parado oito anos.** O subsídio de deputado federal foi fixado em R$ 33.763
 com efeitos a partir de fevereiro de 2015 e só mudou em janeiro de 2023, quando passou a
