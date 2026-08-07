@@ -1,15 +1,15 @@
 # O salário não explica
 
-Um deputado federal ganhou **R$ 1,76 milhão** entre a eleição de 2018 e a de 2022. É o subsídio
-bruto integral: R$ 39.293,32 por mês desde fevereiro de 2019, 42 meses de mandato, mais três
+Um deputado federal ganhou **R$ 1,52 milhão** entre a eleição de 2018 e a de 2022. É o subsídio
+bruto integral: R$ 33.763,00 por mês, valor fixado em 2014 e congelado até o fim de 2022, 42 meses de mandato, mais três
 décimos-terceiros — tudo antes de imposto de renda, previdência, aluguel em Brasília, escola de
 filho, mercado, gasolina. É o teto absoluto do que o cargo poderia ter posto no bolso de alguém
 que não gastasse **nada**.
 
-Dos 472 deputados eleitos em 2018 que voltaram a registrar candidatura em 2022, **39 declararam
+Dos 472 deputados eleitos em 2018 que voltaram a registrar candidatura em 2022, **47 declararam
 um crescimento patrimonial maior que esse teto**. Um deles cresceu vinte e três vezes mais.
 
-E os 39 não são uma cauda qualquer: eles concentram **89,6% de todo o crescimento patrimonial**
+E os 47 não são uma cauda qualquer: eles concentram **69,1% de todo o crescimento patrimonial**
 declarado pelos 472. A Câmara inteira engordou R$ 264,4 milhões entre uma eleição e outra, e
 R$ 237 milhões disso couberam a 8% dos deputados.
 
@@ -52,7 +52,7 @@ que o parlamentar consta do quadro societário como sócio ou titular — sem de
 demais sócios, sem exigir que aquele capital tenha virado renda no bolso dele, e sem cobrar que a
 empresa seja anterior ao mandato. É o teto do negócio que ele tem, não o que tirou de lá.
 
-Mesmo assim, **ela cobre o crescimento de apenas 11 dos 39**. Nos outros 28 sobram **R$ 153,1
+Mesmo assim, **ela cobre o crescimento de apenas 11 dos 47**. Nos outros 34 sobram **R$ 162,8
 milhões** de patrimônio novo que nem o salário nem a empresa própria explicam.
 
 A separação reorganiza a lista inteira. **Hercílio Araújo Diniz Filho** e **Misael Varella**, 2º e
@@ -128,7 +128,7 @@ Nove vezes maior, e sozinho equivalente a 116% de todo o crescimento patrimonial
 (outros itens encolheram).
 
 Emprestar R$ 8,8 milhões a um parente durante o mandato exige ter tido R$ 8,8 milhões líquidos
-para emprestar. O subsídio bruto de todo o período foi R$ 1,76 milhão.
+para emprestar. O subsídio bruto de todo o período foi R$ 1,52 milhão.
 
 ### Misael Artur Ferreira Varella (MG) — o grupo familiar
 
@@ -137,7 +137,7 @@ A maior peça é a participação na **Lael Varella Educação e Cultura Ltda** 
 parte de um conjunto de oito empresas do grupo familiar — administração, empreendimentos
 imobiliários, veículos pesados, pneus, águas minerais.
 
-É o perfil mais comum entre os 39: dinastia empresarial consolidada, onde o patrimônio do grupo
+É o perfil mais comum entre os 47: dinastia empresarial consolidada, onde o patrimônio do grupo
 vai sendo progressivamente refletido na declaração pessoal. Menos "enriquecimento súbito", mais
 "contabilidade familiar aparecendo aos poucos" — o que é uma explicação, não uma absolvição:
 a origem do capital continua fora do alcance do dado público.
@@ -183,7 +183,7 @@ deveria tornar a trajetória rastreável.
 
 A pergunta é inevitável, e a resposta tem duas partes que apontam para lados diferentes.
 
-Dos 39 que passam da linha do subsídio, **24 são de partidos de direita, 9 de centro e 6 de
+Dos 47 que passam da linha do subsídio, **27 são de partidos de direita, 13 de centro e 7 de
 esquerda**. Parece muito. Só que o universo já é assim: dos 472 deputados comparáveis, 235
 (49,8%) estavam em legendas de direita no registro de 2022, 126 no centro e 111 na esquerda. O
 grupo que não fecha a conta é majoritariamente de direita, em boa medida, porque **a Câmara é
@@ -191,18 +191,18 @@ majoritariamente de direita**.
 
 | bloco | no universo | acima de 1× | taxa | encolheram | crescimento mediano |
 |---|---:|---:|---:|---:|---:|
-| esquerda | 111 | 6 | 5,4% | 44 (39,6%) | R$ 67 mil |
-| centro | 126 | 9 | 7,1% | 44 (34,9%) | R$ 129 mil |
-| direita | 235 | 24 | 10,2% | 62 (26,4%) | R$ 277 mil |
+| esquerda | 111 | 7 | 6,3% | 45 (40,5%) | R$ 67 mil |
+| centro | 126 | 13 | 10,3% | 46 (36,5%) | R$ 129 mil |
+| direita | 235 | 27 | 11,5% | 66 (28,1%) | R$ 277 mil |
 
-Descontado o tamanho de cada bancada, sobra uma diferença na cauda: 10,2% dos deputados de
-direita cruzaram a linha, contra 7,1% do centro e 5,4% da esquerda — quase o dobro. Mas são 39
+Descontado o tamanho de cada bancada, sobra uma diferença na cauda: 11,5% dos deputados de
+direita cruzaram a linha, contra 10,3% do centro e 6,3% da esquerda. Mas são 47
 casos no total, e uma diferença desse tamanho, nesse número de eventos, ainda cabe dentro do
 acaso. **Com este dado não dá para afirmar que a direita produza proporcionalmente mais casos
 extremos.** A bancada com a maior taxa entre as de porte médio, aliás, é o **PDT — 3 dos 17**,
 que é de esquerda.
 
-Por partido, os 39 se distribuem assim: PL 8 · PP 8 · MDB 3 · UNIÃO 3 · PSDB 3 · PDT 3 · PSD 2 ·
+Por partido, os 47 se distribuem assim: PP 10 · PL 9 · MDB 6 · PSDB 3 · PDT 3 · UNIÃO 3 · PSB 2 · PSC 2 · PSD 2 · PT 2 · REPUBLICANOS 2 ·
 PT 2 · PSC 2 · REPUBLICANOS 2 · PTB 1 · PSB 1 · CIDADANIA 1. A comparação que interessa é com o
 tamanho de cada bancada no universo: o **PP** põe 8 dos seus 48 acima da linha (16,7%), o **PL**
 8 de 74 (10,8%) e o **PT**, segunda maior bancada do grupo, **2 de 53 (3,8%)**. PSOL, PC do B,
@@ -210,8 +210,8 @@ PV, REDE, NOVO, PODE, PATRIOTA, AVANTE, PROS e SOLIDARIEDADE não têm nenhum.
 
 O contraste que de fato resiste não está na cauda — está no meio da distribuição. O deputado de
 direita mediano declarou **R$ 277 mil a mais** em 2022 do que em 2018; o de esquerda, **R$ 67
-mil** — quatro vezes menos. E encolher é bem mais comum à esquerda: 39,6% dos deputados de
-esquerda declararam em 2022 menos do que tinham, contra 26,4% dos de direita. Aí a separação é
+mil** — quatro vezes menos. E encolher é bem mais comum à esquerda: 40,5% dos deputados de
+esquerda declararam em 2022 menos do que tinham, contra 28,1% dos de direita. Aí a separação é
 consistente demais para ser sorteio: **não é que a direita concentre os escândalos, é que a
 Câmara de direita enriqueceu mais, de forma distribuída, ao longo de todo o corpo da bancada.**
 
@@ -220,7 +220,7 @@ ideológica dos partidos brasileiros de Bolognesi, Ribeiro e Codato, montada a p
 a especialistas — esquerda: PT, PSOL, PC do B, PDT, PSB, PV e REDE; centro: MDB, PSD, PSDB,
 PODE, CIDADANIA, SOLIDARIEDADE, AVANTE e PROS; direita: PL, PP, UNIÃO, REPUBLICANOS, PSC, NOVO,
 PTB e PATRIOTA. E o partido considerado é o do registro de **2022**, não o de 2018: **194 dos 472
-trocaram de sigla entre uma eleição e outra** — 14 deles entre os 39 —, então cada deputado entra
+trocaram de sigla entre uma eleição e outra** — 14 deles entre os 47 —, então cada deputado entra
 aqui pela legenda de destino, e não pela de origem.
 
 ---
@@ -247,7 +247,7 @@ apurar. É uma pergunta com data marcada.
 
 ---
 
-## Para onde foi o dinheiro dos 39
+## Para onde foi o dinheiro dos 47
 
 | Tipo de bem | variação agregada |
 |---|---:|
@@ -307,7 +307,7 @@ Rios & Rios, Patrimonial São Félix. E o sétimo colocado é eleito com o nome 
 levou o nome da própria empresa para a urna.
 
 Dois nomes dessa tabela já apareceram na primeira metade desta análise por outro motivo: Misael
-Varella e Glaustin da Fokus estão entre os 39 cujo crescimento patrimonial supera o subsídio do
+Varella e Glaustin da Fokus estão entre os 47 cujo crescimento patrimonial supera o subsídio do
 mandato. Magda Mofatto também.
 
 Uma distinção que muda o número, e que é fácil errar: **ser administrador de uma empresa não é
@@ -329,13 +329,13 @@ teria de ser procurada, caso não tenha.
 
 ## O que este levantamento não diz
 
-Ele **não afirma que os 39 cometeram crime**, e a distinção importa.
+Ele **não afirma que os 47 cometeram crime**, e a distinção importa.
 
 Deputado pode ter renda perfeitamente lícita fora do subsídio: lucro de empresa, aluguel,
 herança, venda de bem com ganho de capital, rendimento de aplicação, renda do cônjuge em regime
-de comunhão. Vários dos 39 são empresários declarados desde antes do mandato, e para eles o
+de comunhão. Vários dos 47 são empresários declarados desde antes do mandato, e para eles o
 crescimento patrimonial é o resultado esperado do negócio, não do cargo — é exatamente o que a
-segunda cor do gráfico separa, e ela absolve 11 dos 39 já no critério mais generoso possível.
+segunda cor do gráfico separa, e ela absolve 13 dos 47 já no critério mais generoso possível.
 
 O que o número mede é outra coisa: **quanto da variação o salário deixa de explicar**. É um
 filtro de triagem, não um veredito. Serve para dizer onde a checagem deve começar — e a checagem
