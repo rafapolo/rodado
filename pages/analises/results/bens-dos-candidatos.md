@@ -16,7 +16,9 @@ eleição, filtrar por partido, estado e espectro, e ampliar qualquer região do
 
 ## O que aparece
 
-**A regra é o patrimônio parado.** A mediana do crescimento declarado é **0,24 vez** o subsídio
+**A regra é o patrimônio parado.** Dos 900 parlamentares com régua comparável, **744 — 83%**
+ficam abaixo da linha: o patrimônio deles cresceu menos do que o salário bruto do período. A
+mediana do crescimento declarado é **0,24 vez** o subsídio
 do período: o parlamentar típico termina o intervalo entre duas declarações com um quarto do que
 o cargo lhe pagou convertido em bens. Um quarto deles declara crescimento praticamente nulo, e
 metade fica abaixo de 0,7.
