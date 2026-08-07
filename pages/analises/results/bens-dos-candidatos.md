@@ -133,6 +133,28 @@ paisagem normal da Câmara: quem cresce pouco pode estar vivendo do salário, co
 pode simplesmente não estar contando o que tem. Os dois casos ficam no mesmo lugar do gráfico, e
 o gráfico sozinho não os separa.
 
+**Por bloco, a leitura se inverte no meio do caminho.**
+
+| bloco | abaixo da linha | são sócios | capital > declarado | sócios que **não** declaram |
+|---|---:|---:|---:|---:|
+| esquerda | 181 | 70 (39%) | 12 (7%) | **42 (60%)** |
+| centro | 221 | 155 (70%) | 36 (16%) | 64 (41%) |
+| direita | 329 | 226 (69%) | 57 (17%) | 102 (45%) |
+
+Nas duas primeiras colunas o resultado é o esperado e pouco interessante: a esquerda tem muito
+menos empresários — 39% contra cerca de 70% dos outros dois blocos —, e por isso também menos
+casos de capital social maior que o patrimônio declarado. É composição, não comportamento.
+
+A última coluna é que surpreende. **Entre os parlamentares de esquerda que são sócios de empresa,
+60% não declaram a participação** — a maior taxa dos três blocos, acima dos 45% da direita e dos
+41% do centro. A esquerda tem menos empresários, mas os que tem omitem a cota com mais
+frequência. Com 70 sócios de esquerda contra 226 de direita, a diferença fica no limite do que a
+amostra sustenta, e merece confirmação caso a caso antes de virar afirmação.
+
+**Acima da linha, o bloco não explica nada.** Aplicando a régua ampliada com o capital social, a
+proporção que sobrevive é praticamente idêntica nos três: 60% na esquerda, 58% no centro, 60% na
+direita. O desconto das empresas retira a mesma fatia de cada lado do espectro.
+
 **O salário ficou parado oito anos.** O subsídio de deputado federal foi fixado em R$ 33.763 com
 efeitos a partir de fevereiro de 2015 e só mudou em janeiro de 2023, quando passou a R$ 39.293.
 As legislaturas 2015-2018 e 2019-2022 inteiras correram com o mesmo valor nominal. Por isso a
