@@ -62,6 +62,30 @@ o mapa cobra cautela: só entram partidos com pelo menos 20 parlamentares de ré
 partido considerado é o do último registro e não o da eleição em que a pessoa foi eleita, e
 diferenças de poucos pontos entre bancadas de 30 pessoas não sobrevivem ao acaso.
 
+**E direita contra esquerda?** As três últimas linhas do mapa agregam os partidos por bloco
+ideológico, na mesma escala:
+
+| bloco | n | mediana | acima de 1× |
+|---|---:|---:|---:|
+| esquerda | 201 | 0,15× | 20 (10%) |
+| direita | 411 | 0,26× | 82 (20%) |
+| centro | 273 | 0,31× | 52 (19%) |
+
+A esquerda tem metade da proporção das outras duas acima da linha. Mas **centro e direita são
+indistinguíveis entre si** — 19% e 20% —, o que já derruba a leitura de que o eixo esquerda-direita
+organize o fenômeno: se organizasse, o centro ficaria no meio, e ele não fica.
+
+O que enfraquece de vez a explicação por bloco é a variação **dentro** de cada um. Na direita, a
+mediana vai de 0,12× no REPUBLICANOS a 0,36× no UNIÃO; no centro, de 0,26× no PSDB a 0,44× no
+PODE; na esquerda, de 0,10× no PT a 0,33× no PDT. Cada bloco cobre quase toda a amplitude dos
+outros. Saber o partido de alguém informa mais sobre o patrimônio declarado dele do que saber
+o lado do espectro — e saber qualquer um dos dois informa pouco, porque o que domina é a
+variação entre pessoas da mesma legenda.
+
+Vale lembrar também que os blocos têm tamanhos muito diferentes — 411 à direita contra 201 à
+esquerda —, o que faz a direita concentrar mais casos absolutos acima da linha (82 contra 20)
+simplesmente por ser maior. É por isso que a comparação aqui é sempre proporcional.
+
 **O salário ficou parado oito anos.** O subsídio de deputado federal foi fixado em R$ 33.763 com
 efeitos a partir de fevereiro de 2015 e só mudou em janeiro de 2023, quando passou a R$ 39.293.
 As legislaturas 2015-2018 e 2019-2022 inteiras correram com o mesmo valor nominal. Por isso a
