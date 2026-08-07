@@ -362,7 +362,7 @@ function panorama(res){
   // o canvas acompanha a janela em vez de ter altura fixa, para o palco
   // esticado não deixar faixa morta embaixo do gráfico
   const ALT = Math.max(estreito ? 320 : 420,
-                       Math.min(innerHeight - (estreito ? 330 : 260), 900));
+                       Math.min(innerHeight - (estreito ? 300 : 230), 900));
   if(!vista) vista = vistaInicial();
 
   let geo = null;   // preenchido a cada pintura, usado pelo apontamento
