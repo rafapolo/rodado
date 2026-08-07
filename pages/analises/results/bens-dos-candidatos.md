@@ -5,12 +5,13 @@ item. Este painel junta as declarações de **1.025 pessoas que já foram eleita
 federal** — 4.000 declarações ao todo, de 2010 a 2026 — e as coloca contra uma régua só: o
 subsídio que o próprio cargo depositou na conta delas no mesmo período.
 
-**[→ Abrir o painel](https://claude.ai/code/artifact/af80ed4f-4dd3-4a52-9e2a-6330acccb277)**
+**[→ Abrir o painel](/analises/patrimonio/)**
 
 ![Dispersão de 900 parlamentares: patrimônio declarado no eixo horizontal, em escala logarítmica de R$ 1 mil a mais de R$ 10 milhões, contra o crescimento patrimonial em múltiplos do subsídio do período no eixo vertical. A massa se concentra em torno de zero e uma pluma sobe à direita; 156 pontos ficam acima da linha tracejada de 1×](/analises/img/panorama-bens-candidatos.png)
 
 Dá para procurar qualquer parlamentar pelo nome, ver a trajetória declarada dele eleição por
-eleição, filtrar por partido, estado e espectro, e ampliar qualquer região do gráfico.
+eleição com a composição do patrimônio por tipo de bem, filtrar por partido, estado e espectro,
+e ampliar qualquer região do gráfico.
 
 ---
 
