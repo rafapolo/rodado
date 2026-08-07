@@ -50,9 +50,16 @@ RAMPA = LinearSegmentedColormap.from_list("rodado_seq", [
 
 
 def carrega(caminho):
+    """Devolve (partidos com bancada suficiente, os três blocos ideológicos).
+
+    Os blocos entram no mesmo mapa, embaixo, porque a pergunta "direita ou
+    esquerda" só se responde na mesma escala das linhas de partido — e a
+    resposta depende de ver as duas camadas juntas: a variação entre partidos
+    de um mesmo bloco é maior do que a variação entre os blocos.
+    """
     doc = json.loads(Path(caminho).read_text(encoding="utf-8"))
-    partidos = doc["meta"]["partidos"]
-    por_partido = {}
+    partidos, espectros = doc["meta"]["partidos"], doc["meta"]["espectros"]
+    por_partido, por_bloco = {}, {}
     for p in doc["pessoas"]:
         pts = p[5]
         if len(pts) < 2:
@@ -60,27 +67,42 @@ def carrega(caminho):
         regua = sum(x[REGUA] or 0 for x in pts)
         if regua < PISO_REGUA:
             continue
-        ix = pts[-1][1]
-        if ix < 0:
-            continue
         mult = (pts[-1][TOTAL] - pts[0][TOTAL]) / regua
-        por_partido.setdefault(partidos[ix], []).append(mult)
-    return {k: v for k, v in por_partido.items() if len(v) >= MIN_BANCADA}
+        ix = pts[-1][1]
+        if ix >= 0:
+            por_partido.setdefault(partidos[ix], []).append(mult)
+        if p[2] >= 0:
+            por_bloco.setdefault(espectros[p[2]], []).append(mult)
+    return ({k: v for k, v in por_partido.items() if len(v) >= MIN_BANCADA},
+            {b: por_bloco[b] for b in ("esquerda", "centro", "direita")
+             if b in por_bloco})
 
 
 def main():
     origem = sys.argv[1] if len(sys.argv) > 1 else "/tmp/patrimonio_dados.json"
-    dados = carrega(origem)
+    dados, blocos = carrega(origem)
     ordem = sorted(dados, key=lambda k: statistics.median(dados[k]))
+    ordem_bl = sorted(blocos, key=lambda k: statistics.median(blocos[k]))
     print(f"{len(ordem)} partidos com {MIN_BANCADA}+ · "
           f"{sum(len(v) for v in dados.values())} parlamentares")
+    for b in ordem_bl:
+        v = blocos[b]
+        print(f"  {b:9s} n={len(v):3d} mediana={statistics.median(v):.2f}x "
+              f"acima de 1x: {sum(1 for m in v if m>1)*100//len(v)}%")
+    # os blocos entram como linhas extras, separados por uma linha vazia
+    todos = ordem + [None] + ordem_bl
+    fonte = {**dados, **blocos}
 
     bordas = np.arange(LO, HI + PASSO / 2, PASSO)
     n_col = len(bordas) - 1 + 2                      # + transbordo dos dois lados
-    matriz = np.zeros((len(ordem), n_col))
+    matriz = np.full((len(todos), n_col), np.nan)
     medianas = []
-    for i, sigla in enumerate(ordem):
-        v = dados[sigla]
+    for i, sigla in enumerate(todos):
+        if sigla is None:
+            medianas.append(None)
+            continue
+        v = fonte[sigla]
+        matriz[i] = 0
         for m in v:
             if m < LO:
                 c = 0
@@ -92,7 +114,7 @@ def main():
         matriz[i] = matriz[i] / len(v) * 100
         medianas.append(statistics.median(v))
 
-    vmax = float(np.percentile(matriz[matriz > 0], 97))
+    vmax = float(np.percentile(matriz[np.nan_to_num(matriz) > 0], 97))
 
     fig = plt.figure(figsize=(12.4, 10.6), dpi=200, facecolor=FIG_BG)
     ax = fig.add_axes((0.148, 0.300, 0.800, 0.395))
@@ -100,8 +122,12 @@ def main():
     ax.imshow(matriz, aspect="auto", cmap=RAMPA, norm=Normalize(0, vmax),
               interpolation="nearest")
 
-    ax.set_yticks(range(len(ordem)))
-    ax.set_yticklabels([f"{s}" for s in ordem], fontsize=12, color=TXT)
+    ax.set_yticks(range(len(todos)))
+    ax.set_yticklabels(["" if s is None else s.upper() if s in blocos else s
+                        for s in todos], fontsize=12, color=TXT)
+    for t, s_ in zip(ax.get_yticklabels(), todos):
+        if s_ in blocos:
+            t.set_fontweight("bold")
     ax.tick_params(colors=TXT3, length=0, labelsize=11.5)
     for sp in ax.spines.values():
         sp.set_visible(False)
@@ -125,12 +151,16 @@ def main():
 
     # mediana de cada partido, no mesmo traço branco da figura do câncer
     for i, m in enumerate(medianas):
+        if m is None:
+            continue
         x = 0 if m < LO else n_col - 1 if m >= HI else 1 + (m - LO) / PASSO - 0.5
         ax.plot([x, x], [i - 0.34, i + 0.34], color="#ffffff", lw=2.2, zorder=6)
 
-    # N de cada bancada, fora da matriz
-    for i, sigla in enumerate(ordem):
-        ax.text(n_col - 0.3, i, str(len(dados[sigla])), fontsize=10.5,
+    # N de cada linha, fora da matriz
+    for i, sigla in enumerate(todos):
+        if sigla is None:
+            continue
+        ax.text(n_col - 0.3, i, str(len(fonte[sigla])), fontsize=10.5,
                 color=TXT3, va="center", ha="left")
     ax.text(n_col - 0.3, -0.95, "n", fontsize=10.5, color=TXT3,
             va="center", ha="left")
