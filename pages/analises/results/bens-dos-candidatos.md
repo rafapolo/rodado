@@ -34,6 +34,34 @@ pouco para virar patrimônio. É justamente essa forma que torna visível a outr
 subsídio recebido no intervalo entre a primeira e a última declaração. No recorte de 2018 a 2022
 isoladamente, são 47.
 
+**A diferença entre partidos é de grau, não de natureza.**
+
+![Mapa de calor com 11 partidos nas linhas e faixas de crescimento patrimonial nas colunas, cada linha somando 100%. A massa de todas as bancadas se concentra em torno de zero, à esquerda da divisa de 1×, e um traço branco marca a mediana de cada partido — do PT, o menor, ao PODE, o maior](/analises/img/partidos-desvio-regua.png)
+
+Nenhuma bancada foge do padrão: em todas elas a massa fica à esquerda da divisa de 1×. O que
+muda é a mediana, que escorrega de 0,10 vez o subsídio no PT a 0,44 no PODE, e a espessura da
+cauda à direita. A distância entre a legenda mais contida e a mais expandida é de um terço de
+salário — real, mas modesta perto da variação dentro de cada bancada.
+
+| partido | n | mediana | acima de 1× |
+|---|---:|---:|---:|
+| PT | 103 | 0,10× | 5 (5%) |
+| REPUBLICANOS | 78 | 0,12× | 9 (12%) |
+| PSB | 35 | 0,20× | 6 (17%) |
+| PSDB | 43 | 0,26× | 9 (21%) |
+| PL | 130 | 0,28× | 24 (18%) |
+| PSD | 75 | 0,30× | 15 (20%) |
+| MDB | 84 | 0,31× | 15 (18%) |
+| PDT | 31 | 0,33× | 6 (19%) |
+| PP | 87 | 0,34× | 25 (29%) |
+| UNIÃO | 73 | 0,36× | 16 (22%) |
+| PODE | 27 | 0,44× | 6 (22%) |
+
+O PT tem a menor mediana e também a menor proporção acima da linha — 5%, contra 29% do PP. Mas
+o mapa cobra cautela: só entram partidos com pelo menos 20 parlamentares de régua comparável, o
+partido considerado é o do último registro e não o da eleição em que a pessoa foi eleita, e
+diferenças de poucos pontos entre bancadas de 30 pessoas não sobrevivem ao acaso.
+
 **O salário ficou parado oito anos.** O subsídio de deputado federal foi fixado em R$ 33.763 com
 efeitos a partir de fevereiro de 2015 e só mudou em janeiro de 2023, quando passou a R$ 39.293.
 As legislaturas 2015-2018 e 2019-2022 inteiras correram com o mesmo valor nominal. Por isso a
