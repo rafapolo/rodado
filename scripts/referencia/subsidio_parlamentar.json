@@ -1,0 +1,71 @@
+{
+  "_sobre": "Subsídio mensal bruto de deputado federal e senador, por período de vigência. Cada linha traz a norma que fixou o valor e a data de efeitos financeiros declarada no próprio texto legal — não a data de publicação. Os valores são nominais, sem correção. Levantado em 2026-08-07 a partir das normas originais no acervo Legin da Câmara dos Deputados e do portal de transparência da Casa.",
+  "_por_que_existe": "Os scripts de patrimônio usavam a constante SUBSIDIO=1764767, derivada de R$ 39.293,32/mês a partir de fevereiro de 2019. A data estava errada: esse valor só passou a vigorar em 1º de janeiro de 2023, pelo Decreto Legislativo 172/2022. Durante todo o mandato 2019-2022 o subsídio foi R$ 33.763,00, congelado desde 2015. O erro superestimava a régua em 16,4%.",
+
+  "vigencias": [
+    {
+      "desde": "2007-04-01",
+      "valor": 16512.09,
+      "norma": "Decreto Legislativo nº 112, de 4 de junho de 2007",
+      "fonte": "https://www2.camara.leg.br/legin/fed/decleg/2007/decretolegislativo-112-4-junho-2007-554894-publicacaooriginal-73866-pl.html",
+      "verificado": true
+    },
+    {
+      "desde": "2011-02-01",
+      "valor": 26723.13,
+      "norma": "Decreto Legislativo nº 805, de 20 de dezembro de 2010",
+      "fonte": "https://www2.camara.leg.br/legin/fed/decleg/2010/decretolegislativo-805-20-dezembro-2010-609780-normaatualizada-pl.html",
+      "verificado": true
+    },
+    {
+      "desde": "2015-02-01",
+      "valor": 33763.00,
+      "norma": "Decreto Legislativo nº 276, de 18 de dezembro de 2014",
+      "fonte": "https://www2.camara.leg.br/legin/fed/decleg/2014/decretolegislativo-276-18-dezembro-2014-779806-publicacaooriginal-145682-pl.html",
+      "verificado": true,
+      "nota": "Congelado por oito anos: vigorou nas legislaturas 2015-2018 e 2019-2022 inteiras, até 31/12/2022."
+    },
+    {
+      "desde": "2023-01-01",
+      "valor": 39293.32,
+      "norma": "Decreto Legislativo nº 172, de 2022",
+      "fonte": "https://www2.camara.leg.br/transparencia/acesso-a-informacao/copy_of_perguntas-frequentes/subsidios",
+      "verificado": true
+    },
+    {
+      "desde": "2023-04-01",
+      "valor": 41650.92,
+      "norma": "Decreto Legislativo nº 172, de 2022 (escalonamento)",
+      "fonte": "https://www.camara.leg.br/noticias/930619-camara-aprova-reajuste-de-subsidios-do-presidente-da-republica-de-parlamentares-e-ministros-de-estado/",
+      "verificado": true
+    },
+    {
+      "desde": "2024-02-01",
+      "valor": 44008.52,
+      "norma": "Decreto Legislativo nº 172, de 2022 (escalonamento)",
+      "fonte": "https://www.camara.leg.br/noticias/930619-camara-aprova-reajuste-de-subsidios-do-presidente-da-republica-de-parlamentares-e-ministros-de-estado/",
+      "verificado": true
+    },
+    {
+      "desde": "2025-02-01",
+      "valor": 46366.19,
+      "norma": "Decreto Legislativo nº 172, de 2022 (escalonamento)",
+      "fonte": "https://www.camara.leg.br/noticias/930619-camara-aprova-reajuste-de-subsidios-do-presidente-da-republica-de-parlamentares-e-ministros-de-estado/",
+      "verificado": true
+    }
+  ],
+
+  "lacunas": [
+    {
+      "periodo": "antes de 2007-04-01",
+      "situacao": "não levantado",
+      "efeito": "A legislatura 2007-2010 começa em 1º de fevereiro de 2007, mas o Decreto Legislativo 112/2007 só tem efeitos a partir de 1º de abril. Os dois meses intermediários entram no cálculo pelo valor de abril, o que superestima o acumulado desse mandato em algo da ordem de R$ 7 mil sobre ~R$ 800 mil — abaixo de 1%. Nenhum mandato anterior a 2007 é usado pelo painel."
+    }
+  ],
+
+  "decimo_terceiro": {
+    "existe": true,
+    "regra": "Parlamentar recebe décimo-terceiro. O acumulado de um mandato soma, além dos meses de exercício, um décimo-terceiro por ano civil completo, e a fração correspondente no ano de posse.",
+    "nota": "Mesma regra já aplicada pelos scripts de patrimônio existentes; mantida para que os números permaneçam comparáveis com o que foi publicado."
+  }
+}
