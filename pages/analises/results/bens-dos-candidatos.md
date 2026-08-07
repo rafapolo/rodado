@@ -34,6 +34,30 @@ pouco para virar patrimônio. É justamente essa forma que torna visível a outr
 subsídio recebido no intervalo entre a primeira e a última declaração. No recorte de 2018 a 2022
 isoladamente, são 47.
 
+Mas essa conta cobra do salário uma explicação que às vezes está em outro lugar. Quem é sócio de
+empresa tem origem de renda fora do mandato, e ignorar isso seria injusto. Aplicando a mesma
+régua generosa da análise anterior — somar ao subsídio o **capital social integral** de toda
+empresa em que a pessoa consta como sócia, sem descontar a parte dos demais sócios e sem exigir
+que esse capital tenha virado renda:
+
+| | pessoas |
+|---|---:|
+| Acima da linha considerando só o subsídio | 156 |
+| …cujo capital social já cobre o crescimento inteiro | **40** (26%) |
+| …que seguem acima mesmo somando o capital social | **92** |
+| …destes, sem nenhuma empresa registrada | 24 |
+
+Ou seja: **um quarto dos casos deixa de ser anomalia de salário assim que a empresa entra na
+conta** — e vira outra pergunta, de contabilidade empresarial, com outros documentos. Restam 92
+pessoas cujo crescimento declarado supera tudo o que o mandato pagou *e* tudo o que as empresas
+delas poderiam explicar, somando R$ 442 milhões sem contrapartida no dado público. Vinte e quatro
+delas não constam como sócias de empresa nenhuma.
+
+Atenção a uma limitação do gráfico e do painel: **eles ainda mostram o múltiplo só contra o
+subsídio.** A régua ampliada acima foi calculada à parte. Quem usar a figura ou a ferramenta para
+apontar um caso precisa checar o capital social da pessoa antes de concluir qualquer coisa —
+é o que a tabela desta seção diz que muda em um quarto das vezes.
+
 **A diferença entre partidos é de grau, não de natureza.**
 
 ![Mapa de calor com 11 partidos nas linhas e faixas de crescimento patrimonial nas colunas, cada linha somando 100%. A massa de todas as bancadas se concentra em torno de zero, à esquerda da divisa de 1×, e um traço branco marca a mediana de cada partido — do PT, o menor, ao PODE, o maior](/analises/img/partidos-desvio-regua.png)
