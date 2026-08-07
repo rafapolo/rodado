@@ -2,7 +2,7 @@
 """O outro lado da mesma régua: quantos deputados declaram ter menos do que o
 mandato lhes pagou.
 
-O gráfico dos múltiplos do subsídio olha para cima — os 39 cujo patrimônio
+O gráfico dos múltiplos do subsídio olha para cima — os 47 cujo patrimônio
 cresceu mais do que o cargo poderia ter pago. Este olha para baixo, e mede
 outra coisa: não o crescimento, mas o **estoque**. Ao fim do mandato, quanto
 cada deputado declara possuir no total, comparado com o que o mandato inteiro
@@ -11,19 +11,19 @@ lhe depositou em conta.
   universo   os mesmos 472 deputados federais eleitos em 2018 que voltaram a
              registrar candidatura em 2022.
   eixo y     patrimônio total declarado no registro de 2022 dividido pelo
-             subsídio bruto do mandato (R$ 1.764.767). 1,0 = o deputado declara
+             subsídio bruto do mandato (R$ 1.516.521). 1,0 = o deputado declara
              possuir exatamente o que o cargo lhe pagou em 42 meses.
   eixo x     os 472 ordenados do menor para o maior.
 
 Por que a comparação não acusa ninguém: o subsídio é bruto. Descontado imposto
-de renda e previdência sobram cerca de R$ 1,25 milhão, e sobre isso ainda incide
+de renda e previdência sobram cerca de R$ 1,1 milhão, e sobre isso ainda incide
 a vida — moradia, escola, viagem, o custo de manter presença em dois estados.
 Declarar menos de 1× é o comportamento esperado de quem gasta o que ganha.
 
 O que o gráfico mostra, então, é a **linha de base**: a forma que uma declaração
-de bens tem quando o salário é a renda principal. É essa forma que torna os 39
+de bens tem quando o salário é a renda principal. É essa forma que torna os 47
 do outro gráfico visíveis como exceção. E é ela que dá escala ao terceiro grupo,
-o dos 133 que declaram menos que o subsídio do mandato e ainda assim declararam
+o dos que declaram menos que o subsídio do mandato e ainda assim declararam
 em 2022 menos do que tinham em 2018.
 
 Ressalva de dado: bens_candidato traz ~1% de linhas byte-idênticas repetidas.
@@ -41,7 +41,14 @@ import subprocess
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 
-SUBSIDIO = 1_764_767.0
+SUBSIDIO = 1_516_521.0   # bruto acumulado do mandato entre as duas declarações
+# R$ 33.763,00/mês, fixado pelo Decreto Legislativo 276/2014 com efeitos a
+# partir de 1º/02/2015 e congelado até 31/12/2022 — vigorou, portanto, no
+# mandato inteiro. São 42 meses (fev/2019 a jul/2022) mais os décimos-terceiros
+# de 2019 (proporcional), 2020 e 2021.
+# Antes daqui havia R$ 1.764.767, derivado de R$ 39.293,32/mês "desde fevereiro
+# de 2019". O valor existe, a data não: ele só passou a vigorar em 1º/01/2023,
+# pelo Decreto Legislativo 172/2022. A régua estava 16,4% alta.
 
 SQL = """SET enable_progress_bar=false;
 WITH bens AS (
@@ -156,14 +163,16 @@ ax.text(len(abaixo) - 9, 1.30,
         f"a curva cruza a linha no deputado {len(abaixo)}",
         fontsize=11.5, color=TXT, va="bottom", ha="right", zorder=7)
 
-ax.text(8, 1.09, "1× = R\\$ 1,76 milhão, todo o subsídio bruto do mandato",
+ax.text(8, 1.09, f"1× = R\\$ {SUBSIDIO/1e6:.2f}".replace(".", ",")
+        + " milhão, todo o subsídio bruto do mandato",
         fontsize=11.5, color=TXT2, va="bottom", ha="left", zorder=7)
 
 # mediana
 ax.plot([n // 2 - 0.5], [mediana], marker="o", ms=5.5, color=TXT,
         zorder=7, mec=SURFACE, mew=1.2)
 ax.text(n // 2 - 12, mediana + 0.13,
-        f"mediana: {('%.2f' % mediana).replace('.', ',')}× — R\\$ 1,05 milhão",
+        f"mediana: {('%.2f' % mediana).replace('.', ',')}× — R\\$ "
+        + f"{mediana*SUBSIDIO/1e6:.2f}".replace(".", ",") + " milhão",
         fontsize=11, color=TXT2, va="bottom", ha="right", zorder=7)
 
 ax.text(n - 66, 3.52,
@@ -203,7 +212,7 @@ for x, cor, rot in ((0.088, ABAIXO, f"declara menos do que o mandato pagou ({len
 
 fig.text(0.088, 0.124,
          "Fonte: Tribunal Superior Eleitoral — declarações de bens nos registros de candidatura de 2018 e 2022. Subsídio: Câmara dos Deputados,\n"
-         "R\\$ 39.293,32 por mês de fevereiro de 2019 a julho de 2022, mais os décimos-terceiros — R\\$ 1.764.767 bruto, antes de imposto de renda,\n"
+         "R\\$ 33.763,00 por mês de fevereiro de 2019 a julho de 2022, mais os décimos-terceiros — R\\$ 1.516.521 bruto, antes de imposto de renda,\n"
          "previdência e qualquer despesa. Universo: os 472 deputados eleitos em 2018 que voltaram a registrar candidatura em 2022, os únicos\n"
          "com os dois pontos da série. A declaração do TSE segue a regra do imposto de renda e registra bens pelo custo de aquisição.\n"
          "Em vermelho, os 39 cujo patrimônio cresceu mais do que todo o subsídio do mandato — o recorte do gráfico de crescimento patrimonial.\n"
