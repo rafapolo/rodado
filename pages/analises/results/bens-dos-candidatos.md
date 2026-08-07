@@ -27,8 +27,9 @@ Entre os eleitos em 2018 que voltaram a se registrar em 2022, **306 dos 471 — 
 ao fim do mandato, possuir menos do que o mandato lhes pagou de salário bruto. E 17 deputados
 federais declararam não possuir bem nenhum.
 
-Isso não é acusação, é a linha de base: o subsídio é bruto, e depois de imposto e de viver sobra
-pouco para virar patrimônio. É justamente essa forma que torna visível a outra ponta.
+Isso não é acusação, e também não é retrato fiel de riqueza: o subsídio é bruto, e depois de
+imposto e de viver sobra pouco para virar patrimônio — mas a declaração também subestima o que
+se tem, por regra e por omissão, como a seção seguinte detalha. É justamente essa forma que torna visível a outra ponta.
 
 **A outra ponta são 156 pessoas.** Elas declararam crescimento patrimonial maior do que todo o
 subsídio recebido no intervalo entre a primeira e a última declaração. No recorte de 2018 a 2022
@@ -196,6 +197,46 @@ que o corte de R$ 1 milhão importa — ali as três explicações deixam de ser
 estes dados foram extraídos, o arquivo público cobria cerca de 28% das candidaturas esperadas.
 Os pontos de 2026 aparecem marcados como parciais: ausência ali não significa ausência de bem,
 significa candidatura ainda não registrada.
+
+---
+
+## O que a declaração de bens não é
+
+Nada aqui mede patrimônio. Mede **declaração de patrimônio** — e a distância entre as duas coisas
+é grande, conhecida e tem direção previsível.
+
+A declaração é preenchida pelo próprio candidato, não é auditada no ato do registro, e segue a
+regra do imposto de renda: bens entram pelo **custo de aquisição**. Um apartamento comprado em
+1995 continua declarado a preço de 1995. Isso sozinho já põe o valor declarado muito abaixo do
+valor real, sem nenhuma má-fé envolvida — é o que a norma manda.
+
+Some-se a isso a omissão, que este próprio levantamento consegue enxergar:
+
+- **271 dos 683 sócios de empresa** não declaram nenhuma participação societária, embora o
+  formulário tenha rubrica própria para isso
+- **40 pessoas** são sócias de empresas com R$ 184 milhões de capital social somado e declaram
+  R$ 21 milhões de patrimônio, sem uma linha de cota
+- **215 de 988 pessoas — 22%** declaram hoje menos do que já declararam em algum registro
+  anterior, e 37 declararam algo no passado e zero depois
+
+Esse último número é o mais eloquente. Patrimônio pode encolher de verdade — venda de bem,
+divórcio, dívida, um mau negócio. Mas um quinto de um grupo perdendo patrimônio ao longo de anos
+não descreve uma economia; descreve inconsistência entre declarações da mesma pessoa.
+
+**A consequência para tudo o que está acima é assimétrica.** Não há incentivo para declarar mais
+do que se tem, e há vários para declarar menos. Então:
+
+O número de pessoas acima da régua é um **piso**, não um teto. Quem omite bens no registro final
+aparece com crescimento menor do que teve, e alguns dos que estão logo abaixo da linha só estão
+ali por isso.
+
+E o grupo abaixo da linha **não é uma certidão de modéstia**. Ele mistura quem de fato vive do
+salário — a maioria, e é o comportamento esperado — com quem simplesmente não contou o que tem.
+O gráfico põe os dois no mesmo lugar e não sabe separá-los.
+
+Por isso o múltiplo serve para **ordenar e priorizar**, não para concluir. Ele diz por onde
+começar a checar. Qualquer afirmação sobre uma pessoa específica exige sair daqui e ir aos
+documentos: quadro societário atualizado, registro de imóveis, declaração de imposto de renda.
 
 ---
 
