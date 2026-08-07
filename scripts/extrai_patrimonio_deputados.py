@@ -7,10 +7,21 @@ fizeram à Justiça Eleitoral, a composição de cada declaração, as empresas 
 que constam como sócias e a régua do subsídio que o mandato pagou.
 
   universo   2.347 pessoas eleitas deputado federal em alguma eleição de 2006
-             a 2022, e todas as candidaturas que registraram no período —
+             a 2022, e todas as candidaturas que registraram de 2010 em
+             diante —
              inclusive a prefeito e vereador, que entram na série porque
              carregam declaração de bens.
-  série      2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022 e 2026.
+  série      2010, 2012, 2014, 2016, 2018, 2020, 2022 e 2026.
+
+Por que a série começa em 2010
+------------------------------
+Em 2006 e 2008 o sequencial_candidato **não é único** na tabela de candidatos:
+19.204 linhas para 3.162 sequenciais distintos em 2006, 381.250 para 68.551 em
+2008. Como é essa a chave que liga candidato a bem declarado, juntar por ela
+nesses dois anos espalha os bens de uma pessoa por dezenas de outras — o
+sintoma foi um patrimônio de R$ 132.386.000 aparecendo idêntico em duas pessoas
+diferentes, e uma mediana de crescimento de −2,6 vezes o subsídio, que não
+existe no mundo. De 2010 em diante a chave é única e o cruzamento fecha.
   régua      subsídio bruto acumulado entre duas declarações consecutivas,
              contado só nos meses em que a pessoa exercia mandato federal
              (deputado federal ou senador) — ver "A régua" abaixo.
@@ -226,18 +237,18 @@ WITH el AS (
   SELECT DISTINCT ano, sequencial_candidato AS seq
   FROM read_parquet('~/rodado/br_tse_eleicoes/resultados_candidato_municipio/*.parquet')
   WHERE cargo='deputado federal'
-    AND resultado IN ('eleito por media','eleito por qp') AND ano>=2006
+    AND resultado IN ('eleito por media','eleito por qp') AND ano>=2010
 ),
 ca AS (
   SELECT ano, sequencial, cpf, nome, sigla_uf, sigla_partido, cargo
   FROM read_parquet('~/rodado/br_tse_eleicoes/candidatos/*.parquet')
-  WHERE ano>=2006 AND cpf IS NOT NULL AND cpf<>''
+  WHERE ano>=2010 AND cpf IS NOT NULL AND cpf<>''
 ),
 pes AS (SELECT DISTINCT ca.cpf FROM el JOIN ca ON ca.ano=el.ano AND ca.sequencial=el.seq),
 bens AS (
   SELECT DISTINCT ano, sequencial_candidato, tipo_item, descricao_item, valor_item
   FROM read_parquet('~/rodado/br_tse_eleicoes/bens_candidato/*.parquet')
-  WHERE ano>=2006
+  WHERE ano>=2010
 ),
 bcat AS (
   SELECT ano, sequencial_candidato AS seq, {caso} AS cat, SUM(valor_item) AS v
@@ -275,11 +286,11 @@ WITH el AS (
   SELECT DISTINCT ano, sequencial_candidato AS seq
   FROM read_parquet('~/rodado/br_tse_eleicoes/resultados_candidato_municipio/*.parquet')
   WHERE cargo='deputado federal'
-    AND resultado IN ('eleito por media','eleito por qp') AND ano>=2006
+    AND resultado IN ('eleito por media','eleito por qp') AND ano>=2010
 ),
 ca AS (
   SELECT ano, sequencial, cpf, nome FROM read_parquet('~/rodado/br_tse_eleicoes/candidatos/*.parquet')
-  WHERE ano>=2006 AND cpf IS NOT NULL AND cpf<>''
+  WHERE ano>=2010 AND cpf IS NOT NULL AND cpf<>''
 ),
 pes AS (
   SELECT ca.cpf, any_value(ca.nome) AS nome
