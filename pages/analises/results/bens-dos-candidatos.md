@@ -44,6 +44,31 @@ uma empresa nos registros da Receita Federal. Ter empresa é renda fora do salá
 mostra isso ao lado do patrimônio justamente para que a comparação com o subsídio não seja lida
 como acusação onde há explicação.
 
+**Mas quatro em cada dez não põem a empresa na declaração de bens.** A cota de uma sociedade é
+um bem como outro qualquer, e o formulário do TSE tem rubrica própria para ela — "quotas ou
+quinhões de capital", "ações", "outras participações societárias", os mesmos códigos do imposto
+de renda. Cruzando quem consta como sócio na Receita com o que declarou à Justiça Eleitoral no
+registro mais recente:
+
+| | pessoas | % dos sócios |
+|---|---:|---:|
+| Sócios que **declaram** participação societária | 412 | 60,3% |
+| Sócios que **não declaram** nenhuma | **271** | **39,7%** |
+| …destes, com capital social somado ≥ R$ 100 mil | 125 | 18,3% |
+| …destes, com capital social somado ≥ R$ 1 milhão | 40 | 5,9% |
+
+Vinte e um dos 271 declararam patrimônio zero — nada, nenhum bem. E há o movimento contrário:
+48 pessoas declaram participação societária sem constar como sócias em nenhuma empresa ativa no
+retrato da Receita, o que é esperado para quem tem cota em empresa já encerrada ou fora do
+recorte.
+
+O número não prova omissão. As regras do imposto de renda dispensam declarar cotas de uma mesma
+empresa cujo valor de aquisição some menos de R$ 1.000, e quem é sócio sem capital ou tem cota
+ainda não integralizada não tem custo a lançar. Há também descompasso de data: o retrato do
+quadro societário é de setembro de 2024, e a declaração pode ser de 2022 ou de 2026. É por isso
+que o corte de R$ 1 milhão importa — ali as três explicações deixam de ser plausíveis, e sobram
+40 casos.
+
 **2026 ainda está em aberto.** O prazo de registro se encerra em 15 de agosto de 2026. Quando
 estes dados foram extraídos, o arquivo público cobria cerca de 28% das candidaturas esperadas.
 Os pontos de 2026 aparecem marcados como parciais: ausência ali não significa ausência de bem,
