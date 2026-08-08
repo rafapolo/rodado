@@ -66,6 +66,13 @@ scripts/scrap/tse_eleicoes_2026.py, que conforma o arquivo do TSE ao schema da
 Base dos Dados e o deixa no espelho junto dos outros anos. Rode aquele script
 antes deste para gerar o painel com o retrato mais recente.
 
+Onde o JSON é consumido
+-----------------------
+O painel saiu deste repositório e mora em github.com/rafapolo/tse-bens, de onde
+o site o monta em /analises/patrimonio a cada deploy. O `dados.json` gerado aqui
+vai para lá — daí o `--saida ../tse-bens/dados.json` do exemplo abaixo — e é
+commitado naquele repositório, não neste.
+
 Consulta (beelink, via SSH — BEELINK_HOST, default 'beelink'):
   br_tse_eleicoes/resultados_candidato_municipio   eleitos, para o universo e a régua
   br_tse_eleicoes/candidatos                       CPF, nome, UF, partido, cargo (2010-2026)
@@ -75,7 +82,7 @@ Consulta (beelink, via SSH — BEELINK_HOST, default 'beelink'):
 
 Uso:
   python3 scripts/extrai_patrimonio_deputados.py
-  python3 scripts/extrai_patrimonio_deputados.py --saida pages/analises/patrimonio/dados.json
+  python3 scripts/extrai_patrimonio_deputados.py --saida ../tse-bens/dados.json
   python3 scripts/extrai_patrimonio_deputados.py --sem-2026
 """
 import argparse
