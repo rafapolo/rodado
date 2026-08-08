@@ -2,7 +2,7 @@
 "use strict";
 fetch("dados.json").then(r=>r.json()).then(function(D){
 const M = D.meta, PESSOAS = D.pessoas;
-const [NOME,UF,ESP,EMP,CAP,PTS] = [0,1,2,3,4,5];
+const [NOME,UF,ESP,EMP,CAP,PTS,LEMP] = [0,1,2,3,4,5,6];
 const [ANO,PART,CARGO,TOTAL,REGUA,FLAGS,COMP] = [0,1,2,3,4,5,6];
 const F_ELEITO=1, F_REGUA_PARCIAL=2, F_ANO_PARCIAL=4;
 const CAT_ROTULO = {imovel:"imóveis",veiculo:"veículos",dinheiro:"dinheiro",
@@ -21,12 +21,8 @@ PESSOAS.forEach((p,i)=>{
   const pts = p[PTS];
   p.i = i;
   p.chave = p[NOME].normalize("NFD").replace(/[\u0300-\u036f]/g,"").toUpperCase();
-  let s = p.chave.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")
-          || ("pessoa-"+i);
-  // xar\u00e1s: sufixo por ordem de apari\u00e7\u00e3o, determin\u00edstica para um mesmo
-  // dados.json \u2014 o primeiro hom\u00f4nimo fica com o apelido limpo
-  if(PORSLUG[s]){ let n = 2; while(PORSLUG[s+"-"+n]) n++; s += "-"+n; }
-  p.slug = s; PORSLUG[s] = p;
+  p.base = p.chave.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")
+           || ("pessoa-"+i);
   p.ultimo = pts[pts.length-1];
   p.primeiro = pts[0];
   p.patrimonio = p.ultimo[TOTAL];
@@ -43,6 +39,40 @@ PESSOAS.forEach((p,i)=>{
   p.mandatos = pts.filter(x=> x[FLAGS] & F_ELEITO).length;
   p.parcial = pts.some(x=> x[FLAGS] & F_ANO_PARCIAL);
 });
+
+/* Hoje nenhum dos 1.025 nomes se repete, mas o apelido não pode depender
+   disso. Se um xará entrar numa extração futura, resolver a disputa por ordem
+   de aparição seria pior do que não resolver: as duas pessoas trocariam de
+   apelido conforme o array mudasse, e um link já compartilhado passaria a
+   abrir a outra — em silêncio. Então, quando há xará, ninguém fica com o nome
+   puro: os dois recebem UF e, se ainda empatarem, o ano da primeira
+   declaração. Tudo é dado da própria pessoa, então o apelido de cada uma não
+   depende de quem mais existe no arquivo. */
+{
+  const porBase = Object.create(null);
+  PESSOAS.forEach(p=> (porBase[p.base] = porBase[p.base] || []).push(p));
+  for(const base in porBase){
+    const grupo = porBase[base];
+    if(grupo.length === 1){ grupo[0].slug = base; continue; }
+    grupo.forEach(p=>{
+      const uf = p[UF] >= 0 ? M.ufs[p[UF]].toLowerCase() : "br";
+      p.slug = base + "-" + uf;
+    });
+    const porUf = Object.create(null);
+    grupo.forEach(p=> (porUf[p.slug] = porUf[p.slug] || []).push(p));
+    for(const s in porUf){
+      if(porUf[s].length === 1) continue;
+      porUf[s].forEach(p=>{ p.slug = s + "-" + p.primeiro[ANO]; });
+    }
+  }
+  // último desempate, para o caso de dois xarás da mesma UF estrearem no mesmo
+  // ano: aí não há dado que os separe, e a posição é o que resta
+  PESSOAS.forEach(p=>{
+    if(!PORSLUG[p.slug]){ PORSLUG[p.slug] = p; return; }
+    let n = 2; while(PORSLUG[p.slug+"-"+n]) n++;
+    p.slug += "-"+n; PORSLUG[p.slug] = p;
+  });
+}
 
 /* ── formatação ─────────────────────────────────────────────────────────── */
 const nf = new Intl.NumberFormat("pt-BR");
@@ -615,6 +645,19 @@ function dossie(){
         `<span><i class="swatch" style="background:${CAT_COR[i]}"></i>${CAT_ROTULO[c]}</span>`
       ).join("")}</div>
     </div>
+    ${(p[LEMP]||[]).length ? `<div class="quadro rolagem">
+      <table><thead><tr>
+        <th>empresa em que consta no quadro societário</th>
+        <th>capital social</th>
+      </tr></thead><tbody>${p[LEMP].map(e=>`<tr>
+        <td class="empresa">${e[0]}</td><td>${e[1]?brl(e[1]):"—"}</td>
+      </tr>`).join("")}</tbody>
+      <tfoot><tr><td>${p[LEMP].length} empresa${p[LEMP].length>1?"s":""}</td>
+        <td>${brl(p[CAP])}</td></tr></tfoot></table>
+      <p class="rodape">Quadro societário da Receita Federal, casado por nome e
+      seis dígitos do CPF — é indício, não fato. O capital social é o declarado
+      no contrato social, não faturamento nem participação desta pessoa.</p>
+    </div>` : ""}
     <div class="quadro rolagem">
       <table><thead><tr>
         <th>eleição</th><th>cargo</th><th>partido</th><th>declarado</th>
