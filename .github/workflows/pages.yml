@@ -8,10 +8,11 @@ on:
       - '.github/workflows/pages.yml'
   workflow_dispatch:
   # /analises/shutafut e /analises/patrimonio são buscados dos repos
-  # rafapolo/shutafut e rafapolo/tse-bens a cada deploy; o cron garante que
-  # mudanças lá cheguem aqui mesmo sem push no rodado.
-  schedule:
-    - cron: '17 6 * * *'
+  # rafapolo/shutafut e rafapolo/tse-bens a cada deploy. O push no tse-bens
+  # aciona este workflow via repository_dispatch (workflow "Aciona o deploy
+  # no rodado" daquele repositório), então não precisa esperar um cron.
+  repository_dispatch:
+    types: [tse-bens-updated]
 
 permissions:
   contents: read
@@ -44,6 +45,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: rafapolo/tse-bens
+          ref: ${{ github.event.client_payload.sha }}
           path: pages/analises/patrimonio
       - name: Remove arquivos não-públicos do tse-bens
         run: |
