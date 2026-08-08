@@ -92,8 +92,22 @@ function corMult(v){
 }
 
 /* ── estado ─────────────────────────────────────────────────────────────── */
+/* Os três recortes têm três posições: "" (tanto faz), "sim" e "nao". O teste
+   de cada um mora aqui junto do rótulo, para não ficar espalhado entre o
+   filtro, o controle e o endereço. */
+const RECORTES = [
+  {id:"empresa", url:"emp", rotulo:"sócio de empresa",
+   sim: p=> !!p[EMP]},
+  {id:"regua", url:"reg", rotulo:"régua comparável",
+   sim: p=> p.multiplo !== null},
+  // sem régua não é "cresceu abaixo": é não dá para dizer. Fica fora dos dois.
+  {id:"acima", url:"ac", rotulo:"cresceu acima do subsídio",
+   sim: p=> p.multiplo !== null && p.multiplo > 1,
+   nao: p=> p.multiplo !== null && p.multiplo <= 1},
+];
+
 const est = {q:"", espectro:new Set(), partido:"", uf:"",
-             empresa:false, regua:false, acima:false,
+             empresa:"", regua:"", acima:"",
              aba:"panorama", sel:null, fixados:[],
              ordem:"multiplo", limite:120};
 
@@ -118,9 +132,11 @@ function leHash(){
   est.espectro = new Set((h.get("e")||"").split(",").filter(Boolean));
   est.partido = h.get("p") || "";
   est.uf = h.get("uf") || "";
-  est.empresa = h.get("emp") === "1";
-  est.regua = h.get("reg") === "1";
-  est.acima = h.get("ac") === "1";
+  // "1" era o valor da época da caixa de marcar, e queria dizer "sim"
+  RECORTES.forEach(r=>{
+    const v = h.get(r.url);
+    est[r.id] = v === "1" || v === "sim" ? "sim" : v === "nao" ? "nao" : "";
+  });
   est.ordem = ORDENS[h.get("ord")] ? h.get("ord") : "multiplo";
   est.limite = 120;
   est.sel = indiceDe(h.get("d") !== null ? h.get("d") : h.get("i"));
@@ -137,9 +153,7 @@ function gravaHash(empurra){
   if(est.espectro.size) h.set("e", [...est.espectro].join(","));
   if(est.partido) h.set("p", est.partido);
   if(est.uf) h.set("uf", est.uf);
-  if(est.empresa) h.set("emp","1");
-  if(est.regua) h.set("reg","1");
-  if(est.acima) h.set("ac","1");
+  RECORTES.forEach(r=>{ if(est[r.id]) h.set(r.url, est[r.id]); });
   if(est.ordem !== "multiplo") h.set("ord", est.ordem);
   if(est.sel !== null) h.set("d", apelidoDe(est.sel));
   if(est.aba !== (est.sel !== null ? "dossie" : "panorama")) h.set("aba", est.aba);
@@ -165,9 +179,12 @@ function filtra(){
     }
     if(est.partido && p.partidoAtual !== est.partido) return false;
     if(est.uf && (p[UF] < 0 || M.ufs[p[UF]] !== est.uf)) return false;
-    if(est.empresa && !p[EMP]) return false;
-    if(est.regua && p.multiplo === null) return false;
-    if(est.acima && !(p.multiplo > 1)) return false;
+    for(const r of RECORTES){
+      if(!est[r.id]) continue;
+      const passa = est[r.id] === "sim" ? r.sim(p)
+                  : r.nao ? r.nao(p) : !r.sim(p);
+      if(!passa) return false;
+    }
     return true;
   });
 }
@@ -210,12 +227,35 @@ function montaControles(){
 
   el("fPartido").onchange = e=>{ est.partido = e.target.value; vista=null; est.limite=120; desenha(); };
   el("fUf").onchange = e=>{ est.uf = e.target.value; vista=null; est.limite=120; desenha(); };
-  el("fEmpresa").onchange = e=>{ est.empresa = e.target.checked; vista=null; est.limite=120; desenha(); };
-  el("fRegua").onchange = e=>{ est.regua = e.target.checked; vista=null; est.limite=120; desenha(); };
-  el("fAcima").onchange = e=>{ est.acima = e.target.checked; vista=null; est.limite=120; desenha(); };
+
+  const POSICOES = [["","tanto faz"],["sim","sim"],["nao","não"]];
+  el("recortes").innerHTML = RECORTES.map(r=>
+    `<div class="tri" role="radiogroup" aria-label="${r.rotulo}" data-r="${r.id}">
+       <span class="tri-rot">${r.rotulo}</span>
+       <div class="tri-ops">${POSICOES.map(([v,rot])=>
+         `<button type="button" role="radio" data-v="${v}"
+                  aria-checked="false" tabindex="-1">${rot}</button>`).join("")}
+       </div>
+     </div>`).join("");
+  el("recortes").onclick = ev=>{
+    const b = ev.target.closest("[data-v]"); if(!b) return;
+    est[b.closest("[data-r]").dataset.r] = b.dataset.v;
+    vista = null; est.limite = 120; desenha();
+  };
+  // seta anda entre as posições, como manda um radiogroup
+  el("recortes").onkeydown = ev=>{
+    const passo = ev.key === "ArrowRight" || ev.key === "ArrowDown" ? 1
+                : ev.key === "ArrowLeft" || ev.key === "ArrowUp" ? -1 : 0;
+    if(!passo) return;
+    const b = ev.target.closest("[data-v]"); if(!b) return;
+    ev.preventDefault();
+    const irmaos = [...b.parentElement.children];
+    const alvo = irmaos[(irmaos.indexOf(b) + passo + irmaos.length) % irmaos.length];
+    alvo.focus(); alvo.click();
+  };
   el("limpar").onclick = ()=>{
     Object.assign(est,{q:"",espectro:new Set(),partido:"",uf:"",
-      empresa:false,regua:false,acima:false});
+      empresa:"",regua:"",acima:""});
     vista = null; est.limite = 120; est.ordem = 'multiplo'; sincronizaControles(); desenha();
   };
   el("gaveta").onclick = ()=>{
@@ -240,14 +280,20 @@ function sincronizaControles(){
   const campo = el("q");
   if(campo.value !== est.q) campo.value = est.q;
   const nFiltros = est.espectro.size + (est.partido?1:0) + (est.uf?1:0)
-    + (est.empresa?1:0) + (est.regua?1:0) + (est.acima?1:0);
+    + RECORTES.filter(r=> est[r.id]).length;
   const selo = el("gavetaSelo");
   if(selo) selo.textContent = nFiltros ? `${nFiltros} ativo${nFiltros>1?"s":""}` : "nenhum";
   el("fPartido").value = est.partido;
   el("fUf").value = est.uf;
-  el("fEmpresa").checked = est.empresa;
-  el("fRegua").checked = est.regua;
-  el("fAcima").checked = est.acima;
+  RECORTES.forEach(r=>{
+    const g = document.querySelector(`[data-r="${r.id}"]`); if(!g) return;
+    g.querySelectorAll("[data-v]").forEach(b=>{
+      const marcado = b.dataset.v === est[r.id];
+      b.setAttribute("aria-checked", marcado);
+      // só a posição corrente entra na ordem de tabulação, como num radiogroup
+      b.tabIndex = marcado ? 0 : -1;
+    });
+  });
   document.querySelectorAll("[data-e]").forEach(b=>
     b.setAttribute("aria-pressed", est.espectro.has(b.dataset.e)));
   document.querySelectorAll(".aba").forEach(b=>
