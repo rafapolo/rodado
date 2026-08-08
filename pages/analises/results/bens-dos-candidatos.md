@@ -8,7 +8,7 @@ Juntamos 4.000 dessas listas, de **1.025 pessoas que já foram eleitas deputado 
 2010 a 2026. E pusemos todas contra uma régua só: quanto o próprio cargo depositou na conta
 delas no mesmo período.
 
-**[→ Abrir o painel iterativo](/analises/patrimonio/)**
+**[→ Abrir o painel interativo](/analises/patrimonio/)**
 
 ![Dispersão de 900 parlamentares: patrimônio declarado no eixo horizontal, em escala logarítmica de R$ 1 mil a mais de R$ 10 milhões, contra o crescimento patrimonial em múltiplos do subsídio do período no eixo vertical. A massa se concentra em torno de zero e uma pluma sobe à direita; 156 pontos ficam acima da linha tracejada de 1×](/analises/img/panorama-bens-candidatos.png)
 
