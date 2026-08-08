@@ -11,10 +11,22 @@ const CAT_ROTULO = {imovel:"imóveis",veiculo:"veículos",dinheiro:"dinheiro",
 const CAT_COR = ["#7d6b58","#8a8f7e","#5d7f88","#6f8fa8","#c2683c","#9a7f9c","#a9b2ac"];
 
 /* ── derivados por pessoa, calculados uma vez ───────────────────────────── */
+// Índice por apelido de URL. O identificador não pode ser a posição no array:
+// a cada extração nova entram e saem pessoas, as posições andam, e um link
+// compartilhado passaria a abrir outra pessoa. O nome normalizado é estável
+// entre extrações e ainda diz de quem se trata quando o link é colado.
+const PORSLUG = Object.create(null);
+
 PESSOAS.forEach((p,i)=>{
   const pts = p[PTS];
   p.i = i;
   p.chave = p[NOME].normalize("NFD").replace(/[\u0300-\u036f]/g,"").toUpperCase();
+  let s = p.chave.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")
+          || ("pessoa-"+i);
+  // xar\u00e1s: sufixo por ordem de apari\u00e7\u00e3o, determin\u00edstica para um mesmo
+  // dados.json \u2014 o primeiro hom\u00f4nimo fica com o apelido limpo
+  if(PORSLUG[s]){ let n = 2; while(PORSLUG[s+"-"+n]) n++; s += "-"+n; }
+  p.slug = s; PORSLUG[s] = p;
   p.ultimo = pts[pts.length-1];
   p.primeiro = pts[0];
   p.patrimonio = p.ultimo[TOTAL];
@@ -55,6 +67,21 @@ const est = {q:"", espectro:new Set(), partido:"", uf:"",
              aba:"panorama", sel:null, fixados:[],
              ordem:"multiplo", limite:120};
 
+/* O estado inteiro do painel vive no endereço: quem está aberto, que filtros,
+   que ordenação. Quem abre um dossiê pode copiar a barra de endereço e mandar
+   para alguém, que abre exatamente na mesma tela. A pessoa entra como apelido
+   (`d=fulano-de-tal`); `i=<posição>`, que era como se guardava antes, ainda é
+   aceito para não quebrar link já compartilhado. */
+function indiceDe(v){
+  if(v === null || v === undefined || v === "") return null;
+  if(PORSLUG[v]) return PORSLUG[v].i;
+  const n = Number(v);                       // forma antiga: posição no array
+  return Number.isInteger(n) && PESSOAS[n] ? n : null;
+}
+function apelidoDe(i){ return PESSOAS[i] ? PESSOAS[i].slug : null; }
+
+let ultimaUrl = null;   // o endereço que o app escreveu por último
+
 function leHash(){
   const h = new URLSearchParams(location.hash.slice(1));
   est.q = h.get("q") || "";
@@ -64,13 +91,17 @@ function leHash(){
   est.empresa = h.get("emp") === "1";
   est.regua = h.get("reg") === "1";
   est.acima = h.get("ac") === "1";
-  est.aba = ["panorama","dossie"].includes(h.get("aba")) ? h.get("aba") : "panorama";
   est.ordem = ORDENS[h.get("ord")] ? h.get("ord") : "multiplo";
   est.limite = 120;
-  est.sel = h.has("i") ? +h.get("i") : null;
-  est.fixados = (h.get("fx")||"").split(",").filter(Boolean).map(Number);
+  est.sel = indiceDe(h.get("d") !== null ? h.get("d") : h.get("i"));
+  est.fixados = (h.get("fx")||"").split(",").map(indiceDe)
+                .filter(i=> i !== null);
+  // com pessoa no endereço a aba implícita é o dossiê: assim `#d=fulano`,
+  // escrito à mão ou encurtado, abre a ficha dela em vez do panorama
+  est.aba = ["panorama","dossie"].includes(h.get("aba")) ? h.get("aba")
+            : est.sel !== null ? "dossie" : "panorama";
 }
-function gravaHash(){
+function gravaHash(empurra){
   const h = new URLSearchParams();
   if(est.q) h.set("q", est.q);
   if(est.espectro.size) h.set("e", [...est.espectro].join(","));
@@ -79,11 +110,18 @@ function gravaHash(){
   if(est.empresa) h.set("emp","1");
   if(est.regua) h.set("reg","1");
   if(est.acima) h.set("ac","1");
-  if(est.aba !== "panorama") h.set("aba", est.aba);
   if(est.ordem !== "multiplo") h.set("ord", est.ordem);
-  if(est.sel !== null) h.set("i", est.sel);
-  if(est.fixados.length) h.set("fx", est.fixados.join(","));
-  history.replaceState(null, "", "#" + h.toString());
+  if(est.sel !== null) h.set("d", apelidoDe(est.sel));
+  if(est.aba !== (est.sel !== null ? "dossie" : "panorama")) h.set("aba", est.aba);
+  if(est.fixados.length) h.set("fx", est.fixados.map(apelidoDe).join(","));
+  // o "+" que o URLSearchParams usa no lugar do espaço fica ilegível num
+  // endereço colado no WhatsApp; %20 é o que os navegadores mostram de volta
+  const url = "#" + h.toString().replace(/\+/g, "%20");
+  // trocar de parlamentar é navegação — entra no histórico, e o "voltar"
+  // devolve quem estava aberto antes. Mexer em filtro só reescreve.
+  if(empurra && url !== ultimaUrl) history.pushState(null, "", url);
+  else history.replaceState(null, "", url);
+  ultimaUrl = url;
 }
 
 /* ── filtro ─────────────────────────────────────────────────────────────── */
@@ -281,13 +319,7 @@ function desenhaLista(res){
 
   lista.onclick = ev=>{
     const b = ev.target.closest("[data-i]"); if(!b) return;
-    est.sel = +b.dataset.i; est.aba = "dossie"; desenha();
-    // no celular o palco fica acima da lista: sem isto o dossiê abriria
-    // fora da tela e o clique pareceria não ter feito nada
-    if(innerWidth < 880) document.querySelector(".palco").scrollIntoView({
-      block:"start",
-      behavior: matchMedia("(prefers-reduced-motion:reduce)").matches
-        ? "auto" : "smooth"});
+    abrePessoa(+b.dataset.i);
   };
   // navegação por teclado: setas percorrem, Enter/Espaço abrem
   lista.onkeydown = ev=>{
@@ -522,7 +554,7 @@ function panorama(res){
     const a = pts.get(ev.pointerId);
     pts.delete(ev.pointerId); base = null;
     // arraste curto conta como clique: abre o dossiê do ponto mais próximo
-    if(a && a.moveu < 6 && cv._alvo){ est.sel = cv._alvo.i; est.aba="dossie"; desenha(); }
+    if(a && a.moveu < 6 && cv._alvo) abrePessoa(cv._alvo.i);
   }
   cv.addEventListener("pointerup", solta);
   cv.addEventListener("pointercancel", ev=>{ pts.delete(ev.pointerId); base=null; });
@@ -570,6 +602,7 @@ function dossie(){
       <span class="dado">${p.mandatos} mandato${p.mandatos===1?"":"s"}</span>
       ${p[EMP]?`<span class="dado">sócio de <b>${p[EMP]}</b> empresa${
         p[EMP]>1?"s":""} · capital ${brl(p[CAP])}</span>`:""}
+      <button class="bt" id="copiaLink" type="button">copiar link desta ficha</button>
     </div>
     <div class="quadro"><div id="trajetoria"></div>
       <div class="legenda">
@@ -601,6 +634,16 @@ function dossie(){
           <td style="color:${corMult(m)}">${m===null?"—":mult(m)}</td>
         </tr>`;}).join("")}</tbody></table>
     </div>`;
+  el("copiaLink").onclick = ev=>{
+    const b = ev.currentTarget, volta = ()=> setTimeout(()=>{
+      b.textContent = "copiar link desta ficha"; }, 2200);
+    // clipboard só existe em contexto seguro; fora dele resta apontar a barra
+    if(!navigator.clipboard){ b.textContent = "copie da barra de endereço"; return volta(); }
+    navigator.clipboard.writeText(location.href)
+      .then(()=>{ b.textContent = "link copiado"; })
+      .catch(()=>{ b.textContent = "copie da barra de endereço"; })
+      .then(volta);
+  };
   trajetoria(el("trajetoria"), pts);
   composicao(el("composicao"), pts);
 }
@@ -831,19 +874,45 @@ el("notas").innerHTML = `
   (quadro societário). Dados extraídos em ${M.gerado}.</p>`;
 
 /* ── ciclo ──────────────────────────────────────────────────────────────── */
-function desenha(){
+const TITULO = document.title;
+
+function desenha(empurra){
   sincronizaControles();
   const res = filtra();
   desenhaLista(res);
   if(est.aba === "panorama") panorama(res);
   else if(est.aba === "dossie") dossie();
   else dossie();
-  gravaHash();
+  // o nome no título faz o link colado, a aba e o histórico dizerem de quem
+  // é a ficha antes de a página abrir
+  document.title = est.sel !== null && PESSOAS[est.sel]
+    ? `${PESSOAS[est.sel][NOME]} — ${TITULO}` : TITULO;
+  gravaHash(empurra);
+}
+
+/* Abrir uma pessoa é o único gesto que vira entrada de histórico: é o que se
+   compartilha, e é o que o "voltar" deve desfazer. */
+function abrePessoa(i){
+  est.sel = i; est.aba = "dossie"; desenha(true);
+  // no celular o palco fica acima da lista: sem isto o dossiê abriria fora da
+  // tela e o clique pareceria não ter feito nada
+  if(innerWidth < 880) document.querySelector(".palco").scrollIntoView({
+    block:"start",
+    behavior: matchMedia("(prefers-reduced-motion:reduce)").matches
+      ? "auto" : "smooth"});
+}
+
+// voltar/avançar do navegador e edição do endereço à mão caem aqui; o teste
+// evita redesenhar quando o que mudou foi o próprio app escrevendo o endereço
+function aplicaUrl(){
+  if(location.hash === ultimaUrl) return;
+  leHash(); desenha();
 }
 
 leHash();
 montaControles();
 desenha();
-addEventListener("hashchange", ()=>{ leHash(); desenha(); });
+addEventListener("hashchange", aplicaUrl);
+addEventListener("popstate", aplicaUrl);
 });
 })();
