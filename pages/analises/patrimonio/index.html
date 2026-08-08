@@ -113,6 +113,13 @@ header p{margin:0;color:var(--ink2);font-size:12.5px;max-width:none;white-space:
 .rail{border-right:1px solid var(--rule2);background:var(--surface);
       padding:16px 18px 40px;display:flex;flex-direction:column;gap:16px;
       max-height:calc(100vh - 48px);overflow-y:auto;position:sticky;top:0}
+/* O bloco comum do gera_seo traz o site.css para esta página, e com ele a
+   coluna de leitura do site — `main` com 1180px e margem automática, filhos
+   com 700px. Ali é uma reportagem; aqui o palco é a tela inteira ao lado do
+   rail, e o gráfico ficava espremido em 700px. Desfaz as duas regras, com
+   `main.palco` para vencer no peso do seletor. */
+main.palco{max-width:none;margin:0}
+main.palco > *{max-width:none}
 .palco{padding:16px 18px 40px;min-width:0;display:flex;
        flex-direction:column}
 #palcoConteudo{flex:1 1 auto;display:flex;flex-direction:column;width:100%}
@@ -238,6 +245,11 @@ td:first-child,th:first-child{text-align:left}
 .rolagem{overflow-x:auto}
 .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;padding:1px 4px;
      border:1px solid currentColor;text-transform:uppercase}
+/* razão social é nome próprio, não número: sai do mono tabular e pode quebrar */
+td.empresa{font-family:var(--sans);white-space:normal;color:var(--ink)}
+tfoot td{color:var(--ink2);border-bottom:none;border-top:1px solid var(--rule2)}
+.rodape{font-size:11.5px;color:var(--ink3);margin:9px 0 0;line-height:1.45;
+        max-width:70ch}
 .t-eleito{color:var(--accent)}
 .t-parcial{color:var(--ink3)}
 
