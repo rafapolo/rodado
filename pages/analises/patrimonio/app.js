@@ -282,6 +282,12 @@ function desenhaLista(res){
   lista.onclick = ev=>{
     const b = ev.target.closest("[data-i]"); if(!b) return;
     est.sel = +b.dataset.i; est.aba = "dossie"; desenha();
+    // no celular o palco fica acima da lista: sem isto o dossiê abriria
+    // fora da tela e o clique pareceria não ter feito nada
+    if(innerWidth < 880) document.querySelector(".palco").scrollIntoView({
+      block:"start",
+      behavior: matchMedia("(prefers-reduced-motion:reduce)").matches
+        ? "auto" : "smooth"});
   };
   // navegação por teclado: setas percorrem, Enter/Espaço abrem
   lista.onkeydown = ev=>{
