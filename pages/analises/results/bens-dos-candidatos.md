@@ -8,7 +8,7 @@ Juntamos 4.000 dessas listas, de **1.025 pessoas que já foram eleitas deputado 
 2010 a 2026. E pusemos todas contra uma régua só: quanto o próprio cargo depositou na conta
 delas no mesmo período.
 
-**[→ Abrir o painel](/analises/patrimonio/)**
+**[→ Abrir o painel iterativo](/analises/patrimonio/)**
 
 ![Dispersão de 900 parlamentares: patrimônio declarado no eixo horizontal, em escala logarítmica de R$ 1 mil a mais de R$ 10 milhões, contra o crescimento patrimonial em múltiplos do subsídio do período no eixo vertical. A massa se concentra em torno de zero e uma pluma sobe à direita; 156 pontos ficam acima da linha tracejada de 1×](/analises/img/panorama-bens-candidatos.png)
 
@@ -22,7 +22,9 @@ qualquer canto do gráfico.
 
 **A regra é o patrimônio parado.** Isso surpreende quem espera encontrar uma Câmara de nababos.
 Dos 900 parlamentares com régua comparável, **744 — 83%** ficam abaixo da linha: o patrimônio
-cresceu menos do que o salário do período. A mediana é **0,24 vez** o subsídio. Traduzindo: o
+cresceu menos do que o salário do período. A **mediana** — o valor do meio da fila, que deixa
+metade da Câmara abaixo e metade acima, e que por isso não se deixa arrastar por meia dúzia de
+fortunas como aconteceria com a média — é **0,24 vez** o subsídio. Traduzindo: o
 deputado típico sai do mandato com um quarto do que ganhou convertido em bens. Um quarto deles
 não acumulou praticamente nada.
 
