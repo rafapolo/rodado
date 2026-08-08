@@ -9,8 +9,29 @@
 #doc blockquote { color: var(--ink-soft); }
 #doc code { font-family: var(--mono, 'IBM Plex Mono', monospace); font-size: 0.86em;
   background: var(--code-bg, rgba(127,127,127,0.12)); padding: 0.1em 0.35em; border-radius: 4px; }
-#doc ul, #doc ol { max-width: var(--measure); margin: 0 0 1.25rem; padding-left: 1.3rem; }
-#doc li { margin-bottom: 0.4rem; }
+/* listas sem recuo: o texto começa na mesma margem do resto da página, e a
+   marca de cada item fica pendurada fora dela. O ícone é o mesmo desenho dos
+   temas — traço de 1,5, 24×24, na cor de acento — aplicado por máscara, que é
+   o que deixa a cor seguir o tema claro/escuro. */
+#doc { --ico-artigo: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z'/%3E%3Cpath d='M14 3v5h5'/%3E%3Cpath d='M9 13h5'/%3E%3Cpath d='M9 17h3'/%3E%3C/svg%3E"); }
+#doc ul, #doc ol { max-width: var(--measure); margin: 0 0 1.25rem; padding-left: 0;
+  list-style: none; }
+#doc li { margin-bottom: 0.4rem; position: relative; padding-left: 1.75rem; }
+#doc ul > li::before {
+  content: ""; position: absolute; left: 0; top: 0.3em;
+  width: 1.05em; height: 1.05em; background-color: var(--accent);
+  -webkit-mask: var(--ico-artigo) center / contain no-repeat;
+  mask: var(--ico-artigo) center / contain no-repeat;
+}
+/* nas ordenadas o número fica: a síntese da análise de religião é citada por
+   ele no corpo do texto */
+#doc ol { counter-reset: item; }
+#doc ol > li { counter-increment: item; }
+#doc ol > li::before {
+  content: counter(item); position: absolute; left: 0; top: 0;
+  font-family: var(--mono, 'IBM Plex Mono', monospace); font-size: 0.8em;
+  line-height: 1.9; color: var(--accent);
+}
 #doc .maps { font-size: 0.95rem; }
 #doc img { display: block; width: 100%; height: auto; margin: 0.4rem 0 0.2rem;
   border: 1px solid var(--rule); border-radius: 6px; cursor: zoom-in; }
@@ -53,6 +74,7 @@
 /* fontes do dado de cada reportagem: etiquetas discretas, abaixo do resumo */
 .idx-list .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.6rem 0 0; }
 .idx-list .tag { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
-  line-height: 1.5; color: var(--ink-faint); border: 1px solid var(--rule);
-  border-radius: 999px; padding: 0.12rem 0.55rem; white-space: nowrap; }
+  line-height: 1.5; color: var(--ink-soft); background: var(--bg-raised);
+  border: 1px solid var(--rule); border-radius: 999px;
+  padding: 0.12rem 0.55rem; white-space: nowrap; }
 .doc-msg { color: var(--ink-soft); }
