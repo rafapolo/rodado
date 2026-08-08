@@ -68,9 +68,12 @@ a:hover { color: var(--accent-soft); }
   text-decoration: none;
 }
 
-.site-nav .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+.site-nav .nav-right { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
 
-.site-nav .links { display: flex; align-items: center; gap: 1.25rem; font-size: 0.86rem; }
+/* com quatro itens o menu já não cabe em tela de celular: deixa quebrar em vez
+   de estourar a largura da página */
+.site-nav .links { display: flex; align-items: center; gap: 0.4rem 1.25rem;
+  font-size: 0.86rem; flex-wrap: wrap; }
 .site-nav .links a { color: var(--ink-soft); text-decoration: none; }
 .site-nav .links a:hover { color: var(--accent); }
 
@@ -381,4 +384,6 @@ footer a:hover { color: var(--accent); }
   body { font-size: 17px; }
   h1 { font-size: 1.8rem; }
   main { padding: 2rem 1.2rem 3.5rem; }
+  /* aqui o menu já quebrou de linha: o filete separador ficaria solto */
+  .site-nav .nav-controls { padding-left: 0; border-left: 0; }
 }
