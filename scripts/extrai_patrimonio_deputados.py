@@ -55,18 +55,23 @@ pelo mesmo valor. Mesmo tratamento dos scripts de patrimônio já publicados.
 
 2026 está incompleto
 --------------------
-O prazo de registro se encerra em 15/08/2026 e o arquivo do TSE cobria 28,4%
-do esperado quando isto foi escrito. Os pontos de 2026 saem com `parcial: true`
-e o app tem de tratá-los como provisórios: ausência ali não é ausência de bem,
-é candidatura ainda não registrada.
+O prazo de registro se encerra em 15/08/2026 e o arquivo do TSE ainda cresce a
+cada dia. Os pontos de 2026 saem com `parcial: true` e o app tem de tratá-los
+como provisórios: ausência ali não é ausência de bem, é candidatura ainda não
+registrada. Quanto do ciclo já estava protocolado no momento da geração é
+medido na hora, contra o total de 2022, e vai para a ressalva do JSON.
+
+O ano de 2026 não vem mais de CSV baixado aqui: quem cuida dele é
+scripts/scrap/tse_eleicoes_2026.py, que conforma o arquivo do TSE ao schema da
+Base dos Dados e o deixa no espelho junto dos outros anos. Rode aquele script
+antes deste para gerar o painel com o retrato mais recente.
 
 Consulta (beelink, via SSH — BEELINK_HOST, default 'beelink'):
   br_tse_eleicoes/resultados_candidato_municipio   eleitos, para o universo e a régua
-  br_tse_eleicoes/candidatos                       CPF, nome, UF, partido, cargo
-  br_tse_eleicoes/bens_candidato                   declarações de bens
+  br_tse_eleicoes/candidatos                       CPF, nome, UF, partido, cargo (2010-2026)
+  br_tse_eleicoes/bens_candidato                   declarações de bens (2010-2026)
   br_me_cnpj/socios                                quadro societário
   br_me_cnpj/empresas                              capital social
-  cdn.tse.jus.br                                   candidatos e bens de 2026
 
 Uso:
   python3 scripts/extrai_patrimonio_deputados.py
@@ -310,50 +315,32 @@ ult AS (
   WHERE cnpj_basico IN (SELECT cnpj_basico FROM soc) GROUP BY 1
 ),
 cap AS (
-  SELECT e.cnpj_basico, ANY_VALUE(e.capital_social) AS capital
+  SELECT e.cnpj_basico, ANY_VALUE(e.razao_social) AS razao,
+         ANY_VALUE(e.capital_social) AS capital
   FROM read_parquet('~/rodado/br_me_cnpj/empresas/*.parquet') e
   JOIN ult ON ult.cnpj_basico=e.cnpj_basico AND ult.snap=e.ano*100+e.mes
   GROUP BY 1
 )
-SELECT soc.cpf, COUNT(DISTINCT soc.cnpj_basico) AS n_empresas,
-       COALESCE(SUM(cap.capital), 0) AS capital
+-- uma linha por empresa, não por pessoa: a contagem e a soma de capital saem
+-- daqui mesmo, no Python, e a razão social vai junto para o painel poder
+-- dizer de que empresas se trata. O CNPJ fica de fora de propósito: o
+-- casamento é por nome + seis dígitos do CPF e admite homônimo, então
+-- publicar o número do cadastro daria à ligação uma precisão que ela não tem.
+SELECT soc.cpf, cap.razao, COALESCE(cap.capital, 0) AS capital
 FROM soc LEFT JOIN cap ON cap.cnpj_basico = soc.cnpj_basico
-GROUP BY 1;
+ORDER BY soc.cpf, capital DESC, cap.razao;
 """
 
-# 2026 vem do CSV do portal de dados abertos, não do espelho em parquet: a Base
-# dos Dados ainda não publicou o ano. O download roda no beelink porque o
-# cdn.tse.jus.br responde 403 para requisição saída daqui.
-BAIXA_2026 = r"""
-set -e
-d=/tmp/tse2026; mkdir -p $d; cd $d
-for f in consulta_cand bem_candidato; do
-  curl -sS -o $f.zip "https://cdn.tse.jus.br/estatistica/sead/odsele/$f/${f}_2026.zip"
-  unzip -o -q $f.zip
-done
-ls -la ${d}/consulta_cand_2026_BRASIL.csv ${d}/bem_candidato_2026_BRASIL.csv >&2
-"""
-
-SQL_2026 = """SET enable_progress_bar=false;
-WITH ca AS (
-  SELECT NR_CPF_CANDIDATO AS cpf, SQ_CANDIDATO AS sq, NM_CANDIDATO AS nome,
-         SG_UF AS uf, SG_PARTIDO AS partido, lower(DS_CARGO) AS cargo
-  FROM read_csv('/tmp/tse2026/consulta_cand_2026_BRASIL.csv', delim=';', header=true,
-                encoding='latin-1', all_varchar=true, ignore_errors=true)
-),
-bn AS (
-  SELECT SQ_CANDIDATO AS sq, DS_TIPO_BEM_CANDIDATO AS tipo_item,
-         CAST(replace(VR_BEM_CANDIDATO, ',', '.') AS DOUBLE) AS valor_item
-  FROM read_csv('/tmp/tse2026/bem_candidato_2026_BRASIL.csv', delim=';', header=true,
-                encoding='latin-1', all_varchar=true, ignore_errors=true)
-),
-bcat AS (SELECT sq, {caso} AS cat, SUM(valor_item) AS v FROM bn GROUP BY 1,2)
-SELECT ca.cpf, 2026 AS ano, any_value(ca.nome) AS nome, any_value(ca.uf) AS uf,
-       any_value(ca.partido) AS partido, any_value(ca.cargo) AS cargo,
-       {somas},
-       COALESCE(SUM(bcat.v), 0) AS total
-FROM ca LEFT JOIN bcat ON bcat.sq = ca.sq
-GROUP BY ca.cpf ORDER BY 1;
+# Quanto do ciclo de 2026 já estava protocolado quando o painel foi gerado. A
+# régua é o total de candidaturas de 2022, o ciclo geral anterior — não é o
+# número exato que o prazo vai fechar, mas é a única referência honesta que
+# existe antes de 15/08.
+SQL_COBERTURA = """SET enable_progress_bar=false;
+SELECT
+  CAST(count(*) FILTER (WHERE ano = 2026) AS BIGINT) AS agora,
+  CAST(count(*) FILTER (WHERE ano = 2022) AS BIGINT) AS base
+FROM read_parquet('~/rodado/br_tse_eleicoes/candidatos/*.parquet')
+WHERE ano IN (2022, 2026);
 """
 
 
@@ -370,7 +357,7 @@ def main() -> None:
     ap.add_argument("--saida", default=None,
                     help="caminho do JSON de saída (default: scratchpad)")
     ap.add_argument("--sem-2026", action="store_true",
-                    help="não baixa nem inclui o ano de 2026, que está incompleto")
+                    help="descarta o ano de 2026, que está incompleto")
     args = ap.parse_args()
 
     saida = Path(args.saida) if args.saida else (
@@ -380,20 +367,21 @@ def main() -> None:
     linhas = consulta(monta_sql(SQL_PAINEL))
     print(f"  {len(linhas)} linhas pessoa-ano", file=sys.stderr)
 
-    if not args.sem_2026:
-        print("baixando 2026 do TSE…", file=sys.stderr)
-        host = os.environ.get("BEELINK_HOST", "beelink")
-        subprocess.run(["ssh", host, "bash -s"], input=BAIXA_2026.encode(),
-                       check=True)
-        cpfs = {l["cpf"] for l in linhas}
+    # 2026 sai da mesma consulta que os outros anos — só precisa ser marcado
+    # como provisório, ou descartado quando se quer só o que já fechou.
+    if args.sem_2026:
+        linhas = [l for l in linhas if int(l["ano"]) != 2026]
+        cobertura = None
+    else:
         n26 = 0
-        for l in consulta(monta_sql(SQL_2026)):
-            if l["cpf"] in cpfs:          # só quem já é do universo
+        for l in linhas:
+            if int(l["ano"]) == 2026:
                 l["parcial"] = True
-                linhas.append(l)
                 n26 += 1
-        print(f"  {n26} declarações de 2026 (universo já registrado)",
-              file=sys.stderr)
+        c = consulta(SQL_COBERTURA)[0]
+        cobertura = 100 * c["agora"] / c["base"] if c["base"] else 0
+        print(f"  {n26} declarações de 2026 · o TSE já registrou "
+              f"{cobertura:.1f}% do que 2022 teve", file=sys.stderr)
 
     print("consultando mandatos…", file=sys.stderr)
     mandatos = {}
@@ -401,8 +389,17 @@ def main() -> None:
         mandatos.setdefault(m["cpf"], []).append((int(m["ano"]), m["cargo"]))
 
     print("consultando empresas…", file=sys.stderr)
-    empresas = {e["cpf"]: e for e in consulta(monta_sql(SQL_EMPRESAS))}
-    print(f"  {len(empresas)} pessoas com empresa", file=sys.stderr)
+    empresas = {}
+    n_soc = 0
+    for e in consulta(monta_sql(SQL_EMPRESAS)):
+        reg = empresas.setdefault(e["cpf"], {"n_empresas": 0, "capital": 0.0,
+                                             "lista": []})
+        reg["n_empresas"] += 1
+        reg["capital"] += float(e["capital"] or 0)
+        reg["lista"].append([e["razao"] or "—", round(float(e["capital"] or 0))])
+        n_soc += 1
+    print(f"  {len(empresas)} pessoas com empresa · {n_soc} vínculos",
+          file=sys.stderr)
 
     # ── montagem ────────────────────────────────────────────────────────────
     por_cpf = {}
@@ -481,6 +478,7 @@ def main() -> None:
             int(emp.get("n_empresas", 0) or 0),
             round(float(emp.get("capital", 0) or 0)),
             pontos,
+            emp.get("lista", []),
         ])
 
     doc = {
@@ -493,7 +491,7 @@ def main() -> None:
             "espectros": tab_esp,
             "espectro_por_partido": mapa_esp,
             "campos_pessoa": ["nome", "uf", "espectro", "empresas", "capital",
-                              "pontos"],
+                              "pontos", "empresas_lista"],
             "campos_ponto": ["ano", "partido", "cargo", "total", "regua",
                              "flags", "comp"],
             "flags": {"1": "eleito nessa eleição",
@@ -509,7 +507,13 @@ def main() -> None:
                 "valores": "Nominais, a custo de aquisição, como manda a regra do imposto de renda. Não são corrigidos por inflação — e corrigir seria errado: imóvel comprado em 1990 está declarado a preço de 1990.",
                 "regua": "Subsídio bruto, antes de imposto e previdência. Só conta meses de mandato federal; período em mandato municipal ou estadual não soma, e o ponto sai marcado como régua parcial.",
                 "empresas": "Receita Federal, retrato de setembro de 2024. Casamento por nome e seis dígitos do CPF: há risco de homônimo. É indício, não fato.",
-                "2026": "Prazo de registro até 15/08/2026. Quando isto foi gerado, o arquivo do TSE cobria 28,4% do esperado. Ausência em 2026 não é ausência de bem — é candidatura ainda não registrada.",
+                "2026": (
+                    f"Prazo de registro até 15/08/2026. Quando isto foi gerado, "
+                    f"o arquivo do TSE trazia "
+                    f"{('%.1f' % cobertura).replace('.', ',')}% das candidaturas "
+                    f"que 2022 teve. Ausência em 2026 não é ausência de bem — é "
+                    f"candidatura ainda não registrada."
+                ) if cobertura is not None else "",
                 "ausencia": "Pessoa sem declaração num ano pode simplesmente não ter concorrido àquela eleição.",
             },
         },
