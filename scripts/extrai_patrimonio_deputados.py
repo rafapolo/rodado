@@ -304,9 +304,17 @@ ca AS (
   SELECT ano, sequencial, cpf, nome FROM read_parquet('~/rodado/br_tse_eleicoes/candidatos/*.parquet')
   WHERE ano>=2010 AND cpf IS NOT NULL AND cpf<>''
 ),
+-- Uma linha por grafia, não `any_value(nome)`. A mesma pessoa se registra com
+-- nomes diferentes a cada eleição — Carla Zambelli Salgado em 2018 e Carla
+-- Zambelli Salgado De Oliveira em 2022; Luiz Philippe De Orleans Bragança,
+-- De Orleans E Bragança e De Orleans Braganca nos três registros dela — e só
+-- uma das grafias casa com o quadro societário. Escolher uma a esmo fazia a
+-- lista de empresas de alguém aparecer e sumir conforme a variante sorteada.
+-- Aqui a pessoa é testada por todas as grafias que já usou; o DISTINCT no fim
+-- junta o resultado, e os seis dígitos do CPF seguem prendendo o casamento.
 pes AS (
-  SELECT ca.cpf, any_value(ca.nome) AS nome
-  FROM el JOIN ca ON ca.ano=el.ano AND ca.sequencial=el.seq GROUP BY ca.cpf
+  SELECT DISTINCT ca.cpf, ca.nome
+  FROM el JOIN ca ON ca.ano=el.ano AND ca.sequencial=el.seq
 ),
 soc AS (
   SELECT DISTINCT p.cpf, s.cnpj_basico
