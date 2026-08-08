@@ -20,13 +20,12 @@ qualquer canto do gráfico.
 
 ## O que aparece
 
-**A regra é o patrimônio parado.** Isso surpreende quem espera encontrar uma Câmara de nababos.
-Dos 900 parlamentares com régua comparável, **744 — 83%** ficam abaixo da linha: o patrimônio
-cresceu menos do que o salário do período. A **mediana** — o valor do meio da fila, que deixa
-metade da Câmara abaixo e metade acima, e que por isso não se deixa arrastar por meia dúzia de
-fortunas como aconteceria com a média — é **0,24 vez** o subsídio. Traduzindo: o
-deputado típico sai do mandato com um quarto do que ganhou convertido em bens. Um quarto deles
-não acumulou praticamente nada.
+**Oito em cada dez deputados acumulam menos do que o cargo lhes paga.** São 744 dos 900
+parlamentares com régua comparável — 83%. Não é a Câmara de nababos que se espera encontrar.
+
+O deputado típico transforma em bens **um quarto do salário que recebeu**: 0,24 vez o subsídio,
+contando o valor do meio da fila, que não se deixa puxar por meia dúzia de fortunas. Um quarto
+deles não acumulou praticamente nada.
 
 Entre os eleitos em 2018 que voltaram a se registrar em 2022, **306 dos 471 — 65%** declararam,
 no fim do mandato, ter menos do que o mandato lhes pagou. E **17 deputados federais declararam
@@ -59,10 +58,9 @@ Um aviso antes que alguém use isso errado: **o gráfico e o painel mostram só 
 subsídio.** A régua com empresa foi calculada à parte. Antes de apontar o dedo para um nome,
 cheque o capital social dele — em um caso a cada quatro, muda tudo.
 
-![Mapa de calor com 11 partidos nas linhas e faixas de crescimento patrimonial nas colunas, cada linha somando 100%. A massa de todas as bancadas se concentra em torno de zero, à esquerda da divisa de 1×, e um traço branco marca a mediana de cada partido — do PT, o menor, ao PODE, o maior](/analises/img/partidos-desvio-regua.png)
-
-Nenhuma bancada foge do padrão: em todas a massa fica à esquerda da linha. O que muda é onde
-cai a mediana — de 0,10 vez o subsídio no PT a 0,44 no PODE — e a grossura da cauda à direita.
+**Nenhuma bancada foge do padrão.** Em todas, a maioria acumulou menos do que recebeu. O que
+muda é onde cai a mediana — de 0,10 vez o subsídio no PT a 0,44 no PODE — e o tamanho da cauda
+que passa da linha.
 
 | partido | n | mediana | acima de 1× |
 |---|---:|---:|---:|
@@ -158,6 +156,20 @@ foi reeleito e para quem chegou agora — o reeleito passou mais meses recebendo
 **Dois terços têm empresa.** 683 das 1.025 pessoas aparecem como sócias ou titulares de pelo
 menos uma empresa na Receita Federal. Isso é renda fora do salário, e o painel mostra ao lado do
 patrimônio justamente para não acusar quem tem explicação.
+
+![Dispersão de 18 partidos: tamanho da bancada no eixo horizontal, em escala logarítmica de 10 a 150 deputados, contra o percentual de parlamentares que são sócios de empresa no eixo vertical. Cada ponto é um partido, colorido por espectro — esquerda em terracota, centro em cinza, direita em azul. Uma banda cinza ao fundo marca a faixa em que um partido cairia por puro acaso: larga à esquerda, onde as bancadas são pequenas, e estreita à direita. Quase todos os pontos caem dentro dela. NOVO, com 91%, e PV, com 82%, aparecem no topo mas têm onze deputados cada. PT, PC do B e PSOL ficam isolados abaixo, entre 12% e 42%](/analises/img/socios-por-partido.png)
+
+**E isso quase não muda de partido para partido.** Sete das nove maiores bancadas ficam entre
+71% e 76% de sócios — MDB, PL, PSDB, PSD, UNIÃO, PP e REPUBLICANOS, tão coladas que a diferença
+entre elas não quer dizer nada.
+
+**Quem escapa são três, e todos para baixo:** PT (42%), PC do B (23%) e PSOL (12%). É a única
+divisão que o dado sustenta. Não é centro contra direita — é esses três contra o resto da
+Câmara.
+
+**E o topo da lista não vale manchete.** NOVO aparece com 91% e PV com 82%, mas cada um tem onze
+deputados. Numa bancada desse tamanho, qualquer resultado entre 36% e 91% é sorteio: é o que a
+faixa cinza do gráfico mostra, e quase todos os partidos caem dentro dela.
 
 **Mas quatro em cada dez não põem a empresa na declaração.** A cota é um bem como qualquer
 outro, e o formulário do TSE tem campo próprio para ela — "quotas ou quinhões de capital",
