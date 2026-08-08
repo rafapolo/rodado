@@ -212,9 +212,15 @@
     }
     var html = '<h1>Análises</h1><p class="dek">Cruzamentos e achados a partir de dados públicos.</p><ul class="idx-list">';
     items.forEach(function (it) {
+      // as tags dizem de que fonte pública a reportagem foi tirada — vêm do
+      // manifest, abaixo do resumo, para dar o cheiro do dado antes do clique
+      var tags = (it.tags || []).map(function (t) {
+        return '<span class="tag">' + t + '</span>';
+      }).join('');
       html += '<li><a href="' + encodeURIComponent(it.slug) + '/">' + it.title + '</a>' +
         (it.date ? ' <span class="meta">· ' + it.date + '</span>' : '') +
-        (it.dek ? '<p class="dek">' + it.dek + '</p>' : '') + '</li>';
+        (it.dek ? '<p class="dek">' + it.dek + '</p>' : '') +
+        (tags ? '<p class="tags">' + tags + '</p>' : '') + '</li>';
     });
     docEl.innerHTML = html + '</ul>';
     document.title = 'Análises — rodado';
