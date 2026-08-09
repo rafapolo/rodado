@@ -7,12 +7,13 @@ on:
       - 'pages/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
-  # /analises/shutafut e /analises/patrimonio são buscados dos repos
-  # rafapolo/shutafut e rafapolo/tse-bens a cada deploy. O push no tse-bens
+  # /analises/shutafut, /analises/patrimonio e /analises/rios-do-brasil são
+  # buscados dos repos rafapolo/shutafut, rafapolo/tse-bens e
+  # rafapolo/todos-rios-brasil a cada deploy. O push naqueles repositórios
   # aciona este workflow via repository_dispatch (workflow "Aciona o deploy
-  # no rodado" daquele repositório), então não precisa esperar um cron.
+  # no rodado" de cada um), então não precisa esperar um cron.
   repository_dispatch:
-    types: [tse-bens-updated]
+    types: [tse-bens-updated, rios-updated]
 
 permissions:
   contents: read
@@ -41,16 +42,28 @@ jobs:
         run: |
           cd pages/analises/shutafut
           rm -rf .git .github node_modules generate.js package.json bun.lock
+      # O sha do payload só vale para o repositório que disparou o evento; nos
+      # demais, ref vazio faz o checkout pegar o branch padrão.
       - name: Checkout tse-bens
         uses: actions/checkout@v4
         with:
           repository: rafapolo/tse-bens
-          ref: ${{ github.event.client_payload.sha }}
+          ref: ${{ github.event.action == 'tse-bens-updated' && github.event.client_payload.sha || '' }}
           path: pages/analises/patrimonio
       - name: Remove arquivos não-públicos do tse-bens
         run: |
           cd pages/analises/patrimonio
           rm -rf .git .gitignore README.md screenshot.png
+      - name: Checkout todos-rios-brasil
+        uses: actions/checkout@v4
+        with:
+          repository: rafapolo/todos-rios-brasil
+          ref: ${{ github.event.action == 'rios-updated' && github.event.client_payload.sha || '' }}
+          path: pages/analises/rios-do-brasil
+      - name: Remove arquivos não-públicos do todos-rios-brasil
+        run: |
+          cd pages/analises/rios-do-brasil
+          rm -rf .git .github .gitignore pipeline README.md screenshot.png
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
