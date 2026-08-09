@@ -160,7 +160,7 @@ patrimônio justamente para não acusar quem tem explicação.
 ![Dispersão de 18 partidos: tamanho da bancada no eixo horizontal, em escala logarítmica de 10 a 150 deputados, contra o percentual de parlamentares que são sócios de empresa no eixo vertical. Cada ponto é um partido, colorido por espectro — esquerda em terracota, centro em cinza, direita em azul. Uma banda cinza ao fundo marca a faixa em que um partido cairia por puro acaso: larga à esquerda, onde as bancadas são pequenas, e estreita à direita. Quase todos os pontos caem dentro dela. NOVO, com 91%, e PV, com 82%, aparecem no topo mas têm onze deputados cada. PT, PC do B e PSOL ficam isolados abaixo, entre 12% e 42%](/analises/img/socios-por-partido.png)
 
 **E isso quase não muda de partido para partido.** Sete das nove maiores bancadas ficam entre
-71% e 78% de sócios — MDB, PL, PSDB, PSD, UNIÃO, PP e REPUBLICANOS, tão coladas que a diferença
+71% e 77% de sócios — MDB, PL, PSDB, PSD, UNIÃO, PP e REPUBLICANOS, tão coladas que a diferença
 entre elas não quer dizer nada.
 
 **Quem escapa são três, e todos para baixo:** PT (42%), PC do B (23%) e PSOL (12%). É a única
