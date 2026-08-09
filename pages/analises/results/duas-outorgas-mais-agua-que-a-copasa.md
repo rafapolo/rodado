@@ -171,4 +171,7 @@ trecho da Base Hidrográfica Ottocodificada; Receita Federal — Cadastro Nacion
 Jurídica (empresas, estabelecimentos e quadro societário); Ministério das Cidades — Sistema
 Nacional de Informações sobre Saneamento, 2022; IBGE — Censo Demográfico 2022. Dados
 consultados em agosto de 2026. O mapa da rede de drenagem que originou esta apuração está em
-[Todos os rios do Brasil](../rios-do-brasil/).*
+[Todos os rios do Brasil](../rios-do-brasil/); quanto do que esses rios carregam já saiu de uma
+estação de tratamento, no modo esgoto do mesmo mapa. Se os rios de onde sai a água estão
+minguando ao longo do século é a pergunta de
+[Estes rios estão secando?](../rios-do-brasil/series.html).*
