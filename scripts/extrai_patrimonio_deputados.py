@@ -346,6 +346,49 @@ FROM soc LEFT JOIN cap ON cap.cnpj_basico = soc.cnpj_basico
 ORDER BY soc.cpf, capital DESC, cap.razao;
 """
 
+# Os bens item a item, com a descrição que a própria pessoa escreveu. É a mesma
+# tabela que alimenta SQL_PAINEL, só que sem o GROUP BY que colapsa tudo nas
+# sete macro-categorias: ali se perde justamente o que o leitor quer ver, que é
+# "APARTAMENTO 302 BLOCO B" em vez de "imóveis, R$ 480 mil".
+#
+# São 43.205 linhas para as 1.020 pessoas que declararam algum bem — 2,5 MB de
+# JSON, contra os 373 KB do resto. Por isso saem no arquivo de detalhe, que o
+# painel busca à parte e só quando alguém abre um dossiê.
+#
+# O DISTINCT é o mesmo de SQL_PAINEL, pela mesma razão: bens_candidato traz ~1%
+# de linhas byte-idênticas repetidas. Aqui ele custa um pouco mais caro — dois
+# bens genuinamente iguais pelo mesmo valor (dois lotes irmãos, duas cotas da
+# mesma empresa) colapsam em um, e na lista item a item isso fica visível. Some
+# uma linha, não some valor: o total do painel vem de SQL_PAINEL, que aplica o
+# mesmo DISTINCT.
+SQL_BENS = """SET enable_progress_bar=false;
+WITH el AS (
+  SELECT DISTINCT ano, sequencial_candidato AS seq
+  FROM read_parquet('~/rodado/br_tse_eleicoes/resultados_candidato_municipio/*.parquet')
+  WHERE cargo='deputado federal'
+    AND resultado IN ('eleito por media','eleito por qp') AND ano>=2010
+),
+ca AS (
+  SELECT ano, sequencial, cpf
+  FROM read_parquet('~/rodado/br_tse_eleicoes/candidatos/*.parquet')
+  WHERE ano>=2010 AND cpf IS NOT NULL AND cpf<>''
+),
+pes AS (SELECT DISTINCT ca.cpf FROM el JOIN ca ON ca.ano=el.ano AND ca.sequencial=el.seq),
+alvo AS (
+  SELECT DISTINCT ca.cpf, ca.ano, ca.sequencial AS seq
+  FROM ca JOIN pes ON pes.cpf = ca.cpf
+),
+bens AS (
+  SELECT DISTINCT ano, sequencial_candidato AS seq, tipo_item, descricao_item, valor_item
+  FROM read_parquet('~/rodado/br_tse_eleicoes/bens_candidato/*.parquet')
+  WHERE ano>=2010
+)
+SELECT a.cpf, b.ano, {caso} AS cat,
+       b.descricao_item AS descricao, b.valor_item AS valor
+FROM bens b JOIN alvo a ON a.ano = b.ano AND a.seq = b.seq
+ORDER BY a.cpf, b.ano, b.valor_item DESC;
+"""
+
 # Quanto do ciclo de 2026 já estava protocolado quando o painel foi gerado. A
 # régua é o total de candidaturas de 2022, o ciclo geral anterior — não é o
 # número exato que o prazo vai fechar, mas é a única referência honesta que
@@ -416,6 +459,19 @@ def main() -> None:
     print(f"  {len(empresas)} pessoas com empresa · {n_soc} vínculos",
           file=sys.stderr)
 
+    print("consultando bens item a item…", file=sys.stderr)
+    itens = {}
+    n_itens = 0
+    for b in consulta(monta_sql(SQL_BENS)):
+        # a descrição é texto que a pessoa digitou: vem com espaço duplo, quebra
+        # de linha e sobra de tabulação. Colapsar aqui poupa uns 40 KB e evita
+        # que o painel tenha de tratar disso a cada abertura de ficha.
+        desc = " ".join((b["descricao"] or "").split())
+        itens.setdefault((b["cpf"], int(b["ano"])), []).append(
+            [desc, round(float(b["valor"] or 0)), CATEGORIAS.index(b["cat"])])
+        n_itens += 1
+    print(f"  {n_itens} itens em {len(itens)} declarações", file=sys.stderr)
+
     # ── montagem ────────────────────────────────────────────────────────────
     por_cpf = {}
     for l in linhas:
@@ -484,6 +540,9 @@ def main() -> None:
                 regua,
                 flags,
                 comp if any(comp) else 0,
+                # declaração sem bem nenhum sai como 0, e não como [], pela
+                # mesma economia que comp faz: são 174 declarações vazias
+                itens.get((cpf, ano)) or 0,
             ])
 
         pessoas.append([
@@ -508,7 +567,8 @@ def main() -> None:
             "campos_pessoa": ["nome", "uf", "espectro", "empresas", "capital",
                               "pontos", "empresas_lista"],
             "campos_ponto": ["ano", "partido", "cargo", "total", "regua",
-                             "flags", "comp"],
+                             "flags", "comp", "bens"],
+            "campos_bem": ["descricao", "valor", "categoria"],
             "flags": {"1": "eleito nessa eleição",
                       "2": "régua parcial — houve período em mandato não federal",
                       "4": "ano ainda incompleto no dado do TSE"},
