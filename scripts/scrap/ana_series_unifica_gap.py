@@ -14,7 +14,7 @@ anos sem perder as colunas que só o zip tem.
 
 Regra de conflito, na ordem:
   1. maior `nivel_consistencia` vence — consistido (2) sobre bruto (1), a mesma
-     regra do `ana_series_historicas.py` e do `processa.py` no todos-rios-brasil.
+     regra do `ana_series_historicas.py` e do `processa.py` no rios-do-brasil.
   2. empate resolve pelo zip, que carrega mais colunas e é o dado que a ANA
      publicou como release, não a base secundária do serviço.
 
