@@ -1,4 +1,4 @@
-# ask — perguntas em português → SQL sobre a Base dos Dados
+# ask — perguntas em português → SQL sobre os dados públicos brasileiros
 
 TUI em Rust que converte uma pergunta em linguagem natural para SQL DuckDB, executa a
 consulta contra o banco local e mostra o resultado numa tabela navegável. Também funciona

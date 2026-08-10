@@ -267,7 +267,7 @@ Baseado nos estudos da Fundação Heinrich Böll e artigo acadêmico sobre segre
 
 ---
 
-## Datasets Base dos Dados Utilizáveis
+## Datasets Utilizáveis
 
 | Dataset | Anos | Variáveis Relevantes |
 |---------|------|---------------------|

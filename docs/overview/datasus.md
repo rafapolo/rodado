@@ -4,8 +4,8 @@ O [DATASUS](https://datasus.saude.gov.br/) é o departamento de informática do 
 disponibiliza os dados brutos dos sistemas nacionais de saúde via FTP público em
 `ftp://ftp.datasus.gov.br/dissemin/publicos/`.
 
-Este documento mapeia o que existe no FTP, compara com o que já está no mirror da
-Base dos Dados, e quantifica o esforço de um possível ETL direto.
+Este documento mapeia o que existe no FTP, compara com o que já está no espelho
+local, e quantifica o esforço de um possível ETL direto.
 
 ## Visão Geral do FTP
 
@@ -17,23 +17,23 @@ em `Dados_Abertos/`.
 
 ## Sistemas no FTP
 
-### JÁ cobertos pelo mirror da Base dos Dados
+### JÁ cobertos pelo espelho local
 
-Estes datasets já existem (parcial ou totalmente) no BD. O FTP tem o histórico
-completo e dados mais brutos; o BD entrega em Parquet com schema padronizado.
+Estes datasets já existem (parcial ou totalmente) no espelho. O FTP tem o histórico
+completo e dados mais brutos; o espelho entrega em Parquet com schema padronizado.
 
-| Sistema | Tamanho FTP | Tamanho BD | Descrição |
+| Sistema | Tamanho FTP | Tamanho espelho | Descrição |
 |---------|-------------|------------|-----------|
-| **SIHSUS** | 414 GB | 32 GB | Internações hospitalares (AIH). FTP tem série histórica completa desde 1992; BD tem subconjunto (~7,6 GB AIH + 24 GB serviços prof.) |
-| **SIASUS** | 400 GB | 46 GB | Produção ambulatorial (PA). FTP desde 1994; BD tem ~45 GB de produção ambulatorial |
+| **SIHSUS** | 414 GB | 32 GB | Internações hospitalares (AIH). FTP tem série histórica completa desde 1992; o espelho tem subconjunto (~7,6 GB AIH + 24 GB serviços prof.) |
+| **SIASUS** | 400 GB | 46 GB | Produção ambulatorial (PA). FTP desde 1994; o espelho tem ~45 GB de produção ambulatorial |
 | **CNES** | 49 GB | 24 GB | Cadastro Nacional de Estabelecimentos de Saúde. Dados detalhados por competência: PF (profissional) 42 GB, ST 3 GB, RC 1,5 GB, etc. |
-| **PNI** | 20 GB | ? | Programa Nacional de Imunizações. BD tem `br_ms_imunizacoes` (escopo menor?) |
-| **SINASC** | 6,4 GB | 1,4 GB | Nascidos vivos. FTP desde 1994; BD tem 1,4 GB |
-| **SIM** | 5,7 GB | 872 MB | Mortalidade. FTP desde 1996 (CID9 + CID10); BD tem 872 MB |
+| **PNI** | 20 GB | ? | Programa Nacional de Imunizações. O espelho tem `br_ms_imunizacoes` (escopo menor?) |
+| **SINASC** | 6,4 GB | 1,4 GB | Nascidos vivos. FTP desde 1994; o espelho tem 1,4 GB |
+| **SIM** | 5,7 GB | 872 MB | Mortalidade. FTP desde 1996 (CID9 + CID10); o espelho tem 872 MB |
 | **SINAN (DBC)** | 3,2 GB | 616 MB | Doenças de notificação compulsória. FTP em DBC bruto por agravo |
-| **ANS** | ~0 | 8,3 GB | Diretório vazio no FTP — dados da ANS migraram para portal próprio. BD já tem `br_ans_beneficiario` |
+| **ANS** | ~0 | 8,3 GB | Diretório vazio no FTP — dados da ANS migraram para portal próprio. O espelho já tem `br_ans_beneficiario` |
 
-### NÃO cobertos pelo mirror da Base dos Dados
+### NÃO cobertos pelo espelho local
 
 Candidatos prioritários para ETL direto do FTP:
 
@@ -68,17 +68,17 @@ Pasta com dados já convertidos para formatos abertos:
 | **IBGE** | População (150 MB), projeções populacionais (86 MB), censo (11 MB) — dados auxiliares |
 | **EXTR ESP** | Arquivo tiny de extrato especial |
 
-## Comparação BD vs FTP Direto
+## Comparação espelho vs FTP Direto
 
-### Vantagens do BD (status quo)
+### Vantagens do espelho (status quo)
 - Dados em **Parquet** (colunar, comprimido, consultável via DuckDB)
 - Schema padronizado e documentado
 - Junções entre datasets já mapeadas (`docs/context/join_keys.md`)
 - Particionado por ano/mês/UF
 
 ### Vantagens do FTP direto
-- **Dados mais frescos** (BD tem defasagem de meses)
-- **Série histórica completa** (BD às vezes só tem alguns anos)
+- **Dados mais frescos** (o espelho tem defasagem de meses)
+- **Série histórica completa** (o espelho às vezes só tem alguns anos)
 - **Sistemas inteiros faltando** (SISCAN, CIHA, SISPRENATAL)
 - Sem dependência do pipeline BigQuery → GCS → S3
 
@@ -99,7 +99,7 @@ lftp -c "open ftp://ftp.datasus.gov.br; mirror /dissemin/publicos/SISCAN ./raw/S
 #    - https://github.com/JoaoCarats/pydbc (Python)
 #    - https://github.com/ppoisot/dbf2parquet
 
-# 3. Organizar por dataset/tabela no formato BD
+# 3. Organizar por dataset/tabela no formato do espelho
 #    raw/SISCAN/SISCAN/ -> data/SISCAN/  (particionado por ano)
 
 # 4. Criar views no DuckDB (similar a prepara_db.py)
@@ -107,11 +107,11 @@ lftp -c "open ftp://ftp.datasus.gov.br; mirror /dissemin/publicos/SISCAN ./raw/S
 
 ### Prioridade sugerida
 
-1. **SISCAN** (52 GB) — maior impacto, sem cobertura na BD
+1. **SISCAN** (52 GB) — maior impacto, sem cobertura no espelho
 2. **CIHA** (5,3 GB) — complementar ao SIH
 3. **Dados_Abertos/SINAN** (vários GB, já em CSV) — baixo esforço
 4. **SISPRENATAL** + **painel_oncologia** (< 0,5 GB) — triviais
 
-O resto (~1.100 GB) tem sobreposição significativa com o BD e só valeria a pena se
-houver necessidade de dados mais frescos ou séries históricas completas que o BD não
+O resto (~1.100 GB) tem sobreposição significativa com o espelho e só valeria a pena se
+houver necessidade de dados mais frescos ou séries históricas completas que o espelho não
 cobre.

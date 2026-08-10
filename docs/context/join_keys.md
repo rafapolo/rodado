@@ -84,7 +84,7 @@ LIMIT 20
 
 ### Municipality columns under another name
 
-Sources scraped outside Base dos Dados rarely use `id_municipio`. Each row below is the expression that brings that column back to the directory (aliased `m`, and deduped — see gotcha 1). *verified* is what the expression actually matched when it was run on beelink; those are joined-row counts against the duplicated directory, so roughly twice the municipality count.
+Independently scraped sources rarely use `id_municipio`. Each row below is the expression that brings that column back to the directory (aliased `m`, and deduped — see gotcha 1). *verified* is what the expression actually matched when it was run on beelink; those are joined-row counts against the duplicated directory, so roughly twice the municipality count.
 
 | table | column | stored as | join expression | verified |
 |---|---|---|---|---|

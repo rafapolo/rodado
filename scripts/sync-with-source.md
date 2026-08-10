@@ -1,6 +1,6 @@
-# Syncing beelink with the official Base dos Dados BigQuery source
+# Syncing beelink with the upstream BigQuery source
 
-`beelink:~/baseldosdados-data` is a **separate, local-parquet mirror** of Base dos Dados,
+`beelink:~/baseldosdados-data` is a **separate, local-parquet mirror** of the upstream BigQuery source,
 independent from the S3-view-based `data/basedosdados.duckdb` this repo's live service
 queries (see project CLAUDE.md — the live service never touches BigQuery, only Hetzner S3).
 
@@ -259,7 +259,7 @@ Re-run Step 3's row-count comparison periodically to see how much drift has actu
 ## Known gotchas (hit these already, don't rediscover them)
 
 - Some tables are BigQuery **VIEWs**, not TABLEs — `bq extract` can't touch them at all,
-  and several of Base dos Dados's own views are themselves broken (access denied when
+  and several of the upstream project's own views are themselves broken (access denied when
   queried, e.g. `br_anatel_banda_larga_fixa.{backhaul,pble}`). Skip and move on.
 - `numRows` from `bq show` is `0`/meaningless for VIEWs — never gate solely on it, always
   dry-run before a real query.
