@@ -93,10 +93,13 @@ for dsdir in br_* global_* world_* mundo_* eu_* un_* us_*; do
   for tbdir in "$dsdir"/*/; do
     [ -d "$tbdir" ] || continue
     tbl=$(basename "$tbdir")
+    # ** e nao * : tabelas particionadas (ex. br_ana_telemetria/series_vazao_diaria,
+    # em bacia=XX/) ficavam com rows=0 e num_files=0 no catalogo. O ** tambem casa
+    # arquivo direto no diretorio, entao as tabelas planas seguem contando igual.
     result=$(~/bin/duckdb -csv -c "SET enable_progress_bar=false;
 WITH pm AS (
   SELECT file_name, row_group_id, row_group_num_rows, total_compressed_size
-  FROM parquet_metadata('${tbdir}*.parquet')
+  FROM parquet_metadata('${tbdir}**/*.parquet')
 ),
 row_groups AS (
   SELECT DISTINCT file_name, row_group_id, row_group_num_rows FROM pm
