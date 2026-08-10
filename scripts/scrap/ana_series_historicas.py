@@ -152,7 +152,7 @@ def dedup(df: pl.DataFrame, chaves: list[str]) -> pl.DataFrame:
 
     ANA ships both levels for the same month and naively concatenating them
     double-counts every consisted station. `pipeline/processa.py` in
-    todos-rios-brasil already resolves it this way; same rule here so the two
+    rios-do-brasil already resolves it this way; same rule here so the two
     pipelines can't disagree about what a station's mean flow is.
     """
     return (

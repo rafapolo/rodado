@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
   # /analises/shutafut, /analises/patrimonio e /analises/rios-do-brasil são
   # buscados dos repos rafapolo/shutafut, rafapolo/tse-bens e
-  # rafapolo/todos-rios-brasil a cada deploy. O push naqueles repositórios
+  # rafapolo/rios-do-brasil a cada deploy. O push naqueles repositórios
   # aciona este workflow via repository_dispatch (workflow "Aciona o deploy
   # no rodado" de cada um), então não precisa esperar um cron.
   repository_dispatch:
@@ -54,13 +54,13 @@ jobs:
         run: |
           cd pages/analises/patrimonio
           rm -rf .git .gitignore README.md screenshot.png
-      - name: Checkout todos-rios-brasil
+      - name: Checkout rios-do-brasil
         uses: actions/checkout@v4
         with:
-          repository: rafapolo/todos-rios-brasil
+          repository: rafapolo/rios-do-brasil
           ref: ${{ github.event.action == 'rios-updated' && github.event.client_payload.sha || '' }}
           path: pages/analises/rios-do-brasil
-      - name: Remove arquivos não-públicos do todos-rios-brasil
+      - name: Remove arquivos não-públicos do rios-do-brasil
         run: |
           cd pages/analises/rios-do-brasil
           rm -rf .git .github .gitignore pipeline README.md screenshot.png
