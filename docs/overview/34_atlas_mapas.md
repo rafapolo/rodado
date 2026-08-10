@@ -144,7 +144,7 @@ Os dados do TerraMA2 e geobr em `br_geobr_mapas.terra_indigena` com geometria e 
 | setor_censitario | polygon | 450.000+ |
 | concentracao_urbana | polygon | 30+ |
 
-**Conclusão:** Base dos Dados oferece 450.000+ polygons georreferenciados para análise espacial.
+**Conclusão:** o acervo oferece 450.000+ polygons georreferenciados para análise espacial.
 
 ### 9. Desigualdade territorial: IDHM municipal
 

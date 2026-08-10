@@ -41,7 +41,7 @@ erDiagram
 
 ## Contexto e Síntese dos Dados
 
-O IPCA em `br_ibge_ipca.mes_categoria_municipio` com 49.356 registros detalha inflação por categoria. A ANP em `br_anp_precos_combustiveis.microdados` (dados mensais agregados BD) e `br_anp_combustiveis.precos` (2.006.614 linhas, pesquisa semanal por posto CNPJ, 2022-2026) revelam preços de combustíveis por bandeira, produto e município.
+O IPCA em `br_ibge_ipca.mes_categoria_municipio` com 49.356 registros detalha inflação por categoria. A ANP em `br_anp_precos_combustiveis.microdados` (dados mensais agregados) e `br_anp_combustiveis.precos` (2.006.614 linhas, pesquisa semanal por posto CNPJ, 2022-2026) revelam preços de combustíveis por bandeira, produto e município.
 
 ## Revelações Importantes — Consumo
 

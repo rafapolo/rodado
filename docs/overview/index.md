@@ -1,6 +1,6 @@
-# Base dos Dados Brasil para Pesquisa em Ciências Sociais
+# Dados Públicos do Brasil para Pesquisa em Ciências Sociais
 
-Este projeto oferece uma visão integrada do ecossistema de dados da **Base dos Dados Brasil**, conectando 533 tabelas e milhares de variáveis disponíveis para pesquisa em ciências sociais. A versão atual cobre **43 temas temáticos** organizados em seções navegáveis.
+Este projeto oferece uma visão integrada do ecossistema de dados públicos brasileiros, conectando 533 tabelas e milhares de variáveis disponíveis para pesquisa em ciências sociais. A versão atual cobre **43 temas temáticos** organizados em seções navegáveis.
 
 ---
 

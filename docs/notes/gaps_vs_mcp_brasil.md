@@ -1,6 +1,6 @@
 # Gaps vs mcp-brasil
 
-Comparação entre o rodado (Basedosdados mirror + scrapers) e o [mcp-brasil](https://github.com/Mcp-Brasil/mcp-brasil) (533 tools, 70 fontes).
+Comparação entre o rodado (mirror de dados públicos + scrapers) e o [mcp-brasil](https://github.com/Mcp-Brasil/mcp-brasil) (533 tools, 70 fontes).
 
 ## Paradigma
 
@@ -13,7 +13,7 @@ Comparação entre o rodado (Basedosdados mirror + scrapers) e o [mcp-brasil](ht
 
 ## Cobertura compartilhada
 
-Ambös cobrem (via BD ou mcp-brasil):
+Ambos cobrem (via rodado ou mcp-brasil):
 BCB, BNDES, Câmara, CGU/Transparência, Educação (INEP), Eleições (TSE), IBGE, INPE, IPEA, Meio Ambiente (MapBiomas), MS/Saúde (CNES, SIM, SINASC etc.), Portal da Transparência, RAIS/CAGED, Receita Federal, SICONFI, STF, ANP, PNCP/ComprasNet.
 
 ## Gaps
@@ -36,7 +36,7 @@ BCB, BNDES, Câmara, CGU/Transparência, Educação (INEP), Eleições (TSE), IB
 
 ## Maiores gaps estruturais
 
-1. **TCEs estaduais** — 11 estados com APIs de licitações, contratos, despesas municipais. Nada disso está no Basedosdados.
+1. **TCEs estaduais** — 11 estados com APIs de licitações, contratos, despesas municipais. Nada disso está no espelho.
 2. **DataJud** — processos judiciais vivos. CNJ stats são agregados; DataJud é粒ado (grão de processo).
 3. **BrasilAPI** — utilidades (CEP, CNPJ, DDD, FIPE). Dado transacional que faz sentido live, não mirror.
 4. **Diários municipais (Querido Diário)** — 5K+ cidades. Escala inviável pra mirror.
@@ -44,6 +44,6 @@ BCB, BNDES, Câmara, CGU/Transparência, Educação (INEP), Eleições (TSE), IB
 ## Observações
 
 - mcp-brasil é um **MCP server** (live API). rodado é um **ETL + SQL endpoint**. Não são concorrentes diretos.
-- Nosso diferencial: SQL direto em 533 tabelas BD normalizadas com schema unificado.
+- Nosso diferencial: SQL direto em 533 tabelas normalizadas com schema unificado.
 - Dá pra preencher alguns gaps com scrapers adicionais (ex: ANEEL, ANTT têm CKAN).
 - TCEs e DataJud seriam os de maior valor, mas exigem sync contínuo (não batch).

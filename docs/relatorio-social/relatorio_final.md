@@ -1,6 +1,6 @@
-# Relatório Final — Perguntas Sociológicas Respondidas pela Base dos Dados
+# Relatório Final — Perguntas Sociológicas Respondidas pelos Dados Públicos
 
-**Repositório:** `basedosdados`
+**Repositório:** `rodado`
 **Data:** Abril 2026
 **Escopo:** 50 perguntas de pesquisa em ciências sociais, organizadas em 16 temas
 
@@ -8,7 +8,7 @@
 
 ## Sumário Executivo
 
-Este relatório apresenta 50 perguntas de pesquisa em ciências sociais que podem ser respondidas utilizando a Base dos Dados Brasil. Para cada tema, identificamos as tabelas, colunas e relações entre bases que permitem investigar questões sociológicas complexas sobre desigualdade, educação, saúde, trabalho, política, meio ambiente e desenvolvimento.
+Este relatório apresenta 50 perguntas de pesquisa em ciências sociais que podem ser respondidas utilizando o acervo de dados públicos brasileiros. Para cada tema, identificamos as tabelas, colunas e relações entre bases que permitem investigar questões sociológicas complexas sobre desigualdade, educação, saúde, trabalho, política, meio ambiente e desenvolvimento.
 
 ---
 
@@ -442,4 +442,4 @@ A maioria das perguntas requer joins entre múltiplas tabelas usando:
 
 ## Conclusão
 
-A Base dos Dados Brasil oferece um ecossistema completo para pesquisa em ciências sociais, com 533 tabelas cobrindo desde censos demográficos (1970-2022) até dados administrativos de saúde, educação, trabalho, política e meio ambiente. A articulação entre bases — possível através de identificadores padronizados (`id_municipio`, `sigla_uf`, `cbo_2002`, `cnae_2`) — permite responder perguntas de pesquisa complexas que exigem cruzamentos multidimensionais entre variáveis demográficas, econômicas e sociais.
+O acervo oferece um ecossistema completo para pesquisa em ciências sociais, com 533 tabelas cobrindo desde censos demográficos (1970-2022) até dados administrativos de saúde, educação, trabalho, política e meio ambiente. A articulação entre bases — possível através de identificadores padronizados (`id_municipio`, `sigla_uf`, `cbo_2002`, `cnae_2`) — permite responder perguntas de pesquisa complexas que exigem cruzamentos multidimensionais entre variáveis demográficas, econômicas e sociais.

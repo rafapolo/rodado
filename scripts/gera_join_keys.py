@@ -9,7 +9,7 @@ The previous version of the doc was written by hand (its header credited a
 whose names already matched across datasets. That misses most of what actually
 connects the mirror: the independently-scraped sources name the same key
 `UF`, `codIBGE`, `cód_ibge`, `MUNIC`, `CPF_CNPJ`, `nomeMunicipio`…, and the
-Base dos Dados datasets carry role-qualified municipality columns
+mirrored datasets carry role-qualified municipality columns
 (`id_municipio_residencia`, `_ocorrencia`, `_trabalho`, …) that all resolve to
 the same directory. Those are the joins an LLM cannot guess.
 
@@ -1189,7 +1189,7 @@ def render_municipio_bridges():
     out = [
         "### Municipality columns under another name",
         "",
-        "Sources scraped outside Base dos Dados rarely use `id_municipio`. Each "
+        "Independently scraped sources rarely use `id_municipio`. Each "
         "row below is the expression that brings that column back to the "
         "directory (aliased `m`, and deduped — see gotcha 1). *verified* is what "
         "the expression actually matched when it was run on beelink; those are "
