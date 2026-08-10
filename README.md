@@ -1,6 +1,6 @@
 # rodado — Brasil em números, retratos dos dados oficiais
 
-> 839 tabelas públicas brasileiras — a maior parte espelhada da Base dos Dados (RAIS, SIM, TSE, CGU, IBGE, INEP, CNES e outras fontes oficiais), complementada com mais de 40 fontes raspadas de forma independente — lidas a partir de perguntas investigativas, não de uma vitrine técnica: o que esses registros, cruzados, revelam sobre desigualdade, poder, economia, saúde e violência no Brasil?
+> 839 tabelas públicas brasileiras — de instituições oficiais (RAIS, SIM, TSE, CGU, IBGE, INEP, CNES e outras), somadas a mais de 40 fontes raspadas de forma independente — lidas a partir de perguntas investigativas, não de uma vitrine técnica: o que esses registros, cruzados, revelam sobre desigualdade, poder, economia, saúde e violência no Brasil?
 
 **[rodado.xyz](https://rodado.xyz)** — os 43 temas publicados · [English](https://rodado.xyz/en.html)
 
@@ -66,7 +66,7 @@ As 839 tabelas cobrem 43 domínios temáticos, cada um documentado em [`overview
 
 ## Sobre os dados
 
-Os dados vêm principalmente da [Base dos Dados](https://basedosdados.org), que mantém um espelho público de centenas de tabelas de instituições brasileiras no BigQuery — este projeto reexporta essas tabelas para armazenamento próprio, sem precisar importar nada localmente. Além do espelho, mais de 40 fontes são raspadas de forma independente para cobrir o que a Base dos Dados não tem (sanções nacionais e internacionais, SICAF, SINAN Violência, reclamações de consumidor e mais). No total, 839 tabelas (mais de 675 GB em Parquet+zstd) são consultadas sob demanda via DuckDB, o que permite cruzar bases de ministérios, tribunais, institutos e fontes independentes numa única consulta SQL.
+Os dados vêm de instituições públicas brasileiras — ministérios, tribunais, institutos e agências reguladoras — reunidos em um espelho próprio em Parquet, sem precisar importar nada localmente. Mais de 40 dessas fontes são raspadas de forma independente, cobrindo o que não está disponível em nenhum repositório consolidado (sanções nacionais e internacionais, SICAF, SINAN Violência, reclamações de consumidor e mais). No total, 839 tabelas (mais de 675 GB em Parquet+zstd) são consultadas sob demanda via DuckDB, o que permite cruzar bases de ministérios, tribunais, institutos e fontes independentes numa única consulta SQL.
 
 ## Leia também
 

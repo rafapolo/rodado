@@ -232,7 +232,7 @@ Full map in [`ERD.md`](ERD.md) — pt-BR, English in [`ERD_EN.md`](ERD_EN.md) �
 ┌──────────────────────────────────────────────────────────────────┐
 │                      INGESTION PIPELINE                          │
 │                                                                  │
-│   BigQuery (basedosdados project)                                │
+│   BigQuery (public mirror project)                               │
 │     → GCS export (Parquet + zstd, parallel jobs)               │
 │     → Hetzner S3 (rclone streaming, no intermediate disk)      │
 │   scripts/roda.sh — resumable, dry-run, GCP VM option          │

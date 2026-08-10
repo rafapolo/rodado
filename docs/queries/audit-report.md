@@ -1,6 +1,6 @@
-# Relatório de Auditoria — Base dos Dados (DuckDB)
+# Relatório de Auditoria — Compras Públicas (DuckDB)
 
-Análise de auditoria dos 8 padrões de risco para detecção de fraudes em compras públicas, implementados sobre o banco de dados DuckDB da Base dos Dados.
+Análise de auditoria dos 8 padrões de risco para detecção de fraudes em compras públicas, implementados sobre o banco de dados DuckDB do projeto.
 
 ---
 
