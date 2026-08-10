@@ -1,6 +1,6 @@
-# Perguntas Sociológicas para Base dos Dados
+# Perguntas Sociológicas para os Dados Públicos Brasileiros
 
-Este documento apresenta 50 perguntas de pesquisa em ciências sociais que podem ser respondidas utilizando a Base dos Dados Brasil. As perguntas foram elaboradas para explorar relações complexas entre múltiplas dimensões sociais, cruzando dados de censos, saúde, educação, trabalho, política, segurança e infraestrutura.
+Este documento apresenta 50 perguntas de pesquisa em ciências sociais que podem ser respondidas utilizando o acervo de dados públicos brasileiros. As perguntas foram elaboradas para explorar relações complexas entre múltiplas dimensões sociais, cruzando dados de censos, saúde, educação, trabalho, política, segurança e infraestrutura.
 
 ---
 

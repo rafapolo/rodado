@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**baseldosdados** mirrors the [Base dos Dados](https://basedosdados.org) project — public BigQuery tables exported as Parquet+zstd to Hetzner Object Storage (S3-compatible) — and extends it with independently-scraped sources that fill gaps Base dos Dados doesn't cover (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/datasets_to_scrap.md` for the full catalog and provenance of every source). 839 tables (204 datasets, 37,7 bilhões de linhas) as of 2026-07-26 — a DuckDB view `_rodado_metadata` on beelink tracks each table's rows, source, status, and provenance. `_rodado_datasets` aggregates by dataset. DuckDB queries the data on-demand without local imports. An AI-powered TUI converts Portuguese natural language to SQL.
+**baseldosdados** mirrors public Brazilian government tables — exported as Parquet+zstd to Hetzner Object Storage (S3-compatible) — and extends that mirror with independently-scraped sources that fill the remaining gaps (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/datasets_to_scrap.md` for the full catalog and provenance of every source). 839 tables (204 datasets, 37,7 bilhões de linhas) as of 2026-07-26 — a DuckDB view `_rodado_metadata` on beelink tracks each table's rows, source, status, and provenance. `_rodado_datasets` aggregates by dataset. DuckDB queries the data on-demand without local imports. An AI-powered TUI converts Portuguese natural language to SQL.
 
 ## Commands
 

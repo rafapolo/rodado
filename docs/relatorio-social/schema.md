@@ -1,6 +1,6 @@
-# Schema Completo — Base dos Dados Brasil para Pesquisa em Ciências Sociais
+# Schema Completo — Dados Públicos do Brasil para Pesquisa em Ciências Sociais
 
-Este arquivo contém o **índice completo de todas as tabelas, variáveis e cruzamentos** documentados no projeto Base dos Dados Brasil. O volume total de dados atinge **675,4 GB**, com **533 tabelas** organizadas em **34 temas temáticos**.
+Este arquivo contém o **índice completo de todas as tabelas, variáveis e cruzamentos** documentados no projeto. O volume total de dados atinge **675,4 GB**, com **533 tabelas** organizadas em **34 temas temáticos**.
 
 A padronização de identificadores (`id_municipio`, `sigla_uf`, `cbo_2002`, `cnae_2`, `ano`, `mes`) permite cruzar praticamente qualquer tabela com qualquer outra.
 
