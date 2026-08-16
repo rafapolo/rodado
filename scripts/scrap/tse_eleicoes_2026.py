@@ -189,7 +189,9 @@ COPY (
     lp(b.SQ_CANDIDATO)                                   AS sequencial_candidato,
     lp(b.DS_TIPO_BEM_CANDIDATO)                          AS tipo_item,
     lp(b.DS_BEM_CANDIDATO)                               AS descricao_item,
-    CAST(replace(lp(b.VR_BEM_CANDIDATO), ',', '.') AS DOUBLE) AS valor_item
+    -- TRY_CAST: o TSE já publicou valor com estouro de campo ('###...###') em
+    -- vez de número — vira NULL, tolerado abaixo, em vez de derrubar a carga
+    TRY_CAST(replace(lp(b.VR_BEM_CANDIDATO), ',', '.') AS DOUBLE) AS valor_item
   FROM {LER_BENS} b
   LEFT JOIN tit ON tit.sq = lp(b.SQ_CANDIDATO)
   WHERE b.ANO_ELEICAO = '{ANO}'
@@ -337,7 +339,9 @@ def main() -> None:
         erros.append(f"{v['cpf_ruim']} CPFs fora do formato de 11 dígitos")
     if v["cargos"] < 5:
         erros.append(f"só {v['cargos']} cargos distintos — arquivo parcial?")
-    if v["valor_nulo"]:
+    # tolera um traço de estouro de campo do TSE (ex.: '###...###' em vez de
+    # número); acima disso é sinal de problema real de conversão, não ruído
+    if v["valor_nulo"] > v["bens"] * 0.001:
         erros.append(f"{v['valor_nulo']} valores de bem não converteram")
 
     # o registro só cresce até o prazo: encolher é sinal de download truncado.
