@@ -1,0 +1,1464 @@
+<title>Rodado Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+
+<style>
+:root {
+  color-scheme: light;
+  --ground:  #f4f6f9;
+  --rail:    #ffffff;
+  --card:    #ffffff;
+  --card-2:  #eef1f6;
+  --ink:     #0e1319;
+  --ink-2:   #5a6473;
+  --ink-3:   #8a93a3;
+  --line:    #dfe4ec;
+  --line-2:  #c6cede;
+  --shadow:  0 1px 2px rgba(14,19,25,.06), 0 8px 24px rgba(14,19,25,.07);
+
+  /* Themes. Eight hues in fixed order by size, plus two neutrals: the
+     reference directories are the substrate rather than a subject, and the
+     international set is the one peripheral topic. Only four hues clear the
+     all-pairs CVD gate, so the theme layout gives each one a labelled
+     territory and any theme can be isolated in one click — colour reinforces
+     identity here, it never carries it alone. */
+  --t-educacao:      #2a78d6;
+  --t-demografia:    #eb6834;
+  --t-economia:      #1baf7a;
+  --t-governo:       #eda100;
+  --t-territorio:    #e87ba4;
+  --t-politica:      #008300;
+  --t-justica:       #4a3aa7;
+  --t-saude:         #e34948;
+  --t-referencia:    #7c8798;
+  --t-internacional: #b3bcc9;
+  --t-outros:        #b3bcc9;
+  --hub:     #5a6473;
+  --focus:   #2a78d6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ground:  #0e1116;
+    --rail:    #12161d;
+    --card:    #171c24;
+    --card-2:  #1e242e;
+    --ink:     #e6eaf1;
+    --ink-2:   #98a2b2;
+    --ink-3:   #6b7484;
+    --line:    #242a34;
+    --line-2:  #39414f;
+    --shadow:  0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    --t-educacao:      #3987e5;
+    --t-demografia:    #d95926;
+    --t-economia:      #199e70;
+    --t-governo:       #c98500;
+    --t-territorio:    #d55181;
+    --t-politica:      #008300;
+    --t-justica:       #9085e9;
+    --t-saude:         #e66767;
+    --t-referencia:    #788292;
+    --t-internacional: #49515e;
+    --t-outros:        #49515e;
+    --hub:     #98a2b2;
+    --focus:   #3987e5;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ground:  #0e1116;
+  --rail:    #12161d;
+  --card:    #171c24;
+  --card-2:  #1e242e;
+  --ink:     #e6eaf1;
+  --ink-2:   #98a2b2;
+  --ink-3:   #6b7484;
+  --line:    #242a34;
+  --line-2:  #39414f;
+  --shadow:  0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+  --t-educacao:      #3987e5;
+  --t-demografia:    #d95926;
+  --t-economia:      #199e70;
+  --t-governo:       #c98500;
+  --t-territorio:    #d55181;
+  --t-politica:      #008300;
+  --t-justica:       #9085e9;
+  --t-saude:         #e66767;
+  --t-referencia:    #788292;
+  --t-internacional: #49515e;
+  --t-outros:        #49515e;
+  --hub:     #98a2b2;
+  --focus:   #3987e5;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", -apple-system, "Segoe UI", Arial, sans-serif;
+  font-size: 14px;
+  height: 100dvh;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 296px 1fr;
+}
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 3px; }
+
+/* ── rail ────────────────────────────────────────────────────────── */
+.rail {
+  background: var(--rail);
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  z-index: 3;
+}
+.rail-head { padding: 14px 18px 14px; border-bottom: 1px solid var(--line); }
+.back {
+  display: inline-block; margin-bottom: 7px;
+  font-size: 11.5px; color: var(--ink-3); text-decoration: none;
+}
+.back:hover { color: var(--ink); }
+.rail-head h1 {
+  margin: 0 0 3px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+.sub { margin: 0; font-size: 12px; color: var(--ink-2); line-height: 1.5; }
+
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border-bottom: 1px solid var(--line); }
+.stat { background: var(--rail); padding: 10px 18px 11px; }
+.stat b {
+  display: block;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 16px; font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.02em;
+}
+.stat span { font-size: 10.5px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .07em; }
+
+.searchbox { padding: 12px 14px; border-bottom: 1px solid var(--line); }
+#q {
+  width: 100%; padding: 8px 10px;
+  font: 500 13px "IBM Plex Mono", ui-monospace, monospace;
+  color: var(--ink);
+  background: var(--card-2);
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+}
+#q::placeholder { color: var(--ink-3); font-weight: 400; }
+
+.legend { padding: 13px 18px 14px; border-bottom: 1px solid var(--line); }
+.legend-t, .list-t {
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--ink-3); margin: 0 0 9px;
+}
+.modes { display: flex; flex-direction: column; gap: 5px; }
+.modes button {
+  display: block; width: 100%; text-align: left; cursor: pointer;
+  background: none; border: 1px solid var(--line); border-radius: 6px;
+  padding: 7px 9px; line-height: 1.35;
+}
+.modes button:hover { border-color: var(--line-2); }
+.modes button[aria-pressed="true"] { border-color: var(--focus); background: var(--card-2); }
+.modes .nm { display: block; font-size: 12.5px; font-weight: 500; }
+.modes .ds { display: block; font-size: 11px; color: var(--ink-3); margin-top: 1px; }
+
+.leg { display: flex; flex-direction: column; gap: 7px; }
+.leg button {
+  display: flex; align-items: center; gap: 9px;
+  background: none; border: 0; padding: 1px 0; cursor: pointer;
+  text-align: left; width: 100%; line-height: 1.35;
+}
+.leg button[aria-pressed="false"] { opacity: .45; }
+.leg .tick {
+  width: 13px; height: 13px; border-radius: 3px; flex: none;
+  border: 1px solid var(--line-2); background: var(--card-2);
+  position: relative;
+}
+.leg button[aria-pressed="true"] .tick { background: var(--hub); border-color: var(--hub); }
+.leg button[aria-pressed="true"] .tick::after {
+  content: ""; position: absolute; left: 3.5px; top: 1px;
+  width: 3px; height: 7px; border: solid var(--rail);
+  border-width: 0 1.6px 1.6px 0; transform: rotate(42deg);
+}
+.dot { width: 9px; height: 9px; border-radius: 2.5px; flex: none; }
+.leg .nm { font-size: 12.5px; }
+.leg .ct {
+  margin-left: auto;
+  font-family: "IBM Plex Mono", monospace; font-size: 11px;
+  font-variant-numeric: tabular-nums; color: var(--ink-3);
+}
+
+.list-wrap { flex: 1; min-height: 0; overflow-y: auto; padding: 13px 0 24px; }
+.list-t { padding: 0 18px; }
+.row {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%; background: none; border: 0; cursor: pointer;
+  padding: 4px 18px; text-align: left;
+}
+.row:hover, .row.on { background: var(--card-2); }
+.row .nm {
+  font-family: "IBM Plex Mono", monospace; font-size: 11.5px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.row .bar { margin-left: auto; width: 46px; height: 4px; border-radius: 2px; background: var(--line); flex: none; overflow: hidden; }
+.row .bar i { display: block; height: 100%; border-radius: 2px; }
+.row .ct {
+  font-family: "IBM Plex Mono", monospace; font-size: 10.5px;
+  font-variant-numeric: tabular-nums; color: var(--ink-3);
+  width: 30px; text-align: right; flex: none;
+}
+.empty { padding: 10px 18px; font-size: 12px; color: var(--ink-3); }
+
+/* ── stage ───────────────────────────────────────────────────────── */
+.stage { position: relative; min-width: 0; overflow: hidden; }
+canvas { display: block; width: 100%; height: 100%; cursor: grab; }
+canvas.drag { cursor: grabbing; }
+
+.hud {
+  position: absolute; left: 14px; bottom: 14px;
+  display: flex; align-items: stretch; gap: 1px;
+  background: var(--line); border: 1px solid var(--line);
+  border-radius: 7px; overflow: hidden; box-shadow: var(--shadow);
+}
+.hud > * {
+  background: var(--rail); border: 0; padding: 6px 11px;
+  font-family: "IBM Plex Mono", monospace; font-size: 11px;
+  font-variant-numeric: tabular-nums; color: var(--ink-2);
+  display: flex; align-items: center;
+}
+.hud button { cursor: pointer; }
+.hud button:hover { background: var(--card-2); color: var(--ink); }
+#lod { color: var(--ink); font-weight: 500; }
+
+.tip {
+  position: absolute; pointer-events: none; z-index: 5;
+  background: var(--rail); border: 1px solid var(--line-2);
+  border-radius: 6px; padding: 6px 9px; box-shadow: var(--shadow);
+  font-family: "IBM Plex Mono", monospace; font-size: 11.5px;
+  white-space: nowrap; opacity: 0; transition: opacity .1s;
+}
+.tip.on { opacity: 1; }
+.tip em { font-style: normal; color: var(--ink-3); }
+
+/* ── inspector ───────────────────────────────────────────────────── */
+.insp {
+  position: absolute; top: 0; right: 0; bottom: 0; width: 340px;
+  background: var(--rail); border-left: 1px solid var(--line);
+  display: flex; flex-direction: column;
+  transform: translateX(100%); transition: transform .22s cubic-bezier(.4,0,.2,1);
+  z-index: 4;
+}
+.insp.on { transform: none; }
+.insp-head { padding: 15px 16px 13px; border-bottom: 1px solid var(--line); display: flex; gap: 10px; align-items: flex-start; }
+.insp-head .kind { font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-3); display: block; margin-bottom: 4px; }
+.insp-head h2 {
+  margin: 0; font-family: "IBM Plex Mono", monospace;
+  font-size: 14px; font-weight: 600; line-height: 1.35; word-break: break-word;
+}
+.close { background: none; border: 0; cursor: pointer; font-size: 17px; line-height: 1; color: var(--ink-3); padding: 2px 3px; margin-left: auto; }
+.close:hover { color: var(--ink); }
+.insp-body { flex: 1; overflow-y: auto; padding: 14px 16px 28px; }
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 11px 12px; margin-bottom: 15px; }
+.fact b {
+  display: block; font-family: "IBM Plex Mono", monospace;
+  font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.fact span { font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); }
+.note { font-size: 12.5px; line-height: 1.55; color: var(--ink-2); margin: 0 0 14px; }
+.note-src { font-size: 10.5px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; margin: 0 0 5px; }
+.sec { font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-3); margin: 16px 0 8px; }
+.cols { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.col {
+  display: flex; align-items: baseline; gap: 8px; padding: 4px 9px;
+  font-family: "IBM Plex Mono", monospace; font-size: 11.5px;
+  border-bottom: 1px solid var(--line);
+}
+.col:last-child { border-bottom: 0; }
+.col.key { background: var(--card-2); }
+.col .ty { margin-left: auto; font-size: 10px; color: var(--ink-3); }
+.col .kd { width: 7px; height: 7px; border-radius: 2px; flex: none; align-self: center; }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--card-2); border: 1px solid var(--line);
+  border-radius: 5px; padding: 3px 7px; cursor: pointer;
+  font-family: "IBM Plex Mono", monospace; font-size: 11px;
+}
+.chip:hover { border-color: var(--line-2); }
+.chip i { width: 7px; height: 7px; border-radius: 2px; display: block; }
+.tlist { display: flex; flex-direction: column; }
+.tlist button {
+  display: flex; gap: 10px; align-items: baseline;
+  background: none; border: 0; border-bottom: 1px solid var(--line);
+  padding: 5px 2px; cursor: pointer; text-align: left; width: 100%;
+  font-family: "IBM Plex Mono", monospace; font-size: 11.5px;
+}
+.tlist button:hover { color: var(--focus); }
+.tlist .t { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tlist .r {
+  margin-left: auto; flex: none; white-space: nowrap;
+  font-size: 10.5px; color: var(--ink-3); font-variant-numeric: tabular-nums;
+}
+
+.rail-toggle { display: none; }
+
+@media (max-width: 860px) {
+  body { grid-template-columns: 1fr; }
+  .rail {
+    position: absolute; inset: 0 auto 0 0; width: 296px;
+    transform: translateX(-100%); transition: transform .22s cubic-bezier(.4,0,.2,1);
+    box-shadow: var(--shadow);
+  }
+  .rail.on { transform: none; }
+  /* the toggle sits at the far left, which is under the open drawer */
+  body:has(.rail.on) .rail-toggle { left: 310px; }
+  .rail-toggle {
+    display: flex; position: absolute; top: 14px; left: 14px; z-index: 3;
+    background: var(--rail); border: 1px solid var(--line); border-radius: 7px;
+    padding: 7px 12px; cursor: pointer; box-shadow: var(--shadow);
+    font-size: 12px; font-weight: 500;
+  }
+  .insp { width: min(340px, 88vw); }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0s !important; }
+}
+</style>
+
+<aside class="rail" id="rail">
+  <div class="rail-head">
+    <a class="back" href="/">← rodado</a>
+    <h1>Rodado Atlas</h1>
+    <p class="sub">O espelho não tem chave estrangeira — é parquet. O que o conecta são colunas que significam a mesma coisa em mais de uma tabela. Cada pastilha é uma dessas chaves.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b id="s-t">—</b><span>tabelas</span></div>
+    <div class="stat"><b id="s-d">—</b><span>datasets</span></div>
+    <div class="stat"><b id="s-k">—</b><span>chaves</span></div>
+    <div class="stat"><b id="s-e">—</b><span>ligações</span></div>
+  </div>
+
+  <div class="searchbox">
+    <input id="q" type="search" placeholder="buscar tabela, dataset ou chave" autocomplete="off" spellcheck="false" aria-label="Buscar">
+  </div>
+
+  <div class="legend">
+    <p class="legend-t">Distribuição</p>
+    <div class="modes" id="modes"></div>
+  </div>
+
+  <div class="legend">
+    <p class="legend-t">Filtrar chaves</p>
+    <div class="leg" id="leg"></div>
+  </div>
+
+  <div class="list-wrap">
+    <p class="list-t" id="list-t">Temas</p>
+    <div id="list"></div>
+  </div>
+</aside>
+
+<div class="stage" id="stage">
+  <button class="rail-toggle" id="railToggle" aria-expanded="false">Painel</button>
+  <canvas id="cv"></canvas>
+  <div class="tip" id="tip"></div>
+
+  <div class="hud">
+    <button id="zout" title="Afastar" aria-label="Afastar">−</button>
+    <div id="zlvl">100%</div>
+    <button id="zin" title="Aproximar" aria-label="Aproximar">+</button>
+    <div id="lod">datasets</div>
+    <button id="reset" title="Ver tudo">tudo</button>
+    <button id="home" title="Voltar ao ponto de partida">início</button>
+  </div>
+
+  <aside class="insp" id="insp" aria-live="polite">
+    <div class="insp-head">
+      <div>
+        <span class="kind" id="i-kind"></span>
+        <h2 id="i-name"></h2>
+      </div>
+      <button class="close" id="i-close" aria-label="Fechar">✕</button>
+    </div>
+    <div class="insp-body" id="i-body"></div>
+  </aside>
+</div>
+
+<script type="application/json" id="graph">__GRAPH_JSON__</script>
+
+<script>
+"use strict";
+/* The graph travels one of two ways. Published as an Artifact the page must be
+   self-contained, so it is inlined above; served from rodado.xyz it is fetched
+   beside the page, which keeps a 630 KB blob out of every commit. */
+{
+  const el = document.getElementById("graph");
+  const inline = el.textContent.trim();
+  if (inline && inline !== "__GRAPH" + "_JSON__") boot(JSON.parse(inline));
+  else fetch("schema_graph.json").then(r => {
+    if (!r.ok) throw new Error(r.status);
+    return r.json();
+  }).then(boot).catch(err => {
+    document.getElementById("stage").innerHTML =
+      '<p style="padding:40px;max-width:34em;line-height:1.6">Não consegui carregar ' +
+      '<code>schema_graph.json</code> (' + err.message + '). O arquivo precisa estar ' +
+      'na mesma pasta desta página.</p>';
+  });
+}
+
+function boot(G) {
+const DS = G.datasets, KS = G.keys, TB = G.tables;
+const [CELL_W, CELL_H, PAD, HEADER] = G.layout.cell;
+
+/* Three ways of distributing the same 833 tables. `grade` packs them into
+   dataset cards — most legible, least expressive about affinity. The other two
+   put every table in the field as a body of its own. */
+const MODES = [
+  ["grade",     "Grade",      "cartões de dataset empacotados; tabelas em grade dentro"],
+  ["gravidade", "Gravidade",  "n corpos livres: cada tabela puxada pelas chaves que carrega"],
+  ["orbita",    "Órbita",     "cada chave é um centro; suas tabelas em anel ao redor"],
+  ["temas",     "Temas",      "um território por tema; as chaves flutuam entre os que ligam"],
+];
+let mode = "grade";
+const isDisc = () => mode !== "grade";
+let L = G.layout[mode];
+
+/* Key category -> filter group. These four no longer carry colour — colour
+   means theme now — but they stay as the switch that takes ano/mes/sigla_uf
+   out of the drawing, which is what makes the entity keys readable. */
+const GROUP_OF = {
+  empresa: "id", pessoa: "id",
+  municipio: "geo", uf: "geo", geo: "geo",
+  saude: "dom", educacao: "dom", governo: "dom",
+  politica: "dom", classificacao: "dom",
+  tempo: "axis", outros: "axis",
+};
+const GROUPS = [
+  ["id",   "Identidade",  "CNPJ, CPF e seus apelidos"],
+  ["dom",  "Domínio",     "CNES, escola, órgão, CNAE"],
+  ["geo",  "Geografia",   "município, UF, setor, CEP"],
+  ["axis", "Eixo",        "ano, mês e o resto"],
+];
+
+/* Themes, in fixed hue order by size. The last two are neutral on purpose:
+   the directories are the substrate every other theme joins against, and the
+   international set is the one peripheral topic. */
+const THEMES = [
+  "educacao", "demografia", "economia", "governo", "territorio",
+  "politica", "justica", "saude", "referencia", "internacional", "outros",
+];
+const THEME_SHORT = {
+  educacao: "Educação", demografia: "Demografia", economia: "Economia",
+  governo: "Governo", territorio: "Território", politica: "Política",
+  justica: "Justiça", saude: "Saúde", referencia: "Referência",
+  internacional: "Internacional", outros: "Outros",
+};
+const themeOf = ti => DS[TB[ti].ds].dom;
+
+
+/* ── derived indexes ─────────────────────────────────────────────── */
+const dsTables = DS.map(() => []);
+TB.forEach((t, i) => dsTables[t.ds].push(i));
+const keyTables = KS.map(() => []);
+TB.forEach((t, i) => t.k.forEach(k => keyTables[k].push(i)));
+const keyDatasets = KS.map(() => new Set());
+TB.forEach(t => t.k.forEach(k => keyDatasets[k].add(t.ds)));
+
+// dataset -> key edges, deduped: at low zoom the card is the unit
+const dsEdges = [];
+{
+  const seen = new Set();
+  for (const t of TB) for (const k of t.k) {
+    const id = t.ds * 100000 + k;
+    if (!seen.has(id)) { seen.add(id); dsEdges.push([t.ds, k]); }
+  }
+}
+const dsKeys = DS.map(() => new Set());
+dsEdges.forEach(([d, k]) => dsKeys[d].add(k));
+
+// Cell geometry inside a dataset card. `cols` is whatever the packer used —
+// never recompute it here, or the grid stops matching the card it sits in.
+const cellsOf = di => {
+  const cols = L.ds[di][4];
+  return { cols, rows: Math.ceil(dsTables[di].length / cols) };
+};
+
+/* Which key-filter groups a table still has a key in. With every group off, a
+   table has nothing left to draw and drops out with its edges. */
+const tGroups = TB.map(t => new Set(t.k.map(ki => GROUP_OF[KS[ki].cat] || "axis")));
+const tVisible = ti => {
+  const g = tGroups[ti];
+  if (!g.size) return true;           // unconnected tables are always drawn
+  for (const x of g) if (groupOn[x]) return true;
+  return false;
+};
+
+/* Edge weight. `ano` reaches 389 tables and `id_escola` 14; letting them draw
+   the same line would say they join equally well. Width and alpha both fall
+   off with reach, so the generic axes read as ghosts. */
+const REACH_MAX = Math.max(...KS.map(k => k.t));
+const weight = k => 1 / Math.sqrt(KS[k].t);
+const W_MIN = Math.min(...KS.map((_, i) => weight(i)));
+const W_MAX = Math.max(...KS.map((_, i) => weight(i)));
+const wNorm = k => (weight(k) - W_MIN) / (W_MAX - W_MIN || 1);
+
+/* ── theme index ─────────────────────────────────────────────────── */
+const themeTables = {}, themeDatasets = {}, themeRows = {};
+TB.forEach((t, i) => {
+  const th = DS[t.ds].dom;
+  (themeTables[th] = themeTables[th] || []).push(i);
+  themeRows[th] = (themeRows[th] || 0) + t.r;
+});
+DS.forEach(d => (themeDatasets[d.dom] = themeDatasets[d.dom] || new Set()).add(d.n));
+const themeList = THEMES.filter(th => themeTables[th])
+  .sort((a, b) => themeTables[b].length - themeTables[a].length);
+const THEME_MAX = Math.max(...themeList.map(th => themeTables[th].length));
+const themeKeys = {};
+themeList.forEach(th => {
+  const set = new Set();
+  themeTables[th].forEach(ti => TB[ti].k.forEach(ki => set.add(ki)));
+  themeKeys[th] = set;
+});
+
+/* ── canvas state ────────────────────────────────────────────────── */
+const cv = document.getElementById("cv");
+const ctx = cv.getContext("2d");
+const stage = document.getElementById("stage");
+let W = 0, H = 0, dpr = 1;
+let k = 1, tx = 0, ty = 0;
+let hover = null, sel = null;            // {type:"ds"|"key"|"tbl", i, cell?}
+let groupOn = { id: 1, dom: 1, geo: 1, axis: 1 };
+let C = {};
+
+function readColors() {
+  const s = getComputedStyle(document.documentElement);
+  const g = n => s.getPropertyValue(n).trim();
+  C = {
+    ground: g("--ground"), card: g("--card"), card2: g("--card-2"),
+    ink: g("--ink"), ink2: g("--ink-2"), ink3: g("--ink-3"),
+    line: g("--line"), line2: g("--line-2"), focus: g("--focus"),
+    hub: g("--hub"),
+  };
+  C.t = {};
+  THEMES.forEach(th => C.t[th] = g("--t-" + th));
+}
+const tcol = ti => C.t[themeOf(ti)] || C.t.outros;
+const dcol = di => C.t[DS[di].dom] || C.t.outros;
+// a key spans themes, so it is drawn as structure, not as a category
+const gcol = () => C.hub;
+
+function resize() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const r = stage.getBoundingClientRect();
+  W = r.width; H = r.height;
+  cv.width = Math.round(W * dpr);
+  cv.height = Math.round(H * dpr);
+  draw();
+}
+
+/* ── world bounds & view ─────────────────────────────────────────── */
+let bounds = null;
+function measure() {
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  const add = (x, y, w, h) => {
+    x0 = Math.min(x0, x - w / 2); y0 = Math.min(y0, y - h / 2);
+    x1 = Math.max(x1, x + w / 2); y1 = Math.max(y1, y + h / 2);
+  };
+  if (isDisc()) {
+    P.tb.forEach(([x, y, r]) => add(x, y, r * 2, r * 2));
+    P.keys.forEach(([x, y, r]) => add(x, y, r * 2, r * 2));
+  } else {
+    L.ds.forEach(([x, y, w, h]) => add(x, y, w, h));
+    L.keys.forEach(([x, y, w]) => add(x, y, w, 34));
+  }
+  const m = 80;
+  bounds = { x0: x0 - m, y0: y0 - m, x1: x1 + m, y1: y1 + m };
+}
+
+function fit(animate) {
+  const kk = Math.min(W / (bounds.x1 - bounds.x0), H / (bounds.y1 - bounds.y0)) * 0.96;
+  goTo((bounds.x0 + bounds.x1) / 2, (bounds.y0 + bounds.y1) / 2, kk, animate);
+}
+/* In `grade`, 833 tables' worth of cards is roughly five screens even packed
+   perfectly, so fitting them all lands below every label threshold. The disc
+   layouts are compact enough to open whole. */
+function home(animate) {
+  if (isDisc()) return fit(animate);
+  let sx = 0, sy = 0, sw = 0;
+  DS.forEach((d, i) => {
+    if (!d.nk) return;
+    const [x, y, w, h] = L.ds[i], a = w * h;
+    sx += x * a; sy += y * a; sw += a;
+  });
+  goTo(sx / sw, sy / sw, 0.55, animate);
+}
+function goTo(cx, cy, kk, animate) {
+  kk = Math.max(0.06, Math.min(9, kk));
+  const nx = W / 2 - cx * kk, ny = H / 2 - cy * kk;
+  if (!animate || reduced()) { k = kk; tx = nx; ty = ny; draw(); return; }
+  const k0 = k, x0 = tx, y0 = ty, t0 = performance.now(), D = 480;
+  (function step(now) {
+    const p = Math.min(1, (now - t0) / D);
+    const e = ease(p);
+    k = k0 + (kk - k0) * e; tx = x0 + (nx - x0) * e; ty = y0 + (ny - y0) * e;
+    draw();
+    if (p < 1) requestAnimationFrame(step);
+  })(t0);
+}
+const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const ease = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+
+/* ── mode switching ──────────────────────────────────────────────────
+   Between the two disc layouts the node set is identical, so the tables can
+   travel to their new places — watching a table leave `ano` and settle onto
+   `id_escola` is the whole argument for having both. Grade uses a different
+   mark, so that swap cross-fades instead. */
+let P = { tb: [], keys: [] };   // live disc positions (tweened)
+let fade = 1;
+
+function setMode(next) {
+  if (next === mode) return;
+  const wasDisc = isDisc(), from = { tb: P.tb.map(a => a.slice()), keys: P.keys.map(a => a.slice()) };
+  const prevMode = mode;
+  mode = next; L = G.layout[mode];
+  const target = isDisc() ? G.layout[mode] : null;
+
+  document.querySelectorAll("[data-mode]").forEach(b =>
+    b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
+
+  // Only the morph path animates from the old positions; every other path
+  // must land on the new field immediately, or the bodies stay where the
+  // previous layout left them while the labels come from this one.
+  if (isDisc()) P = { tb: target.tb.map(a => a.slice()), keys: target.keys.map(a => a.slice()) };
+
+  if (wasDisc && isDisc() && !reduced()) {
+    // morph: same bodies, new field. The camera travels with them — the two
+    // fields differ in size, so holding the old view leaves the new one
+    // half off-screen.
+    const k0 = k, x0 = tx, y0 = ty;
+    P = { tb: target.tb.map(a => a.slice()), keys: target.keys.map(a => a.slice()) };
+    measure();
+    const kk = Math.min(W / (bounds.x1 - bounds.x0), H / (bounds.y1 - bounds.y0)) * 0.96;
+    const cx = (bounds.x0 + bounds.x1) / 2, cy = (bounds.y0 + bounds.y1) / 2;
+    const kT = Math.max(0.06, Math.min(9, kk));
+    const xT = W / 2 - cx * kT, yT = H / 2 - cy * kT;
+    const t0 = performance.now(), D = 900;
+    (function step(now) {
+      const q = Math.min(1, (now - t0) / D), e = ease(q);
+      for (let i = 0; i < P.tb.length; i++) {
+        P.tb[i][0] = from.tb[i][0] + (target.tb[i][0] - from.tb[i][0]) * e;
+        P.tb[i][1] = from.tb[i][1] + (target.tb[i][1] - from.tb[i][1]) * e;
+        P.tb[i][2] = target.tb[i][2];
+      }
+      for (let i = 0; i < P.keys.length; i++) {
+        P.keys[i][0] = from.keys[i][0] + (target.keys[i][0] - from.keys[i][0]) * e;
+        P.keys[i][1] = from.keys[i][1] + (target.keys[i][1] - from.keys[i][1]) * e;
+        P.keys[i][2] = target.keys[i][2];
+      }
+      k = k0 + (kT - k0) * e; tx = x0 + (xT - x0) * e; ty = y0 + (yT - y0) * e;
+      measure(); draw();
+      if (q < 1) requestAnimationFrame(step);
+    })(t0);
+    return;
+  }
+
+  measure();
+  if (reduced()) { fade = 1; home(false); return; }
+  fade = 0; home(false);
+  const t0 = performance.now();
+  (function step(now) {
+    fade = Math.min(1, (now - t0) / 260);
+    draw();
+    if (fade < 1) requestAnimationFrame(step);
+  })(t0);
+}
+
+const toWorld = (px, py) => [(px - tx) / k, (py - ty) / k];
+
+/* ── level of detail ─────────────────────────────────────────────── */
+// Zoom is the interface: the same layout answers a different question at each
+// depth, so nothing is hidden behind a click.
+const LOD = () => isDisc() ? (k < 0.9 ? 0 : 1)
+                           : (k < 0.42 ? 0 : k < 1.25 ? 1 : 2);
+const LOD_NAME = {
+  grade: ["datasets", "tabelas", "colunas-chave"],
+  disc:  ["chaves", "tabelas"],
+};
+
+/* ── highlight sets ──────────────────────────────────────────────── */
+function activeSet() {
+  const a = sel || hover;
+  if (!a) return null;
+  if (a.type === "theme") {
+    const tbls = new Set(themeTables[a.th]);
+    const dss = new Set();
+    themeTables[a.th].forEach(ti => dss.add(TB[ti].ds));
+    return { keys: themeKeys[a.th], tbls, dss };
+  }
+  if (a.type === "key") return { keys: new Set([a.i]), tbls: new Set(keyTables[a.i]), dss: keyDatasets[a.i] };
+  if (a.type === "ds") return { keys: dsKeys[a.i], tbls: new Set(dsTables[a.i]), dss: new Set([a.i]) };
+  const t = TB[a.i];
+  return { keys: new Set(t.k), tbls: new Set([a.i]), dss: new Set([t.ds]) };
+}
+
+/* ── drawing ─────────────────────────────────────────────────────── */
+const fmt = n => n.toLocaleString("pt-BR");
+function human(n) {
+  if (n >= 1e9) return (n / 1e9).toFixed(n >= 1e10 ? 0 : 1).replace(".", ",") + " bi";
+  if (n >= 1e6) return (n / 1e6).toFixed(n >= 1e7 ? 0 : 1).replace(".", ",") + " mi";
+  if (n >= 1e3) return (n / 1e3).toFixed(0) + " mil";
+  return String(n);
+}
+function bytes(n) {
+  if (!n) return "—";
+  const u = ["B", "KB", "MB", "GB", "TB"];
+  let i = 0; while (n >= 1024 && i < u.length - 1) { n /= 1024; i++; }
+  return n.toFixed(n >= 100 || i === 0 ? 0 : 1).replace(".", ",") + " " + u[i];
+}
+function roundRect(x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+// clip a centre-to-centre segment at the card border so connectors touch, not cross
+function edgePoint(cx, cy, w, h, tx2, ty2) {
+  const dx = tx2 - cx, dy = ty2 - cy;
+  if (!dx && !dy) return [cx, cy];
+  const sx = dx ? (w / 2) / Math.abs(dx) : Infinity;
+  const sy = dy ? (h / 2) / Math.abs(dy) : Infinity;
+  const s = Math.min(sx, sy);
+  return [cx + dx * s, cy + dy * s];
+}
+
+function draw() {
+  const act = activeSet();
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.fillStyle = C.ground;
+  ctx.fillRect(0, 0, W, H);
+  ctx.save();
+  ctx.globalAlpha = fade;
+  ctx.translate(tx, ty);
+  ctx.scale(k, k);
+  if (isDisc()) drawDiscs(act); else drawGrade(act);
+  ctx.restore();
+
+  document.getElementById("zlvl").textContent = Math.round(k * 100) + "%";
+  document.getElementById("lod").textContent =
+    (isDisc() ? LOD_NAME.disc : LOD_NAME.grade)[LOD()];
+}
+
+/* ── disc layouts: every table is a body ─────────────────────────────
+   Radius is log(rows) — row counts run from 0 to 6,6 bilhões, so a linear
+   radius would draw all but a handful of tables as the same dot. */
+function drawDiscs(act) {
+  const vx0 = -tx / k, vy0 = -ty / k, vx1 = (W - tx) / k, vy1 = (H - ty) / k;
+  const near = (x, y, r) => x + r > vx0 && x - r < vx1 && y + r > vy0 && y - r < vy1;
+  const on = ki => groupOn[GROUP_OF[KS[ki].cat] || "axis"];
+
+  /* edges */
+  ctx.lineCap = "round";
+  for (let ti = 0; ti < TB.length; ti++) {
+    const t = TB[ti];
+    if (!t.k.length) continue;
+    const [ax, ay] = P.tb[ti];
+    for (const ki of t.k) {
+      if (!on(ki)) continue;
+      const [bx, by] = P.keys[ki];
+      if (!near((ax + bx) / 2, (ay + by) / 2, Math.hypot(bx - ax, by - ay) / 2)) continue;
+      const lit = !!act && act.tbls.has(ti) && act.keys.has(ki);
+      const w = wNorm(ki);
+      ctx.strokeStyle = lit ? tcol(ti) : C.line2;
+      ctx.globalAlpha = lit ? (0.55 + 0.4 * w) : (act ? 0.045 : 0.09 + 0.4 * w);
+      ctx.lineWidth = ((lit ? 1.4 : 0.7) + 1.4 * w) / k;
+      ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
+    }
+  }
+  ctx.globalAlpha = 1;
+
+  /* tables */
+  for (let ti = 0; ti < TB.length; ti++) {
+    const [x, y, r] = P.tb[ti];
+    if (!near(x, y, r + 2)) continue;
+    if (!tVisible(ti)) continue;
+    const lit = !act || act.tbls.has(ti);
+    const isSel = sel && sel.type === "tbl" && sel.i === ti;
+    ctx.globalAlpha = lit ? 1 : 0.16;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, 6.2832);
+    if (TB[ti].k.length) { ctx.fillStyle = tcol(ti); ctx.fill(); }
+    else {
+      // joins nothing: hollow, so the gap in the structure stays visible
+      ctx.fillStyle = C.card; ctx.fill();
+      ctx.strokeStyle = tcol(ti); ctx.lineWidth = 1.6 / k; ctx.stroke();
+    }
+    if (isSel) { ctx.strokeStyle = C.ink; ctx.lineWidth = 2.5 / k; ctx.stroke(); }
+  }
+  ctx.globalAlpha = 1;
+
+  /* key hubs, on top of what they hold together */
+  for (let ki = 0; ki < KS.length; ki++) {
+    if (!on(ki)) continue;
+    const [x, y, r] = P.keys[ki];
+    if (!near(x, y, r)) continue;
+    const lit = !act || act.keys.has(ki);
+    const isSel = sel && sel.type === "key" && sel.i === ki;
+    ctx.globalAlpha = lit ? 1 : 0.2;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, 6.2832);
+    ctx.fillStyle = C.hub;
+    ctx.fill();
+    ctx.strokeStyle = isSel ? C.ink : C.ground;
+    ctx.lineWidth = (isSel ? 3 : 1.6) / k;
+    ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+
+  /* Territory names first — in the theme layout they are the primary label,
+     so they claim their space before any key or table can take it. */
+  if (mode === "temas" && L.themes) {
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    for (const th of themeList) {
+      const box = L.themes[th];
+      if (!box) continue;
+      const [x, y, r] = box;
+      if (!near(x, y, r)) continue;
+      const lit = !act || (sel && sel.type === "theme" && sel.th === th) ||
+                  (hover && hover.type === "theme" && hover.th === th);
+      const fs = Math.max(15, Math.min(46, r * 0.24));
+      if (fs * k < 7) continue;
+      ctx.font = `700 ${fs}px "IBM Plex Sans", sans-serif`;
+      ctx.globalAlpha = lit ? 0.5 : 0.16;
+      ctx.fillStyle = C.t[th] || C.t.outros;
+      ctx.fillText((THEME_SHORT[th] || th).toUpperCase(), x, y - r - fs * 0.75);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  /* Labels last, and only where one fits. In the dense core a dozen key names
+     land on the same 40 world px; drawn blindly they overprint into noise.
+     Claim space in priority order instead — highlighted first, then by reach,
+     then the tables — and drop whatever no longer has room. */
+  const taken = [];
+  const claim = (x, y, w, h) => {
+    for (const b of taken)
+      if (Math.abs(x - b[0]) * 2 < w + b[2] && Math.abs(y - b[1]) * 2 < h + b[3]) return false;
+    taken.push([x, y, w, h]);
+    return true;
+  };
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  const keyOrder = KS.map((_, i) => i)
+    .filter(ki => on(ki) && near(P.keys[ki][0], P.keys[ki][1], P.keys[ki][2] + 30))
+    .sort((a, b) => ((act && act.keys.has(b)) - (act && act.keys.has(a))) || KS[b].t - KS[a].t);
+
+  for (const ki of keyOrder) {
+    const [x, y, r] = P.keys[ki];
+    const lit = !act || act.keys.has(ki);
+    const inside = r > 26;
+    const fs = inside ? Math.min(15, r * 0.42) : 11;
+    if (fs * k < 4.5) continue;
+    ctx.font = `600 ${fs}px "IBM Plex Mono", monospace`;
+    const tw = ctx.measureText(KS[ki].n).width;
+    const ly = inside ? y : y + r + 9;
+    // a label inside its own disc never collides with anything
+    if (!inside && !claim(x, ly, tw + 6, fs + 4)) continue;
+    if (inside) taken.push([x, ly, tw + 6, fs + 4]);
+    ctx.globalAlpha = lit ? 1 : 0.2;
+    ctx.fillStyle = inside ? C.ground : C.ink;
+    ctx.fillText(KS[ki].n, x, ly);
+    if (inside && r > 42) {
+      ctx.font = `500 ${fs * 0.62}px "IBM Plex Sans", sans-serif`;
+      ctx.globalAlpha = (lit ? 1 : 0.2) * 0.8;
+      ctx.fillText(KS[ki].t + " tabelas", x, y + fs * 0.95);
+    }
+  }
+
+  if (LOD() >= 1) {
+    ctx.font = '500 9px "IBM Plex Mono", monospace';
+    const tblOrder = TB.map((_, i) => i)
+      .filter(ti => tVisible(ti) && near(P.tb[ti][0], P.tb[ti][1], P.tb[ti][2] + 40))
+      .sort((a, b) => ((act && act.tbls.has(b)) - (act && act.tbls.has(a))) || TB[b].r - TB[a].r);
+    for (const ti of tblOrder) {
+      const [x, y, r] = P.tb[ti];
+      const tw = ctx.measureText(TB[ti].n).width;
+      const ly = y + r + 7;
+      if (!claim(x, ly, tw + 5, 12)) continue;
+      const lit = !act || act.tbls.has(ti);
+      ctx.globalAlpha = lit ? (act ? 1 : 0.75) : 0.12;
+      ctx.fillStyle = C.ink2;
+      ctx.fillText(TB[ti].n, x, ly);
+    }
+  }
+  ctx.globalAlpha = 1;
+  ctx.textAlign = "left";
+}
+
+/* ── packed layout: the dataset card is the body ─────────────────── */
+function drawGrade(act) {
+  const lod = LOD();
+  const vx0 = -tx / k, vy0 = -ty / k, vx1 = (W - tx) / k, vy1 = (H - ty) / k;
+  const vis = (x, y, w, h) => x + w / 2 > vx0 && x - w / 2 < vx1 && y + h / 2 > vy0 && y - h / 2 < vy1;
+
+  /* edges */
+  ctx.lineCap = "round";
+  const drawEdge = (ax, ay, aw, ah, ki, on, lineTheme) => {
+    const [kx, ky, kw] = L.keys[ki];
+    const w = wNorm(ki);
+    const [px, py] = edgePoint(ax, ay, aw, ah, kx, ky);
+    const [qx, qy] = edgePoint(kx, ky, kw, 34, ax, ay);
+    ctx.strokeStyle = on ? (ki >= 0 && lineTheme ? lineTheme : C.hub) : C.line2;
+    ctx.globalAlpha = on ? (0.5 + 0.45 * w) : (act ? 0.05 : 0.10 + 0.44 * w);
+    ctx.lineWidth = ((on ? 1.5 : 0.75) + 1.5 * w) / k;
+    ctx.beginPath();
+    ctx.moveTo(px, py);
+    ctx.lineTo(qx, qy);
+    ctx.stroke();
+  };
+
+  if (lod < 2) {
+    for (const [d, ki] of dsEdges) {
+      if (!groupOn[GROUP_OF[KS[ki].cat] || "axis"]) continue;
+      const [x, y, w, h] = L.ds[d];
+      if (!vis(x, y, w, h)) continue;
+      drawEdge(x, y, w, h, ki, !!act && act.keys.has(ki) && act.dss.has(d), dcol(d));
+    }
+  } else {
+    for (let ti = 0; ti < TB.length; ti++) {
+      const t = TB[ti];
+      if (!t.k.length) continue;
+      const [x, y, w, h] = L.ds[t.ds];
+      if (!vis(x, y, w, h)) continue;
+      const { cols } = cellsOf(t.ds);
+      const idx = dsTables[t.ds].indexOf(ti);
+      const cx = x - w / 2 + PAD + (idx % cols) * CELL_W + CELL_W / 2;
+      const cy = y - h / 2 + HEADER + Math.floor(idx / cols) * CELL_H + CELL_H / 2;
+      for (const ki of t.k) {
+        if (!groupOn[GROUP_OF[KS[ki].cat] || "axis"]) continue;
+        drawEdge(cx, cy, CELL_W - 8, CELL_H - 4, ki, !!act && act.tbls.has(ti) && act.keys.has(ki), tcol(ti));
+      }
+    }
+  }
+  ctx.globalAlpha = 1;
+
+  /* dataset cards */
+  for (let d = 0; d < DS.length; d++) {
+    const [x, y, w, h] = L.ds[d];
+    if (!vis(x, y, w, h)) continue;
+    const on = !act || act.dss.has(d);
+    const X = x - w / 2, Y = y - h / 2;
+
+    ctx.globalAlpha = on ? 1 : 0.3;
+    roundRect(X, Y, w, h, 7);
+    ctx.fillStyle = C.card;
+    ctx.fill();
+    ctx.strokeStyle = sel && sel.type === "ds" && sel.i === d ? C.focus : C.line;
+    ctx.lineWidth = (sel && sel.type === "ds" && sel.i === d ? 2 : 1) / k;
+    ctx.stroke();
+
+    // Header tinted by the dataset's most specific key group. Zoomed out, the
+    // labels are gone and this tint is the only thing left saying what a card
+    // is — without it the overview is 197 identical white rectangles.
+    const dg = DS[d].dom;
+    roundRect(X, Y, w, HEADER, 7);
+    ctx.save(); ctx.clip();
+    ctx.fillStyle = C.card2;
+    ctx.fillRect(X, Y, w, HEADER);
+    if (dg) {
+      ctx.globalAlpha = (on ? 1 : 0.3) * (k < 0.2 ? 0.55 : 0.17);
+      ctx.fillStyle = dcol(d);
+      ctx.fillRect(X, Y, w, HEADER);
+      ctx.globalAlpha = on ? 1 : 0.3;
+    }
+    ctx.restore();
+    ctx.strokeStyle = C.line;
+    ctx.lineWidth = 1 / k;
+    ctx.beginPath(); ctx.moveTo(X, Y + HEADER); ctx.lineTo(X + w, Y + HEADER); ctx.stroke();
+
+    ctx.textBaseline = "middle";
+    const count = DS[d].t + " · " + human(DS[d].r);
+    ctx.font = '600 12px "IBM Plex Mono", monospace';
+    const nameW = ctx.measureText(DS[d].n).width;
+    ctx.font = '400 9.5px "IBM Plex Sans", sans-serif';
+    // The name is what the card is; the count is a nicety. If both do not fit,
+    // the count goes — truncating "br_me_caged" to "br_me_cag" to preserve
+    // "4 · 241 mi" is the wrong trade.
+    const showCount = k > 0.3 && nameW + ctx.measureText(count).width + 26 <= w;
+    const countW = showCount ? ctx.measureText(count).width + 10 : 0;
+    if (showCount) {
+      ctx.fillStyle = C.ink3;
+      ctx.textAlign = "right";
+      ctx.fillText(count, X + w - 9, Y + HEADER / 2 + 0.5);
+      ctx.textAlign = "left";
+    }
+    if (k > 0.14) {
+      ctx.fillStyle = C.ink;
+      ctx.font = '600 12px "IBM Plex Mono", monospace';
+      ctx.save();
+      roundRect(X + 8, Y, Math.max(10, w - 17 - countW), HEADER, 0); ctx.clip();
+      ctx.fillText(DS[d].n, X + 9, Y + HEADER / 2 + 0.5);
+      ctx.restore();
+    }
+
+    if (lod >= 1) {
+      const { cols } = cellsOf(d);
+      dsTables[d].forEach((ti, idx) => {
+        const t = TB[ti];
+        const cx = X + PAD + (idx % cols) * CELL_W;
+        const cy = Y + HEADER + Math.floor(idx / cols) * CELL_H;
+        const tOn = !act || act.tbls.has(ti);
+        ctx.globalAlpha = on ? (tOn ? 1 : 0.35) : 0.3;
+
+        const isSel = sel && sel.type === "tbl" && sel.i === ti;
+        if (isSel || (hover && hover.type === "tbl" && hover.i === ti)) {
+          roundRect(cx + 1, cy + 1, CELL_W - 4, CELL_H - 3, 4);
+          ctx.fillStyle = C.card2; ctx.fill();
+          if (isSel) { ctx.strokeStyle = C.focus; ctx.lineWidth = 1.5 / k; ctx.stroke(); }
+        }
+        ctx.fillStyle = t.k.length ? C.ink : C.ink3;
+        ctx.font = '400 10px "IBM Plex Mono", monospace';
+        ctx.save();
+        roundRect(cx + 4, cy, CELL_W - 12, CELL_H, 0); ctx.clip();
+        ctx.fillText(t.n, cx + 5, cy + (lod >= 2 ? 8.5 : CELL_H / 2));
+        ctx.restore();
+
+        if (lod >= 2) {
+          // the key columns themselves, which is what the deepest zoom is for
+          let ox = cx + 5;
+          ctx.font = '500 7.5px "IBM Plex Mono", monospace';
+          for (const ki of t.k) {
+            if (!groupOn[GROUP_OF[KS[ki].cat] || "axis"]) continue;
+            const label = KS[ki].n;
+            const tw = ctx.measureText(label).width + 6;
+            if (ox + tw > cx + CELL_W - 6) { ctx.fillStyle = C.ink3; ctx.fillText("+", ox + 1, cy + 19); break; }
+            ctx.fillStyle = C.hub;
+            ctx.globalAlpha = (on ? (tOn ? 1 : .35) : .3) * (act && act.keys.has(ki) ? 1 : .72);
+            roundRect(ox, cy + 13, tw, 8.5, 2);
+            ctx.fill();
+            ctx.fillStyle = C.ground;
+            ctx.fillText(label, ox + 3, cy + 17.6);
+            ctx.globalAlpha = on ? (tOn ? 1 : 0.35) : 0.3;
+            ox += tw + 3;
+          }
+        }
+      });
+    }
+  }
+  ctx.globalAlpha = 1;
+
+  /* key hubs — drawn last so they sit above the cards they connect */
+  ctx.textBaseline = "middle";
+  for (let ki = 0; ki < KS.length; ki++) {
+    const grp = GROUP_OF[KS[ki].cat] || "axis";
+    if (!groupOn[grp]) continue;
+    const [x, y, w] = L.keys[ki];
+    if (!vis(x, y, w, 34)) continue;
+    const on = !act || act.keys.has(ki);
+    const isSel = sel && sel.type === "key" && sel.i === ki;
+    const col = C.hub;
+
+    ctx.globalAlpha = on ? 1 : 0.22;
+    roundRect(x - w / 2, y - 17, w, 34, 17);
+    ctx.fillStyle = col;
+    ctx.fill();
+    if (isSel) {
+      ctx.strokeStyle = C.ink;
+      ctx.lineWidth = 2.5 / k;
+      ctx.stroke();
+    }
+    if (k > 0.16) {
+      ctx.fillStyle = C.ground;
+      ctx.font = '600 12px "IBM Plex Mono", monospace';
+      ctx.textAlign = "center";
+      ctx.fillText(KS[ki].n, x, y - 3);
+      ctx.font = '500 8.5px "IBM Plex Sans", sans-serif';
+      ctx.globalAlpha = on ? 0.82 : 0.22;
+      ctx.fillText(KS[ki].t + " tabelas · " + KS[ki].d + " datasets", x, y + 9);
+      ctx.textAlign = "left";
+    }
+  }
+  ctx.globalAlpha = 1;
+}
+
+/* ── hit testing ─────────────────────────────────────────────────── */
+function hit(px, py) {
+  const [wx, wy] = toWorld(px, py);
+  if (isDisc()) {
+    // keys first: they are drawn on top, so they win the click
+    let best = null, bd = Infinity;
+    for (let ki = 0; ki < KS.length; ki++) {
+      if (!groupOn[GROUP_OF[KS[ki].cat] || "axis"]) continue;
+      const [x, y, r] = P.keys[ki];
+      const d = Math.hypot(wx - x, wy - y);
+      if (d <= r && d < bd) { bd = d; best = { type: "key", i: ki }; }
+    }
+    if (best) return best;
+    bd = Infinity;
+    for (let ti = 0; ti < TB.length; ti++) {
+      if (!tVisible(ti)) continue;
+      const [x, y, r] = P.tb[ti];
+      // a generous target: the smallest discs are 3px in world units
+      const d = Math.hypot(wx - x, wy - y);
+      if (d <= Math.max(r, 7 / k) && d < bd) { bd = d; best = { type: "tbl", i: ti }; }
+    }
+    return best;
+  }
+  for (let ki = KS.length - 1; ki >= 0; ki--) {
+    if (!groupOn[GROUP_OF[KS[ki].cat] || "axis"]) continue;
+    const [x, y, w] = L.keys[ki];
+    if (Math.abs(wx - x) < w / 2 && Math.abs(wy - y) < 17) return { type: "key", i: ki };
+  }
+  for (let d = 0; d < DS.length; d++) {
+    const [x, y, w, h] = L.ds[d];
+    if (Math.abs(wx - x) > w / 2 || Math.abs(wy - y) > h / 2) continue;
+    const X = x - w / 2, Y = y - h / 2;
+    if (LOD() >= 1 && wy > Y + HEADER) {
+      const { cols } = cellsOf(d);
+      const cxi = Math.floor((wx - X - PAD) / CELL_W);
+      const cyi = Math.floor((wy - Y - HEADER) / CELL_H);
+      const idx = cyi * cols + cxi;
+      if (cxi >= 0 && cxi < cols && idx >= 0 && idx < dsTables[d].length)
+        return { type: "tbl", i: dsTables[d][idx] };
+    }
+    return { type: "ds", i: d };
+  }
+  return null;
+}
+
+/* ── interaction ─────────────────────────────────────────────────── */
+let dragging = false, moved = false, lx = 0, ly = 0;
+cv.addEventListener("pointerdown", e => {
+  dragging = true; moved = false; lx = e.clientX; ly = e.clientY;
+  cv.setPointerCapture(e.pointerId); cv.classList.add("drag");
+});
+cv.addEventListener("pointermove", e => {
+  const r = cv.getBoundingClientRect();
+  if (dragging) {
+    const dx = e.clientX - lx, dy = e.clientY - ly;
+    if (Math.abs(dx) + Math.abs(dy) > 3) moved = true;
+    tx += dx; ty += dy; lx = e.clientX; ly = e.clientY;
+    draw();
+    return;
+  }
+  const h = hit(e.clientX - r.left, e.clientY - r.top);
+  const same = h && hover && h.type === hover.type && h.i === hover.i;
+  if (!same) { hover = h; draw(); }
+  showTip(h, e.clientX - r.left, e.clientY - r.top);
+});
+cv.addEventListener("pointerup", e => {
+  dragging = false; cv.classList.remove("drag");
+  if (moved) return;
+  const r = cv.getBoundingClientRect();
+  const h = hit(e.clientX - r.left, e.clientY - r.top);
+  select(h);
+});
+cv.addEventListener("pointerleave", () => { hover = null; hideTip(); draw(); });
+cv.addEventListener("wheel", e => {
+  e.preventDefault();
+  const r = cv.getBoundingClientRect();
+  const mx = e.clientX - r.left, my = e.clientY - r.top;
+  const f = Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0022));
+  const nk = Math.max(0.06, Math.min(9, k * f));
+  tx = mx - (mx - tx) * (nk / k);
+  ty = my - (my - ty) * (nk / k);
+  k = nk;
+  draw();
+}, { passive: false });
+
+const tip = document.getElementById("tip");
+function showTip(h, x, y) {
+  if (!h) return hideTip();
+  let html = "";
+  if (h.type === "key") html = `${KS[h.i].n} <em>· ${KS[h.i].t} tabelas</em>`;
+  else if (h.type === "ds") html = `${DS[h.i].n} <em>· ${DS[h.i].t} tabelas</em>`;
+  else html = `${DS[TB[h.i].ds].n}.${TB[h.i].n} <em>· ${human(TB[h.i].r)} linhas</em>`;
+  tip.innerHTML = html;
+  tip.classList.add("on");
+  const w = tip.offsetWidth, hh = tip.offsetHeight;
+  tip.style.left = Math.min(W - w - 8, Math.max(8, x + 14)) + "px";
+  tip.style.top = Math.max(8, y - hh - 10) + "px";
+}
+const hideTip = () => tip.classList.remove("on");
+
+/* ── inspector ───────────────────────────────────────────────────── */
+const insp = document.getElementById("insp");
+const iKind = document.getElementById("i-kind");
+const iName = document.getElementById("i-name");
+const iBody = document.getElementById("i-body");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function select(h) {
+  sel = h;
+  if (!h) { insp.classList.remove("on"); draw(); return; }
+  if (h.type === "theme") renderTheme(h.th);
+  else if (h.type === "key") renderKey(h.i);
+  else if (h.type === "ds") renderDs(h.i);
+  else renderTbl(h.i);
+  insp.classList.add("on");
+  document.querySelectorAll(".row").forEach(r => r.classList.toggle("on",
+    (h.type === "theme" && r.dataset.th === h.th) ||
+    (h.type === "key" && +r.dataset.k === h.i)));
+  draw();
+}
+const fact = (v, l) => `<div class="fact"><b>${v}</b><span>${l}</span></div>`;
+
+function renderTheme(th) {
+  const ts = themeTables[th];
+  iKind.textContent = "Tema";
+  iName.textContent = G.domains[th] || th;
+  const ks = [...themeKeys[th]].sort((a, b) => KS[a].t - KS[b].t);
+  const dss = [...new Set(ts.map(ti => TB[ti].ds))].sort((a, b) => DS[b].r - DS[a].r);
+  const orphans = ts.filter(ti => !TB[ti].k.length).length;
+  iBody.innerHTML = `<div class="facts">
+      ${fact(fmt(ts.length), "tabelas")}
+      ${fact(fmt(dss.length), "datasets")}
+      ${fact(human(themeRows[th]), "linhas")}
+      ${fact(fmt(ks.length), "chaves")}
+    </div>
+    ${orphans ? `<p class="note">${orphans} destas tabelas não compartilham coluna com nada — não dá pra cruzá-las com o resto do espelho.</p>` : ""}
+    <p class="sec">Chaves mais específicas deste tema</p>
+    <div class="chips">${ks.slice(0, 14).map(ki =>
+      `<button class="chip" data-k="${ki}"><i style="background:var(--hub)"></i>${esc(KS[ki].n)}</button>`).join("")}</div>
+    <p class="sec">Datasets</p>
+    <div class="tlist">${dss.map(di =>
+      `<button data-d="${di}" title="${esc(DS[di].n)}"><span class="t">${esc(DS[di].n)}</span><span class="r">${DS[di].t} · ${human(DS[di].r)}</span></button>`).join("")}</div>`;
+  wire();
+}
+
+function renderKey(ki) {
+  const K = KS[ki], grp = GROUP_OF[K.cat] || "axis";
+  iKind.textContent = "Chave de junção · " + (GROUPS.find(g => g[0] === grp)[1]);
+  iName.textContent = K.n;
+  const tabs = keyTables[ki].slice().sort((a, b) => TB[b].r - TB[a].r);
+  let h = `<div class="facts">
+      ${fact(fmt(K.t), "tabelas")}
+      ${fact(fmt(K.d), "datasets")}
+      ${fact(esc(G.cats[K.cat] || K.cat), "categoria")}
+      ${fact(esc(K.ty.join(" / ")), "tipo")}
+    </div>`;
+  if (K.desc) h += `<p class="note-src">Referência de join${K.ref ? " · " + esc(K.ref) : ""}</p><p class="note">${esc(K.desc)}</p>`;
+  if (K.sp && K.sp.length > 1)
+    h += `<p class="sec">Grafias no espelho</p><div class="chips">${K.sp.map(s => `<span class="chip">${esc(s)}</span>`).join("")}</div>`;
+  h += `<p class="sec">Tabelas que carregam esta chave</p><div class="tlist">${
+    tabs.map(ti => `<button data-t="${ti}" title="${esc(DS[TB[ti].ds].n)}.${esc(TB[ti].n)}"><span class="t">${esc(DS[TB[ti].ds].n)}.${esc(TB[ti].n)}</span><span class="r">${human(TB[ti].r)}</span></button>`).join("")
+  }</div>`;
+  iBody.innerHTML = h;
+  wire();
+}
+
+function renderDs(d) {
+  const D = DS[d];
+  iKind.textContent = "Dataset · " + (THEME_SHORT[D.dom] || D.dom);
+  iName.textContent = D.n;
+  const ks = [...dsKeys[d]].sort((a, b) => KS[a].t - KS[b].t);
+  iBody.innerHTML = `<div class="facts">
+      ${fact(fmt(D.t), "tabelas")}
+      ${fact(human(D.r), "linhas")}
+      ${fact(fmt(ks.length), "chaves")}
+      ${fact(bytes(dsTables[d].reduce((s, i) => s + TB[i].b, 0)), "em disco")}
+    </div>
+    <p class="sec">Chaves deste dataset</p>
+    <div class="chips">${ks.length ? ks.map(ki =>
+      `<button class="chip" data-k="${ki}"><i style="background:var(--hub)"></i>${esc(KS[ki].n)}</button>`).join("")
+      : '<span class="note">Nenhuma coluna deste dataset é compartilhada com outro. Ele não liga em nada.</span>'}</div>
+    <p class="sec">Tabelas</p>
+    <div class="tlist">${dsTables[d].slice().sort((a, b) => TB[b].r - TB[a].r).map(ti =>
+      `<button data-t="${ti}" title="${esc(TB[ti].n)}"><span class="t">${esc(TB[ti].n)}</span><span class="r">${human(TB[ti].r)}</span></button>`).join("")}</div>`;
+  wire();
+}
+
+function renderTbl(ti) {
+  const T = TB[ti], keys = new Set(T.k.map(x => KS[x].n.toLowerCase()));
+  iKind.textContent = (THEME_SHORT[DS[T.ds].dom] || "Tabela") + " · " + DS[T.ds].n;
+  iName.textContent = T.n;
+  const kbyname = {};
+  T.k.forEach(x => kbyname[KS[x].n.toLowerCase()] = x);
+  let h = `<div class="facts">
+      ${fact(human(T.r), "linhas")}
+      ${fact(fmt(T.nc), "colunas")}
+      ${fact(fmt(T.k.length), "chaves")}
+      ${fact(bytes(T.b), "em disco")}
+    </div>`;
+  h += `<p class="sec">Chaves</p><div class="chips">${T.k.length
+    ? T.k.slice().sort((a, b) => KS[a].t - KS[b].t).map(ki =>
+        `<button class="chip" data-k="${ki}"><i style="background:var(--hub)"></i>${esc(KS[ki].n)}</button>`).join("")
+    : '<span class="note">Nenhuma. Nada no espelho compartilha coluna com esta tabela.</span>'}</div>`;
+  h += `<p class="sec">Colunas${T.nc > T.c.length ? ` · primeiras ${T.c.length} de ${fmt(T.nc)}` : ""}</p><div class="cols">${
+    T.c.map(([n, ty]) => {
+      const ki = kbyname[n.toLowerCase()];
+      const isK = ki !== undefined;
+      return `<div class="col${isK ? " key" : ""}">${isK ? `<i class="kd" style="background:var(--hub)"></i>` : ""}<span>${esc(n)}</span><span class="ty">${esc(ty)}</span></div>`;
+    }).join("")}</div>`;
+  iBody.innerHTML = h;
+  wire();
+}
+
+function wire() {
+  iBody.querySelectorAll("[data-k]").forEach(b =>
+    b.onclick = () => { const ki = +b.dataset.k; select({ type: "key", i: ki }); flyKey(ki); });
+  iBody.querySelectorAll("[data-t]").forEach(b =>
+    b.onclick = () => { const ti = +b.dataset.t; select({ type: "tbl", i: ti }); flyTbl(ti); });
+  iBody.querySelectorAll("[data-d]").forEach(b =>
+    b.onclick = () => { const di = +b.dataset.d; select({ type: "ds", i: di }); flyDs(di); });
+}
+document.getElementById("i-close").onclick = () => select(null);
+addEventListener("keydown", e => { if (e.key === "Escape") select(null); });
+
+function flyKey(ki) {
+  const [x, y] = isDisc() ? P.keys[ki] : L.keys[ki];
+  goTo(x, y, Math.max(k, isDisc() ? 0.55 : 0.75), true);
+}
+function flyTbl(ti) {
+  const [x, y] = isDisc() ? P.tb[ti] : L.ds[TB[ti].ds];
+  goTo(x, y, Math.max(k, isDisc() ? 1.1 : 1.5), true);
+}
+function flyTheme(th) {
+  const ts = themeTables[th];
+  if (mode === "temas" && L.themes && L.themes[th]) {
+    const [x, y, r] = L.themes[th];
+    goTo(x, y, Math.min(9, Math.max(0.3, Math.min(W, H) / (r * 4.5))), true);
+    return;
+  }
+  if (isDisc()) {
+    let x = 0, y = 0;
+    ts.forEach(ti => { x += P.tb[ti][0]; y += P.tb[ti][1]; });
+    goTo(x / ts.length, y / ts.length, Math.max(k, 0.5), true);
+    return;
+  }
+  let x = 0, y = 0, n = 0;
+  const seen = new Set();
+  ts.forEach(ti => { if (!seen.has(TB[ti].ds)) { seen.add(TB[ti].ds); x += L.ds[TB[ti].ds][0]; y += L.ds[TB[ti].ds][1]; n++; } });
+  goTo(x / n, y / n, Math.max(k, 0.45), true);
+}
+function flyDs(d) {
+  if (isDisc()) {                      // no dataset body here — frame its tables
+    const ts = dsTables[d];
+    let x = 0, y = 0;
+    ts.forEach(ti => { x += P.tb[ti][0]; y += P.tb[ti][1]; });
+    goTo(x / ts.length, y / ts.length, Math.max(k, 0.9), true);
+    return;
+  }
+  const [x, y] = L.ds[d];
+  goTo(x, y, Math.max(k, 0.9), true);
+}
+
+/* ── rail ────────────────────────────────────────────────────────── */
+document.getElementById("s-t").textContent = fmt(G.meta.tables);
+document.getElementById("s-d").textContent = fmt(G.meta.datasets);
+document.getElementById("s-k").textContent = fmt(G.meta.keys);
+document.getElementById("s-e").textContent = fmt(G.meta.edges);
+
+const modesEl = document.getElementById("modes");
+modesEl.innerHTML = MODES.map(([id, name, desc]) =>
+  `<button data-mode="${id}" aria-pressed="${id === mode}">
+     <span class="nm">${name}</span><span class="ds">${desc}</span></button>`).join("");
+modesEl.querySelectorAll("button").forEach(b => b.onclick = () => setMode(b.dataset.mode));
+
+const leg = document.getElementById("leg");
+leg.innerHTML = GROUPS.map(([id, name, desc]) => {
+  const n = KS.filter(kk => (GROUP_OF[kk.cat] || "axis") === id).length;
+  return `<button data-g="${id}" aria-pressed="true" title="${esc(desc)}">
+    <span class="tick" aria-hidden="true"></span>
+    <span class="nm">${name}</span><span class="ct">${n}</span></button>`;
+}).join("");
+leg.querySelectorAll("button").forEach(b => b.onclick = () => {
+  const g = b.dataset.g;
+  groupOn[g] = !groupOn[g];
+  b.setAttribute("aria-pressed", String(!!groupOn[g]));
+  draw();
+});
+
+const listEl = document.getElementById("list");
+const listT = document.getElementById("list-t");
+function renderList(q) {
+  q = (q || "").trim().toLowerCase();
+  if (!q) {
+    listT.textContent = "Temas";
+    listEl.innerHTML = themeList.map(th => {
+      const n = themeTables[th].length;
+      const pct = Math.round(n / THEME_MAX * 100);
+      return `<button class="row" data-th="${th}" title="${esc(G.domains[th] || th)}">
+        <span class="dot" style="background:var(--t-${th})"></span>
+        <span class="nm">${esc(THEME_SHORT[th] || th)}</span>
+        <span class="bar"><i style="width:${Math.max(4, pct)}%;background:var(--t-${th})"></i></span>
+        <span class="ct">${n}</span></button>`;
+    }).join("");
+  } else {
+    const hits = [];
+    KS.forEach((kk, i) => { if (kk.n.toLowerCase().includes(q)) hits.push(["key", i, kk.n, kk.t]); });
+    DS.forEach((d, i) => { if (d.n.toLowerCase().includes(q)) hits.push(["ds", i, d.n, d.t]); });
+    TB.forEach((t, i) => {
+      const full = DS[t.ds].n + "." + t.n;
+      if (full.toLowerCase().includes(q)) hits.push(["tbl", i, full, t.k.length]);
+    });
+    listT.textContent = hits.length ? `${hits.length} resultado${hits.length > 1 ? "s" : ""}` : "Nada encontrado";
+    listEl.innerHTML = hits.length ? hits.slice(0, 300).map(([ty, i, label, n]) =>
+      `<button class="row" data-${ty === "key" ? "k" : ty === "ds" ? "d" : "t"}="${i}">
+        <span class="dot" style="background:${ty === "key" ? "var(--hub)"
+          : ty === "ds" ? `var(--t-${DS[i].dom})` : `var(--t-${DS[TB[i].ds].dom})`}"></span>
+        <span class="nm">${esc(label)}</span><span class="ct">${n}</span></button>`).join("")
+      : '<p class="empty">Nenhuma chave, dataset ou tabela com esse nome.</p>';
+  }
+  listEl.querySelectorAll(".row").forEach(r => {
+    r.onclick = () => {
+      if (r.dataset.th !== undefined) { select({ type: "theme", th: r.dataset.th }); flyTheme(r.dataset.th); }
+      else if (r.dataset.k !== undefined) { const i = +r.dataset.k; select({ type: "key", i }); flyKey(i); }
+      else if (r.dataset.d !== undefined) { const i = +r.dataset.d; select({ type: "ds", i }); flyDs(i); }
+      else { const i = +r.dataset.t; select({ type: "tbl", i }); flyTbl(i); }
+      if (innerWidth <= 860) rail.classList.remove("on");
+    };
+    r.onmouseenter = () => {
+      if (r.dataset.th !== undefined) hover = { type: "theme", th: r.dataset.th };
+      else if (r.dataset.k !== undefined) hover = { type: "key", i: +r.dataset.k };
+      else return;
+      draw();
+    };
+    r.onmouseleave = () => { if (hover) { hover = null; draw(); } };
+  });
+}
+document.getElementById("q").addEventListener("input", e => renderList(e.target.value));
+
+document.getElementById("zin").onclick = () => goTo((W / 2 - tx) / k, (H / 2 - ty) / k, k * 1.5, true);
+document.getElementById("zout").onclick = () => goTo((W / 2 - tx) / k, (H / 2 - ty) / k, k / 1.5, true);
+document.getElementById("reset").onclick = () => { select(null); fit(true); };
+document.getElementById("home").onclick = () => { select(null); home(true); };
+
+const rail = document.getElementById("rail");
+document.getElementById("railToggle").onclick = e => {
+  rail.classList.toggle("on");
+  e.currentTarget.setAttribute("aria-expanded", String(rail.classList.contains("on")));
+};
+
+/* ── boot ────────────────────────────────────────────────────────── */
+function themeChanged() { readColors(); renderList(document.getElementById("q").value); draw(); }
+new MutationObserver(themeChanged).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", themeChanged);
+addEventListener("resize", resize);
+
+readColors();
+renderList("");
+P = { tb: G.layout.gravidade.tb.map(a => a.slice()),
+      keys: G.layout.gravidade.keys.map(a => a.slice()) };
+measure();
+resize();
+home(false);
+// canvas text needs the webfont resolved, or the first paint silently falls back
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+
+// handles for the layout probes in scripts/build_atlas.py
+Object.assign(window, { G, DS, KS, TB, L, P, select, goTo, flyKey, flyTheme, draw, setMode });
+}
+</script>

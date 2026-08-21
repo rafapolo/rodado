@@ -2,7 +2,7 @@
   "_meta": {
     "source": "beelink",
     "path": "/home/polo/rodado",
-    "total_tables": 825
+    "total_tables": 833
   },
   "tables": {
     "br_abrinq_oca.municipio_primeira_infancia": {
@@ -197,6 +197,148 @@
         },
         {
           "name": "atencao_nitrogenio",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_ana_bho.topologia": {
+      "path": "beelink:/home/polo/rodado/br_ana_bho/topologia/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "COTRECHO",
+          "type": "INT64"
+        },
+        {
+          "name": "NUTRJUS",
+          "type": "INT64"
+        },
+        {
+          "name": "NUAREAMONT",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "NUSTRAHLER",
+          "type": "INT64"
+        },
+        {
+          "name": "COBACIA",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_ana_outorgas.captacoes": {
+      "path": "beelink:/home/polo/rodado/br_ana_outorgas/captacoes/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "emp_nm_responsavel",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "emp_nu_cpfcnpj",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "int_qt_vazaomedia",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "ing_nm_municipio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ing_sg_ufmunicipio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "esfera",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_ana_outorgas.lancamentos": {
+      "path": "beelink:/home/polo/rodado/br_ana_outorgas/lancamentos/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "emp_nm_empreendimento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "emp_nm_responsavel",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "emp_nu_cpfcnpj",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "int_qt_vazaomedia",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "int_qt_vazaomaxima",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "int_qt_volumeanual",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "int_nm_corpohidrico",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ing_nm_municipio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ing_sg_ufmunicipio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ing_nm_regiao_hidro",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ing_cd_ottobacia_trecho",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "int_nu_latitude",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "int_nu_longitude",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "tfn_ds",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tsf_ds",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tch_ds",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "out_dt_outorgainicial",
+          "type": "INT64"
+        },
+        {
+          "name": "out_dt_outorgafinal",
+          "type": "INT64"
+        },
+        {
+          "name": "org_nm",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "esfera",
           "type": "BYTE_ARRAY"
         }
       ]
@@ -546,6 +688,542 @@
         {
           "name": "DataAlt",
           "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_ana_telemetria.estacoes_inventario_2023": {
+      "path": "beelink:/home/polo/rodado/br_ana_telemetria/estacoes_inventario_2023/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "Codigo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Nome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TipoEstacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CodigoAdicional",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Latitude",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "Longitude",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "Altitude",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "AreaDrenagem",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BaciaCodigo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "BaciaNome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SubBaciaCodigo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SubBaciaNome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "RioCodigo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "RioNome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "EstadoCodigo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "EstadoSigla",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "MunicipioCodigo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "MunicipioNome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ResponsavelCodigo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ResponsavelNome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "OperadoraCodigo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "OperadoraNome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ResponsavelUnidade",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "OperadoraUnidade",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "OperadoraSubUnidade",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TipoEstacaoEscala",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TipoEstacaoRegistradorNivel",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TipoEstacaoDescLiquida",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TipoEstacaoSedimentos",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TipoEstacaoQualAgua",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TipoEstacaoPluviometro",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TipoEstacaoRegistradorChuva",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TipoEstacaoTanqueEvapo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TipoEstacaoClimatologica",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TipoEstacaoPiezometria",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TipoEstacaoTelemetrica",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoEscalaInicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoEscalaFim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoRegistradorNivelInicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoRegistradorNivelFim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoDescLiquidaInicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoDescLiquidaFim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoSedimentosInicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoSedimentosFim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoQualAguaInicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoQualAguaFim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoPluviometroInicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoPluviometroFim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoRegistradorChuvaInicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoRegistradorChuvaFim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoTanqueEvapoInicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoTanqueEvapoFim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoClimatologicaInicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoClimatologicaFim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoPiezometriaInicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoPiezometriaFim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoTelemetricaInicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PeriodoTelemetricaFim",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_ana_telemetria.inventario": {
+      "path": "beelink:/home/polo/rodado/br_ana_telemetria/inventario/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "codigo",
+          "type": "INT64"
+        },
+        {
+          "name": "nome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipoestacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "codigoadicional",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "latitude",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "longitude",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "altitude",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "areadrenagem",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "baciacodigo",
+          "type": "INT64"
+        },
+        {
+          "name": "bacianome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "subbaciacodigo",
+          "type": "INT64"
+        },
+        {
+          "name": "subbacianome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "riocodigo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "rionome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "estadocodigo",
+          "type": "INT64"
+        },
+        {
+          "name": "estadosigla",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "municipiocodigo",
+          "type": "INT64"
+        },
+        {
+          "name": "municipionome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "responsavelcodigo",
+          "type": "INT64"
+        },
+        {
+          "name": "responsavelnome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "operadoracodigo",
+          "type": "INT64"
+        },
+        {
+          "name": "operadoranome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "responsavelunidade",
+          "type": "INT64"
+        },
+        {
+          "name": "operadoraunidade",
+          "type": "INT64"
+        },
+        {
+          "name": "operadorasubunidade",
+          "type": "INT64"
+        },
+        {
+          "name": "tipoestacaoescala",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipoestacaoregistradornivel",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipoestacaodescliquida",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipoestacaosedimentos",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipoestacaoqualagua",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipoestacaopluviometro",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipoestacaoregistradorchuva",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipoestacaotanqueevapo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipoestacaoclimatologica",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipoestacaopiezometria",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipoestacaotelemetrica",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodoescalainicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodoescalafim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodoregistradornivelinicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodoregistradornivelfim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periododescliquidainicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periododescliquidafim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodosedimentosinicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodosedimentosfim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodoqualaguainicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodoqualaguafim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodopluviometroinicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodopluviometrofim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodoregistradorchuvainicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodoregistradorchuvafim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodotanqueevapoinicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodotanqueevapofim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodoclimatologicainicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodoclimatologicafim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodopiezometriainicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodopiezometriafim",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodotelemetricainicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodotelemetricafim",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_ana_telemetria.series_cotas_mensal": {
+      "path": "beelink:/home/polo/rodado/br_ana_telemetria/series_cotas_mensal/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "codigo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nivel_consistencia",
+          "type": "INT32"
+        },
+        {
+          "name": "mes",
+          "type": "INT32"
+        },
+        {
+          "name": "maxima",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "minima",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "media",
+          "type": "DOUBLE"
+        }
+      ]
+    },
+    "br_ana_telemetria.series_vazoes_mensal": {
+      "path": "beelink:/home/polo/rodado/br_ana_telemetria/series_vazoes_mensal/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "codigo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nivel_consistencia",
+          "type": "INT32"
+        },
+        {
+          "name": "mes",
+          "type": "INT32"
+        },
+        {
+          "name": "maxima",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "minima",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "media",
+          "type": "DOUBLE"
         }
       ]
     },
@@ -128708,7 +129386,7 @@
     },
     "br_tse_eleicoes.bens_candidato": {
       "path": "beelink:/home/polo/rodado/br_tse_eleicoes/bens_candidato/",
-      "file_count": 18,
+      "file_count": 19,
       "columns": [
         {
           "name": "ano",
@@ -128754,7 +129432,7 @@
     },
     "br_tse_eleicoes.candidatos": {
       "path": "beelink:/home/polo/rodado/br_tse_eleicoes/candidatos/",
-      "file_count": 29,
+      "file_count": 30,
       "columns": [
         {
           "name": "ano",
@@ -128867,6 +129545,48 @@
         {
           "name": "raca",
           "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_tse_eleicoes.carga_2026": {
+      "path": "beelink:/home/polo/rodado/br_tse_eleicoes/carga_2026/",
+      "file_count": 3,
+      "columns": [
+        {
+          "name": "run_at",
+          "type": "INT64"
+        },
+        {
+          "name": "data",
+          "type": "INT32"
+        },
+        {
+          "name": "cargo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "candidaturas",
+          "type": "INT64"
+        },
+        {
+          "name": "com_declaracao",
+          "type": "INT64"
+        },
+        {
+          "name": "itens",
+          "type": "INT64"
+        },
+        {
+          "name": "valor_total",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "candidaturas_2022",
+          "type": "INT64"
+        },
+        {
+          "name": "cobertura",
+          "type": "DOUBLE"
         }
       ]
     },
