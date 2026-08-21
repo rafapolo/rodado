@@ -2,8 +2,14 @@
 """Build a queryable metadata catalog parquet (`_rodado_metadata/catalog.parquet`)
 for all tables on beelink, merging:
   - Table/dataset listing from parquet directories
-  - Row counts and file sizes from DuckDB parquet_metadata
+  - Row counts, file sizes and mtimes from DuckDB parquet_metadata
   - Provenance info (source URL, status, notes) from tasks/datasets_to_scrap.md
+  - Base dos Dados attribution for everything that is *not* independently
+    scraped — the mirrored portion of the project, whose schema snapshot lives
+    in docs/context/schema_ddl.sql
+
+Rows carry a `source` column: `disk` (parquet on beelink) or `view_only`
+(a DuckDB view with no local parquet behind it — orphaned, rows=0).
 """
 
 import csv
@@ -22,50 +28,148 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 BEELINK_HOST = os.environ.get("BEELINK_HOST", "beelink")
 
 # ---------------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------------
+
+# Schemas that exist only as DuckDB views and carry no project data: BigQuery
+# leftovers, GCP audit logs, and the catalog's own views. Keeping them would
+# make the table/dataset counts lie.
+JUNK_SCHEMAS = {
+    "main",              # _rodado_metadata / _rodado_datasets — self-reference
+    "logs",              # cloudaudit_googleapis_com_* — GCP audit leftovers
+    "test_dataset",      # upstream Base dos Dados test fixture
+    "dataset_new_arch",  # upstream Base dos Dados test fixture
+    "information_schema",
+    "pg_catalog",
+}
+
+# Everything not listed in datasets_to_scrap.md is mirrored from Base dos Dados.
+BD_SOURCE_NAME = "Base dos Dados"
+BD_SOURCE_TYPE = "mirror"
+# Per-dataset BD slugs are not derivable from the dataset id (the site resolves
+# them client-side, so a guessed /dataset/<slug> URL cannot be verified). The
+# search URL always resolves and lands on the right dataset.
+BD_SEARCH_URL = "https://basedosdados.org/search?q={dataset}"
+
+# datasets_to_scrap.md holds several tables that all start with "Source" but
+# carry different columns, so match the layout, not the keyword. Only these two
+# name real beelink datasets; the `Source | Pipeline | Node Types | Auth | ...`
+# ones list mcp-todo pipelines that have no data on disk.
+#   value = (dataset column, format, status, date, notes) — None where absent
+SCRAP_LAYOUTS = {
+    ("Source", "Beelink path", "Format", "Status", "Last updated", "Notes"):
+        {"dataset": 2, "source_type": 3, "status": 4, "date": 5, "notes": 6},
+    ("Source", "Pipeline", "CDN slug", "Period", "Rows", "Files", "Notes"):
+        {"dataset": 2, "source_type": None, "status": None, "date": None, "notes": 7},
+}
+
+URL_RE = re.compile(r"https?://[^\s)`|,;]+")
+# Most notes name the endpoint as a bare backticked host rather than a full URL
+# (`dadosabertos.compras.gov.br`); accept those as a fallback.
+HOST_RE = re.compile(
+    r"`([a-z0-9][a-z0-9.-]*\.(?:gov\.br|jus\.br|leg\.br|tc\.br|org\.br|com\.br"
+    r"|mil\.br|org|com|net|io|eu|br))`"
+)
+
+
+# ---------------------------------------------------------------------------
+# Parse docs/context/schema_ddl.sql — the Base dos Dados schema snapshot
+# ---------------------------------------------------------------------------
+
+def parse_ddl_tables(path: Path) -> set[tuple[str, str]]:
+    """Return {(dataset, table)} declared in the Base dos Dados DDL snapshot.
+
+    Used only to mark which mirrored tables have a confirmed upstream schema —
+    the snapshot is partial, so absence from it does not mean a table is not
+    from Base dos Dados."""
+    if not path.exists():
+        return set()
+    out = set()
+    for m in re.finditer(r"^CREATE TABLE ([a-z0-9_]+)\.([a-z0-9_]+)", path.read_text(), re.M):
+        out.add((m.group(1), m.group(2)))
+    return out
+
+
+# ---------------------------------------------------------------------------
 # Parse datasets_to_scrap.md into a lookup dict
 # ---------------------------------------------------------------------------
 
+def split_row(line: str) -> list[str]:
+    """Split a markdown table row on | while respecting `backticked` cells."""
+    cells = []
+    current = ""
+    in_backtick = False
+    for ch in line:
+        if ch == "`":
+            in_backtick = not in_backtick
+            current += ch
+        elif ch == "|" and not in_backtick:
+            cells.append(current.strip())
+            current = ""
+        else:
+            current += ch
+    if current.strip():
+        cells.append(current.strip())
+    return cells
+
+
 def parse_markdown_table(path: Path) -> dict[str, dict]:
     scraped = {}
+    cols = None
+
     with open(path) as f:
         lines = f.readlines()
 
     for line in lines:
         line = line.strip()
-        if not line.startswith("|") or line.startswith("|---") or "Source" in line:
+        if not line:
+            # Some tables are visually split by a blank line — that is still
+            # the same table, so do not drop the layout here.
+            continue
+        if not line.startswith("|"):
+            cols = None
+            continue
+        if line.startswith("|---"):
             continue
 
-        cells = []
-        current = ""
-        in_backtick = False
-        for ch in line:
-            if ch == "`":
-                in_backtick = not in_backtick
-                current += ch
-            elif ch == "|" and not in_backtick:
-                cells.append(current.strip())
-                current = ""
-            else:
-                current += ch
-        if current.strip():
-            cells.append(current.strip())
-
-        if len(cells) < 7:
+        cells = split_row(line)
+        # cells[0] is the empty string before the leading pipe
+        header = tuple(c for c in cells[1:] if c)
+        if header in SCRAP_LAYOUTS:
+            cols = SCRAP_LAYOUTS[header]
+            continue
+        if header[:1] == ("Source",) or header[:1] == ("Dataset",):
+            cols = None  # a table layout we do not read
+            continue
+        if cols is None or len(cells) <= cols["notes"]:
             continue
 
-        beelink_path = cells[2].strip("` ") if len(cells) > 2 else ""
-        if not beelink_path or beelink_path == "Beelink path":
+        beelink_path = cells[cols["dataset"]].strip("` ")
+        # `~/...` marks a mirror kept outside ~/rodado, deliberately uncatalogued
+        if not beelink_path or beelink_path.startswith("~") or beelink_path == "—":
             continue
 
+        def cell(key, default=""):
+            i = cols[key]
+            return cells[i].strip() if i is not None and i < len(cells) else default
+
+        notes = cell("notes")
+        # datasets_to_scrap.md has no URL column — take the first URL mentioned
+        # anywhere in the row, falling back to the first backticked hostname.
+        urls = URL_RE.findall(line)
+        if urls:
+            source_url = urls[0].rstrip(".")
+        else:
+            host = HOST_RE.search(line)
+            source_url = f"https://{host.group(1)}" if host else ""
         info = {
             "source_name": cells[1].strip(),
-            "source_url": "",
-            "source_type": cells[3].strip().split()[0] if len(cells) > 3 else "",
-            "status": cells[4].strip() if len(cells) > 4 else "",
-            "notes": cells[6].strip()[:500] if len(cells) > 6 else "",
+            "source_url": source_url,
+            "source_type": (cell("source_type") or "scraped").split()[0],
+            "status": cell("status") or "done",
+            "notes": notes[:500],
         }
-        lu = cells[5].strip() if len(cells) > 5 else ""
-        dates = re.findall(r"\d{4}-\d{2}-\d{2}", lu)
+        dates = re.findall(r"\d{4}-\d{2}-\d{2}", cell("date"))
         if dates:
             info["scrape_date"] = dates[-1]
 
@@ -96,6 +200,9 @@ for dsdir in br_* global_* world_* mundo_* eu_* un_* us_*; do
     # ** e nao * : tabelas particionadas (ex. br_ana_telemetria/series_vazao_diaria,
     # em bacia=XX/) ficavam com rows=0 e num_files=0 no catalogo. O ** tambem casa
     # arquivo direto no diretorio, entao as tabelas planas seguem contando igual.
+    # data do parquet mais recente: e a unica "quando foi espelhado" que
+    # existe para as tabelas do Base dos Dados, que nao tem scrape_date.
+    mt=$(find "$tbdir" -name '*.parquet' -printf '%TY-%Tm-%Td\n' 2>/dev/null | sort -r | head -1)
     result=$(~/bin/duckdb -csv -c "SET enable_progress_bar=false;
 WITH pm AS (
   SELECT file_name, row_group_id, row_group_num_rows, total_compressed_size
@@ -109,9 +216,9 @@ SELECT 'disk' AS src, '${dsdir}' AS d, '${tbl}' AS t,
   coalesce((SELECT sum(row_group_num_rows) FROM row_groups), 0) AS r,
   coalesce((SELECT sum(total_compressed_size) FROM pm), 0) AS b;" 2>/dev/null)
     if [ $? -eq 0 ]; then
-      echo "$result"
+      echo "${result},${mt}"
     else
-      echo "disk,${dsdir},${tbl},0,0,0"
+      echo "disk,${dsdir},${tbl},0,0,0,${mt}"
     fi
   done
 done
@@ -148,6 +255,8 @@ done
                 continue
             try:
                 key = (parts[1].strip(), parts[2].strip())
+                if key[0] in JUNK_SCHEMAS:
+                    continue
                 if key not in tables:
                     tables[key] = {
                         "dataset": parts[1].strip(),
@@ -155,6 +264,7 @@ done
                         "num_files": int(parts[3]),
                         "rows": int(parts[4]),
                         "size_bytes": int(parts[5]),
+                        "mtime": parts[6].strip() if len(parts) > 6 else "",
                         "source": "disk",
                     }
             except (ValueError, IndexError):
@@ -197,14 +307,18 @@ ORDER BY table_schema, table_name;
             ds = parts[0].strip()
             tbl = parts[1].strip()
             key = (ds, tbl)
+            if ds in JUNK_SCHEMAS:
+                continue
             if key not in tables:
-                # Try to estimate row count from parquet if available
+                # View with no parquet behind it — the data it pointed at (S3,
+                # a local import) is gone. Kept so the breakage stays visible.
                 tables[key] = {
                     "dataset": ds,
                     "table": tbl,
                     "num_files": 0,
                     "rows": 0,
                     "size_bytes": 0,
+                    "mtime": "",
                     "source": "view_only",
                 }
 
@@ -217,6 +331,7 @@ ORDER BY table_schema, table_name;
 
 def build_catalog():
     scraped_info = parse_markdown_table(REPO_ROOT / "tasks" / "datasets_to_scrap.md")
+    ddl_tables = parse_ddl_tables(REPO_ROOT / "docs" / "context" / "schema_ddl.sql")
     beelink_tables = get_tables_from_beelink()
 
     if not beelink_tables:
@@ -224,6 +339,8 @@ def build_catalog():
         sys.exit(1)
 
     print(f"Got {len(beelink_tables)} tables from beelink", file=sys.stderr)
+    print(f"  {len(scraped_info)} scraped datasets in datasets_to_scrap.md", file=sys.stderr)
+    print(f"  {len(ddl_tables)} tables in the Base dos Dados DDL snapshot", file=sys.stderr)
     total_rows = sum(t["rows"] for t in beelink_tables)
     print(f"Total rows: {total_rows:,}", file=sys.stderr)
 
@@ -244,13 +361,44 @@ def build_catalog():
         ("scrape_date", pa.string()),
         ("status", pa.string()),
         ("provenance_notes", pa.string()),
+        ("source", pa.string()),
         ("updated_at", pa.string()),
     ])
 
     arrays = {f.name: [] for f in schema}
+    n_bd = 0
     for t in beelink_tables:
         ds = t["dataset"]
-        info = scraped_info.get(ds, {})
+        info = scraped_info.get(ds)
+
+        if info is None:
+            # Not independently scraped => mirrored from Base dos Dados.
+            # schema_ddl.sql is a partial snapshot of that mirror, so it can
+            # confirm a table but never rule one out.
+            n_bd += 1
+            confirmed = (ds, t["table"]) in ddl_tables
+            info = {
+                "source_name": BD_SOURCE_NAME,
+                "source_url": BD_SEARCH_URL.format(dataset=ds),
+                "source_type": BD_SOURCE_TYPE,
+                "status": "mirrored",
+                "scrape_date": t.get("mtime", ""),
+                "notes": (
+                    "Espelho do Base dos Dados; schema confirmado em "
+                    "docs/context/schema_ddl.sql."
+                    if confirmed else
+                    "Espelho do Base dos Dados; fora do recorte de "
+                    "docs/context/schema_ddl.sql."
+                ),
+            }
+
+        status = info.get("status", "mirrored")
+        notes = info.get("notes", "")
+        if t["source"] == "view_only":
+            # A view whose parquet is gone — never report it as mirrored data.
+            status = "view_orfa"
+            notes = ("View DuckDB sem parquet local (origem removida). " + notes).strip()
+
         arrays["dataset"].append(ds)
         arrays["table"].append(t["table"])
         arrays["source_name"].append(info.get("source_name", ""))
@@ -259,10 +407,13 @@ def build_catalog():
         arrays["rows"].append(t["rows"])
         arrays["num_files"].append(t["num_files"])
         arrays["size_bytes"].append(t["size_bytes"])
-        arrays["scrape_date"].append(info.get("scrape_date", ""))
-        arrays["status"].append(info.get("status", "mirrored"))
-        arrays["provenance_notes"].append(info.get("notes", ""))
+        arrays["scrape_date"].append(info.get("scrape_date", "") or t.get("mtime", ""))
+        arrays["status"].append(status)
+        arrays["provenance_notes"].append(notes[:500])
+        arrays["source"].append(t["source"])
         arrays["updated_at"].append(today)
+
+    print(f"  {n_bd} tables attributed to {BD_SOURCE_NAME}", file=sys.stderr)
 
     pa_table = pa.table(arrays, schema=schema)
 
@@ -282,6 +433,51 @@ def build_catalog():
         capture_output=True, timeout=120, check=True,
     )
     print(f"Pushed to beelink: ~/rodado/_rodado_metadata/catalog.parquet", file=sys.stderr)
+
+    refresh_views()
+
+
+# ---------------------------------------------------------------------------
+# Views over the catalog, kept here so they follow the parquet schema
+# ---------------------------------------------------------------------------
+
+VIEWS_SQL = """
+CREATE OR REPLACE VIEW _rodado_metadata AS
+SELECT * FROM read_parquet('~/rodado/_rodado_metadata/catalog.parquet');
+
+CREATE OR REPLACE VIEW _rodado_datasets AS
+SELECT
+  dataset,
+  any_value(source_name)          AS source_name,
+  any_value(source_url)           AS source_url,
+  any_value(source_type)          AS source_type,
+  count(*)                        AS total_tables,
+  sum("rows")                     AS total_rows,
+  sum(num_files)                  AS total_files,
+  sum(size_bytes)                 AS total_size_bytes,
+  max(scrape_date)                AS scrape_date,
+  string_agg(DISTINCT status, ', ' ORDER BY status) AS status,
+  count(*) FILTER (WHERE source = 'view_only') AS orphan_views
+FROM read_parquet('~/rodado/_rodado_metadata/catalog.parquet')
+GROUP BY dataset;
+"""
+
+
+def refresh_views():
+    """Recreate _rodado_metadata / _rodado_datasets on beelink.
+
+    _rodado_datasets groups by dataset alone — grouping by the descriptive
+    columns too used to split a dataset into several rows whenever its tables
+    disagreed on scrape_date or status."""
+    proc = subprocess.run(
+        ["ssh", BEELINK_HOST, "~/bin/duckdb ~/rodado/basedosdados.duckdb"],
+        input=("SET enable_progress_bar=false;\n" + VIEWS_SQL).encode(),
+        capture_output=True, timeout=120,
+    )
+    if proc.returncode != 0:
+        print(f"WARN: could not refresh views: {proc.stderr.decode()[:300]}", file=sys.stderr)
+        return
+    print("Refreshed views: _rodado_metadata, _rodado_datasets", file=sys.stderr)
 
 
 if __name__ == "__main__":
