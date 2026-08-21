@@ -178,31 +178,7 @@ button { font: inherit; color: inherit; }
 .modes .nm { display: block; font-size: 12.5px; font-weight: 500; }
 .modes .ds { display: block; font-size: 11px; color: var(--ink-3); margin-top: 1px; }
 
-.leg { display: flex; flex-direction: column; gap: 7px; }
-.leg button {
-  display: flex; align-items: center; gap: 9px;
-  background: none; border: 0; padding: 1px 0; cursor: pointer;
-  text-align: left; width: 100%; line-height: 1.35;
-}
-.leg button[aria-pressed="false"] { opacity: .45; }
-.leg .tick {
-  width: 13px; height: 13px; border-radius: 3px; flex: none;
-  border: 1px solid var(--line-2); background: var(--card-2);
-  position: relative;
-}
-.leg button[aria-pressed="true"] .tick { background: var(--hub); border-color: var(--hub); }
-.leg button[aria-pressed="true"] .tick::after {
-  content: ""; position: absolute; left: 3.5px; top: 1px;
-  width: 3px; height: 7px; border: solid var(--rail);
-  border-width: 0 1.6px 1.6px 0; transform: rotate(42deg);
-}
 .dot { width: 9px; height: 9px; border-radius: 2.5px; flex: none; }
-.leg .nm { font-size: 12.5px; }
-.leg .ct {
-  margin-left: auto;
-  font-family: "IBM Plex Mono", monospace; font-size: 11px;
-  font-variant-numeric: tabular-nums; color: var(--ink-3);
-}
 
 .list-wrap { flex: 1; min-height: 0; overflow-y: auto; padding: 13px 0 24px; }
 .list-t { padding: 0 18px; }
@@ -325,11 +301,16 @@ canvas.drag { cursor: grabbing; }
     transform: translateX(-100%); transition: transform .22s cubic-bezier(.4,0,.2,1);
     box-shadow: var(--shadow);
   }
+  /* Stacking on a narrow screen: the inspector is nearly full width, so both
+     the drawer and its toggle have to sit above it or they become unreachable
+     the moment anything is selected. */
+  .rail { z-index: 5; }
   .rail.on { transform: none; }
   /* the toggle sits at the far left, which is under the open drawer */
   body:has(.rail.on) .rail-toggle { left: 310px; }
+  .insp { top: 54px; }
   .rail-toggle {
-    display: flex; position: absolute; top: 14px; left: 14px; z-index: 3;
+    display: flex; position: absolute; top: 12px; left: 14px; z-index: 6;
     background: var(--rail); border: 1px solid var(--line); border-radius: 7px;
     padding: 7px 12px; cursor: pointer; box-shadow: var(--shadow);
     font-size: 12px; font-weight: 500;
@@ -363,11 +344,6 @@ canvas.drag { cursor: grabbing; }
   <div class="legend">
     <p class="legend-t">Distribuição</p>
     <div class="modes" id="modes"></div>
-  </div>
-
-  <div class="legend">
-    <p class="legend-t">Filtrar chaves</p>
-    <div class="leg" id="leg"></div>
   </div>
 
   <div class="list-wrap">
@@ -428,35 +404,16 @@ function boot(G) {
 const DS = G.datasets, KS = G.keys, TB = G.tables;
 const [CELL_W, CELL_H, PAD, HEADER] = G.layout.cell;
 
-/* Three ways of distributing the same 833 tables. `grade` packs them into
-   dataset cards — most legible, least expressive about affinity. The other two
-   put every table in the field as a body of its own. */
+/* Two ways of distributing the same 833 tables. `grade` packs them into dataset
+   cards — most legible, least expressive about affinity. `temas` puts every
+   table in the field as a body of its own, inside its theme's territory. */
 const MODES = [
-  ["grade",     "Grade",      "cartões de dataset empacotados; tabelas em grade dentro"],
-  ["gravidade", "Gravidade",  "n corpos livres: cada tabela puxada pelas chaves que carrega"],
-  ["orbita",    "Órbita",     "cada chave é um centro; suas tabelas em anel ao redor"],
-  ["temas",     "Temas",      "um território por tema; as chaves flutuam entre os que ligam"],
+  ["grade", "Grade", "cartões de dataset empacotados; tabelas em grade dentro"],
+  ["temas", "Temas", "um território por tema; as chaves flutuam entre os que ligam"],
 ];
 let mode = "grade";
 const isDisc = () => mode !== "grade";
 let L = G.layout[mode];
-
-/* Key category -> filter group. These four no longer carry colour — colour
-   means theme now — but they stay as the switch that takes ano/mes/sigla_uf
-   out of the drawing, which is what makes the entity keys readable. */
-const GROUP_OF = {
-  empresa: "id", pessoa: "id",
-  municipio: "geo", uf: "geo", geo: "geo",
-  saude: "dom", educacao: "dom", governo: "dom",
-  politica: "dom", classificacao: "dom",
-  tempo: "axis", outros: "axis",
-};
-const GROUPS = [
-  ["id",   "Identidade",  "CNPJ, CPF e seus apelidos"],
-  ["dom",  "Domínio",     "CNES, escola, órgão, CNAE"],
-  ["geo",  "Geografia",   "município, UF, setor, CEP"],
-  ["axis", "Eixo",        "ano, mês e o resto"],
-];
 
 /* Themes, in fixed hue order by size. The last two are neutral on purpose:
    the directories are the substrate every other theme joins against, and the
@@ -472,7 +429,6 @@ const THEME_SHORT = {
   internacional: "Internacional", outros: "Outros",
 };
 const themeOf = ti => DS[TB[ti].ds].dom;
-
 
 /* ── derived indexes ─────────────────────────────────────────────── */
 const dsTables = DS.map(() => []);
@@ -499,16 +455,6 @@ dsEdges.forEach(([d, k]) => dsKeys[d].add(k));
 const cellsOf = di => {
   const cols = L.ds[di][4];
   return { cols, rows: Math.ceil(dsTables[di].length / cols) };
-};
-
-/* Which key-filter groups a table still has a key in. With every group off, a
-   table has nothing left to draw and drops out with its edges. */
-const tGroups = TB.map(t => new Set(t.k.map(ki => GROUP_OF[KS[ki].cat] || "axis")));
-const tVisible = ti => {
-  const g = tGroups[ti];
-  if (!g.size) return true;           // unconnected tables are always drawn
-  for (const x of g) if (groupOn[x]) return true;
-  return false;
 };
 
 /* Edge weight. `ano` reaches 389 tables and `id_escola` 14; letting them draw
@@ -545,7 +491,6 @@ const stage = document.getElementById("stage");
 let W = 0, H = 0, dpr = 1;
 let k = 1, tx = 0, ty = 0;
 let hover = null, sel = null;            // {type:"ds"|"key"|"tbl", i, cell?}
-let groupOn = { id: 1, dom: 1, geo: 1, axis: 1 };
 let C = {};
 
 function readColors() {
@@ -626,63 +571,24 @@ function goTo(cx, cy, kk, animate) {
 const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 const ease = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
 
-/* ── mode switching ──────────────────────────────────────────────────
-   Between the two disc layouts the node set is identical, so the tables can
-   travel to their new places — watching a table leave `ano` and settle onto
-   `id_escola` is the whole argument for having both. Grade uses a different
-   mark, so that swap cross-fades instead. */
-let P = { tb: [], keys: [] };   // live disc positions (tweened)
+/* ── mode switching ────────────────────────────────────────────────── */
+let P = { tb: [], keys: [] };   // live positions in the table-body layout
 let fade = 1;
 
 function setMode(next) {
   if (next === mode) return;
-  const wasDisc = isDisc(), from = { tb: P.tb.map(a => a.slice()), keys: P.keys.map(a => a.slice()) };
-  const prevMode = mode;
-  mode = next; L = G.layout[mode];
-  const target = isDisc() ? G.layout[mode] : null;
-
+  mode = next;
+  L = G.layout[mode];
   document.querySelectorAll("[data-mode]").forEach(b =>
     b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
 
-  // Only the morph path animates from the old positions; every other path
-  // must land on the new field immediately, or the bodies stay where the
-  // previous layout left them while the labels come from this one.
-  if (isDisc()) P = { tb: target.tb.map(a => a.slice()), keys: target.keys.map(a => a.slice()) };
-
-  if (wasDisc && isDisc() && !reduced()) {
-    // morph: same bodies, new field. The camera travels with them — the two
-    // fields differ in size, so holding the old view leaves the new one
-    // half off-screen.
-    const k0 = k, x0 = tx, y0 = ty;
-    P = { tb: target.tb.map(a => a.slice()), keys: target.keys.map(a => a.slice()) };
-    measure();
-    const kk = Math.min(W / (bounds.x1 - bounds.x0), H / (bounds.y1 - bounds.y0)) * 0.96;
-    const cx = (bounds.x0 + bounds.x1) / 2, cy = (bounds.y0 + bounds.y1) / 2;
-    const kT = Math.max(0.06, Math.min(9, kk));
-    const xT = W / 2 - cx * kT, yT = H / 2 - cy * kT;
-    const t0 = performance.now(), D = 900;
-    (function step(now) {
-      const q = Math.min(1, (now - t0) / D), e = ease(q);
-      for (let i = 0; i < P.tb.length; i++) {
-        P.tb[i][0] = from.tb[i][0] + (target.tb[i][0] - from.tb[i][0]) * e;
-        P.tb[i][1] = from.tb[i][1] + (target.tb[i][1] - from.tb[i][1]) * e;
-        P.tb[i][2] = target.tb[i][2];
-      }
-      for (let i = 0; i < P.keys.length; i++) {
-        P.keys[i][0] = from.keys[i][0] + (target.keys[i][0] - from.keys[i][0]) * e;
-        P.keys[i][1] = from.keys[i][1] + (target.keys[i][1] - from.keys[i][1]) * e;
-        P.keys[i][2] = target.keys[i][2];
-      }
-      k = k0 + (kT - k0) * e; tx = x0 + (xT - x0) * e; ty = y0 + (yT - y0) * e;
-      measure(); draw();
-      if (q < 1) requestAnimationFrame(step);
-    })(t0);
-    return;
-  }
-
+  // The two modes draw different marks — a dataset card and a table body — so
+  // there is nothing to morph between; cross-fade and reframe instead.
+  if (isDisc()) P = { tb: L.tb.map(a => a.slice()), keys: L.keys.map(a => a.slice()) };
   measure();
   if (reduced()) { fade = 1; home(false); return; }
-  fade = 0; home(false);
+  fade = 0;
+  home(false);
   const t0 = performance.now();
   (function step(now) {
     fade = Math.min(1, (now - t0) / 260);
@@ -775,7 +681,6 @@ function draw() {
 function drawDiscs(act) {
   const vx0 = -tx / k, vy0 = -ty / k, vx1 = (W - tx) / k, vy1 = (H - ty) / k;
   const near = (x, y, r) => x + r > vx0 && x - r < vx1 && y + r > vy0 && y - r < vy1;
-  const on = ki => groupOn[GROUP_OF[KS[ki].cat] || "axis"];
 
   /* edges */
   ctx.lineCap = "round";
@@ -784,7 +689,6 @@ function drawDiscs(act) {
     if (!t.k.length) continue;
     const [ax, ay] = P.tb[ti];
     for (const ki of t.k) {
-      if (!on(ki)) continue;
       const [bx, by] = P.keys[ki];
       if (!near((ax + bx) / 2, (ay + by) / 2, Math.hypot(bx - ax, by - ay) / 2)) continue;
       const lit = !!act && act.tbls.has(ti) && act.keys.has(ki);
@@ -801,7 +705,6 @@ function drawDiscs(act) {
   for (let ti = 0; ti < TB.length; ti++) {
     const [x, y, r] = P.tb[ti];
     if (!near(x, y, r + 2)) continue;
-    if (!tVisible(ti)) continue;
     const lit = !act || act.tbls.has(ti);
     const isSel = sel && sel.type === "tbl" && sel.i === ti;
     ctx.globalAlpha = lit ? 1 : 0.16;
@@ -819,7 +722,6 @@ function drawDiscs(act) {
 
   /* key hubs, on top of what they hold together */
   for (let ki = 0; ki < KS.length; ki++) {
-    if (!on(ki)) continue;
     const [x, y, r] = P.keys[ki];
     if (!near(x, y, r)) continue;
     const lit = !act || act.keys.has(ki);
@@ -872,7 +774,7 @@ function drawDiscs(act) {
   ctx.textBaseline = "middle";
 
   const keyOrder = KS.map((_, i) => i)
-    .filter(ki => on(ki) && near(P.keys[ki][0], P.keys[ki][1], P.keys[ki][2] + 30))
+    .filter(ki => near(P.keys[ki][0], P.keys[ki][1], P.keys[ki][2] + 30))
     .sort((a, b) => ((act && act.keys.has(b)) - (act && act.keys.has(a))) || KS[b].t - KS[a].t);
 
   for (const ki of keyOrder) {
@@ -900,7 +802,7 @@ function drawDiscs(act) {
   if (LOD() >= 1) {
     ctx.font = '500 9px "IBM Plex Mono", monospace';
     const tblOrder = TB.map((_, i) => i)
-      .filter(ti => tVisible(ti) && near(P.tb[ti][0], P.tb[ti][1], P.tb[ti][2] + 40))
+      .filter(ti => near(P.tb[ti][0], P.tb[ti][1], P.tb[ti][2] + 40))
       .sort((a, b) => ((act && act.tbls.has(b)) - (act && act.tbls.has(a))) || TB[b].r - TB[a].r);
     for (const ti of tblOrder) {
       const [x, y, r] = P.tb[ti];
@@ -941,7 +843,6 @@ function drawGrade(act) {
 
   if (lod < 2) {
     for (const [d, ki] of dsEdges) {
-      if (!groupOn[GROUP_OF[KS[ki].cat] || "axis"]) continue;
       const [x, y, w, h] = L.ds[d];
       if (!vis(x, y, w, h)) continue;
       drawEdge(x, y, w, h, ki, !!act && act.keys.has(ki) && act.dss.has(d), dcol(d));
@@ -957,8 +858,7 @@ function drawGrade(act) {
       const cx = x - w / 2 + PAD + (idx % cols) * CELL_W + CELL_W / 2;
       const cy = y - h / 2 + HEADER + Math.floor(idx / cols) * CELL_H + CELL_H / 2;
       for (const ki of t.k) {
-        if (!groupOn[GROUP_OF[KS[ki].cat] || "axis"]) continue;
-        drawEdge(cx, cy, CELL_W - 8, CELL_H - 4, ki, !!act && act.tbls.has(ti) && act.keys.has(ki), tcol(ti));
+          drawEdge(cx, cy, CELL_W - 8, CELL_H - 4, ki, !!act && act.tbls.has(ti) && act.keys.has(ki), tcol(ti));
       }
     }
   }
@@ -988,10 +888,14 @@ function drawGrade(act) {
     ctx.fillStyle = C.card2;
     ctx.fillRect(X, Y, w, HEADER);
     if (dg) {
-      ctx.globalAlpha = (on ? 1 : 0.3) * (k < 0.2 ? 0.55 : 0.17);
+      // The wash gives the card its theme; the saturated rule under it does the
+      // separating. At a single low alpha the ten themes collapse — saúde,
+      // demografia and território all wash out to the same pale pink.
+      ctx.globalAlpha = (on ? 1 : 0.3) * (k < 0.2 ? 0.6 : 0.28);
       ctx.fillStyle = dcol(d);
       ctx.fillRect(X, Y, w, HEADER);
       ctx.globalAlpha = on ? 1 : 0.3;
+      ctx.fillRect(X, Y + HEADER - 2.5, w, 2.5);
     }
     ctx.restore();
     ctx.strokeStyle = C.line;
@@ -1050,8 +954,7 @@ function drawGrade(act) {
           let ox = cx + 5;
           ctx.font = '500 7.5px "IBM Plex Mono", monospace';
           for (const ki of t.k) {
-            if (!groupOn[GROUP_OF[KS[ki].cat] || "axis"]) continue;
-            const label = KS[ki].n;
+                  const label = KS[ki].n;
             const tw = ctx.measureText(label).width + 6;
             if (ox + tw > cx + CELL_W - 6) { ctx.fillStyle = C.ink3; ctx.fillText("+", ox + 1, cy + 19); break; }
             ctx.fillStyle = C.hub;
@@ -1072,8 +975,6 @@ function drawGrade(act) {
   /* key hubs — drawn last so they sit above the cards they connect */
   ctx.textBaseline = "middle";
   for (let ki = 0; ki < KS.length; ki++) {
-    const grp = GROUP_OF[KS[ki].cat] || "axis";
-    if (!groupOn[grp]) continue;
     const [x, y, w] = L.keys[ki];
     if (!vis(x, y, w, 34)) continue;
     const on = !act || act.keys.has(ki);
@@ -1110,7 +1011,6 @@ function hit(px, py) {
     // keys first: they are drawn on top, so they win the click
     let best = null, bd = Infinity;
     for (let ki = 0; ki < KS.length; ki++) {
-      if (!groupOn[GROUP_OF[KS[ki].cat] || "axis"]) continue;
       const [x, y, r] = P.keys[ki];
       const d = Math.hypot(wx - x, wy - y);
       if (d <= r && d < bd) { bd = d; best = { type: "key", i: ki }; }
@@ -1118,8 +1018,7 @@ function hit(px, py) {
     if (best) return best;
     bd = Infinity;
     for (let ti = 0; ti < TB.length; ti++) {
-      if (!tVisible(ti)) continue;
-      const [x, y, r] = P.tb[ti];
+        const [x, y, r] = P.tb[ti];
       // a generous target: the smallest discs are 3px in world units
       const d = Math.hypot(wx - x, wy - y);
       if (d <= Math.max(r, 7 / k) && d < bd) { bd = d; best = { type: "tbl", i: ti }; }
@@ -1127,7 +1026,6 @@ function hit(px, py) {
     return best;
   }
   for (let ki = KS.length - 1; ki >= 0; ki--) {
-    if (!groupOn[GROUP_OF[KS[ki].cat] || "axis"]) continue;
     const [x, y, w] = L.keys[ki];
     if (Math.abs(wx - x) < w / 2 && Math.abs(wy - y) < 17) return { type: "key", i: ki };
   }
@@ -1249,8 +1147,8 @@ function renderTheme(th) {
 }
 
 function renderKey(ki) {
-  const K = KS[ki], grp = GROUP_OF[K.cat] || "axis";
-  iKind.textContent = "Chave de junção · " + (GROUPS.find(g => g[0] === grp)[1]);
+  const K = KS[ki];
+  iKind.textContent = "Chave de junção · " + (G.cats[K.cat] || K.cat);
   iName.textContent = K.n;
   const tabs = keyTables[ki].slice().sort((a, b) => TB[b].r - TB[a].r);
   let h = `<div class="facts">
@@ -1377,20 +1275,6 @@ modesEl.innerHTML = MODES.map(([id, name, desc]) =>
      <span class="nm">${name}</span><span class="ds">${desc}</span></button>`).join("");
 modesEl.querySelectorAll("button").forEach(b => b.onclick = () => setMode(b.dataset.mode));
 
-const leg = document.getElementById("leg");
-leg.innerHTML = GROUPS.map(([id, name, desc]) => {
-  const n = KS.filter(kk => (GROUP_OF[kk.cat] || "axis") === id).length;
-  return `<button data-g="${id}" aria-pressed="true" title="${esc(desc)}">
-    <span class="tick" aria-hidden="true"></span>
-    <span class="nm">${name}</span><span class="ct">${n}</span></button>`;
-}).join("");
-leg.querySelectorAll("button").forEach(b => b.onclick = () => {
-  const g = b.dataset.g;
-  groupOn[g] = !groupOn[g];
-  b.setAttribute("aria-pressed", String(!!groupOn[g]));
-  draw();
-});
-
 const listEl = document.getElementById("list");
 const listT = document.getElementById("list-t");
 function renderList(q) {
@@ -1460,8 +1344,8 @@ addEventListener("resize", resize);
 
 readColors();
 renderList("");
-P = { tb: G.layout.gravidade.tb.map(a => a.slice()),
-      keys: G.layout.gravidade.keys.map(a => a.slice()) };
+P = { tb: G.layout.temas.tb.map(a => a.slice()),
+      keys: G.layout.temas.keys.map(a => a.slice()) };
 measure();
 resize();
 home(false);

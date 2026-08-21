@@ -253,17 +253,11 @@ def build():
 
     print("  layout: grade…", file=sys.stderr)
     grade = layout(out_datasets, out_keys, out_tables)
-    print("  layout: gravidade…", file=sys.stderr)
-    grav = layout_gravity(out_keys, out_tables)
-    print("  layout: órbita…", file=sys.stderr)
-    orb = layout_orbit(out_keys, out_tables)
     print("  layout: temas…", file=sys.stderr)
     thm = layout_theme(out_datasets, out_keys, out_tables)
     graph["layout"] = {
         "cell": [CELL_W, CELL_H, PAD, HEADER],
         "grade": grade,
-        "gravidade": grav,
-        "orbita": orb,
         "temas": thm,
     }
 
@@ -503,10 +497,10 @@ def layout(datasets, keys, tables):
 
 
 # ---------------------------------------------------------------------------
-# Table-level layouts — the unit is the table, not the dataset card
+# Table-level layout — the unit is the table, not the dataset card
 # ---------------------------------------------------------------------------
 # The packed layout reads well but flattens affinity: a card sits where it fits,
-# not where it belongs. These two put the 833 tables in the field themselves.
+# not where it belongs. This one puts the 833 tables in the field themselves.
 
 def table_radius(rows: int) -> float:
     """Log scale — row counts span 0 to 6,6 bilhões, so a linear radius would
@@ -516,74 +510,6 @@ def table_radius(rows: int) -> float:
 
 def key_radius(reach: int) -> float:
     return 9.0 + 3.4 * math.sqrt(reach)
-
-
-def layout_gravity(keys, tables, seed=11):
-    """Free n-body settle: every table is pulled toward each key it carries and
-    pushed off every other body. Clusters are emergent, not assigned."""
-    import numpy as np
-
-    rng = np.random.default_rng(seed)
-    nt, nk = len(tables), len(keys)
-    n = nt + nk
-
-    rad = np.array([table_radius(t["r"]) for t in tables]
-                   + [key_radius(k["t"]) for k in keys])
-
-    src, dst, wgt = [], [], []
-    for ti, t in enumerate(tables):
-        for ki in t["k"]:
-            src.append(ti)
-            dst.append(nt + ki)
-            # a key reaching 389 tables says far less about any one of them
-            # than a key reaching 12, so it pulls proportionally less
-            wgt.append(1.0 / math.sqrt(keys[ki]["t"]))
-    src = np.array(src, dtype=int)
-    dst = np.array(dst, dtype=int)
-    wgt = np.array(wgt)
-
-    pos = rng.normal(0, 900, (n, 2))
-    # seed each table near the centroid of its keys so the sim starts sane
-    for j in range(nk):
-        pos[nt + j] = rng.normal(0, 1400, 2)
-    for ti, t in enumerate(tables):
-        if t["k"]:
-            pos[ti] = np.mean([pos[nt + ki] for ki in t["k"]], axis=0) \
-                + rng.normal(0, 90, 2)
-
-    k_rep = 70.0
-    mass = np.where(np.arange(n) >= nt, 4.0, 1.0)   # keys hold their ground
-    linked = np.zeros(n, dtype=bool)
-    linked[src] = True
-    linked[nt:] = True
-    pull_home = np.where(linked, 0.02, 0.075)
-
-    for step in range(340):
-        cool = 1.0 - step / 340
-        delta = pos[:, None, :] - pos[None, :, :]
-        dist2 = np.sum(delta ** 2, axis=-1) + 1e-6
-        np.fill_diagonal(dist2, np.inf)
-        disp = np.sum(delta * ((k_rep ** 2) / dist2)[..., None], axis=1)
-
-        d = pos[src] - pos[dst]
-        dist = np.sqrt(np.sum(d ** 2, axis=-1)) + 1e-6
-        pull = (d / dist[:, None]) * (dist * wgt * 0.85)[:, None]
-        np.add.at(disp, src, -pull)
-        np.add.at(disp, dst, pull)
-
-        # Edgeless tables feel nothing but repulsion, so they drift into a wide
-        # diffuse shell that triples the field and shrinks the core. Hold them
-        # in a tighter halo — still visibly outside the structure, not lost.
-        disp -= pos * pull_home[:, None]
-        disp /= mass[:, None]
-
-        norm = np.sqrt(np.sum(disp ** 2, axis=-1))[:, None] + 1e-9
-        pos += (disp / norm) * np.minimum(norm, 70.0 * cool + 4.0)
-
-    _compact(pos, rad, 2600.0)
-    out = _finish(pos, rad, nt, nk, keys)
-    del out["_dx"], out["_dy"]
-    return out
 
 
 def layout_theme(datasets, keys, tables):
@@ -650,84 +576,6 @@ def layout_theme(datasets, keys, tables):
                           round(centres[th][2], 1)] for th in centres}
     del out["_dx"], out["_dy"]
     return out
-
-
-def layout_orbit(keys, tables):
-    """Deterministic radial: each key is a centre and its tables ring it.
-
-    A table carrying several keys belongs to its most specific one — orbiting
-    `ano` alongside 388 others says nothing about it."""
-    import numpy as np
-
-    nt, nk = len(tables), len(keys)
-    rad = np.array([table_radius(t["r"]) for t in tables]
-                   + [key_radius(k["t"]) for k in keys])
-    pos = np.zeros((nt + nk, 2))
-
-    # keys laid out by group in angular sectors, most-reaching nearest the middle
-    groups = ["id", "dom", "geo", "axis"]
-    gof = {"empresa": "id", "pessoa": "id",
-           "municipio": "geo", "uf": "geo", "geo": "geo",
-           "saude": "dom", "educacao": "dom", "governo": "dom",
-           "politica": "dom", "classificacao": "dom",
-           "tempo": "axis", "outros": "axis"}
-    by_group = {g: [] for g in groups}
-    for ki, k in enumerate(keys):
-        by_group[gof.get(k["cat"], "axis")].append(ki)
-
-    owner = {}
-    for ti, t in enumerate(tables):
-        if t["k"]:
-            owner.setdefault(min(t["k"], key=lambda ki: (keys[ki]["t"], ki)), []).append(ti)
-
-    placed = []
-    for gi, g in enumerate(groups):
-        members = sorted(by_group[g], key=lambda ki: -keys[ki]["t"])
-        a0 = 2 * math.pi * gi / len(groups)
-        span = 2 * math.pi / len(groups) * 0.94
-        for j, ki in enumerate(members):
-            own = owner.get(ki, [])
-            ring = 60.0 + 13.0 * math.sqrt(max(len(own), 1)) + key_radius(keys[ki]["t"])
-            # spiral outward inside the sector so bigger keys sit inboard
-            step = (j + 0.5) / max(len(members), 1)
-            ang = a0 + span * ((j * 0.618) % 1.0)
-            dist = 300 + 1080 * step
-            cx, cy = dist * math.cos(ang), dist * math.sin(ang)
-            pos[nt + ki] = (cx, cy)
-            placed.append((ki, cx, cy, ring))
-
-            for m, ti in enumerate(sorted(own, key=lambda i: -tables[i]["r"])):
-                # golden-angle ring: even spread without a visible seam
-                th = m * 2.399963
-                rr = ring * math.sqrt((m + 0.6) / max(len(own), 1))
-                pos[ti] = (cx + rr * math.cos(th), cy + rr * math.sin(th))
-
-    # tables nothing joins: an outer band, visibly outside the structure
-    orphans = [ti for ti, t in enumerate(tables) if not t["k"]]
-    for m, ti in enumerate(orphans):
-        th = 2 * math.pi * m / max(len(orphans), 1)
-        rr = 1760 + 62 * ((m % 5) - 2)
-        pos[ti] = (rr * math.cos(th), rr * math.sin(th))
-
-    _separate_circles(pos, rad, rounds=340)
-    out = _finish(pos, rad, nt, nk, keys)
-    del out["_dx"], out["_dy"]
-    return out
-
-
-def _compact(pos, rad, target_span):
-    """Scale the settled field to a chosen span, then push the discs apart.
-
-    A free n-body sim equilibrates wherever repulsion balances the centring
-    pull — for 985 bodies that was a 30.000px field at 0,06% occupancy, which
-    fits on screen only at a zoom where every table is a sub-pixel dot. The
-    relative placement is what the sim is for; the scale is ours to choose."""
-    import numpy as np
-
-    pos -= pos.mean(axis=0)
-    span = max(float((pos.max(axis=0) - pos.min(axis=0)).max()), 1.0)
-    pos *= target_span / span
-    _separate_circles(pos, rad)
 
 
 def _separate_circles(pos, rad, rounds=340):
