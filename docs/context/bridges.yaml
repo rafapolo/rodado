@@ -46,27 +46,74 @@ categories:
   title: Other shared columns
   blurb: 'Auto-detected: columns that appear in two or more datasets and look like identifiers. Less curated,
     but real join surface.'
-auto_deny:
-- anos_estudo
-- data_atualizacao
-- data_coleta
-- data_extracao
-- data_hora
-- data_referencia
-- id
-- id_categoria
-- id_categoria_principal_sidra
-- id_estrato
-- id_item
-- id_quadro
-- id_unidade
-- numero
-- numero_logradouro
-- numero_lote
-- numero_ordem
-- sigla
-- valor
-- version
+# Colunas que passam na heurística de nome mas NÃO são chave de join.
+#
+# Elas existem em duas ou mais fontes com o mesmo nome e significados diferentes —
+# um modelo que vê `valor` em duas tabelas vai tentar juntar por ele. Antes esta
+# lista era muda: o gerador descartava a coluna em silêncio e ninguém aprendia o
+# porquê. O motivo agora é servido junto (mcp_server.explain_column).
+false_friends:
+  valor:
+    reason: montante ou medida, em unidade e moeda que mudam por fonte — nunca identifica uma entidade
+    seen_in: 91 tabelas em 56 datasets
+  id:
+    reason: surrogate key local de cada fonte, sem significado fora da própria tabela
+    seen_in: 18 tabelas em 8 datasets
+  numero:
+    reason: número de documento, processo ou sequência interna — o mesmo valor em duas fontes não é a
+      mesma coisa
+    seen_in: 17 tabelas em 9 datasets
+  version:
+    reason: versão do registro no ETL da fonte, não do fato
+    seen_in: 17 tabelas em 2 datasets
+  id_categoria_principal_sidra:
+    reason: categoria dentro de uma tabela SIDRA específica; o código só vale naquela tabela
+    seen_in: 16 tabelas em 2 datasets
+  id_estrato:
+    reason: estrato amostral da própria pesquisa — não atravessa dataset
+    seen_in: 15 tabelas em 2 datasets
+  sigla:
+    reason: sigla de qualquer coisa (partido, órgão, UF, unidade) — ambíguo sem saber de quê
+    seen_in: 11 tabelas em 7 datasets
+  numero_ordem:
+    reason: posição da linha dentro do próprio documento
+    seen_in: 11 tabelas em 2 datasets
+  id_quadro:
+    reason: numeração de quadro dentro do próprio formulário
+    seen_in: 9 tabelas em 1 dataset
+  id_categoria:
+    reason: categoria local do próprio documento
+    seen_in: 9 tabelas em 3 datasets
+  data_extracao:
+    reason: metadado de ETL — quando a linha foi raspada, não quando o fato ocorreu
+    seen_in: 6 tabelas em 3 datasets
+  id_unidade:
+    reason: unidade administrativa numerada pela própria fonte
+    seen_in: 4 tabelas em 3 datasets
+  id_item:
+    reason: item dentro do próprio documento (licitação, nota, formulário)
+    seen_in: 4 tabelas em 3 datasets
+  data_coleta:
+    reason: metadado de ETL, como data_extracao
+    seen_in: 3 tabelas em 3 datasets
+  numero_lote:
+    reason: lote dentro do próprio processo
+    seen_in: 3 tabelas em 3 datasets
+  data_atualizacao:
+    reason: metadado de ETL, como data_extracao
+    seen_in: 2 tabelas em 2 datasets
+  data_hora:
+    reason: timestamp local do evento; granularidade e fuso variam por fonte
+    seen_in: 2 tabelas em 2 datasets
+  data_referencia:
+    reason: data de referência do recorte, definida por cada fonte
+    seen_in: 2 tabelas em 2 datasets
+  anos_estudo:
+    reason: faixa de escolaridade — é valor, não chave
+    seen_in: 2 tabelas em 2 datasets
+  numero_logradouro:
+    reason: número do imóvel no endereço
+    seen_in: 2 tabelas em 2 datasets
 concepts:
   id_municipio:
     category: municipio
