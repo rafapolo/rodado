@@ -22,9 +22,6 @@ chmod 600 /app/ssh_init.sql
 echo "[start] Starting ttyd terminal (db)..."
 ttyd --port 7681 --writable duckdb -readonly --init /app/ssh_init.sql /app/data/basedosdados.duckdb &
 
-echo "[start] Starting ttyd terminal (ask)..."
-PROMPT_FILE=/app/system_prompt.md ttyd --port 7682 --writable /app/ask &
-
 echo "[start] Starting auth service..."
 python3 /app/auth.py &
 
