@@ -50,6 +50,33 @@ WHERE m.ano = 2023
 GROUP BY 1, 2
 ```
 
+## Columns that look like keys and are not
+
+These appear in two or more datasets under the same name and mean something different in each, so they are deliberately kept out of the sections below. Joining on one of them produces a large, plausible, wrong result.
+
+| column | why it is not a join key | where |
+|---|---|---|
+| `valor` | montante ou medida, em unidade e moeda que mudam por fonte — nunca identifica uma entidade | 91 tabelas em 56 datasets |
+| `id` | surrogate key local de cada fonte, sem significado fora da própria tabela | 18 tabelas em 8 datasets |
+| `numero` | número de documento, processo ou sequência interna — o mesmo valor em duas fontes não é a mesma coisa | 17 tabelas em 9 datasets |
+| `version` | versão do registro no ETL da fonte, não do fato | 17 tabelas em 2 datasets |
+| `id_categoria_principal_sidra` | categoria dentro de uma tabela SIDRA específica; o código só vale naquela tabela | 16 tabelas em 2 datasets |
+| `id_estrato` | estrato amostral da própria pesquisa — não atravessa dataset | 15 tabelas em 2 datasets |
+| `sigla` | sigla de qualquer coisa (partido, órgão, UF, unidade) — ambíguo sem saber de quê | 11 tabelas em 7 datasets |
+| `numero_ordem` | posição da linha dentro do próprio documento | 11 tabelas em 2 datasets |
+| `id_quadro` | numeração de quadro dentro do próprio formulário | 9 tabelas em 1 dataset |
+| `id_categoria` | categoria local do próprio documento | 9 tabelas em 3 datasets |
+| `data_extracao` | metadado de ETL — quando a linha foi raspada, não quando o fato ocorreu | 6 tabelas em 3 datasets |
+| `id_unidade` | unidade administrativa numerada pela própria fonte | 4 tabelas em 3 datasets |
+| `id_item` | item dentro do próprio documento (licitação, nota, formulário) | 4 tabelas em 3 datasets |
+| `data_coleta` | metadado de ETL, como data_extracao | 3 tabelas em 3 datasets |
+| `numero_lote` | lote dentro do próprio processo | 3 tabelas em 3 datasets |
+| `data_atualizacao` | metadado de ETL, como data_extracao | 2 tabelas em 2 datasets |
+| `data_hora` | timestamp local do evento; granularidade e fuso variam por fonte | 2 tabelas em 2 datasets |
+| `data_referencia` | data de referência do recorte, definida por cada fonte | 2 tabelas em 2 datasets |
+| `anos_estudo` | faixa de escolaridade — é valor, não chave | 2 tabelas em 2 datasets |
+| `numero_logradouro` | número do imóvel no endereço | 2 tabelas em 2 datasets |
+
 ## Municipality — the hub key
 
 Every second table in the mirror is municipal. `id_municipio` is the canonical form; everything else in this section is a variant that has to be converted to it.

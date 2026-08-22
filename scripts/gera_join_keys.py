@@ -86,7 +86,8 @@ def load_bridges():
     doc = yaml.safe_load(BRIDGES.read_text(encoding="utf-8"))
 
     categories = [(c["id"], c["title"], c["blurb"]) for c in doc["categories"]]
-    auto_deny = set(doc["auto_deny"])
+    false_friends = doc["false_friends"]
+    auto_deny = set(false_friends)
 
     curated = {}
     for col, e in doc["concepts"].items():
@@ -107,11 +108,12 @@ def load_bridges():
     uf = [(b["table"], b["column"], b["description"]) for b in doc["bridges"]["uf"]]
     ident = [(b["table"], b["column"], b["description"])
              for b in doc["bridges"]["identity"]]
-    return categories, auto_deny, curated, mun, uf, ident
+    return categories, auto_deny, curated, mun, uf, ident, false_friends
 
 
 (CATEGORIES, AUTO_DENY, CURATED,
- MUNICIPIO_BRIDGES, UF_BRIDGES, IDENTITY_BRIDGES) = load_bridges()
+ MUNICIPIO_BRIDGES, UF_BRIDGES, IDENTITY_BRIDGES,
+ FALSE_FRIENDS) = load_bridges()
 
 
 # ---------------------------------------------------------------------------
@@ -396,6 +398,8 @@ def render(meta, tables, idx, duplicated):
         "",
     ]
 
+    L += render_false_friends()
+
     # ---- sections by category
     by_cat = defaultdict(list)
     for col in curated_cols:
@@ -478,6 +482,24 @@ def render_municipio_bridges():
         "| `br_bd_vizinhanca.municipio` | `id_municipio_1`, `id_municipio_2` — the adjacency pair |",
         "",
     ]
+    return out
+
+
+def render_false_friends():
+    """Columns that look like keys and are not — with the reason, not just a drop."""
+    out = [
+        "## Columns that look like keys and are not",
+        "",
+        "These appear in two or more datasets under the same name and mean something "
+        "different in each, so they are deliberately kept out of the sections below. "
+        "Joining on one of them produces a large, plausible, wrong result.",
+        "",
+        "| column | why it is not a join key | where |",
+        "|---|---|---|",
+    ]
+    for col, e in FALSE_FRIENDS.items():
+        out.append(f"| `{col}` | {e['reason']} | {e['seen_in']} |")
+    out.append("")
     return out
 
 
