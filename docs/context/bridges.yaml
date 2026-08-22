@@ -1,0 +1,909 @@
+# Join knowledge for the rodado mirror — the single source of truth.
+#
+# `scripts/gera_join_keys.py` renders `docs/context/join_keys.md` from this file,
+# and `mcp_server.py` reads it directly (get_join_keys, resolve_join).
+# Edit here, never in the generated markdown.
+#
+# Extracted mechanically from the CURATED / *_BRIDGES constants that used to live
+# inside gera_join_keys.py, so the rendered markdown is unchanged byte for byte.
+categories:
+- id: municipio
+  title: Municipality — the hub key
+  blurb: Every second table in the mirror is municipal. `id_municipio` is the canonical form; everything
+    else in this section is a variant that has to be converted to it.
+- id: uf
+  title: State (UF)
+  blurb: The second most common axis, and the one most often renamed by scraped sources.
+- id: geo
+  title: Other geography
+  blurb: Region, census tract, district, postal code, country.
+- id: tempo
+  title: Time
+  blurb: Partition columns. Filter on these before anything else.
+- id: empresa
+  title: Company identity (CNPJ)
+  blurb: '`br_me_cnpj` is the backbone: 60M+ establishments, joined by `cnpj` or `cnpj_basico`.'
+- id: pessoa
+  title: Person identity (CPF)
+  blurb: Almost always masked in public data — read the note on each column before assuming a CPF join
+    is possible.
+- id: educacao
+  title: Education
+  blurb: INEP school/course/student codes.
+- id: saude
+  title: Health
+  blurb: CNES, SUS and disease-notification codes.
+- id: governo
+  title: Government, budget and procurement
+  blurb: Organs, management units, tenders, contracts, budget lines.
+- id: politica
+  title: Politics and elections
+  blurb: TSE and Câmara dos Deputados codes.
+- id: classificacao
+  title: Classification codes
+  blurb: CNAE, CBO, CID, NCM — the code tables that decode microdata.
+- id: outros
+  title: Other shared columns
+  blurb: 'Auto-detected: columns that appear in two or more datasets and look like identifiers. Less curated,
+    but real join surface.'
+# Colunas que passam na heurística de nome mas NÃO são chave de join.
+#
+# Existem em duas ou mais fontes com o mesmo nome e significados diferentes.
+# Antes a lista era muda — o gerador descartava a coluna em silêncio e ninguém
+# aprendia o porquê. O motivo agora é servido (mcp_server.explain_column) e
+# renderizado no join_keys.md.
+false_friends:
+  valor:
+    reason: montante ou medida, em unidade e moeda que mudam por fonte — nunca identifica uma entidade
+    seen_in: 91 tabelas em 56 datasets
+  id:
+    reason: surrogate key local de cada fonte, sem significado fora da própria tabela
+    seen_in: 18 tabelas em 8 datasets
+  numero:
+    reason: número de documento, processo ou sequência interna — o mesmo valor em duas fontes não é a
+      mesma coisa
+    seen_in: 17 tabelas em 9 datasets
+  version:
+    reason: versão do registro no ETL da fonte, não do fato
+    seen_in: 17 tabelas em 2 datasets
+  id_categoria_principal_sidra:
+    reason: categoria dentro de uma tabela SIDRA específica; o código só vale naquela tabela
+    seen_in: 16 tabelas em 2 datasets
+  id_estrato:
+    reason: estrato amostral da própria pesquisa — não atravessa dataset
+    seen_in: 15 tabelas em 2 datasets
+  sigla:
+    reason: sigla de qualquer coisa (partido, órgão, UF, unidade) — ambíguo sem saber de quê
+    seen_in: 11 tabelas em 7 datasets
+  numero_ordem:
+    reason: posição da linha dentro do próprio documento
+    seen_in: 11 tabelas em 2 datasets
+  id_quadro:
+    reason: numeração de quadro dentro do próprio formulário
+    seen_in: 9 tabelas em 1 dataset
+  id_categoria:
+    reason: categoria local do próprio documento
+    seen_in: 9 tabelas em 3 datasets
+  data_extracao:
+    reason: metadado de ETL — quando a linha foi raspada, não quando o fato ocorreu
+    seen_in: 6 tabelas em 3 datasets
+  id_unidade:
+    reason: unidade administrativa numerada pela própria fonte
+    seen_in: 4 tabelas em 3 datasets
+  id_item:
+    reason: item dentro do próprio documento (licitação, nota, formulário)
+    seen_in: 4 tabelas em 3 datasets
+  data_coleta:
+    reason: metadado de ETL, como data_extracao
+    seen_in: 3 tabelas em 3 datasets
+  numero_lote:
+    reason: lote dentro do próprio processo
+    seen_in: 3 tabelas em 3 datasets
+  data_atualizacao:
+    reason: metadado de ETL, como data_extracao
+    seen_in: 2 tabelas em 2 datasets
+  data_hora:
+    reason: timestamp local do evento; granularidade e fuso variam por fonte
+    seen_in: 2 tabelas em 2 datasets
+  data_referencia:
+    reason: data de referência do recorte, definida por cada fonte
+    seen_in: 2 tabelas em 2 datasets
+  anos_estudo:
+    reason: faixa de escolaridade — é valor, não chave
+    seen_in: 2 tabelas em 2 datasets
+  numero_logradouro:
+    reason: número do imóvel no endereço
+    seen_in: 2 tabelas em 2 datasets
+# Colunas cujo nome local difere do conceito, tabela a tabela. Não são pontes
+# (não precisam de conversão) — é só o diretório chamando a chave de outro nome.
+# resolve_join usa isto para reescrever o {d} da expressão da ponte.
+concept_aliases:
+  br_bd_diretorios_brasil.uf:
+    sigla: sigla_uf
+  br_bd_diretorios_brasil.municipio:
+    sigla_uf: sigla_uf
+
+concepts:
+  id_municipio:
+    category: municipio
+    description: 7-digit IBGE municipality code, stored as VARCHAR (zero-padding matters — `1100015`,
+      never `1100015.0`). This is the join key to reach for; every other municipality column below exists
+      to be converted into it.
+    canonical_table: br_bd_diretorios_brasil.municipio
+    notes:
+    - The directory has 5.571 municipalities (5.570 + Brasília's district split), each stored twice —
+      see the duplication warning at the top of this file. Join against a deduped subquery or you double
+      every count.
+    - '`id_municipio_6` is the same code without the check digit: `substr(id_municipio, 1, 6)`.'
+    - Municipalities created after the directory snapshot (e.g. Boa Esperança do Norte/MT) have NULL `id_municipio_tse`,
+      `_rf` and `_bcb` — 2 of 5.571.
+    example_sql: "-- always dedupe the directory before joining\nWITH mun AS (SELECT DISTINCT id_municipio,\
+      \ nome, sigla_uf\n             FROM br_bd_diretorios_brasil.municipio)\nSELECT m.nome AS municipio,\
+      \ m.sigla_uf, p.pib\nFROM br_ibge_pib.municipio p\nJOIN mun m USING (id_municipio)\nWHERE p.ano\
+      \ = 2021\nORDER BY p.pib DESC\nLIMIT 20"
+  id_municipio_6:
+    category: municipio
+    description: IBGE municipality code without the check digit (6 digits). Used by DATASUS systems (CNES,
+      SINAN, SIH) and by the older health aggregates.
+    canonical_table: br_bd_diretorios_brasil.municipio.id_municipio_6
+    notes:
+    - 'Convert either way: `substr(id_municipio, 1, 6) = id_municipio_6`.'
+    - In SINAN microdata the column arrives as a float-shaped string (`261640.0`) — normalize with `lpad(CAST(CAST(x
+      AS DOUBLE) AS BIGINT)::VARCHAR, 6, '0')`.
+    example_sql: "WITH mun AS (SELECT DISTINCT id_municipio_6, nome, sigla_uf\n             FROM br_bd_diretorios_brasil.municipio)\n\
+      SELECT m.nome, m.sigla_uf, count(*) AS estabelecimentos\nFROM br_ms_cnes.estabelecimento e\nJOIN\
+      \ mun m ON e.id_municipio_6 = m.id_municipio_6\nWHERE e.ano = 2023 AND e.mes = 12\nGROUP BY 1, 2\n\
+      ORDER BY 3 DESC"
+  id_municipio_tse:
+    category: municipio
+    description: TSE (Electoral Court) municipality code — a short sequential number, unique only inside
+      a UF. Every electoral table keys on it.
+    canonical_table: br_bd_diretorios_brasil.municipio.id_municipio_tse
+    notes:
+    - 'Not interchangeable with the IBGE code: `35` is Porto Velho in the TSE numbering. Always go through
+      the directory.'
+    - 'Also appears role-qualified: `id_municipio_tse_doador` (donor) and `id_municipio_tse_fornecedor`
+      (supplier) in the campaign-finance tables.'
+    example_sql: "-- the TSE code repeats across states: always pair it with sigla_uf\nWITH mun AS (SELECT\
+      \ DISTINCT id_municipio_tse, nome, sigla_uf\n             FROM br_bd_diretorios_brasil.municipio\n\
+      \             WHERE id_municipio_tse IS NOT NULL)\nSELECT m.nome, m.sigla_uf, sum(v.votos_nominais)\
+      \ AS votos\nFROM br_tse_eleicoes.detalhes_votacao_municipio v\nJOIN mun m ON v.id_municipio_tse\
+      \ = m.id_municipio_tse AND v.sigla_uf = m.sigla_uf\nWHERE v.ano = 2022 AND v.turno = 1\nGROUP BY\
+      \ 1, 2"
+  id_municipio_rf:
+    category: municipio
+    description: Receita Federal municipality code (4 digits). This is the **only** municipality column
+      in `br_me_cnpj.estabelecimentos` — geolocating any company in the CNPJ base goes through it.
+    canonical_table: br_bd_diretorios_brasil.municipio.id_municipio_rf
+    notes:
+    - 'Verified: joining the distinct `id_municipio_rf` of `br_me_cnpj.estabelecimentos` against the directory
+      matches 11.140 of 11.142 directory rows (i.e. all but the 2 municipalities with a NULL RF code).'
+    - '`7107` = São Paulo, `6001` = Rio de Janeiro — the codes are not IBGE-ordered, do not try to derive
+      them.'
+    example_sql: "WITH mun AS (SELECT DISTINCT id_municipio_rf, id_municipio, nome, sigla_uf\n       \
+      \      FROM br_bd_diretorios_brasil.municipio\n             WHERE id_municipio_rf IS NOT NULL)\n\
+      SELECT m.nome, m.sigla_uf, count(*) AS estabelecimentos\nFROM br_me_cnpj.estabelecimentos e\nJOIN\
+      \ mun m ON e.id_municipio_rf = m.id_municipio_rf\nWHERE e.ano = 2025 AND e.mes = 9      -- one snapshot,\
+      \ see the cnpj section\n  AND e.situacao_cadastral = '02'\nGROUP BY 1, 2\nORDER BY 3 DESC\nLIMIT\
+      \ 20"
+  id_municipio_bcb:
+    category: municipio
+    description: Banco Central municipality code. Present only in the directory — it is there so BCB extracts
+      (ESTBAN, SICOR) that carry it can be brought back to IBGE codes.
+    canonical_table: br_bd_diretorios_brasil.municipio.id_municipio_bcb
+    notes:
+    - No table in the mirror currently keys on it; it is a crosswalk column, not a join surface.
+  codigo_municipio_siafi:
+    category: municipio
+    description: SIAFI municipality code (4 digits), used by the CGU social-benefit extracts (Garantia-Safra,
+      Pé-de-Meia, Seguro Defeso).
+    canonical_table: — none in the mirror
+    notes:
+    - '**There is no SIAFI column in the directory.** Join those datasets by name + UF instead; the CGU
+      files carry `nome_municipio` and `uf` next to the SIAFI code.'
+    - 'Verified: `upper(strip_accents(nome_municipio))` + `uf` against the directory matches 2.642 name/UF
+      pairs of Garantia-Safra.'
+    example_sql: "-- br_cgu_garantia_safra has no view: read the parquet directly (gotcha 5),\nWITH mun\
+      \ AS (SELECT DISTINCT id_municipio, nome, sigla_uf\n             FROM br_bd_diretorios_brasil.municipio)\n\
+      -- and its valor_parcela is VARCHAR with a comma decimal separator ('135,00')\nSELECT m.id_municipio,\
+      \ m.nome,\n       sum(CAST(replace(g.valor_parcela, ',', '.') AS DOUBLE)) AS total\nFROM read_parquet('~/rodado/br_cgu_garantia_safra/garantia_safra/*.parquet')\
+      \ g\nJOIN mun m ON upper(strip_accents(g.nome_municipio)) = upper(strip_accents(m.nome))\n     \
+      \     AND g.uf = m.sigla_uf\nGROUP BY 1, 2"
+  municipio:
+    category: municipio
+    description: Municipality *name* (not a code), under the shortest possible name. Six datasets use
+      it, and each one stores a different shape — slug, upper case, or name + UF in parentheses.
+    canonical_table: br_bd_diretorios_brasil.municipio.nome
+    notes:
+    - '`br_ibge_censo2022_raca.*` / `br_ibge_censo2022_religiao.*`: `Alta Floresta D''Oeste (RO)` — split
+      the UF out of the parentheses.'
+    - '`br_tce_sp.municipios`: a slug (`aguas-de-lindoia`); the display name is in `municipio_extenso`.'
+    - '`br_anp_combustiveis.precos` and `br_cvm_administradores_carteira.pessoa_juridica`: upper case,
+      unaccented, and CVM sometimes abbreviates (`POA`).'
+    - See the bridge table under `id_municipio` for the exact expression per dataset.
+  nome_municipio:
+    category: municipio
+    description: Municipality name as text. A fallback key — use it only when no code is available, and
+      always normalize both sides.
+    canonical_table: br_bd_diretorios_brasil.municipio.nome
+    notes:
+    - Normalize with `upper(strip_accents(x))`. Sources disagree on accents (`ITAJAÍ` vs `ITAJAI`), on
+      case, and occasionally on abbreviations (`POA` for Porto Alegre in `br_cvm_administradores_carteira`).
+    - Names are not unique across UFs — 'Bom Jesus' exists in 8 states. Always pair the name with a UF
+      column.
+  sigla_uf:
+    category: uf
+    description: Two-letter state abbreviation (`SP`, `RJ`). The most widely shared column in the mirror
+      and the safest geographic join.
+    canonical_table: br_bd_diretorios_brasil.uf.sigla
+    notes:
+    - The directory `uf` table is also duplicated (54 rows for 27 states) — dedupe before joining.
+    - Scraped sources spell this `UF`, `uf`, `SG_UF`, `ufSigla`, `estado` or `sigla_uf` — see the bridge
+      table below.
+    example_sql: 'WITH uf AS (SELECT DISTINCT sigla, nome FROM br_bd_diretorios_brasil.uf)
+
+      SELECT u.nome AS estado, count(*) AS obitos
+
+      FROM br_ms_sim.microdados s
+
+      JOIN uf u ON s.sigla_uf = u.sigla
+
+      WHERE s.ano = 2020
+
+      GROUP BY 1
+
+      ORDER BY 2 DESC'
+  id_uf:
+    category: uf
+    description: 2-digit IBGE state code (`35` = São Paulo). The first two digits of every `id_municipio`.
+    canonical_table: br_bd_diretorios_brasil.uf.id_uf
+    notes:
+    - 'Derivable: `substr(id_municipio, 1, 2) = id_uf`.'
+    - '`br_ms_sinan_violencia.microdados_violencia` calls it `SG_UF` and stores the numeric code, not
+      the abbreviation.'
+  uf:
+    category: uf
+    description: '`sigla_uf` under a shorter name — what the independently-scraped sources call it, spelled
+      `uf` or `UF` depending on the source. Usually the same two-letter code, so it joins `sigla_uf` directly.'
+    canonical_table: br_bd_diretorios_brasil.uf.sigla
+    notes:
+    - Two-letter code in `br_caixa_sinapi`, `br_cgu_garantia_safra`, `br_cgu_pe_de_meia`, `br_cgu_seguro_defeso`,
+      `br_fbsp_absp`, `br_mjsp_sinesp`, `br_mj_consumidorgovbr`, `br_mjsp_ckan`, `br_tcu_inidoneos`, `br_tesouro_capag`
+      — direct join.
+    - '`br_mjsp_sisdepen.populacao_carceraria` stores `Acre (AC)` — extract with `regexp_extract(uf, ''\(([A-Z]{2})\)$'',
+      1)`.'
+    - '`br_siop_orcamento.localizadores` stores the **full state name, mojibake** (`EspÃ­rito Santo`)
+      — re-encode before matching.'
+  estado:
+    category: uf
+    description: Full state name, in the two datasets that spell it out.
+    canonical_table: br_bd_diretorios_brasil.uf.nome
+    notes:
+    - '`br_anp_combustiveis.precos`: unaccented upper case (`RONDONIA`), `-` when missing.'
+    - '`br_mjsp_procurados.procurados`: accents inconsistent (`GOIAS`, `PARÁ`). The neighbouring `nome_estado`
+      column is mislabeled at the source — it holds the person''s name.'
+  id_regiao:
+    category: uf
+    description: IBGE macro-region code (1 = Norte … 5 = Centro-Oeste).
+    canonical_table: br_bd_diretorios_brasil.setor_censitario_2022 / br_geobr_mapas.regiao
+  id_setor_censitario:
+    category: geo
+    description: 15-digit IBGE census tract code — the finest geography in the mirror. Its first 7 digits
+      are the `id_municipio`.
+    canonical_table: br_bd_diretorios_brasil.setor_censitario_2022
+    notes:
+    - 'The 2010 and 2022 tract meshes are **not** compatible: tracts were redrawn. Never join a 2010 tract
+      to a 2022 tract; aggregate both to `id_municipio` instead.'
+    - '`substr(id_setor_censitario, 1, 7) = id_municipio` works in both vintages.'
+  id_distrito:
+    category: geo
+    description: 'IBGE district code (municipality subdivision). Vintage-specific: 1991, 2000 and 2010
+      meshes are separate directory tables.'
+    canonical_table: br_bd_diretorios_brasil.distrito_2010
+  id_subdistrito:
+    category: geo
+    description: IBGE subdistrict code, one level below the district.
+    canonical_table: br_bd_diretorios_brasil.setor_censitario_2022
+  id_mesorregiao:
+    category: geo
+    description: IBGE mesoregion code.
+    canonical_table: br_bd_diretorios_brasil.municipio
+  id_microrregiao:
+    category: geo
+    description: IBGE microregion code.
+    canonical_table: br_bd_diretorios_brasil.municipio
+  id_regiao_imediata:
+    category: geo
+    description: IBGE immediate region (the 2017 replacement for microregions).
+    canonical_table: br_bd_diretorios_brasil.municipio
+  id_regiao_intermediaria:
+    category: geo
+    description: IBGE intermediate region (replaces mesoregions).
+    canonical_table: br_bd_diretorios_brasil.municipio
+  id_regiao_metropolitana:
+    category: geo
+    description: Metropolitan region code.
+    canonical_table: br_bd_diretorios_brasil.municipio
+  id_regiao_saude:
+    category: geo
+    description: SUS health region — the administrative unit health policy is planned on.
+    canonical_table: br_bd_diretorios_brasil.municipio
+  cep:
+    category: geo
+    description: Brazilian postal code. The directory maps every CEP to `id_municipio`, so it is a usable
+      bridge when a source has an address but no municipality code.
+    canonical_table: br_bd_diretorios_brasil.cep
+    notes:
+    - 905.210 rows, and — unusually for the directory — **not** duplicated.
+    - 'Stored as 8-digit VARCHAR without the hyphen. Strip punctuation before joining: `regexp_replace(cep,
+      ''[^0-9]'', '''', ''g'')`.'
+    example_sql: "SELECT c.nome_municipio, c.sigla_uf, count(*) AS empresas\nFROM br_me_cnpj.estabelecimentos\
+      \ e\nJOIN br_bd_diretorios_brasil.cep c ON e.cep = c.cep\nWHERE e.ano = 2025 AND e.mes = 9     \
+      \ -- one snapshot, see the cnpj section\n  AND e.situacao_cadastral = '02'\nGROUP BY 1, 2\nORDER\
+      \ BY 3 DESC\nLIMIT 20"
+  id_pais:
+    category: geo
+    description: Country code. `br_bd_diretorios_mundo.pais` carries every common encoding (M49, FAO,
+      GAUL, ISO2/ISO3, COI, FIFA) — use it to reconcile international datasets.
+    canonical_table: br_bd_diretorios_mundo.pais
+  sigla_pais_iso3:
+    category: geo
+    description: ISO 3166-1 alpha-3 country code. The join key for the `world_*` datasets.
+    canonical_table: br_bd_diretorios_mundo.pais
+  ano:
+    category: tempo
+    description: Year. The primary partition column across the mirror — filter on it in every query against
+      a large table.
+    canonical_table: br_bd_diretorios_data_tempo.ano
+    notes:
+    - 'BIGINT in most tables but VARCHAR in a few scraped ones (see the type breakdown above) — cast explicitly
+      when joining across datasets: `CAST(a.ano AS INT) = CAST(b.ano AS INT)`.'
+    example_sql: "-- densidade_municipio.ano is VARCHAR, ideb.ano is BIGINT: cast both sides\nSELECT CAST(a.ano\
+      \ AS INT) AS ano, a.id_municipio, a.densidade AS banda_larga, b.ideb\nFROM br_anatel_banda_larga_fixa.densidade_municipio\
+      \ a\nJOIN br_inep_ideb.municipio b\n  ON a.id_municipio = b.id_municipio AND CAST(a.ano AS INT)\
+      \ = b.ano\nWHERE CAST(a.ano AS INT) BETWEEN 2015 AND 2021"
+  mes:
+    category: tempo
+    description: Month (1–12). Always use together with `ano`; a few tables carry `mes` alone and are
+      ambiguous without it.
+    canonical_table: br_bd_diretorios_data_tempo.mes
+  data:
+    category: tempo
+    description: Full date. Event-level microdata tables use it instead of ano/mes.
+    canonical_table: br_bd_diretorios_data_tempo.data
+    notes:
+    - DATE in most tables, VARCHAR in 7 — cast before comparing, and beware of `DD/MM/YYYY` strings in
+      the scraped sources.
+  trimestre:
+    category: tempo
+    description: Quarter (1–4). PNAD Contínua and quarterly economic series.
+    canonical_table: br_bd_diretorios_data_tempo.trimestre
+  semestre:
+    category: tempo
+    description: Semester (1–2).
+    canonical_table: br_bd_diretorios_data_tempo.semestre
+  year:
+    category: tempo
+    description: Year, English-named — the `world_*` and `us_*` datasets use this instead of `ano`.
+    canonical_table: —
+  cnpj:
+    category: empresa
+    description: '14-digit company tax ID (8 base + 4 branch + 2 check digits). `br_me_cnpj.estabelecimentos`
+      is the reference: every active and extinct establishment in Brazil.'
+    canonical_table: br_me_cnpj.estabelecimentos
+    notes:
+    - '**`br_bd_diretorios_brasil.empresa` is empty (0 rows)** — the old version of this file used it
+      as the CNPJ reference. Use `br_me_cnpj.estabelecimentos` (14-digit `cnpj`) or `br_me_cnpj.empresas`
+      (8-digit `cnpj_basico`, one row per company).'
+    - 'Formats differ wildly across sources. Normalize to bare 14 digits: `lpad(regexp_replace(CAST(cnpj
+      AS VARCHAR), ''[^0-9]'', '''', ''g''), 14, ''0'')`. In `br_anp_combustiveis.precos` only 875k of
+      2M rows already have 14 characters; `br_brasilio_holdings.holdings` stores it as BIGINT, so leading
+      zeros are gone.'
+    - '**`br_me_cnpj.empresas` and `estabelecimentos` are stacked monthly full snapshots** — 43 of them,
+      2021-11 to 2025-09, ~64M rows each. A join that does not pin `(ano, mes)` multiplies every company
+      by 43. Always add `WHERE ano = 2025 AND mes = 9` (or whichever snapshot you want) on the CNPJ side.'
+    example_sql: "-- normalize the outside key, and pin one CNPJ snapshot\nWITH postos AS (\n  SELECT\
+      \ DISTINCT lpad(regexp_replace(CAST(cnpj AS VARCHAR), '[^0-9]', '', 'g'), 14, '0') AS cnpj\n  FROM\
+      \ br_anp_combustiveis.precos\n)\nSELECT e.razao_social, e.porte\nFROM postos p\nJOIN br_me_cnpj.empresas\
+      \ e\n  ON substr(p.cnpj, 1, 8) = e.cnpj_basico\nWHERE e.ano = 2025 AND e.mes = 9\nLIMIT 20"
+  cnpj_basico:
+    category: empresa
+    description: First 8 digits of the CNPJ — the company, without the branch. One row per company in
+      `br_me_cnpj.empresas`.
+    canonical_table: br_me_cnpj.empresas
+    notes:
+    - 'Join `empresas` (company-level: razão social, capital, porte) to `estabelecimentos` (branch-level:
+      address, CNAE, situation) on `cnpj_basico`, and to `socios` for ownership. `socios` names the partner
+      columns `nome` and `qualificacao` (not `nome_socio`), and `cnae_fiscal_principal` lives on `estabelecimentos`,
+      not on `empresas`.'
+    - '`substr(cnpj, 1, 8) = cnpj_basico`.'
+    - All three tables are monthly snapshots — join them on `(cnpj_basico, ano, mes)`, never on `cnpj_basico`
+      alone.
+    example_sql: 'SELECT e.razao_social, s.nome, s.qualificacao
+
+      FROM br_me_cnpj.empresas e
+
+      JOIN br_me_cnpj.socios s USING (cnpj_basico, ano, mes)
+
+      WHERE e.cnpj_basico = ''13926231'' AND e.ano = 2025 AND e.mes = 9'
+  cnae_2_subclasse:
+    category: classificacao
+    description: CNAE 2.0 economic-activity subclass, 7 digits. Joins RAIS, CAGED and the CNPJ base to
+      the activity description.
+    canonical_table: br_bd_diretorios_brasil.cnae_2
+    notes:
+    - The directory column is called `subclasse`, not `cnae_2_subclasse`.
+    - '`br_me_cnpj.estabelecimentos` calls it `cnae_fiscal_principal` (plus `cnae_fiscal_secundaria`,
+      a comma-separated list that has to be `unnest(string_split(...))`-ed before joining).'
+    - The directory table is duplicated (2.712 rows for 1.356 subclasses) — dedupe.
+    example_sql: "WITH cnae AS (SELECT DISTINCT subclasse, descricao_subclasse\n              FROM br_bd_diretorios_brasil.cnae_2)\n\
+      SELECT c.descricao_subclasse, count(*) AS vinculos\nFROM br_me_rais.microdados_vinculos v\nJOIN\
+      \ cnae c ON v.cnae_2_subclasse = c.subclasse\nWHERE v.ano = 2020 AND v.sigla_uf = 'SP'\nGROUP BY\
+      \ 1\nORDER BY 2 DESC\nLIMIT 20"
+  id_natureza_juridica:
+    category: empresa
+    description: Legal-nature code (whether an entity is a municipality, a foundation, an LTDA…). Essential
+      to tell public bodies from private companies in the CNPJ base.
+    canonical_table: br_bd_diretorios_brasil.natureza_juridica
+  id_cno:
+    category: empresa
+    description: CNO — construction-works registry ID, links `br_rf_cno` tables to each other.
+    canonical_table: br_rf_cno.cnos
+  cpf_cnpj:
+    category: pessoa
+    description: 'A single column holding either a CPF or a CNPJ, used by three scraped enforcement datasets
+      (PGFN debt, BCB penalties, TCU disqualifications). Tell them apart by digit count after stripping
+      punctuation: 11 = CPF, 14 = CNPJ.'
+    canonical_table: br_me_cnpj.estabelecimentos (for the CNPJ half)
+    notes:
+    - Formats differ per dataset — punctuated in `br_pgfn_dividaativa.divida` and partly in `br_tcu_inidoneos.*`,
+      bare digits in `br_bcb_penalidades.penalidades`. Normalize with `regexp_replace(x, '[^0-9]', '',
+      'g')` before anything else.
+    - PGFN masks the CPF half (`XXX878.325XX`) — those rows cannot be joined to a person, only counted.
+    example_sql: "-- companies with federal debt, resolved against the CNPJ base\nWITH devedores AS (\n\
+      \  SELECT DISTINCT regexp_replace(\"CPF_CNPJ\", '[^0-9]', '', 'g') AS doc\n  FROM br_pgfn_dividaativa.divida\n\
+      )\nSELECT e.razao_social, e.porte\nFROM devedores d\nJOIN br_me_cnpj.empresas e ON substr(d.doc,\
+      \ 1, 8) = e.cnpj_basico\nWHERE length(d.doc) = 14 AND e.ano = 2025 AND e.mes = 9\nLIMIT 20"
+  cpf:
+    category: pessoa
+    description: 11-digit individual tax ID.
+    canonical_table: —
+    notes:
+    - 'Public sources mask it, and they mask it *differently*: the CGU servidor files keep the middle
+      6 digits (`***123456**`), `br_pgfn_dividaativa.divida` stores `XXX878.325XX`. Two datasets masked
+      the same way can be joined on the masked string; two masked differently cannot be joined at all.'
+    - A masked CPF is not unique — never treat it as a person identifier on its own. Combine it with a
+      name column before concluding two rows are the same person.
+  data_nascimento:
+    category: pessoa
+    description: Date of birth. The usual disambiguator when a masked CPF is not unique.
+    canonical_table: —
+  cbo_2002:
+    category: classificacao
+    description: Occupation code (CBO 2002). Joins RAIS, CAGED and the CNES professional tables.
+    canonical_table: br_bd_diretorios_brasil.cbo_2002
+    notes:
+    - Duplicated directory table (5.624 rows for 2.812 occupations) — dedupe.
+    - '`cbo_1994` is the previous vintage and is not convertible one-to-one.'
+  id_escola:
+    category: educacao
+    description: INEP school code (8 digits). Joins the school census, IDEB, SAEB, the socioeconomic indicator
+      and the school geolocation.
+    canonical_table: br_bd_diretorios_brasil.escola
+    notes:
+    - Duplicated directory table (436.234 rows for 218.117 schools) — dedupe.
+    - '`br_geobr_mapas.escola` adds latitude/longitude on the same key.'
+    example_sql: "WITH esc AS (SELECT DISTINCT id_escola, nome, id_municipio, sigla_uf\n             FROM\
+      \ br_bd_diretorios_brasil.escola)\nSELECT e.nome, e.sigla_uf, i.ideb\nFROM br_inep_ideb.escola i\n\
+      JOIN esc e USING (id_escola)\nWHERE i.ano = 2021 AND i.ensino = 'fundamental'\nORDER BY i.ideb DESC\n\
+      LIMIT 20"
+  id_ies:
+    category: educacao
+    description: Higher-education institution code.
+    canonical_table: br_bd_diretorios_brasil.instituicao_ensino_superior
+  id_curso:
+    category: educacao
+    description: Higher-education course code.
+    canonical_table: br_bd_diretorios_brasil.curso_superior
+  id_inscricao:
+    category: educacao
+    description: ENEM registration ID. Joins the microdata to the year's socioeconomic questionnaire.
+    canonical_table: br_inep_enem.microdados
+    notes:
+    - Reissued every year — the same person gets a different `id_inscricao` in a different `ano`. It is
+      **not** a person identifier across years.
+  id_aluno:
+    category: educacao
+    description: Student ID inside a survey wave.
+    canonical_table: —
+  id_turma:
+    category: educacao
+    description: Class ID in the school census.
+    canonical_table: br_inep_censo_escolar.turma
+  id_estabelecimento_cnes:
+    category: saude
+    description: 'CNES health-establishment code (7 digits). The spine of the SUS datasets: it joins CNES''s
+      own 18 tables and reaches SIH/SIA production.'
+    canonical_table: br_ms_cnes.estabelecimento
+    notes:
+    - CNES tables are monthly snapshots — join on `(id_estabelecimento_cnes, ano, mes)` or you get one
+      row per month.
+    - '`br_ms_cnes.estabelecimento` carries `id_municipio_6`, not `id_municipio`.'
+  cid_principal_categoria:
+    category: saude
+    description: ICD-10 category (3 characters) of the main diagnosis.
+    canonical_table: br_bd_diretorios_brasil.cid_10
+    notes:
+    - Directory columns are `categoria` and `subcategoria`; the table is duplicated (24.954 rows for 12.477
+      codes) — dedupe.
+  id_equipe:
+    category: saude
+    description: Primary-care team code (CNES equipe).
+    canonical_table: br_ms_cnes.equipe
+  id_orgao:
+    category: governo
+    description: Government organ code. In the CGU procurement datasets it pairs with `id_orgao_superior`;
+      in `br_camara_dados_abertos` it identifies committees.
+    canonical_table: br_cgu_licitacao_contrato.licitacao
+  id_unidade_gestora:
+    category: governo
+    description: Budget management unit (UG) code — the level actual spending is attributed to.
+    canonical_table: br_cgu_licitacao_contrato.licitacao
+  id_licitacao:
+    category: governo
+    description: Tender ID. Joins the tender to its items, participants, empenhos and contracts.
+    canonical_table: br_cgu_licitacao_contrato.licitacao
+    example_sql: 'SELECT l.objeto, p.nome_participante, i.valor_item
+
+      FROM br_cgu_licitacao_contrato.licitacao l
+
+      JOIN br_cgu_licitacao_contrato.licitacao_item i USING (id_licitacao)
+
+      JOIN br_cgu_licitacao_contrato.licitacao_participante p USING (id_licitacao)
+
+      WHERE l.ano = 2023
+
+      LIMIT 20'
+  id_contrato:
+    category: governo
+    description: Contract ID. Joins contract items, amendments (`termo_aditivo`) and apostilamentos.
+    canonical_table: br_cgu_licitacao_contrato.contrato_compra
+  id_empenho:
+    category: governo
+    description: Budget commitment (empenho) ID — the link between a tender and money actually committed.
+    canonical_table: br_cgu_licitacao_contrato.licitacao_empenho
+  numero_processo:
+    category: governo
+    description: Administrative process number. Free-form text across sources — normalize digits before
+      joining.
+    canonical_table: —
+  sigla_partido:
+    category: politica
+    description: Party abbreviation. The join between electoral results, party affiliation and Câmara
+      voting records.
+    canonical_table: br_tse_eleicoes.partidos
+    notes:
+    - Parties rename and merge (PMDB→MDB, PSDC→DC). Compare within a single election year, or map through
+      `br_camara_dados_abertos.sigla_partido`.
+  id_deputado:
+    category: politica
+    description: Câmara dos Deputados member ID. Joins the member to expenses, votes, committees and parliamentary
+      fronts.
+    canonical_table: br_camara_dados_abertos.deputado
+  id_ncm:
+    category: classificacao
+    description: Mercosur product code (8 digits). The join key for foreign-trade data.
+    canonical_table: br_bd_diretorios_mundo.nomenclatura_comum_mercosul
+  id_sh4:
+    category: classificacao
+    description: Harmonized System heading (4 digits) — the aggregation level above NCM.
+    canonical_table: br_bd_diretorios_mundo.sistema_harmonizado
+  cnae_1:
+    category: classificacao
+    description: CNAE 1.0 activity code — the pre-2007 vintage, still used by older RAIS files.
+    canonical_table: br_bd_diretorios_brasil.cnae_1
+# `expr` é o que sai renderizado no markdown, para leitura humana.
+# `join_expr` é a mesma coisa para a máquina: {s} e {d} são os aliases das duas
+# pontas, e resolve_join substitui os dois. 35 das 54 pontes têm join_expr; as
+# outras não são resolvíveis por expressão (mojibake, código interno da ANA,
+# prefixo do SNIS) e continuam só descritas.
+bridges:
+  municipio:
+  - table: br_ms_sipni_doses_historicas.doses_agregadas
+    column: MUNIC
+    format: 7-digit IBGE code. This table lives *inside* `basedosdados.duckdb`, not as parquet, so it
+      is absent from the table lists in this file
+    expr: MUNIC = m.id_municipio
+    verified: direct
+    concept: id_municipio
+    join_expr: '{s}.MUNIC = {d}.id_municipio'
+  - table: br_tesouro_capag.municipios
+    column: '"Código Município Completo"'
+    format: 7-digit IBGE code
+    expr: CAST("Código Município Completo" AS VARCHAR) = m.id_municipio
+    verified: 11.136 of 11.142 directory rows
+    concept: id_municipio
+    join_expr: CAST({s}."Código Município Completo" AS VARCHAR) = {d}.id_municipio
+  - table: br_mjsp_sinesp.ocorrencias
+    column: '"cód_ibge"'
+    format: 7-digit IBGE code stored as BIGINT
+    expr: CAST("cód_ibge" AS VARCHAR) = m.id_municipio
+    verified: 22 municipalities — the table is a partial scrape (823 rows)
+    concept: id_municipio
+    join_expr: CAST({s}."cód_ibge" AS VARCHAR) = {d}.id_municipio
+  - table: br_tce_pi.prefeituras
+    column: codIBGE
+    format: 7-digit IBGE code
+    expr: CAST(codIBGE AS VARCHAR) = m.id_municipio
+    verified: direct
+    concept: id_municipio
+    join_expr: CAST({s}.codIBGE AS VARCHAR) = {d}.id_municipio
+  - table: br_transferegov.programas / planos_acao
+    column: codigo_ibge_fundo_programa, codigo_ibge_municipio_ente_recebedor_plano_acao, …
+    format: 7-digit IBGE code
+    expr: CAST(codigo_ibge_… AS VARCHAR) = m.id_municipio
+    verified: direct
+  - table: br_trase_supply_chain.soy_beans / beef
+    column: municipality_id_production, municipality_id_logistics_hub
+    format: 7-digit IBGE code
+    expr: CAST(municipality_id_production AS VARCHAR) = m.id_municipio
+    verified: 4.992 rows matched
+  - table: br_mjsp_sisdepen.populacao_carceraria
+    column: codigo_ibge
+    format: 7-digit IBGE code written as a float string (`2927408.0`)
+    expr: lpad(CAST(CAST(codigo_ibge AS DOUBLE) AS BIGINT)::VARCHAR, 7, '0') = m.id_municipio
+    verified: 2.328 rows matched
+    concept: id_municipio
+    join_expr: lpad(CAST(CAST({s}.codigo_ibge AS DOUBLE) AS BIGINT)::VARCHAR, 7, '0') = {d}.id_municipio
+  - table: br_ms_sinan_violencia.microdados_violencia
+    column: ID_MUNICIP
+    format: 6-digit IBGE code
+    expr: CAST("ID_MUNICIP" AS VARCHAR) = m.id_municipio_6
+    verified: 10.970 rows matched
+    concept: id_municipio_6
+    join_expr: CAST("{s}.ID_MUNICIP" AS VARCHAR) = {d}.id_municipio_6
+  - table: br_saude_farmaciapopular.estabelecimentos
+    column: codigo_municipio
+    format: 6-digit IBGE code
+    expr: CAST(codigo_municipio AS VARCHAR) = m.id_municipio_6
+    verified: direct
+    concept: id_municipio_6
+    join_expr: CAST({s}.codigo_municipio AS VARCHAR) = {d}.id_municipio_6
+  - table: br_ms_sinan.microdados_influenza_srag / dengue
+    column: id_municipio_6_residencia, id_municipio_6_notificacao
+    format: 6-digit code written as a float string (`261640.0`)
+    expr: lpad(CAST(CAST(x AS DOUBLE) AS BIGINT)::VARCHAR, 6, '0') = m.id_municipio_6
+    verified: 10.834 rows matched (ano = 2022)
+  - table: br_ibge_censo2022_raca.* / br_ibge_censo2022_religiao.*
+    column: municipio
+    format: 'name + UF in parentheses: `Alta Floresta D''Oeste (RO)`'
+    expr: "upper(strip_accents(regexp_extract(municipio, '^(.*) \\(', 1))) = upper(strip_accents(m.nome))\n\
+      \  AND regexp_extract(municipio, '\\(([A-Z]{2})\\)$', 1) = m.sigla_uf"
+    verified: 11.096 of 11.142 directory rows
+  - table: br_cgu_garantia_safra / pe_de_meia / seguro_defeso
+    column: nome_municipio + uf (SIAFI code has no crosswalk)
+    format: upper-case name, unaccented
+    expr: upper(strip_accents(nome_municipio)) = upper(strip_accents(m.nome)) AND uf = m.sigla_uf
+    verified: 2.642 name/UF pairs
+  - table: br_comprasgov_sicaf.fornecedores
+    column: nomeMunicipio + ufSigla
+    format: mixed-case accented name
+    expr: upper(strip_accents(nomeMunicipio)) = upper(strip_accents(m.nome)) AND ufSigla = m.sigla_uf
+    verified: name-based
+  - table: br_anp_combustiveis.precos
+    column: municipio + estado
+    format: upper-case unaccented name; `estado` is the full state name (`RONDONIA`), `-` when missing
+    expr: upper(strip_accents(municipio)) = upper(strip_accents(m.nome)) — pair with the `estado` bridge
+      listed under `sigla_uf`
+    verified: name-based
+  - table: br_tce_sp.municipios
+    column: municipio / municipio_extenso
+    format: '`municipio` is a slug (`aguas-de-lindoia`), `municipio_extenso` the display name'
+    expr: 'use municipio_extenso: upper(strip_accents(municipio_extenso)) = upper(strip_accents(m.nome))
+      AND m.sigla_uf = ''SP'''
+    verified: name-based
+  - table: br_tce_es.obras_publicas
+    column: Municipio
+    format: mixed-case accented name
+    expr: upper(strip_accents("Municipio")) = upper(strip_accents(m.nome)) AND m.sigla_uf = 'ES'
+    verified: name-based
+  - table: br_cnpq_bolsas.microdados
+    column: municipio_destino
+    format: upper-case accented name
+    expr: upper(strip_accents(municipio_destino)) = upper(strip_accents(m.nome))
+    verified: name-based; ambiguous without a UF column
+  - table: br_saude_bps.dados
+    column: '"nome_do_munica­pio_da_instituicao"'
+    format: upper-case unaccented name. **The column name itself contains a soft hyphen (U+00AD)** — copy
+      it verbatim and keep the quotes
+    expr: upper(strip_accents("nome_do_munica­pio_da_instituicao")) = upper(strip_accents(m.nome))
+    verified: name-based
+  - table: br_siop_orcamento.localizadores
+    column: '"MunicÃ­pio"'
+    format: mojibake — the file was decoded as latin-1 twice, in the values *and* in the column name
+    expr: 'fix first: upper(strip_accents(decode(encode("MunicÃ­pio"), ''utf-8'')))'
+    verified: needs re-encoding, join not reliable as stored
+  - table: br_ana_telemetria.estacoes
+    column: MunicipioCodigo / nmMunicipio
+    format: '`MunicipioCodigo` is an **ANA internal code, not IBGE** (`3041000` = Tabatinga); the table
+      also has foreign rows (`PERU`)'
+    expr: 'join by name: upper(strip_accents(nmMunicipio)) = upper(strip_accents(m.nome)) AND nmEstado
+      matched to the UF name'
+    verified: name-based only
+  - table: br_tcu_inidoneos.*
+    column: MUNICIPIO
+    format: mostly empty string
+    expr: unusable — join via UF, or via CPF_CNPJ to the CNPJ base and take the municipality from there
+    verified: empty in the sampled rows
+  - table: br_ok_queridodiario.diarios
+    column: territory_id
+    format: 7-digit IBGE code — Querido Diário's `territory` *is* the municipality
+    expr: CAST(territory_id AS VARCHAR) = m.id_municipio
+    verified: 524 of 524 distinct codes
+    concept: id_municipio
+    join_expr: CAST({s}.territory_id AS VARCHAR) = {d}.id_municipio
+  - table: br_brasilapi.ddd_cidades
+    column: city + state
+    format: upper-case accented name
+    expr: upper(strip_accents(city)) = upper(strip_accents(m.nome)) AND state = m.sigla_uf
+    verified: 5.449 of 5.565 rows
+  - table: br_tce_rj.contratos_municipio / contratos_estado
+    column: '"Ente"'
+    format: upper-case municipality name, RJ only
+    expr: upper(strip_accents("Ente")) = upper(strip_accents(m.nome)) AND m.sigla_uf = 'RJ'
+    verified: 90 of 91 distinct names
+  - table: br_me_cnpj.estabelecimentos
+    column: id_municipio_rf
+    format: Receita Federal 4-digit code
+    expr: id_municipio_rf = m.id_municipio_rf
+    verified: 11.140 of 11.142 directory rows
+    concept: id_municipio_rf
+    join_expr: '{s}.id_municipio_rf = {d}.id_municipio_rf'
+  uf:
+  - table: br_mj_consumidorgovbr.reclamacoes
+    column: '"UF"'
+    description: 2-letter code — direct join to `sigla_uf`
+    concept: sigla_uf
+    join_expr: '{s}."UF" = {d}.sigla_uf'
+  - table: br_tcu_inidoneos.*
+    column: '"UF"'
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}."UF" = {d}.sigla_uf'
+  - table: br_mjsp_ckan.procon
+    column: '"UF"'
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}."UF" = {d}.sigla_uf'
+  - table: br_ms_sipni_doses_historicas.doses_agregadas
+    column: '"UF"'
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}."UF" = {d}.sigla_uf'
+  - table: br_caixa_sinapi.insumos
+    column: uf
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}.uf = {d}.sigla_uf'
+  - table: br_cgu_garantia_safra / pe_de_meia / seguro_defeso
+    column: uf
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}.uf = {d}.sigla_uf'
+  - table: br_fbsp_absp.violencia_escola
+    column: uf
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}.uf = {d}.sigla_uf'
+  - table: br_mjsp_sinesp.ocorrencias_uf
+    column: uf
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}.uf = {d}.sigla_uf'
+  - table: br_comprasgov_sicaf.fornecedores
+    column: ufSigla
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}.ufSigla = {d}.sigla_uf'
+  - table: br_ms_sinan_violencia.microdados_violencia
+    column: '"SG_UF"'
+    description: '**numeric IBGE code** (21, 52…), joins `id_uf`, not `sigla_uf`'
+    concept: id_uf
+    join_expr: CAST({s}."SG_UF" AS VARCHAR) = CAST({d}.id_uf AS VARCHAR)
+  - table: br_saude_farmaciapopular.estabelecimentos
+    column: codigo_uf
+    description: numeric IBGE code — joins `id_uf`
+    concept: id_uf
+    join_expr: CAST({s}.codigo_uf AS VARCHAR) = CAST({d}.id_uf AS VARCHAR)
+  - table: br_mjsp_sisdepen.populacao_carceraria
+    column: uf
+    description: '`Acre (AC)` — extract with `regexp_extract(uf, ''\(([A-Z]{2})\)$'', 1)`'
+    concept: sigla_uf
+    join_expr: regexp_extract({s}.uf, '\(([A-Z]{{2}})\)$', 1) = {d}.sigla_uf
+  - table: br_anp_combustiveis.precos
+    column: estado
+    description: full state name, unaccented upper case (`RONDONIA`); `-` when missing
+    concept: nome
+    join_expr: upper(strip_accents({s}.estado)) = upper(strip_accents({d}.nome))
+  - table: br_mjsp_procurados.procurados
+    column: estado
+    description: 'full state name (`GOIAS`, `PARÁ`) — accents inconsistent. `nome_estado` in the same
+      table is **not** a state: it holds the person''s name plus the state, mislabeled at the source'
+    concept: nome
+    join_expr: upper(strip_accents({s}.estado)) = upper(strip_accents({d}.nome))
+  - table: br_siop_orcamento.localizadores
+    column: '"UF"'
+    description: full state name, mojibake (`EspÃ­rito Santo`)
+  - table: br_ana_telemetria.estacoes
+    column: EstadoCodigo / nmEstado
+    description: ANA internal code plus the full state name; not IBGE
+  - table: br_ok_queridodiario.diarios
+    column: state_code
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}.state_code = {d}.sigla_uf'
+  - table: br_datahackers_state_data.microdados
+    column: p1_i_1
+    description: '2-letter code — direct. Every column in this survey is a question code: `p1_i` is `São
+      Paulo (SP)`, `p1_i_2` and `p1_k` the macro-region, `p1_i_1` the bare UF'
+    concept: sigla_uf
+    join_expr: '{s}.p1_i_1 = {d}.sigla_uf'
+  - table: br_brasilapi.ddd_cidades
+    column: state
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}.state = {d}.sigla_uf'
+  identity:
+  - table: br_comprasgov_sicaf.fornecedores
+    column: cnpj / cpf
+    description: 14-digit zero-padded — joins `br_me_cnpj.estabelecimentos.cnpj` directly. `cpf` is populated
+      for individual suppliers.
+    concept: cnpj
+    join_expr: '{s}.cnpj = {d}.cnpj'
+  - table: br_bcb_penalidades.penalidades
+    column: '"CPF_CNPJ"'
+    description: 14 bare digits for companies — direct join after `lpad(...,14,'0')`.
+    concept: cnpj
+    join_expr: lpad(regexp_replace({s}."CPF_CNPJ", '[^0-9]', '', 'g'), 14, '0') = {d}.cnpj
+  - table: br_pgfn_dividaativa.divida
+    column: '"CPF_CNPJ"'
+    description: CNPJs are punctuated (`17.533.474/0001-00`) → strip with `regexp_replace(x, '[^0-9]',
+      '', 'g')`. CPFs are masked (`XXX878.325XX`) and cannot be joined.
+    concept: cnpj
+    join_expr: regexp_replace({s}."CPF_CNPJ", '[^0-9]', '', 'g') = {d}.cnpj
+  - table: br_tcu_inidoneos.*
+    column: '"CPF_CNPJ"'
+    description: 'mixed: some rows punctuated, some bare. Normalize with `lpad(regexp_replace(x, ''[^0-9]'',
+      '''', ''g''), 14, ''0'')`.'
+    concept: cnpj
+    join_expr: lpad(regexp_replace({s}."CPF_CNPJ", '[^0-9]', '', 'g'), 14, '0') = {d}.cnpj
+  - table: br_anp_combustiveis.precos
+    column: cnpj
+    description: unpadded — 1.03M rows have 13 characters, 875k have 14. Always `lpad(..., 14, '0')`.
+    concept: cnpj
+    join_expr: lpad(CAST({s}.cnpj AS VARCHAR), 14, '0') = {d}.cnpj
+  - table: br_brasilio_holdings.holdings
+    column: cnpj
+    description: 'stored as BIGINT, leading zeros lost: `lpad(CAST(cnpj AS VARCHAR), 14, ''0'')`.'
+    concept: cnpj
+    join_expr: lpad(CAST({s}.cnpj AS VARCHAR), 14, '0') = {d}.cnpj
+  - table: br_cvm_administradores_carteira.pessoa_juridica
+    column: cnpj
+    description: 14 bare digits — direct.
+    concept: cnpj
+    join_expr: '{s}.cnpj = {d}.cnpj'
+  - table: br_cvm_fundos.fundos
+    column: '"CNPJ_FUNDO" / "CNPJ_ADMIN"'
+    description: punctuated — strip with `regexp_replace(x, '[^0-9]', '', 'g')`; yields 41.106 distinct
+      14-digit CNPJs.
+    concept: cnpj
+    join_expr: regexp_replace({s}."CNPJ_FUNDO", '[^0-9]', '', 'g') = {d}.cnpj
+  - table: br_tce_rj.contratos_*
+    column: '"CNPJCPFContratado" / "CPFCNPJ"'
+    description: punctuated, and holds either a CPF or a CNPJ — strip, then branch on `length()` (11 vs
+      14).
+    concept: cnpj
+    join_expr: regexp_replace({s}."CNPJCPFContratado", '[^0-9]', '', 'g') = {d}.cnpj
+  - table: br_mdr_snis.prestador_agua_esgoto
+    column: id_prestador
+    description: SNIS operator code; the first 6 digits are the `id_municipio_6` of the operator's seat.
