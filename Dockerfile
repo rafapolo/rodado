@@ -68,7 +68,7 @@ COPY --from=builder /build/ask/target/x86_64-unknown-linux-musl/release/ask ./as
 COPY --from=builder /build/dbquery/target/x86_64-unknown-linux-musl/release/dbquery ./dbquery
 COPY ask/system_prompt.md ./system_prompt.md
 COPY data/basedosdados.duckdb ./data/
-COPY context ./context/
+COPY docs/context ./context/
 COPY auth.py ./
 COPY start.sh ./
 COPY Caddyfile ./
