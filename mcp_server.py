@@ -43,6 +43,8 @@ SCHEMA_PATH = CONTEXT_DIR / "basedosdados-schema.json"
 EMBEDDINGS_PATH = CONTEXT_DIR / "table_embeddings.json"
 JOIN_KEYS_PATH = CONTEXT_DIR / "join_keys.md"
 BRIDGES_PATH = CONTEXT_DIR / "bridges.yaml"
+METRICS_PATH = CONTEXT_DIR / "metrics.yaml"
+HIERARCHIES_PATH = CONTEXT_DIR / "hierarchies.yaml"
 
 # ---------------------------------------------------------------------------
 # Catalog loaders (loaded once at startup — small enough to hold in memory)
@@ -75,6 +77,26 @@ with open(BRIDGES_PATH, encoding="utf-8") as f:
 _FALSE_FRIENDS: dict = _BRIDGES.get("false_friends", {})
 _CONCEPTS: dict = _BRIDGES.get("concepts", {})
 _CONCEPT_ALIASES: dict = _BRIDGES.get("concept_aliases", {})
+
+with open(METRICS_PATH, encoding="utf-8") as f:
+    _METRICS: dict = yaml.safe_load(f).get("metrics", {})
+
+with open(HIERARCHIES_PATH, encoding="utf-8") as f:
+    _HIERARCHIES: dict = yaml.safe_load(f).get("hierarchies", {})
+
+
+def _norm(s: str) -> str:
+    return re.sub(r"[^a-z0-9 ]", "", s.lower().strip())
+
+
+# Exact match after normalization, name and synonym alike — the cheap
+# deterministic path that answers "quantos habitantes tem SP?" without spending
+# an LLM call on it.
+_METRIC_BY_NAME = {_norm(k): k for k in _METRICS}
+_METRIC_BY_SYNONYM: dict = {}
+for _name, _m in _METRICS.items():
+    for _syn in _m.get("synonyms", []):
+        _METRIC_BY_SYNONYM.setdefault(_norm(_syn), _name)
 
 
 def _bridge_matches(pattern: str, table_id: str) -> bool:
@@ -681,6 +703,73 @@ def explain_column(column: str) -> dict:
     return {"column": name, "is_join_key": None,
             "note": "not documented as a join key and not a known false friend — "
                     "it may simply be local to one table."}
+
+
+@mcp.tool()
+def get_metric(name: str) -> dict:
+    """Look up a named calculation — its SQL, its grain, and the filters it needs.
+
+    Matching is exact after normalization, against both the metric name and its
+    pt-BR synonyms ("populacao", "habitantes", "pop" are one metric). On a miss
+    you get the available names rather than a guess.
+
+    `required_filters` are not advisory: those are partition columns, and a
+    query that omits them scans the whole table.
+    """
+    key = _norm(name)
+    metric = _METRIC_BY_NAME.get(key) or _METRIC_BY_SYNONYM.get(key)
+    if metric is None:
+        matches = [n for n in _METRICS if key and key in _norm(n)]
+        return {
+            "error": f"No metric matching '{name}'.",
+            "did_you_mean": matches,
+            "available": sorted(_METRICS),
+        }
+    m = dict(_METRICS[metric])
+    m["metric"] = metric
+    return m
+
+
+@mcp.tool()
+def list_metrics() -> dict:
+    """Every named calculation, with what it measures and its unit."""
+    return {
+        "count": len(_METRICS),
+        "metrics": [
+            {"metric": n, "description": m.get("description"),
+             "unit": m.get("unit"), "source_table": m.get("source_table")}
+            for n, m in sorted(_METRICS.items())
+        ],
+    }
+
+
+@mcp.tool()
+def rollup(code_column: str, to_level: str) -> dict:
+    """How to climb one classification code to a level above it.
+
+    CNAE and CID-10 are prefix codes, so the parent is a substr() of the child
+    and needs no join at all — `rollup("subclasse", "divisao")` returns
+    `substr(subclasse, 1, 2)`. Levels that are not positional (a CNAE seção is a
+    letter, a CID capítulo depends on letter ranges) say so instead of returning
+    an expression that would quietly produce wrong groupings.
+    """
+    src, dst = code_column.lower().strip(), to_level.lower().strip()
+    for name, h in _HIERARCHIES.items():
+        parents = h.get("parents", {})
+        edge = f"{src} -> {dst}"
+        if edge in parents:
+            p = parents[edge]
+            if not p.get("expr"):
+                return {"hierarchy": name, "from": src, "to": dst,
+                        "expr": None, "table": h.get("table"),
+                        "note": p.get("verified"), "caveat": h.get("caveat")}
+            return {"hierarchy": name, "from": src, "to": dst,
+                    "expr": p["expr"], "kind": h.get("kind"),
+                    "verified": p.get("verified"), "caveat": h.get("caveat")}
+    edges = [e for h in _HIERARCHIES.values() for e in h.get("parents", {})]
+    return {"error": f"No documented rollup from '{src}' to '{dst}'.",
+            "available": edges}
+
 
 
 

@@ -449,3 +449,63 @@ def test_explain_column_recognises_a_curated_key():
     r = m.explain_column("id_municipio")
     assert r["is_join_key"] is True
     assert r["canonical_table"] == "br_bd_diretorios_brasil.municipio"
+
+
+# ---------------------------------------------------------------------------
+# metrics.yaml / hierarchies.yaml
+# ---------------------------------------------------------------------------
+
+def test_every_metric_carries_what_a_query_needs():
+    assert m._METRICS
+    for name, metric in m._METRICS.items():
+        for field in ("description", "unit", "grain", "source_table",
+                      "expression", "required_filters", "synonyms", "verified"):
+            assert metric.get(field), f"{name} is missing {field}"
+
+
+def test_metric_source_tables_exist_in_the_catalog():
+    for name, metric in m._METRICS.items():
+        ds, _, tbl = metric["source_table"].partition(".")
+        assert tbl in m._SCHEMA.get(ds, {}), f"{name} points at a table that is gone"
+
+
+def test_get_metric_matches_on_a_synonym():
+    a, b = m.get_metric("habitantes"), m.get_metric("populacao")
+    assert a["metric"] == b["metric"] == "populacao"
+    assert a["expression"] == "SUM(populacao)"
+
+
+def test_get_metric_requires_the_partition_filter():
+    assert m.get_metric("saldo caged")["required_filters"] == ["ano"]
+
+
+def test_get_metric_miss_lists_what_exists():
+    r = m.get_metric("faturamento")
+    assert "error" in r and r["available"]
+
+
+def test_synonyms_are_unique_across_metrics():
+    seen = {}
+    for name, metric in m._METRICS.items():
+        for syn in metric["synonyms"]:
+            key = m._norm(syn)
+            assert key not in seen, f"'{syn}' is claimed by {seen.get(key)} and {name}"
+            seen[key] = name
+
+
+def test_rollup_returns_a_positional_parent():
+    r = m.rollup("subclasse", "divisao")
+    assert r["expr"] == "substr(subclasse, 1, 2)"
+    assert r["kind"] == "positional"
+
+
+def test_rollup_refuses_to_invent_a_non_positional_parent():
+    # a CID chapter depends on letter ranges — substr would group wrongly
+    r = m.rollup("categoria", "capitulo")
+    assert r["expr"] is None
+    assert r["note"]
+
+
+def test_rollup_unknown_edge_lists_the_documented_ones():
+    r = m.rollup("subclasse", "planeta")
+    assert "error" in r and r["available"]
