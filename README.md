@@ -68,6 +68,18 @@ As 839 tabelas cobrem 43 domínios temáticos, cada um documentado em [`overview
 
 Os dados vêm de instituições públicas brasileiras — ministérios, tribunais, institutos e agências reguladoras — reunidos em um espelho próprio em Parquet, sem precisar importar nada localmente. Mais de 40 dessas fontes são raspadas de forma independente, cobrindo o que não está disponível em nenhum repositório consolidado (sanções nacionais e internacionais, SICAF, SINAN Violência, reclamações de consumidor e mais). No total, 839 tabelas (mais de 675 GB em Parquet+zstd) são consultadas sob demanda via DuckDB, o que permite cruzar bases de ministérios, tribunais, institutos e fontes independentes numa única consulta SQL.
 
+## Como as tabelas se conectam
+
+O espelho não tem chave estrangeira. O que liga uma tabela à outra são colunas que significam a mesma coisa sob nomes diferentes — o código do município é `id_municipio` numa fonte, `codIBGE` noutra, `MUNIC` numa terceira, e às vezes chega como número, com o zero à esquerda já perdido.
+
+Esse conhecimento fica em três arquivos, versionados junto com o resto:
+
+- **`docs/context/bridges.yaml`** — as 54 pontes entre colunas equivalentes, cada uma com a expressão SQL que converte uma ponta na outra e o registro do que ela casou quando foi conferida. Junto vão as colunas que *parecem* chave e não são: `valor` aparece em 91 tabelas de 56 datasets significando coisas diferentes, e juntar por ele produz um resultado grande, plausível e errado.
+- **`docs/context/metrics.yaml`** — a definição única de cada número recorrente (população, PIB per capita, saldo do CAGED), com a expressão, a unidade e o valor conferido. Sem isso cada análise re-deriva o mesmo cálculo e as diferenças só aparecem quando dois textos publicados discordam.
+- **`docs/context/hierarchies.yaml`** — como subir de um código para o nível acima. CNAE e CID-10 são códigos prefixais: a divisão sai de um `substr()` da subclasse, sem join nenhum.
+
+Os três são servidos ao assistente como ferramentas, não como texto para ele interpretar: pedir a ligação entre duas tabelas devolve a cláusula `ON` pronta, com o aviso de que uma delas devolve toda linha duas vezes, se for o caso.
+
 ## Leia também
 
 - [`overview/`](docs/overview/index.md) — os 43 arquivos-fonte em markdown por trás de cada página do site, usados também como contexto para a camada de IA que traduz perguntas em português para SQL.
