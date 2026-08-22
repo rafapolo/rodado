@@ -380,3 +380,72 @@ def test_consultar_cep_not_found():
         run.return_value = _mock_completed_process(stdout='{"erro": true}')
         result = m.consultar_cep("00000000")
     assert result == {"error": "CEP '00000000' not found."}
+
+
+# ---------------------------------------------------------------------------
+# bridges.yaml — resolve_join / explain_column
+# ---------------------------------------------------------------------------
+
+def test_bridges_yaml_shapes_match_what_the_loader_expects():
+    assert set(m._BRIDGES) >= {"categories", "concepts", "bridges", "false_friends"}
+    for kind in ("municipio", "uf", "identity"):
+        for b in m._BRIDGES["bridges"][kind]:
+            assert "table" in b and "column" in b
+            if b.get("join_expr"):
+                assert "{s}" in b["join_expr"] and "{d}" in b["join_expr"]
+                assert b.get("concept"), f"{b['table']} has join_expr but no concept"
+
+
+def test_resolve_join_prefers_the_bridge_over_the_naive_equality():
+    r = m.resolve_join("br_anp_combustiveis.precos", "br_me_cnpj.estabelecimentos")
+    cnpj = [j for j in r["joins"] if j["concept"] == "cnpj"]
+    assert len(cnpj) == 1
+    assert cnpj[0]["kind"] == "bridge"
+    # the whole point: ANP stores cnpj unpadded, so a.cnpj = b.cnpj is wrong
+    assert "lpad" in cnpj[0]["on"]
+    assert "a.cnpj = b.cnpj" not in [j["on"] for j in r["joins"]]
+
+
+def test_resolve_join_rejects_false_friends_with_a_reason():
+    r = m.resolve_join("br_anp_combustiveis.precos", "br_me_cnpj.estabelecimentos")
+    rejected = {x["column"]: x["reason"] for x in r["rejected"]}
+    assert "numero" in rejected
+    assert rejected["numero"]
+    assert "numero" not in [j["concept"] for j in r["joins"]]
+
+
+def test_resolve_join_skips_shared_columns_that_are_not_documented_keys():
+    r = m.resolve_join("br_anp_combustiveis.precos", "br_me_cnpj.estabelecimentos")
+    concepts = [j["concept"] for j in r["joins"]]
+    for noise in ("bairro", "complemento", "nome"):
+        assert noise not in concepts
+
+
+def test_resolve_join_rewrites_the_concept_to_its_local_alias():
+    # the UF directory calls the key `sigla`, not `sigla_uf`
+    r = m.resolve_join("br_mjsp_sisdepen.populacao_carceraria", "br_bd_diretorios_brasil.uf")
+    on = [j["on"] for j in r["joins"] if j["concept"] == "sigla_uf"]
+    assert on and on[0].endswith("b.sigla")
+    assert "b.sigla_uf" not in on[0]
+
+
+def test_resolve_join_warns_about_the_duplicated_tables():
+    r = m.resolve_join("br_tce_pi.prefeituras", "br_bd_diretorios_brasil.municipio")
+    assert any("twice" in w for w in r["warnings"])
+
+
+def test_resolve_join_unknown_table_returns_suggestions():
+    r = m.resolve_join("br_tce_pi.prefeitura", "br_bd_diretorios_brasil.municipio")
+    assert "error" in r and "suggestions" in r
+
+
+def test_explain_column_gives_the_reason_a_false_friend_is_not_a_key():
+    r = m.explain_column("valor")
+    assert r["is_join_key"] is False
+    assert r["reason"] and r["seen_in"]
+
+
+def test_explain_column_recognises_a_curated_key():
+    r = m.explain_column("id_municipio")
+    assert r["is_join_key"] is True
+    assert r["canonical_table"] == "br_bd_diretorios_brasil.municipio"
