@@ -16,6 +16,7 @@ import threading
 from pathlib import Path
 from typing import Optional
 
+import yaml
 from mcp.server.fastmcp import FastMCP
 
 # ---------------------------------------------------------------------------
@@ -41,6 +42,7 @@ RUN_SQL_MAX_CHARS = int(os.environ.get("MCP_RUN_SQL_MAX_CHARS", "60000"))
 SCHEMA_PATH = CONTEXT_DIR / "basedosdados-schema.json"
 EMBEDDINGS_PATH = CONTEXT_DIR / "table_embeddings.json"
 JOIN_KEYS_PATH = CONTEXT_DIR / "join_keys.md"
+BRIDGES_PATH = CONTEXT_DIR / "bridges.yaml"
 
 # ---------------------------------------------------------------------------
 # Catalog loaders (loaded once at startup — small enough to hold in memory)
@@ -56,6 +58,78 @@ _ALL_TABLE_IDS = [f"{ds}.{tbl}" for ds, tables in _SCHEMA.items() for tbl in tab
 # has parquet under ~/rodado/<dataset>/<table>/. This map lets run_sql fall
 # back transparently when the DuckDB catalog misses.
 _PARQUET_GLOBS = {tid: f"~/rodado/{tid.replace('.', '/', 1)}/*.parquet" for tid in _ALL_TABLE_IDS}
+
+
+# ---------------------------------------------------------------------------
+# Join knowledge (docs/context/bridges.yaml)
+# ---------------------------------------------------------------------------
+# `get_join_keys` still reads join_keys.md, and has to: 92 of its 152 sections
+# are auto-detected from schemas.json and exist only in the rendered markdown.
+# The YAML carries the part that has to be *executed* rather than read — the
+# normalization expressions — so resolve_join can hand back a clause instead of
+# a paragraph describing one.
+
+with open(BRIDGES_PATH, encoding="utf-8") as f:
+    _BRIDGES: dict = yaml.safe_load(f)
+
+_FALSE_FRIENDS: dict = _BRIDGES.get("false_friends", {})
+_CONCEPTS: dict = _BRIDGES.get("concepts", {})
+_CONCEPT_ALIASES: dict = _BRIDGES.get("concept_aliases", {})
+
+
+def _bridge_matches(pattern: str, table_id: str) -> bool:
+    """Bridge tables are written for humans: wildcards and `a / b` alternatives."""
+    for alt in pattern.split(" / "):
+        alt = alt.strip()
+        if "." not in alt and "." in pattern:
+            alt = pattern.split(".", 1)[0] + "." + alt
+        if alt.endswith("*"):
+            if table_id.startswith(alt[:-1]):
+                return True
+        elif alt == table_id:
+            return True
+    return False
+
+
+def _bridges_for(table_id: str) -> list:
+    """Every documented bridge whose table pattern covers `table_id`."""
+    out = []
+    for kind in ("municipio", "uf", "identity"):
+        for b in _BRIDGES["bridges"].get(kind, []):
+            if not _bridge_matches(b["table"], table_id):
+                continue
+            out.append({
+                "kind": kind,
+                "concept": b.get("concept"),
+                "column": b["column"],
+                "join_expr": b.get("join_expr"),
+                "note": b.get("format") or b.get("description"),
+                "verified": b.get("verified"),
+            })
+    return out
+
+
+_duplicated_tables = None
+_duplicated_lock = threading.Lock()
+
+
+def _duplicated() -> set:
+    """The tables that return every row twice, read off the generated markdown.
+
+    gera_join_keys.py probes beelink for leftover tmp*.parquet and renders the
+    list into join_keys.md. Parsing it back is cheap and keeps this server free
+    of its own beelink round-trip at import time.
+    """
+    global _duplicated_tables
+    with _duplicated_lock:
+        if _duplicated_tables is not None:
+            return _duplicated_tables
+        text = JOIN_KEYS_PATH.read_text(encoding="utf-8")
+        m = re.search(r"<details><summary>All \d+ affected tables</summary>(.*?)</details>",
+                      text, re.DOTALL)
+        _duplicated_tables = set(re.findall(r"`([\w.]+)`", m.group(1))) if m else set()
+        return _duplicated_tables
+
 
 # ---------------------------------------------------------------------------
 # Search (embeddings) — lazy-loaded, first call downloads the model (~90MB)
@@ -459,6 +533,155 @@ def get_join_keys(column: str | None = None) -> dict:
         "error": f"No join key matching '{column}'.",
         "available_keys": [v["column"] for v in index.values()],
     }
+
+
+@mcp.tool()
+def resolve_join(table_a: str, table_b: str) -> dict:
+    """Return the ON clause that actually joins two tables, ready to paste.
+
+    Both arguments are "dataset.table". This is the executable half of
+    get_join_keys: instead of the reference section describing how `codIBGE`
+    relates to `id_municipio`, you get
+    `lpad(CAST(a.codIBGE AS VARCHAR), 7, '0') = b.id_municipio`.
+
+    Three things come back that a plain column-name match would miss:
+      * bridges — the two tables name the same key differently, and the
+        expression that converts one to the other has been run on beelink
+        (`verified` says what it matched)
+      * rejected — columns the two share whose name matches but whose meaning
+        does not, so joining on them yields a large, plausible, wrong result
+      * warnings — either table returning every row twice from a leftover
+        tmp*.parquet, which silently doubles counts and sums
+    """
+    for tid in (table_a, table_b):
+        if "." not in tid:
+            return {"error": f"'{tid}' must be in the form 'dataset.table'."}
+        ds, _, tbl = tid.partition(".")
+        if ds not in _SCHEMA or tbl not in _SCHEMA[ds]:
+            return {"error": f"Unknown table '{tid}'.",
+                    "suggestions": difflib.get_close_matches(tid, _ALL_TABLE_IDS, n=5, cutoff=0.4)}
+
+    def cols(tid):
+        ds, _, tbl = tid.partition(".")
+        return {c["name"].lower(): c for c in _SCHEMA[ds][tbl]}
+
+    ca, cb = cols(table_a), cols(table_b)
+    joins, rejected = [], []
+
+    # Bridges first: when one exists for a shared column, the naive
+    # `a.col = b.col` is the wrong answer, not a second opinion.
+    bridged_concepts = set()
+    for src, dst, s_alias, d_alias in ((table_a, table_b, "a", "b"),
+                                       (table_b, table_a, "b", "a")):
+        dst_cols = cols(dst)
+        for br in _bridges_for(src):
+            concept, expr = br["concept"], br["join_expr"]
+            if not concept:
+                continue
+            # The directory names some keys differently (its UF column is
+            # `sigla`), so the concept may live under a local alias.
+            local = concept
+            if concept not in dst_cols:
+                local = next((c for c, k in _CONCEPT_ALIASES.get(dst, {}).items()
+                              if k == concept and c in dst_cols), None)
+                if local is None:
+                    continue
+            if not expr:
+                rejected.append({
+                    "column": br["column"],
+                    "reason": f"documented but not resolvable to an expression — {br['note']}",
+                })
+                continue
+            bridged_concepts.add(concept)
+            bridged_concepts.add(br["column"].strip('"').lower())
+            joins.append({
+                "concept": concept,
+                "kind": "bridge",
+                "on": expr.format(s=s_alias, d=d_alias).replace(
+                    f"{d_alias}.{concept}", f"{d_alias}.{local}"),
+                "note": br["note"],
+                "verified": br["verified"],
+            })
+
+    known_keys = set(_CONCEPTS) | set(_parse_join_keys())
+    for name in sorted(set(ca) & set(cb)):
+        if name in _FALSE_FRIENDS:
+            rejected.append({"column": name, "reason": _FALSE_FRIENDS[name]["reason"]})
+            continue
+        if name in bridged_concepts:
+            continue
+        if name not in known_keys:
+            # Shared name, never documented as a key anywhere in the mirror:
+            # `nome`, `bairro`, `complemento`. Listing these as joins is how a
+            # model ends up joining two tables on a street address.
+            continue
+        ta, tb = ca[name].get("type"), cb[name].get("type")
+        entry = {
+            "concept": name,
+            "kind": "direct",
+            "on": f"a.{name} = b.{name}",
+        }
+        if ta and tb and ta != tb:
+            entry["on"] = f"CAST(a.{name} AS VARCHAR) = CAST(b.{name} AS VARCHAR)"
+            entry["note"] = f"type differs ({ta} vs {tb}) — cast both sides"
+        if name in _CONCEPTS:
+            entry["canonical_table"] = _CONCEPTS[name].get("canonical_table")
+        joins.append(entry)
+
+    warnings = []
+    dup = _duplicated()
+    for tid, alias in ((table_a, "a"), (table_b, "b")):
+        if tid in dup:
+            warnings.append(
+                f"`{tid}` (alias {alias}) returns every row twice — a leftover "
+                "tmp*.parquet sits next to the real export. Join against "
+                "SELECT DISTINCT, and treat any count()/sum() on it as doubled."
+            )
+    if not joins:
+        warnings.append(
+            "No documented join between these two. Check get_join_keys() for a "
+            "third table that bridges them (usually br_bd_diretorios_brasil.municipio)."
+        )
+
+    return {
+        "table_a": table_a, "table_b": table_b,
+        "aliases": {"a": table_a, "b": table_b},
+        "joins": joins,
+        "rejected": rejected,
+        "warnings": warnings,
+    }
+
+
+@mcp.tool()
+def explain_column(column: str) -> dict:
+    """Say whether a column is a join key, and if not, why not.
+
+    Columns like `valor`, `id` and `numero` appear across dozens of datasets
+    under the same name with a different meaning in each. They are deliberately
+    absent from get_join_keys(), which used to make them look merely
+    undocumented — this tool gives the reason instead of silence.
+    """
+    name = column.lower().strip().strip("`\"")
+    if name in _FALSE_FRIENDS:
+        e = _FALSE_FRIENDS[name]
+        return {"column": name, "is_join_key": False,
+                "reason": e["reason"], "seen_in": e["seen_in"]}
+    if name in _CONCEPTS:
+        c = _CONCEPTS[name]
+        return {"column": name, "is_join_key": True,
+                "category": c.get("category"),
+                "canonical_table": c.get("canonical_table"),
+                "description": c.get("description"),
+                "note": "call get_join_keys(column) for the full section and example SQL"}
+    index = _parse_join_keys()
+    if name in index:
+        return {"column": name, "is_join_key": True,
+                "note": "auto-detected (shared by 2+ datasets); "
+                        "call get_join_keys(column) for the section"}
+    return {"column": name, "is_join_key": None,
+            "note": "not documented as a join key and not a known false friend — "
+                    "it may simply be local to one table."}
+
 
 
 @mcp.tool()
