@@ -1,0 +1,85 @@
+# Hierarquias de rollup — subir de um código para o nível acima sem redescobrir
+# a regra a cada análise.
+#
+# Duas formas, e a diferença importa:
+#   - posicional: o pai sai de substr() do próprio código, sem join nenhum.
+#     É o caso de CNAE e CID-10, e é a economia direta deste arquivo.
+#   - por join: o pai só existe na tabela-diretório.
+#
+# Toda parent_expr abaixo foi conferida contra a própria tabela-diretório
+# (2026-08-22); `verified` diz quantas linhas casaram de quantas.
+
+hierarchies:
+
+  geografia:
+    description: município → UF → região
+    levels: [id_municipio, sigla_uf, nome_regiao]
+    table: br_bd_diretorios_brasil.municipio
+    kind: join
+    note: >-
+      o diretório já traz sigla_uf, nome_uf e nome_regiao na mesma linha do
+      município, então subir é projeção, não join encadeado.
+    parents:
+      id_municipio -> sigla_uf:
+        expr: sigla_uf
+        verified: "coluna do próprio diretório"
+      sigla_uf -> nome_regiao:
+        expr: nome_regiao
+        verified: "coluna do próprio diretório"
+    caveat: >-
+      5.571 linhas (5.570 municípios + o distrito de Brasília). A tabela está na
+      lista das 80 duplicadas por tmp*.parquet — junte contra SELECT DISTINCT ou
+      todo rollup sai dobrado. Em br_bd_diretorios_brasil.uf a sigla se chama
+      `sigla`, não `sigla_uf`.
+
+  cnae:
+    description: classificação de atividade econômica (CNAE 2.0)
+    levels: [subclasse, classe, grupo, divisao, secao]
+    table: br_bd_diretorios_brasil.cnae_2
+    kind: positional
+    note: >-
+      os códigos são prefixais: 0111301 → 01113 → 011 → 01. Só `secao` (letra
+      A–U) foge da regra e exige o diretório.
+    parents:
+      subclasse -> classe:
+        expr: substr(subclasse, 1, 5)
+        verified: "1.356/1.356 (2026-08-22)"
+      subclasse -> grupo:
+        expr: substr(subclasse, 1, 3)
+        verified: "1.356/1.356 (2026-08-22)"
+      subclasse -> divisao:
+        expr: substr(subclasse, 1, 2)
+        verified: "1.356/1.356 (2026-08-22)"
+      classe -> grupo:
+        expr: substr(classe, 1, 3)
+        verified: "1.356/1.356 (2026-08-22)"
+      grupo -> divisao:
+        expr: substr(grupo, 1, 2)
+        verified: "1.356/1.356 (2026-08-22)"
+      divisao -> secao:
+        expr: null
+        verified: "não é posicional — junte com o diretório para pegar a seção"
+    caveat: >-
+      são VARCHAR com zero à esquerda (`0111301`). Uma fonte que guardou como
+      número perdeu o zero e precisa de lpad antes de qualquer substr. A tabela
+      está entre as 80 duplicadas (2.712 linhas para 1.356 subclasses).
+
+  cid10:
+    description: classificação internacional de doenças, 10ª revisão
+    levels: [subcategoria, categoria, capitulo]
+    table: br_bd_diretorios_brasil.cid_10
+    kind: positional
+    note: >-
+      subcategoria A009 → categoria A00. O capítulo depende de faixas de letra e
+      número (A00–B99 = I, C00–D48 = II…), então não sai de substr.
+    parents:
+      subcategoria -> categoria:
+        expr: substr(subcategoria, 1, 3)
+        verified: "12.477/12.477 (2026-08-22)"
+      categoria -> capitulo:
+        expr: null
+        verified: "não é posicional — junte com o diretório para pegar o capítulo"
+    caveat: >-
+      é a chave para agrupar causa de morte em br_ms_sim.microdados
+      (`causa_basica`). A tabela está entre as 80 duplicadas (24.954 linhas para
+      12.477 subcategorias).
