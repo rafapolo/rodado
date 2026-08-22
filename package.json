@@ -1,5 +1,14 @@
 {
+  "name": "rodado-ask-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun run web/server.ts",
+    "test": "bun test web/src",
+    "assets": "bun run scripts/build_ask_web_assets.ts"
+  },
   "devDependencies": {
+    "@types/bun": "^1.4.0",
     "playwright": "^1.59.1"
   }
 }
