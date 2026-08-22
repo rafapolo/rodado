@@ -8,8 +8,14 @@ for all tables on beelink, merging:
     scraped — the mirrored portion of the project, whose schema snapshot lives
     in docs/context/schema_ddl.sql
 
-Rows carry a `source` column: `disk` (parquet on beelink) or `view_only`
-(a DuckDB view with no local parquet behind it — orphaned, rows=0).
+Rows carry a `source` column:
+  - `disk`          parquet on beelink; rows measured with parquet_metadata
+  - `duckdb_native` no parquet, but the view reads a native table inside
+                    basedosdados.duckdb and has rows; counted via DuckDB
+  - `view_only`     no parquet and no rows — genuinely orphaned
+
+Counting tables or rows means filtering `source <> 'view_only'`, not
+`source = 'disk'`: the latter drops ~93,8M real rows of br_ms_sipni.
 """
 
 import csv
@@ -322,7 +328,71 @@ ORDER BY table_schema, table_name;
                     "source": "view_only",
                 }
 
+
+    # Phase 2b: a view with no parquet is not automatically broken.
+    #
+    # It used to be recorded as rows=0 / view_orfa on the assumption that its
+    # data was gone. That is wrong for the `br_ms_sipni_*` and `politicos`
+    # views, which read native tables stored *inside* basedosdados.duckdb —
+    # `doses_agregadas` alone holds 93.785.056 rows. Counting via
+    # parquet_metadata reports 0 because there is no parquet, not because there
+    # is no data. So ask DuckDB instead of assuming.
+    no_parquet = [k for k, v in tables.items() if v["source"] == "view_only"]
+    if no_parquet:
+        counts = _count_via_duckdb(no_parquet)
+        for key in no_parquet:
+            n = counts.get(key)
+            if n is None:
+                tables[key]["probe"] = "failed"
+            elif n > 0:
+                tables[key]["source"] = "duckdb_native"
+                tables[key]["rows"] = n
+            else:
+                tables[key]["probe"] = "empty"
+
     return list(tables.values())
+
+
+def _count_via_duckdb(keys):
+    """Row counts for tables DuckDB can reach but parquet_metadata cannot.
+
+    Returns {(dataset, table): rows}; a key is absent when its count failed, so
+    the caller can tell "no data" from "could not ask" instead of writing a
+    confident zero over both.
+    """
+    if not keys:
+        return {}
+    union = "\nUNION ALL ".join(
+        f"SELECT '{ds}' AS d, '{tbl}' AS t, count(*) AS n FROM \"{ds}\".\"{tbl}\""
+        for ds, tbl in keys
+    )
+    tmp = tempfile.NamedTemporaryFile(mode="wb", suffix=".sql", delete=False)
+    tmp.write(b"SET enable_progress_bar=false;\n")
+    tmp.write((union + ";\n").encode("utf-8"))
+    tmp.close()
+    remote = f"/tmp/rodado_cat3_{os.getpid()}.sql"
+    out = {}
+    try:
+        subprocess.run(["scp", tmp.name, f"{BEELINK_HOST}:{remote}"],
+                       capture_output=True, timeout=15, check=True)
+        proc = subprocess.run(
+            ["ssh", BEELINK_HOST,
+             f"~/bin/duckdb -readonly ~/rodado/basedosdados.duckdb -csv < {remote}; rm -f {remote}"],
+            capture_output=True, timeout=600,
+        )
+    except (subprocess.TimeoutExpired, subprocess.CalledProcessError) as exc:
+        print(f"  ! row-count probe failed: {exc}", file=sys.stderr)
+        return out
+    finally:
+        os.unlink(tmp.name)
+    if proc.returncode != 0:
+        print(f"  ! row-count probe failed: {proc.stderr.decode()[:200]}", file=sys.stderr)
+        return out
+    for line in proc.stdout.decode().split("\n"):
+        parts = line.strip().split(",")
+        if len(parts) == 3 and parts[2].isdigit():
+            out[(parts[0], parts[1])] = int(parts[2])
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -395,9 +465,16 @@ def build_catalog():
         status = info.get("status", "mirrored")
         notes = info.get("notes", "")
         if t["source"] == "view_only":
-            # A view whose parquet is gone — never report it as mirrored data.
+            # Asked DuckDB and it really is empty (or unreachable) — never
+            # report it as mirrored data.
             status = "view_orfa"
-            notes = ("View DuckDB sem parquet local (origem removida). " + notes).strip()
+            notes = ("View DuckDB sem parquet local e sem linhas. " + notes).strip()
+        elif t["source"] == "duckdb_native":
+            # Real data, just not stored as parquet: the view reads a native
+            # table inside basedosdados.duckdb. Counted via DuckDB, not
+            # parquet_metadata.
+            notes = ("Tabela nativa dentro de basedosdados.duckdb, sem parquet "
+                     "em ~/rodado. Consulte pela view, nao por read_parquet. " + notes).strip()
 
         arrays["dataset"].append(ds)
         arrays["table"].append(t["table"])
