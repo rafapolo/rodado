@@ -1,0 +1,116 @@
+# Cálculos nomeados do rodado — a definição única de cada número.
+#
+# Sem isto cada análise em pages/analises/ re-deriva "população" ou "saldo do
+# CAGED" em SQL novo, e as variações silenciosas só aparecem quando dois textos
+# publicados discordam.
+#
+# `mcp_server.get_metric()` serve daqui; `scripts/valida_metrics.py` confere.
+# Um dialeto só, DuckDB — o projeto não tem outro motor.
+#
+# Campos:
+#   description      o que mede, em uma linha
+#   unit             unidade — sem isto ninguém sabe se `pib` é real ou mil reais
+#   grain            as colunas que identificam uma linha do resultado
+#   source_table     dataset.table
+#   expression       a agregação, em SQL DuckDB
+#   required_filters partições que a query TEM que filtrar (regra do CLAUDE.md
+#                    virando dado que a ferramenta cobra, não instrução de prompt)
+#   synonyms         como a pergunta chega em pt-BR; o match é exato após
+#                    normalizar, e é o que dispensa o LLM no caso fácil
+#   verified         o valor conferido no beelink, com data — uma métrica sem
+#                    isto é aspiracional
+
+metrics:
+
+  populacao:
+    description: população residente estimada pelo IBGE
+    unit: pessoas
+    grain: [id_municipio, ano]
+    source_table: br_ibge_populacao.municipio
+    expression: SUM(populacao)
+    required_filters: [ano]
+    synonyms: [populacao, habitantes, pop, gente, moradores, residentes]
+    verified: "203.080.756 em 2022 — bate com o Censo 2022 (2026-08-22)"
+    caveat: >-
+      até 2021 a série é estimativa, 2022 em diante é Censo, e há um degrau entre
+      as duas: 213.317.639 em 2021 contra 203.080.756 em 2022. A população não
+      caiu 10 milhões — mudou o método. Não leia essa quebra como tendência.
+
+  pib:
+    description: Produto Interno Bruto municipal a preços correntes
+    unit: BRL (reais correntes do ano)
+    grain: [id_municipio, ano]
+    source_table: br_ibge_pib.municipio
+    expression: SUM(pib)
+    required_filters: [ano]
+    synonyms: [pib, produto interno bruto, riqueza, economia]
+    verified: "R$ 9,012 trilhões em 2021 (2026-08-22)"
+    caveat: >-
+      preços correntes: somar anos diferentes sem deflacionar não significa nada.
+      A série do IBGE para o Brasil é menor que a soma municipal porque esta
+      inclui impostos líquidos alocados por município.
+
+  pib_per_capita:
+    description: PIB dividido pela população, no mesmo ano e município
+    unit: BRL por pessoa
+    grain: [id_municipio, ano]
+    source_table: br_ibge_pib.municipio
+    expression: SUM(pib) / NULLIF(SUM(populacao), 0)
+    required_filters: [ano]
+    synonyms: [pib per capita, pib por habitante, renda por habitante]
+    needs_join:
+      table: br_ibge_populacao.municipio
+      on: a.id_municipio = b.id_municipio AND a.ano = b.ano
+    verified: "R$ 42.248 no Brasil em 2021 (9,012 tri / 213,3 mi) (2026-08-22)"
+    caveat: >-
+      as duas tabelas têm que ser filtradas no MESMO ano antes do join; sem isso
+      o produto cartesiano infla o denominador.
+
+  obitos:
+    description: óbitos registrados no SIM (Sistema de Informações sobre Mortalidade)
+    unit: óbitos
+    grain: [ano, sigla_uf]
+    source_table: br_ms_sim.microdados
+    expression: COUNT(*)
+    required_filters: [ano]
+    synonyms: [obitos, mortes, mortalidade, falecimentos]
+    verified: "1.507.077 em 2022 (2026-08-22)"
+    caveat: >-
+      um registro por óbito. Para mortalidade por causa, filtre `causa_basica`
+      (CID-10) — veja hierarchies.yaml para subir ao capítulo.
+
+  nascimentos:
+    description: nascidos vivos registrados no SINASC
+    unit: nascimentos
+    grain: [ano, sigla_uf]
+    source_table: br_ms_sinasc.microdados
+    expression: COUNT(*)
+    required_filters: [ano]
+    synonyms: [nascimentos, nascidos vivos, natalidade, bebes, partos]
+    verified: "2.560.319 em 2022 (2026-08-22)"
+
+  vinculos_ativos:
+    description: vínculos formais de emprego ativos em 31/12, pela RAIS
+    unit: vínculos
+    grain: [ano, sigla_uf, id_municipio]
+    source_table: br_me_rais.microdados_vinculos
+    expression: COUNT(*) FILTER (WHERE vinculo_ativo_3112 = '1')
+    required_filters: [ano]
+    synonyms: [vinculos ativos, empregos formais, emprego formal, carteira assinada]
+    verified: "52.790.864 em 2022 (2026-08-22)"
+    caveat: >-
+      é estoque em 31/12, não fluxo. Para fluxo use saldo_caged. `vinculo_ativo_3112`
+      é VARCHAR: comparar com 1 sem aspas devolve zero silenciosamente.
+
+  saldo_caged:
+    description: saldo de empregos formais (admissões menos desligamentos) no CAGED
+    unit: postos de trabalho
+    grain: [ano, mes, sigla_uf, id_municipio]
+    source_table: br_me_caged.microdados_movimentacao
+    expression: SUM(saldo_movimentacao)
+    required_filters: [ano]
+    synonyms: [saldo caged, saldo de empregos, geracao de empregos, vagas criadas]
+    verified: "1.478.340 em 2023 — bate com a série oficial do CAGED (2026-08-22)"
+    caveat: >-
+      é fluxo líquido do período, não estoque. Somar sobre vários anos dá o
+      acumulado, não o total de empregos.
