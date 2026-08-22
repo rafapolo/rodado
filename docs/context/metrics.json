@@ -1,0 +1,170 @@
+{
+  "_meta": {
+    "source": "docs/context/metrics.yaml",
+    "count": 7
+  },
+  "metrics": [
+    {
+      "name": "nascimentos",
+      "description": "nascidos vivos registrados no SINASC",
+      "unit": "nascimentos",
+      "grain": [
+        "ano",
+        "sigla_uf"
+      ],
+      "source_table": "br_ms_sinasc.microdados",
+      "expression": "COUNT(*)",
+      "required_filters": [
+        "ano"
+      ],
+      "synonyms": [
+        "nascimentos",
+        "nascidos vivos",
+        "natalidade",
+        "bebes",
+        "partos"
+      ],
+      "caveat": "",
+      "needs_join": null
+    },
+    {
+      "name": "obitos",
+      "description": "óbitos registrados no SIM (Sistema de Informações sobre Mortalidade)",
+      "unit": "óbitos",
+      "grain": [
+        "ano",
+        "sigla_uf"
+      ],
+      "source_table": "br_ms_sim.microdados",
+      "expression": "COUNT(*)",
+      "required_filters": [
+        "ano"
+      ],
+      "synonyms": [
+        "obitos",
+        "mortes",
+        "mortalidade",
+        "falecimentos"
+      ],
+      "caveat": "um registro por óbito. Para mortalidade por causa, filtre `causa_basica` (CID-10) — veja hierarchies.yaml para subir ao capítulo.",
+      "needs_join": null
+    },
+    {
+      "name": "pib",
+      "description": "Produto Interno Bruto municipal a preços correntes",
+      "unit": "BRL (reais correntes do ano)",
+      "grain": [
+        "id_municipio",
+        "ano"
+      ],
+      "source_table": "br_ibge_pib.municipio",
+      "expression": "SUM(pib)",
+      "required_filters": [
+        "ano"
+      ],
+      "synonyms": [
+        "pib",
+        "produto interno bruto",
+        "riqueza",
+        "economia"
+      ],
+      "caveat": "preços correntes: somar anos diferentes sem deflacionar não significa nada. A série do IBGE para o Brasil é menor que a soma municipal porque esta inclui impostos líquidos alocados por município.",
+      "needs_join": null
+    },
+    {
+      "name": "pib_per_capita",
+      "description": "PIB dividido pela população, no mesmo ano e município",
+      "unit": "BRL por pessoa",
+      "grain": [
+        "id_municipio",
+        "ano"
+      ],
+      "source_table": "br_ibge_pib.municipio",
+      "expression": "SUM(pib) / NULLIF(SUM(populacao), 0)",
+      "required_filters": [
+        "ano"
+      ],
+      "synonyms": [
+        "pib per capita",
+        "pib por habitante",
+        "renda por habitante"
+      ],
+      "caveat": "as duas tabelas têm que ser filtradas no MESMO ano antes do join; sem isso o produto cartesiano infla o denominador.",
+      "needs_join": {
+        "table": "br_ibge_populacao.municipio",
+        "true": "a.id_municipio = b.id_municipio AND a.ano = b.ano"
+      }
+    },
+    {
+      "name": "populacao",
+      "description": "população residente estimada pelo IBGE",
+      "unit": "pessoas",
+      "grain": [
+        "id_municipio",
+        "ano"
+      ],
+      "source_table": "br_ibge_populacao.municipio",
+      "expression": "SUM(populacao)",
+      "required_filters": [
+        "ano"
+      ],
+      "synonyms": [
+        "populacao",
+        "habitantes",
+        "pop",
+        "gente",
+        "moradores",
+        "residentes"
+      ],
+      "caveat": "até 2021 a série é estimativa, 2022 em diante é Censo, e há um degrau entre as duas: 213.317.639 em 2021 contra 203.080.756 em 2022. A população não caiu 10 milhões — mudou o método. Não leia essa quebra como tendência.",
+      "needs_join": null
+    },
+    {
+      "name": "saldo_caged",
+      "description": "saldo de empregos formais (admissões menos desligamentos) no CAGED",
+      "unit": "postos de trabalho",
+      "grain": [
+        "ano",
+        "mes",
+        "sigla_uf",
+        "id_municipio"
+      ],
+      "source_table": "br_me_caged.microdados_movimentacao",
+      "expression": "SUM(saldo_movimentacao)",
+      "required_filters": [
+        "ano"
+      ],
+      "synonyms": [
+        "saldo caged",
+        "saldo de empregos",
+        "geracao de empregos",
+        "vagas criadas"
+      ],
+      "caveat": "é fluxo líquido do período, não estoque. Somar sobre vários anos dá o acumulado, não o total de empregos.",
+      "needs_join": null
+    },
+    {
+      "name": "vinculos_ativos",
+      "description": "vínculos formais de emprego ativos em 31/12, pela RAIS",
+      "unit": "vínculos",
+      "grain": [
+        "ano",
+        "sigla_uf",
+        "id_municipio"
+      ],
+      "source_table": "br_me_rais.microdados_vinculos",
+      "expression": "COUNT(*) FILTER (WHERE vinculo_ativo_3112 = '1')",
+      "required_filters": [
+        "ano"
+      ],
+      "synonyms": [
+        "vinculos ativos",
+        "empregos formais",
+        "emprego formal",
+        "carteira assinada"
+      ],
+      "caveat": "é estoque em 31/12, não fluxo. Para fluxo use saldo_caged. `vinculo_ativo_3112` é VARCHAR: comparar com 1 sem aspas devolve zero silenciosamente.",
+      "needs_join": null
+    }
+  ]
+}

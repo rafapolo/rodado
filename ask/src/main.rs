@@ -1,3 +1,4 @@
+mod metric_resolver;
 mod schema_filter;
 mod sql_generator;
 mod table_selector;
@@ -35,6 +36,68 @@ fn project_path(rel: &str) -> PathBuf {
         Err(_) => PathBuf::from(rel),
     }
 }
+
+/// Directories a data file might be relative to, best guess first.
+///
+/// `CARGO_MANIFEST_DIR` only exists while cargo is driving, so the release
+/// binary used to fall back to plain cwd — which meant `ask` only worked when
+/// launched from exactly one directory. Walking up from the executable covers
+/// `target/release/ask` and the container's `/app/ask` alike.
+fn search_roots() -> Vec<PathBuf> {
+    let mut roots = Vec::new();
+    if let Ok(manifest) = env::var("CARGO_MANIFEST_DIR") {
+        roots.push(PathBuf::from(manifest).join(".."));
+    }
+    if let Ok(cwd) = env::current_dir() {
+        roots.push(cwd);
+    }
+    if let Ok(exe) = env::current_exe() {
+        let mut dir = exe.parent().map(PathBuf::from);
+        // ask -> release -> target -> <repo>
+        for _ in 0..4 {
+            if let Some(d) = dir {
+                roots.push(d.clone());
+                dir = d.parent().map(PathBuf::from);
+            }
+        }
+    }
+    roots
+}
+
+/// First candidate that actually exists, honouring `env_var` as an override.
+///
+/// The context files live in `docs/context/` in the repo and in `context/`
+/// inside the container, so every caller passes both. Returning a path that
+/// does not exist is still better than panicking here — the caller's own error
+/// message names the file it could not read.
+fn find_data_file(env_var: &str, candidates: &[&str]) -> String {
+    if let Ok(explicit) = env::var(env_var) {
+        return explicit;
+    }
+    for root in search_roots() {
+        for rel in candidates {
+            let p = root.join(rel);
+            if p.exists() {
+                return p.to_string_lossy().into();
+            }
+        }
+    }
+    for rel in candidates {
+        let p = PathBuf::from(rel);
+        if p.exists() {
+            return p.to_string_lossy().into();
+        }
+    }
+    project_path(candidates[0]).to_string_lossy().into()
+}
+
+fn metrics_path() -> PathBuf {
+    PathBuf::from(find_data_file(
+        "METRICS_FILE",
+        &["docs/context/metrics.json", "context/metrics.json"],
+    ))
+}
+
 use syntect::easy::HighlightLines;
 use syntect::highlighting::ThemeSet;
 use syntect::parsing::SyntaxSet;
@@ -1088,6 +1151,31 @@ fn ask_model_with_selection(
     schema_json: &str,
     similarity_threshold: f32,
 ) -> Result<String> {
+    // Tier 1: a named metric answers some questions outright, and informs the
+    // prompt for the ones it cannot. Missing or unreadable metrics are not an
+    // error — they just mean this tier contributes nothing.
+    let resolution = match metric_resolver::load(&metrics_path().to_string_lossy()) {
+        Ok(metrics) => metric_resolver::resolve(&metrics, question),
+        Err(e) => {
+            eprintln!("=> Aviso: métricas indisponíveis ({}), seguindo sem elas", e);
+            None
+        }
+    };
+
+    if let Some(res) = &resolution {
+        if let Some(sql) = &res.sql {
+            eprintln!(
+                "=> Métrica '{}' resolveu a pergunta — sem chamada ao modelo",
+                res.metric.name
+            );
+            return Ok(ensure_sql(sql));
+        }
+        eprintln!(
+            "=> Métrica '{}' reconhecida, mas a pergunta pede mais — passando a definição ao modelo",
+            res.metric.name
+        );
+    }
+
     let prompt_template = fs::read_to_string(prompt_file)
         .with_context(|| format!("Não foi possível ler o prompt: {}", prompt_file))?;
 
@@ -1119,6 +1207,11 @@ fn ask_model_with_selection(
     } else {
         let schema_filter = schema_filter::SchemaFilter::new(schema_json)?;
         (schema_filter.full_schema_text(), None)
+    };
+
+    let schema_to_use = match &resolution {
+        Some(res) => format!("{}\n\n{}", res.context, schema_to_use),
+        None => schema_to_use,
     };
 
     let generator = sql_generator::create_sql_generator()?;
@@ -1427,15 +1520,16 @@ VARIÁVEIS DE AMBIENTE
   GEMINI_API_KEY       necessária para modelos Gemini
   OPENROUTER_API_KEY   necessária para modelos OpenRouter
   GEMINI_MODEL         modelo padrão (sobrescrito por --model)
-  SCHEMA_FILE          DDL do schema  [context/schema_compact_inline.txt]
-  SCHEMA_JSON          full schema JSON  [context/basedosdados-schema.json]
-  EMBEDDINGS_FILE      table embeddings  [context/table_embeddings.json]
+  SCHEMA_FILE          DDL do schema  [docs/context/schema_compact_inline.txt]
+  SCHEMA_JSON          full schema JSON  [docs/context/basedosdados-schema.json]
+  EMBEDDINGS_FILE      table embeddings  [docs/context/table_embeddings.json]
+  METRICS_FILE         métricas nomeadas  [docs/context/metrics.json]
   TOP_K_TABLES         número de tables a selecionar  [5]
   SQL_GENERATOR        sql generator: sqlcoder|gemini|openrouter  [gemini]
   OLLAMA_MODEL         modelo ollama  [sqlcoder]
   OLLAMA_HOST          host ollama  [http://localhost:11434]
   PROMPT_FILE          prompt do sistema  [ask/system_prompt.md]
-  DB_FILE              banco DuckDB  [basedosdados.duckdb]
+  DB_FILE              banco DuckDB  [data/basedosdados.duckdb]
 "#
         );
         std::process::exit(0);
@@ -1444,21 +1538,9 @@ VARIÁVEIS DE AMBIENTE
     let model = model_override.unwrap_or_else(|| {
         env::var("GEMINI_MODEL").unwrap_or_else(|_| "gemini-flash-latest".into())
     });
-    let schema_file = env::var("SCHEMA_FILE").unwrap_or_else(|_| {
-        project_path("context/schema_compact_inline.txt")
-            .to_string_lossy()
-            .into()
-    });
-    let schema_json = env::var("SCHEMA_JSON").unwrap_or_else(|_| {
-        project_path("context/basedosdados-schema.json")
-            .to_string_lossy()
-            .into()
-    });
-    let embeddings_file = env::var("EMBEDDINGS_FILE").unwrap_or_else(|_| {
-        project_path("context/table_embeddings.json")
-            .to_string_lossy()
-            .into()
-    });
+    let schema_file = find_data_file("SCHEMA_FILE", &["docs/context/schema_compact_inline.txt", "context/schema_compact_inline.txt"]);
+    let schema_json = find_data_file("SCHEMA_JSON", &["docs/context/basedosdados-schema.json", "context/basedosdados-schema.json"]);
+    let embeddings_file = find_data_file("EMBEDDINGS_FILE", &["docs/context/table_embeddings.json", "context/table_embeddings.json"]);
     let similarity_threshold = env::var("SIMILARITY_THRESHOLD")
         .ok()
         .and_then(|v| v.parse().ok())
@@ -1466,16 +1548,8 @@ VARIÁVEIS DE AMBIENTE
     let use_table_selection = env::var("USE_TABLE_SELECTION")
         .map(|v| v != "false" && v != "0")
         .unwrap_or(true);
-    let db_file = env::var("DB_FILE").unwrap_or_else(|_| {
-        project_path("data/basedosdados.duckdb")
-            .to_string_lossy()
-            .into()
-    });
-    let prompt_file = env::var("PROMPT_FILE").unwrap_or_else(|_| {
-        project_path("ask/system_prompt.md")
-            .to_string_lossy()
-            .into()
-    });
+    let db_file = find_data_file("DB_FILE", &["data/basedosdados.duckdb", "basedosdados.duckdb"]);
+    let prompt_file = find_data_file("PROMPT_FILE", &["ask/system_prompt.md", "system_prompt.md", "docs/context/system_prompt.md"]);
     let schema = fs::read_to_string(&schema_file)
         .with_context(|| format!("Não foi possível ler o schema: {}", schema_file))?;
 
