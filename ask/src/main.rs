@@ -1,3 +1,4 @@
+mod metric_resolver;
 mod schema_filter;
 mod sql_generator;
 mod table_selector;
@@ -34,6 +35,24 @@ fn project_path(rel: &str) -> PathBuf {
         Ok(manifest_dir) => PathBuf::from(manifest_dir).join("..").join(rel),
         Err(_) => PathBuf::from(rel),
     }
+}
+
+/// The metric file, wherever it actually is.
+///
+/// The other context defaults point at `context/…`, which does not exist —
+/// the files live under `docs/context/`. Rather than let Tier 1 quietly never
+/// fire on that, try both and let the caller treat a miss as "no metrics".
+fn metrics_path() -> PathBuf {
+    if let Ok(explicit) = env::var("METRICS_FILE") {
+        return PathBuf::from(explicit);
+    }
+    for rel in ["docs/context/metrics.json", "context/metrics.json"] {
+        let p = project_path(rel);
+        if p.exists() {
+            return p;
+        }
+    }
+    project_path("docs/context/metrics.json")
 }
 use syntect::easy::HighlightLines;
 use syntect::highlighting::ThemeSet;
@@ -1088,6 +1107,31 @@ fn ask_model_with_selection(
     schema_json: &str,
     similarity_threshold: f32,
 ) -> Result<String> {
+    // Tier 1: a named metric answers some questions outright, and informs the
+    // prompt for the ones it cannot. Missing or unreadable metrics are not an
+    // error — they just mean this tier contributes nothing.
+    let resolution = match metric_resolver::load(&metrics_path().to_string_lossy()) {
+        Ok(metrics) => metric_resolver::resolve(&metrics, question),
+        Err(e) => {
+            eprintln!("=> Aviso: métricas indisponíveis ({}), seguindo sem elas", e);
+            None
+        }
+    };
+
+    if let Some(res) = &resolution {
+        if let Some(sql) = &res.sql {
+            eprintln!(
+                "=> Métrica '{}' resolveu a pergunta — sem chamada ao modelo",
+                res.metric.name
+            );
+            return Ok(ensure_sql(sql));
+        }
+        eprintln!(
+            "=> Métrica '{}' reconhecida, mas a pergunta pede mais — passando a definição ao modelo",
+            res.metric.name
+        );
+    }
+
     let prompt_template = fs::read_to_string(prompt_file)
         .with_context(|| format!("Não foi possível ler o prompt: {}", prompt_file))?;
 
@@ -1119,6 +1163,11 @@ fn ask_model_with_selection(
     } else {
         let schema_filter = schema_filter::SchemaFilter::new(schema_json)?;
         (schema_filter.full_schema_text(), None)
+    };
+
+    let schema_to_use = match &resolution {
+        Some(res) => format!("{}\n\n{}", res.context, schema_to_use),
+        None => schema_to_use,
     };
 
     let generator = sql_generator::create_sql_generator()?;
