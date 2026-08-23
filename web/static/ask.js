@@ -5,12 +5,14 @@
 import * as embed from "./embed.js";
 import * as llm from "./llm.js";
 import * as P from "./prompt.js";
+import * as lexical from "./lexical.js";
 
 const MAX_REPAROS = 2;
 let colunas = null;
 
-export async function carregarColunas() {
+export async function carregarColunas(meta) {
   colunas = colunas ?? (await fetch("./index/colunas.json").then((r) => r.json()));
+  if (meta) lexical.indexar(meta, colunas);   // índice lexical: em memória, instantâneo
   return colunas;
 }
 
@@ -69,7 +71,7 @@ export async function perguntar(pergunta, emitir) {
 
   // --- seleção de tabelas ---------------------------------------------------
   emitir("fase", { nome: "embedando" });
-  const tabelas = await embed.selecionar(pergunta, 5);
+  const tabelas = await embed.selecionarHibrido(pergunta, lexical, 5);
   if (!tabelas.length) {
     return emitir("erro", { mensagem: "Nenhuma tabela do acervo parece responder a isso.", fase: "selecao" });
   }

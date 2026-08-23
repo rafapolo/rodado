@@ -32,8 +32,9 @@ function validar(loteFile: string, saidaFile: string): { ok: boolean; erros: str
   const erros: string[] = [];
   if (!existsSync(saidaFile)) return { ok: false, erros: ["saída não existe"], n: 0 };
 
-  const entrada = readFileSync(loteFile, "utf-8").trim().split("\n").map((l) => JSON.parse(l));
-  const esperados = new Map(entrada.map((e: any) => [e.id, e.colunas.map((c: string) => c.toLowerCase())]));
+  const entrada: any[] = readFileSync(loteFile, "utf-8").trim().split("\n").map((l) => JSON.parse(l));
+  const esperados = new Map<string, string[]>(
+    entrada.map((e: any) => [e.id as string, (e.colunas as string[]).map((c) => c.toLowerCase())]));
 
   let saidas: Saida[];
   try {

@@ -59,7 +59,7 @@ function limpar() {
 status("carregando índice e modelo de busca…");
 try {
   const n = await embed.carregar(({ pct }) => status(`baixando modelo de busca… <b>${pct}%</b>`));
-  await ask.carregarColunas();
+  await ask.carregarColunas(embed.tabelas());
   await P.carregarSemantica();
   $("ir").disabled = false;
   status(`${n} tabelas indexadas. ` + (llm.temWebGPU()

@@ -43,13 +43,41 @@ export async function carregar(onProgresso) {
 }
 
 export const pronto = () => pipe !== null;
+export const tabelas = () => meta;
 
 async function vetorDaPergunta(texto) {
   const saida = await pipe(texto, { pooling: "mean", normalize: true });
   return saida.data;
 }
 
-/** Top-K tabelas por similaridade de cosseno. */
+/**
+ * Top-K híbrido: lexical + embedding.
+ *
+ * Medido isolado nas 15 douradas: lexical 5/15, embedding 1/15. Eles erram por
+ * motivos diferentes — o lexical não conhece sinônimo sem raiz comum ("quanta
+ * gente mora" → população), o embedding não casa termo direto ("óbito" →
+ * `data_obito`). Somados com peso, cada um cobre o buraco do outro.
+ *
+ * PESO_LEXICAL alto de propósito: hoje o lexical é o componente que funciona.
+ * Quando o índice doc2query entrar, reequilibrar COM MEDIÇÃO, não por gosto.
+ */
+const PESO_LEXICAL = 0.6;
+
+export async function selecionarHibrido(pergunta, lexical, k = 5) {
+  const q = await vetorDaPergunta(pergunta);
+  const lex = lexical.pontuar(pergunta);
+
+  const juntos = meta.map((m, i) => {
+    let dot = 0;
+    for (let j = 0; j < dims; j++) dot += q[j] * vetores[i * dims + j];
+    const sem = Math.max(0, dot);                  // cosseno já em 0..1 na prática
+    const lx = lex.get(m.id) ?? 0;                 // já normalizado em 0..1
+    return { ...m, score: PESO_LEXICAL * lx + (1 - PESO_LEXICAL) * sem, lexical: lx, semantico: sem };
+  });
+  return juntos.sort((a, b) => b.score - a.score).slice(0, k);
+}
+
+/** Top-K só por similaridade de cosseno (sem lexical). */
 export async function selecionar(pergunta, k = 5, limiar = 0.2) {
   const q = await vetorDaPergunta(pergunta);
   const scores = new Array(meta.length);
