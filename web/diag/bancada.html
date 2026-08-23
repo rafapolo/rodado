@@ -1,0 +1,97 @@
+<meta charset="utf-8"><title>bancada multi-tabela</title><pre id="out">…</pre>
+<script type="module">
+/**
+ * Roda o conjunto dourado multi-tabela e mede, em quatro degraus:
+ *   1 recuperou TODAS as tabelas esperadas?   (se falha aqui, o resto é sorte)
+ *   2 o SQL cita 2+ tabelas?
+ *   3 o SQL tem JOIN?
+ *   4 executa e devolve dado não-nulo?
+ * Separar os degraus é o ponto: diz SE o gargalo é a busca ou o modelo.
+ *
+ * ?k=8&modelo=3b&n=50&semllm=1
+ */
+const out=document.getElementById("out"), log=s=>out.textContent+=s+"\n";
+const P_=new URLSearchParams(location.search);
+const K=+(P_.get("k")??8), NMAX=+(P_.get("n")??50), SEMLLM=P_.get("semllm")==="1";
+const DECOMPOR=P_.get("decompor")==="1";
+
+/**
+ * Uma pergunta de pesquisa e uma CONJUNCAO de aspectos ("mortalidade por raca"
+ * E "indicadores socioeconomicos"), e cada aspecto mora numa tabela diferente.
+ * Buscar a frase inteira devolve o centro de massa -- que nao e nenhuma delas.
+ * Buscar cada aspecto e unir cobre as pontas com k pequeno por aspecto.
+ */
+function fatiar(q){
+  const partes = q.split(/\s+(?:e|com|versus|vs\.?|,|;)\s+|\?\s*/i)
+    .map(s=>s.trim()).filter(s=>s.split(/\s+/).length>=3);
+  return partes.length>1 ? partes : [q];
+}
+async function selecionarDecomposto(q, embed, lex, k){
+  const fatias=fatiar(q);
+  const porFatia=Math.max(2, Math.ceil(k/fatias.length));
+  const vistos=new Map();
+  for(const f of fatias){
+    for(const t of await embed.selecionarHibrido(f, lex, porFatia)){
+      const a=vistos.get(t.id);
+      if(!a||a.score<t.score) vistos.set(t.id,t);
+    }
+  }
+  return [...vistos.values()].sort((a,b)=>b.score-a.score).slice(0,k);
+}
+try{
+  const embed=await import("/embed.js"), lex=await import("/lexical.js");
+  const P=await import("/prompt.js"), ask=await import("/ask.js"), llm=await import("/llm.js");
+  await embed.carregar(({pct})=>out.textContent=`busca ${pct}%`);
+  const cols=await ask.carregarColunas(embed.tabelas());
+  await P.carregarSemantica();
+  lex.indexar(embed.tabelas(), cols);
+  if(!SEMLLM){ await llm.carregar(P_.get("modelo")??"1.5b",({pct,texto})=>{out.textContent=`llm ${pct}% ${texto??""}`;}); }
+  out.textContent="";
+
+  const {perguntas}=await fetch("/_douradas_multi.json").then(r=>r.json());
+  const alvo=perguntas.slice(0,NMAX);
+  let recallTudo=0,recallParcial=0,multi=0,comJoin=0,executou=0,comDado=0;
+  const linhas=[];
+
+  for(const p of alvo){
+    const top = DECOMPOR ? await selecionarDecomposto(p.q, embed, lex, K)
+                         : await embed.selecionarHibrido(p.q, lex, K);
+    const ids=top.map(t=>t.id);
+    const achou=p.tabelas.filter(t=>ids.includes(t));
+    const tudo=achou.length===p.tabelas.length;
+    if(tudo) recallTudo++; else if(achou.length) recallParcial++;
+
+    let marca=`${tudo?"R+":achou.length?"R~":"R-"}(${achou.length}/${p.tabelas.length})`;
+    if(!SEMLLM){
+      try{
+        const g=await llm.gerarSQL(P.montarPrompt(p.q, top, cols));
+        if(g.sql){
+          const c=ask.corrigirTabelas(g.sql, top); const sql=c?c.sql:g.sql;
+          const nTab=new Set([...sql.matchAll(/\b(?:FROM|JOIN)\s+([\w]+\.[\w]+)/gi)].map(m=>m[1])).size;
+          const temJoin=/\bJOIN\b/i.test(sql);
+          if(nTab>=2) multi++;
+          if(temJoin) comJoin++;
+          const r=await fetch("/api/executar",{method:"POST",headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({sql})}).then(x=>x.json());
+          const vazio=!r.rows?.length||r.rows.every(l=>Object.values(l).every(v=>v===null||v===undefined));
+          if(!r.erro) executou++;
+          if(!r.erro&&!vazio) comDado++;
+          marca+=` T${nTab}${temJoin?" JOIN":"    "} ${r.erro?"ERRO":vazio?"vazio":"dado"}`;
+        } else marca+=` ${g.erro?.slice(0,28)}`;
+      }catch(e){ marca+=` falhou:${e.message.slice(0,24)}`; }
+    }
+    linhas.push(`${String(p.n).padStart(2)} ${marca}  ${p.q.slice(0,52)}`);
+    out.textContent=linhas.join("\n");
+  }
+  const n=alvo.length, pc=x=>`${x}/${n} (${Math.round(100*x/n)}%)`;
+  log(`\n${"=".repeat(58)}`);
+  log(`recuperou TODAS as tabelas (k=${K}): ${pc(recallTudo)}   parcial: ${recallParcial}`);
+  if(!SEMLLM){
+    log(`SQL com 2+ tabelas:                 ${pc(multi)}`);
+    log(`SQL com JOIN:                       ${pc(comJoin)}`);
+    log(`executou sem erro:                  ${pc(executou)}`);
+    log(`devolveu dado não-nulo:             ${pc(comDado)}`);
+  }
+}catch(e){ log("ERRO: "+e.message+"\n"+(e.stack??"").slice(0,500)); }
+window.__done=true;
+</script>
