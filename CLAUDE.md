@@ -69,6 +69,27 @@ BigQuery → Google Cloud Storage (Parquet) → Hetzner S3 (via `scripts/roda.sh
 ### `ERD.md` (repo root) — the map
 One mermaid `erDiagram` per domain covering all 825 tables: entity = dataset, attribute = table, edge = join key to a reference hub (solid = direct, dashed = needs normalization). Lists what connects to nothing. `ERD.md` is pt-BR (default), `ERD_EN.md` is the English twin — both generated from the same data by `scripts/gera_erd.py`.
 
+### `web/` — ask-web (app local de pergunta em pt-BR)
+
+```bash
+bun install
+bun run scripts/build_ask_web_assets.ts   # indice + colunas + camada semantica -> web/static/index/
+bun run web/server.ts                     # http://127.0.0.1:8090
+bun test web/src                          # firewall, reescrita de parquet, Tier 1
+```
+
+Embedding e LLM rodam **no navegador** (transformers.js + WebLLM/WebGPU, Chrome
+ou Edge); o servidor Bun so executa SQL via `ssh beelink`, com o mesmo firewall
+read-only do `mcp_server.py`. Sem chave de API.
+
+**A selecao semantica de tabela nao esta funcionando** — recall@5 de 1/15 nas
+perguntas douradas (`tasks/ask_web_douradas.json`). A causa nao e o modelo: e o
+texto indexado em `table_embeddings.json`, que e sopa de nome de coluna com tipo
+e fica quase ortogonal a uma pergunta em prosa (0,0755 de similaridade contra
+0,3905 de uma prosa curta equivalente). As paginas de medicao estao em
+`web/diag/`. Enquanto isso nao for refeito, o app serve para SQL escrito a mao,
+para o Tier 1 de metricas, e como bancada de medicao.
+
 ### `docs/context/` — Schema metadata
 - `basedosdados-schema.json` — full schema (3.8 MB)
 - `schema_compact.txt` — text format for prompting
