@@ -221,7 +221,13 @@ def main():
     args = ap.parse_args()
 
     print("Levantando os tmp*.parquet no beelink…")
-    dirs = metadata(collect())
+    achados = collect()
+    if not achados:
+        # Sem isso o glob vazio vira parquet_file_metadata([]) e o DuckDB aborta
+        # com "needs at least one file to read". Nenhuma sobra é o estado bom.
+        print("  nenhum tmp*.parquet no espelho — nada a triar.")
+        return 0
+    dirs = metadata(achados)
     print(f"  {len(dirs)} diretórios com tmp\n")
 
     plan = classify(dirs)

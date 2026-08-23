@@ -350,13 +350,22 @@ def render(meta, tables, idx, duplicated):
             "</details>",
             "",
         ]
-    else:
+    elif duplicated is None:
         L += [
             "**1. Check for duplicated tables.** An aborted sync can leave a "
             "`tmp*.parquet` next to the real export, and both the views and any "
             "`*.parquet` glob then read both files, returning every row twice. "
             "This probe did not run for this build "
             "(`find ~/rodado -name 'tmp*.parquet'` on beelink lists them).",
+            "",
+        ]
+    else:
+        L += [
+            "**1. No duplicated tables.** The probe ran for this build and found "
+            "no `tmp*.parquet` left over on beelink, so no table returns every "
+            "row twice and the examples below join directly. The 80 leftovers "
+            "from the aborted 2026-07-05 sync were triaged and removed on "
+            "2026-08-23 — see `tasks/tmp_parquet_38.plan`.",
             "",
         ]
 
