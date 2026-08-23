@@ -378,7 +378,7 @@ def render(meta, tables, idx, duplicated):
             "no `tmp*.parquet` left over on beelink, so no table returns every "
             "row twice and the examples below join directly. The 80 leftovers "
             "from the aborted 2026-07-05 sync were triaged and removed on "
-            "2026-08-23 — see `tasks/tmp_parquet_38.plan`.",
+            "2026-08-23.",
             "",
         ]
 
