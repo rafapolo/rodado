@@ -16,7 +16,7 @@ Cada tema no site publicado combina uma narrativa em prosa com as tabelas de evi
 
 ## Cobertura de dados
 
-As 849 tabelas cobrem 43 domínios temáticos, cada um documentado em [`overview/`](docs/overview/index.md) e publicado como uma página própria no site. Essas narrativas servem tanto de leitura para o público quanto de contexto para a camada de IA que converte perguntas em linguagem natural para SQL.
+As 849 tabelas cobrem 43 domínios temáticos, cada um documentado em [`overview/`](docs/overview/index.md) e publicado como uma página própria no site. Essas narrativas servem tanto de leitura para o público quanto de contexto para o assistente que consulta o espelho.
 
 | # | Tema |
 |---|------|
@@ -66,7 +66,7 @@ As 849 tabelas cobrem 43 domínios temáticos, cada um documentado em [`overview
 
 ## Sobre os dados
 
-Os dados vêm de instituições públicas brasileiras — ministérios, tribunais, institutos e agências reguladoras — reunidos em um espelho próprio em Parquet, sem precisar importar nada localmente. Mais de 40 dessas fontes são raspadas de forma independente, cobrindo o que não está disponível em nenhum repositório consolidado (sanções nacionais e internacionais, SICAF, SINAN Violência, reclamações de consumidor e mais). No total, 849 tabelas (mais de 675 GB em Parquet+zstd) são consultadas sob demanda via DuckDB, o que permite cruzar bases de ministérios, tribunais, institutos e fontes independentes numa única consulta SQL.
+Os dados vêm de instituições públicas brasileiras — ministérios, tribunais, institutos e agências reguladoras — reunidos em um espelho próprio em Parquet, sem precisar importar nada localmente. Mais de 40 dessas fontes são raspadas de forma independente, cobrindo o que não está disponível em nenhum repositório consolidado (sanções nacionais e internacionais, SICAF, SINAN Violência, reclamações de consumidor e mais). No total, 849 tabelas (868 GB em Parquet+zstd) são consultadas sob demanda via DuckDB, o que permite cruzar bases de ministérios, tribunais, institutos e fontes independentes numa única consulta SQL.
 
 ## Como as tabelas se conectam
 
@@ -82,4 +82,4 @@ Os três são servidos ao assistente como ferramentas, não como texto para ele 
 
 ## Leia também
 
-- [`overview/`](docs/overview/index.md) — os 43 arquivos-fonte em markdown por trás de cada página do site, usados também como contexto para a camada de IA que traduz perguntas em português para SQL.
+- [`overview/`](docs/overview/index.md) — os 43 arquivos-fonte em markdown por trás de cada página do site, usados também como contexto para o assistente que escreve as consultas.
