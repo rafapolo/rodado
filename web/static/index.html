@@ -28,6 +28,9 @@
     <span id="cfg"></span>
   </div>
 
+  <div class="progresso" id="barra" hidden><i id="barra-i"></i></div>
+  <div class="prog-txt" id="barra-txt" hidden><span id="barra-fase"></span><span id="barra-pct"></span></div>
+
   <div class="hist" id="hist"></div>
   <div class="status" id="status"></div>
 
@@ -48,6 +51,15 @@ import * as render from "./render.js";
 import { desenhar } from "./chart.js";
 
 const $ = (id) => document.getElementById(id);
+
+function barra(pct, fase) {
+  const mostrar = pct !== null;
+  $("barra").hidden = $("barra-txt").hidden = !mostrar;
+  if (!mostrar) return;
+  $("barra-i").style.width = `${Math.max(2, Math.min(100, pct))}%`;
+  $("barra-fase").textContent = fase ?? "";
+  $("barra-pct").textContent = `${Math.round(pct)}%`;
+}
 const mostrar = (id, v = true) => ($("b-" + id).hidden = !v);
 const status = (h) => ($("status").innerHTML = h);
 const historico = [];
@@ -59,7 +71,11 @@ function limpar() {
 // ---- boot: embedding primeiro; ele sozinho já é útil ----------------------
 status("carregando índice e modelo de busca…");
 try {
-  const n = await embed.carregar(({ pct }) => status(`baixando modelo de busca… <b>${pct}%</b>`));
+  const n = await embed.carregar(({ pct }) => {
+    status("baixando o modelo de busca…");
+    barra(pct, "modelo de busca");
+  });
+  barra(null);
   await ask.carregarColunas(embed.tabelas());
   await P.carregarSemantica();
   $("ir").disabled = false;
@@ -74,11 +90,17 @@ try {
 $("carregar").onclick = async () => {
   $("carregar").disabled = true;
   try {
-    await llm.carregar($("modelo").value, ({ texto, pct }) =>
-      status(`carregando modelo… <b>${pct}%</b> ${texto ?? ""}`));
-    status("modelo pronto.");
+    const rotulo = $("modelo").selectedOptions[0].textContent.trim();
+    await llm.carregar($("modelo").value, ({ texto, pct }) => {
+      // O WebLLM manda 0% enquanto compila os shaders; mostrar o texto dele
+      // evita a barra parecer travada num download de gigabytes.
+      status(texto ? texto.replace(/\[.*?\]/, "").trim().slice(0, 90) : "carregando o modelo…");
+      barra(pct, rotulo);
+    });
+    barra(null);
+    status("modelo pronto — pode perguntar.");
     $("cfg").textContent = llm.modeloAtual();
-  } catch (e) { status(`falha ao carregar o modelo: ${e.message}`); $("carregar").disabled = false; }
+  } catch (e) { barra(null); status(`falha ao carregar o modelo: ${e.message}`); $("carregar").disabled = false; }
 };
 
 async function perguntar(texto) {
