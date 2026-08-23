@@ -2,7 +2,7 @@
 
 > This is the engineering documentation for **rodado**. For the public-facing project — a sociological reading of Brazilian public data, in Portuguese — see [README.md](README.md) and [rafapolo.github.io/rodado](https://rafapolo.github.io/rodado).
 
-**533 tables · ~675 GB Parquet+zstd · DuckDB · LLM NL→SQL · Single-engineer end-to-end**
+**849 tables · ~868 GB Parquet+zstd · DuckDB · LLM NL→SQL · Single-engineer end-to-end**
 
 ---
 
@@ -11,7 +11,7 @@
 | Competency | How this project demonstrates it |
 |-----------|----------------------------------|
 | End-to-end delivery, prototype → production | Ingestion pipeline + semantic layer + API + UI, fully deployed and running |
-| Data engineering & modeling | 533 tables normalized to a typed ontology with join-key graph |
+| Data engineering & modeling | 849 tables normalized to a typed ontology with join-key graph |
 | Ontology design | 8 business object types with explicit relationships and canonical keys |
 | Application development | Query API + browser SQL shell + NL→SQL TUI, all production-deployed |
 | AI/ML enablement | LLM-powered natural-language → SQL with semantic table selection |
@@ -164,7 +164,7 @@ The platform models Brazilian public data as typed business objects with explici
 └──────────────────────┘     trimestre   (7 tbl)
 ```
 
-Full map in [`ERD.md`](ERD.md) — pt-BR, English in [`ERD_EN.md`](ERD_EN.md) — one mermaid diagram per domain covering all 825 tables; join recipes in [`docs/context/join_keys.md`](docs/context/join_keys.md).
+Full map in [`docs/ERD.md`](docs/ERD.md) — pt-BR, English in [`docs/ERD_EN.md`](docs/ERD_EN.md) — one mermaid diagram per domain covering all 834 tables; join recipes in [`docs/context/join_keys.md`](docs/context/join_keys.md).
 
 **Canonical join keys**:
 
@@ -204,7 +204,7 @@ Full map in [`ERD.md`](ERD.md) — pt-BR, English in [`ERD_EN.md`](ERD_EN.md) �
 │                    SEMANTIC / ONTOLOGY LAYER                     │
 │                                                                  │
 │   DuckDB views over partitioned datasets                         │
-│   basedosdados-schema.json   — 533-table schema registry        │
+│   basedosdados-schema.json   — 832-table schema registry        │
 │   join_keys.md               — join keys + cross-source bridges │
 │   table_embeddings.json      — semantic vectors for AI (11.4 MB)│
 │   overview/ (34 files)       — domain narratives for LLM ctx    │
@@ -224,7 +224,7 @@ Full map in [`ERD.md`](ERD.md) — pt-BR, English in [`ERD_EN.md`](ERD_EN.md) �
 │                        STORAGE LAYER                             │
 │                                                                  │
 │   Hetzner Object Storage, Helsinki (S3-compatible)              │
-│   Partitioned Parquet + zstd · 533 tables · ~675 GB             │
+│   Partitioned Parquet + zstd · 849 tables · ~868 GB             │
 │   DuckDB httpfs reads on demand — no local data import          │
 └────────────────────────────────┬─────────────────────────────────┘
                                  │
@@ -254,7 +254,7 @@ Semantic table selection
     │
     ▼
 Schema filtering
-    (trim 3.8 MB schema to relevant tables only)
+    (trim 1.8 MB schema to relevant tables only)
     │
     ▼
 LLM SQL generation
