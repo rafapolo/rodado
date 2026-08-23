@@ -1,0 +1,36 @@
+<meta charset="utf-8"><title>embeda perguntas</title>
+<style>body{font:14px ui-monospace,monospace;padding:2rem;max-width:60rem}
+pre{white-space:pre-wrap}button{font:inherit;padding:.5rem 1rem}</style>
+<h3>Gerar vetores do índice doc2query</h3>
+<p>Embeda cada pergunta sintética com o <b>mesmo</b> modelo que atende a consulta em
+runtime — é isso que garante que quem indexa e quem busca vivem no mesmo espaço.
+Ao terminar, baixa <code>perguntas_vetores.bin</code>; mova para
+<code>web/static/index/</code>.</p>
+<button id="ir">começar</button>
+<pre id="out"></pre>
+<script type="module">
+const out=document.getElementById("out"), log=s=>out.textContent=s;
+document.getElementById("ir").onclick=async()=>{
+  document.getElementById("ir").disabled=true;
+  const {pipeline,env}=await import("../static/vendor/transformers.js"); env.allowLocalModels=false;
+  log("carregando modelo…");
+  const pipe=await pipeline("feature-extraction","Xenova/paraphrase-multilingual-MiniLM-L12-v2",{dtype:"q8"});
+  const {entradas,cobertura}=await fetch("../static/index/perguntas.json").then(r=>r.json());
+  const D=384, buf=new Float32Array(entradas.length*D);
+  const t0=performance.now();
+  for(let i=0;i<entradas.length;i++){
+    const v=(await pipe(entradas[i].q,{pooling:"mean",normalize:true})).data;
+    buf.set(v,i*D);
+    if(i%50===0){
+      const s=(performance.now()-t0)/1000, resta=(s/(i+1))*(entradas.length-i);
+      log(`${i}/${entradas.length}  (${s.toFixed(0)}s, faltam ~${resta.toFixed(0)}s)`);
+    }
+  }
+  const blob=new Blob([buf.buffer],{type:"application/octet-stream"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download="perguntas_vetores.bin"; a.click();
+  log(`pronto: ${entradas.length} vetores de ${cobertura.tabelas} tabelas\n` +
+      `${(buf.byteLength/1048576).toFixed(1)} MB baixados como perguntas_vetores.bin\n` +
+      `mova para web/static/index/`);
+};
+</script>
