@@ -931,3 +931,15 @@ bridges:
   - table: br_mdr_snis.prestador_agua_esgoto
     column: id_prestador
     description: SNIS operator code; the first 6 digits are the `id_municipio_6` of the operator's seat.
+  pais:
+  - table: br_me_comex_stat.municipio_exportacao / municipio_importacao / ncm_exportacao / ncm_importacao
+    column: sigla_pais_iso3
+    format: ISO 3166-1 alpha-3. O hub renomeou a coluna dele — em `br_bd_diretorios_mundo.pais` ela hoje
+      se chama `sigla_iso3`, não `sigla_pais_iso3`. O Base dos Dados trocou o schema da tabela (junto
+      com `nome` → `nome_pt` e `id_pais_m49` → `id_m49`) e o espelho seguiu em 2026-08-23; o comex ficou
+      no nome antigo. A igualdade ingênua `a.sigla_pais_iso3 = b.sigla_pais_iso3` falha com "column not
+      found", que pelo menos é barulhento.
+    expr: sigla_pais_iso3 = p.sigla_iso3
+    verified: 246 dos 251 códigos de `ncm_exportacao` casam (2026-08-23)
+    concept: sigla_pais_iso3
+    join_expr: '{s}.sigla_pais_iso3 = {d}.sigla_pais_iso3'

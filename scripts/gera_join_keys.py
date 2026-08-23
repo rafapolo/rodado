@@ -89,6 +89,8 @@ def load_bridges():
     false_friends = doc["false_friends"]
     auto_deny = set(false_friends)
 
+    aliases = doc.get("concept_aliases", {})
+
     curated = {}
     for col, e in doc["concepts"].items():
         entry = {"cat": e["category"]}
@@ -102,18 +104,27 @@ def load_bridges():
             entry["example"] = e["example_sql"]
         curated[col] = entry
 
-    mun = [dict(tabela=b["table"], coluna=b["column"], formato=b["format"],
-                recipe=b["expr"], verificado=b["verified"])
-           for b in doc["bridges"]["municipio"]]
-    uf = [(b["table"], b["column"], b["description"]) for b in doc["bridges"]["uf"]]
-    ident = [(b["table"], b["column"], b["description"])
-             for b in doc["bridges"]["identity"]]
-    return categories, auto_deny, curated, mun, uf, ident, false_friends
+    def rica(grupo):
+        """Ponte com receita: formato, expressão e o que casou quando foi rodada."""
+        return [dict(tabela=b["table"], coluna=b["column"], formato=b["format"],
+                     recipe=b["expr"], verificado=b["verified"])
+                for b in doc["bridges"].get(grupo, [])]
+
+    def simples(grupo):
+        return [(b["table"], b["column"], b["description"])
+                for b in doc["bridges"].get(grupo, [])]
+
+    mun = rica("municipio")
+    pais = rica("pais")
+    uf = simples("uf")
+    ident = simples("identity")
+    return (categories, auto_deny, curated, mun, uf, ident, pais,
+            false_friends, aliases)
 
 
 (CATEGORIES, AUTO_DENY, CURATED,
- MUNICIPIO_BRIDGES, UF_BRIDGES, IDENTITY_BRIDGES,
- FALSE_FRIENDS) = load_bridges()
+ MUNICIPIO_BRIDGES, UF_BRIDGES, IDENTITY_BRIDGES, PAIS_BRIDGES,
+ FALSE_FRIENDS, CONCEPT_ALIASES) = load_bridges()
 
 
 # ---------------------------------------------------------------------------
@@ -306,7 +317,9 @@ def render(meta, tables, idx, duplicated):
         f"{len(documented)} join columns documented: {len(curated_cols)} curated, "
         f"{len(auto_cols)} auto-detected (shared by {MIN_DATASETS}+ datasets), "
         f"plus {len(MUNICIPIO_BRIDGES)} municipality bridges, {len(UF_BRIDGES)} "
-        f"UF bridges and {len(IDENTITY_BRIDGES)} CNPJ/CPF bridges for sources "
+        f"UF bridges, {len(PAIS_BRIDGES)} country "
+        f"{'bridge' if len(PAIS_BRIDGES) == 1 else 'bridges'} and "
+        f"{len(IDENTITY_BRIDGES)} CNPJ/CPF bridges for sources "
         f"that name the key differently.",
         "",
         "## Read this before joining anything",
@@ -442,17 +455,53 @@ def render(meta, tables, idx, duplicated):
                     ["table", "column", "format / conversion"],
                     [(f"`{t}`", f"`{c}`", d) for t, c, d in IDENTITY_BRIDGES],
                 )
+            elif col == "sigla_pais_iso3":
+                L += render_pais_bridges()
 
     return "\n".join(L).rstrip() + "\n"
 
 
-def render_municipio_bridges():
-    rows = [
+def rich_bridge_rows(bridges):
+    """As linhas da tabela de pontes-com-receita, escapadas para markdown."""
+    return [
         (f"`{b['tabela']}`", f"`{b['coluna']}`", b["formato"],
          f"`{b['recipe']}`" if "\n" not in b["recipe"] and not b["recipe"].startswith("unusable")
          else b["recipe"], b["verificado"])
-        for b in MUNICIPIO_BRIDGES
+        for b in bridges
     ]
+
+
+def rich_bridge_table(rows):
+    out = ["| table | column | stored as | join expression | verified |",
+           "|---|---|---|---|---|"]
+    for r in rows:
+        cells = [c.replace("|", "\\|").replace("\n", "<br>") for c in r]
+        out.append("| " + " | ".join(cells) + " |")
+    return out
+
+
+def render_pais_bridges():
+    """A ponte de país existe porque o hub renomeou a coluna, não porque o
+    formato do dado difere — é o único caso desses no arquivo."""
+    if not PAIS_BRIDGES:
+        return []
+    return [
+        "### Country columns under another name",
+        "",
+        "`br_bd_diretorios_mundo.pais` is the country hub, and in 2026-08-23 Base dos "
+        "Dados renamed its columns — `sigla_pais_iso3` became `sigla_iso3`, `nome` "
+        "became `nome_pt`, `id_pais_m49` became `id_m49`. The mirror followed the "
+        "source. What consumes the key did *not* get renamed, so the two ends now "
+        "spell the same concept differently and the naive equality raises "
+        "`column not found`. Join with the expression below (hub aliased `p`).",
+        "",
+        *rich_bridge_table(rich_bridge_rows(PAIS_BRIDGES)),
+        "",
+    ]
+
+
+def render_municipio_bridges():
+    rows = rich_bridge_rows(MUNICIPIO_BRIDGES)
     out = [
         "### Municipality columns under another name",
         "",
@@ -463,12 +512,8 @@ def render_municipio_bridges():
         "joined-row counts against the duplicated directory, so roughly twice "
         "the municipality count.",
         "",
-        "| table | column | stored as | join expression | verified |",
-        "|---|---|---|---|---|",
+        *rich_bridge_table(rows),
     ]
-    for r in rows:
-        cells = [c.replace("|", "\\|").replace("\n", "<br>") for c in r]
-        out.append("| " + " | ".join(cells) + " |")
     out += [
         "",
         "Role-qualified municipality columns (same 7-digit IBGE code, different "
