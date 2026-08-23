@@ -1,8 +1,8 @@
 # Flow — o espelho por domínio
 
-Os 195 datasets do espelho e as chaves com que cada um alcança os hubs de referência, um diagrama por domínio.
+Os 198 datasets do espelho e as chaves com que cada um alcança os hubs de referência, um diagrama por domínio.
 
-Gerado por `scripts/gera_flow.py` a partir de `schemas.json` em 2026-07-28 — não edite à mão, regenere.
+Gerado por `scripts/gera_flow.py` a partir de `schemas.json` em 2026-08-23 — não edite à mão, regenere.
 
 - **caixa** = dataset; um diagrama por domínio;
 - **cápsula** = hub de referência, agrupado por família num `subgraph` e
@@ -26,9 +26,9 @@ flowchart LR
         D_educacao["Educação e ciência<br/>20 datasets"]
         D_economia["Trabalho, empresas e economia<br/>40 datasets"]
         D_governo["Governo, orçamento e compras<br/>31 datasets"]
-        D_politica["Política e eleições<br/>6 datasets"]
+        D_politica["Política e eleições<br/>7 datasets"]
         D_justica["Justiça, segurança e sanções<br/>21 datasets"]
-        D_territorio["Território, ambiente e infraestrutura<br/>21 datasets"]
+        D_territorio["Território, ambiente e infraestrutura<br/>23 datasets"]
         D_demografia["Demografia e indicadores sociais<br/>17 datasets"]
         D_internacional["Internacional, cultura e esporte<br/>9 datasets"]
     end
@@ -87,9 +87,10 @@ flowchart LR
     D_justica -->|"6"| MUNICIPIO
     D_justica -->|"3"| PESSOA_CPF
     D_justica -->|"9"| UF
+    D_politica -->|"3"| EMPRESA_CNPJ
     D_politica -->|"5"| MUNICIPIO
     D_politica -->|"4"| PARTIDO
-    D_politica -->|"3"| PESSOA_CPF
+    D_politica -->|"4"| PESSOA_CPF
     D_politica -->|"6"| UF
     D_referencia -->|"5"| MUNICIPIO
     D_referencia -->|"5"| UF
@@ -98,7 +99,8 @@ flowchart LR
     D_saude -->|"17"| MUNICIPIO
     D_saude -->|"16"| UF
     D_territorio -->|"3"| CID10
-    D_territorio -->|"16"| MUNICIPIO
+    D_territorio -->|"3"| EMPRESA_CNPJ
+    D_territorio -->|"17"| MUNICIPIO
     D_territorio -->|"12"| UF
 ```
 
@@ -139,11 +141,10 @@ flowchart LR
     subgraph referencia_g_estado_e_economia["Estado e economia"]
         direction TB
         referencia_NCM_SH(["NCM_SH"])
-        referencia_PAIS(["PAIS"])
     end
     referencia_br_bd_diretorios_brasil --> referencia_CBO
     referencia_br_bd_diretorios_brasil --> referencia_CEP
-    referencia_br_bd_diretorios_brasil --> referencia_CID10
+    referencia_br_bd_diretorios_brasil -.-> referencia_CID10
     referencia_br_bd_diretorios_brasil --> referencia_CNAE
     referencia_br_bd_diretorios_brasil --> referencia_EMPRESA_CNPJ
     referencia_br_bd_diretorios_brasil --> referencia_ESCOLA
@@ -152,7 +153,6 @@ flowchart LR
     referencia_br_bd_diretorios_brasil --> referencia_SETOR_CENSITARIO
     referencia_br_bd_diretorios_brasil --> referencia_UF
     referencia_br_bd_diretorios_mundo --> referencia_NCM_SH
-    referencia_br_bd_diretorios_mundo --> referencia_PAIS
     referencia_br_bd_diretorios_mundo -.-> referencia_UF
     referencia_br_bd_diretorios_us -.-> referencia_MUNICIPIO
     referencia_br_bd_metadados -.-> referencia_UF
@@ -632,13 +632,14 @@ flowchart LR
 
 ## Política e eleições
 
-6 datasets
+7 datasets
 
 ```mermaid
 flowchart LR
     politica_br_camara_dados_abertos["camara_dados_abertos"]
     politica_br_cgu_emendas_parlamentares["cgu_emendas_parlamentares"]
     politica_br_poder360_pesquisas["poder360_pesquisas"]
+    politica_br_senado_ceaps["senado_ceaps"]
     politica_br_senado_dadosabertos["senado_dadosabertos"]
     politica_br_tse_eleicoes["tse_eleicoes"]
     politica_br_tse_filiacao_partidaria["tse_filiacao_partidaria"]
@@ -670,6 +671,8 @@ flowchart LR
     politica_br_poder360_pesquisas -.-> politica_MUNICIPIO
     politica_br_poder360_pesquisas --> politica_PARTIDO
     politica_br_poder360_pesquisas --> politica_UF
+    politica_br_senado_ceaps -.-> politica_EMPRESA_CNPJ
+    politica_br_senado_ceaps -.-> politica_PESSOA_CPF
     politica_br_senado_dadosabertos -.-> politica_UF
     politica_br_tse_eleicoes --> politica_CEP
     politica_br_tse_eleicoes --> politica_CNAE
@@ -745,11 +748,12 @@ flowchart LR
 
 ## Território, ambiente e infraestrutura
 
-21 datasets · 3 sem ligação documentada
+23 datasets · 4 sem ligação documentada
 
 ```mermaid
 flowchart LR
     territorio_br_ana_atlas_esgotos["ana_atlas_esgotos"]
+    territorio_br_ana_outorgas["ana_outorgas"]
     territorio_br_ana_telemetria["ana_telemetria"]
     territorio_br_anatel_banda_larga_fixa["anatel_banda_larga_fixa"]
     territorio_br_anatel_indice_brasileiro_conectividade["anatel_indice_brasileiro_conectividade"]
@@ -789,6 +793,9 @@ flowchart LR
     end
     territorio_br_ana_atlas_esgotos --> territorio_MUNICIPIO
     territorio_br_ana_atlas_esgotos --> territorio_UF
+    territorio_br_ana_outorgas -.-> territorio_EMPRESA_CNPJ
+    territorio_br_ana_outorgas -.-> territorio_MUNICIPIO
+    territorio_br_ana_outorgas -.-> territorio_PESSOA_CPF
     territorio_br_ana_telemetria -.-> territorio_MUNICIPIO
     territorio_br_ana_telemetria -.-> territorio_UF
     territorio_br_anatel_banda_larga_fixa --> territorio_EMPRESA_CNPJ
@@ -924,8 +931,9 @@ flowchart LR
 
 ## Sem ligação documentada
 
-37 datasets não têm nenhuma chave que chegue a um hub — estão no espelho, mas nada documentado os liga a mais nada:
+38 datasets não têm nenhuma chave que chegue a um hub — estão no espelho, mas nada documentado os liga a mais nada:
 
+- `br_ana_bho`
 - `br_ana_reservatorios`
 - `br_anac_dadosabertos`
 - `br_anvisa_consultas`

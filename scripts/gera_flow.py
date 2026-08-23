@@ -42,8 +42,9 @@ from gera_erd import (  # noqa: E402
 )
 
 REPO = Path(__file__).resolve().parent.parent
-DST_FLOW = REPO / "Flow.md"
-DST_TEMAS = REPO / "temas.md"
+# Ver a nota em `gera_erd.py`: o destino e `docs/`, nao a raiz.
+DST_FLOW = REPO / "docs" / "Flow.md"
+DST_TEMAS = REPO / "docs" / "Temas.md"
 OVERVIEW = REPO / "docs" / "overview"
 
 # Os hubs em famílias — viram um subgraph cada, do lado direito do diagrama.
