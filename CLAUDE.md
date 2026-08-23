@@ -111,7 +111,7 @@ O espelho não tem foreign key, não tem métrica nomeada e não tem hierarquia 
 
 Três regras que valem mais que o resto:
 
-1. **`resolve_join` antes de escrever join à mão.** Ele devolve a cláusula `ON` pronta e, quando existe ponte, ela **substitui** a igualdade ingênua em vez de concorrer com ela — `br_anp_combustiveis.precos` guarda `cnpj` sem padding, então `a.cnpj = b.cnpj` está errado e é exatamente o que um match por nome devolveria. Ele também avisa quando uma das pontas está duplicada por sobra de sync — hoje nenhuma está: as 80 sobras de `tmp*.parquet` do sync abortado de 2026-07-05 foram triadas e removidas em 2026-08-23 (`tasks/tmp_parquet_38.plan`).
+1. **`resolve_join` antes de escrever join à mão.** Ele devolve a cláusula `ON` pronta e, quando existe ponte, ela **substitui** a igualdade ingênua em vez de concorrer com ela — `br_anp_combustiveis.precos` guarda `cnpj` sem padding, então `a.cnpj = b.cnpj` está errado e é exatamente o que um match por nome devolveria. Ele também avisa quando uma das pontas está duplicada por sobra de sync — hoje nenhuma está: as 80 sobras de `tmp*.parquet` do sync abortado de 2026-07-05 foram triadas e removidas em 2026-08-23.
 2. **`false_friends` são silenciosos e caros.** `valor` aparece em 91 tabelas de 56 datasets significando coisas diferentes; juntar por ele dá resultado grande, plausível e errado. `explain_column` diz o porquê.
 3. **`verified` não é enfeite.** Toda ponte, métrica e `parent_expr` carrega o que casou quando foi rodado no beelink, com data. Sem isso a linha é aspiracional — trate como não conferida.
 

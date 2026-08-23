@@ -16,34 +16,23 @@ import shutil
 
 sys.path.insert(0, str(Path(__file__).parent))
 import bq_quota
+import _bq_tipos
 
 # Config
 BQ_PROJECT = "basedosdados"      # public data source — metadata reads only (bq ls/bq show)
 JOB_PROJECT = "raspa-491716"     # project that actually runs the query job (Sandbox free tier, no billing)
 BEELINK_HOST = "beelink"
-BEELINK_PATH = "~/baseldosdados-data"
+BEELINK_PATH = "~/rodado"   # ~/baseldosdados-data nao existe mais no beelink
 PROGRESS_FILE = Path.home() / ".gcp_sync_progress"
 TEMP_DIR = Path(tempfile.gettempdir()) / "gcp_sync"
 MAX_ROWS = 10000000  # Safe default for Sandbox
 MAX_ROWS_SAFE = 10000000  # tables above this row count are skipped (too big for a single JSON pull) — matches MAX_ROWS, no point being stricter than the actual fetch cap
 MAX_DRY_RUN_BYTES = 3 * 1024**3  # 3GB — views report numRows=0 so we gate on actual scan bytes instead
 
-# BigQuery type → Python cast function
-TYPE_CASTERS = {
-    "INTEGER": lambda x: int(x) if x else None,
-    "INT64": lambda x: int(x) if x else None,
-    "FLOAT": lambda x: float(x) if x else None,
-    "FLOAT64": lambda x: float(x) if x else None,
-    "NUMERIC": lambda x: float(x) if x else None,
-    "BOOLEAN": lambda x: x.lower() in ("true", "1") if x else None,
-    "BOOL": lambda x: x.lower() in ("true", "1") if x else None,
-    "DATE": lambda x: x if x else None,  # Keep as string
-    "DATETIME": lambda x: x if x else None,  # Keep as string
-    "TIMESTAMP": lambda x: x if x else None,  # Keep as string
-    "STRING": lambda x: x if x else None,
-    "GEOGRAPHY": lambda x: x if x else None,  # Keep as string
-    "JSON": lambda x: x if x else None,  # Keep as string
-}
+# A conversao de tipo vive em `_bq_tipos.para_arrow`. O bloco TYPE_CASTERS que estava
+# aqui castava INT/FLOAT/BOOL mas deixava DATE/DATETIME/TIMESTAMP como string e ainda
+# dependia da inferencia do pyarrow para montar o schema — uma coluna toda nula saia
+# como null. Agora o tipo do BigQuery decide o tipo Arrow, coluna a coluna.
 
 class QuotaExhausted(Exception):
     """Raised when the monthly BigQuery Sandbox scan budget would be exceeded."""
@@ -212,49 +201,54 @@ def fetch_table_parquet(dataset, table, schema):
         write_progress("empty", 0, f"No rows: {full_name}")
         return None
 
-    # Cast types
-    schema_map = {f["name"]: f["type"] for f in schema}
-    casted = []
-    for row in rows:
-        casted_row = {}
-        for col, val in row.items():
-            col_type = schema_map.get(col, "STRING")
-            caster = TYPE_CASTERS.get(col_type, str)
-            try:
-                casted_row[col] = caster(val) if val is not None else None
-            except:
-                casted_row[col] = val
-        casted.append(casted_row)
-
-    # → Parquet
+    # → Parquet, com o tipo declarado pelo BigQuery. O schema ja veio do `bq show`
+    # em `get_table_info`, entao nao ha chamada extra: REPEATED/RECORD viram None e
+    # `para_arrow` os deixa como string, igual ao `schema_bq`.
     try:
-        import pyarrow as pa
         import pyarrow.parquet as pq
     except ImportError:
         write_progress("error", 0, "pyarrow not installed")
         return None
 
-    table_arrow = pa.Table.from_pylist(casted)
+    tipos = {
+        f["name"]: (None if f.get("mode") == "REPEATED" or f["type"] == "RECORD"
+                    else f["type"])
+        for f in schema
+    }
+    table_arrow = _bq_tipos.para_arrow(rows, tipos)
+    if table_arrow is None:
+        write_progress("empty", 0, f"No rows: {full_name}")
+        return None
 
     TEMP_DIR.mkdir(parents=True, exist_ok=True)
     out_path = TEMP_DIR / f"{dataset}_{table}.parquet"
-    pq.write_table(table_arrow, str(out_path))
+    pq.write_table(table_arrow, str(out_path), compression="zstd")
 
     return out_path
 
 def sync_to_beelink(dataset, table, parquet_path):
-    """Sync Parquet file to beelink."""
-    remote_dir = f"{BEELINK_HOST}:{BEELINK_PATH}/{dataset}/{table}"
+    """Sync Parquet file to beelink, com o nome de destino resolvido antes do envio.
+
+    O rsync preserva o basename da origem. As views do beelink enumeram os parquet
+    um a um (nao usam glob), entao um shard fora da convencao `0000000000NN.parquet`
+    entra no diretorio sem que a view o cite — e a consulta responde a menos, calada.
+    """
+    remote_dir_path = f"{BEELINK_PATH}/{dataset}/{table}"
 
     # Ensure dir on beelink
     subprocess.run(
-        f"ssh {BEELINK_HOST} 'mkdir -p {BEELINK_PATH}/{dataset}/{table}'",
+        f"ssh {BEELINK_HOST} 'mkdir -p {remote_dir_path}'",
         shell=True,
         capture_output=True,
     )
 
-    # rsync parquet
-    cmd = f"rsync -av {parquet_path} {remote_dir}/"
+    existentes = subprocess.run(
+        f"ssh {BEELINK_HOST} 'ls {remote_dir_path} 2>/dev/null'",
+        shell=True, capture_output=True, text=True,
+    ).stdout.split()
+    destino = _bq_tipos.nome_destino(existentes)
+
+    cmd = f"rsync -av {parquet_path} {BEELINK_HOST}:{remote_dir_path}/{destino}"
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
     return result.returncode == 0
 
@@ -324,6 +318,8 @@ def main():
 
     write_progress("done", 100, f"Synced {success}/{len(missing)}")
     print(f"\nDone: {success}/{len(missing)} tables synced, {len(skipped)} skipped")
+    if success:
+        print("agora rode: python3 scripts/repara_views_beelink.py --apply")
     print(bq_quota.status())
     if skipped:
         skip_log = TEMP_DIR / "skipped.txt"

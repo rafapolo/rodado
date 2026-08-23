@@ -9,7 +9,7 @@ Por que existe: em 2026-07-05 dois scripts de sync mandaram o resultado de
 `bq query --format=json` para o espelho passando por `pa.Table.from_pylist()`. O JSON
 do `bq` não carrega tipo, então 154 colunas de 38 tabelas chegaram como string, e o
 `rsync` ainda levou junto o nome do tempfile — 80 `tmp*.parquet` largados ao lado do
-export bom, fazendo as views lerem os dois. Ver `tasks/tmp_parquet_38.plan`.
+export bom, fazendo as views lerem os dois.
 
 Aqui o JSON não entra no caminho: `QueryJob.to_arrow()` devolve Arrow **já tipado**
 direto da API de resultados do BigQuery, e o Parquet sai daí. Sem inferência, sem

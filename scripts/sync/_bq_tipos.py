@@ -12,7 +12,7 @@ BOOLEAN, DATE, TIMESTAMP, todas BYTE_ARRAY — convivendo no mesmo diretório co
 export bom do BigQuery. As views leem o glob, então `count(*)` saía somado.
 
 Aqui o schema vem do BigQuery (`bq show --schema`) e os valores são convertidos
-coluna a coluna antes de virar Arrow. Ver `tasks/tmp_parquet_38.plan`.
+coluna a coluna antes de virar Arrow.
 
 **Para código novo, prefira `ressincroniza_bq.py`**, que usa `QueryJob.to_arrow()` da
 biblioteca `google-cloud-bigquery`: o Arrow vem tipado direto da API de resultados e o
@@ -20,8 +20,10 @@ JSON não entra no caminho, então não há o que reconverter. Este módulo exis
 dois scripts que já recebem `rows` como JSON do `bq` CLI e seria invasivo reescrever;
 ele conserta o tipo depois do estrago, o que é pior que não estragar.
 """
+import datetime as dt
 import json
 import subprocess
+import sys
 
 BQ_ARROW = {
     "STRING": "string", "BYTES": "binary", "INTEGER": "int64", "INT64": "int64",
@@ -49,6 +51,23 @@ def schema_bq(dataset, table, project="basedosdados", billing=None):
     }
 
 
+def _instante(v, utc):
+    """String de data-hora do `bq` -> datetime. TIMESTAMP sai como epoch em segundos
+    (`"1577836800.0"`); DATE e DATETIME saem em ISO. Aceita os dois."""
+    if isinstance(v, dt.datetime):
+        d = v
+    else:
+        texto = str(v).strip()
+        try:
+            d = dt.datetime.fromtimestamp(float(texto), dt.timezone.utc)
+        except (ValueError, OSError, OverflowError):
+            d = dt.datetime.fromisoformat(
+                texto.replace("Z", "+00:00").replace(" ", "T", 1))
+    if utc:
+        return d if d.tzinfo else d.replace(tzinfo=dt.timezone.utc)
+    return d.replace(tzinfo=None) if d.tzinfo else d
+
+
 def _valor(v, alvo):
     if v is None or v == "":
         return None
@@ -59,38 +78,63 @@ def _valor(v, alvo):
             return float(v)
         if alvo == "bool":
             return v if isinstance(v, bool) else str(v).lower() in ("true", "1", "t")
-        if alvo.startswith("timestamp") and not isinstance(v, str):
-            return v
-    except (TypeError, ValueError):
+        if alvo == "date32":
+            if isinstance(v, dt.date) and not isinstance(v, dt.datetime):
+                return v
+            return dt.date.fromisoformat(str(v)[:10])
+        if alvo.startswith("timestamp"):
+            return _instante(v, utc=alvo.endswith("utc"))
+        if alvo == "time64_us":
+            return v if isinstance(v, dt.time) else dt.time.fromisoformat(str(v))
+    except (TypeError, ValueError, OSError, OverflowError):
         return None
     return v
 
 
 def para_arrow(rows, tipos):
-    """pa.Table tipado. `tipos` é o dict de `schema_bq`; o que faltar vira string."""
+    """pa.Table tipado. `tipos` é o dict de `schema_bq`; o que faltar vira string.
+
+    Cada coluna é montada e validada **sozinha**: se uma não converter, só ela cai
+    para string e as outras seguem tipadas. Montar tudo de uma vez, como antes,
+    fazia uma única coluna ruim derrubar a tabela inteira para string — que é
+    exatamente o estrago que este módulo existe para evitar.
+    """
     import pyarrow as pa
 
     if not rows:
         return None
+
+    arrow = {
+        "string": pa.string(), "binary": pa.binary(), "int64": pa.int64(),
+        "float64": pa.float64(), "bool": pa.bool_(), "date32": pa.date32(),
+        "timestamp_us": pa.timestamp("us"),
+        "timestamp_us_utc": pa.timestamp("us", tz="UTC"),
+        "time64_us": pa.time64("us"),
+    }
+
     cols = list(rows[0].keys())
-    campos, dados = [], {}
+    campos, arrays = [], []
     for c in cols:
         alvo = BQ_ARROW.get((tipos.get(c) or "STRING").upper(), "string")
-        dados[c] = [_valor(r.get(c), alvo) for r in rows]
-        campos.append(pa.field(c, {
-            "string": pa.string(), "binary": pa.binary(), "int64": pa.int64(),
-            "float64": pa.float64(), "bool": pa.bool_(), "date32": pa.date32(),
-            "timestamp_us": pa.timestamp("us"),
-            "timestamp_us_utc": pa.timestamp("us", tz="UTC"),
-            "time64_us": pa.time64("us"),
-        }[alvo]))
-    schema = pa.schema(campos)
-    try:
-        return pa.Table.from_pydict(dados, schema=schema)
-    except (pa.ArrowInvalid, pa.ArrowTypeError):
-        # uma coluna não converteu; cai para string nela em vez de perder a tabela
-        return pa.Table.from_pydict({c: [None if v is None else str(v) for v in dados[c]]
-                                     for c in cols})
+        tipo = arrow[alvo]
+        try:
+            arr = pa.array([_valor(r.get(c), alvo) for r in rows], type=tipo)
+        except (pa.ArrowInvalid, pa.ArrowTypeError, TypeError, ValueError,
+                OverflowError):
+            arr = pa.array([None if r.get(c) is None else str(r.get(c)) for r in rows],
+                           type=pa.string())
+            tipo = pa.string()
+        # `_valor` devolve None no que nao converte. Uma coluna que chega cheia e sai
+        # toda nula nao levanta erro nenhum — some calada, que e o modo de falha caro
+        # aqui. Avisa; nao aborta, porque a coluna pode ser nula na origem mesmo.
+        if arr.null_count == len(rows) and any(
+            r.get(c) not in (None, "") for r in rows
+        ):
+            print(f"  ! coluna '{c}' ({tipos.get(c)}) tinha valor e converteu toda "
+                  f"para NULL como {tipo}", file=sys.stderr)
+        campos.append(pa.field(c, tipo))
+        arrays.append(arr)
+    return pa.Table.from_arrays(arrays, schema=pa.schema(campos))
 
 
 def nome_destino(existentes):
