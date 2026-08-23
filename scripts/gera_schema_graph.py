@@ -33,6 +33,7 @@ sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
 from gera_join_keys import (  # noqa: E402
     AUTO_DENY,
+    CONCEPT_ALIASES,
     CURATED,
     KEYISH,
     MIN_DATASETS,
@@ -154,18 +155,27 @@ def build():
         ti = len(out_tables)
         my_keys = []
         seen = set()
+        # O grafo liga por NOME de coluna, então um hub que renomeia a coluna sai do
+        # mapa mesmo continuando a ligar. `concept_aliases` diz qual conceito a coluna
+        # local representa — sem isso `br_bd_diretorios_mundo.pais` fica órfã depois do
+        # rename de 2026-08-23 (sigla_pais_iso3 -> sigla_iso3), e o mesmo vale para
+        # `br_bd_diretorios_brasil.uf.sigla`.
+        alias_da_tabela = CONCEPT_ALIASES.get(tid, {})
+        locais = set()          # nomes como estão NA tabela, para ordenar as colunas
         for col in cols:
             low = col["name"].lower()
-            if low in key_set and low not in seen:
-                seen.add(low)
-                ki = key_pos[low]
+            conceito = alias_da_tabela.get(col["name"], alias_da_tabela.get(low, low))
+            if conceito in key_set and conceito not in seen:
+                seen.add(conceito)
+                locais.add(low)
+                ki = key_pos[conceito]
                 my_keys.append(ki)
                 key_tables[ki].append(ti)
                 key_datasets[ki].add(dataset)
 
         # key columns first, then the rest up to the cap
-        ordered = [c for c in cols if c["name"].lower() in seen]
-        rest = [c for c in cols if c["name"].lower() not in seen]
+        ordered = [c for c in cols if c["name"].lower() in locais]
+        rest = [c for c in cols if c["name"].lower() not in locais]
         shown = ordered + rest[: max(0, MAX_COLS - len(ordered))]
 
         out_tables.append({
