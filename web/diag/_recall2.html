@@ -1,0 +1,33 @@
+<meta charset="utf-8"><title>recall enriquecido</title><pre id="out">…</pre>
+<script type="module">
+const out = document.getElementById("out");
+try {
+  const { pipeline, env } = await import("./vendor/transformers.js");
+  env.allowLocalModels = false;
+  out.textContent = "carregando modelo…";
+  const pipe = await pipeline("feature-extraction", "Xenova/paraphrase-multilingual-MiniLM-L12-v2", { dtype: "q8" });
+  const textos = await fetch("./_enriquecido.json").then(r => r.json());
+  const { perguntas } = await fetch("./_douradas.json").then(r => r.json());
+
+  out.textContent = "embedando 824 tabelas…";
+  const V = [];
+  for (let i = 0; i < textos.length; i++) {
+    V.push((await pipe(textos[i].text, { pooling: "mean", normalize: true })).data);
+    if (i % 100 === 0) out.textContent = `embedando ${i}/${textos.length}…`;
+  }
+
+  const linhas = []; let ok = 0, parc = 0;
+  for (const p of perguntas) {
+    const q = (await pipe(p.q, { pooling: "mean", normalize: true })).data;
+    const sc = V.map((v, i) => { let d = 0; for (let j = 0; j < q.length; j++) d += q[j]*v[j]; return { id: textos[i].id, d }; });
+    sc.sort((a,b) => b.d - a.d);
+    const ids = sc.slice(0,5).map(s => s.id);
+    const achou = p.tabelas.filter(t => ids.includes(t));
+    if (achou.length === p.tabelas.length) ok++; else if (achou.length) parc++;
+    linhas.push(`${achou.length===p.tabelas.length?"OK  ":achou.length?"PARC":"MISS"}  ${p.q.slice(0,50)}\n      top5: ${ids.join(", ")}`);
+  }
+  out.textContent = linhas.join("\n") + `\n\nrecall@5 completo: ${ok}/${perguntas.length}  parcial: ${parc}`;
+  window.__r = { ok, parc };
+} catch(e) { out.textContent = "ERRO: " + e.message + "\n" + e.stack; }
+window.__done = true;
+</script>

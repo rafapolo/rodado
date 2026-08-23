@@ -1,0 +1,72 @@
+:root{
+  --bg:#f6f2ea; --bg-raised:#efe9dd; --ink:#201d18; --ink-soft:#4a443a;
+  --ink-faint:#77705f; --rule:#d9d0bd; --accent:#9c3b2e; --accent-soft:#c9573f;
+  --serif:Charter,"Iowan Old Style",Palatino,Georgia,serif;
+  --sans:-apple-system,"Segoe UI",system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,monospace;
+  --measure:820px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#1b1811; --bg-raised:#242017; --ink:#ece6d8; --ink-soft:#c7bfab;
+    --ink-faint:#948b76; --rule:#3a3427; --accent:#c9573f; --accent-soft:#e07a5f;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1b1811; --bg-raised:#242017; --ink:#ece6d8; --ink-soft:#c7bfab;
+  --ink-faint:#948b76; --rule:#3a3427; --accent:#c9573f; --accent-soft:#e07a5f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);
+  font-size:18px;line-height:1.65;overflow-x:hidden}
+main{max-width:var(--measure);margin:0 auto;padding:2.5rem 1.25rem 6rem}
+h1{font-size:1.6rem;margin:0 0 .2rem;font-weight:600}
+.sub{color:var(--ink-faint);font-size:.9rem;margin:0 0 1.75rem;font-family:var(--sans)}
+.barra{display:flex;gap:.5rem;align-items:flex-end;margin-bottom:.6rem}
+textarea{flex:1;font-family:var(--serif);font-size:1.05rem;padding:.7rem .85rem;
+  background:var(--bg-raised);color:var(--ink);border:1px solid var(--rule);
+  border-radius:6px;resize:vertical;min-height:3.2rem;line-height:1.4}
+textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+button{font-family:var(--sans);font-size:.9rem;padding:.75rem 1.15rem;border:none;
+  border-radius:6px;background:var(--accent);color:#fff;cursor:pointer;font-weight:600}
+button:disabled{opacity:.45;cursor:not-allowed}
+select{font-family:var(--sans);font-size:.82rem;padding:.35rem .5rem;background:var(--bg-raised);
+  color:var(--ink);border:1px solid var(--rule);border-radius:5px}
+.linha-cfg{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;
+  font-family:var(--sans);font-size:.82rem;color:var(--ink-faint);margin-bottom:1.5rem}
+.status{font-family:var(--sans);font-size:.85rem;color:var(--ink-faint);
+  padding:.55rem 0;min-height:1.2rem}
+.status b{color:var(--accent);font-weight:600}
+.bloco{margin:1.5rem 0}
+.bloco>h2{font-family:var(--sans);font-size:.72rem;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--ink-faint);margin:0 0 .5rem;font-weight:600}
+.tabelas{display:flex;flex-wrap:wrap;gap:.4rem}
+.chip{font-family:var(--mono);font-size:.75rem;padding:.28rem .55rem;background:var(--bg-raised);
+  border:1px solid var(--rule);border-radius:4px;color:var(--ink-soft)}
+.chip .s{color:var(--ink-faint);margin-left:.4rem}
+.chip.dup{border-color:var(--accent)}
+pre.sql{font-family:var(--mono);font-size:.82rem;line-height:1.55;background:var(--bg-raised);
+  border:1px solid var(--rule);border-left:3px solid var(--accent);border-radius:5px;
+  padding:.8rem .9rem;margin:0;overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+pre.sql b{color:var(--accent);font-weight:600}
+pre.sql i{color:var(--ink-soft);font-style:normal}
+.origem{font-family:var(--sans);font-size:.75rem;color:var(--ink-faint);margin:.4rem 0 0}
+.rolagem-h{overflow-x:auto;border:1px solid var(--rule);border-radius:5px}
+table{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:.85rem}
+th,td{padding:.45rem .7rem;text-align:left;border-bottom:1px solid var(--rule);white-space:nowrap}
+th{background:var(--bg-raised);font-weight:600;font-size:.76rem;letter-spacing:.03em;
+  text-transform:uppercase;color:var(--ink-faint);position:sticky;top:0}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+tbody tr:last-child td{border-bottom:none}
+.prosa{background:var(--bg-raised);border-left:3px solid var(--accent);
+  border-radius:5px;padding:.85rem 1rem;margin:0}
+.erro{background:var(--bg-raised);border-left:3px solid var(--accent);border-radius:5px;
+  padding:.85rem 1rem;font-family:var(--mono);font-size:.82rem;white-space:pre-wrap;
+  color:var(--ink-soft);overflow-x:auto}
+.aviso{font-family:var(--sans);font-size:.82rem;color:var(--ink-faint);
+  border:1px dashed var(--rule);border-radius:5px;padding:.7rem .9rem}
+.vazio{color:var(--ink-faint);font-family:var(--sans);font-size:.88rem}
+canvas{width:100%;display:block}
+.hist{font-family:var(--sans);font-size:.82rem;display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
+.hist button{background:none;border:1px solid var(--rule);color:var(--ink-soft);
+  padding:.25rem .55rem;font-size:.78rem;font-weight:400}

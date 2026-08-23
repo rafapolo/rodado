@@ -1,0 +1,89 @@
+/**
+ * WebLLM — geração de SQL e da resposta em prosa, na aba.
+ *
+ * Os Qwen2.5-Coder vêm pré-compilados para MLC (0.5B/1.5B/3B/7B), então não há
+ * nada a compilar à mão.
+ */
+export const MODELOS = {
+  "1.5b": { id: "Qwen2.5-Coder-1.5B-Instruct-q4f16_1-MLC", rotulo: "1,5 B — rápido, erra mais", gb: 1.1 },
+  "3b":   { id: "Qwen2.5-Coder-3B-Instruct-q4f16_1-MLC",   rotulo: "3 B — equilíbrio",          gb: 2.0 },
+  "7b":   { id: "Qwen2.5-Coder-7B-Instruct-q4f16_1-MLC",   rotulo: "7 B — melhor, pesado",      gb: 4.5 },
+};
+
+let engine = null, carregado = null;
+
+export const temWebGPU = () => typeof navigator !== "undefined" && "gpu" in navigator;
+export const pronto = () => engine !== null;
+export const modeloAtual = () => carregado;
+
+export async function carregar(chave = "3b", onProgresso) {
+  if (!temWebGPU()) throw new Error("Este navegador não tem WebGPU. Use Chrome ou Edge.");
+  const alvo = MODELOS[chave];
+  if (carregado === alvo.id && engine) return engine;
+
+  const webllm = await import("./vendor/webllm.js");
+  engine = await webllm.CreateMLCEngine(alvo.id, {
+    initProgressCallback: (r) => onProgresso?.({ texto: r.text, pct: Math.round((r.progress ?? 0) * 100) }),
+    // O padrão costuma ser 4096 — curto demais para o DDL de 5 tabelas mais as
+    // JOIN HINTS. Subir é obrigatório, não otimização.
+    context_window_size: 8192,
+  });
+  carregado = alvo.id;
+  return engine;
+}
+
+const tirarCercas = (t) => {
+  const s = t.trim();
+  const m = s.match(/```(?:sql)?\s*([\s\S]*?)```/i);
+  return (m ? m[1] : s).replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
+};
+
+export async function gerarSQL(prompt) {
+  const r = await engine.chat.completions.create({
+    messages: [{ role: "user", content: prompt }],
+    temperature: 0,        // SQL não quer criatividade
+    max_tokens: 700,
+  });
+  const bruto = r.choices[0].message.content ?? "";
+  const limpo = tirarCercas(bruto);
+
+  // O prompt manda o modelo responder {"error": "..."} quando não dá. A TUI Rust
+  // embrulhava isso como SELECT '{error...}' AS resposta — uma linha falsa. Aqui
+  // vira erro de verdade.
+  const err = limpo.match(/\{\s*"?error"?\s*:\s*"([^"]+)"/i);
+  if (err) return { erro: err[1] };
+  if (!/^\s*(SELECT|WITH)\b/i.test(limpo)) return { erro: `O modelo não devolveu SQL: ${limpo.slice(0, 200)}` };
+  return { sql: limpo.replace(/;\s*$/, "") };
+}
+
+export async function explicar(pergunta, sql, linhas, colunas) {
+  const amostra = JSON.stringify(linhas.slice(0, 50));
+  const r = await engine.chat.completions.create({
+    messages: [{
+      role: "user",
+      content:
+`Pergunta: ${pergunta}
+
+SQL executado:
+${sql}
+
+Resultado (colunas: ${colunas.join(", ")}):
+${amostra.slice(0, 6000)}
+
+Responda em JSON, exatamente neste formato:
+{"resposta": "um parágrafo em português do Brasil respondendo à pergunta e citando os números",
+ "grafico": {"tipo": "barras|linha|dispersao", "x": "coluna", "y": "coluna", "titulo": "..."}}
+
+Use "grafico": null quando o resultado for um número só ou uma tabela larga demais para um gráfico.`,
+    }],
+    temperature: 0.2,
+    max_tokens: 600,
+    response_format: { type: "json_object" },
+  });
+  try {
+    const j = JSON.parse(r.choices[0].message.content ?? "{}");
+    return { resposta: j.resposta ?? "", grafico: j.grafico ?? null };
+  } catch {
+    return { resposta: r.choices[0].message.content ?? "", grafico: null };
+  }
+}

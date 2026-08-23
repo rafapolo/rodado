@@ -1,0 +1,20 @@
+<meta charset="utf-8"><pre id="out">…</pre>
+<script type="module">
+const out=document.getElementById("out");
+const {pipeline,env}=await import("./vendor/transformers.js"); env.allowLocalModels=false;
+const pipe=await pipeline("feature-extraction","Xenova/paraphrase-multilingual-MiniLM-L12-v2",{dtype:"q8"});
+const emb=async t=>(await pipe(t,{pooling:"mean",normalize:true})).data;
+const cos=(a,b)=>{let d=0;for(let i=0;i<a.length;i++)d+=a[i]*b[i];return d;};
+const q=await emb("Quantos óbitos foram registrados em Pernambuco em 2020?");
+const casos={
+ "A. so prosa curta":"Óbitos e mortalidade no Brasil, registros de mortes por município e ano",
+ "B. prosa + 30 colunas":"Ministério da Saúde, Sistema de Informação sobre Mortalidade: óbitos, mortes, mortalidade, causas de morte. microdados. ano, sigla uf, sequencial obito, tipo obito, causa basica, data obito, hora obito, naturalidade, data nascimento, idade, sexo, raca cor, estado civil, escolaridade, ocupacao, local ocorrencia",
+ "C. sopa de colunas (indice atual)":"br_ms_sim.microdados: ano (INTEGER), sigla_uf (STRING), sequencial_obito (STRING), tipo_obito (STRING), causa_basica (STRING), data_obito (INTEGER), hora_obito (INTEGER)",
+ "D. distrator: indice de precos":"IBGE, IPP: índice de preços ao produtor da indústria geral, mês",
+ "E. distrator prosa+colunas":"IBGE, índice de preços ao produtor industria geral. mes industria geral. ano, mes, indice, variacao mensal, variacao acumulada",
+};
+const l=[];
+for(const[k,v]of Object.entries(casos)) l.push(`${cos(q,await emb(v)).toFixed(4)}  ${k}`);
+out.textContent=l.sort().reverse().join("\n");
+window.__done=true;
+</script>

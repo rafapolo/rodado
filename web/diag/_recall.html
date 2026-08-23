@@ -1,0 +1,24 @@
+<meta charset="utf-8"><title>recall</title><pre id="out">…</pre>
+<script type="module">
+import * as embed from "./embed.js";
+const out = document.getElementById("out");
+try {
+  await embed.carregar(({pct}) => out.textContent = `modelo ${pct}%`);
+  const { perguntas } = await fetch("./_douradas.json").then(r => r.json());
+  const linhas = []; let acertos = 0, parciais = 0;
+  for (const p of perguntas) {
+    const top = await embed.selecionar(p.q, 5, 0);
+    const ids = top.map(t => t.id);
+    const achou = p.tabelas.filter(t => ids.includes(t));
+    const todas = achou.length === p.tabelas.length;
+    if (todas) acertos++; else if (achou.length) parciais++;
+    linhas.push(`${todas ? "OK  " : achou.length ? "PARC" : "MISS"}  ${p.q.slice(0,54)}
+      esperado: ${p.tabelas.join(", ")}
+      top5    : ${ids.join(", ")}`);
+  }
+  out.textContent = linhas.join("\n") +
+    `\n\nrecall@5 completo: ${acertos}/${perguntas.length}  parcial: ${parciais}`;
+  window.__r = { acertos, parciais, total: perguntas.length };
+} catch(e) { out.textContent = "ERRO: " + e.message; window.__r = {erro:e.message}; }
+window.__done = true;
+</script>
