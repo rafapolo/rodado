@@ -1,0 +1,49 @@
+<meta charset="utf-8"><pre id="out">…</pre>
+<script type="module">
+const out=document.getElementById("out");
+try{
+const {pipeline,env}=await import("../static/vendor/transformers.js"); env.allowLocalModels=false;
+const pipe=await pipeline("feature-extraction","Xenova/paraphrase-multilingual-MiniLM-L12-v2",{dtype:"q8"});
+const emb=async t=>Array.from((await pipe(t,{pooling:"mean",normalize:true})).data);
+const cos=(a,b)=>{let d=0;for(let i=0;i<a.length;i++)d+=a[i]*b[i];return d;};
+
+// multi-vetor: cada pergunta sintetica vira um vetor; score da tabela = MAX.
+// Assim acrescentar pergunta nunca dilui — foi a diluicao que derrubou a
+// tentativa de prosa+colunas (0,33 contra 0,39 da prosa sozinha).
+const linhas=(await fetch("./_amostra.jsonl").then(r=>r.text())).trim().split("\n").map(JSON.parse);
+const idx=[];
+for(const t of linhas) for(const q of t.perguntas) idx.push({id:t.id, q, v:await emb(q)});
+
+// distratores: 60 tabelas quaisquer indexadas do jeito ANTIGO (sopa de colunas)
+const meta=await fetch("../static/index/meta.json").then(r=>r.json());
+const cols=await fetch("../static/index/colunas.json").then(r=>r.json());
+const alvos=new Set(linhas.map(t=>t.id));
+const outras=meta.tabelas.filter(t=>!alvos.has(t.id)).slice(0,60);
+for(const t of outras){
+  const c=(cols[t.id]??[]).slice(0,20).map(x=>`${x.n} (${x.t})`).join(", ");
+  idx.push({id:t.id,q:"(sopa)",v:await emb(`${t.id}: ${c}`)});
+}
+
+const testes=[["Quantos municípios tem o Brasil?","br_bd_diretorios_brasil.municipio"],
+["Quantos óbitos foram registrados em Pernambuco em 2020?","br_ms_sim.microdados"],
+["Quantos nascimentos ocorreram na Bahia em 2021?","br_ms_sinasc.microdados"],
+["Qual a nota média do ENEM em matemática em 2022?","br_inep_enem.microdados"],
+["Qual o saldo de empregos do CAGED em 2023?","br_me_caged.microdados_movimentacao"],
+["Qual o preço médio da gasolina por estado em 2024?","br_anp_combustiveis.precos"],
+["Quantas pessoas estão inscritas na dívida ativa da União?","br_pgfn_dividaativa.divida"],
+["Quantos candidatos se elegeram para deputado federal em 2022?","br_tse_eleicoes.candidatos"]];
+
+const L=[]; let ok=0;
+for(const [q,esperado] of testes){
+  const qv=await emb(q);
+  const porTabela=new Map();
+  for(const e of idx){const s=cos(qv,e.v); if(!porTabela.has(e.id)||porTabela.get(e.id).s<s) porTabela.set(e.id,{s,q:e.q});}
+  const top=[...porTabela.entries()].sort((a,b)=>b[1].s-a[1].s).slice(0,3);
+  const acertou=top[0][0]===esperado;
+  if(acertou) ok++;
+  L.push(`${acertou?"OK  ":"MISS"} ${q.slice(0,46)}\n     1º ${top[0][0]} (${top[0][1].s.toFixed(3)}) via "${top[0][1].q}"\n     2º ${top[1][0]} (${top[1][1].s.toFixed(3)})`);
+}
+out.textContent=L.join("\n")+`\n\ntop-1: ${ok}/${testes.length}  (${idx.length} vetores: 64 perguntas + 60 sopas)`;
+}catch(e){out.textContent="ERRO: "+e.message;}
+window.__done=true;
+</script>

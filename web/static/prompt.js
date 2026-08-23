@@ -148,6 +148,10 @@ REGRAS
 - Se não der para responder com as tabelas dadas, responda exatamente:
   {"error": "o motivo"}`;
 
+// Teto real do wasm pré-compilado do WebLLM: 4096 tokens, contando a resposta.
+// Sobram ~2.800 para o prompt inteiro. Daí o corte de colunas ser agressivo.
+export const TETO_TOKENS = 2800;
+
 export function montarPrompt(pergunta, tabelas, colunas) {
   return `${SISTEMA}\n\nTABELAS DISPONÍVEIS\n${montarDDL(tabelas, colunas, pergunta)}\n` +
          `${montarJoinHints(tabelas)}${montarFalseFriends(tabelas, colunas)}\nPERGUNTA: ${pergunta}\nSQL:`;

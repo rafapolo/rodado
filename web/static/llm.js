@@ -24,9 +24,11 @@ export async function carregar(chave = "3b", onProgresso) {
   const webllm = await import("./vendor/webllm.js");
   engine = await webllm.CreateMLCEngine(alvo.id, {
     initProgressCallback: (r) => onProgresso?.({ texto: r.text, pct: Math.round((r.progress ?? 0) * 100) }),
-    // O padrão costuma ser 4096 — curto demais para o DDL de 5 tabelas mais as
-    // JOIN HINTS. Subir é obrigatório, não otimização.
-    context_window_size: 8192,
+    // NÃO subir: o wasm pré-compilado é `..._cs1k-webgpu.wasm` e o config do
+    // WebLLM traz `overrides: {context_window_size: 4096}`. Pedir 8192 é acima
+    // do que a lib compilada suporta. 4k é o teto real, e é o orçamento que o
+    // prompt.js tem que respeitar.
+    context_window_size: 4096,
   });
   carregado = alvo.id;
   return engine;
