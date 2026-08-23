@@ -278,9 +278,16 @@ Re-run Step 3's row-count comparison periodically to see how much drift has actu
   `gcp_to_beelink_sync.py` (tabelas faltando) e `sync_drifted_incremental.py` (drift de
   linha) são os pontos de entrada testados; `ressincroniza_bq.py` é o caminho preferido
   para código novo, porque usa `QueryJob.to_arrow()` e o JSON não entra no caminho.
-  `sync_bq_to_local.py` e `sync_stale_tables_incremental.py` seguem no repositório
-  (`sync_stale_tables_incremental.py` tem `get_max_id_on_beelink` e a detecção de drift
-  como placeholder, não lógica real).
+  `sync_bq_to_local.py` segue no repositório.
+- `sync_stale_tables_incremental.py` removido em 2026-08-23, junto com os quatro acima: era
+  stub inteiro. `get_stale_tables()` devolvia as 20 primeiras tabelas do BigQuery em
+  ordem alfabética sem comparar contagem nenhuma (o docstring dizia "identify 147
+  tables where beelink has < BigQuery rows"), e `get_max_id_on_beelink()` devolvia
+  `(None, None)` sempre, o que colapsava o WHERE para `1=1` — cada execução anexaria
+  as PRIMEIRAS linhas de cada tabela de novo, como shard duplicado. A única parte
+  real era o caminho de escrita, que duplica `sync_drifted_incremental.py`. Para
+  detectar tabela atrasada, compare `_rodado_metadata.rows` com o `numRows` do
+  `bq show` e passe a lista para `sync_drifted_incremental.py`, que já aceita uma.
 - Running Step 4 and Step 5 **concurrently** races on `~/.bq_sandbox_quota.json` (unlocked
   read-modify-write) and can silently over-spend the monthly budget. Run them sequentially
   (Step 4 to completion, then Step 5), not in parallel.
