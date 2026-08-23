@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Recria as views do beelink que apontam para arquivo que não existe mais.
+"""Recria as views do beelink que estao fora de sincronia com os parquet no disco.
 
     python3 scripts/repara_views_beelink.py            # dry-run
     python3 scripts/repara_views_beelink.py --apply
@@ -12,9 +12,18 @@ quebra a view, e a quebra só aparece na hora de consultar:
     IO Error: No files found that match the pattern ".../tmp315dr7qq.parquet"
 
 Aqui a detecção é pelo sintoma, não pela lista do que foi mexido: lê o SQL de
-toda view, confere no disco cada caminho citado, e recria só as que perderam
-arquivo — com a mesma forma (`hive_partitioning`, `union_by_name`) e o conteúdo
-atual do diretório.
+toda view, compara com o conteúdo atual do diretório, e recria as que estiverem
+fora de sincronia — com a mesma forma (`hive_partitioning`, `union_by_name`).
+
+São DOIS sintomas, e o segundo é pior que o primeiro:
+
+  arquivo morto     a view cita um parquet que não existe mais. Barulhento: a
+                    consulta falha com IO Error e alguém percebe.
+  arquivo ignorado  o parquet está no diretório e a view não o cita. Silencioso:
+                    a consulta responde, só que a menos. É o que acontece quando
+                    um re-export gera mais shards que o anterior — todos os nomes
+                    antigos continuam existindo, então nada parece quebrado.
+                    `densidade_municipio` leu 1.000.000 de 1.072.350 linhas assim.
 """
 import argparse
 import json
@@ -63,22 +72,37 @@ def main():
     broken = []
     for v in views:
         refs = PATH_RE.findall(v["sql"] or "")
+        if not refs:
+            continue
         missing = [r for r in refs if r not in existing]
-        if refs and missing:
-            broken.append({**v, "refs": refs, "missing": missing})
+        # O outro lado do mesmo problema, e o mais traiçoeiro: arquivo que existe no
+        # diretório e a view NÃO cita. Nada quebra — a consulta responde, só que a
+        # menos. Um re-export que gere mais shards que o anterior cai exatamente
+        # aqui, porque todos os nomes antigos continuam existindo.
+        table_dir = os.path.dirname(refs[0])
+        atuais = {f for f in existing if os.path.dirname(f) == table_dir}
+        ignorados = sorted(atuais - set(refs))
+        if missing or ignorados:
+            broken.append({**v, "refs": refs, "missing": missing,
+                           "ignorados": ignorados})
 
     if not broken:
-        print("Nenhuma view quebrada.")
+        print("Nenhuma view inconsistente.")
         return 0
 
-    print(f"\n{len(broken)} views citando arquivo inexistente:\n")
+    print(f"\n{len(broken)} views fora de sincronia com o disco:\n")
     stmts = []
     for b in broken:
         table_dir = os.path.dirname(b["refs"][0])
         files = sorted(f for f in existing if os.path.dirname(f) == table_dir)
         name = f'"{b["schema_name"]}"."{b["view_name"]}"'
+        sintoma = []
+        if b["missing"]:
+            sintoma.append(f"-{len(b['missing'])} morto(s)")
+        if b["ignorados"]:
+            sintoma.append(f"+{len(b['ignorados'])} ignorado(s) — LIA A MENOS")
         print(f"  {b['schema_name']}.{b['view_name']:<42} "
-              f"-{len(b['missing'])} arquivo(s) -> {len(files)} atual(is)")
+              f"{', '.join(sintoma)} -> {len(files)} atual(is)")
         if not files:
             print("      ! diretório vazio — view deixada como está")
             continue

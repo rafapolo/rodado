@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**baseldosdados** mirrors public Brazilian government tables from [Base dos Dados](https://basedosdados.org) — stored as Parquet+zstd in `~/rodado` on beelink — and extends that mirror with independently-scraped sources that fill the remaining gaps (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/datasets_to_scrap.md` for the full catalog and provenance of every source). 848 tables (202 datasets, 38,1 bilhões de linhas) as of 2026-08-22 — 689 espelhadas do Base dos Dados, 159 raspadas pelo projeto. A DuckDB view `_rodado_metadata` on beelink tracks each table's rows, source, status, and provenance; `_rodado_datasets` aggregates by dataset. DuckDB queries the data on-demand without local imports. An AI-powered TUI converts Portuguese natural language to SQL.
+**baseldosdados** mirrors public Brazilian government tables from [Base dos Dados](https://basedosdados.org) — stored as Parquet+zstd in `~/rodado` on beelink — and extends that mirror with independently-scraped sources that fill the remaining gaps (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/datasets_to_scrap.md` for the full catalog and provenance of every source). 848 tables (202 datasets, 38,1 bilhões de linhas) as of 2026-08-23 — 689 espelhadas do Base dos Dados, 159 raspadas pelo projeto. A DuckDB view `_rodado_metadata` on beelink tracks each table's rows, source, status, and provenance; `_rodado_datasets` aggregates by dataset. DuckDB queries the data on-demand without local imports. An AI-powered TUI converts Portuguese natural language to SQL.
 
 ## Commands
 
@@ -111,7 +111,7 @@ O espelho não tem foreign key, não tem métrica nomeada e não tem hierarquia 
 
 Três regras que valem mais que o resto:
 
-1. **`resolve_join` antes de escrever join à mão.** Ele devolve a cláusula `ON` pronta e, quando existe ponte, ela **substitui** a igualdade ingênua em vez de concorrer com ela — `br_anp_combustiveis.precos` guarda `cnpj` sem padding, então `a.cnpj = b.cnpj` está errado e é exatamente o que um match por nome devolveria. Também avisa quando uma das pontas é uma das 80 tabelas duplicadas.
+1. **`resolve_join` antes de escrever join à mão.** Ele devolve a cláusula `ON` pronta e, quando existe ponte, ela **substitui** a igualdade ingênua em vez de concorrer com ela — `br_anp_combustiveis.precos` guarda `cnpj` sem padding, então `a.cnpj = b.cnpj` está errado e é exatamente o que um match por nome devolveria. Ele também avisa quando uma das pontas está duplicada por sobra de sync — hoje nenhuma está: as 80 sobras de `tmp*.parquet` do sync abortado de 2026-07-05 foram triadas e removidas em 2026-08-23 (`tasks/tmp_parquet_38.plan`).
 2. **`false_friends` são silenciosos e caros.** `valor` aparece em 91 tabelas de 56 datasets significando coisas diferentes; juntar por ele dá resultado grande, plausível e errado. `explain_column` diz o porquê.
 3. **`verified` não é enfeite.** Toda ponte, métrica e `parent_expr` carrega o que casou quando foi rodado no beelink, com data. Sem isso a linha é aspiracional — trate como não conferida.
 

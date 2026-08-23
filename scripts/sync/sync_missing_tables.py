@@ -7,6 +7,9 @@ Progress reported every iteration to ~/.gcp_sync_progress.
 import json
 import subprocess
 from pathlib import Path
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parent))
+import _bq_tipos
 from datetime import datetime
 from google.cloud import bigquery
 import os
@@ -15,7 +18,7 @@ import sys
 os.environ['GOOGLE_CLOUD_PROJECT'] = 'raspa-491716'
 PROGRESS_FILE = Path.home() / ".gcp_sync_progress"
 BEELINK_HOST = "beelink"
-BEELINK_PATH = "~/baseldosdados-data"
+BEELINK_PATH = "~/rodado"   # ~/baseldosdados-data nao existe mais no beelink
 
 def write_progress(status, pct, table="", rows=0):
     """Write progress."""
@@ -112,30 +115,42 @@ def sync_to_beelink(dataset, table, row_count):
         if not rows:
             return True  # Empty table, still successful
 
-        # Convert to Parquet
-        import tempfile
-        table_arrow = pa.Table.from_pylist(rows)
-        with tempfile.NamedTemporaryFile(suffix=".parquet", delete=False) as f:
-            parquet_file = Path(f.name)
+        # Converte com o tipo do BigQuery. `pa.Table.from_pylist(rows)` direto
+        # transforma TODA coluna em string — o JSON do bq não carrega tipo — e foi
+        # o que produziu os 80 tmp*.parquet de 2026-07-05 (tasks/tmp_parquet_38.plan).
+        tipos = _bq_tipos.schema_bq(dataset, table, billing="raspa-491716")
+        table_arrow = _bq_tipos.para_arrow(rows, tipos)
+        if table_arrow is None:
+            return True
 
-        pq.write_table(table_arrow, str(parquet_file), compression="snappy")
-
-        # Rsync to beelink
-        remote_dir = f"{BEELINK_HOST}:{BEELINK_PATH}/{dataset}/{table}"
+        remote_dir_path = f"{BEELINK_PATH}/{dataset}/{table}"
         subprocess.run(
-            f"ssh {BEELINK_HOST} 'mkdir -p {BEELINK_PATH}/{dataset}/{table}'",
+            f"ssh {BEELINK_HOST} 'mkdir -p {remote_dir_path}'",
             shell=True,
             capture_output=True,
         )
 
-        result = subprocess.run(
-            f"rsync -av {parquet_file} {remote_dir}/",
-            shell=True,
-            capture_output=True,
-            timeout=120,
-        )
+        # O nome final sai ANTES do envio. Mandar o tempfile e deixar o rsync
+        # preservar o basename é o bug que espalhou tmp*.parquet pelo espelho.
+        existentes = subprocess.run(
+            f"ssh {BEELINK_HOST} 'ls -1 {remote_dir_path} 2>/dev/null'",
+            shell=True, capture_output=True, text=True,
+        ).stdout.split()
+        destino = _bq_tipos.nome_destino(existentes)
 
-        parquet_file.unlink()
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            parquet_file = Path(tmpdir) / destino
+            pq.write_table(table_arrow, str(parquet_file), compression="zstd")  # o espelho inteiro e ZSTD
+            # o rsync do macOS (openrsync) nao tem --chmod; ajusta no beelink depois
+            result = subprocess.run(
+                f"rsync -av {parquet_file} "
+                f"{BEELINK_HOST}:{remote_dir_path}/{destino} && "
+                f"ssh {BEELINK_HOST} 'chmod 664 {remote_dir_path}/{destino}'",
+                shell=True,
+                capture_output=True,
+                timeout=120,
+            )
         return result.returncode == 0
     except:
         return False

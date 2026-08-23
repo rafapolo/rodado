@@ -122,6 +122,13 @@ concept_aliases:
     sigla: sigla_uf
   br_bd_diretorios_brasil.municipio:
     sigla_uf: sigla_uf
+  # O Base dos Dados renomeou as colunas de `pais` (sigla_pais_iso3 -> sigla_iso3,
+  # nome -> nome_pt, id_pais_m49 -> id_m49...) e o espelho seguiu em 2026-08-23.
+  # Quem consome — as 4 tabelas de br_me_comex_stat — continua no nome antigo, então
+  # o conceito e a coluna local deixaram de coincidir. Ver tasks/tmp_parquet_38.plan.
+  br_bd_diretorios_mundo.pais:
+    sigla_iso3: sigla_pais_iso3
+    id_m49: id_pais
 
 concepts:
   id_municipio:
@@ -350,18 +357,35 @@ concepts:
     category: geo
     description: ISO 3166-1 alpha-3 country code. The join key for the `world_*` datasets.
     canonical_table: br_bd_diretorios_mundo.pais
+    notes:
+    - 'O hub renomeou a coluna. Em `br_bd_diretorios_mundo.pais` ela hoje se chama `sigla_iso3`
+      — o Base dos Dados trocou o schema da tabela (junto com `nome` → `nome_pt`, `id_pais_m49`
+      → `id_m49` e as outras siglas) e o espelho seguiu em 2026-08-23. Quem ainda carrega o nome
+      antigo `sigla_pais_iso3` são as 4 tabelas de `br_me_comex_stat`, então o join **não** é a
+      igualdade ingênua: use `e.sigla_pais_iso3 = p.sigla_iso3`.'
+    verified: '246 dos 251 códigos ISO3 de `br_me_comex_stat.ncm_exportacao` casam com
+      `pais.sigla_iso3` (2026-08-23)'
+    example_sql: "SELECT p.nome_pt, count(*) AS registros\nFROM br_me_comex_stat.ncm_exportacao e\n\
+      JOIN br_bd_diretorios_mundo.pais p ON e.sigla_pais_iso3 = p.sigla_iso3\nGROUP BY 1\nORDER BY 2 DESC\n\
+      LIMIT 10"
   ano:
     category: tempo
     description: Year. The primary partition column across the mirror — filter on it in every query against
       a large table.
     canonical_table: br_bd_diretorios_data_tempo.ano
     notes:
-    - 'BIGINT in most tables but VARCHAR in a few scraped ones (see the type breakdown above) — cast explicitly
-      when joining across datasets: `CAST(a.ano AS INT) = CAST(b.ano AS INT)`.'
-    example_sql: "-- densidade_municipio.ano is VARCHAR, ideb.ano is BIGINT: cast both sides\nSELECT CAST(a.ano\
-      \ AS INT) AS ano, a.id_municipio, a.densidade AS banda_larga, b.ideb\nFROM br_anatel_banda_larga_fixa.densidade_municipio\
-      \ a\nJOIN br_inep_ideb.municipio b\n  ON a.id_municipio = b.id_municipio AND CAST(a.ano AS INT)\
-      \ = b.ano\nWHERE CAST(a.ano AS INT) BETWEEN 2015 AND 2021"
+    - 'BIGINT em 372 tabelas, VARCHAR em 13 — cast explicitamente ao juntar entre datasets:
+      `CAST(a.ano AS INT) = CAST(b.ano AS INT)`. As que ainda guardam texto são
+      `br_bd_diretorios_data_tempo.*`, `br_bd_vizinhanca.*`, `br_ggb_relatorio_lgbtqi.*`,
+      `br_ibge_pib.brasil_antigo`, `br_inep_formacao_docente.brasil`,
+      `br_mjsp_sisdepen.populacao_carceraria` e `world_wb_mides.orgao_unidade_gestora`.'
+    - '`br_anatel_banda_larga_fixa.densidade_*` guardava `ano` como VARCHAR e era o exemplo
+      clássico de cast aqui. Deixou de ser: a ressincronização tipada de 2026-08-23 trouxe
+      `ano` como BIGINT. O exemplo abaixo junta sem cast por causa disso.'
+    example_sql: "-- os dois lados são BIGINT desde a ressincronização de 2026-08-23\nSELECT a.ano,\
+      \ a.id_municipio, a.densidade AS banda_larga, b.ideb\nFROM br_anatel_banda_larga_fixa.densidade_municipio\
+      \ a\nJOIN br_inep_ideb.municipio b\n  ON a.id_municipio = b.id_municipio AND a.ano = b.ano\n\
+      WHERE a.ano BETWEEN 2015 AND 2021"
   mes:
     category: tempo
     description: Month (1–12). Always use together with `ano`; a few tables carry `mes` alone and are
