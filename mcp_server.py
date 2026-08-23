@@ -116,7 +116,9 @@ def _bridge_matches(pattern: str, table_id: str) -> bool:
 def _bridges_for(table_id: str) -> list:
     """Every documented bridge whose table pattern covers `table_id`."""
     out = []
-    for kind in ("municipio", "uf", "identity"):
+    # Todo grupo declarado no YAML, não uma lista fixa: um grupo novo (o `pais`
+    # foi o primeiro) passa a resolver sem tocar aqui.
+    for kind in _BRIDGES["bridges"]:
         for b in _BRIDGES["bridges"].get(kind, []):
             if not _bridge_matches(b["table"], table_id):
                 continue
