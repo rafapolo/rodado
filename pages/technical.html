@@ -92,7 +92,7 @@
     <div class="card"><div class="label">End-to-end delivery</div><p>Ingestion pipeline + semantic layer + API + browser UI — fully deployed and running end-to-end as a single-engineer project.</p></div>
     <div class="card"><div class="label">Data engineering</div><p>533 tables normalized to a typed ontology with a canonical join-key graph and partition-aware query patterns.</p></div>
     <div class="card"><div class="label">Ontology design</div><p>8 business object types (Municipality, Company, Person, Contract…) with typed relationships and explicit cardinalities.</p></div>
-    <div class="card"><div class="label">Application development</div><p>SQL query API + browser DuckDB shell + Rust NL→SQL TUI — all production-deployed behind Caddy + auth.</p></div>
+    <div class="card"><div class="label">Application development</div><p>SQL query API + browser DuckDB shell — production-deployed behind Caddy + auth.</p></div>
     <div class="card"><div class="label">AI / ML enablement</div><p>LLM-powered NL→SQL with semantic table selection over an 11.4 MB embedding index. Backends: Gemini, OpenRouter, Ollama.</p></div>
     <div class="card"><div class="label">Access controls</div><p>HMAC-SHA256 auth, Caddy forward auth, read-only DuckDB enforcement. CPF/CNPJ handled as sensitive identifiers.</p></div>
     <div class="card"><div class="label">Operational durability</div><p>Persistent DuckDB connection collocated with S3. Resumable pipeline. Docker + haloy deploy. Automated schema generation.</p></div>
@@ -220,31 +220,26 @@ ORDER BY post_election_contracts DESC</pre>
   <p>Data → semantic model → access control → application → users. Each layer independently deployable.</p>
   <div class="grid-cards">
     <div class="card"><div class="label">Users</div><p>Analysts · policy teams · researchers · journalists</p></div>
-    <div class="card"><div class="label">Application</div><p><code>db.ミ.xyz</code> browser SQL shell · <code>ask.ミ.xyz</code> AI NL→SQL TUI · <code>POST /query</code> SQL API</p></div>
+    <div class="card"><div class="label">Application</div><p><code>db.ミ.xyz</code> browser SQL shell · <code>POST /query</code> SQL API</p></div>
     <div class="card"><div class="label">Semantic</div><p>DuckDB views · schema.json (533 tables) · join_keys.md · table_embeddings.json (11.4 MB) · overview/ (34 domain narratives)</p></div>
     <div class="card"><div class="label">Access</div><p>auth.py (HMAC-SHA256) · Caddy (TLS + forward auth) · read-only enforcement</p></div>
     <div class="card"><div class="label">Storage</div><p>Hetzner Object Storage · Parquet + zstd · 533 tables · ~675 GB · httpfs on-demand reads</p></div>
     <div class="card"><div class="label">Pipeline</div><p>BigQuery export → GCS → Hetzner (rclone) · resumable, dry-run, GCP VM option</p></div>
   </div>
 
-  <h2>AI-powered query layer</h2>
-  <p>Semantic table selection over 533 datasets prevents hallucination on a large schema.</p>
-  <pre>$ ask "Qual o município com maior mortalidade infantil no Nordeste em 2021?"
-
-→ SELECT m.nome, m.sigla_uf, s.taxa_mortalidade_infantil
-  FROM br_ms_sim.municipio s
-  JOIN br_bd_diretorios_brasil.municipio m ON s.id_municipio = m.id_municipio
-  WHERE m.sigla_uf IN ('BA','PE','CE','MA','PI','RN','PB','AL','SE')
-    AND s.ano = 2021
-  ORDER BY s.taxa_mortalidade_infantil DESC
-  LIMIT 1</pre>
+  <h2>Semantic table selection</h2>
+  <p>One vector per table over the whole mirror, so a Portuguese question can be narrowed to the
+  handful of tables worth reading before any SQL is written — the step that keeps a large schema
+  from producing hallucinated joins.</p>
+  <pre>pergunta (pt-BR)
+  → embedding 384-d (paraphrase-multilingual-MiniLM-L12-v2)
+  → cosseno sobre 824 vetores
+  → top-K tabelas → schema filtrado → SQL</pre>
   <div class="pills">
-    <span class="pill">Rust (ratatui)</span>
-    <span class="pill">Gemini Flash</span>
-    <span class="pill">OpenRouter</span>
-    <span class="pill">Ollama sqlcoder</span>
+    <span class="pill">824 tabelas × 384 dims</span>
+    <span class="pill">multilingual MiniLM</span>
     <span class="pill">cosine similarity</span>
-    <span class="pill">11.4 MB embeddings</span>
+    <span class="pill">MCP search_tables</span>
   </div>
 
   <h2>Palantir Foundry mapping</h2>
@@ -282,8 +277,7 @@ ORDER BY post_election_contracts DESC</pre>
     <span class="pill">DuckDB</span><span class="pill">Rust</span><span class="pill">Python</span>
     <span class="pill">Parquet + zstd</span><span class="pill">Hetzner S3</span><span class="pill">rclone</span>
     <span class="pill">Caddy</span><span class="pill">Docker</span><span class="pill">haloy</span>
-    <span class="pill">ratatui</span><span class="pill">Gemini</span><span class="pill">OpenRouter</span>
-    <span class="pill">Ollama</span><span class="pill">ttyd</span><span class="pill">HMAC-SHA256</span>
+    <span class="pill">ttyd</span><span class="pill">HMAC-SHA256</span>
     <span class="pill">httpfs</span><span class="pill">BigQuery export</span><span class="pill">gcloud</span>
   </div>
 
