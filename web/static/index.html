@@ -62,6 +62,9 @@ function barra(pct, fase) {
 }
 const mostrar = (id, v = true) => ($("b-" + id).hidden = !v);
 const status = (h) => ($("status").innerHTML = h);
+const PONTOS = '<span class="pensando"><i></i><i></i><i></i></span>';
+// fases em que o usuário espera de verdade ganham os pontinhos animados
+const pensando = (t) => status(`${t} ${PONTOS}`);
 const historico = [];
 
 function limpar() {
@@ -119,18 +122,21 @@ async function perguntar(texto) {
     }
   }
 
-  let ultimas = null;
+  let ultimas = null, conserto = null;
   const t0 = performance.now();
   // Sem este try, uma exceção no meio do laço deixa a página parada na última
   // fase para sempre, sem mensagem e com o botão travado — o usuário vê
   // "escrevendo o SQL…" e nada mais acontece.
   try {
   await ask.perguntar(pergunta, (ev, d) => {
-    if (ev === "fase") status({
-      embedando: "escolhendo tabelas…", gerando: "escrevendo o SQL…",
-      reparando: `corrigindo o SQL (tentativa ${d.tentativa})…`,
-      executando: "consultando o beelink…", explicando: "redigindo a resposta…",
-    }[d.nome] ?? d.nome);
+    if (ev === "fase") {
+      const rotulo = {
+        embedando: "escolhendo tabelas", gerando: "escrevendo o SQL",
+        reparando: `corrigindo o SQL (tentativa ${d.tentativa} de 2)`,
+        executando: "consultando o beelink", explicando: "redigindo a resposta",
+      }[d.nome] ?? d.nome;
+      pensando(rotulo);
+    }
 
     if (ev === "tier1") status(d.caiu
       ? `métrica <b>${d.metrica}</b> reconhecida, mas ${d.caiu} — indo para o modelo…`
@@ -151,9 +157,14 @@ async function perguntar(texto) {
       }
     }
 
-    if (ev === "reparo") status(`${d.local ? "coluna inexistente" : "o DuckDB recusou"} — corrigindo (${d.tentativa}/2)…`);
+    if (ev === "reparo") pensando(`${d.local ? "o SQL citou algo que não existe" : "o DuckDB recusou"} — corrigindo (${d.tentativa} de 2)`);
 
-    if (ev === "sql") { mostrar("sql"); render.sql($("sql"), d.sql, d.origem); }
+    if (ev === "conserto") conserto = d.trocas;
+    if (ev === "sql") {
+      mostrar("sql"); render.sql($("sql"), d.sql, d.origem);
+      if (conserto) $("sql").insertAdjacentHTML("beforeend",
+        `<p class="origem">nome de tabela corrigido: ${conserto.join(", ")}</p>`);
+    }
 
     if (ev === "linhas") {
       ultimas = d;
@@ -165,6 +176,14 @@ async function perguntar(texto) {
     }
 
     if (ev === "prosa") { mostrar("prosa"); $("prosa").textContent = d.texto; }
+
+    if (ev === "semdado") {
+      mostrar("prosa");
+      $("prosa").innerHTML =
+        `<b>Sem resposta.</b> ${d.motivo} — então <b>não</b> dá para concluir que o número seja zero. ` +
+        `Pode ser que a tabela escolhida não cubra esse período ou esse recorte. ` +
+        `Confira o SQL acima e a lista de tabelas.`;
+    }
 
     if (ev === "grafico" && ultimas?.rows?.length) {
       mostrar("gr");

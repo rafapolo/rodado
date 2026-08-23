@@ -26,6 +26,63 @@ async function executar(sql) {
 }
 
 /**
+ * Confere as TABELAS citadas no SQL contra as que foram oferecidas.
+ *
+ * O erro mais caro de um modelo pequeno aqui não é coluna inventada, é escrever
+ * `FROM br_rj_isp_estatisticas_seguranca` — o nome do DATASET sem a tabela.
+ * Isso vira "Catalog Error" no beelink, queima as duas tentativas de reparo e a
+ * pergunta termina sem resposta. Pegar no cliente custa zero e o erro devolvido
+ * já diz o nome completo certo.
+ */
+export function validarTabelas(sql, tabelas) {
+  const ok = new Set(tabelas.map((t) => t.id));
+  const datasets = new Map();
+  for (const t of tabelas) {
+    const ds = t.id.split(".")[0];
+    (datasets.get(ds) ?? datasets.set(ds, []).get(ds)).push(t.id);
+  }
+
+  const citadas = new Set();
+  for (const [, ref] of sql.matchAll(/\b(?:FROM|JOIN)\s+([A-Za-z_][\w]*(?:\.[A-Za-z_][\w]*)?)/gi)) {
+    citadas.add(ref);
+  }
+
+  const ruins = [];
+  for (const ref of citadas) {
+    if (ok.has(ref)) continue;
+    if (ref.includes("(") || /^read_parquet$/i.test(ref)) continue;
+    const sugestao = datasets.get(ref);              // dataset solto, sem tabela
+    ruins.push({ ref, sugestao: sugestao ?? [...ok] });
+  }
+  return ruins.length ? ruins : null;
+}
+
+/**
+ * Conserta `FROM dataset` (sem a tabela) trocando pela tabela mais bem
+ * ranqueada daquele dataset entre as oferecidas.
+ *
+ * Medido: pedir ao 1,5B que corrija não funciona — ele repete o mesmo erro nas
+ * duas tentativas e a pergunta morre sem resposta. A troca é mecânica e
+ * inequívoca (o dataset está no top-K, e as tabelas vêm ordenadas por score),
+ * então fazer é melhor que pedir.
+ */
+export function corrigirTabelas(sql, tabelas) {
+  const melhorDoDataset = new Map();          // tabelas já vêm ordenadas por score
+  for (const t of tabelas) {
+    const ds = t.id.split(".")[0];
+    if (!melhorDoDataset.has(ds)) melhorDoDataset.set(ds, t.id);
+  }
+  const trocas = [];
+  const novo = sql.replace(/\b(FROM|JOIN)\s+([A-Za-z_][\w]*)(?![\w.])/gi, (m, kw, ref) => {
+    const alvo = melhorDoDataset.get(ref);
+    if (!alvo) return m;
+    trocas.push(`${ref} → ${alvo}`);
+    return `${kw} ${alvo}`;
+  });
+  return trocas.length ? { sql: novo, trocas } : null;
+}
+
+/**
  * Confere as colunas do SQL contra o schema, no navegador, antes de gastar um
  * round-trip. É a correção mais barata do laço e a falha mais comum de um
  * modelo pequeno.
@@ -97,6 +154,14 @@ export async function perguntar(pergunta, emitir) {
     const g = await llm.gerarSQL(prompt);
     if (g.erro) return emitir("erro", { mensagem: g.erro, fase: "geracao" });
 
+    // `FROM dataset` sem a tabela: conserta em vez de pedir ao modelo, que
+    // repete o erro. Não gasta tentativa de reparo.
+    const conserto = corrigirTabelas(g.sql, tabelas);
+    if (conserto) {
+      emitir("conserto", { trocas: conserto.trocas });
+      g.sql = conserto.sql;
+    }
+
     const ruins = validarColunas(g.sql, tabelas);
     if (ruins && tentativa < MAX_REPAROS) {
       emitir("reparo", { tentativa: tentativa + 1, erro: `coluna inexistente: ${ruins.invalidas.join(", ")}`, local: true });
@@ -123,6 +188,22 @@ export async function perguntar(pergunta, emitir) {
     }
 
     emitir("linhas", r);
+
+    // Resultado vazio ou só nulos NÃO é resposta "zero". Deixar o modelo
+    // redigir em cima disso produz "não houve mortes por arma no RJ" a partir
+    // de um SUM(null) — uma afirmação falsa sobre dado público, que é a pior
+    // saída possível deste sistema. Pior que não responder.
+    const vazio = !r.rows?.length ||
+      r.rows.every((l) => Object.values(l).every((v) => v === null || v === undefined));
+    if (vazio) {
+      emitir("semdado", {
+        sql: g.sql,
+        motivo: !r.rows?.length ? "a consulta não devolveu linha nenhuma"
+                                : "a consulta devolveu apenas valores nulos",
+      });
+      return emitir("fim", {});
+    }
+
     if (r.rows?.length) {
       emitir("fase", { nome: "explicando" });
       try {
