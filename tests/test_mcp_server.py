@@ -429,9 +429,13 @@ def test_resolve_join_rewrites_the_concept_to_its_local_alias():
     assert "b.sigla_uf" not in on[0]
 
 
-def test_resolve_join_warns_about_the_duplicated_tables():
+def test_resolve_join_no_longer_warns_about_duplicated_tables():
+    """`br_tce_pi.prefeituras` era duplicada por sobra de sync e o join vinha com
+    aviso de "returns every row twice". As 80 sobras de `tmp*.parquet` do sync
+    abortado de 2026-07-05 foram triadas e removidas em 2026-08-23, então o aviso
+    deve ter sumido — se voltar, alguma coisa reintroduziu shard duplicado."""
     r = m.resolve_join("br_tce_pi.prefeituras", "br_bd_diretorios_brasil.municipio")
-    assert any("twice" in w for w in r["warnings"])
+    assert not any("twice" in w for w in r["warnings"]), r["warnings"]
 
 
 def test_resolve_join_unknown_table_returns_suggestions():
