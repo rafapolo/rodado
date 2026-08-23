@@ -9,9 +9,14 @@ const MONETARIA = /(valor|preco|preço|montante|receita|despesa|gasto|pib|renda|
  * caro em tokens e frágil num modelo pequeno. Aqui o tipo e o nome da coluna
  * bastam.
  */
+// Colunas que são identificador ou ano: número, mas nunca com separador de
+// milhar — "2.022" para o ano de 2022 é leitura errada, não estilo.
+const SEM_SEPARADOR = /^(ano|mes|dia|id_|cod|cep|cnpj|cpf|numero|sequencial|zona|secao|turno)/i;
+
 export function formatar(valor, coluna) {
   if (valor === null || valor === undefined) return "—";
   if (typeof valor === "number") {
+    if (SEM_SEPARADOR.test(coluna)) return String(valor);
     if (MONETARIA.test(coluna)) {
       return "R$ " + valor.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
