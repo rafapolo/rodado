@@ -64,7 +64,13 @@ function validar(loteFile: string, saidaFile: string): { ok: boolean; erros: str
       if (q.split(/\s+/).length > 20) erros.push(`${s.id}: pergunta longa demais: "${q.slice(0, 50)}…"`);
       // A regra 1 do prompt, verificada: ecoar nome de coluna anula o exercício,
       // porque o índice já tem os nomes e é justamente isso que não funciona.
-      const eco = cols.find((c) => c.includes("_") && q.toLowerCase().includes(c));
+      // Exceção: em tabela `dicionario` a estrutura É o assunto (regra 8 do
+      // prompt manda perguntar o significado dos códigos), então `nome_coluna`
+      // e `id_tabela` ali são legítimos, não eco.
+      const ehDicionario = s.id.endsWith(".dicionario");
+      const ESTRUTURAIS = new Set(["nome_coluna", "id_tabela", "cobertura_temporal"]);
+      const eco = cols.find((c) => c.includes("_") && q.toLowerCase().includes(c) &&
+                                   !(ehDicionario && ESTRUTURAIS.has(c)));
       if (eco) erros.push(`${s.id}: ecoa nome de coluna "${eco}" em "${q.slice(0, 46)}…"`);
     }
   }
