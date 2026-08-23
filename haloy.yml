@@ -7,13 +7,7 @@ domains:
   - domain: db.xn--2dk.xyz
     port: 8080
     health_check_path: /health
-  - domain: ask.xn--2dk.xyz
-    port: 8080
-    health_check_path: /health
 env:
-  - name: GEMINI_API_KEY
-    from:
-      env: GEMINI_API_KEY
   - name: HETZNER_S3_ENDPOINT
     from:
       env: HETZNER_S3_ENDPOINT

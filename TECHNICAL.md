@@ -13,8 +13,8 @@
 | End-to-end delivery, prototype → production | Ingestion pipeline + semantic layer + API + UI, fully deployed and running |
 | Data engineering & modeling | 849 tables normalized to a typed ontology with join-key graph |
 | Ontology design | 8 business object types with explicit relationships and canonical keys |
-| Application development | Query API + browser SQL shell + NL→SQL TUI, all production-deployed |
-| AI/ML enablement | LLM-powered natural-language → SQL with semantic table selection |
+| Application development | Query API + browser SQL shell, production-deployed |
+| AI/ML enablement | Semantic table selection over a 824-table embedding index |
 | Access controls & auditability | HMAC-SHA256 auth, read-only enforcement, Caddy forward auth |
 | Operational durability | Persistent DuckDB connection, resumable pipelines, Docker + haloy deploy |
 | Sensitive data handling | CPF/CNPJ personal identifiers — read-only, no PII export, credential isolation |
@@ -195,7 +195,6 @@ Full map in [`docs/ERD.md`](docs/ERD.md) — pt-BR, English in [`docs/ERD_EN.md`
 │                       APPLICATION LAYER                          │
 │                                                                  │
 │   db.ミ.xyz        — browser SQL shell (ttyd + DuckDB)          │
-│   ask.ミ.xyz       — AI natural-language query (Rust TUI)       │
 │   POST /query      — programmatic SQL API (curl / scripts)       │
 └────────────────────────────────┬─────────────────────────────────┘
                                  │
@@ -241,45 +240,28 @@ Full map in [`docs/ERD.md`](docs/ERD.md) — pt-BR, English in [`docs/ERD_EN.md`
 
 ---
 
-## AI-Powered Query Layer
+## Semantic Table Selection
 
-Natural-language queries over 533 datasets — an AI workflow layer, not just a search box.
+`docs/context/table_embeddings.json` holds one vector per table — 824 tables × 384 dims,
+produced by `paraphrase-multilingual-MiniLM-L12-v2` via `scripts/update_embeddings.py`.
+Cosine similarity against a Portuguese question ranks the tables worth putting in front of
+a SQL generator, so no consumer has to reason over the full 1.8 MB schema.
 
 ```
-User question (Portuguese/English)
+Pergunta (pt-BR)
     │
     ▼
-Semantic table selection
-    (cosine similarity over 11.4 MB embedding index → top-K tables)
+Embedding (384-d, multilingual)
     │
     ▼
-Schema filtering
-    (trim 1.8 MB schema to relevant tables only)
+Cosseno sobre 824 vetores → top-K tabelas
     │
     ▼
-LLM SQL generation
-    (Gemini Flash / OpenRouter / local Ollama sqlcoder)
-    │
-    ▼
-DuckDB execution → results
+Schema filtrado → gerador de SQL → DuckDB
 ```
 
-**Example:**
-```
-> Qual o município com maior mortalidade infantil no Nordeste em 2021?
-→ SELECT m.nome, m.sigla_uf, s.taxa_mortalidade_infantil
-  FROM br_ms_sim.municipio s
-  JOIN br_bd_diretorios_brasil.municipio m ON s.id_municipio = m.id_municipio
-  WHERE m.sigla_uf IN ('BA','PE','CE','MA','PI','RN','PB','AL','SE')
-    AND s.ano = 2021
-  ORDER BY s.taxa_mortalidade_infantil DESC LIMIT 1
-```
-
-Configurable backends via `SQL_GENERATOR` env var. Table selection controlled by `TOP_K_TABLES` (default: 5). Interfaces: browser (`ask.ミ.xyz`) and CLI.
-
-```bash
-./ask/target/release/ask "Quantos municípios têm IDH abaixo de 0.6?"
-```
+`mcp_server.py` exposes this as the `search_tables` tool. The natural-language query
+interface that consumed it is being rebuilt; this document will describe it when it ships.
 
 ---
 
@@ -395,7 +377,6 @@ Not a Foundry deployment — an open-source system that reproduces the same arch
 | `/query` HTTP endpoint | Foundry Functions |
 | `mcp_server.py` | AIP Agent tool actions |
 | Browser SQL shell | Workshop application |
-| `ask/` NL→SQL layer | AIP-powered application |
 | `scripts/roda.sh` | Foundry pipeline |
 | Caddy + auth.py | Access control + audit layer |
 | `overview/` domain narratives | Business context / documentation |
@@ -407,7 +388,6 @@ Not a Foundry deployment — an open-source system that reproduces the same arch
 | Port | Service | Endpoint |
 |------|---------|----------|
 | 7681 | DuckDB browser shell (ttyd) | db.ミ.xyz |
-| 7682 | NL→SQL TUI (ttyd) | ask.ミ.xyz |
 | 8081 | Query API (auth.py) | db.ミ.xyz/query |
 | 8080 | Caddy reverse proxy + TLS | — |
 
@@ -419,7 +399,6 @@ Not a Foundry deployment — an open-source system that reproduces the same arch
 |-------|-----------|
 | Query engine | DuckDB (httpfs, persistent in-memory connection) |
 | Storage | Hetzner Object Storage, Parquet+zstd |
-| NL→SQL | Rust (ratatui), Gemini / OpenRouter / Ollama |
 | Semantic search | cosine similarity over `table_embeddings.json` |
 | API / auth | Python, HMAC-SHA256, JSON responses |
 | Proxy | Caddy (TLS, forward auth, routing by hostname) |
@@ -459,9 +438,6 @@ haloy deploy -f haloy.yml
 AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY   # Hetzner S3
 HETZNER_S3_ENDPOINT                         # S3 endpoint URL
 BASIC_AUTH_PASSWORD                         # web UI + /query auth
-GEMINI_API_KEY / OPENROUTER_API_KEY         # LLM backends
-SQL_GENERATOR                               # gemini | openrouter | sqlcoder
-TOP_K_TABLES                                # tables sent to LLM (default: 5)
 ```
 
 See `.env.sample` for full list.
