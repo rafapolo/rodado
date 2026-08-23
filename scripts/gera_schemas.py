@@ -10,12 +10,19 @@ import json
 import subprocess
 import tempfile
 import shutil
+from pathlib import Path
 
 BEELINK_DATA = "/home/polo/rodado"
 BEELINK_HOST = "beelink"
 DUCKDB = os.path.expanduser("~/bin/duckdb")
 LOCAL_MOUNT = "/Volumes/homelab/rodado"
-OUTPUT = "schemas.json"
+# Ancorado na raiz do repositorio, nao no cwd. Relativo, rodar de dentro de
+# `scripts/` deixava uma copia morta em `scripts/schemas.json` — foi o que
+# aconteceu (782 tabelas, julho, lida por ninguem). Todos os consumidores
+# (`gera_join_keys`, `gera_erd`, `gera_schema_graph`, `gera_erd_poster`,
+# `sync_mcp_schema`) leem `REPO / "schemas.json"`.
+REPO = Path(__file__).resolve().parent.parent
+OUTPUT = REPO / "schemas.json"
 
 
 BEELINK_PAYLOAD = r"""import json, subprocess, os, sys
