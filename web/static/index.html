@@ -116,7 +116,10 @@ async function perguntar(texto) {
         const c = document.createElement("span");
         c.className = "chip" + (t.duplicada ? " dup" : "");
         c.innerHTML = `${t.id}<span class="s">${t.score.toFixed(2)}</span>`;
-        if (t.duplicada) c.title = "Esta tabela devolve toda linha duas vezes — precisa de SELECT DISTINCT.";
+        const notas = [];
+        if (t.via) notas.push(`casou com: "${t.via}"`);
+        if (t.duplicada) notas.push("Devolve toda linha duas vezes — precisa de SELECT DISTINCT.");
+        if (notas.length) c.title = notas.join("\n");
         $("tabelas").append(c);
       }
     }

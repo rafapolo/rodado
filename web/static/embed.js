@@ -9,6 +9,8 @@
 export const MODELO = "Xenova/paraphrase-multilingual-MiniLM-L12-v2";
 
 let pipe = null, vetores = null, meta = null, dims = 384;
+// índice doc2query: um vetor por PERGUNTA sintética, não por tabela
+let pVetores = null, pEntradas = null;
 
 export async function carregar(onProgresso) {
   const { pipeline, env } = await import("./vendor/transformers.js");
@@ -28,6 +30,26 @@ export async function carregar(onProgresso) {
   ]);
 
   meta = metaJson.tabelas;
+
+  // O índice doc2query é opcional: se ainda não foi gerado, a busca segue só
+  // com o índice por tabela. Falhar aqui deixaria o app inutilizável por causa
+  // de um arquivo que é melhoria, não requisito.
+  try {
+    const [pj, pb] = await Promise.all([
+      fetch("./index/perguntas.json").then((r) => (r.ok ? r.json() : null)),
+      fetch("./index/perguntas_vetores.bin").then((r) => (r.ok ? r.arrayBuffer() : null)),
+    ]);
+    if (pj && pb && pj.entradas.length * 384 * 4 === pb.byteLength) {
+      pEntradas = pj.entradas;
+      pVetores = new Float32Array(pb);
+      for (let i = 0; i < pEntradas.length; i++) {
+        let n = 0;
+        for (let j = 0; j < 384; j++) n += pVetores[i * 384 + j] ** 2;
+        n = Math.sqrt(n) || 1;
+        for (let j = 0; j < 384; j++) pVetores[i * 384 + j] /= n;
+      }
+    }
+  } catch { /* segue sem doc2query */ }
   dims = metaJson.dims;
   vetores = new Float32Array(bin);
 
@@ -44,6 +66,28 @@ export async function carregar(onProgresso) {
 
 export const pronto = () => pipe !== null;
 export const tabelas = () => meta;
+export const temDoc2Query = () => pEntradas !== null;
+
+/**
+ * Score por tabela vindo do índice doc2query, com agregação por MÁXIMO.
+ *
+ * Máximo, nunca média: uma tabela responde a muitas perguntas diferentes, e a
+ * que casa com ESTA consulta é a que importa. Tirar média faria acrescentar
+ * pergunta piorar o score — foi a diluição que derrubou a tentativa anterior de
+ * indexar prosa junto com nomes de coluna.
+ */
+function scoresDoc2Query(q) {
+  const out = new Map();
+  if (!pEntradas) return out;
+  for (let i = 0; i < pEntradas.length; i++) {
+    let dot = 0;
+    for (let j = 0; j < 384; j++) dot += q[j] * pVetores[i * 384 + j];
+    const id = pEntradas[i].id;
+    const atual = out.get(id);
+    if (atual === undefined || atual.s < dot) out.set(id, { s: dot, via: pEntradas[i].q });
+  }
+  return out;
+}
 
 async function vetorDaPergunta(texto) {
   const saida = await pipe(texto, { pooling: "mean", normalize: true });
@@ -62,17 +106,26 @@ async function vetorDaPergunta(texto) {
  * Quando o índice doc2query entrar, reequilibrar COM MEDIÇÃO, não por gosto.
  */
 const PESO_LEXICAL = 0.6;
+// Com doc2query o peso muda de figura: aquele índice vive no mesmo espaço da
+// consulta (medido: tabela certa em 0,58-0,97, contra 0,0755 do índice por
+// coluna), então ele lidera e o lexical vira desempate.
+const PESO_D2Q = 0.6, PESO_LEX_COM_D2Q = 0.3;
 
 export async function selecionarHibrido(pergunta, lexical, k = 5) {
   const q = await vetorDaPergunta(pergunta);
   const lex = lexical.pontuar(pergunta);
+  const d2q = scoresDoc2Query(q);
 
   const juntos = meta.map((m, i) => {
     let dot = 0;
     for (let j = 0; j < dims; j++) dot += q[j] * vetores[i * dims + j];
     const sem = Math.max(0, dot);                  // cosseno já em 0..1 na prática
     const lx = lex.get(m.id) ?? 0;                 // já normalizado em 0..1
-    return { ...m, score: PESO_LEXICAL * lx + (1 - PESO_LEXICAL) * sem, lexical: lx, semantico: sem };
+    const dq = d2q.get(m.id);
+    const score = dq
+      ? PESO_D2Q * Math.max(0, dq.s) + PESO_LEX_COM_D2Q * lx + (1 - PESO_D2Q - PESO_LEX_COM_D2Q) * sem
+      : PESO_LEXICAL * lx + (1 - PESO_LEXICAL) * sem;
+    return { ...m, score, lexical: lx, semantico: sem, ...(dq ? { via: dq.via } : {}) };
   });
   return juntos.sort((a, b) => b.score - a.score).slice(0, k);
 }
