@@ -35,12 +35,12 @@ PAD = 78
 
 VARIANTS = {
     "og.png": {
-        "eyebrow": "839 TABELAS PÚBLICAS · 43 TEMAS",
+        "eyebrow": "849 TABELAS PÚBLICAS · 43 TEMAS",
         "head": ["Brasil em números,", "retratos dos dados oficiais"],
         "dek": "Vínculos de emprego, óbitos, contratos públicos, resultados\neleitorais — cruzados por raça, classe, gênero e território.",
     },
     "og-en.png": {
-        "eyebrow": "839 PUBLIC TABLES · 43 THEMES",
+        "eyebrow": "849 PUBLIC TABLES · 43 THEMES",
         "head": ["Brazil by the numbers,", "portraits from official data"],
         "dek": "Employment records, deaths, public contracts, election results —\ncross-referenced by race, class, gender and territory.",
     },

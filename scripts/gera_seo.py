@@ -59,12 +59,12 @@ MARCAS_COMUNS = (
 # leitor encontra na página.
 DESCRICOES = {
     "index.html": (
-        "839 tabelas de dados oficiais brasileiros cruzadas em 43 investigações "
+        "849 tabelas de dados oficiais brasileiros cruzadas em 43 investigações "
         "sobre desigualdade, poder, economia, saúde e violência — o retrato que o "
         "Estado já tem de si mesmo."
     ),
     "en.html": (
-        "839 tables of official Brazilian data, cross-referenced into 43 "
+        "849 tables of official Brazilian data, cross-referenced into 43 "
         "investigations on inequality, power, economy, health and violence — the "
         "portrait the State already has of itself."
     ),
