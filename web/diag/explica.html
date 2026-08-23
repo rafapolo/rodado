@@ -1,0 +1,17 @@
+<meta charset="utf-8"><pre id="out">…</pre>
+<script type="module">
+const out=document.getElementById("out"), log=s=>out.textContent+=s+"\n";
+try{
+  const llm=await import("/llm.js");
+  await llm.carregar("1.5b",({pct,texto})=>{out.textContent=`load ${pct}% ${texto??""}`;});
+  out.textContent="";
+  log("modelo pronto");
+  const linhas=[{sigla_uf:"PE",obitos:71234}];
+  const t=performance.now();
+  const r=await llm.explicar("Quantos óbitos em Pernambuco em 2020?",
+    "SELECT count(*) FROM br_ms_sim.microdados WHERE sigla_uf='PE'", linhas, ["sigla_uf","obitos"]);
+  log(`explicar levou ${((performance.now()-t)/1000).toFixed(1)}s`);
+  log(JSON.stringify(r).slice(0,400));
+}catch(e){ log("ERRO: "+e.message); }
+window.__done=true;
+</script>

@@ -40,8 +40,13 @@ export function validarColunas(sql, tabelas) {
     "max","distinct","having","with","case","when","then","else","end","desc","asc","cast","varchar",
     "integer","double","date","union","all","offset","using","over","partition","round","coalesce","between"]);
 
+  // `dataset.tabela` casa com o mesmo padrão de `alias.coluna` — sem tirar as
+  // referências de tabela, `br_ms_sim.microdados` vira "coluna microdados
+  // inexistente" e dispara um reparo que não tinha o que reparar.
+  const semTabelas = tabelas.reduce((acc, t) => acc.split(t.id).join(" "), sql);
+
   const suspeitas = new Set();
-  for (const [, col] of sql.matchAll(/\b[A-Za-z_][\w]*\.([A-Za-z_][\w]*)\b/g)) {
+  for (const [, col] of semTabelas.matchAll(/\b[A-Za-z_][\w]*\.([A-Za-z_][\w]*)\b/g)) {
     const c = col.toLowerCase();
     if (!conhecidas.has(c) && !RESERVADAS.has(c) && !/^\d/.test(c)) suspeitas.add(col);
   }

@@ -58,6 +58,15 @@ export async function gerarSQL(prompt) {
   return { sql: limpo.replace(/;\s*$/, "") };
 }
 
+/**
+ * Segunda chamada: a prosa e a escolha do gráfico.
+ *
+ * SEM `response_format: {type:"json_object"}`. Medido: com ele o WebLLM trava
+ * indefinidamente neste modelo — precisa compilar uma gramática para o JSON
+ * forçado, e isso não termina (>10 min contra 4,5s da geração normal). Pedimos
+ * JSON no texto do prompt e extraímos com regex, que é o que o `strip` já fazia
+ * para o SQL.
+ */
 export async function explicar(pergunta, sql, linhas, colunas) {
   const amostra = JSON.stringify(linhas.slice(0, 50));
   const r = await engine.chat.completions.create({
@@ -80,12 +89,15 @@ Use "grafico": null quando o resultado for um número só ou uma tabela larga de
     }],
     temperature: 0.2,
     max_tokens: 600,
-    response_format: { type: "json_object" },
   });
-  try {
-    const j = JSON.parse(r.choices[0].message.content ?? "{}");
-    return { resposta: j.resposta ?? "", grafico: j.grafico ?? null };
-  } catch {
-    return { resposta: r.choices[0].message.content ?? "", grafico: null };
+  const bruto = (r.choices[0].message.content ?? "").trim();
+  // o modelo às vezes embrulha em cerca de markdown ou escreve antes do JSON
+  const m = bruto.match(/\{[\s\S]*\}/);
+  if (m) {
+    try {
+      const j = JSON.parse(m[0]);
+      return { resposta: j.resposta ?? bruto, grafico: j.grafico ?? null };
+    } catch { /* cai pro texto puro */ }
   }
+  return { resposta: bruto.replace(/```/g, "").trim(), grafico: null };
 }

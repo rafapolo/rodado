@@ -1,0 +1,30 @@
+<meta charset="utf-8"><pre id="out">…</pre>
+<script type="module">
+const out=document.getElementById("out"), log=s=>out.textContent+=s+"\n";
+try{
+  const llm=await import("/llm.js");
+  log("webgpu: "+llm.temWebGPU());
+  const t0=performance.now();
+  await llm.carregar("1.5b",({pct,texto})=>{out.textContent=`load ${pct}% ${texto??""}`;});
+  log(`\nmodelo carregado em ${((performance.now()-t0)/1000).toFixed(0)}s`);
+
+  // chamada minima: mede se o problema e o prompt grande ou a geracao em si
+  const t1=performance.now();
+  const r1=await llm.gerarSQL("Responda apenas: SELECT 1");
+  log(`prompt trivial: ${((performance.now()-t1)/1000).toFixed(1)}s -> ${JSON.stringify(r1).slice(0,120)}`);
+
+  // agora com o prompt real
+  const P=await import("/prompt.js"), embed=await import("/embed.js"), lex=await import("/lexical.js");
+  await P.carregarSemantica();
+  await embed.carregar(()=>{});
+  const cols=await fetch("/index/colunas.json").then(r=>r.json());
+  lex.indexar(embed.tabelas(), cols);
+  const tabs=await embed.selecionarHibrido("Quantos óbitos foram registrados em Pernambuco em 2020?", lex, 5);
+  const prompt=P.montarPrompt("Quantos óbitos foram registrados em Pernambuco em 2020?", tabs, cols);
+  log(`\nprompt real: ${prompt.length} chars (~${Math.round(prompt.length/3.5)} tokens)`);
+  const t2=performance.now();
+  const r2=await llm.gerarSQL(prompt);
+  log(`gerou em ${((performance.now()-t2)/1000).toFixed(1)}s -> ${JSON.stringify(r2).slice(0,300)}`);
+}catch(e){ log("ERRO: "+e.message); }
+window.__done=true;
+</script>

@@ -1,0 +1,20 @@
+<meta charset="utf-8"><pre id="out">…</pre>
+<script type="module">
+const out=document.getElementById("out"), log=s=>out.textContent+=s+"\n";
+window.onerror=(m,f,l,c,e)=>{log("WINDOW ERROR: "+m+"\n"+(e?.stack??"").slice(0,900));};
+try{
+  const llm=await import("/llm.js"), ask=await import("/ask.js"), embed=await import("/embed.js");
+  const P=await import("/prompt.js"), lex=await import("/lexical.js");
+  await embed.carregar(()=>{});
+  await ask.carregarColunas(embed.tabelas());
+  await P.carregarSemantica();
+  log("indices ok, carregando LLM…");
+  await llm.carregar("1.5b",({pct})=>{out.textContent=`load ${pct}%`;});
+  out.textContent=""; log("LLM pronto\n");
+  const t=performance.now();
+  await ask.perguntar("Quantos óbitos foram registrados em Pernambuco em 2020?", (ev,d)=>{
+    log(`[${((performance.now()-t)/1000).toFixed(1)}s] ${ev}: ${JSON.stringify(d).slice(0,220)}`);
+  });
+}catch(e){ log("ERRO: "+e.message+"\n"+(e.stack??"").slice(0,900)); }
+window.__done=true;
+</script>
