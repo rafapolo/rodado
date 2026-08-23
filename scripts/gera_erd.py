@@ -31,8 +31,11 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 SRC = REPO / "schemas.json"
-DST_PT = REPO / "ERD.md"          # default: pt-BR
-DST_EN = REPO / "ERD_EN.md"
+# Os gerados vivem em `docs/`. Ficavam na raiz, foram movidos, e os geradores
+# nao acompanharam — entao toda regeneracao caia na raiz e o `docs/` seguia
+# velho. `docs/ERD.md` estava parado em 2026-07-27 por causa disso.
+DST_PT = REPO / "docs" / "ERD.md"          # default: pt-BR
+DST_EN = REPO / "docs" / "ERD_EN.md"
 BEELINK_HOST = "beelink"
 BEELINK_DB = "~/rodado/basedosdados.duckdb"
 JOIN_KEYS_DOC = "docs/context/join_keys.md"

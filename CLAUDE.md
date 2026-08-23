@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**baseldosdados** mirrors public Brazilian government tables from [Base dos Dados](https://basedosdados.org) — stored as Parquet+zstd in `~/rodado` on beelink — and extends that mirror with independently-scraped sources that fill the remaining gaps (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/datasets_to_scrap.md` for the full catalog and provenance of every source). 848 tables (202 datasets, 38,1 bilhões de linhas) as of 2026-08-23 — 689 espelhadas do Base dos Dados, 159 raspadas pelo projeto. A DuckDB view `_rodado_metadata` on beelink tracks each table's rows, source, status, and provenance; `_rodado_datasets` aggregates by dataset. DuckDB queries the data on-demand without local imports. An AI-powered TUI converts Portuguese natural language to SQL.
+**baseldosdados** mirrors public Brazilian government tables from [Base dos Dados](https://basedosdados.org) — stored as Parquet+zstd in `~/rodado` on beelink — and extends that mirror with independently-scraped sources that fill the remaining gaps (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/datasets_to_scrap.md` for the full catalog and provenance of every source). 849 tables (203 datasets, 38,1 bilhões de linhas) as of 2026-08-23 — 689 espelhadas do Base dos Dados, 160 raspadas pelo projeto. A DuckDB view `_rodado_metadata` on beelink tracks each table's rows, source, status, and provenance; `_rodado_datasets` aggregates by dataset. DuckDB queries the data on-demand without local imports. An AI-powered TUI converts Portuguese natural language to SQL.
 
 ## Commands
 
@@ -86,11 +86,11 @@ HMAC-SHA256 cookie auth. Holds a **persistent DuckDB Python connection** (in-mem
 ### Data flow
 BigQuery → Google Cloud Storage (Parquet) → Hetzner S3 (via `scripts/roda.sh` + rclone) → DuckDB httpfs reads on query.
 
-### `ERD.md` (repo root) — the map
-One mermaid `erDiagram` per domain covering all 825 tables: entity = dataset, attribute = table, edge = join key to a reference hub (solid = direct, dashed = needs normalization). Lists what connects to nothing. `ERD.md` is pt-BR (default), `ERD_EN.md` is the English twin — both generated from the same data by `scripts/gera_erd.py`.
+### `docs/ERD.md` — the map
+One mermaid `erDiagram` per domain covering all 834 tables: entity = dataset, attribute = table, edge = join key to a reference hub (solid = direct, dashed = needs normalization). Lists what connects to nothing. `ERD.md` is pt-BR (default), `ERD_EN.md` is the English twin — both generated from the same data by `scripts/gera_erd.py`.
 
 ### `docs/context/` — Schema metadata
-- `basedosdados-schema.json` — full schema (3.8 MB), used by `ask`
+- `basedosdados-schema.json` — full schema (1.8 MB, 197 datasets / 832 tabelas), used by `ask`
 - `schema_compact.txt` — text format for prompting
 - `table_embeddings.json` — semantic vectors for table selection (11.4 MB)
 - `bridges.yaml` — **a fonte única do conhecimento de join**. Conceitos-hub, as 54 pontes (coluna que significa a mesma coisa sob outro nome), os `false_friends` e os `concept_aliases`. Editar aqui; `join_keys.md` é gerado
