@@ -11,6 +11,7 @@ import { runSqlSsh, rewriteToReadParquet, needsParquetFallback } from "./src/bee
 const PORT = Number(Bun.env.ASK_WEB_PORT ?? 8090);
 const MAX_ROWS = Number(Bun.env.ASK_WEB_MAX_ROWS ?? 500);
 const STATIC = new URL("./static/", import.meta.url).pathname;
+const DIAG = new URL("./diag/", import.meta.url).pathname;
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -72,7 +73,9 @@ const server = Bun.serve({
     // estáticos — Bun.file resolve Content-Type e range sozinho
     const rel = url.pathname === "/" ? "index.html" : url.pathname.slice(1);
     if (rel.includes("..")) return new Response("Não.", { status: 400 });
-    const file = Bun.file(STATIC + rel);
+    // as páginas de medição vivem fora de static/ para não irem junto no bundle
+    const base = rel.startsWith("diag/") ? DIAG : STATIC;
+    const file = Bun.file(base + rel.replace(/^diag\//, ""));
     if (await file.exists()) return new Response(file);
     return new Response("Não encontrado", { status: 404 });
   },

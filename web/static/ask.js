@@ -11,7 +11,7 @@ const MAX_REPAROS = 2;
 let colunas = null;
 
 export async function carregarColunas(meta) {
-  colunas = colunas ?? (await fetch("./index/colunas.json").then((r) => r.json()));
+  colunas = colunas ?? (await fetch("/index/colunas.json").then((r) => r.json()));
   if (meta) lexical.indexar(meta, colunas);   // índice lexical: em memória, instantâneo
   return colunas;
 }

@@ -1,0 +1,29 @@
+<meta charset="utf-8"><title>embeda perguntas</title><pre id="out">…</pre>
+<script type="module">
+const out=document.getElementById("out"), log=s=>out.textContent=s;
+try{
+  const {pipeline,env}=await import("/vendor/transformers.js");
+  env.allowLocalModels=false;
+  log("carregando modelo…");
+  const pipe=await pipeline("feature-extraction","Xenova/paraphrase-multilingual-MiniLM-L12-v2",{dtype:"q8"});
+  const {entradas}=await fetch("/index/perguntas.json").then(r=>r.json());
+  const D=384, buf=new Float32Array(entradas.length*D);
+  const t0=performance.now();
+  // lotes de 32: uma passada por pergunta seria ~6.600 round-trips no runtime
+  const B=32;
+  for(let i=0;i<entradas.length;i+=B){
+    const chunk=entradas.slice(i,i+B).map(e=>e.q);
+    const r=await pipe(chunk,{pooling:"mean",normalize:true});
+    for(let j=0;j<chunk.length;j++) buf.set(r.data.slice(j*D,(j+1)*D), (i+j)*D);
+    const s=(performance.now()-t0)/1000;
+    log(`${Math.min(i+B,entradas.length)}/${entradas.length}  ${s.toFixed(0)}s  faltam ~${(s/(i+B)*(entradas.length-i-B)).toFixed(0)}s`);
+  }
+  // devolve em base64 pro Playwright gravar do lado do Bun
+  let bin=""; const u8=new Uint8Array(buf.buffer);
+  for(let i=0;i<u8.length;i+=8192) bin+=String.fromCharCode(...u8.subarray(i,i+8192));
+  window.__b64=btoa(bin);
+  window.__n=entradas.length;
+  log(`pronto: ${entradas.length} vetores`);
+}catch(e){ window.__erro=e.message; log("ERRO: "+e.message); }
+window.__done=true;
+</script>

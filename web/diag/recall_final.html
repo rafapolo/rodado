@@ -1,0 +1,25 @@
+<meta charset="utf-8"><pre id="out">…</pre>
+<script type="module">
+const out=document.getElementById("out");
+try{
+const embed=await import("/embed.js");
+const lexical=await import("/lexical.js");
+await embed.carregar(({pct})=>out.textContent=`modelo ${pct}%`);
+const cols=await fetch("/index/colunas.json").then(r=>r.json());
+lexical.indexar(embed.tabelas(), cols);
+out.textContent = `doc2query carregado: ${embed.temDoc2Query()}\n`;
+const {perguntas}=await fetch("/_douradas.json").then(r=>r.json());
+const L=[]; let ok=0,parc=0,top1=0;
+for(const p of perguntas){
+  const top=await embed.selecionarHibrido(p.q, lexical, 5);
+  const ids=top.map(t=>t.id);
+  const achou=p.tabelas.filter(t=>ids.includes(t));
+  const todas=achou.length===p.tabelas.length;
+  if(todas) ok++; else if(achou.length) parc++;
+  if(ids[0]===p.tabelas[0]) top1++;
+  L.push(`${todas?"OK  ":achou.length?"PARC":"MISS"} ${p.q.slice(0,44)}\n     ${ids.slice(0,3).join(", ")}\n     via: ${top[0].via??"(sem d2q)"}`);
+}
+out.textContent+=L.join("\n")+`\n\nrecall@5: ${ok}/${perguntas.length} completo, ${parc} parcial | top-1: ${top1}/${perguntas.length}`;
+}catch(e){out.textContent="ERRO: "+e.message+"\n"+e.stack;}
+window.__done=true;
+</script>

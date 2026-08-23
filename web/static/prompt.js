@@ -7,7 +7,7 @@
 
 let sem = null;
 export async function carregarSemantica() {
-  sem = sem ?? (await fetch("./index/semantica.json").then((r) => r.json()));
+  sem = sem ?? (await fetch("/index/semantica.json").then((r) => r.json()));
   return sem;
 }
 

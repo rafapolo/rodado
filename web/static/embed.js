@@ -25,8 +25,8 @@ export async function carregar(onProgresso) {
         }
       },
     }).then((p) => (pipe = p)),
-    fetch("./index/meta.json").then((r) => r.json()),
-    fetch("./index/vectors.bin").then((r) => r.arrayBuffer()),
+    fetch("/index/meta.json").then((r) => r.json()),
+    fetch("/index/vectors.bin").then((r) => r.arrayBuffer()),
   ]);
 
   meta = metaJson.tabelas;
@@ -36,8 +36,8 @@ export async function carregar(onProgresso) {
   // de um arquivo que é melhoria, não requisito.
   try {
     const [pj, pb] = await Promise.all([
-      fetch("./index/perguntas.json").then((r) => (r.ok ? r.json() : null)),
-      fetch("./index/perguntas_vetores.bin").then((r) => (r.ok ? r.arrayBuffer() : null)),
+      fetch("/index/perguntas.json").then((r) => (r.ok ? r.json() : null)),
+      fetch("/index/perguntas_vetores.bin").then((r) => (r.ok ? r.arrayBuffer() : null)),
     ]);
     if (pj && pb && pj.entradas.length * 384 * 4 === pb.byteLength) {
       pEntradas = pj.entradas;
