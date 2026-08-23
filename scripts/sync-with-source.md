@@ -1,6 +1,6 @@
 # Syncing beelink with the upstream BigQuery source
 
-`beelink:~/baseldosdados-data` is a **separate, local-parquet mirror** of the upstream BigQuery source,
+`beelink:~/rodado` is a **separate, local-parquet mirror** of the upstream BigQuery source,
 independent from the S3-view-based `data/basedosdados.duckdb` this repo's live service
 queries (see project CLAUDE.md — the live service never touches BigQuery, only Hetzner S3).
 
@@ -128,7 +128,7 @@ cat /tmp/bq_tables_dir/*.txt | sort > /tmp/live_bq_tables.txt   # dataset/table<
 ## Step 2 — Diff against beelink to find genuinely missing tables
 
 ```bash
-ssh beelink "find ~/baseldosdados-data -mindepth 2 -maxdepth 2 -type d -printf '%P\n'" \
+ssh beelink "find ~/rodado -mindepth 2 -maxdepth 2 -type d -printf '%P\n'" \
   | sort > /tmp/beelink_tables.txt
 awk -F'\t' '{print $1}' /tmp/live_bq_tables.txt | sort > /tmp/live_bq_names.txt
 
@@ -205,9 +205,11 @@ Use `scripts/sync/gcp_to_beelink_sync.py <missing_list_file>`. It:
 5. Runs the real `bq query --format=json` with a hard 180s subprocess timeout (guards
    against anything the dry-run underestimated) under `JOB_PROJECT`, fully-qualified table
    ref against `BQ_PROJECT`.
-6. Casts BigQuery JSON string values to real types per column (`bq show` schema →
-   `TYPE_CASTERS` in the script), writes Parquet, `rsync`s straight to
-   `beelink:~/baseldosdados-data/<dataset>/<table>/`.
+6. Converts BigQuery JSON string values to real Arrow types per column (`bq show`
+   schema → `_bq_tipos.para_arrow`), writes Parquet, and `rsync`s to
+   `beelink:~/rodado/<dataset>/<table>/<NN>.parquet` — the destination name is
+   resolved by `_bq_tipos.nome_destino` *before* the transfer, never left to rsync's
+   basename preservation.
 7. Writes progress to `~/.gcp_sync_progress` and a `skipped.txt` log of anything it
    couldn't pull (with a reason) for manual follow-up.
 
@@ -269,15 +271,16 @@ Re-run Step 3's row-count comparison periodically to see how much drift has actu
 - One table (`br_ms_sia.producao_ambulatorial`, ~2.15TB as of 2026-07-05) is bigger than
   the entire Sandbox monthly free quota by itself — this and anything similar should stay
   permanently excluded from automated sync, not retried.
-- Multiple older, superseded sync scripts exist in `scripts/sync/` from earlier sessions
-  (`fast_gcp_sync.py`, `quick_sync_bq.py`, `sync_bq_to_beelink.py`, `sync_bq_to_local.py`,
-  `sync_missing_tables.py`, `sync_via_bq_query.py`, `sync_stale_tables_incremental.py`) —
-  these predate the `JOB_PROJECT` fix, the dry-run gate, the timeout guard, and quota
-  tracking documented here (`sync_stale_tables_incremental.py` in particular is an unfinished
-  stub — `get_max_id_on_beelink` and the row-drift detection are hardcoded placeholders, not
-  real logic). `gcp_to_beelink_sync.py` (missing tables) and `sync_drifted_incremental.py`
-  (row drift) are the current, tested entry points; treat the rest as dead unless someone
-  deliberately revives one.
+- Four superseded sync scripts were removed on 2026-08-23 (`fast_gcp_sync.py`,
+  `quick_sync_bq.py`, `sync_bq_to_beelink.py`, `sync_via_bq_query.py`) — recuperáveis no
+  histórico do git, em `8ce9aa8`. Estavam sem o `JOB_PROJECT`, sem o dry-run, sem o teto
+  de scan do `bq_quota` e sem tipo no Parquet. O que sobra em `scripts/sync/`:
+  `gcp_to_beelink_sync.py` (tabelas faltando) e `sync_drifted_incremental.py` (drift de
+  linha) são os pontos de entrada testados; `ressincroniza_bq.py` é o caminho preferido
+  para código novo, porque usa `QueryJob.to_arrow()` e o JSON não entra no caminho.
+  `sync_bq_to_local.py` e `sync_stale_tables_incremental.py` seguem no repositório
+  (`sync_stale_tables_incremental.py` tem `get_max_id_on_beelink` e a detecção de drift
+  como placeholder, não lógica real).
 - Running Step 4 and Step 5 **concurrently** races on `~/.bq_sandbox_quota.json` (unlocked
   read-modify-write) and can silently over-spend the monthly budget. Run them sequentially
   (Step 4 to completion, then Step 5), not in parallel.

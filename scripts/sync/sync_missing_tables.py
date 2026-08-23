@@ -117,7 +117,7 @@ def sync_to_beelink(dataset, table, row_count):
 
         # Converte com o tipo do BigQuery. `pa.Table.from_pylist(rows)` direto
         # transforma TODA coluna em string — o JSON do bq não carrega tipo — e foi
-        # o que produziu os 80 tmp*.parquet de 2026-07-05 (tasks/tmp_parquet_38.plan).
+        # o que produziu os 80 tmp*.parquet de 2026-07-05.
         tipos = _bq_tipos.schema_bq(dataset, table, billing="raspa-491716")
         table_arrow = _bq_tipos.para_arrow(rows, tipos)
         if table_arrow is None:
@@ -191,6 +191,10 @@ def main():
 
     write_progress("complete", 100, f"Synced {synced} of {len(missing)}", synced)
     print(f"\n✓ Synced {synced}/{len(missing)} missing tables")
+    if synced:
+        # As views do beelink enumeram os parquet um a um; um shard novo que a view
+        # nao cita nao quebra nada, so faz a consulta responder a menos.
+        print("agora rode: python3 scripts/repara_views_beelink.py --apply")
     return 0
 
 if __name__ == "__main__":

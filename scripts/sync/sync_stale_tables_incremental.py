@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """
-Sync missing data from 147 stale tables via incremental bq query.
+INCOMPLETO — o caminho de escrita esta desativado. Ver `INCREMENTAL_IMPLEMENTADO`.
 
-Uses BigQuery Sandbox free tier (1TB/month). Identifies max row ID on beelink,
-fetches only newer rows from BigQuery, pushes via rsync.
-
-Runs slowly/periodically to avoid exhausting free tier quota.
+A deteccao de drift nunca foi escrita: o script re-buscaria o topo de cada tabela
+e anexaria como shard novo. Para sync incremental de verdade use
+`scripts/sync/sync_drifted_incremental.py`.
 
 Usage:
     python3 sync_stale_tables_incremental.py              # full run
@@ -25,6 +24,28 @@ from google.cloud import bigquery
 import os
 
 os.environ['GOOGLE_CLOUD_PROJECT'] = 'raspa-491716'
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Este script NAO faz sync incremental. `get_max_id_on_beelink` devolve
+# (None, None) incondicionalmente, entao o WHERE de `fetch_incremental_rows`
+# colapsa para `1=1` e a consulta vira `SELECT * FROM <tabela> LIMIT BATCH_SIZE`:
+# as PRIMEIRAS linhas da tabela, do topo, de novo — nao as novas. Cada execucao
+# anexaria mais um shard duplicado a cada tabela atrasada.
+#
+# As colunas que ele procura (`id`, `created_at`) tambem nao existem no Base dos
+# Dados; o particionamento de la e `ano` / `mes` / `sigla_uf`.
+#
+# O resto do script foi consertado em 2026-08-23 (tipo vindo do BigQuery, nome de
+# destino resolvido antes do rsync, ZSTD), o que o deixa com CARA de pronto. Nao
+# esta. Enquanto `INCREMENTAL_IMPLEMENTADO` for False ele recusa a rodar o caminho
+# de escrita; `--dry-run`, que so lista, continua liberado.
+#
+# Para fechar: `get_max_id_on_beelink` tem que ler o max real da coluna de
+# particao do parquet local, e `fetch_incremental_rows` tem que usar essa coluna
+# em vez de `id`/`created_at`. `sync_drifted_incremental.py` ja faz exatamente
+# isso e e o caminho testado — provavelmente este arquivo deve morrer em favor
+# dele em vez de ser terminado.
+INCREMENTAL_IMPLEMENTADO = False
 
 PROGRESS_FILE = Path.home() / ".stale_sync_progress"
 CHECKPOINT_FILE = Path.home() / ".stale_sync_checkpoint"
@@ -79,12 +100,11 @@ def get_stale_tables():
     return stale[:20]  # First 20 for pilot
 
 def get_max_id_on_beelink(dataset, table):
+    """NAO IMPLEMENTADO. Ver `INCREMENTAL_IMPLEMENTADO` no topo do arquivo.
+
+    Deveria devolver (max_id, id_column) lendo o parquet local do beelink. Devolve
+    (None, None) sempre, o que faz o WHERE de `fetch_incremental_rows` virar `1=1`.
     """
-    Get max row ID or timestamp from beelink's local parquet.
-    Returns (max_id, id_column) or (None, None) if empty.
-    """
-    # Placeholder: query beelink's DuckDB to find max ID
-    # In production, this would SELECT MAX(id) or MAX(created_at) from local parquet
     return None, None
 
 def fetch_incremental_rows(dataset, table, since_id=None, since_date=None):
@@ -136,7 +156,7 @@ def sync_rows_to_beelink(dataset, table, rows):
 
     # Converte com o tipo do BigQuery. `pa.Table.from_pylist(rows)` direto
     # transforma TODA coluna em string — o JSON do bq nao carrega tipo — e foi
-    # o que produziu os 80 tmp*.parquet de 2026-07-05 (tasks/tmp_parquet_38.plan).
+    # o que produziu os 80 tmp*.parquet de 2026-07-05.
     tipos = _bq_tipos.schema_bq(dataset, table, billing="raspa-491716")
     table_arrow = _bq_tipos.para_arrow(rows, tipos)
     if table_arrow is None:
@@ -188,6 +208,18 @@ def main():
             print(f"  {ds}.{tbl}")
         return 0
 
+    if not INCREMENTAL_IMPLEMENTADO:
+        print(
+            "\nRECUSADO: este script nao faz sync incremental.\n"
+            "  `get_max_id_on_beelink` devolve (None, None) sempre, entao o WHERE\n"
+            "  vira `1=1` e a consulta traz as PRIMEIRAS linhas da tabela de novo,\n"
+            "  nao as novas. Rodar anexaria um shard duplicado por tabela.\n\n"
+            "  Use `scripts/sync/sync_drifted_incremental.py`, que deriva o max real\n"
+            "  da coluna de particao. `--dry-run` aqui continua funcionando.",
+            file=sys.stderr,
+        )
+        return 1
+
     # Sync incrementally
     synced_total = 0
     for idx, (dataset, table) in enumerate(stale):
@@ -212,6 +244,10 @@ def main():
 
     write_progress("complete", 100, f"Synced {synced_total} rows", synced_total)
     print(f"\n✓ Synced {synced_total} rows from stale tables")
+    if synced_total:
+        # As views do beelink enumeram os parquet um a um; um shard novo que a view
+        # nao cita nao quebra nada, so faz a consulta responder a menos.
+        print("agora rode: python3 scripts/repara_views_beelink.py --apply")
     return 0
 
 if __name__ == "__main__":

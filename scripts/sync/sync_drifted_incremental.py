@@ -23,25 +23,20 @@ from datetime import datetime
 
 sys.path.insert(0, str(Path(__file__).parent))
 import bq_quota
+import _bq_tipos
 
 BQ_PROJECT = "basedosdados"
 JOB_PROJECT = "raspa-491716"
 BEELINK_HOST = "beelink"
-BEELINK_PATH = "~/baseldosdados-data"
+BEELINK_PATH = "~/rodado"   # ~/baseldosdados-data nao existe mais no beelink
 PROGRESS_FILE = Path.home() / ".drift_sync_progress"
 TEMP_DIR = Path(tempfile.gettempdir()) / "drift_sync"
 MAX_ROWS_PER_BATCH = 5_000_000
 MAX_DRY_RUN_BYTES = 3 * 1024**3  # 3GB per single incremental pull
 
-TYPE_CASTERS = {
-    "INTEGER": lambda x: int(x) if x else None,
-    "INT64": lambda x: int(x) if x else None,
-    "FLOAT": lambda x: float(x) if x else None,
-    "FLOAT64": lambda x: float(x) if x else None,
-    "NUMERIC": lambda x: float(x) if x else None,
-    "BOOLEAN": lambda x: x.lower() in ("true", "1") if x else None,
-    "BOOL": lambda x: x.lower() in ("true", "1") if x else None,
-}
+# A conversao de tipo vive em `_bq_tipos.para_arrow`. O TYPE_CASTERS que estava aqui
+# so cobria INT/FLOAT/BOOL — DATE, DATETIME e TIMESTAMP passavam direto como string e o
+# pyarrow ainda inferia o schema por cima. Agora o tipo do BigQuery decide o tipo Arrow.
 
 QUOTED_TYPES = {"DATE", "DATETIME", "TIMESTAMP", "STRING"}
 
@@ -172,36 +167,42 @@ def sync_one(dataset, table, meta):
         write_progress("no_new_rows", full_name)
         return "no_new_rows"
 
-    schema_map = {f["name"]: f["type"] for f in meta["schema"]}
-    casted = []
-    for row in rows:
-        casted_row = {}
-        for col, v in row.items():
-            caster = TYPE_CASTERS.get(schema_map.get(col, "STRING"), lambda x: x)
-            try:
-                casted_row[col] = caster(v) if v is not None else None
-            except (ValueError, TypeError):
-                casted_row[col] = v
-        casted.append(casted_row)
-
-    import pyarrow as pa
     import pyarrow.parquet as pq
 
-    table_arrow = pa.Table.from_pylist(casted)
-    TEMP_DIR.mkdir(parents=True, exist_ok=True)
-    part_name = f"incr_{datetime.now().strftime('%Y%m%d_%H%M%S')}.parquet"
-    out_path = TEMP_DIR / f"{dataset}_{table}_{part_name}"
-    pq.write_table(table_arrow, str(out_path))
+    tipos = {
+        f["name"]: (None if f.get("mode") == "REPEATED" or f["type"] == "RECORD"
+                    else f["type"])
+        for f in meta["schema"]
+    }
+    table_arrow = _bq_tipos.para_arrow(rows, tipos)
+    if table_arrow is None:
+        write_progress("no_new_rows", full_name)
+        return "no_new_rows"
 
-    remote_dir = f"{BEELINK_HOST}:{BEELINK_PATH}/{dataset}/{table}"
-    rsync_cmd = f"rsync -av {out_path} {remote_dir}/{part_name}"
+    TEMP_DIR.mkdir(parents=True, exist_ok=True)
+    out_path = TEMP_DIR / f"{dataset}_{table}_incr.parquet"
+    pq.write_table(table_arrow, str(out_path), compression="zstd")
+
+    # O shard novo entra na convencao `0000000000NN.parquet` do espelho. O nome
+    # `incr_<timestamp>.parquet` que estava aqui funcionava para o rsync, mas as views
+    # do beelink enumeram os arquivos um a um: um shard extra que a view nao cita
+    # nao quebra nada — a consulta so responde a menos, calada. Ver
+    # `repara_views_beelink.py`, que precisa rodar depois deste script.
+    remote_dir_path = f"{BEELINK_PATH}/{dataset}/{table}"
+    existentes = subprocess.run(
+        f"ssh {BEELINK_HOST} 'ls {remote_dir_path} 2>/dev/null'",
+        shell=True, capture_output=True, text=True,
+    ).stdout.split()
+    part_name = _bq_tipos.nome_destino(existentes)
+
+    rsync_cmd = f"rsync -av {out_path} {BEELINK_HOST}:{remote_dir_path}/{part_name}"
     result = subprocess.run(rsync_cmd, shell=True, capture_output=True, text=True)
     out_path.unlink()
     if result.returncode != 0:
         write_progress("sync_failed", full_name, result.stderr[:200])
         return "sync_failed"
 
-    write_progress("synced", full_name, f"+{len(rows)} rows")
+    write_progress("synced", full_name, f"+{len(rows)} rows -> {part_name}")
     return f"+{len(rows)}"
 
 
@@ -249,6 +250,9 @@ def main():
         for t, r in results.items():
             f.write(f"{t}\t{r}\n")
     print(f"Results: {log_path}")
+
+    if any(str(r).startswith("+") for r in results.values()):
+        print("agora rode: python3 scripts/repara_views_beelink.py --apply")
 
     no_partition = [t for t, r in results.items() if r == "no_partition_column"]
     if no_partition:

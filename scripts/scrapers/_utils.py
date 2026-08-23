@@ -48,7 +48,7 @@ def write_parquet(df, dest: Path, schema: pa.Schema | None = None) -> int:
 
 def rsync_to_beelink(local_path: Path, dest_path: str) -> bool:
     host = os.environ.get("BEELINK_HOST", "beelink")
-    base = os.environ.get("BEELINK_PATH", "~/baseldosdados-data")
+    base = os.environ.get("BEELINK_PATH", "~/rodado")
     full_dest = f"{host}:{base}/{dest_path}/"
     try:
         subprocess.run(
