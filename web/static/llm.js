@@ -12,6 +12,26 @@ export const MODELOS = {
 
 let engine = null, carregado = null;
 
+/**
+ * Teto por chamada. Um modelo grande em máquina lenta pode levar minutos, e sem
+ * teto a página fica presa em "escrevendo o SQL…" sem nunca dizer o que houve.
+ * Melhor falhar com mensagem do que esperar para sempre.
+ */
+const tetoMs = () => {
+  try { return Number(new URLSearchParams(location.search).get("teto")) || 180_000; }
+  catch { return 180_000; }   // fora do navegador (bun test) não há `location`
+};
+
+function comTeto(promessa, oque) {
+  const ms = tetoMs();
+  return Promise.race([
+    promessa,
+    new Promise((_, rej) => setTimeout(
+      () => rej(new Error(`${oque} passou de ${Math.round(ms / 1000)}s. ` +
+        `Um modelo menor costuma resolver — ou recarregue a página.`)), ms)),
+  ]);
+}
+
 export const temWebGPU = () => typeof navigator !== "undefined" && "gpu" in navigator;
 export const pronto = () => engine !== null;
 export const modeloAtual = () => carregado;
@@ -41,11 +61,11 @@ const tirarCercas = (t) => {
 };
 
 export async function gerarSQL(prompt) {
-  const r = await engine.chat.completions.create({
+  const r = await comTeto(engine.chat.completions.create({
     messages: [{ role: "user", content: prompt }],
     temperature: 0,        // SQL não quer criatividade
     max_tokens: 700,
-  });
+  }), "A geração do SQL");
   const bruto = r.choices[0].message.content ?? "";
   const limpo = tirarCercas(bruto);
 
@@ -69,7 +89,7 @@ export async function gerarSQL(prompt) {
  */
 export async function explicar(pergunta, sql, linhas, colunas) {
   const amostra = JSON.stringify(linhas.slice(0, 50));
-  const r = await engine.chat.completions.create({
+  const r = await comTeto(engine.chat.completions.create({
     messages: [{
       role: "user",
       content:
@@ -89,7 +109,7 @@ Use "grafico": null quando o resultado for um número só ou uma tabela larga de
     }],
     temperature: 0.2,
     max_tokens: 600,
-  });
+  }), "A redação da resposta");
   const bruto = (r.choices[0].message.content ?? "").trim();
   // o modelo às vezes embrulha em cerca de markdown ou escreve antes do JSON
   const m = bruto.match(/\{[\s\S]*\}/);

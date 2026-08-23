@@ -1,0 +1,15 @@
+<meta charset="utf-8"><pre id="out">…</pre>
+<script type="module">
+const out=document.getElementById("out"), log=s=>out.textContent+=s+"\n";
+try{
+  const llm=await import("/llm.js");
+  await llm.carregar("1.5b",({pct})=>{out.textContent=`load ${pct}%`;});
+  out.textContent="";
+  // ?teto=1 força o estouro: a promessa tem que REJEITAR com mensagem legível,
+  // não ficar pendurada.
+  const t=performance.now();
+  try { await llm.gerarSQL("SELECT 1"); log("NAO estourou (inesperado)"); }
+  catch(e){ log(`estourou em ${((performance.now()-t)/1000).toFixed(1)}s: ${e.message}`); }
+}catch(e){ log("ERRO: "+e.message); }
+window.__done=true;
+</script>

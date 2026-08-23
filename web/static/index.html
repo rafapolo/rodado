@@ -121,6 +121,10 @@ async function perguntar(texto) {
 
   let ultimas = null;
   const t0 = performance.now();
+  // Sem este try, uma exceção no meio do laço deixa a página parada na última
+  // fase para sempre, sem mensagem e com o botão travado — o usuário vê
+  // "escrevendo o SQL…" e nada mais acontece.
+  try {
   await ask.perguntar(pergunta, (ev, d) => {
     if (ev === "fase") status({
       embedando: "escolhendo tabelas…", gerando: "escrevendo o SQL…",
@@ -175,7 +179,13 @@ async function perguntar(texto) {
 
     if (ev === "fim") status(`pronto em ${((performance.now() - t0) / 1000).toFixed(1)}s`);
   });
-  $("ir").disabled = false;
+  } catch (e) {
+    mostrar("erro");
+    $("erro").textContent = `${e.message}\n\n${(e.stack ?? "").split("\n").slice(0, 4).join("\n")}`;
+    status("falhou — veja o erro abaixo");
+  } finally {
+    $("ir").disabled = false;
+  }
 }
 
 $("ir").onclick = () => perguntar();
