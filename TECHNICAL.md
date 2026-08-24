@@ -219,7 +219,7 @@ architecture" below for what it demonstrated while it ran.
 ┌──────────────────────────────────────────────────────────────────┐
 │                     QUERY LAYER                                  │
 │                                                                  │
-│   ssh beelink '~/bin/duckdb -json ...'  — read-only, single-stmt │
+│   ssh beelink '~/bin/duckdb -readonly -json ...' — single-stmt   │
 │   No local DuckDB connection, no persistent server process      │
 └────────────────────────────────┬─────────────────────────────────┘
                                  │
