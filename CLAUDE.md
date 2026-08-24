@@ -17,7 +17,7 @@ python scripts/gera_erd.py            # schemas.json → ERD.md (pt-BR) + ERD_EN
 
 ### Querying data
 ```bash
-ssh beelink '~/bin/duckdb -json ~/rodado/basedosdados.duckdb' <<'SQL'
+ssh beelink '~/bin/duckdb -readonly -json ~/rodado/basedosdados.duckdb' <<'SQL'
 SET enable_progress_bar=false;
 SELECT ...;
 SQL
@@ -178,7 +178,7 @@ Existe uma **única exceção, estritamente escopada**: manutenção do mirror d
 ## Key Conventions
 
 - **Never use GCP, BigQuery, or `bq` CLI for queries** — all data access goes through DuckDB only.
-- **SSH to beelink** for all SQL queries — `ssh beelink '~/bin/duckdb -json ~/rodado/basedosdados.duckdb'` (SQL piped over stdin, SET enable_progress_bar=false first). beelink is the project's only data source — everything is local parquet + DuckDB, no live web service. Set BEELINK_HOST env var if the hostname differs.
+- **SSH to beelink** for all SQL queries — `ssh beelink '~/bin/duckdb -readonly -json ~/rodado/basedosdados.duckdb'` (SQL piped over stdin, SET enable_progress_bar=false first). Always pass `-readonly`: DuckDB takes an exclusive file lock even for a bare SELECT unless told otherwise, and multiple sessions query this same file concurrently — a non-readonly connection blocks every other one, including read-only attempts, until it disconnects. See `feedback_duckdb_readonly_no_kill` — never kill the process holding the lock, it's very likely another session's real work, not a stuck query. beelink is the project's only data source — everything is local parquet + DuckDB, no live web service. Set BEELINK_HOST env var if the hostname differs.
 - DuckDB always runs read-only; no writes to the database from queries.
 - Queries on large tables must filter on partition columns (`ano`, `mes`, `sigla_uf`) — this is enforced in prompts.
 - SQL dialect is DuckDB; BigQuery syntax does not apply.
