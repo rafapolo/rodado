@@ -91,6 +91,19 @@ migração pra parquet local e aponta pra um bucket que não existe mais,
 `read_parquet(...)` e tenta de novo uma vez — automático, sem o agente
 precisar perceber a distinção.
 
+**Por que `-readonly` na conexão** — DuckDB toma um lock exclusivo no
+arquivo `.duckdb` mesmo para um `SELECT` puro, a menos que a conexão seja
+aberta com `-readonly`; qualquer conexão read-write bloqueia TODAS as
+outras, inclusive tentativas read-only, até desconectar (várias sessões
+deste projeto — humanas e de agente — costumam consultar o mesmo beelink ao
+mesmo tempo). `_run_sql_ssh` já garante no nível SQL que nada escreve
+(`_check_read_only`), então abrir a conexão em `-readonly` não perde nada e
+elimina o lock exclusivo — corrigido em 2026-08-24 depois de um lock real de
+outra sessão travar um teste cego por >1h (ver `tasks/done/mcp_search_refino.md`).
+Um erro de lock depois desse fix significa que OUTRO processo abriu a
+conexão sem `-readonly` — esperar, nunca `kill`: é quase sempre trabalho
+real de outra sessão, não uma query travada.
+
 ---
 
 ## 2 · Retrieval do `search_tables` — doc2query, não keyword match
