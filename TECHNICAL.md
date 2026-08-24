@@ -14,7 +14,7 @@
 | Data engineering & modeling | 849 tables normalized to a typed ontology with join-key graph |
 | Ontology design | 8 business object types with explicit relationships and canonical keys |
 | Application development | Query API + browser SQL shell, production-deployed |
-| AI/ML enablement | Semantic table selection over a 824-table embedding index |
+| AI/ML enablement | Semantic table selection over a doc2query embedding index (832 tables, 6,464 synthetic questions) |
 | Access controls & auditability | HMAC-SHA256 auth, read-only enforcement, Caddy forward auth |
 | Operational durability | Persistent DuckDB connection, resumable pipelines, Docker + haloy deploy |
 | Sensitive data handling | CPF/CNPJ personal identifiers — read-only, no PII export, credential isolation |
@@ -205,7 +205,7 @@ Full map in [`docs/ERD.md`](docs/ERD.md) — pt-BR, English in [`docs/ERD_EN.md`
 │   DuckDB views over partitioned datasets                         │
 │   basedosdados-schema.json   — 832-table schema registry        │
 │   join_keys.md               — join keys + cross-source bridges │
-│   table_embeddings.json      — semantic vectors for AI (11.4 MB)│
+│   doc2query_index.json/.npy  — semantic vectors for AI (11 MB)  │
 │   overview/ (34 files)       — domain narratives for LLM ctx    │
 └────────────────────────────────┬─────────────────────────────────┘
                                  │
@@ -242,10 +242,14 @@ Full map in [`docs/ERD.md`](docs/ERD.md) — pt-BR, English in [`docs/ERD_EN.md`
 
 ## Semantic Table Selection
 
-`docs/context/table_embeddings.json` holds one vector per table — 824 tables × 384 dims,
-produced by `paraphrase-multilingual-MiniLM-L12-v2` via `scripts/update_embeddings.py`.
-Cosine similarity against a Portuguese question ranks the tables worth putting in front of
-a SQL generator, so no consumer has to reason over the full 1.8 MB schema.
+`docs/context/doc2query_index.json` + `doc2query_vectors.npy` hold one vector per
+*synthetic question* a table answers (~8/table, 6,464 questions over 832 tables,
+384 dims, `paraphrase-multilingual-MiniLM-L12-v2`) — not one vector per table. An
+earlier per-table index (one vector over column-name text) measured nearly
+orthogonal to a real question (recall@5 1/15 on a single-table golden set) and was
+replaced; see `tasks/mcp_search_refino.md` item 1. A table's score is the MAX
+cosine similarity across its own questions, so query and index live in the same
+space and no consumer has to reason over the full 1.8 MB schema.
 
 ```
 Pergunta (pt-BR)
@@ -254,7 +258,7 @@ Pergunta (pt-BR)
 Embedding (384-d, multilingual)
     │
     ▼
-Cosseno sobre 824 vetores → top-K tabelas
+Cosseno sobre 6.464 perguntas → MAX por tabela → top-K tabelas
     │
     ▼
 Schema filtrado → gerador de SQL → DuckDB
@@ -373,7 +377,7 @@ Not a Foundry deployment — an open-source system that reproduces the same arch
 | DuckDB engine + views | Foundry query engine |
 | `basedosdados-schema.json` | Ontology schema registry |
 | `join_keys.md` entity graph | Object type links / property mappings |
-| `table_embeddings.json` | Semantic search index |
+| `doc2query_index.json`/`doc2query_vectors.npy` | Semantic search index |
 | `/query` HTTP endpoint | Foundry Functions |
 | `mcp_server.py` | AIP Agent tool actions |
 | Browser SQL shell | Workshop application |
@@ -399,7 +403,7 @@ Not a Foundry deployment — an open-source system that reproduces the same arch
 |-------|-----------|
 | Query engine | DuckDB (httpfs, persistent in-memory connection) |
 | Storage | Hetzner Object Storage, Parquet+zstd |
-| Semantic search | cosine similarity over `table_embeddings.json` |
+| Semantic search | MAX cosine similarity over `doc2query_index.json`/`doc2query_vectors.npy` |
 | API / auth | Python, HMAC-SHA256, JSON responses |
 | Proxy | Caddy (TLS, forward auth, routing by hostname) |
 | Deploy | Docker (multi-stage), haloy |

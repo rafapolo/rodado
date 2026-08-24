@@ -40,7 +40,8 @@ DESCRIBE_MAX_COLS = int(os.environ.get("MCP_DESCRIBE_MAX_COLS", "150"))
 RUN_SQL_MAX_CHARS = int(os.environ.get("MCP_RUN_SQL_MAX_CHARS", "60000"))
 
 SCHEMA_PATH = CONTEXT_DIR / "basedosdados-schema.json"
-EMBEDDINGS_PATH = CONTEXT_DIR / "table_embeddings.json"
+DOC2QUERY_INDEX_PATH = CONTEXT_DIR / "doc2query_index.json"
+DOC2QUERY_VECTORS_PATH = CONTEXT_DIR / "doc2query_vectors.npy"
 JOIN_KEYS_PATH = CONTEXT_DIR / "join_keys.md"
 BRIDGES_PATH = CONTEXT_DIR / "bridges.yaml"
 METRICS_PATH = CONTEXT_DIR / "metrics.yaml"
@@ -156,20 +157,39 @@ def _duplicated() -> set:
 
 
 # ---------------------------------------------------------------------------
-# Search (embeddings) — lazy-loaded, first call downloads the model (~90MB)
+# Search (doc2query) — lazy-loaded, first call downloads the model (~470MB)
 # ---------------------------------------------------------------------------
+# search_tables used to hold one embedding per table, over text built from its
+# column names — measured nearly orthogonal to a real question (cosine 0.08 vs
+# 0.39 for equivalent prose; recall@5 1/15 on the single-table golden set).
+# This index instead holds one embedding per SYNTHETIC QUESTION the table
+# answers (~8/table, scripts/doc2query_lotes.py + doc2query_roda.py against
+# scripts/prompts/doc2query.md), so query and index live in the same space.
+# See tasks/mcp_search_refino.md item 1.
 
 _embedding_model = None
 _embedding_model_lock = threading.Lock()
-_table_embeddings = None  # {"tables": [{"id","text","embedding"}], "model": str}
+_doc2query_index = None  # {"rows": [{"id","table","text"}], "model": str, "vectors": np.ndarray, "table_rows": {table: [row_idx,...]}}
 
 
-def _load_embeddings():
-    global _table_embeddings
-    if _table_embeddings is None:
-        with open(EMBEDDINGS_PATH, encoding="utf-8") as f:
-            _table_embeddings = json.load(f)
-    return _table_embeddings
+def _load_doc2query_index():
+    global _doc2query_index
+    if _doc2query_index is None:
+        import numpy as np
+
+        with open(DOC2QUERY_INDEX_PATH, encoding="utf-8") as f:
+            meta = json.load(f)
+        vectors = np.load(DOC2QUERY_VECTORS_PATH)
+        table_rows: dict[str, list[int]] = {}
+        for i, row in enumerate(meta["rows"]):
+            table_rows.setdefault(row["table"], []).append(i)
+        _doc2query_index = {
+            "rows": meta["rows"],
+            "model": meta["_meta"]["model"],
+            "vectors": vectors,
+            "table_rows": table_rows,
+        }
+    return _doc2query_index
 
 
 def _get_embedding_model():
@@ -178,19 +198,10 @@ def _get_embedding_model():
         if _embedding_model is None:
             from sentence_transformers import SentenceTransformer
 
-            data = _load_embeddings()
-            model_name = os.environ.get("MCP_EMBEDDING_MODEL", data["model"])
+            index = _load_doc2query_index()
+            model_name = os.environ.get("MCP_EMBEDDING_MODEL", index["model"])
             _embedding_model = SentenceTransformer(model_name)
     return _embedding_model
-
-
-def _cosine_similarity(a, b):
-    dot = sum(x * y for x, y in zip(a, b))
-    norm_a = sum(x * x for x in a) ** 0.5
-    norm_b = sum(y * y for y in b) ** 0.5
-    if norm_a == 0 or norm_b == 0:
-        return 0.0
-    return dot / (norm_a * norm_b)
 
 
 # ---------------------------------------------------------------------------
@@ -499,35 +510,53 @@ def describe_table(table: str) -> dict:
 
 @mcp.tool()
 def search_tables(query: str, top_k: int = 10, min_similarity: float = SEARCH_THRESHOLD) -> dict:
-    """Semantic search over all 782 tables by natural-language description.
+    """Semantic search over all 832 tables by natural-language question.
 
     Example: search_tables("gastos de campanha eleitoral") surfaces
     despesas_candidato/receitas_candidato even without exact keyword matches.
 
-    Each result's `text` is truncated to keep responses token-cheap — call
-    describe_table() on a hit for the full column list.
+    Backed by a doc2query index: ~8 synthetic questions per table, each
+    embedded on its own. A table's score is the MAX cosine similarity across
+    its own questions, not their average — a table answers many different
+    questions, and it's whichever one matches yours that should decide the
+    score (averaging was tried and measured worse: it dilutes a table's best
+    match with its unrelated ones). `text` is the specific question that
+    matched, not a table description — there's no single description in this
+    index — so read a hit as "this table can answer: <text>"; call
+    describe_table() for the actual columns.
 
     NOTE: the first call in a session downloads the embedding model
-    (~90MB from Hugging Face) and is slow; subsequent calls are fast.
+    (~470MB from Hugging Face) and is slow; subsequent calls are fast.
     """
+    import numpy as np
+
     model = _get_embedding_model()
-    data = _load_embeddings()
-    query_embedding = model.encode(query).tolist()
+    index = _load_doc2query_index()
+    query_vec = np.asarray(model.encode(query), dtype="float32")
 
-    scored = [
-        (_cosine_similarity(query_embedding, t["embedding"]), t)
-        for t in data["tables"]
-    ]
-    scored.sort(key=lambda x: x[0], reverse=True)
+    vectors = index["vectors"]
+    query_norm = float(np.linalg.norm(query_vec))
+    if query_norm == 0:
+        sims = np.zeros(len(vectors), dtype="float32")
+    else:
+        norms = np.linalg.norm(vectors, axis=1)
+        sims = (vectors @ query_vec) / (norms * query_norm + 1e-12)
 
-    max_text = 280
+    best_per_table = {}
+    for table, row_idxs in index["table_rows"].items():
+        table_sims = sims[row_idxs]
+        best_local = int(np.argmax(table_sims))
+        best_per_table[table] = (float(table_sims[best_local]), row_idxs[best_local])
+
+    ranked = sorted(best_per_table.items(), key=lambda kv: kv[1][0], reverse=True)
+
     results = [
         {
-            "table": t["id"],
+            "table": table,
             "similarity": round(score, 4),
-            "text": t["text"][:max_text] + ("…" if len(t["text"]) > max_text else ""),
+            "text": index["rows"][row_idx]["text"],
         }
-        for score, t in scored
+        for table, (score, row_idx) in ranked
         if score >= min_similarity
     ][:top_k]
 

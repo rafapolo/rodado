@@ -290,32 +290,54 @@ def test_run_sql_truncates_rows():
 
 
 # ---------------------------------------------------------------------------
-# search_tables — embedding model mocked, no download/network
+# search_tables — doc2query index, embedding model mocked, no download/network
 # ---------------------------------------------------------------------------
 
-def test_search_tables_ranks_by_cosine_similarity(monkeypatch):
-    fake_data = {
-        "model": "all-MiniLM-L6-v2",
-        "tables": [
-            {"id": "ds.a", "text": "candidatos eleitorais", "embedding": [1.0, 0.0]},
-            {"id": "ds.b", "text": "óbitos por município", "embedding": [0.0, 1.0]},
-        ],
-    }
-    monkeypatch.setattr(m, "_table_embeddings", fake_data)
+def _fake_doc2query_index():
+    import numpy as np
+
+    rows = [
+        {"id": "ds.a.q1", "table": "ds.a", "text": "quem foram os candidatos eleitorais"},
+        {"id": "ds.a.q2", "table": "ds.a", "text": "pergunta completamente irrelevante"},
+        {"id": "ds.b.q1", "table": "ds.b", "text": "óbitos por município"},
+    ]
+    # ds.a's best question is a perfect match (sim 1.0); its other question is
+    # a perfect mismatch (sim -1.0). ds.b's only question is a close-but-not-
+    # perfect match (sim ~0.994). Mean-pooling ds.a would give it (1.0-1.0)/2
+    # = 0.0, losing to ds.b — so a top result of ds.a proves MAX aggregation,
+    # not mean, is what's running.
+    vectors = np.array([[1.0, 0.0], [-1.0, 0.0], [0.9, 0.1]], dtype="float32")
+    table_rows = {"ds.a": [0, 1], "ds.b": [2]}
+    return {"rows": rows, "model": "fake-model", "vectors": vectors, "table_rows": table_rows}
+
+
+def test_search_tables_scores_by_max_not_mean(monkeypatch):
+    import numpy as np
+
+    monkeypatch.setattr(m, "_doc2query_index", _fake_doc2query_index())
 
     fake_model = MagicMock()
-    fake_model.encode.return_value = MagicMock(tolist=lambda: [1.0, 0.0])
+    fake_model.encode.return_value = np.array([1.0, 0.0], dtype="float32")
     monkeypatch.setattr(m, "_embedding_model", fake_model)
 
-    result = m.search_tables("candidatos", top_k=5, min_similarity=0.0)
+    result = m.search_tables("candidatos", top_k=5, min_similarity=-1.0)
     assert result["results"][0]["table"] == "ds.a"
     assert result["results"][0]["similarity"] == 1.0
+    assert result["results"][0]["text"] == "quem foram os candidatos eleitorais"
+    assert result["results"][1]["table"] == "ds.b"
 
 
-def test_cosine_similarity_orthogonal_and_identical():
-    assert m._cosine_similarity([1, 0], [0, 1]) == 0.0
-    assert m._cosine_similarity([1, 0], [1, 0]) == 1.0
-    assert m._cosine_similarity([0, 0], [1, 0]) == 0.0
+def test_search_tables_respects_min_similarity(monkeypatch):
+    import numpy as np
+
+    monkeypatch.setattr(m, "_doc2query_index", _fake_doc2query_index())
+
+    fake_model = MagicMock()
+    fake_model.encode.return_value = np.array([1.0, 0.0], dtype="float32")
+    monkeypatch.setattr(m, "_embedding_model", fake_model)
+
+    result = m.search_tables("candidatos", top_k=5, min_similarity=0.995)
+    assert [r["table"] for r in result["results"]] == ["ds.a"]
 
 
 # ---------------------------------------------------------------------------
