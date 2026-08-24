@@ -113,6 +113,34 @@ python3 scripts/gera_dicionario_coverage.py  # beelink -> docs/context/dicionari
 
 `doc2query_index.json`/`doc2query_vectors.npy` **não** entram nesse regen automático — a geração via LLM (`scripts/doc2query_lotes.py` + `scripts/doc2query_roda.py`) é cara e não deve rodar a cada sync; só o passo de embedding (`scripts/gera_doc2query_index.py`, a partir de `docs/context/doc2query_corpus.jsonl` já gerado) é barato o bastante pra rerodar sem pensar. Regenerar tudo só quando o schema mudar o bastante pra `search_tables` começar a perder tabela nova.
 
+### Conjuntos-dourados — medir a qualidade do `search_tables`
+
+Duas fontes independentes, mesma limitação conhecida: perguntas que cruzam 2+
+tabelas/datasets, contra as quais `search_tables` (uma tabela por chamada) nunca
+vai ter recall alto — não é bug, está documentado no docstring de cada `avalia_*.py`.
+
+| Conjunto | Fonte | Constrói | Mede |
+|---|---|---|---|
+| `tasks/douradas_multi.json` | `docs/relatorio-social/perguntas.md` (tabelas citadas em backtick, `**Fontes:**`) | `scripts/build_douradas_multi.py` | `scripts/avalia_douradas_multi.py` — recall@K por TABELA exata |
+| `tasks/douradas_perguntas.json` | `docs/perguntas.md` (43 temas × 5 perguntas, `n=X: dataset_a, dataset_b*`) cruzado com `docs/respostas.md` (status `✅`/`◐`/`⏳` por `T<tema>-<item>`) | `scripts/build_douradas_perguntas.py` | `scripts/avalia_douradas_perguntas.py` — recall@K por DATASET (qualquer tabela do dataset conta como acerto) |
+
+`docs/perguntas.md` é a fonte fixa (43 temas, nunca editado pelos scripts);
+`docs/respostas.md` é o log de trabalho vivo — cada pergunta respondida no
+beelink muda o status ali e alimenta o próximo `build_douradas_perguntas.py`
+automaticamente, sem editar código. Só `✅`/`◐` entram no conjunto: um item
+`⏳` costuma vir com o motivo exato no próprio texto (dado corrompido, tabela
+ausente, sem chave compartilhada), e incluir "pendente" envenenaria o teste
+com uma expectativa nunca verificada — a seção "Bloqueios mapeados" ao fim de
+`respostas.md` cataloga o que está estruturalmente bloqueado (precisa de
+re-scraping ou campo novo), separado do que só ainda não foi tentado.
+
+Regenerar depois de qualquer resposta nova em `respostas.md`:
+
+```bash
+python3 scripts/build_douradas_perguntas.py    # respostas.md -> tasks/douradas_perguntas.json
+python3 scripts/avalia_douradas_perguntas.py   # mede search_tables contra ele
+```
+
 A camada NL→SQL resolve métrica **antes** da seleção por embedding (Tier 1), por match exato de nome ou sinônimo — nunca por similaridade, porque "população de SP" e "população carcerária" ficam perto no espaço vetorial e querem tabelas diferentes. Três detalhes que custaram trabalho e não devem ser redescobertos:
 
 1. O match é por nome **ou sinônimo**, exato, depois de normalizar acento e caixa, e **o mais longo vence** — sem isso "pib per capita" resolve como "pib".
