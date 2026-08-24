@@ -13,7 +13,9 @@
 const out=document.getElementById("out"), log=s=>out.textContent+=s+"\n";
 const P_=new URLSearchParams(location.search);
 const K=+(P_.get("k")??8), NMAX=+(P_.get("n")??50), SEMLLM=P_.get("semllm")==="1";
-const DECOMPOR=P_.get("decompor")==="1";
+const DECOMPOR=P_.get("decompor")==="1", GRAFO=P_.get("grafo")==="1";
+const ESTRATEGIA=P_.get("estrategia")??"tabela";
+const CONJUNTO=P_.get("conjunto")==="temas"?"temas":"multi";
 
 /**
  * Uma pergunta de pesquisa e uma CONJUNCAO de aspectos ("mortalidade por raca"
@@ -38,6 +40,28 @@ async function selecionarDecomposto(q, embed, lex, k){
   }
   return [...vistos.values()].sort((a,b)=>b.score-a.score).slice(0,k);
 }
+
+/**
+ * Decomposição pelo LLM: parte a pergunta de pesquisa em aspectos AUTOCONTIDOS
+ * (o regex quebrava por conjunção e produzia fatias sem sentido). Cada aspecto
+ * busca suas próprias tabelas; o merge por score máximo une as pontas.
+ */
+async function selecionarDecompLLM(q, embed, lex, k, llm){
+  const bruto=await llm.completar(
+`Divida esta pergunta de pesquisa em 2 a 4 aspectos independentes. Cada aspecto deve ser uma frase curta e autocontida descrevendo um dado ou indicador (uma tabela de dados do governo brasileiro responde cada um). Um aspecto por linha, sem numeração, sem explicação.
+
+Pergunta: ${q}`, {maxTokens:200});
+  const fatias=[...bruto.split("\n").map(s=>s.replace(/^[-*\d.)\s]+/,"").trim()).filter(s=>s.length>8)];
+  if(fatias.length<2) fatias.push(q);
+  const vistos=new Map();
+  for(const f of fatias.slice(0,4)){
+    for(const t of await embed.selecionarHibrido(f, lex, Math.max(3, Math.ceil(k/Math.min(4,fatias.length))))){
+      const a=vistos.get(t.id);
+      if(!a||a.score<t.score) vistos.set(t.id,t);
+    }
+  }
+  return [...vistos.values()].sort((a,b)=>b.score-a.score).slice(0,k);
+}
 try{
   const embed=await import("/embed.js"), lex=await import("/lexical.js");
   const P=await import("/prompt.js"), ask=await import("/ask.js"), llm=await import("/llm.js");
@@ -45,23 +69,51 @@ try{
   const cols=await ask.carregarColunas(embed.tabelas());
   await P.carregarSemantica();
   lex.indexar(embed.tabelas(), cols);
-  if(!SEMLLM){ await llm.carregar(P_.get("modelo")??"1.5b",({pct,texto})=>{out.textContent=`llm ${pct}% ${texto??""}`;}); }
+  if (GRAFO) embed.indexarGrafo(cols);
+  if(!SEMLLM || ESTRATEGIA==="decomporllm"){ await llm.carregar(P_.get("modelo")??"1.5b",({pct,texto})=>{out.textContent=`llm ${pct}% ${texto??""}`;}); }
   out.textContent="";
 
-  const {perguntas}=await fetch("/_douradas_multi.json").then(r=>r.json());
+  // temas: expectativa é de DATASET (>=1 tabela de cada citado); multi: tabela exata
+  const {perguntas}=await fetch(CONJUNTO==="temas"?"/_douradas_temas.json":"/_douradas_multi.json").then(r=>r.json());
+  const esperadosDe=(p)=>CONJUNTO==="temas"?p.datasets:p.tabelas;
+  const cobrados=(ids,esperados)=>{ const ach=new Set(ids.map(t=>t.id));
+    return CONJUNTO==="temas"
+      ? esperados.filter(d=>ids.some(t=>t.id.startsWith(d+".")))
+      : esperados.filter(t=>ach.has(t)); };
   const alvo=perguntas.slice(0,NMAX);
   let recallTudo=0,recallParcial=0,multi=0,comJoin=0,executou=0,comDado=0;
   const linhas=[];
 
+  // modo diagnostico: rank de CADA tabela esperada no híbrido (h) vs com grafo (g)
+  if(P_.get("diag")==="1"){
+    for(const p of alvo){
+      const hib=await embed.selecionarHibrido(p.q,lex,50);
+      const grf=GRAFO?await embed.selecionarComGrafo(p.q,lex,50):hib;
+      const rh=new Map(hib.map((t,i)=>[t.id,i+1]));
+      const rg=new Map(grf.map((t,i)=>[t.id,i+1]));
+      const det=esperadosDe(p).map(e=>{ const alvo=CONJUNTO==="temas"?`${e}.`:e;
+        const h=rh.get(alvo)??[...rh.entries()].find(([k])=>alvo.endsWith(".")?k.startsWith(alvo):k===alvo)?.[1];
+        const g=rg.get(alvo)??[...rg.entries()].find(([k])=>alvo.endsWith(".")?k.startsWith(alvo):k===alvo)?.[1];
+        return `${alvo.replace(/\.$/,"").split(".").pop().slice(0,26)} h${h??"-"} g${g??"-"}`;}).join(" | ");
+      linhas.push(`${String(p.n).padStart(2)} ${det}`);
+      out.textContent=linhas.join("\n");
+    }
+    window.__done=true;
+  } else {
+
   for(const p of alvo){
-    const top = DECOMPOR ? await selecionarDecomposto(p.q, embed, lex, K)
+    const top = ESTRATEGIA==="decomporllm" ? await selecionarDecompLLM(p.q, embed, lex, K, llm)
+                         : DECOMPOR ? await selecionarDecomposto(p.q, embed, lex, K)
+                         : GRAFO ? await embed.selecionarComGrafo(p.q, lex, K)
+                         : ESTRATEGIA==="dataset" ? await embed.selecionarPorDataset(p.q, lex, K)
+                         : ESTRATEGIA==="afinidade" ? await embed.selecionarComAfinidade(p.q, lex, K)
                          : await embed.selecionarHibrido(p.q, lex, K);
     const ids=top.map(t=>t.id);
-    const achou=p.tabelas.filter(t=>ids.includes(t));
-    const tudo=achou.length===p.tabelas.length;
+    const achou=cobrados(top,esperadosDe(p));
+    const tudo=achou.length===esperadosDe(p).length;
     if(tudo) recallTudo++; else if(achou.length) recallParcial++;
 
-    let marca=`${tudo?"R+":achou.length?"R~":"R-"}(${achou.length}/${p.tabelas.length})`;
+    let marca=`${tudo?"R+":achou.length?"R~":"R-"}(${achou.length}/${esperadosDe(p).length})`;
     if(!SEMLLM){
       try{
         const g=await llm.gerarSQL(P.montarPrompt(p.q, top, cols));
@@ -85,12 +137,13 @@ try{
   }
   const n=alvo.length, pc=x=>`${x}/${n} (${Math.round(100*x/n)}%)`;
   log(`\n${"=".repeat(58)}`);
-  log(`recuperou TODAS as tabelas (k=${K}): ${pc(recallTudo)}   parcial: ${recallParcial}`);
+  log(`recuperou TODOS os ${CONJUNTO==="temas"?"datasets":"alvos"} (k=${K}): ${pc(recallTudo)}   parcial: ${recallParcial}`);
   if(!SEMLLM){
     log(`SQL com 2+ tabelas:                 ${pc(multi)}`);
     log(`SQL com JOIN:                       ${pc(comJoin)}`);
     log(`executou sem erro:                  ${pc(executou)}`);
     log(`devolveu dado não-nulo:             ${pc(comDado)}`);
+  }
   }
 }catch(e){ log("ERRO: "+e.message+"\n"+(e.stack??"").slice(0,500)); }
 window.__done=true;

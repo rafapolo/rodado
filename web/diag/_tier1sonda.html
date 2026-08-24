@@ -1,0 +1,19 @@
+<meta charset="utf-8"><pre id="out">…</pre>
+<script type="module">
+const out = document.getElementById("out"), log = (s) => out.textContent += s + "\n";
+try {
+  const P = await import("/prompt.js");
+  await P.carregarSemantica();
+  const perguntas = [
+    "Qual a população do Brasil em 2022?",
+    "Quantos municípios tem o Brasil?",
+  ];
+  for (const q of perguntas) {
+    const r = P.resolverMetrica(q);
+    log(`Q: ${q}`);
+    log(`R: ${JSON.stringify(r, null, 0)}`);
+    log("");
+  }
+} catch (e) { log("ERRO: " + e.message + "\n" + e.stack); }
+window.__done = true;
+</script>

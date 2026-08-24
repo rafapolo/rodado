@@ -1,0 +1,37 @@
+<meta charset="utf-8"><title>appConfig customizado</title><pre id="out">…</pre>
+<script type="module">
+/**
+ * Testa o pressuposto do caminho de PESO PRÓPRIO: dá para declarar um modelo
+ * que não está no prebuilt — model_id inventado, URL de pesos e URL de wasm
+ * escritas à mão — e carregá-lo?
+ *
+ * Se sim, um Qwen2.5-Coder fine-tunado e convertido para MLC entra no app sem
+ * tocar no webllm.js: basta hospedar os pesos e reusar o wasm de prateleira.
+ */
+const out=document.getElementById("out"), log=s=>{out.textContent+=s+"\n";};
+const LIB="https://raw.githubusercontent.com/mlc-ai/binary-mlc-llm-libs/main/web-llm-models/v0_2_84/base/Qwen2-1.5B-Instruct-q4f16_1_cs1k-webgpu.wasm";
+try{
+  const webllm=await import("/vendor/webllm.js");
+  // model_id que NÃO existe no prebuiltAppConfig. Pesos do Coder-1.5B, wasm do
+  // Qwen2-1.5B-Instruct — outro modelo, outra geração, mesma arquitetura.
+  const appConfig={ model_list:[{
+    model:"https://huggingface.co/mlc-ai/Qwen2.5-Coder-1.5B-Instruct-q4f16_1-MLC",
+    model_id:"rodado-sql-teste",
+    model_lib:LIB,
+    overrides:{context_window_size:4096},
+  }]};
+  log("model_id pedido: rodado-sql-teste (inexistente no prebuilt)");
+  const t=performance.now();
+  const engine=await webllm.CreateMLCEngine("rodado-sql-teste",{
+    appConfig, initProgressCallback:(r)=>{out.textContent=`load ${Math.round((r.progress??0)*100)}%\n`;},
+  });
+  out.textContent="";
+  log(`CARREGOU em ${((performance.now()-t)/1000).toFixed(1)}s`);
+  const r=await engine.chat.completions.create({
+    messages:[{role:"user",content:"Escreva apenas: SELECT 1;"}], max_tokens:20, temperature:0,
+  });
+  log("gerou: "+JSON.stringify(r.choices[0].message.content));
+  log("VEREDITO: appConfig customizado + wasm emprestado FUNCIONA");
+}catch(e){ log("FALHOU: "+e.message); }
+window.__done=true;
+</script>

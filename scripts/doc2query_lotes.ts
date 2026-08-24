@@ -15,7 +15,8 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 
 const N = Number(process.argv[Bun.argv.indexOf("--lote") + 1]) || 25;
-const DIR = "tasks/doc2query";
+const arg = (n: string) => { const i = Bun.argv.indexOf(n); return i > 0 ? Bun.argv[i + 1] : undefined; };
+const DIR = arg("--dir") ?? "tasks/doc2query";
 
 const meta = JSON.parse(readFileSync("web/static/index/meta.json", "utf-8"));
 const colunas = JSON.parse(readFileSync("web/static/index/colunas.json", "utf-8"));

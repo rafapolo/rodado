@@ -108,10 +108,7 @@ export function validarColunas(sql, tabelas) {
     if (!conhecidas.has(c) && !RESERVADAS.has(c) && !/^\d/.test(c)) suspeitas.add(col);
   }
   if (!suspeitas.size) return null;
-
-  const disponiveis = tabelas.map((t) =>
-    `${t.id}: ${(colunas[t.id] ?? []).map((c) => c.n).join(", ")}`).join("\n");
-  return { invalidas: [...suspeitas], disponiveis };
+  return { invalidas: [...suspeitas] };
 }
 
 /**
@@ -151,7 +148,16 @@ export async function perguntar(pergunta, emitir) {
   for (let tentativa = 0; tentativa <= MAX_REPAROS; tentativa++) {
     emitir("fase", { nome: tentativa === 0 ? "gerando" : "reparando", tentativa });
 
-    const g = await llm.gerarSQL(prompt);
+    // O WebLLM REJEITA a promise (não devolve {erro}) quando o prompt passa do
+    // teto de contexto do wasm — sem este try/catch essa falha é uma exceção
+    // não tratada que mata a pergunta inteira, sem chance de reparo nem
+    // mensagem legível na UI.
+    let g;
+    try {
+      g = await llm.gerarSQL(prompt);
+    } catch (e) {
+      g = { erro: `falha ao gerar SQL: ${e.message}` };
+    }
     if (g.erro) return emitir("erro", { mensagem: g.erro, fase: "geracao" });
 
     // `FROM dataset` sem a tabela: conserta em vez de pedir ao modelo, que
@@ -165,8 +171,11 @@ export async function perguntar(pergunta, emitir) {
     const ruins = validarColunas(g.sql, tabelas);
     if (ruins && tentativa < MAX_REPAROS) {
       emitir("reparo", { tentativa: tentativa + 1, erro: `coluna inexistente: ${ruins.invalidas.join(", ")}`, local: true });
+      // Reusa montarDDL (já ranqueado e capado a 25 col/tabela) em vez de
+      // listar TODAS as colunas — tabela com 300+ colunas nessa lista sem
+      // corte já estourou 11.991 tokens contra o teto de 4096 do wasm.
       prompt = `${P.SISTEMA}\n\nVocê escreveu:\n${g.sql}\n\nEssas colunas NÃO existem: ${ruins.invalidas.join(", ")}\n` +
-               `As colunas que existem:\n${ruins.disponiveis}\n\nPERGUNTA: ${pergunta}\nSQL corrigido:`;
+               `As colunas que existem:\n${P.montarDDL(tabelas, colunas, pergunta)}\n\nPERGUNTA: ${pergunta}\nSQL corrigido:`;
       continue;
     }
 

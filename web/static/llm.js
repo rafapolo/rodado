@@ -60,8 +60,20 @@ const tirarCercas = (t) => {
   return (m ? m[1] : s).replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
 };
 
-export async function gerarSQL(prompt) {
+/**
+ * Completar genérico — para tarefas que não são SQL nem prosa de resposta
+ * (ex.: decompor a pergunta em aspectos antes da busca).
+ */
+export async function completar(prompt, { maxTokens = 300, temperature = 0 } = {}) {
   const r = await comTeto(engine.chat.completions.create({
+    messages: [{ role: "user", content: prompt }],
+    temperature,
+    max_tokens: maxTokens,
+  }), "A tarefa auxiliar do modelo");
+  return (r.choices[0].message.content ?? "").trim();
+}
+
+export async function gerarSQL(prompt) {  const r = await comTeto(engine.chat.completions.create({
     messages: [{ role: "user", content: prompt }],
     temperature: 0,        // SQL não quer criatividade
     max_tokens: 700,

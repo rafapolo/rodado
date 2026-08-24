@@ -109,12 +109,33 @@ async function main() {
       .map(([k, v]) => [k, { categoria: v.category, canonica: v.canonical_table }])),
   }));
 
+  // ---- exemplares few-shot: receita verificada entra no prompt -------------
+  // Falhar alto sem carimbo verified datado — mesma regra de metrics.yaml:
+  // exemplar aspiracional ensina o modelo a escrever SQL que não roda.
+  const ex = parseYaml(readFileSync(`${CTX}/exemplos_sql.yaml`, "utf-8"));
+  const exemplares = Object.entries(ex.exemplos as Record<string, any>).map(([id, e]) => ({
+    id,
+    quando: e.quando,
+    gatilhos: e.gatilhos,
+    datasets: e.datasets,
+    sql: e.sql,
+    verified: e.verified,
+  }));
+  if (!exemplares.length) throw new Error(`exemplos_sql.yaml não gerou nenhum exemplar.`);
+  for (const e of exemplares) {
+    if (!/\(\d{4}-\d{2}-\d{2}\)/.test(e.verified ?? "")) {
+      throw new Error(`exemplar ${e.id} sem carimbo verified datado.`);
+    }
+  }
+  writeFileSync(`${OUT}/exemplos.json`, JSON.stringify({ exemplos: exemplares }));
+
   const kb = (p: string) => (Bun.file(p).size / 1024).toFixed(0) + " KB";
   console.log(`${meta.length} tabelas × ${dims} dims`);
   console.log(`  vectors.bin    ${kb(`${OUT}/vectors.bin`)}`);
   console.log(`  meta.json      ${kb(`${OUT}/meta.json`)}`);
   console.log(`  colunas.json   ${kb(`${OUT}/colunas.json`)}`);
   console.log(`  semantica.json ${kb(`${OUT}/semantica.json`)}  (${mt.metrics.length} métricas, ${Object.keys(br.false_friends).length} false_friends)`);
+  console.log(`  exemplos.json  ${kb(`${OUT}/exemplos.json`)}  (${exemplares.length} exemplares verificados)`);
   console.log(`  ${duplicadas.size} tabelas duplicadas marcadas`);
   const semSchema = meta.length - Object.keys(colunas).length;
   if (semSchema > 0) console.log(`  aviso: ${semSchema} tabela(s) sem colunas no schemas.json`);

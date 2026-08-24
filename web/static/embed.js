@@ -145,3 +145,136 @@ export async function selecionar(pergunta, k = 5, limiar = 0.2) {
     .sort((a, b) => b.score - a.score)
     .slice(0, k);
 }
+
+// ---------------------------------------------------------------------------
+// Expansão pelo grafo de join
+//
+// Uma pergunta de pesquisa é CONJUNÇÃO de aspectos ("mortalidade" E "PIB
+// municipal") e cada aspecto mora numa tabela diferente. A similaridade acha no
+// máximo o centro de massa; o que liga as pontas é ESTRUTURA, não semântica:
+// tabelas que compartilham chave de join (`id_municipio`, `sigla_uf`, `cnpj`).
+// Recuperada a âncora, os vizinhos por chave compartilhada entram no ranking.
+//
+// Chave ubíqua não distingue: `ano` aparece em 385 das 824 tabelas, ligaria
+// qualquer coisa a qualquer coisa. O peso da chave é a especificidade
+// log(T/n), zerada abaixo de 2 tabelas ou acima de 40% do acervo.
+// ---------------------------------------------------------------------------
+
+let grafoColTab = null, grafoTabCol = null, nAcervo = 0;
+
+export function indexarGrafo(colunas) {
+  grafoColTab = new Map(), grafoTabCol = new Map();
+  nAcervo = meta.length;
+  for (const [id, cs] of Object.entries(colunas)) {
+    grafoTabCol.set(id, cs.map((c) => c.n));
+    for (const c of cs) {
+      const a = grafoColTab.get(c.n);
+      if (a) a.push(id); else grafoColTab.set(c.n, [id]);
+    }
+  }
+}
+
+function pesoChave(col) {
+  const n = grafoColTab.get(col)?.length ?? 0;
+  if (n < 2 || n > nAcervo * 0.6) return 0;
+  // 1 - fração do acervo que carrega a chave: `id_municipio` (260 tabelas)
+  // ainda vale ~0,68 porque LIGAR municípios é o que a pergunta pede; `ano`
+  // (385+) afunda. Escala comparável ao score híbrido — ganho de expansão
+  // precisa competir por assento, não ser desempate.
+  return 1 - n / nAcervo;
+}
+
+// Âncoras: quantos do topo puxam vizinhos. Vizinho: quanto do score da âncora a
+// estrutura vale, e quanto do lexical da pergunta pesa no desempate entre os
+// centenas de vizinhos que uma âncora boa tem.
+const MAX_ANCORAS = 3, LIMIAR_ANCORA = 0.5, PESO_ESTRUTURA = 1.0, PESO_LEX_VIZINHO = 0.25;
+
+/**
+ * Top-K com expansão: híbrido primeiro, depois vizinhos por chave compartilhada
+ * com as âncoras. Re-ranqueia e devolve K — o orçamento de prompt não cresce,
+ * só a composição do que entra nele.
+ */
+export async function selecionarComGrafo(pergunta, lexical, k = 8) {
+  const top = await selecionarHibrido(pergunta, lexical, k);
+  if (!grafoColTab || !top.length) return top;
+
+  const lex = lexical.pontuar(pergunta);
+  const dentro = new Set(top.map((t) => t.id));
+  const ancoras = top.filter((t) => t.score >= LIMIAR_ANCORA * top[0].score).slice(0, MAX_ANCORAS);
+  const ganhos = new Map();   // id -> { score, via }
+
+  for (const a of ancoras) {
+    for (const col of grafoTabCol.get(a.id) ?? []) {
+      const w = pesoChave(col);
+      if (!w) continue;
+      for (const idViz of grafoColTab.get(col)) {
+        if (dentro.has(idViz) || idViz === a.id) continue;
+        const g = PESO_ESTRUTURA * a.score * w + PESO_LEX_VIZINHO * (lex.get(idViz) ?? 0);
+        const atual = ganhos.get(idViz);
+        if (!atual || g > atual.score) ganhos.set(idViz, { score: g, via: `↔ ${col}` });
+      }
+    }
+  }
+
+// Vizinho forte DESLOCA membro fraco do topo — o orçamento de K é fixo e a
+// composição é o que muda. Sem isso a expansão nunca entraria: o híbrido já
+// devolve exatamente K.
+  return [...top,
+    ...[...ganhos.entries()].map(([id, g]) => ({ ...meta.find((m) => m.id === id), ...g }))]
+    .sort((x, y) => y.score - x.score)
+    .slice(0, k);
+}
+
+/**
+ * Seleção DATASET-FIRST.
+ *
+ * Medido no diagnóstico das 50 douradas: o conjunto esperado de cada pergunta
+ * quase sempre vive em 2-4 datasets, e dentro de um dataset as irmãs ficam
+ * espalhadas no ranking porque nomes como `microdados`/`municipio` não
+ * distinguem nada. Ranquear DATASETS (pelo melhor score de tabela) e repartir
+ * o orçamento de K entre eles cobre as pontas que a busca por tabela deixa
+ * para trás no posto 9+.
+ */
+export async function selecionarPorDataset(pergunta, lexical, k = 8, porDataset = 2) {
+  const todos = await selecionarHibrido(pergunta, lexical, meta.length);
+  const porDs = new Map();
+  for (const t of todos) {
+    const ds = t.id.split(".")[0];
+    const a = porDs.get(ds);
+    if (a) a.tabs.push(t); else porDs.set(ds, { ds, melhor: t.score, tabs: [t] });
+  }
+  const ranking = [...porDs.values()]
+    .map((a) => ({ ...a, tabs: a.tabs.sort((x, y) => y.score - x.score).slice(0, porDataset) }))
+    .sort((a, b) => b.melhor - a.melhor);
+
+  const saida = [];
+  for (let rodada = 0; rodada < porDataset && saida.length < k; rodada++) {
+    for (const a of ranking) {
+      if (saida.length >= k) break;
+      if (a.tabs[rodada]) saida.push(a.tabs[rodada]);
+    }
+  }
+  return saida;
+}
+
+/**
+ * Afinidade de dataset (MMR-like): âncoras do topo promovem as IRMÃS do próprio
+ * dataset que já estavam no pelotão de trás.
+ *
+ * Medido nas 50 douradas: o padrão dominante de falha é a segunda tabela do
+ * MESMO dataset ficar no posto 9-30 ("receitas_candidato" a h24 quando
+ * "despesas_candidato" é h1). O round-robin dataset-first falhou porque
+ * desperdiça assento em dataset ruído; aqui o boost só alcança quem já provou
+ * relevância própria — multiplicador sobre score existente, não assento novo.
+ */
+const JANELA_AFINIDADE = 40, BOOST_AFINIDADE = 1.25;
+
+export async function selecionarComAfinidade(pergunta, lexical, k = 8) {
+  const todos = await selecionarHibrido(pergunta, lexical, JANELA_AFINIDADE);
+  if (todos.length <= k) return todos;
+  const ancoras = new Set(todos.slice(0, 3).map((t) => t.id.split(".")[0]));
+  return todos
+    .map((t) => ancoras.has(t.id.split(".")[0]) ? { ...t, score: t.score * BOOST_AFINIDADE } : t)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, k);
+}

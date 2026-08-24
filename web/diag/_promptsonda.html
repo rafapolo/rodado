@@ -1,0 +1,21 @@
+<meta charset="utf-8"><pre id="out">…</pre>
+<script type="module">
+const out = document.getElementById("out"), log = (s) => out.textContent += s + "\n";
+try {
+  const embed = await import("/embed.js"), lex = await import("/lexical.js");
+  const P = await import("/prompt.js"), ask = await import("/ask.js");
+  await embed.carregar(() => {});
+  const cols = await ask.carregarColunas(embed.tabelas());
+  await P.carregarSemantica();
+  lex.indexar(embed.tabelas(), cols);
+
+  const q = "Quais os 10 municípios com maior PIB em 2021?";
+  const tabs = await embed.selecionarHibrido(q, lex, 5);
+  log("tabelas: " + tabs.map(t => t.id).join(", "));
+  for (const t of tabs) log(`  ${t.id}: ${(cols[t.id] ?? []).length} colunas totais`);
+  const prompt = P.montarPrompt(q, tabs, cols);
+  log(`\nprompt: ${prompt.length} chars (~${Math.round(prompt.length / 3.5)} tokens est.)`);
+  log(`\n--- primeiros 3000 chars ---\n` + prompt.slice(0, 3000));
+} catch (e) { log("ERRO: " + e.message + "\n" + e.stack); }
+window.__done = true;
+</script>

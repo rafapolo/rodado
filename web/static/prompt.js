@@ -5,9 +5,26 @@
  * e br_inep_censo_escolar.escola sozinha tem 455 colunas.
  */
 
-let sem = null;
+let sem = null, carregando = null;
 export async function carregarSemantica() {
-  sem = sem ?? (await fetch("/index/semantica.json").then((r) => r.json()));
+  // BUG histórico: isto guardava a Promise em `sem`, nunca o valor resolvido.
+  // Toda leitura no arquivo (`sem?.metricas`, `sem?.pontes`, ...) checava uma
+  // propriedade de Promise — sempre undefined — e a camada semântica inteira
+  // (Tier 1, join hints, false_friends, exemplo few-shot) era um no-op
+  // silencioso. `carregando` guarda a promise em voo (uma soma fetch mesmo com
+  // chamadas concorrentes); `sem` só recebe o valor JÁ resolvido.
+  if (sem) return sem;
+  carregando = carregando ?? (async () => {
+    const s = await fetch("/index/semantica.json").then((r) => r.json());
+    // Exemplares são opcionais: sem eles o app segue como sempre foi. Falhar
+    // aqui deixaria o app inutilizável por causa de uma melhoria.
+    try {
+      const ex = await fetch("/index/exemplos.json").then((r) => (r.ok ? r.json() : null));
+      if (ex?.exemplos) s.exemplos = ex.exemplos;
+    } catch { /* segue sem exemplares */ }
+    return s;
+  })();
+  sem = await carregando;
   return sem;
 }
 
@@ -53,8 +70,14 @@ export function resolverMetrica(pergunta) {
   if (uf) { filtros.sigla_uf = uf[0].toUpperCase(); resto = resto.replace(uf[0], " "); }
 
   const RUIDO = new Set(["qual","quais","quantos","quantas","quanto","foi","foram","e","de","do","da",
-    "dos","das","em","no","na","nos","nas","o","a","os","as","por","para","total","numero","o total"]);
-  const sobra = resto.split(/\s+/).filter((w) => w && !RUIDO.has(w));
+    "dos","das","em","no","na","nos","nas","o","a","os","as","por","para","total","numero","o total",
+    // "brasil"/"pais"/"nacional" pedem o agregado nacional — que já é o default
+    // sem filtro de UF. Sem isto, toda métrica pedida "do Brasil" caía pro
+    // modelo por "termo não explicado", mesmo com Tier 1 pronto pra responder.
+    "brasil","pais","nacional","nacionalmente"]);
+  // pontuação solta ("?" no fim da frase) não é termo não explicado — exige
+  // pelo menos uma letra pra contar como palavra real.
+  const sobra = resto.split(/\s+/).filter((w) => w && !RUIDO.has(w) && /[a-z]/.test(w));
   if (sobra.length > 0) return { caiu: true, motivo: `termos não explicados: ${sobra.join(", ")}`, metrica: achada };
 
   for (const f of achada.required_filters ?? []) {
@@ -138,21 +161,59 @@ export const SISTEMA = `Você escreve SQL DuckDB sobre o acervo rodado (dados p�
 
 REGRAS
 - Responda APENAS com o SQL. Sem explicação, sem markdown, sem \`\`\`.
-- Sempre qualifique a tabela: dataset.tabela. Nome solto falha.
+- Sempre qualifique a tabela: dataset.tabela. Nome solto falha. Mas "dataset."
+  é só a notação da lista de tabelas — NUNCA prefixo de coluna.
+- Pergunta de pesquisa pede agregação: SUM/COUNT com GROUP BY, corr() para
+  correlação. Nunca devolva SELECT de colunas soltas sem agregar.
 - Filtre por ano/mes/sigla_uf/id_municipio sempre que a coluna existir — são
   colunas de partição e cortam a leitura drasticamente.
-- Valores de texto estão em MINÚSCULA: cargo = 'deputado federal'.
+- Valores de texto estão em MINÚSCULA: cargo = 'deputado federal'. Exceção:
+  alguns datasets usam CÓDIGOS numéricos como valor — se houver tabela
+  .dicionario no DDL, resolva o significado por ela.
 - Use SOMENTE as colunas listadas no DDL. Não invente coluna.
 - br_bd_diretorios_brasil.municipio e .uf são as tabelas canônicas de geografia;
   junte com elas para mostrar NOME em vez de código.
-- Se não der para responder com as tabelas dadas, responda exatamente:
-  {"error": "o motivo"}`;
+- Se não der para responder com as tabelas dadas, responda em JSON:
+  {"error": "<descreva em uma frase por que não dá, com as SUAS palavras>"}
+  Nunca copie o texto entre "<" e ">" ao pé da letra — é instrução, não resposta.`;
+
+/**
+ * Escolhe o exemplar do caso: gatilho lexical na pergunta E as tabelas
+ * selecionadas tocando os datasets da receita. Um dos dois sozinho não basta —
+ * "correlação" sem as tabelas certas ensina o padrão errado.
+ */
+export function selecionarExemplo(pergunta, tabelas) {
+  if (!sem?.exemplos?.length || !tabelas?.length) return null;
+  const p = semAcento(pergunta);
+  const ds = new Set(tabelas.map((t) => t.id.split(".")[0]));
+
+  let melhor = null, melhorScore = 0;
+  for (const e of sem.exemplos) {
+    let hits = 0;
+    for (const g of e.gatilhos ?? []) if (p.includes(semAcento(g))) hits++;
+    if (!hits) continue;
+    const sobreposicao = (e.datasets ?? []).filter((d) => ds.has(d)).length;
+    if (!sobreposicao) continue;
+    // gatilho vale mais que sobreposição, mas ambas precisam existir
+    const score = hits * 2 + sobreposicao;
+    if (score > melhorScore) { melhor = e; melhorScore = score; }
+  }
+  return melhor;
+}
+
+/** Bloco few-shot compacto — ~150 tokens, o orçamento aqui é caro. */
+export function montarExemplo(e) {
+  return `\nEXEMPLO VERIFICADO (esta receita roda no beelink — adapte tabelas e filtros, mantenha a ESTRUTURA):\n` +
+         `${e.sql}\n`;
+}
 
 // Teto real do wasm pré-compilado do WebLLM: 4096 tokens, contando a resposta.
 // Sobram ~2.800 para o prompt inteiro. Daí o corte de colunas ser agressivo.
 export const TETO_TOKENS = 2800;
 
 export function montarPrompt(pergunta, tabelas, colunas) {
+  const exemplo = selecionarExemplo(pergunta, tabelas);
   return `${SISTEMA}\n\nTABELAS DISPONÍVEIS\n${montarDDL(tabelas, colunas, pergunta)}\n` +
+         (exemplo ? montarExemplo(exemplo) : "") +
          `${montarJoinHints(tabelas)}${montarFalseFriends(tabelas, colunas)}\nPERGUNTA: ${pergunta}\nSQL:`;
 }

@@ -13,13 +13,13 @@
  */
 import { readFileSync, writeFileSync, existsSync, readdirSync, unlinkSync } from "node:fs";
 
-const DIR = "tasks/doc2query";
-const PROMPT = "scripts/prompts/doc2query.md";
 const arg = (n: string) => { const i = Bun.argv.indexOf(n); return i > 0 ? Bun.argv[i + 1] : undefined; };
 const MODELO = arg("--modelo");
 const SO_LOTE = arg("--lote");
+const DIR = arg("--dir") ?? "tasks/doc2query";
+const PROMPT = arg("--prompt") ?? "scripts/prompts/doc2query.md";
+const PERGUNTAS_ESPERADAS = Number(arg("--esperadas")) || 8;
 const REVALIDAR = Bun.argv.includes("--revalidar");
-const PERGUNTAS_ESPERADAS = 8;
 
 interface Saida { id: string; perguntas: string[]; incerta?: boolean }
 

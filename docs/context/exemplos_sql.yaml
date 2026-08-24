@@ -1,0 +1,109 @@
+# Exemplares verificados para few-shot no ask-web — a receita certa, não uma
+# aproximação que o modelo vai imitar mal.
+#
+# Cada entrada é um PADRÃO de query de pesquisa (não uma resposta): o bloco
+# `sql` entra no prompt como EXEMPLO VERIFICADO quando a pergunta casa com o
+# padrão e as tabelas selecionadas tocam os datasets da entrada.
+#
+# Campos:
+#   quando    o gatilho semântico, em pt-BR — o que a pergunta está pedindo
+#   gatilhos  palavras-chave lexicais para o casamento (mesma normalização
+#             de acento/caixa do lexical.js)
+#   datasets  datasets que a receita toca — o casamento com a seleção do
+#             embedding exige sobreposição
+#   sql       a query, executada no beelink na data do carimbo
+#   verified  o que a query devolveu no beelink e quando — sem isto é
+#             aspiracional, mesma regra de metrics.yaml
+#
+# Nota sobre A1 do ../rodado/docs/respostas.md: lá se lê r=+0,85 para
+# emissões agro × desmatamento. As receitas óbvias reproduzem menos:
+# setor agro só = 0,58; agro+MUT em 2022 = 0,64; agro+MUT em 2023 = 0,73
+# (Pearson) / 0,72 (Spearman). O carimbo abaixo guarda o que EU medi, não o
+# número aspiracional — a receita exata que gerou 0,85 não está registrada
+# no respostas.md e continua por descobrir.
+
+exemplos:
+
+  correlacao_painel_municipal:
+    quando: >-
+      pergunta pede RELAÇÃO ou CORRELAÇÃO entre dois fenômenos medidos por
+      município — agregar cada fonte por id_municipio+ano e usar corr()
+    gatilhos: [correlacao, correlaciona, relaciona, relacao, associa]
+    datasets: [br_seeg_emissoes, br_inpe_prodes]
+    sql: |-
+      WITH agro AS (
+        SELECT id_municipio, SUM(emissao_ar5) AS emissao
+        FROM br_seeg_emissoes.municipio
+        WHERE ano = 2023 AND setor IN ('1','3') AND tipo IN ('2','3')
+        GROUP BY 1),
+      desmate AS (
+        SELECT id_municipio, desmatado
+        FROM br_inpe_prodes.municipio_bioma
+        WHERE ano = 2023)
+      SELECT round(corr(a.emissao, d.desmatado), 2) AS r, count(*) AS n
+      FROM agro a JOIN desmate d USING (id_municipio);
+    verified: >-
+      r=0,73 (n=6.536), Pearson, emissões ar5 agro+mudança de uso 2023 ×
+      desmatado 2023 (2026-08-23). Atenção: SEEG codifica setor/tipo como
+      VARCHAR numérico — resolva pelo br_seeg_emissoes.dicionario
+      (setor '1'=Agropecuária, '3'=Mudança de Uso da Terra; tipo '2'=Emissão,
+      '3'=Emissão NCI).
+
+  taxa_por_100_mil:
+    quando: >-
+      pergunta pede TAXA por habitante — COUNT da ocorrência dividido pela
+      população do mesmo recorte, multiplicado por 100.000
+    gatilhos: [taxa, por 100 mil, 100 mil habitantes, proporcional populacao]
+    datasets: [br_ms_sim, br_ibge_populacao]
+    sql: |-
+      WITH ob AS (
+        SELECT sigla_uf, COUNT(*) AS obitos
+        FROM br_ms_sim.microdados
+        WHERE ano = 2022 AND causa_basica BETWEEN 'X85' AND 'Y09'
+        GROUP BY 1),
+      pop AS (
+        SELECT sigla_uf, SUM(populacao) AS pop
+        FROM br_ibge_populacao.municipio
+        WHERE ano = 2022
+        GROUP BY 1)
+      SELECT o.sigla_uf, round(100000.0 * o.obitos / p.pop, 1) AS tx_100k
+      FROM ob o JOIN pop p USING (sigla_uf)
+      ORDER BY tx_100k DESC;
+    verified: >-
+      AM 39,2, AP 38,2, BA 37,5 homicídios/100k em 2022 — ordem de grandeza
+      bate com a série do Atlas da Violência (2026-08-23). CID-10 de agressão
+      é o intervalo X85–Y09; BETWEEN funciona porque causa_basica é VARCHAR.
+
+  ranking_com_diretorio:
+    quando: >-
+      pergunta pede TOP-N ou MAIORES/MENORES — ordenar pela métrica e juntar
+      com o diretório para mostrar NOME, nunca código
+    gatilhos: [maiores, menores, top, ranking, mais, quais municipios, quais estados]
+    datasets: [br_ibge_pib, br_bd_diretorios_brasil]
+    sql: |-
+      SELECT m.nome, ROUND(p.pib / 1e9, 1) AS pib_bi
+      FROM br_ibge_pib.municipio p
+      JOIN br_bd_diretorios_brasil.municipio m USING (id_municipio)
+      WHERE p.ano = 2021
+      ORDER BY p.pib DESC LIMIT 10;
+    verified: >-
+      São Paulo R$ 829 bi, Rio de Janeiro R$ 359,6 bi, Brasília R$ 286,9 bi
+      em 2021 (2026-08-23).
+
+  participacao_por_grupo:
+    quando: >-
+      pergunta pede PARTICIPAÇÃO, PROPORÇÃO ou COMPOSIÇÃO de um grupo —
+      somar por categoria e dividir pelo total da janela com SUM() OVER ()
+    gatilhos: [participacao, proporcao, composicao, percentual, distribuicao, "porcentagem"]
+    datasets: [br_ibge_censo_2022]
+    sql: |-
+      SELECT cor_raca,
+             SUM(populacao) AS total,
+             round(100.0 * SUM(populacao) /
+                   SUM(SUM(populacao)) OVER (), 1) AS pct
+      FROM br_ibge_censo_2022.populacao_grupo_idade_sexo_raca
+      GROUP BY 1 ORDER BY total DESC;
+    verified: >-
+      Branca 179.303.767 (45,5%), Parda 174.360.619 (44,3%), Preta
+      35.174.419 (8,9%) — negros 53,2%, bate com a divulgação do Censo 2022
+      (2026-08-23).

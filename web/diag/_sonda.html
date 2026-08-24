@@ -1,0 +1,34 @@
+<meta charset="utf-8"><title>sonda de sinais</title><pre id="out">…</pre>
+<script type="module">
+/**
+ * Sonda pontual: dado ?id=dataset.tabela&q=pergunta, imprime o score da tabela
+ * nos tres sinais (cosseno do texto da tabela, lexical, doc2query) + a melhor
+ * pergunta sintetica do d2q. Diagnostica POR QUE uma tabela esperada nao aparece.
+ */
+const out=document.getElementById("out"), log=s=>out.textContent+=s+"\n";
+const P_=new URLSearchParams(location.search);
+const ID=P_.get("id")??"" , Q=P_.get("q")??"";
+try{
+  const embed=await import("/embed.js"), lex=await import("/lexical.js");
+  await embed.carregar(()=>{});
+  const resp=await fetch("/index/perguntas.json"); 
+  const cols=await fetch("/index/colunas.json").then(r=>r.json());
+  lex.indexar(embed.tabelas(), cols);
+  out.textContent="";
+
+  const v=await (async()=>{ // vetorDaPergunta nao é exportado; rederiva via selecionar
+    return null;})();
+  // usa a API publica: roda selecao completa e procura o alvo
+  const todos=await embed.selecionarHibrido(Q, lex, embed.tabelas().length);
+  const pos=todos.findIndex(t=>t.id===ID);
+  const t=todos[pos];
+  log(`pergunta: ${Q}`);
+  log(`alvo: ${ID}`);
+  log(`rank geral: ${pos+1} de ${todos.length}   score híbrido: ${t?.score?.toFixed(4)}`);
+  if(t){ log(`  lexical=${t.lexical.toFixed(4)}  semantico=${t.semantico.toFixed(4)}  via="${t.via??""}"`); }
+  // vizinhança: quem está no topo
+  log("\ntop-6:");
+  for(const x of todos.slice(0,6)) log(`  ${x.score.toFixed(4)} ${x.id}  lx=${x.lexical.toFixed(3)} sm=${x.semantico.toFixed(3)} ${x.via?('via:"'+x.via.slice(0,40)+'"'):""}`);
+}catch(e){ log("ERRO: "+e.message+"\n"+(e.stack??"").slice(0,400)); }
+window.__done=true;
+</script>

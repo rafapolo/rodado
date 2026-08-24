@@ -16,7 +16,7 @@
  */
 import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
 
-const DIR = "tasks/doc2query";
+const DIR = Bun.argv[Bun.argv.indexOf("--dir") + 1] ?? "tasks/doc2query";
 const OUT = "web/static/index";
 
 const arquivos = readdirSync(DIR).filter((f) => f.startsWith("saida_") && f.endsWith(".jsonl")).sort();

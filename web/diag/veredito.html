@@ -1,0 +1,142 @@
+<meta charset="utf-8"><title>veredito</title><pre id="out">…</pre>
+<script type="module">
+/**
+ * Harness ponta-a-ponta: roda `ask.perguntar()` de VERDADE (Tier 1 + busca
+ * híbrida + prompt + geração + laço de reparo de 2 tentativas + execução +
+ * checagem de vazio) contra os três conjuntos dourados, e agrega nota.
+ *
+ * fluxo.html já dirige ask.perguntar() para uma pergunta; bancada.html já
+ * agrega em degraus mas com geração single-shot (sem Tier 1, sem reparo, sem
+ * checagem de vazio) e sem tocar o pipeline de produção. Este arquivo é a
+ * junção que faltava: o MESMO ask.perguntar() que a UI usa, em loop, com
+ * nota por conjunto.
+ *
+ *   ?conjunto=douradas|multi|temas   (default: douradas)
+ *   ?n=15                            (default: todas do conjunto)
+ *   ?modelo=3b                       (default: 3b, igual à UI)
+ */
+const out = document.getElementById("out"), log = (s) => { out.textContent += s + "\n"; };
+const P_ = new URLSearchParams(location.search);
+const CONJUNTO = P_.get("conjunto") ?? "douradas";
+const NMAX = +(P_.get("n") ?? 1e9);
+const MODELO = P_.get("modelo") ?? "3b";
+
+const FONTES = {
+  douradas: { arquivo: "/_douradas.json", chave: "tabelas", modo: "tabela" },
+  multi:    { arquivo: "/_douradas_multi.json", chave: "tabelas", modo: "tabela" },
+  temas:    { arquivo: "/_douradas_temas.json", chave: "datasets", modo: "dataset" },
+};
+
+/** Extrai o veredito de uma pergunta a partir dos eventos que ask.perguntar emite. */
+function rodarUmaPergunta(ask, pergunta) {
+  return new Promise((resolve) => {
+    const v = {
+      tier1: false, tabelasVistas: [], tentativasReparo: 0, consertoTabela: false,
+      sql: null, nTabelasSql: 0, temJoin: false, executou: false, erro: null,
+      vazio: false, semDado: null, resolvida: false, fase: null,
+    };
+    ask.perguntar(pergunta, (ev, d) => {
+      if (ev === "fase") v.fase = d.nome;
+      if (ev === "tier1" && !d.caiu) v.tier1 = true;
+      if (ev === "tabelas") v.tabelasVistas = d.map((t) => t.id);
+      if (ev === "reparo") v.tentativasReparo = d.tentativa;
+      if (ev === "conserto") v.consertoTabela = true;
+      if (ev === "sql") {
+        v.sql = d.sql;
+        v.nTabelasSql = new Set([...d.sql.matchAll(/\b(?:FROM|JOIN)\s+([\w]+\.[\w]+)/gi)].map((m) => m[1])).size;
+        v.temJoin = /\bJOIN\b/i.test(d.sql);
+      }
+      if (ev === "linhas") { v.executou = true; v.resolvida = true; }
+      if (ev === "semdado") { v.semDado = d.motivo; v.resolvida = false; }
+      // ask.perguntar() NÃO emite "fim" nos caminhos de erro — só retorna
+      // depois de emitir("erro", ...). Resolver aqui direto, ou o harness
+      // trava para sempre na primeira pergunta que falhar.
+      if (ev === "erro") { v.erro = d.mensagem; v.resolvida = false; resolve(v); }
+      if (ev === "fim") resolve(v);
+    }).catch((e) => { v.erro = `exceção: ${e.message}`; resolve(v); });
+  });
+}
+
+function cobertura(vistas, esperados, modo) {
+  return modo === "dataset"
+    ? esperados.filter((d) => vistas.some((id) => id.startsWith(d + ".")))
+    : esperados.filter((t) => vistas.includes(t));
+}
+
+try {
+  const embed = await import("/embed.js"), lex = await import("/lexical.js");
+  const P = await import("/prompt.js"), ask = await import("/ask.js"), llm = await import("/llm.js");
+
+  out.textContent = "carregando índice de busca…";
+  await embed.carregar(({ pct }) => out.textContent = `busca ${pct}%`);
+  const cols = await ask.carregarColunas(embed.tabelas());
+  await P.carregarSemantica();
+  lex.indexar(embed.tabelas(), cols);
+
+  out.textContent = "carregando modelo…";
+  await llm.carregar(MODELO, ({ pct, texto }) => out.textContent = `llm ${pct}% ${texto ?? ""}`);
+  out.textContent = "";
+
+  const fonte = FONTES[CONJUNTO];
+  if (!fonte) throw new Error(`conjunto desconhecido: ${CONJUNTO} (use douradas|multi|temas)`);
+  const { perguntas } = await fetch(fonte.arquivo).then((r) => r.json());
+  const alvo = perguntas.slice(0, NMAX);
+
+  let tier1N = 0, recallTudo = 0, recallParcial = 0, multi = 0, comJoin = 0,
+      executou = 0, reparouOk = 0, resolvida = 0;
+  const falhas = [];
+  const linhas = [];
+
+  for (const p of alvo) {
+    const esperados = p[fonte.chave] ?? [];
+    const t0 = performance.now();
+    const v = await rodarUmaPergunta(ask, p.q);
+    const ms = Math.round(performance.now() - t0);
+
+    const achou = v.tier1 ? esperados : cobertura(v.tabelasVistas, esperados, fonte.modo);
+    const tudo = v.tier1 || achou.length === esperados.length;
+    if (v.tier1) tier1N++;
+    if (tudo) recallTudo++; else if (achou.length) recallParcial++;
+    if (v.nTabelasSql >= 2) multi++;
+    if (v.temJoin) comJoin++;
+    if (v.executou) executou++;
+    if (v.tentativasReparo > 0 && v.executou) reparouOk++;
+    if (v.resolvida) resolvida++;
+
+    const marca = v.tier1 ? "T1"
+      : `${tudo ? "R+" : achou.length ? "R~" : "R-"}(${achou.length}/${esperados.length})` +
+        (v.nTabelasSql ? ` T${v.nTabelasSql}${v.temJoin ? "J" : " "}` : "") +
+        (v.tentativasReparo ? ` rep${v.tentativasReparo}` : "") +
+        ` ${v.resolvida ? "OK" : v.semDado ? "vazio" : v.erro ? "ERRO" : "?"}`;
+
+    if (!v.resolvida) {
+      falhas.push({ n: p.n ?? falhas.length + 1, q: p.q, motivo: v.erro ?? v.semDado ?? "parou em " + v.fase, sql: v.sql });
+    }
+
+    linhas.push(`${String(p.n ?? "").padStart(3)} ${marca.padEnd(24)} ${(ms / 1000).toFixed(1)}s  ${p.q.slice(0, 60)}`);
+    out.textContent = linhas.join("\n");
+  }
+
+  const n = alvo.length, pc = (x) => `${x}/${n} (${Math.round(100 * x / n)}%)`;
+  log(`\n${"=".repeat(70)}`);
+  log(`conjunto: ${CONJUNTO}  modelo: ${MODELO}  n: ${n}`);
+  log(`resolvida por Tier 1:                ${pc(tier1N)}`);
+  log(`recall completo (${fonte.modo}):          ${pc(recallTudo)}   parcial: ${recallParcial}`);
+  log(`SQL com 2+ tabelas:                  ${pc(multi)}`);
+  log(`SQL com JOIN:                        ${pc(comJoin)}`);
+  log(`executou sem erro:                   ${pc(executou)}`);
+  log(`reparo consertou (das que reparou):  ${reparouOk}`);
+  log(`RESOLVIDA fim-a-fim:                 ${pc(resolvida)}`);
+
+  if (falhas.length) {
+    log(`\n${"-".repeat(70)}\nFALHAS (${falhas.length}):`);
+    for (const f of falhas) log(`  ${f.n}. ${f.q.slice(0, 70)}\n     motivo: ${(f.motivo ?? "").slice(0, 150)}`);
+  }
+
+  window.__resumo = { conjunto: CONJUNTO, modelo: MODELO, n, tier1: tier1N, recallTudo, recallParcial,
+    multi, comJoin, executou, resolvida, falhas: falhas.length };
+} catch (e) {
+  log("ERRO: " + e.message + "\n" + (e.stack ?? "").slice(0, 800));
+}
+window.__done = true;
+</script>

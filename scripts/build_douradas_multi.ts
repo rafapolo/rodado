@@ -39,7 +39,7 @@ for (const m of md.matchAll(re)) {
 }
 
 mkdirSync("tasks", { recursive: true });
-writeFileSync("tasks/douradas_multi.json", JSON.stringify({
+const conteudo = JSON.stringify({
   _meta: {
     origem: "docs/relatorio-social/perguntas.md",
     sobre: "Conjunto dourado MULTI-TABELA. Mede se a recuperação traz TODAS as " +
@@ -49,7 +49,11 @@ writeFileSync("tasks/douradas_multi.json", JSON.stringify({
                 "SQL tem JOIN", "executa sem erro", "resultado não é vazio/nulo"],
   },
   perguntas,
-}, null, 1));
+}, null, 1);
+// web/diag/bancada.html busca /_douradas_multi.json pela raiz do servidor
+mkdirSync("web/static", { recursive: true });
+writeFileSync("tasks/douradas_multi.json", conteudo);
+writeFileSync("web/static/_douradas_multi.json", conteudo);
 
 const porN = perguntas.reduce((a: any, p) => (a[p.tabelas.length] = (a[p.tabelas.length] ?? 0) + 1, a), {});
 console.log(`${perguntas.length} perguntas multi-tabela`);
