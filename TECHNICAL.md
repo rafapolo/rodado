@@ -10,14 +10,14 @@
 
 | Competency | How this project demonstrates it |
 |-----------|----------------------------------|
-| End-to-end delivery, prototype → production | Ingestion pipeline + semantic layer + API + UI, fully deployed and running |
+| End-to-end delivery, prototype → production | Ingestion pipeline + semantic layer + 18-tool MCP interface, in daily use |
 | Data engineering & modeling | 849 tables normalized to a typed ontology with join-key graph |
 | Ontology design | 8 business object types with explicit relationships and canonical keys |
-| Application development | Query API + browser SQL shell, production-deployed |
+| Application development | `mcp_server.py` — 18 MCP tools over stdio (see `docs/MCP.md`); an earlier browser SQL shell + HTTP API is retired |
 | AI/ML enablement | Semantic table selection over a doc2query embedding index (832 tables, 6,464 synthetic questions) |
-| Access controls & auditability | HMAC-SHA256 auth, read-only enforcement, Caddy forward auth |
-| Operational durability | Persistent DuckDB connection, resumable pipelines, Docker + haloy deploy |
-| Sensitive data handling | CPF/CNPJ personal identifiers — read-only, no PII export, credential isolation |
+| Read-only enforcement | Query type/keyword guard client-side before any SSH call reaches beelink |
+| Operational durability | Resumable scraping pipelines, checkpointed ingestion |
+| Sensitive data handling | CPF/CNPJ personal identifiers — read-only, no PII export |
 
 ---
 
@@ -184,6 +184,12 @@ Full map in [`docs/ERD.md`](docs/ERD.md) — pt-BR, English in [`docs/ERD_EN.md`
 
 ## Architecture
 
+Everything is local: partitioned Parquet+zstd on beelink, queried on-demand
+by DuckDB over SSH. No live web service, no cloud object storage — an
+earlier iteration (`db.xn--2dk.xyz`, a BigQuery → GCS → Hetzner Object
+Storage pipeline behind `auth.py`/Caddy) has been retired; see "Previous
+architecture" below for what it demonstrated while it ran.
+
 ```
 ┌──────────────────────────────────────────────────────────────────┐
 │                       USERS / WORKFLOWS                          │
@@ -192,49 +198,38 @@ Full map in [`docs/ERD.md`](docs/ERD.md) — pt-BR, English in [`docs/ERD_EN.md`
                                  │
                                  ▼
 ┌──────────────────────────────────────────────────────────────────┐
-│                       APPLICATION LAYER                          │
+│                       AGENT LAYER                                │
 │                                                                  │
-│   db.ミ.xyz        — browser SQL shell (ttyd + DuckDB)          │
-│   POST /query      — programmatic SQL API (curl / scripts)       │
+│   Claude Desktop / Claude Code — mcp_server.py over stdio        │
+│   18 tools: schema browse, semantic search, join resolution,     │
+│   named metrics, read-only SQL, friendly per-theme lookups       │
 └────────────────────────────────┬─────────────────────────────────┘
                                  │
                                  ▼
 ┌──────────────────────────────────────────────────────────────────┐
 │                    SEMANTIC / ONTOLOGY LAYER                     │
 │                                                                  │
-│   DuckDB views over partitioned datasets                         │
 │   basedosdados-schema.json   — 832-table schema registry        │
-│   join_keys.md               — join keys + cross-source bridges │
+│   join_keys.md / bridges.yaml — join keys + cross-source bridges│
 │   doc2query_index.json/.npy  — semantic vectors for AI (11 MB)  │
 │   overview/ (34 files)       — domain narratives for LLM ctx    │
 └────────────────────────────────┬─────────────────────────────────┘
                                  │
                                  ▼
 ┌──────────────────────────────────────────────────────────────────┐
-│                     QUERY / ACCESS LAYER                         │
+│                     QUERY LAYER                                  │
 │                                                                  │
-│   auth.py    — persistent DuckDB conn, HMAC-SHA256 auth         │
-│   Caddy      — TLS termination, forward auth, access control    │
-│   Read-only  — no writes enforced at engine level               │
+│   ssh beelink '~/bin/duckdb -json ...'  — read-only, single-stmt │
+│   No local DuckDB connection, no persistent server process      │
 └────────────────────────────────┬─────────────────────────────────┘
                                  │
                                  ▼
 ┌──────────────────────────────────────────────────────────────────┐
 │                        STORAGE LAYER                             │
 │                                                                  │
-│   Hetzner Object Storage, Helsinki (S3-compatible)              │
+│   Local disk on beelink                                          │
 │   Partitioned Parquet + zstd · 849 tables · ~868 GB             │
-│   DuckDB httpfs reads on demand — no local data import          │
-└────────────────────────────────┬─────────────────────────────────┘
-                                 │
-                                 ▼
-┌──────────────────────────────────────────────────────────────────┐
-│                      INGESTION PIPELINE                          │
-│                                                                  │
-│   BigQuery (public mirror project)                               │
-│     → GCS export (Parquet + zstd, parallel jobs)               │
-│     → Hetzner S3 (rclone streaming, no intermediate disk)      │
-│   scripts/roda.sh — resumable, dry-run, GCP VM option          │
+│   DuckDB reads local files directly — no network, no import     │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
@@ -247,7 +242,7 @@ Full map in [`docs/ERD.md`](docs/ERD.md) — pt-BR, English in [`docs/ERD_EN.md`
 384 dims, `paraphrase-multilingual-MiniLM-L12-v2`) — not one vector per table. An
 earlier per-table index (one vector over column-name text) measured nearly
 orthogonal to a real question (recall@5 1/15 on a single-table golden set) and was
-replaced; see `tasks/mcp_search_refino.md` item 1. A table's score is the MAX
+replaced; see `tasks/done/mcp_search_refino.md` item 1. A table's score is the MAX
 cosine similarity across its own questions, so query and index live in the same
 space and no consumer has to reason over the full 1.8 MB schema.
 
@@ -289,7 +284,7 @@ Large tables (100M+ rows) require partition filters to avoid scan timeouts. Alwa
 | `cnpj` | Brazilian company tax ID | Read-only; 14-digit canonical identifier |
 | `cnpj_basico` | Company base (8-digit, groups branches) | Use for company-level joins |
 
-All access is read-only enforced at both the DuckDB engine level and the API layer. No PII export endpoints. Credentials isolated per service.
+All access is read-only, enforced client-side in `mcp_server.py` before any SSH call reaches beelink. No PII export endpoints.
 
 ### Known limitations & assumptions
 
@@ -302,65 +297,25 @@ All access is read-only enforced at both the DuckDB engine level and the API lay
 ### Access model
 
 ```
-Public internet → Caddy (TLS + forward auth) → auth.py (HMAC-SHA256)
-                                              → DuckDB (read-only, no writes)
-                                              → Hetzner S3 (private bucket)
+Agent (Claude Desktop/Code) → mcp_server.py (stdio, read-only guard)
+                             → ssh beelink → DuckDB → local Parquet
 ```
 
-- Web UI access requires password authentication
-- `/query` endpoint requires `X-Password` header
-- S3 credentials never exposed to query layer
-- All queries logged with timestamp and source IP
-
----
-
-## Query API
-
-The endpoint is collocated with Hetzner S3 — persistent warmed DuckDB connection, no cold-start latency.
-
-```bash
-# Inline query
-curl -X POST https://db.xn--2dk.xyz/query \
-  -H "X-Password: $BASIC_AUTH_PASSWORD" \
-  --data-binary "SELECT sigla_uf, COUNT(*) FROM br_me_cnpj.estabelecimentos GROUP BY 1"
-
-# From file
-curl -X POST https://db.xn--2dk.xyz/query \
-  -H "X-Password: $BASIC_AUTH_PASSWORD" \
-  --data-binary @analysis.sql > result.csv
-
-# Heredoc (useful in scripts)
-curl -X POST https://db.xn--2dk.xyz/query \
-  -H "X-Password: $BASIC_AUTH_PASSWORD" \
-  --data-binary @- << 'SQL'
-SELECT sigla_uf, SUM(valor_contrato) AS total
-FROM br_cgu_compras_governamentais.contratos
-WHERE ano = 2023
-GROUP BY 1 ORDER BY 2 DESC
-SQL
-```
+No public endpoint, no auth layer to manage — access is scoped to whoever
+has SSH access to beelink and runs `mcp_server.py` locally.
 
 ---
 
 ## MCP server
 
-`mcp_server.py` exposes the catalog and query API as [MCP](https://modelcontextprotocol.io) tools for Claude Desktop/Claude Code, over stdio. It never opens its own DuckDB connection — `run_sql` shells out to `ssh beelink '~/bin/duckdb -json ~/rodado/basedosdados.duckdb'` (SQL piped over stdin), guarded client-side to read-only (`SELECT`/`WITH` only, single statement, mutating keywords rejected before any SSH call). beelink is the project's official data source (fresher than the S3-backed `/query` endpoint, and where newly-scraped datasets in `tasks/datasets_to_scrap.md` land first) — requires SSH access to `beelink`, so this only works from machines with that configured, not as a public service.
-
-| Tool | Purpose |
-|------|---------|
-| `list_datasets` | All datasets with table counts |
-| `list_tables(dataset)` | Tables in one dataset, with close-match suggestions on a miss |
-| `describe_table(table)` | Columns (name/type/description) for `dataset.table` |
-| `search_tables(query)` | Semantic search over table descriptions (`all-MiniLM-L6-v2`, lazy-loaded) |
-| `get_join_keys(column?)` | Foreign-key join columns shared across tables |
-| `run_sql(sql)` | Read-only query against beelink's DuckDB mirror over SSH |
+`mcp_server.py` exposes the catalog and query layer as 18 [MCP](https://modelcontextprotocol.io)
+tools for Claude Desktop/Claude Code, over stdio. Full tool inventory,
+architecture diagrams and the retrieval/iteration mechanism: **[`docs/MCP.md`](docs/MCP.md)**.
 
 ```bash
 pip install -r requirements-mcp.txt
 claude mcp add rodado -- python3 mcp_server.py
 ```
-
-Some views in beelink's `basedosdados.duckdb` are stale and still point at a dead `s3://` bucket — if a query on a view looks wrong or 404s, check `SELECT sql FROM duckdb_views() WHERE view_name='...'` and fall back to `read_parquet('~/rodado/<dataset>/<table>/*.parquet')` directly.
 
 Tests: `pytest tests/test_mcp_server.py` (the ssh subprocess and the embedding model are mocked — no network, no model download).
 
@@ -372,28 +327,13 @@ Not a Foundry deployment — an open-source system that reproduces the same arch
 
 | rodado component | Foundry equivalent |
 |-----------------|-------------------|
-| BigQuery export scripts | External data connectors |
-| Parquet files on Hetzner S3 | Foundry datasets |
+| Parquet files on beelink | Foundry datasets |
 | DuckDB engine + views | Foundry query engine |
 | `basedosdados-schema.json` | Ontology schema registry |
-| `join_keys.md` entity graph | Object type links / property mappings |
+| `join_keys.md`/`bridges.yaml` entity graph | Object type links / property mappings |
 | `doc2query_index.json`/`doc2query_vectors.npy` | Semantic search index |
-| `/query` HTTP endpoint | Foundry Functions |
 | `mcp_server.py` | AIP Agent tool actions |
-| Browser SQL shell | Workshop application |
-| `scripts/roda.sh` | Foundry pipeline |
-| Caddy + auth.py | Access control + audit layer |
 | `overview/` domain narratives | Business context / documentation |
-
----
-
-## Services
-
-| Port | Service | Endpoint |
-|------|---------|----------|
-| 7681 | DuckDB browser shell (ttyd) | db.ミ.xyz |
-| 8081 | Query API (auth.py) | db.ミ.xyz/query |
-| 8080 | Caddy reverse proxy + TLS | — |
 
 ---
 
@@ -401,47 +341,24 @@ Not a Foundry deployment — an open-source system that reproduces the same arch
 
 | Layer | Technology |
 |-------|-----------|
-| Query engine | DuckDB (httpfs, persistent in-memory connection) |
-| Storage | Hetzner Object Storage, Parquet+zstd |
+| Query engine | DuckDB, local, over SSH — no persistent server process |
+| Storage | Local disk on beelink, Parquet+zstd |
 | Semantic search | MAX cosine similarity over `doc2query_index.json`/`doc2query_vectors.npy` |
-| API / auth | Python, HMAC-SHA256, JSON responses |
-| Proxy | Caddy (TLS, forward auth, routing by hostname) |
-| Deploy | Docker (multi-stage), haloy |
-| Pipeline | Bash + gcloud + rclone |
-
----
-
-## Pipeline
-
-```bash
-./scripts/roda.sh --dry-run    # estimate size and export cost
-./scripts/roda.sh              # run locally
-./scripts/roda.sh --gcloud-run # spin up GCP VM, run, auto-delete
-```
-
-```
-BigQuery → GCS (Parquet+zstd, parallel) → Hetzner S3 (rclone streaming, no local disk)
-```
-
-Auto-resumes if interrupted. Schema and embedding metadata auto-generated post-run.
-
----
-
-## Deploy
-
-```bash
-docker build -t rodado .
-haloy deploy -f haloy.yml
-```
-
----
+| Interface | `mcp_server.py`, stdio MCP tools for Claude Desktop/Code |
 
 ## Environment
 
 ```bash
-AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY   # Hetzner S3
-HETZNER_S3_ENDPOINT                         # S3 endpoint URL
-BASIC_AUTH_PASSWORD                         # web UI + /query auth
+BEELINK_HOST   # SSH hostname for beelink (default: beelink)
 ```
 
-See `.env.sample` for full list.
+## Previous architecture
+
+An earlier iteration of this project ran a public live-query service
+(`db.xn--2dk.xyz`): BigQuery → GCS → Hetzner Object Storage, served by a
+persistent `auth.py` DuckDB connection behind Caddy, with a browser SQL
+shell and a `/query` HTTP API. That service is retired — the deployment
+files it left behind (`auth.py`, `start.sh`, `Caddyfile`, `haloy.yml`,
+`Dockerfile`) remain in the repo but describe infrastructure that no
+longer runs. Everything today goes through beelink and `mcp_server.py`,
+described above.

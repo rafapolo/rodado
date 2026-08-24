@@ -11,7 +11,7 @@ so this is the single trust boundary before anything gets embedded).
 The raw lote_*/saida_* batches stay under tasks/ (gitignored — they're bulky
 intermediate files); the combined corpus is written to docs/context/ instead,
 which is NOT gitignored, so it survives the way the ask-web project's
-equivalent artifact didn't (see tasks/mcp_search_refino.md item 1).
+equivalent artifact didn't (see tasks/done/mcp_search_refino.md item 1).
 """
 import json
 import sys

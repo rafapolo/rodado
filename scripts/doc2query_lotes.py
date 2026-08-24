@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Split all tables in docs/context/basedosdados-schema.json into batches ready
 for the doc2query prompt (scripts/prompts/doc2query.md, fetched from
-origin/ask-web — see tasks/mcp_search_refino.md item 1 for why).
+origin/ask-web — see tasks/done/mcp_search_refino.md item 1 for why).
 
     python3 scripts/doc2query_lotes.py            # batches of 25 -> tasks/doc2query/
 
