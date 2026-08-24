@@ -290,7 +290,16 @@ def _check_read_only(sql: str) -> str | None:
 
 
 def _run_sql_ssh(sql: str) -> dict:
-    remote_cmd = f"{BEELINK_DUCKDB_BIN} -json {BEELINK_DUCKDB_PATH}"
+    # -readonly: this server never writes (enforced above by _check_read_only
+    # regardless), but the DuckDB CLI still takes an EXCLUSIVE file lock by
+    # default even for a bare SELECT — one read-write connection anywhere
+    # blocks every other connection, read-only or not, on the same .duckdb
+    # file (https://duckdb.org/docs/stable/connect/concurrency). Multiple
+    # concurrent sessions querying the same beelink mirror (this server runs
+    # from more than one machine/session at once) hit that lock constantly.
+    # Opening read-only lets any number of readers coexist; it only still
+    # blocks if some OTHER process opens the file read-write.
+    remote_cmd = f"{BEELINK_DUCKDB_BIN} -readonly -json {BEELINK_DUCKDB_PATH}"
     # beelink's ~/.duckdbrc sets enable_progress_bar=true, which prints a
     # progress meter to stdout for any query past the render threshold
     # (~2s) and corrupts -json output. Disable it for this session only —
