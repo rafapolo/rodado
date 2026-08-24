@@ -156,6 +156,34 @@ def test_describe_table_unknown_returns_suggestions():
     assert "suggestions" in result
 
 
+def test_describe_table_warns_about_duplicated_tables(monkeypatch):
+    """resolve_join already checks this; describe_table must too, since the
+    natural path for a single-table lookup never calls resolve_join at all."""
+    table_id = m._ALL_TABLE_IDS[0]
+    monkeypatch.setattr(m, "_duplicated", lambda: {table_id})
+    result = m.describe_table(table_id)
+    assert "warning" in result and "twice" in result["warning"]
+
+
+def test_describe_table_no_warning_when_not_duplicated():
+    result = m.describe_table(m._ALL_TABLE_IDS[0])
+    assert "warning" not in result
+
+
+def test_describe_table_flags_decodable_ibge_census_columns():
+    result = m.describe_table("br_ibge_censo_demografico.microdados_pessoa_2010")
+    assert "dicionario_coverage" in result
+    assert "v0502" in result["dicionario_coverage"]["decodable_columns"]
+    assert "dicionario" in result["dicionario_coverage"]["how"]
+
+
+def test_describe_table_no_dicionario_coverage_for_unrelated_table():
+    table_id = next(t for t in m._ALL_TABLE_IDS
+                     if not t.startswith("br_ibge_censo_demografico."))
+    result = m.describe_table(table_id)
+    assert "dicionario_coverage" not in result
+
+
 # ---------------------------------------------------------------------------
 # get_join_keys
 # ---------------------------------------------------------------------------

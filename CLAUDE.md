@@ -78,6 +78,7 @@ One mermaid `erDiagram` per domain covering all 834 tables: entity = dataset, at
 - `metrics.yaml` / `metrics.json` — 7 cálculos nomeados (expressão DuckDB, grain, unidade, sinônimos pt-BR, `required_filters`, `verified`). O `.json` é gerado do `.yaml` por `scripts/gera_metrics_json.py` para a camada NL→SQL ler
 - `hierarchies.yaml` — rollup de município→UF→região, CNAE e CID-10. CNAE e CID são prefixais: o pai sai de `substr()`, sem join
 - `schema_ddl.sql` — snapshot DDL parcial (527 tabelas, 109 datasets) da porção espelhada do **Base dos Dados**; serve de referência de procedência para `scripts/build_metadata_catalog.py`. Cobre parte do mirror, não todo ele
+- `dicionario_coverage.json` — quais colunas das 10 tabelas de microdados do censo IBGE (1970-2010) têm decode chave→valor em `br_ibge_censo_demografico.dicionario` (código cru tipo `v0502`, não nome/valor em português como o resto do mirror). Gerado por `scripts/gera_dicionario_coverage.py`; `describe_table` lê para avisar quais colunas dessas tabelas são decodificáveis
 
 ### Camada semântica — `bridges.yaml`, `metrics.yaml`, `hierarchies.yaml`
 
@@ -105,6 +106,7 @@ python3 scripts/gera_metrics_json.py       # metrics.yaml   -> docs/context/metr
 python3 scripts/valida_metrics.py          # confere metrics.yaml + hierarchies.yaml
 python3 scripts/gera_schema_graph.py       # -> pages/atlas/schema_graph.json
 python3 scripts/build_atlas.py             # -> pages/atlas/index.html
+python3 scripts/gera_dicionario_coverage.py  # beelink -> docs/context/dicionario_coverage.json (raro: só censo 1970-2010)
 ```
 
 `join_keys.md` e `metrics.json` são **gerados** — editar o YAML, nunca a saída. `valida_metrics.py` separa hard de soft como o firewall de `run_sql`: DML na expressão rejeita, coluna ausente só avisa, porque `_check_read_only` revalida antes de executar.
