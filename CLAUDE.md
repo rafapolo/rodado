@@ -10,61 +10,30 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Python services
 ```bash
-python auth.py                         # auth + query HTTP server on :8081
-python scripts/prepara_db.py          # generate DuckDB with views
 python scripts/gera_schemas.py        # extract table schemas → JSON/text
 python scripts/gera_join_keys.py      # schemas.json → docs/context/join_keys.md
 python scripts/gera_erd.py            # schemas.json → ERD.md (pt-BR) + ERD_EN.md
 ```
 
-### DuckDB
-```bash
-duckdb data/basedosdados.duckdb       # interactive shell (requires S3 env vars)
-```
-
-### Data export pipeline
-```bash
-./scripts/roda.sh --dry-run           # estimate costs, no writes
-./scripts/roda.sh                     # run locally (needs gcloud + rclone)
-./scripts/roda.sh --gcloud-run        # spin up GCP VM and run there
-```
-
 ### Querying data
 ```bash
-# Preferred: SSH to beelink (freshest data, no S3 dependency)
 ssh beelink '~/bin/duckdb -json ~/rodado/basedosdados.duckdb' <<'SQL'
 SET enable_progress_bar=false;
 SELECT ...;
 SQL
-
-# Fallback: remote endpoint (if beelink is unavailable)
-curl "https://db.xn--2dk.xyz/query?q=SELECT+..." -H "X-Password: $BASIC_AUTH_PASSWORD"
-# or POST for longer queries
-curl -X POST "https://db.xn--2dk.xyz/query" -H "X-Password: $BASIC_AUTH_PASSWORD" --data-raw "SELECT ..."
-```
-
-### Docker / deployment
-```bash
-docker build -t baseldosdados .       # Caddy + ttyd + DuckDB + Python
-haloy deploy -c haloy.yml             # deploy via haloy
 ```
 
 ## Architecture
 
-### Services (started by `start.sh`)
-| Port | Service | Purpose |
-|------|---------|---------|
-| 7681 | ttyd → duckdb | Browser-accessible DuckDB shell |
-| 8081 | auth.py | Cookie auth + SQL execution proxy |
-| 8080 | Caddy | Public reverse proxy, forward auth |
+Everything is local: parquet on beelink (`~/rodado/<dataset>/<tabela>/*.parquet`), queried through
+DuckDB over SSH — no live web service, no cloud object storage. The former
+`db.xn--2dk.xyz` HTTP endpoint (`auth.py`, a BigQuery → GCS → Hetzner Object
+Storage pipeline via `scripts/roda.sh`, DuckDB httpfs reads on query) is
+retired; the deployment files it left behind (`auth.py`, `start.sh`,
+`Caddyfile`, `haloy.yml`, `Dockerfile`) are not part of the current
+architecture and describe infrastructure that no longer runs.
 
-Caddy serves `db.xn--2dk.xyz` → port 7681. The `/query` endpoint on `db.xn--2dk.xyz` is unauthenticated for read-only SQL via HTTP.
-
-### `auth.py` — Auth & Query Service
-HMAC-SHA256 cookie auth. Holds a **persistent DuckDB Python connection** (in-memory + ATTACH read-only) initialized once at startup with S3 credentials and httpfs. Returns JSON. Use `X-Password` header matching `BASIC_AUTH_PASSWORD`.
-
-### Data flow
-BigQuery → Google Cloud Storage (Parquet) → Hetzner S3 (via `scripts/roda.sh` + rclone) → DuckDB httpfs reads on query.
+`mcp_server.py` is the current interface — see `docs/MCP.md`.
 
 ### `docs/ERD.md` — the map
 One mermaid `erDiagram` per domain covering all 834 tables: entity = dataset, attribute = table, edge = join key to a reference hub (solid = direct, dashed = needs normalization). Lists what connects to nothing. `ERD.md` is pt-BR (default), `ERD_EN.md` is the English twin — both generated from the same data by `scripts/gera_erd.py`.
@@ -72,13 +41,13 @@ One mermaid `erDiagram` per domain covering all 834 tables: entity = dataset, at
 ### `docs/context/` — Schema metadata
 - `basedosdados-schema.json` — full schema (1.8 MB, 197 datasets / 832 tabelas)
 - `schema_compact.txt` — text format for prompting
-- `doc2query_index.json` / `doc2query_vectors.npy` — the `search_tables` index: one embedding per synthetic question a table answers (~8/table, 832 tables, `paraphrase-multilingual-MiniLM-L12-v2`), not one per table (replaces a deleted `table_embeddings.json`, which held one vector per table over column-name text — measured nearly orthogonal to a real question, recall@5 1/15 on a single-table golden set; see `tasks/mcp_search_refino.md` item 1. `scripts/update_embeddings.py`, its generator, was deleted with it). `search_tables` scores a table by the MAX cosine similarity across its own questions. `.json` holds `id`/`table`/`text` per row in the `.npy`'s row order; `.npy` is a float32 `(n_questions, dim)` array. Generation is two separable steps: the LLM pass (`scripts/doc2query_lotes.py` → `scripts/doc2query_roda.py` against `scripts/prompts/doc2query.md`, ~34 `opencode run` batches — expensive, one-time, resumable) produces `docs/context/doc2query_corpus.jsonl` (via `scripts/gera_doc2query_corpus.py`, not gitignored — the raw batches under `tasks/` are); `scripts/gera_doc2query_index.py` embeds it — cheap, rerun freely after editing the corpus or changing the embedding model
-- `bridges.yaml` — **a fonte única do conhecimento de join**. Conceitos-hub, as 54 pontes (coluna que significa a mesma coisa sob outro nome), os `false_friends` e os `concept_aliases`. Editar aqui; `join_keys.md` é gerado
+- `doc2query_index.json` / `doc2query_vectors.npy` — the `search_tables` index: one embedding per synthetic question a table answers (~8/table, 832 tables, `paraphrase-multilingual-MiniLM-L12-v2`), not one per table (replaces a deleted `table_embeddings.json`, which held one vector per table over column-name text — measured nearly orthogonal to a real question, recall@5 1/15 on a single-table golden set; see `tasks/done/mcp_search_refino.md` item 1. `scripts/update_embeddings.py`, its generator, was deleted with it). `search_tables` scores a table by the MAX cosine similarity across its own questions. `.json` holds `id`/`table`/`text` per row in the `.npy`'s row order; `.npy` is a float32 `(n_questions, dim)` array. Generation is two separable steps: the LLM pass (`scripts/doc2query_lotes.py` → `scripts/doc2query_roda.py` against `scripts/prompts/doc2query.md`, ~34 `opencode run` batches — expensive, one-time, resumable) produces `docs/context/doc2query_corpus.jsonl` (via `scripts/gera_doc2query_corpus.py`, not gitignored — the raw batches under `tasks/` are); `scripts/gera_doc2query_index.py` embeds it — cheap, rerun freely after editing the corpus or changing the embedding model
+- `bridges.yaml` — **a fonte única do conhecimento de join**. Conceitos-hub, as 54 pontes (coluna que significa a mesma coisa sob outro nome), os `false_friends`, os `coded_differently` (mesmo conceito, código numérico diverge por dataset/ano — `sexo`, `raca_cor`, `estado_civil`... achado ao vivo num teste cego do MCP, ver `tasks/done/mcp_search_refino.md`) e os `concept_aliases`. Editar aqui; `join_keys.md` é gerado
 - `join_keys.md` — o render de `bridges.yaml` + as chaves auto-detectadas do `schemas.json`: 152 colunas de join ao todo. Gerado por `scripts/gera_join_keys.py` — regenerar, nunca editar à mão
 - `metrics.yaml` / `metrics.json` — 7 cálculos nomeados (expressão DuckDB, grain, unidade, sinônimos pt-BR, `required_filters`, `verified`). O `.json` é gerado do `.yaml` por `scripts/gera_metrics_json.py` para a camada NL→SQL ler
 - `hierarchies.yaml` — rollup de município→UF→região, CNAE e CID-10. CNAE e CID são prefixais: o pai sai de `substr()`, sem join
 - `schema_ddl.sql` — snapshot DDL parcial (527 tabelas, 109 datasets) da porção espelhada do **Base dos Dados**; serve de referência de procedência para `scripts/build_metadata_catalog.py`. Cobre parte do mirror, não todo ele
-- `dicionario_coverage.json` — quais colunas das 10 tabelas de microdados do censo IBGE (1970-2010) têm decode chave→valor em `br_ibge_censo_demografico.dicionario` (código cru tipo `v0502`, não nome/valor em português como o resto do mirror). Gerado por `scripts/gera_dicionario_coverage.py`; `describe_table` lê para avisar quais colunas dessas tabelas são decodificáveis
+- `dicionario_coverage.json` — quais colunas de quais tabelas têm decode chave→valor disponível em `{dataset}.dicionario`, escaneado em **45 datasets** (168 tabelas, 6.256 colunas) — não só o censo IBGE histórico (`v0502` etc.) que motivou o mecanismo, generalizado 2026-08-24 depois que um teste cego do MCP achou o mesmo padrão em RAIS/CAGED/ENEM/SIM e outros 40. Gerado por `scripts/gera_dicionario_coverage.py`; `describe_table` lê pra avisar quais colunas de uma tabela são decodificáveis (`dicionario_coverage`) e quais têm código que **diverge entre datasets** pro mesmo conceito (`coded_value_warning`, cruzado com `bridges.yaml`'s `coded_differently`)
 
 ### Camada semântica — `bridges.yaml`, `metrics.yaml`, `hierarchies.yaml`
 
@@ -106,7 +75,7 @@ python3 scripts/gera_metrics_json.py       # metrics.yaml   -> docs/context/metr
 python3 scripts/valida_metrics.py          # confere metrics.yaml + hierarchies.yaml
 python3 scripts/gera_schema_graph.py       # -> pages/atlas/schema_graph.json
 python3 scripts/build_atlas.py             # -> pages/atlas/index.html
-python3 scripts/gera_dicionario_coverage.py  # beelink -> docs/context/dicionario_coverage.json (raro: só censo 1970-2010)
+python3 scripts/gera_dicionario_coverage.py  # beelink -> docs/context/dicionario_coverage.json (rerodar quando um dicionario mudar)
 ```
 
 `join_keys.md` e `metrics.json` são **gerados** — editar o YAML, nunca a saída. `valida_metrics.py` separa hard de soft como o firewall de `run_sql`: DML na expressão rejeita, coluna ausente só avisa, porque `_check_read_only` revalida antes de executar.
@@ -183,15 +152,11 @@ python3 scripts/build_atlas.py /tmp/atlas.html   # também emite a cópia autoco
 
 | Variable | Used by | Purpose |
 |----------|---------|---------|
-| `BASIC_AUTH_PASSWORD` | auth.py, Caddy | Web UI password |
 | `BEELINK_HOST` | scripts, mcp_server | SSH hostname for beelink (default: `beelink`) |
-| `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` | auth.py | Hetzner S3 credentials (server-side only) |
-| `HETZNER_S3_ENDPOINT` | auth.py | S3 endpoint URL |
-| `BUCKET_REGION` | auth.py | S3 bucket region |
 
 ## Data Querying (DuckDB/CNPJ datasets)
 
-- Always include partition filters on large S3-backed tables to avoid timeouts.
+- Always include partition filters on large tables to avoid timeouts.
 - Validate query results against sanity bounds (e.g., contract values, row counts) before reporting; flag anomalies like trillion-real totals.
 - Prefer name-based filtering combined with CPF when CPF joins alone produce implausible cardinality.
 - Before presenting query results: (1) state the expected order of magnitude, (2) flag any row that exceeds it, (3) verify the count two independent ways. Only report numbers that pass all three checks.
@@ -202,7 +167,7 @@ python3 scripts/build_atlas.py /tmp/atlas.html   # também emite a cópia autoco
 
 **NUNCA usar S3/Hetzner diretamente.** O bucket `s3://baseldosdados` não existe mais — todas as views no DuckDB que referenciam `s3://` estão obsoletas. Para queries em tabelas cujas views apontam para S3, use `read_parquet('~/rodado/<dataset>/<table>/*.parquet')` diretamente com o caminho local do beelink.
 
-Essa regra é sobre **servir consultas de dado ao vivo/produção** (`auth.py`, DuckDB) — nunca usar BigQuery pra isso, sem exceção.
+Essa regra é sobre **servir consultas de dado** — nunca usar BigQuery pra isso, sem exceção.
 
 Existe uma **única exceção, estritamente escopada**: manutenção do mirror do beelink (`scripts/sync-with-source.md`), usando **somente `bq query` em modo Sandbox gratuito** (sem conta de billing, cota mensal ~900GB/1TB), nunca `bq extract` nem qualquer operação que dependa de billing ativo. Essa exceção existe só porque o Sandbox sem billing tem custo zero garantido.
 
@@ -213,7 +178,7 @@ Existe uma **única exceção, estritamente escopada**: manutenção do mirror d
 ## Key Conventions
 
 - **Never use GCP, BigQuery, or `bq` CLI for queries** — all data access goes through DuckDB only.
-- **Prefer SSH to beelink** for all SQL queries — `ssh beelink '~/bin/duckdb -json ~/rodado/basedosdados.duckdb'` (SQL piped over stdin, SET enable_progress_bar=false first). beelink is the project's official data source, fresher than the S3-backed endpoint. Set BEELINK_HOST env var if the hostname differs. Use the query endpoint `https://db.xn--2dk.xyz/query` only if beelink is unavailable.
+- **SSH to beelink** for all SQL queries — `ssh beelink '~/bin/duckdb -json ~/rodado/basedosdados.duckdb'` (SQL piped over stdin, SET enable_progress_bar=false first). beelink is the project's only data source — everything is local parquet + DuckDB, no live web service. Set BEELINK_HOST env var if the hostname differs.
 - DuckDB always runs read-only; no writes to the database from queries.
 - Queries on large tables must filter on partition columns (`ano`, `mes`, `sigla_uf`) — this is enforced in prompts.
 - SQL dialect is DuckDB; BigQuery syntax does not apply.

@@ -8,7 +8,7 @@ Comparação entre o rodado (mirror de dados públicos + scrapers) e o [mcp-bras
 |---|--------|-----------|
 | Modelo | Pre-computed Parquet mirror de BigQuery | Live API passthrough |
 | Atualização | Batch (síncrono do beelink) | Fresh a cada call |
-| Performance | Rápido (S3 collocated) | Limitado pela API upstream |
+| Performance | Rápido (parquet local no beelink) | Limitado pela API upstream |
 | Query | SQL (DuckDB) | Tools + SQL (DuckDB embedded) |
 
 ## Cobertura compartilhada

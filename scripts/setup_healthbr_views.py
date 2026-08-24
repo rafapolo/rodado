@@ -5,7 +5,9 @@ healthbr-data (Sidney Bissoli, CC-BY 4.0) mirrors Brazilian health microdata
 to Cloudflare R2 as Parquet — ~1.93B rows across 6 datasets.
 
 Creates per-year views for large datasets and direct views for dicionarios.
-S3 config is already in ~/.duckdbrc on beelink (set by an earlier run).
+healthbr-data is a third-party bucket, not project storage — this project owns
+no cloud storage of its own. The R2 read config is already in ~/.duckdbrc on
+beelink (set by an earlier run).
 
 Usage:
   python3 scripts/setup_healthbr_views.py
@@ -19,7 +21,7 @@ BEELINK_HOST = "beelink"
 DB = "~/rodado/basedosdados.duckdb"
 
 views = [
-    # (schema, table, s3_path, hive_partitioning)
+    # (schema, table, remote_path — third-party healthbr-data bucket, not ours, hive_partitioning)
     ("br_ms_sipni_dicionarios", "vacinas", "s3://healthbr-data/sipni/dicionarios/imuno.parquet", False),
     ("br_ms_sipni_dicionarios", "cobertura_indicadores", "s3://healthbr-data/sipni/dicionarios/imunocob.parquet", False),
     ("br_ms_sipni_dicionarios", "doses_tipo", "s3://healthbr-data/sipni/dicionarios/dose.parquet", False),
