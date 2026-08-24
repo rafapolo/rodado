@@ -114,6 +114,80 @@ false_friends:
   numero_logradouro:
     reason: número do imóvel no endereço
     seen_in: 2 tabelas em 2 datasets
+# Colunas onde o CONCEITO é o mesmo entre datasets mas o CÓDIGO numérico não —
+# ao contrário de false_friends (nomes iguais, conceitos diferentes), aqui o
+# perigo é justamente o oposto: parece seguro reusar um valor de filtro de uma
+# tabela em outra porque o conceito bate, mas o código por trás mudou.
+#
+# Confirmado por consulta real em 2026-08-24 sobre os 44 datasets com tabela
+# `dicionario` própria (ver scripts/gera_dicionario_coverage.py): agregando
+# chave->valor de todas por nome de coluna, comparando conflitos onde a MESMA
+# chave decodifica para valores DIFERENTES em datasets DIFERENTES. Achado ao
+# vivo durante um teste cego do MCP: uma query que reusou sexo='2' (feminino
+# no RAIS) contra o CAGED (onde '2' não existe — feminino é '3') devolveu
+# 0,0% silenciosamente em vez de erro, quase virando um "achado" fabricado.
+#
+# Mais grave: `br_inep_enem.dicionario` mostra a MESMA tabela, MESMA coluna,
+# usando DUAS convenções diferentes em anos diferentes (numérica invertida —
+# 0=Masculino/1=Feminino — E depois letras M/F) — não é só entre datasets,
+# é dentro do mesmo dataset ao longo do tempo. A regra segura é: nunca
+# carregar um código de uma tabela pra outra (nem do mesmo dataset em outro
+# ano) sem antes checar o `dicionario` daquela tabela especificamente.
+coded_differently:
+  sexo:
+    reason: mesmo conceito, código numérico difere por fonte e por ano — RAIS
+      usa 1=masculino/2=feminino/9=ignorado; CAGED usa 1=masculino/3=feminino
+      (tabela recente) mas 01/02 (tabela antiga); ENEM já usou 0=masculino/
+      1=feminino numérico E, em outros anos, letras M/F. Sempre decodificar
+      via `{dataset}.dicionario WHERE nome_coluna='sexo'` daquela tabela
+      específica antes de filtrar — nunca reusar o código de outra tabela.
+    seen_in: 12+ datasets (br_me_rais, br_me_caged, br_inep_enem, br_ms_sim,
+      br_ms_sinasc, br_ms_sinan, br_inep_saeb, br_inep_censo_escolar,
+      br_mec_prouni, br_ibge_pnad, br_ibge_pof, br_ms_vacinacao_covid19)
+  raca_cor:
+    reason: mesmo conceito, ordem do código muda por fonte — a maioria usa
+      1=branca/2=preta/3=parda/4=amarela/5=indígena, mas br_me_rais usa
+      1=indígena/2=branca/3=?/4=preta (ordem própria), e br_inep_saeb usa
+      letras (A-F) em vez de número em alguns anos. Sempre decodificar via
+      `{dataset}.dicionario WHERE nome_coluna='raca_cor'` daquela tabela.
+    seen_in: 11+ datasets (br_me_rais, br_me_caged, br_ms_sim, br_ms_sinasc,
+      br_inep_saeb, br_inep_censo_escolar, br_mec_prouni, br_ibge_pof,
+      br_ibge_pnad, br_ms_sisvan, br_ms_vacinacao_covid19)
+  estado_civil:
+    reason: mesmo conceito, código difere por fonte — br_ms_sim, br_inep_saeb,
+      br_inep_enem e br_tse_eleicoes não concordam nem na ordem nem no número
+      de categorias (alguns fundem "solteiro" com "mora com companheiro",
+      outros não). Decodificar via `{dataset}.dicionario` daquela tabela.
+    seen_in: 4 datasets (br_ms_sim, br_inep_saeb, br_inep_enem, br_tse_eleicoes)
+  faixa_etaria:
+    reason: mesmo conceito, mas os LIMITES de cada faixa (não só a ordem)
+      mudam por fonte — br_me_rais usa faixas de 5 anos, br_inep_enem usa
+      faixas de 1 ano até os 20 e depois agrega, br_me_cnpj usa faixas de 10
+      anos com limites diferentes ainda. Nunca comparar `faixa_etaria=N` entre
+      datasets — decodificar cada um via seu próprio `dicionario`.
+    seen_in: 5+ datasets (br_me_rais, br_me_cnpj, br_inep_enem,
+      br_inep_sinopse_estatistica_educacao_basica, br_inep_saeb)
+  nacionalidade:
+    reason: mesmo conceito, esquema de código totalmente diferente — br_me_rais
+      usa uma tabela extensa (10=brasileira, 20+=por país), br_inep_enem/
+      br_inep_censo_escolar usam 1-4 (brasileiro/naturalizado/estrangeiro),
+      br_ms_vacinacao_covid19 usa letras B/E.
+    seen_in: 4+ datasets (br_me_rais, br_inep_enem, br_inep_censo_escolar,
+      br_ms_vacinacao_covid19)
+  rede:
+    reason: mesmo conceito (rede de ensino), código difere por fonte — a
+      maioria usa 1=federal/2=estadual/3=municipal/4=privada, mas br_saeb
+      usa uma ordem própria (0=privada) em pelo menos uma tabela/ano.
+    seen_in: 6 datasets (br_inep_saeb, br_inep_avaliacao_alfabetizacao,
+      br_inep_indicador_nivel_socioeconomico, br_inep_ana,
+      br_inep_censo_escolar, br_inep_censo_educacao_superior)
+  tipo_estabelecimento:
+    reason: mesmo conceito, código difere e o SIGNIFICADO muda de fonte —
+      br_me_rais/br_me_caged usam isso pra tipo de vínculo jurídico do
+      estabelecimento (CNPJ/CEI/CAEPF/CNO), br_ibge_censo_2022 usa pra
+      contagem de estabelecimentos no mesmo endereço (único/múltiplo) —
+      não é só código diferente, é conceito diferente por trás do mesmo nome.
+    seen_in: 3 datasets (br_me_rais, br_me_caged, br_ibge_censo_2022)
 # Colunas cujo nome local difere do conceito, tabela a tabela. Não são pontes
 # (não precisam de conversão) — é só o diretório chamando a chave de outro nome.
 # resolve_join usa isto para reescrever o {d} da expressão da ponte.

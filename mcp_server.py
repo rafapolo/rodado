@@ -3,9 +3,9 @@
 beelink DuckDB mirror as tools for Claude Desktop/Claude Code.
 
 Never opens its own DuckDB connection locally — all SQL execution is
-delegated to the DuckDB CLI on beelink over SSH (the project's official data
-source as of 2026-07-09: fresher than the S3-backed remote endpoint and the
-only place newly-scraped datasets land first).
+delegated to the DuckDB CLI on beelink over SSH (the project's only data
+source since 2026-07-09: local Parquet on beelink, no cloud storage — this
+is where newly-scraped datasets land first).
 """
 import difflib
 import json
@@ -77,6 +77,7 @@ with open(BRIDGES_PATH, encoding="utf-8") as f:
     _BRIDGES: dict = yaml.safe_load(f)
 
 _FALSE_FRIENDS: dict = _BRIDGES.get("false_friends", {})
+_CODED_DIFFERENTLY: dict = _BRIDGES.get("coded_differently", {})
 _CONCEPTS: dict = _BRIDGES.get("concepts", {})
 _CONCEPT_ALIASES: dict = _BRIDGES.get("concept_aliases", {})
 
@@ -175,7 +176,7 @@ def _duplicated() -> set:
 # This index instead holds one embedding per SYNTHETIC QUESTION the table
 # answers (~8/table, scripts/doc2query_lotes.py + doc2query_roda.py against
 # scripts/prompts/doc2query.md), so query and index live in the same space.
-# See tasks/mcp_search_refino.md item 1.
+# See tasks/done/mcp_search_refino.md item 1.
 
 _embedding_model = None
 _embedding_model_lock = threading.Lock()
@@ -490,13 +491,21 @@ def describe_table(table: str) -> dict:
     happens the reply carries a `columns_truncated` block with the real total;
     query `parquet_path` with DESCRIBE via `run_sql` to see the rest.
 
-    Two things surface here that the bare column list would hide:
+    Three things surface here that the bare column list would hide:
       * `warning` — this table returns every row twice (leftover tmp*.parquet
         next to the real export); same check `resolve_join` runs, but here it
         fires even when you're not joining anything.
-      * `dicionario_coverage` — some IBGE census microdata columns are raw
-        codes (`v0502`) with a chave->valor decode sitting in a sibling
-        `dicionario` table; this lists which of this table's columns have one.
+      * `dicionario_coverage` — many datasets keep raw numeric/letter codes
+        (`v0502`, or `sexo`/`raca_cor` as bare integers) with a chave->valor
+        decode sitting in a sibling `dicionario` table; this lists which of
+        this table's columns have one.
+      * `coded_value_warning` — a stronger version of the above: this table
+        has a column (e.g. `sexo`, `raca_cor`) whose code is known to differ
+        from the SAME-NAMED column in other datasets, and sometimes even
+        across years of this same table. Reusing a code value learned from
+        another table's data silently returns wrong or empty results, not an
+        error — call explain_column() or check this table's own dicionario
+        before filtering on it.
     """
     if "." not in table:
         return {"error": "table must be in the form 'dataset.table'."}
@@ -534,11 +543,24 @@ def describe_table(table: str) -> dict:
         result["dicionario_coverage"] = {
             "decodable_columns": decodable,
             "how": (
-                f"These columns are raw IBGE codes. Query "
+                f"These columns are raw codes. Query "
                 f"{dataset}.dicionario WHERE id_tabela = '{table_name}' AND "
                 "nome_coluna = '<column>' for the code->label mapping."
             ),
         }
+    column_names = {c["name"].lower() for c in columns}
+    coded_conflicts = sorted(column_names & set(_CODED_DIFFERENTLY))
+    if coded_conflicts:
+        result["coded_value_warning"] = [
+            {
+                "column": col,
+                "reason": _CODED_DIFFERENTLY[col]["reason"],
+                "how": f"Query {dataset}.dicionario WHERE id_tabela = '{table_name}' "
+                       f"AND nome_coluna = '{col}' for THIS table's own mapping — "
+                       "do not assume it matches another table's.",
+            }
+            for col in coded_conflicts
+        ]
     return result
 
 
@@ -747,12 +769,28 @@ def explain_column(column: str) -> dict:
     under the same name with a different meaning in each. They are deliberately
     absent from get_join_keys(), which used to make them look merely
     undocumented — this tool gives the reason instead of silence.
+
+    A second, more dangerous case (`coded_differently` instead of
+    `is_join_key`): the column names the SAME real-world concept everywhere
+    (sexo, raca_cor, estado_civil...) but the numeric CODE behind it is not
+    shared — RAIS's sexo=1 is masculino, CAGED's sexo=1 is also masculino but
+    its sexo=3 is feminino where RAIS uses sexo=2. Never carry a code value
+    from one table's filter into another table's query (or even the same
+    table in a different year) without checking that table's own
+    `{dataset}.dicionario` first — silently returns 0 rows or a wrong
+    subset, not an error.
     """
     name = column.lower().strip().strip("`\"")
     if name in _FALSE_FRIENDS:
         e = _FALSE_FRIENDS[name]
         return {"column": name, "is_join_key": False,
                 "reason": e["reason"], "seen_in": e["seen_in"]}
+    if name in _CODED_DIFFERENTLY:
+        e = _CODED_DIFFERENTLY[name]
+        return {"column": name, "is_join_key": False, "coded_differently": True,
+                "reason": e["reason"], "seen_in": e["seen_in"],
+                "how": f"Query `{{dataset}}.dicionario WHERE nome_coluna = '{name}'` "
+                       "for the table you're actually using before filtering on it."}
     if name in _CONCEPTS:
         c = _CONCEPTS[name]
         return {"column": name, "is_join_key": True,
@@ -841,8 +879,8 @@ def rollup(code_column: str, to_level: str) -> dict:
 @mcp.tool()
 def run_sql(sql: str, max_rows: int = 500) -> dict:
     """Run a read-only SQL query against beelink's DuckDB mirror over SSH —
-    the project's official data source (fresher than the S3-backed remote
-    endpoint, and where newly-scraped datasets land first). This server
+    local Parquet on beelink is the project's only data source (no cloud
+    storage), and where newly-scraped datasets land first. This server
     never opens its own DuckDB connection.
 
     Only SELECT/WITH queries are allowed; everything else is rejected before
@@ -861,8 +899,9 @@ def run_sql(sql: str, max_rows: int = 500) -> dict:
     - Before reporting results: state the expected order of magnitude,
       flag any row that exceeds it, and verify counts two independent ways.
     - SQL dialect is DuckDB, not BigQuery.
-    - Some views in beelink's basedosdados.duckdb are stale and still point
-      at s3://; if a query on a view looks wrong, check
+    - A handful of views in beelink's basedosdados.duckdb are stale leftovers
+      from before the local-parquet migration and still point at a bucket
+      that no longer exists; if a query on a view looks wrong, check
       `SELECT sql FROM duckdb_views() WHERE view_name='...'` and fall back to
       `read_parquet('~/rodado/<dataset>/<table>/*.parquet')` directly.
 
@@ -878,9 +917,10 @@ def run_sql(sql: str, max_rows: int = 500) -> dict:
 
     result = _run_sql_ssh(sql)
     # Two recoverable failure modes: the table has no view in the DuckDB
-    # catalog (scraped datasets), or the view exists but still points at the
-    # decommissioned s3:// bucket. Both are fixed by querying the local
-    # parquet directly.
+    # catalog (scraped datasets), or the view is a stale leftover pointing at
+    # a bucket that no longer exists. Both are fixed by querying the local
+    # parquet directly. The "s3://" marker matches DuckDB's own error text
+    # for that dead bucket, not anything this project still depends on.
     _recoverable = ("Catalog Error", "NoSuchBucket", "s3://")
     if "error" in result and any(marker in result["error"] for marker in _recoverable):
         fallback_sql, rewritten = _rewrite_to_read_parquet(sql)
@@ -1212,6 +1252,96 @@ def consultar_populacao_carceraria(
         "ciclo": (ciclo or "ciclo_19_2025_h2").strip(),
         "estados": rows[:max_rows],
         "truncated": len(rows) > max_rows,
+    }
+
+
+@mcp.tool()
+def consultar_painelprecos(
+    codigo_item: int,
+    tipo_item: str = "material",
+    tipo_codigo: str = "codigoItemCatalogo",
+    estado: Optional[str] = None,
+    max_rows: int = 20,
+) -> dict:
+    """Look up recent public-purchase prices for one CATMAT/CATSER item via
+    ComprasGov's Painel de Preços — a genuine live external lookup (no local
+    mirror possible: the API is per-item, `codigo_item` is required, there's
+    no "all items" call — ~250k catalog items would mean ~250k calls to
+    mirror it).
+
+    `codigo_item` is a CATMAT (material) or CATSER (serviço) catalog code —
+    look one up first with `run_sql` against `br_comprasgov_catmatcatser.
+    {materiais,servicos}` (columns `codigoItem`/`descricaoItem` or
+    `codigoServico`/`nomeServico`).
+
+    Args:
+        codigo_item: the catalog code to price-check.
+        tipo_item: 'material' or 'servico' — which catalog `codigo_item` is from.
+        tipo_codigo: for `tipo_item='material'` only — 'codigoItemCatalogo'
+            (specific item) or 'codigoPdm' (padrão descritivo de material,
+            broader family of items). Ignored for `tipo_item='servico'`.
+        estado: optional 2-letter UF to filter purchases (e.g. "SP").
+
+    Returns each purchase's unit price, quantity, buying entity (UASG),
+    município/estado, fornecedor and date, most recent first.
+    """
+    try:
+        codigo = int(codigo_item)
+    except (TypeError, ValueError):
+        return {"error": f"'{codigo_item}' isn't a valid integer catalog code."}
+
+    if tipo_item not in ("material", "servico"):
+        return {"error": f"tipo_item must be 'material' or 'servico', got '{tipo_item}'."}
+    if tipo_codigo not in ("codigoItemCatalogo", "codigoPdm"):
+        return {"error": f"tipo_codigo must be 'codigoItemCatalogo' or 'codigoPdm', got '{tipo_codigo}'."}
+
+    uf = None
+    if estado:
+        if not re.fullmatch(r"[A-Za-z]{2}", estado):
+            return {"error": f"'{estado}' isn't a valid 2-letter UF."}
+        uf = estado.upper()
+
+    tamanho_pagina = max(10, min(max_rows, 500))
+    if tipo_item == "material":
+        url = (
+            "https://dadosabertos.compras.gov.br/modulo-pesquisa-preco/1_consultarMaterial"
+            f"?tipo={tipo_codigo}&codigo={codigo}&pagina=1&tamanhoPagina={tamanho_pagina}"
+        )
+    else:
+        url = (
+            "https://dadosabertos.compras.gov.br/modulo-pesquisa-preco/3_consultarServico"
+            f"?codigoItemCatalogo={codigo}&pagina=1&tamanhoPagina={tamanho_pagina}"
+        )
+    if uf:
+        url += f"&estado={uf}"
+
+    cmd = f"curl -s --max-time 15 '{url}'"
+    try:
+        proc = subprocess.run(
+            ["ssh", BEELINK_HOST, cmd], capture_output=True, timeout=20
+        )
+    except subprocess.TimeoutExpired:
+        return {"error": "Query timed out after 20s (ssh beelink -> compras.gov.br)."}
+
+    if proc.returncode != 0:
+        return {"error": proc.stderr.decode("utf-8", errors="replace").strip() or "ssh/curl failed"}
+
+    stdout = proc.stdout.decode("utf-8", errors="replace").strip()
+    try:
+        data = json.loads(stdout)
+    except json.JSONDecodeError:
+        return {"error": f"Non-JSON response from Painel de Preços: {stdout[:500]}"}
+
+    if "resultado" not in data:
+        return {"error": data.get("message") or f"Unexpected response shape: {stdout[:500]}"}
+
+    rows = data["resultado"]
+    return {
+        "codigo_item": codigo,
+        "tipo_item": tipo_item,
+        "compras": rows[:max_rows],
+        "truncated": len(rows) > max_rows,
+        "total_registros": data.get("totalRegistros"),
     }
 
 

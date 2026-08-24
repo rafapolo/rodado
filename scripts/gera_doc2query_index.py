@@ -19,7 +19,7 @@ scripts/gera_doc2query_corpus.py) is the expensive, one-time part — a bank of
 opencode calls, not something to rerun casually. Its raw batches live under
 tasks/, which is gitignored — the corpus itself lives in docs/context/
 instead precisely so it doesn't get lost the way the ask-web project's
-version of it did (see tasks/mcp_search_refino.md item 1). This script is
+version of it did (see tasks/done/mcp_search_refino.md item 1). This script is
 the cheap, freely-rerunnable half: change embedding model or re-embed after
 editing the corpus by hand, and just run this again.
 """
