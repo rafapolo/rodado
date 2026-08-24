@@ -72,7 +72,7 @@ One mermaid `erDiagram` per domain covering all 834 tables: entity = dataset, at
 ### `docs/context/` — Schema metadata
 - `basedosdados-schema.json` — full schema (1.8 MB, 197 datasets / 832 tabelas)
 - `schema_compact.txt` — text format for prompting
-- `table_embeddings.json` — semantic vectors for table selection (11.4 MB)
+- `doc2query_index.json` / `doc2query_vectors.npy` — the `search_tables` index: one embedding per synthetic question a table answers (~8/table, 832 tables, `paraphrase-multilingual-MiniLM-L12-v2`), not one per table (replaces a deleted `table_embeddings.json`, which held one vector per table over column-name text — measured nearly orthogonal to a real question, recall@5 1/15 on a single-table golden set; see `tasks/mcp_search_refino.md` item 1. `scripts/update_embeddings.py`, its generator, was deleted with it). `search_tables` scores a table by the MAX cosine similarity across its own questions. `.json` holds `id`/`table`/`text` per row in the `.npy`'s row order; `.npy` is a float32 `(n_questions, dim)` array. Generation is two separable steps: the LLM pass (`scripts/doc2query_lotes.py` → `scripts/doc2query_roda.py` against `scripts/prompts/doc2query.md`, ~34 `opencode run` batches — expensive, one-time, resumable) produces `docs/context/doc2query_corpus.jsonl` (via `scripts/gera_doc2query_corpus.py`, not gitignored — the raw batches under `tasks/` are); `scripts/gera_doc2query_index.py` embeds it — cheap, rerun freely after editing the corpus or changing the embedding model
 - `bridges.yaml` — **a fonte única do conhecimento de join**. Conceitos-hub, as 54 pontes (coluna que significa a mesma coisa sob outro nome), os `false_friends` e os `concept_aliases`. Editar aqui; `join_keys.md` é gerado
 - `join_keys.md` — o render de `bridges.yaml` + as chaves auto-detectadas do `schemas.json`: 152 colunas de join ao todo. Gerado por `scripts/gera_join_keys.py` — regenerar, nunca editar à mão
 - `metrics.yaml` / `metrics.json` — 7 cálculos nomeados (expressão DuckDB, grain, unidade, sinônimos pt-BR, `required_filters`, `verified`). O `.json` é gerado do `.yaml` por `scripts/gera_metrics_json.py` para a camada NL→SQL ler
@@ -108,6 +108,8 @@ python3 scripts/build_atlas.py             # -> pages/atlas/index.html
 ```
 
 `join_keys.md` e `metrics.json` são **gerados** — editar o YAML, nunca a saída. `valida_metrics.py` separa hard de soft como o firewall de `run_sql`: DML na expressão rejeita, coluna ausente só avisa, porque `_check_read_only` revalida antes de executar.
+
+`doc2query_index.json`/`doc2query_vectors.npy` **não** entram nesse regen automático — a geração via LLM (`scripts/doc2query_lotes.py` + `scripts/doc2query_roda.py`) é cara e não deve rodar a cada sync; só o passo de embedding (`scripts/gera_doc2query_index.py`, a partir de `docs/context/doc2query_corpus.jsonl` já gerado) é barato o bastante pra rerodar sem pensar. Regenerar tudo só quando o schema mudar o bastante pra `search_tables` começar a perder tabela nova.
 
 A camada NL→SQL resolve métrica **antes** da seleção por embedding (Tier 1), por match exato de nome ou sinônimo — nunca por similaridade, porque "população de SP" e "população carcerária" ficam perto no espaço vetorial e querem tabelas diferentes. Três detalhes que custaram trabalho e não devem ser redescobertos:
 
