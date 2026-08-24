@@ -1,15 +1,14 @@
 # Syncing beelink with the upstream BigQuery source
 
-`beelink:~/rodado` is a **separate, local-parquet mirror** of the upstream BigQuery source,
-independent from the S3-view-based `data/basedosdados.duckdb` this repo's live service
-queries (see project CLAUDE.md — the live service never touches BigQuery, only Hetzner S3).
+`beelink:~/rodado` is a **local-parquet mirror** of the upstream BigQuery source — the
+project's only data source (see project CLAUDE.md; the former live service that used to
+read from cloud object storage is retired).
 
-This doc is for **maintaining beelink's mirror only**. It intentionally goes straight
-`BigQuery → beelink`, skipping Hetzner S3 entirely — beelink exists precisely so we don't
-have to route through S3 for this.
+This doc is for **maintaining beelink's mirror only**. It goes straight
+`BigQuery → beelink`, no intermediate cloud storage involved.
 
-⚠️ This uses `bq`/BigQuery, which the top-level CLAUDE.md forbids for querying the live
-service. That rule is about how `ask`/`auth.py`/DuckDB serve production queries — it does
+⚠️ This uses `bq`/BigQuery, which the top-level CLAUDE.md forbids for regular querying.
+That rule is about how data gets *queried* day to day (DuckDB only) — it does
 not cover this one-off mirror-maintenance workflow. Treat BigQuery usage here as scoped
 strictly to this doc, never as precedent for touching BigQuery anywhere else in the repo.
 
@@ -60,7 +59,7 @@ strictly to this doc, never as precedent for touching BigQuery anywhere else in 
   use `&&` (not sequential lines) when chaining, and kill the top-level wrapper process, not
   just the inner `python3` child, when pausing.
 
-## Why not `bq extract` / Hetzner S3
+## Why not `bq extract`
 
 - `bq extract` requires a billing-enabled GCP project. Neither available project
   (`raspa-491716`, `project-40912138-177d-4e28-8d2`) has billing enabled, and both linked
@@ -68,9 +67,9 @@ strictly to this doc, never as precedent for touching BigQuery anywhere else in 
 - `bq query` (interactive/on-demand SELECT) runs for free in **BigQuery Sandbox mode** —
   up to ~1TB scanned/month, no billing account needed at all. This is the only viable path
   without opening billing.
-- Since we're going straight to beelink, there's no GCS staging bucket and no Hetzner
-  egress cost either — just the query job itself (free under Sandbox) plus a plain
-  `bq query --format=json` → Parquet → `rsync` to beelink.
+- Going straight to beelink means no staging bucket and no egress cost either — just the
+  query job itself (free under Sandbox) plus a plain `bq query --format=json` → Parquet →
+  `rsync` to beelink.
 
 ## Prerequisites
 

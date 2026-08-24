@@ -1,4 +1,4 @@
-"""Generate schemas.json from beelink parquet files (no S3).
+"""Generate schemas.json from beelink parquet files (fully local, no cloud storage).
 
 Usage:
     python scripts/gera_schemas.py          # via SSH

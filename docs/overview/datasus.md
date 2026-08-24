@@ -80,7 +80,7 @@ Pasta com dados já convertidos para formatos abertos:
 - **Dados mais frescos** (o espelho tem defasagem de meses)
 - **Série histórica completa** (o espelho às vezes só tem alguns anos)
 - **Sistemas inteiros faltando** (SISCAN, CIHA, SISPRENATAL)
-- Sem dependência do pipeline BigQuery → GCS → S3
+- Sem dependência do pipeline BigQuery → beelink
 
 ### Desvantagens do FTP
 - Formato **DBC** (precisa de conversão: `dbc2parquet` ou similar)

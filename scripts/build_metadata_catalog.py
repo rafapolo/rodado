@@ -192,8 +192,9 @@ def parse_markdown_table(path: Path) -> dict[str, dict]:
 
 def get_tables_from_beelink() -> list[dict]:
     """Get all tables from beelink — both from parquet directories on disk
-    AND from DuckDB views that don't have local parquet (e.g. S3-backed,
-    or DuckDB-internal schemas like main, _local_rais_cnpj, politicos)."""
+    AND from DuckDB views that don't have local parquet (e.g. stale views
+    left over from before the local-parquet migration, or DuckDB-internal
+    schemas like main, _local_rais_cnpj, politicos)."""
 
     # Phase 1: parquet directories on disk (with row counts from parquet_metadata)
     shell_script = """#!/bin/bash
@@ -316,8 +317,9 @@ ORDER BY table_schema, table_name;
             if ds in JUNK_SCHEMAS:
                 continue
             if key not in tables:
-                # View with no parquet behind it — the data it pointed at (S3,
-                # a local import) is gone. Kept so the breakage stays visible.
+                # View with no parquet behind it — the data it pointed at (a
+                # dead bucket, a local import) is gone. Kept so the breakage
+                # stays visible.
                 tables[key] = {
                     "dataset": ds,
                     "table": tbl,
