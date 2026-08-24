@@ -45,6 +45,7 @@ JOIN_KEYS_PATH = CONTEXT_DIR / "join_keys.md"
 BRIDGES_PATH = CONTEXT_DIR / "bridges.yaml"
 METRICS_PATH = CONTEXT_DIR / "metrics.yaml"
 HIERARCHIES_PATH = CONTEXT_DIR / "hierarchies.yaml"
+DICIONARIO_COVERAGE_PATH = CONTEXT_DIR / "dicionario_coverage.json"
 
 # ---------------------------------------------------------------------------
 # Catalog loaders (loaded once at startup — small enough to hold in memory)
@@ -83,6 +84,15 @@ with open(METRICS_PATH, encoding="utf-8") as f:
 
 with open(HIERARCHIES_PATH, encoding="utf-8") as f:
     _HIERARCHIES: dict = yaml.safe_load(f).get("hierarchies", {})
+
+# IBGE census microdata (1970-2010) keeps raw IBGE codes as column names
+# (`v0502`, `v6033`...) instead of the Portuguese names the rest of the
+# mirror normalizes to. `{dataset}.dicionario` has the chave->valor decode;
+# this map (dataset.table -> decodable column names), generated offline by
+# scripts/gera_dicionario_coverage.py, is what lets describe_table point a
+# caller at it instead of returning bare `v0502` with no hint it's decodable.
+with open(DICIONARIO_COVERAGE_PATH, encoding="utf-8") as f:
+    _DICIONARIO_COVERAGE: dict = json.load(f).get("tables", {})
 
 
 def _norm(s: str) -> str:
@@ -468,6 +478,14 @@ def describe_table(table: str) -> dict:
     reach 3.957) — the leading columns are the identifying ones. When that
     happens the reply carries a `columns_truncated` block with the real total;
     query `parquet_path` with DESCRIBE via `run_sql` to see the rest.
+
+    Two things surface here that the bare column list would hide:
+      * `warning` — this table returns every row twice (leftover tmp*.parquet
+        next to the real export); same check `resolve_join` runs, but here it
+        fires even when you're not joining anything.
+      * `dicionario_coverage` — some IBGE census microdata columns are raw
+        codes (`v0502`) with a chave->valor decode sitting in a sibling
+        `dicionario` table; this lists which of this table's columns have one.
     """
     if "." not in table:
         return {"error": "table must be in the form 'dataset.table'."}
@@ -492,6 +510,22 @@ def describe_table(table: str) -> dict:
                 f"Showing the first {DESCRIBE_MAX_COLS} of {len(columns)} columns. "
                 f"Run DESCRIBE SELECT * FROM read_parquet('{_PARQUET_GLOBS[table]}') "
                 f"via run_sql for the full list."
+            ),
+        }
+    if table in _duplicated():
+        result["warning"] = (
+            f"`{table}` returns every row twice — a leftover tmp*.parquet sits "
+            "next to the real export. Filter with SELECT DISTINCT, and treat "
+            "any count()/sum() on it as doubled."
+        )
+    decodable = _DICIONARIO_COVERAGE.get(table)
+    if decodable:
+        result["dicionario_coverage"] = {
+            "decodable_columns": decodable,
+            "how": (
+                f"These columns are raw IBGE codes. Query "
+                f"{dataset}.dicionario WHERE id_tabela = '{table_name}' AND "
+                "nome_coluna = '<column>' for the code->label mapping."
             ),
         }
     return result
