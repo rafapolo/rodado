@@ -188,6 +188,29 @@ coded_differently:
       contagem de estabelecimentos no mesmo endereço (único/múltiplo) —
       não é só código diferente, é conceito diferente por trás do mesmo nome.
     seen_in: 3 datasets (br_me_rais, br_me_caged, br_ibge_censo_2022)
+  nivel_socio_economico (br_inep_ana.escola):
+    reason: mesmo conceito, mesmos 7 rótulos (Muito Baixo…Muito Alto), mas o
+      código muda DENTRO da mesma tabela entre os dois únicos anos que ela
+      tem — 2014 usa 8-14, 2016 usa 15-21 pro mesmo rótulo — "Alto" vale 13
+      em 2014 e 20 em 2016. Comparar o código bruto entre anos sem
+      decodificar via `br_inep_ana.dicionario WHERE nome_coluna =
+      'nivel_socio_economico' AND cobertura_temporal = CAST(ano AS VARCHAR)`
+      produz ordenação errada silenciosamente — não dá erro, dá número
+      plausível e errado. Achado respondendo tema 46, 2026-08-25;
+      describe_table() ainda não sinaliza este caso (só sinaliza `rede`).
+    seen_in: 1 dataset, mas entre anos da MESMA tabela (br_inep_ana.escola) —
+      variante do padrão coded_differently, não entre datasets
+  faixa_etaria (br_ans_beneficiario.informacao_consolidada):
+    reason: mesmo conceito, mas DUAS convenções de faixa etária coexistem
+      simultaneamente na MESMA tabela, MESMO ano/mês — não é diferença entre
+      anos, é diferença de vigência regulatória do plano (planos anteriores
+      à Lei 9.656/98 usam a faixa antiga "00 a 05 anos"/"06 a 10 anos".../
+      "61 ou mais"; planos pós-RN 63/2016 usam a faixa nova "1 a 4 anos"/
+      "5 a 9 anos".../"80 ou mais"). Um filtro por rótulo textual precisa
+      cobrir as duas listas para não perder população; um join numérico por
+      índice de faixa entre tabelas seria ainda mais perigoso. Achado
+      respondendo tema 49, 2026-08-25.
+    seen_in: 1 dataset (br_ans_beneficiario.informacao_consolidada)
 # Colunas cujo nome local difere do conceito, tabela a tabela. Não são pontes
 # (não precisam de conversão) — é só o diretório chamando a chave de outro nome.
 # resolve_join usa isto para reescrever o {d} da expressão da ponte.
@@ -730,6 +753,26 @@ bridges:
     verified: 11.136 of 11.142 directory rows
     concept: id_municipio
     join_expr: CAST({s}."Código Município Completo" AS VARCHAR) = {d}.id_municipio
+  - table: br_cgu_emendas_parlamentares.microdados
+    column: id_municipio_gasto
+    format: 7-digit IBGE code stored as STRING — município onde a emenda foi
+      gasta (não o do autor da emenda)
+    expr: id_municipio_gasto = m.id_municipio
+    verified: 5.418 of 5.419 distinct municípios (99,98%) — found answering
+      tasks/respostas_pendentes.md T40-3, 2026-08-25
+    concept: id_municipio
+    join_expr: '{s}.id_municipio_gasto = {d}.id_municipio'
+  - table: br_ana_outorgas.captacoes / lancamentos
+    column: ing_nm_municipio + ing_sg_ufmunicipio
+    format: no id_municipio column at all — name + UF only. Match against
+      `br_bd_diretorios_brasil.municipio.nome` with plain `upper(trim(...))`,
+      no accent-stripping needed (ANA's names already carry the right
+      accents/casing to match the directory as-is)
+    expr: upper(trim(m.nome)) = upper(trim(ing_nm_municipio)) AND m.sigla_uf = ing_sg_ufmunicipio
+    verified: 6.243 of 6.283 distinct município+UF pairs matched (99,4%) — found
+      answering tasks/respostas_pendentes.md T44-5, 2026-08-25
+    concept: id_municipio
+    join_expr: upper(trim({d}.nome)) = upper(trim({s}.ing_nm_municipio)) AND {d}.sigla_uf = {s}.ing_sg_ufmunicipio
   - table: br_mjsp_sinesp.ocorrencias
     column: '"cód_ibge"'
     format: 7-digit IBGE code stored as BIGINT
@@ -903,6 +946,18 @@ bridges:
     verified: 11.140 of 11.142 directory rows
     concept: id_municipio_rf
     join_expr: '{s}.id_municipio_rf = {d}.id_municipio_rf'
+  - table: br_mec_sisu.microdados
+    column: id_municipio_campus (município do campus onde a vaga é ofertada;
+      a coluna irmã id_municipio_candidato existe mas não é o que se quer
+      pra cruzar oferta de vaga com dado municipal)
+    format: 7-digit IBGE code stored as STRING, direto — sem padding, sem
+      conversão
+    expr: id_municipio_campus = m.id_municipio
+    verified: format confirmed 7-digit direct match on 34,7M linhas
+      (2017-2022) — não documentado antes por nome não bater com
+      `id_municipio`; achado respondendo tema 46, 2026-08-25
+    concept: id_municipio
+    join_expr: '{s}.id_municipio_campus = {d}.id_municipio'
   uf:
   - table: br_mj_consumidorgovbr.reclamacoes
     column: '"UF"'
@@ -941,9 +996,15 @@ bridges:
     join_expr: '{s}.uf = {d}.sigla_uf'
   - table: br_mjsp_sinesp.ocorrencias_uf
     column: uf
-    description: 2-letter code — direct
+    description: nome do estado por extenso, acentuado (`São Paulo`, `Rio
+      Grande do Sul`) — NÃO é sigla de 2 letras, ao contrário do que esta
+      entrada dizia antes; um join ingênuo `uf = sigla_uf` devolve zero
+      linhas. Corrigido respondendo tema 50, T50-3, 2026-08-25.
+    expr: upper(strip_accents(uf)) = upper(strip_accents(m.nome))
+    verified: 27 de 27 estados casados 100% contra
+      br_bd_diretorios_brasil.uf.nome (2026-08-25)
     concept: sigla_uf
-    join_expr: '{s}.uf = {d}.sigla_uf'
+    join_expr: upper(strip_accents({s}.uf)) = upper(strip_accents({d}.nome))
   - table: br_comprasgov_sicaf.fornecedores
     column: ufSigla
     description: 2-letter code — direct
@@ -997,6 +1058,32 @@ bridges:
     description: 2-letter code — direct
     concept: sigla_uf
     join_expr: '{s}.state = {d}.sigla_uf'
+  - table: br_mme_consumo_energia_eletrica.uf
+    column: sigla_uf
+    description: 2-letter code — direct. Grain warning — this dataset has
+      NO municipal table in the mirror, only `uf` (2004-2023, monthly,
+      tipo_consumo Total/Cativo/Residencial/Comercial/Industrial/Outros).
+      Any join must be at UF level, despite the dataset's description
+      suggesting a municipal economic-activity proxy.
+    concept: sigla_uf
+    join_expr: '{s}.sigla_uf = {d}.sigla_uf'
+    verified: direct, 27 of 27 UFs present — found answering tema 51,
+      T51-1/T51-2/T51-5, 2026-08-25
+  - table: br_anac_dadosabertos.pontualidade
+    column: Aeroporto_Destino_Nome_UF_Pais (also Aeroporto_Origem_Nome_UF_Pais)
+    description: free-text airport name field, not a code column —
+      Brazilian rows end in `(UF, BRASIL)`, e.g. `GUARULHOS - GOVERNADOR
+      ANDRÉ FRANCO MONTORO(SP, BRASIL)`; international rows end in
+      `(country name)` with no UF. No ICAO→municipality reference table
+      exists anywhere in the mirror, so this UF extraction is the only
+      geography this dataset offers — airport/route grain only, no
+      municipal join possible.
+    expr: regexp_extract("Aeroporto_Destino_Nome_UF_Pais", '\(([A-Z]{2}), BRASIL\)', 1)
+    concept: sigla_uf
+    join_expr: regexp_extract({s}."Aeroporto_Destino_Nome_UF_Pais", '\(([A-Z]{{2}}), BRASIL\)', 1) = {d}.sigla_uf
+    verified: 12.044 of 12.044 Brazil-destination rows parsed (12.944
+      total rows, 900 international) — found answering tema 51, T51-2,
+      2026-08-25
   identity:
   - table: br_comprasgov_sicaf.fornecedores
     column: cnpj / cpf
@@ -1004,23 +1091,34 @@ bridges:
       for individual suppliers.
     concept: cnpj
     join_expr: '{s}.cnpj = {d}.cnpj'
+    verified: 57 of 93 br_tcu_inidoneos.empresas CNPJs found registered in SICAF,
+      12 still habilitadoLicitar=true — found answering
+      tasks/respostas_pendentes.md T45-1, 2026-08-25
   - table: br_bcb_penalidades.penalidades
     column: '"CPF_CNPJ"'
     description: 14 bare digits for companies — direct join after `lpad(...,14,'0')`.
     concept: cnpj
     join_expr: lpad(regexp_replace({s}."CPF_CNPJ", '[^0-9]', '', 'g'), 14, '0') = {d}.cnpj
+    verified: 82 of 2.529 BCB-penalized CNPJs also registered as CVM portfolio
+      administrators (29 currently EM FUNCIONAMENTO NORMAL) — found answering
+      tasks/respostas_pendentes.md T45-3, 2026-08-25
   - table: br_pgfn_dividaativa.divida
     column: '"CPF_CNPJ"'
     description: CNPJs are punctuated (`17.533.474/0001-00`) → strip with `regexp_replace(x, '[^0-9]',
       '', 'g')`. CPFs are masked (`XXX878.325XX`) and cannot be joined.
     concept: cnpj
     join_expr: regexp_replace({s}."CPF_CNPJ", '[^0-9]', '', 'g') = {d}.cnpj
+    verified: 8 of 41.106 br_cvm_fundos.fundos CNPJs have federal dívida ativa,
+      R$121,6 milhões total — found answering tasks/respostas_pendentes.md
+      T45-2, 2026-08-25
   - table: br_tcu_inidoneos.*
     column: '"CPF_CNPJ"'
     description: 'mixed: some rows punctuated, some bare. Normalize with `lpad(regexp_replace(x, ''[^0-9]'',
       '''', ''g''), 14, ''0'')`.'
     concept: cnpj
     join_expr: lpad(regexp_replace({s}."CPF_CNPJ", '[^0-9]', '', 'g'), 14, '0') = {d}.cnpj
+    verified: matches SICAF/holdings cleanly — see the SICAF and brasilio_holdings
+      entries in this same hub for counts (2026-08-25)
   - table: br_anp_combustiveis.precos
     column: cnpj
     description: unpadded — 1.03M rows have 13 characters, 875k have 14. Always `lpad(..., 14, '0')`.
@@ -1031,17 +1129,39 @@ bridges:
     description: 'stored as BIGINT, leading zeros lost: `lpad(CAST(cnpj AS VARCHAR), 14, ''0'')`.'
     concept: cnpj
     join_expr: lpad(CAST({s}.cnpj AS VARCHAR), 14, '0') = {d}.cnpj
+    verified: only 1 of 84 br_tcu_inidoneos CNPJs appears as a corporate
+      shareholder here (C R Almeida S/A, sócia consorciada em 13 consórcios de
+      obras) — found answering tasks/respostas_pendentes.md T45-4, 2026-08-25
   - table: br_cvm_administradores_carteira.pessoa_juridica
     column: cnpj
     description: 14 bare digits — direct.
     concept: cnpj
     join_expr: '{s}.cnpj = {d}.cnpj'
+    verified: see br_bcb_penalidades entry above (T45-3, 2026-08-25)
+  - table: br_rf_cno.microdados
+    column: id_responsavel
+    description: 14 bare digits when the responsável is a pessoa jurídica
+      (Consórcio, Sociedade líder de consórcio, Pessoa jurídica construtora
+      — `qualificacao_responsavel` 109/111/53) — direct join, no padding.
+      For pessoa física responsáveis (qualificação 110 and similar) the
+      column is the LITERAL STRING `"nan"` for 350,1M of 534,1M rows
+      (65,5%) — a pipeline artifact (pandas NaN serialized as text), not
+      real data; filter `length(id_responsavel) = 14` before joining or
+      every "nan" row false-matches nothing (harmless) but wastes the scan.
+    concept: cnpj
+    join_expr: '{s}.id_responsavel = {d}.cnpj'
+    verified: 8 of 84 br_tcu_inidoneos CNPJs (14-digit format) are
+      responsável for a combined 8.535 obra registrations, 7.633 still
+      `situacao = 'Ativa'` — includes C R Almeida S/A, the same company
+      found in the br_brasilio_holdings entry above — found answering
+      tasks/datasets_coverage_gaps.md tema 47, T47-4, 2026-08-25
   - table: br_cvm_fundos.fundos
     column: '"CNPJ_FUNDO" / "CNPJ_ADMIN"'
     description: punctuated — strip with `regexp_replace(x, '[^0-9]', '', 'g')`; yields 41.106 distinct
       14-digit CNPJs.
     concept: cnpj
     join_expr: regexp_replace({s}."CNPJ_FUNDO", '[^0-9]', '', 'g') = {d}.cnpj
+    verified: see br_pgfn_dividaativa entry above (T45-2, 2026-08-25)
   - table: br_tce_rj.contratos_*
     column: '"CNPJCPFContratado" / "CPFCNPJ"'
     description: punctuated, and holds either a CPF or a CNPJ — strip, then branch on `length()` (11 vs
@@ -1051,6 +1171,53 @@ bridges:
   - table: br_mdr_snis.prestador_agua_esgoto
     column: id_prestador
     description: SNIS operator code; the first 6 digits are the `id_municipio_6` of the operator's seat.
+  - table: global_icij_offshoreleaks.entities
+    column: name
+    description: no CNPJ/CPF in any of the 6 ICIJ tables (entities, officers,
+      intermediaries, addresses, relationships, other) — just name, address
+      and country in free text. For entities (shell company), normalized
+      name (upper + strip_accents) matches cleanly against
+      br_me_cnpj.empresas.razao_social — shell-company names are
+      distinctive enough not to collide (max 2 CNPJ per matched ICIJ name
+      in 292 matches). The SAME technique fails for officers (pessoa
+      física, see rejected below) — common 2-3 word person names collide
+      across hundreds of unrelated socios.
+    expr: upper(strip_accents(trim(name))) = upper(strip_accents(trim(e.razao_social)))
+    verified: 292 distinct CNPJs matched of 1.532 ICIJ entities tagged
+      Brazil (2025-09 snapshot) — 290 of 292 (99%) carry
+      natureza_juridica '2216' "Empresa Domiciliada no Exterior" (foreign
+      entity holding a registrable asset — property/aircraft — in
+      Brazil); 191 still Ativa. Found answering tema 48, T48-2, 2026-08-25.
+    concept: cnpj
+    join_expr: upper(strip_accents(trim({s}.name))) = upper(strip_accents(trim({d}.razao_social)))
+    rejected:
+    - column: officers.name
+      reason: no CPF exposed by ICIJ — matching pessoa física names
+        against br_me_cnpj.socios.nome produces high volume (2.293 of
+        4.025 names matched) but with massive collision on common names
+        (e.g. "ROBERTO RESTUM" matches 944 distinct socio rows) —
+        unreliable for beneficial-owner identification without a second
+        key (CPF, birth date) ICIJ doesn't provide. Same class of trap as
+        the general common-name false_friend already documented.
+  - table: br_mjsp_ckan.procon
+    column: NumeroCNPJ
+    description: CNPJ without left-zero padding (13-14 digit text)
+    expr: lpad(NumeroCNPJ, 14, '0') = e.cnpj
+    verified: 3.064 of 3.084 distinct CNPJs found in
+      br_me_cnpj.estabelecimentos (99,4%), ano=2025/mes=9 — found
+      answering tema 50, T50-5, 2026-08-25
+    concept: cnpj
+    join_expr: lpad({s}.NumeroCNPJ, 14, '0') = {d}.cnpj
+  - table: br_bndes_operacoes_contratadas.operacoes_nao_automaticas
+    column: cnpj_cliente
+    description: 14-digit CNPJ, unpadded VARCHAR, no punctuation — matches
+      br_me_cnpj.estabelecimentos.cnpj directly
+    expr: cnpj_cliente = e.cnpj
+    verified: 4.353 of 4.356 distinct cnpj_cliente values (99,9%) matched
+      directly against br_me_cnpj.estabelecimentos.cnpj — found answering
+      tema 52, T52-1/T52-2, 2026-08-25
+    concept: cnpj
+    join_expr: '{s}.cnpj_cliente = {d}.cnpj'
   pais:
   - table: br_me_comex_stat.municipio_exportacao / municipio_importacao / ncm_exportacao / ncm_importacao
     column: sigla_pais_iso3
