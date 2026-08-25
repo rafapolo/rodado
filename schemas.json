@@ -2,7 +2,7 @@
   "_meta": {
     "source": "beelink",
     "path": "/home/polo/rodado",
-    "total_tables": 834
+    "total_tables": 842
   },
   "tables": {
     "br_abrinq_oca.municipio_primeira_infancia": {
@@ -90962,6 +90962,386 @@
         {
           "name": "area_construida",
           "type": "DOUBLE"
+        }
+      ]
+    },
+    "br_minc_salic.areas": {
+      "path": "beelink:/home/polo/rodado/br_minc_salic/areas/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "id",
+          "type": "INT64"
+        },
+        {
+          "name": "nome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "urlized",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_minc_salic.cidades": {
+      "path": "beelink:/home/polo/rodado/br_minc_salic/cidades/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "id",
+          "type": "INT64"
+        },
+        {
+          "name": "estado_id",
+          "type": "INT64"
+        },
+        {
+          "name": "impressions_count",
+          "type": "INT64"
+        },
+        {
+          "name": "latitude",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "longitude",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "nome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "urlized",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_minc_salic.entidades": {
+      "path": "beelink:/home/polo/rodado/br_minc_salic/entidades/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "id",
+          "type": "INT64"
+        },
+        {
+          "name": "cep",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "cidade_id",
+          "type": "INT64"
+        },
+        {
+          "name": "cidade_nome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "cnpjcpf",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "created_at",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "email",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "empresa",
+          "type": "INT64"
+        },
+        {
+          "name": "estado_id",
+          "type": "INT64"
+        },
+        {
+          "name": "impressions_count",
+          "type": "INT64"
+        },
+        {
+          "name": "incentivos_count",
+          "type": "INT64"
+        },
+        {
+          "name": "incentivos_sum",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "last_incentivo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "logradouro",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "patrocinador",
+          "type": "INT64"
+        },
+        {
+          "name": "projetos_count",
+          "type": "INT64"
+        },
+        {
+          "name": "projetos_liberados",
+          "type": "INT64"
+        },
+        {
+          "name": "projetos_sum",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "proponente",
+          "type": "INT64"
+        },
+        {
+          "name": "responsavel",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tel_cel",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tel_com",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tel_fax",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tel_res",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "uf",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "updated_at",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "urlized",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_minc_salic.estados": {
+      "path": "beelink:/home/polo/rodado/br_minc_salic/estados/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "id",
+          "type": "INT64"
+        },
+        {
+          "name": "nome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_minc_salic.incentivos": {
+      "path": "beelink:/home/polo/rodado/br_minc_salic/incentivos/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "id",
+          "type": "INT64"
+        },
+        {
+          "name": "created_at",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "entidade_id",
+          "type": "INT64"
+        },
+        {
+          "name": "last_recibo_at",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "projeto_id",
+          "type": "INT64"
+        },
+        {
+          "name": "recibos_count",
+          "type": "INT64"
+        },
+        {
+          "name": "updated_at",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valor",
+          "type": "DOUBLE"
+        }
+      ]
+    },
+    "br_minc_salic.projetos": {
+      "path": "beelink:/home/polo/rodado/br_minc_salic/projetos/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "id",
+          "type": "INT64"
+        },
+        {
+          "name": "apoiado",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "apoiadores",
+          "type": "INT64"
+        },
+        {
+          "name": "aprovado",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "area_id",
+          "type": "INT64"
+        },
+        {
+          "name": "created_at",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "enquadramento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "entidade_id",
+          "type": "INT64"
+        },
+        {
+          "name": "estado_id",
+          "type": "INT64"
+        },
+        {
+          "name": "impressions_count",
+          "type": "INT64"
+        },
+        {
+          "name": "liberado_at",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "mecanismo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "processo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "providencia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "segmento_id",
+          "type": "INT64"
+        },
+        {
+          "name": "sintese",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "situacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "situacao_at",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "solicitado",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "uf",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "updated_at",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "urlized",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_minc_salic.recibos": {
+      "path": "beelink:/home/polo/rodado/br_minc_salic/recibos/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "id",
+          "type": "INT64"
+        },
+        {
+          "name": "created_at",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "incentivo_id",
+          "type": "INT64"
+        },
+        {
+          "name": "updated_at",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valor",
+          "type": "DOUBLE"
+        }
+      ]
+    },
+    "br_minc_salic.segmentos": {
+      "path": "beelink:/home/polo/rodado/br_minc_salic/segmentos/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "id",
+          "type": "INT64"
+        },
+        {
+          "name": "area_id",
+          "type": "INT64"
+        },
+        {
+          "name": "nome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "urlized",
+          "type": "BYTE_ARRAY"
         }
       ]
     },
