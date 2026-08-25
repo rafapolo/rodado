@@ -145,6 +145,7 @@ python3 scripts/build_atlas.py /tmp/atlas.html   # também emite a cópia autoco
 - `_page.html` é a **única fonte**; `index.html` é gerado — não edite o gerado.
 - O grafo é **bipartido**: tabela→chave, nunca tabela→tabela. Par a par seriam 89.598 arestas (novelo); pela chave são 2.151.
 - Duas distribuições, ambas pré-calculadas em Python e embarcadas no JSON: `grade` (cartões de dataset empacotados) e `temas` (um território por tema, chaves flutuando entre os que ligam).
+- `?db=<dataset>` abre o atlas já centrado naquele dataset com o painel aberto (`rodado.xyz/atlas?db=br_me_rais`); o parâmetro acompanha a seleção via `replaceState`, então a barra de endereço é sempre um link pro que está na tela.
 - **Cor = tema**, nunca chave. Só 4 matizes passam o gate all-pairs de CVD, então os 10 temas dependem de território rotulado + isolamento por clique; a cor reforça, não carrega sozinha.
 - Depois de qualquer sync que mude tabelas: `gera_schemas.py` → `build_metadata_catalog.py` → `gera_schema_graph.py` → `build_atlas.py`.
 
