@@ -190,6 +190,18 @@ No grosso, as três se parecem — audiovisual e publicidade dominam em todas. A
 bordas, e ela é consistente: **Fortaleza pende para fotografia e evento, Brasília para jornalismo,
 São Paulo para a especialização técnica dentro de cada família.**
 
+O mesmo dado, aberto até a subclasse, mostra onde exatamente essas bordas ficam:
+
+![Treemap do setor de comunicação em São Paulo, Distrito Federal e Fortaleza. Cada painel tem o mesmo tamanho e representa uma cidade inteira: a área de cada bloco é a fatia daquela atividade no setor local, agrupada pela família do CNAE](/analises/img/treemap_cnaes_por_uf.png)
+
+Três coisas saltam da comparação lado a lado. **Pós-produção audiovisual é o maior bloco das três
+praças** — 19,8% em São Paulo, 24,5% no Distrito Federal, 26,8% em Fortaleza —, e é justamente a
+atividade que o capítulo seguinte mostra não empregar quase ninguém. **Marketing direto encolhe
+conforme a praça cresce**: 13,0% em São Paulo, 10,2% em Fortaleza, 9,8% no DF. E o **bloco de
+jornalismo do Distrito Federal** — jornais diários 6,9%, não diários 4,2%, revistas 3,6%, agências
+de notícias 2,7% — é visivelmente maior que o das outras duas, que é a mesma concentração já vista
+no índice, agora como área.
+
 ---
 
 ## Uma ressalva que muda a leitura
