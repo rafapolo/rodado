@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 """O setor de comunicação em Fortaleza, Brasília e São Paulo — dois gráficos.
 
-Universo: 25 subclasses CNAE 2.0 de trabalho em comunicação (jornalismo,
+Universo: 24 subclasses CNAE 2.0 de trabalho em comunicação (jornalismo,
 publicidade, audiovisual, design, fotografia, conteúdo digital), contadas como
 estabelecimentos com situação cadastral ATIVA no CNPJ de setembro de 2025.
 
   o que entra   o ofício: agência, produtora, pós-produção, dublagem, mixagem,
-                jornal, revista, portal, agência de notícia, design gráfico e
+                jornal, revista, agência de notícia, design gráfico e
                 web design, fotografia e filmagem de evento.
   o que NÃO     a cadeia em volta dele — promoção de vendas (751.942 empresas,
   entra         é representante comercial autônomo, não comunicação),
                 desenvolvimento de software sob encomenda, pesquisa de mercado,
-                agenciamento de espaços publicitários, criação de estandes e
-                design de interiores. Intermediação, tecnologia ou montagem.
+                agenciamento de espaços publicitários, criação de estandes,
+                design de interiores e "portais e provedores de conteúdo"
+                (6319-4/00), que abriga holding e fintech, não redação.
 
 Gráfico 1 — especialização (quociente locacional). Para cada CNAE, a fatia que
 ele ocupa no setor da cidade dividida pela fatia que ocupa no setor no país.
@@ -32,8 +33,8 @@ Consulta (beelink, via SSH — BEELINK_HOST, default 'beelink'):
   br_me_cnpj/estabelecimentos            CNAE principal, situação, município
   br_bd_diretorios_brasil/cnae_2         descrição das subclasses
 
-Controle: 495.008 ativas no país · São Paulo 98.165 · Brasília 13.651 ·
-Fortaleza 6.966. Agências de notícia em Brasília: QL 3,11 — o maior do mapa.
+Controle: 466.106 ativas no país · São Paulo 92.197 · Brasília 12.668 ·
+Fortaleza 6.518. Agências de notícia em Brasília: QL 3,16 — o maior do mapa.
 """
 import json
 import os
@@ -61,11 +62,10 @@ CNAES = [
     ("5912099", "Pós-produção audiovisual",       "Audiovisual"),
     ("5913800", "Distribuição de cinema e vídeo", "Audiovisual"),
     ("5920100", "Gravação de som e música",       "Audiovisual"),
-    ("5812301", "Jornais diários",                "Edição"),
-    ("5812302", "Jornais não diários",            "Edição"),
-    ("5813100", "Revistas",                       "Edição"),
-    ("6319400", "Portais e provedores de conteúdo", "Conteúdo digital"),
-    ("6391700", "Agências de notícias",           "Conteúdo digital"),
+    ("5812301", "Jornais diários",                "Jornalismo"),
+    ("5812302", "Jornais não diários",            "Jornalismo"),
+    ("5813100", "Revistas",                       "Jornalismo"),
+    ("6391700", "Agências de notícias",           "Jornalismo"),
     ("7420001", "Produção de fotografias",        "Fotografia"),
     ("7420002", "Fotografia aérea e submarina",   "Fotografia"),
     ("7420003", "Laboratórios fotográficos",      "Fotografia"),
@@ -119,8 +119,7 @@ GRID = "#e2e2dd"
 # dataviz: pior par ΔE 13,0 (deutan) / 16,3 (visão normal), contraste ≥3:1
 COR = {"São Paulo": "#2a78d6", "Fortaleza": "#eb6834", "Brasília": "#4a3aa7"}
 
-FAMILIAS = ["Publicidade", "Audiovisual", "Edição", "Conteúdo digital",
-            "Fotografia", "Design"]
+FAMILIAS = ["Publicidade", "Audiovisual", "Jornalismo", "Fotografia", "Design"]
 
 
 def ql(cnae, muni):
@@ -216,8 +215,8 @@ fig.text(0.053, 0.955,
          "Concentração de cada atividade na cidade, em relação à média do país",
          ha="left", va="top", fontsize=13.5, color=TXT2)
 fig.text(0.053, 0.930,
-         "Um valor de 1,0 significa que a atividade ocupa na cidade a mesma fatia do setor que ocupa no Brasil. Brasília tem 3,1 em\n"
-         "agências de notícias — o triplo do esperado para o seu tamanho — e passa da média em jornal diário, jornal não diário e portais.\n"
+         "Um valor de 1,0 significa que a atividade ocupa na cidade a mesma fatia do setor que ocupa no Brasil. Brasília tem 3,2 em\n"
+         "agências de notícias — mais que o triplo do esperado para o seu tamanho — e passa da média em jornal diário e jornal não diário.\n"
          "São Paulo se destaca nas etapas técnicas do audiovisual: mixagem sonora 2,4, dublagem 1,8, estúdios 1,7. Fortaleza puxa para o\n"
          "que é presencial — gravação de som e música 1,7, filmagem de festas e eventos 1,3 — e quase não registra dublagem: 0,1.",
          ha="left", va="top", fontsize=12.5, color=TXT, linespacing=1.62)
@@ -226,9 +225,9 @@ fig.text(0.053, 0.820, "número = empresas ativas no Brasil",
 
 fig.text(0.053, 0.012,
          "Fonte: Receita Federal, Cadastro Nacional da Pessoa Jurídica — estabelecimentos ativos em setembro de 2025, por atividade econômica principal (CNAE 2.0).\n"
-         "Universo de 25 subclasses de comunicação: 495.008 empresas no país, 98.165 em São Paulo, 13.651 em Brasília e 6.966 em Fortaleza. Ficam de fora promoção de\n"
-         "vendas (751.942 ativas, que é representante comercial autônomo), software sob encomenda, pesquisa de mercado, agenciamento de espaço publicitário e design de\n"
-         "interiores. Duas subclasses do universo não cabem no gráfico: microfilmagem, com 138 empresas — base pequena demais para um índice estável — e a 7410-2/01\n"
+         "Universo de 24 subclasses de comunicação: 466.106 empresas no país, 92.197 em São Paulo, 12.668 em Brasília e 6.518 em Fortaleza. Ficam de fora promoção de\n"
+         "vendas (751.942 ativas, que é representante comercial autônomo), software sob encomenda, pesquisa de mercado, agenciamento de espaço publicitário, design de\n"
+         "interiores e \"portais e provedores de conteúdo\" (28.902), guarda-chuva fiscal que abriga holding e fintech, não redação. Duas subclasses do universo não cabem no gráfico: microfilmagem, com 138 empresas — base pequena demais para um índice estável — e a 7410-2/01\n"
          "(\"Design\"), que tem zero empresas ativas no país inteiro, porque quem faz design se registra em \"outras atividades de design\".",
          ha="left", va="bottom", fontsize=9.3, color=TXT3, linespacing=1.62)
 
@@ -251,7 +250,7 @@ totais["Brasil"] = TOT_NAC
 ORDEM = ["São Paulo", "Fortaleza", "Brasília", "Brasil"]
 # rampa de uma hue por luminosidade — a informação está no claro/escuro, então
 # sobrevive a qualquer daltonismo; cada faixa ainda é rotulada por extenso.
-RAMPA = ["#7c2d1d", "#a8462c", "#c46b4c", "#d9927a", "#e9b7a6", "#f2d6cc"]
+RAMPA = ["#7c2d1d", "#a8462c", "#c46b4c", "#d9927a", "#eab9a8"]
 
 fig2 = plt.figure(figsize=(12.6, 7.5), dpi=200, facecolor=FIG_BG)
 ax2 = fig2.add_axes((0.150, 0.150, 0.812, 0.492))
@@ -282,7 +281,7 @@ for j, nome in enumerate(ORDEM):
 # legenda: nome por extenso, nunca só a cor
 x0, y0 = 0.150, 0.688
 for k, f in enumerate(FAMILIAS):
-    x = x0 + k * 0.140
+    x = x0 + k * 0.150
     y = y0
     fig2.patches.append(Rectangle((x, y), 0.018, 0.022, transform=fig2.transFigure,
                                   facecolor=RAMPA[k], edgecolor="none", zorder=4))
@@ -296,12 +295,12 @@ fig2.text(0.062, 0.918,
           ha="left", va="top", fontsize=13.5, color=TXT2)
 fig2.text(0.062, 0.868,
           "No grosso as três se parecem: audiovisual e publicidade dominam em toda parte. A diferença está nas bordas — Fortaleza pende\n"
-          "para fotografia e evento, Brasília para edição e conteúdo digital, São Paulo para publicidade e para a especialização técnica.",
+          "para fotografia e evento, Brasília para jornalismo, São Paulo para publicidade e para a especialização técnica.",
           ha="left", va="top", fontsize=12.5, color=TXT, linespacing=1.62)
 
 fig2.text(0.062, 0.022,
           "Fonte: Receita Federal, Cadastro Nacional da Pessoa Jurídica — estabelecimentos ativos em setembro de 2025, por atividade econômica principal (CNAE 2.0).\n"
-          "As mesmas 25 subclasses do gráfico anterior. O universo conta empresas, não pessoas: um jornalista com carteira assinada aparece como o jornal que o emprega,\n"
+          "As mesmas 24 subclasses do gráfico anterior. O universo conta empresas, não pessoas: um jornalista com carteira assinada aparece como o jornal que o emprega,\n"
           "e o mesmo jornalista aparece como uma linha própria se prestar o serviço por CNPJ — o mapa enxerga bem a parte do setor que trabalha por pessoa jurídica.",
           ha="left", va="bottom", fontsize=9.3, color=TXT3, linespacing=1.62)
 
