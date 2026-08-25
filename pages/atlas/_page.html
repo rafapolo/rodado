@@ -1100,6 +1100,7 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;",
 
 function select(h) {
   sel = h;
+  syncUrl();
   if (!h) { insp.classList.remove("on"); draw(); return; }
   if (h.type === "theme") renderTheme(h.th);
   else if (h.type === "key") renderKey(h.i);
@@ -1241,16 +1242,41 @@ function flyTheme(th) {
   ts.forEach(ti => { if (!seen.has(TB[ti].ds)) { seen.add(TB[ti].ds); x += L.ds[TB[ti].ds][0]; y += L.ds[TB[ti].ds][1]; n++; } });
   goTo(x / n, y / n, Math.max(k, 0.45), true);
 }
-function flyDs(d) {
+function flyDs(d, animate = true) {
   if (isDisc()) {                      // no dataset body here — frame its tables
     const ts = dsTables[d];
     let x = 0, y = 0;
     ts.forEach(ti => { x += P.tb[ti][0]; y += P.tb[ti][1]; });
-    goTo(x / ts.length, y / ts.length, Math.max(k, 0.9), true);
+    goTo(x / ts.length, y / ts.length, Math.max(k, 0.9), animate);
     return;
   }
   const [x, y] = L.ds[d];
-  goTo(x, y, Math.max(k, 0.9), true);
+  goTo(x, y, Math.max(k, 0.9), animate);
+}
+
+/* ── link direto ──────────────────────────────────────────────────
+   `?db=br_me_rais` abre o atlas já centrado naquele dataset, com o painel
+   aberto. O parâmetro acompanha a seleção, então a barra de endereço é sempre
+   um link pro que está na tela — `replaceState`, não `pushState`: clicar de
+   dataset em dataset não deve encher o botão voltar. Num contexto sem origem
+   (um `file://` aberto à mão) a History API lança — daí o try. */
+const dsByName = new Map(DS.map((d, i) => [d.n.toLowerCase(), i]));
+function syncUrl() {
+  try {
+    const u = new URL(location.href);
+    if (sel && sel.type === "ds") u.searchParams.set("db", DS[sel.i].n);
+    else if (u.searchParams.has("db")) u.searchParams.delete("db");
+    else return;
+    history.replaceState(null, "", u.pathname + u.search + u.hash);
+  } catch (e) { /* sem origem navegável: o atlas funciona, o link é que não */ }
+}
+function openFromUrl() {
+  const q = new URLSearchParams(location.search).get("db");
+  if (!q) return;
+  const d = dsByName.get(q.trim().toLowerCase());
+  if (d === undefined) return;
+  select({ type: "ds", i: d });
+  flyDs(d, false);                     // no primeiro quadro, já enquadrado
 }
 
 /* ── rail ────────────────────────────────────────────────────────── */
@@ -1339,10 +1365,11 @@ P = { tb: G.layout.temas.tb.map(a => a.slice()),
 measure();
 resize();
 home(false);
+openFromUrl();
 // canvas text needs the webfont resolved, or the first paint silently falls back
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
 
 // handles for the layout probes in scripts/build_atlas.py
-Object.assign(window, { G, DS, KS, TB, L, P, select, goTo, flyKey, flyTheme, draw, setMode });
+Object.assign(window, { G, DS, KS, TB, L, P, select, goTo, flyKey, flyDs, flyTheme, draw, setMode });
 }
 </script>
