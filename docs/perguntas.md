@@ -352,6 +352,102 @@ atravessam vários datasets de famílias distintas ao mesmo tempo.
 4. A evolução histórica das medalhas brasileiras acompanhou o crescimento do PIB nacional ou seguiu ciclos de política esportiva próprios? *(n=3: world_olympedia_olympics, ibge_pib\*, ibge_munic\*)*
 5. Municípios-sede de atletas olímpicos (Olympedia × Censo) têm mais empresas formais do setor esportivo (CNPJ/CNAE) que a média dos vizinhos? *(n=3: world_olympedia_olympics, me_cnpj\*, geobr_mapas\*)*
 
+## 44 · Saneamento, Produção Rural e Desmatamento
+
+1. Municípios com pior índice de esgotamento sanitário (ANA Atlas Esgotos) têm maior mortalidade infantil (SIM/SINASC), controlado pela renda (Censo)? *(n=3: ana_atlas_esgotos, ms_sim\*, ibge_censo_2022\*)*
+2. A produção agropecuária municipal (PAM lavouras, PEVS extração vegetal/silvicultura) cresce mais nos municípios que mais desmataram (PRODES) — silvicultura plantada substituindo extração nativa onde a vegetação já caiu? *(n=3: ibge_pam, ibge_pevs, inpe_prodes\*)*
+3. Imóveis rurais cadastrados no CAFIR (Receita Federal) concentram-se nos municípios recordistas de desmatamento (PRODES), na mesma medida que o crédito rural do SICOR? *(n=2: rf_cafir, inpe_prodes\*)*
+4. Dos imóveis embargados pelo IBAMA por desmatamento, quantos seguem com produção agropecuária ativa declarada (PAM) no mesmo município? *(n=2: ibama_embargos, ibge_pam\*)*
+5. Municípios com mais outorgas de captação de água (ANA Outorgas) por habitante são os de maior produção agropecuária irrigada (PAM), ou os de maior industrialização (CNPJ/CNAE)? *(n=3: ana_outorgas, ibge_pam\*, me_cnpj\*)*
+
+## 45 · Integridade do Sistema Financeiro e Fornecedores Públicos
+
+1. Fornecedores habilitados a licitar no SICAF (Comprasgov) que também constam como inidôneos no TCU continuam com CNPJ ativo e habilitação vigente? *(n=3: comprasgov_sicaf, tcu_inidoneos, me_cnpj\*)*
+2. Fundos de investimento registrados na CVM sob CNPJ com dívida ativa federal (PGFN) — quantos e qual o valor devido? *(n=2: cvm_fundos, pgfn_dividaativa)*
+3. Instituições ou pessoas penalizadas pelo Banco Central (penalidades BCB) reaparecem como administradores de carteira registrados na CVM? *(n=2: bcb_penalidades, cvm_administradores_carteira)*
+4. Sócios de empresas com CNPJ inidôneo no TCU recriam personalidade jurídica via cadeias de holding (Brasil.IO) com a mesma pessoa como sócia em nova empresa? *(n=2: tcu_inidoneos, brasilio_holdings)*
+5. Entidades sancionadas internacionalmente (OpenSanctions/OFAC/EU/UN) têm nome compatível com alguma empresa ativa no cadastro CNPJ brasileiro? *(n=2: global_opensanctions\*, me_cnpj\*)*
+
+## 46 · Educação Superior e Acesso
+
+1. Municípios com maior proporção de vagas de graduação financiadas pelo PROUNI (Censo da Educação Superior) têm PIB per capita sistematicamente menor — o programa cumpre seu papel redistributivo, ou se distribui igual entre municípios ricos e pobres? *(n=2: inep_censo_educacao_superior, ibge_pib\*)*
+2. A proporção de docentes com doutorado nas IES de um município (Censo da Educação Superior) se relaciona com a taxa de abandono no ensino médio local (Indicadores Educacionais)? *(n=2: inep_censo_educacao_superior, inep_indicadores_educacionais)*
+3. Os bolsistas de mobilidade internacional da CAPES se concentram nos mesmos estados de maior PIB per capita e maior corpo docente com doutorado (Censo da Educação Superior), ou o programa também alcança estados menos providos de pesquisa? *(n=3: capes_bolsas, ibge_pib\*, inep_censo_educacao_superior)*
+4. Municípios onde o SISU é mais concorrido (candidatos aprovados por vaga) formam proporcionalmente mais concluintes em relação às matrículas ativas (Censo da Educação Superior) no mesmo ano? *(n=2: mec_sisu, inep_censo_educacao_superior)*
+5. Municípios sem nenhuma instituição de ensino superior (Censo da Educação Superior) têm nível socioeconômico médio mais baixo nas escolas de ensino fundamental avaliadas pela ANA do que os que têm ao menos uma IES? *(n=2: inep_censo_educacao_superior, inep_ana)*
+
+## 47 · Servidor Público e Integridade
+
+1. A concentração per capita de cargos comissionados federais por UF (Painel Estatístico de Pessoal) acompanha o PIB per capita, ou é só um artefato de Brasília sediar a maioria dos órgãos? *(n=2: mp_pep, ibge_pib\*)*
+2. A composição racial dos cargos comissionados federais (Painel Estatístico de Pessoal) reflete a composição racial da população brasileira do Censo 2022? *(n=2: mp_pep, ibge_censo_2022\*)*
+3. A composição racial do funcionalismo federal como um todo (SIAPE) difere da composição racial de quem ocupa cargo comissionado (Painel Estatístico de Pessoal) — o topo da carreira é mais branco que a base? *(n=2: me_siape, mp_pep)*
+4. Responsáveis por obras cadastradas no CNO (Receita Federal) que constam como inidôneos no TCU seguem registrando obras ativas? *(n=2: rf_cno, tcu_inidoneos)*
+5. Municípios com mais obras ativas cadastradas no CNO per capita têm maior participação industrial no PIB local? *(n=2: rf_cno, ibge_pib\*)*
+
+## 48 · Sanções Internacionais e Verificação de Identificador
+
+1. As listas de sanções internacionais (UE, ONU, OFAC) contêm alguma entrada ligada ao Brasil com identificador estruturado (CNPJ/CPF) utilizável para cruzamento, ou o vínculo — quando existe — só aparece em texto livre? *(n=3: eu_sanctions, un_sanctions, global_ofac_sanctions)*
+2. Das entidades offshore do ICIJ Offshore Leaks (Panama/Paradise/Pandora Papers) marcadas com país Brasil, quantas casam por nome exato com uma razão social no cadastro CNPJ, e sob qual natureza jurídica? *(n=2: global_icij_offshoreleaks, me_cnpj\*)*
+3. O nome das pessoas físicas ("officers") do ICIJ ligadas ao Brasil, cruzado por nome exato contra sócios do CNPJ, produz identificação confiável de beneficiário final ou colide em nomes comuns demais para servir como chave? *(n=2: global_icij_offshoreleaks, me_cnpj\*)*
+4. As entidades offshore do ICIJ casadas ao CNPJ aparecem como sócias de empresas brasileiras no grafo de holdings do Brasil.IO, e alguma coincide com os CNPJ inidôneos do TCU? *(n=3: global_icij_offshoreleaks, brasilio_holdings\*, tcu_inidoneos\*)*
+5. Entre as entidades offshore do ICIJ casadas ao CNPJ brasileiro, qual vazamento de origem (Panama/Paradise/Pandora Papers) domina, e a situação cadastral (ativa/suspensa/baixada) se distribui de forma diferente por jurisdição de incorporação? *(n=2: global_icij_offshoreleaks, me_cnpj\*)*
+
+## 49 · Saúde Suplementar e Atenção Básica
+
+1. Cobertura de plano de saúde privado (ANS) por município reduz a mortalidade infantil (SIM×SINASC), mesmo controlando a renda (PIB per capita)? *(n=4: br_ans_beneficiario, ms_sim\*, ms_sinasc\*, ibge_pib\*)*
+2. Onde a cobertura de plano de saúde privado (ANS) é maior, a cobertura da Estratégia Saúde da Família (Atenção Básica) é menor — substituição do público pelo privado, independente da renda municipal (PIB)? *(n=3: br_ans_beneficiario, br_ms_atencao_basica, ibge_pib\*)*
+3. A cobertura vacinal infantil (Imunizações, vacina pentavalente) explica a mortalidade infantil (SIM×SINASC) melhor ou pior que a cobertura de Atenção Básica (equipes de Saúde da Família) no mesmo município? *(n=4: br_ms_imunizacoes, ms_sim\*, ms_sinasc\*, br_ms_atencao_basica)*
+4. A cobertura vacinal contra Covid-19 por município (Vacinação Covid-19) foi maior onde a Atenção Básica já era mais forte (equipes de Saúde da Família), ou a campanha emergencial chegou igual a todos? *(n=2: br_ms_vacinacao_covid19, br_ms_atencao_basica)*
+5. Beneficiários de plano de saúde privado (ANS) são proporcionalmente mais idosos que a população geral do município (Censo 2022), e isso muda com a renda (PIB per capita)? *(n=3: br_ans_beneficiario, ibge_censo_2022\*, ibge_pib\*)*
+
+## 50 · Justiça Complementar e Filiação Partidária
+
+1. Nos partidos, a proporção de mulheres entre os filiados (TSE filiação partidária) se traduz em proporção equivalente entre os eleitos em 2022, e essa lacuna de conversão varia com a riqueza do estado (PIB per capita)? *(n=3: tse_filiacao_partidaria, tse_eleicoes\*, ibge_pib\*)*
+2. A densidade de filiados por partido e UF (TSE filiação) explica a votação obtida para deputado federal em 2022 (TSE eleições), e essa conversão de filiado em voto é mais eficiente nos estados mais ricos (PIB)? *(n=3: tse_filiacao_partidaria, tse_eleicoes\*, ibge_pib\*)*
+3. A taxa de homicídio doloso por UF em 2022 (SINESP), normalizada pela população do Censo, acompanha o resultado presidencial do primeiro turno (TSE eleições) — estados mais violentos votaram menos em Bolsonaro/PL? *(n=3: mjsp_sinesp, ibge_censo_2022\*, tse_eleicoes\*)*
+4. O volume de decisões eleitorais do STF (Corte Aberta) acompanha o salto de candidaturas registradas no TSE entre eleição municipal e geral, e o gasto do Judiciário eleitoral (CNJ) confirma esse padrão? *(n=3: stf_corte_aberta, tse_eleicoes\*, cnj_estatisticas_poder_judiciario\*)*
+5. As reclamações registradas nos PROCONs (MJSP/CKAN) por UF, normalizadas pela população do Censo, indicam maior conflito de consumo per capita ou cobertura desigual da fonte — e as empresas mais reclamadas seguem ativas no CNPJ? *(n=3: mjsp_ckan, ibge_censo_2022\*, me_cnpj\*)*
+
+## 54 · Censo Histórico e Consistência Populacional
+
+1. As duas fontes de população municipal do espelho — a série do IBGE e a do Ministério da Saúde — concordam? Quando exatamente divergem, e a divergência é sistemática ou ruído de arredondamento? *(n=2: ibge_populacao, ms_populacao)*
+2. Quantos dos 5.570 municípios brasileiros atuais simplesmente não existiam como código próprio no Censo Demográfico de 1970 e no de 1980 — e o quanto isso invalida uma série histórica de população construída por join direto em `id_municipio`? *(n=1: ibge_censo_demografico)*
+3. A população municipal de 2010 reconstruída a partir do peso amostral dos microdados do Censo Demográfico bate com a série oficial do IBGE — e essa reconstrução é possível para os outros anos do censo histórico (1970-2000)? *(n=2: ibge_censo_demografico, ibge_populacao\*)*
+4. A taxa de alfabetização (5 anos ou mais) medida nos microdados do Censo Demográfico cresceu entre 1991 e 2000, e quantos municípios de 2000 não têm par em 1991 para essa comparação? *(n=1: ibge_censo_demografico)*
+5. Estados com maior participação de cargos comissionados na administração direta (ESTADIC) têm PIB per capita menor — o comissionamento é um substituto de carreira profissionalizada nos estados mais pobres? *(n=2: ibge_estadic, ibge_pib\*)*
+
+## 51 · Energia, Comércio Exterior e Infraestrutura
+
+1. O consumo de energia elétrica por UF (MME) explica a renda per capita local mesmo depois de neutralizar o efeito do tamanho populacional — a correlação bruta cai de quanto para quanto quando ambas variáveis são normalizadas pela população do Censo? *(n=3: mme_consumo_energia_eletrica, ibge_pib\*, ibge_censo_2022\*)*
+2. Estados com mais tráfego aéreo (ANAC) são os de maior PIB e maior consumo de energia elétrica (MME) — mas a pontualidade dos voos acompanha a riqueza do estado de destino, ou é independente dela? *(n=3: anac_dadosabertos, ibge_pib\*, mme_consumo_energia_eletrica)*
+3. O preço de um insumo específico de construção (cimento, SINAPI) é mais caro nos estados mais pobres/remotos, mas essa "sobretaxa da distância" se sustenta quando se olha a cesta inteira de materiais, ou desaparece? *(n=3: caixa_sinapi, ibge_pib\*, ibge_censo_2022\*)*
+4. O piso de mão de obra de referência do SINAPI acompanha o salário médio real pago na construção civil formal (RAIS, CNAE 41-43) por UF, e ambos acompanham a renda per capita local? *(n=3: caixa_sinapi, me_rais\*, ibge_pib\*)*
+5. O consumo de energia elétrica da classe "Comercial" (MME) por UF é um proxy fiel do tamanho do setor de comércio formal (RAIS, CNAE 45-47), mesmo depois de tirar o efeito do tamanho populacional? *(n=3: mme_consumo_energia_eletrica, me_rais\*, ibge_censo_2022\*)*
+
+## 52 · Séries Financeiras, Dívida Pública e Crédito
+
+1. Municípios que mais captaram crédito direto do BNDES (operações não automáticas, 2002–2026) são os de maior PIB per capita, ou o crédito de fomento vai desproporcionalmente para municípios mais pobres? *(n=2: bndes_operacoes_contratadas, ibge_pib\*)*
+2. Alguma empresa que tomou empréstimo direto do BNDES apareceu depois na lista de inidôneos do TCU — o banco público de fomento já financiou quem viria a ser formalmente declarado inapto a contratar com a União? *(n=2: bndes_operacoes_contratadas, tcu_inidoneos\*)*
+3. O estoque da dívida pública federal (Tesouro Nacional) como proporção do PIB nacional (IBGE) cresceu de forma monotônica entre 2017 e 2021, ou o choque foi concentrado no ano da pandemia? *(n=2: me_estoque_divida_publica, ibge_pib\*)*
+4. O IGP-M (FGV, índice geral de preços "do atacado") descolou do IPCA nos anos de choque cambial/commodities (2020–2021), e por quanto? *(n=2: fgv_igp, bcb_sgs)*
+5. Os ciclos de aperto da Selic (BCB SGS) historicamente coincidem com desaceleração da contratação de crédito do BNDES, ou o crédito de fomento é imune ao ciclo de juros básico por rodar em taxas próprias (TJLP/TLP)? *(n=2: bcb_sgs, bndes_operacoes_contratadas)*
+
+## 53 · Índices de Competitividade e Comparativos Internacionais
+
+1. Os três índices de saúde fiscal estadual — o pilar "Solidez Fiscal" do ranking CLP, a CAPAG do Tesouro e o IFGF da FIRJAN — concordam entre si sobre quais estados têm melhor gestão fiscal? *(n=3: br_clp_ranking_competitividade, tesouro_capag\*, firjan_ifgf\*)*
+2. O ranking geral de competitividade estadual do CLP é explicado pela riqueza dos estados (PIB per capita), ou existe competitividade "além da renda"? *(n=3: br_clp_ranking_competitividade, ibge_pib\*, ibge_populacao\*)*
+3. A carga tributária dos estados brasileiros (impostos líquidos ÷ PIB, IBGE) cai dentro da faixa observada entre os países da OCDE (world_oecd_public_finance), ou o Brasil tributa fora da curva? *(n=3: world_oecd_public_finance, ibge_pib\*, ibge_populacao\*)*
+4. O pilar "Segurança Pública" do ranking CLP acompanha o pilar "Sustentabilidade Social" e a riqueza (PIB per capita) dos mesmos estados — segurança e coesão social andam juntas? *(n=3: br_clp_ranking_competitividade, ibge_pib\*, ibge_populacao\*)*
+5. Os indicadores fiscais da OCDE (world_oecd_public_finance) permitem posicionar o gasto público obrigatório dos estados brasileiros (capacidade fiscal, Tesouro CAPAG) no comparativo internacional de gasto saúde/educação como % do PIB? *(n=3: world_oecd_public_finance, ibge_pib\*, tesouro_capag\*)*
+
+## 55 · Vulnerabilidade Social, Medicamentos e Consumo
+
+1. A tendência anual de homicídios de pessoas LGBTQI+ (relatório do Grupo Gay da Bahia) acompanha a tendência nacional de óbitos por agressão do SIM entre 2000 e 2019, ou diverge? *(n=2: ggb_relatorio_lgbtqi, ms_sim\*)*
+2. Entre os princípios ativos controlados mais vendidos no país (SNGPC/ANVISA), o preço máximo regulado pela CMED explica o volume vendido — remédio mais caro vende menos? *(n=2: anvisa_medicamentos_industrializados, anvisa_cmed\*)*
+3. Os princípios ativos controlados mais vendidos no SNGPC têm base de fabricantes com registro ativo suficiente na ANVISA, ou a oferta está concentrada em pouquíssimos registros vigentes? *(n=2: anvisa_medicamentos_industrializados, anvisa_consultas)*
+4. O preço FIPE por modelo/ano funciona como proxy municipal de renda quando cruzado com alguma fonte territorial do espelho? *(n=2: fipe_veiculos, ibge_censo_2022\*)*
+5. A composição racial das vítimas de homicídio LGBTQI+ (GGB) segue o mesmo padrão racial das vítimas de homicídio em geral no SIM, no mesmo ano? *(n=2: ggb_relatorio_lgbtqi, ms_sim\*)*
+
 ---
 
 # Perguntas multi-dataset simultâneos
