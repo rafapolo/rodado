@@ -295,13 +295,16 @@ RN 72,4%, SP 71,9%.
 ## 39 · Justiça
 
 - **T39-1 ✅ (fato)** Judiciário estadual (CNJ 2021, 28 tribunais): **despesa de pessoal = 90,1% em média** da despesa total; mínimo 76,4%, máximo 98,7%. Confirma o gancho do tema.
-- **T39-2…T39-5 ⏳** Pendentes — improbidade e TCEs estaduais.
+- **T39-2, T39-3, T39-4 ⏳ — bloqueio estrutural confirmado (2026-08-25)**: nenhum dos 4 espelhos de TCE tem multa/penalidade por município. `br_tce_sp` é só uma tabela de 2 colunas (nome do município), sem nenhum dado de fiscalização. `br_tce_pi` tem `despesas_total`/`receitas_total`/`licitacoes_estado`/`prefeituras` mas nenhuma tabela de penalidade/deliberação. `br_tce_rj.penalidades_ressarcimento_estado` existe mas as 948 linhas são **100% `TipoEnte = 'ESTADUAL'`** — zero linhas municipais. `br_tce_es` tem `resultados_fiscalizacoes` (só `ValorExecutivo`/`ValorLegislativo` por ano/esfera, sem município) e `lista_responsaveis`/`julgamento_contas` (por responsável, sem valor de multa nem porte do município). Cruzar CNJ-improbidade × "TCEs que mais multaram" por município não é possível com o que está espelhado — precisaria de um scrape novo (SP e PI não têm fonte de penalidade nenhuma hoje).
+- **T39-5 ⏳ — bloqueio estrutural confirmado (2026-08-25)**: `br_cnj_estatisticas_poder_judiciario` só tem a tabela `recursos_financeiros` (despesa por tribunal/ano — a mesma usada em T39-1), sem nenhuma coluna de volume processual (não existe `numero_processos`/`processos_julgados`). "Custo médio por processo" não dá pra calcular sem uma tabela de movimentação processual do CNJ, que não está no espelho.
 
 ## 40 · Federalismo Fiscal
 
 - **T40-1 ◐** CAPAG 2025 × transferências voluntárias per capita (Transferegov): **r = +0,03 (n=2.000+ municípios ≥20 mil hab)** — capacidade fiscal não explica quem recebe transferência; porte e política sim.
 - **T40-2 ✅** CAPAG × FIRjan IFGF: **r = +0,37 (n=1.322)** — os dois índices concordam parcialmente; divergências concentram-se nos intermediários (C/B).
-- **T40-3…T40-5 ⏳** Pendentes — exigem série temporal da CAPAG (só há um ano no espelho) e SICONFI alinhado ao Transferegov.
+- **T40-3 ✅ (2026-08-25)** CAPAG 2025 × emendas parlamentares per capita (`br_cgu_emendas_parlamentares`, valor pago 2014–2025, R$168,6 bi / 5.419 municípios): **r = −0,08 (n=1.509 municípios ≥20 mil hab)** — join direto por código IBGE de 7 dígitos (`id_municipio_gasto` = `Código Município Completo`, sem padding, sem bridge documentada — nenhuma existia entre essas duas tabelas). Mesmo padrão do T40-1: capacidade fiscal não explica quem recebe mais emenda por habitante; se algo, o sinal é levemente inverso (piores CAPAG recebem um pouco mais), não "política forte = melhor nota".
+- **T40-4 ⏳ — falso pressuposto confirmado (2026-08-25)**: `br_siop_orcamento` é orçamento da **União** (por órgão/UO/função/ação — ver tabelas `dados`/`alteracoes_orcamentarias`/`localizadores`), não tem despesa obrigatória por orçamento **municipal**. A métrica que a pergunta pede ("quanto pesam as despesas obrigatórias do orçamento dos municípios") vive no SICONFI (`br_me_siconfi`), não no SIOP — a pergunta cruza a fonte errada com o índice municipal (IFGF).
+- **T40-5 ⏳** Pendente — exige série temporal da CAPAG (só há um ano no espelho) e SICONFI alinhado ao Transferegov por município e ano.
 
 ## 41 · Nutrição
 
@@ -316,6 +319,552 @@ RN 72,4%, SP 71,9%.
 
 - **T43-3 ✅ (com ressalva)** Medalhas olímpicas do Brasil por esporte (contagem por atleta, esportes coletivos inflados): futebol 181, vôlei 132, basquete 60, vela 36, atletismo 35, vôlei de praia 26, judô 24, natação 21.
 - **T43-1, T43-2, T43-4, T43-5 ⏳** Pendentes — nascimento de atletas × municípios.
+
+## 44 · Saneamento, Produção Rural e Desmatamento
+
+- **T44-1 ✅ (2026-08-25)** Esgotamento sanitário (ANA Atlas Esgotos) × mortalidade
+  infantil (SIM×SINASC 2020-22): **r = +0,30 (n=1.709 municípios ≥20 mil hab)**
+  entre o índice "sem coleta/sem tratamento" e a TMI — mais forte que renda
+  (PIB per capita × TMI: r=−0,19 no mesmo recorte). Saneamento prevê mortalidade
+  infantil melhor que renda pura.
+- **T44-2 ✅ (2026-08-25)** Desmatamento acumulado (PRODES 2022) × produção
+  agropecuária municipal (PAM/PEVS, mesmo ano): **r=+0,52 com valor de lavoura**
+  (temporária+permanente), r=+0,29 com silvicultura plantada, r=+0,21 com
+  extração vegetal nativa — n=5.563 municípios. Terra desmatada vira
+  predominantemente lavoura, não silvicultura nem extração nativa. **Achado
+  lateral**: `br_ibge_pam.valor_producao` está em **mil reais**, não reais —
+  confirmado batendo a safra de soja 2022 (121,29 Mt, valor batendo só como
+  R$347 bi, não R$347 mi) — sem aviso no schema; virou métrica
+  `valor_producao_agropecuaria` em `metrics.yaml` pra não repetir o erro.
+- **T44-3 ⏳ — bloqueio estrutural grave confirmado (2026-08-25)**: `br_rf_cafir.imoveis_rurais`
+  tem 169,9M linhas mas só 3,89M `id_imovel_receita_federal` distintos — e
+  **61-64% de TODAS as linhas, em TODO snapshot mensal, têm
+  `id_imovel_receita_federal = NULL`** (confirmado no snapshot mais recente,
+  2025-09-02: 6,27M de 10,16M linhas). `id_municipio`/`area` seguem preenchidos
+  nessas linhas órfãs, mas sem id não dá pra saber se são propriedades
+  distintas ou fragmentos/duplicatas das linhas com id — qualquer soma por
+  município seria um número inventado. Não é bug desta sessão, é dado como
+  chegou; precisa de re-scraping ou de entender a causa na fonte antes de usar
+  esta tabela pra qualquer coisa.
+- **T44-4 ⏳ — dataset inteiro vazio, confirmado (2026-08-25)**: as 8 tabelas de
+  `br_ibama_embargos` têm linhas (113.878 em `termo_embargo`, 48.776 em `itens`,
+  439 em `decisao`) mas **100% das colunas são string vazia** — o header do CSV
+  original virou o próprio nome da coluna (uma mega-string com `;` dentro) e
+  nenhuma linha de dado real foi carregada. Diferente do bloqueio já conhecido
+  ("infra-blocked, SSL proxy" em `todo.md`) — aquele é sobre não conseguir
+  *atualizar*; este é sobre o que já está no beelink não servir pra nada.
+  Precisa reprocessar o CSV fonte do zero (delimitador `;`, provavelmente lido
+  como texto único por engano).
+- **T44-5 ✅ (2026-08-25)** Outorgas de captação de água (ANA, join por nome+UF —
+  99,4% de 6.283 pares casaram, `br_ana_outorgas` não tem `id_municipio` algum,
+  achado novo em `bridges.yaml`) por habitante × produção agrícola per capita
+  (PAM): **r=+0,13**; × densidade de empresas ativas per capita (CNPJ):
+  **r=+0,02 (n=1.583)** — outorgas per capita não é bem explicado por nenhum
+  dos dois; provavelmente reflete disponibilidade hídrica/setor industrial
+  específico, não densidade econômica geral.
+
+## 45 · Integridade do Sistema Financeiro e Fornecedores Públicos
+
+- **T45-1 ✅ (2026-08-25)** Dos 93 CNPJs inidôneos do TCU, **57 (61%) estão
+  registrados no SICAF** (Comprasgov) e **12 desses (21%) seguem com
+  `habilitadoLicitar=true`** — formalmente inidôneos e ainda habilitados a
+  licitar com a União.
+- **T45-2 ✅ (2026-08-25)** Dos 41.106 CNPJs de fundos de investimento (CVM),
+  **8 têm dívida ativa federal (PGFN)**, somando **R$121,6 milhões**. Baixa
+  incidência é esperada — fundos são veículos passivos, não costumam ter
+  passivo tributário próprio.
+- **T45-3 ✅ (2026-08-25)** Dos 2.529 CNPJs penalizados pelo Banco Central,
+  **82 (3,2%) também são administradores de carteira registrados na CVM** —
+  **29 seguem "EM FUNCIONAMENTO NORMAL"**, 68 registros (de CNPJs que podem
+  se repetir) estão "CANCELADA".
+- **T45-4 ✅ (2026-08-25)** Só 1 dos 84 CNPJs inidôneos do TCU aparece como
+  sócia pessoa jurídica no grafo de holdings (Brasil.IO): **C R Almeida S/A —
+  Engenharia de Obras**, sócia consorciada em **13 consórcios de obras
+  públicas** (Consórcio Imigrantes, Consórcio Queiroz Galvão-CR Almeida,
+  entre outros).
+- **T45-5 ⏳ — bloqueio estrutural confirmado (2026-08-25)**: dos 131.626
+  registros do OpenSanctions tagueados Brasil, o campo `identifiers` de
+  `LegalEntity` está praticamente vazio — só 11 fragmentos de identificador no
+  total, 2 parecendo CNPJ (e esses 2 são reexportações de sanções domésticas
+  Lei 8666/14133, não sanção internacional de verdade). Cruzar por CNPJ direto
+  não é viável; sobraria só nome-a-nome contra dezenas de milhões de linhas do
+  CNPJ, exatamente o tipo de join caro que o CLAUDE.md já pede pra evitar.
+
+## 46 · Educação Superior e Acesso
+
+- **T46-1 ✅ (2026-08-25)** PROUNI (ingressantes com financiamento não
+  reembolsável integral+parcial, Censo da Educação Superior 2021) por
+  município × PIB per capita 2021: **r = −0,017 (n=1.909 municípios com ≥50
+  ingressantes)** — nenhuma correlação. Nacionalmente o PROUNI cobriu 73.299
+  bolsas integrais + 14.760 parciais em 2021 (~2,2% dos 3,95M ingressantes),
+  em queda desde 2019 (138.115 integrais). O programa não se concentra nem
+  nos municípios mais pobres nem nos mais ricos — a distribuição segue onde
+  há IES privada com sede aberta, não a renda do município.
+- **T46-2 ✅ (2026-08-25)** % de docentes com doutorado nas IES por município
+  (Censo da Educação Superior 2021) × taxa de abandono no ensino médio
+  (Indicadores Educacionais 2021): **r = +0,12 (n=603 municípios com ≥20
+  docentes em exercício)** — correlação fraca e no sentido contrário ao
+  esperado, provavelmente confundida por porte/urbanização (cidades maiores
+  têm IES mais qualificada E mais abandono por outros motivos). Médias:
+  28,7% de docentes com doutorado, 3,5% de abandono no EM — ambas plausíveis.
+- **T46-3 ✅ (2026-08-25)** Bolsistas de mobilidade internacional CAPES
+  (2005-2019, por UF da instituição de origem no Brasil) × PIB per capita
+  2019 e docentes com doutorado 2019: **r = +0,41 com PIB per capita,
+  r = +0,98 com docentes doutores (n=27 UFs)** — a correlação quase perfeita
+  com o corpo docente doutor mostra que mobilidade internacional segue
+  capacidade de pesquisa instalada, não renda. **5 estados (SP, MG, RJ, RS,
+  PR) concentram 67% dos 138.987 bolsistas** identificados por UF brasileira
+  (dos 146.036 totais — o resto tem `uf_instituicao_origem` preenchido com
+  nome de estado/região **estrangeira**, ex.: "CALIFORNIA", "KANSAS",
+  "HLAVNI MESTO PRAHA" — a coluna mistura origem BR e origem estrangeira sob
+  o mesmo nome, não documentado antes; decodificação exigiu casar nome de UF
+  por extenso, sem sigla, contra `br_bd_diretorios_brasil.uf.nome`).
+- **T46-4 ✅ (2026-08-25)** Concorrência no SISU (candidatos aprovados por
+  vaga, 2021) × taxa de conclusão (concluintes/matrículas, Censo da Educação
+  Superior 2021), por município: **r = +0,10 (n=495 municípios)** — sem
+  relação. Médias: 2,9 candidatos aprovados por vaga, 13% de concluintes
+  sobre matrículas no ano (plausível para cursos de ~4-5 anos com matrícula
+  em expansão). Concorrência de entrada não prediz throughput de formação.
+- **T46-5 ✅ (2026-08-25)** Nível socioeconômico médio das escolas na ANA
+  2016 (escala ordinal 1-7, Muito Baixo…Muito Alto) comparando municípios
+  com e sem IES local (Censo da Educação Superior 2016): **4,52 nos 698
+  municípios com IES vs. 3,77 nos 4.856 sem IES** — quase 1 ponto de
+  diferença numa escala de 7. Ter ensino superior local acompanha (não prova
+  causar) melhor nível socioeconômico nas escolas de ensino fundamental da
+  mesma cidade. **Achado lateral, novo bug de código**: `nivel_socio_economico`
+  em `br_inep_ana.escola` usa faixas de código DIFERENTES nos dois únicos
+  anos da tabela — 2014 usa 8-14, 2016 usa 15-21 pro mesmo rótulo ("Alto" =
+  13 em 2014, = 20 em 2016) — comparar o código bruto entre anos dá ordenação
+  errada silenciosa; documentado em `bridges.yaml` `coded_differently`.
+
+## 47 · Servidor Público e Integridade
+
+- **T47-1 ✅ — com ressalva importante (2026-08-25)** Cargos comissionados
+  federais per capita por UF (Painel Estatístico de Pessoal, `br_mp_pep`,
+  ano/mês mais recente 2025-05, `cce_e_fce + das_e_correlatas`) × PIB per
+  capita 2021: **r = +0,61 (n=27 UFs) com o DF incluído, mas r = −0,07 sem
+  o DF** — a correlação inteira era um artefato de um único ponto de
+  alavancagem: o DF concentra 19.419 cargos comissionados (4x mais que o
+  RJ, segundo colocado, com 4.758) só por sediar a maioria dos órgãos
+  federais, e por acaso também é a UF de maior PIB per capita do Brasil.
+  Removido o DF, não sobra relação nenhuma entre riqueza da UF e
+  concentração de cargo comissionado federal.
+- **T47-2 ✅ (2026-08-25)** Composição racial dos cargos comissionados
+  federais em 2024 (`br_mp_pep`) × população brasileira no Censo 2022:
+  **Branca 53,1% (PEP) vs 45,5% (Censo) — sobrerrepresentada em +7,6pp**;
+  **Parda 35,2% vs 44,3% — sub-representada em −9,1pp**; **Preta 8,1% vs
+  8,9% — quase proporcional**; Amarela e Indígena levemente
+  sobrerrepresentadas em termos relativos (bases pequenas). O desenho do
+  desequilíbrio racial no topo do funcionalismo federal é mais específico
+  do que "não-branco sub-representado": quem perde participação é
+  principalmente pardo, não preto.
+- **T47-3 ✅ — achado contraintuitivo (2026-08-25)** Composição racial do
+  funcionalismo federal como um todo (`br_me_siape`, 358.869 vínculos,
+  snapshot mais recente): Branca 54,5%, Parda 30,0%, Preta 7,1%, Não
+  informado 5,3%. Comparado ao cargo comissionado (PEP 2024: Branca 53,1%,
+  Parda 35,2%, Preta 8,1%) — **o topo (comissionados) não é mais branco que
+  a base, é ligeiramente MENOS branco e mais pardo/preto** do que o
+  funcionalismo geral capturado pelo SIAPE. Ressalva: as duas fontes cobrem
+  universos parecidos mas não idênticos (SIAPE aqui é pesado em
+  universidades federais nos exemplos observados; PEP é comissionados do
+  Executivo como um todo, incluindo autarquias fora do escopo típico do
+  SIAPE) — tratar como sinal, não como prova definitiva de igualdade.
+- **T47-4 ✅ (2026-08-25)** Dos 84 CNPJs inidôneos do TCU (`br_tcu_inidoneos.empresas`,
+  formato de 14 dígitos), **8 (9,5%) aparecem como responsável por obra no
+  CNO** (`br_rf_cno.microdados`, `id_responsavel` = CNPJ), somando **8.535
+  registros de obra, 7.633 ainda com `situacao = 'Ativa'`**. Destaque:
+  **C R Almeida S/A — Engenharia de Obras**, a mesma empresa achada em
+  T45-4 como sócia em 13 consórcios de obras públicas via grafo de holding
+  do Brasil.IO, aparece aqui também com 193 obras ativas no CNO — as duas
+  fontes independentes (TCU + Brasil.IO em T45-4, TCU + CNO aqui)
+  convergem na mesma empresa.
+- **T47-5 ✅ (2026-08-25)** Obras ativas no CNO per capita por município
+  (174,4M registros nacionais com `situacao = 'Ativa'`) × participação
+  industrial no PIB local (`va_industria/pib`, 2021): **r = +0,15**; ×
+  PIB per capita: **r = +0,23 (n=5.558 municípios, cobertura quase total)**
+  — correlações fracas. Município ter mais obra ativa registrada per
+  capita acompanha muito fracamente maior renda, e quase não se relaciona
+  com o peso do setor industrial — esperado, já que `va_industria` agrega
+  extrativa+transformação+construção+utilidades, não isola construção
+  civil (o espelho não tem essa quebra).
+
+## 48 · Sanções Internacionais e Verificação de Identificador
+
+- **T48-1 ⏳ — bloqueio estrutural confirmado (2026-08-25)**: nenhuma das
+  três listas tem identificador estruturado utilizável para CNPJ/CPF.
+  `eu_sanctions.sanctions` (42.347 linhas, 5.994 entidades) tem **zero**
+  linhas ligadas ao Brasil em qualquer campo de país/nacionalidade/texto
+  livre; `un_sanctions.sanctions` (1.002 linhas) idem. `global_ofac_sanctions.sanctions`
+  (19.129 linhas) não tem coluna de país estruturada — só **20 linhas**
+  mencionam "Brazil" em `remarks` (texto livre, majoritariamente
+  Hezbollah/narcotráfico); busca por "CNPJ" no texto: 0 ocorrências; por
+  "CPF": 1, falso positivo. O Brasil simplesmente não é alvo principal de
+  nenhuma das três listas, e mesmo as poucas linhas que citam o país não
+  têm identificador parseável em coluna.
+- **T48-2 ✅ (2026-08-25)** Das 1.532 entidades do ICIJ Offshore Leaks
+  marcadas Brasil, **292 CNPJs distintos** casam por nome exato normalizado
+  contra `br_me_cnpj.empresas.razao_social` — sem colisão relevante (máx.
+  2 CNPJ por nome ICIJ). Dos 292: **191 (65%) `Ativa`**, 83 (28%)
+  Suspensa, 16 (6%) Baixada. **290 dos 292 (99%) têm `natureza_juridica='2216'`
+  — "Empresa Domiciliada no Exterior"** (o código legal específico para
+  empresa estrangeira que possui imóvel/aeronave registrável no Brasil);
+  `capital_social=0` em 100% dos casos confirma que são veículos
+  administrativos, não empresas operacionais — o mecanismo é: sociedades
+  do Panama/Pandora/Paradise Papers que compraram imóvel/aeronave no
+  Brasil precisaram de CNPJ próprio para isso.
+- **T48-3 ⏳ — join por nome não confiável para pessoa física (2026-08-25)**:
+  dos 4.025 nomes distintos de "officers" (pessoa física) do ICIJ marcados
+  Brasil, **2.293 (57%) casam por nome exato** contra
+  `br_me_cnpj.socios.nome`, mas o mais frequente casado, "ROBERTO RESTUM",
+  aparece em **944 linhas de sócio diferentes** — implausível como
+  beneficiário único. Sem CPF (que o ICIJ não expõe), o join por nome aqui
+  produz volume grande e plausível, mas não confiável — mesma armadilha
+  de nome comum já documentada em T45-5, ao contrário de T48-2 (nomes de
+  empresa offshore são distintivos o bastante para não colidir).
+- **T48-4 ✅ (2026-08-25)** Das 292 entidades ICIJ casadas ao CNPJ (T48-2),
+  **82 (28%) aparecem como sócia pessoa jurídica** no grafo de holdings do
+  Brasil.IO — ex.: FLINDERS INVESTMENTS CORP. (Panama Papers) é sócia de
+  GREENVALE HOLDING LTDA. Contra os CNPJ inidôneos do TCU: **zero
+  sobreposição** — populações estruturalmente diferentes (TCU pune
+  fornecedor público; ICIJ vaza posse offshore), confirma que não é o
+  mesmo fenômeno de T45-4/T47-4 (C R Almeida S/A).
+- **T48-5 ✅ (2026-08-25)** Das 292 entidades casadas ao CNPJ, **277 (95%)
+  vêm do Panama Papers**, 6 do Pandora Papers, 4+1 do Paradise Papers —
+  consistente com o Panama Papers ter tido a maior cobertura do Brasil
+  (era Lava Jato, 2016). Jurisdição de incorporação: Panamá (104), Ilhas
+  Virgens Britânicas (71), Nevada-EUA (69). Taxa de ativa por origem não
+  difere o bastante entre vazamentos para um padrão claro de sobrevivência
+  por jurisdição — o volume fora do Panama Papers é pequeno demais (11
+  linhas) para comparação confiável.
+
+## 49 · Saúde Suplementar e Atenção Básica
+
+- **T49-1 ✅ (2026-08-25)** Cobertura de plano privado médico-hospitalar (ANS
+  2021, deduplicado — ver bug de `data_carga` abaixo) × TMI (SIM×SINASC
+  2021), n=3.987 municípios com ≥20 nascidos vivos: **r = −0,21**;
+  controlando PIB per capita, parcial ≈ **−0,20** — praticamente inalterado.
+  Cobertura média municipal (não ponderada) 9,2%, TMI média 16,2/1000. Plano
+  privado prevê menos mortalidade infantil independente da renda — mas
+  cobertura×PIB pc já é r=+0,40, então os dois efeitos coexistem sem se
+  anular.
+- **T49-2 ✅ (2026-08-25)** Cobertura de plano privado (ANS dez/2020,
+  deduplicado) × cobertura ESF (Atenção Básica 2020), n=5.568 municípios
+  (quase universal): **r = −0,47**; controlando PIB per capita, parcial ≈
+  **−0,44** — forte mesmo sem a renda como confundidor. Cobertura ESF média
+  87,2%, cobertura privada média 8,4%. Leitura mais plausível: ESF se
+  concentra onde o privado não chega (mesmo padrão de "direcionamento da
+  política" de T03-2), não que o privado desloque o público.
+- **T49-3 ✅ — achado contra-intuitivo (2026-08-25)** Cobertura vacina
+  pentavalente (Imunizações 2020) × TMI (SIM×SINASC 2020), n=3.886
+  municípios: **r = +0,13** — positiva. Cobertura ESF × TMI no mesmo
+  recorte: **r = +0,19**, maior que a da vacina. Ambas positivas pelo mesmo
+  motivo de T03-2/T49-2: cobertura de vacina e de ESF sobem justamente nos
+  municípios de pior indicador de saúde (focalização/mutirão), não o
+  contrário — nenhuma das duas "causa" mais óbito. Cobertura penta média
+  85,0%.
+- **T49-4 ⏳ — bloqueio estrutural confirmado (2026-08-25)**: a pergunta
+  pedia cobertura vacinal Covid-19 (doses/pessoa por município), mas
+  `br_ms_vacinacao_covid19` só tem `microdados_estabelecimento` (805.803
+  linhas, um diretório de postos — id/nome/município, sem data, sem dose,
+  sem paciente) e `dicionario`. O próprio `dicionario` referencia duas
+  tabelas que **não existem no disco nem na view**: `microdados_paciente`
+  (sexo/raça/nacionalidade do vacinado) e `microdados_vacinacao` (tipo de
+  vacina, categoria prioritária, data da dose) — mesmo padrão de
+  `br_mec_prouni` (T46-1): o `dicionario` promete uma granularidade que o
+  mirror não trouxe. **Nota lateral usável**: com o que existe dá pra medir
+  densidade de pontos de vacinação (não cobertura) — 27,3
+  estabelecimentos/100 mil hab em média (n=5.570, cobertura quase total),
+  fracamente correlacionada com ESF (**r = +0,28**).
+- **T49-5 ✅ — achado contra-intuitivo (2026-08-25)** Beneficiários ANS 60+
+  (médico-hospitalar, dez/2022, deduplicado) ÷ total de beneficiários, por
+  município, vs. população 60+ ÷ população total (Censo 2022), n=2.581
+  municípios com ≥500 beneficiários: nacionalmente **14,4% dos
+  beneficiários ANS têm 60+ contra 15,9% da população geral** — o plano
+  privado é ligeiramente MAIS jovem que a população, não mais velho
+  (esperava-se seleção adversa pró-idoso; consistente com a maioria dos
+  planos serem coletivos empresariais, vinculados a emprego formal de
+  adultos em idade ativa). **r = +0,62** entre % 60+ no plano e % 60+ na
+  população do mesmo município; **r = −0,11** com PIB per capita (municípios
+  mais ricos têm base de beneficiários levemente mais jovem).
+
+## 50 · Justiça Complementar e Filiação Partidária
+
+- **T50-1 ✅ (2026-08-25)** Filiação partidária TSE (16.479.345 filiados
+  regulares, snapshot 2024-10-21): mulheres variam de 25,8% (NOVO) a
+  53,6% (PMB) da base por partido. Eleitos 2022: mulheres eleitas variam
+  de 11,2% (PSD) a 27,7% (PT) entre os grandes partidos — **PSOL é o único
+  onde a conversão é quase 1:1** (52,3% filiadas → 52,9% eleitas); NOVO
+  tem a menor base feminina filiada (25,8%) e também baixa conversão
+  (11,1%). A lacuna filiação→eleição (~25-37pp por UF) **não varia com a
+  riqueza do estado**: r=+0,11 (n=27 UFs) entre o tamanho da lacuna e o
+  PIB per capita 2021 — é fenômeno estrutural do sistema partidário, não
+  regional.
+- **T50-2 ✅ (2026-08-25)** Filiados por partido×UF × votos para deputado
+  federal 2022: **r=+0,64 (n=579 pares partido×UF)** — mais filiados
+  acompanha mais votos, correlação moderada. Outlier: PTB/RS com só 12
+  filiados mas 89.766 votos (7.480 votos/filiado, ~100x a mediana) —
+  indício de "puxador de legenda" carregando sozinho um partido de base
+  filiada residual. A eficiência de conversão (votos/filiado) **não varia
+  com a riqueza da UF**: r=−0,13 (n=27) contra PIB per capita.
+- **T50-3 ✅ (2026-08-25)** Taxa de homicídio doloso 2022 por UF (SINESP)
+  × população Censo 2022 × % votos Bolsonaro/PL no 1º turno: **r=−0,43
+  (n=27 UFs)** — estados mais violentos votaram proporcionalmente menos
+  em PL. Faixa: PE no topo (34,7/100mil, 29,9% PL) a SP no fundo
+  (6,6/100mil, 47,7% PL); exceção clara: RR (25,9/100mil, mas 69,6% PL).
+  Corrobora de forma independente o achado prévio de T27 (homicídios×Lula
+  = +0,46, PIB pc×Lula = −0,62) — como PL e PT concentram a maior parte
+  do 1º turno, os dois resultados são espelhados e se validam mutuamente.
+  **Achado de bridge quebrada**: a entrada existente em `bridges.yaml`
+  para `br_mjsp_sinesp.ocorrencias_uf.uf` descrevia "código de 2 letras",
+  mas os dados reais são nome de estado por extenso acentuado — um join
+  ingênuo `uf = sigla_uf` devolvia zero linhas; corrigido.
+- **T50-4 ◐ (2026-08-25)** STF: 2.708.849 decisões (2000-2025), 7.644
+  classificadas "Direito Eleitoral". Candidaturas TSE: anos de eleição
+  municipal registram 15-20x mais candidaturas que anos de eleição geral
+  (380-560 mil vs 18-29 mil), mas **o volume de decisões eleitorais do
+  STF não acompanha esse salto** — média de 298 casos/ano em anos
+  municipais vs 346/ano em anos gerais, praticamente igual. Confirma que
+  disputas municipais ficam nas TREs/TSE e raramente sobem ao STF. **A
+  perna do gasto do Judiciário eleitoral (CNJ) está bloqueada** — ver bug
+  novo de escala documentado abaixo.
+- **T50-5 ✅ — com ressalva de cobertura (2026-08-25)** PROCON (2024):
+  13.803 reclamações, 3.083 CNPJs distintos, mas **cobre só 7 de 27 UFs**
+  (CE, GO, SP, PE, SC, PB, MT). Reclamações por 100 mil hab: CE 80,4
+  (51% de todo o dataset) a MT 0,30 — disparidade de 268x quase certamente
+  é cobertura desigual da fonte, não litigiosidade real. Setor mais
+  reclamado: bancos com carteira comercial (2.679), distribuição de
+  energia (536), água/saneamento (486). Das CNPJs reclamadas, **86,4%
+  seguem ativas** no cadastro CNPJ.
+
+## 54 · Censo Histórico e Consistência Populacional
+
+- **T54-1 ✅ (2026-08-25)** IBGE (`br_ibge_populacao.municipio`) e MS
+  (`br_ms_populacao.municipio`, somado por sexo/faixa etária) concordam
+  **byte-a-byte em 2018-2021 e 2024-2025 (diff=0 nos 5.570 municípios)** —
+  o MS simplesmente copia a estimativa do IBGE vigente nesses anos.
+  Divergem em dois regimes diferentes: **2000-2012**, ruído de revisão de
+  -0,16% a -4,49% (vintages diferentes da mesma estimativa); e
+  **2022-2023**, queda estrutural de -3,69%/-4,07% — o IBGE resetou para
+  o Censo 2022 (203.080.756, já verificado em `metrics.yaml`) enquanto o
+  MS manteve a extrapolação de tendência antiga (210.862.983). Em 2022:
+  MS é maior em **5.487 dos 5.570 municípios (98,5%)**, divergência média
+  absoluta 2,66%, 7 municípios com mais de 10% de diferença, correlação
+  0,9998 (mesma forma, nível sistematicamente diferente). Achado tipo T31
+  "duas fontes discordam", mas com mecanismo identificado — o MS não
+  aplicou o reset do Censo 2022; virou caveat na métrica `populacao`.
+- **T54-2 ✅ — achado grave de estabilidade (2026-08-25)** Nenhum dos 3.876
+  códigos de `id_municipio` distintos no Censo 1970 (mirror) ficou "fora"
+  da lista atual de 5.570 municípios (2022) — o IBGE nunca reaproveita um
+  código para um lugar diferente. Mas o inverso é grave: **1.694 dos 5.570
+  municípios atuais (30,4%) não existem como código próprio no Censo 1970**,
+  e **1.632 (29,3%) não existem no Censo 1980** — criados depois, majoritariamente
+  por emancipação pós-Constituição de 1988. Em 2010 o problema já é pequeno
+  (5 municípios, 0,09%). Um join direto `id_municipio` 1970→2022 perde
+  silenciosamente 30% dos municípios de hoje, e mesmo os pares que casam
+  não são diretamente comparáveis (o "pai" em 1970 ainda inclui o
+  território dos filhos emancipados depois). Achado lateral de
+  metodologia: a primeira tentativa desse cálculo usando `NOT IN` deu 0
+  divergências nos dois sentidos — armadilha clássica de `NOT IN` com
+  `NULL` na subquery; corrigido com `NOT EXISTS`/anti-join.
+- **T54-3 ◐ (2026-08-25)** Para 2010: a soma de `peso_amostral` por
+  `id_municipio` nos microdados pessoa bate **exatamente** com
+  `br_ibge_populacao.municipio` (190.755.799 = 190.755.799, correlação 1,0
+  em 5.565 municípios) — reconciliação de fontes bem-sucedida. Mas a
+  reconstrução **não é possível para 1970/1980/1991/2000** — nenhuma
+  dessas quatro tabelas tem coluna de peso amostral no mirror (só existe
+  em `microdados_pessoa_2010`); 1970 tem 24,78M linhas para uma população
+  real de ~93M, confirmando amostra sem peso publicado, não censo completo.
+- **T54-4 ✅ (2026-08-25, com ressalva)** Usando os únicos dois anos com
+  coluna "sabe ler e escrever" decodificada no mirror (`v0323` em 1991,
+  `v0428` em 2000), taxa de alfabetização não-ponderada 5+ anos: **73,97%
+  em 1991 (11.148.907/15.071.878) → 74,66% em 2000 (15.133.376/20.274.411)**
+  — alta de só 0,69pp. **Ressalva**: denominador "5+" difere do "15+"
+  oficial do IBGE (que saltou de ~81,9% para ~86,4% na mesma década) — os
+  números não são comparáveis ao oficial, só entre si. Confirma T54-2 numa
+  nova janela: dos 4.491 municípios de 1991, todos têm par em 2000, mas
+  **1.016 municípios de 2000 (18,4%) não existiam como código em 1991**.
+- **T54-5 ✅ (2026-08-25)** `br_ibge_estadic.recursos_humanos` (2020, único
+  ano coincidente com `br_ibge_pib.uf`) × PIB per capita por UF: **r =
+  −0,25 (n=27 UFs)** — sinal fraco na direção esperada. Extremos: RR
+  (15,91%), MA (9,44%), RO (7,06%) têm as maiores fatias de comissionados
+  na administração direta; TO (0,13%), SC (0,67%), SP (0,84%) as menores —
+  os estados mais ricos do Sul/Sudeste concentram o extremo baixo, mas
+  n=27 é pequeno demais para além de um sinal direcional.
+
+## 51 · Energia, Comércio Exterior e Infraestrutura
+
+- **T51-1 ✅ (2026-08-25)** Consumo de energia elétrica por UF (MME,
+  "Total", 2021) × PIB por UF (soma dos municípios, 2021): **r = +0,98
+  (n=27) em nível bruto** — quase só efeito de tamanho de estado.
+  Normalizando ambos por população (Censo 2022), **r cai para +0,67** —
+  ainda forte, mas bem menor que a bruta sugeria. **Achado de correção de
+  escopo**: `br_mme_consumo_energia_eletrica` só tem a tabela `uf` no
+  espelho (38.880 linhas, 2004-2023) — **não existe grão municipal**, ao
+  contrário do que a descrição do dataset sugeria. Sanity check: soma
+  nacional 2023 = 531,0 TWh, batendo com o consumo elétrico nacional real
+  (~500-550 TWh/ano, EPE).
+- **T51-2 ✅ (2026-08-25)** Tráfego aéreo por UF de destino (ANAC
+  `pontualidade`, maio/2026, UF extraída do texto livre via regex) × PIB
+  por UF: **r = +0,98**; × consumo de energia por UF: **r = +0,94** —
+  tráfego aéreo replica quase perfeitamente o tamanho econômico do estado
+  (SP: 66.492 etapas previstas no mês, RR: 140). Mas cancelamento e
+  atraso **não** acompanham riqueza: cancelamento ponderado × PIB **r =
+  +0,24**, atraso>30min × PIB **r = −0,11** — ambos fracos, um com sinal
+  "errado". Pontualidade parece explicada por outra coisa (companhia
+  aérea, hub congestionado), não por riqueza do estado de destino.
+- **T51-3 ✅ — achado nuançado (2026-08-25)** Preço do cimento CP II-32
+  (SINAPI, jun/2026) por UF × PIB per capita: **r = −0,41** — RR
+  (R$1,59/kg) e AC (R$1,34/kg) pagam mais que o dobro de RJ (R$0,68/kg) e
+  SP (R$0,71/kg), consistente com sobrecusto logístico no Norte remoto.
+  Mas o **índice geral de materiais** (1.794 insumos, cada um relativizado
+  à média nacional do próprio insumo) inverte o sinal: **r = +0,29** com
+  PIB per capita. A "sobretaxa da distância" é real para uma commodity
+  pesada e transportada (cimento), mas não generaliza para a cesta inteira
+  de materiais, que mistura itens cujo preço reflete mais mão de
+  obra/terreno local do que frete.
+- **T51-4 ✅ (2026-08-25)** Custo de mão de obra de referência do SINAPI
+  (classificação MAO DE OBRA, unidade "H") × salário médio real na
+  construção civil formal (RAIS 2022, CNAE 41/42/43): **r = +0,36
+  (n=27)**. Salário RAIS construção × PIB per capita: **r = +0,39**. Os
+  três se movem na mesma direção mas com correlação só moderada — o piso
+  SINAPI (SP R$3.177/mês-equiv.) não é um substituto fiel do salário real
+  (SP R$3.451, PA R$3.529 — PA supera SP na RAIS apesar de não liderar no
+  SINAPI). **Achado colateral de unidade**: a classificação MAO DE OBRA do
+  SINAPI mistura `unidade='H'` (horista) e `unidade='MES'` (mensalista)
+  sem separação — média direta mistura R$/hora com R$/mês silenciosamente.
+- **T51-5 ✅ — validação forte (2026-08-25)** Consumo de energia
+  "Comercial" por UF (MME 2021) × vínculos formais no comércio (RAIS 2022,
+  CNAE 45/46/47): **r = +0,99 em nível bruto**, **r = +0,89 per capita** —
+  a correlação sobrevive quase intacta mesmo neutralizando o tamanho do
+  estado. É a validação mais limpa do grupo: consumo comercial de energia
+  é um proxy fiel da densidade do setor de comércio formal, não só do
+  tamanho do estado.
+
+## 52 · Séries Financeiras, Dívida Pública e Crédito
+
+- **T52-1 ✅ (2026-08-25)** Crédito BNDES per capita acumulado (2002-2026,
+  `operacoes_nao_automaticas`, só linhas com `id_municipio`) × PIB per
+  capita 2021: **r = +0,19 (n=1.132 municípios)** — correlação fraca e
+  positiva; crédito de fomento concentra-se um pouco mais em municípios
+  ricos, mas não é o fator dominante. Distribuição assimétrica: **média
+  R$10.519/hab vs. mediana R$1.498/hab**. Total contratado nos municípios
+  identificados: **R$602,8 bilhões**, de um total geral de **R$1,229
+  trilhão contratado / R$952 bilhões desembolsados** em 23.483 operações
+  desde 2002.
+- **T52-2 ✅ (2026-08-25)** **Zero** dos 4.356 CNPJs distintos que tomaram
+  crédito direto do BNDES aparecem entre os 84 CNPJs (14 dígitos)
+  inidôneos do TCU — nem por CNPJ completo nem por raiz (8 primeiros
+  dígitos). Resultado negativo genuíno, não bloqueio: o join funciona
+  (99,9% dos CNPJs do BNDES batem contra `br_me_cnpj.estabelecimentos`),
+  só não há sobreposição nesta tabela (que cobre só operações diretas
+  grandes, não o crédito indireto via bancos repassadores).
+- **T52-3 ✅ (2026-08-25)** Estoque da dívida pública federal em dezembro
+  de cada ano ÷ PIB nacional: **2017: 79,2% → 2018: 81,0% → 2019: 83,1% →
+  2020: 91,1% (pico da pandemia) → 2021: 84,8%**. Não é monotônico: salto
+  concentrado em 2020, reversão parcial em 2021. Nível ~5-10pp acima da
+  série oficial de Dívida Bruta do Governo Geral do BCB — mesma forma,
+  escopo mais amplo (inclui carteira do Banco Central). **Achado de
+  escala**: somar `valor_estoque` por `ano` sem filtrar `mes` infla o
+  total em ~12x (cada linha é um snapshot mensal, não um fluxo) — virou
+  caveat de métrica.
+- **T52-4 ✅ (2026-08-25)** IGP-M acumulado (tabela anual, limpa) **2019:
+  7,30% vs. IPCA 4,31% (+3,0pp)**; **2020: 23,14% vs. IPCA 4,52%
+  (+18,6pp — descolamento enorme)**; **2021: 17,78% vs. IPCA 10,06%
+  (+7,7pp)** — os três valores de IGP-M batem exatamente com os números
+  oficiais da FGV. 2020 confirma a história clássica: índice "de atacado"
+  disparou na pandemia enquanto o índice ao consumidor ficou represado.
+  **Achado de bug de schema**: as 4 tabelas MENSAIS de `br_fgv_igp`
+  (`igp_m_mes`, `igp_di_mes`, `igp_10_mes`, `igp_og_mes`) têm as colunas
+  `ano` e `mes` **trocadas** — `ano` contém o número do mês (1-12) e `mes`
+  contém o ano. Confirmado: `WHERE mes=2021 AND ano=12` devolve
+  `variacao_acumulada_ano = 17,78%`, batendo com o IGP-M oficial de 2021.
+  As tabelas ANUAIS não têm o bug. Um `GROUP BY ano` numa tabela `*_mes`
+  agrupa por mês do calendário, não por ano civil — sem erro, silencioso.
+- **T52-5 ✅ (2026-08-25)** Selic anualizada (composta a partir da série
+  mensal do BCB SGS) × valor total contratado anual pelo BNDES: **r =
+  −0,38 (n=23 anos, 2003-2025)** — correlação negativa moderada, longe de
+  mecânica (2022 teve Selic alta *e* contratação em alta; 2024 teve Selic
+  caindo *e* o maior volume contratado da série, R$93,9 bi). Consistente
+  com o crédito do BNDES rodar majoritariamente em TJLP/TLP, parcialmente
+  isolado do ciclo Selic. **Achado de unidade**: as séries `meta_selic`/
+  `selic_anualizada` (series_code 4390/4391) em `br_bcb_sgs.series`
+  **não são taxas anuais apesar do nome** — são a Selic mensal (%a.m.,
+  valores típicos 0,2-1,3); ler o valor bruto como %a.a. é um erro de 10x.
+
+## 53 · Índices de Competitividade e Comparativos Internacionais
+
+- **T53-1 ✅ (2026-08-25)** Os três índices de saúde fiscal estadual **não**
+  medem a mesma coisa. CLP "Solidez Fiscal" 2022 × CAPAG estados 2022:
+  **r=+0,71 (n=26)** — concordam bem. Mas CLP-fiscal × IFGF (agregado por
+  UF, média municipal 2022): **r=+0,16**; CAPAG × IFGF: **r=+0,05
+  (n=27)**. O IFGF é bottom-up a partir de municípios — sua média por UF
+  não captura o mesmo que um índice do próprio governo estadual, mesmo
+  compartilhando o rótulo "fiscal".
+- **T53-2 ✅ (2026-08-25)** CLP ranking geral (2022) × PIB per capita 2020:
+  **r=+0,78 (n=27)** — forte. DF R$87.016, SP R$51.365 per capita vs. SP
+  #1 no ranking geral (83,2), AP último (#27, 27,0). Competitividade
+  estadual é, em boa parte, riqueza — mas ~39% da variância fica fora da
+  renda (r²≈0,61).
+- **T53-3 ◐ — comparação de bases diferentes (2026-08-25)** Razão impostos
+  líquidos/PIB nos 27 estados (IBGE 2020): faixa 6,8%-17,3%, média 11,7%.
+  Razão IRPF/PIB na OCDE (2015, 34 países): faixa 3,3%-27,3%, média 9,1%.
+  `impostos_liquidos` do IBGE é agregado de impostos indiretos (tipo VAT),
+  não IRPF — os numeradores medem tributos de natureza distinta; mostra
+  que o Brasil não está fora da amplitude OCDE, mas não permite concluir
+  "mais ou menos tributado" sem normalizar as bases.
+- **T53-4 ✅ (2026-08-25)** CLP "Segurança Pública" × "Sustentabilidade
+  Social" (2022): **r=+0,71 (n=27)**; Segurança × PIB per capita 2020:
+  **r=+0,58**. SC #1 em segurança (100,0), DF #2 (83,5); RR último (0,0),
+  AP (3,0) — consistente com rankings de violência conhecidos. Segurança
+  correlaciona mais com coesão social do que com renda pura.
+- **T53-5 ⏳ — corrupção de dado confirmada (2026-08-25)**:
+  `expenditure_health`/`expenditure_education`/`total_expenditure`/
+  `total_receipt` em `world_oecd_public_finance.country` estão
+  preenchidos com o sentinel de overflow `INT32_MIN` (-2147483648) em
+  82%-98,5% das linhas "não-nulas" (`total_expenditure`: só 20 de 1.319
+  linhas têm valor real) — qualquer benchmark de gasto público seria
+  calculado sobre lixo. Colunas limpas e usáveis: PIB nominal, desemprego,
+  expectativa de vida, Gini, WGI de governança (2010-2016 só).
+
+## 55 · Vulnerabilidade Social, Medicamentos e Consumo
+
+- **T55-1 ✅ (2026-08-25)** Série nacional anual 2000-2019: homicídios
+  LGBTQI+ (GGB) × óbitos por agressão no SIM (causa_basica X85-Y09): **r =
+  +0,82 (n=20 anos)** — as duas séries sobem e caem juntas, inclusive a
+  queda 2018→2019 aparece nas duas ao mesmo tempo. **Achado estrutural**:
+  nenhuma das 5 tabelas de `br_ggb_relatorio_lgbtqi` tem UF ou município —
+  é 100% agregado nacional por ano; a correlação geográfica originalmente
+  cogitada não é respondível.
+- **T55-2 ✅ (2026-08-25)** Top 15 princípios ativos por quantidade
+  vendida no SNGPC (2014-2021) casados por nome contra `br_anvisa_cmed.precos`
+  (13/15 casaram): **r(ln quantidade, ln preço mediano) = +0,14 —
+  praticamente nulo**. Fenobarbital (R$11,36/caixa, 882 mil unidades) e
+  periciazina (R$12,85, 903 mil) vendem tanto quanto escitalopram
+  (R$227,04, 1,71 milhão) — preço regulado não filtra o volume entre os
+  mais vendidos. Ressalva: a tabela de vendas está truncada em exatamente
+  10.000.000 de linhas e cobre só 406 dos 5.570 municípios (ver bloqueio).
+- **T55-3 ✅ (2026-08-25)** Cruzando os mesmos top-15 do SNGPC com
+  `br_anvisa_consultas.registros`: **fenobarbital tem só 3 registros
+  `Ativo` contra 21 `Inativo`** (11º mais vendido, 882 mil unidades) e
+  **periciazina só 1 `Ativo` contra 2 `Inativo`** (903 mil unidades) —
+  concentração extrema de fabricante para dois medicamentos de alto
+  volume. Escitalopram, por contraste, tem 46 ativos/47 inativos. Risco
+  de desabastecimento é real e específico, não genérico.
+- **T55-4 ⏳ — bloqueio estrutural confirmado (2026-08-25)**:
+  `br_fipe_veiculos.precos` (11.289 linhas, único arquivo no disco) tem
+  **apenas 5 colunas**: `vehicle_type`, `brand_code`, `brand_name`,
+  `model_code`, `model_name` — nenhuma coluna de preço, ano ou geografia,
+  apesar do nome da tabela. É um catálogo estático de marca/modelo, não
+  uma série de preços FIPE. Não há chave municipal ou temporal alguma
+  para cruzar com nada.
+- **T55-5 ✅ — padrão invertido (2026-08-25)** Composição racial 2019:
+  **GGB (vítimas LGBTQI+): Branca 36,8%, Parda 27,4%, Preta 9,7%** (n=329)
+  vs. **SIM (agressão, todas as vítimas): Parda 68,4%, Branca 21,7%,
+  Preta 7,6%** (n=42.702) — padrão invertido: entre vítimas LGBTQI+
+  identificadas pela imprensa (fonte do GGB), branca é a maior fatia;
+  entre vítimas de homicídio em geral, parda domina esmagadoramente.
+  Plausivelmente reflete viés de cobertura jornalística do GGB (sub-registra
+  vítimas menos visíveis), não uma diferença demográfica real.
 
 ## Multi-referência (seção final)
 
@@ -354,6 +903,173 @@ produziria um número que parece verificado mas não é.
 - **T36-3** — precisaria de Censo 2010 por religião, que não está no espelho (só
   Censo 2022 tem os microdados de religião, `br_ibge_censo2022_religiao`); sem o
   ponto de 2010 não dá pra medir mudança de composição religiosa 2010→2022.
+- **T44-3** — `br_rf_cafir.imoveis_rurais`: 61-64% de todas as linhas, em todo
+  snapshot mensal, têm `id_imovel_receita_federal = NULL` (169,9M linhas, só
+  3,89M ids distintos). Precisa re-scraping ou entender a causa na fonte.
+- **T44-4** — `br_ibama_embargos` (8 tabelas, 113k-48k-439 linhas): 100% das
+  colunas vazias, o header do CSV virou o próprio nome da coluna. Dataset
+  inteiro precisa ser reprocessado do zero.
+- **T45-5** — OpenSanctions `identifiers` de `LegalEntity` tagueado Brasil
+  praticamente vazio (11 fragmentos em 131.626 registros); cruzamento por CNPJ
+  direto inviável, só sobraria nome-a-nome caro.
+- **T46-1** — `br_mec_prouni` (dataset inteiro) só tem a tabela `dicionario`
+  no beelink — sem microdados de beneficiário PROUNI algum (confirmado tanto
+  na view DuckDB quanto no disco: `~/rodado/br_mec_prouni/` só tem a pasta
+  `dicionario/`). Não bloqueou T46-1 porque o Censo da Educação Superior tem
+  as mesmas contagens de bolsista PROUNI agregadas por curso/município
+  (`quantidade_ingressantes_financiamento_nao_reembolsavel_prouni_integral`/
+  `_parcial`), mas qualquer pergunta que precise do microdado individual
+  (CPF, nome, nota) do PROUNI está bloqueada — precisa re-scraping.
+- **T47** — `br_mp_pep.cargos_funcoes` **não é "Pessoas Expostas
+  Politicamente"** como o nome sugeria em `tasks/datasets_coverage_gaps.md`
+  (hipótese razoável, mas errada) — é o **Painel Estatístico de Pessoal**
+  do então Ministério do Planejamento: um painel agregado de cargos e
+  funções comissionadas do Executivo federal por UF/órgão/raça/sexo/faixa
+  etária, sem CPF nem nome de pessoa alguma. Não serve para o ângulo AML de
+  identificar PEPs individuais — serve para análise demográfica/estrutural
+  do alto escalão federal (usado em T47-1/T47-2/T47-3).
+- **T47** — `id_responsavel` em `br_rf_cno.microdados` é a string literal
+  `"nan"` (não NULL, não vazio) para **todo** registro cujo responsável é
+  pessoa física (qualificação 110 "Construção em nome coletivo" e
+  similares) — 350,1M de 534,1M linhas (65,5%). É artefato de pipeline
+  (provavelmente um `NaN` do pandas serializado como texto na exportação
+  original), não dado ausente na fonte — o nome (`nome_responsavel`)
+  continua presente. Bloqueia qualquer cruzamento por CPF de pessoa física
+  nesta tabela; só os 183,9M de linhas com `id_responsavel` de 14 dígitos
+  (CNPJ, pessoa jurídica) são utilizáveis para join (usado em T47-4).
+- **T47** — `br_me_siorg.remuneracao` (tabela de remuneração por
+  cargo/função, esquema CA/CAS/CCD/CCE pós-reforma de 2019) não casa por
+  nome com `br_mp_pep.cargos_funcoes.nivel_funcao`/`subnivel_funcao`
+  (esquema DAS/CCX/FEX/FPE) — são dois sistemas de nomenclatura de cargo
+  comissionado diferentes, sem tabela de correspondência no espelho.
+  Estimar custo total de comissionados (contagem do PEP × remuneração do
+  SIORG) exigiria uma tabela-ponte cargo-a-cargo que não existe aqui.
+- **T49-4** — `br_ms_vacinacao_covid19`: só `microdados_estabelecimento`
+  (diretório de postos, sem dose/data/paciente) e `dicionario` existem no
+  mirror; as duas tabelas que o próprio `dicionario` referencia —
+  `microdados_paciente` e `microdados_vacinacao` (tipo de vacina, categoria
+  prioritária, data da dose) — não existem no disco. Sem elas não dá pra
+  medir cobertura vacinal Covid-19 por município, só densidade de postos.
+  Mesmo padrão de `br_mec_prouni` (T46-1): `dicionario` promete
+  granularidade que o mirror não trouxe.
+- **T49-1/T49-5** — `br_ans_beneficiario.informacao_consolidada`: múltiplas
+  cargas `data_carga` coexistem no mesmo `(ano, mes)` em todo o período
+  2014-2025 (2 a 12 `data_carga` distintas por ano); somar
+  `quantidade_beneficiario_ativo` agrupando só por `ano/mes` duplica a
+  contagem (25,3M vs 50,1M em dez/2022 sozinho, contra ~50,9M oficial da
+  ANS). Não é bloqueio de uso — é armadilha silenciosa que exige filtrar
+  por `WHERE data_carga = MAX(data_carga)` antes de agregar; virou métrica
+  verificada em `metrics.yaml`.
+- **T48-1** — `eu_sanctions.sanctions` e `un_sanctions.sanctions` não têm
+  nenhuma linha ligada ao Brasil (0 de 42.347 e 0 de 1.002, checado em
+  todo campo de país/nacionalidade/texto livre); `global_ofac_sanctions.sanctions`
+  não tem coluna de país/CNPJ/CPF estruturada nenhuma — só 20 de 19.129
+  linhas mencionam "Brazil", todas em `remarks` de texto livre, sem CNPJ
+  (0 ocorrências) nem CPF real (1 falso positivo). Estrutural: as três
+  listas simplesmente não cobrem o Brasil como alvo.
+- **T48-3** — `global_icij_offshoreleaks.officers` (pessoa física) não tem
+  CPF — cruzamento por nome contra `br_me_cnpj.socios.nome` produz alto
+  volume (2.293 de 4.025 nomes casam) mas com colisão massiva em nomes
+  comuns (ex. "ROBERTO RESTUM" casa 944 sócios), não confiável para
+  identificar beneficiário final sem uma segunda chave (CPF, data de
+  nascimento) que o ICIJ não expõe.
+- **T51** — `br_me_exportadoras_importadoras` (dataset inteiro) só tem a
+  tabela `dicionario` no beelink (3 linhas) — **sem a tabela de
+  microdados `empresas_exportadoras_importadoras`** que o próprio
+  dicionário referencia (confirmado na view DuckDB e no disco: só a pasta
+  `dicionario/` existe). Mesmo padrão exato de `br_mec_prouni` (T46-1).
+  Precisa de re-scraping.
+- **T53-5, correlato de T33-2…T33-5** — `world_oecd_public_finance.country`:
+  as colunas de despesa/receita agregada (`total_expenditure`,
+  `total_receipt`, `expenditure_health`, `expenditure_education`) trazem
+  o sentinel de overflow `INT32_MIN` (-2147483648) em 82%-98,5% das
+  linhas aparentemente preenchidas (só 20 de 1.319 valores de
+  `total_expenditure` são reais). Bloqueia qualquer benchmark
+  internacional de gasto público em saúde/educação até reprocessamento
+  na fonte. Resposta direta sobre desbloquear T33-2…T33-5: `world_wb_mides`
+  **não desbloqueia nada** — é dado municipal brasileiro mal rotulado
+  (ver achado abaixo), zero linha internacional; `world_oecd_public_finance`
+  desbloqueia parcialmente só o ângulo "benchmark contra a OCDE" (nunca
+  "países vizinhos" — o Brasil não está na lista de 36 países, e os
+  únicos latino-americanos são México e Chile), e só nas colunas não
+  corrompidas pelo sentinel (PIB, desemprego, expectativa de vida, Gini,
+  WGI de governança 2010-2016).
+- **`world_wb_mides` não é o dataset que o nome diz** — confirmado ao ler
+  os dados: as 9 tabelas (`empenho`, `licitacao`, `licitacao_item`,
+  `licitacao_participante`, `liquidacao`, `pagamento`,
+  `orgao_unidade_gestora`, `relacionamentos`, `dicionario`) são
+  empenho/licitação/pagamento de governos municipais **brasileiros**
+  (colunas `id_municipio`, `sigla_uf`, `orgao`) — cobre 10 estados
+  brasileiros, 303.323.046 linhas, 1989-2024, zero relação com o World
+  Bank Multidimensional Inequality Dataset que o nome sugere. Mesma
+  classe de erro de `br_mp_pep` (tema 47) — precisa de
+  renomeação/reclassificação no catálogo.
+- **T54-3, T54-4** — `br_ibge_censo_demografico.microdados_pessoa_*`: só a
+  tabela de **2010** tem `peso_amostral`; 1970/1980/1991/2000 não têm
+  coluna de peso alguma — totais populacionais não são reconstituíveis
+  para esses 4 anos a partir do microdado, só proporções não-ponderadas
+  (viés desconhecido). A variável "sabe ler e escrever" só existe
+  decodificada no `dicionario` para 1991 (`v0323`) e 2000 (`v0428`) — uma
+  série completa de alfabetização 1970-2010 não é possível com o que está
+  espelhado hoje.
+- **T54-2 / geral** — qualquer série histórica municipal 1970/1980→hoje
+  via join direto em `id_municipio` perde silenciosamente ~30% dos
+  municípios atuais (criados depois), e mesmo os pares que casam misturam
+  território que se emancipou depois — precisaria de tabela de
+  correspondência município-pai→filho (não existe no espelho).
+- **T55 / `br_fipe_veiculos`** — a única tabela do dataset (`precos`,
+  11.289 linhas) não tem preço, ano nem geografia: só
+  `vehicle_type`/`brand_code`/`brand_name`/`model_code`/`model_name`. É
+  um catálogo de marca/modelo, não uma série de preços FIPE apesar do
+  nome. Precisaria de re-scraping trazendo a série de valores mensais.
+- **T55 / `br_anvisa_medicamentos_industrializados.microdados`** — a
+  tabela tem exatamente 10.000.000 de linhas, e os 406 municípios
+  presentes estão todos concentrados no começo do alfabeto (de "Águas
+  Frias" a "Áurea") — SP, RJ, BH, Salvador, Curitiba e Fortaleza têm zero
+  linhas. Consistente com scrape processado em ordem alfabética, cortado
+  ao bater o teto de 10M — não é amostra aleatória. Comparações entre
+  substâncias sofrem menos que comparações entre municípios, que ficam
+  inteiramente inválidas sem re-scraping completo.
+- **T55 / `br_ggb_relatorio_lgbtqi`** — dataset inteiro (5 tabelas) é
+  100% agregado nacional por ano; nenhuma tabela tem UF, região ou
+  município. Qualquer pergunta de correlação geográfica está
+  estruturalmente bloqueada.
+- **Tema 41 (CMED/Farmácia Popular)** — parcialmente desbloqueado com
+  ressalva: `br_anvisa_cmed.precos` existe e tem preço regulado real
+  (51.140 linhas, 2.246 substâncias) mas é snapshot único atual, sem
+  série histórica — T41-4 ("ficaram mais baratos depois do Farmácia
+  Popular") continua bloqueada por falta de série temporal.
+  `br_saude_farmaciapopular.estabelecimentos` só tem localização de
+  farmácia credenciada, nenhuma coluna de preço praticado ou medicamento
+  vendido — T41-1/T41-4 seguem bloqueadas mesmo com o CMED disponível.
+- **T50-4 (CNJ recursos_financeiros — bug novo)** —
+  `br_cnj_estatisticas_poder_judiciario.recursos_financeiros.gastos_totais`
+  (e outras colunas de despesa absoluta) contém valores implausíveis e,
+  no ramo Eleitoral, **duplicados**: em 2014 as 28 linhas de tribunal
+  (TRE-AC…TRE-SP + a linha agregada "TRE") têm o MESMO `gastos_totais` =
+  R$2.268.768.427.050 (2,27 trilhões) — um `SUM()` por tribunal infla
+  28x, e o valor unitário já é absurdo por si só. No ramo Estadual não há
+  duplicação, mas os valores também não fecham: TJSP registra
+  `despesa_rh` = R$739 bilhões em 2014, MAIOR que seu próprio
+  `gastos_totais` (R$209,8 bilhões) no mesmo ano. T39-1 não foi afetado
+  porque usou proporção (`despesa_pessoal`/`despesa_total`), que cancela
+  o fator de escala comum — qualquer uso futuro de valor absoluto de
+  despesa nessa tabela precisa reprocessar a fonte do CNJ antes de
+  confiar no número.
+- **br_mjsp_ckan.procon** — cobre só 7 de 27 UFs (CE, GO, SP, PE, SC, PB,
+  MT), com Ceará sozinho respondendo por 51% das reclamações — provável
+  scrape incompleto, não litigiosidade real.
+- **br_mjsp_ckan.infopen** — mesma classe de bug já catalogada para
+  SISDEPEN em T06-1/T06-4: nomes de coluna com unicode inválido, impede
+  até um `SELECT *`. Precisa re-scraping.
+- **br_mjsp_procurados.procurados** — só 195 linhas, sem CPF nem ID
+  numérico (nome+estado em texto livre) — não sustenta cruzamento de 3+
+  datasets além de contagem trivial por UF. Não é dado quebrado, é
+  escopo pequeno por natureza.
+- **br_stf_corte_aberta.decisoes** — sem nenhuma chave geográfica (nem
+  UF, nem município) — grão processo/decisão, só `ano` é utilizável para
+  série temporal. Qualquer pergunta "por estado/município" sobre o STF
+  está estruturalmente bloqueada com o que está espelhado hoje.
 
 Confirmado durante esta rodada (não estava listado como bloqueio antes):
 
@@ -364,12 +1080,28 @@ Confirmado durante esta rodada (não estava listado como bloqueio antes):
   responder no recorte municipal original seria preciso outra fonte com a
   naturalidade/origem municipal do bolsista.
 
+Confirmado em 2026-08-25 (rodada `respostas_pendentes.md`, temas 39-40):
+
+- **T39-2, T39-3, T39-4** — nenhum dos 4 espelhos de TCE (ES/PI/RJ/SP) tem
+  penalidade/multa por município: SP é só nome de município (2 colunas), PI não
+  tem tabela de penalidade nenhuma, RJ tem uma (`penalidades_ressarcimento_estado`)
+  mas 100% `TipoEnte='ESTADUAL'` (zero linhas municipais), ES tem fiscalização só
+  agregada por ano/esfera sem município. Precisaria de scrape novo em pelo menos
+  SP e PI antes de qualquer cruzamento com CNJ-improbidade fazer sentido.
+- **T39-5** — `br_cnj_estatisticas_poder_judiciario` só tem a tabela `recursos_financeiros`
+  (despesa por tribunal/ano); não existe coluna de volume processual, então "custo
+  médio por processo" não é calculável com o que está espelhado.
+- **T40-4** — falso pressuposto: `br_siop_orcamento` é orçamento da União (por
+  órgão/função/ação), não tem despesa obrigatória por orçamento municipal — essa
+  métrica vive no SICONFI (`br_me_siconfi`), não no SIOP.
+
 Não investigados nesta rodada (fora do orçamento desta passada, permanecem `⏳`
 sem reclassificação): temas 13, 15, 16, 21, 22 (itens 2-4), 23, 24, 26, 28, 29
 (exceto os já ◐), 30 (itens 2-5), 31 (itens 1-3 e 5), 32 (itens 2 e 4), 34, 35
-(itens 1-4), 37 (itens 2-4), 38, 39 (itens 2-5), 40 (itens 3-5), 41 (itens 1-4),
-42, 43 (itens 1,2,4,5), M1-M5. A maioria já vem autodescrita no arquivo como
-"pipeline dedicado" (tabelas de centenas de milhões/bilhões de linhas, funções
-espaciais do geobr, encadeamento CPF/CNPJ multi-tabela) — plausível que uma
-fração precise de re-scraping ou chave nova como os itens acima, mas isso não
-foi verificado tabela por tabela.
+(itens 1-4), 37 (itens 2-4), 38, 41 (itens 1-4), 42, 43 (itens 1,2,4,5), M1-M5.
+T40-5 segue `⏳` mas por bloqueio já mapeado acima (CAPAG sem série temporal),
+não por falta de investigação. A maioria dos temas restantes já vem
+autodescrita no arquivo como "pipeline dedicado" (tabelas de centenas de
+milhões/bilhões de linhas, funções espaciais do geobr, encadeamento CPF/CNPJ
+multi-tabela) — plausível que uma fração precise de re-scraping ou chave nova
+como os itens acima, mas isso não foi verificado tabela por tabela.
