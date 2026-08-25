@@ -117,7 +117,7 @@ separadamente, no mesmo espaço da pergunta do usuário.
 
 ```mermaid
 flowchart TD
-    Q["pergunta do usuário\n(ex: \"gastos de campanha eleitoral\")"]
+    Q["pergunta do usuário\n(ex: &quot;gastos de campanha eleitoral&quot;)"]
     EMB["embed com o mesmo modelo\nque gerou o índice\n(paraphrase-multilingual-MiniLM-L12-v2)"]
     IDX[("6.464 perguntas sintéticas\nembedadas offline\n~8 por tabela")]
     SIM["cosseno contra cada uma\ndas 6.464"]
@@ -165,7 +165,7 @@ flowchart TD
     DBERR{"DuckDB\nretornou erro?"}
     CATERR{"Catalog Error /\nview antiga (bucket morto)?"}
     AUTORETRY["servidor reescreve pra\nread_parquet() e tenta de novo\n— automático, o agente\nnem precisa perceber"]
-    OTHERERR["erro cru do DuckDB volta\npro agente\n(\"Binder Error... Candidate\nbindings: ...\")"]
+    OTHERERR["erro cru do DuckDB volta\npro agente\n(&quot;Binder Error... Candidate\nbindings: ...&quot;)"]
     FIX["agente lê o erro,\najusta a query\n(nome de coluna, join, cast)"]
     DONE(["resultado real"])
     REPHRASE["agente reformula a pergunta\nou tenta list_tables/browse\nmanual num dataset suspeito"]
