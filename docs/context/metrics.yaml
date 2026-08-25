@@ -35,6 +35,12 @@ metrics:
       até 2021 a série é estimativa, 2022 em diante é Censo, e há um degrau entre
       as duas: 213.317.639 em 2021 contra 203.080.756 em 2022. A população não
       caiu 10 milhões — mudou o método. Não leia essa quebra como tendência.
+      `br_ms_populacao.municipio` é idêntico byte-a-byte a esta tabela em
+      2018-2021 e 2024-2025, mas NÃO aplicou o reset do Censo 2022 em
+      2022-2023 (diferença de até 4,07% no total nacional, e o MS é maior
+      em 98,5% dos municípios em 2022) — não são fontes intercambiáveis
+      nesses dois anos. Achado respondendo tasks/perguntas.md T54-1,
+      2026-08-25.
 
   pib:
     description: Produto Interno Bruto municipal a preços correntes
@@ -114,3 +120,133 @@ metrics:
     caveat: >-
       é fluxo líquido do período, não estoque. Somar sobre vários anos dá o
       acumulado, não o total de empregos.
+
+  valor_producao_agropecuaria:
+    description: >-
+      valor da produção agrícola municipal (PAM) — lavouras temporárias; some
+      com o mesmo cálculo sobre `br_ibge_pam.lavoura_permanente` para o total
+      lavoura temporária + permanente
+    unit: mil reais (multiplicar por 1.000 para reais correntes)
+    grain: [ano, id_municipio, produto]
+    source_table: br_ibge_pam.lavoura_temporaria
+    expression: SUM(valor_producao)
+    required_filters: [ano]
+    synonyms: [valor da producao, valor da lavoura, producao agricola em reais]
+    verified: >-
+      soja 2022: quantidade_produzida=121.290.103 (bate com a safra oficial de
+      ~121Mt) e valor_producao=347.273.926 — só é um preço-tonelada plausível
+      (~R$2.860/t) se lido como mil reais; como reais puros daria R$2,86/t,
+      absurdo. Achado respondendo tasks/perguntas.md T44-2 (2026-08-25).
+    caveat: >-
+      a coluna NÃO tem sufixo `_mil` nem aviso no schema — é a mesma armadilha
+      de escala que pib_per_capita existe pra evitar, só que sem metric
+      pré-existente até agora. `br_ibge_pevs.producao_extracao_vegetal`/
+      `producao_silvicultura` usam a mesma convenção IBGE (mil reais) na coluna
+      `valor`, não conferido linha a linha mas mesma fonte/padrão — tratar com
+      a mesma suspeita até verificar.
+
+  beneficiarios_ans_ativos:
+    description: >-
+      beneficiários ativos de plano de saúde privado médico-hospitalar,
+      ANS (Agência Nacional de Saúde Suplementar)
+    unit: pessoas
+    grain: [ano, mes, id_municipio]
+    source_table: br_ans_beneficiario.informacao_consolidada
+    expression: >-
+      SUM(quantidade_beneficiario_ativo) FILTER (WHERE
+      cobertura_assistencia_beneficiario ILIKE '%dico%ospital%')
+    required_filters: [ano, mes, "data_carga = MAX(data_carga) para o mesmo (ano, mes)"]
+    synonyms: [beneficiarios ans, plano de saude privado, beneficiarios plano de saude, cobertura ans]
+    verified: >-
+      dez/2022: SEM filtrar `data_carga`, soma dá 75,4M (25,3M da carga
+      2024-03-01 + 50,1M da carga 2024-07-02, mais completa) — muito acima
+      do número oficial ANS (~50,9M); filtrando só a `MAX(data_carga)` bate
+      com o oficial. Achado respondendo tasks/perguntas.md T49-1/T49-5,
+      2026-08-25.
+    caveat: >-
+      `br_ans_beneficiario.informacao_consolidada` tem MÚLTIPLAS cargas
+      `data_carga` sobrepostas no mesmo (ano, mes) em TODO o período
+      2014-2025 (2 a 12 cargas distintas por ano) — um `SUM` direto
+      agrupado só por `ano/mes`, sem filtrar a carga mais recente, duplica
+      ou multiplica a contagem silenciosamente. A coluna
+      `cobertura_assistencia_beneficiario` também tem mojibake inconsistente
+      entre cargas ("Ma©dico-Hospitalar" vs "Medico-Hospitalar"); o filtro
+      `ILIKE '%dico%ospital%'` cobre as duas grafias. `faixa_etaria` na
+      mesma tabela usa DUAS convenções coexistentes (planos pré/pós Lei
+      9.656/98) — ver `coded_differently` em `bridges.yaml`.
+
+  estoque_divida_publica:
+    description: >-
+      estoque da dívida pública federal por classe de carteira (Mercado /
+      Banco Central) e tipo (interna/externa) — snapshot MENSAL por
+      instrumento, não um fluxo
+    unit: BRL correntes
+    grain: [ano, mes, tipo_divida, classe_carteira, id_divida]
+    source_table: br_me_estoque_divida_publica.microdados
+    expression: SUM(valor_estoque)
+    required_filters: [ano, mes]
+    synonyms: [divida publica, estoque da divida, divida do tesouro, divida federal]
+    verified: >-
+      dez/2021 (Dívida interna Mercado + Banco Central + Dívida externa) =
+      R$7,64 tri = 84,8% do PIB nacional 2021 (R$9,01 tri) — ordem de
+      grandeza bate com a série oficial de Dívida Bruta do Governo Geral
+      do BCB (~78% no mesmo ano, escopo um pouco mais estreito). Achado
+      respondendo tasks/perguntas.md T52-3, 2026-08-25.
+    caveat: >-
+      cada linha é uma fatia (id_divida x vencimento) do estoque NAQUELE
+      mês — somar `valor_estoque` sobre um `ano` inteiro sem filtrar
+      `mes` soma até 12 cópias do mesmo estoque e infla o total em ordem
+      de grandeza ~12x (SUM(ano=2022) sem filtro de mes chegou a ~R$57,6
+      tri, quase 7x o PIB nacional — sinal claro de erro). Sempre filtrar
+      por (ano, mes) = último mês disponível do ano; 2022 no espelho só
+      vai até outubro, não dezembro.
+
+  selic_mensal:
+    description: >-
+      taxa Selic (meta ou efetiva), série br_bcb_sgs — APESAR DO NOME das
+      series_code 4390 (`meta_selic`)/4391 (`selic_anualizada`), o valor
+      publicado é a taxa MENSAL (% a.m.), não anual
+    unit: "% ao mês"
+    grain: [date]
+    source_table: br_bcb_sgs.series
+    expression: TRY_CAST(value AS DOUBLE)
+    required_filters: [series_code]
+    synonyms: [selic, taxa selic, juros basicos, meta selic]
+    verified: >-
+      valores mensais típicos entre 0,2 e 1,3; compondo os 12 meses de
+      2025 com (EXP(SUM(LN(1+valor/100)))-1)*100 dá ~13,6% a.a.,
+      consistente com a Selic-meta real do período (~14-15% a.a.); 2016
+      composto dá ~14,0% a.a., também bate com a Selic-meta histórica.
+      Achado respondendo tasks/perguntas.md T52-5, 2026-08-25.
+    caveat: >-
+      ler o valor bruto como "Selic = X% a.a." é um erro de ~10x. Para
+      anualizar de verdade, compor os 12 meses do ano com
+      `(EXP(SUM(LN(1+TRY_CAST(value AS DOUBLE)/100)))-1)*100`, nunca somar
+      nem usar o valor de um mês isolado como se fosse a taxa anual. As
+      colunas reais da tabela são `value` (VARCHAR, precisa `TRY_CAST` —
+      não `valor`) e `date` (string `dd/mm/aaaa`, não `ano`/`mes`
+      separados — extraia com `strptime(date, '%d/%m/%Y')` antes de
+      filtrar por ano).
+
+  br_fgv_igp_mes_ano_mes_trocados:
+    description: >-
+      NÃO é uma métrica de negócio — é um aviso de bug de schema. Nas 4
+      tabelas MENSAIS de br_fgv_igp (`igp_m_mes`, `igp_di_mes`,
+      `igp_10_mes`, `igp_og_mes`) as colunas `ano` e `mes` estão
+      TROCADAS: `ano` contém o número do mês (1-12) e `mes` contém o ano
+      civil. As tabelas ANUAIS (`igp_m_ano`, `igp_di_ano`, etc.) não têm
+      esse problema.
+    unit: n/a
+    grain: [n/a]
+    source_table: br_fgv_igp.igp_m_mes
+    expression: n/a — use as tabelas *_ano para série anual, ou troque
+      `ano`/`mes` na leitura das tabelas *_mes
+    required_filters: []
+    verified: >-
+      `WHERE mes=2021 AND ano=12` em `igp_m_mes`/`igp_di_mes`/`igp_10_mes`
+      devolve `variacao_acumulada_ano` = 17,78%/17,74%/17,70%, batendo
+      exatamente com o IGP-M/DI/10 oficial acumulado de 2021 (17,78%) —
+      só faz sentido se `mes` for o ano e `ano` for o mês. Um `GROUP BY
+      ano` numa tabela `*_mes` agrupa por mês do calendário, não por ano
+      civil, e produz resultado sem sentido em silêncio. Achado
+      respondendo tasks/perguntas.md T52-4, 2026-08-25.
