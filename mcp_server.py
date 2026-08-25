@@ -299,7 +299,16 @@ def _run_sql_ssh(sql: str) -> dict:
     # from more than one machine/session at once) hit that lock constantly.
     # Opening read-only lets any number of readers coexist; it only still
     # blocks if some OTHER process opens the file read-write.
-    remote_cmd = f"{BEELINK_DUCKDB_BIN} -readonly -json {BEELINK_DUCKDB_PATH}"
+    # timeout -k 5 115: the remote command kills itself before the local
+    # subprocess.run timeout (120s) fires. Without this, a killed local ssh
+    # client does NOT propagate to the remote process — the query keeps
+    # running on beelink indefinitely, orphaned, eventually holding a lock
+    # nothing can ever release (see tasks/todo.md, confirmed live 2026-08-24).
+    # -k 5 sends SIGKILL 5s after the initial SIGTERM if duckdb doesn't exit
+    # on its own.
+    remote_cmd = (
+        f"timeout -k 5 115 {BEELINK_DUCKDB_BIN} -readonly -json {BEELINK_DUCKDB_PATH}"
+    )
     # beelink's ~/.duckdbrc sets enable_progress_bar=true, which prints a
     # progress meter to stdout for any query past the render threshold
     # (~2s) and corrupts -json output. Disable it for this session only —
@@ -905,6 +914,18 @@ def run_sql(sql: str, max_rows: int = 500) -> dict:
     Query discipline (per this project's conventions):
     - Always filter large tables on partition columns (ano, mes, sigla_uf)
       to avoid timeouts.
+    - Before hand-writing a per-capita/rate/ratio, call list_metrics() /
+      get_metric() first — a wrong unit assumption is easy to make and hard
+      to notice. `pib_per_capita` exists exactly because `pib` itself is
+      stored in whole BRL, not thousands as its own metrics.yaml comment
+      warns is the easy mistake; a query that multiplies by 1,000 "to be
+      safe" silently inflates every result 1,000x and still looks plausible
+      until checked against a known reference value.
+    - Classifying `br_me_cnpj.estabelecimentos` rows by name (e.g. keyword
+      matching a business type) does not require joining to `.empresas` —
+      `nome_fantasia` already lives on `estabelecimentos`. Joining the full
+      `.empresas` table (tens of millions of rows) for this is both
+      unnecessary and the single most expensive mistake to make here.
     - Before reporting results: state the expected order of magnitude,
       flag any row that exceeds it, and verify counts two independent ways.
     - SQL dialect is DuckDB, not BigQuery.
