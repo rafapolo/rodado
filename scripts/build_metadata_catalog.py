@@ -402,7 +402,16 @@ def _count_via_duckdb(keys):
 # ---------------------------------------------------------------------------
 
 def build_catalog():
-    scraped_info = parse_markdown_table(REPO_ROOT / "tasks" / "datasets_to_scrap.md")
+    # Resolved rows (done/mcp-live/excluded) live in the done/ split file, not
+    # the active one (see its 2026-08-24 split header) — merge both, or every
+    # dataset moved there falls through to the `info is None` branch below and
+    # gets silently misattributed as a Base dos Dados mirror. Caught live
+    # 2026-08-25: br_ok_queridodiario (Querido Diário, a project scrape long
+    # since marked `done`) was showing source_name='Base dos Dados' in
+    # _rodado_metadata for exactly this reason. Active file wins on a key
+    # collision (shouldn't happen — a dataset lives in one file at a time).
+    scraped_info = parse_markdown_table(REPO_ROOT / "tasks" / "done" / "datasets_to_scrap_done.md")
+    scraped_info.update(parse_markdown_table(REPO_ROOT / "tasks" / "datasets_to_scrap.md"))
     ddl_tables = parse_ddl_tables(REPO_ROOT / "docs" / "context" / "schema_ddl.sql")
     beelink_tables = get_tables_from_beelink()
 
@@ -411,7 +420,7 @@ def build_catalog():
         sys.exit(1)
 
     print(f"Got {len(beelink_tables)} tables from beelink", file=sys.stderr)
-    print(f"  {len(scraped_info)} scraped datasets in datasets_to_scrap.md", file=sys.stderr)
+    print(f"  {len(scraped_info)} scraped datasets in datasets_to_scrap.md + done/datasets_to_scrap_done.md", file=sys.stderr)
     print(f"  {len(ddl_tables)} tables in the Base dos Dados DDL snapshot", file=sys.stderr)
     total_rows = sum(t["rows"] for t in beelink_tables)
     print(f"Total rows: {total_rows:,}", file=sys.stderr)
