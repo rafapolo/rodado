@@ -33,7 +33,7 @@ design entram, porque são criação.
 
 Três exclusões merecem número, porque explicam a escala.
 
-A maior é **"Promoção de vendas"**, sozinha com **751.942 empresas ativas** — mais que todas as 25
+A maior é **"Promoção de vendas"**, sozinha com **751.942 empresas ativas** — mais que todas as 24
 categorias acima somadas. É o código usado em massa por representante comercial autônomo e
 revendedor porta a porta. Mantê-la triplicaria o universo com um público que a pesquisa não procura
 e distorceria todas as proporções entre cidades.
