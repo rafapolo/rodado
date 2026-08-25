@@ -55,6 +55,15 @@ million rows) and the regiao_id -> name mapping could not be confirmed from
 the client bundles, so shipping it now risked mislabeled data. Left as a
 follow-up.
 
+Resumable: each series' values are checkpointed to disk
+(/tmp/ipea_atlasviolencia_<mac>/checkpoint.json) as soon as they're fetched,
+and a series already checkpointed is skipped on the next invocation -- so a
+157-series pull that can't finish in one bounded run (dados-api's sustained-
+access flakiness usually prevents that) makes forward progress across
+several. Chain bounded runs until "series covered overall" reaches the total:
+
+    IPEA_DEADLINE_SECONDS=700 python3 scripts/scrap/ipea_atlasviolencia.py
+
 Usage:
     python3 scripts/scrap/ipea_atlasviolencia.py
 """
@@ -214,6 +223,32 @@ def fetch_serie_chart(series_id: int) -> list:
     return rows
 
 
+CHECKPOINT_PATH = TEMP_DIR / "checkpoint.json"
+
+
+def load_checkpoint() -> dict:
+    """{"<series_id>": [rows...]} for every series already fetched by a prior
+    run -- keyed by str(id) because JSON object keys are always strings.
+    Lives under TEMP_DIR (keyed by this machine's MAC via uuid.getnode(), see
+    top of file), so it survives across separate `python3` invocations on the
+    same host -- that's what makes runs resumable instead of restarting the
+    157-series sweep from zero every time the wall-clock deadline hits."""
+    if CHECKPOINT_PATH.exists():
+        try:
+            return json.loads(CHECKPOINT_PATH.read_text())
+        except (json.JSONDecodeError, OSError):
+            return {}
+    return {}
+
+
+def save_checkpoint(checkpoint: dict) -> None:
+    # write-to-temp-then-rename so a process killed mid-write can't corrupt
+    # the checkpoint the next run depends on.
+    tmp = CHECKPOINT_PATH.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(checkpoint))
+    tmp.replace(CHECKPOINT_PATH)
+
+
 def beelink_row_count(remote_dir: str) -> int:
     """Check how many rows already exist on beelink for this table."""
     result = subprocess.run(
@@ -241,29 +276,34 @@ def main():
         print("No series found -- aborting.")
         return 1
 
-    # dados-api throttles this host intermittently (fast responses interspersed
-    # with ~35s stalls on an apparent token-bucket pattern) -- bound the whole
-    # fetch loop by wall-clock deadline so a partial run still writes and
-    # pushes whatever it collected instead of losing everything to an
-    # all-or-nothing timeout kill.
+    # Resumable across separate invocations: series already fetched by a
+    # prior run are loaded from CHECKPOINT_PATH and skipped entirely, so a
+    # 157-series sweep that needs several bounded runs to finish (dados-api's
+    # sustained-access flakiness means one uninterrupted run rarely gets far)
+    # makes forward progress each time instead of restarting from id 0. Each
+    # successful fetch is written to the checkpoint immediately (not batched
+    # at the end), so a kill mid-run -- deadline, Ctrl-C, or an external
+    # `timeout` -- loses at most the one in-flight request, not the run.
+    checkpoint = load_checkpoint()
+    pending_ids = [sid for sid in series_ids if str(sid) not in checkpoint]
+    print(f"  {len(checkpoint)}/{len(series_ids)} series already checkpointed from prior runs, "
+          f"{len(pending_ids)} pending")
+
     deadline = time.time() + float(__import__("os").environ.get("IPEA_DEADLINE_SECONDS", "420"))
-    valores_rows = []
-    fetched_ids = []
-    failed_ids = []
     stopped_early = False
-    for i, sid in enumerate(series_ids):
+    for i, sid in enumerate(pending_ids):
         if time.time() > deadline:
-            print(f"  hit deadline after {i}/{len(series_ids)} series -- stopping early, will push partial data")
+            print(f"  hit deadline after {i}/{len(pending_ids)} pending series -- stopping early, "
+                  f"progress so far is already checkpointed")
             stopped_early = True
             break
         try:
-            valores_rows.extend(fetch_serie_chart(sid))
-            fetched_ids.append(sid)
+            checkpoint[str(sid)] = fetch_serie_chart(sid)
+            save_checkpoint(checkpoint)
         except Exception as e:
             print(f"  ✗ series {sid}: serie-chart fetch failed ({e})")
-            failed_ids.append(sid)
         if (i + 1) % 20 == 0:
-            print(f"  ... {i + 1}/{len(series_ids)} series processed")
+            print(f"  ... {i + 1}/{len(pending_ids)} pending series processed this run")
         # NOTE: dados-api throttles bursts -- a 0.1s gap between requests
         # made ~100% of requests time out; curl calls spaced 1.5s apart
         # succeeded 5/5 in a control test. Keep this spacing.
@@ -271,34 +311,35 @@ def main():
 
     # dados-api's flakiness comes in multi-minute bursts (fully hanging, then
     # fully fine) rather than being tied to any individual series -- a series
-    # that failed early in the pass above often succeeds if retried once the
-    # burst has passed. Give failed ids one more pass before giving up on them.
-    if failed_ids and not stopped_early and time.time() < deadline:
-        print(f"  retrying {len(failed_ids)} failed series after a cooldown ...")
+    # that failed earlier in this run often succeeds if retried once the
+    # burst has passed. Give still-pending ids one more pass this run before
+    # leaving them for the next invocation.
+    still_pending = [sid for sid in pending_ids if str(sid) not in checkpoint]
+    if still_pending and not stopped_early and time.time() < deadline:
+        print(f"  retrying {len(still_pending)} failed series after a cooldown ...")
         time.sleep(10)
-        still_failed = []
-        for sid in failed_ids:
+        for sid in still_pending:
             if time.time() > deadline:
-                still_failed.append(sid)
-                continue
+                break
             try:
-                valores_rows.extend(fetch_serie_chart(sid))
-                fetched_ids.append(sid)
+                checkpoint[str(sid)] = fetch_serie_chart(sid)
+                save_checkpoint(checkpoint)
             except Exception as e:
                 print(f"  ✗ series {sid}: retry also failed ({e})")
-                still_failed.append(sid)
             time.sleep(1.5)
+        still_failed = [sid for sid in still_pending if str(sid) not in checkpoint]
         if still_failed:
-            print(f"  {len(still_failed)} series still failed after retry: {still_failed}")
+            print(f"  {len(still_failed)} series still failed after retry, left pending for next run: {still_failed}")
 
-    covered_ids = set(fetched_ids)
-    if stopped_early:
-        # keep only metadata for series we actually got values for, so the
-        # two tables stay consistent (no metadata rows with zero values)
-        metadata_rows = [m for m in metadata_rows if m["id"] in covered_ids]
+    covered_ids = {int(k) for k in checkpoint}
+    valores_rows = [row for rows in checkpoint.values() for row in rows]
+    # keep only metadata for series we actually have values for, so the two
+    # tables stay consistent (no metadata rows with zero values) -- matters
+    # whenever coverage is partial, which resumable runs make the normal case.
+    metadata_rows = [m for m in metadata_rows if m["id"] in covered_ids]
 
     print(f"Total: {len(metadata_rows)} series metadata rows, {len(valores_rows)} annual value rows"
-          f" ({len(fetched_ids)}/{len(series_ids)} series covered)")
+          f" ({len(covered_ids)}/{len(series_ids)} series covered overall)")
     if not metadata_rows or not valores_rows:
         print("Missing data -- aborting, not pushing incomplete tables.")
         return 1
