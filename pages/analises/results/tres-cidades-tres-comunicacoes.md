@@ -222,6 +222,34 @@ ferramenta que acelera a produção é também a que derruba o preço que se pod
 
 ---
 
+## Metade do setor é uma pessoa
+
+Antes de contar empregos, vale estabelecer o que essas empresas são. O cadastro tem um campo que
+responde sem heurística: a **natureza jurídica**. "Empresário (Individual)" é uma pessoa física com
+inscrição para faturar; "Sociedade Empresária Limitada" é empresa constituída. As duas somam 98,4%
+do universo.
+
+![Treemap da natureza jurídica das empresas de comunicação em São Paulo, Distrito Federal e Fortaleza, com a família do CNAE dentro de cada natureza](/analises/img/treemap_natureza_por_uf.png)
+
+**Empresário individual é 55,7% em São Paulo, 64,2% no Distrito Federal e 69,6% em Fortaleza.** O
+gradiente é limpo e vai na direção contrária do tamanho: quanto menor a praça, maior a fatia do
+setor que é uma pessoa sozinha com CNPJ. Em Fortaleza, sete em cada dez "empresas" de comunicação
+não têm sócio nenhum.
+
+A composição interna de cada natureza também difere. Entre os empresários individuais domina o que
+é executado por uma pessoa só — audiovisual e fotografia, que em Fortaleza somam 52,5% do setor
+inteiro. Entre as sociedades, quem lidera é **publicidade**: 21,1% do setor em São Paulo, 18,5% no
+DF, 17,7% em Fortaleza. Agência se constitui como empresa; produção audiovisual e fotografia, não.
+
+Um alerta de método para quem for reusar esses dados: **a razão social não serve de atalho.** É
+tentador identificar pessoa física pelo formato numerado com CPF (`12.345.678 FULANO DE TAL`), mas
+só metade dos empresários individuais usa esse formato — a outra metade registra um nome de
+fantasia e passaria por sociedade num teste de texto. Foi o erro que este levantamento cometeu
+antes de checar o campo estruturado, e ele subestimava a população de pessoas físicas em mais da
+metade.
+
+---
+
 ## Quem de fato emprega
 
 A frase acima era, até aqui, uma suposição. A RAIS permite medi-la — e o resultado é mais extremo
