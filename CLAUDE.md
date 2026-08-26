@@ -69,6 +69,7 @@ Regenerar, na ordem, depois de qualquer sync que mude tabelas:
 
 ```bash
 python3 scripts/gera_schemas.py            # beelink        -> schemas.json
+python3 scripts/sync_mcp_schema.py         # schemas.json   -> docs/context/basedosdados-schema.json
 python3 scripts/build_metadata_catalog.py  # beelink        -> catalog.parquet + views
 python3 scripts/gera_join_keys.py          # bridges.yaml   -> docs/context/join_keys.md
 python3 scripts/gera_metrics_json.py       # metrics.yaml   -> docs/context/metrics.json
@@ -77,6 +78,10 @@ python3 scripts/gera_schema_graph.py       # -> pages/atlas/schema_graph.json
 python3 scripts/build_atlas.py             # -> pages/atlas/index.html
 python3 scripts/gera_dicionario_coverage.py  # beelink -> docs/context/dicionario_coverage.json (rerodar quando um dicionario mudar)
 ```
+
+`sync_mcp_schema.py` é o passo que se esquece: sem ele `mcp_server.py` continua lendo o
+schema antigo em `docs/context/basedosdados-schema.json` e não enxerga nenhuma coluna
+nova — `describe_table` mente calado.
 
 `join_keys.md` e `metrics.json` são **gerados** — editar o YAML, nunca a saída. `valida_metrics.py` separa hard de soft como o firewall de `run_sql`: DML na expressão rejeita, coluna ausente só avisa, porque `_check_read_only` revalida antes de executar.
 
