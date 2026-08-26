@@ -73,12 +73,23 @@ o site o monta em /analises/patrimonio a cada deploy. O `dados.json` gerado aqui
 vai para lá — daí o `--saida ../tse-bens/dados.json` do exemplo abaixo — e é
 commitado naquele repositório, não neste.
 
+Foto
+----
+Cada pessoa ganha um campo `foto` com a URL da foto oficial no site da Câmara
+dos Deputados — carregada por hotlink direto de camara.leg.br, nunca baixada
+nem hospedada aqui ou em tse-bens. A fonte é `br_camara_dados_abertos/-
+deputado_contato`, casada por CPF; scripts/scrap/camara_deputados_contato.py
+já cuida de manter essa tabela. Cobertura é parcial — só entra quem tem CPF
+cadastrado naquele dataset da Câmara (deputados mais antigos costumam faltar)
+— e ausência de foto não é ausência de mandato, é só ausência na fonte.
+
 Consulta (beelink, via SSH — BEELINK_HOST, default 'beelink'):
   br_tse_eleicoes/resultados_candidato_municipio   eleitos, para o universo e a régua
   br_tse_eleicoes/candidatos                       CPF, nome, UF, partido, cargo (2010-2026)
   br_tse_eleicoes/bens_candidato                   declarações de bens (2010-2026)
   br_me_cnpj/socios                                quadro societário
   br_me_cnpj/empresas                              capital social
+  br_camara_dados_abertos/deputado_contato         URL da foto oficial, por CPF
 
 Uso:
   python3 scripts/extrai_patrimonio_deputados.py
@@ -401,6 +412,16 @@ FROM read_parquet('~/rodado/br_tse_eleicoes/candidatos/*.parquet')
 WHERE ano IN (2022, 2026);
 """
 
+# any_value/GROUP BY é defensivo: a tabela da Câmara pode trazer mais de uma
+# linha por CPF (passagens por legislaturas diferentes), e aqui só interessa
+# uma URL de foto por pessoa, não uma por passagem.
+SQL_FOTOS = """SET enable_progress_bar=false;
+SELECT cpf, any_value(url_foto) AS url_foto
+FROM read_parquet('~/rodado/br_camara_dados_abertos/deputado_contato/*.parquet')
+WHERE cpf IS NOT NULL AND url_foto IS NOT NULL
+GROUP BY cpf;
+"""
+
 
 def monta_sql(modelo: str) -> str:
     somas = ", ".join(
@@ -458,6 +479,10 @@ def main() -> None:
         n_soc += 1
     print(f"  {len(empresas)} pessoas com empresa · {n_soc} vínculos",
           file=sys.stderr)
+
+    print("consultando fotos…", file=sys.stderr)
+    fotos = {f["cpf"]: f["url_foto"] for f in consulta(SQL_FOTOS)}
+    print(f"  {len(fotos)} pessoas com foto na Câmara", file=sys.stderr)
 
     print("consultando bens item a item…", file=sys.stderr)
     itens = {}
@@ -553,6 +578,7 @@ def main() -> None:
             round(float(emp.get("capital", 0) or 0)),
             pontos,
             emp.get("lista", []),
+            fotos.get(cpf),
         ])
 
     doc = {
@@ -565,7 +591,7 @@ def main() -> None:
             "espectros": tab_esp,
             "espectro_por_partido": mapa_esp,
             "campos_pessoa": ["nome", "uf", "espectro", "empresas", "capital",
-                              "pontos", "empresas_lista"],
+                              "pontos", "empresas_lista", "foto"],
             "campos_ponto": ["ano", "partido", "cargo", "total", "regua",
                              "flags", "comp", "bens"],
             "campos_bem": ["descricao", "valor", "categoria"],
@@ -590,6 +616,7 @@ def main() -> None:
                     f"candidatura ainda não registrada."
                 ) if cobertura is not None else "",
                 "ausencia": "Pessoa sem declaração num ano pode simplesmente não ter concorrido àquela eleição.",
+                "foto": "Câmara dos Deputados, dados abertos, casada por CPF. A imagem não é baixada nem hospedada aqui — vem direto de camara.leg.br. Cobertura é parcial: só quem tem CPF cadastrado naquele dataset da Câmara.",
             },
         },
         "pessoas": pessoas,
