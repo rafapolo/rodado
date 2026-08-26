@@ -52,7 +52,135 @@ dígitos contra 16 cadastros do espelho que publicam CPF completo com nome. 99,2
 nome unânime entre as fontes; a divergência restante é acento e nome de casada — a
 mesma pessoa, não colisão de CPF. `variantes_nome_cpf` conta quantas grafias existiam.
 
-## As quatro coisas que dão resultado errado em silêncio
+## O que os nomes revelam
+
+Cinco resultados medidos em 2026-08-26, logo depois da reescrita. Servem de exemplo do
+tipo de pergunta que passou a ter resposta — e o quinto é de um tipo que nenhuma tabela
+respondia sozinha.
+
+### 1. O CNES não é uma base de hospitais
+
+Agrupando por raiz de CNPJ, os maiores "grupos de saúde" do país são redes de farmácia
+e laboratório:
+
+| Grupo | Unidades | UFs |
+|---|---|---|
+| RAIA DROGASIL S/A | 2.743 | 27 |
+| COMERCIO DE MEDICAMENTOS BRAIR LTDA | 1.161 | 3 |
+| EMPREENDIMENTOS PAGUE MENOS S/A | 1.142 | 27 |
+| DIAGNOSTICOS DA AMERICA S.A. (DASA) | 640 | 12 |
+| FLEURY S.A. | 317 | 9 |
+| HAPVIDA ASSISTENCIA MEDICA S.A. | 217 | 15 |
+
+O nome dá o grupo; o que a unidade **é** vem de `tipo_unidade`, decodificado por
+`br_ms_cnes.dicionario`. Das 459.695 unidades de 06/2025:
+
+| Tipo | Unidades |
+|---|---|
+| consultório isolado | 215.540 (116.456 registrados em CPF) |
+| clínica especializada / ambulatório especializado | 84.209 |
+| centro de saúde / UBS | 43.159 |
+| serviço de apoio de diagnose e terapia | 31.180 |
+| farmácia | 19.657 |
+| policlínica | 12.264 |
+| **todos os tipos hospitalares somados** | **16.218** |
+
+Ver a armadilha 5. **Não classifique por `ILIKE` sobre a razão social** — contando por
+nome eu achara 3.579 hospitais e 10.907 farmácias, contra 16.218 e 19.657 reais.
+O nome serve para saber *quem opera*, `tipo_unidade` para saber *o que é*.
+
+```sql
+SELECT substr(cpf_cnpj,1,8) AS raiz, any_value(razao_social) AS grupo,
+       count(DISTINCT id_estabelecimento_cnes) AS unidades, count(DISTINCT sigla_uf) AS ufs
+FROM br_ms_cnes.estabelecimento
+WHERE ano=2025 AND mes=6 AND tipo_pessoa='3' AND length(cpf_cnpj)=14 AND razao_social IS NOT NULL
+GROUP BY 1 HAVING count(DISTINCT id_estabelecimento_cnes) >= 10 ORDER BY unidades DESC;
+```
+
+### 2. Para onde o dinheiro do SUS vai, por entidade
+
+Maiores recebedores não-governamentais, internações de 2024:
+
+| Entidade | Internações | Valor |
+|---|---|---|
+| EBSERH | 281.095 | R$ 646,1 mi |
+| FUNDACAO FACULDADE REGIONAL DE MEDICINA S J RIO PRETO | 53.599 | R$ 228,0 mi |
+| SANTA CASA DE MISERICORDIA DE BELO HORIZONTE | 59.497 | R$ 216,5 mi |
+| MATERNIDADE E CIRURGIA N. S. DO ROCIO S/A | 53.105 | R$ 206,8 mi |
+| FUNDACAO ZERBINI | 14.584 | R$ 168,6 mi |
+
+A assimetria é a pergunta nova: Zerbini fatura R$ 168,6 mi em 14,5 mil internações;
+São Camilo, R$ 198,0 mi em 158,9 mil. Valor por internação como proxy de complexidade
+só existe com o nome.
+
+**Separar poder público por nome não funciona.** Na primeira passada o filtro tinha
+`%MUNICIPIO%` e deixou passar `RIO DE JANEIRO SEC MUNICIPAL DE SAUDE`. Use
+`natureza_juridica` (via `br_me_cnpj.empresas`), não `ILIKE` sobre a razão social.
+
+### 3. "Crédito rural" são dois produtos diferentes com o mesmo nome
+
+| Banco | Operações 2024 | Volume | Ticket médio |
+|---|---|---|---|
+| ITAU UNIBANCO | 3.756 | R$ 16,2 bi | **R$ 4,3 mi** |
+| BANCO DO BRASIL | 581.527 | R$ 154,9 bi (40,8%) | R$ 266 mil |
+| BANCO DO NORDESTE | 1.095.910 | R$ 20,6 bi | **R$ 18,8 mil** |
+
+O BNB faz quase o dobro das operações do BB movimentando 13% do valor. Itaú e BNB estão
+na mesma coluna da mesma tabela com ticket **229 vezes** diferente: somar os dois num
+"total de crédito rural" mistura safra corporativa com microcrédito do Pronaf.
+
+```sql
+SELECT razao_social_instituicao_financeira AS banco, count(*) operacoes,
+       round(sum(valor_parcela_credito)/1e9,2) bilhoes,
+       round(sum(valor_parcela_credito)/count(*)) ticket_medio
+FROM br_bcb_sicor.operacao WHERE ano_emissao=2024 GROUP BY 1 ORDER BY bilhoes DESC;
+```
+
+### 4. Quem toma crédito rural, dos 3,02 milhões nomeados no `mutuario`
+
+| Também aparece em | Pessoas |
+|---|---|
+| lista de benefício social | **2.575.525** |
+| filiação partidária | 749.856 |
+| candidatos a cargo eletivo | 110.800 |
+| servidores federais | 13.518 |
+| inidôneos / contas irregulares no TCU | 590 |
+
+Sai direto de `origem_nome_cpf`, sem join novo. Os 2,58 milhões em lista de benefício
+são o retrato do Pronaf — e a informação mais sensível do conjunto (armadilha 3).
+
+### 5. A coluna vertebral: a mesma entidade atravessando domínios
+
+Saúde, crédito rural e emprego formal não tinham chave comum. Agora têm:
+
+- **94.688** raízes de CNPJ estão no CNES **e** na RAIS identificada — dá pra pendurar
+  vínculos formais em estabelecimento de saúde.
+- **71 empresas, 125 unidades** estão no CNES **e** tomando crédito rural: BRF, RAIZEN
+  CENTRO-SUL, ATVOS (cinco usinas), SAO MARTINHO, LOUIS DREYFUS SUCOS, COOPERATIVA
+  AURORA, BRACELL, AGROPECUARIA SCHIO, ALIBEM ALIMENTOS, STARA.
+
+Conferido o que são essas 125 unidades, e não é hospital: **106 são consultório isolado
+ou ambulatório especializado, e 120 das 125 têm `indicador_vinculo_sus = 0`**. É
+**saúde ocupacional na planta** — o ambulatório da fábrica, fora do SUS, no canteiro.
+A BRF aparece com unidade em seis UFs, a Atvos em cinco. A única exceção é a
+`ASSOCIACAO ... HOSPITAL SAO JOSE` (MG), hospital geral com vínculo SUS que também toma
+crédito rural — outra coisa, não o mesmo padrão.
+
+Esse recorte não existia: um lado era CNPJ no CNES, o outro CNPJ no SICOR, e ninguém
+juntava. É o tipo de coisa que os campos contam **em conjunto** e nenhum conta sozinho.
+Vale a ressalva de que o casamento é por **raiz** de CNPJ (8 dígitos): afirma que o
+mesmo grupo econômico faz as duas coisas, não que o mesmo estabelecimento faz.
+
+```sql
+WITH saude AS (
+  SELECT DISTINCT substr(cpf_cnpj,1,8) raiz, razao_social FROM br_ms_cnes.estabelecimento
+  WHERE ano=2025 AND mes=6 AND tipo_pessoa='3' AND length(cpf_cnpj)=14 AND razao_social IS NOT NULL),
+rural AS (
+  SELECT DISTINCT substr(cnpj,1,8) raiz FROM br_bcb_sicor.recurso_publico_mutuario WHERE length(cnpj)=14)
+SELECT s.razao_social FROM saude s JOIN rural r USING (raiz);
+```
+
+## As cinco coisas que dão resultado errado em silêncio
 
 **1. `razao_social` nunca cai para `razao_social_mantenedora`.** Uma UBS não é a
 prefeitura. As duas colunas ficam separadas de propósito, e um `coalesce` entre elas
@@ -76,6 +204,14 @@ benefício social" junto com o nome, queira ou não. Decida isso de propósito.
 CPFs ausentes das 16 fontes — ou seja, quem não é filiado a partido, não é candidato,
 não é servidor federal e não recebeu benefício. Contar só as linhas nomeadas produz uma
 amostra enviesada exatamente nessas direções.
+
+**5. Contar linha do CNES não conta hospital.** A base cobre toda unidade de saúde
+registrada: das 459.695 de 06/2025, **215.540 são consultório isolado** e apenas
+**16.218 são de algum tipo hospitalar**. Uma estatística de "estabelecimentos de saúde
+no Brasil" tirada daqui sem recorte por `tipo_unidade` conta drogaria e consultório como
+equipamento de saúde. E os 116.456 consultórios registrados em CPF são exatamente as
+linhas que continuam sem nome (armadilha do `cpf_cnpj`, abaixo) — o pedaço mais anônimo
+da base é também o mais numeroso.
 
 ## Onde o join mora
 
