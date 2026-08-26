@@ -83,3 +83,4 @@ Os três são servidos ao assistente como ferramentas, não como texto para ele 
 ## Leia também
 
 - [`overview/`](docs/overview/index.md) — os 43 arquivos-fonte em markdown por trás de cada página do site, usados também como contexto para o assistente que escreve as consultas.
+- [`Deanonimizacao.md`](docs/Deanonimizacao.md) — as nove tabelas que hoje trazem o nome junto do CNPJ ou do CPF, e as quatro maneiras de tirar delas um resultado errado sem perceber.
