@@ -255,57 +255,68 @@ metade.
 A frase acima era, até aqui, uma suposição. A RAIS permite medi-la — e o resultado é mais extremo
 do que a intuição sugeria.
 
-Em 2024, as mesmas 24 atividades registravam **48.316 estabelecimentos em São Paulo**. Deles,
-**45.943 não tinham um único empregado** — 95,1%. A cidade inteira soma **36.788 empregos formais**
-no setor de comunicação: **menos vagas do que estabelecimentos**. Em Brasília são 93,4% sem
-empregado, em Fortaleza 86,5%.
+Em 2025, as mesmas 24 atividades registravam **45.638 estabelecimentos em São Paulo**. Deles,
+**43.341 não tinham um único empregado** — 95,0%. A cidade inteira soma **41.093 empregos formais**
+no setor de comunicação — ainda menos vagas do que estabelecimentos, mas a folga vem fechando: em
+2024 a cidade tinha 36.788 vagas para 48.316 estabelecimentos. Em Brasília são 93,3% sem empregado,
+em Fortaleza 86,9%.
 
 | | São Paulo | Fortaleza | Brasília |
 |---|---:|---:|---:|
-| Estabelecimentos na RAIS | 48.316 | 2.110 | 4.793 |
-| Sem nenhum empregado | 45.943 (95,1%) | 1.826 (86,5%) | 4.478 (93,4%) |
-| Empregos formais | 36.788 | 1.942 | 2.745 |
-| Maior estabelecimento | 4.708 | 140 | 484 |
+| Estabelecimentos na RAIS | 45.638 | 2.263 | 4.881 |
+| Sem nenhum empregado | 43.341 (95,0%) | 1.967 (86,9%) | 4.552 (93,3%) |
+| Empregos formais | 41.093 | 2.061 | 5.373 |
+| Maior estabelecimento | 6.130 | 136 | 2.787\* |
 
 E quando se ordena por emprego em vez de por número de empresas, **a lista vira do avesso**.
 
 ### São Paulo: a agência emprega, a pós-produção não
 
 Pós-produção audiovisual é a maior atividade de São Paulo em quantidade de empresas — 18.249, mais
-que o dobro de qualquer outra. Em empregos formais ela tem **321**. São 0,02 emprego por empresa: é
+que o dobro de qualquer outra. Em empregos formais ela tem **278**. São 0,02 emprego por empresa: é
 uma atividade que existe quase inteiramente como pessoa jurídica de uma pessoa só.
 
 Agências de publicidade fazem o caminho oposto. Com 6.586 empresas — um terço da pós-produção —
-empregam **13.638 pessoas**, **37,1% de todo o emprego do setor na cidade**. Nenhuma outra atividade
+empregam **15.775 pessoas**, **38,4% de todo o emprego do setor na cidade**. Nenhuma outra atividade
 chega perto.
 
 O mesmo contraste aparece justamente onde a cidade é mais especializada. Dublagem, com 861
-empresas, tem **44 empregos formais**. Mixagem sonora, com 332 empresas, tem **72**. A cadeia
+empresas, tem **47 empregos formais**. Mixagem sonora, com 332 empresas, tem **63**. A cadeia
 técnica que distingue São Paulo do resto do país é feita de contratos, não de carteiras assinadas.
 
 Há ainda dois empregadores isolados que distorcem seus próprios setores: um único estabelecimento
-de "outras atividades de publicidade" tem **4.708 empregados** — 76% de tudo o que a atividade
-emprega na cidade — e um de marketing direto tem **2.855**, quase metade da sua.
+de "outras atividades de publicidade" tem **6.130 empregados** — 79,3% de tudo o que a atividade
+emprega na cidade — e um de marketing direto tem **3.812**, mais da metade da sua.
 
 ### Brasília: o audiovisual concentrado e o jornal
 
 Brasília inverte a hierarquia paulistana. O primeiro lugar é **produção de cinema, vídeo e TV, com
-670 vagas — das quais 484 num único estabelecimento**. Setenta e dois por cento da produção
-audiovisual empregada da capital está numa só folha de pagamento, o que é a assinatura de um
-radiodifusor de porte, não de um mercado pulverizado de produtoras. Agências de publicidade vêm
-logo atrás, com 653.
+3.142 vagas — das quais 2.787 num único estabelecimento**, 88,7% da atividade. Agências de
+publicidade vêm logo atrás, com 690.
 
-Jornais diários empregam **400 pessoas** em Brasília, contra 473 em São Paulo — uma cidade sete
-vezes menor no setor quase empata com a maior praça do país em emprego de jornal. É a mesma
-concentração que o índice de especialização já apontava, agora com carteira assinada.
+\* Essa concentração já existia em 2024 (670 vagas, 484 no maior estabelecimento, 72%), mas o salto
+de um ano para o outro é grande demais para ler como continuidade — o maior empregador do audiovisual
+brasiliense quase sextuplicou. A RAIS anônima não carrega CNPJ, só atividade e município, então não
+dá para confirmar qual estabelecimento é esse. Mas o cadastro de CNPJ do Distrito Federal sob esse
+CNAE tem uma pista: entre as poucas dezenas de empresas ativas, aparece uma "prestadora de serviços
+terceirizados" de grande porte fundada em 1980, ao lado de produtoras de fato. Um salto desse tamanho
+num CNAE de nicho é mais compatível com uma terceirizadora de mão de obra migrando ou sendo
+reclassificada para esse código do que com contratação real de equipe de produção audiovisual — o
+número é o que a RAIS 2025 reporta, mas a leitura "Brasília contratou seis vezes mais gente pra fazer
+cinema e TV" provavelmente está errada.
+
+Jornais diários empregam **442 pessoas** em Brasília, contra 434 em São Paulo — uma cidade sete
+vezes menor no setor **ultrapassa** a maior praça do país em emprego de jornal, depois de "quase
+empatar" em 2024 (400 contra 473). É a mesma concentração que o índice de especialização já
+apontava, agora com carteira assinada.
 
 ### Fortaleza: marketing direto na frente, e um jornal que é quase o setor
 
 Fortaleza é a única das três em que **agências de publicidade não lideram**. O primeiro lugar é de
-marketing direto, com **696 empregos** (35,8% do setor), e só então vêm as agências (518).
+marketing direto, com **827 empregos** (40,1% do setor), e só então vêm as agências (475).
 
-E o jornalismo de Fortaleza cabe num prédio. A atividade "jornais diários" emprega **153 pessoas**
-na cidade — **140 delas num único estabelecimento**, 91,5% do total. Não é um mercado com vários
+E o jornalismo de Fortaleza cabe num prédio. A atividade "jornais diários" emprega **149 pessoas**
+na cidade — **136 delas num único estabelecimento**, 91,3% do total. Não é um mercado com vários
 empregadores concorrendo por repórter: é uma redação grande e um punhado de operações pequenas em
 volta.
 
@@ -335,9 +346,15 @@ Três leituras saem daí. Em **São Paulo**, as agências globais que se esperar
 Wunderman Thompson, VML — aparecem, mas **abaixo de uma operação de merchandising** com três vezes
 o tamanho da maior delas: o maior empregador de comunicação da cidade monta ativação de marca em
 ponto de venda, não campanha. Em **Fortaleza**, o maior empregador do setor é **um jornal** — e são
-os mesmos 239 vínculos que, na série de 2024, viraram os 140 de um único estabelecimento. Em
+os mesmos 239 vínculos que, na série de 2025, viraram os 136 de um único estabelecimento. Em
 **Brasília**, nenhum nome é de veículo conhecido: o topo é marketing e produção audiovisual sob
 encomenda, o que combina com uma praça que vende serviço para governo.
+
+O CNPJ de setembro de 2025 também diz o que aconteceu com esses doze nomes desde 2021: onze seguem
+ativos, e um foi baixado — a matriz de **Wunderman Thompson Comunicação** consta baixada desde
+02/01/2025. VML, a agência logo abaixo dela na mesma tabela, é fruto da fusão global entre as duas
+marcas dentro do grupo WPP — a mudança que na imprensa foi só reposicionamento de marca aparece no
+cadastro brasileiro como encerramento de empresa.
 
 A lista também expõe o limite da classificação por CNAE. O segundo maior "empregador de
 comunicação" de São Paulo pelo dado bruto é a **ScanSource Brasil**, distribuidora de tecnologia
@@ -346,10 +363,10 @@ informática lançada em "microfilmagem". Ambas foram retiradas da tabela acima.
 empresa declarou, não o que ela faz — a mesma razão que tirou "portais e provedores de conteúdo"
 do universo lá atrás.
 
-Uma ressalva de compatibilidade: a RAIS de 2024 é anônima — mede vínculos por estabelecimento, sem
+Uma ressalva de compatibilidade: a RAIS de 2025 é anônima — mede vínculos por estabelecimento, sem
 CNPJ nem razão social —, então dá para dizer *quanto* cada atividade emprega e *quão concentrado*
 está, mas os nomes só existem na série que termina em 2021. E os cadastros não cobrem o mesmo
-universo: a RAIS de 2024 tem 48.316 estabelecimentos em São Paulo onde o CNPJ de setembro de 2025
+universo: a RAIS de 2025 tem 45.638 estabelecimentos em São Paulo onde o CNPJ de setembro de 2025
 tem 92.197 empresas ativas. A diferença é a distância entre quem existe como registro e quem chega
 a declarar folha.
 
@@ -418,6 +435,6 @@ tem zero empresas em qualquer lugar.
 **Fonte:** Receita Federal do Brasil, Cadastro Nacional da Pessoa Jurídica — estabelecimentos com
 situação cadastral ativa em setembro de 2025, classificados pela atividade econômica principal
 (CNAE 2.0). Dados de emprego formal: Ministério do Trabalho e Emprego, Relação Anual de Informações
-Sociais (RAIS) — microdados de estabelecimentos de 2024 para os agregados, e a série identificada,
+Sociais (RAIS) — microdados de estabelecimentos de 2025 para os agregados, e a série identificada,
 com razão social, de 2021 para os nomes de empregadores. Classificação de atividades conforme a
 Comissão Nacional de Classificação (Concla/IBGE).
