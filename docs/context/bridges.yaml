@@ -53,6 +53,14 @@ categories:
 # aprendia o porquê. O motivo agora é servido (mcp_server.explain_column) e
 # renderizado no join_keys.md.
 false_friends:
+  cnpj_favorecido_empenho:
+    reason: 'não é quem recebeu a transferência — é o agente financeiro que pagou.
+      Em `br_transferegov.transferencias`, 4.218 das 4.248 linhas (99,3%, R$ 1,50
+      bi) têm o CNPJ do BANCO DO BRASIL SA; as 30 restantes são governos
+      estaduais. O destinatário final da transferência não está nesta coluna, e
+      agrupar gasto por ela produz um ranking de bancos com cara de ranking de
+      beneficiários. Medido 2026-08-26'
+    seen_in: 1 tabela em 1 dataset
   valor:
     reason: montante ou medida, em unidade e moeda que mudam por fonte — nunca identifica uma entidade
     seen_in: 91 tabelas em 56 datasets
@@ -598,9 +606,39 @@ concepts:
     description: 11-digit individual tax ID.
     canonical_table: —
     notes:
-    - 'Public sources mask it, and they mask it *differently*: the CGU servidor files keep the middle
-      6 digits (`***123456**`), `br_pgfn_dividaativa.divida` stores `XXX878.325XX`. Two datasets masked
-      the same way can be joined on the masked string; two masked differently cannot be joined at all.'
+    - '**A maior parte do espelho traz o CPF INTEIRO, não mascarado** — a nota
+      antiga desta seção dizia o contrário e estava errada. Medido em 2026-08-26:
+      `br_cgu_servidores_executivo_federal.cadastro_servidores` tem 159.613.106
+      linhas (95%) com os 11 dígitos e só 3.850.659 (2,3%) mascaradas;
+      `br_tse_filiacao_partidaria.microdados` tem ZERO linhas mascaradas;
+      `br_cgu_beneficios_cidadao.novo_bolsa_familia` (2025) tem 103.169.350
+      completas contra 8.718.704 mascaradas. Antes de assumir que um CPF está
+      mascarado, conte — a suposição custou a este projeto um balde inteiro de
+      trabalho planejado em cima da fonte errada.'
+    - 'Quando ESTÁ mascarado, cada fonte mascara diferente: os arquivos da CGU
+      guardam os 6 dígitos do meio (`***123456**`), `br_pgfn_dividaativa.divida`
+      guarda `XXX878.325XX`, `br_capes_bolsas.mobilidade_internacional` guarda
+      `***.321.977-**`. Duas fontes mascaradas do mesmo jeito podem ser juntadas
+      pela string mascarada; mascaradas de jeitos diferentes, não podem de jeito
+      nenhum.'
+    - '**Os 6 dígitos do meio NÃO identificam uma pessoa — medido, não estimado.**
+      Em `br_me_cnpj.socios` (snapshot 2025-09, `tipo=''2''`) existem 999.751
+      máscaras distintas — praticamente todas as 10^6 combinações possíveis — para
+      17.170.230 pares máscara/nome. São **17,17 nomes por máscara** em média, 14
+      na mediana, 82 no pior caso, e apenas **0,18% das máscaras têm um único
+      nome**. Juntar um CPF completo contra `socios.documento` por
+      `substr(cpf,4,6)` devolve ~17 candidatos com ~5,8% de chance de acertar. Não
+      é um join com ruído: é um join sem sinal. Não use `br_me_cnpj.socios` como
+      fonte de nome por CPF.'
+    - '**Onde buscar nome por CPF, então:** as fontes do espelho que publicam CPF
+      completo + nome completo. Em ordem de tamanho —
+      `br_tse_filiacao_partidaria.microdados` (16,6M CPFs distintos),
+      `br_cgu_servidores_executivo_federal.cadastro_servidores` (2,46M),
+      `br_tse_eleicoes.candidatos` (1,82M), `cadastro_pensionistas` (610k),
+      `cadastro_aposentados` (490k), `cadastro_reserva_reforma_militares` (194k),
+      e as tabelas de `br_cgu_beneficios_cidadao` (bolsa família, BPC, auxílio
+      emergencial — dezenas de milhões, mas bilhões de linhas para varrer).
+      Todas são join exato por igualdade de 11 dígitos, sem ambiguidade nenhuma.'
     - A masked CPF is not unique — never treat it as a person identifier on its own. Combine it with a
       name column before concluding two rows are the same person.
   data_nascimento:
@@ -1084,7 +1122,275 @@ bridges:
     verified: 12.044 of 12.044 Brazil-destination rows parsed (12.944
       total rows, 900 international) — found answering tema 51, T51-2,
       2026-08-25
+  - table: br_comprasgov_sicaf.fornecedores
+    column: nomeMunicipio + ufSigla
+    format: mixed-case accented name
+    expr: upper(strip_accents(nomeMunicipio)) = upper(strip_accents(m.nome)) AND ufSigla = m.sigla_uf
+    verified: name-based
+  - table: br_anp_combustiveis.precos
+    column: municipio + estado
+    format: upper-case unaccented name; `estado` is the full state name (`RONDONIA`), `-` when missing
+    expr: upper(strip_accents(municipio)) = upper(strip_accents(m.nome)) — pair with the `estado` bridge
+      listed under `sigla_uf`
+    verified: name-based
+  - table: br_tce_sp.municipios
+    column: municipio / municipio_extenso
+    format: '`municipio` is a slug (`aguas-de-lindoia`), `municipio_extenso` the display name'
+    expr: 'use municipio_extenso: upper(strip_accents(municipio_extenso)) = upper(strip_accents(m.nome))
+      AND m.sigla_uf = ''SP'''
+    verified: name-based
+  - table: br_tce_es.obras_publicas
+    column: Municipio
+    format: mixed-case accented name
+    expr: upper(strip_accents("Municipio")) = upper(strip_accents(m.nome)) AND m.sigla_uf = 'ES'
+    verified: name-based
+  - table: br_cnpq_bolsas.microdados
+    column: municipio_destino
+    format: upper-case accented name
+    expr: upper(strip_accents(municipio_destino)) = upper(strip_accents(m.nome))
+    verified: name-based; ambiguous without a UF column
+  - table: br_saude_bps.dados
+    column: '"nome_do_munica­pio_da_instituicao"'
+    format: upper-case unaccented name. **The column name itself contains a soft hyphen (U+00AD)** — copy
+      it verbatim and keep the quotes
+    expr: upper(strip_accents("nome_do_munica­pio_da_instituicao")) = upper(strip_accents(m.nome))
+    verified: name-based
+  - table: br_siop_orcamento.localizadores
+    column: '"MunicÃ­pio"'
+    format: mojibake — the file was decoded as latin-1 twice, in the values *and* in the column name
+    expr: 'fix first: upper(strip_accents(decode(encode("MunicÃ­pio"), ''utf-8'')))'
+    verified: needs re-encoding, join not reliable as stored
+  - table: br_ana_telemetria.estacoes
+    column: MunicipioCodigo / nmMunicipio
+    format: '`MunicipioCodigo` is an **ANA internal code, not IBGE** (`3041000` = Tabatinga); the table
+      also has foreign rows (`PERU`)'
+    expr: 'join by name: upper(strip_accents(nmMunicipio)) = upper(strip_accents(m.nome)) AND nmEstado
+      matched to the UF name'
+    verified: name-based only
+  - table: br_tcu_inidoneos.*
+    column: MUNICIPIO
+    format: mostly empty string
+    expr: unusable — join via UF, or via CPF_CNPJ to the CNPJ base and take the municipality from there
+    verified: empty in the sampled rows
+  - table: br_ok_queridodiario.diarios
+    column: territory_id
+    format: 7-digit IBGE code — Querido Diário's `territory` *is* the municipality
+    expr: CAST(territory_id AS VARCHAR) = m.id_municipio
+    verified: 524 of 524 distinct codes
+    concept: id_municipio
+    join_expr: CAST({s}.territory_id AS VARCHAR) = {d}.id_municipio
+  - table: br_brasilapi.ddd_cidades
+    column: city + state
+    format: upper-case accented name
+    expr: upper(strip_accents(city)) = upper(strip_accents(m.nome)) AND state = m.sigla_uf
+    verified: 5.449 of 5.565 rows
+  - table: br_tce_rj.contratos_municipio / contratos_estado
+    column: '"Ente"'
+    format: upper-case municipality name, RJ only
+    expr: upper(strip_accents("Ente")) = upper(strip_accents(m.nome)) AND m.sigla_uf = 'RJ'
+    verified: 90 of 91 distinct names
+  - table: br_me_cnpj.estabelecimentos
+    column: id_municipio_rf
+    format: Receita Federal 4-digit code
+    expr: id_municipio_rf = m.id_municipio_rf
+    verified: 11.140 of 11.142 directory rows
+    concept: id_municipio_rf
+    join_expr: '{s}.id_municipio_rf = {d}.id_municipio_rf'
+  - table: br_mec_sisu.microdados
+    column: id_municipio_campus (município do campus onde a vaga é ofertada;
+      a coluna irmã id_municipio_candidato existe mas não é o que se quer
+      pra cruzar oferta de vaga com dado municipal)
+    format: 7-digit IBGE code stored as STRING, direto — sem padding, sem
+      conversão
+    expr: id_municipio_campus = m.id_municipio
+    verified: format confirmed 7-digit direct match on 34,7M linhas
+      (2017-2022) — não documentado antes por nome não bater com
+      `id_municipio`; achado respondendo tema 46, 2026-08-25
+    concept: id_municipio
+    join_expr: '{s}.id_municipio_campus = {d}.id_municipio'
+  uf:
+  - table: br_mj_consumidorgovbr.reclamacoes
+    column: '"UF"'
+    description: 2-letter code — direct join to `sigla_uf`
+    concept: sigla_uf
+    join_expr: '{s}."UF" = {d}.sigla_uf'
+  - table: br_tcu_inidoneos.*
+    column: '"UF"'
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}."UF" = {d}.sigla_uf'
+  - table: br_mjsp_ckan.procon
+    column: '"UF"'
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}."UF" = {d}.sigla_uf'
+  - table: br_ms_sipni_doses_historicas.doses_agregadas
+    column: '"UF"'
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}."UF" = {d}.sigla_uf'
+  - table: br_caixa_sinapi.insumos
+    column: uf
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}.uf = {d}.sigla_uf'
+  - table: br_cgu_garantia_safra / pe_de_meia / seguro_defeso
+    column: uf
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}.uf = {d}.sigla_uf'
+  - table: br_fbsp_absp.violencia_escola
+    column: uf
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}.uf = {d}.sigla_uf'
+  - table: br_mjsp_sinesp.ocorrencias_uf
+    column: uf
+    description: nome do estado por extenso, acentuado (`São Paulo`, `Rio
+      Grande do Sul`) — NÃO é sigla de 2 letras, ao contrário do que esta
+      entrada dizia antes; um join ingênuo `uf = sigla_uf` devolve zero
+      linhas. Corrigido respondendo tema 50, T50-3, 2026-08-25.
+    expr: upper(strip_accents(uf)) = upper(strip_accents(m.nome))
+    verified: 27 de 27 estados casados 100% contra
+      br_bd_diretorios_brasil.uf.nome (2026-08-25)
+    concept: sigla_uf
+    join_expr: upper(strip_accents({s}.uf)) = upper(strip_accents({d}.nome))
+  - table: br_comprasgov_sicaf.fornecedores
+    column: ufSigla
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}.ufSigla = {d}.sigla_uf'
+  - table: br_ms_sinan_violencia.microdados_violencia
+    column: '"SG_UF"'
+    description: '**numeric IBGE code** (21, 52…), joins `id_uf`, not `sigla_uf`'
+    concept: id_uf
+    join_expr: CAST({s}."SG_UF" AS VARCHAR) = CAST({d}.id_uf AS VARCHAR)
+  - table: br_saude_farmaciapopular.estabelecimentos
+    column: codigo_uf
+    description: numeric IBGE code — joins `id_uf`
+    concept: id_uf
+    join_expr: CAST({s}.codigo_uf AS VARCHAR) = CAST({d}.id_uf AS VARCHAR)
+  - table: br_mjsp_sisdepen.populacao_carceraria
+    column: uf
+    description: '`Acre (AC)` — extract with `regexp_extract(uf, ''\(([A-Z]{2})\)$'', 1)`'
+    concept: sigla_uf
+    join_expr: regexp_extract({s}.uf, '\(([A-Z]{{2}})\)$', 1) = {d}.sigla_uf
+  - table: br_anp_combustiveis.precos
+    column: estado
+    description: full state name, unaccented upper case (`RONDONIA`); `-` when missing
+    concept: nome
+    join_expr: upper(strip_accents({s}.estado)) = upper(strip_accents({d}.nome))
+  - table: br_mjsp_procurados.procurados
+    column: estado
+    description: 'full state name (`GOIAS`, `PARÁ`) — accents inconsistent. `nome_estado` in the same
+      table is **not** a state: it holds the person''s name plus the state, mislabeled at the source'
+    concept: nome
+    join_expr: upper(strip_accents({s}.estado)) = upper(strip_accents({d}.nome))
+  - table: br_siop_orcamento.localizadores
+    column: '"UF"'
+    description: full state name, mojibake (`EspÃ­rito Santo`)
+  - table: br_ana_telemetria.estacoes
+    column: EstadoCodigo / nmEstado
+    description: ANA internal code plus the full state name; not IBGE
+  - table: br_ok_queridodiario.diarios
+    column: state_code
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}.state_code = {d}.sigla_uf'
+  - table: br_datahackers_state_data.microdados
+    column: p1_i_1
+    description: '2-letter code — direct. Every column in this survey is a question code: `p1_i` is `São
+      Paulo (SP)`, `p1_i_2` and `p1_k` the macro-region, `p1_i_1` the bare UF'
+    concept: sigla_uf
+    join_expr: '{s}.p1_i_1 = {d}.sigla_uf'
+  - table: br_brasilapi.ddd_cidades
+    column: state
+    description: 2-letter code — direct
+    concept: sigla_uf
+    join_expr: '{s}.state = {d}.sigla_uf'
+  - table: br_mme_consumo_energia_eletrica.uf
+    column: sigla_uf
+    description: 2-letter code — direct. Grain warning — this dataset has
+      NO municipal table in the mirror, only `uf` (2004-2023, monthly,
+      tipo_consumo Total/Cativo/Residencial/Comercial/Industrial/Outros).
+      Any join must be at UF level, despite the dataset's description
+      suggesting a municipal economic-activity proxy.
+    concept: sigla_uf
+    join_expr: '{s}.sigla_uf = {d}.sigla_uf'
+    verified: direct, 27 of 27 UFs present — found answering tema 51,
+      T51-1/T51-2/T51-5, 2026-08-25
+  - table: br_anac_dadosabertos.pontualidade
+    column: Aeroporto_Destino_Nome_UF_Pais (also Aeroporto_Origem_Nome_UF_Pais)
+    description: free-text airport name field, not a code column —
+      Brazilian rows end in `(UF, BRASIL)`, e.g. `GUARULHOS - GOVERNADOR
+      ANDRÉ FRANCO MONTORO(SP, BRASIL)`; international rows end in
+      `(country name)` with no UF. No ICAO→municipality reference table
+      exists anywhere in the mirror, so this UF extraction is the only
+      geography this dataset offers — airport/route grain only, no
+      municipal join possible.
+    expr: regexp_extract("Aeroporto_Destino_Nome_UF_Pais", '\(([A-Z]{2}), BRASIL\)', 1)
+    concept: sigla_uf
+    join_expr: regexp_extract({s}."Aeroporto_Destino_Nome_UF_Pais", '\(([A-Z]{{2}}), BRASIL\)', 1) = {d}.sigla_uf
+    verified: 12.044 of 12.044 Brazil-destination rows parsed (12.944
+      total rows, 900 international) — found answering tema 51, T51-2,
+      2026-08-25
   identity:
+  - table: br_ms_sih.aihs_reduzidas
+    column: cnpj_estabelecimento / cnpj_mantenedora
+    description: 'CNPJ de 14 dígitos, mas **37.115.348 linhas (18,5%) chegam com 13** —
+      o zero à esquerda foi perdido na origem. Sem `lpad(...,14,''0'')` essas 37M
+      internações perdem o nome do hospital em silêncio. Além disso 47.490.278
+      linhas (23,7%) não trazem CNPJ nenhum: guardam **14 espaços em branco**, não
+      NULL, então `count(cnpj_estabelecimento)` conta essas linhas como
+      preenchidas. Para essas, o nome vem por `id_estabelecimento_cnes` contra
+      `br_ms_cnes.estabelecimento`'
+    expr: lpad(cnpj_estabelecimento, 14, '0') = e.cnpj
+    verified: 'todos os 5.059 CNPJs reais casaram (100,000%) contra o snapshot
+      2025-09 de br_me_cnpj.estabelecimentos; o único valor não casado é a string
+      de 14 espaços — 2026-08-26'
+    concept: cnpj
+    join_expr: lpad({s}.cnpj_estabelecimento, 14, '0') = {d}.cnpj
+  - table: br_ms_cnes.estabelecimento
+    column: cpf_cnpj
+    description: '**a coluna mistura CPF e CNPJ e só `tipo_pessoa` separa os dois.**
+      Com `tipo_pessoa=''3''` são 14 dígitos de CNPJ; com `tipo_pessoa=''1''` são
+      11 dígitos de CPF alinhados à direita num campo de 14 (`00087978997120` é o
+      CPF 87978997120). Juntar sem filtrar `tipo_pessoa` joga 22,8M linhas de
+      pessoa física contra a base de CNPJ. Um terço das linhas de PJ traz
+      `cpf_cnpj` vazio e identifica o estabelecimento só por `cnpj_mantenedora`'
+    expr: CASE WHEN tipo_pessoa = '3' AND length(cpf_cnpj) = 14 THEN cpf_cnpj END = e.cnpj
+    verified: '313.152 de 313.169 CNPJs distintos (99,9946%) contra o snapshot
+      2025-09; 99,996% das 45,4M linhas de pessoa jurídica nomeadas — 2026-08-26'
+    concept: cnpj
+    join_expr: CASE WHEN {s}.tipo_pessoa = '3' AND length({s}.cpf_cnpj) = 14 THEN {s}.cpf_cnpj END = {d}.cnpj
+  - table: br_bcb_sicor.operacao
+    column: cnpj_basico_instituicao_financeira / cnpj_basico_agente_investimento / cnpj_basico_cadastrante
+    description: 'já são os 8 dígitos do `cnpj_basico`, sem zero perdido — junte contra
+      `br_me_cnpj.empresas`, não contra `estabelecimentos`. Universos minúsculos
+      (615, 145 e 47 valores distintos): são bancos e agentes de fomento'
+    expr: cnpj_basico_instituicao_financeira = e.cnpj_basico
+    verified: 100,000% das 27.199.262 linhas nomeadas nas três colunas — 2026-08-26
+    concept: cnpj_basico
+    join_expr: '{s}.cnpj_basico_instituicao_financeira = {d}.cnpj_basico'
+  - table: br_bcb_sicor.recurso_publico_complemento_operacao
+    column: cnpj_agencia
+    description: CNPJ de 14 dígitos da agência bancária que registrou a operação — 11.203 agências distintas
+    expr: cnpj_agencia = e.cnpj
+    verified: 100,000% das 22.005.362 linhas nomeadas — 2026-08-26
+    concept: cnpj
+    join_expr: '{s}.cnpj_agencia = {d}.cnpj'
+  - table: br_me_cnpj.socios
+    column: documento
+    description: '**fonte de nome inutilizável para pessoa física.** Com `tipo=''2''` a
+      Receita mascara o CPF em `***513278**`, sobrando 6 dígitos do meio. Existem
+      999.751 máscaras distintas para 17,2M pares máscara/nome: **17,17 nomes por
+      máscara**, só 0,18% únicas. Ver as notas do conceito `cpf` para as fontes que
+      publicam CPF inteiro. Com `tipo=''1''` (sócio PJ) o `documento` é um CNPJ e
+      junta normalmente'
+    expr: NÃO JUNTAR por documento quando tipo = '2'
+    verified: 'medido no snapshot 2025-09 — 2026-08-26'
+    concept: cpf
+    join_expr: NULL
   - table: br_comprasgov_sicaf.fornecedores
     column: cnpj / cpf
     description: 14-digit zero-padded — joins `br_me_cnpj.estabelecimentos.cnpj` directly. `cpf` is populated
