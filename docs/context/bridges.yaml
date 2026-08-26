@@ -1379,6 +1379,20 @@ bridges:
     verified: 100,000% das 22.005.362 linhas nomeadas — 2026-08-26
     concept: cnpj
     join_expr: '{s}.cnpj_agencia = {d}.cnpj'
+  - table: br_bcb_sicor.recurso_publico_mutuario / _cooperado / _propriedade
+    column: cpf
+    description: '**CPF inteiro, 11 dígitos, sem máscara** — 5.607.513 CPFs
+      distintos de pessoa física (produtor rural tomador de crédito). Junta por
+      igualdade exata contra as fontes do espelho que publicam CPF completo + nome
+      (ver as notas do conceito `cpf`), NUNCA contra `br_me_cnpj.socios`. As três
+      tabelas já carregam `nome_cpf`, `variantes_nome_cpf` e `origem_nome_cpf`
+      desta resolução; a última diz de qual cadastro o nome veio e é parte do
+      dado, não metadado descartável'
+    expr: cpf = f.cpf
+    verified: '3.425.540 dos 5.607.513 CPFs (61,09%) nomeados por 16 fontes;
+      99,267% com nome unânime entre elas ignorando acento — 2026-08-26'
+    concept: cpf
+    join_expr: '{s}.cpf = {d}.cpf'
   - table: br_me_cnpj.socios
     column: documento
     description: '**fonte de nome inutilizável para pessoa física.** Com `tipo=''2''` a
