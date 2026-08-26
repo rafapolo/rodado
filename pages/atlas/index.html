@@ -26,23 +26,28 @@
   --line-2:  #c6cede;
   --shadow:  0 1px 2px rgba(14,19,25,.06), 0 8px 24px rgba(14,19,25,.07);
 
-  /* Themes. Eight hues in fixed order by size, plus two neutrals: the
-     reference directories are the substrate rather than a subject, and the
-     international set is the one peripheral topic. Only four hues clear the
-     all-pairs CVD gate, so the theme layout gives each one a labelled
-     territory and any theme can be isolated in one click — colour reinforces
-     identity here, it never carries it alone. */
-  --t-educacao:      #2a78d6;
-  --t-demografia:    #eb6834;
-  --t-economia:      #1baf7a;
-  --t-governo:       #eda100;
-  --t-territorio:    #e87ba4;
-  --t-politica:      #008300;
-  --t-justica:       #4a3aa7;
-  --t-saude:         #e34948;
-  --t-referencia:    #7c8798;
-  --t-internacional: #b3bcc9;
-  --t-outros:        #b3bcc9;
+  /* Themes. Twelve subjects plus "outros". The eight hues from the site's
+     default categorical palette carry the eight biggest/most central themes
+     (kept from the palette's original eight-domain version — same hues,
+     relabelled); four supplementary muted hues fill the gaps between them
+     for the newer, smaller themes, and outros stays neutral grey. Only the
+     first few clear the all-pairs CVD gate at this count, so the theme
+     layout gives each one a labelled territory and any theme can be
+     isolated in one click — colour reinforces identity here, it never
+     carries it alone. */
+  --t-governo:        #eda100;
+  --t-economia:       #1baf7a;
+  --t-educacao:       #2a78d6;
+  --t-seguranca:      #4a3aa7;
+  --t-saude:          #e34948;
+  --t-meio_ambiente:  #7a9c1e;
+  --t-infraestrutura: #4a5fc4;
+  --t-politica:       #008300;
+  --t-populacao:      #eb6834;
+  --t-territorio:     #e87ba4;
+  --t-ciencia_tec:    #1590a0;
+  --t-cultura_arte:   #9c3fa3;
+  --t-outros:         #b3bcc9;
   --hub:     #5a6473;
   --focus:   #2a78d6;
 }
@@ -59,17 +64,19 @@
     --line:    #242a34;
     --line-2:  #39414f;
     --shadow:  0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
-    --t-educacao:      #3987e5;
-    --t-demografia:    #d95926;
-    --t-economia:      #199e70;
-    --t-governo:       #c98500;
-    --t-territorio:    #d55181;
-    --t-politica:      #008300;
-    --t-justica:       #9085e9;
-    --t-saude:         #e66767;
-    --t-referencia:    #788292;
-    --t-internacional: #49515e;
-    --t-outros:        #49515e;
+    --t-governo:        #c98500;
+    --t-economia:       #199e70;
+    --t-educacao:       #3987e5;
+    --t-seguranca:      #9085e9;
+    --t-saude:          #e66767;
+    --t-meio_ambiente:  #96b83a;
+    --t-infraestrutura: #7086dd;
+    --t-politica:       #008300;
+    --t-populacao:      #d95926;
+    --t-territorio:     #d55181;
+    --t-ciencia_tec:    #2bb5c7;
+    --t-cultura_arte:   #c063c7;
+    --t-outros:         #49515e;
     --hub:     #98a2b2;
     --focus:   #3987e5;
   }
@@ -86,17 +93,19 @@
   --line:    #242a34;
   --line-2:  #39414f;
   --shadow:  0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
-  --t-educacao:      #3987e5;
-  --t-demografia:    #d95926;
-  --t-economia:      #199e70;
-  --t-governo:       #c98500;
-  --t-territorio:    #d55181;
-  --t-politica:      #008300;
-  --t-justica:       #9085e9;
-  --t-saude:         #e66767;
-  --t-referencia:    #788292;
-  --t-internacional: #49515e;
-  --t-outros:        #49515e;
+  --t-governo:        #c98500;
+  --t-economia:       #199e70;
+  --t-educacao:       #3987e5;
+  --t-seguranca:      #9085e9;
+  --t-saude:          #e66767;
+  --t-meio_ambiente:  #96b83a;
+  --t-infraestrutura: #7086dd;
+  --t-politica:       #008300;
+  --t-populacao:      #d95926;
+  --t-territorio:     #d55181;
+  --t-ciencia_tec:    #2bb5c7;
+  --t-cultura_arte:   #c063c7;
+  --t-outros:         #49515e;
   --hub:     #98a2b2;
   --focus:   #3987e5;
 }
@@ -415,18 +424,23 @@ let mode = "grade";
 const isDisc = () => mode !== "grade";
 let L = G.layout[mode];
 
-/* Themes, in fixed hue order by size. The last two are neutral on purpose:
-   the directories are the substrate every other theme joins against, and the
-   international set is the one peripheral topic. */
+/* Themes, in fixed hue order by size (biggest first — matches
+   ATLAS_THEME_ORDER in gera_schema_graph.py); "outros" is neutral on
+   purpose, the one catch-all bucket. THEME_SHORT is the compact label used
+   in tight chrome (map labels, kind badges); G.domains carries the full
+   name (e.g. "Governo e Finanças Públicas") for tooltips and titles. */
 const THEMES = [
-  "educacao", "demografia", "economia", "governo", "territorio",
-  "politica", "justica", "saude", "referencia", "internacional", "outros",
+  "governo", "economia", "educacao", "seguranca", "saude", "meio_ambiente",
+  "infraestrutura", "politica", "populacao", "territorio", "ciencia_tec",
+  "cultura_arte", "outros",
 ];
 const THEME_SHORT = {
-  educacao: "Educação", demografia: "Demografia", economia: "Economia",
-  governo: "Governo", territorio: "Território", politica: "Política",
-  justica: "Justiça", saude: "Saúde", referencia: "Referência",
-  internacional: "Internacional", outros: "Outros",
+  governo: "Governo", economia: "Economia", educacao: "Educação",
+  seguranca: "Segurança", saude: "Saúde", meio_ambiente: "Meio Ambiente",
+  infraestrutura: "Infraestrutura", politica: "Política",
+  populacao: "População", territorio: "Território",
+  ciencia_tec: "Ciência e Tecnologia", cultura_arte: "Cultura e Arte",
+  outros: "Outros",
 };
 const themeOf = ti => DS[TB[ti].ds].dom;
 
@@ -889,8 +903,8 @@ function drawGrade(act) {
     ctx.fillRect(X, Y, w, HEADER);
     if (dg) {
       // The wash gives the card its theme; the saturated rule under it does the
-      // separating. At a single low alpha the ten themes collapse — saúde,
-      // demografia and território all wash out to the same pale pink.
+      // separating. At a single low alpha the thirteen themes collapse — saúde,
+      // população and território all wash out to the same pale pink.
       ctx.globalAlpha = (on ? 1 : 0.3) * (k < 0.2 ? 0.6 : 0.28);
       ctx.fillStyle = dcol(d);
       ctx.fillRect(X, Y, w, HEADER);
