@@ -2627,7 +2627,7 @@
     },
     "br_bcb_sicor.operacao": {
       "path": "beelink:/home/polo/rodado/br_bcb_sicor/operacao/",
-      "file_count": 127,
+      "file_count": 1,
       "columns": [
         {
           "name": "ano_emissao",
@@ -2840,6 +2840,18 @@
         {
           "name": "valor_percentual_risco_stn",
           "type": "DOUBLE"
+        },
+        {
+          "name": "razao_social_agente_investimento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "razao_social_instituicao_financeira",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "razao_social_cadastrante",
+          "type": "BYTE_ARRAY"
         }
       ]
     },
@@ -2883,7 +2895,7 @@
     },
     "br_bcb_sicor.recurso_publico_complemento_operacao": {
       "path": "beelink:/home/polo/rodado/br_bcb_sicor/recurso_publico_complemento_operacao/",
-      "file_count": 44,
+      "file_count": 1,
       "columns": [
         {
           "name": "ano_emissao",
@@ -2915,6 +2927,22 @@
         },
         {
           "name": "numero_cedula",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "razao_social_agencia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_fantasia_agencia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_uf_agencia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_municipio_agencia",
           "type": "BYTE_ARRAY"
         }
       ]
@@ -2958,6 +2986,10 @@
         {
           "name": "valor_parcela",
           "type": "DOUBLE"
+        },
+        {
+          "name": "razao_social_cnpj_basico",
+          "type": "BYTE_ARRAY"
         }
       ]
     },
@@ -2997,7 +3029,7 @@
     },
     "br_bcb_sicor.recurso_publico_mutuario": {
       "path": "beelink:/home/polo/rodado/br_bcb_sicor/recurso_publico_mutuario/",
-      "file_count": 29,
+      "file_count": 1,
       "columns": [
         {
           "name": "ano_emissao",
@@ -3038,12 +3070,20 @@
         {
           "name": "sexo",
           "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "razao_social_mutuario",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "razao_social_cnpj_basico",
+          "type": "BYTE_ARRAY"
         }
       ]
     },
     "br_bcb_sicor.recurso_publico_propriedade": {
       "path": "beelink:/home/polo/rodado/br_bcb_sicor/recurso_publico_propriedade/",
-      "file_count": 15,
+      "file_count": 2,
       "columns": [
         {
           "name": "ano_emissao",
@@ -3079,6 +3119,10 @@
         },
         {
           "name": "id_car",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "razao_social_cnpj_basico",
           "type": "BYTE_ARRAY"
         }
       ]
@@ -89345,7 +89389,7 @@
     },
     "br_me_rais.microdados_estabelecimentos": {
       "path": "beelink:/home/polo/rodado/br_me_rais/microdados_estabelecimentos/",
-      "file_count": 566,
+      "file_count": 593,
       "columns": [
         {
           "name": "ano",
@@ -89765,6 +89809,26 @@
         },
         {
           "name": "quantidade_vinculos_ativos",
+          "type": "INT32"
+        },
+        {
+          "name": "cnpj_completo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_fantasia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "situacao_cadastral_codigo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "situacao_cadastral_descricao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data_situacao_cadastral",
           "type": "INT32"
         }
       ]
@@ -108578,7 +108642,7 @@
     },
     "br_ms_cnes.estabelecimento": {
       "path": "beelink:/home/polo/rodado/br_ms_cnes/estabelecimento/",
-      "file_count": 214,
+      "file_count": 1,
       "columns": [
         {
           "name": "ano",
@@ -109395,6 +109459,26 @@
         {
           "name": "indicador_atendimento_regulacao_plano_saude_privado",
           "type": "INT64"
+        },
+        {
+          "name": "razao_social",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_fantasia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "situacao_cadastral_codigo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "situacao_cadastral_descricao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "razao_social_mantenedora",
+          "type": "BYTE_ARRAY"
         }
       ]
     },
@@ -119086,7 +119170,7 @@
     },
     "br_ms_sih.aihs_reduzidas": {
       "path": "beelink:/home/polo/rodado/br_ms_sih/aihs_reduzidas/",
-      "file_count": 1794,
+      "file_count": 328,
       "columns": [
         {
           "name": "ano",
@@ -119523,6 +119607,22 @@
         {
           "name": "valor_aih",
           "type": "DOUBLE"
+        },
+        {
+          "name": "razao_social_estabelecimento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_fantasia_estabelecimento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "razao_social_mantenedora",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "origem_nome_estabelecimento",
+          "type": "BYTE_ARRAY"
         }
       ]
     },
@@ -129337,6 +129437,14 @@
         {
           "name": "id_plano_acao",
           "type": "INT64"
+        },
+        {
+          "name": "razao_social_favorecido",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_fantasia_favorecido",
+          "type": "BYTE_ARRAY"
         }
       ]
     },
@@ -129996,7 +130104,7 @@
     },
     "br_tse_eleicoes.carga_2026": {
       "path": "beelink:/home/polo/rodado/br_tse_eleicoes/carga_2026/",
-      "file_count": 3,
+      "file_count": 4,
       "columns": [
         {
           "name": "run_at",
