@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="pt-br">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Referência OpenAPI — rodado</title>
-<meta name="description" content="Contrato OpenAPI 3.1 para as 18 ferramentas do servidor MCP do rodado — desenho schema-first, documentação, sem serviço HTTP implantado.">
+<title>OpenAPI Reference — rodado</title>
+<meta name="description" content="OpenAPI 3.1 contract for the 18 tools in rodado's MCP server — schema-first design, documentation only, no HTTP service deployed.">
 <link rel="canonical" href="https://rodado.xyz/api/">
 <link rel="icon" href="../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
@@ -103,8 +103,8 @@
 <div class="topbar">
   <a class="brand" href="/">rodado<span>.</span>xyz</a>
   <div class="right">
-    <a class="back" href="../mcp.html">← MCP / catálogo</a>
-    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Alternar tema claro/escuro">☾</button>
+    <a class="back" href="../mcp.html">← MCP / catalog</a>
+    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle light/dark theme">☾</button>
   </div>
 </div>
 
@@ -114,24 +114,24 @@
       <span class="brand-flag"></span>
       <span class="brand-name">rodado</span>
       <span class="brand-sep"></span>
-      <span class="brand-tag">Referência de API</span>
+      <span class="brand-tag">API Reference</span>
     </div>
-    <h1 class="page-title">Contrato OpenAPI para as ferramentas do MCP</h1>
-    <p class="lead">As 18 ferramentas de <code>mcp_server.py</code>, descritas como endpoints REST — request, resposta e os avisos que hoje só existem em docstring. <strong>Desenho, não deploy</strong>: nenhum servidor HTTP roda por trás disto.</p>
-    <p class="lead-note">Ver <a href="../mcp.html">o catálogo de dados</a> para o que essas ferramentas consultam, ou <a href="https://github.com/rafapolo/rodado/blob/main/docs/MCP.md">docs/MCP.md</a> para como um agente as chama de fato — via MCP, não HTTP.</p>
+    <h1 class="page-title">OpenAPI contract for the MCP tools</h1>
+    <p class="lead">The 18 tools in <code>mcp_server.py</code>, described as REST endpoints — request, response, and the caveats that today only live in docstrings. <strong>Design, not deployment</strong>: no HTTP server runs behind this.</p>
+    <p class="lead-note">See <a href="../mcp.html">the data catalog</a> for what these tools actually query, or <a href="https://github.com/rafapolo/rodado/blob/main/docs/MCP.md">docs/MCP.md</a> for how an agent really calls them — over MCP, not HTTP.</p>
     <div class="header-bottom">
       <div class="stats">
         <div>
           <div class="stat-num">18</div>
-          <div class="stat-label">ferramentas</div>
+          <div class="stat-label">tools</div>
         </div>
         <div>
           <div class="stat-num">4</div>
-          <div class="stat-label">grupos <span class="muted">· catalog, semantics, query, lookups</span></div>
+          <div class="stat-label">groups <span class="muted">· catalog, semantics, query, lookups</span></div>
         </div>
         <div>
           <div class="stat-num">0</div>
-          <div class="stat-label">servidores implantados</div>
+          <div class="stat-label">servers deployed</div>
         </div>
       </div>
     </div>
@@ -139,7 +139,7 @@
 </header>
 
 <div id="redoc-container">
-  <p class="redoc-loading-note">Carregando…</p>
+  <p class="redoc-loading-note">Loading…</p>
 </div>
 
 <script src="../assets/vendor/redoc.standalone.js"></script>

@@ -14,13 +14,13 @@ documentados, 20 false friends, 7 métricas nomeadas, 3 hierarquias de rollup,
 em disco no beelink, sem storage em nuvem — é lá que dado recém-raspado
 aparece primeiro.
 
-`docs/openapi.yaml` é o mesmo conjunto de 18 ferramentas descrito como
-contrato OpenAPI 3.1 — schema-first, sem `servers:` porque nada aqui está
-implantado como HTTP. Existe pra dar tipo a request/response que hoje só
-vivem como dict Python e docstring (útil pra gerar cliente/SDK, ou como
-contrato caso um shim REST algum dia sirva `ask-web`), não porque este
-projeto vai virar API REST — o transporte MCP acima continua sendo como
-Claude/agentes de fato chamam essas funções.
+`docs/openapi.yaml` describes that same set of 18 tools as an OpenAPI 3.1
+contract — schema-first, with no `servers:` entry because nothing here is
+deployed as HTTP. It exists to give a type to request/response shapes that
+today only live as Python dicts and docstrings (useful for generating a
+client/SDK, or as a contract if a REST shim ever serves `ask-web`), not
+because this project is turning into a REST API — the MCP transport above is
+still how Claude/agents actually call these functions.
 
 ## Como ler este documento
 
