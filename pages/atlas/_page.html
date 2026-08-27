@@ -386,7 +386,6 @@ canvas.drag { cursor: grabbing; }
     <p class="legend-t">Grafo 3D</p>
     <div class="d3toggles">
       <button id="d3-shownodes" aria-pressed="true">mostrar nós</button>
-      <button id="d3-colornames" aria-pressed="false">cor nos nomes</button>
       <button id="d3-curve" aria-pressed="true">ligações curvas</button>
     </div>
     <div class="slider-row">
@@ -575,7 +574,7 @@ let C = {};
 let graph3d = null, G3 = null, d3Ready = false, d3Loading = false;
 const d3Pending = [];
 const d3NodeByDs = new Map(), d3NodeByKey = new Map();
-let colorNames3d = false, curved3d = true, edgeWidthMul3d = 0.55, expansion3d = 2.2;
+let curved3d = true, edgeWidthMul3d = 0.55, expansion3d = 2.2;
 let firstFit3d = true;
 let expectingRefit3d = false;
 
@@ -1522,7 +1521,12 @@ function init3D() {
     .nodeRelSize(10)
     .nodeColor(n => n.kind === "ds" ? dcol(n.i) : C.hub)
     .nodeOpacity(1)
-    .nodeResolution(n => n.kind === "ds" ? 14 : 8)
+    // A per-node function here silently breaks the sphere geometry: unlike
+    // nodeVal/nodeColor, this field isn't passed through the library's
+    // accessor-normalizer, so a function gets used directly as the segment
+    // count for THREE.SphereGeometry — producing a degenerate, zero-vertex
+    // (invisible) sphere. Must stay a constant.
+    .nodeResolution(12)
     .linkColor(l => dcol(l.dsIndex))
     .linkOpacity(1)
     .linkWidth(l => (0.35 + 1.8 * l.wn) * edgeWidthMul3d)
@@ -1544,7 +1548,7 @@ function init3D() {
   graph3d.nodeThreeObject(node => {
     const isDs = node.kind === "ds";
     const sprite = new SpriteText(node.name);
-    sprite.color = isDs ? (colorNames3d ? dcol(node.i) : C.ink) : C.ink2;
+    sprite.color = isDs ? C.ink : C.ink2;
     sprite.fontFace = "IBM Plex Mono, monospace";
     sprite.fontWeight = isDs ? "600" : "500";
     sprite.textHeight = isDs ? Math.min(3.6, 1.9 + node.val * 0.22) : 1.55;
@@ -1600,11 +1604,6 @@ function init3D() {
   controls3d.autoRotate = false;
   controls3d.autoRotateSpeed = 0.55;
 
-  document.getElementById("d3-colornames").onclick = e => {
-    colorNames3d = !colorNames3d;
-    e.currentTarget.setAttribute("aria-pressed", String(colorNames3d));
-    G3.nodes.forEach(n => { if (n.kind === "ds" && n.__label) n.__label.color = colorNames3d ? dcol(n.i) : C.ink; });
-  };
   document.getElementById("d3-shownodes").onclick = e => {
     nodesVisible3d = !nodesVisible3d;
     e.currentTarget.setAttribute("aria-pressed", String(nodesVisible3d));
@@ -1775,7 +1774,7 @@ function themeChanged() {
     graph3d.backgroundColor(C.ground).refresh();
     G3.nodes.forEach(n => {
       if (!n.__label) return;
-      n.__label.color = n.kind === "ds" ? (colorNames3d ? dcol(n.i) : C.ink) : C.ink2;
+      n.__label.color = n.kind === "ds" ? C.ink : C.ink2;
     });
     G3.links.forEach(l => { if (l.__label) l.__label.color = C.ink3; });
   }
