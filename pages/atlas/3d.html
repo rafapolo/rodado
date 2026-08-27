@@ -25,7 +25,7 @@
   .hud {
     position: fixed; z-index: 4; pointer-events: none;
   }
-  .hud a, .hud button { pointer-events: auto; }
+  .hud a, .hud button, .hud input { pointer-events: auto; }
 
   .top-left {
     top: 18px; left: 18px; max-width: 380px;
@@ -133,10 +133,13 @@
     <button id="m-rotate" aria-pressed="true">girar sozinho</button>
     <button id="m-labels" aria-pressed="true">nomes</button>
     <button id="m-colornames" aria-pressed="false">cor nos nomes</button>
+    <button id="m-curve" aria-pressed="false">ligações curvas</button>
   </div>
   <div class="panel slider-panel">
     <label for="m-edgeop">transparência das ligações</label>
     <input type="range" id="m-edgeop" min="2" max="60" value="22">
+    <label for="m-edgewidth" style="margin-top:9px">espessura das ligações</label>
+    <input type="range" id="m-edgewidth" min="20" max="260" value="100">
   </div>
 </div>
 
@@ -173,6 +176,8 @@ const tip = document.getElementById("tip");
 let showLabels = true;
 let colorNames = false;
 let edgeBase = 0.22;
+let edgeWidthMul = 1;
+let curved = false;
 let focusId = null;
 let activeNodes = null;   // Set of node ids kept lit while a node is focused
 let activeLinks = null;   // Set of link object refs kept lit while focused
@@ -193,8 +198,8 @@ const Graph = ForceGraph3D()(elGraph)
   .nodeResolution(n => (n.grp === "dataset" ? 14 : 8))
   .linkColor(l => l.color)
   .linkOpacity(l => (!focusId || activeLinks.has(l)) ? edgeBase : edgeBase * 0.05)
-  .linkWidth(l => 0.35 + 1.8 * l.wn)
-  .linkCurvature(0.08)
+  .linkWidth(l => (0.35 + 1.8 * l.wn) * edgeWidthMul)
+  .linkCurvature(l => curved ? 0.28 : 0)
   .linkDirectionalParticles(l => (!focusId || activeLinks.has(l)) ? 1 + Math.round(2 * l.wn) : 0)
   .linkDirectionalParticleWidth(l => 0.9 + 1.1 * l.wn)
   .linkDirectionalParticleSpeed(l => 0.0018 + 0.006 * l.wn)
@@ -297,9 +302,17 @@ document.getElementById("m-colornames").onclick = e => {
     if (n.grp === "dataset" && n.__label) n.__label.color = colorNames ? n.color : "#f4f6fa";
   });
 };
-const edgeSlider = document.getElementById("m-edgeop");
-edgeSlider.oninput = e => {
+document.getElementById("m-edgeop").oninput = e => {
   edgeBase = +e.target.value / 100;
+  Graph.refresh();
+};
+document.getElementById("m-edgewidth").oninput = e => {
+  edgeWidthMul = +e.target.value / 100;
+  Graph.refresh();
+};
+document.getElementById("m-curve").onclick = e => {
+  curved = !curved;
+  e.currentTarget.setAttribute("aria-pressed", String(curved));
   Graph.refresh();
 };
 
