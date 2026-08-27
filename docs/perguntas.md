@@ -448,6 +448,14 @@ atravessam vários datasets de famílias distintas ao mesmo tempo.
 4. O preço FIPE por modelo/ano funciona como proxy municipal de renda quando cruzado com alguma fonte territorial do espelho? *(n=2: fipe_veiculos, ibge_censo_2022\*)*
 5. A composição racial das vítimas de homicídio LGBTQI+ (GGB) segue o mesmo padrão racial das vítimas de homicídio em geral no SIM, no mesmo ano? *(n=2: ggb_relatorio_lgbtqi, ms_sim\*)*
 
+## 56 · Violência Notificada, Vulnerabilidade Infantil e Autolesão
+
+1. A tendência nacional de notificações de autolesão/tentativa de suicídio no SINAN acompanha a tendência da taxa de suicídio consolidada pelo Atlas da Violência (IPEA), ou os dois indicadores divergem? *(n=2: ms_sinan_violencia, ipea_atlasviolencia)*
+2. Municípios com maior taxa de notificação de violência sexual contra crianças (SINAN, vítima menor de 18 anos) por 100 mil habitantes têm menor cobertura líquida de matrícula na pré-escola (Observatório da Criança e do Adolescente/Abrinq)? *(n=3: ms_sinan_violencia, abrinq_oca, ibge_populacao\*)*
+3. A composição racial das vítimas notificadas no SINAN (qualquer tipo de violência) reflete a composição racial das vítimas de homicídio consolidada pelo Atlas da Violência (IPEA), ou pessoas negras estão sobrerrepresentadas nos desfechos letais em relação à violência notificada em geral? *(n=2: ms_sinan_violencia, ipea_atlasviolencia)*
+4. A participação de parceiro/ex-parceiro íntimo entre os agressores de vítimas mulheres notificadas no SINAN cresceu entre 2011 e 2024, e esse movimento acompanha — ou diverge de — a tendência nacional de homicídios de mulheres do Atlas da Violência? *(n=2: ms_sinan_violencia, ipea_atlasviolencia)*
+5. A cobertura temporal das notificações do SINAN Violência é confiável usando a coluna documentada de ano da notificação (NU_ANO), ou existe alguma lacuna de rotulagem que exige outra coluna de ano pra reconstituir a série 2009-2025 corretamente? *(n=1: ms_sinan_violencia)*
+
 ---
 
 # Perguntas multi-dataset simultâneos
