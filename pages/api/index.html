@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Referência OpenAPI — rodado</title>
+<meta name="description" content="Contrato OpenAPI 3.1 para as 18 ferramentas do servidor MCP do rodado — desenho schema-first, documentação, sem serviço HTTP implantado.">
+<link rel="canonical" href="https://rodado.xyz/api/">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<meta name="theme-color" content="#9c3b2e">
+<meta name="robots" content="index,follow">
+<style>
+  :root {
+    --bg: #f6f2ea;
+    --bg-raised: #efe9dd;
+    --ink: #201d18;
+    --ink-soft: #4a443a;
+    --rule: #d9d0bd;
+    --accent: #9c3b2e;
+    --accent-soft: #c9573f;
+    --sans: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  }
+  :root[data-theme="dark"] {
+    --bg: #1b1811;
+    --bg-raised: #242017;
+    --ink: #ece6d8;
+    --ink-soft: #c7bfab;
+    --rule: #3a3427;
+    --accent: #e08468;
+    --accent-soft: #c9573f;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); }
+  body { font-family: var(--sans); }
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.6rem 1.25rem;
+    background: var(--bg-raised);
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--sans);
+  }
+  .topbar a.brand { color: var(--ink); text-decoration: none; font-weight: 700; font-size: 0.95rem; }
+  .topbar a.brand span { color: var(--accent); }
+  .topbar .right { display: flex; align-items: center; gap: 1rem; }
+  .topbar a.back { color: var(--ink-soft); text-decoration: none; font-size: 0.85rem; }
+  .topbar a.back:hover { color: var(--accent); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--rule); border-radius: 6px;
+    color: var(--ink-soft); width: 1.9rem; height: 1.9rem; cursor: pointer;
+    font-size: 0.95rem; line-height: 1; display: flex; align-items: center; justify-content: center;
+  }
+  .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+  #redoc-container { min-height: calc(100vh - 44px); }
+  .redoc-loading-note { padding: 2rem 1.25rem; color: var(--ink-soft); font-size: 0.9rem; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="/">rodado<span>.</span>xyz</a>
+  <div class="right">
+    <a class="back" href="../mcp.html">← MCP / catálogo</a>
+    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Alternar tema claro/escuro">☾</button>
+  </div>
+</div>
+
+<div id="redoc-container">
+  <p class="redoc-loading-note">Carregando…</p>
+</div>
+
+<script src="../assets/vendor/redoc.standalone.js"></script>
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById('themeToggle');
+  var stored = localStorage.getItem('rodado-theme') || 'light';
+
+  function themeFor(mode) {
+    var dark = mode === 'dark';
+    return {
+      colors: {
+        primary: { main: dark ? '#e08468' : '#9c3b2e' },
+        text: { primary: dark ? '#ece6d8' : '#201d18', secondary: dark ? '#c7bfab' : '#4a443a' },
+        border: { dark: dark ? '#3a3427' : '#d9d0bd', light: dark ? '#242017' : '#efe9dd' },
+        http: {
+          get: '#3a7d5c', post: '#9c3b2e', put: '#b08a2e', delete: '#a4443a'
+        }
+      },
+      sidebar: {
+        backgroundColor: dark ? '#1b1811' : '#f6f2ea',
+        textColor: dark ? '#ece6d8' : '#201d18',
+        activeTextColor: dark ? '#e08468' : '#9c3b2e'
+      },
+      rightPanel: {
+        backgroundColor: dark ? '#242017' : '#201d18'
+      },
+      typography: {
+        fontSize: '15px',
+        fontFamily: '-apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif',
+        code: { fontFamily: 'ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace' },
+        headings: { fontFamily: '-apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif' }
+      }
+    };
+  }
+
+  function applyIcon(mode) {
+    btn.textContent = mode === 'dark' ? '☀' : '☾';
+  }
+
+  function render() {
+    Redoc.init(
+      './openapi.yaml',
+      {
+        theme: themeFor(stored),
+        scrollYOffset: 44,
+        expandResponses: '200',
+        hideDownloadButton: false,
+        pathInMiddlePanel: true
+      },
+      document.getElementById('redoc-container')
+    );
+  }
+
+  root.setAttribute('data-theme', stored);
+  applyIcon(stored);
+  render();
+
+  btn.addEventListener('click', function () {
+    stored = stored === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('rodado-theme', stored);
+    root.setAttribute('data-theme', stored);
+    applyIcon(stored);
+    render();
+  });
+})();
+</script>
+
+</body>
+</html>

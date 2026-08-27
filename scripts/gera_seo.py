@@ -342,8 +342,21 @@ def alvos() -> list[Path]:
 
 def alvos_head() -> list[Path]:
     """Todo HTML de pages/ — inclusive os _template.html e o índice de
-    analises/, que fica fora do SEO mas também carrega o head comum."""
-    return sorted(PAGES.rglob("*.html"))
+    analises/, que fica fora do SEO mas também carrega o head comum.
+
+    Exceções: `atlas/` (gerado por `build_atlas.py`, fontes e CSS próprios —
+    ver CLAUDE.md) e `api/` (embute o Redoc, que renderiza no DOM global sem
+    Shadow DOM). As duas são autocontidas por design; injetar o bloco comum
+    aqui troca a fonte/CSS que a própria página escolheu e — no caso do
+    Redoc — vaza `p { margin: 0 0 1.25rem }` e o `--bg` de site.css pro
+    widget, quebrando o layout dele (visto ao vivo: 2026-08-27, corrigido
+    depois de já ter sido injetado uma vez nas duas por engano).
+    """
+    EXCLUI = {"atlas", "api"}
+    return sorted(
+        p for p in PAGES.rglob("*.html")
+        if p.parent.name not in EXCLUI
+    )
 
 
 def gera_sitemap(arquivos: list[Path]) -> None:
