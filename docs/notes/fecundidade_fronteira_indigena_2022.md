@@ -49,7 +49,7 @@ não fronteira em si (ver seção seguinte).
    (MapBiomas/INPE PRODES, já parcialmente no rodado via `br_mapbiomas_estatisticas`
    e `br_inpe_prodes` — falta cruzar com polígono de `br_ibge_censo_2022.terra_indigena`),
    garimpo ilegal (FUNAI/IBAMA autos de infração — gap conhecido, ver
-   `docs/notes/gaps_vs_mcp_brasil.md`), presença de missões evangélicas em TI.
+   `tasks/datasets_gap_analysis.md`), presença de missões evangélicas em TI.
 
 ## Fontes / reprodução
 
