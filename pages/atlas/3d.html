@@ -248,7 +248,7 @@ Graph.onEngineStop(() => {
   if (firstFit) {
     firstFit = false;
     Graph.zoomToFit(0, 40);
-    const cam = Graph.camera(), dist = cam.position.length() * 0.4;
+    const cam = Graph.camera(), dist = cam.position.length() * 0.75;
     const dir = cam.position.clone().normalize();
     Graph.cameraPosition({ x: dir.x * dist, y: dir.y * dist, z: dir.z * dist }, { x: 0, y: 0, z: 0 }, 1000);
   } else {
