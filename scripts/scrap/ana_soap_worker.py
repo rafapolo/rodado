@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
-"""Baixa séries mensais de vazão da ANA via SOAP HidroSerieHistorica, com
-checkpoint resumível. Roda em qualquer host (beelink/finland/livre) sobre a lista
-de códigos; cada linha = 1 estação. Escreve parquets brutos por batch.
+"""Baixa séries mensais de vazão (ou cota) da ANA via SOAP HidroSerieHistorica,
+com checkpoint resumível. Roda em qualquer host (beelink/finland/livre) sobre a
+lista de códigos; cada linha = 1 estação. Escreve parquets brutos por batch.
 
 Uso:
-  python3 ana_soap_worker.py estacoes.csv shard/ 16        # 16 threads
+  python3 ana_soap_worker.py estacoes.csv shard/ 16        # 16 threads, vazão (tipoDados=3)
+  python3 ana_soap_worker.py estacoes.csv shard_cota/ 16 --tipo 1  # cota (tipoDados=1)
         arquivo: lista CSV com coluna 'codigo'
         saida:  diretório que recebe 'batch_XXX.parquet'
         threads: nº
+        --tipo: 1=cota, 3=vazão (default 3, mantém o nome de coluna vazao_* por
+                compatibilidade com ana_series_unifica_gap.py; tipo=1 grava cota_*)
 """
 import argparse
 import random
@@ -23,6 +26,11 @@ import polars as pl
 
 URL = "http://telemetriaws1.ana.gov.br/ServiceANA.asmx"
 
+# tipoDados da ANA: 1=cota, 2=chuva, 3=vazão. O nome de coluna gravado
+# acompanha o tipo para não colidir com o schema já consumido por
+# ana_series_unifica_gap.py (que lê vazao_media/vazao_maxima/vazao_minima).
+PREFIXO_POR_TIPO = {"1": "cota", "3": "vazao"}
+
 # Schema explícito, e não inferido. `pl.DataFrame(lista_de_dicts)` adivinha os
 # tipos pelas primeiras 100 linhas: numa estação cujos primeiros meses não
 # trazem Maxima/Minima, a coluna era inferida como Null e o primeiro float mais
@@ -32,19 +40,23 @@ URL = "http://telemetriaws1.ana.gov.br/ServiceANA.asmx"
 # segue drenando as futures, então o processo continua vivo sem gravar mais
 # nenhum lote — uma corrida parou de progredir em 2.500 de 6.203 e parecia
 # saudável no `ps`.
-ESQUEMA = {
-    "codigo": pl.Utf8,
-    "mes": pl.Utf8,
-    "nivel_consistencia": pl.Int8,
-    "vazao_media": pl.Float64,
-    "vazao_maxima": pl.Float64,
-    "vazao_minima": pl.Float64,
-}
+def esquema_para(tipo):
+    pref = PREFIXO_POR_TIPO[tipo]
+    return {
+        "codigo": pl.Utf8,
+        "mes": pl.Utf8,
+        "nivel_consistencia": pl.Int8,
+        f"{pref}_media": pl.Float64,
+        f"{pref}_maxima": pl.Float64,
+        f"{pref}_minima": pl.Float64,
+    }
+
+
 BODY = """<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
  <soap:Body><HidroSerieHistorica xmlns="http://MRCS/">
   <codEstacao>{cod}</codEstacao><dataInicio>01/01/1960</dataInicio>
-  <dataFim>31/12/2026</dataFim><tipoDados>3</tipoDados><nivelConsistencia></nivelConsistencia>
+  <dataFim>31/12/2026</dataFim><tipoDados>{tipo}</tipoDados><nivelConsistencia></nivelConsistencia>
  </HidroSerieHistorica></soap:Body></soap:Envelope>"""
 
 
@@ -76,16 +88,16 @@ def _espera_freio():
         time.sleep(min(falta, 5))
 
 
-def soap_estacao(cod, tentativas=6):
+def soap_estacao(cod, tipo, tentativas=6):
     for i in range(tentativas):
         _espera_freio()
         try:
             req = urllib.request.Request(
-                URL, data=BODY.format(cod=cod).encode(),
+                URL, data=BODY.format(cod=cod, tipo=tipo).encode(),
                 headers={"Content-Type": "text/xml; charset=utf-8",
                          "SOAPAction": "http://MRCS/HidroSerieHistorica"})
             resp = urllib.request.urlopen(req, timeout=180).read()
-            return parse(resp, cod)
+            return parse(resp, cod, tipo)
         except urllib.error.HTTPError as e:
             if e.code == 429:
                 espera = min(60, 2 ** i) + random.uniform(0, 2)
@@ -102,7 +114,8 @@ def soap_estacao(cod, tentativas=6):
     return None
 
 
-def parse(resp, cod):
+def parse(resp, cod, tipo):
+    pref = PREFIXO_POR_TIPO[tipo]
     root = ET.fromstring(resp)
     meses = {}
     for el in root.iter():
@@ -121,8 +134,8 @@ def parse(resp, cod):
                            float(rec["Minima"]) if rec.get("Minima") else None)
         except ValueError:
             continue
-    return [{"codigo": cod, "mes": m, "nivel_consistencia": v[0], "vazao_media": v[1],
-             "vazao_maxima": v[2], "vazao_minima": v[3]} for m, v in sorted(meses.items())]
+    return [{"codigo": cod, "mes": m, "nivel_consistencia": v[0], f"{pref}_media": v[1],
+             f"{pref}_maxima": v[2], f"{pref}_minima": v[3]} for m, v in sorted(meses.items())]
 
 
 def main():
@@ -130,7 +143,10 @@ def main():
     ap.add_argument("lista")
     ap.add_argument("saida")
     ap.add_argument("threads", type=int, default=16)
+    ap.add_argument("--tipo", default="3", choices=list(PREFIXO_POR_TIPO),
+                     help="tipoDados da ANA: 1=cota, 3=vazão (default 3)")
     a = ap.parse_args()
+    esquema = esquema_para(a.tipo)
 
     cods = pl.read_csv(a.lista, infer_schema_length=1000)["codigo"].cast(pl.Utf8).to_list()
     out = Path(a.saida)
@@ -153,7 +169,7 @@ def main():
     done = 0   # conta tentativas concluídas (para nome do batch)
     ok = 0
     with ThreadPoolExecutor(max_workers=a.threads) as pool:
-        futs = {pool.submit(soap_estacao, c): c for c in faltam}
+        futs = {pool.submit(soap_estacao, c, a.tipo): c for c in faltam}
         for fut in as_completed(futs):
             c = futs[fut]
             try:
@@ -168,7 +184,7 @@ def main():
             # futures sem gravar nada.
             try:
                 if rows:
-                    batch.append(pl.DataFrame(rows, schema=ESQUEMA))
+                    batch.append(pl.DataFrame(rows, schema=esquema))
                     ok += 1
                 else:
                     # estação viva mas sem dados: gravar só o código, para não repetir
