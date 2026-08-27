@@ -140,21 +140,21 @@
   <div class="modebar">
     <button id="m-rotate" aria-pressed="true">girar sozinho</button>
     <button id="m-labels" aria-pressed="true">nomes</button>
-    <button id="m-colornames" aria-pressed="false">cor nos nomes</button>
-    <button id="m-curve" aria-pressed="false">ligações curvas</button>
+    <button id="m-colornames" aria-pressed="true">cor nos nomes</button>
+    <button id="m-curve" aria-pressed="true">ligações curvas</button>
   </div>
   <div class="panel slider-panel">
     <div class="slider-row">
-      <div class="rl"><label for="m-edgeop">transparência das ligações</label><span class="val" id="v-edgeop">22</span></div>
-      <input type="range" id="m-edgeop" min="2" max="60" value="22">
+      <div class="rl"><label for="m-edgeop">transparência das ligações</label><span class="val" id="v-edgeop">40</span></div>
+      <input type="range" id="m-edgeop" min="2" max="60" value="40">
     </div>
     <div class="slider-row">
-      <div class="rl"><label for="m-edgewidth">espessura das ligações</label><span class="val" id="v-edgewidth">100</span></div>
-      <input type="range" id="m-edgewidth" min="20" max="260" value="100">
+      <div class="rl"><label for="m-edgewidth">espessura das ligações</label><span class="val" id="v-edgewidth">55</span></div>
+      <input type="range" id="m-edgewidth" min="20" max="260" value="55">
     </div>
     <div class="slider-row">
-      <div class="rl"><label for="m-expand">expansão do grafo</label><span class="val" id="v-expand">100</span></div>
-      <input type="range" id="m-expand" min="55" max="170" value="100">
+      <div class="rl"><label for="m-expand">expansão do grafo</label><span class="val" id="v-expand">220</span></div>
+      <input type="range" id="m-expand" min="55" max="220" value="220">
     </div>
   </div>
 </div>
@@ -190,10 +190,10 @@ document.getElementById("legend").innerHTML = G.themes.map(([name, color]) =>
 const elGraph = document.getElementById("graph");
 const tip = document.getElementById("tip");
 let showLabels = true;
-let colorNames = false;
-let edgeBase = 0.22;
-let edgeWidthMul = 1;
-let curved = false;
+let colorNames = true;
+let edgeBase = 0.40;
+let edgeWidthMul = 0.55;
+let curved = true;
 let focusId = null;
 let activeNodes = null;   // Set of node ids kept lit while a node is focused
 let activeLinks = null;   // Set of link object refs kept lit while focused
@@ -229,7 +229,7 @@ const Graph = ForceGraph3D()(elGraph)
 // Capping the repulsion's reach and shortening link distance keeps it a
 // dense, legible cluster instead. `expansion` scales both live off the same
 // base numbers, so the slider can loosen or tighten the whole cluster.
-let expansion = 1;
+let expansion = 2.2;
 function applyForces(reheat) {
   Graph.d3Force("charge").strength(-34 * expansion).distanceMax(240 * expansion);
   Graph.d3Force("link").distance(l => (14 + 34 * (1 - l.wn)) * expansion);
