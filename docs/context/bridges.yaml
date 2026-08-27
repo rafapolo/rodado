@@ -948,6 +948,17 @@ bridges:
     format: mojibake — the file was decoded as latin-1 twice, in the values *and* in the column name
     expr: 'fix first: upper(strip_accents(decode(encode("MunicÃ­pio"), ''utf-8'')))'
     verified: needs re-encoding, join not reliable as stored
+  - table: br_ana_telemetria.inventario
+    column: municipiocodigo / municipionome
+    format: '**mesma armadilha do `estacoes`, com os nomes em minúscula**: são
+      duas tabelas de estação diferentes e as colunas não se chamam igual.
+      `municipiocodigo` é código interno da ANA, 7-8 dígitos — **zero** dos
+      4.770 códigos distintos casa com `id_municipio` do IBGE, medido; quem
+      juntar por igualdade recebe conjunto vazio, não erro. É esta a tabela
+      (37.782 estações) que as 7 séries do dataset alcançam por `codigo`.'
+    expr: 'join por nome: upper(strip_accents(municipionome)) = upper(strip_accents(m.nome))
+      AND estadosigla = m.sigla_uf'
+    verified: 0 de 4.770 códigos casam por IBGE (medido 2026-08-27) — só o nome serve
   - table: br_ana_telemetria.estacoes
     column: MunicipioCodigo / nmMunicipio
     format: '`MunicipioCodigo` is an **ANA internal code, not IBGE** (`3041000` = Tabatinga); the table
@@ -958,7 +969,9 @@ bridges:
   - table: br_tcu_inidoneos.*
     column: MUNICIPIO
     format: mostly empty string
-    expr: unusable — join via UF, or via CPF_CNPJ to the CNPJ base and take the municipality from there
+    expr: unusable — join via UF, ou pelo identificador da pessoa/empresa até a
+      base de CNPJ/CPF e pegar o município de lá (`CPF_CNPJ` nas duas tabelas
+      de empresa, `CPF` nas duas de pessoa física — ver o hub de identidade)
     verified: empty in the sampled rows
   - table: br_ok_queridodiario.diarios
     column: territory_id
@@ -972,11 +985,15 @@ bridges:
     format: upper-case accented name
     expr: upper(strip_accents(city)) = upper(strip_accents(m.nome)) AND state = m.sigla_uf
     verified: 5.449 of 5.565 rows
-  - table: br_tce_rj.contratos_municipio / contratos_estado
+  - table: br_tce_rj.contratos_municipio
     column: '"Ente"'
-    format: upper-case municipality name, RJ only
+    format: upper-case municipality name, RJ only. Só a tabela de contratos
+      municipais tem `Ente`; `contratos_estado` não tem coluna de município —
+      o que ela traz é `Unidade` (98 órgãos estaduais), que é o órgão
+      contratante, não o território.
     expr: upper(strip_accents("Ente")) = upper(strip_accents(m.nome)) AND m.sigla_uf = 'RJ'
-    verified: 90 of 91 distinct names
+    verified: 90 of 91 distinct names (96.376 linhas; conferido 2026-08-27 que
+      `contratos_estado` não expõe município)
   - table: br_me_cnpj.estabelecimentos
     column: id_municipio_rf
     format: Receita Federal 4-digit code
@@ -1077,218 +1094,16 @@ bridges:
   - table: br_siop_orcamento.localizadores
     column: '"UF"'
     description: full state name, mojibake (`EspÃ­rito Santo`)
-  - table: br_ana_telemetria.estacoes
-    column: EstadoCodigo / nmEstado
-    description: ANA internal code plus the full state name; not IBGE
-  - table: br_ok_queridodiario.diarios
-    column: state_code
-    description: 2-letter code — direct
+  - table: br_ana_telemetria.inventario
+    column: estadosigla
+    description: '2 letras, direto — mas 2.658 das 37.782 linhas (7%) não são UF
+      brasileira: são os 12 códigos de país vizinho da bacia amazônica/platina
+      (`AR BO CH CO EQ GF GU PG PU SU UR VE`). Nenhum colide com sigla de UF,
+      então o inner join só as descarta em silêncio; conte antes de reportar
+      cobertura nacional.'
     concept: sigla_uf
-    join_expr: '{s}.state_code = {d}.sigla_uf'
-  - table: br_datahackers_state_data.microdados
-    column: p1_i_1
-    description: '2-letter code — direct. Every column in this survey is a question code: `p1_i` is `São
-      Paulo (SP)`, `p1_i_2` and `p1_k` the macro-region, `p1_i_1` the bare UF'
-    concept: sigla_uf
-    join_expr: '{s}.p1_i_1 = {d}.sigla_uf'
-  - table: br_brasilapi.ddd_cidades
-    column: state
-    description: 2-letter code — direct
-    concept: sigla_uf
-    join_expr: '{s}.state = {d}.sigla_uf'
-  - table: br_mme_consumo_energia_eletrica.uf
-    column: sigla_uf
-    description: 2-letter code — direct. Grain warning — this dataset has
-      NO municipal table in the mirror, only `uf` (2004-2023, monthly,
-      tipo_consumo Total/Cativo/Residencial/Comercial/Industrial/Outros).
-      Any join must be at UF level, despite the dataset's description
-      suggesting a municipal economic-activity proxy.
-    concept: sigla_uf
-    join_expr: '{s}.sigla_uf = {d}.sigla_uf'
-    verified: direct, 27 of 27 UFs present — found answering tema 51,
-      T51-1/T51-2/T51-5, 2026-08-25
-  - table: br_anac_dadosabertos.pontualidade
-    column: Aeroporto_Destino_Nome_UF_Pais (also Aeroporto_Origem_Nome_UF_Pais)
-    description: free-text airport name field, not a code column —
-      Brazilian rows end in `(UF, BRASIL)`, e.g. `GUARULHOS - GOVERNADOR
-      ANDRÉ FRANCO MONTORO(SP, BRASIL)`; international rows end in
-      `(country name)` with no UF. No ICAO→municipality reference table
-      exists anywhere in the mirror, so this UF extraction is the only
-      geography this dataset offers — airport/route grain only, no
-      municipal join possible.
-    expr: regexp_extract("Aeroporto_Destino_Nome_UF_Pais", '\(([A-Z]{2}), BRASIL\)', 1)
-    concept: sigla_uf
-    join_expr: regexp_extract({s}."Aeroporto_Destino_Nome_UF_Pais", '\(([A-Z]{{2}}), BRASIL\)', 1) = {d}.sigla_uf
-    verified: 12.044 of 12.044 Brazil-destination rows parsed (12.944
-      total rows, 900 international) — found answering tema 51, T51-2,
-      2026-08-25
-  - table: br_comprasgov_sicaf.fornecedores
-    column: nomeMunicipio + ufSigla
-    format: mixed-case accented name
-    expr: upper(strip_accents(nomeMunicipio)) = upper(strip_accents(m.nome)) AND ufSigla = m.sigla_uf
-    verified: name-based
-  - table: br_anp_combustiveis.precos
-    column: municipio + estado
-    format: upper-case unaccented name; `estado` is the full state name (`RONDONIA`), `-` when missing
-    expr: upper(strip_accents(municipio)) = upper(strip_accents(m.nome)) — pair with the `estado` bridge
-      listed under `sigla_uf`
-    verified: name-based
-  - table: br_tce_sp.municipios
-    column: municipio / municipio_extenso
-    format: '`municipio` is a slug (`aguas-de-lindoia`), `municipio_extenso` the display name'
-    expr: 'use municipio_extenso: upper(strip_accents(municipio_extenso)) = upper(strip_accents(m.nome))
-      AND m.sigla_uf = ''SP'''
-    verified: name-based
-  - table: br_tce_es.obras_publicas
-    column: Municipio
-    format: mixed-case accented name
-    expr: upper(strip_accents("Municipio")) = upper(strip_accents(m.nome)) AND m.sigla_uf = 'ES'
-    verified: name-based
-  - table: br_cnpq_bolsas.microdados
-    column: municipio_destino
-    format: upper-case accented name
-    expr: upper(strip_accents(municipio_destino)) = upper(strip_accents(m.nome))
-    verified: name-based; ambiguous without a UF column
-  - table: br_saude_bps.dados
-    column: '"nome_do_munica­pio_da_instituicao"'
-    format: upper-case unaccented name. **The column name itself contains a soft hyphen (U+00AD)** — copy
-      it verbatim and keep the quotes
-    expr: upper(strip_accents("nome_do_munica­pio_da_instituicao")) = upper(strip_accents(m.nome))
-    verified: name-based
-  - table: br_siop_orcamento.localizadores
-    column: '"MunicÃ­pio"'
-    format: mojibake — the file was decoded as latin-1 twice, in the values *and* in the column name
-    expr: 'fix first: upper(strip_accents(decode(encode("MunicÃ­pio"), ''utf-8'')))'
-    verified: needs re-encoding, join not reliable as stored
-  - table: br_ana_telemetria.estacoes
-    column: MunicipioCodigo / nmMunicipio
-    format: '`MunicipioCodigo` is an **ANA internal code, not IBGE** (`3041000` = Tabatinga); the table
-      also has foreign rows (`PERU`)'
-    expr: 'join by name: upper(strip_accents(nmMunicipio)) = upper(strip_accents(m.nome)) AND nmEstado
-      matched to the UF name'
-    verified: name-based only
-  - table: br_tcu_inidoneos.*
-    column: MUNICIPIO
-    format: mostly empty string
-    expr: unusable — join via UF, or via CPF_CNPJ to the CNPJ base and take the municipality from there
-    verified: empty in the sampled rows
-  - table: br_ok_queridodiario.diarios
-    column: territory_id
-    format: 7-digit IBGE code — Querido Diário's `territory` *is* the municipality
-    expr: CAST(territory_id AS VARCHAR) = m.id_municipio
-    verified: 524 of 524 distinct codes
-    concept: id_municipio
-    join_expr: CAST({s}.territory_id AS VARCHAR) = {d}.id_municipio
-  - table: br_brasilapi.ddd_cidades
-    column: city + state
-    format: upper-case accented name
-    expr: upper(strip_accents(city)) = upper(strip_accents(m.nome)) AND state = m.sigla_uf
-    verified: 5.449 of 5.565 rows
-  - table: br_tce_rj.contratos_municipio / contratos_estado
-    column: '"Ente"'
-    format: upper-case municipality name, RJ only
-    expr: upper(strip_accents("Ente")) = upper(strip_accents(m.nome)) AND m.sigla_uf = 'RJ'
-    verified: 90 of 91 distinct names
-  - table: br_me_cnpj.estabelecimentos
-    column: id_municipio_rf
-    format: Receita Federal 4-digit code
-    expr: id_municipio_rf = m.id_municipio_rf
-    verified: 11.140 of 11.142 directory rows
-    concept: id_municipio_rf
-    join_expr: '{s}.id_municipio_rf = {d}.id_municipio_rf'
-  - table: br_mec_sisu.microdados
-    column: id_municipio_campus (município do campus onde a vaga é ofertada;
-      a coluna irmã id_municipio_candidato existe mas não é o que se quer
-      pra cruzar oferta de vaga com dado municipal)
-    format: 7-digit IBGE code stored as STRING, direto — sem padding, sem
-      conversão
-    expr: id_municipio_campus = m.id_municipio
-    verified: format confirmed 7-digit direct match on 34,7M linhas
-      (2017-2022) — não documentado antes por nome não bater com
-      `id_municipio`; achado respondendo tema 46, 2026-08-25
-    concept: id_municipio
-    join_expr: '{s}.id_municipio_campus = {d}.id_municipio'
-  uf:
-  - table: br_mj_consumidorgovbr.reclamacoes
-    column: '"UF"'
-    description: 2-letter code — direct join to `sigla_uf`
-    concept: sigla_uf
-    join_expr: '{s}."UF" = {d}.sigla_uf'
-  - table: br_tcu_inidoneos.*
-    column: '"UF"'
-    description: 2-letter code — direct
-    concept: sigla_uf
-    join_expr: '{s}."UF" = {d}.sigla_uf'
-  - table: br_mjsp_ckan.procon
-    column: '"UF"'
-    description: 2-letter code — direct
-    concept: sigla_uf
-    join_expr: '{s}."UF" = {d}.sigla_uf'
-  - table: br_ms_sipni_doses_historicas.doses_agregadas
-    column: '"UF"'
-    description: 2-letter code — direct
-    concept: sigla_uf
-    join_expr: '{s}."UF" = {d}.sigla_uf'
-  - table: br_caixa_sinapi.insumos
-    column: uf
-    description: 2-letter code — direct
-    concept: sigla_uf
-    join_expr: '{s}.uf = {d}.sigla_uf'
-  - table: br_cgu_garantia_safra / pe_de_meia / seguro_defeso
-    column: uf
-    description: 2-letter code — direct
-    concept: sigla_uf
-    join_expr: '{s}.uf = {d}.sigla_uf'
-  - table: br_fbsp_absp.violencia_escola
-    column: uf
-    description: 2-letter code — direct
-    concept: sigla_uf
-    join_expr: '{s}.uf = {d}.sigla_uf'
-  - table: br_mjsp_sinesp.ocorrencias_uf
-    column: uf
-    description: nome do estado por extenso, acentuado (`São Paulo`, `Rio
-      Grande do Sul`) — NÃO é sigla de 2 letras, ao contrário do que esta
-      entrada dizia antes; um join ingênuo `uf = sigla_uf` devolve zero
-      linhas. Corrigido respondendo tema 50, T50-3, 2026-08-25.
-    expr: upper(strip_accents(uf)) = upper(strip_accents(m.nome))
-    verified: 27 de 27 estados casados 100% contra
-      br_bd_diretorios_brasil.uf.nome (2026-08-25)
-    concept: sigla_uf
-    join_expr: upper(strip_accents({s}.uf)) = upper(strip_accents({d}.nome))
-  - table: br_comprasgov_sicaf.fornecedores
-    column: ufSigla
-    description: 2-letter code — direct
-    concept: sigla_uf
-    join_expr: '{s}.ufSigla = {d}.sigla_uf'
-  - table: br_ms_sinan_violencia.microdados_violencia
-    column: '"SG_UF"'
-    description: '**numeric IBGE code** (21, 52…), joins `id_uf`, not `sigla_uf`'
-    concept: id_uf
-    join_expr: CAST({s}."SG_UF" AS VARCHAR) = CAST({d}.id_uf AS VARCHAR)
-  - table: br_saude_farmaciapopular.estabelecimentos
-    column: codigo_uf
-    description: numeric IBGE code — joins `id_uf`
-    concept: id_uf
-    join_expr: CAST({s}.codigo_uf AS VARCHAR) = CAST({d}.id_uf AS VARCHAR)
-  - table: br_mjsp_sisdepen.populacao_carceraria
-    column: uf
-    description: '`Acre (AC)` — extract with `regexp_extract(uf, ''\(([A-Z]{2})\)$'', 1)`'
-    concept: sigla_uf
-    join_expr: regexp_extract({s}.uf, '\(([A-Z]{{2}})\)$', 1) = {d}.sigla_uf
-  - table: br_anp_combustiveis.precos
-    column: estado
-    description: full state name, unaccented upper case (`RONDONIA`); `-` when missing
-    concept: nome
-    join_expr: upper(strip_accents({s}.estado)) = upper(strip_accents({d}.nome))
-  - table: br_mjsp_procurados.procurados
-    column: estado
-    description: 'full state name (`GOIAS`, `PARÁ`) — accents inconsistent. `nome_estado` in the same
-      table is **not** a state: it holds the person''s name plus the state, mislabeled at the source'
-    concept: nome
-    join_expr: upper(strip_accents({s}.estado)) = upper(strip_accents({d}.nome))
-  - table: br_siop_orcamento.localizadores
-    column: '"UF"'
-    description: full state name, mojibake (`EspÃ­rito Santo`)
+    join_expr: '{s}.estadosigla = {d}.sigla_uf'
+    verified: 35.124 de 37.782 linhas casam com uma UF (2026-08-27)
   - table: br_ana_telemetria.estacoes
     column: EstadoCodigo / nmEstado
     description: ANA internal code plus the full state name; not IBGE
@@ -1431,14 +1246,30 @@ bridges:
     verified: 8 of 41.106 br_cvm_fundos.fundos CNPJs have federal dívida ativa,
       R$121,6 milhões total — found answering tasks/respostas_pendentes.md
       T45-2, 2026-08-25
-  - table: br_tcu_inidoneos.*
+  - table: br_tcu_inidoneos.empresas / resp_contas_julgadas_irregulares
     column: '"CPF_CNPJ"'
     description: 'mixed: some rows punctuated, some bare. Normalize with `lpad(regexp_replace(x, ''[^0-9]'',
-      '''', ''g''), 14, ''0'')`.'
+      '''', ''g''), 14, ''0'')`. Só estas duas das quatro tabelas do dataset têm
+      esta coluna — as outras duas são de pessoa física e chamam `CPF`, ver a
+      entrada abaixo.'
     concept: cnpj
     join_expr: lpad(regexp_replace({s}."CPF_CNPJ", '[^0-9]', '', 'g'), 14, '0') = {d}.cnpj
-    verified: matches SICAF/holdings cleanly — see the SICAF and brasilio_holdings
-      entries in this same hub for counts (2026-08-25)
+    verified: 93 linhas / 84 CNPJs distintos em `empresas`, 34.930 / 21.161 em
+      `resp_contas_julgadas_irregulares` (2026-08-27). Casa com SICAF/holdings —
+      ver as entradas de SICAF e brasilio_holdings neste mesmo hub (2026-08-25)
+  - table: br_tcu_inidoneos.inabilitados_funcao_publica / resp_contas_julgadas_irreg_implicacao_eleitoral
+    column: '"CPF"'
+    description: 'as duas tabelas de pessoa física do dataset **não** têm
+      `CPF_CNPJ` — a coluna se chama `CPF`, e um join escrito com o nome do
+      wildcard antigo quebra com erro de coluna inexistente. O CPF vem
+      completo e pontuado (`078.099.802-20`), sem máscara: o TCU é uma das
+      poucas fontes públicas que publica o CPF inteiro. Normalize com
+      `regexp_replace(x, ''[^0-9]'', '''', ''g'')` para 11 dígitos.'
+    concept: cpf
+    join_expr: regexp_replace({s}."CPF", '[^0-9]', '', 'g') = {d}.cpf
+    verified: 721 linhas / 564 CPFs distintos em `inabilitados_funcao_publica`,
+      9.660 / 6.306 em `resp_contas_julgadas_irreg_implicacao_eleitoral`;
+      todos com length 14 (pontuados), medido no beelink 2026-08-27
   - table: br_anp_combustiveis.precos
     column: cnpj
     description: unpadded — 1.03M rows have 13 characters, 875k have 14. Always `lpad(..., 14, '0')`.
@@ -1549,4 +1380,4 @@ bridges:
     expr: sigla_pais_iso3 = p.sigla_iso3
     verified: 246 dos 251 códigos de `ncm_exportacao` casam (2026-08-23)
     concept: sigla_pais_iso3
-    join_expr: '{s}.sigla_pais_iso3 = {d}.sigla_pais_iso3'
+    join_expr: '{s}.sigla_pais_iso3 = {d}.sigla_iso3'
