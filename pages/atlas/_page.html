@@ -385,6 +385,7 @@ canvas.drag { cursor: grabbing; }
   <div class="d3panel" id="d3panel" style="display:none">
     <p class="legend-t">Grafo 3D</p>
     <div class="d3toggles">
+      <button id="d3-shownodes" aria-pressed="true">mostrar nós</button>
       <button id="d3-colornames" aria-pressed="false">cor nos nomes</button>
       <button id="d3-curve" aria-pressed="true">ligações curvas</button>
     </div>
@@ -576,6 +577,7 @@ const d3Pending = [];
 const d3NodeByDs = new Map(), d3NodeByKey = new Map();
 let colorNames3d = false, curved3d = true, edgeWidthMul3d = 0.55, expansion3d = 2.2;
 let firstFit3d = true;
+let expectingRefit3d = false;
 
 function readColors() {
   const s = getComputedStyle(document.documentElement);
@@ -1475,16 +1477,34 @@ function hoverTheme3D(th) {
     return (n.kind === "ds" ? dsOn(n.i) : keyOn(n.i)) ? base : fadeToward(base, C.ground, 0.88);
   });
   graph3d.linkColor(l => dsOn(l.dsIndex) ? dcol(l.dsIndex) : fadeToward(dcol(l.dsIndex), C.ground, 0.9));
-  graph3d.linkDirectionalParticles(l => dsOn(l.dsIndex) ? 1 + Math.round(2 * l.wn) : 0);
-  graph3d.refresh();
+  refreshGraph3D();
 }
 function clearHover3D() {
   if (!graph3d || !G3) return;
   hoverThemeId = null;
   graph3d.nodeColor(n => n.kind === "ds" ? dcol(n.i) : C.hub);
   graph3d.linkColor(l => dcol(l.dsIndex));
-  graph3d.linkDirectionalParticles(l => 1 + Math.round(2 * l.wn));
+  refreshGraph3D();
+}
+
+// refresh() applies changed accessors (colour, curvature, width) by purging
+// and rebuilding the three.js objects — which is also, incidentally, enough
+// to make the physics engine report itself "stopped" again, refiring
+// onEngineStop. That handler is guarded by expectingRefit3d for exactly this
+// reason: without it, hovering a theme row would silently re-trigger a
+// zoomToFit and visibly dolly the camera. refresh() itself doesn't move the
+// camera; it just wakes up code that otherwise would.
+let nodesVisible3d = true;
+function refreshGraph3D() {
+  if (!graph3d) return;
   graph3d.refresh();
+  applyNodeVisibility3D();
+}
+function applyNodeVisibility3D() {
+  if (!G3) return;
+  G3.nodes.forEach(n => {
+    if (n.__threeObj && n.__threeObj.material) n.__threeObj.material.opacity = nodesVisible3d ? 1 : 0;
+  });
 }
 
 function init3D() {
@@ -1499,6 +1519,7 @@ function init3D() {
       ? `${esc(n.name)} <i>· ${n.tables} tabelas · ${human(n.rows)} linhas</i>`
       : `${esc(n.name)} <i>· ${n.tables} tabelas · ${n.datasets} datasets</i>`)
     .nodeVal(n => n.val)
+    .nodeRelSize(10)
     .nodeColor(n => n.kind === "ds" ? dcol(n.i) : C.hub)
     .nodeOpacity(1)
     .nodeResolution(n => n.kind === "ds" ? 14 : 8)
@@ -1506,10 +1527,6 @@ function init3D() {
     .linkOpacity(1)
     .linkWidth(l => (0.35 + 1.8 * l.wn) * edgeWidthMul3d)
     .linkCurvature(l => curved3d ? 0.28 : 0)
-    .linkDirectionalParticles(l => 1 + Math.round(2 * l.wn))
-    .linkDirectionalParticleWidth(l => 0.9 + 1.1 * l.wn)
-    .linkDirectionalParticleSpeed(l => 0.0018 + 0.006 * l.wn)
-    .linkDirectionalParticleColor(l => dcol(l.dsIndex))
     .warmupTicks(40)
     .cooldownTime(6000)
     .showNavInfo(false)
@@ -1559,8 +1576,13 @@ function init3D() {
     sprite.position.z = (start.z + end.z) / 2;
   });
 
-  // first settle lands the camera inside the cluster; later reheats (the
-  // expansion slider) fit the whole shape instead, since that is the point
+  // First settle lands the camera inside the cluster; an explicit reheat
+  // (the expansion slider) fits the whole shape afterward, since that is the
+  // point. onEngineStop refires on its own any time refresh() purges/rebuilds
+  // objects — colour hover, the curve toggle, the width slider all call it —
+  // so it can't unconditionally zoomToFit every time it fires, or hovering a
+  // theme row would visibly dolly the camera. expectingRefit is only raised
+  // right before a genuine d3ReheatSimulation() call.
   graph3d.onEngineStop(() => {
     if (firstFit3d) {
       firstFit3d = false;
@@ -1568,7 +1590,8 @@ function init3D() {
       const cam = graph3d.camera(), dist = cam.position.length() * 0.55;
       const dir = cam.position.clone().normalize();
       graph3d.cameraPosition({ x: dir.x * dist, y: dir.y * dist, z: dir.z * dist }, { x: 0, y: 0, z: 0 }, 900);
-    } else {
+    } else if (expectingRefit3d) {
+      expectingRefit3d = false;
       graph3d.zoomToFit(700, 40);
     }
   });
@@ -1582,21 +1605,27 @@ function init3D() {
     e.currentTarget.setAttribute("aria-pressed", String(colorNames3d));
     G3.nodes.forEach(n => { if (n.kind === "ds" && n.__label) n.__label.color = colorNames3d ? dcol(n.i) : C.ink; });
   };
+  document.getElementById("d3-shownodes").onclick = e => {
+    nodesVisible3d = !nodesVisible3d;
+    e.currentTarget.setAttribute("aria-pressed", String(nodesVisible3d));
+    applyNodeVisibility3D();
+  };
   document.getElementById("d3-curve").onclick = e => {
     curved3d = !curved3d;
     e.currentTarget.setAttribute("aria-pressed", String(curved3d));
-    graph3d.refresh();
+    refreshGraph3D();
   };
   document.getElementById("d3-width").oninput = e => {
     edgeWidthMul3d = +e.target.value / 100;
     document.getElementById("d3-width-v").textContent = e.target.value;
-    graph3d.refresh();
+    refreshGraph3D();
   };
   document.getElementById("d3-expand").oninput = e => {
     expansion3d = +e.target.value / 100;
     document.getElementById("d3-expand-v").textContent = e.target.value;
     graph3d.d3Force("charge").strength(-34 * expansion3d).distanceMax(240 * expansion3d);
     graph3d.d3Force("link").distance(l => (14 + 34 * (1 - l.wn)) * expansion3d);
+    expectingRefit3d = true;
     graph3d.d3ReheatSimulation();
   };
 }
@@ -1768,6 +1797,6 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
 
 // handles for the layout probes in scripts/build_atlas.py
 Object.assign(window, { G, DS, KS, TB, L, P, select, goTo, flyKey, flyDs, flyTheme, draw, setMode,
-  getGraph3D: () => graph3d, getG3: () => G3 });
+  getGraph3D: () => graph3d, getG3: () => G3, hoverTheme3D, clearHover3D });
 }
 </script>
