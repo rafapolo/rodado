@@ -387,18 +387,16 @@ canvas.drag { cursor: grabbing; }
   <div class="d3panel" id="d3panel" style="display:none">
     <p class="legend-t">Grafo 3D</p>
     <div class="d3toggles">
-      <button id="d3-rotate" aria-pressed="true">girar sozinho</button>
-      <button id="d3-labels" aria-pressed="true">nomes</button>
       <button id="d3-colornames" aria-pressed="false">cor nos nomes</button>
-      <button id="d3-curve" aria-pressed="false">ligações curvas</button>
+      <button id="d3-curve" aria-pressed="true">ligações curvas</button>
     </div>
     <div class="slider-row">
-      <div class="rl"><label for="d3-width">espessura das ligações</label><span class="val" id="d3-width-v">100</span></div>
-      <input type="range" id="d3-width" min="20" max="260" value="100">
+      <div class="rl"><label for="d3-width">espessura das ligações</label><span class="val" id="d3-width-v">55</span></div>
+      <input type="range" id="d3-width" min="20" max="260" value="55">
     </div>
     <div class="slider-row">
-      <div class="rl"><label for="d3-expand">expansão do grafo</label><span class="val" id="d3-expand-v">100</span></div>
-      <input type="range" id="d3-expand" min="55" max="220" value="100">
+      <div class="rl"><label for="d3-expand">expansão do grafo</label><span class="val" id="d3-expand-v">220</span></div>
+      <input type="range" id="d3-expand" min="55" max="300" value="220">
     </div>
   </div>
 
@@ -572,7 +570,7 @@ let C = {};
 let graph3d = null, G3 = null, d3Ready = false, d3Loading = false;
 const d3Pending = [];
 const d3NodeByDs = new Map(), d3NodeByKey = new Map();
-let colorNames3d = false, curved3d = false, edgeWidthMul3d = 1, expansion3d = 1;
+let colorNames3d = false, curved3d = true, edgeWidthMul3d = 0.55, expansion3d = 2.2;
 let firstFit3d = true;
 
 function readColors() {
@@ -1521,22 +1519,9 @@ function init3D() {
   });
 
   const controls3d = graph3d.controls();
-  controls3d.autoRotate = true;
+  controls3d.autoRotate = false;
   controls3d.autoRotateSpeed = 0.55;
-  cv3dEl.addEventListener("pointerdown", () => {
-    controls3d.autoRotate = false;
-    document.getElementById("d3-rotate").setAttribute("aria-pressed", "false");
-  }, { once: true, passive: true });
 
-  document.getElementById("d3-rotate").onclick = e => {
-    controls3d.autoRotate = !controls3d.autoRotate;
-    e.currentTarget.setAttribute("aria-pressed", String(controls3d.autoRotate));
-  };
-  document.getElementById("d3-labels").onclick = e => {
-    const on = e.currentTarget.getAttribute("aria-pressed") !== "true";
-    e.currentTarget.setAttribute("aria-pressed", String(on));
-    graph3d.scene().traverse(o => { if (o.type === "Sprite") o.visible = on; });
-  };
   document.getElementById("d3-colornames").onclick = e => {
     colorNames3d = !colorNames3d;
     e.currentTarget.setAttribute("aria-pressed", String(colorNames3d));
