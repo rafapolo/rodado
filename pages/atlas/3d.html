@@ -87,12 +87,20 @@
   .modebar button:hover { color: var(--ink); border-color: rgba(255,255,255,.22); }
   .modebar button[aria-pressed="true"] { color: #fff; border-color: rgba(255,255,255,.35); }
   .slider-panel { padding: 9px 13px 10px; }
-  .slider-panel label {
-    display: block; font-size: 9.5px; color: var(--ink-3); text-transform: uppercase;
-    letter-spacing: .06em; margin-bottom: 7px; text-align: right;
+  .slider-row + .slider-row { margin-top: 10px; }
+  .slider-row .rl {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 10px; margin-bottom: 6px;
   }
-  .slider-panel input[type="range"] {
-    width: 168px; accent-color: #7f93e6; display: block;
+  .slider-row label {
+    font-size: 9.5px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em;
+  }
+  .slider-row .val {
+    font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .slider-row input[type="range"] {
+    width: 180px; accent-color: #7f93e6; display: block;
   }
 
   #tip {
@@ -136,10 +144,18 @@
     <button id="m-curve" aria-pressed="false">ligações curvas</button>
   </div>
   <div class="panel slider-panel">
-    <label for="m-edgeop">transparência das ligações</label>
-    <input type="range" id="m-edgeop" min="2" max="60" value="22">
-    <label for="m-edgewidth" style="margin-top:9px">espessura das ligações</label>
-    <input type="range" id="m-edgewidth" min="20" max="260" value="100">
+    <div class="slider-row">
+      <div class="rl"><label for="m-edgeop">transparência das ligações</label><span class="val" id="v-edgeop">22</span></div>
+      <input type="range" id="m-edgeop" min="2" max="60" value="22">
+    </div>
+    <div class="slider-row">
+      <div class="rl"><label for="m-edgewidth">espessura das ligações</label><span class="val" id="v-edgewidth">100</span></div>
+      <input type="range" id="m-edgewidth" min="20" max="260" value="100">
+    </div>
+    <div class="slider-row">
+      <div class="rl"><label for="m-expand">expansão do grafo</label><span class="val" id="v-expand">100</span></div>
+      <input type="range" id="m-expand" min="55" max="170" value="100">
+    </div>
   </div>
 </div>
 
@@ -211,11 +227,34 @@ const Graph = ForceGraph3D()(elGraph)
 // Default charge repulsion pushes a 326-node graph into a diffuse cloud —
 // fitting the camera to that means every sphere shrinks to a sub-pixel dot.
 // Capping the repulsion's reach and shortening link distance keeps it a
-// dense, legible cluster instead.
-Graph.d3Force("charge").strength(-34).distanceMax(240);
-Graph.d3Force("link").distance(l => 14 + 34 * (1 - l.wn));
+// dense, legible cluster instead. `expansion` scales both live off the same
+// base numbers, so the slider can loosen or tighten the whole cluster.
+let expansion = 1;
+function applyForces(reheat) {
+  Graph.d3Force("charge").strength(-34 * expansion).distanceMax(240 * expansion);
+  Graph.d3Force("link").distance(l => (14 + 34 * (1 - l.wn)) * expansion);
+  // the simulation isn't up yet on the very first call at load — only the
+  // slider's later calls need to kick it back into motion
+  if (reheat) Graph.d3ReheatSimulation();
+}
+applyForces(false);
 
-Graph.onEngineStop(() => Graph.zoomToFit(700, 40));
+// zoomToFit frames the whole cluster, which on first load reads as a distant,
+// sparse haze — the first settle instead lands the camera inside the cluster,
+// close enough to read names; later reheats (from the expansion slider) still
+// get the full fit, since the user is deliberately checking the whole shape.
+let firstFit = true;
+Graph.onEngineStop(() => {
+  if (firstFit) {
+    firstFit = false;
+    Graph.zoomToFit(0, 40);
+    const cam = Graph.camera(), dist = cam.position.length() * 0.4;
+    const dir = cam.position.clone().normalize();
+    Graph.cameraPosition({ x: dir.x * dist, y: dir.y * dist, z: dir.z * dist }, { x: 0, y: 0, z: 0 }, 1000);
+  } else {
+    Graph.zoomToFit(700, 40);
+  }
+});
 
 // node label sprites, floating above each sphere
 Graph.nodeThreeObject(node => {
@@ -304,11 +343,18 @@ document.getElementById("m-colornames").onclick = e => {
 };
 document.getElementById("m-edgeop").oninput = e => {
   edgeBase = +e.target.value / 100;
+  document.getElementById("v-edgeop").textContent = e.target.value;
   Graph.refresh();
 };
 document.getElementById("m-edgewidth").oninput = e => {
   edgeWidthMul = +e.target.value / 100;
+  document.getElementById("v-edgewidth").textContent = e.target.value;
   Graph.refresh();
+};
+document.getElementById("m-expand").oninput = e => {
+  expansion = +e.target.value / 100;
+  document.getElementById("v-expand").textContent = e.target.value;
+  applyForces(true);
 };
 document.getElementById("m-curve").onclick = e => {
   curved = !curved;
