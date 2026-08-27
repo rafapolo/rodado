@@ -474,6 +474,12 @@ const cellsOf = di => {
   return { cols, rows: Math.ceil(dsTables[di].length / cols) };
 };
 
+// Full-strength theme colour reads as too loud filling a whole card header or
+// disc; a pale wash used to lose the hue entirely (saúde/população/território
+// collapsed to the same pink). This is the middle point, shared by both the
+// Grade header fill and the Temas table bodies so the two modes tone-match.
+const THEME_TONE = 0.62;
+
 /* Edge weight. `ano` reaches 389 tables and `id_escola` 14; letting them draw
    the same line would say they join equally well. Width and alpha both fall
    off with reach, so the generic axes read as ghosts. */
@@ -724,7 +730,7 @@ function drawDiscs(act) {
     if (!near(x, y, r + 2)) continue;
     const lit = !act || act.tbls.has(ti);
     const isSel = sel && sel.type === "tbl" && sel.i === ti;
-    ctx.globalAlpha = lit ? 1 : 0.16;
+    ctx.globalAlpha = lit ? THEME_TONE : 0.16;
     ctx.beginPath();
     ctx.arc(x, y, r, 0, 6.2832);
     if (TB[ti].k.length) { ctx.fillStyle = tcol(ti); ctx.fill(); }
@@ -896,14 +902,15 @@ function drawGrade(act) {
     ctx.lineWidth = (sel && sel.type === "ds" && sel.i === d ? 2 : 1) / k;
     ctx.stroke();
 
-    // Header filled solid with the dataset's theme colour — same value, same
-    // full opacity, as the table bodies drawn in Temas. No dilution: a card
-    // and the discs it would explode into in the other mode read as one hue.
+    // Header tinted with the dataset's theme colour at THEME_TONE — same
+    // constant the Temas bodies fill at, so the two modes read as one hue at
+    // matching strength. It sits over the opaque card fill above, so at this
+    // mid alpha the card's own light/dark ground still carries the text.
     const dg = DS[d].dom;
     roundRect(X, Y, w, HEADER, 7);
     ctx.save(); ctx.clip();
     ctx.fillStyle = dg ? dcol(d) : C.card2;
-    ctx.globalAlpha = on ? 1 : 0.3;
+    ctx.globalAlpha = (on ? 1 : 0.3) * (dg ? THEME_TONE : 1);
     ctx.fillRect(X, Y, w, HEADER);
     ctx.restore();
     ctx.strokeStyle = C.line;
@@ -921,13 +928,13 @@ function drawGrade(act) {
     const showCount = k > 0.3 && nameW + ctx.measureText(count).width + 26 <= w;
     const countW = showCount ? ctx.measureText(count).width + 10 : 0;
     if (showCount) {
-      ctx.fillStyle = dg ? "rgba(255,255,255,.78)" : C.ink3;
+      ctx.fillStyle = C.ink3;
       ctx.textAlign = "right";
       ctx.fillText(count, X + w - 9, Y + HEADER / 2 + 0.5);
       ctx.textAlign = "left";
     }
     if (k > 0.14) {
-      ctx.fillStyle = dg ? "#fff" : C.ink;
+      ctx.fillStyle = C.ink;
       ctx.font = '600 12px "IBM Plex Mono", monospace';
       ctx.save();
       roundRect(X + 8, Y, Math.max(10, w - 17 - countW), HEADER, 0); ctx.clip();
