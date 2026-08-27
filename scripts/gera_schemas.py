@@ -72,13 +72,41 @@ for ds in sorted(os.listdir(ROOT)):
             os.path.join(tblpath, f) for f in os.listdir(tblpath)
             if f.endswith(".parquet")
         )
+        # Tabela particionada em hive (`bacia=00/`, `ano=2020/`) nao tem
+        # parquet no topo. Sem esta descida as 7 series do
+        # `br_ana_telemetria` (160M+ linhas) ficavam fora de schemas.json e,
+        # por tabela, fora do join_keys/ERD/atlas/describe_table — invisiveis
+        # sem erro nenhum.
+        part_keys = []
+        if not parquets:
+            for dirpath, dirnames, filenames in os.walk(tblpath):
+                dirnames.sort()
+                hits = sorted(
+                    os.path.join(dirpath, f) for f in filenames
+                    if f.endswith(".parquet")
+                )
+                if hits:
+                    parquets = hits
+                    rel = os.path.relpath(dirpath, tblpath)
+                    part_keys = [
+                        seg.split("=", 1)[0]
+                        for seg in rel.split(os.sep)
+                        if "=" in seg
+                    ]
+                    break
         if parquets:
-            tables.append((ds, tbl, parquets))
+            tables.append((ds, tbl, parquets, part_keys))
 
 result = {}
-for i, (ds, tbl, parquets) in enumerate(tables):
+for i, (ds, tbl, parquets, part_keys) in enumerate(tables):
     key = f"{ds}.{tbl}"
     cols = get_schema(parquets)
+    # A coluna de particao vive no nome do diretorio, nao no parquet:
+    # `parquet_schema` nao a enxerga, mas o `read_parquet` com
+    # hive_partitioning a devolve — e e sempre chave de filtro/join.
+    for pk in part_keys:
+        if pk not in {c["name"] for c in cols}:
+            cols.append({"name": pk, "type": "BYTE_ARRAY"})
     result[key] = {
         "path": f"beelink:{ROOT}/{ds}/{tbl}/",
         "file_count": len(parquets),
@@ -150,11 +178,29 @@ def run_local():
                 os.path.join(tblpath, f) for f in os.listdir(tblpath)
                 if f.endswith(".parquet")
             )
+            # mesma descida em hive do caminho por SSH, ver BEELINK_PAYLOAD
+            part_keys = []
+            if not parquets:
+                for dirpath, dirnames, filenames in os.walk(tblpath):
+                    dirnames.sort()
+                    hits = sorted(
+                        os.path.join(dirpath, f) for f in filenames
+                        if f.endswith(".parquet")
+                    )
+                    if hits:
+                        parquets = hits
+                        rel = os.path.relpath(dirpath, tblpath)
+                        part_keys = [
+                            seg.split("=", 1)[0]
+                            for seg in rel.split(os.sep)
+                            if "=" in seg
+                        ]
+                        break
             if parquets:
-                tables.append((ds, tbl, parquets))
+                tables.append((ds, tbl, parquets, part_keys))
 
     result = {}
-    for i, (ds, tbl, parquets) in enumerate(tables):
+    for i, (ds, tbl, parquets, part_keys) in enumerate(tables):
         key = f"{ds}.{tbl}"
         cols = []
         for f in parquets:
@@ -167,6 +213,9 @@ def run_local():
                 pass
             if cols:
                 break
+        for pk in part_keys:
+            if pk not in {c["name"] for c in cols}:
+                cols.append({"name": pk, "type": "string"})
         result[key] = {
             "path": f"{LOCAL_MOUNT}/{ds}/{tbl}/",
             "file_count": len(parquets),
