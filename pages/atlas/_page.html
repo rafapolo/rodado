@@ -650,6 +650,7 @@ function setMode(next) {
   if (next === mode) return;
   const goingTo3D = next === "3d", leaving3D = mode === "3d";
   mode = next;
+  syncUrl();
   document.querySelectorAll("[data-mode]").forEach(b =>
     b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
   document.getElementById("d3panel").style.display = goingTo3D ? "" : "none";
@@ -1538,22 +1539,32 @@ function init3D() {
 
 /* ── link direto ──────────────────────────────────────────────────
    `?db=br_me_rais` abre o atlas já centrado naquele dataset, com o painel
-   aberto. O parâmetro acompanha a seleção, então a barra de endereço é sempre
-   um link pro que está na tela — `replaceState`, não `pushState`: clicar de
-   dataset em dataset não deve encher o botão voltar. Num contexto sem origem
-   (um `file://` aberto à mão) a History API lança — daí o try. */
+   aberto; `?mode=3d` (ou `temas`) abre já na distribuição escolhida — os dois
+   parâmetros acompanham a tela, então a barra de endereço é sempre um link
+   pro que está nela — `replaceState`, não `pushState`: clicar de dataset em
+   dataset, ou trocar de modo, não deve encher o botão voltar. Num contexto
+   sem origem (um `file://` aberto à mão) a History API lança — daí o try. */
 const dsByName = new Map(DS.map((d, i) => [d.n.toLowerCase(), i]));
 function syncUrl() {
   try {
     const u = new URL(location.href);
-    if (sel && sel.type === "ds") u.searchParams.set("db", DS[sel.i].n);
-    else if (u.searchParams.has("db")) u.searchParams.delete("db");
-    else return;
+    let changed = false;
+    if (sel && sel.type === "ds") { u.searchParams.set("db", DS[sel.i].n); changed = true; }
+    else if (u.searchParams.has("db")) { u.searchParams.delete("db"); changed = true; }
+
+    if (mode !== "grade") { u.searchParams.set("mode", mode); changed = true; }
+    else if (u.searchParams.has("mode")) { u.searchParams.delete("mode"); changed = true; }
+
+    if (!changed) return;
     history.replaceState(null, "", u.pathname + u.search + u.hash);
   } catch (e) { /* sem origem navegável: o atlas funciona, o link é que não */ }
 }
 function openFromUrl() {
-  const q = new URLSearchParams(location.search).get("db");
+  const params = new URLSearchParams(location.search);
+  const m = params.get("mode");
+  if (m && MODES.some(([id]) => id === m) && m !== mode) setMode(m);
+
+  const q = params.get("db");
   if (!q) return;
   const d = dsByName.get(q.trim().toLowerCase());
   if (d === undefined) return;
