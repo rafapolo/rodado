@@ -260,6 +260,14 @@ canvas.drag { cursor: grabbing; }
 .hud button:hover { background: var(--card-2); color: var(--ink); }
 #lod { color: var(--ink); font-weight: 500; }
 
+.hint3d {
+  position: absolute; right: 14px; bottom: 14px; z-index: 2;
+  background: var(--rail); border: 1px solid var(--line); border-radius: 7px;
+  box-shadow: var(--shadow); padding: 7px 11px;
+  font-family: "IBM Plex Mono", monospace; font-size: 10.5px; line-height: 1.7;
+  color: var(--ink-2); text-align: right; pointer-events: none;
+}
+
 .tip {
   position: absolute; pointer-events: none; z-index: 5;
   background: var(--rail); border: 1px solid var(--line-2);
@@ -420,6 +428,12 @@ canvas.drag { cursor: grabbing; }
     <div id="lod">datasets</div>
     <button id="reset" title="Ver tudo">tudo</button>
     <button id="home" title="Voltar ao ponto de partida">início</button>
+  </div>
+
+  <div class="hint3d" id="hint3d" style="display:none">
+    clique esquerdo + arrastar → girar<br>
+    clique direito + arrastar → mover<br>
+    rolar → zoom · clique numa esfera → focar
   </div>
 
   <aside class="insp" id="insp" aria-live="polite">
@@ -664,6 +678,7 @@ function setMode(next) {
   document.querySelectorAll("[data-mode]").forEach(b =>
     b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
   document.getElementById("d3panel").style.display = goingTo3D ? "" : "none";
+  document.getElementById("hint3d").style.display = goingTo3D ? "block" : "none";
   document.getElementById("zlvl").style.display = goingTo3D ? "none" : "";
   document.getElementById("lod").style.display = goingTo3D ? "none" : "";
 
@@ -1437,6 +1452,51 @@ function dollyCamera3D(factor) {
   graph3d.cameraPosition({ x: p.x * factor, y: p.y * factor, z: p.z * factor }, undefined, 400);
 }
 
+// Hovering a theme row dims everything outside it, same instinct as the
+// hover highlight Grade/Temas already do on the flat canvas — this is a
+// momentary UI cue, not the old always-on transparency that was removed.
+//
+// This dims by fading the COLOR toward the background, not by lowering
+// opacity. 3d-force-graph caches node/link materials keyed only by colour —
+// two requests for the same colour hex at different opacities collide, and
+// the second is silently dropped, so nothing visibly dims. A faded colour is
+// a distinct cache key, so it always gets its own material.
+//
+// refresh() also purges and rebuilds the custom label sprites (they are in
+// its own purge list), so the label's dim state has to be read by the
+// factory when it (re)builds the sprite — mutating an existing sprite right
+// before calling refresh() would just get thrown away by the rebuild.
+let hoverThemeId = null;
+const nodeDimmed = n => hoverThemeId && !(n.kind === "ds" ? DS[n.i].dom === hoverThemeId : themeKeys[hoverThemeId] && themeKeys[hoverThemeId].has(n.i));
+function fadeToward(hex, bg, ratio) {
+  const h = hex.replace("#", ""), b = bg.replace("#", "");
+  const mix = (i) => Math.round(parseInt(h.substr(i, 2), 16) + (parseInt(b.substr(i, 2), 16) - parseInt(h.substr(i, 2), 16)) * ratio)
+    .toString(16).padStart(2, "0");
+  return "#" + mix(0) + mix(2) + mix(4);
+}
+
+function hoverTheme3D(th) {
+  if (!graph3d || !G3) return;
+  hoverThemeId = th;
+  const dsOn = i => DS[i].dom === th;
+  const keyOn = i => themeKeys[th] && themeKeys[th].has(i);
+  graph3d.nodeColor(n => {
+    const base = n.kind === "ds" ? dcol(n.i) : C.hub;
+    return (n.kind === "ds" ? dsOn(n.i) : keyOn(n.i)) ? base : fadeToward(base, C.ground, 0.88);
+  });
+  graph3d.linkColor(l => dsOn(l.dsIndex) ? dcol(l.dsIndex) : fadeToward(dcol(l.dsIndex), C.ground, 0.9));
+  graph3d.linkDirectionalParticles(l => dsOn(l.dsIndex) ? 1 + Math.round(2 * l.wn) : 0);
+  graph3d.refresh();
+}
+function clearHover3D() {
+  if (!graph3d || !G3) return;
+  hoverThemeId = null;
+  graph3d.nodeColor(n => n.kind === "ds" ? dcol(n.i) : C.hub);
+  graph3d.linkColor(l => dcol(l.dsIndex));
+  graph3d.linkDirectionalParticles(l => 1 + Math.round(2 * l.wn));
+  graph3d.refresh();
+}
+
 function init3D() {
   if (graph3d) { graph3d.width(W).height(H); return; }
   G3 = build3DGraph();
@@ -1484,6 +1544,8 @@ function init3D() {
     sprite.strokeWidth = isDs ? 0.35 : 0.22;
     sprite.strokeColor = C.ground;
     sprite.position.y = Math.cbrt(node.val) * 3.4 + (isDs ? 3 : 2);
+    sprite.material.transparent = true;
+    sprite.material.opacity = nodeDimmed(node) ? 0.12 : 1;
     node.__label = sprite;
     return sprite;
   }).nodeThreeObjectExtend(true);
@@ -1495,6 +1557,8 @@ function init3D() {
     sprite.color = C.ink3;
     sprite.fontFace = "IBM Plex Mono, monospace";
     sprite.textHeight = 1.15;
+    sprite.material.transparent = true;
+    sprite.material.opacity = hoverThemeId && DS[link.dsIndex].dom !== hoverThemeId ? 0.05 : 1;
     link.__label = sprite;
     return sprite;
   });
@@ -1642,12 +1706,18 @@ function renderList(q) {
       if (innerWidth <= 860) rail.classList.remove("on");
     };
     r.onmouseenter = () => {
-      if (r.dataset.th !== undefined) hover = { type: "theme", th: r.dataset.th };
-      else if (r.dataset.k !== undefined) hover = { type: "key", i: +r.dataset.k };
-      else return;
+      if (r.dataset.th !== undefined) {
+        hover = { type: "theme", th: r.dataset.th };
+        if (mode === "3d") hoverTheme3D(r.dataset.th);
+      } else if (r.dataset.k !== undefined) {
+        hover = { type: "key", i: +r.dataset.k };
+      } else return;
       draw();
     };
-    r.onmouseleave = () => { if (hover) { hover = null; draw(); } };
+    r.onmouseleave = () => {
+      if (mode === "3d" && hover && hover.type === "theme") clearHover3D();
+      if (hover) { hover = null; draw(); }
+    };
   });
 }
 document.getElementById("q").addEventListener("input", e => renderList(e.target.value));
