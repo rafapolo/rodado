@@ -522,7 +522,27 @@ def build_catalog():
     )
     print(f"Pushed to beelink: ~/rodado/_rodado_metadata/catalog.parquet", file=sys.stderr)
 
+    write_all_tables(beelink_tables)
     refresh_views()
+
+
+def write_all_tables(beelink_tables):
+    """Emite docs/context/all_tables.txt — a lista chapada de `dataset.tabela`.
+
+    Era um despejo do `bq ls` da era BigQuery (535 linhas, com
+    `logs.cloudaudit_*` e `test_dataset.test_table` dentro) que nenhum script
+    lia e ninguem regenerava. Sai daqui porque o catalogo e a unica fonte que
+    enxerga as duas metades: o parquet em disco e as tabelas nativas dentro do
+    `.duckdb`, que nao tem parquet nenhum e por isso o `gera_schemas.py` nao
+    ve."""
+    names = sorted(
+        f"{t['dataset']}.{t['table']}"
+        for t in beelink_tables
+        if t["source"] != "view_only"
+    )
+    out = REPO_ROOT / "docs" / "context" / "all_tables.txt"
+    out.write_text("\n".join(names) + "\n", encoding="utf-8")
+    print(f"Wrote {len(names)} tables to {out}", file=sys.stderr)
 
 
 # ---------------------------------------------------------------------------
