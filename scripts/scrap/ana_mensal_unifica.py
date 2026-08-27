@@ -101,7 +101,7 @@ def main():
             continue
         todo = pl.concat(partes[tipo])
         todo = (
-            todo.sort(["codigo", "mes", "nivel_consistencia"])
+            todo.sort(["codigo", "mes", "nivel_consistencia"], descending=[False, False, True])
             .unique(subset=["codigo", "mes"], keep="first")
             .sort(["codigo", "mes"])
         )

@@ -9,8 +9,9 @@ Duas fontes, dois recortes, um buraco entre elas:
   * SOAP `HidroSerieHistorica` (via `ana_soap_worker.py`): 1960 a **2026-04**.
     Só o mensal, e só media/maxima/minima.
 
-O resultado é `series_vazao_mensal_completa`, que estende a cobertura em ~2,5
-anos sem perder as colunas que só o zip tem.
+O resultado é `series_vazao_mensal_completa` (ou `series_cota_mensal_completa`
+com `--tipo cota`), que estende a cobertura em ~2,5 anos sem perder as colunas
+que só o zip tem.
 
 Regra de conflito, na ordem:
   1. maior `nivel_consistencia` vence — consistido (2) sobre bruto (1), a mesma
@@ -23,6 +24,7 @@ zip, e comparar as duas mensais é o que permite auditar o que o SOAP mudou.
 
 Uso (no beelink, depois do ana_soap_worker.py terminar):
     python3 ana_series_unifica_gap.py [--gap ~/soap_gap]
+    python3 ana_series_unifica_gap.py --tipo cota [--gap ~/soap_gap_cota]
 """
 
 import argparse
@@ -39,7 +41,7 @@ CREATE OR REPLACE TEMP VIEW zip AS
 SELECT codigo, data, nivel_consistencia, metodo,
        media, maxima, minima, dia_maxima, dia_minima, media_anual,
        'zip' AS fonte
-  FROM read_parquet('{lake}/series_vazao_mensal/**/*.parquet');
+  FROM read_parquet('{lake}/series_{grao}_mensal/**/*.parquet');
 
 -- O worker grava uma linha só com `codigo` para estação viva mas sem série, e
 -- essas linhas vêm sem a coluna `mes`; o filtro as descarta.
@@ -48,12 +50,12 @@ SELECT codigo,
        strptime(mes || '-01', '%Y-%m-%d')::DATE AS data,
        nivel_consistencia,
        NULL::TINYINT AS metodo,
-       vazao_media AS media, vazao_maxima AS maxima, vazao_minima AS minima,
+       {grao}_media AS media, {grao}_maxima AS maxima, {grao}_minima AS minima,
        NULL::TINYINT AS dia_maxima, NULL::TINYINT AS dia_minima,
        NULL::DOUBLE AS media_anual,
        'soap' AS fonte
   FROM read_parquet('{gap}/batch_*.parquet')
- WHERE mes IS NOT NULL AND vazao_media IS NOT NULL;
+ WHERE mes IS NOT NULL AND {grao}_media IS NOT NULL;
 
 CREATE OR REPLACE TEMP VIEW juntas AS
 SELECT * FROM zip UNION ALL BY NAME SELECT * FROM soap;
@@ -69,7 +71,7 @@ COPY (
         FROM juntas
     )
    WHERE rn = 1
-) TO '{lake}/series_vazao_mensal_completa'
+) TO '{lake}/series_{grao}_mensal_completa'
   (FORMAT PARQUET, COMPRESSION ZSTD,
    PARTITION_BY (bacia), OVERWRITE_OR_IGNORE 1);
 """
@@ -87,7 +89,7 @@ RESUMO = """
 SET enable_progress_bar=false;
 SELECT fonte, count(*) AS linhas, count(DISTINCT codigo) AS estacoes,
        min(data) AS ini, max(data) AS fim
-  FROM read_parquet('{lake}/series_vazao_mensal_completa/**/*.parquet')
+  FROM read_parquet('{lake}/series_{grao}_mensal_completa/**/*.parquet')
  GROUP BY 1 ORDER BY 1;
 """
 
@@ -109,17 +111,21 @@ def duck(sql: str, host: str | None) -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--gap", default="~/soap_gap", help="pasta dos batch_*.parquet")
+    ap.add_argument("--gap", default=None,
+                    help="pasta dos batch_*.parquet (default ~/soap_gap[_cota])")
+    ap.add_argument("--tipo", default="vazao", choices=["vazao", "cota"],
+                     help="qual grão unificar (default vazao)")
     ap.add_argument("--host", default=None,
                     help="rodar via ssh neste host (omita se já estiver no beelink)")
     a = ap.parse_args()
+    gap = a.gap or ("~/soap_gap" if a.tipo == "vazao" else "~/soap_gap_cota")
 
-    if not a.host and not Path(a.gap).expanduser().is_dir():
-        raise SystemExit(f"pasta do gap não encontrada: {a.gap}")
+    if not a.host and not Path(gap).expanduser().is_dir():
+        raise SystemExit(f"pasta do gap não encontrada: {gap}")
 
-    print("unificando zip + SOAP...")
-    duck(SQL.format(lake=LAKE, gap=a.gap), a.host)
-    print(duck(RESUMO.format(lake=LAKE), a.host))
+    print(f"unificando zip + SOAP ({a.tipo})...")
+    duck(SQL.format(lake=LAKE, gap=gap, grao=a.tipo), a.host)
+    print(duck(RESUMO.format(lake=LAKE, grao=a.tipo), a.host))
     print("pronto. rode scripts/build_metadata_catalog.py para registrar no catálogo.")
     return 0
 
