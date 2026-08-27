@@ -3,7 +3,7 @@
 O espelho é parquet cru: não tem foreign key, não tem métrica nomeada e não
 tem hierarquia declarada. É aqui que essas três coisas passam a existir como
 **dado**, e não como prosa que o modelo tem que interpretar. `mcp_server.py`
-lê esta pasta; `ask` (CLI Rust, fora deste checkout) lê o `metrics.json`.
+lê esta pasta; `scripts/build_ask_web_assets.ts` (branch `ask-web`, remoto e não mesclado) lê o `metrics.json` para empacotar `web/static/index/semantica.json`. A TUI Rust que lia esse `.json` antes foi removida (`ask/` apagado em `58ab7c7`, 2026-08-23).
 
 A regra que vale para tudo abaixo: **arquivo gerado não se edita à mão** — edite
 a fonte e regenere. A coluna "Gerado por" diz qual é a fonte de cada um.
@@ -36,7 +36,7 @@ Três coisas destes arquivos valem mais que o resto:
 | `all_tables.txt` | 857 `dataset.tabela`, uma por linha — a lista chapada, incluindo as 8 tabelas nativas do `.duckdb` que não têm parquet | `build_metadata_catalog.py` |
 | `basedosdados-schema.json` | Schema completo que o `describe_table` do MCP lê (199 datasets, 848 tabelas, 38.465 colunas) | `sync_mcp_schema.py`, a partir de `schemas.json` na raiz |
 | `join_keys.md` | O render do `bridges.yaml` + as chaves auto-detectadas: 157 seções. `mcp_server.get_join_keys()` fatia este arquivo por `###`, então todo h3 tem que ser um nome de coluna de verdade | `gera_join_keys.py` |
-| `metrics.json` | O `metrics.yaml` em JSON, porque o `ask` já depende de `serde_json` e não de YAML. O MCP lê o YAML direto | `gera_metrics_json.py` |
+| `metrics.json` | O `metrics.yaml` em JSON, consumido por `build_ask_web_assets.ts` no branch `ask-web`. O MCP lê o YAML direto | `gera_metrics_json.py` |
 | `dicionario_coverage.json` | Quais colunas de quais tabelas têm decode chave→valor em `{dataset}.dicionario` — 45 datasets, 168 tabelas, 6.256 colunas | `gera_dicionario_coverage.py` |
 
 ## Busca semântica (`search_tables`)
