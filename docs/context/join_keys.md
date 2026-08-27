@@ -254,6 +254,7 @@ IBGE municipality code without the check digit (6 digits). Used by DATASUS syste
 - Convert either way: `substr(id_municipio, 1, 6) = id_municipio_6`.
 - In SINAN microdata the column arrives as a float-shaped string (`261640.0`) — normalize with `lpad(CAST(CAST(x AS DOUBLE) AS BIGINT)::VARCHAR, 6, '0')`.
 - `br_ms_sih.aihs_reduzidas` and `br_ms_sinan_violencia.microdados_violencia` join straight to this 6-digit code — a naive join against the 7-digit `id_municipio` returns 0 rows, silently, no error. See the bridge entries below for both tables (SIH has three municipality columns: paciente, estabelecimento, gestor — not one).
+- br_ms_sinan_violencia.microdados_violencia.NU_ANO vem vazio (string vazia) pra 100% do lote tageado ano_sinan=2020 (326.503 de 326.563 linhas em branco) — usar ano_sinan como partição de ano nesta tabela, nunca NU_ANO, ou a série pula 2020 inteiro em silêncio. Achado tema 56, 2026-08-27.
 
 ```sql
 WITH mun AS (SELECT DISTINCT id_municipio_6, nome, sigla_uf
