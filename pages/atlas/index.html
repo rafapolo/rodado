@@ -150,7 +150,7 @@ button { font: inherit; color: inherit; }
 .sub { margin: 0; font-size: 12px; color: var(--ink-2); line-height: 1.5; }
 
 .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border-bottom: 1px solid var(--line); }
-.stat { background: var(--rail); padding: 10px 18px 11px; }
+.stat { background: var(--rail); padding: 10px 18px 11px; text-align: center; }
 .stat b {
   display: block;
   font-family: "IBM Plex Mono", ui-monospace, monospace;
@@ -176,16 +176,19 @@ button { font: inherit; color: inherit; }
   font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em;
   color: var(--ink-3); margin: 0 0 9px;
 }
-.modes { display: flex; flex-direction: column; gap: 5px; }
+.modes { display: flex; flex-direction: row; gap: 6px; }
 .modes button {
-  display: block; width: 100%; text-align: left; cursor: pointer;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 5px;
+  flex: 1 1 0; min-width: 0; text-align: left; cursor: pointer;
   background: none; border: 1px solid var(--line); border-radius: 6px;
-  padding: 7px 9px; line-height: 1.35;
+  padding: 8px 9px; line-height: 1.35;
 }
 .modes button:hover { border-color: var(--line-2); }
 .modes button[aria-pressed="true"] { border-color: var(--focus); background: var(--card-2); }
+.modes svg { width: 16px; height: 16px; flex: none; color: var(--ink-3); }
+.modes button[aria-pressed="true"] svg { color: var(--focus); }
 .modes .nm { display: block; font-size: 12.5px; font-weight: 500; }
-.modes .ds { display: block; font-size: 11px; color: var(--ink-3); margin-top: 1px; }
+.modes .ds { display: block; font-size: 11px; color: var(--ink-3); }
 
 .dot { width: 9px; height: 9px; border-radius: 2.5px; flex: none; }
 
@@ -336,7 +339,7 @@ canvas.drag { cursor: grabbing; }
   <div class="rail-head">
     <a class="back" href="/">← rodado</a>
     <h1>Rodado Atlas</h1>
-    <p class="sub">O espelho não tem chave estrangeira — é parquet. O que o conecta são colunas que significam a mesma coisa em mais de uma tabela. Cada pastilha é uma dessas chaves.</p>
+    <p class="sub">As tabelas não vêm conectadas prontas. O que as liga são colunas que guardam a mesma informação com nomes diferentes — um CNPJ, um município, uma data. Cada etiqueta marca um desses pontos em comum.</p>
   </div>
 
   <div class="stats">
@@ -893,24 +896,15 @@ function drawGrade(act) {
     ctx.lineWidth = (sel && sel.type === "ds" && sel.i === d ? 2 : 1) / k;
     ctx.stroke();
 
-    // Header tinted by the dataset's most specific key group. Zoomed out, the
-    // labels are gone and this tint is the only thing left saying what a card
-    // is — without it the overview is 197 identical white rectangles.
+    // Header filled solid with the dataset's theme colour — same value, same
+    // full opacity, as the table bodies drawn in Temas. No dilution: a card
+    // and the discs it would explode into in the other mode read as one hue.
     const dg = DS[d].dom;
     roundRect(X, Y, w, HEADER, 7);
     ctx.save(); ctx.clip();
-    ctx.fillStyle = C.card2;
+    ctx.fillStyle = dg ? dcol(d) : C.card2;
+    ctx.globalAlpha = on ? 1 : 0.3;
     ctx.fillRect(X, Y, w, HEADER);
-    if (dg) {
-      // The wash gives the card its theme; the saturated rule under it does the
-      // separating. At a single low alpha the thirteen themes collapse — saúde,
-      // população and território all wash out to the same pale pink.
-      ctx.globalAlpha = (on ? 1 : 0.3) * (k < 0.2 ? 0.6 : 0.28);
-      ctx.fillStyle = dcol(d);
-      ctx.fillRect(X, Y, w, HEADER);
-      ctx.globalAlpha = on ? 1 : 0.3;
-      ctx.fillRect(X, Y + HEADER - 2.5, w, 2.5);
-    }
     ctx.restore();
     ctx.strokeStyle = C.line;
     ctx.lineWidth = 1 / k;
@@ -927,13 +921,13 @@ function drawGrade(act) {
     const showCount = k > 0.3 && nameW + ctx.measureText(count).width + 26 <= w;
     const countW = showCount ? ctx.measureText(count).width + 10 : 0;
     if (showCount) {
-      ctx.fillStyle = C.ink3;
+      ctx.fillStyle = dg ? "rgba(255,255,255,.78)" : C.ink3;
       ctx.textAlign = "right";
       ctx.fillText(count, X + w - 9, Y + HEADER / 2 + 0.5);
       ctx.textAlign = "left";
     }
     if (k > 0.14) {
-      ctx.fillStyle = C.ink;
+      ctx.fillStyle = dg ? "#fff" : C.ink;
       ctx.font = '600 12px "IBM Plex Mono", monospace';
       ctx.save();
       roundRect(X + 8, Y, Math.max(10, w - 17 - countW), HEADER, 0); ctx.clip();
@@ -1309,9 +1303,15 @@ document.getElementById("s-d").textContent = fmt(G.meta.datasets);
 document.getElementById("s-k").textContent = fmt(G.meta.keys);
 document.getElementById("s-e").textContent = fmt(G.meta.edges);
 
+// grade: cards in a grid. temas: territories of clustered bodies.
+const MODE_ICON = {
+  grade: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1"/><rect x="9" y="1.5" width="5.5" height="5.5" rx="1"/><rect x="1.5" y="9" width="5.5" height="5.5" rx="1"/><rect x="9" y="9" width="5.5" height="5.5" rx="1"/></svg>',
+  temas: '<svg viewBox="0 0 16 16" fill="currentColor"><circle cx="4.5" cy="4.5" r="3"/><circle cx="12" cy="4" r="2"/><circle cx="5" cy="12" r="2.3"/><circle cx="12.5" cy="11.5" r="1.6"/></svg>',
+};
 const modesEl = document.getElementById("modes");
 modesEl.innerHTML = MODES.map(([id, name, desc]) =>
   `<button data-mode="${id}" aria-pressed="${id === mode}">
+     ${MODE_ICON[id] || ""}
      <span class="nm">${name}</span><span class="ds">${desc}</span></button>`).join("");
 modesEl.querySelectorAll("button").forEach(b => b.onclick = () => setMode(b.dataset.mode));
 
