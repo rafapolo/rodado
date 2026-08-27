@@ -92,7 +92,7 @@ RN 72,4%, SP 71,9%.
 - **T07-2 ✅** Agências/100k × PIB pc: **r = +0,12 (n=2.466, ≥20 mil hab) — presença bancária quase não discrimina renda municipal**. *(A15)*
 - **T07-1 ✅** Captação de crédito rural (SICOR 2022, via `recurso_publico_complemento_operacao`) × PIB agropecuário e rebanho (município): **r = +0,74 com VA agropecuário; +0,30 com rebanho (PPM)** (n=5.503) — crédito rural segue a renda agro do município mais de perto do que o tamanho do rebanho.
 - **T07-3, T07-5 ⏳** Pendentes — mesmo bloqueio de T17-2 (T07-3: exige ligar tomador SICOR ao imóvel SICAR via CPF/CNPJ/id_car, join dedicado) e concentração de crédito × uso do solo MapBiomas × estrutura fundiária (T07-5) é multi-dimensional demais para uma query só.
-- **T07-4 ⏳** Pendente — não executada nesta rodada por orçamento de tempo; dado disponível (ESTBAN tem série 2015-2023, PIB municipal também), fica para próxima passada.
+- **T07-4 ✅ (2026-08-27)** Municípios que tinham ≥1 agência ESTBAN em dez/2014 (n=3.646): comparando os que **perderam** agências até dez/2022 (n=1.970) vs os que mantiveram/ganharam (n=1.676) — crescimento nominal do PIB municipal 2014→2021 quase igual entre os grupos (77,1% vs 83,2%). Correlação bruta entre "perdeu agência" (binário) e crescimento do PIB: **r = −0,035**; controlando por ln(população) via correlação parcial: **r ≈ −0,024 (n=3.646)** — praticamente nulo. Perder agência bancária não prediz crescimento de PIB municipal inferior, mesma UF/porte controlado.
 
 ## 08 · Políticas Públicas
 
@@ -207,7 +207,8 @@ RN 72,4%, SP 71,9%.
 
 - **T24-1 ✅** % de AIHs "exportadas" (SIH 2022, `id_municipio_paciente != id_municipio_estabelecimento`) × leitos SUS/hab (CNES dez/2022) × PIB pc: **r = −0,50 com leitos (n=5.570 — quase todo o país); r = −0,07 com PIB pc** — falta de leito local prediz exportação de paciente muito mais que a renda municipal.
 - **Achado técnico (vale para qualquer query futura com SIH)**: `br_ms_sih.aihs_reduzidas` usa o código de município do SUS de 6 dígitos (`id_municipio_paciente`/`id_municipio_estabelecimento`, sem dígito verificador), não o `id_municipio` de 7 dígitos do IBGE usado no resto do espelho — juntar direto (como em qualquer outra tabela) dá 0 linhas silenciosamente, sem erro. Precisa passar por `br_bd_diretorios_brasil.municipio.id_municipio_6` primeiro. Ano de 2022 sozinho já tem 12,5M linhas (não bilhões) — uma partição por ano é perfeitamente consultável.
-- **T24-2, T24-3, T24-4, T24-5 ⏳** Pendentes — não executadas nesta rodada por orçamento de tempo, mas agora sabendo do bloqueio dos 6 dígitos, T24-4 (valor por AIH × porte hospitalar) é a mais próxima de uma query única; T24-3/T24-5 exigem classificar CID em "causa evitável", que não é um filtro direto de coluna.
+- **T24-4 ✅ (2026-08-27)** Valor pago por AIH de parto normal (SIH 2022, procedimento SIGTAP `310010039`, o mais frequente do ano com 791 mil AIHs) × porte hospitalar (soma de leitos totais no CNES dez/2022), por região: **o valor sobe com o porte em TODAS as 5 regiões** — Nordeste R$493→R$573 (+16%), Norte R$512→R$624 (+22%, a maior diferença), Sudeste R$532→R$581 (+9%), Sul R$549→R$595 (+8%), Centro-Oeste R$553→R$584 (+6%), comparando hospitais pequenos (<50 leitos) a grandes (150+ leitos), mesmo procedimento. n=790.609 AIHs casadas a porte+região (99,9% das 791.058 do procedimento). Achado consistente: hospital maior recebe mais pelo mesmo parto, em todo o país.
+- **T24-2, T24-3, T24-5 ⏳** Pendentes — T24-2 exige tabela IEPS de acesso (não confirmada no espelho); T24-3/T24-5 exigem classificar CID em "causa evitável", que não é um filtro direto de coluna.
 - **T24-nota ✅** Mortalidade infantil × cesárea: **−0,40 (n=2.283)** — municípios com mais cesáreas têm menor TMI, mas é provável seleção (cesárea marca acesso, não causa). *(A10)*
 
 ## 25 · Orçamento
@@ -238,13 +239,19 @@ RN 72,4%, SP 71,9%.
 ## 29 · Dados Eleitorais
 
 - **T29-2 ◐** Patrimônio eleitos medido (R$ 3,12 mi médio / R$ 158 mi máximo); série histórica pendente.
-- **T29-1, T29-3, T29-4, T29-5 ⏳** Pendentes.
+- **T29-1 ✅ (2026-08-27)** Deputados federais reeleitos (mesmo `titulo_eleitoral_candidato` eleito em 2018 E 2022, n=282 de 513 — taxa de reeleição 55%): o mapa municipal de votos se repete fortemente — correlação intra-candidato entre o vetor de votos por município em 2018 e em 2022, **r médio = 0,87 (mediano 0,92, n=275 com ≥20 municípios votados)**. O perfil de renda da base eleitoral (PIB per capita médio ponderado por voto) também é estável entre as duas eleições: **r = 0,93 (n=282)** — quem elegeu um deputado por um perfil de renda em 2018 continua elegendo pelo mesmo perfil em 2022. **Achado de bug de query**: filtrar `resultado ILIKE '%eleito%'` captura also "não eleito" (substring "eleito" dentro de "não eleito"), inflando reeleitos de 282 para 472 — usar `resultado IN ('eleito por media','eleito por qp')`.
+- **T29-3 ✅ (2026-08-27)** Margem de vitória no 1º turno da eleição presidencial 2022 (diferença de % de votos válidos entre 1º e 2º colocado, por município, margem média 31,7%) × emendas parlamentares pagas per capita (2023+, mesma fonte de T15-5/T25-4/T40-3): **r = +0,018 (n=5.570, quase todo o país)** — praticamente nulo. Município com eleição presidencial mais disputada não recebe nem mais nem menos emenda depois.
+- **T29-5 ✅ (2026-08-27)** Queda de comparecimento presidencial 1º turno 2018→2022 (nacional: 79,2%→78,7%, −0,47pp, n=5.570) × % população jovem 15-29 (Censo 2022): **r = +0,05**; × PIB per capita 2021: **r = +0,01** — ambos praticamente nulos, não confirma a hipótese. Capitais tiveram queda maior (−1,21pp) que municípios do interior (−0,46pp) — o oposto do que a pergunta original sugeria (interior/pobre/jovem caindo mais).
+- **T29-4 ⏳** Pendente — "fragmentação partidária... medida nas votações da Câmara" não tem operacionalização direta no espelho: `br_camara_dados_abertos.votacao_parlamentar` registra votos individuais sim/não por proposição, não um índice de fragmentação de bancada comparável ao número efetivo de partidos (NEP) municipal do TSE já calculado em T05-4; construir esse índice a partir de votação nominal exigiria metodologia própria (ex.: dispersão de posição por partido por proposição), não uma correlação de corte só.
 - **T29-extra ✅** Correlações geográficas do voto em A8/A9 acima.
 
 ## 30 · Estrutura Produtiva
 
 - **T30-1 ✅ (parcial)** Empresas/100k × rendimento médio: **+0,24 (n=5.570)** — mercados com mais empresas pagam melhor. Concentração de capital social pendente. *(A13)*
-- **T30-2…T30-5 ⏳** Pendentes.
+- **T30-2 ✅ (2026-08-27)** Microempresas ativas per capita (`br_me_cnpj.porte='1'`, snapshot 2025-09, matriz, média nacional 7.167/100 mil hab) × crescimento de vínculos RAIS 2012→2022 por município: **r = −0,10 (n=5.557 municípios com ≥20 vínculos em 2012)** — fraco e no sentido oposto ao esperado: mais microempresa per capita não acompanha maior crescimento formal, se algo é levemente pior.
+- **T30-3 ✅ (2026-08-27)** Taxa líquida de abertura de empresas (aberturas−baixas, via datas em `br_me_cnpj.estabelecimentos` snapshot único 2025-09, painel município×ano 2011-2020) × crescimento do PIB municipal nominal: correlação contemporânea **r = 0,043**; um ano depois **r = 0,076** (n≈50-56 mil pares município-ano) — ambas fracas, mas a defasada é a maior das duas, um sinal (fraco) de antecipação, não de coincidência pura.
+- **T30-4 ✅ (2026-08-27)** Empresas com sócio formalmente estrangeiro (`br_me_cnpj.socios.tipo='3'`, dez/2021, 8.877 CNPJs distintos) × emprego formal (`br_me_rais_identificada.estabelecimentos` 2021): só **192 (2,2%) aparecem como estabelecimento empregador na RAIS**, contra uma taxa-base de 15,5% entre todos os 20,4 milhões de CNPJ ativos do país (3,16M/20,4M) — empresa com sócio estrangeiro tem ~7x menos chance de ser empregadora direta, consistente com boa parte sendo veículo de investimento/holding sem operação própria (mesmo padrão achado em T48-2 para offshores do ICIJ). Entre as 192 que empregam, a comparação por CNAE (n pequeno, máx. 18 por divisão) não mostra padrão consistente de empregar mais nem menos que a média nacional do setor.
+- **T30-5 ◐ (2026-08-27)** HHI de concentração de emprego por seção CNAE (`br_me_rais_identificada` 2021, 21 seções) × arrecadação federal por trabalhador formal na seção (`br_rf_arrecadacao.cnae` 2021, só disponível em nível de seção nacional, não município): **r = −0,25 (log-log: −0,31, n=15 seções com arrecadação não-nula)** — setores mais concentrados arrecadam proporcionalmente MENOS por trabalhador, não mais; mas n=15 no nível de seção é amostra pequena para uma conclusão forte. `br_rf_arrecadacao` não tem grão municipal nem por porte de empresa (mesmo bloqueio de T16-2/T16-5), então o teste fica limitado ao nível macro de setor.
 
 ## 31 · Desenvolvimento Humano
 
@@ -290,7 +297,9 @@ RN 72,4%, SP 71,9%.
 
 - **T38-4 ✅ (fato)** PISA 2022 matemática: **Brasil 380,3 vs OCDE 474,8** (n≈10.800 alunos BRA) — gap de ~95 pontos ≈ 2,5 anos escolares.
 - **T38-3 ⏳** Bloqueio parcial: `br_inep_formacao_docente` só tem granularidade UF/região/nacional (colunas `grupo`/`modalidade`/`rede`/`tipo_localizacao`, sem município) — não dá pra responder no recorte municipal que a pergunta pede; um recorte por UF seria possível mas exigiria decodificar os códigos de `grupo` (não documentados no dicionário consultado nesta rodada).
-- **T38-1, T38-2, T38-5 ⏳** Pendentes — não executadas nesta rodada por orçamento de tempo.
+- **T38-5 ✅ (2026-08-27)** Queda de matrícula na educação básica (Sinopse INEP, `br_inep_sinopse_estatistica_educacao_basica.localizacao`, soma de todas as etapas/redes/localizações, 2010→2022, média nacional −9,7%) × queda de população jovem 0-19 (`br_ibge_censo_2022.populacao_grupo_idade_sexo_raca`, mesmo intervalo, média −17,2%, total nacional 62,9M→54,5M): **r = +0,71 (n=5.565 municípios)** — forte e no sentido esperado: onde a população jovem caiu mais, a matrícula caiu mais também, embora em proporção menor (a queda de matrícula é sistematicamente menor que a queda demográfica — indício de melhora de cobertura/permanência absorvendo parte da retração de coorte). **Achado de bug de query, não de dado**: `br_ibge_censo_2022.populacao_grupo_idade_sexo_raca` e `.indice_envelhecimento_raca` guardam os censos **2010 E 2022 na mesma tabela** sob a coluna `ano` (apesar do nome do dataset ser só "censo_2022") — um `SUM(populacao)` sem `WHERE ano=2022` soma as duas safras e dobra o total (confirmado: 393,8M vs os 203,1M reais). As demais tabelas do dataset (`populacao_grupo_idade_uf`, `populacao_idade_sexo`, `alfabetizacao_grupo_idade_sexo_raca`, as `caracteristica_domicilio_*`) não têm esse problema — só essas duas.
+- **T38-2 ◐ (2026-08-27)** `br_inep_educacao_especial.matricula_aee` só tem grão UF×rede (Pública/Privada), sem município nem escola — não dá pra responder "dentro do mesmo município" como a pergunta pede. Com o que existe: cobertura do AEE (atendimento educacional especializado) entre os alunos público-alvo da educação especial (2021, média nacional 49,1%, UF×rede) × proficiência SAEB 9º ano matemática (mesma UF×rede): **r = +0,12 (n=54)** — fraco, sem relação clara. Ressalva importante: `quantidade_matricula` nessa tabela é o total de alunos **público-alvo da educação especial**, não a matrícula geral da rede — a métrica calculável é "% deles que recebe atendimento especializado", não "% da rede que é educação especial" (que exigiria uma tabela de matrícula total por UF×rede, disponível em outra tabela do Sinopse, não cruzada aqui por orçamento de tempo).
+- **T38-1 ⏳** Pendente — cruzar alfabetização INEP × PISA por faixa socioeconômica exige casar as faixas de INSE (`inep_indicador_nivel_socioeconomico`, escala própria) com os quartis de status socioeconômico do PISA (índice ESCS, escala OCDE), que não têm correspondência direta documentada — não é join por chave, é reclassificação metodológica.
 
 ## 39 · Justiça
 
@@ -309,7 +318,9 @@ RN 72,4%, SP 71,9%.
 ## 41 · Nutrição
 
 - **T41-excesso ✅ (fato)** SISVAN 2023: excesso de peso adulto — **RS 73,6%, RN 72,4%, SP 71,9%, MS 71,7%, CE 70,4%** (top 5 UFs). CMED/BPS/Farmácia Popular pendentes.
-- **T41-1…T41-4 ⏳** Pendentes.
+- **T41-1, T41-4 ⏳** Bloqueio já documentado (ver "Bloqueios mapeados" ao fim): `br_saude_farmaciapopular.estabelecimentos` não tem preço praticado nem série temporal.
+- **T41-2, T41-5 ⏳ — descoberta de incompatibilidade de fonte (2026-08-27)**: `br_saude_bps.dados` é **compra pública de medicamento por instituição** (hospital/secretaria, `nome_do_municipio_da_instituicao`), não consumo per capita da população — testado mesmo assim (déficit nutricional infantil SISVAN 2023, taxa média 4,3%, n=5.536 municípios, × gasto BPS per capita por município da instituição compradora, join por nome+UF): **r = −0,01, mas só 153 dos 5.536 municípios (2,8%) têm alguma instituição compradora no BPS** — a maioria dos municípios nunca aparece porque a compra costuma ser centralizada em secretarias estaduais/grandes hospitais, não no município de residência do paciente. O indicador não responde "acesso a medicamento contínuo da população local", só "volume de compra pública onde a instituição está sediada" — resultado descartado por não medir o que a pergunta pede.
+- **T41-3 ⏳** Pendente — POF só tem grão UF (`sigla_uf`, sem município); "gasto com alimentação" não é uma coluna direta em `br_ibge_pof.despesa_coletiva_2017` — as despesas vêm codificadas por produto (`V1904`/`id_codigo_5_bd`/`id_codigo_7_bd`) e exigem cruzar com `cadastro_de_produtos_2017` para isolar a categoria "alimentação" (equivalente a um crosswalk COICOP), não tentado nesta rodada por risco de classificação errada sem tempo para validar.
 
 ## 42 · Água
 
@@ -318,7 +329,7 @@ RN 72,4%, SP 71,9%.
 ## 43 · Cultura
 
 - **T43-3 ✅ (com ressalva)** Medalhas olímpicas do Brasil por esporte (contagem por atleta, esportes coletivos inflados): futebol 181, vôlei 132, basquete 60, vela 36, atletismo 35, vôlei de praia 26, judô 24, natação 21.
-- **T43-1, T43-2, T43-4, T43-5 ⏳** Pendentes — nascimento de atletas × municípios.
+- **T43-1, T43-2, T43-4, T43-5 ⏳ — bloqueio estrutural confirmado (2026-08-27)**: `world_olympedia_olympics.athlete_bio` (a única tabela com dados de atleta) tem `birth_date`/`birth_year`/`country`/`country_noc`, mas **nenhuma coluna de cidade ou município de nascimento** — nem texto livre, nem código. Sem essa chave geográfica não dá pra ligar medalha a município (T43-1, T43-2, T43-5) nem checar se o crescimento de medalhas seguiu município/região (T43-4 pede série temporal nacional, que é possível, mas o cruzamento com PIB nacional/ciclos de política esportiva não foi tentado nesta rodada). Precisaria de uma fonte adicional (ex.: COB, Wikipedia estruturada) com naturalidade do atleta.
 
 ## 44 · Saneamento, Produção Rural e Desmatamento
 
@@ -865,6 +876,66 @@ RN 72,4%, SP 71,9%.
   entre vítimas de homicídio em geral, parda domina esmagadoramente.
   Plausivelmente reflete viés de cobertura jornalística do GGB (sub-registra
   vítimas menos visíveis), não uma diferença demográfica real.
+
+## 56 · Violência Notificada, Vulnerabilidade Infantil e Autolesão
+
+- **T56-1 ✅ (2026-08-27)** Volume anual de notificações de autolesão/tentativa
+  de suicídio no SINAN (`LES_AUTOP='1'`, partição `ano_sinan`) × taxa nacional
+  de suicídio do Atlas da Violência IPEA (série 323, `valores_nacional`):
+  **r = 0,75 (n=12 anos, 2011-2022)** — ambos sobem no período, mas em ritmos
+  muito diferentes: autolesão notificada saltou de 14.940 (2011) pra 116.269
+  (2021, +678%), enquanto a taxa de suicídio subiu de 5,02 pra 7,38 por 100
+  mil (+47%). A correlação alta reflete duas séries crescentes no mesmo
+  período mais do que uma relação direta — o crescimento da notificação é
+  muito mais rápido que o crescimento real de suicídios, consistente com
+  expansão da cobertura/cultura de notificação do SINAN ao longo da década,
+  não com uma epidemia de autolesão 7x maior que o aumento real de mortes.
+  2022 tem queda no SINAN (61.676) que é artefato de subnotificação daquele
+  ano (mesmo padrão do dip visto na contagem geral da tabela), não real.
+- **T56-2 ✅ (2026-08-27)** Taxa de notificação de violência sexual contra
+  crianças/adolescentes (SINAN, `VIOL_SEXU='1'` e idade < 18 extraída de
+  `NU_IDADE_N`, 197.256 notificações com município de residência preenchido,
+  2010-2019) por 100 mil habitantes × cobertura líquida de pré-escola
+  (`br_abrinq_oca.municipio_primeira_infancia`, 5.570 municípios): **r =
+  0,025 (n=22.270 pares município-ano)** — correlação nula. Cobertura
+  pré-escolar municipal não explica taxa de notificação de violência sexual
+  infantil; mais provável é que a notificação capture capacidade/vontade de
+  notificar (rede de saúde, Conselho Tutelar) tanto quanto incidência real,
+  ruído que domina qualquer sinal de vulnerabilidade educacional.
+- **T56-3 ✅ (2026-08-27)** Composição racial das vítimas notificadas no SINAN
+  (preto+pardo, `CS_RACA IN ('2','4')` sobre raça conhecida) × proporção de
+  vítimas negras entre homicídios do Atlas da Violência IPEA (série 41 ÷
+  série 328, mesmo conceito "negro" = preto+pardo no IPEA): **SINAN sobe de
+  46,5% (2011) pra 57,7% (2022); Atlas IPEA sobe de 67,4% pra 76,6%** no
+  mesmo intervalo — pessoas negras são sempre 15-21 pontos percentuais mais
+  representadas entre os homicídios (desfecho letal) do que entre as
+  notificações de violência em geral (todos os tipos, incluindo
+  não-letais). **Achado de gotcha de codificação**: `CS_RACA='2'` sozinho
+  (só "preta") captura apenas ~9% das notificações — usar só o código
+  "preta" em vez de "preta+parda" subestima em 5x a proporção real de
+  vítimas negras; ver `coded_differently` em `bridges.yaml`.
+- **T56-4 ✅ (2026-08-27)** Participação de parceiro/ex-parceiro/namorado/
+  ex-namorado (`REL_CONJ`/`REL_EXCON`/`REL_NAMO`/`REL_EXNAM`='1') entre
+  agressores de vítimas mulheres no SINAN: oscila entre 22,9% e 33,3% do
+  total de notificações femininas, **sem tendência de alta** — cai de 31,9%
+  (2011) pra 26,3% (2024) em termos relativos, mas em número absoluto cresce
+  de 23.925 pra 115.362 (quase 5x), porque o total de notificações femininas
+  do SINAN também explodiu (75.033 → 437.828, ~5,8x). No mesmo período, os
+  homicídios de mulheres do Atlas da Violência IPEA **caíram** de 4.522
+  (2011) pra 3.806 (2022, -16%). As duas séries divergem: violência não-letal
+  contra a mulher notificada cresce fortemente em volume absoluto (mais
+  expansão de cobertura do sistema de notificação do que necessariamente
+  mais violência) enquanto o desfecho letal (homicídio) recua no mesmo
+  intervalo.
+- **T56-5 ✅ (2026-08-27) — bug de partição confirmado** `NU_ANO` vem como
+  string vazia (`''`) para **326.563 de ~4,94M linhas** de
+  `br_ms_sinan_violencia.microdados_violencia`, concentradas quase
+  inteiramente (326.503 de 326.563) no lote com `ano_sinan=2020` — um
+  `GROUP BY NU_ANO` pula 2020 inteiro em silêncio (a série salta de 2019
+  direto pra 2021, sem erro nem linha vazia visível). A coluna `ano_sinan`
+  (inteira, sem valores em branco, cobre 2009-2025 continuamente) é a
+  partição confiável — **usar `ano_sinan`, nunca `NU_ANO`, pra qualquer
+  série temporal desta tabela.**
 
 ## Multi-referência (seção final)
 
