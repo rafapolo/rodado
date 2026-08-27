@@ -1,0 +1,1045 @@
+openapi: 3.1.0
+info:
+  title: Rodado API
+  version: 0.1.0-design
+  summary: >-
+    Schema-first HTTP contract for the 18 tools currently exposed as MCP
+    tool-calls by mcp_server.py.
+  description: >
+    This is a **design artifact, not a deployed service**. `mcp_server.py`
+    exposes its 18 functions as MCP tools over stdio for an LLM agent (see
+    `docs/MCP.md`) — there is no HTTP server behind it today, and no live
+    `servers:` entry is listed below on purpose.
+
+
+    The point of formalizing it as OpenAPI is to have one typed, versionable
+    contract for this surface — request/response shapes that today only
+    exist as Python dicts and docstrings — so that:
+
+
+    - a REST shim (if one is ever built, e.g. for `ask-web` on the `ask-web`
+      branch) has a schema to implement against instead of re-deriving
+      response shapes from `mcp_server.py` source;
+    - client code (TypeScript types, a generated SDK) can be generated
+      without hand-copying dict shapes;
+    - the contract can be reviewed and diffed like code, independent of
+      whether it is ever served over HTTP, gRPC, or stays MCP-only.
+
+
+    Every operation here maps 1:1 to a `@mcp.tool()` function in
+    `mcp_server.py` (`operationId` matches the Python function name). The
+    mapping from MCP's positional/keyword tool arguments to HTTP is a
+    straightforward RESTful gloss:
+
+    - lookups by a single identifier become a path parameter
+      (`GET /tables/{table}`);
+    - optional filters become query parameters;
+    - `run_sql`, the one operation that takes an open-ended payload, is the
+      only `POST`.
+
+
+    None of this changes `mcp_server.py` or the tool-calling behavior
+    Claude/agents rely on today — it is a parallel, explicit description of
+    the same surface for anyone (human or generator) who needs a contract
+    instead of a docstring.
+  contact:
+    name: rodado
+    url: https://rodado.xyz
+
+# Intentionally no `servers:` block — nothing is deployed. Add one only when
+# (and if) an actual HTTP process implements this contract.
+
+tags:
+  - name: catalog
+    description: What exists — datasets, tables, columns, and semantic search over them.
+  - name: semantics
+    description: >-
+      The join graph, named metrics, and classification rollups that make the
+      mirror queryable without re-deriving domain knowledge every time
+      (backed by docs/context/bridges.yaml, metrics.yaml, hierarchies.yaml).
+  - name: query
+    description: Direct read-only SQL against the beelink DuckDB mirror.
+  - name: lookups
+    description: >-
+      Thin, single-purpose lookups over already-mirrored data or one
+      well-known live external API, for callers who don't want to write SQL.
+
+paths:
+  /datasets:
+    get:
+      operationId: list_datasets
+      tags: [catalog]
+      summary: List all datasets with their table counts
+      description: >-
+        Entry point for orientation — 190+ datasets mixing the Base dos
+        Dados mirror and independently-scraped sources. Use before drilling
+        into a specific dataset with GET /datasets/{dataset}/tables.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DatasetsResponse"
+
+  /datasets/{dataset}/tables:
+    get:
+      operationId: list_tables
+      tags: [catalog]
+      summary: List the tables in one dataset
+      parameters:
+        - name: dataset
+          in: path
+          required: true
+          schema: { type: string }
+          example: br_tse_eleicoes
+      responses:
+        "200":
+          description: >-
+            OK on an exact match, or a 200-with-suggestions body on a
+            close-but-inexact dataset name (no separate error status — the
+            miss is still informative).
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/TablesResponse"
+                  - $ref: "#/components/schemas/NotFoundWithSuggestions"
+
+  /tables/{table}:
+    get:
+      operationId: describe_table
+      tags: [catalog]
+      summary: Describe one table's columns (name + type)
+      description: >-
+        `table` is `dataset.table`, e.g. `br_tse_eleicoes.candidatos`. Column
+        descriptions aren't available in the mirror — only name and type;
+        use GET /search for semantic lookup of what a table is *for*.
+      parameters:
+        - name: table
+          in: path
+          required: true
+          schema: { type: string }
+          example: br_tse_eleicoes.candidatos
+      responses:
+        "200":
+          description: OK, or a suggestions body on an unknown table
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/TableDescription"
+                  - $ref: "#/components/schemas/NotFoundWithSuggestions"
+
+  /search:
+    get:
+      operationId: search_tables
+      tags: [catalog]
+      summary: Semantic search over all tables by natural-language question
+      description: >-
+        Backed by a doc2query index (~8 synthetic questions per table). A
+        table's score is the MAX cosine similarity across its own questions.
+        `text` in each result is the specific synthetic question that
+        matched, not a table description.
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema: { type: string }
+          example: gastos de campanha eleitoral
+        - name: top_k
+          in: query
+          schema: { type: integer, default: 10, minimum: 1 }
+        - name: min_similarity
+          in: query
+          schema: { type: number, format: float }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchResponse"
+
+  /join-keys:
+    get:
+      operationId: get_join_keys
+      tags: [semantics]
+      summary: Look up documented join columns, or one column's full reference section
+      description: >-
+        Without `column`: a compact index of every documented join column.
+        With `column`: case-insensitive substring match returning that
+        column's full reference section (sample tables + example JOIN).
+      parameters:
+        - name: column
+          in: query
+          required: false
+          schema: { type: string }
+          example: id_municipio
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/JoinKeysIndex"
+                  - $ref: "#/components/schemas/JoinKeyDetail"
+        "404":
+          description: No join key matches the given substring
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JoinKeyNotFound"
+
+  /join:
+    get:
+      operationId: resolve_join
+      tags: [semantics]
+      summary: Return the ready-to-paste ON clause joining two tables
+      description: >-
+        The executable half of GET /join-keys: an actual expression (with
+        casts, bridge conversions, and rejected false-friend columns called
+        out), not just documentation of what a key means.
+      parameters:
+        - name: table_a
+          in: query
+          required: true
+          schema: { type: string }
+          example: br_bd_diretorios_brasil.municipio
+        - name: table_b
+          in: query
+          required: true
+          schema: { type: string }
+          example: br_ibge_populacao.municipio
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResolveJoinResponse"
+        "400":
+          description: One or both table ids aren't well-formed or don't exist
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundWithSuggestions"
+
+  /columns/{column}/explain:
+    get:
+      operationId: explain_column
+      tags: [semantics]
+      summary: Say whether a column is a join key, and if not, why not
+      description: >-
+        Surfaces the reason a column like `valor` or `id` is deliberately
+        excluded from the join-key index (false friend, meaning differs per
+        table), or the more dangerous case where the column names the same
+        concept everywhere but its numeric code does not (`coded_differently`).
+      parameters:
+        - name: column
+          in: path
+          required: true
+          schema: { type: string }
+          example: sexo
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExplainColumnResponse"
+
+  /metrics:
+    get:
+      operationId: list_metrics
+      tags: [semantics]
+      summary: Every named calculation, with what it measures and its unit
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MetricsList"
+
+  /metrics/{name}:
+    get:
+      operationId: get_metric
+      tags: [semantics]
+      summary: Look up a named calculation's SQL, grain, and required filters
+      description: >-
+        Matching is exact after normalization, against both the metric name
+        and its pt-BR synonyms (e.g. "populacao", "habitantes", "pop" are one
+        metric). `required_filters` are partition columns — not advisory.
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema: { type: string }
+          example: pib_per_capita
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Metric"
+        "404":
+          description: No metric matches
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MetricNotFound"
+
+  /rollup:
+    get:
+      operationId: rollup
+      tags: [semantics]
+      summary: How to climb one classification code to the level above it
+      description: >-
+        CNAE and CID-10 are prefix codes, so the parent is a `substr()` of
+        the child and needs no join — geography rollups (município→UF→região)
+        instead resolve to a plain column already on the directory table.
+      parameters:
+        - name: code_column
+          in: query
+          required: true
+          schema: { type: string }
+          example: subclasse
+        - name: to_level
+          in: query
+          required: true
+          schema: { type: string }
+          example: divisao
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RollupResult"
+        "404":
+          description: No documented rollup between these two levels
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RollupNotFound"
+
+  /sql:
+    post:
+      operationId: run_sql
+      tags: [query]
+      summary: Run a read-only SQL query against beelink's DuckDB mirror
+      description: >-
+        Only SELECT/WITH is allowed — rejected before any SSH call otherwise.
+        Results are capped by `max_rows` AND by a serialized-size budget,
+        whichever binds first (`truncated` flags it). A `Catalog Error` /
+        stale-S3-view failure is retried once with `dataset.table` references
+        rewritten to `read_parquet()` globs (`rewritten_tables` on the
+        response when that happened) — this is the one operation with
+        server-side retry logic, not a plain passthrough.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [sql]
+              properties:
+                sql:
+                  type: string
+                  description: A single SELECT or WITH statement, DuckDB dialect.
+                max_rows:
+                  type: integer
+                  default: 500
+      responses:
+        "200":
+          description: OK (possibly truncated — see `truncated`)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SqlResult"
+        "400":
+          description: Query rejected (not read-only) or failed to execute
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /cnpj/{cnpj}:
+    get:
+      operationId: consultar_cnpj
+      tags: [lookups]
+      summary: Look up a Brazilian company by CNPJ (fully local — no external call)
+      parameters:
+        - name: cnpj
+          in: path
+          required: true
+          schema: { type: string }
+          description: 14-digit CNPJ or 8-digit CNPJ básico; punctuation stripped automatically.
+          example: "11222333000181"
+        - $ref: "#/components/parameters/MaxRows20"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CnpjResult"
+        "404":
+          description: No company found, or malformed CNPJ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /cep/{cep}:
+    get:
+      operationId: consultar_cep
+      tags: [lookups]
+      summary: Look up a Brazilian address by CEP (live external lookup via ViaCEP)
+      description: >-
+        No bulk CEP database exists to mirror, so this is a genuine live
+        call — shelled through `ssh beelink` (curl there) to keep a single
+        execution path, not made from this process directly.
+      parameters:
+        - name: cep
+          in: path
+          required: true
+          schema: { type: string }
+          example: "01310-100"
+      responses:
+        "200":
+          description: OK — passthrough of ViaCEP's response shape
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CepResult"
+        "404":
+          description: CEP not found, or malformed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /divida-ativa/{cpf_cnpj}:
+    get:
+      operationId: consultar_divida_ativa
+      tags: [lookups]
+      summary: Query PGFN active federal tax debt registry by CPF or CNPJ
+      parameters:
+        - name: cpf_cnpj
+          in: path
+          required: true
+          schema: { type: string }
+        - name: categoria
+          in: query
+          schema:
+            type: string
+            enum: [fgts, previdenciario, nao_previdenciario]
+        - $ref: "#/components/parameters/MaxRows20"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DividaAtivaResult"
+        "400":
+          description: Malformed CPF/CNPJ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /combustiveis/precos:
+    get:
+      operationId: consultar_precos_combustivel
+      tags: [lookups]
+      summary: Query ANP weekly fuel resale price survey
+      parameters:
+        - name: municipio
+          in: query
+          schema: { type: string }
+          description: Partial match.
+        - name: produto
+          in: query
+          schema: { type: string }
+          example: GASOLINA
+        - name: data_inicio
+          in: query
+          schema: { type: string, format: date }
+        - name: data_fim
+          in: query
+          schema: { type: string, format: date }
+        - name: max_rows
+          in: query
+          schema: { type: integer, default: 50 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CombustivelResult"
+
+  /stj/jurisprudencia:
+    get:
+      operationId: consultar_jurisprudencia_stj
+      tags: [lookups]
+      summary: Search STJ decision/acórdão metadata
+      parameters:
+        - name: processo
+          in: query
+          schema: { type: string }
+        - name: ministro
+          in: query
+          schema: { type: string }
+          description: Relator name, partial match.
+        - name: assunto
+          in: query
+          schema: { type: string }
+        - name: data_inicio
+          in: query
+          schema: { type: string, format: date }
+        - $ref: "#/components/parameters/MaxRows20"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JurisprudenciaResult"
+
+  /sisdepen/populacao-carceraria:
+    get:
+      operationId: consultar_populacao_carceraria
+      tags: [lookups]
+      summary: Query the SISDEPEN prison census, cross-section or time series
+      description: >-
+        Default: one row per UF for the most recent cycle. `vagas`
+        (capacity) is not comparable across the 2022_h2→2023_h1 boundary — a
+        questionnaire change, not new construction.
+      parameters:
+        - name: uf
+          in: query
+          schema: { type: string, minLength: 2, maxLength: 2 }
+          example: SP
+        - name: ciclo
+          in: query
+          schema: { type: string }
+          description: Defaults to the latest cycle when omitted.
+          example: ciclo_13_2022_h2
+        - name: serie_historica
+          in: query
+          schema: { type: boolean, default: false }
+          description: Return the time series by cycle instead of the per-UF cross-section.
+        - name: max_rows
+          in: query
+          schema: { type: integer, default: 40 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/PopulacaoCarcerariaCrossSection"
+                  - $ref: "#/components/schemas/PopulacaoCarcerariaSerie"
+
+  /painelprecos/{codigo_item}:
+    get:
+      operationId: consultar_painelprecos
+      tags: [lookups]
+      summary: Look up recent public-purchase prices for one CATMAT/CATSER item
+      description: >-
+        Live external lookup via ComprasGov's Painel de Preços — no local
+        mirror is feasible (per-item API, ~250k catalog items). Look up
+        `codigo_item` first via POST /sql against
+        `br_comprasgov_catmatcatser.{materiais,servicos}`.
+      parameters:
+        - name: codigo_item
+          in: path
+          required: true
+          schema: { type: integer }
+        - name: tipo_item
+          in: query
+          schema: { type: string, enum: [material, servico], default: material }
+        - name: tipo_codigo
+          in: query
+          schema:
+            type: string
+            enum: [codigoItemCatalogo, codigoPdm]
+            default: codigoItemCatalogo
+          description: Only applies when tipo_item=material.
+        - name: estado
+          in: query
+          schema: { type: string, minLength: 2, maxLength: 2 }
+        - $ref: "#/components/parameters/MaxRows20"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PainelPrecosResult"
+        "400":
+          description: Invalid codigo_item, tipo_item, tipo_codigo, or estado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  parameters:
+    MaxRows20:
+      name: max_rows
+      in: query
+      schema: { type: integer, default: 20 }
+      description: Truncates the result list; the matching `*_truncated` flag says whether it cut anything.
+
+  schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string }
+
+    NotFoundWithSuggestions:
+      allOf:
+        - $ref: "#/components/schemas/Error"
+        - type: object
+          properties:
+            suggestions:
+              type: array
+              items: { type: string }
+              description: Close-match table/dataset ids (difflib, cutoff 0.4).
+
+    Column:
+      type: object
+      properties:
+        name: { type: string }
+        type: { type: string }
+
+    Dataset:
+      type: object
+      properties:
+        dataset: { type: string }
+        table_count: { type: integer }
+
+    DatasetsResponse:
+      type: object
+      properties:
+        count: { type: integer }
+        datasets:
+          type: array
+          items: { $ref: "#/components/schemas/Dataset" }
+
+    TablesResponse:
+      type: object
+      properties:
+        dataset: { type: string }
+        tables:
+          type: array
+          items: { type: string }
+        parquet_path:
+          type: string
+          description: Glob pattern, dataset-level (table name unresolved).
+
+    TableDescription:
+      type: object
+      properties:
+        table: { type: string }
+        columns:
+          type: array
+          items: { $ref: "#/components/schemas/Column" }
+        parquet_path: { type: string }
+        columns_truncated:
+          type: object
+          description: Present only when the table has more than 150 columns.
+          properties:
+            shown: { type: integer }
+            total: { type: integer }
+            note: { type: string }
+        warning:
+          type: string
+          description: Present when the table has a known row-doubling leftover file.
+        dicionario_coverage:
+          type: object
+          properties:
+            decodable_columns:
+              type: array
+              items: { type: string }
+            how: { type: string }
+        coded_value_warning:
+          type: array
+          items:
+            type: object
+            properties:
+              column: { type: string }
+              reason: { type: string }
+              how: { type: string }
+
+    SearchResultItem:
+      type: object
+      properties:
+        table: { type: string }
+        similarity: { type: number, format: float }
+        text:
+          type: string
+          description: The specific synthetic question that matched, not a table description.
+
+    SearchResponse:
+      type: object
+      properties:
+        query: { type: string }
+        results:
+          type: array
+          items: { $ref: "#/components/schemas/SearchResultItem" }
+
+    JoinKeysIndex:
+      type: object
+      properties:
+        columns:
+          type: array
+          items:
+            type: object
+            properties:
+              column: { type: string }
+              count: { type: integer }
+
+    JoinKeyDetail:
+      type: object
+      properties:
+        column: { type: string }
+        section:
+          type: string
+          description: Markdown reference section (sample tables + example JOIN), sliced from docs/context/join_keys.md.
+
+    JoinKeyNotFound:
+      allOf:
+        - $ref: "#/components/schemas/Error"
+        - type: object
+          properties:
+            available_keys:
+              type: array
+              items: { type: string }
+
+    JoinEntry:
+      type: object
+      properties:
+        concept: { type: string }
+        kind: { type: string, enum: [bridge, direct] }
+        on:
+          type: string
+          description: Ready-to-paste ON clause fragment, aliases a/b.
+        note: { type: string }
+        verified: { type: string }
+        canonical_table: { type: string }
+
+    RejectedJoin:
+      type: object
+      properties:
+        column: { type: string }
+        reason: { type: string }
+
+    ResolveJoinResponse:
+      type: object
+      properties:
+        table_a: { type: string }
+        table_b: { type: string }
+        aliases:
+          type: object
+          properties:
+            a: { type: string }
+            b: { type: string }
+        joins:
+          type: array
+          items: { $ref: "#/components/schemas/JoinEntry" }
+        rejected:
+          type: array
+          items: { $ref: "#/components/schemas/RejectedJoin" }
+        warnings:
+          type: array
+          items: { type: string }
+
+    ExplainColumnResponse:
+      type: object
+      required: [column, is_join_key]
+      properties:
+        column: { type: string }
+        is_join_key:
+          type: boolean
+          nullable: true
+          description: "null means: not documented as a join key, and not a known false friend either."
+        reason: { type: string }
+        seen_in:
+          type: array
+          items: { type: string }
+        coded_differently:
+          type: boolean
+          description: When true, the column names the same concept everywhere but its numeric code does not carry over between tables.
+        how: { type: string }
+        category: { type: string }
+        canonical_table: { type: string }
+        description: { type: string }
+        note: { type: string }
+
+    Metric:
+      type: object
+      properties:
+        metric: { type: string }
+        description: { type: string }
+        unit: { type: string }
+        grain:
+          type: array
+          items: { type: string }
+        source_table: { type: string }
+        expression:
+          type: string
+          description: DuckDB SQL aggregation expression.
+        required_filters:
+          type: array
+          items: { type: string }
+          description: Partition columns a query using this metric must filter on.
+        synonyms:
+          type: array
+          items: { type: string }
+        verified: { type: string }
+        caveat: { type: string }
+
+    MetricNotFound:
+      allOf:
+        - $ref: "#/components/schemas/Error"
+        - type: object
+          properties:
+            did_you_mean:
+              type: array
+              items: { type: string }
+            available:
+              type: array
+              items: { type: string }
+
+    MetricsList:
+      type: object
+      properties:
+        count: { type: integer }
+        metrics:
+          type: array
+          items:
+            type: object
+            properties:
+              metric: { type: string }
+              description: { type: string }
+              unit: { type: string }
+              source_table: { type: string }
+
+    RollupResult:
+      type: object
+      properties:
+        hierarchy: { type: string }
+        from: { type: string }
+        to: { type: string }
+        expr:
+          type: string
+          nullable: true
+          description: "null when the parent isn't positional (e.g. depends on letter ranges) — no expression is returned rather than one that would silently misgroup."
+        kind: { type: string }
+        table: { type: string }
+        verified: { type: string }
+        note: { type: string }
+        caveat: { type: string }
+
+    RollupNotFound:
+      allOf:
+        - $ref: "#/components/schemas/Error"
+        - type: object
+          properties:
+            available:
+              type: array
+              items: { type: string }
+              description: All documented "from -> to" edges across every hierarchy.
+
+    SqlResult:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        truncated: { type: boolean }
+        returned: { type: integer }
+        total: { type: integer }
+        note: { type: string }
+        rewritten_tables:
+          type: array
+          items: { type: string }
+          description: Present only when a Catalog Error triggered the read_parquet() fallback rewrite.
+
+    CnpjResult:
+      type: object
+      properties:
+        cnpj_basico: { type: string }
+        empresa:
+          type: object
+          properties:
+            cnpj_basico: { type: string }
+            razao_social: { type: string }
+            natureza_juridica: { type: string }
+            qualificacao_responsavel: { type: string }
+            capital_social: { type: string }
+        estabelecimentos:
+          type: array
+          items:
+            type: object
+            properties:
+              cnpj: { type: string }
+              identificador_matriz_filial: { type: string }
+              nome_fantasia: { type: string }
+              situacao_cadastral: { type: string }
+              data_situacao_cadastral: { type: string }
+              sigla_uf: { type: string }
+              cep: { type: string }
+        estabelecimentos_truncated: { type: boolean }
+        socios:
+          type: array
+          items:
+            type: object
+            properties:
+              nome: { type: string }
+              documento: { type: string }
+              qualificacao: { type: string }
+              data: { type: string }
+        socios_truncated: { type: boolean }
+
+    CepResult:
+      type: object
+      description: Passthrough of ViaCEP's response — not normalized.
+      properties:
+        cep: { type: string }
+        logradouro: { type: string }
+        bairro: { type: string }
+        localidade: { type: string }
+        uf: { type: string }
+        ibge: { type: string }
+
+    DividaAtivaResult:
+      type: object
+      properties:
+        cpf_cnpj: { type: string }
+        inscricoes:
+          type: array
+          items:
+            type: object
+            properties:
+              CPF_CNPJ: { type: string }
+              NOME_DEVEDOR: { type: string }
+              TIPO_PESSOA: { type: string }
+              TIPO_DEVEDOR: { type: string }
+              UF_DEVEDOR: { type: string }
+              VALOR_CONSOLIDADO:
+                type: string
+                description: "Formatted like '23337387019.50', not a JSON number."
+              SITUACAO_INSCRICAO: { type: string }
+              RECEITA_PRINCIPAL: { type: string }
+              DATA_INSCRICAO: { type: string }
+              INDICADOR_AJUIZADO: { type: string }
+              categoria: { type: string }
+        inscricoes_truncated: { type: boolean }
+        total_encontradas: { type: integer }
+
+    CombustivelResult:
+      type: object
+      properties:
+        precos:
+          type: array
+          items:
+            type: object
+            properties:
+              cnpj: { type: string }
+              razao: { type: string }
+              municipio: { type: string }
+              estado: { type: string }
+              bandeira: { type: string }
+              produto: { type: string }
+              preco_revenda:
+                type: number
+                description: BRL per liter.
+              data_coleta: { type: string, format: date }
+        truncated: { type: boolean }
+        produtos_disponiveis:
+          type: array
+          items: { type: string }
+          description: Present only when `produto` wasn't given — up to 20 distinct products seen in the result set.
+
+    JurisprudenciaResult:
+      type: object
+      properties:
+        documentos:
+          type: array
+          items:
+            type: object
+            properties:
+              SeqDocumento: { type: integer }
+              dataPublicacao: { type: string, format: date }
+              tipoDocumento: { type: string }
+              processo: { type: string }
+              NM_MINISTRO: { type: string }
+              assunto: { type: string }
+              teor:
+                type: string
+                description: Headnote/summary text.
+        truncated: { type: boolean }
+
+    PopulacaoCarcerariaCrossSection:
+      type: object
+      properties:
+        ciclo: { type: string }
+        estados:
+          type: array
+          items:
+            type: object
+            properties:
+              uf: { type: string }
+              presos: { type: integer }
+              vagas: { type: integer }
+              provisorios: { type: integer }
+              ocupacao_pct:
+                type: number
+                description: "presos/vagas — meaningful only within one cycle, see description above."
+              provisorios_pct: { type: number }
+              estabelecimentos: { type: integer }
+        truncated: { type: boolean }
+
+    PopulacaoCarcerariaSerie:
+      type: object
+      properties:
+        escopo:
+          type: string
+          description: UF or "Brasil".
+        serie:
+          type: array
+          items:
+            type: object
+            properties:
+              ciclo: { type: string }
+              presos: { type: integer }
+              vagas: { type: integer }
+              provisorios: { type: integer }
+        truncated: { type: boolean }
+
+    PainelPrecosResult:
+      type: object
+      properties:
+        codigo_item: { type: integer }
+        tipo_item: { type: string, enum: [material, servico] }
+        compras:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+            description: Passthrough of ComprasGov's per-purchase records — unit price, quantity, UASG, município/estado, fornecedor, date.
+        truncated: { type: boolean }
+        total_registros: { type: integer }
