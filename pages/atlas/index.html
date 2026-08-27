@@ -178,17 +178,16 @@ button { font: inherit; color: inherit; }
 }
 .modes { display: flex; flex-direction: row; gap: 6px; }
 .modes button {
-  display: flex; flex-direction: column; align-items: flex-start; gap: 5px;
-  flex: 1 1 0; min-width: 0; text-align: left; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  flex: 1 1 0; min-width: 0; text-align: center; cursor: pointer;
   background: none; border: 1px solid var(--line); border-radius: 6px;
-  padding: 8px 9px; line-height: 1.35;
+  padding: 9px 6px; line-height: 1.35;
 }
 .modes button:hover { border-color: var(--line-2); }
 .modes button[aria-pressed="true"] { border-color: var(--focus); background: var(--card-2); }
-.modes svg { width: 16px; height: 16px; flex: none; color: var(--ink-3); }
+.modes svg { width: 17px; height: 17px; flex: none; color: var(--ink-3); }
 .modes button[aria-pressed="true"] svg { color: var(--focus); }
-.modes .nm { display: block; font-size: 12.5px; font-weight: 500; }
-.modes .ds { display: block; font-size: 11px; color: var(--ink-3); }
+.modes .nm { display: block; font-size: 12px; font-weight: 500; }
 
 .dot { width: 9px; height: 9px; border-radius: 2.5px; flex: none; }
 
@@ -217,6 +216,33 @@ button { font: inherit; color: inherit; }
 .stage { position: relative; min-width: 0; overflow: hidden; }
 canvas { display: block; width: 100%; height: 100%; cursor: grab; }
 canvas.drag { cursor: grabbing; }
+.cv3d { position: absolute; inset: 0; display: none; cursor: grab; }
+.cv3d canvas { width: 100%; height: 100%; }
+.cv3d-loading {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  color: var(--ink-3); font: 500 13px "IBM Plex Sans", sans-serif; background: var(--ground);
+}
+
+.d3panel { padding: 13px 18px 14px; border-bottom: 1px solid var(--line); }
+.d3toggles { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 13px; }
+.d3toggles button {
+  display: flex; align-items: center; justify-content: center;
+  font: 500 11px "IBM Plex Sans", sans-serif; color: var(--ink-2);
+  background: none; border: 1px solid var(--line); border-radius: 6px;
+  padding: 6px 5px; cursor: pointer; text-align: center;
+}
+.d3toggles button:hover { border-color: var(--line-2); }
+.d3toggles button[aria-pressed="true"] { border-color: var(--focus); background: var(--card-2); color: var(--ink); }
+.slider-row + .slider-row { margin-top: 10px; }
+.slider-row .rl { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.slider-row label {
+  font-size: 10px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .05em;
+}
+.slider-row .val {
+  font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.slider-row input[type="range"] { width: 100%; accent-color: var(--focus); display: block; }
 
 .hud {
   position: absolute; left: 14px; bottom: 14px;
@@ -358,6 +384,24 @@ canvas.drag { cursor: grabbing; }
     <div class="modes" id="modes"></div>
   </div>
 
+  <div class="d3panel" id="d3panel" style="display:none">
+    <p class="legend-t">Grafo 3D</p>
+    <div class="d3toggles">
+      <button id="d3-rotate" aria-pressed="true">girar sozinho</button>
+      <button id="d3-labels" aria-pressed="true">nomes</button>
+      <button id="d3-colornames" aria-pressed="false">cor nos nomes</button>
+      <button id="d3-curve" aria-pressed="false">ligações curvas</button>
+    </div>
+    <div class="slider-row">
+      <div class="rl"><label for="d3-width">espessura das ligações</label><span class="val" id="d3-width-v">100</span></div>
+      <input type="range" id="d3-width" min="20" max="260" value="100">
+    </div>
+    <div class="slider-row">
+      <div class="rl"><label for="d3-expand">expansão do grafo</label><span class="val" id="d3-expand-v">100</span></div>
+      <input type="range" id="d3-expand" min="55" max="220" value="100">
+    </div>
+  </div>
+
   <div class="list-wrap">
     <p class="list-t" id="list-t">Temas</p>
     <div id="list"></div>
@@ -367,6 +411,8 @@ canvas.drag { cursor: grabbing; }
 <div class="stage" id="stage">
   <button class="rail-toggle" id="railToggle" aria-expanded="false">Painel</button>
   <canvas id="cv"></canvas>
+  <div id="cv3d" class="cv3d"></div>
+  <div id="cv3dLoading" class="cv3d-loading" style="display:none">carregando 3D…</div>
   <div class="tip" id="tip"></div>
 
   <div class="hud">
@@ -422,10 +468,10 @@ const [CELL_W, CELL_H, PAD, HEADER] = G.layout.cell;
 const MODES = [
   ["grade", "Grade", "cartões de dataset empacotados; tabelas em grade dentro"],
   ["temas", "Temas", "um território por tema; as chaves flutuam entre os que ligam"],
-  ["3d", "3D", "o mesmo grafo dataset↔chave, fora do canvas, em três dimensões"],
+  ["3d", "3D", "o mesmo grafo dataset↔chave, em três dimensões"],
 ];
 let mode = "grade";
-const isDisc = () => mode !== "grade";
+const isDisc = () => mode === "temas";
 let L = G.layout[mode];
 
 /* Themes, in fixed hue order by size (biggest first — matches
@@ -512,10 +558,22 @@ themeList.forEach(th => {
 const cv = document.getElementById("cv");
 const ctx = cv.getContext("2d");
 const stage = document.getElementById("stage");
+const cv3dEl = document.getElementById("cv3d");
 let W = 0, H = 0, dpr = 1;
 let k = 1, tx = 0, ty = 0;
 let hover = null, sel = null;            // {type:"ds"|"key"|"tbl", i, cell?}
 let C = {};
+
+/* ── 3D mode: a third distribution, same dataset↔chave graph, force-laid out
+   in three.js instead of the flat canvas. Lazily loaded — nothing downloaded
+   or built until the visitor actually clicks it. Nodes/links stay fully lit
+   (no dimming, no glassy panels) so it reads as one more view of the same
+   atlas, not a separate dark demo. */
+let graph3d = null, G3 = null, d3Ready = false, d3Loading = false;
+const d3Pending = [];
+const d3NodeByDs = new Map(), d3NodeByKey = new Map();
+let colorNames3d = false, curved3d = false, edgeWidthMul3d = 1, expansion3d = 1;
+let firstFit3d = true;
 
 function readColors() {
   const s = getComputedStyle(document.documentElement);
@@ -540,6 +598,7 @@ function resize() {
   W = r.width; H = r.height;
   cv.width = Math.round(W * dpr);
   cv.height = Math.round(H * dpr);
+  if (graph3d) graph3d.width(W).height(H);
   draw();
 }
 
@@ -601,13 +660,34 @@ let fade = 1;
 
 function setMode(next) {
   if (next === mode) return;
+  const goingTo3D = next === "3d", leaving3D = mode === "3d";
   mode = next;
-  L = G.layout[mode];
   document.querySelectorAll("[data-mode]").forEach(b =>
     b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
+  document.getElementById("d3panel").style.display = goingTo3D ? "" : "none";
+  document.getElementById("zlvl").style.display = goingTo3D ? "none" : "";
+  document.getElementById("lod").style.display = goingTo3D ? "none" : "";
 
-  // The two modes draw different marks — a dataset card and a table body — so
-  // there is nothing to morph between; cross-fade and reframe instead.
+  // Grade/Temas redraw the same flat canvas; 3D is a whole other renderer
+  // living in its own layer — swap which one is visible and stop there.
+  // 3d-force-graph runs its own rAF loop regardless of visibility, so it is
+  // explicitly paused/resumed too — otherwise it burns CPU/battery hidden
+  // behind the 2D canvas for as long as the tab stays open.
+  if (goingTo3D) {
+    cv.style.display = "none";
+    cv3dEl.style.display = "block";
+    ensure3D(() => { init3D(); if (graph3d) graph3d.resumeAnimation(); });
+    return;
+  }
+  if (leaving3D) {
+    cv3dEl.style.display = "none";
+    cv.style.display = "block";
+    if (graph3d) graph3d.pauseAnimation();
+  }
+
+  L = G.layout[mode];
+  // The two 2D modes draw different marks — a dataset card and a table body —
+  // so there is nothing to morph between; cross-fade and reframe instead.
   if (isDisc()) P = { tb: L.tb.map(a => a.slice()), keys: L.keys.map(a => a.slice()) };
   measure();
   if (reduced()) { fade = 1; home(false); return; }
@@ -683,6 +763,7 @@ function edgePoint(cx, cy, w, h, tx2, ty2) {
 }
 
 function draw() {
+  if (mode === "3d") return;   // the WebGL layer renders itself
   const act = activeSet();
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.fillStyle = C.ground;
@@ -1243,15 +1324,33 @@ document.getElementById("i-close").onclick = () => select(null);
 addEventListener("keydown", e => { if (e.key === "Escape") select(null); });
 
 function flyKey(ki) {
+  if (mode === "3d") { fly3D(d3NodeByKey.get(ki)); return; }
   const [x, y] = isDisc() ? P.keys[ki] : L.keys[ki];
   goTo(x, y, Math.max(k, isDisc() ? 0.55 : 0.75), true);
 }
 function flyTbl(ti) {
+  if (mode === "3d") { fly3D(d3NodeByDs.get(TB[ti].ds)); return; }
   const [x, y] = isDisc() ? P.tb[ti] : L.ds[TB[ti].ds];
   goTo(x, y, Math.max(k, isDisc() ? 1.1 : 1.5), true);
 }
 function flyTheme(th) {
   const ts = themeTables[th];
+  if (mode === "3d") {
+    let x = 0, y = 0, z = 0, n = 0;
+    const seen = new Set();
+    ts.forEach(ti => {
+      const di = TB[ti].ds;
+      if (seen.has(di)) return;
+      seen.add(di);
+      const nd = d3NodeByDs.get(di);
+      if (nd && nd.x !== undefined) { x += nd.x; y += nd.y; z += nd.z; n++; }
+    });
+    if (!n || !graph3d) return;
+    x /= n; y /= n; z /= n;
+    const dist = 220, ratio = 1 + dist / Math.hypot(x || 1e-6, y || 1e-6, z || 1e-6);
+    graph3d.cameraPosition({ x: x * ratio, y: y * ratio, z: z * ratio }, { x, y, z }, 1200);
+    return;
+  }
   if (mode === "temas" && L.themes && L.themes[th]) {
     const [x, y, r] = L.themes[th];
     goTo(x, y, Math.min(9, Math.max(0.3, Math.min(W, H) / (r * 4.5))), true);
@@ -1269,6 +1368,7 @@ function flyTheme(th) {
   goTo(x / n, y / n, Math.max(k, 0.45), true);
 }
 function flyDs(d, animate = true) {
+  if (mode === "3d") { fly3D(d3NodeByDs.get(d)); return; }
   if (isDisc()) {                      // no dataset body here — frame its tables
     const ts = dsTables[d];
     let x = 0, y = 0;
@@ -1278,6 +1378,187 @@ function flyDs(d, animate = true) {
   }
   const [x, y] = L.ds[d];
   goTo(x, y, Math.max(k, 0.9), animate);
+}
+
+/* ── 3D mode ─────────────────────────────────────────────────────── */
+function ensure3D(cb) {
+  if (d3Ready) { cb(); return; }
+  d3Pending.push(cb);
+  if (d3Loading) return;
+  d3Loading = true;
+  document.getElementById("cv3dLoading").style.display = "flex";
+  const scripts = [
+    "https://unpkg.com/three@0.160.0/build/three.min.js",
+    "https://unpkg.com/three-spritetext@1.8.2/dist/three-spritetext.min.js",
+    "https://unpkg.com/3d-force-graph@1.73.3/dist/3d-force-graph.min.js",
+  ];
+  (function loadNext(i) {
+    if (i >= scripts.length) {
+      d3Ready = true; d3Loading = false;
+      document.getElementById("cv3dLoading").style.display = "none";
+      d3Pending.splice(0).forEach(fn => fn());
+      return;
+    }
+    const s = document.createElement("script");
+    s.src = scripts[i];
+    s.onload = () => loadNext(i + 1);
+    s.onerror = () => { document.getElementById("cv3dLoading").textContent = "Falha ao carregar bibliotecas 3D."; };
+    document.head.appendChild(s);
+  })(0);
+}
+
+// Same dataset↔chave bipartite graph the Grade/Temas edges already draw —
+// just built once here in the shape 3d-force-graph wants. Datasets that share
+// no key with anything (dsKeys empty) are left out: nothing to connect them.
+function build3DGraph() {
+  const nodes = [], links = [];
+  DS.forEach((d, i) => {
+    if (!dsKeys[i].size) return;
+    nodes.push({ id: "d" + i, kind: "ds", i, name: d.n, val: 2.4 + Math.log10(Math.max(d.r, 1)) * 0.85, tables: d.t, rows: d.r });
+  });
+  KS.forEach((kk, i) => {
+    if (!keyDatasets[i].size) return;
+    nodes.push({ id: "k" + i, kind: "key", i, name: kk.n, val: 1.5 + Math.log10(Math.max(kk.t, 1)) * 0.7, tables: kk.t, datasets: kk.d });
+  });
+  dsEdges.forEach(([d, ki]) => {
+    links.push({ source: "d" + d, target: "k" + ki, name: KS[ki].n, dsIndex: d, wn: wNorm(ki), lbl: KS[ki].t <= 8 });
+  });
+  nodes.forEach(n => (n.kind === "ds" ? d3NodeByDs : d3NodeByKey).set(n.i, n));
+  return { nodes, links };
+}
+
+function fly3D(node) {
+  if (!node || node.x === undefined || !graph3d) return;
+  const dist = 90, ratio = 1 + dist / Math.hypot(node.x || 1e-6, node.y || 1e-6, node.z || 1e-6);
+  graph3d.cameraPosition({ x: node.x * ratio, y: node.y * ratio, z: node.z * ratio }, node, 1200);
+}
+
+function dollyCamera3D(factor) {
+  const p = graph3d.camera().position;
+  graph3d.cameraPosition({ x: p.x * factor, y: p.y * factor, z: p.z * factor }, undefined, 400);
+}
+
+function init3D() {
+  if (graph3d) { graph3d.width(W).height(H); return; }
+  G3 = build3DGraph();
+  graph3d = ForceGraph3D()(cv3dEl)
+    .width(W).height(H)
+    .graphData(G3)
+    .backgroundColor(C.ground)
+    .nodeId("id")
+    .nodeLabel(n => n.kind === "ds"
+      ? `${esc(n.name)} <i>· ${n.tables} tabelas · ${human(n.rows)} linhas</i>`
+      : `${esc(n.name)} <i>· ${n.tables} tabelas · ${n.datasets} datasets</i>`)
+    .nodeVal(n => n.val)
+    .nodeColor(n => n.kind === "ds" ? dcol(n.i) : C.hub)
+    .nodeOpacity(1)
+    .nodeResolution(n => n.kind === "ds" ? 14 : 8)
+    .linkColor(l => dcol(l.dsIndex))
+    .linkOpacity(1)
+    .linkWidth(l => (0.35 + 1.8 * l.wn) * edgeWidthMul3d)
+    .linkCurvature(l => curved3d ? 0.28 : 0)
+    .linkDirectionalParticles(l => 1 + Math.round(2 * l.wn))
+    .linkDirectionalParticleWidth(l => 0.9 + 1.1 * l.wn)
+    .linkDirectionalParticleSpeed(l => 0.0018 + 0.006 * l.wn)
+    .linkDirectionalParticleColor(l => dcol(l.dsIndex))
+    .warmupTicks(40)
+    .cooldownTime(6000)
+    .showNavInfo(false)
+    .onNodeClick(node => {
+      select(node.kind === "ds" ? { type: "ds", i: node.i } : { type: "key", i: node.i });
+      fly3D(node);
+    })
+    .onNodeHover(node => { cv3dEl.style.cursor = node ? "pointer" : "grab"; });
+
+  graph3d.d3Force("charge").strength(-34 * expansion3d).distanceMax(240 * expansion3d);
+  graph3d.d3Force("link").distance(l => (14 + 34 * (1 - l.wn)) * expansion3d);
+
+  // node label sprites — dark ink on the light ground, a light halo (not a
+  // dark one) so text still pops where lines cross behind it
+  graph3d.nodeThreeObject(node => {
+    const isDs = node.kind === "ds";
+    const sprite = new SpriteText(node.name);
+    sprite.color = isDs ? (colorNames3d ? dcol(node.i) : C.ink) : C.ink2;
+    sprite.fontFace = "IBM Plex Mono, monospace";
+    sprite.fontWeight = isDs ? "600" : "500";
+    sprite.textHeight = isDs ? Math.min(3.6, 1.9 + node.val * 0.22) : 1.55;
+    sprite.strokeWidth = isDs ? 0.35 : 0.22;
+    sprite.strokeColor = C.ground;
+    sprite.position.y = Math.cbrt(node.val) * 3.4 + (isDs ? 3 : 2);
+    node.__label = sprite;
+    return sprite;
+  }).nodeThreeObjectExtend(true);
+
+  graph3d.linkThreeObjectExtend(true);
+  graph3d.linkThreeObject(link => {
+    if (!link.lbl) return null;
+    const sprite = new SpriteText(link.name);
+    sprite.color = C.ink3;
+    sprite.fontFace = "IBM Plex Mono, monospace";
+    sprite.textHeight = 1.15;
+    link.__label = sprite;
+    return sprite;
+  });
+  graph3d.linkPositionUpdate((sprite, { start, end }) => {
+    if (!sprite) return;
+    sprite.position.x = (start.x + end.x) / 2;
+    sprite.position.y = (start.y + end.y) / 2;
+    sprite.position.z = (start.z + end.z) / 2;
+  });
+
+  // first settle lands the camera inside the cluster; later reheats (the
+  // expansion slider) fit the whole shape instead, since that is the point
+  graph3d.onEngineStop(() => {
+    if (firstFit3d) {
+      firstFit3d = false;
+      graph3d.zoomToFit(0, 40);
+      const cam = graph3d.camera(), dist = cam.position.length() * 0.55;
+      const dir = cam.position.clone().normalize();
+      graph3d.cameraPosition({ x: dir.x * dist, y: dir.y * dist, z: dir.z * dist }, { x: 0, y: 0, z: 0 }, 900);
+    } else {
+      graph3d.zoomToFit(700, 40);
+    }
+  });
+
+  const controls3d = graph3d.controls();
+  controls3d.autoRotate = true;
+  controls3d.autoRotateSpeed = 0.55;
+  cv3dEl.addEventListener("pointerdown", () => {
+    controls3d.autoRotate = false;
+    document.getElementById("d3-rotate").setAttribute("aria-pressed", "false");
+  }, { once: true, passive: true });
+
+  document.getElementById("d3-rotate").onclick = e => {
+    controls3d.autoRotate = !controls3d.autoRotate;
+    e.currentTarget.setAttribute("aria-pressed", String(controls3d.autoRotate));
+  };
+  document.getElementById("d3-labels").onclick = e => {
+    const on = e.currentTarget.getAttribute("aria-pressed") !== "true";
+    e.currentTarget.setAttribute("aria-pressed", String(on));
+    graph3d.scene().traverse(o => { if (o.type === "Sprite") o.visible = on; });
+  };
+  document.getElementById("d3-colornames").onclick = e => {
+    colorNames3d = !colorNames3d;
+    e.currentTarget.setAttribute("aria-pressed", String(colorNames3d));
+    G3.nodes.forEach(n => { if (n.kind === "ds" && n.__label) n.__label.color = colorNames3d ? dcol(n.i) : C.ink; });
+  };
+  document.getElementById("d3-curve").onclick = e => {
+    curved3d = !curved3d;
+    e.currentTarget.setAttribute("aria-pressed", String(curved3d));
+    graph3d.refresh();
+  };
+  document.getElementById("d3-width").oninput = e => {
+    edgeWidthMul3d = +e.target.value / 100;
+    document.getElementById("d3-width-v").textContent = e.target.value;
+    graph3d.refresh();
+  };
+  document.getElementById("d3-expand").oninput = e => {
+    expansion3d = +e.target.value / 100;
+    document.getElementById("d3-expand-v").textContent = e.target.value;
+    graph3d.d3Force("charge").strength(-34 * expansion3d).distanceMax(240 * expansion3d);
+    graph3d.d3Force("link").distance(l => (14 + 34 * (1 - l.wn)) * expansion3d);
+    graph3d.d3ReheatSimulation();
+  };
 }
 
 /* ── link direto ──────────────────────────────────────────────────
@@ -1311,22 +1592,19 @@ document.getElementById("s-d").textContent = fmt(G.meta.datasets);
 document.getElementById("s-k").textContent = fmt(G.meta.keys);
 document.getElementById("s-e").textContent = fmt(G.meta.edges);
 
-// grade: cards in a grid. temas: territories of clustered bodies. 3d: leaves
-// the canvas entirely for the force-graph page.
+// grade: cards in a grid. temas: territories of clustered bodies. 3d: the
+// same dataset↔chave graph in a force layout, lazily loaded on first visit.
 const MODE_ICON = {
   grade: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1"/><rect x="9" y="1.5" width="5.5" height="5.5" rx="1"/><rect x="1.5" y="9" width="5.5" height="5.5" rx="1"/><rect x="9" y="9" width="5.5" height="5.5" rx="1"/></svg>',
   temas: '<svg viewBox="0 0 16 16" fill="currentColor"><circle cx="4.5" cy="4.5" r="3"/><circle cx="12" cy="4" r="2"/><circle cx="5" cy="12" r="2.3"/><circle cx="12.5" cy="11.5" r="1.6"/></svg>',
   "3d": '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 1.3 14 4.6v6.8L8 14.7 2 11.4V4.6Z"/><path d="M8 1.3v6.7m0 0L2 4.6m6 3.4 6-3.4m-6 3.4v6.7"/></svg>',
 };
-// every mode but 3d redraws this same canvas; 3d is a whole other renderer,
-// so it is a link out instead of a state this page can be in.
 const modesEl = document.getElementById("modes");
 modesEl.innerHTML = MODES.map(([id, name, desc]) =>
-  `<button data-mode="${id}" aria-pressed="${id === mode}">
+  `<button data-mode="${id}" aria-pressed="${id === mode}" title="${esc(desc)}">
      ${MODE_ICON[id] || ""}
-     <span class="nm">${name}</span><span class="ds">${desc}</span></button>`).join("");
-modesEl.querySelectorAll("button").forEach(b => b.onclick = () =>
-  b.dataset.mode === "3d" ? (location.href = "3d.html") : setMode(b.dataset.mode));
+     <span class="nm">${name}</span></button>`).join("");
+modesEl.querySelectorAll("button").forEach(b => b.onclick = () => setMode(b.dataset.mode));
 
 const listEl = document.getElementById("list");
 const listT = document.getElementById("list-t");
@@ -1378,10 +1656,24 @@ function renderList(q) {
 }
 document.getElementById("q").addEventListener("input", e => renderList(e.target.value));
 
-document.getElementById("zin").onclick = () => goTo((W / 2 - tx) / k, (H / 2 - ty) / k, k * 1.5, true);
-document.getElementById("zout").onclick = () => goTo((W / 2 - tx) / k, (H / 2 - ty) / k, k / 1.5, true);
-document.getElementById("reset").onclick = () => { select(null); fit(true); };
-document.getElementById("home").onclick = () => { select(null); home(true); };
+document.getElementById("zin").onclick = () => {
+  if (mode === "3d") { if (graph3d) dollyCamera3D(1 / 1.4); return; }
+  goTo((W / 2 - tx) / k, (H / 2 - ty) / k, k * 1.5, true);
+};
+document.getElementById("zout").onclick = () => {
+  if (mode === "3d") { if (graph3d) dollyCamera3D(1.4); return; }
+  goTo((W / 2 - tx) / k, (H / 2 - ty) / k, k / 1.5, true);
+};
+document.getElementById("reset").onclick = () => {
+  select(null);
+  if (mode === "3d") { if (graph3d) graph3d.zoomToFit(600, 40); return; }
+  fit(true);
+};
+document.getElementById("home").onclick = () => {
+  select(null);
+  if (mode === "3d") { if (graph3d) graph3d.zoomToFit(600, 40); return; }
+  home(true);
+};
 
 const rail = document.getElementById("rail");
 document.getElementById("railToggle").onclick = e => {
@@ -1390,7 +1682,19 @@ document.getElementById("railToggle").onclick = e => {
 };
 
 /* ── boot ────────────────────────────────────────────────────────── */
-function themeChanged() { readColors(); renderList(document.getElementById("q").value); draw(); }
+function themeChanged() {
+  readColors();
+  renderList(document.getElementById("q").value);
+  draw();
+  if (graph3d) {
+    graph3d.backgroundColor(C.ground).refresh();
+    G3.nodes.forEach(n => {
+      if (!n.__label) return;
+      n.__label.color = n.kind === "ds" ? (colorNames3d ? dcol(n.i) : C.ink) : C.ink2;
+    });
+    G3.links.forEach(l => { if (l.__label) l.__label.color = C.ink3; });
+  }
+}
 new MutationObserver(themeChanged).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change", themeChanged);
 addEventListener("resize", resize);
@@ -1407,7 +1711,8 @@ openFromUrl();
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
 
 // handles for the layout probes in scripts/build_atlas.py
-Object.assign(window, { G, DS, KS, TB, L, P, select, goTo, flyKey, flyDs, flyTheme, draw, setMode });
+Object.assign(window, { G, DS, KS, TB, L, P, select, goTo, flyKey, flyDs, flyTheme, draw, setMode,
+  getGraph3D: () => graph3d, getG3: () => G3 });
 }
 </script>
 </body>
