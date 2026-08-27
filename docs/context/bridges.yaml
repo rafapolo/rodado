@@ -219,6 +219,42 @@ coded_differently:
       índice de faixa entre tabelas seria ainda mais perigoso. Achado
       respondendo tema 49, 2026-08-25.
     seen_in: 1 dataset (br_ans_beneficiario.informacao_consolidada)
+  raca_cor_negro_agregado (br_ms_sinan_violencia vs br_ipea_atlasviolencia):
+    reason: mesmo rótulo "negro" significa coisas diferentes entre as duas fontes —
+      br_ipea_atlasviolencia já vem com "negro" pré-agregado (preto+pardo, convenção
+      IBGE) dentro do próprio nome da série (`Homicídios Negros`, id 41), enquanto
+      br_ms_sinan_violencia.microdados_violencia mantém preto e pardo em códigos
+      CS_RACA separados (2=preta, 4=parda) sem nenhuma coluna pré-agregada.
+      Filtrar CS_RACA='2' pensando "vítimas negras" captura só ~9% das notificações
+      quando o valor correto (preto+pardo, CS_RACA IN ('2','4')) é 46-58% ao longo
+      de 2011-2022 — subestima em ~5x, número plausível e silenciosamente errado.
+      Achado respondendo tema 56, 2026-08-27.
+    seen_in: 2 datasets (br_ms_sinan_violencia, br_ipea_atlasviolencia) — padrão
+      (agregado "negro" pré-computado em uma fonte, cru em outra) provável de
+      recorrer em qualquer cruzamento entre série pronta do IPEA e microdado
+      bruto de raça/cor.
+  resultado_eleitoral_ilike (br_tse_eleicoes):
+    reason: filtrar `resultado ILIKE '%eleito%'` casa a substring "eleito"
+      dentro de "não eleito" também — inflou a contagem de deputados
+      reeleitos de 282 para 472 (67% a mais) numa correlação de mapa de
+      votos 2018×2022. Usar valores exatos, `resultado IN ('eleito por
+      media','eleito por qp')`, nunca `ILIKE '%eleito%'` nesta coluna.
+      Achado respondendo tema 29 (T29-1), 2026-08-27.
+    seen_in: 1 dataset (br_tse_eleicoes) — armadilha de substring, não de
+      código numérico divergente, mas do mesmo gênero "parece filtro simples
+      e não é"
+  ano_censo_2010_e_2022_mesma_coluna (br_ibge_censo_2022):
+    reason: br_ibge_censo_2022.populacao_grupo_idade_sexo_raca e
+      .indice_envelhecimento_raca guardam os censos 2010 E 2022 na MESMA
+      tabela, distinguidos só pela coluna `ano` — apesar do nome do dataset
+      ser só "censo_2022". Um `SUM(populacao)` sem `WHERE ano=2022` soma as
+      duas safras — 393,8M em vez dos 203,1M reais (quase o dobro). As
+      demais tabelas do dataset (populacao_grupo_idade_uf,
+      populacao_idade_sexo, alfabetizacao_grupo_idade_sexo_raca, as
+      caracteristica_domicilio_*) não têm esse problema — só essas duas.
+      Achado respondendo tema 38 (T38-5), 2026-08-27.
+    seen_in: 2 tabelas em 1 dataset (br_ibge_censo_2022.populacao_grupo_idade_sexo_raca,
+      br_ibge_censo_2022.indice_envelhecimento_raca)
 # Colunas cujo nome local difere do conceito, tabela a tabela. Não são pontes
 # (não precisam de conversão) — é só o diretório chamando a chave de outro nome.
 # resolve_join usa isto para reescrever o {d} da expressão da ponte.
@@ -270,6 +306,10 @@ concepts:
       6-digit code — a naive join against the 7-digit `id_municipio` returns 0 rows, silently, no error.
       See the bridge entries below for both tables (SIH has three municipality columns: paciente,
       estabelecimento, gestor — not one).'
+    - 'br_ms_sinan_violencia.microdados_violencia.NU_ANO vem vazio (string vazia)
+      pra 100% do lote tageado ano_sinan=2020 (326.503 de 326.563 linhas em
+      branco) — usar ano_sinan como partição de ano nesta tabela, nunca NU_ANO,
+      ou a série pula 2020 inteiro em silêncio. Achado tema 56, 2026-08-27.'
     example_sql: "WITH mun AS (SELECT DISTINCT id_municipio_6, nome, sigla_uf\n             FROM br_bd_diretorios_brasil.municipio)\n\
       SELECT m.nome, m.sigla_uf, count(*) AS estabelecimentos\nFROM br_ms_cnes.estabelecimento e\nJOIN\
       \ mun m ON e.id_municipio_6 = m.id_municipio_6\nWHERE e.ano = 2023 AND e.mes = 12\nGROUP BY 1, 2\n\
