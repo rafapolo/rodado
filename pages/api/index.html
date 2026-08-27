@@ -18,9 +18,11 @@
     --bg-raised: #efe9dd;
     --ink: #201d18;
     --ink-soft: #4a443a;
+    --ink-faint: #77705f;
     --rule: #d9d0bd;
     --accent: #9c3b2e;
     --accent-soft: #c9573f;
+    --serif: Charter, "Iowan Old Style", "Palatino Linotype", Georgia, "Times New Roman", serif;
     --sans: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
     --mono: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   }
@@ -29,6 +31,7 @@
     --bg-raised: #242017;
     --ink: #ece6d8;
     --ink-soft: #c7bfab;
+    --ink-faint: #8f8672;
     --rule: #3a3427;
     --accent: #e08468;
     --accent-soft: #c9573f;
@@ -36,13 +39,14 @@
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; background: var(--bg); }
   body { font-family: var(--sans); }
+
+  /* ── topbar ── */
   .topbar {
     position: sticky; top: 0; z-index: 20;
     display: flex; align-items: center; justify-content: space-between;
     padding: 0.6rem 1.25rem;
     background: var(--bg-raised);
     border-bottom: 1px solid var(--rule);
-    font-family: var(--sans);
   }
   .topbar a.brand { color: var(--ink); text-decoration: none; font-weight: 700; font-size: 0.95rem; }
   .topbar a.brand span { color: var(--accent); }
@@ -55,8 +59,43 @@
     font-size: 0.95rem; line-height: 1; display: flex; align-items: center; justify-content: center;
   }
   .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
-  #redoc-container { min-height: calc(100vh - 44px); }
+
+  /* ── hero, same editorial vocabulary as mcp.html's page-header ── */
+  .hero {
+    padding: 3rem clamp(1.25rem, 4vw, 3rem) 2.25rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero-inner { max-width: 820px; }
+  .brand-row { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+  .brand-flag { display: inline-block; width: 26px; height: 18px; background: var(--ink-faint); position: relative; border-radius: 2px; overflow: hidden; }
+  .brand-flag::before { content: ''; position: absolute; top: 0; bottom: 0; left: 8px; width: 4px; background: var(--bg); }
+  .brand-flag::after { content: ''; position: absolute; left: 0; right: 0; top: 7px; height: 4px; background: var(--bg); }
+  .brand-name { font-size: 15px; font-weight: 800; letter-spacing: -0.01em; color: var(--ink); }
+  .brand-sep { width: 1px; height: 14px; background: var(--rule); }
+  .brand-tag { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); }
+  .page-title {
+    font-family: var(--serif); font-size: clamp(28px, 4.2vw, 44px); line-height: 1.08;
+    font-weight: 800; letter-spacing: -0.02em; margin: 0 0 16px; max-width: 20ch;
+  }
+  .lead { font-family: var(--serif); font-size: 18px; line-height: 1.6; color: var(--ink-soft); max-width: 66ch; margin: 0; }
+  .lead strong { color: var(--ink); font-weight: 600; }
+  .lead code, .lead-note code {
+    font-family: var(--mono); font-size: 0.82em; background: var(--bg-raised);
+    padding: 0.1em 0.4em; border-radius: 4px; color: var(--accent);
+  }
+  .lead-note { font-size: 14px; line-height: 1.6; color: var(--ink-faint); max-width: 66ch; margin: 12px 0 0; }
+  .lead-note a { color: var(--accent); }
+  .header-bottom { margin-top: 30px; }
+  .stats { display: flex; flex-wrap: wrap; gap: 32px; }
+  .stat-num { font-family: var(--serif); font-size: 32px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+  .stat-label { font-size: 12.5px; color: var(--ink-soft); margin-top: 6px; letter-spacing: 0.02em; }
+  .stat-label .muted { opacity: 0.7; }
+
+  /* ── redoc mount ── */
+  #redoc-container { min-height: 60vh; }
   .redoc-loading-note { padding: 2rem 1.25rem; color: var(--ink-soft); font-size: 0.9rem; }
+  /* the generic "Rodado API (version)" h1 duplicates .page-title above */
+  .api-info h1 { display: none !important; }
 </style>
 </head>
 <body>
@@ -68,6 +107,36 @@
     <button id="themeToggle" class="theme-toggle" type="button" aria-label="Alternar tema claro/escuro">☾</button>
   </div>
 </div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="brand-row">
+      <span class="brand-flag"></span>
+      <span class="brand-name">rodado</span>
+      <span class="brand-sep"></span>
+      <span class="brand-tag">Referência de API</span>
+    </div>
+    <h1 class="page-title">Contrato OpenAPI para as ferramentas do MCP</h1>
+    <p class="lead">As 18 ferramentas de <code>mcp_server.py</code>, descritas como endpoints REST — request, resposta e os avisos que hoje só existem em docstring. <strong>Desenho, não deploy</strong>: nenhum servidor HTTP roda por trás disto.</p>
+    <p class="lead-note">Ver <a href="../mcp.html">o catálogo de dados</a> para o que essas ferramentas consultam, ou <a href="https://github.com/rafapolo/rodado/blob/main/docs/MCP.md">docs/MCP.md</a> para como um agente as chama de fato — via MCP, não HTTP.</p>
+    <div class="header-bottom">
+      <div class="stats">
+        <div>
+          <div class="stat-num">18</div>
+          <div class="stat-label">ferramentas</div>
+        </div>
+        <div>
+          <div class="stat-num">4</div>
+          <div class="stat-label">grupos <span class="muted">· catalog, semantics, query, lookups</span></div>
+        </div>
+        <div>
+          <div class="stat-num">0</div>
+          <div class="stat-label">servidores implantados</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
 
 <div id="redoc-container">
   <p class="redoc-loading-note">Carregando…</p>
@@ -97,7 +166,9 @@
         activeTextColor: dark ? '#e08468' : '#9c3b2e'
       },
       rightPanel: {
-        backgroundColor: dark ? '#242017' : '#201d18'
+        // deep espresso-maroon, not neutral charcoal — reads as a deliberate
+        // dark rail (echoes the terracotta accent) even when it's empty.
+        backgroundColor: dark ? '#120a07' : '#2b1712'
       },
       typography: {
         fontSize: '15px',
@@ -119,7 +190,7 @@
         theme: themeFor(stored),
         scrollYOffset: 44,
         expandResponses: '200',
-        hideDownloadButton: false,
+        hideDownloadButton: true,
         pathInMiddlePanel: true
       },
       document.getElementById('redoc-container')
