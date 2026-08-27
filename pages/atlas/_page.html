@@ -572,6 +572,7 @@ let C = {};
    (no dimming, no glassy panels) so it reads as one more view of the same
    atlas, not a separate dark demo. */
 let graph3d = null, G3 = null, d3Ready = false, d3Loading = false;
+let adj3d = null;   // node id -> Set(neighbour ids), built alongside G3
 const d3Pending = [];
 const d3NodeByDs = new Map(), d3NodeByKey = new Map();
 let edgeWidthMul3d = 0.55, expansion3d = 2.2;
@@ -1213,6 +1214,13 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;",
 function select(h) {
   sel = h;
   syncUrl();
+  if (mode === "3d") {
+    if (!h) clearSelect3D();
+    else if (h.type === "ds") selectNode3D(d3NodeByDs.get(h.i));
+    else if (h.type === "key") selectNode3D(d3NodeByKey.get(h.i));
+    else if (h.type === "tbl") selectNode3D(d3NodeByDs.get(TB[h.i].ds));
+    else clearSelect3D();   // theme: no single 3D node stands for it
+  }
   if (!h) { insp.classList.remove("on"); draw(); return; }
   if (h.type === "theme") renderTheme(h.th);
   else if (h.type === "key") renderKey(h.i);
@@ -1429,6 +1437,13 @@ function build3DGraph() {
     links.push({ source: "d" + d, target: "k" + ki, name: KS[ki].n, dsIndex: d, wn: wNorm(ki), lbl: KS[ki].t <= 8 });
   });
   nodes.forEach(n => (n.kind === "ds" ? d3NodeByDs : d3NodeByKey).set(n.i, n));
+  adj3d = new Map();
+  links.forEach(l => {
+    if (!adj3d.has(l.source)) adj3d.set(l.source, new Set());
+    if (!adj3d.has(l.target)) adj3d.set(l.target, new Set());
+    adj3d.get(l.source).add(l.target);
+    adj3d.get(l.target).add(l.source);
+  });
   return { nodes, links };
 }
 
@@ -1458,7 +1473,27 @@ function dollyCamera3D(factor) {
 // factory when it (re)builds the sprite — mutating an existing sprite right
 // before calling refresh() would just get thrown away by the rebuild.
 let hoverThemeId = null;
-const nodeDimmed = n => hoverThemeId && !(n.kind === "ds" ? DS[n.i].dom === hoverThemeId : themeKeys[hoverThemeId] && themeKeys[hoverThemeId].has(n.i));
+// Clicking a node pins the same dim treatment to it and its direct
+// neighbours, until the background (or i-close/Escape/reset) clears it via
+// select(null). Theme hover, being momentary, takes priority while active.
+let selectedNode3D = null;   // node id ("d"+i / "k"+i), or null
+const EMPTY_SET = new Set();
+const nodeDimmed = n => {
+  if (hoverThemeId) return !(n.kind === "ds" ? DS[n.i].dom === hoverThemeId : themeKeys[hoverThemeId] && themeKeys[hoverThemeId].has(n.i));
+  if (selectedNode3D) return !(n.id === selectedNode3D || (adj3d.get(selectedNode3D) || EMPTY_SET).has(n.id));
+  return false;
+};
+// Shared by applyDim3D (link colour) and the link-label sprite (link opacity).
+const linkOn3D = l => {
+  if (hoverThemeId) return DS[l.dsIndex].dom === hoverThemeId;
+  if (selectedNode3D) {
+    const sid = typeof l.source === "object" ? l.source.id : l.source;
+    const tid = typeof l.target === "object" ? l.target.id : l.target;
+    const near = id => id === selectedNode3D || (adj3d.get(selectedNode3D) || EMPTY_SET).has(id);
+    return near(sid) && near(tid);
+  }
+  return true;
+};
 function fadeToward(hex, bg, ratio) {
   const h = hex.replace("#", ""), b = bg.replace("#", "");
   const mix = (i) => Math.round(parseInt(h.substr(i, 2), 16) + (parseInt(b.substr(i, 2), 16) - parseInt(h.substr(i, 2), 16)) * ratio)
@@ -1466,24 +1501,38 @@ function fadeToward(hex, bg, ratio) {
   return "#" + mix(0) + mix(2) + mix(4);
 }
 
-function hoverTheme3D(th) {
+// Single place that paints node/link colour from whichever of the two dim
+// sources (theme hover, node selection) is currently active — so clearing
+// one correctly falls back to the other instead of wiping both.
+function applyDim3D() {
   if (!graph3d || !G3) return;
-  hoverThemeId = th;
-  const dsOn = i => DS[i].dom === th;
-  const keyOn = i => themeKeys[th] && themeKeys[th].has(i);
   graph3d.nodeColor(n => {
     const base = n.kind === "ds" ? dcol(n.i) : C.hub;
-    return (n.kind === "ds" ? dsOn(n.i) : keyOn(n.i)) ? base : fadeToward(base, C.ground, 0.88);
+    return nodeDimmed(n) ? fadeToward(base, C.ground, 0.88) : base;
   });
-  graph3d.linkColor(l => dsOn(l.dsIndex) ? dcol(l.dsIndex) : fadeToward(dcol(l.dsIndex), C.ground, 0.9));
+  graph3d.linkColor(l => linkOn3D(l) ? dcol(l.dsIndex) : fadeToward(dcol(l.dsIndex), C.ground, 0.9));
   refreshGraph3D();
 }
-function clearHover3D() {
-  if (!graph3d || !G3) return;
+
+function selectNode3D(node) {
+  if (!node) return;
+  selectedNode3D = node.id;
   hoverThemeId = null;
-  graph3d.nodeColor(n => n.kind === "ds" ? dcol(n.i) : C.hub);
-  graph3d.linkColor(l => dcol(l.dsIndex));
-  refreshGraph3D();
+  applyDim3D();
+}
+function clearSelect3D() {
+  if (!selectedNode3D) return;
+  selectedNode3D = null;
+  applyDim3D();
+}
+function hoverTheme3D(th) {
+  hoverThemeId = th;
+  applyDim3D();
+}
+function clearHover3D() {
+  if (!hoverThemeId) return;
+  hoverThemeId = null;
+  applyDim3D();
 }
 
 // refresh() applies changed accessors (colour, curvature, width) by purging
@@ -1538,6 +1587,7 @@ function init3D() {
       select(node.kind === "ds" ? { type: "ds", i: node.i } : { type: "key", i: node.i });
       fly3D(node);
     })
+    .onBackgroundClick(() => select(null))
     .onNodeHover(node => { cv3dEl.style.cursor = node ? "pointer" : "grab"; });
 
   graph3d.d3Force("charge").strength(-34 * expansion3d).distanceMax(240 * expansion3d);
@@ -1569,7 +1619,7 @@ function init3D() {
     sprite.fontFace = "IBM Plex Mono, monospace";
     sprite.textHeight = 1.15;
     sprite.material.transparent = true;
-    sprite.material.opacity = hoverThemeId && DS[link.dsIndex].dom !== hoverThemeId ? 0.05 : 1;
+    sprite.material.opacity = linkOn3D(link) ? 1 : 0.05;
     link.__label = sprite;
     return sprite;
   });
