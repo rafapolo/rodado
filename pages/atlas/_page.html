@@ -412,6 +412,7 @@ const [CELL_W, CELL_H, PAD, HEADER] = G.layout.cell;
 const MODES = [
   ["grade", "Grade", "cartões de dataset empacotados; tabelas em grade dentro"],
   ["temas", "Temas", "um território por tema; as chaves flutuam entre os que ligam"],
+  ["3d", "3D", "o mesmo grafo dataset↔chave, fora do canvas, em três dimensões"],
 ];
 let mode = "grade";
 const isDisc = () => mode !== "grade";
@@ -1300,17 +1301,22 @@ document.getElementById("s-d").textContent = fmt(G.meta.datasets);
 document.getElementById("s-k").textContent = fmt(G.meta.keys);
 document.getElementById("s-e").textContent = fmt(G.meta.edges);
 
-// grade: cards in a grid. temas: territories of clustered bodies.
+// grade: cards in a grid. temas: territories of clustered bodies. 3d: leaves
+// the canvas entirely for the force-graph page.
 const MODE_ICON = {
   grade: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1"/><rect x="9" y="1.5" width="5.5" height="5.5" rx="1"/><rect x="1.5" y="9" width="5.5" height="5.5" rx="1"/><rect x="9" y="9" width="5.5" height="5.5" rx="1"/></svg>',
   temas: '<svg viewBox="0 0 16 16" fill="currentColor"><circle cx="4.5" cy="4.5" r="3"/><circle cx="12" cy="4" r="2"/><circle cx="5" cy="12" r="2.3"/><circle cx="12.5" cy="11.5" r="1.6"/></svg>',
+  "3d": '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 1.3 14 4.6v6.8L8 14.7 2 11.4V4.6Z"/><path d="M8 1.3v6.7m0 0L2 4.6m6 3.4 6-3.4m-6 3.4v6.7"/></svg>',
 };
+// every mode but 3d redraws this same canvas; 3d is a whole other renderer,
+// so it is a link out instead of a state this page can be in.
 const modesEl = document.getElementById("modes");
 modesEl.innerHTML = MODES.map(([id, name, desc]) =>
   `<button data-mode="${id}" aria-pressed="${id === mode}">
      ${MODE_ICON[id] || ""}
      <span class="nm">${name}</span><span class="ds">${desc}</span></button>`).join("");
-modesEl.querySelectorAll("button").forEach(b => b.onclick = () => setMode(b.dataset.mode));
+modesEl.querySelectorAll("button").forEach(b => b.onclick = () =>
+  b.dataset.mode === "3d" ? (location.href = "3d.html") : setMode(b.dataset.mode));
 
 const listEl = document.getElementById("list");
 const listT = document.getElementById("list-t");
