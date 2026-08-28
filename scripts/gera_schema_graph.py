@@ -32,13 +32,11 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
 from gera_join_keys import (  # noqa: E402
-    AUTO_DENY,
     CONCEPT_ALIASES,
     CURATED,
-    KEYISH,
-    MIN_DATASETS,
     TYPE_MAP,
     index_columns,
+    select_join_columns,
 )
 from gera_erd import TEMPORAL  # noqa: E402
 
@@ -79,7 +77,7 @@ CAT_NAMES = {
 }
 
 
-def cat_of(col: str) -> str:
+def cat_of(col: str, hub: dict[str, str] | None = None) -> str:
     if col in CURATED:
         return CURATED[col].get("cat", "outros")
     if col in TEMPORAL or col.startswith(("ano_", "mes_", "data_")):
@@ -87,6 +85,13 @@ def cat_of(col: str) -> str:
     for prefix, cat in PREFIX_CAT:
         if col.startswith(prefix):
             return cat
+    # PREFIX_CAT only matches at the start, so the role variants that read
+    # backwards (`destino_uf`, `uf_devedor`, `pais_infeccao`) fell through to
+    # "outros" and lost their colour. The hub they resolve to already carries a
+    # category — bridges.yaml and PREFIX_CAT share the id namespace.
+    hub_of = (hub or {}).get(col)
+    if hub_of:
+        return CURATED.get(hub_of, {}).get("cat", "outros")
     return "outros"
 
 
@@ -363,17 +368,20 @@ def load_row_counts() -> dict[str, dict]:
 
 
 def select_keys(idx) -> list[str]:
-    """The same set gera_join_keys.py documents: curated hubs + auto-detected."""
-    curated = {c for c in CURATED if c in idx}
-    auto = {
-        c for c, i in idx.items()
-        if c not in curated
-        and len(i["datasets"]) >= MIN_DATASETS
-        and KEYISH.match(c)
-        and c not in AUTO_DENY
-        and not re.fullmatch(r"v\d{3}", c)
-    }
-    return sorted(curated | auto)
+    """The set gera_join_keys.py documents, minus the keys that connect nothing.
+
+    `select_join_columns` is shared with the doc so the two never drift, but the
+    doc and the map want different cuts of it. The doc lists a role-qualified
+    column that lives in a single table (`sigla_uf_conselho_prescritor`) because
+    a reader looking that column up still needs to be told it is a state code.
+    The map is bipartite table→key and exists to show what *connects*: a key
+    reaching one table draws an edge to nothing and just adds a dangling node to
+    a picture whose whole job is adjacency. Curated hubs stay regardless — they
+    are the anchors, and they carry the descriptions the panel shows.
+    """
+    curated, shared, hub = select_join_columns(idx)
+    connecting = {c for c in shared | set(hub) if len(idx[c]["tables"]) >= 2}
+    return sorted(curated | connecting)
 
 
 def build():
@@ -383,6 +391,7 @@ def build():
     idx = index_columns(tables)
 
     key_names = select_keys(idx)
+    _, _, hub_map = select_join_columns(idx)
     key_pos = {c: i for i, c in enumerate(key_names)}
     key_set = set(key_names)
 
@@ -451,7 +460,7 @@ def build():
         types = info["types"].most_common(2)
         entry = {
             "n": info["spellings"].most_common(1)[0][0],
-            "cat": cat_of(col),
+            "cat": cat_of(col, hub_map),
             "t": len(key_tables[i]),
             "d": len(key_datasets[i]),
             "ty": [t for t, _ in types],
