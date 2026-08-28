@@ -430,8 +430,12 @@ concepts:
     - Two-letter code in `br_caixa_sinapi`, `br_cgu_garantia_safra`, `br_cgu_pe_de_meia`, `br_cgu_seguro_defeso`,
       `br_fbsp_absp`, `br_mjsp_sinesp`, `br_mj_consumidorgovbr`, `br_mjsp_ckan`, `br_tcu_inidoneos`, `br_tesouro_capag`
       — direct join.
-    - '`br_mjsp_sisdepen.populacao_carceraria` stores `Acre (AC)` — extract with `regexp_extract(uf, ''\(([A-Z]{2})\)$'',
-      1)`.'
+    - '`br_mjsp_sisdepen.populacao_carceraria` mistura os dois formatos na mesma coluna: 31.690 das 38.364
+      linhas já são a sigla de 2 letras e só 1.413 são `Acre (AC)`. O `regexp_extract` sozinho resolve 1.413
+      — use `CASE WHEN length(uf) = 2 THEN uf ELSE regexp_extract(uf, ''\(([A-Z]{2})\)$'', 1) END`, que resolve
+      33.103 linhas / 27 siglas (as 5.252 restantes são NULL). A coluna irmã `invite_uf` é sigla de 2 letras
+      limpa, mas preenchida em só 1.420 linhas (mais 4 `União`) — não serve de substituta. Conferido no
+      beelink, 2026-08-28.'
     - '`br_siop_orcamento.localizadores` stores the **full state name, mojibake** (`EspÃ­rito Santo`)
       — re-encode before matching.'
   estado:
@@ -1117,9 +1121,19 @@ bridges:
     join_expr: CAST({s}.codigo_uf AS VARCHAR) = CAST({d}.id_uf AS VARCHAR)
   - table: br_mjsp_sisdepen.populacao_carceraria
     column: uf
-    description: '`Acre (AC)` — extract with `regexp_extract(uf, ''\(([A-Z]{2})\)$'', 1)`'
+    description: 'dois formatos na mesma coluna — 31.690 linhas em sigla de 2 letras, 1.413 em `Acre (AC)`,
+      5.252 NULL. O `regexp_extract` sozinho resolvia 1.413; o CASE resolve 33.103 / 27 siglas (conferido
+      no beelink, 2026-08-28)'
     concept: sigla_uf
-    join_expr: regexp_extract({s}.uf, '\(([A-Z]{{2}})\)$', 1) = {d}.sigla_uf
+    join_expr: CASE WHEN length({s}.uf) = 2 THEN {s}.uf ELSE regexp_extract({s}.uf, '\(([A-Z]{{2}})\)$',
+      1) END = {d}.sigla_uf
+  - table: br_mjsp_sisdepen.populacao_carceraria
+    column: invite_uf
+    description: 'sigla de 2 letras limpa (27 UFs) e direta, **mas preenchida em só 1.420 das 38.364 linhas**
+      (mais 4 linhas `União`, o sistema penitenciário federal) — parece a coluna de UF boa e agrupar por
+      ela descarta 96% da tabela em silêncio. Use `uf` (linha acima). Conferido no beelink, 2026-08-28'
+    concept: sigla_uf
+    join_expr: '{s}.invite_uf = {d}.sigla_uf'
   - table: br_anp_combustiveis.precos
     column: estado
     description: full state name, unaccented upper case (`RONDONIA`); `-` when missing
