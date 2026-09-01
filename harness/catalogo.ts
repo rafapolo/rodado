@@ -127,3 +127,37 @@ if (import.meta.main) {
     console.log(`${ds.length} datasets, ${catalogo().length} tabelas`);
   }
 }
+
+/**
+ * Resolve o nome que o modelo escreveu contra o catálogo real — **só grafia**.
+ *
+ * Medido em 2026-09-01. A tentação era mapear prefixo (`seeg` -> o dataset que
+ * começa com `seeg_`), porque parecia que o modelo truncava nomes. Não truncava:
+ * `br_seeg` existe, tem `emissoes_municipais` com 12,1M linhas, e
+ * `br_seeg_emissoes` é um dataset **diferente**, com `municipio` a 165,7M. O
+ * espelho tem quase-duplicatas, e a "falha" era o modelo escolhendo o outro
+ * membro defensável do par. Mapear por prefixo trocaria uma escolha legítima
+ * por outra em silêncio.
+ *
+ * Sobra o que é erro de grafia de fato: prefixo `br_` ausente, e underscore a
+ * mais ou a menos (`ibge_censo_2022_religiao` para `br_ibge_censo2022_religiao`).
+ * Nome que não resolve devolve `null`, nunca um palpite.
+ */
+export function resolveDataset(escrito: string): string | null {
+  const alvo = escrito.trim().toLowerCase().replace(/[.*\\\s]+$/g, "");
+  if (!alvo) return null;
+  const todos = listaDatasets();
+
+  // 1. exato, com ou sem o prefixo br_
+  const exato = todos.find((d) => d === alvo || d === `br_${alvo}`);
+  if (exato) return exato;
+
+  // 2. ignorando underscores, e só quando o resultado é único
+  const achata = (s: string) => s.replace(/_/g, "");
+  for (const cand of [alvo, `br_${alvo}`]) {
+    const planos = todos.filter((d) => achata(d) === achata(cand));
+    if (planos.length === 1) return planos[0]!;
+  }
+
+  return null;
+}
