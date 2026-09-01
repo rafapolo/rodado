@@ -1,8 +1,8 @@
 # Flow — o espelho por domínio
 
-Os 198 datasets do espelho e as chaves com que cada um alcança os hubs de referência, um diagrama por domínio.
+Os 207 datasets do espelho e as chaves com que cada um alcança os hubs de referência, um diagrama por domínio.
 
-Gerado por `scripts/gera_flow.py` a partir de `schemas.json` em 2026-08-23 — não edite à mão, regenere.
+Gerado por `scripts/gera_flow.py` a partir de `schemas.json` em 2026-09-01 — não edite à mão, regenere.
 
 - **caixa** = dataset; um diagrama por domínio;
 - **cápsula** = hub de referência, agrupado por família num `subgraph` e
@@ -22,15 +22,16 @@ flowchart LR
     subgraph doms["Domínios"]
         direction TB
         D_referencia["Diretórios e tabelas de referência<br/>10 datasets"]
-        D_saude["Saúde<br/>20 datasets"]
+        D_saude["Saúde<br/>22 datasets"]
         D_educacao["Educação e ciência<br/>20 datasets"]
         D_economia["Trabalho, empresas e economia<br/>40 datasets"]
         D_governo["Governo, orçamento e compras<br/>31 datasets"]
         D_politica["Política e eleições<br/>7 datasets"]
         D_justica["Justiça, segurança e sanções<br/>21 datasets"]
-        D_territorio["Território, ambiente e infraestrutura<br/>23 datasets"]
+        D_territorio["Território, ambiente e infraestrutura<br/>26 datasets"]
         D_demografia["Demografia e indicadores sociais<br/>17 datasets"]
         D_internacional["Internacional, cultura e esporte<br/>9 datasets"]
+        D_outros["Outros<br/>4 datasets"]
     end
     subgraph g_territ_rio["Território"]
         direction TB
@@ -96,12 +97,13 @@ flowchart LR
     D_referencia -->|"5"| UF
     D_saude -->|"7"| CNES
     D_saude -->|"6"| EMPRESA_CNPJ
-    D_saude -->|"17"| MUNICIPIO
-    D_saude -->|"16"| UF
+    D_saude -->|"19"| MUNICIPIO
+    D_saude -->|"18"| UF
     D_territorio -->|"3"| CID10
-    D_territorio -->|"3"| EMPRESA_CNPJ
-    D_territorio -->|"17"| MUNICIPIO
-    D_territorio -->|"12"| UF
+    D_territorio -->|"6"| EMPRESA_CNPJ
+    D_territorio -->|"20"| MUNICIPIO
+    D_territorio -->|"4"| PESSOA_CPF
+    D_territorio -->|"15"| UF
 ```
 
 ## Diretórios e tabelas de referência
@@ -167,7 +169,7 @@ flowchart LR
 
 ## Saúde
 
-20 datasets · 1 sem ligação documentada
+22 datasets · 1 sem ligação documentada
 
 ```mermaid
 flowchart LR
@@ -184,6 +186,8 @@ flowchart LR
     saude_br_ms_sih["ms_sih"]
     saude_br_ms_sim["ms_sim"]
     saude_br_ms_sinan["ms_sinan"]
+    saude_br_ms_sinan_esquistossomose["ms_sinan_esquistossomose"]
+    saude_br_ms_sinan_malaria["ms_sinan_malaria"]
     saude_br_ms_sinan_violencia["ms_sinan_violencia"]
     saude_br_ms_sinasc["ms_sinasc"]
     saude_br_ms_sisvan["ms_sisvan"]
@@ -248,6 +252,10 @@ flowchart LR
     saude_br_ms_sinan --> saude_CNES
     saude_br_ms_sinan --> saude_MUNICIPIO
     saude_br_ms_sinan --> saude_UF
+    saude_br_ms_sinan_esquistossomose -.-> saude_MUNICIPIO
+    saude_br_ms_sinan_esquistossomose -.-> saude_UF
+    saude_br_ms_sinan_malaria -.-> saude_MUNICIPIO
+    saude_br_ms_sinan_malaria -.-> saude_UF
     saude_br_ms_sinan_violencia -.-> saude_MUNICIPIO
     saude_br_ms_sinan_violencia -.-> saude_UF
     saude_br_ms_sinasc -.-> saude_CNES
@@ -748,7 +756,7 @@ flowchart LR
 
 ## Território, ambiente e infraestrutura
 
-23 datasets · 4 sem ligação documentada
+26 datasets · 4 sem ligação documentada
 
 ```mermaid
 flowchart LR
@@ -758,7 +766,10 @@ flowchart LR
     territorio_br_anatel_banda_larga_fixa["anatel_banda_larga_fixa"]
     territorio_br_anatel_indice_brasileiro_conectividade["anatel_indice_brasileiro_conectividade"]
     territorio_br_geobr_mapas["geobr_mapas"]
+    territorio_br_ibama_autos["ibama_autos"]
+    territorio_br_ibama_ctf["ibama_ctf"]
     territorio_br_ibama_embargos["ibama_embargos"]
+    territorio_br_ibama_embargos_novo["ibama_embargos_novo"]
     territorio_br_inmet_bdmep["inmet_bdmep"]
     territorio_br_inpe_prodes["inpe_prodes"]
     territorio_br_inpe_queimadas["inpe_queimadas"]
@@ -808,9 +819,20 @@ flowchart LR
     territorio_br_geobr_mapas --> territorio_MUNICIPIO
     territorio_br_geobr_mapas --> territorio_SETOR_CENSITARIO
     territorio_br_geobr_mapas --> territorio_UF
+    territorio_br_ibama_autos -.-> territorio_EMPRESA_CNPJ
+    territorio_br_ibama_autos -.-> territorio_MUNICIPIO
+    territorio_br_ibama_autos -.-> territorio_PESSOA_CPF
+    territorio_br_ibama_autos -.-> territorio_UF
+    territorio_br_ibama_ctf --> territorio_EMPRESA_CNPJ
+    territorio_br_ibama_ctf -.-> territorio_MUNICIPIO
+    territorio_br_ibama_ctf -.-> territorio_UF
     territorio_br_ibama_embargos -.-> territorio_EMPRESA_CNPJ
     territorio_br_ibama_embargos -.-> territorio_MUNICIPIO
     territorio_br_ibama_embargos -.-> territorio_PESSOA_CPF
+    territorio_br_ibama_embargos_novo -.-> territorio_EMPRESA_CNPJ
+    territorio_br_ibama_embargos_novo -.-> territorio_MUNICIPIO
+    territorio_br_ibama_embargos_novo -.-> territorio_PESSOA_CPF
+    territorio_br_ibama_embargos_novo -.-> territorio_UF
     territorio_br_inmet_bdmep --> territorio_MUNICIPIO
     territorio_br_inpe_prodes --> territorio_MUNICIPIO
     territorio_br_inpe_queimadas --> territorio_MUNICIPIO
@@ -929,9 +951,45 @@ flowchart LR
     internacional_world_wb_mides --> internacional_UNIDADE_GESTORA
 ```
 
+## Outros
+
+4 datasets · 1 sem ligação documentada
+
+```mermaid
+flowchart LR
+    outros_br_anm["anm"]
+    outros_br_minc_salic["minc_salic"]
+    outros_br_seeg["seeg"]
+    subgraph outros_g_territ_rio["Território"]
+        direction TB
+        outros_MUNICIPIO(["MUNICIPIO"])
+        outros_UF(["UF"])
+        outros_CEP(["CEP"])
+    end
+    subgraph outros_g_pessoas_e_empresas["Pessoas e empresas"]
+        direction TB
+        outros_EMPRESA_CNPJ(["EMPRESA_CNPJ"])
+        outros_PESSOA_CPF(["PESSOA_CPF"])
+    end
+    subgraph outros_g_equipamentos["Equipamentos"]
+        direction TB
+        outros_CID10(["CID10"])
+    end
+    outros_br_anm -.-> outros_EMPRESA_CNPJ
+    outros_br_anm -.-> outros_MUNICIPIO
+    outros_br_anm -.-> outros_PESSOA_CPF
+    outros_br_anm -.-> outros_UF
+    outros_br_minc_salic --> outros_CEP
+    outros_br_minc_salic --> outros_EMPRESA_CNPJ
+    outros_br_minc_salic -.-> outros_PESSOA_CPF
+    outros_br_minc_salic -.-> outros_UF
+    outros_br_seeg -.-> outros_CID10
+    outros_br_seeg --> outros_MUNICIPIO
+```
+
 ## Sem ligação documentada
 
-38 datasets não têm nenhuma chave que chegue a um hub — estão no espelho, mas nada documentado os liga a mais nada:
+39 datasets não têm nenhuma chave que chegue a um hub — estão no espelho, mas nada documentado os liga a mais nada:
 
 - `br_ana_bho`
 - `br_ana_reservatorios`
@@ -946,6 +1004,7 @@ flowchart LR
 - `br_ggb_relatorio_lgbtqi`
 - `br_ibge_ipp`
 - `br_ibge_pnad_covid`
+- `br_inea_boletim`
 - `br_ipea_atlasviolencia`
 - `br_me_estoque_divida_publica`
 - `br_me_exportadoras_importadoras`
