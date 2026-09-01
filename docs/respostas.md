@@ -74,8 +74,8 @@ RN 72,4%, SP 71,9%.
 ## 05 · Política
 
 - **T05-1 ✅** Patrimônio × autoria (legislatura 2023+, match por nome_urna 81%, n=404): **r = −0,18** entre log do patrimônio e nº de proposições — deputados mais ricos não autorizam mais; mediana de 451 proposições.
-- **T05-2 ✅** Ocupação declarada × eleição 2022 (dep. federal/senador): deputados na reeleição **58,8%**, engenheiros 7,8%, médicos 6,5% vs **empresários 3,9%** (n=1.229 candidatos) — abaixo da média (~5%), empresário não é profissão que elege.
-- **T05-3 ⏳** Senado: o espelho não tem tabela de proposições do Senado (só `senadores` + CEAPS) — pipeline necessário.
+- **T05-2 ⏳** Senado: o espelho não tem tabela de proposições do Senado (só `senadores` + CEAPS) — pipeline necessário.
+- **T05-3 ✅** Ocupação declarada × eleição 2022 (dep. federal/senador): deputados na reeleição **58,8%**, engenheiros 7,8%, médicos 6,5% vs **empresários 3,9%** (n=1.229 candidatos) — abaixo da média (~5%), empresário não é profissão que elege.
 - **T05-4 ◐** Fragmentação partidária municipal 2022: nº efetivo de partidos médio **5,6** (n=3.035); × PIB pc **+0,21**; AP mais fragmentado, PI menos. Comparação com votações nominais da Câmara pendente.
 - **T05-5 ✅** Gasto por voto × transferências voluntárias (UF, n=27): **r = +0,92** — mas é estrutural: UFs pequenas (RR R$144/voto, 749 transf pc) têm campanha cara por eleitor E recebem mais transferência per capita; ambas as séries escalam com o tamanho do eleitorado.
 
@@ -948,7 +948,7 @@ análise pendente. Cada um precisaria de trabalho de dado (re-scraping, campo no
 chave nova) antes de qualquer query fazer sentido — tentar responder sem isso
 produziria um número que parece verificado mas não é.
 
-- **T05-3** — Senado: o espelho só tem `senadores` + CEAPS; não existe tabela de
+- **T05-2** — Senado: o espelho só tem `senadores` + CEAPS; não existe tabela de
   proposições/votações do Senado. Precisaria raspar o dataset de proposições do
   Senado (análogo ao que existe para a Câmara em `br_camara_dados_abertos`).
 - **T06-1, T06-4** — INFOPEN/SISDEPEN: colunas com unicode inválido (1.514 linhas).
