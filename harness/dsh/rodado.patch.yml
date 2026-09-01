@@ -1,0 +1,60 @@
+# Overlay do dsh para o harness do rodado.
+#
+#   bunx dsh --profile web --patch harness/dsh/rodado.patch.yml
+#
+# Duas coisas: apontar o modelo para o Gemma 4 local no beelink, e montar o
+# mcp_server.py do projeto como servidor de ferramentas.
+
+# --- modelo local -----------------------------------------------------------
+# Rota declarada à mão: pi-ai não traz nada sob esta chave, então o perfil
+# fornece o provider inteiro. llama-server fala openai-completions e ignora a
+# chave de API, então `apiKeyEnv` fica de fora (rota não autenticada).
+- id: llm-pi-ai
+  name: '@deepseek-ai/dsh-llm-pi-ai'
+  config:
+    providers:
+      beelink-local:
+        displayName: Gemma 4 26B-A4B (beelink)
+        api: openai-completions
+        baseURL: http://beelink:8099/v1
+        models:
+          - id: gemma-4-26B-A4B-it-qat
+            name: Gemma 4 26B-A4B q4_0 QAT
+            # llama-server sobe com -c 32768; o modelo suporta 262k, mas o KV
+            # a 262k não cabe junto do mirror na mesma máquina.
+            contextWindow: 32768
+            maxTokens: 4096
+            # `off:` sem valor = a opção existe e, escolhida, não manda nada na
+            # requisição. É o que vale 28x aqui: com thinking ligado o Gemma
+            # gastou 1.200 tokens e 94,8 s sem produzir SQL nenhuma; desligado,
+            # 3,4 s com a query completa. Medido em 2026-09-01.
+            reasoningEfforts:
+              off:
+
+- id: agent-default-model
+  name: '@deepseek-ai/dsh-agent-default-model'
+  config:
+    provider: beelink-local
+    model: gemma-4-26B-A4B-it-qat
+
+# --- ferramentas do espelho -------------------------------------------------
+# Uma instância do mcp-client = um servidor MCP. As ferramentas aparecem no
+# registro como mcp__rodado__<nome>.
+# `insert` (sem id) anexa entradas novas na raiz — patch com id só sobrepõe
+# entrada existente, e este plugin não está no perfil base.
+- insert:
+    # Uma instância do mcp-client = um servidor MCP. As ferramentas aparecem no
+    # registro como mcp__rodado__<nome>. Hoje o dsh faz ponte só da capability
+    # Tools (Resources e Prompts adiados) — o que basta: mcp_server.py é só
+    # ferramenta.
+    - id: mcp-rodado
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: rodado
+        transport: stdio
+        command: python3
+        args:
+          - mcp_server.py
+        cwd: .
+        env:
+          BEELINK_HOST: beelink
