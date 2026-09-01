@@ -26,6 +26,7 @@ import { dicasDeJoin } from "./pontes.ts";
 import { runSqlSsh } from "./beelink.ts";
 import { capRows } from "./sqlguard.ts";
 import { textoFaixa } from "./anos.ts";
+import { inservivel } from "./catalogo.ts";
 
 const servidor = new Server(
   { name: "rodado-harness", version: "1.0.0" },
@@ -93,7 +94,8 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
       const part = cols.filter((c) => ["ano", "mes", "sigla_uf"].includes(c.name.toLowerCase()));
       return `${ds}.${t.tabela}  ${t.linhas.toLocaleString("pt-BR")} linhas` +
              (part.length ? `  particionada por: ${part.map((c) => c.name).join(", ")}` : "") +
-             textoFaixa(`${ds}.${t.tabela}`);
+             textoFaixa(`${ds}.${t.tabela}`) +
+             (inservivel(`${ds}.${t.tabela}`) ? "  ⚠ NÃO USE — " + inservivel(`${ds}.${t.tabela}`) : "");
     });
     return texto(linhas.join("\n"));
   }
