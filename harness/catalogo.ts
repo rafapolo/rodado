@@ -26,6 +26,10 @@ export interface EntradaCatalogo {
   dataset: string;
   tabela: string;
   linhas: number;
+  /** status do _rodado_metadata: mirrored, done, blocked, redundante... */
+  status?: string;
+  /** notas de procedência — carregam avisos como "está VAZIO, use o novo" */
+  notas?: string;
 }
 
 export interface Coluna {
@@ -69,6 +73,55 @@ export function tabelasDe(dataset: string): EntradaCatalogo[] {
   return catalogo().filter((e) => e.dataset === dataset);
 }
 
+/**
+ * Índice de datasets aposentados — construído das notas de procedência de TODOS
+ * os outros, porque um dataset quebrado raramente se denuncia.
+ *
+ * O caso que motivou isto: `br_ibama_embargos` tem 497 mil linhas em uma de suas
+ * tabelas e `status = 'done'`. Nenhuma coluna de metadado a acusa: as linhas
+ * existem, os *valores* é que são strings vazias — o CSV foi parseado errado e os
+ * bytes nunca chegaram (`max(length()) = 0`). Ela não falha, responde zero, e o
+ * zero passa por resposta: "não há embargos" no lugar de "não há dado". O único
+ * sinal no espelho inteiro é a nota do dataset que a substituiu, dizendo
+ * "Substitui `br_ibama_embargos`, que está VAZIO".
+ */
+let _aposentados: Map<string, string> | null = null;
+function aposentados(): Map<string, string> {
+  if (_aposentados) return _aposentados;
+  const m = new Map<string, string>();
+  for (const e of catalogo()) {
+    if (!e.notas) continue;
+    for (const [, alvo] of e.notas.matchAll(/Substitui\s+`([a-z0-9_.]+)`/gi)) {
+      const frase = e.notas.match(new RegExp(`[^.]*${alvo}[^.]*\\.`))?.[0]?.trim();
+      m.set(alvo.toLowerCase(), frase ?? `substituído por ${e.dataset}`);
+    }
+  }
+  _aposentados = m;
+  return m;
+}
+
+/**
+ * Tabela que não serve para consulta, e por quê — ou null se está de pé.
+ * Três sinais, do mais forte ao mais sutil: aposentada por outro dataset,
+ * marcada como redundante no status, ou sem nenhuma linha.
+ */
+export function inservivel(id: string): string | null {
+  const [ds, tb] = partir(id);
+  const ap = aposentados();
+  const motivo = ap.get(id.toLowerCase()) ?? ap.get(ds.toLowerCase());
+  if (motivo) {
+    return `${id} foi aposentada: ${motivo} Consultá-la devolve resultado que parece legítimo.`;
+  }
+
+  const e = catalogo().find((x) => x.dataset === ds && x.tabela === tb);
+  if (!e) return null;
+  if (/redundante|obsolet|remover/i.test(e.status ?? "")) {
+    return `${id} está marcada como '${e.status}' no catálogo. Use a tabela canônica.`;
+  }
+  if (e.linhas === 0) return `${id} está vazia (0 linhas).`;
+  return null;
+}
+
 /** Linhas de `dataset.tabela`, ou null se desconhecida. */
 export function linhasDe(id: string): number | null {
   const [ds, tb] = partir(id);
@@ -102,7 +155,8 @@ function partir(id: string): [string, string] {
 /** Rebusca o catálogo no beelink e regrava o cache. */
 export async function atualiza(): Promise<number> {
   const sql = `
-    SELECT dataset, "table" AS tabela, rows AS linhas
+    SELECT dataset, "table" AS tabela, rows AS linhas, status,
+           substr(provenance_notes, 1, 300) AS notas
     FROM read_parquet('~/rodado/_rodado_metadata/catalog.parquet')
     WHERE source <> 'view_only'
     ORDER BY dataset, tabela`;
@@ -112,6 +166,8 @@ export async function atualiza(): Promise<number> {
     dataset: String(x.dataset),
     tabela: String(x.tabela),
     linhas: Number(x.linhas ?? 0),
+    status: x.status ? String(x.status) : undefined,
+    notas: x.notas ? String(x.notas) : undefined,
   }));
   writeFileSync(CACHE, JSON.stringify(linhas, null, 0));
   _catalogo = linhas;
