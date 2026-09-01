@@ -16,7 +16,15 @@
       beelink-local:
         displayName: Gemma 4 26B-A4B (beelink)
         api: openai-completions
-        baseURL: http://beelink:8099/v1
+        # O llama-server não autentica e ignora o valor, mas o pi-ai exige a
+        # referência: sem ela o boot morre com "No API key for provider". O README
+        # do plugin diz que omitir deixa a rota não autenticada — vale para rota
+        # do catálogo, não para rota declarada à mão.
+        apiKeyEnv: HARNESS_LLM_KEY
+        # O llama-server escuta em 127.0.0.1 no beelink — de propósito, para não
+        # expor inferência na rede. Do mac, abra o túnel antes de rodar o dsh:
+        #     ssh -f -N -L 8099:127.0.0.1:8099 beelink
+        baseURL: http://127.0.0.1:8099/v1
         models:
           - id: gemma-4-26B-A4B-it-qat
             name: Gemma 4 26B-A4B q4_0 QAT
@@ -24,12 +32,15 @@
             # a 262k não cabe junto do mirror na mesma máquina.
             contextWindow: 32768
             maxTokens: 4096
-            # `off:` sem valor = a opção existe e, escolhida, não manda nada na
-            # requisição. É o que vale 28x aqui: com thinking ligado o Gemma
-            # gastou 1.200 tokens e 94,8 s sem produzir SQL nenhuma; desligado,
-            # 3,4 s com a query completa. Medido em 2026-09-01.
-            reasoningEfforts:
-              off:
+            # `false` declara um modelo NÃO-raciocinante — nenhum parâmetro de
+            # thinking vai na requisição. É o que vale 28x aqui: com thinking
+            # ligado o Gemma gastou 1.200 tokens e 94,8 s sem produzir SQL
+            # nenhuma; desligado, 3,4 s com a query completa (medido 2026-09-01).
+            #
+            # Declarar só `off:` NÃO funciona: o plugin recusa com "offers no
+            # level beyond off". E `--dump-config` não pega isso — ele valida a
+            # composição do patch, não o carregamento do plugin. Só o boot pega.
+            reasoningEfforts: false
 
 - id: agent-default-model
   name: '@deepseek-ai/dsh-agent-default-model'
@@ -38,23 +49,25 @@
     model: gemma-4-26B-A4B-it-qat
 
 # --- ferramentas do espelho -------------------------------------------------
-# Uma instância do mcp-client = um servidor MCP. As ferramentas aparecem no
-# registro como mcp__rodado__<nome>.
 # `insert` (sem id) anexa entradas novas na raiz — patch com id só sobrepõe
 # entrada existente, e este plugin não está no perfil base.
 - insert:
-    # Uma instância do mcp-client = um servidor MCP. As ferramentas aparecem no
-    # registro como mcp__rodado__<nome>. Hoje o dsh faz ponte só da capability
-    # Tools (Resources e Prompts adiados) — o que basta: mcp_server.py é só
-    # ferramenta.
+    # O servidor MCP do harness (harness/mcp.ts), não o mcp_server.py.
+    #
+    # Dois motivos. Superfície: as docstrings do mcp_server.py somam 3.482 tokens
+    # de nuance escrita para o Claude, que um 26B em q4 não aproveita e que
+    # dilui o prompt — aqui são 4 ferramentas com descrição curta. E o portão:
+    # `consultar` valida antes de executar, e a REJEIÇÃO VOLTA COMO RESULTADO DA
+    # FERRAMENTA. É isso que faz o laço agêntico do dsh virar o mecanismo de
+    # reparo da SQL, com o log de sessão junto — em vez de um retry escrito à mão.
     - id: mcp-rodado
       name: '@deepseek-ai/dsh-mcp-client'
       config:
         serverName: rodado
         transport: stdio
-        command: python3
+        command: bun
         args:
-          - mcp_server.py
+          - harness/mcp.ts
         cwd: .
         env:
           BEELINK_HOST: beelink
