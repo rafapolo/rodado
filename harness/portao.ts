@@ -23,7 +23,7 @@
  * erros são mecânicos.
  */
 import { checkReadOnly } from "./sqlguard.ts";
-import { colunasDe, linhasDe, particoesDe, LIMIAR_PARTICAO } from "./catalogo.ts";
+import { colunasDe, linhasDe, particoesDe, inservivel, LIMIAR_PARTICAO } from "./catalogo.ts";
 
 export interface Veredito {
   ok: boolean;
@@ -86,6 +86,24 @@ function checaTabelas(sql: string): Veredito {
   return ruins.length
     ? { ok: false, camada: "tabela", erro: `Referência inválida: ${ruins.join("; ")}.` }
     : OK;
+}
+
+/**
+ * Camada 2b — a tabela existe, tem linhas, e ainda assim não serve.
+ *
+ * `br_ibama_embargos` tem 497 mil linhas e status 'done', mas os valores são
+ * strings vazias: o CSV foi parseado errado na raspagem e os bytes nunca
+ * chegaram. Uma consulta contra ela devolve zero e o zero passa por resposta —
+ * "não há embargos" no lugar de "não há dado". É a falha mais cara que existe
+ * aqui, porque não deixa rastro nenhum.
+ */
+function checaInservivel(sql: string): Veredito {
+  for (const ref of tabelasCitadas(sql)) {
+    if (!ref.includes(".")) continue;
+    const motivo = inservivel(ref);
+    if (motivo) return { ok: false, camada: "inservivel", erro: motivo };
+  }
+  return OK;
 }
 
 /** Camada 3 — coluna inventada. */
@@ -203,7 +221,7 @@ export function portao(sql: string): Veredito {
   const leitura = checkReadOnly(sql);
   if (leitura) return { ok: false, camada: "read-only", erro: leitura };
 
-  for (const camada of [checaTabelas, checaColunas, checaParticao, checaLimite, checaCodificacao]) {
+  for (const camada of [checaTabelas, checaInservivel, checaColunas, checaParticao, checaLimite, checaCodificacao]) {
     const v = camada(sql);
     if (!v.ok) return v;
   }

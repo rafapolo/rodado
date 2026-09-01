@@ -121,3 +121,24 @@ describe("CTE — o caso multi-dataset, que é o que importa", () => {
     expect(v.camada).toBe("tabela");
   });
 });
+
+describe("camada inservível — a tabela que responde zero e parece certa", () => {
+  test("REJEITA br_ibama_embargos, vazia por bug de parsing apesar de 497k linhas", () => {
+    const v = portao("SELECT COUNT(*) FROM br_ibama_embargos.termo_embargo WHERE ano = 2020");
+    expect(v.ok).toBe(false);
+    expect(v.camada).toBe("inservivel");
+  });
+  test("aceita a que a substituiu", () => {
+    const v = portao("SELECT COUNT(*) FROM br_ibama_embargos_novo.termo_embargo");
+    expect(v.camada).not.toBe("inservivel");
+  });
+  test("REJEITA br_seeg, marcada redundante no catálogo", () => {
+    const v = portao("SELECT COUNT(*) FROM br_seeg.emissoes_municipais WHERE ano = 2020");
+    expect(v.ok).toBe(false);
+    expect(v.camada).toBe("inservivel");
+  });
+  test("não bloqueia o diretório canônico de municípios", () => {
+    const v = portao("SELECT COUNT(*) FROM br_bd_diretorios_brasil.municipio");
+    expect(v.camada).not.toBe("inservivel");
+  });
+});
