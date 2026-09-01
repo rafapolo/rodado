@@ -1,0 +1,39 @@
+> # Relatório de saúde mental — dados disponíveis no espelho
+
+> Aberto em 2026-09-01, a partir de um levantamento do que o espelho tem para
+> relatórios sobre questões psiquiátricas e psicológicas. Ainda não é um
+> relatório — é o mapa do que dá para responder e do que falta, antes de
+> escolher um recorte (município, período, tema) e escrever
+> `pages/analises/results/*.md`.
+
+## Tabelas já mapeadas
+
+| Tabela | O que dá | Chave/filtro |
+|---|---|---|
+| `br_ms_sia.psicossocial`  ... (truncated)
+
+[Start thinking]
+
+A technical report/mapping document titled "Relatório de saúde mental — dados disponíveis no espelho". It's a pre-analysis assessment (dated 2026-09-01) detailing what data is available in a database (the "espelho") regarding mental health, what can be answered, what's missing, and the next steps for creating analysis reports.
+A data scientist or analyst working on a health data project (likely using a specific internal framework/tooling, given the references like `pages/analises/results/*.md`, `describe_table`, `resolve_join`, and `coded_value_warning`).
+
+        *   *Tables Mapped:* SIA (CAPS/Psychosocial), CNES (Beds), SIH (Hospitalizations/AIH), SIM (Deaths/Suicides), SINAN (Violence/Suicide attempts), and CID-10 lookup.
+        *   *Warnings:* Decoding issues with demographic variables in SIM; need for `resolve_join`.
+        *   *Unexplored:* PNS (Self-reported prevalence), CNES establishments (to find CAPS), Joins between tables.
+        *   *Known Gaps:* No prevalence data (only service demand/death), no private sector data.
+        *   *Next Steps:* Choose a scope, check PNS, test joins, follow reporting standards.
+
+    *   The user provided a "status report" or "technical roadmap."
+    *   *Goal:* Usually, when a user provides a document like this, they want:
+        *   A summary/synthesis.
+        *   A critique or suggestions for improvement.
+        *   A structured plan of action.
+        *   Help in choosing the "recorte" (scope) mentioned in the next steps.
+
+    *   *Option 1: Summary.* Good for quick reading.
+    *   *Option 2: Strategic Analysis (Strengths/Weaknesses/Opportunities/Threats - SWOT-style).* Very professional for data projects.
+    *   *Option 3: Roadmap/Action Plan.* Highly practical.
+    *   *Option 4: Data Science Perspective (The "How-to").* Technical advice on the joins and the "prevalence gap."
+
+    *   *Critique of the "Mapping":* The mapping is excellent. It covers the "Three Pillars" of health indicators: *Service Demand* (S
+
