@@ -46,11 +46,29 @@ const CODIFICADAS = new Set(["sexo", "raca_cor", "estado_civil"]);
 /** Colunas de CID-10 — guardadas sem ponto, então comparação de faixa mente. */
 const COLUNAS_CID = /\b(causa_basica|cid_principal\w*|cid_\w+|causa_\w+)\b/i;
 
+/**
+ * Nomes definidos por `WITH x AS (...)`. Um CTE é referenciado igual a uma
+ * tabela e não existe no catálogo — sem reconhecê-los, o portão rejeita toda
+ * consulta multi-dataset, que é justamente a que importa aqui: CTE é como se
+ * escreve o join entre dois datasets sem repetir subconsulta.
+ */
+function ctesDefinidos(sql: string): Set<string> {
+  const out = new Set<string>();
+  // WITH a AS (...), b AS (...)  — pega tanto o primeiro quanto os seguintes
+  for (const [, nome] of sql.matchAll(/(?:\bWITH\s+|,\s*)([A-Za-z_][\w]*)\s+AS\s*\(/gi)) {
+    out.add(nome.toLowerCase());
+  }
+  return out;
+}
+
 function tabelasCitadas(sql: string): string[] {
+  const ctes = ctesDefinidos(sql);
   const out = new Set<string>();
   for (const [, ref] of sql.matchAll(
     /\b(?:FROM|JOIN)\s+([A-Za-z_][\w]*(?:\.[A-Za-z_][\w]*)?)/gi,
-  )) out.add(ref);
+  )) {
+    if (!ctes.has(ref.toLowerCase())) out.add(ref);
+  }
   return [...out];
 }
 
@@ -78,6 +96,13 @@ function checaColunas(sql: string): Veredito {
     for (const c of colunasDe(r) ?? []) conhecidas.add(c.name.toLowerCase());
   }
   if (!conhecidas.size) return OK;
+
+  // Colunas que a própria consulta cria com AS viram referência válida adiante
+  // (`SUM(x) AS saldo_2020` e depois `c.saldo_2020`). Sem isso o portão acusa
+  // de inexistente exatamente a coluna que a consulta acabou de definir.
+  for (const [, apelido] of sql.matchAll(/\bAS\s+([A-Za-z_][\w]*)/gi)) {
+    conhecidas.add(apelido.toLowerCase());
+  }
 
   // `dataset.tabela` casa com o mesmo padrão de `alias.coluna` — sem tirar as
   // referências de tabela, `br_ms_sim.microdados` vira "coluna inexistente".
@@ -185,17 +210,31 @@ export function portao(sql: string): Veredito {
   return OK;
 }
 
+/** Assinaturas de erro real do DuckDB. Qualquer outra saída de um EXPLAIN
+ *  significa que ele montou o plano — ou seja, tabela e coluna existem. */
+const ERROS_DUCKDB = [
+  "Catalog Error", "Binder Error", "Parser Error", "Conversion Error",
+  "Syntax Error", "Type Error", "Not implemented Error", "Invalid Input Error",
+];
+
 /**
  * Camada 7 — EXPLAIN no beelink. Valida tabela e coluna contra o catálogo real
  * sem ler uma linha de dado; erro de nome volta em milissegundos em vez de
  * depois de uma varredura. Separado de `portao()` porque custa uma ida à rede.
+ *
+ * `EXPLAIN` devolve o plano físico em arte-ASCII, não JSON — então o executor,
+ * que espera JSON, reporta "resposta não-JSON". Isso é **sucesso**: o plano só
+ * existe porque a consulta ligou. Falha é só a assinatura de erro do próprio
+ * DuckDB. Sem esta distinção o portão rejeitava toda consulta válida.
  */
 export async function checaExplain(
   sql: string,
   roda: (s: string) => Promise<{ error?: string }>,
 ): Promise<Veredito> {
   const r = await roda(`EXPLAIN ${sql}`);
-  return r.error
-    ? { ok: false, camada: "explain", erro: `DuckDB rejeitou: ${r.error}` }
-    : OK;
+  if (!r.error) return OK;
+  const real = ERROS_DUCKDB.find((e) => r.error!.includes(e));
+  return real
+    ? { ok: false, camada: "explain", erro: `DuckDB rejeitou (${real}): ${r.error.slice(0, 300)}` }
+    : OK; // plano em ASCII — a consulta liga
 }

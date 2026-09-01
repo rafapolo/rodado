@@ -88,3 +88,36 @@ describe("camada limite", () => {
     expect(portao("SELECT COUNT(*) FROM br_ms_sim.microdados WHERE ano = 2020").ok).toBe(true);
   });
 });
+
+describe("CTE — o caso multi-dataset, que é o que importa", () => {
+  const sql = `WITH caged AS (
+      SELECT id_municipio, SUM(saldo_movimentacao) AS saldo
+      FROM br_me_caged.microdados_movimentacao WHERE ano = 2020 GROUP BY id_municipio
+    ), pib AS (
+      SELECT id_municipio, pib FROM br_ibge_pib.municipio WHERE ano = 2020
+    )
+    SELECT COUNT(*) FROM caged JOIN pib ON caged.id_municipio = pib.id_municipio`;
+
+  test("não confunde nome de CTE com tabela inexistente", () => {
+    const v = portao(sql);
+    expect(v.camada).not.toBe("tabela");
+  });
+  test("a consulta multi-dataset inteira passa", () => {
+    expect(portao(sql).ok).toBe(true);
+  });
+  test("coluna criada com AS não é acusada de inexistente", () => {
+    const v = portao(
+      `WITH t AS (SELECT id_municipio, COUNT(*) AS total
+         FROM br_ms_sim.microdados WHERE ano = 2020 GROUP BY id_municipio)
+       SELECT AVG(t.total) FROM t`,
+    );
+    expect(v.ok).toBe(true);
+  });
+  test("ainda pega tabela de verdade inexistente dentro de CTE", () => {
+    const v = portao(
+      `WITH t AS (SELECT * FROM br_ms_sim.nao_existe WHERE ano = 2020 LIMIT 5) SELECT * FROM t LIMIT 5`,
+    );
+    expect(v.ok).toBe(false);
+    expect(v.camada).toBe("tabela");
+  });
+});

@@ -24,6 +24,8 @@ export interface Resposta {
   /** tokens do prompt realmente prefilados; ~0 significa cache de prefixo ativo */
   prefilados: number;
   segundos: number;
+  /** true quando a resposta bateu no teto de tokens e foi cortada no meio */
+  truncada: boolean;
 }
 
 export async function pergunta(
@@ -48,13 +50,14 @@ export async function pergunta(
   });
   if (!r.ok) throw new Error(`llama-server ${r.status}: ${await r.text()}`);
   const d = await r.json() as {
-    choices: { message: { content?: string } }[];
+    choices: { message: { content?: string }; finish_reason?: string }[];
     timings?: { prompt_n?: number; predicted_ms?: number };
   };
   return {
     texto: d.choices[0]?.message?.content ?? "",
     prefilados: d.timings?.prompt_n ?? -1,
     segundos: (d.timings?.predicted_ms ?? 0) / 1000,
+    truncada: d.choices[0]?.finish_reason === "length",
   };
 }
 
