@@ -33,9 +33,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Checkout shutafut
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: rafapolo/shutafut
           path: pages/analises/shutafut
@@ -46,7 +46,7 @@ jobs:
       # O sha do payload só vale para o repositório que disparou o evento; nos
       # demais, ref vazio faz o checkout pegar o branch padrão.
       - name: Checkout tse-bens
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: rafapolo/tse-bens
           ref: ${{ github.event.action == 'tse-bens-updated' && github.event.client_payload.sha || '' }}
@@ -56,7 +56,7 @@ jobs:
           cd pages/analises/patrimonio
           rm -rf .git .gitignore README.md screenshot.png
       - name: Checkout rios-do-brasil
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: rafapolo/rios-do-brasil
           ref: ${{ github.event.action == 'rios-updated' && github.event.client_payload.sha || '' }}
@@ -66,9 +66,9 @@ jobs:
           cd pages/analises/rios-do-brasil
           rm -rf .git .github .gitignore pipeline README.md screenshot.png
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: './pages'
 
@@ -81,4 +81,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
