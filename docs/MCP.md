@@ -6,7 +6,7 @@ Desktop/Claude Code) — não é uma API REST, é uma lista de funções que um
 modelo de linguagem chama em sequência, decidindo a cada passo qual chamar a
 seguir a partir do resultado da anterior.
 
-Números de hoje: 197 datasets, 832 tabelas, índice doc2query com 6.464
+Números de hoje: 212 datasets, 904 tabelas (índice doc2query ainda cobre as 832 de 2026-08-23), índice doc2query com 6.464
 perguntas sintéticas (uma por tabela em média ~8), 60 conceitos de join
 documentados, 20 false friends, 7 métricas nomeadas, 3 hierarquias de rollup,
 18 ferramentas ao todo. Nunca abre conexão DuckDB local — toda query roda no
@@ -52,7 +52,7 @@ flowchart LR
 
     subgraph ctx["docs/context/ — carregado 1x no import"]
         direction TB
-        C1["basedosdados-schema.json\n(_SCHEMA: 197 ds / 832 tbl)"]
+        C1["basedosdados-schema.json\n(_SCHEMA: 207 ds / 895 tbl)"]
         C2["doc2query_index.json +\ndoc2query_vectors.npy\n(6.464 perguntas sintéticas)"]
         C3["bridges.yaml\n(concepts / false_friends /\ncoded_differently / concept_aliases)"]
         C4["metrics.yaml · hierarchies.yaml"]
