@@ -1,0 +1,760 @@
+<title>Poluentes do Ar em Nova Friburgo</title>
+<style>
+/* ─────────────────────────────────────────────────────────────────────────
+   Tokens do rodado (site.css) redeclarados para a cópia autocontida do
+   Artifact valer sozinha. Na página do site os valores são idênticos, então
+   redeclarar não muda nada.
+   ───────────────────────────────────────────────────────────────────────── */
+:root {
+  --bg: #f6f2ea; --bg-raised: #efe9dd; --ink: #201d18; --ink-soft: #4a443a;
+  --ink-faint: #77705f; --rule: #d9d0bd; --accent: #9c3b2e; --accent-soft: #c9573f;
+  --serif: Charter, "Iowan Old Style", "Palatino Linotype", Georgia, "Times New Roman", serif;
+  --sans: "Public Sans", -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --measure: 700px;
+  /* canal de dado — validado (OKLab ΔE CVD) contra a superfície --bg */
+  --d1: #9c3b2e;  /* aberturas */
+  --d2: #2a78d6;  /* baixas */
+  --st-good: #0f7a2e; --st-warn: #a06a00; --st-crit: #b33636;
+}
+:root:not([data-theme="light"]) {
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #1b1811; --bg-raised: #242017; --ink: #ece6d8; --ink-soft: #c7bfab;
+    --ink-faint: #8f8672; --rule: #3a3427; --accent: #e08468; --accent-soft: #c9573f;
+    --d1: #c9573f; --d2: #2a78d6;
+    --st-good: #4fb85f; --st-warn: #d9a021; --st-crit: #e66767;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #1b1811; --bg-raised: #242017; --ink: #ece6d8; --ink-soft: #c7bfab;
+  --ink-faint: #8f8672; --rule: #3a3427; --accent: #e08468; --accent-soft: #c9573f;
+  --d1: #c9573f; --d2: #2a78d6;
+  --st-good: #4fb85f; --st-warn: #d9a021; --st-crit: #e66767;
+}
+
+.nf { background: var(--bg); color: var(--ink); font-family: var(--serif);
+      font-size: 19px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+.nf * { box-sizing: border-box; }
+.nf .wrap { max-width: 1180px; margin: 0 auto; padding: 0 1.5rem 5rem; }
+.nf .intro, .nf .prosa { max-width: var(--measure); }
+.nf .eyebrow { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink-faint); margin: 2.4rem 0 0.6rem; }
+.nf h1 { font-family: var(--sans); font-weight: 800; font-size: clamp(2rem, 5vw, 2.9rem);
+  line-height: 1.12; letter-spacing: -0.02em; margin: 0 0 1rem; text-wrap: balance; }
+.nf .dek { font-size: 1.12rem; color: var(--ink-soft); margin: 0 0 0.4rem; }
+.nf h2 { font-family: var(--sans); font-weight: 700; font-size: 1.45rem; line-height: 1.25;
+  letter-spacing: -0.01em; margin: 3.4rem 0 0.4rem; text-wrap: balance;
+  border-top: 1px solid var(--rule); padding-top: 0.9rem; }
+.nf h2 .secn { font-family: var(--mono); font-size: 0.78rem; font-weight: 500; color: var(--accent);
+  display: block; letter-spacing: 0.1em; margin-bottom: 0.35rem; }
+.nf h3 { font-family: var(--sans); font-weight: 700; font-size: 1.02rem; margin: 2rem 0 0.3rem; }
+.nf p { margin: 0.85rem 0; }
+.nf a { color: var(--accent); }
+.nf strong { font-weight: 600; }
+.nf .sub { font-family: var(--sans); font-size: 0.88rem; color: var(--ink-faint);
+  line-height: 1.6; margin: 0.3rem 0 1.4rem; max-width: var(--measure); }
+
+/* ── selo de referência ── */
+.nf .selo { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.4rem 0 0; }
+.nf .selo span { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.04em;
+  border: 1px solid var(--rule); border-radius: 2px; padding: 0.28rem 0.55rem; color: var(--ink-soft); }
+.nf .selo span b { font-weight: 500; color: var(--ink); }
+
+/* ── KPIs ── */
+.nf .kpis { display: grid; gap: 1px; background: var(--rule);
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  border: 1px solid var(--rule); margin: 2.2rem 0 0; }
+.nf .kpi { background: var(--bg); padding: 1.05rem 1.1rem; }
+.nf .kpi .v { font-family: var(--sans); font-weight: 800; font-size: 2rem; line-height: 1;
+  letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.nf .kpi .l { font-family: var(--sans); font-size: 0.78rem; color: var(--ink-soft);
+  line-height: 1.4; margin-top: 0.4rem; }
+.nf .kpi .n { font-family: var(--mono); font-size: 0.68rem; color: var(--ink-faint); margin-top: 0.3rem; }
+
+/* ── tabelas ── */
+.nf .rolagem { overflow-x: auto; margin: 1.2rem 0 0; border: 1px solid var(--rule); }
+.nf table { border-collapse: collapse; width: 100%; font-family: var(--sans); font-size: 0.85rem; }
+.nf th { text-align: left; font-weight: 600; font-size: 0.72rem; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--ink-faint); padding: 0.7rem 0.7rem;
+  border-bottom: 1px solid var(--rule); background: var(--bg-raised);
+  position: sticky; top: 0; z-index: 2; white-space: nowrap; }
+.nf td { padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.nf tbody tr:last-child td { border-bottom: 0; }
+.nf .num, .nf td.n { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.nf th.n { text-align: right; }
+.nf td.forte { font-weight: 600; color: var(--ink); }
+.nf tbody tr:hover td { background: var(--bg-raised); }
+.nf .cat-nome { color: var(--ink); font-weight: 600; }
+.nf .cat-cnae { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-faint); display: block; margin-top: 0.15rem; }
+
+/* barra dentro da célula: magnitude sem virar gráfico separado */
+.nf .barra { display: block; height: 4px; background: var(--accent); opacity: 0.85;
+  margin: 0.35rem 0 0 auto; border-radius: 2px 0 0 2px; min-width: 3px; }
+.nf td.ativos { min-width: 84px; }
+.nf td.end { white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 300px; }
+.nf #tab-lista th:first-child, .nf #tab-lista td:first-child { min-width: 260px; }
+.nf #tab-lista th:nth-child(2), .nf #tab-lista td:nth-child(2) { min-width: 130px; }
+
+/* ── situação ── */
+.nf .pill { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.03em;
+  padding: 0.14rem 0.42rem; border-radius: 2px; white-space: nowrap;
+  border: 1px solid currentColor; }
+.nf .s-ativa { color: var(--st-good); }
+.nf .s-suspensa, .nf .s-inapta { color: var(--st-warn); }
+.nf .s-baixada, .nf .s-nula { color: var(--st-crit); }
+
+/* ── controles: busca em cima, facetas embaixo, tudo com contagem ── */
+.nf .painel { margin: 1.6rem 0 0; border: 1px solid var(--rule); }
+.nf .controles { display: grid; background: var(--rule); gap: 1px; }
+.nf .linha-busca { background: var(--bg-raised); padding: 0.8rem 1.1rem;
+  display: flex; flex-wrap: wrap; gap: 0.8rem 1.2rem; align-items: center;
+  justify-content: space-between; }
+.nf .campo { display: flex; align-items: center; gap: 0.5rem; flex: 1 1 260px; }
+.nf .campo svg { flex: none; color: var(--ink-faint); }
+.nf .facetas { display: grid; gap: 1px; background: var(--rule);
+  grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.nf .grupo { background: var(--bg-raised); padding: 0.75rem 1.1rem 0.85rem;
+  display: flex; flex-direction: column; gap: 0.5rem; }
+.nf .grupo.largo { grid-column: 1 / -1; }
+.nf .rot { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-faint); }
+.nf .chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.nf .chip { font-family: var(--sans); font-size: 0.78rem; padding: 0.22rem 0.55rem;
+  border: 1px solid var(--rule); background: var(--bg); color: var(--ink-soft);
+  cursor: pointer; border-radius: 2px; line-height: 1.4; display: inline-flex;
+  align-items: baseline; gap: 0.4rem; }
+.nf .chip:hover:not(:disabled) { border-color: var(--accent); color: var(--ink); }
+.nf .chip .q { font-family: var(--mono); font-size: 0.68rem; color: var(--ink-faint);
+  font-variant-numeric: tabular-nums; }
+.nf .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fdf9f2; }
+.nf .chip[aria-pressed="true"] .q { color: #fdf9f2; opacity: 0.75; }
+.nf .chip:disabled { opacity: 0.38; cursor: default; }
+.nf input[type="search"] { font-family: var(--sans); font-size: 0.88rem; flex: 1 1 auto;
+  padding: 0.4rem 0.55rem; border: 1px solid var(--rule); background: var(--bg);
+  color: var(--ink); border-radius: 2px; min-width: 0; }
+.nf .atalho { font-family: var(--mono); font-size: 0.66rem; color: var(--ink-faint);
+  border: 1px solid var(--rule); border-radius: 2px; padding: 0.05rem 0.28rem; flex: none; }
+.nf input:focus-visible, .nf .chip:focus-visible, .nf button:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px; }
+.nf .placar { display: flex; align-items: baseline; gap: 0.7rem; flex: none;
+  font-family: var(--mono); font-size: 0.78rem; color: var(--ink-faint); }
+.nf .placar b { font-size: 1.05rem; color: var(--ink); font-weight: 500;
+  font-variant-numeric: tabular-nums; }
+.nf .limpar { font-family: var(--sans); font-size: 0.76rem; background: none; cursor: pointer;
+  border: 1px solid var(--rule); border-radius: 2px; padding: 0.22rem 0.5rem; color: var(--ink-soft); }
+.nf .limpar:hover { border-color: var(--accent); color: var(--accent); }
+.nf .limpar[hidden] { display: none; }
+/* a lista vira painel de altura fixa: o cabeçalho gruda e a página para de ter 16 mil px */
+.nf .painel .rolagem { border: 0; border-top: 1px solid var(--rule); margin: 0;
+  max-height: max(340px, min(68vh, 700px)); overflow: auto; }
+.nf .vazio { padding: 2.4rem 1.1rem; text-align: center; font-family: var(--sans);
+  font-size: 0.9rem; color: var(--ink-faint); }
+.nf .contagem { font-family: var(--mono); font-size: 0.76rem; color: var(--ink-faint); margin: 0.8rem 0 0; }
+.nf .mais { font-family: var(--sans); font-size: 0.8rem; background: var(--bg-raised);
+  border: 1px solid var(--rule); border-radius: 2px; padding: 0.35rem 0.8rem;
+  color: var(--ink-soft); cursor: pointer; }
+.nf .mais:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── gráfico ── */
+.nf .figura { margin: 1.4rem 0 0; border: 1px solid var(--rule); padding: 1.1rem 1.1rem 0.6rem; position: relative; }
+.nf .legenda { display: flex; gap: 1.1rem; font-family: var(--sans); font-size: 0.78rem;
+  color: var(--ink-soft); margin: 0 0 0.9rem; }
+.nf .legenda i { display: inline-block; width: 10px; height: 10px; margin-right: 0.35rem;
+  vertical-align: baseline; border-radius: 1px; }
+.nf .tip { position: absolute; pointer-events: none; opacity: 0; transition: opacity 0.1s;
+  background: var(--ink); color: var(--bg); font-family: var(--mono); font-size: 0.72rem;
+  padding: 0.4rem 0.55rem; border-radius: 2px; white-space: nowrap; z-index: 5; line-height: 1.5; }
+.nf .spark { display: block; }
+.nf svg text { font-family: var(--mono); font-size: 10px; fill: var(--ink-faint); }
+.nf .spark-line { fill: none; stroke: var(--accent); stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round; }
+.nf .spark-dot { fill: var(--accent); stroke: var(--bg); stroke-width: 2; }
+.nf .grade { stroke: var(--rule); stroke-width: 1; }
+.nf .bar-a { fill: var(--d1); }
+.nf .bar-b { fill: var(--d2); }
+
+/* ── caixas ── */
+.nf .caixa { border-left: 3px solid var(--accent); padding: 0.2rem 0 0.2rem 1rem;
+  margin: 1.6rem 0; max-width: var(--measure); }
+.nf .caixa p { font-size: 1rem; }
+/* grade da correspondência CNAE: cartão por atividade, não lista larga */
+.nf .grade-cnae { display: grid; gap: 1px; background: var(--rule);
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  border: 1px solid var(--rule); margin: 1.4rem 0 0; }
+.nf .cartao { background: var(--bg); padding: 1rem 1.1rem 1.1rem;
+  display: flex; flex-direction: column; gap: 0.55rem; }
+.nf .cartao h3 { margin: 0; font-size: 0.98rem; line-height: 1.3; text-wrap: balance; }
+.nf .cartao .codigos { font-family: var(--mono); font-size: 0.72rem; line-height: 1.7;
+  color: var(--ink-soft); margin: 0; }
+.nf .cartao .codigos b { color: var(--accent); font-weight: 500; }
+.nf .cartao .porque { font-family: var(--sans); font-size: 0.83rem; line-height: 1.55;
+  color: var(--ink-faint); margin: 0; }
+.nf .cartao .conta { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-faint);
+  border-top: 1px solid var(--rule); padding-top: 0.5rem; margin-top: auto; }
+.nf .cartao .conta b { color: var(--ink); font-weight: 500; }
+
+/* selos de cruzamento por empresa */
+.nf .selos { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-top: 0.3rem; }
+.nf .badge { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.02em;
+  padding: 0.1rem 0.36rem; border-radius: 2px; border: 1px solid var(--rule);
+  color: var(--ink-faint); white-space: nowrap; }
+.nf .badge.emprego { border-color: var(--d2); color: var(--d2); }
+.nf .badge.contrato { border-color: var(--accent); color: var(--accent); }
+
+/* rodapé de procedência */
+.nf .fontes { margin: 1.2rem 0 0; border: 1px solid var(--rule); }
+.nf .fontes table { font-size: 0.8rem; }
+.nf .fontes td { padding: 0.45rem 0.7rem; }
+.nf .velha { color: var(--st-warn); }
+.nf ul { max-width: var(--measure); padding-left: 1.1rem; }
+.nf li { margin: 0.4rem 0; }
+.nf .fonte { font-family: var(--sans); font-size: 0.8rem; color: var(--ink-faint);
+  line-height: 1.6; margin: 2.6rem 0 0; max-width: var(--measure); }
+.nf code { font-family: var(--mono); font-size: 0.86em; background: var(--bg-raised);
+  padding: 0.08em 0.3em; border-radius: 2px; }
+@media (max-width: 860px) { .nf .facetas { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) {
+  .nf { font-size: 17px; }
+  .nf .wrap { padding: 0 1rem 3rem; }
+  .nf .facetas { grid-template-columns: 1fr; }
+  .nf .painel .rolagem { max-height: 60vh; }
+  .nf .linha-busca { gap: 0.6rem; }
+}
+@media (prefers-reduced-motion: reduce) { .nf * { transition: none !important; } }
+</style>
+
+<div class="nf">
+<div class="wrap">
+
+  <div class="intro">
+    <p class="eyebrow">Levantamento semestral · 2º semestre de 2025</p>
+    <h1>Poluentes do Ar em Nova Friburgo</h1>
+    <p class="dek" id="dek"></p>
+    <div class="selo" id="selo"></div>
+  </div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <h2><span class="secn">01</span>Quadro-resumo por atividade</h2>
+  <p class="sub">Estabelecimentos com a atividade no CNAE <b>principal</b> (o que a empresa declara fazer) e no <b>secundário</b> (o que ela também faz). Um CNPJ nunca é contado duas vezes dentro da mesma atividade. A coluna de tendência traz os sete semestres da série.</p>
+  <div class="rolagem"><table id="tab-resumo"></table></div>
+  <p class="contagem" id="nota-resumo"></p>
+
+  <h2><span class="secn">02</span>Correspondência entre a categoria pedida e a classificação oficial</h2>
+  <p class="sub">Nenhuma base pública usa os nomes do pedido. O que existe é CNAE 2.3 — a classificação da Receita Federal e do IBGE. Um cartão por atividade: o que entrou, por quê, e quanto deu.</p>
+  <div class="grade-cnae" id="corresp"></div>
+
+  <h2><span class="secn">03</span>Comparação entre semestres</h2>
+  <p class="sub">Cada coluna é uma foto do cadastro no mês de referência do semestre, contando estabelecimentos <b>ativos por CNAE principal</b> — o critério que se reproduz igual em qualquer mês da série. Por isso os números aqui são menores que os do quadro-resumo, que soma também o CNAE secundário.</p>
+  <div class="rolagem"><table id="tab-serie"></table></div>
+
+  <h2><span class="secn">04</span>Aberturas e baixas, ano a ano</h2>
+  <p class="sub">Todo o universo das oito atividades, do CNPJ aberto ao CNPJ baixado. Data de início de atividade contra data da baixa.</p>
+  <div class="figura">
+    <div class="legenda">
+      <span><i style="background:var(--d1)"></i>Aberturas</span>
+      <span><i style="background:var(--d2)"></i>Baixas</span>
+    </div>
+    <div id="fluxo"></div>
+    <div class="tip" id="tip-fluxo"></div>
+  </div>
+
+  <h2><span class="secn">05</span>Lista detalhada dos empreendimentos</h2>
+  <p class="sub" id="sub-lista"></p>
+  <div class="painel">
+    <div class="controles">
+      <div class="linha-busca">
+        <div class="campo">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <label class="rot" for="busca" style="position:absolute;left:-9999px">Buscar empreendimento</label>
+          <input id="busca" type="search" placeholder="nome, bairro, CNPJ, endereço…" autocomplete="off">
+          <span class="atalho" aria-hidden="true">/</span>
+        </div>
+        <div class="placar">
+          <span id="placar" aria-live="polite"></span>
+          <button type="button" class="limpar" id="limpar" hidden>limpar filtros</button>
+        </div>
+      </div>
+      <div class="facetas">
+        <div class="grupo largo">
+          <span class="rot" id="rot-cat">Atividade</span>
+          <div class="chips" id="chips-cat" role="group" aria-labelledby="rot-cat"></div>
+        </div>
+        <div class="grupo">
+          <span class="rot" id="rot-sit">Situação cadastral</span>
+          <div class="chips" id="chips-sit" role="group" aria-labelledby="rot-sit"></div>
+        </div>
+        <div class="grupo">
+          <span class="rot" id="rot-papel">A atividade é</span>
+          <div class="chips" id="chips-papel" role="group" aria-labelledby="rot-papel"></div>
+        </div>
+        <div class="grupo">
+          <span class="rot" id="rot-cruz">Cruzamentos</span>
+          <div class="chips" id="chips-cruz" role="group" aria-labelledby="rot-cruz"></div>
+        </div>
+      </div>
+    </div>
+    <div class="rolagem"><table id="tab-lista"></table></div>
+  </div>
+  <p class="contagem" id="mais"></p>
+
+  <h2><span class="secn">06</span>O que não pôde ser confirmado</h2>
+  <p class="sub">O pedido inclui situação de licenciamento, número de processo e órgão responsável. Esses campos não existem em nenhuma base consultada — e nenhum número foi estimado para preenchê-los.</p>
+  <div class="grade-cnae" id="lacunas"></div>
+
+  <h2><span class="secn">07</span>Metodologia</h2>
+  <div class="prosa" id="metodo"></div>
+
+  <h3 style="margin-top:2.4rem">Bases usadas e quando cada uma foi atualizada</h3>
+  <p class="sub" style="margin-bottom:0">O espelho é uma cópia com data. A coluna <b>cobertura</b> diz até quando o dado vai; a coluna <b>espelhada em</b>, quando essa cópia foi puxada da fonte. Se as duas estiverem velhas, o número desta página está velho junto.</p>
+  <div class="fontes rolagem"><table id="tab-fontes"></table></div>
+
+  <p class="fonte" id="fonte"></p>
+
+</div>
+</div>
+
+<script id="dados-nf" type="application/json">/*DADOS*/</script>
+<script>
+(function () {
+  "use strict";
+  var D = JSON.parse(document.getElementById('dados-nf').textContent);
+  var M = D.meta;
+  var fmt = function (n) { return n.toLocaleString('pt-BR'); };
+  var esc = function (s) { return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
+  var CAT = {}; D.cats.forEach(function (c) { CAT[c.id] = c; });
+  var CURTO = { '1': 'Marmorarias', '2': 'Metalurgia (24)', '2b': 'Produtos de metal (25)',
+    '3': 'Torrefação de café', '4': 'Produtos químicos', '5': 'Olaria e cerâmica',
+    '6': 'Gesso', '7': 'Gorduras', '8': 'Extração mineral' };
+  var PERIODOS = [];
+  D.serie.forEach(function (s) { if (PERIODOS.indexOf(s.per) < 0) PERIODOS.push(s.per); });
+  PERIODOS.sort();
+  var SER = {}; D.serie.forEach(function (s) { SER[s.cat + '|' + s.per] = s; });
+  var RAIS = {}; D.rais.forEach(function (r) { if (r.ano === M.ref_rais) RAIS[r.cat] = r; });
+
+  // ── dek e selo ───────────────────────────────────────────────────────────
+  document.getElementById('dek').innerHTML =
+    'São <b>' + fmt(M.cnpj_ativos) + ' estabelecimentos ativos</b> em Nova Friburgo nas oito atividades '
+    + 'potencialmente geradoras de emissões atmosféricas deste levantamento — e dois em cada três são '
+    + 'microempreendedor individual. A cidade se conhece como polo metal-mecânico e é: '
+    + fmt(SER['2b|2025-S2'].ativas) + ' oficinas de produtos de metal, ' + fmt(RAIS['2b'].vinculos)
+    + ' empregos formais. Metalúrgicas no sentido estrito — que fundem metal — são '
+    + SER['2|2025-S2'].ativas + '. Torrefação de café ativa, uma. Fabricante de gesso, nenhum.';
+  document.getElementById('selo').innerHTML =
+    [['Município', M.municipio + '/' + M.uf + ' · IBGE ' + M.id_municipio],
+     ['Referência do cadastro', M.ref_label],
+     ['Vínculos (RAIS)', M.ref_rais],
+     ['Registros', fmt(M.linhas) + ' linhas · ' + fmt(M.cnpj_total) + ' CNPJs']]
+    .map(function (p) { return '<span>' + p[0] + ' <b>' + esc(p[1]) + '</b></span>'; }).join('');
+
+  // ── KPIs ─────────────────────────────────────────────────────────────────
+  var vincTotal = D.rais.filter(function (r) { return r.ano === M.ref_rais; })
+    .reduce(function (a, r) { return a + r.vinculos; }, 0);
+  var pctMei = Math.round(M.mei_ativos / M.cnpj_ativos * 100);
+  document.getElementById('kpis').innerHTML = [
+    [fmt(M.cnpj_ativos), 'estabelecimentos ativos nas 8 atividades', 'sem dupla contagem entre bases'],
+    [pctMei + '%', 'são microempreendedor individual', fmt(M.mei_ativos) + ' dos ' + fmt(M.cnpj_ativos) + ' ativos'],
+    [fmt(vincTotal), 'vínculos formais nas 8 atividades', 'RAIS ' + M.ref_rais],
+    [fmt(M.bairros[0][1]), 'no bairro ' + M.bairros[0][0].toLowerCase().replace(/(^|\s)\S/g, function (c) { return c.toUpperCase(); }),
+     Math.round(M.bairros[0][1] / M.cnpj_ativos * 100) + '% dos ativos num bairro só']
+  ].map(function (k) {
+    return '<div class="kpi"><div class="v">' + k[0] + '</div><div class="l">' + k[1]
+      + '</div><div class="n">' + k[2] + '</div></div>';
+  }).join('');
+
+  // ── sparkline ────────────────────────────────────────────────────────────
+  function spark(cid) {
+    var vs = PERIODOS.map(function (p) { var s = SER[cid + '|' + p]; return s ? s.ativas : null; });
+    var ok = vs.filter(function (v) { return v != null; });
+    if (ok.length < 2) return '';
+    var w = 72, h = 20, lo = Math.min.apply(null, ok), hi = Math.max.apply(null, ok);
+    var span = (hi - lo) || 1;
+    var pts = vs.map(function (v, i) {
+      if (v == null) return null;
+      return [i / (vs.length - 1) * (w - 4) + 2, h - 3 - (v - lo) / span * (h - 8)];
+    }).filter(Boolean);
+    var d = pts.map(function (p, i) { return (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' ');
+    var last = pts[pts.length - 1];
+    return '<svg class="spark" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h
+      + '" role="img" aria-label="' + ok.join(', ') + '">'
+      + '<path class="spark-line" d="' + d + '"/>'
+      + '<circle class="spark-dot" cx="' + last[0].toFixed(1) + '" cy="' + last[1].toFixed(1) + '" r="2.6"/></svg>';
+  }
+
+  // ── 01 quadro-resumo ─────────────────────────────────────────────────────
+  var maxAt = Math.max.apply(null, D.resumo.map(function (r) { return r.ativa; }));
+  document.getElementById('tab-resumo').innerHTML =
+    '<thead><tr><th>Atividade</th><th class="n">Ativos</th><th class="n">CNAE princ.</th>'
+    + '<th class="n">CNAE sec.</th><th class="n">Inaptos</th><th class="n">Baixados</th>'
+    + '<th class="n">Vínculos</th><th>Tendência 2022–2025</th><th>Fonte</th></tr></thead><tbody>'
+    + D.resumo.map(function (r) {
+      var v = RAIS[r.id];
+      return '<tr><td><span class="cat-nome">' + esc(r.nome) + '</span>'
+        + '<span class="cat-cnae">' + esc(r.cnaes.map(function (c) { return c.split(' ')[0]; }).join(' · ')) + '</span></td>'
+        + '<td class="n forte ativos">' + fmt(r.ativa)
+        + '<span class="barra" style="width:' + Math.max(3, r.ativa / maxAt * 64).toFixed(1) + 'px"></span></td>'
+        + '<td class="n">' + fmt(r.ativa_p) + '</td><td class="n">' + fmt(r.ativa_s) + '</td>'
+        + '<td class="n">' + fmt(r.inapta + r.suspensa) + '</td><td class="n">' + fmt(r.baixada + r.nula) + '</td>'
+        + '<td class="n">' + (v ? fmt(v.vinculos) : '—') + '</td>'
+        + '<td>' + spark(r.id) + '</td>'
+        + '<td style="font-size:0.78rem;color:var(--ink-faint)">RFB · CNPJ ' + esc(M.ref) + '</td></tr>';
+    }).join('') + '</tbody>';
+  document.getElementById('nota-resumo').textContent =
+    'Ativos = situação cadastral “Ativa”. Inaptos inclui suspensos; baixados inclui nulos. '
+    + 'Vínculos = empregos formais na RAIS ' + M.ref_rais + ', mesmo conjunto de CNAEs, no município. '
+    + 'Somando as oito linhas dá mais que ' + fmt(M.cnpj_ativos) + ' porque um mesmo CNPJ pode ter atividade em duas categorias.';
+
+  // ── 02 correspondência ───────────────────────────────────────────────────
+  var RES = {}; D.resumo.forEach(function (r) { RES[r.id] = r; });
+  document.getElementById('corresp').innerHTML = D.cats.map(function (c) {
+    var r = RES[c.id];
+    return '<div class="cartao"><h3>' + esc(CURTO[c.id]) + '</h3>'
+      + '<p class="codigos">' + c.cnaes.map(function (t) {
+          var i = t.indexOf(' ');
+          return '<b>' + esc(t.slice(0, i)) + '</b> ' + esc(t.slice(i + 1));
+        }).join('<br>') + '</p>'
+      + '<p class="porque">' + esc(c.nota) + '</p>'
+      + '<p class="conta"><b>' + fmt(r.ativa) + '</b> ativos · ' + fmt(r.ativa_p)
+      + ' por CNAE principal · ' + fmt(r.baixada + r.nula) + ' já baixados</p></div>';
+  }).join('');
+
+  // ── 03 série semestral ───────────────────────────────────────────────────
+  function varia(a, b) {
+    if (a == null || b == null) return '—';
+    if (a === 0) return b === 0 ? '0,0%' : '+∞';
+    var p = (b - a) / a * 100;
+    return (p > 0 ? '+' : '') + p.toFixed(1).replace('.', ',') + '%';
+  }
+  var primeiro = PERIODOS[0], ultimo = PERIODOS[PERIODOS.length - 1];
+  document.getElementById('tab-serie').innerHTML =
+    '<thead><tr><th>Atividade</th>' + PERIODOS.map(function (p) { return '<th class="n">' + p + '</th>'; }).join('')
+    + '<th class="n">Δ último semestre</th><th class="n">Δ ' + primeiro + '→' + ultimo + '</th></tr></thead><tbody>'
+    + D.resumo.map(function (r) {
+      var vs = PERIODOS.map(function (p) { var s = SER[r.id + '|' + p]; return s ? s.ativas : null; });
+      var n = vs.length;
+      return '<tr><td class="cat-nome">' + esc(CURTO[r.id]) + '</td>'
+        + vs.map(function (v, i) {
+            return '<td class="n"' + (i === n - 1 ? ' style="font-weight:600;color:var(--ink)"' : '') + '>'
+              + (v == null ? '—' : fmt(v)) + '</td>';
+          }).join('')
+        + '<td class="n">' + varia(vs[n - 2], vs[n - 1]) + '</td>'
+        + '<td class="n">' + varia(vs[0], vs[n - 1]) + '</td></tr>';
+    }).join('') + '</tbody>';
+
+  // ── 04 fluxo aberturas × baixas ──────────────────────────────────────────
+  (function () {
+    var host = document.getElementById('fluxo'), tip = document.getElementById('tip-fluxo');
+    var dados = D.fluxo, W = 1100, H = 240, ml = 34, mr = 8, mt = 8, mb = 26;
+    var iw = W - ml - mr, ih = H - mt - mb;
+    var hi = Math.max.apply(null, dados.map(function (d) { return Math.max(d.aberturas, d.baixas); }));
+    var passo = iw / dados.length, larg = Math.max(3, passo / 2 - 2);
+    var y = function (v) { return mt + ih - v / hi * ih; };
+    var ticks = [0, Math.round(hi / 2), hi];
+    var svg = ['<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" height="' + H
+      + '" preserveAspectRatio="none" role="img" aria-label="Aberturas e baixas de CNPJ por ano, 2000 a 2025">'];
+    ticks.forEach(function (t) {
+      svg.push('<line x1="' + ml + '" x2="' + (W - mr) + '" y1="' + y(t).toFixed(1) + '" y2="' + y(t).toFixed(1)
+        + '" class="grade"/>');
+      svg.push('<text x="' + (ml - 6) + '" y="' + (y(t) + 4).toFixed(1) + '" text-anchor="end">' + t + '</text>');
+    });
+    dados.forEach(function (d, i) {
+      var x = ml + i * passo + (passo - larg * 2 - 2) / 2;
+      svg.push('<rect x="' + x.toFixed(1) + '" y="' + y(d.aberturas).toFixed(1) + '" width="' + larg.toFixed(1)
+        + '" height="' + Math.max(0, ih - (y(d.aberturas) - mt)).toFixed(1) + '" class="bar-a" rx="1"/>');
+      svg.push('<rect x="' + (x + larg + 2).toFixed(1) + '" y="' + y(d.baixas).toFixed(1) + '" width="' + larg.toFixed(1)
+        + '" height="' + Math.max(0, ih - (y(d.baixas) - mt)).toFixed(1) + '" class="bar-b" rx="1"/>');
+      if (d.ano % 5 === 0 || i === dados.length - 1) {
+        svg.push('<text x="' + (ml + i * passo + passo / 2).toFixed(1) + '" y="' + (H - 8)
+          + '" text-anchor="middle">' + d.ano + '</text>');
+      }
+      svg.push('<rect class="hit" data-i="' + i + '" x="' + (ml + i * passo).toFixed(1) + '" y="' + mt
+        + '" width="' + passo.toFixed(1) + '" height="' + ih + '" fill="transparent"/>');
+    });
+    svg.push('</svg>');
+    host.innerHTML = svg.join('');
+    host.addEventListener('mousemove', function (e) {
+      var alvo = e.target.closest ? e.target.closest('.hit') : null;
+      if (!alvo) { tip.style.opacity = 0; return; }
+      var d = dados[+alvo.dataset.i];
+      tip.innerHTML = d.ano + '<br>' + d.aberturas + ' aberturas<br>' + d.baixas + ' baixas';
+      var r = host.getBoundingClientRect();
+      tip.style.left = Math.min(r.width - 120, Math.max(0, e.clientX - r.left + 12)) + 'px';
+      tip.style.top = (e.clientY - r.top - 10) + 'px';
+      tip.style.opacity = 1;
+    });
+    host.addEventListener('mouseleave', function () { tip.style.opacity = 0; });
+  })();
+
+  // ── 05 lista ─────────────────────────────────────────────────────────────
+  var CRUZ = D.cruz || {};
+  function moeda(v) {
+    if (v == null) return '';
+    if (v >= 1e6) return 'R$ ' + (v / 1e6).toFixed(1).replace('.', ',') + ' mi';
+    if (v >= 1e3) return 'R$ ' + Math.round(v / 1e3) + ' mil';
+    return 'R$ ' + fmt(Math.round(v));
+  }
+  function selos(cnpj) {
+    var c = CRUZ[cnpj]; if (!c) return '';
+    var out = [];
+    if (c.rais) out.push('<span class="badge emprego" title="Vínculos formais declarados na RAIS identificada">'
+      + fmt(c.rais[0]) + ' empregado' + (c.rais[0] === 1 ? '' : 's') + ' · RAIS ' + c.rais[1] + '</span>');
+    (c.contratos || []).forEach(function (k) {
+      var quem = k[0] === 'tce' ? 'prefeitura de ' + k[3].toLowerCase() : k[3];
+      out.push('<span class="badge contrato" title="' + esc(k[3]) + '">' + k[1] + ' contrato'
+        + (k[1] === 1 ? '' : 's') + ' · ' + esc(quem.length > 34 ? quem.slice(0, 32) + '…' : quem)
+        + (k[2] ? ' · ' + moeda(k[2]) : '') + ' · ' + esc(k[4]) + '</span>');
+    });
+    if (c.sicaf) out.push('<span class="badge" title="Cadastrado no SICAF e habilitado a licitar">SICAF</span>');
+    else if (c.sicaf === false) out.push('<span class="badge" title="Cadastrado no SICAF, não habilitado a licitar">SICAF · não habilitado</span>');
+    return out.length ? '<span class="selos">' + out.join('') + '</span>' : '';
+  }
+  var E = D.estab.map(function (r) {
+    return { cat: r[0], princ: r[1], cnae: r[2], cnpj: r[3], nome: r[4], fant: r[5],
+             sit: r[6], ini: r[7], dsit: r[8], end: r[9], bairro: r[10], cep: r[11],
+             porte: r[12], mei: r[13], cruz: CRUZ[r[3]] || null,
+             busca: (r[4] + ' ' + r[5] + ' ' + r[10] + ' ' + r[3] + ' ' + r[9]).toLowerCase() };
+  });
+  var X = M.cruzamentos || {};
+  document.getElementById('sub-lista').innerHTML =
+    'Todos os ' + fmt(M.linhas) + ' registros do levantamento — ' + fmt(M.cnpj_total)
+    + ' CNPJs distintos, em qualquer situação cadastral. A tabela abre filtrada em <b>ativos</b>. '
+    + 'Endereço, bairro e CEP vêm do próprio cadastro da Receita Federal. '
+    + 'Os selos sob o nome são cruzamentos por CNPJ com outras bases: <b>' + fmt(X.com_rais)
+    + '</b> empresas com empregado declarado na RAIS identificada (' + fmt(X.vinculos_rais)
+    + ' vínculos somados), <b>' + fmt(X.com_contrato) + '</b> com contrato público e <b>'
+    + fmt(X.com_sicaf) + '</b> cadastradas no SICAF.';
+
+  var GRUPOS = [
+    { id: 'cat',   el: 'chips-cat',   estado: new Set(),
+      itens: D.cats.map(function (c) { return [c.id, CURTO[c.id]]; }),
+      casa: function (r, v) { return r.cat === v; } },
+    { id: 'sit',   el: 'chips-sit',   estado: new Set(['Ativa']),
+      itens: [['Ativa', 'Ativa'], ['Suspensa', 'Suspensa'], ['Inapta', 'Inapta'],
+              ['Baixada', 'Baixada'], ['Nula', 'Nula']],
+      casa: function (r, v) { return r.sit === v; } },
+    { id: 'papel', el: 'chips-papel', estado: new Set(),
+      itens: [['1', 'principal'], ['0', 'secundária']],
+      casa: function (r, v) { return String(r.princ) === v; } },
+    { id: 'cruz',  el: 'chips-cruz',  estado: new Set(),
+      itens: [['rais', 'Tem empregado'], ['contrato', 'Contrato público'], ['sicaf', 'SICAF']],
+      casa: function (r, v) {
+        var c = r.cruz; if (!c) return false;
+        if (v === 'rais') return !!c.rais;
+        if (v === 'contrato') return !!(c.contratos && c.contratos.length);
+        return c.sicaf !== undefined;
+      } }
+  ];
+  var PADRAO = { cat: [], sit: ['Ativa'], papel: [], cruz: [] };
+  var termo = '', limite = 100;
+
+  // um grupo com nada marcado não filtra; marcar dois valores no mesmo grupo é OU
+  function passa(r, pular) {
+    for (var i = 0; i < GRUPOS.length; i++) {
+      var g = GRUPOS[i];
+      if (g === pular || !g.estado.size) continue;
+      var ok = false;
+      g.estado.forEach(function (v) { if (g.casa(r, v)) ok = true; });
+      if (!ok) return false;
+    }
+    return !termo || r.busca.indexOf(termo) >= 0;
+  }
+  function filtra() { return E.filter(function (r) { return passa(r, null); }); }
+
+  // contagem de cada chip com os OUTROS grupos aplicados: nunca oferece beco sem saída
+  function facetas() {
+    GRUPOS.forEach(function (g) {
+      var base = E.filter(function (r) { return passa(r, g); });
+      g.contagem = {};
+      g.itens.forEach(function (it) {
+        g.contagem[it[0]] = base.reduce(function (n, r) { return n + (g.casa(r, it[0]) ? 1 : 0); }, 0);
+      });
+    });
+  }
+
+  function montaChips(g) {
+    var el = document.getElementById(g.el);
+    el.innerHTML = g.itens.map(function (it) {
+      return '<button type="button" class="chip" data-v="' + esc(it[0]) + '" aria-pressed="'
+        + (g.estado.has(it[0]) ? 'true' : 'false') + '">' + esc(it[1])
+        + '<span class="q"></span></button>';
+    }).join('');
+    el.addEventListener('click', function (e) {
+      var b = e.target.closest('.chip'); if (!b || b.disabled) return;
+      var v = b.dataset.v;
+      if (g.estado.has(v)) g.estado.delete(v); else g.estado.add(v);
+      limite = 100; desenha();
+    });
+  }
+  GRUPOS.forEach(montaChips);
+
+  function pintaChips() {
+    GRUPOS.forEach(function (g) {
+      var el = document.getElementById(g.el);
+      g.itens.forEach(function (it) {
+        var b = el.querySelector('[data-v="' + it[0] + '"]');
+        var n = g.contagem[it[0]] || 0, marcado = g.estado.has(it[0]);
+        b.setAttribute('aria-pressed', marcado ? 'true' : 'false');
+        b.disabled = !n && !marcado;
+        b.querySelector('.q').textContent = fmt(n);
+      });
+    });
+  }
+
+  function noPadrao() {
+    return !termo && GRUPOS.every(function (g) {
+      var p = PADRAO[g.id];
+      return g.estado.size === p.length && p.every(function (v) { return g.estado.has(v); });
+    });
+  }
+
+  var busca = document.getElementById('busca');
+  busca.addEventListener('input', function (e) {
+    termo = e.target.value.trim().toLowerCase(); limite = 100; desenha();
+  });
+  busca.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && busca.value) { busca.value = ''; termo = ''; desenha(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== '/' || e.metaKey || e.ctrlKey || e.altKey) return;
+    var a = document.activeElement;
+    if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')) return;
+    e.preventDefault(); busca.focus(); busca.select();
+  });
+  document.getElementById('limpar').addEventListener('click', function () {
+    GRUPOS.forEach(function (g) { g.estado = new Set(PADRAO[g.id]); });
+    termo = ''; busca.value = ''; limite = 100; desenha(); busca.focus();
+  });
+  document.getElementById('mais').addEventListener('click', function (e) {
+    if (e.target.tagName !== 'BUTTON') return;
+    limite += 300; desenha();
+  });
+
+  var CLS = { Ativa: 's-ativa', Suspensa: 's-suspensa', Inapta: 's-inapta',
+              Baixada: 's-baixada', Nula: 's-nula' };
+  function dt(s) { return s ? s.split('-').reverse().join('/') : '—'; }
+  function cnpjf(c) {
+    return c.slice(0, 2) + '.' + c.slice(2, 5) + '.' + c.slice(5, 8) + '/' + c.slice(8, 12) + '-' + c.slice(12);
+  }
+
+  function desenha() {
+    facetas(); pintaChips();
+    var r = filtra(), vis = r.slice(0, limite);
+    var cnpjs = new Set(r.map(function (x) { return x.cnpj; })).size;
+    document.getElementById('placar').innerHTML =
+      '<b>' + fmt(r.length) + '</b> de ' + fmt(E.length) + ' registros · ' + fmt(cnpjs) + ' CNPJs';
+    document.getElementById('limpar').hidden = noPadrao();
+    document.getElementById('tab-lista').innerHTML = !r.length ? '' :
+      '<thead><tr><th>Empreendimento</th><th>Atividade</th><th>CNAE</th><th>Situação</th>'
+      + '<th>Endereço</th><th>Bairro</th><th class="n">Início</th><th class="n">Situação em</th>'
+      + '<th>Porte</th></tr></thead><tbody>'
+      + vis.map(function (x) {
+        return '<tr><td class="forte">' + esc(x.nome)
+          + (x.fant && x.fant !== x.nome ? '<span class="cat-cnae">' + esc(x.fant) + '</span>' : '')
+          + '<span class="cat-cnae">' + cnpjf(x.cnpj) + (x.mei ? ' · MEI' : '') + '</span>'
+          + selos(x.cnpj) + '</td>'
+          + '<td>' + esc(CURTO[x.cat]) + '</td>'
+          + '<td><span class="cat-cnae" style="margin:0">' + esc(x.cnae) + '</span>'
+          + '<span class="cat-cnae" style="margin:0">' + (x.princ ? 'principal' : 'secundário') + '</span></td>'
+          + '<td><span class="pill ' + CLS[x.sit] + '">' + esc(x.sit) + '</span></td>'
+          + '<td class="end" title="' + esc(x.end) + '">' + esc(x.end) + '</td>'
+          + '<td>' + esc(x.bairro) + '</td>'
+          + '<td class="n">' + dt(x.ini) + '</td><td class="n">' + dt(x.dsit) + '</td>'
+          + '<td>' + esc(x.porte) + '</td></tr>';
+      }).join('') + '</tbody>';
+    var pane = document.querySelector('.painel .rolagem');
+    var vazio = pane.querySelector('.vazio');
+    if (!r.length) {
+      if (!vazio) pane.insertAdjacentHTML('beforeend',
+        '<p class="vazio">Nenhum empreendimento com esses filtros. '
+        + 'Os números ao lado de cada filtro mostram quanto sobra ao marcá-lo.</p>');
+    } else if (vazio) { vazio.remove(); }
+    if (r.length) pane.scrollTop = 0;
+    document.getElementById('mais').innerHTML = r.length > vis.length
+      ? 'Mostrando ' + fmt(vis.length) + ' de ' + fmt(r.length)
+        + '. <button type="button" class="mais">Mostrar mais 300</button>'
+      : (r.length ? 'Mostrando todos os ' + fmt(r.length) + '.' : '');
+  }
+  desenha();
+
+  // ── 06 lacunas ───────────────────────────────────────────────────────────
+  document.getElementById('lacunas').innerHTML = [
+    ['Situação de licenciamento ambiental (LP / LI / LO)',
+     'Não confirmada para nenhum dos ' + fmt(M.cnpj_ativos) + ' estabelecimentos. Nenhuma base pública espelhada aqui traz licença por empreendimento. '
+     + 'A situação relatada neste levantamento é a <b>situação cadastral na Receita Federal</b> — que diz se o CNPJ existe e está ativo, não se a atividade está licenciada. São coisas diferentes e não devem ser lidas uma pela outra. '
+     + 'Para preencher: consulta ao INEA (licenças estaduais) e à Secretaria de Meio Ambiente de Nova Friburgo (impacto local).'],
+    ['Número do processo ou da licença ambiental',
+     'Não disponível. Mesma origem da lacuna acima. Nenhum número foi estimado.'],
+    ['Órgão responsável',
+     'Definido por competência, não por consulta a cadastro: o <b>INEA/RJ</b> licencia o que não é de impacto local; o <b>município</b> licencia o de impacto local — o IBGE MUNIC registra que Nova Friburgo assumiu o licenciamento de impacto local (MUNIC 2012 e 2015, com LP, LI e LO concedidas) e que o município tem legislação específica sobre poluição do ar desde <b>2009</b> (MUNIC 2017 e 2020). O mesmo MUNIC registra que o órgão gestor ambiental não é secretaria exclusiva desde 2017 e que não houve capacitação em licenciamento.'],
+    ['Fabricação de gesso',
+     'Número não confirmado — mas por ausência real, não por falta de fonte. A CNAE 2392-3/00 (fabricação de cal e gesso) tem <b>zero</b> registros em Nova Friburgo, em qualquer situação cadastral. As quatro empresas ativas com “gesso” no nome estão em CNAE de <b>serviço</b> (4330-4/03, instalação de drywall e gesso) ou de <b>comércio</b> (4744-0/99) — nenhuma é fabricante. Os 12 estabelecimentos ativos contados na categoria estão na 2330-3/99, que agrega concreto, cimento, fibrocimento e gesso e não permite separar. Para confirmar quantos desses trabalham gesso, só visita ou consulta ao licenciamento municipal.'],
+    ['Empreendimentos sem CNPJ',
+     'Fora do alcance. Extração de areia e argila sem registro, olaria informal e oficina de fundo de quintal não aparecem em nenhuma das bases usadas. O levantamento cobre o que é formalizado.'],
+    ['Embargos ambientais federais e idoneidade',
+     'Consultados e zerados, dos dois lados: nenhuma das áreas embargadas pelo IBAMA no país está em Nova Friburgo, e nenhum dos '
+     + fmt(M.cnpj_total) + ' CNPJs deste levantamento aparece embargado em qualquer município do Brasil. '
+     + 'Nenhum consta como inidôneo ou suspenso no cadastro do TCU. São resultados conferidos, não campos em branco — '
+     + 'mas dizem respeito só às esferas federais: autuação do INEA ou da prefeitura não está em nenhuma base pública espelhada aqui.']
+  ].map(function (l) {
+    return '<div class="cartao"><h3>' + l[0] + '</h3><p class="porque">' + l[1] + '</p></div>';
+  }).join('');
+
+  // ── 07 metodologia ───────────────────────────────────────────────────────
+  document.getElementById('metodo').innerHTML =
+    '<p><b>Recorte.</b> Município de Nova Friburgo (código IBGE ' + M.id_municipio + '), '
+    + fmt(M.estab_municipio) + ' estabelecimentos no cadastro de ' + M.ref_label + '. '
+    + 'Cada uma das oito atividades pedidas foi traduzida para um conjunto de subclasses CNAE 2.3 (seção 02).</p>'
+    + '<p><b>O que conta como um empreendimento.</b> Uma linha por CNPJ de estabelecimento. Um CNPJ com a '
+    + 'atividade no CNAE principal <i>e</i> em algum CNAE secundário é contado uma vez só. Matriz e filial '
+    + 'no mesmo endereço são CNPJs distintos e aparecem separados — é assim que o licenciamento também os trata.</p>'
+    + '<p><b>Principal e secundário.</b> A contagem principal é o que a empresa declara como atividade '
+    + 'econômica principal. A secundária é atividade declarada mas não principal — vale menos como indicação '
+    + 'de fonte de emissão e por isso vai em coluna separada, nunca somada por cima sem aviso. Há ruído '
+    + 'conhecido aí: MEIs com listas de CNAE secundário que não correspondem ao que fazem.</p>'
+    + '<p><b>Comparação entre semestres.</b> O cadastro é espelhado mês a mês desde 2021. A série usa a foto '
+    + 'de março (1º semestre) e a de setembro (2º semestre) de cada ano — sete pontos. Como cada ponto é uma '
+    + 'foto, e não um acumulado, a comparação entre semestres é direta: o mesmo recorte, o mesmo critério, '
+    + 'seis meses depois. Repetir no próximo semestre é trocar o mês de referência e rodar de novo.</p>'
+    + '<p><b>Sem dupla contagem entre bases.</b> A chave é o CNPJ. A RAIS entra só como medida de porte '
+    + '(vínculos formais), nunca como contagem de empreendimento.</p>'
+    + '<p><b>Os selos da lista.</b> Cruzamentos por CNPJ com outras cinco bases. Empregados vêm da <i>RAIS '
+    + 'identificada</i>, que casa pelo CNPJ completo mas só vai até 2021 — por isso o ano aparece sempre '
+    + 'no selo; é o último número conhecido, não o de hoje. Contrato público e cadastro de fornecedor casam '
+    + 'pela <b>raiz do CNPJ</b> (os oito primeiros dígitos), porque quem assina contrato é a pessoa jurídica '
+    + 'e o que este levantamento lista é o estabelecimento: matriz e filial compartilham a raiz. '
+    + 'Embargo do IBAMA e inidoneidade no TCU foram consultados pelo mesmo critério e deram zero.</p>';
+
+  (function () {
+    var hoje = new Date(M.gerado);
+    document.getElementById('tab-fontes').innerHTML =
+      '<thead><tr><th>Base</th><th>Cobertura do dado</th><th>Espelhada em</th>'
+      + '<th class="n">Linhas</th></tr></thead><tbody>'
+      + (D.fontes || []).map(function (f) {
+        var meses = f.espelhada === '—' ? 0
+          : Math.round((hoje - new Date(f.espelhada)) / 2629800000);
+        return '<tr><td class="forte">' + esc(f.nome)
+          + '<span class="cat-cnae">' + esc(f.tabela) + '</span></td>'
+          + '<td>' + esc(f.cobertura) + '</td>'
+          + '<td class="' + (meses >= 12 ? 'velha' : '') + '">'
+          + esc(f.espelhada.split('-').reverse().join('/'))
+          + (meses ? '<span class="cat-cnae">há ' + meses + ' ' + (meses === 1 ? 'mês' : 'meses') + '</span>' : '')
+          + '</td>'
+          + '<td class="n">' + (f.linhas ? fmt(f.linhas) : '—') + '</td></tr>';
+      }).join('') + '</tbody>';
+  })();
+
+  document.getElementById('fonte').innerHTML =
+    'Levantamento gerado em ' + M.gerado.split('-').reverse().join('/')
+    + ' a partir das doze bases da tabela acima, todas públicas e oficiais, consultadas em espelho local. '
+    + 'Este documento é um <b>inventário cadastral</b>: diz quem existe e o que declara fazer. '
+    + 'Não é um cadastro de licenciamento e não substitui consulta ao INEA ou à Secretaria de Meio '
+    + 'Ambiente de Nova Friburgo.';
+})();
+</script>
