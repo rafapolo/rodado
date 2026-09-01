@@ -89,10 +89,20 @@ despercebido. `harness/portao.test.ts` trava os dois casos.
 
 Medido contra o conjunto dourado do projeto:
 
-| Estratégia de recuperação de dataset | Recall |
-|---|---|
-| `search_tables` — embedding doc2query | 52,9% |
-| **catálogo de 212 nomes no prefixo** | **88%** |
+| Estratégia de recuperação de dataset | Recall | Casos perfeitos |
+|---|---|---|
+| `search_tables` — embedding doc2query | 52,9% | — |
+| catálogo de 212 nomes no prefixo | 91,3% | 85,7% |
+| **+ 43 exemplos resolvidos no prefixo** | **97,8%** | **96,4%** |
+
+Medido em 28 casos de teste, com `bun harness/avalia_datasets.ts [--fewshot]`.
+Os exemplos vêm de `respostas.md` — ele não é só gabarito, ensina qual dataset
+serve qual tipo de pergunta. Divisão treino/teste **por tema**, não por caso:
+dentro de um tema as 5 perguntas são variações do mesmo cruzamento, então
+dividir por caso deixaria o vizinho quase-idêntico no prefixo e mediria memória.
+
+O few-shot é grátis **por pergunta**: o prefixo cresce para ~11k tokens e o
+`prefill` medido continua em ~45 — só a pergunta é prefilada.
 
 
 Os nomes já são semânticos — `br_ms_sim` é Ministério da Saúde / Sistema de
