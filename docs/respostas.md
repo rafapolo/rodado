@@ -49,6 +49,13 @@ RN 72,4%, SP 71,9%.
 
 ## 02 · Educação
 
+> ⚠️ `bun harness/casos.ts` marca T02-1…T02-4 como suspeitos: cada gabarito casa
+> por palavra-chave com mais de uma pergunta de `perguntas.md` (IDEB, ENEM, PIB e
+> INSE aparecem nas 4). O emparelhamento numeração↔conteúdo aqui não está
+> confirmado — revisão humana pendente (ver T05 em 2026-09-01 para um caso onde a
+> numeração de fato estava errada). Não usar este bloco para avaliação automática
+> até resolver.
+
 - **T02-1 ✅** IDEB × ENEM: **r = +0,45 (n=1.657)**; PIB pc × ENEM só +0,185 e rendimento × ENEM +0,168 — aprendizado explica mais que renda. *(A7)*
 - **T02-2 ✅** INSE × ENEM/IDEB (município, n=2.254): **INSE × redação +0,27; INSE × IDEB AF +0,14**; controlando INSE, IDEB × ENEM cai de +0,20 para **+0,17** — o nível socioeconômico explica o desempenho tanto quanto (ou mais que) o fluxo medido pelo IDEB.
 - **T02-3 ✅** Rural × urbano no ENEM 2022: nos 491 municípios com os dois pares comparáveis, escolas rurais ficam **~32 pontos atrás na redação**; a defasagem é maior no tercil mais pobre (**37,2**) que no mais rico (**32,3**).
