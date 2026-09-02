@@ -182,13 +182,44 @@ DuckDB **sem `-readonly`**. A CLI pega lock exclusivo do arquivo mesmo num
 comentário explicando; o porte a perdeu. Aqui está corrigida — **vale levar de
 volta ao `ask-web`**.
 
+## Rodar uma pergunta
+
+```bash
+bun harness/pergunte.ts "Quantos óbitos por suicídio houve no RJ em 2020, por sexo?"
+```
+
+Sai a resposta em prosa, com os números que o modelo apurou. Espere **~5 a 10
+min**: o tempo está no laço agêntico (uns 8 turnos de modelo a ~9 t/s), não numa
+consulta lenta. Se o `llama-server` não estiver de pé, o comando diz exatamente o
+que subir.
+
+Passa pelo caminho agêntico de propósito — ver a comparação acima.
+
 ## Rodar
 
 ```bash
 bun test harness/                    # 56 testes
 bun harness/catalogo.ts              # 212 datasets, 904 tabelas
 bun harness/catalogo.ts --atualiza   # rebusca no beelink após um sync
+bun harness/anos.ts --atualiza       # faixa de anos por tabela
+
+bun harness/avalia_datasets.ts       # escolha de dataset nas 274 perguntas
+bun harness/lote.ts <arquivo>        # perguntas abertas pelo dsh, com gabarito
+bun harness/compara.ts <arquivo>     # agêntico contra pipeline fixo
 ```
+
+O arquivo de perguntas do `lote.ts` e do `compara.ts` é uma por linha, com o
+valor esperado depois de um TAB quando houver:
+
+```
+Quantos óbitos por suicídio houve no RJ em 2020?	789
+Qual foi o PIB per capita médio dos municípios de MG em 2020?	32066
+Quantos CAPS existem por estado no CNES?
+```
+
+Sem o valor esperado o caso ainda roda, mas só mede se **respondeu** — nunca se
+acertou. Foi assim que uma resposta "não foram encontrados óbitos" entrou como
+sucesso quando o certo era 789.
 
 O modelo é servido pelo `llama-server` no beelink:
 
@@ -218,5 +249,5 @@ Do mac, abra o túnel antes (o servidor escuta só em loopback, de propósito):
 ssh -f -N -L 8099:127.0.0.1:8099 beelink
 ```
 
-O diário completo dos experimentos está em
-[`../exp/harness-gemma-dsh.md`](../exp/harness-gemma-dsh.md).
+As checagens de operação — o que quebra calado e o detector de cada coisa — estão
+em [`tasks/operacao.md`](tasks/operacao.md).
