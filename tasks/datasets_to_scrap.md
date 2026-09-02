@@ -128,10 +128,6 @@ never itemized as their own Tier row and are still genuinely unstarted:
   `dadosabertos-download.cgu.gov.br/PortalDaTransparencia/saida/<slug>/`. `orgaos-siafi`
   additionally 500s on the page itself. Garantia-Safra/Seguro-Defeso/Pe-de-Meia/Viagens from
   the same family are already done (see archive).
-- **ANVISA remaining sub-registries**: only `DADOS_ABERTOS_MEDICAMENTOS.csv` (product
-  registration) has been pulled from `dados.anvisa.gov.br`; bulário, agrotóxicos, and
-  alimentos CSVs on the same open host are still unscraped. CMED (price ceilings) is done
-  separately (see archive).
 - **BCB/BACEN SGS series beyond the curated 18**: `scripts/scrap/bcb_sgs.py`'s `SERIES`
   dict covers 18 hand-picked series; the SGS catalog has thousands more, extendable anytime
   by adding entries to that dict.
@@ -157,19 +153,24 @@ survey, Australian crime stats, etc., ~360 tables) that's out of scope for this 
 Brazilian-government-data mirror — not itemized here. Filtering to genuinely new **Brazilian**
 (`br_*`) physical TABLEs not on beelink, by dataset:
 
+**Partial resume 2026-09-02** (a prior agent pass on this same list, cut off mid-task before
+committing): `br_cgu_sancoes` (6/6 tables), `br_sedec_desastres` (1/1) and
+`br_senado_dados_abertos` (18 tables — covers the ~17 the original finding named) all landed
+in full and were verified via DuckDB readonly, so their rows are dropped from the table below
+and moved to `tasks/done/datasets_to_scrap_done.md`. `br_bcb_ifdata`,
+`br_bndes_operacoes_contratadas` and `br_senado_dados_abertos_administrativos` landed
+partially — see their updated Notes below for exactly what's still missing.
+
 | Dataset | Tables | Rows (BQ, largest table) | Notes |
 |---|---|---|---|
 | `br_bcb_taxa_cambio` | 1 (`taxa_cambio`) | 801K | carried over from the 2026-07-09 finding, still open |
 | `br_bcb_taxa_selic` | 1 (`taxa_selic`) | 9.7K | carried over from the 2026-07-09 finding, still open |
-| `br_bcb_ifdata` | 4 (`coluna`, `dicionario`, `instituicao`, `relatorio`) | 54.5M (`relatorio`) | BCB IF.data — financial institution indicators |
-| `br_bndes_operacoes_contratadas` | 2 (`operacoes_administracao_publica`, `operacoes_indiretas_automaticas`) | 2.4M | beelink already has this dataset's `operacoes_nao_automaticas` table — these 2 are the missing siblings |
+| `br_bcb_ifdata` | 4 (`coluna`, `dicionario`, `instituicao`, `relatorio`) | 54.5M (`relatorio`) | **3/4 pulled 2026-09-02** (`coluna` 48,482, `dicionario` 56, `instituicao` 440,444 rows, verified via DuckDB readonly) — `relatorio`, the 54.5M-row table, is the one still missing |
+| `br_bndes_operacoes_contratadas` | 2 (`operacoes_administracao_publica`, `operacoes_indiretas_automaticas`) | 2.4M | **1/2 pulled 2026-09-02** (`operacoes_administracao_publica`, 4,733 rows, verified) — `operacoes_indiretas_automaticas` still missing |
 | `br_cgu_pessoal_executivo_federal` | 1 (`terceirizados`) | 732K | outsourced federal workforce |
-| `br_cgu_sancoes` | 6 (`ceis`, `cepim`, `cnep`, `acordos_leniencia`, `acordos_leniencia_efeitos`, `dicionario`) | 23.6K (`ceis`) | sanctions registries (debarment/leniency) — no overlap found under any existing beelink dataset name, genuinely new |
 | `br_me_siconfi` | 3 (`municipio_execucao_restos_pagar`, `municipio_execucao_restos_pagar_funcao`, `municipio_variacoes_patrimoniais`) | 8.5M | beelink has 21 other `br_me_siconfi` tables already — these 3 are the gap |
-| `br_sedec_desastres` | 1 (`reconhecimentos_vigentes`) | 1.2K | small, trivial to pull |
-| `br_senado_dados_abertos` | 17 tables (senador, votação, comissão, discurso, processo…) | 289K (`votacao_parlamentar`) | brand-new dataset, all small |
-| `br_senado_dados_abertos_administrativos` | 36 tables (contratação, licitação, folha de pessoal, terceirizados…) | 132K (`servidor_hora_extra_dia`) | brand-new dataset, all small |
-| `br_sfb_sicar` | 8 tables (`app`, `area_consolidada`, `area_pousio`, `hidrografia`, `reserva_legal`, `servidao_administrativa`, `uso_restrito`, `vegetacao_nativa`) | 28.1M (`app`) | SICAR — Cadastro Ambiental Rural; likely has geometry columns, check schema before pulling |
+| `br_senado_dados_abertos_administrativos` | 36 tables (contratação, licitação, folha de pessoal, terceirizados…) | 132K (`servidor_hora_extra_dia`) | **12/36 pulled 2026-09-02** (`despesa_ceaps`, `dicionario`, `senador`, `servidor_hora_extra`, `servidor_hora_extra_dia`, `servidor_remuneracao`, `suprido_ato_concessao`, `suprido_empenho`, `suprido_movimentacao`, `suprido_movimentacao_subtipo`, `suprido_transacao`, `suprido_transacao_objeto` — the `contratação`/`licitação` tables the dataset name promises are still missing) — likely where a rate-limit cutoff interrupted an in-progress pull; resume with the same `bq query` (Sandbox, free) → parquet → rsync pattern for the remaining ~24 tables |
+| `br_sfb_sicar` | 8 tables (`app`, `area_consolidada`, `area_pousio`, `hidrografia`, `reserva_legal`, `servidao_administrativa`, `uso_restrito`, `vegetacao_nativa`) | 28.1M (`app`) | SICAR — Cadastro Ambiental Rural; likely has geometry columns, check schema before pulling. beelink already has an older, differently-shaped partial pull (`area_imovel`, `dicionario`, since 2026-07-09) — not the same tables, check for overlap before treating as a blind gap-fill |
 
 **Not listed as a gap — needs a rename/refresh check first, not a blind pull:**
 `br_rf_cnpj` (5 tables: `empresas`, `estabelecimentos`, `socios`, `simples`, `dicionario`)

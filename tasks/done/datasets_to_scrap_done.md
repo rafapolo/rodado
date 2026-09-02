@@ -97,6 +97,25 @@
 tool") but `mcp_server.py` has no `consultar_oab` function — nothing was actually built.
 Moved back to the open file's "mcp-live candidates" section rather than archived as done.
 
+## Tables from the Base dos Dados mirror — filled
+
+Resolved rows from the still-open file's "Tables from the Base dos Dados mirror still
+genuinely absent from beelink" gap list, pulled via the `bq query` (Sandbox, free) → parquet
+→ rsync pattern in `scripts/sync-with-source.md`.
+
+| Dataset | Tables | Rows | Status | Last updated | Notes |
+|---|---|---|---|---|---|
+| `br_anvisa_consultas` (agrotóxicos + alimentos) | `agrotoxicos`, `alimentos` | 9,676 + 48,956 | done | 2026-09-02 | Same unblocked host as `anvisa_registros.py` (`dados.anvisa.gov.br`, plain Apache/h5ai, no WAF). Pulled `TA_MONOGRAFIA_AGROTOXICO.csv` → `agrotoxicos` (pesticide monograph/LMR registry: substance, LMR, crop, legal act, validity dates) and `DADOS_ABERTOS_ALIMENTO.csv` → `alimentos` (registered food product records: CNPJ, empresa, produto, categoria, registro, situação). `scripts/scrap/anvisa_agrotoxicos_alimentos.py`. Bulário (medicine package-insert lookups) checked again this session and stays blocked — served only by `consultas.anvisa.gov.br`, still 403s under every header combination tried; not on the open `dados.anvisa.gov.br` host like the rest of this family. |
+| `br_cgu_sancoes` | `ceis`, `cepim`, `cnep`, `acordos_leniencia`, `acordos_leniencia_efeitos`, `dicionario` | 19,142 + 3,530 + 1,553 + 146 + 176 + 4 | done | 2026-09-02 | Sanctions registries (debarment/leniency) — no overlap with any existing beelink dataset name. All 6 tables present and verified via DuckDB readonly. |
+| `br_sedec_desastres` | `reconhecimentos_vigentes` | 1,237 | done | 2026-09-02 | Small, matches the ~1.2K row estimate from the original gap finding. |
+| `br_senado_dados_abertos` | 18 tables (`bloco`, `comissao`, `discurso`, `lideranca`, `mesa`, `partido`, `processo`, `relatoria`, `senador`, `senador_cargo`, `senador_comissao`, `senador_filiacao`, `senador_mandato`, `votacao`, `votacao_comissao`, `votacao_comissao_parlamentar`, `votacao_orientacao_bancada`, `votacao_parlamentar`) | 288,855 (`votacao_parlamentar`, matches the 289K estimate) | done | 2026-09-02 | Brand-new dataset, all 18 tables present (original finding estimated ~17). |
+
+Found already-landed and uncommitted when this pass started — presumably from the same prior
+agent instance's `bq query`→parquet→rsync work before it was cut off mid-task; verified via
+DuckDB readonly (`ssh beelink '~/bin/duckdb -readonly -json ...'`) rather than re-scraped.
+`br_bcb_ifdata`, `br_bndes_operacoes_contratadas` and `br_senado_dados_abertos_administrativos`
+landed only partially and stay in the open file with updated Notes on what's missing.
+
 ## mcp-live candidates — built
 
 Lookup-shaped sources routed to a live pass-through tool instead of a beelink mirror,
