@@ -9,6 +9,40 @@ perguntas não muda o comportamento do `search_tables` por si só (recall ficou
 ~51% estável nas três rodadas já feitas); o valor real de continuar é o que
 aparece *ao responder*: bugs reais de join, tabelas quebradas, campos ausentes.
 
+## Estado em 2026-09-02
+
+Sessão de retomada do "Agente A" (caiu por rate limit em 2026-08-27, ver seção
+"Herdado" abaixo). **Ambiente concorrente**: pelo menos 2-3 outras sessões
+trabalharam no mesmo `docs/respostas.md` ao mesmo tempo desta (temas 31, 35,
+42 e outros commits sobre saúde mental/COTA/CVM) — commits intercalados no
+histórico do git confirmam isso. Não refazer T31 (`4795752`), T35-2/4
+(`2c96122`) nem o que já está em T42 (`377c2ed`).
+
+- **T37 fechado por completo**: T37-2 ✅ e T37-4 ✅ já estavam prontos e
+  staged quando esta sessão assumiu (dívida PGFN × contratos/cartão CGU;
+  TCU+PGFN × RAIS 2021) — conferidos, não truncados, comitados como estão
+  (`5e4341e`). T37-3 ◐ idem (sócios de empresas TCU recriando personalidade
+  jurídica, com ressalva sobre CPF mascarado). T37-1/T37-5 já vinham de antes.
+- **T30-1 completado** (`ff0fd91` incorporado a um commit maior de outra
+  sessão): HHI de capital social por divisão CNAE (86 divisões, snapshot
+  2025-09) × salário médio e emprego RAIS 2021 — **r = +0,07 e −0,02**,
+  nenhuma correlação; setor concentrado não paga mais nem emprega
+  proporcionalmente menos. Achado lateral: 124 empresas com
+  `capital_social = 999999999999` (valor-sentinela, ver bugs abaixo).
+- **T43-4 respondido** (`ff0fd91`): medalhas olímpicas do Brasil (1920-2020) ×
+  PIB nacional nominal — limite de instrumento real (PIB a preço corrente
+  nunca cai numa série de 20 anos, não separa "acompanhou o PIB" de "cresceu
+  independente do PIB"); `◐` com leitura qualitativa (medalhas continuaram
+  subindo através da recessão de 2015-16).
+- Golden set regenerado: **183 perguntas** (era 114 em 2026-08-25 — salto
+  grande por causa do volume de trabalho concorrente de outras sessões, não
+  só desta). `search_tables` recall@10: **56,0% dos datasets esperados**
+  (dataset-level, era 52,9%); 69,4% das perguntas têm ≥1 dataset esperado no
+  top-10; 47,0% têm todos. Consistente com o padrão já visto: mais perguntas
+  não move essa métrica sozinho.
+- Contagem final em `docs/respostas.md` ao fim desta sessão: **160 ✅, 38 ◐,
+  61 ⏳** (não é só desta sessão — reflete todo o trabalho concorrente).
+
 ## Estado em 2026-08-25
 
 - 114 perguntas mantidas no golden set (`tasks/douradas_perguntas.json`, status
