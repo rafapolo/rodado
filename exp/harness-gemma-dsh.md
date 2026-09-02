@@ -199,5 +199,5 @@ Não sei o estado pretendido deles e não carimbei trabalho alheio.
 
 - `harness/README.md` — como rodar
 - `gemma_stats.md` — o benchmark do modelo isolado
-- `tasks/check-dspark-replacement.md` — por que LFM2.5+DSpark não substitui
-- `tasks/harness_gemma_dsh.md` — o plano original, para comparar com o que saiu
+- `harness/tasks/check-dspark-replacement.md` — por que LFM2.5+DSpark não substitui
+- `harness/tasks/harness_gemma_dsh.md` — o plano original, para comparar com o que saiu

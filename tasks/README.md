@@ -4,6 +4,11 @@
 ter sido tirado em `7a5fe32`). Duas áreas: arquivos ativos aqui na raiz e
 `done/` (arquivado — mantido por provenance, não é lista de afazeres).
 
+Tarefas específicas do subsistema `harness/` (o apurador local com Gemma 4 —
+plano, medições, catálogo de refino, avaliação de modelo candidato) vivem em
+[`harness/tasks/`](../harness/tasks/README.md), não aqui — aqui fica o que é
+do projeto como um todo (datasets, raspagem, camada semântica, o espelho).
+
 ## Ativos
 
 Ordenados por atividade recente (mtime + commits), não por tema — o que está
@@ -11,9 +16,6 @@ sendo trabalhado agora fica no topo.
 
 | Arquivo | Descrição | Status |
 |---|---|---|
-| [`harness_gemma_dsh.md`](harness_gemma_dsh.md) | Harness de produção (branch `harness-gemma`): DSH + `mcp_server.py` + Gemma 4 local no beelink, portão de 7 camadas como ferramenta MCP | 🟢 ativo — fases 0-3 feitas (5 commits, 51 testes), sessão em andamento |
-| [`check-dspark-replacement.md`](check-dspark-replacement.md) | LFM2.5 + DSpark trocaria o Gemma 4 no harness? (a pedido do rafael) | ✅ respondido 2026-09-02 — não como está; nada rodado no beelink ainda |
-| [`check-qwencoder-vs-duckdbnsql.md`](check-qwencoder-vs-duckdbnsql.md) | Qwen3-Coder-30B-A3B (agente) e DuckDB-NSQL-7B (redator) trocariam/complementariam o Gemma 4? | 🔵 aberto 2026-09-02 — plano de experimento, nada rodado no beelink; espera medição do Gemma (item 1 de `harness_gemma_dsh.md`) |
 | [`datasets_quase_duplicados.md`](datasets_quase_duplicados.md) | Datasets quase-duplicados no espelho (item 2 do TODO do harness) — `br_ibama_embargos` vazio é o mais urgente | 🔴 diagnosticado, ação pendente — survey de 2026-09-01, nada removido/mapeado ainda |
 | [`datasets_licenciamento_ambiental.md`](datasets_licenciamento_ambiental.md) | Datasets de licenciamento e poluição ambiental (saído do relatório de Nova Friburgo) | 🟡 6 de 8 raspados 2026-09-01 (ANM, IBAMA CTF/autos/embargos, INEA, Querido Diário) — ver *Em aberto* abaixo |
 | [`relatorio_saude_mental.md`](relatorio_saude_mental.md) | Mapa do que o espelho tem para um relatório de saúde mental — ainda não é o relatório | 🔵 aberto — levantamento 2026-09-01 |

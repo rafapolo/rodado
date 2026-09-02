@@ -1,6 +1,6 @@
 # Qwen Coder ou DuckDB-NSQL trocaria o Gemma 4 no harness?
 
-> Aberto em 2026-09-02, a pedido do rafael, continuação de
+> Aberto em 2026-09-02, a pedido, continuação de
 > `check-dspark-replacement.md` (mesma pergunta de fundo — "dá pra trocar o
 > Gemma por algo melhor em SQL/tool-calling?" — candidatos diferentes). **Nada
 > abaixo foi rodado no beelink.** Os números do Gemma são medidos (ver

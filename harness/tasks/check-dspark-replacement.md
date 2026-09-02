@@ -1,6 +1,6 @@
 # LFM2.5 + DSpark substituiria o Gemma 4 no harness?
 
-> Aberto em 2026-09-02, a pedido do rafael, a partir de
+> Aberto em 2026-09-02, a pedido, a partir de
 > https://www.liquid.ai/blog/lfm2.5-dspark
 >
 > **Resposta curta: não como está — mas há um experimento que vale, e não é o
