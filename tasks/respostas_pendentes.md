@@ -361,6 +361,49 @@ componentes isolados medidos). Nenhum desses tem caminho de query que não
 seja pipeline dedicado ou dado que falta no espelho — não é "não tentei",
 é "tentei e o dado/chave não sustenta".
 
+## Estado em 2026-09-02 (continuação, sessão de retomada 2)
+
+Nova sessão de retomada, mesmo dia, depois do fechamento anterior. Focou nos
+poucos itens `⏳` que já vinham marcados como "não executado por orçamento de
+tempo" (não bloqueio estrutural) em vez de reabrir os já documentados como
+bloqueados — T19-2/T19-5 (tema Mercado Financeiro) e T28-1/T28-2/T28-4 (tema
+Violência Escolar), mais T38-3 (Educação Básica, que na verdade *era*
+respondível em nível de UF, só documentado como bloqueio parcial antes).
+
+- **T19-2 ◐**: crédito rural SICOR nacional cresceu 111,6% (2013→2021) contra
+  146,0% do PIB agropecuário no mesmo período — razão crédito/PIB agro CAIU
+  de 0,58 para 0,50, o oposto da hipótese de "crédito crescendo acima da
+  renda agro". Agências ESTBAN caíram monotonicamente todo ano (−23,1% no
+  período) sem relação clara com essa razão (r=+0,33, fraco).
+- **T19-5 ✅**: presença bancária (agências/100k hab 2010) não lidera
+  crescimento futuro do PIB per capita municipal (r=−0,05, n=5.565); na
+  direção oposta, PIB per capita 2010 × queda de agências per capita
+  2010-2021 também é fraco (r=−0,10) — nenhuma direção domina.
+- **T28-1 ✅ / T28-2 ✅ / T28-4 ✅**: violência SINAN (adolescentes e "local
+  escola") correlaciona POSITIVAMENTE com INSE mais alto (r=+0,21 e +0,30),
+  não negativamente — reforça o padrão já visto em T09-1/T28-5 de que
+  notificação mede capacidade/cultura de notificar, não incidência bruta.
+  T28-2 (INSE × letalidade juvenil SIM) mostra padrão de Simpson: r=−0,25
+  nacional mas o sinal se dilui ou inverte dentro de cada região (Nordeste
+  r=+0,27) — a correlação nacional é efeito de composição regional, não de
+  nível socioeconômico escolar local.
+- **T28-3 segue ⏳**: "queda de participação entre SAEB e ENEM" não tem
+  operacionalização direta (SAEB é censitário por escola, ENEM é inscrição
+  voluntária) — exigiria definição própria de coorte, não uma correlação de
+  corte simples.
+- **T38-3 ✅ (nível UF)**: formação docente (2020) prevê o NÍVEL de
+  alfabetização 2024 (r=+0,33, n=24 UFs) mas não sua MELHORA 2023→2024
+  (r=+0,007, nulo) — é estoque acumulado, não choque recente. Achado de
+  schema: `br_inep_formacao_docente.uf` tem uma coluna `modalidade` (etapa
+  de ensino) não documentada antes — sem filtrar por ela, um `GROUP BY`
+  soma 7 linhas por UF/grupo (todas as modalidades juntas), inflando o
+  percentual para >600%.
+- Golden set regenerado: **193 perguntas** (era 185). Recall@10 dataset-level:
+  **54,9% (161/293)**, contra 55,4% (155/280) antes desta sessão — dentro do
+  ruído, confirma mais uma vez que responder pergunta nova não move essa
+  métrica sozinho.
+- Contagem em `docs/respostas.md` ao fim desta sessão: **172 ✅, 40 ◐, 58 ⏳**.
+
 ## Bugs encontrados nesta sessão (2026-09-02)
 
 - **`br_me_cnpj.empresas.capital_social` tem valor-sentinela**: 124 linhas
