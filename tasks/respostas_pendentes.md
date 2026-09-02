@@ -97,6 +97,16 @@ histórico do git confirmam isso. Não refazer T31 (`4795752`), T35-2/4
 
 ## Ainda não tocado (~85 perguntas dos temas 1-43, temas inteiros ou parciais)
 
+**[FECHADO 2026-09-02 — ver "Estado final desta sessão" acima]** Temas 29, 30,
+31, 32, 35 e 37 estão totalmente verificados agora (cada item ✅/◐/⏳ com
+motivo). Do resto: 34 segue pulado de propósito (geobr); 38 só o item 1 segue
+pendente (reclassificação metodológica, não join); 41 e 42 seguem
+majoritariamente bloqueados mas cada item tem razão específica documentada
+(não é mais "genérico, não tentado"); 43 segue bloqueado por ausência de
+coluna geográfica na fonte de atletas; M1-M5 têm componentes isolados medidos
+mas nenhuma cadeia completa fechada (M3 é a mais perto, só falta um elo
+estruturalmente bloqueado). Texto original abaixo preservado como histórico:
+
 Temas: 29 (Dados Eleitorais, restam 1/3/4/5), 30 (itens 2-5), 31 (itens 1-3 e 5),
 32 (itens 2 e 4), 34 (Atlas — geoespacial, geobr, pulado de propósito), 35 (itens
 1-4), 37 (itens 2-4), 38 (itens 1/2/5), 41 (itens 1-4), 42 (todo — hidro/clima),
@@ -288,6 +298,68 @@ perguntas e nunca retomou. O que ficou por responder:
 
 O log completo da rodada, com os 5 bugs confirmados e o que cada agente
 entregou, está em `done/bugs_e_achados_agentes.md`.
+
+## Estado final desta sessão (2026-09-02, continuação após reset)
+
+Depois do fechamento acima (`9f70a3d`), a mesma sessão de retomada continuou e
+fechou o resto do que "ainda não tocado" listava como pendente de verdade:
+
+- **Tema 32 (Conectividade) fechado por completo** (`2e5c63c`): T32-2 e T32-4
+  respondidos com `br_simet_educacao_conectada.escola` — a nota anterior de
+  que essa tabela "só tinha `faixa_velocidade` categórica" estava **errada**:
+  ela tem `media_tcp_download` (Mbps, contínua, 77.935 escolas medidas em
+  2023) e `localizacao` (Urbana/Rural). T32-4: escolas rurais têm 66,6 Mbps
+  vs 101,5 Mbps nas urbanas **dentro do mesmo município** (n=3.470). T32-2:
+  SIMET agregado por município × IBC Anatel só bate moderadamente (r=+0,35,
+  n=4.540) e a concordância é sistematicamente pior no Nordeste (r=+0,18)
+  que no Norte (r=+0,36) apesar de IBC médio parecido — a fonte agregada da
+  Anatel não capta bem o que a medição direta mostra ali.
+- **T41-3 confirmado bloqueado de vez** (`c5279d8`): tentei o crosswalk
+  `despesa_coletiva_2017` × `cadastro_de_produtos_2017` filtrando
+  `descricao_3_despesa='Alimentacao'` — **zero linhas casadas em qualquer
+  UF**. Não é falta de tentativa: a aquisição alimentar da POF vive num
+  instrumento separado (a árvore `descricao_*_aquisicao_alimentar` do
+  cadastro é distinta da de despesa) e **essa tabela não existe no espelho**
+  — nenhuma das 14 tabelas de `br_ibge_pof` é uma tabela de aquisição
+  alimentar.
+- **M3 (emenda→contrato→empresa→sanção) parcialmente fechado** (`82b5c78`):
+  com T37-1/2/4/5 prontos, só faltava o elo emenda→contrato. `resolve_join`
+  confirma que não há ponte — e o motivo real é mais forte que "falta
+  documentar": `br_cgu_emendas_parlamentares.microdados` e
+  `br_cgu_licitacao_contrato.contrato_compra` **não compartilham nenhuma
+  coluna**, nem `id_municipio` (a segunda não tem coluna de município
+  nenhuma). Fechar essa cadeia exigiria passar pelo SIOP, já documentado
+  como corrompido/no grão errado (T08-5, T40-4) — não dá sem scrape novo.
+- **T42 com razão de bloqueio precisa por item** (`377c2ed`): T42-3
+  confirmado bloqueado — `br_mma_extincao.fauna_ameacada`/`.flora_ameacada`
+  não têm NENHUMA coluna geográfica (nem bioma, nem município), então não
+  há como ligar espécie ameaçada a MapBiomas/queimadas por local. T42-1/2/4/5
+  seguem bloqueados pelo já documentado descasamento `br_ana_telemetria`
+  (0 de 4.770 municípios batem).
+- Golden set regenerado de novo ao final: **185 perguntas** (era 174 antes
+  desta sessão, 183 no meio dela via outra sessão concorrente). Recall@10
+  dataset-level: **55,4% (155/280)** — praticamente igual ao 55,6% de antes
+  desta sessão (150/270) e ao 56,0% registrado no meio dela; confirma outra
+  vez que responder mais pergunta não move essa métrica sozinho.
+- **Bug adicional catalogado**: `br_ipea_avs.municipio` não está no grão de
+  município apesar do nome — é UDH (subdivisão intramunicipal), com até
+  1.594 linhas pra um único `id_municipio` (São Paulo) na combinação
+  "resumo" (`raca_cor='total'`/`sexo='total'`/`localizacao='total'`). Um
+  join direto sem `GROUP BY`/`AVG()` prévio infla `n` sem mudar muito a
+  correlação (pares se repetem idênticos) — mas relatar `n` errado é, por si
+  só, o tipo de coisa que essa disciplina existe pra evitar. A nota antiga
+  de que "AVS só tem um ano no espelho" também estava errada — tem 2000 e
+  2010 (usado para fechar T31-5).
+
+**Do que estava listado em "Ainda não tocado" no início desta sessão, resta
+genuinamente pendente**: T29-4 (índice de fragmentação partidária via
+votação nominal da Câmara — exige metodologia própria, não é join), T38-1
+(reclassificação INSE↔ESCS, não é join), T33-2…5 e T43-1/2/4/5 (fonte não
+tem a coluna geográfica que a pergunta pede, já documentado antes desta
+sessão), T34 (geobr, pulado de propósito), M1/M2/M4/M5 completos (só
+componentes isolados medidos). Nenhum desses tem caminho de query que não
+seja pipeline dedicado ou dado que falta no espelho — não é "não tentei",
+é "tentei e o dado/chave não sustenta".
 
 ## Bugs encontrados nesta sessão (2026-09-02)
 
