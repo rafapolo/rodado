@@ -63,8 +63,15 @@ export function carregaCasos(): Caso[] {
     const item = Number(m[1]);
     const obrigatorios: string[] = [];
     const apoio: string[] = [];
-    for (const bruto of m[3].split(",")) {
-      (/[*\\]/.test(bruto) ? apoio : obrigatorios).push(normaliza(bruto));
+    // As perguntas multi-dataset anotam `n=4+: ds1, ds2, chaves: id_municipio,
+    // sigla_uf` — tudo depois de "chaves:" é coluna de junção, não dataset. Sem
+    // cortar, `sigla_uf` e `id_municipio` entram no gabarito como se fossem
+    // datasets e o modelo é acusado de não os ter escolhido; eram a 3ª e a 7ª
+    // "falha" mais comum da rodada de 274.
+    for (const bruto of m[3].split(/;|\bchaves?\s*:/i)[0].split(",")) {
+      const n = normaliza(bruto);
+      if (n.length < 3) continue;
+      (/[*\\]/.test(bruto) ? apoio : obrigatorios).push(n);
     }
     const id = `T${String(tema).padStart(2, "0")}-${item}`;
     porId.set(id, { id, tema, item, pergunta: m[2].trim(), obrigatorios, apoio });
@@ -180,8 +187,15 @@ export function carregaTodasPerguntas(): Omit<Caso, "gabarito" | "suspeito">[] {
     if (!m || !tema) continue;
     const obrigatorios: string[] = [];
     const apoio: string[] = [];
-    for (const bruto of m[3]!.split(",")) {
-      (/[*\\]/.test(bruto) ? apoio : obrigatorios).push(normaliza(bruto));
+    // A seção multi-dataset anota `n=4: ds1, ds2; chaves: id_municipio, sigla_uf`
+    // — tudo depois do `;` (ou de "chaves:") é coluna de junção, não dataset.
+    // Sem cortar, `sigla_uf` e `id_municipio` entram no gabarito como datasets e
+    // o modelo é acusado de não os ter escolhido: eram a 3ª e a 7ª "falha" mais
+    // comum da rodada de 274.
+    for (const bruto of m[3]!.split(/;|\bchaves?\s*:/i)[0]!.split(",")) {
+      const n = normaliza(bruto);
+      if (n.length < 3) continue;
+      (/[*\\]/.test(bruto) ? apoio : obrigatorios).push(n);
     }
     if (!obrigatorios.length) continue;
     out.push({
