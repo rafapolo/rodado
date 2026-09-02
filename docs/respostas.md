@@ -306,7 +306,23 @@ RN 72,4%, SP 71,9%.
 - **T32-1 ✅** Anatel IBC × ENEM: **r = +0,57 (n=1.736)** — mais forte que qualquer medida de renda. *(A4)*
 - **T32-5 ✅ (proxy)** IBC × formalidade +0,56 e × empresas +0,57 (A5, A6) — conectividade anda com dinamismo econômico; direção causal pendente.
 - **T32-3 ✅** Densidade banda larga fixa (Anatel) × IBC: **r = +0,73 (n=3.070)**; × PIB pc **+0,31** — as duas métricas Anatel se confirmam mutuamente; a renda explica bem menos.
-- **T32-2, T32-4 ⏳** Pendentes — SIMET tem formato por escola (faixa_velocidade) sem nota/velocidade contínua municipal; cruzamento exige normalização dedicada.
+- **Correção de achado anterior (2026-09-02)**: a nota antiga dizia que `br_simet_educacao_conectada.escola` só tinha
+  `faixa_velocidade` categórica, sem velocidade contínua — **errado**: a tabela tem `media_tcp_download` (Mbps,
+  contínua, medição real por escola, 2023, 77.935 de 137.914 escolas com medição válida) e `localizacao`
+  (Urbana/Rural), o suficiente pra responder T32-2 e T32-4 direto, sem normalização dedicada.
+- **T32-4 ✅ (2026-09-02)** `media_tcp_download` por escola (SIMET 2023) comparando Urbana × Rural **dentro do
+  mesmo município** (só municípios com pelo menos 1 escola de cada tipo medida, n=3.470): **média urbana 101,5
+  Mbps vs rural 66,6 Mbps — diferença de 34,9 Mbps a favor da urbana**, `corr(urbana, rural)=+0,30` entre
+  municípios (onde uma é mais rápida a outra tende a acompanhar, mas fracamente). Nacionalmente (todas as escolas,
+  sem parear por município): urbana 118,0 Mbps vs rural 64,2 Mbps. Confirma a hipótese: conectividade medida é
+  sistematicamente inferior nas escolas rurais mesmo comparando só dentro do mesmo município.
+- **T32-2 ✅ (2026-09-02)** Velocidade média SIMET por município (2023, municípios com ≥3 escolas medidas, n=4.540)
+  × IBC Anatel (2023): **r = +0,35 nacional** — concordância moderada, longe de perfeita. Quebrando por região:
+  **Norte r=+0,36, Centro-Oeste +0,29, Sudeste +0,26, Sul +0,22, Nordeste +0,18** (a mais fraca) — divergência
+  sistemática real: o Nordeste tem IBC médio (47,0) parecido com o do Norte (45,6), mas velocidade medida nas
+  escolas bem mais baixa (64,8 Mbps vs 78,0 no Norte) — o índice agregado da Anatel (que pondera cobertura móvel e
+  densidade de operadora) não capta bem o que a medição direta nas escolas do Nordeste mostra; as duas fontes
+  concordam menos ali do que em qualquer outra região.
 
 ## 33 · Internacionais
 
