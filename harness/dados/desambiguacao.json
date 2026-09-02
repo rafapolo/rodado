@@ -41,12 +41,19 @@
       "motivo": "SI-PNI microdado, SI-PNI agregado e cobertura vacinal municipal respondem à mesma pergunta com grãos diferentes.",
       "datasets": ["br_ms_sipni_microdados", "br_ms_sipni_doses_historicas", "br_ms_imunizacoes"]
     },
+    "bolsas_de_pesquisa": {
+      "motivo": "Medido na rodada de 284 (2026-09-02, pós-conserto do item 1): `cnpq_bolsas` perdeu 3x, sempre classificado 'nada_perto' — o classificador de vizinho só compara o primeiro segmento do nome (órgão), e `cnpq` e `capes` são agências diferentes, então a confusão nem aparece como 'vizinho' apesar de ser exatamente essa classe de erro.",
+      "datasets": ["br_cnpq_bolsas", "br_capes_bolsas"]
+    },
     "mortalidade_e_natalidade": {
       "motivo": "SIM e SINASC são o par óbito/nascimento; SIM já vem no par de sigla com SIA e SIH.",
       "datasets": ["br_ms_sim", "br_ms_sinasc"]
     }
   },
   "descricoes": {
+    "br_cnpq_bolsas": "bolsas do CNPq (Ministério da Ciência e Tecnologia): microdados de bolsista, modalidade e valor",
+    "br_capes_bolsas": "bolsas da CAPES (Ministério da Educação): só o recorte de mobilidade acadêmica internacional",
+
     "br_ibge_pam": "lavoura: área plantada, colhida e valor da produção agrícola por município (rebanho é br_ibge_ppm)",
     "br_ibge_ppm": "pecuária: efetivo de rebanhos, leite, ovos, mel e aquicultura por município (lavoura é br_ibge_pam)",
     "br_ibge_pevs": "extração vegetal e silvicultura — madeira, carvão, açaí, erva-mate; não é lavoura nem rebanho",
