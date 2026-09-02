@@ -113,7 +113,11 @@ DataJud continua bloqueado por credencial, não por esforço.
 - **Chaves**: NIS, CPF mascarado, município/UF; Gás do Povo traz CNPJ da revenda
 - **Por quê**: Pé-de-Meia cruza com Censo Escolar (aluno/escola) que já se tem. Nota: `pe_de_meia` bulk já foi baixada (~64M rows no beelink via Portal da Transparência) — validar cobertura vs. esta fonte; **Gás do Povo e Novo Bolsa Família não existem**.
 - **Status BD**: Auxílio Emergencial/Auxílio Brasil parciais na BD; Pé-de-Meia/Gás do Povo não existem
-- **2026-09-02**: Gás do Povo **feito** (`br_cgu_gas_do_povo`, 34.846.839 linhas, 8/8 meses). Novo Bolsa Família **em andamento** (`br_cgu_novo_bolsa_familia`, resumível) — ver Execução abaixo.
+- **2026-09-02**: Gás do Povo **feito** (`br_cgu_gas_do_povo`, 20.817.231 linhas, 8/8 meses — a contagem
+  de 34.846.839 registrada mais cedo hoje estava inflada por um `.parquet` duplicado que uma sessão
+  paralela gravou por engano na mesma pasta com outro padrão de nome; removido e recontado, ver
+  Execução abaixo). Novo Bolsa Família **em andamento** (`br_cgu_novo_bolsa_familia`, resumível) — ver
+  Execução abaixo.
 
 #### 3. Transferegov.br (ex-SICONV) — transferências completas 🔵 ver Execução 2026-09-02
 - **Fonte**: http://repositorio.dados.gov.br/seges/detru/
@@ -650,8 +654,21 @@ acesso direto ao CDN — não precisou passar pelo laptop).
 ```sql
 SELECT count(*), min(mes_referencia), max(mes_referencia)
 FROM read_parquet('~/rodado/br_cgu_gas_do_povo/gas_do_povo/*.parquet');
--- 34.846.839 linhas · 202511 → 202607 (8/8 meses, completo)
+-- 20.817.231 linhas · 202511 → 202607 (8/8 meses, completo)
 ```
+
+**Correção 2026-09-02, mais tarde:** a contagem de 34.846.839 registrada antes nesta mesma
+seção estava errada — duplicada por uma sessão paralela que, sem saber deste job já em
+andamento no beelink, rodou `scripts/scrap/portal_transparencia.py` a partir do laptop para
+o mesmo dataset e gravou 6 arquivos extras na mesma pasta com outro padrão de nome
+(`2025_11_gas_do_povo.parquet` etc., em vez de `202511.parquet`) — mesmo conteúdo, nome
+diferente, então `read_parquet('*.parquet')` contava as duas cópias. Os 6 arquivos
+duplicados foram identificados (contagem por arquivo batendo par a par) e removidos; a
+contagem real e final é 20.817.231. `scripts/scrap/portal_transparencia.py` ganhou uma
+entrada `gas-do-povo` no `DATA_DICT` como efeito colateral dessa colisão — fica como
+scraper reutilizável de git para reprocessamentos incrementais futuros, mas **não rodar de
+novo sem checar primeiro se o job no beelink já não fez o mês** (ele não faz essa checagem
+de existência antes de baixar).
 
 Colunas: `mes_referencia, uf, codigo_municipio_siafi, nome_municipio,
 cpf_beneficiario (mascarado na origem), nome_favorecido, cnpj_estabelecimento,
