@@ -1,12 +1,22 @@
 #!/usr/bin/env python3
 """Scrape Portal da Transparencia bulk CSV datasets.
 
-Four datasets confirmed working via direct CDN download (no API key needed):
+Datasets confirmed working via direct CDN download (no API key needed):
 
   1. Garantia-Safra (2013-01+, monthly, 7 cols)
   2. Seguro-Defeso (2013-01+, monthly, 9 cols)
   3. Pe-de-Meia   (2024-03+, monthly, 18 cols)
   4. Viagens      (2011+, yearly, 4 sub-tables)
+  5. Gas-do-Povo  (2025-11+, monthly, 13 cols) — CNPJ da revenda, CPF beneficiario
+
+Novo-Bolsa-Familia (2023-03+, monthly) is confirmed reachable at the same CDN
+(slug "novo-bolsa-familia", origin "NovoBolsaFamilia") but is NOT wired into
+DATA_DICT: a single month's CSV is ~2.2GB uncompressed (~340MB zipped), and
+41 months (2023-03 through today) is ~90GB uncompressed / ~14GB zipped total —
+too large to route through this script's laptop-side download+convert path.
+As of 2026-09-02 it's being pulled directly on beelink instead (see
+tasks/fontes_novas.md, item 2, Execucao 2026-09-02) — check there before
+wiring a second, competing fetch of the same dataset into this script.
 
 CDN: dadosabertos-download.cgu.gov.br/PortalDaTransparencia/saida/<slug>/
 
@@ -61,6 +71,13 @@ DATA_DICT = {
         "origin": "PeDeMeia",
         "period": "monthly",
         "tables": {"pe_de_meia": "PeDeMeia"},
+    },
+    "gas-do-povo": {
+        "dataset": "br_cgu_gas_do_povo",
+        "slug": "gas-do-povo",
+        "origin": "GasdoPovo",
+        "period": "monthly",
+        "tables": {"gas_do_povo": "GasdoPovo"},
     },
     "viagens": {
         "dataset": "br_cgu_viagens",
