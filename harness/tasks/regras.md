@@ -30,8 +30,8 @@ a classe das falhas diz o que consertar. `avalia_datasets.ts` faz isso desde
 | Nome de CTE não é tabela inexistente | o portão reprovava `WITH ... AS`, que é exatamente como se escreve join entre datasets | `portao.ts` camada 2 |
 | Só assinatura de erro do DuckDB reprova um `EXPLAIN` | `EXPLAIN` devolve plano em arte-ASCII e o executor tratava como erro | `portao.ts` camada 7 |
 | Rejeição de coluna **lista as parecidas** | o modelo gastou **991 s em 31 consultas** caçando `causa_basica` (tentou `causa_materia`, `causa_materna`, `cid_causa_morte`) — `descrever_tabela` devolve na 5ª linha, em 619 tokens | `portao.ts` camada 3 |
-| Consulta obrigada a devolver `COUNT(*) AS n` | `n` saía do "primeiro número da linha" e apanhava o coeficiente | 🔴 só no pipeline fixo |
-| `n=0` vira reparo, com as causas prováveis na mensagem | join vazio era reportado como resultado | 🔴 só no pipeline fixo |
+| Consulta obrigada a devolver `COUNT(*) AS n` | `n` saía do "primeiro número da linha" e apanhava o coeficiente | ✅ `portao.ts` camada 8 (`checaAmostra`), `portao.test.ts` — ver tarefa 1 |
+| `n=0` vira reparo, com as causas prováveis na mensagem | join vazio era reportado como resultado | ✅ `mcp.ts` (`consultar`, zero linhas + `faixasCitadas`) |
 
 **O princípio que vale acima de todos:** o modo de falha que importa aqui é
 **silencioso** — não dá exceção, dá número plausível. É por isso que nenhuma
@@ -110,28 +110,41 @@ Duas "melhorias" minhas que pioravam, e foram removidas:
 
 As 🔴 acima, em ordem de custo se voltarem a ser quebradas. Nenhuma feita.
 
-### 1. `COUNT(*) AS n` e `n=0` no caminho agêntico 🔴
+### 1. `COUNT(*) AS n` e `n=0` no caminho agêntico ✅ fechado 2026-09-02
 
-As duas regras existem **só no `laco.ts`**, que é justamente o caminho
-aposentado. No laço agêntico, o número volta da prosa do modelo — que é como
-"573 em vez de 789" (um grupo do `GROUP BY` lido como total) entrou na Rodada 6.
+Feito no mesmo commit que a tarefa 6 de `backlog.md` (`26a73cb`), mas não
+registrado aqui até 2026-09-03 (doc drift — o código chegou antes da nota).
 
-- **Onde:** `mcp.ts` / `portao.ts`, para valer na ferramenta e não no pipeline.
-- **Cruza com:** item 6 de [`backlog.md`](backlog.md) (portão rejeitar ano fora
-  da faixa real, que `anos.ts` já sabe e não bloqueia) — mesma família: o portão
-  sabe a coisa e não age.
-- **Fecha quando:** uma consulta agregada sem `n` explícito é rejeitada, e um
-  `n=0` volta como reparo com as causas prováveis.
+**Fechado**: `checaAmostra` (camada 8 de `portao.ts`) rejeita, ANTES de
+executar, toda estatística derivada (`AVG`, `MEDIAN`, `STDDEV`, `CORR`, razão
+entre agregados) no SELECT final sem uma coluna chamada exatamente `n` — é
+forma da consulta, não julgamento do número, então não há falso positivo
+legítimo a proteger. `mcp.ts` (`consultar`) trata `n=0` como reparo: zero
+linhas volta como erro de ferramenta com `faixasCitadas()` listando a faixa de
+anos real das tabelas citadas, para o modelo saber se o zero é join errado ou
+ano fora do intervalo disponível.
 
-### 2. Few-shot independente do conjunto de teste 🔴
+**Fecha quando** (verificado por teste, `portao.test.ts` "camada amostra"):
+uma consulta agregada sem `n` explícito é rejeitada — `AVG(pib) AS media` sem
+`COUNT(*) AS n` falha camada `amostra`; com ela, passa. Falta a verificação
+ao vivo (rodar o caso "573 em vez de 789" pelo dsh de novo e confirmar que o
+portão intercepta antes da prosa) — isso só existe depois do item 2 de
+`backlog.md` rodar.
 
-Hoje nada impede regenerar os exemplos a partir de `respostas.md` — que é o
-gabarito. O score sobe, parece progresso, e é **memória**. Já aconteceu uma vez
-(metade do conjunto estava no prefixo).
+### 2. Few-shot independente do conjunto de teste ✅ fechado 2026-09-03
 
-- **Onde:** teste ao lado de `catalogo.test.ts`.
-- **Fecha quando:** apontar a fonte de few-shot para o conjunto de teste quebra
-  o teste, nomeando a sobreposição.
+`harness/casos.test.ts` (novo) compara o texto de `exemplosIndependentes()`
+contra `carregaTodasPerguntas()` pergunta a pergunta — não pelo caminho do
+arquivo, pelo **conteúdo**, então pega o erro mesmo que alguém troque a fonte
+por outra que acidentalmente se sobreponha ao teste.
+
+**Fecha quando:** apontar a fonte de few-shot para o conjunto de teste quebra
+o teste. Verificado ao vivo: redirecionando `exemplosIndependentes` para
+`docs/perguntas.md` (a fonte do teste) em vez de `docs/relatorio-social/`, o
+teste falha — nesse caso pelo formato (`docs/perguntas.md` não tem o padrão
+`**Fontes:**` que o parser espera, então `exemplosIndependentes()` volta
+vazio e o teste "não fica vazio" acusa; se algum dia o formato bater, é o
+teste de sobreposição que pega).
 
 ### 3. Marca de etapa nos exemplos few-shot ✅ feito — `montaPrefixo()`
 
@@ -143,16 +156,17 @@ datasets". O comentário registra o sintoma medido — o modelo chegou a **ecoar
 **Fica de resto:** nenhum teste trava isso. Cabe no mesmo teste do item 2, que
 já vai olhar a montagem do prefixo.
 
-### 4. Registrar `-np` junto de todo tempo medido 🔴
+### 4. Registrar `-np` junto de todo tempo medido ✅ fechado (achado já feito 2026-09-03, não registrado até agora)
 
-Não é mais "usar paralelismo": a Rodada 8 mostrou que ele **não multiplica**
-(−27%, não 5x). O risco virou outro — comparar 20,9 min com 15,2 min como se
-fosse ganho do harness, quando é só `-np` diferente.
+`acerto.ts` (`configServidor`, `rotuloConfig`, `avisaConfigDivergente`) e
+`lote.ts` já implementam isto: toda `Rodada` grava `config` (lido de `/props`
+do servidor) junto dos casos, e `lote.ts --diff a.json b.json` chama
+`avisaConfigDivergente` — que emite o aviso exato pedido aqui quando `-np`,
+`-c` ou o modelo diferem entre dois arquivos comparados.
 
-- **Onde:** `lote.ts`, no cabeçalho da rodada; `servidor.sh status` já sabe
-  informar a config no ar.
-- **Fecha quando:** todo tempo registrado carrega o `-np` que o produziu, e
-  comparar rodadas com `-np` diferente aparece como aviso.
+**Fecha quando:** todo tempo registrado carrega o `-np` que o produziu (sim —
+campo `config` em `Rodada`), e comparar rodadas com `-np` diferente aparece
+como aviso (sim — `diff()` em `lote.ts` imprime `avisaConfigDivergente`).
 
 ## Os quatro que valem para o próximo
 

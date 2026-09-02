@@ -139,7 +139,7 @@ emite o TSV `pergunta <TAB> esperado` que `lote.ts` lê —
 quebrado ou o raciocínio ligado é o desperdício mais caro disponível aqui — e a
 tarefa 1 de lá (asserção de `prefilados`) existe exatamente para isso.
 
-## 3. A prosa cita a ferramenta, não o órgão 🔴
+## 3. A prosa cita a ferramenta, não o órgão ✅ fechado 2026-09-03
 
 As respostas mencionam `br_ibge_pib.municipio`. A convenção de
 `pages/analises/results/` é citar o **órgão de origem** — nunca a tabela, nunca o
@@ -149,6 +149,22 @@ SQL. Hoje nenhuma resposta gerada sai publicável sem edição à mão.
 que rejeite resposta contendo `br_[a-z_]+\.` — a instrução sozinha é do tipo que
 o modelo obedece na maioria das vezes, e a checagem transforma "maioria" em
 todas.
+
+**Fechado.** Metade 1: `system-prompt` (persona) em `dsh/rodado.patch.yml`
+instrui citar o órgão, nunca tabela/dataset/SQL. Metade 2: `checaCitacaoTabela`
+(`portao.ts`) roda como ferramenta MCP nova, `revisar_resposta` (`mcp.ts`) — o
+modelo é instruído a chamá-la com o parágrafo pronto antes de responder, e a
+rejeição volta como resultado de ferramenta (mesmo mecanismo do portão de
+SQL). Testado em `portao.test.ts` (3 casos: cita `br_x.y`, cita `world_x.y`,
+prosa limpa passa).
+
+**Verificado ao vivo** (`bun harness/pergunte.ts "Quantos óbitos por suicídio
+houve no RJ em 2020?"`, 5,5 min): resposta final — "Em 2020, houve 749 óbitos
+por suicídio no estado do Rio de Janeiro, de acordo com dados do Ministério
+da Saúde/SIM." Citação funcionou (chamou `revisar_resposta`, órgão citado,
+nenhum `br_x.y` na prosa). **O número não bate com o caso canônico (789)** —
+achado à parte, documentado no item 9 abaixo: desta vez o modelo usou
+`circunstancia_obito` em vez de `causa_basica`/CID, um campo que subconta.
 
 ## 4. Encurtar mais o contexto 🔴
 
@@ -205,6 +221,59 @@ Achado à parte, fora da lista original: `cnpq_bolsas` (3x) entrou no top-10
 novo — não é dataset repetido da lista de 2026-09-01, é falha nova exposta
 pela medição fresca. Já endereçado no item 1 (grupo `bolsas_de_pesquisa`),
 remedição pendente.
+
+## 9. `circunstancia_obito` subconta suicídio contra `causa_basica` (CID) 🟡 achado 2026-09-03, alerta feito — sem verificação ao vivo
+
+Achado testando o item 3 (não procurado — apareceu na primeira pergunta
+rodada depois do conserto). O caso canônico de suicídio RJ 2020 (789, o
+número que sustenta a camada 6 do portão) voltou **749** — sem erro, sem
+rejeição do portão, prosa corretamente citando "Ministério da Saúde/SIM" (o
+item 3 funcionou). O modelo não usou `causa_basica`/CID desta vez: explorou
+`br_ms_sim.dicionario`, achou `circunstancia_obito` (campo já decodificado,
+"Suicídio" em vez de um código CID) e filtrou por ele.
+
+**Medido no beelink, RJ 2020:**
+
+| Filtro | n |
+|---|---|
+| `substr(causa_basica,1,3) BETWEEN 'X60' AND 'X84'` (CID-10) | **789** |
+| `circunstancia_obito = '2'` ("Suicídio") | **749** |
+| interseção | 749 — `circunstancia_obito='2'` é subconjunto estrito do CID |
+| CID diz suicídio, `circunstancia_obito` diz outra coisa | **40** |
+
+`circunstancia_obito` está sub-preenchido em 40 dos 789 óbitos por suicídio
+reais — não é erro de sintaxe (como o `BETWEEN` cru que motivou a camada 6),
+é um **segundo campo, plausível e mais fácil de achar** (decodificado via
+`dicionario`, enquanto CID exige saber a convenção X60-X84), que dá número
+menor e igualmente crível. É exatamente a classe que a camada 6 existe para
+pegar, só que num campo que a camada 6 não olha — `CODIFICADAS` cobre `sexo`,
+`raca_cor`, `estado_civil`, não `circunstancia_obito`.
+
+**Por que não virou camada agora:** um caso medido é a barra que este projeto
+já usa para as duas camadas centrais (partição, CID cru) — mas as duas eram
+erro de *sintaxe* (portão vê a SQL e decide sem precisar saber estatística
+médica). Aqui a SQL é sintaticamente perfeita nas duas versões; a camada
+teria que saber que **CID é a fonte mais completa para causa de óbito no SIM**,
+que é conhecimento de domínio específico, não um padrão sintático. Rejeitar
+duro seria arriscado sem medir outros datasets/causas primeiro (mesma
+disciplina do item 7: alerta primeiro, reparo depois de provado).
+
+**Feito, mesma sessão:** `alertasDeSanidade` (`portao.ts`) avisa — não rejeita
+— quando a SQL usa `circunstancia_obito` sem `causa_basica` junto, citando o
+749×789 medido. Mesmo padrão não-bloqueante do item 7: volta grudado no
+resultado da ferramenta `consultar`, o modelo vê antes de escrever a prosa.
+Coberto por `portao.test.ts` (3 casos: avisa sozinho, cala com `causa_basica`
+junto, cala quando a coluna nem aparece).
+
+**Falta:** verificação ao vivo — rodar a mesma pergunta de novo pelo dsh e
+confirmar que o modelo, vendo o alerta, troca para `causa_basica` e chega em
+789. Não feito ainda porque custaria outro turno de ~5 min só para isso;
+qualquer caso do item 2 que toque `br_ms_sim` serve de verificação de graça.
+Cruza com o mecanismo de `coded_differently`/`false_friends` de
+`bridges.yaml`, mas não é bem o mesmo formato (não é "duas tabelas discordam
+do código", é "dois campos da MESMA tabela respondem à mesma pergunta com
+cobertura diferente") — por isso virou alerta ad-hoc em vez de entrada no
+YAML.
 
 ---
 

@@ -122,3 +122,21 @@
   disabled: true
 - id: tool-goal
   disabled: true
+
+# --- a prosa cita o órgão, não a ferramenta ----------------------------------
+# backlog.md item 3. A convenção de pages/analises/results/ é citar o ÓRGÃO de
+# origem do dado (Ministério da Saúde/SIM, IBGE, RAIS...) — nunca a tabela, o
+# dataset ou o SQL. A instrução sozinha é do tipo que o modelo obedece na
+# maioria das vezes; `revisar_resposta` (harness/mcp.ts, checaCitacaoTabela em
+# portao.ts) é a metade que transforma "maioria" em "todas" — mesmo mecanismo
+# do portão de SQL: a rejeição volta como resultado de ferramenta.
+- id: system-prompt
+  config:
+    persona: >-
+      Você apura dados públicos brasileiros pelo espelho do projeto rodado,
+      usando as ferramentas do servidor MCP "rodado". Escreva a resposta
+      final em português, citando o ÓRGÃO de origem do dado (ex.: Ministério
+      da Saúde/SIM, IBGE, RAIS/CAGED do Ministério do Trabalho) — NUNCA o
+      nome da tabela, do dataset ou o SQL usado. Antes de responder ao
+      usuário, chame a ferramenta revisar_resposta com o parágrafo pronto; só
+      entregue a resposta depois que ela aprovar.

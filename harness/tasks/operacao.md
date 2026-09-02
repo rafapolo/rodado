@@ -132,8 +132,11 @@ espera a **porta** liberar — não o processo sumir, porque é o bind que falha
 **confere `n_slots`/`n_ctx_slot` contra o que foi pedido**, saindo com erro se
 divergir. `./harness/servidor.sh status` informa o que está no ar.
 
-**Fica de resto:** nada chama isso automaticamente antes de uma rodada. Ligar ao
-começo de `lote.ts`/`compara.ts` é o que falta, e é pequeno.
+**Fica de resto — fechado 2026-09-03:** `confereBoot()` (`acerto.ts`) chama
+`servidor.sh aquece` e agora roda no começo de `lote.ts`/`compara.ts`, antes
+de gastar tempo com um servidor mal configurado — a rodada aborta se o
+raciocínio estiver ligado ou o servidor não responder. Verificado ao vivo
+contra o servidor no ar: `456 ms (limiar 10000), cache_n=51`, aprovado.
 
 ### 3. Detector de raciocínio ligado, junto do aquecimento ✅ feito — `harness/servidor.sh aquece`
 
@@ -155,19 +158,18 @@ original (trocar a flag por `--reasoning off` e confirmar que o detector
 recusa) — exigiria reiniciar o servidor com a config ruim de propósito, e
 isso não foi feito ainda.
 
-### 4. Travar a superfície de ferramenta 🔴 nada feito
+### 4. Travar a superfície de ferramenta ✅ fechado 2026-09-03
 
-O corte de 14.213 → 6.849 tokens é edição manual em
-[`../dsh/rodado.patch.yml`](../dsh/rodado.patch.yml). Nada impede a lista de
-voltar a crescer — e uma das ferramentas desligadas (`bash`) não era peso, era
-**buraco no portão**: o modelo consultava o DuckDB por fora.
+`harness/patch.test.ts` (novo) lê `dsh/rodado.patch.yml` com `Bun.YAML.parse`
+e trava `disabled: true` nas 19 entradas (bash, fs, subagent, skill, workflow,
+jobs, ralph, todo, goal...) e confere que `mcp-rodado` (o caminho pelo portão)
+não está entre elas.
 
-- **Onde:** teste em `harness/`, ao lado de `portao.test.ts`.
-- **O quê:** travar o conjunto de ferramentas habilitadas e o tamanho do prompt
-  de sistema; qualquer acréscimo tem que ser deliberado e justificado no diff.
-- **Fecha quando:** reabilitar `bash` no patch quebra o teste.
+**Fecha quando:** reabilitar `bash` no patch quebra o teste. Verificado: com
+`tool-bash` mudado para `disabled: false` no YAML lido, o teste acusa
+`porId.get("tool-bash")?.disabled` como `false` em vez do `true` esperado.
 
-### 5. Varredura `Substitui \`X\`` → aposentar X 🟡 casos conhecidos mapeados
+### 5. Varredura `Substitui \`X\`` → aposentar X ✅ fechado 2026-09-03
 
 `br_ibama_embargos` tem 497 mil linhas, `status='done'` e valores vazios:
 responde zero, e o zero passa por "não há embargos" em vez de "não há dado". O
@@ -182,9 +184,14 @@ responde zero, e o zero passa por "não há embargos" em vez de "não há dado".
   vazias que restam. Plano original em
   [`../../tasks/done/higiene_espelho.md`](../../tasks/done/higiene_espelho.md)
   (arquivado — os 4 itens do plano foram concluídos em 2026-09-02).
-- **Falta:** só a varredura geral. **O valor dela era achar os casos que ninguém
-  procurou** — os dois conhecidos já se resolveram por outro caminho, então o
-  retorno agora é desconhecido, não alto. Item de oportunidade, não de fila.
+- **Varredura geral feita 2026-09-03**: `SELECT ... WHERE provenance_notes
+  ILIKE '%Substitui \`%'` no beelink devolve só as 8 tabelas de
+  `br_ibama_embargos_novo` citando o `br_ibama_embargos` já removido — nenhum
+  candidato novo. Uma segunda varredura mais larga (`substitui`, `redundante`,
+  `obsoleto`, `aposentad`) achou só `br_transferegov_siconv`, e a nota lá é
+  sobre um **zip pulado dentro do mesmo dataset** (`siconv.zip`, consolidado
+  redundante das próprias tabelas), não uma tabela-irmã para aposentar — não é
+  o padrão que este mecanismo procura. **Sem candidato pendente hoje.**
 
 ## Aberto — não é ops
 
