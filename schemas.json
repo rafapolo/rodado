@@ -2,7 +2,7 @@
   "_meta": {
     "source": "beelink",
     "path": "/home/polo/rodado",
-    "total_tables": 895
+    "total_tables": 940
   },
   "tables": {
     "_obsoleto.br_ibama_embargos": {
@@ -3739,6 +3739,118 @@
         }
       ]
     },
+    "br_anvisa_consultas.agrotoxicos": {
+      "path": "beelink:/home/polo/rodado/br_anvisa_consultas/agrotoxicos/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "NO_SUBSTANCIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TP_SUBSTANCIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NU_LMR",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CO_MONOGRAFIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DS_INGREDIENTE_ATIVO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NU_CAS",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ST_AUTORIZADO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NO_CULTURA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TIPO_LIMITE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NO_VALOR_REFERENCIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NO_UNIDADE_MEDIDA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DS_ATO_LEGAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_INICIO_VIGENCIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_FIM_VIGENCIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_ATUALIZACAO",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_anvisa_consultas.alimentos": {
+      "path": "beelink:/home/polo/rodado/br_anvisa_consultas/alimentos/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "NU_CNPJ_EMPRESA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NO_RAZAO_SOCIAL_EMPRESA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NO_PRODUTO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NU_PROCESSO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DS_TIPO_PRODUTO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DS_CATEGORIA_PRODUTO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_FINALIZACAO_PROCESSO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NU_REGISTRO_PRODUTO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_VENCIMENTO_REGISTRO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ST_SITUACAO_REGISTRO",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
     "br_anvisa_consultas.registros": {
       "path": "beelink:/home/polo/rodado/br_anvisa_consultas/registros/",
       "file_count": 1,
@@ -3988,6 +4100,144 @@
         {
           "name": "valor",
           "type": "DOUBLE"
+        }
+      ]
+    },
+    "br_bcb_ifdata.coluna": {
+      "path": "beelink:/home/polo/rodado/br_bcb_ifdata/coluna/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "id_coluna",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_relatorio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "mes",
+          "type": "INT64"
+        },
+        {
+          "name": "nome_coluna",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_coluna_ingles",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_grupo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_relatorio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ordem_coluna",
+          "type": "INT64"
+        },
+        {
+          "name": "tipo_consolidado",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_bcb_ifdata.dicionario": {
+      "path": "beelink:/home/polo/rodado/br_bcb_ifdata/dicionario/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "chave",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "cobertura_temporal",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_tabela",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_coluna",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valor",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_bcb_ifdata.instituicao": {
+      "path": "beelink:/home/polo/rodado/br_bcb_ifdata/instituicao/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "data_alteracao_segmento",
+          "type": "INT32"
+        },
+        {
+          "name": "id_conglomerado_financeiro",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_conglomerado_prudencial",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_instituicao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_municipio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "mes",
+          "type": "INT64"
+        },
+        {
+          "name": "nome_instituicao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "segmento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sr",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tc",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tcb",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "td",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ti",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipo_consolidado",
+          "type": "BYTE_ARRAY"
         }
       ]
     },
@@ -7114,6 +7364,64 @@
         {
           "name": "sigla_uf_2",
           "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_bndes_operacoes_contratadas.operacoes_administracao_publica": {
+      "path": "beelink:/home/polo/rodado/br_bndes_operacoes_contratadas/operacoes_administracao_publica/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "data_nivel_atual",
+          "type": "INT32"
+        },
+        {
+          "name": "descricao_projeto",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ente_publico",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_municipio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "modalidade_operacional",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nivel_atual",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "programa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_uf",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "situacao_operacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valor_desembolsado",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "valor_operacao",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "valor_saldo_liberar",
+          "type": "DOUBLE"
         }
       ]
     },
@@ -10495,6 +10803,72 @@
         }
       ]
     },
+    "br_cgu_gas_do_povo.gas_do_povo": {
+      "path": "beelink:/home/polo/rodado/br_cgu_gas_do_povo/gas_do_povo/",
+      "file_count": 8,
+      "columns": [
+        {
+          "name": "ano_mes",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "mes_referencia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "uf",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "codigo_municipio_siafi",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_municipio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "cpf_beneficiario",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_favorecido",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "cnpj_estabelecimento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "estabelecimento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "quantidade_pessoas_familia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "periodo_validade_vale_meses",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data_inicio_vigencia_vale",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data_fim_vigencia_vale",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data_retirada_vale",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valor_beneficio",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
     "br_cgu_licitacao_contrato.contrato_apostilamento": {
       "path": "beelink:/home/polo/rodado/br_cgu_licitacao_contrato/contrato_apostilamento/",
       "file_count": 1,
@@ -11047,6 +11421,52 @@
         }
       ]
     },
+    "br_cgu_novo_bolsa_familia.novo_bolsa_familia": {
+      "path": "beelink:/home/polo/rodado/br_cgu_novo_bolsa_familia/novo_bolsa_familia/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano_mes",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "mes_competencia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "mes_referencia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "uf",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "codigo_municipio_siafi",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_municipio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "cpf_favorecido",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nis_favorecido",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_favorecido",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valor_parcela",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
     "br_cgu_orcamento_publico.orcamento": {
       "path": "beelink:/home/polo/rodado/br_cgu_orcamento_publico/orcamento/",
       "file_count": 1,
@@ -11302,6 +11722,354 @@
         {
           "name": "percentual_realizado",
           "type": "DOUBLE"
+        }
+      ]
+    },
+    "br_cgu_sancoes.acordos_leniencia": {
+      "path": "beelink:/home/polo/rodado/br_cgu_sancoes/acordos_leniencia/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "cnpj_sancionado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data_extracao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_fim_acordo",
+          "type": "INT32"
+        },
+        {
+          "name": "data_informacao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_inicio_acordo",
+          "type": "INT32"
+        },
+        {
+          "name": "id_acordo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_fantasia_receita",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero_processo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "orgao_sancionador",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "razao_social_receita",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "situacao_acordo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "termos_acordo",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_cgu_sancoes.acordos_leniencia_efeitos": {
+      "path": "beelink:/home/polo/rodado/br_cgu_sancoes/acordos_leniencia_efeitos/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "complemento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data_extracao",
+          "type": "INT32"
+        },
+        {
+          "name": "efeito",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_acordo",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_cgu_sancoes.ceis": {
+      "path": "beelink:/home/polo/rodado/br_cgu_sancoes/ceis/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "abrangencia_sancao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "cadastro",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "categoria_sancao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "codigo_sancao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "cpf_cnpj_sancionado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data_extracao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_final_sancao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_inicio_sancao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_origem_informacao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_publicacao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_transito_julgado",
+          "type": "INT32"
+        },
+        {
+          "name": "detalhamento_meio_publicacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "esfera_orgao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "fundamentacao_legal",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_fantasia_receita",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_informado_orgao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_sancionado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero_processo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "observacoes",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "orgao_sancionador",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "origem_informacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "publicacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "razao_social_receita",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_uf_orgao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipo_pessoa",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_cgu_sancoes.cepim": {
+      "path": "beelink:/home/polo/rodado/br_cgu_sancoes/cepim/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "cnpj_entidade",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data_extracao",
+          "type": "INT32"
+        },
+        {
+          "name": "motivo_impedimento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_entidade",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero_convenio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "orgao_concedente",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_cgu_sancoes.cnep": {
+      "path": "beelink:/home/polo/rodado/br_cgu_sancoes/cnep/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "abrangencia_sancao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "cadastro",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "categoria_sancao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "codigo_sancao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "cpf_cnpj_sancionado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data_extracao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_final_sancao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_inicio_sancao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_origem_informacao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_publicacao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_transito_julgado",
+          "type": "INT32"
+        },
+        {
+          "name": "detalhamento_meio_publicacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "esfera_orgao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "fundamentacao_legal",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_fantasia_receita",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_informado_orgao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_sancionado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero_processo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "observacoes",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "orgao_sancionador",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "origem_informacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "publicacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "razao_social_receita",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_uf_orgao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipo_pessoa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valor_multa",
+          "type": "DOUBLE"
+        }
+      ]
+    },
+    "br_cgu_sancoes.dicionario": {
+      "path": "beelink:/home/polo/rodado/br_cgu_sancoes/dicionario/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "chave",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "cobertura_temporal",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_tabela",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_coluna",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valor",
+          "type": "BYTE_ARRAY"
         }
       ]
     },
@@ -131308,6 +132076,44 @@
         }
       ]
     },
+    "br_sedec_desastres.reconhecimentos_vigentes": {
+      "path": "beelink:/home/polo/rodado/br_sedec_desastres/reconhecimentos_vigentes/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "data_extracao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_ocorrencia",
+          "type": "INT32"
+        },
+        {
+          "name": "data_vigencia",
+          "type": "INT32"
+        },
+        {
+          "name": "id_cobrade",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_municipio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_cobrade",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_uf",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "situacao",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
     "br_seeg_emissoes.dicionario": {
       "path": "beelink:/home/polo/rodado/br_seeg_emissoes/dicionario/",
       "file_count": 1,
@@ -131521,6 +132327,1582 @@
         {
           "name": "id_documento",
           "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos.bloco": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos/bloco/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "data_criacao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_extincao",
+          "type": "INT32"
+        },
+        {
+          "name": "id_bloco",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_apelido",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos.comissao": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos/comissao/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "data_inicio",
+          "type": "INT32"
+        },
+        {
+          "name": "descricao_tipo_colegiado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_comissao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_tipo_colegiado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "publica",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_casa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_tipo_colegiado",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos.discurso": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos/discurso/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "data_sessao",
+          "type": "INT32"
+        },
+        {
+          "name": "descricao_tipo_uso_palavra",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_pronunciamento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_senador",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_sessao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "indexacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero_sessao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "resumo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_casa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_partido",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_tipo_sessao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_tipo_uso_palavra",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_uf",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipo_autor",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "url_texto",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos.lideranca": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos/lideranca/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "casa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data_designacao",
+          "type": "INT32"
+        },
+        {
+          "name": "descricao_tipo_lideranca",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "descricao_tipo_unidade_lideranca",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_bloco",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_lideranca",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_partido_filiacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_senador",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_bloco",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_parlamentar",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_partido_filiacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero_ordem_vice_lider",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_bloco",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_partido_filiacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_tipo_lideranca",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_tipo_unidade_lideranca",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos.mesa": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos/mesa/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "bancada",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "cargo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_colegiado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_senador",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_colegiado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_parlamentar",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ordem",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "origem",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_colegiado",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos.partido": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos/partido/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "data_criacao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_extincao",
+          "type": "INT32"
+        },
+        {
+          "name": "id_partido",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos.processo": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos/processo/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "apelido",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "autoria",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "casa_identificadora",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "codigo_materia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data_apresentacao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_deliberacao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_situacao_atual",
+          "type": "INT32"
+        },
+        {
+          "name": "data_ultima_atualizacao",
+          "type": "INT64"
+        },
+        {
+          "name": "ementa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ente_identificador",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_processo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "identificacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "norma_gerada",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "objetivo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_tipo_deliberacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "situacao_atual",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipo_conteudo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipo_documento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tramitando",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ultima_informacao_atualizada",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "url_documento",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos.relatoria": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos/relatoria/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "codigo_materia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data_designacao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_destituicao",
+          "type": "INT32"
+        },
+        {
+          "name": "id_colegiado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_processo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_relatoria",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_senador",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_tipo_colegiado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_tipo_relator",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "identificacao_processo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_colegiado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero_autuacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_casa_relator",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_colegiado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipo_encerramento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipo_relator",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tramitando",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos.senador": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos/senador/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "email",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "forma_tratamento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_publico_legislatura_atual",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_senador",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_completo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sexo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_partido",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_uf",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "url_foto",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "url_pagina",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "url_pagina_particular",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos.senador_cargo": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos/senador_cargo/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "data_fim",
+          "type": "INT32"
+        },
+        {
+          "name": "data_inicio",
+          "type": "INT32"
+        },
+        {
+          "name": "descricao_cargo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_cargo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_comissao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_senador",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_comissao",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos.senador_comissao": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos/senador_comissao/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "data_fim",
+          "type": "INT32"
+        },
+        {
+          "name": "data_inicio",
+          "type": "INT32"
+        },
+        {
+          "name": "id_comissao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_senador",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "participacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_casa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_comissao",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos.senador_filiacao": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos/senador_filiacao/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "data_desfiliacao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_filiacao",
+          "type": "INT32"
+        },
+        {
+          "name": "id_partido",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_senador",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_partido",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos.senador_mandato": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos/senador_mandato/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "data_fim_legislatura_1",
+          "type": "INT32"
+        },
+        {
+          "name": "data_fim_legislatura_2",
+          "type": "INT32"
+        },
+        {
+          "name": "data_inicio_legislatura_1",
+          "type": "INT32"
+        },
+        {
+          "name": "data_inicio_legislatura_2",
+          "type": "INT32"
+        },
+        {
+          "name": "id_mandato",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_senador",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero_legislatura_1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero_legislatura_2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "participacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_uf",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos.votacao": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos/votacao/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "ano_materia",
+          "type": "INT64"
+        },
+        {
+          "name": "casa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "codigo_materia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data_apresentacao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_sessao",
+          "type": "INT32"
+        },
+        {
+          "name": "descricao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ementa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_processo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_sessao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_sessao_legislativa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_votacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "identificacao_materia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_colegiado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero_materia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero_sessao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "resultado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sequencial",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sequencial_sessao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_colegiado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_materia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_tipo_sessao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "votacao_secreta",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "voto_abstencao",
+          "type": "INT64"
+        },
+        {
+          "name": "voto_nao",
+          "type": "INT64"
+        },
+        {
+          "name": "voto_outro",
+          "type": "INT64"
+        },
+        {
+          "name": "voto_sim",
+          "type": "INT64"
+        }
+      ]
+    },
+    "br_senado_dados_abertos.votacao_comissao": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos/votacao_comissao/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "ano_materia",
+          "type": "INT64"
+        },
+        {
+          "name": "data_reuniao",
+          "type": "INT32"
+        },
+        {
+          "name": "descricao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_comissao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_reuniao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_senador_presidente",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_votacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "identificacao_materia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_colegiado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero_materia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero_reuniao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_casa_colegiado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_colegiado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_materia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipo_reuniao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "voto_abstencao",
+          "type": "INT64"
+        },
+        {
+          "name": "voto_nao",
+          "type": "INT64"
+        },
+        {
+          "name": "voto_sim",
+          "type": "INT64"
+        }
+      ]
+    },
+    "br_senado_dados_abertos.votacao_comissao_parlamentar": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos/votacao_comissao_parlamentar/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "data_reuniao",
+          "type": "INT32"
+        },
+        {
+          "name": "id_senador",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_votacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_casa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_partido",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "voto",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "voto_presidente",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos.votacao_orientacao_bancada": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos/votacao_orientacao_bancada/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "ano_materia",
+          "type": "INT64"
+        },
+        {
+          "name": "bancada",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data_hora_orientacao",
+          "type": "INT64"
+        },
+        {
+          "name": "data_votacao",
+          "type": "INT32"
+        },
+        {
+          "name": "id_votacao_sve",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero_materia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "orientacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sequencial_votacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_materia",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos.votacao_parlamentar": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos/votacao_parlamentar/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "data_sessao",
+          "type": "INT32"
+        },
+        {
+          "name": "descricao_voto",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_senador",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_votacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_partido",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_uf",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "voto",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos_administrativos.despesa_ceaps": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos_administrativos/despesa_ceaps/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "cpf_cnpj_fornecedor",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data",
+          "type": "INT32"
+        },
+        {
+          "name": "detalhamento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "documento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_despesa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_senador",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "mes",
+          "type": "INT64"
+        },
+        {
+          "name": "nome_fornecedor",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipo_despesa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipo_documento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valor_reembolsado",
+          "type": "DOUBLE"
+        }
+      ]
+    },
+    "br_senado_dados_abertos_administrativos.dicionario": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos_administrativos/dicionario/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "chave",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "cobertura_temporal",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_tabela",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_coluna",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valor",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos_administrativos.senador": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos_administrativos/senador/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "data_nascimento",
+          "type": "INT32"
+        },
+        {
+          "name": "email",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_senador",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "indicador_em_exercicio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "mandato",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_completo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_parlamentar",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sexo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_partido",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_uf",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "titular_suplente",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos_administrativos.servidor_hora_extra": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos_administrativos/servidor_hora_extra/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "id_hora_extra",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "mes",
+          "type": "INT64"
+        },
+        {
+          "name": "mes_ano_pagamento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "mes_ano_prestacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valor_total",
+          "type": "DOUBLE"
+        }
+      ]
+    },
+    "br_senado_dados_abertos_administrativos.servidor_hora_extra_dia": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos_administrativos/servidor_hora_extra_dia/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "data",
+          "type": "INT32"
+        },
+        {
+          "name": "id_hora_extra",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "mes",
+          "type": "INT64"
+        },
+        {
+          "name": "mes_ano_prestacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "quantidade_horas",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "setor_prestacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sigla_setor_prestacao",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_senado_dados_abertos_administrativos.servidor_remuneracao": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos_administrativos/servidor_remuneracao/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "abono_permanencia",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "auxilios",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "diarias",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "faltas",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "funcao_comissionada",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "gratificacao_natalina",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "horas_extras",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "id_remuneracao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "imposto_renda",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "mes",
+          "type": "INT64"
+        },
+        {
+          "name": "nome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "outras_eventuais",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "previdencia",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "remuneracao_basica",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "remuneracao_liquida",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "reversao_teto_constitucional",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "tipo_folha",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "vantagens_indenizatorias",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "vantagens_pessoais",
+          "type": "DOUBLE"
+        }
+      ]
+    },
+    "br_senado_dados_abertos_administrativos.suprido_ato_concessao": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos_administrativos/suprido_ato_concessao/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "codigo_ato_concessao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "codigo_orgao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "codigo_suprido",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data",
+          "type": "INT32"
+        },
+        {
+          "name": "data_aplicacao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_comprovacao",
+          "type": "INT32"
+        },
+        {
+          "name": "data_processamento",
+          "type": "INT64"
+        },
+        {
+          "name": "data_publicacao_basf",
+          "type": "INT32"
+        },
+        {
+          "name": "indicador_regime_especial",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "matricula_solicitante",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nome_suprido",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero_processo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "orgao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "prazo_aplicacao",
+          "type": "INT32"
+        },
+        {
+          "name": "prazo_comprovacao",
+          "type": "INT32"
+        },
+        {
+          "name": "sigla_orgao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valor_total_elementos_despesa",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "valor_total_empenhos",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "valor_total_movimentacoes",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "valor_total_transacoes",
+          "type": "DOUBLE"
+        }
+      ]
+    },
+    "br_senado_dados_abertos_administrativos.suprido_empenho": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos_administrativos/suprido_empenho/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "codigo_ato_concessao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data",
+          "type": "INT32"
+        },
+        {
+          "name": "data_processamento",
+          "type": "INT64"
+        },
+        {
+          "name": "descricao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "rubrica",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valor_concedido",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "valor_executado",
+          "type": "DOUBLE"
+        }
+      ]
+    },
+    "br_senado_dados_abertos_administrativos.suprido_movimentacao": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos_administrativos/suprido_movimentacao/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "codigo_ato_concessao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data",
+          "type": "INT32"
+        },
+        {
+          "name": "data_processamento",
+          "type": "INT64"
+        },
+        {
+          "name": "fornecedor",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_movimentacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "inscricao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "rubricas",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipo_inscricao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valor",
+          "type": "DOUBLE"
+        }
+      ]
+    },
+    "br_senado_dados_abertos_administrativos.suprido_movimentacao_subtipo": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos_administrativos/suprido_movimentacao_subtipo/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "id_movimentacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_subtipo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "rubrica",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "subtipo_despesa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipo_despesa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valor",
+          "type": "DOUBLE"
+        }
+      ]
+    },
+    "br_senado_dados_abertos_administrativos.suprido_transacao": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos_administrativos/suprido_transacao/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "codigo_ato_concessao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data",
+          "type": "INT32"
+        },
+        {
+          "name": "data_processamento",
+          "type": "INT64"
+        },
+        {
+          "name": "fornecedor",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_transacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "inscricao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "rubricas",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipo_inscricao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valor",
+          "type": "DOUBLE"
+        }
+      ]
+    },
+    "br_senado_dados_abertos_administrativos.suprido_transacao_objeto": {
+      "path": "beelink:/home/polo/rodado/br_senado_dados_abertos_administrativos/suprido_transacao_objeto/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "descricao_objeto",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_objeto",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_transacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "quantidade",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "rubrica",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "subtipo_despesa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipo_despesa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valor_total",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "valor_unitario",
+          "type": "DOUBLE"
         }
       ]
     },
