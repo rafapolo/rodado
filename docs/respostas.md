@@ -320,7 +320,24 @@ RN 72,4%, SP 71,9%.
 ## 35 · Transporte
 
 - **T35-5 ◐** Tempo de deslocamento (Mobilidados) × rendimento RAIS: **r = −0,40 entre municípios ≥100 mil hab (n=101)**; × PIB pc −0,15 — cidades mais ricas têm deslocamentos menores; a "renda efetiva" (salário÷tempo) penaliza as metrópoles médias do Norte/Nordeste. Demais itens exigem cruzamento com CAGED origem-destino.
-- **T35-1…T35-4 ⏳** Pendentes — dormitório×fluxo CAGED e geobr exigem pipeline dedicado.
+- **T35-2 ✅ (2026-09-02)** `br_mobilidados_indicadores.tempo_deslocamento_casa_trabalho` (única safra, 2010, 229
+  municípios metropolitanos) × PIB per capita 2021 e crescimento de PIB pc 2010→2021 (`br_ibge_pib.municipio`):
+  **r = −0,10 com o nível de PIB pc 2021 (n=227); r = −0,08 com o crescimento relativo 2010-2021** — ambos fracos e
+  negativos, contrariando a hipótese: as regiões de pior mobilidade **não** são sistematicamente nem as mais ricas
+  nem as de crescimento mais recente; tempo de deslocamento parece descolado do ciclo econômico municipal medido
+  por PIB.
+- **T35-4 ✅ (2026-09-02)** `br_mobilidados_indicadores.transporte_media_alta_capacidade` (2019, indicador
+  "Estações de TMA em operação na capital" — metrô/BRT/VLT) × mortes por acidente de transporte no SIM 2019
+  (`causa_basica` CID-10 `V*`, local de ocorrência, ÷ população): das **27 capitais, 9 têm alguma estação de
+  transporte de média/alta capacidade e 18 não têm nenhuma**. Taxa média de mortes no trânsito: **10,6/100 mil
+  habitantes nas capitais com TMA vs 19,9/100 mil nas sem TMA** — quase o dobro. Confirma a hipótese: capitais com
+  infraestrutura de transporte de massa registram bem menos mortes no trânsito per capita que as sem nenhuma —
+  ainda que o desenho seja observacional (correlação, não causal; capitais com metrô tendem a ser as maiores/mais
+  antigas, um confundidor óbvio não controlado aqui).
+- **T35-1, T35-3 ⏳** Pendentes — bloqueios de dado confirmados (2026-09-02): T35-1 exige o par origem→destino do
+  trabalhador no CAGED, que o espelho não tem (só o município do estabelecimento — mesmo bloqueio de T13-1/3/5).
+  T35-3 pede "onde o tempo de deslocamento cresceu mais **entre medições**", mas
+  `tempo_deslocamento_casa_trabalho` tem uma safra só (2010) — sem segunda medição não há Δ para calcular.
 
 ## 36 · Religiosidade
 
