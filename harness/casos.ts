@@ -158,3 +158,66 @@ if (import.meta.main) {
     console.log(`      ${x.pergunta.slice(0, 88)}`);
   }
 }
+
+
+/**
+ * TODAS as perguntas com datasets anotados — 280, contra as 84 que têm resposta
+ * conferida.
+ *
+ * A restrição a "casos com resposta" era minha, não da fonte: para medir
+ * **escolha de dataset** basta a pergunta e os datasets que ela cita, e as 280
+ * têm isso. Só a medição de número ponta a ponta precisa do gabarito de
+ * `respostas.md`. Estava desprezando 178 casos à toa.
+ */
+export function carregaTodasPerguntas(): Omit<Caso, "gabarito" | "suspeito">[] {
+  const linhas = readFileSync(`${RAIZ}docs/perguntas.md`, "utf8").split("\n");
+  const out: Omit<Caso, "gabarito" | "suspeito">[] = [];
+  let tema = 0;
+  for (const linha of linhas) {
+    const cab = linha.match(/^##\s+(\d+)\s+·/);
+    if (cab) { tema = Number(cab[1]); continue; }
+    const m = linha.trim().match(/^(\d+)\.\s+(.*?)\s*\*\(n=\d+\+?:\s*([^)]+)\)\*\s*$/);
+    if (!m || !tema) continue;
+    const obrigatorios: string[] = [];
+    const apoio: string[] = [];
+    for (const bruto of m[3]!.split(",")) {
+      (/[*\\]/.test(bruto) ? apoio : obrigatorios).push(normaliza(bruto));
+    }
+    if (!obrigatorios.length) continue;
+    out.push({
+      id: `T${String(tema).padStart(2, "0")}-${m[1]}`,
+      tema, item: Number(m[1]), pergunta: m[2]!.trim(), obrigatorios, apoio,
+    });
+  }
+  return out;
+}
+
+/**
+ * Exemplos few-shot de uma fonte **independente** — `docs/relatorio-social/`,
+ * que cita tabelas em `**Fontes:**` e não alimenta nenhuma avaliação daqui.
+ *
+ * Antes eu tirava os exemplos do próprio conjunto de teste, o que custava metade
+ * dele: 36 perguntas iam para o prefixo e sobravam 45 para medir. Vindos de fora,
+ * as 280 inteiras viram teste.
+ */
+export function exemplosIndependentes(): { pergunta: string; obrigatorios: string[] }[] {
+  const txt = readFileSync(`${RAIZ}docs/relatorio-social/perguntas.md`, "utf8");
+  const out: { pergunta: string; obrigatorios: string[] }[] = [];
+  const linhas = txt.split("\n");
+  for (let i = 0; i < linhas.length; i++) {
+    const f = linhas[i]!.match(/^\s*-\s*\*\*Fontes:\*\*\s*(.+)$/);
+    if (!f) continue;
+    // a pergunta vem logo acima, no formato `**N. texto?**`
+    let q = "";
+    for (let j = i - 1; j >= 0 && j > i - 5; j--) {
+      const m = linhas[j]!.trim().match(/^\*\*\d+\.\s+(.+?)\*\*$/);
+      if (m) { q = m[1]!.trim(); break; }
+    }
+    if (!q) continue;
+    const ds = [...new Set(
+      [...f[1]!.matchAll(/`([a-z0-9_]+)\.[a-z0-9_]+`/g)].map((m) => normaliza(m[1]!)),
+    )];
+    if (ds.length) out.push({ pergunta: q, obrigatorios: ds });
+  }
+  return out;
+}
