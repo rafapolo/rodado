@@ -103,34 +103,50 @@ DataJud continua bloqueado por credencial, não por esforço.
 - **Chaves**: `cnpj` (órgão = raiz, fornecedor = completo), `id_municipio`
 - **Por quê**: única fonte com licitações **municipais** padronizadas; substitui e ultrapassa o ComprasNet. Não existe na BD.
 - **Status BD**: não existe
+- **2026-09-02**: já em coleta por outro processo em paralelo (`_staging/pncp/multi.sh` +
+  `persistente.sh`, rodando no beelink desde antes desta sessão — ver `tasks/README.md` § "Em
+  aberto"). Não tocado aqui para não duplicar/competir por rate limit com esse workstream.
 
-#### 2. Benefícios CGU novos: Pé-de-Meia, Gás do Povo, Novo Bolsa Família
+#### 2. Benefícios CGU novos: Pé-de-Meia, Gás do Povo, Novo Bolsa Família ✅ / 🔵 ver Execução 2026-09-02
 - **Fonte**: https://portaldatransparencia.gov.br/download-de-dados (CSV zipados mensais)
 - **Volume**: BF ~20M famílias/mês; Pé-de-Meia ~3M/mês; Gás do Povo ~15M famílias (nov/2025+)
 - **Chaves**: NIS, CPF mascarado, município/UF; Gás do Povo traz CNPJ da revenda
 - **Por quê**: Pé-de-Meia cruza com Censo Escolar (aluno/escola) que já se tem. Nota: `pe_de_meia` bulk já foi baixada (~64M rows no beelink via Portal da Transparência) — validar cobertura vs. esta fonte; **Gás do Povo e Novo Bolsa Família não existem**.
 - **Status BD**: Auxílio Emergencial/Auxílio Brasil parciais na BD; Pé-de-Meia/Gás do Povo não existem
+- **2026-09-02**: Gás do Povo **feito** (`br_cgu_gas_do_povo`, 34.846.839 linhas, 8/8 meses). Novo Bolsa Família **em andamento** (`br_cgu_novo_bolsa_familia`, resumível) — ver Execução abaixo.
 
-#### 3. Transferegov.br (ex-SICONV) — transferências completas
+#### 3. Transferegov.br (ex-SICONV) — transferências completas 🔵 ver Execução 2026-09-02
 - **Fonte**: http://repositorio.dados.gov.br/seges/detru/
-- **Freq**: diária (extração às 9h) · **Formato**: CSV.zip · **Volume**: ~20 tabelas, dezenas de GB histórico
+- **Freq**: diária (extração às 9h) · **Formato**: CSV.zip · **Volume**: ~20 tabelas, dezenas de GB histórico (na verdade **54** arquivos CSV.zip no diretório, ver Execução)
 - **Chaves**: `cnpj` proponente/convenente, `codigo_ibge`
 - **Por quê**: fluxo integral União→municípios/OSC (convênios, propostas, empenhos, desembolsos, pagamentos a favorecidos). Casa com Siconfi/SIOP/TransfereGov parcial já existente (`br_transferegov` tem só 3 tabelas).
 - **Status BD**: não
+- **2026-09-02**: **em andamento** (`br_transferegov_siconv`, resumível) — ver Execução abaixo.
 
-#### 4. BCB — Estatísticas do Pix por município + meios de pagamento
+#### 4. BCB — Estatísticas do Pix por município + meios de pagamento ❌ endpoint quebrado do lado do BCB
 - **Fonte**: https://olinda.bcb.gov.br/olinda/servico/Pix_DadosAbertos/versao/v1/odata (`TransacoesPixPorMunicipio`); https://dadosabertos.bcb.gov.br/dataset/pix
 - **Freq**: mensal desde nov/2020 · **Formato**: OData JSON/CSV · **Volume**: ~5.570 municípios × PF/PJ × mês
 - **Chaves**: `id_municipio`
 - **Por quê**: proxy econômico mensal municipal de altíssimo valor analítico; ETL trivial. BD só tem séries SGS agregadas.
 - **Status BD**: não (Pix por município)
+- **2026-09-02 — testado ao vivo, não é credencial**: o entity set real é `_TransacoesPixPorMunicipio` (com underscore — sem ele o serviço devolve 400 "malformed", o nome do item na doc original estava sem underscore). Com underscore, **toda** variação testada (`$top`, `$filter=AnoMes eq …`, com/sem `$format=json`, chave composta `(202401)`) devolve `HTTP 500 {"codigo":500,"mensagem":"Erro desconhecido"}` — no mesmo host, no mesmo serviço, outros entity sets (`PixUsuariosCadastradosDICT`, sem underscore) respondem normalmente. `$metadata` também responde 200 e descreve o schema certinho. Ou seja: o schema existe, o endpoint de dado está quebrado no lado do BCB, não é geo-bloqueio nem parâmetro errado nosso. Sem CSV alternativo no CKAN (`dadosabertos.bcb.gov.br/dataset/pix` só linka de volta pro mesmo OData). Reteste periodicamente — pode ser transitório.
 
-#### 5. SINESP VDE — criminalidade municipal consolidada
+#### 5. SINESP VDE — criminalidade municipal consolidada ❌ WAF bloqueia o download, não é geo/credencial
 - **Fonte**: https://dados.mj.gov.br/dataset/sistema-nacional-de-estatisticas-de-seguranca-publica ; gov.br/mj dados nacionais
 - **Freq**: mensal (2015–2026) · **Formato**: XLSX/CSV · **Volume**: ~16 indicadores × município × mês
 - **Chaves**: `id_municipio`; cross-check com SIM (CID-10)
 - **Por quê**: única série nacional de criminalidade municipal (homicídio doloso, feminicídio, estupro, roubo/furto de veículo e carga…). O `br_mjsp_sinesp` existente tem só 2 tabelas — validar se cobre VDE municipal consolidado ou apenas agregado UF.
 - **Status BD**: não
+- **2026-09-02**: `dados.mj.gov.br` não resolve mais (DNS falha — domínio parece desativado). A base migrou para
+  `gov.br/mj/.../base-de-dados-e-notas-metodologicas-dos-gestores-estaduais-sinesp-vde-2022-e-2023`
+  — página HTML acessível (200) e lista **12 XLSX diretos**, um por ano, 2015–2026
+  (`.../download/dnsp-base-de-dados/bancovde-{2015..2026}.xlsx/@@download/file`). Mas os links de
+  download em si devolvem **403** — testado direto do laptop, direto do beelink e via o proxy BR
+  (`129.121.55.206:8080`) já usado pelo PNCP: os três dão 403 idêntico, com e sem `Referer`/cookie de
+  sessão da página. Não é o mesmo padrão de bloqueio geo-IP do IBAMA/INEA (que cede a qualquer IP
+  brasileiro) — aqui até o proxy BR apanha, então é uma regra de WAF específica para o path
+  `/@@download/file` (Plone), não geografia. Não achei contorno em esforço razoável; próxima tentativa:
+  testar com um browser real (cookies/JS challenge) em vez de curl.
 
 ### Tier 2 — alto valor, esforço médio
 
@@ -146,6 +162,10 @@ DataJud continua bloqueado por credencial, não por esforço.
 - **Chaves**: município, CNAE da distribuidora
 - **Nota**: o bloqueio antigo era NXDOMAIN do portal velho — o portal mudou de endereço; re-testar.
 - **Status BD**: não
+- **2026-09-02**: re-testado, ainda fora do ar — mas o modo de falha mudou. O domínio novo
+  (`dadosabertos.aneel.gov.br`) **resolve** (`200.198.220.169`), só não completa a conexão TCP na
+  porta 443 (timeout, direto e via beelink). Não é mais NXDOMAIN — é o host que não responde. Sem
+  contorno testado.
 
 #### 8. IBGE MUNIC 2024 / ESTADIC 2024
 - **Fonte**: SIDRA / https://www.ibge.gov.br/estatisticas/sociais/saude/10586-pesquisa-de-informacoes-basicas-municipais.html
@@ -160,6 +180,10 @@ DataJud continua bloqueado por credencial, não por esforço.
 - **Chaves**: cnpj/cpf, id_municipio
 - **Nota**: ANTT está no bucket blocked→mcp-todo por WAF; o portal CKAN `dados.antt.gov.br` pode ser caminho alternativo.
 - **Status BD**: não
+- **2026-09-02**: re-testado — o caminho CKAN alternativo também apanha. `dados.antt.gov.br/dataset/rntrc`
+  (HTML) responde 200, mas a API (`/api/3/action/package_show`) devolve um HTML de rejeição de WAF
+  ("Request Rejected... consult your administrator", assinatura de F5 BigIP ASM) — mesmo bloqueio,
+  camada diferente. Confirma que continua bloqueado, não é achado novo.
 
 #### 10. CNJ — Painel Justiça em Números (agregados)
 - **Fonte**: https://paineis.cnj.jus.br (downloads agregados); microdado DataJud fica no bucket deferred-api_key por Res. 331/2020
@@ -178,7 +202,7 @@ DataJud continua bloqueado por credencial, não por esforço.
 | # | Dataset | Fonte | Chave | Status BD |
 |---|---|---|---|---|
 | 12 | Emendas parlamentares (bulk CGU) | portaldatransparencia.gov.br/download-de-dados/emendas | autor, id_municipio, código SIAFI | não (só via mirror CGU parcial) |
-| 13 | ANP cadastro de revendas (postos/GLP, bandeira) | gov.br/anp dados abertos | CNPJ | não — enriquece `br_anp_combustiveis.precos` |
+| 13 | ANP cadastro de revendas (postos/GLP, bandeira) | gov.br/anp dados abertos | CNPJ | não — enriquece `br_anp_combustiveis.precos`. **2026-09-02**: achei o dataset em `dados.gov.br/dados/conjuntos-dados/relacao-de-revendedores-varejistas-de-combustiveis-automotivos` (página HTML 200), mas a API do `dados.gov.br` novo (`/api/3/action/package_show`) devolve **401** mesmo pra leitura pública — a plataforma passou a exigir chave de API que não temos. Vira item gated por credencial, sai da lista de "sem chave" |
 | 14 | CadÚnico agregados municipais | MDS VIS DATA / portal analítico | id_municipio | não (só painéis) |
 | 15 | CAUC / Tesouro Transparente — regularidade fiscal | tesourotransparente.gov.br | codigo_siafi/id_municipio | não — pré-requisito de convênios, casa com Transferegov |
 | 16 | PNS 2023 microdados | IBGE FTP | UF/região (chave fraca) | BD não tem 2023 |
@@ -601,3 +625,150 @@ ainda não raspado.
 `br_ibama_embargos` (o antigo, vazio) continua no disco e **deve ser removido ou
 marcado como obsoleto** — quem consultar ele em vez de `br_ibama_embargos_novo`
 recebe zero e acha que é resposta.
+
+---
+
+## Execução 2026-09-02 (segunda rodada) — Tier 1 externo
+
+Trabalhando a "Ordem recomendada" de cima para baixo. PNCP (#1) já estava em
+coleta por outro processo em paralelo (`_staging/pncp/`) — não foi tocado aqui.
+Os itens #4 (Pix) e #5 (SINESP) foram investigados a fundo e **não são
+credencial** — são fonte quebrada (Pix) e WAF (SINESP); ver as notas inline
+nos itens acima. #7 (ANEEL) e #9 (ANTT) foram re-testados e continuam
+bloqueados, motivo confirmado, sem contorno novo.
+
+### Gás do Povo — feito
+
+`br_cgu_gas_do_povo/gas_do_povo/` — CSV mensal de
+`portaldatransparencia.gov.br/download-de-dados/gas-do-povo`, baixado via CDN
+direto (`dadosabertos-download.cgu.gov.br`, sem chave), CP1252 → UTF-8 via
+`iconv`, convertido a parquet+zstd com DuckDB no próprio beelink (o host tem
+acesso direto ao CDN — não precisou passar pelo laptop).
+
+**Verificado no beelink (readonly):**
+
+```sql
+SELECT count(*), min(mes_referencia), max(mes_referencia)
+FROM read_parquet('~/rodado/br_cgu_gas_do_povo/gas_do_povo/*.parquet');
+-- 34.846.839 linhas · 202511 → 202607 (8/8 meses, completo)
+```
+
+Colunas: `mes_referencia, uf, codigo_municipio_siafi, nome_municipio,
+cpf_beneficiario (mascarado na origem), nome_favorecido, cnpj_estabelecimento,
+estabelecimento, quantidade_pessoas_familia, periodo_validade_vale_meses,
+data_inicio_vigencia_vale, data_fim_vigencia_vale, data_retirada_vale,
+valor_beneficio`. Chave de join: `cnpj_estabelecimento` (revenda de gás),
+`codigo_municipio_siafi`.
+
+### Novo Bolsa Família — em andamento, resumível
+
+`br_cgu_novo_bolsa_familia/novo_bolsa_familia/` — mesmo padrão, mas 41 meses
+(2023-03 a 2026-07) de ~2,2 GB de CSV cru cada, então é um job muito mais
+longo. No momento em que este arquivo foi escrito:
+
+```sql
+SELECT count(*), min(ano_mes), max(ano_mes), count(distinct ano_mes)
+FROM read_parquet('~/rodado/br_cgu_novo_bolsa_familia/novo_bolsa_familia/*.parquet');
+-- 184.099.724 linhas · 202303 → 202311 · 9 de 41 meses feitos
+```
+
+Colunas: `ano_mes, mes_competencia, mes_referencia, uf, codigo_municipio_siafi,
+nome_municipio, cpf_favorecido (mascarado), nis_favorecido, nome_favorecido,
+valor_parcela`.
+
+**Script**: `~/rodado/_staging/fetch_cgu.sh` no beelink (cópia do que gerou
+este job). **Resumível por design** — pula qualquer `{ano_mes}.parquet` que já
+exista, então rodar de novo não reprocessa o que já foi feito:
+
+```bash
+ssh beelink 'nohup bash ~/rodado/_staging/fetch_cgu.sh > ~/rodado/_staging/cgu_beneficios/run.log 2>&1 < /dev/null & disown'
+# acompanhar:
+ssh beelink 'tail -f ~/rodado/_staging/cgu_beneficios/run.log'
+# checar se ainda roda:
+ssh beelink 'ps aux | grep fetch_cgu.sh | grep -v grep'
+```
+
+Estava rodando (processo vivo no beelink) no momento em que esta sessão
+encerrou — não foi morto, só não foi esperado até o fim porque 41 arquivos de
+~2,2 GB cada não cabe no orçamento de uma sessão. Terminando, o total esperado
+é da ordem de 700-800M linhas (9 meses já deram 184M, ritmo consistente de
+~20M linhas/mês).
+
+### Transferegov/SICONV completo — em andamento, resumível
+
+`br_transferegov_siconv/<tabela>/dados.parquet` — dataset novo, separado do
+`br_transferegov` existente (que usa nomes de tabela normalizados da própria
+BD — `planos_acao`, `programas`, `transferencias` — diferentes da estrutura
+crua do SICONV). O diretório `repositorio.dados.gov.br/seges/detru/` tem
+**54 arquivos** `.zip`; pulado de propósito `siconv.zip` (3 GB, consolidado,
+redundante com os CSVs individuais — mesmo raciocínio do `SIGMINE/BRASIL.zip`
+pulado no ANM), `data_carga_siconv.csv.zip` (metadado de timestamp, não dado)
+e `modelo_dados_siconv.zip` (dicionário de dados, não dado). CSV é UTF-8 com
+BOM, `;`-delimitado, direto — sem a armadilha de encoding do CGU.
+
+No momento em que este arquivo foi escrito, **23 das ~50 tabelas candidatas**
+já landed, soma parcial:
+
+| Tabela | Linhas |
+|---|---|
+| `siconv_itens_dl` | 9.805.615 |
+| `siconv_dl` | 7.487.823 |
+| `siconv_historico_situacao` | 8.957.864 |
+| `siconv_cronograma_desembolso` | 2.732.825 |
+| `siconv_etapa_crono_fisico` | 3.272.439 |
+| `siconv_contrato` | 726.602 |
+| `siconv_convenio` | 285.743 |
+| `siconv_apoiadores_emendas_programas` | 291.954 |
+| `siconv_emenda` | 297.828 |
+| `siconv_historico_projeto_basico` | 1.061.746 |
+| (+ 13 tabelas menores) | — |
+
+**~37,4M linhas somadas até aqui**, com as tabelas maiores restantes
+(`siconv_itens_licitacao` 210MB zip, `siconv_justificativas_proposta` 682MB
+zip, `siconv_pagamento` 328MB zip, `siconv_plano_aplicacao` 267MB zip,
+`siconv_proposta` 190MB zip) ainda por vir — o total final deve passar de
+60-80M linhas.
+
+Três arquivos zip têm **mais de um CSV membro** (`siconv_inst_cont_aio_mod_empresas.csv.zip`
+trouxe 3: `..._contratos_lotes_empresas_modulo_empresas`,
+`..._metas_submetas_po_modulo_empresas`, `..._proposta_aio_modulo_empresas`) — o
+script detecta isso e **pula com log**, em vez de adivinhar qual pegar; ficam
+para uma segunda passada que trate zips multi-membro explicitamente.
+
+**Script**: `~/rodado/_staging/fetch_transferegov.sh` no beelink. Também
+resumível (pula tabela cujo `dados.parquet` já existe):
+
+```bash
+ssh beelink 'nohup bash ~/rodado/_staging/fetch_transferegov.sh > ~/rodado/_staging/transferegov/run.log 2>&1 < /dev/null & disown'
+ssh beelink 'tail -f ~/rodado/_staging/transferegov/run.log'
+ssh beelink 'ps aux | grep fetch_transferegov.sh | grep -v grep'
+```
+
+Também deixado rodando (processo vivo) ao encerrar a sessão.
+
+### Depois que os dois jobs terminarem
+
+Nenhum dos dois datasets novos (`br_cgu_gas_do_povo`, `br_cgu_novo_bolsa_familia`,
+`br_transferegov_siconv`) passou ainda pelo regen de metadados — falta, nessa
+ordem, depois que `fetch_cgu.sh`/`fetch_transferegov.sh` terminarem:
+
+```bash
+python3 scripts/gera_schemas.py
+python3 scripts/sync_mcp_schema.py
+python3 scripts/build_metadata_catalog.py
+python3 scripts/gera_join_keys.py
+```
+
+(`gera_schema_graph.py`/`build_atlas.py` se quiser os três novos datasets no
+Atlas também.)
+
+### Itens não tocados nesta rodada
+
+Tier 2/3 além de #7/#9 (CNEFE #6, CadÚnico #14, CAUC #15, PNS 2023 #16,
+PRODES/DETER #17, DIRPF #18, TCEs estaduais #20, SPU SIAPA #21) não foram
+investigados nesta sessão — nem confirmados como bloqueados nem como viáveis,
+simplesmente não houve tempo depois de #1-#5, #7, #9, #13. CNJ Painel (#10) e
+BCB SCR.data/Desenrola (#11) tiveram um teste de conectividade rápido (ambos
+respondem HTTP 200/302) mas não foram explorados a fundo — provavelmente
+dashboards embarcados (Power BI) sem endpoint de bulk download óbvio, precisa
+de investigação própria antes de virar ETL.
