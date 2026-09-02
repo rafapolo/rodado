@@ -46,7 +46,7 @@ export async function pergunta(
       reasoning: "off",
       chat_template_kwargs: { enable_thinking: false },
     }),
-    signal: AbortSignal.timeout(300_000),
+    signal: AbortSignal.timeout(Number(Bun.env.HARNESS_TIMEOUT_MS ?? 600_000)),
   });
   if (!r.ok) throw new Error(`llama-server ${r.status}: ${await r.text()}`);
   const d = await r.json() as {
