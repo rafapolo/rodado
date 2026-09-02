@@ -51,17 +51,17 @@ item é acionável sozinho; nenhum depende dos outros.
 
 | O quê | Por que urge |
 |---|---|
-| **Remover `br_ibama_embargos`** | 113.878 linhas com **zero** não-vazias — o CSV foi parseado errado e os bytes nunca foram gravados. Quem consulta recebe zero e acha que é resposta. Substituto pronto: `br_ibama_embargos_novo` (892.279 linhas, 2001–2026). Ver [`datasets_quase_duplicados.md`](datasets_quase_duplicados.md) |
-| **Remover `br_seeg`** | Raspei 12,1M linhas da API GraphQL **antes de conferir** que `br_seeg_emissoes.municipio` já existia com 165,7M linhas e mais granular. Conferido idêntico onde se sobrepõem (Nova Friburgo 2024: 345.342 tCO2e nos dois) |
+| ~~Remover `br_ibama_embargos`~~ ✅ feito 2026-09-02 (movido para `~/rodado/_obsoleto/`, não apagado) | 113.878 linhas com **zero** não-vazias — o CSV foi parseado errado e os bytes nunca foram gravados. Quem consulta recebe zero e acha que é resposta. Substituto pronto: `br_ibama_embargos_novo` (892.279 linhas, 2001–2026). Ver [`datasets_quase_duplicados.md`](datasets_quase_duplicados.md) |
+| ~~Remover `br_seeg`~~ ✅ feito 2026-09-02 (idem) | Raspei 12,1M linhas da API GraphQL **antes de conferir** que `br_seeg_emissoes.municipio` já existia com 165,7M linhas e mais granular. Conferido idêntico onde se sobrepõem (Nova Friburgo 2024: 345.342 tCO2e nos dois) |
 | **`valorGlobal` do PNCP tem outlier absurdo** | 54 contratos (0,008%) somam **88% do total de 2024**: uma empresa de ônibus com "R$ 481 bilhões". Sem filtro, qualquer soma mente por fator de 8. Mediana real: R$ 2.800 |
 
 ### Descoberta e documentação
 
 | O quê | Estado |
 |---|---|
-| **Índice doc2query** | 🔄 em geração 2026-09-02 pelo **Gemma 4 local** (`scripts/doc2query_gemma.py`, `llama-server` na porta 8099 do beelink) — o `opencode/hy3-free` que o `doc2query_roda.py` usa passou a devolver `UnknownError: Unexpected server error` em toda chamada. 63 tabelas a gerar, uma por chamada (contexto menor, JSON mais confiável, falha custa uma tabela e não 25). Depois: `gera_doc2query_corpus.py` → `gera_doc2query_index.py`. Cobria 832 tabelas; o espelho tem 909. As **45 tabelas novas não são encontráveis por `search_tables`** — quem procurar "licenciamento ambiental" não acha o INEA. Regenerar o embedding é barato (`scripts/gera_doc2query_index.py`), mas o corpus precisa da passada LLM, que é cara |
+| **Índice doc2query** | ⏸️ **parado a pedido em 2026-09-02** com 23 de 63 tabelas geradas (`tasks/doc2query/saida_0{1,2}.jsonl`, resumível com `--faltantes`). Nada foi aplicado ao índice: as 63 tabelas novas seguem invisíveis para `search_tables`, embora apareçam em `list_tables`/`describe_table`. Gerador: **Gemma 4 local** (`scripts/doc2query_gemma.py`, `llama-server` na porta 8099 do beelink) — o `opencode/hy3-free` que o `doc2query_roda.py` usa passou a devolver `UnknownError: Unexpected server error` em toda chamada. 63 tabelas a gerar, uma por chamada (contexto menor, JSON mais confiável, falha custa uma tabela e não 25). Depois: `gera_doc2query_corpus.py` → `gera_doc2query_index.py`. Cobria 832 tabelas; o espelho tem 909. As **45 tabelas novas não são encontráveis por `search_tables`** — quem procurar "licenciamento ambiental" não acha o INEA. Regenerar o embedding é barato (`scripts/gera_doc2query_index.py`), mas o corpus precisa da passada LLM, que é cara |
 | **`tasks/` é gitignored** | As 7 entradas de procedência que escrevi em `done/datasets_to_scrap_done.md` vivem só nesta máquina. Se o beelink for reinstalado, `build_metadata_catalog.py` perde a procedência das fontes novas |
-| **`harness/prefixo.ts` sem versionar** | Apareceu depois do commit `070d69b`, não incluído por não saber se está pronto |
+| ~~`harness/prefixo.ts` sem versionar~~ | ✅ versionado em `3806705` |
 
 ## `done/` — arquivado (provenance, não é to-do)
 
