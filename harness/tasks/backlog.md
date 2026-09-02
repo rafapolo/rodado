@@ -53,7 +53,7 @@ depois significa jogar as 3,2 h fora ou, pior, publicar o número.
 - **Fecha quando:** um caso com `n=789` cuja resposta contenha só `1789` é
   contado como erro.
 
-## 1. Desambiguar dataset irmão — **24 das 36 falhas** 🟡 codado 2026-09-02, medição pendente
+## 1. Desambiguar dataset irmão — **24 das 36 falhas** ✅ medido 2026-09-02 — funcionou
 
 A maior classe de longe, e sempre a mesma forma: o modelo escolhe o parente
 errado porque **os nomes não distinguem**. Nome semântico separa domínio, não
@@ -78,9 +78,34 @@ o teste que separa ganho real de troca de erro.
 `listaDatasets()`, `harness/dados/desambiguacao.json` traz a frase contrastiva
 (mais os `grupos_semanticos` que nenhuma regra de string pega), e
 `prefixo.ts` gruda a pista na linha do `CATÁLOGO` só dos datasets ambíguos —
-`prefixo.test.ts` tranca a regra de entrada do JSON. **Falta rodar** a
-avaliação contra as 274 perguntas para medir se a classe `vizinho` caiu —
-nada disso foi medido ainda, só implementado e testado por unidade.
+`prefixo.test.ts` tranca a regra de entrada do JSON.
+
+**Medido**: achado no meio do caminho — `avalia_datasets.ts` tinha sua
+PRÓPRIA cópia do catálogo, sem a pista nenhuma; teria medido a régua de
+antes do conserto (corrigido, commit separado, antes de rodar). Com o
+conserto de verdade em vigor, rodada completa contra as 284 perguntas de
+`perguntas.md` (cresceu de 274; `HARNESS_PARALELO=1` — ver a nota de
+`operacao.md` sobre `-np` real vs. concorrência do script):
+
+| | antes (Rodada 8, 274 perguntas) | depois (2026-09-02, 284 perguntas) |
+|---|---|---|
+| RECALL (datasets obrigatórios) | 91,2% | **93,9%** |
+| CASOS PERFEITOS | 86,9% | **90,5%** |
+| falhas `vizinho` | 24 | **18** |
+| falhas `nada_perto` | (dentro das 12 não-vizinho) | 9 — não subiu, o teste do parágrafo acima passa |
+
+Não é 24→0: `ibge_pib` sozinho ainda perde 4x contra `ibge_pam`/`bcb_sicor`/
+`inpe_prodes`/`sfb_sicar` — datasets de domínios genuinamente diferentes que
+só compartilham o prefixo `ibge`/mesmo tema agrícola-fundiário, então a
+ressalva do classificador (próximo parágrafo) provavelmente conta parte
+disso como falso "vizinho". `anp_combustiveis` também ainda perdeu 1x apesar
+da descrição já existir — caso a acompanhar, não a investigar agora.
+
+Achado de bônus: `cnpq_bolsas` perdeu 3x (classe `nada_perto`, não
+`vizinho` — o classificador só compara o primeiro segmento do nome, e
+`cnpq`≠`capes`) contra `capes_bolsas`. Não estava no JSON; adicionado como
+novo `grupo_semantico` (`bolsas_de_pesquisa`) no mesmo commit desta medição,
+mas **ainda não remedido** — entra na próxima rodada.
 
 A taxonomia que mede está na função `classe()` de `avalia_datasets.ts`. Uma ressalva na leitura do número: o classificador
 `vizinho` compara só o **primeiro segmento** do nome (`d.split("_")[0]`), então
