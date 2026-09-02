@@ -204,13 +204,18 @@ export function resolveDataset(escrito: string): string | null {
   if (!alvo) return null;
   const todos = listaDatasets();
 
-  // 1. exato, com ou sem o prefixo br_
-  const exato = todos.find((d) => d === alvo || d === `br_${alvo}`);
+  // O espelho tem três famílias de prefixo, não uma. Medido em 2026-09-02: o
+  // modelo respondeu `olympedia_olympics` e o dataset é `world_olympedia_olympics`
+  // — só `br_` era tentado, então um acerto virava falha na contagem.
+  const PREFIXOS = ["br_", "world_", "us_"];
+
+  // 1. exato, com ou sem prefixo
+  const exato = todos.find((d) => d === alvo || PREFIXOS.some((p) => d === p + alvo));
   if (exato) return exato;
 
   // 2. ignorando underscores, e só quando o resultado é único
   const achata = (s: string) => s.replace(/_/g, "");
-  for (const cand of [alvo, `br_${alvo}`]) {
+  for (const cand of [alvo, ...PREFIXOS.map((p) => p + alvo)]) {
     const planos = todos.filter((d) => achata(d) === achata(cand));
     if (planos.length === 1) return planos[0]!;
   }
