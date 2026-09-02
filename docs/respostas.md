@@ -1002,7 +1002,7 @@ produziria um número que parece verificado mas não é.
   `_parcial`), mas qualquer pergunta que precise do microdado individual
   (CPF, nome, nota) do PROUNI está bloqueada — precisa re-scraping.
 - **T47** — `br_mp_pep.cargos_funcoes` **não é "Pessoas Expostas
-  Politicamente"** como o nome sugeria em `tasks/datasets_coverage_gaps.md`
+  Politicamente"** como o nome sugeria em `tasks/espelho_subutilizado.md` (Parte I)
   (hipótese razoável, mas errada) — é o **Painel Estatístico de Pessoal**
   do então Ministério do Planejamento: um painel agregado de cargos e
   funções comissionadas do Executivo federal por UF/órgão/raça/sexo/faixa
