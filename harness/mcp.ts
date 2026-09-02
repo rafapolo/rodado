@@ -21,7 +21,7 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { listaDatasets, tabelasDe, colunasDe, resolveDataset } from "./catalogo.ts";
-import { portao, checaExplain } from "./portao.ts";
+import { portao, checaExplain, alertasDeSanidade, faixasCitadas } from "./portao.ts";
 import { dicasDeJoin } from "./pontes.ts";
 import { runSqlSsh } from "./beelink.ts";
 import { capRows } from "./sqlguard.ts";
@@ -147,13 +147,19 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
 
     const capado = capRows(r.rows ?? [], 200);
     if (!capado.rows.length) {
+      const faixas = faixasCitadas(sql);
       return erro(
         "A consulta rodou e devolveu ZERO linhas — o join não casou nada, ou o filtro " +
-        "de ano não tem dado. Confira a faixa de anos com listar_tabelas e o tipo das " +
-        "duas pontas da chave.",
+        "de ano não tem dado. Confira o tipo das duas pontas da chave." +
+        (faixas ? ` Faixa de anos das tabelas citadas: ${faixas}.` : " Chame listar_tabelas para ver a faixa de anos."),
       );
     }
-    return texto(JSON.stringify(capado));
+    // Alertas de sanidade (grupo reportado como total, join que duplicou linha,
+    // correlação suspeita) grudados ANTES dos dados, no mesmo texto — nenhum
+    // rejeita, mas o modelo só corrige o que vê.
+    const alertas = alertasDeSanidade(sql, capado.rows);
+    const prefixo = alertas.length ? alertas.map((a) => `⚠ ${a}`).join("\n") + "\n\n" : "";
+    return texto(prefixo + JSON.stringify(capado));
   }
 
   return erro(`Ferramenta desconhecida: ${name}`);
