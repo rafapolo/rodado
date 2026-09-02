@@ -9,14 +9,15 @@
  *
  * Roda um de cada vez: os dois disputam o mesmo llama-server e medir em paralelo
  * falsearia o tempo dos dois.
+ *
+ * A régua de acerto vem de `acerto.ts`, e não daqui: ela estava copiada em dois
+ * arquivos comparando substring de dígitos, e `789` casava dentro de `1789`.
  */
 import { roda as rodaLaco } from "./laco.ts";
 import { carregaCasos } from "./casos.ts";
+import { avalia, configServidor, rotuloConfig, avisaPrefill, LIMIAR_PREFILL } from "./acerto.ts";
 
 interface Caso { pergunta: string; esperado?: string }
-
-const bate = (texto: string, esperado?: string) =>
-  esperado ? texto.replace(/[.\s]/g, "").includes(esperado.replace(/[.\s]/g, "")) : undefined;
 
 if (import.meta.main) {
   const arquivo = Bun.argv[2];
@@ -31,23 +32,39 @@ if (import.meta.main) {
   const pares = new Set(temas.filter((_, i) => i % 2 === 0));
   const exemplos = todos.filter((c) => pares.has(c.tema));
 
-  console.log(`PIPELINE FIXO (laco.ts, sem MCP) — ${casos.length} perguntas\n`);
-  let certos = 0, comGab = 0, tempo = 0;
+  const config = await configServidor();
+  console.log(`PIPELINE FIXO (laco.ts, sem MCP) — ${casos.length} perguntas — ${rotuloConfig(config)}`);
+  if (!config) console.log("AVISO: sem a config do servidor, o TEMPO desta rodada não é comparável com nenhuma outra");
+  console.log(`limiar de prefill: ${LIMIAR_PREFILL} tokens\n`);
+  let certos = 0, comGab = 0, tempo = 0, ecos = 0, piorPrefill = 0;
   for (const [i, c] of casos.entries()) {
     const t0 = Date.now();
     const r = await rodaLaco(c.pergunta, exemplos);
     const seg = (Date.now() - t0) / 1000;
     tempo += seg;
     const texto = `${r.prosa ?? ""} ${JSON.stringify(r.linhas ?? [])}`;
-    const ok = bate(texto, c.esperado);
+    const a = avalia(texto, c.esperado, c.pergunta);
+    const ok = a.veredito === "certo" ? true : a.veredito === "errado" ? false : undefined;
+    if (a.eco) ecos++;
     if (ok !== undefined) { comGab++; if (ok) certos++; }
-    const marca = ok === false ? "ERRO" : ok === true ? " ok " : r.erro ? "  --" : " ?  ";
+    const marca = a.eco ? "ECO " : ok === false ? "ERRO" : ok === true ? " ok " : r.erro ? "  --" : " ?  ";
     console.log(`${marca} ${i + 1}/${casos.length}  ${seg.toFixed(0)}s  ${r.tentativas} tentativa(s)  ${c.pergunta.slice(0, 50)}`);
     if (r.erro) console.log(`      ${r.erro}`);
+    else if (a.eco) console.log(`      esperado ${c.esperado} aparece na própria pergunta — caso fora do denominador`);
     else if (ok === false) console.log(`      esperava ${c.esperado} | n=${r.n} | ${(r.prosa ?? "").replace(/\s+/g, " ").slice(0, 110)}`);
+
+    // `laco.ts` já devolve o maior `timings.prompt_n` das 4 chamadas do caso, e
+    // ninguém olhava. O primeiro caso prefila o prefixo inteiro por definição.
+    if (i > 0) {
+      piorPrefill = Math.max(piorPrefill, r.prefiladosMax);
+      const aviso = avisaPrefill([r.prefiladosMax]);
+      if (aviso) console.log(`      ${aviso}`);
+    }
   }
   console.log(`\n${"=".repeat(56)}`);
   if (comGab) console.log(`CORRETO: ${certos}/${comGab} = ${(100 * certos / comGab).toFixed(0)}%`);
-  console.log(`TEMPO MÉDIO: ${(tempo / casos.length).toFixed(0)}s por pergunta`);
+  if (ecos) console.log(`FORA DO DENOMINADOR: ${ecos} caso(s) cujo esperado ecoa na pergunta`);
+  console.log(`TEMPO MÉDIO: ${(tempo / casos.length).toFixed(0)}s por pergunta  [${rotuloConfig(config)}]`);
+  if (piorPrefill) console.log(`PIOR PREFILL após o aquecimento: ${piorPrefill} tokens (limiar ${LIMIAR_PREFILL})`);
   console.log("=".repeat(56));
 }
