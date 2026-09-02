@@ -188,7 +188,34 @@ RN 72,4%, SP 71,9%.
 - **T19-4 ✅ (proxy)** Bancos × crédito: agências × PIB pc fraco (+0,12, A15); SICOR pendente.
 - **T19-1 ✅** IBC (Anatel) × agências bancárias/100k hab (ESTBAN 2022) × bolsistas CNPq/100k hab (2022, junção por nome do município de destino): **r = +0,19 com agências; r = +0,13 com bolsistas** (n=342, municípios com bolsista CNPq) — conectividade acompanha um pouco mais a presença bancária do que a presença de bolsistas.
 - **T19-3 ✅** Bolsistas CNPq/100k hab × agências ESTBAN/100k hab × PIB pc, mesmo recorte de 342 municípios: **r = +0,04 com densidade bancária; r = −0,05 com PIB pc** — praticamente nenhuma relação; onde há bolsista não é nem mais bancarizado nem mais rico, dentro do universo de municípios que já têm algum bolsista.
-- **T19-2, T19-5 ⏳** Pendentes — não executadas nesta rodada por orçamento de tempo (T19-2 cruza crescimento de crédito SICOR com queda de agências ESTBAN, T19-5 pede correlação defasada agências→PIB, ambas exigem duas leituras temporais por município em vez de uma correlação simples).
+- **T19-2 ◐ (2026-09-02)** Série nacional anual 2013-2021: crédito rural SICOR
+  (`br_bcb_sicor.operacao.valor_parcela_credito`, soma por `ano_emissao`)
+  cresceu **+111,6%** (R$139,4 bi → R$295,0 bi) enquanto o PIB agropecuário
+  nacional (`br_ibge_pib.municipio.va_agropecuaria`) cresceu **+146,0%**
+  (R$240,3 bi → R$591,1 bi) no mesmo intervalo — a razão crédito/PIB agro
+  **caiu** de 0,58 para 0,50: não há evidência de que o crédito tenha
+  crescido acima da renda agro (o oposto do que a pergunta hipotetiza, puxado
+  pela disparada do preço de commodities em 2020-21). Enquanto isso, o número
+  de agências ESTBAN caiu **monotonicamente todo ano** (22.879 em dez/2013 →
+  17.603 em dez/2021, −23,1%), sem relação visível com a aceleração/desaceleração
+  do crédito: `corr(nível de crédito, nº agências)` = **r = −0,87 (n=9 anos)**,
+  mas é artefato de duas séries monotônicas em direções opostas — a métrica
+  direta da hipótese, `corr(razão crédito/PIB agro, nº agências)` = **r =
+  +0,33**, fraca e no sentido errado. `◐` porque confirma a queda de agências
+  mas não confirma "crédito crescendo acima do PIB agro" nem uma coincidência
+  clara entre as duas séries.
+- **T19-5 ✅ (2026-09-02)** Defasagem entre presença bancária e crescimento do
+  PIB municipal, controlado por população via métricas per capita (n=5.565
+  municípios, ambas as pontas com população≥1): agências ESTBAN/100k hab em
+  2010 × crescimento relativo do PIB per capita 2010→2021: **r = −0,05**
+  (agências não "lideram" crescimento futuro); na direção oposta, PIB per
+  capita em 2010 × Δagências/100k hab 2010→2021: **r = −0,10** — fraca, mas no
+  sentido de que municípios mais ricos em 2010 tiveram queda relativa MAIOR
+  de agências per capita depois (plausível: substituição por banco digital
+  mais forte onde a bancarização já era alta). Nenhuma das duas direções é
+  forte; se algo, presença bancária segue levemente a renda prévia, não o
+  contrário — média nacional de agências/100k caiu de 8,64 (2010) para 6,92
+  (2021).
 
 ## 20 · Ciência
 
@@ -245,7 +272,36 @@ RN 72,4%, SP 71,9%.
 
 - **T28-5 ✅** Autolesão notificada entre 10-19 anos (`br_ms_sinan_violencia`, 2022, `LES_AUTOP='1'`) per capita × nota média SAEB 9º ano (2021, rede total, localização total): **r = +0,03 (n=1.163 municípios com ≥3 notificações)** — praticamente nulo; nota SAEB não prevê taxa de autolesão notificada.
 - **2 achados técnicos (valem para queries futuras)**: (1) `br_ms_sinan_violencia.microdados_violencia` usa o código de município do SUS de 6 dígitos (`ID_MN_RESI`), igual ao problema achado em `br_ms_sih` — precisa do bridge `br_bd_diretorios_brasil.municipio.id_municipio_6`; `br_ms_sinan.microdados_dengue` (tabela normalizada, minúsculas) já usa o `id_municipio` de 7 dígitos direto, não tem esse problema. (2) `br_inep_saeb.municipio` tem várias linhas por município/ano (rede × localização × disciplina × série) — juntar sem filtrar essas dimensões infla o join silenciosamente (achei um caso com 90 mil "municípios" em vez de ~1.200); filtrar rede/localização/série antes de agregar.
-- **T28-1, T28-2, T28-3, T28-4 ⏳** Pendentes — não executadas nesta rodada por orçamento de tempo; T28-2/T28-3/T28-4 citam ISP-RJ, que só cobre o Rio de Janeiro (regional, não nacional), então qualquer resposta seria só sobre um estado, não o Brasil que a pergunta parece pedir.
+- **T28-1 ✅ (2026-09-02)** Notificações SINAN de violência contra adolescentes (10-19 anos, `NU_IDADE_N`
+  decodificado, residência via bridge `id_municipio_6`, 2019) por 100 mil habitantes × infraestrutura escolar
+  precária (`br_inep_censo_escolar.escola` 2019, índice médio de `esgoto_inexistente`+`agua_inexistente`+
+  `energia_inexistente`) e × INSE médio (`br_inep_indicador_nivel_socioeconomico.escola` 2019), por município
+  (n=5.503, ≥3 escolas): **r = −0,05 com infraestrutura precária (nulo); r = +0,21 com INSE** — o sinal do INSE é
+  invertido em relação à hipótese: municípios de INSE MAIOR notificam mais, não menos. Taxa média 45,8/100 mil.
+  Mesmo padrão já visto em T09-1/T28-5: a notificação mede capacidade/cultura de notificar (rede de saúde,
+  Conselho Tutelar), não incidência bruta — infraestrutura escolar por si só não prevê onde a violência é
+  notificada.
+- **T28-2 ✅ (2026-09-02)** Letalidade juvenil (SIM 2019, 15-29 anos, causas X85-Y09 "agressão") por 100 mil
+  habitantes × INSE médio (`br_inep_indicador_nivel_socioeconomico.escola` 2019), por município (n=3.118,
+  ≥10 mil hab): **r = −0,25 nacional (n=3.118)** — INSE mais baixo acompanha letalidade juvenil mais alta, como
+  a hipótese sugere. Mas **dentro de cada região o sinal se dilui ou inverte**: Sudeste r=−0,23, Sul r=−0,20,
+  Centro-Oeste r≈0,00, Norte r=+0,08, **Nordeste r=+0,27** (o oposto do nacional) — a correlação nacional é
+  majoritariamente efeito de composição entre regiões (Sudeste/Sul mais ricos E mais seguros; Nordeste mais
+  pobre E mais violento; taxa média 12,2/100 mil no NE vs 4,2/100 mil no Sudeste), não um efeito de nível
+  socioeconômico escolar dentro de uma mesma região — clássico padrão de Simpson.
+- **T28-3 ⏳** Pendente — "queda de participação entre SAEB e ENEM" não tem operacionalização direta pronta no
+  espelho: SAEB é censitário por escola (não tem taxa de participação individual comparável) e ENEM é inscrição
+  voluntária — construir a métrica de "queda" exigiria uma definição própria de coorte (mesmos alunos entre as
+  duas avaliações), não uma correlação de corte simples; e a pergunta original cita ISP-RJ, que só cobre o Rio
+  de Janeiro (regional, não nacional).
+- **T28-4 ✅ (2026-09-02)** Notificações SINAN com local de ocorrência "Escola" (`LOCAL_OCOR='03'`, 2017-2021,
+  bridge `id_municipio_6` no local de ocorrência `ID_MN_OCOR`) por 100 mil habitantes × infraestrutura escolar
+  precária e × INSE médio (ambos 2019), por município (n=3.118, ≥10 mil hab, só 1.928/3.118 com alguma
+  notificação): **r = −0,13 com infraestrutura precária (fraca); r = +0,30 com INSE** — mesmo padrão de T28-1:
+  violência escolar notificada correlaciona POSITIVAMENTE com nível socioeconômico mais alto, não negativamente;
+  não há coincidência geográfica com vulnerabilidade da escola, o que aparece é viés de notificação (escolas em
+  municípios mais ricos/estruturados notificam mais, não que haja mais violência ali). Taxa média 9,0/100 mil.
+  ISP-RJ (regional) não foi usado — a comparação nacional via SINAN é o que o espelho sustenta.
 
 ## 29 · Dados Eleitorais
 
@@ -428,7 +484,19 @@ RN 72,4%, SP 71,9%.
 ## 38 · Educação Básica
 
 - **T38-4 ✅ (fato)** PISA 2022 matemática: **Brasil 380,3 vs OCDE 474,8** (n≈10.800 alunos BRA) — gap de ~95 pontos ≈ 2,5 anos escolares.
-- **T38-3 ⏳** Bloqueio parcial: `br_inep_formacao_docente` só tem granularidade UF/região/nacional (colunas `grupo`/`modalidade`/`rede`/`tipo_localizacao`, sem município) — não dá pra responder no recorte municipal que a pergunta pede; um recorte por UF seria possível mas exigiria decodificar os códigos de `grupo` (não documentados no dicionário consultado nesta rodada).
+- **T38-3 ✅ (2026-09-02, nível UF)** `br_inep_formacao_docente` confirmado sem grão municipal (só UF/região/
+  nacional, decodificado via `.dicionario`: `grupo` 1-4 = formação superior em graus variados, 5 = sem formação
+  superior; a coluna extra `modalidade` — não documentada antes — separa por etapa de ensino e precisa ser
+  filtrada, senão soma 7 linhas por UF/grupo). % de docentes dos anos iniciais do fundamental com formação
+  superior (2020, `SUM(percentual WHERE grupo IN (1,2,3,4))`, média nacional 83,9%) × **nível** de alfabetização
+  (`br_inep_avaliacao_alfabetizacao.uf`, rede pública estadual+municipal, 2024): **r = +0,33 (n=24 UFs)** — mais
+  formação docente acompanha maior taxa de alfabetização, moderado. Mas × **melhora** de alfabetização
+  (Δ2023→2024, único par de anos disponível no espelho): **r = +0,007 — nulo**; controlando por PIB per capita
+  (2020) no lugar de renda municipal (grão UF, Censo 2022 não tem renda): **r(PIB pc, Δalfabetização) = −0,12**,
+  também fraco. Formação docente prevê o NÍVEL de alfabetização de um estado, não sua melhora ano a ano —
+  consistente com ser um estoque acumulado, não um choque recente. `br_inep_avaliacao_alfabetizacao` só tem
+  2023-2024 no espelho (sem sobreposição de anos com `br_inep_formacao_docente`, que para em 2020), então o
+  teste de "melhora" usa a única janela de 1 ano disponível, não uma série longa.
 - **T38-5 ✅ (2026-08-27)** Queda de matrícula na educação básica (Sinopse INEP, `br_inep_sinopse_estatistica_educacao_basica.localizacao`, soma de todas as etapas/redes/localizações, 2010→2022, média nacional −9,7%) × queda de população jovem 0-19 (`br_ibge_censo_2022.populacao_grupo_idade_sexo_raca`, mesmo intervalo, média −17,2%, total nacional 62,9M→54,5M): **r = +0,71 (n=5.565 municípios)** — forte e no sentido esperado: onde a população jovem caiu mais, a matrícula caiu mais também, embora em proporção menor (a queda de matrícula é sistematicamente menor que a queda demográfica — indício de melhora de cobertura/permanência absorvendo parte da retração de coorte). **Achado de bug de query, não de dado**: `br_ibge_censo_2022.populacao_grupo_idade_sexo_raca` e `.indice_envelhecimento_raca` guardam os censos **2010 E 2022 na mesma tabela** sob a coluna `ano` (apesar do nome do dataset ser só "censo_2022") — um `SUM(populacao)` sem `WHERE ano=2022` soma as duas safras e dobra o total (confirmado: 393,8M vs os 203,1M reais). As demais tabelas do dataset (`populacao_grupo_idade_uf`, `populacao_idade_sexo`, `alfabetizacao_grupo_idade_sexo_raca`, as `caracteristica_domicilio_*`) não têm esse problema — só essas duas.
 - **T38-2 ◐ (2026-08-27)** `br_inep_educacao_especial.matricula_aee` só tem grão UF×rede (Pública/Privada), sem município nem escola — não dá pra responder "dentro do mesmo município" como a pergunta pede. Com o que existe: cobertura do AEE (atendimento educacional especializado) entre os alunos público-alvo da educação especial (2021, média nacional 49,1%, UF×rede) × proficiência SAEB 9º ano matemática (mesma UF×rede): **r = +0,12 (n=54)** — fraco, sem relação clara. Ressalva importante: `quantidade_matricula` nessa tabela é o total de alunos **público-alvo da educação especial**, não a matrícula geral da rede — a métrica calculável é "% deles que recebe atendimento especializado", não "% da rede que é educação especial" (que exigiria uma tabela de matrícula total por UF×rede, disponível em outra tabela do Sinopse, não cruzada aqui por orçamento de tempo).
 - **T38-1 ⏳** Pendente — cruzar alfabetização INEP × PISA por faixa socioeconômica exige casar as faixas de INSE (`inep_indicador_nivel_socioeconomico`, escala própria) com os quartis de status socioeconômico do PISA (índice ESCS, escala OCDE), que não têm correspondência direta documentada — não é join por chave, é reclassificação metodológica.
