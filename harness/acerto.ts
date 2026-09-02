@@ -268,3 +268,19 @@ export function extraiPrefills(logo: string): number[] {
   return [...logo.matchAll(/prompt eval time =[^/]*\/\s*(\d+) tokens/g)]
     .map((m) => Number(m[1]));
 }
+
+// ------------------------------------------------------------- 4. o boot
+
+/**
+ * `servidor.sh aquece` antes de qualquer rodada — operacao.md tarefa 2: "nada
+ * chama isso automaticamente". Uma rodada de horas com o raciocínio ligado
+ * (20,9 s por turno em vez de 4,7 s) ou o cache de prefixo quebrado é o
+ * desperdício mais caro disponível aqui, e os dois passam sem exceção — só o
+ * detector de `servidor.sh` pega. Não reinicia nada: só confere.
+ */
+export async function confereBoot(): Promise<boolean> {
+  const p = Bun.spawn(["./harness/servidor.sh", "aquece"], {
+    stdout: "inherit", stderr: "inherit",
+  });
+  return (await p.exited) === 0;
+}
