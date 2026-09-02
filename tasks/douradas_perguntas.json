@@ -9,7 +9,7 @@
    "search_tables no top-K deve trazer >=1 tabela de cada required_dataset",
    "supporting_datasets (marcados com * em perguntas.md) sao bonus, nao obrigatorios"
   ],
-  "n": 174
+  "n": 183
  },
  "perguntas": [
   {
@@ -1180,6 +1180,30 @@
    ]
   },
   {
+   "code": "T31-1",
+   "q": "Municípios de maior vulnerabilidade social no Censo 2022 recebem benefícios (CGU) proporcionais à necessidade medida também pelo IPEA-AVS?",
+   "status": "ok",
+   "required_datasets": [
+    "br_cgu_beneficios_cidadao",
+    "br_ipea_avs"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T31-3",
+   "q": "Onde beneficiários (CGU) são muitos mas a vulnerabilidade (Censo/AVS) é baixa — sobreposição de programas ou erro cadastral?",
+   "status": "ok",
+   "required_datasets": [
+    "br_cgu_beneficios_cidadao",
+    "br_ipea_avs"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
    "code": "T31-4",
    "q": "A vulnerabilidade social (Censo + AVS) explica quanto da variação da mortalidade infantil implícita no par SIM×SINASC por município?",
    "status": "partial",
@@ -1189,6 +1213,18 @@
    ],
    "supporting_datasets": [
     "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T31-5",
+   "q": "Municípios com pior indicador composto (AVS/IPEA) melhoraram entre ondas, e o ganho acompanhou crescimento do PIB ou dos repasses sociais (CGU)?",
+   "status": "partial",
+   "required_datasets": [
+    "br_ipea_avs"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib",
+    "br_cgu_beneficios_cidadao"
    ]
   },
   {
@@ -1237,6 +1273,29 @@
    "supporting_datasets": [
     "br_ibge_censo_2022",
     "br_geobr_mapas"
+   ]
+  },
+  {
+   "code": "T35-2",
+   "q": "As regiões metropolitanas de pior mobilidade (Mobilidados) são as de maior PIB per capita ou as de crescimento mais recente (PIB/Censo)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_mobilidados_indicadores"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib",
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T35-4",
+   "q": "Capitais com melhor infraestrutura de transporte (Mobilidados) registram menos mortes no trânsito (SIM) per capita que as demais?",
+   "status": "ok",
+   "required_datasets": [],
+   "supporting_datasets": [
+    "br_mobilidados_indicadores",
+    "br_ms_sim",
+    "br_ibge_censo_2022"
    ]
   },
   {
@@ -1307,6 +1366,39 @@
     "br_tcu_inidoneos",
     "br_me_cnpj",
     "br_cgu_licitacao_contrato"
+   ]
+  },
+  {
+   "code": "T37-2",
+   "q": "Empresas com dívida ativa federal (PGFN) recebem pagamentos públicos (cartão CGU/licitações) apesar do débito?",
+   "status": "ok",
+   "required_datasets": [],
+   "supporting_datasets": [
+    "br_pgfn_dividaativa",
+    "br_cgu_licitacao_contrato",
+    "br_cgu_cartao_pagamento"
+   ]
+  },
+  {
+   "code": "T37-3",
+   "q": "CPFs de sócios de empresas inidôneas (TCU) reaparecem como sócios de novas empresas ativas — recriação de personalidade jurídica?",
+   "status": "partial",
+   "required_datasets": [],
+   "supporting_datasets": [
+    "br_tcu_inidoneos",
+    "br_me_cnpj",
+    "br_rf_arrecadacao"
+   ]
+  },
+  {
+   "code": "T37-4",
+   "q": "Empresas sancionadas (TCU) ou endividadas (PGFN) mantêm quadro de funcionários formais (RAIS) e sede em quais municípios?",
+   "status": "ok",
+   "required_datasets": [],
+   "supporting_datasets": [
+    "br_tcu_inidoneos",
+    "br_me_rais",
+    "br_me_cnpj"
    ]
   },
   {
@@ -1413,6 +1505,18 @@
    "supporting_datasets": [
     "br_geobr_mapas",
     "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T43-4",
+   "q": "A evolução histórica das medalhas brasileiras acompanhou o crescimento do PIB nacional ou seguiu ciclos de política esportiva próprios?",
+   "status": "partial",
+   "required_datasets": [
+    "world_olympedia_olympics"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib",
+    "br_ibge_munic"
    ]
   },
   {
