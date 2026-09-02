@@ -16,7 +16,7 @@ do projeto como um todo (datasets, raspagem, camada semântica, o espelho).
 
 ## Ativos
 
-Seis arquivos, cada um com uma pergunta própria. A regra que separa os quatro
+Cinco arquivos, cada um com uma pergunta própria. A regra que separa os quatro
 primeiros: **onde o dado está**.
 
 | Arquivo | A pergunta que ele responde | Status |
@@ -25,7 +25,6 @@ primeiros: **onde o dado está**.
 | [`fontes_novas.md`](fontes_novas.md) | O que existe de dado público **fora** do espelho, rankeado por valor/esforço | 🔵 backlog — varredura geral (2026-08-23) + mergulho em licenciamento ambiental (2026-09-01); vários itens presos em credencial/API |
 | [`espelho_subutilizado.md`](espelho_subutilizado.md) | O que **já está** no espelho e nada consome — nenhuma pergunta, nenhuma seção de dashboard, nenhum relatório | 🔵 inventário — 111 datasets sem pergunta, 53 sem uso no dashboard, + o mapa de saúde mental |
 | [`respostas_pendentes.md`](respostas_pendentes.md) | Que perguntas do golden set ainda faltam responder — e que bugs aparecem ao responder | 🟡 em andamento — inclui o backlog herdado do Agente A |
-| [`deanonimizacao_geral.md`](deanonimizacao_geral.md) | Quem no espelho só aparece como CNPJ/CPF e dá pra nomear | 🟡 parcial — baldes 1 (CNPJ) e 2 (CPF) feitos; **1 decisão de privacidade aguarda o usuário** (CNES `tipo_pessoa='1'`) |
 | [`ana_series_historicas.md`](ana_series_historicas.md) | Séries da ANA — o que falta além do ETL e da página `series.html` | 🟡 **1 item aberto**: o gap da COTA (conferido 2026-09-02: `series_cota_mensal_completa` não existe no beelink, a rodada de 08-27 não entregou) |
 
 Não são tarefas, são insumos:
@@ -62,6 +61,7 @@ pertencem a nenhum dos seis acima. Cada item é acionável sozinho.
 
 | Arquivo | Descrição | Concluído em |
 |---|---|---|
+| [`deanonimizacao_geral.md`](done/deanonimizacao_geral.md) | Quem no espelho só aparece como CNPJ/CPF e dá pra nomear — baldes 1 (CNPJ) e 2 (CPF) feitos e reconferidos ao vivo no beelink. **Arquivado com 1 decisão de privacidade ainda em aberto** (CNES `tipo_pessoa='1'`, ver o topo do arquivo para as opções a/b/c) — arquivar não a resolveu, só tirou o arquivo da lista ativa a pedido | 2026-09-02 |
 | [`threads_pos_scraping_2026-07.md`](done/threads_pos_scraping_2026-07.md) | Era `todo.md` — as 3 threads pós-scraping: `_run_sql_ssh` órfão, Atlas da Violência (152/152), pesquisa completa do bloqueio do Consumidor.gov.br | 2026-09-02 |
 | [`bugs_e_achados_agentes.md`](done/bugs_e_achados_agentes.md) | Log da rodada de 5 agentes paralelos: 5 bugs confirmados (já em `bridges.yaml`) + o que cada agente entregou | 2026-09-02 |
 | [`higiene_espelho.md`](done/higiene_espelho.md) | Duplicatas/dado zerado no espelho (`br_ibama_embargos`, `br_seeg`) + outlier do PNCP + nota ANP — 4 de 4 | 2026-09-02 |
