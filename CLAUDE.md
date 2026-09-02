@@ -84,6 +84,12 @@ python3 scripts/gera_dicionario_coverage.py  # beelink -> docs/context/dicionari
 schema antigo em `docs/context/basedosdados-schema.json` e não enxerga nenhuma coluna
 nova — `describe_table` mente calado.
 
+Antes desse regen, depois de qualquer scraper novo ou job resumido sem supervisão,
+ver [`docs/housekeeping.md`](docs/housekeeping.md) — checklist do que não acontece
+sozinho (view faltando no `.duckdb` com parquet já completo no disco, job que parou
+por rate limit sem erro fatal, contagem duplicada entre sessões concorrentes, zip com
+mais de um CSV membro), com os comandos exatos e os casos reais que motivaram cada item.
+
 `join_keys.md` e `metrics.json` são **gerados** — editar o YAML, nunca a saída. `valida_metrics.py` separa hard de soft como o firewall de `run_sql`: DML na expressão rejeita, coluna ausente só avisa, porque `_check_read_only` revalida antes de executar.
 
 `doc2query_index.json`/`doc2query_vectors.npy` **não** entram nesse regen automático — a geração via LLM (`scripts/doc2query_lotes.py` + `scripts/doc2query_roda.py`) é cara e não deve rodar a cada sync; só o passo de embedding (`scripts/gera_doc2query_index.py`, a partir de `docs/context/doc2query_corpus.jsonl` já gerado) é barato o bastante pra rerodar sem pensar. Regenerar tudo só quando o schema mudar o bastante pra `search_tables` começar a perder tabela nova.
