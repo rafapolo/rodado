@@ -171,6 +171,30 @@ turnos de 20 s. O que o MCP entrega é o portão como ferramenta e o log auditá
 `respostas.md` — o conjunto multi-tabela, que é o objetivo real. É o próximo
 número.
 
+## 8. Operacional — o que quase deu errado fora do código
+
+Duas armadilhas que não são do harness mas custaram tempo e quase custaram um
+commit errado.
+
+**O hook do `rtk` trunca a saída do git, calado.** `git add harness/` seguido de
+`git diff --cached --name-only` listou **2 arquivos**; eram **9**, e o commit
+levou os 9. `git show --stat` repetiu a mentira. É exatamente o comando que a
+regra do projeto manda usar para conferir o staging antes de commitar — e ele
+erra na direção tranquilizadora, mostrando menos do que há. Conferir com
+`git ls-files`, `git ls-tree -r HEAD --name-only` ou `rtk proxy git <cmd>`.
+
+**Duas sessões no mesmo branch se atropelam.** Outra sessão mesclou
+`harness-gemma` em `main` enquanto eu trabalhava; meu commit seguinte caiu em
+`main` sem eu perceber, e só apareceu quando fui olhar o reflog. O conserto foi
+levar o branch adiante sem tocar em `main` (o commit tinha o topo do branch como
+pai, então bastou fast-forward). O acordo que funcionou depois: um dono por
+diretório, e avisar antes de mesclar.
+
+**O que ficou fora do meu commit de propósito:** `schemas.json`,
+`docs/context/basedosdados-schema.json` e dois `pages/*/index.html` estavam
+modificados quando esta sessão começou, por um sync/regen que rodou fora dela.
+Não sei o estado pretendido deles e não carimbei trabalho alheio.
+
 ## Ver também
 
 - `harness/README.md` — como rodar
