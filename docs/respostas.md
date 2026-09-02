@@ -454,7 +454,18 @@ RN 72,4%, SP 71,9%.
 ## 43 · Cultura
 
 - **T43-3 ✅ (com ressalva)** Medalhas olímpicas do Brasil por esporte (contagem por atleta, esportes coletivos inflados): futebol 181, vôlei 132, basquete 60, vela 36, atletismo 35, vôlei de praia 26, judô 24, natação 21.
-- **T43-1, T43-2, T43-4, T43-5 ⏳ — bloqueio estrutural confirmado (2026-08-27)**: `world_olympedia_olympics.athlete_bio` (a única tabela com dados de atleta) tem `birth_date`/`birth_year`/`country`/`country_noc`, mas **nenhuma coluna de cidade ou município de nascimento** — nem texto livre, nem código. Sem essa chave geográfica não dá pra ligar medalha a município (T43-1, T43-2, T43-5) nem checar se o crescimento de medalhas seguiu município/região (T43-4 pede série temporal nacional, que é possível, mas o cruzamento com PIB nacional/ciclos de política esportiva não foi tentado nesta rodada). Precisaria de uma fonte adicional (ex.: COB, Wikipedia estruturada) com naturalidade do atleta.
+- **T43-1, T43-2, T43-5 ⏳ — bloqueio estrutural confirmado (2026-08-27)**: `world_olympedia_olympics.athlete_bio` (a única tabela com dados de atleta) tem `birth_date`/`birth_year`/`country`/`country_noc`, mas **nenhuma coluna de cidade ou município de nascimento** — nem texto livre, nem código. Sem essa chave geográfica não dá pra ligar medalha a município. Precisaria de uma fonte adicional (ex.: COB, Wikipedia estruturada) com naturalidade do atleta.
+- **T43-4 ◐ (2026-09-02)** Total de medalhas do Brasil por edição (`world_olympedia_olympics.game_medal_tally`,
+  `country_noc='BRA'`, 1920-2020, 20 participações) × PIB nacional a preços correntes (`br_ibge_pib.municipio`,
+  `SUM(pib)`, só cobre 2002-2021 no espelho — 5 edições em comum: 2004/2008/2012/2016/2020): medalhas subiram sem
+  interrupção nessas 5 edições (10→17→17→19→21) e o PIB nominal também — mas **PIB a preços correntes nunca cai
+  numa série de 20 anos** (inflação mascara qualquer recessão real), então essa comparação não separa "acompanhou o
+  PIB" de "cresceu através de qualquer coisa que também nunca caiu"; o espelho não tem série de PIB real/deflacionado
+  para testar ciclo econômico de verdade. Único sinal qualitativo possível com o que existe: o Brasil somou medalhas
+  em 2016 (19) e 2020 (21) — as duas edições que atravessam a recessão de 2015-2016 (queda real de PIB amplamente
+  documentada fora do espelho) — sem nenhuma queda visível na contagem de medalhas, o que pende para "ciclo de
+  política esportiva própria" mais do que para "acompanha o PIB", mas não é um teste estatístico, é leitura de
+  série curta (n=5 pontos com dado de PIB). `◐` por essa limitação de instrumento, não por falta de tentativa.
 
 ## 44 · Saneamento, Produção Rural e Desmatamento
 
