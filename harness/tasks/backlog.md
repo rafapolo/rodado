@@ -92,20 +92,22 @@ duas confusões diferentes.
 pergunta — mas conta para o gargalo de contexto (item 4). Só onde há par
 ambíguo.
 
-## 2. Rodar o laço nos 32 casos com `n` conferido 🔴
+## 2. Rodar o laço nos casos com `n` conferido 🟡 ponte feita 2026-09-02, rodada ainda não começou
 
-O número que responde ao objetivo do harness, e **o único ainda não medido**: 30
-dos 32 exigem 2+ datasets. Tudo o que existe hoje mede *escolha de dataset*, não
-resposta ponta a ponta.
+O número que responde ao objetivo do harness, e **o único ainda não medido**.
+Tudo o que existe hoje mede *escolha de dataset*, não resposta ponta a ponta.
 
-- A ~6 min por pergunta dá **~3,2 h**. É o próximo trabalho pesado.
+- A contagem cresceu desde que este item foi escrito: eram 32, `bun harness/casos.ts`
+  reporta **58** em 2026-09-02 (mais casos com `n` conferido entraram desde
+  então). A ~6 min por pergunta isso é **~5,8 h**, não as 3,2 h originais —
+  conferir a contagem de novo antes de estimar o tempo da rodada.
 - Ferramenta pronta: `bun harness/pergunte.ts "<pergunta>"` já roda o caminho
   agêntico (testado: 789 com a decomposição por sexo correta, 5,9 min).
 
-**Falta uma ponte de 5 linhas, e sem ela isto não começa:** `casos.ts` conhece os
-casos com `n` (campo `Caso.n`), mas `lote.ts` come um arquivo TSV
-`pergunta <TAB> esperado` e **nada converte um no outro**. `casos.ts` hoje só
-imprime relatório. É pequeno, mas é pré-requisito.
+**A ponte de 5 linhas está feita**: `casos.ts --tsv` (função `tsvComN()`)
+emite o TSV `pergunta <TAB> esperado` que `lote.ts` lê —
+`bun harness/casos.ts --tsv > /tmp/casos.tsv && bun harness/lote.ts /tmp/casos.tsv`.
+**A rodada em si não começou** — só o pré-requisito.
 
 **Antes de rodar**, além do item 0: conferir as invariantes de
 [`operacao.md`](operacao.md). Uma rodada de 3,2 h com o cache de prefixo
