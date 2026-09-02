@@ -1132,6 +1132,60 @@ RN 72,4%, SP 71,9%.
   nenhuma das empresas formalmente declaradas inaptas a contratar com a
   União — ao menos não sob o mesmo CNPJ.
 
+## 58 · Programas de Transferência CGU e Viagens a Serviço
+
+Nenhuma das quatro tabelas (`br_cgu_pe_de_meia.pe_de_meia`,
+`br_cgu_garantia_safra.garantia_safra`, `br_cgu_seguro_defeso.seguro_defeso`,
+`br_cgu_viagens.viagem`) tem view no DuckDB — mesmo gotcha já documentado
+para `garantia_safra` em `bridges.yaml`, lido via `read_parquet(...)` direto
+nas quatro. `valor_parcela`/`valor_diarias`/`valor_passagens` são STRING com
+vírgula decimal (`"200,00"`) — `CAST(regexp_replace(x, ',', '.') AS DOUBLE)`.
+
+- **T58-1 ✅ (2026-09-02)** O ritmo **não** é suave: `br_cgu_pe_de_meia` paga
+  R$0,5-0,7 bilhão/mês na maior parte do calendário (`Frequência` domina o
+  volume), mas fevereiro/2025 salta para **R$3,13 bilhões** — 3.011.187
+  pagamentos de `Conclusão` a R$1.000 cada, o bônus de fim do ensino médio
+  pago em lote logo após o encerramento do ano letivo. Março/2025 tem outro
+  pico menor de `Matrícula` (3.640.338 pagamentos, R$728 milhões) no início
+  do ano letivo seguinte. Qualquer leitura de "gasto mensal médio" sem isolar
+  esses dois meses subestima a volatilidade real do programa.
+- **T58-2 ✅ (2026-09-02)** Cruzando beneficiários distintos de novembro/2025
+  (`cpf_beneficiario`) com `br_ibge_populacao.municipio` (ano 2022, `SUM(populacao)
+  GROUP BY sigla_uf` — métrica `populacao` verificada): gradiente Norte/Nordeste
+  → Sul confirmado, ~10x de amplitude. Maior cobertura: **AP (11,59
+  beneficiários/mil hab.)**, seguido de AM (7,97), PI (7,71), AC (7,61), PA
+  (7,41); menor cobertura: **SP (1,10)**, PR (1,11), SC (1,19), RS (1,52),
+  MG (1,81). Consistente com um benefício de renda condicionada concentrado
+  nas regiões de maior vulnerabilidade — não uma distribuição uniforme por
+  matrícula no ensino médio.
+- **T58-3 ✅ (2026-09-02)** Join por `nis_favorecido` (chave comum às duas
+  tabelas, sem bridge necessária — mesmo nome, mesmo formato) entre os NIS
+  distintos de toda a série histórica: **35.189 pessoas** aparecem nas duas
+  bases (de 2.143.263 NIS distintos do Seguro-Defeso e 2.630.643 do
+  Garantia-Safra) — 1,6% e 1,3% dos respectivos públicos. Sobreposição real,
+  não erro: agricultor familiar do semiárido que também pesca
+  artesanalmente em período de defeso é elegível aos dois programas, que
+  têm regras e fontes de recurso distintas (FAT vs. Bolsa Família/MDS).
+- **T58-4 ✅ (2026-09-02)** Gasto total do Seguro-Defeso: R$1,81 bilhão em
+  2013 (391.997 beneficiários) → R$6,84 bilhões em 2025 (292.488
+  beneficiários) — **3,78x** em valor nominal com **25% menos**
+  beneficiários. Decompondo em duas frentes que fecham a conta (verificado
+  duas vias): (1) o valor médio por parcela paga acompanha o salário mínimo
+  quase exatamente — R$671,30/parcela em 2013 (SM oficial: R$678) e
+  R$1.501,70/parcela em 2025 (SM oficial: R$1.518), 2,24x; (2) o número de
+  parcelas pagas por beneficiário/ano subiu de 6,87 para 15,57 (2,27x) — mais
+  meses de defeso remunerados por pessoa, não só reajuste do piso legal.
+  2,24 × 2,27 × 0,75 (queda de beneficiários) = 3,81x ≈ 3,78x observado.
+- **T58-5 ✅ (2026-09-02)** Gasto federal com viagens a serviço (diárias +
+  passagens): R$1,43 bilhão em 2018 → R$2,51 bilhões em 2025, com queda a
+  R$0,58-0,81 bilhão em 2020-2021 (pandemia) e recuperação a partir de 2022.
+  O número de viagens ficou **estável** no período (990 mil em 2018, 811 mil
+  em 2025) — o gasto cresceu por viagem mais cara, não por mais viagens. Em
+  2025, o **Ministério da Justiça e Segurança Pública** concentra o maior
+  gasto (R$825,3 milhões, 173.869 viagens — Polícia Federal/Rodoviária
+  Federal viajam mais que qualquer outro órgão), seguido do Ministério da
+  Defesa (R$346,7 milhões) e do Ministério da Educação (R$326,0 milhões).
+
 ## Multi-referência (seção final)
 
 - **M1 ⏳ / M2 ⏳ / M3 ◐ / M4 ⏳ / M5 ⏳** — as cadeias completas exigem pipelines dedicados; componentes já medidos
