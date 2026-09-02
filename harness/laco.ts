@@ -27,6 +27,9 @@ export interface Resultado {
   /** avisos da etapa de sanidade: número que passou pela ordem de grandeza esperada */
   alertas?: string[];
   prosa?: string;
+  /** a prosa citava tabela do espelho e teve a citação apagada à força —
+   *  a reescrita pedida ao modelo não bastou. Sinal para revisão, não erro. */
+  prosaSaneada?: boolean;
   erro?: string;
   tentativas: number;
   passos: Passo[];
@@ -84,6 +87,37 @@ const soLista = (s: string) =>
 /** Tira cerca de markdown que o modelo às vezes põe apesar da instrução. */
 const limpaSql = (s: string) =>
   s.replace(/```(?:sql)?\s*/gi, "").replace(/```/g, "").trim();
+
+/**
+ * Item 3 do backlog: a convenção de `pages/analises/results/` é citar o
+ * ÓRGÃO de origem do dado, nunca a tabela nem a ferramenta —
+ * `br_ibge_pib.municipio` na prosa final é exatamente o que ela proíbe, e hoje
+ * nenhuma resposta gerada sai publicável sem edição à mão. A instrução sozinha
+ * (no prompt da etapa 9, abaixo) é do tipo que o modelo obedece na maioria das
+ * vezes; isto é a metade que transforma "maioria" em "todas".
+ */
+const REF_TABELA = /\bbr_[a-z_]+\.[a-z_]+\b/;
+
+/** `undefined` = a prosa não cita tabela. Caso contrário, a mensagem de
+ *  reparo — mesmo padrão das camadas do portão: diz o que consertar. */
+export function checaProsa(texto: string): string | undefined {
+  const m = texto.match(REF_TABELA);
+  if (!m) return undefined;
+  return `A prosa cita "${m[0]}" — nome de tabela do espelho, não texto para o leitor final. ` +
+    `Reescreva citando o ÓRGÃO de origem do dado (ex.: "segundo o Censo do IBGE", ` +
+    `"segundo a RAIS, do Ministério do Trabalho"), nunca a tabela nem a ferramenta.`;
+}
+
+/**
+ * Rede de segurança para quando a reescrita (uma tentativa, como o portão de
+ * SQL) ainda falha: em vez de publicar a tabela mesmo assim, apaga a citação.
+ * Silêncio é o lado certo de errar aqui — perder uma frase de atribuição é
+ * menos grave que vazar `br_ms_sim.microdados` num relatório.
+ */
+export function saneiaProsa(texto: string): { texto: string; saneada: boolean } {
+  if (!REF_TABELA.test(texto)) return { texto, saneada: false };
+  return { texto: texto.replace(new RegExp(REF_TABELA, "g"), "a fonte do espelho"), saneada: true };
+}
 
 export async function roda(q: string, exemplos: Caso[] = []): Promise<Resultado> {
   const sistema = montaPrefixo(exemplos);
@@ -238,14 +272,32 @@ export async function roda(q: string, exemplos: Caso[] = []): Promise<Resultado>
 
     // 9 · prosa
     const amostra = JSON.stringify(linhas.slice(0, 12));
-    const p = await perguntar(
+    const promptProsa =
       `ETAPA prosa\nPergunta: ${q}\nResultado da consulta: ${amostra}\n\n` +
       `Escreva um parágrafo em português respondendo à pergunta com estes números. ` +
-      `Cite o órgão de origem do dado, nunca a ferramenta nem o nome da tabela.`,
-      400);
+      `Cite o órgão de origem do dado, nunca a ferramenta nem o nome da tabela.`;
+    let p = await perguntar(promptProsa, 400);
     passos.push({ etapa: "prosa", detalhe: `${p.texto.length} chars`, segundos: p.segundos });
 
-    return { sql, linhas, n, alertas, prosa: p.texto.trim(), tentativas, passos, prefiladosMax };
+    // A checagem que transforma a instrução acima de "maioria das vezes" em
+    // "sempre": uma reescrita, e se ainda falhar, a citação é apagada à força
+    // (saneiaProsa) em vez de publicada — ver o comentário da função.
+    let erroProsa = checaProsa(p.texto);
+    if (erroProsa) {
+      passos.push({ etapa: "prosa#rejeitada", detalhe: erroProsa });
+      p = await perguntar(
+        `${promptProsa}\n\nA resposta anterior foi:\n${p.texto}\n\n${erroProsa}`,
+        400);
+      passos.push({ etapa: "prosa#2", detalhe: `${p.texto.length} chars`, segundos: p.segundos });
+      erroProsa = checaProsa(p.texto);
+    }
+    const { texto: prosaFinal, saneada } = erroProsa ? saneiaProsa(p.texto) : { texto: p.texto, saneada: false };
+    if (saneada) passos.push({ etapa: "prosa#saneada", detalhe: "citação de tabela apagada à força após a reescrita ainda falhar" });
+
+    return {
+      sql, linhas, n, alertas, prosa: prosaFinal.trim(), prosaSaneada: saneada || undefined,
+      tentativas, passos, prefiladosMax,
+    };
   }
 
   return { erro: `não passou do portão em ${MAX_TENTATIVAS} tentativas`, tentativas, passos, prefiladosMax };
