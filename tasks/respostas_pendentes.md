@@ -242,9 +242,30 @@ não daquele: o **Agente A caiu por rate limit** no meio do backlog de
 perguntas e nunca retomou. O que ficou por responder:
 
 - **T37-2/3/4 em diante**, mais os temas listados acima como "ainda não tocado".
+  **Retomado em 2026-09-02**: T37-2/3/4 já estavam completos e staged quando
+  a sessão de retomada assumiu (confirmados, não refeitos) — commit
+  `5e4341e`. Tema 37 está fechado (T37-1 a T37-5 todos ✅/◐). Além disso
+  nesta mesma janela outra(s) sessão(ões) concorrente(s) fecharam T31
+  (commit `4795752`), T35-2/4 (`2c96122`) e mexeram em T42 (`377c2ed`) — não
+  refazer, ver `docs/respostas.md`. T43-4 fechado nesta sessão (`ff0fd91`).
 - Os dois achados que o agente produziu **já foram mesclados** em
   `bridges.yaml` (ILIKE de resultado eleitoral casando "não eleito"; censo
   2010+2022 na mesma coluna `ano` dobrando o total sem filtro) — não refazer.
 
 O log completo da rodada, com os 5 bugs confirmados e o que cada agente
 entregou, está em `done/bugs_e_achados_agentes.md`.
+
+## Bugs encontrados nesta sessão (2026-09-02)
+
+- **`br_me_cnpj.empresas.capital_social` tem valor-sentinela**: 124 linhas
+  (snapshot 2025-09) têm `capital_social = 999999999999.0` (R$ 1 trilhão
+  exatos, quase o PIB nacional inteiro de 2021) — claramente um
+  placeholder/erro de preenchimento, não capital real. Qualquer soma ou HHI
+  sobre essa coluna sem excluir esse valor-sentinela fica distorcido para o
+  CNAE/UF onde ele cai. Usado para fechar T30-1 (HHI de concentração por
+  divisão CNAE) — refazer excluindo essas 124 linhas não mudou o resultado
+  neste caso (r's idênticos), mas o próximo uso da coluna deveria filtrar
+  `capital_social < 999999999999` ou tratar como nulo. Não catalogado em
+  `bridges.yaml` (não é join, é qualidade de valor) — considerar registrar
+  em `dicionario_coverage.json` ou como nota na tabela se o padrão se
+  repetir em outro dataset do CNPJ.
