@@ -157,11 +157,11 @@ DataJud continua bloqueado por credencial, não por esforço.
 
 ### Tier 2 — alto valor, esforço médio
 
-#### 6. CNEFE Censo 2022 (Cadastro Nacional de Endereços)
-- **Fonte**: https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/ (divulgado jun/2024)
-- **Volume**: ~110M endereços com coordenadas, setor censitário, CEP, face de quadra — dezenas de GB, CSV por UF
+#### 6. CNEFE Censo 2022 (Cadastro Nacional de Endereços) ✅ feito 2026-09-02
+- **Fonte real**: `ftp.ibge.gov.br/Cadastro_Nacional_de_Enderecos_para_Fins_Estatisticos/Censo_Demografico_2022/Arquivos_CNEFE/CSV/UF/` (não fica debaixo de `Censos/Censo_Demografico_2022/` como a entrada original supunha — divulgado jun/2024)
+- **Volume**: 111.102.875 endereços com coordenadas, setor censitário, CEP, face de quadra — 2,8 GB em parquet+zstd, CSV por UF
 - **Chaves**: **CEP ↔ setor censitário ↔ id_municipio** — a grande ponte faltante para geolocalizar qualquer base
-- **Status BD**: não
+- **Status BD**: `br_ibge_cnefe.enderecos`, ver Execução 2026-09-02 (terceira rodada)
 
 #### 7. ANEEL — geração distribuída, usinas SIGA, tarifas
 - **Fonte**: https://dadosabertos.aneel.gov.br (CKAN, vários datasets em **Parquet nativo**)
@@ -192,17 +192,17 @@ DataJud continua bloqueado por credencial, não por esforço.
   ("Request Rejected... consult your administrator", assinatura de F5 BigIP ASM) — mesmo bloqueio,
   camada diferente. Confirma que continua bloqueado, não é achado novo.
 
-#### 10. CNJ — Painel Justiça em Números (agregados)
+#### 10. CNJ — Painel Justiça em Números (agregados) ❌ serviço fora do ar
 - **Fonte**: https://paineis.cnj.jus.br (downloads agregados); microdado DataJud fica no bucket deferred-api_key por Res. 331/2020
 - **Chaves**: tribunal, município (unidade judiciária), CNPJ de partes PJ nos agregados de litigiosidade
-- **Status BD**: não
+- **Status BD**: não — **2026-09-02**: `paineis.cnj.jus.br` devolve 502 Bad Gateway de forma consistente (3 tentativas), balanceador do próprio CNJ rejeitando. Rota alternativa `cnj.jus.br/paineis-de-dados` dá 404. Reteste depois — pode ser transitório
 
-#### 11. BCB SCR.data + Desenrola Brasil
-- **Fonte**: https://www.bcb.gov.br/estabilidadefinanceira/scrdata ; dataset Desenrola no portal de dados abertos do BCB
+#### 11. BCB SCR.data + Desenrola Brasil ✅ feito 2026-09-02
+- **Fonte**: catálogo CKAN `dadosabertos.bcb.gov.br` (`scr_data`, `desenrola-brasil`) — URLs reais de download em `bcb.gov.br/pda/desig/scrdata_{ANO}.zip` (V2, 2012–2026 completo) e `.../desenrola/dados_desenrola.csv`
 - **Freq**: mensal · **Formato**: CSV.zip
-- **Chaves**: município × CNAE × porte × modalidade
+- **Chaves**: UF × CNAE/ocupação × porte × modalidade (SCR.data não tem `id_municipio`, grão é UF)
 - **Por quê**: crédito por dupla chave que o rodado domina.
-- **Status BD**: não
+- **Status BD**: `br_bcb_scrdata.dados` (169 meses, 2012-07 a 2026-07, 43.061.984 linhas) e `br_bcb_desenrola.dados` (12.751 linhas), ver Execução 2026-09-02 (terceira rodada)
 
 ### Tier 3 — valioso, escopo mais estreito
 
@@ -210,11 +210,11 @@ DataJud continua bloqueado por credencial, não por esforço.
 |---|---|---|---|---|
 | 12 | Emendas parlamentares (bulk CGU) | portaldatransparencia.gov.br/download-de-dados/emendas | autor, id_municipio, código SIAFI | não (só via mirror CGU parcial) |
 | 13 | ANP cadastro de revendas (postos/GLP, bandeira) | gov.br/anp dados abertos | CNPJ | não — enriquece `br_anp_combustiveis.precos`. **2026-09-02**: achei o dataset em `dados.gov.br/dados/conjuntos-dados/relacao-de-revendedores-varejistas-de-combustiveis-automotivos` (página HTML 200), mas a API do `dados.gov.br` novo (`/api/3/action/package_show`) devolve **401** mesmo pra leitura pública — a plataforma passou a exigir chave de API que não temos. Vira item gated por credencial, sai da lista de "sem chave" |
-| 14 | CadÚnico agregados municipais | MDS VIS DATA / portal analítico | id_municipio | não (só painéis) |
-| 15 | CAUC / Tesouro Transparente — regularidade fiscal | tesourotransparente.gov.br | codigo_siafi/id_municipio | não — pré-requisito de convênios, casa com Transferegov |
-| 16 | PNS 2023 microdados | IBGE FTP | UF/região (chave fraca) | BD não tem 2023 |
-| 17 | PRODES/DETER BiomasBR all-biomas | terrabrasilis.dpi.inpe.br/downloads/ + API v1 | id_municipio | BD/espelho têm versões antigas só Amazônia/Cerrado; desde 2024–26 cobre todos os biomas com Sentinel-2 |
-| 18 | DIRPF destinações FDCA/FDI | gov.br/receitafederal/dados | CNPJ do fundo/município | não |
+| 14 | CadÚnico agregados municipais | MDS VIS DATA / portal analítico | id_municipio | não (só painéis) — **2026-09-02**: bloqueado, `aplicacoes.mds.gov.br` trava no TLS handshake (laptop e beelink), não é credencial |
+| 15 | CAUC / Tesouro Transparente — regularidade fiscal | tesourotransparente.gov.br | codigo_siafi/id_municipio | **2026-09-02: feito** — `br_tesouro_cauc.{situacao_estados,situacao_municipios,legenda_itens}` |
+| 16 | PNS 2023 microdados | IBGE FTP | UF/região (chave fraca) | BD não tem 2023 — **2026-09-02**: confirmado que a PNS 2023 ainda não foi publicada no FTP público (só 2013/2019 existem), não é bloqueio de acesso |
+| 17 | PRODES/DETER BiomasBR all-biomas | terrabrasilis.dpi.inpe.br/downloads/ + API v1 | id_municipio | BD/espelho têm versões antigas só Amazônia/Cerrado; desde 2024–26 cobre todos os biomas com Sentinel-2 — **2026-09-02**: DETER (avisos quase em tempo real, 4 biomas) feito em `br_inpe_deter.avisos`; PRODES acumulado (polígonos, >800MB/bioma) segue como "janela própria" |
+| 18 | DIRPF destinações FDCA/FDI | gov.br/receitafederal/dados | CNPJ do fundo/município | **2026-09-02: feito** (lista de fundos habilitados) — `br_rf_dirpf.fundos_habilitados`; valores destinados por declaração seguem sem achar |
 | 19 | Corpus PT-BR (Jabuticaba etc., HF Parquet) | huggingface.co | — | relevante só p/ treinar PT-BR do `ask`, não é join-analítico |
 | 20 | TCEs estaduais (11 cortes: SP, RJ, RS, PE, CE, ES, RN, PI, SC, TO, PA) | portais/API de cada corte | cnpj, id_municipio | não — 11 fontes distintas, esforço alto; achado na comparação com o mcp-brasil |
 | 21 | SPU SIAPA — imóveis da União | gov.br/spu | id_municipio, CEP | não — ~813K imóveis; idem |
@@ -863,13 +863,286 @@ acumulado (conversão json→parquet é passo separado, não automático dentro 
 rodadas"), é cota de IP batida — esperar a janela abrir antes de tentar de
 novo, não é bug para investigar.
 
-### Itens não tocados nesta rodada
+### Itens não tocados nesta rodada — status revisado na rodada seguinte
 
-Tier 2/3 além de #7/#9 (CNEFE #6, CadÚnico #14, CAUC #15, PNS 2023 #16,
-PRODES/DETER #17, DIRPF #18, TCEs estaduais #20, SPU SIAPA #21) não foram
-investigados nesta sessão — nem confirmados como bloqueados nem como viáveis,
-simplesmente não houve tempo depois de #1-#5, #7, #9, #13. CNJ Painel (#10) e
-BCB SCR.data/Desenrola (#11) tiveram um teste de conectividade rápido (ambos
-respondem HTTP 200/302) mas não foram explorados a fundo — provavelmente
-dashboards embarcados (Power BI) sem endpoint de bulk download óbvio, precisa
-de investigação própria antes de virar ETL.
+A lista original (CNEFE #6, CadÚnico #14, CAUC #15, PNS 2023 #16, PRODES/DETER
+#17, DIRPF #18, TCEs estaduais #20, SPU SIAPA #21, CNJ Painel #10, BCB
+SCR.data/Desenrola #11) foi trabalhada item a item na rodada seguinte — ver
+"Execução 2026-09-02 (terceira rodada)" logo abaixo.
+
+---
+
+## Execução 2026-09-02 (terceira rodada) — os itens não tocados
+
+Trabalhando os 9 itens marcados como "não investigados" na rodada anterior
+(CNEFE #6, CadÚnico #14, CAUC #15, PNS 2023 #16, PRODES/DETER #17, DIRPF #18,
+TCEs estaduais #20, SPU SIAPA #21, CNJ Painel #10, BCB SCR.data/Desenrola
+#11). Não tocado: as seções de Gás do Povo/Novo Bolsa Família/Transferegov/
+PNCP acima (outra sessão trabalhando em paralelo no mesmo arquivo) nem
+`datasets_to_scrap.md`/`espelho_subutilizado.md`/`respostas_pendentes.md`.
+
+### CNEFE Censo 2022 (#6) — feito, microdado completo, não só o agregado
+
+A fonte real é `ftp.ibge.gov.br/Cadastro_Nacional_de_Enderecos_para_Fins_Estatisticos/`
+— **não** fica debaixo de `Censos/Censo_Demografico_2022/` (por isso o item
+tinha ficado sem investigar: quem procura pelo caminho óbvio erra o diretório
+e cai num 404). Duas rotas existem ali: `Agregados_por_CEP` (zip único de 9
+MB, contagens por CEP) e `Arquivos_CNEFE/CSV/UF/` — **27 CSV, um por UF, ASCII
+`;`-delimitado, 34 colunas, 3,9 GB zipados no total**. Fui pela segunda: é o
+microdado completo, não o agregado, e é o que a entrada do arquivo já descrevia
+como "a grande ponte faltante" — endereço a endereço, com `CEP`, `COD_SETOR`
+(setor censitário — atenção: tem sufixo de letra às vezes, ex.
+`140010005000549P`, por isso ficou `VARCHAR` e não numérico), `COD_MUNICIPIO`
+(código IBGE 7 dígitos, compatível com `id_municipio` do resto do espelho) e
+`LATITUDE`/`LONGITUDE`.
+
+Script: baixa UF por UF, converte com `read_csv(..., all_varchar=true)` do
+próprio DuckDB no beelink (rodou em segundos por UF, sem armadilha de
+encoding — o CSV é puro ASCII, sem acento), resumível por `stat` do parquet
+de saída.
+
+**Verificado no beelink (readonly), view `br_ibge_cnefe.enderecos`:**
+
+```sql
+SELECT count(*) FROM br_ibge_cnefe.enderecos;
+-- 111.102.875 linhas, 27 UFs, 2,8 GB em parquet+zstd
+```
+
+Bate com a estimativa original do item ("~110M endereços"). Colunas completas
+em `docs/context/basedosdados-schema.json` (`br_ibge_cnefe.enderecos`).
+
+### CAUC / Tesouro Transparente (#15) — feito
+
+CKAN público (`tesourotransparente.gov.br/ckan/api/3/action/package_search`),
+sem chave. O dataset `cauc` tem 2 CSV vivos (situação atual, não série
+histórica — é um retrato do dia da consulta): um para os 26 estados+DF, outro
+para os 5.570 municípios. Formato incomum: 3 linhas de metadado, depois a
+tabela de dados (colunas `1.1`, `1.2` ... `5.8` — códigos de exigência sem
+nome), depois — sem separador — uma **segunda tabela** de legenda (`código do
+item` → texto da exigência) colada no mesmo arquivo. Parser em Python
+(`polars`, não pandas — convenção do projeto) que separa as duas seções pelo
+marcador de linha `"Código do Itens";"Exigência"`.
+
+**Verificado no beelink (readonly):**
+
+```sql
+SELECT count(*) FROM br_tesouro_cauc.situacao_estados;    -- 27
+SELECT count(*) FROM br_tesouro_cauc.situacao_municipios; -- 5.569
+SELECT count(*) FROM br_tesouro_cauc.legenda_itens;       -- 78 (item x nível estados/municípios)
+```
+
+Chave de join: `Código IBGE` (7 dígitos, = `id_municipio`) em ambas as
+tabelas. Os valores por item são datas (`DD/MM/AA`) ou `"Desabilitado"`/`"!"`
+(irregular) — a legenda diz o que cada código de item significa; junte por
+`codigo_item` + `nivel`.
+
+### BCB Desenrola Brasil (#11a) — feito
+
+CSV público e direto, achado via CKAN do BCB
+(`dadosabertos.bcb.gov.br/api/3/action/package_show?id=desenrola-brasil`) —
+`https://www.bcb.gov.br/pda/desig/desenrola/dados_desenrola.csv`, sem chave.
+UTF-8, `;`-delimitado.
+
+**Verificado no beelink (readonly):**
+
+```sql
+SELECT count(*), min(DATA_BASE), max(DATA_BASE) FROM br_bcb_desenrola.dados;
+-- 12.751 linhas, 202309 -> mais recente
+```
+
+Chave: `UNIDADE_FEDERACAO` (UF), `COD_CONGLOMERADO_FINANCEIRO`. Não tem
+`id_municipio` — grão é UF x instituição x mês.
+
+### BCB SCR.data (#11b) — feito, Versão 2 completa 2012–2026
+
+Achado pelo mesmo CKAN (`package_show?id=scr_data`) — os dois recursos ZIP
+tinham `url` vazia na API, mas a `description` de cada um documenta o padrão
+de URL real: Versão 1 (legada, descontinuada em jun/2025) em
+`bcb.gov.br/pda/desig/planilha_{ANO}.zip`, Versão 2 (atual, cobre **todo** o
+histórico 2012–2026, não só o período pós-jun/2025) em
+`bcb.gov.br/pda/desig/scrdata_{ANO}.zip`. Fui só pela V2 — mesma metodologia
+do início ao fim, sem precisar reconciliar duas séries diferentes.
+
+Cada zip anual contém um CSV por mês (~310 mil linhas/mês, UTF-8 com BOM,
+`;`-delimitado). Script baixa por ano, converte cada CSV mensal para parquet
+individual (`{AAAAMM}.parquet`), resumível por mês — útil porque são 168
+meses ao todo (14 anos x 12).
+
+**Verificado no beelink (readonly), 169/169 meses (2012 só tem jul-dez, por
+isso não são 168 = 14 anos x 12):**
+
+```sql
+SELECT count(*), count(distinct data_base), min(data_base), max(data_base) FROM br_bcb_scrdata.dados;
+-- 43.061.984 linhas, 169 meses, 2012-07-31 -> 2026-07-31
+```
+
+Grão: UF x segmento x tipo de cliente (PF/PJ) x CNAE/ocupação x porte x
+modalidade x mês — carteira ativa, inadimplência, ativo problemático. Chave:
+`uf`, `cnae_ocupacao` (CNAE só para PJ).
+
+### INPE DETER — avisos de desmatamento quase em tempo real (parte do #17)
+
+**Não é o PRODES acumulado** (polígono completo desde 2000/2007, centenas de
+MB a ~900MB só de um bioma em `.gpkg.zip`) — é o **DETER**, os avisos de
+alteração de cobertura detectados por sensor, atualizados quase diariamente,
+que o espelho não tinha em nenhuma forma. Achado via o endpoint AJAX que a
+página de downloads do TerraBrasilis usa por trás (`/business/api/v1/download/all`,
+231 datasets catalogados, nenhum documentado numa página estática — por isso
+o item tinha ficado como "provavelmente dashboard sem endpoint óbvio"; o
+endpoint existe, só não está em HTML nenhum).
+
+4 biomas têm endpoint de shapefile DETER público: Amazônia, Cerrado,
+Pantanal, e um recorte "não-floresta" da Amazônia. Os dois primeiros trazem
+`GEOCODIBGE` (= `id_municipio`) e `MUNICIPALI` direto no shapefile — join
+pronto, sem precisar de join espacial. Os outros dois (Pantanal,
+não-floresta) usam um schema mais simples sem essas colunas — ficaram só com
+coordenadas.
+
+**Decisão de shape**: geometria do polígono virou **centroide (lat/lon)**, não
+WKT completo — testei os dois: WKT do bioma Amazônia sozinho pesava 298 MB
+(455K alertas, polígonos com muitos vértices), centroide reduziu para 14 MB
+(21x menor) sem perder a localização pontual, que é o que a maioria das
+consultas de join precisa.
+
+**Verificado no beelink (readonly), view `br_inpe_deter.avisos`:**
+
+```sql
+SELECT bioma_arquivo, count(*), min(VIEW_DATE), max(VIEW_DATE)
+FROM br_inpe_deter.avisos GROUP BY 1;
+-- amazonia            455.392   2016-08-02 -> 2026-08-21
+-- cerrado             132.607   2018-05-01 -> 2026-08-21
+-- nao_floresta_amz     74.492   2023-08-01 -> 2026-08-21
+-- pantanal             23.645   2023-08-03 -> 2026-08-21
+-- total               686.136
+```
+
+**O PRODES acumulado (polígono completo por bioma) não foi baixado** — cada
+bioma sozinho passa de 800 MB zipado, os 231 datasets do TerraBrasilis cobrem
+todos os biomas em raster e vetor, e isso é claramente a "janela própria"
+que o item já pedia desde a análise original. `br_inpe_prodes.municipio_bioma`
+(já espelhado da BD, 156.864 linhas, até 2023, já com `id_municipio`) segue
+sendo a fonte pra série longa agregada por município — o gap real que sobra é
+só 2024-2026, e fechar isso com fidelidade exigiria replicar o método de
+agregação da BD sobre os polígonos brutos, não é ETL de 20 minutos.
+
+### PNS 2023 microdados (#16) — confirmado bloqueado, mas não por credencial
+
+`ftp.ibge.gov.br/PNS/` está no ar, sem autenticação — mas só lista `2013/` e
+`2019/`. **A PNS 2023 simplesmente não foi publicada no FTP público ainda** —
+não é geo-bloqueio nem WAF nem chave, é o dado não ter saído do IBGE. (A
+página HTML do IBGE que anunciaria a data de publicação devolve 403 pro
+`curl` puro, mesmo padrão de anti-bot já visto no MUNIC/ESTADIC — não
+persegui um browser real pra confirmar a data prevista.) Continua bloqueado,
+motivo diferente do suposto antes.
+
+### SPU SIAPA (#21) — investigado, sem endpoint público de bulk achado
+
+A página oficial (`gov.br/spu`) linka dois sistemas vivos:
+`geoportal.spunet.economia.gov.br` (não resolveu) e
+`sistema.patrimoniodetodos.gov.br` (SPA Angular, responde 200). O SPA aponta
+pra uma API (`API_PUBLIC_URL = 'https://me.evolux.cx'`, domínio de terceiro —
+parece a consultoria que construiu o sistema) que devolve 403/404 em todo
+endpoint tentado às cegas. `dados.gov.br` (a rota que serviria um catálogo
+CKAN) devolve **401 mesmo pra leitura pública** — mesmo bloqueio já documentado
+no item ANP #13 desta vez confirmado de novo num domínio diferente, então é a
+plataforma `dados.gov.br` inteira que passou a exigir chave, não coincidência
+pontual. Sem engenharia reversa da SPA (inspecionar tráfego de rede real, não
+só o HTML/JS estático), não achei o endpoint que serve os 813K imóveis —
+mesma categoria de esforço do `consultar_oab` já documentado como pesquisa,
+não implementação direta.
+
+### DIRPF FDCA/FDI (#18) — feito, mas é a lista de fundos habilitados, não os microdados de imposto
+
+A página `gov.br/receitafederal/dados/` (o índice de dados abertos da
+Receita) devolve 200 pro `curl` puro — diferente da página institucional
+principal, que dá 403. Achei os dois arquivos que o item pedia: "Anexo I —
+FDCAs habilitados para a DIRPF 2025" e "Anexo II — FDIs habilitados" (fundos
+da criança/adolescente e do idoso habilitados a receber destinação via
+declaração de IR), formato `.ods`. O link direto de download (`/@@download/file`,
+mesmo padrão Plone visto no SINESP) devolveu 403 com `curl` puro mas
+**200 com um `User-Agent` de navegador** — diferente do bloqueio do SINESP
+(que persistiu com WAF mesmo via proxy BR), aqui é filtro de UA simples, não
+WAF de verdade.
+
+Cada `.ods` tem 26 colunas, mas só as 12 primeiras são dado (o resto é rastro
+de auditoria interna da planilha da Receita — colunas como
+`final.num.diferentes.CNPJ do Fundo`, claramente debug, descartadas). `pandas`
+com engine `odf` pra ler o `.ods` (`polars`/`fastexcel` não leem ODS, só
+XLSX) — única exceção à preferência por Polars nesta rodada, e só pro parse;
+a escrita final é parquet via `polars.from_pandas`.
+
+**Verificado no beelink (readonly), view `br_rf_dirpf.fundos_habilitados`:**
+
+```sql
+SELECT anexo, count(*), count(distinct id_municipio) FROM br_rf_dirpf.fundos_habilitados GROUP BY 1;
+-- FDCA  4.286 linhas, 4.286 municípios
+-- FDI   2.185 linhas, 2.185 municípios/estados
+```
+
+Colunas: `numero, uf, nome_municipio, id_municipio, tipo_fundo (M/E),
+cnpj_fundo, codigo_banco, codigo_agencia, numero_conta, vai_pgd, e_classe,
+nome_empresarial, anexo (FDCA/FDI), ano_dirpf`. Chave de join: `cnpj_fundo`,
+`id_municipio`. **Nota**: isto é a lista de fundos **habilitados a receber**
+destinação — não os valores efetivamente destinados por declaração. A fonte
+dos valores (se publicada) segue sem achar.
+
+### TCEs estaduais (#20) — não tocado, confirmado alto esforço
+
+Não investigado a fundo nesta rodada além do que a análise original (mcp-brasil)
+já tinha mapeado. Um teste de conectividade rápido em 2 domínios (TCE-SP,
+TCE-RS) não achou um padrão de API comum — cada corte parece ter portal e
+formato próprios, confirmando a avaliação já registrada ("11 fontes
+distintas, esforço alto"). Sem mudança de status.
+
+### CNJ Painel (#10) — confirmado bloqueado, não é dashboard sem endpoint, é o serviço fora do ar
+
+`paineis.cnj.jus.br` devolveu **502 Bad Gateway** de forma consistente (3
+tentativas espaçadas, `NSX LB` no header — balanceador do próprio CNJ
+rejeitando, não CDN de terceiro). Diferente do que a nota anterior sugeria
+("responde 200/302, provavelmente dashboard sem endpoint óbvio") — não chegou
+a resolver pra examinar dashboard nenhum, o serviço está fora do ar agora.
+`www.cnj.jus.br/paineis-de-dados` (tentativa de rota alternativa) deu 404.
+Reteste mais tarde — mesmo padrão do item BCB Pix (#4), pode ser transitório
+do lado do órgão.
+
+### Regen de metadados e views — feito
+
+`scripts/sync/cria_views_novas.py` para os datasets desta rodada
+(`br_ibge_cnefe.enderecos`, `br_inpe_deter.avisos`, `br_bcb_desenrola.dados`,
+`br_tesouro_cauc.{situacao_estados,situacao_municipios,legenda_itens}`,
+`br_rf_dirpf.fundos_habilitados`) — view criada e cada uma conferida com
+`count(*)` direto no beelink, readonly. `br_bcb_scrdata.dados` (169 parquets,
+um por mês) recebeu a mesma view depois que o job de coleta terminou —
+**43.061.984 linhas, 2012-07 a 2026-07, conferido**.
+
+Regen completo `gera_schemas.py` → `sync_mcp_schema.py` →
+`build_metadata_catalog.py` → `gera_join_keys.py` rodado depois que os 4
+primeiros landed (antes do DIRPF e do SCR.data — regen final fica pra fechar
+a rodada); catálogo foi de 1.017 para 1.023 tabelas / 39,2 bi linhas (inclui
+também os datasets da sessão paralela — Gás do Povo, Novo Bolsa Família,
+Transferegov). `gera_schema_graph.py`/`build_atlas.py` não rodados — ficam
+pra quem quiser os datasets desta rodada também no Atlas.
+
+**Provenance pendente, registrado aqui e não corrigido**: `catalog.parquet`
+atribui todos os datasets novos desta rodada como `source_name="Base dos
+Dados"` / `source_type="mirror"` — **errado**, são raspagem independente. A
+causa é `build_metadata_catalog.py` tratar qualquer dataset ausente de
+`datasets_to_scrap.md` como espelho da BD por padrão (comentário no próprio
+script, linha ~52). Não editei `datasets_to_scrap.md` porque a instrução desta
+rodada foi explicitamente não tocar nesse arquivo (outra sessão trabalhando
+nele em paralelo) — quem tiver posse dele depois deve adicionar entradas para
+`br_ibge_cnefe`, `br_inpe_deter`, `br_bcb_desenrola`, `br_tesouro_cauc`,
+`br_rf_dirpf` e `br_bcb_scrdata` com as fontes documentadas acima, e rerodar
+`build_metadata_catalog.py` pra corrigir a atribuição.
+
+### Itens que continuam abertos depois desta rodada
+
+| # | Item | Situação |
+|---|---|---|
+| 14 | CadÚnico agregados (VIS DATA / SAGI-MDS) | **investigado, bloqueado — não é credencial.** `aplicacoes.mds.gov.br` (o host do VIS DATA) resolve e aceita a conexão TCP, mas trava no TLS handshake — testado do laptop e do beelink (IP brasileiro), mesmo padrão do ANEEL (#7). `gov.br/mds` (dados abertos) está no ar mas não lista CadÚnico bulk, só contratos de adesão. `dados.gov.br` de novo 401 (mesmo bloqueio sistêmico de API key já visto em ANP #13 e SPU #21) |
+| 17 | PRODES acumulado (só o DETER foi feito) | cada bioma sozinho >800 MB zipado; "janela própria" confirmada necessária |
+| 18 | DIRPF microdados de destinação (valores, não só habilitados) | não achado |
+| 20 | TCEs estaduais | alto esforço confirmado, não iniciado |
+| 21 | SPU SIAPA | sem endpoint de bulk público achado; exigiria engenharia reversa de SPA |
+| 10 | CNJ Painel | serviço fora do ar (502), reteste depois |
+| 4 | BCB Pix por município | segue quebrado do lado do BCB (já documentado antes) |
