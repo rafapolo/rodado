@@ -1,0 +1,111 @@
+{
+  "_comentario": [
+    "Uma linha por dataset AMBÍGUO — o que o separa do irmão, não o que ele é.",
+    "Item 1 do harness/tasks/backlog.md: 24 das 36 falhas da rodada de 274 foram o",
+    "modelo escolhendo o parente errado. `provenance_notes` inteiras já foram",
+    "tentadas e descartadas na Rodada 3 (76% boilerplate), então aqui cabe frase",
+    "curta e contrastiva, nunca descrição geral.",
+    "",
+    "REGRA DE ENTRADA: um dataset só pode aparecer em `descricoes` se estiver num",
+    "par detectado por harness/desambigua.ts OU num grupo declarado em",
+    "`grupos_semanticos`. É o que impede o arquivo de virar um glossário do",
+    "catálogo inteiro e estourar o orçamento de contexto (item 4 do backlog).",
+    "`prefixo.test.ts` trava essa regra."
+  ],
+  "grupos_semanticos": {
+    "producao_agropecuaria_ibge": {
+      "motivo": "PAM/PPM/PEVS: três siglas de três letras do mesmo órgão para lavoura, rebanho e extração vegetal. `ibge_ppm` perdeu 4x na rodada de 274, sempre para `ibge_pam`.",
+      "datasets": ["br_ibge_pam", "br_ibge_ppm", "br_ibge_pevs"]
+    },
+    "vinculo_de_trabalho": {
+      "motivo": "CAGED é fluxo mensal, RAIS é estoque anual. Falha medida: pediu `me_caged` e deu `me_rais`. Nenhuma regra de string liga os dois nomes.",
+      "datasets": ["br_me_caged", "br_me_rais", "br_me_rais_identificada"]
+    },
+    "financas_municipais": {
+      "motivo": "Falha medida: pediu `tesouro_capag` e deu `firjan_ifgf` ou `me_siconfi`. Três medidas de dinheiro de município, siglas sem nada em comum; `ibge_pib` entra porque é o produto, e é confundido com orçamento (3 perdas).",
+      "datasets": ["br_tesouro_capag", "br_firjan_ifgf", "br_me_siconfi", "br_ibge_pib", "br_me_sic"]
+    },
+    "servidor_publico_federal": {
+      "motivo": "`mp_pep` perdeu 3x. PEP, SIAPE e o cadastro da CGU descrevem o mesmo funcionalismo por recortes diferentes, e nenhum nome diz isso.",
+      "datasets": ["br_mp_pep", "br_me_siape", "br_cgu_servidores_executivo_federal"]
+    },
+    "rede_e_cobertura_de_saude": {
+      "motivo": "`ms_atencao_basica` perdeu 3x. Cobertura de equipe não é cadastro de estabelecimento, e os dois respondem a 'saúde por município'.",
+      "datasets": ["br_ms_atencao_basica", "br_ms_cnes"]
+    },
+    "avaliacao_de_alfabetizacao": {
+      "motivo": "`inep_avaliacao_alfabetizacao` perdeu 3x. ANA, SAEB e a avaliação atual medem alfabetização em épocas e etapas diferentes; os nomes não datam nada.",
+      "datasets": ["br_inep_avaliacao_alfabetizacao", "br_inep_ana", "br_inep_saeb"]
+    },
+    "vacinacao": {
+      "motivo": "SI-PNI microdado, SI-PNI agregado e cobertura vacinal municipal respondem à mesma pergunta com grãos diferentes.",
+      "datasets": ["br_ms_sipni_microdados", "br_ms_sipni_doses_historicas", "br_ms_imunizacoes"]
+    },
+    "mortalidade_e_natalidade": {
+      "motivo": "SIM e SINASC são o par óbito/nascimento; SIM já vem no par de sigla com SIA e SIH.",
+      "datasets": ["br_ms_sim", "br_ms_sinasc"]
+    }
+  },
+  "descricoes": {
+    "br_ibge_pam": "lavoura: área plantada, colhida e valor da produção agrícola por município (rebanho é br_ibge_ppm)",
+    "br_ibge_ppm": "pecuária: efetivo de rebanhos, leite, ovos, mel e aquicultura por município (lavoura é br_ibge_pam)",
+    "br_ibge_pevs": "extração vegetal e silvicultura — madeira, carvão, açaí, erva-mate; não é lavoura nem rebanho",
+
+    "br_me_caged": "fluxo mensal de emprego formal 2020+: admissão e desligamento, é daqui que sai o saldo do mês",
+    "br_me_rais": "estoque anual de vínculos em 31/12, 1985+; não dá movimentação mensal — isso é br_me_caged",
+    "br_me_rais_identificada": "só estabelecimentos com CNPJ identificado, 2010-2021; sem vínculo de pessoa",
+
+    "br_tesouro_capag": "a nota A-D de capacidade de pagamento que o Tesouro dá a cada estado e município",
+    "br_firjan_ifgf": "índice FIRJAN de gestão fiscal — ranking calculado por entidade privada, não é dado orçamentário",
+    "br_me_siconfi": "os valores orçamentários em si: receita e despesa declaradas por município, UF e União",
+    "br_ibge_pib": "PIB e Gini de município, UF e Brasil — produto da economia, não orçamento público",
+    "br_me_sic": "custo de transferências da União por unidade organizacional; não tem recorte de município",
+
+    "br_mp_pep": "cargos e funções comissionadas do Executivo federal, agregado por mês, sem identificar pessoa",
+    "br_me_siape": "SIAPE: o cadastro de servidores federais, com vínculo e remuneração",
+    "br_cgu_servidores_executivo_federal": "cadastro e remuneração de servidores publicados pela CGU no Portal da Transparência",
+
+    "br_ms_atencao_basica": "cobertura de atenção básica e Saúde da Família por município: equipes e população coberta",
+    "br_ms_cnes": "CNES: cadastro dos estabelecimentos de saúde, leitos, equipamentos e profissionais",
+
+    "br_inep_avaliacao_alfabetizacao": "avaliação de alfabetização do 2º ano em vigor: taxa_alfabetizacao por município e por aluno",
+    "br_inep_ana": "ANA, a avaliação de alfabetização que existiu até 2016; escola e prova, série encerrada",
+    "br_inep_saeb": "SAEB: proficiência do aluno por etapa (5º, 9º, 3ª série), não é indicador de alfabetização",
+
+    "br_ms_sia": "SIA: produção ambulatorial — consultas e procedimentos fora de internação",
+    "br_ms_sih": "SIH: internação hospitalar pela AIH — quem foi internado, não quem foi atendido",
+    "br_ms_sim": "SIM: óbitos, um por linha, com causa básica em CID-10",
+    "br_ms_sinasc": "SINASC: nascidos vivos, um por linha — o par de nascimento do br_ms_sim",
+
+    "br_ibge_pnad": "PNAD antiga: microdados compatibilizados 1992-2015, série encerrada",
+    "br_ibge_pnadc": "PNAD Contínua 2012+, a série corrente — use esta para qualquer ano recente",
+    "br_ibge_pnad_covid": "só o dicionário chegou ao espelho; não há microdado da PNAD COVID aqui",
+
+    "br_ibge_ipca": "IPCA cheio do mês, por categoria, Brasil/RM/município",
+    "br_ibge_ipca15": "IPCA-15: a prévia, com coleta encerrada no dia 15 — número diferente do IPCA cheio",
+
+    "br_ibge_censo_2022": "Censo 2022 agregado: população por idade/sexo/raça, domicílio, setor censitário, endereços",
+    "br_ibge_censo2022_raca": "recorte de cor/raça do Censo 2022: fecundidade por idade e instrução",
+    "br_ibge_censo2022_religiao": "recorte de religião do Censo 2022, mais conjugalidade, fecundidade e indígenas",
+    "br_ibge_censo_demografico": "Censos 1970-2010: microdados de pessoa e domicílio e o setor censitário de 2010",
+
+    "br_ibge_populacao": "população por município, UF e Brasil ao longo da série — o denominador demográfico geral",
+    "br_ms_populacao": "população do DATASUS por município, sexo e grupo de idade — denominador de taxa de saúde",
+
+    "br_ms_sinan": "SINAN só de dengue e influenza/SRAG; as outras doenças e a violência são datasets próprios",
+    "br_ms_sinan_violencia": "notificações de violência interpessoal e autoprovocada; não estão em br_ms_sinan",
+
+    "br_anp_combustiveis": "raspagem semanal 2022+ posto a posto, com CNPJ e endereço; sem coluna ano, use data_coleta",
+    "br_anp_precos_combustiveis": "série 2004+ com ano, id_municipio, preco_compra e preco_venda — a de série histórica",
+
+    "br_me_cno": "recorte pequeno do Cadastro Nacional de Obras: CNAE e vínculo",
+    "br_rf_cno": "o CNO completo da Receita Federal: obras, áreas, CNAEs e vínculos (centenas de milhões)",
+
+    "br_ms_sipni_microdados": "SI-PNI dose a dose, só o ano de 2020",
+    "br_ms_sipni_doses_historicas": "SI-PNI agregado: doses aplicadas por série histórica",
+    "br_ms_imunizacoes": "cobertura vacinal por município — o indicador, não a dose",
+
+    "br_mc_indicadores": "Bolsa Família e Cadastro Único por município: famílias, pessoas e valor pago",
+    "br_mobilidados_indicadores": "mobilidade urbana: divisão modal, motorização, tempo de deslocamento casa-trabalho"
+  }
+}
