@@ -1,6 +1,6 @@
 # Temas — que dados cada investigação usa
 
-Os 43 temas do site e os datasets que cada um cita, 103 dos 211 do espelho. Os temas não se ligam
+Os 43 temas do site e os datasets que cada um cita, 103 dos 226 do espelho. Os temas não se ligam
 entre si diretamente: o que os conecta é chegarem às mesmas
 referências — a aresta leva quantos datasets do tema carregam a chave.
 

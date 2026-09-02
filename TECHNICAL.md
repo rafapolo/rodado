@@ -2,7 +2,7 @@
 
 > This is the engineering documentation for **rodado**. For the public-facing project — a sociological reading of Brazilian public data, in Portuguese — see [README.md](README.md) and [rafapolo.github.io/rodado](https://rafapolo.github.io/rodado).
 
-**849 tables · ~868 GB Parquet+zstd · DuckDB · LLM NL→SQL · Single-engineer end-to-end**
+**1,024 tables · ~896 GB Parquet+zstd · DuckDB · LLM NL→SQL · Single-engineer end-to-end**
 
 ---
 
@@ -11,7 +11,7 @@
 | Competency | How this project demonstrates it |
 |-----------|----------------------------------|
 | End-to-end delivery, prototype → production | Ingestion pipeline + semantic layer + 18-tool MCP interface, in daily use |
-| Data engineering & modeling | 849 tables normalized to a typed ontology with join-key graph |
+| Data engineering & modeling | 1,024 tables normalized to a typed ontology with join-key graph |
 | Ontology design | 8 business object types with explicit relationships and canonical keys |
 | Application development | `mcp_server.py` — 18 MCP tools over stdio (see `docs/MCP.md`); an earlier browser SQL shell + HTTP API is retired |
 | AI/ML enablement | Semantic table selection over a doc2query embedding index (832 tables, 6,464 synthetic questions) |
@@ -228,7 +228,7 @@ architecture" below for what it demonstrated while it ran.
 │                        STORAGE LAYER                             │
 │                                                                  │
 │   Local disk on beelink                                          │
-│   Partitioned Parquet + zstd · 849 tables · ~868 GB             │
+│   Partitioned Parquet + zstd · 1,024 tables · ~896 GB           │
 │   DuckDB reads local files directly — no network, no import     │
 └──────────────────────────────────────────────────────────────────┘
 ```
