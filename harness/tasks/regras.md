@@ -1,0 +1,175 @@
+# Regras que o harness já pagou para aprender
+
+> Reindexado em 2026-09-02, a pedido, a partir do catálogo cronológico
+> `enhance-harness.md` (Rodadas 1–8, dissolvido neste arquivo — última versão
+> lida: commit `25aeeb2`). O "o que fazer a seguir" de lá, que é medido e
+> ordenado por retorno, virou [`backlog.md`](backlog.md). A ordem deixou
+> de ser a das rodadas e passou a ser **por subsistema**: uma regra é consultada
+> quando se mexe no portão ou no prefixo, nunca "pela data em que foi
+> aprendida". Todo número abaixo foi **medido no beelink**.
+
+Nenhuma destas regras foi imaginada. Cada uma tem um erro observado atrás, e o
+custo está na coluna do meio — é o que separa regra de preferência.
+
+A coluna **Travada em** é a que importa na prática: regra que só vive em prosa
+volta a ser quebrada. As marcadas 🔴 são as [tarefas](#tarefas--travar-o-que-ainda-é-só-disciplina)
+do fim do arquivo.
+
+**Regra de trabalho que gerou todas as outras:** toda rodada termina
+**classificando as falhas**, não só contando acertos. Um número diz se está bom;
+a classe das falhas diz o que consertar. `avalia_datasets.ts` faz isso desde
+2026-09-02.
+
+## Portão
+
+| Regra | O que custou aprender | Travada em |
+|---|---|---|
+| Toda camada nasce de um **erro observado**, nunca de imaginação | as duas camadas que mais pegam (partição, codificação) vieram das **duas primeiras** SQLs que o modelo escreveu | princípio — governa o que entra |
+| Consulta sem filtro de partição é rejeitada | 1ª tool call foi `COUNT(*) FROM br_ms_sim.microdados`; varredura segura o lock do DuckDB por horas | `portao.ts` camada 4, `portao.test.ts` |
+| `BETWEEN` sobre coluna crua de CID é rejeitado | `causa_basica BETWEEN 'X60' AND 'X84'` deu **726** contra **789** reais — CID é guardado sem ponto | `portao.ts` camada 6, `portao.test.ts` |
+| Nome de CTE não é tabela inexistente | o portão reprovava `WITH ... AS`, que é exatamente como se escreve join entre datasets | `portao.ts` camada 2 |
+| Só assinatura de erro do DuckDB reprova um `EXPLAIN` | `EXPLAIN` devolve plano em arte-ASCII e o executor tratava como erro | `portao.ts` camada 7 |
+| Rejeição de coluna **lista as parecidas** | o modelo gastou **991 s em 31 consultas** caçando `causa_basica` (tentou `causa_materia`, `causa_materna`, `cid_causa_morte`) — `descrever_tabela` devolve na 5ª linha, em 619 tokens | `portao.ts` camada 3 |
+| Consulta obrigada a devolver `COUNT(*) AS n` | `n` saía do "primeiro número da linha" e apanhava o coeficiente | 🔴 só no pipeline fixo |
+| `n=0` vira reparo, com as causas prováveis na mensagem | join vazio era reportado como resultado | 🔴 só no pipeline fixo |
+
+**O princípio que vale acima de todos:** o modo de falha que importa aqui é
+**silencioso** — não dá exceção, dá número plausível. É por isso que nenhuma
+camada pode ser especulativa: uma camada errada rejeita trabalho legítimo de
+forma igualmente calada.
+
+## Prefixo e few-shot
+
+| Regra | O que custou aprender | Travada em |
+|---|---|---|
+| Recuperação de dataset é catálogo literal no prefixo, não embedding | 212 nomes no prefixo: **91,3%** contra **52,9%** do `search_tables` | `catalogo.ts`; `search_tables` fora do caminho do Gemma |
+| Few-shot é grátis por pergunta e leva a **97,8%** | o cache de prefixo reaproveita o KV; prefixo vai a ~11k e o prefill medido continua em ~45 | prefixo estável, `avalia_datasets.ts --fewshot` |
+| Nada variável entra no prefixo | prefixo instável evapora o 44x sem sinal no resultado | detector é `timings.prompt_n` — ver [`operacao.md`](operacao.md) tarefa 1 |
+| `provenance_notes` não entram no prompt | são **76% boilerplate**; do `catalog.parquet` só `rows` e `status` importam | `catalogo.ts` |
+| Exemplo few-shot carrega a **marca da etapa** a que pertence | os exemplos dominavam a instrução: pedia-se tabelas e o modelo respondia datasets, chegando a ecoar `ETAPA datasets` na resposta | `prefixo.ts`, bloco `if (exemplos.length)` de `montaPrefixo()` — sem teste |
+| Divisão treino/teste **por tema**, nunca por caso | dentro de um tema as 5 perguntas são variações do mesmo cruzamento — dividir por caso deixa o quase-idêntico no prefixo e mede memória | `avalia_datasets.ts` |
+| Few-shot vem de fonte **independente** do conjunto de teste | metade do conjunto ia para o prefixo; os exemplos passaram a vir de `docs/relatorio-social/` (50), e as 274 inteiras viram teste | 🔴 só disciplina |
+| Nome semântico distingue domínio, **não distingue irmão** | no conjunto inteiro, **24 das 36 falhas** são o parente errado: `ibge_ppm`↔`ibge_pam`, `anp_combustiveis`↔`anp_precos_combustiveis`, `me_caged`↔`me_rais` | 🔴 nada feito — item 1 do [`backlog.md`](backlog.md) |
+
+Medido no conjunto inteiro (274 perguntas, Rodada 8): **91,2%** de recall de
+dataset e **86,9%** de casos perfeitos, com **0** erro de execução. Os 97,8% da
+tabela acima são do conjunto de 28 casos — números de réguas diferentes, não
+comparáveis entre si.
+
+## O laço e o reparo
+
+| Regra | O que custou aprender | Travada em |
+|---|---|---|
+| Laço agêntico, não pipeline fixo | mesmas perguntas: **3/3** contra **0/3**. O fixo é 14x mais rápido e não serve | decidido; `laco.ts` sobrevive só como esqueleto do experimento DuckDB-NSQL ([`check-qwencoder-vs-duckdbnsql.md`](check-qwencoder-vs-duckdbnsql.md)) |
+| Todo ganho de tempo tem que **preservar a capacidade de iterar** | as 3 falhas do pipeline fixo (573 em vez de 789; código `3550308` em vez de "São Paulo"; desistir após 4 rejeições) não são erro de SQL, são **erro de não iterar** | critério de aceite de qualquer otimização |
+| O prompt de reparo reenvia o contexto inteiro | cada chamada é independente — o reparo não carregava pergunta, schema, pontes, a SQL rejeitada nem o motivo | `laco.ts`; no laço agêntico o contexto vem de graça |
+| O modelo **não pode ter shell** | descobriu a ferramenta `bash` e consultou o DuckDB por fora do portão — validação inteira vira decoração | `dsh/rodado.patch.yml`; 🔴 sem teste que trave a lista ([`operacao.md`](operacao.md) tarefa 4) |
+| Cálculo nomeado vem de `metrics.yaml`, nunca da cabeça do modelo | PIB per capita deu **23.704**; a métrica verificada dá **32.066** — nenhuma das duas dá erro | ferramenta `definicao_de_calculo`, `metricas.ts` |
+| Menos ferramentas é escolha melhor, não só menos token | um 26B em q4 acerta mais entre 5 ferramentas do que entre 20 | corte de 14.213 → 6.849 tokens (−52%) |
+
+## Medir — a régua também erra
+
+Dois dos piores erros da série inteira estavam na **medição**, não no harness, e
+os dois passaram despercebidos por rodadas.
+
+| Regra | O que custou aprender | Travada em |
+|---|---|---|
+| O benchmark exige o **valor esperado**; RESPONDEU e CORRETO são colunas separadas | "não foram encontrados óbitos" era contado como acerto — **por um tempo eu otimizava contra uma medição quebrada** | `lote.ts` |
+| Usar o conjunto inteiro, não o pedaço conveniente | eu usava **84 perguntas quando havia 274** — escolha de dataset não precisa de resposta conferida, só dos datasets citados | `casos.ts` |
+| Erro de um caso não derruba a rodada | um `TimeoutError` derrubava a avaliação inteira | `lote.ts` — cada caso isolado, erro conta e a rodada segue |
+| Desencontro de gabarito **não** se resolve por heurística | a numeração de `respostas.md` não batia com `perguntas.md` em 8 de 79; marcar suspeitos e deixar a correção para revisão humana levou de 71/8 a **81 confiáveis / 3 suspeitos** | `casos.ts` — o casador acusa, não reatribui |
+| O parser do gabarito não pode engolir linha que não é dataset | a linha `chaves: id_municipio, sigla_uf` entrava como se fossem datasets: a 3ª e a 7ª "falha mais comum" eram **fantasma** | `casos.ts` |
+| O espelho não é só `br_` | `resolveDataset` só tentava o prefixo `br_`; há `world_` e `us_` — `olympedia_olympics` contava como erro do modelo | `catalogo.ts` |
+| Teste que aponta para dataset removido é vermelho por motivo bom | 3 testes quebraram quando `br_seeg`/`br_ibama_embargos` saíram do espelho — sinal correto, não ruído | `portao.test.ts` |
+| Acerto de número se confere com **fronteira**, não com substring | `resposta.includes('789')` casa dentro de `1789`, e um `n=2022` casa com o ano da própria pergunta — falso positivo silencioso | 🔴 nada feito — item 0 do [`backlog.md`](backlog.md) |
+
+**Os 2,5 pontos de ganho da Rodada 8 vieram da régua, não do modelo.** É a
+terceira vez que consertar a medição rende mais que mexer no harness.
+
+**Paralelismo não multiplica.** Com `-np 5` cada caso passou de ~2 s para ~12 s e
+o total caiu só de 20,9 para 15,2 min (−27%): o modelo é limitado por CPU em 8
+threads, e 5 requisições dividem o mesmo compute. O ganho vem do batch de decode
+do llama.cpp, não de concorrência de verdade — vale usar, **não vale esperar 5x**,
+e comparar tempo entre rodadas com `-np` diferente é comparar coisas distintas.
+
+## Desfazer também é refino
+
+Duas "melhorias" minhas que pioravam, e foram removidas:
+
+- **Casamento de dataset por prefixo.** `br_seeg` e `br_seeg_emissoes` existiam
+  os dois — o casamento trocaria uma escolha legítima por outra, calado. Hoje
+  `resolveDataset` corrige **só grafia**. (O par sumiu depois: `br_seeg` e
+  `br_ibama_embargos` **foram removidos do espelho**, e hoje caem na camada
+  `tabela` do portão — desfecho melhor que ser desviado. A regra continua
+  valendo; o que mudou foi o exemplo.)
+- **KV quantizado** (`-ctk/-ctv q8_0`). Desquantizar a cada operação de atenção
+  domina o que se economiza em banda: prefill **15,8 → 50,5 t/s** em CPU.
+
+## Tarefas — travar o que ainda é só disciplina
+
+As 🔴 acima, em ordem de custo se voltarem a ser quebradas. Nenhuma feita.
+
+### 1. `COUNT(*) AS n` e `n=0` no caminho agêntico 🔴
+
+As duas regras existem **só no `laco.ts`**, que é justamente o caminho
+aposentado. No laço agêntico, o número volta da prosa do modelo — que é como
+"573 em vez de 789" (um grupo do `GROUP BY` lido como total) entrou na Rodada 6.
+
+- **Onde:** `mcp.ts` / `portao.ts`, para valer na ferramenta e não no pipeline.
+- **Cruza com:** item 6 de [`backlog.md`](backlog.md) (portão rejeitar ano fora
+  da faixa real, que `anos.ts` já sabe e não bloqueia) — mesma família: o portão
+  sabe a coisa e não age.
+- **Fecha quando:** uma consulta agregada sem `n` explícito é rejeitada, e um
+  `n=0` volta como reparo com as causas prováveis.
+
+### 2. Few-shot independente do conjunto de teste 🔴
+
+Hoje nada impede regenerar os exemplos a partir de `respostas.md` — que é o
+gabarito. O score sobe, parece progresso, e é **memória**. Já aconteceu uma vez
+(metade do conjunto estava no prefixo).
+
+- **Onde:** teste ao lado de `catalogo.test.ts`.
+- **Fecha quando:** apontar a fonte de few-shot para o conjunto de teste quebra
+  o teste, nomeando a sobreposição.
+
+### 3. Marca de etapa nos exemplos few-shot ✅ feito — `montaPrefixo()`
+
+Está implementada e documentada no lugar certo: cada exemplo entra prefixado por
+`ETAPA datasets`, e o bloco fecha com "os exemplos acima valem SÓ para a ETAPA
+datasets". O comentário registra o sintoma medido — o modelo chegou a **ecoar
+`ETAPA datasets` na resposta** porque todo exemplo do prefixo tinha essa forma.
+
+**Fica de resto:** nenhum teste trava isso. Cabe no mesmo teste do item 2, que
+já vai olhar a montagem do prefixo.
+
+### 4. Registrar `-np` junto de todo tempo medido 🔴
+
+Não é mais "usar paralelismo": a Rodada 8 mostrou que ele **não multiplica**
+(−27%, não 5x). O risco virou outro — comparar 20,9 min com 15,2 min como se
+fosse ganho do harness, quando é só `-np` diferente.
+
+- **Onde:** `lote.ts`, no cabeçalho da rodada; `servidor.sh status` já sabe
+  informar a config no ar.
+- **Fecha quando:** todo tempo registrado carrega o `-np` que o produziu, e
+  comparar rodadas com `-np` diferente aparece como aviso.
+
+## Os quatro que valem para o próximo
+
+Se só quatro linhas deste arquivo sobrevivessem:
+
+1. **Toda camada do portão nasce de um erro observado.** Nenhuma foi imaginada,
+   e as duas que mais pegam vieram das duas primeiras SQLs do modelo.
+2. **Medir a medição.** Dois erros meus estavam na régua: o benchmark premiando
+   resposta errada, e 84 casos quando havia 274. Os dois passaram por rodadas.
+3. **Config que "parece" aplicada não está.** `reasoningEfforts: false`,
+   `--reasoning off` e `--dump-config` deram todos a impressão de resolver. Só o
+   comportamento medido conta — ver [`operacao.md`](operacao.md).
+4. **Desfazer também é refino.** O casamento por prefixo e o KV quantizado eram
+   melhorias minhas que pioravam.
+
+## Ver também
+
+- [`operacao.md`](operacao.md) — as checagens de operação e as 6 tarefas de automatizá-las
+- [`harness_gemma_dsh.md`](harness_gemma_dsh.md) — o plano (fases 0-5) e a lista "Falta"
+- [`harness_bpe.md`](harness_bpe.md) — este arquivo é a semente do **Experience store** de lá; reindexá-lo por subsistema é o passo que o aproxima de um store consultável, já que experiência se recupera por situação, não por data
+- [`../README.md`](../README.md) — o fluxo e os módulos

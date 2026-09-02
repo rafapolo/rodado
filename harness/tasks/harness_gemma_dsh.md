@@ -43,19 +43,16 @@ laço agêntico: 16.397 de 16.585 tokens do prompt vieram do cache.
 global — com os 4 slots padrão o KV cache real era 4x o que parecia. Fix:
 `-c 65536 -np 1`.
 
-### Falta (ordem que a própria sessão do harness deu)
+### Falta → migrado para [`backlog.md`](backlog.md)
 
-1. Rodar a avaliação completa (53 casos) com `n` conferido, pelo dsh — a rodada
-   acima foi um caso só.
-2. Camada no `portao.ts` rejeitando filtro de ano fora da faixa real da tabela
-   (hoje `anos.ts` sabe a faixa mas não bloqueia, só serve pro `n=0` acima).
-3. Alertas de sanidade (hoje `corr=0,97` só avisa) virarem reparo de verdade —
-   mesmo padrão do portão: erro mecânico volta ao prompt, modelo corrige.
-4. Medir a prosa gerada contra as 9 análises publicadas em
-   `pages/analises/results/` — decide se o Gemma consegue redigir relatório ou
-   só apurar número. Expectativa da própria sessão: provavelmente não redige —
-   alvo é 3-4 mil palavras com contra-argumento steelmanado, e um 26B em q4
-   nunca foi testado nisso.
+A lista que ficava aqui saiu em 2026-09-02: mantinha uma segunda fila de
+próximos passos, com contagens já desatualizadas (falava em "53 casos" quando
+são **32** com `n` conferido), competindo com a fila medida do `backlog.md`.
+Duas listas divergindo é como se lê o número errado.
+
+Onde cada item foi parar: rodar a avaliação completa → **item 2**; camada de ano
+no portão → **item 6**; alerta de sanidade virar reparo → **item 7**; medir a
+prosa contra as 9 análises → **item 8**.
 
 ### Achados fora do harness, mas achados *por causa* dele
 

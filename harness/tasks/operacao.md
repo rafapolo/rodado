@@ -2,7 +2,7 @@
 
 > Aberto em 2026-09-02, a pedido, destilado do diário de experimentos de
 > 2026-09-01/02 (`exp/harness-gemma-dsh.md`, removido depois que tudo o que
-> ele tinha de acionável virou este arquivo, [`enhance-harness.md`](enhance-harness.md)
+> ele tinha de acionável virou este arquivo, [`regras.md`](regras.md)
 > e [`../README.md`](../README.md)). Tudo abaixo foi **medido no beelink**;
 > onde há estimativa está dito.
 
@@ -22,7 +22,7 @@ precisam já está exposto — o que falta é alguém consultá-lo automaticamen
 | O cache de prefixo está vivo | `timings.prompt_n` na resposta do `llama-server`: deve ser ~o tamanho da pergunta, não o do prefixo | algo variável entrou no prefixo (timestamp, ordem não determinística de ferramenta). Perde-se o 44x sem nenhum sinal no resultado |
 | `-c` é o que se pensa | `n_slots` no log de boot do `llama-server` | `-c` é **por slot**: com os 4 slots padrão, `-c 65536` aloca 4x o KV. `-np` sempre explícito |
 | O modelo não tem saída lateral | grep por `bash`/`ssh` no trace da sessão | o Gemma descobriu a ferramenta `bash` e consultou o DuckDB por fora do portão — todo o portão vira decoração. Lista de ferramentas desligadas em [`../dsh/rodado.patch.yml`](../dsh/rodado.patch.yml) |
-| A régua mede a coisa certa | rodada onde o esperado é conhecido, conferido por fora | duas vezes o erro estava na medição, não no harness (ver `enhance-harness.md`, "Padrões", item 2) |
+| A régua mede a coisa certa | rodada onde o esperado é conhecido, conferido por fora | duas vezes o erro estava na medição, não no harness (ver `regras.md`, "Os quatro que valem para o próximo", item 2) |
 
 ## Raciocínio: o que resolve e o que só parece resolver
 
@@ -98,12 +98,12 @@ propriedades têm que sobreviver à troca, ou a troca não vale.
 
 Toda checagem da primeira tabela é hoje **manual e por inspeção de log**. Cada
 uma delas já falhou em silêncio pelo menos uma vez, e todas são baratas de
-automatizar — o dado já está exposto, só ninguém o consulta. Nada abaixo foi
-feito; nenhuma depende da Fase 4 fechar.
+automatizar — o dado já está exposto, só ninguém o consulta. Nenhuma depende da
+Fase 4 fechar; a 2 já foi feita por outra sessão, as demais não.
 
 ### 1. Asserção de cache de prefixo no `lote.ts` 🔴 nada feito
 
-`modelo.ts:58` já devolve `prefilados` (o `timings.prompt_n`) em toda chamada, e
+`modelo.ts` já devolve `prefilados` (o `timings.prompt_n`) em toda chamada, e
 **nenhum consumidor olha**. Uma rodada com o prefixo quebrado continua correta e
 fica ~7x mais lenta — passa por "o beelink hoje está pesado".
 
@@ -113,19 +113,21 @@ fica ~7x mais lenta — passa por "o beelink hoje está pesado".
 - **Fecha quando:** uma mudança deliberada no prefixo (inserir um timestamp)
   faz a rodada acusar, em vez de só demorar mais.
 
-### 2. `checa_servidor.ts` — as quatro invariantes de boot 🔴 nada feito
+### 2. Invariantes de boot ✅ feito — `harness/servidor.sh`
 
-`-t 8`, `-np 1`, sem `-ctk/-ctv q8_0`, e `--chat-template-kwargs`. As quatro
-vivem em prosa no [`../README.md`](../README.md) e **as quatro já foram
-esquecidas uma vez**, cada uma custando entre 30% e 3x. Um `llama-server`
-reiniciado à mão sem a linha inteira é o caminho normal para isso acontecer de
-novo.
+Resolvido por outra sessão em `f8a7033`, e por um motivo pior do que o que eu
+tinha previsto: reiniciar o servidor à mão falhou **três vezes seguidas do mesmo
+jeito** — o processo antigo ainda segura a porta, o novo morre com
+"couldn't bind" em silêncio, **o antigo segue servindo com a config velha**, e a
+medição seguinte sai errada sem aviso.
 
-- **Onde:** script novo em `harness/`, chamado no começo de `lote.ts`/`compara.ts`.
-- **O quê:** ler `/props` do servidor (ou o log de boot) e comparar com as
-  invariantes; recusar a rodada com a diferença nomeada.
-- **Fecha quando:** subir o servidor sem `-np 1` aborta a rodada em vez de
-  produzir números 4x mais caros em KV.
+O script sobe com a config medida (`-t 8`, `--chat-template-kwargs`, KV em f16),
+espera a **porta** liberar — não o processo sumir, porque é o bind que falha — e
+**confere `n_slots`/`n_ctx_slot` contra o que foi pedido**, saindo com erro se
+divergir. `./harness/servidor.sh status` informa o que está no ar.
+
+**Fica de resto:** nada chama isso automaticamente antes de uma rodada. Ligar ao
+começo de `lote.ts`/`compara.ts` é o que falta, e é pequeno.
 
 ### 3. Detector de raciocínio ligado, junto do aquecimento 🔴 nada feito
 
@@ -133,8 +135,11 @@ Hoje o único sinal é notar `reasoning-chunks` no log ou estranhar um turno de
 20 s. É a config que mais vezes *pareceu* aplicada sem estar (ver a tabela do
 raciocínio acima) e a que `--dump-config` não pega.
 
-- **Onde:** mesmo script do item 2 — a chamada de aquecimento já existe por
-  outro motivo, então é grátis.
+`servidor.sh` **passa** a flag certa, mas ninguém confere que ela **fez efeito** —
+e essa distinção é exatamente o modo de falha desta config.
+
+- **Onde:** `servidor.sh`, logo depois do `/health`: uma chamada de aquecimento
+  que já vale a pena por si (paga o prefill uma vez).
 - **O quê:** reprovar se a resposta trouxer campo de reasoning, ou se o turno
   de aquecimento passar do limiar medido (~10 s).
 - **Fecha quando:** trocar `--chat-template-kwargs` por `--reasoning off` faz o
@@ -161,35 +166,28 @@ responde zero, e o zero passa por "não há embargos" em vez de "não há dado".
 
 - **Onde:** varrer `provenance_notes` de `_rodado_metadata` por ``Substitui `X` ``
   e propor `X` para aposentadoria.
-- **Já feito:** o portão bloqueia os dois casos conhecidos localmente; o plano
-  de execução deles está em [`../../tasks/higiene_espelho.md`](../../tasks/higiene_espelho.md).
-- **Falta:** a varredura geral, e mudar o `status` em `_rodado_metadata` — que é
-  **estado compartilhado**, então combinar antes de mexer.
-
-### 6. Prosa citar o órgão, não a tabela 🔴 nada feito
-
-As respostas mencionam `br_ibge_pib.municipio`; a convenção de
-`pages/analises/results/` é citar o **órgão de origem**, nunca a tabela nem a
-ferramenta. É ops de saída: hoje nenhum relatório gerado sai publicável sem
-edição à mão.
-
-- **Onde:** passo 9 do fluxo (a redação), no prompt.
-- **Fecha quando:** uma amostra de respostas passa sem nome de tabela, mantendo
-  a proveniência legível.
+- **Fechado desde então:** `br_ibama_embargos` e `br_seeg` **foram removidos do
+  espelho**. Hoje caem na camada `tabela` do portão — desfecho melhor do que ser
+  desviado para o vizinho. A camada `inservivel` segue guardando as duas tabelas
+  vazias que restam. Plano original em
+  [`../../tasks/done/higiene_espelho.md`](../../tasks/done/higiene_espelho.md)
+  (arquivado — os 4 itens do plano foram concluídos em 2026-09-02).
+- **Falta:** só a varredura geral. **O valor dela era achar os casos que ninguém
+  procurou** — os dois conhecidos já se resolveram por outro caminho, então o
+  retorno agora é desconhecido, não alto. Item de oportunidade, não de fila.
 
 ## Aberto — não é ops
 
 - **Codificação do domínio é onde o modelo ainda erra plausível** — CID sem
   ponto, `coded_differently` (`sexo`, `raca_cor`, `estado_civil`). O portão pega
   os casos conhecidos; casos novos aparecem um a um, e cada um vira camada.
-- A taxa de acerto ponta a ponta nos casos com `n` conferido fora do prefixo —
-  o número que responde ao objetivo. Contagem corrente e método em
-  [`enhance-harness.md`](enhance-harness.md), "Aberto"; é o item 1 de "Falta" em
-  [`harness_gemma_dsh.md`](harness_gemma_dsh.md).
+- O que fazer a seguir no harness em si — escolha de dataset, prosa, contexto —
+  está em [`backlog.md`](backlog.md), ordenado por retorno medido.
 
 ## Ver também
 
 - [`../README.md`](../README.md) — o fluxo, os módulos, como rodar
-- [`enhance-harness.md`](enhance-harness.md) — uma linha por medição, na ordem das rodadas
+- [`regras.md`](regras.md) — as regras que cada medição gerou, por subsistema
+- [`backlog.md`](backlog.md) — o que fazer a seguir no harness, por retorno medido
 - [`harness_gemma_dsh.md`](harness_gemma_dsh.md) — o plano original, para comparar com o que saiu
 - [`../../gemma_stats.md`](../../gemma_stats.md) — o benchmark do modelo isolado

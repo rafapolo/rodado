@@ -4,7 +4,7 @@
 > ([arxiv 2608.05446](https://arxiv.org/html/2608.05446v1)). Não é plano de
 > treino — este projeto não tem infra de SFT+GRPO para o Gemma 4, nem faria
 > sentido montá-la para um harness que já mede certo por outros meios (ver
-> `enhance-harness.md`). É um mapeamento: o que o paper chama de Belief,
+> `regras.md`). É um mapeamento: o que o paper chama de Belief,
 > Progress e Experience já existe aqui, em partes, de forma implícita ou
 > hardcoded — e a Fase 5 (relatório) de `harness_gemma_dsh.md` é exatamente o
 > ponto onde a ausência começa a doer.
@@ -29,9 +29,9 @@ grupo.
 |---|---|---|
 | **Belief** | `anos.ts` (faixa de ano por tabela), `resolve_join`/`get_metric` (fatos já resolvidos) | Nada disso persiste **na sessão**. Cada chamada MCP é sem estado — o portão redescobre a faixa de ano, o join, a métrica a cada vez em vez de reusar o que já foi verificado nesta mesma pergunta |
 | **Progress** | Nada. O log de sessão do dsh é append-only, não é lista de subgoal com status | É exatamente o buraco que trava a Fase 5: um relatório é várias sub-alegações; sem registro de "isto já foi verificado" o risco da Rodada 6 (573 reportado como total, um `GROUP BY` mal lido) se repete por seção |
-| **Experience** | A própria tabela "Rodada 1–7" de `enhance-harness.md` — é literalmente um log de aprendido→refino | Hoje cada linha vira código em `portao.ts` por um humano. Não é recuperável em tempo de execução pelo modelo; é enforcement, não conhecimento consultável |
+| **Experience** | As regras por subsistema de `regras.md` — cada uma é um par erro observado→refino, com o custo medido | Hoje cada linha vira código em `portao.ts` por um humano. Não é recuperável em tempo de execução pelo modelo; é enforcement, não conhecimento consultável |
 
-O princípio já declarado em `enhance-harness.md` — *"toda camada do portão
+O princípio já declarado em `regras.md` — *"toda camada do portão
 nasce de um erro observado"* — é consolidação de experiência feita à mão, uma
 rodada de cada vez. O que o paper propõe é rodar essa mesma disciplina dentro
 do episódio, sem esperar um humano promover o achado a código.
@@ -60,7 +60,7 @@ modelo (é o mecanismo que corrigiu 726→789 na medição 6 de
 subgoal `verificado`" fecha exatamente o buraco que a Rodada 6 expôs no
 pipeline fixo.
 
-### 3. Experience — a tabela de `enhance-harness.md` como store consultável
+### 3. Experience — as regras de `regras.md` como store consultável
 
 Semear com as linhas já catalogadas: CID pede `substr()` não `BETWEEN`,
 `n=0` em join costuma ser bridge faltando, valores codificados divergem por
@@ -69,7 +69,7 @@ listar os parecidos. Recuperação por overlap de palavra-chave (barato, sem
 treino) em vez de embedding — a mesma lição da Rodada 3 (catálogo no prefixo
 bateu embedding, 91,3% vs 52,9%) sugere que recuperação simples e determinística
 tende a vencer aqui. Achados novos entram via `note` durante a sessão; viram
-candidatos a linha nova da tabela de `enhance-harness.md` numa revisão humana
+candidatos a regra nova em `regras.md` numa revisão humana
 periódica — a mesma consolidação por época do paper, só que já é o hábito
 deste projeto.
 
@@ -127,4 +127,4 @@ atual já resolve sozinho. Depois:
 
 - [EvoHarness-RL, arxiv 2608.05446v1](https://arxiv.org/html/2608.05446v1)
 - `tasks/harness_gemma_dsh.md` — arquitetura e medições que motivam este documento
-- `tasks/enhance-harness.md` — catálogo Rodada 1–7, semente do Experience store
+- `tasks/regras.md` — as regras por subsistema, semente do Experience store
