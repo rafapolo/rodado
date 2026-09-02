@@ -2,7 +2,7 @@
   "_meta": {
     "source": "beelink",
     "path": "/home/polo/rodado",
-    "total_tables": 997
+    "total_tables": 1016
   },
   "tables": {
     "_obsoleto.br_ibama_embargos": {
@@ -3989,6 +3989,40 @@
         }
       ]
     },
+    "br_bcb_desenrola.dados": {
+      "path": "beelink:/home/polo/rodado/br_bcb_desenrola/dados/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "DATA_BASE",
+          "type": "INT64"
+        },
+        {
+          "name": "TIPO_DESENROLA",
+          "type": "INT64"
+        },
+        {
+          "name": "UNIDADE_FEDERACAO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "COD_CONGLOMERADO_FINANCEIRO",
+          "type": "INT64"
+        },
+        {
+          "name": "NOME_CONGLOMERADO_FINANCEIRO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NUMERO_OPERACOES",
+          "type": "INT64"
+        },
+        {
+          "name": "VOLUME_OPERACOES",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
     "br_bcb_estban.agencia": {
       "path": "beelink:/home/polo/rodado/br_bcb_estban/agencia/",
       "file_count": 1524,
@@ -4307,6 +4341,108 @@
         },
         {
           "name": "Situacao",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_bcb_scrdata.dados": {
+      "path": "beelink:/home/polo/rodado/br_bcb_scrdata/dados/",
+      "file_count": 30,
+      "columns": [
+        {
+          "name": "data_base",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "uf",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "segmento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "cliente",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "cnae_ocupacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "porte",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "modalidade",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "submodalidade",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "origem",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "indexador",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numero_de_operacoes",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "a_vencer_ate_90_dias",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "a_vencer_de_91_ate_360_dias",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "a_vencer_de_361_ate_1080_dias",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "a_vencer_de_1081_ate_1800_dias",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "a_vencer_de_1801_ate_5400_dias",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "a_vencer_acima_de_5400_dias",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "carteira_a_vencer",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "vencido_de_15_ate_90_dias",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "vencido_acima_de_90_dias",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "carteira_vencida",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "carteira_ativa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "carteira_inadimplencia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ativo_problematico",
           "type": "BYTE_ARRAY"
         }
       ]
@@ -47037,7 +47173,7 @@
     },
     "br_ibge_cnefe.enderecos": {
       "path": "beelink:/home/polo/rodado/br_ibge_cnefe/enderecos/",
-      "file_count": 3,
+      "file_count": 19,
       "columns": [
         {
           "name": "COD_UNICO_ENDERECO",
@@ -137100,6 +137236,332 @@
         }
       ]
     },
+    "br_tesouro_cauc.legenda_itens": {
+      "path": "beelink:/home/polo/rodado/br_tesouro_cauc/legenda_itens/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "codigo_item",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "descricao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nivel",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_tesouro_cauc.situacao_estados": {
+      "path": "beelink:/home/polo/rodado/br_tesouro_cauc/situacao_estados/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "UF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Nome do Ente Federado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Código IBGE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Código SIAFI",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Região",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "População",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Fonte",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "1.1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "1.2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "1.3",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "1.4",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "1.5",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "2.1.1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "2.1.2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.1.1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.1.2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.2.1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.2.2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.2.3",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.2.4",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.3",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.4.1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.4.2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.5",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.6",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.7",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "4.1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "4.2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "4.3",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "5.1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "5.2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "5.3",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "5.4",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "5.5",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "5.6",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "5.7",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "5.8",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data_pesquisa",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_tesouro_cauc.situacao_municipios": {
+      "path": "beelink:/home/polo/rodado/br_tesouro_cauc/situacao_municipios/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "UF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Nome do Ente Federado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Código IBGE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Código SIAFI",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Região",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "População",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Fonte",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "1.1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "1.2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "1.3",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "1.4",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "1.5",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "2.1.1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "2.1.2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.1.1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.1.2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.2.1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.2.2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.2.3",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.2.4",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.3",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.4.1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.4.2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.5",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.6",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "3.7",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "4.1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "4.2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "5.1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "5.2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "5.3",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "5.4",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "5.5",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "5.6",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "5.7",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "data_pesquisa",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
     "br_transferegov.planos_acao": {
       "path": "beelink:/home/polo/rodado/br_transferegov/planos_acao/",
       "file_count": 1,
@@ -137658,6 +138120,86 @@
         },
         {
           "name": "st_avaliacao",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_transferegov_siconv.siconv_acomp_obras_contratos_medicoes": {
+      "path": "beelink:/home/polo/rodado/br_transferegov_siconv/siconv_acomp_obras_contratos_medicoes/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ID_PROPOSTA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_CONTRATO_MEDICAO_ACOMPANHAMENTO_OBRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_MEDICAO_ACOMPANHAMENTO_OBRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DATA_INICIO_OBRA_CONTRATO_ACOMPANHAMENTO_OBRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CNPJ_FORNECEDOR_CONTRATO_ACOMPANHAMENTO_OBRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NUMERO_MEDICAO_ACOMPANHAMENTO_OBRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NR_ULTIMA_MEDICAO_ACOMPANHAMENTO_OBRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SITUACAO_MEDICAO_ACOMPANHAMENTO_OBRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DATA_INICIO_MEDICAO_OBJETO_ACOMPANHAMENTO_OBRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DATA_FIM_MEDICAO_OBJETO_ACOMPANHAMENTO_OBRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "QTD_DIAS_SEM_MEDICAO_ACOMPANHAMENTO_OBRA",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_transferegov_siconv.siconv_acomp_obras_valores_itens_medicao": {
+      "path": "beelink:/home/polo/rodado/br_transferegov_siconv/siconv_acomp_obras_valores_itens_medicao/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ID_SUBMETA_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_CONTRATO_MEDICAO_ACOMPANHAMENTO_OBRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "VALOR_EXECUCAO_FISICA_ACUMULADA_TOTAL_ACOMPANHAMENTO_OBRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "VALOR_EXECUCAO_FISICA_ACUMULADA_CONCEDENTE_ACOMPANHAMENTO_OBRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "VALOR_EXECUCAO_FISICA_ACUMULADA_CONVENENTE_ACOMPANHAMENTO_OBRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "VALOR_EXECUCAO_FISICA_ACUMULADA_EMPRESA_ACOMPANHAMENTO_OBRA",
           "type": "BYTE_ARRAY"
         }
       ]
@@ -138662,6 +139204,152 @@
         }
       ]
     },
+    "br_transferegov_siconv.siconv_inst_cont_contratos_lotes_empresas": {
+      "path": "beelink:/home/polo/rodado/br_transferegov_siconv/siconv_inst_cont_contratos_lotes_empresas/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ID_CONTRATO_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_PROPOSTA_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_LOTE_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NUMERO_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SITUACAO_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DATA_ASSINATURA_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DATA_INICIO_VIGENCIA_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DATA_FIM_VIGENCIA_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NUMERO_LOTE_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "RAZAO_SOCIAL_EMPRESA_EXECUTORA_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TIPO_IDENTIFICACAO_EMPRESA_EXECUTORA_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "IDENTIFICACAO_EMPRESA_EXECUTORA_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_transferegov_siconv.siconv_inst_cont_metas_submetas_po": {
+      "path": "beelink:/home/polo/rodado/br_transferegov_siconv/siconv_inst_cont_metas_submetas_po/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ID_META_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_SUBMETA_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_PO_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_PROPOSTA_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_LOTE_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NUMERO_META_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DESCRICAO_META_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NUMERO_SUBMETA_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DESCRICAO_SUBMETA_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SITUACAO_SUBMETA_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "VALOR_TOTAL_LICITADO_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DATA_PREVISAO_INICIO_OBRA_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DATABASE_PO_VRPL_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SIGLA_LOCALIDADE_PO_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ACOMPANHADO_POR_EVENTO_PO_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_transferegov_siconv.siconv_inst_cont_proposta_aio": {
+      "path": "beelink:/home/polo/rodado/br_transferegov_siconv/siconv_inst_cont_proposta_aio/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ID_PROPOSTA_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_PROPOSTA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_AIO_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SITUACAO_AIO_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DATA_EMISSAO_AIO_INSTRUMENTO_CONTRATUAL",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
     "br_transferegov_siconv.siconv_itens_dl": {
       "path": "beelink:/home/polo/rodado/br_transferegov_siconv/siconv_itens_dl/",
       "file_count": 1,
@@ -139228,6 +139916,196 @@
         }
       ]
     },
+    "br_transferegov_siconv.siconv_projeto_basico_acffo": {
+      "path": "beelink:/home/polo/rodado/br_transferegov_siconv/siconv_projeto_basico_acffo/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ID_ACFFO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_PROPOSTA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ULTIMA_VERSAO_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "APELIDO_EMPREENDIMENTO_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SITUACAO_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SITUACAO_SPA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DATA_ACEITE_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_transferegov_siconv.siconv_projeto_basico_lae": {
+      "path": "beelink:/home/polo/rodado/br_transferegov_siconv/siconv_projeto_basico_lae/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ID_QCI_ACFFO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_ACFFO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_PROPOSTA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SITUACAO_LAE_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "EMISSAO_LAE_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DATA_EMISSAO_LAE_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "IND_PARAMETRICA",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_transferegov_siconv.siconv_projeto_basico_metas": {
+      "path": "beelink:/home/polo/rodado/br_transferegov_siconv/siconv_projeto_basico_metas/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ID_META_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_QCI_ACFFO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NUMERO_META_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DESCRICAO_META_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NOME_ITEM_INVESTIMENTO_META",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DESCRICAO_SUBITEM_INVESTIMENTO_META",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "QUANTIDADE_ITENS_META_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "UNIDADE_ITEM_INVESTIMENTO_META",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_transferegov_siconv.siconv_projeto_basico_proposta": {
+      "path": "beelink:/home/polo/rodado/br_transferegov_siconv/siconv_projeto_basico_proposta/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ID_PROPOSTA_ACFFO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_PROPOSTA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "VALOR_GLOBAL_PROPOSTA_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_transferegov_siconv.siconv_projeto_basico_submetas": {
+      "path": "beelink:/home/polo/rodado/br_transferegov_siconv/siconv_projeto_basico_submetas/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ID_SUBMETA_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_META_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "LOTE_SUBMETA_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NUMERO_SUBMETA_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DESCRICAO_SUBMETA_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SITUACAO_SUBMETA_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "VALOR_REPASSE_SUBMETA_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "VALOR_CONTRAPARTIDA_SUBMETA_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "VALOR_OUTROS_SUBMETA_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "VALOR_TOTAL_SUBMETA_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DATA_PREVISAO_INICIO_OBRA_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "QUANTIDADE_MESES_DURACAO_OBRA_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DATABASE_OBRA_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SIGLA_LOCALIDADE_OBRA_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "OBRA_ACOMPANHADA_POR_EVENTO_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
     "br_transferegov_siconv.siconv_prop_inst_indicadores_estados": {
       "path": "beelink:/home/polo/rodado/br_transferegov_siconv/siconv_prop_inst_indicadores_estados/",
       "file_count": 1,
@@ -139602,6 +140480,156 @@
         },
         {
           "name": "FAX_PROPONENTE",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_transferegov_siconv.siconv_proposta": {
+      "path": "beelink:/home/polo/rodado/br_transferegov_siconv/siconv_proposta/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ID_PROPOSTA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "UF_PROPONENTE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "MUNIC_PROPONENTE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "COD_MUNIC_IBGE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "COD_ORGAO_SUP",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DESC_ORGAO_SUP",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NATUREZA_JURIDICA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NR_PROPOSTA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DIA_PROP",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "MES_PROP",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ANO_PROP",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DIA_PROPOSTA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "COD_ORGAO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DESC_ORGAO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "MODALIDADE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "IDENTIF_PROPONENTE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NM_PROPONENTE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CEP_PROPONENTE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ENDERECO_PROPONENTE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "BAIRRO_PROPONENTE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NM_BANCO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SITUACAO_CONTA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SITUACAO_PROJETO_BASICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SIT_PROPOSTA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DIA_INIC_VIGENCIA_PROPOSTA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DIA_FIM_VIGENCIA_PROPOSTA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "OBJETO_PROPOSTA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ITEM_INVESTIMENTO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ENVIADA_MANDATARIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NOME_SUBTIPO_PROPOSTA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DESCRICAO_SUBTIPO_PROPOSTA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "VL_GLOBAL_PROP",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "VL_REPASSE_PROP",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "VL_CONTRAPARTIDA_PROP",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CD_AGENCIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CD_CONTA",
           "type": "BYTE_ARRAY"
         }
       ]
@@ -140026,6 +141054,156 @@
         },
         {
           "name": "JUSTIFICATIVA_TA",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_transferegov_siconv.siconv_vrpl_lotes_fornecedores_licitacao": {
+      "path": "beelink:/home/polo/rodado/br_transferegov_siconv/siconv_vrpl_lotes_fornecedores_licitacao/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ID_LICITACAO_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_LOTE_LICITACAO_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NUMERO_LOTE_LICITACAO_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "RAZAO_SOCIAL_FORNECEDOR_LICITACAO_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TIPO_IDENTIFICACAO_FORNECEDOR_LICITACAO_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "IDENTIFICACAO_FORNECEDOR_LICITACAO_VRPL",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_transferegov_siconv.siconv_vrpl_metas_submetas": {
+      "path": "beelink:/home/polo/rodado/br_transferegov_siconv/siconv_vrpl_metas_submetas/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ID_META_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_SUBMETA_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_PO_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_PROPOSTA_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NUMERO_META_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DESCRICAO_META_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NUMERO_LOTE_LICITACAO_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NUMERO_SUBMETA_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DESCRICAO_SUBMETA_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SITUACAO_SUBMETA_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "VALOR_TOTAL_LICITADO_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DATA_PREVISAO_INICIO_OBRA_PO_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DATABASE_PO_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SIGLA_LOCALIDADE_PO_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ACOMPANHADO_POR_EVENTO_PO_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "QUANTIDADE_ITENS_META_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DESCRICAO_SUBITEM_INVESTIMENTO_META_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "UNIDADE_ITEM_INVESTIMENTO_META_VRPL",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_transferegov_siconv.siconv_vrpl_proposta_licitacao": {
+      "path": "beelink:/home/polo/rodado/br_transferegov_siconv/siconv_vrpl_proposta_licitacao/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "ID_PROPOSTA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_PROPOSTA_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_LICITACAO_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ULTIMA_VERSAO_PROPOSTA_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SITUACAO_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SITUACAO_PARECER_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "EMISSAO_PARECER_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DATA_EMISSAO_PARECER_VRPL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DATA_ACEITE_LICITACAO_VRPL",
           "type": "BYTE_ARRAY"
         }
       ]
