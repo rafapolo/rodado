@@ -636,6 +636,17 @@ recebe zero e acha que é resposta.
 
 Trabalhando a "Ordem recomendada" de cima para baixo. PNCP (#1) já estava em
 coleta por outro processo em paralelo (`_staging/pncp/`) — não foi tocado aqui.
+
+**Checagem 2026-09-02, mais tarde:** o job do PNCP não está mais rodando —
+`persistente.log` no beelink registra `sem progresso entre rodadas — fonte
+esgotada, parando` às 18:49, depois de 3 rodadas travadas em ~3.545 páginas
+faltando. `br_pncp.contratos` está em **1.979.024 linhas** agora (confirmado
+via `count(*)` no beelink, readonly), contra os 1.412.466 registrados antes
+desta sessão — progresso real, mas o job parou sozinho, não terminou. Para
+retomar: `nohup bash ~/rodado/_staging/pncp/duplo.sh &` no beelink (mesmo
+comando de sempre, resumível por `stat`) — mas vale esperar a janela de rate
+limit por IP abrir de novo antes, já que "fonte esgotada" é sinal de cota
+batida, não de bug.
 Os itens #4 (Pix) e #5 (SINESP) foram investigados a fundo e **não são
 credencial** — são fonte quebrada (Pix) e WAF (SINESP); ver as notas inline
 nos itens acima. #7 (ANEEL) e #9 (ANTT) foram re-testados e continuam
@@ -677,39 +688,28 @@ data_inicio_vigencia_vale, data_fim_vigencia_vale, data_retirada_vale,
 valor_beneficio`. Chave de join: `cnpj_estabelecimento` (revenda de gás),
 `codigo_municipio_siafi`.
 
-### Novo Bolsa Família — em andamento, resumível
+### Novo Bolsa Família — feito
 
-`br_cgu_novo_bolsa_familia/novo_bolsa_familia/` — mesmo padrão, mas 41 meses
-(2023-03 a 2026-07) de ~2,2 GB de CSV cru cada, então é um job muito mais
-longo. No momento em que este arquivo foi escrito:
+`br_cgu_novo_bolsa_familia/novo_bolsa_familia/` — mesmo padrão do Gás do Povo.
+**Terminou sozinho no beelink** (job ficou rodando sem supervisão depois que
+esta sessão parou de acompanhar; log mostra `=== DONE ===` às 16:42:48 de
+2026-09-02). Verificado ao vivo:
 
 ```sql
 SELECT count(*), min(ano_mes), max(ano_mes), count(distinct ano_mes)
 FROM read_parquet('~/rodado/br_cgu_novo_bolsa_familia/novo_bolsa_familia/*.parquet');
--- 184.099.724 linhas · 202303 → 202311 · 9 de 41 meses feitos
+-- 821.346.847 linhas · 202303 → 202607 · 41 de 41 meses (completo)
 ```
 
 Colunas: `ano_mes, mes_competencia, mes_referencia, uf, codigo_municipio_siafi,
 nome_municipio, cpf_favorecido (mascarado), nis_favorecido, nome_favorecido,
 valor_parcela`.
 
-**Script**: `~/rodado/_staging/fetch_cgu.sh` no beelink (cópia do que gerou
-este job). **Resumível por design** — pula qualquer `{ano_mes}.parquet` que já
-exista, então rodar de novo não reprocessa o que já foi feito:
-
-```bash
-ssh beelink 'nohup bash ~/rodado/_staging/fetch_cgu.sh > ~/rodado/_staging/cgu_beneficios/run.log 2>&1 < /dev/null & disown'
-# acompanhar:
-ssh beelink 'tail -f ~/rodado/_staging/cgu_beneficios/run.log'
-# checar se ainda roda:
-ssh beelink 'ps aux | grep fetch_cgu.sh | grep -v grep'
-```
-
-Estava rodando (processo vivo no beelink) no momento em que esta sessão
-encerrou — não foi morto, só não foi esperado até o fim porque 41 arquivos de
-~2,2 GB cada não cabe no orçamento de uma sessão. Terminando, o total esperado
-é da ordem de 700-800M linhas (9 meses já deram 184M, ritmo consistente de
-~20M linhas/mês).
+**Falta**: registrar a view no `.duckdb` (parquet no disco, mas
+`information_schema` não enxerga o dataset ainda — mesma armadilha
+documentada em `datasets_to_scrap.md`; `scripts/sync/cria_views_novas.py`
+resolve isso, não rodado ainda para este dataset) e o regen de metadado
+(`gera_schemas.py` → `sync_mcp_schema.py` → `build_metadata_catalog.py`).
 
 ### Transferegov/SICONV completo — em andamento, resumível
 
@@ -723,53 +723,57 @@ pulado no ANM), `data_carga_siconv.csv.zip` (metadado de timestamp, não dado)
 e `modelo_dados_siconv.zip` (dicionário de dados, não dado). CSV é UTF-8 com
 BOM, `;`-delimitado, direto — sem a armadilha de encoding do CGU.
 
-No momento em que este arquivo foi escrito, **23 das ~50 tabelas candidatas**
-já landed, soma parcial:
+**Terminou sozinho no beelink** (log: `=== DONE transferegov ===` às 16:15:13
+de 2026-09-02, sem supervisão depois que a sessão que o iniciou parou de
+acompanhar). **48 tabelas landed, 66.107.314 linhas somadas**, confirmado por
+`count(*)` tabela a tabela em 2026-09-02. Maiores: `siconv_itens_dl`
+(9.805.615), `siconv_historico_situacao` (8.957.864), `siconv_dl`
+(7.487.823), `siconv_pagamento` (7.359.136), `siconv_plano_aplicacao`
+(4.855.746).
 
-| Tabela | Linhas |
+**5 zips ficaram de fora, motivo logado por arquivo, nenhum recuperado
+ainda**:
+
+| Zip | Motivo |
 |---|---|
-| `siconv_itens_dl` | 9.805.615 |
-| `siconv_dl` | 7.487.823 |
-| `siconv_historico_situacao` | 8.957.864 |
-| `siconv_cronograma_desembolso` | 2.732.825 |
-| `siconv_etapa_crono_fisico` | 3.272.439 |
-| `siconv_contrato` | 726.602 |
-| `siconv_convenio` | 285.743 |
-| `siconv_apoiadores_emendas_programas` | 291.954 |
-| `siconv_emenda` | 297.828 |
-| `siconv_historico_projeto_basico` | 1.061.746 |
-| (+ 13 tabelas menores) | — |
+| `siconv_acomp_obras_mod_empresas.csv.zip` | 2 membros CSV (esperado 1) |
+| `siconv_inst_cont_aio_mod_empresas.csv.zip` | 3 membros CSV |
+| `siconv_projeto_basico_mod_empresas.csv.zip` | 5 membros CSV |
+| `siconv_proposta.csv.zip` | 0 membros CSV (zip vazio ou corrompido — checar na fonte) |
+| `siconv_vrpl_mod_empresas.csv.zip` | 3 membros CSV |
 
-**~37,4M linhas somadas até aqui**, com as tabelas maiores restantes
-(`siconv_itens_licitacao` 210MB zip, `siconv_justificativas_proposta` 682MB
-zip, `siconv_pagamento` 328MB zip, `siconv_plano_aplicacao` 267MB zip,
-`siconv_proposta` 190MB zip) ainda por vir — o total final deve passar de
-60-80M linhas.
+Ficam para uma segunda passada que trate zips multi-membro explicitamente
+(o script detecta e pula com log, em vez de adivinhar qual membro pegar).
 
-Três arquivos zip têm **mais de um CSV membro** (`siconv_inst_cont_aio_mod_empresas.csv.zip`
-trouxe 3: `..._contratos_lotes_empresas_modulo_empresas`,
-`..._metas_submetas_po_modulo_empresas`, `..._proposta_aio_modulo_empresas`) — o
-script detecta isso e **pula com log**, em vez de adivinhar qual pegar; ficam
-para uma segunda passada que trate zips multi-membro explicitamente.
+**Falta, igual ao Novo Bolsa Família**: nenhuma das 48 tabelas tem view no
+`.duckdb` ainda — `SELECT count(*) FROM information_schema.tables WHERE
+table_schema='br_transferegov_siconv'` devolve **0**, confirmado
+2026-09-02, embora o parquet esteja todo no disco e verificado via
+`read_parquet`. `scripts/sync/cria_views_novas.py` resolve isso, não rodado
+ainda para este dataset.
 
-**Script**: `~/rodado/_staging/fetch_transferegov.sh` no beelink. Também
-resumível (pula tabela cujo `dados.parquet` já existe):
+**Script**: `~/rodado/_staging/fetch_transferegov.sh` no beelink. Resumível
+(pula tabela cujo `dados.parquet` já existe) — só precisa rodar de novo se
+alguém tratar os 5 zips multi-membro:
 
 ```bash
 ssh beelink 'nohup bash ~/rodado/_staging/fetch_transferegov.sh > ~/rodado/_staging/transferegov/run.log 2>&1 < /dev/null & disown'
 ssh beelink 'tail -f ~/rodado/_staging/transferegov/run.log'
-ssh beelink 'ps aux | grep fetch_transferegov.sh | grep -v grep'
 ```
-
-Também deixado rodando (processo vivo) ao encerrar a sessão.
 
 ### Depois que os dois jobs terminarem
 
-Nenhum dos dois datasets novos (`br_cgu_gas_do_povo`, `br_cgu_novo_bolsa_familia`,
-`br_transferegov_siconv`) passou ainda pelo regen de metadados — falta, nessa
-ordem, depois que `fetch_cgu.sh`/`fetch_transferegov.sh` terminarem:
+Nenhum dos três datasets novos (`br_cgu_gas_do_povo`, `br_cgu_novo_bolsa_familia`,
+`br_transferegov_siconv`) tem view no `.duckdb` ainda — confirmado 2026-09-02
+via `information_schema.tables`, todos os três dão 0 apesar do parquet estar
+completo e verificado por `read_parquet`. Nenhum passou pelo regen de
+metadados. Próximo passo concreto para retomar, nessa ordem:
 
 ```bash
+# roda localmente (via ssh), não no beelink -- lista dataset/tabela, 1 par por linha
+printf 'br_cgu_gas_do_povo/gas_do_povo\nbr_cgu_novo_bolsa_familia/novo_bolsa_familia\n' > /tmp/views_novas.txt
+for t in $(ssh beelink "ls ~/rodado/br_transferegov_siconv/"); do echo "br_transferegov_siconv/$t" >> /tmp/views_novas.txt; done
+python3 scripts/sync/cria_views_novas.py /tmp/views_novas.txt
 python3 scripts/gera_schemas.py
 python3 scripts/sync_mcp_schema.py
 python3 scripts/build_metadata_catalog.py
