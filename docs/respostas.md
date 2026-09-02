@@ -301,7 +301,63 @@ RN 72,4%, SP 71,9%.
 
 - **T37-1 ✅** Dos **93 sancionados do TCU, 38 (41%) seguem com CNPJ ativo** em 2023.
 - **T37-5 ✅ (parcial)** PGFN: **R$ 7,06 trilhões consolidados, 7,67M devedores; SP sozinho R$ 3,04 tri** (RJ 873 bi, MG 601 bi). Sobreposição com TCU pendente.
-- **T37-2, T37-3, T37-4 ⏳** Pendentes — join PGFN×licitações×sócios.
+- **T37-2 ✅ (2026-09-02)** CNPJ com dívida ativa federal (`br_pgfn_dividaativa.divida`,
+  pessoa jurídica, CPF/CNPJ normalizado com `regexp_replace`, **6.675.326 CNPJs
+  distintos**) cruzados contra `br_cgu_licitacao_contrato.contrato_compra` e
+  `br_cgu_cartao_pagamento.microdados_governo_federal` (toda a série de cada
+  tabela, ambas pequenas — 472.638 e 1.666.696 linhas, sem necessidade de
+  filtro de partição): **24.942 desses CNPJs (0,37%) firmaram 166.692
+  contratos federais (R$517,4 bi)**; **24.926 (0,37%) receberam 142.256
+  transações de cartão corporativo (R$43,2 milhões)**. Os 20 maiores CNPJs por
+  valor contratado concentram R$234,1 bi dos R$517,4 bi — e são, quase todos,
+  estatais/empresas de economia mista com disputa tributária federal em curso
+  (CAIXA, SERPRO, BNDES, Correios, Telebras, Banco do Brasil, Embraer,
+  FIOTEC), não fornecedores irregulares. **Ressalva importante**: a dívida
+  ativa da PGFN inclui qualquer inscrição em status `ATIVA*` — cobrança,
+  parcelamento negociado no SISPAR, ajuizada — não distingue débito
+  contestado/parcelado de inadimplência definitiva; ter uma linha na PGFN é
+  comum até para os maiores fornecedores legítimos do governo. Excluindo os
+  20 maiores, ainda restam **24.922 CNPJs / R$283,3 bi / 161.900 contratos** —
+  a cauda longa de empresas menores com débito federal que seguem contratando
+  seria o recorte mais informativo para uma investigação de integridade, não
+  o agregado bruto.
+- **T37-3 ◐ (2026-09-02)** Sócios pessoa física (`br_me_cnpj.socios`,
+  `tipo='2'`, snapshot 2025-09) dos 84 CNPJs distintos de
+  `br_tcu_inidoneos.empresas`: **79 das 84 empresas têm ao menos 1 sócio PF
+  no snapshot atual, totalizando 131 pares pessoa-empresa / 125 pessoas
+  distintas**. Buscando essas mesmas pessoas (par `documento`+`nome`) como
+  sócias de QUALQUER outro `cnpj_basico` na mesma tabela: **72 das 125
+  (57,6%) reaparecem em 166 CNPJs novos distintos**; dessas 166 empresas, **58
+  (35%) estão `Ativa`, 55 `Baixada`, 53 `Inapta`** (matriz, 2025-09) —
+  indício real de recriação de personalidade jurídica por sócios de empresas
+  inidôneas. **Ressalva que rebaixa para `◐`**: `br_me_cnpj.socios.documento`
+  vem mascarado para pessoa física (só os 6 dígitos do meio, ex.
+  `***855401**`) — `bridges.yaml` já registra que essa máscara sozinha NÃO
+  identifica uma pessoa (999.751 máscaras distintas para 17,17M pares,
+  0,18% únicas). Mitiguei exigindo `documento` **e** `nome` idênticos, o que
+  reduz muito a chance de colisão mas não a elimina — é correspondência
+  heurística de identidade, não uma chave garantida.
+- **T37-4 ✅ (2026-09-02)** CNPJ (matriz) do TCU e da PGFN cruzados contra
+  `br_me_rais_identificada.estabelecimentos` (ano mais recente do espelho,
+  2021): das **84 empresas do TCU, 18 (21%) têm estabelecimento na RAIS 2021,
+  somando 228 vínculos ativos** — exemplos: Construtora CHC Ltda (Fortaleza-CE,
+  55 vínculos), C R Almeida S/A Engenharia (São José dos Pinhais-PR, 2
+  estabelecimentos, 45+41), Metro 2 Construções (Saquarema-RJ, 13), Quartzo
+  Engenharia de Defesa (Rio de Janeiro-RJ, 11), CMSD Tecnologia (Pinhais-PR,
+  11), Sistematech (Barueri-SP, 11), D G de Oliveira Construções (Bom Jesus
+  do Tocantins-PA, 6), GD Distribuidora de Livros (Belo Horizonte-MG, 5) — a
+  maioria construtoras/engenharia, condizente com o perfil de sanção do TCU
+  (obras públicas). Para a PGFN, a escala muda de ordem: dos **2.778.942
+  estabelecimentos totais da RAIS 2021, 825.417 (29,7%) pertencem a um
+  `cnpj_basico` com alguma dívida ativa federal registrada**, respondendo por
+  **23.666.974 dos 47.500.354 vínculos formais do país (49,8%)** — quase
+  metade do emprego formal brasileiro está em empresa com débito federal
+  inscrito em algum momento. Mesma ressalva de T37-2: a base PGFN é ampla
+  demais (qualquer inscrição ativa) para servir de proxy de irregularidade
+  sozinha; o achado central é que a proporção de estabelecimentos "devedores"
+  cresce quando ponderada por vínculo — empresas maiores/mais antigas
+  acumulam mais dívida ativa registrada ao longo do tempo, não que o débito
+  se concentre nas pequenas.
 
 ## 38 · Educação Básica
 
@@ -992,7 +1048,7 @@ RN 72,4%, SP 71,9%.
 
 ## Multi-referência (seção final)
 
-- **M1 ⏳ / M2 ⏳ / M3 ⏳ / M4 ⏳ / M5 ⏳** — as cadeias completas exigem pipelines dedicados; componentes já medidos aparecem nas entradas parciais acima (ex.: M4 usa A1/A2; M3 usa T37-1/T37-5).
+- **M1 ⏳ / M2 ⏳ / M3 ◐ / M4 ⏳ / M5 ⏳** — as cadeias completas exigem pipelines dedicados; componentes já medidos aparecem nas entradas parciais acima (ex.: M4 usa A1/A2; M3 usa T37-1/T37-2/T37-4/T37-5 — falta só o elo emenda→contrato→fornecedor, que exige juntar `cgu_emendas_parlamentares` a `contrato_compra` por órgão/UG, ainda não tentado).
 
 ## Bloqueios mapeados (dado ausente, corrompido ou sem chave — não é falta de query)
 
