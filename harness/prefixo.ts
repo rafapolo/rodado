@@ -14,6 +14,7 @@
 import { readFileSync } from "node:fs";
 import { parse } from "yaml";
 import { listaDatasets } from "./catalogo.ts";
+import { catalogoComPistas } from "./desambigua.ts";
 import type { Caso } from "./casos.ts";
 
 const RAIZ = new URL("..", import.meta.url).pathname;
@@ -21,24 +22,6 @@ const RAIZ = new URL("..", import.meta.url).pathname;
 interface Bridges {
   false_friends?: Record<string, unknown>;
   coded_differently?: Record<string, unknown>;
-}
-
-interface Desambiguacao {
-  descricoes: Record<string, string>;
-}
-
-/**
- * Item 1 do backlog: 24 das 36 falhas da rodada de 274 foram o modelo
- * escolhendo o dataset irmão errado (`ibge_ppm` por `ibge_pam`, `me_caged` por
- * `me_rais`...). `harness/dados/desambiguacao.json` guarda a frase curta e
- * contrastiva que separa cada par — só onde há ambiguidade, nunca um glossário
- * do catálogo inteiro (isso estouraria o orçamento de contexto do item 4).
- */
-function descricoesDeDesambiguacao(): Record<string, string> {
-  const d = JSON.parse(
-    readFileSync(new URL("./dados/desambiguacao.json", import.meta.url), "utf8"),
-  ) as Desambiguacao;
-  return d.descricoes;
 }
 
 /** Só as duas seções de perigo. `concepts` + `bridges` são 15.758 tokens e vão
@@ -70,21 +53,13 @@ const ETAPAS = `ETAPAS. Cada mensagem começa com "ETAPA <nome>". Responda no fo
 - ETAPA sql       -> só a consulta SQL DuckDB, sem markdown, sem comentário.
 - ETAPA prosa     -> um parágrafo em português citando os números recebidos.`;
 
-/** Nome do catálogo, com a descrição contrastiva grudada só onde há dataset
- *  irmão — a maioria das linhas fica como estava. */
-function linhaCatalogo(dataset: string, desc: Record<string, string>): string {
-  const d = desc[dataset];
-  return d ? `${dataset} — ${d}` : dataset;
-}
-
 export function montaPrefixo(exemplos: Caso[]): string {
-  const desc = descricoesDeDesambiguacao();
   const partes = [
     "Você consulta o espelho de dados públicos brasileiros do projeto rodado.",
     "",
     `CATÁLOGO — os ${listaDatasets().length} datasets, um por linha ` +
       "(com uma pista curta nos que têm irmão fácil de confundir):",
-    listaDatasets().map((d) => linhaCatalogo(d, desc)).join("\n"),
+    catalogoComPistas(),
     "",
     REGRAS,
     "",
