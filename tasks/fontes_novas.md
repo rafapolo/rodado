@@ -1123,17 +1123,17 @@ também os datasets da sessão paralela — Gás do Povo, Novo Bolsa Família,
 Transferegov). `gera_schema_graph.py`/`build_atlas.py` não rodados — ficam
 pra quem quiser os datasets desta rodada também no Atlas.
 
-**Provenance pendente, registrado aqui e não corrigido**: `catalog.parquet`
-atribui todos os datasets novos desta rodada como `source_name="Base dos
-Dados"` / `source_type="mirror"` — **errado**, são raspagem independente. A
-causa é `build_metadata_catalog.py` tratar qualquer dataset ausente de
-`datasets_to_scrap.md` como espelho da BD por padrão (comentário no próprio
-script, linha ~52). Não editei `datasets_to_scrap.md` porque a instrução desta
-rodada foi explicitamente não tocar nesse arquivo (outra sessão trabalhando
-nele em paralelo) — quem tiver posse dele depois deve adicionar entradas para
-`br_ibge_cnefe`, `br_inpe_deter`, `br_bcb_desenrola`, `br_tesouro_cauc`,
-`br_rf_dirpf` e `br_bcb_scrdata` com as fontes documentadas acima, e rerodar
-`build_metadata_catalog.py` pra corrigir a atribuição.
+**Provenance corrigida 2026-09-02.** Os 9 datasets desta e da rodada paralela
+(`br_ibge_cnefe`, `br_inpe_deter`, `br_bcb_desenrola`, `br_tesouro_cauc`,
+`br_rf_dirpf`, `br_bcb_scrdata`, `br_cgu_gas_do_povo`, `br_cgu_novo_bolsa_familia`,
+`br_transferegov_siconv`) ganharam linha em `done/datasets_to_scrap_done.md`
+com a fonte real documentada acima — `build_metadata_catalog.py` só lê esse
+arquivo (+ `datasets_to_scrap.md`) para decidir procedência, então qualquer
+dataset ausente dele vira `source_name="Base dos Dados"`/mirror por padrão
+(comentário no próprio script, linha ~52), o que estava acontecendo com os 9.
+`gera_schemas.py` → `sync_mcp_schema.py` → `build_metadata_catalog.py` →
+`gera_join_keys.py` rerodados; `_rodado_metadata` no beelink confirma
+`source_name` correto para os 9 (`Gás do Povo (CGU)`, `BCB SCR.data` etc.).
 
 ### Itens que continuam abertos depois desta rodada
 
