@@ -6,9 +6,9 @@ Desktop/Claude Code) — não é uma API REST, é uma lista de funções que um
 modelo de linguagem chama em sequência, decidindo a cada passo qual chamar a
 seguir a partir do resultado da anterior.
 
-Números de hoje: 215 datasets, 900 tabelas (índice doc2query ainda cobre as 832 de 2026-08-23), índice doc2query com 6.464
+Números de hoje: 230 datasets, 1.024 tabelas (índice doc2query ainda cobre as 832 de 2026-08-23), índice doc2query com 6.464
 perguntas sintéticas (uma por tabela em média ~8), 60 conceitos de join
-documentados, 20 false friends, 7 métricas nomeadas, 3 hierarquias de rollup,
+documentados, 21 false friends, 13 métricas nomeadas, 3 hierarquias de rollup,
 18 ferramentas ao todo. Nunca abre conexão DuckDB local — toda query roda no
 `~/bin/duckdb` do beelink via SSH (ver `_run_sql_ssh`). Tudo local: parquet
 em disco no beelink, sem storage em nuvem — é lá que dado recém-raspado
@@ -226,7 +226,7 @@ zero.
 | `get_join_keys` | `join_keys.md` (152 seções) | Índice de colunas de join documentadas, ou seção completa por coluna |
 | `resolve_join` | `bridges.yaml` + `join_keys.md` | Cláusula `ON` pronta entre duas tabelas — bridges primeiro, depois match direto, com `rejected` explícito pra false friends |
 | `explain_column` | `bridges.yaml` (`false_friends`/`coded_differently`/`concepts`) | Por que uma coluna comum (`valor`, `id`, `numero`) NÃO é chave de join; ou, pra `sexo`/`raca_cor`/etc., por que o CÓDIGO não atravessa datasets mesmo o conceito sendo o mesmo |
-| `get_metric` | `metrics.yaml` (7 métricas) | Cálculo nomeado — SQL, grão, filtros obrigatórios — por nome ou sinônimo pt-BR |
+| `get_metric` | `metrics.yaml` (13 métricas) | Cálculo nomeado — SQL, grão, filtros obrigatórios — por nome ou sinônimo pt-BR |
 | `list_metrics` | `metrics.yaml` | Todas as métricas nomeadas |
 | `rollup` | `hierarchies.yaml` (3 hierarquias) | Expressão pra subir um código de classificação um nível (CNAE, CID-10) |
 | `run_sql` | beelink via SSH | Execução real — só SELECT/WITH, fallback automático pra `read_parquet()` |
