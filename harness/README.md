@@ -165,7 +165,7 @@ inteiro**. Todo o trabalho de validação vira decoração se o modelo tem shell
 | `anos.ts` | faixa de anos por tabela (377 cacheadas) |
 | `pontes.ts` | dicas de join das pontes conferidas de `bridges.yaml` |
 | `mcp.ts` | servidor MCP: 5 ferramentas, o portão entre elas |
-| `laco.ts` | o pipeline fixo — mantido como base de comparação, não como caminho de produção |
+| `laco.ts` | o pipeline fixo — **não é caminho de produção** (0/3 contra 3/3 do agêntico). Sobrevive por um motivo nomeado: é o esqueleto do experimento DuckDB-NSQL-7B de `tasks/check-qwencoder-vs-duckdbnsql.md`, que precisa de um apurador sem agente e sem MCP. Se aquele experimento fechar sem usá-lo, remover — a comparação que ele provou já está registrada aqui e em `tasks/regras.md`, e o código sai por `git show` |
 | `lote.ts` / `compara.ts` | benchmark de perguntas abertas |
 
 ## Procedência e uma correção
