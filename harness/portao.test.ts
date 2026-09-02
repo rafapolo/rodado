@@ -4,7 +4,7 @@
  * ask-web apanhou em produção. O portão existe por causa deles.
  */
 import { expect, test, describe } from "bun:test";
-import { portao } from "./portao.ts";
+import { portao, checaCitacaoTabela, alertasDeSanidade } from "./portao.ts";
 
 describe("camada read-only (sqlguard)", () => {
   test("rejeita escrita", () => {
@@ -121,6 +121,123 @@ describe("CTE — o caso multi-dataset, que é o que importa", () => {
     );
     expect(v.ok).toBe(false);
     expect(v.camada).toBe("tabela");
+  });
+});
+
+describe("camada ano — o filtro cai fora da faixa real da tabela", () => {
+  // O caso medido em 2026-09-01: CAGED × RAIS × PIB com chave e LPAD certos,
+  // filtrado ano = 2022. br_ibge_pib.municipio termina em 2021, o join deu
+  // zero e o zero passou por resposta. backlog.md item 6.
+  test("ano = 2022 rejeita br_ibge_pib.municipio, que termina em 2021", () => {
+    const v = portao(
+      "SELECT sigla_uf, SUM(pib) AS n FROM br_ibge_pib.municipio WHERE ano = 2022 GROUP BY sigla_uf",
+    );
+    expect(v.ok).toBe(false);
+    expect(v.camada).toBe("ano");
+    expect(v.erro).toContain("2021");
+  });
+  test("ano dentro da faixa passa", () => {
+    const v = portao(
+      "SELECT sigla_uf, SUM(pib) AS n FROM br_ibge_pib.municipio WHERE ano = 2020 GROUP BY sigla_uf",
+    );
+    expect(v.camada).not.toBe("ano");
+  });
+  test("predicado cru com mais de uma tabela candidata não chuta — se cala de propósito", () => {
+    const v = portao(
+      `SELECT c.sigla_uf, SUM(c.saldo) AS n
+       FROM br_me_caged.microdados_movimentacao c
+       JOIN br_ibge_pib.municipio p ON c.id_municipio = p.id_municipio
+       WHERE ano = 2022 GROUP BY c.sigla_uf`,
+    );
+    expect(v.camada).not.toBe("ano");
+  });
+});
+
+describe("camada amostra — estatística derivada sem COUNT(*) AS n", () => {
+  // regras.md, tarefa 1: a regra existia só no laco.ts (pipeline aposentado).
+  // No laço agêntico o número vem da prosa do modelo, e foi assim que "573 em
+  // vez de 789" (um grupo do GROUP BY lido como total) entrou na Rodada 6.
+  test("AVG sem n é rejeitado", () => {
+    const v = portao(
+      "SELECT AVG(pib) AS media FROM br_ibge_pib.municipio WHERE ano = 2020",
+    );
+    expect(v.ok).toBe(false);
+    expect(v.camada).toBe("amostra");
+    expect(v.erro).toContain("COUNT(*) AS n");
+  });
+  test("AVG com COUNT(*) AS n passa", () => {
+    const v = portao(
+      "SELECT AVG(pib) AS media, COUNT(*) AS n FROM br_ibge_pib.municipio WHERE ano = 2020",
+    );
+    expect(v.camada).not.toBe("amostra");
+  });
+  test("CORR sem n é rejeitado — o caso de corr=0,97 sobre poucos pares", () => {
+    // LIMIT 1 satisfaz a camada 5 (limite) antes de chegar na 8 — CORR não é
+    // reconhecida como agregação por aquela camada, e não é o que este teste mede.
+    const v = portao(
+      "SELECT corr(a, b) AS corr FROM br_ibge_pib.municipio WHERE ano = 2020 LIMIT 1",
+    );
+    expect(v.camada).toBe("amostra");
+  });
+  test("SUM/COUNT puros não exigem n — não são estatística derivada", () => {
+    const v = portao(
+      "SELECT sigla_uf, SUM(pib) AS total FROM br_ibge_pib.municipio WHERE ano = 2020 GROUP BY sigla_uf",
+    );
+    expect(v.camada).not.toBe("amostra");
+  });
+});
+
+describe("checaCitacaoTabela — a prosa cita o órgão, não a ferramenta", () => {
+  // backlog.md item 3: a convenção de pages/analises/results/ é citar o
+  // órgão de origem, nunca a tabela — checaCitacaoTabela é a metade que a
+  // ferramenta revisar_resposta (mcp.ts) usa para transformar a instrução do
+  // system prompt em rejeição de verdade.
+  test("rejeita quando a prosa cita dataset.tabela", () => {
+    const v = checaCitacaoTabela(
+      "Segundo br_ms_sim.microdados, houve 789 óbitos por suicídio no RJ em 2020.",
+    );
+    expect(v.ok).toBe(false);
+    expect(v.camada).toBe("citacao");
+    expect(v.erro).toContain("br_ms_sim.microdados");
+  });
+  test("pega mais de um prefixo do espelho (world_/us_, não só br_)", () => {
+    const v = checaCitacaoTabela("Fonte: world_olympedia_olympics.resultados.");
+    expect(v.ok).toBe(false);
+  });
+  test("prosa citando o órgão, sem nome de tabela, passa", () => {
+    const v = checaCitacaoTabela(
+      "Segundo o Ministério da Saúde (Sistema de Informação sobre Mortalidade), " +
+      "houve 789 óbitos por suicídio no RJ em 2020.",
+    );
+    expect(v.ok).toBe(true);
+  });
+});
+
+describe("alertasDeSanidade — circunstancia_obito subconta suicídio (backlog item 9)", () => {
+  // Medido ao vivo em 2026-09-03: circunstancia_obito='2' deu 749 contra 789
+  // de causa_basica/CID no mesmo recorte (RJ, 2020) — achado testando o item 3.
+  test("avisa quando circunstancia_obito classifica causa sem causa_basica junto", () => {
+    const alertas = alertasDeSanidade(
+      "SELECT COUNT(*) AS n FROM br_ms_sim.microdados WHERE sigla_uf='RJ' AND ano=2020 AND circunstancia_obito='2'",
+      [{ n: 749 }],
+    );
+    expect(alertas.some((a) => a.includes("circunstancia_obito"))).toBe(true);
+    expect(alertas.some((a) => a.includes("749"))).toBe(true);
+  });
+  test("não avisa quando causa_basica também está na consulta", () => {
+    const alertas = alertasDeSanidade(
+      "SELECT COUNT(*) AS n FROM br_ms_sim.microdados " +
+      "WHERE sigla_uf='RJ' AND ano=2020 AND (circunstancia_obito='2' OR substr(causa_basica,1,3) BETWEEN 'X60' AND 'X84')",
+      [{ n: 789 }],
+    );
+    expect(alertas.some((a) => a.includes("circunstancia_obito"))).toBe(false);
+  });
+  test("não avisa quando a consulta não toca circunstancia_obito", () => {
+    const alertas = alertasDeSanidade(
+      "SELECT COUNT(*) AS n FROM br_ms_sim.microdados WHERE sigla_uf='RJ' AND ano=2020",
+      [{ n: 12345 }],
+    );
+    expect(alertas).toEqual([]);
   });
 });
 

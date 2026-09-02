@@ -17,7 +17,7 @@
 import { writeFileSync } from "node:fs";
 import {
   avalia, configServidor, rotuloConfig, avisaConfigDivergente,
-  avisaPrefill, marcaDoLog, prefillsDesde, LIMIAR_PREFILL,
+  avisaPrefill, marcaDoLog, prefillsDesde, LIMIAR_PREFILL, confereBoot,
   type ConfigServidor,
 } from "./acerto.ts";
 
@@ -147,6 +147,16 @@ if (import.meta.main) {
 
   const arquivo = Bun.argv[2];
   if (!arquivo) { console.error("uso: bun harness/lote.ts <arquivo-de-perguntas>"); process.exit(1); }
+
+  // operacao.md tarefa 2: confere raciocínio desligado e cache de prefixo
+  // vivo ANTES de gastar horas rodando com um servidor mal configurado.
+  console.log("conferindo o boot do servidor…");
+  if (!await confereBoot()) {
+    console.error("\nboot reprovado — ver mensagem acima. Rodando mesmo assim seria o desperdício mais caro disponível aqui.");
+    process.exit(1);
+  }
+  console.log();
+
   // formato: pergunta [TAB] valor esperado (opcional) — o que `casos.ts --tsv` emite
   const casos: Caso[] = (await Bun.file(arquivo).text()).split("\n")
     .map((l) => l.trim()).filter(Boolean)

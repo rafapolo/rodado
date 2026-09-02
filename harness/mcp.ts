@@ -21,7 +21,7 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { listaDatasets, tabelasDe, colunasDe, resolveDataset } from "./catalogo.ts";
-import { portao, checaExplain, alertasDeSanidade, faixasCitadas } from "./portao.ts";
+import { portao, checaExplain, alertasDeSanidade, faixasCitadas, checaCitacaoTabela } from "./portao.ts";
 import { dicasDeJoin } from "./pontes.ts";
 import { runSqlSsh } from "./beelink.ts";
 import { capRows } from "./sqlguard.ts";
@@ -84,6 +84,18 @@ const FERRAMENTAS = [
       type: "object",
       properties: { sql: { type: "string", description: "SELECT ou WITH" } },
       required: ["sql"],
+    },
+  },
+  {
+    name: "revisar_resposta",
+    description:
+      "Confere o parágrafo final ANTES de entregá-lo: rejeita se citar tabela ou dataset " +
+      "(ex.: br_ms_sim.microdados) em vez do órgão de origem. Chame com o parágrafo pronto " +
+      "— só responda ao usuário depois que esta ferramenta aprovar.",
+    inputSchema: {
+      type: "object",
+      properties: { texto: { type: "string", description: "o parágrafo final, em português" } },
+      required: ["texto"],
     },
   },
 ];
@@ -160,6 +172,13 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     const alertas = alertasDeSanidade(sql, capado.rows);
     const prefixo = alertas.length ? alertas.map((a) => `⚠ ${a}`).join("\n") + "\n\n" : "";
     return texto(prefixo + JSON.stringify(capado));
+  }
+
+  if (name === "revisar_resposta") {
+    const v = checaCitacaoTabela(arg.texto ?? "");
+    return v.ok
+      ? texto("Aprovado — pode responder ao usuário com este texto.")
+      : erro(`REJEITADA (${v.camada}): ${v.erro}`);
   }
 
   return erro(`Ferramenta desconhecida: ${name}`);

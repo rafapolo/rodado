@@ -15,13 +15,21 @@
  */
 import { roda as rodaLaco } from "./laco.ts";
 import { carregaCasos } from "./casos.ts";
-import { avalia, configServidor, rotuloConfig, avisaPrefill, LIMIAR_PREFILL } from "./acerto.ts";
+import { avalia, configServidor, rotuloConfig, avisaPrefill, LIMIAR_PREFILL, confereBoot } from "./acerto.ts";
 
 interface Caso { pergunta: string; esperado?: string }
 
 if (import.meta.main) {
   const arquivo = Bun.argv[2];
   if (!arquivo) { console.error("uso: bun harness/compara.ts <arquivo>"); process.exit(1); }
+
+  console.log("conferindo o boot do servidor…");
+  if (!await confereBoot()) {
+    console.error("\nboot reprovado — ver mensagem acima.");
+    process.exit(1);
+  }
+  console.log();
+
   const casos: Caso[] = (await Bun.file(arquivo).text()).split("\n")
     .map((l) => l.trim()).filter(Boolean)
     .map((l) => { const [p, e] = l.split("\t"); return { pergunta: p!.trim(), esperado: e?.trim() }; });
