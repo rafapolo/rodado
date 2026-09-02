@@ -142,3 +142,15 @@ describe("camada inservível — a tabela que responde zero e parece certa", () 
     expect(v.camada).not.toBe("inservivel");
   });
 });
+
+describe("a rejeição de coluna ensina o conserto", () => {
+  test("lista colunas parecidas em vez de só acusar", () => {
+    const v = portao(
+      "SELECT m.causa_materia FROM br_ms_sim.microdados m WHERE m.ano = 2020 LIMIT 10",
+    );
+    expect(v.ok).toBe(false);
+    expect(v.camada).toBe("coluna");
+    // o que o modelo procurava por 31 consultas
+    expect(v.erro).toContain("causa_basica");
+  });
+});

@@ -131,13 +131,34 @@ function checaColunas(sql: string): Veredito {
     const c = col.toLowerCase();
     if (!conhecidas.has(c) && !RESERVADAS.has(c) && !/^\d/.test(c)) suspeitas.add(col);
   }
-  return suspeitas.size
-    ? {
-        ok: false,
-        camada: "coluna",
-        erro: `Coluna inexistente: ${[...suspeitas].join(", ")}. Use só as colunas do schema mostrado.`,
-      }
-    : OK;
+  if (!suspeitas.size) return OK;
+
+  // A rejeição precisa ENSINAR, não só acusar. Medido em 2026-09-02: o modelo
+  // gastou 991 s e 31 consultas caçando o nome da coluna de causa de morte
+  // (`causa_materia`, `causa_materna`, `cid_causa_morte`) e nunca achou
+  // `causa_basica`, apesar de `descrever_tabela` devolvê-la na quinta linha —
+  // ele só não chamou a ferramenta. Uma mensagem que diz "não existe" e para aí
+  // devolve o modelo ao mesmo palpite. Listar as colunas parecidas custa zero e
+  // corta o laço.
+  const inventadas = [...suspeitas];
+  const dicas = refs.map((r) => {
+    const cols = (colunasDe(r) ?? []).map((c) => c.name);
+    const parecidas = cols.filter((c) =>
+      inventadas.some((i) => {
+        const a = i.toLowerCase(), b = c.toLowerCase();
+        return b.includes(a.slice(0, 4)) || a.includes(b.slice(0, 4));
+      }),
+    );
+    const mostrar = (parecidas.length ? parecidas : cols).slice(0, 20);
+    return `  ${r} tem: ${mostrar.join(", ")}` +
+      (cols.length > mostrar.length ? ` … +${cols.length - mostrar.length} (use descrever_tabela)` : "");
+  });
+
+  return {
+    ok: false,
+    camada: "coluna",
+    erro: `Coluna inexistente: ${inventadas.join(", ")}.\n${dicas.join("\n")}`,
+  };
 }
 
 /** Camada 4 — filtro de partição em tabela grande. O que evita o lock de horas. */
