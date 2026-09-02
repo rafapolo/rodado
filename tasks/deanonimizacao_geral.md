@@ -1,5 +1,37 @@
 # deanonimizacao_geral.md — nomear quem só aparece como CNPJ/CPF no espelho
 
+## ⚠️ Decisão pendente do usuário — CNES `tipo_pessoa='1'`
+
+**Único item aberto neste arquivo.** Tudo mais (Baldes 1 e 2, e a investigação
+dos três itens que sobraram deles) está fechado — ver seções abaixo.
+
+Nomear estabelecimento de saúde individual (CNES `tipo_pessoa='1'`, CPF em vez
+de CNPJ) cruzando com cadastro de benefício social é decisão sensível — **não
+tomada, e explicitamente não delegável a agente.** Os números, medidos
+read-only contra `~/staging/b2_registro.parquet` (nada escrito no beelink):
+
+- 180.573 CPFs distintos de estabelecimento de saúde no CNES (não 22,8M —
+  esse é o total de linhas ano/mês, a estimativa original confundiu as duas).
+- Só **2.636 (1,46%)** teriam nome pelo registro do Balde 2.
+- Desses, **93,9% (2.474)** viriam de fonte "barata" e já pública:
+  filiação/candidatura TSE, cadastro de servidor/aposentado/pensionista/militar
+  CGU, TCU inidôneos.
+- **6,1% (162)** só seriam nomeados porque o CPF também aparece numa lista de
+  benefício social (auxílio emergencial, bolsa família, auxílio Brasil, novo
+  bolsa família, BPC). **Este é o trade-off de privacidade inteiro: 162
+  pessoas, não 22,8 milhões.**
+
+Opções pra quem decidir, sem recomendação embutida: (a) não nomear nada nessas
+22,8M linhas; (b) nomear só os 2.474 estabelecimentos de fonte barata,
+deixando os 162 de fora; (c) nomear os 2.636 inteiros, aceitando que a origem
+do nome (`origem_nome_cpf`) expõe o vínculo com benefício social pra 162
+deles. O join, se autorizado, é de minutos — o registro já existe.
+
+Detalhe completo, com a investigação que produziu esses números, na seção
+"Decisão pendente do usuário — CNES `tipo_pessoa='1'`" ao final deste arquivo.
+
+---
+
 Nasceu em 2026-08-26, depois de de-anonimizar `br_me_rais_identificada.estabelecimentos`
 (36,16M linhas, 2010-2021): join por `cnpj_basico` contra `br_me_cnpj.empresas`/
 `estabelecimentos` (snapshot set/2025) trouxe `cnpj_completo`, `nome_fantasia`,
@@ -207,7 +239,9 @@ linha ganha ou perdida em nenhuma das dez tabelas.
 - **`br_ms_cnes.estabelecimento`, `tipo_pessoa='1'`** — 22,8M linhas de estabelecimento
   de saúde registrado no CPF de uma pessoa física, hoje sem nome. O `b2_registro.parquet`
   já existe e o join seria de minutos; a decisão de nomear consultório individual por
-  cadastro de benefício social não foi tomada nem levantada.
+  cadastro de benefício social não foi tomada nem levantada. *(Números corrigidos e
+  decisão detalhada: ver "⚠️ Decisão pendente do usuário" no topo do arquivo — 22,8M é
+  linha ano/mês, não CPF distinto; o universo real de decisão é 2.636 estabelecimentos.)*
 - **Os 38,91% do SICOR que ficaram sem nome** — são CPFs que não constam de nenhuma das
   16 fontes. Não há fonte no espelho que os alcance; só um cadastro que o espelho não
   tem resolveria.
@@ -326,3 +360,30 @@ agente.
   `br_trase_supply_chain.soy_beans_storage_facilities` já tem `company`;
   `br_ibama_embargos.decisao` era o dataset vazio, removido desde então —
   ver `done/higiene_espelho.md`).
+
+## Verificação 2026-09-02 — Baldes 1 e 2 ainda íntegros, nada mais a fazer sem a decisão
+
+Reconferi ao vivo no beelink (`count(*)` e `count(<coluna de nome>)` por
+tabela) contra os números publicados neste arquivo. Todas batem exatamente —
+nenhuma linha ganha ou perdida, nenhuma coluna sumida:
+
+| Tabela | Linhas (bate) | Coluna de nome conferida |
+|---|---|---|
+| `br_ms_cnes.estabelecimento` | 68.194.917 | `razao_social` (27.476.061 preenchidas) |
+| `br_ms_sih.aihs_reduzidas` | 200.147.614 | `razao_social_estabelecimento` (169.589.738) |
+| `br_bcb_sicor.operacao` | 27.199.262 | `razao_social_agente_investimento` |
+| `br_bcb_sicor.recurso_publico_complemento_operacao` | 22.005.362 | `razao_social_agencia` (100%) |
+| `br_bcb_sicor.recurso_publico_mutuario` | 17.050.644 | `nome_cpf` (10.332.393) |
+| `br_bcb_sicor.recurso_publico_propriedade` | 26.550.484 | `nome_cpf` (14.365.214) |
+| `br_bcb_sicor.recurso_publico_cooperado` | 151.737 | `nome_cpf` (66.162) |
+| `br_transferegov.transferencias` | 4.248 | `razao_social_favorecido` (100%) |
+
+Os arquivos de staging (`~/staging/b2_registro.parquet` e os oito lookups) e
+os treze diretórios de backup em `~/backups/` seguem no lugar no beelink —
+conferido por listagem, não só citado.
+
+Não sobrou trabalho mecânico: os três itens de "O que sobrou" e da
+"Investigação 2026-08-27" estão fechados (dois informativos, sem ação
+possível; o terceiro é a decisão de privacidade no topo deste arquivo, que
+segue aberta). Este arquivo permanece ativo em `tasks/` — não vai para
+`done/` enquanto a decisão da CNES não for tomada.
