@@ -16,9 +16,13 @@
  */
 import { carregaCasos, carregaTodasPerguntas, exemplosIndependentes, type Caso } from "./casos.ts";
 import { listaDatasets, resolveDataset } from "./catalogo.ts";
+import { catalogoComPistas } from "./desambigua.ts";
 import { pergunta, vivo } from "./modelo.ts";
 
-const CATALOGO = listaDatasets().join("\n");
+// item 1 do backlog: sem a pista contrastiva aqui, esta avaliação mede a régua
+// de ANTES do conserto — o próprio erro que motivou o item, medindo o catálogo
+// sem a descrição que deveria estar sendo testada.
+const CATALOGO = catalogoComPistas();
 
 /**
  * Monta o system prompt. Com `exemplos`, entram casos já resolvidos —

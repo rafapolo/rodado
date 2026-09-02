@@ -22,7 +22,33 @@
  * chave `grupos_semanticos`, vindos das falhas medidas — e é por isso que o
  * arquivo de dados não é gerado por este script, só conferido contra ele.
  */
+import { readFileSync } from "node:fs";
 import { listaDatasets } from "./catalogo.ts";
+
+interface Desambiguacao {
+  descricoes: Record<string, string>;
+}
+
+/**
+ * As descrições contrastivas, lidas uma vez. Consumido por `prefixo.ts`
+ * (o prefixo real do laço) e por `avalia_datasets.ts` (a medição do item 1) —
+ * os dois tinham cópias próprias do catálogo antes disto, e uma delas
+ * (avalia_datasets.ts) nunca ganhou a pista: media a régua sem o conserto que
+ * estava sendo medido.
+ */
+export function descricoesDeDesambiguacao(): Record<string, string> {
+  const d = JSON.parse(
+    readFileSync(new URL("./dados/desambiguacao.json", import.meta.url), "utf8"),
+  ) as Desambiguacao;
+  return d.descricoes;
+}
+
+/** Nome do catálogo, com a descrição contrastiva grudada só onde há dataset
+ *  irmão — a maioria das linhas fica como estava. */
+export function catalogoComPistas(datasets = listaDatasets()): string {
+  const desc = descricoesDeDesambiguacao();
+  return datasets.map((d) => (desc[d] ? `${d} — ${desc[d]}` : d)).join("\n");
+}
 
 /** Prefixos de escopo geográfico — não são o órgão, são a jurisdição. */
 const ESCOPOS = new Set(["br", "world", "us", "eu", "un", "global", "mundo"]);
