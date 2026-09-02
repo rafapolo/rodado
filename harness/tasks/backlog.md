@@ -161,14 +161,50 @@ usa. Tensão real com o item 1, que **adiciona** tokens ao prefixo: os dois
 disputam o mesmo orçamento, e o item 1 tem retorno medido enquanto este é
 especulativo. Fazer o 1 primeiro.
 
-## 5. Seis datasets concentram 20 das 38 perdas 🔴
+**Item 1 feito (2026-09-02) — ainda não retomado.** Examinar "o que o modelo
+não usa" exige transcrição real de sessão agêntica, que só existe depois do
+item 2 rodar (o laço via dsh, não a escolha de dataset isolada). Continua
+adiado, mas agora pelo motivo certo — falta o dado, não falta prioridade.
+
+## 5. Seis datasets concentram 20 das 38 perdas ✅ diagnosticado 2026-09-02, após o item 1
 
 `ibge_ppm` (4x), `ms_sinan_violencia` (4x), `ibge_pib` (3x),
 `inep_avaliacao_alfabetizacao` (3x), `mp_pep` (3x), `ms_atencao_basica` (3x).
 
-**É diagnóstico antes de ação:** se for sempre a mesma confusão de irmão, o item
-1 resolve e este some junto. Se for nome opaco, o dataset precisa de alias — que
-é outro conserto. Conferir depois do item 1, não antes.
+**Era diagnóstico antes de ação:** se for sempre a mesma confusão de irmão, o
+item 1 resolve e este some junto. Se for nome opaco, o dataset precisa de
+alias — que é outro conserto. Conferir depois do item 1, não antes.
+
+**Diagnosticado, com a lista dos 6 originais confrontada contra a rodada
+pós-item-1 (284 perguntas):**
+
+| Original | Hoje |
+|---|---|
+| `ibge_ppm` 4x | **0x** — resolvido pela descrição contrastiva |
+| `ms_sinan_violencia` 4x | **0x** — some da lista; `ms_sinan` (sem `_violencia`) aparece 3x, caso distinto |
+| `mp_pep` 3x | **0x** — resolvido |
+| `ms_atencao_basica` 3x | **0x** — resolvido |
+| `inep_avaliacao_alfabetizacao` 3x | **0x** — resolvido |
+| `ibge_pib` 3x | **4x** — não resolvido, piorou 1 caso |
+
+Cinco dos seis eram exatamente "sempre a mesma confusão de irmão" — o item 1
+resolveu e eles somem, como a hipótese previa. `ibge_pib` é o contraexemplo:
+não é um par, é um ímã. Perde contra `bcb_sicor`, `ibge_pam`, `ibge_ppm`,
+`inpe_prodes`, `sfb_sicar` — cinco datasets de domínios genuinamente
+diferentes (crédito rural, agropecuária, desmatamento, cadastro rural), sem
+nada em comum além de aparecerem em perguntas sobre município. A descrição
+contrastiva já existe (`financas_municipais`) e não ajuda porque o problema
+não é confundir PIB com outra coisa — é o modelo **incluir** PIB como apoio
+em perguntas que não pedem produto econômico. Isso não é o defeito que a
+descrição contrastiva resolve; é mais parecido com o modelo usar PIB como
+palpite genérico de "algo econômico municipal". Sem conserto óbvio de
+catálogo — fica em aberto, não é mais prioridade de fila (a classe que
+motivou o item já foi resolvida 5 de 6).
+
+Achado à parte, fora da lista original: `cnpq_bolsas` (3x) entrou no top-10
+novo — não é dataset repetido da lista de 2026-09-01, é falha nova exposta
+pela medição fresca. Já endereçado no item 1 (grupo `bolsas_de_pesquisa`),
+remedição pendente.
 
 ---
 
