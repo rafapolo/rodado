@@ -49,26 +49,18 @@ RN 72,4%, SP 71,9%.
 
 ## 02 · Educação
 
-> ⚠️ `bun harness/casos.ts` marca T02-1…T02-4 como suspeitos: cada gabarito casa
-> por palavra-chave com mais de uma pergunta de `perguntas.md` (IDEB, ENEM, PIB e
-> INSE aparecem nas 5 perguntas do tema). O emparelhamento numeração↔conteúdo aqui
-> não está confirmado — revisão humana pendente (ver T05 em 2026-09-01 para um caso
-> onde a numeração de fato estava errada). Não usar este bloco para avaliação
-> automática até resolver.
->
-> Leitura manual (2026-09-02): T02-2 ("controlando INSE, IDEB × ENEM cai de +0,20
-> para +0,17") bate melhor com a pergunta 1 ("essa relação sobrevive ao controle
-> pelo INSE?") do que T02-1, que não menciona INSE. Mas isso não fecha uma
-> permutação limpa: reatribuir T02-1↔T02-2 deixaria as perguntas 4 e 5 (INSE por
-> UF; população jovem/matrícula) sem gabarito correspondente — T02-1 e T02-5 não
-> falam de nenhuma das duas. Sinal real, mas não suficiente pra reordenar sem
-> arriscar inventar um erro no lugar do conhecido.
+> Refeito do zero em 2026-09-02: as 5 respostas anteriores deste tema tinham
+> correspondência numeração↔conteúdo incerta (`bun harness/casos.ts` marcava
+> T02-1…T02-4 como suspeitos — vocabulário sobreposto entre as 5 perguntas
+> impedia reatribuir com segurança). Em vez de reordenar os gabaritos antigos,
+> cada pergunta abaixo foi respondida com uma query nova e dedicada, garantindo
+> 1:1 com `perguntas.md`.
 
-- **T02-1 ✅** IDEB × ENEM: **r = +0,45 (n=1.657)**; PIB pc × ENEM só +0,185 e rendimento × ENEM +0,168 — aprendizado explica mais que renda. *(A7)*
-- **T02-2 ✅** INSE × ENEM/IDEB (município, n=2.254): **INSE × redação +0,27; INSE × IDEB AF +0,14**; controlando INSE, IDEB × ENEM cai de +0,20 para **+0,17** — o nível socioeconômico explica o desempenho tanto quanto (ou mais que) o fluxo medido pelo IDEB.
-- **T02-3 ✅** Rural × urbano no ENEM 2022: nos 491 municípios com os dois pares comparáveis, escolas rurais ficam **~32 pontos atrás na redação**; a defasagem é maior no tercil mais pobre (**37,2**) que no mais rico (**32,3**).
-- **T02-4 ✅** Participação no ENEM (presentes/pop 15–24, n=2.254): média 1,1%; **× IDEB AF +0,315**, × nota do próprio município +0,13, × PIB pc −0,005 — participação acompanha aprendizado, não renda.
-- **T02-5 ✅** ΔIDEB 2017→2021 × Δln PIB pc: **r = −0,07 (n=4.739)** — evolução do IDEB não segue ciclos econômicos municipais.
+- **T02-1 ✅** Em 3.591 municípios com IDEB (anos finais, rede pública), INSE e ENEM em 2021: correlação bruta IDEB × ENEM = **+0,36**; dividida em terços de INSE cai para **+0,09 (terço mais pobre) / +0,15 / +0,16 (mais rico)** — a relação sobrevive ao controle por nível socioeconômico, mas fica bem mais fraca: boa parte da correlação bruta é explicada pelo INSE.
+- **T02-2 ✅** Dentro do terço mais pobre de PIB per capita (2021), escolas rurais têm IDEB **0,42 ponto** abaixo das urbanas (4,25 vs 4,67, n=6.369 escolas) e nota ENEM **9,4 pontos** abaixo (n=75.248 candidatos); no terço mais rico o gap cai para **0,28 ponto** de IDEB e **4,8 pontos** de ENEM (n=8.853 escolas / 184.311 candidatos) — pior fluxo e desempenho rural confirmados, com gap maior justamente nos municípios pobres.
+- **T02-3 ✅** Entre 5.536 municípios com IDEB, ENEM e PIB per capita 2021, **392 (7,1%)** combinam IDEB abaixo da mediana, participação ENEM acima da mediana e PIB per capita acima da mediana — acesso sem aprendizado mesmo com renda. Exemplos: Canaã dos Carajás-PA (PIB per capita R$ 894.806, IDEB 4,6), Conceição do Mato Dentro-MG, Tasso Fragoso-MA, Porto dos Gaúchos-MT, Nova Lima-MG — municípios de economia mineradora/agro com renda concentrada, não distribuída.
+- **T02-4 ✅** Em 24 UFs com ao menos 15 municípios (n=3.574), a correlação média INSE × ENEM (**+0,382**) é levemente maior que INSE × IDEB (**+0,360**), e o ENEM vence em 13 das 24 UFs contra 11 do IDEB — o nível socioeconômico explica um pouco mais a variação do ENEM que a do IDEB, mas a margem é pequena e não sistemática.
+- **T02-5 ◐** Entre 4.744 municípios, só **469 (9,9%)** ganharam população jovem (0-19 anos) de 2010 a 2022 (+13,6% em média, contra a tendência nacional de queda); desses, **88,3%** também ampliaram matrícula (+18,5%, Sinopse INEP) e o IDEB subiu em média **0,93 ponto** entre 2009 e 2021 — próximo, mas levemente abaixo, do ganho médio de **1,05 ponto** nos municípios que perderam população jovem. Δpopulação × Δmatrícula r=**+0,71** (forte); Δpopulação × ΔIDEB r=**−0,08** (nula) — quem ganhou população jovem ampliou matrícula quase sempre, mas isso não se traduziu em ganho extra de IDEB. `◐` porque descreve um subconjunto pequeno (9,9%) do país, não o padrão geral.
 
 ## 03 · Saúde
 
