@@ -29,6 +29,7 @@ de 5.570 municípios) ou estaduais (27 UFs), conforme indicado.
 | A14 | Lacuna racial salarial × homicídios/100k | UF | 27 | +0,12 |
 | A15 | Agências bancárias/100k × PIB per capita | município | 2.466 | +0,12 |
 | A16 | Templos religiosos/100k × PIB per capita | município | 5.570 | −0,11 |
+| A17 | Vulnerabilidade social (IVS-IPEA 2010) × cobertura Bolsa Família per capita (2025) | município | 5.565 | **+0,82** |
 
 Fatos medidos (não-correlações): PISA 2022 matemática Brasil 380 vs OCDE 475;
 exportações 2023 com 69,8% de primários (US$ 339,7 bi); dívida ativa PGFN
@@ -266,7 +267,39 @@ RN 72,4%, SP 71,9%.
 ## 31 · Desenvolvimento Humano
 
 - **T31-4 ◐** IVS-IPEA × mortalidade infantil (SIM×SINASC 2020–22): **r = +0,31 (n=1.423 municípios ≥20 mil hab)** — vulnerabilidade social prevê TMI melhor que PIB pc (−0,13, T03-3).
-- **T31-1…T31-3, T31-5 ⏳** Pendentes — CGU×AVS e setores censitários exigem cruzamentos dedicados; AVS só tem um ano no espelho (sem série "entre ondas").
+- **Achado de bug de query (2026-09-02)**: `br_ipea_avs.municipio` **não** está no grão de município apesar do nome —
+  é UDH (Unidade de Desenvolvimento Humano, subdivisão intramunicipal do Atlas IPEA), com até 1.594 linhas para um
+  único `id_municipio` (São Paulo) na combinação `raca_cor='total'`/`sexo='total'`/`localizacao='total'` que parece
+  a "linha resumo". Um `JOIN` direto por `id_municipio` sem `GROUP BY`/`AVG()` prévio infla `n` (5.565 municípios
+  viraram 16.687 linhas nesta sessão) — a correlação em si não muda muito porque os pares se repetem idênticos, mas
+  o `n` reportado ficaria errado. **A nota anterior de que "AVS só tem um ano no espelho" também estava errada**: a
+  tabela tem **dois anos, 2000 e 2010** (não uma série contínua, mas dá pra medir Δ entre as duas ondas do Censo
+  correspondentes — T31-5 abaixo).
+- **T31-1 ✅ (2026-09-02)** IVS 2010 (`br_ipea_avs.municipio`, agregado por município com `AVG(ivs)` sobre as UDH) ×
+  taxa de beneficiários do Bolsa Família por habitante (`br_cgu_beneficios_cidadao.novo_bolsa_familia`,
+  snapshot mais recente 2025-07, CPFs distintos ÷ população 2022): **r = +0,82 (n=5.565)** — forte e no sentido
+  esperado, vulnerabilidade social medida em 2010 prevê bem a cobertura de benefício quinze anos depois; taxa média
+  de cobertura 9,8% da população. *(A17, correlação forte ≥0,4 — ver "Resultados transversais")*
+- **T31-3 ✅ (2026-09-02)** Dado o r=+0,82 de T31-1, o descolamento que a pergunta imagina (muitos beneficiários,
+  baixa vulnerabilidade) é raro: separando os municípios em quartis de IVS e de cobertura, **0 dos 5.565** caem no
+  quadrante "1º quartil de vulnerabilidade (menos vulnerável) + 4º quartil de cobertura (mais benefício)", e só
+  **2** caem no oposto (muito vulnerável, pouca cobertura) — não há evidência de sobreposição de programas nem de
+  erro cadastral em massa; a focalização do CGU segue de perto o indicador de vulnerabilidade nos extremos.
+- **T31-5 ◐ (2026-09-02)** ΔIVS 2000→2010 por município: **melhorou (caiu) em 5.510 dos 5.565 (99%)**, média
+  −0,129 (de 0,480 para 0,352) — melhora quase universal, não seletiva. Cruzando essa melhora com crescimento do
+  PIB per capita no período mais próximo disponível (2002→2010, `br_ibge_pib.municipio`): **r = +0,08 em nível
+  absoluto de Δ; r = −0,07 em crescimento relativo** — praticamente nulo, a melhora do IVS não acompanhou quem
+  cresceu mais em renda. Contra a cobertura atual de benefícios (2025, proxy imperfeito por não haver CGU antes de
+  2004): **r = −0,16** — fraco, mas no sentido de que quem mais melhorou tem hoje cobertura um pouco maior (efeito
+  provavelmente capturado pelo nível de vulnerabilidade de partida, já medido em T31-1). `◐` porque a pergunta
+  original pede "acompanhou... repasses sociais" numa janela 2000-2010 em que o Bolsa Família do espelho mal
+  existia (a tabela `bolsa_familia_pagamento` mais antiga só cobre 2021+); a comparação usa a cobertura de 2025
+  como proxy estrutural, não a série histórica que a pergunta sugere.
+- **T31-2 ⏳** Bloqueio estrutural: a pergunta pede sobrepor áreas de risco do IPEA-AVS a "setores censitários mais
+  vulneráveis do Censo" — o espelho só tem dado demográfico em grão de setor censitário para o **Censo 2010**
+  (`br_ibge_censo_demografico.setor_censitario_*_2010`); o Censo 2022 (`br_ibge_censo_2022`) só existe em grão de
+  **município** no espelho, sem tabela de setor censitário. E o próprio AVS para em 2010 (ver acima) — não há como
+  cruzar "setor censitário mais vulnerável" de 2022 com nada no espelho.
 
 ## 32 · Conectividade
 
