@@ -106,10 +106,12 @@ describe("CTE — o caso multi-dataset, que é o que importa", () => {
     expect(portao(sql).ok).toBe(true);
   });
   test("coluna criada com AS não é acusada de inexistente", () => {
+    // AVG exige `n` (camada 8) — junto para não testar duas coisas com o
+    // mesmo SQL e cair na rejeição errada.
     const v = portao(
       `WITH t AS (SELECT id_municipio, COUNT(*) AS total
          FROM br_ms_sim.microdados WHERE ano = 2020 GROUP BY id_municipio)
-       SELECT AVG(t.total) FROM t`,
+       SELECT AVG(t.total) AS media, COUNT(*) AS n FROM t`,
     );
     expect(v.ok).toBe(true);
   });
