@@ -4,8 +4,8 @@ Pergunta em pt-BR → datasets → schema → SQL → **portão** → número co
 Tudo no beelink, sem chamada de API paga.
 
 Bun + TypeScript. As medições que sustentam cada escolha estão em
-[`../gemma_stats.md`](../gemma_stats.md); o plano completo em
-[`../tasks/harness_gemma_dsh.md`](../tasks/harness_gemma_dsh.md).
+[`../gemma_stats.md`](../gemma_stats.md); o plano completo e o catálogo de
+refino em [`tasks/`](tasks/README.md).
 
 ## O fluxo
 
