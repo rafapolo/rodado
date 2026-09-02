@@ -101,17 +101,22 @@ uma delas já falhou em silêncio pelo menos uma vez, e todas são baratas de
 automatizar — o dado já está exposto, só ninguém o consulta. Nenhuma depende da
 Fase 4 fechar; a 2 já foi feita por outra sessão, as demais não.
 
-### 1. Asserção de cache de prefixo no `lote.ts` 🔴 nada feito
+### 1. Asserção de cache de prefixo no `lote.ts` ✅ feito — `harness/acerto.ts`
 
-`modelo.ts` já devolve `prefilados` (o `timings.prompt_n`) em toda chamada, e
-**nenhum consumidor olha**. Uma rodada com o prefixo quebrado continua correta e
-fica ~7x mais lenta — passa por "o beelink hoje está pesado".
+`modelo.ts` já devolvia `prefilados` (o `timings.prompt_n`) em toda chamada e
+nenhum consumidor olhava. `acerto.ts` centraliza a checagem (`avisaPrefill`,
+`LIMIAR_PREFILL=2000`) e `lote.ts`/`compara.ts` agora chamam depois de cada
+caso — `lote.ts` lê o prefill de fora, do log do `llama-server`
+(`prefillsDesde`/`marcaDoLog`), porque cada pergunta é um processo `dsh`
+separado e `timings.prompt_n` morre lá dentro; `compara.ts` já roda no mesmo
+processo e usa o valor direto.
 
-- **Onde:** `lote.ts` e `compara.ts`, no ponto onde já acumulam tempo por caso.
-- **O quê:** depois do caso de aquecimento, reprovar (ou pelo menos berrar) se
-  `prefilados` de qualquer caso for maior que a ordem de grandeza da pergunta.
-- **Fecha quando:** uma mudança deliberada no prefixo (inserir um timestamp)
-  faz a rodada acusar, em vez de só demorar mais.
+**Fecha quando** (verificado por teste, não por rodada ao vivo): uma mudança
+deliberada no prefixo faz a rodada acusar em vez de só demorar mais —
+`acerto.test.ts` simula exatamente isso (`avisaPrefill([97, 6849])` acusa o
+prefill do tamanho do prefixo). Falta a verificação ao vivo: inserir um
+timestamp de propósito no prefixo e confirmar que uma rodada real acusa, não
+só o teste unitário.
 
 ### 2. Invariantes de boot ✅ feito — `harness/servidor.sh`
 
@@ -129,21 +134,25 @@ divergir. `./harness/servidor.sh status` informa o que está no ar.
 **Fica de resto:** nada chama isso automaticamente antes de uma rodada. Ligar ao
 começo de `lote.ts`/`compara.ts` é o que falta, e é pequeno.
 
-### 3. Detector de raciocínio ligado, junto do aquecimento 🔴 nada feito
+### 3. Detector de raciocínio ligado, junto do aquecimento ✅ feito — `harness/servidor.sh aquece`
 
-Hoje o único sinal é notar `reasoning-chunks` no log ou estranhar um turno de
-20 s. É a config que mais vezes *pareceu* aplicada sem estar (ver a tabela do
-raciocínio acima) e a que `--dump-config` não pega.
+`servidor.sh` **passava** a flag certa, mas ninguém conferia que ela **fez
+efeito** — e essa distinção é exatamente o modo de falha desta config (ver a
+tabela do raciocínio acima).
 
-`servidor.sh` **passa** a flag certa, mas ninguém confere que ela **fez efeito** —
-e essa distinção é exatamente o modo de falha desta config.
+Dois turnos idênticos logo depois do `/health` (o primeiro paga o prefill
+frio, o segundo mede regime): reprova se a resposta trouxer campo de
+`reasoning`/`<think`, ou se o turno passar do limiar medido (10.000 ms —
+2.140 ms frio, 530 ms quente contra 20,9 s com raciocínio ligado). De brinde,
+acusa `cache_n=0` no segundo turno como prefixo instável. Chamado
+automaticamente no fim de `servidor.sh` (sem argumento) e disponível avulso
+via `servidor.sh aquece`.
 
-- **Onde:** `servidor.sh`, logo depois do `/health`: uma chamada de aquecimento
-  que já vale a pena por si (paga o prefill uma vez).
-- **O quê:** reprovar se a resposta trouxer campo de reasoning, ou se o turno
-  de aquecimento passar do limiar medido (~10 s).
-- **Fecha quando:** trocar `--chat-template-kwargs` por `--reasoning off` faz o
-  harness recusar rodar.
+**Verificado ao vivo em 2026-09-02** contra o servidor no ar: 470 ms,
+`cache_n=51`, aprovado. **Não verificado**: o outro lado do "fecha quando"
+original (trocar a flag por `--reasoning off` e confirmar que o detector
+recusa) — exigiria reiniciar o servidor com a config ruim de propósito, e
+isso não foi feito ainda.
 
 ### 4. Travar a superfície de ferramenta 🔴 nada feito
 

@@ -21,10 +21,15 @@ segunda fila, com contagem desatualizada, competindo com esta.
 
 ---
 
-## 0. Consertar a régua do `correto` — **antes do item 2** 🔴
+## 0. Consertar a régua do `correto` — **antes do item 2** ✅ fechado 2026-09-02
 
 Achado ao auditar o backlog contra o código, 2026-09-02. **Não estava na lista, e
 bloqueia o item 2.**
+
+**Fechado**: `harness/acerto.ts` unifica a régua (fronteira de número, não
+substring) e `lote.ts`/`compara.ts` foram trocados para usá-la —
+`acerto.test.ts` trava o próprio caso do "fecha quando" abaixo. O item 2 pode
+rodar contra ela agora.
 
 A const `correto` em `lote.ts` (dentro de `roda()`) e o helper `bate()` em
 `compara.ts` decidem se a resposta está certa por
@@ -48,7 +53,7 @@ depois significa jogar as 3,2 h fora ou, pior, publicar o número.
 - **Fecha quando:** um caso com `n=789` cuja resposta contenha só `1789` é
   contado como erro.
 
-## 1. Desambiguar dataset irmão — **24 das 36 falhas** 🔴
+## 1. Desambiguar dataset irmão — **24 das 36 falhas** 🟡 codado 2026-09-02, medição pendente
 
 A maior classe de longe, e sempre a mesma forma: o modelo escolhe o parente
 errado porque **os nomes não distinguem**. Nome semântico separa domínio, não
@@ -69,9 +74,15 @@ boilerplate, descartadas na Rodada 3 por isso mesmo).
 `nada_perto` subir, a descrição está confundindo em vez de esclarecer** — esse é
 o teste que separa ganho real de troca de erro.
 
-**Está pronto para executar** — os dois pontos já existem: o catálogo entra no
-prefixo no bloco `CATÁLOGO` de `montaPrefixo()` (`prefixo.ts`), e a taxonomia
-que mede está na função `classe()` de `avalia_datasets.ts`. Uma ressalva na leitura do número: o classificador
+**Feito**: `harness/desambigua.ts` detecta os pares por regra sobre
+`listaDatasets()`, `harness/dados/desambiguacao.json` traz a frase contrastiva
+(mais os `grupos_semanticos` que nenhuma regra de string pega), e
+`prefixo.ts` gruda a pista na linha do `CATÁLOGO` só dos datasets ambíguos —
+`prefixo.test.ts` tranca a regra de entrada do JSON. **Falta rodar** a
+avaliação contra as 274 perguntas para medir se a classe `vizinho` caiu —
+nada disso foi medido ainda, só implementado e testado por unidade.
+
+A taxonomia que mede está na função `classe()` de `avalia_datasets.ts`. Uma ressalva na leitura do número: o classificador
 `vizinho` compara só o **primeiro segmento** do nome (`d.split("_")[0]`), então
 agrupa por **órgão**, não por irmão de verdade — `me_caged`↔`me_rais` cai na
 mesma classe que `ibge_ppm`↔`ibge_pam`. A classe cair é sinal bom, mas mistura
@@ -140,22 +151,36 @@ Vieram da lista "Falta" de `harness_gemma_dsh.md`, removida de lá para não
 manter duas filas divergindo. Ficam **abaixo** dos itens 0-5 de propósito:
 nenhum tem falha medida atrás, então a ordem entre eles é julgamento, não dado.
 
-### 6. Camada de ano no portão 🔴
+### 6. Camada de ano no portão ✅ fechado 2026-09-02
 
-`anos.ts` já sabe a faixa real de cada tabela (377 cacheadas) e **não bloqueia** —
+`anos.ts` já sabia a faixa real de cada tabela (377 cacheadas) e **não bloqueava** —
 só serviu uma vez para explicar um `n=0` depois do fato. O caso que a motivou: o
 modelo montou CAGED×RAIS×PIB corretamente e filtrou `ano=2022`, mas
-`br_ibge_pib.municipio` termina em **2021**. Sem a camada, o harness reporta zero
-como se fosse resposta.
+`br_ibge_pib.municipio` termina em **2021**.
 
 Mesma família da tarefa 1 de [`regras.md`](regras.md) (`COUNT(*) AS n` e `n=0`
-só valem no pipeline aposentado): **o portão sabe a coisa e não age**.
+só valem no pipeline aposentado): o portão sabia a coisa e não agia.
 
-### 7. Alerta de sanidade virar reparo 🔴
+**Fechado**: `checaAno` em `portao.ts` rejeita antes de executar, dividindo a
+SQL em escopos (CTE/subconsulta) para não cobrar filtro de uma tabela pelo
+predicado de outra. `mcp.ts` também usa `faixasCitadas()` na mensagem de zero
+linhas, no lugar de mandar chamar `listar_tabelas` de novo. Coberto por
+`portao.test.ts`, não medido numa rodada ao vivo ainda.
+
+### 7. Alerta de sanidade virar reparo 🟡 parcial 2026-09-02
 
 Hoje `corr=0,97` só avisa. O mecanismo que funciona já existe e está provado — a
 rejeição do portão volta ao modelo como resultado de tool call e ele conserta
 sozinho (foi assim que 726 virou 789). Falta aplicá-lo aos alertas.
+
+**Parcial**: só o caso sem leitura legítima — estatística derivada (`AVG`,
+`MEDIAN`, `STDDEV`, `CORR`, razão entre agregados) sem `COUNT(*) AS n` —
+virou rejeição dura (`checaAmostra` em `portao.ts`). Os outros três alertas
+(`GROUP BY` reportado como total, `n` acima dos 5.570 municípios, correlação
+suspeita) continuam soft de propósito — todos têm leitura legítima, e
+rejeitar duro rejeitaria trabalho correto. Eles voltam grudados no resultado
+via `alertasDeSanidade()` em `mcp.ts`, então o modelo pelo menos vê antes de
+escrever a prosa; não viram reparo automático.
 
 ### 8. O Gemma redige relatório, ou só apura número? 🔴
 
