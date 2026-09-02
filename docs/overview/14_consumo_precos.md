@@ -43,6 +43,25 @@ erDiagram
 
 O IPCA em `br_ibge_ipca.mes_categoria_municipio` com 49.356 registros detalha inflação por categoria. A ANP em `br_anp_precos_combustiveis.microdados` (dados mensais agregados) e `br_anp_combustiveis.precos` (2.006.614 linhas, pesquisa semanal por posto CNPJ, 2022-2026) revelam preços de combustíveis por bandeira, produto e município.
 
+**As duas tabelas de preço de combustível da ANP não são duplicatas — cobrem janelas diferentes e servem perguntas diferentes:**
+
+| | `br_anp_combustiveis.precos` | `br_anp_precos_combustiveis.microdados` |
+|---|---|---|
+| Origem | raspagem própria | espelho do Base dos Dados |
+| Período | 2024-03 a 2026-07 (~7 meses de atraso a menos) | 2004-05 a 2026-02 (22 anos de histórico) |
+| `cnpj` | sem padding (texto livre) | — |
+| Local | município/estado em texto livre | `id_municipio`/`sigla_uf` padronizados (join direto) |
+| Linhas | 2.006.614 | 16.409.523 |
+
+Para "preço atual/recente" e granularidade semanal por posto, usar
+`br_anp_combustiveis.precos`. Para série histórica de longo prazo ou para
+juntar com outras tabelas por `id_municipio`/`sigla_uf`, usar
+`br_anp_precos_combustiveis.microdados` — escolher a errada dá resposta
+plausível mas do período ou da fonte errada, silenciosamente (mesmo padrão
+de `false_friends` em `docs/context/bridges.yaml`, só que entre tabelas em
+vez de colunas). Nenhuma das duas é removida ou preferida de forma
+absoluta; a escolha depende da pergunta.
+
 ## Revelações Importantes — Consumo
 
 ### 1. Inflação: pobre paga mais
