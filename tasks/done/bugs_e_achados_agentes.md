@@ -466,3 +466,21 @@ Preencher aqui conforme cada notificação de conclusão chegar:
   cruzando com cadastro de benefício social é decisão de privacidade sensível,
   explicitamente não tomada nem levantada antes — fica pro usuário decidir se
   quer isso feito, não é escolha automática.
+
+---
+
+## ✅ Arquivado em 2026-09-02 — onde foram parar os fios vivos
+
+Esta rodada está encerrada. Os 5 bugs do §1 já foram mesclados em
+`bridges.yaml`, e a cadeia de regen + o golden set já rodaram (ver a nota do
+topo). Os dois itens que ainda respiravam saíram daqui:
+
+| Fio | Foi para |
+|---|---|
+| §3 — backlog do Agente A (T37-2/3/4 e temas não tocados) | [`respostas_pendentes.md`](../respostas_pendentes.md) |
+| §5 — decisão de privacidade do CNES `tipo_pessoa='1'` | [`deanonimizacao_geral.md`](../deanonimizacao_geral.md) |
+| §2.5 — Consumidor.gov.br travado em login gov.br | [`datasets_to_scrap.md`](../datasets_to_scrap.md), seção *Deferred* |
+| §2.4 — IPEA Atlas da Violência 152/152 | fechado; registro em [`threads_pos_scraping_2026-07.md`](threads_pos_scraping_2026-07.md) |
+| §2.9 — fix do sort da ANA | fechado; ver [`../ana_series_historicas.md`](../ana_series_historicas.md) item 0 |
+
+O resto fica como provenance: é o log de como a rodada correu, não afazer.

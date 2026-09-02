@@ -84,3 +84,19 @@ Não fiz uma varredura sistemática de todos os 207 datasets por sobreposição
 semântica (só nome compartilhado + `_antigo`/`_novo`/`_original`). Pode haver
 outros pares que não compartilham prefixo de nome e por isso não apareceram
 nesta busca.
+
+---
+
+## ✅ Arquivado em 2026-09-02
+
+Survey encerrado. Os itens **1 a 4** viraram ação e estão todos executados —
+o plano e o registro de execução estão em
+[`higiene_espelho.md`](higiene_espelho.md) (`br_ibama_embargos` e `br_seeg`
+movidos para `~/rodado/_obsoleto/`; outlier do PNCP virou a métrica
+`pncp_valor_total_contratos`; distinção ANP documentada em
+`docs/overview/14_consumo_precos.md`).
+
+Os itens **5 e 6** (pares `_antigo` de `br_ibge_pib`,
+`br_me_rais_identificada` × `br_me_rais`) seguem sem ação **por decisão** —
+são hipóteses de escopo diferente, não duplicatas. Nada pendente aqui; o
+arquivo fica pelo método e pelas contagens brutas.

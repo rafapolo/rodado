@@ -1,4 +1,11 @@
-# TODO
+# Threads abertas pós-finalização do scraping (2026-07-14)
+
+> ✅ **Arquivado em 2026-09-02 — as três threads estão fechadas.**
+> `_run_sql_ssh` órfão: corrigido 2026-08-25. Atlas da Violência: fechado
+> 152/152 em 2026-08-27. Consumidor.gov.br: a pesquisa abaixo continua sendo
+> o registro completo do bloqueio, mas o item vivo migrou para a seção
+> *Deferred* de [`../datasets_to_scrap.md`](../datasets_to_scrap.md) — é
+> credencial pessoal (login gov.br), não infra quebrada.
 
 Open threads left after the 2026-07-14 scraping finalization pass. Both are
 blocked on external state, not on anything actionable locally right now.

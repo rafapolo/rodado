@@ -9,77 +9,90 @@ plano, medições, catálogo de refino, avaliação de modelo candidato) vivem e
 [`harness/tasks/`](../harness/tasks/README.md), não aqui — aqui fica o que é
 do projeto como um todo (datasets, raspagem, camada semântica, o espelho).
 
+> **Reorganizado em 2026-09-02.** Eram 15 arquivos ativos, hoje são 6. Cinco
+> foram fundidos em dois arquivos de grupo (`fontes_novas.md`,
+> `espelho_subutilizado.md`) e quatro foram para `done/` com os fios ainda
+> vivos roteados para quem é dono deles. O mapa da mudança está no fim.
+
 ## Ativos
 
-Ordenados por atividade recente (mtime + commits), não por tema — o que está
-sendo trabalhado agora fica no topo.
+Seis arquivos, cada um com uma pergunta própria. A regra que separa os quatro
+primeiros: **onde o dado está**.
 
-| Arquivo | Descrição | Status |
+| Arquivo | A pergunta que ele responde | Status |
 |---|---|---|
-| [`datasets_quase_duplicados.md`](datasets_quase_duplicados.md) | Datasets quase-duplicados no espelho (item 2 do TODO do harness) — `br_ibama_embargos` vazio é o mais urgente | 🔴 diagnosticado, ação pendente — survey de 2026-09-01, nada removido/mapeado ainda |
-| [`datasets_licenciamento_ambiental.md`](datasets_licenciamento_ambiental.md) | Datasets de licenciamento e poluição ambiental (saído do relatório de Nova Friburgo) | 🟡 6 de 8 raspados 2026-09-01 (ANM, IBAMA CTF/autos/embargos, INEA, Querido Diário) — ver *Em aberto* abaixo |
-| [`relatorio_saude_mental.md`](relatorio_saude_mental.md) | Mapa do que o espelho tem para um relatório de saúde mental — ainda não é o relatório | 🔵 aberto — levantamento 2026-09-01 |
-| [`municipio_dashboard_datasets_pendentes.md`](municipio_dashboard_datasets_pendentes.md) | 53 datasets com coluna de município que o dashboard `dataviz/municipio` (repo `xyz`) ainda não usa | 🔵 aberto — levantamento 2026-08-28, triado em baldes |
-| [`bugs_e_achados_agentes.md`](bugs_e_achados_agentes.md) | Log da rodada de 5 agentes paralelos (2026-08-27): bugs e achados cruzados | 🟡 em andamento — 1 agente caiu por rate limit, progresso mesclado |
-| [`deanonimizacao_geral.md`](deanonimizacao_geral.md) | Nomear quem só aparece como CNPJ/CPF no espelho, via join com cadastros | 🟡 parcial — baldes 1 (CNPJ) e 2 (CPF) feitos, resto aberto |
-| [`datasets_coverage_gaps.md`](datasets_coverage_gaps.md) | Os 111 (de 197) datasets do espelho que nenhuma pergunta em `docs/perguntas.md` nunca tocou | 🟡 em andamento — 1ª rodada: 7/10 respondidas, 3 bloqueadas |
-| [`respostas_pendentes.md`](respostas_pendentes.md) | O que falta responder no golden set `douradas_perguntas.json` (continuação de `done/mcp_search_refino.md`) | 🟡 em andamento |
-| [`ana_series_historicas.md`](ana_series_historicas.md) | Séries históricas da ANA (vazão/cota) — o que falta além do ETL e da página `series.html` | 🟡 parcial — ETL/análise feitos 2026-08-10, itens residuais abertos |
-| [`datasets_gap_analysis.md`](datasets_gap_analysis.md) | Fontes públicas *fora* do espelho, candidatas a ETL, rankeadas por valor/esforço | 🔵 backlog — vários itens bloqueados por credencial/API |
-| [`todo.md`](todo.md) | Threads abertas pós-finalização do scraping (2026-07-14) | 🟡 1 de 2 resolvida — Atlas da Violência ✅; Consumidor.gov.br bloqueado em login gov.br |
-| [`datasets_to_scrap.md`](datasets_to_scrap.md) | Board de status do scraping autônomo — só o que ainda é acionável (`blocked`, `blocked → mcp-todo`) | 🟢 ativo — resolvidos vivem em `done/datasets_to_scrap_done.md` |
-| [`minc_salic_import.md`](minc_salic_import.md) | Import do SALIC/Lei Rouanet (MinC), trazido do repo `../Mostre` | ✅ feito (parcial) — 2026-08-25 |
-| [`douradas_perguntas.json`](douradas_perguntas.json) | Golden set dataset-level (43 temas × 5) gerado de `docs/perguntas.md`+`docs/respostas.md`, mede `search_tables` | ⚙️ gerado — regenerar via `build_douradas_perguntas.py` após resposta nova |
+| [`datasets_to_scrap.md`](datasets_to_scrap.md) | O que está **na fila** de coleta e por que ainda não entrou (`blocked`, `deferred-api_key`) | 🟢 ativo — resolvidos vivem em [`done/datasets_to_scrap_done.md`](done/datasets_to_scrap_done.md) |
+| [`fontes_novas.md`](fontes_novas.md) | O que existe de dado público **fora** do espelho, rankeado por valor/esforço | 🔵 backlog — varredura geral (2026-08-23) + mergulho em licenciamento ambiental (2026-09-01); vários itens presos em credencial/API |
+| [`espelho_subutilizado.md`](espelho_subutilizado.md) | O que **já está** no espelho e nada consome — nenhuma pergunta, nenhuma seção de dashboard, nenhum relatório | 🔵 inventário — 111 datasets sem pergunta, 53 sem uso no dashboard, + o mapa de saúde mental |
+| [`respostas_pendentes.md`](respostas_pendentes.md) | Que perguntas do golden set ainda faltam responder — e que bugs aparecem ao responder | 🟡 em andamento — inclui o backlog herdado do Agente A |
+| [`deanonimizacao_geral.md`](deanonimizacao_geral.md) | Quem no espelho só aparece como CNPJ/CPF e dá pra nomear | 🟡 parcial — baldes 1 (CNPJ) e 2 (CPF) feitos; **1 decisão de privacidade aguarda o usuário** (CNES `tipo_pessoa='1'`) |
+| [`ana_series_historicas.md`](ana_series_historicas.md) | Séries da ANA — o que falta além do ETL e da página `series.html` | 🟡 **1 item aberto**: o gap da COTA (conferido 2026-09-02: `series_cota_mensal_completa` não existe no beelink, a rodada de 08-27 não entregou) |
 
-## Em aberto — deixado pela sessão de 2026-09-01/02
+Não são tarefas, são insumos:
 
-O que ficou pela metade quando a sessão de raspagem ambiental terminou. Cada
-item é acionável sozinho; nenhum depende dos outros.
+| Arquivo | O que é |
+|---|---|
+| [`douradas_perguntas.json`](douradas_perguntas.json) | Golden set dataset-level (43 temas × 5) — ⚙️ **gerado**, regenerar com `build_douradas_perguntas.py` depois de cada resposta nova em `docs/respostas.md` |
+| [`doc2query/`](doc2query/) | Os 39 lotes brutos da geração doc2query (`lote_*.jsonl`, `saida_*.jsonl`) — insumo de `gera_doc2query_corpus.py` |
+
+## Em aberto — sem arquivo próprio
+
+Fios que sobraram da sessão de raspagem ambiental de 2026-09-01/02 e não
+pertencem a nenhum dos seis acima. Cada item é acionável sozinho.
 
 ### Coleta
 
 | O quê | Estado | O que falta |
 |---|---|---|
-| **PNCP: endpoint escondido `/api/search`** | Descoberto 2026-09-02 no bundle Angular do portal (`pncp.gov.br/app/main.*.js`, chave `searchURL`). Responde em **1,4s** com **57 campos** por contrato (a API pública leva 30–120s e dá 41 campos), e traz `municipio_id`, `esfera_nome`, `poder_nome` que a pública não tem. Exige header `Referer: https://pncp.gov.br/app/contratos` e `status` obrigatório (`todos`). **Não serve para ETL**: teto duro de 10.000 resultados (`pagina × tam_pagina ≤ 10000`, o limite do Elasticsearch — o próprio portal assume em `qtdDocumentsToShow: 9990`), e os únicos filtros que fatiam são `anos` e `ufs`, insuficientes (RJ/2025 sozinho tem 61.241). **Ótimo para consulta pontual**, péssimo para colheita. Atenção: em teste, `anos=2024` e `anos=2025` devolveram o mesmo total — o filtro parece ser ignorado às vezes, então não confiar no `total` sem conferir contra a API oficial |
 | **PNCP mai/2025 → hoje** | 1.412.466 contratos em `br_pncp.contratos` (2021–2026); faltam ~85 janelas de 5 dias | O `HTTP 500` da API é **rate limit por IP** — confirmado por um `429` explícito. Paralelizar do mesmo IP não adianta (todos dividem a cota); o proxy BR tem cota própria e devolve 200 onde o direto dá 500. `_staging/pncp/duplo.sh` roda as duas rotas, ~20h. Retomar: `nohup bash ~/rodado/_staging/pncp/duplo.sh &` — ele pula por `stat` o que já existe |
-| **INEA anterior a 2019** | Índice do Boletim de Serviço começa em 28/01/2019 | Acervo velho está em `portalproderj.inea.rj.gov.br`, que não respondeu nem pelo proxy BR. Pode estar desativado |
-| **PDFs dos 1.081 boletins do INEA** | Só o índice foi colhido | É neles que estão **validade e condicionantes** da licença — dois campos que o relatório de Nova Friburgo pedia e o índice não traz |
-| **Qualidade do ar (item 8, 2ª metade)** | SEEG fechou a parte de emissão estimada | Rede de monitoramento do INEA não raspada; segue sem confirmar se Nova Friburgo tem estação |
+| **PNCP: endpoint escondido `/api/search`** | Descoberto 2026-09-02 no bundle Angular do portal (`pncp.gov.br/app/main.*.js`, chave `searchURL`). Responde em **1,4s** com **57 campos** por contrato (a API pública leva 30–120s e dá 41), e traz `municipio_id`, `esfera_nome`, `poder_nome` que a pública não tem. Exige header `Referer: https://pncp.gov.br/app/contratos` e `status=todos` | **Não serve para ETL**: teto duro de 10.000 resultados (`pagina × tam_pagina ≤ 10000`, limite do Elasticsearch — o próprio portal assume em `qtdDocumentsToShow: 9990`), e os únicos filtros que fatiam são `anos` e `ufs`, insuficientes (RJ/2025 sozinho tem 61.241). **Ótimo para consulta pontual, péssimo para colheita.** Atenção: em teste, `anos=2024` e `anos=2025` devolveram o mesmo total — o filtro parece ser ignorado às vezes, não confiar no `total` sem conferir contra a API oficial |
 | **8 páginas do PNCP irrecuperáveis** | Servidor não entrega nem após 5 tentativas | Registrar como buraco conhecido, não insistir |
-
-### Higiene do espelho
-
-| O quê | Por que urge |
-|---|---|
-| ~~Remover `br_ibama_embargos`~~ ✅ feito 2026-09-02 (movido para `~/rodado/_obsoleto/`, não apagado) | 113.878 linhas com **zero** não-vazias — o CSV foi parseado errado e os bytes nunca foram gravados. Quem consulta recebe zero e acha que é resposta. Substituto pronto: `br_ibama_embargos_novo` (892.279 linhas, 2001–2026). Ver [`datasets_quase_duplicados.md`](datasets_quase_duplicados.md) |
-| ~~Remover `br_seeg`~~ ✅ feito 2026-09-02 (idem) | Raspei 12,1M linhas da API GraphQL **antes de conferir** que `br_seeg_emissoes.municipio` já existia com 165,7M linhas e mais granular. Conferido idêntico onde se sobrepõem (Nova Friburgo 2024: 345.342 tCO2e nos dois) |
-| **`valorGlobal` do PNCP tem outlier absurdo** | 54 contratos (0,008%) somam **88% do total de 2024**: uma empresa de ônibus com "R$ 481 bilhões". Sem filtro, qualquer soma mente por fator de 8. Mediana real: R$ 2.800 |
+| **PDFs dos 1.081 boletins do INEA** | Só o índice foi colhido | É neles que estão **validade e condicionantes** da licença — dois campos que o relatório de Nova Friburgo pedia e o índice não traz |
+| **INEA anterior a 2019** | Índice do Boletim de Serviço começa em 28/01/2019 | Acervo velho está em `portalproderj.inea.rj.gov.br`, que não respondeu nem pelo proxy BR. Pode estar desativado |
+| **Qualidade do ar (2ª metade)** | SEEG fechou a parte de emissão estimada | Rede de monitoramento do INEA não raspada; segue sem confirmar se Nova Friburgo tem estação |
 
 ### Descoberta e documentação
 
 | O quê | Estado |
 |---|---|
-| **Índice doc2query** | ⏸️ **parado a pedido em 2026-09-02** com 23 de 63 tabelas geradas (`tasks/doc2query/saida_0{1,2}.jsonl`, resumível com `--faltantes`). Nada foi aplicado ao índice: as 63 tabelas novas seguem invisíveis para `search_tables`, embora apareçam em `list_tables`/`describe_table`. Gerador: **Gemma 4 local** (`scripts/doc2query_gemma.py`, `llama-server` na porta 8099 do beelink) — o `opencode/hy3-free` que o `doc2query_roda.py` usa passou a devolver `UnknownError: Unexpected server error` em toda chamada. 63 tabelas a gerar, uma por chamada (contexto menor, JSON mais confiável, falha custa uma tabela e não 25). Depois: `gera_doc2query_corpus.py` → `gera_doc2query_index.py`. Cobria 832 tabelas; o espelho tem 909. As **45 tabelas novas não são encontráveis por `search_tables`** — quem procurar "licenciamento ambiental" não acha o INEA. Regenerar o embedding é barato (`scripts/gera_doc2query_index.py`), mas o corpus precisa da passada LLM, que é cara |
-| **`tasks/` é gitignored** | As 7 entradas de procedência que escrevi em `done/datasets_to_scrap_done.md` vivem só nesta máquina. Se o beelink for reinstalado, `build_metadata_catalog.py` perde a procedência das fontes novas |
-| ~~`harness/prefixo.ts` sem versionar~~ | ✅ versionado em `3806705` |
+| **Índice doc2query** | ⏸️ **parado a pedido em 2026-09-02** com 23 de 63 tabelas geradas (`doc2query/saida_0{1,2}.jsonl`, resumível com `--faltantes`). Nada foi aplicado ao índice: as 63 tabelas novas seguem **invisíveis para `search_tables`**, embora apareçam em `list_tables`/`describe_table` — quem procurar "licenciamento ambiental" não acha o INEA. Gerador: **Gemma 4 local** (`scripts/doc2query_gemma.py`, `llama-server` na porta 8099 do beelink) — o `opencode/hy3-free` que o `doc2query_roda.py` usa passou a devolver `UnknownError` em toda chamada. Uma tabela por chamada (contexto menor, JSON mais confiável, falha custa uma tabela e não 25). Depois: `gera_doc2query_corpus.py` → `gera_doc2query_index.py`. O corpus cobre 832 tabelas; o espelho tem 909 |
+| **`douradas_multi.json` não existe** | `CLAUDE.md` cita o golden set table-level (`scripts/build_douradas_multi.py`, gerado de `docs/relatorio-social/perguntas.md`), mas o arquivo não está em `tasks/` — rodar o gerador ou remover a referência do `CLAUDE.md` |
 
 ## `done/` — arquivado (provenance, não é to-do)
 
 | Arquivo | Descrição | Concluído em |
 |---|---|---|
+| [`threads_pos_scraping_2026-07.md`](done/threads_pos_scraping_2026-07.md) | Era `todo.md` — as 3 threads pós-scraping: `_run_sql_ssh` órfão, Atlas da Violência (152/152), pesquisa completa do bloqueio do Consumidor.gov.br | 2026-09-02 |
+| [`bugs_e_achados_agentes.md`](done/bugs_e_achados_agentes.md) | Log da rodada de 5 agentes paralelos: 5 bugs confirmados (já em `bridges.yaml`) + o que cada agente entregou | 2026-09-02 |
+| [`higiene_espelho.md`](done/higiene_espelho.md) | Duplicatas/dado zerado no espelho (`br_ibama_embargos`, `br_seeg`) + outlier do PNCP + nota ANP — 4 de 4 | 2026-09-02 |
+| [`datasets_quase_duplicados.md`](done/datasets_quase_duplicados.md) | O survey que originou o `higiene_espelho.md` — método e contagens brutas | 2026-09-02 |
+| [`minc_salic_import.md`](done/minc_salic_import.md) | Import do SALIC/Lei Rouanet (MinC), trazido do repo `../Mostre` | 2026-08-25 |
+| [`datasets_to_scrap_done.md`](done/datasets_to_scrap_done.md) | Linhas resolvidas/fechadas splitadas de `datasets_to_scrap.md` (provenance) | 2026-08-24 (split) |
+| [`mcp_search_refino.md`](done/mcp_search_refino.md) | Achados da investigação ask-web aplicados ao `mcp_server.py` (índice doc2query, `dicionario_coverage`) | 2026-08-24 |
+| [`ask_web.md`](done/ask_web.md) | App web local de pergunta em pt-BR — retirado de circulação, preservado em `origin/ask-web` | 2026-08-24 |
 | [`ana_series_etl.md`](done/ana_series_etl.md) | ETL do zip da ANA + análise de tendência ("rios morrendo") | 2026-08-09 |
 | [`ana_series_historicas.md`](done/ana_series_historicas.md) | Download/extração do zip único da série histórica ANA | (insumo do item acima) |
-| [`ask_web.md`](done/ask_web.md) | App web local de pergunta em pt-BR — retirado de circulação, preservado em `origin/ask-web` | 2026-08-24 |
-| [`datasets_to_scrap_done.md`](done/datasets_to_scrap_done.md) | Linhas resolvidas/fechadas splitadas de `tasks/datasets_to_scrap.md` (provenance) | 2026-08-24 (split) |
-| [`mcp_search_refino.md`](done/mcp_search_refino.md) | Achados da investigação ask-web aplicados ao `mcp_server.py` (índice doc2query, `dicionario_coverage`) | 2026-08-24 |
 | [`sync_censo.md`](done/sync_censo.md) | Mirror completo do FTP do IBGE para beelink | ✅ (resumível, concluído) |
 | [`sync_cpf.md`](done/sync_cpf.md) | Completar CPFs mascarados em 15 tabelas via `pessoas.parquet` | ✅ |
-| [`ducklake.plan`](done/ducklake.plan) | Avaliação de migração para DuckLake | ❌ arquivado, não adotado |
-| [`normalization.plan`](done/normalization.plan) | Consolidar 52.281 parquets do IBGE FTP (1/UF) em datasets com `_uf` | ✅ v4 em produção — 2026-07-27 |
 | [`semantica.plan`](done/semantica.plan) | Camada semântica: `bridges.yaml` + `metrics.yaml` + `hierarchies.yaml` | ✅ executado — 2026-08-22 |
+| [`normalization.plan`](done/normalization.plan) | Consolidar 52.281 parquets do IBGE FTP (1/UF) em datasets com `_uf` | ✅ v4 em produção — 2026-07-27 |
+| [`ducklake.plan`](done/ducklake.plan) | Avaliação de migração para DuckLake | ❌ arquivado, não adotado |
 
-## Nota
+## O que mudou em 2026-09-02
 
-`CLAUDE.md` cita `tasks/douradas_multi.json` (golden set table-level, gerado por
-`scripts/build_douradas_multi.py` a partir de `docs/relatorio-social/perguntas.md`) —
-o arquivo não existe hoje em `tasks/`; rodar o script gerador ou remover a referência.
+**Fusões** — cinco arquivos viraram dois, sem perda de conteúdo:
+
+| Novo | Absorveu | Por que é uma coisa só |
+|---|---|---|
+| `fontes_novas.md` | `datasets_gap_analysis.md` + `datasets_licenciamento_ambiental.md` | Os dois rankeiam fonte pública **fora** do espelho como candidata a ETL; licenciamento era o mergulho temático da mesma pergunta |
+| `espelho_subutilizado.md` | `datasets_coverage_gaps.md` + `municipio_dashboard_datasets_pendentes.md` + `relatorio_saude_mental.md` | Os três inventariam dado **já espelhado** que nada consome — muda só quem é o consumidor ausente (pergunta, dashboard, relatório) |
+
+**Arquivamentos** — com os fios vivos roteados antes de mover, não descartados:
+
+| Saiu | Fio que ainda respirava | Foi para |
+|---|---|---|
+| `todo.md` | Consumidor.gov.br travado em login gov.br | `datasets_to_scrap.md`, seção *Deferred* (é credencial pessoal, não infra quebrada) |
+| `bugs_e_achados_agentes.md` | Backlog do Agente A (T37-2/3/4 + temas não tocados) | `respostas_pendentes.md` |
+| `bugs_e_achados_agentes.md` | Decisão de privacidade do CNES `tipo_pessoa='1'` | `deanonimizacao_geral.md` |
+| `datasets_quase_duplicados.md` | — (itens 1-4 executados em `higiene_espelho.md`; 5-6 sem ação por decisão) | nada pendente |
+| `minc_salic_import.md` | — (feito em 2026-08-25) | nada pendente |

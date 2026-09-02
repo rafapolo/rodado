@@ -191,8 +191,13 @@ Teste de fumaça em 5 estações confirmou: SOAP `tipoDados=1` devolve o mesmo f
 (`Cota01..31` diário embutido, `Media`/`Maxima`/`Minima`, `NivelConsistencia`) até 2026-04.
 Rodada completa disparada no beelink contra os 7.197 códigos de `series_cota_mensal`, 4 threads
 (mesma configuração que rendeu ~40 estações/min na vazão, por causa do rate limit 429 do lado da
-ANA) — **[preencher ao terminar: linhas/estações/período de `series_cota_mensal_completa` e
-resultado do `build_metadata_catalog.py`]**.
+ANA) — **a rodada não entregou.** Conferido no beelink em 2026-09-02:
+`~/rodado/br_ana_telemetria/` tem `series_vazao_mensal_completa` mas **não tem**
+`series_cota_mensal_completa` — o diretório não existe. A rodada disparada em
+2026-08-27 ou morreu no meio, ou nunca escreveu a saída. **É o único item aberto
+deste arquivo**; retomar significa redisparar
+`ana_soap_worker.py --tipo 1` contra os 7.197 códigos e depois
+`ana_series_unifica_gap.py --tipo cota`.
 
 ## 5. Série diária pós-2023-09 — a suposição anterior estava ERRADA
 

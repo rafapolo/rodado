@@ -1,4 +1,25 @@
-# datasets_coverage_gaps.md — datasets do espelho que nenhuma pergunta nunca tocou
+# Espelho subutilizado — dado que já temos e nada consome
+
+> Agrupado em 2026-09-02 de três levantamentos que mediam a mesma lacuna por
+> três consumidores diferentes. Todos partem de dado **já espelhado** e
+> perguntam "quem usa isto?" — a resposta em todos os casos é "ninguém ainda".
+>
+> - **Parte I** — os 111 datasets que nenhuma pergunta de `docs/perguntas.md` tocou
+> - **Parte II** — os 53 datasets com coluna de município que o dashboard `dataviz/municipio` não usa
+> - **Parte III** — o mapa de saúde mental: um tema onde o dado existe e o relatório não
+>
+> Parte III é a forma concreta que as Partes I e II tomam quando alguém
+> escolhe um recorte: sai do inventário e vira "o que dá pra responder".
+
+**Como isto se relaciona com os vizinhos:** o oposto de
+[`fontes_novas.md`](fontes_novas.md), que cataloga o que o espelho **não**
+tem. Aqui é excesso não aproveitado, lá é falta. Nenhum dos dois executa —
+quem executa é [`respostas_pendentes.md`](respostas_pendentes.md) (perguntas)
+e [`datasets_to_scrap.md`](datasets_to_scrap.md) (coleta).
+
+---
+
+# Parte I — Datasets que nenhuma pergunta nunca tocou
 
 Nasceu de uma observação simples em 2026-08-25: `docs/perguntas.md` tinha 215
 perguntas (43 temas × 5) mas só citava 86 dos 197 datasets do espelho. Os
@@ -7,13 +28,13 @@ tiveram uma chance de expor um bug de join ou uma armadilha de unidade, porque
 a disciplina de `respostas_pendentes.md` (responder com query real, documentar
 bloqueio real) só roda sobre pergunta que existe.
 
-Diferente de `datasets_gap_analysis.md` (que procura **fontes novas fora do
+Diferente de `fontes_novas.md` (que procura **fontes novas fora do
 espelho**) e de `respostas_pendentes.md` (que fecha o backlog de perguntas
 **já escritas**), este arquivo rastreia **datasets já espelhados que nenhuma
 pergunta usa** — o inventário pra decidir o próximo tema a escrever, não pra
 executar.
 
-## Metodologia (temas 44/45 como precedente)
+### Metodologia (temas 44/45 como precedente)
 
 ```python
 import json, re
@@ -36,7 +57,7 @@ mais alta que nas rodadas sobre temas 1-43 (que já tinham sido escritos e
 parcialmente tentados) — sugere que "nunca tocado" é um preditor melhor de bug
 que "tema difícil".
 
-## Estado em 2026-08-25
+### Estado em 2026-08-25
 
 Depois dos temas 44/45: **99 de 197 datasets** (era 111) ainda nunca aparecem
 em `docs/perguntas.md`. Triados abaixo em três baldes.
@@ -143,7 +164,7 @@ tema em temas 46-55 — ver as duas atualizações acima. Re-triagem completa
 dos **62 datasets** que sobraram untouched depois dessa rodada, em quatro
 baldes.
 
-### Confirmados quebrados/vazios/mal-rotulados nesta rodada — não retentar sem re-scraping
+#### Confirmados quebrados/vazios/mal-rotulados nesta rodada — não retentar sem re-scraping
 
 Ficam fora de qualquer Balde C futuro até o dado ser corrigido na fonte:
 `br_mec_prouni` (só dicionário, T46-1), `br_me_exportadoras_importadoras`
@@ -152,7 +173,7 @@ sem tabela-ponte, T47), `br_me_cno` (versão pequena/defasada de
 `br_rf_cno`, T47), `world_wb_mides` (é procurement municipal brasileiro,
 não dado internacional, T53).
 
-### Balde A — puro lookup/dimensão, não vale pergunta própria
+#### Balde A — puro lookup/dimensão, não vale pergunta própria
 
 `br_bd_diretorios_brasil`, `br_bd_diretorios_data_tempo`, `br_bd_diretorios_mundo`,
 `br_bd_diretorios_us`, `br_bd_metadados`, `br_bd_vizinhanca`, `br_brasilapi`,
@@ -160,7 +181,7 @@ não dado internacional, T53).
 `global_ibge_tabua_mares`, `br_comprasgov_catmatcatser` (catálogo
 CATMAT/CATSER, código de material/serviço).
 
-### Balde B — escopo muito estreito ou difícil de cruzar
+#### Balde B — escopo muito estreito ou difícil de cruzar
 
 `br_ba_feiradesantana_camara_leis`, `br_ce_fortaleza_sefin_iptu`,
 `br_mg_belohorizonte_smfa_iptu`, `br_sp_saopaulo_geosampa_iptu` (IPTU de
@@ -174,7 +195,7 @@ ao IPCA já usado — baixa prioridade, redundantes sem um ângulo novo),
 `br_me_rais_identificada` (RAIS com mais PII, mas provavelmente redundante
 com `br_me_rais` já usado em dezenas de temas).
 
-### Balde C — candidatos reais pro próximo lote de temas
+#### Balde C — candidatos reais pro próximo lote de temas
 
 - **Programas sociais e transparência CGU** (grupo grande, nunca tocado):
   `br_cgu_pe_de_meia` (programa Pé-de-Meia, permanência escolar — cruza
@@ -249,7 +270,7 @@ os dois separados (2=preta, 4=parda) — filtrar só `CS_RACA='2'` pensando
 anos. Sem bloqueio novo: os cinco itens do tema foram todos respondidos com
 número real.
 
-## Pra continuar
+### Pra continuar
 
 1. Escolher 1-2 grupos do Balde C, escrever o próximo tema (56 em diante)
    em `docs/perguntas.md` (5 perguntas cada, formato
@@ -278,3 +299,118 @@ número real.
    (`perguntas.md`, `respostas.md`, `bridges.yaml`, `metrics.yaml`) fica
    sempre pra sessão orquestradora, sequencial, pra evitar conflito de
    edição concorrente no mesmo arquivo.
+
+---
+
+# Parte II — Datasets de município fora do dashboard
+
+Levantamento de 2026-08-28: dos 111 datasets do espelho que têm pelo menos uma
+tabela com coluna de município (`docs/context/basedosdados-schema.json`, busca
+por `municip` no nome da coluna), `dataviz/municipio/extract_municipio.py`
+(repo `xn--2dk.xyz` / `xyz`, não este) usa 62. Os 53 abaixo não entraram —
+triados em três baldes pra decidir depois quais valem uma seção nova. Nenhum
+destes foi verificado com query real no beelink; são hipóteses de escopo a
+partir do nome das tabelas e colunas, pra guiar a próxima rodada de decisão,
+não pra implementar direto.
+
+### Balde A — gap real, provável de valer a pena
+
+- `br_ms_sia` (`producao_ambulatorial`, `psicossocial`) — produção ambulatorial do SUS; complemento natural do SIH (internação) que já está no dashboard.
+- `br_ms_atencao_basica` (`municipio`) — cobertura de atenção básica/ESF; hoje o dashboard só tem CNES (estrutura) e agravos pontuais, nada sobre cobertura de saúde da família.
+- `br_transferegov` (`transferencias`, `programas`, `planos_acao`) — repasses federais a convênios/planos de ação, além das emendas parlamentares já cobertas.
+- `br_tcu_inidoneos` (`empresas`, `inabilitados_funcao_publica`, ...) — empresas e pessoas inabilitadas para contratar com o poder público; complementa a seção de transparência com um ângulo de integridade.
+- `br_tse_filiacao_partidaria` (`microdados`) — filiação partidária por município; complementa a seção de política, que hoje só tem eleitorado e resultado.
+- `br_comprasgov_sicaf` (`fornecedores`) — fornecedores cadastrados no SICAF sediados no município; complementa CNPJ/licitação.
+- `br_bndes_operacoes_contratadas` (`operacoes_nao_automaticas`) — financiamentos do BNDES contratados no município.
+- `br_cgu_pe_de_meia` (`pe_de_meia`) — programa de transferência a estudantes do ensino médio (2024+); mesma família de `bolsa_familia`/`bpc` já cobertos em `beneficios`.
+- `br_cgu_seguro_defeso` (`seguro_defeso`) — seguro-defeso a pescadores artesanais; mesma família de benefícios sociais.
+- `br_ibge_ipca` / `br_ibge_ipca15` (`mes_categoria_municipio`) — inflação por categoria **no município**, não só o INPC nacional que já está em `economia`. Cobertura limitada às ~16 cidades onde o IBGE coleta preços (capitais + poucas outras) — checar se Nova Friburgo tem dado antes de prometer a seção.
+
+### Balde B — relevante, mas com escopo geográfico estreito (não aparece pra toda cidade)
+
+- `br_tce_es`, `br_tce_pi`, `br_tce_sp` — dados de tribunais de contas estaduais; só existem para município do ES/PI/SP respectivamente, então uma seção "genérica" mostraria vazio pra ~89% dos municípios do país.
+- `br_trase_supply_chain` (`soy_beans*`, `beef*`) — rastreabilidade de cadeia de soja/boi; só tem dado real pra município de fronteira agrícola.
+- `br_ibama_embargos` — embargos ambientais; concentrado em município de desmatamento/Amazônia Legal. Nota: a Parte I deste arquivo já registrou que as 8 tabelas deste dataset têm 100% das colunas vazias em pelo menos um teste (2026-08-25) — checar se ainda está quebrado antes de investir tempo aqui.
+- `br_ana_outorgas` (`captacoes`, `lancamentos`) — outorgas de uso de água; só relevante pra município com corpo d'água outorgado. O projeto já tem conhecimento verificado sobre este dataset (ver memória `reference_outorgas_snirh` / `bridges.yaml`), então o custo de adicionar é baixo mesmo sendo de cobertura parcial.
+- `br_ana_telemetria` (`estacoes`, `series_chuva_*`, `series_cota_*`) — séries de chuva/nível de rio por estação telemétrica; só município com estação ANA por perto.
+- `br_cnpq_bolsas` (`microdados`) — bolsas CNPq por município de destino; concentrado em município com instituição de pesquisa.
+- `br_sfb_sicar` (`area_imovel`) — Cadastro Ambiental Rural; mais relevante pra município rural/agropecuário.
+- `br_ibge_pevs` (`producao_extracao_vegetal`, `producao_silvicultura`) — produção de extrativismo vegetal e silvicultura; só município com essa atividade.
+- `world_wb_mides` (`licitacao`, `empenho`, `liquidacao`) — execução orçamentária por município apesar do prefixo `world_`; parece ligado a um programa financiado pelo Banco Mundial, cobertura provavelmente restrita aos municípios participantes desse programa — checar antes de assumir.
+
+### Balde C — baixa prioridade, niche ou registro administrativo sem grão cívico
+
+- `br_anp_precos_combustiveis` (`microdados`) — parece duplicar `br_anp_combustiveis.precos`, que já está no dashboard; checar se são o mesmo dado antes de somar.
+- `br_anvisa_medicamentos_industrializados` — fabricantes de medicamento registrados por município; só relevante pra município com planta farmacêutica.
+- `br_bcb_sicor` (`operacao`, `empreendimento`, ...) — operações de crédito rural por instituição financeira; nicho, mais dado de mercado financeiro que perfil municipal.
+- `br_cvm_administradores_carteira` — administradores de carteira registrados na CVM; registro profissional, não indicador do município.
+- `br_rf_cafir` (`imoveis_rurais`) — Cadastro de Imóveis Rurais da Receita; a Parte I deste arquivo já registrou 61-64% das linhas sem id em todo snapshot (achado de 2026-08-25) — dado corrompido conhecido, não vale investir sem re-checar a fonte.
+- `br_rf_cno` (`microdados`, `vinculos`, `areas`, `cnaes`) — Cadastro Nacional de Obras; nicho, mais dado de fiscalização trabalhista em obra que perfil municipal.
+- `br_rf_arrecadacao` (`ir_ipi`, `itr`, ...) — arrecadação federal, mas tabelas parecem ser por UF/CNAE, não por município — checar grão antes de assumir que serve.
+- `br_ibge_amc` (`municipio_de_para`) — crosswalk de códigos de município ao longo do tempo (municípios que se desmembraram); é metadado de correspondência, não dado sobre o município em si.
+- `br_ibge_nomes_brasil` (`quantidade_municipio_nome_2010`) — nomes de bebês por município, censo 2010; curiosidade demográfica, não indicador.
+- `br_ibge_censo2022_raca` (`fecundidade_idade`, `instrucao`) — parece sobreposto ao que `censo_extra`/`demografia` já cobrem do censo 2022; checar antes de duplicar.
+- `br_ibge_censo_demografico` (`microdados_domicilio_1970` … `2010`) — censos históricos pré-2022; dado rico mas trabalho pesado (33 tabelas, microdados de domicílio) pra uma seção "perfil atual" — mais adequado a uma seção de série histórica futura, se um dia o dashboard ganhar visão temporal longa.
+- `br_ibge_pnadc` (`ano_municipio_raca_cor`, `ano_municipio_grupo_idade`) — PNAD Contínua parece ter uma agregação por município (`id_municipio`, `populacao`, `raca_cor`/`grupo_idade`), o que contraria a suposição inicial de que PNAD é só amostral sem grão municipal — vale conferir o que exatamente essa agregação representa antes de descartar.
+- `br_inep_ana`, `br_inep_avaliacao_alfabetizacao`, `br_inep_censo_educacao_superior`, `br_inep_educacao_especial`, `br_inep_indicador_nivel_socioeconomico`, `br_inep_sinopse_estatistica_educacao_basica` — tabelas INEP adicionais (alfabetização, educação especial, nível socioeconômico, ensino superior); o núcleo forte (IDEB/SAEB/ENEM/censo_escolar/SISU) já está coberto, estas são complementares, não um buraco óbvio.
+- `br_inmet_bdmep` (`estacao`, `microdados`) — dados meteorológicos por estação INMET; só município com estação por perto, e é clima, não indicador socioeconômico.
+- `br_ipea_acesso_oportunidades` (`estatisticas_2019`) — índice de acesso a oportunidades urbanas (empregos, serviços por transporte); dado único de 2019, sem série.
+- `br_mobilidados_indicadores` — indicadores de mobilidade urbana; provavelmente só grandes cidades têm cobertura real.
+- `br_ms_populacao` (`municipio`) — provavelmente duplica `br_ibge_populacao`, que já está no dashboard; checar se é a mesma série antes de somar.
+- `br_ms_vacinacao_covid19` (`microdados_estabelecimento`) — vacinação covid por estabelecimento; dado histórico de um evento específico, não indicador contínuo.
+- `br_mjsp_sisdepen` (`populacao_carceraria`) — população carcerária; o projeto já tem conhecimento verificado deste dataset (`bridges.yaml`, correção de formato feita nesta mesma sessão), custo de adicionar é baixo.
+- `br_poder360_pesquisas` (`microdados`) — pesquisas eleitorais; dado de opinião, não indicador do município.
+- `br_simet_educacao_conectada` (`escola`) — conectividade de escola; sobrepõe parcialmente `conectividade`/`educacao` já existentes.
+- `br_cgu_dados_abertos` (`conjunto`, `organizacao`, `recurso`) — metadado do portal de dados abertos, não dado sobre o município.
+- `br_cgu_fef` (`microdados`, `municipios_sorteados`, `sorteio`) — Fundo de Fiscalização de sorteio da CGU; nicho, cobertura por sorteio, não sistemática.
+- `br_cgu_garantia_safra` — já tem bridge documentado e é da mesma família de benefícios, mas não é usado ainda; baixa prioridade só porque `bolsa_familia`/`bpc` já cobrem o essencial de `beneficios`.
+- `world_oecd_public_finance` (`country`) — grão é país, não município; entrou na varredura por falso positivo (não tem coluna de município real) — descartar da lista de pendências.
+
+### Como decidir depois
+
+Pra promover um item do Balde A/B pra uma seção real: `mcp__rodado__describe_table`
++ uma query real no beelink pra confirmar que Nova Friburgo (`id_municipio`
+`3303401`) tem dado não-nulo, antes de prometer a seção no dashboard — vários
+destes datasets têm bugs conhecidos e catalogados (`br_rf_cafir`,
+`br_ibama_embargos`) que só apareceram ao tentar de fato.
+
+---
+
+# Parte III — Saúde mental: mapa do que o espelho responde
+
+> Aberto em 2026-09-01, a partir de um levantamento do que o espelho tem para
+> relatórios sobre questões psiquiátricas e psicológicas. Ainda não é um
+> relatório — é o mapa do que dá para responder e do que falta, antes de
+> escolher um recorte (município, período, tema) e escrever
+> `pages/analises/results/*.md`.
+
+### Tabelas já mapeadas
+
+| Tabela | O que dá | Chave/filtro |
+|---|---|---|
+| `br_ms_sia.psicossocial` | Atendimentos em CAPS/serviços psicossociais do SUS, mensal, por município. `cid_principal_categoria/subcategoria` (diagnóstico), `tipo_droga`, `indicador_situacao_rua`, idade/sexo/raça | `ano`, `id_municipio` |
+| `br_ms_cnes.leito` | Leitos de psiquiatria por estabelecimento/município — capacidade instalada, não atendimento | `id_municipio`, especialidade |
+| `br_ms_sih.aihs_reduzidas` | Internações SUS (AIH); não é específica de psiquiatria, mas `especialidade_leito` + `cid_principal_categoria/subcategoria` (e 9 diagnósticos secundários) permitem filtrar por CID F00-F99. Tem custo (`valor_aih`), permanência, óbito (`indicador_obito`) | `cid_principal_categoria` LIKE 'F%' |
+| `br_ms_sim.microdados` | Óbitos (SIM). `causa_basica` em CID-10 isola suicídio (X60-X84) e transtorno mental como causa (F00-F99); cruza com `circunstancia_obito`, idade, sexo, escolaridade, município | `causa_basica`, `id_municipio_residencia` |
+| `br_ms_sinan_violencia.microdados_violencia` | Notificação de violência interpessoal/autoprovocada (SINAN). Colunas específicas: `LES_AUTOP` (lesão autoprovocada), `CONS_SUIC` (ideação/tentativa de suicídio), `CONS_MENT` (transtorno mental como consequência), `TRAN_MENT`/`TRAN_COMP` (transtorno preexistente), `DEF_MENTAL`, `AUTOR_ALCO` | `ID_MUNICIP`, `NU_ANO` |
+| `br_datasus_cid10.codigos` | Referência CID-10 — monta a lista de códigos F00-F99 (transtornos mentais) e X60-X84 (suicídio) usada nos filtros acima | lookup |
+
+**Cuidado ao decodificar:** `sexo`, `raca_cor`, `estado_civil` em `br_ms_sim.microdados` têm código que **diverge por tabela** — sempre decodificar via `br_ms_sim.dicionario`, nunca reusar código de outra fonte (ver `coded_value_warning` do `describe_table`).
+
+### Ainda não explorado
+
+- `br_ms_pns.microdados_2013` / `microdados_2019` (Pesquisa Nacional de Saúde) — checar se o módulo de saúde mental autorreferida (diagnóstico de depressão, etc.) está nas colunas.
+- `br_ms_cnes.estabelecimento` — para localizar CAPS especificamente por tipo de estabelecimento (hoje só temos leito por especialidade, não o estabelecimento em si).
+- `resolve_join` entre `psicossocial`/`aihs_reduzidas`/`sim` — nenhuma ponte foi conferida ainda; se o recorte cruzar duas dessas tabelas, rodar `resolve_join` antes de juntar por `id_municipio` à mão.
+
+### Lacunas conhecidas
+
+- Nenhuma tabela dá **prevalência de transtorno mental na população geral** — só atendimento (demanda que chegou ao SUS) ou óbito. Sub-representa quem não busca/consegue atendimento.
+- Sem cobertura de rede privada/planos de saúde — todas as fontes são SUS (SIA, SIH, CNES) ou vigilância (SIM, SINAN).
+
+### Próximos passos
+
+1. Escolher o recorte do relatório (nacional? um município como os outros `pages/analises/`? um tema — CAPS, suicídio, internação por transtorno mental?).
+2. Rodar `describe_table` em `br_ms_pns.microdados_2013/2019` para fechar a lacuna de prevalência autorreferida.
+3. Conferir `resolve_join` entre as tabelas antes de qualquer cruzamento.
+4. Seguir o padrão de `pages/analises/results/*.md` — citar a fonte do dado (SIA/SIM/SINAN/CNES), nunca a ferramenta (ver `feedback_analises_sem_detalhe_tecnico` em memória).

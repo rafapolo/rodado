@@ -1,7 +1,7 @@
 # SALIC/Lei Rouanet (MinC) — importado de ../Mostre
 
 **Status: feito (parcial) — 2026-08-25.** Ver a linha correspondente em
-[`done/datasets_to_scrap_done.md`](done/datasets_to_scrap_done.md) (tabela Tier 1a) para o
+[`done/datasets_to_scrap_done.md`](datasets_to_scrap_done.md) (tabela Tier 1a) para o
 registro oficial de provenance que o `build_metadata_catalog.py` lê.
 
 ## O que é
@@ -73,3 +73,11 @@ python3 scripts/build_metadata_catalog.py   # beelink -> catalog.parquet + views
 
 Provenance já está em `done/datasets_to_scrap_done.md` — o catalog builder lê de lá
 automaticamente, não precisa editar nada além disso se só os números de linhas mudarem.
+
+---
+
+## ✅ Arquivado em 2026-09-02
+
+Import feito (parcial) em 2026-08-25, sem pendência acionável. O registro
+oficial de provenance que `build_metadata_catalog.py` lê está na tabela
+Tier 1a de [`datasets_to_scrap_done.md`](datasets_to_scrap_done.md).

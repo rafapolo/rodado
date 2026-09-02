@@ -232,3 +232,19 @@ vez — monitore o orçamento e pare limpo bem antes de ficar sem tokens:
    de `noop`/parada.
 6. **Não faça commit automático** — pare pra revisão do usuário antes de
    `git add`/`git commit`, mesmo ao encerrar por orçamento.
+
+---
+
+## Herdado de `bugs_e_achados_agentes.md` (arquivado 2026-09-02)
+
+A rodada de 5 agentes de 2026-08-27 deixou um fio aberto que é deste arquivo,
+não daquele: o **Agente A caiu por rate limit** no meio do backlog de
+perguntas e nunca retomou. O que ficou por responder:
+
+- **T37-2/3/4 em diante**, mais os temas listados acima como "ainda não tocado".
+- Os dois achados que o agente produziu **já foram mesclados** em
+  `bridges.yaml` (ILIKE de resultado eleitoral casando "não eleito"; censo
+  2010+2022 na mesma coluna `ano` dobrando o total sem filtro) — não refazer.
+
+O log completo da rodada, com os 5 bugs confirmados e o que cada agente
+entregou, está em `done/bugs_e_achados_agentes.md`.

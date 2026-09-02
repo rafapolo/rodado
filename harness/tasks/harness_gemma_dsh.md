@@ -57,7 +57,7 @@ prosa contra as 9 análises → **item 8**.
 ### Achados fora do harness, mas achados *por causa* dele
 
 O item 2 do TODO informal ("datasets quase-duplicados confundindo o matching de
-avaliação") gerou um levantamento à parte — ver `tasks/datasets_quase_duplicados.md`
+avaliação") gerou um levantamento à parte — ver `tasks/done/datasets_quase_duplicados.md`
 (gitignored, não versionado) pro detalhe completo. Dois achados de lá viraram
 prioridade maior que o próprio dedup:
 

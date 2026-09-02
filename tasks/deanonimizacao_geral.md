@@ -280,7 +280,7 @@ de "sem nome ao lado":
 |---|---|---|
 | `br_cvm_fundos.fundos` | `CPF_CNPJ_GESTOR` | **Falso positivo** — a tabela já tem `GESTOR` (nome do gestor da carteira) na coluna ao lado; meu filtro de palavras-chave não pegou "GESTOR". Já nomeada, só não parecia pelo nome da coluna. |
 | `br_trase_supply_chain.soy_beans_storage_facilities` (+ `_original`) | `cnpj_cpf` | **Falso positivo** — coluna `company` já traz o nome, inclusive de pessoa física: conferido numa amostra, `cnpj_cpf="06128262015"` (11 dígitos, CPF) casa com `company="THEODORUS GERARDUS CORNELIS SANDERS"` na mesma linha. Já nomeada. |
-| `br_ibama_embargos.decisao` | (schema malformado — colunas viraram uma string única separada por `;`, sinal de parse quebrado) | **Não é candidato de verdade**: `DESCRIBE br_ibama_embargos.decisao` no beelink dá `Catalog Error: schema "br_ibama_embargos" does not exist` — é o mesmo bloqueio de infra do IBAMA já documentado em `tasks/todo.md` ("IBAMA embargos reconfirmed infra-blocked"), não uma tabela viva. |
+| `br_ibama_embargos.decisao` | (schema malformado — colunas viraram uma string única separada por `;`, sinal de parse quebrado) | **Não é candidato de verdade**: `DESCRIBE br_ibama_embargos.decisao` no beelink dá `Catalog Error: schema "br_ibama_embargos" does not exist` — é o mesmo bloqueio de infra do IBAMA já documentado em `tasks/done/threads_pos_scraping_2026-07.md` ("IBAMA embargos reconfirmed infra-blocked"), não uma tabela viva. |
 
 **Resultado do inventário: zero alvos novos.** As 70 tabelas com coluna `*cpf*` ou já têm
 nome (a esmagadora maioria, incluindo os 2 falsos positivos acima) ou não existem de
@@ -288,3 +288,41 @@ verdade no beelink. O Balde 2 não tem pra onde se estender além do que já foi
 SICOR — pelo menos não por essa via (coluna literalmente chamada `cpf`); uma coluna de CPF
 sem "cpf" no nome (ex. um campo genérico "documento") não entrou nesta varredura porque
 o escopo pedido foi explicitamente esse.
+
+---
+
+## Decisão pendente do usuário — CNES `tipo_pessoa='1'`
+
+> Herdado de `bugs_e_achados_agentes.md` (§2.7, Agente E), arquivado em
+> 2026-09-02. Medido read-only contra `~/staging/b2_registro.parquet`,
+> **nada foi escrito**. Fica aqui porque é decisão de escopo do Balde 2, não
+> um achado da rodada de agentes.
+
+A estimativa original ("nomear 22,8M linhas de estabelecimento de saúde
+individual") estava errada por confundir linha com CPF distinto. Os números
+reais, pra quem for decidir:
+
+- 180.573 CPFs distintos de estabelecimento de saúde no CNES.
+- Só **2.636 (1,46%)** teriam nome pelo registro do Balde 2 — não 22,8M.
+- Desses, **93,9% (2.474)** viriam de fonte "barata" e já pública:
+  filiação/candidatura TSE, cadastro de servidor/aposentado CGU, TCU.
+- **6,1% (162)** só seriam nomeados porque o CPF também aparece numa lista de
+  benefício social (auxílio emergencial, bolsa família, BPC). **Este é o
+  trade-off de privacidade inteiro: 162 pessoas, não 22,8 milhões.**
+
+Nomear profissional de saúde individual cruzando com cadastro de benefício
+social é decisão sensível — não tomada, e explicitamente não delegável a
+agente.
+
+**Dois achados vizinhos da mesma medição** (informativos, sem ação):
+
+- **SICOR 38,91% sem nome** — reconfirmado exato: 5.607.513 CPFs distintos,
+  2.181.973 sem nome. Não há fix disponível dentro do espelho.
+- **Zero alvos novos pro Balde 2 além do SICOR.** Varredura das 199
+  datasets/832 tabelas do `basedosdados-schema.json` procurando coluna de CPF
+  sem coluna de nome ao lado: das 70 tabelas com alguma coluna `*cpf*`, só 3
+  não tinham nome óbvio — e as 3 eram falso-positivo na inspeção manual
+  (`br_cvm_fundos.fundos` já tem `GESTOR`;
+  `br_trase_supply_chain.soy_beans_storage_facilities` já tem `company`;
+  `br_ibama_embargos.decisao` era o dataset vazio, removido desde então —
+  ver `done/higiene_espelho.md`).

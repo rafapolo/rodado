@@ -102,6 +102,22 @@ B3 via brapi.dev, DataJud (excluded from bulk mirroring for legal reasons regard
 `mcp-todo` candidate once an api_key exists). Do not pause to request credentials — just
 leave these `deferred-api_key` and keep moving down Tier 1.
 
+**Consumidor.gov.br — passou a `deferred-api_key` em 2026-09-02** (veio de
+`tasks/todo.md`, arquivado; pesquisa completa em
+`tasks/done/threads_pos_scraping_2026-07.md`). Estado: 10.167.141 linhas / 70 de
+86 arquivos em `br_mj_consumidorgovbr`. O host antigo `dados.mj.gov.br` **saiu
+do ar de vez** (NXDOMAIN, não é queda temporária — só sobra o Wayback, cujos
+links apontam todos de volta pro próprio domínio morto). O dataset está vivo em
+`dados.gov.br/dados/conjuntos-dados/reclamacoes-do-consumidor-gov-br1` (note o
+`1` final), mas o portal inteiro — inclusive navegação anônima — agora exige o
+header `chave-api-dados-abertos`; testado e confirmado `401` em toda rota
+`publico`, com e sem `Referer`/`Origin` de browser. O token é self-service, mas
+exige **login gov.br com CPF pessoal** — por isso `deferred-api_key` e não
+`blocked`: não é infra quebrada, é credencial pessoal, decisão do usuário.
+Quando existir token, `scripts/scrap/mj_consumidorgovbr.py` precisa de (1)
+`PACKAGE_API` repontado pro novo endpoint (shape de resposta diferente do CKAN
+antigo, ainda não mapeado) e (2) o header em toda requisição.
+
 ### Still-open items with no table row of their own
 
 A few gaps surfaced during the pre-status-board planning pass (now archived) that were
