@@ -145,7 +145,27 @@ function sobreposicao(a: string, b: string): number {
   return n;
 }
 
+/**
+ * A ponte que faltava entre este arquivo e `lote.ts`: os casos confiáveis com
+ * `n` conferido, no TSV `pergunta <TAB> esperado` que `lote.ts` já lê.
+ *
+ *     bun harness/casos.ts --tsv > /tmp/casos.tsv
+ *     bun harness/lote.ts /tmp/casos.tsv
+ *
+ * Só `!suspeito`: um caso cuja numeração não bate com o conteúdo leva um `n` de
+ * outra pergunta, e a rodada mediria o modelo contra o gabarito errado.
+ * A pergunta vai com o espaço em branco colapsado — TAB dentro dela partiria a
+ * linha em três campos e o `esperado` viraria pedaço de frase.
+ */
+export function tsvComN(): string {
+  return carregaCasos()
+    .filter((c) => !c.suspeito && c.n !== undefined)
+    .map((c) => `${c.pergunta.replace(/\s+/g, " ").trim()}\t${c.n}`)
+    .join("\n");
+}
+
 if (import.meta.main) {
+  if (Bun.argv.includes("--tsv")) { console.log(tsvComN()); process.exit(0); }
   const c = carregaCasos();
   const comN = c.filter((x) => x.n !== undefined);
   const comR = c.filter((x) => x.r !== undefined);
