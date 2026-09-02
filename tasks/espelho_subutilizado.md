@@ -331,10 +331,20 @@ Levantamento de 2026-08-28: dos 111 datasets do espelho que têm pelo menos uma
 tabela com coluna de município (`docs/context/basedosdados-schema.json`, busca
 por `municip` no nome da coluna), `dataviz/municipio/extract_municipio.py`
 (repo `xn--2dk.xyz` / `xyz`, não este) usa 62. Os 53 abaixo não entraram —
-triados em três baldes pra decidir depois quais valem uma seção nova. Nenhum
-destes foi verificado com query real no beelink; são hipóteses de escopo a
-partir do nome das tabelas e colunas, pra guiar a próxima rodada de decisão,
-não pra implementar direto.
+triados em três baldes pra decidir depois quais valem uma seção nova. A
+maioria segue como hipótese de escopo a partir do nome das tabelas e
+colunas — pra guiar a próxima rodada de decisão, não pra implementar
+direto —, mas 6 já foram checados com query real no beelink em 2026-09-02
+(marcados "verificado" abaixo): 1 promovido de Balde C pra A
+(`br_anp_precos_combustiveis`, achado: não duplica, é estritamente melhor
+que o que já está no dashboard), 1 confirmado já resolvido em outra sessão
+(`br_ms_populacao`), 2 com grão real mas escopo estreito confirmado
+(`br_ibge_pnadc`, `br_rf_arrecadacao`), 1 parcialmente checado sem acesso
+ao código do dashboard (`br_ibge_censo2022_raca`). **Criar a seção em si —
+a parte que muda `dataviz/municipio/` — segue fora do escopo desta sessão**:
+esse código vive no repo `xyz`, e decidir qual item vira seção nova (e como
+ela se encaixa no layout existente) é uma escolha de produto/editorial que
+cabe a quem trabalha nesse repo, não uma inferência a fazer daqui.
 
 ### Balde A — gap real, provável de valer a pena
 
@@ -348,6 +358,7 @@ não pra implementar direto.
 - `br_cgu_pe_de_meia` (`pe_de_meia`) — programa de transferência a estudantes do ensino médio (2024+); mesma família de `bolsa_familia`/`bpc` já cobertos em `beneficios`.
 - `br_cgu_seguro_defeso` (`seguro_defeso`) — seguro-defeso a pescadores artesanais; mesma família de benefícios sociais.
 - `br_ibge_ipca` / `br_ibge_ipca15` (`mes_categoria_municipio`) — inflação por categoria **no município**, não só o INPC nacional que já está em `economia`. Cobertura limitada às ~16 cidades onde o IBGE coleta preços (capitais + poucas outras) — checar se Nova Friburgo tem dado antes de prometer a seção.
+- `br_anp_precos_combustiveis` (`microdados`) — **verificado 2026-09-02, promovido do Balde C**: NÃO duplica `br_anp_combustiveis.precos`. São sistemas diferentes — 16.409.523 linhas (2004-2026) contra 2.006.614 (formato distinto, inclui GLP, `municipio` como texto livre em vez de `id_municipio`). Esta tabela já vem com `id_municipio` (formato padrão IBGE) e `sigla_uf`, além de `preco_compra`/`preco_venda` (a que já está no dashboard só tem `preco_revenda`) — é estritamente melhor para join municipal que a que já está no dashboard, não uma redundância.
 
 ### Balde B — relevante, mas com escopo geográfico estreito (não aparece pra toda cidade)
 
@@ -363,23 +374,22 @@ não pra implementar direto.
 
 ### Balde C — baixa prioridade, niche ou registro administrativo sem grão cívico
 
-- `br_anp_precos_combustiveis` (`microdados`) — parece duplicar `br_anp_combustiveis.precos`, que já está no dashboard; checar se são o mesmo dado antes de somar.
 - `br_anvisa_medicamentos_industrializados` — fabricantes de medicamento registrados por município; só relevante pra município com planta farmacêutica.
 - `br_bcb_sicor` (`operacao`, `empreendimento`, ...) — operações de crédito rural por instituição financeira; nicho, mais dado de mercado financeiro que perfil municipal.
 - `br_cvm_administradores_carteira` — administradores de carteira registrados na CVM; registro profissional, não indicador do município.
 - `br_rf_cafir` (`imoveis_rurais`) — Cadastro de Imóveis Rurais da Receita; a Parte I deste arquivo já registrou 61-64% das linhas sem id em todo snapshot (achado de 2026-08-25) — dado corrompido conhecido, não vale investir sem re-checar a fonte.
 - `br_rf_cno` (`microdados`, `vinculos`, `areas`, `cnaes`) — Cadastro Nacional de Obras; nicho, mais dado de fiscalização trabalhista em obra que perfil municipal.
-- `br_rf_arrecadacao` (`ir_ipi`, `itr`, ...) — arrecadação federal, mas tabelas parecem ser por UF/CNAE, não por município — checar grão antes de assumir que serve.
+- `br_rf_arrecadacao` (`ir_ipi`, `itr`, ...) — **verificado 2026-09-02**: grão é misto dentro do próprio dataset. `itr` (Imposto Territorial Rural) TEM `id_municipio`+`sigla_uf`+`ano`+`mes` — daria uma seção real, estreita (só ITR); `ir_ipi` NÃO tem nem UF nem município, só `ano`/`mes`/`tributo`/`decendio` nacional — não serve pro dashboard municipal de jeito nenhum. Não tratar o dataset como uma unidade só.
 - `br_ibge_amc` (`municipio_de_para`) — crosswalk de códigos de município ao longo do tempo (municípios que se desmembraram); é metadado de correspondência, não dado sobre o município em si.
 - `br_ibge_nomes_brasil` (`quantidade_municipio_nome_2010`) — nomes de bebês por município, censo 2010; curiosidade demográfica, não indicador.
-- `br_ibge_censo2022_raca` (`fecundidade_idade`, `instrucao`) — parece sobreposto ao que `censo_extra`/`demografia` já cobrem do censo 2022; checar antes de duplicar.
+- `br_ibge_censo2022_raca` (`fecundidade_idade`, `instrucao`) — **verificado parcialmente 2026-09-02**: o grão é raça/cor **cruzada** com categoria (`cor_raca` × `categoria_principal`, ex. nível de instrução), não uma contagem simples de população por raça — se `censo_extra`/`demografia` no dashboard só tem contagem simples, não é sobreposição, é um corte novo. Não foi possível confirmar contra o código do dashboard em si (fora deste repo, ver nota no topo do arquivo) — verificação de sobreposição real ainda pendente de quem tiver acesso ao `xyz`.
 - `br_ibge_censo_demografico` (`microdados_domicilio_1970` … `2010`) — censos históricos pré-2022; dado rico mas trabalho pesado (33 tabelas, microdados de domicílio) pra uma seção "perfil atual" — mais adequado a uma seção de série histórica futura, se um dia o dashboard ganhar visão temporal longa.
-- `br_ibge_pnadc` (`ano_municipio_raca_cor`, `ano_municipio_grupo_idade`) — PNAD Contínua parece ter uma agregação por município (`id_municipio`, `populacao`, `raca_cor`/`grupo_idade`), o que contraria a suposição inicial de que PNAD é só amostral sem grão municipal — vale conferir o que exatamente essa agregação representa antes de descartar.
+- `br_ibge_pnadc` (`ano_municipio_raca_cor`, `ano_municipio_grupo_idade`) — **verificado 2026-09-02**: `ano_municipio_raca_cor` de fato tem `id_municipio`+`populacao`+`raca_cor`+`sexo`, confirmando a agregação municipal — mas cobre só **27 municípios por ano** (as capitais, onde a amostra do PNAD-C é densa o bastante pra publicar no grão município) e para em **2019** (zero linhas em 2022 ou depois). Fica no Balde C mesmo: promoveria uma seção que existe pra 27 das 5.570 cidades e já está parada há 7 anos.
 - `br_inep_ana`, `br_inep_avaliacao_alfabetizacao`, `br_inep_censo_educacao_superior`, `br_inep_educacao_especial`, `br_inep_indicador_nivel_socioeconomico`, `br_inep_sinopse_estatistica_educacao_basica` — tabelas INEP adicionais (alfabetização, educação especial, nível socioeconômico, ensino superior); o núcleo forte (IDEB/SAEB/ENEM/censo_escolar/SISU) já está coberto, estas são complementares, não um buraco óbvio.
 - `br_inmet_bdmep` (`estacao`, `microdados`) — dados meteorológicos por estação INMET; só município com estação por perto, e é clima, não indicador socioeconômico.
 - `br_ipea_acesso_oportunidades` (`estatisticas_2019`) — índice de acesso a oportunidades urbanas (empregos, serviços por transporte); dado único de 2019, sem série.
 - `br_mobilidados_indicadores` — indicadores de mobilidade urbana; provavelmente só grandes cidades têm cobertura real.
-- `br_ms_populacao` (`municipio`) — provavelmente duplica `br_ibge_populacao`, que já está no dashboard; checar se é a mesma série antes de somar.
+- `br_ms_populacao` (`municipio`) — **já verificado, não é hipótese**: tema 54 (`docs/respostas.md` T54-1, 2026-08-25) já confirmou que bate byte-a-byte com `br_ibge_populacao` na maioria dos anos mas diverge até 4% em 2022-2023 porque o MS não aplicou o reset do Censo 2022 — caveat verificado na métrica `populacao` (`metrics.yaml`). Não somar as duas séries nesses dois anos; nos demais são intercambiáveis.
 - `br_ms_vacinacao_covid19` (`microdados_estabelecimento`) — vacinação covid por estabelecimento; dado histórico de um evento específico, não indicador contínuo.
 - `br_mjsp_sisdepen` (`populacao_carceraria`) — população carcerária; o projeto já tem conhecimento verificado deste dataset (`bridges.yaml`, correção de formato feita nesta mesma sessão), custo de adicionar é baixo.
 - `br_poder360_pesquisas` (`microdados`) — pesquisas eleitorais; dado de opinião, não indicador do município.
