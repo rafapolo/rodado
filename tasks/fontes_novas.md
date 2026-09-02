@@ -107,7 +107,7 @@ DataJud continua bloqueado por credencial, não por esforço.
   `persistente.sh`, rodando no beelink desde antes desta sessão — ver `tasks/README.md` § "Em
   aberto"). Não tocado aqui para não duplicar/competir por rate limit com esse workstream.
 
-#### 2. Benefícios CGU novos: Pé-de-Meia, Gás do Povo, Novo Bolsa Família ✅ / 🔵 ver Execução 2026-09-02
+#### 2. Benefícios CGU novos: Pé-de-Meia, Gás do Povo, Novo Bolsa Família ✅ feito e com view — ver Execução 2026-09-02
 - **Fonte**: https://portaldatransparencia.gov.br/download-de-dados (CSV zipados mensais)
 - **Volume**: BF ~20M famílias/mês; Pé-de-Meia ~3M/mês; Gás do Povo ~15M famílias (nov/2025+)
 - **Chaves**: NIS, CPF mascarado, município/UF; Gás do Povo traz CNPJ da revenda
@@ -116,16 +116,19 @@ DataJud continua bloqueado por credencial, não por esforço.
 - **2026-09-02**: Gás do Povo **feito** (`br_cgu_gas_do_povo`, 20.817.231 linhas, 8/8 meses — a contagem
   de 34.846.839 registrada mais cedo hoje estava inflada por um `.parquet` duplicado que uma sessão
   paralela gravou por engano na mesma pasta com outro padrão de nome; removido e recontado, ver
-  Execução abaixo). Novo Bolsa Família **em andamento** (`br_cgu_novo_bolsa_familia`, resumível) — ver
+  Execução abaixo). Novo Bolsa Família **feito** (`br_cgu_novo_bolsa_familia`, 821.346.847 linhas,
+  41/41 meses). **View criada em ambos e conferida por `count(*)`** (terceira rodada, 2026-09-02) — ver
   Execução abaixo.
 
-#### 3. Transferegov.br (ex-SICONV) — transferências completas 🔵 ver Execução 2026-09-02
+#### 3. Transferegov.br (ex-SICONV) — transferências completas ✅ feito e com view — ver Execução 2026-09-02
 - **Fonte**: http://repositorio.dados.gov.br/seges/detru/
 - **Freq**: diária (extração às 9h) · **Formato**: CSV.zip · **Volume**: ~20 tabelas, dezenas de GB histórico (na verdade **54** arquivos CSV.zip no diretório, ver Execução)
 - **Chaves**: `cnpj` proponente/convenente, `codigo_ibge`
 - **Por quê**: fluxo integral União→municípios/OSC (convênios, propostas, empenhos, desembolsos, pagamentos a favorecidos). Casa com Siconfi/SIOP/TransfereGov parcial já existente (`br_transferegov` tem só 3 tabelas).
 - **Status BD**: não
-- **2026-09-02**: **em andamento** (`br_transferegov_siconv`, resumível) — ver Execução abaixo.
+- **2026-09-02**: **feito** (`br_transferegov_siconv`, 62 tabelas, 69.060.758 linhas — incluindo os 5
+  zips multi-membro recuperados na terceira rodada). View criada e conferida por `count(*)` em cada
+  tabela — ver Execução abaixo.
 
 #### 4. BCB — Estatísticas do Pix por município + meios de pagamento ❌ endpoint quebrado do lado do BCB
 - **Fonte**: https://olinda.bcb.gov.br/olinda/servico/Pix_DadosAbertos/versao/v1/odata (`TransacoesPixPorMunicipio`); https://dadosabertos.bcb.gov.br/dataset/pix
@@ -731,57 +734,134 @@ acompanhar). **48 tabelas landed, 66.107.314 linhas somadas**, confirmado por
 (7.487.823), `siconv_pagamento` (7.359.136), `siconv_plano_aplicacao`
 (4.855.746).
 
-**5 zips ficaram de fora, motivo logado por arquivo, nenhum recuperado
-ainda**:
+**5 zips ficaram de fora, motivo logado por arquivo — todos recuperados na
+terceira rodada (2026-09-02), ver seção "Os 5 zips multi-membro" mais
+abaixo**:
 
-| Zip | Motivo |
-|---|---|
-| `siconv_acomp_obras_mod_empresas.csv.zip` | 2 membros CSV (esperado 1) |
-| `siconv_inst_cont_aio_mod_empresas.csv.zip` | 3 membros CSV |
-| `siconv_projeto_basico_mod_empresas.csv.zip` | 5 membros CSV |
-| `siconv_proposta.csv.zip` | 0 membros CSV (zip vazio ou corrompido — checar na fonte) |
-| `siconv_vrpl_mod_empresas.csv.zip` | 3 membros CSV |
+| Zip | Motivo original | Resolução |
+|---|---|---|
+| `siconv_acomp_obras_mod_empresas.csv.zip` | 2 membros CSV (esperado 1) | 2 tabelas landed |
+| `siconv_inst_cont_aio_mod_empresas.csv.zip` | 3 membros CSV | 3 tabelas landed |
+| `siconv_projeto_basico_mod_empresas.csv.zip` | 5 membros CSV | 5 tabelas landed |
+| `siconv_proposta.csv.zip` | 0 membros CSV (zip vazio ou corrompido — checar na fonte) | download truncado numa tentativa anterior, não corrupção na fonte — 1 tabela landed |
+| `siconv_vrpl_mod_empresas.csv.zip` | 3 membros CSV | 3 tabelas landed |
 
-Ficam para uma segunda passada que trate zips multi-membro explicitamente
-(o script detecta e pula com log, em vez de adivinhar qual membro pegar).
+**View criada e conferida na terceira rodada (2026-09-02)** — ver seção de
+Execução mais abaixo; as 62 tabelas (48 originais + 14 dos zips
+multi-membro) têm view em `br_transferegov_siconv` e `count(*)` confere com
+o disco.
 
-**Falta, igual ao Novo Bolsa Família**: nenhuma das 48 tabelas tem view no
-`.duckdb` ainda — `SELECT count(*) FROM information_schema.tables WHERE
-table_schema='br_transferegov_siconv'` devolve **0**, confirmado
-2026-09-02, embora o parquet esteja todo no disco e verificado via
-`read_parquet`. `scripts/sync/cria_views_novas.py` resolve isso, não rodado
-ainda para este dataset.
-
-**Script**: `~/rodado/_staging/fetch_transferegov.sh` no beelink. Resumível
-(pula tabela cujo `dados.parquet` já existe) — só precisa rodar de novo se
-alguém tratar os 5 zips multi-membro:
+**Script**: `~/rodado/_staging/fetch_transferegov.sh` no beelink — corrigido
+na terceira rodada (extrai o membro `.csv` do zip por nome em vez de um
+`unzip -p` cego, que corrompia o CSV quando o zip trazia um segundo membro
+não-CSV). Resumível (pula tabela cujo `dados.parquet` já existe):
 
 ```bash
 ssh beelink 'nohup bash ~/rodado/_staging/fetch_transferegov.sh > ~/rodado/_staging/transferegov/run.log 2>&1 < /dev/null & disown'
 ssh beelink 'tail -f ~/rodado/_staging/transferegov/run.log'
 ```
 
-### Depois que os dois jobs terminarem
+### Views registradas e metadados regenerados — feito 2026-09-02 (terceira rodada)
 
-Nenhum dos três datasets novos (`br_cgu_gas_do_povo`, `br_cgu_novo_bolsa_familia`,
-`br_transferegov_siconv`) tem view no `.duckdb` ainda — confirmado 2026-09-02
-via `information_schema.tables`, todos os três dão 0 apesar do parquet estar
-completo e verificado por `read_parquet`. Nenhum passou pelo regen de
-metadados. Próximo passo concreto para retomar, nessa ordem:
+Os três datasets — `br_cgu_gas_do_povo`, `br_cgu_novo_bolsa_familia`,
+`br_transferegov_siconv` — ganharam view no `.duckdb` via
+`scripts/sync/cria_views_novas.py`, e cada view foi conferida com
+`SELECT count(*)` (readonly, via SSH, nunca só `read_parquet`):
+
+| View | Linhas |
+|---|---|
+| `br_cgu_gas_do_povo.gas_do_povo` | 20.817.231 |
+| `br_cgu_novo_bolsa_familia.novo_bolsa_familia` | 821.346.847 |
+| `br_transferegov_siconv.*` (62 tabelas) | 69.060.758 |
+
+Regen completo na ordem do `CLAUDE.md` (`gera_schemas.py` →
+`sync_mcp_schema.py` → `build_metadata_catalog.py` → `gera_join_keys.py`),
+rodado duas vezes (antes e depois de recuperar os 5 zips abaixo). Catálogo
+final: **1.022 tabelas, 39,14 bi linhas**. Os três datasets aparecem em
+`docs/context/all_tables.txt` e na view `_rodado_metadata` do beelink.
+`gera_schema_graph.py`/`build_atlas.py` não foram rodados — ficam para quem
+quiser os três novos datasets também no Atlas.
+
+**Achado no caminho — 2 tabelas do Transferegov estavam sem parquet, fora
+dos 5 zips já catalogados como pendentes:** `siconv_prop_inst_indicadores_estados`
+e `siconv_prop_inst_indicadores_municipios` tinham diretório vazio no disco,
+log com `FAIL parquet`. Causa: os dois zips-fonte trazem um **segundo membro
+não-CSV** (um PDF de "campos de extração de dados"), e
+`unzip -o -p "$zip" > "$csv"` sem apontar o nome do membro concatena
+**todos** os arquivos do zip — o PDF binário se mistura ao CSV e o DuckDB
+falha ao converter (silenciosamente, sem erro claro, só "FAIL parquet" no
+log). O checador `nmembers -ne 1` só contava membros `.csv`, então passou
+batido: 1 membro CSV, mas 2 membros no total. Reextraído apontando o nome do
+membro `.csv` explicitamente, convertido, `dados.parquet` gravado
+(12.349 + 236.467 linhas). `~/rodado/_staging/fetch_transferegov.sh` no
+beelink foi corrigido para a próxima vez que rodar (extrai o membro `.csv`
+por nome, resolvido via `unzip -l | grep -oE '.*\.csv$'`, em vez de um
+`unzip -p` cego).
+
+### Os 5 zips multi-membro — resolvidos 2026-09-02 (terceira rodada)
+
+Todos os 5 continham dado genuíno, não lixo. Baixados de novo (o cache local
+tinha expirado/sido limpo), inspecionados membro a membro, e cada membro
+`.csv` distinto virou uma tabela própria — nome do membro sem o sufixo
+redundante `_modulo_empresas` (os 5 zips-fonte já são "`_mod_empresas`", o
+sufixo no nome do membro não carrega informação nova), mesmo padrão das 48
+tabelas já landed:
+
+| Zip | Membros → tabelas | Linhas |
+|---|---|---|
+| `siconv_acomp_obras_mod_empresas.csv.zip` | `siconv_acomp_obras_contratos_medicoes`, `siconv_acomp_obras_valores_itens_medicao` | 27.713 + 25.909 |
+| `siconv_inst_cont_aio_mod_empresas.csv.zip` | `siconv_inst_cont_contratos_lotes_empresas`, `siconv_inst_cont_metas_submetas_po`, `siconv_inst_cont_proposta_aio` | 36.613 + 45.729 + 31.739 |
+| `siconv_projeto_basico_mod_empresas.csv.zip` | `siconv_projeto_basico_acffo`, `_lae`, `_metas`, `_proposta`, `_submetas` | 63.644 + 219.059 + 273.336 + 101.260 + 417.785 |
+| `siconv_proposta.csv.zip` | `siconv_proposta` (1 membro só) | 1.153.701 |
+| `siconv_vrpl_mod_empresas.csv.zip` | `siconv_vrpl_lotes_fornecedores_licitacao`, `_metas_submetas`, `_proposta_licitacao` | 105.324 + 161.624 + 41.192 |
+
+**`siconv_proposta.csv.zip` não estava corrompido nem vazio** — o "0 membros"
+registrado antes era sintoma de um download truncado numa tentativa anterior
+(a fonte, `repositorio.dados.gov.br`, entrega o arquivo completo: 199 MB
+zipado, 1 único membro CSV de 750 MB, 1.153.701 linhas). Baixado de novo do
+zero, `unzip -l` mostrou exatamente 1 membro `.csv`, conversão limpa.
+
+Total: **2.704.628 linhas em 14 tabelas novas**, todas com view criada e
+`count(*)` conferido. `br_transferegov_siconv` fecha em **62 tabelas,
+69.060.758 linhas**.
+
+### PNCP — restart confirmado, mas já estava rodando quando a sessão chegou
+
+A instrução era reiniciar via `duplo.sh` (2 faixas: direto + proxy). Ao
+checar antes de rodar, **já havia um job ativo** — `multi.sh` (variante mais
+nova, 8 faixas A–H alternando rota direta/proxy, sem `sleep` entre páginas),
+iniciado às 21:31:58 de 2026-09-02, PID raiz 2506225, reparented para `init`
+(`nohup ... & disown`, não via cron — `crontab -l` não tem entrada de PNCP).
+Confirmado com progresso real, não só processo pendurado: contagem de
+arquivos JSON em `~/rodado/_staging/pncp/json/` subiu de 4.103 para 4.174 em
+~6 minutos de observação, e os contadores "faltando" por faixa (`multi2.log`)
+caem a cada passada.
+
+**Decisão: não iniciar `duplo.sh` em paralelo.** O próprio `duplo.sh`
+documenta que paralelizar do mesmo IP piora a cota (é rate-limit por IP, não
+instabilidade da API — ver nota de 2026-09-02 no topo deste arquivo);
+rodar as duas faixas de `duplo.sh` ao lado das 8 de `multi.sh` competiria
+pela mesma cota e provavelmente derrubaria as duas. `multi.sh` já cobre o
+mesmo objetivo (coleta ativa, resumível, roda sem supervisão) com mais
+paralelismo que `duplo.sh` ofereceria.
+
+**Como checar o progresso mais tarde:**
 
 ```bash
-# roda localmente (via ssh), não no beelink -- lista dataset/tabela, 1 par por linha
-printf 'br_cgu_gas_do_povo/gas_do_povo\nbr_cgu_novo_bolsa_familia/novo_bolsa_familia\n' > /tmp/views_novas.txt
-for t in $(ssh beelink "ls ~/rodado/br_transferegov_siconv/"); do echo "br_transferegov_siconv/$t" >> /tmp/views_novas.txt; done
-python3 scripts/sync/cria_views_novas.py /tmp/views_novas.txt
-python3 scripts/gera_schemas.py
-python3 scripts/sync_mcp_schema.py
-python3 scripts/build_metadata_catalog.py
-python3 scripts/gera_join_keys.py
+ssh beelink 'pgrep -fl multi.sh'                                   # confere se ainda está de pé
+ssh beelink 'tail -20 ~/rodado/_staging/pncp/multi2.log'           # última passada por faixa
+ssh beelink 'find ~/rodado/_staging/pncp/json -name "*.json" | wc -l'  # páginas já baixadas
+ssh beelink '~/bin/duckdb -readonly -json ~/rodado/basedosdados.duckdb' <<'SQL'
+SELECT count(*) FROM br_pncp.contratos;
+SQL
 ```
 
-(`gera_schema_graph.py`/`build_atlas.py` se quiser os três novos datasets no
-Atlas também.)
+O `count(*)` só sobe depois de rodar `converte_pncp.py` sobre o JSON
+acumulado (conversão json→parquet é passo separado, não automático dentro de
+`multi.sh`) — para ver progresso em tempo real, o contador de arquivos JSON
+é o sinal mais direto. Se o job parar sozinho de novo ("sem progresso entre
+rodadas"), é cota de IP batida — esperar a janela abrir antes de tentar de
+novo, não é bug para investigar.
 
 ### Itens não tocados nesta rodada
 
