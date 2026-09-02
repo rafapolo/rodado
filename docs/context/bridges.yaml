@@ -1367,6 +1367,23 @@ bridges:
     concept: cnpj
     join_expr: regexp_replace({s}."CNPJ_FUNDO", '[^0-9]', '', 'g') = {d}.cnpj
     verified: see br_pgfn_dividaativa entry above (T45-2, 2026-08-25)
+  - table: br_cvm_oferta_publica_distribuicao.dia
+    column: cnpj_emissor / cnpj_lider / cnpj_ofertante
+    description: punctuated (`12.130.744/0001-00`) — strip and pad with
+      `lpad(regexp_replace(x, '[^0-9]', '', 'g'), 14, '0')`. 13.052 distinct
+      cnpj_emissor across 27.486 rows. `valor_total` is stored as VARCHAR but
+      parses cleanly with `try_cast(... AS DOUBLE)` (0 unparseable of 27.486).
+      Table is 100% `modalidade_oferta = 'Dispensada de Registro'` (ICVM
+      476/476-A restricted/private placements to qualified investors) — it
+      does NOT cover full public-registered IPOs/follow-ons despite the
+      dataset name; and it stops at 2022 (no 2023+ rows), so any trend read
+      from it undercounts the most recent years silently if not filtered.
+    concept: cnpj
+    join_expr: lpad(regexp_replace({s}.cnpj_emissor, '[^0-9]', '', 'g'), 14, '0') = {d}.cnpj
+    verified: joined against br_cvm_fundos.fundos (4.164 of 46.809 funds
+      matched as issuers) and br_tcu_inidoneos.empresas (0 of 13.052 distinct
+      issuers matched) — found answering tasks/espelho_subutilizado.md
+      (Parte I) tema 57, 2026-09-02
   - table: br_tce_rj.contratos_*
     column: '"CNPJCPFContratado" / "CPFCNPJ"'
     description: punctuated, and holds either a CPF or a CNPJ — strip, then branch on `length()` (11 vs
