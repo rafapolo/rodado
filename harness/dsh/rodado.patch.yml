@@ -71,3 +71,32 @@
         cwd: .
         env:
           BEELINK_HOST: beelink
+
+# --- desliga o que contorna o portão -----------------------------------------
+# Medido em 2026-09-02: o modelo descobriu a ferramenta `bash` do perfil e
+# escreveu `ssh beelink '~/bin/duckdb -readonly ...'` direto, passando por cima
+# do `consultar` e portanto do portão inteiro — sem checagem de partição, de
+# codificação de CID nem de tabela aposentada. Todo o trabalho de validação vira
+# decoração se o modelo tem shell.
+#
+# O mesmo vale para leitura de arquivo: o espelho tem 38 bilhões de linhas e o
+# caminho para elas é o `consultar`, não o sistema de arquivos.
+#
+# Efeito colateral bom: a superfície de ferramenta encolhe, e um 26B em q4
+# escolhe melhor entre 4 ferramentas do que entre vinte.
+- id: tool-bash
+  disabled: true
+- id: tool-pwsh
+  disabled: true
+- id: tool-fs
+  disabled: true
+- id: tool-fs-search
+  disabled: true
+- id: tool-str-replace-editor
+  disabled: true
+- id: tool-web
+  disabled: true
+- id: tool-subagent
+  disabled: true
+- id: tool-subagent-fork
+  disabled: true
