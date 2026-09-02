@@ -258,7 +258,7 @@ RN 72,4%, SP 71,9%.
 
 ## 30 · Estrutura Produtiva
 
-- **T30-1 ✅ (parcial)** Empresas/100k × rendimento médio: **+0,24 (n=5.570)** — mercados com mais empresas pagam melhor. Concentração de capital social pendente. *(A13)*
+- **T30-1 ✅ (2026-09-02, completo)** Empresas/100k × rendimento médio: **+0,24 (n=5.570)** — mercados com mais empresas pagam melhor. *(A13)* Concentração de capital social: HHI por divisão CNAE (2 dígitos, prefixo de `cnae_fiscal_principal`) do capital social entre matrizes ativas (`br_me_cnpj.estabelecimentos` + `.empresas`, snapshot 2025-09, 86 divisões com ≥30 empresas) × salário médio (`br_me_rais.microdados_vinculos` 2021, `valor_remuneracao_media_sm`, vínculo ativo em 31/12) e × volume de vínculos por divisão: **r(HHI, salário) = +0,07; r(HHI, emprego) = −0,02 (n=86 divisões)** — nenhuma das duas correlações se sustenta; setor dominado por poucas gigantes não paga sistematicamente mais nem emprega proporcionalmente menos. **Achado de qualidade de dado**: 124 empresas em `br_me_cnpj.empresas` têm `capital_social` = exatamente `999.999.999.999` (R$ 1 trilhão, quase o PIB nacional inteiro) — valor-sentinela/placeholder, não capital real; refazer o HHI excluindo essas 124 linhas não muda o resultado (mesmos r's), mas o valor deveria ser tratado como nulo em qualquer outro uso de `capital_social`.
 - **T30-2 ✅ (2026-08-27)** Microempresas ativas per capita (`br_me_cnpj.porte='1'`, snapshot 2025-09, matriz, média nacional 7.167/100 mil hab) × crescimento de vínculos RAIS 2012→2022 por município: **r = −0,10 (n=5.557 municípios com ≥20 vínculos em 2012)** — fraco e no sentido oposto ao esperado: mais microempresa per capita não acompanha maior crescimento formal, se algo é levemente pior.
 - **T30-3 ✅ (2026-08-27)** Taxa líquida de abertura de empresas (aberturas−baixas, via datas em `br_me_cnpj.estabelecimentos` snapshot único 2025-09, painel município×ano 2011-2020) × crescimento do PIB municipal nominal: correlação contemporânea **r = 0,043**; um ano depois **r = 0,076** (n≈50-56 mil pares município-ano) — ambas fracas, mas a defasada é a maior das duas, um sinal (fraco) de antecipação, não de coincidência pura.
 - **T30-4 ✅ (2026-08-27)** Empresas com sócio formalmente estrangeiro (`br_me_cnpj.socios.tipo='3'`, dez/2021, 8.877 CNPJs distintos) × emprego formal (`br_me_rais_identificada.estabelecimentos` 2021): só **192 (2,2%) aparecem como estabelecimento empregador na RAIS**, contra uma taxa-base de 15,5% entre todos os 20,4 milhões de CNPJ ativos do país (3,16M/20,4M) — empresa com sócio estrangeiro tem ~7x menos chance de ser empregadora direta, consistente com boa parte sendo veículo de investimento/holding sem operação própria (mesmo padrão achado em T48-2 para offshores do ICIJ). Entre as 192 que empregam, a comparação por CNAE (n pequeno, máx. 18 por divisão) não mostra padrão consistente de empregar mais nem menos que a média nacional do setor.
@@ -440,7 +440,16 @@ RN 72,4%, SP 71,9%.
 
 ## 42 · Água
 
-- **T42-1…T42-5 ⏳** Pendentes — séries hidro/clima exigem alinhamento temporal dedicado.
+- **T42-3 ⏳ — bloqueio estrutural confirmado (2026-09-02)**: `br_mma_extincao.fauna_ameacada` e `.flora_ameacada`
+  (as únicas duas tabelas do dataset) têm só `especie_ou_subespecie`/`familia`/`grupo`/`ordem`/`categoria` de
+  risco — **nenhuma coluna geográfica**, nem bioma, nem município, nem UF. Não há chave nenhuma pra ligar espécie
+  ameaçada a MapBiomas ou a foco de queimadas do INPE; a pergunta pede um cruzamento espacial que a fonte não
+  suporta de jeito nenhum, não é falta de join documentado.
+- **T42-1, T42-2, T42-4, T42-5 ⏳** Pendentes — `br_ana_telemetria` é a fonte comum às quatro, e o
+  `codigo`/`municipiocodigo` do seu `inventario` (37.782 estações) **não bate com o id_municipio do IBGE em nenhum
+  caso testado** (0 de 4.770, achado documentado em `bridges.yaml`/nota de T42 no prompt) — sem essa chave não dá
+  pra colocar bacia/estação no mesmo grão de município que `inpe_queimadas`/`mapbiomas_estatisticas`/`inmet_bdmep`
+  exigem; a série hidro/clima em si existe, mas o vínculo geográfico dela ao resto do espelho não.
 
 ## 43 · Cultura
 
