@@ -9,7 +9,7 @@
    "search_tables no top-K deve trazer >=1 tabela de cada required_dataset",
    "supporting_datasets (marcados com * em perguntas.md) sao bonus, nao obrigatorios"
   ],
-  "n": 185
+  "n": 187
  },
  "perguntas": [
   {
@@ -2166,6 +2166,27 @@
    "required_datasets": [
     "br_cvm_oferta_publica_distribuicao",
     "br_tcu_inidoneos"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T58-2",
+   "q": "A cobertura do Pé-de-Meia por habitante segue o gradiente Norte/Nordeste-Sul esperado de um benefício de baixa renda, e qual UF tem a maior taxa de beneficiários por mil habitantes?",
+   "status": "ok",
+   "required_datasets": [
+    "br_cgu_pe_de_meia"
+   ],
+   "supporting_datasets": [
+    "br_ibge_populacao"
+   ]
+  },
+  {
+   "code": "T58-3",
+   "q": "Quantas pessoas recebem ao mesmo tempo o Seguro-Defeso (pescador artesanal) e o Garantia-Safra (agricultor familiar do semiárido) — os dois públicos-alvo se sobrepõem?",
+   "status": "ok",
+   "required_datasets": [
+    "br_cgu_seguro_defeso",
+    "br_cgu_garantia_safra"
    ],
    "supporting_datasets": []
   }
