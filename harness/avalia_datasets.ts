@@ -18,6 +18,7 @@ import { carregaCasos, carregaTodasPerguntas, exemplosIndependentes, type Caso }
 import { listaDatasets, resolveDataset } from "./catalogo.ts";
 import { catalogoComPistas } from "./desambigua.ts";
 import { pergunta, vivo } from "./modelo.ts";
+import { configServidor } from "./acerto.ts";
 
 // item 1 do backlog: sem a pista contrastiva aqui, esta avaliação mede a régua
 // de ANTES do conserto — o próprio erro que motivou o item, medindo o catálogo
@@ -56,12 +57,26 @@ const norm = (s: string) => {
   return (resolveDataset(cru) ?? cru).replace(/^br_/, "");
 };
 
-/** Slots paralelos do llama-server. O `-np` do servidor tem que casar com isto:
- *  com `-np 1` as requisições só enfileiram e o paralelismo é ilusório. */
-const PARALELO = Number(Bun.env.HARNESS_PARALELO ?? 5);
+/**
+ * Slots paralelos do llama-server. Isto não é só "com `-np 1` o paralelismo é
+ * ilusório" — é pior: medido em 2026-09-02, com `PARALELO` fixo em 5 contra um
+ * servidor em `-np 1`, todo 5º caso pagava um prefill do tamanho do prefixo
+ * inteiro (~5.000 tokens) em vez de ~40. As requisições extra não só
+ * enfileiram à toa, elas disputam o único slot e derrubam a cache de prefixo
+ * dele em rodízio — o padrão bateu exatamente na cadência de `PARALELO`.
+ * `HARNESS_PARALELO` ainda pode forçar um valor (para medir de propósito com
+ * mais concorrência que slots), mas o padrão nunca deve *chutar* um número:
+ * lê o `-np` real do servidor, e cai para 1 (nunca 5) se `/props` não responder.
+ */
+async function paraleloEfetivo(): Promise<number> {
+  if (Bun.env.HARNESS_PARALELO) return Number(Bun.env.HARNESS_PARALELO);
+  const cfg = await configServidor();
+  return cfg?.np ?? 1;
+}
 
 export async function avalia(casos: Caso[], exemplos: Caso[] = []) {
   const SISTEMA = montaSistema(exemplos);
+  const PARALELO = await paraleloEfetivo();
   let acertos = 0, esperados = 0, perfeitos = 0, erros = 0, feitos = 0;
   const falhas: { caso: Caso; faltou: string[]; deu: string[] }[] = [];
 
