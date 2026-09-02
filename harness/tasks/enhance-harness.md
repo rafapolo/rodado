@@ -87,6 +87,88 @@ capacidade de iterar.
 
 ---
 
+## Rodada 8 — as 274 perguntas, e três bugs meus (2026-09-02)
+
+Primeira medição no conjunto inteiro, com exemplos de fonte independente.
+
+| | antes dos consertos | depois |
+|---|---|---|
+| Recall de dataset | 89,5% (384/429) | **91,2%** (393/431) |
+| Casos perfeitos | 84,3% (231/274) | **86,9%** (238/274) |
+| Erros de execução | 5 | **0** |
+| Tempo (5 paralelos) | 20,9 min | 15,2 min |
+
+Os 2,5 pontos vieram de consertar a régua, não o modelo:
+
+| Bug meu | Efeito |
+|---|---|
+| Gabarito engolia `chaves: id_municipio, sigla_uf` como se fossem datasets | 3ª e 7ª "falha" mais comum eram fantasma |
+| `resolveDataset` só tentava `br_`; o espelho tem `br_`, `world_`, `us_` | `olympedia_olympics` contava como erro |
+| Testes apontando para `br_seeg`/`br_ibama_embargos`, removidos do espelho | 3 testes vermelhos por motivo bom |
+
+**Paralelismo não multiplica.** Com `-np 5` cada caso passou de ~2 s para ~12 s e
+o total caiu só de 20,9 para 15,2 min: o modelo é limitado por CPU em 8 threads e
+5 requisições dividem o mesmo compute. O ganho vem do batch de decode do
+llama.cpp, não de concorrência de verdade — vale usar, mas não espere 5x.
+
+**Abstração nova, `harness/servidor.sh`.** Reiniciar o llama-server à mão falhou
+**três vezes seguidas do mesmo jeito**: o processo antigo ainda segura a porta, o
+novo morre com "couldn't bind" em silêncio, o antigo segue servindo com a config
+velha, e a medição seguinte sai errada sem aviso. O script espera a **porta**
+liberar (não o processo sumir) e **confere que subiu com o que foi pedido**.
+
+---
+
+## O que fazer a seguir, em ordem de retorno
+
+Cada item sai de uma falha medida, não de intuição.
+
+### 1. Desambiguar dataset irmão — **24 das 36 falhas**
+
+A classe `vizinho` é a maior e é sempre a mesma forma: o modelo escolhe o parente
+errado, e os nomes não distinguem.
+
+| Pediu | Deu |
+|---|---|
+| `ibge_ppm` (pecuária municipal) | `ibge_pam` (agrícola municipal) |
+| `anp_combustiveis` | `anp_precos_combustiveis` |
+| `me_caged` | `me_rais` |
+| `tesouro_capag` | `firjan_ifgf`, `me_siconfi` |
+
+**Ação:** uma linha de descrição por dataset no catálogo do prefixo, só onde há
+ambiguidade — ~40 tokens por par, não os 14k das `provenance_notes` inteiras (76%
+boilerplate, já descartadas na rodada 3).
+
+**Como medir se valeu:** a classe `vizinho` tem que cair. Se cair e a
+`nada_perto` subir, a descrição está confundindo em vez de esclarecer.
+
+### 2. Rodar o laço nos 32 casos com `n` conferido
+
+O número que responde ao objetivo, e o único ainda não medido: 30 dos 32 exigem
+2+ datasets. A ~6 min por pergunta dá ~3,2 h. **É o próximo trabalho pesado.**
+
+### 3. A prosa cita a ferramenta
+
+As respostas mencionam `br_ibge_pib.municipio`. A convenção de
+`pages/analises/results/` é citar o **órgão de origem**, nunca a tabela ou o SQL.
+Conserto: instrução na etapa de prosa mais uma checagem que rejeite resposta
+contendo `br_[a-z_]+\.`.
+
+### 4. Encurtar mais o contexto
+
+O prompt do dsh está em 6.849 tokens (era 14.213). O throughput cai ~3x entre 2k
+e 18k, então cada corte se paga. Falta examinar quanto das ferramentas restantes
+é descrição que o modelo não usa.
+
+### 5. Seis datasets concentram 20 das 38 perdas
+
+`ibge_ppm` (4x), `ms_sinan_violencia` (4x), `ibge_pib` (3x),
+`inep_avaliacao_alfabetizacao` (3x), `mp_pep` (3x), `ms_atencao_basica` (3x). Se
+for sempre a mesma confusão, o item 1 resolve; se for nome opaco, o dataset
+talvez precise de alias.
+
+---
+
 ## Padrões que valem para o próximo
 
 1. **Toda camada do portão nasce de um erro observado.** Nenhuma foi imaginada, e
@@ -101,11 +183,11 @@ capacidade de iterar.
 4. **Desfazer também é refino.** O casamento por prefixo de dataset e o KV
    quantizado eram "melhorias" minhas que pioravam.
 
-## Aberto
+## Fechado desde a última revisão
 
-- Taxa de acerto ponta a ponta nos **32** casos com `n` conferido fora do prefixo
-  (30 deles multi-dataset) — o número que responde ao objetivo.
-- A prosa cita nome de tabela; a convenção de `pages/analises/results/` é citar o
-  órgão de origem.
-- `br_ibama_embargos` e `br_seeg` precisam de status novo no `_rodado_metadata`,
-  que é estado compartilhado — o portão já os bloqueia localmente.
+- `br_ibama_embargos` e `br_seeg` **foram removidos do espelho** depois que o
+  levantamento os expôs. Hoje caem na camada `tabela` do portão, desfecho melhor
+  do que ser desviado. A camada `inservivel` segue guardando as duas tabelas
+  vazias que restam.
+- O emparelhamento de `docs/respostas.md` foi corrigido por revisão humana: 81
+  confiáveis e 3 suspeitos, contra 71 e 8.
