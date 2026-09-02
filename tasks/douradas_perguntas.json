@@ -9,7 +9,7 @@
    "search_tables no top-K deve trazer >=1 tabela de cada required_dataset",
    "supporting_datasets (marcados com * em perguntas.md) sao bonus, nao obrigatorios"
   ],
-  "n": 183
+  "n": 185
  },
  "perguntas": [
   {
@@ -1240,6 +1240,18 @@
    ]
   },
   {
+   "code": "T32-2",
+   "q": "As velocidades medidas pelo SIMET nas escolas confirmam o índice agregado da Anatel por município, ou há divergências sistemáticas por região?",
+   "status": "ok",
+   "required_datasets": [
+    "br_simet_educacao_conectada",
+    "br_anatel_indice_brasileiro_conectividade"
+   ],
+   "supporting_datasets": [
+    "br_inep_censo_escolar"
+   ]
+  },
+  {
    "code": "T32-3",
    "q": "Provedores regionais pequenos (banda larga Anatel) cobrem os municípios abandonados pelas grandes operadoras — e qual o perfil econômico desses?",
    "status": "ok",
@@ -1249,6 +1261,18 @@
    ],
    "supporting_datasets": [
     "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T32-4",
+   "q": "Escolas rurais (Censo Escolar) têm conectividade medida (SIMET) sistematicamente inferior às urbanas no mesmo município?",
+   "status": "ok",
+   "required_datasets": [
+    "br_simet_educacao_conectada"
+   ],
+   "supporting_datasets": [
+    "br_inep_censo_escolar",
+    "br_ibge_censo_2022"
    ]
   },
   {
