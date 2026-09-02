@@ -947,6 +947,49 @@ RN 72,4%, SP 71,9%.
   partição confiável — **usar `ano_sinan`, nunca `NU_ANO`, pra qualquer
   série temporal desta tabela.**
 
+## 57 · Ofertas Públicas CVM e Mercado de Capitais
+
+- **T57-1 ✅ (2026-09-02)** Valor total ofertado por ano (`data_inicio_oferta`),
+  `br_cvm_oferta_publica_distribuicao.dia`: cresce de R$0,4 bilhão (2008, 2
+  ofertas) para R$667,5 bilhões (2021, 6.117 ofertas), caindo para R$614,1
+  bilhões em 2022 (5.833 ofertas). **A série para em 2022 — não há uma linha
+  sequer de 2023 em diante**, apesar de o dataset se chamar "oferta pública"
+  no presente; qualquer leitura de tendência recente com esta tabela
+  subestima silenciosamente sem esse corte explícito. **Achado adicional**:
+  100% das 27.486 linhas têm `modalidade_oferta = 'Dispensada de Registro'`
+  (ICVM 476/476-A) — a tabela cobre só colocação privada/restrita a
+  investidor qualificado, não a oferta pública registrada/IPO que o nome
+  sugere; nenhuma linha tem `modalidade_registro` preenchida.
+- **T57-2 ✅ (2026-09-02)** Por `tipo_ativo`, valor total (R$2.985,6 bilhões
+  somados, 2008-2022): **cotas de fundo de investimento fechado lideram**
+  (R$1.228,8 bi, 18.166 ofertas), seguidas de **debêntures simples**
+  (R$1.103,2 bi, 3.283) — as duas somam **78,1%** do total. O resto se
+  distribui entre ações ordinárias (R$180,1 bi), notas promissórias
+  (R$155,8 bi), CRI (R$136,5 bi), CRA (R$66,9 bi), notas comerciais (R$48,7
+  bi) e certificados de depósito de valores mobiliários (R$23,2 bi).
+- **T57-3 ✅ (2026-09-02)** Por `nome_lider` (coordenador), top 6: Itaú BBA
+  R$535,5 bi (1.995 ofertas), Bradesco BBI R$376,6 bi (830), BTG Pactual
+  R$331,0 bi (2.335), Santander R$159,7 bi (1.044), BRL Trust R$126,7 bi
+  (966), XP Investimentos R$86,2 bi (852). **Os três maiores concentram
+  41,6% do valor total ofertado** ((535,5+376,6+331,0)/2.985,6) — mercado de
+  coordenação bem mais concentrado que o de emissores (13.052 CNPJs
+  emissores distintos).
+- **T57-4 ✅ (2026-09-02)** Cruzando `cnpj_emissor` (normalizado,
+  `lpad(regexp_replace(...,14,'0'))`) contra `br_cvm_fundos.fundos.CNPJ_FUNDO`
+  (bridge documentada em `bridges.yaml`): **4.164 dos 46.809 fundos
+  registrados (8,9%) já emitiram ao menos uma oferta pública** nesta tabela.
+  Patrimônio líquido médio desses fundos: R$48,1 milhões, contra R$50,6
+  milhões da média geral dos 46.809 — **sem diferença de porte relevante**;
+  ter feito oferta pública de cotas não distingue fundo grande de pequeno.
+- **T57-5 ✅ (2026-09-02) — achado limpo, zero coincidências** Dos 13.052
+  CNPJs emissores distintos de `br_cvm_oferta_publica_distribuicao.dia`,
+  **nenhum** casa com os 84 CNPJs distintos de `br_tcu_inidoneos.empresas`
+  (join via `bridges.yaml`, `lpad(regexp_replace(...))` nos dois lados).
+  Diferente do achado positivo do CNO em T47-4 (mesma lista de inidôneos, via
+  obras públicas), o mercado de capitais registrado na CVM não deu acesso a
+  nenhuma das empresas formalmente declaradas inaptas a contratar com a
+  União — ao menos não sob o mesmo CNPJ.
+
 ## Multi-referência (seção final)
 
 - **M1 ⏳ / M2 ⏳ / M3 ⏳ / M4 ⏳ / M5 ⏳** — as cadeias completas exigem pipelines dedicados; componentes já medidos aparecem nas entradas parciais acima (ex.: M4 usa A1/A2; M3 usa T37-1/T37-5).
