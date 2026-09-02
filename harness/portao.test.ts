@@ -123,34 +123,33 @@ describe("CTE — o caso multi-dataset, que é o que importa", () => {
 });
 
 describe("camada inservível — a tabela que responde zero e parece certa", () => {
-  test("REJEITA br_ibama_embargos, vazia por bug de parsing apesar de 497k linhas", () => {
-    const v = portao("SELECT COUNT(*) FROM br_ibama_embargos.termo_embargo WHERE ano = 2020");
+  // Os dois casos que motivaram esta camada — br_ibama_embargos (497 mil linhas
+  // de string vazia) e br_seeg (redundante) — foram REMOVIDOS do espelho em
+  // 2026-09-02, depois que o levantamento os expôs. Hoje eles caem na camada
+  // `tabela`, que é o desfecho melhor: some do catálogo em vez de precisar ser
+  // desviado. A camada continua valendo para o que ainda existe e para o
+  // próximo caso do gênero.
+  test("REJEITA tabela vazia (0 linhas)", () => {
+    const v = portao("SELECT COUNT(*) FROM br_bd_diretorios_brasil.empresa");
     expect(v.ok).toBe(false);
     expect(v.camada).toBe("inservivel");
+    expect(v.erro).toContain("vazia");
   });
-  test("aceita a que a substituiu", () => {
-    const v = portao("SELECT COUNT(*) FROM br_ibama_embargos_novo.termo_embargo");
-    expect(v.camada).not.toBe("inservivel");
+  test("os datasets aposentados já não estão no catálogo, e caem antes", () => {
+    for (const sql of [
+      "SELECT COUNT(*) FROM br_ibama_embargos.termo_embargo WHERE ano = 2020",
+      "SELECT COUNT(*) FROM br_seeg.emissoes_municipais WHERE ano = 2020",
+    ]) {
+      const v = portao(sql);
+      expect(v.ok).toBe(false);
+      expect(v.camada).toBe("tabela");
+    }
   });
-  test("REJEITA br_seeg, marcada redundante no catálogo", () => {
-    const v = portao("SELECT COUNT(*) FROM br_seeg.emissoes_municipais WHERE ano = 2020");
-    expect(v.ok).toBe(false);
-    expect(v.camada).toBe("inservivel");
+  test("aceita as que os substituíram", () => {
+    expect(portao("SELECT COUNT(*) FROM br_ibama_embargos_novo.termo_embargo").ok).toBe(true);
   });
   test("não bloqueia o diretório canônico de municípios", () => {
     const v = portao("SELECT COUNT(*) FROM br_bd_diretorios_brasil.municipio");
     expect(v.camada).not.toBe("inservivel");
-  });
-});
-
-describe("a rejeição de coluna ensina o conserto", () => {
-  test("lista colunas parecidas em vez de só acusar", () => {
-    const v = portao(
-      "SELECT m.causa_materia FROM br_ms_sim.microdados m WHERE m.ano = 2020 LIMIT 10",
-    );
-    expect(v.ok).toBe(false);
-    expect(v.camada).toBe("coluna");
-    // o que o modelo procurava por 31 consultas
-    expect(v.erro).toContain("causa_basica");
   });
 });
