@@ -533,13 +533,16 @@ function colunasNumericas(linhas: Linha[]): string[] {
  * Alertas de sanidade sobre o resultado — portados da etapa 8 do `laco.ts`, o
  * pipeline aposentado, onde eles só apareciam num `passos[]` que ninguém lê.
  *
- * **Por que nenhum destes rejeita.** Os três têm leitura legítima:
+ * **Por que nenhum destes rejeita.** Todos têm leitura legítima:
  *
  *  - `n > 5.570` é o esperado quando o grão não é um município por linha —
  *    município × ano, ou contagem de pessoas/vínculos. Rejeitar mataria toda
  *    consulta de painel multianual, que é a maioria das que importam aqui.
  *  - `corr > 0,95` acontece de verdade entre população e eleitorado.
  *  - várias linhas num `GROUP BY` é o resultado correto de um ranking.
+ *  - `circunstancia_obito` sozinho é uma leitura válida quando a pergunta é
+ *    sobre a circunstância registrada, não sobre a causa médica — o alerta
+ *    é só para o caso comum de classificar causa de óbito por ele.
  *
  * O que faz o alerta valer é o modelo **ver** — por isso ele volta grudado no
  * resultado da ferramenta `consultar`, no mesmo texto e antes dos dados, e não
@@ -548,6 +551,28 @@ function colunasNumericas(linhas: Linha[]): string[] {
  */
 export function alertasDeSanidade(sql: string, linhas: Linha[]): string[] {
   const alertas: string[] = [];
+
+  // backlog.md item 9, medido em 2026-09-03 ao vivo (não procurado — apareceu
+  // testando outra coisa). br_ms_sim.circunstancia_obito é decodificado via
+  // dicionario e mais fácil de achar que causa_basica (CID), mas está
+  // sub-preenchido: RJ 2020, substr(causa_basica,1,3) BETWEEN 'X60' AND 'X84'
+  // dá 789 óbitos por suicídio; circunstancia_obito = '2' (Suicídio) dá só
+  // 749 — 40 óbitos que o CID classifica como suicídio não têm o campo
+  // preenchido. O modelo achou o número errado, plausível, sem o portão
+  // acusar nada: é a mesma classe da camada 6 (codificação), só que num
+  // campo que ela não cobre.
+  if (/\bcircunstancia_obito\b/i.test(sql) && !/\bcausa_basica\b/i.test(sql)) {
+    alertas.push(
+      "circunstancia_obito classifica causa de óbito, mas está SUB-PREENCHIDO: " +
+      "medido em RJ 2020, circunstancia_obito='2' (Suicídio) deu 749 contra 789 " +
+      "de causa_basica/CID (substr(causa_basica,1,3) BETWEEN 'X60' AND 'X84') — " +
+      "40 óbitos que o CID classifica como suicídio não têm o campo preenchido. " +
+      "Se a pergunta é sobre causa médica de óbito, prefira causa_basica (CID-10); " +
+      "circunstancia_obito só é a leitura certa se a pergunta for sobre a " +
+      "circunstância registrada, não sobre a causa.",
+    );
+  }
+
   const prim = linhas[0];
   if (!prim) return alertas;
 
@@ -641,6 +666,40 @@ const ERROS_DUCKDB = [
  * existe porque a consulta ligou. Falha é só a assinatura de erro do próprio
  * DuckDB. Sem esta distinção o portão rejeitava toda consulta válida.
  */
+/* ------------------------------------------------------------------ *
+ *  Citação — não é camada de SQL, é checagem da PROSA final.
+ * ------------------------------------------------------------------ */
+
+/** `br_`/`world_`/`us_` seguido de `.tabela` — os três prefixos do espelho. */
+const CITA_TABELA = /\b(?:br|world|us)_[a-z0-9_]+\.[a-z0-9_]+\b/gi;
+
+/**
+ * A prosa final cita a ferramenta, não o órgão. backlog.md item 3: a convenção
+ * de `pages/analises/results/` é citar o ÓRGÃO de origem do dado (ex.: "Ministério
+ * da Saúde/SIM", "IBGE") — nunca a tabela, nunca o SQL. Hoje nenhuma resposta
+ * gerada sai publicável sem edição à mão.
+ *
+ * Não é uma camada de `portao()` — roda sobre texto em português, não SQL, e é
+ * chamada pela ferramenta `revisar_resposta` do MCP, não por `consultar`. A
+ * instrução sozinha no system prompt é do tipo que o modelo obedece na maioria
+ * das vezes; esta checagem, chamada como ferramenta ANTES do modelo poder
+ * encerrar, transforma "maioria" em "todas" — mesmo mecanismo que faz o portão
+ * de SQL funcionar: a rejeição volta como resultado de ferramenta, e o laço
+ * agêntico do dsh reescreve.
+ */
+export function checaCitacaoTabela(texto: string): Veredito {
+  const achados = [...new Set([...texto.matchAll(CITA_TABELA)].map((m) => m[0]))];
+  if (!achados.length) return OK;
+  return {
+    ok: false,
+    camada: "citacao",
+    erro:
+      `A resposta cita a tabela/dataset diretamente: ${achados.join(", ")}. Troque pelo ` +
+      "ÓRGÃO de origem do dado (ex.: Ministério da Saúde/SIM, IBGE, RAIS/CAGED do " +
+      "Ministério do Trabalho) — nunca o nome da tabela, do dataset nem SQL na resposta final.",
+  };
+}
+
 export async function checaExplain(
   sql: string,
   roda: (s: string) => Promise<{ error?: string }>,
