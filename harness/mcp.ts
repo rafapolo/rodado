@@ -27,6 +27,7 @@ import { runSqlSsh } from "./beelink.ts";
 import { capRows } from "./sqlguard.ts";
 import { textoFaixa } from "./anos.ts";
 import { inservivel } from "./catalogo.ts";
+import { metrica, listaMetricas } from "./metricas.ts";
 
 const servidor = new Server(
   { name: "rodado-harness", version: "1.0.0" },
@@ -58,6 +59,18 @@ const FERRAMENTAS = [
       type: "object",
       properties: { tabela: { type: "string", description: "ex.: br_ms_sim.microdados" } },
       required: ["tabela"],
+    },
+  },
+  {
+    name: "definicao_de_calculo",
+    description:
+      "Devolve a definição VERIFICADA de um cálculo nomeado (pib per capita, população, " +
+      "saldo do CAGED...) com a expressão SQL exata. CHAME ANTES de escrever à mão " +
+      "qualquer taxa, média ou razão: a mesma pergunta tem mais de uma leitura aritmética " +
+      "e as respostas divergem. Sem argumento, lista os cálculos disponíveis.",
+    inputSchema: {
+      type: "object",
+      properties: { nome: { type: "string", description: "ex.: pib per capita" } },
     },
   },
   {
@@ -109,6 +122,13 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
       cols.map((c) => `  ${c.name}: ${c.type}`).join("\n") +
       (dicas ? `\n\n${dicas}` : ""),
     );
+  }
+
+  if (name === "definicao_de_calculo") {
+    if (!arg.nome) return texto(listaMetricas());
+    const m = metrica(arg.nome);
+    return m ? texto(m) : erro(
+      `Não há definição verificada para '${arg.nome}'. Disponíveis:\n${listaMetricas()}`);
   }
 
   if (name === "consultar") {
