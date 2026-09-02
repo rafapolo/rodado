@@ -1134,7 +1134,17 @@ RN 72,4%, SP 71,9%.
 
 ## Multi-referência (seção final)
 
-- **M1 ⏳ / M2 ⏳ / M3 ◐ / M4 ⏳ / M5 ⏳** — as cadeias completas exigem pipelines dedicados; componentes já medidos aparecem nas entradas parciais acima (ex.: M4 usa A1/A2; M3 usa T37-1/T37-2/T37-4/T37-5 — falta só o elo emenda→contrato→fornecedor, que exige juntar `cgu_emendas_parlamentares` a `contrato_compra` por órgão/UG, ainda não tentado).
+- **M1 ⏳ / M2 ⏳ / M3 ◐ / M4 ⏳ / M5 ⏳** — as cadeias completas exigem pipelines dedicados; componentes já medidos
+  aparecem nas entradas parciais acima (ex.: M4 usa A1/A2; M3 usa T37-1/T37-2/T37-4/T37-5). **O elo que falta em
+  M3 (emenda→contrato) está estruturalmente bloqueado, confirmado em 2026-09-02**: `resolve_join` não encontra
+  nenhuma ponte entre `br_cgu_emendas_parlamentares.microdados` e `br_cgu_licitacao_contrato.contrato_compra` — e
+  não é só falta de documentação: as duas tabelas **não compartilham nenhuma coluna em comum**, nem `id_municipio`
+  (emendas tem `id_municipio_gasto`; `contrato_compra` não tem coluna de município nenhuma, só
+  `id_orgao`/`id_unidade_gestora`, que emendas também não tem). Pra fechar essa cadeia seria preciso passar por
+  uma terceira fonte que ligue "ação orçamentária financiada por emenda" a "unidade gestora que contratou" — o
+  candidato óbvio é `br_siop_orcamento`, já documentado como tendo cabeçalho corrompido (BOM) e sendo orçamento da
+  União por órgão/ação, não por emenda (T08-5, T40-4) — não dá pra fechar sem um scrape novo ou uma normalização
+  de texto que não foi tentada aqui.
 
 ## Bloqueios mapeados (dado ausente, corrompido ou sem chave — não é falta de query)
 
