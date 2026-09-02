@@ -6,10 +6,20 @@
 >
 > - **Parte I** — os 111 datasets que nenhuma pergunta de `docs/perguntas.md` tocou
 > - **Parte II** — os 53 datasets com coluna de município que o dashboard `dataviz/municipio` não usa
-> - **Parte III** — o mapa de saúde mental: um tema onde o dado existe e o relatório não
+> - **Parte III** — o mapa de saúde mental: um tema onde o dado existia e o relatório não
 >
 > Parte III é a forma concreta que as Partes I e II tomam quando alguém
 > escolhe um recorte: sai do inventário e vira "o que dá pra responder".
+>
+> **Rodada de 2026-09-02 (fechamento parcial):** Parte III publicada como
+> relatório (`pages/analises/results/mapa-da-saude-mental.md`) — fechada.
+> Parte I ganhou o tema 57 (fecha `br_cvm_oferta_publica_distribuicao`).
+> Parte II não teve seção de dashboard criada — o código do dashboard
+> (`dataviz/municipio/`) vive no repo `xn--2dk.xyz`/`xyz`, fora do escopo
+> desta sessão (repo declarado: `rodado`) — em vez disso, uma rodada de
+> verificação real no beelink resolveu 6 dos "checar antes de assumir"
+> espalhados pelos três baldes, promovendo/rebaixando item por achado
+> real em vez de hipótese. Detalhe de cada achado nas seções abaixo.
 
 **Como isto se relaciona com os vizinhos:** o oposto de
 [`fontes_novas.md`](fontes_novas.md), que cataloga o que o espelho **não**
@@ -159,6 +169,18 @@ Nove bridges novos e três correções de bridge existente foram pra
 (todas com `verified` e `caveat`). Regenerado `join_keys.md`,
 `metrics.json`, `valida_metrics.py` rodou limpo (0 erros).
 
+**Atualização pós-tema 57 (2026-09-02)**: grupo "Mercado financeiro,
+extensão do tema 19/45" (`br_cvm_oferta_publica_distribuicao`) virou tema 57
+(`docs/perguntas.md`, `docs/respostas.md`, commit `bf562fc`). Achado: a
+série para em 2022 sem aviso e é 100% ICVM 476 (colocação privada, não IPO
+registrado) — quem espera oferta pública registrada no sentido comum não
+encontra nenhuma aqui. Concentração real por tipo de ativo (cotas fechadas +
+debêntures = 78,1%) e por líder coordenador (top 3 = 41,6%); cruzamento com
+`cvm_fundos` (8,9% dos fundos já ofertaram) e `tcu_inidoneos` (zero
+coincidência, achado limpo). Novo bridge
+`cnpj_emissor`/`cnpj_lider`/`cnpj_ofertante` em `bridges.yaml`. Untouched
+cai de 61 para **60**.
+
 Todos os grupos do Balde C original (2026-08-25, primeira triagem) viraram
 tema em temas 46-55 — ver as duas atualizações acima. Re-triagem completa
 dos **62 datasets** que sobraram untouched depois dessa rodada, em quatro
@@ -171,7 +193,10 @@ Ficam fora de qualquer Balde C futuro até o dado ser corrigido na fonte:
 (só dicionário, T51), `br_me_siorg` (esquema de cargo incompatível com PEP,
 sem tabela-ponte, T47), `br_me_cno` (versão pequena/defasada de
 `br_rf_cno`, T47), `world_wb_mides` (é procurement municipal brasileiro,
-não dado internacional, T53).
+não dado internacional, T53), `br_ana_bho` (o schema **não existe** no
+DuckDB do beelink — `SHOW TABLES FROM br_ana_bho` falha com "no catalog
+found"; está listado em `all_tables.txt`/`schemas.json` mas não é
+consultável hoje, achado verificando o Balde C em 2026-09-02).
 
 #### Balde A — puro lookup/dimensão, não vale pergunta própria
 
@@ -226,8 +251,6 @@ com `br_me_rais` já usado em dezenas de temas).
 - **Comparativos internacionais de educação, extensão do tema 33/38**:
   `world_iea_pirls`, `world_iea_timss` (leitura e matemática/ciências
   internacional — mesmo padrão do PISA já usado).
-- **Mercado financeiro, extensão do tema 19/45**: `br_cvm_oferta_publica_distribuicao`
-  (cruza com `cvm_fundos` já usado em T45-2).
 - **Infraestrutura urbana**: `br_mc_indicadores` (Ministério das Cidades),
   `br_ipea_acesso_oportunidades` (acesso a oportunidades urbanas).
 - **Pandemia**: `br_ibge_pnad_covid` (PNAD-COVID, pesquisa especial —
@@ -378,11 +401,21 @@ destes datasets têm bugs conhecidos e catalogados (`br_rf_cafir`,
 
 # Parte III — Saúde mental: mapa do que o espelho responde
 
-> Aberto em 2026-09-01, a partir de um levantamento do que o espelho tem para
-> relatórios sobre questões psiquiátricas e psicológicas. Ainda não é um
-> relatório — é o mapa do que dá para responder e do que falta, antes de
-> escolher um recorte (município, período, tema) e escrever
-> `pages/analises/results/*.md`.
+> **Fechada em 2026-09-02** — virou relatório publicado:
+> `pages/analises/mapa-da-saude-mental/` ("O mapa da saúde mental no SUS",
+> commit `815d658`, rodada em paralelo com esta sessão). Achados: PNS 2019
+> tem o escore PHQ-9 completo (colunas `n010`-`n018`, 9 itens — não em
+> `Q09201`/`Q094` como esta sessão tinha mapeado abaixo, que são
+> acompanhamento/abandono de tratamento, não o instrumento de rastreio) —
+> 10,5% dos adultos com sintoma depressivo moderado/grave em 2019, de 7,4%
+> (AM) a 14,9% (SE); CAPS fez 16,4 milhões de atendimentos em 2023 (2,2x
+> 2013), com buraco de 16x em 2020; taxa de suicídio quase dobrou
+> 2000-2021 (3,78→7,14/100mil, 78% homens); notificação de autolesão
+> (SINAN) cresceu 10x mais rápido que óbito real no mesmo período —
+> mais cobertura de notificação que epidemia, não confundir as duas séries.
+> O mapa abaixo (tabelas, chaves, três pontes fechadas nesta sessão)
+> fica como registro do levantamento que alimentou o relatório — não
+> precisa de mais trabalho.
 
 ### Tabelas já mapeadas
 
@@ -390,6 +423,7 @@ destes datasets têm bugs conhecidos e catalogados (`br_rf_cafir`,
 |---|---|---|
 | `br_ms_sia.psicossocial` | Atendimentos em CAPS/serviços psicossociais do SUS, mensal, por município. `cid_principal_categoria/subcategoria` (diagnóstico), `tipo_droga`, `indicador_situacao_rua`, idade/sexo/raça | `ano`, `id_municipio` |
 | `br_ms_cnes.leito` | Leitos de psiquiatria por estabelecimento/município — capacidade instalada, não atendimento | `id_municipio`, especialidade |
+| `br_ms_cnes.estabelecimento` | Localiza CAPS especificamente (não só leito psiquiátrico): `tipo_unidade = '70'` = "centro de atencao psicossocial". Verificado: 1.822 CAPS distintos (`id_estabelecimento_cnes`) em 2010 subindo pra 3.411 em 2023 — condiz com a expansão conhecida da rede CAPS; a tabela é de grão mensal (`ano`+`mes`), então `count(*)` sem `DISTINCT id_estabelecimento_cnes` infla ~12x | `id_municipio`, `tipo_unidade='70'` |
 | `br_ms_sih.aihs_reduzidas` | Internações SUS (AIH); não é específica de psiquiatria, mas `especialidade_leito` + `cid_principal_categoria/subcategoria` (e 9 diagnósticos secundários) permitem filtrar por CID F00-F99. Tem custo (`valor_aih`), permanência, óbito (`indicador_obito`) | `cid_principal_categoria` LIKE 'F%' |
 | `br_ms_sim.microdados` | Óbitos (SIM). `causa_basica` em CID-10 isola suicídio (X60-X84) e transtorno mental como causa (F00-F99); cruza com `circunstancia_obito`, idade, sexo, escolaridade, município | `causa_basica`, `id_municipio_residencia` |
 | `br_ms_sinan_violencia.microdados_violencia` | Notificação de violência interpessoal/autoprovocada (SINAN). Colunas específicas: `LES_AUTOP` (lesão autoprovocada), `CONS_SUIC` (ideação/tentativa de suicídio), `CONS_MENT` (transtorno mental como consequência), `TRAN_MENT`/`TRAN_COMP` (transtorno preexistente), `DEF_MENTAL`, `AUTOR_ALCO` | `ID_MUNICIP`, `NU_ANO` |
@@ -397,20 +431,20 @@ destes datasets têm bugs conhecidos e catalogados (`br_rf_cafir`,
 
 **Cuidado ao decodificar:** `sexo`, `raca_cor`, `estado_civil` em `br_ms_sim.microdados` têm código que **diverge por tabela** — sempre decodificar via `br_ms_sim.dicionario`, nunca reusar código de outra fonte (ver `coded_value_warning` do `describe_table`).
 
-### Ainda não explorado
+**Atualização 2026-09-02** — as três investigações abaixo foram fechadas (`describe_table`/`resolve_join`/query real no beelink):
 
-- `br_ms_pns.microdados_2013` / `microdados_2019` (Pesquisa Nacional de Saúde) — checar se o módulo de saúde mental autorreferida (diagnóstico de depressão, etc.) está nas colunas.
-- `br_ms_cnes.estabelecimento` — para localizar CAPS especificamente por tipo de estabelecimento (hoje só temos leito por especialidade, não o estabelecimento em si).
-- `resolve_join` entre `psicossocial`/`aihs_reduzidas`/`sim` — nenhuma ponte foi conferida ainda; se o recorte cruzar duas dessas tabelas, rodar `resolve_join` antes de juntar por `id_municipio` à mão.
+- **`br_ms_pns.microdados_2013`/`microdados_2019`**: tem sim saúde mental autorreferida — 2019 usa o módulo Q (`Q09201`/`Q09202` diagnóstico de depressão, `Q094`/`Q098` acompanhamento, `Q09502` motivo de abandono do tratamento, `Q106` encaminhamento a especialista); 2013 usa `J004=18` ("Depressão") e `J004=19` ("Outro problema de saúde mental") na lista de causa da última consulta, mais `Q113` (percepção de estigma). **Mas a tabela não tem `id_municipio` nem `sigla_uf` além de `sigla_uf` — grão é só UF/nacional** (é PNAD-like, amostral, geografia detalhada é sigilosa) — mesma limitação do `br_ipea_atlasviolencia` (Parte I). Serve pra fechar parcialmente a lacuna de prevalência, mas só em recorte estadual/nacional, nunca municipal, e é diagnóstico autorreferido de depressão especificamente — não "transtorno mental" em geral.
+- **`br_ms_cnes.estabelecimento`**: fechado — ver linha nova na tabela acima (`tipo_unidade='70'`).
+- **`resolve_join` entre `psicossocial`/`aihs_reduzidas`/`sim`/`cnes.estabelecimento`**: psicossocial↔sih, psicossocial↔cnes.estabelecimento e sih↔sim juntam limpo por `ano`/`mes`/`sigla_uf`/`id_estabelecimento_cnes` — nenhuma ponte nova precisou pra esses pares. **Um gap real apareceu**: `sih.aihs_reduzidas` guarda município em `id_municipio_paciente` (6 dígitos, hub `id_municipio_6` já em `bridges.yaml`) enquanto `sim.microdados` guarda em `id_municipio_residencia` (7 dígitos, formato padrão, mas nunca tinha sido registrado como bridge) — `resolve_join(sih, sim)` não achava o par de município por isso, só `ano`/`sigla_uf`. Registrado agora em `bridges.yaml` (`br_ms_sim.microdados.id_municipio_residencia`/`id_municipio_ocorrencia`, concept `id_municipio`, verificado 99,85%/100% em 2022) — cruzar SIH×SIM por município exige então o crosswalk `id_municipio_6`→`id_municipio` (via `br_bd_diretorios_brasil.municipio`), não um cast direto. **Nota**: `join_keys.md` **não** foi regenerado junto — `scripts/gera_join_keys.py` lê `schemas.json`, que nesta sessão tinha alterações não commitadas de outra sessão em paralelo (218 datasets/940 tabelas vs. os 211/895 do HEAD); regenerar contra esse estado teria misturado tabelas novas de raspagem alheia no diff deste bridge. Regenerar `join_keys.md` depois que o `schemas.json` desse ciclo de sync for commitado.
 
 ### Lacunas conhecidas
 
-- Nenhuma tabela dá **prevalência de transtorno mental na população geral** — só atendimento (demanda que chegou ao SUS) ou óbito. Sub-representa quem não busca/consegue atendimento.
-- Sem cobertura de rede privada/planos de saúde — todas as fontes são SUS (SIA, SIH, CNES) ou vigilância (SIM, SINAN).
+- **Prevalência de transtorno mental na população geral**: parcialmente fechada por `br_ms_pns` (diagnóstico autorreferido de depressão, só grão UF/nacional) — mas nenhuma tabela dá prevalência **municipal**, nem cobre transtorno mental além de depressão. Todo o resto é atendimento (demanda que chegou ao SUS) ou óbito, sub-representando quem não busca/consegue atendimento.
+- Sem cobertura de rede privada/planos de saúde — todas as fontes são SUS (SIA, SIH, CNES) ou vigilância (SIM, SINAN); `br_ms_pns` cobre a população geral mas sem grão municipal.
 
 ### Próximos passos
 
-1. Escolher o recorte do relatório (nacional? um município como os outros `pages/analises/`? um tema — CAPS, suicídio, internação por transtorno mental?).
-2. Rodar `describe_table` em `br_ms_pns.microdados_2013/2019` para fechar a lacuna de prevalência autorreferida.
-3. Conferir `resolve_join` entre as tabelas antes de qualquer cruzamento.
-4. Seguir o padrão de `pages/analises/results/*.md` — citar a fonte do dado (SIA/SIM/SINAN/CNES), nunca a ferramenta (ver `feedback_analises_sem_detalhe_tecnico` em memória).
+Nenhum — ver a nota de fechamento no topo desta Parte III. O relatório está
+publicado em `pages/analises/mapa-da-saude-mental/`; qualquer extensão
+futura (outro recorte, série temporal mais longa, cruzamento com rede
+privada) é um relatório novo, não uma pendência desta parte.
