@@ -24,8 +24,12 @@ primária, com cada item pontuado de 0 (nunca) a 3 (quase todos os dias). Somand
 itens, escore 10 ou mais indica quadro depressivo moderado a grave.
 
 Entre os 90.846 entrevistados que responderam à bateria completa, **10,5% pontuaram 10 ou
-mais** — quase exatamente o percentual que o IBGE divulgou na época para diagnóstico
-depressivo na população adulta. A prevalência varia por estado:
+mais** — sintoma atual compatível com quadro depressivo, não diagnóstico. A mesma pesquisa
+também pergunta diretamente se algum médico já deu o diagnóstico de depressão alguma vez na
+vida (`q092`): **9,2% responderam que sim** (8.332 dos mesmos 90.846) — as duas medidas, uma de
+sintoma presente e outra de diagnóstico já recebido, convergem para a faixa de 1 em cada 10
+adultos, sem serem a mesma pergunta nem precisarem coincidir. A prevalência de sintoma
+(PHQ-9) varia por estado:
 
 | Mais alto | % | Mais baixo | % |
 |---|---:|---|---:|
@@ -107,9 +111,10 @@ vezes maior que o aumento real de óbitos.
 ## O que falta
 
 - **Nenhuma fonte mede prevalência de transtorno mental fora do que a pessoa já buscou
-  atendimento ou morreu** — a única exceção é o PHQ-9 da PNS 2019, uma foto única de um
-  ano, sem série. Não há PNS mais recente no espelho para comparar antes/depois da
-  pandemia.
+  atendimento ou morreu** — a única exceção é a PNS 2019, com as duas medidas de depressão
+  (sintoma via PHQ-9, diagnóstico via `q092`), uma foto única de um ano, sem série. Não há
+  PNS mais recente no espelho para comparar antes/depois da pandemia, e nenhuma das duas
+  perguntas cobre transtorno mental além de depressão especificamente.
 - **Cobertura só SUS.** SIA, SIH e CNES enxergam a rede pública; nenhuma fonte do espelho
   cobre atendimento psiquiátrico da rede privada ou de planos de saúde.
 - **Grão geográfico desigual.** SIA e SIM chegam ao município; a PNS só é representativa
