@@ -21,10 +21,10 @@ primeiros: **onde o dado está**.
 
 | Arquivo | A pergunta que ele responde | Status |
 |---|---|---|
-| [`datasets_to_scrap.md`](datasets_to_scrap.md) | O que está **na fila** de coleta e por que ainda não entrou (`blocked`, `deferred-api_key`) | 🟢 ativo — resolvidos vivem em [`done/datasets_to_scrap_done.md`](done/datasets_to_scrap_done.md) |
-| [`fontes_novas.md`](fontes_novas.md) | O que existe de dado público **fora** do espelho, rankeado por valor/esforço | 🔵 backlog — varredura geral (2026-08-23) + mergulho em licenciamento ambiental (2026-09-01); vários itens presos em credencial/API |
-| [`espelho_subutilizado.md`](espelho_subutilizado.md) | O que **já está** no espelho e nada consome — nenhuma pergunta, nenhuma seção de dashboard, nenhum relatório | 🔵 inventário — 111 datasets sem pergunta, 53 sem uso no dashboard, + o mapa de saúde mental |
-| [`respostas_pendentes.md`](respostas_pendentes.md) | Que perguntas do golden set ainda faltam responder — e que bugs aparecem ao responder | 🟡 em andamento — inclui o backlog herdado do Agente A |
+| [`datasets_to_scrap.md`](datasets_to_scrap.md) | O que está **na fila** de coleta e por que ainda não entrou (`blocked`, `deferred-api_key`) | 🟢 ativo — rodada de 2026-09-02 fechou ANVISA agrotóxicos/alimentos, CGU sanções, SEDEC desastres e Senado dados abertos; resolvidos vivem em [`done/datasets_to_scrap_done.md`](done/datasets_to_scrap_done.md); resta o que é credencial/API (BCB câmbio/Selic, CGU pessoal executivo, SICONFI município, SICAR) |
+| [`fontes_novas.md`](fontes_novas.md) | O que existe de dado público **fora** do espelho, rankeado por valor/esforço | 🔵 backlog — Gás do Povo colhido em 2026-09-02 (20.817.231 linhas, 8/8 meses; um duplicate-write entre duas sessões concorrentes foi pego e corrigido, ver nota no arquivo); PNCP/Novo Bolsa Família/Transferegov seguem baixando sem supervisão no beelink; vários itens presos em credencial/API |
+| [`espelho_subutilizado.md`](espelho_subutilizado.md) | O que **já está** no espelho e nada consome — nenhuma pergunta, nenhuma seção de dashboard, nenhum relatório | 🔵 inventário — mapa de saúde mental fechado (partes I e III; parte II segue aberta), tema 57 (CVM) fechado; achou e documentou uma ponte SIH↔SIM (`bridges.yaml`) que não existia |
+| [`respostas_pendentes.md`](respostas_pendentes.md) | Que perguntas do golden set ainda faltam responder — e que bugs aparecem ao responder | 🟡 em andamento — 163 ✅ / 38 ◐ / 60 ⏳ em `docs/respostas.md` (rodada de 2026-09-02); achou sentinela `capital_social=999999999999.0` em 124 empresas, logado no arquivo |
 
 Não são tarefas, são insumos:
 
