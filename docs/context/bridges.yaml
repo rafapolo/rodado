@@ -931,6 +931,18 @@ bridges:
       5.181.822 linhas têm o campo vazio, não código inválido)
     concept: id_municipio_6
     join_expr: '{s}.id_municipio_gestor = {d}.id_municipio_6'
+  - table: br_ms_sim.microdados
+    column: id_municipio_residencia, id_municipio_ocorrencia
+    format: 7-digit IBGE code (STRING) — already in the standard `id_municipio` format, no cast/pad
+      needed. Note this is a DIFFERENT hub than `br_ms_sih.aihs_reduzidas.id_municipio_paciente`
+      just above (6-digit, `id_municipio_6` hub) — joining SIH to SIM by município of residence needs
+      `m.id_municipio_6 = <crosswalk> = m2.id_municipio`, not a direct column-to-column match; found
+      while mapping joins for tasks/espelho_subutilizado.md Parte III (mental-health tables), 2026-09-02
+    expr: id_municipio_residencia = m.id_municipio
+    verified: id_municipio_residencia 1.504.796 of 1.507.077 matched (ano=2022, 99,85%);
+      id_municipio_ocorrencia 1.507.077 of 1.507.077 matched (ano=2022, 100%)
+    concept: id_municipio
+    join_expr: '{s}.id_municipio_residencia = {d}.id_municipio'
   - table: br_saude_farmaciapopular.estabelecimentos
     column: codigo_municipio
     format: 6-digit IBGE code
