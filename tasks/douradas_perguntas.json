@@ -1,0 +1,2025 @@
+{
+ "_meta": {
+  "origem": [
+   "docs/perguntas.md",
+   "docs/respostas.md"
+  ],
+  "sobre": "Conjunto dourado DATASET-level (nao table-level), restrito a perguntas com status verificado (ok/partial) em respostas.md — perguntas pendentes sao descartadas porque varias delas documentam explicitamente que o dataset citado nao funciona no espelho atual.",
+  "criterios": [
+   "search_tables no top-K deve trazer >=1 tabela de cada required_dataset",
+   "supporting_datasets (marcados com * em perguntas.md) sao bonus, nao obrigatorios"
+  ],
+  "n": 172
+ },
+ "perguntas": [
+  {
+   "code": "T01-1",
+   "q": "Nos municípios onde a lacuna de rendimento branco-negro na RAIS é maior, a taxa de óbitos por agressão no SIM por 100 mil habitantes é também maior quando normalizada pela população do Censo 2022?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_rais",
+    "br_ms_sim"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T01-2",
+   "q": "Municípios de maioria negra (Censo) têm salário médio formal menor (RAIS) mesmo entre os de PIB per capita equivalente?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_rais"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T01-3",
+   "q": "A composição racial dos vínculos por CNAE na RAIS reflete a composição da população residente do Censo nos mesmos municípios — há setores onde a distância é maior?",
+   "status": "partial",
+   "required_datasets": [
+    "br_me_rais"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T01-4",
+   "q": "Entre UFs, a lacuna racial salarial da RAIS se correlaciona com a mortalidade diferencial por raça no SIM controlada pela estrutura etária do Censo?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_rais",
+    "br_ms_sim"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T01-5",
+   "q": "Municípios que reduziram a lacuna racial de rendimento (RAIS 2012→2022) melhoraram também seus indicadores demográficos e de renda do Censo/PIB?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_rais"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T02-1",
+   "q": "Municípios de maior IDEB nos anos finais têm candidatos ENEM com médias maiores, e essa relação sobrevive ao controle pelo nível socioeconômico das escolas (INSE)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_inep_ideb",
+    "br_inep_enem",
+    "br_inep_indicador_nivel_socioeconomico"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T02-2",
+   "q": "Escolas rurais (Censo Escolar) de municípios pobres (PIB) acumulam pior fluxo (IDEB) e pior média ENEM que as urbanas vizinhas?",
+   "status": "ok",
+   "required_datasets": [
+    "br_inep_ideb",
+    "br_inep_enem"
+   ],
+   "supporting_datasets": [
+    "br_inep_censo_escolar",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T02-3",
+   "q": "Quais municípios combinam IDEB baixo, alta participação no ENEM e alta renda municipal (PIB) — acesso sem aprendizado mesmo onde há recursos?",
+   "status": "ok",
+   "required_datasets": [
+    "br_inep_ideb",
+    "br_inep_enem"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T02-4",
+   "q": "O nível socioeconômico médio (INSE) das escolas explica mais a variação do IDEB ou a do ENEM dentro de cada UF?",
+   "status": "ok",
+   "required_datasets": [
+    "br_inep_indicador_nivel_socioeconomico",
+    "br_inep_ideb",
+    "br_inep_enem"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T02-5",
+   "q": "Municípios que ganharam população jovem entre os censos (Censo 2022 vs 2010) ampliaram matrícula e mantiveram IDEB?",
+   "status": "partial",
+   "required_datasets": [
+    "br_inep_ideb"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_inep_censo_escolar"
+   ]
+  },
+  {
+   "code": "T03-1",
+   "q": "Municípios com mais beneficiários de programas sociais (CGU) têm maior proporção de cesáreas no SINASC mesmo com oferta hospitalar semelhante (CNES)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_cgu_beneficios_cidadao",
+    "br_ms_sinasc",
+    "br_ms_cnes"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T03-2",
+   "q": "A razão óbitos infantis (SIM) / nascidos vivos (SINASC) melhora conforme aumentam leitos e equipes do CNES por habitante?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ms_sim",
+    "br_ms_sinasc",
+    "br_ms_cnes"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T03-3",
+   "q": "Os municípios com excesso de mortalidade infantil (SIM×SINASC) concentram-se nas faixas mais baixas de PIB per capita e de cobertura social (CGU)?",
+   "status": "partial",
+   "required_datasets": [
+    "br_ms_sim",
+    "br_ms_sinasc",
+    "br_cgu_beneficios_cidadao"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T03-4",
+   "q": "Onde há muitos nascidos vivos (SINASC) mas poucos estabelecimentos com obstetra (CNES), a mortalidade materna (SIM) excede a regional?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ms_sinasc",
+    "br_ms_cnes",
+    "br_ms_sim"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T03-5",
+   "q": "Benefícios sociais (CGU) chegam aos municípios cujo perfil de nascidos vivos (SINASC) indica maior vulnerabilidade — escolaridade materna e consultas pré-natais?",
+   "status": "ok",
+   "required_datasets": [
+    "br_cgu_beneficios_cidadao",
+    "br_ms_sinasc"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T04-1",
+   "q": "Setores com maior rotatividade no CAGED pagam abaixo da mediana da RAIS no mesmo município, e isso coincide com piores indicadores de saúde mental no SIM?",
+   "status": "partial",
+   "required_datasets": [
+    "br_me_caged",
+    "br_me_rais",
+    "br_ms_sim"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T04-2",
+   "q": "Municípios que mais perderam vínculos no CAGED em 2020 recuperaram emprego formal na RAIS até 2022 proporcionalmente à sua renda (PIB)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_caged",
+    "br_me_rais"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T04-3",
+   "q": "CBOs dominadas por admissões precárias no CAGED correspondem às ocupações de menor rendimento médio na RAIS por faixa de escolaridade?",
+   "status": "partial",
+   "required_datasets": [
+    "br_me_caged",
+    "br_me_rais"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T04-4",
+   "q": "Municípios dependentes de um único CNAE dominante (CAGED/RAIS) têm pior perfil socioeconômico no Censo 2022 que diversificados com mesma população?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_caged",
+    "br_me_rais"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T04-5",
+   "q": "Onde o emprego formal cresceu (CAGED) sem crescer a população (Censo), o rendimento médio local subiu na RAIS e no PIB municipal?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_caged",
+    "br_me_rais"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T05-1",
+   "q": "Deputados eleitos com maior patrimônio declarado no TSE autorizam mais proposições na Câmara, e representam municípios de maior PIB per capita?",
+   "status": "ok",
+   "required_datasets": [
+    "br_tse_eleicoes",
+    "br_camara_dados_abertos"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T05-3",
+   "q": "Candidatos empresários no TSE são eleitos mais vezes que liberais com igual gasto, e suas empresas aparecem depois em contratos públicos (CGU)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_tse_eleicoes"
+   ],
+   "supporting_datasets": [
+    "br_me_cnpj",
+    "br_cgu_licitacao_contrato"
+   ]
+  },
+  {
+   "code": "T05-4",
+   "q": "A fragmentação partidária municipal no TSE acompanha a federal medida nas votações da Câmara, ou diverge por região?",
+   "status": "partial",
+   "required_datasets": [
+    "br_tse_eleicoes",
+    "br_camara_dados_abertos"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T05-5",
+   "q": "Municípios onde o vencedor gastou mais por voto (TSE) recebem mais transferências voluntárias depois da eleição?",
+   "status": "ok",
+   "required_datasets": [
+    "br_tse_eleicoes"
+   ],
+   "supporting_datasets": [
+    "br_transferegov",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T06-2",
+   "q": "No RJ, a queda dos crimes letais do ISP-RJ espelha a dos óbitos por agressão no SIM, município a município, ou divergem nos grandes centros?",
+   "status": "ok",
+   "required_datasets": [
+    "br_rj_isp_estatisticas_seguranca",
+    "br_ms_sim"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T06-3",
+   "q": "Municípios com economia concentrada em poucos CNAE (RAIS) têm taxas de homicídio (SIM) acima dos diversificados de mesma população?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ms_sim"
+   ],
+   "supporting_datasets": [
+    "br_me_rais",
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T06-5",
+   "q": "Municípios de fronteira/portos identificados pelo CNAE de transporte (RAIS) concentram homicídios acima do esperado pelo Censo e pelo ISP?",
+   "status": "partial",
+   "required_datasets": [
+    "br_ms_sim",
+    "br_rj_isp_estatisticas_seguranca"
+   ],
+   "supporting_datasets": [
+    "br_me_rais"
+   ]
+  },
+  {
+   "code": "T07-1",
+   "q": "Municípios que mais captam crédito rural (SICOR) são os de maior PIB agropecuário (IBGE) e maior estoque pecuário (PPM), ou há descolamento?",
+   "status": "ok",
+   "required_datasets": [
+    "br_bcb_sicor",
+    "br_ibge_pib"
+   ],
+   "supporting_datasets": [
+    "br_ibge_ppm"
+   ]
+  },
+  {
+   "code": "T07-2",
+   "q": "A densidade bancária (ESTBAN) explica parte da diferença de PIB per capita entre municípios vizinhos da mesma UF após controlar pela população do Censo?",
+   "status": "ok",
+   "required_datasets": [
+    "br_bcb_estban",
+    "br_ibge_pib"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T07-4",
+   "q": "Municípios que perderam agências (ESTBAN) tiveram crescimento de PIB municipal inferior aos que as mantiveram, mesma UF e porte populacional?",
+   "status": "ok",
+   "required_datasets": [
+    "br_bcb_estban",
+    "br_ibge_pib"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T08-1",
+   "q": "Municípios com mais beneficiários (CGU) gastam proporcionalmente mais em assistência social no SICONFI e têm maior vulnerabilidade no Censo?",
+   "status": "ok",
+   "required_datasets": [
+    "br_cgu_beneficios_cidadao",
+    "br_me_siconfi"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T08-2",
+   "q": "A cobertura de benefícios (CGU) supera a pobreza estimada pelo Censo justamente nos municípios de maior repasse estadual/federal no SICONFI?",
+   "status": "partial",
+   "required_datasets": [
+    "br_cgu_beneficios_cidadao",
+    "br_me_siconfi"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T08-3",
+   "q": "Municípios com arrecadação própria forte (SICONFI) dependem menos de benefícios federais per capita, mesmo com igual renda média (Censo)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_siconfi",
+    "br_cgu_beneficios_cidadao"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T08-4",
+   "q": "As despesas de saúde e educação (SICONFI) dos municípios com mais beneficiários diferem em resultado — mortalidade evitável (SIM) e analfabetismo (Censo)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_siconfi",
+    "br_ms_sim"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T09-1",
+   "q": "Municípios com maior feminização do emprego formal (RAIS) têm menos violência doméstica notificada no SINAN, controlando pela população feminina do Censo?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_rais"
+   ],
+   "supporting_datasets": [
+    "br_ms_sinan",
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T09-2",
+   "q": "A proporção de cesáreas no SINASC por escolaridade materna varia com a oferta de leitos obstétricos (CNES) do município?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ms_sinasc"
+   ],
+   "supporting_datasets": [
+    "br_ms_cnes",
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T09-3",
+   "q": "Mulheres reingressam no emprego formal (CAGED) mais devagar que homens nas ocupações de maior rendimento (RAIS), e essa diferença é maior em quais UFs?",
+   "status": "partial",
+   "required_datasets": [
+    "br_me_caged",
+    "br_me_rais"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T09-4",
+   "q": "Onde a mortalidade materna e obstétrica (SIM) excede a nacional, quantos leitos e equipes de obstetrícia existem (CNES) e qual a renda municipal (PIB)?",
+   "status": "partial",
+   "required_datasets": [
+    "br_ms_sim"
+   ],
+   "supporting_datasets": [
+    "br_ms_cnes",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T10-1",
+   "q": "Municípios líderes de desmatamento (PRODES) têm maior PIB agropecuário (IBGE) e maior emissão agropecuária no SEEG, na mesma ordem?",
+   "status": "ok",
+   "required_datasets": [
+    "br_inpe_prodes",
+    "br_ibge_pib",
+    "br_seeg_emissoes"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T10-2",
+   "q": "Imóveis com pendências no SICAR concentram-se nos municípios recordistas de desmatamento (PRODES) e de maior rebanho (PPM)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_sfb_sicar",
+    "br_inpe_prodes"
+   ],
+   "supporting_datasets": [
+    "br_ibge_ppm"
+   ]
+  },
+  {
+   "code": "T10-3",
+   "q": "As emissões per capita do SEEG correlacionam com perda de vegetação (MapBiomas) e desmatamento (PRODES) nos mesmos municípios?",
+   "status": "ok",
+   "required_datasets": [
+    "br_seeg_emissoes",
+    "br_inpe_prodes"
+   ],
+   "supporting_datasets": [
+    "br_mapbiomas_estatisticas"
+   ]
+  },
+  {
+   "code": "T10-4",
+   "q": "Municípios com CAR validado (SICAR) desmataram menos (PRODES) que os pendentes, mesmo com produção pecuária igual (PPM)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_sfb_sicar",
+    "br_inpe_prodes"
+   ],
+   "supporting_datasets": [
+    "br_ibge_ppm"
+   ]
+  },
+  {
+   "code": "T10-5",
+   "q": "Onde a renda agro (PIB) cresceu junto com o desmatamento (PRODES), as emissões (SEEG) cresceram na mesma proporção ou mais?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ibge_pib",
+    "br_inpe_prodes",
+    "br_seeg_emissoes"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T11-1",
+   "q": "Municípios com pior índice de conectividade Anatel têm também menor cobertura de água/esgoto (SNIS) e menor gasto público municipal em saneamento (SICONFI)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_anatel_indice_brasileiro_conectividade",
+    "br_mdr_snis"
+   ],
+   "supporting_datasets": [
+    "br_me_siconfi"
+   ]
+  },
+  {
+   "code": "T11-2",
+   "q": "Investimento municipal em saneamento (SICONFI) converte-se em melhores indicadores SNIS de coleta de esgoto, e a defasagem é maior no Norte?",
+   "status": "ok",
+   "required_datasets": [
+    "br_mdr_snis"
+   ],
+   "supporting_datasets": [
+    "br_me_siconfi",
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T11-3",
+   "q": "A defasagem digital (Anatel) explica parte da diferença de IDEB entre municípios do Norte e do Sul com renda (PIB) parecida?",
+   "status": "ok",
+   "required_datasets": [
+    "br_anatel_indice_brasileiro_conectividade"
+   ],
+   "supporting_datasets": [
+    "br_inep_ideb",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T11-4",
+   "q": "Municípios universalizados em água (SNIS) mas deficientes em esgoto têm perfil econômico (PIB/CNAE RAIS) distinto dos universalizados em ambos?",
+   "status": "ok",
+   "required_datasets": [
+    "br_mdr_snis"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib",
+    "br_me_rais"
+   ]
+  },
+  {
+   "code": "T11-5",
+   "q": "Melhor conectividade (Anatel) associa-se a mais empresas formais per capita (RAIS/CNPJ) nos municípios de interior?",
+   "status": "ok",
+   "required_datasets": [
+    "br_anatel_indice_brasileiro_conectividade"
+   ],
+   "supporting_datasets": [
+    "br_me_rais",
+    "br_me_cnpj"
+   ]
+  },
+  {
+   "code": "T12-1",
+   "q": "Entre mulheres negras (RAIS × Censo), quais CNAE concentram vínculos e o rendimento nelas compara ao de homens brancos na mesma ocupação e município?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_rais"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T12-2",
+   "q": "Mães pretas e pardas (SINASC) dão à luz em municípios com menos leitos obstétricos per capita (CNES) e menor renda (PIB) que mães brancas?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ms_sinasc"
+   ],
+   "supporting_datasets": [
+    "br_ms_cnes",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T12-3",
+   "q": "A dupla desvantagem raça×sexo no rendimento da RAIS é maior nos setores de maior rotatividade do CAGED?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_rais",
+    "br_me_caged"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T12-5",
+   "q": "A interseção raça × sexo × setor (RAIS) produz a maior lacuna salarial em quais combinações de UF e CNAE, e esses territórios são os mais pobres (PIB)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_rais"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T13-2",
+   "q": "Os polos de atração de trabalhadores (CAGED) coincidem com os municípios de maior PIB per capita ou com os de boom da construção civil (CNAE)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_caged"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib",
+    "br_me_rais"
+   ]
+  },
+  {
+   "code": "T14-1",
+   "q": "A dispersão de preços da gasolina entre postos (ANP) é maior nos municípios pobres (Censo) e de menos postos concorrentes (CNPJ/RAIS)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_anp_precos_combustiveis"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_me_cnpj"
+   ]
+  },
+  {
+   "code": "T14-2",
+   "q": "Regiões com IPCA de alimentos mais alto também têm combustível (ANP) e renda (POF) com comportamento distinto das demais regiões?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ibge_ipca",
+    "br_anp_precos_combustiveis"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pof"
+   ]
+  },
+  {
+   "code": "T15-1",
+   "q": "Deputados eleitos com maior patrimônio no TSE concentram autoria na Câmara em quais temas, e vêm de municípios de maior renda (Censo)?",
+   "status": "partial",
+   "required_datasets": [
+    "br_tse_eleicoes",
+    "br_camara_dados_abertos"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T15-3",
+   "q": "Dinastias políticas (recorrência de sobrenomes no TSE) controlam municípios de maior ou de menor PIB per capita?",
+   "status": "ok",
+   "required_datasets": [
+    "br_tse_eleicoes"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib",
+    "br_camara_dados_abertos"
+   ]
+  },
+  {
+   "code": "T15-5",
+   "q": "A razão patrimônio do eleito (TSE) / renda média do eleitorado (Censo) é maior em quais UFs, e essas UFs têm mais emendas direcionadas (CGU)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_tse_eleicoes"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_cgu_emendas_parlamentares"
+   ]
+  },
+  {
+   "code": "T16-1",
+   "q": "UFs que contribuem com arrecadação (RF) acima do peso no PIB nacional subsidiam as demais?",
+   "status": "ok",
+   "required_datasets": [
+    "br_rf_arrecadacao",
+    "br_ibge_pib"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T16-3",
+   "q": "Onde a arrecadação (RF) depende de tributos setoriais (IEF/II), a produção agro ou extrativa (PPM/PIB) domina o município?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ibge_pib"
+   ],
+   "supporting_datasets": [
+    "br_rf_arrecadacao",
+    "br_ibge_ppm"
+   ]
+  },
+  {
+   "code": "T16-4",
+   "q": "Estados que mais arrecadam (RF) são os mesmos que repassam mais transferências voluntárias ou recebem mais (SIOP)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_siop_orcamento"
+   ],
+   "supporting_datasets": [
+    "br_rf_arrecadacao",
+    "br_transferegov"
+   ]
+  },
+  {
+   "code": "T17-1",
+   "q": "Os municípios de maior estoque bovino (PPM) concentram crédito rural (SICOR) e área cadastrada gigante (SICAR) na mesma proporção?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ibge_ppm",
+    "br_bcb_sicor",
+    "br_sfb_sicar"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T17-4",
+   "q": "Municípios com CAR pendente (SICAR) produzem (PPM) tanto quanto os validados, mas recebem menos crédito formal (SICOR)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_sfb_sicar",
+    "br_ibge_ppm",
+    "br_bcb_sicor"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T17-5",
+   "q": "Quem recebe crédito (SICOR) gera mais PIB agro local (IBGE) por hectare cadastrado (SICAR) — escala ou produtividade?",
+   "status": "partial",
+   "required_datasets": [
+    "br_bcb_sicor",
+    "br_ibge_pib",
+    "br_sfb_sicar"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T18-1",
+   "q": "Municípios exportadores de manufaturados (COMEX) geram mais emprego industrial formal (RAIS) que exportadores de primários, mesmo com valor exportado igual?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_comex_stat"
+   ],
+   "supporting_datasets": [
+    "br_me_rais",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T18-2",
+   "q": "As exportações para a China (COMEX por país) saem exatamente dos municípios primários/agro (NCM × PIB agro) identificados pelo IBGE?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_comex_stat"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib",
+    "br_sfb_sicar"
+   ]
+  },
+  {
+   "code": "T18-5",
+   "q": "O valor exportado per capita (COMEX ÷ Censo) explica quanto da diferença de PIB per capita dentro de cada UF?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_comex_stat"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T19-1",
+   "q": "Municípios com melhor conectividade Anatel atraem mais operações bancárias (ESTBAN) e bolsistas CNPq simultaneamente?",
+   "status": "ok",
+   "required_datasets": [
+    "br_anatel_indice_brasileiro_conectividade"
+   ],
+   "supporting_datasets": [
+    "br_bcb_estban",
+    "br_cnpq_bolsas"
+   ]
+  },
+  {
+   "code": "T19-3",
+   "q": "Bolsistas CNPq concentram-se nas capitais/regiões de maior densidade financeira (ESTBAN) e renda (PIB)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_cnpq_bolsas"
+   ],
+   "supporting_datasets": [
+    "br_bcb_estban",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T19-4",
+   "q": "Municípios atendidos só por cooperativas de crédito têm crédito rural (SICOR) mais barato que os servidos por grandes bancos (ESTBAN)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_bcb_sicor"
+   ],
+   "supporting_datasets": [
+    "br_bcb_estban",
+    "br_ibge_ppm"
+   ]
+  },
+  {
+   "code": "T20-1",
+   "q": "Municípios formadores de bolsistas CNPq produzem candidatos ENEM com notas maiores mesmo controlando pela renda municipal (PIB)?",
+   "status": "partial",
+   "required_datasets": [
+    "br_cnpq_bolsas",
+    "br_inep_enem"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T20-2",
+   "q": "As bolsas CNPq distribuem-se proporcionalmente à população (Censo) das regiões das IES, ou reforçam a concentração do Sudeste?",
+   "status": "partial",
+   "required_datasets": [
+    "br_cnpq_bolsas"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T20-4",
+   "q": "Investimento federal em ciência (bolsas) vai para estados cuja participação no PIB é menor — correção ou reforço da desigualdade regional?",
+   "status": "ok",
+   "required_datasets": [
+    "br_cnpq_bolsas"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib",
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T21-4",
+   "q": "Municípios que mais recebem emendas (CGU) executam o equivalente no orçamento (SICONFI/SIOP), ou há retenção em nível estadual?",
+   "status": "ok",
+   "required_datasets": [
+    "br_cgu_emendas_parlamentares"
+   ],
+   "supporting_datasets": [
+    "br_siop_orcamento",
+    "br_me_siconfi"
+   ]
+  },
+  {
+   "code": "T22-1",
+   "q": "Municípios recordistas de focos de calor (QUEIMADAS) perderam mais vegetação (PRODES) e emitem mais no SEEG no mesmo período?",
+   "status": "ok",
+   "required_datasets": [
+    "br_inpe_prodes",
+    "br_seeg_emissoes"
+   ],
+   "supporting_datasets": [
+    "br_inpe_queimadas"
+   ]
+  },
+  {
+   "code": "T22-4",
+   "q": "A mortalidade respiratória (SIM) sobe nos meses/municípios de pico de fogo (QUEIMADAS), controlada pela população do Censo?",
+   "status": "ok",
+   "required_datasets": [],
+   "supporting_datasets": [
+    "br_inpe_queimadas",
+    "br_ms_sim",
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T22-5",
+   "q": "As emissões SEEG municipais confirmam que o fogo está associado à conversão agropecuária (PIB agro) e não a eventos naturais?",
+   "status": "partial",
+   "required_datasets": [
+    "br_seeg_emissoes",
+    "br_ibge_pib"
+   ],
+   "supporting_datasets": [
+    "br_inpe_queimadas"
+   ]
+  },
+  {
+   "code": "T23-2",
+   "q": "A letalidade das doenças infecciosas notificadas (SINAN×SIM) é menor onde há mais estabelecimentos do CNES per capita?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ms_sim",
+    "br_ms_cnes"
+   ],
+   "supporting_datasets": [
+    "br_ms_sinan"
+   ]
+  },
+  {
+   "code": "T24-1",
+   "q": "Quais municípios exportam pacientes pelo SIH para hospitais de outros municípios, e isso correlaciona com a falta de leitos locais no CNES e com a renda municipal?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ms_sih",
+    "br_ms_cnes"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T24-4",
+   "q": "O valor pago por AIH (SIH) varia entre hospitais do mesmo porte (CNES) pelos mesmos procedimentos, por região?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ms_sih",
+    "br_ms_cnes"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T25-1",
+   "q": "As emendas parlamentares (CGU) chegam aos municípios declarados via Transferegov, ou ficam retidas em nível estadual/federal conforme o SIOP?",
+   "status": "ok",
+   "required_datasets": [
+    "br_cgu_emendas_parlamentares"
+   ],
+   "supporting_datasets": [
+    "br_transferegov",
+    "br_siop_orcamento"
+   ]
+  },
+  {
+   "code": "T25-3",
+   "q": "Emendas individuais vs de bancada (CGU) diferem em velocidade de execução e taxa de bloqueio registrada no SIOP/Transferegov?",
+   "status": "partial",
+   "required_datasets": [
+    "br_cgu_emendas_parlamentares"
+   ],
+   "supporting_datasets": [
+    "br_siop_orcamento",
+    "br_transferegov"
+   ]
+  },
+  {
+   "code": "T25-4",
+   "q": "Municípios que mais receberam emendas (CGU) mudaram o voto (TSE) em direção aos partidos proponentes na eleição seguinte?",
+   "status": "ok",
+   "required_datasets": [
+    "br_cgu_emendas_parlamentares"
+   ],
+   "supporting_datasets": [
+    "br_tse_eleicoes",
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T27-1",
+   "q": "As intenções de voto do Poder360 acertaram o resultado TSE município a município, e o erro foi maior nas regiões de perfil PNADC mais informal?",
+   "status": "partial",
+   "required_datasets": [
+    "br_poder360_pesquisas",
+    "br_tse_eleicoes"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pnadc"
+   ]
+  },
+  {
+   "code": "T27-2",
+   "q": "Estados com pior autodeclaração de saúde (PNS) votam diferente dos mais saudáveis, controlando pela renda municipal (PIB)?",
+   "status": "partial",
+   "required_datasets": [
+    "br_ms_pns",
+    "br_tse_eleicoes"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T27-3",
+   "q": "O perfil socioeconômico regional da PNADC prediz o vencedor TSE melhor que as pesquisas nacionais agregadas?",
+   "status": "partial",
+   "required_datasets": [
+    "br_ibge_pnadc",
+    "br_tse_eleicoes"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T27-4",
+   "q": "Regiões de maior informalidade (PNADC) tiveram maior oscilação de voto entre eleições (TSE), punindo o incumbente?",
+   "status": "partial",
+   "required_datasets": [
+    "br_ibge_pnadc",
+    "br_tse_eleicoes"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T27-5",
+   "q": "Onde a percepção de saúde (PNS) divergiu mais das condições objetivas (SIM/SISVAN), o voto divergiu também da média nacional?",
+   "status": "partial",
+   "required_datasets": [
+    "br_ms_pns",
+    "br_tse_eleicoes"
+   ],
+   "supporting_datasets": [
+    "br_ms_sim"
+   ]
+  },
+  {
+   "code": "T28-5",
+   "q": "Municípios com pior SAEB têm mais automutilação notificada no SINAN entre jovens, controlada pela população adolescente do Censo?",
+   "status": "ok",
+   "required_datasets": [
+    "br_inep_saeb",
+    "br_ms_sinan"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T29-1",
+   "q": "Candidatos reeleitos (TSE 2018→2022) repetiram o mapa municipal de votos, e esses mapas seguem a divisão de renda (Censo/PIB)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_tse_eleicoes"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T29-2",
+   "q": "O patrimônio médio dos eleitos (TSE) cresceu entre eleições, e os maiores saltos vieram de partidos com mais bancada na Câmara?",
+   "status": "partial",
+   "required_datasets": [
+    "br_tse_eleicoes"
+   ],
+   "supporting_datasets": [
+    "br_camara_dados_abertos",
+    "br_senado_dadosabertos"
+   ]
+  },
+  {
+   "code": "T29-3",
+   "q": "Municípios com eleição mais disputada (TSE margem estreita) receberam mais emendas parlamentares (CGU) depois?",
+   "status": "ok",
+   "required_datasets": [
+    "br_tse_eleicoes"
+   ],
+   "supporting_datasets": [
+    "br_cgu_emendas_parlamentares",
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T29-5",
+   "q": "A participação eleitoral (TSE ÷ população Censo) caiu mais nos municípios jovens, pobres e do interior?",
+   "status": "ok",
+   "required_datasets": [
+    "br_tse_eleicoes"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T30-1",
+   "q": "Os setores dominados por poucas gigantes (capital social no CNPJ) pagam salários maiores na RAIS mas empregam menos proporcionalmente à população (Censo)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_cnpj"
+   ],
+   "supporting_datasets": [
+    "br_me_rais",
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T30-2",
+   "q": "Municípios com mais microempresas per capita (CNPJ) crescem mais em vínculos formais (RAIS) que os de estrutura concentrada?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_cnpj"
+   ],
+   "supporting_datasets": [
+    "br_me_rais",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T30-3",
+   "q": "A taxa de abertura vs fechamento de empresas (CNPJ) antecipa ciclos visíveis no PIB municipal um ano depois?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_cnpj"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib",
+    "br_me_comex_stat"
+   ]
+  },
+  {
+   "code": "T30-4",
+   "q": "Empresas com sócios estrangeiros (CNPJ) instalam-se em quais municípios/CNAE e geram quantos empregos formais (RAIS) comparados às nacionais do mesmo setor?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_cnpj"
+   ],
+   "supporting_datasets": [
+    "br_me_rais",
+    "br_me_comex_stat"
+   ]
+  },
+  {
+   "code": "T30-5",
+   "q": "Setores de alta concentração (CNPJ) arrecadam proporcionalmente mais imposto (RF) por trabalhador formal (RAIS) que os competitivos?",
+   "status": "partial",
+   "required_datasets": [
+    "br_me_cnpj"
+   ],
+   "supporting_datasets": [
+    "br_rf_arrecadacao",
+    "br_me_rais"
+   ]
+  },
+  {
+   "code": "T31-4",
+   "q": "A vulnerabilidade social (Censo + AVS) explica quanto da variação da mortalidade infantil implícita no par SIM×SINASC por município?",
+   "status": "partial",
+   "required_datasets": [
+    "br_ms_sim",
+    "br_ms_sinasc"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T32-1",
+   "q": "Municípios com pior índice Anatel têm escolas com pior ENEM mesmo dentro da mesma UF e faixa de renda (PIB)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_anatel_indice_brasileiro_conectividade",
+    "br_inep_enem"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T32-3",
+   "q": "Provedores regionais pequenos (banda larga Anatel) cobrem os municípios abandonados pelas grandes operadoras — e qual o perfil econômico desses?",
+   "status": "ok",
+   "required_datasets": [
+    "br_anatel_banda_larga_fixa",
+    "br_anatel_indice_brasileiro_conectividade"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T32-5",
+   "q": "Melhorias no índice Anatel precedem ganhos no IDEB municipal, ou apenas coincidem com ciclos econômicos (PIB)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_anatel_indice_brasileiro_conectividade"
+   ],
+   "supporting_datasets": [
+    "br_inep_ideb",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T33-1",
+   "q": "Se cada UF fosse um país, onde ranquearia em homicídios (FBSP) considerando sua população equivalente (Censo)?",
+   "status": "partial",
+   "required_datasets": [
+    "br_fbsp_absp"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_geobr_mapas"
+   ]
+  },
+  {
+   "code": "T35-5",
+   "q": "O tempo de deslocamento (Mobilidados) penaliza mais a renda efetiva do trabalhador (RAIS ÷ tempo) em quais metrópoles?",
+   "status": "partial",
+   "required_datasets": [],
+   "supporting_datasets": [
+    "br_mobilidados_indicadores",
+    "br_me_rais",
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T36-1",
+   "q": "Municípios com mais templos evangélicos per capita (CNPJ, CNAE religioso) têm renda média menor no Censo e vínculos religiosos pagando menos na RAIS?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_cnpj",
+    "br_me_rais"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T36-2",
+   "q": "A proporção de fiéis por religião (Censo 2022) acompanha a densidade de templos por denominação registrados como empresas no CNPJ?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ibge_censo2022_religiao",
+    "br_me_cnpj"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T36-4",
+   "q": "Onde há pouca igreja católica por fiel mas muitos templos evangélicos (CNPJ × Censo), qual o perfil socioeconômico local (renda/educação do Censo)?",
+   "status": "partial",
+   "required_datasets": [
+    "br_me_cnpj",
+    "br_ibge_censo2022_religiao"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T36-5",
+   "q": "A renda média dos vínculos em organizações religiosas (RAIS) fica acima ou abaixo da média municipal, e essa diferença varia com a renda local (PIB)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_rais"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T37-1",
+   "q": "CNPJ sancionados pelo TCU (inidôneos) permanecem ativos no cadastro do CNPJ, em quais CNAE e municípios, e continuam vencendo licitações?",
+   "status": "ok",
+   "required_datasets": [],
+   "supporting_datasets": [
+    "br_tcu_inidoneos",
+    "br_me_cnpj",
+    "br_cgu_licitacao_contrato"
+   ]
+  },
+  {
+   "code": "T37-5",
+   "q": "Os maiores devedores da PGFN concentram-se em poucos grupos econômicos (mesmo CNPJ raiz), e esses aparecem também nas sanções do TCU?",
+   "status": "ok",
+   "required_datasets": [],
+   "supporting_datasets": [
+    "br_pgfn_dividaativa",
+    "br_tcu_inidoneos",
+    "br_cgu_licitacao_contrato"
+   ]
+  },
+  {
+   "code": "T38-2",
+   "q": "Escolas com mais alunos público-alvo da educação especial (INEP) têm desempenho SAEB comparável às demais dentro do mesmo município e rede?",
+   "status": "partial",
+   "required_datasets": [
+    "br_inep_educacao_especial"
+   ],
+   "supporting_datasets": [
+    "br_inep_saeb",
+    "br_inep_censo_escolar"
+   ]
+  },
+  {
+   "code": "T38-4",
+   "q": "O gap entre o quartil rico brasileiro e a média OCDE no PISA aparece já na alfabetização dos anos iniciais (INEP) nas escolas privadas?",
+   "status": "ok",
+   "required_datasets": [
+    "world_oecd_pisa",
+    "br_inep_avaliacao_alfabetizacao"
+   ],
+   "supporting_datasets": [
+    "br_inep_censo_escolar"
+   ]
+  },
+  {
+   "code": "T38-5",
+   "q": "A matrícula na educação básica (Sinopse INEP) caiu proporcionalmente à perda de população jovem entre censos (2010→2022) em cada município?",
+   "status": "ok",
+   "required_datasets": [
+    "br_inep_sinopse_estatistica_educacao_basica"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_ibge_munic"
+   ]
+  },
+  {
+   "code": "T39-1",
+   "q": "Estados com maior despesa de pessoal do Judiciário (CNJ) julgam mais processos per capita, controlando pela população e renda (Censo/PIB)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_cnj_estatisticas_poder_judiciario"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T40-1",
+   "q": "Municípios com melhor CAPAG (Tesouro) recebem mais ou menos transferências voluntárias (Transferegov) que os de pior nota, controlado pelo porte (Censo)?",
+   "status": "partial",
+   "required_datasets": [
+    "br_tesouro_capag",
+    "br_transferegov"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T40-2",
+   "q": "O índice FIRjan IFGF confirma a classificação da CAPAG município a município, e onde divergem há diferença de gasto obrigatório no SIOP?",
+   "status": "ok",
+   "required_datasets": [
+    "br_firjan_ifgf",
+    "br_tesouro_capag",
+    "br_siop_orcamento"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T40-3",
+   "q": "Emendas e transferências federais (Transferegov/CGU) vão proporcionalmente aos municípios de pior capacidade fiscal ou aos politicamente fortes?",
+   "status": "ok",
+   "required_datasets": [
+    "br_transferegov",
+    "br_tesouro_capag"
+   ],
+   "supporting_datasets": [
+    "br_cgu_emendas_parlamentares"
+   ]
+  },
+  {
+   "code": "T43-3",
+   "q": "Quais esportes concentram as medalhas do Brasil (Olympedia) e de quais regiões vêm seus atletas (geobr × Censo)?",
+   "status": "ok",
+   "required_datasets": [
+    "world_olympedia_olympics"
+   ],
+   "supporting_datasets": [
+    "br_geobr_mapas",
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T44-1",
+   "q": "Municípios com pior índice de esgotamento sanitário (ANA Atlas Esgotos) têm maior mortalidade infantil (SIM/SINASC), controlado pela renda (Censo)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ana_atlas_esgotos"
+   ],
+   "supporting_datasets": [
+    "br_ms_sim",
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T44-2",
+   "q": "A produção agropecuária municipal (PAM lavouras, PEVS extração vegetal/silvicultura) cresce mais nos municípios que mais desmataram (PRODES) — silvicultura plantada substituindo extração nativa onde a vegetação já caiu?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ibge_pam",
+    "br_ibge_pevs"
+   ],
+   "supporting_datasets": [
+    "br_inpe_prodes"
+   ]
+  },
+  {
+   "code": "T44-5",
+   "q": "Municípios com mais outorgas de captação de água (ANA Outorgas) por habitante são os de maior produção agropecuária irrigada (PAM), ou os de maior industrialização (CNPJ/CNAE)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ana_outorgas"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pam",
+    "br_me_cnpj"
+   ]
+  },
+  {
+   "code": "T45-1",
+   "q": "Fornecedores habilitados a licitar no SICAF (Comprasgov) que também constam como inidôneos no TCU continuam com CNPJ ativo e habilitação vigente?",
+   "status": "ok",
+   "required_datasets": [
+    "br_comprasgov_sicaf",
+    "br_tcu_inidoneos"
+   ],
+   "supporting_datasets": [
+    "br_me_cnpj"
+   ]
+  },
+  {
+   "code": "T45-2",
+   "q": "Fundos de investimento registrados na CVM sob CNPJ com dívida ativa federal (PGFN) — quantos e qual o valor devido?",
+   "status": "ok",
+   "required_datasets": [
+    "br_cvm_fundos",
+    "br_pgfn_dividaativa"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T45-3",
+   "q": "Instituições ou pessoas penalizadas pelo Banco Central (penalidades BCB) reaparecem como administradores de carteira registrados na CVM?",
+   "status": "ok",
+   "required_datasets": [
+    "br_bcb_penalidades",
+    "br_cvm_administradores_carteira"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T45-4",
+   "q": "Sócios de empresas com CNPJ inidôneo no TCU recriam personalidade jurídica via cadeias de holding (Brasil.IO) com a mesma pessoa como sócia em nova empresa?",
+   "status": "ok",
+   "required_datasets": [
+    "br_tcu_inidoneos",
+    "br_brasilio_holdings"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T46-1",
+   "q": "Municípios com maior proporção de vagas de graduação financiadas pelo PROUNI (Censo da Educação Superior) têm PIB per capita sistematicamente menor — o programa cumpre seu papel redistributivo, ou se distribui igual entre municípios ricos e pobres?",
+   "status": "ok",
+   "required_datasets": [
+    "br_inep_censo_educacao_superior"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T46-2",
+   "q": "A proporção de docentes com doutorado nas IES de um município (Censo da Educação Superior) se relaciona com a taxa de abandono no ensino médio local (Indicadores Educacionais)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_inep_censo_educacao_superior",
+    "br_inep_indicadores_educacionais"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T46-3",
+   "q": "Os bolsistas de mobilidade internacional da CAPES se concentram nos mesmos estados de maior PIB per capita e maior corpo docente com doutorado (Censo da Educação Superior), ou o programa também alcança estados menos providos de pesquisa?",
+   "status": "ok",
+   "required_datasets": [
+    "br_capes_bolsas",
+    "br_inep_censo_educacao_superior"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T46-4",
+   "q": "Municípios onde o SISU é mais concorrido (candidatos aprovados por vaga) formam proporcionalmente mais concluintes em relação às matrículas ativas (Censo da Educação Superior) no mesmo ano?",
+   "status": "ok",
+   "required_datasets": [
+    "br_mec_sisu",
+    "br_inep_censo_educacao_superior"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T46-5",
+   "q": "Municípios sem nenhuma instituição de ensino superior (Censo da Educação Superior) têm nível socioeconômico médio mais baixo nas escolas de ensino fundamental avaliadas pela ANA do que os que têm ao menos uma IES?",
+   "status": "ok",
+   "required_datasets": [
+    "br_inep_censo_educacao_superior",
+    "br_inep_ana"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T47-1",
+   "q": "A concentração per capita de cargos comissionados federais por UF (Painel Estatístico de Pessoal) acompanha o PIB per capita, ou é só um artefato de Brasília sediar a maioria dos órgãos?",
+   "status": "ok",
+   "required_datasets": [
+    "br_mp_pep"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T47-2",
+   "q": "A composição racial dos cargos comissionados federais (Painel Estatístico de Pessoal) reflete a composição racial da população brasileira do Censo 2022?",
+   "status": "ok",
+   "required_datasets": [
+    "br_mp_pep"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T47-3",
+   "q": "A composição racial do funcionalismo federal como um todo (SIAPE) difere da composição racial de quem ocupa cargo comissionado (Painel Estatístico de Pessoal) — o topo da carreira é mais branco que a base?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_siape",
+    "br_mp_pep"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T47-4",
+   "q": "Responsáveis por obras cadastradas no CNO (Receita Federal) que constam como inidôneos no TCU seguem registrando obras ativas?",
+   "status": "ok",
+   "required_datasets": [
+    "br_rf_cno",
+    "br_tcu_inidoneos"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T47-5",
+   "q": "Municípios com mais obras ativas cadastradas no CNO per capita têm maior participação industrial no PIB local?",
+   "status": "ok",
+   "required_datasets": [
+    "br_rf_cno"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T48-2",
+   "q": "Das entidades offshore do ICIJ Offshore Leaks (Panama/Paradise/Pandora Papers) marcadas com país Brasil, quantas casam por nome exato com uma razão social no cadastro CNPJ, e sob qual natureza jurídica?",
+   "status": "ok",
+   "required_datasets": [
+    "global_icij_offshoreleaks"
+   ],
+   "supporting_datasets": [
+    "br_me_cnpj"
+   ]
+  },
+  {
+   "code": "T48-4",
+   "q": "As entidades offshore do ICIJ casadas ao CNPJ aparecem como sócias de empresas brasileiras no grafo de holdings do Brasil.IO, e alguma coincide com os CNPJ inidôneos do TCU?",
+   "status": "ok",
+   "required_datasets": [
+    "global_icij_offshoreleaks"
+   ],
+   "supporting_datasets": [
+    "br_brasilio_holdings",
+    "br_tcu_inidoneos"
+   ]
+  },
+  {
+   "code": "T48-5",
+   "q": "Entre as entidades offshore do ICIJ casadas ao CNPJ brasileiro, qual vazamento de origem (Panama/Paradise/Pandora Papers) domina, e a situação cadastral (ativa/suspensa/baixada) se distribui de forma diferente por jurisdição de incorporação?",
+   "status": "ok",
+   "required_datasets": [
+    "global_icij_offshoreleaks"
+   ],
+   "supporting_datasets": [
+    "br_me_cnpj"
+   ]
+  },
+  {
+   "code": "T49-1",
+   "q": "Cobertura de plano de saúde privado (ANS) por município reduz a mortalidade infantil (SIM×SINASC), mesmo controlando a renda (PIB per capita)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ans_beneficiario"
+   ],
+   "supporting_datasets": [
+    "br_ms_sim",
+    "br_ms_sinasc",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T49-2",
+   "q": "Onde a cobertura de plano de saúde privado (ANS) é maior, a cobertura da Estratégia Saúde da Família (Atenção Básica) é menor — substituição do público pelo privado, independente da renda municipal (PIB)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ans_beneficiario",
+    "br_ms_atencao_basica"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T49-3",
+   "q": "A cobertura vacinal infantil (Imunizações, vacina pentavalente) explica a mortalidade infantil (SIM×SINASC) melhor ou pior que a cobertura de Atenção Básica (equipes de Saúde da Família) no mesmo município?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ms_imunizacoes",
+    "br_ms_atencao_basica"
+   ],
+   "supporting_datasets": [
+    "br_ms_sim",
+    "br_ms_sinasc"
+   ]
+  },
+  {
+   "code": "T49-5",
+   "q": "Beneficiários de plano de saúde privado (ANS) são proporcionalmente mais idosos que a população geral do município (Censo 2022), e isso muda com a renda (PIB per capita)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ans_beneficiario"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T50-1",
+   "q": "Nos partidos, a proporção de mulheres entre os filiados (TSE filiação partidária) se traduz em proporção equivalente entre os eleitos em 2022, e essa lacuna de conversão varia com a riqueza do estado (PIB per capita)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_tse_filiacao_partidaria"
+   ],
+   "supporting_datasets": [
+    "br_tse_eleicoes",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T50-2",
+   "q": "A densidade de filiados por partido e UF (TSE filiação) explica a votação obtida para deputado federal em 2022 (TSE eleições), e essa conversão de filiado em voto é mais eficiente nos estados mais ricos (PIB)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_tse_filiacao_partidaria"
+   ],
+   "supporting_datasets": [
+    "br_tse_eleicoes",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T50-3",
+   "q": "A taxa de homicídio doloso por UF em 2022 (SINESP), normalizada pela população do Censo, acompanha o resultado presidencial do primeiro turno (TSE eleições) — estados mais violentos votaram menos em Bolsonaro/PL?",
+   "status": "ok",
+   "required_datasets": [
+    "br_mjsp_sinesp"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_tse_eleicoes"
+   ]
+  },
+  {
+   "code": "T50-4",
+   "q": "O volume de decisões eleitorais do STF (Corte Aberta) acompanha o salto de candidaturas registradas no TSE entre eleição municipal e geral, e o gasto do Judiciário eleitoral (CNJ) confirma esse padrão?",
+   "status": "partial",
+   "required_datasets": [
+    "br_stf_corte_aberta"
+   ],
+   "supporting_datasets": [
+    "br_tse_eleicoes",
+    "br_cnj_estatisticas_poder_judiciario"
+   ]
+  },
+  {
+   "code": "T50-5",
+   "q": "As reclamações registradas nos PROCONs (MJSP/CKAN) por UF, normalizadas pela população do Censo, indicam maior conflito de consumo per capita ou cobertura desigual da fonte — e as empresas mais reclamadas seguem ativas no CNPJ?",
+   "status": "ok",
+   "required_datasets": [
+    "br_mjsp_ckan"
+   ],
+   "supporting_datasets": [
+    "br_ibge_censo_2022",
+    "br_me_cnpj"
+   ]
+  },
+  {
+   "code": "T51-1",
+   "q": "O consumo de energia elétrica por UF (MME) explica a renda per capita local mesmo depois de neutralizar o efeito do tamanho populacional — a correlação bruta cai de quanto para quanto quando ambas variáveis são normalizadas pela população do Censo?",
+   "status": "ok",
+   "required_datasets": [
+    "br_mme_consumo_energia_eletrica"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib",
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T51-2",
+   "q": "Estados com mais tráfego aéreo (ANAC) são os de maior PIB e maior consumo de energia elétrica (MME) — mas a pontualidade dos voos acompanha a riqueza do estado de destino, ou é independente dela?",
+   "status": "ok",
+   "required_datasets": [
+    "br_anac_dadosabertos",
+    "br_mme_consumo_energia_eletrica"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T51-3",
+   "q": "O preço de um insumo específico de construção (cimento, SINAPI) é mais caro nos estados mais pobres/remotos, mas essa \"sobretaxa da distância\" se sustenta quando se olha a cesta inteira de materiais, ou desaparece?",
+   "status": "ok",
+   "required_datasets": [
+    "br_caixa_sinapi"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib",
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T51-4",
+   "q": "O piso de mão de obra de referência do SINAPI acompanha o salário médio real pago na construção civil formal (RAIS, CNAE 41-43) por UF, e ambos acompanham a renda per capita local?",
+   "status": "ok",
+   "required_datasets": [
+    "br_caixa_sinapi"
+   ],
+   "supporting_datasets": [
+    "br_me_rais",
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T51-5",
+   "q": "O consumo de energia elétrica da classe \"Comercial\" (MME) por UF é um proxy fiel do tamanho do setor de comércio formal (RAIS, CNAE 45-47), mesmo depois de tirar o efeito do tamanho populacional?",
+   "status": "ok",
+   "required_datasets": [
+    "br_mme_consumo_energia_eletrica"
+   ],
+   "supporting_datasets": [
+    "br_me_rais",
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T52-1",
+   "q": "Municípios que mais captaram crédito direto do BNDES (operações não automáticas, 2002–2026) são os de maior PIB per capita, ou o crédito de fomento vai desproporcionalmente para municípios mais pobres?",
+   "status": "ok",
+   "required_datasets": [
+    "br_bndes_operacoes_contratadas"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T52-2",
+   "q": "Alguma empresa que tomou empréstimo direto do BNDES apareceu depois na lista de inidôneos do TCU — o banco público de fomento já financiou quem viria a ser formalmente declarado inapto a contratar com a União?",
+   "status": "ok",
+   "required_datasets": [
+    "br_bndes_operacoes_contratadas"
+   ],
+   "supporting_datasets": [
+    "br_tcu_inidoneos"
+   ]
+  },
+  {
+   "code": "T52-3",
+   "q": "O estoque da dívida pública federal (Tesouro Nacional) como proporção do PIB nacional (IBGE) cresceu de forma monotônica entre 2017 e 2021, ou o choque foi concentrado no ano da pandemia?",
+   "status": "ok",
+   "required_datasets": [
+    "br_me_estoque_divida_publica"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T52-4",
+   "q": "O IGP-M (FGV, índice geral de preços \"do atacado\") descolou do IPCA nos anos de choque cambial/commodities (2020–2021), e por quanto?",
+   "status": "ok",
+   "required_datasets": [
+    "br_fgv_igp",
+    "br_bcb_sgs"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T52-5",
+   "q": "Os ciclos de aperto da Selic (BCB SGS) historicamente coincidem com desaceleração da contratação de crédito do BNDES, ou o crédito de fomento é imune ao ciclo de juros básico por rodar em taxas próprias (TJLP/TLP)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_bcb_sgs",
+    "br_bndes_operacoes_contratadas"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T53-1",
+   "q": "Os três índices de saúde fiscal estadual — o pilar \"Solidez Fiscal\" do ranking CLP, a CAPAG do Tesouro e o IFGF da FIRJAN — concordam entre si sobre quais estados têm melhor gestão fiscal?",
+   "status": "ok",
+   "required_datasets": [
+    "br_clp_ranking_competitividade"
+   ],
+   "supporting_datasets": [
+    "br_tesouro_capag",
+    "br_firjan_ifgf"
+   ]
+  },
+  {
+   "code": "T53-2",
+   "q": "O ranking geral de competitividade estadual do CLP é explicado pela riqueza dos estados (PIB per capita), ou existe competitividade \"além da renda\"?",
+   "status": "ok",
+   "required_datasets": [
+    "br_clp_ranking_competitividade"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib",
+    "br_ibge_populacao"
+   ]
+  },
+  {
+   "code": "T53-3",
+   "q": "A carga tributária dos estados brasileiros (impostos líquidos ÷ PIB, IBGE) cai dentro da faixa observada entre os países da OCDE (world_oecd_public_finance), ou o Brasil tributa fora da curva?",
+   "status": "partial",
+   "required_datasets": [
+    "world_oecd_public_finance"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib",
+    "br_ibge_populacao"
+   ]
+  },
+  {
+   "code": "T53-4",
+   "q": "O pilar \"Segurança Pública\" do ranking CLP acompanha o pilar \"Sustentabilidade Social\" e a riqueza (PIB per capita) dos mesmos estados — segurança e coesão social andam juntas?",
+   "status": "ok",
+   "required_datasets": [
+    "br_clp_ranking_competitividade"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib",
+    "br_ibge_populacao"
+   ]
+  },
+  {
+   "code": "T54-1",
+   "q": "As duas fontes de população municipal do espelho — a série do IBGE e a do Ministério da Saúde — concordam? Quando exatamente divergem, e a divergência é sistemática ou ruído de arredondamento?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ibge_populacao",
+    "br_ms_populacao"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T54-3",
+   "q": "A população municipal de 2010 reconstruída a partir do peso amostral dos microdados do Censo Demográfico bate com a série oficial do IBGE — e essa reconstrução é possível para os outros anos do censo histórico (1970-2000)?",
+   "status": "partial",
+   "required_datasets": [
+    "br_ibge_censo_demografico"
+   ],
+   "supporting_datasets": [
+    "br_ibge_populacao"
+   ]
+  },
+  {
+   "code": "T54-5",
+   "q": "Estados com maior participação de cargos comissionados na administração direta (ESTADIC) têm PIB per capita menor — o comissionamento é um substituto de carreira profissionalizada nos estados mais pobres?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ibge_estadic"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
+   ]
+  },
+  {
+   "code": "T55-1",
+   "q": "A tendência anual de homicídios de pessoas LGBTQI+ (relatório do Grupo Gay da Bahia) acompanha a tendência nacional de óbitos por agressão do SIM entre 2000 e 2019, ou diverge?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ggb_relatorio_lgbtqi"
+   ],
+   "supporting_datasets": [
+    "br_ms_sim"
+   ]
+  },
+  {
+   "code": "T55-2",
+   "q": "Entre os princípios ativos controlados mais vendidos no país (SNGPC/ANVISA), o preço máximo regulado pela CMED explica o volume vendido — remédio mais caro vende menos?",
+   "status": "ok",
+   "required_datasets": [
+    "br_anvisa_medicamentos_industrializados"
+   ],
+   "supporting_datasets": [
+    "br_anvisa_cmed"
+   ]
+  },
+  {
+   "code": "T55-3",
+   "q": "Os princípios ativos controlados mais vendidos no SNGPC têm base de fabricantes com registro ativo suficiente na ANVISA, ou a oferta está concentrada em pouquíssimos registros vigentes?",
+   "status": "ok",
+   "required_datasets": [
+    "br_anvisa_medicamentos_industrializados",
+    "br_anvisa_consultas"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T55-5",
+   "q": "A composição racial das vítimas de homicídio LGBTQI+ (GGB) segue o mesmo padrão racial das vítimas de homicídio em geral no SIM, no mesmo ano?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ggb_relatorio_lgbtqi"
+   ],
+   "supporting_datasets": [
+    "br_ms_sim"
+   ]
+  },
+  {
+   "code": "T56-1",
+   "q": "A tendência nacional de notificações de autolesão/tentativa de suicídio no SINAN acompanha a tendência da taxa de suicídio consolidada pelo Atlas da Violência (IPEA), ou os dois indicadores divergem?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ms_sinan_violencia",
+    "br_ipea_atlasviolencia"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T56-2",
+   "q": "Municípios com maior taxa de notificação de violência sexual contra crianças (SINAN, vítima menor de 18 anos) por 100 mil habitantes têm menor cobertura líquida de matrícula na pré-escola (Observatório da Criança e do Adolescente/Abrinq)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ms_sinan_violencia",
+    "br_abrinq_oca"
+   ],
+   "supporting_datasets": [
+    "br_ibge_populacao"
+   ]
+  },
+  {
+   "code": "T56-3",
+   "q": "A composição racial das vítimas notificadas no SINAN (qualquer tipo de violência) reflete a composição racial das vítimas de homicídio consolidada pelo Atlas da Violência (IPEA), ou pessoas negras estão sobrerrepresentadas nos desfechos letais em relação à violência notificada em geral?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ms_sinan_violencia",
+    "br_ipea_atlasviolencia"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T56-4",
+   "q": "A participação de parceiro/ex-parceiro íntimo entre os agressores de vítimas mulheres notificadas no SINAN cresceu entre 2011 e 2024, e esse movimento acompanha — ou diverge de — a tendência nacional de homicídios de mulheres do Atlas da Violência?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ms_sinan_violencia",
+    "br_ipea_atlasviolencia"
+   ],
+   "supporting_datasets": []
+  }
+ ]
+}

@@ -1,0 +1,425 @@
+# IBGE FTP Normalization — Plano e Status
+
+## Objetivo
+
+Transformar 52.281 arquivos parquet (1 arquivo por UF por tabela) em datasets
+consolidados com campo `_uf`, para permitir queries SQL como:
+
+```sql
+SELECT * FROM ibge_ftp.censo_agropecuario WHERE _uf = 'SP' AND tabela = '01925'
+```
+
+**Status: v4 concluído e em produção (2026-07-27).** `~/ibge_ftp.duckdb` aponta
+para `~/ibge_ftp_normalized_v3/` (nome do diretório não mudou, o script evoluiu
+in-place), com catálogo em `~/ibge_ftp_catalog.json`. **23.672 tabelas** (era
+40.056 no v3 inicial) — ver seção "v4: reagrupamento por título" abaixo.
+
+---
+
+## Pipeline
+
+### Fase 1: Sync ✅
+- **Script:** `scripts/sync/sync_censo_ftp.sh`
+- **Dados brutos:** `~/ibge_ftp_raw/` (67 pastas, 15 GB)
+
+### Fase 2: Conversão para Parquet ✅
+- **Script:** `scripts/sync/convert_ibge_to_parquet.py`
+- **Dados:** `~/ibge_ftp_parquet/` (58 pastas, 52.281 arquivos, 2.6 GB)
+
+### Fase 3: Normalização v2 ❌ removida (ineficaz)
+Merge por tipo de tabela (52.281 → 51.012, 2,4% de ganho), 97 grupos perdidos por
+bug de `sorted()`. Diagnóstico completo abaixo. **`~/ibge_ftp_normalized/` (v2) e
+`~/ibge_ftp_consolidated/` (OOM, 0 arquivos) foram apagados em 2026-07-26** — o v3
+os substitui integralmente, nada de valor foi perdido.
+
+### Fase 3v3: Normalização v3 (id de planilha + UF) — superada pelo v4
+- **Script:** `scripts/sync/normalize_ibge_v3.py`
+- **Rodou:** 2026-07-26, ~8 min (16 workers)
+- **Resultado: 52.281 arquivos → 40.056 tabelas, 0 erros, 72.498.937 linhas**
+- Merge por (pasta, id-de-planilha-de-origem, sobreposição de colunas) — corrigia
+  UF mas não juntava a mesma tabela publicada em anos/edições diferentes, porque
+  o id de planilha muda a cada release. Ver "v4" abaixo.
+
+### Fase 3v4: Normalização v4 (por título) ✅ em produção
+- **Mesmo script**, `phase_b`/`table_key` reescritos em 2026-07-27
+- **Rodou:** 2026-07-27, ~16 min (Fase B sozinha, reaproveitando `~/ibge_ftp_clean`)
+- **Resultado final: 52.281 arquivos → 23.672 tabelas (54,7% de redução), 0 erros,
+  60.145.099 linhas**
+- Chave de agrupamento trocada de "id de planilha" pra "descrição da tabela com
+  UF e ano removidos" — isso é o que de fato junta a mesma pergunta de pesquisa
+  através de edições do censo/PNAD, não só através de UF. Detalhe completo abaixo.
+
+### Fase 4: Catálogo + DuckDB ✅
+- `scripts/sync/build_ibge_catalog.py` → `~/ibge_ftp_catalog.json` (23.672
+  entradas: `tabela_id`, `titulo`, `n_rows`, `ufs`, `anos`, `n_municipios`, `colunas`)
+- `scripts/sync/create_ibge_duckdb.py` → `~/ibge_ftp.duckdb` (53 schemas, 23.672
+  views), apontando para `ibge_ftp_normalized_v3`
+
+---
+
+## Diagnóstico do v2 (por que consolidou quase nada)
+
+### Causa raiz: a chave de agrupamento carregava a geografia no prefixo
+
+`get_table_type()` devolvia `f"{prefix}__{tid}"` e só limpava sufixos de UF/GR/BR
+do `tid`. O `prefix` (tudo antes de `__`) ficava intacto — e é justamente onde
+mora a geografia na maior parte dos arquivos.
+
+| Padrão do nome normalizado | Qtd | O que deveria acontecer |
+|---|---|---|
+| `SP__5614751_tabela_1`, `BA__5614751_tabela_1`, … | 266 × 27 UFs = **7.182** | mesma tabela em 27 UFs → **266** tabelas com `_uf` |
+| `31_MINAS_GERAIS__3100104_abadia_dos_dourados` | ~**5.570** | 1 arquivo por município → **1 tabela** com `_municipio` |
+| `ufs__confronto_tab3_NN_1` | **5.277** | `tab3_NN` codifica a UF (10=CE, 20=SP…) → ~**160** |
+
+### Os headers estavam errados desde a Fase 2
+
+Amostra de 3.000 tabelas do v2: **86%** tinham colunas `Unnamed: N`, **73%** tinham
+o **título da tabela** como nome da coluna 0 (a linha de título do Excel virou
+header; o header real era a linha 0 dos dados). Isso explicava os "160 schemas em
+200 arquivos" do v1 — eram todos idênticos, só pareciam diferentes.
+
+### `_uf`/`_municipio` só 25%/24% preenchidos, dois bugs de crash (97 grupos)
+
+`'<' not supported between float and str'` era `sorted(all_cols)` sobre nome de
+coluna `NaN`; `Errno 36` era nome de arquivo > 255 bytes (o `hashlib` importado
+nunca era usado).
+
+---
+
+## O que o v3 fez
+
+### 1. Reconstrução de header (`promote_header`)
+Detecta título deslocado para nome de coluna (`^Tabela\b` ou `" - "` + maioria
+`Unnamed:`), acha onde os dados realmente começam (heurística: fração de células
+numéricas ≥ 30% numa janela de 8 linhas), reconstrói o header combinando as
+linhas anteriores (com `ffill` horizontal pra células mescladas do Excel),
+slugifica e deduplica.
+
+**Resultado em amostra de 4.000 tabelas: `Unnamed:` caiu de 86% para 9%.**
+
+### 2. Extração de geografia e metadados (`parse_title` + `extract_geo`)
+Do título: `_tabela_id` (`"Tabela 3.10.1"` → `"3.10.1"`), `_titulo` (descrição),
+`_ano`, `_uf` (nome de UF no texto). Do filename, em ordem: sigla de 2 letras
+(`SP__`), `UF NN`, `<código>_<NOME>` (`31_MINAS_GERAIS`), nome de UF livre,
+`tab3_NN` (mapa UF derivado em runtime lendo os títulos dos próprios arquivos
+`ufs__confronto_tab3_*`, não hardcoded), código de município de 7 dígitos
+(validado contra o código de UF nos 2 primeiros dígitos, não qualquer run de
+7 dígitos — evita falso-positivo, ex. `5614751` não é município).
+
+**`_uf` com pelo menos um valor: 25% → 36%** (o resto é legitimamente hierárquico
+BR→região→UF→município dentro do próprio arquivo, onde não existe *um* `_uf`).
+
+### 3. Reagrupamento correto (`base_key_from_filename` + clustering)
+Fix central: a chave de grupo só remove a geografia *especificamente confirmada*
+por `extract_geo` (o `uf`/`municipio` já detectados), nunca um regex cego sobre
+"qualquer run de 7 dígitos" — isso preserva o id de planilha estável (`5614751`
+em `SP__5614751_tabela_1`) que antes era destruído junto com a geografia. Municípios
+(`<código>_<nome>`) colapsam para uma chave genérica, deixando o *column-overlap
+clustering* (Jaccard ≥ 0.5 nas colunas, greedy single-linkage) unificar arquivos
+com schema idêntico — foi assim que os ~5.570 arquivos municipais de endereço
+(CNEFE) de todos os estados viraram **1 tabela só de 5.005.286 linhas**
+(`censo_agropecuario.enderecos_rurais_cnefe`, renomeada depois — ver decisão 2026-07-26).
+
+### Bugs encontrados e corrigidos durante a execução (não estavam no diagnóstico original)
+
+| Bug | Sintoma | Causa | Fix |
+|---|---|---|---|
+| Colisão de dedup por contador | `AttributeError: 'DataFrame' object has no attribute 'dtype'` | Um dict `seen[nome_base] += 1` gera sufixo `_1`, mas não registra esse *nome final* — se outra coluna já se chama naturalmente `..._1` (ex. sufixo `.1` do próprio pandas ao ler Excel com header duplicado), as duas colidem e `df[c]` retorna DataFrame em vez de Series | `dedupe_name()`: checa contra o *conjunto* de nomes já usados, não um contador por base |
+| Overlap exato demais no agrupamento | 27.281→25.439 tabelas só (quase nenhum ganho) na primeira tentativa do v3 | Agrupar por `(table_key, cols_sig)` exato — pequenas diferenças de célula entre planilhas de UFs diferentes geram nomes de coluna levemente distintos, fragmentando em centenas de variantes `_v2`..`_v240` | Clustering por sobreposição aproximada (Jaccard ≥ 0.5) em vez de igualdade exata |
+| Perda silenciosa de arquivos | `~/ibge_ftp_clean` tinha 51.831 arquivos, não 52.281 (450 sumiram sem warning) | `safe_name(filepath.stem)` truncava e slugificava; dois nomes originais diferentes podiam colapsar no mesmo slug e um sobrescrevia o outro | Nome de saída ganhou sufixo `sha1(nome_original)[:6]` — unicidade garantida sem depender do conteúdo do slug |
+| Chave de grupo truncada | `SP__5614751_tabela_1` virava `sem_titulo_tabela_1` — colidia com QUALQUER outro "Tabela 1" de fonte diferente | Código só olhava a parte do filename *antes* de `__`, descartando o id de planilha que vem depois | `base_key_from_filename` passou a receber o filename inteiro |
+| **Coerção numérica nunca rodava** | Toda a base ficou com números guardados como texto (`"93393"` em vez de `93393`); só apareceu ao validar (tarefa #8), não nos checks estruturais | `coerce_numeric` testava `series.dtype != object` — pandas 3.0.5 (a versão instalada no beelink) lê colunas de texto com o dtype nativo `str`, não o `object` do numpy legado, então a checagem sempre era verdadeira e a função devolvia a coluna sem tocar | Trocado para `pd.api.types.is_numeric_dtype(series)` |
+| **Coerção por arquivo quebrava o merge** | Depois do fix acima, 41 grupos falharam ao escrever: `"Expected bytes, got a 'float' object"` / `"Could not convert '2023'... to double"` — a tabela de endereços CNEFE (5.005.286 linhas) sumiu inteira | `coerce_numeric` decidia por *arquivo*: um município cujas ruas têm nome numérico (ex. "Rua 10") passava do limiar de 90% e virava `float`, enquanto outro município da mesma coluna ficava `string` — ao concatenar os ~5.570 arquivos no merge, a coluna final misturava tipos reais (não só null) e o PyArrow recusava escrever | Coerção movida de `_clean_one_file_inner` (Fase A, por arquivo) para `merge_group` (Fase B, uma vez por grupo já concatenado) — decisão única e consistente por tabela final. Reescrita vetorizada (`pd.to_numeric` em vez de `.map()` célula a célula) por causa do custo em tabelas de milhões de linhas |
+
+---
+
+## Validação de valores (tarefa pós-execução)
+
+Duas checagens, uma interna (sem depender de nenhuma fonte externa) e uma contra
+número oficial publicado:
+
+1. **Consistência interna** — `Registro_Civil/02obitos_xls_tab217_tabela_2_17.parquet`
+   (Tabela 2.17, óbitos por natureza e sexo, 2011): soma das 5 regiões
+   (Norte+Nordeste+Sudeste+Sul+Centro-Oeste) = **93.393**, linha "Brasil" da mesma
+   tabela = **93.393**. Bate exato — confirma que header, geografia e merge não
+   embaralharam linha/coluna.
+2. **Número oficial conhecido** — `Censo_Agropecuario/5616460_tabela_1_tabela_1.parquet`
+   (Condição legal do produtor, Censo Agropecuário 2017): soma de `estabelecimentos`
+   na linha "Total" dos 27 UFs = **5.073.324** — bate exatamente com o total oficial
+   do IBGE de estabelecimentos agropecuários no Censo 2017.
+
+**Limitação encontrada e não corrigida:** a mesma tabela `5616460_tabela_1_tabela_1`
+tem 27 colunas extras espúrias (`11_rondonia`, `12_acre`, ..., `53_distrito_federal`)
+cujo valor é sempre a string constante do próprio nome (ex. toda a coluna
+`11_rondonia` vale literalmente `"11_RONDONIA"`). Causa: uma linha de rodapé do
+Excel listando "código = nome da UF" (nota de rodapé, não header) foi capturada
+pela heurística de detecção de bloco de header em `promote_header` e virou colunas
+fantasma. Não contamina as colunas de dado reais (`estabelecimentos`, `area_ha`
+etc., como provou a validação acima) — é ruído reconhecível, não corrupção
+silenciosa — mas não foi filtrado. Achar quantas outras tabelas têm esse padrão
+específico de rodapé ficou fora do escopo desta rodada.
+
+---
+
+## v4: Reagrupamento por título (2026-07-27)
+
+**Pedido do usuário:** o v3 já juntava UF, mas tratava cada ano/edição de
+publicação da "mesma" tabela como tabela à parte, porque a chave de agrupamento
+incluía o id de planilha de origem (que muda a cada release do censo/PNAD).
+Pergunta: "qual o mínimo de tabelas pra estruturar isso tudo?"
+
+### Medição antes de implementar
+
+Três abordagens de agrupamento testadas por simulação sobre `~/ibge_ftp_clean`
+(sem reprocessar nada), pra escolher com número na mão em vez de achismo:
+
+| Chave de agrupamento | Tabelas | Redução |
+|---|---:|---:|
+| id de planilha + UF (v3) | 40.056 | 23,4% |
+| Colunas idênticas (ignora ano/UF) | 25.766 | 50,7% |
+| **Título normalizado (ano+UF removidos)** | 19.489 (estimativa) | 62,7% |
+
+Título venceu — junta a mesma pergunta de pesquisa através de UF **e** ano, que
+nenhuma das outras duas fazia. Validado nos 5 maiores clusters antes de
+implementar: zero colisão falsa (times "Tratores existentes... - Rondônia - 2006"
+e "...- São Paulo - 2017" corretamente no mesmo cluster).
+
+### Implementação
+
+- `strip_year_and_uf(descricao)`: remove ano/faixa de anos (`\b(19|20)\d{2}(/...)?\b`)
+  e nome de UF do texto de `_titulo`, slugifica o resto — essa string vira a
+  `table_key` primária. Fallback pro `base_key_from_filename` antigo só quando não
+  há `_titulo` utilizável (arquivos já limpos tipo CNEFE, sem header deslocado).
+- `merge_group` reescrito: `f.reindex(columns=all_cols)` no lugar de `f[c] = None`
+  por coluna — a versão anterior gerava um aviso de "DataFrame fragmentado" do
+  pandas por cada coluna faltante, e em grupos maiores (agora comuns, já que
+  título agrupa mais arquivos por chave) isso sozinho levou o Registro_Civil de
+  45s pra 5min11s. Com `reindex` voltou a 48s.
+
+### Dois bugs reais encontrados ao validar (não hipotéticos — achados com número errado na mão)
+
+1. **Título idêntico, tabela diferente.** Tentativa inicial: merge incondicional
+   dentro de uma chave de título (sem checar sobreposição de colunas), assumindo
+   que o título já era um sinal forte o suficiente. Errado: `5615458_TABELA_1.xls`
+   e `5616460_TABELA_1.xls` (SP, 2017) têm o **mesmo título exato** ("Condição
+   legal do produtor, segundo a agricultura familiar e Pronaf") mas cobrem
+   variáveis **diferentes** — uma sobre condição legal, outra sobre associação a
+   cooperativa — compartilhando só ~33-36% das colunas (a coluna `estabelecimentos`,
+   presente nas duas como contexto). Merge incondicional somou as duas: total
+   de estabelecimentos saiu **10.146.648** (o dobro de 5.073.324). **Fix:** manter
+   o limiar de sobreposição de colunas (Jaccard ≥ 0.5) mesmo dentro da chave por
+   título — já provado que separa esse caso (jaccard real: 0,33-0,36) sem
+   fragmentar demais o resto. Custo: tabelas com diferença grande de colunas
+   entre edições (ex. 2006 vs 2017 do Censo Agropecuário mudou bastante) não
+   mergeiam entre anos — fica como duas tabelas em vez de uma. Correção > compressão.
+2. **Um `.txt` interpretado como tabela de 10 milhões de linhas.** Durante a
+   rodada completa, o grupo `notas_tecnicas` de `Precos_Custos_e_Indices_da_Construcao_Civil`
+   apareceu com **10.000.000 de linhas antes do dedup, 2 depois** — não é dedup
+   normal. Rastreado: um único arquivo de origem, `_original_file` = `Notas_Tecnicas.txt`
+   (texto puro, não planilha), que a Fase 2 (`convert_ibge_to_parquet.py`,
+   fora do escopo desta sessão) converteu errado, produzindo colunas-lixo
+   (`i_a_a`, `col`, `1`..`6`) e milhões de linhas sem sentido. **Não corrigido na
+   Fase 2** (fora de escopo); o dedup da Fase B já neutraliza o efeito (produto
+   final: 2 linhas de lixo inofensivo, não milhões). Verificado que é caso único
+   (nenhum outro grupo com queda > 200k linhas). Vale registrar como pendência
+   se algum dia mexer em `convert_ibge_to_parquet.py`: arquivos `_original_file`
+   terminados em `.txt` merecem tratamento especial ou exclusão.
+
+### Deduplicação de republicação
+
+Além dos dois bugs acima, uma proteção nova e permanente: o IBGE às vezes
+republica a mesma tabela sob um id de planilha diferente (mesmo conteúdo, dois
+arquivos fonte). `merge_group` agora dá `drop_duplicates` no resultado do merge,
+ignorando só `_original_file`/`_download_date` (as duas colunas de proveniência
+que devem legitimamente diferir). ~13 mil grupos tiveram alguma linha
+deduplicada dessa forma na rodada final — a maioria poucas dezenas de linhas,
+consistente com republicação pontual, não com um problema sistêmico.
+
+### Resultado final validado
+
+`condicao_legal_do_produtor_segundo_a_agricultura_familiar_e_pronaf_v3.parquet`
+(a tabela que sobrou com a coluna `estabelecimentos` e o schema de 2017 completo):
+soma de `estabelecimentos` na linha "Total" das 27 UFs = **5.073.324** — bate
+exato de novo, com o merge por título habilitado e os dois bugs acima corrigidos.
+
+---
+
+## Qualidade final (verificada, não estimada)
+
+| Métrica | v2 | v3 (id de planilha) | v4 (título) |
+|---|---|---|---|
+| Tabelas | 51.012 (2,4% de ganho) | 40.056 (23,4% de ganho) | **23.672** (54,7% de ganho) |
+| Erros de processamento | 97 grupos perdidos | 0 | **0** |
+| Headers `Unnamed:` | 86% | 9% (amostra 4.000) | 9% (Fase A não mudou) |
+| `_uf` preenchido | 25% | 36% (amostra 2.000) | 36% (Fase A não mudou) |
+| `_tabela_id` extraído | não existia | 71% (amostra 4.000) | 71% (Fase A não mudou) |
+| Linhas totais | 72.666.604 | 72.498.937 | 60.145.099* |
+
+\* A queda de linhas do v3→v4 é quase toda deduplicação real: republicações
+IBGE (mesma tabela, dois ids de planilha) + o artefato do `.txt` de 10M linhas
+neutralizado (ver seção v4 acima). Excluindo esse artefato isolado, a queda
+líquida é de ~2,35M linhas — consistente com deduplicação legítima, não com
+perda de dado (validado pelas checagens de 5.073.324 e Brasil=soma-das-regiões).
+
+**Limitação conhecida:** nomes de coluna reconstruídos podem ficar muito longos
+(até ~90 chars antes do cap de 60) ou, quando dezenas de colunas só diferem
+depois do ponto de truncagem, ganham sufixo de hash opaco (`..._45ba503d`) em vez
+de um sufixo sequencial legível — funcionalmente correto (sem colisão nem perda
+de dado), mas menos legível em `DESCRIBE`. Não resolvido por falta de tempo;
+próxima iteração poderia usar um sufixo sequencial determinístico só quando o
+hash for a única causa de colisão.
+
+O objetivo original de "~3.000 tabelas" (extrapolado por amostragem manual no
+diagnóstico do v2) não foi atingido no v3 — 40.056 era o número real depois de
+corrigir os bugs de agrupamento por UF, mas a chave ainda era escopada por id de
+planilha, incapaz de juntar edições/anos diferentes da mesma tabela. **O v4
+(seção acima) resolve exatamente essa lacuna, trocando a chave pra título
+normalizado: 40.056 → 23.672.** Boa parte do que sobra em `Censo_Agropecuario`
+ainda é singleton genuíno (tabela BR-only, GR-only ou de fato exclusiva de uma
+edição), não fragmento de bug — mas agora com bem menos falsos singletons do
+que no v3, já que o mesmo levantamento em anos diferentes finalmente mergeia.
+
+---
+
+## Estatísticas por pasta
+
+Tabela do v4 (por título). Redução mais forte e mais espalhada que no v3: o
+agrupamento por título junta a mesma pergunta de pesquisa através de anos, não
+só de UF, então pastas com múltiplas edições de censo/PNAD (Contas_Nacionais,
+Censo_Agropecuario, Economia_da_Saude) saltam de quase-zero pra 50-80% de redução.
+
+| Pasta | Arquivos | Tabelas | Linhas | Redução |
+|---|---:|---:|---:|---:|
+| Censo_Agropecuario | 29343 | 7472 | 12472173 | 74.5% |
+| Indicadores_Sociais | 4488 | 4121 | 3298044 | 8.2% |
+| Comercio_e_Servicos | 4214 | 3201 | 257018 | 24.0% |
+| Contas_Nacionais | 3215 | 662 | 280601 | 79.4% |
+| Industrias_Extrativas_e_de_Transformacao | 2997 | 1399 | 543232 | 53.3% |
+| Registro_Civil | 1379 | 817 | 609645 | 40.8% |
+| Contas_Regionais | 1206 | 1073 | 754136 | 11.0% |
+| Contagem_da_Populacao | 871 | 871 | 1572980 | 0.0% |
+| Industria_da_Construcao | 613 | 385 | 57864 | 37.2% |
+| Dados_Genericos | 587 | 587 | 36791737 | 0.0% |
+| Acesso_a_internet_e_posse_celular | 572 | 570 | 69195 | 0.3% |
+| Economia_Cadastro_de_Empresas | 447 | 434 | 756287 | 2.9% |
+| Indices_de_Precos_Consumidor_Harmonizado | 208 | 183 | 35242 | 12.0% |
+| Assistencia_Social_Privada_Sem_Fins_Lucrativos | 197 | 197 | 24850 | 0.0% |
+| Estatisticas_de_Genero | 184 | 177 | 37448 | 3.8% |
+| Setor_Publico | 176 | 172 | 13554 | 2.3% |
+| Caracteristicas_etnico_raciais_populacao | 153 | 153 | 4347 | 0.0% |
+| Fundacoes_Privadas_e_Associacoes | 135 | 117 | 279094 | 13.3% |
+| Tecnologias_de_Informacao_e_Comunicacao_nas_Empresas | 119 | 115 | 5020 | 3.4% |
+| Economia_da_Saude | 117 | 38 | 5387 | 67.5% |
+| Informacoes_Gerais_e_Referencia | 112 | 106 | 89216 | 5.4% |
+| Estatisticas_Vitais | 107 | 62 | 42149 | 42.1% |
+| Demografia_das_Empresas | 83 | 83 | 21891 | 0.0% |
+| Estoque | 72 | 40 | 848 | 44.4% |
+| Precos_Custos_e_Indices_da_Construcao_Civil | 65 | 63 | 17627 | 3.1% |
+| Tabuas_Completas_de_Mortalidade | 64 | 63 | 5860 | 1.6% |
+| Estatisticas_Sociais | 63 | 63 | 121671 | 0.0% |
+| Programa | 61 | 60 | 896421 | 1.6% |
+| Meio_Ambiente | 57 | 57 | 2640 | 0.0% |
+| Estatisticas_de_Empreendedorismo | 50 | 48 | 4431 | 4.0% |
+| edital | 41 | 41 | 727 | 0.0% |
+| Projecao_da_Populacao | 34 | 34 | 252498 | 0.0% |
+| Economia_Turismo | 33 | 33 | 537 | 0.0% |
+| Tabuas_Abreviadas_de_Mortalidade | 33 | 9 | 2376 | 72.7% |
+| PNS | 27 | 27 | 738368 | 0.0% |
+| Inovacao | 26 | 25 | 146 | 3.8% |
+| Demografia_das_Empresas_e_Estatisticas_de_Empreendedorismo | 24 | 17 | 4526 | 29.2% |
+| Micro_Empresa | 22 | 20 | 677 | 9.1% |
+| Matriz_insumo-produto | 18 | 9 | 2042 | 50.0% |
+| Mobilidade_Socio_Ocupacional_2014 | 12 | 12 | 18855 | 0.0% |
+| Pesquisa_de_Esporte | 10 | 10 | 836 | 0.0% |
+| Pulso_Empresa | 6 | 6 | 2162 | 0.0% |
+| Dimensionamento_em_areas_indigenas_e_quilombolas_para_acoes_de_enfrentamento_COVID-19 | 5 | 5 | 3619 | 0.0% |
+| Pesquisa_de_Servicos_de_Tecnologia_da_Informacao | 5 | 5 | 277 | 0.0% |
+| Aspectos_das_relacoes_de_trabalho_e_sindicalicacao | 4 | 4 | 22114 | 0.0% |
+| acesso_ao_cadastro_unico_2014 | 4 | 4 | 6273 | 0.0% |
+| Retroprojecao_da_populacao | 4 | 4 | 3407 | 0.0% |
+| Estatisticas_dos_Cadastros_de_Microempreendedores_Individuais | 4 | 4 | 1513 | 0.0% |
+| Metodos_Alternativos_Censo | 4 | 4 | 93 | 0.0% |
+| Educacao_e_qualificacao_profissional | 3 | 3 | 4897 | 0.0% |
+| Aspectos_e_cuidados_das_criancas | 3 | 3 | 835 | 0.0% |
+| Pratica_de_esporte_e_atividade_fisica | 2 | 2 | 7570 | 0.0% |
+| Salario_Minimo | 2 | 2 | 143 | 0.0% |
+| **TOTAL** | **52281** | **23672** | **60145099** | **54.7%** |
+
+---
+
+## Como consultar
+
+```bash
+ssh beelink '~/bin/duckdb -json ~/ibge_ftp.duckdb' <<'SQL'
+SET enable_progress_bar=false;
+SELECT _uf, count(*) FROM censo_agropecuario.enderecos_rurais_cnefe GROUP BY 1 ORDER BY 2 DESC;
+SQL
+```
+
+Catálogo para achar a tabela certa sem abrir parquet:
+```python
+import json
+c = json.load(open("/home/polo/ibge_ftp_catalog.json"))
+c["Registro_Civil"]["tabelas"]["02obitos_xls_tab217_..."]
+# -> {"tabela_id": "2.17", "titulo": "Óbitos, ocorridos no ano...", "n_rows": ..., "ufs": [...], "anos": [...]}
+```
+
+---
+
+## Fora de escopo / não feito
+
+- Embeddings de colunas e agrupamento semântico por LLM — desnecessário: com
+  header corrigido, o schema matching por overlap de colunas já resolveu o
+  agrupamento sem precisar disso.
+- Sufixo de hash legível nos nomes de coluna (ver limitação conhecida acima).
+- **Integração com `_rodado_metadata`/`basedosdados.duckdb` — decisão explícita de não fazer.**
+  Perguntado ao usuário: as 40.056 tabelas seriam 47x o catálogo atual (839 tabelas)
+  e poderiam sobrecarregar a seleção semântica do `ask`/TUI. Resposta: manter
+  `~/ibge_ftp.duckdb` como catálogo separado (documentado em
+  `tasks/datasets_to_scrap.md`), sem tocar em `_rodado_metadata` nem no `ask`. Se
+  o cenário mudar (ex. quiser só um subconjunto curado nas queries normais do
+  projeto), reabrir essa decisão — não é definitivo, é o estado atual.
+- Dashboard de cobertura.
+
+---
+
+## Scripts
+
+| Script | Função | Estado |
+|--------|--------|--------|
+| `scripts/sync/sync_censo_ftp.sh` | Mirror do FTP IBGE | ✅ |
+| `scripts/sync/convert_ibge_to_parquet.py` | Conversão para Parquet | ✅ (gera header deslocado, corrigido a jusante) |
+| `scripts/sync/normalize_ibge_v3.py` | Normalização v3 (header + geo + reagrupamento) | ✅ em produção |
+| `scripts/sync/build_ibge_catalog.py` | Catálogo JSON | ✅ |
+| `scripts/sync/create_ibge_duckdb.py` | Criação do DuckDB (agora com `--source-dir`/`--db-path`) | ✅ aponta pro v3 |
+
+---
+
+## Decisões
+
+| Data | Decisão |
+|------|---------|
+| 2026-07-24 | Sync: tier 1 → 2 → 3, menor primeiro |
+| 2026-07-24 | Conversão: 52.281 parquets via pandas/pyarrow |
+| 2026-07-25 | Normalização v1: merge por schema (falhou — 160 "schemas" que eram só header deslocado) |
+| 2026-07-25 | Normalização v2: merge por tipo de tabela (52k → 51k — pouco ganho, 97 grupos perdidos) |
+| 2026-07-25 | `consolidate_ibge_parquet.py` abortado por OOM — 0 arquivos escritos |
+| 2026-07-26 | Diagnóstico: 86% `Unnamed:`, 73% título-como-coluna; erro `sorted()` isolado (não é dtype de dado) |
+| 2026-07-26 | v3 escrito e testado piloto em 3 pastas (Registro_Civil, Censo_Agropecuario, Setor_Publico) antes de rodar tudo |
+| 2026-07-26 | Chave de agrupamento corrigida pra preservar id de planilha estável em vez de truncar tudo que parece geografia |
+| 2026-07-26 | Column-overlap clustering (Jaccard ≥ 0.5) substituiu igualdade exata de assinatura — exata fragmentava demais |
+| 2026-07-26 | v3 rodado em produção: 52.281 → 40.056 tabelas, 0 erros. DuckDB e catálogo regenerados |
+| 2026-07-26 | `~/ibge_ftp_normalized` (v2) e `~/ibge_ftp_consolidated` apagados do beelink (confirmado com o usuário) — v3 os substitui |
+| 2026-07-26 | `scripts/sync/normalize_ibge_parquet.py` e `consolidate_ibge_parquet.py` removidos do repo (tinham sido commitados por engano junto com o v3; obsoletos) |
+| 2026-07-26 | As 36 tabelas com nome genérico `sem_titulo*` renomeadas por conteúdo (ex. `enderecos_rurais_cnefe`, `dim_uf_referencia`) — feito via `/tmp/rename_sem_titulo.sh` no beelink, DuckDB e catálogo regenerados depois |
+| 2026-07-26 | Bug crítico achado na validação: `coerce_numeric` nunca convertia nada (checagem de dtype incompatível com pandas 3.x) — números ficaram como texto na primeira rodada de produção. Corrigido e a base inteira reprocessada |
+| 2026-07-26 | Coerção numérica movida de por-arquivo (Fase A) pra por-grupo-já-mergeado (Fase B) — decidir por arquivo produzia colunas de tipo misto entre arquivos do mesmo grupo, e o PyArrow recusava escrever (41 grupos falhos, incluindo a tabela de 5M linhas de endereços). Reescrita vetorizada por causa do custo em tabelas grandes |
+| 2026-07-26 | Validação: consistência interna (Brasil = soma das regiões) e valor externo batendo com o total oficial do Censo Agropecuário 2017 (5.073.324 estabelecimentos) — pipeline final considerado correto |
+| 2026-07-27 | Usuário pediu merge entre anos ("uma tabela só" em vez de uma por ano) e o mínimo de tabelas possível. Medidas 3 abordagens antes de implementar: id-planilha (40.056), colunas idênticas (25.766), título normalizado (~19.489 estimado) — título escolhido |
+| 2026-07-27 | Chave de agrupamento trocada pra `strip_year_and_uf(descricao)` — o que de fato junta a mesma pergunta de pesquisa através de censo/PNAD, não só de UF |
+| 2026-07-27 | Tentativa de merge incondicional (sem checar sobreposição de colunas) dentro da chave por título causou merge falso: duas tabelas com título idêntico mas variáveis diferentes ("condição legal" vs "associação a cooperativa") somadas, dobrando o total de estabelecimentos. Revertido pra manter Jaccard ≥ 0.5 mesmo com título |
+| 2026-07-27 | `merge_group` reescrito com `f.reindex()` no lugar de `f[c] = None` por coluna — fix de performance (Registro_Civil de 5min11s pra 48s) |
+| 2026-07-27 | `drop_duplicates` adicionado ao merge — IBGE às vezes republica a mesma tabela sob id de planilha diferente |
+| 2026-07-27 | Achado (não corrigido, fora de escopo): um arquivo `.txt` (`Notas_Tecnicas.txt`) foi convertido errado na Fase 2, virando uma "tabela" de 10M linhas-lixo. O dedup da Fase B neutraliza o efeito (2 linhas no resultado final); registrado como pendência pra quando `convert_ibge_to_parquet.py` for revisitado |
+| 2026-07-27 | v4 rodado em produção: 52.281 → 23.672 tabelas (54,7% de redução), 0 erros. Revalidado (5.073.324 estabelecimentos bate de novo). DuckDB e catálogo regenerados |
+| 2026-07-27 | Preferência global salva em `~/.claude/CLAUDE.md`: usar Polars em vez de pandas em código novo (pandas 3.x's dtype `str` nativo foi a causa raiz do bug de coerção numérica desta sessão) |

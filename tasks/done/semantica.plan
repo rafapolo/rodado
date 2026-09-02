@@ -1,0 +1,330 @@
+# Camada semântica — bridges.yaml, metrics.yaml, hierarchies.yaml
+
+**Status: executado na branch `camada-semantica` (2026-08-22).** As cinco fases estão
+de pé. O que mudou em relação ao plano original está em *Desvios* no fim do arquivo.
+
+Origem: avaliação do [aws/context-ontology-accelerator](https://github.com/aws/context-ontology-accelerator)
+(COA). A conclusão foi **não adotar** — é uma plataforma AWS CDK (Nx, Smithy, Neptune,
+OpenSearch, Ontop VKG, RBAC por namespace), o oposto da aposta deste projeto (parquet no
+beelink, DuckDB in-process, zero nuvem). Mas o desenho do COA nomeia com precisão coisas
+que aqui já existem meio prontas e meio em prosa. Este plano é o que vale a pena roubar,
+sem trazer uma linha do código deles.
+
+Referência lida: `external-docs/content/ontologies.md`, `metrics.md`,
+`packages/context-manager/docs/query-routing.md` do repo do COA.
+
+---
+
+## O problema de fundo
+
+Os dados estruturados **já existem** — em Python, dentro de `scripts/gera_join_keys.py`:
+
+| Estrutura | Linha | O que tem |
+|---|---|---|
+| `CURATED` | `:110` | `cat` / `desc` / `ref` / `notes` / `example` por coluna-hub |
+| `MUNICIPIO_BRIDGES` | `:683` | 25 pontes, cada uma com `recipe` + `verificado` |
+| `UF_BRIDGES` | `:797` | 19 pontes |
+| `IDENTITY_BRIDGES` | `:831` | 10 pontes CNPJ/CPF |
+| `CATEGORIES` | `:77` | taxonomia de 12 categorias |
+| `AUTO_DENY` | `:66` | colunas que passam na heurística mas são valor, não chave |
+
+Tudo isso vira markdown em `docs/context/join_keys.md` (2.097 linhas) — e então
+`mcp_server.py:108` (`_parse_join_keys`) **re-parseia o markdown com regex** para servir.
+Estrutura → prosa → regex → prosa de volta pro modelo. A `recipe`, que é literalmente a
+expressão SQL de normalização já testada no beelink, chega no LLM como texto para ele
+copiar à mão.
+
+O COA chama a camada que resolve isso de mapping (R2RML). Não precisamos de RDF: precisamos
+parar de passar por markdown.
+
+---
+
+## Fase 1 — `docs/context/bridges.yaml` como fonte única
+
+### 1.1 Extrair
+
+Tirar `CURATED`, `MUNICIPIO_BRIDGES`, `UF_BRIDGES`, `IDENTITY_BRIDGES`, `CATEGORIES` e
+`AUTO_DENY` de `gera_join_keys.py` para `docs/context/bridges.yaml`. O script passa a **ler**
+o YAML e renderizar o mesmo markdown de hoje.
+
+**Contrato a preservar:** o docstring de `gera_join_keys.py:28-31` avisa que todo `h3` tem
+que ser um nome de coluna real, porque `mcp_server` fatia o arquivo nesse header. Enquanto
+a Fase 2 não estiver de pé, o markdown gerado tem que sair **byte a byte igual** — `git diff`
+vazio em `join_keys.md` é o teste de aceitação da Fase 1.
+
+### 1.2 Forma
+
+```yaml
+concepts:
+  id_municipio:
+    category: municipio
+    canonical:
+      table: br_bd_diretorios_brasil.municipio
+      column: id_municipio
+      type: VARCHAR
+    description: código IBGE de 7 dígitos, VARCHAR, zero-padding importa
+    notes: [...]
+    example_sql: |
+      ...
+    variants:
+      - table: br_ana_atlas_esgotos.municipio
+        column: codIBGE
+        expr: "lpad(CAST(codIBGE AS VARCHAR), 7, '0')"
+        verificado: "5.412/5.570 casaram — 2026-07-27"
+```
+
+`verificado` vira **obrigatório** em toda variante: data + o que a recipe realmente casou
+quando rodou no beelink. Uma ponte sem `verificado` é aspiracional e o gerador deve
+marcá-la como tal na saída.
+
+### 1.3 `false_friends` — ideia nova, vinda do "grounding" do COA
+
+O COA distingue match por nome de match por significado justamente para rejeitar
+same-name-different-meaning (o exemplo deles: "Policy" do Dublin Core ≠ "policy" de seguro).
+Aqui isso já existe como `AUTO_DENY` — `valor`, `numero`, `sigla`, `id`, `data_extracao` —
+mas é uma lista muda: o gerador **descarta em silêncio** e o LLM nunca aprende *por que*
+`valor` não é chave de join. Um modelo que vê `valor` em duas tabelas vai tentar juntar.
+
+Promover a lista a seção de primeira classe, com motivo:
+
+```yaml
+false_friends:
+  valor:
+    reason: montante em BRL, escala e moeda diferentes por fonte — nunca é join key
+    seen_in: 47 tabelas
+  id:
+    reason: surrogate key local de cada fonte, sem significado entre datasets
+```
+
+Servir isso pelo MCP é mais barato que corrigir o join errado depois.
+
+---
+
+## Fase 2 — servir estruturado no `mcp_server.py`
+
+### 2.1 Trocar a fonte
+
+`_parse_join_keys` (`mcp_server.py:108`) passa a carregar `bridges.yaml`. `get_join_keys()`
+mantém a assinatura e o texto de hoje para quem quer prosa — a mudança é interna.
+
+### 2.2 `resolve_join(table_a, table_b)` — a ferramenta que falta
+
+Retorna a cláusula `ON` pronta, não a explicação dela:
+
+```json
+{
+  "on": "lpad(CAST(a.codIBGE AS VARCHAR),7,'0') = b.id_municipio",
+  "concept": "id_municipio",
+  "verificado": "5.412/5.570 casaram — 2026-07-27",
+  "warning": "br_ana_atlas_esgotos.municipio está na lista das 80 tabelas duplicadas — use SELECT DISTINCT"
+}
+```
+
+O `warning` sai de graça: a lista das 80 tabelas com `tmp*.parquet` sobrando já está no topo
+do `join_keys.md`. Hoje ela é um parágrafo que o modelo pode ou não ler; ali vira um campo
+que ele recebe exatamente quando tocar numa tabela afetada.
+
+### 2.3 Filtro mapped-only — a melhor ideia do COA para este repo
+
+O COA marca classe como `is_mapped` quando existe tabela SQL por trás, e **filtra a geração
+de query só para as mapeadas**, para o tradutor nunca escrever SQL contra algo que não tem
+dado. O flag é derivado no servidor, não aceito de quem sobe a ontologia.
+
+O análogo aqui já está pronto e não está sendo usado: a coluna `source` do
+`_rodado_metadata/catalog.parquet` — `disk` vs `view_only`, sendo `view_only` as 8 views
+órfãs mantidas de propósito, todas com `rows=0`. Hoje `search_tables()` (`mcp_server.py:403`)
+e o `table_selector` do `ask` fazem busca por embedding sobre **todas** as tabelas: uma view
+órfã pode ganhar o top-k, entrar no prompt, virar SQL e devolver zero linha sem explicação.
+
+Filtrar `search_tables`, `list_tables` e o `table_selector` para `source='disk'`, com um
+`include_unmapped: bool = False` para inspeção. Correção de uma classe inteira de resultado
+vazio, e o dado para fazer isso já está no catálogo.
+
+---
+
+## Fase 3 — `docs/context/metrics.yaml`
+
+Não existe nada equivalente hoje: cada análise em `pages/analises/` re-deriva "população",
+"PIB per capita", "taxa de homicídio" em SQL novo, com variações silenciosas.
+
+### 3.1 Forma
+
+Alinhar de leve ao OSI v1.0 (hoje **Apache Ossie**, incubating) que o COA usa como formato
+de intercâmbio de métrica — não por interoperabilidade, mas para não inventar um shape.
+Um dialeto só: DuckDB. Multi-dialeto é explicitamente fora de escopo.
+
+```yaml
+metrics:
+  populacao_municipio:
+    description: população residente estimada, por município e ano
+    unit: pessoas
+    grain: [id_municipio, ano]
+    source_table: br_ibge_populacao.municipio
+    expression: "SUM(populacao)"
+    required_filters: [ano]
+    synonyms: [populacao, habitantes, pop, gente]
+    verificado: "203.080.756 em 2022 — bate com o Censo, 2026-08-22"
+```
+
+`required_filters` não é decoração: é a regra de partição do CLAUDE.md (`ano`/`mes`/`sigla_uf`)
+virando dado que a ferramenta pode exigir, em vez de instrução de prompt que o modelo pode
+ignorar.
+
+`synonyms` vem direto do `MetricResolver` do COA (índices `by_name` e `by_synonym`, match
+exato após normalização). Em pt-BR isso rende: "população"/"habitantes"/"pop" são a mesma
+pergunta.
+
+### 3.2 Validação hard/soft — o padrão vale a pena
+
+O COA separa: DML/DDL na expressão é **hard** (rejeita), erro de sintaxe e coluna inexistente
+são **soft** (publica com warning), porque um *SQL firewall* revalida tudo no serve-time.
+Defense-in-depth: criar é permissivo, servir é estrito.
+
+Aqui o firewall **já existe** — `_check_read_only` (`mcp_server.py:146`), que só deixa passar
+`SELECT`/`WITH` e barra 26 keywords. Então o validador de `metrics.yaml` pode ser soft de
+propósito:
+
+- **hard:** expressão com DML/DDL; `source_table` ausente do `catalog.parquet` **e** o
+  catálogo legível (ausência provável, não presumida — se o catálogo não abriu, falha fechado
+  em vez de aceitar em silêncio)
+- **soft (warning):** coluna que não aparece no `schemas.json`; expressão que o sqlglot não
+  parseia; `verificado` faltando
+
+---
+
+## Fase 4 — `docs/context/hierarchies.yaml`
+
+Rollup derivável em vez de re-descoberto a cada análise.
+
+```yaml
+hierarchies:
+  geografia:
+    levels: [id_municipio, sigla_uf, regiao, pais]
+    table: br_bd_diretorios_brasil.municipio
+    parent_expr:
+      id_municipio -> sigla_uf: "sigla_uf"
+      sigla_uf -> regiao: "regiao"
+    caveat: "5.571 linhas (5.570 + distrito de Brasília); a tabela está na lista das 80 duplicadas"
+  cnae:
+    levels: [subclasse, classe, grupo, divisao, secao]
+    table: br_bd_diretorios_brasil.cnae_2
+    parent_expr:
+      subclasse -> classe: "substr(cnae_2, 1, 5)"
+      classe -> grupo: "substr(cnae_2, 1, 4)"
+      grupo -> divisao: "substr(cnae_2, 1, 2)"
+  cid10:
+    levels: [subcategoria, categoria, grupo, capitulo]
+    table: br_bd_diretorios_brasil.cid_10
+```
+
+CNAE e CID-10 são hierarquia **posicional** — o pai sai de `substr()` do código, sem join.
+É a economia mais direta do arquivo: hoje isso é redescoberto (e às vezes errado) a cada
+análise. Cada `parent_expr` precisa de `verificado` como as pontes.
+
+Fora de escopo: raciocinador OWL. São ~150 tipos de identificador e três hierarquias
+posicionais; HermiT/ELK existem para milhares de classes com axiomas não-triviais.
+
+---
+
+## Fase 5 — roteamento em camadas no `ask` (opcional, depois)
+
+O COA resolve query em fall-through sequencial: Tier 1 métrica determinística → Tier 2
+NL→SQL guiado por ontologia → Tier 3 síntese LLM. Com um aviso que vale citar:
+
+> similarity score alone is a poor proxy for which tier can actually answer
+
+É exatamente o que `ask` faz hoje: `table_selector` por embedding → top-K (`TOP_K_TABLES`,
+default 5) → prompt. Sempre o mesmo caminho, "quantos municípios tem SP?" incluído.
+
+Com `metrics.yaml` de pé, sai um Tier 1 barato: match exato de nome/sinônimo → expressão +
+`required_filters` → SQL sem LLM nenhum. Cai para o caminho atual quando não casa, ou quando
+casa mais de uma métrica (o COA também desvia o multi-metric).
+
+O **pruning fail-open** deles também se traduz: pular um caminho só quando ele
+comprovadamente não pode contribuir, nunca por score. Aqui: se o top-k do embedding é todo
+`view_only`, não vale gerar SQL (é a Fase 2.3 de novo, no `ask`).
+
+Deixar para depois das Fases 1-4 — é a única que mexe em Rust.
+
+---
+
+## Princípio a importar junto: falhar alto
+
+O COA garante que um job de indução que não consegue completar o grounding **falha**, em vez
+de devolver ontologia degradada que "pareceria um schema legitimamente todo-novo, sem sinal
+de que algo deu errado".
+
+O paralelo aqui é a falha de dado mais cara do repo: as **80 tabelas que devolvem toda linha
+duas vezes** por causa de `tmp*.parquet` que sobrou de um sync abortado — e que inclui tabela
+fato, então `count(*)` e `sum()` já estão errados, sem sintoma. Os geradores devem parar de
+emitir catálogo/markdown plausível por cima disso: se um diretório tem `tmp*.parquet`, o
+gerador berra.
+
+**Vale dizer com todas as letras: nenhuma das 5 fases conserta isso.** Camada semântica
+modela o dado; não limpa. Se a escolha for uma coisa só, limpar o mirror rende mais que
+qualquer YAML deste plano.
+
+---
+
+## Ordem e aceitação
+
+| # | Entrega | Aceitação |
+|---|---|---|
+| 1 | `bridges.yaml` + gerador lê YAML | `git diff docs/context/join_keys.md` vazio |
+| 2 | `mcp_server` lê YAML; `resolve_join`; filtro `source='disk'` | `resolve_join` devolve `ON` que roda no beelink; view órfã some do `search_tables` |
+| 3 | `metrics.yaml` + validador | toda métrica com `verificado` conferido no beelink |
+| 4 | `hierarchies.yaml` | `parent_expr` de CNAE/CID conferido contra a tabela-diretório |
+| 5 | Tier 1 no `ask` | "quantos habitantes tem SP?" resolve sem chamar LLM |
+
+Fases 1-4 são Python e YAML, sem dependência nova além de `pyyaml` (e `sqlglot`, opcional,
+só para o warning de sintaxe). Fase 5 mexe em `ask/`.
+
+## Explicitamente fora de escopo
+
+Ontop VKG (SPARQL sobre 37,9 bilhões de linhas em parquet particionado destrói o partition
+pruning que o CLAUDE.md exige), raciocinador OWL, Neptune/OpenSearch, RBAC por namespace,
+web app (o Atlas já é melhor e já é feito sob medida), e as dependências AGPL-3.0 (PyMuPDF)
+/ LGPL-3.0 (owlready2) que o COA arrasta — relevante porque o rodado é servido por HTTP.
+
+
+---
+
+## Desvios do plano original
+
+**`get_join_keys` continuou lendo o markdown.** O plano dizia que ele passaria a ler o
+YAML. Não dá: 92 das 152 seções são auto-detectadas do `schemas.json` e só existem no
+render. O YAML passou a servir a parte que é **executada** (as expressões), e a prosa
+seguiu vindo do markdown.
+
+**As pontes não tinham a mesma forma.** `MUNICIPIO_BRIDGES` já era dict com `recipe` e
+`verificado`; `UF_BRIDGES` e `IDENTITY_BRIDGES` eram tuplas de 3 com a expressão enterrada
+dentro de uma frase em inglês. Foi extração à mão, como previsto — 35 das 54 pontes têm
+`join_expr`; as outras 19 não são resolvíveis por expressão (mojibake do SIOP, código
+interno da ANA, prefixo do SNIS) e seguem apenas descritas.
+
+**Apareceu um caso que o plano não previa: `concept_aliases`.** `br_bd_diretorios_brasil.uf`
+chama a chave de `sigla`, não `sigla_uf` — e `sigla` é false friend em todo o resto do
+espelho. Sem o alias, toda ponte de UF contra o diretório falhava calada.
+
+**O filtro `source='disk'` do plano estava errado e teria escondido dado.** As 8 tabelas
+`view_orfa` não estavam quebradas: leem tabelas nativas dentro do `basedosdados.duckdb`,
+e `parquet_metadata` devolvia `rows=0` por não existir parquet. São **250.126.810 linhas**
+reais. O que a Fase 2.3 virou foi consertar o catálogo — `duckdb_native` como terceiro
+valor de `source`, contado pelo próprio DuckDB — e a regra passou a ser
+`source <> 'view_only'`. Total do mirror: 37,87 bi → 38,12 bi.
+
+**Fase 5 saiu sem dependência nova.** `serde_yaml` está descontinuado e o crate já dependia
+de `serde_json`, então `metrics.yaml` vira `metrics.json` por `gera_metrics_json.py`.
+O Tier 1 ficou **antes** da seleção por embedding — colocado depois, como estava na
+primeira versão, ele economizava a chamada ao modelo mas ainda pagava os 18s do embedding.
+
+## O que ficou de fora
+
+**Os `context/...` do `ask` estão quebrados.** Os defaults apontam para `context/`, e os
+arquivos estão em `docs/context/` — `ask` não roda sem env var. `metrics_path()` tenta os
+dois e degrada para o modelo se não achar, mas os outros caminhos (`SCHEMA_FILE`,
+`SCHEMA_JSON`, `EMBEDDINGS_FILE`, `PROMPT_FILE`) seguem quebrados. Fora do escopo desta
+branch, mas é a próxima coisa a consertar.
+
+**As 80 tabelas duplicadas continuam duplicadas.** Como dito acima: nenhuma das cinco fases
+conserta isso, e continua rendendo mais que qualquer YAML deste plano.
