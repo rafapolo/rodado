@@ -20,6 +20,26 @@
 > verificação real no beelink resolveu 6 dos "checar antes de assumir"
 > espalhados pelos três baldes, promovendo/rebaixando item por achado
 > real em vez de hipótese. Detalhe de cada achado nas seções abaixo.
+>
+> **Segunda rodada de 2026-09-02:** tema 58 fechado (`docs/perguntas.md`,
+> `docs/respostas.md` T58-1…5) — grupo "Programas sociais e transparência
+> CGU" do Balde C: `br_cgu_pe_de_meia`, `br_cgu_garantia_safra`,
+> `br_cgu_seguro_defeso`, `br_cgu_viagens`. Untouched cai de 60 para
+> **56** (4 datasets tocados). Achados: pico de R$3,13 bi em fev/2025 no
+> Pé-de-Meia (bônus de conclusão pago em lote, não gasto suave);
+> gradiente per capita Norte/Nordeste-Sul de ~10x; 35.189 pessoas recebem
+> Seguro-Defeso e Garantia-Safra ao mesmo tempo; gasto do Seguro-Defeso
+> cresceu 3,78x (2013→2025) mesmo com 25% menos beneficiários, decomposto
+> em reajuste do salário mínimo + mais parcelas/beneficiário; viagens a
+> serviço do governo federal ficaram mais caras, não mais numerosas.
+> Também fechado nesta rodada: o "checar se ainda está quebrado" pendente
+> sobre `br_ibama_embargos` (Parte II, Balde B) — **o dataset foi
+> re-raspado e renomeado para `br_ibama_embargos_novo`**, e não está mais
+> quebrado (113.878 termos de embargo, 1990-2026, `cpf_cnpj_embargado`
+> 91,3% preenchido, `qtd_area_embargada` 60,8%, só 8 linhas de 113.878
+> com data implausível). Cruzamento bônus com `br_tcu_inidoneos.empresas`
+> por CNPJ: zero coincidência (achado limpo, mesmo padrão de T57-5).
+> Detalhe nas seções abaixo.
 
 **Como isto se relaciona com os vizinhos:** o oposto de
 [`fontes_novas.md`](fontes_novas.md), que cataloga o que o espelho **não**
@@ -181,6 +201,46 @@ coincidência, achado limpo). Novo bridge
 `cnpj_emissor`/`cnpj_lider`/`cnpj_ofertante` em `bridges.yaml`. Untouched
 cai de 61 para **60**.
 
+**Atualização pós-tema 58 (2026-09-02)**: grupo "Programas sociais e
+transparência CGU" virou tema 58 (`docs/perguntas.md`, `docs/respostas.md`
+T58-1…5) — só a fatia com dado real de pagamento/beneficiário
+(`br_cgu_pe_de_meia`, `br_cgu_garantia_safra`, `br_cgu_seguro_defeso`,
+`br_cgu_viagens`); `br_cgu_receitas_publicas`, `br_cgu_orcamento_publico`,
+`br_cgu_ebt`, `br_cgu_fef` e `br_cgu_dados_abertos` seguem untouched, não
+couberam nas 5 perguntas desta rodada. Achados: o Pé-de-Meia paga em picos
+de calendário escolar, não de forma suave (R$3,13 bi em fev/2025 por causa
+do bônus de conclusão pago em lote); cobertura per capita segue um
+gradiente Norte/Nordeste→Sul de ~10x (AP 11,59 benef./mil hab. vs. SP
+1,10); 35.189 pessoas recebem Seguro-Defeso e Garantia-Safra ao mesmo
+tempo (join direto por `nis_favorecido`, sem bridge nova — mesmo nome nos
+dois); o gasto do Seguro-Defeso cresceu 3,78x entre 2013 e 2025 mesmo com
+25% menos beneficiários — decomposto em reajuste do salário mínimo (2,24x,
+o valor por parcela bate quase exato com o SM oficial dos dois anos) e
+mais parcelas pagas por beneficiário/ano (2,27x); o gasto federal com
+viagens a serviço dobrou desde 2018 com o número de viagens estável — ficou
+mais caro por viagem, não mais numeroso. Nenhuma das quatro tabelas tem
+view no DuckDB (mesmo gotcha do `garantia_safra` já documentado em
+`bridges.yaml`) — leitura via `read_parquet(...)` direto. Untouched cai de
+60 para **56**.
+
+Nesta mesma rodada, o "checar se ainda está quebrado antes de investir
+tempo aqui" pendente sobre `br_ibama_embargos` (Parte II, Balde B) foi
+verificado: **o dataset foi re-raspado e renomeado para
+`br_ibama_embargos_novo`** (8 tabelas → `coordenadas`, `decisao`,
+`enquadramento`, `enquadramento_complementar`, `itens`,
+`termo_de_embargo_anexo`, `termo_embargo`, `termo_embargo_historico`) e
+não está mais 100% vazio como em 2026-08-25: `termo_embargo` tem 113.878
+linhas (1990-2026), `cpf_cnpj_embargado` 91,3% preenchido, `municipio`/`uf`
+100%, `qtd_area_embargada` 60,8% — só 8 linhas de 113.878 têm
+`dat_embargo` implausível (fora de 1990-2026). Concentração geográfica
+confirma o Balde B (PA 19.433, MT 12.970, RO 11.898, AM 10.078 — Amazônia
+Legal domina, como o nome já sugeria). Cruzamento por CNPJ com
+`br_tcu_inidoneos.empresas`: zero coincidência entre os 13.133 CNPJs
+embargados e os 84 inidôneos — achado limpo, mesmo padrão de T57-5. Este
+dataset volta a ser candidato real de Balde C pro próximo lote de temas
+(extensão do tema 44/45), agora com dado utilizável — não entrou no tema
+58 por ser de outra família temática (ambiental, não benefício social).
+
 Todos os grupos do Balde C original (2026-08-25, primeira triagem) viraram
 tema em temas 46-55 — ver as duas atualizações acima. Re-triagem completa
 dos **62 datasets** que sobraram untouched depois dessa rodada, em quatro
@@ -334,13 +394,16 @@ por `municip` no nome da coluna), `dataviz/municipio/extract_municipio.py`
 triados em três baldes pra decidir depois quais valem uma seção nova. A
 maioria segue como hipótese de escopo a partir do nome das tabelas e
 colunas — pra guiar a próxima rodada de decisão, não pra implementar
-direto —, mas 6 já foram checados com query real no beelink em 2026-09-02
+direto —, mas 8 já foram checados com query real no beelink em 2026-09-02
 (marcados "verificado" abaixo): 1 promovido de Balde C pra A
 (`br_anp_precos_combustiveis`, achado: não duplica, é estritamente melhor
 que o que já está no dashboard), 1 confirmado já resolvido em outra sessão
 (`br_ms_populacao`), 2 com grão real mas escopo estreito confirmado
 (`br_ibge_pnadc`, `br_rf_arrecadacao`), 1 parcialmente checado sem acesso
-ao código do dashboard (`br_ibge_censo2022_raca`). **Criar a seção em si —
+ao código do dashboard (`br_ibge_censo2022_raca`), 1 confirmado não mais
+quebrado (`br_ibama_embargos`, agora `br_ibama_embargos_novo` — segunda
+rodada de 2026-09-02), 1 confirmado como o mesmo achado do tema 53
+(`world_wb_mides` — não precisou de checagem nova, já resolvido). **Criar a seção em si —
 a parte que muda `dataviz/municipio/` — segue fora do escopo desta sessão**:
 esse código vive no repo `xyz`, e decidir qual item vira seção nova (e como
 ela se encaixa no layout existente) é uma escolha de produto/editorial que
@@ -364,13 +427,13 @@ cabe a quem trabalha nesse repo, não uma inferência a fazer daqui.
 
 - `br_tce_es`, `br_tce_pi`, `br_tce_sp` — dados de tribunais de contas estaduais; só existem para município do ES/PI/SP respectivamente, então uma seção "genérica" mostraria vazio pra ~89% dos municípios do país.
 - `br_trase_supply_chain` (`soy_beans*`, `beef*`) — rastreabilidade de cadeia de soja/boi; só tem dado real pra município de fronteira agrícola.
-- `br_ibama_embargos` — embargos ambientais; concentrado em município de desmatamento/Amazônia Legal. Nota: a Parte I deste arquivo já registrou que as 8 tabelas deste dataset têm 100% das colunas vazias em pelo menos um teste (2026-08-25) — checar se ainda está quebrado antes de investir tempo aqui.
+- `br_ibama_embargos` — **verificado 2026-09-02, não está mais quebrado**: o dataset foi re-raspado e renomeado para `br_ibama_embargos_novo` (8 tabelas, mesmo nome de tabelas do original) — `termo_embargo` tem 113.878 linhas reais, 1990-2026, `cpf_cnpj_embargado`/`municipio`/`uf` bem preenchidos. Fica no Balde B mesmo assim: concentração geográfica confirmada real (PA, MT, RO, AM concentram a maioria — Amazônia Legal), não escopo genérico de todo município. Cruzamento com `br_tcu_inidoneos.empresas` por CNPJ: zero coincidência (achado limpo).
 - `br_ana_outorgas` (`captacoes`, `lancamentos`) — outorgas de uso de água; só relevante pra município com corpo d'água outorgado. O projeto já tem conhecimento verificado sobre este dataset (ver memória `reference_outorgas_snirh` / `bridges.yaml`), então o custo de adicionar é baixo mesmo sendo de cobertura parcial.
 - `br_ana_telemetria` (`estacoes`, `series_chuva_*`, `series_cota_*`) — séries de chuva/nível de rio por estação telemétrica; só município com estação ANA por perto.
 - `br_cnpq_bolsas` (`microdados`) — bolsas CNPq por município de destino; concentrado em município com instituição de pesquisa.
 - `br_sfb_sicar` (`area_imovel`) — Cadastro Ambiental Rural; mais relevante pra município rural/agropecuário.
 - `br_ibge_pevs` (`producao_extracao_vegetal`, `producao_silvicultura`) — produção de extrativismo vegetal e silvicultura; só município com essa atividade.
-- `world_wb_mides` (`licitacao`, `empenho`, `liquidacao`) — execução orçamentária por município apesar do prefixo `world_`; parece ligado a um programa financiado pelo Banco Mundial, cobertura provavelmente restrita aos municípios participantes desse programa — checar antes de assumir.
+- `world_wb_mides` (`licitacao`, `empenho`, `liquidacao`) — execução orçamentária por município apesar do prefixo `world_`. **Já verificado (tema 53, Parte I deste arquivo)**: não é dado internacional — é empenho/licitação/pagamento de governos municipais brasileiros, 303.323.046 linhas, 10 estados, 1989-2024. Cobertura real mas restrita a esses 10 estados (não todo município do país) — fica no Balde B por isso, não por incerteza.
 
 ### Balde C — baixa prioridade, niche ou registro administrativo sem grão cívico
 
@@ -404,8 +467,11 @@ cabe a quem trabalha nesse repo, não uma inferência a fazer daqui.
 Pra promover um item do Balde A/B pra uma seção real: `mcp__rodado__describe_table`
 + uma query real no beelink pra confirmar que Nova Friburgo (`id_municipio`
 `3303401`) tem dado não-nulo, antes de prometer a seção no dashboard — vários
-destes datasets têm bugs conhecidos e catalogados (`br_rf_cafir`,
-`br_ibama_embargos`) que só apareceram ao tentar de fato.
+destes datasets têm bugs conhecidos e catalogados (`br_rf_cafir` continua
+quebrado; `br_ibama_embargos` foi verificado de novo em 2026-09-02 e **não**
+está mais quebrado, virou `br_ibama_embargos_novo` — nem todo bug catalogado
+continua vale pra sempre, reconferir antes de descartar) que só apareceram
+ao tentar de fato.
 
 ---
 
