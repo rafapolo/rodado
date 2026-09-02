@@ -1,97 +1,68 @@
-# Qwen Coder ou DuckDB-NSQL trocaria o Gemma 4 no harness?
+# Qwen3-Coder ou DuckDB-NSQL trocaria o Gemma 4 no harness?
 
-> Aberto em 2026-09-02, a pedido, continuação de
-> `check-dspark-replacement.md` (mesma pergunta de fundo — "dá pra trocar o
-> Gemma por algo melhor em SQL/tool-calling?" — candidatos diferentes). **Nada
-> abaixo foi rodado no beelink.** Os números do Gemma são medidos (ver
-> `harness_gemma_dsh.md`); os dos candidatos são de benchmark publicado
-> (BIRD/Spider/BFCL), não do harness real.
+> Aberto em 2026-09-02, a pedido. **Nada abaixo foi rodado no beelink** — os
+> números do Gemma são medidos ([`harness_gemma_dsh.md`](harness_gemma_dsh.md));
+> os dos candidatos são benchmark publicado (BIRD/Spider/BFCL), não o harness.
+> 🔵 plano de experimento, bloqueado pelo item 2 de [`backlog.md`](backlog.md).
+
+## Por que perguntar
+
+O gargalo do harness não é velocidade — é **acerto de SQL**. O Gemma erra
+codificação de domínio em silêncio: `causa_basica BETWEEN 'X60' AND 'X84'` deu
+**726** contra **789** reais, 8% a menos com número plausível (medição 6 de
+`harness_gemma_dsh.md`; virou regra em [`regras.md`](regras.md), camada 6 do
+portão). Isso é exatamente o que os modelos de text-to-SQL prometem melhorar.
 
 ## Os candidatos
 
-| Modelo | Params (total/ativos) | Arquitetura | Especialidade | Tool-calling |
-|---|---|---|---|---|
-| **Gemma 4 26B-A4B** (atual) | 26B / ~4B | MoE 128 experts | generalista | sim, via grammar do llama.cpp (template não tem `tools` nativo) |
-| **Qwen3-Coder-30B-A3B** | 30,5B / 3,3B | MoE, 128 experts (8 ativos) | código/SQL + agente | sim, nativo — treinado pra tool-use |
-| **XiYanSQL-QwenCoder-32B** | 32B / 32B (densa) | fine-tune do Qwen Coder | só text-to-SQL | não é o foco do fine-tune — checar se sobrevive |
-| **DuckDB-NSQL-7B** | 7B / 7B (densa) | Llama-2 7B + fine-tune | só dialeto DuckDB | não — modelo de completion, sem chat template de agente |
+| Modelo | Params (total/ativos) | Especialidade | Tool-calling |
+|---|---|---|---|
+| **Gemma 4 26B-A4B** (atual) | 26B / ~4B, MoE 128 experts | generalista | sim, via grammar do llama.cpp (template não tem `tools` nativo) |
+| **Qwen3-Coder-30B-A3B** | 30,5B / 3,3B, MoE (8 de 128 ativos) | código/SQL + agente | **nativo**, treinado pra tool-use |
+| **DuckDB-NSQL-7B** | 7B densa (Llama-2 + fine-tune) | só dialeto DuckDB | **não** — modelo de completion, sem chat template de agente |
 
-Benchmarks publicados (não medidos aqui):
-- XiYanSQL-QwenCoder-32B: **67,14%** BIRD Dev@M-Schema, **89,20%** Spider Test —
-  acima do GPT-4o-0806 (58,47% no mesmo BIRD). Apache 2.0, também em 3B/7B/14B.
-- Qwen3-30B-A3B (base do Coder): perde só pro QwQ-32B em LiveCodeBench/CodeForces
-  entre os abertos, e fica atrás só do GPT-4o em BFCL (function calling).
-- DuckDB-NSQL-7B: treinado em 200k pares text-to-SQL **especificamente no
-  dialeto DuckDB** (sintaxe, extensões oficiais), não só `SELECT` — mas é
-  2023/Llama-2, sem tool-calling.
+Benchmarks publicados: Qwen3-30B-A3B (base do Coder) perde só pro QwQ-32B em
+LiveCodeBench entre os abertos e fica atrás só do GPT-4o em BFCL;
+DuckDB-NSQL-7B foi treinado em 200k pares text-to-SQL **no dialeto DuckDB**
+(sintaxe + extensões), mas é de 2023. O XiYanSQL-QwenCoder-32B (67,1% BIRD,
+89,2% Spider) foi descartado como agente: é fine-tune de SQL puro e denso de
+32B — pode ter perdido o tool-calling do Qwen base, e BIRD/Spider medem SQL
+isolado, nunca o laço de ferramentas.
 
-## Por que isto pode importar mais que o DSpark
+## Dois papéis, não um substituto
 
-O `check-dspark-replacement.md` concluiu que o gargalo do harness não é
-velocidade (a correção do `reasoning: off` já deu 4,4x de graça) — é
-**acerto de SQL**: o Gemma erra codificação silenciosamente (`causa_basica
-BETWEEN 'X60' AND 'X84'` → 726 em vez de 789, 8% a menos, número plausível).
-
-Isso muda a pergunta de "modelo mais rápido" pra "modelo mais preciso em SQL",
-que é exatamente o que XiYanSQL-QwenCoder e DuckDB-NSQL prometem — ao contrário
-do LFM2.5/DSpark, que só prometia latência.
-
-## O risco dos dois candidatos especializados
-
-Nenhum dos dois foi feito pra rodar dentro do laço agêntico do dsh:
-
-1. **XiYanSQL-QwenCoder** é um fine-tune de SQL puro — pode ter perdido parte
-   da habilidade geral de tool-calling/instruction-following do Qwen Coder
-   base ao ser especializado. Não documentado nos benchmarks publicados
-   (BIRD/Spider medem SQL isolado, não o loop de ferramentas).
-2. **DuckDB-NSQL-7B** é ainda mais restrito: sem chat template de agente, é
-   modelo de *completion* (prompt → SQL, sem tool call, sem MCP). Não serve
-   como "cérebro" do dsh — serve, na melhor hipótese, como **redator de SQL
-   dentro do pipeline fixo** (`laco.ts`, sem MCP), com outro modelo (Gemma ou
-   Qwen3-Coder) decidindo tabela/join e conduzindo o loop.
-
-Isso aponta pra dois papéis diferentes, não um "substituto":
-
-- **Qwen3-Coder-30B-A3B** — candidato a *substituir* o Gemma no laço agêntico
-  inteiro (dsh+MCP): mesma classe de MoE eficiente em CPU (3,3B ativos vs 4B),
-  tool-calling nativo, e código/SQL mais forte que o Gemma nos benchmarks
-  gerais.
-- **DuckDB-NSQL-7B** — candidato a *apurador* dentro do `laco.ts`: se escrever
-  SQL no dialeto DuckDB com menos erro de codificação que o Gemma, vale medir
-  como redator de query isolado, não como agente.
+- **Qwen3-Coder-30B-A3B — substituir o Gemma no laço agêntico inteiro**
+  (dsh+MCP): mesma classe de MoE eficiente em CPU (3,3B ativos vs ~4B),
+  tool-calling nativo, SQL mais forte nos benchmarks gerais.
+- **DuckDB-NSQL-7B — apurador dentro do `laco.ts`**: sem agente, sem MCP.
+  Outro modelo decide tabela/join e conduz o laço; ele só redige a query.
 
 ## O experimento
 
-Pré-requisito ainda não feito (`harness_gemma_dsh.md`, item 1 da lista
-"Falta"): rodar a avaliação completa dos 53 casos com `n` conferido pelo dsh
-atual, pra ter linha de base real — sem isso qualquer comparação é contra um
-número que não existe ainda.
+**Pré-requisito:** item 2 de [`backlog.md`](backlog.md) — rodar os 32 casos com
+`n` conferido pelo dsh atual (e antes o item 0, a régua de `correto`). Sem
+linha de base real, qualquer comparação é contra um número que não existe.
 
-Depois disso:
+1. GGUF do `Qwen3-Coder-30B-A3B-Instruct`, quantizado no tamanho do Gemma atual
+   (13,43 GiB q4_0) → mesmos 32 casos por `harness/compara.ts`, mesmo portão,
+   mesmo beelink. Seleção de dataset isolada: `avalia_datasets.ts --fewshot`
+   nas 274 perguntas.
+2. GGUF do `DuckDB-NSQL-7B` → **só** a geração de SQL (tabela e colunas já
+   resolvidas, sem tool-calling), nos casos onde o Gemma erra por codificação —
+   ver se acerta `causa_basica` sem o portão corrigir.
+3. Comparar: % SQL válida, % número bate com `respostas.md`, tokens/s
+   **medidos** (a CPU do beelink não é H100 nem M4 Max).
 
-1. Baixar GGUF de `Qwen3-Coder-30B-A3B-Instruct` (quantizado, mirar tamanho
-   parecido ao Gemma atual — 13,43 GiB q4_0) e rodar os mesmos 53 casos pelo
-   `harness/compara.ts` (ou `avalia_datasets.ts --fewshot` pra seleção de
-   dataset isolada), mesmo portão, mesmo beelink.
-2. Baixar GGUF de `DuckDB-NSQL-7B` e testar **só** a etapa de geração de SQL
-   (dado tabela+colunas já resolvidos, sem tool-calling) contra os casos onde
-   o Gemma errou por codificação — ver se ele acerta `causa_basica` sem
-   precisar do portão corrigir.
-3. Comparar: % SQL válida, % número bate com `respostas.md`, tokens/s medidos
-   (não o benchmark publicado — CPU do beelink não é H100 nem M4 Max).
+## Veredito por ora
 
-## O que fazer com isto
-
-Nada agora — mesmo veredito do DSpark: medir o Gemma ponta a ponta primeiro
-(pré-requisito acima). Depois disso, o teste do Qwen3-Coder-30B-A3B é o de
-maior valor esperado (troca o agente inteiro, mesma classe de custo em CPU);
-o do DuckDB-NSQL é mais barato de rodar (só geração de SQL, sem agente) e vale
-como teste rápido isolado nos casos que já sabemos que o Gemma erra.
+Nada agora. Medir o Gemma ponta a ponta primeiro. Depois, o Qwen3-Coder é o
+teste de maior valor esperado (troca o agente inteiro, mesma classe de custo em
+CPU); o DuckDB-NSQL é mais barato de rodar e vale como sonda isolada nos casos
+que já sabemos que o Gemma erra.
 
 ## Fontes
 
-- [XiYanSQL-QwenCoder (GitHub)](https://github.com/XGenerationLab/XiYanSQL-QwenCoder)
 - [Qwen3-Coder-30B-A3B-Instruct (OpenRouter)](https://openrouter.ai/qwen/qwen3-coder-30b-a3b-instruct)
-- [DuckDB-NSQL-7B-v0.1 (Hugging Face)](https://huggingface.co/motherduckdb/DuckDB-NSQL-7B-v0.1)
-- [AI That Quacks: Introducing DuckDB-NSQL-7B (MotherDuck)](https://motherduck.com/blog/duckdb-text2sql-llm/)
-- `check-dspark-replacement.md`, `harness_gemma_dsh.md` — contexto e medições do que já roda
+- [DuckDB-NSQL-7B-v0.1 (HF)](https://huggingface.co/motherduckdb/DuckDB-NSQL-7B-v0.1) · [AI That Quacks (MotherDuck)](https://motherduck.com/blog/duckdb-text2sql-llm/)
+- [XiYanSQL-QwenCoder (GitHub)](https://github.com/XGenerationLab/XiYanSQL-QwenCoder)
+- [`harness_gemma_dsh.md`](harness_gemma_dsh.md), [`backlog.md`](backlog.md), [`regras.md`](regras.md) — o que já roda e o que falta medir

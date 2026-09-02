@@ -24,5 +24,9 @@ Mesma do `tasks/` raiz: cada arquivo carrega no topo quando foi aberto, a
 pedido de quem, e o estado real do que já rodou no beelink versus o que é só
 plano — nenhum destes documentos assume que algo funciona sem uma medição
 citada. Quando um item fechar de vez (não só "respondido", mas sem mais
-desdobramento esperado), mover para `../../tasks/done/` segue sendo o lugar
-certo — não criar um `done/` paralelo aqui só por este subsistema ser pequeno.
+desdobramento esperado), `git mv` para [`done/`](done/) — o `done/` local, não o
+do `tasks/` raiz. A versão anterior desta linha mandava o contrário; mudou a
+pedido, em 2026-09-02, e o motivo é de leitura: uma tarefa fechada do harness
+lida ao lado das outras seis do harness diz mais do que arquivada entre as do
+projeto inteiro, e mantém a tabela acima curta — quem chega vê só o que está
+aberto.
