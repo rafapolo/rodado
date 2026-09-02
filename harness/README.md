@@ -119,6 +119,40 @@ Estabilidade do prefixo é, por isso, **restrição de arquitetura e não
 otimização**: qualquer coisa variável no prefixo (timestamp, ordem não
 determinística) evapora o 44x sem ninguém perceber.
 
+## Por que laço agêntico, e não pipeline fixo
+
+A comparação que decide o desenho — mesmas 5 perguntas, mesmo modelo, mesmo
+portão, mesmo beelink; muda só quem decide a sequência de passos:
+
+| | dsh + MCP (agêntico) | pipeline fixo (`laco.ts`) |
+|---|---|---|
+| **Correto** | **3/3 = 100%** | **0/3 = 0%** |
+| Tempo | ~400 s | 61 s |
+
+O pipeline fixo é 14x mais rápido e não serve. As três falhas dele nomeiam o que
+o laço faz de essencial, e **nenhuma é erro de SQL**: respondeu 573 em vez de 789
+(agrupou por sexo e reportou um grupo só); devolveu o código `3550308` em vez de
+"São Paulo", por não ir ao diretório; e bateu 4x no portão sem recuperar. São
+erros de não iterar.
+
+Rode você mesmo com `bun harness/compara.ts <arquivo>` — em sequência, nunca em
+paralelo, senão os dois disputam o mesmo `llama-server` e o tempo sai errado.
+
+## O contexto é o gargalo
+
+| | 2k de contexto | ~18k (dentro do laço) |
+|---|---|---|
+| Prefill | 50,5 t/s | 15 t/s |
+| Geração | 13,3 t/s | 9 t/s |
+
+Cai ~3x, e o system prompt do dsh eram **14.213 tokens**. Desligar as ferramentas
+que este harness não usa levou a **6.849** — corte de 52%, com a correção intacta
+e ~30% menos tempo por pergunta.
+
+Duas dessas ferramentas eram um buraco, não só peso: o modelo descobriu a `bash`
+e escreveu `ssh beelink '~/bin/duckdb ...'` direto, **passando por cima do portão
+inteiro**. Todo o trabalho de validação vira decoração se o modelo tem shell.
+
 ## Módulos
 
 | Arquivo | Papel |
@@ -127,6 +161,12 @@ determinística) evapora o 44x sem ninguém perceber.
 | `portao.ts` | as 7 camadas |
 | `sqlguard.ts` | `checkReadOnly` + `capRows` — porte fiel de `mcp_server.py`, trazido de `ask-web` |
 | `beelink.ts` | executor SSH+DuckDB, **com `-readonly`** |
+| `metricas.ts` | os 12 cálculos verificados de `metrics.yaml` — busca exata por nome ou sinônimo, nunca por similaridade |
+| `anos.ts` | faixa de anos por tabela (377 cacheadas) |
+| `pontes.ts` | dicas de join das pontes conferidas de `bridges.yaml` |
+| `mcp.ts` | servidor MCP: 5 ferramentas, o portão entre elas |
+| `laco.ts` | o pipeline fixo — mantido como base de comparação, não como caminho de produção |
+| `lote.ts` / `compara.ts` | benchmark de perguntas abertas |
 
 ## Procedência e uma correção
 
@@ -145,11 +185,38 @@ volta ao `ask-web`**.
 ## Rodar
 
 ```bash
-bun test harness/                    # 40 testes
+bun test harness/                    # 56 testes
 bun harness/catalogo.ts              # 212 datasets, 904 tabelas
 bun harness/catalogo.ts --atualiza   # rebusca no beelink após um sync
 ```
 
-O modelo é servido pelo `llama-server` no beelink — sempre **`-t 8`** (16 threads
-é 31% pior e instável) e **`reasoning: off`** (ligado, o Gemma gastou 1.200
-tokens e 94,8 s sem produzir SQL nenhuma; desligado, 3,4 s).
+O modelo é servido pelo `llama-server` no beelink:
+
+```bash
+llama-server -m ~/llm/gemma-4-26B_q4_0-it.gguf \
+  -t 8 -c 32768 -np 1 \
+  --chat-template-kwargs '{"enable_thinking":false}' \
+  --host 127.0.0.1 --port 8099
+```
+
+Cada flag aí é uma medição, não gosto:
+
+- **`-t 8`**, nunca 16: os 8 núcleos físicos já saturam a banda; com 16 o prefill
+  cai 32%, a geração 31%, e o desvio-padrão cresce 10x.
+- **`-np 1`**: o `-c` é **por slot**. Com os 4 slots padrão, `-c 65536` aloca 4x
+  o KV sem avisar.
+- **`--chat-template-kwargs`**: é o único jeito de desligar o raciocínio do Gemma.
+  `reasoningEfforts: false` no dsh declara o modelo como não-raciocinante *para o
+  harness* e não manda nada ao llama.cpp; `--reasoning off` também não resolve.
+  Medido: 20,9 s → 4,7 s por turno de tool calling, com o tool call intacto.
+- **sem `-ctk/-ctv q8_0`**: KV quantizado sai caro em CPU — desquantizar a cada
+  operação de atenção domina o que economiza em banda. Prefill 15,8 → 50,5 t/s.
+
+Do mac, abra o túnel antes (o servidor escuta só em loopback, de propósito):
+
+```bash
+ssh -f -N -L 8099:127.0.0.1:8099 beelink
+```
+
+O diário completo dos experimentos está em
+[`../exp/harness-gemma-dsh.md`](../exp/harness-gemma-dsh.md).
