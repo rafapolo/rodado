@@ -116,6 +116,25 @@ DuckDB readonly (`ssh beelink '~/bin/duckdb -readonly -json ...'`) rather than r
 `br_bcb_ifdata`, `br_bndes_operacoes_contratadas` and `br_senado_dados_abertos_administrativos`
 landed only partially and stay in the open file with updated Notes on what's missing.
 
+**Correction, same day:** that "verified via DuckDB readonly" claim above didn't hold up —
+none of the four rows in the table above (nor the partial `br_bcb_ifdata`/
+`br_bndes_operacoes_contratadas` landings) actually had a DuckDB *view* in
+`basedosdados.duckdb`, only bare parquet on disk. `read_parquet()` against the directory works
+either way, which is almost certainly what made the earlier "verified" check look clean without
+actually exercising the view every real consumer (MCP tools, `information_schema.tables`,
+anything doing `SELECT * FROM dataset.table`) goes through. Fixed this session with
+`scripts/sync/cria_views_novas.py` (new — creates a view for any `dataset/table` with parquet on
+disk but no view yet, idempotent) and re-verified all of the above with a real
+`SELECT count(*) FROM dataset.table`, not `read_parquet`, before trusting them again.
+
+| Dataset | Tables | Rows | Status | Last updated | Notes |
+|---|---|---|---|---|---|
+| `br_bndes_operacoes_contratadas` | `operacoes_administracao_publica`, `operacoes_indiretas_automaticas` | 4,733 + 2,376,926 | done | 2026-09-02 | Now 2/2 — `operacoes_indiretas_automaticas` (2,376,926 rows) landed via `scripts/sync/sync_novas_tabelas.py` after `bq query --format=json` timed out on it at 180s (JSON round-trip is too slow for a table this shape; `to_arrow()` isn't). |
+| `br_cgu_pessoal_executivo_federal` | `terceirizados` | 732,269 | done | 2026-09-02 | Outsourced federal workforce. Same `bq query --format=json` timeout as above (0.26GB dry-run, well under the 3GB cap, but still >180s over JSON) — landed via `sync_novas_tabelas.py`'s `to_arrow()` path instead. |
+| `br_me_siconfi` | `municipio_execucao_restos_pagar`, `municipio_execucao_restos_pagar_funcao`, `municipio_variacoes_patrimoniais` | 6,407,632 + 8,491,614 + 8,507,365 | done | 2026-09-02 | All 3 gap tables landed via `sync_novas_tabelas.py` (same JSON-timeout issue as the two rows above). beelink already had 21 other `br_me_siconfi` tables; these were the only gap. |
+| `br_senado_dados_abertos_administrativos` | 12/36 tables (see notes) | 288K max | done, partial by design | 2026-09-02 | The 12 tables that ever had rows: `despesa_ceaps`, `dicionario`, `senador`, `servidor_hora_extra`, `servidor_hora_extra_dia`, `servidor_remuneracao`, `suprido_ato_concessao`, `suprido_empenho`, `suprido_movimentacao`, `suprido_movimentacao_subtipo`, `suprido_transacao`, `suprido_transacao_objeto` — all verified via view + `count(*)`. **The other 24 (`contratacao`, `licitacao`, `servidor`/`servidor_ativo`/`servidor_aposentado`, `empresa`, `terceirizado`, `pensionista`, `estagiario`, `quadro_pessoal`, etc.) are genuinely 0 rows at the BigQuery source** — confirmed by running `SELECT count(*)` directly against BigQuery for 6 of them (all returned 0), even though `bq show`'s `numRows` metadata reports a nonzero count for the same tables (e.g. `contratacao` shows 12,811 in metadata, 0 on an actual count). Stale/wrong upstream metadata, not a rate-limit cutoff as an earlier note here speculated — nothing left to pull, closing as done. |
+| `br_sfb_sicar` (partial) | `area_pousio`, `servidao_administrativa`, `uso_restrito` | 212,315 + 2,175,650 + 179,748 | done (3/8) | 2026-09-02 | First slice of the SICAR gap, via `sync_novas_tabelas.py`. The other 5 (`app`, `area_consolidada`, `hidrografia`, `reserva_legal`, `vegetacao_nativa`) stay open in the main file — `app` is too many rows, the other 4 hit a BigQuery REST response-size wall caused by their `GEOGRAPHY` column. See the open file for detail. |
+
 ## mcp-live candidates — built
 
 Lookup-shaped sources routed to a live pass-through tool instead of a beelink mirror,

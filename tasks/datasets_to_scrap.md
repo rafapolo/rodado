@@ -153,24 +153,30 @@ survey, Australian crime stats, etc., ~360 tables) that's out of scope for this 
 Brazilian-government-data mirror — not itemized here. Filtering to genuinely new **Brazilian**
 (`br_*`) physical TABLEs not on beelink, by dataset:
 
-**Partial resume 2026-09-02** (a prior agent pass on this same list, cut off mid-task before
-committing): `br_cgu_sancoes` (6/6 tables), `br_sedec_desastres` (1/1) and
-`br_senado_dados_abertos` (18 tables — covers the ~17 the original finding named) all landed
-in full and were verified via DuckDB readonly, so their rows are dropped from the table below
-and moved to `tasks/done/datasets_to_scrap_done.md`. `br_bcb_ifdata`,
-`br_bndes_operacoes_contratadas` and `br_senado_dados_abertos_administrativos` landed
-partially — see their updated Notes below for exactly what's still missing.
+**Closed out 2026-09-02.** `br_bndes_operacoes_contratadas` (2/2), `br_cgu_pessoal_executivo_federal`
+(1/1) and `br_me_siconfi`'s 3-table gap all finished and moved to
+`tasks/done/datasets_to_scrap_done.md`, along with `br_senado_dados_abertos_administrativos`
+(closed as "done, partial by design" — the 24 tables that never landed are 0 rows at the BQ
+source itself, confirmed by `SELECT count(*)`, not a rate-limit cutoff as an earlier note here
+guessed) and a first slice of `br_sfb_sicar` (3/8 new tables). **Also found and fixed 2026-09-02:**
+a prior pass in this same file had already written up `br_cgu_sancoes`, `br_sedec_desastres`,
+`br_senado_dados_abertos` and the ANVISA agrotóxicos/alimentos pull as "done, verified via DuckDB
+readonly" — but no DuckDB *view* existed for any of these tables (or for `br_bcb_ifdata`/
+`br_bndes_operacoes_contratadas`'s partial landings), so `SELECT * FROM dataset.table` against
+`basedosdados.duckdb` on beelink would have failed even though the parquet was really on disk —
+`read_parquet()` works without a view, `information_schema.tables` (and every MCP/`describe_table`
+consumer) doesn't. `scripts/sync/cria_views_novas.py` (new) creates a view for any `dataset/table`
+that has parquet on disk but no view yet — idempotent, safe to rerun. All tables below were
+(re-)verified this pass with a real `SELECT count(*)` through the view, not just `read_parquet`.
+`scripts/build_metadata_catalog.py` re-run three times as tables landed; `_rodado_metadata` is
+current.
 
 | Dataset | Tables | Rows (BQ, largest table) | Notes |
 |---|---|---|---|
-| `br_bcb_taxa_cambio` | 1 (`taxa_cambio`) | 801K | carried over from the 2026-07-09 finding, still open |
-| `br_bcb_taxa_selic` | 1 (`taxa_selic`) | 9.7K | carried over from the 2026-07-09 finding, still open |
-| `br_bcb_ifdata` | 4 (`coluna`, `dicionario`, `instituicao`, `relatorio`) | 54.5M (`relatorio`) | **3/4 pulled 2026-09-02** (`coluna` 48,482, `dicionario` 56, `instituicao` 440,444 rows, verified via DuckDB readonly) — `relatorio`, the 54.5M-row table, is the one still missing |
-| `br_bndes_operacoes_contratadas` | 2 (`operacoes_administracao_publica`, `operacoes_indiretas_automaticas`) | 2.4M | **1/2 pulled 2026-09-02** (`operacoes_administracao_publica`, 4,733 rows, verified) — `operacoes_indiretas_automaticas` still missing |
-| `br_cgu_pessoal_executivo_federal` | 1 (`terceirizados`) | 732K | outsourced federal workforce |
-| `br_me_siconfi` | 3 (`municipio_execucao_restos_pagar`, `municipio_execucao_restos_pagar_funcao`, `municipio_variacoes_patrimoniais`) | 8.5M | beelink has 21 other `br_me_siconfi` tables already — these 3 are the gap |
-| `br_senado_dados_abertos_administrativos` | 36 tables (contratação, licitação, folha de pessoal, terceirizados…) | 132K (`servidor_hora_extra_dia`) | **12/36 pulled 2026-09-02** (`despesa_ceaps`, `dicionario`, `senador`, `servidor_hora_extra`, `servidor_hora_extra_dia`, `servidor_remuneracao`, `suprido_ato_concessao`, `suprido_empenho`, `suprido_movimentacao`, `suprido_movimentacao_subtipo`, `suprido_transacao`, `suprido_transacao_objeto` — the `contratação`/`licitação` tables the dataset name promises are still missing) — likely where a rate-limit cutoff interrupted an in-progress pull; resume with the same `bq query` (Sandbox, free) → parquet → rsync pattern for the remaining ~24 tables |
-| `br_sfb_sicar` | 8 tables (`app`, `area_consolidada`, `area_pousio`, `hidrografia`, `reserva_legal`, `servidao_administrativa`, `uso_restrito`, `vegetacao_nativa`) | 28.1M (`app`) | SICAR — Cadastro Ambiental Rural; likely has geometry columns, check schema before pulling. beelink already has an older, differently-shaped partial pull (`area_imovel`, `dicionario`, since 2026-07-09) — not the same tables, check for overlap before treating as a blind gap-fill |
+| `br_bcb_taxa_cambio` | 1 (`taxa_cambio`) | 801K | **Confirmed genuinely blocked, not just untried** — `bq show` reports a real 801,451-row TABLE, but `bq query`/`SELECT` on it returns `Access Denied: ... User does not have permission to query table ..., or perhaps it does not exist` even under the Sandbox job project. Same shape as the known "upstream view/table is broken or access-restricted" gotcha in `scripts/sync-with-source.md` — not fixable from our side, no bulk alternate found. Stays open. |
+| `br_bcb_taxa_selic` | 1 (`taxa_selic`) | 9.7K | Same Access Denied signature as `taxa_cambio` above, confirmed 2026-09-02. Stays open. |
+| `br_bcb_ifdata` | 4 (`coluna`, `dicionario`, `instituicao`, `relatorio`) | 54.5M (`relatorio`) | **3/4 done** (`coluna` 48,482, `dicionario` 56, `instituicao` 440,444 rows — view created, re-verified via `SELECT count(*)`). `relatorio` (54.5M rows) is over the 10M-row single-shot safety cap (`MAX_ROWS_SAFE` in `gcp_to_beelink_sync.py`) — needs a chunked pull (e.g. by year/quarter), not attempted this session. Stays open for just that one table. |
+| `br_sfb_sicar` | 8 tables (`app`, `area_consolidada`, `area_pousio`, `hidrografia`, `reserva_legal`, `servidao_administrativa`, `uso_restrito`, `vegetacao_nativa`) | 28.1M (`app`) | **3/8 new tables done 2026-09-02**: `area_pousio` (212,315 rows), `servidao_administrativa` (2,175,650), `uso_restrito` (179,748) — pulled via `scripts/sync/sync_novas_tabelas.py` (new; uses `QueryJob.to_arrow()`, not `bq query --format=json`, see rationale in its docstring), views created, re-verified. **`app`** stays skipped, 28.1M rows over the safety cap. **`area_consolidada`, `hidrografia`, `reserva_legal`, `vegetacao_nativa`** were attempted and failed with a *new* wall, not access-denied: BigQuery's REST `jobs.getQueryResults` returns `403 Response too large to return` on these — the `GEOGRAPHY` (WKT multipolygon) column makes individual result pages too large for the default REST iterator; needs the `google-cloud-bigquery-storage` package (not installed) or a destination-table extract instead of a bare `client.query().to_arrow()`. Confirmed the geometry column specifically is the cost driver: a dry-run of `area_consolidada` *without* `geometria` is 0.88GB vs. 26.6GB with it. beelink already has an older, differently-shaped partial pull (`area_imovel`, `dicionario`, since 2026-07-09) — not the same tables, no overlap. |
 
 **Not listed as a gap — needs a rename/refresh check first, not a blind pull:**
 `br_rf_cnpj` (5 tables: `empresas`, `estabelecimentos`, `socios`, `simples`, `dicionario`)
@@ -182,10 +188,15 @@ Also skipped: `br_mf_divida_ativa` (`fgts`/`previdenciario`/`nao_previdenciario`
 `br_pgfn_dividaativa` (backs `consultar_divida_ativa` in `mcp_server.py`); check for
 overlap before treating as a fresh pull.
 
-All the small/medium new tables above are trivial to pull with the same `bq query`
-(Sandbox, free) → beelink pipeline used for the rest — see `scripts/sync-with-source.md`.
-`br_sfb_sicar` and `br_rf_cnpj` (if confirmed genuinely new data, not just a rename) are
-the only ones here large enough to need the dry-run/quota-aware path.
+What's left in the table above is genuinely stuck, not just untried: `br_bcb_taxa_cambio`/
+`br_bcb_taxa_selic` are access-denied at the BigQuery permission level (not fixable from our
+side), `br_bcb_ifdata.relatorio` and `br_sfb_sicar.app` are single tables over the 10M-row
+safety cap (need a chunked pull), and `br_sfb_sicar`'s other 4 remaining tables hit a BigQuery
+REST response-size wall driven by their `GEOGRAPHY` column (needs the
+`google-cloud-bigquery-storage` package, not installed, or a destination-table extract). None
+of these are a plain `bq query`→parquet→rsync rerun away. `br_rf_cnpj` (if confirmed genuinely
+new data, not just a rename of `br_me_cnpj`) is still untouched and would need the dry-run/
+quota-aware path given its billion-row scale.
 
 ## Pending Data Integrations
 
