@@ -1,10 +1,11 @@
-# Séries históricas da ANA — o que falta, e uma duplicação a resolver
+# Séries históricas da ANA — RESOLVIDO (2026-09-02)
 
 O ETL do zip e a análise de tendência estão feitos e documentados em
-[`done/ana_series_etl.md`](done/ana_series_etl.md). A página saiu em
+[`ana_series_etl.md`](ana_series_etl.md). A página saiu em
 `todos-rios-brasil/series.html` (404 estações com tendência comprovada: 303 caindo, 101 subindo).
 
-Este arquivo guarda o que continua aberto.
+Este arquivo guardava o que ficou aberto depois do ETL — todos os itens abaixo foram fechados
+(último: o gap da COTA, item 4, resolvido em 2026-09-02).
 
 ---
 
@@ -178,7 +179,7 @@ são CSVs só com cabeçalho (858 bytes). O inventário marca 4.494 estações c
 porque a flag descreve o *propósito* da estação, não a existência de série no arquivo. Não é
 perda do ETL; é lacuna da fonte. Confirmável com o SOAP quando o gap rodar.
 
-## 4. Gap da COTA (2026-08-27)
+## 4. Gap da COTA — RESOLVIDO (2026-09-02)
 
 `ana_soap_worker.py` só pedia `tipoDados=3` (vazão) — `series_cota_mensal` parava em 2023-09
 enquanto vazão já ia a 2026-05. Corrigido: parametrizado `--tipo {1,3}` (1=cota, 3=vazão), com
@@ -189,15 +190,70 @@ ganhou `--tipo {vazao,cota}` para gerar `series_cota_mensal_completa` do mesmo j
 
 Teste de fumaça em 5 estações confirmou: SOAP `tipoDados=1` devolve o mesmo formato mensal
 (`Cota01..31` diário embutido, `Media`/`Maxima`/`Minima`, `NivelConsistencia`) até 2026-04.
-Rodada completa disparada no beelink contra os 7.197 códigos de `series_cota_mensal`, 4 threads
-(mesma configuração que rendeu ~40 estações/min na vazão, por causa do rate limit 429 do lado da
-ANA) — **a rodada não entregou.** Conferido no beelink em 2026-09-02:
-`~/rodado/br_ana_telemetria/` tem `series_vazao_mensal_completa` mas **não tem**
-`series_cota_mensal_completa` — o diretório não existe. A rodada disparada em
-2026-08-27 ou morreu no meio, ou nunca escreveu a saída. **É o único item aberto
-deste arquivo**; retomar significa redisparar
-`ana_soap_worker.py --tipo 1` contra os 7.197 códigos e depois
-`ana_series_unifica_gap.py --tipo cota`.
+
+### Causa real de "a rodada não entregou"
+
+Não era falha no SOAP: a coleta (`ana_soap_worker.py --tipo 1` contra os 7.197 códigos, disparada
+em 2026-08-27) **terminou com sucesso** — `~/soap_gap_cota/` no beelink tem 72 batches, o último
+com `done=7197` (todas as estações), timestamp 2026-08-27 16:12, **1.429.422 linhas, 6.603
+estações, 1960-01 a 2026-05**. O gap era só de sync: `~/ana_series_unifica_gap.py` no beelink
+ainda era a versão **antiga**, sem suporte a `--tipo` (só sabia unificar vazão) — a versão nova do
+script (que o próprio item acima diz ter sido escrita) nunca tinha sido copiada de
+`scripts/scrap/ana_series_unifica_gap.py` para o beelink. `--tipo cota` falhava silenciosamente
+por não existir como flag; a etapa de merge nunca rodou, e por isso o diretório
+`series_cota_mensal_completa` nunca foi criado. O download da ANA não tinha o menor problema.
+
+**Fix:** `scp scripts/scrap/ana_series_unifica_gap.py beelink:~/ana_series_unifica_gap.py`
+(sobrescrevendo a cópia desatualizada) e `ssh beelink python3 ~/ana_series_unifica_gap.py --tipo cota`.
+Rodou em segundos (é só um `COPY` DuckDB sobre parquet já em disco, sem nova chamada de rede).
+
+Saída do merge:
+
+| fonte | linhas | estações | início | fim |
+|---|---|---|---|---|
+| soap | 189.702 | 2.751 | 1960-01 | 2026-05 |
+| zip | 1.617.518 | 7.175 | 1900-01 | 2023-09 |
+
+(a maioria das 1.429.422 linhas do SOAP perdeu o desempate para o zip — nível de consistência
+igual ou menor nos meses que já existiam; só os meses novos, pós-2023-09, e os poucos com
+consistência maior sobrevivem como `soap`.)
+
+### Verificação no beelink (DuckDB `-readonly`)
+
+- **`series_cota_mensal_completa`: 1.807.220 linhas, 7.197 estações, 1900-01 a 2026-05.**
+  Contra `series_cota_mensal` (zip sozinho): mesmas 7.197 estações, mas cobertura estendida
+  2023-09 → 2026-05 — o mesmo ganho de ~2,5 anos que a vazão teve.
+- **Regressão zero no dado antigo**: estação `58770000`, mês 1934-02, `media=130.1071`,
+  `maxima=178.0`, `minima=118.0`, `nivel_consistencia=2` — idêntico em `series_cota_mensal` e em
+  `series_cota_mensal_completa`. O merge não alterou nenhum valor histórico.
+- **Gap fechado de fato**: estação `15400000` tem cota mensal até 2026-04 (`media=1475.0` em
+  abril/2026) — inexistente na tabela zip-only, que parava em 2023-09.
+- **Magnitude plausível, outliers pré-existentes, não introduzidos**: `min(media)=-699.900`,
+  `max(media)=343.597,25` em toda a tabela — **valores idênticos** aos já presentes em
+  `series_cota_mensal` (zip) antes do merge. São 1.364 de 1.807.220 linhas (0,075%), todas com
+  `nivel_consistencia=1` (bruto, não revisado pela ANA) — erro de sensor/telemetria já registrado
+  na fonte, não algo que o merge introduziu ou que o SOAP trouxe de novo.
+
+### Catálogo registrado
+
+`scripts/gera_schemas.py` → `scripts/sync_mcp_schema.py` → `scripts/build_metadata_catalog.py`
+rodados nesta sessão: `schemas.json` (895 tabelas, +1), `docs/context/basedosdados-schema.json`
+(894 tabelas, +1 — `describe_table`/`search_tables` do MCP já enxergam a coluna nova),
+`docs/context/all_tables.txt` (902 tabelas no catálogo, incluindo
+`br_ana_telemetria.series_cota_mensal_completa`), `catalog.parquet` reenviado ao beelink.
+`docs/context/join_keys.md`/`bridges.yaml` e o Atlas (`pages/atlas/`) **não** foram regerados
+nesta sessão — ficam para o próximo regen completo do schema (não é exigido pra fechar este item:
+`codigo`/`mes` já são chave conhecida via `series_vazao_mensal_completa`, mesmo padrão).
+
+### `series.html` não precisa de mudança
+
+Checado em `todos-rios-brasil`/`rios-do-brasil` (repositório irmão, fora do `rodado`): o pipeline
+inteiro (`analisa_tendencia.py`, `prepara_paineis.py`, `monta_series.py`) e a página são
+construídos **só sobre vazão** — nenhum script em `pipeline/` referencia cota. `series.html` não
+consome `series_cota_mensal*` hoje, então fechar o gap na ANA não cria nenhuma atualização
+pendente na página. Se algum dia quiserem um painel de nível de rio (cota), a tabela agora está
+completa e pronta — mas construir esse painel é um projeto de análise novo, fora do escopo deste
+item.
 
 ## 5. Série diária pós-2023-09 — a suposição anterior estava ERRADA
 
@@ -308,8 +364,10 @@ outorga relativa — não mostram queda.
       `todos-rios-brasil` e documentados em `datasets_to_scrap.md`
 - [x] **resolver a duplicação plural × singular (item 0)** — fix no sort + reprocessado
       (2026-08-27); 28.037 meses divergentes → 0
-- [ ] **gap da COTA** (item 4) — `ana_soap_worker.py` parametrizado com `--tipo`, rodada disparada
-      no beelink (7.197 estações, ~2h) — em andamento, ver item 4 para o resultado final
+- [x] **gap da COTA** (item 4) — a coleta SOAP de 2026-08-27 tinha terminado com sucesso
+      (7.197 estações); o que faltava era só copiar a versão nova de `ana_series_unifica_gap.py`
+      para o beelink. `series_cota_mensal_completa` existe agora: 1.807.220 linhas, 7.197
+      estações, 1900-01 a 2026-05, verificado no beelink sem regressão no dado antigo
 - [x] série **diária** pós-2023-09 (item 5) — a suposição "SOAP não serve diário" estava
       **errada**: confirmado que o SOAP devolve `VazaoNN` embutido no registro mensal. Não
       implementado (fora do escopo pedido), documentado como próximo passo concreto
