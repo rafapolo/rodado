@@ -49,6 +49,21 @@ RN 72,4%, SP 71,9%.
 
 ## 02 · Educação
 
+> ⚠️ `bun harness/casos.ts` marca T02-1…T02-4 como suspeitos: cada gabarito casa
+> por palavra-chave com mais de uma pergunta de `perguntas.md` (IDEB, ENEM, PIB e
+> INSE aparecem nas 5 perguntas do tema). O emparelhamento numeração↔conteúdo aqui
+> não está confirmado — revisão humana pendente (ver T05 em 2026-09-01 para um caso
+> onde a numeração de fato estava errada). Não usar este bloco para avaliação
+> automática até resolver.
+>
+> Leitura manual (2026-09-02): T02-2 ("controlando INSE, IDEB × ENEM cai de +0,20
+> para +0,17") bate melhor com a pergunta 1 ("essa relação sobrevive ao controle
+> pelo INSE?") do que T02-1, que não menciona INSE. Mas isso não fecha uma
+> permutação limpa: reatribuir T02-1↔T02-2 deixaria as perguntas 4 e 5 (INSE por
+> UF; população jovem/matrícula) sem gabarito correspondente — T02-1 e T02-5 não
+> falam de nenhuma das duas. Sinal real, mas não suficiente pra reordenar sem
+> arriscar inventar um erro no lugar do conhecido.
+
 - **T02-1 ✅** IDEB × ENEM: **r = +0,45 (n=1.657)**; PIB pc × ENEM só +0,185 e rendimento × ENEM +0,168 — aprendizado explica mais que renda. *(A7)*
 - **T02-2 ✅** INSE × ENEM/IDEB (município, n=2.254): **INSE × redação +0,27; INSE × IDEB AF +0,14**; controlando INSE, IDEB × ENEM cai de +0,20 para **+0,17** — o nível socioeconômico explica o desempenho tanto quanto (ou mais que) o fluxo medido pelo IDEB.
 - **T02-3 ✅** Rural × urbano no ENEM 2022: nos 491 municípios com os dois pares comparáveis, escolas rurais ficam **~32 pontos atrás na redação**; a defasagem é maior no tercil mais pobre (**37,2**) que no mais rico (**32,3**).
@@ -74,8 +89,8 @@ RN 72,4%, SP 71,9%.
 ## 05 · Política
 
 - **T05-1 ✅** Patrimônio × autoria (legislatura 2023+, match por nome_urna 81%, n=404): **r = −0,18** entre log do patrimônio e nº de proposições — deputados mais ricos não autorizam mais; mediana de 451 proposições.
-- **T05-2 ✅** Ocupação declarada × eleição 2022 (dep. federal/senador): deputados na reeleição **58,8%**, engenheiros 7,8%, médicos 6,5% vs **empresários 3,9%** (n=1.229 candidatos) — abaixo da média (~5%), empresário não é profissão que elege.
-- **T05-3 ⏳** Senado: o espelho não tem tabela de proposições do Senado (só `senadores` + CEAPS) — pipeline necessário.
+- **T05-2 ⏳** Senado: o espelho não tem tabela de proposições do Senado (só `senadores` + CEAPS) — pipeline necessário.
+- **T05-3 ✅** Ocupação declarada × eleição 2022 (dep. federal/senador): deputados na reeleição **58,8%**, engenheiros 7,8%, médicos 6,5% vs **empresários 3,9%** (n=1.229 candidatos) — abaixo da média (~5%), empresário não é profissão que elege.
 - **T05-4 ◐** Fragmentação partidária municipal 2022: nº efetivo de partidos médio **5,6** (n=3.035); × PIB pc **+0,21**; AP mais fragmentado, PI menos. Comparação com votações nominais da Câmara pendente.
 - **T05-5 ✅** Gasto por voto × transferências voluntárias (UF, n=27): **r = +0,92** — mas é estrutural: UFs pequenas (RR R$144/voto, 749 transf pc) têm campanha cara por eleitor E recebem mais transferência per capita; ambas as séries escalam com o tamanho do eleitorado.
 
@@ -130,7 +145,8 @@ RN 72,4%, SP 71,9%.
 ## 12 · Interseccionalidade
 
 - **T12-1 ✅** Mulher negra × homem branco no mesmo setor (RAIS 2022, 21 setores): **mediana de 40,3% de lacuna salarial** — a dupla desvantagem é generalizada e grande.
-- **T12-3 ✅ / T12-5 ✅** Dupla desvantagem × rotatividade setorial (CAGED 2021): **r = +0,04 com lacuna mulher-negra; +0,19 com lacuna de gênero; −0,33 com lacuna racial** — setores de alta rotatividade não concentram as maiores desigualdades; para raça o sinal até inverte.
+- **T12-3 ✅** Dupla desvantagem × rotatividade setorial (CAGED 2021): **r = +0,04 com lacuna mulher-negra** — setores de alta rotatividade não concentram a desvantagem combinada.
+- **T12-5 ✅** Mesmo cruzamento (CAGED 2021 × RAIS), decompondo por eixo: **r = +0,19 com lacuna de gênero; −0,33 com lacuna racial** — rotatividade setorial não explica a interseção; para o recorte racial o sinal até inverte.
 - **T12-2 ✅** % mães pretas/pardas (SINASC 2022, por município de residência, n≥30 nascimentos) × leitos obstétricos SUS por 1.000 nascidos (CNES 2022) × PIB pc: **r = +0,02 com leitos (praticamente nulo, n=3.052); r = −0,26 com PIB pc** — a composição racial das mães não se associa à oferta de leito obstétrico, mas municípios com mais mães pretas/pardas são sistematicamente mais pobres.
 - **T12-4 ⏳** Pendente — chefia feminina não existe no Censo 2022 do espelho (ver T09-5).
 
@@ -183,7 +199,9 @@ RN 72,4%, SP 71,9%.
 
 ## 20 · Ciência
 
-- **T20-1, T20-2, T20-4 ✅ (UF, não município)** Bolsistas CNPq por UF de origem (2022) × nota média de redação ENEM da UF × PIB pc da UF × população da UF: **r = +0,57 com ENEM; r = +0,69 com PIB pc; r = +0,80 com população** (n=27 UFs) — bolsas seguem fortemente o tamanho populacional e a renda da UF, mais do que corrigem a desigualdade regional (reforço, não correção, respondendo T20-4). Só em nível de UF: a tabela de bolsas só tem UF de origem, não município, então T20-1/T20-2 não puderam ser feitas no recorte municipal que a pergunta original pede.
+- **T20-1 ◐** Bolsistas CNPq por UF de origem (2022) × nota média de redação ENEM da UF (n=27 UFs): **r = +0,57**. Proxy em nível de UF — a tabela de bolsas só tem UF de origem, não município, então não é a correlação municipal que a pergunta pede.
+- **T20-2 ◐** Bolsistas CNPq por UF × população da UF (Censo, n=27 UFs): **r = +0,80** — bolsas seguem fortemente o tamanho populacional, reforçando a concentração regional em vez de distribuir proporcionalmente. Mesma ressalva de T20-1: proxy em nível de UF, não a distribuição por região das IES em recorte fino.
+- **T20-4 ✅** Bolsistas CNPq por UF × PIB pc da UF (n=27 UFs): **r = +0,69** — bolsas seguem a renda da UF mais do que corrigem a desigualdade regional (reforço, não correção).
 - **T20-3, T20-5 ⏳** Pendentes — exigem comparação antes/depois (T20-3: escolas de alta nota alimentando bolsistas anos depois) ou comparação de vizinhança (T20-5: municípios com/sem campus, mesma renda) — nenhuma das duas é uma correlação de um corte só.
 
 ## 21 · Corrupção
@@ -948,7 +966,7 @@ análise pendente. Cada um precisaria de trabalho de dado (re-scraping, campo no
 chave nova) antes de qualquer query fazer sentido — tentar responder sem isso
 produziria um número que parece verificado mas não é.
 
-- **T05-3** — Senado: o espelho só tem `senadores` + CEAPS; não existe tabela de
+- **T05-2** — Senado: o espelho só tem `senadores` + CEAPS; não existe tabela de
   proposições/votações do Senado. Precisaria raspar o dataset de proposições do
   Senado (análogo ao que existe para a Câmara em `br_camara_dados_abertos`).
 - **T06-1, T06-4** — INFOPEN/SISDEPEN: colunas com unicode inválido (1.514 linhas).
