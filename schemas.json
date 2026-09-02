@@ -2,9 +2,81 @@
   "_meta": {
     "source": "beelink",
     "path": "/home/polo/rodado",
-    "total_tables": 896
+    "total_tables": 894
   },
   "tables": {
+    "_obsoleto.br_ibama_embargos": {
+      "path": "beelink:/home/polo/rodado/_obsoleto/br_ibama_embargos/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "seq_tad;seq_anexo_tad;num_anexo_tad;tipo_anexo;des_anexo_tad;no_arquivo_evidencia;ultima_atualizacao_relatorio",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "_obsoleto.br_seeg": {
+      "path": "beelink:/home/polo/rodado/_obsoleto/br_seeg/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "slug",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "id_municipio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "municipio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ano",
+          "type": "INT64"
+        },
+        {
+          "name": "gas",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipo_id",
+          "type": "INT64"
+        },
+        {
+          "name": "tipo_emissao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "emissao_total",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "categoria_dominante",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "posicao_ranking",
+          "type": "INT64"
+        },
+        {
+          "name": "categoria",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valor",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "agrupamento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "gas_id",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
     "br_abrinq_oca.municipio_primeira_infancia": {
       "path": "beelink:/home/polo/rodado/br_abrinq_oca/municipio_primeira_infancia/",
       "file_count": 1,
@@ -18459,86 +18531,6 @@
         },
         {
           "name": "uf",
-          "type": "BYTE_ARRAY"
-        }
-      ]
-    },
-    "br_ibama_embargos.anexo": {
-      "path": "beelink:/home/polo/rodado/br_ibama_embargos/anexo/",
-      "file_count": 1,
-      "columns": [
-        {
-          "name": "seq_tad;seq_anexo_tad;num_anexo_tad;tipo_anexo;des_anexo_tad;no_arquivo_evidencia;ultima_atualizacao_relatorio",
-          "type": "BYTE_ARRAY"
-        }
-      ]
-    },
-    "br_ibama_embargos.coordenadas": {
-      "path": "beelink:/home/polo/rodado/br_ibama_embargos/coordenadas/",
-      "file_count": 1,
-      "columns": [
-        {
-          "name": "seq_tad;num_tad;seq_poligono;sq_poligono_aiemob;no_area;area_poligono;seq_ponto_poligono;sq_coordenada_aiemob;ordem;longitude;latitude;wkt;ultima_atualizacao_relatorio",
-          "type": "BYTE_ARRAY"
-        }
-      ]
-    },
-    "br_ibama_embargos.decisao": {
-      "path": "beelink:/home/polo/rodado/br_ibama_embargos/decisao/",
-      "file_count": 1,
-      "columns": [
-        {
-          "name": "seq_tad;seq_decisao_judicial;dat_decisao_embargo;tipo_decisao;des_observacao;num_pessoa_interessado;interessado;cpf_cnpj_interessado;tipo_acao;dat_inclusao_acao;sit_cancelado;ultima_atualizacao_relatorio",
-          "type": "BYTE_ARRAY"
-        }
-      ]
-    },
-    "br_ibama_embargos.enquadramento": {
-      "path": "beelink:/home/polo/rodado/br_ibama_embargos/enquadramento/",
-      "file_count": 1,
-      "columns": [
-        {
-          "name": "seq_tad;num_tad;administrativo;norma_tipo;norma_numero;artigo;nu_paragrafo;nu_inciso;cd_alinea;ultima_atualizacao_relatorio",
-          "type": "BYTE_ARRAY"
-        }
-      ]
-    },
-    "br_ibama_embargos.enquadramento_complementar": {
-      "path": "beelink:/home/polo/rodado/br_ibama_embargos/enquadramento_complementar/",
-      "file_count": 1,
-      "columns": [
-        {
-          "name": "seq_tad;num_tad;nu_lei_comp;nu_artigo_comp;nu_par_inc_al;ultima_atualizacao_relatorio",
-          "type": "BYTE_ARRAY"
-        }
-      ]
-    },
-    "br_ibama_embargos.itens": {
-      "path": "beelink:/home/polo/rodado/br_ibama_embargos/itens/",
-      "file_count": 1,
-      "columns": [
-        {
-          "name": "seq_tad;natureza;item;num_latitude_tad;num_longitude_tad;deter_prodes;wkt;id_poligono;embarga_poligono;qtd_area_embargada;nome_imovel;ultima_atualizacao_relatorio",
-          "type": "BYTE_ARRAY"
-        }
-      ]
-    },
-    "br_ibama_embargos.termo_embargo": {
-      "path": "beelink:/home/polo/rodado/br_ibama_embargos/termo_embargo/",
-      "file_count": 1,
-      "columns": [
-        {
-          "name": "seq_tad;des_status_formulario;des_status_formulario_aie;sit_cancelado;num_tad;ser_tad;cod_substituicao;dat_embargo;dat_impressao;forma_entrega;num_pessoa_embargo;nome_embargado;cpf_cnpj_embargado;num_processo;des_tad;cod_municipio;municipio;uf;des_localizacao;num_longitude_tad;num_latitude_tad;deter_prodes;id_poligono;embarga_poligono;qtd_area_embargada;nome_imovel;tipo_area;geom_area_embargada;dat_ult_alter_geom;unid_apresentacao;unid_controle;sit_desembargo;tipo_desembargo;dat_desembargo;des_desembargo;seq_auto_infracao;num_auto_infracao;seq_notificacao;seq_acao_fiscalizatoria;cd_acao_fiscalizatoria;operacao;seq_ordem_fiscalizacao;ordem_fiscalizacao;unid_ordenadora;seq_solicitacao_recurso;solicitacao_recurso;operacao_sol_recurso;dat_ult_alteracao;tipo_alteracao;justificativa_alteracao;ultima_atualizacao_relatorio",
-          "type": "BYTE_ARRAY"
-        }
-      ]
-    },
-    "br_ibama_embargos.termo_embargo_historico": {
-      "path": "beelink:/home/polo/rodado/br_ibama_embargos/termo_embargo_historico/",
-      "file_count": 1,
-      "columns": [
-        {
-          "name": "seq_tad;seq_hist_tad;dt_alteracao;des_status_formulario;sit_cancelado;num_tad;ser_tad;dat_embargo;dat_impressao;forma_entrega;num_processo;des_tad;cod_municipio;municipio;uf;des_localizacao;num_longitude_tad;num_latitude_tad;deter_prodes;id_poligono;embarga_poligono;qtd_area_embargada;nome_imovel;tipo_area;wkt;unid_apresentacao;unid_controle;sit_desembargo;dat_desembargo;des_desembargo;seq_auto_infracao;seq_notificacao;seq_acao_fiscalizatoria;operacao;seq_ordem_fiscalizacao;ordem_fiscalizacao;unid_ordenadora;seq_solicitacao_recurso;solicitacao_recurso;operacao_sol_recurso;dat_ult_alteracao;tipo_alteracao;justificativa_alteracao;ultima_atualizacao_relatorio",
           "type": "BYTE_ARRAY"
         }
       ]
@@ -124816,6 +124808,504 @@
         }
       ]
     },
+    "br_ms_sinan_chikungunya.microdados_chikungunya": {
+      "path": "beelink:/home/polo/rodado/br_ms_sinan_chikungunya/microdados_chikungunya/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "TP_NOT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_AGRAVO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_NOTIFIC",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SEM_NOT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NU_ANO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SG_UF_NOT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_MUNICIP",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_REGIONA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_UNIDADE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_SIN_PRI",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SEM_PRI",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ANO_NASC",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NU_IDADE_N",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CS_SEXO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CS_GESTANT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CS_RACA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CS_ESCOL_N",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SG_UF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_MN_RESI",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_RG_RESI",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_PAIS",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_INVEST",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_OCUPA_N",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "FEBRE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "MIALGIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CEFALEIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "EXANTEMA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "VOMITO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NAUSEA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DOR_COSTAS",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CONJUNTVIT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ARTRITE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ARTRALGIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PETEQUIA_N",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "LEUCOPENIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "LACO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DOR_RETRO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DIABETES",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "HEMATOLOG",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "HEPATOPAT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "RENAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "HIPERTENSA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ACIDO_PEPT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "AUTO_IMUNE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_CHIK_S1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_CHIK_S2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_PRNT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "RES_CHIKS1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "RES_CHIKS2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "RESUL_PRNT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_SORO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "RESUL_SORO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_NS1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "RESUL_NS1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_VIRAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "RESUL_VI_N",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_PCR",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "RESUL_PCR_",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SOROTIPO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "HISTOPA_N",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "IMUNOH_N",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "HOSPITALIZ",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_INTERNA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "UF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "MUNICIPIO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TPAUTOCTO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "COUFINF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "COPAISINF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "COMUNINF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CLASSI_FIN",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CRITERIO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DOENCA_TRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CLINC_CHIK",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "EVOLUCAO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_OBITO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_ENCERRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ALRM_HIPOT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ALRM_PLAQ",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ALRM_VOM",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ALRM_SANG",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ALRM_HEMAT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ALRM_ABDOM",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ALRM_LETAR",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ALRM_HEPAT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ALRM_LIQ",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_ALRM",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "GRAV_PULSO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "GRAV_CONV",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "GRAV_ENCH",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "GRAV_INSUF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "GRAV_TAQUI",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "GRAV_EXTRE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "GRAV_HIPOT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "GRAV_HEMAT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "GRAV_MELEN",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "GRAV_METRO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "GRAV_SANG",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "GRAV_AST",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "GRAV_MIOC",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "GRAV_CONSC",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "GRAV_ORGAO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_GRAV",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "MANI_HEMOR",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "EPISTAXE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "GENGIVO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "METRO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PETEQUIAS",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "HEMATURA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SANGRAM",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "LACO_N",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PLASMATICO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "EVIDENCIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PLAQ_MENOR",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CON_FHD",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "COMPLICA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NU_LOTE_I",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TP_SISTEMA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NDUPLIC_N",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_DIGITA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CS_FLXRET",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "FLXRECEBI",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "MIGRADO_W",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ano_sinan",
+          "type": "INT64"
+        }
+      ]
+    },
     "br_ms_sinan_esquistossomose.microdados_esquistossomose": {
       "path": "beelink:/home/polo/rodado/br_ms_sinan_esquistossomose/microdados_esquistossomose/",
       "file_count": 1,
@@ -125035,6 +125525,408 @@
         {
           "name": "ano_sinan",
           "type": "INT64"
+        }
+      ]
+    },
+    "br_ms_sinan_febre_amarela.microdados_febre_amarela": {
+      "path": "beelink:/home/polo/rodado/br_ms_sinan_febre_amarela/microdados_febre_amarela/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "TP_NOT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_AGRAVO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_NOTIFIC",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SEM_NOT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NU_ANO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SG_UF_NOT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_MUNICIP",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_REGIONA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_UNIDADE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_SIN_PRI",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SEM_PRI",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NU_IDADE_N",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CS_SEXO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CS_GESTANT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CS_RACA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CS_ESCOL_N",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SG_UF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_MN_RESI",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_RG_RESI",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_PAIS",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_INVEST",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_OCUPA_N",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "FEBRE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CEFALEIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ABDOMINAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "MIALGIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NAUSEA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "EXANTEMA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DIARREIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ICTERICIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "HIPEREMIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "HEPATOME",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PETEQUIAS",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "HEMORRAG",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "LINFADENO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CONVULSAO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NECROSE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "PROSTACAO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CHOQUE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "COMA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "HEMORRAGI",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "RESPIRATO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "OLIGURIA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "OUTROS",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "OUTRO_ESP",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CARRAPATO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CAPIVARA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CAO_GATO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "BOVINO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "EQUINOS",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "OUTROANI",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ANIM_ESP",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "FOI_MATA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "HOSPITAL",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DTINTERNA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DTALTA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "COUFHOSP",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "COMUNHOSP",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DIAGNO_LAB",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DTS1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DTS2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "IGM_S1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TIT_IGM_S1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "IGG_S1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TIT_IGG_S1",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "IGM_S2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TIT_IGM_S2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "IGG_S2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TIT_IGG_S2",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_COLETA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_DIGITA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ISOLAMENTO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "AGENTE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "HISTOPATO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "IMUNOHIST",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CLASSI_FIN",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CRITERIO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DIAG_DESCA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TPAUTOCTO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "COUFINF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "COPAISINF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "COMUNINF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "AMBIENTE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DOENCA_TRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "EVOLUCAO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_OBITO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_ENCERRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ano_sinan",
+          "type": "INT64"
+        },
+        {
+          "name": "ANO_NASC",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CODISINF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ZONA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_TRANSUS",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_TRANSDM",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_TRANSRM",
+          "type": "INT32"
+        },
+        {
+          "name": "DT_TRANSRS",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_TRANSSE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NU_LOTE_V",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NU_LOTE_H",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "IDENT_MICR",
+          "type": "BYTE_ARRAY"
         }
       ]
     },
@@ -126106,6 +126998,168 @@
         }
       ]
     },
+    "br_ms_sinan_zika.microdados_zika": {
+      "path": "beelink:/home/polo/rodado/br_ms_sinan_zika/microdados_zika/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "TP_NOT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_AGRAVO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_NOTIFIC",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SEM_NOT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NU_ANO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SG_UF_NOT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_MUNICIP",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_REGIONA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_UNIDADE",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_SIN_PRI",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SEM_PRI",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ANO_NASC",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NU_IDADE_N",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CS_SEXO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CS_GESTANT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CS_RACA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CS_ESCOL_N",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SG_UF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_MN_RESI",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_RG_RESI",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_PAIS",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NDUPLIC_N",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "IN_VINCULA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_INVEST",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ID_OCUPA_N",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CLASSI_FIN",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CRITERIO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TPAUTOCTO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "COUFINF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "COPAISINF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "COMUNINF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DOENCA_TRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "EVOLUCAO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_OBITO",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_ENCERRA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DT_DIGITA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TP_SISTEMA",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "TPUNINOT",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ano_sinan",
+          "type": "INT64"
+        }
+      ]
+    },
     "br_ms_sinasc.dicionario": {
       "path": "beelink:/home/polo/rodado/br_ms_sinasc/dicionario/",
       "file_count": 1,
@@ -126640,6 +127694,56 @@
         }
       ]
     },
+    "br_ok_queridodiario_texto.diarios": {
+      "path": "beelink:/home/polo/rodado/br_ok_queridodiario_texto/diarios/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "territory_id",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "territory_name",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "state_code",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "date",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "edition",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "is_extra_edition",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "url",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "txt_url",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "scraped_at",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "texto",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "texto_bytes",
+          "type": "INT64"
+        }
+      ]
+    },
     "br_pgfn_dividaativa.divida": {
       "path": "beelink:/home/polo/rodado/br_pgfn_dividaativa/divida/",
       "file_count": 1,
@@ -126710,6 +127814,204 @@
         },
         {
           "name": "trimestre",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_pncp.contratos": {
+      "path": "beelink:/home/polo/rodado/br_pncp/contratos/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "numeroControlePncpCompra",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numeroControlePncpAta",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "codigoPaisFornecedor",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "anoContrato",
+          "type": "INT64"
+        },
+        {
+          "name": "id",
+          "type": "INT64"
+        },
+        {
+          "name": "nome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "numeroContratoEmpenho",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "dataAssinatura",
+          "type": "INT32"
+        },
+        {
+          "name": "dataVigenciaInicio",
+          "type": "INT32"
+        },
+        {
+          "name": "dataVigenciaFim",
+          "type": "INT32"
+        },
+        {
+          "name": "niFornecedor",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "tipoPessoa",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "cnpj",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "razaoSocial",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "poderId",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "esferaId",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "dataPublicacaoPncp",
+          "type": "INT64"
+        },
+        {
+          "name": "dataAtualizacao",
+          "type": "INT64"
+        },
+        {
+          "name": "sequencialContrato",
+          "type": "INT64"
+        },
+        {
+          "name": "ufNome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "codigoUnidade",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nomeUnidade",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ufSigla",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "municipioNome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "codigoIbge",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "informacaoComplementar",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "processo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nomeRazaoSocialFornecedor",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "niFornecedorSubContratado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "nomeFornecedorSubContratado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "receita",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "numeroParcelas",
+          "type": "INT64"
+        },
+        {
+          "name": "numeroRetificacao",
+          "type": "INT64"
+        },
+        {
+          "name": "temRemanejamento",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "emendaParlamentar",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "frutoAdesao",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "tipoPessoaSubContratada",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "objetoContrato",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valorInicial",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "valorParcela",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "valorGlobal",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "numeroControlePNCP",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "valorAcumulado",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "dataAtualizacaoGlobal",
+          "type": "INT64"
+        },
+        {
+          "name": "identificadorCipi",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "urlCipi",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "usuarioNome",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ano_publicacao",
           "type": "BYTE_ARRAY"
         }
       ]
@@ -129948,68 +131250,6 @@
         },
         {
           "name": "data_atualizacao",
-          "type": "BYTE_ARRAY"
-        }
-      ]
-    },
-    "br_seeg.emissoes_municipais": {
-      "path": "beelink:/home/polo/rodado/br_seeg/emissoes_municipais/",
-      "file_count": 1,
-      "columns": [
-        {
-          "name": "slug",
-          "type": "BYTE_ARRAY"
-        },
-        {
-          "name": "id_municipio",
-          "type": "BYTE_ARRAY"
-        },
-        {
-          "name": "municipio",
-          "type": "BYTE_ARRAY"
-        },
-        {
-          "name": "ano",
-          "type": "INT64"
-        },
-        {
-          "name": "gas",
-          "type": "BYTE_ARRAY"
-        },
-        {
-          "name": "tipo_id",
-          "type": "INT64"
-        },
-        {
-          "name": "tipo_emissao",
-          "type": "BYTE_ARRAY"
-        },
-        {
-          "name": "emissao_total",
-          "type": "DOUBLE"
-        },
-        {
-          "name": "categoria_dominante",
-          "type": "BYTE_ARRAY"
-        },
-        {
-          "name": "posicao_ranking",
-          "type": "INT64"
-        },
-        {
-          "name": "categoria",
-          "type": "BYTE_ARRAY"
-        },
-        {
-          "name": "valor",
-          "type": "DOUBLE"
-        },
-        {
-          "name": "agrupamento",
-          "type": "BYTE_ARRAY"
-        },
-        {
-          "name": "gas_id",
           "type": "BYTE_ARRAY"
         }
       ]
