@@ -9,7 +9,7 @@
    "search_tables no top-K deve trazer >=1 tabela de cada required_dataset",
    "supporting_datasets (marcados com * em perguntas.md) sao bonus, nao obrigatorios"
   ],
-  "n": 187
+  "n": 193
  },
  "perguntas": [
   {
@@ -821,6 +821,18 @@
    ]
   },
   {
+   "code": "T19-2",
+   "q": "Onde o crédito rural (SICOR) cresce acima do PIB agro (IBGE), há endividamento, e isso coincide com queda de agências (ESTBAN)?",
+   "status": "partial",
+   "required_datasets": [
+    "br_bcb_sicor",
+    "br_ibge_pib"
+   ],
+   "supporting_datasets": [
+    "br_bcb_estban"
+   ]
+  },
+  {
    "code": "T19-3",
    "q": "Bolsistas CNPq concentram-se nas capitais/regiões de maior densidade financeira (ESTBAN) e renda (PIB)?",
    "status": "ok",
@@ -842,6 +854,18 @@
    "supporting_datasets": [
     "br_bcb_estban",
     "br_ibge_ppm"
+   ]
+  },
+  {
+   "code": "T19-5",
+   "q": "A presença bancária (ESTBAN) antecede ou segue o crescimento do PIB municipal, controlado pela população do Censo?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ibge_pib"
+   ],
+   "supporting_datasets": [
+    "br_bcb_estban",
+    "br_ibge_censo_2022"
    ]
   },
   {
@@ -1058,6 +1082,40 @@
    "supporting_datasets": [
     "br_ms_sim"
    ]
+  },
+  {
+   "code": "T28-1",
+   "q": "Notificações de violência contra adolescentes no SINAN se concentram nos municípios cujas escolas (Censo Escolar) têm pior infraestrutura e menor INSE?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ms_sinan",
+    "br_inep_censo_escolar"
+   ],
+   "supporting_datasets": [
+    "br_inep_indicador_nivel_socioeconomico"
+   ]
+  },
+  {
+   "code": "T28-2",
+   "q": "Escolas de menor nível socioeconômico (INSE) ficam nos municípios de maior letalidade juvenil (SIM), dentro da mesma região?",
+   "status": "ok",
+   "required_datasets": [],
+   "supporting_datasets": [
+    "br_inep_indicador_nivel_socioeconomico",
+    "br_ms_sim",
+    "br_ibge_censo_2022"
+   ]
+  },
+  {
+   "code": "T28-4",
+   "q": "Casos de violência escolar notificados no SINAN coincidem geograficamente com registros policiais (ISP-RJ) e com escolas de maior vulnerabilidade (Censo Escolar)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ms_sinan",
+    "br_rj_isp_estatisticas_seguranca",
+    "br_inep_censo_escolar"
+   ],
+   "supporting_datasets": []
   },
   {
    "code": "T28-5",
@@ -1446,6 +1504,18 @@
    "supporting_datasets": [
     "br_inep_saeb",
     "br_inep_censo_escolar"
+   ]
+  },
+  {
+   "code": "T38-3",
+   "q": "Municípios cujos docentes têm maior formação superior (formação docente INEP) melhoram mais na alfabetização medida pelo INEP, controlada pela renda (PIB)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_inep_formacao_docente",
+    "br_inep_avaliacao_alfabetizacao"
+   ],
+   "supporting_datasets": [
+    "br_ibge_pib"
    ]
   },
   {
