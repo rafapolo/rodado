@@ -303,7 +303,7 @@ def _run_sql_ssh(sql: str) -> dict:
     # subprocess.run timeout (120s) fires. Without this, a killed local ssh
     # client does NOT propagate to the remote process — the query keeps
     # running on beelink indefinitely, orphaned, eventually holding a lock
-    # nothing can ever release (see tasks/done/threads_pos_scraping_2026-07.md, confirmed live 2026-08-24).
+    # nothing can ever release (see tasks/todo.md, confirmed live 2026-08-24).
     # -k 5 sends SIGKILL 5s after the initial SIGTERM if duckdb doesn't exit
     # on its own.
     remote_cmd = (

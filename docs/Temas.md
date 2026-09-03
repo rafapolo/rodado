@@ -1,6 +1,6 @@
 # Temas — que dados cada investigação usa
 
-Os 43 temas do site e os datasets que cada um cita, 103 dos 226 do espelho. Os temas não se ligam
+Os 43 temas do site e os datasets que cada um cita, 103 dos 207 do espelho. Os temas não se ligam
 entre si diretamente: o que os conecta é chegarem às mesmas
 referências — a aresta leva quantos datasets do tema carregam a chave.
 
@@ -8,7 +8,7 @@ referências — a aresta leva quantos datasets do tema carregam a chave.
 > texto de cada tema nomeia. Não é a lista completa do que a investigação
 > tocou — é o que está registrado. Dataset sem citação não aparece.
 
-Gerado por `scripts/gera_flow.py` a partir de `schemas.json` em 2026-09-02 — não edite à mão, regenere.
+Gerado por `scripts/gera_flow.py` a partir de `schemas.json` em 2026-09-01 — não edite à mão, regenere.
 
 - **caixa** = dataset; cada `subgraph` é um tema, e a aresta sai do tema inteiro;
 - **cápsula** = hub de referência, agrupado por família num `subgraph` e

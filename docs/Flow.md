@@ -1,8 +1,8 @@
 # Flow — o espelho por domínio
 
-Os 226 datasets do espelho e as chaves com que cada um alcança os hubs de referência, um diagrama por domínio.
+Os 207 datasets do espelho e as chaves com que cada um alcança os hubs de referência, um diagrama por domínio.
 
-Gerado por `scripts/gera_flow.py` a partir de `schemas.json` em 2026-09-02 — não edite à mão, regenere.
+Gerado por `scripts/gera_flow.py` a partir de `schemas.json` em 2026-09-01 — não edite à mão, regenere.
 
 - **caixa** = dataset; um diagrama por domínio;
 - **cápsula** = hub de referência, agrupado por família num `subgraph` e
@@ -22,16 +22,16 @@ flowchart LR
     subgraph doms["Domínios"]
         direction TB
         D_referencia["Diretórios e tabelas de referência<br/>10 datasets"]
-        D_saude["Saúde<br/>25 datasets"]
+        D_saude["Saúde<br/>22 datasets"]
         D_educacao["Educação e ciência<br/>20 datasets"]
-        D_economia["Trabalho, empresas e economia<br/>44 datasets"]
-        D_governo["Governo, orçamento e compras<br/>38 datasets"]
-        D_politica["Política e eleições<br/>9 datasets"]
+        D_economia["Trabalho, empresas e economia<br/>40 datasets"]
+        D_governo["Governo, orçamento e compras<br/>31 datasets"]
+        D_politica["Política e eleições<br/>7 datasets"]
         D_justica["Justiça, segurança e sanções<br/>21 datasets"]
         D_territorio["Território, ambiente e infraestrutura<br/>26 datasets"]
-        D_demografia["Demografia e indicadores sociais<br/>18 datasets"]
+        D_demografia["Demografia e indicadores sociais<br/>17 datasets"]
         D_internacional["Internacional, cultura e esporte<br/>9 datasets"]
-        D_outros["Outros<br/>6 datasets"]
+        D_outros["Outros<br/>4 datasets"]
     end
     subgraph g_territ_rio["Território"]
         direction TB
@@ -64,49 +64,46 @@ flowchart LR
         PAIS(["PAIS"])
     end
     D_demografia -->|"3"| CEP
-    D_demografia -->|"11"| MUNICIPIO
+    D_demografia -->|"10"| MUNICIPIO
     D_demografia -->|"9"| UF
     D_economia -->|"6"| CEP
     D_economia -->|"5"| CID10
-    D_economia -->|"8"| CNAE
-    D_economia -->|"13"| EMPRESA_CNPJ
-    D_economia -->|"28"| MUNICIPIO
+    D_economia -->|"7"| CNAE
+    D_economia -->|"12"| EMPRESA_CNPJ
+    D_economia -->|"26"| MUNICIPIO
     D_economia -->|"3"| PAIS
     D_economia -->|"4"| PESSOA_CPF
-    D_economia -->|"28"| UF
+    D_economia -->|"26"| UF
     D_educacao -->|"8"| ESCOLA
     D_educacao -->|"3"| IES
     D_educacao -->|"15"| MUNICIPIO
     D_educacao -->|"15"| UF
-    D_governo -->|"10"| EMPRESA_CNPJ
-    D_governo -->|"22"| MUNICIPIO
-    D_governo -->|"7"| ORGAO
-    D_governo -->|"14"| PESSOA_CPF
-    D_governo -->|"23"| UF
-    D_governo -->|"6"| UNIDADE_GESTORA
+    D_governo -->|"6"| EMPRESA_CNPJ
+    D_governo -->|"17"| MUNICIPIO
+    D_governo -->|"6"| ORGAO
+    D_governo -->|"9"| PESSOA_CPF
+    D_governo -->|"17"| UF
+    D_governo -->|"5"| UNIDADE_GESTORA
     D_justica -->|"4"| EMPRESA_CNPJ
     D_justica -->|"6"| MUNICIPIO
     D_justica -->|"3"| PESSOA_CPF
     D_justica -->|"9"| UF
-    D_outros -->|"3"| EMPRESA_CNPJ
-    D_outros -->|"4"| MUNICIPIO
-    D_outros -->|"4"| UF
-    D_politica -->|"4"| EMPRESA_CNPJ
+    D_politica -->|"3"| EMPRESA_CNPJ
     D_politica -->|"5"| MUNICIPIO
-    D_politica -->|"6"| PARTIDO
-    D_politica -->|"5"| PESSOA_CPF
-    D_politica -->|"8"| UF
+    D_politica -->|"4"| PARTIDO
+    D_politica -->|"4"| PESSOA_CPF
+    D_politica -->|"6"| UF
     D_referencia -->|"5"| MUNICIPIO
     D_referencia -->|"5"| UF
     D_saude -->|"7"| CNES
-    D_saude -->|"7"| EMPRESA_CNPJ
-    D_saude -->|"22"| MUNICIPIO
-    D_saude -->|"21"| UF
+    D_saude -->|"6"| EMPRESA_CNPJ
+    D_saude -->|"19"| MUNICIPIO
+    D_saude -->|"18"| UF
     D_territorio -->|"3"| CID10
-    D_territorio -->|"5"| EMPRESA_CNPJ
+    D_territorio -->|"6"| EMPRESA_CNPJ
     D_territorio -->|"20"| MUNICIPIO
-    D_territorio -->|"3"| PESSOA_CPF
-    D_territorio -->|"16"| UF
+    D_territorio -->|"4"| PESSOA_CPF
+    D_territorio -->|"15"| UF
 ```
 
 ## Diretórios e tabelas de referência
@@ -172,13 +169,12 @@ flowchart LR
 
 ## Saúde
 
-25 datasets
+22 datasets · 1 sem ligação documentada
 
 ```mermaid
 flowchart LR
     saude_br_ans_beneficiario["ans_beneficiario"]
     saude_br_anvisa_cmed["anvisa_cmed"]
-    saude_br_anvisa_consultas["anvisa_consultas"]
     saude_br_anvisa_medicamentos_industrializados["anvisa_medicamentos_industrializados"]
     saude_br_ieps_saude["ieps_saude"]
     saude_br_ms_atencao_basica["ms_atencao_basica"]
@@ -190,12 +186,9 @@ flowchart LR
     saude_br_ms_sih["ms_sih"]
     saude_br_ms_sim["ms_sim"]
     saude_br_ms_sinan["ms_sinan"]
-    saude_br_ms_sinan_chikungunya["ms_sinan_chikungunya"]
     saude_br_ms_sinan_esquistossomose["ms_sinan_esquistossomose"]
-    saude_br_ms_sinan_febre_amarela["ms_sinan_febre_amarela"]
     saude_br_ms_sinan_malaria["ms_sinan_malaria"]
     saude_br_ms_sinan_violencia["ms_sinan_violencia"]
-    saude_br_ms_sinan_zika["ms_sinan_zika"]
     saude_br_ms_sinasc["ms_sinasc"]
     saude_br_ms_sisvan["ms_sisvan"]
     saude_br_ms_vacinacao_covid19["ms_vacinacao_covid19"]
@@ -223,7 +216,6 @@ flowchart LR
     saude_br_ans_beneficiario --> saude_MUNICIPIO
     saude_br_ans_beneficiario --> saude_UF
     saude_br_anvisa_cmed --> saude_EMPRESA_CNPJ
-    saude_br_anvisa_consultas -.-> saude_EMPRESA_CNPJ
     saude_br_anvisa_medicamentos_industrializados --> saude_MUNICIPIO
     saude_br_anvisa_medicamentos_industrializados --> saude_UF
     saude_br_ieps_saude --> saude_MUNICIPIO
@@ -260,18 +252,12 @@ flowchart LR
     saude_br_ms_sinan --> saude_CNES
     saude_br_ms_sinan --> saude_MUNICIPIO
     saude_br_ms_sinan --> saude_UF
-    saude_br_ms_sinan_chikungunya -.-> saude_MUNICIPIO
-    saude_br_ms_sinan_chikungunya -.-> saude_UF
     saude_br_ms_sinan_esquistossomose -.-> saude_MUNICIPIO
     saude_br_ms_sinan_esquistossomose -.-> saude_UF
-    saude_br_ms_sinan_febre_amarela -.-> saude_MUNICIPIO
-    saude_br_ms_sinan_febre_amarela -.-> saude_UF
     saude_br_ms_sinan_malaria -.-> saude_MUNICIPIO
     saude_br_ms_sinan_malaria -.-> saude_UF
     saude_br_ms_sinan_violencia -.-> saude_MUNICIPIO
     saude_br_ms_sinan_violencia -.-> saude_UF
-    saude_br_ms_sinan_zika -.-> saude_MUNICIPIO
-    saude_br_ms_sinan_zika -.-> saude_UF
     saude_br_ms_sinasc -.-> saude_CNES
     saude_br_ms_sinasc --> saude_MUNICIPIO
     saude_br_ms_sinasc --> saude_UF
@@ -375,15 +361,13 @@ flowchart LR
 
 ## Trabalho, empresas e economia
 
-44 datasets · 8 sem ligação documentada
+40 datasets · 7 sem ligação documentada
 
 ```mermaid
 flowchart LR
     economia_br_anp_combustiveis["anp_combustiveis"]
     economia_br_anp_precos_combustiveis["anp_precos_combustiveis"]
     economia_br_bcb_estban["bcb_estban"]
-    economia_br_bcb_ifdata["bcb_ifdata"]
-    economia_br_bcb_scrdata["bcb_scrdata"]
     economia_br_bcb_sicor["bcb_sicor"]
     economia_br_bndes_operacoes_contratadas["bndes_operacoes_contratadas"]
     economia_br_brasilio_holdings["brasilio_holdings"]
@@ -413,7 +397,6 @@ flowchart LR
     economia_br_rf_arrecadacao["rf_arrecadacao"]
     economia_br_rf_cafir["rf_cafir"]
     economia_br_rf_cno["rf_cno"]
-    economia_br_rf_dirpf["rf_dirpf"]
     economia_br_trase_supply_chain["trase_supply_chain"]
     subgraph economia_g_territ_rio["Território"]
         direction TB
@@ -448,9 +431,6 @@ flowchart LR
     economia_br_bcb_estban --> economia_EMPRESA_CNPJ
     economia_br_bcb_estban --> economia_MUNICIPIO
     economia_br_bcb_estban --> economia_UF
-    economia_br_bcb_ifdata --> economia_MUNICIPIO
-    economia_br_bcb_scrdata --> economia_CNAE
-    economia_br_bcb_scrdata -.-> economia_UF
     economia_br_bcb_sicor --> economia_EMPRESA_CNPJ
     economia_br_bcb_sicor --> economia_FUNCAO_PROGRAMA
     economia_br_bcb_sicor --> economia_MUNICIPIO
@@ -530,9 +510,6 @@ flowchart LR
     economia_br_rf_cno --> economia_MUNICIPIO
     economia_br_rf_cno --> economia_PAIS
     economia_br_rf_cno --> economia_UF
-    economia_br_rf_dirpf --> economia_EMPRESA_CNPJ
-    economia_br_rf_dirpf --> economia_MUNICIPIO
-    economia_br_rf_dirpf -.-> economia_UF
     economia_br_trase_supply_chain --> economia_EMPRESA_CNPJ
     economia_br_trase_supply_chain -.-> economia_MUNICIPIO
     economia_br_trase_supply_chain -.-> economia_PESSOA_CPF
@@ -541,7 +518,7 @@ flowchart LR
 
 ## Governo, orçamento e compras
 
-38 datasets · 5 sem ligação documentada
+31 datasets · 5 sem ligação documentada
 
 ```mermaid
 flowchart LR
@@ -552,14 +529,10 @@ flowchart LR
     governo_br_cgu_ebt["cgu_ebt"]
     governo_br_cgu_fef["cgu_fef"]
     governo_br_cgu_garantia_safra["cgu_garantia_safra"]
-    governo_br_cgu_gas_do_povo["cgu_gas_do_povo"]
     governo_br_cgu_licitacao_contrato["cgu_licitacao_contrato"]
-    governo_br_cgu_novo_bolsa_familia["cgu_novo_bolsa_familia"]
     governo_br_cgu_orcamento_publico["cgu_orcamento_publico"]
     governo_br_cgu_pe_de_meia["cgu_pe_de_meia"]
-    governo_br_cgu_pessoal_executivo_federal["cgu_pessoal_executivo_federal"]
     governo_br_cgu_receitas_publicas["cgu_receitas_publicas"]
-    governo_br_cgu_sancoes["cgu_sancoes"]
     governo_br_cgu_seguro_defeso["cgu_seguro_defeso"]
     governo_br_cgu_servidores_executivo_federal["cgu_servidores_executivo_federal"]
     governo_br_cgu_viagens["cgu_viagens"]
@@ -568,16 +541,13 @@ flowchart LR
     governo_br_me_siconfi["me_siconfi"]
     governo_br_mp_pep["mp_pep"]
     governo_br_ok_queridodiario["ok_queridodiario"]
-    governo_br_ok_queridodiario_texto["ok_queridodiario_texto"]
     governo_br_siop_orcamento["siop_orcamento"]
     governo_br_tce_es["tce_es"]
     governo_br_tce_pi["tce_pi"]
     governo_br_tce_rj["tce_rj"]
     governo_br_tce_sp["tce_sp"]
     governo_br_tesouro_capag["tesouro_capag"]
-    governo_br_tesouro_cauc["tesouro_cauc"]
     governo_br_transferegov["transferegov"]
-    governo_br_transferegov_siconv["transferegov_siconv"]
     subgraph governo_g_territ_rio["Território"]
         direction TB
         governo_MUNICIPIO(["MUNICIPIO"])
@@ -616,34 +586,20 @@ flowchart LR
     governo_br_cgu_fef --> governo_UF
     governo_br_cgu_garantia_safra -.-> governo_MUNICIPIO
     governo_br_cgu_garantia_safra -.-> governo_UF
-    governo_br_cgu_gas_do_povo --> governo_EMPRESA_CNPJ
-    governo_br_cgu_gas_do_povo -.-> governo_MUNICIPIO
-    governo_br_cgu_gas_do_povo --> governo_PESSOA_CPF
-    governo_br_cgu_gas_do_povo -.-> governo_UF
     governo_br_cgu_licitacao_contrato -.-> governo_EMPRESA_CNPJ
     governo_br_cgu_licitacao_contrato --> governo_MUNICIPIO
     governo_br_cgu_licitacao_contrato --> governo_ORGAO
     governo_br_cgu_licitacao_contrato -.-> governo_PESSOA_CPF
     governo_br_cgu_licitacao_contrato --> governo_UF
     governo_br_cgu_licitacao_contrato --> governo_UNIDADE_GESTORA
-    governo_br_cgu_novo_bolsa_familia -.-> governo_MUNICIPIO
-    governo_br_cgu_novo_bolsa_familia --> governo_PESSOA_CPF
-    governo_br_cgu_novo_bolsa_familia -.-> governo_UF
     governo_br_cgu_orcamento_publico --> governo_FUNCAO_PROGRAMA
     governo_br_cgu_orcamento_publico --> governo_ORGAO
     governo_br_cgu_orcamento_publico --> governo_UNIDADE_GESTORA
     governo_br_cgu_pe_de_meia -.-> governo_MUNICIPIO
     governo_br_cgu_pe_de_meia --> governo_PESSOA_CPF
     governo_br_cgu_pe_de_meia -.-> governo_UF
-    governo_br_cgu_pessoal_executivo_federal --> governo_EMPRESA_CNPJ
-    governo_br_cgu_pessoal_executivo_federal -.-> governo_ORGAO
-    governo_br_cgu_pessoal_executivo_federal --> governo_PESSOA_CPF
-    governo_br_cgu_pessoal_executivo_federal --> governo_UNIDADE_GESTORA
     governo_br_cgu_receitas_publicas --> governo_ORGAO
     governo_br_cgu_receitas_publicas --> governo_UNIDADE_GESTORA
-    governo_br_cgu_sancoes --> governo_EMPRESA_CNPJ
-    governo_br_cgu_sancoes -.-> governo_PESSOA_CPF
-    governo_br_cgu_sancoes --> governo_UF
     governo_br_cgu_seguro_defeso -.-> governo_MUNICIPIO
     governo_br_cgu_seguro_defeso --> governo_PESSOA_CPF
     governo_br_cgu_seguro_defeso -.-> governo_UF
@@ -663,8 +619,6 @@ flowchart LR
     governo_br_mp_pep --> governo_UF
     governo_br_ok_queridodiario -.-> governo_MUNICIPIO
     governo_br_ok_queridodiario -.-> governo_UF
-    governo_br_ok_queridodiario_texto -.-> governo_MUNICIPIO
-    governo_br_ok_queridodiario_texto -.-> governo_UF
     governo_br_siop_orcamento -.-> governo_MUNICIPIO
     governo_br_siop_orcamento -.-> governo_UF
     governo_br_tce_es -.-> governo_CID10
@@ -678,21 +632,15 @@ flowchart LR
     governo_br_tce_sp -.-> governo_MUNICIPIO
     governo_br_tesouro_capag -.-> governo_MUNICIPIO
     governo_br_tesouro_capag -.-> governo_UF
-    governo_br_tesouro_cauc -.-> governo_MUNICIPIO
-    governo_br_tesouro_cauc -.-> governo_UF
     governo_br_transferegov --> governo_EMPRESA_CNPJ
     governo_br_transferegov --> governo_FUNCAO_PROGRAMA
     governo_br_transferegov --> governo_ORGAO
     governo_br_transferegov --> governo_UNIDADE_GESTORA
-    governo_br_transferegov_siconv -.-> governo_EMPRESA_CNPJ
-    governo_br_transferegov_siconv -.-> governo_MUNICIPIO
-    governo_br_transferegov_siconv --> governo_PESSOA_CPF
-    governo_br_transferegov_siconv --> governo_UF
 ```
 
 ## Política e eleições
 
-9 datasets
+7 datasets
 
 ```mermaid
 flowchart LR
@@ -700,8 +648,6 @@ flowchart LR
     politica_br_cgu_emendas_parlamentares["cgu_emendas_parlamentares"]
     politica_br_poder360_pesquisas["poder360_pesquisas"]
     politica_br_senado_ceaps["senado_ceaps"]
-    politica_br_senado_dados_abertos["senado_dados_abertos"]
-    politica_br_senado_dados_abertos_administrativos["senado_dados_abertos_administrativos"]
     politica_br_senado_dadosabertos["senado_dadosabertos"]
     politica_br_tse_eleicoes["tse_eleicoes"]
     politica_br_tse_filiacao_partidaria["tse_filiacao_partidaria"]
@@ -719,7 +665,6 @@ flowchart LR
     end
     subgraph politica_g_estado_e_economia["Estado e economia"]
         direction TB
-        politica_ORGAO(["ORGAO"])
         politica_FUNCAO_PROGRAMA(["FUNCAO_PROGRAMA"])
         politica_PARTIDO(["PARTIDO"])
     end
@@ -736,13 +681,6 @@ flowchart LR
     politica_br_poder360_pesquisas --> politica_UF
     politica_br_senado_ceaps -.-> politica_EMPRESA_CNPJ
     politica_br_senado_ceaps -.-> politica_PESSOA_CPF
-    politica_br_senado_dados_abertos --> politica_PARTIDO
-    politica_br_senado_dados_abertos --> politica_UF
-    politica_br_senado_dados_abertos_administrativos -.-> politica_EMPRESA_CNPJ
-    politica_br_senado_dados_abertos_administrativos --> politica_ORGAO
-    politica_br_senado_dados_abertos_administrativos --> politica_PARTIDO
-    politica_br_senado_dados_abertos_administrativos -.-> politica_PESSOA_CPF
-    politica_br_senado_dados_abertos_administrativos --> politica_UF
     politica_br_senado_dadosabertos -.-> politica_UF
     politica_br_tse_eleicoes --> politica_CEP
     politica_br_tse_eleicoes --> politica_CNAE
@@ -830,9 +768,9 @@ flowchart LR
     territorio_br_geobr_mapas["geobr_mapas"]
     territorio_br_ibama_autos["ibama_autos"]
     territorio_br_ibama_ctf["ibama_ctf"]
+    territorio_br_ibama_embargos["ibama_embargos"]
     territorio_br_ibama_embargos_novo["ibama_embargos_novo"]
     territorio_br_inmet_bdmep["inmet_bdmep"]
-    territorio_br_inpe_deter["inpe_deter"]
     territorio_br_inpe_prodes["inpe_prodes"]
     territorio_br_inpe_queimadas["inpe_queimadas"]
     territorio_br_inpe_sisam["inpe_sisam"]
@@ -888,13 +826,14 @@ flowchart LR
     territorio_br_ibama_ctf --> territorio_EMPRESA_CNPJ
     territorio_br_ibama_ctf -.-> territorio_MUNICIPIO
     territorio_br_ibama_ctf -.-> territorio_UF
+    territorio_br_ibama_embargos -.-> territorio_EMPRESA_CNPJ
+    territorio_br_ibama_embargos -.-> territorio_MUNICIPIO
+    territorio_br_ibama_embargos -.-> territorio_PESSOA_CPF
     territorio_br_ibama_embargos_novo -.-> territorio_EMPRESA_CNPJ
     territorio_br_ibama_embargos_novo -.-> territorio_MUNICIPIO
     territorio_br_ibama_embargos_novo -.-> territorio_PESSOA_CPF
     territorio_br_ibama_embargos_novo -.-> territorio_UF
     territorio_br_inmet_bdmep --> territorio_MUNICIPIO
-    territorio_br_inpe_deter -.-> territorio_MUNICIPIO
-    territorio_br_inpe_deter -.-> territorio_UF
     territorio_br_inpe_prodes --> territorio_MUNICIPIO
     territorio_br_inpe_queimadas --> territorio_MUNICIPIO
     territorio_br_inpe_queimadas --> territorio_UF
@@ -918,7 +857,7 @@ flowchart LR
 
 ## Demografia e indicadores sociais
 
-18 datasets · 2 sem ligação documentada
+17 datasets · 2 sem ligação documentada
 
 ```mermaid
 flowchart LR
@@ -927,7 +866,6 @@ flowchart LR
     demografia_br_ibge_censo2022_religiao["ibge_censo2022_religiao"]
     demografia_br_ibge_censo_2022["ibge_censo_2022"]
     demografia_br_ibge_censo_demografico["ibge_censo_demografico"]
-    demografia_br_ibge_cnefe["ibge_cnefe"]
     demografia_br_ibge_estadic["ibge_estadic"]
     demografia_br_ibge_munic["ibge_munic"]
     demografia_br_ibge_nomes_brasil["ibge_nomes_brasil"]
@@ -960,7 +898,6 @@ flowchart LR
     demografia_br_ibge_censo_demografico -.-> demografia_PESSOA_CPF
     demografia_br_ibge_censo_demografico --> demografia_SETOR_CENSITARIO
     demografia_br_ibge_censo_demografico --> demografia_UF
-    demografia_br_ibge_cnefe -.-> demografia_MUNICIPIO
     demografia_br_ibge_estadic --> demografia_UF
     demografia_br_ibge_munic --> demografia_MUNICIPIO
     demografia_br_ibge_munic --> demografia_UF
@@ -1016,15 +953,13 @@ flowchart LR
 
 ## Outros
 
-6 datasets · 1 sem ligação documentada
+4 datasets · 1 sem ligação documentada
 
 ```mermaid
 flowchart LR
-    outros__obsoleto["_obsoleto"]
     outros_br_anm["anm"]
     outros_br_minc_salic["minc_salic"]
-    outros_br_pncp["pncp"]
-    outros_br_sedec_desastres["sedec_desastres"]
+    outros_br_seeg["seeg"]
     subgraph outros_g_territ_rio["Território"]
         direction TB
         outros_MUNICIPIO(["MUNICIPIO"])
@@ -1040,8 +975,6 @@ flowchart LR
         direction TB
         outros_CID10(["CID10"])
     end
-    outros__obsoleto -.-> outros_CID10
-    outros__obsoleto --> outros_MUNICIPIO
     outros_br_anm -.-> outros_EMPRESA_CNPJ
     outros_br_anm -.-> outros_MUNICIPIO
     outros_br_anm -.-> outros_PESSOA_CPF
@@ -1050,11 +983,8 @@ flowchart LR
     outros_br_minc_salic --> outros_EMPRESA_CNPJ
     outros_br_minc_salic -.-> outros_PESSOA_CPF
     outros_br_minc_salic -.-> outros_UF
-    outros_br_pncp --> outros_EMPRESA_CNPJ
-    outros_br_pncp -.-> outros_MUNICIPIO
-    outros_br_pncp -.-> outros_UF
-    outros_br_sedec_desastres --> outros_MUNICIPIO
-    outros_br_sedec_desastres --> outros_UF
+    outros_br_seeg -.-> outros_CID10
+    outros_br_seeg --> outros_MUNICIPIO
 ```
 
 ## Sem ligação documentada
@@ -1064,7 +994,7 @@ flowchart LR
 - `br_ana_bho`
 - `br_ana_reservatorios`
 - `br_anac_dadosabertos`
-- `br_bcb_desenrola`
+- `br_anvisa_consultas`
 - `br_bcb_sgs`
 - `br_bd_diretorios_data_tempo`
 - `br_caixa_sorteios`
