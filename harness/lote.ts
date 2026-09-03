@@ -37,6 +37,8 @@ export interface Saida {
   eco?: boolean;
   /** maior prefill visto no llama-server durante o caso; alto = cache quebrado */
   prefillMax?: number;
+  /** quantas vezes o caso foi tentado — 1 é o normal; >1 é o workaround do item 10 agindo */
+  tentativas: number;
 }
 
 /** Arquivo de saída — o tempo sem a config que o produziu não é comparável. */
@@ -55,54 +57,98 @@ export interface Rodada {
  */
 export interface Caso { pergunta: string; esperado?: string }
 
+/** Uma tentativa isolada — um processo `dsh` do começo ao fim. */
+interface Tentativa {
+  resposta: string;
+  segundos: number;
+  respondeu: boolean;
+  prefillMax?: number;
+  semLog: boolean;
+}
+
+/**
+ * Quantas vezes tentar uma pergunta antes de desistir. backlog.md item 10:
+ * medido 2026-09-03, 4 de 6 sessões reais terminaram com a chamada de
+ * ferramenta do Gemma caindo como texto solto (formato nativo do modelo,
+ * `<|tool_call>...<tool_call|>`, que o parser do llama-server às vezes não
+ * reconhece) — o dsh não imprime nada nesse caso, então `respondeu` fica
+ * `false` mesmo com `code === 0`. Não é erro de raciocínio: casos 1 e 5, com
+ * sessões do mesmo tamanho, completaram normalmente — é probabilístico por
+ * turno, então repetir a MESMA pergunta numa sessão `dsh` nova tem boa chance
+ * de não bater o mesmo bug de novo. Não conserta a causa raiz (aberta,
+ * bloqueando em `backlog.md`); é o workaround que torna a rodada usável
+ * enquanto ela não fecha.
+ */
+const MAX_TENTATIVAS = Number(Bun.env.HARNESS_TENTATIVAS ?? 3);
+
+async function rodaUmaVez(q: string): Promise<Tentativa> {
+  // O prefill não volta pelo stdout do dsh — cada pergunta é outro processo.
+  // A marca no log do llama-server é o que sobra para saber se o cache viveu.
+  const marca = await marcaDoLog();
+  const t0 = Date.now();
+  const p = Bun.spawn(
+    ["bunx", "dsh", "--profile", "headless", "--patch", PATCH, q],
+    {
+      env: { ...process.env, HARNESS_LLM_KEY: "x" },
+      stdout: "pipe", stderr: "pipe",
+      timeout: 2_400_000, killSignal: "SIGKILL",
+    },
+  );
+  const texto = await new Response(p.stdout).text();
+  const err = await new Response(p.stderr).text();
+  const code = await p.exited;
+  const seg = (Date.now() - t0) / 1000;
+  const resposta = (texto.trim() || err.trim()).slice(0, 4000);
+  const respondeu = code === 0 && texto.trim().length > 40;
+
+  const prefills = await prefillsDesde(marca);
+  const prefillMax = prefills?.length ? Math.max(...prefills) : undefined;
+  return { resposta, segundos: seg, respondeu, prefillMax, semLog: prefills === undefined };
+}
+
 export async function roda(casos: Caso[]): Promise<Saida[]> {
   const out: Saida[] = [];
   let semLog = false;
   for (const [i, caso] of casos.entries()) {
     const q = caso.pergunta;
-    // O prefill não volta pelo stdout do dsh — cada pergunta é outro processo.
-    // A marca no log do llama-server é o que sobra para saber se o cache viveu.
-    const marca = await marcaDoLog();
-    const t0 = Date.now();
-    const p = Bun.spawn(
-      ["bunx", "dsh", "--profile", "headless", "--patch", PATCH, q],
-      {
-        env: { ...process.env, HARNESS_LLM_KEY: "x" },
-        stdout: "pipe", stderr: "pipe",
-        timeout: 2_400_000, killSignal: "SIGKILL",
-      },
-    );
-    const texto = await new Response(p.stdout).text();
-    const err = await new Response(p.stderr).text();
-    const code = await p.exited;
-    const seg = (Date.now() - t0) / 1000;
-    const resposta = (texto.trim() || err.trim()).slice(0, 4000);
-    const respondeu = code === 0 && texto.trim().length > 40;
+    let tentativa = await rodaUmaVez(q);
+    let tentativas = 1;
+    let segundos = tentativa.segundos;
+    let prefillMax = tentativa.prefillMax;
+    // Retentativa: só quando o dsh terminou sem produzir NADA (item 10) — uma
+    // resposta que veio, mesmo errada, não se repete: é erro de raciocínio,
+    // não do bug de parsing, e repetir esconderia o número real de acerto.
+    while (!tentativa.respondeu && tentativas < MAX_TENTATIVAS) {
+      tentativas++;
+      console.log(`      (vazio — tentativa ${tentativas}/${MAX_TENTATIVAS}, workaround do item 10)`);
+      tentativa = await rodaUmaVez(q);
+      segundos += tentativa.segundos;
+      prefillMax = Math.max(prefillMax ?? 0, tentativa.prefillMax ?? 0) || undefined;
+    }
+    if (tentativa.semLog && !semLog) {
+      semLog = true;
+      console.log("      (sem leitura do log do llama-server — o cache de prefixo NÃO está sendo conferido)");
+    }
+    const { resposta, respondeu } = tentativa;
     // fronteira de número, não substring: `789` não pode casar dentro de `1789`
     const a = avalia(resposta, caso.esperado, q);
     const correto = a.veredito === "sem_gabarito" || a.veredito === "eco"
       ? undefined
       : respondeu && a.certo;
 
-    const prefills = await prefillsDesde(marca);
-    if (prefills === undefined && !semLog) {
-      semLog = true;
-      console.log("      (sem leitura do log do llama-server — o cache de prefixo NÃO está sendo conferido)");
-    }
-    const prefillMax = prefills?.length ? Math.max(...prefills) : undefined;
-
-    out.push({ pergunta: q, resposta, segundos: seg, respondeu, correto, esperado: caso.esperado, eco: a.eco || undefined, prefillMax });
+    out.push({ pergunta: q, resposta, segundos, respondeu, correto, esperado: caso.esperado, eco: a.eco || undefined, prefillMax, tentativas });
     const marcaLinha = a.eco ? "ECO " : correto === false ? "ERRO" : correto === true ? " ok " : respondeu ? " ?  " : "  -- ";
-    console.log(`${marcaLinha} ${i + 1}/${casos.length}  ${seg.toFixed(0)}s  ${q.slice(0, 58)}`);
+    const sufixoTentativas = tentativas > 1 ? ` (${tentativas} tentativas)` : "";
+    console.log(`${marcaLinha} ${i + 1}/${casos.length}  ${segundos.toFixed(0)}s${sufixoTentativas}  ${q.slice(0, 58)}`);
     if (a.eco) console.log(`      esperado ${caso.esperado} aparece na própria pergunta — caso fora do denominador`);
     else if (correto === false) console.log(`      esperava ${caso.esperado} | veio: ${resposta.replace(/\s+/g, " ").slice(0, 130)}`);
-    else if (!respondeu) console.log(`      (vazio)`);
+    else if (!respondeu) console.log(`      (vazio após ${tentativas} tentativas)`);
 
     // O primeiro caso prefila o prefixo inteiro por definição — acusá-lo seria
     // ruído garantido. Do segundo em diante, prefill de tamanho de prefixo é
     // cache quebrado: a rodada continua CERTA e fica ~7x mais lenta.
-    if (i > 0 && prefills?.length) {
-      const aviso = avisaPrefill(prefills);
+    if (i > 0 && prefillMax) {
+      const aviso = avisaPrefill([prefillMax]);
       if (aviso) console.log(`      ${aviso}`);
     }
   }
