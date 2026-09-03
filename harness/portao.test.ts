@@ -244,26 +244,36 @@ describe("alertasDeSanidade — circunstancia_obito subconta suicídio (backlog 
 describe("camada inservível — a tabela que responde zero e parece certa", () => {
   // Os dois casos que motivaram esta camada — br_ibama_embargos (497 mil linhas
   // de string vazia) e br_seeg (redundante) — foram REMOVIDOS do espelho em
-  // 2026-09-02, depois que o levantamento os expôs. Hoje eles caem na camada
-  // `tabela`, que é o desfecho melhor: some do catálogo em vez de precisar ser
-  // desviado. A camada continua valendo para o que ainda existe e para o
-  // próximo caso do gênero.
+  // 2026-09-02, depois que o levantamento os expôs. `aposentados()` (catalogo.ts)
+  // varre TODAS as `provenance_notes` por `Substitui \`X\`` e intercepta X pelo
+  // NOME, mesmo já fora do catálogo — desfecho melhor que "tabela não existe"
+  // (camada `tabela`): a mensagem explica O QUE substituiu e por quê, em vez de
+  // just "não achei". Mesmo mecanismo da varredura de operacao.md tarefa 5.
   test("REJEITA tabela vazia (0 linhas)", () => {
     const v = portao("SELECT COUNT(*) FROM br_bd_diretorios_brasil.empresa");
     expect(v.ok).toBe(false);
     expect(v.camada).toBe("inservivel");
     expect(v.erro).toContain("vazia");
   });
-  test("os datasets aposentados já não estão no catálogo, e caem antes", () => {
-    for (const sql of [
-      "SELECT COUNT(*) FROM br_ibama_embargos.termo_embargo WHERE ano = 2020",
-      "SELECT COUNT(*) FROM br_seeg.emissoes_municipais WHERE ano = 2020",
-    ]) {
-      const v = portao(sql);
-      expect(v.ok).toBe(false);
-      expect(v.camada).toBe("tabela");
-    }
+  test("br_ibama_embargos é interceptado pelo nome, com o motivo", () => {
+    // aposentados() acha isto porque br_ibama_embargos_novo tem
+    // "Substitui `br_ibama_embargos`" em provenance_notes — a nota existe.
+    const v = portao("SELECT COUNT(*) FROM br_ibama_embargos.termo_embargo WHERE ano = 2020");
+    expect(v.ok).toBe(false);
+    expect(v.camada).toBe("inservivel");
+    expect(v.erro).toContain("aposentada");
   });
+  // br_seeg NÃO tem teste equivalente aqui, de propósito, e é um achado, não
+  // um esquecimento: nenhuma provenance_notes no espelho diz "Substitui
+  // `br_seeg`" (confirmado 2026-09-03, varredura de operacao.md tarefa 5), então
+  // aposentados() não tem como saber que ele foi removido. Pior: colunasDe()
+  // lê de docs/context/basedosdados-schema.json (gerado por scripts/gera_schemas.py,
+  // fora do escopo do harness), que não foi regenerado desde a remoção — então
+  // br_seeg.emissoes_municipais ainda PASSA o portão (camadas tabela/coluna
+  // acham a referência válida), mesmo com harness/dados/catalogo.json (fonte
+  // viva, via `catalogo.ts --atualiza`) confirmando que o dataset não existe
+  // mais. Não é um bug do portão — é uma dependência de arquivo desatualizado
+  // fora do escopo deste subsistema. Fecha só regenerando basedosdados-schema.json.
   test("aceita as que os substituíram", () => {
     expect(portao("SELECT COUNT(*) FROM br_ibama_embargos_novo.termo_embargo").ok).toBe(true);
   });

@@ -250,36 +250,3 @@ metrics:
       ano` numa tabela `*_mes` agrupa por mês do calendário, não por ano
       civil, e produz resultado sem sentido em silêncio. Achado
       respondendo tasks/perguntas.md T52-4, 2026-08-25.
-
-  pncp_valor_total_contratos:
-    description: >-
-      valor total contratado no PNCP, excluindo outliers de `valorGlobal`
-      claramente incompatíveis com o objeto do contrato (erro de digitação/
-      parsing na fonte, não erro do espelho)
-    unit: BRL (correntes, sem deflação)
-    grain: [ano_publicacao, numeroControlePNCP]
-    source_table: br_pncp.contratos
-    expression: SUM(valorGlobal) FILTER (WHERE valorGlobal < 1e9)
-    required_filters: [ano_publicacao]
-    synonyms: [valor total pncp, total contratado pncp, gasto total pncp,
-      valor dos contratos publicos, soma dos contratos]
-    verified: >-
-      2024: soma bruta R$1,736 tri (633.860 contratos) vs. soma filtrada
-      R$205,7 bi — 54 contratos (0,008% das linhas) acima de R$1 bi somam
-      88,15% do bruto e inflam o total em ~8,4x. Mediana real R$2.800.
-      Conferido no beelink 2026-09-02.
-    caveat: >-
-      corte de R$1 bi é um teto de sanidade, não uma fronteira exata entre
-      contrato real e erro de digitação — alguns contratos legítimos ficam
-      perto ou pouco acima dele (ex. pavimentação asfáltica ~R$1,01 bi,
-      Fundação Butantan ~R$1,24 bi em 2024) e saem do filtro junto. Os que
-      de fato distorcem o total são muito mais extremos e óbvios por
-      incompatibilidade com o objeto do contrato: 15 contratos >= R$50 bi
-      no espelho inteiro (2021-2026), incluindo um contrato de "serviço de
-      nefrologia" a R$1,96 trilhão (maior que o PIB do Brasil) e um valor
-      sentinela evidente (R$999.999.999.999,999999, fornecedor "P R C
-      DUARTE", 2026). `valorParcela * numeroParcelas` diverge muito de
-      `valorGlobal` nos piores casos e ajudaria a apontar o erro
-      linha a linha, mas isso não foi materializado como flag — a correção
-      aqui é só no agregado. NUNCA usar `SUM(valorGlobal)` sem este filtro
-      (ou equivalente) para "valor total contratado" — mente por ~8x.
