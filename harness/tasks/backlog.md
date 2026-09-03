@@ -453,7 +453,7 @@ parser nativo do Gemma4 falha em ~2/3 dos turnos, e se dá pra reduzir a taxa
 propõe um caminho pra esse conserto de verdade — LoRA em vez de patch em
 C++/upstream.
 
-## 11. LoRA pra estabilizar o tool call nativo do Gemma4 🔵 plano completo 2026-09-03 — nada rodado, primeiro passo é uma checagem de compatibilidade
+## 11. LoRA pra estabilizar o tool call nativo do Gemma4 🟡 passo 0 feito 2026-09-03 — resto do plano não rodado
 
 Nasce direto do item 10: o Gemma4 já FOI treinado pro formato nativo
 `<|tool_call>call:nome{...}<tool_call|>` — o llama.cpp tem parser PEG
@@ -470,13 +470,26 @@ de coisa que LoRA resolve bem, ao contrário de saber o schema do espelho
   ferramenta de servir (`servidor.sh`), só adiciona uma flag (`--lora`).
 - Ele já tem o comportamento-alvo internalizado; o LoRA teria que
   **reforçar**, não ensinar do zero — dataset pequeno, alvo estreito.
-- **Risco real, não verificado ainda:** Gemma4-A4B é MoE com arquitetura
-  própria no llama.cpp (`src/models/gemma4-assistant.cpp`, não um Llama
-  denso genérico). Não confirmei se `transformers`/`peft` (a pilha padrão de
-  LoRA em CUDA — `mlx-lm` é só Apple Silicon, não roda numa GPU alugada) já
-  suporta essa arquitetura específica. **Isso é o passo 0**, antes de gastar
-  qualquer coisa em GPU: se não tiver suporte upstream ainda, o plano para
-  aqui até ter.
+- **Passo 0 confirmado ao vivo, neste Mac, sem baixar o checkpoint real**
+  (`transformers` 5.15.0 e `peft` 0.20.0, ambos já instalados/instaláveis
+  localmente): `transformers` tem a arquitetura registrada —
+  `gemma4_assistant` → `Gemma4AssistantForCausalLM`/`Gemma4AssistantConfig`,
+  importam e instanciam limpo. `peft.get_peft_model()` com `LoraConfig`
+  (`target_modules=[q_proj, o_proj, gate_proj, up_proj, down_proj]`) anexou
+  adapters sem erro, trainable% na faixa normal de LoRA (~0,09% numa config
+  de teste pequena, não o checkpoint de 26B real). Verificado só na
+  estrutura (config em `meta`/CPU, sem baixar os pesos de 13–52 GB), mas
+  confirma que o resto do plano pode prosseguir sem risco de arquitetura.
+- **Achado de bônus, corrige uma suposição do projeto:** o validador da
+  config (`Gemma4AssistantConfig.validate_architecture` em
+  `configuration_gemma4_assistant.py`) **exige** `enable_moe_block=False` —
+  erra se não for. O checkpoint "assistant" (o que o `llama-server` serve e
+  cujo tool-call nativo é o alvo deste item) roda em modo **denso, não
+  MoE-roteado**, ao contrário do "26B / ~4B ativos, 128 experts" descrito em
+  `check-qwencoder-vs-duckdbnsql.md` (que provavelmente descreve um
+  checkpoint-irmão, não este). Na prática isso **remove** o risco de
+  "roteamento de MoE se comportando estranho sob LoRA" da tabela de custo
+  abaixo — LoRA em transformer denso é o caso mais bem suportado que existe.
 
 ### Por que NÃO expandir para as camadas do portão
 
@@ -513,8 +526,11 @@ sintético do zero, só extrair.
 
 ### Plano — RunPod.io, treino só, base continua local
 
-**Passo 0 (antes de qualquer GPU):** confirmar que `transformers`/`peft`
-carrega a arquitetura do checkpoint Gemma4-A4B. Sem isso o resto não começa.
+**Passo 0 ✅ feito 2026-09-03, sem GPU.** `transformers`/`peft` carregam a
+arquitetura (`Gemma4AssistantForCausalLM`) e `peft` anexa LoRA sem erro —
+ver achado acima. Não testado: carregar os PESOS REAIS do checkpoint de 26B
+(exigiria baixar 13–52 GB e não coube na checagem estrutural feita aqui) —
+fica pro passo 2, já dentro do pod alugado, não antes.
 
 **Passo 1 — extrair o dataset.** Script novo (não escrito ainda),
 `harness/dados/lora_toolcall.jsonl` ou similar: varre as sessões `dsh` já
@@ -533,9 +549,9 @@ matrizes de adaptação, base congelada).
 | Aplicar no beelink | — | segundos — `llama-server --lora adapter.gguf`, sem requantizar o GGUF base atual | grátis |
 
 **Total estimado para uma tentativa limpa: US$5–15, 2–4 h.** Realisticamente
-orçar **2–3 tentativas** (formato de dado errado, hiperparâmetro pra
-ajustar, roteamento de MoE se comportando estranho sob LoRA são todos
-comuns numa primeira passada) — mais perto de **US$20–40, uma tarde**.
+orçar **2–3 tentativas** (formato de dado errado, hiperparâmetro pra ajustar
+— o risco de roteamento de MoE saiu da lista, ver achado do passo 0 acima:
+o checkpoint "assistant" é denso) — mais perto de **US$20–40, uma tarde**.
 
 **Passo 3 — validar.** Reverter é só tirar a flag `--lora`. Medir contra os
 casos que já bateram o bug (as sessões do item 10 e do item 2 com
