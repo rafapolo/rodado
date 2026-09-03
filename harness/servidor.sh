@@ -154,10 +154,18 @@ FLAG_JINJA=""
 FLAG_TEMP=""
 [[ -n "${TEMP:-}" ]] && FLAG_TEMP="--temp $TEMP"
 
-echo "subindo: -c $CTX -np $SLOTS  (thinking off, KV em f16)${FLAG_JINJA:+, $FLAG_JINJA}${FLAG_TEMP:+, $FLAG_TEMP}"
+# LOGPROMPTS=1: --log-prompts-dir + --verbose, pra diagnosticar o item 10 de
+# verdade — ver o campo bruto tool_calls/content da resposta HTTP em vez de só
+# inferir pelo texto (ou ausência dele) que chega no dsh. Custa throughput
+# (verbose loga tudo); só usar pra uma pergunta de diagnóstico, não numa rodada.
+FLAG_LOG=""
+[[ "${LOGPROMPTS:-0}" == "1" ]] && FLAG_LOG="--verbose --log-prompts-dir /tmp/llmlogs"
+
+echo "subindo: -c $CTX -np $SLOTS  (thinking off, KV em f16)${FLAG_JINJA:+, $FLAG_JINJA}${FLAG_TEMP:+, $FLAG_TEMP}${FLAG_LOG:+, $FLAG_LOG}"
+[[ -n "$FLAG_LOG" ]] && ssh "$HOST" "mkdir -p /tmp/llmlogs"
 # Cada flag é medida, não gosto — ver harness/README.md.
 ssh "$HOST" "setsid $BIN -m $MODELO \
-  -t 8 -c $CTX -np $SLOTS $FLAG_JINJA $FLAG_TEMP \
+  -t 8 -c $CTX -np $SLOTS $FLAG_JINJA $FLAG_TEMP $FLAG_LOG \
   --chat-template-kwargs '{\"enable_thinking\":false}' \
   --host 127.0.0.1 --port $PORTA < /dev/null > /tmp/srv.log 2>&1 & disown" || true
 
