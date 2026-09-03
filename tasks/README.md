@@ -30,7 +30,7 @@ primeiros: **onde o dado está**.
 
 | Arquivo | O quê |
 |---|---|
-| [`plan/generate-full-schema-dict.md`](plan/generate-full-schema-dict.md) | Varredura em estágios pra achar colunas-código sem significado documentado em lugar nenhum (hoje só ~45 de ~230 datasets têm decode, via `dicionario_coverage.json`) — motivado pelo achado de `circunstancia_obito` (item 9 de `harness/tasks/backlog.md`), que subcontava suicídio sem nenhum alerta existir. 🔵 aberto 2026-09-03, nada rodado |
+| [`plan/generate-full-schema-dict.md`](plan/generate-full-schema-dict.md) | Varredura em estágios pra achar colunas-código sem significado documentado em lugar nenhum (hoje só ~45 de ~230 datasets têm decode, via `dicionario_coverage.json`) — motivado pelo achado de `circunstancia_obito` (item 9 de `harness/tasks/backlog.md`), que subcontava suicídio sem nenhum alerta existir. 🟡 estágios 1+2 rodados 2026-09-03, mais uma passada de leitura humana/LLM (não regex) — `docs/context/schema_dict_status.json` etiqueta 28.263 colunas, **8.690 `nao_verificado`** (era 17.164 antes da leitura); `describe_table` já expõe o aviso. Estágios 3 (priorizar por uso real) e 4 (pesquisa manual, o que sobrou — PIRLS/TIMSS/PNS/censo 2022) seguem abertos |
 
 Não são tarefas, são insumos:
 

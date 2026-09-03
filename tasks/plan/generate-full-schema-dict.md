@@ -184,6 +184,144 @@ ler os dois — a extensão natural do alerta que já dá pra
 - **Vale por si**, mesmo sem nenhum modelo — é documentação que humano lendo
   `describe_table` também precisa.
 
+## Resultado dos estágios 1+2 — rodado 2026-09-03
+
+`scripts/gera_schema_dict_status.py` (novo) sweepa as 28.263 colunas
+STRING/INTEGER fora de `dicionario_coverage.json` — `FLOAT`/`BOOLEAN` ficam
+de fora por serem contínuas/autoexplicativas por tipo, não por nome. Saída
+em `docs/context/schema_dict_status.json`:
+
+| Etiqueta | Colunas | % |
+|---|---|---|
+| `nao_verificado` | **17.164** | 60,7% |
+| `nao_e_codigo` | 9.612 | 34,0% |
+| `padrao_externo` | 1.289 | 4,6% |
+| `documentado_em_outro_lugar` | 198 | 0,7% |
+
+**Atualizado no mesmo dia, depois de uma segunda passada** (`scripts/llm_triage_schema_dict_status.py`, ver seção própria abaixo): a pedido, em vez de continuar batendo em busca na internet dataset por dataset, usei esta própria sessão pra LER as colunas e julgar se precisavam de dicionário. Regex não lê linguagem natural — não reconhecia que `br_mjsp_sisdepen` inteiro (3.233 colunas, sozinho 18,8% do total) é a pergunta literal do formulário oficial do SISDEPEN convertida em slug, autoexplicativa por construção. Números finais:
+
+| Etiqueta | Colunas | % |
+|---|---|---|
+| `nao_verificado` | **8.690** | 30,7% |
+| `nao_e_codigo` | 15.842 | 56,1% |
+| `documentado_em_outro_lugar` | 2.442 | 8,6% |
+| `padrao_externo` | 1.289 | 4,6% |
+
+Confirma a suspeita que abriu o plano: a maioria das colunas-código do
+espelho (17.164, quase dois terços do universo varrido) não tem fonte de
+significado em lugar nenhum — nem dicionario, nem `bridges.yaml`, nem
+`hierarchies.yaml`. `describe_table` (MCP) já lê o arquivo e expõe
+`nao_verificado_warning` por tabela (702 tabelas afetadas), generalizando o
+alerta manual que `harness/tasks/backlog.md` item 9 escreveu à mão só pra
+`circunstancia_obito`.
+
+Duas decisões tomadas ao rodar, não previstas no texto original acima:
+
+1. **Cardinalidade não é o filtro primário — nome é.** Em vez do limiar cru
+   de <100 valores distintos, o critério aplicado foi "não dá pra inferir o
+   significado dos VALORES a partir do nome da coluna" — implementado como
+   uma cascata de checagens por nome (calendário/medida/flag binário
+   `indicador_*`/`flag_*`/padrão externo conhecido por token, incluindo CBO e
+   NCM que não têm entrada em `hierarchies.yaml` ainda — gap registrado, não
+   corrigido aqui) que resolve ~5 mil colunas **sem tocar o beelink**; só o
+   que sobra sem explicação por nome paga uma consulta de cardinalidade real.
+2. **Tabelas acima de 50M linhas (10,6% do espelho, até 6,16 bilhões no maior
+   caso) tiveram a cardinalidade adiada, não medida** — calibrado ao vivo
+   antes de rodar tudo (0,4–1,2s por tabela mesmo em ~48M linhas; a 2,5
+   bilhões de linhas, 32s **para 2 colunas**). Rodar sem esse teto teria sido
+   o mesmo tipo de erro que o item 7 de `mcp_search_refino.md` já cometeu
+   (join sem filtro em tabela gigante prendeu lock de 2h+) — aqui sem lock
+   (consulta é `-readonly`), mas ainda scan pesado sem necessidade. Essas
+   colunas ficam `nao_verificado` com motivo "adiado por custo", candidatas
+   naturais ao estágio 3.
+
+## Passada de leitura humana/LLM — `llm_triage_schema_dict_status.py`
+
+A pedido, em vez de sair caçando dicionário na internet dataset por dataset
+(o que eu tinha começado a fazer — 2 buscas, 2 fetches, achando fontes reais
+mas devagar demais pra escala do problema), usei esta própria sessão pra ler
+amostra real de cada um dos 40 datasets que concentram 91,5% dos
+`nao_verificado`, e julgar: dá pra saber o que a coluna significa só de ler o
+nome, ou precisa mesmo de fonte externa?
+
+**O que a leitura achou que regex não podia achar:** boa parte dos
+`nao_verificado` não é código nenhum — é questionário/formulário oficial
+com o texto da pergunta inteiro convertido em nome de coluna. Regex pega
+padrão fixo (`ano`, `indicador_*`); não pega "a coluna inteira é uma frase em
+português". Datasets confirmados por amostra e reclassificados em bloco pra
+`nao_e_codigo`: `br_mjsp_sisdepen` (3.233 colunas — sozinho 18,8% do total
+original), `br_ibge_munic`, `br_ibge_estadic`, `br_inep_censo_escolar`,
+`world_sofascore_competicoes_futebol`, `mundo_transfermarkt_competicoes`,
+`br_camara_dados_abertos`, `br_cgu_beneficios_cidadao`, `br_transferegov`,
+`br_bd_diretorios_brasil`, `br_ieps_saude`, `br_ms_cnes`, `br_ana_telemetria`,
+`br_tse_eleicoes`, `eu_sanctions`, `br_senado_dadosabertos`, `world_oecd_pisa`,
+`br_ibama_embargos_novo`, `br_ibama_autos`, `br_anm`, `br_bcb_sicor` — 6.230
+colunas.
+
+**Três achados pontuais, não achismo de regex:**
+1. `br_ibge_censo_demografico.setor_censitario_*` (2.228 colunas, 88% do
+   dataset): são códigos V- do produto "Agregados por Setores Censitários"
+   do Censo 2010, que TEM dicionário oficial publicado pelo IBGE — achado
+   via busca real (FTP oficial do IBGE + um PDF de terceiros), mas **não
+   conferido célula a célula**. Vira `documentado_em_outro_lugar` com a
+   ressalva explícita de que é pista forte, não decode verificado.
+2. `cor_raca`/`sexo_paciente`/`raca_cor_paciente` (16 colunas, 3 datasets):
+   mesmo conceito de `bridges.yaml coded_differently`, só com a ordem das
+   palavras trocada ou um sufixo — o match exato do gerador original não
+   pega variação de ordem. Reclassificadas junto.
+3. `br_siop_orcamento`: achado um **bug de import**, não falta de
+   dicionário — colunas como `FunÃ§Ã£o`/`RegiÃ£o`/`ï»¿ano` têm o nome
+   corrompido por mojibake, coexistindo com a versão correta (`funcao`). Não
+   é candidato a pesquisa externa nenhuma, é limpeza de dado — sinalizado à
+   parte, fora do escopo deste plano corrigir.
+
+**O que NÃO foi reclassificado, de propósito:** `world_iea_pirls` (2.303),
+`world_iea_timss` (1.005), `br_ms_pns` (1.023), `br_ibge_censo_2022` (661),
+`br_datahackers_state_data`, `us_harvard_ned`, `br_ms_sinan*`, `br_inep_enem`,
+`br_ibge_pof`, `br_ibge_pnadc`, `br_inep_saeb`, `br_ms_sih` — amostrados e
+achados **genuinamente opacos** (PIRLS/TIMSS usam a nomenclatura oficial do
+IEA, tipo `atbr03b`; SINAN usa abreviação DATASUS maiúscula, tipo `CS_RACA`;
+PNS/ENEM/POF usam código de questionário tipo `q075`/`Q005`/`V0206`) ou
+**mistos demais** pra reclassificar em bloco sem risco de marcar errado.
+Esses continuam `nao_verificado` — são os candidatos reais ao estágio 4.
+
+Resultado final, `docs/context/schema_dict_status.json` regenerado:
+
+| Etiqueta | Colunas | % |
+|---|---|---|
+| `nao_verificado` | **8.690** | 30,7% |
+| `nao_e_codigo` | 15.842 | 56,1% |
+| `documentado_em_outro_lugar` | 2.442 | 8,6% |
+| `padrao_externo` | 1.289 | 4,6% |
+
+**Estágios 3 e 4 seguem abertos** — priorizar os 8.690 `nao_verificado` que
+sobraram por uso real (golden sets, `harness/tasks/backlog.md` item 2,
+`docs/perguntas.md`) e só então pesquisar manualmente o que sobrar. A maior
+fatia que resta é justamente a mais difícil: PIRLS/TIMSS (survey
+internacional, codebook do IEA) e PNS/censo 2022 (survey IBGE) — dicionários
+que existem mas exigem baixar/cruzar um documento por estudo, não uma busca
+solta por coluna.
+
+### Considerado e descartado: treinar LoRA no DuckDB-NSQL-7B com este resultado
+
+Perguntado à parte 2026-09-03. `schema_dict_status.json` não serve como dado
+de treino de LoRA pro DuckDB-NSQL-7B: é etiqueta+motivo por coluna em prosa,
+não par (schema, pergunta, SQL) — o formato que um fine-tune de text-to-SQL
+consome. Descasa também de papel: por
+`harness/tasks/check-qwencoder-vs-duckdbnsql.md`, o NSQL-7B está escopado a
+**"apurador dentro do `laco.ts`"** — só redige SQL depois que outro modelo já
+resolveu tabela/coluna, sem tool-calling, sem canal de saída pra avisar nada.
+Decidir se uma coluna é confiável é papel do orquestrador (que já lê
+`nao_verificado_warning` via `describe_table`), não do modelo que só escreve
+a query. E o argumento que já fechou `harness/tasks/backlog.md` item 11 contra
+expandir o LoRA do Gemma pras camadas de schema vale igual aqui: é dado
+regenerável (muda a cada regen do `dicionario_coverage.json`), não
+conhecimento pra congelar em peso, a menos que o retreino vire passo
+automático do pipeline de sync — o que não é escopo deste plano. Valor real,
+sem treino: como comentário injetado no schema que vira contexto de prompt
+(prompting, não peso), e como filtro de qualidade sobre um futuro dataset
+sintético de text-to-SQL, se um dia existir.
+
 ## Ver também
 
 - [`harness/tasks/backlog.md`](../../harness/tasks/backlog.md) item 9 — o
