@@ -133,14 +133,17 @@ Tudo o que existe hoje mede *escolha de dataset*, não resposta ponta a ponta.
 emite o TSV `pergunta <TAB> esperado` que `lote.ts` lê —
 `bun harness/casos.ts --tsv > /tmp/casos.tsv && bun harness/lote.ts /tmp/casos.tsv`.
 
-**Rodada começou 2026-09-03 00:19, abortada no caso 6/58.** As invariantes de
+**1ª tentativa: 2026-09-03 00:19, abortada no caso 6/58.** As invariantes de
 `operacao.md` estavam ok (`confereBoot()` aprovou, `-np 1 -c 32768` confirmado).
 0/6 casos corretos — mas **4 dos 6 não são falha de raciocínio, são a chamada
 de ferramenta caindo como texto solto** por causa de um bug de parsing só
 agora exposto porque é a primeira vez que o laço roda tantas sessões `dsh`
-reais em sequência. Detalhe completo, causa provável e o que já foi
-descartado: **item 10**, abaixo. **Não rodar de novo até o item 10 fechar** —
-qualquer número coletado sem o conserto mede o bug, não o modelo.
+reais em sequência. Detalhe completo, causa provável e o workaround: **item
+10**, abaixo.
+
+**2ª tentativa: 2026-09-03 09:11, com o workaround de retentativa
+(`lote.ts`) no ar.** `bun harness/casos.ts --tsv > /tmp/casos.tsv && bun
+harness/lote.ts /tmp/casos.tsv`, em background — rodando.
 
 ## 3. A prosa cita a ferramenta, não o órgão ✅ fechado 2026-09-03
 
