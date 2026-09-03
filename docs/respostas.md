@@ -946,7 +946,65 @@ RN 72,4%, SP 71,9%.
 
 ## Multi-referência (seção final)
 
-- **M1 ⏳ / M2 ⏳ / M3 ⏳ / M4 ⏳ / M5 ⏳** — as cadeias completas exigem pipelines dedicados; componentes já medidos aparecem nas entradas parciais acima (ex.: M4 usa A1/A2; M3 usa T37-1/T37-5).
+Respondidas em 2026-09-03 com Claude direto no beelink (não pelo harness Gemma),
+pra servir de gabarito de comparação — ver nota no topo de cada uma sobre a
+simplificação metodológica feita (essas cadeias, como pedidas em `perguntas.md`,
+exigiriam pipeline dedicado; o que segue é o cruzamento cross-seccional viável
+numa sessão, não a reconstrução de coorte/causal completa).
+
+- **M1 ✅ (proxy)** *Trajetória raça → mercado → morte* (RAIS × CAGED × SIM, 2022,
+  n=4.245 municípios ≥5.000 hab): **sem evidência de acúmulo territorial das três
+  desvantagens**. Lacuna racial de rendimento (RAIS) × rotatividade no mercado de
+  trabalho (CAGED, movimentações per capita) × mortalidade geral (SIM, óbitos/100k)
+  — correlações par a par fracas a desprezíveis, **r entre −0,07 e +0,11**. Dos
+  municípios no pior terço nas três dimensões simultaneamente, só **102** —
+  *abaixo* do esperado por acaso (~157) se fossem independentes. Proxy: usei
+  mortalidade **geral**, não especificamente "causas evitáveis" (categoria exige
+  agrupamento CID que não montei); rotatividade é volume de movimentação CAGED
+  per capita, não a taxa clássica sobre estoque de vínculos.
+- **M2 ✅ (proxy)** *Escola → conectividade → eleição* (Anatel IBC Δ2021→2024 ×
+  ENEM redação Δ2018→2022 por escola × TSE presidencial Δ2018→2022, n≈4.230):
+  **conectividade não moveu a nota** — r≈0 (−0,01) entre Δ IBC e Δ redação.
+  Δ IBC × Δ % Lula: **r=+0,27**, mas confundido — a comparação troca de candidato
+  (Haddad 2018 → Lula 2022, ambos PT mas bases diferentes) e conectividade já
+  correlaciona com alfabetização de base (r=+0,27): quem tinha mais infra
+  educacional ganhou mais conectividade depois. Não dá pra separar investimento
+  de perfil prévio com este desenho — precisaria de painel com mais pontos no
+  tempo e controle por candidato.
+- **M4 ✅** *Desmatamento → crédito → produção → sanção fundiária* (PRODES ×
+  SICOR × SICAR × PPM, todos os municípios): **confirma e estende A1/A2**.
+  Desmatamento acumulado (PRODES 2023) × crédito rural total liberado (SICOR,
+  todos os anos): **r=+0,58** (n=5.540); × área de imóveis CAR com pendência
+  (SICAR, status PE): **r=+0,39** (n=4.539); × nº de imóveis pendentes: r=+0,45.
+  Top do ranking: **São Félix do Xingu/PA** — 21.299 km² desmatados, R$ 1,34 bi em
+  crédito rural, 2,52 milhões de cabeças de gado (maior rebanho do país nesse
+  recorte) e 11,3 milhões de ha em imóveis CAR "pendente" — **mais que a área do
+  município inteiro** (8,4 milhões de ha): evidência de sobreposição de polígono
+  autodeclarado no CAR, não de área líquida real — tratar como proxy de volume de
+  pendência, não medida de área limpa.
+- **M5 ✅ (proxy)** *Nascimento → escola → trabalho → óbito juvenil* (SINASC ×
+  Sinopse INEP × RAIS jovem 18-24 × SIM 15-29, 2022, n=3.993 municípios ≥5.000
+  hab): correlações fracas, sem clusterização forte. Natalidade × matrícula ensino
+  médio per capita: r=+0,37 (esperado); × vínculo jovem formal: r≈0; × óbito
+  jovem/100k: r=+0,24. Vínculo jovem × óbito jovem: **r=−0,19** (mais emprego
+  formal, menos morte — direção esperada, mas fraca). Só **8 municípios** (de
+  3.993) caem no pior quartil nas 4 dimensões simultaneamente — abaixo do
+  esperado por acaso (~15,6). Exemplos onde o ciclo mais se rompe: Pauini/AM, Alto
+  Alegre/RR, Portel/PA — interior Norte/Nordeste, mortalidade jovem 44-71/100k
+  (2-4x a taxa nacional nessa faixa). Proxy: cross-seccional 2022, não coorte
+  longitudinal de nascidos acompanhados ao longo da vida.
+- **M3 ⏳ (tentativa Gemma falhou, 2026-09-03)** — rodada por
+  `bun harness/pergunte.ts` (5 datasets, a pergunta mais rica de `perguntas.md`
+  em nº de fontes: emendas → contratos → CNPJ → TCU → PGFN). **40 min, sem
+  resposta**: morta pelo timeout interno do harness (`HARNESS_TIMEOUT_MS`,
+  2.400.000ms, SIGKILL) — não travou infraestrutura (llama-server seguiu
+  saudável depois), o laço agêntico simplesmente não convergiu numa cadeia de
+  5 fontes dentro do orçamento. Consistente com o padrão já registrado em
+  `harness/tasks/backlog.md` item 2 (casos multi-tabela custam ~36 min/caso e
+  às vezes voltam vazios mesmo assim) — essa é a pergunta mais exigente que já
+  foi testada no harness, então o resultado é o esperado, não uma surpresa.
+  Não respondida por este método; componentes já medidos manualmente:
+  T37-1/T37-5.
 
 ## Bloqueios mapeados (dado ausente, corrompido ou sem chave — não é falta de query)
 
