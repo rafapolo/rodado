@@ -388,10 +388,29 @@ para o workaround de retentativa, não melhor. Revertido na hora
 (`./harness/servidor.sh` sem `TEMP`), servidor confirmado saudável de novo.
 Flag `TEMP` fica em `servidor.sh` só documentada como descartada.
 
+**Diagnóstico #3, com log verboso** (`LOGPROMPTS=1 ./harness/servidor.sh` —
+`--verbose --log-prompts-dir`, novo em `servidor.sh`, não descartado):
+não reproduziu o bug na tentativa (esperado — é probabilístico). Achado à
+parte, valioso mesmo sem confirmar a hipótese: a mesma pergunta ("CBOs
+dominadas por admissões precárias...") terminou com o modelo apresentando
+um **plano de investigação e pedindo aprovação** em vez de executar — 2ª vez
+que isso aparece em rodadas diferentes. Não é o bug do item 10 (a ferramenta
+FOI reconhecida; o modelo só decidiu parar sozinho) — é comportamento de
+assistente interativo vazando pra um contexto sem humano nenhum pra aprovar
+nada. **Consertado**: `persona` em `dsh/rodado.patch.yml` agora instrui
+explicitamente a nunca parar num plano. Testado ao vivo, mesma pergunta:
+desta vez executou de verdade e concluiu (não confirmou a hipótese por
+limite real dos dados — CAGED só cobre 2020-2025, a pergunta assumia
+2012-2022 — mas é uma resposta completa, não um plano parado). Detalhe em
+`regras.md`, "O laço e o reparo".
+
 **Não investigado ainda:**
 - Log verboso do `llama-server` numa chamada ao vivo, pra ver se o campo
   `tool_calls` da resposta HTTP vem vazio (confirmaria: falha é do parser
-  server-side, não do dsh) — a suspeita forte, mas não verificada byte a byte.
+  server-side, não do dsh) — a suspeita forte, mas não verificada byte a byte
+  (a tentativa de diagnóstico acima não bateu o bug, então não deu pra olhar
+  a resposta bruta do caso quebrado — `LOGPROMPTS=1` fica pronto pra próxima
+  vez que reproduzir).
 - Forçar `tool_choice: required` desativa o `grammar_lazy`, mas também
   impediria o modelo de terminar com texto livre (a resposta final) —
   não dá pra usar sem repensar como o laço encerra o turno.
