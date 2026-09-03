@@ -49,6 +49,7 @@ Um `README.md` na própria pasta descreve arquivo por arquivo, quem gera cada um
 - `hierarchies.yaml` — rollup de município→UF→região, CNAE e CID-10. CNAE e CID são prefixais: o pai sai de `substr()`, sem join
 - `schema_ddl.sql` — snapshot DDL parcial (527 tabelas, 109 datasets) da porção espelhada do **Base dos Dados**; serve de referência de procedência para `scripts/build_metadata_catalog.py`. Cobre parte do mirror, não todo ele
 - `dicionario_coverage.json` — quais colunas de quais tabelas têm decode chave→valor disponível em `{dataset}.dicionario`, escaneado em **45 datasets** (168 tabelas, 6.256 colunas) — não só o censo IBGE histórico (`v0502` etc.) que motivou o mecanismo, generalizado 2026-08-24 depois que um teste cego do MCP achou o mesmo padrão em RAIS/CAGED/ENEM/SIM e outros 40. Gerado por `scripts/gera_dicionario_coverage.py`; `describe_table` lê pra avisar quais colunas de uma tabela são decodificáveis (`dicionario_coverage`) e quais têm código que **diverge entre datasets** pro mesmo conceito (`coded_value_warning`, cruzado com `bridges.yaml`'s `coded_differently`)
+- `schema_dict_status.json` — estágios 1+2 de [`tasks/plan/generate-full-schema-dict.md`](tasks/plan/generate-full-schema-dict.md), mais uma passada de leitura humana/LLM (não regex) por cima: toda coluna STRING/INTEGER fora de `dicionario_coverage.json` etiquetada (`dicionario_disponivel` fica implícito, fora do escopo do arquivo) — 28.263 colunas: **8.690 `nao_verificado`** (candidato real a código, sem fonte de significado em lugar nenhum — a etiqueta que importa, generaliza o alerta manual que `harness/tasks/backlog.md` item 9 teve que escrever à mão pra `br_ms_sim.circunstancia_obito`), 15.842 `nao_e_codigo` (nome autoexplicativo, cardinalidade alta demais, ou — a maior fatia — confirmado por leitura direta: SISDEPEN inteiro, 3.233 colunas, é a pergunta literal do formulário oficial convertida em slug), 2.442 `documentado_em_outro_lugar` (inclui os 2.228 códigos V- do "Agregados por Setores Censitários" do Censo 2010, achado com dicionário oficial do IBGE mas não conferido célula a célula), 1.289 `padrao_externo` (CNAE/CID/CBO/NCM/geografia, já cobertos por `hierarchies.yaml`/`bridges.yaml`). Tabelas acima de 50M linhas (6,3 bilhões no maior caso) têm a cardinalidade adiada por custo, não medida. Gerado por `scripts/gera_schema_dict_status.py` + `scripts/llm_triage_schema_dict_status.py`; `describe_table` lê e expõe `nao_verificado_warning` por tabela
 
 ### Camada semântica — `bridges.yaml`, `metrics.yaml`, `hierarchies.yaml`
 
@@ -78,6 +79,8 @@ python3 scripts/valida_metrics.py          # confere metrics.yaml + hierarchies.
 python3 scripts/gera_schema_graph.py       # -> pages/atlas/schema_graph.json
 python3 scripts/build_atlas.py             # -> pages/atlas/index.html
 python3 scripts/gera_dicionario_coverage.py  # beelink -> docs/context/dicionario_coverage.json (rerodar quando um dicionario mudar)
+python3 scripts/gera_schema_dict_status.py   # beelink + dicionario_coverage.json + bridges.yaml + hierarchies.yaml -> docs/context/schema_dict_status.json
+python3 scripts/llm_triage_schema_dict_status.py  # passada de leitura humana/LLM em cima do resultado acima — sempre depois, não é automático
 ```
 
 `sync_mcp_schema.py` é o passo que se esquece: sem ele `mcp_server.py` continua lendo o

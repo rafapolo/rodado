@@ -38,6 +38,7 @@ Três coisas destes arquivos valem mais que o resto:
 | `join_keys.md` | O render do `bridges.yaml` + as chaves auto-detectadas: 157 seções. `mcp_server.get_join_keys()` fatia este arquivo por `###`, então todo h3 tem que ser um nome de coluna de verdade | `gera_join_keys.py` |
 | `metrics.json` | O `metrics.yaml` em JSON, consumido por `build_ask_web_assets.ts` no branch `ask-web`. O MCP lê o YAML direto | `gera_metrics_json.py` |
 | `dicionario_coverage.json` | Quais colunas de quais tabelas têm decode chave→valor em `{dataset}.dicionario` — 45 datasets, 168 tabelas, 6.256 colunas | `gera_dicionario_coverage.py` |
+| `schema_dict_status.json` | Estágios 1+2 de `tasks/plan/generate-full-schema-dict.md` + uma passada de leitura humana/LLM (não regex): toda coluna STRING/INTEGER fora do `dicionario_coverage.json` etiquetada — 28.263 colunas: **8.690 `nao_verificado`** (sem fonte de significado em lugar nenhum — a etiqueta que importa), 15.842 `nao_e_codigo`, 2.442 `documentado_em_outro_lugar`, 1.289 `padrao_externo`. `describe_table` lê e expõe `nao_verificado_warning` por tabela | `gera_schema_dict_status.py` + `llm_triage_schema_dict_status.py` |
 
 ## Busca semântica (`search_tables`)
 
@@ -75,6 +76,8 @@ python3 scripts/gera_join_keys.py          # bridges.yaml   -> join_keys.md
 python3 scripts/gera_metrics_json.py       # metrics.yaml   -> metrics.json
 python3 scripts/valida_metrics.py          # confere metrics.yaml + hierarchies.yaml
 python3 scripts/gera_dicionario_coverage.py  # beelink      -> dicionario_coverage.json
+python3 scripts/gera_schema_dict_status.py   # beelink + dicionario_coverage.json + bridges.yaml + hierarchies.yaml -> schema_dict_status.json
+python3 scripts/llm_triage_schema_dict_status.py  # passada de leitura humana/LLM sobre o resultado acima — rodar sempre depois, não é automático
 ```
 
 `sync_mcp_schema.py` é o passo que se esquece: sem ele o `mcp_server.py` segue
