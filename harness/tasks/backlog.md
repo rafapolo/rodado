@@ -117,7 +117,7 @@ duas confusões diferentes.
 pergunta — mas conta para o gargalo de contexto (item 4). Só onde há par
 ambíguo.
 
-## 2. Rodar o laço nos casos com `n` conferido 🔴 rodada iniciada e ABORTADA 2026-09-03 — achou bug bloqueador, ver item 10
+## 2. Rodar o laço nos casos com `n` conferido 🟡 rodada em andamento 2026-09-03 (3ª tentativa) — ver item 10
 
 O número que responde ao objetivo do harness, e **o único ainda não medido**.
 Tudo o que existe hoje mede *escolha de dataset*, não resposta ponta a ponta.
@@ -438,7 +438,105 @@ disparou.
 libera o item 2 pra rodar de novo, e a rodada plena começou logo depois
 deste teste. Fica em aberto **conserto de verdade**: entender por que o
 parser nativo do Gemma4 falha em ~2/3 dos turnos, e se dá pra reduzir a taxa
-(`tool_choice`, gramática forçada, ou upstream do llama.cpp).
+(`tool_choice`, gramática forçada, ou upstream do llama.cpp). O item 11
+propõe um caminho pra esse conserto de verdade — LoRA em vez de patch em
+C++/upstream.
+
+## 11. LoRA pra estabilizar o tool call nativo do Gemma4 🔵 plano completo 2026-09-03 — nada rodado, primeiro passo é uma checagem de compatibilidade
+
+Nasce direto do item 10: o Gemma4 já FOI treinado pro formato nativo
+`<|tool_call>call:nome{...}<tool_call|>` — o llama.cpp tem parser PEG
+dedicado pra ele — mas sob `tool_choice=auto` a geração roda em gramática
+"lazy" (sem restrição até bater um gatilho por substring, ver item 10) e o
+modelo erra a própria sintaxe treinada em boa parte dos turnos. Isso é
+**consistência de comportamento**, não conhecimento novo — exatamente o tipo
+de coisa que LoRA resolve bem, ao contrário de saber o schema do espelho
+(camadas do portão), que é conhecimento específico e muda a cada sync.
+
+### Por que Gemma continua sendo a base certa
+
+- É o modelo já em produção — treinar um LoRA pra ele não muda nada da
+  ferramenta de servir (`servidor.sh`), só adiciona uma flag (`--lora`).
+- Ele já tem o comportamento-alvo internalizado; o LoRA teria que
+  **reforçar**, não ensinar do zero — dataset pequeno, alvo estreito.
+- **Risco real, não verificado ainda:** Gemma4-A4B é MoE com arquitetura
+  própria no llama.cpp (`src/models/gemma4-assistant.cpp`, não um Llama
+  denso genérico). Não confirmei se `transformers`/`peft` (a pilha padrão de
+  LoRA em CUDA — `mlx-lm` é só Apple Silicon, não roda numa GPU alugada) já
+  suporta essa arquitetura específica. **Isso é o passo 0**, antes de gastar
+  qualquer coisa em GPU: se não tiver suporte upstream ainda, o plano para
+  aqui até ter.
+
+### Por que NÃO expandir para as camadas do portão
+
+Princípio já em vigor no projeto (`bridges.yaml`/`catalog.parquet`/
+`metrics.yaml` como **dado regenerável**, não prosa que o modelo memoriza —
+ver CLAUDE.md): schema muda a cada sync, e conhecimento em peso vai ficando
+velho até alguém lembrar de retreinar. Código+dado lido em tempo de execução
+não tem esse problema — é sempre a versão mais recente.
+
+**Ressalva, levantada e aceita durante a conversa:** essa objeção só vale
+para um LoRA treinado uma vez e esquecido. Se o escopo um dia **expandir**
+para conhecimento de schema, e o retreino virar **outro passo automático do
+pipeline de sync** — ao lado de `gera_join_keys.py`, `gera_metrics_json.py`
+etc. — a "ficar velho" deixa de ser argumento, vira só mais um regen. Esse
+plano, porém, fica **escopado ao alvo estreito do item 10** (formato de tool
+call, independente de schema) — expandir o escopo é decisão futura separada,
+não parte deste item.
+
+### Fonte de dado de treino — já existe, de graça
+
+Toda sessão `dsh` que bateu o bug do item 10 (o texto solto `<tool_call|>` ou
+`<|tool_call>call:...<tool_call|>` mal-classificado) e toda rejeição do
+portão seguida de correção (`~/.dsh/sessions/*.jsonl.zstd`, mais os
+`benchmarks/lote_*.json` do item 2) é um par (tentativa ruim → o que devia
+ter saído) sem custo de rotulagem — já está logado. Não precisa gerar
+sintético do zero, só extrair.
+
+### Hardware — testado ao vivo, os dois descartados
+
+| Onde | Achado | Veredito |
+|---|---|---|
+| Este Mac (M4, 16 GB) | `mlx-lm` 0.31.3 já instalado, mas `vm_stat`/`top` mostram **14 GB de 16 GB já em uso** só rodando esta sessão — 1,8 GB livre. O GGUF q4_0 sozinho é 13,4 GB. Não cabe, e esta máquina é o ambiente de trabalho ativo — travar ela trava tudo o mais | ❌ descartado |
+| beelink | `nvidia-smi` ausente, só iGPU AMD Vega (`lspci`); 27 GB RAM com 21 GB já em uso servindo o `llama-server` | ❌ descartado (já sabíamos que não tinha GPU; confirmado de novo aqui) |
+
+### Plano — RunPod.io, treino só, base continua local
+
+**Passo 0 (antes de qualquer GPU):** confirmar que `transformers`/`peft`
+carrega a arquitetura do checkpoint Gemma4-A4B. Sem isso o resto não começa.
+
+**Passo 1 — extrair o dataset.** Script novo (não escrito ainda),
+`harness/dados/lora_toolcall.jsonl` ou similar: varre as sessões `dsh` já
+logadas, extrai pares (contexto até o ponto da falha → tool call correto que
+deveria ter saído), few centenas a ~2 mil exemplos esperados dado o volume já
+logado.
+
+**Passo 2 — treinar.** GPU alugada, LoRA (não fine-tune completo: só as
+matrizes de adaptação, base congelada).
+
+| Etapa | GPU | Tempo | Custo |
+|---|---|---|---|
+| Subir o pod + baixar pesos base (bf16, ~52 GB pros 26B) | — | 10–20 min | incluso |
+| Treino LoRA (algumas centenas a ~2 mil exemplos, 2–4 épocas) | 1× A100 80GB (~US$1,50–2/h) ou H100 80GB (~US$2,50–4/h); QLoRA 4-bit caberia numa placa mais barata (24–48 GB) se bf16 não for necessário | **~1–3 h** (estimativa — sem benchmark de MoE nesta escala; medir com `--iters 20` antes de comprometer a rodada inteira) | **US$3–12** |
+| Salvar/baixar o adapter (LoRA é dezenas de MB, não GB) | — | poucos min | — |
+| Aplicar no beelink | — | segundos — `llama-server --lora adapter.gguf`, sem requantizar o GGUF base atual | grátis |
+
+**Total estimado para uma tentativa limpa: US$5–15, 2–4 h.** Realisticamente
+orçar **2–3 tentativas** (formato de dado errado, hiperparâmetro pra
+ajustar, roteamento de MoE se comportando estranho sob LoRA são todos
+comuns numa primeira passada) — mais perto de **US$20–40, uma tarde**.
+
+**Passo 3 — validar.** Reverter é só tirar a flag `--lora`. Medir contra os
+casos que já bateram o bug (as sessões do item 10 e do item 2 com
+`tentativas > 1` em `benchmarks/lote_*.json`) — se o LoRA funcionou, esses
+mesmos casos devem responder na 1ª tentativa, sem precisar do workaround de
+`lote.ts`. Não é um "não bloqueia mais nada" solto: é uma régua concreta, os
+mesmos casos que já têm gabarito de falha registrado.
+
+**Fecha quando:** rodando os casos que hoje precisam de retentativa (item 2)
+contra o servidor com o LoRA aplicado, a taxa de `tentativas > 1` cai — não
+precisa chegar a zero, só cair o bastante pra a retentativa deixar de ser o
+caminho normal.
 
 ---
 
