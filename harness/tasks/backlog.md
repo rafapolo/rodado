@@ -141,9 +141,13 @@ agora exposto porque é a primeira vez que o laço roda tantas sessões `dsh`
 reais em sequência. Detalhe completo, causa provável e o workaround: **item
 10**, abaixo.
 
-**2ª tentativa: 2026-09-03 09:11, com o workaround de retentativa
-(`lote.ts`) no ar.** `bun harness/casos.ts --tsv > /tmp/casos.tsv && bun
-harness/lote.ts /tmp/casos.tsv`, em background — rodando.
+**2ª tentativa: 2026-09-03 09:11**, com o workaround de retentativa no ar —
+interrompida de propósito no caso 3/58 pra testar `TEMP=0` (ver item 10);
+2 casos completos (`respondeu` 100%, `correto` 0/2 por raciocínio, não bug).
+
+**3ª tentativa: 2026-09-03 10:07**, `temp` revertido ao default (0,80) depois
+do teste de `TEMP=0` sair pior. `bun harness/casos.ts --tsv > /tmp/casos.tsv
+&& bun harness/lote.ts /tmp/casos.tsv`, em background — rodando.
 
 ## 3. A prosa cita a ferramenta, não o órgão ✅ fechado 2026-09-03
 
