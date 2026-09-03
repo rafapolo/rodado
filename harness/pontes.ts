@@ -37,6 +37,24 @@ function bridges() {
 /** Chaves de join que valem por convenção quando nenhuma ponte especial existe. */
 const CANONICAS = ["id_municipio", "sigla_uf", "ano", "id_uf"];
 
+/**
+ * O "significado" de uma coluna pra fins de join: o `concept` da ponte curada
+ * (bridges.yaml) que documenta `tabela.coluna`, ou a própria coluna quando ela
+ * é uma chave canônica (não precisa de ponte pra ser reconhecida). `undefined`
+ * quando nem uma coisa nem outra — é o sinal que `juncoesSemPonte` (portao.ts)
+ * usa pra saber que a junção não tem lastro nenhum.
+ */
+export function conceitoDaColuna(ref: string, coluna: string): string | undefined {
+  const col = coluna.toLowerCase();
+  const b = bridges();
+  for (const [conceito, pontes] of Object.entries(b.bridges ?? {})) {
+    for (const p of pontes ?? []) {
+      if (p.table === ref && p.column.toLowerCase() === col) return p.concept ?? conceito;
+    }
+  }
+  return CANONICAS.includes(col) ? col : undefined;
+}
+
 export function dicasDeJoin(tabelas: string[]): string {
   const b = bridges();
   const linhas: string[] = [];

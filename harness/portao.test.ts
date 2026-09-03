@@ -4,7 +4,10 @@
  * ask-web apanhou em produção. O portão existe por causa deles.
  */
 import { expect, test, describe } from "bun:test";
-import { portao, checaCitacaoTabela, alertasDeSanidade } from "./portao.ts";
+import {
+  portao, checaCitacaoTabela, alertasDeSanidade,
+  juncoesSemPonte, mensagemSemPonte, assinaturaJuncao,
+} from "./portao.ts";
 
 describe("camada read-only (sqlguard)", () => {
   test("rejeita escrita", () => {
@@ -238,6 +241,77 @@ describe("alertasDeSanidade — circunstancia_obito subconta suicídio (backlog 
       [{ n: 12345 }],
     );
     expect(alertas).toEqual([]);
+  });
+});
+
+describe("juncoesSemPonte — backlog.md item 12, a pergunta de 5 fontes que morreu presa", () => {
+  // O caso real: 38 das 55 SQLs de uma sessão de 40 min tentaram
+  // `id_emenda = id_licitacao` entre estas duas tabelas. Elas não compartilham
+  // coluna nenhuma (conferido no beelink) e bridges.yaml não documenta a
+  // relação — não existia ponte pra achar, e o portão não tinha como avisar.
+  const semChaveNenhuma =
+    "SELECT l.id_emenda, p.cpf_cnpj_vencedor FROM br_cgu_emendas_parlamentares.microdados l " +
+    "JOIN br_cgu_licitacao_contrato.licitacao_item p ON l.id_emenda = p.id_licitacao " +
+    "WHERE p.ano = 2022 LIMIT 5";
+
+  test("acusa a junção sem ponte nem chave canônica em comum", () => {
+    const achados = juncoesSemPonte(semChaveNenhuma);
+    expect(achados.length).toBe(1);
+    expect(achados[0]!.refA).toBe("br_cgu_emendas_parlamentares.microdados");
+    expect(achados[0]!.refB).toBe("br_cgu_licitacao_contrato.licitacao_item");
+  });
+
+  test("a mensagem nomeia as duas colunas e diz que a ponte não é conhecida", () => {
+    const msg = mensagemSemPonte(juncoesSemPonte(semChaveNenhuma));
+    expect(msg).toContain("id_emenda");
+    expect(msg).toContain("id_licitacao");
+    expect(msg).toContain("Nenhuma ponte conhecida");
+  });
+
+  test("não acusa junção por chave canônica (id_municipio dos dois lados)", () => {
+    const sql =
+      "SELECT c.sigla_uf, SUM(c.saldo_movimentacao) AS n " +
+      "FROM br_me_caged.microdados_movimentacao c " +
+      "JOIN br_ibge_pib.municipio p ON c.id_municipio = p.id_municipio " +
+      "WHERE c.ano = 2020 AND p.ano = 2020 GROUP BY c.sigla_uf";
+    expect(juncoesSemPonte(sql)).toEqual([]);
+  });
+
+  test("não acusa junção dentro do mesmo dataset (sem risco de par sem lastro)", () => {
+    const sql =
+      "SELECT l.objeto, i.valor_item FROM br_cgu_licitacao_contrato.licitacao l " +
+      "JOIN br_cgu_licitacao_contrato.licitacao_item i ON l.id_licitacao = i.id_licitacao " +
+      "WHERE l.ano = 2023 LIMIT 5";
+    expect(juncoesSemPonte(sql)).toEqual([]);
+  });
+
+  test("reconhece a ponte curada de emendas → município (id_municipio_gasto)", () => {
+    // bridges.yaml documenta id_municipio_gasto como concept id_municipio —
+    // mesmo com nomes diferentes dos dois lados, isto TEM ponte.
+    const sql =
+      "SELECT e.id_municipio_gasto, m.nome FROM br_cgu_emendas_parlamentares.microdados e " +
+      "JOIN br_bd_diretorios_brasil.municipio m ON e.id_municipio_gasto = m.id_municipio LIMIT 5";
+    expect(juncoesSemPonte(sql)).toEqual([]);
+  });
+});
+
+describe("assinaturaJuncao — detecta a mesma junção repetida com cosmético diferente", () => {
+  test("duas consultas com WHERE/LIMIT diferentes, mesmo FROM/JOIN/ON, têm a mesma assinatura", () => {
+    const a =
+      "SELECT l.id_emenda, p.cpf_cnpj_vencedor FROM br_cgu_emendas_parlamentares.microdados l " +
+      "JOIN br_cgu_licitacao_contrato.licitacao_item p ON l.id_emenda = p.id_licitacao " +
+      "WHERE p.ano = 2022 LIMIT 5";
+    const b =
+      "SELECT l.id_emenda, l.valor_liquidado, p.nome_vencedor FROM br_cgu_emendas_parlamentares.microdados l " +
+      "JOIN br_cgu_licitacao_contrato.licitacao_item p ON l.id_emenda = p.id_licitacao " +
+      "WHERE l.id_emenda = '201535780008' LIMIT 100";
+    expect(assinaturaJuncao(a)).toBe(assinaturaJuncao(b));
+  });
+
+  test("uma junção genuinamente diferente tem assinatura diferente", () => {
+    const a = "SELECT COUNT(*) AS n FROM br_ms_sim.microdados WHERE ano = 2020";
+    const b = "SELECT COUNT(*) AS n FROM br_ms_sinasc.microdados WHERE ano = 2020";
+    expect(assinaturaJuncao(a)).not.toBe(assinaturaJuncao(b));
   });
 });
 

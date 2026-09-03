@@ -21,7 +21,10 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { listaDatasets, tabelasDe, colunasDe, resolveDataset } from "./catalogo.ts";
-import { portao, checaExplain, alertasDeSanidade, faixasCitadas, checaCitacaoTabela } from "./portao.ts";
+import {
+  portao, checaExplain, alertasDeSanidade, faixasCitadas, checaCitacaoTabela,
+  juncoesSemPonte, mensagemSemPonte, assinaturaJuncao,
+} from "./portao.ts";
 import { dicasDeJoin } from "./pontes.ts";
 import { runSqlSsh } from "./beelink.ts";
 import { capRows } from "./sqlguard.ts";
@@ -33,6 +36,28 @@ const servidor = new Server(
   { name: "rodado-harness", version: "1.0.0" },
   { capabilities: { tools: {} } },
 );
+
+/**
+ * backlog.md item 12 — o post-mortem da pergunta de 5 fontes que rodou 40 min
+ * e morreu sem resposta, presa 38x na mesma junção inexistente. Duas coisas
+ * que aquele caso mostrou faltar, e que só fazem sentido com estado por
+ * pergunta (um processo mcp.ts = uma pergunta = um `dsh --profile headless`,
+ * ver pergunte.ts — o Map nasce e morre com ela, nunca vaza entre perguntas):
+ *
+ *  - disjuntor de repetição: a MESMA junção (mesmo FROM/JOIN/ON, só o resto
+ *    mudando) tentada `LIMIAR_REPETICAO` vezes sem achar linha escala a
+ *    mensagem de zero-linhas — ela para de soar como "você errou o tipo,
+ *    tenta de novo" e passa a dizer "pare de tentar isso";
+ *  - orçamento de consultas: um teto bem mais apertado que os 40 min de
+ *    parede do `pergunte.ts` (`HARNESS_TIMEOUT_MS`) — se a pergunta não
+ *    convergiu em `ORCAMENTO_CONSULTAS` chamadas de `consultar`, é sinal de
+ *    que não vai convergir sozinha, e o corte aqui é imediato (sem ida ao
+ *    beelink), não silencioso 25+ minutos depois.
+ */
+const tentativasPorJuncao = new Map<string, number>();
+const LIMIAR_REPETICAO = Number(Bun.env.HARNESS_LIMIAR_REPETICAO ?? 3);
+const ORCAMENTO_CONSULTAS = Number(Bun.env.HARNESS_ORCAMENTO_CONSULTAS ?? 30);
+let totalConsultas = 0;
 
 const FERRAMENTAS = [
   {
@@ -146,6 +171,17 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
   if (name === "consultar") {
     const sql = (arg.sql ?? "").trim();
 
+    totalConsultas++;
+    if (totalConsultas > ORCAMENTO_CONSULTAS) {
+      return erro(
+        `Orçamento de ${ORCAMENTO_CONSULTAS} consultas nesta pergunta esgotado (esta seria a ` +
+        `${totalConsultas}ª). ${totalConsultas - 1} tentativas sem chegar numa resposta é sinal ` +
+        `de que a estratégia atual não vai convergir sozinha, não de que falta mais uma tentativa. ` +
+        `Pare de consultar agora: responda com o que já apurou, ou diga explicitamente que não ` +
+        `conseguiu responder e por quê — não invente número pra fechar a pergunta.`,
+      );
+    }
+
     // O portão. A rejeição vira resultado de ferramenta — é assim que o laço do
     // dsh vira o mecanismo de reparo, sem código de retry meu.
     const v = portao(sql);
@@ -160,11 +196,33 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     const capado = capRows(r.rows ?? [], 200);
     if (!capado.rows.length) {
       const faixas = faixasCitadas(sql);
-      return erro(
+      const semPonte = juncoesSemPonte(sql);
+
+      const assinatura = assinaturaJuncao(sql);
+      const repeticoes = (tentativasPorJuncao.get(assinatura) ?? 0) + 1;
+      tentativasPorJuncao.set(assinatura, repeticoes);
+
+      const partes = [
         "A consulta rodou e devolveu ZERO linhas — o join não casou nada, ou o filtro " +
         "de ano não tem dado. Confira o tipo das duas pontas da chave." +
         (faixas ? ` Faixa de anos das tabelas citadas: ${faixas}.` : " Chame listar_tabelas para ver a faixa de anos."),
-      );
+      ];
+      // backlog.md item 12: quando a junção nem tem ponte conhecida, a mensagem
+      // acima soa como "você errou o tipo" e não é isso — é que a chave pode
+      // nem existir. Diz isso explicitamente em vez de convidar a tentar de novo.
+      if (semPonte.length) partes.push(mensagemSemPonte(semPonte));
+      // E quando é a MESMA junção repetindo, nem a mensagem mais clara ajuda —
+      // o que falta é parar, não explicar melhor.
+      if (repeticoes >= LIMIAR_REPETICAO) {
+        partes.push(
+          `⚠ Esta MESMA junção (mesmo FROM/JOIN/ON — só o resto da consulta mudou) já ` +
+          `devolveu zero linhas ${repeticoes} vezes nesta pergunta. Pare de tentar variações ` +
+          `dela: troque a tabela ou a coluna de junção por algo estruturalmente diferente, ` +
+          `ou conclua que esta pergunta não tem resposta direta com os dados disponíveis e ` +
+          `diga isso — repetir não vai fazer a linha aparecer.`,
+        );
+      }
+      return erro(partes.join("\n\n"));
     }
     // Alertas de sanidade (grupo reportado como total, join que duplicou linha,
     // correlação suspeita) grudados ANTES dos dados, no mesmo texto — nenhum
