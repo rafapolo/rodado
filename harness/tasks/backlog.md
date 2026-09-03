@@ -356,6 +356,23 @@ correto, mas ainda cai como `reasoning`). As duas hipóteses continuam
 o corpo bruto da resposta, não tentado (custaria outra rodada do servidor
 compartilhado só para diagnóstico).
 
+**Descartado #2, testado ao vivo:** `TEMP=0 ./harness/servidor.sh`
+(`--temp 0`, sobrepondo o default de 0,80 do llama-server). Hipótese: com
+temperatura alta e sem o cliente mandar `temperature` próprio, o modelo tinha
+variância real token a token, e reproduzir o gatilho `<|tool_call>call:` por
+sorte explicava a taxa de falha. **Confirmado o oposto**: a mesma pergunta
+("Escolas rurais...", a que quebrou como case3 na rodada) bateu o **mesmo bug,
+byte a byte** (`<tool_call|>` sozinho, no mesmo step 2, logo depois do
+resultado de `listar_datasets`) — 2,7 min, bem mais rápido que o normal,
+confirmando falha rápida e reproduzível. Decodificação gulosa (`temp=0`) é
+**determinística**: se o caminho de maior probabilidade passa pelo bug NESTE
+contexto, ele passa por ele **sempre**, e retentativa não ajudaria mais
+(diferente do `temp=0,80` padrão, onde a variância real já foi observada
+recuperando os mesmos 2 casos sem bater o bug de novo). `temp=0` é **pior**
+para o workaround de retentativa, não melhor. Revertido na hora
+(`./harness/servidor.sh` sem `TEMP`), servidor confirmado saudável de novo.
+Flag `TEMP` fica em `servidor.sh` só documentada como descartada.
+
 **Não investigado ainda:**
 - Log verboso do `llama-server` numa chamada ao vivo, pra ver se o campo
   `tool_calls` da resposta HTTP vem vazio (confirmaria: falha é do parser
@@ -366,9 +383,19 @@ compartilhado só para diagnóstico).
 - `--grammar`/`--grammar-file` (flags existem, conferido no `--help`) para
   forçar uma gramática não-lazy por fora do mecanismo nativo do Gemma4 — não
   tentado, exigiria replicar a gramática PEG à mão.
-- Taxa de falha real: 4/6 é a amostra que existe. O workaround abaixo
-  (retentativa) supre a necessidade de saber a taxa exata pra rodar o item 2,
-  mas não decide se vale investir mais na causa raiz.
+- Taxa de falha real: 4/6 (rodada abortada) e agora mais casos na rodada 2
+  também bateram (case2, case3 de novo, ambos recuperados por retentativa) —
+  parece alta e consistente, não um acaso da amostra pequena. O workaround
+  supre a necessidade de saber a taxa exata pra rodar o item 2, mas não
+  decide se vale investir mais na causa raiz.
+- **Achado junto com o teste de temperatura, ainda mais interessante que o
+  resultado em si:** o mesmo caso (case3) bate o MESMO bug no MESMO step
+  (step 2, logo após `listar_datasets`) em duas rodadas diferentes, com
+  configs diferentes — sugere que o gatilho de falha pode estar ligado ao
+  CONTEXTO específico daquele ponto (o resultado de `listar_datasets`, uma
+  lista de ~212 nomes, ~2000 tokens) mais do que a aleatoriedade pura. Não
+  confirmado — outras perguntas falharam em steps diferentes (step 3, 5, 10),
+  então não é *só* isso. Pista para quem continuar a investigação.
 
 ### Workaround feito — retentativa automática em `lote.ts`
 

@@ -116,6 +116,16 @@ Duas "melhorias" minhas que pioravam, e foram removidas:
   Gemma) e o teste ao vivo matou ela em menos de um minuto. Revertido
   na hora; flag fica em `servidor.sh` (`NOJINJA=1`) só documentada como
   descartada.
+- **`--temp 0`** (2026-09-03, mesma investigação). O llama-server tem default
+  de **0,80** quando o cliente não manda `temperature` — hipótese: variância
+  de amostragem explicava a falha probabilística do tool-call nativo do
+  Gemma4 (item 10). Testado ao vivo: a MESMA pergunta bateu o MESMO bug, byte
+  a byte, no mesmo turno — decodificação gulosa é determinística, então se o
+  caminho de maior probabilidade passa pelo bug NESTE contexto, passa
+  **sempre**. Pior que o padrão: com `temp=0,80` a variância real já foi
+  observada recuperando os mesmos casos numa segunda tentativa; com `temp=0`
+  a retentativa perderia essa saída. Revertido na hora; flag fica em
+  `servidor.sh` (`TEMP=<n>`) só documentada como descartada.
 
 ## Tarefas — travar o que ainda é só disciplina
 
