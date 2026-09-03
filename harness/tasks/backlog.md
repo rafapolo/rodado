@@ -278,7 +278,7 @@ do código", é "dois campos da MESMA tabela respondem à mesma pergunta com
 cobertura diferente") — por isso virou alerta ad-hoc em vez de entrada no
 YAML.
 
-## 10. Tool call cai como texto solto — bloqueia o item 2 🔴 achado 2026-09-03, bloqueador — nada resolvido ainda
+## 10. Tool call cai como texto solto — bloqueia o item 2 🟡 achado 2026-09-03 — causa provável entendida, workaround feito, causa raiz não corrigida
 
 **O achado mais caro desta sessão.** A rodada do item 2 (58 casos pelo dsh
 real) nunca tinha rodado antes — é a primeira vez que o laço agêntico
@@ -319,33 +319,92 @@ tool-calling. Reversão imediata, servidor voltou ao normal
 `NOJINJA` fica em `servidor.sh` só documentada como descartada, para não
 repetir o experimento.
 
-**Não investigado ainda:**
-- Versão do llama-server é `0.3.0-dev` (build `8887a48`) — conferir se é uma
-  versão conhecidamente afetada, ou se uma mais nova tem o parser do Gemma
-  corrigido.
-- `--chat-template`/`--chat-template-file` custom, explicitamente ensinando o
-  parser a reconhecer `<|tool_call>...<tool_call|>` — ou forçando um
-  `--grammar` estático que não dependa do parser nativo do modelo (o que o
-  README já supunha estar acontecendo: "tool-calling, via grammar do
-  llama.cpp" — aparentemente não é garantido, só parcial).
-  `--grammar`/`--grammar-file` existem como flag do `llama-server` (conferido
-  no `--help`), não testados.
-  `--jinja` (mantendo jinja) + template customizado é o caminho mais provável
-  — `--no-jinja` só provou que o template do Gemma não roda sem jinja, não
-  disse nada sobre o parser de tool-call em si.
-- Taxa de falha real: 4/6 é a amostra que existe. Pode ser mais alto ou mais
-  baixo em 58 casos — não dá para saber sem rodar de novo, e rodar de novo sem
-  conserto é o desperdício que este item existe para evitar.
-- Se o parser tem algum jeito de RECUPERAR desse estado (reenviar o turno,
-  pedir para o modelo tentar de novo) em vez de simplesmente terminar — hoje o
-  `turn/end` marca `"reason":{"kind":"completed"}` como se tivesse dado certo,
-  o que é **por si só um bug a reportar** (achar isto pode ser trabalho do
-  dsh, não do harness deste projeto).
+### Causa provável, encontrada lendo o código do llama.cpp no beelink (`~/llama.cpp`, sem custo de servidor)
 
-**Bloqueia:** item 2 (a rodada em si), item 4, item 8, e o experimento de
-`check-qwencoder-vs-duckdbnsql.md` (todos esperam uma linha de base
-confiável). **Não bloqueia:** os itens 0/1/3/5/6/7/9, que não dependem de
-rodar 58 sessões `dsh` completas.
+O llama.cpp **já tem** suporte dedicado ao tool-calling nativo do Gemma4:
+`common_chat_params_init_gemma4` em `common/chat.cpp` monta um parser PEG
+inteiro (`common_chat_peg_gemma4_mapper`, `common/chat-peg-parser.h/.cpp`)
+que reconhece exatamente `<|tool_call>call:NOME{...}<tool_call|>` — não é
+genérico nem incompleto, é escrito pra este formato. Confirmado: o
+`chat_template` embutido no GGUF (lido via `/props`) contém a string literal
+que o detector procura (`'<|tool_call>call:'`) e o marcador de template
+oficial (`{#- OpenAI Chat Completions:`), então o llama-server ESTÁ usando
+esse parser, não um genérico.
+
+**O mecanismo suspeito — grammar "lazy" com gatilho por substring.** Em
+`common_chat_params_init_gemma4`:
+
+```cpp
+data.grammar_lazy = !(has_response_format || (has_tools && inputs.tool_choice == COMMON_CHAT_TOOL_CHOICE_REQUIRED));
+```
+
+Com ferramentas presentes e `tool_choice` em `auto` (o normal de um laço
+agêntico — o modelo decide se chama ferramenta ou responde em texto),
+`grammar_lazy = true`: a geração roda **sem nenhuma restrição de gramática**
+até o texto bruto conter o gatilho exato `<|tool_call>call:`; só a partir
+daí a gramática PEG passa a forçar sintaxe válida. Antes do gatilho, o
+modelo gera livre — e é exatamente aí que uma tentativa mal-formada de tool
+call pode nunca disparar o gatilho (casos 2/3: só a tag de fechamento
+sobrou, o `<|tool_call>call:` nunca apareceu) ou disparar mas ainda assim
+falhar no parse final quando a geração completa é reprocessada pela
+gramática PEG completa (casos 4/6: o texto tem as duas tags e parece
+correto, mas ainda cai como `reasoning`). As duas hipóteses continuam
+**não confirmadas** — precisaria de log verboso do `llama-server` capturando
+o corpo bruto da resposta, não tentado (custaria outra rodada do servidor
+compartilhado só para diagnóstico).
+
+**Não investigado ainda:**
+- Log verboso do `llama-server` numa chamada ao vivo, pra ver se o campo
+  `tool_calls` da resposta HTTP vem vazio (confirmaria: falha é do parser
+  server-side, não do dsh) — a suspeita forte, mas não verificada byte a byte.
+- Forçar `tool_choice: required` desativa o `grammar_lazy`, mas também
+  impediria o modelo de terminar com texto livre (a resposta final) —
+  não dá pra usar sem repensar como o laço encerra o turno.
+- `--grammar`/`--grammar-file` (flags existem, conferido no `--help`) para
+  forçar uma gramática não-lazy por fora do mecanismo nativo do Gemma4 — não
+  tentado, exigiria replicar a gramática PEG à mão.
+- Taxa de falha real: 4/6 é a amostra que existe. O workaround abaixo
+  (retentativa) supre a necessidade de saber a taxa exata pra rodar o item 2,
+  mas não decide se vale investir mais na causa raiz.
+
+### Workaround feito — retentativa automática em `lote.ts`
+
+`respondeu` já detectava isto sem querer: o dsh não imprime NADA quando o
+turno termina só com bloco `reasoning`, então `texto.trim().length > 40` já
+dava `false` para os 4 casos quebrados. `roda()` agora tenta a MESMA pergunta
+de novo, num processo `dsh` novo, até `HARNESS_TENTATIVAS` vezes (padrão 3,
+`rodaUmaVez()`/`MAX_TENTATIVAS` em `lote.ts`) — só quando a tentativa veio
+**vazia**, nunca quando veio uma resposta errada (isso é falha de raciocínio
+de verdade, repetir esconderia a taxa de acerto real). `Saida.tentativas`
+registra quantas vezes cada caso precisou, pra retentativa aparecer no
+relatório em vez de desaparecer calada.
+
+**Por que é aceitável não ser a causa raiz:** casos 1 e 5 (sessões do mesmo
+tamanho ou maiores que os que quebraram) completaram normalmente — o bug
+parece ser por-turno, não por-conteúdo fixo, então repetir a pergunta numa
+sessão nova tem chance real de não bater o mesmo problema. Não é garantido.
+
+**Testado ao vivo 2026-09-03** contra os 2 casos que romperam com o padrão
+mais curto (`<tool_call|>` sozinho, casos 2 e 3 da rodada abortada,
+`benchmarks/lote_2026-09-030710.json`): as duas sessões completaram no
+`tentativas: 1` — nenhuma bateu o bug de novo desta vez (confirma a hipótese
+de que é por-turno, não determinístico pelo conteúdo da pergunta; não prova
+que a retentativa em si recupera um caso, só que o mecanismo não atrapalha
+quando não precisa). RESPONDEU 2/2 = 100%, CORRETO 0/2 — os dois erraram o
+número por raciocínio de verdade, não pelo bug: um caso divergiu do
+cruzamento pedido, o outro devolveu um **plano de investigação** em vez de
+executá-lo (agente parou cedo, achado à parte — não é o bug do item 10, é
+"não completar o laço", mesma família da regra "todo ganho de tempo tem que
+preservar a capacidade de iterar" de `regras.md`). Tempo médio 1096 s/caso —
+bem acima da linha de base de ~6 min, porque ambos os casos são dos mais
+difíceis do conjunto (múltiplos cruzamentos), não porque a retentativa
+disparou.
+
+**Bloqueia** (a causa raiz, não o workaround): nada mais — o workaround
+libera o item 2 pra rodar de novo, e a rodada plena começou logo depois
+deste teste. Fica em aberto **conserto de verdade**: entender por que o
+parser nativo do Gemma4 falha em ~2/3 dos turnos, e se dá pra reduzir a taxa
+(`tool_choice`, gramática forçada, ou upstream do llama.cpp).
 
 ---
 
