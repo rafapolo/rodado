@@ -634,6 +634,137 @@ alvo são 3-4 mil palavras com contra-argumento steelmanado, e um 26B em q4 nunc
 foi testado nisso. O scaffold proposto para essa fase está em
 [`harness_bpe.md`](harness_bpe.md).
 
+## 12. Falta a mensagem "não há ponte" — o modelo repete uma chave inexistente 38x sem escalar ✅ fechado 2026-09-03 (a ação de harness — a de dado, T21, continua aberta)
+
+Medido rodando a pergunta mais rica de `perguntas.md` em nº de fontes
+(emendas parlamentares → contratos → CNPJ → TCU → PGFN, seção "Perguntas
+multi-dataset simultâneos", item 3) por `bun harness/pergunte.ts`. **40 min,
+`SIGKILL` pelo timeout do próprio harness, zero resposta.** Log completo em
+`~/.dsh/sessions/--Users-polux-Projetos-rodado--/session-358f388b-.../session.jsonl.zstd`
+(75 turnos, 74 tool calls, 55 SQL).
+
+**O que aconteceu, turno a turno:**
+
+- Turnos 1-19: reconhecimento normal — achou as duas tabelas certas
+  (`br_cgu_emendas_parlamentares.microdados`, `br_cgu_licitacao_contrato.licitacao_item`),
+  mas bateu 6 erros seguidos tentando `br_cgu_sancoes.ceis/cepim/cnep/...`
+  (nomes errados — a tabela certa é `br_tcu_inidoneos`) e abandonou essa
+  ponta da pergunta pro resto da sessão.
+- Turnos 20-74 (quase todo o tempo): **38 das 55 SQLs (69%) tentam a mesma
+  hipótese de join**, `l.id_emenda = p.id_licitacao`, sempre com o mesmo
+  resultado — 9x rejeitado por faltar filtro de partição, 29x "ZERO linhas"
+  depois de corrigir. O modelo varia cosmético (coluna selecionada, `WHERE`,
+  `LIMIT`) sem nunca abandonar a hipótese. No turno 20, o **próprio
+  comentário da primeira tentativa** já registra a dúvida certa —
+  `-- Tentativa de join por ID, mas emendas e licitacoes podem não ter a
+  mesma chave direta` — e mesmo assim insiste mais 37 vezes.
+- Turno 72-73: desespero visível — tenta `ON l.id_emenda = p.cpf_cnpj_vencedor`
+  (join sem sentido nenhum, ID de emenda contra CNPJ), com comentário
+  `-- Testing if join is on CNPJ`.
+- Turno 75: morre por infra, não por lógica — `pi-ai stream idle timeout` no
+  meio da geração, dispara retentativa, o `SIGKILL` de 40 min do
+  `pergunte.ts` chega antes dela terminar.
+
+**Causa raiz, não só sintoma — checado nos dois lados:**
+
+1. **A mensagem de "zero linhas" não sugere, e as que sugerem não cobrem
+   este caso.** `rejeitada (particao)` e `rejeitada (coluna)` já ensinam o
+   conserto (mensagem cita a coluna certa/o predicado certo — funcionou pro
+   caso do suicídio RJ, 726→789). `zero linhas` só diz "confira o tipo das
+   duas pontas da chave" — nenhuma sugestão concreta.
+2. **O harness TEM um mecanismo de sugestão de join** (`pontes.ts` →
+   `dicasDeJoin`, plugado em `descrever_tabela`, com fallback genérico
+   "junte por `id_municipio`/`sigla_uf`/`ano`/`id_uf` quando as duas
+   tiverem") — mas só dispara quando `descrever_tabela` é chamado com as
+   duas tabelas de uma vez, e nesta sessão (e provavelmente em geral) o
+   modelo sempre chama uma tabela por chamada. Nunca disparou.
+3. **Mesmo se disparasse, não ajudaria neste par específico** — conferido
+   direto no beelink: `licitacao_item` não tem `id_municipio` nem
+   `sigla_uf` (só `ano`, `id_orgao`, `id_unidade_gestora`); `emendas.microdados`
+   não tem `id_orgao` nem `id_unidade_gestora` (só `id_municipio_gasto`).
+   **As duas tabelas não compartilham nenhuma coluna real**, e `bridges.yaml`
+   não tem ponte entre elas (só existe `emendas_parlamentares` → `municipio`).
+4. **Isto não é bug do harness — é o mesmo buraco já catalogado em
+   `respostas.md` (T21-1/T21-2/T21-3/T21-5 ⏳):** "exige identificar
+   fornecedor por CNPJ recorrente entre `cgu_cartao_pagamento`/
+   `cgu_licitacao_contrato`... fica para uma passada de resolução de
+   entidade dedicada." Essa cadeia de `perguntas.md` pode genuinamente não
+   ser respondível por join direto neste espelho — nem um modelo perfeito
+   acharia uma chave que não existe.
+
+**Duas ações, não uma — não confundir "consertar a mensagem" com "consertar
+o dado":**
+
+- **Ação de harness (barata, faz o modelo desistir mais cedo):** a rejeição
+  de `zero_linhas` devia checar `bridges.yaml` para o par de tabelas do
+  `JOIN` e, se não achar ponte nenhuma **e** nenhuma coluna em comum,
+  responder algo como *"Nenhuma ponte conhecida entre estas duas tabelas —
+  provavelmente não há chave direta neste espelho; considere responder pela
+  parte que tem dado, ou avisar que esta pergunta não é resolvível por SQL
+  simples"* em vez de convidar a tentar de novo. Isso é o que teria parado o
+  modelo no turno ~30, não no timeout do turno 75.
+- **Ação de dado (cara, não deste item):** se a cadeia emenda→contrato
+  realmente importa, precisaria de uma tabela-ponte real (ex.: cruzar por
+  CNPJ do fornecedor entre `licitacao_item.cpf_cnpj_vencedor` e algum
+  identificador de execução orçamentária que também apareça em
+  `emendas_parlamentares` — não óbvio que exista na fonte). Ficaria junto
+  do T21 pendente, não é problema novo. **Continua aberta** — nada aqui
+  resolve isso, só faz o harness desistir rápido em vez de devagar.
+
+### Implementado 2026-09-03 — três conserto de harness, nenhum de dado
+
+**1. `juncoesSemPonte()` + `mensagemSemPonte()` (`portao.ts`).** NÃO é camada
+de `portao()` — roda só depois que a consulta já executou e voltou zero
+linhas (dentro de `mcp.ts`), de propósito: checar a ponte ANTES de executar
+arriscaria bloquear uma junção legítima que só ainda não está documentada em
+`bridges.yaml`, o mesmo risco de falso positivo que a camada `ano` evita
+calando-se (ver o comentário dela). Reaproveita a máquina de escopo/apelido
+que a camada `ano` já tinha (`segmentos`, `refsDoEscopo`) — extrai os pares
+`alias.coluna = alias.coluna` de cada `ON`, resolve os apelidos pra
+`dataset.tabela`, e pergunta pra `conceitoDaColuna()` (nova, `pontes.ts`) se
+cada lado tem ponte curada ou é chave canônica (`id_municipio`, `sigla_uf`,
+`ano`, `id_uf`) — se os dois lados não convergem no mesmo conceito, a junção
+entra na lista.
+
+**2. Disjuntor de repetição (`assinaturaJuncao()` + `Map` em `mcp.ts`).** A
+assinatura é o `FROM…JOIN…ON` com literais apagados — o que ficou constante
+nas 38 tentativas reais foi exatamente isso, só o resto (`WHERE`, colunas do
+`SELECT`, `LIMIT`) variava. Na 3ª vez que a MESMA assinatura devolve zero
+linhas, a mensagem escala de "confira o tipo da chave" pra "pare de tentar
+isto". Estado é `Map` de módulo em `mcp.ts` — nasce e morre com o processo,
+que é um por pergunta (`pergunte.ts` spawna um `dsh` novo a cada chamada).
+
+**3. Orçamento de consultas (`ORCAMENTO_CONSULTAS`, `mcp.ts`).** Teto de 30
+chamadas de `consultar` por pergunta (`HARNESS_ORCAMENTO_CONSULTAS`, env),
+bem abaixo do que os 40 min de parede do `pergunte.ts` deixariam rodar. Corte
+é local — sem ida ao beelink — e a mensagem instrui a responder com o que já
+tem, não a insistir.
+
+**Verificado contra a sessão real que morreu** (as 55 SQLs de
+`session-358f388b-...jsonl.zstd`, rodadas pelo `portao()`/`juncoesSemPonte()`/
+`assinaturaJuncao()` novos, fora do laço agêntico — não uma rodada nova no
+beelink):
+
+| Métrica | Sem os 3 consertos | Com eles |
+|---|---|---|
+| Turno em que o disjuntor dispara (3ª repetição da mesma junção) | nunca — seguiu até o turno 74 | **turno 27** |
+| SQLs com "sem ponte conhecida" anexado | 0 (mensagem não existia) | **28 de 55** |
+| Assinaturas de junção distintas tentadas | — | 7 (duas dominantes: 27x e 10x) |
+
+Ou seja: o mesmo caso que morreu em 40 minutos sem resposta teria escalado
+pro modelo desistir por volta do **turno 27** (~7 min, pela cadência medida
+de ~30s/turno) em vez do turno 75. Não testado ainda **rodando de novo pelo
+laço agêntico** (custaria outros ~10-40 min de beelink) — a validação acima é
+contra o log gravado, não uma repetição ao vivo; fica pra quando o item 2
+rodar de novo.
+
+**Testes:** `portao.test.ts`, describe `juncoesSemPonte` (5 casos: acusa o
+par emendas/licitação sem ponte, a mensagem nomeia as duas colunas, não
+acusa chave canônica em comum, não acusa junção dentro do mesmo dataset,
+reconhece a ponte curada `id_municipio_gasto`) e `assinaturaJuncao` (2 casos:
+mesma junção com cosmético diferente tem assinatura igual; junção genuinamente
+diferente tem assinatura diferente). `bun test harness/`: 108 passam.
+
 ## Ver também
 
 - [`regras.md`](regras.md) — as regras que cada medição gerou, e o que ainda é só disciplina
