@@ -141,10 +141,23 @@ done
 FLAG_JINJA=""
 [[ "${NOJINJA:-0}" == "1" ]] && FLAG_JINJA="--no-jinja"
 
-echo "subindo: -c $CTX -np $SLOTS  (thinking off, KV em f16)${FLAG_JINJA:+, $FLAG_JINJA}"
+# TEMP=<n>: sobrepõe o default do llama-server (0,80!) via --temp. Hipótese
+# 2026-09-03 (item 10 do backlog): o parser de tool-call nativo do Gemma4 usa
+# gramática "lazy" — sem restrição nenhuma até o texto bruto bater o gatilho
+# exato `<|tool_call>call:`. Com temperatura 0,80 (o default do llama-server
+# quando o cliente não manda `temperature` na requisição — dsh aparentemente
+# não manda), o modelo tem variância real token a token, e reproduzir esse
+# gatilho de vários tokens byte a byte vira parcialmente sorte. Só ajuda se o
+# CLIENTE não estiver mandando `temperature` próprio na requisição (senão o
+# valor por-requisição sobrepõe o default do servidor) — não confirmado que
+# seja o caso do dsh, é a hipótese sendo testada.
+FLAG_TEMP=""
+[[ -n "${TEMP:-}" ]] && FLAG_TEMP="--temp $TEMP"
+
+echo "subindo: -c $CTX -np $SLOTS  (thinking off, KV em f16)${FLAG_JINJA:+, $FLAG_JINJA}${FLAG_TEMP:+, $FLAG_TEMP}"
 # Cada flag é medida, não gosto — ver harness/README.md.
 ssh "$HOST" "setsid $BIN -m $MODELO \
-  -t 8 -c $CTX -np $SLOTS $FLAG_JINJA \
+  -t 8 -c $CTX -np $SLOTS $FLAG_JINJA $FLAG_TEMP \
   --chat-template-kwargs '{\"enable_thinking\":false}' \
   --host 127.0.0.1 --port $PORTA < /dev/null > /tmp/srv.log 2>&1 & disown" || true
 
