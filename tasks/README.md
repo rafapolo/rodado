@@ -26,6 +26,12 @@ primeiros: **onde o dado está**.
 | [`espelho_subutilizado.md`](espelho_subutilizado.md) | O que **já está** no espelho e nada consome — nenhuma pergunta, nenhuma seção de dashboard, nenhum relatório | 🔵 inventário — mapa de saúde mental fechado (partes I e III; parte II segue aberta, depende do repo `xyz`), tema 57 (CVM) e tema 58 (programas sociais CGU: pé-de-meia, garantia-safra, seguro-defeso, viagens) fechados; achou e documentou uma ponte SIH↔SIM (`bridges.yaml`) que não existia; reverificou `br_ibama_embargos_novo` (113.878 linhas, já não está quebrado); ~9 grupos do Balde C da Parte I seguem sem tocar |
 | [`respostas_pendentes.md`](respostas_pendentes.md) | Que perguntas do golden set ainda faltam responder — e que bugs aparecem ao responder | 🟡 em andamento — golden set em 193 perguntas (era 185), recall@10 dataset-level 54,9% (161/293), estável; achou sentinela `capital_social=999999999999.0` em 124 empresas e uma coluna `modalidade` não documentada em `br_inep_formacao_docente.uf` que infla `GROUP BY` sem filtro (>600%), ambos logados no arquivo; ~58 itens ⏳ restam, maioria já com bloqueio estrutural catalogado ("Bloqueios mapeados") |
 
+## `plan/` — planos abertos, ainda não executados
+
+| Arquivo | O quê |
+|---|---|
+| [`plan/generate-full-schema-dict.md`](plan/generate-full-schema-dict.md) | Varredura em estágios pra achar colunas-código sem significado documentado em lugar nenhum (hoje só ~45 de ~230 datasets têm decode, via `dicionario_coverage.json`) — motivado pelo achado de `circunstancia_obito` (item 9 de `harness/tasks/backlog.md`), que subcontava suicídio sem nenhum alerta existir. 🔵 aberto 2026-09-03, nada rodado |
+
 Não são tarefas, são insumos:
 
 | Arquivo | O que é |
