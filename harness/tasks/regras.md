@@ -84,7 +84,7 @@ os dois passaram despercebidos por rodadas.
 | O parser do gabarito não pode engolir linha que não é dataset | a linha `chaves: id_municipio, sigla_uf` entrava como se fossem datasets: a 3ª e a 7ª "falha mais comum" eram **fantasma** | `casos.ts` |
 | O espelho não é só `br_` | `resolveDataset` só tentava o prefixo `br_`; há `world_` e `us_` — `olympedia_olympics` contava como erro do modelo | `catalogo.ts` |
 | Teste que aponta para dataset removido é vermelho por motivo bom | 3 testes quebraram quando `br_seeg`/`br_ibama_embargos` saíram do espelho — sinal correto, não ruído | `portao.test.ts` |
-| Acerto de número se confere com **fronteira**, não com substring | `resposta.includes('789')` casa dentro de `1789`, e um `n=2022` casa com o ano da própria pergunta — falso positivo silencioso | 🔴 nada feito — item 0 do [`backlog.md`](backlog.md) |
+| Acerto de número se confere com **fronteira**, não com substring | `resposta.includes('789')` casa dentro de `1789`, e um `n=2022` casa com o ano da própria pergunta — falso positivo silencioso | ✅ `acerto.ts` (`avalia()`), unificado — item 0 do [`backlog.md`](backlog.md), fechado 2026-09-02 |
 
 **Os 2,5 pontos de ganho da Rodada 8 vieram da régua, não do modelo.** É a
 terceira vez que consertar a medição rende mais que mexer no harness.
@@ -129,7 +129,11 @@ Duas "melhorias" minhas que pioravam, e foram removidas:
 
 ## Tarefas — travar o que ainda é só disciplina
 
-As 🔴 acima, em ordem de custo se voltarem a ser quebradas. Nenhuma feita.
+As 🔴 marcadas nas tabelas de subsistema acima, em ordem de custo se voltarem
+a ser quebradas. As 4 originais (numeradas abaixo) fecharam 2026-09-03; os 🔴
+que restam nas tabelas de cima (cache entre processos `dsh`, tool call do
+Gemma) são achados novos de 2026-09-03, sem tarefa de conserto ainda — ver
+`backlog.md` itens 10 e a nota de cache em "Prefixo e few-shot".
 
 ### 1. `COUNT(*) AS n` e `n=0` no caminho agêntico ✅ fechado 2026-09-02
 
