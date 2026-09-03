@@ -117,7 +117,7 @@ duas confusões diferentes.
 pergunta — mas conta para o gargalo de contexto (item 4). Só onde há par
 ambíguo.
 
-## 2. Rodar o laço nos casos com `n` conferido 🟡 rodada em andamento 2026-09-03 (3ª tentativa) — ver item 10
+## 2. Rodar o laço nos casos com `n` conferido 🟡 rodada em andamento 2026-09-03 (4ª tentativa, amostra de 20/58) — ver item 10
 
 O número que responde ao objetivo do harness, e **o único ainda não medido**.
 Tudo o que existe hoje mede *escolha de dataset*, não resposta ponta a ponta.
@@ -146,8 +146,19 @@ interrompida de propósito no caso 3/58 pra testar `TEMP=0` (ver item 10);
 2 casos completos (`respondeu` 100%, `correto` 0/2 por raciocínio, não bug).
 
 **3ª tentativa: 2026-09-03 10:07**, `temp` revertido ao default (0,80) depois
-do teste de `TEMP=0` sair pior. `bun harness/casos.ts --tsv > /tmp/casos.tsv
-&& bun harness/lote.ts /tmp/casos.tsv`, em background — rodando.
+do teste de `TEMP=0` sair pior — **interrompida a pedido no caso 6/58**. Os
+5 casos completos mostraram o custo real da retentativa: ritmo caindo de
+~24 min/caso pra **~36 min/caso** (5 casos, 10.850 s = ~3 h), com um caso
+(5/58) gastando **85 min em 3 tentativas e voltando vazio mesmo assim** —
+extrapolado, ~30+ h pras 58, contra a estimativa original de 5,8 h. RESPONDEU
+4/5 mesmo com o bug (bom sinal do workaround), CORRETO 0/5 (nenhum bateu o
+número, todos por raciocínio — nenhum dos 5 caiu no bug depois de recuperado).
+
+**4ª tentativa: 2026-09-03 ~13:10**, amostra menor a pedido — **20 dos 58
+casos** (`awk 'NR % 3 == 1' /tmp/casos.tsv`, um a cada 3 pra manter
+diversidade temática em vez dos primeiros 20 corridos), pra ter um número de
+correção utilizável sem esperar 30 h. Os 58 completos ficam pra depois do
+item 10/11 resolver de verdade. Em background — rodando.
 
 ## 3. A prosa cita a ferramenta, não o órgão ✅ fechado 2026-09-03
 
