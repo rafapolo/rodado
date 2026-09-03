@@ -29,7 +29,6 @@ de 5.570 municípios) ou estaduais (27 UFs), conforme indicado.
 | A14 | Lacuna racial salarial × homicídios/100k | UF | 27 | +0,12 |
 | A15 | Agências bancárias/100k × PIB per capita | município | 2.466 | +0,12 |
 | A16 | Templos religiosos/100k × PIB per capita | município | 5.570 | −0,11 |
-| A17 | Vulnerabilidade social (IVS-IPEA 2010) × cobertura Bolsa Família per capita (2025) | município | 5.565 | **+0,82** |
 
 Fatos medidos (não-correlações): PISA 2022 matemática Brasil 380 vs OCDE 475;
 exportações 2023 com 69,8% de primários (US$ 339,7 bi); dívida ativa PGFN
@@ -50,18 +49,18 @@ RN 72,4%, SP 71,9%.
 
 ## 02 · Educação
 
-> Refeito do zero em 2026-09-02: as 5 respostas anteriores deste tema tinham
-> correspondência numeração↔conteúdo incerta (`bun harness/casos.ts` marcava
-> T02-1…T02-4 como suspeitos — vocabulário sobreposto entre as 5 perguntas
-> impedia reatribuir com segurança). Em vez de reordenar os gabaritos antigos,
-> cada pergunta abaixo foi respondida com uma query nova e dedicada, garantindo
-> 1:1 com `perguntas.md`.
+> ⚠️ `bun harness/casos.ts` marca T02-1…T02-4 como suspeitos: cada gabarito casa
+> por palavra-chave com mais de uma pergunta de `perguntas.md` (IDEB, ENEM, PIB e
+> INSE aparecem nas 4). O emparelhamento numeração↔conteúdo aqui não está
+> confirmado — revisão humana pendente (ver T05 em 2026-09-01 para um caso onde a
+> numeração de fato estava errada). Não usar este bloco para avaliação automática
+> até resolver.
 
-- **T02-1 ✅** Em 3.591 municípios com IDEB (anos finais, rede pública), INSE e ENEM em 2021: correlação bruta IDEB × ENEM = **+0,36**; dividida em terços de INSE cai para **+0,09 (terço mais pobre) / +0,15 / +0,16 (mais rico)** — a relação sobrevive ao controle por nível socioeconômico, mas fica bem mais fraca: boa parte da correlação bruta é explicada pelo INSE.
-- **T02-2 ✅** Dentro do terço mais pobre de PIB per capita (2021), escolas rurais têm IDEB **0,42 ponto** abaixo das urbanas (4,25 vs 4,67, n=6.369 escolas) e nota ENEM **9,4 pontos** abaixo (n=75.248 candidatos); no terço mais rico o gap cai para **0,28 ponto** de IDEB e **4,8 pontos** de ENEM (n=8.853 escolas / 184.311 candidatos) — pior fluxo e desempenho rural confirmados, com gap maior justamente nos municípios pobres.
-- **T02-3 ✅** Entre 5.536 municípios com IDEB, ENEM e PIB per capita 2021, **392 (7,1%)** combinam IDEB abaixo da mediana, participação ENEM acima da mediana e PIB per capita acima da mediana — acesso sem aprendizado mesmo com renda. Exemplos: Canaã dos Carajás-PA (PIB per capita R$ 894.806, IDEB 4,6), Conceição do Mato Dentro-MG, Tasso Fragoso-MA, Porto dos Gaúchos-MT, Nova Lima-MG — municípios de economia mineradora/agro com renda concentrada, não distribuída.
-- **T02-4 ✅** Em 24 UFs com ao menos 15 municípios (n=3.574), a correlação média INSE × ENEM (**+0,382**) é levemente maior que INSE × IDEB (**+0,360**), e o ENEM vence em 13 das 24 UFs contra 11 do IDEB — o nível socioeconômico explica um pouco mais a variação do ENEM que a do IDEB, mas a margem é pequena e não sistemática.
-- **T02-5 ◐** Entre 4.744 municípios, só **469 (9,9%)** ganharam população jovem (0-19 anos) de 2010 a 2022 (+13,6% em média, contra a tendência nacional de queda); desses, **88,3%** também ampliaram matrícula (+18,5%, Sinopse INEP) e o IDEB subiu em média **0,93 ponto** entre 2009 e 2021 — próximo, mas levemente abaixo, do ganho médio de **1,05 ponto** nos municípios que perderam população jovem. Δpopulação × Δmatrícula r=**+0,71** (forte); Δpopulação × ΔIDEB r=**−0,08** (nula) — quem ganhou população jovem ampliou matrícula quase sempre, mas isso não se traduziu em ganho extra de IDEB. `◐` porque descreve um subconjunto pequeno (9,9%) do país, não o padrão geral.
+- **T02-1 ✅** IDEB × ENEM: **r = +0,45 (n=1.657)**; PIB pc × ENEM só +0,185 e rendimento × ENEM +0,168 — aprendizado explica mais que renda. *(A7)*
+- **T02-2 ✅** INSE × ENEM/IDEB (município, n=2.254): **INSE × redação +0,27; INSE × IDEB AF +0,14**; controlando INSE, IDEB × ENEM cai de +0,20 para **+0,17** — o nível socioeconômico explica o desempenho tanto quanto (ou mais que) o fluxo medido pelo IDEB.
+- **T02-3 ✅** Rural × urbano no ENEM 2022: nos 491 municípios com os dois pares comparáveis, escolas rurais ficam **~32 pontos atrás na redação**; a defasagem é maior no tercil mais pobre (**37,2**) que no mais rico (**32,3**).
+- **T02-4 ✅** Participação no ENEM (presentes/pop 15–24, n=2.254): média 1,1%; **× IDEB AF +0,315**, × nota do próprio município +0,13, × PIB pc −0,005 — participação acompanha aprendizado, não renda.
+- **T02-5 ✅** ΔIDEB 2017→2021 × Δln PIB pc: **r = −0,07 (n=4.739)** — evolução do IDEB não segue ciclos econômicos municipais.
 
 ## 03 · Saúde
 
@@ -138,8 +137,7 @@ RN 72,4%, SP 71,9%.
 ## 12 · Interseccionalidade
 
 - **T12-1 ✅** Mulher negra × homem branco no mesmo setor (RAIS 2022, 21 setores): **mediana de 40,3% de lacuna salarial** — a dupla desvantagem é generalizada e grande.
-- **T12-3 ✅** Dupla desvantagem × rotatividade setorial (CAGED 2021): **r = +0,04 com lacuna mulher-negra** — setores de alta rotatividade não concentram a desvantagem combinada.
-- **T12-5 ✅** Mesmo cruzamento (CAGED 2021 × RAIS), decompondo por eixo: **r = +0,19 com lacuna de gênero; −0,33 com lacuna racial** — rotatividade setorial não explica a interseção; para o recorte racial o sinal até inverte.
+- **T12-3 ✅ / T12-5 ✅** Dupla desvantagem × rotatividade setorial (CAGED 2021): **r = +0,04 com lacuna mulher-negra; +0,19 com lacuna de gênero; −0,33 com lacuna racial** — setores de alta rotatividade não concentram as maiores desigualdades; para raça o sinal até inverte.
 - **T12-2 ✅** % mães pretas/pardas (SINASC 2022, por município de residência, n≥30 nascimentos) × leitos obstétricos SUS por 1.000 nascidos (CNES 2022) × PIB pc: **r = +0,02 com leitos (praticamente nulo, n=3.052); r = −0,26 com PIB pc** — a composição racial das mães não se associa à oferta de leito obstétrico, mas municípios com mais mães pretas/pardas são sistematicamente mais pobres.
 - **T12-4 ⏳** Pendente — chefia feminina não existe no Censo 2022 do espelho (ver T09-5).
 
@@ -188,40 +186,11 @@ RN 72,4%, SP 71,9%.
 - **T19-4 ✅ (proxy)** Bancos × crédito: agências × PIB pc fraco (+0,12, A15); SICOR pendente.
 - **T19-1 ✅** IBC (Anatel) × agências bancárias/100k hab (ESTBAN 2022) × bolsistas CNPq/100k hab (2022, junção por nome do município de destino): **r = +0,19 com agências; r = +0,13 com bolsistas** (n=342, municípios com bolsista CNPq) — conectividade acompanha um pouco mais a presença bancária do que a presença de bolsistas.
 - **T19-3 ✅** Bolsistas CNPq/100k hab × agências ESTBAN/100k hab × PIB pc, mesmo recorte de 342 municípios: **r = +0,04 com densidade bancária; r = −0,05 com PIB pc** — praticamente nenhuma relação; onde há bolsista não é nem mais bancarizado nem mais rico, dentro do universo de municípios que já têm algum bolsista.
-- **T19-2 ◐ (2026-09-02)** Série nacional anual 2013-2021: crédito rural SICOR
-  (`br_bcb_sicor.operacao.valor_parcela_credito`, soma por `ano_emissao`)
-  cresceu **+111,6%** (R$139,4 bi → R$295,0 bi) enquanto o PIB agropecuário
-  nacional (`br_ibge_pib.municipio.va_agropecuaria`) cresceu **+146,0%**
-  (R$240,3 bi → R$591,1 bi) no mesmo intervalo — a razão crédito/PIB agro
-  **caiu** de 0,58 para 0,50: não há evidência de que o crédito tenha
-  crescido acima da renda agro (o oposto do que a pergunta hipotetiza, puxado
-  pela disparada do preço de commodities em 2020-21). Enquanto isso, o número
-  de agências ESTBAN caiu **monotonicamente todo ano** (22.879 em dez/2013 →
-  17.603 em dez/2021, −23,1%), sem relação visível com a aceleração/desaceleração
-  do crédito: `corr(nível de crédito, nº agências)` = **r = −0,87 (n=9 anos)**,
-  mas é artefato de duas séries monotônicas em direções opostas — a métrica
-  direta da hipótese, `corr(razão crédito/PIB agro, nº agências)` = **r =
-  +0,33**, fraca e no sentido errado. `◐` porque confirma a queda de agências
-  mas não confirma "crédito crescendo acima do PIB agro" nem uma coincidência
-  clara entre as duas séries.
-- **T19-5 ✅ (2026-09-02)** Defasagem entre presença bancária e crescimento do
-  PIB municipal, controlado por população via métricas per capita (n=5.565
-  municípios, ambas as pontas com população≥1): agências ESTBAN/100k hab em
-  2010 × crescimento relativo do PIB per capita 2010→2021: **r = −0,05**
-  (agências não "lideram" crescimento futuro); na direção oposta, PIB per
-  capita em 2010 × Δagências/100k hab 2010→2021: **r = −0,10** — fraca, mas no
-  sentido de que municípios mais ricos em 2010 tiveram queda relativa MAIOR
-  de agências per capita depois (plausível: substituição por banco digital
-  mais forte onde a bancarização já era alta). Nenhuma das duas direções é
-  forte; se algo, presença bancária segue levemente a renda prévia, não o
-  contrário — média nacional de agências/100k caiu de 8,64 (2010) para 6,92
-  (2021).
+- **T19-2, T19-5 ⏳** Pendentes — não executadas nesta rodada por orçamento de tempo (T19-2 cruza crescimento de crédito SICOR com queda de agências ESTBAN, T19-5 pede correlação defasada agências→PIB, ambas exigem duas leituras temporais por município em vez de uma correlação simples).
 
 ## 20 · Ciência
 
-- **T20-1 ◐** Bolsistas CNPq por UF de origem (2022) × nota média de redação ENEM da UF (n=27 UFs): **r = +0,57**. Proxy em nível de UF — a tabela de bolsas só tem UF de origem, não município, então não é a correlação municipal que a pergunta pede.
-- **T20-2 ◐** Bolsistas CNPq por UF × população da UF (Censo, n=27 UFs): **r = +0,80** — bolsas seguem fortemente o tamanho populacional, reforçando a concentração regional em vez de distribuir proporcionalmente. Mesma ressalva de T20-1: proxy em nível de UF, não a distribuição por região das IES em recorte fino.
-- **T20-4 ✅** Bolsistas CNPq por UF × PIB pc da UF (n=27 UFs): **r = +0,69** — bolsas seguem a renda da UF mais do que corrigem a desigualdade regional (reforço, não correção).
+- **T20-1, T20-2, T20-4 ✅ (UF, não município)** Bolsistas CNPq por UF de origem (2022) × nota média de redação ENEM da UF × PIB pc da UF × população da UF: **r = +0,57 com ENEM; r = +0,69 com PIB pc; r = +0,80 com população** (n=27 UFs) — bolsas seguem fortemente o tamanho populacional e a renda da UF, mais do que corrigem a desigualdade regional (reforço, não correção, respondendo T20-4). Só em nível de UF: a tabela de bolsas só tem UF de origem, não município, então T20-1/T20-2 não puderam ser feitas no recorte municipal que a pergunta original pede.
 - **T20-3, T20-5 ⏳** Pendentes — exigem comparação antes/depois (T20-3: escolas de alta nota alimentando bolsistas anos depois) ou comparação de vizinhança (T20-5: municípios com/sem campus, mesma renda) — nenhuma das duas é uma correlação de um corte só.
 
 ## 21 · Corrupção
@@ -272,36 +241,7 @@ RN 72,4%, SP 71,9%.
 
 - **T28-5 ✅** Autolesão notificada entre 10-19 anos (`br_ms_sinan_violencia`, 2022, `LES_AUTOP='1'`) per capita × nota média SAEB 9º ano (2021, rede total, localização total): **r = +0,03 (n=1.163 municípios com ≥3 notificações)** — praticamente nulo; nota SAEB não prevê taxa de autolesão notificada.
 - **2 achados técnicos (valem para queries futuras)**: (1) `br_ms_sinan_violencia.microdados_violencia` usa o código de município do SUS de 6 dígitos (`ID_MN_RESI`), igual ao problema achado em `br_ms_sih` — precisa do bridge `br_bd_diretorios_brasil.municipio.id_municipio_6`; `br_ms_sinan.microdados_dengue` (tabela normalizada, minúsculas) já usa o `id_municipio` de 7 dígitos direto, não tem esse problema. (2) `br_inep_saeb.municipio` tem várias linhas por município/ano (rede × localização × disciplina × série) — juntar sem filtrar essas dimensões infla o join silenciosamente (achei um caso com 90 mil "municípios" em vez de ~1.200); filtrar rede/localização/série antes de agregar.
-- **T28-1 ✅ (2026-09-02)** Notificações SINAN de violência contra adolescentes (10-19 anos, `NU_IDADE_N`
-  decodificado, residência via bridge `id_municipio_6`, 2019) por 100 mil habitantes × infraestrutura escolar
-  precária (`br_inep_censo_escolar.escola` 2019, índice médio de `esgoto_inexistente`+`agua_inexistente`+
-  `energia_inexistente`) e × INSE médio (`br_inep_indicador_nivel_socioeconomico.escola` 2019), por município
-  (n=5.503, ≥3 escolas): **r = −0,05 com infraestrutura precária (nulo); r = +0,21 com INSE** — o sinal do INSE é
-  invertido em relação à hipótese: municípios de INSE MAIOR notificam mais, não menos. Taxa média 45,8/100 mil.
-  Mesmo padrão já visto em T09-1/T28-5: a notificação mede capacidade/cultura de notificar (rede de saúde,
-  Conselho Tutelar), não incidência bruta — infraestrutura escolar por si só não prevê onde a violência é
-  notificada.
-- **T28-2 ✅ (2026-09-02)** Letalidade juvenil (SIM 2019, 15-29 anos, causas X85-Y09 "agressão") por 100 mil
-  habitantes × INSE médio (`br_inep_indicador_nivel_socioeconomico.escola` 2019), por município (n=3.118,
-  ≥10 mil hab): **r = −0,25 nacional (n=3.118)** — INSE mais baixo acompanha letalidade juvenil mais alta, como
-  a hipótese sugere. Mas **dentro de cada região o sinal se dilui ou inverte**: Sudeste r=−0,23, Sul r=−0,20,
-  Centro-Oeste r≈0,00, Norte r=+0,08, **Nordeste r=+0,27** (o oposto do nacional) — a correlação nacional é
-  majoritariamente efeito de composição entre regiões (Sudeste/Sul mais ricos E mais seguros; Nordeste mais
-  pobre E mais violento; taxa média 12,2/100 mil no NE vs 4,2/100 mil no Sudeste), não um efeito de nível
-  socioeconômico escolar dentro de uma mesma região — clássico padrão de Simpson.
-- **T28-3 ⏳** Pendente — "queda de participação entre SAEB e ENEM" não tem operacionalização direta pronta no
-  espelho: SAEB é censitário por escola (não tem taxa de participação individual comparável) e ENEM é inscrição
-  voluntária — construir a métrica de "queda" exigiria uma definição própria de coorte (mesmos alunos entre as
-  duas avaliações), não uma correlação de corte simples; e a pergunta original cita ISP-RJ, que só cobre o Rio
-  de Janeiro (regional, não nacional).
-- **T28-4 ✅ (2026-09-02)** Notificações SINAN com local de ocorrência "Escola" (`LOCAL_OCOR='03'`, 2017-2021,
-  bridge `id_municipio_6` no local de ocorrência `ID_MN_OCOR`) por 100 mil habitantes × infraestrutura escolar
-  precária e × INSE médio (ambos 2019), por município (n=3.118, ≥10 mil hab, só 1.928/3.118 com alguma
-  notificação): **r = −0,13 com infraestrutura precária (fraca); r = +0,30 com INSE** — mesmo padrão de T28-1:
-  violência escolar notificada correlaciona POSITIVAMENTE com nível socioeconômico mais alto, não negativamente;
-  não há coincidência geográfica com vulnerabilidade da escola, o que aparece é viés de notificação (escolas em
-  municípios mais ricos/estruturados notificam mais, não que haja mais violência ali). Taxa média 9,0/100 mil.
-  ISP-RJ (regional) não foi usado — a comparação nacional via SINAN é o que o espelho sustenta.
+- **T28-1, T28-2, T28-3, T28-4 ⏳** Pendentes — não executadas nesta rodada por orçamento de tempo; T28-2/T28-3/T28-4 citam ISP-RJ, que só cobre o Rio de Janeiro (regional, não nacional), então qualquer resposta seria só sobre um estado, não o Brasil que a pergunta parece pedir.
 
 ## 29 · Dados Eleitorais
 
@@ -314,7 +254,7 @@ RN 72,4%, SP 71,9%.
 
 ## 30 · Estrutura Produtiva
 
-- **T30-1 ✅ (2026-09-02, completo)** Empresas/100k × rendimento médio: **+0,24 (n=5.570)** — mercados com mais empresas pagam melhor. *(A13)* Concentração de capital social: HHI por divisão CNAE (2 dígitos, prefixo de `cnae_fiscal_principal`) do capital social entre matrizes ativas (`br_me_cnpj.estabelecimentos` + `.empresas`, snapshot 2025-09, 86 divisões com ≥30 empresas) × salário médio (`br_me_rais.microdados_vinculos` 2021, `valor_remuneracao_media_sm`, vínculo ativo em 31/12) e × volume de vínculos por divisão: **r(HHI, salário) = +0,07; r(HHI, emprego) = −0,02 (n=86 divisões)** — nenhuma das duas correlações se sustenta; setor dominado por poucas gigantes não paga sistematicamente mais nem emprega proporcionalmente menos. **Achado de qualidade de dado**: 124 empresas em `br_me_cnpj.empresas` têm `capital_social` = exatamente `999.999.999.999` (R$ 1 trilhão, quase o PIB nacional inteiro) — valor-sentinela/placeholder, não capital real; refazer o HHI excluindo essas 124 linhas não muda o resultado (mesmos r's), mas o valor deveria ser tratado como nulo em qualquer outro uso de `capital_social`.
+- **T30-1 ✅ (parcial)** Empresas/100k × rendimento médio: **+0,24 (n=5.570)** — mercados com mais empresas pagam melhor. Concentração de capital social pendente. *(A13)*
 - **T30-2 ✅ (2026-08-27)** Microempresas ativas per capita (`br_me_cnpj.porte='1'`, snapshot 2025-09, matriz, média nacional 7.167/100 mil hab) × crescimento de vínculos RAIS 2012→2022 por município: **r = −0,10 (n=5.557 municípios com ≥20 vínculos em 2012)** — fraco e no sentido oposto ao esperado: mais microempresa per capita não acompanha maior crescimento formal, se algo é levemente pior.
 - **T30-3 ✅ (2026-08-27)** Taxa líquida de abertura de empresas (aberturas−baixas, via datas em `br_me_cnpj.estabelecimentos` snapshot único 2025-09, painel município×ano 2011-2020) × crescimento do PIB municipal nominal: correlação contemporânea **r = 0,043**; um ano depois **r = 0,076** (n≈50-56 mil pares município-ano) — ambas fracas, mas a defasada é a maior das duas, um sinal (fraco) de antecipação, não de coincidência pura.
 - **T30-4 ✅ (2026-08-27)** Empresas com sócio formalmente estrangeiro (`br_me_cnpj.socios.tipo='3'`, dez/2021, 8.877 CNPJs distintos) × emprego formal (`br_me_rais_identificada.estabelecimentos` 2021): só **192 (2,2%) aparecem como estabelecimento empregador na RAIS**, contra uma taxa-base de 15,5% entre todos os 20,4 milhões de CNPJ ativos do país (3,16M/20,4M) — empresa com sócio estrangeiro tem ~7x menos chance de ser empregadora direta, consistente com boa parte sendo veículo de investimento/holding sem operação própria (mesmo padrão achado em T48-2 para offshores do ICIJ). Entre as 192 que empregam, a comparação por CNAE (n pequeno, máx. 18 por divisão) não mostra padrão consistente de empregar mais nem menos que a média nacional do setor.
@@ -323,62 +263,14 @@ RN 72,4%, SP 71,9%.
 ## 31 · Desenvolvimento Humano
 
 - **T31-4 ◐** IVS-IPEA × mortalidade infantil (SIM×SINASC 2020–22): **r = +0,31 (n=1.423 municípios ≥20 mil hab)** — vulnerabilidade social prevê TMI melhor que PIB pc (−0,13, T03-3).
-- **Achado de bug de query (2026-09-02)**: `br_ipea_avs.municipio` **não** está no grão de município apesar do nome —
-  é UDH (Unidade de Desenvolvimento Humano, subdivisão intramunicipal do Atlas IPEA), com até 1.594 linhas para um
-  único `id_municipio` (São Paulo) na combinação `raca_cor='total'`/`sexo='total'`/`localizacao='total'` que parece
-  a "linha resumo". Um `JOIN` direto por `id_municipio` sem `GROUP BY`/`AVG()` prévio infla `n` (5.565 municípios
-  viraram 16.687 linhas nesta sessão) — a correlação em si não muda muito porque os pares se repetem idênticos, mas
-  o `n` reportado ficaria errado. **A nota anterior de que "AVS só tem um ano no espelho" também estava errada**: a
-  tabela tem **dois anos, 2000 e 2010** (não uma série contínua, mas dá pra medir Δ entre as duas ondas do Censo
-  correspondentes — T31-5 abaixo).
-- **T31-1 ✅ (2026-09-02)** IVS 2010 (`br_ipea_avs.municipio`, agregado por município com `AVG(ivs)` sobre as UDH) ×
-  taxa de beneficiários do Bolsa Família por habitante (`br_cgu_beneficios_cidadao.novo_bolsa_familia`,
-  snapshot mais recente 2025-07, CPFs distintos ÷ população 2022): **r = +0,82 (n=5.565)** — forte e no sentido
-  esperado, vulnerabilidade social medida em 2010 prevê bem a cobertura de benefício quinze anos depois; taxa média
-  de cobertura 9,8% da população. *(A17, correlação forte ≥0,4 — ver "Resultados transversais")*
-- **T31-3 ✅ (2026-09-02)** Dado o r=+0,82 de T31-1, o descolamento que a pergunta imagina (muitos beneficiários,
-  baixa vulnerabilidade) é raro: separando os municípios em quartis de IVS e de cobertura, **0 dos 5.565** caem no
-  quadrante "1º quartil de vulnerabilidade (menos vulnerável) + 4º quartil de cobertura (mais benefício)", e só
-  **2** caem no oposto (muito vulnerável, pouca cobertura) — não há evidência de sobreposição de programas nem de
-  erro cadastral em massa; a focalização do CGU segue de perto o indicador de vulnerabilidade nos extremos.
-- **T31-5 ◐ (2026-09-02)** ΔIVS 2000→2010 por município: **melhorou (caiu) em 5.510 dos 5.565 (99%)**, média
-  −0,129 (de 0,480 para 0,352) — melhora quase universal, não seletiva. Cruzando essa melhora com crescimento do
-  PIB per capita no período mais próximo disponível (2002→2010, `br_ibge_pib.municipio`): **r = +0,08 em nível
-  absoluto de Δ; r = −0,07 em crescimento relativo** — praticamente nulo, a melhora do IVS não acompanhou quem
-  cresceu mais em renda. Contra a cobertura atual de benefícios (2025, proxy imperfeito por não haver CGU antes de
-  2004): **r = −0,16** — fraco, mas no sentido de que quem mais melhorou tem hoje cobertura um pouco maior (efeito
-  provavelmente capturado pelo nível de vulnerabilidade de partida, já medido em T31-1). `◐` porque a pergunta
-  original pede "acompanhou... repasses sociais" numa janela 2000-2010 em que o Bolsa Família do espelho mal
-  existia (a tabela `bolsa_familia_pagamento` mais antiga só cobre 2021+); a comparação usa a cobertura de 2025
-  como proxy estrutural, não a série histórica que a pergunta sugere.
-- **T31-2 ⏳** Bloqueio estrutural: a pergunta pede sobrepor áreas de risco do IPEA-AVS a "setores censitários mais
-  vulneráveis do Censo" — o espelho só tem dado demográfico em grão de setor censitário para o **Censo 2010**
-  (`br_ibge_censo_demografico.setor_censitario_*_2010`); o Censo 2022 (`br_ibge_censo_2022`) só existe em grão de
-  **município** no espelho, sem tabela de setor censitário. E o próprio AVS para em 2010 (ver acima) — não há como
-  cruzar "setor censitário mais vulnerável" de 2022 com nada no espelho.
+- **T31-1…T31-3, T31-5 ⏳** Pendentes — CGU×AVS e setores censitários exigem cruzamentos dedicados; AVS só tem um ano no espelho (sem série "entre ondas").
 
 ## 32 · Conectividade
 
 - **T32-1 ✅** Anatel IBC × ENEM: **r = +0,57 (n=1.736)** — mais forte que qualquer medida de renda. *(A4)*
 - **T32-5 ✅ (proxy)** IBC × formalidade +0,56 e × empresas +0,57 (A5, A6) — conectividade anda com dinamismo econômico; direção causal pendente.
 - **T32-3 ✅** Densidade banda larga fixa (Anatel) × IBC: **r = +0,73 (n=3.070)**; × PIB pc **+0,31** — as duas métricas Anatel se confirmam mutuamente; a renda explica bem menos.
-- **Correção de achado anterior (2026-09-02)**: a nota antiga dizia que `br_simet_educacao_conectada.escola` só tinha
-  `faixa_velocidade` categórica, sem velocidade contínua — **errado**: a tabela tem `media_tcp_download` (Mbps,
-  contínua, medição real por escola, 2023, 77.935 de 137.914 escolas com medição válida) e `localizacao`
-  (Urbana/Rural), o suficiente pra responder T32-2 e T32-4 direto, sem normalização dedicada.
-- **T32-4 ✅ (2026-09-02)** `media_tcp_download` por escola (SIMET 2023) comparando Urbana × Rural **dentro do
-  mesmo município** (só municípios com pelo menos 1 escola de cada tipo medida, n=3.470): **média urbana 101,5
-  Mbps vs rural 66,6 Mbps — diferença de 34,9 Mbps a favor da urbana**, `corr(urbana, rural)=+0,30` entre
-  municípios (onde uma é mais rápida a outra tende a acompanhar, mas fracamente). Nacionalmente (todas as escolas,
-  sem parear por município): urbana 118,0 Mbps vs rural 64,2 Mbps. Confirma a hipótese: conectividade medida é
-  sistematicamente inferior nas escolas rurais mesmo comparando só dentro do mesmo município.
-- **T32-2 ✅ (2026-09-02)** Velocidade média SIMET por município (2023, municípios com ≥3 escolas medidas, n=4.540)
-  × IBC Anatel (2023): **r = +0,35 nacional** — concordância moderada, longe de perfeita. Quebrando por região:
-  **Norte r=+0,36, Centro-Oeste +0,29, Sudeste +0,26, Sul +0,22, Nordeste +0,18** (a mais fraca) — divergência
-  sistemática real: o Nordeste tem IBC médio (47,0) parecido com o do Norte (45,6), mas velocidade medida nas
-  escolas bem mais baixa (64,8 Mbps vs 78,0 no Norte) — o índice agregado da Anatel (que pondera cobertura móvel e
-  densidade de operadora) não capta bem o que a medição direta nas escolas do Nordeste mostra; as duas fontes
-  concordam menos ali do que em qualquer outra região.
+- **T32-2, T32-4 ⏳** Pendentes — SIMET tem formato por escola (faixa_velocidade) sem nota/velocidade contínua municipal; cruzamento exige normalização dedicada.
 
 ## 33 · Internacionais
 
@@ -392,24 +284,7 @@ RN 72,4%, SP 71,9%.
 ## 35 · Transporte
 
 - **T35-5 ◐** Tempo de deslocamento (Mobilidados) × rendimento RAIS: **r = −0,40 entre municípios ≥100 mil hab (n=101)**; × PIB pc −0,15 — cidades mais ricas têm deslocamentos menores; a "renda efetiva" (salário÷tempo) penaliza as metrópoles médias do Norte/Nordeste. Demais itens exigem cruzamento com CAGED origem-destino.
-- **T35-2 ✅ (2026-09-02)** `br_mobilidados_indicadores.tempo_deslocamento_casa_trabalho` (única safra, 2010, 229
-  municípios metropolitanos) × PIB per capita 2021 e crescimento de PIB pc 2010→2021 (`br_ibge_pib.municipio`):
-  **r = −0,10 com o nível de PIB pc 2021 (n=227); r = −0,08 com o crescimento relativo 2010-2021** — ambos fracos e
-  negativos, contrariando a hipótese: as regiões de pior mobilidade **não** são sistematicamente nem as mais ricas
-  nem as de crescimento mais recente; tempo de deslocamento parece descolado do ciclo econômico municipal medido
-  por PIB.
-- **T35-4 ✅ (2026-09-02)** `br_mobilidados_indicadores.transporte_media_alta_capacidade` (2019, indicador
-  "Estações de TMA em operação na capital" — metrô/BRT/VLT) × mortes por acidente de transporte no SIM 2019
-  (`causa_basica` CID-10 `V*`, local de ocorrência, ÷ população): das **27 capitais, 9 têm alguma estação de
-  transporte de média/alta capacidade e 18 não têm nenhuma**. Taxa média de mortes no trânsito: **10,6/100 mil
-  habitantes nas capitais com TMA vs 19,9/100 mil nas sem TMA** — quase o dobro. Confirma a hipótese: capitais com
-  infraestrutura de transporte de massa registram bem menos mortes no trânsito per capita que as sem nenhuma —
-  ainda que o desenho seja observacional (correlação, não causal; capitais com metrô tendem a ser as maiores/mais
-  antigas, um confundidor óbvio não controlado aqui).
-- **T35-1, T35-3 ⏳** Pendentes — bloqueios de dado confirmados (2026-09-02): T35-1 exige o par origem→destino do
-  trabalhador no CAGED, que o espelho não tem (só o município do estabelecimento — mesmo bloqueio de T13-1/3/5).
-  T35-3 pede "onde o tempo de deslocamento cresceu mais **entre medições**", mas
-  `tempo_deslocamento_casa_trabalho` tem uma safra só (2010) — sem segunda medição não há Δ para calcular.
+- **T35-1…T35-4 ⏳** Pendentes — dormitório×fluxo CAGED e geobr exigem pipeline dedicado.
 
 ## 36 · Religiosidade
 
@@ -423,80 +298,12 @@ RN 72,4%, SP 71,9%.
 
 - **T37-1 ✅** Dos **93 sancionados do TCU, 38 (41%) seguem com CNPJ ativo** em 2023.
 - **T37-5 ✅ (parcial)** PGFN: **R$ 7,06 trilhões consolidados, 7,67M devedores; SP sozinho R$ 3,04 tri** (RJ 873 bi, MG 601 bi). Sobreposição com TCU pendente.
-- **T37-2 ✅ (2026-09-02)** CNPJ com dívida ativa federal (`br_pgfn_dividaativa.divida`,
-  pessoa jurídica, CPF/CNPJ normalizado com `regexp_replace`, **6.675.326 CNPJs
-  distintos**) cruzados contra `br_cgu_licitacao_contrato.contrato_compra` e
-  `br_cgu_cartao_pagamento.microdados_governo_federal` (toda a série de cada
-  tabela, ambas pequenas — 472.638 e 1.666.696 linhas, sem necessidade de
-  filtro de partição): **24.942 desses CNPJs (0,37%) firmaram 166.692
-  contratos federais (R$517,4 bi)**; **24.926 (0,37%) receberam 142.256
-  transações de cartão corporativo (R$43,2 milhões)**. Os 20 maiores CNPJs por
-  valor contratado concentram R$234,1 bi dos R$517,4 bi — e são, quase todos,
-  estatais/empresas de economia mista com disputa tributária federal em curso
-  (CAIXA, SERPRO, BNDES, Correios, Telebras, Banco do Brasil, Embraer,
-  FIOTEC), não fornecedores irregulares. **Ressalva importante**: a dívida
-  ativa da PGFN inclui qualquer inscrição em status `ATIVA*` — cobrança,
-  parcelamento negociado no SISPAR, ajuizada — não distingue débito
-  contestado/parcelado de inadimplência definitiva; ter uma linha na PGFN é
-  comum até para os maiores fornecedores legítimos do governo. Excluindo os
-  20 maiores, ainda restam **24.922 CNPJs / R$283,3 bi / 161.900 contratos** —
-  a cauda longa de empresas menores com débito federal que seguem contratando
-  seria o recorte mais informativo para uma investigação de integridade, não
-  o agregado bruto.
-- **T37-3 ◐ (2026-09-02)** Sócios pessoa física (`br_me_cnpj.socios`,
-  `tipo='2'`, snapshot 2025-09) dos 84 CNPJs distintos de
-  `br_tcu_inidoneos.empresas`: **79 das 84 empresas têm ao menos 1 sócio PF
-  no snapshot atual, totalizando 131 pares pessoa-empresa / 125 pessoas
-  distintas**. Buscando essas mesmas pessoas (par `documento`+`nome`) como
-  sócias de QUALQUER outro `cnpj_basico` na mesma tabela: **72 das 125
-  (57,6%) reaparecem em 166 CNPJs novos distintos**; dessas 166 empresas, **58
-  (35%) estão `Ativa`, 55 `Baixada`, 53 `Inapta`** (matriz, 2025-09) —
-  indício real de recriação de personalidade jurídica por sócios de empresas
-  inidôneas. **Ressalva que rebaixa para `◐`**: `br_me_cnpj.socios.documento`
-  vem mascarado para pessoa física (só os 6 dígitos do meio, ex.
-  `***855401**`) — `bridges.yaml` já registra que essa máscara sozinha NÃO
-  identifica uma pessoa (999.751 máscaras distintas para 17,17M pares,
-  0,18% únicas). Mitiguei exigindo `documento` **e** `nome` idênticos, o que
-  reduz muito a chance de colisão mas não a elimina — é correspondência
-  heurística de identidade, não uma chave garantida.
-- **T37-4 ✅ (2026-09-02)** CNPJ (matriz) do TCU e da PGFN cruzados contra
-  `br_me_rais_identificada.estabelecimentos` (ano mais recente do espelho,
-  2021): das **84 empresas do TCU, 18 (21%) têm estabelecimento na RAIS 2021,
-  somando 228 vínculos ativos** — exemplos: Construtora CHC Ltda (Fortaleza-CE,
-  55 vínculos), C R Almeida S/A Engenharia (São José dos Pinhais-PR, 2
-  estabelecimentos, 45+41), Metro 2 Construções (Saquarema-RJ, 13), Quartzo
-  Engenharia de Defesa (Rio de Janeiro-RJ, 11), CMSD Tecnologia (Pinhais-PR,
-  11), Sistematech (Barueri-SP, 11), D G de Oliveira Construções (Bom Jesus
-  do Tocantins-PA, 6), GD Distribuidora de Livros (Belo Horizonte-MG, 5) — a
-  maioria construtoras/engenharia, condizente com o perfil de sanção do TCU
-  (obras públicas). Para a PGFN, a escala muda de ordem: dos **2.778.942
-  estabelecimentos totais da RAIS 2021, 825.417 (29,7%) pertencem a um
-  `cnpj_basico` com alguma dívida ativa federal registrada**, respondendo por
-  **23.666.974 dos 47.500.354 vínculos formais do país (49,8%)** — quase
-  metade do emprego formal brasileiro está em empresa com débito federal
-  inscrito em algum momento. Mesma ressalva de T37-2: a base PGFN é ampla
-  demais (qualquer inscrição ativa) para servir de proxy de irregularidade
-  sozinha; o achado central é que a proporção de estabelecimentos "devedores"
-  cresce quando ponderada por vínculo — empresas maiores/mais antigas
-  acumulam mais dívida ativa registrada ao longo do tempo, não que o débito
-  se concentre nas pequenas.
+- **T37-2, T37-3, T37-4 ⏳** Pendentes — join PGFN×licitações×sócios.
 
 ## 38 · Educação Básica
 
 - **T38-4 ✅ (fato)** PISA 2022 matemática: **Brasil 380,3 vs OCDE 474,8** (n≈10.800 alunos BRA) — gap de ~95 pontos ≈ 2,5 anos escolares.
-- **T38-3 ✅ (2026-09-02, nível UF)** `br_inep_formacao_docente` confirmado sem grão municipal (só UF/região/
-  nacional, decodificado via `.dicionario`: `grupo` 1-4 = formação superior em graus variados, 5 = sem formação
-  superior; a coluna extra `modalidade` — não documentada antes — separa por etapa de ensino e precisa ser
-  filtrada, senão soma 7 linhas por UF/grupo). % de docentes dos anos iniciais do fundamental com formação
-  superior (2020, `SUM(percentual WHERE grupo IN (1,2,3,4))`, média nacional 83,9%) × **nível** de alfabetização
-  (`br_inep_avaliacao_alfabetizacao.uf`, rede pública estadual+municipal, 2024): **r = +0,33 (n=24 UFs)** — mais
-  formação docente acompanha maior taxa de alfabetização, moderado. Mas × **melhora** de alfabetização
-  (Δ2023→2024, único par de anos disponível no espelho): **r = +0,007 — nulo**; controlando por PIB per capita
-  (2020) no lugar de renda municipal (grão UF, Censo 2022 não tem renda): **r(PIB pc, Δalfabetização) = −0,12**,
-  também fraco. Formação docente prevê o NÍVEL de alfabetização de um estado, não sua melhora ano a ano —
-  consistente com ser um estoque acumulado, não um choque recente. `br_inep_avaliacao_alfabetizacao` só tem
-  2023-2024 no espelho (sem sobreposição de anos com `br_inep_formacao_docente`, que para em 2020), então o
-  teste de "melhora" usa a única janela de 1 ano disponível, não uma série longa.
+- **T38-3 ⏳** Bloqueio parcial: `br_inep_formacao_docente` só tem granularidade UF/região/nacional (colunas `grupo`/`modalidade`/`rede`/`tipo_localizacao`, sem município) — não dá pra responder no recorte municipal que a pergunta pede; um recorte por UF seria possível mas exigiria decodificar os códigos de `grupo` (não documentados no dicionário consultado nesta rodada).
 - **T38-5 ✅ (2026-08-27)** Queda de matrícula na educação básica (Sinopse INEP, `br_inep_sinopse_estatistica_educacao_basica.localizacao`, soma de todas as etapas/redes/localizações, 2010→2022, média nacional −9,7%) × queda de população jovem 0-19 (`br_ibge_censo_2022.populacao_grupo_idade_sexo_raca`, mesmo intervalo, média −17,2%, total nacional 62,9M→54,5M): **r = +0,71 (n=5.565 municípios)** — forte e no sentido esperado: onde a população jovem caiu mais, a matrícula caiu mais também, embora em proporção menor (a queda de matrícula é sistematicamente menor que a queda demográfica — indício de melhora de cobertura/permanência absorvendo parte da retração de coorte). **Achado de bug de query, não de dado**: `br_ibge_censo_2022.populacao_grupo_idade_sexo_raca` e `.indice_envelhecimento_raca` guardam os censos **2010 E 2022 na mesma tabela** sob a coluna `ano` (apesar do nome do dataset ser só "censo_2022") — um `SUM(populacao)` sem `WHERE ano=2022` soma as duas safras e dobra o total (confirmado: 393,8M vs os 203,1M reais). As demais tabelas do dataset (`populacao_grupo_idade_uf`, `populacao_idade_sexo`, `alfabetizacao_grupo_idade_sexo_raca`, as `caracteristica_domicilio_*`) não têm esse problema — só essas duas.
 - **T38-2 ◐ (2026-08-27)** `br_inep_educacao_especial.matricula_aee` só tem grão UF×rede (Pública/Privada), sem município nem escola — não dá pra responder "dentro do mesmo município" como a pergunta pede. Com o que existe: cobertura do AEE (atendimento educacional especializado) entre os alunos público-alvo da educação especial (2021, média nacional 49,1%, UF×rede) × proficiência SAEB 9º ano matemática (mesma UF×rede): **r = +0,12 (n=54)** — fraco, sem relação clara. Ressalva importante: `quantidade_matricula` nessa tabela é o total de alunos **público-alvo da educação especial**, não a matrícula geral da rede — a métrica calculável é "% deles que recebe atendimento especializado", não "% da rede que é educação especial" (que exigiria uma tabela de matrícula total por UF×rede, disponível em outra tabela do Sinopse, não cruzada aqui por orçamento de tempo).
 - **T38-1 ⏳** Pendente — cruzar alfabetização INEP × PISA por faixa socioeconômica exige casar as faixas de INSE (`inep_indicador_nivel_socioeconomico`, escala própria) com os quartis de status socioeconômico do PISA (índice ESCS, escala OCDE), que não têm correspondência direta documentada — não é join por chave, é reclassificação metodológica.
@@ -520,36 +327,16 @@ RN 72,4%, SP 71,9%.
 - **T41-excesso ✅ (fato)** SISVAN 2023: excesso de peso adulto — **RS 73,6%, RN 72,4%, SP 71,9%, MS 71,7%, CE 70,4%** (top 5 UFs). CMED/BPS/Farmácia Popular pendentes.
 - **T41-1, T41-4 ⏳** Bloqueio já documentado (ver "Bloqueios mapeados" ao fim): `br_saude_farmaciapopular.estabelecimentos` não tem preço praticado nem série temporal.
 - **T41-2, T41-5 ⏳ — descoberta de incompatibilidade de fonte (2026-08-27)**: `br_saude_bps.dados` é **compra pública de medicamento por instituição** (hospital/secretaria, `nome_do_municipio_da_instituicao`), não consumo per capita da população — testado mesmo assim (déficit nutricional infantil SISVAN 2023, taxa média 4,3%, n=5.536 municípios, × gasto BPS per capita por município da instituição compradora, join por nome+UF): **r = −0,01, mas só 153 dos 5.536 municípios (2,8%) têm alguma instituição compradora no BPS** — a maioria dos municípios nunca aparece porque a compra costuma ser centralizada em secretarias estaduais/grandes hospitais, não no município de residência do paciente. O indicador não responde "acesso a medicamento contínuo da população local", só "volume de compra pública onde a instituição está sediada" — resultado descartado por não medir o que a pergunta pede.
-- **T41-3 ⏳ — bloqueio estrutural confirmado (2026-09-02)**: tentei o crosswalk (`br_ibge_pof.despesa_coletiva_2017.id_codigo_5_bd` = `cadastro_de_produtos_2017.id_codigo_5_bd`, filtrando `descricao_3_despesa = 'Alimentacao'`) e o resultado é **zero linhas casadas em todas as 27 UFs** — não é erro de digitação: `despesa_coletiva_2017` cobre só as categorias não-alimentares da árvore de despesa (habitação, saúde, educação, transporte, vestuário etc.; confirmado pelos valores de `descricao_3_despesa` presentes: nenhum é "Alimentacao"). O cadastro de produtos tem uma árvore de classificação **separada** só pra alimentação (`descricao_*_aquisicao_alimentar`), o que indica que a aquisição alimentar é registrada em outro instrumento da POF (base "aquisição alimentar") — e **essa tabela não existe no espelho**: das 14 tabelas de `br_ibge_pof`, nenhuma se chama `aquisicao_alimentar_2017` ou equivalente (só `despesa_coletiva`, `outros_rendimentos`, `rendimento_trabalho`, `condicoes_vida`, `caracteristicas_dieta`, `domicilio`, `morador`, `aluguel_estimado`, `inventario`, `restricao_saude`, `servico_nao_monetario_pof2/4`). Não é falta de crosswalk — é ausência da tabela-fonte. Também vale a limitação já registrada: POF é grão `sigla_uf`, sem município.
+- **T41-3 ⏳** Pendente — POF só tem grão UF (`sigla_uf`, sem município); "gasto com alimentação" não é uma coluna direta em `br_ibge_pof.despesa_coletiva_2017` — as despesas vêm codificadas por produto (`V1904`/`id_codigo_5_bd`/`id_codigo_7_bd`) e exigem cruzar com `cadastro_de_produtos_2017` para isolar a categoria "alimentação" (equivalente a um crosswalk COICOP), não tentado nesta rodada por risco de classificação errada sem tempo para validar.
 
 ## 42 · Água
 
-- **T42-3 ⏳ — bloqueio estrutural confirmado (2026-09-02)**: `br_mma_extincao.fauna_ameacada` e `.flora_ameacada`
-  (as únicas duas tabelas do dataset) têm só `especie_ou_subespecie`/`familia`/`grupo`/`ordem`/`categoria` de
-  risco — **nenhuma coluna geográfica**, nem bioma, nem município, nem UF. Não há chave nenhuma pra ligar espécie
-  ameaçada a MapBiomas ou a foco de queimadas do INPE; a pergunta pede um cruzamento espacial que a fonte não
-  suporta de jeito nenhum, não é falta de join documentado.
-- **T42-1, T42-2, T42-4, T42-5 ⏳** Pendentes — `br_ana_telemetria` é a fonte comum às quatro, e o
-  `codigo`/`municipiocodigo` do seu `inventario` (37.782 estações) **não bate com o id_municipio do IBGE em nenhum
-  caso testado** (0 de 4.770, achado documentado em `bridges.yaml`/nota de T42 no prompt) — sem essa chave não dá
-  pra colocar bacia/estação no mesmo grão de município que `inpe_queimadas`/`mapbiomas_estatisticas`/`inmet_bdmep`
-  exigem; a série hidro/clima em si existe, mas o vínculo geográfico dela ao resto do espelho não.
+- **T42-1…T42-5 ⏳** Pendentes — séries hidro/clima exigem alinhamento temporal dedicado.
 
 ## 43 · Cultura
 
 - **T43-3 ✅ (com ressalva)** Medalhas olímpicas do Brasil por esporte (contagem por atleta, esportes coletivos inflados): futebol 181, vôlei 132, basquete 60, vela 36, atletismo 35, vôlei de praia 26, judô 24, natação 21.
-- **T43-1, T43-2, T43-5 ⏳ — bloqueio estrutural confirmado (2026-08-27)**: `world_olympedia_olympics.athlete_bio` (a única tabela com dados de atleta) tem `birth_date`/`birth_year`/`country`/`country_noc`, mas **nenhuma coluna de cidade ou município de nascimento** — nem texto livre, nem código. Sem essa chave geográfica não dá pra ligar medalha a município. Precisaria de uma fonte adicional (ex.: COB, Wikipedia estruturada) com naturalidade do atleta.
-- **T43-4 ◐ (2026-09-02)** Total de medalhas do Brasil por edição (`world_olympedia_olympics.game_medal_tally`,
-  `country_noc='BRA'`, 1920-2020, 20 participações) × PIB nacional a preços correntes (`br_ibge_pib.municipio`,
-  `SUM(pib)`, só cobre 2002-2021 no espelho — 5 edições em comum: 2004/2008/2012/2016/2020): medalhas subiram sem
-  interrupção nessas 5 edições (10→17→17→19→21) e o PIB nominal também — mas **PIB a preços correntes nunca cai
-  numa série de 20 anos** (inflação mascara qualquer recessão real), então essa comparação não separa "acompanhou o
-  PIB" de "cresceu através de qualquer coisa que também nunca caiu"; o espelho não tem série de PIB real/deflacionado
-  para testar ciclo econômico de verdade. Único sinal qualitativo possível com o que existe: o Brasil somou medalhas
-  em 2016 (19) e 2020 (21) — as duas edições que atravessam a recessão de 2015-2016 (queda real de PIB amplamente
-  documentada fora do espelho) — sem nenhuma queda visível na contagem de medalhas, o que pende para "ciclo de
-  política esportiva própria" mais do que para "acompanha o PIB", mas não é um teste estatístico, é leitura de
-  série curta (n=5 pontos com dado de PIB). `◐` por essa limitação de instrumento, não por falta de tentativa.
+- **T43-1, T43-2, T43-4, T43-5 ⏳ — bloqueio estrutural confirmado (2026-08-27)**: `world_olympedia_olympics.athlete_bio` (a única tabela com dados de atleta) tem `birth_date`/`birth_year`/`country`/`country_noc`, mas **nenhuma coluna de cidade ou município de nascimento** — nem texto livre, nem código. Sem essa chave geográfica não dá pra ligar medalha a município (T43-1, T43-2, T43-5) nem checar se o crescimento de medalhas seguiu município/região (T43-4 pede série temporal nacional, que é possível, mas o cruzamento com PIB nacional/ciclos de política esportiva não foi tentado nesta rodada). Precisaria de uma fonte adicional (ex.: COB, Wikipedia estruturada) com naturalidade do atleta.
 
 ## 44 · Saneamento, Produção Rural e Desmatamento
 
@@ -1157,116 +944,9 @@ RN 72,4%, SP 71,9%.
   partição confiável — **usar `ano_sinan`, nunca `NU_ANO`, pra qualquer
   série temporal desta tabela.**
 
-## 57 · Ofertas Públicas CVM e Mercado de Capitais
-
-- **T57-1 ✅ (2026-09-02)** Valor total ofertado por ano (`data_inicio_oferta`),
-  `br_cvm_oferta_publica_distribuicao.dia`: cresce de R$0,4 bilhão (2008, 2
-  ofertas) para R$667,5 bilhões (2021, 6.117 ofertas), caindo para R$614,1
-  bilhões em 2022 (5.833 ofertas). **A série para em 2022 — não há uma linha
-  sequer de 2023 em diante**, apesar de o dataset se chamar "oferta pública"
-  no presente; qualquer leitura de tendência recente com esta tabela
-  subestima silenciosamente sem esse corte explícito. **Achado adicional**:
-  100% das 27.486 linhas têm `modalidade_oferta = 'Dispensada de Registro'`
-  (ICVM 476/476-A) — a tabela cobre só colocação privada/restrita a
-  investidor qualificado, não a oferta pública registrada/IPO que o nome
-  sugere; nenhuma linha tem `modalidade_registro` preenchida.
-- **T57-2 ✅ (2026-09-02)** Por `tipo_ativo`, valor total (R$2.985,6 bilhões
-  somados, 2008-2022): **cotas de fundo de investimento fechado lideram**
-  (R$1.228,8 bi, 18.166 ofertas), seguidas de **debêntures simples**
-  (R$1.103,2 bi, 3.283) — as duas somam **78,1%** do total. O resto se
-  distribui entre ações ordinárias (R$180,1 bi), notas promissórias
-  (R$155,8 bi), CRI (R$136,5 bi), CRA (R$66,9 bi), notas comerciais (R$48,7
-  bi) e certificados de depósito de valores mobiliários (R$23,2 bi).
-- **T57-3 ✅ (2026-09-02)** Por `nome_lider` (coordenador), top 6: Itaú BBA
-  R$535,5 bi (1.995 ofertas), Bradesco BBI R$376,6 bi (830), BTG Pactual
-  R$331,0 bi (2.335), Santander R$159,7 bi (1.044), BRL Trust R$126,7 bi
-  (966), XP Investimentos R$86,2 bi (852). **Os três maiores concentram
-  41,6% do valor total ofertado** ((535,5+376,6+331,0)/2.985,6) — mercado de
-  coordenação bem mais concentrado que o de emissores (13.052 CNPJs
-  emissores distintos).
-- **T57-4 ✅ (2026-09-02)** Cruzando `cnpj_emissor` (normalizado,
-  `lpad(regexp_replace(...,14,'0'))`) contra `br_cvm_fundos.fundos.CNPJ_FUNDO`
-  (bridge documentada em `bridges.yaml`): **4.164 dos 46.809 fundos
-  registrados (8,9%) já emitiram ao menos uma oferta pública** nesta tabela.
-  Patrimônio líquido médio desses fundos: R$48,1 milhões, contra R$50,6
-  milhões da média geral dos 46.809 — **sem diferença de porte relevante**;
-  ter feito oferta pública de cotas não distingue fundo grande de pequeno.
-- **T57-5 ✅ (2026-09-02) — achado limpo, zero coincidências** Dos 13.052
-  CNPJs emissores distintos de `br_cvm_oferta_publica_distribuicao.dia`,
-  **nenhum** casa com os 84 CNPJs distintos de `br_tcu_inidoneos.empresas`
-  (join via `bridges.yaml`, `lpad(regexp_replace(...))` nos dois lados).
-  Diferente do achado positivo do CNO em T47-4 (mesma lista de inidôneos, via
-  obras públicas), o mercado de capitais registrado na CVM não deu acesso a
-  nenhuma das empresas formalmente declaradas inaptas a contratar com a
-  União — ao menos não sob o mesmo CNPJ.
-
-## 58 · Programas de Transferência CGU e Viagens a Serviço
-
-Nenhuma das quatro tabelas (`br_cgu_pe_de_meia.pe_de_meia`,
-`br_cgu_garantia_safra.garantia_safra`, `br_cgu_seguro_defeso.seguro_defeso`,
-`br_cgu_viagens.viagem`) tem view no DuckDB — mesmo gotcha já documentado
-para `garantia_safra` em `bridges.yaml`, lido via `read_parquet(...)` direto
-nas quatro. `valor_parcela`/`valor_diarias`/`valor_passagens` são STRING com
-vírgula decimal (`"200,00"`) — `CAST(regexp_replace(x, ',', '.') AS DOUBLE)`.
-
-- **T58-1 ✅ (2026-09-02)** O ritmo **não** é suave: `br_cgu_pe_de_meia` paga
-  R$0,5-0,7 bilhão/mês na maior parte do calendário (`Frequência` domina o
-  volume), mas fevereiro/2025 salta para **R$3,13 bilhões** — 3.011.187
-  pagamentos de `Conclusão` a R$1.000 cada, o bônus de fim do ensino médio
-  pago em lote logo após o encerramento do ano letivo. Março/2025 tem outro
-  pico menor de `Matrícula` (3.640.338 pagamentos, R$728 milhões) no início
-  do ano letivo seguinte. Qualquer leitura de "gasto mensal médio" sem isolar
-  esses dois meses subestima a volatilidade real do programa.
-- **T58-2 ✅ (2026-09-02)** Cruzando beneficiários distintos de novembro/2025
-  (`cpf_beneficiario`) com `br_ibge_populacao.municipio` (ano 2022, `SUM(populacao)
-  GROUP BY sigla_uf` — métrica `populacao` verificada): gradiente Norte/Nordeste
-  → Sul confirmado, ~10x de amplitude. Maior cobertura: **AP (11,59
-  beneficiários/mil hab.)**, seguido de AM (7,97), PI (7,71), AC (7,61), PA
-  (7,41); menor cobertura: **SP (1,10)**, PR (1,11), SC (1,19), RS (1,52),
-  MG (1,81). Consistente com um benefício de renda condicionada concentrado
-  nas regiões de maior vulnerabilidade — não uma distribuição uniforme por
-  matrícula no ensino médio.
-- **T58-3 ✅ (2026-09-02)** Join por `nis_favorecido` (chave comum às duas
-  tabelas, sem bridge necessária — mesmo nome, mesmo formato) entre os NIS
-  distintos de toda a série histórica: **35.189 pessoas** aparecem nas duas
-  bases (de 2.143.263 NIS distintos do Seguro-Defeso e 2.630.643 do
-  Garantia-Safra) — 1,6% e 1,3% dos respectivos públicos. Sobreposição real,
-  não erro: agricultor familiar do semiárido que também pesca
-  artesanalmente em período de defeso é elegível aos dois programas, que
-  têm regras e fontes de recurso distintas (FAT vs. Bolsa Família/MDS).
-- **T58-4 ✅ (2026-09-02)** Gasto total do Seguro-Defeso: R$1,81 bilhão em
-  2013 (391.997 beneficiários) → R$6,84 bilhões em 2025 (292.488
-  beneficiários) — **3,78x** em valor nominal com **25% menos**
-  beneficiários. Decompondo em duas frentes que fecham a conta (verificado
-  duas vias): (1) o valor médio por parcela paga acompanha o salário mínimo
-  quase exatamente — R$671,30/parcela em 2013 (SM oficial: R$678) e
-  R$1.501,70/parcela em 2025 (SM oficial: R$1.518), 2,24x; (2) o número de
-  parcelas pagas por beneficiário/ano subiu de 6,87 para 15,57 (2,27x) — mais
-  meses de defeso remunerados por pessoa, não só reajuste do piso legal.
-  2,24 × 2,27 × 0,75 (queda de beneficiários) = 3,81x ≈ 3,78x observado.
-- **T58-5 ✅ (2026-09-02)** Gasto federal com viagens a serviço (diárias +
-  passagens): R$1,43 bilhão em 2018 → R$2,51 bilhões em 2025, com queda a
-  R$0,58-0,81 bilhão em 2020-2021 (pandemia) e recuperação a partir de 2022.
-  O número de viagens ficou **estável** no período (990 mil em 2018, 811 mil
-  em 2025) — o gasto cresceu por viagem mais cara, não por mais viagens. Em
-  2025, o **Ministério da Justiça e Segurança Pública** concentra o maior
-  gasto (R$825,3 milhões, 173.869 viagens — Polícia Federal/Rodoviária
-  Federal viajam mais que qualquer outro órgão), seguido do Ministério da
-  Defesa (R$346,7 milhões) e do Ministério da Educação (R$326,0 milhões).
-
 ## Multi-referência (seção final)
 
-- **M1 ⏳ / M2 ⏳ / M3 ◐ / M4 ⏳ / M5 ⏳** — as cadeias completas exigem pipelines dedicados; componentes já medidos
-  aparecem nas entradas parciais acima (ex.: M4 usa A1/A2; M3 usa T37-1/T37-2/T37-4/T37-5). **O elo que falta em
-  M3 (emenda→contrato) está estruturalmente bloqueado, confirmado em 2026-09-02**: `resolve_join` não encontra
-  nenhuma ponte entre `br_cgu_emendas_parlamentares.microdados` e `br_cgu_licitacao_contrato.contrato_compra` — e
-  não é só falta de documentação: as duas tabelas **não compartilham nenhuma coluna em comum**, nem `id_municipio`
-  (emendas tem `id_municipio_gasto`; `contrato_compra` não tem coluna de município nenhuma, só
-  `id_orgao`/`id_unidade_gestora`, que emendas também não tem). Pra fechar essa cadeia seria preciso passar por
-  uma terceira fonte que ligue "ação orçamentária financiada por emenda" a "unidade gestora que contratou" — o
-  candidato óbvio é `br_siop_orcamento`, já documentado como tendo cabeçalho corrompido (BOM) e sendo orçamento da
-  União por órgão/ação, não por emenda (T08-5, T40-4) — não dá pra fechar sem um scrape novo ou uma normalização
-  de texto que não foi tentada aqui.
+- **M1 ⏳ / M2 ⏳ / M3 ⏳ / M4 ⏳ / M5 ⏳** — as cadeias completas exigem pipelines dedicados; componentes já medidos aparecem nas entradas parciais acima (ex.: M4 usa A1/A2; M3 usa T37-1/T37-5).
 
 ## Bloqueios mapeados (dado ausente, corrompido ou sem chave — não é falta de query)
 
@@ -1319,7 +999,7 @@ produziria um número que parece verificado mas não é.
   `_parcial`), mas qualquer pergunta que precise do microdado individual
   (CPF, nome, nota) do PROUNI está bloqueada — precisa re-scraping.
 - **T47** — `br_mp_pep.cargos_funcoes` **não é "Pessoas Expostas
-  Politicamente"** como o nome sugeria em `tasks/espelho_subutilizado.md` (Parte I)
+  Politicamente"** como o nome sugeria em `tasks/datasets_coverage_gaps.md`
   (hipótese razoável, mas errada) — é o **Painel Estatístico de Pessoal**
   do então Ministério do Planejamento: um painel agregado de cargos e
   funções comissionadas do Executivo federal por UF/órgão/raça/sexo/faixa
