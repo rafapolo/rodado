@@ -127,10 +127,24 @@ for _ in $(seq 1 20); do
   ssh "$HOST" "ss -ltn 2>/dev/null | grep -q ':$PORTA '" || break
 done
 
-echo "subindo: -c $CTX -np $SLOTS  (thinking off, KV em f16)"
+# NOJINJA=1: TESTADO E DESCARTADO em 2026-09-03 — não usar. A hipótese era
+# que, com --jinja (padrão), o parser de tool-call do llama-server às vezes não
+# reconhece as tags nativas do Gemma (`<|tool_call>...<tool_call|>`, diferente
+# do `<tool_call>...</tool_call>` que o parser genérico espera) — 4 de 6
+# sessões reais da rodada do item 2 do backlog terminaram com a chamada de
+# ferramenta caindo como texto solto em vez de ser executada. --no-jinja
+# QUEBRA O SERVIDOR INTEIRO para este modelo: toda chamada volta
+# `{"error":{"code":500,"message":"this custom template is not supported, try
+# using --jinja"}}` — o template do Gemma exige o motor jinja, não é só o
+# tool-calling que depende dele. Mantido como flag só para não repetir o
+# experimento; ver regras.md, "Desfazer também é refino".
+FLAG_JINJA=""
+[[ "${NOJINJA:-0}" == "1" ]] && FLAG_JINJA="--no-jinja"
+
+echo "subindo: -c $CTX -np $SLOTS  (thinking off, KV em f16)${FLAG_JINJA:+, $FLAG_JINJA}"
 # Cada flag é medida, não gosto — ver harness/README.md.
 ssh "$HOST" "setsid $BIN -m $MODELO \
-  -t 8 -c $CTX -np $SLOTS \
+  -t 8 -c $CTX -np $SLOTS $FLAG_JINJA \
   --chat-template-kwargs '{\"enable_thinking\":false}' \
   --host 127.0.0.1 --port $PORTA < /dev/null > /tmp/srv.log 2>&1 & disown" || true
 

@@ -117,7 +117,7 @@ duas confusões diferentes.
 pergunta — mas conta para o gargalo de contexto (item 4). Só onde há par
 ambíguo.
 
-## 2. Rodar o laço nos casos com `n` conferido 🟡 ponte feita 2026-09-02, rodada ainda não começou
+## 2. Rodar o laço nos casos com `n` conferido 🔴 rodada iniciada e ABORTADA 2026-09-03 — achou bug bloqueador, ver item 10
 
 O número que responde ao objetivo do harness, e **o único ainda não medido**.
 Tudo o que existe hoje mede *escolha de dataset*, não resposta ponta a ponta.
@@ -132,12 +132,15 @@ Tudo o que existe hoje mede *escolha de dataset*, não resposta ponta a ponta.
 **A ponte de 5 linhas está feita**: `casos.ts --tsv` (função `tsvComN()`)
 emite o TSV `pergunta <TAB> esperado` que `lote.ts` lê —
 `bun harness/casos.ts --tsv > /tmp/casos.tsv && bun harness/lote.ts /tmp/casos.tsv`.
-**A rodada em si não começou** — só o pré-requisito.
 
-**Antes de rodar**, além do item 0: conferir as invariantes de
-[`operacao.md`](operacao.md). Uma rodada de 3,2 h com o cache de prefixo
-quebrado ou o raciocínio ligado é o desperdício mais caro disponível aqui — e a
-tarefa 1 de lá (asserção de `prefilados`) existe exatamente para isso.
+**Rodada começou 2026-09-03 00:19, abortada no caso 6/58.** As invariantes de
+`operacao.md` estavam ok (`confereBoot()` aprovou, `-np 1 -c 32768` confirmado).
+0/6 casos corretos — mas **4 dos 6 não são falha de raciocínio, são a chamada
+de ferramenta caindo como texto solto** por causa de um bug de parsing só
+agora exposto porque é a primeira vez que o laço roda tantas sessões `dsh`
+reais em sequência. Detalhe completo, causa provável e o que já foi
+descartado: **item 10**, abaixo. **Não rodar de novo até o item 10 fechar** —
+qualquer número coletado sem o conserto mede o bug, não o modelo.
 
 ## 3. A prosa cita a ferramenta, não o órgão ✅ fechado 2026-09-03
 
@@ -274,6 +277,75 @@ Cruza com o mecanismo de `coded_differently`/`false_friends` de
 do código", é "dois campos da MESMA tabela respondem à mesma pergunta com
 cobertura diferente") — por isso virou alerta ad-hoc em vez de entrada no
 YAML.
+
+## 10. Tool call cai como texto solto — bloqueia o item 2 🔴 achado 2026-09-03, bloqueador — nada resolvido ainda
+
+**O achado mais caro desta sessão.** A rodada do item 2 (58 casos pelo dsh
+real) nunca tinha rodado antes — é a primeira vez que o laço agêntico
+encadeia muitas sessões `dsh` de verdade em sequência, não só os 3 casos
+isolados do README ou testes avulsos. Em **4 das 6** primeiras sessões, a
+chamada de ferramenta do modelo não foi reconhecida como tool call: caiu como
+bloco de `reasoning` (texto solto que ninguém lê) e o turno terminou
+("completed") sem executar nada. Não é o modelo raciocinando errado — o
+conteúdo dos casos quebrados é coerente, às vezes é uma SQL correta e bem
+construída (case 6: CTEs certas, comentário explicando a escolha de
+agregação). **A ferramenta simplesmente nunca chega a rodar.**
+
+**Evidência exata, dos logs de sessão do dsh** (`~/.dsh/sessions/`, lidos
+localmente, sem custo de servidor):
+
+```
+case2, step 2:  '<tool_call|>'
+case3, step 3:  '<tool_call|>'
+case4, step 5:  '<|tool_call>call:mcp__rodado__descrever_tabela{tabela:<|"|>br_inep_ideb.escola<|"|>}<tool_call|>'
+case6, step 10: '<|tool_call>call:mcp__rodado__consultar{sql:<|"|>\nWITH obitos_infantis AS (...) ...\n<|"|>}<tool_call|>'
+```
+
+O padrão `<|tool_call>call:NOME{arg:<|"|>VALOR<|"|>}<tool_call|>` é a
+convenção NATIVA de tool-call do próprio Gemma (tags com o `|` na posição
+trocada) — **diferente** do `<tool_call>{"name":...}</tool_call>` que o
+parser de tool-call do llama-server reconhece para outros modelos. Casos 1 e
+5 completaram normalmente (respostas erradas, mas por SQL/raciocínio — falha
+"de verdade"); casos 2, 3, 4, 6 morreram neste bug.
+
+**Descartado, testado ao vivo** (com autorização explícita antes de mexer no
+servidor compartilhado): `NOJINJA=1 ./harness/servidor.sh` (desliga o motor
+jinja, hipótese de que o parser genérico sem-jinja reconheceria o formato) —
+**quebra o servidor inteiro** para este modelo, toda chamada volta
+`{"error":{"code":500,"message":"this custom template is not supported, try
+using --jinja"}}`. O template do Gemma exige jinja para qualquer coisa, não só
+tool-calling. Reversão imediata, servidor voltou ao normal
+(`./harness/servidor.sh`, sem `NOJINJA`) e confirmado saudável. A flag
+`NOJINJA` fica em `servidor.sh` só documentada como descartada, para não
+repetir o experimento.
+
+**Não investigado ainda:**
+- Versão do llama-server é `0.3.0-dev` (build `8887a48`) — conferir se é uma
+  versão conhecidamente afetada, ou se uma mais nova tem o parser do Gemma
+  corrigido.
+- `--chat-template`/`--chat-template-file` custom, explicitamente ensinando o
+  parser a reconhecer `<|tool_call>...<tool_call|>` — ou forçando um
+  `--grammar` estático que não dependa do parser nativo do modelo (o que o
+  README já supunha estar acontecendo: "tool-calling, via grammar do
+  llama.cpp" — aparentemente não é garantido, só parcial).
+  `--grammar`/`--grammar-file` existem como flag do `llama-server` (conferido
+  no `--help`), não testados.
+  `--jinja` (mantendo jinja) + template customizado é o caminho mais provável
+  — `--no-jinja` só provou que o template do Gemma não roda sem jinja, não
+  disse nada sobre o parser de tool-call em si.
+- Taxa de falha real: 4/6 é a amostra que existe. Pode ser mais alto ou mais
+  baixo em 58 casos — não dá para saber sem rodar de novo, e rodar de novo sem
+  conserto é o desperdício que este item existe para evitar.
+- Se o parser tem algum jeito de RECUPERAR desse estado (reenviar o turno,
+  pedir para o modelo tentar de novo) em vez de simplesmente terminar — hoje o
+  `turn/end` marca `"reason":{"kind":"completed"}` como se tivesse dado certo,
+  o que é **por si só um bug a reportar** (achar isto pode ser trabalho do
+  dsh, não do harness deste projeto).
+
+**Bloqueia:** item 2 (a rodada em si), item 4, item 8, e o experimento de
+`check-qwencoder-vs-duckdbnsql.md` (todos esperam uma linha de base
+confiável). **Não bloqueia:** os itens 0/1/3/5/6/7/9, que não dependem de
+rodar 58 sessões `dsh` completas.
 
 ---
 

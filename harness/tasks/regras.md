@@ -65,9 +65,10 @@ comparáveis entre si.
 | Laço agêntico, não pipeline fixo | mesmas perguntas: **3/3** contra **0/3**. O fixo é 14x mais rápido e não serve | decidido; `laco.ts` sobrevive só como esqueleto do experimento DuckDB-NSQL ([`check-qwencoder-vs-duckdbnsql.md`](check-qwencoder-vs-duckdbnsql.md)) |
 | Todo ganho de tempo tem que **preservar a capacidade de iterar** | as 3 falhas do pipeline fixo (573 em vez de 789; código `3550308` em vez de "São Paulo"; desistir após 4 rejeições) não são erro de SQL, são **erro de não iterar** | critério de aceite de qualquer otimização |
 | O prompt de reparo reenvia o contexto inteiro | cada chamada é independente — o reparo não carregava pergunta, schema, pontes, a SQL rejeitada nem o motivo | `laco.ts`; no laço agêntico o contexto vem de graça |
-| O modelo **não pode ter shell** | descobriu a ferramenta `bash` e consultou o DuckDB por fora do portão — validação inteira vira decoração | `dsh/rodado.patch.yml`; 🔴 sem teste que trave a lista ([`operacao.md`](operacao.md) tarefa 4) |
+| O modelo **não pode ter shell** | descobriu a ferramenta `bash` e consultou o DuckDB por fora do portão — validação inteira vira decoração | `dsh/rodado.patch.yml`; ✅ travado — `harness/patch.test.ts` ([`operacao.md`](operacao.md) tarefa 4) |
 | Cálculo nomeado vem de `metrics.yaml`, nunca da cabeça do modelo | PIB per capita deu **23.704**; a métrica verificada dá **32.066** — nenhuma das duas dá erro | ferramenta `definicao_de_calculo`, `metricas.ts` |
 | Menos ferramentas é escolha melhor, não só menos token | um 26B em q4 acerta mais entre 5 ferramentas do que entre 20 | corte de 14.213 → 6.849 tokens (−52%) |
+| Tool call do Gemma nem sempre é reconhecido pelo parser do `llama-server` | medido 2026-09-03, rodada real do item 2 de `backlog.md` (a primeira vez que o laço encadeou muitas sessões `dsh` de verdade): 4 de 6 sessões terminaram com a chamada de ferramenta em formato NATIVO do Gemma (`<\|tool_call>call:nome{...}<tool_call\|>`, tags na ordem trocada) caindo como bloco de `reasoning` — texto solto, não executado — em vez de tool call reconhecido. Não é erro de raciocínio: o conteúdo (inclusive SQL) costuma estar correto | 🔴 aberto, bloqueador — item 10 do [`backlog.md`](backlog.md). `--no-jinja` testado e descartado (quebra o servidor inteiro pra este checkpoint); `--chat-template`/`--grammar` explícitos ainda não tentados |
 
 ## Medir — a régua também erra
 
@@ -106,6 +107,15 @@ Duas "melhorias" minhas que pioravam, e foram removidas:
   valendo; o que mudou foi o exemplo.)
 - **KV quantizado** (`-ctk/-ctv q8_0`). Desquantizar a cada operação de atenção
   domina o que se economiza em banda: prefill **15,8 → 50,5 t/s** em CPU.
+- **`--no-jinja`** (2026-09-03, testando a hipótese do item 10 de
+  `backlog.md`). Quebra o servidor inteiro para este checkpoint do Gemma:
+  toda chamada volta `{"error":{"message":"this custom template is not
+  supported, try using --jinja"}}`. O template do modelo exige o motor jinja
+  para qualquer coisa, não só para tool-calling — a hipótese era plausível
+  (o parser genérico sem-jinja podia reconhecer melhor as tags nativas do
+  Gemma) e o teste ao vivo matou ela em menos de um minuto. Revertido
+  na hora; flag fica em `servidor.sh` (`NOJINJA=1`) só documentada como
+  descartada.
 
 ## Tarefas — travar o que ainda é só disciplina
 
