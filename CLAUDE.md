@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**baseldosdados** mirrors public Brazilian government tables from [Base dos Dados](https://basedosdados.org) — stored as Parquet+zstd in `~/rodado` on beelink — and extends that mirror with independently-scraped sources that fill the remaining gaps (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/datasets_to_scrap.md` for the full catalog and provenance of every source). 1.024 tables (230 datasets, 39,2 bilhões de linhas) as of 2026-09-02 — 741 espelhadas do Base dos Dados, 283 raspadas pelo projeto. A DuckDB view `_rodado_metadata` on beelink tracks each table's rows, source, status, and provenance; `_rodado_datasets` aggregates by dataset. DuckDB queries the data on-demand without local imports.
+**baseldosdados** mirrors public Brazilian government tables from [Base dos Dados](https://basedosdados.org) — stored as Parquet+zstd in `~/rodado` on beelink — and extends that mirror with independently-scraped sources that fill the remaining gaps (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/datasets_to_scrap.md` for the full catalog and provenance of every source). 904 tables (212 datasets, 38,1 bilhões de linhas) as of 2026-09-01 — 689 espelhadas do Base dos Dados, 215 raspadas pelo projeto. A DuckDB view `_rodado_metadata` on beelink tracks each table's rows, source, status, and provenance; `_rodado_datasets` aggregates by dataset. DuckDB queries the data on-demand without local imports.
 
 ## Commands
 
@@ -36,16 +36,16 @@ architecture and describe infrastructure that no longer runs.
 `mcp_server.py` is the current interface — see `docs/MCP.md`.
 
 ### `docs/ERD.md` — the map
-One mermaid `erDiagram` per domain covering all 893 tables: entity = dataset, attribute = table, edge = join key to a reference hub (solid = direct, dashed = needs normalization). Lists what connects to nothing. `ERD.md` is pt-BR (default), `ERD_EN.md` is the English twin — both generated from the same data by `scripts/gera_erd.py`.
+One mermaid `erDiagram` per domain covering all 904 tables: entity = dataset, attribute = table, edge = join key to a reference hub (solid = direct, dashed = needs normalization). Lists what connects to nothing. `ERD.md` is pt-BR (default), `ERD_EN.md` is the English twin — both generated from the same data by `scripts/gera_erd.py`.
 
 ### `docs/context/` — Schema metadata
 Um `README.md` na própria pasta descreve arquivo por arquivo, quem gera cada um e a ordem do regen.
-- `all_tables.txt` — as 900 `dataset.tabela`, uma por linha, incluindo as 8 nativas do `.duckdb` que não têm parquet. Gerado por `scripts/build_metadata_catalog.py` — era um despejo do `bq ls` da era BigQuery que ninguém regenerava
-- `basedosdados-schema.json` — full schema (2.0 MB, 226 datasets / 1017 tabelas)
+- `all_tables.txt` — as 904 `dataset.tabela`, uma por linha, incluindo as 8 nativas do `.duckdb` que não têm parquet. Gerado por `scripts/build_metadata_catalog.py` — era um despejo do `bq ls` da era BigQuery que ninguém regenerava
+- `basedosdados-schema.json` — full schema (1.9 MB, 207 datasets / 895 tabelas)
 - `doc2query_index.json` / `doc2query_vectors.npy` — the `search_tables` index: one embedding per synthetic question a table answers (~8/table, 832 tables, `paraphrase-multilingual-MiniLM-L12-v2`), not one per table (replaces a deleted `table_embeddings.json`, which held one vector per table over column-name text — measured nearly orthogonal to a real question, recall@5 1/15 on a single-table golden set; see `tasks/done/mcp_search_refino.md` item 1. `scripts/update_embeddings.py`, its generator, was deleted with it). `search_tables` scores a table by the MAX cosine similarity across its own questions. `.json` holds `id`/`table`/`text` per row in the `.npy`'s row order; `.npy` is a float32 `(n_questions, dim)` array. Generation is two separable steps: the LLM pass (`scripts/doc2query_lotes.py` → `scripts/doc2query_roda.py` against `scripts/prompts/doc2query.md`, ~34 `opencode run` batches — expensive, one-time, resumable) produces `docs/context/doc2query_corpus.jsonl` (via `scripts/gera_doc2query_corpus.py`, not gitignored — the raw batches under `tasks/` are); `scripts/gera_doc2query_index.py` embeds it — cheap, rerun freely after editing the corpus or changing the embedding model
-- `bridges.yaml` — **a fonte única do conhecimento de join**. Conceitos-hub, as 81 pontes (coluna que significa a mesma coisa sob outro nome), os `false_friends`, os `coded_differently` (mesmo conceito, código numérico diverge por dataset/ano — `sexo`, `raca_cor`, `estado_civil`... achado ao vivo num teste cego do MCP, ver `tasks/done/mcp_search_refino.md`) e os `concept_aliases`. Editar aqui; `join_keys.md` é gerado
-- `join_keys.md` — o render de `bridges.yaml` + as chaves auto-detectadas do `schemas.json`: 430 colunas de join ao todo. Gerado por `scripts/gera_join_keys.py` — regenerar, nunca editar à mão
-- `metrics.yaml` / `metrics.json` — 13 cálculos nomeados (expressão DuckDB, grain, unidade, sinônimos pt-BR, `required_filters`, `verified`). O `.json` é gerado do `.yaml` por `scripts/gera_metrics_json.py`; `mcp_server.py` lê o `.yaml` diretamente. A TUI Rust que lia o `.json` foi removida (`ask/` apagado em `58ab7c7`, 2026-08-23); hoje quem consome o `.json` é `scripts/build_ask_web_assets.ts`, que empacota `metrics.json` + `bridges.yaml` em `web/static/index/semantica.json` — vive só no branch `ask-web` (remoto, não mesclado), não neste checkout em `main`
+- `bridges.yaml` — **a fonte única do conhecimento de join**. Conceitos-hub, as 78 pontes (coluna que significa a mesma coisa sob outro nome), os `false_friends`, os `coded_differently` (mesmo conceito, código numérico diverge por dataset/ano — `sexo`, `raca_cor`, `estado_civil`... achado ao vivo num teste cego do MCP, ver `tasks/done/mcp_search_refino.md`) e os `concept_aliases`. Editar aqui; `join_keys.md` é gerado
+- `join_keys.md` — o render de `bridges.yaml` + as chaves auto-detectadas do `schemas.json`: 157 colunas de join ao todo. Gerado por `scripts/gera_join_keys.py` — regenerar, nunca editar à mão
+- `metrics.yaml` / `metrics.json` — 12 cálculos nomeados (expressão DuckDB, grain, unidade, sinônimos pt-BR, `required_filters`, `verified`). O `.json` é gerado do `.yaml` por `scripts/gera_metrics_json.py`; `mcp_server.py` lê o `.yaml` diretamente. A TUI Rust que lia o `.json` foi removida (`ask/` apagado em `58ab7c7`, 2026-08-23); hoje quem consome o `.json` é `scripts/build_ask_web_assets.ts`, que empacota `metrics.json` + `bridges.yaml` em `web/static/index/semantica.json` — vive só no branch `ask-web` (remoto, não mesclado), não neste checkout em `main`
 - `hierarchies.yaml` — rollup de município→UF→região, CNAE e CID-10. CNAE e CID são prefixais: o pai sai de `substr()`, sem join
 - `schema_ddl.sql` — snapshot DDL parcial (527 tabelas, 109 datasets) da porção espelhada do **Base dos Dados**; serve de referência de procedência para `scripts/build_metadata_catalog.py`. Cobre parte do mirror, não todo ele
 - `dicionario_coverage.json` — quais colunas de quais tabelas têm decode chave→valor disponível em `{dataset}.dicionario`, escaneado em **45 datasets** (168 tabelas, 6.256 colunas) — não só o censo IBGE histórico (`v0502` etc.) que motivou o mecanismo, generalizado 2026-08-24 depois que um teste cego do MCP achou o mesmo padrão em RAIS/CAGED/ENEM/SIM e outros 40. Gerado por `scripts/gera_dicionario_coverage.py`; `describe_table` lê pra avisar quais colunas de uma tabela são decodificáveis (`dicionario_coverage`) e quais têm código que **diverge entre datasets** pro mesmo conceito (`coded_value_warning`, cruzado com `bridges.yaml`'s `coded_differently`)
@@ -83,12 +83,6 @@ python3 scripts/gera_dicionario_coverage.py  # beelink -> docs/context/dicionari
 `sync_mcp_schema.py` é o passo que se esquece: sem ele `mcp_server.py` continua lendo o
 schema antigo em `docs/context/basedosdados-schema.json` e não enxerga nenhuma coluna
 nova — `describe_table` mente calado.
-
-Antes desse regen, depois de qualquer scraper novo ou job resumido sem supervisão,
-ver [`docs/housekeeping.md`](docs/housekeeping.md) — checklist do que não acontece
-sozinho (view faltando no `.duckdb` com parquet já completo no disco, job que parou
-por rate limit sem erro fatal, contagem duplicada entre sessões concorrentes, zip com
-mais de um CSV membro), com os comandos exatos e os casos reais que motivaram cada item.
 
 `join_keys.md` e `metrics.json` são **gerados** — editar o YAML, nunca a saída. `valida_metrics.py` separa hard de soft como o firewall de `run_sql`: DML na expressão rejeita, coluna ausente só avisa, porque `_check_read_only` revalida antes de executar.
 

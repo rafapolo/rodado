@@ -307,14 +307,11 @@ sic AS (
 SELECT * FROM tce UNION ALL SELECT * FROM cgu UNION ALL SELECT * FROM sic;""")
 
     # negativos conferidos: valem como resultado, não como ausência de consulta
-    # br_ibama_embargos_novo substitui br_ibama_embargos (2026-09-02): o antigo
-    # tinha 113.878 linhas com zero não-vazias — o CSV foi parseado errado na
-    # raspagem e os bytes nunca chegaram. Por isso a versão anterior desta query
-    # precisava de str_split(x,';') sobre uma coluna única; agora são colunas.
     embargo = duck(alvo + """
-SELECT count(*) AS n
-FROM read_parquet('~/rodado/br_ibama_embargos_novo/termo_embargo/*.parquet') e
-JOIN alvo a ON substr(regexp_replace(e.cpf_cnpj_embargado,'[^0-9]','','g'),1,8) = a.bas;""")[0]["n"]
+WITH r AS (SELECT str_split(x,';') AS f FROM
+  (SELECT COLUMNS(*) AS x FROM read_parquet('~/rodado/br_ibama_embargos/termo_embargo/*.parquet')) t)
+SELECT count(*) AS n FROM r JOIN alvo a
+  ON substr(regexp_replace(r.f[13],'[^0-9]','','g'),1,8) = a.bas;""")[0]["n"]
     inidoneo = duck(alvo + """
 SELECT count(*) AS n FROM br_tcu_inidoneos.empresas e JOIN alvo a
   ON substr(regexp_replace(e."CPF_CNPJ",'[^0-9]','','g'),1,8) = a.bas;""")[0]["n"]
@@ -341,7 +338,7 @@ DATASETS = [
     ("br_me_rais.microdados_estabelecimentos", "MTE · RAIS estabelecimentos", "até {rais}"),
     ("br_me_rais_identificada.estabelecimentos", "MTE · RAIS identificada (por CNPJ)", "2010–2021"),
     ("br_ibge_munic.meio_ambiente", "IBGE · MUNIC, suplemento Meio Ambiente", "2004–2020"),
-    ("br_ibama_embargos_novo.termo_embargo", "IBAMA · áreas embargadas", "base completa"),
+    ("br_ibama_embargos.termo_embargo", "IBAMA · áreas embargadas", "base completa"),
     ("br_tce_rj.contratos_municipio", "TCE-RJ · contratos municipais", "até 2025"),
     ("br_cgu_licitacao_contrato.contrato_compra", "CGU · contratos federais", "até 2024"),
     ("br_comprasgov_sicaf.fornecedores", "Compras.gov · SICAF", "cadastro corrente"),
