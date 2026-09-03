@@ -55,8 +55,9 @@ inteiro ou string curta) tem que sair desta varredura com uma etiqueta**:
   padrão público e estável, só precisa apontar pra `hierarchies.yaml` ou pra
   documentação de fora, não pesquisar do zero.
 - `documentado_em_outro_lugar` — achado em `provenance_notes`, no site do
-  Base dos Dados, ou na documentação da fonte original (ex.: manual do
-  SICONV) — vira entrada nova em `bridges.yaml`/comentário no schema.
+  Base dos Dados, ou na documentação **que o próprio órgão de origem já
+  publica** (ex.: dicionário de variáveis do IBGE pra Censo/PNAD — ver
+  estágio 2b) — vira entrada nova em `bridges.yaml`/comentário no schema.
   `docs/context/schema_ddl.sql` e `provenance_notes` do catálogo já são
   fontes conferíveis sem sair do projeto.
 - `nao_e_codigo` — a varredura heurística errou (ex.: CEP, que tem muitos
@@ -96,6 +97,26 @@ conhecido)? O nome bate com CNAE/CID (já coberto por `hierarchies.yaml`)?
 `dicionario_disponivel`/`padrao_externo`/`documentado_em_outro_lugar` do que
 sobra — sem abrir uma página externa ainda.
 
+### Estágio 2b — os órgãos que já publicam dicionário próprio, antes de desistir
+
+Alguns dos maiores órgãos de origem do espelho **já documentam suas
+próprias variáveis publicamente** — IBGE é o caso óbvio: Censo, PNAD, PNADC,
+POF e o próprio Censo 2022 saem com nota metodológica e dicionário de
+variáveis publicados no site do IBGE (SIDRA, ou o pacote de documentação
+que acompanha cada pesquisa), independente de o Base dos Dados ter
+espelhado uma tabela `.dicionario` companheira ou não. Isso importa mais
+que a média: são os datasets que mais aparecem em pergunta real (censo,
+população, PIB, PNAD) — o retorno de checar a fonte oficial antes de
+marcar `nao_verificado` é maior aqui que em qualquer dataset menor.
+
+Antes do estágio 4 (pesquisa manual genérica), **checar especificamente
+se o órgão de origem já publica isso**: IBGE primeiro (maior peso de uso),
+depois os outros órgãos com muitos datasets no espelho (MS/DataSUS, MTE,
+INEP). Isso não é a mesma coisa que o estágio 4 — é mais barato, porque a
+fonte é conhecida e estável (o mesmo padrão de dicionário se repete entre
+pesquisas do mesmo órgão), então uma vez mapeado onde o IBGE publica o
+dicionário de uma pesquisa, o mesmo caminho serve pras outras.
+
 ### Estágio 3 — priorizar o que sobrou por uso real, não por ordem alfabética
 
 O que sobrar do estágio 2 (candidato sem fonte) não vira pesquisa em massa
@@ -118,13 +139,36 @@ realmente sobram sem fonte alguma.
 
 ## Formato de saída
 
-Estender `docs/context/dicionario_coverage.json` (ou um arquivo irmão,
-`docs/context/schema_dict_status.json`) com uma etiqueta por coluna
-candidata, no formato das cinco categorias acima. `describe_table` (MCP) já
-lê `dicionario_coverage.json` pra avisar quais colunas são decodificáveis —
-a extensão natural é o mesmo mecanismo também avisar `nao_verificado`,
-generalizando o alerta ad-hoc que o item 9 do `harness/tasks/backlog.md`
-teve que escrever à mão pra um caso só.
+**Arquivo novo, irmão — não uma reescrita de `dicionario_coverage.json`**:
+`docs/context/schema_dict_status.json`. `dicionario_coverage.json` fica
+exatamente como está (pequeno, já testado, `describe_table` já lê ele) — o
+arquivo novo carrega só a etiqueta de status por coluna candidata. Mesmo
+padrão de `bridges.yaml`/`metrics.yaml`/`hierarchies.yaml`/
+`dicionario_coverage.json` já coexistindo, um arquivo por preocupação, em
+vez de um arquivo só crescendo sem parar. `describe_table` (MCP) passa a
+ler os dois — a extensão natural do alerta que já dá pra
+`dicionario_coverage`, generalizando o alerta ad-hoc que o item 9 do
+`harness/tasks/backlog.md` teve que escrever à mão pra um caso só.
+
+**O que este plano garante, e o que não garante — duas coisas diferentes:**
+
+- **Achar toda coluna-código candidata** (estágio 1): completo, o mirror
+  inteiro, sem exceção — é só um `COUNT(DISTINCT)` por coluna.
+- **Descrever o significado** de cada uma: só as que têm fonte achável
+  (estágio 2, automático — `.dicionario` já espelhado, padrão externo tipo
+  CNAE/CID, algo em `provenance_notes`, ou — ver estágio 2b abaixo — a
+  documentação oficial que o próprio órgão já publica). Provavelmente uma
+  fração, não a maioria, mas a fração conta os datasets mais usados
+  primeiro (estágio 3).
+- Pro resto — candidato sem fonte nenhuma achada, mesmo depois do estágio
+  2b — o plano **não promete pesquisar e descrever cada uma** (isso é o
+  estágio 4, escopo aberto, priorizado por uso real, tamanho desconhecido
+  até os estágios 1/2 rodarem). O que ele garante pro resto é só a etiqueta
+  `nao_verificado` — não é "sabemos o que significa", é "sabemos que
+  NINGUÉM verificou ainda, e agora isso está escrito em vez de silêncio".
+  Essa etiqueta sozinha já é o conserto pro modo de falha do
+  `circunstancia_obito` — avisar que o nome não é garantia, mesmo sem saber
+  ainda o que o código de fato quer dizer.
 
 ## O que isto destrava
 
