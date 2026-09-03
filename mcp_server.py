@@ -47,6 +47,7 @@ BRIDGES_PATH = CONTEXT_DIR / "bridges.yaml"
 METRICS_PATH = CONTEXT_DIR / "metrics.yaml"
 HIERARCHIES_PATH = CONTEXT_DIR / "hierarchies.yaml"
 DICIONARIO_COVERAGE_PATH = CONTEXT_DIR / "dicionario_coverage.json"
+SCHEMA_DICT_STATUS_PATH = CONTEXT_DIR / "schema_dict_status.json"
 
 # ---------------------------------------------------------------------------
 # Catalog loaders (loaded once at startup — small enough to hold in memory)
@@ -95,6 +96,23 @@ with open(HIERARCHIES_PATH, encoding="utf-8") as f:
 # caller at it instead of returning bare `v0502` with no hint it's decodable.
 with open(DICIONARIO_COVERAGE_PATH, encoding="utf-8") as f:
     _DICIONARIO_COVERAGE: dict = json.load(f).get("tables", {})
+
+# tasks/plan/generate-full-schema-dict.md: colunas STRING/INTEGER que parecem
+# código (baixa cardinalidade) mas não têm fonte de significado conhecida em
+# nenhum mecanismo acima — nem dicionario, nem bridges.yaml, nem
+# hierarchies.yaml. Generaliza o alerta manual que
+# harness/tasks/backlog.md item 9 escreveu à mão pra
+# br_ms_sim.circunstancia_obito (subcontava suicídio, 749 contra 789 reais,
+# sem nenhum mecanismo avisando) num aviso que soa pra qualquer tabela.
+_NAO_VERIFICADO_BY_TABLE: dict = {}
+if SCHEMA_DICT_STATUS_PATH.exists():
+    with open(SCHEMA_DICT_STATUS_PATH, encoding="utf-8") as f:
+        _SCHEMA_DICT_COLUMNS: dict = json.load(f).get("columns", {})
+    for _col_key, _info in _SCHEMA_DICT_COLUMNS.items():
+        if _info.get("label") != "nao_verificado":
+            continue
+        _tid, _, _colname = _col_key.rpartition(".")
+        _NAO_VERIFICADO_BY_TABLE.setdefault(_tid, []).append(_colname)
 
 
 def _norm(s: str) -> str:
@@ -509,7 +527,7 @@ def describe_table(table: str) -> dict:
     happens the reply carries a `columns_truncated` block with the real total;
     query `parquet_path` with DESCRIBE via `run_sql` to see the rest.
 
-    Three things surface here that the bare column list would hide:
+    Four things surface here that the bare column list would hide:
       * `warning` — this table returns every row twice (leftover tmp*.parquet
         next to the real export); same check `resolve_join` runs, but here it
         fires even when you're not joining anything.
@@ -524,6 +542,17 @@ def describe_table(table: str) -> dict:
         another table's data silently returns wrong or empty results, not an
         error — call explain_column() or check this table's own dicionario
         before filtering on it.
+      * `nao_verificado_warning` — this table has a column that looks like a
+        code (low cardinality, short values) with NO known source of meaning
+        anywhere in this project — not dicionario, not bridges.yaml, not
+        hierarchies.yaml. This is the general case
+        `br_ms_sim.circunstancia_obito` was a specific instance of: it
+        undercounted suicide (749 vs 789 real, RJ 2020) with nothing warning
+        that the field was under-filled, because the column is plausible,
+        easy to find, and silent. Treat a flagged column the same way —
+        don't trust what the name implies, confirm against the source before
+        using it. See docs/context/schema_dict_status.json for the full
+        reasoning per column (tasks/plan/generate-full-schema-dict.md).
     """
     if "." not in table:
         return {"error": "table must be in the form 'dataset.table'."}
@@ -579,6 +608,18 @@ def describe_table(table: str) -> dict:
             }
             for col in coded_conflicts
         ]
+    nao_verificado = _NAO_VERIFICADO_BY_TABLE.get(table)
+    if nao_verificado:
+        result["nao_verificado_warning"] = {
+            "columns": sorted(nao_verificado),
+            "how": (
+                "These look like code columns (low measured cardinality) with no known "
+                "decode anywhere in this project — not dicionario, not bridges.yaml, not "
+                "hierarchies.yaml. Treat like circunstancia_obito: don't trust what the "
+                "name implies, confirm meaning against the source (site do Base dos Dados, "
+                "manual do órgão de origem) before using the raw value."
+            ),
+        }
     return result
 
 
