@@ -25,6 +25,7 @@
 import { checkReadOnly } from "./sqlguard.ts";
 import { colunasDe, linhasDe, particoesDe, inservivel, LIMIAR_PARTICAO } from "./catalogo.ts";
 import { faixaDeAnos, type Faixa } from "./anos.ts";
+import { conceitoDaColuna } from "./pontes.ts";
 
 export interface Veredito {
   ok: boolean;
@@ -429,6 +430,101 @@ function checaAno(sql: string): Veredito {
     }
   }
   return OK;
+}
+
+/* ------------------------------------------------------------------ *
+ *  Junção sem ponte — backlog.md item 12.
+ *
+ *  Medido ao vivo 2026-09-03: a pergunta de 5 fontes de perguntas.md (emenda →
+ *  contrato → CNPJ → TCU → PGFN) rodou 40 min, 55 SQLs, e morreu sem resposta —
+ *  38 delas (69%) tentando a MESMA junção, `id_emenda = id_licitacao`, que
+ *  nunca existiu: as duas tabelas não compartilham coluna nenhuma, e
+ *  bridges.yaml não documenta relação entre elas. A mensagem de "zero linhas"
+ *  de mcp.ts dizia "confira o tipo das duas pontas da chave" — como se fosse
+ *  consertável — e o modelo tentou 38 variações cosméticas em volta da mesma
+ *  chave errada.
+ *
+ *  NÃO é uma camada de `portao()`: rodar ANTES da execução arriscaria bloquear
+ *  uma junção legítima que só ainda não está documentada em bridges.yaml — o
+ *  mesmo risco de falso positivo que a camada `ano` evita calando-se de
+ *  propósito (ver o comentário dela). Em vez disso, `mcp.ts` chama isto só
+ *  quando a consulta JÁ rodou e voltou zero linhas — nesse ponto já se sabe
+ *  empiricamente que a junção não achou nada, e a pergunta é só "por quê", não
+ *  "devo deixar rodar".
+ */
+
+/** Pares `alias.coluna = alias.coluna` dentro de um texto de ON. */
+function paresIgualdade(texto: string): Array<[string, string, string, string]> {
+  const out: Array<[string, string, string, string]> = [];
+  for (const m of texto.matchAll(
+    /\b([A-Za-z_]\w*)\.([A-Za-z_]\w*)\s*=\s*([A-Za-z_]\w*)\.([A-Za-z_]\w*)/g,
+  )) {
+    out.push([m[1]!, m[2]!, m[3]!, m[4]!]);
+  }
+  return out;
+}
+
+export interface JuncaoSemPonte {
+  refA: string; colA: string; refB: string; colB: string;
+}
+
+/**
+ * As junções entre tabelas de datasets DIFERENTES cuja coluna usada não é uma
+ * ponte curada (bridges.yaml) nem uma chave canônica com o mesmo nome dos dois
+ * lados (`id_municipio`, `sigla_uf`, `ano`, `id_uf`). Uma lista vazia não prova
+ * que a junção está certa — só que ela não caiu num buraco CONHECIDO.
+ */
+export function juncoesSemPonte(sql: string): JuncaoSemPonte[] {
+  const ctes = ctesDefinidos(sql);
+  const achados: JuncaoSemPonte[] = [];
+  for (const seg of segmentos(sql)) {
+    const refs = refsDoEscopo(seg, ctes);
+    if (refs.length < 2) continue;
+    for (const m of seg.matchAll(
+      /\bJOIN\s+[A-Za-z_][\w.]*(?:\s+(?:AS\s+)?[A-Za-z_]\w*)?\s+ON\s+([\s\S]*?)(?=\bJOIN\b|\bWHERE\b|\bGROUP\b|\bORDER\b|\bLIMIT\b|\bQUALIFY\b|$)/gi,
+    )) {
+      for (const [a1, c1, a2, c2] of paresIgualdade(m[1]!)) {
+        const r1 = refs.find((r) => r.apelidos.has(a1.toLowerCase()));
+        const r2 = refs.find((r) => r.apelidos.has(a2.toLowerCase()));
+        if (!r1 || !r2 || r1.ref === r2.ref) continue;
+        if (r1.ref.split(".")[0] === r2.ref.split(".")[0]) continue; // mesmo dataset, sem risco
+        const k1 = conceitoDaColuna(r1.ref, c1);
+        const k2 = conceitoDaColuna(r2.ref, c2);
+        if (k1 && k1 === k2) continue; // ponte confirmada, curada ou canônica
+        achados.push({ refA: r1.ref, colA: c1, refB: r2.ref, colB: c2 });
+      }
+    }
+  }
+  return achados;
+}
+
+/** Mensagem que ensina o próximo passo, não só aponta o buraco. */
+export function mensagemSemPonte(achados: JuncaoSemPonte[]): string {
+  return achados.map((a) =>
+    `Nenhuma ponte conhecida entre ${a.refA}.${a.colA} e ${a.refB}.${a.colB} — ` +
+    `bridges.yaml não documenta essa relação, e o nome da coluna não bate por ` +
+    `convenção. Pode não existir junção direta entre estas duas tabelas neste ` +
+    `espelho. Antes de tentar outra variação desta MESMA junção: chame ` +
+    `descrever_tabela nas duas e procure uma coluna que aponte de uma pra outra ` +
+    `(CNPJ, id_orgao, id_municipio); se não achar nenhuma, responda só com a ` +
+    `parte que tem dado e diga que este cruzamento não é possível com as ` +
+    `tabelas disponíveis.`
+  ).join("\n");
+}
+
+/**
+ * Assinatura estrutural de FROM/JOIN/ON, sem literal nem espaço — pra detectar
+ * quando o modelo tenta a MESMA junção de novo com cosmético diferente em
+ * volta (WHERE, LIMIT, colunas do SELECT). Medido: 38 das 55 tentativas do
+ * caso acima variavam só o que fica FORA desta assinatura.
+ */
+export function assinaturaJuncao(sql: string): string {
+  const semLiterais = sql
+    .replace(/'[^']*'/g, "?")
+    .replace(/\b\d+\b/g, "?")
+    .toLowerCase();
+  const m = /\bfrom\b[\s\S]*?(?=\bwhere\b|\bgroup\s+by\b|\border\s+by\b|\blimit\b|$)/.exec(semLiterais);
+  return (m ? m[0] : semLiterais).replace(/\s+/g, " ").trim();
 }
 
 /**
