@@ -456,22 +456,6 @@ atravessam vários datasets de famílias distintas ao mesmo tempo.
 4. A participação de parceiro/ex-parceiro íntimo entre os agressores de vítimas mulheres notificadas no SINAN cresceu entre 2011 e 2024, e esse movimento acompanha — ou diverge de — a tendência nacional de homicídios de mulheres do Atlas da Violência? *(n=2: ms_sinan_violencia, ipea_atlasviolencia)*
 5. A cobertura temporal das notificações do SINAN Violência é confiável usando a coluna documentada de ano da notificação (NU_ANO), ou existe alguma lacuna de rotulagem que exige outra coluna de ano pra reconstituir a série 2009-2025 corretamente? *(n=1: ms_sinan_violencia)*
 
-## 57 · Ofertas Públicas CVM e Mercado de Capitais
-
-1. Qual foi o valor total ofertado por ano no mercado de capitais brasileiro registrado na CVM, e a série realmente cobre até hoje ou para numa data anterior sem aviso? *(n=1: cvm_oferta_publica_distribuicao)*
-2. Que tipo de ativo domina o valor ofertado — ações, debêntures, cotas de fundo fechado, CRI/CRA — e quanto os dois maiores concentram do total? *(n=1: cvm_oferta_publica_distribuicao)*
-3. As instituições líderes (coordenadoras) das ofertas públicas são concentradas em poucos bancos, e quanto os três maiores respondem do valor total ofertado? *(n=1: cvm_oferta_publica_distribuicao)*
-4. Que fração dos fundos de investimento registrados na CVM já emitiu uma oferta pública de cotas, e esses fundos têm patrimônio líquido médio maior que os que nunca ofertaram? *(n=2: cvm_oferta_publica_distribuicao, cvm_fundos)*
-5. Algum emissor de oferta pública na CVM aparece na lista de inidôneos do TCU — o mercado de capitais já deu acesso a alguém formalmente declarado inapto a contratar com a União? *(n=2: cvm_oferta_publica_distribuicao, tcu_inidoneos)*
-
-## 58 · Programas de Transferência CGU e Viagens a Serviço
-
-1. O ritmo mensal de pagamento do Pé-de-Meia é suave, ou concentra picos ligados ao calendário escolar (matrícula em março, conclusão no início do ano seguinte, Enem)? *(n=1: cgu_pe_de_meia)*
-2. A cobertura do Pé-de-Meia por habitante segue o gradiente Norte/Nordeste-Sul esperado de um benefício de baixa renda, e qual UF tem a maior taxa de beneficiários por mil habitantes? *(n=2: cgu_pe_de_meia, ibge_populacao\*)*
-3. Quantas pessoas recebem ao mesmo tempo o Seguro-Defeso (pescador artesanal) e o Garantia-Safra (agricultor familiar do semiárido) — os dois públicos-alvo se sobrepõem? *(n=2: cgu_seguro_defeso, cgu_garantia_safra)*
-4. O gasto total do Seguro-Defeso cresceu mais rápido que o número de beneficiários entre 2013 e 2025 — o valor médio por pescador aumentou, e isso acompanha o salário mínimo (base legal do benefício)? *(n=1: cgu_seguro_defeso)*
-5. O gasto do governo federal com viagens a serviço (diárias + passagens) cresceu mais que o número de viagens entre 2018 e 2025, e qual órgão concentra o maior gasto hoje? *(n=1: cgu_viagens)*
-
 ---
 
 # Perguntas multi-dataset simultâneos

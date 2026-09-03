@@ -1,6 +1,6 @@
 # rodado — Brasil em números, retratos dos dados oficiais
 
-> 1.024 tabelas públicas brasileiras — de instituições oficiais (RAIS, SIM, TSE, CGU, IBGE, INEP, CNES e outras), somadas a 74 fontes raspadas de forma independente — lidas a partir de perguntas investigativas, não de uma vitrine técnica: o que esses registros, cruzados, revelam sobre desigualdade, poder, economia, saúde e violência no Brasil?
+> 849 tabelas públicas brasileiras — de instituições oficiais (RAIS, SIM, TSE, CGU, IBGE, INEP, CNES e outras), somadas a mais de 40 fontes raspadas de forma independente — lidas a partir de perguntas investigativas, não de uma vitrine técnica: o que esses registros, cruzados, revelam sobre desigualdade, poder, economia, saúde e violência no Brasil?
 
 **[rodado.xyz](https://rodado.xyz)** — os 43 temas publicados · [English](https://rodado.xyz/en.html)
 
@@ -16,7 +16,7 @@ Cada tema no site publicado combina uma narrativa em prosa com as tabelas de evi
 
 ## Cobertura de dados
 
-As 1.024 tabelas cobrem 43 domínios temáticos, cada um documentado em [`overview/`](docs/overview/index.md) e publicado como uma página própria no site. Essas narrativas servem tanto de leitura para o público quanto de contexto para o assistente que consulta o espelho.
+As 849 tabelas cobrem 43 domínios temáticos, cada um documentado em [`overview/`](docs/overview/index.md) e publicado como uma página própria no site. Essas narrativas servem tanto de leitura para o público quanto de contexto para o assistente que consulta o espelho.
 
 | # | Tema |
 |---|------|
@@ -66,7 +66,7 @@ As 1.024 tabelas cobrem 43 domínios temáticos, cada um documentado em [`overvi
 
 ## Sobre os dados
 
-Os dados vêm de instituições públicas brasileiras — ministérios, tribunais, institutos e agências reguladoras — reunidos em um espelho próprio em Parquet, sem precisar importar nada localmente. 74 dessas fontes são raspadas de forma independente, cobrindo o que não está disponível em nenhum repositório consolidado (sanções nacionais e internacionais, SICAF, SINAN Violência, reclamações de consumidor e mais). No total, 1.024 tabelas (896 GB em Parquet+zstd) são consultadas sob demanda via DuckDB, o que permite cruzar bases de ministérios, tribunais, institutos e fontes independentes numa única consulta SQL.
+Os dados vêm de instituições públicas brasileiras — ministérios, tribunais, institutos e agências reguladoras — reunidos em um espelho próprio em Parquet, sem precisar importar nada localmente. Mais de 40 dessas fontes são raspadas de forma independente, cobrindo o que não está disponível em nenhum repositório consolidado (sanções nacionais e internacionais, SICAF, SINAN Violência, reclamações de consumidor e mais). No total, 849 tabelas (868 GB em Parquet+zstd) são consultadas sob demanda via DuckDB, o que permite cruzar bases de ministérios, tribunais, institutos e fontes independentes numa única consulta SQL.
 
 ## Como as tabelas se conectam
 
@@ -74,13 +74,9 @@ O espelho não tem chave estrangeira. O que liga uma tabela à outra são coluna
 
 Esse conhecimento fica em três arquivos, versionados junto com o resto:
 
-- **`docs/context/bridges.yaml`** — as 81 pontes entre colunas equivalentes, cada uma com a expressão SQL que converte uma ponta na outra e o registro do que ela casou quando foi conferida. Junto vão as colunas que *parecem* chave e não são: `valor` aparece em 91 tabelas de 56 datasets significando coisas diferentes, e juntar por ele produz um resultado grande, plausível e errado.
+- **`docs/context/bridges.yaml`** — as 54 pontes entre colunas equivalentes, cada uma com a expressão SQL que converte uma ponta na outra e o registro do que ela casou quando foi conferida. Junto vão as colunas que *parecem* chave e não são: `valor` aparece em 91 tabelas de 56 datasets significando coisas diferentes, e juntar por ele produz um resultado grande, plausível e errado.
 - **`docs/context/metrics.yaml`** — a definição única de cada número recorrente (população, PIB per capita, saldo do CAGED), com a expressão, a unidade e o valor conferido. Sem isso cada análise re-deriva o mesmo cálculo e as diferenças só aparecem quando dois textos publicados discordam.
 - **`docs/context/hierarchies.yaml`** — como subir de um código para o nível acima. CNAE e CID-10 são códigos prefixais: a divisão sai de um `substr()` da subclasse, sem join nenhum.
 
 Os três são servidos ao assistente como ferramentas, não como texto para ele interpretar: pedir a ligação entre duas tabelas devolve a cláusula `ON` pronta, com o aviso de que uma delas devolve toda linha duas vezes, se for o caso.
-
-## Leia também
-
-- [`overview/`](docs/overview/index.md) — os 43 arquivos-fonte em markdown por trás de cada página do site, usados também como contexto para o assistente que escreve as consultas.
 - [`Deanonimizacao.md`](docs/Deanonimizacao.md) — as nove tabelas que hoje trazem o nome junto do CNPJ ou do CPF, e as quatro maneiras de tirar delas um resultado errado sem perceber.
