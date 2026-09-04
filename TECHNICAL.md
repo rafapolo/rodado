@@ -127,44 +127,29 @@ ORDER BY post_election_contracts DESC
 
 The platform models Brazilian public data as typed business objects with explicit relationships.
 
-```
-┌──────────────────────┐          ┌──────────────────────┐
-│      State (UF)      │─────────▶│     Municipality     │
-│  sigla_uf (322 tbl)  │   1:N    │   id_municipio       │
-│  id_uf    (27 tbl)   │          │   (260 tables)       │
-└──────────────────────┘          └──────────┬───────────┘
-                                             │ 1:N
-             ┌───────────────────────────────┼──────────────────────┐
-             │                              │                       │
-             ▼                              ▼                       ▼
-┌──────────────────────┐  ┌──────────────────────┐  ┌──────────────────────┐
-│    CensusSector      │  │   SocialIndicator    │  │   ElectoralZone      │
-│ id_setor_censitario  │  │  health · education  │  │  id_municipio_tse    │
-│      (27 tbl)        │  │  income · housing    │  │      (23 tbl)        │
-└──────────────────────┘  │  ano/mes (389+ tbl)  │  └──────────────────────┘
-                          └──────────────────────┘
+```mermaid
+flowchart TD
+    UF["State (UF)<br/>sigla_uf (336 tbl)<br/>id_uf (27 tbl)"]
+    MUN["Municipality<br/>id_municipio<br/>(272 tables)"]
+    CS["CensusSector<br/>id_setor_censitario<br/>(27 tbl)"]
+    SI["SocialIndicator<br/>health · education · income · housing<br/>ano/mes (389+ tbl)"]
+    EZ["ElectoralZone<br/>id_municipio_tse<br/>(23 tbl)"]
+    CO["Company<br/>cnpj (14-digit)<br/>br_me_cnpj.*"]
+    PE["Person<br/>cpf<br/>servidores · rais"]
+    EA["EconomicActivity<br/>cnae_2_subclasse<br/>(6 tbl)"]
+    PC["PublicContract<br/>licitacoes · compras_gov"]
+    OC["OccupationClass<br/>cbo_2002 (8 tbl)<br/>RAIS/CAGED/CNES"]
+    TEMP["Temporal dimension<br/>ano (389 tbl) · mes (117 tbl) · trimestre (7 tbl)"]
 
-┌──────────────────────┐          ┌──────────────────────┐
-│       Company        │─────────▶│        Person        │
-│   cnpj  (14-digit)  │   N:M    │   cpf                │
-│   br_me_cnpj.*       │  socios  │   servidores · rais  │
-└──────────┬───────────┘          └──────────────────────┘
-           │ 1:N
-           ▼
-┌──────────────────────┐          ┌──────────────────────┐
-│  EconomicActivity    │          │   PublicContract     │
-│  cnae_2_subclasse    │          │   licitacoes         │
-│      (6 tbl)         │          │   compras_gov        │
-└──────────────────────┘          └──────────────────────┘
-
-┌──────────────────────┐
-│   OccupationClass    │   Temporal dimension:
-│   cbo_2002 (8 tbl)  │     ano       (389 tbl)
-│   RAIS/CAGED/CNES    │     mes       (117 tbl)
-└──────────────────────┘     trimestre   (7 tbl)
+    UF -->|1:N| MUN
+    MUN -->|1:N| CS
+    MUN -->|1:N| SI
+    MUN -->|1:N| EZ
+    CO -->|"N:M (socios)"| PE
+    CO -->|1:N| EA
 ```
 
-Full map in [`docs/ERD.md`](docs/ERD.md) — pt-BR, English in [`docs/ERD_EN.md`](docs/ERD_EN.md) — one mermaid diagram per domain covering all 834 tables; join recipes in [`docs/context/join_keys.md`](docs/context/join_keys.md).
+Full map in [`docs/ERD.md`](docs/ERD.md) — pt-BR, English in [`docs/ERD_EN.md`](docs/ERD_EN.md) — one mermaid diagram per domain covering all 1,018 tables; join recipes in [`docs/context/join_keys.md`](docs/context/join_keys.md).
 
 **Canonical join keys**:
 
@@ -190,47 +175,25 @@ earlier iteration (`db.xn--2dk.xyz`, a BigQuery → GCS → Hetzner Object
 Storage pipeline behind `auth.py`/Caddy) has been retired; see "Previous
 architecture" below for what it demonstrated while it ran.
 
-```
-┌──────────────────────────────────────────────────────────────────┐
-│                       USERS / WORKFLOWS                          │
-│   Compliance analysts · Policy teams · Researchers · Journalists │
-└────────────────────────────────┬─────────────────────────────────┘
-                                 │
-                                 ▼
-┌──────────────────────────────────────────────────────────────────┐
-│                       AGENT LAYER                                │
-│                                                                  │
-│   Claude Desktop / Claude Code — mcp_server.py over stdio        │
-│   18 tools: schema browse, semantic search, join resolution,     │
-│   named metrics, read-only SQL, friendly per-theme lookups       │
-└────────────────────────────────┬─────────────────────────────────┘
-                                 │
-                                 ▼
-┌──────────────────────────────────────────────────────────────────┐
-│                    SEMANTIC / ONTOLOGY LAYER                     │
-│                                                                  │
-│   basedosdados-schema.json   — 832-table schema registry        │
-│   join_keys.md / bridges.yaml — join keys + cross-source bridges│
-│   doc2query_index.json/.npy  — semantic vectors for AI (11 MB)  │
-│   overview/ (34 files)       — domain narratives for LLM ctx    │
-└────────────────────────────────┬─────────────────────────────────┘
-                                 │
-                                 ▼
-┌──────────────────────────────────────────────────────────────────┐
-│                     QUERY LAYER                                  │
-│                                                                  │
-│   ssh beelink '~/bin/duckdb -readonly -json ...' — single-stmt   │
-│   No local DuckDB connection, no persistent server process      │
-└────────────────────────────────┬─────────────────────────────────┘
-                                 │
-                                 ▼
-┌──────────────────────────────────────────────────────────────────┐
-│                        STORAGE LAYER                             │
-│                                                                  │
-│   Local disk on beelink                                          │
-│   Partitioned Parquet + zstd · 1,024 tables · ~896 GB           │
-│   DuckDB reads local files directly — no network, no import     │
-└──────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    subgraph USERS["USERS / WORKFLOWS"]
+        U["Compliance analysts · Policy teams · Researchers · Journalists"]
+    end
+    subgraph AGENT["AGENT LAYER"]
+        A["Claude Desktop / Claude Code — mcp_server.py over stdio<br/>18 tools: schema browse, semantic search, join resolution,<br/>named metrics, read-only SQL, friendly per-theme lookups"]
+    end
+    subgraph SEMANTIC["SEMANTIC / ONTOLOGY LAYER"]
+        S["basedosdados-schema.json — 832-table schema registry<br/>join_keys.md / bridges.yaml — join keys + cross-source bridges<br/>doc2query_index.json/.npy — semantic vectors for AI (11 MB)<br/>overview/ (34 files) — domain narratives for LLM ctx"]
+    end
+    subgraph QUERY["QUERY LAYER"]
+        Q["ssh beelink '~/bin/duckdb -readonly -json ...' — single-stmt<br/>No local DuckDB connection, no persistent server process"]
+    end
+    subgraph STORAGE["STORAGE LAYER"]
+        ST["Local disk on beelink<br/>Partitioned Parquet + zstd · 1,024 tables · ~896 GB<br/>DuckDB reads local files directly — no network, no import"]
+    end
+
+    USERS --> AGENT --> SEMANTIC --> QUERY --> STORAGE
 ```
 
 ---
@@ -246,17 +209,11 @@ replaced; see `tasks/done/mcp_search_refino.md` item 1. A table's score is the M
 cosine similarity across its own questions, so query and index live in the same
 space and no consumer has to reason over the full 1.8 MB schema.
 
-```
-Pergunta (pt-BR)
-    │
-    ▼
-Embedding (384-d, multilingual)
-    │
-    ▼
-Cosseno sobre 6.464 perguntas → MAX por tabela → top-K tabelas
-    │
-    ▼
-Schema filtrado → gerador de SQL → DuckDB
+```mermaid
+flowchart TD
+    P["Pergunta (pt-BR)"] --> E["Embedding (384-d, multilingual)"]
+    E --> C["Cosseno sobre 6.464 perguntas → MAX por tabela → top-K tabelas"]
+    C --> F["Schema filtrado → gerador de SQL → DuckDB"]
 ```
 
 `mcp_server.py` exposes this as the `search_tables` tool. The natural-language query
@@ -296,9 +253,10 @@ All access is read-only, enforced client-side in `mcp_server.py` before any SSH 
 
 ### Access model
 
-```
-Agent (Claude Desktop/Code) → mcp_server.py (stdio, read-only guard)
-                             → ssh beelink → DuckDB → local Parquet
+```mermaid
+flowchart LR
+    A["Agent (Claude Desktop/Code)"] --> B["mcp_server.py (stdio, read-only guard)"]
+    B --> C["ssh beelink"] --> D["DuckDB"] --> E["local Parquet"]
 ```
 
 No public endpoint, no auth layer to manage — access is scoped to whoever
