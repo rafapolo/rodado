@@ -130,12 +130,12 @@ DataJud continua bloqueado por credencial, não por esforço.
   zips multi-membro recuperados na terceira rodada). View criada e conferida por `count(*)` em cada
   tabela — ver Execução abaixo.
 
-#### 4. BCB — Estatísticas do Pix por município + meios de pagamento ❌ endpoint quebrado do lado do BCB
+#### 4. BCB — Estatísticas do Pix por município + meios de pagamento ✅ feito 2026-09-04 — ver Execução 2026-09-04
 - **Fonte**: https://olinda.bcb.gov.br/olinda/servico/Pix_DadosAbertos/versao/v1/odata (`TransacoesPixPorMunicipio`); https://dadosabertos.bcb.gov.br/dataset/pix
 - **Freq**: mensal desde nov/2020 · **Formato**: OData JSON/CSV · **Volume**: ~5.570 municípios × PF/PJ × mês
 - **Chaves**: `id_municipio`
 - **Por quê**: proxy econômico mensal municipal de altíssimo valor analítico; ETL trivial. BD só tem séries SGS agregadas.
-- **Status BD**: não (Pix por município)
+- **Status BD**: `br_bcb_pix_municipio.transacoes`, 395.447 linhas — era tido como "endpoint quebrado" (o ❌ acima), na verdade era sintaxe OData errada, ver Execução 2026-09-04
 - **2026-09-02 — testado ao vivo, não é credencial**: o entity set real é `_TransacoesPixPorMunicipio` (com underscore — sem ele o serviço devolve 400 "malformed", o nome do item na doc original estava sem underscore). Com underscore, **toda** variação testada (`$top`, `$filter=AnoMes eq …`, com/sem `$format=json`, chave composta `(202401)`) devolve `HTTP 500 {"codigo":500,"mensagem":"Erro desconhecido"}` — no mesmo host, no mesmo serviço, outros entity sets (`PixUsuariosCadastradosDICT`, sem underscore) respondem normalmente. `$metadata` também responde 200 e descreve o schema certinho. Ou seja: o schema existe, o endpoint de dado está quebrado no lado do BCB, não é geo-bloqueio nem parâmetro errado nosso. Sem CSV alternativo no CKAN (`dadosabertos.bcb.gov.br/dataset/pix` só linka de volta pro mesmo OData). Reteste periodicamente — pode ser transitório.
 
 #### 5. SINESP VDE — criminalidade municipal consolidada ❌ WAF bloqueia o download, não é geo/credencial
@@ -163,16 +163,23 @@ DataJud continua bloqueado por credencial, não por esforço.
 - **Chaves**: **CEP ↔ setor censitário ↔ id_municipio** — a grande ponte faltante para geolocalizar qualquer base
 - **Status BD**: `br_ibge_cnefe.enderecos`, ver Execução 2026-09-02 (terceira rodada)
 
-#### 7. ANEEL — geração distribuída, usinas SIGA, tarifas
+#### 7. ANEEL — geração distribuída, usinas SIGA, tarifas ✅ feito 2026-09-04
 - **Fonte**: https://dadosabertos.aneel.gov.br (CKAN, vários datasets em **Parquet nativo**)
 - **Freq**: mensal/diária · **Volume**: GD >3M unidades consumidoras
 - **Chaves**: município, CNAE da distribuidora
 - **Nota**: o bloqueio antigo era NXDOMAIN do portal velho — o portal mudou de endereço; re-testar.
-- **Status BD**: não
+- **Status BD**: `br_aneel_dadosabertos.empreendimento_geracao_distribuida`, 4.692.466 linhas
 - **2026-09-02**: re-testado, ainda fora do ar — mas o modo de falha mudou. O domínio novo
   (`dadosabertos.aneel.gov.br`) **resolve** (`200.198.220.169`), só não completa a conexão TCP na
   porta 443 (timeout, direto e via beelink). Não é mais NXDOMAIN — é o host que não responde. Sem
   contorno testado.
+- **2026-09-04**: **era geo-bloqueio de rede, não host fora do ar** — o CKAN estava vivo o tempo
+  todo, só o TCP não completava de fora do Brasil. Destravado com um pool de proxy BR (ver
+  `tasks/README.md` § Em aberto para os endereços). Baixado o recurso "Relação de empreendimentos
+  de Mini e Micro Geração Distribuída", já em Parquet nativo na fonte — 4.692.466 linhas,
+  106.169.418 bytes, hash de tamanho batendo com o metadado da API. ~9 outros recursos do mesmo
+  pacote (dicionário, técnico por fonte eólica/fotovoltaica/hidrelétrica/termelétrica) e o resto
+  do catálogo (60+ datasets) não tocados — fica pra quem quiser ampliar.
 
 #### 8. IBGE MUNIC 2024 / ESTADIC 2024
 - **Fonte**: SIDRA / https://www.ibge.gov.br/estatisticas/sociais/saude/10586-pesquisa-de-informacoes-basicas-municipais.html
@@ -213,8 +220,8 @@ DataJud continua bloqueado por credencial, não por esforço.
 | 14 | CadÚnico agregados municipais | MDS VIS DATA / portal analítico | id_municipio | não (só painéis) — **2026-09-02**: bloqueado, `aplicacoes.mds.gov.br` trava no TLS handshake (laptop e beelink), não é credencial |
 | 15 | CAUC / Tesouro Transparente — regularidade fiscal | tesourotransparente.gov.br | codigo_siafi/id_municipio | **2026-09-02: feito** — `br_tesouro_cauc.{situacao_estados,situacao_municipios,legenda_itens}` |
 | 16 | PNS 2023 microdados | IBGE FTP | UF/região (chave fraca) | BD não tem 2023 — **2026-09-02**: confirmado que a PNS 2023 ainda não foi publicada no FTP público (só 2013/2019 existem), não é bloqueio de acesso |
-| 17 | PRODES/DETER BiomasBR all-biomas | terrabrasilis.dpi.inpe.br/downloads/ + API v1 | id_municipio | BD/espelho têm versões antigas só Amazônia/Cerrado; desde 2024–26 cobre todos os biomas com Sentinel-2 — **2026-09-02**: DETER (avisos quase em tempo real, 4 biomas) feito em `br_inpe_deter.avisos`; PRODES acumulado (polígonos, >800MB/bioma) segue como "janela própria" |
-| 18 | DIRPF destinações FDCA/FDI | gov.br/receitafederal/dados | CNPJ do fundo/município | **2026-09-02: feito** (lista de fundos habilitados) — `br_rf_dirpf.fundos_habilitados`; valores destinados por declaração seguem sem achar |
+| 17 | PRODES/DETER BiomasBR all-biomas | terrabrasilis.dpi.inpe.br/downloads/ + API v1 | id_municipio | BD/espelho têm versões antigas só Amazônia/Cerrado; desde 2024–26 cobre todos os biomas com Sentinel-2 — **2026-09-02**: DETER (avisos quase em tempo real, 4 biomas) feito em `br_inpe_deter.avisos`. **2026-09-04: PRODES acumulado também feito** — `br_inpe_prodes_acumulado.desmatamento`, 7.598.548 linhas, 7 biomas, centroide lat/lon |
+| 18 | DIRPF destinações FDCA/FDI | gov.br/receitafederal/dados | CNPJ do fundo/município | **2026-09-02: feito** (lista de fundos habilitados) — `br_rf_dirpf.fundos_habilitados`. **2026-09-04: valores também feitos** — `br_rf_dirpf.repasses`, 28.885 linhas, só 2022-2023 (anos anteriores só em PDF) |
 | 19 | Corpus PT-BR (Jabuticaba etc., HF Parquet) | huggingface.co | — | relevante só p/ treinar PT-BR do `ask`, não é join-analítico |
 | 20 | TCEs estaduais (11 cortes: SP, RJ, RS, PE, CE, ES, RN, PI, SC, TO, PA) | portais/API de cada corte | cnpj, id_municipio | não — 11 fontes distintas, esforço alto; achado na comparação com o mcp-brasil |
 | 21 | SPU SIAPA — imóveis da União | gov.br/spu | id_municipio, CEP | não — ~813K imóveis; idem |
@@ -512,8 +519,18 @@ foram os padrões de URL, que o portal bloqueado não entrega:
 - Autos: `.../dados/SIFISC/auto_infracao/{tabela}/{tabela}_csv.zip`
 - Embargos: `.../dados/SIFISC/termo_embargo/{tabela}/{tabela}_csv.zip`
 
-Com um proxy de saída no Brasil o download roda normalmente
-(`~/Downloads/ibama/baixa_ibama.sh` respeita `ALL_PROXY`).
+Com um proxy de saída no Brasil o download roda normalmente. **Correção
+2026-09-04**: essa frase estava certa no sentido geral (IP BR contorna o
+geo-bloqueio), mas errada quanto a `baixa_ibama.sh` — o script **não** lê
+`ALL_PROXY` nem nenhuma outra variável de proxy; o comentário nele só instrui
+"rode numa rede com IP brasileiro" (VPN/4G/roteador de casa), depende de
+execução manual numa rede BR real, não de infra reutilizável. Confirmado por
+3 forks independentes em 2026-09-04: **não existe proxy BR configurado neste
+ambiente** — laptop e beelink saem por IP suíço, e o único proxy referenciado
+no repo (`PROXY=http://129.121.55.206:8080` em `_staging/pncp/duplo.sh`, usado
+pro PNCP) está com connection refused. Sem VPN/proxy residencial real, o
+geo-bloqueio do INEA (e qualquer outro do mesmo tipo) segue intransponível a
+partir daqui.
 
 #### Correção ao que este arquivo dizia
 
@@ -604,9 +621,11 @@ ainda não raspado.
    (empresa, processo SEI, data, PDF) estão corretos — este é o único errado.
    Reparse é de graça: os HTML estão em `~/Downloads/inea/boletins/pg*.html`.
 
-3. **Os 1.081 PDFs do INEA não foram baixados**, só o índice. É neles que estão
-   **validade da licença e condicionantes** — dois dos campos que o relatório de
-   Nova Friburgo pedia e que o índice não traz.
+3. ✅ **Fechado 2026-09-04** — os 1.079 PDFs (2 dos 1.081 sem anexo) foram
+   baixados via proxy BR e o texto extraído: `br_inea_boletim.atos_pdf`, 7.052
+   linhas (`processo`, `validade` 63,8% preenchido, `texto_ato` bruto — o
+   termo real do INEA é "condições de validade" numerada i/ii/iii, não um
+   campo fixo "condicionantes"). Ver `done/datasets_to_scrap_done.md`.
 
 4. **`SIGMINE/BRASIL.zip` (125 MB) foi pulado de propósito** — consolidado
    nacional, redundante com as 28 UFs já convertidas. Registro para não parecer
@@ -1139,10 +1158,76 @@ dataset ausente dele vira `source_name="Base dos Dados"`/mirror por padrão
 
 | # | Item | Situação |
 |---|---|---|
-| 14 | CadÚnico agregados (VIS DATA / SAGI-MDS) | **investigado, bloqueado — não é credencial.** `aplicacoes.mds.gov.br` (o host do VIS DATA) resolve e aceita a conexão TCP, mas trava no TLS handshake — testado do laptop e do beelink (IP brasileiro), mesmo padrão do ANEEL (#7). `gov.br/mds` (dados abertos) está no ar mas não lista CadÚnico bulk, só contratos de adesão. `dados.gov.br` de novo 401 (mesmo bloqueio sistêmico de API key já visto em ANP #13 e SPU #21) |
-| 17 | PRODES acumulado (só o DETER foi feito) | cada bioma sozinho >800 MB zipado; "janela própria" confirmada necessária |
-| 18 | DIRPF microdados de destinação (valores, não só habilitados) | não achado |
+| 14 | CadÚnico agregados (VIS DATA / SAGI-MDS) | **parcial — portal novo achado, API de valores não mapeada.** `aplicacoes.mds.gov.br` migrou para `aplicacoes.cidadania.gov.br/vis/data3/data-explorer.php` (VIS DATA 3, SPA) — achado com proxy BR em 2026-09-04, depois de duas revalidações sem proxy (2026-09-02, 2026-09-04) confirmarem só que o host antigo trava/reseta no TLS (correção: essas revalidações não tinham IP BR de verdade, o beelink também sai por IP suíço). O endpoint `.../servicos/get_objetos_vis.php` é só busca/autocomplete de indicador (`{'q': termo}`), os valores reais ficam atrás de uma segunda chamada não decifrada a tempo — labirinto de SPA, não WAF. `gov.br/mds` (dados abertos) não lista CadÚnico bulk. `dados.gov.br` de novo 401 (mesmo bloqueio sistêmico de API key já visto em ANP #13 e SPU #21) |
+| 17 | PRODES acumulado | ✅ **feito 2026-09-04** — `br_inpe_prodes_acumulado.desmatamento`, 7.598.548 linhas, 7 biomas (amazonia, amazonia_legal, mata_atlantica, caatinga, cerrado, pampa, pantanal), geometria como centroide lat/lon (mesma decisão do DETER) |
+| 18 | DIRPF microdados de destinação (valores, não só habilitados) | ✅ **feito 2026-09-04** — `br_rf_dirpf.repasses`, 28.885 linhas, fonte real achada em `.../dados-abertos/receitadata/arrecadacao/repasse-das-doacoes...`, mas só 2022-2023 têm CSV (2013-2021 e FDI pré-2019 só em PDF, não convertido — buraco conhecido) |
 | 20 | TCEs estaduais | alto esforço confirmado, não iniciado |
 | 21 | SPU SIAPA | sem endpoint de bulk público achado; exigiria engenharia reversa de SPA |
-| 10 | CNJ Painel | serviço fora do ar (502), reteste depois |
-| 4 | BCB Pix por município | segue quebrado do lado do BCB (já documentado antes) |
+| 10 | CNJ Painel | revalidado 2026-09-04: não é mais 502 constante, mas é um dashboard QlikView AccessPoint (`Authenticate.aspx` ainda 502) — não vale perseguir como REST simples |
+| 4 | BCB Pix por município | ✅ **feito 2026-09-04 — era falso negativo, não fonte quebrada.** O endpoint é um FunctionImport OData composable, não entity-set simples; a chamada direta usada antes sempre dava 400. `br_bcb_pix_municipio.transacoes`, 395.447 linhas, 71 meses (2020-11→2026-09), 5.571 municípios |
+
+---
+
+## Execução 2026-09-04 — os 4 itens abertos + revalidação geral com proxy BR
+
+Trabalhando os 4 itens sinalizados como próximos passos (PDFs do INEA, buraco
+do Querido Diário, PRODES acumulado, DIRPF valores) mais um pedido paralelo:
+revalidar todo o backlog `blocked`/`blocked → mcp-todo` de
+`tasks/datasets_to_scrap.md` usando um proxy de saída no Brasil. 7 forks
+paralelos, resultado líquido: **3 datasets novos fechados** (PRODES acumulado,
+DIRPF repasses, BCB Pix — este último um falso negativo, não fonte quebrada),
+**2 bloqueios confirmados por causa real** (INEA PDFs, buraco do Querido
+Diário), e **nenhuma das ~20 fontes bloqueadas do backlog geral destravou**.
+
+**Achado que corrige a doc anterior: não existe proxy BR configurado neste
+ambiente.** Testado por 3 forks independentes de formas diferentes — laptop e
+beelink resolvem para Suíça, o único proxy referenciado no repo
+(`_staging/pncp/duplo.sh`) está com connection refused, e o script citado como
+"padrão de proxy do projeto" (`~/Downloads/ibama/baixa_ibama.sh`) nunca usou
+proxy de verdade, só um comentário pedindo execução manual numa rede BR. Isso
+também invalida uma afirmação anterior sobre CadÚnico ("testado do beelink,
+IP brasileiro") — o beelink não tem IP brasileiro. Sem VPN/proxy residencial
+real fornecido pelo usuário, a hipótese de geo-bloqueio permanece **testada
+mas não resolvida** para INEA, ANEEL e CadÚnico.
+
+Ver as linhas atualizadas nos itens 4, 17, 18 acima e na tabela "Itens que
+continuam abertos" para os detalhes por fonte.
+
+### Continuação — proxy BR achado, INEA e ANEEL destravados
+
+Pedido explícito do usuário depois da revalidação sem sucesso: "buscar na web
+até achar um proxy vivo", do mesmo jeito manual que ele já tinha feito antes
+(mais de 150 candidatos testados em 12 páginas de resultado). Um fork rodou
+~1h30 fazendo exatamente isso — testou dezenas de listas públicas até achar
+um pool de **5 proxies SOCKS4 residenciais gratuitos** que sustentaram a
+sessão inteira (fonte: `raw.githubusercontent.com/proxifly/free-proxy-list`,
+filtrado por país BR — teve hit-rate melhor que proxyscrape/geonode nessa
+tentativa; endereços na tabela "Em aberto" de `tasks/README.md`, instáveis
+individualmente mas resilientes com rotação/failover).
+
+Com o proxy funcionando: **INEA fechado** (os 1.079 PDFs, texto extraído,
+`br_inea_boletim.atos_pdf`, 7.052 linhas) e **ANEEL fechado**
+(`br_aneel_dadosabertos.empreendimento_geracao_distribuida`, 4.692.466
+linhas — confirmando que era geo-bloqueio de rede, não CKAN fora do ar).
+**CadÚnico ficou parcial**: achou o portal novo (`aplicacoes.cidadania.gov.br/
+vis/data3`), mas a API de valores reais (atrás de uma segunda chamada de SPA)
+não foi decifrada a tempo — registrado como porta aberta, não como bloqueio.
+
+Dois bugs de dado (não de proxy) custaram tempo no meio do caminho: nome de
+arquivo por número de boletim colidia entre anos (reinicia todo janeiro) e um
+terminador `\r\n` de CSV gerado em Python deixava `\r` grudado nas URLs no
+`read` do bash, derrubando qualquer proxy por corrupção de dado, não
+instabilidade de rede — os dois documentados em `done/datasets_to_scrap_done.md`.
+
+Catálogo regenerado de novo (mesma cadeia): **1.029 tabelas, 233 datasets,
+39,25 bi linhas**. Os 5 datasets desta sessão (`br_bcb_pix_municipio`,
+`br_rf_dirpf.repasses`, `br_inpe_prodes_acumulado`, `br_inea_boletim.atos_pdf`,
+`br_aneel_dadosabertos.empreendimento_geracao_distribuida`) têm view criada,
+`count(*)` conferido e linha de proveniência em `done/datasets_to_scrap_done.md`.
+
+**Para a próxima sessão**: o pool de proxy é achado, não infraestrutura
+permanente — se todos os 5 caírem, a mesma fonte (`proxifly/free-proxy-list`,
+filtro BR) é o primeiro lugar pra buscar de novo antes de tentar outra lista.
+Vale retestar contra o resto do backlog geo-bloqueado de `datasets_to_scrap.md`
+(TCE-CE/PE/RN/RS, principalmente — timeout total nunca testado com IP BR de
+verdade) e a segunda chamada do CadÚnico VIS DATA 3.
