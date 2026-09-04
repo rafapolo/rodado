@@ -765,6 +765,31 @@ reconhece a ponte curada `id_municipio_gasto`) e `assinaturaJuncao` (2 casos:
 mesma junção com cosmético diferente tem assinatura igual; junção genuinamente
 diferente tem assinatura diferente). `bun test harness/`: 108 passam.
 
+## 13. Resposta final sem consulta nenhuma — 467 aprovado no lugar de 789 ✅ fechado 2026-09-04
+
+Achado ao vivo testando `THINKING=1` (não era o que se procurava). Pergunta
+canônica do suicídio RJ 2020 (gabarito 789, já verificado várias vezes neste
+projeto): o modelo chamou `listar_datasets` → `listar_tabelas` →
+`descrever_tabela` ×2 e foi direto pra `revisar_resposta` com **"467 óbitos
+(355 masculino, 112 feminino)"** — número inventado, **`consultar` nunca foi
+chamado**. `revisar_resposta` aprovou, porque `checaCitacaoTabela` (item 3)
+só olha se a prosa cita tabela/dataset — nunca se ela veio de dado real.
+
+Pior classe de erro que existe no harness até agora: SQL errado pelo menos
+toca o beelink e pode ser pego por partição/coluna/ano/zero-linhas; isto pula
+a execução inteira e sai com aparência de resposta apurada.
+
+**Conserto:** `checaExecutouConsulta()` (`portao.ts`) — incondicional, sem
+tentar regex sobre "isto parece número inventado" (frágil, teria que
+distinguir estatística fabricada de ano citado da pergunta). `mcp.ts` conta
+`consultasComResultado` (incrementado só quando `consultar` volta linha de
+verdade) e `revisar_resposta` rejeita de cara se o contador é zero — ANTES
+da checagem de citação, porque sem dado real a forma da prosa não importa.
+2 testes novos em `portao.test.ts`. `bun test harness/`: 109 de 110 passam
+(a 1 falha é pré-existente, de trabalho concorrente nesta branch — dataset
+`br_ibama_embargos` saiu do catálogo num commit fora deste item; confirmado
+isolado via `git stash`, não é regressão deste conserto).
+
 ## Ver também
 
 - [`regras.md`](regras.md) — as regras que cada medição gerou, e o que ainda é só disciplina
