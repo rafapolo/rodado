@@ -124,7 +124,7 @@ determinística) evapora o 44x sem ninguém perceber.
 A comparação que decide o desenho — mesmas 5 perguntas, mesmo modelo, mesmo
 portão, mesmo beelink; muda só quem decide a sequência de passos:
 
-| | dsh + MCP (agêntico) | pipeline fixo (`laco.ts`) |
+| | harness + MCP (agêntico) | pipeline fixo (`laco.ts`) |
 |---|---|---|
 | **Correto** | **3/3 = 100%** | **0/3 = 0%** |
 | Tempo | ~400 s | 61 s |
@@ -145,9 +145,11 @@ paralelo, senão os dois disputam o mesmo `llama-server` e o tempo sai errado.
 | Prefill | 50,5 t/s | 15 t/s |
 | Geração | 13,3 t/s | 9 t/s |
 
-Cai ~3x, e o system prompt do dsh eram **14.213 tokens**. Desligar as ferramentas
-que este harness não usa levou a **6.849** — corte de 52%, com a correção intacta
-e ~30% menos tempo por pergunta.
+Cai ~3x. Medido com o CLI agêntico usado antes de `agente.ts` (removido — ver
+"Módulos" abaixo): o system prompt dele era **14.213 tokens**; desligar as
+ferramentas que este harness não usa levou a **6.849** — corte de 52%, com a
+correção intacta e ~30% menos tempo por pergunta. O laço atual (`agente.ts`)
+nunca inclui essas ferramentas — a persona sozinha fica bem abaixo disso.
 
 Duas dessas ferramentas eram um buraco, não só peso: o modelo descobriu a `bash`
 e escreveu `ssh beelink '~/bin/duckdb ...'` direto, **passando por cima do portão
@@ -165,6 +167,7 @@ inteiro**. Todo o trabalho de validação vira decoração se o modelo tem shell
 | `anos.ts` | faixa de anos por tabela (377 cacheadas) |
 | `pontes.ts` | dicas de join das pontes conferidas de `bridges.yaml` |
 | `mcp.ts` | servidor MCP: 5 ferramentas, o portão entre elas |
+| `agente.ts` | o laço agêntico — persona, modelo/provider (`pi-ai`), cliente MCP falando com `mcp.ts` por stdio. Substitui o CLI agêntico usado antes (removido) |
 | `laco.ts` | o pipeline fixo — **não é caminho de produção** (0/3 contra 3/3 do agêntico). Sobrevive por um motivo nomeado: é o esqueleto do experimento DuckDB-NSQL-7B de `tasks/check-qwencoder-vs-duckdbnsql.md`, que precisa de um apurador sem agente e sem MCP. Se aquele experimento fechar sem usá-lo, remover — a comparação que ele provou já está registrada aqui e em `tasks/regras.md`, e o código sai por `git show` |
 | `lote.ts` / `compara.ts` | benchmark de perguntas abertas |
 
@@ -204,7 +207,7 @@ bun harness/catalogo.ts --atualiza   # rebusca no beelink após um sync
 bun harness/anos.ts --atualiza       # faixa de anos por tabela
 
 bun harness/avalia_datasets.ts       # escolha de dataset nas 274 perguntas
-bun harness/lote.ts <arquivo>        # perguntas abertas pelo dsh, com gabarito
+bun harness/lote.ts <arquivo>        # perguntas abertas pelo laço agêntico, com gabarito
 bun harness/compara.ts <arquivo>     # agêntico contra pipeline fixo
 ```
 
@@ -237,9 +240,10 @@ Cada flag aí é uma medição, não gosto:
 - **`-np 1`**: o `-c` é **por slot**. Com os 4 slots padrão, `-c 65536` aloca 4x
   o KV sem avisar.
 - **`--chat-template-kwargs`**: é o único jeito de desligar o raciocínio do Gemma.
-  `reasoningEfforts: false` no dsh declara o modelo como não-raciocinante *para o
-  harness* e não manda nada ao llama.cpp; `--reasoning off` também não resolve.
-  Medido: 20,9 s → 4,7 s por turno de tool calling, com o tool call intacto.
+  `reasoning: false` no modelo (`agente.ts`, `pi-ai`) declara o modelo como
+  não-raciocinante *para o cliente* e não manda nada ao llama.cpp; `--reasoning
+  off` também não resolve. Medido: 20,9 s → 4,7 s por turno de tool calling,
+  com o tool call intacto.
 - **sem `-ctk/-ctv q8_0`**: KV quantizado sai caro em CPU — desquantizar a cada
   operação de atenção domina o que economiza em banda. Prefill 15,8 → 50,5 t/s.
 
