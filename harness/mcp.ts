@@ -23,7 +23,7 @@ import {
 import { listaDatasets, tabelasDe, colunasDe, resolveDataset } from "./catalogo.ts";
 import {
   portao, checaExplain, alertasDeSanidade, faixasCitadas, checaCitacaoTabela,
-  juncoesSemPonte, mensagemSemPonte, assinaturaJuncao,
+  juncoesSemPonte, mensagemSemPonte, assinaturaJuncao, checaExecutouConsulta,
 } from "./portao.ts";
 import { dicasDeJoin } from "./pontes.ts";
 import { runSqlSsh } from "./beelink.ts";
@@ -58,6 +58,15 @@ const tentativasPorJuncao = new Map<string, number>();
 const LIMIAR_REPETICAO = Number(Bun.env.HARNESS_LIMIAR_REPETICAO ?? 3);
 const ORCAMENTO_CONSULTAS = Number(Bun.env.HARNESS_ORCAMENTO_CONSULTAS ?? 30);
 let totalConsultas = 0;
+
+/**
+ * Achado ao vivo 2026-09-04 (testando THINKING=1): o modelo pulou `consultar`
+ * inteiro e aprovou em `revisar_resposta` um número inventado (467, contra os
+ * 789 reais) — pior que SQL errado, porque nem chega a tocar o beelink.
+ * `checaExecutouConsulta` (portao.ts) usa este contador pra recusar qualquer
+ * resposta final que não veio de dado de verdade.
+ */
+let consultasComResultado = 0;
 
 const FERRAMENTAS = [
   {
@@ -224,6 +233,9 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
       }
       return erro(partes.join("\n\n"));
     }
+    // Chegou aqui com linha de verdade — a resposta final poderá se apoiar em
+    // dado real. checaExecutouConsulta (revisar_resposta) só aprova depois disto.
+    consultasComResultado++;
     // Alertas de sanidade (grupo reportado como total, join que duplicou linha,
     // correlação suspeita) grudados ANTES dos dados, no mesmo texto — nenhum
     // rejeita, mas o modelo só corrige o que vê.
@@ -233,6 +245,13 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
   }
 
   if (name === "revisar_resposta") {
+    // backlog.md item 12/13: achado ao vivo — o modelo aprovou um número
+    // inventado (467 contra 789 reais) sem nunca ter chamado `consultar`.
+    // Grounding vem ANTES da checagem de citação: sem dado real, a forma da
+    // prosa não importa.
+    const g = checaExecutouConsulta(consultasComResultado);
+    if (!g.ok) return erro(`REJEITADA (${g.camada}): ${g.erro}`);
+
     const v = checaCitacaoTabela(arg.texto ?? "");
     return v.ok
       ? texto("Aprovado — pode responder ao usuário com este texto.")

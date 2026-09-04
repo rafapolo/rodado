@@ -762,6 +762,41 @@ const ERROS_DUCKDB = [
  * existe porque a consulta ligou. Falha é só a assinatura de erro do próprio
  * DuckDB. Sem esta distinção o portão rejeitava toda consulta válida.
  */
+/**
+ * Camada de grounding — a resposta final não pode existir sem consulta real.
+ *
+ * Achado ao vivo 2026-09-04, testando `THINKING=1` (não era o que se estava
+ * procurando): na pergunta canônica do suicídio RJ 2020, o modelo explorou o
+ * schema (`listar_tabelas`, `descrever_tabela` ×2) e foi direto pra
+ * `revisar_resposta` com **467 óbitos (355 M / 112 F)** — número inventado,
+ * SEM NUNCA CHAMAR `consultar`. `revisar_resposta` aprovou, porque
+ * `checaCitacaoTabela` só olha se a prosa cita tabela/dataset — nunca se ela
+ * veio de dado real. É pior que SQL errado: SQL errado pelo menos executa
+ * contra o beelink e pode ser pego por partição/coluna/zero-linhas; isto
+ * pula a execução inteira e ainda assim tem aparência de resposta apurada.
+ *
+ * A regra é deliberadamente cega ao CONTEÚDO da prosa — não tenta adivinhar
+ * "isto parece uma estatística inventada" por regex (frágil: teria que
+ * distinguir um número fabricado de um ano citado da própria pergunta, e
+ * errar pra qualquer lado é ruim). Em vez disso, é incondicional: a persona
+ * deste harness instrui SEMPRE chamar `revisar_resposta` antes de responder
+ * (`dsh/rodado.patch.yml`), então nenhuma resposta final legítima deveria
+ * existir sem pelo menos uma consulta que voltou linha — o próprio trabalho
+ * deste harness é apurar contra o mirror, não redigir de memória.
+ */
+export function checaExecutouConsulta(consultasComResultado: number): Veredito {
+  if (consultasComResultado > 0) return OK;
+  return {
+    ok: false,
+    camada: "sem-consulta",
+    erro:
+      "Nenhuma consulta SQL foi executada com sucesso nesta pergunta ainda — a resposta " +
+      "final não pode ser aprovada sem vir de dado real apurado no beelink, mesmo que o " +
+      "texto pareça correto. Chame consultar com a SQL que apura o número, confira que " +
+      "ela devolveu linhas, e só depois chame revisar_resposta de novo.",
+  };
+}
+
 /* ------------------------------------------------------------------ *
  *  Citação — não é camada de SQL, é checagem da PROSA final.
  * ------------------------------------------------------------------ */
