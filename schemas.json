@@ -2,7 +2,7 @@
   "_meta": {
     "source": "beelink",
     "path": "/home/polo/rodado",
-    "total_tables": 1018
+    "total_tables": 1023
   },
   "tables": {
     "_obsoleto.br_ibama_embargos": {
@@ -2060,6 +2060,136 @@
         {
           "name": "adensamento_estacoes",
           "type": "DOUBLE"
+        }
+      ]
+    },
+    "br_aneel_dadosabertos.empreendimento_geracao_distribuida": {
+      "path": "beelink:/home/polo/rodado/br_aneel_dadosabertos/empreendimento_geracao_distribuida/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "DatGeracaoConjuntoDados",
+          "type": "INT32"
+        },
+        {
+          "name": "AnmPeriodoReferencia",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NumCNPJDistribuidora",
+          "type": "INT64"
+        },
+        {
+          "name": "SigAgente",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NomAgente",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CodClasseConsumo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DscClasseConsumo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CodSubGrupoTarifario",
+          "type": "INT32"
+        },
+        {
+          "name": "DscSubGrupoTarifario",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CodUFibge",
+          "type": "INT64"
+        },
+        {
+          "name": "SigUF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CodRegiao",
+          "type": "INT64"
+        },
+        {
+          "name": "NomRegiao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CodMunicipioIbge",
+          "type": "INT64"
+        },
+        {
+          "name": "NomMunicipio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CodCEP",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "SigTipoConsumidor",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NumCPFCNPJ",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CodEmpreendimento",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DthAtualizaCadastralEmpreend",
+          "type": "INT32"
+        },
+        {
+          "name": "SigModalidadeEmpreendimento",
+          "type": "INT32"
+        },
+        {
+          "name": "DscModalidadeHabilitado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "QtdUCRecebeCredito",
+          "type": "INT64"
+        },
+        {
+          "name": "SigTipoGeracao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DscFonteGeracao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "DscPorte",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "MdaPotenciaInstaladaKW",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "NomSubEstacao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "NumCoordESub",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "NumCoordNSub",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "NomTitularEmpreendimento",
+          "type": "BYTE_ARRAY"
         }
       ]
     },
@@ -4342,6 +4472,88 @@
         {
           "name": "Situacao",
           "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_bcb_pix_municipio.transacoes": {
+      "path": "beelink:/home/polo/rodado/br_bcb_pix_municipio/transacoes/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "AnoMes",
+          "type": "INT64"
+        },
+        {
+          "name": "Municipio_Ibge",
+          "type": "INT64"
+        },
+        {
+          "name": "Municipio",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Estado_Ibge",
+          "type": "INT64"
+        },
+        {
+          "name": "Estado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Sigla_Regiao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Regiao",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "VL_PagadorPF",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "QT_PagadorPF",
+          "type": "INT64"
+        },
+        {
+          "name": "VL_PagadorPJ",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "QT_PagadorPJ",
+          "type": "INT64"
+        },
+        {
+          "name": "VL_RecebedorPF",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "QT_RecebedorPF",
+          "type": "INT64"
+        },
+        {
+          "name": "VL_RecebedorPJ",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "QT_RecebedorPJ",
+          "type": "INT64"
+        },
+        {
+          "name": "QT_PES_PagadorPF",
+          "type": "INT64"
+        },
+        {
+          "name": "QT_PES_PagadorPJ",
+          "type": "INT64"
+        },
+        {
+          "name": "QT_PES_RecebedorPF",
+          "type": "INT64"
+        },
+        {
+          "name": "QT_PES_RecebedorPJ",
+          "type": "INT64"
         }
       ]
     },
@@ -63231,6 +63443,36 @@
         }
       ]
     },
+    "br_inea_boletim.atos_pdf": {
+      "path": "beelink:/home/polo/rodado/br_inea_boletim/atos_pdf/",
+      "file_count": 1,
+      "columns": [
+        {
+          "name": "rowid",
+          "type": "INT64"
+        },
+        {
+          "name": "boletim",
+          "type": "INT64"
+        },
+        {
+          "name": "processo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "validade",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "texto_ato",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "n_chars",
+          "type": "INT64"
+        }
+      ]
+    },
     "br_inea_boletim.boletins": {
       "path": "beelink:/home/polo/rodado/br_inea_boletim/boletins/",
       "file_count": 1,
@@ -90544,6 +90786,92 @@
         {
           "name": "hidrografia",
           "type": "DOUBLE"
+        }
+      ]
+    },
+    "br_inpe_prodes_acumulado.desmatamento": {
+      "path": "beelink:/home/polo/rodado/br_inpe_prodes_acumulado/desmatamento/",
+      "file_count": 7,
+      "columns": [
+        {
+          "name": "OGC_FID",
+          "type": "INT64"
+        },
+        {
+          "name": "fid",
+          "type": "INT32"
+        },
+        {
+          "name": "state",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "path_row",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "main_class",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "class_name",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sub_class",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "def_cloud",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "julian_day",
+          "type": "INT32"
+        },
+        {
+          "name": "image_date",
+          "type": "INT32"
+        },
+        {
+          "name": "year",
+          "type": "INT32"
+        },
+        {
+          "name": "area_km",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "scene_id",
+          "type": "INT32"
+        },
+        {
+          "name": "source",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "satellite",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "sensor",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "uuid",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "centroid_lon",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "centroid_lat",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "bioma_arquivo",
+          "type": "BYTE_ARRAY"
         }
       ]
     },
@@ -130444,6 +130772,48 @@
         },
         {
           "name": "ano_dirpf",
+          "type": "BYTE_ARRAY"
+        }
+      ]
+    },
+    "br_rf_dirpf.repasses": {
+      "path": "beelink:/home/polo/rodado/br_rf_dirpf/repasses/",
+      "file_count": 26,
+      "columns": [
+        {
+          "name": "fundo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "ano_pagina",
+          "type": "INT32"
+        },
+        {
+          "name": "arquivo",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Nº",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "CNPJ",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "UF",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Município/Estado",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Doação",
+          "type": "BYTE_ARRAY"
+        },
+        {
+          "name": "Valor",
           "type": "BYTE_ARRAY"
         }
       ]

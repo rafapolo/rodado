@@ -33,9 +33,9 @@ Três coisas destes arquivos valem mais que o resto:
 
 | Arquivo | O que é | Gerado por |
 |---|---|---|
-| `all_tables.txt` | 904 `dataset.tabela`, uma por linha — a lista chapada, incluindo as 8 tabelas nativas do `.duckdb` que não têm parquet | `build_metadata_catalog.py` |
-| `basedosdados-schema.json` | Schema completo que o `describe_table` do MCP lê (207 datasets, 895 tabelas, 39.275 colunas) | `sync_mcp_schema.py`, a partir de `schemas.json` na raiz |
-| `join_keys.md` | O render do `bridges.yaml` + as chaves auto-detectadas: 157 seções. `mcp_server.get_join_keys()` fatia este arquivo por `###`, então todo h3 tem que ser um nome de coluna de verdade | `gera_join_keys.py` |
+| `all_tables.txt` | 1029 `dataset.tabela`, uma por linha — a lista chapada, incluindo as 8 tabelas nativas do `.duckdb` que não têm parquet | `build_metadata_catalog.py` |
+| `basedosdados-schema.json` | Schema completo que o `describe_table` do MCP lê (229 datasets, 1022 tabelas, 41.183 colunas) | `sync_mcp_schema.py`, a partir de `schemas.json` na raiz |
+| `join_keys.md` | O render do `bridges.yaml` + as chaves auto-detectadas: 430 seções. `mcp_server.get_join_keys()` fatia este arquivo por `###`, então todo h3 tem que ser um nome de coluna de verdade | `gera_join_keys.py` |
 | `metrics.json` | O `metrics.yaml` em JSON, consumido por `build_ask_web_assets.ts` no branch `ask-web`. O MCP lê o YAML direto | `gera_metrics_json.py` |
 | `dicionario_coverage.json` | Quais colunas de quais tabelas têm decode chave→valor em `{dataset}.dicionario` — 45 datasets, 168 tabelas, 6.256 colunas | `gera_dicionario_coverage.py` |
 | `schema_dict_status.json` | Estágios 1+2 de `tasks/plan/generate-full-schema-dict.md` + uma passada de leitura humana/LLM (não regex): toda coluna STRING/INTEGER fora do `dicionario_coverage.json` etiquetada — 28.263 colunas: **8.690 `nao_verificado`** (sem fonte de significado em lugar nenhum — a etiqueta que importa), 15.842 `nao_e_codigo`, 2.442 `documentado_em_outro_lugar`, 1.289 `padrao_externo`. `describe_table` lê e expõe `nao_verificado_warning` por tabela | `gera_schema_dict_status.py` + `llm_triage_schema_dict_status.py` |
