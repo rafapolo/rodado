@@ -846,6 +846,88 @@ da checagem de citação, porque sem dado real a forma da prosa não importa.
 `br_ibama_embargos` saiu do catálogo num commit fora deste item; confirmado
 isolado via `git stash`, não é regressão deste conserto).
 
+## 14. Cache de prefixo quebra em TODA sessão nova, não só ocasionalmente 🔵 achado 2026-09-04, não investigado a fundo
+
+Rodando os 72 confiáveis: `lote.ts` acusou prefill de 8011/8017/8037 tokens
+(limiar 2000) em **3 das 4 primeiras sessões** — não é falso-positivo
+isolado, é sistemático. Conferido direto no log do `llama-server`
+(`/tmp/srv.log` no beelink): todo `task` que abre uma sessão `dsh` NOVA
+reprocessa ~8000 tokens do zero, mesmo vindo logo depois de outra sessão que
+deveria compartilhar o prefixo estático inteiro (persona + ferramentas +
+catálogo). **Dentro** de uma mesma sessão o cache funciona bem (prefills de
+dezenas a poucas centenas de tokens entre turnos) — o corte é exatamente na
+fronteira entre processos `dsh`.
+
+**Hipótese descartada:** catálogo mudando embaixo do harness. `listaDatasets()`
+lê `harness/dados/catalogo.json`, com mtime de 3 de setembro — congelado, não
+é tocado pelo trabalho paralelo de raspagem que rodou durante esta mesma
+janela (outras sessões commitando dataset novo o tempo todo, mas noutro
+arquivo).
+
+**Hipótese não confirmada, mais provável:** nos logs de sessão já lidos hoje
+(`~/.dsh/sessions/`), toda sessão nova recebe um bloco `"Current runtime
+context. This snapshot supersedes earlier runtime-context snapshots..."` —
+se ele carrega algo específico da sessão (workspace, timestamp) e vem ANTES
+do catálogo/ferramentas no prompt que o `dsh` monta, isso invalidaria o
+prefixo cacheado inteiro pra tudo que vem depois, mesmo com o catálogo e as
+ferramentas byte-idênticos entre sessões — sem precisar de nada variável
+DENTRO do catálogo em si.
+
+**Por que não foi confirmado nem consertado agora:** confirmar exige log
+verboso do servidor (`LOGPROMPTS=1 ./harness/servidor.sh`) pra ver o corpo
+bruto do prompt de duas sessões consecutivas — o que reinicia o
+`llama-server` e derruba tanto o cache quanto (antes do item acima) o
+progresso não salvo. O checkpoint incremental já resolve a segunda parte;
+falta decidir se vale pausar uma rodada em andamento pra rodar esse
+diagnóstico. `dsh` é pacote externo (`node_modules/.bin/dsh`) — mesmo
+confirmado, o conserto pode exigir mudança no próprio `dsh`, fora deste
+repositório.
+
+**Custo medido:** ~140-190s extra por pergunta (141871, 141297, 146537,
+153288 ms nos 4 casos vistos) — real, mas pequeno contra os 20-40 min totais
+por pergunta neste momento (thinking já desligado). Não muda a taxa de
+acerto nem os passos, só o tempo de parede — por isso `LIMIAR_PREFILL`
+continua certo em acusar, e nada no harness precisa mudar por causa disto
+agora.
+
+## 15. Sair do `dsh` e ir direto no `pi-ai` — proposta séria, não decisão 🔵 aberto 2026-09-04, a pedido
+
+Nasce do item 14 (cache de prefixo quebrando em toda sessão nova). `dsh`
+(`@deepseek-ai/dsh`) é um agente de CODIFICAÇÃO completo — sandbox de
+arquivo, política de aprovação, e um bloco `"Current runtime context..."`
+injetado a cada sessão nova (visto nos logs de `~/.dsh/sessions/`) — bagagem
+inteira que este harness não usa (não edita arquivo, não hospeda humano
+aprovando nada). É o candidato mais provável a estar quebrando o prefixo
+cacheado entre sessões, e não é algo que dá pra desligar via `patch.yml`.
+
+Por baixo do `dsh` está `@earendil-works/pi-ai` (`~/.bun/install/cache/`) —
+"Unified LLM API": chamada de modelo, definição/despacho de ferramenta,
+streaming, persistência de contexto. **Não é um agente** — não tem loop de
+tool-calling pronto, não decide quando parar um turno, não tem reparo. É a
+API de baixo nível que o `dsh` usa por trás.
+
+**A ideia:** um harness próprio direto sobre `pi-ai`, sem a camada de
+agente de codificação do `dsh`, controlando os bytes do prompt do início ao
+fim — sem bloco de runtime context nenhum, prefixo garantidamente idêntico
+entre sessões (resolveria o item 14 na raiz, não só mitigado). Reduziria
+também os tokens do prefixo (menos framing de agente de código = prompt mais
+curto), o que ajuda o item 4 (contexto é o gargalo).
+
+**O que se perde, e teria que ser reescrito à mão:**
+- o loop agêntico inteiro (chamar modelo → despachar tool call via MCP →
+  devolver resultado → repetir → decidir quando parar);
+- a retentativa que cobre o bug do item 10 — que, note, **não desaparece**:
+  a causa é o parser do llama.cpp (`grammar_lazy`), server-side, e bate em
+  qualquer cliente que mande `tool_choice=auto`, `pi-ai` incluso;
+- a integração com os servidores MCP (`harness/mcp.ts` já fala MCP puro, ~
+  reusável, mas o lado cliente que os conecta é do `dsh` hoje).
+
+**Por que fica registrado e não implementado agora:** é troca de fundação,
+não ajuste — e a rodada dos 72 confiáveis está em andamento sobre o `dsh`
+atual. Decidir isso no meio descartaria a comparação em curso. Candidato
+forte pra próxima fase do harness (`harness_gemma_dsh.md`), não pra esta
+sessão.
+
 ## Ver também
 
 - [`regras.md`](regras.md) — as regras que cada medição gerou, e o que ainda é só disciplina
