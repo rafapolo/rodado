@@ -200,9 +200,10 @@ export function avisaConfigDivergente(
  * Acima disto o prefill é do tamanho do PREFIXO, não da pergunta.
  *
  * Medido no log do llama-server em 2026-09-02, dentro do laço agêntico com o
- * cache vivo: 97, 177, 197 e 248 tokens por turno, com o slot em ~11k. O prefixo
- * do dsh está em 6.849. 2.000 fica entre as duas ordens de grandeza — larga o
- * bastante para não acusar um turno com muito resultado de ferramenta colado.
+ * cache vivo: 97, 177, 197 e 248 tokens por turno, com o slot em ~11k. O
+ * prefixo do `dsh` (removido, ver `agente.ts`) estava em 6.849 naquela medição.
+ * 2.000 fica entre as duas ordens de grandeza — larga o bastante para não
+ * acusar um turno com muito resultado de ferramenta colado.
  */
 export const LIMIAR_PREFILL = Number(Bun.env.HARNESS_LIMIAR_PREFILL ?? 2000);
 
@@ -222,8 +223,10 @@ export function avisaPrefill(
 
 // -- o prefill quando não volta pelo stdout: o log do llama-server no beelink --
 //
-// Em `lote.ts` cada pergunta é um processo `dsh` separado e o `timings.prompt_n`
-// morre lá dentro. O que sobra é o log do servidor, que imprime uma linha
+// Em `lote.ts` cada pergunta passa por `agente.ts` (`pi-ai`), cuja API
+// unificada entre providers não expõe o `timings.prompt_n` específico do
+// llama.cpp — o dado morre na abstração, não numa fronteira de processo. O que
+// sobra é o log do servidor, que imprime uma linha
 // `prompt eval time = ... ms /  N tokens` por requisição. `/slots` não serve:
 // medido 2026-09-02, com o slot ocioso `n_prompt_tokens_processed` e
 // `n_prompt_tokens_cache` voltam 0 — o dado só existe enquanto a requisição corre.
