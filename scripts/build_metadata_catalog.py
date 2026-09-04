@@ -27,6 +27,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import yaml
 from datetime import date
 from pathlib import Path
 
@@ -56,6 +57,10 @@ BD_SOURCE_TYPE = "mirror"
 # them client-side, so a guessed /dataset/<slug> URL cannot be verified). The
 # search URL always resolves and lands on the right dataset.
 BD_SEARCH_URL = "https://basedosdados.org/search?q={dataset}"
+
+# One-line dataset descriptions -- edit docs/context/dataset_descriptions.yaml,
+# never this file or the generated catalog.parquet/docs/catalog.md.
+DATASET_DESCRIPTIONS_PATH = REPO_ROOT / "docs" / "context" / "dataset_descriptions.yaml"
 
 # datasets_to_scrap.md holds several tables that all start with "Source" but
 # carry different columns, so match the layout, not the keyword. Only these two
@@ -433,6 +438,7 @@ def build_catalog():
     schema = pa.schema([
         ("dataset", pa.string()),
         ("table", pa.string()),
+        ("description", pa.string()),
         ("source_name", pa.string()),
         ("source_url", pa.string()),
         ("source_type", pa.string()),
@@ -446,8 +452,14 @@ def build_catalog():
         ("updated_at", pa.string()),
     ])
 
+    with open(DATASET_DESCRIPTIONS_PATH) as f:
+        dataset_descriptions = yaml.safe_load(f) or {}
+    print(f"  {len(dataset_descriptions)} dataset descriptions loaded from "
+          f"{DATASET_DESCRIPTIONS_PATH.relative_to(REPO_ROOT)}", file=sys.stderr)
+
     arrays = {f.name: [] for f in schema}
     n_bd = 0
+    missing_descriptions = set()
     for t in beelink_tables:
         ds = t["dataset"]
         info = scraped_info.get(ds)
@@ -487,8 +499,13 @@ def build_catalog():
             notes = ("Tabela nativa dentro de basedosdados.duckdb, sem parquet "
                      "em ~/rodado. Consulte pela view, nao por read_parquet. " + notes).strip()
 
+        description = dataset_descriptions.get(ds, "")
+        if not description:
+            missing_descriptions.add(ds)
+
         arrays["dataset"].append(ds)
         arrays["table"].append(t["table"])
+        arrays["description"].append(description)
         arrays["source_name"].append(info.get("source_name", ""))
         arrays["source_url"].append(info.get("source_url", ""))
         arrays["source_type"].append(info.get("source_type", ""))
@@ -502,6 +519,11 @@ def build_catalog():
         arrays["updated_at"].append(today)
 
     print(f"  {n_bd} tables attributed to {BD_SOURCE_NAME}", file=sys.stderr)
+    if missing_descriptions:
+        print(f"  {len(missing_descriptions)} dataset(s) missing a description "
+              f"in {DATASET_DESCRIPTIONS_PATH.relative_to(REPO_ROOT)}: "
+              f"{', '.join(sorted(missing_descriptions)[:10])}"
+              f"{' ...' if len(missing_descriptions) > 10 else ''}", file=sys.stderr)
 
     pa_table = pa.table(arrays, schema=schema)
 
