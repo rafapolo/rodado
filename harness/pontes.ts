@@ -80,3 +80,39 @@ export function dicasDeJoin(tabelas: string[]): string {
   if (!linhas.length) return cab;
   return `${cab}\nPontes específicas destas tabelas (a expressão já foi conferida):\n${linhas.join("\n")}`;
 }
+
+/**
+ * A metade que `dicasDeJoin` sozinha não cobre: ela lista o que EXISTE, mas
+ * fica calada quando NADA existe — a ausência ficava implícita, dependendo do
+ * modelo notar que só um lado tem ponte listada. `juncoesSemPonte` (portao.ts)
+ * já detecta esse caso, mas só depois que o modelo ESCREVEU um `ON` e a
+ * consulta voltou vazia. Aqui não há `ON` ainda — o sinal disponível é mais
+ * grosso (a tabela toda, não um par de colunas): entre as colunas de A e as de
+ * B, existe ALGUMA que bata em conceito (ponte curada ou chave canônica)? Se
+ * não, é o mesmo caso do par emendas/licitacao_item do backlog.md item 12 —
+ * confirmado ao vivo: nenhuma coluna real em comum, sem depender de zero
+ * linhas pra descobrir.
+ */
+export function semColunaComum(
+  tabelaA: string, colsA: string[],
+  tabelaB: string, colsB: string[],
+): boolean {
+  const conceitosA = new Set(colsA.map((c) => conceitoDaColuna(tabelaA, c)).filter((c): c is string => !!c));
+  if (!conceitosA.size) return true;
+  return !colsB.some((c) => {
+    const k = conceitoDaColuna(tabelaB, c);
+    return k !== undefined && conceitosA.has(k);
+  });
+}
+
+export function avisoSemColunaComum(tabelaA: string, tabelaB: string): string {
+  return (
+    `⚠ Nenhuma coluna em comum encontrada entre ${tabelaA} e ${tabelaB} ` +
+    `(nem ponte curada em bridges.yaml, nem chave canônica com o mesmo nome) — ` +
+    `pode não existir junção direta entre estas duas tabelas neste espelho. ` +
+    `Antes de tentar um JOIN entre elas, procure uma coluna que aponte de uma ` +
+    `pra outra (CNPJ, id_orgao, id_municipio); se não achar, responda só com a ` +
+    `parte que tem dado e diga que este cruzamento não é possível com as ` +
+    `tabelas disponíveis — não repita a mesma junção esperando resultado diferente.`
+  );
+}
