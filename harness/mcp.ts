@@ -26,7 +26,7 @@ import {
   juncoesSemPonte, mensagemSemPonte, assinaturaJuncao, checaExecutouConsulta,
   checaDescritaAntes,
 } from "./portao.ts";
-import { dicasDeJoin, semColunaComum, avisoSemColunaComum } from "./pontes.ts";
+import { dicasDeJoin, semColunaComum, avisoSemColunaComum, resolverJuncao } from "./pontes.ts";
 import { runSqlSsh } from "./beelink.ts";
 import { capRows } from "./sqlguard.ts";
 import { textoFaixa } from "./anos.ts";
@@ -169,6 +169,21 @@ const FERRAMENTAS = [
     inputSchema: {
       type: "object",
       properties: { nome: { type: "string", description: "ex.: pib per capita" } },
+    },
+  },
+  {
+    name: "resolver_juncao",
+    description:
+      "Devolve a cláusula ON pronta entre duas tabelas — chame ANTES de escrever o JOIN à " +
+      "mão, sem gastar consulta. Se não houver junção documentada, diz isso claramente em " +
+      "vez de deixar você descobrir por tentativa e erro.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        tabela_a: { type: "string", description: "ex.: br_me_caged.microdados_movimentacao" },
+        tabela_b: { type: "string", description: "ex.: br_me_rais.microdados_vinculos" },
+      },
+      required: ["tabela_a", "tabela_b"],
     },
   },
   {
@@ -344,6 +359,24 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     const m = metrica(arg.nome);
     return m ? texto(m) : erro(
       `Não há definição verificada para '${arg.nome}'. Disponíveis:\n${listaMetricas()}`);
+  }
+
+  if (name === "resolver_juncao") {
+    const a = arg.tabela_a ?? "", bb = arg.tabela_b ?? "";
+    const colsA = colunasDe(a), colsB = colunasDe(bb);
+    if (!colsA) return erro(`Tabela '${a}' não existe. Chame listar_tabelas do dataset.`);
+    if (!colsB) return erro(`Tabela '${bb}' não existe. Chame listar_tabelas do dataset.`);
+    const r = resolverJuncao(a, colsA.map((c) => c.name), bb, colsB.map((c) => c.name));
+    const linhas = r.joins.map((j) =>
+      `  ${j.kind === "bridge" ? "[ponte]" : "[canônica]"} ${j.on}` +
+      (j.verified ? `  (conferido: ${j.verified})` : ""));
+    const rej = r.rejeitados.map((x) => `  ${x.coluna}: ${x.motivo}`);
+    return texto(
+      `${a} × ${bb}\n` +
+      (linhas.length ? linhas.join("\n") : "(nenhuma junção documentada)") +
+      (rej.length ? `\n\nColunas com nome igual mas significado diferente (NÃO junte por elas):\n${rej.join("\n")}` : "") +
+      (r.avisos.length ? `\n\n${r.avisos.join("\n")}` : ""),
+    );
   }
 
   if (name === "consultar") {
