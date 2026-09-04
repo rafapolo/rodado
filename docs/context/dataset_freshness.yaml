@@ -1,0 +1,27 @@
+# docs/context/dataset_freshness.yaml — onde achar a data mais recente
+# dentro de cada tabela (não confundir com `scrape_date`, que é quando NÓS
+# baixamos, não a data mais recente que o dado em si cobre).
+#
+# Curado à mão, dataset.tabela por entrada — nunca um detector automático por
+# nome de coluna: muita coluna com "data"/"ano" no nome não indica frescor
+# (data_nascimento, data_eleicao, dt_notific de um caso específico...), então
+# um heurístico amplo erraria silenciosamente em alguma fatia. Só entra aqui
+# o que foi conferido manualmente.
+#
+# Valor = expressão SQL (roda contra a tabela via DuckDB no beelink) que
+# resolve pra uma DATE — geralmente o nome da coluna certa, entre aspas
+# duplas se tiver espaço/maiúscula, com CAST/strptime se não for DATE nativa.
+# `null` = tabela conferida e genuinamente sem coluna de data por linha (o
+# frescor só existe no nível do arquivo/fonte, não do dado) — documentar o
+# porquê no comentário ao lado, não deixar `null` sem explicação.
+#
+# build_metadata_catalog.py lê este arquivo e roda `SELECT max(<expr>)` pra
+# cada entrada não-nula, grava em catalog.parquet.last_date. Editar aqui,
+# nunca no parquet.
+
+br_bcb_sgs.series: "strptime(date, '%d/%m/%Y')::DATE"        # verificado 2026-09-04: SEM gap — dado real vai até 2026-08-26 (9 dias, normal pra série diária). Achado errado numa checagem manual anterior por comparar a coluna `date` (VARCHAR "DD/MM/YYYY") como string em vez de data — "31/12/2025" > "26/08/2026" alfabeticamente. Corrigido; nunca comparar essa coluna sem strptime
+br_anac_dadosabertos.voos: '"Partida Real"'                   # verificado 2026-09-04: fonte tem VRA de julho/2026 (sistemas.anac.gov.br), nosso mirror parava em junho/2026
+br_mjsp_sinesp.ocorrencias: '"mes/ano"'                       # verificado 2026-09-04: max no nosso mirror é dez/2022 — fonte (dados.mj.gov.br) está morta (NXDOMAIN, mesmo host do Consumidor.gov.br), gap real mas não upgradável sem achar host novo
+br_cvm_fundos.fundos: DT_PATRIM_LIQ                            # verificado 2026-09-04: coluna é por-fundo (último patrimônio líquido reportado por cada fundo), não uma data de corte única; fonte (dados.cvm.gov.br/cad_fi.csv) é atualizada diariamente
+br_tesouro_capag.estados: null                                 # sem coluna de data por linha — frescor é por arquivo_origem (ano da edição CAPAG); conferido 2026-09-04: já temos "Capag Estados 2025", igual à fonte, sem gap
+br_anvisa_cmed.precos: null                                    # sem coluna de data por linha — frescor é do arquivo xls_conformidade na fonte (gov.br/anvisa), datado 2026-08-11; nosso scrape_date era 2026-07-11, ~1 mês defasado
