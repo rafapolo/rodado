@@ -73,6 +73,7 @@ Regenerar, na ordem, depois de qualquer sync que mude tabelas:
 python3 scripts/gera_schemas.py            # beelink        -> schemas.json
 python3 scripts/sync_mcp_schema.py         # schemas.json   -> docs/context/basedosdados-schema.json
 python3 scripts/build_metadata_catalog.py  # beelink        -> catalog.parquet + views + all_tables.txt
+python3 scripts/gera_catalog_md.py         # catalog.parquet -> docs/catalog.md (ver docs/housekeeping.md item 7)
 python3 scripts/gera_join_keys.py          # bridges.yaml   -> docs/context/join_keys.md
 python3 scripts/gera_metrics_json.py       # metrics.yaml   -> docs/context/metrics.json
 python3 scripts/valida_metrics.py          # confere metrics.yaml + hierarchies.yaml
