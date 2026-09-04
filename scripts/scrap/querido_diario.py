@@ -60,7 +60,7 @@ import requests
 API_BASE = "https://api.queridodiario.ok.org.br"
 BEELINK_HOST = "beelink"
 BEELINK_PATH = "~/rodado/br_ok_queridodiario/diarios"
-TEMP_DIR = Path("/private/tmp/claude-501/-Users-polux-Projetos-rodado/50905fb8-827b-445f-bb28-3e8ed468da54/scratchpad/querido_diario")
+TEMP_DIR = Path("/private/tmp/claude-501/-Users-polux-Projetos-rodado/22eb7c95-6e75-4c6c-9ce4-8b0d925db2ae/scratchpad/querido_diario")
 CHECKPOINT_FILE = TEMP_DIR / "checkpoint.jsonl"
 
 MAX_WINDOW = 10000  # OpenSearch max_result_window enforced by the API
@@ -122,10 +122,12 @@ def fetch_bucket(since: date, until: date):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--years", type=int, default=3, help="how many years back from today to mirror")
+    parser.add_argument("--since", type=str, default=None, help="explicit start date YYYY-MM-DD, overrides --years")
+    parser.add_argument("--until", type=str, default=None, help="explicit end date YYYY-MM-DD, defaults to today")
     args = parser.parse_args()
 
-    today = date.today()
-    start = date(today.year - args.years, today.month, today.day)
+    today = date.fromisoformat(args.until) if args.until else date.today()
+    start = date.fromisoformat(args.since) if args.since else date(today.year - args.years, today.month, today.day)
 
     print(f"Fetching Querido Diário gazette metadata index: {start} .. {today}")
 
