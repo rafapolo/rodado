@@ -1,0 +1,239 @@
+# docs/context/dataset_descriptions.yaml — uma descrição de uma linha por dataset.
+# Fonte única: build_metadata_catalog.py lê este arquivo e grava a coluna
+# `description` no catalog.parquet. Editar aqui, nunca no parquet nem no
+# docs/catalog.md gerado — depois de editar, regenerar (ver docs/housekeeping.md
+# item 7): python3 scripts/build_metadata_catalog.py && python3 scripts/gera_catalog_md.py
+
+_local_rais_cnpj: RAIS de estabelecimentos cruzada com CNPJ, 2010-2021
+br_abrinq_oca: Observatório da Criança e do Adolescente (Fundação Abrinq) — indicadores de primeira infância por município
+br_ana_atlas_esgotos: Atlas Esgotos da ANA — diagnóstico de coleta e tratamento de esgoto por município
+br_ana_bho: Base Hidrográfica Ottocodificada da ANA — topologia de trechos de rio
+br_ana_outorgas: Outorgas de uso da água (captação e lançamento) da ANA
+br_ana_reservatorios: Reservatórios do Sistema Integrado Nacional monitorados pela ANA
+br_ana_telemetria: Telemetria da ANA — séries de vazão, cota e chuva de estações de monitoramento de rios
+br_anac_dadosabertos: ANAC — registro de aeronaves, voos e pontualidade
+br_anatel_banda_larga_fixa: Densidade de acessos de banda larga fixa por município/UF (Anatel)
+br_anatel_indice_brasileiro_conectividade: Índice Brasileiro de Conectividade por município (Anatel)
+br_aneel_dadosabertos: ANEEL — empreendimentos de geração distribuída (mini/microgeração solar, eólica etc.)
+br_anm: ANM/SIGMINE — processos minerários, CFEM (royalties de mineração) e licenciamento
+br_anp_combustiveis: ANP — preços de combustíveis por posto/revenda
+br_anp_precos_combustiveis: ANP — preços de combustíveis pesquisados (via Base dos Dados)
+br_ans_beneficiario: ANS — beneficiários de planos de saúde suplementar
+br_anvisa_cmed: CMED/ANVISA — preços regulados de medicamentos
+br_anvisa_consultas: ANVISA — registros de agrotóxicos, alimentos e produtos regulados
+br_anvisa_medicamentos_industrializados: ANVISA — medicamentos industrializados registrados
+br_ba_feiradesantana_camara_leis: Câmara Municipal de Feira de Santana — leis municipais
+br_bcb_desenrola: BCB — programa Desenrola Brasil (renegociação de dívidas de pessoa física)
+br_bcb_estban: BCB ESTBAN — estatísticas bancárias por agência/município
+br_bcb_ifdata: BCB IF.data — indicadores financeiros de instituições financeiras
+br_bcb_penalidades: BCB — penalidades aplicadas a instituições financeiras
+br_bcb_pix_municipio: BCB — volume de transações Pix por município, separado por perfil pagador/recebedor PF/PJ
+br_bcb_scrdata: BCB SCR.data — carteira de crédito do Sistema de Informações de Crédito
+br_bcb_sgs: BCB SGS — séries temporais macroeconômicas (câmbio, Selic, inflação etc.)
+br_bcb_sicor: BCB SICOR — operações de crédito rural
+br_bd_diretorios_brasil: Base dos Dados — diretórios de referência (CEP, CNAE, CID, município etc.)
+br_bd_diretorios_data_tempo: Base dos Dados — diretório de calendário/tempo
+br_bd_diretorios_mundo: Base dos Dados — diretórios internacionais (país, NCM, sistema harmonizado)
+br_bd_diretorios_us: Base dos Dados — diretórios de referência dos EUA
+br_bd_metadados: Base dos Dados — metadados do próprio catálogo original (tabelas, organizações)
+br_bd_vizinhanca: Base dos Dados — vizinhança geográfica de municípios e UFs
+br_bndes_operacoes_contratadas: BNDES — operações de crédito contratadas
+br_brasilapi: BrasilAPI — bancos, DDDs, feriados nacionais, taxas de referência
+br_brasilio_holdings: Brasil.IO — estrutura societária de holdings empresariais
+br_caixa_sinapi: SINAPI/Caixa — custos e insumos de construção civil
+br_caixa_sorteios: Caixa Econômica — resultados da Mega-Sena
+br_camara_dados_abertos: Câmara dos Deputados — deputados, votações, despesas, licitações internas
+br_capes_bolsas: CAPES — bolsas de mobilidade acadêmica internacional
+br_ce_fortaleza_sefin_iptu: Prefeitura de Fortaleza — cadastro de IPTU por face de quadra
+br_cgu_beneficios_cidadao: CGU — benefícios sociais federais (Bolsa Família, Auxílio Emergencial, BPC etc.)
+br_cgu_cartao_pagamento: CGU — gastos com cartão de pagamento do governo federal
+br_cgu_dados_abertos: CGU — catálogo de dados abertos do governo federal
+br_cgu_ebt: CGU — Escala Brasil Transparente (municípios e UFs)
+br_cgu_emendas_parlamentares: CGU — emendas parlamentares ao orçamento federal
+br_cgu_fef: CGU — Fundo de Erradicação da Pobreza e sorteios de fiscalização
+br_cgu_garantia_safra: Garantia-Safra — pagamentos aos agricultores familiares do semiárido
+br_cgu_gas_do_povo: Gás do Povo — pagamentos do benefício de gás de cozinha
+br_cgu_licitacao_contrato: CGU — licitações e contratos do governo federal
+br_cgu_novo_bolsa_familia: Novo Bolsa Família — pagamentos mensais por beneficiário
+br_cgu_orcamento_publico: CGU — execução do orçamento público federal
+br_cgu_pe_de_meia: Pé-de-Meia — pagamentos do programa de incentivo à permanência escolar
+br_cgu_pessoal_executivo_federal: CGU — terceirizados do Poder Executivo federal
+br_cgu_receitas_publicas: CGU — receitas públicas federais
+br_cgu_sancoes: CGU — sanções administrativas (CEIS, CNEP, CEPIM, acordos de leniência)
+br_cgu_seguro_defeso: Seguro-Defeso — pagamentos aos pescadores artesanais durante o defeso
+br_cgu_servidores_executivo_federal: CGU — cadastro e remuneração de servidores do Poder Executivo federal
+br_cgu_viagens: CGU — viagens a serviço de servidores federais
+br_clp_ranking_competitividade: CLP — ranking de competitividade dos estados
+br_cnj_estatisticas_poder_judiciario: CNJ — recursos financeiros do Poder Judiciário
+br_cnj_improbidade_administrativa: CNJ — condenações por improbidade administrativa
+br_cnpq_bolsas: CNPq — bolsas de pesquisa concedidas
+br_comprasgov_catmatcatser: ComprasGov — catálogo de materiais e serviços padronizados (CATMAT/CATSER)
+br_comprasgov_sicaf: SICAF — cadastro de fornecedores habilitados a contratar com o governo
+br_cvm_administradores_carteira: CVM — administradores de carteira de valores mobiliários
+br_cvm_fundos: CVM — cadastro de fundos de investimento
+br_cvm_oferta_publica_distribuicao: CVM — ofertas públicas de distribuição de valores mobiliários
+br_datahackers_state_data: Data Hackers — pesquisa State of Data sobre o mercado de dados no Brasil
+br_datasus_cid10: DATASUS — tabela de códigos CID-10 e CID-O
+br_fbsp_absp: Fórum Brasileiro de Segurança Pública — violência nas escolas
+br_fgv_igp: FGV — índices de preços (IGP-M, IGP-DI e variantes)
+br_fipe_veiculos: FIPE — tabela de preços de referência de veículos
+br_firjan_ifgf: FIRJAN — Índice de Gestão Fiscal municipal
+br_geobr_mapas: geobr — malhas geográficas oficiais do IBGE (municípios, UFs, biomas, terras indígenas etc.)
+br_ggb_relatorio_lgbtqi: Grupo Gay da Bahia — relatório de mortes de pessoas LGBTQI+
+br_ibama_autos: IBAMA — autos de infração ambiental
+br_ibama_ctf: IBAMA — Cadastro Técnico Federal de atividades potencialmente poluidoras
+br_ibama_embargos_novo: IBAMA — termos de embargo ambiental
+br_ibge_amc: IBGE — correspondência de áreas mínimas comparáveis entre municípios ao longo do tempo
+br_ibge_cbo_2002: IBGE — Classificação Brasileira de Ocupações 2002
+br_ibge_censo2022_raca: IBGE Censo 2022 — cor/raça cruzada com instrução e fecundidade, por município
+br_ibge_censo2022_religiao: IBGE Censo 2022 — religião e recortes demográficos associados
+br_ibge_censo_2022: IBGE — Censo Demográfico 2022, agregados por setor censitário e município
+br_ibge_censo_demografico: IBGE — microdados dos Censos Demográficos 1970 a 2010
+br_ibge_cnefe: IBGE — Cadastro Nacional de Endereços para Fins Estatísticos, Censo 2022 (endereço a endereço)
+br_ibge_estadic: IBGE — Pesquisa de Informações Básicas Estaduais (ESTADIC)
+br_ibge_inpc: IBGE — Índice Nacional de Preços ao Consumidor
+br_ibge_ipca: IBGE — Índice de Preços ao Consumidor Amplo
+br_ibge_ipca15: IBGE — IPCA-15, prévia mensal do IPCA
+br_ibge_ipp: IBGE — Índice de Preços ao Produtor
+br_ibge_munic: IBGE — Pesquisa de Informações Básicas Municipais (MUNIC)
+br_ibge_nomes_brasil: IBGE — frequência de nomes de pessoas por município, Censo 2010
+br_ibge_pam: IBGE — Produção Agrícola Municipal, lavouras permanentes e temporárias
+br_ibge_pevs: IBGE — Produção da Extração Vegetal e da Silvicultura
+br_ibge_pib: IBGE — PIB municipal e estadual
+br_ibge_pnad: IBGE — PNAD, microdados compatibilizados históricos
+br_ibge_pnad_covid: IBGE — PNAD-COVID19, dicionário de variáveis
+br_ibge_pnadc: IBGE — PNAD Contínua, mercado de trabalho e rendimento
+br_ibge_pof: IBGE — Pesquisa de Orçamentos Familiares
+br_ibge_populacao: IBGE — estimativas populacionais por município, UF e Brasil
+br_ibge_ppm: IBGE — Pesquisa Pecuária Municipal (rebanhos, aquicultura, produção animal)
+br_ieps_saude: IEPS — indicadores de saúde por município e região de saúde
+br_inea_boletim: INEA-RJ — boletins de serviço de licenciamento ambiental, atos e texto extraído dos PDFs
+br_inep_ana: INEP — Avaliação Nacional da Alfabetização
+br_inep_avaliacao_alfabetizacao: INEP — avaliação da alfabetização e metas por município/UF
+br_inep_censo_educacao_superior: INEP — Censo da Educação Superior
+br_inep_censo_escolar: INEP — Censo Escolar, escolas e turmas
+br_inep_educacao_especial: INEP — indicadores de educação especial/inclusiva
+br_inep_enem: INEP — microdados do ENEM
+br_inep_formacao_docente: INEP — formação de docentes da educação básica
+br_inep_ideb: INEP — Índice de Desenvolvimento da Educação Básica
+br_inep_indicador_nivel_socioeconomico: INEP — indicador de nível socioeconômico das escolas
+br_inep_indicadores_educacionais: INEP — indicadores educacionais (transição de etapa, remuneração docente)
+br_inep_saeb: INEP — SAEB, proficiência de alunos por etapa/disciplina
+br_inep_sinopse_estatistica_educacao_basica: INEP — sinopse estatística da educação básica
+br_inmet_bdmep: INMET — Banco de Dados Meteorológicos, séries por estação
+br_inpe_deter: INPE DETER — alertas quase em tempo real de desmatamento
+br_inpe_prodes: INPE PRODES — desmatamento anual agregado por município e bioma
+br_inpe_prodes_acumulado: INPE PRODES — polígonos de desmatamento acumulado por bioma, geometria em centroide
+br_inpe_queimadas: INPE — focos de queimada detectados por satélite
+br_inpe_sisam: INPE SISAM — qualidade do ar
+br_ipea_acesso_oportunidades: IPEA — acesso a oportunidades urbanas (empregos, serviços) por tempo de deslocamento
+br_ipea_atlasviolencia: IPEA — Atlas da Violência, indicadores de homicídio e letalidade
+br_ipea_avs: IPEA — Atlas da Vulnerabilidade Social
+br_mapbiomas_estatisticas: MapBiomas — estatísticas de cobertura e transição de uso do solo
+br_mc_indicadores: Ministério das Cidades — transferências a municípios
+br_mdr_snis: SNIS/MDR — indicadores de água e esgoto por município e prestador de serviço
+br_me_caged: Ministério do Trabalho — CAGED, movimentação de empregos formais (admissões/demissões)
+br_me_clima_organizacional: Ministério da Economia — pesquisa de clima organizacional no serviço público
+br_me_cno: Cadastro Nacional de Obras (CNO) — obras e vínculos de trabalhadores da construção
+br_me_cnpj: Receita Federal — cadastro completo de empresas, estabelecimentos, sócios e Simples Nacional
+br_me_comex_stat: Comex Stat — exportação e importação por município e NCM
+br_me_estoque_divida_publica: Tesouro Nacional — estoque da dívida pública federal
+br_me_exportadoras_importadoras: dicionário de empresas exportadoras e importadoras
+br_me_rais: RAIS — microdados de vínculos empregatícios e estabelecimentos
+br_me_rais_identificada: RAIS — estabelecimentos com identificação não anonimizada
+br_me_siape: SIAPE — servidores do Poder Executivo federal
+br_me_sic: SIC — Serviço de Informação ao Cidadão, pedidos de acesso à informação
+br_me_siconfi: SICONFI — contas públicas de municípios, estados e União
+br_me_siorg: SIORG — remuneração de cargos em comissão da administração federal
+br_mec_prouni: MEC ProUni — dicionário de variáveis do programa
+br_mec_sisu: MEC SISU — microdados de inscrição no Sistema de Seleção Unificada
+br_mg_belohorizonte_smfa_iptu: Prefeitura de Belo Horizonte — cadastro de IPTU
+br_minc_salic: MinC — SALIC/Lei Rouanet, projetos culturais incentivados
+br_mj_consumidorgovbr: Consumidor.gov.br — reclamações de consumidores contra empresas
+br_mjsp_ckan: MJSP — Procon (reclamações Sindec) e Infopen (censo penitenciário legado)
+br_mjsp_procurados: MJSP — lista de procurados do projeto Captura Nacional
+br_mjsp_sinesp: SINESP — ocorrências registradas de segurança pública
+br_mjsp_sisdepen: SISDEPEN — população carcerária por unidade prisional
+br_mma_extincao: MMA — listas oficiais de fauna e flora ameaçadas de extinção
+br_mme_consumo_energia_eletrica: MME — consumo de energia elétrica por UF
+br_mobilidados_indicadores: MobiliDados — indicadores de mobilidade urbana (transporte, ciclovia, acidentes)
+br_mp_pep: Ministério do Planejamento — cargos e funções do Poder Executivo federal
+br_ms_atencao_basica: Ministério da Saúde — indicadores de atenção básica por município
+br_ms_cnes: CNES — Cadastro Nacional de Estabelecimentos de Saúde
+br_ms_imunizacoes: Ministério da Saúde — cobertura vacinal por município
+br_ms_pns: Ministério da Saúde — Pesquisa Nacional de Saúde
+br_ms_populacao: Ministério da Saúde — estimativas populacionais por município
+br_ms_sia: SIA/SUS — produção ambulatorial e psicossocial
+br_ms_sih: SIH/SUS — Autorizações de Internação Hospitalar (AIH)
+br_ms_sim: SIM — Sistema de Informações sobre Mortalidade
+br_ms_sinan: SINAN — notificação compulsória de dengue e influenza/SRAG
+br_ms_sinan_chikungunya: SINAN — notificação compulsória de chikungunya
+br_ms_sinan_esquistossomose: SINAN — notificação compulsória de esquistossomose
+br_ms_sinan_febre_amarela: SINAN — notificação compulsória de febre amarela
+br_ms_sinan_malaria: SINAN — notificação compulsória de malária fora da Amazônia Legal
+br_ms_sinan_violencia: SINAN — notificação compulsória de violência doméstica, sexual e outras
+br_ms_sinan_zika: SINAN — notificação compulsória de zika
+br_ms_sinasc: SINASC — Sistema de Informações sobre Nascidos Vivos
+br_ms_sipni_dicionarios: SI-PNI — dicionários de cobertura vacinal
+br_ms_sipni_doses_historicas: SI-PNI — doses de vacina aplicadas, série histórica agregada
+br_ms_sipni_microdados: SI-PNI — microdados de vacinação individual (2020)
+br_ms_sisvan: SISVAN — Sistema de Vigilância Alimentar e Nutricional
+br_ms_vacinacao_covid19: Ministério da Saúde — vacinação contra covid-19
+br_ok_queridodiario: Querido Diário — metadados de diários oficiais municipais
+br_ok_queridodiario_texto: Querido Diário — texto integral das edições de diários oficiais municipais
+br_pgfn_dividaativa: PGFN — dívida ativa da União (tributária, FGTS, previdenciária)
+br_pncp: PNCP — Portal Nacional de Contratações Públicas, licitações e contratos de todos os entes
+br_poder360_pesquisas: Poder360 — pesquisas eleitorais
+br_rf_arrecadacao: Receita Federal — arrecadação tributária federal
+br_rf_cafir: Receita Federal — Cadastro de Imóveis Rurais (CAFIR)
+br_rf_cno: Receita Federal — Cadastro Nacional de Obras
+br_rf_dirpf: Receita Federal — fundos habilitados e repasses via destinação de IRPF (FDCA/FDI)
+br_rj_isp_estatisticas_seguranca: ISP-RJ — estatísticas de segurança pública do estado do Rio de Janeiro
+br_saude_bps: Boletim de Pessoal da Saúde — dados de profissionais de saúde
+br_saude_farmaciapopular: Farmácia Popular — estabelecimentos credenciados
+br_sedec_desastres: SEDEC/Defesa Civil — reconhecimentos vigentes de situação de emergência ou calamidade
+br_seeg_emissoes: SEEG — emissões estimadas de gases de efeito estufa por município e setor
+br_senado_ceaps: Senado Federal — Cota para Exercício da Atividade Parlamentar (CEAPS)
+br_senado_dados_abertos: Senado Federal — senadores, votações, discursos, comissões
+br_senado_dados_abertos_administrativos: Senado Federal — dados administrativos (CEAPS, remuneração de servidores)
+br_senado_dadosabertos: Senado Federal — comissões, matérias, senadores e votações (fonte alternativa)
+br_sfb_sicar: SICAR/SFB — Cadastro Ambiental Rural
+br_simet_educacao_conectada: Programa Educação Conectada — conectividade de internet em escolas
+br_siop_orcamento: SIOP — Sistema Integrado de Planejamento e Orçamento federal
+br_sp_saopaulo_geosampa_iptu: Prefeitura de São Paulo — cadastro de IPTU (GeoSampa)
+br_stf_corte_aberta: STF — decisões do projeto Corte Aberta
+br_stj_dadosabertos: STJ — documentos e decisões
+br_tce_es: TCE-ES — fiscalização de contas de municípios e do estado
+br_tce_pi: TCE-PI — despesas, licitações e receitas de municípios
+br_tce_rj: TCE-RJ — contratos, licitações, convênios e gastos com pessoal
+br_tce_sp: TCE-SP — municípios fiscalizados
+br_tce_to: TCE-TO — pautas de julgamento
+br_tcu_dadosabertos: TCU — dados abertos gerais
+br_tcu_inidoneos: TCU — empresas e responsáveis inidôneos ou inabilitados
+br_tesouro_capag: Tesouro Nacional — Capacidade de Pagamento (CAPAG) de estados e municípios
+br_tesouro_cauc: Tesouro Transparente — CAUC, regularidade fiscal de estados e municípios
+br_transferegov: TransfereGov — planos de ação, programas e transferências (API normalizada)
+br_transferegov_siconv: TransfereGov/SICONV — convênios, contratos de repasse e execução física/financeira completa
+br_trase_supply_chain: Trase — cadeia de suprimentos de soja e carne bovina, do frigorífico/esmagadora à origem
+br_tse_eleicoes: TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas)
+br_tse_filiacao_partidaria: TSE — filiação partidária
+eu_sanctions: União Europeia — lista de sanções
+global_ibge_tabua_mares: IBGE — tábua de marés
+global_icij_offshoreleaks: ICIJ Offshore Leaks — empresas offshore, intermediários e beneficiários
+global_ofac_sanctions: OFAC (EUA) — lista de sanções
+global_opensanctions: OpenSanctions — consolidado mundial de listas de sanções e PEP
+mundo_transfermarkt_competicoes: Transfermarkt — Campeonato Brasileiro Série A e Copa do Brasil
+mundo_transfermarkt_competicoes_internacionais: Transfermarkt — Champions League
+politicos: Base dos Dados — contatos de políticos
+un_sanctions: ONU — lista de sanções
+us_harvard_ned: Harvard NED — eleições parlamentares e presidenciais internacionais
+world_ampas_oscar: Oscar (AMPAS) — demografia de vencedores
+world_iea_pirls: IEA PIRLS — avaliação internacional de leitura
+world_iea_timss: IEA TIMSS — avaliação internacional de matemática e ciências
+world_imdb_movies: IMDB — filmes mais bem avaliados por ano
+world_oecd_pisa: OCDE PISA — avaliação internacional de estudantes
+world_oecd_public_finance: OCDE — finanças públicas por país
+world_olympedia_olympics: Olympedia — atletas e resultados olímpicos históricos
+world_sofascore_competicoes_futebol: Sofascore — Campeonato Brasileiro Série A e Champions League
+world_wb_mides: World Bank/MIDES — licitações e execução orçamentária (dataset internacional de referência)
+world_wwf_hydrosheds: WWF HydroSHEDS — bacias, lagos e rios do mundo, dataset hidrográfico de referência
