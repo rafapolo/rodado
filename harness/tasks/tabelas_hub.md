@@ -51,7 +51,7 @@ lista das tabelas-hub — só nunca foi extraída e servida pro modelo.
 1. **`scripts/gera_tabelas_hub.py`** (novo): lê `bridges.yaml`, agrupa os
    `canonical_table` únicos por `concepts`, gera uma lista curta (~15-20
    linhas) `tabela — o que ela traduz — colunas-chave`.
-2. Embutir essa lista no prompt estático do `dsh/rodado.patch.yml` (ou, mais
+2. Embutir essa lista no prompt estático de `agente.ts` (`PERSONA`) (ou, mais
    barato ainda, na descrição de `listar_datasets` em `mcp.ts`, expandindo o
    hint pontual que já foi aplicado pra município) — decisão de onde entra é
    de quem mantém, mas tem que ser **gerado**, nunca editado à mão, mesma

@@ -1,6 +1,6 @@
 # Datasets quase-duplicados no espelho
 
-Levantamento (item 2 do TODO do harness Gemma+dsh) — **só survey, nenhum dataset
+Levantamento (item 2 do TODO do harness Gemma) — **só survey, nenhum dataset
 foi removido, renomeado ou mapeado**. `resolveDataset` e afins não foram tocados.
 
 Método: `_rodado_metadata` por padrão de nome (`%antigo%`, `%novo%`, `%original%`,

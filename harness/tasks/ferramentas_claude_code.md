@@ -335,7 +335,7 @@ Claude Code e **erradas aqui**, por motivo medido:
 |---|---|
 | **Divulgação progressiva de ferramenta** (`ToolSearch`) | Resolve contexto quando há dezenas de ferramentas. Aqui são 6, e `regras.md` já mediu que *um 26B em q4 acerta mais entre 5 ferramentas do que entre 20*. Buscar schema custaria um turno para economizar centenas de tokens que já cabem. Só passa a valer se o harness chegar a ~15+ ferramentas |
 | **Chamadas independentes em paralelo no mesmo turno** | Minha instrução manda batelar chamadas independentes. Aqui seria **contraindicado**: o item 10 do `backlog.md` mede que o tool call do Gemma já cai como texto solto em 4 de 6 sessões, sem parser reconhecer. Pedir várias por turno compõe um bug bloqueador conhecido em vez de contorná-lo |
-| **Subagentes** | O isolamento que eles dão aqui já vem de graça: um processo `dsh` por pergunta (`pergunte.ts`), estado nascendo e morrendo com ela. Delegação exigiria do 26B um julgamento de escopo que ele não demonstrou nem para escolher tabela irmã (24 das 36 falhas do conjunto são o parente errado) |
+| **Subagentes** | O isolamento que eles dão aqui já vem de graça: uma chamada de `agente.roda()` por pergunta (`pergunte.ts`), estado nascendo e morrendo com ela. Delegação exigiria do 26B um julgamento de escopo que ele não demonstrou nem para escolher tabela irmã (24 das 36 falhas do conjunto são o parente errado) |
 
 ## Ordem, agora por contribuição MEDIDA no traço
 

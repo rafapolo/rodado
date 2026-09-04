@@ -6,7 +6,7 @@
 > sentido montá-la para um harness que já mede certo por outros meios (ver
 > `regras.md`). É um mapeamento: o que o paper chama de Belief,
 > Progress e Experience já existe aqui, em partes, de forma implícita ou
-> hardcoded — e a Fase 5 (relatório) de `harness_gemma_dsh.md` é exatamente o
+> hardcoded — e a Fase 5 (relatório) de `harness_gemma_agente.md` é exatamente o
 > ponto onde a ausência começa a doer.
 
 ## O conceito, em uma frase
@@ -28,7 +28,7 @@ grupo.
 | Peça do BPE | Já existe como | O que falta |
 |---|---|---|
 | **Belief** | `anos.ts` (faixa de ano por tabela), `resolve_join`/`get_metric` (fatos já resolvidos) | Nada disso persiste **na sessão**. Cada chamada MCP é sem estado — o portão redescobre a faixa de ano, o join, a métrica a cada vez em vez de reusar o que já foi verificado nesta mesma pergunta |
-| **Progress** | Nada. O log de sessão do dsh é append-only, não é lista de subgoal com status | É exatamente o buraco que trava a Fase 5: um relatório é várias sub-alegações; sem registro de "isto já foi verificado" o risco da Rodada 6 (573 reportado como total, um `GROUP BY` mal lido) se repete por seção |
+| **Progress** | Nada. Não há lista de subgoal com status — só o texto que o laço vai produzindo | É exatamente o buraco que trava a Fase 5: um relatório é várias sub-alegações; sem registro de "isto já foi verificado" o risco da Rodada 6 (573 reportado como total, um `GROUP BY` mal lido) se repete por seção |
 | **Experience** | As regras por subsistema de `regras.md` — cada uma é um par erro observado→refino, com o custo medido | Hoje cada linha vira código em `portao.ts` por um humano. Não é recuperável em tempo de execução pelo modelo; é enforcement, não conhecimento consultável |
 
 O princípio já declarado em `regras.md` — *"toda camada do portão
@@ -56,7 +56,7 @@ Só relevante a partir da Fase 5. Antes de escrever prosa, a lista de seções
 do relatório entra como subgoals com status (`pendente` / `consultado` /
 `verificado` / `redigido`). O portão já sabe rejeitar e devolver o motivo ao
 modelo (é o mecanismo que corrigiu 726→789 na medição 6 de
-`harness_gemma_dsh.md`) — aplicar o mesmo mecanismo a "seção X citada sem
+`harness_gemma_agente.md`) — aplicar o mesmo mecanismo a "seção X citada sem
 subgoal `verificado`" fecha exatamente o buraco que a Rodada 6 expôs no
 pipeline fixo.
 
@@ -99,7 +99,7 @@ estável já levam a escolha correta sem treinar pesos.
 
 ## Ordem sugerida
 
-Depende da Fase 4 de `harness_gemma_dsh.md` estar fechada (medir os 32 casos
+Depende da Fase 4 de `harness_gemma_agente.md` estar fechada (medir os 32 casos
 com `n` conferido) — não faz sentido adicionar BPE antes de saber se o portão
 atual já resolve sozinho. Depois:
 
@@ -126,5 +126,5 @@ atual já resolve sozinho. Depois:
 ## Fontes
 
 - [EvoHarness-RL, arxiv 2608.05446v1](https://arxiv.org/html/2608.05446v1)
-- `tasks/harness_gemma_dsh.md` — arquitetura e medições que motivam este documento
+- `tasks/harness_gemma_agente.md` — arquitetura e medições que motivam este documento
 - `tasks/regras.md` — as regras por subsistema, semente do Experience store

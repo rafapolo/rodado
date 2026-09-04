@@ -1,8 +1,8 @@
 # Operar o harness — o que quebra calado, e o detector de cada coisa
 
-> Aberto em 2026-09-02, a pedido, destilado do diário de experimentos de
-> 2026-09-01/02 (`exp/harness-gemma-dsh.md`, removido depois que tudo o que
-> ele tinha de acionável virou este arquivo, [`regras.md`](regras.md)
+> Aberto em 2026-09-02, a pedido, destilado do diário de experimentos original
+> de 2026-09-01/02 (removido depois que tudo o que ele tinha de acionável
+> virou este arquivo, [`regras.md`](regras.md)
 > e [`../README.md`](../README.md)). Tudo abaixo foi **medido no beelink**;
 > onde há estimativa está dito.
 
@@ -18,11 +18,11 @@ precisam já está exposto — o que falta é alguém consultá-lo automaticamen
 
 | Checar | Como | Se falhar |
 |---|---|---|
-| O raciocínio está mesmo desligado | `reasoning-chunks` no log de sessão do dsh, ou turno de tool calling > ~10 s | ver "Raciocínio" abaixo — três configs *parecem* resolver e não resolvem |
+| O raciocínio está mesmo desligado | `servidor.sh aquece` (automatizado — reprova se a resposta trouxer `reasoning`/`<think`), ou turno de tool calling > ~10 s | ver "Raciocínio" abaixo — três configs *parecem* resolver e não resolvem |
 | O cache de prefixo está vivo | `timings.prompt_n` na resposta do `llama-server`: deve ser ~o tamanho da pergunta, não o do prefixo | algo variável entrou no prefixo (timestamp, ordem não determinística de ferramenta). Perde-se o 44x sem nenhum sinal no resultado |
 | `-c` é o que se pensa | `n_slots` no log de boot do `llama-server` | `-c` é **por slot**: com os 4 slots padrão, `-c 65536` aloca 4x o KV. `-np` sempre explícito |
 | Concorrência do script bate com o `-np` real | `configServidor()` (`acerto.ts`) contra o que o script dispara — `avalia_datasets.ts` lê via `paraleloEfetivo()` | disparar mais requisições que slots não só enfileira à toa: **derruba a cache do slot em rodízio**. Medido 2026-09-02 — `PARALELO=5` contra `-np 1` pagou prefill do prefixo inteiro a cada 5º caso, 18,1 s/pergunta em vez de ~2,5 s. Ver `regras.md`, seção "Prefixo e few-shot" |
-| O modelo não tem saída lateral | grep por `bash`/`ssh` no trace da sessão | o Gemma descobriu a ferramenta `bash` e consultou o DuckDB por fora do portão — todo o portão vira decoração. Lista de ferramentas desligadas em [`../dsh/rodado.patch.yml`](../dsh/rodado.patch.yml) |
+| O modelo não tem saída lateral | não se aplica mais por checagem — o Gemma descobriu a ferramenta `bash` uma vez e consultou o DuckDB por fora do portão. Hoje o laço (`agente.ts`) só oferece as 7 ferramentas do MCP; não existe `bash`/`fs`/`web` para desligar num config, porque nunca são construídas | — |
 | A régua mede a coisa certa | rodada onde o esperado é conhecido, conferido por fora | duas vezes o erro estava na medição, não no harness (ver `regras.md`, "Os quatro que valem para o próximo", item 2) |
 
 ## Raciocínio: o que resolve e o que só parece resolver
@@ -31,7 +31,7 @@ Ordem de descoberta, porque as três primeiras custaram tempo:
 
 | Tentativa | O que faz de verdade |
 |---|---|
-| `reasoningEfforts: false` no dsh | declara o modelo como não-raciocinante **para o harness**. Não manda nada ao llama.cpp — o modelo segue raciocinando |
+| Declarar o modelo como não-raciocinante do lado do CLIENTE (`reasoning: false` hoje, era `reasoningEfforts: false` no CLI agêntico antigo) | declara o modelo como não-raciocinante **só para quem está chamando**. Não manda nada ao llama.cpp — o modelo segue raciocinando |
 | `--reasoning off` no `llama-server` | não resolve |
 | `reasoningEfforts: off:` (sem valor) | **nem carrega** — o plugin recusa com "offers no level beyond off" |
 | `--chat-template-kwargs '{"enable_thinking":false}'` | **é o que resolve.** 20,9 s → 4,7 s por turno, tool call intacto |
@@ -108,9 +108,9 @@ Fase 4 fechar; a 2 já foi feita por outra sessão, as demais não.
 nenhum consumidor olhava. `acerto.ts` centraliza a checagem (`avisaPrefill`,
 `LIMIAR_PREFILL=2000`) e `lote.ts`/`compara.ts` agora chamam depois de cada
 caso — `lote.ts` lê o prefill de fora, do log do `llama-server`
-(`prefillsDesde`/`marcaDoLog`), porque cada pergunta é um processo `dsh`
-separado e `timings.prompt_n` morre lá dentro; `compara.ts` já roda no mesmo
-processo e usa o valor direto.
+(`prefillsDesde`/`marcaDoLog`), porque a API unificada entre providers que
+`agente.ts` usa (`pi-ai`) não expõe o `timings.prompt_n` específico do
+llama.cpp; `compara.ts` já roda no mesmo processo e usa o valor direto.
 
 **Fecha quando** (verificado por teste, não por rodada ao vivo): uma mudança
 deliberada no prefixo faz a rodada acusar em vez de só demorar mais —
@@ -158,16 +158,20 @@ original (trocar a flag por `--reasoning off` e confirmar que o detector
 recusa) — exigiria reiniciar o servidor com a config ruim de propósito, e
 isso não foi feito ainda.
 
-### 4. Travar a superfície de ferramenta ✅ fechado 2026-09-03
+### 4. Travar a superfície de ferramenta ✅ fechado 2026-09-03 — mecanismo trocado depois
 
-`harness/patch.test.ts` (novo) lê `dsh/rodado.patch.yml` com `Bun.YAML.parse`
-e trava `disabled: true` nas 19 entradas (bash, fs, subagent, skill, workflow,
-jobs, ralph, todo, goal...) e confere que `mcp-rodado` (o caminho pelo portão)
-não está entre elas.
+Original: o CLI agêntico usado então trazia `bash`/`fs`/`subagent`/etc.
+disponíveis por padrão, e um teste (`harness/patch.test.ts`, lendo o YAML de
+config daquele CLI) travava as 19 entradas em `disabled: true`, conferindo que
+`mcp-rodado` (o caminho pelo portão) não estava entre elas.
 
-**Fecha quando:** reabilitar `bash` no patch quebra o teste. Verificado: com
-`tool-bash` mudado para `disabled: false` no YAML lido, o teste acusa
-`porId.get("tool-bash")?.disabled` como `false` em vez do `true` esperado.
+**Superado, não só fechado**, quando esse CLI foi trocado por `agente.ts`: o
+laço agêntico próprio nunca constrói `bash`/`fs`/`subagent` — as únicas
+ferramentas que existem para o modelo são as que `client.listTools()` devolve
+do servidor MCP (`mcp.ts`, hoje 7). Não há mais config para reabilitar por
+engano, então não há mais o que travar por YAML; `harness/agente.test.ts`
+(sucessor de `patch.test.ts`) trava outra coisa — a persona e os valores do
+modelo — que é o que ainda pode regredir calado.
 
 ### 5. Varredura `Substitui \`X\`` → aposentar X ✅ fechado 2026-09-03
 
@@ -206,5 +210,5 @@ responde zero, e o zero passa por "não há embargos" em vez de "não há dado".
 - [`../README.md`](../README.md) — o fluxo, os módulos, como rodar
 - [`regras.md`](regras.md) — as regras que cada medição gerou, por subsistema
 - [`backlog.md`](backlog.md) — o que fazer a seguir no harness, por retorno medido
-- [`harness_gemma_dsh.md`](harness_gemma_dsh.md) — o plano original, para comparar com o que saiu
+- [`harness_gemma_agente.md`](harness_gemma_agente.md) — o plano original, para comparar com o que saiu
 - [`../../gemma_stats.md`](../../gemma_stats.md) — o benchmark do modelo isolado

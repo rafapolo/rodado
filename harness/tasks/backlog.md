@@ -16,7 +16,7 @@ estão aqui, estão em [`operacao.md`](operacao.md). Regras que ainda são só
 disciplina, em [`regras.md`](regras.md).
 
 **Esta é a única fila de próximos passos do harness.** A lista "Falta" de
-`harness_gemma_dsh.md` foi migrada para cá (itens 6-8) justamente por manter uma
+`harness_gemma_agente.md` foi migrada para cá (itens 6-8) justamente por manter uma
 segunda fila, com contagem desatualizada, competindo com esta.
 
 ---
@@ -137,8 +137,8 @@ emite o TSV `pergunta <TAB> esperado` que `lote.ts` lê —
 `operacao.md` estavam ok (`confereBoot()` aprovou, `-np 1 -c 32768` confirmado).
 0/6 casos corretos — mas **4 dos 6 não são falha de raciocínio, são a chamada
 de ferramenta caindo como texto solto** por causa de um bug de parsing só
-agora exposto porque é a primeira vez que o laço roda tantas sessões `dsh`
-reais em sequência. Detalhe completo, causa provável e o workaround: **item
+agora exposto porque é a primeira vez que o laço roda tantas sessões reais
+em sequência. Detalhe completo, causa provável e o workaround: **item
 10**, abaixo.
 
 **2ª tentativa: 2026-09-03 09:11**, com o workaround de retentativa no ar —
@@ -171,8 +171,9 @@ que rejeite resposta contendo `br_[a-z_]+\.` — a instrução sozinha é do tip
 o modelo obedece na maioria das vezes, e a checagem transforma "maioria" em
 todas.
 
-**Fechado.** Metade 1: `system-prompt` (persona) em `dsh/rodado.patch.yml`
-instrui citar o órgão, nunca tabela/dataset/SQL. Metade 2: `checaCitacaoTabela`
+**Fechado.** Metade 1: a persona (config do CLI agêntico usado então; hoje é
+`PERSONA` em `agente.ts`) instrui citar o órgão, nunca tabela/dataset/SQL.
+Metade 2: `checaCitacaoTabela`
 (`portao.ts`) roda como ferramenta MCP nova, `revisar_resposta` (`mcp.ts`) — o
 modelo é instruído a chamá-la com o parágrafo pronto antes de responder, e a
 rejeição volta como resultado de ferramenta (mesmo mecanismo do portão de
@@ -189,7 +190,7 @@ achado à parte, documentado no item 9 abaixo: desta vez o modelo usou
 
 ## 4. Encurtar mais o contexto 🔴
 
-O prompt do dsh está em **6.849** tokens (era 14.213). O throughput cai ~3x entre
+O prompt do CLI agêntico usado então estava em **6.849** tokens (era 14.213). O throughput cai ~3x entre
 2k e 18k, então cada corte se paga duas vezes — em tempo e em qualidade de
 escolha (um 26B em q4 acerta mais entre 5 ferramentas que entre 20).
 
@@ -200,7 +201,7 @@ especulativo. Fazer o 1 primeiro.
 
 **Item 1 feito (2026-09-02) — ainda não retomado.** Examinar "o que o modelo
 não usa" exige transcrição real de sessão agêntica, que só existe depois do
-item 2 rodar (o laço via dsh, não a escolha de dataset isolada). Continua
+item 2 rodar (o laço agêntico completo, não a escolha de dataset isolada). Continua
 adiado, mas agora pelo motivo certo — falta o dado, não falta prioridade.
 
 ## 5. Seis datasets concentram 20 das 38 perdas ✅ diagnosticado 2026-09-02, após o item 1
@@ -286,8 +287,9 @@ resultado da ferramenta `consultar`, o modelo vê antes de escrever a prosa.
 Coberto por `portao.test.ts` (3 casos: avisa sozinho, cala com `causa_basica`
 junto, cala quando a coluna nem aparece).
 
-**Falta:** verificação ao vivo — rodar a mesma pergunta de novo pelo dsh e
-confirmar que o modelo, vendo o alerta, troca para `causa_basica` e chega em
+**Falta:** verificação ao vivo — rodar a mesma pergunta de novo pelo laço
+agêntico e confirmar que o modelo, vendo o alerta, troca para `causa_basica`
+e chega em
 789. Não feito ainda porque custaria outro turno de ~5 min só para isso;
 qualquer caso do item 2 que toque `br_ms_sim` serve de verificação de graça.
 Cruza com o mecanismo de `coded_differently`/`false_friends` de
@@ -298,9 +300,9 @@ YAML.
 
 ## 10. Tool call cai como texto solto — bloqueia o item 2 🟡 achado 2026-09-03 — causa provável entendida, workaround feito, causa raiz não corrigida
 
-**O achado mais caro desta sessão.** A rodada do item 2 (58 casos pelo dsh
-real) nunca tinha rodado antes — é a primeira vez que o laço agêntico
-encadeia muitas sessões `dsh` de verdade em sequência, não só os 3 casos
+**O achado mais caro desta sessão.** A rodada do item 2 (58 casos pelo laço
+agêntico real) nunca tinha rodado antes — é a primeira vez que o laço
+encadeia muitas sessões de verdade em sequência, não só os 3 casos
 isolados do README ou testes avulsos. Em **4 das 6** primeiras sessões, a
 chamada de ferramenta do modelo não foi reconhecida como tool call: caiu como
 bloco de `reasoning` (texto solto que ninguém lê) e o turno terminou
@@ -309,7 +311,7 @@ conteúdo dos casos quebrados é coerente, às vezes é uma SQL correta e bem
 construída (case 6: CTEs certas, comentário explicando a escolha de
 agregação). **A ferramenta simplesmente nunca chega a rodar.**
 
-**Evidência exata, dos logs de sessão do dsh** (`~/.dsh/sessions/`, lidos
+**Evidência exata, dos logs de sessão do CLI agêntico usado então** (lidos
 localmente, sem custo de servidor):
 
 ```
@@ -397,7 +399,8 @@ um **plano de investigação e pedindo aprovação** em vez de executar — 2ª 
 que isso aparece em rodadas diferentes. Não é o bug do item 10 (a ferramenta
 FOI reconhecida; o modelo só decidiu parar sozinho) — é comportamento de
 assistente interativo vazando pra um contexto sem humano nenhum pra aprovar
-nada. **Consertado**: `persona` em `dsh/rodado.patch.yml` agora instrui
+nada. **Consertado**: a persona (config do CLI agêntico usado então; hoje é
+`PERSONA` em `agente.ts`) agora instrui
 explicitamente a nunca parar num plano. Testado ao vivo, mesma pergunta:
 desta vez executou de verdade e concluiu (não confirmou a hipótese por
 limite real dos dados — CAGED só cobre 2020-2025, a pergunta assumia
@@ -407,7 +410,7 @@ limite real dos dados — CAGED só cobre 2020-2025, a pergunta assumia
 **Não investigado ainda:**
 - Log verboso do `llama-server` numa chamada ao vivo, pra ver se o campo
   `tool_calls` da resposta HTTP vem vazio (confirmaria: falha é do parser
-  server-side, não do dsh) — a suspeita forte, mas não verificada byte a byte
+  server-side, não de quem chama) — a suspeita forte, mas não verificada byte a byte
   (a tentativa de diagnóstico acima não bateu o bug, então não deu pra olhar
   a resposta bruta do caso quebrado — `LOGPROMPTS=1` fica pronto pra próxima
   vez que reproduzir).
@@ -433,10 +436,11 @@ limite real dos dados — CAGED só cobre 2020-2025, a pergunta assumia
 
 ### Workaround feito — retentativa automática em `lote.ts`
 
-`respondeu` já detectava isto sem querer: o dsh não imprime NADA quando o
-turno termina só com bloco `reasoning`, então `texto.trim().length > 40` já
-dava `false` para os 4 casos quebrados. `roda()` agora tenta a MESMA pergunta
-de novo, num processo `dsh` novo, até `HARNESS_TENTATIVAS` vezes (padrão 3,
+`respondeu` já detectava isto sem querer: o CLI agêntico usado então não
+imprimia NADA quando o turno terminava só com bloco `reasoning`, então
+`texto.trim().length > 40` já dava `false` para os 4 casos quebrados.
+`roda()` agora tenta a MESMA pergunta de novo, numa sessão nova, até
+`HARNESS_TENTATIVAS` vezes (padrão 3,
 `rodaUmaVez()`/`MAX_TENTATIVAS` em `lote.ts`) — só quando a tentativa veio
 **vazia**, nunca quando veio uma resposta errada (isso é falha de raciocínio
 de verdade, repetir esconderia a taxa de acerto real). `Saida.tentativas`
@@ -543,14 +547,20 @@ plano, porém, fica **escopado ao alvo estreito do item 10** (formato de tool
 call, independente de schema) — expandir o escopo é decisão futura separada,
 não parte deste item.
 
-### Fonte de dado de treino — já existe, de graça
+### Fonte de dado de treino — já existe, de graça (só o histórico até 2026-09-04)
 
-Toda sessão `dsh` que bateu o bug do item 10 (o texto solto `<tool_call|>` ou
-`<|tool_call>call:...<tool_call|>` mal-classificado) e toda rejeição do
-portão seguida de correção (`~/.dsh/sessions/*.jsonl.zstd`, mais os
-`benchmarks/lote_*.json` do item 2) é um par (tentativa ruim → o que devia
-ter saído) sem custo de rotulagem — já está logado. Não precisa gerar
-sintético do zero, só extrair.
+Toda sessão do CLI agêntico usado até aqui que bateu o bug do item 10 (o
+texto solto `<tool_call|>` ou `<|tool_call>call:...<tool_call|>`
+mal-classificado) e toda rejeição do portão seguida de correção (nos logs de
+sessão daquele CLI, mais os `benchmarks/lote_*.json` do item 2) é um par
+(tentativa ruim → o que devia ter saído) sem custo de rotulagem — já está
+logado. Não precisa gerar sintético do zero, só extrair.
+
+**Atualização 2026-09-04:** essa fonte parou de crescer — o CLI foi
+substituído por `agente.ts` (item 15), que não grava log de sessão
+estruturado. O histórico já logado continua utilizável para este item; um
+LoRA que dependa de volume crescendo sozinho precisaria de um logger
+equivalente escrito para `agente.ts`, que não existe hoje.
 
 ### Hardware — testado ao vivo, os dois descartados
 
@@ -568,8 +578,9 @@ ver achado acima. Não testado: carregar os PESOS REAIS do checkpoint de 26B
 fica pro passo 2, já dentro do pod alugado, não antes.
 
 **Passo 1 — extrair o dataset.** Script novo (não escrito ainda),
-`harness/dados/lora_toolcall.jsonl` ou similar: varre as sessões `dsh` já
-logadas, extrai pares (contexto até o ponto da falha → tool call correto que
+`harness/dados/lora_toolcall.jsonl` ou similar: varre as sessões do CLI
+agêntico anterior já logadas, extrai pares (contexto até o ponto da falha →
+tool call correto que
 deveria ter saído), few centenas a ~2 mil exemplos esperados dado o volume já
 logado.
 
@@ -604,7 +615,7 @@ caminho normal.
 
 ## Sem retorno medido — herdados do plano original
 
-Vieram da lista "Falta" de `harness_gemma_dsh.md`, removida de lá para não
+Vieram da lista "Falta" de `harness_gemma_agente.md`, removida de lá para não
 manter duas filas divergindo. Ficam **abaixo** dos itens 0-5 de propósito:
 nenhum tem falha medida atrás, então a ordem entre eles é julgamento, não dado.
 
@@ -655,9 +666,8 @@ foi testado nisso. O scaffold proposto para essa fase está em
 Medido rodando a pergunta mais rica de `perguntas.md` em nº de fontes
 (emendas parlamentares → contratos → CNPJ → TCU → PGFN, seção "Perguntas
 multi-dataset simultâneos", item 3) por `bun harness/pergunte.ts`. **40 min,
-`SIGKILL` pelo timeout do próprio harness, zero resposta.** Log completo em
-`~/.dsh/sessions/--Users-polux-Projetos-rodado--/session-358f388b-.../session.jsonl.zstd`
-(75 turnos, 74 tool calls, 55 SQL).
+`SIGKILL` pelo timeout do próprio harness, zero resposta.** Log completo de
+sessão (75 turnos, 74 tool calls, 55 SQL).
 
 **O que aconteceu, turno a turno:**
 
@@ -748,7 +758,7 @@ nas 38 tentativas reais foi exatamente isso, só o resto (`WHERE`, colunas do
 `SELECT`, `LIMIT`) variava. Na 3ª vez que a MESMA assinatura devolve zero
 linhas, a mensagem escala de "confira o tipo da chave" pra "pare de tentar
 isto". Estado é `Map` de módulo em `mcp.ts` — nasce e morre com o processo,
-que é um por pergunta (`pergunte.ts` spawna um `dsh` novo a cada chamada).
+que é um por pergunta (`pergunte.ts` chama `agente.roda()`, que sobe uma sessão MCP nova por chamada).
 
 **3. Orçamento de consultas (`ORCAMENTO_CONSULTAS`, `mcp.ts`).** Teto de 30
 chamadas de `consultar` por pergunta (`HARNESS_ORCAMENTO_CONSULTAS`, env),
@@ -846,17 +856,17 @@ da checagem de citação, porque sem dado real a forma da prosa não importa.
 `br_ibama_embargos` saiu do catálogo num commit fora deste item; confirmado
 isolado via `git stash`, não é regressão deste conserto).
 
-## 14. Cache de prefixo quebra em TODA sessão nova, não só ocasionalmente 🔵 achado 2026-09-04, não investigado a fundo
+## 14. Cache de prefixo quebra em TODA sessão nova, não só ocasionalmente 🟢 superado 2026-09-04 pelo item 15 (não diagnosticado a fundo — contornado trocando de CLI)
 
 Rodando os 72 confiáveis: `lote.ts` acusou prefill de 8011/8017/8037 tokens
 (limiar 2000) em **3 das 4 primeiras sessões** — não é falso-positivo
 isolado, é sistemático. Conferido direto no log do `llama-server`
-(`/tmp/srv.log` no beelink): todo `task` que abre uma sessão `dsh` NOVA
-reprocessa ~8000 tokens do zero, mesmo vindo logo depois de outra sessão que
-deveria compartilhar o prefixo estático inteiro (persona + ferramentas +
-catálogo). **Dentro** de uma mesma sessão o cache funciona bem (prefills de
-dezenas a poucas centenas de tokens entre turnos) — o corte é exatamente na
-fronteira entre processos `dsh`.
+(`/tmp/srv.log` no beelink): toda sessão NOVA do CLI agêntico usado então
+reprocessava ~8000 tokens do zero, mesmo vindo logo depois de outra sessão
+que deveria compartilhar o prefixo estático inteiro (persona + ferramentas +
+catálogo). **Dentro** de uma mesma sessão o cache funcionava bem (prefills de
+dezenas a poucas centenas de tokens entre turnos) — o corte era exatamente na
+fronteira entre sessões daquele CLI.
 
 **Hipótese descartada:** catálogo mudando embaixo do harness. `listaDatasets()`
 lê `harness/dados/catalogo.json`, com mtime de 3 de setembro — congelado, não
@@ -864,24 +874,24 @@ lê `harness/dados/catalogo.json`, com mtime de 3 de setembro — congelado, nã
 janela (outras sessões commitando dataset novo o tempo todo, mas noutro
 arquivo).
 
-**Hipótese não confirmada, mais provável:** nos logs de sessão já lidos hoje
-(`~/.dsh/sessions/`), toda sessão nova recebe um bloco `"Current runtime
+**Hipótese não confirmada, mais provável na época:** nos logs de sessão já
+lidos naquele dia, toda sessão nova recebia um bloco `"Current runtime
 context. This snapshot supersedes earlier runtime-context snapshots..."` —
-se ele carrega algo específico da sessão (workspace, timestamp) e vem ANTES
-do catálogo/ferramentas no prompt que o `dsh` monta, isso invalidaria o
-prefixo cacheado inteiro pra tudo que vem depois, mesmo com o catálogo e as
-ferramentas byte-idênticos entre sessões — sem precisar de nada variável
-DENTRO do catálogo em si.
+se ele carregava algo específico da sessão (workspace, timestamp) e vinha
+ANTES do catálogo/ferramentas no prompt que aquele CLI montava, isso
+invalidaria o prefixo cacheado inteiro pra tudo que vem depois, mesmo com o
+catálogo e as ferramentas byte-idênticos entre sessões — sem precisar de
+nada variável DENTRO do catálogo em si.
 
-**Por que não foi confirmado nem consertado agora:** confirmar exige log
+**Por que não foi confirmado nem consertado então:** confirmar exigiria log
 verboso do servidor (`LOGPROMPTS=1 ./harness/servidor.sh`) pra ver o corpo
 bruto do prompt de duas sessões consecutivas — o que reinicia o
 `llama-server` e derruba tanto o cache quanto (antes do item acima) o
-progresso não salvo. O checkpoint incremental já resolve a segunda parte;
-falta decidir se vale pausar uma rodada em andamento pra rodar esse
-diagnóstico. `dsh` é pacote externo (`node_modules/.bin/dsh`) — mesmo
-confirmado, o conserto pode exigir mudança no próprio `dsh`, fora deste
-repositório.
+progresso não salvo. O CLI que injetava aquele bloco era pacote externo —
+mesmo confirmado, o conserto exigiria mudança nele, fora deste repositório.
+**Superado 2026-09-04 pelo item 15:** trocado por `agente.ts`, que monta o
+prompt à mão, byte a byte, sem bloco de runtime context nenhum — a causa
+suspeita simplesmente deixou de existir, sem precisar ser confirmada.
 
 **Custo medido:** ~140-190s extra por pergunta (141871, 141297, 146537,
 153288 ms nos 4 casos vistos) — real, mas pequeno contra os 20-40 min totais
@@ -890,46 +900,49 @@ acerto nem os passos, só o tempo de parede — por isso `LIMIAR_PREFILL`
 continua certo em acusar, e nada no harness precisa mudar por causa disto
 agora.
 
-## 15. Sair do `dsh` e ir direto no `pi-ai` — proposta séria, não decisão 🔵 aberto 2026-09-04, a pedido
+## 15. Sair do CLI agêntico usado até aqui e ir direto no `pi-ai` ✅ feito 2026-09-04
 
-Nasce do item 14 (cache de prefixo quebrando em toda sessão nova). `dsh`
-(`@deepseek-ai/dsh`) é um agente de CODIFICAÇÃO completo — sandbox de
-arquivo, política de aprovação, e um bloco `"Current runtime context..."`
-injetado a cada sessão nova (visto nos logs de `~/.dsh/sessions/`) — bagagem
-inteira que este harness não usa (não edita arquivo, não hospeda humano
-aprovando nada). É o candidato mais provável a estar quebrando o prefixo
-cacheado entre sessões, e não é algo que dá pra desligar via `patch.yml`.
+Nasceu do item 14 (cache de prefixo quebrando em toda sessão nova). O CLI
+agêntico usado até então era um agente de CODIFICAÇÃO completo — sandbox de arquivo, política de aprovação, e um bloco `"Current
+runtime context..."` injetado a cada sessão nova — bagagem inteira que este
+harness não usa (não edita arquivo, não hospeda humano aprovando nada). Era
+o candidato mais provável a estar quebrando o prefixo cacheado entre sessões,
+e não era algo que dava pra desligar via config.
 
-Por baixo do `dsh` está `@earendil-works/pi-ai` (`~/.bun/install/cache/`) —
-"Unified LLM API": chamada de modelo, definição/despacho de ferramenta,
-streaming, persistência de contexto. **Não é um agente** — não tem loop de
-tool-calling pronto, não decide quando parar um turno, não tem reparo. É a
-API de baixo nível que o `dsh` usa por trás.
+Por baixo dele estava `@earendil-works/pi-ai` — "Unified LLM API": chamada
+de modelo, definição/despacho de ferramenta, streaming, persistência de
+contexto, sem loop de tool-calling pronto, sem decisão de quando parar um
+turno, sem reparo — a API de baixo nível que aquele CLI usava por trás.
 
-**A ideia:** um harness próprio direto sobre `pi-ai`, sem a camada de
-agente de codificação do `dsh`, controlando os bytes do prompt do início ao
-fim — sem bloco de runtime context nenhum, prefixo garantidamente idêntico
-entre sessões (resolveria o item 14 na raiz, não só mitigado). Reduziria
-também os tokens do prefixo (menos framing de agente de código = prompt mais
-curto), o que ajuda o item 4 (contexto é o gargalo).
+**Feito:** harness próprio direto sobre `pi-ai` (`harness/agente.ts`) —
+persona, modelo/provider e o laço de tool-calling escritos à mão, sem
+nenhuma camada de agente de codificação, sem bloco de runtime context. O
+que se perdia (e foi reescrito à mão): o loop agêntico inteiro (chamar
+modelo → despachar tool call via MCP → devolver resultado → repetir →
+decidir quando parar) e a integração cliente com `harness/mcp.ts` (que já
+falava MCP puro e não mudou). A retentativa que cobre o bug do item 10
+**não desapareceu**, como já se esperava — a causa é o parser do llama.cpp,
+server-side; `lote.ts` mantém o mesmo workaround, agora em cima de
+`agente.roda()`.
 
-**O que se perde, e teria que ser reescrito à mão:**
-- o loop agêntico inteiro (chamar modelo → despachar tool call via MCP →
-  devolver resultado → repetir → decidir quando parar);
-- a retentativa que cobre o bug do item 10 — que, note, **não desaparece**:
-  a causa é o parser do llama.cpp (`grammar_lazy`), server-side, e bate em
-  qualquer cliente que mande `tool_choice=auto`, `pi-ai` incluso;
-- a integração com os servidores MCP (`harness/mcp.ts` já fala MCP puro, ~
-  reusável, mas o lado cliente que os conecta é do `dsh` hoje).
+**Medido ao vivo, dois casos de controle (não substitui uma rodada dos 72
+confiáveis, que ainda não rodou sobre o harness novo):**
 
-**Por que fica registrado e não implementado agora:** é troca de fundação,
-não ajuste — e a rodada dos 72 confiáveis está em andamento sobre o `dsh`
-atual. Decidir isso no meio descartaria a comparação em curso. Candidato
-forte pra próxima fase do harness (`harness_gemma_dsh.md`), não pra esta
-sessão.
+| Pergunta | Turnos | Tempo | Resultado |
+|---|---|---|---|
+| Suicídios RJ 2020 | 7 | 2,0 min | **errado** — 128 em vez de 789: SQL usou `LIKE 'X60%' OR ... OR 'X69%'` (faltou X70–X84), um jeito de errar que a camada 6 do portão não cobre porque não é `BETWEEN` |
+| PIB per capita MG 2020 | 9 | 1,6 min | certo — 32.066,73 |
+
+Nos dois casos, bem mais rápido que os tempos históricos registrados neste
+arquivo para o mesmo par de perguntas sob o CLI antigo (item 4: RJ 645→490s,
+MG 504→293s, já com o corte de ferramentas aplicado) — mas **N=2 não prova
+velocidade nem correção**; falta rodar o conjunto inteiro (item 2) sobre o
+harness novo antes de declarar isto medido. O achado de SQL incompleta
+(`LIKE` sem cobrir a faixa toda) é novo e independente da troca de CLI — vale
+item próprio se se repetir.
 
 ## Ver também
 
 - [`regras.md`](regras.md) — as regras que cada medição gerou, e o que ainda é só disciplina
 - [`operacao.md`](operacao.md) — as checagens antes de confiar numa rodada
-- [`harness_gemma_dsh.md`](harness_gemma_dsh.md) — o plano (fases 0-5) e a lista "Falta"
+- [`harness_gemma_agente.md`](harness_gemma_agente.md) — o plano (fases 0-5) e a lista "Falta"

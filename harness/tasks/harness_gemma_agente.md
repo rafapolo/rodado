@@ -1,4 +1,4 @@
-# Harness de relatório: DeepSeek Harness + mcp_server.py + Gemma 4 local
+# Harness de relatório: CLI agêntico + mcp_server.py + Gemma 4 local
 
 > Aberto em 2026-09-01. Plano para transformar o Gemma 4 26B-A4B rodando no
 > beelink num harness de produção que responde perguntas em pt-BR consultando o
@@ -6,6 +6,13 @@
 > — ver "Status em 2026-09-01, fim do dia" logo abaixo antes de ler o resto como
 > se fosse projeto futuro. As medições da seção seguinte continuam válidas como
 > registro do que motivou cada decisão de arquitetura.
+>
+> **Atualização 2026-09-04:** o CLI agêntico avaliado abaixo (o pacote externo
+> que a Fase 2 conectava por config) foi removido e substituído por
+> `harness/agente.ts`, escrito direto sobre a biblioteca de LLM que aquele CLI
+> usava por trás — ver `backlog.md` item 15. A análise de arquitetura e as
+> medições abaixo continuam registradas como o raciocínio que levou à escolha
+> original; o arquivo de config que elas citam não existe mais.
 
 ## Status em 2026-09-01, fim do dia — o que saiu do papel
 
@@ -18,7 +25,7 @@ retomar não precisar reconstruir o histórico de mensagens.
 - `portao.ts` — as 7 camadas da Fase 0, ciente de CTE (não só `_check_read_only`
   ingênuo).
 - `mcp.ts` — 4 ferramentas; o portão em si é ferramenta MCP, então a rejeição
-  volta como resultado de tool call e o laço agêntico do dsh repara sozinho (ver
+  volta como resultado de tool call e o laço agêntico repara sozinho (ver
   achado abaixo — não é só teoria, rodou de verdade).
 - `anos.ts` — faixa de ano real por tabela, 377 tabelas cacheadas. Resolveu um
   `n=0`: o modelo montou CAGED×RAIS×PIB corretamente e filtrou `ano=2022`, mas
@@ -27,7 +34,7 @@ retomar não precisar reconstruir o histórico de mensagens.
 - `avalia_datasets.ts` — seleção de dataset por few-shot: **97,8%**, contra
   **52,9%** do `search_tables` por embedding (ver `avalia_douradas_perguntas.py`
   pro método de medição equivalente).
-- `dsh/rodado.patch.yml` — `llama-server` local plugado no dsh.
+- arquivo de config do CLI agêntico usado então (removido — ver nota do topo) — `llama-server` local plugado nele.
 
 **Fase 4 (medir com pergunta real): primeira rodada ponta a ponta validou a
 arquitetura inteira, não só o código isolado.** Pergunta: óbitos por suicídio
@@ -179,11 +186,11 @@ pergunta pt-BR
       │
       ▼
 ┌─────────────────────────────────────────────┐
-│ DeepSeek Harness (dsh) — Cordis, Node.js    │
+│ CLI agêntico (avaliado) — Cordis, Node.js    │
 │  MIT, tudo é plugin, log de sessão append-only│
 │                                               │
 │  ├── plugin llm  ──────► llama-server         │
-│  │   (dsh-llm-pi-ai,     beelink:8099         │
+│  │   (adaptador de LLM,  beelink:8099         │
 │  │    OpenAI-compat)     Gemma 4 26B-A4B      │
 │  │                                            │
 │  └── plugin mcp-client ─► mcp_server.py       │
@@ -194,26 +201,27 @@ pergunta pt-BR
 relatório + SQL + proveniência (session log)
 ```
 
-O dsh é MIT, em developer preview, e seu adaptador padrão fala OpenAI
-chat-completions — então o `llama-server` entra sem adaptador novo. O
-`dsh-mcp-client` monta um servidor MCP por instância, com transporte `stdio` ou
-`streamable-http`, e expõe as ferramentas como `mcp__<server>__<tool>`. Hoje ele
-faz ponte só da capability **Tools** (Resources e Prompts estão adiados) — o que
-basta, porque `mcp_server.py` é só ferramentas.
+O CLI avaliado aqui é MIT, em developer preview, e seu adaptador padrão fala
+OpenAI chat-completions — então o `llama-server` entra sem adaptador novo. O
+plugin de cliente MCP monta um servidor MCP por instância, com transporte
+`stdio` ou `streamable-http`, e expõe as ferramentas como
+`mcp__<server>__<tool>`. Hoje ele faz ponte só da capability **Tools**
+(Resources e Prompts estão adiados) — o que basta, porque `mcp_server.py` é
+só ferramentas.
 
 ### `cordis.yml` (esboço)
 
 ```yaml
 plugins:
   - id: llm-local
-    name: '@deepseek-ai/dsh-llm-pi-ai'
+    name: '<plugin de LLM do CLI avaliado>'
     config:
       baseUrl: http://beelink:8099/v1
       apiKeyEnv: DUMMY_KEY          # llama-server ignora
       model: gemma-4-26B-A4B-it-qat
 
   - id: mcp-rodado
-    name: '@deepseek-ai/dsh-mcp-client'
+    name: '<plugin de cliente MCP do CLI avaliado>'
     config:
       serverName: rodado
       transport: stdio
@@ -269,10 +277,11 @@ curta e imperativa. Reaproveita toda a lógica testada — `_check_read_only`,
 superfície. O servidor MCP continua existindo para o Claude, onde as docstrings
 ricas se pagam.
 
-Isso torna o dsh opcional: ele agrega o log de sessão append-only, o replay e a
-UI. Se o objetivo for só gerar relatório em lote, um laço próprio em Python/Bun
-sobre o endpoint OpenAI do `llama-server` é menos peça móvel — e o dsh está em
-developer preview.
+Isso torna o CLI agêntico opcional: ele agrega o log de sessão append-only, o
+replay e a UI. Se o objetivo for só gerar relatório em lote, um laço próprio
+em Python/Bun sobre o endpoint OpenAI do `llama-server` é menos peça móvel —
+e o CLI avaliado está em developer preview. (Foi exatamente essa a decisão
+tomada depois — ver a nota do topo.)
 
 ## Fases
 
@@ -284,7 +293,7 @@ contra um valor já verificado antes de o número entrar em relatório. Sem isso
 harness publica 726 no lugar de 789 e ninguém percebe.
 
 **Fase 1 — servir.** `llama-server` como serviço (systemd user unit), `-t 8`,
-prefixo estável. Medir que o cache de prefixo sobrevive entre requisições do dsh.
+prefixo estável. Medir que o cache de prefixo sobrevive entre requisições do CLI.
 
 **Fase 2 — montar.** `cordis.yml` com os dois plugins. Perguntar algo trivial de
 uma tabela só e conferir o laço inteiro ponta a ponta.
@@ -313,7 +322,7 @@ Serve para lote, não para interativo.
 
 ## Riscos honestos
 
-- **dsh está em developer preview** — API instável, é alvo em movimento.
+- **o CLI avaliado está em developer preview** — API instável, é alvo em movimento.
 - **Gemma 26B em q4 fazendo raciocínio agêntico de múltiplos passos é não
   comprovado aqui.** A fase 4 existe para medir isso antes de confiar. Se o
   número for ruim, o plano B é o pipeline fixo: recuperação determinística,

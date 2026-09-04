@@ -1,7 +1,7 @@
 # Qwen3-Coder ou DuckDB-NSQL trocaria o Gemma 4 no harness?
 
 > Aberto em 2026-09-02, a pedido. **Nada abaixo foi rodado no beelink** — os
-> números do Gemma são medidos ([`harness_gemma_dsh.md`](harness_gemma_dsh.md));
+> números do Gemma são medidos ([`harness_gemma_agente.md`](harness_gemma_agente.md));
 > os dos candidatos são benchmark publicado (BIRD/Spider/BFCL), não o harness.
 > 🔵 plano de experimento, bloqueado pelo item 2 de [`backlog.md`](backlog.md).
 
@@ -10,7 +10,7 @@
 O gargalo do harness não é velocidade — é **acerto de SQL**. O Gemma erra
 codificação de domínio em silêncio: `causa_basica BETWEEN 'X60' AND 'X84'` deu
 **726** contra **789** reais, 8% a menos com número plausível (medição 6 de
-`harness_gemma_dsh.md`; virou regra em [`regras.md`](regras.md), camada 6 do
+`harness_gemma_agente.md`; virou regra em [`regras.md`](regras.md), camada 6 do
 portão). Isso é exatamente o que os modelos de text-to-SQL prometem melhorar.
 
 ## Os candidatos
@@ -32,7 +32,7 @@ isolado, nunca o laço de ferramentas.
 ## Dois papéis, não um substituto
 
 - **Qwen3-Coder-30B-A3B — substituir o Gemma no laço agêntico inteiro**
-  (dsh+MCP): mesma classe de MoE eficiente em CPU (3,3B ativos vs ~4B),
+  (`agente.ts`+MCP): mesma classe de MoE eficiente em CPU (3,3B ativos vs ~4B),
   tool-calling nativo, SQL mais forte nos benchmarks gerais.
 - **DuckDB-NSQL-7B — apurador dentro do `laco.ts`**: sem agente, sem MCP.
   Outro modelo decide tabela/join e conduz o laço; ele só redige a query.
@@ -40,7 +40,7 @@ isolado, nunca o laço de ferramentas.
 ## O experimento
 
 **Pré-requisito:** item 2 de [`backlog.md`](backlog.md) — rodar os 32 casos com
-`n` conferido pelo dsh atual (e antes o item 0, a régua de `correto`). Sem
+`n` conferido pelo laço agêntico atual (e antes o item 0, a régua de `correto`). Sem
 linha de base real, qualquer comparação é contra um número que não existe.
 
 1. GGUF do `Qwen3-Coder-30B-A3B-Instruct`, quantizado no tamanho do Gemma atual
@@ -65,4 +65,4 @@ que já sabemos que o Gemma erra.
 - [Qwen3-Coder-30B-A3B-Instruct (OpenRouter)](https://openrouter.ai/qwen/qwen3-coder-30b-a3b-instruct)
 - [DuckDB-NSQL-7B-v0.1 (HF)](https://huggingface.co/motherduckdb/DuckDB-NSQL-7B-v0.1) · [AI That Quacks (MotherDuck)](https://motherduck.com/blog/duckdb-text2sql-llm/)
 - [XiYanSQL-QwenCoder (GitHub)](https://github.com/XGenerationLab/XiYanSQL-QwenCoder)
-- [`harness_gemma_dsh.md`](harness_gemma_dsh.md), [`backlog.md`](backlog.md), [`regras.md`](regras.md) — o que já roda e o que falta medir
+- [`harness_gemma_agente.md`](harness_gemma_agente.md), [`backlog.md`](backlog.md), [`regras.md`](regras.md) — o que já roda e o que falta medir
