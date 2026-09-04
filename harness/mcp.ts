@@ -25,7 +25,7 @@ import {
   portao, checaExplain, alertasDeSanidade, faixasCitadas, checaCitacaoTabela,
   juncoesSemPonte, mensagemSemPonte, assinaturaJuncao, checaExecutouConsulta,
 } from "./portao.ts";
-import { dicasDeJoin } from "./pontes.ts";
+import { dicasDeJoin, semColunaComum, avisoSemColunaComum } from "./pontes.ts";
 import { runSqlSsh } from "./beelink.ts";
 import { capRows } from "./sqlguard.ts";
 import { textoFaixa } from "./anos.ts";
@@ -67,6 +67,21 @@ let totalConsultas = 0;
  * resposta final que não veio de dado de verdade.
  */
 let consultasComResultado = 0;
+
+/**
+ * backlog.md item 12, ponto 2 — `dicasDeJoin` foi desenhada pra comparar DUAS
+ * tabelas (`pontes.ts`: o aviso "JOIN — estas tabelas..." só liga com
+ * `tabelas.length > 1`), mas `descrever_tabela` sempre chamava com um array de
+ * um elemento só — a dica nunca disparava na prática, porque o modelo descreve
+ * uma tabela por chamada. O disjuntor de repetição (abaixo) cobre o sintoma
+ * DEPOIS de queimar `LIMIAR_REPETICAO` tentativas; isto cobre a causa, ANTES da
+ * primeira SQL: lembra as tabelas já descritas nesta pergunta (mesmo Map de
+ * módulo, mesmo ciclo de vida — nasce e morre com o processo) e passa a lista
+ * inteira, não só a mais recente. Janela limitada a 6 pra não inflar o prompt
+ * numa pergunta que navega muitos datasets sem relação com o join em questão.
+ */
+const tabelasDescritas: string[] = [];
+const JANELA_TABELAS_DESCRITAS = 6;
 
 const FERRAMENTAS = [
   {
@@ -162,11 +177,29 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
   if (name === "descrever_tabela") {
     const cols = colunasDe(arg.tabela ?? "");
     if (!cols) return erro(`Tabela '${arg.tabela}' não existe. Chame listar_tabelas do dataset.`);
-    const dicas = dicasDeJoin([arg.tabela!]);
+    // A tabela anterior na sessão, ANTES de empurrar a atual — é o par mais
+    // provável de ser o join que o modelo está investigando (descreve A,
+    // depois descreve B pra montar o ON entre as duas).
+    const anterior = tabelasDescritas[tabelasDescritas.length - 1];
+    if (!tabelasDescritas.includes(arg.tabela!)) {
+      tabelasDescritas.push(arg.tabela!);
+      if (tabelasDescritas.length > JANELA_TABELAS_DESCRITAS) tabelasDescritas.shift();
+    }
+    const dicas = dicasDeJoin(tabelasDescritas);
+    // backlog.md item 12 — a checagem que hoje só roda DEPOIS de uma SQL com
+    // ON escrito voltar zero linhas (juncoesSemPonte, portao.ts), aqui roda
+    // ANTES de qualquer SQL: se a tabela recém-descrita e a anterior não têm
+    // nenhuma coluna com o mesmo conceito, avisa já.
+    const colsAnterior = anterior && anterior !== arg.tabela ? colunasDe(anterior) : null;
+    const avisoJuncao = colsAnterior && semColunaComum(
+      anterior!, colsAnterior.map((c) => c.name),
+      arg.tabela!, cols.map((c) => c.name),
+    ) ? avisoSemColunaComum(anterior!, arg.tabela!) : "";
     return texto(
       `${arg.tabela} — ${cols.length} colunas${textoFaixa(arg.tabela!)}\n` +
       cols.map((c) => `  ${c.name}: ${c.type}`).join("\n") +
-      (dicas ? `\n\n${dicas}` : ""),
+      (dicas ? `\n\n${dicas}` : "") +
+      (avisoJuncao ? `\n\n${avisoJuncao}` : ""),
     );
   }
 

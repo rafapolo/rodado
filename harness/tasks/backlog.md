@@ -765,6 +765,46 @@ reconhece a ponte curada `id_municipio_gasto`) e `assinaturaJuncao` (2 casos:
 mesma junção com cosmético diferente tem assinatura igual; junção genuinamente
 diferente tem assinatura diferente). `bun test harness/`: 108 passam.
 
+### Continuação 2026-09-04 — a dica virou proativa, não só reativa
+
+Os 3 consertos acima disparam DEPOIS que uma SQL com `ON` já rodou e voltou
+zero linhas — ganho real (turno 74→27), mas ainda gastam turnos. Faltava a
+metade de antes da primeira SQL: `dicasDeJoin()` (`pontes.ts`) já foi
+desenhada pra comparar duas tabelas (o aviso "JOIN — estas tabelas..." só
+liga com `tabelas.length > 1`), mas `descrever_tabela` (`mcp.ts`) sempre
+chamava com um array de um elemento — o modelo descreve uma tabela por vez,
+então a dica nunca disparava na prática. Bug de fiação, não de desenho;
+achado revisando este item, não em rodada nova.
+
+**Dois consertos, ambos em `mcp.ts`/`pontes.ts`, nenhum no portão:**
+
+1. `mcp.ts` passa a lembrar as últimas `JANELA_TABELAS_DESCRITAS` (6) tabelas
+   descritas nesta pergunta (mesmo padrão de estado por processo do
+   disjuntor) e chama `dicasDeJoin` com a lista inteira, não só a mais
+   recente — a dica que já existia começa a aparecer de verdade a partir da
+   2ª tabela descrita.
+2. `semColunaComum()` + `avisoSemColunaComum()`, novas em `pontes.ts`: como
+   ainda não existe um `ON` pra examinar (isso é `juncoesSemPonte`, que
+   continua rodando depois da SQL), o sinal disponível é por TABELA, não por
+   par de colunas — entre as colunas de A e as de B, alguma bate em conceito
+   (ponte curada ou chave canônica)? `descrever_tabela` compara a tabela
+   recém-descrita com a anterior na sessão e, se não bate nenhuma, anexa o
+   aviso explícito na resposta — mesma tabela do caso morto, confirmado ao
+   vivo: `semColunaComum(emendas.microdados, licitacao_item)` → `true`
+   (emendas só tem `sigla_uf_gasto`/`ano_emenda`, sem bridge nem nome
+   canônico; licitacao_item não tem `id_municipio` nem `sigla_uf`). Controle
+   negativo conferido — `br_ms_sim.microdados` × `br_bd_diretorios_brasil.
+   municipio` (ambas têm `sigla_uf`) → `false`, sem falso positivo.
+
+Efeito esperado: o modelo veria o aviso ao descrever a 2ª tabela, no turno
+~20 do caso morto, em vez de precisar rodar SQL nenhuma pra descobrir —
+turno 27 (disjuntor) vira o teto, não mais o caminho normal. **Não testado
+rodando de novo pelo laço agêntico** — mesma ressalva do parágrafo acima,
+custa 10-40 min de beelink; fica pra quando o item 2 rodar de novo.
+
+`bun test harness/`: 109 de 110 (mesma falha pré-existente do item 13,
+`br_ibama_embargos`, não relacionada).
+
 ## 13. Resposta final sem consulta nenhuma — 467 aprovado no lugar de 789 ✅ fechado 2026-09-04
 
 Achado ao vivo testando `THINKING=1` (não era o que se procurava). Pergunta
