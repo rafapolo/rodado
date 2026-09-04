@@ -6,7 +6,7 @@
 import { expect, test, describe } from "bun:test";
 import {
   portao, checaCitacaoTabela, alertasDeSanidade,
-  juncoesSemPonte, mensagemSemPonte, assinaturaJuncao,
+  juncoesSemPonte, mensagemSemPonte, assinaturaJuncao, checaExecutouConsulta,
 } from "./portao.ts";
 
 describe("camada read-only (sqlguard)", () => {
@@ -312,6 +312,22 @@ describe("assinaturaJuncao — detecta a mesma junção repetida com cosmético 
     const a = "SELECT COUNT(*) AS n FROM br_ms_sim.microdados WHERE ano = 2020";
     const b = "SELECT COUNT(*) AS n FROM br_ms_sinasc.microdados WHERE ano = 2020";
     expect(assinaturaJuncao(a)).not.toBe(assinaturaJuncao(b));
+  });
+});
+
+describe("checaExecutouConsulta — a resposta sem SQL nenhuma (467 vs 789)", () => {
+  // Achado ao vivo 2026-09-04, testando THINKING=1: o modelo explorou schema,
+  // nunca chamou `consultar`, e `revisar_resposta` aprovou 467 óbitos
+  // inventados (o real, já verificado várias vezes neste projeto, é 789).
+  test("rejeita quando nenhuma consulta com resultado rodou ainda", () => {
+    const v = checaExecutouConsulta(0);
+    expect(v.ok).toBe(false);
+    expect(v.camada).toBe("sem-consulta");
+    expect(v.erro).toContain("consultar");
+  });
+  test("aprova depois de pelo menos uma consulta com linha real", () => {
+    expect(checaExecutouConsulta(1).ok).toBe(true);
+    expect(checaExecutouConsulta(5).ok).toBe(true);
   });
 });
 

@@ -23,8 +23,17 @@ BIN="${BIN:-~/llama.cpp/build/bin/llama-server}"
 # Medido 2026-09-02 com a flag certa: 2.140 ms frio, 530 ms quente, 6 tokens
 # gerados. Com raciocínio ligado o mesmo turno gera centenas de tokens de
 # pensamento a ~13 t/s e estoura — o histórico do harness é 20,9 s contra 4,7 s.
-# 10.000 ms deixa 19x de folga para o caso bom e ainda pega o caso ruim.
+# 10.000 ms deixa 19x de folga para o caso bom e ainda pega o caso ruim. Só se
+# aplica com THINKING=0 (default) — ver abaixo.
 LIMIAR_MS="${LIMIAR_MS:-10000}"
+# THINKING=1: sobe com --chat-template-kwargs enable_thinking:true, pra medir
+# o modelo raciocinando de propósito (ex.: testar se ele evita repetir uma
+# junção errada sozinho, sem o disjuntor externo de portao.ts — backlog.md
+# item 12). Default 0 preserva o comportamento de produção byte a byte.
+THINKING="${THINKING:-0}"
+THINK_ON=false
+[[ "$THINKING" == "1" || "$THINKING" == "true" ]] && THINK_ON=true
+THINK_KW="{\"enable_thinking\":$THINK_ON}"
 
 estado() {
   local cfg
@@ -79,7 +88,19 @@ aquece() {
   # 1. Campo de raciocínio na resposta. O llama.cpp separa o pensamento em
   #    `reasoning_content` quando `--reasoning-format` é deepseek/auto, e o
   #    deixa inline como `<think>` quando é `none` — por isso as três formas.
+  #    Com THINKING=1 a checagem inverte: agora É ESPERADO ver raciocínio, e a
+  #    ausência dele é que reprova (a flag não pegou).
+  local tem_raciocinio=false
   if grep -qE '"reasoning(_content)?"[[:space:]]*:' <<<"$resp" || grep -qF '<think' <<<"$resp"; then
+    tem_raciocinio=true
+  fi
+  if [[ "$THINK_ON" == "true" ]]; then
+    if [[ "$tem_raciocinio" == "false" ]]; then
+      echo "REPROVADO: pedimos thinking LIGADO mas a resposta não trouxe raciocínio nenhum — a flag não pegou." >&2
+      return 1
+    fi
+    echo "  (thinking ligado — raciocínio presente, como esperado)"
+  elif [[ "$tem_raciocinio" == "true" ]]; then
     echo "REPROVADO: o servidor devolveu campo de raciocínio — thinking está LIGADO." >&2
     echo "Conserto: suba o llama-server com --chat-template-kwargs '{\"enable_thinking\":false}'." >&2
     echo "Não adianta --reasoning off nem reasoningEfforts no dsh: os dois passam por aplicados e não são." >&2
@@ -98,12 +119,16 @@ aquece() {
     echo "AVISO: resposta sem bloco timings — não dá para medir o turno. Confira à mão." >&2
     return 1
   fi
-  printf '  aquecimento: %s ms (limiar %s), cache_n=%s\n' "$tot" "$LIMIAR_MS" "${cache:-?}"
-  if (( tot > LIMIAR_MS )); then
-    echo "REPROVADO: turno de aquecimento em ${tot} ms, acima do limiar de ${LIMIAR_MS} ms." >&2
-    echo "É a assinatura de raciocínio ligado (20,9 s contra 4,7 s medidos). Suba com" >&2
-    echo "--chat-template-kwargs '{\"enable_thinking\":false}' e rode de novo." >&2
-    return 1
+  if [[ "$THINK_ON" == "true" ]]; then
+    printf '  aquecimento: %s ms (sem teto — thinking ligado é esperado ser bem mais lento), cache_n=%s\n' "$tot" "${cache:-?}"
+  else
+    printf '  aquecimento: %s ms (limiar %s), cache_n=%s\n' "$tot" "$LIMIAR_MS" "${cache:-?}"
+    if (( tot > LIMIAR_MS )); then
+      echo "REPROVADO: turno de aquecimento em ${tot} ms, acima do limiar de ${LIMIAR_MS} ms." >&2
+      echo "É a assinatura de raciocínio ligado (20,9 s contra 4,7 s medidos). Suba com" >&2
+      echo "--chat-template-kwargs '{\"enable_thinking\":false}' e rode de novo." >&2
+      return 1
+    fi
   fi
   # cache_n=0 no 2º turno com corpo idêntico significa prefixo instável: a
   # rodada segue correta e fica ~7x mais lenta, sem nada no log.
@@ -161,12 +186,12 @@ FLAG_TEMP=""
 FLAG_LOG=""
 [[ "${LOGPROMPTS:-0}" == "1" ]] && FLAG_LOG="--verbose --log-prompts-dir /tmp/llmlogs"
 
-echo "subindo: -c $CTX -np $SLOTS  (thinking off, KV em f16)${FLAG_JINJA:+, $FLAG_JINJA}${FLAG_TEMP:+, $FLAG_TEMP}${FLAG_LOG:+, $FLAG_LOG}"
+echo "subindo: -c $CTX -np $SLOTS  (thinking $([[ "$THINK_ON" == "true" ]] && echo LIGADO || echo off), KV em f16)${FLAG_JINJA:+, $FLAG_JINJA}${FLAG_TEMP:+, $FLAG_TEMP}${FLAG_LOG:+, $FLAG_LOG}"
 [[ -n "$FLAG_LOG" ]] && ssh "$HOST" "mkdir -p /tmp/llmlogs"
 # Cada flag é medida, não gosto — ver harness/README.md.
 ssh "$HOST" "setsid $BIN -m $MODELO \
   -t 8 -c $CTX -np $SLOTS $FLAG_JINJA $FLAG_TEMP $FLAG_LOG \
-  --chat-template-kwargs '{\"enable_thinking\":false}' \
+  --chat-template-kwargs '$THINK_KW' \
   --host 127.0.0.1 --port $PORTA < /dev/null > /tmp/srv.log 2>&1 & disown" || true
 
 for _ in $(seq 1 60); do
