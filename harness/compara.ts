@@ -1,11 +1,11 @@
 /**
- * dsh+MCP contra pipeline fixo, nas MESMAS perguntas.
+ * harness (agente.ts + MCP) contra pipeline fixo, nas MESMAS perguntas.
  *
  *     bun harness/compara.ts <arquivo-de-perguntas>
  *
  * A pergunta que isto responde: o laço agêntico paga por si? Os dois caminhos
  * usam o mesmo modelo, o mesmo portão e o mesmo beelink. O que muda é quem
- * decide a sequência — o modelo (dsh) ou o código (laco.ts).
+ * decide a sequência — o modelo (agente.ts) ou o código (laco.ts).
  *
  * Roda um de cada vez: os dois disputam o mesmo llama-server e medir em paralelo
  * falsearia o tempo dos dois.
