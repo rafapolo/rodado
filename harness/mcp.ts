@@ -24,6 +24,7 @@ import { listaDatasets, tabelasDe, colunasDe, resolveDataset } from "./catalogo.
 import {
   portao, checaExplain, alertasDeSanidade, faixasCitadas, checaCitacaoTabela,
   juncoesSemPonte, mensagemSemPonte, assinaturaJuncao, checaExecutouConsulta,
+  checaDescritaAntes,
 } from "./portao.ts";
 import { dicasDeJoin, semColunaComum, avisoSemColunaComum } from "./pontes.ts";
 import { runSqlSsh } from "./beelink.ts";
@@ -83,6 +84,45 @@ let consultasComResultado = 0;
 const tabelasDescritas: string[] = [];
 const JANELA_TABELAS_DESCRITAS = 6;
 
+/**
+ * Curto-circuito idempotente — `tasks/ferramentas_claude_code.md`, proposta 5.
+ *
+ * A classe de desperdício mais cara medida no head-to-head de 2026-09-04: 5 das
+ * 21 chamadas da sessão `53ac1869` re-obtiveram schema que o modelo já tinha
+ * (`SELECT * … LIMIT 1` e `PRAGMA table_info` de tabelas descritas nos passos 3
+ * e 8), sendo TRÊS byte-idênticas entre si. Ele não estava confuso: nada no
+ * diálogo lembrava que a informação já estava em mãos.
+ *
+ * É o análogo do `Read` do Claude Code dizer "do NOT re-read a file you just
+ * edited" — instrução que só é honesta porque o lado do servidor de fato sabe.
+ * Aqui o servidor sabe, então nem precisa pedir: devolve o mesmo resultado, diz
+ * que é repetição, e **não gasta a ida ao beelink**.
+ *
+ * Chave é a SQL normalizada só em espaço em branco — não em semântica. Duas
+ * consultas diferentes que fazem a mesma coisa continuam ambas executando; o
+ * alvo é a repetição literal, que é a que foi medida e a única com risco zero.
+ */
+const consultasFeitas = new Map<string, string>();
+const normalizaSql = (s: string) => s.trim().replace(/\s+/g, " ").toLowerCase();
+
+/** Proposta 1 do mesmo documento — ver o comentário no ponto de uso, em
+ *  `consultar`. Desligada por padrão por falta de caso observado. */
+const EXIGE_DESCRICAO = Bun.env.HARNESS_EXIGE_DESCRICAO === "1";
+
+/**
+ * Proposta 3 (`tasks/ferramentas_claude_code.md`) — estado que hoje só é
+ * descoberto tarde: o orçamento de consultas só aparece quando estoura, e a
+ * repetição de junção só falava na LIMIAR_REPETICAO-ésima vez. O que falta não
+ * é mais checagem — é o mesmo estado, que já existe em memória, GRUDADO no
+ * resultado desde a 1ª chamada. Não toca no prefixo (viaja no retorno, que já
+ * ia voltar) e não custa turno (o modelo lê, não precisa perguntar).
+ */
+function estadoFooter(): string {
+  const partes = [`consultas: ${totalConsultas}/${ORCAMENTO_CONSULTAS}`];
+  if (tabelasDescritas.length) partes.push(`tabelas descritas: ${tabelasDescritas.join(", ")}`);
+  return `[estado] ${partes.join(" · ")}`;
+}
+
 const FERRAMENTAS = [
   {
     name: "listar_datasets",
@@ -103,11 +143,20 @@ const FERRAMENTAS = [
   {
     name: "descrever_tabela",
     description:
-      "Colunas e tipos de uma tabela, mais as pontes de join já conferidas para ela.",
+      "Colunas e tipos de uma tabela, mais as pontes de join já conferidas para ela. Para " +
+      "montar um JOIN, descreva as duas de uma vez com 'tabelas' — a dica de junção sai na " +
+      "mesma resposta. O resultado não muda dentro desta pergunta — não chame duas vezes " +
+      "para a mesma tabela.",
     inputSchema: {
       type: "object",
-      properties: { tabela: { type: "string", description: "ex.: br_ms_sim.microdados" } },
-      required: ["tabela"],
+      properties: {
+        tabela: { type: "string", description: "ex.: br_ms_sim.microdados — uma só" },
+        tabelas: {
+          type: "array",
+          items: { type: "string" },
+          description: "duas ou mais — use quando o objetivo é montar JOIN entre elas",
+        },
+      },
     },
   },
   {
@@ -128,7 +177,9 @@ const FERRAMENTAS = [
       "Executa uma consulta DuckDB read-only no espelho. REGRAS: tabela grande exige filtro " +
       "de partição (ano, sigla_uf); escreva sempre dataset.tabela; consulta sem agregação " +
       "precisa de LIMIT; CID-10 é guardado sem ponto, use substr(col,1,3) para faixa. " +
-      "Se a consulta for rejeitada, a resposta diz o que corrigir — reescreva e chame de novo.",
+      "Se a consulta for rejeitada, a resposta diz o que corrigir — reescreva e chame de novo. " +
+      "Não reenvie a mesma junção variando só SELECT, WHERE ou LIMIT — se voltou zero linhas, " +
+      "o que precisa mudar é o ON.",
     inputSchema: {
       type: "object",
       properties: { sql: { type: "string", description: "SELECT ou WITH" } },
@@ -154,9 +205,43 @@ servidor.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: FERRAME
 const texto = (s: string) => ({ content: [{ type: "text" as const, text: s }] });
 const erro = (s: string) => ({ content: [{ type: "text" as const, text: s }], isError: true });
 
+/**
+ * Proposta 6 (`tasks/ferramentas_claude_code.md`) — argumento não declarado é
+ * erro, não silêncio.
+ *
+ * Medido: a chamada 6 da sessão `53ac1869` foi
+ * `listar_datasets({"dataset":"br_transferegov"})`. O schema não tem `dataset`,
+ * o argumento foi ignorado calado e voltaram os 212 datasets — resposta grande,
+ * plausível e inútil, que não corrige o modelo e ainda enche o contexto. Ele
+ * queria `listar_tabelas`.
+ *
+ * A dica sai do próprio inventário: se outra ferramenta declara a chave que
+ * veio sobrando, é quase certo que era essa a intenção.
+ */
+function checaArgumentos(nome: string, arg: Record<string, unknown>): string | null {
+  const def = FERRAMENTAS.find((f) => f.name === nome);
+  if (!def) return null;
+  const aceitas = new Set(Object.keys(def.inputSchema.properties ?? {}));
+  const sobrando = Object.keys(arg).filter((k) => !aceitas.has(k));
+  if (!sobrando.length) return null;
+  const dicas = sobrando.map((k) => {
+    const outra = FERRAMENTAS.find(
+      (f) => f.name !== nome && Object.keys(f.inputSchema.properties ?? {}).includes(k),
+    );
+    return outra ? `'${k}' (é argumento de ${outra.name} — era essa que você queria?)` : `'${k}'`;
+  });
+  return (
+    `${nome} não aceita ${dicas.join(", ")}. ` +
+    (aceitas.size ? `Aceita: ${[...aceitas].join(", ")}.` : "Não aceita argumento nenhum.")
+  );
+}
+
 servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
   const { name, arguments: a } = req.params;
   const arg = (a ?? {}) as Record<string, string>;
+
+  const argRuim = checaArgumentos(name, arg);
+  if (argRuim) return erro(argRuim);
 
   if (name === "listar_datasets") return texto(listaDatasets().join("\n"));
 
@@ -175,8 +260,54 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
   }
 
   if (name === "descrever_tabela") {
+    // Proposta 2 (tasks/ferramentas_claude_code.md): a forma plural existe pra
+    // que o par que vai virar JOIN chegue descrito na MESMA chamada — dicasDeJoin
+    // foi desenhada pra comparar duas tabelas, mas o modelo sempre descrevia uma
+    // por vez, e a dica nunca disparava (backlog.md item 12, ponto 2). A forma
+    // singular abaixo continua idêntica, como rede de segurança pra quando o
+    // modelo ainda descrever uma de cada vez.
+    const tabelasArg = (arg as unknown as { tabelas?: unknown }).tabelas;
+    if (Array.isArray(tabelasArg) && tabelasArg.length) {
+      const lista = tabelasArg.map(String);
+      const blocos = lista.map((t) => {
+        const cols = colunasDe(t);
+        if (!cols) return `${t}: não existe. Chame listar_tabelas do dataset.`;
+        const repetida = tabelasDescritas.includes(t);
+        if (!repetida) {
+          tabelasDescritas.push(t);
+          if (tabelasDescritas.length > JANELA_TABELAS_DESCRITAS) tabelasDescritas.shift();
+        }
+        return (
+          (repetida
+            ? `(você já descreveu ${t} nesta pergunta — o schema não muda; abaixo é a ` +
+              `mesma resposta.)\n\n`
+            : "") +
+          `${t} — ${cols.length} colunas${textoFaixa(t)}\n` +
+          cols.map((c) => `  ${c.name}: ${c.type}`).join("\n")
+        );
+      });
+      const dicas = dicasDeJoin(tabelasDescritas);
+      const avisos: string[] = [];
+      for (let i = 0; i < lista.length - 1; i++) {
+        const a = lista[i]!, b = lista[i + 1]!;
+        const colsA = colunasDe(a), colsB = colunasDe(b);
+        if (!colsA || !colsB) continue;
+        if (semColunaComum(a, colsA.map((c) => c.name), b, colsB.map((c) => c.name))) {
+          avisos.push(avisoSemColunaComum(a, b));
+        }
+      }
+      return texto(
+        blocos.join("\n\n") +
+        (dicas ? `\n\n${dicas}` : "") +
+        (avisos.length ? `\n\n${avisos.join("\n")}` : ""),
+      );
+    }
+
     const cols = colunasDe(arg.tabela ?? "");
     if (!cols) return erro(`Tabela '${arg.tabela}' não existe. Chame listar_tabelas do dataset.`);
+    // Proposta 5: repetir descrever_tabela é grátis em rede mas não em turno —
+    // o aviso é o que impede a próxima repetição, já que o conteúdo é idêntico.
+    const repetida = tabelasDescritas.includes(arg.tabela!);
     // A tabela anterior na sessão, ANTES de empurrar a atual — é o par mais
     // provável de ser o join que o modelo está investigando (descreve A,
     // depois descreve B pra montar o ON entre as duas).
@@ -196,6 +327,11 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
       arg.tabela!, cols.map((c) => c.name),
     ) ? avisoSemColunaComum(anterior!, arg.tabela!) : "";
     return texto(
+      (repetida
+        ? `(você já descreveu ${arg.tabela} nesta pergunta — o schema não muda; ` +
+          `abaixo é a mesma resposta. Se o que falta é ver VALOR de exemplo, ` +
+          `consulte projetando as colunas que interessam.)\n\n`
+        : "") +
       `${arg.tabela} — ${cols.length} colunas${textoFaixa(arg.tabela!)}\n` +
       cols.map((c) => `  ${c.name}: ${c.type}`).join("\n") +
       (dicas ? `\n\n${dicas}` : "") +
@@ -229,6 +365,32 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     const v = portao(sql);
     if (!v.ok) return erro(`REJEITADA (${v.camada}): ${v.erro}`);
 
+    // Proposta 1 — DESLIGADA por padrão, de propósito. A justificativa original
+    // (economizar as idas ao beelink dos chutes de nome) não sobreviveu à
+    // releitura dos resultados no log: tabela inexistente já é rejeitada de
+    // graça pela camada `tabela`. Sobra o caso de tabela que existe e nunca foi
+    // olhada — real, mas SEM falha observada atrás, e a regra da casa é que
+    // camada especulativa não entra: uma camada errada rejeita trabalho legítimo
+    // tão calada quanto o bug que ela queria pegar. Implementada e testada
+    // (`checaDescritaAntes`, 5 casos), esperando seu próprio caso medido.
+    if (EXIGE_DESCRICAO) {
+      const d = checaDescritaAntes(sql, tabelasDescritas);
+      if (!d.ok) return erro(`REJEITADA (${d.camada}): ${d.erro}`);
+    }
+
+    // Proposta 5 — repetição literal não vai ao beelink. Devolve o que já
+    // devolveu, dizendo que é o mesmo, pra romper o ciclo em vez de alimentá-lo.
+    const chave = normalizaSql(sql);
+    const anterior = consultasFeitas.get(chave);
+    if (anterior !== undefined) {
+      return texto(
+        `(consulta IDÊNTICA a uma que você já rodou nesta pergunta — não foi ` +
+        `executada de novo, o resultado é o mesmo. Se ele não respondeu o que ` +
+        `você precisa, mude a consulta: outra coluna, outro recorte, outra ` +
+        `tabela — repetir não muda o resultado.)\n\n${anterior}\n\n${estadoFooter()}`,
+      );
+    }
+
     const ex = await checaExplain(sql, runSqlSsh);
     if (!ex.ok) return erro(`REJEITADA (explain): ${ex.erro}`);
 
@@ -253,17 +415,25 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
       // acima soa como "você errou o tipo" e não é isso — é que a chave pode
       // nem existir. Diz isso explicitamente em vez de convidar a tentar de novo.
       if (semPonte.length) partes.push(mensagemSemPonte(semPonte));
-      // E quando é a MESMA junção repetindo, nem a mensagem mais clara ajuda —
-      // o que falta é parar, não explicar melhor.
-      if (repeticoes >= LIMIAR_REPETICAO) {
+      // Proposta 3: o placar da MESMA junção aparece desde a 2ª tentativa, não
+      // só na LIMIAR_REPETICAO-ésima — "×2" já é sinal de reincidência, esperar
+      // a 3ª pra falar é deixar o modelo repetir de olhos fechados.
+      if (repeticoes > 1) {
         partes.push(
-          `⚠ Esta MESMA junção (mesmo FROM/JOIN/ON — só o resto da consulta mudou) já ` +
-          `devolveu zero linhas ${repeticoes} vezes nesta pergunta. Pare de tentar variações ` +
-          `dela: troque a tabela ou a coluna de junção por algo estruturalmente diferente, ` +
-          `ou conclua que esta pergunta não tem resposta direta com os dados disponíveis e ` +
-          `diga isso — repetir não vai fazer a linha aparecer.`,
+          `Esta MESMA junção (mesmo FROM/JOIN/ON — só o resto da consulta mudou) já ` +
+          `devolveu zero linhas ${repeticoes}x nesta pergunta.`,
         );
       }
+      // E quando é a MESMA junção repetindo demais, nem a mensagem mais clara
+      // ajuda — o que falta é parar, não explicar melhor.
+      if (repeticoes >= LIMIAR_REPETICAO) {
+        partes.push(
+          `⚠ Pare de tentar variações desta junção: troque a tabela ou a coluna de junção ` +
+          `por algo estruturalmente diferente, ou conclua que esta pergunta não tem resposta ` +
+          `direta com os dados disponíveis e diga isso — repetir não vai fazer a linha aparecer.`,
+        );
+      }
+      partes.push(estadoFooter());
       return erro(partes.join("\n\n"));
     }
     // Chegou aqui com linha de verdade — a resposta final poderá se apoiar em
@@ -274,7 +444,9 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     // rejeita, mas o modelo só corrige o que vê.
     const alertas = alertasDeSanidade(sql, capado.rows);
     const prefixo = alertas.length ? alertas.map((a) => `⚠ ${a}`).join("\n") + "\n\n" : "";
-    return texto(prefixo + JSON.stringify(capado));
+    const saida = prefixo + JSON.stringify(capado);
+    consultasFeitas.set(chave, saida);
+    return texto(`${saida}\n\n${estadoFooter()}`);
   }
 
   if (name === "revisar_resposta") {

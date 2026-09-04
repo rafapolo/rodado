@@ -63,7 +63,7 @@ function ctesDefinidos(sql: string): Set<string> {
   return out;
 }
 
-function tabelasCitadas(sql: string): string[] {
+export function tabelasCitadas(sql: string): string[] {
   const ctes = ctesDefinidos(sql);
   const out = new Set<string>();
   for (const [, ref] of sql.matchAll(
@@ -784,6 +784,39 @@ const ERROS_DUCKDB = [
  * existir sem pelo menos uma consulta que voltou linha — o próprio trabalho
  * deste harness é apurar contra o mirror, não redigir de memória.
  */
+/**
+ * "Olhou antes de tocar" — o análogo do `Edit` do Claude Code exigir um `Read`
+ * antes: a pré-condição é do SERVIDOR, não um conselho na descrição.
+ *
+ * Medido no head-to-head de 2026-09-04 (`tasks/ferramentas_claude_code.md`):
+ * das 21 chamadas da sessão `53ac1869`, três (15, 16, 17) inventaram
+ * `_rodado_metadata` — tabela que existe no `mcp_server.py` e NÃO no contrato
+ * de 6 ferramentas do harness. Cada uma custou uma ida ao beelink para
+ * devolver erro. Uma tabela que o modelo nunca descreveu é uma tabela sobre a
+ * qual ele está chutando.
+ *
+ * Roda DEPOIS de `portao()` de propósito: assim uma tabela que não existe no
+ * catálogo recebe a mensagem certa da camada 2 ("não existe, chame
+ * listar_tabelas") em vez desta, que fala de descrever. As duas são locais, a
+ * ordem só escolhe qual ensina melhor.
+ */
+export function checaDescritaAntes(sql: string, descritas: Iterable<string>): Veredito {
+  const vistas = new Set([...descritas].map((t) => t.toLowerCase()));
+  const faltando = tabelasCitadas(sql)
+    .filter((r) => r.includes("."))
+    .filter((r) => !vistas.has(r.toLowerCase()));
+  if (!faltando.length) return { ok: true };
+  return {
+    ok: false,
+    camada: "nao-descrita",
+    erro:
+      `Você ainda não chamou descrever_tabela para: ${faltando.join(", ")}. ` +
+      `Descreva antes de consultar — é local, não custa ida ao banco, e devolve as ` +
+      `colunas reais (mais as pontes de junção conferidas). Consultar sem isso é ` +
+      `chutar nome de coluna, e o erro só volta depois de gastar a consulta.`,
+  };
+}
+
 export function checaExecutouConsulta(consultasComResultado: number): Veredito {
   if (consultasComResultado > 0) return OK;
   return {

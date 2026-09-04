@@ -53,6 +53,10 @@ test("capRows corta por número de linhas", () => {
   expect(out.returned).toBe(10);
   expect(out.total).toBe(50);
   expect(out.truncated).toBe(true);
+  // Achado em tasks/ferramentas_claude_code.md: o corte por linhas também
+  // precisa ensinar — só o de tamanho tinha `note` antes deste teste.
+  expect(out.note).toBeDefined();
+  expect(out.note).toContain("50");
 });
 
 test("capRows corta linha larga por tamanho", () => {
