@@ -90,6 +90,35 @@ arquivos do mesmo dataset. Zip com **0** membros CSV é sinal de baixar de
 novo antes de descartar como corrompido — pode ter sido um download
 truncado, não necessariamente um problema na fonte.
 
+## 6. `source_url` preenchida na proveniência, não só `source_name`
+
+`build_metadata_catalog.py` extrai `source_url` da linha do `done.md`/
+`datasets_to_scrap.md` por regex (`URL_RE` exige esquema `https://` explícito;
+sem isso cai num fallback mais fraco por hostname entre crase, que só pega
+hostname puro, sem caminho). Um `` `dominio.gov.br/caminho` `` sem `https://`
+na frente não vira URL — a coluna fica vazia. Escreva a URL completa com
+esquema na nota de proveniência, sempre.
+
+**Duas armadilhas achadas ao vivo em 2026-09-04:**
+
+1. **Linha velha e stale em `datasets_to_scrap.md` vence a linha nova em
+   `done.md`.** ANEEL tinha uma linha antiga `blocked` apontando pro domínio
+   morto `dados.aneel.gov.br` (Tier 1a) que continuou lá depois do dataset
+   ter sido raspado com sucesso e ganhar linha própria em `done.md` — o
+   `source_url` do catálogo saiu errado (domínio morto) até a linha velha ser
+   removida. Sempre que um item sai de `blocked`/`deferred-api_key` para
+   `done`, a linha velha em `datasets_to_scrap.md` precisa **sair do
+   arquivo**, não só ganhar uma linha nova em `done.md` ao lado dela.
+2. **87 tabelas raspadas independentemente (fora do espelho Base dos Dados)
+   seguem sem `source_url`** no catálogo — pré-existente, não introduzido
+   nesta rodada, não corrigido (precisaria pesquisar a URL original de cada
+   uma). Checar com:
+   ```sql
+   SELECT dataset, "table" FROM _rodado_metadata
+   WHERE (source_url IS NULL OR source_url = '') AND source <> 'view_only'
+     AND source_name NOT LIKE 'Base dos Dados%';
+   ```
+
 ## Ordem completa, resumida
 
 ```
