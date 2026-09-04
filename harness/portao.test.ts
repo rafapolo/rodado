@@ -57,6 +57,28 @@ describe("camada codificação — o erro de 8% que passa plausível", () => {
     );
     expect(v.ok).toBe(true);
   });
+  // Achado ao vivo 2026-09-04: benchmark pós-migração pra agente.ts pediu
+  // "suicídios RJ 2020" (X60-X84, esperado 789) e voltou 128 — SQL real da
+  // sessão, LIKE encadeado só até X69, esquecendo X70-X84 inteiro.
+  test("REJEITA LIKE encadeado sobre CID (enumeração manual incompleta)", () => {
+    const v = portao(
+      "SELECT count(*) FROM br_ms_sim.microdados WHERE ano = 2020 AND sigla_uf = 'RJ' " +
+      "AND causa_basica LIKE 'X60%' OR causa_basica LIKE 'X61%' OR causa_basica LIKE 'X62%' " +
+      "OR causa_basica LIKE 'X63%' OR causa_basica LIKE 'X64%' OR causa_basica LIKE 'X65%' " +
+      "OR causa_basica LIKE 'X66%' OR causa_basica LIKE 'X67%' OR causa_basica LIKE 'X68%' " +
+      "OR causa_basica LIKE 'X69%'",
+    );
+    expect(v.ok).toBe(false);
+    expect(v.camada).toBe("codificacao");
+    expect(v.erro).toContain("substr");
+  });
+  test("aceita um único LIKE contra CID (código específico, não faixa)", () => {
+    const v = portao(
+      "SELECT COUNT(*) AS n FROM br_ms_sim.microdados " +
+      "WHERE ano = 2020 AND sigla_uf = 'RJ' AND causa_basica LIKE 'X60%'",
+    );
+    expect(v.ok).toBe(true);
+  });
 });
 
 describe("camada tabela — o erro mais caro de modelo pequeno", () => {
