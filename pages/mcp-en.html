@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>rodado — MCP server for Brazilian public data</title>
-<meta name="description" content="849 Brazilian public tables across 203 datasets (RAIS, SIM, TSE, CGU, IBGE, INEP...) organized into 43 thematic domains and exposed as tools on a real MCP server.">
+<meta name="description" content="1022 Brazilian public tables across 229 datasets (RAIS, SIM, TSE, CGU, IBGE, INEP...) organized into 43 thematic domains and exposed as tools on a real MCP server.">
 <!-- seo:start (gerado por scripts/gera_seo.py — não editar à mão) -->
 <link rel="canonical" href="https://rodado.xyz/mcp-en.html">
 <link rel="alternate" hreflang="en" href="https://rodado.xyz/mcp-en.html">
@@ -14,14 +14,14 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://rodado.xyz/mcp-en.html">
 <meta property="og:title" content="rodado — MCP server for Brazilian public data">
-<meta property="og:description" content="849 Brazilian public tables across 203 datasets (RAIS, SIM, TSE, CGU, IBGE, INEP...) organized into 43 thematic domains and exposed as tools on a real MCP server.">
+<meta property="og:description" content="1022 Brazilian public tables across 229 datasets (RAIS, SIM, TSE, CGU, IBGE, INEP...) organized into 43 thematic domains and exposed as tools on a real MCP server.">
 <meta property="og:image" content="https://rodado.xyz/assets/og-en.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="rodado — MCP server for Brazilian public data">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="rodado — MCP server for Brazilian public data">
-<meta name="twitter:description" content="849 Brazilian public tables across 203 datasets (RAIS, SIM, TSE, CGU, IBGE, INEP...) organized into 43 thematic domains and exposed as tools on a real MCP server.">
+<meta name="twitter:description" content="1022 Brazilian public tables across 229 datasets (RAIS, SIM, TSE, CGU, IBGE, INEP...) organized into 43 thematic domains and exposed as tools on a real MCP server.">
 <meta name="twitter:image" content="https://rodado.xyz/assets/og-en.png">
 <link rel="icon" href="assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
@@ -75,7 +75,7 @@
         <span class="brand-tag">Data Catalog · Brazil</span>
       </div>
       <h1 class="page-title">Brazilian public-data catalog, served as an MCP server</h1>
-      <p class="lead">A thematic index over 849 Brazilian public tables — RAIS, SIM, TSE, CGU, IBGE, INEP and more — queryable directly with <strong>DuckDB</strong>. Each card below is a research theme; each row inside it is a table you can query.</p>
+      <p class="lead">A thematic index over 1022 Brazilian public tables — RAIS, SIM, TSE, CGU, IBGE, INEP and more — queryable directly with <strong>DuckDB</strong>. Each card below is a research theme; each row inside it is a table you can query.</p>
       <p class="lead-note">The catalog includes a growing set of independently-collected sources — international sanctions lists (EU, UN, OFAC, OpenSanctions), ICIJ Offshore Leaks, SICAF, SINAN Violência, Consumidor.gov.br, PGFN active debt and state Courts of Accounts — see the full catalog of these sources.</p>
       <div class="header-bottom">
         <div class="stats">
@@ -84,8 +84,8 @@
             <div class="stat-label">themes</div>
           </div>
           <div>
-            <div class="stat-num">849</div>
-            <div class="stat-label">tables across 203 datasets <span class="muted">· 100 highlighted below</span></div>
+            <div class="stat-num">1022</div>
+            <div class="stat-label">tables across 229 datasets <span class="muted">· 100 highlighted below</span></div>
           </div>
           <div>
             <div class="stat-num">Restricted</div>
@@ -110,10 +110,10 @@
       <p class="tools-desc">Eight MCP tools expose the catalog and the DuckDB mirror. Catalog table names work directly in SQL: when a table has no view in the database, the query is automatically rewritten against the local Parquet files.</p>
       <div class="tools-grid">
         <ul class="tools-list">
-          <li><code>list_datasets()</code> — all 203 datasets with table counts</li>
+          <li><code>list_datasets()</code> — all 229 datasets with table counts</li>
           <li><code>list_tables(dataset)</code> — a dataset's tables, with name suggestions</li>
           <li><code>describe_table(table)</code> — columns, types, descriptions and Parquet path</li>
-          <li><code>search_tables(query)</code> — semantic search over the 849 tables</li>
+          <li><code>search_tables(query)</code> — semantic search over the 1022 tables</li>
           <li><code>get_join_keys(column?)</code> — documented join keys across datasets</li>
           <li><code>run_sql(sql)</code> — read-only SQL (SELECT/WITH) on the DuckDB mirror</li>
           <li><code>consultar_cnpj(cnpj)</code> — company, branches and partners from the full registry</li>
