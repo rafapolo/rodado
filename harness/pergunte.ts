@@ -4,19 +4,18 @@
  *
  *     bun harness/pergunte.ts "Quantos óbitos por suicídio houve no RJ em 2020?"
  *
- * Passa pelo caminho agêntico (dsh + as ferramentas de harness/mcp.ts), que é o
- * que acerta: medido em 2026-09-02, agêntico 3/3 correto contra 0/3 do pipeline
- * fixo nas mesmas perguntas. O fixo é 14x mais rápido e erra — reporta um grupo
- * do GROUP BY como se fosse o total, devolve código de município em vez do nome,
- * e desiste depois de algumas rejeições em vez de iterar.
+ * Passa pelo caminho agêntico (`agente.ts` + as ferramentas de
+ * `harness/mcp.ts`), que é o que acerta: medido em 2026-09-02, agêntico 3/3
+ * correto contra 0/3 do pipeline fixo nas mesmas perguntas. O fixo é 14x mais
+ * rápido e erra — reporta um grupo do GROUP BY como se fosse o total, devolve
+ * código de município em vez do nome, e desiste depois de algumas rejeições
+ * em vez de iterar.
  *
  * Espere ~5 a 10 min por pergunta. O tempo está no laço, não em uma consulta
  * lenta: são 8 e poucos turnos de modelo a ~9 t/s de geração.
  */
 import { vivo } from "./modelo.ts";
-
-const RAIZ = new URL("..", import.meta.url).pathname;
-const PATCH = "harness/dsh/rodado.patch.yml";
+import { roda } from "./agente.ts";
 
 const pergunta = Bun.argv.slice(2).join(" ").trim();
 if (!pergunta) {
@@ -38,16 +37,10 @@ if (!await vivo()) {
 }
 
 const t0 = Date.now();
-const proc = Bun.spawn(["bunx", "dsh", "--profile", "headless", "--patch", PATCH, pergunta], {
-  cwd: RAIZ,
-  // O llama-server ignora o valor, mas o pi-ai exige a referência: sem ela o
-  // boot morre com "No API key for provider".
-  env: { ...process.env, HARNESS_LLM_KEY: process.env.HARNESS_LLM_KEY ?? "nao-usada" },
-  stdout: "inherit",
-  stderr: "inherit",
-  timeout: Number(Bun.env.HARNESS_TIMEOUT_MS ?? 2_400_000),
-  killSignal: "SIGKILL",
-});
-const code = await proc.exited;
-console.error(`\n[${((Date.now() - t0) / 60000).toFixed(1)} min]`);
-process.exit(code);
+const r = await roda(pergunta, { log: (s) => process.stdout.write(s) });
+console.error(`\n[${((Date.now() - t0) / 60000).toFixed(1)} min, ${r.turnos} turno(s)]`);
+if (r.interrompido) {
+  console.error("(laço interrompido por limite de turnos/tempo — ver HARNESS_MAX_TURNOS/HARNESS_TIMEOUT_MS)");
+  process.exit(1);
+}
+process.exit(0);

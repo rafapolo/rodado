@@ -1,14 +1,16 @@
 /**
- * Roda perguntas abertas pelo dsh e registra o que voltou.
+ * Roda perguntas abertas pelo laço agêntico (`agente.ts`) e registra o que
+ * voltou.
  *
  *     bun harness/lote.ts perguntas.txt
  *     bun harness/lote.ts --diff benchmarks/a.json benchmarks/b.json
  *
- * Cada pergunta é um processo `dsh --profile headless` novo, mas o cache de
- * prefixo vive no llama-server e sobrevive entre processos — medido: 16.397 de
- * 16.585 tokens vieram do cache já na primeira pergunta seguinte. Esse cache é
- * a diferença entre 6 min e ~40 min por caso e quebra em silêncio: a checagem
- * de prefill abaixo existe por isso.
+ * Cada pergunta chama `agente.roda()`, que sobe um processo `bun
+ * harness/mcp.ts` novo (o cliente MCP), mas o cache de prefixo vive no
+ * llama-server e sobrevive entre chamadas — medido: 16.397 de 16.585 tokens
+ * vieram do cache já na primeira pergunta seguinte. Esse cache é a diferença
+ * entre 6 min e ~40 min por caso e quebra em silêncio: a checagem de prefill
+ * abaixo existe por isso.
  *
  * Todo tempo registrado carrega o `-np`/`-c` que o produziu. Rodada 8: `-np 5`
  * levou o total de 20,9 para 15,2 min (−27%, não 5x) — sem a config no arquivo,
@@ -20,14 +22,13 @@ import {
   avisaPrefill, marcaDoLog, prefillsDesde, LIMIAR_PREFILL, confereBoot,
   type ConfigServidor,
 } from "./acerto.ts";
-
-const PATCH = "harness/dsh/rodado.patch.yml";
+import { roda as rodaAgente } from "./agente.ts";
 
 export interface Saida {
   pergunta: string;
   resposta: string;
   segundos: number;
-  /** o dsh terminou e produziu texto — NÃO quer dizer que o texto está certo */
+  /** o laço terminou e produziu texto — NÃO quer dizer que o texto está certo */
   respondeu: boolean;
   /** o texto contém o valor conferido, quando o caso traz um.
    *  `undefined` = não medível (sem gabarito, ou o esperado ecoa na pergunta) */
@@ -60,7 +61,7 @@ export interface Rodada {
  */
 export interface Caso { pergunta: string; esperado?: string }
 
-/** Uma tentativa isolada — um processo `dsh` do começo ao fim. */
+/** Uma tentativa isolada — uma chamada de `agente.roda()` do começo ao fim. */
 interface Tentativa {
   resposta: string;
   segundos: number;
@@ -71,38 +72,36 @@ interface Tentativa {
 
 /**
  * Quantas vezes tentar uma pergunta antes de desistir. backlog.md item 10:
- * medido 2026-09-03, 4 de 6 sessões reais terminaram com a chamada de
- * ferramenta do Gemma caindo como texto solto (formato nativo do modelo,
- * `<|tool_call>...<tool_call|>`, que o parser do llama-server às vezes não
- * reconhece) — o dsh não imprime nada nesse caso, então `respondeu` fica
- * `false` mesmo com `code === 0`. Não é erro de raciocínio: casos 1 e 5, com
- * sessões do mesmo tamanho, completaram normalmente — é probabilístico por
- * turno, então repetir a MESMA pergunta numa sessão `dsh` nova tem boa chance
- * de não bater o mesmo bug de novo. Não conserta a causa raiz (aberta,
+ * medido 2026-09-03 (ainda com o `dsh`), 4 de 6 sessões reais terminaram com
+ * a chamada de ferramenta do Gemma caindo como texto solto (formato nativo
+ * do modelo, `<|tool_call>...<tool_call|>`, que o parser do llama-server às
+ * vezes não reconhece) — a resposta ficava vazia mesmo sem erro de processo.
+ * Não é erro de raciocínio: casos 1 e 5, com sessões do mesmo tamanho,
+ * completaram normalmente — é probabilístico por turno, então repetir a
+ * MESMA pergunta numa sessão nova (novo cliente MCP, novo laço) tem boa
+ * chance de não bater o mesmo bug de novo. Não conserta a causa raiz (aberta,
  * bloqueando em `backlog.md`); é o workaround que torna a rodada usável
- * enquanto ela não fecha.
+ * enquanto ela não fecha — continua valendo com `agente.ts`, porque a causa é
+ * do parser de tool-call do `llama-server`, não do que chamava ele.
  */
 const MAX_TENTATIVAS = Number(Bun.env.HARNESS_TENTATIVAS ?? 3);
 
 async function rodaUmaVez(q: string): Promise<Tentativa> {
-  // O prefill não volta pelo stdout do dsh — cada pergunta é outro processo.
-  // A marca no log do llama-server é o que sobra para saber se o cache viveu.
+  // O prefill não vem no retorno de agente.roda() — cada pergunta sobe um
+  // cliente MCP novo. A marca no log do llama-server é o que sobra para saber
+  // se o cache viveu.
   const marca = await marcaDoLog();
   const t0 = Date.now();
-  const p = Bun.spawn(
-    ["bunx", "dsh", "--profile", "headless", "--patch", PATCH, q],
-    {
-      env: { ...process.env, HARNESS_LLM_KEY: "x" },
-      stdout: "pipe", stderr: "pipe",
-      timeout: 2_400_000, killSignal: "SIGKILL",
-    },
-  );
-  const texto = await new Response(p.stdout).text();
-  const err = await new Response(p.stderr).text();
-  const code = await p.exited;
+  let resposta = "";
+  let respondeu = false;
+  try {
+    const r = await rodaAgente(q);
+    resposta = r.resposta.slice(0, 4000);
+    respondeu = !r.interrompido && r.resposta.trim().length > 40;
+  } catch (e) {
+    resposta = String(e instanceof Error ? e.message : e).slice(0, 4000);
+  }
   const seg = (Date.now() - t0) / 1000;
-  const resposta = (texto.trim() || err.trim()).slice(0, 4000);
-  const respondeu = code === 0 && texto.trim().length > 40;
 
   const prefills = await prefillsDesde(marca);
   const prefillMax = prefills?.length ? Math.max(...prefills) : undefined;
@@ -132,7 +131,7 @@ export async function roda(
     let tentativas = 1;
     let segundos = tentativa.segundos;
     let prefillMax = tentativa.prefillMax;
-    // Retentativa: só quando o dsh terminou sem produzir NADA (item 10) — uma
+    // Retentativa: só quando o laço terminou sem produzir NADA (item 10) — uma
     // resposta que veio, mesmo errada, não se repete: é erro de raciocínio,
     // não do bug de parsing, e repetir esconderia o número real de acerto.
     while (!tentativa.respondeu && tentativas < MAX_TENTATIVAS) {
@@ -226,7 +225,7 @@ if (import.meta.main) {
     .map((l) => l.trim()).filter(Boolean)
     .map((l) => { const [p, e] = l.split("\t"); return { pergunta: p!.trim(), esperado: e?.trim() }; });
   const config = await configServidor();
-  console.log(`${casos.length} perguntas pelo dsh — ${rotuloConfig(config)}`);
+  console.log(`${casos.length} perguntas pelo laço agêntico — ${rotuloConfig(config)}`);
   if (!config) console.log("AVISO: sem a config do servidor, o TEMPO desta rodada não é comparável com nenhuma outra");
   console.log(`limiar de prefill: ${LIMIAR_PREFILL} tokens\n`);
 
