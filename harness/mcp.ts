@@ -85,6 +85,18 @@ const tabelasDescritas: string[] = [];
 const JANELA_TABELAS_DESCRITAS = 6;
 
 /**
+ * `harness/tasks/tabelas_hub.md` — achado ao vivo 2026-09-04, rodando T04-2 a
+ * terceira vez: `listar_datasets` (conteúdo 100% estático, não depende de
+ * nada da pergunta) foi chamado DUAS vezes na mesma sessão, sem relação
+ * aparente no raciocínio do passo anterior — o modelo só "recomeçou". Ao
+ * contrário de `descrever_tabela` (a repetição pode ser pra ver valor de
+ * exemplo) e `consultar` (a SQL pode mudar), aqui não existe leitura legítima
+ * pra repetir: a lista dos 212 datasets é a mesma agora e vai ser a mesma daqui
+ * a 10 turnos. Curto-circuito total, sem reservas.
+ */
+let listarDatasetsChamado = false;
+
+/**
  * Curto-circuito idempotente — `tasks/ferramentas_claude_code.md`, proposta 5.
  *
  * A classe de desperdício mais cara medida no head-to-head de 2026-09-04: 5 das
@@ -127,7 +139,9 @@ const FERRAMENTAS = [
   {
     name: "listar_datasets",
     description:
-      "Lista os 212 datasets do espelho. Use para descobrir onde está o assunto da pergunta.",
+      "Lista os 212 datasets do espelho. Use para descobrir onde está o assunto da pergunta. " +
+      "Nome de município a partir de id_municipio: sempre br_bd_diretorios_brasil.municipio " +
+      "(colunas id_municipio, nome) — não precisa procurar, é o diretório único.",
     inputSchema: { type: "object", properties: {} },
   },
   {
@@ -258,7 +272,17 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
   const argRuim = checaArgumentos(name, arg);
   if (argRuim) return erro(argRuim);
 
-  if (name === "listar_datasets") return texto(listaDatasets().join("\n"));
+  if (name === "listar_datasets") {
+    if (listarDatasetsChamado) {
+      return texto(
+        "(você já chamou listar_datasets nesta pergunta — a lista não muda, não " +
+        "precisa chamar de novo. Se procura uma tabela específica, chame listar_tabelas " +
+        "do dataset, ou descrever_tabela se já sabe o nome.)",
+      );
+    }
+    listarDatasetsChamado = true;
+    return texto(listaDatasets().join("\n"));
+  }
 
   if (name === "listar_tabelas") {
     const ds = resolveDataset(arg.dataset ?? "");
