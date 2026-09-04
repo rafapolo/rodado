@@ -7,6 +7,7 @@ import { expect, test, describe } from "bun:test";
 import {
   portao, checaCitacaoTabela, alertasDeSanidade,
   juncoesSemPonte, mensagemSemPonte, assinaturaJuncao, checaExecutouConsulta,
+  checaDescritaAntes,
 } from "./portao.ts";
 
 describe("camada read-only (sqlguard)", () => {
@@ -370,5 +371,51 @@ describe("camada inservível — a tabela que responde zero e parece certa", () 
   test("não bloqueia o diretório canônico de municípios", () => {
     const v = portao("SELECT COUNT(*) FROM br_bd_diretorios_brasil.municipio");
     expect(v.camada).not.toBe("inservivel");
+  });
+});
+
+describe("checaDescritaAntes — 'olhou antes de tocar', tasks/ferramentas_claude_code.md proposta 1", () => {
+  // ATENÇÃO à divisão de trabalho com a camada 2, conferida no log de
+  // `53ac1869` em 2026-09-04: tabela que NÃO EXISTE (`_rodado_metadata`) já é
+  // rejeitada localmente pela camada `tabela`, sem ida ao beelink — não é o
+  // caso desta camada. O que sobra pra ela é o outro: tabela que EXISTE e que
+  // o modelo nunca olhou, onde ele estaria chutando nome de coluna.
+  const descritas = ["br_ms_sim.microdados", "br_bd_diretorios_brasil.municipio"];
+
+  test("rejeita tabela que existe mas nunca foi descrita", () => {
+    const v = checaDescritaAntes(
+      "SELECT COUNT(*) AS n FROM br_ibge_pib.municipio WHERE ano = 2020", descritas);
+    expect(v.ok).toBe(false);
+    expect(v.camada).toBe("nao-descrita");
+  });
+
+  test("a mensagem nomeia a tabela que falta descrever", () => {
+    const v = checaDescritaAntes(
+      "SELECT COUNT(*) FROM br_me_rais.microdados_vinculos WHERE ano = 2020", descritas);
+    expect(v.erro).toContain("br_me_rais.microdados_vinculos");
+  });
+
+  test("passa quando todas as citadas já foram descritas", () => {
+    const v = checaDescritaAntes(
+      "SELECT COUNT(*) AS n FROM br_ms_sim.microdados WHERE ano = 2020 AND sigla_uf = 'RJ'",
+      descritas);
+    expect(v.ok).toBe(true);
+  });
+
+  test("nome de CTE não conta como tabela não descrita", () => {
+    const v = checaDescritaAntes(
+      "WITH base AS (SELECT ano FROM br_ms_sim.microdados WHERE ano = 2020) " +
+      "SELECT COUNT(*) AS n FROM base", descritas);
+    expect(v.ok).toBe(true);
+  });
+
+  test("junção só passa quando as DUAS pontas foram descritas — é o que torna " +
+       "o aviso de junção um invariante, não um acaso", () => {
+    const sql =
+      "SELECT COUNT(*) AS n FROM br_ms_sim.microdados a " +
+      "JOIN br_bd_diretorios_brasil.municipio m ON a.id_municipio = m.id_municipio " +
+      "WHERE a.ano = 2020";
+    expect(checaDescritaAntes(sql, descritas).ok).toBe(true);
+    expect(checaDescritaAntes(sql, ["br_ms_sim.microdados"]).ok).toBe(false);
   });
 });

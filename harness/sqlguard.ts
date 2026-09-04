@@ -122,6 +122,16 @@ export function capRows(rows: Row[], maxRows: number): CappedResult {
       `Truncado em ${kept.length} de ${total} linha(s) para caber em ` +
       `${RUN_SQL_MAX_CHARS} caracteres — as linhas são largas. Escolha as colunas ` +
       `em vez de *, ou agregue no SQL.`;
+  } else {
+    // Achado em tasks/ferramentas_claude_code.md: o corte por SIZE sempre
+    // ensinou o conserto; o corte por ROWS devolvia total/returned mas nenhum
+    // `note` — mesma classe de erro silencioso e plausível que a Rodada 6
+    // catalogou (573 reportado como total). 200 linhas de 5.000 podem ser lidas
+    // como o conjunto inteiro se nada disser o contrário.
+    out.note =
+      `Cortado em ${kept.length} de ${total} linha(s) pelo limite de linhas — ` +
+      `NÃO é o total. Se a pergunta precisa do número completo, agregue no SQL ` +
+      `(COUNT/SUM/GROUP BY) em vez de contar as linhas devolvidas.`;
   }
   return out;
 }
