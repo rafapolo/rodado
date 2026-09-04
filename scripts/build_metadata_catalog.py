@@ -62,6 +62,14 @@ BD_SEARCH_URL = "https://basedosdados.org/search?q={dataset}"
 # never this file or the generated catalog.parquet/docs/catalog.md.
 DATASET_DESCRIPTIONS_PATH = REPO_ROOT / "docs" / "context" / "dataset_descriptions.yaml"
 
+# Curated dataset.table -> SQL expression for "most recent date the data
+# itself covers" -- edit docs/context/dataset_freshness.yaml, never this file
+# or the generated catalog.parquet. Not auto-detected: a column-name
+# heuristic (anything with "data"/"ano" in it) would silently latch onto
+# birthdates, election dates, per-record timestamps -- wrong signal that
+# looks authoritative. Only curated, verified entries go in.
+DATASET_FRESHNESS_PATH = REPO_ROOT / "docs" / "context" / "dataset_freshness.yaml"
+
 # datasets_to_scrap.md holds several tables that all start with "Source" but
 # carry different columns, so match the layout, not the keyword. Only these two
 # name real beelink datasets; the `Source | Pipeline | Node Types | Auth | ...`
@@ -402,6 +410,53 @@ def _count_via_duckdb(keys):
     return out
 
 
+def _probe_freshness_dates(freshness_map):
+    """Curated dataset.table -> SQL expression from dataset_freshness.yaml,
+    resolved to `SELECT max(<expr>)` per entry, batched into one DuckDB
+    session. Returns {(dataset, table): "YYYY-MM-DD"}; an entry absent from
+    the result (query failed, or expression is null in the YAML) means "we
+    don't know", not "no gap" -- never write a confident date over that.
+    """
+    entries = [(k, expr) for k, expr in freshness_map.items() if expr]
+    if not entries:
+        return {}
+    selects = []
+    for key, expr in entries:
+        ds, tbl = key.split(".", 1)
+        selects.append(
+            f"SELECT '{ds}' AS d, '{tbl}' AS t, "
+            f"CAST(max({expr}) AS VARCHAR) AS last_date FROM \"{ds}\".\"{tbl}\""
+        )
+    union = "\nUNION ALL ".join(selects)
+    tmp = tempfile.NamedTemporaryFile(mode="wb", suffix=".sql", delete=False)
+    tmp.write(b"SET enable_progress_bar=false;\n")
+    tmp.write((union + ";\n").encode("utf-8"))
+    tmp.close()
+    remote = f"/tmp/rodado_cat4_{os.getpid()}.sql"
+    out = {}
+    try:
+        subprocess.run(["scp", tmp.name, f"{BEELINK_HOST}:{remote}"],
+                       capture_output=True, timeout=15, check=True)
+        proc = subprocess.run(
+            ["ssh", BEELINK_HOST,
+             f"~/bin/duckdb -readonly ~/rodado/basedosdados.duckdb -csv < {remote}; rm -f {remote}"],
+            capture_output=True, timeout=120,
+        )
+    except (subprocess.TimeoutExpired, subprocess.CalledProcessError) as exc:
+        print(f"  ! freshness probe failed: {exc}", file=sys.stderr)
+        return out
+    finally:
+        os.unlink(tmp.name)
+    if proc.returncode != 0:
+        print(f"  ! freshness probe failed: {proc.stderr.decode()[:200]}", file=sys.stderr)
+        return out
+    for line in proc.stdout.decode().split("\n"):
+        parts = line.strip().split(",")
+        if len(parts) == 3 and parts[0] and parts[2]:
+            out[(parts[0], parts[1])] = parts[2][:10]  # date part only
+    return out
+
+
 # ---------------------------------------------------------------------------
 # Merge and write
 # ---------------------------------------------------------------------------
@@ -446,6 +501,7 @@ def build_catalog():
         ("num_files", pa.int64()),
         ("size_bytes", pa.int64()),
         ("scrape_date", pa.string()),
+        ("last_date", pa.string()),
         ("status", pa.string()),
         ("provenance_notes", pa.string()),
         ("source", pa.string()),
@@ -456,6 +512,12 @@ def build_catalog():
         dataset_descriptions = yaml.safe_load(f) or {}
     print(f"  {len(dataset_descriptions)} dataset descriptions loaded from "
           f"{DATASET_DESCRIPTIONS_PATH.relative_to(REPO_ROOT)}", file=sys.stderr)
+
+    with open(DATASET_FRESHNESS_PATH) as f:
+        freshness_map = yaml.safe_load(f) or {}
+    freshness_dates = _probe_freshness_dates(freshness_map)
+    print(f"  {len(freshness_dates)}/{len(freshness_map)} freshness dates resolved from "
+          f"{DATASET_FRESHNESS_PATH.relative_to(REPO_ROOT)}", file=sys.stderr)
 
     arrays = {f.name: [] for f in schema}
     n_bd = 0
@@ -513,6 +575,7 @@ def build_catalog():
         arrays["num_files"].append(t["num_files"])
         arrays["size_bytes"].append(t["size_bytes"])
         arrays["scrape_date"].append(info.get("scrape_date", "") or t.get("mtime", ""))
+        arrays["last_date"].append(freshness_dates.get((ds, t["table"]), ""))
         arrays["status"].append(status)
         arrays["provenance_notes"].append(notes[:500])
         arrays["source"].append(t["source"])
