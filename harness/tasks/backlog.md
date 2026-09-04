@@ -472,6 +472,22 @@ parser nativo do Gemma4 falha em ~2/3 dos turnos, e se dá pra reduzir a taxa
 propõe um caminho pra esse conserto de verdade — LoRA em vez de patch em
 C++/upstream.
 
+**Reincidência 2026-09-04, rodada dos 72 confiáveis:** o bug bateu de novo (2
+ocorrências vistas ao vivo, ambas recuperadas pela retentativa) — segue sem
+causa raiz confirmada, mesma classe. A pista do contexto grande logo antes
+(`listar_datasets`, ~230 nomes hoje contra 212 quando o achado original foi
+escrito) permanece não confirmada — não investigada de novo desta vez porque
+confirmar exigiria `LOGPROMPTS=1` no servidor compartilhado, o que reinicia o
+`llama-server` e **derruba o cache de KV e todo o progresso não salvo de uma
+rodada em andamento**. Foi exatamente esse segundo risco que virou ação: `lote.ts`
+só gravava o JSON no FIM do loop inteiro — uma rodada de horas perdia TUDO se
+interrompida no meio, o mesmo tipo de fragilidade que o disjuntor de repetição
+já resolveu pra uma pergunta isolada, agora pro lote inteiro. `roda()` ganhou
+um callback `salvaParcial` que grava o progresso em disco depois de CADA caso
+(`Rodada.parcial: true` no checkpoint, ausente no arquivo final) — não é
+conserto do item 10, é o que impede que investigar o item 10 ao vivo (ou
+qualquer outra queda) custe a rodada inteira de novo.
+
 ## 11. LoRA pra estabilizar o tool call nativo do Gemma4 🟡 passo 0 feito 2026-09-03 — resto do plano não rodado
 
 Nasce direto do item 10: o Gemma4 já FOI treinado pro formato nativo

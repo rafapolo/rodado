@@ -46,6 +46,9 @@ export interface Rodada {
   gerado: string;
   config?: ConfigServidor;
   casos: Saida[];
+  /** presente e `true` só no checkpoint incremental — ausente/false quer dizer
+   *  que a rodada terminou o loop inteiro (arquivo final, não parcial). */
+  parcial?: boolean;
 }
 
 /**
@@ -106,7 +109,21 @@ async function rodaUmaVez(q: string): Promise<Tentativa> {
   return { resposta, segundos: seg, respondeu, prefillMax, semLog: prefills === undefined };
 }
 
-export async function roda(casos: Caso[]): Promise<Saida[]> {
+/**
+ * Checkpoint incremental — achado rodando o lote de 72 perguntas douradas
+ * (2026-09-04): `roda()` só gravava o JSON no FIM, depois de `import.meta.main`
+ * terminar o loop inteiro. Numa rodada de horas isso é a mesma classe de risco
+ * que o disjuntor de repetição resolveu para uma pergunta só, agora pro lote
+ * inteiro: qualquer interrupção (SIGKILL do sistema, queda de rede, `Ctrl+C`
+ * por engano) perde TODAS as respostas já obtidas, mesmo as horas de trabalho
+ * anteriores ao ponto da queda. `salvaParcial`, quando passado, grava o
+ * progresso depois de CADA caso — o custo é uma escrita de arquivo pequena por
+ * pergunta (~KB), irrelevante contra os minutos que cada pergunta já leva.
+ */
+export async function roda(
+  casos: Caso[],
+  salvaParcial?: (parcial: Saida[]) => void,
+): Promise<Saida[]> {
   const out: Saida[] = [];
   let semLog = false;
   for (const [i, caso] of casos.entries()) {
@@ -137,6 +154,7 @@ export async function roda(casos: Caso[]): Promise<Saida[]> {
       : respondeu && a.certo;
 
     out.push({ pergunta: q, resposta, segundos, respondeu, correto, esperado: caso.esperado, eco: a.eco || undefined, prefillMax, tentativas });
+    salvaParcial?.(out);
     const marcaLinha = a.eco ? "ECO " : correto === false ? "ERRO" : correto === true ? " ok " : respondeu ? " ?  " : "  -- ";
     const sufixoTentativas = tentativas > 1 ? ` (${tentativas} tentativas)` : "";
     console.log(`${marcaLinha} ${i + 1}/${casos.length}  ${segundos.toFixed(0)}s${sufixoTentativas}  ${q.slice(0, 58)}`);
@@ -211,7 +229,16 @@ if (import.meta.main) {
   console.log(`${casos.length} perguntas pelo dsh — ${rotuloConfig(config)}`);
   if (!config) console.log("AVISO: sem a config do servidor, o TEMPO desta rodada não é comparável com nenhuma outra");
   console.log(`limiar de prefill: ${LIMIAR_PREFILL} tokens\n`);
-  const r = await roda(casos);
+
+  // Nome fixo desde o início — o checkpoint incremental escreve nele a cada
+  // caso, e o arquivo final (com o resumo abaixo) é o MESMO arquivo, só que
+  // completo. Uma rodada interrompida no meio já deixa o parcial utilizável.
+  const saida = `benchmarks/lote_${new Date().toISOString().slice(0, 16).replace(/[:T]/g, "")}.json`;
+  const gerado = new Date().toISOString();
+  console.log(`(checkpoint incremental em ${saida}, a cada pergunta)\n`);
+  const r = await roda(casos, (parcial) => {
+    writeFileSync(saida, JSON.stringify({ gerado, config, casos: parcial, parcial: true }, null, 1));
+  });
   const bons = r.filter((x) => x.respondeu).length;
   const medio = r.reduce((a, b) => a + b.segundos, 0) / r.length;
   console.log(`\n${"=".repeat(56)}`);
@@ -227,8 +254,9 @@ if (import.meta.main) {
   const piorPrefill = Math.max(0, ...r.slice(1).map((x) => x.prefillMax ?? 0));
   if (piorPrefill) console.log(`PIOR PREFILL após o aquecimento: ${piorPrefill} tokens (limiar ${LIMIAR_PREFILL})`);
   console.log("=".repeat(56));
-  const saida = `benchmarks/lote_${new Date().toISOString().slice(0, 16).replace(/[:T]/g, "")}.json`;
-  const rodada: Rodada = { gerado: new Date().toISOString(), config, casos: r };
+  // Mesmo arquivo do checkpoint incremental, agora sem `parcial` — sinaliza
+  // que a rodada chegou ao fim (o consumidor do JSON pode distinguir).
+  const rodada: Rodada = { gerado, config, casos: r };
   writeFileSync(saida, JSON.stringify(rodada, null, 1));
   console.log(`\ndetalhe em ${saida}`);
 }
