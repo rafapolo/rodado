@@ -282,17 +282,27 @@ desconhecidas nomeando a ferramenta provável (*"`listar_datasets` não aceita
 Barato e sem falso positivo: um argumento que não existe no schema nunca é
 intencional.
 
-### 7. Portar `resolve_join` — a única que precisa ser medida antes de adotar
+### 7. Portar `resolve_join` — ✅ implementado 2026-09-04, LIGADO a pedido explícito
 
 Descrita na seção da meta. Uma ferramenta local que responde *"como estas
 duas se juntam, e se não se juntam, por quê"* sem ida ao beelink. Fonte já
-existe em `docs/context/bridges.yaml`, e `pontes.ts` já lê o arquivo —
-`conceitoDaColuna` e `semColunaComum` são metade da implementação.
+existe em `docs/context/bridges.yaml`, e `pontes.ts` já lia o arquivo —
+`conceitoDaColuna` e `semColunaComum` eram metade da implementação;
+`resolverJuncao` (novo em `pontes.ts`, porte de `mcp_server.py:resolve_join`)
+fecha a outra metade e sai como a ferramenta `resolver_juncao` em `mcp.ts`.
+Testada em `pontes.test.ts` (5 casos, incluindo um `false_friend` real e um
+par com ponte curada real do catálogo).
 
-**Por que fica por último apesar de ser a maior alavanca:** é a única que
+**Por que ficava por último apesar de ser a maior alavanca:** é a única que
 aumenta a superfície de ferramenta (6→7), e `regras.md` tem medição contrária
-a isso. O teste tem que ser A/B no conjunto dourado, não impressão: se o
-recall de escolha de tabela cair, não compensa.
+a isso — um 26B acerta mais entre poucas ferramentas que entre muitas. O A/B
+recomendado (medir recall de escolha de tabela no conjunto dourado antes de
+ligar) **não foi feito** — foi ligada direto, a pedido explícito em
+2026-09-04 ("seja proativo... para ficar mais parecida e refinada como a
+sua"), sobrepondo a cautela original. **Isto é uma mudança de decisão
+registrada, não uma conclusão nova sobre o trade-off** — o risco que motivava
+esperar (diluir a escolha de ferramenta) continua real e não medido; se o
+recall cair depois desta mudança, a causa mais provável é esta.
 
 ## Achado, não proposta: `capRows` não ensina no corte por linhas — ✅ corrigido 2026-09-04
 

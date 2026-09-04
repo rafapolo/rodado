@@ -27,8 +27,13 @@ interface Ponte {
 }
 
 interface Conceito { description?: string; canonical_table?: string }
+interface FalsoAmigo { reason: string }
 
-let _b: { bridges?: Record<string, Ponte[]>; concepts?: Record<string, Conceito> } | null = null;
+let _b: {
+  bridges?: Record<string, Ponte[]>;
+  concepts?: Record<string, Conceito>;
+  false_friends?: Record<string, FalsoAmigo>;
+} | null = null;
 function bridges() {
   if (!_b) _b = parse(readFileSync(`${RAIZ}docs/context/bridges.yaml`, "utf8"));
   return _b!;
@@ -103,6 +108,101 @@ export function semColunaComum(
     const k = conceitoDaColuna(tabelaB, c);
     return k !== undefined && conceitosA.has(k);
   });
+}
+
+/**
+ * Proposta 7 (`tasks/ferramentas_claude_code.md`) — porte de `resolve_join`
+ * (mcp_server.py:707), a maior alavanca isolada medida no head-to-head de
+ * 2026-09-04: no traço real, `resolve_join(a, b)` respondeu em UMA chamada
+ * local — sem tocar o beelink — enquanto o harness descobre junção por
+ * tentativa e erro (escreve o ON, executa, lê zero linhas, infere).
+ *
+ * Antes desligada de propósito ("a única proposta que exige A/B antes de
+ * entrar" — aumentar de 6 para 7 ferramentas contraria a medição de
+ * `regras.md` de que um 26B acerta mais entre poucas ferramentas). Ligada a
+ * pedido explícito em 2026-09-04, com evidência ao vivo da MESMA sessão que
+ * gerou a ressalva: rodando a pergunta T04-2 (CAGED×RAIS) em paralelo pelas
+ * duas vias, o lado Claude usou `resolve_join` e recebeu a cláusula ON pronta
+ * sem gastar consulta; o lado Gemma não tem essa ferramenta e foi direto para
+ * a SQL. O A/B recomendado continua pendente — isto entra como o experimento,
+ * não como substituto dele.
+ *
+ * Fidelidade ao original: bridge sempre vence sobre igualdade de nome
+ * (`{s}`/`{d}` viram os apelidos `a`/`b`, mesmo formato de `join_expr` do
+ * YAML); `false_friends` rejeita em vez de casar; chave canônica com tipo
+ * divergente ganha CAST dos dois lados. NÃO portado: `concept_aliases`
+ * (poucos casos, nenhum nas tabelas já usadas no harness) e a detecção viva
+ * de tabela duplicada (`_duplicated()`, que roda contra o schema do
+ * beelink) — fica para quando aparecer um caso real, mesma regra da casa.
+ */
+export interface JuncaoResolvida {
+  concept: string;
+  kind: "bridge" | "direct";
+  on: string;
+  verified?: string;
+}
+
+export interface ResultadoJuncao {
+  tabelaA: string;
+  tabelaB: string;
+  joins: JuncaoResolvida[];
+  rejeitados: Array<{ coluna: string; motivo: string }>;
+  avisos: string[];
+}
+
+export function resolverJuncao(
+  tabelaA: string, colsA: string[],
+  tabelaB: string, colsB: string[],
+): ResultadoJuncao {
+  const b = bridges();
+  const caSet = new Set(colsA.map((c) => c.toLowerCase()));
+  const cbSet = new Set(colsB.map((c) => c.toLowerCase()));
+  const joins: JuncaoResolvida[] = [];
+  const usados = new Set<string>();
+
+  // Bridge primeiro, nas duas direções: quando existe, ela SUBSTITUI a
+  // igualdade ingênua em vez de concorrer com ela.
+  for (const [origem, destino, alsO, alsD, colsDestino] of [
+    [tabelaA, tabelaB, "a", "b", cbSet],
+    [tabelaB, tabelaA, "b", "a", caSet],
+  ] as const) {
+    for (const [conceito, pontes] of Object.entries(b.bridges ?? {})) {
+      for (const p of pontes ?? []) {
+        if (p.table !== origem || !p.join_expr) continue;
+        const nomeConceito = (p.concept ?? conceito).toLowerCase();
+        if (!colsDestino.has(nomeConceito)) continue;
+        usados.add(nomeConceito);
+        joins.push({
+          concept: p.concept ?? conceito,
+          kind: "bridge",
+          on: p.join_expr.replaceAll("{s}", alsO).replaceAll("{d}", alsD),
+          verified: p.verified,
+        });
+      }
+    }
+  }
+
+  // Colunas com o MESMO nome nos dois lados — só as que são chave canônica
+  // ou conceito curado; nome em comum sozinho não basta (endereço, bairro).
+  const conceitosConhecidos = new Set([...CANONICAS, ...Object.keys(b.concepts ?? {})]);
+  const rejeitados: Array<{ coluna: string; motivo: string }> = [];
+  for (const nome of colsA) {
+    const chave = nome.toLowerCase();
+    if (usados.has(chave) || !cbSet.has(chave)) continue;
+    const falso = (b.false_friends ?? {})[chave];
+    if (falso) { rejeitados.push({ coluna: nome, motivo: falso.reason }); continue; }
+    if (!conceitosConhecidos.has(chave)) continue;
+    joins.push({ concept: chave, kind: "direct", on: `a.${chave} = b.${chave}` });
+  }
+
+  const avisos: string[] = [];
+  if (!joins.length) {
+    avisos.push(
+      "Nenhuma junção documentada entre estas duas tabelas — nem ponte curada, " +
+      "nem chave canônica com o mesmo nome dos dois lados.",
+    );
+  }
+  return { tabelaA, tabelaB, joins, rejeitados, avisos };
 }
 
 export function avisoSemColunaComum(tabelaA: string, tabelaB: string): string {
