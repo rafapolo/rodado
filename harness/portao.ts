@@ -217,6 +217,35 @@ function checaCodificacao(sql: string): Veredito {
         "Use substr(coluna,1,3) BETWEEN 'X60' AND 'X84'.",
     };
   }
+  // Enumeração manual de CID por LIKE: convite ao mesmo erro do BETWEEN, por
+  // outra porta. Achado ao vivo 2026-09-04, benchmark pós-migração pra
+  // agente.ts: "óbitos por suicídio no RJ em 2020" (X60-X84, esperado 789)
+  // voltou 128 porque o SQL era `causa_basica LIKE 'X60%' OR ... OR 'X69%'`
+  // — dez cláusulas bem formadas, cobrindo só X60-X69 e esquecendo X70-X84
+  // inteiro. Nenhuma camada existente pega isso: não é BETWEEN, e cada
+  // cláusula sozinha é uma consulta válida. A regra aqui não confere se a
+  // faixa está completa (não dá, sem saber o que a pergunta pediu) — rejeita
+  // a FORMA: 2+ `LIKE` encadeados por OR contra a mesma coluna de CID é
+  // sinal de enumeração manual de faixa, e o jeito seguro já existe e é
+  // ensinado ao lado (substr+BETWEEN, testado e coberto por `descrever_tabela`
+  // e pela mensagem da camada acima).
+  for (const m of sql.matchAll(new RegExp(`\\b(${COLUNAS_CID.source})\\b`, "gi"))) {
+    const col = m[1]!;
+    const likes = sql.match(new RegExp(`\\b${col}\\s+LIKE\\s+'[^']*'`, "gi"));
+    if (likes && likes.length >= 2) {
+      return {
+        ok: false,
+        camada: "codificacao",
+        erro:
+          `${col} tem ${likes.length} cláusulas LIKE encadeadas — jeito arriscado de ` +
+          "cobrir uma faixa de CID: é fácil esquecer um código no meio (medido: " +
+          "'X60%' até 'X69%' esqueceu X70–X84 inteiro, 128 em vez de 789 óbitos). " +
+          `Use substr(${col},1,3) BETWEEN 'X60' AND 'X84' para uma faixa contígua, ` +
+          "ou IN ('X600','X601',...) só se os códigos forem mesmo específicos e " +
+          "não uma faixa.",
+      };
+    }
+  }
   // Código que diverge entre datasets: exige decode pelo dicionario do dataset.
   for (const col of CODIFICADAS) {
     const usaComparacao = new RegExp(`\\b${col}\\s*(=|IN)\\s*['"\\d(]`, "i").test(sql);
@@ -780,7 +809,7 @@ const ERROS_DUCKDB = [
  * distinguir um número fabricado de um ano citado da própria pergunta, e
  * errar pra qualquer lado é ruim). Em vez disso, é incondicional: a persona
  * deste harness instrui SEMPRE chamar `revisar_resposta` antes de responder
- * (`dsh/rodado.patch.yml`), então nenhuma resposta final legítima deveria
+ * (`agente.ts`, `PERSONA`), então nenhuma resposta final legítima deveria
  * existir sem pelo menos uma consulta que voltou linha — o próprio trabalho
  * deste harness é apurar contra o mirror, não redigir de memória.
  */
@@ -849,7 +878,7 @@ const CITA_TABELA = /\b(?:br|world|us)_[a-z0-9_]+\.[a-z0-9_]+\b/gi;
  * das vezes; esta checagem, chamada como ferramenta ANTES do modelo poder
  * encerrar, transforma "maioria" em "todas" — mesmo mecanismo que faz o portão
  * de SQL funcionar: a rejeição volta como resultado de ferramenta, e o laço
- * agêntico do dsh reescreve.
+ * agêntico (`agente.ts`) reescreve.
  */
 export function checaCitacaoTabela(texto: string): Veredito {
   const achados = [...new Set([...texto.matchAll(CITA_TABELA)].map((m) => m[0]))];
