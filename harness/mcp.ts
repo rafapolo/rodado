@@ -2,12 +2,11 @@
 /**
  * Servidor MCP do harness — o espelho, com o portão embutido.
  *
- * A integração com o dsh acontece aqui, e a escolha central é esta: **o portão
+ * A integração acontece em `agente.ts`, e a escolha central é esta: **o portão
  * é uma ferramenta, não um passo de pipeline.** Quando `consultar` rejeita uma
  * consulta, a mensagem volta ao modelo como resultado da ferramenta, e o laço
- * agêntico do dsh a usa para tentar de novo. O reparo deixa de ser código meu e
- * passa a ser o que o harness já sabe fazer — com o log de sessão junto, que é
- * o que permite defender um número publicado depois.
+ * agêntico a usa para tentar de novo. O reparo deixa de ser código meu e
+ * passa a ser o que o harness já sabe fazer.
  *
  * As descrições das ferramentas são curtas de propósito. As do mcp_server.py
  * somam 3.482 tokens de nuance escrita para o Claude; um 26B em q4 não aproveita
@@ -42,8 +41,9 @@ const servidor = new Server(
  * backlog.md item 12 — o post-mortem da pergunta de 5 fontes que rodou 40 min
  * e morreu sem resposta, presa 38x na mesma junção inexistente. Duas coisas
  * que aquele caso mostrou faltar, e que só fazem sentido com estado por
- * pergunta (um processo mcp.ts = uma pergunta = um `dsh --profile headless`,
- * ver pergunte.ts — o Map nasce e morre com ela, nunca vaza entre perguntas):
+ * pergunta (um processo mcp.ts = uma pergunta = uma chamada de
+ * `agente.roda()`, ver pergunte.ts — o Map nasce e morre com ela, nunca vaza
+ * entre perguntas):
  *
  *  - disjuntor de repetição: a MESMA junção (mesmo FROM/JOIN/ON, só o resto
  *    mudando) tentada `LIMIAR_REPETICAO` vezes sem achar linha escala a
@@ -417,8 +417,8 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
       );
     }
 
-    // O portão. A rejeição vira resultado de ferramenta — é assim que o laço do
-    // dsh vira o mecanismo de reparo, sem código de retry meu.
+    // O portão. A rejeição vira resultado de ferramenta — é assim que o laço
+    // agêntico vira o mecanismo de reparo, sem código de retry meu.
     const v = portao(sql);
     if (!v.ok) return erro(`REJEITADA (${v.camada}): ${v.erro}`);
 
