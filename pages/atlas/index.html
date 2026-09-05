@@ -45,7 +45,6 @@
   --t-politica:       #008300;
   --t-populacao:      #eb6834;
   --t-territorio:     #e87ba4;
-  --t-ciencia_tec:    #1590a0;
   --t-cultura_arte:   #9c3fa3;
   --t-outros:         #b3bcc9;
   --hub:     #5a6473;
@@ -74,7 +73,6 @@
     --t-politica:       #008300;
     --t-populacao:      #d95926;
     --t-territorio:     #d55181;
-    --t-ciencia_tec:    #2bb5c7;
     --t-cultura_arte:   #c063c7;
     --t-outros:         #49515e;
     --hub:     #98a2b2;
@@ -103,7 +101,6 @@
   --t-politica:       #008300;
   --t-populacao:      #d95926;
   --t-territorio:     #d55181;
-  --t-ciencia_tec:    #2bb5c7;
   --t-cultura_arte:   #c063c7;
   --t-outros:         #49515e;
   --hub:     #98a2b2;
@@ -493,7 +490,7 @@ let L = G.layout[mode];
    name (e.g. "Governo e Finanças Públicas") for tooltips and titles. */
 const THEMES = [
   "governo", "economia", "educacao", "seguranca", "saude", "meio_ambiente",
-  "infraestrutura", "politica", "populacao", "territorio", "ciencia_tec",
+  "infraestrutura", "politica", "populacao", "territorio",
   "cultura_arte", "outros",
 ];
 const THEME_SHORT = {
@@ -501,7 +498,7 @@ const THEME_SHORT = {
   seguranca: "Segurança", saude: "Saúde", meio_ambiente: "Meio Ambiente",
   infraestrutura: "Infraestrutura", politica: "Política",
   populacao: "População", territorio: "Território",
-  ciencia_tec: "Ciência e Tecnologia", cultura_arte: "Cultura e Arte",
+  cultura_arte: "Cultura e Arte",
   outros: "Outros",
 };
 const themeOf = ti => DS[TB[ti].ds].dom;
