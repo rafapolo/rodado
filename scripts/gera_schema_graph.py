@@ -110,7 +110,7 @@ def cat_of(col: str, hub: dict[str, str] | None = None) -> str:
 # THEMES array follows for its legend order and hue-slot assignment.
 ATLAS_THEME_ORDER = [
     "governo", "economia", "educacao", "seguranca", "saude", "meio_ambiente",
-    "infraestrutura", "politica", "populacao", "territorio", "ciencia_tec",
+    "infraestrutura", "politica", "populacao", "territorio",
     "cultura_arte", "outros",
 ]
 ATLAS_THEME_NAMES = {
@@ -124,10 +124,14 @@ ATLAS_THEME_NAMES = {
     "politica": "Política",
     "populacao": "População",
     "territorio": "Organização Territorial",
-    "ciencia_tec": "Ciência, Tecnologia e Inovação",
     "cultura_arte": "Cultura e Arte",
     "outros": "Outros",
 }
+# "ciencia_tec" existiu até 2026-09-05: só 3 datasets (capes_bolsas,
+# cnpq_bolsas, datahackers_state_data), e capes_bolsas era educação disfarçada
+# (nivel_ensino/instituicao_ensino, mobilidade de pós-graduando — CAPES é MEC).
+# Os 3 foram remapeados para "educacao" a pedido; categoria removida em vez de
+# deixada vazia porque não sobrava nenhum dataset genuinamente de C&T no espelho.
 
 # One entry per dataset (schemas.json has 199, 2026-08-26) — hand-classified,
 # not prefix-matched, because e.g. br_ibge_* alone spans economia (pib, ipca,
@@ -168,7 +172,7 @@ ATLAS_DATASET_THEME = {
     "br_caixa_sinapi": "infraestrutura",
     "br_caixa_sorteios": "outros",
     "br_camara_dados_abertos": "politica",
-    "br_capes_bolsas": "ciencia_tec",
+    "br_capes_bolsas": "educacao",  # mobilidade de pós-graduando (nivel_ensino/instituicao_ensino) — CAPES é MEC
     "br_ce_fortaleza_sefin_iptu": "governo",
     "br_cgu_beneficios_cidadao": "governo",
     "br_cgu_cartao_pagamento": "governo",
@@ -187,13 +191,13 @@ ATLAS_DATASET_THEME = {
     "br_clp_ranking_competitividade": "economia",
     "br_cnj_estatisticas_poder_judiciario": "seguranca",
     "br_cnj_improbidade_administrativa": "seguranca",
-    "br_cnpq_bolsas": "ciencia_tec",
+    "br_cnpq_bolsas": "educacao",
     "br_comprasgov_catmatcatser": "governo",
     "br_comprasgov_sicaf": "governo",
     "br_cvm_administradores_carteira": "economia",
     "br_cvm_fundos": "economia",
     "br_cvm_oferta_publica_distribuicao": "economia",
-    "br_datahackers_state_data": "ciencia_tec",
+    "br_datahackers_state_data": "educacao",
     "br_datasus_cid10": "saude",
     "br_fbsp_absp": "seguranca",
     "br_fgv_igp": "economia",
