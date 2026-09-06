@@ -1,4 +1,4 @@
-# Achados fortes — rodadas de 2026-09-05 e 2026-09-06
+# Achados fortes — rodado em 2026-09-06
 
 Relações medidas no beelink cruzando os datasets espelhados entre **2026-09-01 e
 2026-09-04** (Pix por município, ANM/CFEM, IBAMA autos+embargos+CTF, INPE DETER,
