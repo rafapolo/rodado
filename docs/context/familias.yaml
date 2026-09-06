@@ -1,0 +1,403 @@
+# Famílias temáticas — a unidade de uma hipótese.
+#
+# Uma hipótese distinta é uma combinação de FAMÍLIAS, não de tabelas:
+# `RAIS × SIM × PIB` e `CAGED × SIM × Censo` testam a mesma proposição
+# (trabalho × mortalidade × demografia) com fontes diferentes. Sem esta
+# taxonomia, 145 mil "trincas" são 2 mil hipóteses contadas 70 vezes cada.
+#
+# Gerado à mão, revisável. Consumido por `scripts/hipoteses/93_inedito.py`.
+#
+# papel:
+#   desfecho   — pode ser a variável que a hipótese explica ou que explica
+#   controle   — covariável estrutural (renda, porte, demografia). Uma hipótese
+#                com duas pernas de controle não é uma hipótese, é um controle
+#                correlacionado com outro
+#   referencia — diretório, dicionário, malha. Não tem desfecho nenhum
+#
+# escopo: municipal | uf | outro   (medido, ver docs/context/cobertura_municipal.json)
+
+familias:
+  demografia_censo:   {desc: "População, composição e condições do domicílio"}
+  trabalho_empresa:   {desc: "Vínculo formal, estabelecimento, cadastro de CNPJ"}
+  educacao:           {desc: "Matrícula, desempenho, escola, ensino superior"}
+  saude_producao:     {desc: "Atendimento, internação, cobertura, medicamento"}
+  vigilancia_sinan:   {desc: "Notificação compulsória de agravo"}
+  mortalidade:        {desc: "Óbito e suas causas"}
+  natalidade:         {desc: "Nascimento"}
+  transferencia_renda: {desc: "Benefício monetário direto a família ou pessoa"}
+  credito_financeiro: {desc: "Crédito, dívida, meio de pagamento, presença bancária"}
+  fiscal_municipal:   {desc: "Receita, despesa, conformidade e capacidade fiscal"}
+  compras_publicas:   {desc: "Licitação, contrato, convênio, pagamento a fornecedor"}
+  sancao_integridade: {desc: "Sanção, inidoneidade, improbidade, dívida ativa"}
+  fiscalizacao_ambiental: {desc: "Auto, embargo, cadastro e fiscalização ambiental"}
+  desmatamento_clima: {desc: "Cobertura vegetal, alerta, emissão, clima, fogo"}
+  agropecuaria:       {desc: "Produção agrícola, pecuária e extrativista"}
+  fundiario:          {desc: "Imóvel rural, cadastro de terra"}
+  saneamento_agua:    {desc: "Água, esgoto, outorga, corpo hídrico"}
+  conectividade:      {desc: "Banda larga, telefonia, internet na escola"}
+  mineracao_energia:  {desc: "Mineração, geração e consumo de energia"}
+  seguranca:          {desc: "Crime, prisão, letalidade"}
+  justica:            {desc: "Tribunal, processo, jurisprudência"}
+  politica:           {desc: "Eleição, filiação, mandato, produção legislativa"}
+  mobilidade:         {desc: "Transporte e acessibilidade urbana"}
+  precos_indices:     {desc: "Índice de preço e custo"}
+  comercio_exterior:  {desc: "Exportação, importação, cadeia global"}
+  cultura_consumo:    {desc: "Consumo, cultura, lazer, reclamação"}
+  ciencia_tecnologia: {desc: "Bolsa, pesquisa, pós-graduação"}
+  administracao:      {desc: "Servidor, remuneração e custeio do Estado"}
+  referencia:         {desc: "Diretório, dicionário, malha — sem desfecho"}
+
+datasets:
+  # --- demografia / censo
+  br_ibge_censo_2022:        {familia: demografia_censo, papel: controle}
+  br_ibge_censo_demografico: {familia: demografia_censo, papel: controle}
+  br_ibge_censo2022_raca:    {familia: demografia_censo, papel: desfecho}
+  br_ibge_censo2022_religiao: {familia: demografia_censo, papel: desfecho}
+  br_ibge_populacao:         {familia: demografia_censo, papel: controle}
+  br_ms_populacao:           {familia: demografia_censo, papel: controle}
+  br_ibge_cnefe:             {familia: demografia_censo, papel: desfecho}
+  br_ibge_nomes_brasil:      {familia: demografia_censo, papel: desfecho}
+  br_ibge_pnad:              {familia: demografia_censo, papel: desfecho}
+  br_ibge_pnadc:             {familia: demografia_censo, papel: desfecho}
+  br_ibge_pnad_covid:        {familia: demografia_censo, papel: desfecho}
+  br_ibge_pof:               {familia: demografia_censo, papel: desfecho}
+  br_ipea_avs:               {familia: demografia_censo, papel: desfecho}
+  br_abrinq_oca:             {familia: demografia_censo, papel: desfecho}
+  br_ipea_acesso_oportunidades: {familia: demografia_censo, papel: desfecho}
+
+  # --- trabalho / empresa
+  br_me_rais:                {familia: trabalho_empresa, papel: controle}
+  br_me_rais_identificada:   {familia: trabalho_empresa, papel: desfecho}
+  br_me_caged:               {familia: trabalho_empresa, papel: desfecho}
+  br_me_cnpj:                {familia: trabalho_empresa, papel: desfecho}
+  br_me_cno:                 {familia: trabalho_empresa, papel: desfecho}
+  br_rf_cno:                 {familia: trabalho_empresa, papel: desfecho}
+  br_ibge_pib:               {familia: trabalho_empresa, papel: controle}
+  br_me_clima_organizacional: {familia: trabalho_empresa, papel: desfecho}
+  br_comprasgov_sicaf:       {familia: trabalho_empresa, papel: desfecho}
+  br_brasilio_holdings:      {familia: trabalho_empresa, papel: desfecho}
+  br_clp_ranking_competitividade: {familia: trabalho_empresa, papel: desfecho}
+
+  # --- educação
+  br_inep_ideb:              {familia: educacao, papel: desfecho}
+  br_inep_enem:              {familia: educacao, papel: desfecho}
+  br_inep_saeb:              {familia: educacao, papel: desfecho}
+  br_inep_ana:               {familia: educacao, papel: desfecho}
+  br_inep_censo_escolar:     {familia: educacao, papel: desfecho}
+  br_inep_censo_educacao_superior: {familia: educacao, papel: desfecho}
+  br_inep_educacao_especial: {familia: educacao, papel: desfecho}
+  br_inep_formacao_docente:  {familia: educacao, papel: desfecho}
+  br_inep_indicadores_educacionais: {familia: educacao, papel: desfecho}
+  br_inep_indicador_nivel_socioeconomico: {familia: educacao, papel: controle}
+  br_inep_avaliacao_alfabetizacao: {familia: educacao, papel: desfecho}
+  br_inep_sinopse_estatistica_educacao_basica: {familia: educacao, papel: desfecho}
+  br_mec_prouni:             {familia: educacao, papel: desfecho}
+  br_mec_sisu:               {familia: educacao, papel: desfecho}
+  br_cgu_pe_de_meia:         {familia: educacao, papel: desfecho}
+  world_oecd_pisa:           {familia: educacao, papel: desfecho}
+  world_iea_pirls:           {familia: educacao, papel: desfecho}
+  world_iea_timss:           {familia: educacao, papel: desfecho}
+
+  # --- saúde
+  br_ms_sia:                 {familia: saude_producao, papel: desfecho}
+  br_ms_sih:                 {familia: saude_producao, papel: desfecho}
+  br_ms_cnes:                {familia: saude_producao, papel: desfecho}
+  br_ms_atencao_basica:      {familia: saude_producao, papel: desfecho}
+  br_ms_imunizacoes:         {familia: saude_producao, papel: desfecho}
+  br_ms_vacinacao_covid19:   {familia: saude_producao, papel: desfecho}
+  br_ms_sisvan:              {familia: saude_producao, papel: desfecho}
+  br_ms_pns:                 {familia: saude_producao, papel: desfecho}
+  br_ieps_saude:             {familia: saude_producao, papel: desfecho}
+  br_ans_beneficiario:       {familia: saude_producao, papel: desfecho}
+  br_saude_farmaciapopular:  {familia: saude_producao, papel: desfecho}
+  br_saude_bps:              {familia: saude_producao, papel: desfecho}
+  br_anvisa_cmed:            {familia: saude_producao, papel: desfecho}
+  br_anvisa_consultas:       {familia: saude_producao, papel: desfecho}
+  br_anvisa_medicamentos_industrializados: {familia: saude_producao, papel: desfecho}
+
+  # --- vigilância / mortalidade / natalidade
+  br_ms_sinan:               {familia: vigilancia_sinan, papel: desfecho}
+  br_ms_sinan_chikungunya:   {familia: vigilancia_sinan, papel: desfecho}
+  br_ms_sinan_zika:          {familia: vigilancia_sinan, papel: desfecho}
+  br_ms_sinan_malaria:       {familia: vigilancia_sinan, papel: desfecho}
+  br_ms_sinan_febre_amarela: {familia: vigilancia_sinan, papel: desfecho}
+  br_ms_sinan_esquistossomose: {familia: vigilancia_sinan, papel: desfecho}
+  br_ms_sinan_violencia:     {familia: vigilancia_sinan, papel: desfecho}
+  br_ms_sim:                 {familia: mortalidade, papel: desfecho}
+  br_ipea_atlasviolencia:    {familia: mortalidade, papel: desfecho}
+  br_ggb_relatorio_lgbtqi:   {familia: mortalidade, papel: desfecho}
+  br_ms_sinasc:              {familia: natalidade, papel: desfecho}
+
+  # --- transferência de renda
+  br_cgu_novo_bolsa_familia: {familia: transferencia_renda, papel: desfecho}
+  br_cgu_beneficios_cidadao: {familia: transferencia_renda, papel: desfecho}
+  br_cgu_gas_do_povo:        {familia: transferencia_renda, papel: desfecho}
+  br_cgu_seguro_defeso:      {familia: transferencia_renda, papel: desfecho}
+  br_cgu_garantia_safra:     {familia: transferencia_renda, papel: desfecho}
+  br_mc_indicadores:         {familia: transferencia_renda, papel: desfecho}
+
+  # --- crédito / financeiro
+  br_bcb_sicor:              {familia: credito_financeiro, papel: desfecho}
+  br_bcb_scrdata:            {familia: credito_financeiro, papel: desfecho}
+  br_bcb_desenrola:          {familia: credito_financeiro, papel: desfecho}
+  br_bcb_estban:             {familia: credito_financeiro, papel: desfecho}
+  br_bcb_ifdata:             {familia: credito_financeiro, papel: desfecho}
+  br_bcb_pix_municipio:      {familia: credito_financeiro, papel: desfecho}
+  br_bcb_sgs:                {familia: credito_financeiro, papel: desfecho}
+  br_bcb_penalidades:        {familia: credito_financeiro, papel: desfecho}
+  br_bndes_operacoes_contratadas: {familia: credito_financeiro, papel: desfecho}
+  br_cvm_fundos:             {familia: credito_financeiro, papel: desfecho}
+  br_cvm_administradores_carteira: {familia: credito_financeiro, papel: desfecho}
+  br_cvm_oferta_publica_distribuicao: {familia: credito_financeiro, papel: desfecho}
+  br_rf_dirpf:               {familia: credito_financeiro, papel: desfecho}
+
+  # --- fiscal municipal
+  br_me_siconfi:             {familia: fiscal_municipal, papel: desfecho}
+  br_tesouro_capag:          {familia: fiscal_municipal, papel: desfecho}
+  br_tesouro_cauc:           {familia: fiscal_municipal, papel: desfecho}
+  br_firjan_ifgf:            {familia: fiscal_municipal, papel: desfecho}
+  br_rf_arrecadacao:         {familia: fiscal_municipal, papel: desfecho}
+  br_cgu_receitas_publicas:  {familia: fiscal_municipal, papel: desfecho}
+  br_cgu_orcamento_publico:  {familia: fiscal_municipal, papel: desfecho}
+  br_siop_orcamento:         {familia: fiscal_municipal, papel: desfecho}
+  br_me_estoque_divida_publica: {familia: fiscal_municipal, papel: desfecho}
+  br_ce_fortaleza_sefin_iptu: {familia: fiscal_municipal, papel: desfecho}
+  br_mg_belohorizonte_smfa_iptu: {familia: fiscal_municipal, papel: desfecho}
+  br_sp_saopaulo_geosampa_iptu: {familia: fiscal_municipal, papel: desfecho}
+  world_oecd_public_finance: {familia: fiscal_municipal, papel: desfecho}
+
+  # --- compras públicas
+  br_pncp:                   {familia: compras_publicas, papel: desfecho}
+  br_cgu_licitacao_contrato: {familia: compras_publicas, papel: desfecho}
+  br_transferegov:           {familia: compras_publicas, papel: desfecho}
+  br_transferegov_siconv:    {familia: compras_publicas, papel: desfecho}
+  br_cgu_emendas_parlamentares: {familia: compras_publicas, papel: desfecho}
+  br_cgu_cartao_pagamento:   {familia: compras_publicas, papel: desfecho}
+  br_comprasgov_catmatcatser: {familia: compras_publicas, papel: desfecho}
+  br_caixa_sinapi:           {familia: compras_publicas, papel: desfecho}
+  world_wb_mides:            {familia: compras_publicas, papel: desfecho}
+
+  # --- sanção / integridade
+  br_cgu_sancoes:            {familia: sancao_integridade, papel: desfecho}
+  br_cgu_fef:                {familia: sancao_integridade, papel: desfecho}
+  br_cgu_ebt:                {familia: sancao_integridade, papel: desfecho}
+  br_cgu_dados_abertos:      {familia: sancao_integridade, papel: desfecho}
+  br_tcu_inidoneos:          {familia: sancao_integridade, papel: desfecho}
+  br_cnj_improbidade_administrativa: {familia: sancao_integridade, papel: desfecho}
+  br_pgfn_dividaativa:       {familia: sancao_integridade, papel: desfecho}
+  global_opensanctions:      {familia: sancao_integridade, papel: desfecho}
+  global_ofac_sanctions:     {familia: sancao_integridade, papel: desfecho}
+  eu_sanctions:              {familia: sancao_integridade, papel: desfecho}
+  un_sanctions:              {familia: sancao_integridade, papel: desfecho}
+  global_icij_offshoreleaks: {familia: sancao_integridade, papel: desfecho}
+
+  # --- ambiente
+  br_ibama_autos:            {familia: fiscalizacao_ambiental, papel: desfecho}
+  br_ibama_embargos_novo:    {familia: fiscalizacao_ambiental, papel: desfecho}
+  br_ibama_ctf:              {familia: fiscalizacao_ambiental, papel: desfecho}
+  br_sedec_desastres:        {familia: fiscalizacao_ambiental, papel: desfecho}
+  br_mma_extincao:           {familia: fiscalizacao_ambiental, papel: desfecho}
+  br_inpe_prodes:            {familia: desmatamento_clima, papel: desfecho}
+  br_inpe_prodes_acumulado:  {familia: desmatamento_clima, papel: desfecho}
+  br_inpe_deter:             {familia: desmatamento_clima, papel: desfecho}
+  br_inpe_queimadas:         {familia: desmatamento_clima, papel: desfecho}
+  br_inpe_sisam:             {familia: desmatamento_clima, papel: desfecho}
+  br_inmet_bdmep:            {familia: desmatamento_clima, papel: desfecho}
+  br_mapbiomas_estatisticas: {familia: desmatamento_clima, papel: desfecho}
+  br_seeg_emissoes:          {familia: desmatamento_clima, papel: desfecho}
+  br_ibge_pevs:              {familia: agropecuaria, papel: desfecho}
+  br_ibge_pam:               {familia: agropecuaria, papel: desfecho}
+  br_ibge_ppm:               {familia: agropecuaria, papel: desfecho}
+  br_sfb_sicar:              {familia: fundiario, papel: desfecho}
+  br_rf_cafir:               {familia: fundiario, papel: desfecho}
+
+  # --- saneamento / água
+  br_mdr_snis:               {familia: saneamento_agua, papel: desfecho}
+  br_ana_atlas_esgotos:      {familia: saneamento_agua, papel: desfecho}
+  br_ana_outorgas:           {familia: saneamento_agua, papel: desfecho}
+  br_ana_reservatorios:      {familia: saneamento_agua, papel: desfecho}
+  br_ana_telemetria:         {familia: saneamento_agua, papel: desfecho}
+  br_ana_bho:                {familia: saneamento_agua, papel: referencia}
+  br_inea_boletim:           {familia: saneamento_agua, papel: desfecho}
+  world_wwf_hydrosheds:      {familia: saneamento_agua, papel: referencia}
+  global_ibge_tabua_mares:   {familia: saneamento_agua, papel: referencia}
+
+  # --- conectividade / energia / mineração
+  br_anatel_banda_larga_fixa: {familia: conectividade, papel: desfecho}
+  br_anatel_indice_brasileiro_conectividade: {familia: conectividade, papel: desfecho}
+  br_simet_educacao_conectada: {familia: conectividade, papel: desfecho}
+  br_anm:                    {familia: mineracao_energia, papel: desfecho}
+  br_aneel_dadosabertos:     {familia: mineracao_energia, papel: desfecho}
+  br_mme_consumo_energia_eletrica: {familia: mineracao_energia, papel: desfecho}
+
+  # --- segurança / justiça / política
+  br_mjsp_sisdepen:          {familia: seguranca, papel: desfecho}
+  br_mjsp_sinesp:            {familia: seguranca, papel: desfecho}
+  br_mjsp_procurados:        {familia: seguranca, papel: desfecho}
+  br_mjsp_ckan:              {familia: seguranca, papel: desfecho}
+  br_fbsp_absp:              {familia: seguranca, papel: desfecho}
+  br_rj_isp_estatisticas_seguranca: {familia: seguranca, papel: desfecho}
+  br_cnj_estatisticas_poder_judiciario: {familia: justica, papel: desfecho}
+  br_stf_corte_aberta:       {familia: justica, papel: desfecho}
+  br_stj_dadosabertos:       {familia: justica, papel: desfecho}
+  br_tce_es:                 {familia: justica, papel: desfecho}
+  br_tce_pi:                 {familia: justica, papel: desfecho}
+  br_tce_rj:                 {familia: justica, papel: desfecho}
+  br_tce_sp:                 {familia: justica, papel: desfecho}
+  br_tce_to:                 {familia: justica, papel: desfecho}
+  br_tcu_dadosabertos:       {familia: justica, papel: desfecho}
+  br_tse_eleicoes:           {familia: politica, papel: desfecho}
+  br_tse_filiacao_partidaria: {familia: politica, papel: desfecho}
+  br_camara_dados_abertos:   {familia: politica, papel: desfecho}
+  br_senado_dados_abertos:   {familia: politica, papel: desfecho}
+  br_senado_dadosabertos:    {familia: politica, papel: desfecho}
+  br_senado_dados_abertos_administrativos: {familia: politica, papel: desfecho}
+  br_senado_ceaps:           {familia: politica, papel: desfecho}
+  br_poder360_pesquisas:     {familia: politica, papel: desfecho}
+  br_ibge_munic:             {familia: politica, papel: desfecho}
+  br_ibge_estadic:           {familia: politica, papel: desfecho}
+  br_ok_queridodiario:       {familia: politica, papel: desfecho}
+  br_ok_queridodiario_texto: {familia: politica, papel: desfecho}
+  br_ba_feiradesantana_camara_leis: {familia: politica, papel: desfecho}
+  us_harvard_ned:            {familia: politica, papel: desfecho}
+
+  # --- preços / comércio / mobilidade
+  br_ibge_ipca:              {familia: precos_indices, papel: desfecho}
+  br_ibge_ipca15:            {familia: precos_indices, papel: desfecho}
+  br_ibge_inpc:              {familia: precos_indices, papel: desfecho}
+  br_ibge_ipp:               {familia: precos_indices, papel: desfecho}
+  br_fgv_igp:                {familia: precos_indices, papel: desfecho}
+  br_anp_precos_combustiveis: {familia: precos_indices, papel: desfecho}
+  br_anp_combustiveis:       {familia: precos_indices, papel: desfecho}
+  br_fipe_veiculos:          {familia: precos_indices, papel: referencia}
+  br_me_comex_stat:          {familia: comercio_exterior, papel: desfecho}
+  br_me_exportadoras_importadoras: {familia: comercio_exterior, papel: desfecho}
+  br_trase_supply_chain:     {familia: comercio_exterior, papel: desfecho}
+  br_mobilidados_indicadores: {familia: mobilidade, papel: desfecho}
+  br_anac_dadosabertos:      {familia: mobilidade, papel: desfecho}
+
+  # --- cultura / consumo / ciência / administração
+  br_mj_consumidorgovbr:     {familia: cultura_consumo, papel: desfecho}
+  br_minc_salic:             {familia: cultura_consumo, papel: desfecho}
+  br_caixa_sorteios:         {familia: cultura_consumo, papel: desfecho}
+  br_datahackers_state_data: {familia: cultura_consumo, papel: desfecho}
+  world_imdb_movies:         {familia: cultura_consumo, papel: desfecho}
+  world_ampas_oscar:         {familia: cultura_consumo, papel: desfecho}
+  world_olympedia_olympics:  {familia: cultura_consumo, papel: desfecho}
+  world_sofascore_competicoes_futebol: {familia: cultura_consumo, papel: desfecho}
+  mundo_transfermarkt_competicoes: {familia: cultura_consumo, papel: desfecho}
+  mundo_transfermarkt_competicoes_internacionais: {familia: cultura_consumo, papel: desfecho}
+  br_capes_bolsas:           {familia: ciencia_tecnologia, papel: desfecho}
+  br_cnpq_bolsas:            {familia: ciencia_tecnologia, papel: desfecho}
+  br_me_siape:               {familia: administracao, papel: desfecho}
+  br_me_sic:                 {familia: administracao, papel: desfecho}
+  br_me_siorg:               {familia: administracao, papel: referencia}
+  br_mp_pep:                 {familia: administracao, papel: desfecho}
+  br_cgu_servidores_executivo_federal: {familia: administracao, papel: desfecho}
+  br_cgu_pessoal_executivo_federal: {familia: administracao, papel: desfecho}
+  br_cgu_viagens:            {familia: administracao, papel: desfecho}
+
+  # --- referência pura (sem desfecho)
+  br_bd_diretorios_brasil:   {familia: referencia, papel: referencia}
+  br_bd_diretorios_data_tempo: {familia: referencia, papel: referencia}
+  br_bd_diretorios_mundo:    {familia: referencia, papel: referencia}
+  br_bd_diretorios_us:       {familia: referencia, papel: referencia}
+  br_bd_metadados:           {familia: referencia, papel: referencia}
+  br_bd_vizinhanca:          {familia: referencia, papel: referencia}
+  br_datasus_cid10:          {familia: referencia, papel: referencia}
+  br_ibge_cbo_2002:          {familia: referencia, papel: referencia}
+  br_ibge_amc:               {familia: referencia, papel: referencia}
+  br_geobr_mapas:            {familia: referencia, papel: referencia}
+  br_brasilapi:              {familia: referencia, papel: referencia}
+
+# Como as fontes aparecem escritas em achados_fortes.md e hipoteses.md — prosa,
+# não token. Sem este léxico o gerador de inéditos não enxerga nenhum achado
+# como cobertura e "descobre" o que já foi medido.
+apelidos:
+  CNEFE: br_ibge_cnefe
+  Anatel: br_anatel_indice_brasileiro_conectividade
+  IBC: br_anatel_indice_brasileiro_conectividade
+  PRODES: br_inpe_prodes_acumulado
+  DETER: br_inpe_deter
+  MapBiomas: br_mapbiomas_estatisticas
+  SEEG: br_seeg_emissoes
+  IBAMA: br_ibama_autos
+  SICAR: br_sfb_sicar
+  CAR: br_sfb_sicar
+  CAFIR: br_rf_cafir
+  SICOR: br_bcb_sicor
+  Pix: br_bcb_pix_municipio
+  CFEM: br_anm
+  ANM: br_anm
+  SIGMINE: br_anm
+  ANEEL: br_aneel_dadosabertos
+  PNCP: br_pncp
+  CEIS: br_cgu_sancoes
+  CNEP: br_cgu_sancoes
+  CGU Sanções: br_cgu_sancoes
+  Gás do Povo: br_cgu_gas_do_povo
+  Novo Bolsa Família: br_cgu_novo_bolsa_familia
+  Bolsa Família: br_cgu_novo_bolsa_familia
+  PBF: br_mc_indicadores
+  SCR.data: br_bcb_scrdata
+  SCR: br_bcb_scrdata
+  Desenrola: br_bcb_desenrola
+  IF.data: br_bcb_ifdata
+  ESTBAN: br_bcb_estban
+  BNDES: br_bndes_operacoes_contratadas
+  SICONV: br_transferegov_siconv
+  Transferegov: br_transferegov
+  CAUC: br_tesouro_cauc
+  CAPAG: br_tesouro_capag
+  SICONFI: br_me_siconfi
+  DIRPF: br_rf_dirpf
+  SINAN: br_ms_sinan
+  SIM: br_ms_sim
+  SINASC: br_ms_sinasc
+  SIH: br_ms_sih
+  SIA: br_ms_sia
+  CNES: br_ms_cnes
+  SISVAN: br_ms_sisvan
+  IEPS: br_ieps_saude
+  INSE: br_inep_indicador_nivel_socioeconomico
+  IDEB: br_inep_ideb
+  ENEM: br_inep_enem
+  SAEB: br_inep_saeb
+  SIMET: br_simet_educacao_conectada
+  SEDEC: br_sedec_desastres
+  Querido Diário: br_ok_queridodiario_texto
+  Senado: br_senado_dados_abertos
+  CEAPS: br_senado_ceaps
+  Câmara: br_camara_dados_abertos
+  RAIS: br_me_rais
+  RAIS identificada: br_me_rais_identificada
+  CAGED: br_me_caged
+  CNPJ: br_me_cnpj
+  PIB: br_ibge_pib
+  Censo: br_ibge_censo_2022
+  IVS: br_ipea_avs
+  AVS: br_ipea_avs
+  IDHM: br_ipea_avs
+  SISDEPEN: br_mjsp_sisdepen
+  PGFN: br_pgfn_dividaativa
+  MIDES: world_wb_mides
+  FEF: br_cgu_fef
+  EBT: br_cgu_ebt
+  Consumidor.gov: br_mj_consumidorgovbr
+  Pé-de-Meia: br_cgu_pe_de_meia
+  Seguro-Defeso: br_cgu_seguro_defeso
+  Garantia-Safra: br_cgu_garantia_safra
+  ANP: br_anp_precos_combustiveis
+  ANA: br_ana_outorgas
+  SNIS: br_mdr_snis
+  CNJ: br_cnj_estatisticas_poder_judiciario
+  TCU: br_tcu_dadosabertos
+  CEPIM: br_cgu_dados_abertos
+  terceirizados: br_cgu_pessoal_executivo_federal
+  SIAPE: br_me_siape
+  TSE: br_tse_eleicoes
+  IPCA: br_ibge_ipca
+  SISAM: br_inpe_sisam
+  PAM: br_ibge_pam
+  PPM: br_ibge_ppm
+  PEVS: br_ibge_pevs
