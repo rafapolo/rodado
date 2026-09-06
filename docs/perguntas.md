@@ -108,7 +108,7 @@ atravessam vários datasets de famílias distintas ao mesmo tempo.
 
 1. Municípios que importam vínculos formais (CAGED origem/destino) ganharam população entre censos (2010→2022) acima da média de sua UF? *(n=3: me_caged, ibge_censo_2022\*, ibge_munic\*)*
 2. Os polos de atração de trabalhadores (CAGED) coincidem com os municípios de maior PIB per capita ou com os de boom da construção civil (CNAE)? *(n=3: me_caged, ibge_pib\*, me_rais\*)*
-3. Fluxos de vínculos entre municípios (CAGED) seguem a hierarquia urbana capturada nas malhas do geobr/regiões do IBGE? *(n=3: me_caged, geobr_mapas\*, ibge_munic\*)*
+3. Fluxos de vínculos entre municípios (CAGED) seguem a hierarquia urbana das regiões imediatas e intermediárias do IBGE? *(n=3: me_caged, bd_diretorios_brasil\*, ibge_munic\*)*
 4. Municípios que exportaram trabalhadores (CAGED) envelheceram mais rápido no Censo 2022 que os receptores? *(n=3: me_caged, ibge_censo_2022\*, ibge_pib\*)*
 5. A migração interna de vínculos (CAGED 2019–2022) antecipou mudanças de domicílio entre os censos, município a município? *(n=3: me_caged, ibge_censo_2022\*, ibge_munic\*)*
 
@@ -148,7 +148,7 @@ atravessam vários datasets de famílias distintas ao mesmo tempo.
 
 1. Municípios exportadores de manufaturados (COMEX) geram mais emprego industrial formal (RAIS) que exportadores de primários, mesmo com valor exportado igual? *(n=3: me_comex_stat, me_rais\*, ibge_pib\*)*
 2. As exportações para a China (COMEX por país) saem exatamente dos municípios primários/agro (NCM × PIB agro) identificados pelo IBGE? *(n=3: me_comex_stat, ibge_pib\*, sfb_sicar\*)*
-3. Municípios importadores de bens intermediários (COMEX) crescem mais em vínculos industriais (RAIS) nos anos seguintes que os não importadores vizinhos? *(n=3: me_comex_stat, me_rais\*, geobr_mapas\*)*
+3. Municípios importadores de bens intermediários (COMEX) crescem mais em vínculos industriais (RAIS) nos anos seguintes que os não importadores vizinhos? *(n=3: me_comex_stat, me_rais\*, bd_vizinhanca\*)*
 4. A concentração exportadora em poucos NCM-Sh por município acompanha a concentração fundiária medida pelo SICAR? *(n=3: me_comex_stat, sfb_sicar\*, ibge_ppm\*)*
 5. O valor exportado per capita (COMEX ÷ Censo) explica quanto da diferença de PIB per capita dentro de cada UF? *(n=3: me_comex_stat, ibge_censo_2022\*, ibge_pib\*)*
 
@@ -179,10 +179,8 @@ atravessam vários datasets de famílias distintas ao mesmo tempo.
 ## 22 · Clima, Queimadas e Variação de Temperatura
 
 1. Municípios recordistas de focos de calor (QUEIMADAS) perderam mais vegetação (PRODES) e emitem mais no SEEG no mesmo período? *(n=3: inpe_queimadas\*, inpe_prodes, seeg_emissoes)*
-2. Estações do INMET registram tendência de temperatura mais alta nos municípios que mais desmataram (PRODES) vs conservados vizinhos? *(n=3: inmet_bdmep\*, inpe_prodes, geobr_mapas\*)*
-3. Imóveis com sobreposição irregular no SICAR concentram-se nos municípios de pico de queimadas e emissões SEEG? *(n=3: sfb_sicar, inpe_queimadas\*, seeg_emissoes)*
-4. A mortalidade respiratória (SIM) sobe nos meses/municípios de pico de fogo (QUEIMADAS), controlada pela população do Censo? *(n=3: inpe_queimadas\*, ms_sim\*, ibge_censo_2022\*)*
-5. As emissões SEEG municipais confirmam que o fogo está associado à conversão agropecuária (PIB agro) e não a eventos naturais? *(n=3: seeg_emissoes, inpe_queimadas\*, ibge_pib)*
+2. A mortalidade respiratória (SIM) sobe nos meses/municípios de pico de fogo (QUEIMADAS), controlada pela população do Censo? *(n=3: inpe_queimadas\*, ms_sim\*, ibge_censo_2022\*)*
+3. As emissões SEEG municipais confirmam que o fogo está associado à conversão agropecuária (PIB agro) e não a eventos naturais? *(n=3: seeg_emissoes, inpe_queimadas\*, ibge_pib)*
 
 ## 23 · Epidemiologia, Doenças Infecciosas e Vigilância
 
@@ -237,7 +235,7 @@ atravessam vários datasets de famílias distintas ao mesmo tempo.
 1. Candidatos reeleitos (TSE 2018→2022) repetiram o mapa municipal de votos, e esses mapas seguem a divisão de renda (Censo/PIB)? *(n=3: tse_eleicoes, ibge_censo_2022\*, ibge_pib\*)*
 2. O patrimônio médio dos eleitos (TSE) cresceu entre eleições, e os maiores saltos vieram de partidos com mais bancada na Câmara? *(n=3: tse_eleicoes, camara_dados_abertos\*, senado_dadosabertos\*)*
 3. Municípios com eleição mais disputada (TSE margem estreita) receberam mais emendas parlamentares (CGU) depois? *(n=3: tse_eleicoes, cgu_emendas_parlamentares\*, ibge_censo_2022\*)*
-4. A fragmentação partidária municipal (TSE) acompanha a federal (votações Câmara) ou segue lógica própria por região? *(n=3: tse_eleicoes, camara_dados_abertos\*, geobr_mapas\*)*
+4. A fragmentação partidária municipal (TSE) acompanha a federal (votações Câmara) ou segue lógica própria por região? *(n=3: tse_eleicoes, camara_dados_abertos\*, bd_diretorios_brasil\*)*
 5. A participação eleitoral (TSE ÷ população Censo) caiu mais nos municípios jovens, pobres e do interior? *(n=3: tse_eleicoes, ibge_censo_2022\*, ibge_pib\*)*
 
 ## 30 · Estrutura Produtiva, Empresas, MPEs e Dinâmica Competitiva
@@ -251,10 +249,9 @@ atravessam vários datasets de famílias distintas ao mesmo tempo.
 ## 31 · Desenvolvimento Humano, Vulnerabilidade Social e Índices Compostos
 
 1. Municípios de maior vulnerabilidade social no Censo 2022 recebem benefícios (CGU) proporcionais à necessidade medida também pelo IPEA-AVS? *(n=3: ibge_censo_2022\*, cgu_beneficios_cidadao, ipea_avs)*
-2. Áreas de risco ambiental do IPEA-AVS sobrepõem-se aos setores censitários mais vulneráveis do Censo nos grandes municípios? *(n=3: ipea_avs, ibge_censo_2022\*, geobr_mapas\*)*
-3. Onde beneficiários (CGU) são muitos mas a vulnerabilidade (Censo/AVS) é baixa — sobreposição de programas ou erro cadastral? *(n=3: cgu_beneficios_cidadao, ibge_censo_2022\*, ipea_avs)*
-4. A vulnerabilidade social (Censo + AVS) explica quanto da variação da mortalidade infantil implícita no par SIM×SINASC por município? *(n=3: ibge_censo_2022\*, ms_sim, ms_sinasc)*
-5. Municípios com pior indicador composto (AVS/IPEA) melhoraram entre ondas, e o ganho acompanhou crescimento do PIB ou dos repasses sociais (CGU)? *(n=3: ipea_avs, ibge_pib\*, cgu_beneficios_cidadao\*)*
+2. Onde beneficiários (CGU) são muitos mas a vulnerabilidade (Censo/AVS) é baixa — sobreposição de programas ou erro cadastral? *(n=3: cgu_beneficios_cidadao, ibge_censo_2022\*, ipea_avs)*
+3. A vulnerabilidade social (Censo + AVS) explica quanto da variação da mortalidade infantil implícita no par SIM×SINASC por município? *(n=3: ibge_censo_2022\*, ms_sim, ms_sinasc)*
+4. Municípios com pior indicador composto (AVS/IPEA) melhoraram entre ondas, e o ganho acompanhou crescimento do PIB ou dos repasses sociais (CGU)? *(n=3: ipea_avs, ibge_pib\*, cgu_beneficios_cidadao\*)*
 
 ## 32 · Conectividade, Educação Digital e Telecomunicações
 
@@ -266,27 +263,23 @@ atravessam vários datasets de famílias distintas ao mesmo tempo.
 
 ## 33 · Dados Internacionais Comparativos e Rankings Globais
 
-1. Se cada UF fosse um país, onde ranquearia em homicídios (FBSP) considerando sua população equivalente (Censo)? *(n=3: fbsp_absp, ibge_censo_2022\*, geobr_mapas\*)*
+1. Se cada UF fosse um país, onde ranquearia em homicídios (FBSP) considerando sua população equivalente (Censo)? *(n=3: fbsp_absp, ibge_censo_2022\*, ibge_populacao\*)*
 2. A desigualdade intra-brasileira por UF (PIB municipal IBGE) supera a desigualdade entre países vizinhos nos comparativos da FBSP? *(n=3: fbsp_absp, ibge_pib\*, ibge_censo_2022\*)*
 3. Municípios brasileiros teriam posição internacional melhor avaliados isoladamente (PIB + FBSP) que o Brasil agregado — quais superariam a média da OCDE? *(n=3: fbsp_absp, ibge_pib\*, world_oecd_pisa\*)*
 4. Quais UFs combinam ranking internacional bom de segurança (FBSP) com indicadores sociais ruins (Censo) — e vice-versa? *(n=3: fbsp_absp, ibge_censo_2022\*, ipea_avs\*)*
 5. Estados brasileiros como "países" (população Censo × violência FBSP × PIB): quais seriam de renda média-alta e quais zonas de conflito segundo os benchmarks internacionais? *(n=3: fbsp_absp, ibge_censo_2022\*, ibge_pib\*)*
 
-## 34 · Atlas, Mapas Georreferenciados e Bases Territoriais
+## 34 · Bases Territoriais, Códigos Municipais e Emancipações
 
-1. Quantos municípios mudaram código/nome desde as malhas históricas do geobr, e o Censo 2022 captou todos os novos? *(n=3: geobr_mapas, ibge_censo_2022\*, ibge_munic\*)*
-2. A soma das malhas setoriais do Censo 2022 cobre exatamente o polígono municipal do geobr nos grandes municípios, ou há buracos/sobreposições? *(n=3: geobr_mapas, ibge_censo_2022\*, ibge_munic\*)*
-3. A área calculada via malha do geobr diverge da oficial do Censo em quais municípios, e a divergência segue padrão regional/bioma? *(n=3: geobr_mapas, ibge_censo_2022\*, mapbiomas_estatisticas\*)*
-4. Municípios criados após 2000 (geobr histórico) têm perfil demográfico distinto dos antigos no Censo 2022? *(n=3: geobr_mapas, ibge_censo_2022\*, ibge_pib\*)*
-5. É possível reconstruir densidade populacional por setor censitário juntando Censo 2022 + malhas geobr sem lacunas, validando contra os totais municipais oficiais? *(n=3: ibge_censo_2022\*, geobr_mapas, ibge_munic\*)*
+1. Quantos municípios mudaram de código ou de nome entre os diretórios do IBGE e a Área Mínima Comparável, e o Censo 2022 captou todos os novos? *(n=3: bd_diretorios_brasil, ibge_amc, ibge_censo_2022\*)*
+2. Municípios emancipados recentemente (ausentes da AMC 1970-2010) têm perfil demográfico e econômico distinto dos antigos? *(n=3: ibge_amc, ibge_censo_2022\*, ibge_pib\*)*
 
 ## 35 · Transporte e Mobilidade Urbana
 
 1. Municípios-dormitório (Mobilidados) exportam quantos trabalhadores por dia (CAGED), e isso explica o tempo médio de deslocamento acima dos pares de mesma população (Censo)? *(n=3: mobilidados_indicadores, me_caged\*, ibge_censo_2022\*)*
 2. As regiões metropolitanas de pior mobilidade (Mobilidados) são as de maior PIB per capita ou as de crescimento mais recente (PIB/Censo)? *(n=3: mobilidados_indicadores, ibge_pib\*, ibge_censo_2022\*)*
-3. Onde o tempo de deslocamento cresceu mais entre medições (Mobilidados), coincide com expansão urbana visível no Censo e no geobr? *(n=3: mobilidados_indicadores, ibge_censo_2022\*, geobr_mapas\*)*
-4. Capitais com melhor infraestrutura de transporte (Mobilidados) registram menos mortes no trânsito (SIM) per capita que as demais? *(n=3: mobilidados_indicadores\*, ms_sim\*, ibge_censo_2022\*)*
-5. O tempo de deslocamento (Mobilidados) penaliza mais a renda efetiva do trabalhador (RAIS ÷ tempo) em quais metrópoles? *(n=3: mobilidados_indicadores\*, me_rais\*, ibge_censo_2022\*)*
+3. Capitais com melhor infraestrutura de transporte (Mobilidados) registram menos mortes no trânsito (SIM) per capita que as demais? *(n=3: mobilidados_indicadores\*, ms_sim\*, ibge_censo_2022\*)*
+4. O tempo de deslocamento (Mobilidados) penaliza mais a renda efetiva do trabalhador (RAIS ÷ tempo) em quais metrópoles? *(n=3: mobilidados_indicadores\*, me_rais\*, ibge_censo_2022\*)*
 
 ## 36 · Religiosidade, Infraestrutura de Fé e Desigualdade de Renda
 
@@ -330,7 +323,7 @@ atravessam vários datasets de famílias distintas ao mesmo tempo.
 
 ## 41 · Nutrição, Preço de Medicamentos e Acesso à Saúde
 
-1. O preço máximo permitido pela CMED (ANVISA) difere do praticado no Farmácia Popular para os mesmos princípios ativos, e a diferença varia por região? *(n=3: anvisa_cmed, saude_farmaciapopular, geobr_mapas\*)*
+1. O preço máximo permitido pela CMED (ANVISA) difere do praticado no Farmácia Popular para os mesmos princípios ativos, e a diferença varia por região? *(n=3: anvisa_cmed, saude_farmaciapopular, bd_diretorios_brasil\*)*
 2. Municípios com pior estado nutricional no SISVAN são os que mais consomem medicamentos contínuos (BPS/Farmácia Popular) per capita? *(n=3: ms_sisvan, saude_bps\*, saude_farmaciapopular\*)*
 3. O orçamento familiar com alimentação (POF) explica quanto da variação regional do sobrepeso/obesidade no SISVAN, controlada pela renda municipal? *(n=3: ibge_pof, ms_sisvan, ibge_censo_2022\*)*
 4. Medicamentos com demanda regulada (CMED) ficaram mais baratos depois de entrarem no Farmácia Popular, na série temporal? *(n=3: anvisa_cmed, saude_farmaciapopular, saude_bps\*)*
@@ -346,11 +339,11 @@ atravessam vários datasets de famílias distintas ao mesmo tempo.
 
 ## 43 · Cultura, Esporte e Desempenho Internacional
 
-1. Atletas olímpicos brasileiros nascidos em municípios grandes (Censo) superam proporcionalmente os de cidades pequenas, ou há polos regionais específicos (malhas geobr)? *(n=3: world_olympedia_olympics, ibge_censo_2022\*, geobr_mapas\*)*
+1. Atletas olímpicos brasileiros nascidos em municípios grandes (Censo) superam proporcionalmente os de cidades pequenas, ou há polos regionais específicos? *(n=3: world_olympedia_olympics, ibge_censo_2022\*, bd_diretorios_brasil\*)*
 2. Medalhas olímpicas por município de nascimento (Olympedia) correlacionam-se com PIB per capita municipal e renda média do Censo? *(n=3: world_olympedia_olympics, ibge_pib\*, ibge_censo_2022\*)*
-3. Quais esportes concentram as medalhas do Brasil (Olympedia) e de quais regiões vêm seus atletas (geobr × Censo)? *(n=3: world_olympedia_olympics, geobr_mapas\*, ibge_censo_2022\*)*
+3. Quais esportes concentram as medalhas do Brasil (Olympedia) e de quais regiões vêm seus atletas? *(n=3: world_olympedia_olympics, bd_diretorios_brasil\*, ibge_censo_2022\*)*
 4. A evolução histórica das medalhas brasileiras acompanhou o crescimento do PIB nacional ou seguiu ciclos de política esportiva próprios? *(n=3: world_olympedia_olympics, ibge_pib\*, ibge_munic\*)*
-5. Municípios-sede de atletas olímpicos (Olympedia × Censo) têm mais empresas formais do setor esportivo (CNPJ/CNAE) que a média dos vizinhos? *(n=3: world_olympedia_olympics, me_cnpj\*, geobr_mapas\*)*
+5. Municípios-sede de atletas olímpicos (Olympedia × Censo) têm mais empresas formais do setor esportivo (CNPJ/CNAE) que a média dos vizinhos? *(n=3: world_olympedia_olympics, me_cnpj\*, bd_vizinhanca\*)*
 
 ## 44 · Saneamento, Produção Rural e Desmatamento
 
@@ -455,6 +448,214 @@ atravessam vários datasets de famílias distintas ao mesmo tempo.
 3. A composição racial das vítimas notificadas no SINAN (qualquer tipo de violência) reflete a composição racial das vítimas de homicídio consolidada pelo Atlas da Violência (IPEA), ou pessoas negras estão sobrerrepresentadas nos desfechos letais em relação à violência notificada em geral? *(n=2: ms_sinan_violencia, ipea_atlasviolencia)*
 4. A participação de parceiro/ex-parceiro íntimo entre os agressores de vítimas mulheres notificadas no SINAN cresceu entre 2011 e 2024, e esse movimento acompanha — ou diverge de — a tendência nacional de homicídios de mulheres do Atlas da Violência? *(n=2: ms_sinan_violencia, ipea_atlasviolencia)*
 5. A cobertura temporal das notificações do SINAN Violência é confiável usando a coluna documentada de ano da notificação (NU_ANO), ou existe alguma lacuna de rotulagem que exige outra coluna de ano pra reconstituir a série 2009-2025 corretamente? *(n=1: ms_sinan_violencia)*
+
+## 57 · Pix como Termômetro Territorial (BCB Pix por município)
+
+1. Um município é credor ou devedor líquido no Pix — quem recebe mais do que paga? A razão recebido/pago por município acompanha a renda local (PIB) e a formalização (RAIS), ou existem municípios ricos que são drenos líquidos de dinheiro para fora? *(n=3: bcb_pix_municipio, ibge_pib\*, me_rais\*)*
+2. A penetração do Pix (pessoas pagadoras distintas ÷ população do Censo) é explicada mais pela cobertura 4G/5G da Anatel ou pela renda municipal — infraestrutura ou bolso? *(n=3: bcb_pix_municipio, anatel_indice_brasileiro_conectividade\*, ibge_censo_2022\*)*
+3. O ticket médio do Pix PF por município funciona como proxy de renda melhor que o PIB per capita quando validado contra rendimento médio da RAIS e proporção de beneficiários do Bolsa Família? *(n=4: bcb_pix_municipio, me_rais\*, cgu_novo_bolsa_familia, ibge_pib\*)*
+4. A fatia do valor recebido que vai para PJ (e não PF) mede formalização do comércio local melhor que a densidade de CNPJ ativos — municípios com muita empresa registrada mas Pix quase todo PF existem? *(n=3: bcb_pix_municipio, me_cnpj\*, me_rais\*)*
+5. Municípios com alta densidade de estabelecimentos agropecuários no CNEFE adotaram Pix menos que os urbanos de mesma renda — o campo é o último bolsão de dinheiro não-digital? *(n=3: bcb_pix_municipio, ibge_cnefe, ibge_pib\*)*
+
+## 58 · Mineração, CFEM e Destino Social da Geologia (ANM)
+
+1. A substância minerada prediz o perfil social do município melhor que o valor da CFEM arrecadada — basalto, quartzito e ouro produzem sociedades diferentes? *(n=4: anm, ibge_pib\*, me_rais\*, cgu_novo_bolsa_familia)*
+2. Municípios que arrecadam CFEM têm mais homicídios (SIM) que os não-mineradores de mesma UF e porte, ou o efeito é totalmente explicado pela região? *(n=3: anm, ms_sim\*, ibge_censo_2022\*)*
+3. A renda mineral per capita (CFEM) se converte em capacidade fiscal — municípios mineradores têm menos pendências no CAUC e mais convênios executados? *(n=3: anm, tesouro_cauc, transferegov_siconv)*
+4. A concentração de titulares da CFEM (poucos CNPJ respondendo por quase toda a arrecadação) é maior nos municípios pobres — a renda mineral chega concentrada onde a economia é fraca? *(n=3: anm, me_cnpj\*, ibge_pib\*)*
+5. Os municípios com processos minerários ativos no SIGMINE mas sem CFEM arrecadada são casos de título parado, ou de extração que não recolhe? *(n=2: anm, me_cnpj\*)*
+
+## 59 · Fiscalização Ambiental: Alerta, Auto e Embargo (IBAMA + INPE DETER)
+
+1. A fiscalização segue o alerta? Autos de infração e termos de embargo do IBAMA por km² desmatado alertado no DETER variam quanto entre municípios da mesma UF? *(n=3: ibama_autos, ibama_embargos_novo, inpe_deter)*
+2. Existem municípios com desmatamento alertado alto e zero autuação desde 2015 — quais, e o que têm em comum (distância, CAR, presença de CFEM)? *(n=4: inpe_deter, ibama_autos, sfb_sicar, anm)*
+3. O Cadastro Técnico Federal de atividades poluidoras (IBAMA CTF) mede indústria formal ou risco ambiental — sua densidade acompanha o PIB industrial ou o desmatamento? *(n=3: ibama_ctf, ibge_pib\*, inpe_deter)*
+4. Municípios com mais empresas no CTF recebem mais autos de infração per capita, ou o registro funciona como escudo (quem se cadastra é quem já cumpre)? *(n=2: ibama_ctf, ibama_autos)*
+5. O valor médio do auto de infração do IBAMA difere entre biomas para a mesma tipificação legal — a Amazônia é multada mais caro que o Cerrado pelo mesmo artigo? *(n=2: ibama_autos, inpe_prodes_acumulado)*
+
+## 60 · Desmatamento Acumulado por Bioma (PRODES acumulado)
+
+1. Qual bioma acumulou mais área desmatada desde 2002 no PRODES — a resposta contraria a atenção pública dada à Amazônia? *(n=1: inpe_prodes_acumulado)*
+2. A razão entre desmatamento consolidado (PRODES acumulado) e alerta recente (DETER) mede "frente ativa" — quais municípios têm frente ativa desproporcional ao seu passivo? *(n=2: inpe_prodes_acumulado, inpe_deter)*
+3. O Cerrado e a Caatinga, somados, desmataram mais que a Amazônia Legal no período — e o crédito rural (SICOR) e o BNDES acompanharam essa geografia ou continuaram olhando para o Norte? *(n=4: inpe_prodes_acumulado, bcb_sicor\*, bndes_operacoes_contratadas, ibge_pib\*)*
+4. A cobertura do CAR (SICAR) é maior justamente nos municípios de maior desmatamento acumulado — cadastro persegue a fronteira em vez de antecipá-la? *(n=2: inpe_prodes_acumulado, sfb_sicar)*
+5. Os polígonos de "cicatriz de queimada" do DETER antecipam o desmatamento consolidado do PRODES no ano seguinte, ou são fenômeno independente? *(n=2: inpe_deter, inpe_prodes_acumulado)*
+
+## 61 · Geração Distribuída Solar (ANEEL)
+
+1. A geração distribuída solar per capita é um fenômeno de município rico ou de município do agronegócio — MT e MS lideram por sol, por renda ou por CNAE? *(n=4: aneel_dadosabertos, ibge_pib\*, me_rais\*, ibge_cnefe)*
+2. Municípios com mais unidades de GD por domicílio têm menos famílias no Bolsa Família mesmo controlando renda — a placa solar é marcador de classe? *(n=3: aneel_dadosabertos, cgu_novo_bolsa_familia, ibge_cnefe)*
+3. A GD rural (classe de consumo "Rural") concentra-se nos mesmos municípios que tomam crédito do BNDES e do SICOR — o financiamento explica a adoção? *(n=3: aneel_dadosabertos, bndes_operacoes_contratadas, bcb_sicor\*)*
+4. A potência instalada de GD por município acompanha a qualidade da rede (interrupções/IBC) ou a irradiação — as pessoas fogem da rede ruim ou aproveitam o sol? *(n=3: aneel_dadosabertos, anatel_indice_brasileiro_conectividade\*, inmet_bdmep\*)*
+5. Os titulares de empreendimentos de GD são pessoa física ou jurídica, e essa proporção separa municípios com adoção "de telhado" de adoção "de investidor"? *(n=2: aneel_dadosabertos, me_cnpj\*)*
+
+## 62 · PNCP — o Novo Portal de Contratações
+
+1. O `valorGlobal` do PNCP é utilizável em soma agregada, ou existem contratos com valores impossíveis que inviabilizam qualquer total? *(n=1: pncp)*
+2. Contratos por fornecedor (razão contratos ÷ CNPJ distintos) mede captura do mercado local de compras — municípios com poucos fornecedores repetidos têm mais pendências no CAUC ou mais empresas sancionadas? *(n=3: pncp, tesouro_cauc, cgu_sancoes)*
+3. A cobertura do PNCP é uniforme — quantos dos 5.570 municípios publicaram contrato, e os ausentes são os menores, os mais pobres ou os menos transparentes (Querido Diário)? *(n=3: pncp, ok_queridodiario, ibge_censo_2022\*)*
+4. Fornecedores do PNCP que aparecem no CEIS/CNEP da CGU contrataram com quantos entes, e depois ou antes da sanção? *(n=2: pncp, cgu_sancoes)*
+5. O marcador `emendaParlamentar` do PNCP está preenchido o suficiente para medir o peso de emendas nas compras, ou é campo majoritariamente nulo? *(n=2: pncp, transferegov_siconv)*
+
+## 63 · Sanções, Leniência e Impedimento (CGU Sanções)
+
+1. Empresas sancionadas no CEIS/CNEP se concentram em quais municípios per capita, depois de descontar o efeito capital — existe geografia da sanção? *(n=3: cgu_sancoes, me_cnpj\*, ibge_censo_2022\*)*
+2. Municípios com mais empresas sancionadas têm mais ou menos desmatamento, mineração e infração ambiental — a irregularidade administrativa e a ambiental moram juntas? *(n=4: cgu_sancoes, ibama_autos, anm, inpe_deter)*
+3. Os acordos de leniência da CGU cobrem quais setores CNAE, e as empresas signatárias seguiram contratando via PNCP depois do acordo? *(n=3: cgu_sancoes, me_cnpj\*, pncp)*
+4. O CEPIM (entidades privadas sem fins lucrativos impedidas) aponta para os mesmos convênios que o SICONV registra como não-executados? *(n=2: cgu_sancoes, transferegov_siconv)*
+5. Quantas empresas sancionadas ainda têm CNPJ ativo e vínculos formais na RAIS — a sanção fecha a empresa ou só o balcão público? *(n=3: cgu_sancoes, me_cnpj\*, me_rais\*)*
+
+## 64 · Gás do Povo — Focalização de um Programa Novo (CGU)
+
+1. O Gás do Povo alcança que fração das famílias do Novo Bolsa Família em cada município, e a cobertura é uniforme ou há municípios quase descobertos? *(n=2: cgu_gas_do_povo, cgu_novo_bolsa_familia)*
+2. A rede de revendas credenciadas (CNPJ de estabelecimento no Gás do Povo) existe onde a demanda existe, ou os municípios de pior cobertura são os de menos revenda? *(n=3: cgu_gas_do_povo, me_cnpj\*, ibge_cnefe)*
+3. Municípios com menor cobertura do Gás do Povo têm maior distância/dispersão de endereços (domicílios por CEP no CNEFE) — o gargalo é logístico? *(n=3: cgu_gas_do_povo, ibge_cnefe, ibge_censo_2022\*)*
+4. O tamanho médio da família beneficiária do Gás do Povo bate com o do Censo 2022 no mesmo município, ou o programa capta famílias sistematicamente maiores? *(n=2: cgu_gas_do_povo, ibge_censo_2022\*)*
+5. A cobertura do Gás do Povo é pior nos mesmos municípios onde o CAUC registra mais pendências — capacidade administrativa local limita o alcance de programa federal direto ao cidadão? *(n=2: cgu_gas_do_povo, tesouro_cauc)*
+
+## 65 · Novo Bolsa Família em Microdado (CGU, 821M linhas)
+
+1. A fração de domicílios do CNEFE que recebe Novo Bolsa Família é um índice de pobreza municipal mais fino que qualquer indicador do Censo — como se comporta contra rendimento da RAIS e PIB per capita? *(n=4: cgu_novo_bolsa_familia, ibge_cnefe, me_rais\*, ibge_pib\*)*
+2. Municípios com mais NBF têm mais templos por domicílio no CNEFE — a rede religiosa cresce onde o Estado transfere renda? *(n=2: cgu_novo_bolsa_familia, ibge_cnefe)*
+3. O valor médio da parcela do NBF varia entre municípios além do que a composição familiar explicaria — há assimetria territorial no benefício? *(n=3: cgu_novo_bolsa_familia, ibge_censo_2022\*, ibge_cnefe)*
+4. Municípios com alta cobertura do NBF têm menor razão recebido/pago no Pix — a transferência entra e vaza para fora do município? *(n=2: cgu_novo_bolsa_familia, bcb_pix_municipio)*
+5. A cobertura do NBF acompanha as notificações de arboviroses (chikungunya, zika) por 100 mil habitantes — pobreza e vetor moram no mesmo lugar? *(n=3: cgu_novo_bolsa_familia, ms_sinan_chikungunya, ms_sinan_zika)*
+
+## 66 · Crédito às Famílias, Inadimplência e Desenrola (BCB SCR.data + Desenrola)
+
+1. A inadimplência do crédito PF por UF (SCR.data) é explicada melhor pela renda ou pela conectividade — qual variável prevê melhor quem não paga? *(n=3: bcb_scrdata, anatel_indice_brasileiro_conectividade\*, ibge_pib\*)*
+2. Qual modalidade de crédito PF tem inadimplência extrema, e o volume dela justifica a atenção regulatória que recebe? *(n=1: bcb_scrdata)*
+3. O Desenrola Brasil alcançou quantas operações por mil famílias do Bolsa Família em cada UF — o programa de renegociação chegou mais aos estados ricos ou aos pobres? *(n=3: bcb_desenrola, cgu_novo_bolsa_familia, ibge_populacao\*)*
+4. O número de conglomerados financeiros participantes do Desenrola por UF explica o alcance, ou o alcance é demanda e não oferta? *(n=3: bcb_desenrola, bcb_ifdata, ibge_populacao\*)*
+5. A inadimplência do crédito rural (SCR.data) por UF acompanha as safras ruins reconhecidas como desastre pela SEDEC? *(n=3: bcb_scrdata, sedec_desastres, ibge_ppm\*)*
+
+## 67 · Presença Bancária e Sistema Financeiro Territorial (BCB IF.data)
+
+1. Em quantos dos 5.570 municípios existe sede de instituição financeira segundo o IF.data, e essa presença explica o volume de Pix melhor que a renda? *(n=3: bcb_ifdata, bcb_pix_municipio, ibge_pib\*)*
+2. Os segmentos S1–S5 do IF.data se distribuem no território como uma hierarquia urbana — cooperativas seguram os municípios que os bancos grandes abandonaram? *(n=3: bcb_ifdata, bcb_estban\*, ibge_pib\*)*
+3. Municípios com instituição financeira sediada têm maior taxa de sucesso em convênios federais (SICONV) — a capacidade financeira local ajuda a captar? *(n=2: bcb_ifdata, transferegov_siconv)*
+4. A série 2000–2025 do IF.data mostra concentração ou desconcentração do sistema financeiro por município — quantos municípios perderam a única instituição sediada? *(n=2: bcb_ifdata, ibge_populacao\*)*
+5. A presença de instituição financeira acompanha o BNDES indireto automático (que opera por banco credenciado) — sem banco na praça, não há crédito de fomento? *(n=2: bcb_ifdata, bndes_operacoes_contratadas)*
+
+## 68 · Convênios Federais e o Preço Político (Transferegov/SICONV)
+
+1. Uma proposta de convênio com emenda parlamentar tem quantas vezes mais chance de virar convênio assinado que uma sem emenda? *(n=1: transferegov_siconv)*
+2. Convênios com emenda são maiores ou menores em valor pedido, e executam melhor ou pior que os sem emenda? *(n=1: transferegov_siconv)*
+3. A taxa de sucesso de proposta→convênio de um município acompanha sua conformidade fiscal no CAUC, ou o filtro fiscal não morde? *(n=2: transferegov_siconv, tesouro_cauc)*
+4. Municípios que mais desembolsaram convênio per capita têm melhor infraestrutura observável (obras no CNEFE, saneamento, conectividade), ou o dinheiro não deixa rastro físico? *(n=4: transferegov_siconv, ibge_cnefe, mdr_snis\*, anatel_indice_brasileiro_conectividade\*)*
+5. Os fornecedores pagos nos convênios (SICONV pagamento) coincidem com os fornecedores do PNCP e com empresas do CEIS — a mesma cadeia atende convênio e licitação? *(n=3: transferegov_siconv, pncp, cgu_sancoes)*
+
+## 69 · CAUC, Conformidade Fiscal e Filantropia Tributária (Tesouro + RF DIRPF)
+
+1. Quantas pendências no CAUC tem o município mediano, e a pendência é sintoma de pobreza ou de descaso administrativo — o que ela prevê depois de descontar a renda? *(n=3: tesouro_cauc, ibge_pib\*, cgu_novo_bolsa_familia)*
+2. As pendências do CAUC são concentradas em quais itens (transparência, RGF, MSC, Fundeb) — o gargalo é contábil ou de transparência? *(n=1: tesouro_cauc)*
+3. Municípios com fundo habilitado a receber doação dedutível do IRPF (DIRPF) são os mais ricos e mais formais — a infraestrutura da filantropia fiscal está onde o doador está, não onde a criança está? *(n=4: rf_dirpf, ibge_pib\*, me_rais\*, cgu_novo_bolsa_familia)*
+4. Fundos da criança/adolescente e do idoso habilitados no DIRPF cobrem os municípios de maior notificação de violência infantil no SINAN? *(n=3: rf_dirpf, ms_sinan_violencia\*, ibge_populacao\*)*
+5. Municípios com pendência no CAUC ainda assim habilitaram fundo no DIRPF — a exigência de regularidade vale para transferência voluntária mas não para doação privada? *(n=2: tesouro_cauc, rf_dirpf)*
+
+## 70 · O Território Lido pelo Endereço (IBGE CNEFE, 111M linhas)
+
+1. O CNEFE tem lacuna de CEP ou de logradouro em algum município, ou os 111 milhões de endereços estão 100% preenchidos nesses campos? *(n=1: ibge_cnefe)*
+2. A densidade de templos por domicílio no CNEFE (prédio físico) mede religiosidade melhor que a contagem de CNPJ religioso — e qual das duas se correlaciona mais com pobreza? *(n=4: ibge_cnefe, me_cnpj\*, cgu_novo_bolsa_familia, ibge_censo2022_religiao\*)*
+3. A densidade de "edificação em construção ou reforma" por domicílio é maior nos municípios pobres — o canteiro de obras do Brasil é autoconstrução, não incorporação? *(n=4: ibge_cnefe, ibge_pib\*, cgu_novo_bolsa_familia, ms_sim\*)*
+4. A densidade de estabelecimentos agropecuários no CNEFE prevê a lacuna de cobertura 4G/5G da Anatel melhor que a população — o apagão digital é rural, não pequeno? *(n=3: ibge_cnefe, anatel_indice_brasileiro_conectividade\*, ibge_censo_2022\*)*
+5. Domicílios por CEP (dispersão do endereçamento) é proxy de ruralidade utilizável para logística de programa social — prediz a cobertura do Gás do Povo? *(n=3: ibge_cnefe, cgu_gas_do_povo, ibge_censo_2022\*)*
+
+## 71 · Arboviroses e Doenças Negligenciadas (SINAN zika, chikungunya, febre amarela, malária, esquistossomose)
+
+1. Chikungunya e zika circulam nos mesmos municípios ou têm geografias distintas, e a co-circulação é maior onde a cobertura de saúde do CNEFE é menor? *(n=3: ms_sinan_chikungunya, ms_sinan_zika, ibge_cnefe)*
+2. A malária se concentra nos municípios com alerta DETER de mineração — o garimpo é o vetor territorial da malária? *(n=3: ms_sinan_malaria, inpe_deter, anm)*
+3. A taxa de chikungunya por 100 mil habitantes é maior nos municípios mais pobres mesmo dentro da mesma UF, ou a notificação segue a capacidade de diagnóstico (CNES)? *(n=4: ms_sinan_chikungunya, cgu_novo_bolsa_familia, ms_cnes\*, ibge_populacao\*)*
+4. A esquistossomose ainda é doença de água e saneamento — sua distribuição municipal acompanha os indicadores do SNIS melhor que a renda? *(n=3: ms_sinan_esquistossomose, mdr_snis\*, ibge_pib\*)*
+5. As notificações de febre amarela se concentram nos municípios de maior remanescente de Mata Atlântica (PRODES/MapBiomas) — a doença é indicador de interface floresta-cidade? *(n=3: ms_sinan_febre_amarela, inpe_prodes_acumulado, mapbiomas_estatisticas\*)*
+
+## 72 · Desastres Reconhecidos e Risco Climático (SEDEC)
+
+1. Que tipos de desastre (COBRADE) dominam os reconhecimentos vigentes, e a distribuição por UF acompanha a exposição climática do INMET? *(n=3: sedec_desastres, inmet_bdmep\*, ibge_populacao\*)*
+2. Municípios com desastre reconhecido têm pior conectividade (Anatel) — o desastre atinge preferencialmente o território mal servido? *(n=2: sedec_desastres, anatel_indice_brasileiro_conectividade\*)*
+3. O reconhecimento de desastre destrava transferência federal — municípios reconhecidos captaram mais convênio (SICONV) no ano seguinte? *(n=2: sedec_desastres, transferegov_siconv)*
+4. Desastre reconhecido em município agrícola (densidade agro no CNEFE) coincide com pico de inadimplência rural no SCR.data da mesma UF? *(n=3: sedec_desastres, bcb_scrdata, ibge_cnefe)*
+5. Municípios com reconhecimento recorrente de seca ou estiagem são os mesmos que concentram Garantia-Safra e Bolsa Família? *(n=3: sedec_desastres, cgu_novo_bolsa_familia, cgu_garantia_safra\*)*
+
+## 73 · Terceirização no Executivo Federal (CGU Pessoal)
+
+1. Quanto o governo federal paga por trabalhador terceirizado acima do salário que o trabalhador recebe — qual a razão custo/salário? *(n=1: cgu_pessoal_executivo_federal)*
+2. A margem do intermediário é regressiva — cresce conforme cai a escolaridade exigida do posto? *(n=1: cgu_pessoal_executivo_federal)*
+3. As empresas que mais empregam terceirizados no Executivo federal aparecem no CEIS/CNEP da CGU ou na dívida ativa da PGFN? *(n=3: cgu_pessoal_executivo_federal, cgu_sancoes, pgfn_dividaativa\*)*
+4. A concentração do mercado de terceirização (quantas empresas respondem por metade dos postos) mudou entre os anos cobertos? *(n=2: cgu_pessoal_executivo_federal, me_cnpj\*)*
+5. Órgãos com mais terceirizados por servidor efetivo são os mesmos que mais gastam em viagens e cartão corporativo? *(n=3: cgu_pessoal_executivo_federal, cgu_servidores_executivo_federal\*, cgu_viagens\*)*
+
+## 74 · Diários Oficiais como Sinal de Estado (Querido Diário texto)
+
+1. O tamanho médio do diário oficial de um município é proxy de complexidade administrativa — prevê taxa de sucesso em convênios e número de fornecedores no PNCP? *(n=3: ok_queridodiario_texto, transferegov_siconv, pncp)*
+2. A cobertura do Querido Diário é enviesada para municípios grandes e ricos — quantos municípios têm diário raspado, e quem fica de fora? *(n=3: ok_queridodiario_texto, ibge_populacao\*, ibge_pib\*)*
+3. Municípios que publicam mais edições extras têm mais contratações emergenciais no PNCP? *(n=2: ok_queridodiario_texto, pncp)*
+4. O texto integral dos diários permite localizar menções a desastre/calamidade e conferir contra os reconhecimentos da SEDEC — o município declara antes do reconhecimento federal? *(n=2: ok_queridodiario_texto, sedec_desastres)*
+5. A densidade de menções a fornecedores sancionados (CEIS) no texto dos diários identifica contratação irregular em curso? *(n=2: ok_queridodiario_texto, cgu_sancoes)*
+
+## 75 · BNDES, Fomento e Geografia do Crédito (BNDES operações)
+
+1. O crédito do BNDES per capita acompanha a formalização (RAIS) mais do que o PIB — o banco de fomento financia onde já existe carteira assinada? *(n=3: bndes_operacoes_contratadas, me_rais\*, ibge_pib\*)*
+2. A taxa de juros média cobrada pelo BNDES é maior nos municípios de perfil agropecuário — o risco setorial se traduz em preço? *(n=3: bndes_operacoes_contratadas, ibge_pib\*, ibge_cnefe)*
+3. As operações indiretas automáticas (via banco credenciado) cobrem quantos municípios a mais que as não-automáticas — o intermediário amplia o alcance territorial do fomento? *(n=2: bndes_operacoes_contratadas, bcb_ifdata)*
+4. Municípios que receberam BNDES agro são os mesmos do desmatamento acumulado (PRODES) e do crédito rural SICOR, ou o fomento evita a fronteira? *(n=4: bndes_operacoes_contratadas, inpe_prodes_acumulado, bcb_sicor\*, sfb_sicar)*
+5. A fatia do BNDES destinada a micro e pequenas empresas por município é maior onde há mais MEI e microempresa no CNPJ, ou o porte do tomador não segue o porte da economia local? *(n=3: bndes_operacoes_contratadas, me_cnpj\*, me_rais\*)*
+
+## 76 · Senado: Produção Legislativa e Custo Administrativo (Senado dados abertos)
+
+1. O espelho agora tem processos e votações nominais do Senado — quantas proposições e votações por senador na legislatura atual, e isso desbloqueia a comparação Câmara×Senado antes impossível? *(n=2: senado_dados_abertos, camara_dados_abertos\*)*
+2. Senadores que mais discursam são os que menos gastam CEAPS, ou palavra e verba andam juntas? *(n=2: senado_dados_abertos, senado_dados_abertos_administrativos)*
+3. O gasto médio de CEAPS por senador é função da distância do estado a Brasília, não da atividade parlamentar — DF e GO gastam quanto abaixo de AM e RR? *(n=3: senado_dados_abertos_administrativos, senado_dados_abertos, bd_diretorios_brasil\*)*
+4. A disciplina partidária medida nas votações nominais do Senado difere da medida na Câmara para os mesmos partidos? *(n=2: senado_dados_abertos, camara_dados_abertos\*)*
+5. As horas extras dos servidores do Senado se concentram nos meses de maior atividade legislativa (votações e sessões), ou são estruturais e independentes do calendário? *(n=2: senado_dados_abertos_administrativos, senado_dados_abertos)*
+
+## 77 · Cruzamentos Inéditos de Três Famílias (Bloco I de `tasks/hipoteses.md`, H41–H45)
+
+1. Municípios cuja exportação caiu mais entre 2019 e 2020 registraram aumento maior de famílias no Bolsa Família no ano seguinte, e o efeito é maior onde a pauta exportadora é concentrada num único código SH4? *(n=3: me_comex_stat, mc_indicadores, me_caged)*
+2. Municípios que terceirizam mais a função Saúde (empenho em "serviços de terceiros — pessoa jurídica") retêm mais internação no próprio território e pagam mais por AIH, sem reduzir a mortalidade por causas evitáveis? *(n=3: world_wb_mides, ms_sih, ms_sim)*
+3. A troca de partido na prefeitura reduz a sobreposição de fornecedores pagos pelo MIDES em torno da posse mais que a reeleição, e os fornecedores que entram depois da troca são mais de fora do município e mais sancionados? *(n=3: tse_eleicoes, world_wb_mides, cgu_sancoes)*
+4. A concentração ocupacional feminina (RAIS por CBO) prevê a taxa de mães adolescentes (SINASC) melhor que o IDEB ou a cobertura do Bolsa Família? *(n=3: me_rais, ms_sinasc, inep_ideb)*
+5. Municípios com maior queda na arrecadação de CFEM entre 2017-2021 e 2022-2025 mantêm o saldo de emprego formal do CAGED mas acumulam mais pendência no CAUC — o choque da mineração é fiscal, não trabalhista? *(n=3: anm, me_caged, tesouro_cauc)*
+
+---
+
+## 78 · Agropecuária e Fundiário — Famílias Quase Sem Pergunta (Blocos N e P de `tasks/hipoteses.md`, H46–H50 e H55–H58)
+
+1. A razão área colhida ÷ área plantada da PAM mede quebra de safra por município e ano — o Garantia-Safra paga onde a safra quebrou ou onde o cadastro já existia? *(n=3: ibge_pam, cgu_garantia_safra, ibge_pib\*)*
+2. Municípios de monocultura (HHI sobre o valor de produção por produto na PAM) têm mortalidade por neoplasia maior que os de policultura de mesma renda? *(n=3: ibge_pam, ms_sim, ibge_pib\*)*
+3. O rendimento médio da lavoura (kg/ha na PAM) responde ao crédito rural com defasagem de um ano, e a resposta é menor onde a propriedade é grande? *(n=3: ibge_pam, bcb_sicor, rf_cafir)*
+4. A silvicultura (PEVS) ocupa o município que já desmatou e não o que está desmatando — correlaciona com PRODES acumulado e não com DETER recente? *(n=3: ibge_pevs, inpe_prodes_acumulado, inpe_deter)*
+5. Rebanho bovino por hectare (PPM) prevê desmatamento melhor que crédito rural, separando pecuária extensiva de agricultura intensiva? *(n=3: ibge_ppm, inpe_prodes_acumulado, bcb_sicor)*
+
+## 79 · Saneamento como Fonte Auto-Declarada (Bloco O de `tasks/hipoteses.md`, H51–H54)
+
+1. O índice de esgoto do Atlas da ANA (modelado por terceiro) e o declarado do SNIS divergem sistematicamente, e a divergência segue o mesmo eixo de capacidade administrativa que o G3 mediu? *(n=3: ana_atlas_esgotos, mdr_snis, anatel_indice_brasileiro_conectividade)*
+2. Município cujo prestador de água é empresa estadual declara cobertura maior que o de autarquia municipal, controlando renda e porte? *(n=3: mdr_snis, ibge_pib\*, ibge_censo_2022\*)*
+3. Esgoto sem tratamento (Atlas ANA) prevê internação por doença infecciosa acima do que a renda prevê? *(n=3: ana_atlas_esgotos, ms_sih, ibge_pib\*)*
+4. A vazão de lançamento outorgada pela ANA cruzada com o esgoto não tratado do Atlas identifica onde o lançamento é legal e sem tratamento? *(n=3: ana_outorgas, ana_atlas_esgotos, mdr_snis)*
+5. Foco de calor com chuva recente (o INPE traz `dias_sem_chuva` e `precipitacao` na própria linha) separa fogo de manejo de fogo climático, e o de manejo concentra onde há crédito rural? *(n=3: inpe_queimadas, bcb_sicor, inpe_prodes_acumulado)*
+
+## 80 · Natalidade e Conectividade como Viés de Registro (Bloco Q de `tasks/hipoteses.md`, H59–H62)
+
+1. A fração de cesárea por hora do dia (SINASC tem `hora_nascimento`) distingue eletiva de emergência, e a eletiva concentra onde há plano de saúde privado? *(n=3: ms_sinasc, ieps_saude, ibge_pib\*)*
+2. Baixo peso ao nascer (SINASC) × esgoto sem tratamento (Atlas ANA) × cobertura de atenção básica: qual das três pernas prevê depois de controlar renda? *(n=4: ms_sinasc, ana_atlas_esgotos, ieps_saude, ibge_pib\*)*
+3. A conectividade prediz a notificação de agravo (SINAN) melhor que prediz a incidência medida por internação (SIH) — a diferença é a medida direta do viés de registro? *(n=3: anatel_indice_brasileiro_conectividade, ms_sinan, ms_sih)*
+4. Escola sem internet (SIMET) × desempenho (IDEB/SAEB) dentro da mesma UF: a defasagem digital custa nota ou é proxy de renda? *(n=3: simet_educacao_conectada, inep_ideb, inep_indicador_nivel_socioeconomico\*)*
+5. O tamanho médio da propriedade (CAFIR, achado G2) prevê concentração de crédito rural — onde a propriedade é grande, poucos tomadores levam a maior parte do SICOR? *(n=3: rf_cafir, bcb_sicor, ibge_pam)*
+
+## 81 · Pares Nunca Cruzados Entre Datasets Já Mirrorados
+
+Diferente de 57–80 (dataset novo × covariável já conhecida): aqui os dois
+lados de cada pergunta já estão no espelho há tempo, só nunca foram cruzados
+um com o outro. Variáveis já extraídas no painel municipal de
+`tasks/hipoteses.md` (`scripts/hipoteses/100_pares_existentes.py`), sem SQL
+nova.
+
+1. Cobertura vacinal contra poliomielite (IEPS Saúde, `vac_polio`) é pior onde a vulnerabilidade social (IVS 2010) é maior? *(n=2: ieps_saude, ipea_avs; chave: id_municipio)*
+2. O sub-índice de mercado móvel do IBC (`hhi_smp`) é pior onde a cobertura do Bolsa Família é maior? *(n=2: anatel_indice_brasileiro_conectividade, cgu_novo_bolsa_familia)*
+3. A cobertura da Estratégia Saúde da Família (`cob_esf`, IEPS Saúde) prevê desempenho escolar (IDEB)? *(n=2: ieps_saude, inep_ideb)*
+4. O valor mediano de contrato do PNCP é menor onde a nota de transparência (EBT/CGU) é maior? *(n=2: pncp, cgu_ebt)*
+5. Pendências no CAUC (Tesouro) e o capital social mediano do estabelecimento (RAIS identificada) andam juntos — município mais devedor tem empresa de capital menor? *(n=2: tesouro_cauc, me_rais_identificada)*
 
 ---
 
