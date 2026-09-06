@@ -61,6 +61,7 @@ MODELO = """<!doctype html>
 <main>
   <a class="voltar" href="../">&larr; voltar às análises</a>
   <p class="eyebrow" id="eyebrow">Análises</p>
+  <p class="meta">rodado em {rodado_em}</p>
   <div id="doc" data-slug="{slug}" data-base="../"><p class="doc-msg">Carregando…</p></div>
 </main>
 
@@ -85,6 +86,9 @@ def escapa(texto: str) -> str:
 
 
 def main() -> None:
+    # "rodado_em" (DD-MM-AAAA) vem do primeiro commit de results/<slug>.md — não é
+    # calculado aqui, precisa ser mantido à mão no manifest a cada análise nova:
+    # git log --follow --diff-filter=A --format=%ad --date=format:%d-%m-%Y -- <arquivo> | tail -1
     if not MANIFEST.exists():
         sys.exit(f"manifest não encontrado: {MANIFEST}")
     itens = json.loads(MANIFEST.read_text(encoding="utf-8"))
@@ -105,6 +109,7 @@ def main() -> None:
                 titulo=escapa(item["title"]),
                 dek=escapa(item["dek"]),
                 slug=escapa(slug),
+                rodado_em=escapa(item.get("rodado_em", "")),
             ),
             encoding="utf-8",
         )

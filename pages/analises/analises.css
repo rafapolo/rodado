@@ -70,7 +70,10 @@
 .idx-list li { margin: 0 0 1.4rem; padding-bottom: 1.4rem; border-bottom: 1px solid var(--rule); }
 .idx-list a { font-size: 1.15rem; font-weight: 700; text-decoration: none; }
 .idx-list .dek { margin: 0.3rem 0 0; color: var(--ink-soft); font-size: 0.95rem; }
-.idx-list .meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--ink-faint); }
+.meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--ink-faint); }
+/* na página de uma análise, fica acima de #doc — quando o markdown carrega
+   por baixo, tira a dúvida de "isso é de quando" sem esperar o corpo render */
+main > .meta { margin: 0 0 1rem; }
 /* fontes do dado de cada reportagem: etiquetas discretas, abaixo do resumo */
 .idx-list .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.6rem 0 0; }
 .idx-list .tag { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
