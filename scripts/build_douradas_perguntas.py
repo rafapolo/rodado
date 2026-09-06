@@ -35,7 +35,7 @@ RESPOSTAS = REPO / "docs" / "respostas.md"
 SCHEMA_PATH = REPO / "docs" / "context" / "basedosdados-schema.json"
 OUT = REPO / "tasks" / "douradas_perguntas.json"
 
-STATUS_MAP = {"✅": "ok", "◐": "partial", "⏳": "pending"}
+STATUS_MAP = {"✅": "ok", "◐": "partial", "⏳": "pending", "❌": "no_answer"}
 KEEP_STATUS = {"ok", "partial"}
 
 THEME_RE = re.compile(r"^## (\d+) · ")
@@ -114,12 +114,12 @@ def parse_respostas():
     """(tema, item) -> status ('ok'/'partial'/'pending'), last one wins."""
     status = {}
     for bold in BOLD_RE.findall(RESPOSTAS.read_text(encoding="utf-8")):
-        if not re.search(r"[✅◐⏳]", bold):
+        if not re.search(r"[✅◐⏳❌]", bold):
             continue
         if "T" not in bold and "M" not in bold:
             continue
         # split on status glyphs, keep each glyph paired with the codes before it
-        pieces = re.split(r"([✅◐⏳])", bold)
+        pieces = re.split(r"([✅◐⏳❌])", bold)
         buf = ""
         for piece in pieces:
             if piece in STATUS_MAP:
