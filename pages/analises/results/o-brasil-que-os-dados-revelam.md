@@ -1,20 +1,14 @@
 # O Brasil que os dados revelam
 
-Cruzando dezenas de bases públicas federais e estaduais — nota fiscal de convênio, foto de
-satélite da Amazônia, extrato de Pix, boletim de nascimento, folha de pagamento do
-funcionalismo — apareceram relações que não estavam em nenhum relatório oficial. Todas foram
-testadas descontando o efeito óbvio de população, renda e estado, para separar padrão real de
-"cidade grande tem mais de tudo". O que sobrou está aqui, organizado por assunto, em doses
-curtas.
-
-As relações deste painel não vieram de olhar tabela por tabela: vieram de um mapeamento
-sistemático de todo o espaço de cruzamentos possível entre as categorias de dados do país —
-ambiental, fiscal, financeira, educacional, sanitária — priorizando o que nunca tinha sido
-testado. Cada hipótese nasceu ao aplicar padrões que se repetiam nos achados anteriores a uma
-fonte que ainda não tinha passado por aquele teste. Toda relação foi calculada duas vezes —
-bruta, e depois descontando o efeito de população, renda e estado — e só entrou aqui o que
-sobreviveu ao segundo cálculo; a condição que derrubaria cada hipótese foi escrita antes de rodar
-o teste, e o resultado é a prosa sobre os 83 achados inéditos.
+As informações deste artigo vêm do mapeamento sistemático de todo o espaço de cruzamentos e
+perguntas possíveis entre os mais de 200 datasets públicos, divididos em 43 temas, priorizando o
+que nunca tinha sido perguntado. Cada uma das mais de 2 mil
+[hipóteses](https://github.com/rafapolo/rodado/blob/main/docs/hipoteses/perguntas.md) nasceu ao
+aplicar padrões de achados de pesquisas anteriores, e as
+[respostas](https://github.com/rafapolo/rodado/blob/main/docs/hipoteses/respostas.md) foram
+validadas estatisticamente para encontrar os 83
+[achados inéditos](https://github.com/rafapolo/rodado/blob/main/docs/hipoteses/achados_fortes.md)
+aqui reunidos — nenhum deles publicado em relatório oficial.
 
 ---
 
@@ -348,9 +342,3 @@ INSS/SISDEPEN (população carcerária); tribunais de justiça estaduais e Conse
 Justiça; Senado Federal e Câmara dos Deputados (dados abertos legislativos, CEAPS); Comitê
 Olímpico Internacional (Olympedia); SNIS (saneamento); prefeituras de Belo Horizonte e Fortaleza
 (cadastros urbanos).
-
-As perguntas que orientaram este levantamento, as respostas completas e a tabela integral de
-achados estão documentadas em código aberto:
-[perguntas](https://github.com/rafapolo/rodado/blob/main/docs/hipoteses/perguntas.md) ·
-[respostas](https://github.com/rafapolo/rodado/blob/main/docs/hipoteses/respostas.md) ·
-[achados fortes](https://github.com/rafapolo/rodado/blob/main/docs/hipoteses/achados_fortes.md).
