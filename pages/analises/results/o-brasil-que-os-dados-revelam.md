@@ -9,15 +9,12 @@ curtas.
 
 As relações deste painel não vieram de olhar tabela por tabela: vieram de um mapeamento
 sistemático de todo o espaço de cruzamentos possível entre as famílias de dados do país —
-ambiental, fiscal, financeira, educacional, sanitária — descartando o que já tinha sido
-perguntado e priorizando o que nunca tinha sido testado. Cada hipótese nova nasceu de aplicar um
-punhado de padrões que se repetiam nos achados anteriores (uma base auto-declarada difere do que
-uma fonte independente mede do mesmo fato; um impedimento legal existe no papel mas não impede
-ninguém na prática; a margem que um intermediário fica numa cadeia de repasse) a uma fonte que
-ainda não tinha passado por aquele teste. Toda relação foi calculada duas vezes — bruta, e
-depois descontando o efeito de população, renda e estado — e só entrou aqui o que sobreviveu ao
-segundo cálculo; a condição que derrubaria cada hipótese foi escrita antes de rodar o teste, e o
-resultado contou mesmo quando negou a ideia original.
+ambiental, fiscal, financeira, educacional, sanitária — priorizando o que nunca tinha sido
+testado. Cada hipótese nasceu de aplicar um punhado de padrões que se repetiam nos achados
+anteriores a uma fonte que ainda não tinha passado por aquele teste. Toda relação foi calculada
+duas vezes — bruta, e depois descontando o efeito de população, renda e estado — e só entrou aqui
+o que sobreviveu ao segundo cálculo; a condição que derrubaria cada hipótese foi escrita antes de
+rodar o teste, e o resultado é a prosa sobre 83 achados inéditos.
 
 ---
 
