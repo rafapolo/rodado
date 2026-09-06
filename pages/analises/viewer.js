@@ -221,7 +221,7 @@
       // externos como rios-do-brasil, checados out em pages/analises/ no deploy)
       var href = it.url || (encodeURIComponent(it.slug) + '/');
       html += '<li><a href="' + href + '">' + it.title + '</a>' +
-        (it.date ? ' <span class="meta">· ' + it.date + '</span>' : '') +
+        (it.rodado_em ? ' <span class="meta">rodado em ' + it.rodado_em + '</span>' : '') +
         (it.dek ? '<p class="dek">' + it.dek + '</p>' : '') +
         (tags ? '<p class="tags">' + tags + '</p>' : '') + '</li>';
     });
