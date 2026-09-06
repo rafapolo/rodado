@@ -348,3 +348,9 @@ INSS/SISDEPEN (população carcerária); tribunais de justiça estaduais e Conse
 Justiça; Senado Federal e Câmara dos Deputados (dados abertos legislativos, CEAPS); Comitê
 Olímpico Internacional (Olympedia); SNIS (saneamento); prefeituras de Belo Horizonte e Fortaleza
 (cadastros urbanos).
+
+As perguntas que orientaram este levantamento, as respostas completas e a tabela integral de
+achados estão documentadas em código aberto:
+[perguntas](https://github.com/rafapolo/rodado/blob/main/docs/hipoteses/perguntas.md) ·
+[respostas](https://github.com/rafapolo/rodado/blob/main/docs/hipoteses/respostas.md) ·
+[achados fortes](https://github.com/rafapolo/rodado/blob/main/docs/hipoteses/achados_fortes.md).
