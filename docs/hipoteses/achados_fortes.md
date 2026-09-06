@@ -137,7 +137,7 @@ Rodada completa de `scripts/hipoteses_overnight.sh` — 5 blocos SQL + análise 
 intensivos varridos. Cada hipótese tinha a **condição de falseamento escrita
 antes de rodar**; a maioria falseou. Respostas completas em
 [`respostas.md`](respostas.md), fila e método em
-[`tasks/hipoteses.md`](../tasks/hipoteses.md).
+[`tasks/hipoteses.md`](../../tasks/hipoteses.md).
 
 Aqui só o que **sobreviveu ao parcial** e merece ficar como achado.
 
@@ -176,7 +176,7 @@ correções têm a mesma causa e estão marcadas com ⚠️ nas linhas originais
 
 ## Achados da varredura de inéditos (2026-09-06)
 
-Saíram do método de §5 de [`tasks/hipoteses.md`](../tasks/hipoteses.md):
+Saíram do método de §5 de [`tasks/hipoteses.md`](../../tasks/hipoteses.md):
 subtrair de todas as combinações de família as que `perguntas.md`, `hipoteses.md`
 e este arquivo já ocupam, e aplicar os **8 moldes** de
 [`docs/context/moldes.yaml`](context/moldes.yaml) às fontes que nunca os
@@ -200,7 +200,7 @@ ao parcial, promovidas depois da checagem de magnitude que `CLAUDE.md` exige
 método completo em `scripts/hipoteses/96_blocof_fechamento.py`). As outras três
 (H41 choque de exportação, H42 terceirização da saúde, H43 troca de partido)
 fecharam como nulo ou confirmação parcial pequena demais para entrar aqui — ver
-`docs/respostas.md` tema 77 e `tasks/hipoteses.md`.
+`respostas.md` tema 77 e `tasks/hipoteses.md`.
 
 | # | Relação | Nível | n | Valor | Por que importa |
 |---|---|---|---|---|---|
@@ -214,7 +214,7 @@ eram rotulados H1/H2/H3, que colidem com os nomes das hipóteses H01–H03 de
 sancionado) — flagrado pela sessão `analise-hipoteses-municipais`. Renomeados
 para **I1/I2/I3** (casa com o Bloco I de onde vêm I1/I2).
 
-I1 e I2 vêm do Bloco I (H41–H45, `docs/respostas.md` tema 77); I3 vem do
+I1 e I2 vêm do Bloco I (H41–H45, `respostas.md` tema 77); I3 vem do
 Bloco H de §5.2 (`div_nomes`/`obras_1000dom`/MIDES, sinalizados pela sessão
 `analise-hipoteses-municipais` e cedidos por acordo — ver `tasks/hipoteses.md`).
 H38 e a metade de H40 (`div_nomes × mides_valor_pc`) que testei junto **não**
@@ -245,9 +245,38 @@ do país. Dividir 7.893 (sancionados) por 6,68 milhões (devedores) mistura o
 numerador de um cadastro com o denominador de outro — sempre vai inflar
 qualquer interseção testada contra essa base.
 
+## Trincas corrigidas do Bloco R — ITR × propriedade rural (2026-09-06)
+
+`mobilidade` e `fiscal_municipal` estavam catalogadas em `tasks/hipoteses.md`
+§5.5 Bloco R como travadas por grão de fonte — na verdade só a tabela
+específica citada estava travada (`br_mobilidados_indicadores` tem 9
+municípios **na tabela de transporte de alta capacidade**; `br_rf_arrecadacao`
+não tem município **na receita geral**). Rerodar o gerador de inéditos achou
+outra tabela em cada, nunca testada: `itr` (imposto territorial rural, 5.571
+municípios) e `proporcao_mortes_negras_acidente_transporte` (5.544). Tema 82
+de `perguntas.md`, extração `scripts/hipoteses/72_novidades.sql`,
+análise `101_novidades.py`.
+
+| # | Relação | Nível | n | Valor | Por que importa |
+|---|---|---|---|---|---|
+| **L1** | ITR per capita (Receita Federal) × tamanho médio da propriedade rural (SICAR) | município | 5.563 | **r_parcial +0,53** (bruto +0,47) — sobe, não cai, com o controle; quintis **R$ 2,00 → 98,47 pc (49×)** conforme o tamanho médio vai de 11,7 a 223,5 ha | Nunca medido neste espelho. Faz sentido econômico — o ITR é progressivo por tamanho de imóvel na tabela oficial — mas é o tipo de relação que só aparece cruzando duas famílias (fiscal × fundiário) que nunca tinham sido testadas juntas. Checagem de armadilha extensiva: `sicar_area_media` já é média (não soma), não correlaciona com população (r=−0,00) |
+
+Os outros dois testes do mesmo tema saem nulos (documentados em
+`respostas.md` tema 82, não repetidos aqui): notificação de violência
+doméstica × conectividade **não** confirma o `registro_vs_fenomeno` (parcial
++0,03, quase todo escala); proporção de vítimas negras em acidente de
+transporte × composição racial **não** mostra excesso sistemático (mediana do
+excesso −0,13, positivo em só 37% dos municípios — o oposto da hipótese de
+disparidade).
+
+**Vale reconferir as outras famílias do Bloco R** (`comercio_exterior`,
+`precos_indices`, `seguranca`, `justica`) com o mesmo cuidado — a nota
+original pode ter testado a tabela errada dentro do dataset em mais de um
+caso.
+
 ## Achados das famílias vazias (2026-09-06)
 
-Blocos N–Q de [`tasks/hipoteses.md`](../tasks/hipoteses.md) §5.5, escolhidos
+Blocos N–Q de [`tasks/hipoteses.md`](../../tasks/hipoteses.md) §5.5, escolhidos
 pelo gerador de inéditos: as sete famílias com **menos combinações ocupadas**.
 Extração `scripts/hipoteses/60_familias_vazias.sql`, análise
 `scripts/hipoteses/97_familias.py`. Placar: 4 ✅ · 6 ❌ · 3 ◐ · 4 não rodadas;

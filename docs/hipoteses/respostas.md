@@ -1508,7 +1508,7 @@ por falta de investigação.
 Rodada completa de [`scripts/hipoteses_overnight.sh`](../scripts/hipoteses_overnight.sh)
 no beelink: 5 blocos SQL + análise, **88 segundos**, painel de **5.571 municípios ×
 164 colunas**. Estas não são perguntas de `perguntas.md` — são as hipóteses de
-[`tasks/hipoteses.md`](../tasks/hipoteses.md), cada uma com a condição de
+[`tasks/hipoteses.md`](../../tasks/hipoteses.md), cada uma com a condição de
 falseamento escrita antes de rodar. O resultado está reportado **inclusive quando
 nega a hipótese**, que é a maior parte das vezes.
 
@@ -1630,7 +1630,7 @@ fraca** (parcial +0,06, robusta ao controle de porte). Detalhe na tabela acima.
 ## 77 · Cruzamentos Inéditos de Três Famílias
 
 Extração em [`scripts/hipoteses/50_novas.sql`](../scripts/hipoteses/50_novas.sql)
-(Bloco I de [`tasks/hipoteses.md`](../tasks/hipoteses.md), H41–H45 — renumerado
+(Bloco I de [`tasks/hipoteses.md`](../../tasks/hipoteses.md), H41–H45 — renumerado
 de H20–H24 em 2026-09-06 por colisão com outro Bloco F escrito em paralelo no
 mesmo arquivo, ver a nota no topo daquela seção), rodada como **corrida
 completa** via `bash hipoteses_overnight.sh` em 2026-09-06 (isolada em
@@ -1704,10 +1704,35 @@ IBC onde maior é melhor) — vale conferir a documentação oficial do IBC ante
 de reusar essa coluna em qualquer análise futura, e registrar em
 `docs/context/schema_dict_status.json` se confirmado.
 
+## 82 · Trincas Corrigidas do Bloco R (2026-09-06)
+
+`tasks/hipoteses.md` §5.5 Bloco R catalogava `mobilidade` e `fiscal_municipal`
+como travadas por grão de fonte inteiro — na verdade só a tabela específica
+citada naquela nota (`br_mobilidados_indicadores.transporte_alta_capacidade`,
+9 municípios; a receita geral de `br_rf_arrecadacao` sem grão municipal)
+estava travada. Rerodar o gerador de inéditos (`93_inedito.py`) achou outra
+tabela em cada dataset com cobertura municipal excelente:
+`proporcao_mortes_negras_acidente_transporte` (mobilidade, 5.544 municípios) e
+`itr` (fiscal_municipal, imposto territorial rural, 5.571 municípios) —
+nenhuma das duas tinha sido testada. Extração em
+`scripts/hipoteses/72_novidades.sql`, análise em `101_novidades.py`, OUT dir
+próprio (`~/rodado_hipoteses/inedito2/`).
+
+- **T82-1 ✅ — achado forte** ITR per capita (Receita Federal) × tamanho médio da propriedade rural (SICAR): bruto **+0,47** → parcial **+0,53** (n=5.563) — sobe, não cai, com o controle, e quintis limpos e monotônicos: propriedade média 11,7 ha → ITR R$ 2,00 pc; propriedade 223,5 ha → ITR R$ 98,47 pc (**49×**). Checagem de armadilha extensiva: `sicar_area_media` (já é média, não soma) não correlaciona com população (r=−0,00) e quase nada com renda (r=+0,14) — não é artefato de escala. × densidade de rebanho (bovino/ha): nulo (bruto +0,13 → parcial −0,07). Faz sentido econômico: o ITR é progressivo por tamanho de imóvel rural na tabela oficial, então município dominado por propriedade grande arrecada proporcionalmente mais per capita — mas nunca tinha sido medido neste espelho. → achado registrado em `achados_fortes.md` como **L1**.
+- **T82-2 ✅ (resposta negativa)** Notificação de violência doméstica/sexual (SINAN) por 100 mil hab × conectividade (IBC): bruto **+0,35** → parcial **+0,03**; controlando também a cobertura do Bolsa Família, **+0,01**. **Não** confirma o padrão `registro_vs_fenomeno` que já apareceu 6× no espelho — aqui o bruto era quase todo escala/renda, e o resíduo é nulo em qualquer direção. Aviso de dado: `ID_MUNICIP` desta tabela SINAN é código **SUS de 6 dígitos**, diferente de `microdados_dengue` (IBGE 7 dígitos, achado por outra sessão hoje) — **a convenção de chave do SINAN não é uniforme entre agravos**, varia tabela a tabela; usar `substr` no lado IBGE (`id_municipio // 10` tira o dígito verificador) para casar.
+- **T82-3 ✅ (resposta negativa)** Proporção de vítimas negras em acidente de transporte × composição racial (Censo 2022): bruto **+0,46** → parcial **+0,13** — a proporção acompanha a composição racial local, como o esperado mecanicamente (mais população negra, mais vítima negra em números absolutos). O **excesso** (proporção de vítimas menos share populacional) tem **mediana −0,13** e é positivo em só **37,3%** dos municípios — ao contrário do que a hipótese de disparidade racial previa, no município mediano a fração de vítimas negras é **menor**, não maior, que a fração da população. Não sustenta a hipótese como escrita. Ressalva: indicador oficial de uma fonte só, não verificado contra outra base (ex.: SIM por raça).
+
+Placar: **1 forte (L1) · 2 nulos**. O achado de método aqui vale mais que a
+correlação: **duas famílias que constavam como "travadas por fonte" no Bloco
+R não estavam** — a nota original testou a tabela errada dentro do dataset.
+Vale reconferir as outras famílias do Bloco R (`comercio_exterior`,
+`precos_indices`, `seguranca`, `justica`) com o mesmo cuidado antes de aceitar
+o bloqueio como definitivo.
+
 ## Bateria de inéditos H20–H36 (2026-09-06)
 
 Segunda bateria do dia. As hipóteses **não** vieram de leitura: vieram da
-subtração de §5 de [`tasks/hipoteses.md`](../tasks/hipoteses.md) — toda
+subtração de §5 de [`tasks/hipoteses.md`](../../tasks/hipoteses.md) — toda
 combinação de família menos as que `perguntas.md`, `hipoteses.md` e
 `achados_fortes.md` já ocupam — cruzada com os **8 moldes** de
 [`docs/context/moldes.yaml`](context/moldes.yaml) aplicados a fontes que nunca
@@ -1765,7 +1790,7 @@ replicado do espelho.
 
 ## Bateria das famílias vazias H46–H62 (2026-09-06)
 
-Terceira bateria do dia, blocos **N–Q** de [`tasks/hipoteses.md`](../tasks/hipoteses.md)
+Terceira bateria do dia, blocos **N–Q** de [`tasks/hipoteses.md`](../../tasks/hipoteses.md)
 §5.5. O alvo saiu do gerador de inéditos: as sete famílias com **menos
 combinações ocupadas** — `agropecuaria` (10), `saneamento_agua` (10),
 `fundiario` (9), `natalidade` (12), `conectividade` (14) — todas com fonte
@@ -1859,11 +1884,11 @@ que enfraquece o pareamento e não muda a direção.
 
 | Status | Perguntas | % |
 |---|---|---|
-| ✅ respondida | 292 | 74% |
+| ✅ respondida | 295 | 74% |
 | ◐ parcial | 79 | 20% |
 | ❌ **sem resposta** (bloqueio verificado) | 26 | 6% |
 | ⏳ pendente sem investigar | **0** | — |
-| **total temático** | **397** | |
+| **total temático** | **400** | |
 
 **Os temas 77 a 80 (18 perguntas) fecham sem `⏳` restante nesta rodada** — mas
 seis itens de rodadas anteriores continuam com a marca `⏳` no corpo do

@@ -1,9 +1,9 @@
 # Perguntas por tema — cada uma cruzando 3+ datasets
 
-5 perguntas por cada um dos 43 temas de [`Temas.md`](Temas.md). Toda pergunta exige
+5 perguntas por cada um dos 43 temas de [`Temas.md`](../Temas.md). Toda pergunta exige
 **n ≥ 3 datasets** simultâneos (contagem entre parênteses). Datasets de referência
 de outros temas, usados para completar o cruzamento, marcados com `*`. Chaves de
-join: [`context/join_keys.md`](context/join_keys.md). Ao fim, 5 perguntas que
+join: [`context/join_keys.md`](../context/join_keys.md). Ao fim, 5 perguntas que
 atravessam vários datasets de famílias distintas ao mesmo tempo.
 
 ---
@@ -656,6 +656,18 @@ nova.
 3. A cobertura da Estratégia Saúde da Família (`cob_esf`, IEPS Saúde) prevê desempenho escolar (IDEB)? *(n=2: ieps_saude, inep_ideb)*
 4. O valor mediano de contrato do PNCP é menor onde a nota de transparência (EBT/CGU) é maior? *(n=2: pncp, cgu_ebt)*
 5. Pendências no CAUC (Tesouro) e o capital social mediano do estabelecimento (RAIS identificada) andam juntos — município mais devedor tem empresa de capital menor? *(n=2: tesouro_cauc, me_rais_identificada)*
+
+## 82 · Trincas Corrigidas do Bloco R (2026-09-06)
+
+Duas famílias que `tasks/hipoteses.md` §5.5 Bloco R catalogava como travadas
+por grão de fonte (`mobilidade`, `fiscal_municipal` — só a tabela citada
+naquela nota estava mesmo travada) tinham **outra tabela**, nunca conferida,
+com grão municipal bom. Achado ao rerodar o gerador de inéditos
+(`scripts/hipoteses/93_inedito.py`) depois do fechamento de hoje.
+
+1. A arrecadação de ITR (Receita Federal) por município acompanha o **tamanho médio da propriedade rural** (CAFIR/SICAR) e a densidade de rebanho bovino (PPM)? *(n=3: rf_arrecadacao, sfb_sicar, ibge_ppm; chave: id_municipio)*
+2. A notificação de violência doméstica/sexual (SINAN) é predita mais por conectividade (IBC) do que por pobreza — o mesmo viés de registro já visto 6× no espelho? *(n=2: ms_sinan_violencia, anatel_indice_brasileiro_conectividade)*
+3. A proporção de vítimas negras em acidentes de transporte (Mobilidados) excede a própria composição racial do município (Censo 2022), e o excesso é maior onde a renda é menor? *(n=2: mobilidados_indicadores, ibge_censo2022_raca)*
 
 ---
 

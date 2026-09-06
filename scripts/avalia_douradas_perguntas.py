@@ -4,7 +4,7 @@
 Dataset-level, not table-level (see build_douradas_perguntas.py): a "hit" is
 search_tables returning ANY table from a required dataset in the top-K, not
 one specific table. supporting_datasets (the `*`-marked ones in
-docs/perguntas.md) are reported separately and don't count against recall —
+docs/hipoteses/perguntas.md) are reported separately and don't count against recall —
 they were never claimed as required.
 
     python3 scripts/avalia_douradas_perguntas.py [--top-k 10]
