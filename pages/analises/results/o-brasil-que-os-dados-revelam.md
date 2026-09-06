@@ -8,13 +8,13 @@ testadas descontando o efeito óbvio de população, renda e estado, para separa
 curtas.
 
 As relações deste painel não vieram de olhar tabela por tabela: vieram de um mapeamento
-sistemático de todo o espaço de cruzamentos possível entre as famílias de dados do país —
+sistemático de todo o espaço de cruzamentos possível entre as categorias de dados do país —
 ambiental, fiscal, financeira, educacional, sanitária — priorizando o que nunca tinha sido
-testado. Cada hipótese nasceu de aplicar um punhado de padrões que se repetiam nos achados
-anteriores a uma fonte que ainda não tinha passado por aquele teste. Toda relação foi calculada
-duas vezes — bruta, e depois descontando o efeito de população, renda e estado — e só entrou aqui
-o que sobreviveu ao segundo cálculo; a condição que derrubaria cada hipótese foi escrita antes de
-rodar o teste, e o resultado é a prosa sobre 83 achados inéditos.
+testado. Cada hipótese nasceu ao aplicar padrões que se repetiam nos achados anteriores a uma
+fonte que ainda não tinha passado por aquele teste. Toda relação foi calculada duas vezes —
+bruta, e depois descontando o efeito de população, renda e estado — e só entrou aqui o que
+sobreviveu ao segundo cálculo; a condição que derrubaria cada hipótese foi escrita antes de rodar
+o teste, e o resultado é a prosa sobre os 83 achados inéditos.
 
 ---
 
