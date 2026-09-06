@@ -1,15 +1,15 @@
 {
  "_meta": {
   "origem": [
-   "docs/perguntas.md",
-   "docs/respostas.md"
+   "docs/hipoteses/perguntas.md",
+   "docs/hipoteses/respostas.md"
   ],
   "sobre": "Conjunto dourado DATASET-level (nao table-level), restrito a perguntas com status verificado (ok/partial) em respostas.md — perguntas pendentes sao descartadas porque varias delas documentam explicitamente que o dataset citado nao funciona no espelho atual.",
   "criterios": [
    "search_tables no top-K deve trazer >=1 tabela de cada required_dataset",
    "supporting_datasets (marcados com * em perguntas.md) sao bonus, nao obrigatorios"
   ],
-  "n": 358
+  "n": 361
  },
  "perguntas": [
   {
@@ -4161,6 +4161,37 @@
    "required_datasets": [
     "br_tesouro_cauc",
     "br_me_rais_identificada"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T82-1",
+   "q": "A arrecadação de ITR (Receita Federal) por município acompanha o **tamanho médio da propriedade rural** (CAFIR/SICAR) e a densidade de rebanho bovino (PPM)?",
+   "status": "ok",
+   "required_datasets": [
+    "br_rf_arrecadacao",
+    "br_sfb_sicar",
+    "br_ibge_ppm"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T82-2",
+   "q": "A notificação de violência doméstica/sexual (SINAN) é predita mais por conectividade (IBC) do que por pobreza — o mesmo viés de registro já visto 6× no espelho?",
+   "status": "ok",
+   "required_datasets": [
+    "br_ms_sinan_violencia",
+    "br_anatel_indice_brasileiro_conectividade"
+   ],
+   "supporting_datasets": []
+  },
+  {
+   "code": "T82-3",
+   "q": "A proporção de vítimas negras em acidentes de transporte (Mobilidados) excede a própria composição racial do município (Censo 2022), e o excesso é maior onde a renda é menor?",
+   "status": "ok",
+   "required_datasets": [
+    "br_mobilidados_indicadores",
+    "br_ibge_censo2022_raca"
    ],
    "supporting_datasets": []
   }

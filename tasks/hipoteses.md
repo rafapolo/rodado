@@ -1,7 +1,7 @@
 # Banco de hipóteses — o que ainda dá para perguntar ao espelho
 
-Complementa [`docs/perguntas.md`](../docs/perguntas.md) (o banco de perguntas
-formuladas) e [`docs/achados_fortes.md`](../docs/achados_fortes.md) (o que já foi
+Complementa [`docs/hipoteses/perguntas.md`](../docs/hipoteses/perguntas.md) (o banco de perguntas
+formuladas) e [`docs/hipoteses/achados_fortes.md`](../docs/hipoteses/achados_fortes.md) (o que já foi
 medido). Aqui fica: **quanto do espaço de hipóteses é de fato válido**, **quais
 hipóteses concretas estão na fila** e **como rodar a bateria offline**.
 
@@ -283,6 +283,7 @@ eles existem porque a varredura de `90_analise.py` deixa buracos por desenho:
 | `70_temporais.sql` + `98_temporais.py` | Extração e análise de H05/H08/H14/H15 — as quatro que exigiam recorte temporal (pré×pós, defasagem, Δ ano-a-ano), não acumulado por município. OUT dir próprio (`~/rodado_hipoteses/temporais/` no beelink, `.hipoteses/temporais/` local) |
 | `71_rouanet.sql` + `99_rouanet.py` | H30/H31 — Lei Rouanet (`br_minc_salic`, sem view no `.duckdb`, lido via `read_parquet` direto do disco): funil regional (H30) e integridade de proponente/patrocinador contra taxa-base de CNPJ ativo (H31). OUT dir próprio (`~/rodado_hipoteses/rouanet/` no beelink, `.hipoteses/rouanet/` local) |
 | `100_pares_existentes.py` | Tema 81 de `docs/perguntas.md` — pares de variáveis **já extraídas** no painel principal que nunca tinham sido cruzadas entre si (vacinação×IVS, telecom×pobreza, ESF×IDEB, PNCP×EBT, CAUC×capital social). Sem SQL nova. Achado de método: `hhi_smp` provavelmente não é HHI de concentração — correlaciona positivo com população/renda/densidade, o oposto do esperado de um índice de concentração |
+| `72_novidades.sql` + `101_novidades.py` | Tema 82 — corrige o Bloco R: `mobilidade` e a tabela geral de `br_rf_arrecadacao` estavam travadas, mas `itr` (fiscal_municipal) e `proporcao_mortes_negras_acidente_transporte` (mobilidade) não. ITR×tamanho de propriedade rural vira **L1** (r_parcial +0,53). OUT dir próprio (`~/rodado_hipoteses/inedito2/`) |
 
 ### O que sai
 
@@ -343,9 +344,9 @@ DuckDB só lê as colunas usadas. Rodar overnight continua sendo a forma segura
 (nada compete pelo lock, e há folga se um bloco novo for pesado), mas o custo
 real é baixo. Painel: **5.571 municípios × 164 colunas**, 1.941 pares intensivos.
 
-**As respostas completas estão em [`docs/respostas.md`](../docs/respostas.md),
+**As respostas completas estão em [`docs/hipoteses/respostas.md`](../docs/hipoteses/respostas.md),
 seção "Bateria de hipóteses H01–H19"; o que sobreviveu ao parcial está em
-[`docs/achados_fortes.md`](../docs/achados_fortes.md) como F1–F7.**
+[`docs/hipoteses/achados_fortes.md`](../docs/hipoteses/achados_fortes.md) como F1–F7.**
 
 Placar: **5 confirmadas · 9 falseadas · 5 fracas · 0 não testáveis** — H05, H08,
 H14 e H15 fecharam em 2026-09-06 com o recorte temporal que faltava
@@ -461,9 +462,9 @@ Prioridade: (a) molde que funciona aplicado a fonte que nunca o recebeu,
 sinalizou. Cada linha traz o **falseador**, como as anteriores.
 
 > **Estado:** H20–H29, H32 e H36 rodaram (12 no total) — **6 ✅ · 4 ❌ · 1 ◐ · 1 ⏳**.
-> Respostas em [`docs/respostas.md`](../docs/respostas.md) ("Bateria de inéditos
+> Respostas em [`docs/hipoteses/respostas.md`](../docs/hipoteses/respostas.md) ("Bateria de inéditos
 > H20–H36"); o que sobreviveu está em
-> [`docs/achados_fortes.md`](../docs/achados_fortes.md) como **G1–G7**.
+> [`docs/hipoteses/achados_fortes.md`](../docs/hipoteses/achados_fortes.md) como **G1–G7**.
 > Extração: `scripts/hipoteses/50_inedito.sql` · análise:
 > `scripts/hipoteses/95_inedito.py`.
 >
@@ -697,9 +698,9 @@ cobertura quase total e quase nenhuma pergunta feita.
 
 > **Estado (2026-09-06):** H46–H62 rodaram, todas as 17 — **5 ✅ · 9 ❌ · 3 ◐**. Extração `scripts/hipoteses/60_familias_vazias.sql`, análise
 > `scripts/hipoteses/97_familias.py`, OUT dir `~/rodado_hipoteses/familias/`.
-> Respostas em [`docs/respostas.md`](../docs/respostas.md) ("Bateria das
+> Respostas em [`docs/hipoteses/respostas.md`](../docs/hipoteses/respostas.md) ("Bateria das
 > famílias vazias"); sobreviventes como **J1–J4** em
-> [`docs/achados_fortes.md`](../docs/achados_fortes.md).
+> [`docs/hipoteses/achados_fortes.md`](../docs/hipoteses/achados_fortes.md).
 >
 > | # | Veredito | Resumo |
 > |---|---|---|
@@ -774,7 +775,7 @@ redescobertas.
 
 | Família | Por que está travada |
 |---|---|
-| `mobilidade` | 224 combinações inéditas e **nenhuma testável**: `br_mobilidados_indicadores` cobre 9 municípios, `br_anac_dadosabertos` é por aeroporto |
+| `mobilidade` | ⚠️ **corrigido em 2026-09-06** — a nota original testou só `br_mobilidados_indicadores.transporte_alta_capacidade` (9 municípios) e `br_anac_dadosabertos` (por aeroporto). A tabela `proporcao_mortes_negras_acidente_transporte` do mesmo dataset cobre **5.544 municípios** e nunca tinha sido testada — ver tema 82 de `docs/perguntas.md` e achado L1 de `achados_fortes.md`. A família **não está travada**, só estava sub-explorada |
 | `comercio_exterior` | 220 inéditas; COMEX STAT é por município de **domicílio fiscal do exportador**, não de produção — o cruzamento territorial é enganoso |
 | `precos_indices` | IPCA/INPC/IPCA-15 cobrem 9, 9 e 2 municípios. Preço municipal só existe via ANP (422 municípios) |
 | `seguranca` | Depende inteiramente do SISDEPEN, com preenchimento desigual por UF |
