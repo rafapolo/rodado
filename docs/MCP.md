@@ -203,14 +203,14 @@ outra:
 
 | Métrica | O que mede | Resultado | O que NÃO prova |
 |---|---|---|---|
-| `docs/respostas.md` (106 perguntas ✅/◐ de `docs/perguntas.md`) | Se o **dado** existe e junta corretamente, dado que quem escreveu a query já sabia o nome das tabelas (schema lido, não descoberto) | ~106/220 respondidas com query real no beelink | Nada sobre `search_tables` — a descoberta nunca passou pelas ferramentas do MCP |
+| `docs/hipoteses/respostas.md` (106 perguntas ✅/◐ de `docs/hipoteses/perguntas.md`) | Se o **dado** existe e junta corretamente, dado que quem escreveu a query já sabia o nome das tabelas (schema lido, não descoberto) | ~106/220 respondidas com query real no beelink | Nada sobre `search_tables` — a descoberta nunca passou pelas ferramentas do MCP |
 | `scripts/avalia_douradas_perguntas.py` contra `tasks/douradas_perguntas.json` | Se `search_tables`, sozinho, numa única chamada, devolve TODOS os datasets exigidos por uma pergunta no mesmo `top_k` | ~51% dos datasets recuperados | Não testa o loop da seção 3 — é uma chamada isolada, sem describe_table/resolve_join/run_sql depois, sem reformular em caso de erro |
 
 O espaço entre essas duas linhas — quanto da distância de 106→51% a
 iteração completa (seção 3) recupera de volta — nunca foi medido até este
 documento existir. É exatamente o teste em andamento nesta sessão: um agente
 sem contexto do repositório, só com as ferramentas MCP e o texto da
-pergunta, tentando as 99 perguntas verificadas de `docs/respostas.md` do
+pergunta, tentando as 99 perguntas verificadas de `docs/hipoteses/respostas.md` do
 zero.
 
 ---
