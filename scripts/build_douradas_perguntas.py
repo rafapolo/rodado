@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""docs/perguntas.md + docs/respostas.md -> tasks/douradas_perguntas.json
+"""docs/hipoteses/perguntas.md + docs/hipoteses/respostas.md -> tasks/douradas_perguntas.json
 
     python3 scripts/build_douradas_perguntas.py
 
-docs/perguntas.md is dataset-level (43 themes x 5 questions, each citing
+docs/hipoteses/perguntas.md is dataset-level (43 themes x 5 questions, each citing
 `n=3+` datasets, `*` marking a supporting/reference dataset rather than a
 required one) — a separate, larger source than docs/relatorio-social/
 perguntas.md (already used by build_douradas_multi.py for
 tasks/douradas_multi.json). This script does NOT touch that file or its
 output; it adds a second, independent golden set alongside it.
 
-The key move: docs/respostas.md marks every `T<tema>-<item>` code with a
+The key move: docs/hipoteses/respostas.md marks every `T<tema>-<item>` code with a
 status — [OK] respondida (query actually run on beelink), [PARTIAL] parcial,
 or [PENDING] pendente (not yet run, and often the entry itself says WHY the
 originally-cited dataset doesn't actually work — corrupted columns, missing
@@ -30,8 +30,8 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-PERGUNTAS = REPO / "docs" / "perguntas.md"
-RESPOSTAS = REPO / "docs" / "respostas.md"
+PERGUNTAS = REPO / "docs" / "hipoteses" / "perguntas.md"
+RESPOSTAS = REPO / "docs" / "hipoteses" / "respostas.md"
 SCHEMA_PATH = REPO / "docs" / "context" / "basedosdados-schema.json"
 OUT = REPO / "tasks" / "douradas_perguntas.json"
 
@@ -189,7 +189,7 @@ def main():
     entries.sort(key=lambda e: e["code"])
     OUT.write_text(json.dumps({
         "_meta": {
-            "origem": ["docs/perguntas.md", "docs/respostas.md"],
+            "origem": ["docs/hipoteses/perguntas.md", "docs/hipoteses/respostas.md"],
             "sobre": ("Conjunto dourado DATASET-level (nao table-level), restrito a perguntas "
                       "com status verificado (ok/partial) em respostas.md — perguntas pendentes "
                       "sao descartadas porque varias delas documentam explicitamente que o "
