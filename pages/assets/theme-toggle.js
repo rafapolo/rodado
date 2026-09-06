@@ -1,7 +1,18 @@
 (function () {
   var root = document.documentElement;
   var btn = document.getElementById('themeToggle');
-  var stored = localStorage.getItem('rodado-theme');
+
+  // ?mode=dark or ?mode=light forces the theme for this pageview, overriding
+  // whatever's in localStorage — useful for shared links and screenshots.
+  // It does not overwrite the stored preference; the next toggle click (or a
+  // reload without the param) falls back to it as usual.
+  var fromUrl = null;
+  try {
+    var m = new URLSearchParams(location.search).get('mode');
+    if (m === 'dark' || m === 'light') fromUrl = m;
+  } catch (e) { /* no-op */ }
+
+  var stored = fromUrl || localStorage.getItem('rodado-theme');
 
   function effectiveTheme() {
     return stored || 'light';
