@@ -59,12 +59,12 @@ MARCAS_COMUNS = (
 # leitor encontra na página.
 DESCRICOES = {
     "index.html": (
-        "849 tabelas de dados oficiais brasileiros cruzadas em 43 investigações "
+        "1.029 tabelas de dados oficiais brasileiros cruzadas em 43 investigações "
         "sobre desigualdade, poder, economia, saúde e violência — o retrato que o "
         "Estado já tem de si mesmo."
     ),
     "en.html": (
-        "849 tables of official Brazilian data, cross-referenced into 43 "
+        "1,029 tables of official Brazilian data, cross-referenced into 43 "
         "investigations on inequality, power, economy, health and violence — the "
         "portrait the State already has of itself."
     ),
@@ -342,8 +342,16 @@ def alvos() -> list[Path]:
 
 def alvos_head() -> list[Path]:
     """Todo HTML de pages/ — inclusive os _template.html e o índice de
-    analises/, que fica fora do SEO mas também carrega o head comum."""
-    return sorted(PAGES.rglob("*.html"))
+    analises/, que fica fora do SEO mas também carrega o head comum.
+
+    Menos o Atlas: pages/atlas/index.html é gerado por scripts/build_atlas.py a
+    partir de pages/atlas/_page.html, que traz a própria tipografia (IBM Plex
+    Sans) e não carrega o site.css. Injetar o head comum ali troca a fonte da
+    página e vira pingue-pongue — o build_atlas seguinte apaga a injeção, o
+    gera_seo seguinte repõe. Quem manda no Atlas é o _page.html."""
+    return sorted(
+        p for p in PAGES.rglob("*.html") if p.parent != PAGES / "atlas"
+    )
 
 
 def gera_sitemap(arquivos: list[Path]) -> None:
