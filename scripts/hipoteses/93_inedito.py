@@ -73,7 +73,7 @@ coberto = defaultdict(list)   # frozenset(familias) -> [origem]
 # perguntas.md — tem a lista de datasets entre parênteses, é o caso fácil
 ITEM = re.compile(r"^(\d+)\.\s+.*?\*\(n=\d+[+–-]*:\s*(.+?)\)\*\s*$")
 tema = None
-for line in (REPO/"docs"/"perguntas.md").read_text(encoding="utf-8").splitlines():
+for line in (REPO/"docs"/"hipoteses"/"perguntas.md").read_text(encoding="utf-8").splitlines():
     m = re.match(r"^## (\d+) · ", line)
     if m: tema = m.group(1); continue
     m = ITEM.match(line.strip())
@@ -83,7 +83,7 @@ for line in (REPO/"docs"/"perguntas.md").read_text(encoding="utf-8").splitlines(
     if len(f) >= 2: coberto[f].append(f"P{tema}-{m.group(1)}")
 
 # hipoteses.md e achados_fortes.md — só citam o nome do dataset no texto
-for arq, tag in [("tasks/hipoteses.md","H"), ("docs/achados_fortes.md","A")]:
+for arq, tag in [("tasks/hipoteses.md","H"), ("docs/hipoteses/achados_fortes.md","A")]:
     for line in (REPO/arq).read_text(encoding="utf-8").splitlines():
         if not line.startswith("|"): continue
         cod = re.match(r"\|\s*\*\*([A-Z]?\d+[a-z]?)\*\*", line)
