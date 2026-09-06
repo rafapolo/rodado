@@ -1,0 +1,110 @@
+# Moldes de achado — a forma recorrente, não a combinação de datasets.
+#
+# Lendo os 60 achados de `docs/achados_fortes.md` de trás para frente, quase
+# todos são um de oito moldes aplicados a uma fonte nova. O molde é o que
+# generaliza: dizer "cruze fundiario × agropecuaria" não produz achado nenhum;
+# dizer "esta base é auto-declarada, procure a medição independente do mesmo
+# fato" produz.
+#
+# Consumido por `scripts/hipoteses/93_inedito.py` para emitir hipótese concreta
+# em vez de tupla de família.
+
+moldes:
+  registro_vs_fenomeno:
+    nome: "O indicador mede a capacidade de registrar, não o fenômeno"
+    forma: >
+      Uma contagem de notificação, reclamação ou denúncia correlaciona
+      POSITIVAMENTE com renda e conectividade — porque registrar exige serviço,
+      internet e alguém para reclamar. Antes de ler a série como medida do
+      problema, medir contra o acesso.
+    ja_aplicado: [C3, D19, C4, F2, T28-1, T42-5]
+    teste: "correlacionar a taxa com IBC/Pix/PIB pc ANTES de correlacionar com o desfecho"
+    falseia: "a taxa acompanhar pobreza mais que conectividade"
+    candidatos: [br_cnj_improbidade_administrativa, br_mjsp_procurados, br_mdr_snis,
+                 br_ibge_munic, br_sedec_desastres, br_ok_queridodiario, br_ms_sisvan,
+                 br_anvisa_consultas, br_ms_cnes]
+
+  declarado_vs_observado:
+    nome: "Declarado × observado"
+    forma: >
+      Dois registros do mesmo fato, um auto-declarado pelo interessado e outro
+      medido por terceiro. A diferença entre eles é o achado, não a média.
+    ja_aplicado: [D1, F5, D14, D15]
+    teste: "razão declarado/observado por município, e o que prediz a razão"
+    falseia: "a razão ser constante — aí é conversão de unidade, não comportamento"
+    candidatos: [br_mdr_snis, br_ibge_munic, br_ms_cnes, br_tesouro_capag,
+                 br_sfb_sicar, br_rf_cafir, br_ana_outorgas]
+
+  regra_nao_morde:
+    nome: "A regra formal não morde"
+    forma: >
+      Existe um impedimento legal (inscrição, pendência, sanção, nota). Medir
+      se o impedido efetivamente passa. Em toda vez que foi medido neste
+      espelho, passou.
+    ja_aplicado: [T68-3, D7, D9, F1, F5, E3]
+    teste: "taxa de aprovação/pagamento do grupo impedido × do grupo limpo"
+    falseia: "o grupo impedido ter taxa materialmente menor"
+    candidatos: [br_tcu_inidoneos, br_tesouro_capag, br_bcb_penalidades,
+                 br_cnj_improbidade_administrativa, br_comprasgov_sicaf]
+
+  programa_vs_necessidade:
+    nome: "O programa não segue a geografia da necessidade"
+    forma: >
+      Todo programa federal alega um alvo. Correlacionar a cobertura com a
+      necessidade declarada — e com renda. Os dois extremos já medidos são
+      Pé-de-Meia (+0,89, acerta) e Desenrola (+0,89 com PIB pc, inverte).
+    ja_aplicado: [B9, E2, T64-1, B18, H07]
+    teste: "cobertura per capita × indicador da necessidade, controlando renda"
+    falseia: "a cobertura acompanhar a necessidade tão bem quanto acompanha renda"
+    candidatos: [br_minc_salic, br_mec_prouni, br_mec_sisu, br_capes_bolsas,
+                 br_cnpq_bolsas, br_saude_farmaciapopular, br_cgu_seguro_defeso,
+                 br_bndes_operacoes_contratadas, br_caixa_sinapi]
+
+  fluxo_vs_estoque:
+    nome: "Fluxo resiste à escala, estoque não"
+    forma: >
+      Quando duas medidas do mesmo domínio são uma de fluxo (crédito no ano,
+      pagamento no ano) e uma de estoque (área cadastrada, dívida acumulada),
+      só a de fluxo sobrevive ao controle de tamanho. Foi a diferença entre
+      C1/F3 (sobrevive) e D1 (cai).
+    ja_aplicado: [F3, D1, C1, C2]
+    teste: "rodar as duas formas e o parcial com log-área; reportar as duas"
+    falseia: "as duas se comportarem igual — aí não era escala"
+    candidatos: [br_pgfn_dividaativa, br_me_estoque_divida_publica, br_sfb_sicar,
+                 br_bcb_scrdata, br_me_cnpj]
+
+  mesmo_cnpj_dois_cadastros:
+    nome: "A mesma empresa ou pessoa em dois cadastros"
+    forma: >
+      Não é correlação municipal, é interseção por CPF/CNPJ. Barata, direta, e
+      produziu B13, D7, D8, D20, F1, F5 — a maior densidade de achado por query
+      do espelho.
+    ja_aplicado: [B13, D7, D8, D20, F1, F5, D13]
+    teste: "count(DISTINCT doc) na interseção, e a fatia de VALOR, não só de contagem"
+    falseia: "a interseção ser do tamanho esperado pelo acaso dado o tamanho dos dois cadastros"
+    candidatos: [br_comprasgov_sicaf, br_brasilio_holdings, global_opensanctions,
+                 global_icij_offshoreleaks, br_cvm_administradores_carteira,
+                 br_tse_filiacao_partidaria, br_me_exportadoras_importadoras]
+
+  margem_por_elo:
+    nome: "O intermediário fica com a diferença"
+    forma: >
+      Onde há repasse em cadeia (governo → empresa → trabalhador, teto → preço
+      pago), medir a margem elo a elo. A margem da terceirização federal é
+      regressiva: 1,87× no topo, 3,31× na base.
+    ja_aplicado: [T73-2, B12, C7, F4, F7, C15]
+    teste: "razão entre o valor de cada elo, quebrada por faixa"
+    falseia: "a margem ser constante entre faixas"
+    candidatos: [br_saude_bps, br_anvisa_cmed, br_caixa_sinapi, br_comprasgov_catmatcatser,
+                 br_anp_precos_combustiveis, br_saude_farmaciapopular]
+
+  bruto_e_escala:
+    nome: "O bruto é escala"
+    forma: >
+      Método, não história. Todo par extensivo × extensivo precisa de log-área
+      além de log-população; toda razão precisa checar se divide numerador ou
+      denominador com a outra ponta.
+    ja_aplicado: [D1, E1, D4, H13, H16]
+    teste: "parcial com log-pop, log-PIB, UF e — se as duas pontas forem extensivas — log-área"
+    falseia: "—"
+    candidatos: []
