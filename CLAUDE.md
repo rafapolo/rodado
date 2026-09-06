@@ -101,10 +101,10 @@ vai ter recall alto — não é bug, está documentado no docstring de cada `ava
 | Conjunto | Fonte | Constrói | Mede |
 |---|---|---|---|
 | `tasks/douradas_multi.json` | `docs/relatorio-social/perguntas.md` (tabelas citadas em backtick, `**Fontes:**`) | `scripts/build_douradas_multi.py` | `scripts/avalia_douradas_multi.py` — recall@K por TABELA exata |
-| `tasks/douradas_perguntas.json` | `docs/perguntas.md` (43 temas × 5 perguntas, `n=X: dataset_a, dataset_b*`) cruzado com `docs/respostas.md` (status `✅`/`◐`/`⏳` por `T<tema>-<item>`) | `scripts/build_douradas_perguntas.py` | `scripts/avalia_douradas_perguntas.py` — recall@K por DATASET (qualquer tabela do dataset conta como acerto) |
+| `tasks/douradas_perguntas.json` | `docs/hipoteses/perguntas.md` (43 temas × 5 perguntas, `n=X: dataset_a, dataset_b*`) cruzado com `docs/hipoteses/respostas.md` (status `✅`/`◐`/`⏳` por `T<tema>-<item>`) | `scripts/build_douradas_perguntas.py` | `scripts/avalia_douradas_perguntas.py` — recall@K por DATASET (qualquer tabela do dataset conta como acerto) |
 
-`docs/perguntas.md` é a fonte fixa (43 temas, nunca editado pelos scripts);
-`docs/respostas.md` é o log de trabalho vivo — cada pergunta respondida no
+`docs/hipoteses/perguntas.md` é a fonte fixa (43 temas, nunca editado pelos scripts);
+`docs/hipoteses/respostas.md` é o log de trabalho vivo — cada pergunta respondida no
 beelink muda o status ali e alimenta o próximo `build_douradas_perguntas.py`
 automaticamente, sem editar código. Só `✅`/`◐` entram no conjunto: um item
 `⏳` costuma vir com o motivo exato no próprio texto (dado corrompido, tabela
