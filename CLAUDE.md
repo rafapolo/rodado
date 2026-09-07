@@ -113,6 +113,81 @@ com uma expectativa nunca verificada — a seção "Bloqueios mapeados" ao fim d
 `respostas.md` cataloga o que está estruturalmente bloqueado (precisa de
 re-scraping ou campo novo), separado do que só ainda não foi tentado.
 
+`respostas.md` marca **dois eixos** desde 2026-09-07: o status (`✅ ◐ ⏳ ❌`, "a
+query rodou?") e a **força do achado** (`🟢` forte, `🟡` moderada, `🟠` fraca,
+`⚪` nula, `⬜` descritivo, mais os modificadores `↯` contraria a hipótese e `⚠`
+número frágil), logo depois do status. O segundo eixo é **documental e não entra
+no conjunto dourado**: `build_douradas_perguntas.py` corta o bold nos glifos de
+status e só lê o que vem antes de cada um, então o recorte continua sendo
+`✅`/`◐`, e um achado `⚪` (relação nula) segue valendo como pergunta respondida —
+o que o teste mede é se `search_tables` acha a tabela, não se a hipótese vingou.
+
+### `docs/hipoteses/respostas_trincas.md` — o espaço inteiro, enumerado
+
+`docs/hipoteses/respostas.md` responde perguntas escritas uma a uma.
+`respostas_trincas.md` **enumera e roda o espaço inteiro de trincas de
+família de uma vez**, em duas rodadas fundidas num único documento (h2+h3,
+mescladas manualmente em 2026-09-07). O que torna isso barato: uma trinca de
+famílias é um **trio de colunas do painel municipal**, e o painel já foi
+extraído do beelink pelas rodadas anteriores. A rodada h2 fundiu três painéis
+(`20260906`, `inedito`, `familias`) em 5.571 municípios × 270 colunas e rodou
+as **1.330 trincas** que isso permitia, em 8 segundos, sem tocar no beelink. A
+rodada h3 estendeu o painel para **358 colunas** (37 datasets novos — ENEM,
+Censo Escolar, SEEG, MapBiomas, ESTBAN, BNDES, SIA, ANS, SISVAN, Imunizações,
+filiação partidária) e abriu um segundo eixo que a cascata F0–F7 de
+`tasks/hipoteses.md` nunca contava por exigir chave territorial: o **grafo de
+identificadores** CNPJ/CPF (papéis de CNPJ sobre o mesmo cadastro — sancionado,
+fornecedor, embargado — e político-candidato como sócio).
+
+Os scripts de ambas as rodadas vivem em `scripts/hipoteses/` com prefixo `h2_`/
+`h3_` (evita colidir com a numeração dos blocos SQL originais):
+
+```bash
+python3 scripts/hipoteses/h2_00_painel_mestre.py     # 3 paineis -> painel_mestre.csv
+python3 scripts/hipoteses/h2_10_roda_trincas.py      # -> pares.csv + trincas.csv
+python3 scripts/hipoteses/h2_20_escreve_respostas.py # -> a secao de trincas de respostas_trincas.md
+
+python3 scripts/hipoteses/h3_10_estende_painel.py    # painel 270 -> 358 colunas
+python3 scripts/hipoteses/h3_40_roda_trincas.py      # eixo territorio (extensao do h2)
+python3 scripts/hipoteses/h3_20_matriz_cnpj.py       # eixo identificador (lift, nao correlacao)
+python3 scripts/hipoteses/h3_30_politico_empresa.py  # a ponte entre os dois eixos
+python3 scripts/hipoteses/h3_50_escreve.py           # -> fragmento em tasks/hipoteses_resultado/, colar a mao
+```
+
+**Os dois `_escreve` geram documentos separados, não o arquivo final** — a
+fusão em `respostas_trincas.md` foi manual; rodar `h3_50_escreve.py` de novo
+produz um fragmento em `tasks/hipoteses_resultado/hipoteses3/respostas_h3_fragmento.md`
+que precisa ser colado à mão nas seções correspondentes ("O que a corrida
+achou" até "Como refazer"), não um doc pronto para publicar.
+
+A extração SQL do h3 (`scripts/hipoteses/h3_*.sql` + `h3_roda.sh`, retomável por
+sentinela `.done_<nome>`) roda no beelink offline — como os arquivos ficam soltos
+junto com o resto de `scripts/hipoteses/`, faça stage antes do `scp` (`mkdir -p
+/tmp/h3 && cp scripts/hipoteses/h3_*.sql scripts/hipoteses/h3_roda.sh /tmp/h3/`).
+
+`scripts/hipoteses/h2_familias_colunas.yaml` é o elo que faltava — `familias.yaml`
+mapeia dataset→família, o painel tem coluna, e ninguém mapeava coluna→família.
+Ele também carrega as duas guardas sem as quais a corrida devolve artefato como
+descoberta: `duplicatas_conceituais` (mesma quantidade por duas fontes, ou
+elegibilidade compartilhada — o Pé-de-Meia exige CadÚnico, então correlacioná-lo
+com o Bolsa Família é tautologia) e `metricas_de_registro` (coluna que mede a
+capacidade de notificar/declarar/fiscalizar antes do fenômeno). `h3_familias_colunas.yaml`
+complementa com as famílias novas do painel estendido. **Editar o YAML, nunca o
+`respostas_trincas*.md` gerado.**
+
+Três decisões de método que não devem ser redescobertas: `log(área)` entra
+**sempre** no controle (metade do painel é normalizada por área, e o `1/área`
+compartilhado produz correlação sozinho — foi o que separou o B5 publicado, +0,36,
+do valor correto, +0,32); só colunas **intensivas** entram como perna; e o FDR
+de Benjamini-Hochberg corre sobre os pares testados (5.325 no h2, 10.279 no h3),
+porque escolher o maior |r| de milhares de testes sem correção é garimpo de
+ruído. O resultado territorial é negativo e vale registrar: sob controle de
+porte, renda, área e UF, nenhuma trinca fecha as três pernas acima de |r| = 0,50
+no h2; o h3 amplia a base (1.950 pares sobrevivem de 10.279) sem mudar essa
+conclusão. No eixo de identificador, a medida é **lift** (`P(B|A) ÷ P(B)`), não
+correlação — e o Mantel-Haenszel estratificado por CNAE×idade cumpre o papel do
+parcial: quando ele desaba, o achado era porte e setor, não papel de CNPJ.
+
 Regenerar depois de qualquer resposta nova em `respostas.md`:
 
 ```bash
