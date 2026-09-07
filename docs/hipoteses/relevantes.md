@@ -1,7 +1,7 @@
 # Achados com pouca visibilidade — por que cada um importa
 
-Dos achados marcados 🟢 em [`achados.md`](achados.md), 18 sobrevivem aqui,
-ordenados do mais para o menos inédito - sem referências online.
+Dos achados marcados 🟢 em [`achados.md`](achados.md), 17 sobrevivem aqui,
+ordenados do mais para o menos inédito pela falta de referências online.
 
 
 | # | Achado | O que significa | Por que importa |
