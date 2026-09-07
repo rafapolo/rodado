@@ -1,0 +1,174 @@
+# Coluna do painel-mestre -> familia tematica de docs/context/familias.yaml
+#
+# Uma hipotese e uma trinca de FAMILIAS, nao de colunas. Este arquivo e o elo
+# que faltava: familias.yaml mapeia dataset->familia, o painel tem coluna, e
+# ninguem mapeava coluna->familia.
+#
+# `intensivas`  ja normalizadas (taxa, share, per capita, indice, mediana).
+#               Sao as unicas que entram como perna de hipotese: contagem crua
+#               correlaciona com tamanho do municipio e produz achado falso.
+# `extensivas`  contagem/valor bruto. Ficam registradas para rastreio e para o
+#               caso de alguem querer a versao per capita, mas nao entram.
+#
+# controle/identificacao nao sao familia: nao contam como perna.
+
+controle:
+  intensivas: [pib_pc, share_agro, share_ind]
+  extensivas: [populacao, pop2010, pib, pib_2010, area_total, va_agropecuaria,
+               va_industria, va_servicos, impostos_liquidos]
+
+identificacao: [id_municipio, sigla_uf, nome, nome_regiao_imediata, capital_uf,
+                amazonia_legal, mun6, n, anos, munic_ano, cfem_substancia,
+                snis_natureza, snis_abrangencia]
+
+familias:
+  demografia_censo:
+    intensivas: [dom_por_cep, div_nomes, share_nome_top, ivs_2010, ivs_2000,
+                 idhm_2010, d_ivs, cresc_pop]
+    extensivas: [cnefe_n, cnefe_dom, cnefe_ceps, cnefe_outros, nomes_distintos, nascimentos]
+
+  trabalho_empresa:
+    intensivas: [rem_media, gap_sexo, formalidade, capital_social_mediano,
+                 cno_1000dom, obras_1000dom, formal_obra]
+    extensivas: [vinculos, rem_masc, rem_fem, vinc_fem, rais_estab, rais_vinculos,
+                 cno_obras, cnefe_construcao]
+
+  educacao:
+    intensivas: [ideb, sem_internet, pdm_share, ies_pc, sisu_pc]
+    extensivas: [simet_escolas, simet_com_internet, simet_matriculas, pdm_alunos,
+                 ies_n, sisu_vagas, sisu_ies, cnefe_ensino]
+
+  saude_producao:
+    intensivas: [cob_ab, cob_esf, cob_priv, vac_polio, leitos_1000, prod_por_leito,
+                 sih_infec_share, intern_infec_100k, saude_1000dom]
+    extensivas: [cnes_leitos, cnes_leitos_sus, sih_internacoes, sih_total,
+                 sih_infecciosa, cnefe_saude]
+
+  vigilancia_sinan:
+    intensivas: [notif_100k]
+    extensivas: [sinan_dengue]
+
+  mortalidade:
+    intensivas: [homic_100k, suic_100k, ip_100k, transito_100k, infec_100k, homic_juv_100k]
+    extensivas: [obitos, homicidios, suicidios, interv_policial, mortes_transito,
+                 obitos_infecciosos, obitos_respiratorios, homic_juvenis, ob_fem_precoce]
+
+  natalidade:
+    intensivas: [cesarea, cesarea_comercial, share_comercial, baixo_peso, mae_adol]
+    extensivas: [nasc_n, nasc_cesarea, nasc_cesarea_comercial, nasc_comercial,
+                 nasc_baixo_peso, nasc_mae_adolescente]
+
+  transferencia_renda:
+    intensivas: [nbf_share_dom, pbf_2019_2006, defeso_share]
+    extensivas: [nbf_familias, nbf_valor, pbf_2006, pbf_2013, pbf_2019,
+                 pbf_valor_acumulado, defeso_pescadores]
+
+  credito_financeiro:
+    intensivas: [credito_pc, credito_ha, cred_ha, sicor_hhi_tomador, sicor_share_top,
+                 pix_pag_pc, pix_ticket_pf, pix_penetracao, pix_razao_rec_pag]
+    extensivas: [credito_rural, credito_2019, credito_2024, cred_2021, cars_financiados,
+                 sicor_tomadores, pix_vl_pag_pf, pix_vl_pag_pj, pix_vl_rec_pf,
+                 pix_vl_rec_pj, pix_qt_pag_pf, pix_pes_pag_pf]
+
+  fiscal_municipal:
+    intensivas: [sic_pessoal_pc, op_cred_share, capag_num, capag_ind1, capag_ind2, capag_ind3]
+    extensivas: [sic_pessoal, sic_despesa_total, sic_op_credito, sic_rec_bruta,
+                 sic_rec_corrente, tem_op_cred, capag]
+
+  compras_publicas:
+    intensivas: [pncp_valor_mediano, mides_credores_pc, mides_valor_pc, share_credor_local]
+    extensivas: [pncp_n, pncp_fornecedores, mides_pagamentos, mides_credores,
+                 mides_valor, credor_local, pag_total_n, pag_total_valor]
+
+  sancao_integridade:
+    intensivas: [sanc_100k, share_pago_sancionado, pago_a_devedor, share_pago_tcu]
+    extensivas: [sanc_n, sanc_empregadoras, sanc_vinculos, pag_sancionado_n,
+                 pag_sancionado_valor, credores_devedores, pag_tcu_n, pag_tcu_valor]
+
+  fiscalizacao_ambiental:
+    intensivas: [autos_100k, emb_100k]
+    extensivas: [ibama_autos_n, emb_n, emb_termos, emb_pessoas, emb_pj]
+
+  desmatamento_clima:
+    intensivas: [desmat_share, deter_share_area, fogo_manejo, fogo_dias_sem_chuva_med]
+    extensivas: [desmatado, vegetacao_natural, deter_km2, deter_n, deter_km2_garimpo,
+                 fogo_n, fogo_com_chuva]
+
+  agropecuaria:
+    intensivas: [pam_hhi, pam_share_top, pevs_share, bov_por_ha, va_agro_ha,
+                 rend_2022, perda_med, perda_max, agro_1000dom]
+    extensivas: [pam_produtos, pam_valor_total, pevs_silvicultura, pevs_extracao,
+                 ppm_bovinos, ppm_rebanho_total, cnefe_agro]
+
+  fundiario:
+    intensivas: [car_cafir, cafir_ha_por_imovel]
+    extensivas: [sicar_imoveis, sicar_area, imoveis_cafir, area_cafir]
+
+  saneamento_agua:
+    intensivas: [snis_cob_agua, snis_gap, snis_gap_agua, esgoto_ok, atlas_sem_nada,
+                 atlas_individual, atlas_coleta_sem_trat, atlas_coleta_com_trat,
+                 lanc_vazao_pc]
+    extensivas: [snis_agua_decl, snis_agua_ibge, snis_esg_decl, snis_esg_res_ibge,
+                 snis_pop_urb, snis_rede_agua, snis_prestadores, atlas_pop_urb,
+                 ana_lanc_n, ana_lanc_vazao]
+
+  conectividade:
+    intensivas: [ibc, cobertura_pop_4g5g, densidade_smp, hhi_smp]
+    extensivas: [fibra]
+
+  mineracao_energia:
+    intensivas: [cfem_pc, gd_por_domicilio]
+    extensivas: [cfem_valor, cfem_titulares, gd_n, gd_kw, gd_rural]
+
+  cultura_consumo:
+    intensivas: [reclam_100k, nota_consumidor, tempo_resposta, relig_100k,
+                 templos_1000dom, comercio_por_dom]
+    extensivas: [reclamacoes, respondidas, vinc_religioso, cnefe_religioso]
+
+  administracao:
+    intensivas: [ebt_nota, munic_vinc_pc, fef_montante_pc, fef_share_grave, custo_por_vinculo]
+    extensivas: [munic_vinculos, munic_tipos, fef_ordens, fef_ciclos, fef_montante,
+                 fef_graves, fef_tipos]
+
+# Familias de familias.yaml SEM nenhuma coluna no painel-mestre. Trinca que as
+# inclua nao roda -- e a fronteira do que falta extrair do beelink.
+ausentes:
+  politica:           TSE (votacao, filiacao, patrimonio) -- municipal, extraivel
+  ciencia_tecnologia: CNPq/CAPES bolsas -- municipal, extraivel
+  comercio_exterior:  COMEX municipio -- municipal, extraivel
+  mobilidade:         frota/ANTT -- municipal, extraivel
+  seguranca:          SINESP/FBSP -- so UF, cortado pelo filtro F1 da cascata
+  justica:            CNJ/improbidade -- so UF, cortado por F1
+  precos_indices:     series nacionais -- sem grao municipal, cortado por F1
+
+# --------------------------------------------------------------------------
+# Pares que NAO sao achado, e o motivo. Sem isto a corrida devolve as duas
+# correlacoes mais fortes do painel como se fossem descoberta.
+duplicatas_conceituais:
+  - [sic_pessoal_pc, mides_valor_pc]   # gasto municipal per capita por duas fontes (SICONFI x MIDES)
+  - [sic_pessoal_pc, munic_vinc_pc]    # pessoal do municipio por duas fontes (SICONFI x MUNIC)
+  - [munic_vinc_pc, mides_valor_pc]    # idem, terceiro par do mesmo triangulo
+  - [pdm_share, nbf_share_dom]         # Pe-de-Meia exige CadUnico: a elegibilidade E a do Bolsa Familia
+  - [pdm_share, pbf_2019_2006]         # mesmo motivo
+  - [credito_ha, va_agro_ha]           # ambos /hectare do mesmo municipio: denominador compartilhado
+  - [cred_ha, cafir_ha_por_imovel]     # idem
+  - [credito_pc, credito_ha]           # mesmo credito, dois normalizadores
+
+# Colunas que medem o REGISTRO, nao o fenomeno. O molde `registro_vs_fenomeno`
+# de achados_fortes.md ja apareceu 6 vezes; correlacao com estas colunas mede
+# capacidade de notificar/declarar/fiscalizar, e ler como fenomeno inverte o sinal.
+metricas_de_registro:
+  snis_gap_agua:   razao entre agua declarada ao SNIS e a medida pelo IBGE -- mede a declaracao
+  snis_gap:        idem para esgoto
+  notif_100k:      notificacao SINAN -- mede vigilancia instalada
+  reclam_100k:     Consumidor.gov -- mede acesso digital (H10, achado mais limpo da bateria)
+  tempo_resposta:  idem
+  nota_consumidor: idem
+  autos_100k:      auto do IBAMA -- mede fiscalizacao presente
+  emb_100k:        idem
+  sanc_100k:       sancao CGU -- mede deteccao
+  ebt_nota:        Escala Brasil Transparente -- mede o portal, nao a gestao
+  sih_infec_share: internacao -- mede acesso a hospital antes de medir doenca
+  intern_infec_100k: idem
+  fef_share_grave: constatacao da CGU -- mede a chance de ser auditado
+  sem_internet:    declaracao do Censo Escolar
