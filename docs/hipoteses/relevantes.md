@@ -1,26 +1,8 @@
 # Achados com pouca visibilidade — por que cada um importa
 
-Dos 28 achados marcados 🟢 em [`achados.md`](achados.md), 18 sobrevivem aqui,
-ordenados do mais para o menos inédito. Para cada um, o achado técnico, uma
-explicação em linguagem clara e por que ele é relevante.
+Dos achados marcados 🟢 em [`achados.md`](achados.md), 18 sobrevivem aqui,
+ordenados do mais para o menos inédito - sem referências online.
 
-10 saíram nesta passada (2026-09-07, `WebSearch` + `WebFetch` direto nas
-fontes, um por um): **D17** (hora extra do Senado em julho) tem equivalente
-publicado e verificado — a Gazeta do Povo já registra "em julho, período de
-recesso parlamentar, o valor chegou a R$ 8,5 milhões" em hora extra, o mesmo
-pico que o achado media. Os outros nove saíram por relevância mais estreita
-— nicho de controle interno ou execução orçamentária com pouco apelo fora do
-próprio órgão, achado de suporte/contraste que não é notícia sozinho, ou
-território já disputado publicamente (mesmo sem a métrica exata publicada):
-**D6** (CEPIM execução × prestação de contas), **D22** (assistência social
-municipal não responde a BF), **F2** (Consumidor.gov como proxy digital),
-**F7** (fornecedor local 49,4%), **J2** (crédito rural pulverizado —
-contraste de F4), **K1** (funil Rouanet Sudeste×Norte), **C15** (HHI CFEM —
-concentração de royalty mineral já é tema batido, ainda que não nessa
-métrica), **B13** (16% terceirizadas no CEIS/CNEP — redundante com o mesmo
-padrão que D7/D9/F1/F5/K2 já cobrem) e **B4** (solar × Bolsa Família — a
-imprensa já debate abertamente se geração distribuída é "coisa de rico",
-inclusive com números que se contradizem entre si).
 
 | # | Achado | O que significa | Por que importa |
 |---|---|---|---|
@@ -39,6 +21,5 @@ inclusive com números que se contradizem entre si).
 | K2 | Sancionado é 17-24× a taxa-base entre proponentes/patrocinadores da Rouanet | Entre quem usa a Lei Rouanet para patrocinar cultura, empresa já punida pelo governo aparece muito mais do que seria de esperar | Mostra que o incentivo fiscal cultural tem o mesmo buraco de integridade da compra pública comum |
 | F1 | Devedor da PGFN é 12,2% dos credores municipais, leva 22,7% do valor | Boa parte do dinheiro que as prefeituras pagam vai para empresas que devem à Receita Federal — e são as que recebem mais, não menos | Devedor da União não é exceção do fornecedor municipal — é o fornecedor **grande** |
 | F5 | R$ 18,4 bi pagos a empresa sancionada (CEIS/CNEP) | O governo pagou R$ 18,4 bilhões a empresas que estão em lista de sanção por irregularidade | Quantifica em reais o mesmo problema do D7/D9: sanção não trava o dinheiro que chega ao sancionado |
-| F6 | Constatação grave da CGU não acompanha pobreza | Município pobre não é fiscalizado com mais rigor do que município rico — a irregularidade grave aparece na mesma proporção em quase todo lugar | A irregularidade grave não é maior onde há mais pobreza — o que varia é a chance de ser fiscalizado, não a conduta |
 | D9 | 55% das licitações federais com participante único | Mais da metade das licitações federais tem só uma empresa concorrendo — não há disputa de preço de verdade | Metade da compra pública federal não tem disputa real — o pregão é procedimento, não concorrência |
 | C12 | "Frente ativa" (DETER÷passivo): Roraima e Amapá lideram | Roraima e Amapá são hoje onde o desmatamento mais avança em relação ao que já foi destruído — não o Pará, que concentrou o pior no passado | Identifica onde o desmatamento está avançando agora, não a manchete de 20 anos atrás (Pará) |
