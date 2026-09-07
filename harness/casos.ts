@@ -49,8 +49,8 @@ function numero(s: string): number {
 }
 
 export function carregaCasos(): Caso[] {
-  const perguntas = readFileSync(`${RAIZ}docs/perguntas.md`, "utf8").split("\n");
-  const respostas = readFileSync(`${RAIZ}docs/respostas.md`, "utf8");
+  const perguntas = readFileSync(`${RAIZ}docs/hipoteses/perguntas.md`, "utf8").split("\n");
+  const respostas = readFileSync(`${RAIZ}docs/hipoteses/respostas.md`, "utf8");
 
   // 1. perguntas.md — tema vem do cabeçalho "## 01 · ...", item da numeração
   const porId = new Map<string, Omit<Caso, "gabarito" | "n" | "r" | "suspeito" | "melhorCasamento">>();
@@ -92,7 +92,7 @@ export function carregaCasos(): Caso[] {
   //    saem numa lista para revisão humana.
   const casos: Caso[] = [];
   for (const [, id, status, texto] of respostas.matchAll(
-    /\*\*(T\d+-\d+)\s+(✅|◐)\*\*\s*(.*)/g,
+    /\*\*(T\d+-\d+)\s+(✅|◐)[^*]*\*\*\s*(.*)/g,
   )) {
     const declarada = porId.get(id);
     if (!declarada) continue;
@@ -197,7 +197,7 @@ if (import.meta.main) {
  * `respostas.md`. Estava desprezando 178 casos à toa.
  */
 export function carregaTodasPerguntas(): Omit<Caso, "gabarito" | "suspeito">[] {
-  const linhas = readFileSync(`${RAIZ}docs/perguntas.md`, "utf8").split("\n");
+  const linhas = readFileSync(`${RAIZ}docs/hipoteses/perguntas.md`, "utf8").split("\n");
   const out: Omit<Caso, "gabarito" | "suspeito">[] = [];
   let tema = 0;
   for (const linha of linhas) {
