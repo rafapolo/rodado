@@ -1,0 +1,176 @@
+# Colunas que o lote h3 acrescentou ao painel -> familia.
+# Complementa scripts/hipoteses/h2_familias_colunas.yaml; a analise funde os dois.
+#
+# `politica` estreia aqui: nao tinha NENHUMA coluna no painel anterior, e sozinha
+# abre C(22,3)-C(21,3) = 210 trincas novas.
+
+familias:
+  educacao:
+    intensivas: [inse_medio, inse_share_nivel1, atu_ef, atu_em, alfab_proficiencia,
+                 alfab_taxa, enem_redacao, enem_matematica, enem_presenca,
+                 enem_treineiro, abrinq_pre_escola_liquida]
+    extensivas: [inse_escolas, ind_escolas, docentes, docentes_rural, esp_matriculas,
+                 esp_classe_comum, alfab_n, ce_matriculas, ce_turmas, ce_escolas,
+                 enem_inscritos, abrinq_pre_escola_bruta]
+
+  saude_producao:
+    intensivas: [ab_cob_esf, ab_cob_total, ab_ch_medica, imu_cobertura_total,
+                 imu_polio, imu_penta, sisvan_imc]
+    extensivas: [ab_equipes_esf, covid_estabelecimentos, sia_procedimentos,
+                 sia_estabelecimentos, sia_ocupacoes, ans_ativos, ans_cancelados,
+                 ans_operadoras, ans_individual, sisvan_n, sisvan_obesidade,
+                 sisvan_sobrepeso, sisvan_baixo_peso]
+
+  vigilancia_sinan:
+    intensivas: []
+    extensivas: [chik_casos, zika_casos, esquisto_casos, dengue_casos_3a]
+
+  transferencia_renda:
+    intensivas: [gas_pessoas_familia, bf_parcela_media]
+    extensivas: [gas_beneficiarios, gas_valor, gas_estabelecimentos, bf_familias, bf_valor]
+
+  demografia_censo:
+    intensivas: []
+    extensivas: [msp_populacao, msp_pop_60mais, msp_pop_fem]
+
+  desmatamento_clima:
+    intensivas: []
+    extensivas: [seeg_emissao_total, seeg_agro, seeg_energia, seeg_mut, seeg_residuos,
+                 mb_area_transicao, mb_area_total, mb_classes]
+
+  conectividade:
+    intensivas: []
+    extensivas: [bl_acessos, bl_fibra, bl_empresas]
+
+  fiscal_municipal:
+    intensivas: [ifgf, ifgf_ranking]
+    extensivas: []
+
+  credito_financeiro:
+    intensivas: []
+    extensivas: [estban_v140, estban_v144145146147152, estban_v160, estban_v399,
+                 estban_v430, estban_v440, estban_v444445446447456458, estban_v899]
+
+  compras_publicas:
+    intensivas: []
+    extensivas: [emendas_n, emendas_autores, emendas_valor_pago, emendas_valor_empenhado]
+
+  administracao:
+    intensivas: []
+    extensivas: [dirpf_fundos, dirpf_tipos]
+
+  # FAMILIA NOVA -- nao existia no painel anterior
+  politica:
+    intensivas: [fil_share_maior, fil_hhi]
+    extensivas: [fil_total, fil_partidos]
+
+# Derivadas que a analise calcula a partir das extensivas acima (contagem crua
+# nao entra como perna: correlaciona com o tamanho do municipio).
+derivar_por_populacao:
+  enem_inscritos:      enem_por_1000hab
+  ce_matriculas:       matriculas_por_1000hab
+  docentes:            docentes_por_1000hab
+  sia_procedimentos:   sia_por_hab
+  ans_ativos:          ans_cobertura
+  bf_familias:         bf_por_1000hab
+  gas_beneficiarios:   gas_por_1000hab
+  chik_casos:          chik_100k
+  zika_casos:          zika_100k
+  esquisto_casos:      esquisto_100k
+  dengue_casos_3a:     dengue_100k
+  bl_acessos:          bl_por_100hab
+  fil_total:           filiados_por_100hab
+  emendas_valor_pago:  emendas_pc
+  seeg_emissao_total:  emissao_pc
+  msp_pop_60mais:      share_60mais
+  bl_fibra:            share_fibra
+  esp_classe_comum:    share_classe_comum
+  docentes_rural:      share_docente_rural
+  sisvan_obesidade:    share_obesidade
+
+# Duplicatas que o painel ESTENDIDO criou. Sem elas, as tres correlacoes mais
+# fortes da corrida h3 sao artefato -- de novo.
+duplicatas_conceituais:
+  - [pdm_share, bf_por_1000hab]      # Pe-de-Meia exige CadUnico: mesma elegibilidade do BF
+  - [nbf_share_dom, bf_por_1000hab]  # cobertura do Bolsa Familia por DUAS fontes (CGU novo x CGU pagamento)
+  - [nbf_share_dom, bf_valor]        # idem
+  - [gas_por_1000hab, nbf_share_dom] # Gas do Povo tambem exige CadUnico
+  - [gas_por_1000hab, bf_por_1000hab]
+  - [ab_cob_esf, cob_esf]            # cobertura ESF: IEPS x MS atencao basica
+  - [ab_cob_total, cob_ab]           # cobertura atencao basica: mesmas duas fontes
+  - [imu_polio, vac_polio]           # cobertura de polio por duas fontes
+  - [ans_cobertura, cob_priv]        # plano privado: ANS x IEPS
+  - [msp_populacao, populacao]       # populacao MS x IBGE
+
+# Colunas do lote que medem REGISTRO, nao fenomeno (mesmo criterio do h2).
+metricas_de_registro:
+  sia_por_hab:      procedimento ambulatorial -- mede oferta e faturamento SUS, nao doenca
+  dengue_100k:      notificacao SINAN -- mede vigilancia instalada
+  chik_100k:        idem
+  zika_100k:        idem
+  esquisto_100k:    idem
+  enem_por_1000hab: inscricao no ENEM por municipio de PROVA, nao de residencia --
+                    o polo regional aparece inflado e o entorno, vazio
+  enem_redacao:     "a NOTA tambem e por municipio de prova - e a media dos
+                    alunos da regiao inteira que foram prestar prova ali, nao a
+                    dos residentes. id_municipio_residencia existe no espelho e
+                    esta 100% nula, entao nao ha alternativa, so ressalva"
+  enem_matematica:  idem
+  enem_presenca:    idem
+  enem_treineiro:   idem
+
+# Terceira guarda, diferente das outras duas.
+#
+# `duplicatas_conceituais` sao a MESMA grandeza por duas fontes. Isto aqui e
+# outra coisa: fontes diferentes, medidas diferentes, mas o MESMO CONSTRUTO
+# LATENTE -- "quao pobre e este municipio". IVS, IDHM e INSE sao indices
+# compostos de renda/escolaridade/infraestrutura, e a cobertura do Bolsa Familia
+# e focalizada por renda do CadUnico, entao ela e uma medida de pobreza por
+# desenho. Correlacionar dois deles nao e descoberta, e verificacao de que os
+# dois indices funcionam.
+#
+# Nao sao excluidos: sao marcados `construto`, ficam visiveis e fora da lista de
+# achados. Par que SAI deste grupo para um desfecho (IVS x nota do ENEM) segue
+# valendo como achado -- e a relacao pobreza->desfecho, que e a pergunta.
+mesmo_construto:
+  nivel_socioeconomico:
+    - ivs_2000
+    - ivs_2010
+    - idhm_2010
+    - inse_medio
+    - inse_share_nivel1
+    - nbf_share_dom
+    - bf_por_1000hab
+    - pbf_2019_2006
+
+# Quarta guarda, so do eixo de CNPJ: pares DEFINICIONAIS -- a relacao existe por
+# definicao do processo, nao por comportamento da empresa. Sem esta lista, os 18
+# maiores lifts da corrida sao todos "vencedor de licitacao tambem participou
+# dela" e variacoes. Cada linha traz o motivo.
+pares_definicionais:
+  - [cgu_licitacao_participante, cgu_licitacao_vencedor]   # vencedor e subconjunto de participante
+  - [cgu_contratado_federal, cgu_licitacao_vencedor]       # ganhar licitacao gera o contrato
+  - [cgu_contratado_federal, cgu_licitacao_participante]   # idem
+  - [cgu_contratado_federal, sicaf_habilitado]             # SICAF e pre-requisito para vender a Uniao
+  - [cgu_licitacao_vencedor, sicaf_habilitado]             # idem
+  - [cgu_licitacao_participante, sicaf_habilitado]         # idem
+  - [sicaf_habilitado, terceirizacao_federal]              # terceirizada federal precisa de SICAF
+  - [cgu_licitacao_vencedor, terceirizacao_federal]        # idem, pela via da licitacao
+  - [cgu_licitacao_participante, terceirizacao_federal]    # idem
+  - [cgu_contratado_federal, terceirizacao_federal]        # o contrato de terceirizacao E o contrato federal
+  - [ibama_autuado, ibama_embargado]                       # o embargo nasce de um auto de infracao
+  - [ceis, cnep]                                           # dois cadastros de sancao que se sobrepoem
+  - [ceis, tcu_inidoneo]                                   # idem
+  - [cnep, tcu_inidoneo]                                   # idem
+  - [ceis, leniencia]                                      # leniencia acompanha sancao
+  - [anm_titular_mineracao, cfem_arrecadador]              # quem tem titulo paga royalty
+  - [outorga_agua_captacao, outorga_agua_lancamento]       # mesmo sistema de outorga da ANA
+  - [anvisa_cmed_farmaceutica, bps_fornecedor_saude]       # teto de preco e compra publica do MESMO setor
+  - [bps_fornecedor_saude, sicaf_habilitado]               # fornecedor de saude publica precisa de SICAF
+  - [bps_fornecedor_saude, pncp_fornecedor]                # idem, pela via do PNCP
+  - [bps_fornecedor_saude, cgu_licitacao_participante]     # idem
+  - [bps_fornecedor_saude, cgu_licitacao_vencedor]         # idem
+  - [bps_fornecedor_saude, cgu_contratado_federal]         # idem
+  - [pncp_fornecedor, sicaf_habilitado]                    # idem
+  - [pncp_fornecedor, cgu_licitacao_vencedor]              # idem
+  - [pncp_fornecedor, cgu_contratado_federal]              # idem
