@@ -1,31 +1,10 @@
 # Achados fortes × cobertura online
 
-Companheiro de [`achados_fortes.md`](achados_fortes.md): mesma lista de 85
-achados, com duas perguntas a mais em cada linha — **esse fenômeno já é
-conhecido fora deste espelho?** e **por que ele importa?** Curadoria editorial
+Filtro de [`achados_fortes.md`](achados_fortes.md) com duas perguntas a mais em cada linha — **esse fenômeno já é
+conhecido na internet?** e **por que ele importa?** Curadoria editorial
 antes de decidir o que vira `pages/analises/`, não checagem de prioridade
 científica. ~35 buscas (`WebSearch`, 2026-09-07) por *fenômeno geral*, não
-pela correlação exata — nenhuma medição deste espelho tem paralelo publicado
-por construção; o que se busca é se o padrão já circula.
-
-Tabela única (antes espalhada em 13 tabelas por rodada): todo achado positivo
-ordenado por selo (🟢 primeiro, ⚫ por último), achado negativo/nulo ao final
-— ele usa uma escala de cobertura diferente (crença documentada, não achado
-documentado) — e as retratações internas fecham a lista.
-
-## Legenda
-
-| Selo | Significa |
-|---|---|
-| 🟢 | **Pouco coberto** — busca não achou equivalente; candidato a ângulo inédito (busca vazia ≠ ineditismo confirmado) |
-| 🟡 | **Parcial** — mecanismo conhecido, medição/ângulo específico não |
-| 🔴 | **Bem documentado** — publicar como "descoberta" seria enganoso |
-| ⚫ | **Não verificável por busca** — validação interna, achado intraurbano de cidade única, correção, ou nulo que essa escala não se aplica |
-
-**Essa escala só serve para achado positivo.** Para negativo/nulo (bloco ao
-final) o selo responde outra pergunta — existe crença pública/oficial de que
-a relação é positiva? — e por isso reaparece só ali, não misturado ao ranking
-dos positivos.
+pela correlação exata — o que se busca é se o padrão já circula.
 
 ---
 
@@ -166,16 +145,6 @@ reclassificou o par como a mesma coisa medida duas vezes — pobreza por dois
 nomes —, não uma correlação de fato.
 
 ---
-
-## Leitura agregada
-
-| Selo | Achados | % |
-|---|---|---|
-| 🟢 Pouco coberto | 23 | 30% |
-| 🟡 Parcial | 22 | 29% |
-| 🔴 Bem documentado | 22 | 29% |
-| ⚫ Não verificável por busca | 4 | 5% |
-| Negativos/nulos | 8 | 11%* |
 
 \* Percentual sobre o total incluindo o bloco negativo; escala de cobertura
 diferente, ver seção própria.
