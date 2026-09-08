@@ -84,7 +84,7 @@ a lista de papéis, sim.
 
 | Papéis | n | Leitura |
 |---|---|---|
-| penalidade do BC + BNDES não-automático + autuado IBAMA + outorga de lançamento de água + patrocinador Rouanet | 50 | Um grupo de 50 empresas que acumula multa do Banco Central, crédito BNDES não-automático, autuação ambiental, outorga de lançamento de efluente **e** patrocínio cultural — cinco chapéus regulatórios muito diferentes na mesma raiz de CNPJ |
+| penalidade do BC + BNDES não-automático + autuado IBAMA + outorga de lançamento de água + patrocinador Rouanet | 50 | Um grupo de 50 empresas que acumula multa do Banco Central, crédito BNDES não-automático, autuação ambiental, outorga de lançamento de efluente **e** patrocínio cultural — cinco chapéus regulatórios muito diferentes na mesma raiz de CNPJ. Publicado em [`pages/analises/cinco-cadastros-as-mesmas-empresas`](../../pages/analises/results/cinco-cadastros-as-mesmas-empresas.md): 890 autos de infração do IBAMA desde 1988, R$ 1,08 bi em multa, R$ 73,8 bi em BNDES não-automático — liderados por Vale, Bunge, Volkswagen, JBS, Carrefour e Furnas |
 | penalidade do BC + BNDES não-automático + sócio-holding + outorga de lançamento de água + patrocinador Rouanet | 44 | Variante do grupo acima trocando autuação IBAMA por estrutura societária em holding |
 
 ## O que ainda falta
