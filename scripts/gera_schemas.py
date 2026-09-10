@@ -1,4 +1,11 @@
-"""Generate schemas.json from beelink parquet files (fully local, no cloud storage).
+"""Generate schemas.json from beelink (fully local, no cloud storage).
+
+Covers both storage layers: parquet directories, and the 8 `duckdb_native`
+tables that live only inside `basedosdados.duckdb` with no parquet behind
+them (see build_metadata_catalog.py's Phase 2/2b for the same
+classification — `br_ms_sipni_microdados.vacinacao_2020` and friends).
+Before this, schemas.json (and everything downstream reading it, including
+describe_table) was silently blind to those tables.
 
 Usage:
     python scripts/gera_schemas.py          # via SSH
@@ -114,8 +121,76 @@ for i, (ds, tbl, parquets, part_keys) in enumerate(tables):
     }
     print(f"  [{i+1}/{len(tables)}] {key} ({len(cols)} cols, {len(parquets)} files)", file=sys.stderr)
 
+# Fase 2: tabelas sem parquet cuja view le uma tabela nativa dentro do
+# proprio basedosdados.duckdb (mesma classificacao de build_metadata_catalog.py,
+# Fase 2/2b). `information_schema.columns` e `duckdb_columns()` falham com
+# "Invalid unicode (byte sequence mismatch)" em qualquer consulta contra esta
+# base — um metadado corrompido em algum lugar do catalogo (candidato:
+# br_mjsp_ckan.infopen, ja documentado como tendo nomes de coluna em UTF-8
+# invalido) envenena a enumeracao inteira, filtro de WHERE ou nao. `DESCRIBE`
+# por tabela evita isso por resolver so a view alvo — mas e lento nas maiores
+# (~90-100M linhas): `doses_agregadas` costuma responder em segundos,
+# `vacinacao_2020` mediu ate ~280s numa corrida concorrente com outra sessao
+# no beelink. O timeout aqui (bem abaixo do limite de 600s do Popen em
+# run_via_ssh) e so uma rede de seguranca pra nao travar o regen inteiro se
+# uma view ficar realmente presa — nao um limite pensado pra excluir nada.
+DB_PATH = os.path.join(ROOT, "basedosdados.duckdb")
+NATIVE_JUNK_SCHEMAS = SKIP_DATASETS | {"main", "information_schema", "pg_catalog"}
+
+def list_views():
+    try:
+        r = subprocess.run(
+            [DUCKDB, "-readonly", "-json", DB_PATH, "-c",
+             "SET enable_progress_bar=false; "
+             "SELECT table_schema, table_name FROM information_schema.tables "
+             "WHERE table_type='VIEW';"],
+            capture_output=True, text=True, timeout=30,
+        )
+        return [(row["table_schema"], row["table_name"])
+                for row in json.loads(r.stdout.strip() or "[]")]
+    except Exception:
+        return []
+
+def get_native_columns(ds, tbl):
+    try:
+        r = subprocess.run(
+            [DUCKDB, "-readonly", "-json", DB_PATH, "-c",
+             'SET enable_progress_bar=false; DESCRIBE "%s"."%s";' % (ds, tbl)],
+            capture_output=True, text=True, timeout=300,
+        )
+        rows = json.loads(r.stdout.strip() or "[]")
+        return [{"name": row["column_name"], "type": row["column_type"]} for row in rows]
+    except Exception:
+        return []
+
+disk_keys = {(ds, tbl) for ds, tbl, _, _ in tables}
+native_candidates = [
+    (ds, tbl) for ds, tbl in list_views()
+    if ds not in NATIVE_JUNK_SCHEMAS and (ds, tbl) not in disk_keys
+]
+n_native_ok = 0
+for ds, tbl in native_candidates:
+    key = f"{ds}.{tbl}"
+    cols = get_native_columns(ds, tbl)
+    if not cols:
+        print(f"  [native] skip {key} — DESCRIBE travou ou falhou", file=sys.stderr)
+        continue
+    result[key] = {
+        "path": f"beelink:{DB_PATH}#{key}",
+        "file_count": 0,
+        "source": "duckdb_native",
+        "columns": cols,
+    }
+    n_native_ok += 1
+    print(f"  [native {n_native_ok}] {key} ({len(cols)} cols)", file=sys.stderr)
+
 print(json.dumps({
-    "_meta": {"source": "beelink", "path": ROOT, "total_tables": len(tables)},
+    "_meta": {
+        "source": "beelink",
+        "path": ROOT,
+        "total_tables": len(tables) + n_native_ok,
+        "native_tables": n_native_ok,
+    },
     "tables": dict(sorted(result.items())),
 }, ensure_ascii=False, indent=2))
 """
@@ -130,7 +205,9 @@ def run_via_ssh():
         stderr=subprocess.PIPE,
         text=True,
     )
-    stdout, stderr = proc.communicate(input=BEELINK_PAYLOAD, timeout=600)
+    # Headroom for the slowest native-table DESCRIBE (measured up to ~280s for
+    # vacinacao_2020, see BEELINK_PAYLOAD) plus the ~1000-table disk walk.
+    stdout, stderr = proc.communicate(input=BEELINK_PAYLOAD, timeout=900)
 
     for line in stderr.strip().split("\n"):
         if line.strip():
@@ -155,6 +232,11 @@ def run_via_ssh():
 
 
 def run_local():
+    # Fallback path only (SMB mount). Does NOT pick up duckdb_native tables —
+    # that needs shelling out to a local `duckdb` binary against
+    # LOCAL_MOUNT/basedosdados.duckdb, same as run_via_ssh() now does. Not
+    # worth duplicating here since the documented regen chain always uses
+    # run_via_ssh(); add it if this path ever becomes primary.
     if not os.path.isdir(LOCAL_MOUNT):
         print(f"Local mount {LOCAL_MOUNT} not found", file=sys.stderr)
         sys.exit(1)

@@ -52,7 +52,7 @@ flowchart LR
 
     subgraph ctx["docs/context/ — carregado 1x no import"]
         direction TB
-        C1["basedosdados-schema.json\n(_SCHEMA: 207 ds / 895 tbl)"]
+        C1["rodado-schema.json\n(_SCHEMA: 207 ds / 895 tbl)"]
         C2["doc2query_index.json +\ndoc2query_vectors.npy\n(6.464 perguntas sintéticas)"]
         C3["bridges.yaml\n(concepts / false_friends /\ncoded_differently / concept_aliases)"]
         C4["metrics.yaml · hierarchies.yaml"]
