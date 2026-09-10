@@ -1,6 +1,6 @@
 # br_ibge_censo_demografico.setor_censitario_domicilio_moradores_2010
 
-**Fonte**: `basedosdados-schema.json` + Documentação oficial do IBGE (PDF: Base de informações do Censo Demográfico 2010)
+**Fonte**: `rodado-schema.json` + Documentação oficial do IBGE (PDF: Base de informações do Censo Demográfico 2010)
 
 Este arquivo contém 84 variáveis da tabela `br_ibge_censo_demografico.setor_censitario_domicilio_moradores_2010` do Censo Demográfico 2010.
 

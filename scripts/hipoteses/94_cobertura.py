@@ -30,7 +30,7 @@ if len(sys.argv) > 1:                      # modo 2: consolidar
     print(f"gravado {OUT} ({len(res)} datasets; {len(sus)} com n_mun > 5.571)")
     sys.exit()
 
-schema = json.loads((REPO/"docs"/"context"/"basedosdados-schema.json").read_text())
+schema = json.loads((REPO/"docs"/"context"/"rodado-schema.json").read_text())
 # código IBGE direto > código de outro cadastro > nome em texto
 COD = {"id_municipio","id_municipio_6","id_municipio_residencia","id_municipio_6_residencia",
        "id_municipio_nascimento","id_municipio_1","id_municipio_2","id_municipio_gasto",

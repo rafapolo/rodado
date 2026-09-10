@@ -32,7 +32,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 PERGUNTAS = REPO / "docs" / "hipoteses" / "perguntas.md"
 RESPOSTAS = REPO / "docs" / "hipoteses" / "respostas.md"
-SCHEMA_PATH = REPO / "docs" / "context" / "basedosdados-schema.json"
+SCHEMA_PATH = REPO / "docs" / "context" / "rodado-schema.json"
 OUT = REPO / "tasks" / "douradas_perguntas.json"
 
 STATUS_MAP = {"✅": "ok", "◐": "partial", "⏳": "pending", "❌": "no_answer"}

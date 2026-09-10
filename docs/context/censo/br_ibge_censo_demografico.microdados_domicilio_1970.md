@@ -1,6 +1,6 @@
 # br_ibge_censo_demografico.microdados_domicilio_1970
 
-**Fonte**: `basedosdados-schema.json` + Documentação oficial do IBGE (Censo 1970)
+**Fonte**: `rodado-schema.json` + Documentação oficial do IBGE (Censo 1970)
 
 Este arquivo contém os **microdados de domicílios** do Censo Demográfico 1970.
 

@@ -5,7 +5,7 @@ scripts/hipoteses/71_rouanet.sql, sobre ~/rodado_hipoteses/rouanet/ no
 beelink (copiado para .hipoteses/rouanet/ local, gitignorado).
 
 H35 (SINAPI) NAO esta aqui — bloqueada por grao de fonte (so' tem UF, nao
-municipio; diagnostico da sessao paralela, confirmado em basedosdados-schema.json).
+municipio; diagnostico da sessao paralela, confirmado em rodado-schema.json).
 
   python3 scripts/hipoteses/99_rouanet.py
 """

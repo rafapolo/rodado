@@ -310,7 +310,7 @@ G7), são os dois padrões mais replicados do espelho.
 
 ## Quanto do espaço de hipóteses é de fato válido
 
-Medido em cascata sobre `docs/context/basedosdados-schema.json` (228 datasets),
+Medido em cascata sobre `docs/context/rodado-schema.json` (228 datasets),
 com a **cobertura municipal aferida no beelink** (`approx_count_distinct` sobre a
 maior tabela municipal de cada dataset, com amostragem nas acima de 20M linhas).
 
