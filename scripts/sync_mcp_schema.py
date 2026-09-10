@@ -85,11 +85,22 @@ def main() -> int:
             continue
         # A table whose schema could not be read is useless to every consumer:
         # describe_table returns nothing and search_tables still ranks it, so an
-        # LLM gets steered into a dead end. br_mjsp_ckan.infopen is the live case
-        # — its parquet has invalid UTF-8 in the column names (countable, but not
-        # selectable by column) and its source is gone; br_mjsp_sisdepen replaces
-        # it. The parquet stays on beelink and the row stays in
-        # tasks/datasets_to_scrap.md for provenance.
+        # LLM gets steered into a dead end. br_mjsp_ckan.infopen used to be the
+        # live case here — its parquet footer had raw latin-1 column names
+        # (mojibake: "Situa\xe7\xe3o" instead of proper UTF-8 "Situação"), which
+        # also poisoned any catalog-wide information_schema.columns/
+        # duckdb_columns() query against the whole beelink database, not just
+        # this table. Fixed 2026-09-10 by rewriting just the corrupted Thrift
+        # fields in the footer (SchemaElement.name, ColumnMetaData
+        # .path_in_schema) in place — data pages untouched, original backed up
+        # as infopen.parquet.pre-utf8fix-20260910.bak. Some free-text VALUE
+        # columns (Endereço, Outras Denominações — the ones read_parquet types
+        # as BLOB rather than VARCHAR) still hold latin-1 bytes in the actual
+        # cell content, unfixed: that needs decompressing/rewriting data pages,
+        # out of scope for a metadata-only patch. br_mjsp_sisdepen remains the
+        # documented replacement source; this table stays for provenance.
+        # This code path (skip on empty columns) is now dead for infopen but
+        # kept generically for whatever table hits it next.
         if not meta.get("columns"):
             skipped_empty.append(tid)
             continue
