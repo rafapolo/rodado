@@ -1,6 +1,6 @@
 # br_ibge_censo_2022.setor_censitario — Variáveis Agregadas
 
-**Fonte**: `basedosdados-schema.json` + `/tmp/dicionario_setores.xlsx` (dicionário oficial do IBGE)
+**Fonte**: `rodado-schema.json` + `/tmp/dicionario_setores.xlsx` (dicionário oficial do IBGE)
 
 Este arquivo contém a descrição de todas as **1.411 variáveis agregadas** (`v00001` a `v01411`) da tabela `br_ibge_censo_2022.setor_censitario`.
 

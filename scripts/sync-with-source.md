@@ -107,7 +107,7 @@ bq query --project_id=raspa-491716 --use_legacy_sql=false \
   'SELECT * FROM `basedosdados.br_bd_diretorios_brasil.municipio` LIMIT 3'
 ```
 
-## Step 1 — Get the live table list (don't trust `context/basedosdados-schema.json`)
+## Step 1 — Get the live table list (don't trust `context/rodado-schema.json`)
 
 That catalog file is stale — it has table names (e.g. `br_bcb_sicor.microdados_liberacao`)
 that don't exist on the live source anymore (the real names are `liberacao`, `operacao`,
@@ -264,7 +264,7 @@ Re-run Step 3's row-count comparison periodically to see how much drift has actu
   queried, e.g. `br_anatel_banda_larga_fixa.{backhaul,pble}`). Skip and move on.
 - `numRows` from `bq show` is `0`/meaningless for VIEWs — never gate solely on it, always
   dry-run before a real query.
-- `context/basedosdados-schema.json` in this repo is a point-in-time snapshot and already
+- `context/rodado-schema.json` in this repo is a point-in-time snapshot and already
   has table names that don't exist on the source anymore — never use it as the sync target
   list, only `bq ls` live.
 - One table (`br_ms_sia.producao_ambulatorial`, ~2.15TB as of 2026-07-05) is bigger than
