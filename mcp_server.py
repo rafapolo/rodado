@@ -8,11 +8,13 @@ source since 2026-07-09: local Parquet on beelink, no cloud storage — this
 is where newly-scraped datasets land first).
 """
 import difflib
+import functools
 import json
 import os
 import re
 import subprocess
 import threading
+import time
 from pathlib import Path
 from typing import Optional
 
@@ -38,6 +40,11 @@ DESCRIBE_MAX_COLS = int(os.environ.get("MCP_DESCRIBE_MAX_COLS", "150"))
 # `SELECT *` over br_inep_censo_escolar.escola (455 columns). Budget the
 # serialized payload too — this is the cap that actually binds.
 RUN_SQL_MAX_CHARS = int(os.environ.get("MCP_RUN_SQL_MAX_CHARS", "60000"))
+# Local observability only (see scripts/mcp_call_stats.py): one JSONL line
+# per tool call (name, latency, response bytes), so a tool whose responses
+# are quietly ballooning shows up as a size outlier before it floods a live
+# session's context — https://www.runpod.io/blog/designing-mcp-tools.
+CALL_LOG_PATH = Path(os.environ.get("MCP_CALL_LOG", REPO_ROOT / "logs" / "mcp_calls.jsonl"))
 
 SCHEMA_PATH = CONTEXT_DIR / "rodado-schema.json"
 DOC2QUERY_INDEX_PATH = CONTEXT_DIR / "doc2query_index.json"
@@ -464,6 +471,51 @@ def _rewrite_to_read_parquet(sql: str) -> tuple[str, list[str]]:
 
 
 # ---------------------------------------------------------------------------
+# Observability — per-call size/latency log (no attribution needed: this
+# server is stdio, one client per process, so unlike the blog's HTTP-fleet
+# case there's no caller/transport to tag; the tool name is the only axis
+# that matters here). Best-effort and silent on failure — logging must never
+# be why a tool call fails.
+# ---------------------------------------------------------------------------
+
+_call_log_lock = threading.Lock()
+
+
+def _log_call(name: str, elapsed_ms: float, response: object) -> None:
+    try:
+        size = len(json.dumps(response, ensure_ascii=False, default=str))
+    except Exception:
+        size = -1
+    entry = {"ts": round(time.time(), 3), "tool": name,
+             "elapsed_ms": round(elapsed_ms, 1), "response_bytes": size}
+    try:
+        CALL_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with _call_log_lock, open(CALL_LOG_PATH, "a", encoding="utf-8") as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    except OSError:
+        pass
+
+
+def _instrumented(fn):
+    """Log one JSONL line per call to `fn` — latency and response size.
+
+    Applied as the innermost decorator (`@mcp.tool()` / `@_instrumented` /
+    `def ...`) so FastMCP still registers the true name/docstring/signature:
+    `functools.wraps` sets `__wrapped__`, and both `inspect.signature()`
+    (used by mcp's func_metadata, confirmed against the installed `mcp`
+    package) and `fn.__doc__` follow it back to the original function —
+    this wrapper is transparent to tool-schema generation.
+    """
+    @functools.wraps(fn)
+    def wrapper(*args, **kwargs):
+        start = time.monotonic()
+        result = fn(*args, **kwargs)
+        _log_call(fn.__name__, (time.monotonic() - start) * 1000, result)
+        return result
+    return wrapper
+
+
+# ---------------------------------------------------------------------------
 # MCP app + tools
 # ---------------------------------------------------------------------------
 
@@ -471,6 +523,7 @@ mcp = FastMCP("rodado")
 
 
 @mcp.tool()
+@_instrumented
 def list_datasets() -> dict:
     """List all datasets in the unified catalog, with their table counts.
 
@@ -491,6 +544,7 @@ def list_datasets() -> dict:
 
 
 @mcp.tool()
+@_instrumented
 def list_tables(dataset: str) -> dict:
     """List the tables in one dataset (e.g. 'br_tse_eleicoes').
 
@@ -512,6 +566,7 @@ def list_tables(dataset: str) -> dict:
 
 
 @mcp.tool()
+@_instrumented
 def describe_table(table: str) -> dict:
     """Describe one table's columns: name and type.
 
@@ -624,6 +679,7 @@ def describe_table(table: str) -> dict:
 
 
 @mcp.tool()
+@_instrumented
 def search_tables(query: str, top_k: int = 10, min_similarity: float = SEARCH_THRESHOLD) -> dict:
     """Semantic search over all 832 tables by natural-language question.
 
@@ -679,6 +735,7 @@ def search_tables(query: str, top_k: int = 10, min_similarity: float = SEARCH_TH
 
 
 @mcp.tool()
+@_instrumented
 def get_join_keys(column: str | None = None) -> dict:
     """Look up foreign-key join columns shared across tables.
 
@@ -704,6 +761,7 @@ def get_join_keys(column: str | None = None) -> dict:
 
 
 @mcp.tool()
+@_instrumented
 def resolve_join(table_a: str, table_b: str) -> dict:
     """Return the ON clause that actually joins two tables, ready to paste.
 
@@ -821,6 +879,7 @@ def resolve_join(table_a: str, table_b: str) -> dict:
 
 
 @mcp.tool()
+@_instrumented
 def explain_column(column: str) -> dict:
     """Say whether a column is a join key, and if not, why not.
 
@@ -868,6 +927,7 @@ def explain_column(column: str) -> dict:
 
 
 @mcp.tool()
+@_instrumented
 def get_metric(name: str) -> dict:
     """Look up a named calculation — its SQL, its grain, and the filters it needs.
 
@@ -893,6 +953,7 @@ def get_metric(name: str) -> dict:
 
 
 @mcp.tool()
+@_instrumented
 def list_metrics() -> dict:
     """Every named calculation, with what it measures and its unit."""
     return {
@@ -906,6 +967,7 @@ def list_metrics() -> dict:
 
 
 @mcp.tool()
+@_instrumented
 def rollup(code_column: str, to_level: str) -> dict:
     """How to climb one classification code to a level above it.
 
@@ -936,6 +998,7 @@ def rollup(code_column: str, to_level: str) -> dict:
 
 
 @mcp.tool()
+@_instrumented
 def run_sql(sql: str, max_rows: int = 500) -> dict:
     """Run a read-only SQL query against beelink's DuckDB mirror over SSH —
     local Parquet on beelink is the project's only data source (no cloud
@@ -1014,13 +1077,41 @@ def run_sql(sql: str, max_rows: int = 500) -> dict:
 
 _CNPJ_BASE = "~/rodado/br_me_cnpj"
 
+# run_sql bounds an oversized response via _cap_rows' byte budget regardless
+# of the max_rows a caller passes; these wrappers build their own LIMIT
+# straight into SQL or an external API call, so without a ceiling here
+# max_rows=999999 would ask for that many rows before any size guard ran.
+_FRIENDLY_MAX_ROWS_CAP = 200
+
 
 def _only_digits(s: str) -> str:
     return re.sub(r"\D", "", s or "")
 
 
+def _clamp_max_rows(max_rows: int) -> int:
+    try:
+        max_rows = int(max_rows)
+    except (TypeError, ValueError):
+        max_rows = 20
+    return min(max(1, max_rows), _FRIENDLY_MAX_ROWS_CAP)
+
+
+def _bound_rows(rows: list, max_rows: int) -> tuple[list, bool]:
+    """Row-count AND serialized-size bound for a friendly tool's result list.
+
+    Reuses run_sql's own byte budget (_cap_rows) so a wide or numerous
+    result can't flood context just because max_rows was set high. `rows`
+    should already carry at most max_rows+1 items (the caller's LIMIT); the
+    +1 is what lets `total > max_rows` signal truncation without a separate
+    COUNT round-trip.
+    """
+    capped = _cap_rows(rows, max_rows)
+    return capped.get("rows", []), bool(capped.get("truncated"))
+
+
 @mcp.tool()
-def consultar_cnpj(cnpj: str, max_rows: int = 20) -> dict:
+@_instrumented
+def consultar_cnpj(cnpj: str, max_rows: int = 20, offset: int = 0) -> dict:
     """Look up a Brazilian company by CNPJ against the full registry already
     mirrored on beelink (br_me_cnpj — empresas/estabelecimentos/socios) —
     no external API call, just SQL over local data already on this server.
@@ -1029,13 +1120,18 @@ def consultar_cnpj(cnpj: str, max_rows: int = 20) -> dict:
 
     Returns company info (razão social, natureza jurídica, capital social),
     matriz/filial establishments and registered sócios — each list truncated
-    to `max_rows` (default 20, to keep responses token-cheap; raise it when
-    the full picture is needed). `*_truncated: true` flags a cut list.
+    to `max_rows` (default 20, hard-capped at 200 regardless of what's
+    passed — that's also the point a wide result starts risking the
+    response's own byte budget, not just row count). `*_truncated: true`
+    flags a cut list; pass `offset` to page past it (both lists are ordered,
+    matriz/filial by `cnpj` and sócios by `nome`, so paging is stable).
     """
     digits = _only_digits(cnpj)
     if len(digits) not in (8, 14):
         return {"error": f"'{cnpj}' isn't a valid CNPJ (need 8 or 14 digits, got {len(digits)})."}
     basico = digits[:8]
+    max_rows = _clamp_max_rows(max_rows)
+    offset = max(0, int(offset or 0))
 
     empresa = _run_sql_ssh(
         f"SELECT cnpj_basico, razao_social, natureza_juridica, "
@@ -1048,32 +1144,36 @@ def consultar_cnpj(cnpj: str, max_rows: int = 20) -> dict:
     if not empresa["rows"]:
         return {"error": f"No company found for cnpj_basico '{basico}'."}
 
-    # LIMIT n+1 so a full page signals truncation without a COUNT round-trip.
+    # LIMIT n+1 so a full page signals truncation without a COUNT round-trip;
+    # ORDER BY makes offset-based paging stable across calls.
     estabelecimentos = _run_sql_ssh(
         f"SELECT cnpj, identificador_matriz_filial, nome_fantasia, "
         f"situacao_cadastral, data_situacao_cadastral, sigla_uf, cep "
         f"FROM read_parquet('{_CNPJ_BASE}/estabelecimentos/*.parquet') "
-        f"WHERE cnpj_basico = '{basico}' LIMIT {max_rows + 1}"
+        f"WHERE cnpj_basico = '{basico}' ORDER BY cnpj "
+        f"LIMIT {max_rows + 1} OFFSET {offset}"
     )
     socios = _run_sql_ssh(
         f"SELECT nome, documento, qualificacao, data "
         f"FROM read_parquet('{_CNPJ_BASE}/socios/*.parquet') "
-        f"WHERE cnpj_basico = '{basico}' LIMIT {max_rows + 1}"
+        f"WHERE cnpj_basico = '{basico}' ORDER BY nome "
+        f"LIMIT {max_rows + 1} OFFSET {offset}"
     )
 
-    estab_rows = estabelecimentos.get("rows", [])
-    socio_rows = socios.get("rows", [])
+    estab_rows, estab_truncated = _bound_rows(estabelecimentos.get("rows", []), max_rows)
+    socio_rows, socio_truncated = _bound_rows(socios.get("rows", []), max_rows)
     return {
         "cnpj_basico": basico,
         "empresa": empresa["rows"][0],
-        "estabelecimentos": estab_rows[:max_rows],
-        "estabelecimentos_truncated": len(estab_rows) > max_rows,
-        "socios": socio_rows[:max_rows],
-        "socios_truncated": len(socio_rows) > max_rows,
+        "estabelecimentos": estab_rows,
+        "estabelecimentos_truncated": estab_truncated,
+        "socios": socio_rows,
+        "socios_truncated": socio_truncated,
     }
 
 
 @mcp.tool()
+@_instrumented
 def consultar_cep(cep: str) -> dict:
     """Look up a Brazilian address by CEP via ViaCEP.
 
@@ -1110,10 +1210,12 @@ def consultar_cep(cep: str) -> dict:
 
 
 @mcp.tool()
+@_instrumented
 def consultar_divida_ativa(
     cpf_cnpj: str,
     categoria: Optional[str] = None,
     max_rows: int = 20,
+    offset: int = 0,
 ) -> dict:
     """Consult PGFN (Procuradoria-Geral da Fazenda Nacional) active debt
     registry — 46.6M inscriptions of federal tax debts (FGTS, INSS/previdenciário,
@@ -1124,10 +1226,14 @@ def consultar_divida_ativa(
 
     Returns debtor info: nome, CPF/CNPJ, valor consolidado (string, formatted
     like '23337387019.50'), situação (ajuizado/em cobrança/parcelado), categoria.
+    `max_rows` is hard-capped at 200; pass `offset` to page past a truncated
+    result (ordered by valor consolidado descending, so paging is stable).
     """
     digits = _only_digits(cpf_cnpj)
     if len(digits) not in (8, 11, 14):
         return {"error": f"'{cpf_cnpj}' — need 8/14 digits for CNPJ or 11 for CPF."}
+    max_rows = _clamp_max_rows(max_rows)
+    offset = max(0, int(offset or 0))
 
     where_cpfcnpj = f"CPF_CNPJ LIKE '%{digits}%'"
     cat_filter = f" AND categoria = '{categoria}'" if categoria else ""
@@ -1139,27 +1245,30 @@ def consultar_divida_ativa(
         f"FROM read_parquet('~/rodado/br_pgfn_dividaativa/divida/*.parquet') "
         f"WHERE {where_cpfcnpj}{cat_filter} "
         f"ORDER BY CAST(regexp_replace(regexp_replace(VALOR_CONSOLIDADO, '\\.', ''), ',', '.') AS double) DESC "
-        f"LIMIT {max_rows + 1}"
+        f"LIMIT {max_rows + 1} OFFSET {offset}"
     )
     if "error" in result:
         return result
 
-    rows = result.get("rows", [])
+    fetched = result.get("rows", [])
+    rows, truncated = _bound_rows(fetched, max_rows)
     return {
         "cpf_cnpj": cpf_cnpj,
-        "inscricoes": rows[:max_rows],
-        "inscricoes_truncated": len(rows) > max_rows,
-        "total_encontradas": len(rows),
+        "inscricoes": rows,
+        "inscricoes_truncated": truncated,
+        "total_encontradas": len(fetched),
     }
 
 
 @mcp.tool()
+@_instrumented
 def consultar_precos_combustivel(
     municipio: Optional[str] = None,
     produto: Optional[str] = None,
     data_inicio: Optional[str] = None,
     data_fim: Optional[str] = None,
     max_rows: int = 50,
+    offset: int = 0,
 ) -> dict:
     """Query ANP weekly fuel resale price survey — 2M+ rows (2022–2026),
     one row per gas station per fuel product per week, Brazil-wide.
@@ -1168,8 +1277,12 @@ def consultar_precos_combustivel(
     'DIESEL', 'GLP', etc), data range (YYYY-MM-DD).
 
     Returns station info (CNPJ, razão social, bandeira), product, price,
-    collection date. Prices are per-liter in BRL (preco_revenda).
+    collection date. Prices are per-liter in BRL (preco_revenda). `max_rows`
+    is hard-capped at 200; pass `offset` to page past a truncated result
+    (ordered by data_coleta descending, so paging is stable).
     """
+    max_rows = _clamp_max_rows(max_rows)
+    offset = max(0, int(offset or 0))
     and_clauses = []
     if municipio:
         and_clauses.append(f"municipio ILIKE '%{municipio}%'")
@@ -1186,33 +1299,35 @@ def consultar_precos_combustivel(
         f"SELECT cnpj, razao, municipio, estado, bandeira, produto, "
         f"preco_revenda, data_coleta "
         f"FROM read_parquet('~/rodado/br_anp_combustiveis/precos/*.parquet'){where} "
-        f"ORDER BY data_coleta DESC LIMIT {max_rows + 1}"
+        f"ORDER BY data_coleta DESC LIMIT {max_rows + 1} OFFSET {offset}"
     )
     if "error" in result:
         return result
 
-    rows = result.get("rows", [])
+    rows, truncated = _bound_rows(result.get("rows", []), max_rows)
     # Summarize available products if no filter
     if not produto and rows:
         products = list(dict.fromkeys(r["produto"] for r in rows if r.get("produto")))
         return {
-            "precos": rows[:max_rows],
-            "truncated": len(rows) > max_rows,
+            "precos": rows,
+            "truncated": truncated,
             "produtos_disponiveis": products[:20],
         }
     return {
-        "precos": rows[:max_rows],
-        "truncated": len(rows) > max_rows,
+        "precos": rows,
+        "truncated": truncated,
     }
 
 
 @mcp.tool()
+@_instrumented
 def consultar_jurisprudencia_stj(
     processo: Optional[str] = None,
     ministro: Optional[str] = None,
     assunto: Optional[str] = None,
     data_inicio: Optional[str] = None,
     max_rows: int = 20,
+    offset: int = 0,
 ) -> dict:
     """Search STJ (Superior Tribunal de Justiça) document metadata —
     549K decisions/acórdãos from 2021-01-04 onwards, with relator, type,
@@ -1222,8 +1337,12 @@ def consultar_jurisprudencia_stj(
     assunto (subject/law topic), data_inicio (earliest publication date).
 
     Returns SeqDocumento, dataPublicacao, tipoDocumento, processo,
-    NM_MINISTRO, assuntos, teor (headnote summary).
+    NM_MINISTRO, assuntos, teor (headnote summary). `max_rows` is
+    hard-capped at 200; pass `offset` to page past a truncated result
+    (ordered by dataPublicacao descending, so paging is stable).
     """
+    max_rows = _clamp_max_rows(max_rows)
+    offset = max(0, int(offset or 0))
     and_clauses = []
     if processo:
         and_clauses.append(f"processo ILIKE '%{processo}%'")
@@ -1240,19 +1359,20 @@ def consultar_jurisprudencia_stj(
         f"SELECT SeqDocumento, dataPublicacao, tipoDocumento, processo, "
         f"NM_MINISTRO, assunto, teor "
         f"FROM read_parquet('~/rodado/br_stj_dadosabertos/documentos/*.parquet'){where} "
-        f"ORDER BY dataPublicacao DESC LIMIT {max_rows + 1}"
+        f"ORDER BY dataPublicacao DESC LIMIT {max_rows + 1} OFFSET {offset}"
     )
     if "error" in result:
         return result
 
-    rows = result.get("rows", [])
+    rows, truncated = _bound_rows(result.get("rows", []), max_rows)
     return {
-        "documentos": rows[:max_rows],
-        "truncated": len(rows) > max_rows,
+        "documentos": rows,
+        "truncated": truncated,
     }
 
 
 @mcp.tool()
+@_instrumented
 def consultar_populacao_carceraria(
     uf: Optional[str] = None,
     ciclo: Optional[str] = None,
@@ -1279,7 +1399,11 @@ def consultar_populacao_carceraria(
     is comparable across cycles; `vagas` (capacity) is NOT — it jumps from
     261,601 to 450,411 between 2022_h2 and 2023_h1 on a questionnaire change,
     not construction. Use occupancy only within a single cycle.
+
+    No `offset` param: results are one row per UF (<=27) or per cycle
+    (<=22) — inherently small, nothing to page through.
     """
+    max_rows = _clamp_max_rows(max_rows)
     src = "read_parquet('~/rodado/br_mjsp_sisdepen/populacao_carceraria/*.parquet')"
     pop = 'TRY_CAST("4_1_populacao_prisional_total" AS BIGINT)'
     cap = ('TRY_CAST("1_3_capacidade_do_estabelecimento_masculino_total" AS BIGINT)'
@@ -1298,11 +1422,11 @@ def consultar_populacao_carceraria(
         )
         if "error" in result:
             return result
-        rows = result.get("rows", [])
+        rows, truncated = _bound_rows(result.get("rows", []), max_rows)
         return {
             "escopo": uf.strip().upper() if uf else "Brasil",
-            "serie": rows[:max_rows],
-            "truncated": len(rows) > max_rows,
+            "serie": rows,
+            "truncated": truncated,
         }
 
     where = f" WHERE ciclo_arquivo = '{(ciclo or 'ciclo_19_2025_h2').strip()}' AND uf IS NOT NULL"
@@ -1318,21 +1442,23 @@ def consultar_populacao_carceraria(
     if "error" in result:
         return result
 
-    rows = result.get("rows", [])
+    rows, truncated = _bound_rows(result.get("rows", []), max_rows)
     return {
         "ciclo": (ciclo or "ciclo_19_2025_h2").strip(),
-        "estados": rows[:max_rows],
-        "truncated": len(rows) > max_rows,
+        "estados": rows,
+        "truncated": truncated,
     }
 
 
 @mcp.tool()
+@_instrumented
 def consultar_painelprecos(
     codigo_item: int,
     tipo_item: str = "material",
     tipo_codigo: str = "codigoItemCatalogo",
     estado: Optional[str] = None,
     max_rows: int = 20,
+    pagina: int = 1,
 ) -> dict:
     """Look up recent public-purchase prices for one CATMAT/CATSER item via
     ComprasGov's Painel de Preços — a genuine live external lookup (no local
@@ -1352,6 +1478,10 @@ def consultar_painelprecos(
             (specific item) or 'codigoPdm' (padrão descritivo de material,
             broader family of items). Ignored for `tipo_item='servico'`.
         estado: optional 2-letter UF to filter purchases (e.g. "SP").
+        max_rows: hard-capped at 200.
+        pagina: 1-based, passed straight through to the upstream API's own
+            paging — use it to fetch results beyond the first page;
+            `total_registros` in the reply says how many exist overall.
 
     Returns each purchase's unit price, quantity, buying entity (UASG),
     município/estado, fornecedor and date, most recent first.
@@ -1372,16 +1502,22 @@ def consultar_painelprecos(
             return {"error": f"'{estado}' isn't a valid 2-letter UF."}
         uf = estado.upper()
 
-    tamanho_pagina = max(10, min(max_rows, 500))
+    max_rows = _clamp_max_rows(max_rows)
+    try:
+        pagina = max(1, int(pagina))
+    except (TypeError, ValueError):
+        pagina = 1
+
+    tamanho_pagina = max(10, min(max_rows, _FRIENDLY_MAX_ROWS_CAP))
     if tipo_item == "material":
         url = (
             "https://dadosabertos.compras.gov.br/modulo-pesquisa-preco/1_consultarMaterial"
-            f"?tipo={tipo_codigo}&codigo={codigo}&pagina=1&tamanhoPagina={tamanho_pagina}"
+            f"?tipo={tipo_codigo}&codigo={codigo}&pagina={pagina}&tamanhoPagina={tamanho_pagina}"
         )
     else:
         url = (
             "https://dadosabertos.compras.gov.br/modulo-pesquisa-preco/3_consultarServico"
-            f"?codigoItemCatalogo={codigo}&pagina=1&tamanhoPagina={tamanho_pagina}"
+            f"?codigoItemCatalogo={codigo}&pagina={pagina}&tamanhoPagina={tamanho_pagina}"
         )
     if uf:
         url += f"&estado={uf}"
@@ -1406,12 +1542,13 @@ def consultar_painelprecos(
     if "resultado" not in data:
         return {"error": data.get("message") or f"Unexpected response shape: {stdout[:500]}"}
 
-    rows = data["resultado"]
+    rows, truncated = _bound_rows(data["resultado"], max_rows)
     return {
         "codigo_item": codigo,
         "tipo_item": tipo_item,
-        "compras": rows[:max_rows],
-        "truncated": len(rows) > max_rows,
+        "pagina": pagina,
+        "compras": rows,
+        "truncated": truncated,
         "total_registros": data.get("totalRegistros"),
     }
 
