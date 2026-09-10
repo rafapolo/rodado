@@ -1,6 +1,6 @@
 # br_ibge_censo_demografico — Census 2000 Variáveis Agregadas
 
-**Fonte**: `basedosdados-schema.json` + Documentação oficial do IBGE (Microdados da Amostra + Resultados do Universo)
+**Fonte**: `rodado-schema.json` + Documentação oficial do IBGE (Microdados da Amostra + Resultados do Universo)
 
 Este dataset contém os microdados e variáveis agregadas do **Censo Demográfico 2000** para os setores censitários brasileiros.
 

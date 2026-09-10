@@ -61,7 +61,7 @@ from pathlib import Path
 import yaml
 
 REPO = Path(__file__).resolve().parent.parent
-SCHEMA_PATH = REPO / "docs" / "context" / "basedosdados-schema.json"
+SCHEMA_PATH = REPO / "docs" / "context" / "rodado-schema.json"
 DICIONARIO_PATH = REPO / "docs" / "context" / "dicionario_coverage.json"
 BRIDGES_PATH = REPO / "docs" / "context" / "bridges.yaml"
 HIERARCHIES_PATH = REPO / "docs" / "context" / "hierarchies.yaml"

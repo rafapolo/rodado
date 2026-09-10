@@ -8,7 +8,7 @@ quais dessas valem a pena.
 Três entradas, todas versionadas:
   docs/context/familias.yaml              dataset -> família + papel
   docs/context/cobertura_municipal.json   quantos municípios cada dataset cobre
-  docs/context/basedosdados-schema.json   colunas, para achar a chave de join
+  docs/context/rodado-schema.json   colunas, para achar a chave de join
 
 E três saídas em tasks/:
   inedito_familias.tsv   toda combinação de 2..4 famílias, coberta ou não
@@ -30,7 +30,7 @@ fam_cfg  = yaml.safe_load((CTX / "familias.yaml").read_text(encoding="utf-8"))
 DSFAM    = {k: v["familia"] for k, v in fam_cfg["datasets"].items()}
 DSPAPEL  = {k: v["papel"]   for k, v in fam_cfg["datasets"].items()}
 FAMDESC  = {k: v["desc"]    for k, v in fam_cfg["familias"].items()}
-schema   = json.loads((CTX / "basedosdados-schema.json").read_text(encoding="utf-8"))
+schema   = json.loads((CTX / "rodado-schema.json").read_text(encoding="utf-8"))
 
 cob_path = CTX / "cobertura_municipal.json"
 COB = json.loads(cob_path.read_text(encoding="utf-8")) if cob_path.exists() else {}

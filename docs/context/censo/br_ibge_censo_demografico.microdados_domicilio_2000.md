@@ -1,6 +1,6 @@
 # br_ibge_censo_demografico.microdados_domicilio_2000
 
-**Fonte**: `basedosdados-schema.json` + Documentação oficial do IBGE (Censo 2000)
+**Fonte**: `rodado-schema.json` + Documentação oficial do IBGE (Censo 2000)
 
 Este arquivo contém os **microdados de domicílios** do Censo Demográfico 2000.
 

@@ -1,6 +1,6 @@
 # br_ibge_censo_demografico.microdados_domicilio_1991
 
-**Fonte**: `basedosdados-schema.json` + Documentação oficial do IBGE (Censo 1991)
+**Fonte**: `rodado-schema.json` + Documentação oficial do IBGE (Censo 1991)
 
 Este arquivo contém os **microdados de domicílios** do Censo Demográfico 1991.
 

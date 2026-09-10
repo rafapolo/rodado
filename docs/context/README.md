@@ -34,7 +34,7 @@ Três coisas destes arquivos valem mais que o resto:
 | Arquivo | O que é | Gerado por |
 |---|---|---|
 | `all_tables.txt` | 1029 `dataset.tabela`, uma por linha — a lista chapada, incluindo as 8 tabelas nativas do `.duckdb` que não têm parquet | `build_metadata_catalog.py` |
-| `basedosdados-schema.json` | Schema completo que o `describe_table` do MCP lê (229 datasets, 1022 tabelas, 41.183 colunas) | `sync_mcp_schema.py`, a partir de `schemas.json` na raiz |
+| `rodado-schema.json` | Schema completo que o `describe_table` do MCP lê (233 datasets, 1029 tabelas, 41.296 colunas) — inclui as 7 tabelas `duckdb_native` sem parquet (`br_ms_sipni_*`, `politicos.contato`; `_local_rais_cnpj` fica de fora, é infra), que `gera_schemas.py` não enxergava antes por só varrer diretório. Renomeado de `basedosdados-schema.json`: cobria só a porção espelhada, e o nome sobrou depois que o mecanismo passou a incluir tabela raspada e nativa também | `sync_mcp_schema.py`, a partir de `schemas.json` na raiz |
 | `join_keys.md` | O render do `bridges.yaml` + as chaves auto-detectadas: 430 seções. `mcp_server.get_join_keys()` fatia este arquivo por `###`, então todo h3 tem que ser um nome de coluna de verdade | `gera_join_keys.py` |
 | `metrics.json` | O `metrics.yaml` em JSON, consumido por `build_ask_web_assets.ts` no branch `ask-web`. O MCP lê o YAML direto | `gera_metrics_json.py` |
 | `dicionario_coverage.json` | Quais colunas de quais tabelas têm decode chave→valor em `{dataset}.dicionario` — 45 datasets, 168 tabelas, 6.256 colunas | `gera_dicionario_coverage.py` |
@@ -70,7 +70,7 @@ Depois de qualquer sync que mude tabelas, nesta ordem, da raiz do repo:
 
 ```bash
 python3 scripts/gera_schemas.py            # beelink        -> schemas.json (na raiz)
-python3 scripts/sync_mcp_schema.py         # schemas.json   -> basedosdados-schema.json
+python3 scripts/sync_mcp_schema.py         # schemas.json   -> rodado-schema.json
 python3 scripts/build_metadata_catalog.py  # beelink        -> catalog.parquet + views + all_tables.txt
 python3 scripts/gera_join_keys.py          # bridges.yaml   -> join_keys.md
 python3 scripts/gera_metrics_json.py       # metrics.yaml   -> metrics.json

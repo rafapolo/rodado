@@ -184,7 +184,7 @@ flowchart TD
         A["Claude Desktop / Claude Code — mcp_server.py over stdio<br/>18 tools: schema browse, semantic search, join resolution,<br/>named metrics, read-only SQL, friendly per-theme lookups"]
     end
     subgraph SEMANTIC["SEMANTIC / ONTOLOGY LAYER"]
-        S["basedosdados-schema.json — 832-table schema registry<br/>join_keys.md / bridges.yaml — join keys + cross-source bridges<br/>doc2query_index.json/.npy — semantic vectors for AI (11 MB)<br/>overview/ (34 files) — domain narratives for LLM ctx"]
+        S["rodado-schema.json — 832-table schema registry<br/>join_keys.md / bridges.yaml — join keys + cross-source bridges<br/>doc2query_index.json/.npy — semantic vectors for AI (11 MB)<br/>overview/ (34 files) — domain narratives for LLM ctx"]
     end
     subgraph QUERY["QUERY LAYER"]
         Q["ssh beelink '~/bin/duckdb -readonly -json ...' — single-stmt<br/>No local DuckDB connection, no persistent server process"]
@@ -287,7 +287,7 @@ Not a Foundry deployment — an open-source system that reproduces the same arch
 |-----------------|-------------------|
 | Parquet files on beelink | Foundry datasets |
 | DuckDB engine + views | Foundry query engine |
-| `basedosdados-schema.json` | Ontology schema registry |
+| `rodado-schema.json` | Ontology schema registry |
 | `join_keys.md`/`bridges.yaml` entity graph | Object type links / property mappings |
 | `doc2query_index.json`/`doc2query_vectors.npy` | Semantic search index |
 | `mcp_server.py` | AIP Agent tool actions |

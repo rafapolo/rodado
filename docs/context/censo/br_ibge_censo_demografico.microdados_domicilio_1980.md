@@ -1,6 +1,6 @@
 # br_ibge_censo_demografico.microdados_domicilio_1980
 
-**Fonte**: `basedosdados-schema.json` + Documentação oficial do IBGE (Censo 1980)
+**Fonte**: `rodado-schema.json` + Documentação oficial do IBGE (Censo 1980)
 
 Este arquivo contém os **microdados de domicílios** do Censo Demográfico 1980.
 

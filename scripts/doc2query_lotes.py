@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Split all tables in docs/context/basedosdados-schema.json into batches ready
+"""Split all tables in docs/context/rodado-schema.json into batches ready
 for the doc2query prompt (scripts/prompts/doc2query.md, fetched from
 origin/ask-web — see tasks/done/mcp_search_refino.md item 1 for why).
 
@@ -20,7 +20,7 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-SCHEMA_PATH = REPO / "docs" / "context" / "basedosdados-schema.json"
+SCHEMA_PATH = REPO / "docs" / "context" / "rodado-schema.json"
 OUT_DIR = REPO / "tasks" / "doc2query"
 BATCH_SIZE = 25
 MAX_COLS = 40

@@ -1,6 +1,6 @@
 # br_ibge_censo_demografico.setor_censitario_relacao_parentesco_conjuges_2010
 
-**Fonte**: `basedosdados-schema.json` + Documentação oficial do IBGE (PDF: Base de informações do Censo Demográfico 2010)
+**Fonte**: `rodado-schema.json` + Documentação oficial do IBGE (PDF: Base de informações do Censo Demográfico 2010)
 
 Este arquivo contém 211 variáveis da tabela `br_ibge_censo_demografico.setor_censitario_relacao_parentesco_conjuges_2010` do Censo Demográfico 2010.
 

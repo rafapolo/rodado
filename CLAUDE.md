@@ -41,7 +41,7 @@ One mermaid `erDiagram` per domain covering all 1023 tables: entity = dataset, a
 ### `docs/context/` — Schema metadata
 Um `README.md` na própria pasta descreve arquivo por arquivo, quem gera cada um e a ordem do regen.
 - `all_tables.txt` — as 904 `dataset.tabela`, uma por linha, incluindo as 8 nativas do `.duckdb` que não têm parquet. Gerado por `scripts/build_metadata_catalog.py` — era um despejo do `bq ls` da era BigQuery que ninguém regenerava
-- `basedosdados-schema.json` — full schema (1.9 MB, 229 datasets / 1022 tabelas)
+- `rodado-schema.json` — full schema (2.0 MB, 233 datasets / 1029 tabelas). Renomeado de `basedosdados-schema.json` — o nome antigo mentia escopo (parquet só) desde que `gera_schemas.py` passou a incluir as 7 tabelas `duckdb_native` (sem parquet, lidas direto de dentro de `basedosdados.duckdb`) que antes ficavam invisíveis por o script só varrer diretório
 - `doc2query_index.json` / `doc2query_vectors.npy` — the `search_tables` index: one embedding per synthetic question a table answers (~8/table, 832 tables, `paraphrase-multilingual-MiniLM-L12-v2`), not one per table (replaces a deleted `table_embeddings.json`, which held one vector per table over column-name text — measured nearly orthogonal to a real question, recall@5 1/15 on a single-table golden set; see `tasks/done/mcp_search_refino.md` item 1. `scripts/update_embeddings.py`, its generator, was deleted with it). `search_tables` scores a table by the MAX cosine similarity across its own questions. `.json` holds `id`/`table`/`text` per row in the `.npy`'s row order; `.npy` is a float32 `(n_questions, dim)` array. Generation is two separable steps: the LLM pass (`scripts/doc2query_lotes.py` → `scripts/doc2query_roda.py` against `scripts/prompts/doc2query.md`, ~34 `opencode run` batches — expensive, one-time, resumable) produces `docs/context/doc2query_corpus.jsonl` (via `scripts/gera_doc2query_corpus.py`, not gitignored — the raw batches under `tasks/` are); `scripts/gera_doc2query_index.py` embeds it — cheap, rerun freely after editing the corpus or changing the embedding model
 - `bridges.yaml` — **a fonte única do conhecimento de join**. Conceitos-hub, as 78 pontes (coluna que significa a mesma coisa sob outro nome), os `false_friends`, os `coded_differently` (mesmo conceito, código numérico diverge por dataset/ano — `sexo`, `raca_cor`, `estado_civil`... achado ao vivo num teste cego do MCP, ver `tasks/done/mcp_search_refino.md`) e os `concept_aliases`. Editar aqui; `join_keys.md` é gerado
 - `join_keys.md` — o render de `bridges.yaml` + as chaves auto-detectadas do `schemas.json`: 157 colunas de join ao todo. Gerado por `scripts/gera_join_keys.py` — regenerar, nunca editar à mão
@@ -71,7 +71,7 @@ Regenerar, na ordem, depois de qualquer sync que mude tabelas:
 
 ```bash
 python3 scripts/gera_schemas.py            # beelink        -> schemas.json
-python3 scripts/sync_mcp_schema.py         # schemas.json   -> docs/context/basedosdados-schema.json
+python3 scripts/sync_mcp_schema.py         # schemas.json   -> docs/context/rodado-schema.json
 python3 scripts/build_metadata_catalog.py  # beelink        -> catalog.parquet + views + all_tables.txt
 python3 scripts/gera_catalog_md.py         # catalog.parquet -> docs/catalog.md (ver docs/housekeeping.md item 7)
 python3 scripts/gera_join_keys.py          # bridges.yaml   -> docs/context/join_keys.md
@@ -85,7 +85,7 @@ python3 scripts/llm_triage_schema_dict_status.py  # passada de leitura humana/LL
 ```
 
 `sync_mcp_schema.py` é o passo que se esquece: sem ele `mcp_server.py` continua lendo o
-schema antigo em `docs/context/basedosdados-schema.json` e não enxerga nenhuma coluna
+schema antigo em `docs/context/rodado-schema.json` e não enxerga nenhuma coluna
 nova — `describe_table` mente calado.
 
 `join_keys.md` e `metrics.json` são **gerados** — editar o YAML, nunca a saída. `valida_metrics.py` separa hard de soft como o firewall de `run_sql`: DML na expressão rejeita, coluna ausente só avisa, porque `_check_read_only` revalida antes de executar.

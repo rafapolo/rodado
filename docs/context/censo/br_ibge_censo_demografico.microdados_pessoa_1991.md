@@ -1,6 +1,6 @@
 # br_ibge_censo_demografico.microdados_pessoa_1991
 
-**Fonte**: `basedosdados-schema.json` + Documentação oficial do IBGE (Censo 1991)
+**Fonte**: `rodado-schema.json` + Documentação oficial do IBGE (Censo 1991)
 
 Este arquivo contém os **microdados de pessoas** do Censo Demográfico 1991.
 
