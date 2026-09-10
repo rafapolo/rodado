@@ -39,7 +39,7 @@ DESCRIBE_MAX_COLS = int(os.environ.get("MCP_DESCRIBE_MAX_COLS", "150"))
 # serialized payload too — this is the cap that actually binds.
 RUN_SQL_MAX_CHARS = int(os.environ.get("MCP_RUN_SQL_MAX_CHARS", "60000"))
 
-SCHEMA_PATH = CONTEXT_DIR / "basedosdados-schema.json"
+SCHEMA_PATH = CONTEXT_DIR / "rodado-schema.json"
 DOC2QUERY_INDEX_PATH = CONTEXT_DIR / "doc2query_index.json"
 DOC2QUERY_VECTORS_PATH = CONTEXT_DIR / "doc2query_vectors.npy"
 JOIN_KEYS_PATH = CONTEXT_DIR / "join_keys.md"

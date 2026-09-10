@@ -25,7 +25,7 @@ import yaml
 
 REPO = Path(__file__).resolve().parent.parent
 CONTEXT = REPO / "docs" / "context"
-SCHEMA = CONTEXT / "basedosdados-schema.json"
+SCHEMA = CONTEXT / "rodado-schema.json"
 
 DML = ("INSERT", "UPDATE", "DELETE", "DROP", "TRUNCATE", "GRANT", "REVOKE",
        "CREATE", "ALTER", "ATTACH", "COPY", "CALL", "INSTALL", "LOAD",

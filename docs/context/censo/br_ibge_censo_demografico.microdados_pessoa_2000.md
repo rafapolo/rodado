@@ -1,6 +1,6 @@
 # br_ibge_censo_demografico.microdados_pessoa_2000
 
-**Fonte**: `basedosdados-schema.json` + Documentação oficial do IBGE (Censo 2000)
+**Fonte**: `rodado-schema.json` + Documentação oficial do IBGE (Censo 2000)
 
 Este arquivo contém os **microdados de pessoas** do Censo Demográfico 2000.
 
