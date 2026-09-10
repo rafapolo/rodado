@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Rebuild the MCP server's schema from a fresh `schemas.json`.
 
-`mcp_server.py` reads `docs/context/basedosdados-schema.json`, which drifts
+`mcp_server.py` reads `docs/context/rodado-schema.json`, which drifts
 away from beelink as new datasets land (it sat at 782 tables while the mirror
 had 825, so `describe_table` answered "Unknown table" for anything recent).
 Nothing regenerated it — `gera_schemas.py` writes the *other* artifact,
@@ -15,10 +15,13 @@ Shapes:
                                                       "columns": [{name,type}]}}}
     MCP schema     {"ds": {"tbl": [{"name", "type"}]}}
 
-Types are also translated: `schemas.json` carries the *physical* parquet type
-(INT64, BYTE_ARRAY), the MCP schema the *logical* one (INTEGER, STRING). The
-previous MCP schema had been built with an incomplete mapping — 262 columns
-still held raw physical names — so this normalizes every column.
+Types are also translated: `schemas.json` carries a *physical* type — the
+parquet physical type (INT64, BYTE_ARRAY) for disk-backed tables, or the
+DuckDB logical type (VARCHAR, BIGINT) for `duckdb_native` tables that have no
+parquet — the MCP schema wants one *logical* vocabulary (INTEGER, STRING)
+regardless of which storage layer a table came from. The previous MCP schema
+had been built with an incomplete mapping — 262 columns still held raw
+physical names — so this normalizes every column.
 """
 
 import json
@@ -28,9 +31,12 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 SRC = REPO / "schemas.json"
-DST = REPO / "docs" / "context" / "basedosdados-schema.json"
+DST = REPO / "docs" / "context" / "rodado-schema.json"
 
-# physical parquet type -> logical type used by the MCP schema
+# physical/native type -> logical type used by the MCP schema. Parquet
+# physical types (INT64, BYTE_ARRAY, …) and DuckDB logical types (VARCHAR,
+# BIGINT, …) share this one map since schemas.json now mixes both, depending
+# on whether a table is disk-backed or duckdb_native.
 TYPE_MAP = {
     "INT64": "INTEGER",
     "INT32": "INTEGER",
@@ -40,6 +46,17 @@ TYPE_MAP = {
     "DOUBLE": "FLOAT",
     "FLOAT": "FLOAT",
     "BOOLEAN": "BOOLEAN",
+    # DuckDB DESCRIBE output (duckdb_native tables)
+    "VARCHAR": "STRING",
+    "BIGINT": "INTEGER",
+    "UBIGINT": "INTEGER",
+    "HUGEINT": "INTEGER",
+    "SMALLINT": "INTEGER",
+    "TINYINT": "INTEGER",
+    "UINTEGER": "INTEGER",
+    "REAL": "FLOAT",
+    "DATE": "DATE",
+    "TIMESTAMP": "TIMESTAMP",
 }
 
 
@@ -79,7 +96,9 @@ def main() -> int:
         cols = []
         for col in meta.get("columns", []):
             phys = col.get("type", "")
-            logical = TYPE_MAP.get(phys)
+            # DECIMAL(18,2) etc — strip params, DuckDB's only parametrized type
+            lookup = phys.split("(", 1)[0] if "(" in phys else phys
+            logical = TYPE_MAP.get(lookup)
             if logical is None:
                 unmapped[phys] += 1
                 logical = phys

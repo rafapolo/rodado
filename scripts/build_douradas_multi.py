@@ -15,7 +15,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 SRC = REPO / "docs" / "relatorio-social" / "perguntas.md"
-SCHEMA_PATH = REPO / "docs" / "context" / "basedosdados-schema.json"
+SCHEMA_PATH = REPO / "docs" / "context" / "rodado-schema.json"
 OUT = REPO / "tasks" / "douradas_multi.json"
 
 PATTERN = re.compile(r"\*\*(\d+)\.\s*(.+?)\*\*\s*\n\s*\n?\s*-\s*\*\*Fontes:\*\*\s*(.+?)(?:\n\n|\n#)", re.DOTALL)
