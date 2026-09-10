@@ -161,7 +161,7 @@ origem, e uma camada de renome precisa de remapeamento a cada sync; (4) são
 conferidas de `docs/respostas.md`. O que falta de verdade não é nome melhor: é
 **descrição nenhuma** — `describe_table` diz isso na própria docstring ("Column
 descriptions are not available: the mirrored schema carries only name and type"),
-e uma varredura em `basedosdados-schema.json` acha `description`/`descricao` em
+e uma varredura em `rodado-schema.json` acha `description`/`descricao` em
 quantidade desprezível. Importar as descrições que a origem já publica é aditivo,
 chaveado pelo nome original, e não quebra nada — mas é outro plano.
 

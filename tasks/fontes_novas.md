@@ -928,7 +928,7 @@ SELECT count(*) FROM br_ibge_cnefe.enderecos;
 ```
 
 Bate com a estimativa original do item ("~110M endereços"). Colunas completas
-em `docs/context/basedosdados-schema.json` (`br_ibge_cnefe.enderecos`).
+em `docs/context/rodado-schema.json` (`br_ibge_cnefe.enderecos`).
 
 ### CAUC / Tesouro Transparente (#15) — feito
 

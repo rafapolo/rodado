@@ -1,6 +1,6 @@
 # br_ibge_censo_demografico — Census 1991
 
-**Fonte**: `basedosdados-schema.json` + Documentação oficial do IBGE
+**Fonte**: `rodado-schema.json` + Documentação oficial do IBGE
 
 Este dataset contém os microdados do **Censo Demográfico 1991** para os setores censitários brasileiros.
 

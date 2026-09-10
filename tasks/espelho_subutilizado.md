@@ -68,7 +68,7 @@ executar.
 
 ```python
 import json, re
-d = json.load(open('docs/context/basedosdados-schema.json'))
+d = json.load(open('docs/context/rodado-schema.json'))
 text = open('docs/perguntas.md').read()
 untouched = [ds for ds in sorted(d) if ds not in text and re.sub(r'^(br_|world_|global_)', '', ds) not in text]
 ```
@@ -388,7 +388,7 @@ número real.
 # Parte II — Datasets de município fora do dashboard
 
 Levantamento de 2026-08-28: dos 111 datasets do espelho que têm pelo menos uma
-tabela com coluna de município (`docs/context/basedosdados-schema.json`, busca
+tabela com coluna de município (`docs/context/rodado-schema.json`, busca
 por `municip` no nome da coluna), `dataviz/municipio/extract_municipio.py`
 (repo `xn--2dk.xyz` / `xyz`, não este) usa 62. Os 53 abaixo não entraram —
 triados em três baldes pra decidir depois quais valem uma seção nova. A

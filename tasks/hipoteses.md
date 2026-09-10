@@ -19,7 +19,7 @@ hipóteses concretas estão na fila** e **como rodar a bateria offline**.
 
 ## 1 · Quanto do espaço é válido
 
-Medido em cascata sobre `docs/context/basedosdados-schema.json` (228 datasets),
+Medido em cascata sobre `docs/context/rodado-schema.json` (228 datasets),
 com a cobertura municipal **aferida no beelink** (`approx_count_distinct` sobre a
 maior tabela municipal de cada dataset, amostrando as acima de 20M linhas).
 

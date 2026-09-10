@@ -1,6 +1,6 @@
 # br_ibge_censo_demografico.setor_censitario_basico_2010
 
-**Fonte**: `basedosdados-schema.json` + Documentação oficial do IBGE
+**Fonte**: `rodado-schema.json` + Documentação oficial do IBGE
 
 Este arquivo contém 11 variáveis da tabela `br_ibge_censo_demografico.setor_censitario_basico_2010` do Censo Demográfico 2010.
 

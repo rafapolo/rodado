@@ -2,7 +2,8 @@
   "_meta": {
     "source": "beelink",
     "path": "/home/polo/rodado",
-    "total_tables": 1023
+    "total_tables": 1030,
+    "native_tables": 7
   },
   "tables": {
     "_obsoleto.br_ibama_embargos": {
@@ -129308,6 +129309,376 @@
         }
       ]
     },
+    "br_ms_sipni_dicionarios.cobertura_indicadores": {
+      "path": "beelink:/home/polo/rodado/basedosdados.duckdb#br_ms_sipni_dicionarios.cobertura_indicadores",
+      "file_count": 0,
+      "source": "duckdb_native",
+      "columns": [
+        {
+          "name": "imuno",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "nome",
+          "type": "VARCHAR"
+        }
+      ]
+    },
+    "br_ms_sipni_dicionarios.doses_tipo": {
+      "path": "beelink:/home/polo/rodado/basedosdados.duckdb#br_ms_sipni_dicionarios.doses_tipo",
+      "file_count": 0,
+      "source": "duckdb_native",
+      "columns": [
+        {
+          "name": "code",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "label",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "source_codes",
+          "type": "VARCHAR"
+        }
+      ]
+    },
+    "br_ms_sipni_dicionarios.faixa_etaria": {
+      "path": "beelink:/home/polo/rodado/basedosdados.duckdb#br_ms_sipni_dicionarios.faixa_etaria",
+      "file_count": 0,
+      "source": "duckdb_native",
+      "columns": [
+        {
+          "name": "code",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "label",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "source_codes",
+          "type": "VARCHAR"
+        }
+      ]
+    },
+    "br_ms_sipni_dicionarios.vacinas": {
+      "path": "beelink:/home/polo/rodado/basedosdados.duckdb#br_ms_sipni_dicionarios.vacinas",
+      "file_count": 0,
+      "source": "duckdb_native",
+      "columns": [
+        {
+          "name": "code",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "label",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "source_codes",
+          "type": "VARCHAR"
+        }
+      ]
+    },
+    "br_ms_sipni_doses_historicas.doses_agregadas": {
+      "path": "beelink:/home/polo/rodado/basedosdados.duckdb#br_ms_sipni_doses_historicas.doses_agregadas",
+      "file_count": 0,
+      "source": "duckdb_native",
+      "columns": [
+        {
+          "name": "ANO",
+          "type": "BIGINT"
+        },
+        {
+          "name": "UF",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "MUNIC",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "FX_ETARIA",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "IMUNO",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "DOSE",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "QT_DOSE",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "ANOMES",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "MES",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "DOSE1",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "DOSEN",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "DIFER",
+          "type": "VARCHAR"
+        }
+      ]
+    },
+    "br_ms_sipni_microdados.vacinacao_2020": {
+      "path": "beelink:/home/polo/rodado/basedosdados.duckdb#br_ms_sipni_microdados.vacinacao_2020",
+      "file_count": 0,
+      "source": "duckdb_native",
+      "columns": [
+        {
+          "name": "co_documento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_paciente",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "tp_sexo_paciente",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_raca_cor_paciente",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "no_raca_cor_paciente",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_municipio_paciente",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_pais_paciente",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "no_municipio_paciente",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "no_pais_paciente",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "sg_uf_paciente",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "nu_cep_paciente",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "ds_nacionalidade_paciente",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "no_etnia_indigena_paciente",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_etnia_indigena_paciente",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_cnes_estabelecimento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "no_razao_social_estabelecimento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "no_fantasia_estalecimento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_municipio_estabelecimento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "no_municipio_estabelecimento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "sg_uf_estabelecimento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_troca_documento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_vacina",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "sg_imunobiologico",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "dt_vacina",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_dose_vacina",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "ds_tipo_dose",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_local_aplicacao",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "ds_local_aplicacao",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_via_administracao",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "ds_via_administracao",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_lote_vacina",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "ds_vacina_fabricante",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "dt_entrada_rnds",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_sistema_origem",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "ds_sistema_origem",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "st_documento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_estrategia_vacinacao",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "no_estrategia",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_origem_registro",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "ds_origem_registro",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_vacina_grupo_atendimento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "no_grupo_atendimento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_categoria",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "ds_categoria",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_vacina_fabricante",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "ds_nome",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "ds_condicao_maternal",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_tipo_estabelecimento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "ds_tipo_estabelecimento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_natureza_estabelecimento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "ds_natureza_estabelecimento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "nu_idade_paciente",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "co_condicao_maternal",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "no_uf_paciente",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "no_uf_estabelecimento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "dt_deletado_rnds",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "ano",
+          "type": "BIGINT"
+        },
+        {
+          "name": "mes",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "uf",
+          "type": "VARCHAR"
+        }
+      ]
+    },
     "br_ms_sisvan.dicionario": {
       "path": "beelink:/home/polo/rodado/br_ms_sisvan/dicionario/",
       "file_count": 1,
@@ -146015,6 +146386,137 @@
         {
           "name": "chutes_fora_visitante",
           "type": "INT64"
+        }
+      ]
+    },
+    "politicos.contato": {
+      "path": "beelink:/home/polo/rodado/basedosdados.duckdb#politicos.contato",
+      "file_count": 0,
+      "source": "duckdb_native",
+      "columns": [
+        {
+          "name": "casa",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "id",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "nome",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "nome_completo",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "nome_eleitoral",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "sexo",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "partido",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "uf",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "email",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "cpf",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "em_exercicio",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "situacao",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "condicao_eleitoral",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "telefone",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "gabinete_nome",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "gabinete_predio",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "gabinete_andar",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "gabinete_sala",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "escolaridade",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "data_nascimento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "data_falecimento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "uf_nascimento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "municipio_nascimento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "id_legislatura",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "rede_social",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "data_status",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "url_foto",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "url_pagina",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "forma_tratamento",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "membro_mesa",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "membro_lideranca",
+          "type": "VARCHAR"
         }
       ]
     },
