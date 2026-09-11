@@ -21,7 +21,7 @@
   function applyIcon(theme) {
     if (!btn) return;
     btn.innerHTML = theme === 'dark'
-      ? '<i class="fa-solid fa-sun"></i>'
+      ? '<i class="fa-solid fa-lightbulb"></i>'
       : '<i class="fa-solid fa-moon"></i>';
   }
 
