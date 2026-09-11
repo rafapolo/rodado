@@ -205,13 +205,31 @@
     });
   }
 
+  // plataformas (painel/mapa/rede navegável, não markdown com gráficos
+  // estáticos) ganham vitrine de screenshot no topo, fora da lista — igual ao
+  // teaser do DataViz Hub no index principal (pages/index.html)
+  function renderPlataformas(plataformas) {
+    if (!plataformas.length) return '';
+    var html = '<p class="teaser-nota">Não são só análises: plataformas completas, com dado navegável painel a painel.</p><div class="teaser">';
+    plataformas.forEach(function (it) {
+      var href = it.url || (encodeURIComponent(it.slug) + '/');
+      html += '<a class="teaser-tile" href="' + href + '">' +
+        '<img src="' + (base || './') + it.screenshot + '" alt="' + (it.caption || it.title) + '" loading="lazy">' +
+        '<span>' + (it.caption || it.title) + '</span></a>';
+    });
+    return html + '</div>';
+  }
+
   function renderIndex(items) {
     if (!items.length) {
       docEl.innerHTML = '<h1>Análises</h1><p class="doc-msg">Nenhuma análise publicada ainda.</p>';
       return;
     }
-    var html = '<h1>Análises</h1><p class="dek">Cruzamentos e achados a partir de dados públicos.</p><ul class="idx-list">';
-    items.forEach(function (it) {
+    var plataformas = items.filter(function (it) { return it.platform; });
+    var demais = items.filter(function (it) { return !it.platform; });
+    var html = '<h1>Análises</h1><p class="dek">Cruzamentos e achados a partir de dados públicos.</p>' +
+      renderPlataformas(plataformas) + '<ul class="idx-list">';
+    demais.forEach(function (it) {
       // as tags dizem de que fonte pública a reportagem foi tirada — vêm do
       // manifest, abaixo do resumo, para dar o cheiro do dado antes do clique
       var tags = (it.tags || []).map(function (t) {
