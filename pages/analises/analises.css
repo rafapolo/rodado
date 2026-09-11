@@ -1,11 +1,14 @@
 /* Estilos das páginas de análise: o índice e os shells gerados por
    scripts/gera_analises.py compartilham este arquivo. */
 /* markdown renderizado herda o CSS geral; só re-aplicamos a coluna de leitura
-   (site.css só mira `main > *`, e aqui o conteúdo fica dentro de #doc) */
-#doc > * { max-width: var(--measure); }
-#doc > .data-table-wrap { max-width: var(--measure); }
+   (site.css só mira `main > *`, e aqui o conteúdo fica dentro de #doc) —
+   condicionado a `main:not(.wide)` como o site.css, para o índice
+   (main.wide) poder usar a largura cheia do body, igual ao index principal */
+main:not(.wide) #doc > * { max-width: var(--measure); }
+main:not(.wide) #doc > .data-table-wrap { max-width: var(--measure); }
 #doc h1 { margin-top: 0.4rem; }
-#doc hr { border: 0; border-top: 1px solid var(--rule); margin: 2.4rem 0; max-width: var(--measure); }
+#doc hr { border: 0; border-top: 1px solid var(--rule); margin: 2.4rem 0; }
+main:not(.wide) #doc hr { max-width: var(--measure); }
 #doc blockquote { color: var(--ink-soft); }
 #doc code { font-family: var(--mono, 'IBM Plex Mono', monospace); font-size: 0.86em;
   background: var(--code-bg, rgba(127,127,127,0.12)); padding: 0.1em 0.35em; border-radius: 4px; }
@@ -14,8 +17,8 @@
    temas — traço de 1,5, 24×24, na cor de acento — aplicado por máscara, que é
    o que deixa a cor seguir o tema claro/escuro. */
 #doc { --ico-artigo: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z'/%3E%3Cpath d='M14 3v5h5'/%3E%3Cpath d='M9 13h5'/%3E%3Cpath d='M9 17h3'/%3E%3C/svg%3E"); }
-#doc ul, #doc ol { max-width: var(--measure); margin: 0 0 1.25rem; padding-left: 0;
-  list-style: none; }
+#doc ul, #doc ol { margin: 0 0 1.25rem; padding-left: 0; list-style: none; }
+main:not(.wide) #doc ul, main:not(.wide) #doc ol { max-width: var(--measure); }
 #doc li { margin-bottom: 0.4rem; position: relative; padding-left: 1.75rem; }
 #doc ul > li::before {
   content: ""; position: absolute; left: 0; top: 0.3em;
@@ -38,6 +41,10 @@
 #doc a img { cursor: pointer; }
 #doc a:hover img { border-color: var(--ink-soft); }
 #doc img:hover, #doc img:focus-visible { border-color: var(--ink-soft); }
+/* vitrine de plataformas: mesmo visual do teaser DataViz Hub (site.css),
+   sem a moldura/cursor de zoom que #doc img aplica às figuras de análise */
+#doc .teaser-tile img { border: none; cursor: pointer; }
+#doc .teaser-tile img:hover { border-color: transparent; }
 
 /* âncora de capítulo: o "#" só aparece no hover/foco do título, mas segue
    sempre alcançável pelo teclado (viewer.js põe um em cada h2/h3/h4) */
