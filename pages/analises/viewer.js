@@ -205,17 +205,29 @@
     });
   }
 
+  // as tags dizem de que fonte pública o trabalho foi tirado — vêm do manifest:
+  // na lista ficam abaixo do resumo, no cartão de plataforma abaixo da legenda,
+  // para dar o cheiro do dado antes do clique
+  function etiquetas(it) {
+    var tags = (it.tags || []).map(function (t) {
+      return '<span class="tag">' + t + '</span>';
+    }).join('');
+    return tags ? '<p class="tags">' + tags + '</p>' : '';
+  }
+
   // plataformas (painel/mapa/rede navegável, não markdown com gráficos
   // estáticos) ganham vitrine de screenshot no topo, fora da lista — igual ao
   // teaser do DataViz Hub no index principal (pages/index.html)
   function renderPlataformas(plataformas) {
     if (!plataformas.length) return '';
-    var html = '<p class="teaser-nota">Não são só análises: plataformas completas, com dado navegável painel a painel.</p><div class="teaser">';
+    var html = '<h2>Plataformas</h2>' +
+      '<p class="mod-sub">Painel, mapa e rede navegáveis: o dado inteiro, ' +
+      'não só o recorte que uma reportagem usou.</p><div class="teaser">';
     plataformas.forEach(function (it) {
       var href = it.url || (encodeURIComponent(it.slug) + '/');
       html += '<a class="teaser-tile" href="' + href + '">' +
         '<img src="' + (base || './') + it.screenshot + '" alt="' + (it.caption || it.title) + '" loading="lazy">' +
-        '<span>' + (it.caption || it.title) + '</span></a>';
+        '<span>' + (it.caption || it.title) + '</span>' + etiquetas(it) + '</a>';
     });
     return html + '</div>';
   }
@@ -227,24 +239,37 @@
     }
     var plataformas = items.filter(function (it) { return it.platform; });
     var demais = items.filter(function (it) { return !it.platform; });
-    var html = '<h1>Análises</h1><p class="dek">Cruzamentos e achados a partir de dados públicos.</p>' +
-      renderPlataformas(plataformas) + '<ul class="idx-list">';
+    // a eyebrow vira placar, como a do index principal
+    eyebrow.textContent = plataformas.length + ' plataformas · ' +
+                          demais.length + ' análises';
+    var html = '<h1>Análises</h1>' +
+      '<p class="dek">Emendas parlamentares, dívida ativa, outorgas de água, ' +
+      'contas de campanha, óbitos do SUS — registros públicos cruzados uns com ' +
+      'os outros até aparecer o que nenhum deles mostra sozinho.</p>' +
+      renderPlataformas(plataformas) +
+      // a ponte entre os dois módulos: de onde os dois saem, e o que os separa
+      '<p class="lede">Plataforma e análise saem do mesmo lugar: um espelho ' +
+      'local de 1.029 tabelas públicas — RAIS, SIM, TSE, CGU, IBGE, Receita ' +
+      'Federal e outras, mais de 77 raspadas de forma independente — ' +
+      'consultado sob demanda por DuckDB. A diferença é o que se faz depois: ' +
+      'a plataforma entrega o dado inteiro para você navegar; a análise fecha ' +
+      'uma pergunta e mostra o número.</p>' +
+      '<h2>Rodados</h2>' +
+      '<p class="mod-sub">Cada uma abre com o achado e leva a tabela de ' +
+      'evidência junto — número, fonte oficial e a data em que foi rodada, ' +
+      'para conferir, não só ler.</p>' +
+      '<ul class="idx-list">';
     demais.forEach(function (it) {
-      // as tags dizem de que fonte pública a reportagem foi tirada — vêm do
-      // manifest, abaixo do resumo, para dar o cheiro do dado antes do clique
-      var tags = (it.tags || []).map(function (t) {
-        return '<span class="tag">' + t + '</span>';
-      }).join('');
       // "url" é para análises hospedadas fora do results/*.md (ex.: repos
       // externos como rios-do-brasil, checados out em pages/analises/ no deploy)
       var href = it.url || (encodeURIComponent(it.slug) + '/');
       html += '<li><a href="' + href + '">' + it.title + '</a>' +
         (it.rodado_em ? ' <span class="meta">· rodado em ' + it.rodado_em + '</span>' : '') +
         (it.dek ? '<p class="dek">' + it.dek + '</p>' : '') +
-        (tags ? '<p class="tags">' + tags + '</p>' : '') + '</li>';
+        etiquetas(it) + '</li>';
     });
     docEl.innerHTML = html + '</ul>';
-    document.title = 'Análises — rodado';
+    document.title = 'Análises de dados públicos — rodado';
   }
 
   // ?doc=<slug> é a forma antiga: não tem metadados próprios, então mandamos

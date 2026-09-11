@@ -68,7 +68,15 @@ DESCRICOES = {
         "investigations on inequality, power, economy, health and violence — the "
         "portrait the State already has of itself."
     ),
+    "analises/index.html": (
+        "Emendas parlamentares, dívida ativa, outorgas de água, contas de "
+        "campanha, óbitos do SUS — registros públicos brasileiros cruzados uns "
+        "com os outros até aparecer o que nenhum deles mostra sozinho."
+    ),
 }
+
+# o índice de analises/: hub, não artigo, e sem gêmea em inglês
+INDICE_ANALISES = "analises/index.html"
 
 SITE_NAME = "rodado"
 
@@ -140,6 +148,7 @@ def analises_manifest() -> list[dict]:
 
 def bloco(path: Path, titulo: str, descricao: str) -> str:
     en = is_en(path)
+    rel = path.relative_to(PAGES).as_posix()
     url = BASE + rel_url(path)
     prefixo = prefixo_de(path)
     if is_analise(path):
@@ -173,8 +182,9 @@ def bloco(path: Path, titulo: str, descricao: str) -> str:
         ]
 
     linhas += [
-        '<meta property="og:type" content="website">' if path.parent == PAGES
-        and not is_analise(path) else '<meta property="og:type" content="article">',
+        '<meta property="og:type" content="website">'
+        if (path.parent == PAGES or rel == INDICE_ANALISES) and not is_analise(path)
+        else '<meta property="og:type" content="article">',
         f'<meta property="og:site_name" content="{SITE_NAME}">',
         f'<meta property="og:locale" content="{locale}">',
         f'<meta property="og:url" content="{e(url)}">',
@@ -205,6 +215,16 @@ def bloco(path: Path, titulo: str, descricao: str) -> str:
             f'"name":"{SITE_NAME}","url":"{BASE}/",'
             f'"description":"{e(descricao)}",'
             f'"inLanguage":"{"en" if en else "pt-BR"}"}}'
+            "</script>"
+        )
+    elif rel == INDICE_ANALISES:
+        linhas.append(
+            '<script type="application/ld+json">'
+            '{"@context":"https://schema.org","@type":"CollectionPage",'
+            f'"name":"{e(social)}","description":"{e(descricao)}",'
+            f'"url":"{e(url)}","image":"{e(imagem)}",'
+            '"inLanguage":"pt-BR",'
+            f'"isPartOf":{{"@type":"WebSite","name":"{SITE_NAME}","url":"{BASE}/"}}}}'
             "</script>"
         )
     elif path.parent.name in ("temas", "temas-en"):
@@ -333,9 +353,11 @@ def alvos() -> list[Path]:
         arquivos += sorted(
             p for p in (PAGES / sub).glob("*.html") if not p.name.startswith("_")
         )
-    # as páginas por análise (pages/analises/<slug>/index.html), geradas por
-    # scripts/gera_analises.py — o índice analises/index.html fica de fora,
-    # o conteúdo dele é montado por JS e não tem metadados próprios
+    # o índice analises/index.html e as páginas por análise geradas por
+    # scripts/gera_analises.py (pages/analises/<slug>/index.html). O corpo do
+    # índice é montado por JS, mas as metatags são <head> e não dependem dele —
+    # sem elas o link mais compartilhado do site ia sem cartão nenhum
+    arquivos.append(PAGES / "analises" / "index.html")
     arquivos += sorted((PAGES / "analises").glob("*/index.html"))
     return arquivos
 
