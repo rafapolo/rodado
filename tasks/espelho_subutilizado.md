@@ -520,7 +520,11 @@ ao tentar de fato.
 
 ### Próximos passos
 
-Nenhum — ver a nota de fechamento no topo desta Parte III. O relatório está
-publicado em `pages/analises/mapa-da-saude-mental/`; qualquer extensão
-futura (outro recorte, série temporal mais longa, cruzamento com rede
-privada) é um relatório novo, não uma pendência desta parte.
+Nenhum — ver a nota de fechamento no topo desta Parte III. O relatório foi
+publicado em `pages/analises/mapa-da-saude-mental/` e **despublicado em
+11-09-2026** (nunca chegou ao `manifest.json`, então ficou no ar sem aparecer
+no índice; os três arquivos saíram por `git rm` e seguem recuperáveis pelo
+histórico — ver `tasks/plan/ux_analises.md`). A apuração relatada aqui
+continua válida; o que deixou de existir é a página. Qualquer extensão futura
+(outro recorte, série temporal mais longa, cruzamento com rede privada) é um
+relatório novo, não uma pendência desta parte.

@@ -40,18 +40,23 @@ seções de `h2`:
 | `o-unico-doador-do-negao.md` | 2.301 | 5 | 0 |
 | `nao-era-um-doador-era-um-escritorio.md` | 1.963 | 5 | 0 |
 | `duas-outorgas-mais-agua-que-a-copasa.md` | 1.622 | 8 | 0 |
-| `mapa-da-saude-mental.md` | 1.522 | 6 | 0 |
+
+(`mapa-da-saude-mental.md`, 1.522 palavras, estava nesta medição e foi removida
+em 11-09-2026 — ver "Órfã" abaixo.)
 
 Não há sumário, não há noção de onde se está no texto, e não há saída no fim
 além do rodapé global do site. Ao mesmo tempo `main` tem `max-width: 1180px` e
 o texto trava em `--measure: 700px` (`site.css:120`, `analises.css:5`) —
 sobram ~450px de gutter vazio à direita em qualquer tela de desktop.
 
-**Órfã** — `mapa-da-saude-mental` tem `.md` (desde 02-09), pasta, shell
-gerado e `img/og-mapa-da-saude-mental.png`, mas **não está no
-`manifest.json`**. Não aparece no índice e o próprio `gera_analises.py` já
-cospe o aviso (`gera_analises.py:118-125`). É a única decisão de conteúdo
-deste plano: entra no manifest ou sai do ar.
+**Órfã — resolvida em 11-09-2026: saiu.** `mapa-da-saude-mental` tinha `.md`
+(desde 02-09), pasta, shell gerado e `img/og-mapa-da-saude-mental.png`, mas
+nunca esteve no `manifest.json` — estava no ar e invisível, e o próprio
+`gera_analises.py` já cuspia o aviso. A pedido, os três arquivos foram
+removidos por `git rm` (recuperáveis pelo histórico) em vez de listados. Como
+nenhum link do site apontava para a página, a remoção não quebrou navegação
+nenhuma; a URL `rodado.xyz/analises/mapa-da-saude-mental/` passa a dar 404 e
+saiu do `sitemap.xml`.
 
 ## O plano
 
@@ -119,10 +124,10 @@ CSS novo.
 
 Custo: ~25 linhas em `viewer.js`.
 
-### 6. Resolver a órfã
+### 6. Resolver a órfã ✅ feito em 11-09-2026
 
-`mapa-da-saude-mental`: entra no `manifest.json` (com `rodado_em`, `dek` e
-`tags`) ou a pasta e a og-image saem. Decisão de conteúdo, não de código.
+`mapa-da-saude-mental` saiu: `.md`, pasta e og-image removidos por `git rm`.
+Decisão de conteúdo, não de código — ver "Órfã" acima.
 
 ## O que este plano deliberadamente não faz
 
