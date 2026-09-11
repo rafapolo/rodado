@@ -46,6 +46,11 @@ main:not(.wide) #doc ul, main:not(.wide) #doc ol { max-width: var(--measure); }
 #doc .teaser-tile img { border: none; cursor: pointer; }
 #doc .teaser-tile img:hover { border-color: transparent; }
 
+/* subtítulo de módulo (índice): a voz da .teaser-nota do site.css, mas colada
+   no h2 que a antecede em vez de abrir os 2rem de respiro dela */
+#doc .mod-sub { font-family: var(--sans); font-size: 0.88rem;
+  color: var(--ink-soft); margin: -0.3rem 0 1.3rem; }
+
 /* âncora de capítulo: o "#" só aparece no hover/foco do título, mas segue
    sempre alcançável pelo teclado (viewer.js põe um em cada h2/h3/h4) */
 #doc h2, #doc h3, #doc h4 { scroll-margin-top: 1.2rem; }
@@ -73,7 +78,7 @@ main:not(.wide) #doc ul, main:not(.wide) #doc ol { max-width: var(--measure); }
   display: flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 50%;
   background: rgba(255,255,255,0.12); color: #fff; font-size: 1.5rem; line-height: 1; cursor: pointer; }
 .lb-close:hover { background: rgba(255,255,255,0.24); }
-.idx-list { list-style: none; padding: 0; margin: 1.5rem 0 0; }
+.idx-list { list-style: none; padding: 0; margin: 0; }
 .idx-list li { margin: 0 0 1.4rem; padding-bottom: 1.4rem; border-bottom: 1px solid var(--rule); }
 .idx-list a { font-size: 1.15rem; font-weight: 700; text-decoration: none; }
 .idx-list .dek { margin: 0.3rem 0 0; color: var(--ink-soft); font-size: 0.95rem; }
@@ -81,10 +86,18 @@ main:not(.wide) #doc ul, main:not(.wide) #doc ol { max-width: var(--measure); }
 /* na página de uma análise, fica acima de #doc — quando o markdown carrega
    por baixo, tira a dúvida de "isso é de quando" sem esperar o corpo render */
 main > .meta { margin: 0 0 1rem; }
-/* fontes do dado de cada reportagem: etiquetas discretas, abaixo do resumo */
-.idx-list .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.6rem 0 0; }
-.idx-list .tag { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
+/* fontes do dado de cada trabalho: etiquetas discretas, abaixo do resumo na
+   lista e abaixo da legenda no cartão de plataforma (nenhum markdown de análise
+   usa .tags, então escopar em #doc não pega nada além destes dois) */
+#doc .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.6rem 0 0; }
+#doc .tag { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
   line-height: 1.5; color: var(--ink-soft); background: var(--bg-raised);
   border: 1px solid var(--rule); border-radius: 999px;
   padding: 0.12rem 0.55rem; white-space: nowrap; }
+/* no cartão elas continuam o bloco da legenda, um corpo abaixo. O `> span` é a
+   legenda, filha direta do <a>: sem ele o seletor pega também os <span class=
+   "tag"> lá dentro e desiguala o padding das pílulas */
+#doc .teaser-tile:has(.tags) > span { padding-bottom: 0.35rem; }
+#doc .teaser-tile .tags { gap: 0.3rem; margin: 0; padding: 0 0.7rem 0.7rem; }
+#doc .teaser-tile .tag { font-size: 0.66rem; white-space: normal; }
 .doc-msg { color: var(--ink-soft); }
