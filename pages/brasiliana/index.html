@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Brasiliana Fotográfica — Mural do Acervo</title>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js"
+  }
+}
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #0b0b0c; font-family: Georgia, 'Times New Roman', serif; color: #eee; }
+  #canvas { display: block; width: 100vw; height: 100vh; touch-action: none; }
+
+  #loading {
+    position: fixed; inset: 0; background: #0b0b0c;
+    display: flex; align-items: center; justify-content: center; z-index: 100;
+    transition: opacity .8s ease, background-color 1.2s ease;
+  }
+  #loading.ready { background: rgba(11,11,12,.78); } /* the wall renders live behind the title card */
+  #loading p { font-size: .8rem; letter-spacing: .15em; text-transform: uppercase; color: #999; }
+
+  /* ── opening title screen (shown once data is ready, before entering) ──── */
+  #title-screen {
+    text-align: center; padding: 0 24px; cursor: pointer;
+    opacity: 0; transition: opacity .9s ease;
+  }
+  #title-screen.show { opacity: 1; }
+  #title-screen .eyebrow {
+    font-family: system-ui, sans-serif; font-size: .68rem; letter-spacing: .28em;
+    text-transform: uppercase; color: #d8b04a; margin-bottom: 22px;
+  }
+  #title-screen h1 {
+    font-family: Georgia, 'Times New Roman', serif; font-weight: 400;
+    font-size: clamp(2rem, 6vw, 3.6rem); letter-spacing: .01em; color: #f4f1e8;
+    line-height: 1.15;
+  }
+  #title-screen .sub {
+    margin-top: 16px; font-family: Georgia, serif; font-style: italic;
+    font-size: clamp(.95rem, 2vw, 1.15rem); color: #b9b9b0;
+  }
+  #title-screen .stats {
+    margin-top: 34px; display: flex; gap: 28px; justify-content: center; flex-wrap: wrap;
+    font-family: system-ui, sans-serif;
+  }
+  #title-screen .stat { text-align: center; }
+  #title-screen .stat b {
+    display: block; font-size: 1.3rem; color: #f4f1e8; font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  #title-screen .stat span {
+    display: block; margin-top: 3px; font-size: .62rem; letter-spacing: .1em;
+    text-transform: uppercase; color: #888;
+  }
+  #title-screen .enter {
+    margin-top: 46px; font-family: system-ui, sans-serif; font-size: .68rem;
+    letter-spacing: .12em; text-transform: uppercase; color: #7fa8c9;
+  }
+  #title-screen .enter.ready { animation: pulse 2.4s ease-in-out infinite; cursor: pointer; }
+  @keyframes pulse { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+  #progress-track {
+    margin: 14px auto 0; width: 180px; height: 2px; background: rgba(255,255,255,.12);
+    border-radius: 2px; overflow: hidden;
+  }
+  #progress-bar { height: 100%; width: 0%; background: #7fa8c9; transition: width .2s ease; }
+
+  #badge {
+    position: fixed; top: 14px; left: 14px; z-index: 10;
+    font-family: system-ui, sans-serif; font-size: .68rem; letter-spacing: .04em;
+    color: #d8b04a; background: rgba(4,4,5,.92); border: 1px solid rgba(216,176,74,.35);
+    border-radius: 4px; padding: 6px 10px; max-width: 300px; line-height: 1.4;
+  }
+
+  /* ── compact filter panel, top-left — the "mesa de luz" as a physical
+       light table object sitting on the dark wall, not more wall-chrome ──── */
+  #filters {
+    position: fixed; top: 14px; left: 14px; z-index: 15;
+    width: 240px; max-width: calc(100vw - 28px);
+    font-family: 'Public Sans', system-ui, sans-serif;
+    background: rgba(238,241,238,.97); border: 1px solid #c7cfc6;
+    border-radius: 8px; color: #1b2320;
+    box-shadow: 0 14px 34px rgba(0,0,0,.4);
+  }
+  #filters-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    padding: 9px 11px; cursor: pointer; user-select: none;
+  }
+  #filters-head .label { font-size: .68rem; letter-spacing: .05em; color: #5c665f; font-weight: 600; }
+  #filters-head .chevron { font-size: .6rem; color: #a97a3a; transition: transform .2s ease; }
+  #filters.open #filters-head .chevron { transform: rotate(180deg); }
+  #filters-count {
+    font-variant-numeric: tabular-nums; background: #dde6ee; color: #2f5480;
+    border-radius: 3px; padding: 1px 5px; font-size: .62rem; margin-left: 6px;
+  }
+  #filters-body { display: none; padding: 2px 11px 11px; border-top: 1px solid #d6dcd4; }
+  #filters.open #filters-body { display: block; }
+  .f-row { margin-top: 9px; }
+  .f-row label {
+    display: block; font-size: .6rem; letter-spacing: .08em; text-transform: uppercase;
+    color: #8a938c; margin-bottom: 4px; font-weight: 600;
+  }
+  .f-row select, .f-row input[type="text"] {
+    width: 100%; font-family: 'Public Sans', system-ui, sans-serif; font-size: .76rem;
+    background: #fff; color: #1b2320; border: 1px solid #c7cfc6;
+    border-radius: 5px; padding: 5px 7px; outline: none;
+  }
+  .f-row select:focus, .f-row input[type="text"]:focus { border-color: #2f5480; }
+  .f-row input[type="range"] { width: 100%; margin: 0; accent-color: #2f5480; display: block; }
+  .f-decade-readout {
+    display: flex; justify-content: space-between; font-size: .66rem; color: #1b2320;
+    font-variant-numeric: tabular-nums; margin-top: 2px;
+  }
+  #f-clear {
+    all: unset; display: block; margin-top: 12px; cursor: pointer;
+    font-size: .66rem; letter-spacing: .04em; color: #a5452f; text-align: center;
+    padding: 5px; border-radius: 5px; border: 1px dashed #c7cfc6;
+  }
+  #f-clear:hover { border-color: #a5452f; background: rgba(165,69,47,.08); }
+  #f-clear.disabled { opacity: .35; pointer-events: none; }
+  #hint {
+    position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 10;
+    font-family: system-ui, sans-serif; font-size: .68rem; letter-spacing: .06em; color: #999;
+    background: rgba(4,4,5,.92); border-radius: 4px; padding: 6px 10px; white-space: nowrap;
+    pointer-events: none;
+  }
+
+  /* ── metadata card ────────────────────────────────────────────────── */
+  #card-wrap {
+    position: fixed; inset: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity .35s ease;
+  }
+  #card-wrap.open { opacity: 1; pointer-events: auto; }
+
+  #card {
+    position: relative;
+    width: min(420px, 90vw);
+    max-height: 86vh;
+    overflow-y: auto;
+    background: rgba(6,6,8,.86);
+    backdrop-filter: blur(6px);
+    border-radius: 6px;
+    padding: 34px 30px 26px;
+    text-align: center;
+    box-shadow: 0 30px 80px rgba(0,0,0,.6);
+    transform: translateY(10px) scale(.97);
+    transition: transform .35s ease;
+  }
+  #card-wrap.open #card { transform: translateY(0) scale(1); }
+
+  #card-back {
+    position: absolute; left: 14px; top: 14px;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18);
+    color: #ddd; font-size: 1rem; line-height: 28px; text-align: center;
+    cursor: pointer; font-family: system-ui, sans-serif;
+  }
+  #card-back:hover { background: rgba(255,255,255,.18); }
+
+  #card-type { font-size: 1.55rem; font-weight: 400; color: #f2f2f2; margin-bottom: 6px; }
+  #card-seealso { font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: #7fa8c9; margin-bottom: 18px; }
+  #card-seealso span { color: #cdd8e0; }
+
+  #card-img-wrap { margin: 0 auto 18px; max-width: 260px; }
+  #card-img {
+    display: block; width: 100%; height: auto; border-radius: 2px;
+    box-shadow: 0 12px 40px rgba(0,0,0,.55);
+    image-rendering: auto;
+  }
+
+  #card-title { font-size: 1.02rem; color: #f5f5f0; }
+  #card-date { font-size: .85rem; color: #b9b9b0; margin-top: 2px; }
+  #card-contrib { font-size: .82rem; color: #cdd8e0; margin-top: 10px; }
+  #card-footer {
+    margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.12);
+    font-family: system-ui, sans-serif; font-size: .68rem; letter-spacing: .04em; color: #888;
+  }
+  #card-footer a { color: #d8b04a; text-decoration: none; }
+  #card-footer a:hover { text-decoration: underline; }
+  #card-rights { margin-top: 6px; font-size: .68rem; color: #777; }
+
+  @media (max-width: 480px) {
+    #card { padding: 28px 20px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<div id="loading">
+  <p id="loading-msg">carregando mural…</p>
+  <div id="title-screen">
+    <div class="eyebrow">Biblioteca Nacional · Acervo Digital</div>
+    <h1>Brasiliana Fotográfica</h1>
+    <p class="sub">um mural do acervo fotográfico brasileiro</p>
+    <div class="stats">
+      <div class="stat"><b id="stat-pecas">—</b><span>peças</span></div>
+      <div class="stat"><b id="stat-periodo">—</b><span>período</span></div>
+      <div class="stat"><b id="stat-instituicoes">—</b><span>instituições</span></div>
+    </div>
+    <div class="enter" id="enter-label">carregando imagens… 0%</div>
+    <div id="progress-track"><div id="progress-bar"></div></div>
+  </div>
+</div>
+
+<div id="filters">
+  <div id="filters-head">
+    <span class="label" id="filters-label">carregando…</span>
+    <span><span id="filters-count" style="display:none"></span> <span class="chevron">▾</span></span>
+  </div>
+  <div id="filters-body">
+    <div class="f-row">
+      <label>Instituição</label>
+      <select id="f-institution"><option value="">todas</option></select>
+    </div>
+    <div class="f-row">
+      <label>Década</label>
+      <input type="range" id="f-year-lo">
+      <input type="range" id="f-year-hi">
+      <div class="f-decade-readout"><span id="f-year-readout">—</span><span id="f-year-hint" style="color:#8a938c">arraste as alças</span></div>
+    </div>
+    <div class="f-row">
+      <label>Autor / fotógrafo</label>
+      <input type="text" id="f-author" list="f-author-list" placeholder="buscar ou escolher…">
+      <datalist id="f-author-list"></datalist>
+    </div>
+    <div class="f-row">
+      <label>Tipo de suporte</label>
+      <select id="f-type"><option value="">todos</option></select>
+    </div>
+    <button id="f-clear" class="disabled">limpar filtros</button>
+  </div>
+</div>
+<p id="hint">arraste para deslocar · scroll para aproximar · clique numa peça · setas navegam com a ficha aberta</p>
+
+<div id="card-wrap">
+  <div id="card">
+    <div id="card-back">←</div>
+    <div id="card-type">—</div>
+    <div id="card-seealso"><span id="card-community">—</span> · <span id="card-date-tag">—</span></div>
+    <div id="card-img-wrap"><img id="card-img" alt=""></div>
+    <div id="card-title">—</div>
+    <div id="card-date">—</div>
+    <div id="card-contrib"></div>
+    <div id="card-footer">
+      <div><a id="card-link" href="#" target="_blank" rel="noopener">ver item original ↗</a> · <span id="card-handle"></span></div>
+      <div id="card-rights"></div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+
+const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+// ─── renderer / scene / camera ─────────────────────────────────────────────
+const canvas = document.getElementById('canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0b0b0c);
+
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 500);
+camera.position.set(0, 0, 26);
+
+new ResizeObserver(() => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}).observe(document.documentElement);
+
+// ─── pan / zoom over the flat wall (no orbit — it's a wall, not a globe) ───
+// the camera itself never moves on selection — only the tiles do (see selectTile below)
+const camTarget = new THREE.Vector3(0, 0, 26); // camera eases toward this each frame
+
+renderer.domElement.addEventListener('wheel', e => {
+  e.preventDefault();
+  if (selected) return; // navigation is frozen while a card is open
+  camTarget.z = THREE.MathUtils.clamp(camTarget.z + e.deltaY * 0.02, 4, 60);
+}, { passive: false });
+
+let dragging = null;
+renderer.domElement.addEventListener('pointerdown', e => {
+  if (selected) return; // navigation is frozen while a card is open
+  dragging = { x: e.clientX, y: e.clientY, cx: camTarget.x, cy: camTarget.y, moved: false };
+});
+renderer.domElement.addEventListener('pointermove', e => {
+  if (!dragging) return;
+  const dx = e.clientX - dragging.x, dy = e.clientY - dragging.y;
+  if (Math.hypot(dx, dy) > 4) dragging.moved = true;
+  camTarget.x = dragging.cx - dx * 0.03;
+  camTarget.y = dragging.cy + dy * 0.03;
+});
+window.addEventListener('pointerup', e => {
+  if (dragging && !dragging.moved) doRaycast(e.clientX, e.clientY);
+  dragging = null;
+});
+
+// ─── grid of tiles ──────────────────────────────────────────────────────────
+const tileMeshes = [];
+const tileGroup = new THREE.Group();
+scene.add(tileGroup);
+
+const GUTTER = 1.12; // spacing multiplier so tiles don't touch
+let GRID_COLS = 1; // set by buildGrid, used by arrow-key navigation to move by row/col
+
+function buildGrid(handles, mapEntries, tpr) {
+  const n = handles.length;
+  const cols = Math.max(1, Math.round(Math.sqrt(n * (window.innerWidth / window.innerHeight) * 1.4)));
+  const rows = Math.ceil(n / cols);
+  GRID_COLS = cols;
+
+  handles.forEach((handle, i) => {
+    const col = i % cols, row = Math.floor(i / cols);
+    const entry = mapEntries[handle];
+    const geo = new THREE.PlaneGeometry(1, 1);
+    const uv = geo.attributes.uv;
+    const u0 = entry.col / tpr, u1 = (entry.col + 1) / tpr;
+    const v1 = 1 - entry.row / tpr, v0 = 1 - (entry.row + 1) / tpr;
+    uv.setXY(0, u0, v1); uv.setXY(1, u1, v1); uv.setXY(2, u0, v0); uv.setXY(3, u1, v0);
+
+    const mesh = new THREE.Mesh(geo, baseMat); // material swapped once atlas texture is ready
+    mesh.position.set(
+      (col - cols / 2) * GUTTER,
+      (rows / 2 - row) * GUTTER,
+      (Math.random() - 0.5) * 0.6 // slight depth jitter, like the reference photo
+    );
+    mesh.userData = {
+      handle, meta: entry.meta, atlas: entry.atlas || 0,
+      basePos: mesh.position.clone(),
+      targetPos: mesh.position.clone(),
+      targetScale: 1,
+    };
+    tileGroup.add(mesh);
+    tileMeshes.push(mesh);
+  });
+
+  return { cols, rows };
+}
+
+const _scaleScratch = new THREE.Vector3();
+function updateTileAnimation() {
+  tileMeshes.forEach(m => {
+    m.position.lerp(m.userData.targetPos, 0.16);
+    _scaleScratch.setScalar(m.userData.targetScale);
+    m.scale.lerp(_scaleScratch, 0.16);
+  });
+}
+
+const baseMat = new THREE.MeshBasicMaterial({ color: 0x1a1a1a });
+
+// ─── raycasting ─────────────────────────────────────────────────────────────
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+let hovered = null;
+
+function doRaycast(cx, cy) {
+  pointer.x = (cx / window.innerWidth) * 2 - 1;
+  pointer.y = -(cy / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(pointer, camera);
+  const hits = raycaster.intersectObjects(tileGroup.children, false);
+  if (hits.length > 0) selectTile(hits[0].object);
+}
+
+renderer.domElement.addEventListener('pointermove', e => {
+  if (dragging) return;
+  pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+  pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(pointer, camera);
+  if (dragging || selected) return;
+  const hits = raycaster.intersectObjects(tileGroup.children, false);
+  const m = hits.length ? hits[0].object : null;
+  if (m !== hovered) {
+    if (hovered) hovered.userData.targetScale = 1;
+    hovered = m;
+    if (hovered) hovered.userData.targetScale = 1.08;
+    renderer.domElement.style.cursor = m ? 'pointer' : '';
+  }
+});
+
+// ─── selection / card ─────────────────────────────────────────────────────
+// the camera never moves here — the *tiles* do: the clicked one grows and
+// moves to screen-center, the rest part radially away from that same point
+// (the "hole" always opens in the middle, wherever you clicked).
+let atlasImgs = []; // plain <img>[], one per atlas page, used to crop the tile into the card canvas
+let atlasEntries = null, TPR = 1;
+let selected = null;
+
+function selectTile(mesh) {
+  selected = mesh;
+  hovered = null;
+
+  const centerZ = mesh.userData.basePos.z;
+  const cx = camTarget.x, cy = camTarget.y;
+
+  tileMeshes.forEach(m => {
+    if (m === mesh) return;
+    const dx = m.userData.basePos.x - cx;
+    const dy = m.userData.basePos.y - cy;
+    const dist = Math.hypot(dx, dy) || 0.001;
+    const ux = dx / dist, uy = dy / dist;
+    const push = THREE.MathUtils.clamp(6.5 - dist * 0.5, 1.5, 6.5); // closer tiles get shoved further
+    m.userData.targetPos = m.userData.basePos.clone().add(new THREE.Vector3(ux * push, uy * push, -1.5));
+    m.userData.targetScale = 1;
+  });
+
+  mesh.userData.targetPos = new THREE.Vector3(cx, cy, centerZ + 4);
+  mesh.userData.targetScale = 3.4;
+
+  showCard(mesh.userData);
+}
+
+function deselect() {
+  tileMeshes.forEach(m => {
+    m.userData.targetPos = m.userData.basePos.clone();
+    m.userData.targetScale = 1;
+  });
+  document.getElementById('card-wrap').classList.remove('open');
+  selected = null;
+}
+document.getElementById('card-back').addEventListener('click', deselect);
+document.getElementById('card-wrap').addEventListener('click', e => {
+  if (e.target.id === 'card-wrap') deselect();
+});
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { deselect(); return; }
+  if (!selected) return; // arrow navigation only makes sense with a card open
+  // move by actual row/col in the grid, not raw array index — Up/Down jump
+  // a full row (GRID_COLS), Left/Right move one column, both wrap at the ends.
+  const step = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: GRID_COLS, ArrowUp: -GRID_COLS }[e.key];
+  if (!step) return;
+  e.preventDefault();
+  const i = tileMeshes.indexOf(selected);
+  const next = (i + step + tileMeshes.length) % tileMeshes.length;
+  selectTile(tileMeshes[next]);
+});
+
+function showCard(data) {
+  const meta = data.meta || {};
+  document.getElementById('card-type').textContent = meta.type || 'Fotografia';
+  document.getElementById('card-community').textContent = meta.community || '—';
+  document.getElementById('card-date-tag').textContent = meta.date || 's.d.';
+  document.getElementById('card-title').textContent = meta.title || '(sem título)';
+  document.getElementById('card-date').textContent = meta.date || '';
+  document.getElementById('card-contrib').textContent = meta.contributor ? meta.contributor : '';
+  document.getElementById('card-handle').textContent = meta.handle || '';
+  document.getElementById('card-link').href = meta.source_url || '#';
+  document.getElementById('card-rights').textContent = meta.rights ? `Direitos: ${meta.rights}` : '';
+
+  // crop this tile out of the atlas image for a (still small, but framed) preview
+  const entry = atlasEntries[data.handle];
+  const img = document.getElementById('card-img');
+  const atlasImg = atlasImgs[entry?.atlas || 0];
+  if (atlasImg && entry) {
+    const S = atlasImg.naturalWidth / TPR;
+    const c = document.createElement('canvas');
+    c.width = c.height = 512;
+    const ctx = c.getContext('2d');
+    ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(atlasImg, entry.col * S, entry.row * S, S, S, 0, 0, 512, 512);
+    img.src = c.toDataURL('image/jpeg', 0.92);
+  }
+  document.getElementById('card-wrap').classList.add('open');
+}
+
+// ─── render loop ────────────────────────────────────────────────────────────
+function tick() {
+  requestAnimationFrame(tick);
+  camera.position.lerp(camTarget, 0.09); // pure user pan/zoom — never touched by selection
+  camera.lookAt(camTarget.x, camTarget.y, camTarget.z - 20);
+  updateTileAnimation();
+  renderer.render(scene, camera);
+}
+
+// ─── load atlas + map, build scene ───────────────────────────────────────────
+async function main() {
+  const mapData = await fetch('atlas/atlas-map.json').then(r => r.json());
+  TPR = mapData.size / mapData.tile;
+  atlasEntries = mapData.map;
+  const handles = Object.keys(mapData.map);
+
+  document.getElementById('badge').textContent = mapData.placeholder
+    ? `protótipo — as fotos ainda são um placeholder (uma única imagem de teste, tonalizada por item); os metadados abaixo são reais, do catalogo.jsonl`
+    : `${handles.length} peças do acervo Brasiliana Fotográfica`;
+
+  buildGrid(handles, mapData.map, TPR);
+
+  // ── stats for the title screen: item count, year span, institution count ──
+  let minYear = Infinity, maxYear = -Infinity;
+  const institutions = new Set();
+  for (const entry of Object.values(mapData.map)) {
+    const meta = entry.meta || {};
+    if (meta.community) institutions.add(meta.community);
+    const m = String(meta.date || '').match(/(1[5-9]\d{2}|20\d{2})/);
+    if (m) {
+      const y = parseInt(m[1], 10);
+      if (y < minYear) minYear = y;
+      if (y > maxYear) maxYear = y;
+    }
+  }
+  document.getElementById('stat-pecas').textContent = handles.length.toLocaleString('pt-BR');
+  document.getElementById('stat-periodo').textContent =
+    minYear <= maxYear ? `${minYear}–${maxYear}` : 's.d.';
+  document.getElementById('stat-instituicoes').textContent = institutions.size || '—';
+
+  // ── show the title screen right away — the heavy atlas images load behind it ──
+  document.getElementById('loading-msg').remove();
+  const titleScreen = document.getElementById('title-screen');
+  titleScreen.classList.add('show');
+  const enterLabel = document.getElementById('enter-label');
+  const progressBar = document.getElementById('progress-bar');
+
+  // ── fetch each atlas with byte-level progress, build both the GPU texture
+  //    and the plain <img> (for the card crop) from the same downloaded blob ──
+  const fileBytes = new Array(mapData.atlases.length).fill(0);
+  const fileTotals = new Array(mapData.atlases.length).fill(0);
+  function reportProgress() {
+    const loaded = fileBytes.reduce((a, b) => a + b, 0);
+    const total = fileTotals.reduce((a, b) => a + b, 0);
+    const pct = total ? Math.round((loaded / total) * 100) : 0;
+    enterLabel.textContent = `carregando imagens… ${pct}%`;
+    progressBar.style.width = `${pct}%`;
+  }
+
+  const atlasImages = await Promise.all(mapData.atlases.map(async (name, idx) => {
+    const res = await fetch(`atlas/${name}`);
+    fileTotals[idx] = parseInt(res.headers.get('content-length') || '0', 10);
+    const reader = res.body.getReader();
+    const chunks = [];
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      chunks.push(value);
+      fileBytes[idx] += value.length;
+      reportProgress();
+    }
+    const blob = new Blob(chunks, { type: 'image/webp' });
+    const img = new Image();
+    img.src = URL.createObjectURL(blob);
+    await img.decode().catch(() => {});
+    return img;
+  }));
+  atlasImgs = atlasImages;
+
+  const atlasMats = atlasImages.map(img => {
+    const tex = new THREE.Texture(img);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.generateMipmaps = false;
+    tex.minFilter = THREE.LinearFilter;
+    tex.needsUpdate = true;
+    return new THREE.MeshBasicMaterial({ map: tex });
+  });
+  tileMeshes.forEach(m => { m.material = atlasMats[m.userData.atlas]; });
+
+  // ── ready — start rendering the wall right away, behind a translucent
+  //    title card, so the visitor sees it live before deciding to enter ──
+  tick();
+  enterLabel.textContent = 'clique ou toque para entrar';
+  enterLabel.classList.add('ready');
+  document.getElementById('progress-track').style.display = 'none';
+  document.getElementById('loading').classList.add('ready');
+
+  await new Promise(res => {
+    const enter = () => { titleScreen.removeEventListener('click', enter); window.removeEventListener('keydown', enter); res(); };
+    titleScreen.addEventListener('click', enter);
+    window.addEventListener('keydown', enter);
+  });
+
+  document.getElementById('loading').style.opacity = '0';
+  setTimeout(() => document.getElementById('loading').remove(), 800);
+}
+
+main().catch(err => {
+  document.getElementById('loading').innerHTML = `<p style="color:#e88">erro: ${err.message}</p>`;
+  console.error(err);
+});
+</script>
+</body>
+</html>
