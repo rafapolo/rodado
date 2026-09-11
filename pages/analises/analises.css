@@ -98,6 +98,15 @@ main > .meta { margin: 0 0 1rem; }
    legenda, filha direta do <a>: sem ele o seletor pega também os <span class=
    "tag"> lá dentro e desiguala o padding das pílulas */
 #doc .teaser-tile:has(.tags) > span { padding-bottom: 0.35rem; }
-#doc .teaser-tile .tags { gap: 0.3rem; margin: 0; padding: 0 0.7rem 0.7rem; }
-#doc .teaser-tile .tag { font-size: 0.66rem; white-space: normal; }
+#doc .teaser-tile .tags { gap: 0.25rem; margin: 0; padding: 0 0.7rem 0.7rem; }
+/* no cartão a etiqueta quebra em duas linhas (cabem ~34 caracteres nos 320px
+   do tile), e a cápsula de 999px vira losango quando isso acontece — aqui ela
+   é chip de canto reto. O text-wrap: balance evita a segunda linha com uma
+   palavra só */
+#doc .teaser-tile .tag { font-size: 0.66rem; line-height: 1.4;
+  white-space: normal; text-wrap: balance; overflow-wrap: anywhere;
+  border-radius: 4px; padding: 0.1rem 0.38rem; }
+/* o tile passa a --bg-raised no hover, que é o fundo da própria etiqueta: sem
+   inverter os dois, a pílula some debaixo do cursor */
+#doc .teaser-tile:hover .tag { background: var(--bg); }
 .doc-msg { color: var(--ink-soft); }
