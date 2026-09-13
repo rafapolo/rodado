@@ -12,6 +12,11 @@ on:
   # rafapolo/rios-do-brasil a cada deploy. O push naqueles repositórios
   # aciona este workflow via repository_dispatch (workflow "Aciona o deploy
   # no rodado" de cada um), então não precisa esperar um cron.
+  #
+  # /analises/pet16704 vem de git.rodado.xyz/rodado/pet16704 (Gitea próprio,
+  # fora do GitHub) — sem repository_dispatch equivalente, então um push só
+  # naquele repo não redeploya sozinho; precisa de um push em pages/**, um
+  # workflow_dispatch, ou um dos dois eventos acima para levar a atualização.
   repository_dispatch:
     types: [tse-bens-updated, rios-updated]
 
@@ -65,6 +70,23 @@ jobs:
         run: |
           cd pages/analises/rios-do-brasil
           rm -rf .git .github .gitignore pipeline README.md screenshot.png
+      # pet16704 vive em git.rodado.xyz (Gitea próprio, não GitHub), então
+      # actions/checkout não serve — é um clone raso comum, sem credencial
+      # porque o repo aceita clone anônimo.
+      - name: Clonar pet16704
+        run: git clone --depth 1 https://git.rodado.xyz/rodado/pet16704.git /tmp/pet16704
+      - name: Monta pet16704 na estrutura que o index.html espera
+        run: |
+          mkdir -p pages/analises/pet16704
+          cp /tmp/pet16704/web/index.html /tmp/pet16704/web/revelacoes.html \
+             /tmp/pet16704/web/docs.json /tmp/pet16704/web/people.json \
+             pages/analises/pet16704/
+          # resumos/ fica uma pasta acima de web/ no repo original — o
+          # index.html busca "../resumos/parteN/" a partir de onde é servido,
+          # então aqui vira irmã de pet16704/, não filha (web/resumos/ é só
+          # o fallback do repo para servidor local sem pasta acima; ignorado)
+          cp -r /tmp/pet16704/resumos pages/analises/resumos
+          rm -rf /tmp/pet16704
       - name: Setup Pages
         uses: actions/configure-pages@v6
       - name: Upload artifact
