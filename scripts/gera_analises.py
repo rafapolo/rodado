@@ -49,8 +49,8 @@ MODELO = """<!doctype html>
         <a href="/#temas">Temas</a>
         <a href="/analises/">Análises</a>
         <a href="/plataformas/">Plataformas</a>
-        <a href="../../mcp.html">MCP</a>
-        <a href="https://xn--2dk.xyz/dataviz/">DataViz Hub</a>
+        <a class="mcp-link" href="../../mcp.html">MCP</a>
+        <a href="https://xn--2dk.xyz/dataviz/">DataViz</a>
       </div>
       <div class="nav-controls">
         <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema claro/escuro" type="button"><i class="fa-solid fa-moon"></i></button>
