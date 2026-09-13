@@ -32,7 +32,9 @@
       var href = it.url || (encodeURIComponent(it.slug) + '/');
       html += '<a class="teaser-tile" href="' + href + '">' +
         '<img src="' + it.screenshot + '" alt="' + (it.caption || it.title) + '" loading="lazy">' +
-        '<span>' + (it.caption || it.title) + '</span>' + etiquetas(it) + '</a>';
+        '<span class="teaser-title">' + it.title + '</span>' +
+        (it.dek ? '<p class="teaser-dek">' + it.dek + '</p>' : '') +
+        etiquetas(it) + '</a>';
     });
     docEl.innerHTML = html + '</div>';
   }
