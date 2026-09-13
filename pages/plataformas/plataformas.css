@@ -47,9 +47,11 @@ main:not(.wide) #doc ul, main:not(.wide) #doc ol { max-width: var(--measure); }
    texto da lista de análises), não só uma linha de 0.78rem */
 #doc .teaser-tile img { border: none; cursor: pointer; }
 #doc .teaser-tile img:hover { border-color: transparent; }
-#doc .teaser { gap: 1.75rem; background: none; border: none; }
+/* 358px + 1.5rem de gap fecha 3 por linha nos ~1132px de conteúdo do
+   main.wide com desktop aberto (1180px - 2×1.5rem de padding) */
+#doc .teaser { gap: 1.5rem; background: none; border: none; }
 #doc .teaser-tile {
-  flex-basis: 385px; max-width: 385px;
+  flex-basis: 358px; max-width: 358px;
   border: 1px solid var(--rule); border-radius: 10px; overflow: hidden;
 }
 #doc .teaser-tile img { border-radius: 0; }
