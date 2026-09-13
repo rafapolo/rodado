@@ -48,6 +48,7 @@ MODELO = """<!doctype html>
       <div class="links">
         <a href="/#temas">Temas</a>
         <a href="/analises/">Análises</a>
+        <a href="/plataformas/">Plataformas</a>
         <a href="../../mcp.html">MCP</a>
         <a href="https://xn--2dk.xyz/dataviz/">DataViz Hub</a>
       </div>

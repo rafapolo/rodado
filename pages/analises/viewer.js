@@ -215,53 +215,31 @@
     return tags ? '<p class="tags">' + tags + '</p>' : '';
   }
 
-  // plataformas (painel/mapa/rede navegável, não markdown com gráficos
-  // estáticos) ganham vitrine de screenshot no topo, fora da lista — igual ao
-  // teaser do DataViz Hub no index principal (pages/index.html)
-  function renderPlataformas(plataformas) {
-    if (!plataformas.length) return '';
-    var html = '<h2>Plataformas</h2>' +
-      '<p class="mod-sub">Painel, mapa e rede navegáveis: o dado inteiro, ' +
-      'não só o recorte que uma reportagem usou.</p><div class="teaser">';
-    plataformas.forEach(function (it) {
-      var href = it.url || (encodeURIComponent(it.slug) + '/');
-      html += '<a class="teaser-tile" href="' + href + '">' +
-        '<img src="' + (base || './') + it.screenshot + '" alt="' + (it.caption || it.title) + '" loading="lazy">' +
-        '<span>' + (it.caption || it.title) + '</span>' + etiquetas(it) + '</a>';
-    });
-    return html + '</div>';
-  }
-
   function renderIndex(items) {
     if (!items.length) {
       docEl.innerHTML = '<h1>Análises</h1><p class="doc-msg">Nenhuma análise publicada ainda.</p>';
       return;
     }
-    var plataformas = items.filter(function (it) { return it.platform; });
-    var demais = items.filter(function (it) { return !it.platform; });
-    // a eyebrow vira placar, como a do index principal
-    eyebrow.textContent = plataformas.length + ' plataformas · ' +
-                          demais.length + ' análises';
+    eyebrow.textContent = items.length + ' análises';
     var html = '<h1>Análises</h1>' +
       '<p class="dek">Emendas parlamentares, dívida ativa, outorgas de água, ' +
       'contas de campanha, óbitos do SUS — registros públicos cruzados uns com ' +
       'os outros até aparecer o que nenhum deles mostra sozinho.</p>' +
-      renderPlataformas(plataformas) +
-      // a ponte entre os dois módulos: de onde os dois saem, e o que os separa
-      '<p class="lede">Plataforma e análise saem do mesmo lugar: um espelho ' +
-      'local de 1.029 tabelas públicas — RAIS, SIM, TSE, CGU, IBGE, Receita ' +
-      'Federal e outras, mais de 77 raspadas de forma independente — ' +
-      'consultado sob demanda por DuckDB. A diferença é o que se faz depois: ' +
-      'a plataforma entrega o dado inteiro para você navegar; a análise fecha ' +
-      'uma pergunta e mostra o número.</p>' +
+      // ponte pro módulo irmão: mesmo espelho de dados, uso diferente
+      '<p class="lede">Cada uma sai do mesmo espelho local de 1.029 tabelas ' +
+      'públicas — RAIS, SIM, TSE, CGU, IBGE, Receita Federal e outras, mais ' +
+      'de 77 raspadas de forma independente — consultado sob demanda por ' +
+      'DuckDB, e fecha uma pergunta com um número. Quem quiser o dado ' +
+      'inteiro pra navegar, não só a conclusão, encontra em ' +
+      '<a href="/plataformas/">Plataformas</a>.</p>' +
       '<h2>Rodados</h2>' +
       '<p class="mod-sub">Cada uma abre com o achado e leva a tabela de ' +
       'evidência junto — número, fonte oficial e a data em que foi rodada, ' +
       'para conferir, não só ler.</p>' +
       '<ul class="idx-list">';
-    demais.forEach(function (it) {
+    items.forEach(function (it) {
       // "url" é para análises hospedadas fora do results/*.md (ex.: repos
-      // externos como rios-do-brasil, checados out em pages/analises/ no deploy)
+      // externos, checados out em pages/analises/ no deploy)
       var href = it.url || (encodeURIComponent(it.slug) + '/');
       html += '<li><a href="' + href + '">' + it.title + '</a>' +
         (it.rodado_em ? ' <span class="meta">· rodado em ' + it.rodado_em + '</span>' : '') +
