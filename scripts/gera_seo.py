@@ -73,10 +73,16 @@ DESCRICOES = {
         "campanha, óbitos do SUS — registros públicos brasileiros cruzados uns "
         "com os outros até aparecer o que nenhum deles mostra sozinho."
     ),
+    "plataformas/index.html": (
+        "Painéis, mapas e redes navegáveis construídos sobre o mesmo espelho de "
+        "dados públicos — o dado inteiro para explorar, não só o recorte de uma "
+        "análise fechada."
+    ),
 }
 
-# o índice de analises/: hub, não artigo, e sem gêmea em inglês
+# os índices de analises/ e plataformas/: hub, não artigo, e sem gêmea em inglês
 INDICE_ANALISES = "analises/index.html"
+INDICE_PLATAFORMAS = "plataformas/index.html"
 
 SITE_NAME = "rodado"
 
@@ -125,21 +131,41 @@ def extrai(pattern: str, texto: str) -> str | None:
     return m.group(1).strip() if m else None
 
 
+SECOES_COM_FICHA = {
+    "analises": PAGES / "analises" / "results" / "manifest.json",
+    "plataformas": PAGES / "plataformas" / "plataformas.json",
+}
+
+
+def secao_da_ficha(path: Path) -> str | None:
+    """"analises" ou "plataformas" se path for pages/<secao>/<slug>/index.html
+    com página própria; None caso contrário."""
+    secao = path.parent.parent.name
+    if secao in SECOES_COM_FICHA and path.name == "index.html":
+        return secao
+    return None
+
+
 def is_analise(path: Path) -> bool:
-    """pages/analises/<slug>/index.html — uma análise com página própria."""
-    return path.parent.parent.name == "analises" and path.name == "index.html"
+    """pages/analises/<slug>/index.html ou pages/plataformas/<slug>/index.html
+    — uma análise ou plataforma com página própria."""
+    return secao_da_ficha(path) is not None
 
 
-def data_da_analise(slug: str) -> str | None:
-    for item in analises_manifest():
+def data_da_analise(slug: str, secao: str = "analises") -> str | None:
+    for item in manifest_da_secao(secao):
         if item.get("slug") == slug:
             return item.get("date")
     return None
 
 
 def analises_manifest() -> list[dict]:
-    caminho = PAGES / "analises" / "results" / "manifest.json"
-    if not caminho.exists():
+    return manifest_da_secao("analises")
+
+
+def manifest_da_secao(secao: str) -> list[dict]:
+    caminho = SECOES_COM_FICHA.get(secao)
+    if caminho is None or not caminho.exists():
         return []
     import json
 
@@ -151,10 +177,12 @@ def bloco(path: Path, titulo: str, descricao: str) -> str:
     rel = path.relative_to(PAGES).as_posix()
     url = BASE + rel_url(path)
     prefixo = prefixo_de(path)
-    if is_analise(path):
-        # cada análise tem seu cartão editorial (scripts/gera_og_image.py); sem
-        # isso todas compartilhariam a capa do site no feed
-        imagem = f"{BASE}/analises/img/og-{path.parent.name}.png"
+    secao = secao_da_ficha(path)
+    if secao:
+        # cada análise/plataforma tem seu cartão editorial
+        # (scripts/gera_og_image.py); sem isso todas compartilhariam a capa do
+        # site no feed
+        imagem = f"{BASE}/{secao}/img/og-{path.parent.name}.png"
     else:
         imagem = f"{BASE}/assets/{'og-en.png' if en else 'og.png'}"
     locale = "en_US" if en else "pt_BR"
@@ -183,7 +211,8 @@ def bloco(path: Path, titulo: str, descricao: str) -> str:
 
     linhas += [
         '<meta property="og:type" content="website">'
-        if (path.parent == PAGES or rel == INDICE_ANALISES) and not is_analise(path)
+        if (path.parent == PAGES or rel in (INDICE_ANALISES, INDICE_PLATAFORMAS))
+        and not is_analise(path)
         else '<meta property="og:type" content="article">',
         f'<meta property="og:site_name" content="{SITE_NAME}">',
         f'<meta property="og:locale" content="{locale}">',
@@ -217,7 +246,7 @@ def bloco(path: Path, titulo: str, descricao: str) -> str:
             f'"inLanguage":"{"en" if en else "pt-BR"}"}}'
             "</script>"
         )
-    elif rel == INDICE_ANALISES:
+    elif rel in (INDICE_ANALISES, INDICE_PLATAFORMAS):
         linhas.append(
             '<script type="application/ld+json">'
             '{"@context":"https://schema.org","@type":"CollectionPage",'
@@ -237,8 +266,8 @@ def bloco(path: Path, titulo: str, descricao: str) -> str:
             f'"isPartOf":{{"@type":"WebSite","name":"{SITE_NAME}","url":"{BASE}/"}}}}'
             "</script>"
         )
-    elif is_analise(path):
-        data = data_da_analise(path.parent.name)
+    elif secao_da_ficha(path):
+        data = data_da_analise(path.parent.name, secao_da_ficha(path))
         # o manifest traz só ano-mês; o schema aceita a precisão que houver
         publicado = f',"datePublished":"{e(data)}"' if data else ""
         linhas.append(
@@ -353,12 +382,24 @@ def alvos() -> list[Path]:
         arquivos += sorted(
             p for p in (PAGES / sub).glob("*.html") if not p.name.startswith("_")
         )
-    # o índice analises/index.html e as páginas por análise geradas por
-    # scripts/gera_analises.py (pages/analises/<slug>/index.html). O corpo do
-    # índice é montado por JS, mas as metatags são <head> e não dependem dele —
-    # sem elas o link mais compartilhado do site ia sem cartão nenhum
-    arquivos.append(PAGES / "analises" / "index.html")
-    arquivos += sorted((PAGES / "analises").glob("*/index.html"))
+    # os índices de analises/ e plataformas/, e as páginas por análise/
+    # plataforma geradas por scripts/gera_analises.py ou committadas à mão
+    # (pages/<secao>/<slug>/index.html). O corpo do índice é montado por JS,
+    # mas as metatags são <head> e não dependem dele — sem elas o link mais
+    # compartilhado do site ia sem cartão nenhum.
+    #
+    # Só entram pastas cujo slug ainda está no manifest da seção — isso separa
+    # de propósito os stubs de redirecionamento (uma análise que virou
+    # plataforma, ou vice-versa: seo:start/head geraria canonical e og:image
+    # duplicados ou quebrados por cima do próprio redirect) e pastas órfãs de
+    # slugs removidos, que só o commit de quem removeu devia limpar.
+    for secao in ("analises", "plataformas"):
+        arquivos.append(PAGES / secao / "index.html")
+        slugs = {item["slug"] for item in manifest_da_secao(secao)}
+        arquivos += sorted(
+            p for p in (PAGES / secao).glob("*/index.html")
+            if p.parent.name in slugs
+        )
     return arquivos
 
 

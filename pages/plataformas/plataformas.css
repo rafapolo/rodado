@@ -1,0 +1,112 @@
+/* Estilos das páginas de análise: o índice e os shells gerados por
+   scripts/gera_analises.py compartilham este arquivo. */
+/* markdown renderizado herda o CSS geral; só re-aplicamos a coluna de leitura
+   (site.css só mira `main > *`, e aqui o conteúdo fica dentro de #doc) —
+   condicionado a `main:not(.wide)` como o site.css, para o índice
+   (main.wide) poder usar a largura cheia do body, igual ao index principal */
+main:not(.wide) #doc > * { max-width: var(--measure); }
+main:not(.wide) #doc > .data-table-wrap { max-width: var(--measure); }
+#doc h1 { margin-top: 0.4rem; }
+#doc hr { border: 0; border-top: 1px solid var(--rule); margin: 2.4rem 0; }
+main:not(.wide) #doc hr { max-width: var(--measure); }
+#doc blockquote { color: var(--ink-soft); }
+#doc code { font-family: var(--mono, 'IBM Plex Mono', monospace); font-size: 0.86em;
+  background: var(--code-bg, rgba(127,127,127,0.12)); padding: 0.1em 0.35em; border-radius: 4px; }
+/* listas sem recuo: o texto começa na mesma margem do resto da página, e a
+   marca de cada item fica pendurada fora dela. O ícone é o mesmo desenho dos
+   temas — traço de 1,5, 24×24, na cor de acento — aplicado por máscara, que é
+   o que deixa a cor seguir o tema claro/escuro. */
+#doc { --ico-artigo: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z'/%3E%3Cpath d='M14 3v5h5'/%3E%3Cpath d='M9 13h5'/%3E%3Cpath d='M9 17h3'/%3E%3C/svg%3E"); }
+#doc ul, #doc ol { margin: 0 0 1.25rem; padding-left: 0; list-style: none; }
+main:not(.wide) #doc ul, main:not(.wide) #doc ol { max-width: var(--measure); }
+#doc li { margin-bottom: 0.4rem; position: relative; padding-left: 1.75rem; }
+#doc ul > li::before {
+  content: ""; position: absolute; left: 0; top: 0.3em;
+  width: 1.05em; height: 1.05em; background-color: var(--accent);
+  -webkit-mask: var(--ico-artigo) center / contain no-repeat;
+  mask: var(--ico-artigo) center / contain no-repeat;
+}
+/* nas ordenadas o número fica: a síntese da análise de religião é citada por
+   ele no corpo do texto */
+#doc ol { counter-reset: item; }
+#doc ol > li { counter-increment: item; }
+#doc ol > li::before {
+  content: counter(item); position: absolute; left: 0; top: 0;
+  font-family: var(--mono, 'IBM Plex Mono', monospace); font-size: 0.8em;
+  line-height: 1.9; color: var(--accent);
+}
+#doc .maps { font-size: 0.95rem; }
+#doc img { display: block; width: 100%; height: auto; margin: 0.4rem 0 0.2rem;
+  border: 1px solid var(--rule); border-radius: 6px; cursor: zoom-in; }
+#doc a img { cursor: pointer; }
+#doc a:hover img { border-color: var(--ink-soft); }
+#doc img:hover, #doc img:focus-visible { border-color: var(--ink-soft); }
+/* vitrine de plataformas: mesmo visual do teaser DataViz Hub (site.css),
+   sem a moldura/cursor de zoom que #doc img aplica às figuras de análise */
+#doc .teaser-tile img { border: none; cursor: pointer; }
+#doc .teaser-tile img:hover { border-color: transparent; }
+
+/* subtítulo de módulo (índice): a voz da .teaser-nota do site.css, mas colada
+   no h2 que a antecede em vez de abrir os 2rem de respiro dela */
+#doc .mod-sub { font-family: var(--sans); font-size: 0.88rem;
+  color: var(--ink-soft); margin: -0.3rem 0 1.3rem; }
+
+/* âncora de capítulo: o "#" só aparece no hover/foco do título, mas segue
+   sempre alcançável pelo teclado (viewer.js põe um em cada h2/h3/h4) */
+#doc h2, #doc h3, #doc h4 { scroll-margin-top: 1.2rem; }
+#doc .anchor { margin-left: 0.4em; font-weight: 400; color: var(--ink-faint);
+  text-decoration: none; opacity: 0; transition: opacity 0.12s ease; }
+#doc h2:hover .anchor, #doc h3:hover .anchor, #doc h4:hover .anchor,
+#doc .anchor:focus-visible { opacity: 1; }
+#doc .anchor:hover { color: var(--accent); }
+@media (hover: none) { #doc .anchor { opacity: 0.35; } }
+
+/* lightbox: figura em tela cheia, com um segundo clique indo pro tamanho real */
+.lightbox { position: fixed; inset: 0; z-index: 1000; display: flex; flex-direction: column;
+  background: rgba(0,0,0,0.92); }
+.lightbox[hidden] { display: none; }
+.lb-stage { flex: 1 1 auto; min-height: 0; display: flex; overflow: auto;
+  padding: 1rem; -webkit-overflow-scrolling: touch; }
+.lb-stage img { margin: auto; max-width: 100%; max-height: 100%;
+  width: auto; height: auto; object-fit: contain; cursor: zoom-in; background: #fff; border-radius: 4px; }
+.lightbox.is-zoomed .lb-stage { padding: 0; }
+.lightbox.is-zoomed .lb-stage img { max-width: none; max-height: none; border-radius: 0; cursor: zoom-out; }
+.lb-cap { flex: 0 0 auto; margin: 0; padding: 0.7rem 1rem 1rem; text-align: center;
+  color: rgba(255,255,255,0.72); font-size: 0.85rem; line-height: 1.4; }
+.lb-cap:empty { display: none; }
+.lb-close { position: absolute; top: 0.6rem; right: 0.9rem; z-index: 1; width: 2.2rem; height: 2.2rem;
+  display: flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 50%;
+  background: rgba(255,255,255,0.12); color: #fff; font-size: 1.5rem; line-height: 1; cursor: pointer; }
+.lb-close:hover { background: rgba(255,255,255,0.24); }
+.idx-list { list-style: none; padding: 0; margin: 0; }
+.idx-list li { margin: 0 0 1.4rem; padding-bottom: 1.4rem; border-bottom: 1px solid var(--rule); }
+.idx-list a { font-size: 1.15rem; font-weight: 700; text-decoration: none; }
+.idx-list .dek { margin: 0.3rem 0 0; color: var(--ink-soft); font-size: 0.95rem; }
+.meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--ink-faint); }
+/* na página de uma análise, fica acima de #doc — quando o markdown carrega
+   por baixo, tira a dúvida de "isso é de quando" sem esperar o corpo render */
+main > .meta { margin: 0 0 1rem; }
+/* fontes do dado de cada trabalho: etiquetas discretas, abaixo do resumo na
+   lista e abaixo da legenda no cartão de plataforma (nenhum markdown de análise
+   usa .tags, então escopar em #doc não pega nada além destes dois) */
+#doc .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.6rem 0 0; }
+#doc .tag { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
+  line-height: 1.5; color: var(--ink-soft); background: var(--bg-raised);
+  border: 1px solid var(--rule); border-radius: 999px;
+  padding: 0.12rem 0.55rem; white-space: nowrap; }
+/* no cartão elas continuam o bloco da legenda, um corpo abaixo. O `> span` é a
+   legenda, filha direta do <a>: sem ele o seletor pega também os <span class=
+   "tag"> lá dentro e desiguala o padding das pílulas */
+#doc .teaser-tile:has(.tags) > span { padding-bottom: 0.35rem; }
+#doc .teaser-tile .tags { gap: 0.25rem; margin: 0; padding: 0 0.7rem 0.7rem; }
+/* no cartão a etiqueta quebra em duas linhas (cabem ~34 caracteres nos 320px
+   do tile), e a cápsula de 999px vira losango quando isso acontece — aqui ela
+   é chip de canto reto. O text-wrap: balance evita a segunda linha com uma
+   palavra só */
+#doc .teaser-tile .tag { font-size: 0.66rem; line-height: 1.4;
+  white-space: normal; text-wrap: balance; overflow-wrap: anywhere;
+  border-radius: 4px; padding: 0.1rem 0.38rem; }
+/* o tile passa a --bg-raised no hover, que é o fundo da própria etiqueta: sem
+   inverter os dois, a pílula some debaixo do cursor */
+#doc .teaser-tile:hover .tag { background: var(--bg); }
+.doc-msg { color: var(--ink-soft); }
