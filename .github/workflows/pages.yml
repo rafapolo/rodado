@@ -7,16 +7,17 @@ on:
       - 'pages/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
-  # /analises/shutafut, /analises/patrimonio e /analises/rios-do-brasil são
-  # buscados dos repos rafapolo/shutafut, rafapolo/tse-bens e
+  # /plataformas/shutafut, /plataformas/patrimonio e /plataformas/rios-do-brasil
+  # são buscados dos repos rafapolo/shutafut, rafapolo/tse-bens e
   # rafapolo/rios-do-brasil a cada deploy. O push naqueles repositórios
   # aciona este workflow via repository_dispatch (workflow "Aciona o deploy
   # no rodado" de cada um), então não precisa esperar um cron.
   #
-  # /analises/pet16704 vem de git.rodado.xyz/rodado/pet16704 (Gitea próprio,
-  # fora do GitHub) — sem repository_dispatch equivalente, então um push só
-  # naquele repo não redeploya sozinho; precisa de um push em pages/**, um
-  # workflow_dispatch, ou um dos dois eventos acima para levar a atualização.
+  # /plataformas/pet16704 vem de git.rodado.xyz/rodado/pet16704 (Gitea
+  # próprio, fora do GitHub) — sem repository_dispatch equivalente, então um
+  # push só naquele repo não redeploya sozinho; precisa de um push em
+  # pages/**, um workflow_dispatch, ou um dos dois eventos acima para levar a
+  # atualização.
   repository_dispatch:
     types: [tse-bens-updated, rios-updated]
 
@@ -43,10 +44,10 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: rafapolo/shutafut
-          path: pages/analises/shutafut
+          path: pages/plataformas/shutafut
       - name: Remove arquivos não-públicos do shutafut
         run: |
-          cd pages/analises/shutafut
+          cd pages/plataformas/shutafut
           rm -rf .git .github node_modules generate.js package.json bun.lock
       # O sha do payload só vale para o repositório que disparou o evento; nos
       # demais, ref vazio faz o checkout pegar o branch padrão.
@@ -55,20 +56,20 @@ jobs:
         with:
           repository: rafapolo/tse-bens
           ref: ${{ github.event.action == 'tse-bens-updated' && github.event.client_payload.sha || '' }}
-          path: pages/analises/patrimonio
+          path: pages/plataformas/patrimonio
       - name: Remove arquivos não-públicos do tse-bens
         run: |
-          cd pages/analises/patrimonio
+          cd pages/plataformas/patrimonio
           rm -rf .git .gitignore README.md screenshot.png
       - name: Checkout rios-do-brasil
         uses: actions/checkout@v7
         with:
           repository: rafapolo/rios-do-brasil
           ref: ${{ github.event.action == 'rios-updated' && github.event.client_payload.sha || '' }}
-          path: pages/analises/rios-do-brasil
+          path: pages/plataformas/rios-do-brasil
       - name: Remove arquivos não-públicos do rios-do-brasil
         run: |
-          cd pages/analises/rios-do-brasil
+          cd pages/plataformas/rios-do-brasil
           rm -rf .git .github .gitignore pipeline README.md screenshot.png
       # pet16704 vive em git.rodado.xyz (Gitea próprio, não GitHub), então
       # actions/checkout não serve — é um clone raso comum, sem credencial
@@ -77,15 +78,15 @@ jobs:
         run: git clone --depth 1 https://git.rodado.xyz/rodado/pet16704.git /tmp/pet16704
       - name: Monta pet16704 na estrutura que o index.html espera
         run: |
-          mkdir -p pages/analises/pet16704
+          mkdir -p pages/plataformas/pet16704
           cp /tmp/pet16704/web/index.html /tmp/pet16704/web/revelacoes.html \
              /tmp/pet16704/web/docs.json /tmp/pet16704/web/people.json \
-             pages/analises/pet16704/
+             pages/plataformas/pet16704/
           # resumos/ fica uma pasta acima de web/ no repo original — o
           # index.html busca "../resumos/parteN/" a partir de onde é servido,
           # então aqui vira irmã de pet16704/, não filha (web/resumos/ é só
           # o fallback do repo para servidor local sem pasta acima; ignorado)
-          cp -r /tmp/pet16704/resumos pages/analises/resumos
+          cp -r /tmp/pet16704/resumos pages/plataformas/resumos
           rm -rf /tmp/pet16704
       - name: Setup Pages
         uses: actions/configure-pages@v6
