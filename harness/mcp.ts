@@ -81,12 +81,6 @@ const semLimite = (s: string) => s.replace(/\blimit\s+\d+/gi, "").replace(/\s+/g
 
 const FERRAMENTAS = [
   {
-    name: "listar_datasets",
-    description:
-      "Lista crua dos datasets do espelho. O catálogo com pistas já está no system prompt — só use se precisar reler.",
-    inputSchema: { type: "object", properties: {} },
-  },
-  {
     name: "listar_tabelas",
     description:
       "Lista as tabelas de um dataset, com quantas linhas cada uma tem e a faixa de anos disponível.",
@@ -150,7 +144,7 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
 
   if (name === "listar_tabelas") {
     const ds = resolveDataset(arg.dataset ?? "");
-    if (!ds) return erro(`Dataset '${arg.dataset}' não existe. Chame listar_datasets.`);
+    if (!ds) return erro(`Dataset '${arg.dataset}' não existe. Os nomes estão no CATÁLOGO do system prompt.`);
     const linhas = tabelasDe(ds).map((t) => {
       const cols = colunasDe(`${ds}.${t.tabela}`) ?? [];
       const part = cols.filter((c) => (COLUNAS_PARTICAO as readonly string[]).includes(c.name.toLowerCase()));
@@ -168,7 +162,7 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
       semanticaVista.add(principal);
       const dicas = dicasDeJoin([principal]);
       linhas.push("", `Tabela principal, já descrita (as outras: descrever_tabela):`,
-        descreve(principal, cols, textoFaixa(principal)) + (dicas ? `\n\n${dicas}` : ""));
+        descreve(principal, cols, textoFaixa(principal), "", PERGUNTA) + (dicas ? `\n\n${dicas}` : ""));
     }
     return texto(linhas.join("\n"));
   }
@@ -179,7 +173,7 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     await garanteValores(arg.tabela!, cols);
     semanticaVista.add(arg.tabela!.toLowerCase());
     const dicas = dicasDeJoin([arg.tabela!]);
-    return texto(descreve(arg.tabela!, cols, textoFaixa(arg.tabela!), arg.filtro ?? "") + (dicas ? `\n\n${dicas}` : ""));
+    return texto(descreve(arg.tabela!, cols, textoFaixa(arg.tabela!), arg.filtro ?? "", PERGUNTA) + (dicas ? `\n\n${dicas}` : ""));
   }
 
   if (name === "definicao_de_calculo") {
