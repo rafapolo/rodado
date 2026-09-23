@@ -85,6 +85,13 @@ verdade**, medidos no beelink em 2026-09-01:
 O segundo é o modo de falha que importa: não dá erro, dá um número que passa
 despercebido. `harness/portao.test.ts` trava os dois casos.
 
+**Erro de forma o portão conserta sozinho** (2026-09-23). Falta de `LIMIT`,
+amostra sem `COUNT(*) AS n` e `FROM dataset` sem tabela custavam um turno do
+modelo cada (~15 s) para um conserto mecânico. `repara()` corrige antes de
+rodar e avisa no resultado ("Ajustei a consulta antes de rodar: ..."). O que
+muda o significado da SQL — partição, codificação, coluna inventada — continua
+voltando ao modelo.
+
 ## Por que catálogo no prefixo, e não busca por embedding
 
 Medido contra o conjunto dourado do projeto:
@@ -138,6 +145,33 @@ erros de não iterar.
 Rode você mesmo com `bun harness/compara.ts <arquivo>` — em sequência, nunca em
 paralelo, senão os dois disputam o mesmo `llama-server` e o tempo sai errado.
 
+## O papel do dsh
+
+O laço agêntico não é código deste diretório: é o **dsh** (DeepSeek Harness),
+rodado como `bunx dsh --profile headless --patch harness/dsh/rodado.patch.yml
+"<pergunta>"` — um processo por pergunta, lançado por `pergunte.ts` e `lote.ts`.
+Ele faz o que um agente faz e nada do que é do projeto: mantém a conversa,
+manda cada turno ao modelo, executa as chamadas de ferramenta e devolve o
+resultado ao modelo até vir uma resposta final. Guarda cada sessão em disco, que
+é o que `sessao.ts` lê.
+
+Tudo que é do rodado entra pelo patch (`dsh/rodado.patch.yml`):
+
+| O patch | Para quê |
+|---|---|
+| provider `beelink-local` | aponta o dsh para o `llama-server` (ou para a `guarda.ts`, via `HARNESS_LLM_URL`), com `reasoningEfforts: false` |
+| `mcp-rodado` | monta `harness/mcp.ts` como único servidor de ferramentas |
+| `bash`, `fs`, `web`, subagentes, skills, todo… desligados | sem shell nem arquivo, o único caminho até o dado é o `consultar` — e portanto o portão |
+| `agent-instructions` com `maxBytes: 0`, sem título de sessão por LLM, sem `plan-mode` | tira do prompt o que é para o Claude Code e as chamadas extras ao único slot |
+| `system-prompt` lido de `dsh/persona.md` | papel, como trabalhar e o catálogo, gerados por `persona.ts` |
+
+A divisão de trabalho que isso produz: **o dsh decide a sequência, o harness
+decide o que vale.** A rejeição do portão volta como resultado de ferramenta, e
+o próprio laço do dsh vira o mecanismo de reparo da SQL — sem retry escrito à
+mão. O que o dsh não faz bem ficou em volta dele, não dentro: a `guarda.ts`
+entre ele e o modelo (turno degenerado) e o `lote.ts` por fora (sessão nova
+como última linha).
+
 ## O contexto é o gargalo
 
 | | 2k de contexto | ~18k (dentro do laço) |
@@ -168,6 +202,23 @@ tabela larga resume as colunas por prefixo e lista por inteiro só as que decide
 a SQL (partição, chave, codificadas) — `escola` caiu de 5.660 para 1.841 tokens,
 com `filtro` para abrir um grupo —, e o resultado de `consultar` vai como tabela
 de texto em vez de JSON com a chave repetida em cada linha.
+
+**2026-09-23, menos turnos.** Cada turno custa ~14,5 s e as ferramentas ~1 s
+por pergunta inteira: o que pesa é o número de turnos e os tokens novos em cada
+um, não a consulta. Detalhe em [`tasks/velocidade.md`](tasks/velocidade.md):
+
+- `listar_tabelas` já traz a descrição da tabela principal do dataset, e o
+  `descrever_tabela` que vinha logo depois sumiu.
+- `revisar_resposta` saiu (151 chamadas, **nenhuma** rejeição). O recorte da
+  pergunta (ano, estado, bioma) passou a ser conferido no resultado de
+  `consultar`, na hora.
+- `listar_datasets` saiu: o catálogo já está no system prompt.
+- Em tabela com mais de 8 colunas codificadas, a lista de códigos vai inteira
+  só nas colunas ligadas à pergunta (raiz do nome ou de um rótulo: "rurais" ↔
+  "Rural"); as outras mostram a marca `(códigos)` e abrem com `filtro`. **Nenhuma
+  coluna some** — o `filtro` que escondia `tipo_localizacao` fez o modelo
+  concluir que o Censo Escolar não classifica escola rural. SIM 3.506 → 1.580
+  tokens, RAIS 3.601 → 1.369.
 
 ## A guarda
 
@@ -205,20 +256,20 @@ resposta. Detalhe em [`tasks/avaliacao_diretas.md`](tasks/avaliacao_diretas.md).
 | Arquivo | Papel |
 |---|---|
 | `catalogo.ts` | `catalog.parquet` (linhas por tabela → camada 4) + schema local (colunas). Cache em `dados/catalogo.json`; `bun harness/catalogo.ts --atualiza` |
-| `portao.ts` | as 7 camadas |
+| `portao.ts` | as 7 camadas, e `repara()` para o erro de forma |
 | `sqlguard.ts` | `checkReadOnly` + `capRows` — porte fiel de `mcp_server.py`, trazido de `ask-web` |
 | `beelink.ts` | executor SSH+DuckDB, **com `-readonly`** |
 | `metricas.ts` | os 12 cálculos verificados de `metrics.yaml` — busca exata por nome ou sinônimo, nunca por similaridade |
 | `anos.ts` | faixa de anos por tabela (377 cacheadas) |
 | `pontes.ts` | dicas de join das pontes conferidas de `bridges.yaml` |
-| `mcp.ts` | servidor MCP: 6 ferramentas, o portão entre elas |
+| `mcp.ts` | servidor MCP: 4 ferramentas (`listar_tabelas`, `descrever_tabela`, `definicao_de_calculo`, `consultar`), o portão entre elas |
 | `guarda.ts` | proxy entre o dsh e o llama-server: repete o turno degenerado e resgata a chamada presa no pensamento (ver "A guarda") |
 | `persona.ts` | gera `dsh/persona.md`, o system prompt do laço; `--confere` acusa quando está velho |
 | `dicionarios.ts` | o significado dos códigos (`'2'=Rural`) ao lado da coluna, de `{dataset}.dicionario`. Cache em `dados/dicionarios.json`; `--atualiza` |
 | `valores.ts` | os valores reais das colunas de texto sem dicionário (`'estadual'`, `'prefeito'`), calculados na 1ª descrição e guardados em `dados/valores.json` |
 | `semantica.ts` | notas curadas (`dados/notas.json`), o cálculo verificado da tabela (`metrics.yaml`) e as tabelas reais mais parecidas com um nome inventado |
-| `recortes.ts` | ano, estado e bioma que a pergunta nomeia — `revisar_resposta` recusa quando nenhuma SQL executada os aplicou |
-| `formato.ts` | como as ferramentas escrevem para o modelo: descrição compacta, resultado em tabela de texto |
+| `recortes.ts` | ano, estado e bioma que a pergunta nomeia — o resultado de `consultar` avisa quando a SQL não os aplicou |
+| `formato.ts` | como as ferramentas escrevem para o modelo: descrição compacta (códigos só nas colunas ligadas à pergunta), resultado em tabela de texto |
 | `sessao.ts` | lê uma sessão do dsh como transcrição (cada chamada, a SQL inteira, o resultado) |
 | `laco.ts` | o pipeline fixo — **não é caminho de produção** (0/3 contra 3/3 do agêntico). Sobrevive por um motivo nomeado: é o esqueleto do experimento DuckDB-NSQL-7B de `tasks/check-qwencoder-vs-duckdbnsql.md`, que precisa de um apurador sem agente e sem MCP. Se aquele experimento fechar sem usá-lo, remover — a comparação que ele provou já está registrada aqui e em `tasks/regras.md`, e o código sai por `git show` |
 | `lote.ts` / `compara.ts` | benchmark de perguntas abertas |
@@ -244,9 +295,10 @@ bun harness/pergunte.ts "Quantos óbitos por suicídio houve no RJ em 2020, por 
 ```
 
 Sai a resposta em prosa, com os números que o modelo apurou. Pergunta direta
-leva **~1 a 2 min** (medido em 2026-09-22 nas 42 de
+leva **~1 a 1,5 min** — na rodada de 2026-09-23 (`benchmarks/lote_2026-09-231049.json`,
+43 perguntas): 41/43 certas, média 96 s, **mediana 63 s** (76 s na rodada 5 de
 [`tasks/avaliacao_diretas.md`](tasks/avaliacao_diretas.md); eram 5–10 min antes
-do corte de contexto); pergunta de pesquisa, cruzando três ou quatro fontes,
+do corte de contexto). Pergunta de pesquisa, cruzando três ou quatro fontes,
 ~10 min. Se o `llama-server` não estiver de pé, o comando diz exatamente o que
 subir. Para ver o que o modelo fez: `bun harness/sessao.ts`.
 
@@ -255,8 +307,8 @@ Passa pelo caminho agêntico de propósito — ver a comparação acima.
 ## Rodar
 
 ```bash
-bun test harness/                    # 56 testes
-bun harness/catalogo.ts              # 212 datasets, 904 tabelas
+bun test harness/                    # 169 testes
+bun harness/catalogo.ts              # 230 datasets, 1024 tabelas
 bun harness/catalogo.ts --atualiza   # rebusca no beelink após um sync
 bun harness/anos.ts --atualiza       # faixa de anos por tabela
 
@@ -278,7 +330,11 @@ Sem o valor esperado o caso ainda roda, mas só mede se **respondeu** — nunca 
 acertou. Foi assim que uma resposta "não foram encontrados óbitos" entrou como
 sucesso quando o certo era 789.
 
-O modelo é servido pelo `llama-server` no beelink:
+O modelo é servido pelo `llama-server` no beelink. `./harness/servidor.sh` sobe
+(ou reinicia) com a config abaixo, abre o túnel e aquece o prefixo do laço com
+uma pergunta trivial — sem isso a 1ª pergunta depois de subir paga ~75 s a mais.
+Depois de mudar `persona.md`, `./harness/servidor.sh aquece-laco` refaz só o
+aquecimento (`SEM_LACO=1` pula). A linha que ele roda:
 
 ```bash
 llama-server -m ~/llm/gemma-4-26B_q4_0-it.gguf \
