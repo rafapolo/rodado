@@ -1,9 +1,32 @@
 {
   "_meta": {
     "source": "docs/context/metrics.yaml",
-    "count": 12
+    "count": 13
   },
   "metrics": [
+    {
+      "name": "area_desmatada",
+      "description": "área desmatada acumulada até o ano, por bioma, segundo o PRODES",
+      "unit": "km²",
+      "grain": [
+        "ano",
+        "bioma"
+      ],
+      "source_table": "br_inpe_prodes.municipio_bioma",
+      "expression": "SUM(desmatado)",
+      "required_filters": [
+        "ano",
+        "bioma"
+      ],
+      "synonyms": [
+        "area desmatada",
+        "desmatamento acumulado",
+        "area desmatada acumulada",
+        "desmatamento prodes"
+      ],
+      "caveat": "é estoque acumulado, somado sobre os municípios do bioma. O desmatamento DE UM ANO é a diferença entre as somas de dois anos seguidos.",
+      "needs_join": null
+    },
     {
       "name": "beneficiarios_ans_ativos",
       "description": "beneficiários ativos de plano de saúde privado médico-hospitalar, ANS (Agência Nacional de Saúde Suplementar)",
