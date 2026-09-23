@@ -23,7 +23,7 @@
  * erros são mecânicos.
  */
 import { checkReadOnly } from "./sqlguard.ts";
-import { colunasDe, linhasDe, particoesDe, inservivel, LIMIAR_PARTICAO } from "./catalogo.ts";
+import { colunasDe, linhasDe, particoesDe, inservivel, LIMIAR_PARTICAO, tabelaPrincipal } from "./catalogo.ts";
 import { sugereTabelas, DIRETORIOS } from "./semantica.ts";
 import { codigos } from "./dicionarios.ts";
 import { valores } from "./valores.ts";
@@ -103,7 +103,9 @@ function tabelasAgregadas(sql: string): string[] {
   const out = new Set<string>();
   for (const ref of tabelasCitadas(sql)) {
     const [ds, tb] = ref.toLowerCase().split(".");
-    if (!ds || !tb || ["brasil", "uf", "regiao"].includes(tb)) continue;
+    // Os diretórios têm uf/regiao, mas são cadastro de nomes, não índice agregado:
+    // 2026-09-23 o alerta disparou num AVG de temperatura por município.
+    if (!ds || !tb || ["brasil", "uf", "regiao"].includes(tb) || ds.startsWith("br_bd_diretorios")) continue;
     for (const nivel of ["brasil", "uf", "regiao"]) {
       if (colunasDe(`${ds}.${nivel}`)) out.add(`${ds}.${nivel}`);
     }
@@ -349,6 +351,75 @@ export function semComentarios(sql: string): string {
   }
   return out;
 }
+
+/**
+ * Conserta sozinho as rejeições que são só forma, em vez de gastar um turno do
+ * modelo (~15 s) para ele reescrever. Medido 2026-09-23: numa pergunta de 17
+ * turnos, 3 foram LIMIT, `COUNT(*) AS n` e dataset sem tabela. Só o que tem uma
+ * correção única e segura; o resto continua rejeitado com a mensagem de sempre.
+ */
+export const NOTA_AMOSTRA = "acrescentei COUNT(*) AS n ao SELECT final";
+
+export function repara(sql: string, opcoes: { amostra?: boolean } = {}): { sql: string; notas: string[] } {
+  const notas: string[] = [];
+  let atual = sql.trim().replace(/;\s*$/, "");
+  for (let i = 0; i < 4; i++) {
+    const v = portao(atual);
+    if (v.ok) break;
+    let novo: string | undefined;
+    if (v.camada === "limite") {
+      novo = `${atual}\nLIMIT 100`;
+      notas.push("acrescentei LIMIT 100");
+    } else if (v.camada === "amostra" && opcoes.amostra !== false) {
+      // No FIM da lista de colunas: no começo deslocaria `GROUP BY 1`.
+      const p = selectExterno(atual);
+      const f = p === undefined ? undefined : fromExterno(atual, p);
+      if (p !== undefined && f !== undefined && !/^\s*DISTINCT\b/i.test(atual.slice(p + 6)) && !temUniao(atual)) {
+        novo = `${atual.slice(0, f).trimEnd()}, COUNT(*) AS n\n${atual.slice(f)}`;
+        notas.push(NOTA_AMOSTRA);
+      }
+    } else if (v.camada === "tabela") {
+      const nus = tabelasCitadas(atual).filter((r) => !r.includes(".") && !r.includes("("));
+      const trocas = nus.map((ds) => [ds, tabelaPrincipal(ds.toLowerCase())] as const);
+      if (nus.length && trocas.every(([, t]) => t)) {
+        novo = atual;
+        for (const [ds, t] of trocas) novo = novo.replace(new RegExp(`\\b${ds}\\b(?!\\.)`, "g"), t!);
+        notas.push(`troquei ${trocas.map(([ds, t]) => `${ds} por ${t}`).join(", ")} (a tabela principal do dataset)`);
+      }
+    }
+    if (!novo || novo === atual) break;
+    atual = novo;
+  }
+  return { sql: atual, notas };
+}
+
+/** Posição do SELECT da consulta externa (fora de parênteses e literais). */
+function selectExterno(sql: string): number | undefined {
+  let nivel = 0, ultimo: number | undefined;
+  for (let i = 0; i < sql.length; i++) {
+    const c = sql[i]!;
+    if (c === "'" || c === '"') { const f = sql.indexOf(c, i + 1); i = f < 0 ? sql.length : f; continue; }
+    if (c === "(") nivel++;
+    else if (c === ")") nivel--;
+    else if (nivel === 0 && /^SELECT\b/i.test(sql.slice(i, i + 7)) && !/\w/.test(sql[i - 1] ?? " ")) ultimo = i;
+  }
+  return ultimo;
+}
+
+/** Posição do FROM da consulta externa, depois do SELECT externo. */
+function fromExterno(sql: string, inicio: number): number | undefined {
+  let nivel = 0;
+  for (let i = inicio; i < sql.length; i++) {
+    const c = sql[i]!;
+    if (c === "'" || c === '"') { const f = sql.indexOf(c, i + 1); i = f < 0 ? sql.length : f; continue; }
+    if (c === "(") nivel++;
+    else if (c === ")") nivel--;
+    else if (nivel === 0 && /^FROM\b/i.test(sql.slice(i, i + 5)) && /\s/.test(sql[i - 1] ?? " ")) return i;
+  }
+  return undefined;
+}
+
+const temUniao = (sql: string) => /\b(UNION|INTERSECT|EXCEPT)\b/i.test(sql.replace(/\([^()]*\)/g, ""));
 
 /* ------------------------------------------------------------------ *
  *  Escopos — a máquina que as camadas 7 e 8 compartilham.
@@ -823,7 +894,10 @@ export function alertasDeSanidade(sql: string, linhas: Linha[]): string[] {
   }
 
   const n = extraiN(linhas);
-  if (n !== undefined && n > MUNICIPIOS_BR && /municipio/i.test(sql)) {
+  // Só para o total de uma linha (a junção que duplicou). Com várias linhas, o n
+  // de cada grupo é o que a camada 8 obriga a contar — 8.784 leituras horárias
+  // por estação disparavam o alerta à toa (2026-09-23, duas vezes seguidas).
+  if (n !== undefined && n > MUNICIPIOS_BR && linhas.length === 1 && /municipio/i.test(sql)) {
     alertas.push(
       `n=${n} passa dos ${MUNICIPIOS_BR.toLocaleString("pt-BR")} municípios do país. ` +
       `Se cada linha deveria ser um município, o join duplicou linhas — uma das pontas ` +
