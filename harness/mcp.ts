@@ -20,10 +20,10 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { listaDatasets, tabelasDe, colunasDe, resolveDataset } from "./catalogo.ts";
+import { listaDatasets, tabelasDe, colunasDe, resolveDataset, COLUNAS_PARTICAO } from "./catalogo.ts";
 import {
   portao, checaExplain, alertasDeSanidade, faixasCitadas, checaCitacaoTabela,
-  juncoesSemPonte, mensagemSemPonte, assinaturaJuncao,
+  juncoesSemPonte, mensagemSemPonte, assinaturaJuncao, sugestao, semComentarios,
 } from "./portao.ts";
 import { dicasDeJoin } from "./pontes.ts";
 import { runSqlSsh } from "./beelink.ts";
@@ -31,6 +31,17 @@ import { capRows } from "./sqlguard.ts";
 import { textoFaixa } from "./anos.ts";
 import { inservivel } from "./catalogo.ts";
 import { metrica, listaMetricas } from "./metricas.ts";
+import { descreve, tabelaTexto, dicaMunicipio } from "./formato.ts";
+import { faltando } from "./recortes.ts";
+import { garanteValores } from "./valores.ts";
+import { notaTabela, notaColuna, calculosDaTabela } from "./semantica.ts";
+import { colunasDe as colunas } from "./catalogo.ts";
+
+const tabelasDaSql = (sql: string) =>
+  [...new Set([...sql.matchAll(/\b(?:FROM|JOIN)\s+([a-z_][\w]*\.[a-z_][\w]*)/gi)].map((m) => m[1]!.toLowerCase()))]
+    .filter((t) => colunas(t));
+const colunasCitadas = (sql: string, tabela: string) =>
+  (colunas(tabela) ?? []).map((c) => c.name).filter((n) => new RegExp(`\\b${n}\\b`, "i").test(sql));
 
 const servidor = new Server(
   { name: "rodado-harness", version: "1.0.0" },
@@ -58,12 +69,21 @@ const tentativasPorJuncao = new Map<string, number>();
 const LIMIAR_REPETICAO = Number(Bun.env.HARNESS_LIMIAR_REPETICAO ?? 3);
 const ORCAMENTO_CONSULTAS = Number(Bun.env.HARNESS_ORCAMENTO_CONSULTAS ?? 30);
 let totalConsultas = 0;
+/** SQL que rodou e devolveu linha — é contra ela que revisar_resposta confere os recortes. */
+const executadas: string[] = [];
+const PERGUNTA = Bun.env.HARNESS_PERGUNTA ?? "";
+let rejeicoesDeRecorte = 0;
+/** A mesma consulta, só com outro LIMIT: medido rodando 3x seguidas sem mudar nada. */
+const jaRodadas = new Set<string>();
+/** Tabelas cuja nota e cálculo verificado o modelo já viu nesta pergunta. */
+const semanticaVista = new Set<string>();
+const semLimite = (s: string) => s.replace(/\blimit\s+\d+/gi, "").replace(/\s+/g, " ").trim().toLowerCase();
 
 const FERRAMENTAS = [
   {
     name: "listar_datasets",
     description:
-      "Lista os 212 datasets do espelho. Use para descobrir onde está o assunto da pergunta.",
+      "Lista crua dos datasets do espelho. O catálogo com pistas já está no system prompt — só use se precisar reler.",
     inputSchema: { type: "object", properties: {} },
   },
   {
@@ -79,10 +99,14 @@ const FERRAMENTAS = [
   {
     name: "descrever_tabela",
     description:
-      "Colunas e tipos de uma tabela, mais as pontes de join já conferidas para ela.",
+      "Colunas, tipos e o significado dos códigos de uma tabela, mais as pontes de join já " +
+      "conferidas para ela. Em tabela larga, use filtro para listar só as colunas com aquele trecho no nome.",
     inputSchema: {
       type: "object",
-      properties: { tabela: { type: "string", description: "ex.: br_ms_sim.microdados" } },
+      properties: {
+        tabela: { type: "string", description: "ex.: br_ms_sim.microdados" },
+        filtro: { type: "string", description: "opcional, ex.: matricula" },
+      },
       required: ["tabela"],
     },
   },
@@ -141,7 +165,7 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     if (!ds) return erro(`Dataset '${arg.dataset}' não existe. Chame listar_datasets.`);
     const linhas = tabelasDe(ds).map((t) => {
       const cols = colunasDe(`${ds}.${t.tabela}`) ?? [];
-      const part = cols.filter((c) => ["ano", "mes", "sigla_uf"].includes(c.name.toLowerCase()));
+      const part = cols.filter((c) => (COLUNAS_PARTICAO as readonly string[]).includes(c.name.toLowerCase()));
       return `${ds}.${t.tabela}  ${t.linhas.toLocaleString("pt-BR")} linhas` +
              (part.length ? `  particionada por: ${part.map((c) => c.name).join(", ")}` : "") +
              textoFaixa(`${ds}.${t.tabela}`) +
@@ -152,13 +176,11 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
 
   if (name === "descrever_tabela") {
     const cols = colunasDe(arg.tabela ?? "");
-    if (!cols) return erro(`Tabela '${arg.tabela}' não existe. Chame listar_tabelas do dataset.`);
+    if (!cols) return erro(`Tabela '${arg.tabela}' não existe.${sugestao(arg.tabela ?? "")} Chame listar_tabelas do dataset.`);
+    await garanteValores(arg.tabela!, cols);
+    semanticaVista.add(arg.tabela!.toLowerCase());
     const dicas = dicasDeJoin([arg.tabela!]);
-    return texto(
-      `${arg.tabela} — ${cols.length} colunas${textoFaixa(arg.tabela!)}\n` +
-      cols.map((c) => `  ${c.name}: ${c.type}`).join("\n") +
-      (dicas ? `\n\n${dicas}` : ""),
-    );
+    return texto(descreve(arg.tabela!, cols, textoFaixa(arg.tabela!), arg.filtro ?? "") + (dicas ? `\n\n${dicas}` : ""));
   }
 
   if (name === "definicao_de_calculo") {
@@ -169,7 +191,7 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
   }
 
   if (name === "consultar") {
-    const sql = (arg.sql ?? "").trim();
+    const sql = semComentarios(arg.sql ?? "").trim();
 
     totalConsultas++;
     if (totalConsultas > ORCAMENTO_CONSULTAS) {
@@ -203,8 +225,9 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
       tentativasPorJuncao.set(assinatura, repeticoes);
 
       const partes = [
-        "A consulta rodou e devolveu ZERO linhas — o join não casou nada, ou o filtro " +
-        "de ano não tem dado. Confira o tipo das duas pontas da chave." +
+        "A consulta rodou e devolveu ZERO linhas: algum filtro (WHERE, HAVING ou JOIN) não casou " +
+        "com nenhum valor real. Confira os valores com SELECT DISTINCT na coluna filtrada " +
+        "(códigos são texto: '2', não 2 nem 'Rural') e o tipo das duas pontas do join." +
         (faixas ? ` Faixa de anos das tabelas citadas: ${faixas}.` : " Chame listar_tabelas para ver a faixa de anos."),
       ];
       // backlog.md item 12: quando a junção nem tem ponte conhecida, a mensagem
@@ -227,12 +250,49 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     // Alertas de sanidade (grupo reportado como total, join que duplicou linha,
     // correlação suspeita) grudados ANTES dos dados, no mesmo texto — nenhum
     // rejeita, mas o modelo só corrige o que vê.
+    executadas.push(sql);
     const alertas = alertasDeSanidade(sql, capado.rows);
+    // Medido 2026-09-23: o modelo foi direto ao consultar, sem descrever_tabela,
+    // e contou todos os vínculos da RAIS (186.571) em vez dos ativos em 31/12
+    // (142.490) — a nota e o cálculo verificado só apareciam na descrição.
+    // Na 1ª consulta a uma tabela não descrita, eles vêm junto do resultado.
+    for (const ref of tabelasDaSql(sql)) {
+      if (semanticaVista.has(ref)) continue;
+      semanticaVista.add(ref);
+      const partes = [notaTabela(ref), ...calculosDaTabela(ref).map((c) => `cálculo verificado: ${c}`),
+        ...colunasCitadas(sql, ref).map((c) => { const n = notaColuna(ref, c); return n ? `${c}: ${n}` : ""; })].filter(Boolean);
+      if (partes.length) alertas.push(`Sobre ${ref} (confira se a consulta respeita): ${partes.join(" · ")}`);
+    }
+    if (jaRodadas.has(semLimite(sql))) {
+      alertas.push("Esta consulta já rodou nesta pergunta (só o LIMIT mudou) e o resultado é o mesmo. " +
+        "Se o número parece errado, o problema está na lógica — junção que multiplica linhas, filtro, nível de agregação —, não no LIMIT.");
+    }
+    jaRodadas.add(semLimite(sql));
+    // Agregado sobre nada: 1 linha com n=0 ou tudo NULL é o "zero linhas" disfarçado.
+    const unica = capado.rows.length === 1 ? (capado.rows[0] as Record<string, unknown>) : undefined;
+    const agregado = /\b(COUNT|SUM|AVG|MIN|MAX)\s*\(/i.test(sql) && !/\bGROUP\s+BY\b/i.test(sql);
+    if (agregado && unica && Object.values(unica).every((v) => v === null || v === 0 || v === "0")) {
+      alertas.push("A agregação não achou nenhum registro (n=0 ou tudo NULL): algum filtro não casou com valor real. " +
+        "Confira os valores com SELECT DISTINCT na coluna filtrada antes de responder.");
+    }
+    const municipio = dicaMunicipio(capado.rows as Record<string, unknown>[]);
+    if (municipio) alertas.push(municipio);
     const prefixo = alertas.length ? alertas.map((a) => `⚠ ${a}`).join("\n") + "\n\n" : "";
-    return texto(prefixo + JSON.stringify(capado));
+    return texto(prefixo + tabelaTexto(capado));
   }
 
   if (name === "revisar_resposta") {
+    // Recorte da pergunta que nenhuma SQL aplicou (bioma, estado, ano): cada
+    // consulta era válida sozinha, o erro só aparece olhando as duas juntas.
+    // Duas vezes no máximo — se o modelo insistir, a leitura dele pode ser legítima.
+    const sem = PERGUNTA ? faltando(PERGUNTA, executadas) : [];
+    if (sem.length && rejeicoesDeRecorte < 2) {
+      rejeicoesDeRecorte++;
+      return erro(
+        `REJEITADA (recorte): a pergunta pede ${sem.map((r) => r.rotulo).join(", ")}, mas nenhuma consulta ` +
+        `executada filtrou por isso. Refaça a consulta aplicando esse recorte (ex.: no WHERE) e só então responda. ` +
+        `Se o dado desse recorte não existe no espelho, diga isso na resposta.`);
+    }
     const v = checaCitacaoTabela(arg.texto ?? "");
     return v.ok
       ? texto("Aprovado — pode responder ao usuário com este texto.")

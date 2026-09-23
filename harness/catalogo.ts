@@ -6,7 +6,7 @@
  *     de partição. Cacheado em `harness/dados/catalogo.json`; regerar com
  *     `bun harness/catalogo.ts --atualiza` depois de qualquer sync.
  *
- *  2. `docs/context/basedosdados-schema.json` (local) — colunas por tabela.
+ *  2. `docs/context/rodado-schema.json` (local) — colunas por tabela.
  *     Lido do disco, sem ssh.
  *
  * Por que o catálogo por DATASET e não por tabela no prompt: medido em
@@ -20,7 +20,7 @@ import { runSqlSsh } from "./beelink.ts";
 
 const RAIZ = new URL("..", import.meta.url).pathname;
 const CACHE = `${RAIZ}harness/dados/catalogo.json`;
-const SCHEMA = `${RAIZ}docs/context/basedosdados-schema.json`;
+const SCHEMA = `${RAIZ}docs/context/rodado-schema.json`;
 
 export interface EntradaCatalogo {
   dataset: string;
@@ -42,7 +42,13 @@ export interface Coluna {
 export const LIMIAR_PARTICAO = 10_000_000;
 
 /** Colunas que servem de partição neste espelho. */
-export const COLUNAS_PARTICAO = ["ano", "mes", "sigla_uf"] as const;
+// Além de ano/mes/sigla_uf: as 22 tabelas de 10M+ linhas que particionam por
+// outro nome (Bolsa Família 821M por ano_mes/uf, CNO, SCR, Pé-de-Meia...)
+// passavam pelo portão sem filtro nenhum, porque nenhuma das três existia nelas.
+export const COLUNAS_PARTICAO = [
+  "ano", "mes", "sigla_uf", "ano_mes", "mes_referencia", "mes_competencia", "mes_folha",
+  "uf", "data_base", "trimestre", "ano_emissao", "mes_emissao", "data", "ano_competencia", "ano_referencia",
+] as const;
 
 let _catalogo: EntradaCatalogo[] | null = null;
 let _schema: Record<string, Record<string, Coluna[]>> | null = null;

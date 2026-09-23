@@ -24,6 +24,9 @@
  */
 import { checkReadOnly } from "./sqlguard.ts";
 import { colunasDe, linhasDe, particoesDe, inservivel, LIMIAR_PARTICAO } from "./catalogo.ts";
+import { sugereTabelas, DIRETORIOS } from "./semantica.ts";
+import { codigos } from "./dicionarios.ts";
+import { valores } from "./valores.ts";
 import { faixaDeAnos, type Faixa } from "./anos.ts";
 import { conceitoDaColuna } from "./pontes.ts";
 
@@ -74,6 +77,47 @@ function tabelasCitadas(sql: string): string[] {
   return [...out];
 }
 
+/**
+ * SUM(populacao) no mesmo escopo que microdados, com JOIN: a população entra uma
+ * vez por LINHA do microdado. Medido 2026-09-22: taxa de homicídio por UF saiu
+ * 0,9 por 100 mil (o certo é ~42 em SE) — SIM × população municipal juntados
+ * óbito a óbito e a população somada por óbito.
+ */
+const DENOMINADOR = /\bSUM\s*\(\s*(?:\w+\.)?(populacao|pop|pib|area|area_total|domicilios|habitantes)\s*\)/i;
+function fanOut(sql: string): string | undefined {
+  const ctes = ctesDefinidos(sql);
+  for (const seg of segmentos(sql)) {
+    if (!DENOMINADOR.test(seg) || !/\bJOIN\b/i.test(seg)) continue;
+    const grande = refsDoEscopo(seg, ctes).find((r) => (linhasDe(r.ref) ?? 0) > 1_000_000);
+    if (grande) {
+      return `SUM(${DENOMINADOR.exec(seg)![1]}) numa junção com ${grande.ref} (${((linhasDe(grande.ref) ?? 0) / 1e6).toFixed(0)}M linhas): ` +
+        `o denominador é somado uma vez por LINHA do microdado e a taxa sai errada. Agregue cada lado numa CTE ` +
+        `no mesmo nível (ex.: óbitos por sigla_uf; população por sigla_uf e ano) e só depois junte e divida.`;
+    }
+  }
+  return undefined;
+}
+
+/** Tabelas `brasil`/`uf`/`regiao` do mesmo dataset de uma tabela de unidade menor citada. */
+function tabelasAgregadas(sql: string): string[] {
+  const out = new Set<string>();
+  for (const ref of tabelasCitadas(sql)) {
+    const [ds, tb] = ref.toLowerCase().split(".");
+    if (!ds || !tb || ["brasil", "uf", "regiao"].includes(tb)) continue;
+    for (const nivel of ["brasil", "uf", "regiao"]) {
+      if (colunasDe(`${ds}.${nivel}`)) out.add(`${ds}.${nivel}`);
+    }
+  }
+  return [...out];
+}
+
+/** "Parecidas: ..." para um nome inventado, e onde estão os nomes de lugar. */
+export function sugestao(ref: string): string {
+  const s = sugereTabelas(ref);
+  const lugar = /municip|cidade|estado|\buf\b|diretori|nome/i.test(ref) ? ` ${DIRETORIOS}` : "";
+  return (s.length ? ` (parecidas que existem: ${s.join(", ")})` : "") + lugar.replace(/\.$/, "");
+}
+
 /** Camada 2 — o modelo escreveu `FROM dataset` sem a tabela? */
 function checaTabelas(sql: string): Veredito {
   const ruins: string[] = [];
@@ -83,7 +127,7 @@ function checaTabelas(sql: string): Veredito {
       ruins.push(`'${ref}' não tem tabela — escreva dataset.tabela`);
       continue;
     }
-    if (colunasDe(ref) === null) ruins.push(`'${ref}' não existe no espelho`);
+    if (colunasDe(ref) === null) ruins.push(`'${ref}' não existe no espelho${sugestao(ref)}`);
   }
   return ruins.length
     ? { ok: false, camada: "tabela", erro: `Referência inválida: ${ruins.join("; ")}.` }
@@ -182,18 +226,33 @@ function checaParticao(sql: string): Veredito {
         erro:
           `${ref} tem ${(linhas / 1e6).toFixed(1)}M linhas e exige filtro de partição. ` +
           `Adicione um predicado em: ${parts.join(", ")}. ` +
-          `Ex.: WHERE ano = 2020${parts.includes("sigla_uf") ? " AND sigla_uf = 'RJ'" : ""}.`,
+          `Ex.: WHERE ${exemploParticao(parts)}.`,
       };
     }
   }
   return OK;
 }
 
+const EXEMPLO: Record<string, string> = {
+  ano: "ano = 2020", mes: "mes = 3", sigla_uf: "sigla_uf = 'RJ'", uf: "uf = 'RJ'",
+  ano_mes: "ano_mes = '202403'", ano_emissao: "ano_emissao = 2020", mes_emissao: "mes_emissao = 3",
+};
+function exemploParticao(parts: string[]): string {
+  const tempo = parts.find((p) => !["sigla_uf", "uf"].includes(p));
+  const lugar = parts.find((p) => ["sigla_uf", "uf"].includes(p));
+  return [tempo, lugar].filter(Boolean).map((p) => EXEMPLO[p!] ?? `${p} = ...`).join(" AND ");
+}
+
 /** Camada 5 — LIMIT em consulta não agregada. */
 function checaLimite(sql: string): Veredito {
   const upper = sql.toUpperCase();
-  const agrega = /\b(COUNT|SUM|AVG|MIN|MAX|GROUP\s+BY)\b/.test(upper);
+  const agrega = /\b(COUNT|SUM|AVG|MIN|MAX|GROUP\s+BY|DISTINCT)\b/.test(upper);
   if (agrega || /\bLIMIT\s+\d+/.test(upper)) return OK;
+  // Tabela pequena (o diretório de UFs, 27 linhas) já vem capada em 200 linhas
+  // por capRows; exigir LIMIT ali só custava um turno — medido duas vezes numa
+  // pergunta só em 2026-09-22.
+  const refs = tabelasCitadas(sql).filter((r) => r.includes("."));
+  if (refs.every((r) => (linhasDe(r) ?? Infinity) <= 100_000)) return OK;
   return {
     ok: false,
     camada: "limite",
@@ -221,6 +280,13 @@ function checaCodificacao(sql: string): Veredito {
   for (const col of CODIFICADAS) {
     const usaComparacao = new RegExp(`\\b${col}\\s*(=|IN)\\s*['"\\d(]`, "i").test(sql);
     const temDecode = new RegExp(`dicionario`, "i").test(sql);
+    // 2026-09-22: `sexo = '2'` na RAIS (2 = Feminino, certo) era recusado, e o
+    // modelo não tinha saída — descrever_tabela já mostra os códigos da tabela.
+    // Com dicionário conhecido, o literal passa se for chave válida; se não for,
+    // a recusa lista as válidas.
+    const conferido = usaComparacao && !temDecode ? literalConferido(sql, col) : undefined;
+    if (conferido === true) continue;
+    if (typeof conferido === "string") return { ok: false, camada: "codificacao", erro: conferido };
     if (usaComparacao && !temDecode) {
       return {
         ok: false,
@@ -233,6 +299,55 @@ function checaCodificacao(sql: string): Veredito {
     }
   }
   return OK;
+}
+
+/** true: todo literal comparado com `col` é chave do dicionário de cada tabela
+ *  citada que tem a coluna; string: a mensagem de recusa; undefined: sem dicionário. */
+function literalConferido(sql: string, col: string): true | string | undefined {
+  const tabelas = tabelasCitadas(sql).filter((t) => t.includes(".") && (colunasDe(t) ?? []).some((c) => c.name.toLowerCase() === col));
+  if (!tabelas.length) return undefined;
+  // Chaves conhecidas por tabela: o dicionário inteiro, ou os valores vistos
+  // (valores.ts) quando a coluna é texto sem dicionário ('Mulheres' no Censo).
+  const dics = tabelas.map((t) => {
+    const d = codigos(t, col);
+    if (d && d.total <= d.previa.length) return [t, d.previa] as const;
+    const v = valores(t, col);
+    return [t, v && !v.amostra ? v.lista.map((x) => [x, x] as [string, string]) : undefined] as const;
+  });
+  if (dics.every(([, d]) => !d)) return undefined;
+  const literais: string[] = [];
+  for (const m of sql.matchAll(new RegExp(`\\b${col}\\s*(?:=\\s*('[^']*'|\\d+)|IN\\s*\\(([^)]*)\\))`, "gi"))) {
+    const lista = m[1] ? [m[1]] : (m[2] ?? "").split(",");
+    for (const x of lista) literais.push(x.trim().replace(/^'|'$/g, ""));
+  }
+  const conhecidas = new Set(dics.flatMap(([, d]) => (d ?? []).map(([k]) => k)));
+  const ruins = literais.filter((l) => !conhecidas.has(l));
+  if (!ruins.length) return true;
+  if (dics.some(([, d]) => !d)) return undefined;
+  return `'${col}' não tem o código ${ruins.map((r) => `'${r}'`).join(", ")} em ${tabelas.join(", ")}. ` +
+    `Códigos válidos: ${dics.map(([t, d]) => `${t}: ${d!.map(([k, v]) => (k === v ? `'${k}'` : `'${k}'=${v}`)).join(", ")}`).join("; ")}.`;
+}
+
+/** SQL sem comentários: o modelo comenta em português ("junte com a tabela"), e
+ *  `FROM`/`JOIN` dentro do comentário virava tabela inexistente ('com'). */
+export function semComentarios(sql: string): string {
+  let out = "";
+  for (let i = 0; i < sql.length; i++) {
+    const c = sql[i]!;
+    if (c === "'" || c === '"') {
+      const fim = sql.indexOf(c, i + 1);
+      const j = fim < 0 ? sql.length : fim + 1;
+      out += sql.slice(i, j);
+      i = j - 1;
+    } else if (c === "-" && sql[i + 1] === "-") {
+      const fim = sql.indexOf("\n", i);
+      i = (fim < 0 ? sql.length : fim) - 1;
+    } else if (c === "/" && sql[i + 1] === "*") {
+      const fim = sql.indexOf("*/", i + 2);
+      i = (fim < 0 ? sql.length : fim + 2) - 1;
+    } else out += c;
+  }
+  return out;
 }
 
 /* ------------------------------------------------------------------ *
@@ -669,13 +784,30 @@ export function alertasDeSanidade(sql: string, linhas: Linha[]): string[] {
     );
   }
 
+  // Medido 2026-09-22 (duas vezes, mesmo com a regra no prompt): "IDEB do Brasil"
+  // respondido como AVG(ideb) das escolas — 4,15 contra o 3,9 oficial. Média de
+  // índices de unidades menores não é o índice do agregado, e o dataset já traz
+  // a tabela no nível pedido.
+  const fan = fanOut(sql);
+  if (fan) alertas.push(fan);
+
+  const agregadas = tabelasAgregadas(sql);
+  if (agregadas.length && /\bAVG\s*\(/i.test(sql)) {
+    alertas.push(
+      `Média (AVG) sobre tabela de unidade menor, e o dataset tem tabela já agregada: ${agregadas.join(", ")}. ` +
+      `Se a pergunta é sobre o Brasil, um estado ou uma região, leia o valor pronto dessa tabela — ` +
+      `a média dos índices de escolas ou municípios NÃO é o índice do agregado.`);
+  }
+
   const prim = linhas[0];
   if (!prim) return alertas;
 
   // Medido em 2026-09-01: o pipeline fixo respondeu 573 onde o total era 789 —
   // agrupou por sexo e reportou UM grupo como se fosse o total. É o erro que o
   // laço agêntico não pode repetir na prosa, e ele não custa nada de avisar.
-  if (linhas.length > 1 && /\bGROUP\s+BY\b/i.test(sql)) {
+  // Ranking explícito (ORDER BY ... LIMIT) já declara que quer grupos: o aviso
+  // ali só gastava tokens — disparou 9x numa pergunta de "qual município".
+  if (linhas.length > 1 && /\bGROUP\s+BY\b/i.test(sql) && !/\bORDER\s+BY\b[\s\S]*\bLIMIT\s+\d+/i.test(sql)) {
     const num = colunasNumericas(linhas);
     const alvo = num.find((k) => k.toLowerCase() === "n") ?? (num.length === 1 ? num[0] : undefined);
     const soma = alvo
@@ -738,7 +870,8 @@ export function portao(sql: string): Veredito {
   const leitura = checkReadOnly(sql);
   if (leitura) return { ok: false, camada: "read-only", erro: leitura };
 
-  for (const camada of [checaTabelas, checaInservivel, checaColunas, checaParticao, checaLimite, checaCodificacao, checaAno, checaAmostra]) {
+  // Aposentada antes de inexistente: a mensagem diz para onde o dado foi.
+  for (const camada of [checaInservivel, checaTabelas, checaColunas, checaParticao, checaLimite, checaCodificacao, checaAno, checaAmostra]) {
     const v = camada(sql);
     if (!v.ok) return v;
   }

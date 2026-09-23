@@ -65,8 +65,42 @@ export async function atualiza(): Promise<number> {
   return Object.keys(out).length;
 }
 
+/**
+ * Tabelas sem coluna `ano` que ainda assim têm o ano em outra coluna. Sem a
+ * faixa, `listar_tabelas` não mostrava que br_mc_indicadores termina em 2020 e
+ * o Novo Bolsa Família começa em 2023 — e o modelo não tinha como trocar de
+ * fonte. Acrescenta ao cache existente, sem refazer as ~400 de `ano`.
+ */
+const OUTRAS: [string, (c: string) => string][] = [
+  ["ano_referencia", (c) => c], ["ano_competencia", (c) => c], ["ano_emissao", (c) => c],
+  ["ano_mes", (c) => `CAST(substr(CAST(${c} AS VARCHAR), 1, 4) AS INTEGER)`],
+];
+
+export async function atualizaOutras(): Promise<number> {
+  const f = carrega();
+  let n = 0;
+  for (const e of catalogo()) {
+    const id = `${e.dataset}.${e.tabela}`;
+    if (f[id]) continue;
+    const nomes = new Set((colunasDe(id) ?? []).map((c) => c.name.toLowerCase()));
+    const achada = OUTRAS.find(([c]) => nomes.has(c));
+    if (!achada) continue;
+    const expr = achada[1](achada[0]);
+    const r = await runSqlSsh(`SELECT min(${expr}) AS lo, max(${expr}) AS hi FROM ${id}`);
+    const lo = Number(r.rows?.[0]?.lo), hi = Number(r.rows?.[0]?.hi);
+    if (r.error || !Number.isFinite(lo) || !Number.isFinite(hi)) { console.error(`${id}: ${r.error?.slice(0, 100) ?? "sem faixa"}`); continue; }
+    f[id] = { min: lo, max: hi };
+    n++;
+    console.error(`  ${id}: ${lo}–${hi}`);
+  }
+  writeFileSync(CACHE, JSON.stringify(f));
+  return n;
+}
+
 if (import.meta.main) {
-  if (Bun.argv.includes("--atualiza")) {
+  if (Bun.argv.includes("--outras")) {
+    console.log(`${await atualizaOutras()} tabelas acrescentadas -> harness/dados/anos.json`);
+  } else if (Bun.argv.includes("--atualiza")) {
     console.log(`${await atualiza()} tabelas com faixa de anos -> harness/dados/anos.json`);
   } else {
     const f = carrega();

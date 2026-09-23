@@ -12,11 +12,18 @@
  *
  * Espere ~5 a 10 min por pergunta. O tempo está no laço, não em uma consulta
  * lenta: são 8 e poucos turnos de modelo a ~9 t/s de geração.
+ *
+ * O turno degenerado do item 10 de `tasks/backlog.md` é repetido por
+ * `guarda.ts`, que fica entre o dsh e o llama-server. Repetir a pergunta
+ * inteira numa sessão dsh nova sobra só como última linha, para quando a
+ * guarda esgota as tentativas dela.
  */
 import { vivo } from "./modelo.ts";
+import { sobeGuarda, resumoGuarda } from "./guarda.ts";
 
 const RAIZ = new URL("..", import.meta.url).pathname;
 const PATCH = "harness/dsh/rodado.patch.yml";
+const MAX_TENTATIVAS = Number(Bun.env.HARNESS_TENTATIVAS ?? 3);
 
 const pergunta = Bun.argv.slice(2).join(" ").trim();
 if (!pergunta) {
@@ -37,17 +44,39 @@ if (!await vivo()) {
   process.exit(1);
 }
 
+async function tenta(): Promise<{ code: number; texto: string }> {
+  const proc = Bun.spawn(["bunx", "dsh", "--profile", "headless", "--patch", PATCH, pergunta], {
+    cwd: RAIZ,
+    // O llama-server ignora o valor, mas o pi-ai exige a referência: sem ela o
+    // boot morre com "No API key for provider".
+    env: { ...process.env, HARNESS_LLM_KEY: process.env.HARNESS_LLM_KEY ?? "nao-usada", HARNESS_LLM_URL: guarda.url, HARNESS_PERGUNTA: pergunta },
+    stdout: "pipe",
+    stderr: "inherit",
+    timeout: Number(Bun.env.HARNESS_TIMEOUT_MS ?? 2_400_000),
+    killSignal: "SIGKILL",
+  });
+  // "pipe" em vez de "inherit" só para poder medir se saiu algo — o texto
+  // ainda vai pro terminal em tempo real, igual antes.
+  const decoder = new TextDecoder();
+  const pedacos: string[] = [];
+  for await (const pedaco of proc.stdout) {
+    const s = decoder.decode(pedaco, { stream: true });
+    process.stdout.write(s);
+    pedacos.push(s);
+  }
+  const code = await proc.exited;
+  return { code, texto: pedacos.join("") };
+}
+
+const guarda = sobeGuarda();
 const t0 = Date.now();
-const proc = Bun.spawn(["bunx", "dsh", "--profile", "headless", "--patch", PATCH, pergunta], {
-  cwd: RAIZ,
-  // O llama-server ignora o valor, mas o pi-ai exige a referência: sem ela o
-  // boot morre com "No API key for provider".
-  env: { ...process.env, HARNESS_LLM_KEY: process.env.HARNESS_LLM_KEY ?? "nao-usada" },
-  stdout: "inherit",
-  stderr: "inherit",
-  timeout: Number(Bun.env.HARNESS_TIMEOUT_MS ?? 2_400_000),
-  killSignal: "SIGKILL",
-});
-const code = await proc.exited;
-console.error(`\n[${((Date.now() - t0) / 60000).toFixed(1)} min]`);
-process.exit(code);
+let resultado = await tenta();
+let tentativas = 1;
+while (resultado.texto.trim().length <= 40 && tentativas < MAX_TENTATIVAS) {
+  tentativas++;
+  console.error(`\n(vazio — tentativa ${tentativas}/${MAX_TENTATIVAS}, workaround do item 10)\n`);
+  resultado = await tenta();
+}
+console.error(`\n[${((Date.now() - t0) / 60000).toFixed(1)} min] ${resumoGuarda(guarda.stats)}`);
+guarda.para();
+process.exit(resultado.code);

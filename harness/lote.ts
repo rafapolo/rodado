@@ -20,7 +20,9 @@ import {
   avisaPrefill, marcaDoLog, prefillsDesde, LIMIAR_PREFILL, confereBoot,
   type ConfigServidor,
 } from "./acerto.ts";
+import { sobeGuarda, resumoGuarda, type Estatistica } from "./guarda.ts";
 
+const RAIZ = new URL("..", import.meta.url).pathname;
 const PATCH = "harness/dsh/rodado.patch.yml";
 
 export interface Saida {
@@ -39,6 +41,8 @@ export interface Saida {
   prefillMax?: number;
   /** quantas vezes o caso foi tentado — 1 é o normal; >1 é o workaround do item 10 agindo */
   tentativas: number;
+  /** turnos repetidos/resgatados por guarda.ts, somados entre as tentativas */
+  guarda?: Estatistica;
 }
 
 /** Arquivo de saída — o tempo sem a config que o produziu não é comparável. */
@@ -64,6 +68,7 @@ interface Tentativa {
   respondeu: boolean;
   prefillMax?: number;
   semLog: boolean;
+  guarda: Estatistica;
 }
 
 /**
@@ -85,11 +90,13 @@ async function rodaUmaVez(q: string): Promise<Tentativa> {
   // O prefill não volta pelo stdout do dsh — cada pergunta é outro processo.
   // A marca no log do llama-server é o que sobra para saber se o cache viveu.
   const marca = await marcaDoLog();
+  const guarda = sobeGuarda();
   const t0 = Date.now();
   const p = Bun.spawn(
     ["bunx", "dsh", "--profile", "headless", "--patch", PATCH, q],
     {
-      env: { ...process.env, HARNESS_LLM_KEY: "x" },
+      cwd: RAIZ,
+      env: { ...process.env, HARNESS_LLM_KEY: "x", HARNESS_LLM_URL: guarda.url, HARNESS_PERGUNTA: q },
       stdout: "pipe", stderr: "pipe",
       timeout: 2_400_000, killSignal: "SIGKILL",
     },
@@ -97,13 +104,14 @@ async function rodaUmaVez(q: string): Promise<Tentativa> {
   const texto = await new Response(p.stdout).text();
   const err = await new Response(p.stderr).text();
   const code = await p.exited;
+  guarda.para();
   const seg = (Date.now() - t0) / 1000;
   const resposta = (texto.trim() || err.trim()).slice(0, 4000);
   const respondeu = code === 0 && texto.trim().length > 40;
 
   const prefills = await prefillsDesde(marca);
   const prefillMax = prefills?.length ? Math.max(...prefills) : undefined;
-  return { resposta, segundos: seg, respondeu, prefillMax, semLog: prefills === undefined };
+  return { resposta, segundos: seg, respondeu, prefillMax, semLog: prefills === undefined, guarda: guarda.stats };
 }
 
 export async function roda(casos: Caso[]): Promise<Saida[]> {
@@ -115,6 +123,7 @@ export async function roda(casos: Caso[]): Promise<Saida[]> {
     let tentativas = 1;
     let segundos = tentativa.segundos;
     let prefillMax = tentativa.prefillMax;
+    const guarda: Estatistica = { ...tentativa.guarda };
     // Retentativa: só quando o dsh terminou sem produzir NADA (item 10) — uma
     // resposta que veio, mesmo errada, não se repete: é erro de raciocínio,
     // não do bug de parsing, e repetir esconderia o número real de acerto.
@@ -124,6 +133,8 @@ export async function roda(casos: Caso[]): Promise<Saida[]> {
       tentativa = await rodaUmaVez(q);
       segundos += tentativa.segundos;
       prefillMax = Math.max(prefillMax ?? 0, tentativa.prefillMax ?? 0) || undefined;
+      for (const k of ["turnos", "repetidos", "resgatados", "perdidos"] as const) guarda[k] += tentativa.guarda[k];
+      guarda.contextoMax = Math.max(guarda.contextoMax, tentativa.guarda.contextoMax);
     }
     if (tentativa.semLog && !semLog) {
       semLog = true;
@@ -136,13 +147,14 @@ export async function roda(casos: Caso[]): Promise<Saida[]> {
       ? undefined
       : respondeu && a.certo;
 
-    out.push({ pergunta: q, resposta, segundos, respondeu, correto, esperado: caso.esperado, eco: a.eco || undefined, prefillMax, tentativas });
+    out.push({ pergunta: q, resposta, segundos, respondeu, correto, esperado: caso.esperado, eco: a.eco || undefined, prefillMax, tentativas, guarda });
     const marcaLinha = a.eco ? "ECO " : correto === false ? "ERRO" : correto === true ? " ok " : respondeu ? " ?  " : "  -- ";
     const sufixoTentativas = tentativas > 1 ? ` (${tentativas} tentativas)` : "";
     console.log(`${marcaLinha} ${i + 1}/${casos.length}  ${segundos.toFixed(0)}s${sufixoTentativas}  ${q.slice(0, 58)}`);
     if (a.eco) console.log(`      esperado ${caso.esperado} aparece na própria pergunta — caso fora do denominador`);
     else if (correto === false) console.log(`      esperava ${caso.esperado} | veio: ${resposta.replace(/\s+/g, " ").slice(0, 130)}`);
     else if (!respondeu) console.log(`      (vazio após ${tentativas} tentativas)`);
+    console.log(`      ${resumoGuarda(guarda)}`);
 
     // O primeiro caso prefila o prefixo inteiro por definição — acusá-lo seria
     // ruído garantido. Do segundo em diante, prefill de tamanho de prefixo é
@@ -205,7 +217,7 @@ if (import.meta.main) {
 
   // formato: pergunta [TAB] valor esperado (opcional) — o que `casos.ts --tsv` emite
   const casos: Caso[] = (await Bun.file(arquivo).text()).split("\n")
-    .map((l) => l.trim()).filter(Boolean)
+    .map((l) => l.trim()).filter((l) => l && !l.startsWith("#"))
     .map((l) => { const [p, e] = l.split("\t"); return { pergunta: p!.trim(), esperado: e?.trim() }; });
   const config = await configServidor();
   console.log(`${casos.length} perguntas pelo dsh — ${rotuloConfig(config)}`);
@@ -227,7 +239,7 @@ if (import.meta.main) {
   const piorPrefill = Math.max(0, ...r.slice(1).map((x) => x.prefillMax ?? 0));
   if (piorPrefill) console.log(`PIOR PREFILL após o aquecimento: ${piorPrefill} tokens (limiar ${LIMIAR_PREFILL})`);
   console.log("=".repeat(56));
-  const saida = `benchmarks/lote_${new Date().toISOString().slice(0, 16).replace(/[:T]/g, "")}.json`;
+  const saida = `${RAIZ}harness/benchmarks/lote_${new Date().toISOString().slice(0, 16).replace(/[:T]/g, "")}.json`;
   const rodada: Rodada = { gerado: new Date().toISOString(), config, casos: r };
   writeFileSync(saida, JSON.stringify(rodada, null, 1));
   console.log(`\ndetalhe em ${saida}`);

@@ -10,6 +10,8 @@ import { readFileSync } from "node:fs";
 const HOST = Bun.env.BEELINK_HOST ?? "beelink";
 const DUCKDB_BIN = Bun.env.ASK_WEB_DUCKDB_BIN ?? "~/bin/duckdb";
 const DUCKDB_PATH = Bun.env.ASK_WEB_DUCKDB_PATH ?? "~/rodado/basedosdados.duckdb";
+const MEMORIA = Bun.env.HARNESS_DUCKDB_MEM ?? "3GB";
+const THREADS = Number(Bun.env.HARNESS_DUCKDB_THREADS ?? 4);
 const TIMEOUT_MS = Number(Bun.env.ASK_WEB_TIMEOUT_MS ?? 120_000);
 
 export interface SqlResult {
@@ -29,7 +31,13 @@ export async function runSqlSsh(sql: string): Promise<SqlResult> {
   // O ~/.duckdbrc do beelink liga enable_progress_bar, e a barra vai pro stdout
   // em qualquer consulta que passe de ~2s — corrompendo o -json. Desligar por
   // sessão não toca no arquivo em disco.
-  const stdin = `SET enable_progress_bar=false;\n${sql}`;
+  //
+  // Teto de memória: o llama-server divide a máquina (23 de 27 GB) e o padrão
+  // do DuckDB é 80% da RAM. Um GROUP BY grande sem teto põe o OOM killer para
+  // escolher, e ele escolhe o maior processo — o modelo, no meio da pergunta.
+  const stdin =
+    `SET enable_progress_bar=false;\n` +
+    `SET memory_limit='${MEMORIA}';\nSET threads=${THREADS};\nSET temp_directory='/tmp/duckdb_harness';\n${sql}`;
 
   let proc;
   try {
@@ -73,8 +81,34 @@ export async function runSqlSsh(sql: string): Promise<SqlResult> {
   try {
     return { rows: JSON.parse(out) };
   } catch {
-    return { error: `Resposta não-JSON do beelink: ${out.slice(0, 2000)}` };
+    // O -json do DuckDB escreve NaN e Infinity crus (corr() num grupo constante),
+    // que não são JSON. Medido 2026-09-22: a consulta inteira virou "Falhou" e o
+    // modelo respondeu lendo o texto do erro.
+    try {
+      return { rows: JSON.parse(semNaoNumeros(out)) };
+    } catch {
+      return { error: `Resposta não-JSON do beelink: ${out.slice(0, 2000)}` };
+    }
   }
+}
+
+/** NaN/Infinity fora de string viram null. */
+export function semNaoNumeros(json: string): string {
+  let out = "";
+  for (let i = 0; i < json.length; i++) {
+    const c = json[i]!;
+    if (c === '"') {
+      let j = i + 1;
+      while (j < json.length && json[j] !== '"') j += json[j] === "\\" ? 2 : 1;
+      out += json.slice(i, j + 1);
+      i = j;
+      continue;
+    }
+    const m = /^(-?Infinity|NaN)\b/.exec(json.slice(i, i + 9));
+    if (m) { out += "null"; i += m[1]!.length - 1; continue; }
+    out += c;
+  }
+  return out;
 }
 
 // Palavras que podem seguir legitimamente uma referência de tabela — qualquer

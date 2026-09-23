@@ -24,7 +24,9 @@
         # O llama-server escuta em 127.0.0.1 no beelink — de propósito, para não
         # expor inferência na rede. Do mac, abra o túnel antes de rodar o dsh:
         #     ssh -f -N -L 8099:127.0.0.1:8099 beelink
-        baseURL: http://127.0.0.1:8099/v1
+        # Sem HARNESS_LLM_URL vai direto ao llama-server. pergunte.ts/lote.ts
+        # apontam para harness/guarda.ts, que repete o turno degenerado.
+        baseURL: !!js process.env.HARNESS_LLM_URL ?? 'http://127.0.0.1:8099/v1'
         models:
           - id: gemma-4-26B-A4B-it-qat
             name: Gemma 4 26B-A4B q4_0 QAT
@@ -123,6 +125,24 @@
 - id: tool-goal
   disabled: true
 
+# --- corta contexto que não é do harness -------------------------------------
+# Medido 2026-09-22 com o /tokenize do próprio llama-server, no 1º turno real:
+# 9.475 tokens de prompt, dos quais 8.424 (89%) eram o CLAUDE.md da raiz do
+# repo, injetado pelo agent-instructions — instruções para o Claude Code
+# (BigQuery, regen de schema, ferramentas do mcp_server.py que este servidor
+# MCP não tem). As ferramentas de verdade somam 726. O contexto é o gargalo
+# (throughput cai ~3x entre 2k e 18k), e os turnos que degeneraram estavam em
+# ~17,6k. `maxBytes: 0` desliga o plugin inteiro (README dele).
+- id: agent-instructions
+  config:
+    maxBytes: 0
+# Uma chamada extra ao mesmo llama-server (1 slot) só para dar título à sessão.
+- id: session-title-llm
+  disabled: true
+# Acrescenta a ferramenta exit_plan_mode, que o laço sem humano nunca usa.
+- id: plan-mode
+  disabled: true
+
 # --- a prosa cita o órgão, não a ferramenta ----------------------------------
 # backlog.md item 3. A convenção de pages/analises/results/ é citar o ÓRGÃO de
 # origem do dado (Ministério da Saúde/SIM, IBGE, RAIS...) — nunca a tabela, o
@@ -132,15 +152,7 @@
 # do portão de SQL: a rejeição volta como resultado de ferramenta.
 - id: system-prompt
   config:
-    persona: >-
-      Você apura dados públicos brasileiros pelo espelho do projeto rodado,
-      usando as ferramentas do servidor MCP "rodado". Você opera sozinho, sem
-      humano disponível para aprovar passos — NUNCA pare a resposta num plano
-      de investigação esperando confirmação ("aguardando aprovação",
-      "próximo passo: executar..."). Execute as consultas direto, uma após a
-      outra, até ter o número final; um plano sem execução não é resposta.
-      Escreva a resposta final em português, citando o ÓRGÃO de origem do
-      dado (ex.: Ministério da Saúde/SIM, IBGE, RAIS/CAGED do Ministério do
-      Trabalho) — NUNCA o nome da tabela, do dataset ou o SQL usado. Antes de
-      responder ao usuário, chame a ferramenta revisar_resposta com o
-      parágrafo pronto; só entregue a resposta depois que ela aprovar.
+    # Gerado por harness/persona.ts (papel + como trabalhar + o catálogo com as
+    # pistas de irmão). Lido do arquivo porque o `!!js` só avalia expressão
+    # síncrona; `bun harness/persona.ts --confere` acusa quando está velho.
+    persona: !!js process.getBuiltinModule('node:fs').readFileSync(process.env.HARNESS_PERSONA ?? 'harness/dsh/persona.md', 'utf8')

@@ -153,6 +153,53 @@ Duas dessas ferramentas eram um buraco, não só peso: o modelo descobriu a `bas
 e escreveu `ssh beelink '~/bin/duckdb ...'` direto, **passando por cima do portão
 inteiro**. Todo o trabalho de validação vira decoração se o modelo tem shell.
 
+**2026-09-22, o que o prompt tinha virado.** Medido com o `/tokenize` do próprio
+servidor no 1º turno real: 9.475 tokens, dos quais **8.424 (89%) eram o
+`CLAUDE.md` da raiz**, injetado pelo plugin `agent-instructions` do dsh —
+instruções para o Claude Code, com ferramentas que este servidor MCP nem tem.
+Desligado (`maxBytes: 0` no patch), junto com o título de sessão por LLM e o
+`plan-mode`. No lugar entrou o que o modelo usa: `dsh/persona.md` (papel, como
+trabalhar e o catálogo com as pistas de irmão, 3,5 mil tokens, no prefixo
+cacheado). O contexto máximo por pergunta caiu de ~19k para ~5–9k, e os turnos
+que degeneravam estavam todos acima de 17k.
+
+As saídas das ferramentas também encolheram (`formato.ts`): a descrição de uma
+tabela larga resume as colunas por prefixo e lista por inteiro só as que decidem
+a SQL (partição, chave, codificadas) — `escola` caiu de 5.660 para 1.841 tokens,
+com `filtro` para abrir um grupo —, e o resultado de `consultar` vai como tabela
+de texto em vez de JSON com a chave repetida em cada linha.
+
+## A guarda
+
+O item 10 de `tasks/backlog.md` — o turno que "volta vazio" e mata a sessão
+inteira — foi visto no byte bruto em 2026-09-22 (log verboso do llama-server).
+Não é um parser engolindo a chamada: o Gemma decodifica **3 tokens**,
+`<|channel>` `thought` `<tool_call|>` (a tag de fechamento, sem abertura), e
+para em EOS. Não há chamada nenhuma a resgatar. O upstream `f072b10`
+(PR #29115, conserto da gramática de tool call do Gemma 4) foi aplicado no
+beelink e **não muda isso** — reproduziu igual depois do rebuild.
+
+`guarda.ts` fica entre o dsh e o llama-server (`HARNESS_LLM_URL`, que
+`pergunte.ts` e `lote.ts` apontam para ela):
+
+- segura os pedaços do turno até aparecer `content` não vazio ou `tool_calls` —
+  com o raciocínio desligado, um turno saudável sempre produz um dos dois;
+- se o turno termina sem nenhum, **repete a mesma requisição**. O prefixo já está
+  no cache do servidor, então repetir custa segundos, não os 5–7 min de uma
+  sessão nova (o workaround anterior, em `lote.ts`, que continua como última linha);
+- se o pensamento contém uma chamada inteira (`<|tool_call>call:nome{...}<tool_call|>`,
+  os casos 4/6 do item 10), extrai e devolve como `tool_calls`.
+
+- da 2ª tentativa em diante, **proíbe `<|channel>`** (token 100, `logit_bias`):
+  todo turno degenerado começa por ele e, com o raciocínio desligado, o modelo
+  nunca precisa gerá-lo. Repetir a requisição idêntica às vezes caía no mesmo
+  caminho 4 vezes seguidas.
+
+Em 144 perguntas medidas (1.024 turnos): 47 turnos repetidos (4,6%), 4
+resgatados, 4 perdidos — todos antes da proibição do `<|channel>` entrar, e as
+duas perguntas afetadas terminaram certas na sessão nova. Nenhuma ficou sem
+resposta. Detalhe em [`tasks/avaliacao_diretas.md`](tasks/avaliacao_diretas.md).
+
 ## Módulos
 
 | Arquivo | Papel |
@@ -164,7 +211,15 @@ inteiro**. Todo o trabalho de validação vira decoração se o modelo tem shell
 | `metricas.ts` | os 12 cálculos verificados de `metrics.yaml` — busca exata por nome ou sinônimo, nunca por similaridade |
 | `anos.ts` | faixa de anos por tabela (377 cacheadas) |
 | `pontes.ts` | dicas de join das pontes conferidas de `bridges.yaml` |
-| `mcp.ts` | servidor MCP: 5 ferramentas, o portão entre elas |
+| `mcp.ts` | servidor MCP: 6 ferramentas, o portão entre elas |
+| `guarda.ts` | proxy entre o dsh e o llama-server: repete o turno degenerado e resgata a chamada presa no pensamento (ver "A guarda") |
+| `persona.ts` | gera `dsh/persona.md`, o system prompt do laço; `--confere` acusa quando está velho |
+| `dicionarios.ts` | o significado dos códigos (`'2'=Rural`) ao lado da coluna, de `{dataset}.dicionario`. Cache em `dados/dicionarios.json`; `--atualiza` |
+| `valores.ts` | os valores reais das colunas de texto sem dicionário (`'estadual'`, `'prefeito'`), calculados na 1ª descrição e guardados em `dados/valores.json` |
+| `semantica.ts` | notas curadas (`dados/notas.json`), o cálculo verificado da tabela (`metrics.yaml`) e as tabelas reais mais parecidas com um nome inventado |
+| `recortes.ts` | ano, estado e bioma que a pergunta nomeia — `revisar_resposta` recusa quando nenhuma SQL executada os aplicou |
+| `formato.ts` | como as ferramentas escrevem para o modelo: descrição compacta, resultado em tabela de texto |
+| `sessao.ts` | lê uma sessão do dsh como transcrição (cada chamada, a SQL inteira, o resultado) |
 | `laco.ts` | o pipeline fixo — **não é caminho de produção** (0/3 contra 3/3 do agêntico). Sobrevive por um motivo nomeado: é o esqueleto do experimento DuckDB-NSQL-7B de `tasks/check-qwencoder-vs-duckdbnsql.md`, que precisa de um apurador sem agente e sem MCP. Se aquele experimento fechar sem usá-lo, remover — a comparação que ele provou já está registrada aqui e em `tasks/regras.md`, e o código sai por `git show` |
 | `lote.ts` / `compara.ts` | benchmark de perguntas abertas |
 
@@ -188,10 +243,12 @@ volta ao `ask-web`**.
 bun harness/pergunte.ts "Quantos óbitos por suicídio houve no RJ em 2020, por sexo?"
 ```
 
-Sai a resposta em prosa, com os números que o modelo apurou. Espere **~5 a 10
-min**: o tempo está no laço agêntico (uns 8 turnos de modelo a ~9 t/s), não numa
-consulta lenta. Se o `llama-server` não estiver de pé, o comando diz exatamente o
-que subir.
+Sai a resposta em prosa, com os números que o modelo apurou. Pergunta direta
+leva **~1 a 2 min** (medido em 2026-09-22 nas 42 de
+[`tasks/avaliacao_diretas.md`](tasks/avaliacao_diretas.md); eram 5–10 min antes
+do corte de contexto); pergunta de pesquisa, cruzando três ou quatro fontes,
+~10 min. Se o `llama-server` não estiver de pé, o comando diz exatamente o que
+subir. Para ver o que o modelo fez: `bun harness/sessao.ts`.
 
 Passa pelo caminho agêntico de propósito — ver a comparação acima.
 
@@ -225,7 +282,7 @@ O modelo é servido pelo `llama-server` no beelink:
 
 ```bash
 llama-server -m ~/llm/gemma-4-26B_q4_0-it.gguf \
-  -t 8 -c 32768 -np 1 \
+  -t 8 -c 32768 -np 1 --cache-ram 1024 \
   --chat-template-kwargs '{"enable_thinking":false}' \
   --host 127.0.0.1 --port 8099
 ```
@@ -242,6 +299,9 @@ Cada flag aí é uma medição, não gosto:
   Medido: 20,9 s → 4,7 s por turno de tool calling, com o tool call intacto.
 - **sem `-ctk/-ctv q8_0`**: KV quantizado sai caro em CPU — desquantizar a cada
   operação de atenção domina o que economiza em banda. Prefill 15,8 → 50,5 t/s.
+- **`--cache-ram 1024`**: o padrão (8 GiB de conversas guardadas na RAM do host)
+  levou o servidor ao OOM killer em 2026-09-22 — ver `tasks/operacao.md`,
+  "Memória do beelink". O binário é o do llama.cpp `f072b10`.
 
 Do mac, abra o túnel antes (o servidor escuta só em loopback, de propósito):
 
