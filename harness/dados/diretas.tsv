@@ -1,0 +1,39 @@
+# Perguntas diretas com gabarito conferido no beelink em 2026-09-22 (DuckDB
+# -readonly), cada uma por duas vias quando a tabela permitiu, e contra o número
+# oficial publicado quando havia um. Formato: pergunta <TAB> esperado, onde o
+# esperado aceita alternativas (a|b), tolerância (~0,5% ou ~0,02) e texto.
+#
+# suicídio RJ 2020: substr(causa_basica,1,3) BETWEEN 'X60' AND 'X84' e regexp — 789 nas duas
+# PIB per capita MG 2020: SUM(pib)/SUM(populacao) = 32.066,73 (metrics.yaml); média dos municípios daria 23.704,50, por isso "do estado"
+# nascidos vivos 2021: count(*) SINASC, total e por UF somado — 2.677.097 (DATASUS publica ~2.677.101)
+# CAGED 2023: SUM(saldo_movimentacao) por município — 3550308 São Paulo, +136.109
+# escolas rurais BA 2023: tipo_localizacao='2' AND tipo_situacao_funcionamento='1' — 7.422 (10.144 sem filtrar situação)
+# BH 2021: br_ibge_populacao.municipio — 2.530.701 (estimativa IBGE)
+# homicídio 2019: X85–Y09, por BETWEEN e por partes — 44.033
+# PRODES: municipio_bioma.desmatado é estoque acumulado; Amazônia 2022 = 767.679,6 km²
+# queimadas PA 2020: 38.603 (INPE, satélite de referência)
+# PSD 2020: 657 em eleição ordinária, 664 com suplementares (663 municípios distintos); TSE divulgou 654 após o 2º turno
+# IDEB 2019 anos iniciais rede pública: 5,7 (oficial)
+# Bolsa Família CE mar/2024: 1.441.716 NIS distintos, 1.455.369 pagamentos
+# gasolina SP 2023: AVG(preco_venda) produto='Gasolina' — R$ 5,37 por duas vias
+# RAIS AC 2021: vinculo_ativo_3112='1' — 142.490, total e por tipo_vinculo somado
+# ENEM 2022 matemática: 542,5 (oficial INEP)
+# cesárea 2021: tipo_parto='2' — 57,0% (com ou sem os ignorados)
+# CAPS dez/2023: tipo_unidade='70', id_estabelecimento_cnes distintos — 3.394
+Quantos óbitos por suicídio houve no estado do Rio de Janeiro em 2020?	789
+Qual foi o PIB per capita do estado de Minas Gerais em 2020?	32066,73~0,5%
+Quantos nascidos vivos foram registrados no Brasil em 2021?	2677097~0,2%
+Qual município teve o maior saldo de empregos formais no CAGED em 2023?	São Paulo
+Quantas escolas rurais em atividade havia na Bahia em 2023, segundo o Censo Escolar?	7422
+Qual era a população estimada de Belo Horizonte em 2021?	2530701~0,1%
+Quantos óbitos por agressão (homicídios, CID-10 X85 a Y09) houve no Brasil em 2019?	44033
+Qual era a área total desmatada acumulada na Amazônia até 2022, segundo o PRODES?	767679,6~0,5%
+Quantos focos de queimada foram registrados no Pará em 2020?	38603
+Quantos prefeitos o PSD elegeu em 2020?	657|663|664|654
+Qual foi o IDEB dos anos iniciais do ensino fundamental da rede pública do Brasil em 2019?	5,7
+Quantas famílias receberam o Bolsa Família no Ceará em março de 2024?	1441716~0,5%|1455369~0,5%
+Qual foi o preço médio de venda da gasolina comum no estado de São Paulo em 2023, segundo a ANP?	5,37~0,02
+Quantos vínculos de emprego formal estavam ativos em 31 de dezembro de 2021 no Acre, segundo a RAIS?	142490~0,2%
+Qual foi a nota média de matemática no ENEM 2022?	542,5~0,1
+Qual foi o percentual de partos cesáreos entre os nascidos vivos no Brasil em 2021?	57~0,5
+Quantos estabelecimentos do tipo CAPS (Centro de Atenção Psicossocial) estavam cadastrados no CNES em dezembro de 2023?	3394~1%

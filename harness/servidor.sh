@@ -25,6 +25,16 @@ BIN="${BIN:-~/llama.cpp/build/bin/llama-server}"
 # pensamento a ~13 t/s e estoura — o histórico do harness é 20,9 s contra 4,7 s.
 # 10.000 ms deixa 19x de folga para o caso bom e ainda pega o caso ruim.
 LIMIAR_MS="${LIMIAR_MS:-10000}"
+# Teto do cache de prompts em RAM do host (padrão do llama-server: 8192 MiB).
+# 2026-09-22: o OOM killer matou o servidor (23 GB de RSS, 27 GB na máquina,
+# swap cheia) ao guardar uma conversa de 19k tokens (576 MiB) quando o prefixo
+# mudou. Com 1 slot e o mesmo prefixo de sistema+ferramentas entre perguntas, o
+# slot já reaproveita o prefixo sozinho; o cache no host só guardava conversas
+# velhas que nunca voltam. O beelink também roda o DuckDB das consultas.
+CACHE_RAM="${CACHE_RAM:-1024}"
+# O commit que as medições de tasks/tool_call_gramatica.md usam. f072b10 traz o
+# conserto upstream da gramática de tool call do Gemma 4 (PR #29115).
+LLAMA_COMMIT="${LLAMA_COMMIT:-f072b10}"
 
 estado() {
   local cfg
@@ -32,6 +42,9 @@ estado() {
   if [[ -z "$cfg" ]]; then echo "  servidor: parado"; else
     echo "  servidor: $(echo "$cfg" | grep -oE '\-c [0-9]+ -np [0-9]+' || echo '?')"
     echo "  saúde:    $(ssh "$HOST" "curl -s -m 3 http://127.0.0.1:$PORTA/health" 2>/dev/null || echo inalcançável)"
+    local commit
+    commit=$(ssh "$HOST" "git -C ~/llama.cpp rev-parse --short HEAD" 2>/dev/null || echo "?")
+    echo "  llama.cpp: $commit$([[ "$commit" == "$LLAMA_COMMIT"* ]] || echo "  (AVISO: esperado $LLAMA_COMMIT)")"
   fi
   if curl -s -m 3 "http://127.0.0.1:$PORTA/health" >/dev/null 2>&1; then
     echo "  túnel:    aberto"
@@ -161,11 +174,11 @@ FLAG_TEMP=""
 FLAG_LOG=""
 [[ "${LOGPROMPTS:-0}" == "1" ]] && FLAG_LOG="--verbose --log-prompts-dir /tmp/llmlogs"
 
-echo "subindo: -c $CTX -np $SLOTS  (thinking off, KV em f16)${FLAG_JINJA:+, $FLAG_JINJA}${FLAG_TEMP:+, $FLAG_TEMP}${FLAG_LOG:+, $FLAG_LOG}"
+echo "subindo: -c $CTX -np $SLOTS --cache-ram $CACHE_RAM  (thinking off, KV em f16)${FLAG_JINJA:+, $FLAG_JINJA}${FLAG_TEMP:+, $FLAG_TEMP}${FLAG_LOG:+, $FLAG_LOG}"
 [[ -n "$FLAG_LOG" ]] && ssh "$HOST" "mkdir -p /tmp/llmlogs"
 # Cada flag é medida, não gosto — ver harness/README.md.
 ssh "$HOST" "setsid $BIN -m $MODELO \
-  -t 8 -c $CTX -np $SLOTS $FLAG_JINJA $FLAG_TEMP $FLAG_LOG \
+  -t 8 -c $CTX -np $SLOTS --cache-ram $CACHE_RAM $FLAG_JINJA $FLAG_TEMP $FLAG_LOG \
   --chat-template-kwargs '{\"enable_thinking\":false}' \
   --host 127.0.0.1 --port $PORTA < /dev/null > /tmp/srv.log 2>&1 & disown" || true
 

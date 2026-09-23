@@ -118,3 +118,31 @@ describe("prefill", () => {
     expect(extraiPrefills(log)).toEqual([101, 177]);
   });
 });
+
+describe("gabarito rico", () => {
+  test("alternativas", () => {
+    expect(avalia("o PSD elegeu 664 prefeitos", "657|664|654").certo).toBe(true);
+    expect(avalia("o PSD elegeu 600 prefeitos", "657|664|654").certo).toBe(false);
+  });
+  test("tolerância relativa aceita arredondamento", () => {
+    expect(avalia("PIB per capita de R$ 32.067", "32066,73~0,5%").certo).toBe(true);
+    expect(avalia("cerca de 1,44 milhão de famílias", "1441716~0,5%").certo).toBe(true);
+    expect(avalia("cerca de 1,2 milhão de famílias", "1441716~0,5%").certo).toBe(false);
+  });
+  test("tolerância absoluta e decimal com ponto", () => {
+    expect(avalia("R$ 5,37 por litro", "5,37~0,02").certo).toBe(true);
+    expect(avalia("R$ 5.37 por litro", "5,37~0,02").certo).toBe(true);
+    expect(avalia("R$ 5,47 por litro", "5,37~0,02").certo).toBe(false);
+  });
+  test("texto, sem acento nem caixa", () => {
+    expect(avalia("O maior saldo foi de SAO PAULO (SP).", "São Paulo").certo).toBe(true);
+    expect(avalia("O maior saldo foi do Rio de Janeiro.", "São Paulo").certo).toBe(false);
+  });
+  test("número sem ~ continua exato", () => {
+    expect(avalia("foram 790 óbitos", "789").certo).toBe(false);
+  });
+  test("eco considera todas as alternativas numéricas", () => {
+    expect(casoEcoa("Em 2021, quantos?", "2021")).toBe(true);
+    expect(casoEcoa("Em 2021, quantos?", "2021|57")).toBe(false);
+  });
+});

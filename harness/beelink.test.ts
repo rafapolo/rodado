@@ -49,3 +49,9 @@ test("needsParquetFallback reconhece so os erros de catalogo/S3", () => {
   expect(needsParquetFallback("... s3://baseldosdados/x ...")).toBe(true);
   expect(needsParquetFallback("Binder Error: coluna inexistente")).toBe(false);
 });
+
+import { semNaoNumeros } from "./beelink.ts";
+test("NaN e Infinity do -json do DuckDB viram null, sem tocar em string", () => {
+  const cru = '[{"uf":"AC","corr":NaN,"x":-Infinity,"y":Infinity,"t":"NaN no texto","z":0.4}]';
+  expect(JSON.parse(semNaoNumeros(cru))).toEqual([{ uf: "AC", corr: null, x: null, y: null, t: "NaN no texto", z: 0.4 }]);
+});

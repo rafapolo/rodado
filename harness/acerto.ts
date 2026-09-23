@@ -106,21 +106,73 @@ export function avalia(
   esperado?: string,
   pergunta?: string,
 ): Acerto {
-  const alvo = esperado ? normalizaNumero(esperado.trim()) : undefined;
-  if (alvo === undefined) {
-    return { veredito: "sem_gabarito", certo: false, eco: false, achados: [] };
-  }
-  const eco = pergunta ? numeros(pergunta).includes(alvo) : false;
+  const as = esperado ? alvos(esperado) : [];
+  if (!as.length) return { veredito: "sem_gabarito", certo: false, eco: false, achados: [] };
+  const nums = as.filter((a): a is AlvoNum => a.tipo === "num");
+  const alvo = nums[0]?.valor;
+  const eco = pergunta !== undefined && nums.length === as.length &&
+    nums.every((a) => numeros(pergunta).includes(a.valor));
   const achados = numeros(resposta);
   if (eco) return { veredito: "eco", certo: false, eco: true, alvo, achados };
-  const certo = achados.includes(alvo);
+  const cands = candidatos(resposta);
+  const texto = semAcento(resposta);
+  const certo = as.some((a) => {
+    if (a.tipo === "texto") return texto.includes(semAcento(a.valor));
+    if (!a.tol) return achados.includes(a.valor);
+    const margem = a.relativo ? a.tol * Math.abs(a.valor) : a.tol;
+    return cands.some((c) => Math.abs(c - a.valor) <= margem + 1e-9);
+  });
   return { veredito: certo ? "certo" : "errado", certo, eco: false, alvo, achados };
 }
 
+/**
+ * Gabarito rico, para perguntas diretas: `a|b` aceita qualquer das duas;
+ * `32066,73~0,5%` e `5,37~0,02` aceitam arredondamento (relativo ou absoluto);
+ * o que não é número é texto ("São Paulo"), sem acento nem caixa. Número sem
+ * `~` continua exato — é a régua do `n` das hipóteses, que não pode afrouxar.
+ */
+interface AlvoNum { tipo: "num"; valor: number; tol: number; relativo: boolean }
+interface AlvoTexto { tipo: "texto"; valor: string }
+
+export function alvos(esperado: string): (AlvoNum | AlvoTexto)[] {
+  return esperado.split("|").map((x) => x.trim()).filter(Boolean).map((x) => {
+    const [base, tol] = x.split("~").map((y) => y.trim());
+    const v = /^-?[\d.,\s]+$/.test(base!) ? normalizaNumero(base!) : undefined;
+    if (v === undefined) return { tipo: "texto", valor: x };
+    if (!tol) return { tipo: "num", valor: v, tol: 0, relativo: false };
+    const relativo = tol.endsWith("%");
+    const t = Number(tol.replace("%", "").replace(",", "."));
+    return { tipo: "num", valor: v, tol: relativo ? t / 100 : t, relativo };
+  });
+}
+
+const ESCALA: [RegExp, number][] = [
+  [/^\s*mil\b/i, 1e3],
+  [/^\s*(milh(ão|ões|ao|oes)|mi)\b/i, 1e6],
+  [/^\s*(bilh(ão|ões|ao|oes)|bi)\b/i, 1e9],
+];
+
+/** Toda leitura plausível dos números da resposta: pt-BR, "1,44 milhão", e o
+ *  decimal com ponto ("5.37") que o modelo às vezes escreve. Só a régua com
+ *  tolerância usa isto — a exata continua em `numeros()`. */
+export function candidatos(texto: string): number[] {
+  const out = new Set<number>();
+  for (const m of texto.matchAll(NUMERO)) {
+    const v = normalizaNumero(m[0]);
+    if (v === undefined) continue;
+    out.add(v);
+    const depois = texto.slice(m.index! + m[0].length, m.index! + m[0].length + 12);
+    for (const [re, f] of ESCALA) if (re.test(depois)) out.add(v * f);
+  }
+  for (const m of texto.matchAll(/(?<![\d.,])\d+\.\d{1,2}(?![\d.,])/g)) out.add(Number(m[0]));
+  return [...out];
+}
+
+const semAcento = (s: string) => s.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+
 /** O caso é passável por papagaio? Dá para auditar um TSV inteiro sem rodar nada. */
 export function casoEcoa(pergunta: string, esperado?: string): boolean {
-  const alvo = esperado ? normalizaNumero(esperado.trim()) : undefined;
-  return alvo !== undefined && numeros(pergunta).includes(alvo);
+  return esperado ? avalia("", esperado, pergunta).eco : false;
 }
 
 /**
@@ -279,7 +331,7 @@ export function extraiPrefills(logo: string): number[] {
  * detector de `servidor.sh` pega. Não reinicia nada: só confere.
  */
 export async function confereBoot(): Promise<boolean> {
-  const p = Bun.spawn(["./harness/servidor.sh", "aquece"], {
+  const p = Bun.spawn([new URL("./servidor.sh", import.meta.url).pathname, "aquece"], {
     stdout: "inherit", stderr: "inherit",
   });
   return (await p.exited) === 0;
