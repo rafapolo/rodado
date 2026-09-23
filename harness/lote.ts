@@ -21,6 +21,7 @@ import {
   type ConfigServidor,
 } from "./acerto.ts";
 import { sobeGuarda, resumoGuarda, type Estatistica } from "./guarda.ts";
+import { garanteTunel } from "./modelo.ts";
 
 const RAIZ = new URL("..", import.meta.url).pathname;
 const PATCH = "harness/dsh/rodado.patch.yml";
@@ -87,6 +88,7 @@ interface Tentativa {
 const MAX_TENTATIVAS = Number(Bun.env.HARNESS_TENTATIVAS ?? 3);
 
 async function rodaUmaVez(q: string): Promise<Tentativa> {
+  if (!await garanteTunel()) console.log("      (llama-server inalcançável mesmo reabrindo o túnel)");
   // O prefill não volta pelo stdout do dsh — cada pergunta é outro processo.
   // A marca no log do llama-server é o que sobra para saber se o cache viveu.
   const marca = await marcaDoLog();

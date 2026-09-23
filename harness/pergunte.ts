@@ -18,7 +18,7 @@
  * inteira numa sessão dsh nova sobra só como última linha, para quando a
  * guarda esgota as tentativas dela.
  */
-import { vivo } from "./modelo.ts";
+import { garanteTunel } from "./modelo.ts";
 import { sobeGuarda, resumoGuarda } from "./guarda.ts";
 
 const RAIZ = new URL("..", import.meta.url).pathname;
@@ -32,7 +32,7 @@ if (!pergunta) {
   process.exit(1);
 }
 
-if (!await vivo()) {
+if (!await garanteTunel()) {
   console.error("llama-server inalcançável em 127.0.0.1:8099.\n");
   console.error("No beelink:");
   console.error("  cd ~/llama.cpp/build/bin && setsid ./llama-server \\");

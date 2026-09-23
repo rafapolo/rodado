@@ -67,3 +67,22 @@ export async function vivo(): Promise<boolean> {
     return r.ok;
   } catch { return false; }
 }
+
+/**
+ * O servidor de pé mas o túnel caído: reabre o túnel. Medido 2026-09-23: a rede
+ * do mac caiu no meio de uma rodada, o túnel morreu e 20 perguntas seguidas
+ * voltaram "TRANSPORT: Connection error" — com o llama-server saudável no beelink.
+ */
+export async function garanteTunel(host = Bun.env.BEELINK_HOST ?? "beelink"): Promise<boolean> {
+  if (await vivo()) return true;
+  const porta = new URL(BASE).port || "8099";
+  for (let i = 0; i < 6; i++) {
+    const p = Bun.spawn(["ssh", "-f", "-N", "-o", "ExitOnForwardFailure=yes", "-o", "ServerAliveInterval=15",
+      "-L", `${porta}:127.0.0.1:${porta}`, host], { stdout: "ignore", stderr: "ignore" });
+    await p.exited;
+    await Bun.sleep(2000);
+    if (await vivo()) return true;
+    await Bun.sleep(10_000 * (i + 1));
+  }
+  return false;
+}
