@@ -228,3 +228,10 @@ export function resolveDataset(escrito: string): string | null {
 
   return null;
 }
+
+/** `microdados`, ou a única tabela que não é dicionário; senão nenhuma. */
+export function tabelaPrincipal(ds: string): string | undefined {
+  const reais = tabelasDe(ds).filter((t) => t.tabela !== "dicionario" && colunasDe(`${ds}.${t.tabela}`) && !inservivel(`${ds}.${t.tabela}`));
+  const m = reais.find((t) => t.tabela === "microdados") ?? (reais.length === 1 ? reais[0] : undefined);
+  return m ? `${ds}.${m.tabela}` : undefined;
+}

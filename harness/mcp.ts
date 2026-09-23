@@ -20,10 +20,10 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { listaDatasets, tabelasDe, colunasDe, resolveDataset, COLUNAS_PARTICAO } from "./catalogo.ts";
+import { listaDatasets, tabelasDe, colunasDe, resolveDataset, COLUNAS_PARTICAO, tabelaPrincipal } from "./catalogo.ts";
 import {
   portao, checaExplain, alertasDeSanidade, faixasCitadas, checaCitacaoTabela,
-  juncoesSemPonte, mensagemSemPonte, assinaturaJuncao, sugestao, semComentarios,
+  juncoesSemPonte, mensagemSemPonte, assinaturaJuncao, sugestao, semComentarios, repara, NOTA_AMOSTRA,
 } from "./portao.ts";
 import { dicasDeJoin } from "./pontes.ts";
 import { runSqlSsh } from "./beelink.ts";
@@ -135,18 +135,6 @@ const FERRAMENTAS = [
       required: ["sql"],
     },
   },
-  {
-    name: "revisar_resposta",
-    description:
-      "Confere o parágrafo final ANTES de entregá-lo: rejeita se citar tabela ou dataset " +
-      "(ex.: br_ms_sim.microdados) em vez do órgão de origem. Chame com o parágrafo pronto " +
-      "— só responda ao usuário depois que esta ferramenta aprovar.",
-    inputSchema: {
-      type: "object",
-      properties: { texto: { type: "string", description: "o parágrafo final, em português" } },
-      required: ["texto"],
-    },
-  },
 ];
 
 servidor.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: FERRAMENTAS }));
@@ -171,6 +159,17 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
              textoFaixa(`${ds}.${t.tabela}`) +
              (inservivel(`${ds}.${t.tabela}`) ? "  ⚠ NÃO USE — " + inservivel(`${ds}.${t.tabela}`) : "");
     });
+    // A tabela principal vem descrita junto: dispensa o turno seguinte de
+    // descrever_tabela, que acontecia em quase toda pergunta.
+    const principal = tabelaPrincipal(ds);
+    if (principal) {
+      const cols = colunasDe(principal)!;
+      await garanteValores(principal, cols);
+      semanticaVista.add(principal);
+      const dicas = dicasDeJoin([principal]);
+      linhas.push("", `Tabela principal, já descrita (as outras: descrever_tabela):`,
+        descreve(principal, cols, textoFaixa(principal)) + (dicas ? `\n\n${dicas}` : ""));
+    }
     return texto(linhas.join("\n"));
   }
 
@@ -191,7 +190,7 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
   }
 
   if (name === "consultar") {
-    const sql = semComentarios(arg.sql ?? "").trim();
+    let sql = semComentarios(arg.sql ?? "").trim();
 
     totalConsultas++;
     if (totalConsultas > ORCAMENTO_CONSULTAS) {
@@ -206,11 +205,28 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
 
     // O portão. A rejeição vira resultado de ferramenta — é assim que o laço do
     // dsh vira o mecanismo de reparo, sem código de retry meu.
+    const original = sql;
+    const reparo = repara(original);
+    sql = reparo.sql;
     const v = portao(sql);
     if (!v.ok) return erro(`REJEITADA (${v.camada}): ${v.erro}`);
 
     const ex = await checaExplain(sql, runSqlSsh);
-    if (!ex.ok) return erro(`REJEITADA (explain): ${ex.erro}`);
+    if (!ex.ok) {
+      // O reparo quebrou a consulta (ex.: COUNT(*) numa projeção sem GROUP BY):
+      // volta a rejeição original, que ensina o conserto certo.
+      // Só o COUNT(*) inserido pode ser a causa; LIMIT e tabela principal não
+      // quebram SQL válida, então ali o erro do DuckDB é o problema de verdade.
+      if (reparo.notas.includes(NOTA_AMOSTRA)) {
+        const semN = repara(original, { amostra: false });
+        const ex2 = await checaExplain(semN.sql, runSqlSsh);
+        if (ex2.ok) {
+          const v0 = portao(semN.sql);
+          if (!v0.ok) return erro(`REJEITADA (${v0.camada}): ${v0.erro}`);
+        }
+      }
+      return erro(`REJEITADA (explain): ${ex.erro}`);
+    }
 
     const r = await runSqlSsh(sql);
     if (r.error) return erro(`Falhou: ${r.error}`);
@@ -252,6 +268,7 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     // rejeita, mas o modelo só corrige o que vê.
     executadas.push(sql);
     const alertas = alertasDeSanidade(sql, capado.rows);
+    if (reparo.notas.length) alertas.unshift(`Ajustei a consulta antes de rodar: ${reparo.notas.join("; ")}.`);
     // Medido 2026-09-23: o modelo foi direto ao consultar, sem descrever_tabela,
     // e contou todos os vínculos da RAIS (186.571) em vez dos ativos em 31/12
     // (142.490) — a nota e o cálculo verificado só apareciam na descrição.
@@ -262,6 +279,16 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
       const partes = [notaTabela(ref), ...calculosDaTabela(ref).map((c) => `cálculo verificado: ${c}`),
         ...colunasCitadas(sql, ref).map((c) => { const n = notaColuna(ref, c); return n ? `${c}: ${n}` : ""; })].filter(Boolean);
       if (partes.length) alertas.push(`Sobre ${ref} (confira se a consulta respeita): ${partes.join(" · ")}`);
+    }
+    // O recorte da pergunta (ano, estado, bioma) que nenhuma SQL aplicou até
+    // aqui: antes era checado num turno à parte (revisar_resposta, 151 chamadas
+    // e nenhuma rejeição); agora vai junto do resultado que o modelo vai usar.
+    if (PERGUNTA && /\b(COUNT|SUM|AVG|MIN|MAX)\s*\(|\bGROUP\s+BY\b/i.test(sql)) {
+      const sem = faltando(PERGUNTA, executadas);
+      if (sem.length) {
+        alertas.push(`A pergunta pede ${sem.map((r) => r.rotulo).join(", ")}, e nenhuma consulta até aqui filtrou por isso. ` +
+          `Se este resultado é a resposta, refaça aplicando o recorte (ex.: no WHERE); se o dado desse recorte não existe, diga isso na resposta.`);
+      }
     }
     if (jaRodadas.has(semLimite(sql))) {
       alertas.push("Esta consulta já rodou nesta pergunta (só o LIMIT mudou) e o resultado é o mesmo. " +
