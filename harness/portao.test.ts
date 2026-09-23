@@ -341,13 +341,13 @@ describe("camada inservível — a tabela que responde zero e parece certa", () 
   // um esquecimento: nenhuma provenance_notes no espelho diz "Substitui
   // `br_seeg`" (confirmado 2026-09-03, varredura de operacao.md tarefa 5), então
   // aposentados() não tem como saber que ele foi removido. Pior: colunasDe()
-  // lê de docs/context/basedosdados-schema.json (gerado por scripts/gera_schemas.py,
+  // lê de docs/context/rodado-schema.json (gerado por scripts/gera_schemas.py,
   // fora do escopo do harness), que não foi regenerado desde a remoção — então
   // br_seeg.emissoes_municipais ainda PASSA o portão (camadas tabela/coluna
   // acham a referência válida), mesmo com harness/dados/catalogo.json (fonte
   // viva, via `catalogo.ts --atualiza`) confirmando que o dataset não existe
   // mais. Não é um bug do portão — é uma dependência de arquivo desatualizado
-  // fora do escopo deste subsistema. Fecha só regenerando basedosdados-schema.json.
+  // fora do escopo deste subsistema. Fecha só regenerando rodado-schema.json.
   test("aceita as que os substituíram", () => {
     expect(portao("SELECT COUNT(*) FROM br_ibama_embargos_novo.termo_embargo").ok).toBe(true);
   });
@@ -355,4 +355,66 @@ describe("camada inservível — a tabela que responde zero e parece certa", () 
     const v = portao("SELECT COUNT(*) FROM br_bd_diretorios_brasil.municipio");
     expect(v.camada).not.toBe("inservivel");
   });
+});
+
+describe("média sobre unidade menor com tabela agregada no dataset", () => {
+  test("AVG em ideb.escola aponta ideb.brasil e .uf", () => {
+    const a = alertasDeSanidade("SELECT AVG(ideb) AS m, COUNT(*) AS n FROM br_inep_ideb.escola WHERE ano = 2019", [{ m: 4.15, n: 18728 }]);
+    expect(a.join()).toContain("br_inep_ideb.brasil");
+  });
+  test("ler a tabela agregada não alerta", () => {
+    const a = alertasDeSanidade("SELECT ideb FROM br_inep_ideb.brasil WHERE ano = 2019 LIMIT 5", [{ ideb: 3.9 }]);
+    expect(a.join()).not.toContain("tabela já agregada");
+  });
+  test("sem AVG não alerta", () => {
+    const a = alertasDeSanidade("SELECT COUNT(*) AS n FROM br_inep_ideb.escola WHERE ano = 2019", [{ n: 10 }]);
+    expect(a.join()).not.toContain("tabela já agregada");
+  });
+});
+
+describe("fan-out: denominador somado por linha de microdado", () => {
+  test("o caso medido: SIM × população municipal com SUM(p.populacao)", () => {
+    const sql = `SELECT u.sigla_uf, COUNT(m.causa_basica) * 100000.0 / SUM(p.populacao) AS taxa
+      FROM br_ms_sim.microdados m
+      JOIN br_ibge_populacao.municipio p ON m.id_municipio_residencia = p.id_municipio AND m.ano = p.ano
+      WHERE m.ano = 2019 GROUP BY u.sigla_uf ORDER BY taxa DESC LIMIT 5`;
+    expect(alertasDeSanidade(sql, [{ sigla_uf: "TO", taxa: 0.94 }]).join()).toContain("uma vez por LINHA");
+  });
+  test("agregado antes em CTE não alerta", () => {
+    const sql = `WITH h AS (SELECT sigla_uf, COUNT(*) AS n FROM br_ms_sim.microdados WHERE ano = 2019 GROUP BY 1),
+      p AS (SELECT sigla_uf, SUM(populacao) AS pop FROM br_ibge_populacao.municipio WHERE ano = 2019 GROUP BY 1)
+      SELECT h.sigla_uf, 100000.0 * h.n / p.pop AS taxa FROM h JOIN p ON h.sigla_uf = p.sigla_uf ORDER BY taxa DESC LIMIT 3`;
+    expect(alertasDeSanidade(sql, [{ sigla_uf: "SE", taxa: 42.1 }]).join()).not.toContain("uma vez por LINHA");
+  });
+});
+
+describe("LIMIT dispensado em tabela pequena", () => {
+  test("diretório de UFs sem LIMIT passa", () => {
+    expect(portao("SELECT sigla, nome FROM br_bd_diretorios_brasil.uf WHERE sigla = 'SE'").camada).not.toBe("limite");
+  });
+  test("microdados sem LIMIT continua rejeitado", () => {
+    expect(portao("SELECT causa_basica FROM br_ms_sim.microdados WHERE ano = 2020").camada).toBe("limite");
+  });
+});
+
+describe("comentário e código conferido pelo dicionário", () => {
+  test("FROM/JOIN dentro de comentário não vira tabela", () => {
+    const { semComentarios } = require("./portao.ts");
+    const sql = semComentarios("SELECT COUNT(*) AS n -- junte com a outra depois\nFROM br_ms_sim.microdados /* join com x */ WHERE ano = 2020");
+    expect(portao(sql).ok).toBe(true);
+    expect(sql).not.toContain("junte");
+  });
+  test("sexo = '2' na RAIS passa: é chave do dicionário (Feminino)", () => {
+    const v = portao("SELECT COUNT(*) FILTER (WHERE sexo = '2') AS f FROM br_me_rais.microdados_vinculos WHERE ano = 2021 AND sigla_uf = 'AC'");
+    expect(v.camada).not.toBe("codificacao");
+  });
+  test("código que não existe no dicionário é recusado com os válidos", () => {
+    const v = portao("SELECT COUNT(*) AS n FROM br_me_rais.microdados_vinculos WHERE ano = 2021 AND sigla_uf = 'AC' AND sexo = 'F'");
+    expect(v.camada).toBe("codificacao");
+    expect(v.erro).toContain("'2'=Feminino");
+  });
+});
+
+test("SELECT DISTINCT dispensa LIMIT: já reduz as linhas, e a saída é capada", () => {
+  expect(portao("SELECT DISTINCT tipo_localizacao FROM br_inep_censo_escolar.escola WHERE ano = 2023").camada).not.toBe("limite");
 });

@@ -1,0 +1,62 @@
+{
+  "_comentario": [
+    "Notas de semântica que o nome e o tipo da coluna não contam, cada uma de um erro",
+    "visto ou de um número conferido no beelink. Aparecem em descrever_tabela: '*' é a",
+    "tabela inteira, o resto é coluna. Curto e contrastivo — cada token é prefilado."
+  ],
+  "br_ms_sim.microdados": {
+    "*": "uma linha por óbito; sigla_uf e ano do óbito",
+    "causa_basica": "CID-10 SEM ponto ('X840'). Faixa: substr(causa_basica,1,3) BETWEEN 'X60' AND 'X84' (suicídio); agressão/homicídio: 'X85' a 'Y09'",
+    "circunstancia_obito": "SUBCONTA: RJ 2020 dá 749 suicídios contra 789 pelo CID. Para causa do óbito use causa_basica",
+    "idade": "idade em anos; óbito INFANTIL = idade < 1 (não use tipo_obito_ocorrencia, que é o momento do óbito materno). Mortalidade infantil = óbitos com idade < 1 ÷ nascidos vivos do SINASC × 1000 — Brasil 2021: 31.682 ÷ 2.677.097 = 11,8 por mil",
+    "tipo_obito_ocorrencia": "momento do óbito em relação a gravidez/parto (óbito materno), NÃO a idade de quem morreu"
+  },
+  "br_me_caged.microdados_movimentacao": {
+    "*": "uma linha por movimentação (admissão ou desligamento)",
+    "saldo_movimentacao": "+1 admissão, -1 desligamento. Saldo de empregos = SUM(saldo_movimentacao)",
+    "tipo_movimentacao": "desde 2020 a maioria das admissões vem como '97' (fora do dicionário) — NÃO conte admissão/desligamento por este código; use saldo_movimentacao (1 ou -1)"
+  },
+  "br_me_rais.microdados_vinculos": {
+    "*": "uma linha por vínculo no ano; 2 bilhões de linhas — filtre sempre por ano, e por sigla_uf quando o recorte for estadual",
+    "vinculo_ativo_3112": "'1' = ativo em 31/12: o estoque de emprego formal é COUNT(*) FILTER (WHERE vinculo_ativo_3112 = '1')",
+    "valor_remuneracao_dezembro": "em R$. As colunas terminadas em _sm são o mesmo valor em SALÁRIOS MÍNIMOS — responda em R$ salvo se a pergunta pedir salários mínimos",
+    "valor_remuneracao_media": "em R$ (média do ano). _sm = em salários mínimos"
+  },
+  "br_inpe_prodes.municipio_bioma": {
+    "desmatado": "km² desmatados ACUMULADOS até o ano (estoque), não o desmatamento do ano; o do ano é a diferença entre dois anos"
+  },
+  "br_ibge_pib.municipio": {
+    "pib": "R$ correntes, reais inteiros (não mil). Per capita = SUM(pib)/SUM(populacao), população em br_ibge_populacao.municipio"
+  },
+  "br_ms_cnes.estabelecimento": {
+    "*": "uma linha por estabelecimento POR MÊS: para contar estabelecimentos filtre ano e mes e use COUNT(DISTINCT id_estabelecimento_cnes)"
+  },
+  "br_cgu_novo_bolsa_familia.novo_bolsa_familia": {
+    "*": "uma linha por pagamento. ano_mes é TEXTO 'AAAAMM' ('202403'); uf é a sigla; valor_parcela é TEXTO com vírgula decimal ('800,00'): some com CAST(replace(valor_parcela, ',', '.') AS DOUBLE). Famílias = COUNT(DISTINCT nis_favorecido)"
+  },
+  "br_inep_censo_escolar.escola": {
+    "*": "uma linha por escola por ano, incluindo paralisadas e extintas — escolas existentes: tipo_situacao_funcionamento = '1'"
+  },
+  "br_tse_eleicoes.resultados_candidato": {
+    "*": "uma linha por candidato por turno. tipo_eleicao separa a ordinária das suplementares. Eleito no 2º turno aparece como 'eleito' em turno = 2: para contar eleitos NÃO filtre turno.",
+    "cargo": "minúsculo: 'prefeito', 'vereador', 'governador'...",
+    "resultado": "eleito = resultado IN ('eleito', 'eleito por qp', 'eleito por media') — os dois últimos são os de cargo proporcional (vereador, deputado)"
+  },
+  "br_inpe_queimadas.microdados": {
+    "*": "uma linha por foco de calor (satélite de referência)"
+  },
+  "br_anp_precos_combustiveis.microdados": {
+    "produto": "'Gasolina' é a comum; 'Gasolina Aditivada' é outro produto"
+  },
+  "br_tse_eleicoes.resultados_candidato_municipio": {
+    "cargo": "minúsculo: 'prefeito', 'vereador', 'governador'...",
+    "*": "uma linha por candidato por município por turno. Eleito no 2º turno aparece como 'eleito' em turno = 2: para contar eleitos NÃO filtre turno.",
+    "resultado": "eleito = resultado IN ('eleito', 'eleito por qp', 'eleito por media') — os dois últimos são os de cargo proporcional (vereador, deputado)"
+  },
+  "br_tse_eleicoes.resultados_candidato_municipio_zona": {
+    "cargo": "minúsculo: 'prefeito', 'vereador', 'governador'..."
+  },
+  "br_tse_eleicoes.candidatos": {
+    "cargo": "minúsculo: 'prefeito', 'vereador', 'governador'..."
+  }
+}
