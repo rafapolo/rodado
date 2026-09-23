@@ -147,30 +147,69 @@ paralelo, senão os dois disputam o mesmo `llama-server` e o tempo sai errado.
 
 ## O papel do dsh
 
-O laço agêntico não é código deste diretório: é o **dsh** (DeepSeek Harness),
-rodado como `bunx dsh --profile headless --patch harness/dsh/rodado.patch.yml
-"<pergunta>"` — um processo por pergunta, lançado por `pergunte.ts` e `lote.ts`.
-Ele faz o que um agente faz e nada do que é do projeto: mantém a conversa,
-manda cada turno ao modelo, executa as chamadas de ferramenta e devolve o
-resultado ao modelo até vir uma resposta final. Guarda cada sessão em disco, que
-é o que `sessao.ts` lê.
+O **dsh** (DeepSeek Harness) é o laço agêntico — e **não sabe que o portão
+existe**. Não valida nada, não conhece SQL, CID nem partição. O trabalho dele é
+só repassar mensagens entre o modelo e as ferramentas até sair uma resposta
+final: manda o turno ao modelo, executa a chamada de ferramenta que vier,
+devolve o resultado, repete. Guarda cada sessão em disco, que é o que
+`sessao.ts` lê.
 
-Tudo que é do rodado entra pelo patch (`dsh/rodado.patch.yml`):
+Onde cada peça fica, de fora para dentro:
+
+```mermaid
+flowchart TD
+    L["pergunte.ts / lote.ts<br/>um processo dsh por pergunta;<br/>sessão nova se ele morrer"] --> D
+    D["dsh — o laço<br/>turno do modelo → executa ferramenta → devolve → repete"]
+    D <-->|"cada turno"| G["guarda.ts<br/>repete o turno que volta vazio"]
+    G <--> M["llama-server (Gemma)"]
+    D <-->|"chamada de ferramenta"| T["mcp.ts — as ferramentas"]
+    T --> C["consultar"]
+    C --> P{{"PORTÃO<br/>7 camadas"}}
+    P -->|passa| B["DuckDB no beelink"]
+    P -.->|"rejeita: texto que<br/>ensina o conserto"| T
+
+    style P fill:#c0392b,color:#fff,stroke:#7b241c
+    style D fill:#1a5276,color:#fff,stroke:#0b2e40
+```
+
+O portão mora **dentro da ferramenta `consultar`**, e quem o roda é o `mcp.ts`.
+Na pergunta dos óbitos por suicídio no RJ em 2020:
+
+1. O dsh manda a pergunta ao Gemma.
+2. O Gemma responde "chame `consultar` com `causa_basica BETWEEN 'X60' AND 'X84'`".
+3. O dsh repassa ao `mcp.ts`; o portão reprova e devolve um texto: "CID é
+   guardado sem ponto, use `substr(...)`".
+4. O dsh **não sabe que aquilo é uma rejeição** — para ele é só o resultado da
+   ferramenta, e ele entrega ao Gemma como entregaria qualquer resultado.
+5. O Gemma lê, reescreve a SQL e chama `consultar` de novo. Passa, roda, volta 789.
+6. O Gemma redige a resposta; o dsh termina.
+
+É por isso que o portão não precisa de retry escrito à mão: a rejeição chega ao
+modelo como resultado de ferramenta, o laço do dsh continua girando e o conserto
+acontece sozinho. O `laco.ts` era a versão sem o dsh, com a sequência fixa — 0/3
+contra 3/3 (ver "Por que laço agêntico" acima).
+
+**Divisão de trabalho: o dsh decide a sequência dos passos; o harness — portão,
+guarda, persona — decide o que é permitido e o que vale.**
+
+Tudo que é do rodado entra pelo patch (`dsh/rodado.patch.yml`), rodado como
+`bunx dsh --profile headless --patch harness/dsh/rodado.patch.yml "<pergunta>"`:
 
 | O patch | Para quê |
 |---|---|
-| provider `beelink-local` | aponta o dsh para o `llama-server` (ou para a `guarda.ts`, via `HARNESS_LLM_URL`), com `reasoningEfforts: false` |
+| provider `beelink-local` | aponta o dsh para o Gemma local (pela `guarda.ts`, via `HARNESS_LLM_URL`), com `reasoningEfforts: false` |
 | `mcp-rodado` | monta `harness/mcp.ts` como único servidor de ferramentas |
-| `bash`, `fs`, `web`, subagentes, skills, todo… desligados | sem shell nem arquivo, o único caminho até o dado é o `consultar` — e portanto o portão |
-| `agent-instructions` com `maxBytes: 0`, sem título de sessão por LLM, sem `plan-mode` | tira do prompt o que é para o Claude Code e as chamadas extras ao único slot |
+| `bash`, `fs`, `web`, subagentes, skills, todo… desligados | o dsh vem com shell, e o Gemma já usou `bash` para chamar o DuckDB direto por SSH, **por fora do portão**. Sem eles, o único caminho até o dado é o `consultar` |
+| `agent-instructions` com `maxBytes: 0`, sem título de sessão por LLM, sem `plan-mode` | tira do prompt o `CLAUDE.md` que o dsh injetava sozinho e as chamadas extras ao único slot |
 | `system-prompt` lido de `dsh/persona.md` | papel, como trabalhar e o catálogo, gerados por `persona.ts` |
 
-A divisão de trabalho que isso produz: **o dsh decide a sequência, o harness
-decide o que vale.** A rejeição do portão volta como resultado de ferramenta, e
-o próprio laço do dsh vira o mecanismo de reparo da SQL — sem retry escrito à
-mão. O que o dsh não faz bem ficou em volta dele, não dentro: a `guarda.ts`
-entre ele e o modelo (turno degenerado) e o `lote.ts` por fora (sessão nova
-como última linha).
+As duas camadas em volta existem porque o dsh falha em dois lugares:
+
+- **`guarda.ts`** — às vezes o Gemma devolve um turno vazio e o dsh encerra a
+  sessão como se tivesse terminado. A guarda fica no meio, vê o turno vazio e
+  repete a requisição antes que o dsh perceba (ver "A guarda").
+- **`lote.ts`** — se mesmo assim a sessão morrer, abre outro dsh do zero. Última
+  linha.
 
 ## O contexto é o gargalo
 
