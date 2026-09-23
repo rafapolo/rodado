@@ -146,10 +146,10 @@
 # --- a prosa cita o órgão, não a ferramenta ----------------------------------
 # backlog.md item 3. A convenção de pages/analises/results/ é citar o ÓRGÃO de
 # origem do dado (Ministério da Saúde/SIM, IBGE, RAIS...) — nunca a tabela, o
-# dataset ou o SQL. A instrução sozinha é do tipo que o modelo obedece na
-# maioria das vezes; `revisar_resposta` (harness/mcp.ts, checaCitacaoTabela em
-# portao.ts) é a metade que transforma "maioria" em "todas" — mesmo mecanismo
-# do portão de SQL: a rejeição volta como resultado de ferramenta.
+# dataset ou o SQL. A instrução é do tipo que o modelo obedece na maioria das
+# vezes. A ferramenta `revisar_resposta`, que recusava a citação de tabela,
+# saiu em 2026-09-23 (151 chamadas, nenhuma rejeição, um turno inteiro cada) —
+# ver harness/tasks/velocidade.md.
 - id: system-prompt
   config:
     # Gerado por harness/persona.ts (papel + como trabalhar + o catálogo com as
