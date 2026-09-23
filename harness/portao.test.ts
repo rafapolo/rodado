@@ -418,3 +418,66 @@ describe("comentário e código conferido pelo dicionário", () => {
 test("SELECT DISTINCT dispensa LIMIT: já reduz as linhas, e a saída é capada", () => {
   expect(portao("SELECT DISTINCT tipo_localizacao FROM br_inep_censo_escolar.escola WHERE ano = 2023").camada).not.toBe("limite");
 });
+
+describe("alertas que dispararam à toa em 2026-09-23", () => {
+  test("AVG com junção ao diretório de municípios não sugere br_bd_diretorios_brasil.uf", () => {
+    const sql = `SELECT m.nome, AVG(md.temperatura_min) AS media, COUNT(*) AS n FROM br_inmet_bdmep.microdados md
+      JOIN br_inmet_bdmep.estacao e ON md.id_estacao = e.id_estacao
+      JOIN br_bd_diretorios_brasil.municipio m ON e.id_municipio = m.id_municipio
+      WHERE md.ano = 2020 GROUP BY 1 ORDER BY 2 LIMIT 10`;
+    expect(alertasDeSanidade(sql, [{ nome: "Urubici", media: 10.7, n: 8784 }, { nome: "X", media: 11, n: 8000 }]).join())
+      .not.toContain("tabela já agregada");
+  });
+  test("n de cada grupo acima de 5.570 não é junção duplicada", () => {
+    const sql = "SELECT id_municipio, COUNT(*) AS n FROM br_inmet_bdmep.microdados WHERE ano = 2020 GROUP BY 1 ORDER BY 2 LIMIT 10";
+    expect(alertasDeSanidade(sql, [{ id_municipio: "4218905", n: 8784 }, { id_municipio: "1", n: 8000 }]).join())
+      .not.toContain("passa dos");
+  });
+  test("o total de uma linha acima de 5.570 continua alertado", () => {
+    const sql = "SELECT COUNT(*) AS n FROM br_ibge_pib.municipio p JOIN br_ibge_populacao.municipio q ON p.id_municipio = q.id_municipio";
+    expect(alertasDeSanidade(sql, [{ n: 111400 }]).join()).toContain("passa dos");
+  });
+});
+
+describe("repara — o portão conserta a forma em vez de gastar um turno", () => {
+  const { repara } = require("./portao.ts");
+  test("LIMIT que faltava", () => {
+    const r = repara("SELECT causa_basica FROM br_ms_sim.microdados WHERE ano = 2020;");
+    expect(r.sql).toEndWith("LIMIT 100");
+    expect(portao(r.sql).ok).toBe(true);
+    expect(r.notas).toEqual(["acrescentei LIMIT 100"]);
+  });
+  test("COUNT(*) AS n no SELECT final, fora da CTE", () => {
+    const sql = `WITH t AS (SELECT id_municipio, COUNT(*) AS total FROM br_ms_sim.microdados WHERE ano = 2020 GROUP BY 1)
+      SELECT AVG(t.total) AS media FROM t`;
+    const r = repara(sql);
+    expect(r.sql).toContain("SELECT AVG(t.total) AS media, COUNT(*) AS n\nFROM t");
+    expect(r.sql).toContain("SELECT id_municipio, COUNT(*) AS total");
+    expect(portao(r.sql).ok).toBe(true);
+  });
+  test("o caso medido: AVG de IDEB sem n", () => {
+    const r = repara("SELECT AVG(ideb) as ideb_medio FROM br_inep_ideb.escola WHERE ano = 2019 AND ensino = 'medio' AND rede = 'estadual'");
+    expect(portao(r.sql).ok).toBe(true);
+  });
+  test("dataset sem tabela vira a tabela principal quando ela é única", () => {
+    const r = repara("SELECT COUNT(*) FROM br_ms_sim WHERE ano = 2020");
+    expect(r.sql).toBe("SELECT COUNT(*) FROM br_ms_sim.microdados WHERE ano = 2020");
+  });
+  test("dataset sem tabela principal óbvia continua rejeitado", () => {
+    const r = repara("SELECT SUM(pib) FROM br_ibge_pib WHERE ano = 2020");
+    expect(r.notas).toEqual([]);
+    expect(portao(r.sql).camada).toBe("tabela");
+  });
+  test("SELECT DISTINCT não ganha COUNT(*) enfiado no meio", () => {
+    const r = repara("SELECT DISTINCT AVG(pib) AS m FROM br_ibge_pib.municipio WHERE ano = 2020");
+    expect(r.notas).toEqual([]);
+  });
+  test("GROUP BY posicional continua apontando para a mesma coluna", () => {
+    const r = repara("SELECT sigla_uf, AVG(peso) AS peso_medio FROM br_ms_sinasc.microdados WHERE ano = 2019 GROUP BY 1");
+    expect(r.sql).toStartWith("SELECT sigla_uf, AVG(peso) AS peso_medio, COUNT(*) AS n\nFROM");
+  });
+  test("consulta que já passa não muda", () => {
+    const sql = "SELECT COUNT(*) FROM br_ms_sim.microdados WHERE ano = 2020";
+    expect(repara(sql)).toEqual({ sql, notas: [] });
+  });
+});
