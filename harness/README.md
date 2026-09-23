@@ -9,39 +9,46 @@ refino em [`tasks/`](tasks/README.md).
 
 ## O fluxo
 
+Uma pergunta, do jeito que roda hoje (`pergunte.ts` → dsh → as ferramentas de
+`mcp.ts`). Quem decide a ordem é o modelo, dentro do laço do dsh — ver "O papel
+do dsh"; as setas abaixo são o caminho típico, não uma sequência fixa.
+
 ```mermaid
 flowchart TD
     P["pergunta em pt-BR"] --> PRE
 
-    subgraph PRE["prefixo estável — prefilado 1x, depois grátis"]
+    subgraph PRE["prefixo estável — persona.md + ferramentas, ~4.400 tok, lido 1x e cacheado"]
         direction LR
-        R["regras"] --- D["212 datasets<br/>1.954 tok"] --- M["metrics.yaml<br/>4.239 tok"] --- H["hierarchies<br/>1.178 tok"]
+        R["como trabalhar"] --- D["catálogo de 230 datasets<br/>com pistas de irmão"]
     end
 
-    PRE --> S1["1 · modelo escolhe datasets<br/>~2 s · 88% medido"]
-    S1 --> S2["2 · lista tabelas<br/>catalogo.ts — determinístico"]
-    S2 --> S3["3 · modelo escolhe tabelas<br/>~2 s"]
-    S3 --> S4["4 · schema das escolhidas<br/>colunas ranqueadas e capadas"]
-    S4 --> S5["5 · modelo escreve SQL<br/>~3 s · reasoning off"]
+    PRE --> S1["modelo escolhe o dataset<br/>pelo catálogo, sem ferramenta"]
+    S1 --> S2["listar_tabelas<br/>+ descrição da tabela principal"]
+    S2 -.->|"se precisar"| S3["descrever_tabela / definicao_de_calculo<br/>outras tabelas, códigos, cálculo verificado"]
+    S2 --> S4["modelo escreve SQL"]
+    S3 -.-> S4
 
-    S5 --> G{{"6 · PORTÃO<br/>portao.ts"}}
-    G -->|"rejeita — mensagem<br/>ensina o conserto"| S5
-    G -->|passa| S7["7 · executa no beelink<br/>beelink.ts · -readonly"]
+    S4 --> G{{"consultar → PORTÃO<br/>portao.ts"}}
+    G -->|"erro de forma<br/>(LIMIT, dataset sem tabela)"| FIX["repara() conserta<br/>e avisa"]
+    FIX --> X
+    G -->|"erro de significado<br/>(partição, CID, coluna)"| S4
+    G -->|passa| X["executa no beelink<br/>beelink.ts · -readonly"]
 
-    S7 --> S8{{"8 · sanidade<br/>ordem de grandeza"}}
-    S8 -->|"fora da faixa"| S5
-    S8 -->|ok| S9["9 · modelo redige<br/>números já calculados"]
-
-    S9 --> OUT["rascunho + SQL + proveniência"]
+    X --> A{{"alertas junto do resultado<br/>zero linhas, n=0, recorte da pergunta<br/>não aplicado, nota da tabela"}}
+    A -->|"modelo corrige"| S4
+    A --> OUT["resposta em prosa<br/>número, recorte, órgão de origem"]
 
     style G fill:#c0392b,color:#fff,stroke:#7b241c
-    style S8 fill:#c0392b,color:#fff,stroke:#7b241c
+    style A fill:#8e6f1e,color:#fff,stroke:#5c4813
     style PRE fill:#1a5276,color:#fff,stroke:#0b2e40
     style OUT fill:#1e6f42,color:#fff,stroke:#0f3d24
 ```
 
-O modelo é chamado em **quatro pontos curtos** (1, 3, 5, 9). Recuperação,
-validação e execução são determinísticas — código, não julgamento do modelo.
+Recuperação, validação e execução são determinísticas — código, não julgamento
+do modelo. O modelo escolhe o dataset, escreve a SQL, lê o que voltou e redige;
+tudo que ele recebe de volta (rejeição, conserto, alerta) chega como resultado
+de ferramenta, e é isso que o faz corrigir sem retry escrito à mão. Pergunta
+direta: ~5 turnos, mediana de 63 s.
 
 ## O portão
 
