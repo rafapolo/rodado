@@ -50,3 +50,24 @@ describe("descreve com filtro e grupos", () => {
     expect(d).toContain("tipo_localizacao: str — códigos: '1'=Urbana, '2'=Rural");
   });
 });
+
+describe("códigos só das colunas ligadas à pergunta", () => {
+  const sim = "br_ms_sim.microdados";
+  test("tabela com muitas codificadas encolhe e mantém a coluna da pergunta", () => {
+    const d = descreve(sim, colunasDe(sim)!, "", "", "Quantos óbitos por suicídio houve no RJ em 2020?");
+    expect(d.length).toBeLessThan(descreve(sim, colunasDe(sim)!).length * 0.7);
+    expect(d).toContain("causa_basica: str — NOTA");
+    expect(d).toContain("(N códigos)");
+  });
+  test("rótulo casa com a pergunta: 'rurais' abre tipo_localizacao", () => {
+    const t = "br_inep_censo_escolar.escola";
+    expect(descreve(t, colunasDe(t)!, "", "", "Quantas escolas rurais havia na Bahia?")).toContain("'2'=Rural");
+  });
+  test("lista curta (até 5 códigos) fica sempre inteira", () => {
+    const t = "br_inep_censo_escolar.escola";
+    expect(descreve(t, colunasDe(t)!, "", "", "Quantas escolas havia no Ceará em 2022?")).toContain("rede: str — códigos:");
+  });
+  test("sem pergunta, nada muda", () => {
+    expect(descreve(sim, colunasDe(sim)!)).not.toContain("(N códigos)");
+  });
+});

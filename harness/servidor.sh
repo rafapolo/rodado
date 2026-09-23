@@ -5,6 +5,7 @@
 #     ./harness/servidor.sh          # reinicia com a config padrão
 #     ./harness/servidor.sh status   # o que está no ar
 #     ./harness/servidor.sh aquece   # só o aquecimento + detector de raciocínio
+#     ./harness/servidor.sh aquece-laco  # só o prefixo do laço real (depois de mudar persona.md)
 #     CTX=65536 SLOTS=5 ./harness/servidor.sh   # avaliação paralela
 #
 # Existe porque reiniciar isso à mão falhou três vezes seguidas do mesmo jeito:
@@ -126,7 +127,23 @@ aquece() {
   return 0
 }
 
+# O aquecimento acima manda uma pergunta curta de teste; o laço real começa com
+# ~4.400 tokens (persona com o catálogo + ferramentas) que o llama-server só
+# guarda depois de ler uma vez — ~75 s pagos pela 1ª pergunta depois de subir
+# ou de mudar dsh/persona.md. Uma pergunta trivial pelo caminho real paga isso
+# antes. medido 2026-09-23: o turno frio custa ~75 s, os seguintes ~8 s.
+aquece_laco() {
+  local dir; dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  echo "aquecendo o laço real (persona + ferramentas)…"
+  if (cd "$dir/.." && bun harness/pergunte.ts "Qual era a população estimada de Belo Horizonte em 2021?" >/dev/null 2>&1); then
+    echo "  laço aquecido"
+  else
+    echo "  AVISO: o aquecimento do laço falhou — a 1ª pergunta paga o prefixo inteiro" >&2
+  fi
+}
+
 if [[ "${1:-}" == "status" ]]; then estado; exit 0; fi
+if [[ "${1:-}" == "aquece-laco" ]]; then aquece_laco; exit 0; fi
 if [[ "${1:-}" == "aquece" ]]; then aquece; exit $?; fi
 
 echo "parando o que estiver no ar…"
@@ -203,4 +220,5 @@ fi
 # Só depois do /health: a flag de thinking não aparece em lugar nenhum da
 # config — só no comportamento.
 aquece || { echo "AVISO: o servidor subiu, mas o aquecimento reprovou. NÃO rode medição." >&2; exit 1; }
+[[ "${SEM_LACO:-0}" == "1" ]] || aquece_laco
 estado
