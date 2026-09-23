@@ -105,8 +105,11 @@ function tabelasAgregadas(sql: string): string[] {
     const [ds, tb] = ref.toLowerCase().split(".");
     // Os diretórios têm uf/regiao, mas são cadastro de nomes, não índice agregado:
     // 2026-09-23 o alerta disparou num AVG de temperatura por município.
-    if (!ds || !tb || ["brasil", "uf", "regiao"].includes(tb) || ds.startsWith("br_bd_diretorios")) continue;
-    for (const nivel of ["brasil", "uf", "regiao"]) {
+    if (!ds || !tb || tb === "brasil" || ds.startsWith("br_bd_diretorios")) continue;
+    // A média das 27 UFs também não é o Brasil (2026-09-23: IDEB médio estadual
+    // saiu 3,8 pela média de br_inep_ideb.uf; o oficial, em .brasil, é 3,9).
+    const niveis = tb === "uf" || tb === "regiao" ? ["brasil"] : ["brasil", "uf", "regiao"];
+    for (const nivel of niveis) {
       if (colunasDe(`${ds}.${nivel}`)) out.add(`${ds}.${nivel}`);
     }
   }
@@ -867,7 +870,7 @@ export function alertasDeSanidade(sql: string, linhas: Linha[]): string[] {
     alertas.push(
       `Média (AVG) sobre tabela de unidade menor, e o dataset tem tabela já agregada: ${agregadas.join(", ")}. ` +
       `Se a pergunta é sobre o Brasil, um estado ou uma região, leia o valor pronto dessa tabela — ` +
-      `a média dos índices de escolas ou municípios NÃO é o índice do agregado.`);
+      `a média dos índices de escolas, municípios ou estados NÃO é o índice do agregado.`);
   }
 
   const prim = linhas[0];
