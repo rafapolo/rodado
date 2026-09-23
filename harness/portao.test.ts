@@ -481,3 +481,9 @@ describe("repara — o portão conserta a forma em vez de gastar um turno", () =
     expect(repara(sql)).toEqual({ sql, notas: [] });
   });
 });
+
+test("AVG sobre a tabela de UFs aponta a tabela Brasil (IDEB 3,8 contra 3,9)", () => {
+  const a = alertasDeSanidade("SELECT AVG(ideb) AS m, COUNT(*) AS n FROM br_inep_ideb.uf WHERE ano = 2019 AND rede = 'estadual' AND ensino = 'medio'", [{ m: 3.8, n: 27 }]);
+  expect(a.join()).toContain("br_inep_ideb.brasil");
+  expect(a.join()).not.toContain("br_inep_ideb.regiao");
+});
