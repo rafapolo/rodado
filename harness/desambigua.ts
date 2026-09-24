@@ -1,7 +1,7 @@
 /**
  * Detector de **dataset irmão** — quais nomes do catálogo não se distinguem.
  *
- * Por que existe: item 1 do `tasks/backlog.md`. Na rodada de 274 perguntas,
+ * Por que existe: item 1 do `tasks/harness/backlog.md`. Na rodada de 274 perguntas,
  * **24 das 36 falhas** foram o modelo escolhendo o parente errado — pediu
  * `br_ibge_ppm` (pecuária) e deu `br_ibge_pam` (agrícola); `br_anp_combustiveis`
  * por `br_anp_precos_combustiveis`; `br_me_caged` por `br_me_rais`. Nome
