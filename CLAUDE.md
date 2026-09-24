@@ -33,9 +33,9 @@ retired; its deployment files (`auth.py`, `start.sh`, `Caddyfile`,
 `haloy.yml`, `Dockerfile`) were removed on 2026-09-24 — `git log --all --
 Caddyfile` finds them.
 
-`mcp_server.py` is the current interface — see `docs/MCP.md`.
+`mcp_server.py` is the current interface — see `docs/tecnico/MCP.md`.
 
-### `docs/ERD.md` — the map
+### `docs/mapa/ERD.md` — the map
 One mermaid `erDiagram` per domain covering all 1023 tables: entity = dataset, attribute = table, edge = join key to a reference hub (solid = direct, dashed = needs normalization). Lists what connects to nothing. `ERD.md` is pt-BR (default), `ERD_EN.md` is the English twin — both generated from the same data by `scripts/gera_erd.py`.
 
 ### `docs/context/` — Schema metadata
@@ -73,7 +73,7 @@ Regenerar, na ordem, depois de qualquer sync que mude tabelas:
 python3 scripts/gera_schemas.py            # beelink        -> schemas.json
 python3 scripts/sync_mcp_schema.py         # schemas.json   -> docs/context/rodado-schema.json
 python3 scripts/build_metadata_catalog.py  # beelink        -> catalog.parquet + views + all_tables.txt
-python3 scripts/gera_catalog_md.py         # catalog.parquet -> docs/catalog.md (ver docs/housekeeping.md item 7)
+python3 scripts/gera_catalog_md.py         # catalog.parquet -> docs/mapa/catalog.md (ver docs/tecnico/housekeeping.md item 7)
 python3 scripts/gera_join_keys.py          # bridges.yaml   -> docs/context/join_keys.md
 python3 scripts/gera_metrics_json.py       # metrics.yaml   -> docs/context/metrics.json
 python3 scripts/valida_metrics.py          # confere metrics.yaml + hierarchies.yaml
@@ -100,11 +100,11 @@ vai ter recall alto — não é bug, está documentado no docstring de cada `ava
 
 | Conjunto | Fonte | Constrói | Mede |
 |---|---|---|---|
-| `tasks/douradas_multi.json` | `docs/relatorio-social/perguntas.md` (tabelas citadas em backtick, `**Fontes:**`) | `scripts/build_douradas_multi.py` | `scripts/avalia_douradas_multi.py` — recall@K por TABELA exata |
-| `tasks/douradas_perguntas.json` | `docs/hipoteses/perguntas.md` (43 temas × 5 perguntas, `n=X: dataset_a, dataset_b*`) cruzado com `docs/hipoteses/respostas.md` (status `✅`/`◐`/`⏳` por `T<tema>-<item>`) | `scripts/build_douradas_perguntas.py` | `scripts/avalia_douradas_perguntas.py` — recall@K por DATASET (qualquer tabela do dataset conta como acerto) |
+| `tasks/douradas_multi.json` | `docs/pesquisa/relatorio-social/perguntas.md` (tabelas citadas em backtick, `**Fontes:**`) | `scripts/build_douradas_multi.py` | `scripts/avalia_douradas_multi.py` — recall@K por TABELA exata |
+| `tasks/douradas_perguntas.json` | `docs/pesquisa/hipoteses/perguntas.md` (43 temas × 5 perguntas, `n=X: dataset_a, dataset_b*`) cruzado com `docs/pesquisa/hipoteses/respostas.md` (status `✅`/`◐`/`⏳` por `T<tema>-<item>`) | `scripts/build_douradas_perguntas.py` | `scripts/avalia_douradas_perguntas.py` — recall@K por DATASET (qualquer tabela do dataset conta como acerto) |
 
-`docs/hipoteses/perguntas.md` é a fonte fixa (43 temas, nunca editado pelos scripts);
-`docs/hipoteses/respostas.md` é o log de trabalho vivo — cada pergunta respondida no
+`docs/pesquisa/hipoteses/perguntas.md` é a fonte fixa (43 temas, nunca editado pelos scripts);
+`docs/pesquisa/hipoteses/respostas.md` é o log de trabalho vivo — cada pergunta respondida no
 beelink muda o status ali e alimenta o próximo `build_douradas_perguntas.py`
 automaticamente, sem editar código. Só `✅`/`◐` entram no conjunto: um item
 `⏳` costuma vir com o motivo exato no próprio texto (dado corrompido, tabela
@@ -122,9 +122,9 @@ status e só lê o que vem antes de cada um, então o recorte continua sendo
 `✅`/`◐`, e um achado `⚪` (relação nula) segue valendo como pergunta respondida —
 o que o teste mede é se `search_tables` acha a tabela, não se a hipótese vingou.
 
-### `docs/hipoteses/respostas_trincas.md` — o espaço inteiro, enumerado
+### `docs/pesquisa/hipoteses/respostas_trincas.md` — o espaço inteiro, enumerado
 
-`docs/hipoteses/respostas.md` responde perguntas escritas uma a uma.
+`docs/pesquisa/hipoteses/respostas.md` responde perguntas escritas uma a uma.
 `respostas_trincas.md` **enumera e roda o espaço inteiro de trincas de
 família de uma vez**, em duas rodadas fundidas num único documento (h2+h3,
 mescladas manualmente em 2026-09-07). O que torna isso barato: uma trinca de
@@ -195,7 +195,7 @@ python3 scripts/build_douradas_perguntas.py    # respostas.md -> tasks/douradas_
 python3 scripts/avalia_douradas_perguntas.py   # mede search_tables contra ele
 ```
 
-A TUI Rust `ask` que fazia isto foi removida (`ask/` apagado em `58ab7c7`, 2026-08-23). A mesma lógica de Tier 1 sobrevive reimplementada em JS — `resolverMetrica()` em `web/static/prompt.js` —, parte do app web `ask-web` que vive só no branch `ask-web` (remoto, não mesclado em `main`, sem worktree local no momento). Ela resolve métrica **antes** da seleção por embedding, por match exato de nome ou sinônimo — nunca por similaridade, porque "população de SP" e "população carcerária" ficam perto no espaço vetorial e querem tabelas diferentes. **Isto não é `mcp_server.py`**: o `get_metric()` do MCP é um lookup direto sem parser de frase (confirmado em `docs/MCP.md`) — não faz longest-match sobre uma pergunta em texto livre, não tem Tier 2/3. Três detalhes do Tier 1 que custaram trabalho na versão Rust e não devem ser redescobertos:
+A TUI Rust `ask` que fazia isto foi removida (`ask/` apagado em `58ab7c7`, 2026-08-23). A mesma lógica de Tier 1 sobrevive reimplementada em JS — `resolverMetrica()` em `web/static/prompt.js` —, parte do app web `ask-web` que vive só no branch `ask-web` (remoto, não mesclado em `main`, sem worktree local no momento). Ela resolve métrica **antes** da seleção por embedding, por match exato de nome ou sinônimo — nunca por similaridade, porque "população de SP" e "população carcerária" ficam perto no espaço vetorial e querem tabelas diferentes. **Isto não é `mcp_server.py`**: o `get_metric()` do MCP é um lookup direto sem parser de frase (confirmado em `docs/tecnico/MCP.md`) — não faz longest-match sobre uma pergunta em texto livre, não tem Tier 2/3. Três detalhes do Tier 1 que custaram trabalho na versão Rust e não devem ser redescobertos:
 
 1. O match é por nome **ou sinônimo**, exato, depois de normalizar acento e caixa, e **o mais longo vence** — sem isso "pib per capita" resolve como "pib".
 2. O Tier 1 roda **antes** do embedding. Depois dele economiza a chamada ao modelo mas ainda paga o embedding inteiro (~18s → 0,00s).
@@ -216,7 +216,7 @@ Gerado por `scripts/build_metadata_catalog.py`, que também recria as views `_ro
 
 Ao contar tabelas ou linhas, filtre **`source <> 'view_only'`** — nunca `source = 'disk'`.
 
-As 8 tabelas que eram registradas como `view_orfa` com `rows=0` não têm parquet local, e `duckdb_native` descreve só uma delas direito. Conferido em 2026-09-24: a única tabela nativa dentro de `basedosdados.duckdb` é `main.cpf_lookup` (223,7M linhas). As 6 do SIPNI (`br_ms_sipni_dicionarios.*`, `br_ms_sipni_doses_historicas.doses_agregadas`, `br_ms_sipni_microdados.vacinacao_2020` — ~196M linhas no catálogo de 04/09) são views sobre **`s3://healthbr-data/...` no Cloudflare R2**, um bucket público de terceiros ([healthbr-data](https://github.com/SidneyBissoli/healthbr-data), CC-BY 4.0) com token de leitura publicado no próprio README. O `~/.duckdbrc` o lê pelo `SECRET healthbr` (restrito a esse bucket), e a trava de arquivo libera só o prefixo `s3://healthbr-data/`. Leitura remota é lenta (minutos num `count(*)` da `vacinacao_2020`); espelhar em disco está em [`plans/espelhar_healthbr_data.md`](plans/espelhar_healthbr_data.md), adiado por falta de HD (217,9 GiB).
+As 8 tabelas que eram registradas como `view_orfa` com `rows=0` não têm parquet local, e `duckdb_native` descreve só uma delas direito. Conferido em 2026-09-24: a única tabela nativa dentro de `basedosdados.duckdb` é `main.cpf_lookup` (223,7M linhas). As 6 do SIPNI (`br_ms_sipni_dicionarios.*`, `br_ms_sipni_doses_historicas.doses_agregadas`, `br_ms_sipni_microdados.vacinacao_2020` — ~196M linhas no catálogo de 04/09) são views sobre **`s3://healthbr-data/...` no Cloudflare R2**, um bucket público de terceiros ([healthbr-data](https://github.com/SidneyBissoli/healthbr-data), CC-BY 4.0) com token de leitura publicado no próprio README. O `~/.duckdbrc` o lê pelo `SECRET healthbr` (restrito a esse bucket), e a trava de arquivo libera só o prefixo `s3://healthbr-data/`. Leitura remota é lenta (minutos num `count(*)` da `vacinacao_2020`); espelhar em disco está em [`tasks/plans/espelhar_healthbr_data.md`](tasks/plans/espelhar_healthbr_data.md), adiado por falta de HD (217,9 GiB).
 
 ### `pages/atlas/` — Rodado Atlas (rodado.xyz/atlas)
 Mapa navegável das tabelas e das colunas de join que as conectam. O espelho não tem foreign key — o que o liga são colunas que significam a mesma coisa em mais de uma tabela, a mesma seleção que `gera_join_keys.py` faz.
@@ -234,9 +234,9 @@ python3 scripts/build_atlas.py /tmp/atlas.html   # também emite a cópia autoco
 - **Cor = tema**, nunca chave. Só 4 matizes passam o gate all-pairs de CVD, então os 10 temas dependem de território rotulado + isolamento por clique; a cor reforça, não carrega sozinha.
 - Depois de qualquer sync que mude tabelas: `gera_schemas.py` → `build_metadata_catalog.py` → `gera_schema_graph.py` → `build_atlas.py`.
 
-## `tasks/` e `plans/`
+## `tasks/` e `tasks/plans/`
 
-`tasks/README.md` é o índice único do que está **em andamento**: o projeto na raiz de `tasks/`, o harness em `tasks/harness/` (era `harness/tasks/` até 2026-09-24). O que ainda não começou fica em `plans/`, com índice próprio. Plano que começa a rodar vai para `tasks/` (`git mv`); tarefa fechada sai do repo (`git rm`), depois de levar o que ensinou para onde será lido. `tasks/done/` é só o arquivo anterior a essa regra. Mudou o status de um arquivo, mude a linha dele no índice na mesma edição.
+`tasks/README.md` é o índice único do que está **em andamento**: o projeto na raiz de `tasks/`, o harness em `tasks/harness/` (era `harness/tasks/` até 2026-09-24). O que ainda não começou fica em `tasks/plans/`, com índice próprio. Plano que começa a rodar vai para `tasks/` (`git mv`); tarefa fechada sai do repo (`git rm`), depois de levar o que ensinou para onde será lido. `tasks/done/` é só o arquivo anterior a essa regra. Mudou o status de um arquivo, mude a linha dele no índice na mesma edição.
 
 ## beelink: `~/.duckdbrc` e a trava de arquivo
 
@@ -280,5 +280,5 @@ Existe uma **única exceção, estritamente escopada**: manutenção do mirror d
 - DuckDB always runs read-only; no writes to the database from queries.
 - Queries on large tables must filter on partition columns (`ano`, `mes`, `sigla_uf`) — this is enforced in prompts.
 - SQL dialect is DuckDB; BigQuery syntax does not apply.
-- `docs/overview/` contains per-dataset markdown summaries used as LLM context.
-- `docs/queries/` contains example SQL and CNAE audit analysis files.
+- `docs/mapa/overview/` contains per-dataset markdown summaries used as LLM context.
+- `docs/pesquisa/queries/` contains example SQL and CNAE audit analysis files.

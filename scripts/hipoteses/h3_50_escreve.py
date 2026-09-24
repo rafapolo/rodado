@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Escreve um FRAGMENTO com as secoes da rodada h3 a partir dos tres resultados
-do lote -- nao o doc final. docs/hipoteses/respostas_trincas.md fundiu h2+h3
+do lote -- nao o doc final. docs/pesquisa/hipoteses/respostas_trincas.md fundiu h2+h3
 manualmente num unico arquivo (2026-09-07); rodar este script de novo gera
 material novo aqui, mas colar no lugar certo de respostas_trincas.md
 ("O que a corrida achou" em diante, ate "Como refazer") e trabalho manual --

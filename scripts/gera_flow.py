@@ -43,9 +43,9 @@ from gera_erd import (  # noqa: E402
 
 REPO = Path(__file__).resolve().parent.parent
 # Ver a nota em `gera_erd.py`: o destino e `docs/`, nao a raiz.
-DST_FLOW = REPO / "docs" / "Flow.md"
-DST_TEMAS = REPO / "docs" / "Temas.md"
-OVERVIEW = REPO / "docs" / "overview"
+DST_FLOW = REPO / "docs" / "mapa" / "Flow.md"
+DST_TEMAS = REPO / "docs" / "mapa" / "Temas.md"
+OVERVIEW = REPO / "docs" / "mapa" / "overview"
 
 # Os hubs em famílias — viram um subgraph cada, do lado direito do diagrama.
 HUB_GRUPOS = [
@@ -61,7 +61,7 @@ HUB_GRUPOS = [
 # ---------------------------------------------------------------------------
 # Não existe manifesto de "que dados cada tema usa": as páginas publicadas não
 # nomeiam dataset nenhum. O que existe é o markdown de origem em
-# `docs/overview/`, que cita as bases de três formas — daí os três padrões.
+# `docs/mapa/overview/`, que cita as bases de três formas — daí os três padrões.
 _QUALIFICADO = re.compile(r"\b((?:br|global|mundo|world)_[a-z0-9_]+)\.[a-z0-9_]+")
 _SOLTO = re.compile(r"\b((?:br|global|mundo|world)_[a-z0-9_]+)\b")
 _ENTIDADE = re.compile(r"^\s{4}([a-z][a-z0-9_]*)\s*\{", re.M)
@@ -302,7 +302,7 @@ def main():
         f"{len(cobertos)} dos {len(info)} do espelho. Os temas não se ligam\n"
         f"entre si diretamente: o que os conecta é chegarem às mesmas\n"
         f"referências — a aresta leva quantos datasets do tema carregam a chave.\n\n"
-        "> A origem é o markdown de `docs/overview/`: os datasets que o próprio\n"
+        "> A origem é o markdown de `docs/mapa/overview/`: os datasets que o próprio\n"
         "> texto de cada tema nomeia. Não é a lista completa do que a investigação\n"
         "> tocou — é o que está registrado. Dataset sem citação não aparece.",
         "cada `subgraph` é um tema, e a aresta sai do tema inteiro")]

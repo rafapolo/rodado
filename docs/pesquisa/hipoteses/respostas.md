@@ -1531,10 +1531,10 @@ por falta de investigação.
 
 ## Bateria de hipóteses H01–H19 (2026-09-06)
 
-Rodada completa de [`scripts/hipoteses_overnight.sh`](../scripts/hipoteses_overnight.sh)
+Rodada completa de [`scripts/hipoteses_overnight.sh`](../../../scripts/hipoteses_overnight.sh)
 no beelink: 5 blocos SQL + análise, **88 segundos**, painel de **5.571 municípios ×
 164 colunas**. Estas não são perguntas de `perguntas.md` — são as hipóteses de
-[`tasks/hipoteses.md`](../../tasks/hipoteses.md), cada uma com a condição de
+[`tasks/hipoteses.md`](../../../tasks/hipoteses.md), cada uma com a condição de
 falseamento escrita antes de rodar. O resultado está reportado **inclusive quando
 nega a hipótese**, que é a maior parte das vezes.
 
@@ -1638,9 +1638,9 @@ território.
    o que separou H16 de H17. Os municípios de maior área da Amazônia são os de
    **menor** população: controlar população não controla área, e sem isso "área
    de imóvel rural × área desmatada" é dois tamanhos multiplicados. Rodado por
-   [`scripts/hipoteses/91_parciais.py`](../scripts/hipoteses/91_parciais.py); as
+   [`scripts/hipoteses/91_parciais.py`](../../../scripts/hipoteses/91_parciais.py); as
    lacunas de H13/H08/H04/H14, por
-   [`scripts/hipoteses/92_lacunas.py`](../scripts/hipoteses/92_lacunas.py).
+   [`scripts/hipoteses/92_lacunas.py`](../../../scripts/hipoteses/92_lacunas.py).
 
 ### O que ficou de fora (fechado em 2026-09-06)
 
@@ -1648,15 +1648,15 @@ H05 (pré × pós do sorteio FEF), H08 (desfecho pós-2020 para a dose do PBF), 
 (inadimplência do SCR por UF) e H15 (variação de vínculos 2019→2020) exigiam
 recorte temporal que os blocos 00-50 não fazem — eram de extração, não de
 análise. Fechadas em 2026-09-06 por
-[`scripts/hipoteses/70_temporais.sql`](../scripts/hipoteses/70_temporais.sql) +
-[`98_temporais.py`](../scripts/hipoteses/98_temporais.py): **H05, H08 e H14
+[`scripts/hipoteses/70_temporais.sql`](../../../scripts/hipoteses/70_temporais.sql) +
+[`98_temporais.py`](../../../scripts/hipoteses/98_temporais.py): **H05, H08 e H14
 falseadas** (nenhuma sobrevive ao pré×pós/defasagem honesto), **H15 sobrevive
 fraca** (parcial +0,06, robusta ao controle de porte). Detalhe na tabela acima.
 
 ## 77 · Cruzamentos Inéditos de Três Famílias
 
-Extração em [`scripts/hipoteses/50_novas.sql`](../scripts/hipoteses/50_novas.sql)
-(Bloco I de [`tasks/hipoteses.md`](../../tasks/hipoteses.md), H41–H45 — renumerado
+Extração em [`scripts/hipoteses/50_novas.sql`](../../../scripts/hipoteses/50_novas.sql)
+(Bloco I de [`tasks/hipoteses.md`](../../../tasks/hipoteses.md), H41–H45 — renumerado
 de H20–H24 em 2026-09-06 por colisão com outro Bloco F escrito em paralelo no
 mesmo arquivo, ver a nota no topo daquela seção), rodada como **corrida
 completa** via `bash hipoteses_overnight.sh` em 2026-09-06 (isolada em
@@ -1758,10 +1758,10 @@ o bloqueio como definitivo.
 ## Bateria de inéditos H20–H36 (2026-09-06)
 
 Segunda bateria do dia. As hipóteses **não** vieram de leitura: vieram da
-subtração de §5 de [`tasks/hipoteses.md`](../../tasks/hipoteses.md) — toda
+subtração de §5 de [`tasks/hipoteses.md`](../../../tasks/hipoteses.md) — toda
 combinação de família menos as que `perguntas.md`, `hipoteses.md` e
 `achados_fortes.md` já ocupam — cruzada com os **8 moldes** de
-[`docs/context/moldes.yaml`](context/moldes.yaml) aplicados a fontes que nunca
+[`docs/context/moldes.yaml`](../../context/moldes.yaml) aplicados a fontes que nunca
 os receberam. Extração em `scripts/hipoteses/50_inedito.sql`, análise em
 `scripts/hipoteses/95_inedito.py`.
 
@@ -1816,7 +1816,7 @@ replicado do espelho.
 
 ## Bateria das famílias vazias H46–H62 (2026-09-06)
 
-Terceira bateria do dia, blocos **N–Q** de [`tasks/hipoteses.md`](../../tasks/hipoteses.md)
+Terceira bateria do dia, blocos **N–Q** de [`tasks/hipoteses.md`](../../../tasks/hipoteses.md)
 §5.5. O alvo saiu do gerador de inéditos: as sete famílias com **menos
 combinações ocupadas** — `agropecuaria` (10), `saneamento_agua` (10),
 `fundiario` (9), `natalidade` (12), `conectividade` (14) — todas com fonte
