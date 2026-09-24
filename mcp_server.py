@@ -354,7 +354,9 @@ def _run_sql_ssh(sql: str) -> dict:
     # ~/rodado, `../`, glob and `SET enable_external_access=true` all fail.
     stdin_payload = (
         "SET enable_progress_bar=false;\n"
-        f"SET allowed_directories=['{BEELINK_HOME}/rodado/', '{BEELINK_HOME}/duckdb_tmp/'];\n"
+        # s3://healthbr-data: third-party public SIPNI bucket (CC-BY 4.0), read
+        # through the SECRET in ~/.duckdbrc — this prefix only
+        f"SET allowed_directories=['{BEELINK_HOME}/rodado/', '{BEELINK_HOME}/duckdb_tmp/', 's3://healthbr-data/'];\n"
         "SET enable_external_access=false;\n"
         "SET lock_configuration=true;\n"
         f"{sql}"
