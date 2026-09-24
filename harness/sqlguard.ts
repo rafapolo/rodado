@@ -7,7 +7,7 @@
  * Esta é a segunda cópia da regra (a primeira é Python, em mcp_server.py:220).
  * A duplicação é deliberada — as duas superfícies são independentes — e o que
  * impede a deriva é sqlguard.test.ts, que repete os casos de
- * tests/test_mcp_server.py um a um.
+ * mcp/test_mcp_server.py um a um.
  */
 
 /** Teto de caracteres do resultado serializado. Espelha MCP_RUN_SQL_MAX_CHARS. */
