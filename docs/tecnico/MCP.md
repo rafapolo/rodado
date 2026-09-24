@@ -1,6 +1,6 @@
 # MCP — o servidor de ferramentas sobre o espelho
 
-`mcp_server.py`, na raiz do repo. Expõe o catálogo (`docs/context/`) e o
+`mcp/mcp_server.py`. Expõe o catálogo (`docs/context/`) e o
 espelho DuckDB do beelink como ferramentas MCP para um agente (Claude
 Desktop/Claude Code) — não é uma API REST, é uma lista de funções que um
 modelo de linguagem chama em sequência, decidindo a cada passo qual chamar a
