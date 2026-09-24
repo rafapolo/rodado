@@ -1423,6 +1423,23 @@ bridges:
       tema 52, T52-1/T52-2, 2026-08-25
     concept: cnpj
     join_expr: '{s}.cnpj_cliente = {d}.cnpj'
+  estacao:
+  - table: br_inmet_bdmep.microdados
+    column: id_estacao
+    format: código da estação do INMET ('A845'). A tabela horária não tem município nenhum —
+      a cidade vem de `br_inmet_bdmep.estacao.id_municipio`. O nome da estação pode citar outro
+      município (a A845 se chama "Bom Jardim da Serra - Morro da Igreja" e fica em outro).
+    expr: id_estacao = e.id_estacao
+    verified: 555 das 589 estações com leitura em 2020 casam (94%), todas com id_municipio — 2026-09-24
+    concept: id_estacao
+    join_expr: '{s}.id_estacao = {d}.id_estacao'
+  - table: br_inmet_bdmep.estacao
+    column: id_estacao
+    format: a tabela de referência das estações (633 linhas), com id_municipio de 7 dígitos
+    expr: id_estacao = m.id_estacao
+    verified: hub — 2026-09-24
+    concept: id_estacao
+    join_expr: '{s}.id_estacao = {d}.id_estacao'
   pais:
   - table: br_me_comex_stat.municipio_exportacao / municipio_importacao / ncm_exportacao / ncm_importacao
     column: sigla_pais_iso3
