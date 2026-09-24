@@ -71,7 +71,10 @@ def check_metrics(doc, schema):
                     soft.append(f"{name}: coluna `{col}` não está em {table} "
                                 f"(pode vir do needs_join)")
 
-        for field in ("description", "unit", "grain", "required_filters", "synonyms"):
+        campos = ("description", "unit", "grain", "required_filters", "synonyms")
+        if m.get("kind") == "aviso":  # aviso de schema, não cálculo
+            campos = ("description",)
+        for field in campos:
             if not m.get(field):
                 soft.append(f"{name}: sem `{field}`")
         if not m.get("verified"):
