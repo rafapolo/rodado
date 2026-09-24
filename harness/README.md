@@ -330,7 +330,7 @@ resposta. Detalhe em [`tasks/avaliacao_diretas.md`](tasks/avaliacao_diretas.md).
 | `catalogo.ts` | `catalog.parquet` (linhas por tabela → camada 4) + schema local (colunas). Cache em `dados/catalogo.json`; `bun harness/catalogo.ts --atualiza` |
 | `portao.ts` | as 7 camadas, e `repara()` para o erro de forma |
 | `sqlguard.ts` | `checkReadOnly` + `capRows` — porte fiel de `mcp_server.py`, trazido de `ask-web` |
-| `beelink.ts` | executor SSH+DuckDB, **com `-readonly`** |
+| `beelink.ts` | executor SSH+DuckDB, **com `-readonly`** e com acesso a arquivo travado em `~/rodado` (`enable_external_access=false` + `lock_configuration`: um `read_text('~/.ssh/...')` escrito pelo modelo passava por `checkReadOnly`); despejo no NVMe, não no `/tmp` (tmpfs) do beelink |
 | `metricas.ts` | os 12 cálculos verificados de `metrics.yaml` — busca exata por nome ou sinônimo, nunca por similaridade |
 | `anos.ts` | faixa de anos por tabela (377 cacheadas) |
 | `pontes.ts` | dicas de join das pontes conferidas de `bridges.yaml` |

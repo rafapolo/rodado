@@ -285,7 +285,12 @@ def test_run_sql_success():
     args = run.call_args.args[0]
     assert args[0] == "ssh"
     assert args[1] == m.BEELINK_HOST
-    assert run.call_args.kwargs["input"] == b"SET enable_progress_bar=false;\nSELECT 42 AS n"
+    payload = run.call_args.kwargs["input"].decode()
+    assert payload.startswith("SET enable_progress_bar=false;\n")
+    # the model's SQL runs with file access locked to ~/rodado and the spill dir
+    assert f"SET allowed_directories=['{m.BEELINK_HOME}/rodado/', '{m.BEELINK_HOME}/duckdb_tmp/'];" in payload
+    assert payload.index("enable_external_access=false") < payload.index("lock_configuration=true")
+    assert payload.endswith("SET lock_configuration=true;\nSELECT 42 AS n")
 
 
 def test_run_sql_empty_result():

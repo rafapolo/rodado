@@ -30,6 +30,8 @@ CONTEXT_DIR = Path(os.environ.get("MCP_CONTEXT_DIR", REPO_ROOT / "docs" / "conte
 BEELINK_HOST = os.environ.get("MCP_BEELINK_HOST", "beelink")
 BEELINK_DUCKDB_BIN = os.environ.get("MCP_BEELINK_DUCKDB_BIN", "~/bin/duckdb")
 BEELINK_DUCKDB_PATH = os.environ.get("MCP_BEELINK_DUCKDB_PATH", "~/rodado/basedosdados.duckdb")
+# Absolute home on beelink: DuckDB's allowed_directories wants absolute paths.
+BEELINK_HOME = os.environ.get("MCP_BEELINK_HOME", "/home/polo")
 SEARCH_THRESHOLD = float(os.environ.get("MCP_SEARCH_THRESHOLD", "0.35"))
 # Survey mirrors (SISDEPEN: 3.957 cols) would flood an LLM's context if
 # describe_table returned every column, so wide tables are capped.
@@ -338,11 +340,25 @@ def _run_sql_ssh(sql: str) -> dict:
     remote_cmd = (
         f"timeout -k 5 115 {BEELINK_DUCKDB_BIN} -readonly -json {BEELINK_DUCKDB_PATH}"
     )
-    # beelink's ~/.duckdbrc sets enable_progress_bar=true, which prints a
-    # progress meter to stdout for any query past the render threshold
-    # (~2s) and corrupts -json output. Disable it for this session only —
-    # doesn't touch the on-disk .duckdbrc.
-    stdin_payload = f"SET enable_progress_bar=false;\n{sql}"
+    # A progress bar on stdout corrupts -json output. beelink's ~/.duckdbrc
+    # now ships it off (2026-09-24), but set it per session anyway so this
+    # doesn't depend on that file.
+    #
+    # File sandbox: the SQL comes from a model, and
+    # `SELECT * FROM read_text('/home/polo/.ssh/...')` passes _check_read_only
+    # (it is a SELECT). With external access off, only ~/rodado (the parquet)
+    # and the spill directory the ~/.duckdbrc points at stay readable, and
+    # lock_configuration stops the query itself from undoing it. Tested on
+    # beelink 2026-09-24: views, read_parquet with ~ and hive, the native
+    # cpf_lookup table and spilling work; read_text/read_csv outside
+    # ~/rodado, `../`, glob and `SET enable_external_access=true` all fail.
+    stdin_payload = (
+        "SET enable_progress_bar=false;\n"
+        f"SET allowed_directories=['{BEELINK_HOME}/rodado/', '{BEELINK_HOME}/duckdb_tmp/'];\n"
+        "SET enable_external_access=false;\n"
+        "SET lock_configuration=true;\n"
+        f"{sql}"
+    )
     try:
         proc = subprocess.run(
             ["ssh", BEELINK_HOST, remote_cmd],
