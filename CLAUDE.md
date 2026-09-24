@@ -29,9 +29,9 @@ Everything is local: parquet on beelink (`~/rodado/<dataset>/<tabela>/*.parquet`
 DuckDB over SSH — no live web service, no cloud object storage. The former
 `db.xn--2dk.xyz` HTTP endpoint (`auth.py`, a BigQuery → GCS → Hetzner Object
 Storage pipeline via `scripts/roda.sh`, DuckDB httpfs reads on query) is
-retired; the deployment files it left behind (`auth.py`, `start.sh`,
-`Caddyfile`, `haloy.yml`, `Dockerfile`) are not part of the current
-architecture and describe infrastructure that no longer runs.
+retired; its deployment files (`auth.py`, `start.sh`, `Caddyfile`,
+`haloy.yml`, `Dockerfile`) were removed on 2026-09-24 — `git log --all --
+Caddyfile` finds them.
 
 `mcp_server.py` is the current interface — see `docs/MCP.md`.
 
