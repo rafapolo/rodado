@@ -13,6 +13,8 @@ describe("checkReadOnly aceita", () => {
     "SELECT 1;",
     "SELECT 1 -- trailing comment",
     "/* leading comment */ SELECT 1",
+    "SELECT SUM(CAST(replace(valor, ',', '.') AS DOUBLE)) FROM t",
+    "SELECT REPLACE (nome, 'a', 'b') FROM t",
   ]) test(sql, () => expect(checkReadOnly(sql)).toBeNull());
 });
 
@@ -26,6 +28,8 @@ describe("checkReadOnly recusa", () => {
     "ATTACH 'x.db'",
     "PRAGMA table_info('x')",
     "COPY (SELECT 1) TO 'out.csv'",
+    "WITH x AS (SELECT 1) SELECT * FROM x; CREATE OR REPLACE TABLE y AS SELECT 1",
+    "SELECT 1 FROM t WHERE x = 1 OR REPLACE",
   ]) test(JSON.stringify(sql), () => expect(checkReadOnly(sql)).not.toBeNull());
 });
 

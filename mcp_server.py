@@ -308,7 +308,11 @@ def _check_read_only(sql: str) -> str | None:
 
     upper_body = body.upper()
     for kw in _DISALLOWED_KEYWORDS:
-        if re.search(rf"\b{kw}\b", upper_body):
+        # replace(col, ',', '.') is the string function, not REPLACE the
+        # statement — blocking it made the model hand-parse '800,00' with
+        # substr() and report a total 100x too large (harness, 2026-09-23).
+        guard = r"(?!\s*\()" if kw == "REPLACE" else ""
+        if re.search(rf"\b{kw}\b{guard}", upper_body):
             return f"Keyword '{kw}' is not allowed — read-only by design."
 
     return None
