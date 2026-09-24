@@ -13,7 +13,7 @@
 | End-to-end delivery, prototype → production | Ingestion pipeline + semantic layer + 18-tool MCP interface, in daily use |
 | Data engineering & modeling | 1,024 tables normalized to a typed ontology with join-key graph |
 | Ontology design | 8 business object types with explicit relationships and canonical keys |
-| Application development | `mcp_server.py` — 18 MCP tools over stdio (see `docs/tecnico/MCP.md`); an earlier browser SQL shell + HTTP API is retired |
+| Application development | `mcp_server.py` — 18 MCP tools over stdio (see `mcp/MCP.md`); an earlier browser SQL shell + HTTP API is retired |
 | AI/ML enablement | Semantic table selection over a doc2query embedding index (832 tables, 6,464 synthetic questions) |
 | Read-only enforcement | Query type/keyword guard client-side before any SSH call reaches beelink |
 | Operational durability | Resumable scraping pipelines, checkpointed ingestion |
@@ -268,7 +268,7 @@ has SSH access to beelink and runs `mcp_server.py` locally.
 
 `mcp_server.py` exposes the catalog and query layer as 18 [MCP](https://modelcontextprotocol.io)
 tools for Claude Desktop/Claude Code, over stdio. Full tool inventory,
-architecture diagrams and the retrieval/iteration mechanism: **[`docs/tecnico/MCP.md`](MCP.md)**.
+architecture diagrams and the retrieval/iteration mechanism: **[`mcp/MCP.md`](../../mcp/MCP.md)**.
 
 ```bash
 pip install -r mcp/requirements.txt
