@@ -1,4 +1,4 @@
-# docs/housekeeping.md — checklist pós-scraping
+# docs/tecnico/housekeeping.md — checklist pós-scraping
 
 Toda vez que um scraper novo (ou um job resumido/retomado sem supervisão) larga
 parquet em `~/rodado/<dataset>/<tabela>/` no beelink, sobra um conjunto fixo de
@@ -119,17 +119,17 @@ esquema na nota de proveniência, sempre.
      AND source_name NOT LIKE 'Base dos Dados%';
    ```
 
-## 7. `catalog.parquet` mudou → `docs/catalog.md` tem que ser regenerado junto
+## 7. `catalog.parquet` mudou → `docs/mapa/catalog.md` tem que ser regenerado junto
 
-`docs/catalog.md` é um export legível do `_rodado_metadata`/`catalog.parquet`
+`docs/mapa/catalog.md` é um export legível do `_rodado_metadata`/`catalog.parquet`
 (um dataset por linha: descrição, nº de tabelas, linhas, fonte). É gerado, não
 editado à mão. Toda vez que `build_metadata_catalog.py` roda — e portanto
 toda vez que um dataset novo entra, uma tabela some, uma proveniência muda —
-`docs/catalog.md` fica desatualizado até rodar de novo:
+`docs/mapa/catalog.md` fica desatualizado até rodar de novo:
 
 ```bash
 python3 scripts/build_metadata_catalog.py   # regrava catalog.parquet
-python3 scripts/gera_catalog_md.py          # regrava docs/catalog.md a partir dele
+python3 scripts/gera_catalog_md.py          # regrava docs/mapa/catalog.md a partir dele
 ```
 
 Novo dataset sem descrição em `docs/context/dataset_descriptions.yaml`? O

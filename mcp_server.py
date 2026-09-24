@@ -596,7 +596,7 @@ def describe_table(table: str) -> dict:
     On a miss, returns close-match suggestions from the full table list.
 
     Column descriptions are not available: the mirrored schema carries only
-    name and type. Use `search_tables` for semantic lookup and `docs/overview/`
+    name and type. Use `search_tables` for semantic lookup and `docs/mapa/overview/`
     for what a dataset actually means.
 
     Very wide tables are truncated to the first 150 columns (survey mirrors

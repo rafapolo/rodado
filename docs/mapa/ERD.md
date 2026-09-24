@@ -4,7 +4,7 @@
 
 Mapa de entidades e relações das 1023 tabelas (229 datasets) do espelho. Gerado por `scripts/gera_erd.py` a partir de `schemas.json` em 2026-09-04 — não edite à mão, regenere.
 
-As expressões de join, o formato de cada chave e as pegadinhas estão em [`docs/context/join_keys.md`](docs/context/join_keys.md). Este arquivo é o mapa; aquele é o manual.
+As expressões de join, o formato de cada chave e as pegadinhas estão em [`docs/context/join_keys.md`](../context/join_keys.md). Este arquivo é o mapa; aquele é o manual.
 
 ## Como ler
 
@@ -18,7 +18,7 @@ Um único `erDiagram` com 1023 tabelas seria ilegível, então o modelo sobe um 
 | aresta | significado |
 |---|---|
 | `HUB \|\|--o{ dataset` | (sólida) a chave está lá com o nome canônico — join direto |
-| `HUB \|\|..o{ dataset` | (tracejada) a chave está lá com outro nome ou formato — normalize antes, receita em [`docs/context/join_keys.md`](docs/context/join_keys.md) |
+| `HUB \|\|..o{ dataset` | (tracejada) a chave está lá com outro nome ou formato — normalize antes, receita em [`docs/context/join_keys.md`](../context/join_keys.md) |
 
 Dataset sem nenhuma aresta aparece como caixa solta no diagrama do seu domínio: está no espelho, mas nada documentado o liga a mais nada.
 

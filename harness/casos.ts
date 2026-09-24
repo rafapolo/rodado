@@ -49,8 +49,8 @@ function numero(s: string): number {
 }
 
 export function carregaCasos(): Caso[] {
-  const perguntas = readFileSync(`${RAIZ}docs/hipoteses/perguntas.md`, "utf8").split("\n");
-  const respostas = readFileSync(`${RAIZ}docs/hipoteses/respostas.md`, "utf8");
+  const perguntas = readFileSync(`${RAIZ}docs/pesquisa/hipoteses/perguntas.md`, "utf8").split("\n");
+  const respostas = readFileSync(`${RAIZ}docs/pesquisa/hipoteses/respostas.md`, "utf8");
 
   // 1. perguntas.md — tema vem do cabeçalho "## 01 · ...", item da numeração
   const porId = new Map<string, Omit<Caso, "gabarito" | "n" | "r" | "suspeito" | "melhorCasamento">>();
@@ -197,7 +197,7 @@ if (import.meta.main) {
  * `respostas.md`. Estava desprezando 178 casos à toa.
  */
 export function carregaTodasPerguntas(): Omit<Caso, "gabarito" | "suspeito">[] {
-  const linhas = readFileSync(`${RAIZ}docs/hipoteses/perguntas.md`, "utf8").split("\n");
+  const linhas = readFileSync(`${RAIZ}docs/pesquisa/hipoteses/perguntas.md`, "utf8").split("\n");
   const out: Omit<Caso, "gabarito" | "suspeito">[] = [];
   let tema = 0;
   for (const linha of linhas) {
@@ -227,7 +227,7 @@ export function carregaTodasPerguntas(): Omit<Caso, "gabarito" | "suspeito">[] {
 }
 
 /**
- * Exemplos few-shot de uma fonte **independente** — `docs/relatorio-social/`,
+ * Exemplos few-shot de uma fonte **independente** — `docs/pesquisa/relatorio-social/`,
  * que cita tabelas em `**Fontes:**` e não alimenta nenhuma avaliação daqui.
  *
  * Antes eu tirava os exemplos do próprio conjunto de teste, o que custava metade
@@ -235,7 +235,7 @@ export function carregaTodasPerguntas(): Omit<Caso, "gabarito" | "suspeito">[] {
  * as 280 inteiras viram teste.
  */
 export function exemplosIndependentes(): { pergunta: string; obrigatorios: string[] }[] {
-  const txt = readFileSync(`${RAIZ}docs/relatorio-social/perguntas.md`, "utf8");
+  const txt = readFileSync(`${RAIZ}docs/pesquisa/relatorio-social/perguntas.md`, "utf8");
   const out: { pergunta: string; obrigatorios: string[] }[] = [];
   const linhas = txt.split("\n");
   for (let i = 0; i < linhas.length; i++) {

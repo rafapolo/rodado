@@ -174,7 +174,7 @@ if (import.meta.main) {
   }
   const arg = Bun.argv.indexOf("--n");
   const limite = arg > -1 ? Number(Bun.argv[arg + 1]) : Infinity;
-  // Exemplos de FONTE INDEPENDENTE (docs/relatorio-social/), não do conjunto de
+  // Exemplos de FONTE INDEPENDENTE (docs/pesquisa/relatorio-social/), não do conjunto de
   // teste. Antes eu tirava metade das perguntas para o prefixo e media na outra
   // metade — 36 viravam exemplo e sobravam 45. Vindos de fora, as 274 inteiras
   // viram teste, e não há vazamento a policiar.
@@ -194,7 +194,7 @@ if (import.meta.main) {
   console.log(`${casos.length} perguntas de teste (TODAS as de perguntas.md)`);
   console.log(`  ${casos.filter((c) => c.obrigatorios.length > 1).length} exigem 2+ datasets`);
   console.log(usaFewShot
-    ? `${exemplos.length} exemplos de fonte independente (docs/relatorio-social/)\n`
+    ? `${exemplos.length} exemplos de fonte independente (docs/pesquisa/relatorio-social/)\n`
     : `sem few-shot (base de comparação)\n`);
   await avalia(casos, exemplos);
 }

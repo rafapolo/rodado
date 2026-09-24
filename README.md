@@ -16,7 +16,7 @@ Cada tema no site publicado combina uma narrativa em prosa com as tabelas de evi
 
 ## Cobertura de dados
 
-As 1.029 tabelas cobrem 43 domínios temáticos, cada um documentado em [`overview/`](docs/overview/index.md) e publicado como uma página própria no site. Essas narrativas servem tanto de leitura para o público quanto de contexto para o assistente que consulta o espelho.
+As 1.029 tabelas cobrem 43 domínios temáticos, cada um documentado em [`overview/`](docs/mapa/overview/index.md) e publicado como uma página própria no site. Essas narrativas servem tanto de leitura para o público quanto de contexto para o assistente que consulta o espelho.
 
 | # | Tema |
 |---|------|
@@ -79,4 +79,4 @@ Esse conhecimento fica em três arquivos, versionados junto com o resto:
 - **`docs/context/hierarchies.yaml`** — como subir de um código para o nível acima. CNAE e CID-10 são códigos prefixais: a divisão sai de um `substr()` da subclasse, sem join nenhum.
 
 Os três são servidos ao assistente como ferramentas, não como texto para ele interpretar: pedir a ligação entre duas tabelas devolve a cláusula `ON` pronta, com o aviso de que uma delas devolve toda linha duas vezes, se for o caso.
-- [`Deanonimizacao.md`](docs/Deanonimizacao.md) — as nove tabelas que hoje trazem o nome junto do CNPJ ou do CPF, e as quatro maneiras de tirar delas um resultado errado sem perceber.
+- [`Deanonimizacao.md`](docs/pesquisa/deanonimizacao.md) — as nove tabelas que hoje trazem o nome junto do CNPJ ou do CPF, e as quatro maneiras de tirar delas um resultado errado sem perceber.

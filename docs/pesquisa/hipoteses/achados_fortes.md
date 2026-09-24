@@ -137,7 +137,7 @@ Rodada completa de `scripts/hipoteses_overnight.sh` — 5 blocos SQL + análise 
 intensivos varridos. Cada hipótese tinha a **condição de falseamento escrita
 antes de rodar**; a maioria falseou. Respostas completas em
 [`respostas.md`](respostas.md), fila e método em
-[`tasks/hipoteses.md`](../../tasks/hipoteses.md).
+[`tasks/hipoteses.md`](../../../tasks/hipoteses.md).
 
 Aqui só o que **sobreviveu ao parcial** e merece ficar como achado.
 
@@ -176,10 +176,10 @@ correções têm a mesma causa e estão marcadas com ⚠️ nas linhas originais
 
 ## Achados da varredura de inéditos (2026-09-06)
 
-Saíram do método de §5 de [`tasks/hipoteses.md`](../../tasks/hipoteses.md):
+Saíram do método de §5 de [`tasks/hipoteses.md`](../../../tasks/hipoteses.md):
 subtrair de todas as combinações de família as que `perguntas.md`, `hipoteses.md`
 e este arquivo já ocupam, e aplicar os **8 moldes** de
-[`docs/context/moldes.yaml`](context/moldes.yaml) às fontes que nunca os
+[`docs/context/moldes.yaml`](../../context/moldes.yaml) às fontes que nunca os
 receberam. Rodada completa em 2026-09-06: **G1–G7** abaixo são o que sobreviveu de H20–H36 (5 confirmadas, 4 falseadas, 3 nulas, 1 sem dado). Respostas completas em [`respostas.md`](respostas.md).
 
 | # | Relação | Nível | n | Valor | Por que importa |
@@ -276,7 +276,7 @@ caso.
 
 ## Achados das famílias vazias (2026-09-06)
 
-Blocos N–Q de [`tasks/hipoteses.md`](../../tasks/hipoteses.md) §5.5, escolhidos
+Blocos N–Q de [`tasks/hipoteses.md`](../../../tasks/hipoteses.md) §5.5, escolhidos
 pelo gerador de inéditos: as sete famílias com **menos combinações ocupadas**.
 Extração `scripts/hipoteses/60_familias_vazias.sql`, análise
 `scripts/hipoteses/97_familias.py`. Placar: 4 ✅ · 6 ❌ · 3 ◐ · 4 não rodadas;

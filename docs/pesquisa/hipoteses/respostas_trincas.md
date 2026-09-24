@@ -13,7 +13,7 @@ municípios × 270 colunas e rodou as **1.330 trincas** que isso permitia, em
 **358 colunas** (37 datasets novos — ENEM, Censo Escolar, SEEG, MapBiomas,
 ESTBAN, BNDES, SIA, ANS, SISVAN, Imunizações, filiação partidária) e abriu um
 **segundo eixo**, o do grafo de identificadores CNPJ/CPF, que a cascata F0–F7
-de [`tasks/hipoteses.md`](../../tasks/hipoteses.md) nunca contava por exigir
+de [`tasks/hipoteses.md`](../../../tasks/hipoteses.md) nunca contava por exigir
 chave territorial.
 
 ## Método
@@ -98,7 +98,7 @@ para perto do IVS:
   desenho de programa, não achado. A h3 ampliou a lista: cobertura de atenção
   básica e de vacina também aparecem em duplicata (IEPS × Ministério da
   Saúde). Lista completa em
-  [`scripts/hipoteses/h2_familias_colunas.yaml`](../../scripts/hipoteses/h2_familias_colunas.yaml).
+  [`scripts/hipoteses/h2_familias_colunas.yaml`](../../../scripts/hipoteses/h2_familias_colunas.yaml).
 - **métrica de registro** (14 colunas na h2, 438 sobreviventes marcados `⚠`
   na h3) — a coluna mede a capacidade de registrar antes do fenômeno.
   `snis_gap_agua` é a razão entre a água *declarada* ao SNIS e a medida pelo
@@ -128,7 +128,7 @@ Com a estreia de `politica` na h3, seis famílias seguem sem nenhuma coluna:
 - **precos_indices** — series nacionais -- sem grao municipal, cortado por F1
 
 As 3 primeiras são municipais e extraíveis: entram numa próxima rodada. As 3
-últimas são só UF, e a cascata F1 de [`tasks/hipoteses.md`](../../tasks/hipoteses.md)
+últimas são só UF, e a cascata F1 de [`tasks/hipoteses.md`](../../../tasks/hipoteses.md)
 já as cortava — n=27 não sustenta parcial com efeito fixo.
 
 ## Os achados no topo (h3, painel de 358 colunas)
@@ -254,8 +254,8 @@ python3 scripts/hipoteses/h3_50_escreve.py           # gera as duas últimas se�
 ```
 
 O mapa coluna→família vive em
-[`scripts/hipoteses/h2_familias_colunas.yaml`](../../scripts/hipoteses/h2_familias_colunas.yaml)
-(h2) e [`scripts/hipoteses/h3_familias_colunas.yaml`](../../scripts/hipoteses/h3_familias_colunas.yaml)
+[`scripts/hipoteses/h2_familias_colunas.yaml`](../../../scripts/hipoteses/h2_familias_colunas.yaml)
+(h2) e [`scripts/hipoteses/h3_familias_colunas.yaml`](../../../scripts/hipoteses/h3_familias_colunas.yaml)
 (h3, complementa o primeiro) — o elo que faltava: `docs/context/familias.yaml`
 mapeia dataset→família, o painel tem coluna, e ninguém mapeava coluna→família.
 Editar o YAML, nunca a saída.

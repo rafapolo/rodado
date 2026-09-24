@@ -27,7 +27,7 @@ PAINEL = REPO / "tasks" / "hipoteses_resultado" / "hipoteses2" / "painel_mestre.
 MAPA   = REPO / "scripts" / "hipoteses" / "h2_familias_colunas.yaml"
 OUT    = REPO / "tasks" / "hipoteses_resultado" / "hipoteses2"
 N_MIN  = 500          # abaixo disso o parcial nao tem gl para nada
-R_MIN  = 0.10         # piso do glifo 🟠 em docs/hipoteses/respostas.md
+R_MIN  = 0.10         # piso do glifo 🟠 em docs/pesquisa/hipoteses/respostas.md
 Q_MAX  = 0.01         # FDR
 
 def phi(x):  # normal padrao acumulada, sem scipy
