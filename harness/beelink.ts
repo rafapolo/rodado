@@ -53,7 +53,9 @@ const TENTATIVAS_CHECKSUM = 3;
 export function preambuloSessao(): string {
   return `SET enable_progress_bar=false;\n` +
     `SET memory_limit='${MEMORIA}';\nSET threads=${THREADS};\nSET temp_directory='${TEMP_REMOTO}';\n` +
-    `SET allowed_directories=['${HOME_REMOTO}/rodado/', '${TEMP_REMOTO}'];\n` +
+    // s3://healthbr-data: bucket público de terceiros (SIPNI, CC-BY 4.0), lido
+    // pelo SECRET do ~/.duckdbrc — só este prefixo, nenhum outro bucket ou URL
+    `SET allowed_directories=['${HOME_REMOTO}/rodado/', '${TEMP_REMOTO}', 's3://healthbr-data/'];\n` +
     `SET enable_external_access=false;\nSET lock_configuration=true;\n`;
 }
 

@@ -66,7 +66,7 @@ describe("ehChecksumTransitorio", () => {
 
 test("a SQL do modelo roda com acesso a arquivo travado em ~/rodado e no despejo", () => {
   const p = preambuloSessao();
-  expect(p).toContain("SET allowed_directories=['/home/polo/rodado/', '/home/polo/duckdb_tmp/'];");
+  expect(p).toContain("SET allowed_directories=['/home/polo/rodado/', '/home/polo/duckdb_tmp/', 's3://healthbr-data/'];");
   // a ordem importa: travar antes de desligar o acesso impediria o próprio SET
   expect(p.indexOf("enable_external_access=false")).toBeLessThan(p.indexOf("lock_configuration=true"));
   expect(p).not.toContain("/tmp/");
