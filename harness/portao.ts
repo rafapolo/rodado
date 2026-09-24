@@ -972,40 +972,6 @@ const ERROS_DUCKDB = [
  * existe porque a consulta ligou. Falha é só a assinatura de erro do próprio
  * DuckDB. Sem esta distinção o portão rejeitava toda consulta válida.
  */
-/* ------------------------------------------------------------------ *
- *  Citação — não é camada de SQL, é checagem da PROSA final.
- * ------------------------------------------------------------------ */
-
-/** `br_`/`world_`/`us_` seguido de `.tabela` — os três prefixos do espelho. */
-const CITA_TABELA = /\b(?:br|world|us)_[a-z0-9_]+\.[a-z0-9_]+\b/gi;
-
-/**
- * A prosa final cita a ferramenta, não o órgão. backlog.md item 3: a convenção
- * de `pages/analises/results/` é citar o ÓRGÃO de origem do dado (ex.: "Ministério
- * da Saúde/SIM", "IBGE") — nunca a tabela, nunca o SQL. Hoje nenhuma resposta
- * gerada sai publicável sem edição à mão.
- *
- * Não é uma camada de `portao()` — roda sobre texto em português, não SQL, e é
- * chamada pela ferramenta `revisar_resposta` do MCP, não por `consultar`. A
- * instrução sozinha no system prompt é do tipo que o modelo obedece na maioria
- * das vezes; esta checagem, chamada como ferramenta ANTES do modelo poder
- * encerrar, transforma "maioria" em "todas" — mesmo mecanismo que faz o portão
- * de SQL funcionar: a rejeição volta como resultado de ferramenta, e o laço
- * agêntico do dsh reescreve.
- */
-export function checaCitacaoTabela(texto: string): Veredito {
-  const achados = [...new Set([...texto.matchAll(CITA_TABELA)].map((m) => m[0]))];
-  if (!achados.length) return OK;
-  return {
-    ok: false,
-    camada: "citacao",
-    erro:
-      `A resposta cita a tabela/dataset diretamente: ${achados.join(", ")}. Troque pelo ` +
-      "ÓRGÃO de origem do dado (ex.: Ministério da Saúde/SIM, IBGE, RAIS/CAGED do " +
-      "Ministério do Trabalho) — nunca o nome da tabela, do dataset nem SQL na resposta final.",
-  };
-}
-
 export async function checaExplain(
   sql: string,
   roda: (s: string) => Promise<{ error?: string }>,

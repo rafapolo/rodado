@@ -30,8 +30,8 @@ interface Desambiguacao {
 }
 
 /**
- * As descrições contrastivas, lidas uma vez. Consumido por `prefixo.ts`
- * (o prefixo real do laço) e por `avalia_datasets.ts` (a medição do item 1) —
+ * As descrições contrastivas, lidas uma vez. Consumido por `persona.ts`
+ * (o catálogo do system prompt) e por `avalia_datasets.ts` (a medição do item 1) —
  * os dois tinham cópias próprias do catálogo antes disto, e uma delas
  * (avalia_datasets.ts) nunca ganhou a pista: media a régua sem o conserto que
  * estava sendo medido.
