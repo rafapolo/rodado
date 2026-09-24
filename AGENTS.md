@@ -33,7 +33,7 @@ retired; its deployment files (`auth.py`, `start.sh`, `Caddyfile`,
 `haloy.yml`, `Dockerfile`) were removed on 2026-09-24 — `git log --all --
 Caddyfile` finds them.
 
-`mcp_server.py` is the current interface — see `docs/tecnico/MCP.md`.
+`mcp/mcp_server.py` is the current interface — see `docs/tecnico/MCP.md`.
 
 ### `docs/mapa/ERD.md` — the map
 One mermaid `erDiagram` per domain covering all 1023 tables: entity = dataset, attribute = table, edge = join key to a reference hub (solid = direct, dashed = needs normalization). Lists what connects to nothing. `ERD.md` is pt-BR (default), `ERD_EN.md` is the English twin — both generated from the same data by `scripts/gera_erd.py`.

@@ -1,7 +1,7 @@
 import { expect, test, describe } from "bun:test";
 import { checkReadOnly, stripSqlComments, capRows, RUN_SQL_MAX_CHARS, DESCRIBE_MAX_COLS } from "./sqlguard.ts";
 
-// Os casos abaixo são os de tests/test_mcp_server.py, um a um. São duas
+// Os casos abaixo são os de mcp/test_mcp_server.py, um a um. São duas
 // implementações do mesmo firewall (Python no MCP, TS aqui); repetir os casos
 // é o que impede as duas de derivarem.
 

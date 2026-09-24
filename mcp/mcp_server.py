@@ -25,7 +25,7 @@ from mcp.server.fastmcp import FastMCP
 # Config
 # ---------------------------------------------------------------------------
 
-REPO_ROOT = Path(__file__).resolve().parent
+REPO_ROOT = Path(__file__).resolve().parent.parent
 CONTEXT_DIR = Path(os.environ.get("MCP_CONTEXT_DIR", REPO_ROOT / "docs" / "context"))
 BEELINK_HOST = os.environ.get("MCP_BEELINK_HOST", "beelink")
 BEELINK_DUCKDB_BIN = os.environ.get("MCP_BEELINK_DUCKDB_BIN", "~/bin/duckdb")
