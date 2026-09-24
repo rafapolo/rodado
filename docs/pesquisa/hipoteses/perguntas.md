@@ -1,9 +1,9 @@
 # Perguntas por tema — cada uma cruzando 3+ datasets
 
-5 perguntas por cada um dos 43 temas de [`Temas.md`](../Temas.md). Toda pergunta exige
+5 perguntas por cada um dos 43 temas de [`Temas.md`](../../mapa/Temas.md). Toda pergunta exige
 **n ≥ 3 datasets** simultâneos (contagem entre parênteses). Datasets de referência
 de outros temas, usados para completar o cruzamento, marcados com `*`. Chaves de
-join: [`context/join_keys.md`](../context/join_keys.md). Ao fim, 5 perguntas que
+join: [`context/join_keys.md`](../../context/join_keys.md). Ao fim, 5 perguntas que
 atravessam vários datasets de famílias distintas ao mesmo tempo.
 
 ---

@@ -14,7 +14,7 @@ set -euo pipefail
 # ---------------------------------------------------------------------------
 # THREADS=8 e CONSTANTE, nao parametro.
 #
-# Medido em 2026-09-01 (ver gemma_stats.md): os 8 nucleos fisicos do Ryzen
+# Medido em 2026-09-01 (ver docs/tecnico/gemma_stats.md): os 8 nucleos fisicos do Ryzen
 # 5800H ja saturam a banda de memoria. Os 8 threads logicos do SMT nao
 # acrescentam banda, so disputa — com 16 threads o prefill cai 32%, a geracao
 # cai 31% e o desvio-padrao cresce ~10x (+-0,23 -> +-6,27 t/s).
@@ -131,7 +131,7 @@ done
   echo "# Benchmark — $TASKNAME"
   echo
   echo "- Modelo: \`gemma-4-26B-A4B-it-qat\` (q4_0), 13,43 GiB, MoE 128 experts / ~4B ativos"
-  echo "- Threads: **$THREADS** (fixo — ver gemma_stats.md)"
+  echo "- Threads: **$THREADS** (fixo — ver docs/tecnico/gemma_stats.md)"
   echo "- Task: \`$TASK\` ($(wc -w < "$REPO/$TASK" | tr -d ' ') palavras)"
   echo "- Data: $(date '+%Y-%m-%d %H:%M')"
   echo

@@ -27,7 +27,7 @@ from matplotlib.lines import Line2D
 import numpy as np
 
 REPO = Path(__file__).resolve().parent.parent
-SRC = REPO / "schemas.json"
+SRC = REPO / "docs" / "context" / "schemas.json"
 DST_DIR = REPO
 
 BEELINK_HOST = "beelink"

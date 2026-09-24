@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""docs/relatorio-social/perguntas.md -> tasks/douradas_multi.json
+"""docs/pesquisa/relatorio-social/perguntas.md -> tasks/douradas_multi.json
 
 Python port of origin/ask-web's scripts/build_douradas_multi.ts (same source
 doc, same filtering rule: a cited table not in the current catalog is
@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-SRC = REPO / "docs" / "relatorio-social" / "perguntas.md"
+SRC = REPO / "docs" / "pesquisa" / "relatorio-social" / "perguntas.md"
 SCHEMA_PATH = REPO / "docs" / "context" / "rodado-schema.json"
 OUT = REPO / "tasks" / "douradas_multi.json"
 
@@ -45,7 +45,7 @@ def main():
 
     OUT.write_text(json.dumps({
         "_meta": {
-            "origem": "docs/relatorio-social/perguntas.md",
+            "origem": "docs/pesquisa/relatorio-social/perguntas.md",
             "sobre": ("Conjunto dourado MULTI-TABELA. Mede se a recuperação traz TODAS as "
                       "pontas de uma pergunta de pesquisa, e se o modelo escreve o JOIN."),
             "criterios": ["recall@k das tabelas esperadas", "SQL cita 2+ tabelas",

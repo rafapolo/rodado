@@ -30,7 +30,7 @@ from collections import Counter
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-SRC = REPO / "schemas.json"
+SRC = REPO / "docs" / "context" / "schemas.json"
 DST = REPO / "docs" / "context" / "rodado-schema.json"
 
 # physical/native type -> logical type used by the MCP schema. Parquet
