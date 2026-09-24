@@ -315,8 +315,7 @@ BEELINK_HOST   # SSH hostname for beelink (default: beelink)
 An earlier iteration of this project ran a public live-query service
 (`db.xn--2dk.xyz`): BigQuery → GCS → Hetzner Object Storage, served by a
 persistent `auth.py` DuckDB connection behind Caddy, with a browser SQL
-shell and a `/query` HTTP API. That service is retired — the deployment
-files it left behind (`auth.py`, `start.sh`, `Caddyfile`, `haloy.yml`,
-`Dockerfile`) remain in the repo but describe infrastructure that no
-longer runs. Everything today goes through beelink and `mcp_server.py`,
+shell and a `/query` HTTP API. That service is retired, and its deployment
+files (`auth.py`, `start.sh`, `Caddyfile`, `haloy.yml`, `Dockerfile`) were
+removed on 2026-09-24 — `git log --all -- Caddyfile` finds them. Everything today goes through beelink and `mcp_server.py`,
 described above.
