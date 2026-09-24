@@ -234,9 +234,9 @@ python3 scripts/build_atlas.py /tmp/atlas.html   # também emite a cópia autoco
 - **Cor = tema**, nunca chave. Só 4 matizes passam o gate all-pairs de CVD, então os 10 temas dependem de território rotulado + isolamento por clique; a cor reforça, não carrega sozinha.
 - Depois de qualquer sync que mude tabelas: `gera_schemas.py` → `build_metadata_catalog.py` → `gera_schema_graph.py` → `build_atlas.py`.
 
-## `tasks/` e `tasks/plans/`
+## `tasks/` — local, fora do git
 
-`tasks/README.md` é o índice único do que está **em andamento**: o projeto na raiz de `tasks/`, o harness em `tasks/harness/` (era `harness/tasks/` até 2026-09-24). O que ainda não começou fica em `tasks/plans/`, com índice próprio. Plano que começa a rodar vai para `tasks/` (`git mv`); tarefa fechada sai do repo (`git rm`), depois de levar o que ensinou para onde será lido. `tasks/done/` é só o arquivo anterior a essa regra. Mudou o status de um arquivo, mude a linha dele no índice na mesma edição.
+`tasks/` está no `.gitignore` desde 2026-09-24: existe só no disco desta máquina, sem histórico. `tasks/README.md` é o índice único do que está **em andamento**: o projeto na raiz de `tasks/`, o harness em `tasks/harness/` (era `harness/tasks/`), os planos que ainda não começaram em `tasks/plans/`. Plano que começa a rodar vai para `tasks/`; mudou o status de um arquivo, mude a linha dele no índice na mesma edição. Como não há `git log` para recuperar nada, **apagar um arquivo de `tasks/` é definitivo** — o que ele ensinou vai antes para um lugar versionado (`harness/README.md`, `docs/`). Scripts que leem ou escrevem ali (`build_metadata_catalog.py` lê `tasks/datasets_to_scrap.md`; `build_douradas_*.py` escrevem `tasks/douradas_*.json`) seguem funcionando localmente.
 
 ## beelink: `~/.duckdbrc` e a trava de arquivo
 
