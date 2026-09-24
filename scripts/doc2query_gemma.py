@@ -4,7 +4,7 @@
 Motivo: em 2026-09-02 o `opencode/hy3-free` que o `doc2query_roda.py` usa passou
 a devolver `UnknownError: Unexpected server error` em toda chamada, o que trava
 a geração do corpus. O beelink já roda um `llama-server` com Gemma 4 26B na
-porta 8099 (ver tasks/harness_gemma_dsh.md), e ele serve para esta tarefa --
+porta 8099 (ver tasks/harness/harness_gemma_dsh.md), e ele serve para esta tarefa --
 gerar perguntas em português é bem mais tolerante que gerar SQL, onde o Gemma
 erra codificação em silêncio.
 
