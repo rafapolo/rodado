@@ -1965,9 +1965,9 @@ negativa)` na tabela acima.
 
 **Toda pergunta de `perguntas.md` tem entrada em `respostas.md`**, e nenhuma
 das perguntas de 01–76 está pendente por falta de tentativa: as 25 marcadas `❌ SEM RESPOSTA` têm o
-bloqueio identificado e verificado na própria entrada. `scripts/build_douradas_perguntas.py`
-reconhece o marcador `❌` desde 2026-09-06 (mapeado para `no_answer`, fora do
-golden set) — antes disso ele tratava essas linhas como "código não encontrado".
+bloqueio identificado e verificado na própria entrada. O gerador do conjunto dourado (`build_douradas_perguntas.py`, removido em
+2026-09-24 junto com o `search_tables`) reconhecia o marcador `❌` desde
+2026-09-06.
 
 Trajetória: 132 pendentes em 2026-09-05 → 79 → 28 → **0**.
 
