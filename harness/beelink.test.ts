@@ -1,5 +1,5 @@
 import { expect, test, describe } from "bun:test";
-import { rewriteToReadParquet, needsParquetFallback, ehChecksumTransitorio } from "./beelink.ts";
+import { rewriteToReadParquet, needsParquetFallback, ehChecksumTransitorio, preambuloSessao } from "./beelink.ts";
 
 const globs = new Map([
   ["br_ms_sim.microdados", "~/rodado/br_ms_sim/microdados/*.parquet"],
@@ -62,4 +62,13 @@ describe("ehChecksumTransitorio", () => {
     expect(ehChecksumTransitorio("Binder Error: Referenced column \"x\" not found")).toBe(false);
     expect(ehChecksumTransitorio(undefined)).toBe(false);
   });
+});
+
+test("a SQL do modelo roda com acesso a arquivo travado em ~/rodado e no despejo", () => {
+  const p = preambuloSessao();
+  expect(p).toContain("SET allowed_directories=['/home/polo/rodado/', '/home/polo/duckdb_tmp/'];");
+  // a ordem importa: travar antes de desligar o acesso impediria o próprio SET
+  expect(p.indexOf("enable_external_access=false")).toBeLessThan(p.indexOf("lock_configuration=true"));
+  expect(p).not.toContain("/tmp/");
+  expect(p.trimEnd().endsWith("SET lock_configuration=true;")).toBe(true);
 });
