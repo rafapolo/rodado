@@ -1,26 +1,30 @@
-data/
+# Segredos e sistema
 .env
 .DS_Store
-logs/
-done_tables.txt
-done_transfers.txt
-**/target
-*.log
+
+# Ambientes e dependências
 .venv
 node_modules/
-.cocoindex_code
-.cocoindex_code
 __pycache__/
+.cocoindex_code
+
+# Dado local — o espelho vive no beelink, não no repo
+data/
 _rodado_metadata/
 
-# Resultados de benchmark do harness — gerados por harness/lote.ts e
-# harness/compara.ts. Cada run traz a resposta inteira do modelo e vale só
-# enquanto o config daquele run vale; os números que importam ficam citados em
-# tasks/harness/regras.md, que é o que se lê depois.
+# Logs e estado de execução
+logs/
+*.log
+done_tables.txt
+done_transfers.txt
+
+# Tarefas e planos — locais, fora do controle de versão desde 2026-09-24
+tasks/
+
+# Resultados de benchmark do harness (harness/lote.ts, harness/compara.ts):
+# cada run vale só enquanto o config daquele run vale.
 benchmarks/
 
-# Saídas de scripts/hipoteses_overnight.sh (painel.csv, correlacoes.tsv, etc.)
-# trazidas do beelink — cada run é reprodutível a partir da bateria, e os
-# números que importam ficam citados em tasks/hipoteses.md/docs/respostas.md.
+# Saídas de scripts/hipoteses_overnight.sh trazidas do beelink — reprodutíveis
+# a partir da bateria.
 .hipoteses/
-tasks/hipoteses_resultado/
