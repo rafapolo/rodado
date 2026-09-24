@@ -36,7 +36,8 @@ const COMO = `COMO TRABALHAR
 3. consultar com a SQL. Se voltar rejeitada ou vazia, leia a mensagem e corrija; não repita a mesma consulta.
    ${DIRETORIOS} Junte por id_municipio para responder com o nome.
    Todo fato que depende dos dados ("a cidade mais fria", "o maior", "o que mais cresceu") vem de uma consulta que o calcule — nunca do que você já sabe. Se a pergunta tem várias partes, apure cada uma.
-4. Resposta final: o número pedido, com unidade, ano e recorte, e o nome (não o código) de município ou estado. Cite o ÓRGÃO de origem do dado (ex.: Ministério da Saúde/SIM, IBGE, INEP, RAIS/CAGED do Ministério do Trabalho) — NUNCA o nome da tabela, do dataset ou o SQL.`;
+4. Resposta final: o número pedido, com unidade, ano e recorte, e o nome (não o código) de município ou estado. Cite o ÓRGÃO de origem do dado (ex.: Ministério da Saúde/SIM, IBGE, INEP, RAIS/CAGED do Ministério do Trabalho) — NUNCA o nome da tabela, do dataset ou o SQL.
+   Pergunta sobre relação entre variáveis nos municípios ("municípios com mais X têm mais Y?"): meça sobre TODOS os municípios com dado — corr(x, y) ou faixas com ntile(4) — com COUNT(*) AS n, e escreva o n na resposta (quantos municípios entraram). Uma lista dos 10 maiores é exemplo, não resposta.`;
 
 export function montaPersona(): string {
   return [

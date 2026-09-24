@@ -14,15 +14,15 @@
  * levou o total de 20,9 para 15,2 min (−27%, não 5x) — sem a config no arquivo,
  * a comparação seguinte lê isso como ganho do harness.
  */
-import { writeFileSync } from "node:fs";
+import { writeFileSync, readFileSync, readdirSync, statSync } from "node:fs";
 import {
   avalia, configServidor, rotuloConfig, avisaConfigDivergente,
-  avisaPrefill, marcaDoLog, prefillsDesde, LIMIAR_PREFILL, confereBoot,
+  avisaPrefill, marcaDoLog, prefillsDesde, LIMIAR_PREFILL, confereBoot, nsDaSessao, trocasDeBuild,
   type ConfigServidor,
 } from "./acerto.ts";
 import { sobeGuarda, resumoGuarda, type Estatistica } from "./guarda.ts";
 import { garanteTunel } from "./modelo.ts";
-import { comandoPi } from "./pi.ts";
+import { comandoPi, SESSOES } from "./pi.ts";
 
 const RAIZ = new URL("..", import.meta.url).pathname;
 
@@ -48,6 +48,13 @@ export interface Saida {
   tentativas: number;
   /** turnos repetidos/resgatados por guarda.ts, somados entre as tentativas */
   guarda?: Estatistica;
+  /** os `n` que as consultas da sessão devolveram (`nsDaSessao`) — diagnóstico,
+   *  não entra em `correto` */
+  nNaSql?: number[];
+  /** errou na prosa, mas o esperado estava num `n` da SQL: apurou e não escreveu */
+  nSoNaSql?: boolean;
+  /** commit do llama.cpp no ar logo depois do caso (`build_info` do /props) */
+  build?: string;
 }
 
 /** Arquivo de saída — o tempo sem a config que o produziu não é comparável. */
@@ -57,6 +64,8 @@ export interface Rodada {
   /** o laço que produziu a rodada; ausente = dsh, o único antes de 2026-09-24 */
   cliente?: "dsh" | "pi" | "omp";
   casos: Saida[];
+  /** onde o build do llama.cpp mudou no meio da rodada — vazio/ausente = não mudou */
+  trocasDeBuild?: { caso: number; de: string; para: string }[];
 }
 
 /**
@@ -77,10 +86,11 @@ interface Tentativa {
   prefillInicial?: number;
   semLog: boolean;
   guarda: Estatistica;
+  nNaSql?: number[];
 }
 
 /**
- * Quantas vezes tentar uma pergunta antes de desistir. backlog.md item 10:
+ * Quantas vezes tentar uma pergunta antes de desistir. harness_tasks.md B10:
  * medido 2026-09-03, 4 de 6 sessões reais terminaram com a chamada de
  * ferramenta do Gemma caindo como texto solto (formato nativo do modelo,
  * `<|tool_call>...<tool_call|>`, que o parser do llama-server às vezes não
@@ -89,7 +99,7 @@ interface Tentativa {
  * sessões do mesmo tamanho, completaram normalmente — é probabilístico por
  * turno, então repetir a MESMA pergunta num processo novo tem boa chance
  * de não bater o mesmo bug de novo. Não conserta a causa raiz (aberta,
- * bloqueando em `backlog.md`); é o workaround que torna a rodada usável
+ * bloqueando em `harness_tasks.md`); é o workaround que torna a rodada usável
  * enquanto ela não fecha.
  */
 const MAX_TENTATIVAS = Number(Bun.env.HARNESS_TENTATIVAS ?? 3);
@@ -111,6 +121,7 @@ async function rodaUmaVez(q: string): Promise<Tentativa> {
   const texto = await new Response(p.stdout).text();
   const err = await new Response(p.stderr).text();
   const code = await p.exited;
+  const nNaSql = nsDaUltimaSessao(t0);
   guarda.para();
   const seg = (Date.now() - t0) / 1000;
   const resposta = (texto.trim() || err.trim()).slice(0, 4000);
@@ -119,11 +130,22 @@ async function rodaUmaVez(q: string): Promise<Tentativa> {
   const prefills = await prefillsDesde(marca);
   const prefillMax = prefills?.length ? Math.max(...prefills) : undefined;
   const prefillInicial = prefills?.[0];
-  return { resposta, segundos: seg, respondeu, prefillMax, prefillInicial, semLog: prefills === undefined, guarda: guarda.stats };
+  return { resposta, segundos: seg, respondeu, prefillMax, prefillInicial, semLog: prefills === undefined, guarda: guarda.stats, nNaSql };
 }
 
-export async function roda(casos: Caso[], aoCaso?: (feitos: Saida[]) => void): Promise<Saida[]> {
+/** A sessão que o Pi gravou para este caso: o .jsonl mais novo desde `t0`. */
+function nsDaUltimaSessao(t0: number): number[] | undefined {
+  try {
+    const arq = readdirSync(SESSOES).filter((a) => a.endsWith(".jsonl"))
+      .map((a) => ({ a: `${SESSOES}/${a}`, m: statSync(`${SESSOES}/${a}`).mtimeMs }))
+      .filter((x) => x.m >= t0).sort((x, y) => y.m - x.m)[0];
+    return arq ? nsDaSessao(readFileSync(arq.a, "utf8")) : undefined;
+  } catch { return undefined; }
+}
+
+export async function roda(casos: Caso[], aoCaso?: (feitos: Saida[]) => void, buildInicial?: string): Promise<Saida[]> {
   const out: Saida[] = [];
+  let buildAnterior = buildInicial;
   let semLog = false;
   for (const [i, caso] of casos.entries()) {
     const q = caso.pergunta;
@@ -156,14 +178,28 @@ export async function roda(casos: Caso[], aoCaso?: (feitos: Saida[]) => void): P
       ? undefined
       : respondeu && a.certo;
 
-    out.push({ pergunta: q, resposta, segundos, respondeu, correto, esperado: caso.esperado, eco: a.eco || undefined, prefillMax, prefillInicial, tentativas, guarda });
+    const nNaSql = tentativa.nNaSql?.length ? [...new Set(tentativa.nNaSql)] : undefined;
+    const alvo = Number(caso.esperado);
+    const nSoNaSql = correto === false && Number.isFinite(alvo) && nNaSql?.includes(alvo) ? true : undefined;
+    // Medido 2026-09-24: 6b790a9 no lugar de f072b10 no meio da rodada B2, e
+    // nada no JSON registrou — o build é relido a cada caso, não só no começo.
+    const build = (await configServidor())?.build;
+    out.push({ pergunta: q, resposta, segundos, respondeu, correto, esperado: caso.esperado, eco: a.eco || undefined, prefillMax, prefillInicial, tentativas, guarda, nNaSql, nSoNaSql, build });
     const marcaLinha = a.eco ? "ECO " : correto === false ? "ERRO" : correto === true ? " ok " : respondeu ? " ?  " : "  -- ";
     const sufixoTentativas = tentativas > 1 ? ` (${tentativas} tentativas)` : "";
     console.log(`${marcaLinha} ${i + 1}/${casos.length}  ${segundos.toFixed(0)}s${sufixoTentativas}  ${q.slice(0, 58)}`);
     if (a.eco) console.log(`      esperado ${caso.esperado} aparece na própria pergunta — caso fora do denominador`);
     else if (correto === false) console.log(`      esperava ${caso.esperado} | veio: ${resposta.replace(/\s+/g, " ").slice(0, 130)}`);
+    if (correto === false) console.log(nSoNaSql
+      ? `      o n ${caso.esperado} estava na SQL e não na resposta`
+      : `      n na SQL: ${nNaSql?.slice(0, 8).join(", ") ?? "nenhum"}`);
     else if (!respondeu) console.log(`      (vazio após ${tentativas} tentativas)`);
     console.log(`      ${resumoGuarda(guarda)}`);
+    if (build && buildAnterior && build !== buildAnterior) {
+      console.log(`      AVISO: o llama.cpp trocou de build no meio da rodada (${buildAnterior} → ${build}) — ` +
+        `os casos daqui em diante NÃO são comparáveis com os anteriores`);
+    }
+    if (build) buildAnterior = build;
     aoCaso?.(out);
 
     // O primeiro caso fica de fora: `confereBoot()` acabou de mandar a conversa
@@ -222,7 +258,7 @@ if (import.meta.main) {
   const arquivo = Bun.argv[2];
   if (!arquivo) { console.error("uso: bun harness/lote.ts <arquivo-de-perguntas>"); process.exit(1); }
 
-  // operacao.md tarefa 2: confere raciocínio desligado e cache de prefixo
+  // harness_tasks.md O2: confere raciocínio desligado e cache de prefixo
   // vivo ANTES de gastar horas rodando com um servidor mal configurado.
   console.log("conferindo o boot do servidor…");
   if (!await confereBoot()) {
@@ -243,8 +279,11 @@ if (import.meta.main) {
   // `n` foram interrompidas no meio e perderam o que já tinham rodado.
   const saida = `${RAIZ}harness/benchmarks/lote_${new Date().toISOString().slice(0, 16).replace(/[:T]/g, "")}.json`;
   const grava = (casosFeitos: Saida[]) =>
-    writeFileSync(saida, JSON.stringify({ gerado: new Date().toISOString(), config, cliente: "pi", casos: casosFeitos } satisfies Rodada, null, 1));
-  const r = await roda(casos, grava);
+    writeFileSync(saida, JSON.stringify({
+      gerado: new Date().toISOString(), config, cliente: "pi", casos: casosFeitos,
+      trocasDeBuild: trocasDeBuild(casosFeitos.map((c) => c.build), config?.build),
+    } satisfies Rodada, null, 1));
+  const r = await roda(casos, grava, config?.build);
   const bons = r.filter((x) => x.respondeu).length;
   const medio = r.reduce((a, b) => a + b.segundos, 0) / r.length;
   console.log(`\n${"=".repeat(56)}`);
@@ -259,6 +298,9 @@ if (import.meta.main) {
   console.log(`TEMPO MÉDIO: ${medio.toFixed(0)}s por pergunta  [${rotuloConfig(config)}]`);
   const piorPrefill = Math.max(0, ...r.slice(1).map((x) => x.prefillInicial ?? 0));
   if (piorPrefill) console.log(`PIOR PREFILL INICIAL após o 1º caso: ${piorPrefill} tokens (limiar ${LIMIAR_PREFILL})`);
+  for (const t of trocasDeBuild(r.map((c) => c.build), config?.build)) {
+    console.log(`BUILD TROCOU no caso ${t.caso}: llama.cpp ${t.de} → ${t.para}`);
+  }
   console.log("=".repeat(56));
   grava(r);
   console.log(`\ndetalhe em ${saida}`);

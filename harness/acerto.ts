@@ -198,6 +198,19 @@ export interface ConfigServidor {
   /** `-c` — contexto POR SLOT. `-c 65536 -np 4` aloca 4x o KV */
   ctx: number;
   modelo: string;
+  /** commit do llama.cpp do binário NO AR (`build_info` do /props, "b417-6b790a9"
+   *  → "6b790a9") — não o HEAD do repositório, que pode estar à frente do build */
+  build?: string;
+}
+
+/**
+ * O commit dentro do `build_info` do llama-server: "b417-6b790a9" → "6b790a9".
+ * Medido 2026-09-24: o build trocou no meio da rodada B2 (6b790a9 no lugar de
+ * f072b10, em que todas as medições foram feitas) e nada no JSON registrou.
+ */
+export function commitDoBuild(info?: string): string | undefined {
+  const m = (info ?? "").trim().match(/(?:^|-)([0-9a-f]{7,40})$/i);
+  return m ? m[1]!.toLowerCase() : undefined;
 }
 
 /**
@@ -212,18 +225,20 @@ export async function configServidor(base = BASE): Promise<ConfigServidor | unde
     const d = await r.json() as {
       total_slots?: number;
       model_alias?: string;
+      build_info?: string;
       default_generation_settings?: { n_ctx?: number };
     };
     return {
       np: d.total_slots ?? -1,
       ctx: d.default_generation_settings?.n_ctx ?? -1,
       modelo: (d.model_alias ?? "?").split("/").pop() ?? "?",
+      build: commitDoBuild(d.build_info),
     };
   } catch { return undefined; }
 }
 
 export function rotuloConfig(c?: ConfigServidor): string {
-  return c ? `-np ${c.np} -c ${c.ctx} (${c.modelo})` : "-np ? -c ? (servidor não respondeu)";
+  return c ? `-np ${c.np} -c ${c.ctx} (${c.modelo}, llama.cpp ${c.build ?? "?"})` : "-np ? -c ? (servidor não respondeu)";
 }
 
 /**
@@ -242,8 +257,28 @@ export function avisaConfigDivergente(
   if (a.np !== b.np) d.push(`-np ${a.np} vs ${b.np}`);
   if (a.ctx !== b.ctx) d.push(`-c ${a.ctx} vs ${b.ctx}`);
   if (a.modelo !== b.modelo) d.push(`modelo ${a.modelo} vs ${b.modelo}`);
+  if (a.build && b.build && a.build !== b.build) d.push(`llama.cpp ${a.build} vs ${b.build}`);
   if (!d.length) return undefined;
   return `AVISO: ${rotuloA} e ${rotuloB} rodaram com config diferente (${d.join("; ")}) — comparar TEMPO entre elas é comparar coisas distintas`;
+}
+
+/**
+ * Onde o build do llama.cpp mudou dentro de uma rodada: `builds[i]` é o lido
+ * depois do caso i (undefined = servidor não respondeu, não conta como troca).
+ * Parte de `inicial`, o build do começo da rodada. Casos numerados de 1.
+ */
+export function trocasDeBuild(
+  builds: (string | undefined)[],
+  inicial?: string,
+): { caso: number; de: string; para: string }[] {
+  const out: { caso: number; de: string; para: string }[] = [];
+  let atual = inicial;
+  builds.forEach((b, i) => {
+    if (!b) return;
+    if (atual && b !== atual) out.push({ caso: i + 1, de: atual, para: b });
+    atual = b;
+  });
+  return out;
 }
 
 // ------------------------------------------------------------- 3. o prefill
@@ -324,7 +359,7 @@ export function extraiPrefills(logo: string): number[] {
 // ------------------------------------------------------------- 4. o boot
 
 /**
- * `servidor.sh aquece` antes de qualquer rodada — operacao.md tarefa 2: "nada
+ * `servidor.sh aquece` antes de qualquer rodada — harness_tasks.md O2: "nada
  * chama isso automaticamente". Uma rodada de horas com o raciocínio ligado
  * (20,9 s por turno em vez de 4,7 s) ou o cache de prefixo quebrado é o
  * desperdício mais caro disponível aqui, e os dois passam sem exceção — só o
@@ -335,4 +370,39 @@ export async function confereBoot(): Promise<boolean> {
     stdout: "inherit", stderr: "inherit",
   });
   return (await p.exited) === 0;
+}
+
+/**
+ * Os `n` que as consultas de uma sessão do Pi devolveram — a coluna literalmente
+ * chamada `n` em cada resultado de `consultar` (o formato de `tabelaTexto`:
+ * linha de contagem, cabeçalho `a | b | n`, uma linha por registro).
+ *
+ * Diagnóstico, não nota: medido 2026-09-24, caso 6 da rodada B2, a SQL tinha
+ * `COUNT(*) AS n` sete vezes e a prosa não citou nenhuma. O acerto continua
+ * sendo o da resposta (é ela que chega a quem perguntou); isto só separa
+ * "apurou o n e não escreveu" de "nunca chegou nele".
+ */
+export function nsDaSessao(jsonl: string): number[] {
+  const out: number[] = [];
+  for (const linha of jsonl.split("\n")) {
+    if (!linha.includes('"toolResult"') || !linha.includes('"consultar"')) continue;
+    let msg: { message?: { toolName?: string; content?: { type: string; text?: string }[] } };
+    try { msg = JSON.parse(linha); } catch { continue; }
+    if (msg.message?.toolName !== "consultar") continue;
+    for (const c of msg.message.content ?? []) {
+      const ls = (c.text ?? "").split("\n");
+      const i = ls.findIndex((l) => /^\d+ linha/.test(l));
+      if (i < 0 || !ls[i + 1]) continue;
+      const cab = ls[i + 1]!.split(" | ");
+      const col = cab.findIndex((k) => k.trim().toLowerCase() === "n");
+      if (col < 0) continue;
+      for (const l of ls.slice(i + 2)) {
+        const cel = l.split(" | ");
+        if (!l.trim() || cel.length !== cab.length) break;
+        const v = Number(cel[col]!.trim());
+        if (Number.isFinite(v)) out.push(v);
+      }
+    }
+  }
+  return out;
 }

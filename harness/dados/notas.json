@@ -33,7 +33,8 @@
     "*": "uma linha por estabelecimento POR MÊS: para contar estabelecimentos filtre ano e mes e use COUNT(DISTINCT id_estabelecimento_cnes)"
   },
   "br_cgu_novo_bolsa_familia.novo_bolsa_familia": {
-    "*": "uma linha por pagamento. ano_mes é TEXTO 'AAAAMM' ('202403'); uf é a sigla; valor_parcela é TEXTO com vírgula decimal ('800,00'): some com CAST(replace(valor_parcela, ',', '.') AS DOUBLE). Famílias = COUNT(DISTINCT nis_favorecido)"
+    "*": "uma linha por pagamento. ano_mes é TEXTO 'AAAAMM' ('202403'); uf é a sigla; valor_parcela é TEXTO com vírgula decimal ('800,00'): some com CAST(replace(valor_parcela, ',', '.') AS DOUBLE). Famílias = COUNT(DISTINCT nis_favorecido). NÃO tem id_municipio: para cruzar por município, use br_cgu_beneficios_cidadao.novo_bolsa_familia (id_municipio IBGE, os 5.570 municípios em 2023–2025) ou junte por nome + UF (ver codigo_municipio_siafi)",
+    "codigo_municipio_siafi": "código SIAFI de 4 dígitos, NÃO é o IBGE e não tem tabela de correspondência — nunca compare com id_municipio. Junte por nome + UF: upper(strip_accents(nome_municipio)) = upper(strip_accents(m.nome)) AND uf = m.sigla_uf com br_bd_diretorios_brasil.municipio m (5.554 de 5.570 municípios em 202306, conferido 2026-09-24)"
   },
   "br_inep_censo_escolar.escola": {
     "*": "uma linha por escola por ano, incluindo paralisadas e extintas — escolas existentes: tipo_situacao_funcionamento = '1'"

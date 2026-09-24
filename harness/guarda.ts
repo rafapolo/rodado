@@ -2,7 +2,7 @@
  * Guarda entre o laço (Pi) e o llama-server: conserta o turno, não a sessão.
  *
  * Medido 2026-09-22 com log verboso, llama.cpp `8887a48` e `f072b10`: o turno
- * que "volta vazio" (backlog.md item 10) é o Gemma decodificando 3 tokens —
+ * que "volta vazio" (harness_tasks.md B10) é o Gemma decodificando 3 tokens —
  * `<|channel>` `thought` `<tool_call|>` — e parando em EOS. Não há chamada a
  * resgatar; o modelo nem tentou. A saída era repetir a pergunta inteira numa
  * sessão nova (5-7 min). Aqui a mesma requisição é reenviada: o prefixo já

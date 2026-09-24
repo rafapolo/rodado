@@ -4,6 +4,7 @@
  */
 import { expect, test, describe } from "bun:test";
 import {
+  nsDaSessao, commitDoBuild, trocasDeBuild,
   avalia, bate, numeros, normalizaNumero, casoEcoa,
   avisaConfigDivergente, avisaPrefill, extraiPrefills, LIMIAR_PREFILL,
 } from "./acerto.ts";
@@ -145,4 +146,25 @@ describe("gabarito rico", () => {
     expect(casoEcoa("Em 2021, quantos?", "2021")).toBe(true);
     expect(casoEcoa("Em 2021, quantos?", "2021|57")).toBe(false);
   });
+});
+
+test("nsDaSessao lê a coluna n dos resultados de consultar (caso 6 da rodada B2)", () => {
+  const texto = "⚠ aviso\n\n2 linha(s):\nano | grupo | avg_mortalidade | n\n2020 | a | 0 | 1200\n2020 | b | 0 | 2025";
+  const linha = JSON.stringify({ type: "message", message: { role: "toolResult", toolName: "consultar", content: [{ type: "text", text: texto }] } });
+  const outra = JSON.stringify({ type: "message", message: { role: "toolResult", toolName: "listar_tabelas", content: [{ type: "text", text: "1 linha(s):\nn\n99" }] } });
+  expect(nsDaSessao([linha, outra, "lixo"].join("\n"))).toEqual([1200, 2025]);
+});
+
+test("commitDoBuild tira o commit do build_info do /props", () => {
+  expect(commitDoBuild("b417-6b790a9")).toBe("6b790a9");
+  expect(commitDoBuild("f072b10")).toBe("f072b10");
+  expect(commitDoBuild("")).toBeUndefined();
+  expect(commitDoBuild(undefined)).toBeUndefined();
+});
+
+test("trocasDeBuild acha a troca no meio da rodada (B2, 2026-09-24)", () => {
+  expect(trocasDeBuild(["f072b10", undefined, "6b790a9", "6b790a9"], "f072b10"))
+    .toEqual([{ caso: 3, de: "f072b10", para: "6b790a9" }]);
+  expect(trocasDeBuild(["f072b10", "f072b10"], "f072b10")).toEqual([]);
+  expect(trocasDeBuild(["6b790a9"], undefined)).toEqual([]);
 });

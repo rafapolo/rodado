@@ -622,7 +622,7 @@ function checaAno(sql: string): Veredito {
 }
 
 /* ------------------------------------------------------------------ *
- *  Junção sem ponte — backlog.md item 12.
+ *  Junção sem ponte — harness_tasks.md B12.
  *
  *  Medido ao vivo 2026-09-03: a pergunta de 5 fontes de perguntas.md (emenda →
  *  contrato → CNPJ → TCU → PGFN) rodou 40 min, 55 SQLs, e morreu sem resposta —
@@ -778,6 +778,64 @@ function checaAmostra(sql: string): Veredito {
   };
 }
 
+/**
+ * Pergunta de pesquisa — relação entre variáveis em muitos municípios, não um
+ * número só. As diretas começam por interrogativo ("Qual", "Quantos", "Em que");
+ * as de pesquisa afirmam uma relação e perguntam se ela vale ("Municípios com
+ * mais X têm Y?"). Medido 2026-09-24: 87/87 dos casos de pesquisa e 0/42 das
+ * diretas (os três `dados/diretas*.tsv`). O único que começa por "Quais" cai
+ * pelo verbo de relação.
+ */
+export function perguntaDePesquisa(pergunta: string): boolean {
+  const q = pergunta.trim();
+  if (!q) return false;
+  if (/\b(correlaciona\w*|correla[çc][ãa]o|associa\w*|explica|prev[êe])\b/i.test(q)) return true;
+  return /\?\s*$/.test(q) && !/^(qual|quais|quant[oa]s?|em (que|qual|quant[oa]s?)|quem|como|por que)\b/i.test(q);
+}
+
+/**
+ * Ranking cruzando fontes, numa pergunta de pesquisa — rejeitado.
+ *
+ * Medido 2026-09-24, os 8 primeiros casos da rodada B2, todos errados: a
+ * pergunta era "municípios com mais X têm mais Y?" e 7 das 8 sessões fecharam
+ * num `ORDER BY … LIMIT 10` com quatro fontes juntadas, sem `corr()` nem
+ * `COUNT(*) AS n`. A resposta vira uma lista de exemplos (Tufilândia, Extrema,
+ * Abadia de Goiás) e uma conclusão hesitante — nenhuma medida sobre os
+ * municípios todos, e nenhum `n` para conferir o join.
+ *
+ * Só quando a SQL junta **duas ou mais fontes** (os diretórios não contam): a
+ * exploração de uma tabela só com `LIMIT` — ver valores, conferir código —
+ * segue livre. E só no SELECT externo, sem estatística derivada nem `n`: uma
+ * comparação de faixas com `COUNT(*) AS n` e `ORDER BY` passa.
+ *
+ * Fica fora de `portao()` porque depende da pergunta, que só `mcp.ts` conhece.
+ */
+export function checaRanking(sql: string): Veredito {
+  const externo = segmentos(sql).at(-1) ?? sql;
+  if (!/\bORDER\s+BY\b[\s\S]*\bLIMIT\s+\d+/i.test(externo)) return OK;
+  if (DERIVADAS.test(externo) || /\bAS\s+"?n"?\b/i.test(externo)) return OK;
+  const fontes = new Set(
+    tabelasCitadas(sql)
+      .filter((r) => r.includes(".") && !/^br_bd_diretorios/i.test(r))
+      .map((r) => r.split(".")[0]!.toLowerCase()),
+  );
+  if (fontes.size < 2) return OK;
+  return {
+    ok: false,
+    camada: "ranking",
+    erro:
+      `A pergunta é sobre uma relação entre variáveis nos municípios, e esta consulta ` +
+      `junta ${fontes.size} fontes (${[...fontes].join(", ")}) para devolver só os ` +
+      `primeiros de um ORDER BY … LIMIT. Uma lista dos 10 maiores é exemplo, não ` +
+      `resposta: não diz se a relação vale para os municípios todos. Meça sobre TODOS ` +
+      `os municípios com dado, sem LIMIT no SELECT final, e com o tamanho da amostra: ` +
+      `SELECT corr(x, y) AS corr, COUNT(*) AS n FROM ... ; ou compare faixas — ` +
+      `ntile(4) OVER (ORDER BY x) AS faixa numa CTE, e no SELECT final ` +
+      `faixa, AVG(y), COUNT(*) AS n ... GROUP BY faixa. Exemplos com nome podem vir ` +
+      `depois, numa consulta à parte.`,
+  };
+}
+
 /* ------------------------------------------------------------------ *
  *  Sanidade — depois da execução, sobre as linhas que voltaram.
  *
@@ -837,7 +895,7 @@ function colunasNumericas(linhas: Linha[]): string[] {
 export function alertasDeSanidade(sql: string, linhas: Linha[]): string[] {
   const alertas: string[] = [];
 
-  // backlog.md item 9, medido em 2026-09-03 ao vivo (não procurado — apareceu
+  // harness_tasks.md B9, medido em 2026-09-03 ao vivo (não procurado — apareceu
   // testando outra coisa). br_ms_sim.circunstancia_obito é decodificado via
   // dicionario e mais fácil de achar que causa_basica (CID), mas está
   // sub-preenchido: RJ 2020, substr(causa_basica,1,3) BETWEEN 'X60' AND 'X84'
@@ -875,6 +933,26 @@ export function alertasDeSanidade(sql: string, linhas: Linha[]): string[] {
 
   const prim = linhas[0];
   if (!prim) return alertas;
+
+  // Medido 2026-09-24, caso 6 da rodada B2: taxa de mortalidade infantil 0,0 em
+  // todos os grupos, e o modelo explicou o zero como achado. A causa era
+  // `tipo_obito_ocorrencia != '8'` — NULL em 1.494.553 dos 1.556.824 óbitos do
+  // SIM 2020, e `NULL != '8'` não é verdadeiro: o filtro jogou fora os 28.864
+  // óbitos infantis. Só avisa quando as duas coisas aparecem juntas.
+  const diferentes = [...sql.matchAll(/\b([A-Za-z_]\w*)\s*(?:!=|<>)\s*'[^']*'/g)].map((m) => m[1]!);
+  const zeradas = colunasNumericas(linhas).filter((k) => k.toLowerCase() !== "n" &&
+    linhas.every((l) => Number(l[k]) === 0));
+  if (diferentes.length && zeradas.length) {
+    const cols = [...new Set(diferentes)];
+    alertas.push(
+      `${zeradas.join(", ")} deu 0 em todas as linhas, e a consulta filtra com != / <> ` +
+      `(${cols.join(", ")}). Em SQL, NULL != 'x' não é verdadeiro: a linha com a coluna ` +
+      `vazia sai do resultado junto com a que vale 'x'. Medido aqui: ` +
+      `tipo_obito_ocorrencia != '8' descartou os 28.864 óbitos infantis do SIM 2020, ` +
+      `porque a coluna é NULL em 96% das linhas. Use (${cols[0]} IS NULL OR ${cols[0]} != '...'), ` +
+      `ou tire o filtro — um zero assim é o filtro, não um achado.`,
+    );
+  }
 
   // Medido em 2026-09-01: o pipeline fixo respondeu 573 onde o total era 789 —
   // agrupou por sexo e reportou UM grupo como se fosse o total. É o erro que o

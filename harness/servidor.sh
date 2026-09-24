@@ -169,7 +169,7 @@ done
 # `{"error":{"code":500,"message":"this custom template is not supported, try
 # using --jinja"}}` — o template do Gemma exige o motor jinja, não é só o
 # tool-calling que depende dele. Mantido como flag só para não repetir o
-# experimento; ver regras.md, "Desfazer também é refino".
+# experimento; ver tasks/harness_tasks.md, "Desfazer também é refino".
 FLAG_JINJA=""
 [[ "${NOJINJA:-0}" == "1" ]] && FLAG_JINJA="--no-jinja"
 

@@ -24,3 +24,8 @@ describe("semantica", () => {
     expect(sugereTabelas("br_ms_sim.obitos")).toContain("br_ms_sim.microdados");
   });
 });
+
+test("SIAFI do Novo Bolsa Família aponta a junção por nome + UF e a tabela com id_municipio (caso 4 da rodada B2)", () => {
+  expect(notaColuna("br_cgu_novo_bolsa_familia.novo_bolsa_familia", "codigo_municipio_siafi")).toContain("strip_accents(nome_municipio)");
+  expect(notaTabela("br_cgu_novo_bolsa_familia.novo_bolsa_familia")).toContain("br_cgu_beneficios_cidadao.novo_bolsa_familia");
+});
