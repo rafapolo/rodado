@@ -59,5 +59,12 @@
   },
   "br_tse_eleicoes.candidatos": {
     "cargo": "minúsculo: 'prefeito', 'vereador', 'governador'..."
+  },
+  "br_inmet_bdmep.microdados": {
+    "*": "uma linha por estação por HORA, sem município: a cidade sai de br_inmet_bdmep.estacao (JOIN ON id_estacao, depois id_municipio). O NOME da estação pode citar outro município — vale estacao.id_municipio, nunca o nome. Clima de uma cidade = AVG sobre o ano, só estações com o ano quase completo (COUNT(*) > 6000 leituras)",
+    "temperatura_bulbo_hora": "temperatura do ar na hora (°C) — a média anual é AVG desta; temperatura_max/min são extremos da hora"
+  },
+  "br_inep_censo_escolar.turma": {
+    "quantidade_matriculas": "turma sem etapa_ensino (atividade complementar, AEE) repete aluno já contado — total de estudantes: escola.quantidade_matricula_educacao_basica, ou turma com etapa_ensino IS NOT NULL"
   }
 }
