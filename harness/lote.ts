@@ -22,9 +22,13 @@ import {
 } from "./acerto.ts";
 import { sobeGuarda, resumoGuarda, type Estatistica } from "./guarda.ts";
 import { garanteTunel } from "./modelo.ts";
+import { comandoPi, comandoOmp } from "./pi.ts";
 
 const RAIZ = new URL("..", import.meta.url).pathname;
 const PATCH = "harness/dsh/rodado.patch.yml";
+/** O laço agêntico: `dsh` (padrão), `pi` ou `omp` — tasks/pi_no_lugar_do_dsh.md. */
+export type Cliente = "dsh" | "pi" | "omp";
+const CLIENTE = (Bun.env.HARNESS_CLIENTE ?? "dsh") as Cliente;
 
 export interface Saida {
   pergunta: string;
@@ -54,6 +58,8 @@ export interface Saida {
 export interface Rodada {
   gerado: string;
   config?: ConfigServidor;
+  /** ausente = dsh, o único que existia antes */
+  cliente?: Cliente;
   casos: Saida[];
 }
 
@@ -99,15 +105,19 @@ async function rodaUmaVez(q: string): Promise<Tentativa> {
   const marca = await marcaDoLog();
   const guarda = sobeGuarda();
   const t0 = Date.now();
-  const p = Bun.spawn(
-    ["bunx", "dsh", "--profile", "headless", "--patch", PATCH, q],
-    {
-      cwd: RAIZ,
+  const { cmd, env } = CLIENTE === "pi" ? comandoPi(q, guarda.url)
+    : CLIENTE === "omp" ? comandoOmp(q, guarda.url)
+    : {
+      cmd: ["bunx", "dsh", "--profile", "headless", "--patch", PATCH, q],
       env: { ...process.env, HARNESS_LLM_KEY: "x", HARNESS_LLM_URL: guarda.url, HARNESS_PERGUNTA: q },
-      stdout: "pipe", stderr: "pipe",
-      timeout: 2_400_000, killSignal: "SIGKILL",
-    },
-  );
+    };
+  const p = Bun.spawn(cmd, {
+    cwd: RAIZ, env,
+    // o omp em -p espera stdin fechado; com um pipe aberto trava em readPipedInput
+    stdin: "ignore",
+    stdout: "pipe", stderr: "pipe",
+    timeout: 2_400_000, killSignal: "SIGKILL",
+  });
   const texto = await new Response(p.stdout).text();
   const err = await new Response(p.stderr).text();
   const code = await p.exited;
@@ -198,7 +208,7 @@ function diff(arqA: string, arqB: string, a: Rodada, b: Rodada) {
   const ca = conta(a), cb = conta(b);
   for (const [arq, r, c] of [[arqA, a, ca], [arqB, b, cb]] as const) {
     console.log(`${arq}`);
-    console.log(`  ${rotuloConfig(r.config)}`);
+    console.log(`  ${r.cliente ?? "dsh"} · ${rotuloConfig(r.config)}`);
     console.log(`  ${c.certos}/${c.comGab} certos em ${c.n} casos · ${c.minutos.toFixed(1)} min`);
   }
   const aviso = avisaConfigDivergente(a.config, b.config, arqA, arqB);
@@ -236,14 +246,14 @@ if (import.meta.main) {
     .map((l) => l.trim()).filter((l) => l && !l.startsWith("#"))
     .map((l) => { const [p, e] = l.split("\t"); return { pergunta: p!.trim(), esperado: e?.trim() }; });
   const config = await configServidor();
-  console.log(`${casos.length} perguntas pelo dsh — ${rotuloConfig(config)}`);
+  console.log(`${casos.length} perguntas pelo ${CLIENTE} — ${rotuloConfig(config)}`);
   if (!config) console.log("AVISO: sem a config do servidor, o TEMPO desta rodada não é comparável com nenhuma outra");
   console.log(`limiar de prefill: ${LIMIAR_PREFILL} tokens\n`);
   // Gravado a cada caso, não só no fim: as rodadas de 2026-09-03 dos casos com
   // `n` foram interrompidas no meio e perderam o que já tinham rodado.
   const saida = `${RAIZ}harness/benchmarks/lote_${new Date().toISOString().slice(0, 16).replace(/[:T]/g, "")}.json`;
   const grava = (casosFeitos: Saida[]) =>
-    writeFileSync(saida, JSON.stringify({ gerado: new Date().toISOString(), config, casos: casosFeitos } satisfies Rodada, null, 1));
+    writeFileSync(saida, JSON.stringify({ gerado: new Date().toISOString(), config, cliente: CLIENTE, casos: casosFeitos } satisfies Rodada, null, 1));
   const r = await roda(casos, grava);
   const bons = r.filter((x) => x.respondeu).length;
   const medio = r.reduce((a, b) => a + b.segundos, 0) / r.length;

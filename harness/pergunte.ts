@@ -20,10 +20,13 @@
  */
 import { garanteTunel } from "./modelo.ts";
 import { sobeGuarda, resumoGuarda } from "./guarda.ts";
+import { comandoPi, comandoOmp } from "./pi.ts";
 
 const RAIZ = new URL("..", import.meta.url).pathname;
 const PATCH = "harness/dsh/rodado.patch.yml";
 const MAX_TENTATIVAS = Number(Bun.env.HARNESS_TENTATIVAS ?? 3);
+/** `dsh` (padrão), `pi` ou `omp` — tasks/pi_no_lugar_do_dsh.md */
+const CLIENTE = Bun.env.HARNESS_CLIENTE ?? "dsh";
 
 const pergunta = Bun.argv.slice(2).join(" ").trim();
 if (!pergunta) {
@@ -45,11 +48,18 @@ if (!await garanteTunel()) {
 }
 
 async function tenta(): Promise<{ code: number; texto: string }> {
-  const proc = Bun.spawn(["bunx", "dsh", "--profile", "headless", "--patch", PATCH, pergunta], {
+  const { cmd, env } = CLIENTE === "pi" ? comandoPi(pergunta, guarda.url)
+    : CLIENTE === "omp" ? comandoOmp(pergunta, guarda.url)
+    : {
+      cmd: ["bunx", "dsh", "--profile", "headless", "--patch", PATCH, pergunta],
+      // O llama-server ignora o valor, mas o pi-ai exige a referência: sem ela o
+      // boot morre com "No API key for provider".
+      env: { ...process.env, HARNESS_LLM_KEY: process.env.HARNESS_LLM_KEY ?? "nao-usada", HARNESS_LLM_URL: guarda.url, HARNESS_PERGUNTA: pergunta },
+    };
+  const proc = Bun.spawn(cmd, {
     cwd: RAIZ,
-    // O llama-server ignora o valor, mas o pi-ai exige a referência: sem ela o
-    // boot morre com "No API key for provider".
-    env: { ...process.env, HARNESS_LLM_KEY: process.env.HARNESS_LLM_KEY ?? "nao-usada", HARNESS_LLM_URL: guarda.url, HARNESS_PERGUNTA: pergunta },
+    env,
+    stdin: "ignore",
     stdout: "pipe",
     stderr: "inherit",
     timeout: Number(Bun.env.HARNESS_TIMEOUT_MS ?? 2_400_000),
