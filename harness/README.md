@@ -239,7 +239,8 @@ O erro do Pi foi de cópia: a consulta devolveu 115879 e o modelo escreveu
 de 19 plugins desligados (`dsh/rodado.patch.yml`) e o teste que o travava. O
 omp puro, com a configuração de uso diário (prompt de engenharia, bash,
 `CLAUDE.md`), manda ~29 mil tokens no 1º turno e levou 12 min para responder
-"ok". Detalhe em [`tasks/pi_no_lugar_do_dsh.md`](tasks/pi_no_lugar_do_dsh.md).
+"ok". A comparação inteira, com a lição da cidade mais fria, ficou no histórico:
+`git log --all -- harness/tasks/pi_no_lugar_do_dsh.md`.
 
 ## O contexto é o gargalo
 
