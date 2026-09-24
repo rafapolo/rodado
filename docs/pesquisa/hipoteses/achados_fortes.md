@@ -195,7 +195,7 @@ receberam. Rodada completa em 2026-09-06: **G1–G7** abaixo são o que sobreviv
 ## Fechamento do Bloco I e diagnósticos do Bloco H (2026-09-06)
 
 As duas hipóteses do Bloco I (`tasks/hipoteses.md`, H41–H45) que sobreviveram
-ao parcial, promovidas depois da checagem de magnitude que `CLAUDE.md` exige
+ao parcial, promovidas depois da checagem de magnitude que `AGENTS.md` exige
 (ordem de grandeza esperada, flag de anomalia, verificação por duas vias —
 método completo em `scripts/hipoteses/96_blocof_fechamento.py`). As outras três
 (H41 choque de exportação, H42 terceirização da saúde, H43 troca de partido)

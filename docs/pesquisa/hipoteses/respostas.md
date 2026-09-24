@@ -476,7 +476,7 @@ o item 4 é respondível por **tempo de serviço** em vez de idade.
   total, 2 parecendo CNPJ (e esses 2 são reexportações de sanções domésticas
   Lei 8666/14133, não sanção internacional de verdade). Cruzar por CNPJ direto
   não é viável; sobraria só nome-a-nome contra dezenas de milhões de linhas do
-  CNPJ, exatamente o tipo de join caro que o CLAUDE.md já pede pra evitar.
+  CNPJ, exatamente o tipo de join caro que o AGENTS.md já pede pra evitar.
 
 ## 46 · Educação Superior e Acesso
 

@@ -17,7 +17,7 @@ originally-cited dataset doesn't actually work — corrupted columns, missing
 fields, no shared key). Keeping [PENDING] items would poison the golden set
 with dataset citations that were never verified to work. Only [OK]/[PARTIAL]
 items go in, matching this project's own "verified is not decoration"
-principle (see CLAUDE.md, docs/context/bridges.yaml).
+principle (see AGENTS.md, docs/context/bridges.yaml).
 
 Cited dataset names are resolved against the current schema by trying a
 `br_` prefix first (world_/us_ names already carry their own prefix), then a

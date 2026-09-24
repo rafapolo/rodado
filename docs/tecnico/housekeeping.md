@@ -40,7 +40,7 @@ diferentes para dois problemas diferentes.)
 ## 2. Regen de metadados, sempre nesta ordem
 
 Depois que a view existir, roda a cadeia inteira documentada na seção
-"Camada semântica" deste `CLAUDE.md` — `gera_schemas.py` →
+"Camada semântica" deste `AGENTS.md` — `gera_schemas.py` →
 `sync_mcp_schema.py` → `build_metadata_catalog.py` → `gera_join_keys.py` (e
 o resto, se o schema mudou o bastante). `sync_mcp_schema.py` é o passo mais
 esquecido: sem ele, `describe_table` continua mentindo sobre colunas novas.

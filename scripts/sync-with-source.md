@@ -1,13 +1,13 @@
 # Syncing beelink with the upstream BigQuery source
 
 `beelink:~/rodado` is a **local-parquet mirror** of the upstream BigQuery source — the
-project's only data source (see project CLAUDE.md; the former live service that used to
+project's only data source (see project AGENTS.md; the former live service that used to
 read from cloud object storage is retired).
 
 This doc is for **maintaining beelink's mirror only**. It goes straight
 `BigQuery → beelink`, no intermediate cloud storage involved.
 
-⚠️ This uses `bq`/BigQuery, which the top-level CLAUDE.md forbids for regular querying.
+⚠️ This uses `bq`/BigQuery, which the top-level AGENTS.md forbids for regular querying.
 That rule is about how data gets *queried* day to day (DuckDB only) — it does
 not cover this one-off mirror-maintenance workflow. Treat BigQuery usage here as scoped
 strictly to this doc, never as precedent for touching BigQuery anywhere else in the repo.

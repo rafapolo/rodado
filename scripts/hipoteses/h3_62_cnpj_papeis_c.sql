@@ -1,6 +1,6 @@
 -- hipoteses3 · bloco 62 · MATRIZ DE PAPEIS POR CNPJ (c): setorial e cadastro.
 -- br_ana_outorgas nao tem view no .duckdb -- so parquet em disco. Le-se por
--- read_parquet, como manda a regra do CLAUDE.md para esse caso. Idem SALIC.
+-- read_parquet, como manda a regra do AGENTS.md para esse caso. Idem SALIC.
 -- O cadastro (CNPJ/RAIS) entra como ATRIBUTO, nao como papel: serve de
 -- denominador honesto -- "16% das terceirizadas sao sancionadas" so significa
 -- algo contra a taxa-base de sancao entre empresas ativas.

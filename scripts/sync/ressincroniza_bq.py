@@ -15,7 +15,7 @@ Aqui o JSON não entra no caminho: `QueryJob.to_arrow()` devolve Arrow **já tip
 direto da API de resultados do BigQuery, e o Parquet sai daí. Sem inferência, sem
 round-trip por texto.
 
-Regras que este script respeita, do CLAUDE.md:
+Regras que este script respeita, do AGENTS.md:
 
   - BigQuery só em Sandbox, sem billing. O script **confere** `billingEnabled` antes de
     qualquer consulta e aborta se estiver ligado — é o que torna o uso pontual seguro.
@@ -66,7 +66,7 @@ def exige_sandbox():
         info = json.load(resp)
     if info.get("billingEnabled"):
         sys.exit(f"billing ATIVO em {BILLING_PROJECT} — a exceção de BigQuery do "
-                 f"CLAUDE.md não vale mais. Abortando.")
+                 f"AGENTS.md não vale mais. Abortando.")
     print(f"  sandbox confirmado: billingEnabled=false em {BILLING_PROJECT}")
 
 
