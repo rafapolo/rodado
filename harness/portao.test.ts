@@ -7,6 +7,7 @@ import { expect, test, describe } from "bun:test";
 import {
   portao, alertasDeSanidade,
   juncoesSemPonte, mensagemSemPonte, assinaturaJuncao,
+  perguntaDePesquisa, checaRanking,
 } from "./portao.ts";
 
 describe("camada read-only (sqlguard)", () => {
@@ -130,7 +131,7 @@ describe("CTE — o caso multi-dataset, que é o que importa", () => {
 describe("camada ano — o filtro cai fora da faixa real da tabela", () => {
   // O caso medido em 2026-09-01: CAGED × RAIS × PIB com chave e LPAD certos,
   // filtrado ano = 2022. br_ibge_pib.municipio termina em 2021, o join deu
-  // zero e o zero passou por resposta. backlog.md item 6.
+  // zero e o zero passou por resposta. harness_tasks.md B6.
   test("ano = 2022 rejeita br_ibge_pib.municipio, que termina em 2021", () => {
     const v = portao(
       "SELECT sigla_uf, SUM(pib) AS n FROM br_ibge_pib.municipio WHERE ano = 2022 GROUP BY sigla_uf",
@@ -157,7 +158,7 @@ describe("camada ano — o filtro cai fora da faixa real da tabela", () => {
 });
 
 describe("camada amostra — estatística derivada sem COUNT(*) AS n", () => {
-  // regras.md, tarefa 1: a regra existia só no laco.ts (pipeline aposentado).
+  // harness_tasks.md R1: a regra existia só no laco.ts (pipeline aposentado).
   // No laço agêntico o número vem da prosa do modelo, e foi assim que "573 em
   // vez de 789" (um grupo do GROUP BY lido como total) entrou na Rodada 6.
   test("AVG sem n é rejeitado", () => {
@@ -218,7 +219,7 @@ describe("alertasDeSanidade — circunstancia_obito subconta suicídio (backlog 
   });
 });
 
-describe("juncoesSemPonte — backlog.md item 12, a pergunta de 5 fontes que morreu presa", () => {
+describe("juncoesSemPonte — harness_tasks.md B12, a pergunta de 5 fontes que morreu presa", () => {
   // O caso real: 38 das 55 SQLs de uma sessão de 40 min tentaram
   // `id_emenda = id_licitacao` entre estas duas tabelas. Elas não compartilham
   // coluna nenhuma (conferido no beelink) e bridges.yaml não documenta a
@@ -296,7 +297,7 @@ describe("camada inservível — a tabela que responde zero e parece certa", () 
   // varre TODAS as `provenance_notes` por `Substitui \`X\`` e intercepta X pelo
   // NOME, mesmo já fora do catálogo — desfecho melhor que "tabela não existe"
   // (camada `tabela`): a mensagem explica O QUE substituiu e por quê, em vez de
-  // just "não achei". Mesmo mecanismo da varredura de operacao.md tarefa 5.
+  // just "não achei". Mesmo mecanismo da varredura de harness_tasks.md O5.
   test("REJEITA tabela vazia (0 linhas)", () => {
     const v = portao("SELECT COUNT(*) FROM br_bd_diretorios_brasil.empresa");
     expect(v.ok).toBe(false);
@@ -313,7 +314,7 @@ describe("camada inservível — a tabela que responde zero e parece certa", () 
   });
   // br_seeg NÃO tem teste equivalente aqui, de propósito, e é um achado, não
   // um esquecimento: nenhuma provenance_notes no espelho diz "Substitui
-  // `br_seeg`" (confirmado 2026-09-03, varredura de operacao.md tarefa 5), então
+  // `br_seeg`" (confirmado 2026-09-03, varredura de harness_tasks.md O5), então
   // aposentados() não tem como saber que ele foi removido. Pior: colunasDe()
   // lê de docs/context/rodado-schema.json (gerado por scripts/gera_schemas.py,
   // fora do escopo do harness), que não foi regenerado desde a remoção — então
@@ -460,4 +461,51 @@ test("AVG sobre a tabela de UFs aponta a tabela Brasil (IDEB 3,8 contra 3,9)", (
   const a = alertasDeSanidade("SELECT AVG(ideb) AS m, COUNT(*) AS n FROM br_inep_ideb.uf WHERE ano = 2019 AND rede = 'estadual' AND ensino = 'medio'", [{ m: 3.8, n: 27 }]);
   expect(a.join()).toContain("br_inep_ideb.brasil");
   expect(a.join()).not.toContain("br_inep_ideb.regiao");
+});
+
+describe("rodada B2, 2026-09-24 — os 8 primeiros casos, todos sem n", () => {
+  test("pergunta de pesquisa contra pergunta direta", () => {
+    expect(perguntaDePesquisa("Municípios que mais perderam vínculos no CAGED em 2020 recuperaram emprego formal na RAIS até 2022 proporcionalmente à sua renda (PIB)?")).toBe(true);
+    expect(perguntaDePesquisa("A razão óbitos infantis (SIM) / nascidos vivos (SINASC) melhora conforme aumentam leitos e equipes do CNES por habitante?")).toBe(true);
+    expect(perguntaDePesquisa("Quais municípios exportam pacientes pelo SIH para hospitais de outros municípios, e isso correlaciona com a falta de leitos locais no CNES e com a renda municipal?")).toBe(true);
+    expect(perguntaDePesquisa("Qual município do Pará teve mais focos de queimada em 2020?")).toBe(false);
+    expect(perguntaDePesquisa("Em quantos municípios o saldo de empregos formais do CAGED foi negativo em 2023?")).toBe(false);
+    expect(perguntaDePesquisa("")).toBe(false);
+  });
+
+  // A SQL final do caso 8, encurtada: CAGED × RAIS × PIB, top 10 por um score.
+  const TOP10 = `WITH p AS (SELECT id_municipio, SUM(saldo_movimentacao) AS s FROM br_me_caged.microdados_movimentacao WHERE ano = 2020 GROUP BY 1),
+r AS (SELECT id_municipio, COUNT(*) AS v FROM br_me_rais.microdados_vinculos WHERE ano = 2022 GROUP BY 1),
+i AS (SELECT id_municipio, pib FROM br_ibge_pib.municipio WHERE ano = 2020)
+SELECT d.nome, r.v / ABS(p.s) / i.pib AS score FROM p
+JOIN br_bd_diretorios_brasil.municipio d ON p.id_municipio = d.id_municipio
+LEFT JOIN r ON p.id_municipio = r.id_municipio LEFT JOIN i ON p.id_municipio = i.id_municipio
+ORDER BY score DESC LIMIT 10`;
+
+  test("ranking de várias fontes é rejeitado", () => {
+    const v = checaRanking(TOP10);
+    expect(v.ok).toBe(false);
+    expect(v.camada).toBe("ranking");
+    expect(v.erro).toContain("COUNT(*) AS n");
+  });
+  test("a mesma junção medida com corr e n passa", () => {
+    expect(checaRanking(TOP10.replace(/SELECT d\.nome[\s\S]*$/, "SELECT corr(r.v, i.pib) AS corr, COUNT(*) AS n FROM p JOIN r USING (id_municipio) JOIN i USING (id_municipio)")).ok).toBe(true);
+  });
+  test("faixas com n e ORDER BY passam", () => {
+    expect(checaRanking("WITH f AS (SELECT a.id_municipio, ntile(4) OVER (ORDER BY a.pib) AS faixa, b.x FROM br_ibge_pib.municipio a JOIN br_ms_sim.microdados b USING (id_municipio)) SELECT faixa, AVG(x) AS y, COUNT(*) AS n FROM f GROUP BY faixa ORDER BY faixa LIMIT 100").ok).toBe(true);
+  });
+  test("exploração de uma fonte com LIMIT segue livre", () => {
+    expect(checaRanking("SELECT nome, pib FROM br_ibge_pib.municipio p JOIN br_bd_diretorios_brasil.municipio d USING (id_municipio) WHERE ano = 2020 ORDER BY pib DESC LIMIT 10").ok).toBe(true);
+  });
+
+  test("zero em todo grupo com filtro != avisa do NULL (caso 6)", () => {
+    const sql = "SELECT grupo, AVG(t) AS avg_mortalidade, COUNT(*) AS n FROM m WHERE tipo_obito_ocorrencia != '8' GROUP BY grupo";
+    const a = alertasDeSanidade(sql, [{ grupo: "a", avg_mortalidade: 0, n: 1200 }, { grupo: "b", avg_mortalidade: 0, n: 2025 }]).join();
+    expect(a).toContain("NULL != 'x'");
+    expect(a).toContain("tipo_obito_ocorrencia");
+  });
+  test("zero sem filtro != não avisa", () => {
+    const a = alertasDeSanidade("SELECT grupo, SUM(x) AS s, COUNT(*) AS n FROM m GROUP BY grupo", [{ grupo: "a", s: 0, n: 3 }, { grupo: "b", s: 0, n: 4 }]).join();
+    expect(a).not.toContain("NULL != 'x'");
+  });
 });

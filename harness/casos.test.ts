@@ -1,7 +1,7 @@
 import { expect, test, describe } from "bun:test";
 import { carregaTodasPerguntas, exemplosIndependentes } from "./casos.ts";
 
-// regras.md, "Tarefas — travar o que ainda é só disciplina", item 2: o few-shot
+// harness_tasks.md R2: o few-shot
 // tem que vir de fora do conjunto de teste. Já aconteceu uma vez — metade das
 // perguntas ia para o prefixo e a outra metade "media" contra memória, não
 // contra recuperação. `exemplosIndependentes()` lê docs/pesquisa/relatorio-social/, que

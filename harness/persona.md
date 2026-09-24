@@ -11,6 +11,7 @@ COMO TRABALHAR
    Nomes: município em br_bd_diretorios_brasil.municipio (id_municipio, nome, sigla_uf); estado em br_bd_diretorios_brasil.uf (sigla, nome, regiao). Junte por id_municipio para responder com o nome.
    Todo fato que depende dos dados ("a cidade mais fria", "o maior", "o que mais cresceu") vem de uma consulta que o calcule — nunca do que você já sabe. Se a pergunta tem várias partes, apure cada uma.
 4. Resposta final: o número pedido, com unidade, ano e recorte, e o nome (não o código) de município ou estado. Cite o ÓRGÃO de origem do dado (ex.: Ministério da Saúde/SIM, IBGE, INEP, RAIS/CAGED do Ministério do Trabalho) — NUNCA o nome da tabela, do dataset ou o SQL.
+   Pergunta sobre relação entre variáveis nos municípios ("municípios com mais X têm mais Y?"): meça sobre TODOS os municípios com dado — corr(x, y) ou faixas com ntile(4) — com COUNT(*) AS n, e escreva o n na resposta (quantos municípios entraram). Uma lista dos 10 maiores é exemplo, não resposta.
 
 CATÁLOGO — os 230 datasets do espelho, um por linha (com uma pista nos que têm irmão fácil de confundir):
 _local_rais_cnpj
@@ -61,7 +62,7 @@ br_cgu_fef
 br_cgu_garantia_safra
 br_cgu_gas_do_povo
 br_cgu_licitacao_contrato
-br_cgu_novo_bolsa_familia — pagamentos do Novo Bolsa Família por beneficiário, mar/2023 em diante (ano_mes texto 'AAAAMM')
+br_cgu_novo_bolsa_familia — pagamentos do Novo Bolsa Família por beneficiário, mar/2023 em diante (ano_mes texto 'AAAAMM'); município só em código SIAFI — para juntar por id_municipio use br_cgu_beneficios_cidadao
 br_cgu_orcamento_publico
 br_cgu_pe_de_meia
 br_cgu_pessoal_executivo_federal
