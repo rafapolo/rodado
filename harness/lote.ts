@@ -38,8 +38,12 @@ export interface Saida {
   esperado?: string;
   /** o valor esperado também está escrito na pergunta: um papagaio passaria */
   eco?: boolean;
-  /** maior prefill visto no llama-server durante o caso; alto = cache quebrado */
+  /** maior prefill visto no llama-server durante o caso — inclui resultado de
+   *  ferramenta grande no meio da conversa, então alto NÃO quer dizer cache quebrado */
   prefillMax?: number;
+  /** prefill da 1ª requisição do caso: é ali que o prefixo é lido, e é este que
+   *  diz se o cache viveu */
+  prefillInicial?: number;
   /** quantas vezes o caso foi tentado — 1 é o normal; >1 é o workaround do item 10 agindo */
   tentativas: number;
   /** turnos repetidos/resgatados por guarda.ts, somados entre as tentativas */
@@ -68,6 +72,7 @@ interface Tentativa {
   segundos: number;
   respondeu: boolean;
   prefillMax?: number;
+  prefillInicial?: number;
   semLog: boolean;
   guarda: Estatistica;
 }
@@ -113,10 +118,11 @@ async function rodaUmaVez(q: string): Promise<Tentativa> {
 
   const prefills = await prefillsDesde(marca);
   const prefillMax = prefills?.length ? Math.max(...prefills) : undefined;
-  return { resposta, segundos: seg, respondeu, prefillMax, semLog: prefills === undefined, guarda: guarda.stats };
+  const prefillInicial = prefills?.[0];
+  return { resposta, segundos: seg, respondeu, prefillMax, prefillInicial, semLog: prefills === undefined, guarda: guarda.stats };
 }
 
-export async function roda(casos: Caso[]): Promise<Saida[]> {
+export async function roda(casos: Caso[], aoCaso?: (feitos: Saida[]) => void): Promise<Saida[]> {
   const out: Saida[] = [];
   let semLog = false;
   for (const [i, caso] of casos.entries()) {
@@ -125,6 +131,7 @@ export async function roda(casos: Caso[]): Promise<Saida[]> {
     let tentativas = 1;
     let segundos = tentativa.segundos;
     let prefillMax = tentativa.prefillMax;
+    const prefillInicial = tentativa.prefillInicial;
     const guarda: Estatistica = { ...tentativa.guarda };
     // Retentativa: só quando o dsh terminou sem produzir NADA (item 10) — uma
     // resposta que veio, mesmo errada, não se repete: é erro de raciocínio,
@@ -149,7 +156,7 @@ export async function roda(casos: Caso[]): Promise<Saida[]> {
       ? undefined
       : respondeu && a.certo;
 
-    out.push({ pergunta: q, resposta, segundos, respondeu, correto, esperado: caso.esperado, eco: a.eco || undefined, prefillMax, tentativas, guarda });
+    out.push({ pergunta: q, resposta, segundos, respondeu, correto, esperado: caso.esperado, eco: a.eco || undefined, prefillMax, prefillInicial, tentativas, guarda });
     const marcaLinha = a.eco ? "ECO " : correto === false ? "ERRO" : correto === true ? " ok " : respondeu ? " ?  " : "  -- ";
     const sufixoTentativas = tentativas > 1 ? ` (${tentativas} tentativas)` : "";
     console.log(`${marcaLinha} ${i + 1}/${casos.length}  ${segundos.toFixed(0)}s${sufixoTentativas}  ${q.slice(0, 58)}`);
@@ -157,12 +164,19 @@ export async function roda(casos: Caso[]): Promise<Saida[]> {
     else if (correto === false) console.log(`      esperava ${caso.esperado} | veio: ${resposta.replace(/\s+/g, " ").slice(0, 130)}`);
     else if (!respondeu) console.log(`      (vazio após ${tentativas} tentativas)`);
     console.log(`      ${resumoGuarda(guarda)}`);
+    aoCaso?.(out);
 
-    // O primeiro caso prefila o prefixo inteiro por definição — acusá-lo seria
-    // ruído garantido. Do segundo em diante, prefill de tamanho de prefixo é
-    // cache quebrado: a rodada continua CERTA e fica ~7x mais lenta.
-    if (i > 0 && prefillMax) {
-      const aviso = avisaPrefill([prefillMax]);
+    // O primeiro caso fica de fora: `confereBoot()` acabou de mandar a conversa
+    // de teste de `servidor.sh aquece`, e com `-np 1` ela tira o prefixo do laço
+    // do slot — o 1º caso paga o prefixo inteiro sempre (~4.500 tokens, medido
+    // 2026-09-24). Do segundo em diante, prefixo inteiro prefilado é cache
+    // quebrado: a rodada continua CERTA e fica ~7x mais lenta.
+    // Olha a 1ª requisição do caso, onde o prefixo é lido — não o maior prefill:
+    // numa pergunta de pesquisa um resultado de ferramenta grande no meio da
+    // conversa passa do limiar sem cache nenhum quebrado (6.830 tokens medidos
+    // em 2026-09-24).
+    if (i > 0 && prefillInicial) {
+      const aviso = avisaPrefill([prefillInicial]);
       if (aviso) console.log(`      ${aviso}`);
     }
   }
@@ -225,7 +239,12 @@ if (import.meta.main) {
   console.log(`${casos.length} perguntas pelo dsh — ${rotuloConfig(config)}`);
   if (!config) console.log("AVISO: sem a config do servidor, o TEMPO desta rodada não é comparável com nenhuma outra");
   console.log(`limiar de prefill: ${LIMIAR_PREFILL} tokens\n`);
-  const r = await roda(casos);
+  // Gravado a cada caso, não só no fim: as rodadas de 2026-09-03 dos casos com
+  // `n` foram interrompidas no meio e perderam o que já tinham rodado.
+  const saida = `${RAIZ}harness/benchmarks/lote_${new Date().toISOString().slice(0, 16).replace(/[:T]/g, "")}.json`;
+  const grava = (casosFeitos: Saida[]) =>
+    writeFileSync(saida, JSON.stringify({ gerado: new Date().toISOString(), config, casos: casosFeitos } satisfies Rodada, null, 1));
+  const r = await roda(casos, grava);
   const bons = r.filter((x) => x.respondeu).length;
   const medio = r.reduce((a, b) => a + b.segundos, 0) / r.length;
   console.log(`\n${"=".repeat(56)}`);
@@ -238,11 +257,9 @@ if (import.meta.main) {
   }
   if (ecos) console.log(`FORA DO DENOMINADOR: ${ecos} caso(s) cujo esperado ecoa na pergunta — troque o valor esperado, não o modelo`);
   console.log(`TEMPO MÉDIO: ${medio.toFixed(0)}s por pergunta  [${rotuloConfig(config)}]`);
-  const piorPrefill = Math.max(0, ...r.slice(1).map((x) => x.prefillMax ?? 0));
-  if (piorPrefill) console.log(`PIOR PREFILL após o aquecimento: ${piorPrefill} tokens (limiar ${LIMIAR_PREFILL})`);
+  const piorPrefill = Math.max(0, ...r.slice(1).map((x) => x.prefillInicial ?? 0));
+  if (piorPrefill) console.log(`PIOR PREFILL INICIAL após o 1º caso: ${piorPrefill} tokens (limiar ${LIMIAR_PREFILL})`);
   console.log("=".repeat(56));
-  const saida = `${RAIZ}harness/benchmarks/lote_${new Date().toISOString().slice(0, 16).replace(/[:T]/g, "")}.json`;
-  const rodada: Rodada = { gerado: new Date().toISOString(), config, casos: r };
-  writeFileSync(saida, JSON.stringify(rodada, null, 1));
+  grava(r);
   console.log(`\ndetalhe em ${saida}`);
 }
