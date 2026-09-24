@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Fecha o Bloco I (H41-H45) — as pernas que 90_analise.py nao cobre.
 
-Ver tasks/plan/bloco_i_pendencias.md para o roteiro completo. Tres coisas:
+Ver tasks/done/bloco_i_pendencias.md para o roteiro completo. Tres coisas:
 
 1. H41b — a hipotese e' de interacao (choque de exportacao move mais o PBF
    onde a pauta e' concentrada), nao de correlacao linear simples. Corte por

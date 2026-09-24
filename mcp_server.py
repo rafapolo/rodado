@@ -106,11 +106,11 @@ with open(HIERARCHIES_PATH, encoding="utf-8") as f:
 with open(DICIONARIO_COVERAGE_PATH, encoding="utf-8") as f:
     _DICIONARIO_COVERAGE: dict = json.load(f).get("tables", {})
 
-# tasks/plan/generate-full-schema-dict.md: colunas STRING/INTEGER que parecem
+# tasks/generate-full-schema-dict.md: colunas STRING/INTEGER que parecem
 # código (baixa cardinalidade) mas não têm fonte de significado conhecida em
 # nenhum mecanismo acima — nem dicionario, nem bridges.yaml, nem
 # hierarchies.yaml. Generaliza o alerta manual que
-# harness/tasks/backlog.md item 9 escreveu à mão pra
+# tasks/harness/backlog.md item 9 escreveu à mão pra
 # br_ms_sim.circunstancia_obito (subcontava suicídio, 749 contra 789 reais,
 # sem nenhum mecanismo avisando) num aviso que soa pra qualquer tabela.
 _NAO_VERIFICADO_BY_TABLE: dict = {}
@@ -629,7 +629,7 @@ def describe_table(table: str) -> dict:
         easy to find, and silent. Treat a flagged column the same way —
         don't trust what the name implies, confirm against the source before
         using it. See docs/context/schema_dict_status.json for the full
-        reasoning per column (tasks/plan/generate-full-schema-dict.md).
+        reasoning per column (tasks/generate-full-schema-dict.md).
     """
     if "." not in table:
         return {"error": "table must be in the form 'dataset.table'."}
