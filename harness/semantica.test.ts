@@ -15,6 +15,10 @@ describe("semantica", () => {
     expect(notaTabela("br_ms_cnes.estabelecimento")).toContain("COUNT(DISTINCT");
     expect(notaColuna("br_ms_sim.microdados", "nao_existe")).toBe("");
   });
+  test("a cidade mais fria de 2026-09-24: estação não é município, turma repete aluno", () => {
+    expect(notaTabela("br_inmet_bdmep.microdados")).toContain("br_inmet_bdmep.estacao");
+    expect(notaColuna("br_inep_censo_escolar.turma", "quantidade_matriculas")).toContain("etapa_ensino");
+  });
   test("tabela inventada ganha as reais parecidas", () => {
     expect(sugereTabelas("br_inep.escolas")).toContain("br_inep_censo_escolar.escola");
     expect(sugereTabelas("br_ms_sim.obitos")).toContain("br_ms_sim.microdados");
