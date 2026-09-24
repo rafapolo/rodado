@@ -87,6 +87,10 @@ python3 scripts/llm_triage_schema_dict_status.py  # passada de leitura humana/LL
 schema antigo em `docs/context/rodado-schema.json` e não enxerga nenhuma coluna
 nova — `describe_table` mente calado.
 
+`schemas.json` e `rodado-schema.json` ficam **fora do git** (`.gitignore`, purgados do
+histórico em 2026-09-24): um clone novo não os tem, e `mcp_server.py`/`harness/` só
+funcionam depois de `gera_schemas.py` + `sync_mcp_schema.py`.
+
 `join_keys.md` e `metrics.json` são **gerados** — editar o YAML, nunca a saída. `valida_metrics.py` separa hard de soft como o firewall de `run_sql`: DML na expressão rejeita, coluna ausente só avisa, porque `_check_read_only` revalida antes de executar.
 
 ### `docs/pesquisa/hipoteses/` — perguntas e respostas
