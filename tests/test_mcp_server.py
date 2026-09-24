@@ -288,7 +288,7 @@ def test_run_sql_success():
     payload = run.call_args.kwargs["input"].decode()
     assert payload.startswith("SET enable_progress_bar=false;\n")
     # the model's SQL runs with file access locked to ~/rodado and the spill dir
-    assert f"SET allowed_directories=['{m.BEELINK_HOME}/rodado/', '{m.BEELINK_HOME}/duckdb_tmp/'];" in payload
+    assert f"SET allowed_directories=['{m.BEELINK_HOME}/rodado/', '{m.BEELINK_HOME}/duckdb_tmp/', 's3://healthbr-data/'];" in payload
     assert payload.index("enable_external_access=false") < payload.index("lock_configuration=true")
     assert payload.endswith("SET lock_configuration=true;\nSELECT 42 AS n")
 
