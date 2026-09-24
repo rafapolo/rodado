@@ -28,3 +28,12 @@ benchmarks/
 # Saídas de scripts/hipoteses_overnight.sh trazidas do beelink — reprodutíveis
 # a partir da bateria.
 .hipoteses/
+
+# Gerados e pesados — regenerar localmente, nunca versionar (purgados do histórico em 2026-09-24).
+# schemas.json e rodado-schema.json: gera_schemas.py + sync_mcp_schema.py.
+# viz-uf: extrai_estados_cnpj.py + build_br_national.py, ou
+#   gh release download viz-uf-dados -D docs/pesquisa/viz-uf/dados
+docs/context/schemas.json
+docs/context/rodado-schema.json
+docs/context/doc2query_*
+docs/pesquisa/viz-uf/dados/*.bin.gz
