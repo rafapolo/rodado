@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "docs/context/metrics.yaml",
-    "count": 14
+    "count": 15
   },
   "metrics": [
     {
@@ -276,6 +276,31 @@
       ],
       "caveat": "ler o valor bruto como \"Selic = X% a.a.\" é um erro de ~10x. Para anualizar de verdade, compor os 12 meses do ano com `(EXP(SUM(LN(1+TRY_CAST(value AS DOUBLE)/100)))-1)*100`, nunca somar nem usar o valor de um mês isolado como se fosse a taxa anual. As colunas reais da tabela são `value` (VARCHAR, precisa `TRY_CAST` — não `valor`) e `date` (string `dd/mm/aaaa`, não `ano`/`mes` separados — extraia com `strptime(date, '%d/%m/%Y')` antes de filtrar por ano).",
       "needs_join": null
+    },
+    {
+      "name": "taxa_homicidio",
+      "description": "óbitos por agressão (CID-10 X85–Y09 como causa básica, SIM) por 100 mil habitantes, mesmo ano, pelo lugar de RESIDÊNCIA — o molde de toda taxa por 100 mil: troque a faixa de CID e mantenha o resto",
+      "unit": "óbitos por 100 mil habitantes",
+      "grain": [
+        "sigla_uf",
+        "ano"
+      ],
+      "source_table": "br_ms_sim.microdados",
+      "expression": "100000.0 * COUNT(*) FILTER (WHERE substr(causa_basica, 1, 3) BETWEEN 'X85' AND 'Y09') / NULLIF(populacao, 0)",
+      "required_filters": [
+        "ano"
+      ],
+      "synonyms": [
+        "taxa de homicidio",
+        "taxa de homicidios",
+        "homicidios por 100 mil",
+        "homicidios por cem mil habitantes"
+      ],
+      "caveat": "A população por município ao lado de cada óbito, somada, multiplica o denominador pelo número de óbitos: medido 2026-09-22, a taxa de SE saiu 0,9 em vez de ~42. Agregue as duas pontas antes de juntar. Por ocorrência a taxa de capital sobe (óbito no hospital da capital); por residência é o padrão do Atlas da Violência. Em município pequeno a taxa anual oscila — reporte com o número de óbitos ao lado.",
+      "needs_join": {
+        "table": "br_ibge_populacao.uf",
+        "true": "o.ano = p.ano AND o.sigla_uf = p.sigla_uf — com a UF de RESIDÊNCIA na CTE de óbitos (d.sigla_uf de br_bd_diretorios_brasil.municipio d ON d.id_municipio = id_municipio_residencia; o sigla_uf do próprio SIM diferiu em 1 de 968 em SE 2019), contados por UF e ano ANTES do join; para município, br_ibge_populacao.municipio por id_municipio_residencia = id_municipio. Nunca SUM(populacao) numa junção com o microdado"
+      }
     },
     {
       "name": "valor_producao_agropecuaria",
