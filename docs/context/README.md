@@ -41,23 +41,6 @@ Três coisas destes arquivos valem mais que o resto:
 | `dicionario_coverage.json` | Quais colunas de quais tabelas têm decode chave→valor em `{dataset}.dicionario` — 45 datasets, 168 tabelas, 6.256 colunas | `gera_dicionario_coverage.py` |
 | `schema_dict_status.json` | Estágios 1+2 de `tasks/generate-full-schema-dict.md` + uma passada de leitura humana/LLM (não regex): toda coluna STRING/INTEGER fora do `dicionario_coverage.json` etiquetada — 28.263 colunas: **8.690 `nao_verificado`** (sem fonte de significado em lugar nenhum — a etiqueta que importa), 15.842 `nao_e_codigo`, 2.442 `documentado_em_outro_lugar`, 1.289 `padrao_externo`. `describe_table` lê e expõe `nao_verificado_warning` por tabela | `gera_schema_dict_status.py` + `llm_triage_schema_dict_status.py` |
 
-## Busca semântica (`search_tables`)
-
-Um embedding por **pergunta sintética que a tabela responde** (~8 por tabela),
-nunca um por tabela: indexar a sopa de nomes de coluna mediu recall@5 de 1/15.
-O score de uma tabela é o MAX de cosseno entre as perguntas dela.
-
-| Arquivo | O que é |
-|---|---|
-| `doc2query_corpus.jsonl` | 6.464 perguntas sintéticas. Saída da passada de LLM (`doc2query_lotes.py` → `doc2query_roda.py`), que é cara, única e resumível |
-| `doc2query_index.json` | `id`/`table`/`text` de cada linha, na ordem das linhas do `.npy` |
-| `doc2query_vectors.npy` | float32 `(6464, 384)`, `paraphrase-multilingual-MiniLM-L12-v2` |
-
-Só o passo de embedding (`gera_doc2query_index.py`, do `.jsonl` já pronto) é
-barato — rode à vontade depois de editar o corpus. **Nada disto entra no regen
-automático de sync**: só regenere tudo quando o schema mudar o bastante para o
-`search_tables` começar a perder tabela nova.
-
 ## Referência e apoio
 
 | Arquivo | O que é |

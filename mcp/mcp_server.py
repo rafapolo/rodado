@@ -32,7 +32,6 @@ BEELINK_DUCKDB_BIN = os.environ.get("MCP_BEELINK_DUCKDB_BIN", "~/bin/duckdb")
 BEELINK_DUCKDB_PATH = os.environ.get("MCP_BEELINK_DUCKDB_PATH", "~/rodado/basedosdados.duckdb")
 # Absolute home on beelink: DuckDB's allowed_directories wants absolute paths.
 BEELINK_HOME = os.environ.get("MCP_BEELINK_HOME", "/home/polo")
-SEARCH_THRESHOLD = float(os.environ.get("MCP_SEARCH_THRESHOLD", "0.35"))
 # Survey mirrors (SISDEPEN: 3.957 cols) would flood an LLM's context if
 # describe_table returned every column, so wide tables are capped.
 DESCRIBE_MAX_COLS = int(os.environ.get("MCP_DESCRIBE_MAX_COLS", "150"))
@@ -49,8 +48,6 @@ RUN_SQL_MAX_CHARS = int(os.environ.get("MCP_RUN_SQL_MAX_CHARS", "60000"))
 CALL_LOG_PATH = Path(os.environ.get("MCP_CALL_LOG", REPO_ROOT / "logs" / "mcp_calls.jsonl"))
 
 SCHEMA_PATH = CONTEXT_DIR / "rodado-schema.json"
-DOC2QUERY_INDEX_PATH = CONTEXT_DIR / "doc2query_index.json"
-DOC2QUERY_VECTORS_PATH = CONTEXT_DIR / "doc2query_vectors.npy"
 JOIN_KEYS_PATH = CONTEXT_DIR / "join_keys.md"
 BRIDGES_PATH = CONTEXT_DIR / "bridges.yaml"
 METRICS_PATH = CONTEXT_DIR / "metrics.yaml"
@@ -192,54 +189,6 @@ def _duplicated() -> set:
                       text, re.DOTALL)
         _duplicated_tables = set(re.findall(r"`([\w.]+)`", m.group(1))) if m else set()
         return _duplicated_tables
-
-
-# ---------------------------------------------------------------------------
-# Search (doc2query) — lazy-loaded, first call downloads the model (~470MB)
-# ---------------------------------------------------------------------------
-# search_tables used to hold one embedding per table, over text built from its
-# column names — measured nearly orthogonal to a real question (cosine 0.08 vs
-# 0.39 for equivalent prose; recall@5 1/15 on the single-table golden set).
-# This index instead holds one embedding per SYNTHETIC QUESTION the table
-# answers (~8/table, scripts/doc2query_lotes.py + doc2query_roda.py against
-# scripts/prompts/doc2query.md), so query and index live in the same space.
-# See tasks/done/mcp_search_refino.md item 1.
-
-_embedding_model = None
-_embedding_model_lock = threading.Lock()
-_doc2query_index = None  # {"rows": [{"id","table","text"}], "model": str, "vectors": np.ndarray, "table_rows": {table: [row_idx,...]}}
-
-
-def _load_doc2query_index():
-    global _doc2query_index
-    if _doc2query_index is None:
-        import numpy as np
-
-        with open(DOC2QUERY_INDEX_PATH, encoding="utf-8") as f:
-            meta = json.load(f)
-        vectors = np.load(DOC2QUERY_VECTORS_PATH)
-        table_rows: dict[str, list[int]] = {}
-        for i, row in enumerate(meta["rows"]):
-            table_rows.setdefault(row["table"], []).append(i)
-        _doc2query_index = {
-            "rows": meta["rows"],
-            "model": meta["_meta"]["model"],
-            "vectors": vectors,
-            "table_rows": table_rows,
-        }
-    return _doc2query_index
-
-
-def _get_embedding_model():
-    global _embedding_model
-    with _embedding_model_lock:
-        if _embedding_model is None:
-            from sentence_transformers import SentenceTransformer
-
-            index = _load_doc2query_index()
-            model_name = os.environ.get("MCP_EMBEDDING_MODEL", index["model"])
-            _embedding_model = SentenceTransformer(model_name)
-    return _embedding_model
 
 
 # ---------------------------------------------------------------------------
@@ -596,8 +545,8 @@ def describe_table(table: str) -> dict:
     On a miss, returns close-match suggestions from the full table list.
 
     Column descriptions are not available: the mirrored schema carries only
-    name and type. Use `search_tables` for semantic lookup and `docs/mapa/overview/`
-    for what a dataset actually means.
+    name and type. Use `list_tables`/`list_datasets` to find a table and
+    `docs/mapa/overview/` for what a dataset actually means.
 
     Very wide tables are truncated to the first 150 columns (survey mirrors
     reach 3.957) — the leading columns are the identifying ones. When that
@@ -698,62 +647,6 @@ def describe_table(table: str) -> dict:
             ),
         }
     return result
-
-
-@mcp.tool()
-@_instrumented
-def search_tables(query: str, top_k: int = 10, min_similarity: float = SEARCH_THRESHOLD) -> dict:
-    """Semantic search over all 832 tables by natural-language question.
-
-    Example: search_tables("gastos de campanha eleitoral") surfaces
-    despesas_candidato/receitas_candidato even without exact keyword matches.
-
-    Backed by a doc2query index: ~8 synthetic questions per table, each
-    embedded on its own. A table's score is the MAX cosine similarity across
-    its own questions, not their average — a table answers many different
-    questions, and it's whichever one matches yours that should decide the
-    score (averaging was tried and measured worse: it dilutes a table's best
-    match with its unrelated ones). `text` is the specific question that
-    matched, not a table description — there's no single description in this
-    index — so read a hit as "this table can answer: <text>"; call
-    describe_table() for the actual columns.
-
-    NOTE: the first call in a session downloads the embedding model
-    (~470MB from Hugging Face) and is slow; subsequent calls are fast.
-    """
-    import numpy as np
-
-    model = _get_embedding_model()
-    index = _load_doc2query_index()
-    query_vec = np.asarray(model.encode(query), dtype="float32")
-
-    vectors = index["vectors"]
-    query_norm = float(np.linalg.norm(query_vec))
-    if query_norm == 0:
-        sims = np.zeros(len(vectors), dtype="float32")
-    else:
-        norms = np.linalg.norm(vectors, axis=1)
-        sims = (vectors @ query_vec) / (norms * query_norm + 1e-12)
-
-    best_per_table = {}
-    for table, row_idxs in index["table_rows"].items():
-        table_sims = sims[row_idxs]
-        best_local = int(np.argmax(table_sims))
-        best_per_table[table] = (float(table_sims[best_local]), row_idxs[best_local])
-
-    ranked = sorted(best_per_table.items(), key=lambda kv: kv[1][0], reverse=True)
-
-    results = [
-        {
-            "table": table,
-            "similarity": round(score, 4),
-            "text": index["rows"][row_idx]["text"],
-        }
-        for table, (score, row_idx) in ranked
-        if score >= min_similarity
-    ][:top_k]
-
-    return {"query": query, "results": results}
 
 
 @mcp.tool()

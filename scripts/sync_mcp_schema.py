@@ -84,7 +84,7 @@ def main() -> int:
         if not table:
             continue
         # A table whose schema could not be read is useless to every consumer:
-        # describe_table returns nothing and search_tables still ranks it, so an
+        # describe_table returns nothing while list_tables still lists it, so an
         # LLM gets steered into a dead end. br_mjsp_ckan.infopen used to be the
         # live case here — its parquet footer had raw latin-1 column names
         # (mojibake: "Situa\xe7\xe3o" instead of proper UTF-8 "Situação"), which
