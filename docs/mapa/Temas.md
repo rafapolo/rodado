@@ -4,7 +4,7 @@ Os 43 temas do site e os datasets que cada um cita, 103 dos 226 do espelho. Os t
 entre si diretamente: o que os conecta é chegarem às mesmas
 referências — a aresta leva quantos datasets do tema carregam a chave.
 
-> A origem é o markdown de `docs/overview/`: os datasets que o próprio
+> A origem é o markdown de `docs/mapa/overview/`: os datasets que o próprio
 > texto de cada tema nomeia. Não é a lista completa do que a investigação
 > tocou — é o que está registrado. Dataset sem citação não aparece.
 
@@ -15,7 +15,7 @@ Gerado por `scripts/gera_flow.py` a partir de `schemas.json` em 2026-09-04 — n
   repetido em cada diagrama para manter as arestas curtas;
 - **seta cheia** (`-->`) = a chave está lá com o nome canônico, join direto;
 - **seta pontilhada** (`-.->`) = a chave está com outro nome ou formato,
-  normalize antes — receita em [`docs/context/join_keys.md`](docs/context/join_keys.md);
+  normalize antes — receita em [`docs/context/join_keys.md`](../context/join_keys.md);
 - a lista de tabelas de cada dataset ficou de fora de propósito; está no
   [`ERD.md`](ERD.md).
 

@@ -24,9 +24,9 @@ Usage:
   BEELINK_HOST=custom-host python scripts/extrai_estados_cnpj.py
 
 Output:
-  docs/viz-uf/dados/<uf>.bin.gz     # binary point cloud, per UF
-  docs/viz-uf/dados/meta.json       # { uf: {n_points, n_estab_ativos, n_estab_geolocalizados, bbox} }
-  docs/viz-uf/generate_uf_map.md    # per-UF geolocation coverage stats report
+  docs/pesquisa/viz-uf/dados/<uf>.bin.gz     # binary point cloud, per UF
+  docs/pesquisa/viz-uf/dados/meta.json       # { uf: {n_points, n_estab_ativos, n_estab_geolocalizados, bbox} }
+  docs/pesquisa/viz-uf/generate_uf_map.md    # per-UF geolocation coverage stats report
 """
 
 import array
@@ -37,8 +37,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-DADOS_DIR = Path("docs/viz-uf/dados")
-REPORT_PATH = Path("docs/viz-uf/generate_uf_map.md")
+DADOS_DIR = Path("docs/pesquisa/viz-uf/dados")
+REPORT_PATH = Path("docs/pesquisa/viz-uf/generate_uf_map.md")
 BEELINK = os.environ.get("BEELINK_HOST", "beelink")
 DB_PATH = os.environ.get("DB_PATH", "~/rodado/basedosdados.duckdb")
 

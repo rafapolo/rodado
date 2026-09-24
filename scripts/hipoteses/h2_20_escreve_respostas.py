@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""pares.csv + trincas.csv -> docs/hipoteses/respostas_trincas.md
+"""pares.csv + trincas.csv -> docs/pesquisa/hipoteses/respostas_trincas.md
 
 Usa o MESMO eixo de forca de respostas.md (🟢🟡🟠⚪⬜), para os
 dois documentos serem lidos com a mesma regua.
@@ -12,7 +12,7 @@ import pandas as pd, yaml
 
 REPO = Path(__file__).resolve().parent.parent.parent
 RES  = REPO / "tasks" / "hipoteses_resultado" / "hipoteses2"
-OUT  = REPO / "docs" / "hipoteses" / "respostas_trincas.md"
+OUT  = REPO / "docs" / "pesquisa" / "hipoteses" / "respostas_trincas.md"
 
 def forca(r):
     r = abs(r)

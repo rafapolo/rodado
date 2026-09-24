@@ -9,7 +9,7 @@ Gerado por `scripts/gera_flow.py` a partir de `schemas.json` em 2026-09-04 — n
   repetido em cada diagrama para manter as arestas curtas;
 - **seta cheia** (`-->`) = a chave está lá com o nome canônico, join direto;
 - **seta pontilhada** (`-.->`) = a chave está com outro nome ou formato,
-  normalize antes — receita em [`docs/context/join_keys.md`](docs/context/join_keys.md);
+  normalize antes — receita em [`docs/context/join_keys.md`](../context/join_keys.md);
 - a lista de tabelas de cada dataset ficou de fora de propósito; está no
   [`ERD.md`](ERD.md).
 

@@ -43,7 +43,7 @@ from datetime import date
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-SRC = REPO / "schemas.json"
+SRC = REPO / "docs" / "context" / "schemas.json"
 DST = REPO / "docs" / "context" / "join_keys.md"
 BEELINK_HOST = "beelink"
 BEELINK_ROOT = "/home/polo/rodado"

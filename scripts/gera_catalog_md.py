@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Export `_rodado_metadata/catalog.parquet` as `docs/catalog.md` — one row
+"""Export `_rodado_metadata/catalog.parquet` as `docs/mapa/catalog.md` — one row
 per dataset (description, tables, rows, source), human-readable.
 
     python3 scripts/build_metadata_catalog.py  # -> catalog.parquet (+ description column)
-    python3 scripts/gera_catalog_md.py         # catalog.parquet -> docs/catalog.md
+    python3 scripts/gera_catalog_md.py         # catalog.parquet -> docs/mapa/catalog.md
 
 Generated file — edit docs/context/dataset_descriptions.yaml instead, never
-this output. See docs/housekeeping.md item 7: run this every time
+this output. See docs/tecnico/housekeeping.md item 7: run this every time
 catalog.parquet changes, not just when descriptions change.
 """
 
@@ -16,7 +16,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CATALOG = REPO_ROOT / "_rodado_metadata" / "catalog.parquet"
-OUT = REPO_ROOT / "docs" / "catalog.md"
+OUT = REPO_ROOT / "docs" / "mapa" / "catalog.md"
 
 
 def fmt_int(n):
@@ -55,7 +55,7 @@ def main():
     n_freshness = sum(1 for _, d in datasets if d["last_date"])
 
     lines = [
-        "# docs/catalog.md — catálogo de datasets",
+        "# docs/mapa/catalog.md — catálogo de datasets",
         "",
         f"**Gerado por `scripts/gera_catalog_md.py`, a partir de "
         f"`_rodado_metadata/catalog.parquet` — não editar à mão.** "
