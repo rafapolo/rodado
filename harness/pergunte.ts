@@ -4,29 +4,28 @@
  *
  *     bun harness/pergunte.ts "Quantos óbitos por suicídio houve no RJ em 2020?"
  *
- * Passa pelo caminho agêntico (dsh + as ferramentas de harness/mcp.ts), que é o
+ * Passa pelo caminho agêntico (Pi + as ferramentas de harness/mcp.ts), que é o
  * que acerta: medido em 2026-09-02, agêntico 3/3 correto contra 0/3 do pipeline
  * fixo nas mesmas perguntas. O fixo é 14x mais rápido e erra — reporta um grupo
  * do GROUP BY como se fosse o total, devolve código de município em vez do nome,
  * e desiste depois de algumas rejeições em vez de iterar.
  *
- * Espere ~5 a 10 min por pergunta. O tempo está no laço, não em uma consulta
- * lenta: são 8 e poucos turnos de modelo a ~9 t/s de geração.
+ * Espere ~1 min numa pergunta direta e ~5 a 10 numa que cruza fontes. O tempo
+ * está no laço, não na consulta: cada turno de modelo gera a ~9 t/s.
  *
  * O turno degenerado do item 10 de `tasks/backlog.md` é repetido por
- * `guarda.ts`, que fica entre o dsh e o llama-server. Repetir a pergunta
- * inteira numa sessão dsh nova sobra só como última linha, para quando a
- * guarda esgota as tentativas dela.
+ * `guarda.ts`, que fica entre o Pi e o llama-server. Repetir a pergunta
+ * inteira num processo novo sobra só como última linha, para quando a guarda
+ * esgota as tentativas dela.
+ *
+ * A transcrição (cada SQL e o começo de cada resultado): `bun harness/sessao.ts`.
  */
 import { garanteTunel } from "./modelo.ts";
 import { sobeGuarda, resumoGuarda } from "./guarda.ts";
-import { comandoPi, comandoOmp } from "./pi.ts";
+import { comandoPi } from "./pi.ts";
 
 const RAIZ = new URL("..", import.meta.url).pathname;
-const PATCH = "harness/dsh/rodado.patch.yml";
 const MAX_TENTATIVAS = Number(Bun.env.HARNESS_TENTATIVAS ?? 3);
-/** `dsh` (padrão), `pi` ou `omp` — tasks/pi_no_lugar_do_dsh.md */
-const CLIENTE = Bun.env.HARNESS_CLIENTE ?? "dsh";
 
 const pergunta = Bun.argv.slice(2).join(" ").trim();
 if (!pergunta) {
@@ -48,14 +47,7 @@ if (!await garanteTunel()) {
 }
 
 async function tenta(): Promise<{ code: number; texto: string }> {
-  const { cmd, env } = CLIENTE === "pi" ? comandoPi(pergunta, guarda.url)
-    : CLIENTE === "omp" ? comandoOmp(pergunta, guarda.url)
-    : {
-      cmd: ["bunx", "dsh", "--profile", "headless", "--patch", PATCH, pergunta],
-      // O llama-server ignora o valor, mas o pi-ai exige a referência: sem ela o
-      // boot morre com "No API key for provider".
-      env: { ...process.env, HARNESS_LLM_KEY: process.env.HARNESS_LLM_KEY ?? "nao-usada", HARNESS_LLM_URL: guarda.url, HARNESS_PERGUNTA: pergunta },
-    };
+  const { cmd, env } = comandoPi(pergunta, guarda.url);
   const proc = Bun.spawn(cmd, {
     cwd: RAIZ,
     env,

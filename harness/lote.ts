@@ -1,10 +1,10 @@
 /**
- * Roda perguntas abertas pelo dsh e registra o que voltou.
+ * Roda perguntas abertas pelo Pi (pi.ts) e registra o que voltou.
  *
  *     bun harness/lote.ts perguntas.txt
  *     bun harness/lote.ts --diff benchmarks/a.json benchmarks/b.json
  *
- * Cada pergunta é um processo `dsh --profile headless` novo, mas o cache de
+ * Cada pergunta é um processo `pi --print` novo, mas o cache de
  * prefixo vive no llama-server e sobrevive entre processos — medido: 16.397 de
  * 16.585 tokens vieram do cache já na primeira pergunta seguinte. Esse cache é
  * a diferença entre 6 min e ~40 min por caso e quebra em silêncio: a checagem
@@ -22,19 +22,15 @@ import {
 } from "./acerto.ts";
 import { sobeGuarda, resumoGuarda, type Estatistica } from "./guarda.ts";
 import { garanteTunel } from "./modelo.ts";
-import { comandoPi, comandoOmp } from "./pi.ts";
+import { comandoPi } from "./pi.ts";
 
 const RAIZ = new URL("..", import.meta.url).pathname;
-const PATCH = "harness/dsh/rodado.patch.yml";
-/** O laço agêntico: `dsh` (padrão), `pi` ou `omp` — tasks/pi_no_lugar_do_dsh.md. */
-export type Cliente = "dsh" | "pi" | "omp";
-const CLIENTE = (Bun.env.HARNESS_CLIENTE ?? "dsh") as Cliente;
 
 export interface Saida {
   pergunta: string;
   resposta: string;
   segundos: number;
-  /** o dsh terminou e produziu texto — NÃO quer dizer que o texto está certo */
+  /** o laço terminou e produziu texto — NÃO quer dizer que o texto está certo */
   respondeu: boolean;
   /** o texto contém o valor conferido, quando o caso traz um.
    *  `undefined` = não medível (sem gabarito, ou o esperado ecoa na pergunta) */
@@ -58,8 +54,8 @@ export interface Saida {
 export interface Rodada {
   gerado: string;
   config?: ConfigServidor;
-  /** ausente = dsh, o único que existia antes */
-  cliente?: Cliente;
+  /** o laço que produziu a rodada; ausente = dsh, o único antes de 2026-09-24 */
+  cliente?: "dsh" | "pi" | "omp";
   casos: Saida[];
 }
 
@@ -72,7 +68,7 @@ export interface Rodada {
  */
 export interface Caso { pergunta: string; esperado?: string }
 
-/** Uma tentativa isolada — um processo `dsh` do começo ao fim. */
+/** Uma tentativa isolada — um processo `pi` do começo ao fim. */
 interface Tentativa {
   resposta: string;
   segundos: number;
@@ -88,10 +84,10 @@ interface Tentativa {
  * medido 2026-09-03, 4 de 6 sessões reais terminaram com a chamada de
  * ferramenta do Gemma caindo como texto solto (formato nativo do modelo,
  * `<|tool_call>...<tool_call|>`, que o parser do llama-server às vezes não
- * reconhece) — o dsh não imprime nada nesse caso, então `respondeu` fica
+ * reconhece) — o laço não imprime nada nesse caso, então `respondeu` fica
  * `false` mesmo com `code === 0`. Não é erro de raciocínio: casos 1 e 5, com
  * sessões do mesmo tamanho, completaram normalmente — é probabilístico por
- * turno, então repetir a MESMA pergunta numa sessão `dsh` nova tem boa chance
+ * turno, então repetir a MESMA pergunta num processo novo tem boa chance
  * de não bater o mesmo bug de novo. Não conserta a causa raiz (aberta,
  * bloqueando em `backlog.md`); é o workaround que torna a rodada usável
  * enquanto ela não fecha.
@@ -100,20 +96,14 @@ const MAX_TENTATIVAS = Number(Bun.env.HARNESS_TENTATIVAS ?? 3);
 
 async function rodaUmaVez(q: string): Promise<Tentativa> {
   if (!await garanteTunel()) console.log("      (llama-server inalcançável mesmo reabrindo o túnel)");
-  // O prefill não volta pelo stdout do dsh — cada pergunta é outro processo.
+  // O prefill não volta pelo stdout do Pi — cada pergunta é outro processo.
   // A marca no log do llama-server é o que sobra para saber se o cache viveu.
   const marca = await marcaDoLog();
   const guarda = sobeGuarda();
   const t0 = Date.now();
-  const { cmd, env } = CLIENTE === "pi" ? comandoPi(q, guarda.url)
-    : CLIENTE === "omp" ? comandoOmp(q, guarda.url)
-    : {
-      cmd: ["bunx", "dsh", "--profile", "headless", "--patch", PATCH, q],
-      env: { ...process.env, HARNESS_LLM_KEY: "x", HARNESS_LLM_URL: guarda.url, HARNESS_PERGUNTA: q },
-    };
+  const { cmd, env } = comandoPi(q, guarda.url);
   const p = Bun.spawn(cmd, {
     cwd: RAIZ, env,
-    // o omp em -p espera stdin fechado; com um pipe aberto trava em readPipedInput
     stdin: "ignore",
     stdout: "pipe", stderr: "pipe",
     timeout: 2_400_000, killSignal: "SIGKILL",
@@ -143,7 +133,7 @@ export async function roda(casos: Caso[], aoCaso?: (feitos: Saida[]) => void): P
     let prefillMax = tentativa.prefillMax;
     const prefillInicial = tentativa.prefillInicial;
     const guarda: Estatistica = { ...tentativa.guarda };
-    // Retentativa: só quando o dsh terminou sem produzir NADA (item 10) — uma
+    // Retentativa: só quando o laço terminou sem produzir NADA (item 10) — uma
     // resposta que veio, mesmo errada, não se repete: é erro de raciocínio,
     // não do bug de parsing, e repetir esconderia o número real de acerto.
     while (!tentativa.respondeu && tentativas < MAX_TENTATIVAS) {
@@ -246,14 +236,14 @@ if (import.meta.main) {
     .map((l) => l.trim()).filter((l) => l && !l.startsWith("#"))
     .map((l) => { const [p, e] = l.split("\t"); return { pergunta: p!.trim(), esperado: e?.trim() }; });
   const config = await configServidor();
-  console.log(`${casos.length} perguntas pelo ${CLIENTE} — ${rotuloConfig(config)}`);
+  console.log(`${casos.length} perguntas pelo Pi — ${rotuloConfig(config)}`);
   if (!config) console.log("AVISO: sem a config do servidor, o TEMPO desta rodada não é comparável com nenhuma outra");
   console.log(`limiar de prefill: ${LIMIAR_PREFILL} tokens\n`);
   // Gravado a cada caso, não só no fim: as rodadas de 2026-09-03 dos casos com
   // `n` foram interrompidas no meio e perderam o que já tinham rodado.
   const saida = `${RAIZ}harness/benchmarks/lote_${new Date().toISOString().slice(0, 16).replace(/[:T]/g, "")}.json`;
   const grava = (casosFeitos: Saida[]) =>
-    writeFileSync(saida, JSON.stringify({ gerado: new Date().toISOString(), config, cliente: CLIENTE, casos: casosFeitos } satisfies Rodada, null, 1));
+    writeFileSync(saida, JSON.stringify({ gerado: new Date().toISOString(), config, cliente: "pi", casos: casosFeitos } satisfies Rodada, null, 1));
   const r = await roda(casos, grava);
   const bons = r.filter((x) => x.respondeu).length;
   const medio = r.reduce((a, b) => a + b.segundos, 0) / r.length;

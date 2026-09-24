@@ -9,9 +9,9 @@ refino em [`tasks/`](tasks/README.md).
 
 ## O fluxo
 
-Uma pergunta, do jeito que roda hoje (`pergunte.ts` → dsh → as ferramentas de
-`mcp.ts`). Quem decide a ordem é o modelo, dentro do laço do dsh — ver "O papel
-do dsh"; as setas abaixo são o caminho típico, não uma sequência fixa.
+Uma pergunta, do jeito que roda hoje (`pergunte.ts` → Pi → as ferramentas de
+`mcp.ts`). Quem decide a ordem é o modelo, dentro do laço do Pi — ver "O laço:
+o Pi"; as setas abaixo são o caminho típico, não uma sequência fixa.
 
 ```mermaid
 flowchart TD
@@ -48,7 +48,7 @@ Recuperação, validação e execução são determinísticas — código, não 
 do modelo. O modelo escolhe o dataset, escreve a SQL, lê o que voltou e redige;
 tudo que ele recebe de volta (rejeição, conserto, alerta) chega como resultado
 de ferramenta, e é isso que o faz corrigir sem retry escrito à mão. Pergunta
-direta: ~5 turnos, mediana de 63 s.
+direta: ~4 turnos, mediana de 49 s.
 
 ## O portão
 
@@ -138,7 +138,7 @@ determinística) evapora o 44x sem ninguém perceber.
 A comparação que decide o desenho — mesmas 5 perguntas, mesmo modelo, mesmo
 portão, mesmo beelink; muda só quem decide a sequência de passos:
 
-| | dsh + MCP (agêntico) | pipeline fixo (`laco.ts`, removido) |
+| | laço agêntico + MCP (medido com o dsh) | pipeline fixo (`laco.ts`, removido) |
 |---|---|---|
 | **Correto** | **3/3 = 100%** | **0/3 = 0%** |
 | Tempo | ~400 s | 61 s |
@@ -153,24 +153,24 @@ erros de não iterar.
 em 2026-09-24 — a comparação está decidida e o código fica no histórico do git
 (`git show 6ef2921:harness/laco.ts`).
 
-## O papel do dsh
+## O laço: o Pi
 
-O **dsh** (DeepSeek Harness) é o laço agêntico — e **não sabe que o portão
-existe**. Não valida nada, não conhece SQL, CID nem partição. O trabalho dele é
-só repassar mensagens entre o modelo e as ferramentas até sair uma resposta
-final: manda o turno ao modelo, executa a chamada de ferramenta que vier,
-devolve o resultado, repete. Guarda cada sessão em disco, que é o que
-`sessao.ts` lê.
+O laço agêntico é o **Pi** (`@earendil-works/pi-coding-agent`, montado por
+`pi.ts`) — e ele **não sabe que o portão existe**. Não valida nada, não conhece
+SQL, CID nem partição. O trabalho dele é só repassar mensagens entre o modelo e
+as ferramentas até sair uma resposta final: manda o turno ao modelo, executa a
+chamada de ferramenta que vier, devolve o resultado, repete. Guarda cada sessão
+em `~/.rodado-harness/sessoes/`, que é o que `sessao.ts` lê.
 
 Onde cada peça fica, de fora para dentro:
 
 ```mermaid
 flowchart TD
-    L["pergunte.ts / lote.ts<br/>um processo dsh por pergunta;<br/>sessão nova se ele morrer"] --> D
-    D["dsh — o laço<br/>turno do modelo → executa ferramenta → devolve → repete"]
+    L["pergunte.ts / lote.ts<br/>um processo pi por pergunta;<br/>processo novo se ele morrer"] --> D
+    D["Pi — o laço<br/>turno do modelo → executa ferramenta → devolve → repete"]
     D <-->|"cada turno"| G["guarda.ts<br/>repete o turno que volta vazio"]
     G <--> M["llama-server (Gemma)"]
-    D <-->|"chamada de ferramenta"| T["mcp.ts — as ferramentas"]
+    D <-->|"chamada de ferramenta<br/>(pi-mcp-adapter)"| T["mcp.ts — as ferramentas"]
     T --> C["consultar"]
     C --> P{{"PORTÃO<br/>7 camadas"}}
     P -->|passa| B["DuckDB no beelink"]
@@ -183,41 +183,63 @@ flowchart TD
 O portão mora **dentro da ferramenta `consultar`**, e quem o roda é o `mcp.ts`.
 Na pergunta dos óbitos por suicídio no RJ em 2020:
 
-1. O dsh manda a pergunta ao Gemma.
+1. O Pi manda a pergunta ao Gemma.
 2. O Gemma responde "chame `consultar` com `causa_basica BETWEEN 'X60' AND 'X84'`".
-3. O dsh repassa ao `mcp.ts`; o portão reprova e devolve um texto: "CID é
+3. O Pi repassa ao `mcp.ts`; o portão reprova e devolve um texto: "CID é
    guardado sem ponto, use `substr(...)`".
-4. O dsh **não sabe que aquilo é uma rejeição** — para ele é só o resultado da
+4. O Pi **não sabe que aquilo é uma rejeição** — para ele é só o resultado da
    ferramenta, e ele entrega ao Gemma como entregaria qualquer resultado.
 5. O Gemma lê, reescreve a SQL e chama `consultar` de novo. Passa, roda, volta 789.
-6. O Gemma redige a resposta; o dsh termina.
+6. O Gemma redige a resposta; o Pi termina.
 
 É por isso que o portão não precisa de retry escrito à mão: a rejeição chega ao
-modelo como resultado de ferramenta, o laço do dsh continua girando e o conserto
-acontece sozinho. O `laco.ts` (removido) era a versão sem o dsh, com a sequência fixa — 0/3
-contra 3/3 (ver "Por que laço agêntico" acima).
+modelo como resultado de ferramenta, o laço continua girando e o conserto
+acontece sozinho. O `laco.ts` (removido) era a versão sem laço, com a sequência
+fixa — 0/3 contra 3/3 (ver "Por que laço agêntico" acima).
 
-**Divisão de trabalho: o dsh decide a sequência dos passos; o harness — portão,
+**Divisão de trabalho: o Pi decide a sequência dos passos; o harness — portão,
 guarda, persona — decide o que é permitido e o que vale.**
 
-Tudo que é do rodado entra pelo patch (`dsh/rodado.patch.yml`), rodado como
-`bunx dsh --profile headless --patch harness/dsh/rodado.patch.yml "<pergunta>"`:
+Tudo que é do rodado entra pela configuração que `pi.ts` monta num diretório
+temporário a cada pergunta (nada do `~/.pi` do usuário entra):
 
-| O patch | Para quê |
+| A configuração | Para quê |
 |---|---|
-| provider `beelink-local` | aponta o dsh para o Gemma local (pela `guarda.ts`, via `HARNESS_LLM_URL`), com `reasoningEfforts: false` |
-| `mcp-rodado` | monta `harness/mcp.ts` como único servidor de ferramentas |
-| `bash`, `fs`, `web`, subagentes, skills, todo… desligados | o dsh vem com shell, e o Gemma já usou `bash` para chamar o DuckDB direto por SSH, **por fora do portão**. Sem eles, o único caminho até o dado é o `consultar` |
-| `agent-instructions` com `maxBytes: 0`, sem título de sessão por LLM, sem `plan-mode` | tira do prompt o `CLAUDE.md` que o dsh injetava sozinho e as chamadas extras ao único slot |
-| `system-prompt` lido de `dsh/persona.md` | papel, como trabalhar e o catálogo, gerados por `persona.ts` |
+| provider `beelink-local` (`models.json`) | aponta o Pi para o Gemma local pela `guarda.ts`, com `reasoning: false` |
+| `pi-mcp-adapter` com `directTools: true` | o Pi não tem MCP nativo; o adapter monta `harness/mcp.ts` e expõe as 4 ferramentas uma a uma, com o proxy `mcp` escondido |
+| `--no-builtin-tools` | tira `bash`, `read`, `edit`, `write`. O Gemma já usou shell para chamar o DuckDB direto por SSH, **por fora do portão**; sem ele, o único caminho até o dado é o `consultar` |
+| `--no-context-files`, `--no-skills`, `--no-extensions` | nenhum `CLAUDE.md`/`AGENTS.md` injetado — o erro que custava 89% do prompt no dsh |
+| `compaction` e `cacheWarming` desligados | com contexto de 32k, a reserva padrão compactaria na metade; o aquecimento de cache manda requisição extra ao slot único |
+| `--system-prompt harness/persona.md` | papel, como trabalhar e o catálogo, gerados por `persona.ts` |
 
-As duas camadas em volta existem porque o dsh falha em dois lugares:
+Conferido contra um servidor falso: a requisição leva as 4 ferramentas e nada
+mais, e system prompt e ferramentas saem **iguais byte a byte** entre perguntas
+diferentes — o cache de prefixo vive.
 
-- **`guarda.ts`** — às vezes o Gemma devolve um turno vazio e o dsh encerra a
+As duas camadas em volta existem porque o laço falha em dois lugares:
+
+- **`guarda.ts`** — às vezes o Gemma devolve um turno vazio e o laço encerra a
   sessão como se tivesse terminado. A guarda fica no meio, vê o turno vazio e
-  repete a requisição antes que o dsh perceba (ver "A guarda").
-- **`lote.ts`** — se mesmo assim a sessão morrer, abre outro dsh do zero. Última
-  linha.
+  repete a requisição antes que o laço perceba (ver "A guarda").
+- **`lote.ts`** — se mesmo assim a sessão morrer, abre outro processo do zero.
+  Última linha.
+
+**Por que o Pi, e não o dsh (2026-09-24).** Até aqui o laço era o dsh (DeepSeek
+Harness), que já usava a camada de LLM do Pi por baixo. Nas 28 primeiras
+perguntas diretas, mesmo servidor e mesmas camadas:
+
+| | Certas | Média | Mediana | Turnos |
+|---|---|---|---|---|
+| **Pi** | 27/28 | **55 s** | **49 s** | 4,3 |
+| dsh (rodada 7) | 28/28 | 64 s | 54 s | 4,2 |
+| omp (fork do Pi, MCP nativo) | 26/28 | 82 s | 57 s | 4,4 |
+
+O erro do Pi foi de cópia: a consulta devolveu 115879 e o modelo escreveu
+115.798. Fora a velocidade, sumiu o que só existia para domar o dsh — o patch
+de 19 plugins desligados (`dsh/rodado.patch.yml`) e o teste que o travava. O
+omp puro, com a configuração de uso diário (prompt de engenharia, bash,
+`CLAUDE.md`), manda ~29 mil tokens no 1º turno e levou 12 min para responder
+"ok". Detalhe em [`tasks/pi_no_lugar_do_dsh.md`](tasks/pi_no_lugar_do_dsh.md).
 
 ## O contexto é o gargalo
 
@@ -226,7 +248,7 @@ As duas camadas em volta existem porque o dsh falha em dois lugares:
 | Prefill | 50,5 t/s | 15 t/s |
 | Geração | 13,3 t/s | 9 t/s |
 
-Cai ~3x, e o system prompt do dsh eram **14.213 tokens**. Desligar as ferramentas
+Cai ~3x, e o system prompt do dsh (o laço até 2026-09-24) eram **14.213 tokens**. Desligar as ferramentas
 que este harness não usa levou a **6.849** — corte de 52%, com a correção intacta
 e ~30% menos tempo por pergunta.
 
@@ -239,10 +261,11 @@ servidor no 1º turno real: 9.475 tokens, dos quais **8.424 (89%) eram o
 `CLAUDE.md` da raiz**, injetado pelo plugin `agent-instructions` do dsh —
 instruções para o Claude Code, com ferramentas que este servidor MCP nem tem.
 Desligado (`maxBytes: 0` no patch), junto com o título de sessão por LLM e o
-`plan-mode`. No lugar entrou o que o modelo usa: `dsh/persona.md` (papel, como
+`plan-mode`. No lugar entrou o que o modelo usa: `persona.md` (papel, como
 trabalhar e o catálogo com as pistas de irmão, 3,5 mil tokens, no prefixo
 cacheado). O contexto máximo por pergunta caiu de ~19k para ~5–9k, e os turnos
-que degeneravam estavam todos acima de 17k.
+que degeneravam estavam todos acima de 17k. Com o Pi, o 1º turno leva ~4.400
+tokens (persona + as 4 ferramentas) e nada mais.
 
 As saídas das ferramentas também encolheram (`formato.ts`): a descrição de uma
 tabela larga resume as colunas por prefixo e lista por inteiro só as que decidem
@@ -278,8 +301,8 @@ para em EOS. Não há chamada nenhuma a resgatar. O upstream `f072b10`
 (PR #29115, conserto da gramática de tool call do Gemma 4) foi aplicado no
 beelink e **não muda isso** — reproduziu igual depois do rebuild.
 
-`guarda.ts` fica entre o dsh e o llama-server (`HARNESS_LLM_URL`, que
-`pergunte.ts` e `lote.ts` apontam para ela):
+`guarda.ts` fica entre o Pi e o llama-server (`pi.ts` põe a URL dela no
+`baseUrl` do provider a cada pergunta):
 
 - segura os pedaços do turno até aparecer `content` não vazio ou `tool_calls` —
   com o raciocínio desligado, um turno saudável sempre produz um dos dois;
@@ -311,14 +334,15 @@ resposta. Detalhe em [`tasks/avaliacao_diretas.md`](tasks/avaliacao_diretas.md).
 | `anos.ts` | faixa de anos por tabela (377 cacheadas) |
 | `pontes.ts` | dicas de join das pontes conferidas de `bridges.yaml` |
 | `mcp.ts` | servidor MCP: 4 ferramentas (`listar_tabelas`, `descrever_tabela`, `definicao_de_calculo`, `consultar`), o portão entre elas |
-| `guarda.ts` | proxy entre o dsh e o llama-server: repete o turno degenerado e resgata a chamada presa no pensamento (ver "A guarda") |
-| `persona.ts` | gera `dsh/persona.md`, o system prompt do laço; `--confere` acusa quando está velho |
+| `pi.ts` | monta o Pi para uma pergunta: modelo, ajustes e o `mcp.ts` pelo `pi-mcp-adapter`, num diretório temporário; sessões em `~/.rodado-harness/sessoes/` |
+| `guarda.ts` | proxy entre o Pi e o llama-server: repete o turno degenerado e resgata a chamada presa no pensamento (ver "A guarda") |
+| `persona.ts` | gera `persona.md`, o system prompt do laço; `--confere` acusa quando está velho |
 | `dicionarios.ts` | o significado dos códigos (`'2'=Rural`) ao lado da coluna, de `{dataset}.dicionario`. Cache em `dados/dicionarios.json`; `--atualiza` |
 | `valores.ts` | os valores reais das colunas de texto sem dicionário (`'estadual'`, `'prefeito'`), calculados na 1ª descrição e guardados em `dados/valores.json` |
 | `semantica.ts` | notas curadas (`dados/notas.json`), o cálculo verificado da tabela (`metrics.yaml`) e as tabelas reais mais parecidas com um nome inventado |
 | `recortes.ts` | ano, estado e bioma que a pergunta nomeia — o resultado de `consultar` avisa quando a SQL não os aplicou |
 | `formato.ts` | como as ferramentas escrevem para o modelo: descrição compacta (códigos só nas colunas ligadas à pergunta), resultado em tabela de texto |
-| `sessao.ts` | lê uma sessão do dsh como transcrição (cada chamada, a SQL inteira, o resultado) |
+| `sessao.ts` | lê uma sessão do Pi como transcrição (cada chamada, a SQL inteira, o resultado) |
 | `lote.ts` | benchmark de perguntas abertas; grava o resultado a cada caso |
 
 ## Procedência e uma correção
@@ -342,10 +366,10 @@ bun harness/pergunte.ts "Quantos óbitos por suicídio houve no RJ em 2020, por 
 ```
 
 Sai a resposta em prosa, com os números que o modelo apurou. Pergunta direta
-leva **~1 a 1,5 min** — na última rodada inteira, de 2026-09-23 (`benchmarks/lote_2026-09-231922.json`,
-43 perguntas): 42/43 certas, média 95 s, **mediana 66 s** (76 s na rodada 5 de
-[`tasks/avaliacao_diretas.md`](tasks/avaliacao_diretas.md); eram 5–10 min antes
-do corte de contexto). Pergunta de pesquisa, cruzando três ou quatro fontes,
+leva **~1 min** — nas 28 primeiras diretas pelo Pi, em 2026-09-24
+(`benchmarks/lote_2026-09-240928.json`): 27/28 certas, média 55 s, **mediana
+49 s** (a última rodada inteira pelo dsh, as 43, foi 42/43 com mediana 66 s —
+[`tasks/avaliacao_diretas.md`](tasks/avaliacao_diretas.md)). Pergunta de pesquisa, cruzando três ou quatro fontes,
 ~10 min. Se o `llama-server` não estiver de pé, o comando diz exatamente o que
 subir. Para ver o que o modelo fez: `bun harness/sessao.ts`.
 
@@ -354,13 +378,13 @@ Passa pelo caminho agêntico de propósito — ver a comparação acima.
 ## Rodar
 
 ```bash
-bun test harness/                    # 156 testes
+bun test harness/                    # 159 testes
 bun harness/catalogo.ts              # 230 datasets, 1024 tabelas
 bun harness/catalogo.ts --atualiza   # rebusca no beelink após um sync
 bun harness/anos.ts --atualiza       # faixa de anos por tabela
 
 bun harness/avalia_datasets.ts       # escolha de dataset nas 274 perguntas
-bun harness/lote.ts <arquivo>        # perguntas abertas pelo dsh, com gabarito
+bun harness/lote.ts <arquivo>        # perguntas abertas pelo Pi, com gabarito
 ```
 
 O arquivo de perguntas do `lote.ts` é uma por linha, com o
@@ -396,8 +420,8 @@ Cada flag aí é uma medição, não gosto:
 - **`-np 1`**: o `-c` é **por slot**. Com os 4 slots padrão, `-c 65536` aloca 4x
   o KV sem avisar.
 - **`--chat-template-kwargs`**: é o jeito medido de desligar o raciocínio do Gemma.
-  `reasoningEfforts: false` no dsh declara o modelo como não-raciocinante *para o
-  harness* e não manda nada ao llama.cpp; `--reasoning off` não resolvia no llama.cpp de 2026-09-01 (no `f072b10` resolve, medido 2026-09-24).
+  `reasoning: false` no cliente (`pi.ts`) declara o modelo como não-raciocinante
+  *para o laço* e não manda nada ao llama.cpp; `--reasoning off` não resolvia no llama.cpp de 2026-09-01 (no `f072b10` resolve, medido 2026-09-24).
   Medido: 20,9 s → 4,7 s por turno de tool calling, com o tool call intacto.
 - **sem `-ctk/-ctv q8_0`**: KV quantizado sai caro em CPU — desquantizar a cada
   operação de atenção domina o que economiza em banda. Prefill 15,8 → 50,5 t/s.
