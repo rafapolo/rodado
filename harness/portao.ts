@@ -9,7 +9,7 @@
  *
  *  - a primeiríssima tool call dele foi `SELECT COUNT(*) FROM
  *    br_ms_sim.microdados`, sem filtro nenhum — a forma exata do lock de 2h
- *    registrado no CLAUDE.md;
+ *    registrado no AGENTS.md;
  *  - pedido "suicídios X60–X84 no RJ em 2020", escreveu
  *    `causa_basica BETWEEN 'X60' AND 'X84'`. O CID é guardado sem ponto
  *    (`X840`) e `'X840' > 'X84'`, então o grupo X84 inteiro sai: **726 contra
