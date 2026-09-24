@@ -317,7 +317,7 @@ resposta. Detalhe em [`tasks/avaliacao_diretas.md`](tasks/avaliacao_diretas.md).
 | `recortes.ts` | ano, estado e bioma que a pergunta nomeia — o resultado de `consultar` avisa quando a SQL não os aplicou |
 | `formato.ts` | como as ferramentas escrevem para o modelo: descrição compacta (códigos só nas colunas ligadas à pergunta), resultado em tabela de texto |
 | `sessao.ts` | lê uma sessão do dsh como transcrição (cada chamada, a SQL inteira, o resultado) |
-| `laco.ts` | o pipeline fixo — **não é caminho de produção** (0/3 contra 3/3 do agêntico). Sobrevive por um motivo nomeado: é o esqueleto do experimento DuckDB-NSQL-7B de `tasks/check-qwencoder-vs-duckdbnsql.md`, que precisa de um apurador sem agente e sem MCP. Se aquele experimento fechar sem usá-lo, remover — a comparação que ele provou já está registrada aqui e em `tasks/regras.md`, e o código sai por `git show` |
+| `laco.ts` | o pipeline fixo — **não é caminho de produção** (0/3 contra 3/3 do agêntico). Sobrevivia como esqueleto do experimento DuckDB-NSQL-7B, que saiu do plano em 2026-09-24 — **remoção pendente**; a comparação que ele provou já está registrada aqui e em `tasks/regras.md`, e o código sai por `git show` |
 | `lote.ts` / `compara.ts` | benchmark de perguntas abertas |
 
 ## Procedência e uma correção
