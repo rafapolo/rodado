@@ -218,6 +218,8 @@ def test_get_join_keys_unknown_column():
     "SELECT 1;",
     "SELECT 1 -- trailing comment",
     "/* leading comment */ SELECT 1",
+    "SELECT SUM(CAST(replace(valor, ',', '.') AS DOUBLE)) FROM t",
+    "SELECT REPLACE (nome, 'a', 'b') FROM t",
 ])
 def test_check_read_only_allows_select_with(sql):
     assert m._check_read_only(sql) is None
@@ -233,6 +235,8 @@ def test_check_read_only_allows_select_with(sql):
     "ATTACH 'x.db'",
     "PRAGMA table_info('x')",
     "COPY (SELECT 1) TO 'out.csv'",
+    "WITH x AS (SELECT 1) SELECT * FROM x; CREATE OR REPLACE TABLE y AS SELECT 1",
+    "SELECT 1 FROM t WHERE x = 1 OR REPLACE",
 ])
 def test_check_read_only_rejects(sql):
     assert m._check_read_only(sql) is not None

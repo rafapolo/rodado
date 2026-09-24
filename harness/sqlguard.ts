@@ -44,7 +44,11 @@ export function checkReadOnly(sql: string): string | null {
 
   const upper = body.toUpperCase();
   for (const kw of DISALLOWED_KEYWORDS) {
-    if (new RegExp(`\\b${kw}\\b`).test(upper)) {
+    // replace(col, ',', '.') é a função de texto, não o statement REPLACE —
+    // recusá-la fez o modelo desmontar '800,00' com substr() e somar 100x o
+    // Bolsa Família de PE (medido 2026-09-23).
+    const guarda = kw === "REPLACE" ? "(?!\\s*\\()" : "";
+    if (new RegExp(`\\b${kw}\\b${guarda}`).test(upper)) {
       return `A palavra-chave '${kw}' não é permitida — read-only por desenho.`;
     }
   }
