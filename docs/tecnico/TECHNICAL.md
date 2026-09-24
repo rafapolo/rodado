@@ -271,11 +271,11 @@ tools for Claude Desktop/Claude Code, over stdio. Full tool inventory,
 architecture diagrams and the retrieval/iteration mechanism: **[`docs/tecnico/MCP.md`](MCP.md)**.
 
 ```bash
-pip install -r requirements-mcp.txt
-claude mcp add rodado -- python3 mcp_server.py
+pip install -r mcp/requirements.txt
+claude mcp add rodado -- python3 mcp/mcp_server.py
 ```
 
-Tests: `pytest tests/test_mcp_server.py` (the ssh subprocess and the embedding model are mocked — no network, no model download).
+Tests: `pytest mcp/` (the ssh subprocess and the embedding model are mocked — no network, no model download).
 
 ---
 
