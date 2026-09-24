@@ -6,22 +6,19 @@ Desktop/Claude Code) — não é uma API REST, é uma lista de funções que um
 modelo de linguagem chama em sequência, decidindo a cada passo qual chamar a
 seguir a partir do resultado da anterior.
 
-Números de hoje: 233 datasets, 1.029 tabelas (índice doc2query ainda cobre as 832 de 2026-08-23), índice doc2query com 6.464
-perguntas sintéticas (uma por tabela em média ~8), 60 conceitos de join
+Números de hoje: 233 datasets, 1.029 tabelas, 60 conceitos de join
 documentados, 20 false friends, 7 métricas nomeadas, 3 hierarquias de rollup,
-18 ferramentas ao todo. Nunca abre conexão DuckDB local — toda query roda no
+17 ferramentas ao todo. Nunca abre conexão DuckDB local — toda query roda no
 `~/bin/duckdb` do beelink via SSH (ver `_run_sql_ssh`). Tudo local: parquet
 em disco no beelink, sem storage em nuvem — é lá que dado recém-raspado
 aparece primeiro.
 
 ## Como ler este documento
 
-Três diagramas, cada um respondendo uma pergunta diferente:
+Dois diagramas, cada um respondendo uma pergunta diferente:
 
 1. **Arquitetura** — de onde cada ferramenta puxa dado (arquivo local vs SSH).
-2. **Retrieval do `search_tables`** — como uma pergunta em português vira uma
-   tabela candidata.
-3. **O loop de iteração** — o que faz uma tentativa falha virar uma tentativa
+2. **O loop de iteração** — o que faz uma tentativa falha virar uma tentativa
    nova, e a diferença entre o que o *servidor* corrige sozinho e o que só o
    *agente* corrige.
 
@@ -43,7 +40,6 @@ flowchart LR
     subgraph server["mcp_server.py"]
         direction TB
         T1["list_datasets\nlist_tables\ndescribe_table"]
-        T2["search_tables"]
         T3["get_join_keys\nresolve_join\nexplain_column"]
         T4["get_metric\nlist_metrics\nrollup"]
         T5["run_sql"]
@@ -53,7 +49,6 @@ flowchart LR
     subgraph ctx["docs/context/ — carregado 1x no import"]
         direction TB
         C1["rodado-schema.json\n(_SCHEMA: 207 ds / 895 tbl)"]
-        C2["doc2query_index.json +\ndoc2query_vectors.npy\n(6.464 perguntas sintéticas)"]
         C3["bridges.yaml\n(concepts / false_friends /\ncoded_differently / concept_aliases)"]
         C4["metrics.yaml · hierarchies.yaml"]
         C5["join_keys.md\n(152 seções, 92 auto-detectadas)"]
@@ -67,10 +62,9 @@ flowchart LR
         D3["curl ao vivo\n(CEP, Painel de Preços —\nnão dá pra espelhar)"]
     end
 
-    LLM --> T1 & T2 & T3 & T4 & T5 & T6
+    LLM --> T1 & T3 & T4 & T5 & T6
 
     T1 --> C1
-    T2 --> C2
     T3 --> C3 & C5
     T4 --> C4
     T5 --> D1
@@ -106,57 +100,17 @@ real de outra sessão, não uma query travada.
 
 ---
 
-## 2 · Retrieval do `search_tables` — doc2query, não keyword match
+## 2 · O loop de iteração
 
-A versão anterior indexava um embedding por tabela sobre o texto
-`"nome_coluna (TIPO), nome_coluna (TIPO)..."` — sopa de schema, quase
-ortogonal a uma pergunta real (cosseno 0,08 contra 0,39 de prosa
-equivalente). A versão atual indexa **uma pergunta sintética por vez**: um
-LLM gerou ~8 perguntas que cada tabela responde, cada uma embedada
-separadamente, no mesmo espaço da pergunta do usuário.
-
-```mermaid
-flowchart TD
-    Q["pergunta do usuário\n(ex: gastos de campanha eleitoral)"]
-    EMB["embed com o mesmo modelo\nque gerou o índice\n(paraphrase-multilingual-MiniLM-L12-v2)"]
-    IDX[("6.464 perguntas sintéticas\nembedadas offline\n~8 por tabela")]
-    SIM["cosseno contra cada uma\ndas 6.464"]
-    MAX["por tabela: pega o MÁXIMO\nentre as perguntas dela\n(não a média)"]
-    TOPK["ordena, corta em top_k\nacima de min_similarity\n(default 0.35)"]
-
-    Q --> EMB --> SIM
-    IDX -.-> SIM
-    SIM --> MAX --> TOPK
-```
-
-**Por que máximo e não média** — uma tabela responde muitas perguntas
-sintéticas diferentes; é a que casa com a pergunta real que importa. Média
-dilui o melhor match com os irrelevantes da mesma tabela — testado e medido
-pior (uma tentativa anterior com prosa+colunas juntas ficou em 2/15 de
-recall). O resultado devolve o `text` da pergunta sintética que bateu, não
-uma descrição da tabela — é assim que o agente lê "esta tabela responde:
-`<text>`" em vez de confiar cegamente no nome.
-
-Isso resolveu o recall **por tabela** (1/15 → 11/15 no conjunto de teste de
-uma tabela só). Não resolve sozinho o recall **por conjunto de tabelas**: uma
-pergunta que precisa de 3+ datasets ao mesmo tempo no mesmo `top_k` é uma
-barra mais alta, medida em ~51% no conjunto-dourado dataset-level
-(`tasks/douradas_perguntas.json` + `scripts/avalia_douradas_perguntas.py`) —
-ver seção 4.
-
----
-
-## 3 · O loop de iteração
-
-Isto é o que a seção 2 sozinha não mostra: uma chamada de `search_tables`
-que erra não é o fim da história para um agente real. Há dois tipos de
+Uma primeira escolha de tabela errada não é o fim da história para um agente
+real. Há dois tipos de
 correção bem diferentes — uma automática dentro do próprio servidor, outra
 que só existe porque o agente decide tentar de novo.
 
 ```mermaid
 flowchart TD
     START(["pergunta do usuário"])
-    SEARCH["search_tables(pergunta)"]
+    SEARCH["list_datasets / list_tables\n(achar a tabela candidata)"]
     GOODHIT{"algum resultado\nrelevante?"}
     DESC["describe_table\nnas 1-3 melhores candidatas"]
     OKCOLS{"colunas batem\ncom o que precisa?"}
@@ -168,7 +122,7 @@ flowchart TD
     OTHERERR["erro cru do DuckDB volta\npro agente\n(Binder Error...\nCandidate bindings: ...)"]
     FIX["agente lê o erro,\najusta a query\n(nome de coluna, join, cast)"]
     DONE(["resultado real"])
-    REPHRASE["agente reformula a pergunta\nou tenta list_tables/browse\nmanual num dataset suspeito"]
+    REPHRASE["agente tenta outro dataset\nou outra tabela suspeita"]
 
     START --> SEARCH --> GOODHIT
     GOODHIT -- não --> REPHRASE -. "tentativa nova" .-> SEARCH
@@ -196,33 +150,28 @@ amigável" quebraria exatamente esse laço de correção laranja.
 
 ---
 
-## 4 · O que já foi medido, e o que isso realmente prova
-
-Duas métricas existem hoje para este servidor, e é fácil confundir uma pela
-outra:
+## 3 · O que já foi medido, e o que isso realmente prova
 
 | Métrica | O que mede | Resultado | O que NÃO prova |
 |---|---|---|---|
-| `docs/pesquisa/hipoteses/respostas.md` (106 perguntas ✅/◐ de `docs/pesquisa/hipoteses/perguntas.md`) | Se o **dado** existe e junta corretamente, dado que quem escreveu a query já sabia o nome das tabelas (schema lido, não descoberto) | ~106/220 respondidas com query real no beelink | Nada sobre `search_tables` — a descoberta nunca passou pelas ferramentas do MCP |
-| `scripts/avalia_douradas_perguntas.py` contra `tasks/douradas_perguntas.json` | Se `search_tables`, sozinho, numa única chamada, devolve TODOS os datasets exigidos por uma pergunta no mesmo `top_k` | ~51% dos datasets recuperados | Não testa o loop da seção 3 — é uma chamada isolada, sem describe_table/resolve_join/run_sql depois, sem reformular em caso de erro |
+| `docs/pesquisa/hipoteses/respostas.md` (106 perguntas ✅/◐ de `docs/pesquisa/hipoteses/perguntas.md`) | Se o **dado** existe e junta corretamente, dado que quem escreveu a query já sabia o nome das tabelas (schema lido, não descoberto) | ~106/220 respondidas com query real no beelink | Nada sobre a descoberta de tabela — ela nunca passou pelas ferramentas do MCP |
 
-O espaço entre essas duas linhas — quanto da distância de 106→51% a
-iteração completa (seção 3) recupera de volta — nunca foi medido até este
-documento existir. É exatamente o teste em andamento nesta sessão: um agente
-sem contexto do repositório, só com as ferramentas MCP e o texto da
-pergunta, tentando as 99 perguntas verificadas de `docs/pesquisa/hipoteses/respostas.md` do
-zero.
+A busca semântica que existia (`search_tables`, sobre um índice doc2query de
+6.464 perguntas sintéticas) saiu em 2026-09-24: acertava o dataset em ~53%
+das perguntas, contra 88% do catálogo de datasets posto direto no prompt pelo
+harness (`harness/catalogo.ts`), cobria só 832 das 1.029 tabelas e era ~4% das
+chamadas. Achar a tabela hoje é `list_datasets` → `list_tables` →
+`describe_table`.
 
 ---
 
-## 5 · Inventário de ferramentas
+## 4 · Inventário de ferramentas
 
 | Ferramenta | Fonte | Propósito |
 |---|---|---|
 | `list_datasets` | `_SCHEMA` (schema.json) | Catálogo completo, contagem de tabelas por dataset |
 | `list_tables` | `_SCHEMA` | Tabelas de um dataset, com sugestão por proximidade em caso de erro de nome |
 | `describe_table` | `_SCHEMA` + `_duplicated()` + `_DICIONARIO_COVERAGE` + `_CODED_DIFFERENTLY` | Colunas de uma tabela, mais três avisos que a lista nua esconderia (linha duplicada, coluna decodificável, código que diverge entre datasets) |
-| `search_tables` | índice doc2query (seção 2) | Busca semântica: pergunta → tabelas candidatas |
 | `get_join_keys` | `join_keys.md` (152 seções) | Índice de colunas de join documentadas, ou seção completa por coluna |
 | `resolve_join` | `bridges.yaml` + `join_keys.md` | Cláusula `ON` pronta entre duas tabelas — bridges primeiro, depois match direto, com `rejected` explícito pra false friends |
 | `explain_column` | `bridges.yaml` (`false_friends`/`coded_differently`/`concepts`) | Por que uma coluna comum (`valor`, `id`, `numero`) NÃO é chave de join; ou, pra `sexo`/`raca_cor`/etc., por que o CÓDIGO não atravessa datasets mesmo o conceito sendo o mesmo |
@@ -238,12 +187,13 @@ zero.
 | `consultar_populacao_carceraria` | `br_mjsp_sisdepen/populacao_carceraria` | Censo prisional por UF/ciclo |
 | `consultar_painelprecos` | ComprasGov (live, via SSH) | Preço de compra pública por código CATMAT/CATSER — API por item, sem "tabela completa" pra espelhar |
 
-## 6 · Onde isso já quebrou, e o que foi corrigido
+## 5 · Onde isso já quebrou, e o que foi corrigido
 
 Achados confirmados em código (não por analogia) em `tasks/done/mcp_search_refino.md`,
 todos fechados em 2026-08-24:
 
-1. **Índice quebrado** (item 1) — trocado pelo doc2query da seção 2.
+1. **Índice quebrado** (item 1) — trocado por um índice doc2query, que por
+   sua vez saiu em 2026-09-24 junto com o `search_tables` (ver seção 3).
 2. **`describe_table` mudo sobre tabela duplicada** (item 2) — hoje carrega
    `warning` mesmo fora de `resolve_join`.
 3. **Colunas cruas do censo histórico** (item 3) — `dicionario_coverage`
@@ -267,5 +217,5 @@ todos fechados em 2026-08-24:
    *antes* da query, não só quando perguntado.
 
 O que ficou documentado como *não* mexer: `run_sql` devolve erro cru (seção
-3), `get_metric` é lookup direto sem parser de frase, `resolve_join` rejeita
+2), `get_metric` é lookup direto sem parser de frase, `resolve_join` rejeita
 explicitamente em vez de silenciar false friends.

@@ -13,8 +13,8 @@
 | End-to-end delivery, prototype → production | Ingestion pipeline + semantic layer + 18-tool MCP interface, in daily use |
 | Data engineering & modeling | 1,024 tables normalized to a typed ontology with join-key graph |
 | Ontology design | 8 business object types with explicit relationships and canonical keys |
-| Application development | `mcp_server.py` — 18 MCP tools over stdio (see `mcp/MCP.md`); an earlier browser SQL shell + HTTP API is retired |
-| AI/ML enablement | Semantic table selection over a doc2query embedding index (832 tables, 6,464 synthetic questions) |
+| Application development | `mcp/mcp_server.py` — 17 MCP tools over stdio (see `mcp/MCP.md`); an earlier browser SQL shell + HTTP API is retired |
+| AI/ML enablement | Table discovery by dataset catalog in the prompt (88% dataset hit rate in the local harness) |
 | Read-only enforcement | Query type/keyword guard client-side before any SSH call reaches beelink |
 | Operational durability | Resumable scraping pipelines, checkpointed ingestion |
 | Sensitive data handling | CPF/CNPJ personal identifiers — read-only, no PII export |
@@ -181,10 +181,10 @@ flowchart TD
         U["Compliance analysts · Policy teams · Researchers · Journalists"]
     end
     subgraph AGENT["AGENT LAYER"]
-        A["Claude Desktop / Claude Code — mcp_server.py over stdio<br/>18 tools: schema browse, semantic search, join resolution,<br/>named metrics, read-only SQL, friendly per-theme lookups"]
+        A["Claude Desktop / Claude Code — mcp_server.py over stdio<br/>17 tools: schema browse, join resolution,<br/>named metrics, read-only SQL, friendly per-theme lookups"]
     end
     subgraph SEMANTIC["SEMANTIC / ONTOLOGY LAYER"]
-        S["rodado-schema.json — 832-table schema registry<br/>join_keys.md / bridges.yaml — join keys + cross-source bridges<br/>doc2query_index.json/.npy — semantic vectors for AI (11 MB)<br/>overview/ (34 files) — domain narratives for LLM ctx"]
+        S["rodado-schema.json — 832-table schema registry<br/>join_keys.md / bridges.yaml — join keys + cross-source bridges<br/>overview/ (34 files) — domain narratives for LLM ctx"]
     end
     subgraph QUERY["QUERY LAYER"]
         Q["ssh beelink '~/bin/duckdb -readonly -json ...' — single-stmt<br/>No local DuckDB connection, no persistent server process"]
@@ -198,26 +198,14 @@ flowchart TD
 
 ---
 
-## Semantic Table Selection
+## Table Selection
 
-`docs/context/doc2query_index.json` + `doc2query_vectors.npy` hold one vector per
-*synthetic question* a table answers (~8/table, 6,464 questions over 832 tables,
-384 dims, `paraphrase-multilingual-MiniLM-L12-v2`) — not one vector per table. An
-earlier per-table index (one vector over column-name text) measured nearly
-orthogonal to a real question (recall@5 1/15 on a single-table golden set) and was
-replaced; see `tasks/done/mcp_search_refino.md` item 1. A table's score is the MAX
-cosine similarity across its own questions, so query and index live in the same
-space and no consumer has to reason over the full 1.8 MB schema.
-
-```mermaid
-flowchart TD
-    P["Pergunta (pt-BR)"] --> E["Embedding (384-d, multilingual)"]
-    E --> C["Cosseno sobre 6.464 perguntas → MAX por tabela → top-K tabelas"]
-    C --> F["Schema filtrado → gerador de SQL → DuckDB"]
-```
-
-`mcp_server.py` exposes this as the `search_tables` tool. The natural-language query
-interface that consumed it is being rebuilt; this document will describe it when it ships.
+Finding the right table is `list_datasets` → `list_tables` → `describe_table`,
+or — in the local harness — the whole dataset catalog placed in the prompt
+(~2k tokens, cached by llama-server after the first question), which picks the
+right dataset 88% of the time. An embedding index over synthetic questions
+(doc2query, `search_tables`) scored ~53% on the same measure, covered 832 of
+1,029 tables, and was removed on 2026-09-24.
 
 ---
 
@@ -289,7 +277,6 @@ Not a Foundry deployment — an open-source system that reproduces the same arch
 | DuckDB engine + views | Foundry query engine |
 | `rodado-schema.json` | Ontology schema registry |
 | `join_keys.md`/`bridges.yaml` entity graph | Object type links / property mappings |
-| `doc2query_index.json`/`doc2query_vectors.npy` | Semantic search index |
 | `mcp_server.py` | AIP Agent tool actions |
 | `overview/` domain narratives | Business context / documentation |
 
@@ -301,7 +288,6 @@ Not a Foundry deployment — an open-source system that reproduces the same arch
 |-------|-----------|
 | Query engine | DuckDB, local, over SSH — no persistent server process |
 | Storage | Local disk on beelink, Parquet+zstd |
-| Semantic search | MAX cosine similarity over `doc2query_index.json`/`doc2query_vectors.npy` |
 | Interface | `mcp_server.py`, stdio MCP tools for Claude Desktop/Code |
 
 ## Environment
