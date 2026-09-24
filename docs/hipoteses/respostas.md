@@ -1292,7 +1292,7 @@ numa sessão, não a reconstrução de coorte/causal completa).
   2.400.000ms, SIGKILL) — não travou infraestrutura (llama-server seguiu
   saudável depois), o laço agêntico simplesmente não convergiu numa cadeia de
   5 fontes dentro do orçamento. Consistente com o padrão já registrado em
-  `harness/tasks/backlog.md` item 2 (casos multi-tabela custam ~36 min/caso e
+  `tasks/harness/backlog.md` item 2 (casos multi-tabela custam ~36 min/caso e
   às vezes voltam vazios mesmo assim) — essa é a pergunta mais exigente que já
   foi testada no harness, então o resultado é o esperado, não uma surpresa.
   Não respondida por este método; componentes já medidos manualmente:

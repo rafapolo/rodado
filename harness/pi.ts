@@ -10,7 +10,7 @@
  * O Pi não tem MCP nativo. As 4 ferramentas chegam por `pi-mcp-adapter` com
  * `directTools: true` (uma ferramenta Pi por ferramenta MCP) e o proxy `mcp`
  * escondido. `--no-builtin-tools` tira `bash`/`read`/`edit`/`write`: com shell
- * o Gemma consulta o DuckDB por fora do portão (tasks/operacao.md).
+ * o Gemma consulta o DuckDB por fora do portão (tasks/harness/operacao.md).
  *
  * O diretório de agente é montado do zero a cada pergunta, num tmp: nada do
  * ~/.pi do usuário (extensões, AGENTS.md, credenciais) entra no prompt, e a URL
