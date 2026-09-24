@@ -25,6 +25,7 @@ import { listaDatasets, tabelasDe, colunasDe, resolveDataset, COLUNAS_PARTICAO, 
 import {
   portao, checaExplain, alertasDeSanidade, faixasCitadas,
   juncoesSemPonte, mensagemSemPonte, assinaturaJuncao, sugestao, semComentarios, repara, NOTA_AMOSTRA,
+  perguntaDePesquisa, checaRanking, extraiN,
 } from "./portao.ts";
 import { dicasDeJoin } from "./pontes.ts";
 import { runSqlSsh } from "./beelink.ts";
@@ -50,7 +51,7 @@ const servidor = new Server(
 );
 
 /**
- * backlog.md item 12 — o post-mortem da pergunta de 5 fontes que rodou 40 min
+ * harness_tasks.md B12 — o post-mortem da pergunta de 5 fontes que rodou 40 min
  * e morreu sem resposta, presa 38x na mesma junção inexistente. Duas coisas
  * que aquele caso mostrou faltar, e que só fazem sentido com estado por
  * pergunta (um processo mcp.ts = uma pergunta = um `pi --print`,
@@ -73,6 +74,8 @@ let totalConsultas = 0;
 /** SQL que rodou e devolveu linha — é contra ela que o recorte da pergunta é conferido. */
 const executadas: string[] = [];
 const PERGUNTA = Bun.env.HARNESS_PERGUNTA ?? "";
+/** Relação entre variáveis em muitos municípios — cobra medida sobre todos, com n. */
+const PESQUISA = perguntaDePesquisa(PERGUNTA);
 /** A mesma consulta, só com outro LIMIT: medido rodando 3x seguidas sem mudar nada. */
 const jaRodadas = new Set<string>();
 /** Tabelas cuja nota e cálculo verificado o modelo já viu nesta pergunta. */
@@ -204,6 +207,10 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     sql = reparo.sql;
     const v = portao(sql);
     if (!v.ok) return erro(`REJEITADA (${v.camada}): ${v.erro}`);
+    if (PESQUISA) {
+      const vr = checaRanking(sql);
+      if (!vr.ok) return erro(`REJEITADA (${vr.camada}): ${vr.erro}`);
+    }
 
     const ex = await checaExplain(sql, runSqlSsh);
     if (!ex.ok) {
@@ -240,7 +247,7 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
         "(códigos são texto: '2', não 2 nem 'Rural') e o tipo das duas pontas do join." +
         (faixas ? ` Faixa de anos das tabelas citadas: ${faixas}.` : " Chame listar_tabelas para ver a faixa de anos."),
       ];
-      // backlog.md item 12: quando a junção nem tem ponte conhecida, a mensagem
+      // harness_tasks.md B12: quando a junção nem tem ponte conhecida, a mensagem
       // acima soa como "você errou o tipo" e não é isso — é que a chave pode
       // nem existir. Diz isso explicitamente em vez de convidar a tentar de novo.
       if (semPonte.length) partes.push(mensagemSemPonte(semPonte));
@@ -295,6 +302,15 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     if (agregado && unica && Object.values(unica).every((v) => v === null || v === 0 || v === "0")) {
       alertas.push("A agregação não achou nenhum registro (n=0 ou tudo NULL): algum filtro não casou com valor real. " +
         "Confira os valores com SELECT DISTINCT na coluna filtrada antes de responder.");
+    }
+    // Medido 2026-09-24, caso 6 da rodada B2: a SQL tinha `COUNT(*) AS n` sete
+    // vezes e a prosa não citou nenhuma. Numa pergunta de pesquisa o n é quanto
+    // da amostra a conclusão cobre — sem ele na resposta, ninguém confere o join.
+    if (PESQUISA && Object.keys(capado.rows[0] ?? {}).some((k) => k.toLowerCase() === "n")) {
+      const n = extraiN(capado.rows as Record<string, unknown>[]);
+      alertas.push(`Se este resultado sustenta a resposta, escreva nela o n — quantos municípios entraram na medida` +
+        (n !== undefined && capado.rows.length === 1 ? ` (aqui, n=${n})` : ", somando os grupos se houver mais de um") +
+        `. Uma conclusão sem o tamanho da amostra não dá para conferir.`);
     }
     const municipio = dicaMunicipio(capado.rows as Record<string, unknown>[]);
     if (municipio) alertas.push(municipio);

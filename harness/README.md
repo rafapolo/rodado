@@ -5,7 +5,7 @@ Tudo no beelink, sem chamada de API paga.
 
 Bun + TypeScript. As medições que sustentam cada escolha estão em
 [`docs/tecnico/gemma_stats.md`](../docs/tecnico/gemma_stats.md); o plano completo e o catálogo de
-refino em [`tasks/harness/`](../tasks/README.md#harness--ativos-tasksharness).
+refino em [`tasks/harness_tasks.md`](../tasks/harness_tasks.md) (local, fora do git).
 
 ## O fluxo
 
@@ -276,7 +276,7 @@ de texto em vez de JSON com a chave repetida em cada linha.
 
 **2026-09-23, menos turnos.** Cada turno custa ~14,5 s e as ferramentas ~1 s
 por pergunta inteira: o que pesa é o número de turnos e os tokens novos em cada
-um, não a consulta. O plano com as medições saiu de `harness/tasks/` (hoje `tasks/harness/`) quando fechou
+um, não a consulta. O plano com as medições saiu de `harness/tasks/` (depois `tasks/harness/`, hoje fundido em `tasks/harness_tasks.md`) quando fechou
 (`git log -- harness/tasks/velocidade.md`):
 
 - `listar_tabelas` já traz a descrição da tabela principal do dataset, e o
@@ -294,7 +294,7 @@ um, não a consulta. O plano com as medições saiu de `harness/tasks/` (hoje `t
 
 ## A guarda
 
-O item 10 de `tasks/harness/backlog.md` — o turno que "volta vazio" e mata a sessão
+O item B10 de `tasks/harness_tasks.md` — o turno que "volta vazio" e mata a sessão
 inteira — foi visto no byte bruto em 2026-09-22 (log verboso do llama-server).
 Não é um parser engolindo a chamada: o Gemma decodifica **3 tokens**,
 `<|channel>` `thought` `<tool_call|>` (a tag de fechamento, sem abertura), e
@@ -321,7 +321,7 @@ beelink e **não muda isso** — reproduziu igual depois do rebuild.
 Em 144 perguntas medidas (1.024 turnos): 47 turnos repetidos (4,6%), 4
 resgatados, 4 perdidos — todos antes da proibição do `<|channel>` entrar, e as
 duas perguntas afetadas terminaram certas na sessão nova. Nenhuma ficou sem
-resposta. Detalhe em [`tasks/harness/avaliacao_diretas.md`](../tasks/harness/avaliacao_diretas.md).
+resposta. Detalhe em [`tasks/harness_tasks.md`](../tasks/harness_tasks.md), "Régua das perguntas diretas".
 
 ## Módulos
 
@@ -370,7 +370,7 @@ Sai a resposta em prosa, com os números que o modelo apurou. Pergunta direta
 leva **~1 min** — nas 28 primeiras diretas pelo Pi, em 2026-09-24
 (`benchmarks/lote_2026-09-240928.json`): 27/28 certas, média 55 s, **mediana
 49 s** (a última rodada inteira pelo dsh, as 43, foi 42/43 com mediana 66 s —
-[`tasks/harness/avaliacao_diretas.md`](../tasks/harness/avaliacao_diretas.md)). Pergunta de pesquisa, cruzando três ou quatro fontes,
+[`tasks/harness_tasks.md`](../tasks/harness_tasks.md), "Régua das perguntas diretas"). Pergunta de pesquisa, cruzando três ou quatro fontes,
 ~10 min. Se o `llama-server` não estiver de pé, o comando diz exatamente o que
 subir. Para ver o que o modelo fez: `bun harness/sessao.ts`.
 
@@ -427,7 +427,7 @@ Cada flag aí é uma medição, não gosto:
 - **sem `-ctk/-ctv q8_0`**: KV quantizado sai caro em CPU — desquantizar a cada
   operação de atenção domina o que economiza em banda. Prefill 15,8 → 50,5 t/s.
 - **`--cache-ram 1024`**: o padrão (8 GiB de conversas guardadas na RAM do host)
-  levou o servidor ao OOM killer em 2026-09-22 — ver `tasks/harness/operacao.md`,
+  levou o servidor ao OOM killer em 2026-09-22 — ver `tasks/harness_tasks.md`, "Operar",
   "Memória do beelink". O binário é o do llama.cpp `f072b10`.
 
 Do mac, abra o túnel antes (o servidor escuta só em loopback, de propósito):
@@ -437,4 +437,4 @@ ssh -f -N -L 8099:127.0.0.1:8099 beelink
 ```
 
 As checagens de operação — o que quebra calado e o detector de cada coisa — estão
-em [`tasks/harness/operacao.md`](../tasks/harness/operacao.md).
+em [`tasks/harness_tasks.md`](../tasks/harness_tasks.md), "Operar".

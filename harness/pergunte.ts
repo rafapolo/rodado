@@ -13,7 +13,7 @@
  * Espere ~1 min numa pergunta direta e ~5 a 10 numa que cruza fontes. O tempo
  * está no laço, não na consulta: cada turno de modelo gera a ~9 t/s.
  *
- * O turno degenerado do item 10 de `tasks/harness/backlog.md` é repetido por
+ * O turno degenerado do B10 de `tasks/harness_tasks.md` é repetido por
  * `guarda.ts`, que fica entre o Pi e o llama-server. Repetir a pergunta
  * inteira num processo novo sobra só como última linha, para quando a guarda
  * esgota as tentativas dela.

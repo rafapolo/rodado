@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { comandoPi } from "./pi.ts";
 
 /**
- * Trava a superfície do laço (operacao.md tarefa 4, antes em patch.test.ts para
+ * Trava a superfície do laço (harness_tasks.md O4, antes em patch.test.ts para
  * o dsh). Com shell, o Gemma consultou o DuckDB por fora do portão em
  * 2026-09-02; com o CLAUDE.md injetado, 89% do prompt era instrução para outro
  * agente. Nenhuma das duas falhas dá erro — por isso o teste.
