@@ -1,6 +1,6 @@
 """Tests for mcp_server.py — catalog tools, SQL guard, and the beelink SSH client.
 
-The ssh subprocess and the embedding model are mocked; the real docs/context/
+The ssh subprocess is mocked; the real docs/context/
 catalog files are used so tests double as a schema-shape regression check.
 """
 import json
@@ -22,14 +22,12 @@ def test_config_defaults():
     assert m.BEELINK_HOST == "beelink"
     assert m.BEELINK_DUCKDB_BIN == "~/bin/duckdb"
     assert m.BEELINK_DUCKDB_PATH == "~/rodado/basedosdados.duckdb"
-    assert m.SEARCH_THRESHOLD == 0.35
 
 
 def test_config_env_overrides(monkeypatch):
     monkeypatch.setenv("MCP_BEELINK_HOST", "other-host")
     monkeypatch.setenv("MCP_BEELINK_DUCKDB_BIN", "/usr/bin/duckdb")
     monkeypatch.setenv("MCP_BEELINK_DUCKDB_PATH", "/data/db.duckdb")
-    monkeypatch.setenv("MCP_SEARCH_THRESHOLD", "0.5")
 
     import importlib
     reloaded = importlib.reload(m)
@@ -37,7 +35,6 @@ def test_config_env_overrides(monkeypatch):
         assert reloaded.BEELINK_HOST == "other-host"
         assert reloaded.BEELINK_DUCKDB_BIN == "/usr/bin/duckdb"
         assert reloaded.BEELINK_DUCKDB_PATH == "/data/db.duckdb"
-        assert reloaded.SEARCH_THRESHOLD == 0.5
     finally:
         monkeypatch.undo()
         importlib.reload(m)  # restore module-level state for later tests
@@ -324,57 +321,6 @@ def test_run_sql_truncates_rows():
     assert result["returned"] == 3
     assert result["total"] == 10
     assert len(result["rows"]) == 3
-
-
-# ---------------------------------------------------------------------------
-# search_tables — doc2query index, embedding model mocked, no download/network
-# ---------------------------------------------------------------------------
-
-def _fake_doc2query_index():
-    import numpy as np
-
-    rows = [
-        {"id": "ds.a.q1", "table": "ds.a", "text": "quem foram os candidatos eleitorais"},
-        {"id": "ds.a.q2", "table": "ds.a", "text": "pergunta completamente irrelevante"},
-        {"id": "ds.b.q1", "table": "ds.b", "text": "óbitos por município"},
-    ]
-    # ds.a's best question is a perfect match (sim 1.0); its other question is
-    # a perfect mismatch (sim -1.0). ds.b's only question is a close-but-not-
-    # perfect match (sim ~0.994). Mean-pooling ds.a would give it (1.0-1.0)/2
-    # = 0.0, losing to ds.b — so a top result of ds.a proves MAX aggregation,
-    # not mean, is what's running.
-    vectors = np.array([[1.0, 0.0], [-1.0, 0.0], [0.9, 0.1]], dtype="float32")
-    table_rows = {"ds.a": [0, 1], "ds.b": [2]}
-    return {"rows": rows, "model": "fake-model", "vectors": vectors, "table_rows": table_rows}
-
-
-def test_search_tables_scores_by_max_not_mean(monkeypatch):
-    import numpy as np
-
-    monkeypatch.setattr(m, "_doc2query_index", _fake_doc2query_index())
-
-    fake_model = MagicMock()
-    fake_model.encode.return_value = np.array([1.0, 0.0], dtype="float32")
-    monkeypatch.setattr(m, "_embedding_model", fake_model)
-
-    result = m.search_tables("candidatos", top_k=5, min_similarity=-1.0)
-    assert result["results"][0]["table"] == "ds.a"
-    assert result["results"][0]["similarity"] == 1.0
-    assert result["results"][0]["text"] == "quem foram os candidatos eleitorais"
-    assert result["results"][1]["table"] == "ds.b"
-
-
-def test_search_tables_respects_min_similarity(monkeypatch):
-    import numpy as np
-
-    monkeypatch.setattr(m, "_doc2query_index", _fake_doc2query_index())
-
-    fake_model = MagicMock()
-    fake_model.encode.return_value = np.array([1.0, 0.0], dtype="float32")
-    monkeypatch.setattr(m, "_embedding_model", fake_model)
-
-    result = m.search_tables("candidatos", top_k=5, min_similarity=0.995)
-    assert [r["table"] for r in result["results"]] == ["ds.a"]
 
 
 # ---------------------------------------------------------------------------

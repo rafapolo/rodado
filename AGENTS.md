@@ -42,7 +42,6 @@ One mermaid `erDiagram` per domain covering all 1023 tables: entity = dataset, a
 Um `README.md` na própria pasta descreve arquivo por arquivo, quem gera cada um e a ordem do regen.
 - `all_tables.txt` — as 904 `dataset.tabela`, uma por linha, incluindo as 8 nativas do `.duckdb` que não têm parquet. Gerado por `scripts/build_metadata_catalog.py` — era um despejo do `bq ls` da era BigQuery que ninguém regenerava
 - `rodado-schema.json` — full schema (2.0 MB, 233 datasets / 1029 tabelas). Renomeado de `basedosdados-schema.json` — o nome antigo mentia escopo (parquet só) desde que `gera_schemas.py` passou a incluir as 7 tabelas `duckdb_native` (sem parquet, lidas direto de dentro de `basedosdados.duckdb`) que antes ficavam invisíveis por o script só varrer diretório
-- `doc2query_index.json` / `doc2query_vectors.npy` — the `search_tables` index: one embedding per synthetic question a table answers (~8/table, 832 tables, `paraphrase-multilingual-MiniLM-L12-v2`), not one per table (replaces a deleted `table_embeddings.json`, which held one vector per table over column-name text — measured nearly orthogonal to a real question, recall@5 1/15 on a single-table golden set; see `tasks/done/mcp_search_refino.md` item 1. `scripts/update_embeddings.py`, its generator, was deleted with it). `search_tables` scores a table by the MAX cosine similarity across its own questions. `.json` holds `id`/`table`/`text` per row in the `.npy`'s row order; `.npy` is a float32 `(n_questions, dim)` array. Generation is two separable steps: the LLM pass (`scripts/doc2query_lotes.py` → `scripts/doc2query_roda.py` against `scripts/prompts/doc2query.md`, ~34 `opencode run` batches — expensive, one-time, resumable) produces `docs/context/doc2query_corpus.jsonl` (via `scripts/gera_doc2query_corpus.py`, not gitignored — the raw batches under `tasks/` are); `scripts/gera_doc2query_index.py` embeds it — cheap, rerun freely after editing the corpus or changing the embedding model
 - `bridges.yaml` — **a fonte única do conhecimento de join**. Conceitos-hub, as 78 pontes (coluna que significa a mesma coisa sob outro nome), os `false_friends`, os `coded_differently` (mesmo conceito, código numérico diverge por dataset/ano — `sexo`, `raca_cor`, `estado_civil`... achado ao vivo num teste cego do MCP, ver `tasks/done/mcp_search_refino.md`) e os `concept_aliases`. Editar aqui; `join_keys.md` é gerado
 - `join_keys.md` — o render de `bridges.yaml` + as chaves auto-detectadas do `schemas.json`: 157 colunas de join ao todo. Gerado por `scripts/gera_join_keys.py` — regenerar, nunca editar à mão
 - `metrics.yaml` / `metrics.json` — 12 cálculos nomeados (expressão DuckDB, grain, unidade, sinônimos pt-BR, `required_filters`, `verified`). O `.json` é gerado do `.yaml` por `scripts/gera_metrics_json.py`; `mcp_server.py` lê o `.yaml` diretamente. A TUI Rust que lia o `.json` foi removida (`ask/` apagado em `58ab7c7`, 2026-08-23); hoje quem consome o `.json` é `scripts/build_ask_web_assets.ts`, que empacota `metrics.json` + `bridges.yaml` em `web/static/index/semantica.json` — vive só no branch `ask-web` (remoto, não mesclado), não neste checkout em `main`
@@ -90,37 +89,23 @@ nova — `describe_table` mente calado.
 
 `join_keys.md` e `metrics.json` são **gerados** — editar o YAML, nunca a saída. `valida_metrics.py` separa hard de soft como o firewall de `run_sql`: DML na expressão rejeita, coluna ausente só avisa, porque `_check_read_only` revalida antes de executar.
 
-`doc2query_index.json`/`doc2query_vectors.npy` **não** entram nesse regen automático — a geração via LLM (`scripts/doc2query_lotes.py` + `scripts/doc2query_roda.py`) é cara e não deve rodar a cada sync; só o passo de embedding (`scripts/gera_doc2query_index.py`, a partir de `docs/context/doc2query_corpus.jsonl` já gerado) é barato o bastante pra rerodar sem pensar. Regenerar tudo só quando o schema mudar o bastante pra `search_tables` começar a perder tabela nova.
+### `docs/pesquisa/hipoteses/` — perguntas e respostas
 
-### Conjuntos-dourados — medir a qualidade do `search_tables`
-
-Duas fontes independentes, mesma limitação conhecida: perguntas que cruzam 2+
-tabelas/datasets, contra as quais `search_tables` (uma tabela por chamada) nunca
-vai ter recall alto — não é bug, está documentado no docstring de cada `avalia_*.py`.
-
-| Conjunto | Fonte | Constrói | Mede |
-|---|---|---|---|
-| `tasks/douradas_multi.json` | `docs/pesquisa/relatorio-social/perguntas.md` (tabelas citadas em backtick, `**Fontes:**`) | `scripts/build_douradas_multi.py` | `scripts/avalia_douradas_multi.py` — recall@K por TABELA exata |
-| `tasks/douradas_perguntas.json` | `docs/pesquisa/hipoteses/perguntas.md` (43 temas × 5 perguntas, `n=X: dataset_a, dataset_b*`) cruzado com `docs/pesquisa/hipoteses/respostas.md` (status `✅`/`◐`/`⏳` por `T<tema>-<item>`) | `scripts/build_douradas_perguntas.py` | `scripts/avalia_douradas_perguntas.py` — recall@K por DATASET (qualquer tabela do dataset conta como acerto) |
-
-`docs/pesquisa/hipoteses/perguntas.md` é a fonte fixa (43 temas, nunca editado pelos scripts);
-`docs/pesquisa/hipoteses/respostas.md` é o log de trabalho vivo — cada pergunta respondida no
-beelink muda o status ali e alimenta o próximo `build_douradas_perguntas.py`
-automaticamente, sem editar código. Só `✅`/`◐` entram no conjunto: um item
-`⏳` costuma vir com o motivo exato no próprio texto (dado corrompido, tabela
-ausente, sem chave compartilhada), e incluir "pendente" envenenaria o teste
-com uma expectativa nunca verificada — a seção "Bloqueios mapeados" ao fim de
+`docs/pesquisa/hipoteses/perguntas.md` é a fonte fixa (43 temas × 5 perguntas,
+`n=X: dataset_a, dataset_b*`, nunca editado por script);
+`docs/pesquisa/hipoteses/respostas.md` é o log de trabalho vivo — cada pergunta
+respondida no beelink muda o status ali (`✅`/`◐`/`⏳` por `T<tema>-<item>`), e
+`harness/casos.ts` lê os dois para montar os casos do harness. Um item `⏳`
+costuma vir com o motivo exato no próprio texto (dado corrompido, tabela
+ausente, sem chave compartilhada) — a seção "Bloqueios mapeados" ao fim de
 `respostas.md` cataloga o que está estruturalmente bloqueado (precisa de
 re-scraping ou campo novo), separado do que só ainda não foi tentado.
 
 `respostas.md` marca **dois eixos** desde 2026-09-07: o status (`✅ ◐ ⏳ ❌`, "a
 query rodou?") e a **força do achado** (`🟢` forte, `🟡` moderada, `🟠` fraca,
 `⚪` nula, `⬜` descritivo, mais os modificadores `↯` contraria a hipótese e `⚠`
-número frágil), logo depois do status. O segundo eixo é **documental e não entra
-no conjunto dourado**: `build_douradas_perguntas.py` corta o bold nos glifos de
-status e só lê o que vem antes de cada um, então o recorte continua sendo
-`✅`/`◐`, e um achado `⚪` (relação nula) segue valendo como pergunta respondida —
-o que o teste mede é se `search_tables` acha a tabela, não se a hipótese vingou.
+número frágil), logo depois do status. O segundo eixo é documental: um achado
+`⚪` (relação nula) segue valendo como pergunta respondida.
 
 ### `docs/pesquisa/hipoteses/respostas_trincas.md` — o espaço inteiro, enumerado
 
@@ -188,14 +173,7 @@ conclusão. No eixo de identificador, a medida é **lift** (`P(B|A) ÷ P(B)`), n
 correlação — e o Mantel-Haenszel estratificado por CNAE×idade cumpre o papel do
 parcial: quando ele desaba, o achado era porte e setor, não papel de CNPJ.
 
-Regenerar depois de qualquer resposta nova em `respostas.md`:
-
-```bash
-python3 scripts/build_douradas_perguntas.py    # respostas.md -> tasks/douradas_perguntas.json
-python3 scripts/avalia_douradas_perguntas.py   # mede search_tables contra ele
-```
-
-A TUI Rust `ask` que fazia isto foi removida (`ask/` apagado em `58ab7c7`, 2026-08-23). A mesma lógica de Tier 1 sobrevive reimplementada em JS — `resolverMetrica()` em `web/static/prompt.js` —, parte do app web `ask-web` que vive só no branch `ask-web` (remoto, não mesclado em `main`, sem worktree local no momento). Ela resolve métrica **antes** da seleção por embedding, por match exato de nome ou sinônimo — nunca por similaridade, porque "população de SP" e "população carcerária" ficam perto no espaço vetorial e querem tabelas diferentes. **Isto não é `mcp_server.py`**: o `get_metric()` do MCP é um lookup direto sem parser de frase (confirmado em `mcp/MCP.md`) — não faz longest-match sobre uma pergunta em texto livre, não tem Tier 2/3. Três detalhes do Tier 1 que custaram trabalho na versão Rust e não devem ser redescobertos:
+A TUI Rust `ask`, que resolvia métrica por frase ("Tier 1"), foi removida (`ask/` apagado em `58ab7c7`, 2026-08-23). A mesma lógica de Tier 1 sobrevive reimplementada em JS — `resolverMetrica()` em `web/static/prompt.js` —, parte do app web `ask-web` que vive só no branch `ask-web` (remoto, não mesclado em `main`, sem worktree local no momento). Ela resolve métrica **antes** da seleção por embedding, por match exato de nome ou sinônimo — nunca por similaridade, porque "população de SP" e "população carcerária" ficam perto no espaço vetorial e querem tabelas diferentes. **Isto não é `mcp_server.py`**: o `get_metric()` do MCP é um lookup direto sem parser de frase (confirmado em `mcp/MCP.md`) — não faz longest-match sobre uma pergunta em texto livre, não tem Tier 2/3. Três detalhes do Tier 1 que custaram trabalho na versão Rust e não devem ser redescobertos:
 
 1. O match é por nome **ou sinônimo**, exato, depois de normalizar acento e caixa, e **o mais longo vence** — sem isso "pib per capita" resolve como "pib".
 2. O Tier 1 roda **antes** do embedding. Depois dele economiza a chamada ao modelo mas ainda paga o embedding inteiro (~18s → 0,00s).
@@ -236,7 +214,7 @@ python3 scripts/build_atlas.py /tmp/atlas.html   # também emite a cópia autoco
 
 ## `tasks/` — local, fora do git
 
-`tasks/` está no `.gitignore` desde 2026-09-24: existe só no disco desta máquina, sem histórico. `tasks/README.md` é o índice único do que está **em andamento**: o projeto na raiz de `tasks/`, o harness em `tasks/harness/` (era `harness/tasks/`), os planos que ainda não começaram em `tasks/plans/`. Plano que começa a rodar vai para `tasks/`; mudou o status de um arquivo, mude a linha dele no índice na mesma edição. Como não há `git log` para recuperar nada, **apagar um arquivo de `tasks/` é definitivo** — o que ele ensinou vai antes para um lugar versionado (`harness/README.md`, `docs/`). Scripts que leem ou escrevem ali (`build_metadata_catalog.py` lê `tasks/datasets_to_scrap.md`; `build_douradas_*.py` escrevem `tasks/douradas_*.json`) seguem funcionando localmente.
+`tasks/` está no `.gitignore` desde 2026-09-24: existe só no disco desta máquina, sem histórico. `tasks/README.md` é o índice único do que está **em andamento**: o projeto na raiz de `tasks/`, o harness em `tasks/harness/` (era `harness/tasks/`), os planos que ainda não começaram em `tasks/plans/`. Plano que começa a rodar vai para `tasks/`; mudou o status de um arquivo, mude a linha dele no índice na mesma edição. Como não há `git log` para recuperar nada, **apagar um arquivo de `tasks/` é definitivo** — o que ele ensinou vai antes para um lugar versionado (`harness/README.md`, `docs/`). Scripts que leem dali (`build_metadata_catalog.py` lê `tasks/datasets_to_scrap.md`) seguem funcionando localmente.
 
 ## beelink: `~/.duckdbrc` e a trava de arquivo
 

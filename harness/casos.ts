@@ -9,9 +9,7 @@
  * comparar prosa.
  *
  * Datasets marcados com `*` em perguntas.md são de apoio ("de outros temas,
- * usados para completar o cruzamento") e não contam contra o recall — mesma
- * regra de scripts/avalia_douradas_perguntas.py, para os números serem
- * comparáveis.
+ * usados para completar o cruzamento") e não contam contra o recall.
  */
 import { readFileSync } from "node:fs";
 
