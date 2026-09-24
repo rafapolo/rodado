@@ -9,7 +9,7 @@ Achado: r = -0,18 bruto; -0,01 ponderado por populacao; R2 de 3,4 por cento --
 a relacao entre encarcerar mais e o homicidio cair nao sobrevive a checagens
 de robustez (remover PR e DF inverte o sinal para +0,01).
 
-Os dados abaixo foram apurados em 26/07/2026 via `ssh beelink` (ver CLAUDE.md) e
+Os dados abaixo foram apurados em 26/07/2026 via `ssh beelink` (ver AGENTS.md) e
 estao embutidos para o script rodar sem depender do beelink.
 
 Uso:
