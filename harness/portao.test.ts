@@ -5,7 +5,7 @@
  */
 import { expect, test, describe } from "bun:test";
 import {
-  portao, checaCitacaoTabela, alertasDeSanidade,
+  portao, alertasDeSanidade,
   juncoesSemPonte, mensagemSemPonte, assinaturaJuncao,
 } from "./portao.ts";
 
@@ -187,32 +187,6 @@ describe("camada amostra — estatística derivada sem COUNT(*) AS n", () => {
       "SELECT sigla_uf, SUM(pib) AS total FROM br_ibge_pib.municipio WHERE ano = 2020 GROUP BY sigla_uf",
     );
     expect(v.camada).not.toBe("amostra");
-  });
-});
-
-describe("checaCitacaoTabela — a prosa cita o órgão, não a ferramenta", () => {
-  // backlog.md item 3: a convenção de pages/analises/results/ é citar o
-  // órgão de origem, nunca a tabela — checaCitacaoTabela é a metade que a
-  // ferramenta revisar_resposta (mcp.ts) usa para transformar a instrução do
-  // system prompt em rejeição de verdade.
-  test("rejeita quando a prosa cita dataset.tabela", () => {
-    const v = checaCitacaoTabela(
-      "Segundo br_ms_sim.microdados, houve 789 óbitos por suicídio no RJ em 2020.",
-    );
-    expect(v.ok).toBe(false);
-    expect(v.camada).toBe("citacao");
-    expect(v.erro).toContain("br_ms_sim.microdados");
-  });
-  test("pega mais de um prefixo do espelho (world_/us_, não só br_)", () => {
-    const v = checaCitacaoTabela("Fonte: world_olympedia_olympics.resultados.");
-    expect(v.ok).toBe(false);
-  });
-  test("prosa citando o órgão, sem nome de tabela, passa", () => {
-    const v = checaCitacaoTabela(
-      "Segundo o Ministério da Saúde (Sistema de Informação sobre Mortalidade), " +
-      "houve 789 óbitos por suicídio no RJ em 2020.",
-    );
-    expect(v.ok).toBe(true);
   });
 });
 

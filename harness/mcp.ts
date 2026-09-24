@@ -22,7 +22,7 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import { listaDatasets, tabelasDe, colunasDe, resolveDataset, COLUNAS_PARTICAO, tabelaPrincipal } from "./catalogo.ts";
 import {
-  portao, checaExplain, alertasDeSanidade, faixasCitadas, checaCitacaoTabela,
+  portao, checaExplain, alertasDeSanidade, faixasCitadas,
   juncoesSemPonte, mensagemSemPonte, assinaturaJuncao, sugestao, semComentarios, repara, NOTA_AMOSTRA,
 } from "./portao.ts";
 import { dicasDeJoin } from "./pontes.ts";
@@ -69,10 +69,9 @@ const tentativasPorJuncao = new Map<string, number>();
 const LIMIAR_REPETICAO = Number(Bun.env.HARNESS_LIMIAR_REPETICAO ?? 3);
 const ORCAMENTO_CONSULTAS = Number(Bun.env.HARNESS_ORCAMENTO_CONSULTAS ?? 30);
 let totalConsultas = 0;
-/** SQL que rodou e devolveu linha — é contra ela que revisar_resposta confere os recortes. */
+/** SQL que rodou e devolveu linha — é contra ela que o recorte da pergunta é conferido. */
 const executadas: string[] = [];
 const PERGUNTA = Bun.env.HARNESS_PERGUNTA ?? "";
-let rejeicoesDeRecorte = 0;
 /** A mesma consulta, só com outro LIMIT: medido rodando 3x seguidas sem mudar nada. */
 const jaRodadas = new Set<string>();
 /** Tabelas cuja nota e cálculo verificado o modelo já viu nesta pergunta. */
@@ -300,24 +299,6 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     if (municipio) alertas.push(municipio);
     const prefixo = alertas.length ? alertas.map((a) => `⚠ ${a}`).join("\n") + "\n\n" : "";
     return texto(prefixo + tabelaTexto(capado));
-  }
-
-  if (name === "revisar_resposta") {
-    // Recorte da pergunta que nenhuma SQL aplicou (bioma, estado, ano): cada
-    // consulta era válida sozinha, o erro só aparece olhando as duas juntas.
-    // Duas vezes no máximo — se o modelo insistir, a leitura dele pode ser legítima.
-    const sem = PERGUNTA ? faltando(PERGUNTA, executadas) : [];
-    if (sem.length && rejeicoesDeRecorte < 2) {
-      rejeicoesDeRecorte++;
-      return erro(
-        `REJEITADA (recorte): a pergunta pede ${sem.map((r) => r.rotulo).join(", ")}, mas nenhuma consulta ` +
-        `executada filtrou por isso. Refaça a consulta aplicando esse recorte (ex.: no WHERE) e só então responda. ` +
-        `Se o dado desse recorte não existe no espelho, diga isso na resposta.`);
-    }
-    const v = checaCitacaoTabela(arg.texto ?? "");
-    return v.ok
-      ? texto("Aprovado — pode responder ao usuário com este texto.")
-      : erro(`REJEITADA (${v.camada}): ${v.erro}`);
   }
 
   return erro(`Ferramenta desconhecida: ${name}`);

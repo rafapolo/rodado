@@ -1,11 +1,10 @@
 /**
- * Item 1 do backlog, a parte que falta trancar: o CATÁLOGO do prefixo carrega
- * a descrição contrastiva só onde há dataset irmão, e o arquivo de dados não
- * vira glossário do catálogo inteiro por engano.
+ * Item 1 do backlog: a descrição contrastiva de `desambiguacao.json` fica só
+ * onde há dataset irmão, e o arquivo de dados não vira glossário do catálogo
+ * inteiro por engano. `persona.ts` a gruda no catálogo do system prompt.
  */
 import { expect, test, describe } from "bun:test";
 import { readFileSync } from "node:fs";
-import { montaPrefixo } from "./prefixo.ts";
 import { datasetsAmbiguos } from "./desambigua.ts";
 import { listaDatasets } from "./catalogo.ts";
 
@@ -39,28 +38,5 @@ describe("regra de entrada do desambiguacao.json", () => {
     ]);
     const sumidos = [...citados].filter((d) => !atual.has(d));
     expect(sumidos).toEqual([]);
-  });
-});
-
-describe("montaPrefixo carrega a descrição no CATÁLOGO", () => {
-  test("um par conhecido (ppm/pam) aparece com a pista, não só o nome", () => {
-    const p = montaPrefixo([]);
-    expect(p).toContain("br_ibge_ppm — pecuária");
-    expect(p).toContain("br_ibge_pam — lavoura");
-  });
-
-  test("dataset sem ambiguidade continua sem descrição grudada", () => {
-    const semPar = listaDatasets().find((d) => !dados.descricoes[d]);
-    expect(semPar).toBeDefined();
-    const p = montaPrefixo([]);
-    expect(p).toContain(`\n${semPar}\n`);
-  });
-
-  test("o catálogo continua com um dataset por linha (nada de linha extra por descrição)", () => {
-    const p = montaPrefixo([]);
-    const bloco = p.split("CATÁLOGO")[1]!.split("\n\n")[0]!;
-    const linhas = bloco.split("\n").filter(Boolean);
-    // a primeira linha do bloco é o cabeçalho "— os N datasets...", o resto é 1/dataset
-    expect(linhas.length - 1).toBe(listaDatasets().length);
   });
 });
