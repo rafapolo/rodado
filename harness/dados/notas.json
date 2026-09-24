@@ -67,5 +67,9 @@
   },
   "br_inep_censo_escolar.turma": {
     "quantidade_matriculas": "turma sem etapa_ensino (atividade complementar, AEE) repete aluno já contado — total de estudantes: escola.quantidade_matricula_educacao_basica, ou turma com etapa_ensino IS NOT NULL"
+  },
+  "br_cgu_gas_do_povo.gas_do_povo": {
+    "*": "uma linha por vale retirado. ano_mes é TEXTO 'AAAAMM' (202511 é piloto com 10 municípios; de 202601 em diante, nacional); valor_beneficio é TEXTO com vírgula decimal ('105,35'): CAST(replace(valor_beneficio, ',', '.') AS DOUBLE). NÃO tem id_municipio.",
+    "codigo_municipio_siafi": "código SIAFI de 4 dígitos, NÃO é o IBGE e não tem tabela de correspondência — nunca compare com id_municipio. Junte por nome + UF: upper(strip_accents(nome_municipio)) = upper(strip_accents(m.nome)) AND uf = m.sigla_uf com br_bd_diretorios_brasil.municipio m — casa 5.517 de 5.532 municípios em 202607 (medido 2026-09-24)."
   }
 }

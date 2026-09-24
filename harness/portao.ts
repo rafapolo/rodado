@@ -663,24 +663,53 @@ export interface JuncaoSemPonte {
  * lados (`id_municipio`, `sigla_uf`, `ano`, `id_uf`). Uma lista vazia não prova
  * que a junção está certa — só que ela não caiu num buraco CONHECIDO.
  */
+/**
+ * Apelido de subconsulta ou nome de CTE → a tabela real de dentro, quando ela é
+ * uma só. Medido 2026-09-24, caso 4 da rodada B2: `JOIN (SELECT
+ * codigo_municipio_siafi … FROM br_cgu_novo_bolsa_familia…) bcf ON
+ * s.id_municipio_nascimento = bcf.codigo_municipio_siafi` voltou zero linhas
+ * três vezes, e a mensagem de sem-ponte nunca disparou — no escopo de fora a
+ * subconsulta vira espaço e `bcf` não tinha tabela por trás.
+ */
+function tabelasDerivadas(sql: string, ctes: Set<string>): Map<string, string> {
+  const out = new Map<string, string>();
+  const dentro = (corpo: string) => {
+    const refs = new Set(refsDoEscopo(recorta(corpo, []), ctes).map((r) => r.ref));
+    return refs.size === 1 ? [...refs][0]! : undefined;
+  };
+  for (let i = sql.indexOf("("); i >= 0; i = sql.indexOf("(", i + 1)) {
+    const fim = fechaParen(sql, i);
+    const corpo = sql.slice(i + 1, fim);
+    if (!/^\s*SELECT\b/i.test(corpo)) continue;
+    const antes = /\b([A-Za-z_]\w*)\s+AS\s*$/i.exec(sql.slice(0, i));
+    const depois = /^\s*(?:AS\s+)?([A-Za-z_]\w*)/i.exec(sql.slice(fim + 1));
+    const nome = antes && ctes.has(antes[1]!.toLowerCase()) ? antes[1]! : depois?.[1];
+    const ref = dentro(corpo);
+    if (nome && ref && !NAO_APELIDO.has(nome.toLowerCase())) out.set(nome.toLowerCase(), ref);
+  }
+  return out;
+}
+
 export function juncoesSemPonte(sql: string): JuncaoSemPonte[] {
   const ctes = ctesDefinidos(sql);
+  const derivadas = tabelasDerivadas(sql, ctes);
+  const acha = (refs: RefEscopo[], a: string): string | undefined =>
+    refs.find((r) => r.apelidos.has(a.toLowerCase()))?.ref ?? derivadas.get(a.toLowerCase());
   const achados: JuncaoSemPonte[] = [];
   for (const seg of segmentos(sql)) {
     const refs = refsDoEscopo(seg, ctes);
-    if (refs.length < 2) continue;
     for (const m of seg.matchAll(
       /\bJOIN\s+[A-Za-z_][\w.]*(?:\s+(?:AS\s+)?[A-Za-z_]\w*)?\s+ON\s+([\s\S]*?)(?=\bJOIN\b|\bWHERE\b|\bGROUP\b|\bORDER\b|\bLIMIT\b|\bQUALIFY\b|$)/gi,
     )) {
       for (const [a1, c1, a2, c2] of paresIgualdade(m[1]!)) {
-        const r1 = refs.find((r) => r.apelidos.has(a1.toLowerCase()));
-        const r2 = refs.find((r) => r.apelidos.has(a2.toLowerCase()));
-        if (!r1 || !r2 || r1.ref === r2.ref) continue;
-        if (r1.ref.split(".")[0] === r2.ref.split(".")[0]) continue; // mesmo dataset, sem risco
-        const k1 = conceitoDaColuna(r1.ref, c1);
-        const k2 = conceitoDaColuna(r2.ref, c2);
+        const r1 = acha(refs, a1);
+        const r2 = acha(refs, a2);
+        if (!r1 || !r2 || r1 === r2) continue;
+        if (r1.split(".")[0] === r2.split(".")[0]) continue; // mesmo dataset, sem risco
+        const k1 = conceitoDaColuna(r1, c1);
+        const k2 = conceitoDaColuna(r2, c2);
         if (k1 && k1 === k2) continue; // ponte confirmada, curada ou canônica
-        achados.push({ refA: r1.ref, colA: c1, refB: r2.ref, colB: c2 });
+        achados.push({ refA: r1, colA: c1, refB: r2, colB: c2 });
       }
     }
   }

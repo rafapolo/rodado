@@ -24,6 +24,7 @@ interface Metrica {
   required_filters?: string[];
   synonyms?: string[];
   verified?: string;
+  caveat?: string;
   needs_join?: { table?: string; on?: string };
 }
 
@@ -60,6 +61,10 @@ export function metrica(nome: string): string | null {
     if (v.needs_join?.table) l.push(`exige join com ${v.needs_join.table} ON ${v.needs_join.on}`);
     if (v.required_filters?.length) l.push(`filtros obrigatórios: ${v.required_filters.join(", ")}`);
     if (v.verified) l.push(`conferido: ${v.verified}`);
+    // Medido 2026-09-24: o caveat de mortalidade_infantil (tipo_obito_ocorrencia
+    // NULL em 96% do SIM zera os óbitos infantis) não chegava ao modelo — é o
+    // campo que diz onde a expressão certa ainda dá número errado.
+    if (v.caveat) l.push(`CUIDADO: ${v.caveat.replace(/\s+/g, " ").trim()}`);
     return l.join("\n");
   }
   return null;
