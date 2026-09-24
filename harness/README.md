@@ -86,7 +86,7 @@ verdade**, medidos no beelink em 2026-09-01:
 
 | Camada | O que o modelo escreveu | Por que é caro |
 |---|---|---|
-| **4 · partição** | `SELECT COUNT(*) FROM br_ms_sim.microdados` — sua primeira tool call | Varredura completa segura o lock do DuckDB por horas. O incidente de 2h do `CLAUDE.md` tem exatamente esta forma. |
+| **4 · partição** | `SELECT COUNT(*) FROM br_ms_sim.microdados` — sua primeira tool call | Varredura completa segura o lock do DuckDB por horas. O incidente de 2h do `AGENTS.md` tem exatamente esta forma. |
 | **6 · codificação** | `causa_basica BETWEEN 'X60' AND 'X84'` | CID é guardado **sem ponto** (`X840`), e `'X840' > 'X84'` — o grupo X84 some inteiro. **726 contra 789 reais: 8% a menos, com número plausível.** |
 
 O segundo é o modo de falha que importa: não dá erro, dá um número que passa

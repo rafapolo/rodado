@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This file provides guidance to coding agents (Claude Code, Pi, and others) when working with code in this repository. `CLAUDE.md` only imports it.
+This file provides guidance to coding agents (Claude Code, Pi, and others) when working with code in this repository.
 
 ## Project Overview
 
@@ -33,7 +33,7 @@ retired; its deployment files (`auth.py`, `start.sh`, `Caddyfile`,
 `haloy.yml`, `Dockerfile`) were removed on 2026-09-24 — `git log --all --
 Caddyfile` finds them.
 
-`mcp/mcp_server.py` is the current interface — see `docs/tecnico/MCP.md`.
+`mcp/mcp_server.py` is the current interface — see `mcp/MCP.md`.
 
 ### `docs/mapa/ERD.md` — the map
 One mermaid `erDiagram` per domain covering all 1023 tables: entity = dataset, attribute = table, edge = join key to a reference hub (solid = direct, dashed = needs normalization). Lists what connects to nothing. `ERD.md` is pt-BR (default), `ERD_EN.md` is the English twin — both generated from the same data by `scripts/gera_erd.py`.
@@ -195,7 +195,7 @@ python3 scripts/build_douradas_perguntas.py    # respostas.md -> tasks/douradas_
 python3 scripts/avalia_douradas_perguntas.py   # mede search_tables contra ele
 ```
 
-A TUI Rust `ask` que fazia isto foi removida (`ask/` apagado em `58ab7c7`, 2026-08-23). A mesma lógica de Tier 1 sobrevive reimplementada em JS — `resolverMetrica()` em `web/static/prompt.js` —, parte do app web `ask-web` que vive só no branch `ask-web` (remoto, não mesclado em `main`, sem worktree local no momento). Ela resolve métrica **antes** da seleção por embedding, por match exato de nome ou sinônimo — nunca por similaridade, porque "população de SP" e "população carcerária" ficam perto no espaço vetorial e querem tabelas diferentes. **Isto não é `mcp_server.py`**: o `get_metric()` do MCP é um lookup direto sem parser de frase (confirmado em `docs/tecnico/MCP.md`) — não faz longest-match sobre uma pergunta em texto livre, não tem Tier 2/3. Três detalhes do Tier 1 que custaram trabalho na versão Rust e não devem ser redescobertos:
+A TUI Rust `ask` que fazia isto foi removida (`ask/` apagado em `58ab7c7`, 2026-08-23). A mesma lógica de Tier 1 sobrevive reimplementada em JS — `resolverMetrica()` em `web/static/prompt.js` —, parte do app web `ask-web` que vive só no branch `ask-web` (remoto, não mesclado em `main`, sem worktree local no momento). Ela resolve métrica **antes** da seleção por embedding, por match exato de nome ou sinônimo — nunca por similaridade, porque "população de SP" e "população carcerária" ficam perto no espaço vetorial e querem tabelas diferentes. **Isto não é `mcp_server.py`**: o `get_metric()` do MCP é um lookup direto sem parser de frase (confirmado em `mcp/MCP.md`) — não faz longest-match sobre uma pergunta em texto livre, não tem Tier 2/3. Três detalhes do Tier 1 que custaram trabalho na versão Rust e não devem ser redescobertos:
 
 1. O match é por nome **ou sinônimo**, exato, depois de normalizar acento e caixa, e **o mais longo vence** — sem isso "pib per capita" resolve como "pib".
 2. O Tier 1 roda **antes** do embedding. Depois dele economiza a chamada ao modelo mas ainda paga o embedding inteiro (~18s → 0,00s).
