@@ -95,6 +95,40 @@ metrics:
     synonyms: [nascimentos, nascidos vivos, natalidade, bebes, partos]
     verified: "2.560.319 em 2022 (2026-08-22)"
 
+  mortalidade_infantil:
+    description: >-
+      óbitos de menores de 1 ano (SIM) por mil nascidos vivos (SINASC), mesmo
+      ano, pelo município de RESIDÊNCIA nas duas pontas — sem filtro em
+      tipo_obito_ocorrencia
+    unit: óbitos por mil nascidos vivos (‰)
+    grain: [id_municipio_residencia, ano]
+    source_table: br_ms_sim.microdados
+    expression: 1000.0 * COUNT(*) FILTER (WHERE idade < 1) / NULLIF(nascidos_vivos, 0)
+    required_filters: [ano]
+    synonyms: [mortalidade infantil, taxa de mortalidade infantil, tmi, obitos infantis por mil nascidos]
+    needs_join:
+      table: br_ms_sinasc.microdados
+      on: >-
+        o.ano = n.ano AND o.id_municipio_residencia = n.id_municipio_residencia —
+        cada ponta agregada ANTES do join (CTE de óbitos com idade < 1 e CTE de
+        COUNT(*) AS nascidos_vivos, as duas por ano e município de residência);
+        juntar microdado a microdado multiplica linhas
+    verified: >-
+      Brasil 2021: 31.682 / 2.677.097 = 11,83‰; 2020: 28.864 / 2.730.145 =
+      10,57‰; SP 2021 (residência): 5.436 / 525.233 = 10,35‰. Cada número por
+      duas vias que bateram — contagem nacional direta e soma dos grupos por UF
+      de residência; SP por prefixo '35' e por join ao diretório (2026-09-24)
+    caveat: >-
+      `idade` é em anos decimais (0,01 ≈ poucos dias), então `idade < 1` pega o
+      primeiro ano de vida inteiro. NÃO filtre `tipo_obito_ocorrencia != '8'`:
+      a coluna é NULL em 1.494.553 dos 1.556.824 óbitos do SIM 2020, e `NULL !=
+      '8'` não é verdadeiro — o filtro zera os 28.864 óbitos infantis e a taxa
+      sai 0,0 (aconteceu no harness, rodada B2, 2026-09-24). Por ocorrência
+      (id_municipio_ocorrencia / id_municipio_nascimento) a taxa municipal
+      muda, porque parto e óbito se concentram nas cidades com hospital. Em
+      município pequeno a taxa anual oscila muito: poucos óbitos sobre poucos
+      nascimentos — agrupe anos ou reporte com o n de nascidos.
+
   vinculos_ativos:
     description: vínculos formais de emprego ativos em 31/12, pela RAIS
     unit: vínculos
