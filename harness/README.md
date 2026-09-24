@@ -138,7 +138,7 @@ determinística) evapora o 44x sem ninguém perceber.
 A comparação que decide o desenho — mesmas 5 perguntas, mesmo modelo, mesmo
 portão, mesmo beelink; muda só quem decide a sequência de passos:
 
-| | dsh + MCP (agêntico) | pipeline fixo (`laco.ts`) |
+| | dsh + MCP (agêntico) | pipeline fixo (`laco.ts`, removido) |
 |---|---|---|
 | **Correto** | **3/3 = 100%** | **0/3 = 0%** |
 | Tempo | ~400 s | 61 s |
@@ -149,8 +149,9 @@ o laço faz de essencial, e **nenhuma é erro de SQL**: respondeu 573 em vez de 
 "São Paulo", por não ir ao diretório; e bateu 4x no portão sem recuperar. São
 erros de não iterar.
 
-Rode você mesmo com `bun harness/compara.ts <arquivo>` — em sequência, nunca em
-paralelo, senão os dois disputam o mesmo `llama-server` e o tempo sai errado.
+`laco.ts` e `compara.ts`, que rodava os dois lado a lado, saíram do repositório
+em 2026-09-24 — a comparação está decidida e o código fica no histórico do git
+(`git show 6ef2921:harness/laco.ts`).
 
 ## O papel do dsh
 
@@ -193,7 +194,7 @@ Na pergunta dos óbitos por suicídio no RJ em 2020:
 
 É por isso que o portão não precisa de retry escrito à mão: a rejeição chega ao
 modelo como resultado de ferramenta, o laço do dsh continua girando e o conserto
-acontece sozinho. O `laco.ts` era a versão sem o dsh, com a sequência fixa — 0/3
+acontece sozinho. O `laco.ts` (removido) era a versão sem o dsh, com a sequência fixa — 0/3
 contra 3/3 (ver "Por que laço agêntico" acima).
 
 **Divisão de trabalho: o dsh decide a sequência dos passos; o harness — portão,
@@ -251,7 +252,8 @@ de texto em vez de JSON com a chave repetida em cada linha.
 
 **2026-09-23, menos turnos.** Cada turno custa ~14,5 s e as ferramentas ~1 s
 por pergunta inteira: o que pesa é o número de turnos e os tokens novos em cada
-um, não a consulta. Detalhe em [`tasks/velocidade.md`](tasks/velocidade.md):
+um, não a consulta. O plano com as medições saiu de `tasks/` quando fechou
+(`git log -- harness/tasks/velocidade.md`):
 
 - `listar_tabelas` já traz a descrição da tabela principal do dataset, e o
   `descrever_tabela` que vinha logo depois sumiu.
@@ -317,8 +319,7 @@ resposta. Detalhe em [`tasks/avaliacao_diretas.md`](tasks/avaliacao_diretas.md).
 | `recortes.ts` | ano, estado e bioma que a pergunta nomeia — o resultado de `consultar` avisa quando a SQL não os aplicou |
 | `formato.ts` | como as ferramentas escrevem para o modelo: descrição compacta (códigos só nas colunas ligadas à pergunta), resultado em tabela de texto |
 | `sessao.ts` | lê uma sessão do dsh como transcrição (cada chamada, a SQL inteira, o resultado) |
-| `laco.ts` | o pipeline fixo — **não é caminho de produção** (0/3 contra 3/3 do agêntico). Sobrevivia como esqueleto do experimento DuckDB-NSQL-7B, que saiu do plano em 2026-09-24 — **remoção pendente**; a comparação que ele provou já está registrada aqui e em `tasks/regras.md`, e o código sai por `git show` |
-| `lote.ts` / `compara.ts` | benchmark de perguntas abertas |
+| `lote.ts` | benchmark de perguntas abertas; grava o resultado a cada caso |
 
 ## Procedência e uma correção
 
@@ -341,8 +342,8 @@ bun harness/pergunte.ts "Quantos óbitos por suicídio houve no RJ em 2020, por 
 ```
 
 Sai a resposta em prosa, com os números que o modelo apurou. Pergunta direta
-leva **~1 a 1,5 min** — na rodada de 2026-09-23 (`benchmarks/lote_2026-09-231049.json`,
-43 perguntas): 41/43 certas, média 96 s, **mediana 63 s** (76 s na rodada 5 de
+leva **~1 a 1,5 min** — na última rodada inteira, de 2026-09-23 (`benchmarks/lote_2026-09-231922.json`,
+43 perguntas): 42/43 certas, média 95 s, **mediana 66 s** (76 s na rodada 5 de
 [`tasks/avaliacao_diretas.md`](tasks/avaliacao_diretas.md); eram 5–10 min antes
 do corte de contexto). Pergunta de pesquisa, cruzando três ou quatro fontes,
 ~10 min. Se o `llama-server` não estiver de pé, o comando diz exatamente o que
@@ -353,17 +354,16 @@ Passa pelo caminho agêntico de propósito — ver a comparação acima.
 ## Rodar
 
 ```bash
-bun test harness/                    # 169 testes
+bun test harness/                    # 156 testes
 bun harness/catalogo.ts              # 230 datasets, 1024 tabelas
 bun harness/catalogo.ts --atualiza   # rebusca no beelink após um sync
 bun harness/anos.ts --atualiza       # faixa de anos por tabela
 
 bun harness/avalia_datasets.ts       # escolha de dataset nas 274 perguntas
 bun harness/lote.ts <arquivo>        # perguntas abertas pelo dsh, com gabarito
-bun harness/compara.ts <arquivo>     # agêntico contra pipeline fixo
 ```
 
-O arquivo de perguntas do `lote.ts` e do `compara.ts` é uma por linha, com o
+O arquivo de perguntas do `lote.ts` é uma por linha, com o
 valor esperado depois de um TAB quando houver:
 
 ```
@@ -395,9 +395,9 @@ Cada flag aí é uma medição, não gosto:
   cai 32%, a geração 31%, e o desvio-padrão cresce 10x.
 - **`-np 1`**: o `-c` é **por slot**. Com os 4 slots padrão, `-c 65536` aloca 4x
   o KV sem avisar.
-- **`--chat-template-kwargs`**: é o único jeito de desligar o raciocínio do Gemma.
+- **`--chat-template-kwargs`**: é o jeito medido de desligar o raciocínio do Gemma.
   `reasoningEfforts: false` no dsh declara o modelo como não-raciocinante *para o
-  harness* e não manda nada ao llama.cpp; `--reasoning off` também não resolve.
+  harness* e não manda nada ao llama.cpp; `--reasoning off` não resolvia no llama.cpp de 2026-09-01 (no `f072b10` resolve, medido 2026-09-24).
   Medido: 20,9 s → 4,7 s por turno de tool calling, com o tool call intacto.
 - **sem `-ctk/-ctv q8_0`**: KV quantizado sai caro em CPU — desquantizar a cada
   operação de atenção domina o que economiza em banda. Prefill 15,8 → 50,5 t/s.

@@ -33,7 +33,7 @@ LIMIAR_MS="${LIMIAR_MS:-10000}"
 # slot já reaproveita o prefixo sozinho; o cache no host só guardava conversas
 # velhas que nunca voltam. O beelink também roda o DuckDB das consultas.
 CACHE_RAM="${CACHE_RAM:-1024}"
-# O commit que as medições de tasks/tool_call_gramatica.md usam. f072b10 traz o
+# O commit que as medições da guarda usam (README, "A guarda"). f072b10 traz o
 # conserto upstream da gramática de tool call do Gemma 4 (PR #29115).
 LLAMA_COMMIT="${LLAMA_COMMIT:-f072b10}"
 
@@ -59,7 +59,8 @@ estado() {
 # Por que existe: das quatro maneiras de desligar o raciocínio, três só PARECEM
 # funcionar — `reasoningEfforts: false` no dsh declara o modelo como
 # não-raciocinante para o harness e não manda nada ao llama.cpp; `--reasoning
-# off` no llama-server não resolve; `reasoningEfforts: off:` nem carrega. O que
+# off` no llama-server não resolvia (no f072b10 resolve, medido 2026-09-24);
+# `reasoningEfforts: off:` nem carrega. O que
 # resolve é `--chat-template-kwargs '{"enable_thinking":false}'`, e
 # `--dump-config` não pega nenhuma das outras: ele valida a composição do patch,
 # não o carregamento do plugin. Este script PASSAVA a flag certa e ninguém
@@ -96,7 +97,7 @@ aquece() {
   if grep -qE '"reasoning(_content)?"[[:space:]]*:' <<<"$resp" || grep -qF '<think' <<<"$resp"; then
     echo "REPROVADO: o servidor devolveu campo de raciocínio — thinking está LIGADO." >&2
     echo "Conserto: suba o llama-server com --chat-template-kwargs '{\"enable_thinking\":false}'." >&2
-    echo "Não adianta --reasoning off nem reasoningEfforts no dsh: os dois passam por aplicados e não são." >&2
+    echo "Não adianta reasoningEfforts no dsh: passa por aplicado e não é. (--reasoning off funciona no f072b10, medido 2026-09-24.)" >&2
     return 1
   fi
 
