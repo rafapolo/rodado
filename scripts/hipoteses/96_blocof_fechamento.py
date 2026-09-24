@@ -11,7 +11,7 @@ Ver tasks/done/bloco_i_pendencias.md para o roteiro completo. Tres coisas:
    grupo (troca vs. nao-troca), via diferenca de mediana + teste de
    permutacao em numpy puro (sem scipy, convencao do runner offline).
 3. H44c/H45 — checagem de magnitude antes de promover a achados_fortes.md
-   (regra do CLAUDE.md: ordem de grandeza esperada, flag de anomalia,
+   (regra do AGENTS.md: ordem de grandeza esperada, flag de anomalia,
    verificacao por duas vias).
 
   python3 scripts/hipoteses/96_blocof_fechamento.py <dir_do_resultado>
