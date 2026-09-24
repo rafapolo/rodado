@@ -3,8 +3,7 @@
  *
  *     bun harness/avalia_datasets.ts [--n 20]
  *
- * Mede contra os casos confiáveis de casos.ts, com a mesma régua de
- * scripts/avalia_douradas_perguntas.py: só os datasets **obrigatórios** contam;
+ * Mede contra os casos confiáveis de casos.ts: só os datasets **obrigatórios** contam;
  * os de apoio (marcados com `*`) não entram no denominador, porque nunca foram
  * reivindicados como necessários.
  *

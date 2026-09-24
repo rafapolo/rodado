@@ -105,7 +105,7 @@ Medido contra o conjunto dourado do projeto:
 
 | Estratégia de recuperação de dataset | Recall | Casos perfeitos |
 |---|---|---|
-| `search_tables` — embedding doc2query | 52,9% | — |
+| `search_tables` — embedding doc2query (removido em 2026-09-24) | 52,9% | — |
 | catálogo de 212 nomes no prefixo | 91,3% | 85,7% |
 | **+ 43 exemplos resolvidos no prefixo** | **97,8%** | **96,4%** |
 

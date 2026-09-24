@@ -89,11 +89,11 @@
   <h2>Engineering competencies demonstrated</h2>
   <p>Each capability below is backed by a concrete, deployed piece of this project — not a claim, a running system.</p>
   <div class="grid-cards">
-    <div class="card"><div class="label">End-to-end delivery</div><p>Scraping and mirroring pipelines + semantic layer + 18-tool MCP interface, in daily use as a single-engineer project.</p></div>
+    <div class="card"><div class="label">End-to-end delivery</div><p>Scraping and mirroring pipelines + semantic layer + 17-tool MCP interface, in daily use as a single-engineer project.</p></div>
     <div class="card"><div class="label">Data engineering</div><p>1,029 tables across 233 datasets (39.2 billion rows, ~897 GB) — 741 mirrored from Base dos Dados, 288 scraped independently — with a canonical join-key graph and partition-aware query patterns.</p></div>
     <div class="card"><div class="label">Ontology design</div><p>8 business object types (Municipality, Company, Person, Contract…) with typed relationships, 60 documented join concepts and 21 catalogued false friends.</p></div>
     <div class="card"><div class="label">Application development</div><p><code>mcp_server.py</code> — 18 MCP tools over stdio for schema browsing, join resolution, named metrics and read-only SQL.</p></div>
-    <div class="card"><div class="label">AI / ML enablement</div><p>Semantic table selection over a doc2query index: 6,464 synthetic questions covering 832 tables, scored by max cosine similarity per table.</p></div>
+    <div class="card"><div class="label">AI / ML enablement</div><p>Table discovery by a compact dataset catalog placed in the model's prompt — 88% of questions land on the right dataset, against ~53% for the embedding search it replaced.</p></div>
     <div class="card"><div class="label">Read-only enforcement</div><p>Statement guard in <code>mcp_server.py</code> before any SSH call, and every DuckDB session opened with <code>-readonly</code>.</p></div>
     <div class="card"><div class="label">Operational durability</div><p>Resumable, checkpointed scrapers. A metadata catalog records rows, source and provenance for every table, and schemas are regenerated after each sync.</p></div>
     <div class="card"><div class="label">Sensitive data handling</div><p>CPF (individual) and CNPJ (company) tax IDs — read-only access, no PII export endpoints, masking documented source by source.</p></div>
@@ -242,26 +242,19 @@ ORDER BY contratos_federais_2023_2025 DESC</pre>
   <p>Everything is local: partitioned Parquet on one machine, queried on demand by DuckDB over SSH. No live web service, no cloud object storage.</p>
   <div class="grid-cards">
     <div class="card"><div class="label">Users</div><p>Analysts · policy teams · researchers · journalists</p></div>
-    <div class="card"><div class="label">Agent</div><p>Claude Desktop / Claude Code · <code>mcp_server.py</code> over stdio · 18 tools: schema browsing, semantic search, join resolution, named metrics, read-only SQL, per-theme lookups</p></div>
-    <div class="card"><div class="label">Semantic</div><p><code>rodado-schema.json</code> (1,029 tables) · <code>bridges.yaml</code> + <code>join_keys.md</code> · 12 named metrics · 3 rollup hierarchies · doc2query index · 47 domain overviews</p></div>
+    <div class="card"><div class="label">Agent</div><p>Claude Desktop / Claude Code · <code>mcp/mcp_server.py</code> over stdio · 17 tools: schema browsing, join resolution, named metrics, read-only SQL, per-theme lookups</p></div>
+    <div class="card"><div class="label">Semantic</div><p><code>rodado-schema.json</code> (1,029 tables) · <code>bridges.yaml</code> + <code>join_keys.md</code> · 12 named metrics · 3 rollup hierarchies · 47 domain overviews</p></div>
     <div class="card"><div class="label">Query</div><p><code>ssh beelink '~/bin/duckdb -readonly'</code> · no persistent server process · statement guard before every call</p></div>
     <div class="card"><div class="label">Storage</div><p>Local disk · Parquet + zstd · 1,029 tables · ~897 GB · DuckDB reads the files directly, no import</p></div>
     <div class="card"><div class="label">Catalog</div><p><code>_rodado_metadata</code> view: rows, source, status and provenance for every table, rebuilt after each sync</p></div>
   </div>
 
-  <h2>Semantic table selection</h2>
-  <p>One vector per <em>synthetic question</em> a table answers (~8 per table), not one per table, so a Portuguese question can be narrowed to the
-  handful of tables worth reading before any SQL is written — the step that keeps a large schema
-  from producing hallucinated joins. An earlier index with one vector per table, built from column names, scored recall@5 of 1/15 and was replaced.</p>
-  <pre>pergunta (pt-BR)
-  → embedding 384-d (paraphrase-multilingual-MiniLM-L12-v2)
-  → cosseno sobre 6.464 perguntas → MAX por tabela
-  → top-K tabelas → schema filtrado → SQL</pre>
+  <h2>Table selection</h2>
+  <p>With 1,029 tables, the hard step is picking the handful worth reading before any SQL is written — the step that keeps a large schema from producing hallucinated joins. The local harness puts the whole dataset catalog in the prompt (~2k tokens, cached after the first question) and lands on the right dataset 88% of the time. An embedding index over ~8 synthetic questions per table scored ~53% on the same measure and was removed.</p>
   <div class="pills">
-    <span class="pill">6.464 perguntas · 832 tabelas × 384 dims</span>
-    <span class="pill">multilingual MiniLM</span>
-    <span class="pill">max cosine similarity</span>
-    <span class="pill">MCP search_tables</span>
+    <span class="pill">catalog in prompt</span>
+    <span class="pill">88% dataset hit rate</span>
+    <span class="pill">list_datasets → list_tables → describe_table</span>
   </div>
 
   <h2>Palantir Foundry mapping</h2>
@@ -276,7 +269,6 @@ ORDER BY contratos_federais_2023_2025 DESC</pre>
         <tr><td>rodado-schema.json</td><td>Ontology schema registry</td></tr>
         <tr><td>bridges.yaml / join_keys.md entity graph</td><td>Object type links / property mappings</td></tr>
         <tr><td>metrics.yaml / hierarchies.yaml</td><td>Semantic metrics &amp; rollups</td></tr>
-        <tr><td>doc2query_index.json + vectors</td><td>Semantic search index</td></tr>
         <tr><td>mcp_server.py tools</td><td>AIP Agent tool actions</td></tr>
         <tr><td>_rodado_metadata catalog</td><td>Data lineage / catalog</td></tr>
         <tr><td>overview/ domain narratives</td><td>Business context documentation</td></tr>
@@ -296,7 +288,7 @@ ORDER BY contratos_federais_2023_2025 DESC</pre>
   <div class="pills">
     <span class="pill">DuckDB</span><span class="pill">Parquet + zstd</span><span class="pill">Python</span>
     <span class="pill">Bun + TypeScript</span><span class="pill">MCP</span><span class="pill">SSH</span>
-    <span class="pill">sentence-transformers</span><span class="pill">YAML semantic layer</span>
+    <span class="pill">YAML semantic layer</span>
   </div>
 
   <p>An earlier version served live queries from <code>db.xn--2dk.xyz</code>: a BigQuery → GCS → Hetzner Object Storage pipeline with httpfs reads, a Caddy + HMAC auth layer, a browser SQL shell and a Rust NL→SQL TUI. All of it has been retired in favor of the local setup described above.</p>
