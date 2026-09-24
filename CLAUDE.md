@@ -216,7 +216,7 @@ Gerado por `scripts/build_metadata_catalog.py`, que também recria as views `_ro
 
 Ao contar tabelas ou linhas, filtre **`source <> 'view_only'`** — nunca `source = 'disk'`.
 
-As 8 tabelas que eram registradas como `view_orfa` com `rows=0` não estavam quebradas: leem tabelas nativas dentro do próprio `basedosdados.duckdb`, e `parquet_metadata` devolvia 0 porque não existe parquet, não porque não existe dado. São 250.126.810 linhas reais (`br_ms_sipni_microdados.vacinacao_2020` sozinha tem 115,7M). Hoje elas são `duckdb_native` e **nenhuma** linha é `view_only`. Consulte-as pela view, não por `read_parquet`.
+As 8 tabelas que eram registradas como `view_orfa` com `rows=0` não têm parquet local, e `duckdb_native` descreve só uma delas direito. Conferido em 2026-09-24: a única tabela nativa dentro de `basedosdados.duckdb` é `main.cpf_lookup` (223,7M linhas). As 6 do SIPNI (`br_ms_sipni_dicionarios.*`, `br_ms_sipni_doses_historicas.doses_agregadas`, `br_ms_sipni_microdados.vacinacao_2020` — ~196M linhas no catálogo de 04/09) são views sobre **`s3://healthbr-data/...` no Cloudflare R2**, e **estão quebradas desde 2026-09-24**: as chaves do R2 saíram do `~/.duckdbrc` (estavam em texto puro) e a trava de arquivo do `run_sql`/harness bloqueia rede de qualquer jeito. O conserto é espelhar o bucket em `~/rodado/br_ms_sipni_*` e reapontar as views para o disco, o que precisa de uma chave nova do R2.
 
 ### `pages/atlas/` — Rodado Atlas (rodado.xyz/atlas)
 Mapa navegável das tabelas e das colunas de join que as conectam. O espelho não tem foreign key — o que o liga são colunas que significam a mesma coisa em mais de uma tabela, a mesma seleção que `gera_join_keys.py` faz.
@@ -233,6 +233,12 @@ python3 scripts/build_atlas.py /tmp/atlas.html   # também emite a cópia autoco
 - `?db=<dataset>` abre o atlas já centrado naquele dataset com o painel aberto (`rodado.xyz/atlas?db=br_me_rais`); o parâmetro acompanha a seleção via `replaceState`, então a barra de endereço é sempre um link pro que está na tela.
 - **Cor = tema**, nunca chave. Só 4 matizes passam o gate all-pairs de CVD, então os 10 temas dependem de território rotulado + isolamento por clique; a cor reforça, não carrega sozinha.
 - Depois de qualquer sync que mude tabelas: `gera_schemas.py` → `build_metadata_catalog.py` → `gera_schema_graph.py` → `build_atlas.py`.
+
+## beelink: `~/.duckdbrc` e a trava de arquivo
+
+Desde 2026-09-24, o `~/.duckdbrc` do beelink tem `memory_limit = '8GB'` (o limite é **por processo**, e o llama-server ocupa ~20 dos 27 GB), `threads = 8` (8 núcleos físicos), `enable_progress_bar = false`, `autoinstall_known_extensions = false` e o despejo em `~/duckdb_tmp` no NVMe, com teto de 100 GB. **Nunca** apontar `temp_directory` para `/dev/shm` nem `/tmp`: os dois são tmpfs, e despejar lá é despejar na RAM. Em 2026-09-24 havia 10 GB de despejo órfão em `/dev/shm` com o swap 100% cheio, e o OOM killer matou o llama-server. Nenhuma chave vai no `.duckdbrc`.
+
+`mcp_server.py` (`_run_sql_ssh`) e `harness/beelink.ts` abrem cada sessão com `allowed_directories` em `~/rodado` e `~/duckdb_tmp`, `enable_external_access=false` e `lock_configuration=true`: a SQL vem de um modelo, e um `SELECT * FROM read_text('~/.ssh/...')` passa pela checagem de somente-leitura. Ferramenta nova que leia fora de `~/rodado` precisa entrar na lista, não desligar a trava.
 
 ## Environment Variables
 
