@@ -521,8 +521,13 @@ def test_explain_column_recognises_a_curated_key():
 def test_every_metric_carries_what_a_query_needs():
     assert m._METRICS
     for name, metric in m._METRICS.items():
-        for field in ("description", "unit", "grain", "source_table",
-                      "expression", "required_filters", "synonyms", "verified"):
+        fields = ("description", "unit", "grain", "source_table",
+                  "expression", "required_filters", "synonyms", "verified")
+        if metric.get("kind") == "aviso":
+            # a schema-bug warning parked here, not a calculation: it has
+            # nothing to filter and no phrase that should resolve to it
+            fields = ("description", "source_table", "verified")
+        for field in fields:
             assert metric.get(field), f"{name} is missing {field}"
 
 
@@ -550,7 +555,7 @@ def test_get_metric_miss_lists_what_exists():
 def test_synonyms_are_unique_across_metrics():
     seen = {}
     for name, metric in m._METRICS.items():
-        for syn in metric["synonyms"]:
+        for syn in metric.get("synonyms", []):
             key = m._norm(syn)
             assert key not in seen, f"'{syn}' is claimed by {seen.get(key)} and {name}"
             seen[key] = name

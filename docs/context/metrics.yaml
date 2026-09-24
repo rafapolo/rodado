@@ -242,6 +242,9 @@ metrics:
       filtrar por ano).
 
   br_fgv_igp_mes_ano_mes_trocados:
+    # aviso, não métrica: não tem expressão nem sinônimo, e os testes e o
+    # valida_metrics.py não cobram deles o que cobram de uma métrica
+    kind: aviso
     description: >-
       NÃO é uma métrica de negócio — é um aviso de bug de schema. Nas 4
       tabelas MENSAIS de br_fgv_igp (`igp_m_mes`, `igp_di_mes`,
