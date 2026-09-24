@@ -57,8 +57,9 @@ estado() {
 # Aquecimento com detector de raciocínio ligado.
 #
 # Por que existe: das quatro maneiras de desligar o raciocínio, três só PARECEM
-# funcionar — `reasoningEfforts: false` no dsh declara o modelo como
-# não-raciocinante para o harness e não manda nada ao llama.cpp; `--reasoning
+# funcionar — `reasoning: false` no cliente (pi.ts; antes `reasoningEfforts:
+# false` no dsh) declara o modelo como não-raciocinante e não manda nada ao
+# llama.cpp; `--reasoning
 # off` no llama-server não resolvia (no f072b10 resolve, medido 2026-09-24);
 # `reasoningEfforts: off:` nem carrega. O que
 # resolve é `--chat-template-kwargs '{"enable_thinking":false}'`, e
@@ -97,7 +98,7 @@ aquece() {
   if grep -qE '"reasoning(_content)?"[[:space:]]*:' <<<"$resp" || grep -qF '<think' <<<"$resp"; then
     echo "REPROVADO: o servidor devolveu campo de raciocínio — thinking está LIGADO." >&2
     echo "Conserto: suba o llama-server com --chat-template-kwargs '{\"enable_thinking\":false}'." >&2
-    echo "Não adianta reasoningEfforts no dsh: passa por aplicado e não é. (--reasoning off funciona no f072b10, medido 2026-09-24.)" >&2
+    echo "Não adianta reasoning: false no cliente: passa por aplicado e não é. (--reasoning off funciona no f072b10, medido 2026-09-24.)" >&2
     return 1
   fi
 
@@ -131,7 +132,7 @@ aquece() {
 # O aquecimento acima manda uma pergunta curta de teste; o laço real começa com
 # ~4.400 tokens (persona com o catálogo + ferramentas) que o llama-server só
 # guarda depois de ler uma vez — ~75 s pagos pela 1ª pergunta depois de subir
-# ou de mudar dsh/persona.md. Uma pergunta trivial pelo caminho real paga isso
+# ou de mudar harness/persona.md. Uma pergunta trivial pelo caminho real paga isso
 # antes. medido 2026-09-23: o turno frio custa ~75 s, os seguintes ~8 s.
 aquece_laco() {
   local dir; dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -176,18 +177,17 @@ FLAG_JINJA=""
 # 2026-09-03 (item 10 do backlog): o parser de tool-call nativo do Gemma4 usa
 # gramática "lazy" — sem restrição nenhuma até o texto bruto bater o gatilho
 # exato `<|tool_call>call:`. Com temperatura 0,80 (o default do llama-server
-# quando o cliente não manda `temperature` na requisição — dsh aparentemente
-# não manda), o modelo tem variância real token a token, e reproduzir esse
+# quando o cliente não manda `temperature` na requisição — o dsh não mandava;
+# o Pi não foi conferido), o modelo tem variância real token a token, e reproduzir esse
 # gatilho de vários tokens byte a byte vira parcialmente sorte. Só ajuda se o
 # CLIENTE não estiver mandando `temperature` próprio na requisição (senão o
-# valor por-requisição sobrepõe o default do servidor) — não confirmado que
-# seja o caso do dsh, é a hipótese sendo testada.
+# valor por-requisição sobrepõe o default do servidor) — hipótese, não medida.
 FLAG_TEMP=""
 [[ -n "${TEMP:-}" ]] && FLAG_TEMP="--temp $TEMP"
 
 # LOGPROMPTS=1: --log-prompts-dir + --verbose, pra diagnosticar o item 10 de
 # verdade — ver o campo bruto tool_calls/content da resposta HTTP em vez de só
-# inferir pelo texto (ou ausência dele) que chega no dsh. Custa throughput
+# inferir pelo texto (ou ausência dele) que chega no laço. Custa throughput
 # (verbose loga tudo); só usar pra uma pergunta de diagnóstico, não numa rodada.
 FLAG_LOG=""
 [[ "${LOGPROMPTS:-0}" == "1" ]] && FLAG_LOG="--verbose --log-prompts-dir /tmp/llmlogs"
