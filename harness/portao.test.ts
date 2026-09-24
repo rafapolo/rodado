@@ -509,3 +509,26 @@ ORDER BY score DESC LIMIT 10`;
     expect(a).not.toContain("NULL != 'x'");
   });
 });
+
+describe("sem-ponte através de subconsulta e CTE (caso 4 da rodada B2)", () => {
+  const SUB = `SELECT sinasc.id_municipio_nascimento, bcf.beneficiarios
+FROM (SELECT id_municipio_nascimento, COUNT(*) AS nasc FROM br_ms_sinasc.microdados WHERE ano = 2022 GROUP BY 1) sinasc
+JOIN (SELECT codigo_municipio_siafi, COUNT(*) AS beneficiarios FROM br_cgu_novo_bolsa_familia.novo_bolsa_familia WHERE ano_mes = '202306' GROUP BY codigo_municipio_siafi) bcf
+  ON sinasc.id_municipio_nascimento = bcf.codigo_municipio_siafi`;
+  test("apelido de subconsulta resolve para a tabela de dentro", () => {
+    const a = juncoesSemPonte(SUB);
+    expect(a.length).toBe(1);
+    expect(a[0]!.refB).toBe("br_cgu_novo_bolsa_familia.novo_bolsa_familia");
+    expect(a[0]!.colB).toBe("codigo_municipio_siafi");
+  });
+  test("o mesmo via CTE", () => {
+    const cte = `WITH b AS (SELECT codigo_municipio_siafi, COUNT(*) AS q FROM br_cgu_novo_bolsa_familia.novo_bolsa_familia GROUP BY 1)
+SELECT * FROM br_ms_sinasc.microdados s JOIN b ON s.id_municipio_nascimento = b.codigo_municipio_siafi WHERE s.ano = 2022`;
+    expect(juncoesSemPonte(cte).map((j) => j.colB)).toContain("codigo_municipio_siafi");
+  });
+  test("id_municipio dos dois lados, via subconsulta, segue sem alerta", () => {
+    const ok = `SELECT * FROM (SELECT id_municipio, SUM(pib) AS pib FROM br_ibge_pib.municipio WHERE ano = 2020 GROUP BY 1) p
+JOIN (SELECT id_municipio, SUM(populacao) AS pop FROM br_ibge_populacao.municipio WHERE ano = 2020 GROUP BY 1) q ON p.id_municipio = q.id_municipio`;
+    expect(juncoesSemPonte(ok)).toEqual([]);
+  });
+});
