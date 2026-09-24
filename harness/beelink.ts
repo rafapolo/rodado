@@ -12,6 +12,10 @@ const DUCKDB_BIN = Bun.env.ASK_WEB_DUCKDB_BIN ?? "~/bin/duckdb";
 const DUCKDB_PATH = Bun.env.ASK_WEB_DUCKDB_PATH ?? "~/rodado/basedosdados.duckdb";
 const MEMORIA = Bun.env.HARNESS_DUCKDB_MEM ?? "3GB";
 const THREADS = Number(Bun.env.HARNESS_DUCKDB_THREADS ?? 4);
+/** Home no beelink — a trava de arquivos do DuckDB quer caminho absoluto. */
+const HOME_REMOTO = Bun.env.BEELINK_HOME ?? "/home/polo";
+/** No NVMe: o /tmp do beelink é tmpfs, e despejar lá é despejar na RAM do llama-server. */
+const TEMP_REMOTO = `${HOME_REMOTO}/duckdb_tmp/`;
 const TIMEOUT_MS = Number(Bun.env.ASK_WEB_TIMEOUT_MS ?? 120_000);
 
 export interface SqlResult {
@@ -45,6 +49,14 @@ export function ehChecksumTransitorio(erro: string | undefined): boolean {
 
 const TENTATIVAS_CHECKSUM = 3;
 
+/** O que vai antes de toda SQL — ver o comentário em `rodaUmaVez`. */
+export function preambuloSessao(): string {
+  return `SET enable_progress_bar=false;\n` +
+    `SET memory_limit='${MEMORIA}';\nSET threads=${THREADS};\nSET temp_directory='${TEMP_REMOTO}';\n` +
+    `SET allowed_directories=['${HOME_REMOTO}/rodado/', '${TEMP_REMOTO}'];\n` +
+    `SET enable_external_access=false;\nSET lock_configuration=true;\n`;
+}
+
 export async function runSqlSsh(sql: string): Promise<SqlResult> {
   let r = await rodaUmaVez(sql);
   for (let i = 1; i < TENTATIVAS_CHECKSUM && ehChecksumTransitorio(r.error); i++) r = await rodaUmaVez(sql);
@@ -59,9 +71,15 @@ async function rodaUmaVez(sql: string): Promise<SqlResult> {
   // Teto de memória: o llama-server divide a máquina (23 de 27 GB) e o padrão
   // do DuckDB é 80% da RAM. Um GROUP BY grande sem teto põe o OOM killer para
   // escolher, e ele escolhe o maior processo — o modelo, no meio da pergunta.
-  const stdin =
-    `SET enable_progress_bar=false;\n` +
-    `SET memory_limit='${MEMORIA}';\nSET threads=${THREADS};\nSET temp_directory='/tmp/duckdb_harness';\n${sql}`;
+  //
+  // Trava de arquivos: a SQL vem do modelo, e `SELECT * FROM read_text('~/.ssh/...')`
+  // passa por checkReadOnly (é um SELECT). Com o acesso externo desligado, só
+  // ~/rodado (os parquet) e o diretório de despejo ficam legíveis, e
+  // lock_configuration impede a própria SQL de desfazer isso. Testado no beelink
+  // em 2026-09-24: views, read_parquet com ~ e com hive, a tabela nativa e o
+  // despejo passam; read_text/read_csv fora de ~/rodado, `../`, glob e
+  // `SET enable_external_access=true` falham.
+  const stdin = preambuloSessao() + sql;
 
   let proc;
   try {
