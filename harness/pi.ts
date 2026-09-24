@@ -1,7 +1,7 @@
 /**
  * O laço agêntico do harness: o Pi (`@earendil-works/pi-coding-agent`).
  *
- * Substituiu o dsh em 2026-09-24 (tasks/pi_no_lugar_do_dsh.md): nas 28 primeiras
+ * Substituiu o dsh em 2026-09-24 (README.md, "O laço: o Pi"): nas 28 primeiras
  * diretas, 27/28 com média de 55 s, contra 28/28 e 64 s do dsh na rodada 7 — o
  * único erro foi o modelo copiar errado um número que a consulta devolveu certo.
  * Mesmo llama-server, mesma guarda, mesma persona, mesmo harness/mcp.ts; mudou
