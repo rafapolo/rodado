@@ -27,9 +27,9 @@ LOCAL_MOUNT = "/Volumes/homelab/rodado"
 # `scripts/` deixava uma copia morta em `scripts/schemas.json` — foi o que
 # aconteceu (782 tabelas, julho, lida por ninguem). Todos os consumidores
 # (`gera_join_keys`, `gera_erd`, `gera_schema_graph`, `gera_erd_poster`,
-# `sync_mcp_schema`) leem `REPO / "schemas.json"`.
+# `sync_mcp_schema`) leem `REPO / "docs" / "context" / "schemas.json"`.
 REPO = Path(__file__).resolve().parent.parent
-OUTPUT = REPO / "schemas.json"
+OUTPUT = REPO / "docs" / "context" / "schemas.json"
 
 
 BEELINK_PAYLOAD = r"""import json, subprocess, os, sys

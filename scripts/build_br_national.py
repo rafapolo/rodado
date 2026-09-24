@@ -18,8 +18,8 @@ safe to re-run after any extrai_estados_cnpj.py run.
 Usage: python3 scripts/build_br_national.py [--cap N]
 
 Output:
-  docs/viz-uf/dados/br.bin.gz   # same struct-of-arrays binary format as per-UF files
-  docs/viz-uf/dados/meta.json   # gains a "BR" entry
+  docs/pesquisa/viz-uf/dados/br.bin.gz   # same struct-of-arrays binary format as per-UF files
+  docs/pesquisa/viz-uf/dados/meta.json   # gains a "BR" entry
 """
 
 import array
@@ -29,7 +29,7 @@ import random
 import sys
 from pathlib import Path
 
-DADOS_DIR = Path("docs/viz-uf/dados")
+DADOS_DIR = Path("docs/pesquisa/viz-uf/dados")
 META_PATH = DADOS_DIR / "meta.json"
 DEFAULT_CAP = 2_000_000
 

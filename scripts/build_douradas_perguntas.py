@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""docs/hipoteses/perguntas.md + docs/hipoteses/respostas.md -> tasks/douradas_perguntas.json
+"""docs/pesquisa/hipoteses/perguntas.md + docs/pesquisa/hipoteses/respostas.md -> tasks/douradas_perguntas.json
 
     python3 scripts/build_douradas_perguntas.py
 
-docs/hipoteses/perguntas.md is dataset-level (43 themes x 5 questions, each citing
+docs/pesquisa/hipoteses/perguntas.md is dataset-level (43 themes x 5 questions, each citing
 `n=3+` datasets, `*` marking a supporting/reference dataset rather than a
-required one) — a separate, larger source than docs/relatorio-social/
+required one) — a separate, larger source than docs/pesquisa/relatorio-social/
 perguntas.md (already used by build_douradas_multi.py for
 tasks/douradas_multi.json). This script does NOT touch that file or its
 output; it adds a second, independent golden set alongside it.
 
-The key move: docs/hipoteses/respostas.md marks every `T<tema>-<item>` code with a
+The key move: docs/pesquisa/hipoteses/respostas.md marks every `T<tema>-<item>` code with a
 status — [OK] respondida (query actually run on beelink), [PARTIAL] parcial,
 or [PENDING] pendente (not yet run, and often the entry itself says WHY the
 originally-cited dataset doesn't actually work — corrupted columns, missing
@@ -30,8 +30,8 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-PERGUNTAS = REPO / "docs" / "hipoteses" / "perguntas.md"
-RESPOSTAS = REPO / "docs" / "hipoteses" / "respostas.md"
+PERGUNTAS = REPO / "docs" / "pesquisa" / "hipoteses" / "perguntas.md"
+RESPOSTAS = REPO / "docs" / "pesquisa" / "hipoteses" / "respostas.md"
 SCHEMA_PATH = REPO / "docs" / "context" / "rodado-schema.json"
 OUT = REPO / "tasks" / "douradas_perguntas.json"
 
@@ -189,7 +189,7 @@ def main():
     entries.sort(key=lambda e: e["code"])
     OUT.write_text(json.dumps({
         "_meta": {
-            "origem": ["docs/hipoteses/perguntas.md", "docs/hipoteses/respostas.md"],
+            "origem": ["docs/pesquisa/hipoteses/perguntas.md", "docs/pesquisa/hipoteses/respostas.md"],
             "sobre": ("Conjunto dourado DATASET-level (nao table-level), restrito a perguntas "
                       "com status verificado (ok/partial) em respostas.md — perguntas pendentes "
                       "sao descartadas porque varias delas documentam explicitamente que o "

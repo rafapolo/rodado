@@ -40,7 +40,7 @@ from gera_join_keys import (  # noqa: E402
 )
 from gera_erd import TEMPORAL  # noqa: E402
 
-SCHEMAS = REPO_ROOT / "schemas.json"
+SCHEMAS = REPO_ROOT / "docs" / "context" / "schemas.json"
 CATALOG = REPO_ROOT / "_rodado_metadata" / "catalog.parquet"
 # The graph is viz data, not LLM context — it lives beside the page that
 # serves it, so there is exactly one copy of a 630 KB file in the repo.
@@ -98,7 +98,7 @@ def cat_of(col: str, hub: dict[str, str] | None = None) -> str:
 # ---------------------------------------------------------------------------
 # Atlas themes — a classification of its own, used only by this script.
 #
-# docs/ERD.md keeps gera_erd.py's ten prefix-matched domains (referencia,
+# docs/mapa/ERD.md keeps gera_erd.py's ten prefix-matched domains (referencia,
 # saude, educacao, economia, governo, politica, justica, territorio,
 # demografia, internacional, outros): coarse buckets good enough for a
 # document skimmed top to bottom. The atlas is browsed, not read start to
