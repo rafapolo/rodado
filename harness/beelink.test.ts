@@ -1,5 +1,5 @@
 import { expect, test, describe } from "bun:test";
-import { rewriteToReadParquet, needsParquetFallback } from "./beelink.ts";
+import { rewriteToReadParquet, needsParquetFallback, ehChecksumTransitorio } from "./beelink.ts";
 
 const globs = new Map([
   ["br_ms_sim.microdados", "~/rodado/br_ms_sim/microdados/*.parquet"],
@@ -54,4 +54,12 @@ import { semNaoNumeros } from "./beelink.ts";
 test("NaN e Infinity do -json do DuckDB viram null, sem tocar em string", () => {
   const cru = '[{"uf":"AC","corr":NaN,"x":-Infinity,"y":Infinity,"t":"NaN no texto","z":0.4}]';
   expect(JSON.parse(semNaoNumeros(cru))).toEqual([{ uf: "AC", corr: null, x: null, y: null, t: "NaN no texto", z: 0.4 }]);
+});
+
+describe("ehChecksumTransitorio", () => {
+  test("reconhece o erro visto em 2026-09-24 e nada mais", () => {
+    expect(ehChecksumTransitorio("Falhou: IO Error: Corrupt database file: computed checksum 3937549283549580682 does not match stored checksum 3154664207457498862 in block at location 4770508800")).toBe(true);
+    expect(ehChecksumTransitorio("Binder Error: Referenced column \"x\" not found")).toBe(false);
+    expect(ehChecksumTransitorio(undefined)).toBe(false);
+  });
 });

@@ -61,7 +61,7 @@ async function pede(url: string) {
 }
 
 describe("sobeGuarda", () => {
-  test("turno degenerado é repetido e o dsh só vê o saudável", async () => {
+  test("turno degenerado é repetido e o laço só vê o saudável", async () => {
     const up = falso([DEGENERADO, SAUDAVEL]);
     const g = sobeGuarda({ upstream: up.url });
     fechar.push(g.para);

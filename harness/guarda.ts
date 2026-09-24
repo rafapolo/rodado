@@ -1,11 +1,11 @@
 /**
- * Guarda entre o dsh e o llama-server: conserta o turno, não a sessão.
+ * Guarda entre o laço (Pi) e o llama-server: conserta o turno, não a sessão.
  *
  * Medido 2026-09-22 com log verboso, llama.cpp `8887a48` e `f072b10`: o turno
  * que "volta vazio" (backlog.md item 10) é o Gemma decodificando 3 tokens —
  * `<|channel>` `thought` `<tool_call|>` — e parando em EOS. Não há chamada a
  * resgatar; o modelo nem tentou. A saída era repetir a pergunta inteira numa
- * sessão dsh nova (5-7 min). Aqui a mesma requisição é reenviada: o prefixo já
+ * sessão nova (5-7 min). Aqui a mesma requisição é reenviada: o prefixo já
  * está no cache do servidor, então repetir o turno custa segundos.
  *
  * O outro formato do mesmo bug (casos 4/6: a chamada inteira, bem formada,
@@ -14,7 +14,7 @@
  *
  * Regra que decide tudo: com raciocínio desligado, um turno saudável sempre
  * produz `content` não vazio ou `tool_calls`. Enquanto nenhum dos dois
- * apareceu, os pedaços ficam retidos; nada chega ao dsh até o turno se provar.
+ * apareceu, os pedaços ficam retidos; nada chega ao laço até o turno se provar.
  */
 
 export interface Chamada { nome: string; argumentos: Record<string, unknown> }

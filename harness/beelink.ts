@@ -27,7 +27,31 @@ function cleanStderr(raw: string): string {
     .trim();
 }
 
+/**
+ * O "Corrupt database file: computed checksum … does not match" que o DuckDB
+ * devolve às vezes. Visto 2x em 2026-09-24 (blocos 18198 e 18230, os de
+ * metadados no fim do arquivo) e nunca reproduzido: o arquivo não muda desde
+ * 13/09, o sha256 lido direto do SSD (dd iflag=direct) bate em toda leitura, a
+ * cópia lê inteira sem erro e ~80 consultas repetidas, 4 em paralelo e com a
+ * config do harness, passaram todas. Nas duas vezes a MESMA consulta passou na
+ * tentativa seguinte. É transitório (a máquina roda com ~2 GB livres ao lado do
+ * llama-server); repetir resolve, e o modelo não gasta um turno lendo um erro
+ * de infraestrutura como se fosse da SQL dele — foi o que tirou o filtro certo
+ * da consulta de matrículas na 1ª pergunta do Pi com a lição.
+ */
+export function ehChecksumTransitorio(erro: string | undefined): boolean {
+  return !!erro && /Corrupt database file|checksum \d+ does not match/i.test(erro);
+}
+
+const TENTATIVAS_CHECKSUM = 3;
+
 export async function runSqlSsh(sql: string): Promise<SqlResult> {
+  let r = await rodaUmaVez(sql);
+  for (let i = 1; i < TENTATIVAS_CHECKSUM && ehChecksumTransitorio(r.error); i++) r = await rodaUmaVez(sql);
+  return r;
+}
+
+async function rodaUmaVez(sql: string): Promise<SqlResult> {
   // O ~/.duckdbrc do beelink liga enable_progress_bar, e a barra vai pro stdout
   // em qualquer consulta que passe de ~2s — corrompendo o -json. Desligar por
   // sessão não toca no arquivo em disco.
