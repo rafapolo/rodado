@@ -839,6 +839,41 @@ export function perguntaDePesquisa(pergunta: string): boolean {
  *
  * Fica fora de `portao()` porque depende da pergunta, que só `mcp.ts` conhece.
  */
+/**
+ * Faixas por quartil, inteiras e copiáveis. B15, medido 2026-09-25: a versão
+ * em prosa desta instrução ("ntile numa CTE, e no SELECT final GROUP BY
+ * faixa") precedeu 4 dos 8 `GROUP BY clause cannot contain window functions!`
+ * da rodada B2 — o modelo punha o `ntile` direto no GROUP BY.
+ */
+export const MOLDE_FAIXAS =
+  "o ntile numa CTE e o GROUP BY fora dela, assim: " +
+  "WITH base AS (SELECT id_municipio, x, y, ntile(4) OVER (ORDER BY x) AS faixa FROM ...) " +
+  "SELECT faixa, AVG(y) AS media_y, COUNT(*) AS n FROM base GROUP BY faixa ORDER BY faixa.";
+
+/**
+ * Janela ou agregado dentro do GROUP BY — o DuckDB rejeita, e o erro dele só
+ * diz que não pode. Medido 2026-09-25, 75 sessões da rodada B2: 10x janela e
+ * 6x agregado no GROUP BY, cada um um turno inteiro do modelo. Aqui a
+ * rejeição chega antes do EXPLAIN e com o molde que funciona.
+ */
+function checaGroupBy(sql: string): Veredito {
+  for (const seg of segmentos(sql)) {
+    const m = /\bGROUP\s+BY\b([\s\S]*?)(?=\bHAVING\b|\bORDER\s+BY\b|\bLIMIT\b|\bQUALIFY\b|\bWINDOW\b|$)/i.exec(seg);
+    if (!m) continue;
+    const g = m[1]!;
+    if (/\bOVER\b/i.test(g) || /\b(ntile|row_number|rank|dense_rank|percent_rank|cume_dist|lag|lead)\s*\(/i.test(g)) {
+      return { ok: false, camada: "group-by",
+        erro: `Função de janela dentro do GROUP BY — o DuckDB não aceita. Calcule a faixa antes e agrupe depois: ${MOLDE_FAIXAS}` };
+    }
+    if (/\b(SUM|COUNT|AVG|MIN|MAX|MEDIAN|CORR|STDDEV\w*)\s*\(/i.test(g)) {
+      return { ok: false, camada: "group-by",
+        erro: "Agregado dentro do GROUP BY — o DuckDB não aceita. Agrupe pelas colunas de grupo (ou pela faixa) e " +
+          `deixe SUM/COUNT/AVG só no SELECT. Para faixas de um valor agregado, agregue numa CTE primeiro: ${MOLDE_FAIXAS}` };
+    }
+  }
+  return OK;
+}
+
 export function checaRanking(sql: string): Veredito {
   const externo = segmentos(sql).at(-1) ?? sql;
   if (!/\bORDER\s+BY\b[\s\S]*\bLIMIT\s+\d+/i.test(externo)) return OK;
@@ -858,10 +893,8 @@ export function checaRanking(sql: string): Veredito {
       `primeiros de um ORDER BY … LIMIT. Uma lista dos 10 maiores é exemplo, não ` +
       `resposta: não diz se a relação vale para os municípios todos. Meça sobre TODOS ` +
       `os municípios com dado, sem LIMIT no SELECT final, e com o tamanho da amostra: ` +
-      `SELECT corr(x, y) AS corr, COUNT(*) AS n FROM ... ; ou compare faixas — ` +
-      `ntile(4) OVER (ORDER BY x) AS faixa numa CTE, e no SELECT final ` +
-      `faixa, AVG(y), COUNT(*) AS n ... GROUP BY faixa. Exemplos com nome podem vir ` +
-      `depois, numa consulta à parte.`,
+      `SELECT corr(x, y) AS r, COUNT(*) AS n FROM ... ; ou compare faixas com ` +
+      MOLDE_FAIXAS + ` Exemplos com nome podem vir depois, numa consulta à parte.`,
   };
 }
 
@@ -1055,7 +1088,7 @@ export function portao(sql: string): Veredito {
   if (leitura) return { ok: false, camada: "read-only", erro: leitura };
 
   // Aposentada antes de inexistente: a mensagem diz para onde o dado foi.
-  for (const camada of [checaInservivel, checaTabelas, checaColunas, checaParticao, checaLimite, checaCodificacao, checaAno, checaAmostra]) {
+  for (const camada of [checaInservivel, checaTabelas, checaColunas, checaParticao, checaLimite, checaCodificacao, checaAno, checaGroupBy, checaAmostra]) {
     const v = camada(sql);
     if (!v.ok) return v;
   }

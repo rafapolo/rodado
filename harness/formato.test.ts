@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { descreve, tabelaTexto, dicaMunicipio } from "./formato.ts";
+import { descreve, tabelaTexto, dicaMunicipio, dicaColunaInexistente } from "./formato.ts";
 import { colunasDe } from "./catalogo.ts";
 
 describe("descreve", () => {
@@ -70,4 +70,13 @@ describe("códigos só das colunas ligadas à pergunta", () => {
   test("sem pergunta, nada muda", () => {
     expect(descreve(sim, colunasDe(sim)!)).not.toContain("(N códigos)");
   });
+});
+
+test("B16: coluna inventada ganha as colunas reais parecidas (RAIS, rodada B2)", () => {
+  const e = 'Binder Error: Referenced column "quantidade_vinculos_ativos" not found in FROM clause!';
+  const d = dicaColunaInexistente(e, [{ ref: "br_me_rais.microdados_vinculos", cols: ["tipo_vinculo", "vinculo_ativo_3112", "quantidade_horas_contratadas", "idade"] }]);
+  expect(d).toContain("vinculo_ativo_3112");
+  expect(d).not.toContain("quantidade_horas_contratadas");
+  expect(dicaColunaInexistente('Referenced column "nome" not found', [])).toContain("br_bd_diretorios_brasil.municipio");
+  expect(dicaColunaInexistente("Parser Error: syntax error", [])).toBe("");
 });

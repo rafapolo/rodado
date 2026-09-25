@@ -155,9 +155,35 @@ function sobreposicao(a: string, b: string): number {
  * A pergunta vai com o espaço em branco colapsado — TAB dentro dela partiria a
  * linha em três campos e o `esperado` viraria pedaço de frase.
  */
+/**
+ * Gabarito que responde outra pergunta — o `suspeito` por sobreposição de
+ * termos não pegou. Lido par a par em 2026-09-24 (harness_tasks.md B18):
+ * T02-5 pergunta população jovem → matrícula/IDEB e o gabarito é ΔIDEB × PIB;
+ * T30-1 pergunta concentração de capital e o gabarito diz "concentração
+ * pendente". Saem da rodada até `respostas.md` ser corrigido.
+ */
+export const GABARITO_TROCADO = new Set(["T02-5", "T30-1"]);
+
+/**
+ * `n` publicado que a pergunta não deixa alcançar: corte explícito no gabarito
+ * que o texto não diz (≥30 mil hab, ≥5 mil admissões, ≥30 casos, só
+ * Amazônia+Cerrado) ou unidade diferente da que a pergunta sugere (UF,
+ * candidato, AIH, auto de infração, seção CNAE). Lido 2026-09-24; só entra o
+ * que o próprio gabarito declara. Nesses o `n` exato não conta no placar —
+ * a régua é o `r` (`rejulga.ts`).
+ */
+export const N_INALCANCAVEL = new Set([
+  // corte que a pergunta não diz
+  "T04-3", "T06-2", "T07-2", "T10-2", "T10-4", "T10-5", "T11-4", "T12-2", "T13-2", "T14-1",
+  "T15-3", "T18-1", "T18-5", "T19-1", "T21-4", "T23-2", "T28-5", "T31-3", "T35-4", "T40-1",
+  "T40-3", "T75-2", "T81-4",
+  // unidade diferente da pergunta
+  "T05-1", "T05-3", "T05-5", "T14-2", "T16-3", "T24-4", "T29-1", "T30-5", "T38-2", "T59-5",
+]);
+
 export function tsvComN(): string {
   return carregaCasos()
-    .filter((c) => !c.suspeito && c.n !== undefined)
+    .filter((c) => !c.suspeito && c.n !== undefined && !GABARITO_TROCADO.has(c.id))
     .map((c) => `${c.pergunta.replace(/\s+/g, " ").trim()}\t${c.n}`)
     .join("\n");
 }

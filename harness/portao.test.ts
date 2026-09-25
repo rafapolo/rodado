@@ -532,3 +532,23 @@ JOIN (SELECT id_municipio, SUM(populacao) AS pop FROM br_ibge_populacao.municipi
     expect(juncoesSemPonte(ok)).toEqual([]);
   });
 });
+
+describe("B15 — janela e agregado no GROUP BY (rodada B2, 2026-09-25)", () => {
+  test("ntile no GROUP BY é rejeitado com o molde", () => {
+    const v = portao("SELECT ntile(4) OVER (ORDER BY pib) AS faixa, COUNT(*) AS n FROM br_ibge_pib.municipio WHERE ano = 2020 GROUP BY ntile(4) OVER (ORDER BY pib)");
+    expect(v.ok).toBe(false);
+    expect(v.camada).toBe("group-by");
+    expect(v.erro).toContain("WITH base AS");
+  });
+  test("agregado no GROUP BY é rejeitado", () => {
+    const v = portao("SELECT sigla_uf, COUNT(*) AS n FROM br_ibge_pib.municipio WHERE ano = 2020 GROUP BY sigla_uf, SUM(pib)");
+    expect(v.camada).toBe("group-by");
+  });
+  test("o molde de faixas passa", () => {
+    const v = portao("WITH base AS (SELECT id_municipio, pib, ntile(4) OVER (ORDER BY pib) AS faixa FROM br_ibge_pib.municipio WHERE ano = 2020) SELECT faixa, AVG(pib) AS media_y, COUNT(*) AS n FROM base GROUP BY faixa ORDER BY faixa");
+    expect(v.camada).not.toBe("group-by");
+  });
+  test("GROUP BY posicional e por coluna passam", () => {
+    expect(portao("SELECT sigla_uf, SUM(pib) AS s FROM br_ibge_pib.municipio WHERE ano = 2020 GROUP BY 1").camada).not.toBe("group-by");
+  });
+});

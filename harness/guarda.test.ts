@@ -1,5 +1,5 @@
 import { describe, expect, test, afterEach } from "bun:test";
-import { chamadasNativas, decide, sobeGuarda } from "./guarda.ts";
+import { chamadasNativas, decide, sobeGuarda, soMolde } from "./guarda.ts";
 
 describe("chamadasNativas", () => {
   test("o caso 4 real do backlog", () => {
@@ -121,4 +121,11 @@ test("a repetição proíbe <|channel>; a 1ª tentativa vai intacta", async () =
   await pede(g.url);
   expect(JSON.parse(corpos[0]!).logit_bias).toBeUndefined();
   expect(JSON.parse(corpos[1]!).logit_bias).toEqual({ "100": -100 });
+});
+
+test("B17: content só com tokens de molde não prova o turno (rodada B2, 2026-09-25)", () => {
+  expect(soMolde("thought<tool_call|>")).toBe(true);
+  expect(soMolde("<|channel>thought")).toBe(true);
+  expect(soMolde("  ")).toBe(true);
+  expect(soMolde("Com base nos dados do SIM, 789 óbitos.")).toBe(false);
 });

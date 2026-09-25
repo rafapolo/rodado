@@ -23,6 +23,15 @@ import {
 import { sobeGuarda, resumoGuarda, type Estatistica } from "./guarda.ts";
 import { garanteTunel } from "./modelo.ts";
 import { comandoPi, SESSOES } from "./pi.ts";
+import { carregaCasos, N_INALCANCAVEL } from "./casos.ts";
+import { coeficientes, julgaR } from "./rejulga.ts";
+
+/**
+ * Pergunta → caso de pesquisa (id e `r` publicado), para julgar pelo `r` ao
+ * lado do `n`. B18: o `n` exato só é alcançável em ~⅔ dos casos; nos outros o
+ * gabarito carrega corte ou unidade que a pergunta não diz.
+ */
+const PESQUISA = new Map(carregaCasos().map((c) => [c.pergunta.replace(/\s+/g, " ").trim(), c]));
 
 const RAIZ = new URL("..", import.meta.url).pathname;
 
@@ -55,6 +64,15 @@ export interface Saida {
   nSoNaSql?: boolean;
   /** commit do llama.cpp no ar logo depois do caso (`build_info` do /props) */
   build?: string;
+  /** caso de pesquisa: id em respostas.md */
+  id?: string;
+  /** o `n` publicado é alcançável pelo texto da pergunta (B18) */
+  nAlcancavel?: boolean;
+  /** `r` publicado e o julgamento dos coeficientes citados na resposta */
+  rPublicado?: number;
+  rCitados?: number[];
+  rSinal?: boolean;
+  rPerto?: boolean;
 }
 
 /** Arquivo de saída — o tempo sem a config que o produziu não é comparável. */
@@ -87,6 +105,8 @@ interface Tentativa {
   semLog: boolean;
   guarda: Estatistica;
   nNaSql?: number[];
+  /** morto pelo teto de tempo — não se repete */
+  estourou?: boolean;
 }
 
 /**
@@ -104,6 +124,15 @@ interface Tentativa {
  */
 const MAX_TENTATIVAS = Number(Bun.env.HARNESS_TENTATIVAS ?? 3);
 
+/**
+ * Teto de uma tentativa. Era 40 min; medido 2026-09-25, rodada B2: a média é
+ * 899 s por caso, e o T30-1 bateu o teto três vezes seguidas (7.200 s, sessões
+ * começando exatamente a 40 min uma da outra, todas cortadas no meio do turno).
+ * Estourar o teto não é o bug do turno vazio — é o caminho lento, e repeti-lo
+ * repete a lentidão. Por isso timeout não conta para a retentativa (ver `roda`).
+ */
+const TETO_MS = Number(Bun.env.HARNESS_TETO_MIN ?? 25) * 60_000;
+
 async function rodaUmaVez(q: string): Promise<Tentativa> {
   if (!await garanteTunel()) console.log("      (llama-server inalcançável mesmo reabrindo o túnel)");
   // O prefill não volta pelo stdout do Pi — cada pergunta é outro processo.
@@ -116,7 +145,7 @@ async function rodaUmaVez(q: string): Promise<Tentativa> {
     cwd: RAIZ, env,
     stdin: "ignore",
     stdout: "pipe", stderr: "pipe",
-    timeout: 2_400_000, killSignal: "SIGKILL",
+    timeout: TETO_MS, killSignal: "SIGKILL",
   });
   const texto = await new Response(p.stdout).text();
   const err = await new Response(p.stderr).text();
@@ -126,11 +155,12 @@ async function rodaUmaVez(q: string): Promise<Tentativa> {
   const seg = (Date.now() - t0) / 1000;
   const resposta = (texto.trim() || err.trim()).slice(0, 4000);
   const respondeu = code === 0 && texto.trim().length > 40;
+  const estourou = p.signalCode === "SIGKILL" || Date.now() - t0 >= TETO_MS;
 
   const prefills = await prefillsDesde(marca);
   const prefillMax = prefills?.length ? Math.max(...prefills) : undefined;
   const prefillInicial = prefills?.[0];
-  return { resposta, segundos: seg, respondeu, prefillMax, prefillInicial, semLog: prefills === undefined, guarda: guarda.stats, nNaSql };
+  return { resposta, segundos: seg, respondeu, prefillMax, prefillInicial, semLog: prefills === undefined, guarda: guarda.stats, nNaSql, estourou };
 }
 
 /** A sessão que o Pi gravou para este caso: o .jsonl mais novo desde `t0`. */
@@ -158,7 +188,7 @@ export async function roda(casos: Caso[], aoCaso?: (feitos: Saida[]) => void, bu
     // Retentativa: só quando o laço terminou sem produzir NADA (item 10) — uma
     // resposta que veio, mesmo errada, não se repete: é erro de raciocínio,
     // não do bug de parsing, e repetir esconderia o número real de acerto.
-    while (!tentativa.respondeu && tentativas < MAX_TENTATIVAS) {
+    while (!tentativa.respondeu && !tentativa.estourou && tentativas < MAX_TENTATIVAS) {
       tentativas++;
       console.log(`      (vazio — tentativa ${tentativas}/${MAX_TENTATIVAS}, workaround do item 10)`);
       tentativa = await rodaUmaVez(q);
@@ -167,6 +197,7 @@ export async function roda(casos: Caso[], aoCaso?: (feitos: Saida[]) => void, bu
       for (const k of ["turnos", "repetidos", "resgatados", "perdidos"] as const) guarda[k] += tentativa.guarda[k];
       guarda.contextoMax = Math.max(guarda.contextoMax, tentativa.guarda.contextoMax);
     }
+    if (tentativa.estourou) console.log(`      (estourou o teto de ${TETO_MS / 60_000} min — não se repete: o caminho lento seria o mesmo)`);
     if (tentativa.semLog && !semLog) {
       semLog = true;
       console.log("      (sem leitura do log do llama-server — o cache de prefixo NÃO está sendo conferido)");
@@ -194,6 +225,19 @@ export async function roda(casos: Caso[], aoCaso?: (feitos: Saida[]) => void, bu
       ? `      o n ${caso.esperado} estava na SQL e não na resposta`
       : `      n na SQL: ${nNaSql?.slice(0, 8).join(", ") ?? "nenhum"}`);
     else if (!respondeu) console.log(`      (vazio após ${tentativas} tentativas)`);
+    const cp = PESQUISA.get(q.replace(/\s+/g, " ").trim());
+    if (cp) {
+      const ultimo = out.at(-1)!;
+      ultimo.id = cp.id;
+      ultimo.nAlcancavel = !N_INALCANCAVEL.has(cp.id);
+      if (cp.r !== undefined) {
+        const citados = coeficientes(resposta);
+        const j = julgaR(cp.r, citados);
+        Object.assign(ultimo, { rPublicado: cp.r, rCitados: citados, rSinal: j.sinal, rPerto: j.perto });
+        console.log(`      r publicado ${cp.r.toFixed(2)} | citou ${citados.length ? citados.map((x) => x.toFixed(2)).join(", ") : "nenhum"} → ` +
+          (j.perto ? "PERTO" : j.sinal ? "mesmo sinal" : "--") + (ultimo.nAlcancavel ? "" : "  (n publicado inalcançável pelo texto)"));
+      }
+    }
     console.log(`      ${resumoGuarda(guarda)}`);
     if (build && buildAnterior && build !== buildAnterior) {
       console.log(`      AVISO: o llama.cpp trocou de build no meio da rodada (${buildAnterior} → ${build}) — ` +
@@ -293,6 +337,14 @@ if (import.meta.main) {
   console.log(`RESPONDEU (produziu texto): ${bons}/${r.length} = ${(100 * bons / r.length).toFixed(0)}%`);
   if (comGabarito.length) {
     console.log(`CORRETO (número confere):   ${certos}/${comGabarito.length} = ${(100 * certos / comGabarito.length).toFixed(0)}%`);
+  }
+  const pesq = r.filter((x) => x.id);
+  if (pesq.length) {
+    const alc = pesq.filter((x) => x.nAlcancavel);
+    const comR = pesq.filter((x) => x.rPublicado !== undefined);
+    console.log(`PESQUISA, n exato (só n alcançável): ${alc.filter((x) => x.correto).length}/${alc.length}`);
+    console.log(`PESQUISA, r citado: ${comR.filter((x) => x.rCitados?.length).length}/${comR.length} · ` +
+      `mesmo sinal ${comR.filter((x) => x.rSinal).length} · a ≤0,15 ${comR.filter((x) => x.rPerto).length}`);
   }
   if (ecos) console.log(`FORA DO DENOMINADOR: ${ecos} caso(s) cujo esperado ecoa na pergunta — troque o valor esperado, não o modelo`);
   console.log(`TEMPO MÉDIO: ${medio.toFixed(0)}s por pergunta  [${rotuloConfig(config)}]`);
