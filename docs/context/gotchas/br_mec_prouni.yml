@@ -1,0 +1,11 @@
+dataset: br_mec_prouni
+gotchas:
+  - id: so_dicionario
+    resumo: "Só a tabela dicionario existe: não há microdado de bolsista PROUNI no espelho."
+    detalhe: >
+      O dicionario descreve id_tabela 'microdados', que nunca foi trazida.
+      Contagem de bolsistas PROUNI por curso/município sai agregada do Censo
+      da Educação Superior (quantidade_ingressantes_financiamento_nao_reembolsavel_prouni_*).
+    colunas: []
+    severidade: erro
+    verificado: "~/rodado/br_mec_prouni/ só tem dicionario/; o dicionario referencia id_tabela 'microdados' — medido 2026-09-25"

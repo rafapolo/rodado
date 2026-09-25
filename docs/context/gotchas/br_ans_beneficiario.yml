@@ -1,0 +1,13 @@
+dataset: br_ans_beneficiario
+gotchas:
+  - id: data_carga_sobreposta
+    resumo: "Várias data_carga convivem no mesmo (ano, mes): filtre a MAX(data_carga) antes de somar."
+    detalhe: >
+      Cargas diferentes da ANS para o mesmo mês ficam lado a lado. Somar
+      agrupando só por ano/mes junta as duas. A métrica pronta é
+      get_metric('beneficiarios_ans_ativos'), que já aplica o filtro e o
+      recorte médico-hospitalar.
+    tabelas: [informacao_consolidada]
+    colunas: [data_carga, quantidade_beneficiario_ativo]
+    severidade: silencioso
+    verificado: "dez/2022, médico-hospitalar: carga 2024-03-01 = 25,3M, carga 2024-07-02 = 50,1M (oficial ANS ~50,9M); soma ingênua 75,4M — medido 2026-09-25"

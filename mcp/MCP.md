@@ -171,7 +171,7 @@ chamadas. Achar a tabela hoje é `list_datasets` → `list_tables` →
 |---|---|---|
 | `list_datasets` | `_SCHEMA` (schema.json) | Catálogo completo, contagem de tabelas por dataset |
 | `list_tables` | `_SCHEMA` | Tabelas de um dataset, com sugestão por proximidade em caso de erro de nome |
-| `describe_table` | `_SCHEMA` + `_duplicated()` + `_DICIONARIO_COVERAGE` + `_CODED_DIFFERENTLY` | Colunas de uma tabela, mais três avisos que a lista nua esconderia (linha duplicada, coluna decodificável, código que diverge entre datasets) |
+| `describe_table` | `_SCHEMA` + `_GOTCHAS_BY_DATASET` + `_duplicated()` + `_DICIONARIO_COVERAGE` + `_CODED_DIFFERENTLY` + `_COLUMN_CODES_BY_TABLE` + `_NAO_VERIFICADO_BY_TABLE` | Colunas de uma tabela e o que a lista nua esconderia: as armadilhas medidas do dataset (`gotchas`, de `docs/context/gotchas/`, antes das colunas, teto de 8), linha duplicada, coluna decodificável, código que diverge entre datasets, códigos pesquisados, coluna-código sem fonte |
 | `get_join_keys` | `join_keys.md` (152 seções) | Índice de colunas de join documentadas, ou seção completa por coluna |
 | `resolve_join` | `bridges.yaml` + `join_keys.md` | Cláusula `ON` pronta entre duas tabelas — bridges primeiro, depois match direto, com `rejected` explícito pra false friends |
 | `explain_column` | `bridges.yaml` (`false_friends`/`coded_differently`/`concepts`) | Por que uma coluna comum (`valor`, `id`, `numero`) NÃO é chave de join; ou, pra `sexo`/`raca_cor`/etc., por que o CÓDIGO não atravessa datasets mesmo o conceito sendo o mesmo |

@@ -55,6 +55,10 @@ HIERARCHIES_PATH = CONTEXT_DIR / "hierarchies.yaml"
 DICIONARIO_COVERAGE_PATH = CONTEXT_DIR / "dicionario_coverage.json"
 SCHEMA_DICT_STATUS_PATH = CONTEXT_DIR / "schema_dict_status.json"
 COLUMN_CODES_PATH = CONTEXT_DIR / "column_codes.yaml"
+GOTCHAS_DIR = CONTEXT_DIR / "gotchas"
+# Teto do bloco `gotchas` por resposta: o describe_table já corta em 150 colunas
+# e o bloco novo não pode ser o que estoura o contexto de um modelo local.
+DESCRIBE_MAX_GOTCHAS = 8
 
 # ---------------------------------------------------------------------------
 # Catalog loaders (loaded once at startup — small enough to hold in memory)
@@ -137,6 +141,53 @@ if COLUMN_CODES_PATH.exists():
         if _src:
             _item["fonte"] = _src.get("url")
         _COLUMN_CODES_BY_TABLE.setdefault(_e["tabela"], []).append(_item)
+
+
+# tasks/plans/gotchas_por_dataset.md: armadilhas SEMÂNTICAS por dataset
+# (docs/context/gotchas/<dataset>.yml) — a coluna existe, decodifica limpo e
+# continua sendo a errada, classe que os quatro avisos estruturais acima não
+# pegam (circunstancia_obito tem dicionario, e ainda assim subconta). Só entra
+# gotcha com `verificado`: sem o que foi medido e quando, é folclore.
+GOTCHA_SEVERIDADES = {"silencioso", "erro", "custo"}
+
+
+def _load_gotchas(gotchas_dir: Path) -> dict:
+    """dataset -> lista de gotchas. Entrada malformada derruba o carregamento:
+    melhor o servidor não subir do que entregar armadilha sem medição."""
+    by_dataset: dict = {}
+    if not gotchas_dir.is_dir():
+        return by_dataset
+    for path in sorted(gotchas_dir.glob("*.yml")):
+        with open(path, encoding="utf-8") as f:
+            doc = yaml.safe_load(f) or {}
+        dataset = doc.get("dataset")
+        if dataset != path.stem:
+            raise ValueError(f"{path.name}: dataset '{dataset}' não bate com o nome do arquivo")
+        for g in doc.get("gotchas", []):
+            gid = g.get("id", "?")
+            for campo in ("id", "resumo", "severidade", "verificado"):
+                if not g.get(campo):
+                    raise ValueError(f"{path.name}:{gid}: falta '{campo}'")
+            if g["severidade"] not in GOTCHA_SEVERIDADES:
+                raise ValueError(f"{path.name}:{gid}: severidade '{g['severidade']}' fora de {sorted(GOTCHA_SEVERIDADES)}")
+            by_dataset.setdefault(dataset, []).append(g)
+    return by_dataset
+
+
+_GOTCHAS_BY_DATASET: dict = _load_gotchas(GOTCHAS_DIR)
+
+
+def _gotchas_for(dataset: str, table_name: str) -> list[dict]:
+    """As gotchas do dataset que valem para esta tabela: sem `tabelas`, vale
+    para todas; com `tabelas`, só para as listadas."""
+    out = []
+    for g in _GOTCHAS_BY_DATASET.get(dataset, []):
+        if g.get("tabelas") and table_name not in g["tabelas"]:
+            continue
+        out.append({k: g[k].strip() if isinstance(g[k], str) else g[k]
+                    for k in ("id", "resumo", "detalhe", "colunas",
+                              "severidade", "verificado") if g.get(k)})
+    return out
 
 
 def _norm(s: str) -> str:
@@ -571,7 +622,14 @@ def describe_table(table: str) -> dict:
     happens the reply carries a `columns_truncated` block with the real total;
     query `parquet_path` with DESCRIBE via `run_sql` to see the rest.
 
-    Five things surface here that the bare column list would hide:
+    Six things surface here that the bare column list would hide:
+      * `gotchas` — READ FIRST. Measured traps of this table's dataset, where
+        a column exists, decodes cleanly and is still the wrong one (e.g. in
+        br_ms_sim, cause of death is `causa_basica`, not
+        `circunstancia_obito`: 749 vs 789 real). Each carries `verificado`,
+        what was measured and when. `severidade: silencioso` means the wrong
+        query returns a plausible number, not an error. No block means
+        nothing was measured for this dataset, not that it has no traps.
       * `warning` — this table returns every row twice (leftover tmp*.parquet
         next to the real export); same check `resolve_join` runs, but here it
         fires even when you're not joining anything.
@@ -614,11 +672,20 @@ def describe_table(table: str) -> dict:
         return {"error": f"Unknown table '{table}'.", "suggestions": suggestions}
 
     columns = tables[table_name]
-    result = {
-        "table": table,
-        "columns": columns[:DESCRIBE_MAX_COLS],
-        "parquet_path": _PARQUET_GLOBS[table],
-    }
+    result = {"table": table}
+    # Antes das colunas: numa tabela de 150 colunas o aviso no fim da resposta
+    # é o que o modelo lê por último, se lê.
+    gotchas = _gotchas_for(dataset, table_name)
+    if gotchas:
+        result["gotchas"] = gotchas[:DESCRIBE_MAX_GOTCHAS]
+        if len(gotchas) > DESCRIBE_MAX_GOTCHAS:
+            result["gotchas_truncated"] = {
+                "shown": DESCRIBE_MAX_GOTCHAS,
+                "total": len(gotchas),
+                "file": f"docs/context/gotchas/{dataset}.yml",
+            }
+    result["columns"] = columns[:DESCRIBE_MAX_COLS]
+    result["parquet_path"] = _PARQUET_GLOBS[table]
     if len(columns) > DESCRIBE_MAX_COLS:
         result["columns_truncated"] = {
             "shown": DESCRIBE_MAX_COLS,

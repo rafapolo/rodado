@@ -1,0 +1,12 @@
+dataset: br_mp_pep
+gotchas:
+  - id: nao_e_pessoa_exposta
+    resumo: "PEP aqui é o Painel Estatístico de Pessoal, não Pessoas Expostas Politicamente."
+    detalhe: >
+      cargos_funcoes é um painel agregado de cargos e funções comissionadas
+      do Executivo federal por órgão/UF/sexo/raça/faixa etária. Não tem CPF
+      nem nome: não serve para achar PEP individual.
+    tabelas: [cargos_funcoes]
+    colunas: []
+    severidade: silencioso
+    verificado: "cargos_funcoes: 1.799.733 linhas, 16 colunas, nenhuma de CPF ou nome — medido 2026-09-25"
