@@ -1,0 +1,22 @@
+dataset: br_me_cnpj
+gotchas:
+  - id: snapshot_mensal
+    resumo: "Cada (ano, mes) é o cadastro inteiro. Filtre um único mês antes de contar ou somar."
+    detalhe: >
+      As partições ano/mes não são fluxo, são fotografias completas da base
+      da Receita. Contar empresas num ano inteiro sem fixar mes multiplica
+      pelo número de meses carregados.
+    colunas: [ano, mes]
+    severidade: silencioso
+    verificado: "empresas: 60,9M linhas em 2025-01 e 64,5M em 2025-09, cada mês de 2025 com o cadastro inteiro — medido 2026-09-25"
+  - id: capital_social_sentinela
+    resumo: "capital_social = 999999999999 é sentinela, não capital. Exclua antes de somar."
+    detalhe: >
+      124 empresas por snapshot têm exatamente R$ 999.999.999.999 (quase um
+      PIB inteiro). Qualquer SUM, média ou HHI sobre capital_social
+      distorce o CNAE/UF onde elas caem. Filtre capital_social < 999999999999
+      ou trate como nulo.
+    tabelas: [empresas]
+    colunas: [capital_social]
+    severidade: silencioso
+    verificado: "124 linhas com capital_social = 999999999999 em cada um dos 9 snapshots de 2025 (jan a set) — medido 2026-09-25"
