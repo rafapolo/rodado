@@ -1,0 +1,7 @@
+dataset: br_inep_saeb
+gotchas:
+  - id: agregado_para_em_2021
+    resumo: "As tabelas agregadas (brasil) param em 2021, mas o microdado aluno_ef_9ano tem 2023. Para 2023, agregar o microdado com peso_aluno."
+    tabelas: [brasil, aluno_ef_9ano]
+    severidade: silencioso
+    verificado: "brasil: último ano 2021; aluno_ef_9ano 2023: 5.005.814 linhas, média ponderada MT 9º ano 258,0 — medido 2026-09-25"

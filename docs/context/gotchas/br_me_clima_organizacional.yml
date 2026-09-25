@@ -1,0 +1,14 @@
+dataset: br_me_clima_organizacional
+gotchas:
+  - id: soma_repetida
+    resumo: "Somar quantidade_resposta dá 764.186; os respondentes são 32.393. Use a linha classe = 'Médias' ou só os órgãos de nível 1 com area_empresa = 'Empresa'."
+    detalhe: >
+      Cada linha vem duas vezes (area_empresa 'Empresa' e 'Área'), cada classe
+      (Órgão, UF, Gênero, Idade...) é um corte do mesmo conjunto, e dentro de
+      'Órgão' os códigos são hierárquicos (116.5.14.15), então somar os níveis
+      repete gente. Os 188 órgãos cujo código não tem ponto somam exatamente
+      32.393, e a média ponderada deles (55,8) é a oficial.
+    tabelas: [microdados]
+    colunas: [quantidade_resposta, classe, area_empresa, subclasse]
+    severidade: silencioso
+    verificado: "Médias = 32.393; 188 órgãos nível 1 somam 32.393, média ponderada 55,84 = media_geral da linha Médias — medido 2026-09-25"
