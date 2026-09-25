@@ -1,0 +1,21 @@
+dataset: br_rf_cno
+gotchas:
+  - id: snapshot_por_extracao
+    resumo: "Cada data_extracao é o cadastro inteiro. Fixe uma extração antes de contar obras."
+    detalhe: >
+      microdados empilha 191 extrações completas. Contar sem filtrar
+      data_extracao multiplica cada obra por quantas extrações a viram.
+    tabelas: [microdados]
+    colunas: [data_extracao]
+    severidade: silencioso
+    verificado: "191 data_extracao distintas; a última (2025-07-28) tem 3.006.410 linhas — medido 2026-09-25"
+  - id: id_responsavel_nan
+    resumo: "id_responsavel é a string 'nan' para todo responsável pessoa física: não junte por CPF."
+    detalhe: >
+      Artefato de pipeline (NaN serializado como texto), não NULL. Só as
+      linhas com 14 dígitos (CNPJ) servem para join; nome_responsavel segue
+      preenchido nas demais.
+    tabelas: [microdados]
+    colunas: [id_responsavel, nome_responsavel]
+    severidade: silencioso
+    verificado: "extração 2025-07-28: 1.981.742 de 3.006.410 linhas com id_responsavel = 'nan', 1.024.668 com 14 dígitos, 0 NULL — medido 2026-09-25"

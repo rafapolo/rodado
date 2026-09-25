@@ -1,0 +1,21 @@
+dataset: br_ms_sinan_violencia
+gotchas:
+  - id: nu_ano_vazio_2020
+    resumo: "Filtre o ano por ano_sinan, nunca por NU_ANO: NU_ANO está vazio em todo 2020."
+    detalhe: >
+      WHERE NU_ANO = '2020' devolve zero linhas e parece partição faltando.
+      Não é: o ano está inteiro. A tabela nem é particionada (um parquet só);
+      ano_sinan foi acrescentada na raspagem e está correta em todos os anos.
+    tabelas: [microdados_violencia]
+    colunas: [NU_ANO, ano_sinan]
+    severidade: silencioso
+    verificado: "ano_sinan=2020: 326.503 linhas, todas com NU_ANO vazio; 2019 tem 60 vazios em 405.497, 2021-2023 nenhum — medido 2026-09-25"
+  - id: ano_2022_magro
+    resumo: "2022 tem menos da metade das notificações dos vizinhos: não use em série ano a ano sem ressalva."
+    detalhe: >
+      Os 12 meses estão presentes, sem truncamento visível. Cara de release
+      incompleto na fonte, não de raspagem interrompida.
+    tabelas: [microdados_violencia]
+    colunas: [ano_sinan]
+    severidade: silencioso
+    verificado: "ano_sinan: 373.262 (2021), 159.576 (2022), 588.388 (2023) — medido 2026-09-25"
