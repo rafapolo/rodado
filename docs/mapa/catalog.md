@@ -6,12 +6,12 @@
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
-| `_local_rais_cnpj` | RAIS de estabelecimentos cruzada com CNPJ, 2010-2021 | 1 | 40.626.223 | — | Base dos Dados |
+| `_local_rais_cnpj` | RAIS de estabelecimentos cruzada com CNPJ, 2010-2021 | 1 | 40.626.223 | — | RAIS estabelecimentos por CNPJ 2010–2021 (import local) |
 | `br_abrinq_oca` | Observatório da Criança e do Adolescente (Fundação Abrinq) — indicadores de primeira infância por município | 1 | 55.700 | — | Base dos Dados |
 | `br_ana_atlas_esgotos` | Atlas Esgotos da ANA — diagnóstico de coleta e tratamento de esgoto por município | 1 | 5.570 | — | Base dos Dados |
 | `br_ana_bho` | Base Hidrográfica Ottocodificada da ANA — topologia de trechos de rio | 1 | 462.539 | — | ANA Base Hidrográfica Ottocodificada (topologia) |
 | `br_ana_outorgas` | Outorgas de uso da água (captação e lançamento) da ANA | 2 | 192.772 | — | ANA outorgas de uso da água |
-| `br_ana_reservatorios` | Reservatórios do Sistema Integrado Nacional monitorados pela ANA | 1 | 1.157.621 | — | Base dos Dados |
+| `br_ana_reservatorios` | ANA — boletim diário dos 162 reservatórios do Sistema Interligado Nacional (cota, vazões, % do volume útil), 2000 a jan/2022 | 1 | 1.157.621 | — | Base dos Dados |
 | `br_ana_telemetria` | Telemetria da ANA — séries de vazão, cota e chuva de estações de monitoramento de rios | 13 | 165.625.437 | — | ANA telemetria (rios/chuva) |
 | `br_anac_dadosabertos` | ANAC — registro de aeronaves, voos e pontualidade | 3 | 129.666 | 2026-06-01 | ANAC |
 | `br_anatel_banda_larga_fixa` | Densidade de acessos de banda larga fixa por município/UF (Anatel) | 4 | 58.902.377 | — | Base dos Dados |
@@ -50,18 +50,18 @@
 | `br_ce_fortaleza_sefin_iptu` | Prefeitura de Fortaleza — cadastro de IPTU por face de quadra | 1 | 68.932 | — | Base dos Dados |
 | `br_cgu_beneficios_cidadao` | CGU — benefícios sociais federais (Bolsa Família, Auxílio Emergencial, BPC etc.) | 11 | 6.609.906.509 | — | Base dos Dados |
 | `br_cgu_cartao_pagamento` | CGU — gastos com cartão de pagamento do governo federal | 4 | 3.075.035 | — | Base dos Dados |
-| `br_cgu_dados_abertos` | CGU — catálogo de dados abertos do governo federal | 3 | 89.771 | — | Base dos Dados |
-| `br_cgu_ebt` | CGU — Escala Brasil Transparente (municípios e UFs) | 2 | 1.384 | — | Base dos Dados |
+| `br_cgu_dados_abertos` | CGU — metadados do catálogo dados.gov.br (conjuntos, recursos, organizações), foto de fev/2024 | 3 | 89.771 | — | Base dos Dados |
+| `br_cgu_ebt` | CGU — Escala Brasil Transparente 360°, nota de transparência de 665 municípios avaliados e das 27 UFs, 2020 e 2021 | 2 | 1.384 | — | Base dos Dados |
 | `br_cgu_emendas_parlamentares` | CGU — emendas parlamentares ao orçamento federal | 1 | 88.991 | — | Base dos Dados |
 | `br_cgu_fef` | CGU — Fundo de Erradicação da Pobreza e sorteios de fiscalização | 3 | 84.945 | — | Base dos Dados |
 | `br_cgu_garantia_safra` | Garantia-Safra — pagamentos aos agricultores familiares do semiárido | 1 | 33.522.915 | — | Portal - Garantia-Safra |
 | `br_cgu_gas_do_povo` | Gás do Povo — pagamentos do benefício de gás de cozinha | 1 | 20.817.231 | — | Gás do Povo (CGU) |
 | `br_cgu_licitacao_contrato` | CGU — licitações e contratos do governo federal | 8 | 100.105.069 | — | Base dos Dados |
 | `br_cgu_novo_bolsa_familia` | Novo Bolsa Família — pagamentos mensais por beneficiário | 1 | 821.346.847 | — | Novo Bolsa Família (CGU) |
-| `br_cgu_orcamento_publico` | CGU — execução do orçamento público federal | 1 | 289.426 | — | Base dos Dados |
+| `br_cgu_orcamento_publico` | CGU — orçamento federal por órgão, programa, ação e elemento: inicial, atualizado, empenhado e realizado, 2014–2024 | 1 | 289.426 | — | Base dos Dados |
 | `br_cgu_pe_de_meia` | Pé-de-Meia — pagamentos do programa de incentivo à permanência escolar | 1 | 64.047.519 | — | Portal - Pe-de-Meia |
 | `br_cgu_pessoal_executivo_federal` | CGU — terceirizados do Poder Executivo federal | 1 | 732.269 | — | Base dos Dados |
-| `br_cgu_receitas_publicas` | CGU — receitas públicas federais | 1 | 1.529.345 | — | Base dos Dados |
+| `br_cgu_receitas_publicas` | CGU — receitas federais previstas, lançadas e realizadas por órgão e natureza, 2013–2024 | 1 | 1.529.345 | — | Base dos Dados |
 | `br_cgu_sancoes` | CGU — sanções administrativas (CEIS, CNEP, CEPIM, acordos de leniência) | 6 | 24.551 | — | Base dos Dados |
 | `br_cgu_seguro_defeso` | Seguro-Defeso — pagamentos aos pescadores artesanais durante o defeso | 1 | 42.088.721 | — | Portal - Seguro-Defeso |
 | `br_cgu_servidores_executivo_federal` | CGU — cadastro e remuneração de servidores do Poder Executivo federal | 14 | 852.909.944 | — | Base dos Dados |
@@ -99,12 +99,12 @@
 | `br_ibge_ipca15` | IBGE — IPCA-15, prévia mensal do IPCA | 4 | 359.690 | — | Base dos Dados |
 | `br_ibge_ipp` | IBGE — Índice de Preços ao Produtor | 6 | 5.118 | — | Base dos Dados |
 | `br_ibge_munic` | IBGE — Pesquisa de Informações Básicas Municipais (MUNIC) | 7 | 852.056 | — | Base dos Dados |
-| `br_ibge_nomes_brasil` | IBGE — frequência de nomes de pessoas por município, Censo 2010 | 1 | 1.959.116 | — | Base dos Dados |
+| `br_ibge_nomes_brasil` | IBGE — frequência de nomes por município, Censo 2010 (nomes raros suprimidos: soma 145 mi de 191 mi) | 1 | 1.959.116 | — | Base dos Dados |
 | `br_ibge_pam` | IBGE — Produção Agrícola Municipal, lavouras permanentes e temporárias | 2 | 20.097.187 | — | Base dos Dados |
 | `br_ibge_pevs` | IBGE — Produção da Extração Vegetal e da Silvicultura | 2 | 558.451 | — | Base dos Dados |
 | `br_ibge_pib` | IBGE — PIB municipal e estadual | 7 | 190.805 | — | Base dos Dados |
 | `br_ibge_pnad` | IBGE — PNAD, microdados compatibilizados históricos | 3 | 9.587.801 | — | Base dos Dados |
-| `br_ibge_pnad_covid` | IBGE — PNAD-COVID19, dicionário de variáveis | 1 | 554 | — | Base dos Dados |
+| `br_ibge_pnad_covid` | IBGE — PNAD-COVID19, só o dicionário de variáveis: os microdados não estão no espelho | 1 | 554 | — | Base dos Dados |
 | `br_ibge_pnadc` | IBGE — PNAD Contínua, mercado de trabalho e rendimento | 14 | 31.529.302 | — | Base dos Dados |
 | `br_ibge_pof` | IBGE — Pesquisa de Orçamentos Familiares | 14 | 2.238.882 | — | Base dos Dados |
 | `br_ibge_populacao` | IBGE — estimativas populacionais por município, UF e Brasil | 3 | 192.080 | — | Base dos Dados |
@@ -130,11 +130,11 @@
 | `br_inpe_prodes_acumulado` | INPE PRODES — polígonos de desmatamento acumulado por bioma, geometria em centroide | 1 | 7.598.548 | — | INPE PRODES acumulado (desmatamento por bioma) |
 | `br_inpe_queimadas` | INPE — focos de queimada detectados por satélite | 1 | 17.812.710 | — | Base dos Dados |
 | `br_inpe_sisam` | INPE SISAM — qualidade do ar | 1 | 158.705.816 | — | Base dos Dados |
-| `br_ipea_acesso_oportunidades` | IPEA — acesso a oportunidades urbanas (empregos, serviços) por tempo de deslocamento | 1 | 336.427 | — | Base dos Dados |
+| `br_ipea_acesso_oportunidades` | IPEA — grade H3 das 20 maiores cidades, 2019: população por renda e raça e contagem de escolas e unidades de saúde por hexágono (sem os indicadores de tempo de acesso) | 1 | 336.427 | — | Base dos Dados |
 | `br_ipea_atlasviolencia` | IPEA — Atlas da Violência, indicadores de homicídio e letalidade | 2 | 3.006 | — | Atlas da Violência (IPEA) |
 | `br_ipea_avs` | IPEA — Atlas da Vulnerabilidade Social | 1 | 319.681 | — | Base dos Dados |
 | `br_mapbiomas_estatisticas` | MapBiomas — estatísticas de cobertura e transição de uso do solo | 6 | 1.219.409 | — | Base dos Dados |
-| `br_mc_indicadores` | Ministério das Cidades — transferências a municípios | 1 | 1.118.855 | — | Base dos Dados |
+| `br_mc_indicadores` | Ministério da Cidadania — Bolsa Família e CadÚnico por município e mês (famílias, pessoas, valor pago), 2004 a set/2020 | 1 | 1.118.855 | — | Base dos Dados |
 | `br_mdr_snis` | SNIS/MDR — indicadores de água e esgoto por município e prestador de serviço | 2 | 245.101 | — | Base dos Dados |
 | `br_mds_cadunico` | CadÚnico (MDS) — indicadores municipais mensais do Cadastro Único e Bolsa Família | 2 | 350.069.349 | — | CadÚnico — indicadores municipais (VIS DATA 3, MDS/SAGI) |
 | `br_me_caged` | Ministério do Trabalho — CAGED, movimentação de empregos formais (admissões/demissões) | 4 | 240.703.713 | — | Base dos Dados |
@@ -154,7 +154,7 @@
 | `br_mec_sisu` | MEC SISU — microdados de inscrição no Sistema de Seleção Unificada | 1 | 34.700.256 | — | Base dos Dados |
 | `br_mg_belohorizonte_smfa_iptu` | Prefeitura de Belo Horizonte — cadastro de IPTU | 2 | 21.463.825 | — | Base dos Dados |
 | `br_minc_salic` | MinC — SALIC/Lei Rouanet, projetos culturais incentivados | 8 | 839.316 | — | SALIC/Lei Rouanet (MinC) |
-| `br_mj_consumidorgovbr` | Consumidor.gov.br — reclamações de consumidores contra empresas | 1 | 10.167.141 | — | Consumidor.gov.br |
+| `br_mj_consumidorgovbr` | Consumidor.gov.br — reclamações contra empresas, 2014–2025 (2019 só com 2 meses, 2025 parcial) | 1 | 10.167.141 | — | Consumidor.gov.br |
 | `br_mjsp_ckan` | MJSP — Procon (reclamações Sindec) e Infopen (censo penitenciário legado) | 2 | 15.317 | — | MJSP CKAN (broader) |
 | `br_mjsp_procurados` | MJSP — lista de procurados do projeto Captura Nacional | 1 | 195 | — | Procurados (MJSP/Interpol) |
 | `br_mjsp_sinesp` | SINESP — ocorrências registradas de segurança pública | 2 | 23.843 | 2022-12-01 | SINESP/MJSP |
@@ -172,16 +172,16 @@
 | `br_ms_sih` | SIH/SUS — Autorizações de Internação Hospitalar (AIH) | 3 | 2.619.388.412 | — | Base dos Dados |
 | `br_ms_sim` | SIM — Sistema de Informações sobre Mortalidade | 3 | 31.376.032 | — | Base dos Dados |
 | `br_ms_sinan` | SINAN — notificação compulsória de dengue e influenza/SRAG | 3 | 38.468.299 | — | Base dos Dados |
-| `br_ms_sinan_chikungunya` | SINAN — notificação compulsória de chikungunya | 1 | 2.498.459 | — | Base dos Dados |
+| `br_ms_sinan_chikungunya` | SINAN — notificação compulsória de chikungunya | 1 | 2.498.459 | — | SINAN Chikungunya |
 | `br_ms_sinan_esquistossomose` | SINAN — notificação compulsória de esquistossomose | 1 | 169.721 | — | SINAN Esquistossomose |
-| `br_ms_sinan_febre_amarela` | SINAN — notificação compulsória de febre amarela | 1 | 39.517 | — | Base dos Dados |
+| `br_ms_sinan_febre_amarela` | SINAN — notificação compulsória de febre amarela | 1 | 39.517 | — | SINAN Febre Amarela |
 | `br_ms_sinan_malaria` | SINAN — notificação compulsória de malária fora da Amazônia Legal | 1 | 68.320 | — | SINAN Malária (notificação fora da Amazônia Legal) |
 | `br_ms_sinan_violencia` | SINAN — notificação compulsória de violência doméstica, sexual e outras | 1 | 4.939.266 | — | SINAN Violência (violência doméstica, sexual e/ou outras) |
-| `br_ms_sinan_zika` | SINAN — notificação compulsória de zika | 1 | 605.045 | — | Base dos Dados |
+| `br_ms_sinan_zika` | SINAN — notificação compulsória de zika | 1 | 605.045 | — | SINAN Zika |
 | `br_ms_sinasc` | SINASC — Sistema de Informações sobre Nascidos Vivos | 2 | 85.559.448 | — | Base dos Dados |
-| `br_ms_sipni_dicionarios` | SI-PNI — dicionários de cobertura vacinal | 4 | 224 | — | Base dos Dados |
-| `br_ms_sipni_doses_historicas` | SI-PNI — doses de vacina aplicadas, série histórica agregada | 1 | 93.785.056 | — | Base dos Dados |
-| `br_ms_sipni_microdados` | SI-PNI — microdados de vacinação individual (2020) | 1 | 102.423.524 | — | Base dos Dados |
+| `br_ms_sipni_dicionarios` | SI-PNI — dicionários de cobertura vacinal | 4 | 224 | — | SI-PNI dicionários (healthbr-data) |
+| `br_ms_sipni_doses_historicas` | SI-PNI — doses de vacina aplicadas, série histórica agregada | 1 | 93.785.056 | — | SI-PNI doses históricas (healthbr-data) |
+| `br_ms_sipni_microdados` | SI-PNI — microdados de vacinação individual (2020) | 1 | 102.423.524 | — | SI-PNI microdados (healthbr-data) |
 | `br_ms_sisvan` | SISVAN — Sistema de Vigilância Alimentar e Nutricional | 2 | 406.253.847 | — | Base dos Dados |
 | `br_ms_vacinacao_covid19` | Ministério da Saúde — vacinação contra covid-19 | 2 | 805.917 | — | Base dos Dados |
 | `br_mte_listasuja` | MTE — Lista Suja do trabalho escravo (Cadastro de Empregadores) e CEAC, com CNPJ/CPF | 4 | 1.204 | — | MTE — Lista Suja do Trabalho Escravo (Cadastro de Empregadores) + CEAC |
@@ -209,13 +209,13 @@
 | `br_siop_orcamento` | SIOP — Sistema Integrado de Planejamento e Orçamento federal | 4 | 36.922 | — | SIOP |
 | `br_sp_saopaulo_geosampa_iptu` | Prefeitura de São Paulo — cadastro de IPTU (GeoSampa) | 1 | 93.430.758 | — | Base dos Dados |
 | `br_stf_corte_aberta` | STF — decisões do projeto Corte Aberta | 2 | 2.708.896 | — | Base dos Dados |
-| `br_stj_dadosabertos` | STJ — documentos e decisões | 1 | 549.243 | — | STJ dados abertos |
+| `br_stj_dadosabertos` | STJ — decisões monocráticas e acórdãos publicados em 2021 (só este ano) | 1 | 549.243 | — | STJ dados abertos |
 | `br_tce_es` | TCE-ES — fiscalização de contas de municípios e do estado | 5 | 12.422 | — | TCE-ES |
 | `br_tce_pi` | TCE-PI — despesas, licitações e receitas de municípios | 5 | 406 | — | TCE-PI |
 | `br_tce_rj` | TCE-RJ — contratos, licitações, convênios e gastos com pessoal | 6 | 179.409 | — | TCE-RJ |
 | `br_tce_sp` | TCE-SP — municípios fiscalizados | 1 | 644 | — | TCE-SP |
 | `br_tce_to` | TCE-TO — pautas de julgamento | 1 | 50 | — | TCE-TO |
-| `br_tcu_dadosabertos` | TCU — dados abertos gerais | 1 | 36.499 | — | TCU |
+| `br_tcu_dadosabertos` | TCU — acórdãos (Plenário e Câmaras) com relator, sumário e link, 2024–2026 | 1 | 36.499 | — | TCU |
 | `br_tcu_inidoneos` | TCU — empresas e responsáveis inidôneos ou inabilitados | 4 | 45.404 | — | TCU inidôneos e suspensos |
 | `br_tesouro_capag` | Tesouro Nacional — Capacidade de Pagamento (CAPAG) de estados e municípios | 2 | 5.815 | — | CAPAG (capacidade de pagamento, entes SICONFI) |
 | `br_tesouro_cauc` | Tesouro Transparente — CAUC, regularidade fiscal de estados e municípios | 3 | 5.674 | — | Tesouro Transparente — CAUC |
@@ -231,12 +231,12 @@
 | `global_opensanctions` | OpenSanctions — consolidado mundial de listas de sanções e PEP | 1 | 1.316.073 | — | OpenSanctions |
 | `mundo_transfermarkt_competicoes` | Transfermarkt — Campeonato Brasileiro Série A e Copa do Brasil | 2 | 9.054 | — | Base dos Dados |
 | `mundo_transfermarkt_competicoes_internacionais` | Transfermarkt — Champions League | 1 | 2.572 | — | Base dos Dados |
-| `politicos` | Base dos Dados — contatos de políticos | 1 | 7.664 | — | Base dos Dados |
+| `politicos` | Base dos Dados — contatos de políticos | 1 | 7.664 | — | Políticos — contato (Câmara + Senado) |
 | `un_sanctions` | ONU — lista de sanções | 1 | 1.002 | — | UN Sanctions |
 | `us_harvard_ned` | Harvard NED — eleições parlamentares e presidenciais internacionais | 2 | 6.309 | — | Base dos Dados |
 | `world_ampas_oscar` | Oscar (AMPAS) — demografia de vencedores | 1 | 415 | — | Base dos Dados |
-| `world_iea_pirls` | IEA PIRLS — avaliação internacional de leitura | 8 | 1.941.828 | — | Base dos Dados |
-| `world_iea_timss` | IEA TIMSS — avaliação internacional de matemática e ciências | 11 | 1.929.595 | — | Base dos Dados |
+| `world_iea_pirls` | IEA PIRLS — avaliação internacional de leitura do 4º ano, 51 países, sem o Brasil | 8 | 1.941.828 | — | Base dos Dados |
+| `world_iea_timss` | IEA TIMSS 2023 — matemática e ciências do 4º e 8º anos, 59 países, com o Brasil | 11 | 1.929.595 | — | Base dos Dados |
 | `world_imdb_movies` | IMDB — filmes mais bem avaliados por ano | 1 | 33.600 | — | Base dos Dados |
 | `world_oecd_pisa` | OCDE PISA — avaliação internacional de estudantes | 1 | 1.745.082 | — | Base dos Dados |
 | `world_oecd_public_finance` | OCDE — finanças públicas por país | 1 | 2.646 | — | Base dos Dados |
