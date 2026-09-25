@@ -144,6 +144,10 @@ const DIZ_SEM_DADO = new RegExp([
   "nao (esta|estao) disponive", "indisponive", "sem dados?", "nao cobre", "nao abrange", "fora da cobertura",
   "(vai|cobre|chega|vao|cobrem|chegam) (apenas |somente |so )?ate", "disponive(l|is) (apenas |somente |so )?ate",
   "ainda nao (foi|foram) (publicad|divulgad|disponibilizad)", "nao (foi|foram) (publicad|divulgad)",
+  // 2026-09-25, holdout3: "contém dados apenas até o ano de 2022" e "Não é possível
+  // informar" — resposta certa lida como erro.
+  "(contem|tem|possui|traz) (dados|registros|informac\\w*)? ?(apenas |somente |so )?ate",
+  "nao e possivel (informar|responder|calcular|obter|determinar|saber|apurar)",
 ].join("|"));
 
 export function alvos(esperado: string): (AlvoNum | AlvoTexto | AlvoSemDado)[] {
