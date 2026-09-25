@@ -4,7 +4,7 @@
  */
 import { expect, test, describe } from "bun:test";
 import {
-  nsDaSessao, commitDoBuild, trocasDeBuild,
+  nsDaSessao, leCelula, commitDoBuild, trocasDeBuild,
   avalia, bate, numeros, normalizaNumero, casoEcoa,
   avisaConfigDivergente, avisaPrefill, extraiPrefills, LIMIAR_PREFILL,
 } from "./acerto.ts";
@@ -167,4 +167,9 @@ test("trocasDeBuild acha a troca no meio da rodada (B2, 2026-09-24)", () => {
     .toEqual([{ caso: 3, de: "f072b10", para: "6b790a9" }]);
   expect(trocasDeBuild(["f072b10", "f072b10"], "f072b10")).toEqual([]);
   expect(trocasDeBuild(["6b790a9"], undefined)).toEqual([]);
+});
+
+test("leCelula lê a célula pt-BR de hoje e a crua das sessões antigas", () => {
+  expect([leCelula("115.879"), leCelula("115879"), leCelula("-0,2734"), leCelula("0.4312"), leCelula("NULL")])
+    .toEqual([115879, 115879, -0.2734, 0.4312, undefined]);
 });
