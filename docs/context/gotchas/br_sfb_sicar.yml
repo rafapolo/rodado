@@ -1,0 +1,24 @@
+dataset: br_sfb_sicar
+gotchas:
+  - id: app_area_absurda
+    resumo: "app.area tem 9 valores absurdos na fonte (até 1,7e50 ha, tipos BORDA_CHAPADA e VEREDA): sum(area) dá 5e44. Corte area < 1e7 antes de somar."
+    tabelas: [app]
+    colunas: [area]
+    severidade: silencioso
+    verificado: "9 linhas acima de 1e7 ha, máximo 1,7e50, em PI, RR e GO — medido 2026-09-25"
+  - id: app_total_agrega
+    resumo: "Não some app entre tipos: APP_TOTAL (32,25 mi ha) já é o agregado dos outros, e vários tipos se sobrepõem."
+    tabelas: [app]
+    severidade: silencioso
+    verificado: "APP_TOTAL soma 32,25 mi ha — medido 2026-09-25"
+  - id: data_extracao_e_por_uf
+    resumo: "Nas tabelas app, area_consolidada, hidrografia, reserva_legal e vegetacao_nativa a data de extração é por UF (2026-06-02 e 2026-08-01..04): juntas são uma só foto. Filtrar por uma data perde estados."
+    tabelas: [app, area_consolidada, hidrografia, reserva_legal, vegetacao_nativa]
+    colunas: [data_extracao]
+    severidade: silencioso
+    verificado: "5 datas distintas, cada UF em uma só — medido 2026-09-25"
+  - id: area_imovel_e_serie_mensal
+    resumo: "area_imovel guarda 10 fotos mensais (2024-10 a 2025-10, 79,3 mi linhas) e é de outra safra que as outras tabelas. Toda contagem ou soma pega uma foto só."
+    tabelas: [area_imovel]
+    severidade: silencioso
+    verificado: "foto 2025-10-15: 8.186.157 imóveis, 822,8 mi ha (715,8 sem cancelados) — medido 2026-09-25"
