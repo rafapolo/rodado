@@ -3,7 +3,7 @@
 for all tables on beelink, merging:
   - Table/dataset listing from parquet directories
   - Row counts, file sizes and mtimes from DuckDB parquet_metadata
-  - Provenance info (source URL, status, notes) from tasks/datasets_to_scrap.md
+  - Provenance info (source URL, status, notes) from tasks/done/datasets_to_scrap_done.md
   - Base dos Dados attribution for everything that is *not* independently
     scraped — the mirrored portion of the project, whose schema snapshot lives
     in docs/context/schema_ddl.sql
@@ -135,6 +135,8 @@ def split_row(line: str) -> list[str]:
 def parse_markdown_table(path: Path) -> dict[str, dict]:
     scraped = {}
     cols = None
+    if not path.exists():
+        return scraped
 
     with open(path) as f:
         lines = f.readlines()
@@ -471,7 +473,12 @@ def build_catalog():
     # _rodado_metadata for exactly this reason. Active file wins on a key
     # collision (shouldn't happen — a dataset lives in one file at a time).
     scraped_info = parse_markdown_table(REPO_ROOT / "tasks" / "done" / "datasets_to_scrap_done.md")
-    scraped_info.update(parse_markdown_table(REPO_ROOT / "tasks" / "datasets_to_scrap.md"))
+    # The open queue lives in tasks/plans/ since 2026-09-24 and uses pt-BR
+    # headers that this parser skips; tasks/ is gitignored, so a fresh clone
+    # has neither file.
+    queue = REPO_ROOT / "tasks" / "plans" / "datasets_to_scrap.md"
+    if queue.exists():
+        scraped_info.update(parse_markdown_table(queue))
     ddl_tables = parse_ddl_tables(REPO_ROOT / "docs" / "context" / "schema_ddl.sql")
     beelink_tables = get_tables_from_beelink()
 
