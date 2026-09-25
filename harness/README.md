@@ -336,6 +336,35 @@ resgatados, 4 perdidos — todos antes da proibição do `<|channel>` entrar, e 
 duas perguntas afetadas terminaram certas na sessão nova. Nenhuma ficou sem
 resposta. Detalhe em [`tasks/harness_tasks.md`](../tasks/harness_tasks.md), "Régua das perguntas diretas".
 
+## Perguntas de pesquisa — o que a rodada B2 ensinou (2026-09-24/25)
+
+As 87 perguntas que cruzam fontes ("municípios com mais X têm Y?") mediram
+coisas que as diretas não mediam:
+
+- **A régua do `n` exato não serve sozinha.** Lidos par a par, ~⅓ dos `n`
+  publicados carregam um corte que a pergunta não diz (≥30 mil hab, ≥5 mil
+  admissões, UF no lugar de município). `casos.ts` marca esses em
+  `N_INALCANCAVEL`, e `lote.ts` dá dois placares: `n` exato nos alcançáveis e
+  o `r` citado contra o publicado (`rejulga.ts`: mesmo sinal, a ≤0,15).
+- **Antes de consertar, o modelo listava.** 7 dos 8 primeiros casos fecharam em
+  `ORDER BY … LIMIT 10`: exemplos, não medida. A camada 12 (ranking) recusa isso
+  em pergunta de pesquisa; depois dela, 6 de 8 mediram sobre os municípios.
+- **O que o modelo não escreve não existe para a régua.** O `n` passou a vir
+  quando um alerta pediu (44/50); o coeficiente, que ninguém pedia, vinha em 8/50.
+  O alerta de pesquisa agora pede os dois, e nos primeiros casos depois 3 de 4
+  citaram o `r`.
+- **Mensagem de erro é instrução.** A recusa de ranking que dizia "ntile numa
+  CTE" precedeu 4 dos 8 `GROUP BY` com janela; agora ela traz a consulta inteira,
+  e a camada 10 recusa janela ou agregado no `GROUP BY`.
+- **Consulta vazia costuma ser o filtro, não a junção.** Das consultas de zero
+  linha, 68 juntavam por `id_municipio = id_municipio`; o vazio vinha de um valor
+  que a coluna não tem (`'Preto'` onde o Censo guarda `'Preta'`). Virou a camada 9.
+- **Consulta órfã deixa o modelo 80x mais lento.** O timeout local matava o `ssh`,
+  não o `duckdb` remoto; três órfãos de 6h30 levaram o aquecimento de 0,5 s a 40 s.
+  `beelink.ts` põe `timeout -s KILL` no próprio comando remoto.
+- **Não mexer no código com a rodada viva.** Cada pergunta sobe um `mcp.ts`
+  novo; editar no meio mistura duas versões na mesma rodada.
+
 ## Módulos
 
 | Arquivo | Papel |
