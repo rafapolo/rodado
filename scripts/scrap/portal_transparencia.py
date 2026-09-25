@@ -15,7 +15,8 @@ DATA_DICT: a single month's CSV is ~2.2GB uncompressed (~340MB zipped), and
 41 months (2023-03 through today) is ~90GB uncompressed / ~14GB zipped total —
 too large to route through this script's laptop-side download+convert path.
 As of 2026-09-02 it's being pulled directly on beelink instead (see
-tasks/fontes_novas.md, item 2, Execucao 2026-09-02) — check there before
+the appendix of tasks/plans/datasets_to_scrap.md, item 2,
+Execucao 2026-09-02) — check there before
 wiring a second, competing fetch of the same dataset into this script.
 
 CDN: dadosabertos-download.cgu.gov.br/PortalDaTransparencia/saida/<slug>/
