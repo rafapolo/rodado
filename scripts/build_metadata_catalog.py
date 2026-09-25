@@ -82,7 +82,7 @@ SCRAP_LAYOUTS = {
         {"dataset": 2, "source_type": None, "status": None, "date": None, "notes": 7},
 }
 
-URL_RE = re.compile(r"https?://[^\s)`|,;]+")
+URL_RE = re.compile(r"(?:https?|ftp)://[^\s)`|,;]+")
 # Most notes name the endpoint as a bare backticked host rather than a full URL
 # (`dadosabertos.compras.gov.br`); accept those as a fallback.
 HOST_RE = re.compile(
@@ -180,6 +180,10 @@ def parse_markdown_table(path: Path) -> dict[str, dict]:
         urls = URL_RE.findall(line)
         if urls:
             source_url = urls[0].rstrip(".")
+            # A `{FINAIS,PRELIM}` template is cut at its comma — keep the
+            # prefix before an unclosed brace rather than half a template.
+            if "{" in source_url and "}" not in source_url.split("{")[-1]:
+                source_url = source_url[:source_url.rindex("{")]
         else:
             host = HOST_RE.search(line)
             source_url = f"https://{host.group(1)}" if host else ""
@@ -309,7 +313,7 @@ ORDER BY table_schema, table_name;
         subprocess.run(["scp", tmp.name, f"{BEELINK_HOST}:{remote_tmp}"],
                        capture_output=True, timeout=15, check=True)
         proc2 = subprocess.run(
-            ["ssh", BEELINK_HOST, f"~/bin/duckdb ~/rodado/basedosdados.duckdb -csv < {remote_tmp} && rm {remote_tmp}"],
+            ["ssh", BEELINK_HOST, f"~/bin/duckdb -readonly ~/rodado/basedosdados.duckdb -csv < {remote_tmp} && rm {remote_tmp}"],
             capture_output=True, timeout=30,
         )
     except subprocess.TimeoutExpired:
