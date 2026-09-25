@@ -135,9 +135,21 @@ function dados(ev: string): string | undefined {
   return linhas.length ? linhas.map((l) => l.slice(5).trimStart()).join("\n") : undefined;
 }
 
+/**
+ * Tokens de molde do Gemma que vazam para o `content` sem ser resposta. Medido
+ * 2026-09-25, rodada B2: a sessão terminou com o texto literal
+ * `thought<tool_call|>` como resposta final — o mesmo turno degenerado de B10,
+ * só que no `content` em vez do raciocínio, e por isso "provado" e repassado.
+ */
+const MOLDE = /<\|?[a-z_]+\|?>|\bthought\b/gi;
+
+export function soMolde(texto: string): boolean {
+  return texto.replace(MOLDE, "").trim() === "";
+}
+
 function prova(d: Delta | undefined): boolean {
   if (!d) return false;
-  return (typeof d.content === "string" && d.content.trim() !== "") || (d.tool_calls?.length ?? 0) > 0;
+  return (typeof d.content === "string" && !soMolde(d.content)) || (d.tool_calls?.length ?? 0) > 0;
 }
 
 function sintetiza(base: Pedaco, chamadas: Chamada[]): string[] {
