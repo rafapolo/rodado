@@ -372,6 +372,13 @@ export async function confereBoot(): Promise<boolean> {
   return (await p.exited) === 0;
 }
 
+/** Célula de `tabelaTexto` (formato.ts) de volta a número: a pt-BR de hoje e a crua das sessões antigas. */
+export function leCelula(s: string): number | undefined {
+  const t = s.trim();
+  const v = /,|^-?\d{1,3}(\.\d{3})+$/.test(t) ? Number(t.replace(/\./g, "").replace(",", ".")) : Number(t);
+  return t && Number.isFinite(v) ? v : undefined;
+}
+
 /**
  * Os `n` que as consultas de uma sessão do Pi devolveram — a coluna literalmente
  * chamada `n` em cada resultado de `consultar` (o formato de `tabelaTexto`:
@@ -399,8 +406,8 @@ export function nsDaSessao(jsonl: string): number[] {
       for (const l of ls.slice(i + 2)) {
         const cel = l.split(" | ");
         if (!l.trim() || cel.length !== cab.length) break;
-        const v = Number(cel[col]!.trim());
-        if (Number.isFinite(v)) out.push(v);
+        const v = leCelula(cel[col]!);
+        if (v !== undefined) out.push(v);
       }
     }
   }

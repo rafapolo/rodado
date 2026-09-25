@@ -125,6 +125,36 @@ export function descreve(tabela: string, cols: Coluna[], sufixo = "", filtro = "
 const celula = (v: unknown) =>
   v === null || v === undefined ? "NULL" : typeof v === "object" ? JSON.stringify(v) : String(v).replace(/\s*\n\s*/g, " ");
 
+/**
+ * Coluna cujo número é rótulo (ano, código, id), não quantidade: fica cru — o
+ * modelo o reusa na SQL seguinte (`WHERE id_municipio = '3550308'`).
+ */
+const CODIGO = /(^|_)(ano|mes|dia|semana|trimestre|semestre|id|cod|codigo|cd|co|nu|num|cep|cnpj|cpf|cnae|cbo|cid|ncm|sigla|uf|municipio|ibge|setor|cnes|nis|pis|titulo)(_|$)/i;
+
+/**
+ * Número inteiro ou decimal escrito como texto. O `-json` do DuckDB devolve
+ * HUGEINT e DECIMAL entre aspas — `SUM` de BIGINT é HUGEINT, então o saldo do
+ * CAGED chega `"115879"`, igual a um código VARCHAR. Zero à esquerda é código.
+ */
+const NUMERICO = /^-?(0|[1-9]\d*)(\.\d+)?$/;
+
+/**
+ * Número em pt-BR, dígito por dígito o mesmo: `115879` -> `115.879`,
+ * `0.4312` -> `0,4312`. Inteiro abaixo de 10.000 fica como está.
+ *
+ * Medido 2026-09-24 (Pi, caso 22/43): a consulta devolveu `115879` e a resposta
+ * saiu `115.798`. O modelo não copiava — reformatava para pt-BR enquanto
+ * gerava, e os três últimos dígitos giraram. Entregue já formatado, o número é
+ * copiado como string.
+ */
+export function numeroPtBR(v: number | bigint | string): string {
+  const s = String(v);
+  if (!/^-?\d+(\.\d+)?$/.test(s)) return s;
+  const [int, dec] = s.split(".");
+  if (dec === undefined && Math.abs(Number(v)) < 10_000) return s;
+  return int!.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + (dec === undefined ? "" : `,${dec}`);
+}
+
 /** Linhas como tabela de texto: cabeçalho uma vez, em vez da chave repetida em cada objeto JSON. */
 export function tabelaTexto(r: CappedResult): string {
   const rows = r.rows as Record<string, unknown>[];
@@ -132,9 +162,18 @@ export function tabelaTexto(r: CappedResult): string {
   if (rows.length) {
     const cols = Object.keys(rows[0]!);
     const total = r.total ?? rows.length;
-    partes.push(total > rows.length ? `${total} linhas, mostrando ${rows.length}:` : `${rows.length} linha(s):`);
-    partes.push(cols.join(" | "));
-    for (const row of rows) partes.push(cols.map((c) => celula(row[c])).join(" | "));
+    let formatou = false;
+    const corpo = rows.map((row) => cols.map((c) => {
+      const v = row[c];
+      const numero = typeof v === "number" || typeof v === "bigint" || (typeof v === "string" && NUMERICO.test(v));
+      if (!numero || CODIGO.test(c)) return celula(v);
+      const f = numeroPtBR(v);
+      formatou ||= f !== String(v);
+      return f;
+    }).join(" | "));
+    partes.push((total > rows.length ? `${total} linhas, mostrando ${rows.length}` : `${rows.length} linha(s)`) +
+      (formatou ? " (números em pt-BR: ponto separa milhar, vírgula separa decimal — copie como estão):" : ":"));
+    partes.push(cols.join(" | "), ...corpo);
   }
   if (r.note) partes.push(r.note);
   else if (!rows.length && r.columns) partes.push(`colunas: ${r.columns.join(", ")}`);
