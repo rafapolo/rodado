@@ -3,7 +3,7 @@
 
     python3 scripts/aplica_column_codes.py
 
-Estágio 4 de tasks/generate-full-schema-dict.md. `column_codes.yaml` é escrito à
+Estágio 4 de tasks/done/generate-full-schema-dict.md. `column_codes.yaml` é escrito à
 mão (pesquisa com fonte oficial + medição no beelink); este script só propaga
 o `status` de cada coluna para a etiqueta de `schema_dict_status.json`, que é o
 que `describe_table` usa para montar o `nao_verificado_warning`:

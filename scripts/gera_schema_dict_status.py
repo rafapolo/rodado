@@ -4,7 +4,7 @@
 
     python3 scripts/gera_schema_dict_status.py
 
-Estágios 1+2 de tasks/generate-full-schema-dict.md: toda coluna
+Estágios 1+2 de tasks/done/generate-full-schema-dict.md: toda coluna
 STRING/INTEGER que não está em `dicionario_coverage.json` (i.e. sem decode
 vivo em `{dataset}.dicionario`) sai desta varredura com uma de cinco
 etiquetas — a mesma escala que motivou o plano: `br_ms_sim.circunstancia_obito`
@@ -318,7 +318,7 @@ def main():
     out = {
         "_meta": {
             "generated_by": "scripts/gera_schema_dict_status.py",
-            "plan": "tasks/generate-full-schema-dict.md",
+            "plan": "tasks/done/generate-full-schema-dict.md",
             "scope": "colunas STRING/INTEGER fora de dicionario_coverage.json — FLOAT/BOOLEAN não entram (contínuo/autoexplicativo)",
             "cardinality_threshold": CARDINALITY_THRESHOLD,
             "counts_by_label": by_label,

@@ -3,7 +3,7 @@
 
     python3 scripts/prioriza_schema_dict_status.py [--top 300]
 
-Estágio 3 de tasks/generate-full-schema-dict.md: das colunas `nao_verificado`
+Estágio 3 de tasks/done/generate-full-schema-dict.md: das colunas `nao_verificado`
 (sem fonte de significado em lugar nenhum), quais estão no caminho de uma
 pergunta real? Documentar coluna que ninguém consulta rende pouco; o estágio 4
 (pesquisa manual) começa pelo topo desta lista.
