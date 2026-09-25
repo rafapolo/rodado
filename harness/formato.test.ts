@@ -20,6 +20,16 @@ describe("tabelaTexto", () => {
     expect(tabelaTexto({ rows: [{ uf: "RJ", n: 789 }, { uf: "SP", n: null }], truncated: false }))
       .toBe("2 linha(s):\nuf | n\nRJ | 789\nSP | NULL");
   });
+  test("quantidade sai em pt-BR, ano e código ficam crus", () => {
+    expect(tabelaTexto({ rows: [{ ano: 2022, id_municipio: 4106902, saldo: 115879, r: -0.2734 }], truncated: false }))
+      .toBe("1 linha(s) (números em pt-BR: ponto separa milhar, vírgula separa decimal — copie como estão):\n" +
+        "ano | id_municipio | saldo | r\n2022 | 4106902 | 115.879 | -0,2734");
+  });
+  test("HUGEINT e DECIMAL chegam como texto e também saem em pt-BR; código em texto não", () => {
+    expect(tabelaTexto({ rows: [{ saldo_empregos_formais: "115879", d: "115879.00", municipio: "4106902", cod: "0101", nome: "Curitiba" }], truncated: false }))
+      .toBe("1 linha(s) (números em pt-BR: ponto separa milhar, vírgula separa decimal — copie como estão):\n" +
+        "saldo_empregos_formais | d | municipio | cod | nome\n115.879 | 115.879,00 | 4106902 | 0101 | Curitiba");
+  });
   test("avisa quando cortou", () => {
     expect(tabelaTexto({ rows: [{ a: 1 }], truncated: true, total: 500 })).toStartWith("500 linhas, mostrando 1:");
   });

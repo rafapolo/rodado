@@ -194,7 +194,7 @@ export async function roda(casos: Caso[], aoCaso?: (feitos: Saida[]) => void, bu
       tentativa = await rodaUmaVez(q);
       segundos += tentativa.segundos;
       prefillMax = Math.max(prefillMax ?? 0, tentativa.prefillMax ?? 0) || undefined;
-      for (const k of ["turnos", "repetidos", "resgatados", "perdidos"] as const) guarda[k] += tentativa.guarda[k];
+      for (const k of ["turnos", "repetidos", "resgatados", "perdidos", "corrigidos"] as const) guarda[k] += tentativa.guarda[k] ?? 0;
       guarda.contextoMax = Math.max(guarda.contextoMax, tentativa.guarda.contextoMax);
     }
     if (tentativa.estourou) console.log(`      (estourou o teto de ${TETO_MS / 60_000} min — não se repete: o caminho lento seria o mesmo)`);

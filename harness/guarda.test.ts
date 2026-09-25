@@ -129,3 +129,73 @@ test("B17: content só com tokens de molde não prova o turno (rodada B2, 2026-0
   expect(soMolde("  ")).toBe(true);
   expect(soMolde("Com base nos dados do SIM, 789 óbitos.")).toBe(false);
 });
+
+describe("conferência de números", () => {
+  const RESULTADO = "1 linha(s) (números em pt-BR: ponto separa milhar, vírgula separa decimal — copie como estão):\nsaldo_total\n115.879";
+  const conversa = [
+    { role: "system", content: "persona" },
+    { role: "user", content: "Qual foi o saldo de empregos formais do Paraná em 2022, segundo o CAGED?" },
+    { role: "assistant", content: null, tool_calls: [{ function: { name: "consultar", arguments: '{"sql":"SELECT SUM(saldo_movimentacao) FROM t WHERE ano = 2022"}' } }] },
+    { role: "tool", content: RESULTADO },
+  ];
+  const resposta = (t: string) => sse(pedaco({ role: "assistant", content: null }), pedaco({ content: t }), pedaco({}, "stop"), "[DONE]");
+
+  function espiao(respostas: string[]) {
+    const corpos: { messages: { role: string; content: string }[] }[] = [];
+    const s = Bun.serve({
+      hostname: "127.0.0.1", port: 0,
+      fetch: async (req) => {
+        corpos.push(await req.json() as (typeof corpos)[number]);
+        return new Response(respostas[Math.min(corpos.length - 1, respostas.length - 1)], { headers: { "Content-Type": "text/event-stream" } });
+      },
+    });
+    fechar.push(() => s.stop(true));
+    return { url: `http://127.0.0.1:${s.port}`, corpos };
+  }
+  const pedeCom = async (url: string, messages: unknown[]) =>
+    (await fetch(`${url}/chat/completions`, {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ stream: true, messages }),
+    })).text();
+
+  test("o caso 22/43: 115.798 sem origem vira reescrita, e o laço só vê a certa", async () => {
+    const up = espiao([resposta("O saldo foi de 115.798 postos em 2022."), resposta("O saldo foi de 115.879 postos em 2022.")]);
+    const g = sobeGuarda({ upstream: up.url });
+    fechar.push(g.para);
+    const txt = await pedeCom(g.url, conversa);
+    expect(txt).toContain("115.879");
+    expect(txt).not.toContain("115.798");
+    expect(up.corpos).toHaveLength(2);
+    const ultimas = up.corpos[1]!.messages.slice(-2);
+    expect(ultimas[0]).toEqual({ role: "assistant", content: "O saldo foi de 115.798 postos em 2022." });
+    expect(ultimas[1]!.content).toContain('"115.798"');
+    expect(g.stats.corrigidos).toBe(1);
+  });
+
+  test("número com origem passa sem reescrita", async () => {
+    const up = espiao([resposta("O saldo foi de 115.879 postos em 2022, cerca de 115,9 mil.")]);
+    const g = sobeGuarda({ upstream: up.url });
+    fechar.push(g.para);
+    expect(await pedeCom(g.url, conversa)).toContain("115.879");
+    expect(up.corpos).toHaveLength(1);
+    expect(g.stats.corrigidos).toBe(0);
+  });
+
+  test("uma reescrita só por pergunta: a segunda errada passa", async () => {
+    const errada = resposta("O saldo foi de 115.798 postos.");
+    const up = espiao([errada, errada, errada]);
+    const g = sobeGuarda({ upstream: up.url });
+    fechar.push(g.para);
+    expect(await pedeCom(g.url, conversa)).toContain("115.798");
+    expect(await pedeCom(g.url, conversa)).toContain("115.798");
+    expect(up.corpos).toHaveLength(3);
+    expect(g.stats.corrigidos).toBe(1);
+  });
+
+  test("antes de qualquer consulta não há o que conferir", async () => {
+    const up = espiao([resposta("Não sei; seriam uns 123.456.")]);
+    const g = sobeGuarda({ upstream: up.url });
+    fechar.push(g.para);
+    await pedeCom(g.url, conversa.slice(0, 2));
+    expect(up.corpos).toHaveLength(1);
+  });
+});
