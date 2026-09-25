@@ -1,0 +1,26 @@
+dataset: br_ibge_pnad_covid
+gotchas:
+  - id: ocupado_pelo_c007
+    resumo: "Ocupado é c007 <> '9' (14 anos ou mais), não c001 = '1' OR c002 = '1': a regra ingênua superestima em 2,3 a 5,5 milhões. Desocupado é c015 = '1'."
+    tabelas: [microdados]
+    colunas: [c007, c001, c002, c015]
+    severidade: silencioso
+    verificado: "maio: 84.404,2 mil ocupados e taxa de desocupação 10,71%, iguais à tabela oficial; mai–ago 10,71/12,40/13,07/13,60% — medido 2026-09-25"
+  - id: pesar_por_v1032
+    resumo: "É amostra: some v1032 (peso), nunca count(*). A soma dá a população do mês (210.869.401 em maio)."
+    tabelas: [microdados]
+    colunas: [v1032]
+    severidade: silencioso
+    verificado: "sum(v1032) maio 210.869.401 = publicado; count(*) 349.306 — medido 2026-09-25"
+  - id: variaveis_so_de_julho
+    resumo: "O questionário cresceu: maio e junho têm 114 variáveis, jul–out 145, nov 148. As que faltam vêm NULL (b008, teste de covid, só de julho em diante)."
+    tabelas: [microdados]
+    colunas: [b008]
+    severidade: silencioso
+    verificado: "b008 nulo em mai e jun, preenchido de jul em diante — medido 2026-09-25"
+  - id: nascimento_sentinela
+    resumo: "a001b1 = 99, a001b2 = 99, a001b3 = 9999 são 'não informado' (141.773 pessoas), não datas."
+    tabelas: [microdados]
+    colunas: [a001b1, a001b2, a001b3]
+    severidade: silencioso
+    verificado: "141.773 pessoas com a sentinela — medido 2026-09-25"
