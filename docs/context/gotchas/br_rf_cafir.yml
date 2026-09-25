@@ -1,0 +1,14 @@
+dataset: br_rf_cafir
+gotchas:
+  - id: snapshot_mensal
+    resumo: "Cada data_referencia é o cadastro inteiro (~10M imóveis). Fixe uma antes de contar ou somar área."
+    tabelas: [imoveis_rurais]
+    colunas: [data_referencia]
+    severidade: silencioso
+    verificado: "2025-07-02, 2025-08-02 e 2025-09-02 com 10,1M a 10,2M linhas cada — medido 2026-09-25"
+  - id: id_imovel_nulo
+    resumo: "id_imovel_receita_federal é NULL em ~62% das linhas: não serve de chave para o cadastro inteiro."
+    tabelas: [imoveis_rurais]
+    colunas: [id_imovel_receita_federal]
+    severidade: silencioso
+    verificado: "data_referencia 2025-09-02: 6.270.208 NULL de 10.157.996, 3.887.782 ids distintos — medido 2026-09-25"

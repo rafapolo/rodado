@@ -181,6 +181,60 @@ def test_describe_table_no_dicionario_coverage_for_unrelated_table():
     assert "dicionario_coverage" not in result
 
 
+def test_describe_table_carries_dataset_gotchas_first():
+    result = m.describe_table("br_ms_sim.microdados")
+    assert list(result)[:2] == ["table", "gotchas"]
+    ids = [g["id"] for g in result["gotchas"]]
+    assert "causa_vs_circunstancia" in ids
+    assert all(g["verificado"] for g in result["gotchas"])
+
+
+def test_describe_table_gotchas_scoped_by_tabelas():
+    # capital_social só vale para empresas; snapshot_mensal vale para o dataset todo
+    empresas = {g["id"] for g in m.describe_table("br_me_cnpj.empresas")["gotchas"]}
+    socios = {g["id"] for g in m.describe_table("br_me_cnpj.socios")["gotchas"]}
+    assert empresas == {"snapshot_mensal", "capital_social_sentinela"}
+    assert socios == {"snapshot_mensal"}
+
+
+def test_describe_table_no_gotchas_block_without_file():
+    table_id = next(t for t in m._ALL_TABLE_IDS
+                    if t.split(".")[0] not in m._GOTCHAS_BY_DATASET)
+    assert "gotchas" not in m.describe_table(table_id)
+
+
+def test_describe_table_caps_gotchas(monkeypatch):
+    many = [{"id": f"g{i}", "resumo": "x", "severidade": "erro", "verificado": "v"}
+            for i in range(m.DESCRIBE_MAX_GOTCHAS + 3)]
+    monkeypatch.setitem(m._GOTCHAS_BY_DATASET, "br_ms_sim", many)
+    result = m.describe_table("br_ms_sim.microdados")
+    assert len(result["gotchas"]) == m.DESCRIBE_MAX_GOTCHAS
+    assert result["gotchas_truncated"]["total"] == m.DESCRIBE_MAX_GOTCHAS + 3
+
+
+def test_gotcha_files_match_real_tables():
+    # dataset e `tabelas` de todo .yml precisam existir no schema; senão a
+    # gotcha nunca chega a ninguém e ninguém percebe
+    for ds, gotchas in m._GOTCHAS_BY_DATASET.items():
+        assert ds in m._SCHEMA, ds
+        for g in gotchas:
+            for t in g.get("tabelas", []):
+                assert t in m._SCHEMA[ds], f"{ds}.{t}"
+
+
+@pytest.mark.parametrize("bad, erro", [
+    ({"dataset": "outro", "gotchas": []}, "não bate"),
+    ({"dataset": "ds", "gotchas": [{"id": "a", "resumo": "r", "severidade": "erro"}]}, "verificado"),
+    ({"dataset": "ds", "gotchas": [{"id": "a", "resumo": "r", "severidade": "grave",
+                                    "verificado": "v"}]}, "severidade"),
+])
+def test_load_gotchas_rejects_malformed(tmp_path, bad, erro):
+    import yaml
+    (tmp_path / "ds.yml").write_text(yaml.safe_dump(bad, allow_unicode=True), encoding="utf-8")
+    with pytest.raises(ValueError, match=erro):
+        m._load_gotchas(tmp_path)
+
+
 # ---------------------------------------------------------------------------
 # get_join_keys
 # ---------------------------------------------------------------------------
