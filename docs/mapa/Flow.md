@@ -1,15 +1,15 @@
 # Flow — o espelho por domínio
 
-Os 226 datasets do espelho e as chaves com que cada um alcança os hubs de referência, um diagrama por domínio.
+Os 236 datasets do espelho e as chaves com que cada um alcança os hubs de referência, um diagrama por domínio.
 
-Gerado por `scripts/gera_flow.py` a partir de `schemas.json` em 2026-09-04 — não edite à mão, regenere.
+Gerado por `scripts/gera_flow.py` a partir de `schemas.json` em 2026-09-25 — não edite à mão, regenere.
 
 - **caixa** = dataset; um diagrama por domínio;
 - **cápsula** = hub de referência, agrupado por família num `subgraph` e
   repetido em cada diagrama para manter as arestas curtas;
 - **seta cheia** (`-->`) = a chave está lá com o nome canônico, join direto;
 - **seta pontilhada** (`-.->`) = a chave está com outro nome ou formato,
-  normalize antes — receita em [`docs/context/join_keys.md`](../context/join_keys.md);
+  normalize antes — receita em [`docs/context/join_keys.md`](docs/context/join_keys.md);
 - a lista de tabelas de cada dataset ficou de fora de propósito; está no
   [`ERD.md`](ERD.md).
 
@@ -22,16 +22,16 @@ flowchart LR
     subgraph doms["Domínios"]
         direction TB
         D_referencia["Diretórios e tabelas de referência<br/>10 datasets"]
-        D_saude["Saúde<br/>25 datasets"]
+        D_saude["Saúde<br/>28 datasets"]
         D_educacao["Educação e ciência<br/>20 datasets"]
-        D_economia["Trabalho, empresas e economia<br/>44 datasets"]
+        D_economia["Trabalho, empresas e economia<br/>45 datasets"]
         D_governo["Governo, orçamento e compras<br/>38 datasets"]
         D_politica["Política e eleições<br/>9 datasets"]
         D_justica["Justiça, segurança e sanções<br/>21 datasets"]
-        D_territorio["Território, ambiente e infraestrutura<br/>26 datasets"]
+        D_territorio["Território, ambiente e infraestrutura<br/>27 datasets"]
         D_demografia["Demografia e indicadores sociais<br/>18 datasets"]
         D_internacional["Internacional, cultura e esporte<br/>9 datasets"]
-        D_outros["Outros<br/>6 datasets"]
+        D_outros["Outros<br/>11 datasets"]
     end
     subgraph g_territ_rio["Território"]
         direction TB
@@ -70,10 +70,10 @@ flowchart LR
     D_economia -->|"5"| CID10
     D_economia -->|"8"| CNAE
     D_economia -->|"13"| EMPRESA_CNPJ
-    D_economia -->|"28"| MUNICIPIO
+    D_economia -->|"29"| MUNICIPIO
     D_economia -->|"3"| PAIS
     D_economia -->|"4"| PESSOA_CPF
-    D_economia -->|"28"| UF
+    D_economia -->|"29"| UF
     D_educacao -->|"8"| ESCOLA
     D_educacao -->|"3"| IES
     D_educacao -->|"15"| MUNICIPIO
@@ -85,12 +85,13 @@ flowchart LR
     D_governo -->|"23"| UF
     D_governo -->|"6"| UNIDADE_GESTORA
     D_justica -->|"4"| EMPRESA_CNPJ
-    D_justica -->|"6"| MUNICIPIO
+    D_justica -->|"7"| MUNICIPIO
     D_justica -->|"3"| PESSOA_CPF
     D_justica -->|"9"| UF
-    D_outros -->|"3"| EMPRESA_CNPJ
-    D_outros -->|"4"| MUNICIPIO
-    D_outros -->|"4"| UF
+    D_outros -->|"5"| EMPRESA_CNPJ
+    D_outros -->|"9"| MUNICIPIO
+    D_outros -->|"5"| PESSOA_CPF
+    D_outros -->|"8"| UF
     D_politica -->|"4"| EMPRESA_CNPJ
     D_politica -->|"5"| MUNICIPIO
     D_politica -->|"6"| PARTIDO
@@ -100,13 +101,13 @@ flowchart LR
     D_referencia -->|"5"| UF
     D_saude -->|"7"| CNES
     D_saude -->|"7"| EMPRESA_CNPJ
-    D_saude -->|"22"| MUNICIPIO
-    D_saude -->|"21"| UF
+    D_saude -->|"24"| MUNICIPIO
+    D_saude -->|"23"| UF
     D_territorio -->|"3"| CID10
     D_territorio -->|"5"| EMPRESA_CNPJ
     D_territorio -->|"20"| MUNICIPIO
     D_territorio -->|"3"| PESSOA_CPF
-    D_territorio -->|"16"| UF
+    D_territorio -->|"17"| UF
 ```
 
 ## Diretórios e tabelas de referência
@@ -172,7 +173,7 @@ flowchart LR
 
 ## Saúde
 
-25 datasets
+28 datasets · 1 sem ligação documentada
 
 ```mermaid
 flowchart LR
@@ -197,6 +198,8 @@ flowchart LR
     saude_br_ms_sinan_violencia["ms_sinan_violencia"]
     saude_br_ms_sinan_zika["ms_sinan_zika"]
     saude_br_ms_sinasc["ms_sinasc"]
+    saude_br_ms_sipni_doses_historicas["ms_sipni_doses_historicas"]
+    saude_br_ms_sipni_microdados["ms_sipni_microdados"]
     saude_br_ms_sisvan["ms_sisvan"]
     saude_br_ms_vacinacao_covid19["ms_vacinacao_covid19"]
     saude_br_saude_bps["saude_bps"]
@@ -275,6 +278,10 @@ flowchart LR
     saude_br_ms_sinasc -.-> saude_CNES
     saude_br_ms_sinasc --> saude_MUNICIPIO
     saude_br_ms_sinasc --> saude_UF
+    saude_br_ms_sipni_doses_historicas -.-> saude_MUNICIPIO
+    saude_br_ms_sipni_doses_historicas -.-> saude_UF
+    saude_br_ms_sipni_microdados -.-> saude_MUNICIPIO
+    saude_br_ms_sipni_microdados -.-> saude_UF
     saude_br_ms_sisvan --> saude_MUNICIPIO
     saude_br_ms_sisvan --> saude_UF
     saude_br_ms_vacinacao_covid19 -.-> saude_CNES
@@ -375,7 +382,7 @@ flowchart LR
 
 ## Trabalho, empresas e economia
 
-44 datasets · 8 sem ligação documentada
+45 datasets · 8 sem ligação documentada
 
 ```mermaid
 flowchart LR
@@ -383,6 +390,7 @@ flowchart LR
     economia_br_anp_precos_combustiveis["anp_precos_combustiveis"]
     economia_br_bcb_estban["bcb_estban"]
     economia_br_bcb_ifdata["bcb_ifdata"]
+    economia_br_bcb_pix_municipio["bcb_pix_municipio"]
     economia_br_bcb_scrdata["bcb_scrdata"]
     economia_br_bcb_sicor["bcb_sicor"]
     economia_br_bndes_operacoes_contratadas["bndes_operacoes_contratadas"]
@@ -449,6 +457,8 @@ flowchart LR
     economia_br_bcb_estban --> economia_MUNICIPIO
     economia_br_bcb_estban --> economia_UF
     economia_br_bcb_ifdata --> economia_MUNICIPIO
+    economia_br_bcb_pix_municipio -.-> economia_MUNICIPIO
+    economia_br_bcb_pix_municipio -.-> economia_UF
     economia_br_bcb_scrdata --> economia_CNAE
     economia_br_bcb_scrdata -.-> economia_UF
     economia_br_bcb_sicor --> economia_EMPRESA_CNPJ
@@ -799,6 +809,7 @@ flowchart LR
     justica_br_fbsp_absp --> justica_UF
     justica_br_mj_consumidorgovbr -.-> justica_UF
     justica_br_mjsp_ckan -.-> justica_EMPRESA_CNPJ
+    justica_br_mjsp_ckan -.-> justica_MUNICIPIO
     justica_br_mjsp_ckan -.-> justica_UF
     justica_br_mjsp_procurados -.-> justica_UF
     justica_br_mjsp_sinesp -.-> justica_MUNICIPIO
@@ -818,7 +829,7 @@ flowchart LR
 
 ## Território, ambiente e infraestrutura
 
-26 datasets · 4 sem ligação documentada
+27 datasets · 4 sem ligação documentada
 
 ```mermaid
 flowchart LR
@@ -834,6 +845,7 @@ flowchart LR
     territorio_br_inmet_bdmep["inmet_bdmep"]
     territorio_br_inpe_deter["inpe_deter"]
     territorio_br_inpe_prodes["inpe_prodes"]
+    territorio_br_inpe_prodes_acumulado["inpe_prodes_acumulado"]
     territorio_br_inpe_queimadas["inpe_queimadas"]
     territorio_br_inpe_sisam["inpe_sisam"]
     territorio_br_ipea_acesso_oportunidades["ipea_acesso_oportunidades"]
@@ -896,6 +908,7 @@ flowchart LR
     territorio_br_inpe_deter -.-> territorio_MUNICIPIO
     territorio_br_inpe_deter -.-> territorio_UF
     territorio_br_inpe_prodes --> territorio_MUNICIPIO
+    territorio_br_inpe_prodes_acumulado -.-> territorio_UF
     territorio_br_inpe_queimadas --> territorio_MUNICIPIO
     territorio_br_inpe_queimadas --> territorio_UF
     territorio_br_inpe_sisam --> territorio_MUNICIPIO
@@ -1016,15 +1029,20 @@ flowchart LR
 
 ## Outros
 
-6 datasets · 1 sem ligação documentada
+11 datasets · 1 sem ligação documentada
 
 ```mermaid
 flowchart LR
-    outros__obsoleto["_obsoleto"]
+    outros_br_aneel_dadosabertos["aneel_dadosabertos"]
     outros_br_anm["anm"]
+    outros_br_antt_dadosabertos["antt_dadosabertos"]
+    outros_br_incra_acervo["incra_acervo"]
+    outros_br_mds_cadunico["mds_cadunico"]
     outros_br_minc_salic["minc_salic"]
     outros_br_pncp["pncp"]
     outros_br_sedec_desastres["sedec_desastres"]
+    outros_br_senatran_frota["senatran_frota"]
+    outros_politicos["politicos"]
     subgraph outros_g_territ_rio["Território"]
         direction TB
         outros_MUNICIPIO(["MUNICIPIO"])
@@ -1036,16 +1054,27 @@ flowchart LR
         outros_EMPRESA_CNPJ(["EMPRESA_CNPJ"])
         outros_PESSOA_CPF(["PESSOA_CPF"])
     end
-    subgraph outros_g_equipamentos["Equipamentos"]
+    subgraph outros_g_estado_e_economia["Estado e economia"]
         direction TB
-        outros_CID10(["CID10"])
+        outros_PARTIDO(["PARTIDO"])
+        outros_NCM_SH(["NCM_SH"])
     end
-    outros__obsoleto -.-> outros_CID10
-    outros__obsoleto --> outros_MUNICIPIO
+    outros_br_aneel_dadosabertos -.-> outros_EMPRESA_CNPJ
+    outros_br_aneel_dadosabertos -.-> outros_MUNICIPIO
+    outros_br_aneel_dadosabertos -.-> outros_PESSOA_CPF
     outros_br_anm -.-> outros_EMPRESA_CNPJ
     outros_br_anm -.-> outros_MUNICIPIO
     outros_br_anm -.-> outros_PESSOA_CPF
     outros_br_anm -.-> outros_UF
+    outros_br_antt_dadosabertos --> outros_CEP
+    outros_br_antt_dadosabertos -.-> outros_EMPRESA_CNPJ
+    outros_br_antt_dadosabertos -.-> outros_MUNICIPIO
+    outros_br_antt_dadosabertos -.-> outros_NCM_SH
+    outros_br_antt_dadosabertos -.-> outros_PESSOA_CPF
+    outros_br_antt_dadosabertos -.-> outros_UF
+    outros_br_incra_acervo -.-> outros_MUNICIPIO
+    outros_br_incra_acervo --> outros_UF
+    outros_br_mds_cadunico --> outros_MUNICIPIO
     outros_br_minc_salic --> outros_CEP
     outros_br_minc_salic --> outros_EMPRESA_CNPJ
     outros_br_minc_salic -.-> outros_PESSOA_CPF
@@ -1055,11 +1084,17 @@ flowchart LR
     outros_br_pncp -.-> outros_UF
     outros_br_sedec_desastres --> outros_MUNICIPIO
     outros_br_sedec_desastres --> outros_UF
+    outros_br_senatran_frota --> outros_MUNICIPIO
+    outros_br_senatran_frota --> outros_UF
+    outros_politicos -.-> outros_MUNICIPIO
+    outros_politicos -.-> outros_PARTIDO
+    outros_politicos --> outros_PESSOA_CPF
+    outros_politicos -.-> outros_UF
 ```
 
 ## Sem ligação documentada
 
-39 datasets não têm nenhuma chave que chegue a um hub — estão no espelho, mas nada documentado os liga a mais nada:
+40 datasets não têm nenhuma chave que chegue a um hub — estão no espelho, mas nada documentado os liga a mais nada:
 
 - `br_ana_bho`
 - `br_ana_reservatorios`
@@ -1082,6 +1117,7 @@ flowchart LR
 - `br_me_sic`
 - `br_me_siorg`
 - `br_mec_prouni`
+- `br_ms_sipni_dicionarios`
 - `br_stf_corte_aberta`
 - `br_stj_dadosabertos`
 - `br_tce_to`
