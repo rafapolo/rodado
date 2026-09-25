@@ -669,6 +669,18 @@ com grão municipal bom. Achado ao rerodar o gerador de inéditos
 2. A notificação de violência doméstica/sexual (SINAN) é predita mais por conectividade (IBC) do que por pobreza — o mesmo viés de registro já visto 6× no espelho? *(n=2: ms_sinan_violencia, anatel_indice_brasileiro_conectividade)*
 3. A proporção de vítimas negras em acidentes de transporte (Mobilidados) excede a própria composição racial do município (Censo 2022), e o excesso é maior onde a renda é menor? *(n=2: mobilidados_indicadores, ibge_censo2022_raca)*
 
+## 83 · Transferência, Orçamento e Aprendizagem: Datasets Espelhados Sem Pergunta (2026-09-25)
+
+Datasets que nenhuma pergunta tocava, verificados no beelink antes de virar
+tema (contagem, cobertura e chave de join). A verificação está no
+inventário local de `tasks/espelho_subutilizado.md`, Parte I.
+
+1. O corte de famílias do Bolsa Família em 2019 (maio → dezembro, com o CadÚnico crescendo) foi proporcionalmente maior onde a pobreza cadastrada por habitante é maior? *(n=3: mc_indicadores, cgu_beneficios_cidadao, ibge_populacao\*)*
+2. Em termos reais, quais funções do orçamento federal cresceram entre 2015 e 2024, a execução (pago ÷ dotação atualizada) é menor nas discricionárias, e quanto da receita realizada é dívida rolada? *(n=3: cgu_orcamento_publico, cgu_receitas_publicas, ibge_ipca\*)*
+3. Município com nota maior na Escala Brasil Transparente (CGU) tem menos pendência no CAUC, controlando porte e renda? *(n=3: cgu_ebt, tesouro_cauc, ibge_pib\*)*
+4. O TIMSS 2023, primeira participação do Brasil, põe o país no mesmo lugar que o PISA 2022 e o SAEB? *(n=3: world_iea_timss, world_oecd_pisa, inep_saeb)*
+5. Reclamação no consumidor.gov.br por habitante segue a conectividade (IBC) mais que a renda, como outro caso de registro que mede o acesso ao canal e não o fenômeno? *(n=3: mj_consumidorgovbr, anatel_indice_brasileiro_conectividade, ibge_pib\*)*
+
 ---
 
 # Perguntas multi-dataset simultâneos
