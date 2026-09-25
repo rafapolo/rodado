@@ -160,9 +160,10 @@ function sobreposicao(a: string, b: string): number {
  * termos não pegou. Lido par a par em 2026-09-24 (harness_tasks.md B18):
  * T02-5 pergunta população jovem → matrícula/IDEB e o gabarito é ΔIDEB × PIB;
  * T30-1 pergunta concentração de capital e o gabarito diz "concentração
- * pendente". Saem da rodada até `respostas.md` ser corrigido.
+ * pendente". Saíram da rodada até `respostas.md` ser corrigido — respondidos
+ * de fato em 2026-09-25 (B21) e de volta. O conjunto fica para o próximo.
  */
-export const GABARITO_TROCADO = new Set(["T02-5", "T30-1"]);
+export const GABARITO_TROCADO = new Set<string>([]);
 
 /**
  * `n` publicado que a pergunta não deixa alcançar: corte explícito no gabarito
@@ -177,6 +178,8 @@ export const N_INALCANCAVEL = new Set([
   "T04-3", "T06-2", "T07-2", "T10-2", "T10-4", "T10-5", "T11-4", "T12-2", "T13-2", "T14-1",
   "T15-3", "T18-1", "T18-5", "T19-1", "T21-4", "T23-2", "T28-5", "T31-3", "T35-4", "T40-1",
   "T40-3", "T75-2", "T81-4",
+  // T30-1: divisão CNAE (86) é uma escolha — seção (21) daria outro n
+  "T30-1",
   // unidade diferente da pergunta
   "T05-1", "T05-3", "T05-5", "T14-2", "T16-3", "T24-4", "T29-1", "T30-5", "T38-2", "T59-5",
 ]);
