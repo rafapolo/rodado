@@ -1,0 +1,556 @@
+# column_codes.yaml — o significado dos códigos de colunas que nenhuma outra
+# fonte do projeto decodificava.
+#
+# Estágio 4 de tasks/generate-full-schema-dict.md (pesquisa manual), rodado
+# em 2026-09-25 sobre o topo do ranking de uso real de
+# docs/context/schema_dict_prioridade.json (estágio 3). Escrito à mão, como
+# bridges.yaml: é a fonte. schema_dict_status.json é o gerado.
+#
+# Cada entrada cobre uma ou mais colunas de UMA tabela e tem um `status`:
+#   documentado    o significado dos valores foi conferido numa fonte oficial
+#                  (URL em `fontes`) E os valores medidos no beelink batem com
+#                  ela. Vira `documentado_em_outro_lugar` em schema_dict_status.
+#   padrao_externo a coluna é um código de padrão público (UF/município IBGE,
+#                  CID-10, natureza jurídica CONCLA...), conferido por join
+#                  medido contra a tabela de referência do espelho.
+#   nao_e_codigo   os valores medidos são rótulo por extenso, nome, texto livre,
+#                  ano ou número: não há código a decodificar. A maioria veio do
+#                  estágio 1 como "tabela grande, cardinalidade adiada".
+#   pendente       pesquisado e NÃO confirmado. Continua `nao_verificado`; a
+#                  `nota` diz o que se sabe e o que falta. Nunca promover a
+#                  documentado sem fonte.
+#
+# `verificado` é o que casou no beelink, com data — mesma regra de bridges.yaml:
+# sem isso a linha é aspiracional. Valores fora do dicionário oficial ficam
+# registrados em `nota`, não escondidos.
+#
+# Depois de editar: python3 scripts/aplica_column_codes.py (reescreve os labels
+# em schema_dict_status.json) e python3 scripts/prioriza_schema_dict_status.py.
+# describe_table (mcp/mcp_server.py) lê este arquivo direto e devolve o decode
+# no bloco `column_codes`.
+
+fontes:
+  sinan_violencia_v5:
+    titulo: "Dicionário de dados SINAN NET v5 — Violência interpessoal/autoprovocada (MS/SVS, revisado jun/2015)"
+    url: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf
+    consultado: 2026-09-25
+  sinan_violencia_5_0_naovigente:
+    titulo: "Dicionário de dados SINAN — Violência doméstica, sexual e/ou outras violências, versão 5.0 não vigente (MS/SVS)"
+    url: http://www.portalsinan.saude.gov.br/images/documentos/Agravos/Violencia/DIC_DADOS_violencias_5_0_naovigente.pdf
+    consultado: 2026-09-25
+  sinan_malaria_v5:
+    titulo: "Dicionário de dados SINAN NET v5 — Malária (MS/SVS, revisado jul/2010)"
+    url: http://portalsinan.saude.gov.br/images/documentos/Agravos/Malaria/DIC_DADOS_Malaria_v5.pdf
+    consultado: 2026-09-25
+  sinan_esquistossomose_v5:
+    titulo: "Dicionário de dados SINAN NET v5 — Esquistossomose (MS/SVS, revisado mar/2012)"
+    url: http://portalsinan.saude.gov.br/images/documentos/Agravos/Esquistossomose/DIC_DADOS_Esquistossomose_v5.pdf
+    consultado: 2026-09-25
+  sim_estrutura:
+    titulo: "Estrutura do SIM — Mortalidade Geral (DATASUS; deriva de Estrutura_SIM_para_CD.DBF)"
+    url: https://diaad.s3.sa-east-1.amazonaws.com/sim/Mortalidade_Geral+-+Estrutura.pdf
+    consultado: 2026-09-25
+  lei_4320:
+    titulo: "Lei 4.320/1964, arts. 58–65 e 36 — estágios da despesa (empenho, liquidação, pagamento) e restos a pagar"
+    url: https://www.planalto.gov.br/ccivil_03/leis/l4320.htm
+    consultado: 2026-09-25
+  espelho:
+    titulo: "Tabela de referência do próprio espelho, conferida por join medido no beelink"
+    url: https://basedosdados.org
+    consultado: 2026-09-25
+
+entradas:
+
+  # --- SINAN Violência -------------------------------------------------------
+  - tabela: br_ms_sinan_violencia.microdados_violencia
+    colunas: [AG_AMEACA, AG_CORTE, AG_ENFOR, AG_ENVEN, AG_FOGO, AG_FORCA, AG_OBJETO,
+              AG_OUTROS, AG_QUENTE, ASSIST_SOC, AUTOR_ALCO, CONS_IDO, CONS_TUTEL,
+              DEFEN_PUBL, DELEG, DELEG_CRIA, DELEG_IDOS, DIR_HUMAN, INFAN_JUV, MPU,
+              REDE_EDUCA, REL_CONHEC, REL_CONJ, REL_CUIDA, REL_DESCO, REL_EXCON,
+              REL_EXNAM, REL_FILHO, REL_INST, REL_MAD, REL_MAE, REL_NAMO, REL_OUTROS,
+              REL_PAD, REL_PAI, REL_PATRAO, REL_POL, REL_PROPRI, REL_TRAB, VIOL_FINAN,
+              VIOL_FISIC, VIOL_INFAN, VIOL_LEGAL, VIOL_NEGLI, VIOL_OUTR, VIOL_PSICO,
+              VIOL_SEXU, VIOL_TORT, VIOL_TRAF, OUT_VEZES]
+    status: documentado
+    significado: "Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES)"
+    valores: {"1": Sim, "2": Não, "9": Ignorado, "": não preenchido}
+    fonte: sinan_violencia_v5
+    verificado: "2026-09-25: valores distintos medidos coluna a coluna ⊆ {'',1,2,9} (+ '0' em OUT_VEZES/VIOL_OUTR e '.' em REL_PAI); cada DBF achado no dicionário com as categorias 1/2/9. VIOL_FISIC: 2.705.730 sim, 2.103.796 não, 54.477 ignorado, 75.263 vazio de 4.939.266"
+    nota: "Contar 'sim' é = '1', nunca soma da coluna. '0' (OUT_VEZES, VIOL_OUTR) e '.' (REL_PAI) não existem no dicionário: tratar como não preenchido."
+
+  - tabela: br_ms_sinan_violencia.microdados_violencia
+    colunas: [DEF_AUDITI, DEF_FISICA, DEF_MENTAL, DEF_OUT, DEF_VISUAL, DEF_TRANS,
+              TRAN_COMP, TRAN_MENT, PROC_ABORT, PROC_CONTR, PROC_DST, PROC_HEPB,
+              PROC_HIV, PROC_SANG, PROC_SEMEN, PROC_VAGIN, REL_CAT, SEX_ESTUPR,
+              SEX_EXPLO, SEX_OUTRO, SEX_PORNO, LES_AUTOP]
+    status: documentado
+    significado: "Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP)"
+    valores: {"1": Sim, "2": Não, "8": Não se aplica, "9": Ignorado, "": não preenchido}
+    fonte: sinan_violencia_v5
+    verificado: "2026-09-25: valores medidos ⊆ {'',1,2,8,9} (LES_AUTOP tem 1 linha '0'). LES_AUTOP: 1.304.571 sim, 3.275.066 não, 269.797 ignorado, 89.831 vazio"
+    nota: "DEF_TRANS no dicionário v5 lista só 1/2/9; o 8 aparece no dado (versão anterior da ficha). SEX_* com 8 = a violência não foi sexual."
+
+  - tabela: br_ms_sinan_violencia.microdados_violencia
+    colunas: [TP_NOT]
+    status: documentado
+    significado: Tipo de notificação
+    valores: {"1": Negativa, "2": Individual, "3": Surto, "4": Agregado}
+    fonte: sinan_violencia_v5
+    verificado: "2026-09-25: um valor só, '2' (individual), em 4.939.266 linhas — coluna constante, não filtra nada"
+
+  - tabela: br_ms_sinan_violencia.microdados_violencia
+    colunas: [ID_AGRAVO]
+    status: padrao_externo
+    significado: "Agravo notificado, código CID-10 sem ponto. Y09 = agressão por meios não especificados, o código do agravo violência interpessoal/autoprovocada"
+    fonte: sinan_violencia_v5
+    verificado: "2026-09-25: um valor só, 'Y09', em 4.939.266 linhas — coluna constante"
+
+  - tabela: br_ms_sinan_violencia.microdados_violencia
+    colunas: [CS_SEXO]
+    status: documentado
+    significado: Sexo da vítima
+    valores: {M: Masculino, F: Feminino, I: Ignorado}
+    fonte: sinan_violencia_v5
+    verificado: "2026-09-25: F 3.505.452, M 1.432.147, I 1.666, vazio 1"
+    nota: "Letras, não 1/2 como em SIM/SINASC — ver bridges.yaml coded_differently.sexo."
+
+  - tabela: br_ms_sinan_violencia.microdados_violencia
+    colunas: [CS_RACA]
+    status: documentado
+    significado: Raça/cor declarada
+    valores: {"1": Branca, "2": Preta, "3": Amarela, "4": Parda, "5": Indígena, "9": Ignorado}
+    fonte: sinan_violencia_v5
+    verificado: "2026-09-25: 4 parda 2.065.124, 1 branca 1.933.108, 2 preta 413.804, 9 ignorado 398.514, 5 indígena 45.410, 3 amarela 41.332, vazio 41.974"
+
+  - tabela: br_ms_sinan_violencia.microdados_violencia
+    colunas: [CS_GESTANT]
+    status: documentado
+    significado: Gestante (idade gestacional)
+    valores: {"1": 1º trimestre, "2": 2º trimestre, "3": 3º trimestre, "4": Idade gestacional ignorada, "5": Não, "6": Não se aplica, "9": Ignorado}
+    fonte: sinan_violencia_v5
+    verificado: "2026-09-25: valores medidos {'',1,2,3,4,5,6,8,9}"
+    nota: "O dicionário v5 está truncado no PDF para o código 5 (lê 'Não preenchido'); o padrão SINAN é 5 = Não. O 8 aparece no dado e não está no dicionário."
+
+  - tabela: br_ms_sinan_violencia.microdados_violencia
+    colunas: [SIT_CONJUG]
+    status: documentado
+    significado: Situação conjugal da vítima
+    valores: {"1": Solteiro, "2": Casado/União consensual, "3": Viúvo, "4": Separado, "8": Não se aplica, "9": Ignorado}
+    fonte: sinan_violencia_v5
+    verificado: "2026-09-25: valores medidos {'',1,2,3,4,8,9}"
+
+  - tabela: br_ms_sinan_violencia.microdados_violencia
+    colunas: [ORIENT_SEX]
+    status: documentado
+    significado: Orientação sexual da vítima (obrigatório a partir de 10 anos)
+    valores: {"1": Heterossexual, "2": Homossexual (gay/lésbica), "3": Bissexual, "8": Não se aplica, "9": Ignorado}
+    fonte: sinan_violencia_v5
+    verificado: "2026-09-25: valores medidos {'',1,2,3,8,9}"
+
+  - tabela: br_ms_sinan_violencia.microdados_violencia
+    colunas: [IDENT_GEN]
+    status: documentado
+    significado: Identidade de gênero da vítima
+    valores: {"1": Travesti, "2": Transexual mulher, "3": Transexual homem, "8": Não se aplica, "9": Ignorado}
+    fonte: sinan_violencia_v5
+    verificado: "2026-09-25: valores medidos {'',1,2,3,5,8,9}"
+    nota: "O código 5 aparece no dado e não está no dicionário v5 — não interpretar."
+
+  - tabela: br_ms_sinan_violencia.microdados_violencia
+    colunas: [LOCAL_OCOR]
+    status: documentado
+    significado: Local de ocorrência
+    valores: {"01": Residência, "02": Habitação coletiva, "03": Escola, "04": Local de prática esportiva, "05": Bar ou similar, "06": Via pública, "07": Comércio/Serviços, "08": Indústrias/construção, "09": Outro, "99": Ignorado}
+    fonte: sinan_violencia_v5
+    verificado: "2026-09-25: valores medidos {'',01..09,1,99}"
+    nota: "Há '1' sem zero à esquerda misturado com '01': filtrar residência com IN ('01','1')."
+
+  - tabela: br_ms_sinan_violencia.microdados_violencia
+    colunas: [AUTOR_SEXO]
+    status: documentado
+    significado: Sexo do provável autor da agressão
+    valores: {"1": Masculino, "2": Feminino, "3": Ambos os sexos, "9": Ignorado}
+    fonte: sinan_violencia_v5
+    verificado: "2026-09-25: valores medidos {'',1,2,3,4,5,9}"
+    nota: "4 e 5 aparecem no dado e não estão no dicionário v5. Aqui o sexo é NÚMERO (1/2); em CS_SEXO, da vítima, é LETRA (M/F)."
+
+  - tabela: br_ms_sinan_violencia.microdados_violencia
+    colunas: [VIOL_MOTIV]
+    status: documentado
+    significado: Violência motivada por
+    valores: {"01": Sexismo, "02": Homofobia/Lesbofobia/Bifobia/Transfobia, "03": Racismo, "04": Intolerância religiosa, "05": Xenofobia, "06": Conflito geracional, "07": Situação de rua, "08": Deficiência, "09": Outros, "88": Não se aplica, "99": Ignorado}
+    fonte: sinan_violencia_v5
+    verificado: "2026-09-25: valores medidos {'',01..09,4,7,88,99}"
+    nota: "Há '4' e '7' sem zero à esquerda misturados com '04'/'07': filtrar com IN ('04','4')."
+
+  - tabela: br_ms_sinan_violencia.microdados_violencia
+    colunas: [CICL_VID]
+    status: documentado
+    significado: "Ciclo de vida do provável autor da agressão (DBF CICL_VID_AUTOR no dicionário, truncado para 8 caracteres no arquivo)"
+    valores: {"1": Criança, "2": Adolescente, "3": Jovem, "4": Pessoa adulta, "5": Pessoa idosa, "9": Ignorado}
+    fonte: sinan_violencia_v5
+    verificado: "2026-09-25: valores medidos {'',1,2,3,4,5,9}, idênticos às categorias do dicionário"
+    nota: "É do AUTOR, não da vítima — o nome da coluna não diz."
+
+  - tabela: br_ms_sinan_violencia.microdados_violencia
+    colunas: [SG_UF_NOT, SG_UF, SG_UF_OCOR]
+    status: padrao_externo
+    significado: "UF de notificação / de residência / de ocorrência, código IBGE de 2 dígitos (11..53), não sigla"
+    fonte: sinan_violencia_v5
+    verificado: "2026-09-25: 27 códigos distintos de 11 a 53 (SG_UF e SG_UF_OCOR com vazio). Junta com br_bd_diretorios_brasil.uf.id_uf"
+
+  - tabela: br_ms_sinan_violencia.microdados_violencia
+    colunas: [REL_SEXUAL]
+    status: pendente
+    nota: "Valores {'',1,2,3,8,9}, preenchido só de 2009 a ~2021 (4.242.249 vazios de 4.939.266). Não está no dicionário v5 vigente nem no 5.0 não vigente: é campo de ficha anterior. Significado dos códigos NÃO confirmado — não usar sem o dicionário da ficha 2009–2014."
+
+  - tabela: br_ms_sinan_violencia.microdados_violencia
+    colunas: [ATEND_MULH, CONS_COMP, CONS_ESTRE, CONS_GRAV, CONS_MENT, CONS_OUTR,
+              CONS_SUIC, CONS_ABORT, CONS_DST, DELEG_MULH, ENC_ABRIGO, ENC_CREAS, ENC_DEAM,
+              ENC_DELEG, ENC_DPCA, ENC_IML, ENC_MPU, ENC_MULHER, ENC_OUTR, ENC_SENTIN,
+              ENC_TUTELA, ENC_VARA, PEN_ANAL, PEN_ORAL, PEN_VAGINA, REDE_SAU, REL_IRMAO,
+              SEX_PUDOR, SEX_ASSEDI]
+    status: pendente
+    nota: "Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
+
+  # --- SINAN Malária ---------------------------------------------------------
+  - tabela: br_ms_sinan_malaria.microdados_malaria
+    colunas: [CLASSI_FIN]
+    status: documentado
+    significado: Classificação final do caso
+    valores: {"1": Confirmado, "2": Descartado}
+    fonte: sinan_malaria_v5
+    verificado: "2026-09-25: 2 descartado 35.347, 1 confirmado 10.591, 8 → 610, vazio 9.746, NULL 12.026 (de 68.320)"
+    nota: "O código 8 (610 linhas) não está no dicionário. A maioria das notificações de malária fora da Amazônia Legal é DESCARTADA: contar casos exige CLASSI_FIN = '1'."
+
+  - tabela: br_ms_sinan_malaria.microdados_malaria
+    colunas: [TPAUTOCTO]
+    status: documentado
+    significado: O caso é autóctone do município de residência?
+    valores: {"1": Sim, "2": Não, "3": Indeterminado}
+    fonte: sinan_malaria_v5
+    verificado: "2026-09-25: 2 → 13.056, 1 → 3.287, 3 → 1.283, vazio 38.668, NULL 12.026"
+
+  - tabela: br_ms_sinan_malaria.microdados_malaria
+    colunas: [RESULT]
+    status: documentado
+    significado: "Resultado do exame parasitológico (espécie/forma do plasmódio, notação do dicionário)"
+    valores: {"1": Negativo, "2": F, "3": F + FG, "4": V, "5": F + V, "6": V + FG, "7": FG, "8": M, "9": F + M, "10": O}
+    fonte: sinan_malaria_v5
+    verificado: "2026-09-25: 1 → 44.880, 4 → 13.593, 2 → 4.550, 5 → 635, 3 → 425, 6 → 235, 10 → 118, 8 → 87, 7 → 72, 9 → 23, vazio 3.702"
+    nota: "O dicionário usa as siglas sem expandir. Na notação corrente da vigilância de malária F = P. falciparum, V = P. vivax, M = P. malariae, FG = gametócitos de falciparum, O = P. ovale — expansão não escrita nesta fonte. O rótulo do 10 está cortado no PDF ('10 - O')."
+
+  - tabela: br_ms_sinan_malaria.microdados_malaria
+    colunas: [COUFINF]
+    status: padrao_externo
+    significado: "UF provável da fonte de infecção — aqui como SIGLA (AC, AM, PA...), não código IBGE"
+    fonte: sinan_malaria_v5
+    verificado: "2026-09-25: 28 valores distintos, todos siglas (RO 2.840, AM 1.894, PA 1.588...), vazio 44.658, NULL 12.026"
+    nota: "Diverge do mesmo campo em br_ms_sinan_esquistossomose, que guarda o código IBGE numérico (11..53). Juntar as duas pelo COUFINF sem converter devolve zero."
+
+  # --- SINAN Esquistossomose -------------------------------------------------
+  - tabela: br_ms_sinan_esquistossomose.microdados_esquistossomose
+    colunas: [EVOLUCAO]
+    status: documentado
+    significado: Evolução do caso
+    valores: {"1": Cura, "2": Não cura, "3": Óbito por esquistossomose, "4": Óbito por outras causas, "9": Ignorado}
+    fonte: sinan_esquistossomose_v5
+    verificado: "2026-09-25: 1 → 102.845, 9 → 11.549, 2 → 1.821, 3 → 1.291, 4 → 683, vazio 51.532 (de 169.721)"
+
+  - tabela: br_ms_sinan_esquistossomose.microdados_esquistossomose
+    colunas: [FORMA]
+    status: documentado
+    significado: Forma anátomo-clínica
+    valores: {"1": Intestinal, "2": Hepatointestinal, "3": Hepatoesplênica, "4": Aguda, "5": Outra}
+    fonte: sinan_esquistossomose_v5
+    verificado: "2026-09-25: 1 → 79.577, 4 → 4.094, 2 → 3.965, 3 → 3.748, 5 → 3.583, vazio 74.754"
+
+  - tabela: br_ms_sinan_esquistossomose.microdados_esquistossomose
+    colunas: [TPAUTOCTO]
+    status: documentado
+    significado: O caso é autóctone do município de residência?
+    valores: {"1": Sim, "2": Não, "3": Indeterminado}
+    fonte: sinan_esquistossomose_v5
+    verificado: "2026-09-25: 1 → 101.853, 2 → 24.500, 3 → 21.990, vazio 21.378"
+
+  - tabela: br_ms_sinan_esquistossomose.microdados_esquistossomose
+    colunas: [AN_QUALI]
+    status: documentado
+    significado: Análise qualitativa (exame Hoffman)
+    valores: {"1": Positivo, "2": Negativo, "3": Não realizado}
+    fonte: sinan_esquistossomose_v5
+    verificado: "2026-09-25: 1 → 79.961, 3 → 22.870, 2 → 4.083, vazio 62.807"
+
+  - tabela: br_ms_sinan_esquistossomose.microdados_esquistossomose
+    colunas: [TRATAM]
+    status: documentado
+    significado: Fez tratamento?
+    valores: {"1": "Sim, praziquantel", "2": "Sim, oxamniquina", "3": Não, "9": Ignorado}
+    fonte: sinan_esquistossomose_v5
+    verificado: "2026-09-25: 1 → 137.676, 9 → 11.863, 3 → 8.443, 2 → 1.355, 4 → 5, vazio 10.379"
+    nota: "O código 4 (5 linhas) não está no dicionário."
+
+  - tabela: br_ms_sinan_esquistossomose.microdados_esquistossomose
+    colunas: [CS_SEXO]
+    status: documentado
+    significado: Sexo do paciente (campos gerais da ficha SINAN)
+    valores: {M: Masculino, F: Feminino, I: Ignorado}
+    fonte: sinan_violencia_v5
+    verificado: "2026-09-25: M 102.222, F 67.476, I 23"
+    nota: "O dicionário da esquistossomose remete os campos 1–30 ao dicionário da ficha de notificação individual, cuja categoria de sexo é a mesma citada na fonte."
+
+  - tabela: br_ms_sinan_esquistossomose.microdados_esquistossomose
+    colunas: [COUFINF]
+    status: padrao_externo
+    significado: "UF provável da fonte de infecção, código IBGE numérico (11..53)"
+    fonte: sinan_esquistossomose_v5
+    verificado: "2026-09-25: 28 valores distintos, máximo 53"
+    nota: "Diverge de br_ms_sinan_malaria.COUFINF, que guarda sigla."
+
+  # --- SIM -------------------------------------------------------------------
+  - tabela: br_ms_sim.microdados
+    colunas: [fontes]
+    status: documentado
+    significado: "Fontes consultadas na investigação do óbito, 6 posições S/X na ordem FONTENTREV (entrevista), FONTEAMBUL (ambulatório), FONTEPRONT (prontuário), FONTESVO (SVO), FONTEIML (IML), FONTEPROF (profissional): 'S' = fonte usada, 'X' = não"
+    valores: {S: fonte preenchida, X: campo vazio}
+    fonte: sim_estrutura
+    verificado: "2026-09-25: NULL em 30.847.303 de 31.242.595; preenchido só de 2014 a 2022 (como a estrutura diz: 2014). Mais comum XXSXXX (70.736: só prontuário)"
+    nota: "Posição 3 = prontuário: substr(fontes, 3, 1) = 'S'."
+
+  - tabela: br_ms_sim.microdados
+    colunas: [alt_causa]
+    status: documentado
+    significado: Houve correção ou alteração da causa do óbito após investigação?
+    valores: {"1": Sim, "2": Não}
+    fonte: sim_estrutura
+    verificado: "2026-09-25: '2' 187.969, '1' 46.527, '2.0' 30.559, '1.0' 7.170, NULL 30.970.370"
+    nota: "Bug de import: o mesmo código vem como '1' e '1.0', '2' e '2.0'. Filtrar com IN ('1','1.0')."
+
+  - tabela: br_ms_sim.microdados
+    colunas: [causa_materna]
+    status: padrao_externo
+    significado: "CID-10 da causa obstétrica (valores O930–O939). Ver hierarchies.yaml cid10"
+    fonte: sim_estrutura
+    verificado: "2026-09-25: 10 códigos O930..O939, 290 linhas preenchidas de 31.242.595"
+
+  - tabela: br_ms_sim.microdados
+    colunas: [serie_escolar_falecido, serie_escolar_mae]
+    status: documentado
+    significado: "Última série escolar concluída (SERIESCFAL / SERIESCMAE), número de 1 a 8"
+    valores: {"1-8": série concluída (número da série)}
+    fonte: sim_estrutura
+    verificado: "2026-09-25: falecido 1..8 (+ '0' em 5 linhas e '9' em 1), NULL 28.725.710; mãe 1..8, NULL 31.125.366"
+    nota: "A série só faz sentido junto do nível de escolaridade (escolaridade_2010), que diz de qual ciclo é a série."
+
+  # --- MapBiomas -------------------------------------------------------------
+  - tabela: br_mapbiomas_estatisticas.transicao_municipio_de_para_decenal
+    colunas: [id_classe_de, id_classe_para]
+    status: documentado
+    significado: "Classe de cobertura da legenda MapBiomas. Decode em br_mapbiomas_estatisticas.classe (chave → valor_pt/valor_en), junto no mesmo dataset: JOIN ON classe.chave = id_classe_de::VARCHAR"
+    fonte: espelho
+    verificado: "2026-09-25: 28 códigos em id_classe_de; todos menos '0' existem em classe.chave. Ex.: 3 = 1.1 Formação Florestal, 15 = 3.1 Pastagem, 39 = 3.2.1.1 Soja"
+    nota: "O código 0 (9.001 linhas, 639 ha de 25,5 milhões de ha) não está em classe: é 'sem dado'. A legenda é hierárquica (1. Floresta > 1.1 Formação Florestal): não somar pai e filho."
+
+  - tabela: br_mapbiomas_estatisticas.transicao_uf_de_para_anual
+    colunas: [id_classe_de, id_classe_para]
+    status: documentado
+    significado: "Classe de cobertura da legenda MapBiomas. Decode em br_mapbiomas_estatisticas.classe"
+    fonte: espelho
+    verificado: "2026-09-25: um único código de id_classe_de fora de classe.chave (o 0, sem dado)"
+
+  # --- Siconfi ---------------------------------------------------------------
+  - tabela: br_me_siconfi.municipio_despesas_funcao
+    colunas: [estagio, estagio_bd]
+    status: documentado
+    significado: "Estágio da despesa. Empenhada ⊇ liquidada ⊇ paga são o MESMO gasto em fases sucessivas; restos a pagar são inscrições à parte. Somar estágios conta o mesmo real duas ou três vezes."
+    valores: {Despesas Empenhadas: empenho, Despesas Liquidadas: liquidação, Despesas Pagas: pagamento, "Inscrição de Restos a Pagar Processados": liquidado não pago, "Inscrição de Restos a Pagar Não Processados": empenhado não liquidado}
+    fonte: lei_4320
+    verificado: "2026-09-25: estagio_bd preenchido 1996–2025; de 1996 a 2012 só existe 'Despesas Empenhadas', os 5 estágios só a partir de 2013. estagio vem NULL antes de 2013 (8.690.188 linhas) e com nome curto ('Inscrição de RP Processados') em parte dos anos"
+    nota: "Usar estagio_bd (harmonizado), não estagio. Série histórica comparável só em 'Despesas Empenhadas'. 285.416 linhas de 2004–2010 têm estagio_bd NULL."
+
+  - tabela: br_me_siconfi.municipio_despesas_orcamentarias
+    colunas: [estagio, estagio_bd]
+    status: documentado
+    significado: "Estágio da despesa, mesma semântica de municipio_despesas_funcao: não somar estágios"
+    valores: {Despesas Empenhadas: empenho, Despesas Liquidadas: liquidação, Despesas Pagas: pagamento, "Inscrição de Restos a Pagar Processados": liquidado não pago, "Inscrição de Restos a Pagar Não Processados": empenhado não liquidado}
+    fonte: lei_4320
+    verificado: "2026-09-25: Empenhadas 12.034.369 linhas (estagio preenchido em só 6.435.085), Liquidadas 6.430.233, Pagas 6.395.144"
+    nota: "Usar estagio_bd."
+
+  - tabela: br_me_siconfi.municipio_receitas_orcamentarias
+    colunas: [estagio, estagio_bd]
+    status: documentado
+    significado: "Estágio da receita: bruta realizada e deduções (FUNDEB, transferências constitucionais, outras) em linhas separadas. Receita líquida = brutas − deduções; somar tudo mistura sinal"
+    valores: {Receitas Brutas Realizadas: receita arrecadada bruta, "Deduções - FUNDEB": retenção para o FUNDEB, "Deduções - Transferências Constitucionais": repasse constitucional deduzido, Outras Deduções da Receita: demais deduções}
+    fonte: lei_4320
+    verificado: "2026-09-25: Brutas 1989–2025 (18.008.034 linhas; estagio preenchido em 5.923.389); deduções só de 2013/2014 em diante. estagio antigo usa 'Receitas Realizadas' e 'Deduções da Receita' onde estagio_bd diz 'Receitas Brutas Realizadas' e 'Outras Deduções da Receita'"
+    nota: "Usar estagio_bd. Deduções vêm com valor POSITIVO (2022: FUNDEB R$ 525 bi, outras R$ 40 bi): subtrair, não somar. Antes de 2013 não há dedução separada: comparar série longa só por 'Receitas Brutas Realizadas'. Somar todas as linhas de um estágio também empilha os níveis de `conta` (2022: R$ 8,4 tri em brutas, contra ordem de grandeza de ~R$ 1 tri de receita municipal): filtrar a conta de total."
+
+  # --- Natureza jurídica, MEI, município -------------------------------------
+  - tabela: br_me_cnpj.empresas
+    colunas: [natureza_juridica]
+    status: padrao_externo
+    significado: "Código de natureza jurídica (CONCLA/Receita, 4 dígitos). Decode: br_bd_diretorios_brasil.natureza_juridica.id_natureza_juridica"
+    fonte: espelho
+    verificado: "2026-09-25: ano=2025 mes=9, 64.489.125 de 64.490.532 linhas (99,998%) casam; 89 códigos. 2062 = Sociedade Empresária Limitada, 2135 = Empresário (Individual)"
+
+  - tabela: br_me_rais.microdados_vinculos
+    colunas: [natureza_juridica]
+    status: padrao_externo
+    significado: "Código de natureza jurídica (CONCLA, 4 dígitos). Decode: br_bd_diretorios_brasil.natureza_juridica"
+    fonte: espelho
+    verificado: "2026-09-25: ano=2020 sigla_uf=RJ, 5.173.665 de 5.173.665 casam"
+
+  - tabela: br_me_rais.microdados_estabelecimentos
+    colunas: [natureza_juridica]
+    status: padrao_externo
+    significado: "Código de natureza jurídica (CONCLA, 4 dígitos). Decode: br_bd_diretorios_brasil.natureza_juridica"
+    fonte: espelho
+    verificado: "2026-09-25: ano=2020 sigla_uf=RJ, 545.404 de 545.404 casam"
+
+  - tabela: br_me_rais_identificada.estabelecimentos
+    colunas: [natureza_juridica]
+    status: padrao_externo
+    significado: "Código de natureza jurídica (CONCLA, 4 dígitos). Decode: br_bd_diretorios_brasil.natureza_juridica"
+    fonte: espelho
+    verificado: "2026-09-25: 36.161.314 de 36.161.488 casam (99,9995%)"
+
+  - tabela: br_me_cnpj.simples
+    colunas: [opcao_mei]
+    status: documentado
+    significado: "Optante pelo MEI. O leiaute da Receita usa S/N; o espelho (Base dos Dados) grava 1/0"
+    valores: {"1": optante MEI (S), "0": não optante (N)}
+    fonte: espelho
+    verificado: "2026-09-25: amostra de 2M linhas, 1 → 34,9%. Conferido por coerência: das 62.329 empresas da amostra com opcao_mei=1, 62.318 (99,98%) têm natureza_juridica 2135 (Empresário Individual), a única que admite MEI; com opcao_mei=0, 69%"
+
+  - tabela: br_ms_sinasc.microdados
+    colunas: [id_municipio_residencia, id_municipio_nascimento]
+    status: padrao_externo
+    significado: "Código IBGE de município, 7 dígitos. Junta com br_bd_diretorios_brasil.municipio.id_municipio"
+    fonte: espelho
+    verificado: "2026-09-25: ano=2020, 2.730.050 de 2.730.145 (99,997%) casam em id_municipio; nascimento com 7 dígitos em 2.730.144"
+
+  - tabela: br_ms_sih.aihs_reduzidas
+    colunas: [id_municipio_paciente, id_municipio_estabelecimento]
+    status: padrao_externo
+    significado: "Código IBGE de município com 6 dígitos (SEM dígito verificador), apesar do nome id_municipio. Junta com br_bd_diretorios_brasil.municipio.id_municipio_6"
+    fonte: espelho
+    verificado: "2026-09-25: ano=2020 mes=1, 1.014.705 de 1.014.705 com 6 dígitos; 0 casam com id_municipio (7), 1.014.705 casam com id_municipio_6"
+    nota: "Armadilha: o nome promete 7 dígitos. Juntar direto com id_municipio devolve zero linhas, sem erro."
+
+  - tabela: br_me_rais.microdados_vinculos
+    colunas: [id_municipio_trabalho]
+    status: padrao_externo
+    significado: "Código IBGE de município do local de trabalho, 7 dígitos"
+    fonte: espelho
+    verificado: "2026-09-25: ano=2020 sigla_uf=RJ, 3.648.516 com 7 dígitos, 1.525.149 NULL (29%)"
+    nota: "Quase um terço NULL em RJ 2020: para contar vínculos por município prefira id_municipio (do estabelecimento)."
+
+  - tabela: br_inep_enem.microdados
+    colunas: [id_municipio_escola]
+    status: padrao_externo
+    significado: "Código IBGE de município da escola, 7 dígitos"
+    fonte: espelho
+    verificado: "2026-09-25: ano=2020, 904.569 com 7 dígitos, 4.878.540 NULL (egressos e quem não declarou escola)"
+
+  - tabela: br_inep_enem.microdados
+    colunas: [id_municipio_residencia]
+    status: pendente
+    nota: "Código de município, mas 100% NULL em ano=2020 (5.783.109 linhas). Não conferido em outros anos; não usar para 2020+ sem checar o preenchimento."
+
+  # --- Rótulos por extenso (não é código) ------------------------------------
+  - tabela: br_inpe_prodes.municipio_bioma
+    colunas: [bioma]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 6 rótulos por extenso (Mata Atlântica, Cerrado, Caatinga, Amazônia, Pampa, Pantanal)"
+  - tabela: br_ibge_censo_2022.populacao_grupo_idade_sexo_raca
+    colunas: [grupo_idade]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 21 faixas por extenso ('0 a 4 anos' ... '100 anos ou mais')"
+    nota: "Ordenar por texto põe '100 anos ou mais' antes de '15 a 19': ordene por CAST(split_part(grupo_idade,' ',1) AS INT)."
+  - tabela: br_ibge_ppm.efetivo_rebanhos
+    colunas: [tipo_rebanho]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 8 rótulos (Bovino, Suíno - total, Suíno - matrizes de suínos, Galináceos - galinhas...)"
+    nota: "'Suíno - matrizes de suínos' é subconjunto de 'Suíno - total': não somar os dois."
+  - tabela: br_anp_precos_combustiveis.microdados
+    colunas: [produto]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 8 rótulos em caixa mista (Glp, Gasolina, Etanol, Diesel, Diesel S10, Gasolina Aditivada, Gnv, Diesel S50)"
+    nota: "Vocabulário diferente de br_anp_combustiveis.precos.produto (caixa alta, 'GASOLINA COMUM', 'DIESEL S500'): não juntar pelo texto."
+  - tabela: br_anp_combustiveis.precos
+    colunas: [produto]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 7 rótulos em caixa alta (GASOLINA COMUM, ETANOL, GASOLINA ADITIVADA, DIESEL S10, GLP, DIESEL S500, GNV)"
+  - tabela: br_cgu_emendas_parlamentares.microdados
+    colunas: [tipo_emenda]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 5 rótulos (Emenda Individual - Transferências com Finalidade Definida / Especiais, de Relator, de Bancada, de Comissão)"
+  - tabela: br_me_rais_identificada.estabelecimentos
+    colunas: [situacao_cadastral_descricao]
+    status: nao_e_codigo
+    verificado: "2026-09-25: Ativa, Baixada, Inapta, Suspensa, Nula"
+  - tabela: br_pgfn_dividaativa.divida
+    colunas: [TIPO_PESSOA]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 'Pessoa jurídica' 30.248.859, 'Pessoa física' 16.358.226"
+  - tabela: br_inep_ideb.municipio
+    colunas: [ensino, anos_escolares]
+    status: nao_e_codigo
+    verificado: "2026-09-25: ensino ∈ {fundamental, medio}; anos_escolares ∈ {'iniciais (1-5)', 'finais (6-9)', 'todos (1-4)'} — o último é o ensino médio"
+
+  # --- Nome, identificador, calendário (estágio 1 adiou por tamanho) ---------
+  - tabela: br_me_cnpj.socios
+    colunas: [nome, documento]
+    status: nao_e_codigo
+    verificado: "2026-09-25: nome do sócio e CPF/CNPJ mascarado — identificador, não código (tabela de 1,04 bi linhas adiada no estágio 1)"
+  - tabela: br_me_cnpj.empresas
+    colunas: [razao_social]
+    status: nao_e_codigo
+    verificado: "2026-09-25: texto livre (nome empresarial)"
+  - tabela: br_me_cnpj.estabelecimentos
+    colunas: [nome_fantasia, bairro, logradouro, complemento]
+    status: nao_e_codigo
+    verificado: "2026-09-25: texto livre de endereço/nome"
+  - tabela: br_ms_sih.aihs_reduzidas
+    colunas: [razao_social_estabelecimento, razao_social_mantenedora, nome_fantasia_estabelecimento]
+    status: nao_e_codigo
+    verificado: "2026-09-25: nomes, texto livre"
+  - tabela: br_cgu_servidores_executivo_federal.cadastro_servidores
+    colunas: [nome]
+    status: nao_e_codigo
+    verificado: "2026-09-25: nome do servidor"
+  - tabela: br_cgu_emendas_parlamentares.microdados
+    colunas: [ano_emenda]
+    status: nao_e_codigo
+    verificado: "2026-09-25: ano (13 valores)"
+  - tabela: br_cgu_cartao_pagamento.microdados_governo_federal
+    colunas: [ano_extrato, mes_extrato]
+    status: nao_e_codigo
+    verificado: "2026-09-25: ano e mês do extrato"
+  - tabela: br_ms_sinan_violencia.microdados_violencia
+    colunas: [ano_sinan]
+    status: nao_e_codigo
+    verificado: "2026-09-25: ano do arquivo SINAN (2009–2025), a coluna de ano confiável da tabela — NU_ANO vem vazio em 2020"
+  - tabela: br_ms_sinan_malaria.microdados_malaria
+    colunas: [ano_sinan]
+    status: nao_e_codigo
+    verificado: "2026-09-25: ano do arquivo SINAN"
+  - tabela: br_ms_sinan_esquistossomose.microdados_esquistossomose
+    colunas: [ano_sinan]
+    status: nao_e_codigo
+    verificado: "2026-09-25: ano do arquivo SINAN"
+  - tabela: br_saude_bps.dados
+    colunas: [ano_da_compra]
+    status: nao_e_codigo
+    verificado: "2026-09-25: ano"
+  - tabela: br_ms_sinasc.microdados
+    colunas: [idade_mae, hora_nascimento]
+    status: nao_e_codigo
+    verificado: "2026-09-25: idade em anos e hora (hhmm) — número, não código"
+
+  # --- Pesquisado, não confirmado -------------------------------------------
+  - tabela: br_inep_saeb.municipio
+    colunas: [serie]
+    status: pendente
+    nota: "Valores {4,5,9,12,13,14}. br_inep_saeb.dicionario só decodifica serie da tabela proficiencia, com OUTRO código (3 = 3º ano EM, 5 = 5º EF, 9 = 9º EF). 5 e 9 batem; 4, 12, 13 e 14 não têm fonte achada (API do Base dos Dados descreve a coluna só como 'Série/Ano Escolar'). Não reusar o dicionário da proficiencia aqui."

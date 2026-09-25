@@ -2,11 +2,16 @@
   "_meta": {
     "cardinality_threshold": 100,
     "caveat_provenance_notes": "match contra provenance_notes é best-effort e fraco pra dataset espelhado (nota é boilerplate); não é triagem exaustiva",
+    "column_codes": {
+      "applied_by": "scripts/aplica_column_codes.py",
+      "columns": 186,
+      "source": "docs/context/column_codes.yaml"
+    },
     "counts_by_label": {
-      "documentado_em_outro_lugar": 2442,
-      "nao_e_codigo": 15842,
-      "nao_verificado": 8690,
-      "padrao_externo": 1289
+      "documentado_em_outro_lugar": 2549,
+      "nao_e_codigo": 15872,
+      "nao_verificado": 8536,
+      "padrao_externo": 1306
     },
     "generated_by": "scripts/gera_schema_dict_status.py",
     "llm_triage": {
@@ -2739,8 +2744,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_anp_combustiveis.precos.produto": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 7 rótulos em caixa alta (GASOLINA COMUM, ETANOL, GASOLINA ADITIVADA, DIESEL S10, GLP, DIESEL S500, GNV)"
     },
     "br_anp_combustiveis.precos.razao": {
       "label": "nao_e_codigo",
@@ -2787,8 +2793,9 @@
       "reason": "cardinalidade medida ~78746 valores distintos (> 100) — não parece código"
     },
     "br_anp_precos_combustiveis.microdados.produto": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 8 rótulos em caixa mista (Glp, Gasolina, Etanol, Diesel, Diesel S10, Gasolina Aditivada, Gnv, Diesel S50)"
     },
     "br_anp_precos_combustiveis.microdados.sigla_uf": {
       "label": "padrao_externo",
@@ -8376,8 +8383,9 @@
       "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_cgu_cartao_pagamento.microdados_governo_federal.ano_extrato": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~15 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: ano e mês do extrato"
     },
     "br_cgu_cartao_pagamento.microdados_governo_federal.cnpj_cpf_favorecido": {
       "label": "nao_e_codigo",
@@ -8404,8 +8412,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_cgu_cartao_pagamento.microdados_governo_federal.mes_extrato": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~13 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: ano e mês do extrato"
     },
     "br_cgu_cartao_pagamento.microdados_governo_federal.nome_favorecido": {
       "label": "nao_e_codigo",
@@ -8588,8 +8597,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_cgu_emendas_parlamentares.microdados.ano_emenda": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~13 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: ano (13 valores)"
     },
     "br_cgu_emendas_parlamentares.microdados.id_acao": {
       "label": "nao_e_codigo",
@@ -8660,8 +8670,9 @@
       "reason": "candidato real: ~28 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_cgu_emendas_parlamentares.microdados.tipo_emenda": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 5 rótulos (Emenda Individual - Transferências com Finalidade Definida / Especiais, de Relator, de Bancada, de Comissão)"
     },
     "br_cgu_fef.microdados.acao": {
       "label": "nao_e_codigo",
@@ -10412,8 +10423,9 @@
       "reason": "tabela grande (~168.131.529 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_cgu_servidores_executivo_federal.cadastro_servidores.nome": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~168.131.529 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: nome do servidor"
     },
     "br_cgu_servidores_executivo_federal.cadastro_servidores.opcao_parcial": {
       "label": "nao_verificado",
@@ -17123,8 +17135,9 @@
       "reason": "mesmo conceito de bridges.yaml coded_differently.raca_cor, só com a ordem das palavras trocada — ver a entrada raca_cor: código numérico difere por fonte, decodificar via br_ibge_censo_2022.dicionario"
     },
     "br_ibge_censo_2022.populacao_grupo_idade_sexo_raca.grupo_idade": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~20 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 21 faixas por extenso ('0 a 4 anos' ... '100 anos ou mais')"
     },
     "br_ibge_censo_2022.populacao_grupo_idade_sexo_raca.id_municipio": {
       "label": "padrao_externo",
@@ -53274,8 +53287,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_ibge_ppm.efetivo_rebanhos.tipo_rebanho": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 8 rótulos (Bovino, Suíno - total, Suíno - matrizes de suínos, Galináceos - galinhas...)"
     },
     "br_ibge_ppm.producao_aquicultura.ano": {
       "label": "nao_e_codigo",
@@ -57841,16 +57855,18 @@
       "reason": "bridges.yaml concepts.id_inscricao -> br_inep_enem.microdados"
     },
     "br_inep_enem.microdados.id_municipio_escola": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~108.132.056 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Código IBGE de município da escola, 7 dígitos — fonte: https://basedosdados.org"
     },
     "br_inep_enem.microdados.id_municipio_prova": {
       "label": "nao_verificado",
       "reason": "tabela grande (~108.132.056 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_inep_enem.microdados.id_municipio_residencia": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "tabela grande (~108.132.056 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "reason": "column_codes.yaml (pendente): Código de município, mas 100% NULL em ano=2020 (5.783.109 linhas). Não conferido em outros anos; não usar para 2020+ sem checar o preenchimento."
     },
     "br_inep_enem.microdados.nome_certificadora": {
       "label": "nao_verificado",
@@ -58381,12 +58397,14 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_inep_ideb.municipio.anos_escolares": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: ensino ∈ {fundamental, medio}; anos_escolares ∈ {'iniciais (1-5)', 'finais (6-9)', 'todos (1-4)'} — o último é o ensino médio"
     },
     "br_inep_ideb.municipio.ensino": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: ensino ∈ {fundamental, medio}; anos_escolares ∈ {'iniciais (1-5)', 'finais (6-9)', 'todos (1-4)'} — o último é o ensino médio"
     },
     "br_inep_ideb.municipio.id_municipio": {
       "label": "padrao_externo",
@@ -59677,8 +59695,9 @@
       "reason": "bridges.yaml coded_differently.rede: mesmo conceito (rede de ensino), código difere por fonte — a maioria usa 1=federal/2=estadual/3=municipal/4=privada, mas br_saeb usa uma ordem própria (0=privada) em pelo menos uma tabela/ano."
     },
     "br_inep_saeb.municipio.serie": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores {4,5,9,12,13,14}. br_inep_saeb.dicionario só decodifica serie da tabela proficiencia, com OUTRO código (3 = 3º ano EM, 5 = 5º EF, 9 = 9º EF). 5 e 9 batem; 4, 12, 13 e 14 não têm fonte achada (API do Base dos Dados descreve a coluna só como 'Série/Ano Escolar'). Não reusar o dicionário da proficiencia aqui."
     },
     "br_inep_saeb.municipio.sigla_uf": {
       "label": "padrao_externo",
@@ -60245,8 +60264,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_inpe_prodes.municipio_bioma.bioma": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 6 rótulos por extenso (Mata Atlântica, Cerrado, Caatinga, Amazônia, Pampa, Pantanal)"
     },
     "br_inpe_prodes.municipio_bioma.id_municipio": {
       "label": "padrao_externo",
@@ -60593,12 +60613,14 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_mapbiomas_estatisticas.transicao_municipio_de_para_decenal.id_classe_de": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~26 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Classe de cobertura da legenda MapBiomas. Decode em br_mapbiomas_estatisticas.classe (chave → valor_pt/valor_en), junto no mesmo dataset: JOIN ON classe.chave = id_classe_de::VARCHAR — fonte: https://basedosdados.org"
     },
     "br_mapbiomas_estatisticas.transicao_municipio_de_para_decenal.id_classe_para": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~26 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Classe de cobertura da legenda MapBiomas. Decode em br_mapbiomas_estatisticas.classe (chave → valor_pt/valor_en), junto no mesmo dataset: JOIN ON classe.chave = id_classe_de::VARCHAR — fonte: https://basedosdados.org"
     },
     "br_mapbiomas_estatisticas.transicao_municipio_de_para_decenal.id_municipio": {
       "label": "padrao_externo",
@@ -60613,12 +60635,14 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_mapbiomas_estatisticas.transicao_uf_de_para_anual.id_classe_de": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~26 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Classe de cobertura da legenda MapBiomas. Decode em br_mapbiomas_estatisticas.classe — fonte: https://basedosdados.org"
     },
     "br_mapbiomas_estatisticas.transicao_uf_de_para_anual.id_classe_para": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~26 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Classe de cobertura da legenda MapBiomas. Decode em br_mapbiomas_estatisticas.classe — fonte: https://basedosdados.org"
     },
     "br_mapbiomas_estatisticas.transicao_uf_de_para_anual.sigla_uf": {
       "label": "padrao_externo",
@@ -61337,20 +61361,23 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_me_cnpj.empresas.natureza_juridica": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~2.411.104.671 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Código de natureza jurídica (CONCLA/Receita, 4 dígitos). Decode: br_bd_diretorios_brasil.natureza_juridica.id_natureza_juridica — fonte: https://basedosdados.org"
     },
     "br_me_cnpj.empresas.razao_social": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~2.411.104.671 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: texto livre (nome empresarial)"
     },
     "br_me_cnpj.estabelecimentos.ano": {
       "label": "nao_e_codigo",
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_me_cnpj.estabelecimentos.bairro": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~2.540.728.606 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: texto livre de endereço/nome"
     },
     "br_me_cnpj.estabelecimentos.cep": {
       "label": "nao_e_codigo",
@@ -61381,8 +61408,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_me_cnpj.estabelecimentos.complemento": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~2.540.728.606 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: texto livre de endereço/nome"
     },
     "br_me_cnpj.estabelecimentos.data": {
       "label": "nao_e_codigo",
@@ -61429,8 +61457,9 @@
       "reason": "bridges.yaml concepts.id_municipio_rf -> br_bd_diretorios_brasil.municipio.id_municipio_rf"
     },
     "br_me_cnpj.estabelecimentos.logradouro": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~2.540.728.606 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: texto livre de endereço/nome"
     },
     "br_me_cnpj.estabelecimentos.mes": {
       "label": "nao_e_codigo",
@@ -61441,8 +61470,9 @@
       "reason": "tabela grande (~2.540.728.606 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_me_cnpj.estabelecimentos.nome_fantasia": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~2.540.728.606 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: texto livre de endereço/nome"
     },
     "br_me_cnpj.estabelecimentos.numero": {
       "label": "nao_e_codigo",
@@ -61489,8 +61519,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_me_cnpj.simples.opcao_mei": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Optante pelo MEI. O leiaute da Receita usa S/N; o espelho (Base dos Dados) grava 1/0 — fonte: https://basedosdados.org"
     },
     "br_me_cnpj.simples.opcao_simples": {
       "label": "nao_verificado",
@@ -61517,16 +61548,18 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_me_cnpj.socios.documento": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~1.040.152.210 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: nome do sócio e CPF/CNPJ mascarado — identificador, não código (tabela de 1,04 bi linhas adiada no estágio 1)"
     },
     "br_me_cnpj.socios.mes": {
       "label": "nao_e_codigo",
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_me_cnpj.socios.nome": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~1.040.152.210 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: nome do sócio e CPF/CNPJ mascarado — identificador, não código (tabela de 1,04 bi linhas adiada no estágio 1)"
     },
     "br_me_cnpj.socios.nome_representante_legal": {
       "label": "nao_verificado",
@@ -61785,8 +61818,9 @@
       "reason": "flag binário — nome já indica o que representa; a codificação exata (S/N, 0/1) pode precisar de conferência pontual, mas não de glossário"
     },
     "br_me_rais.microdados_estabelecimentos.natureza_juridica": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~245.274.703 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Código de natureza jurídica (CONCLA, 4 dígitos). Decode: br_bd_diretorios_brasil.natureza_juridica — fonte: https://basedosdados.org"
     },
     "br_me_rais.microdados_estabelecimentos.quantidade_vinculos_ativos": {
       "label": "nao_e_codigo",
@@ -61841,8 +61875,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_me_rais.microdados_vinculos.id_municipio_trabalho": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~2.071.895.691 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Código IBGE de município do local de trabalho, 7 dígitos — fonte: https://basedosdados.org"
     },
     "br_me_rais.microdados_vinculos.idade": {
       "label": "nao_e_codigo",
@@ -61857,8 +61892,9 @@
       "reason": "tabela grande (~2.071.895.691 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_me_rais.microdados_vinculos.natureza_juridica": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~2.071.895.691 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Código de natureza jurídica (CONCLA, 4 dígitos). Decode: br_bd_diretorios_brasil.natureza_juridica — fonte: https://basedosdados.org"
     },
     "br_me_rais.microdados_vinculos.quantidade_dias_afastamento": {
       "label": "nao_e_codigo",
@@ -61897,8 +61933,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_me_rais_identificada.estabelecimentos.natureza_juridica": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~85 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Código de natureza jurídica (CONCLA, 4 dígitos). Decode: br_bd_diretorios_brasil.natureza_juridica — fonte: https://basedosdados.org"
     },
     "br_me_rais_identificada.estabelecimentos.nome_fantasia": {
       "label": "nao_e_codigo",
@@ -61925,8 +61962,9 @@
       "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_me_rais_identificada.estabelecimentos.situacao_cadastral_descricao": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: Ativa, Baixada, Inapta, Suspensa, Nula"
     },
     "br_me_siape.servidores_executivo_federal.atividade": {
       "label": "nao_e_codigo",
@@ -62225,12 +62263,14 @@
       "reason": "cardinalidade medida ~177 valores distintos (> 100) — não parece código"
     },
     "br_me_siconfi.municipio_despesas_funcao.estagio": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Estágio da despesa. Empenhada ⊇ liquidada ⊇ paga são o MESMO gasto em fases sucessivas; restos a pagar são inscrições à parte. Somar estágios conta o mesmo real duas ou três vezes. — fonte: https://www.planalto.gov.br/ccivil_03/leis/l4320.htm"
     },
     "br_me_siconfi.municipio_despesas_funcao.estagio_bd": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Estágio da despesa. Empenhada ⊇ liquidada ⊇ paga são o MESMO gasto em fases sucessivas; restos a pagar são inscrições à parte. Somar estágios conta o mesmo real duas ou três vezes. — fonte: https://www.planalto.gov.br/ccivil_03/leis/l4320.htm"
     },
     "br_me_siconfi.municipio_despesas_funcao.id_conta_bd": {
       "label": "nao_e_codigo",
@@ -62261,12 +62301,14 @@
       "reason": "cardinalidade medida ~248 valores distintos (> 100) — não parece código"
     },
     "br_me_siconfi.municipio_despesas_orcamentarias.estagio": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Estágio da despesa, mesma semântica de municipio_despesas_funcao: não somar estágios — fonte: https://www.planalto.gov.br/ccivil_03/leis/l4320.htm"
     },
     "br_me_siconfi.municipio_despesas_orcamentarias.estagio_bd": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Estágio da despesa, mesma semântica de municipio_despesas_funcao: não somar estágios — fonte: https://www.planalto.gov.br/ccivil_03/leis/l4320.htm"
     },
     "br_me_siconfi.municipio_despesas_orcamentarias.id_conta_bd": {
       "label": "nao_verificado",
@@ -62297,12 +62339,14 @@
       "reason": "cardinalidade medida ~1574 valores distintos (> 100) — não parece código"
     },
     "br_me_siconfi.municipio_receitas_orcamentarias.estagio": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Estágio da receita: bruta realizada e deduções (FUNDEB, transferências constitucionais, outras) em linhas separadas. Receita líquida = brutas − deduções; somar tudo mistura sinal — fonte: https://www.planalto.gov.br/ccivil_03/leis/l4320.htm"
     },
     "br_me_siconfi.municipio_receitas_orcamentarias.estagio_bd": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Estágio da receita: bruta realizada e deduções (FUNDEB, transferências constitucionais, outras) em linhas separadas. Receita líquida = brutas − deduções; somar tudo mistura sinal — fonte: https://www.planalto.gov.br/ccivil_03/leis/l4320.htm"
     },
     "br_me_siconfi.municipio_receitas_orcamentarias.id_conta_bd": {
       "label": "nao_verificado",
@@ -89421,16 +89465,18 @@
       "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_ms_sih.aihs_reduzidas.id_municipio_estabelecimento": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Código IBGE de município com 6 dígitos (SEM dígito verificador), apesar do nome id_municipio. Junta com br_bd_diretorios_brasil.municipio.id_municipio_6 — fonte: https://basedosdados.org"
     },
     "br_ms_sih.aihs_reduzidas.id_municipio_gestor": {
       "label": "nao_verificado",
       "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_ms_sih.aihs_reduzidas.id_municipio_paciente": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Código IBGE de município com 6 dígitos (SEM dígito verificador), apesar do nome id_municipio. Junta com br_bd_diretorios_brasil.municipio.id_municipio_6 — fonte: https://basedosdados.org"
     },
     "br_ms_sih.aihs_reduzidas.idade_paciente": {
       "label": "nao_verificado",
@@ -89469,8 +89515,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_ms_sih.aihs_reduzidas.nome_fantasia_estabelecimento": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: nomes, texto livre"
     },
     "br_ms_sih.aihs_reduzidas.origem_nome_estabelecimento": {
       "label": "nao_verificado",
@@ -89506,12 +89553,14 @@
       "reason": "mesmo conceito de bridges.yaml coded_differently.raca_cor, com sufixo _paciente — código numérico difere por fonte, decodificar via br_ms_sih.dicionario"
     },
     "br_ms_sih.aihs_reduzidas.razao_social_estabelecimento": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: nomes, texto livre"
     },
     "br_ms_sih.aihs_reduzidas.razao_social_mantenedora": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: nomes, texto livre"
     },
     "br_ms_sih.aihs_reduzidas.regra_contratual": {
       "label": "nao_verificado",
@@ -89759,8 +89808,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_ms_sim.microdados.alt_causa": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Houve correção ou alteração da causa do óbito após investigação? — fonte: https://diaad.s3.sa-east-1.amazonaws.com/sim/Mortalidade_Geral+-+Estrutura.pdf"
     },
     "br_ms_sim.microdados.ano": {
       "label": "nao_e_codigo",
@@ -89783,8 +89833,9 @@
       "reason": "cardinalidade medida ~8289 valores distintos (> 100) — não parece código"
     },
     "br_ms_sim.microdados.causa_materna": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~10 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): CID-10 da causa obstétrica (valores O930–O939). Ver hierarchies.yaml cid10 — fonte: https://diaad.s3.sa-east-1.amazonaws.com/sim/Mortalidade_Geral+-+Estrutura.pdf"
     },
     "br_ms_sim.microdados.codigo_bairro_ocorrencia": {
       "label": "nao_e_codigo",
@@ -89859,8 +89910,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_ms_sim.microdados.fontes": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~63 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Fontes consultadas na investigação do óbito, 6 posições S/X na ordem FONTENTREV (entrevista), FONTEAMBUL (ambulatório), FONTEPRONT (prontuário), FONTESVO (SVO), FONTEIML (IML), FONTEPROF (profissional): 'S' = fonte usada, 'X' = não — fonte: https://diaad.s3.sa-east-1.amazonaws.com/sim/Mortalidade_Geral+-+Estrutura.pdf"
     },
     "br_ms_sim.microdados.fontes_informacao": {
       "label": "nao_e_codigo",
@@ -89955,12 +90007,14 @@
       "reason": "cardinalidade medida ~1782475 valores distintos (> 100) — não parece código"
     },
     "br_ms_sim.microdados.serie_escolar_falecido": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Última série escolar concluída (SERIESCFAL / SERIESCMAE), número de 1 a 8 — fonte: https://diaad.s3.sa-east-1.amazonaws.com/sim/Mortalidade_Geral+-+Estrutura.pdf"
     },
     "br_ms_sim.microdados.serie_escolar_mae": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Última série escolar concluída (SERIESCFAL / SERIESCMAE), número de 1 a 8 — fonte: https://diaad.s3.sa-east-1.amazonaws.com/sim/Mortalidade_Geral+-+Estrutura.pdf"
     },
     "br_ms_sim.microdados.sigla_uf": {
       "label": "padrao_externo",
@@ -90887,8 +90941,9 @@
       "reason": "cardinalidade medida ~132 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_esquistossomose.microdados_esquistossomose.AN_QUALI": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Análise qualitativa (exame Hoffman) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/Esquistossomose/DIC_DADOS_Esquistossomose_v5.pdf"
     },
     "br_ms_sinan_esquistossomose.microdados_esquistossomose.AN_QUANT": {
       "label": "nao_verificado",
@@ -90903,8 +90958,9 @@
       "reason": "candidato real: ~33 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ms_sinan_esquistossomose.microdados_esquistossomose.COUFINF": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~30 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): UF provável da fonte de infecção, código IBGE numérico (11..53) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/Esquistossomose/DIC_DADOS_Esquistossomose_v5.pdf"
     },
     "br_ms_sinan_esquistossomose.microdados_esquistossomose.CS_ESCOL_N": {
       "label": "nao_verificado",
@@ -90919,8 +90975,9 @@
       "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ms_sinan_esquistossomose.microdados_esquistossomose.CS_SEXO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Sexo do paciente (campos gerais da ficha SINAN) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_esquistossomose.microdados_esquistossomose.DOENCA_TRA": {
       "label": "nao_verificado",
@@ -90987,12 +91044,14 @@
       "reason": "cardinalidade medida ~753 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_esquistossomose.microdados_esquistossomose.EVOLUCAO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Evolução do caso — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/Esquistossomose/DIC_DADOS_Esquistossomose_v5.pdf"
     },
     "br_ms_sinan_esquistossomose.microdados_esquistossomose.FORMA": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Forma anátomo-clínica — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/Esquistossomose/DIC_DADOS_Esquistossomose_v5.pdf"
     },
     "br_ms_sinan_esquistossomose.microdados_esquistossomose.ID_AGRAVO": {
       "label": "nao_verificado",
@@ -91079,24 +91138,27 @@
       "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ms_sinan_esquistossomose.microdados_esquistossomose.TPAUTOCTO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): O caso é autóctone do município de residência? — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/Esquistossomose/DIC_DADOS_Esquistossomose_v5.pdf"
     },
     "br_ms_sinan_esquistossomose.microdados_esquistossomose.TP_NOT": {
       "label": "nao_verificado",
       "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ms_sinan_esquistossomose.microdados_esquistossomose.TRATAM": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Fez tratamento? — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/Esquistossomose/DIC_DADOS_Esquistossomose_v5.pdf"
     },
     "br_ms_sinan_esquistossomose.microdados_esquistossomose.TRATANAO": {
       "label": "nao_verificado",
       "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ms_sinan_esquistossomose.microdados_esquistossomose.ano_sinan": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~21 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: ano do arquivo SINAN"
     },
     "br_ms_sinan_malaria.microdados_malaria.AMALARIA": {
       "label": "nao_e_codigo",
@@ -91151,8 +91213,9 @@
       "reason": "cardinalidade medida ~1871 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_malaria.microdados_malaria.CLASSI_FIN": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Classificação final do caso — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/Malaria/DIC_DADOS_Malaria_v5.pdf"
     },
     "br_ms_sinan_malaria.microdados_malaria.CLIND": {
       "label": "nao_verificado",
@@ -91219,8 +91282,9 @@
       "reason": "candidato real: ~90 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ms_sinan_malaria.microdados_malaria.COUFINF": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~30 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): UF provável da fonte de infecção — aqui como SIGLA (AC, AM, PA...), não código IBGE — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/Malaria/DIC_DADOS_Malaria_v5.pdf"
     },
     "br_ms_sinan_malaria.microdados_malaria.CS_ESCOLAR": {
       "label": "nao_verificado",
@@ -91447,8 +91511,9 @@
       "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ms_sinan_malaria.microdados_malaria.RESULT": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Resultado do exame parasitológico (espécie/forma do plasmódio, notação do dicionário) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/Malaria/DIC_DADOS_Malaria_v5.pdf"
     },
     "br_ms_sinan_malaria.microdados_malaria.SEM_NOT": {
       "label": "nao_e_codigo",
@@ -91479,8 +91544,9 @@
       "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ms_sinan_malaria.microdados_malaria.TPAUTOCTO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): O caso é autóctone do município de residência? — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/Malaria/DIC_DADOS_Malaria_v5.pdf"
     },
     "br_ms_sinan_malaria.microdados_malaria.TP_NOT": {
       "label": "nao_verificado",
@@ -91507,72 +91573,87 @@
       "reason": "candidato real: ~41 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ms_sinan_malaria.microdados_malaria.ano_sinan": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~23 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: ano do arquivo SINAN"
     },
     "br_ms_sinan_violencia.microdados_violencia.AG_AMEACA": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.AG_CORTE": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.AG_ENFOR": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.AG_ENVEN": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.AG_ESPEC": {
       "label": "nao_e_codigo",
       "reason": "cardinalidade medida ~80213 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_violencia.microdados_violencia.AG_FOGO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.AG_FORCA": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.AG_OBJETO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.AG_OUTROS": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.AG_QUENTE": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.ANO_NASC": {
       "label": "nao_e_codigo",
       "reason": "cardinalidade medida ~123 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_violencia.microdados_violencia.ASSIST_SOC": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.ATEND_MULH": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.AUTOR_ALCO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.AUTOR_SEXO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Sexo do provável autor da agressão — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.CICL_VID": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Ciclo de vida do provável autor da agressão (DBF CICL_VID_AUTOR no dicionário, truncado para 8 caracteres no arquivo) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.CIRC_LESAO": {
       "label": "nao_e_codigo",
@@ -91583,116 +91664,141 @@
       "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ms_sinan_violencia.microdados_violencia.CONS_ABORT": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.CONS_COMP": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.CONS_DST": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.CONS_ESPEC": {
       "label": "nao_e_codigo",
       "reason": "cardinalidade medida ~5844 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_violencia.microdados_violencia.CONS_ESTRE": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.CONS_GRAV": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.CONS_IDO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.CONS_MENT": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.CONS_OUTR": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.CONS_SUIC": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.CONS_TUTEL": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.CS_ESCOL_N": {
       "label": "nao_verificado",
       "reason": "candidato real: ~12 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ms_sinan_violencia.microdados_violencia.CS_GESTANT": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Gestante (idade gestacional) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.CS_RACA": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Raça/cor declarada — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.CS_SEXO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Sexo da vítima — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.DEFEN_PUBL": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.DEF_AUDITI": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.DEF_ESPEC": {
       "label": "nao_e_codigo",
       "reason": "cardinalidade medida ~17533 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_violencia.microdados_violencia.DEF_FISICA": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.DEF_MENTAL": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.DEF_OUT": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.DEF_TRANS": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.DEF_VISUAL": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.DELEG": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.DELEG_CRIA": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.DELEG_IDOS": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.DELEG_MULH": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.DIR_HUMAN": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.DT_DIGITA": {
       "label": "nao_e_codigo",
@@ -91743,60 +91849,72 @@
       "reason": "cardinalidade medida ~2509 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_violencia.microdados_violencia.ENC_ABRIGO": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.ENC_CREAS": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.ENC_DEAM": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.ENC_DELEG": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.ENC_DPCA": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.ENC_ESPEC": {
       "label": "nao_e_codigo",
       "reason": "cardinalidade medida ~19508 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_violencia.microdados_violencia.ENC_IML": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.ENC_MPU": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.ENC_MULHER": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.ENC_OUTR": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.ENC_SAUDE": {
       "label": "nao_verificado",
       "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ms_sinan_violencia.microdados_violencia.ENC_SENTIN": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.ENC_TUTELA": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.ENC_VARA": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.EVOLUCAO": {
       "label": "nao_verificado",
@@ -91807,12 +91925,14 @@
       "reason": "cardinalidade medida ~1361 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_violencia.microdados_violencia.IDENT_GEN": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Identidade de gênero da vítima — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.ID_AGRAVO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Agravo notificado, código CID-10 sem ponto. Y09 = agressão por meios não especificados, o código do agravo violência interpessoal/autoprovocada — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.ID_MN_OCOR": {
       "label": "nao_e_codigo",
@@ -91839,8 +91959,9 @@
       "reason": "cardinalidade medida ~47617 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_violencia.microdados_violencia.INFAN_JUV": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.LESAO_CORP": {
       "label": "nao_verificado",
@@ -91855,20 +91976,23 @@
       "reason": "candidato real: ~16 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ms_sinan_violencia.microdados_violencia.LES_AUTOP": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.LOCAL_ESPE": {
       "label": "nao_e_codigo",
       "reason": "cardinalidade medida ~15659 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_violencia.microdados_violencia.LOCAL_OCOR": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~13 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Local de ocorrência — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.MPU": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.NDUPLIC": {
       "label": "nao_verificado",
@@ -91887,152 +92011,188 @@
       "reason": "cardinalidade medida ~284 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_violencia.microdados_violencia.ORIENT_SEX": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Orientação sexual da vítima (obrigatório a partir de 10 anos) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.OUT_VEZES": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.PEN_ANAL": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.PEN_ORAL": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.PEN_VAGINA": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.PROC_ABORT": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.PROC_CONTR": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.PROC_DST": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.PROC_HEPB": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.PROC_HIV": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.PROC_SANG": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.PROC_SEMEN": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.PROC_VAGIN": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REDE_EDUCA": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REDE_SAU": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_CAT": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_CONHEC": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_CONJ": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_CUIDA": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_DESCO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_ESPEC": {
       "label": "nao_e_codigo",
       "reason": "cardinalidade medida ~25238 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_EXCON": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_EXNAM": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_FILHO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_INST": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_IRMAO": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_MAD": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_MAE": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_NAMO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_OUTROS": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_PAD": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_PAI": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_PATRAO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_POL": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_PROPRI": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_SEXUAL": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores {'',1,2,3,8,9}, preenchido só de 2009 a ~2021 (4.242.249 vazios de 4.939.266). Não está no dicionário v5 vigente nem no 5.0 não vigente: é campo de ficha anterior. Significado dos códigos NÃO confirmado — não usar sem o dicionário da ficha 2009–2014."
     },
     "br_ms_sinan_violencia.microdados_violencia.REL_TRAB": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.SEM_NOT": {
       "label": "nao_e_codigo",
@@ -92043,116 +92203,141 @@
       "reason": "cardinalidade medida ~3076 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_violencia.microdados_violencia.SEX_ASSEDI": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.SEX_ESPEC": {
       "label": "nao_e_codigo",
       "reason": "cardinalidade medida ~6548 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_violencia.microdados_violencia.SEX_ESTUPR": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.SEX_EXPLO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.SEX_OUTRO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.SEX_PORNO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.SEX_PUDOR": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
     },
     "br_ms_sinan_violencia.microdados_violencia.SG_UF": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~30 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): UF de notificação / de residência / de ocorrência, código IBGE de 2 dígitos (11..53), não sigla — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.SG_UF_NOT": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~30 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): UF de notificação / de residência / de ocorrência, código IBGE de 2 dígitos (11..53), não sigla — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.SG_UF_OCOR": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~30 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): UF de notificação / de residência / de ocorrência, código IBGE de 2 dígitos (11..53), não sigla — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.SIT_CONJUG": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Situação conjugal da vítima — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.TPUNINOT": {
       "label": "nao_verificado",
       "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ms_sinan_violencia.microdados_violencia.TP_NOT": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Tipo de notificação — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.TRAN_COMP": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.TRAN_MENT": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não com 'não se aplica': deficiência/transtorno (DEF_*, TRAN_*), procedimento após violência sexual (PROC_*), tipo de violência sexual (SEX_*), emissão de CAT (REL_CAT), lesão autoprovocada (LES_AUTOP) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.VIOL_ESPEC": {
       "label": "nao_e_codigo",
       "reason": "cardinalidade medida ~30873 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_violencia.microdados_violencia.VIOL_FINAN": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.VIOL_FISIC": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.VIOL_INFAN": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.VIOL_LEGAL": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.VIOL_MOTIV": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~16 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Violência motivada por — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.VIOL_NEGLI": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.VIOL_OUTR": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.VIOL_PSICO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.VIOL_SEXU": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.VIOL_TORT": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.VIOL_TRAF": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Campo sim/não da ficha: tipo de violência (VIOL_*), meio de agressão (AG_*), relação do provável autor com a vítima (REL_*), encaminhamento (DELEG*, CONS_*, MPU...), suspeita de álcool do autor (AUTOR_ALCO), violência de repetição (OUT_VEZES) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/via/DIC_DADOS_NET_Violencias_v5.pdf"
     },
     "br_ms_sinan_violencia.microdados_violencia.ano_sinan": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~20 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: ano do arquivo SINAN (2009–2025), a coluna de ano confiável da tabela — NU_ANO vem vazio em 2020"
     },
     "br_ms_sinasc.dicionario.chave": {
       "label": "nao_e_codigo",
@@ -92231,20 +92416,23 @@
       "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_ms_sinasc.microdados.hora_nascimento": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: idade em anos e hora (hhmm) — número, não código"
     },
     "br_ms_sinasc.microdados.id_municipio_mae": {
       "label": "nao_verificado",
       "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_ms_sinasc.microdados.id_municipio_nascimento": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Código IBGE de município, 7 dígitos. Junta com br_bd_diretorios_brasil.municipio.id_municipio — fonte: https://basedosdados.org"
     },
     "br_ms_sinasc.microdados.id_municipio_residencia": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Código IBGE de município, 7 dígitos. Junta com br_bd_diretorios_brasil.municipio.id_municipio — fonte: https://basedosdados.org"
     },
     "br_ms_sinasc.microdados.id_pais_residencia": {
       "label": "nao_verificado",
@@ -92255,8 +92443,9 @@
       "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_ms_sinasc.microdados.idade_mae": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: idade em anos e hora (hhmm) — número, não código"
     },
     "br_ms_sinasc.microdados.idade_pai": {
       "label": "nao_verificado",
@@ -92535,8 +92724,9 @@
       "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_pgfn_dividaativa.divida.TIPO_PESSOA": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 'Pessoa jurídica' 30.248.859, 'Pessoa física' 16.358.226"
     },
     "br_pgfn_dividaativa.divida.TIPO_SITUACAO_INSCRICAO": {
       "label": "nao_verificado",
@@ -94143,8 +94333,9 @@
       "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_saude_bps.dados.ano_da_compra": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: ano"
     },
     "br_saude_bps.dados.anvisa": {
       "label": "nao_e_codigo",

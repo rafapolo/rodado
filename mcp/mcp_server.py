@@ -54,6 +54,7 @@ METRICS_PATH = CONTEXT_DIR / "metrics.yaml"
 HIERARCHIES_PATH = CONTEXT_DIR / "hierarchies.yaml"
 DICIONARIO_COVERAGE_PATH = CONTEXT_DIR / "dicionario_coverage.json"
 SCHEMA_DICT_STATUS_PATH = CONTEXT_DIR / "schema_dict_status.json"
+COLUMN_CODES_PATH = CONTEXT_DIR / "column_codes.yaml"
 
 # ---------------------------------------------------------------------------
 # Catalog loaders (loaded once at startup — small enough to hold in memory)
@@ -119,6 +120,23 @@ if SCHEMA_DICT_STATUS_PATH.exists():
             continue
         _tid, _, _colname = _col_key.rpartition(".")
         _NAO_VERIFICADO_BY_TABLE.setdefault(_tid, []).append(_colname)
+
+
+# tasks/generate-full-schema-dict.md estágio 4: o significado dos códigos
+# pesquisado à mão, com fonte oficial e valores medidos no beelink
+# (docs/context/column_codes.yaml). dataset.table -> lista de entradas.
+_COLUMN_CODES_BY_TABLE: dict = {}
+if COLUMN_CODES_PATH.exists():
+    with open(COLUMN_CODES_PATH, encoding="utf-8") as f:
+        _cc = yaml.safe_load(f) or {}
+    _cc_fontes = _cc.get("fontes", {})
+    for _e in _cc.get("entradas", []):
+        _item = {k: _e[k] for k in ("colunas", "status", "significado", "valores",
+                                    "verificado", "nota") if k in _e}
+        _src = _cc_fontes.get(_e.get("fonte", ""))
+        if _src:
+            _item["fonte"] = _src.get("url")
+        _COLUMN_CODES_BY_TABLE.setdefault(_e["tabela"], []).append(_item)
 
 
 def _norm(s: str) -> str:
@@ -553,7 +571,7 @@ def describe_table(table: str) -> dict:
     happens the reply carries a `columns_truncated` block with the real total;
     query `parquet_path` with DESCRIBE via `run_sql` to see the rest.
 
-    Four things surface here that the bare column list would hide:
+    Five things surface here that the bare column list would hide:
       * `warning` — this table returns every row twice (leftover tmp*.parquet
         next to the real export); same check `resolve_join` runs, but here it
         fires even when you're not joining anything.
@@ -579,6 +597,12 @@ def describe_table(table: str) -> dict:
         don't trust what the name implies, confirm against the source before
         using it. See docs/context/schema_dict_status.json for the full
         reasoning per column (tasks/generate-full-schema-dict.md).
+      * `column_codes` — the researched meaning of this table's code columns
+        (docs/context/column_codes.yaml): value -> label, the official source
+        URL, what was measured on beelink, and traps found while checking
+        (e.g. SIH `id_municipio_*` has 6 digits, Siconfi `estagio_bd` must not
+        be summed across stages). `status: pendente` means researched and NOT
+        confirmed — the note says what is missing; don't guess the code.
     """
     if "." not in table:
         return {"error": "table must be in the form 'dataset.table'."}
@@ -634,6 +658,9 @@ def describe_table(table: str) -> dict:
             }
             for col in coded_conflicts
         ]
+    column_codes = _COLUMN_CODES_BY_TABLE.get(table)
+    if column_codes:
+        result["column_codes"] = column_codes
     nao_verificado = _NAO_VERIFICADO_BY_TABLE.get(table)
     if nao_verificado:
         result["nao_verificado_warning"] = {
