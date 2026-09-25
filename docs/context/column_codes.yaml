@@ -54,6 +54,38 @@ fontes:
     titulo: "Lei 4.320/1964, arts. 58–65 e 36 — estágios da despesa (empenho, liquidação, pagamento) e restos a pagar"
     url: https://www.planalto.gov.br/ccivil_03/leis/l4320.htm
     consultado: 2026-09-25
+  sinasc_estrutura:
+    titulo: "SINASC: Estrutura de 1996 a 2019 — Dicionário de Dados (MS/SVS/CGIAE)"
+    url: https://diaad.s3.sa-east-1.amazonaws.com/sinasc/SINASC+-+Estrutura.pdf
+    consultado: 2026-09-25
+  sinasc_cbo_sp:
+    titulo: "CBO e sua importância na DNV — códigos especiais 9999.91–9999.94 (CEInfo/SMS São Paulo)"
+    url: https://drive.prefeitura.sp.gov.br/cidade/secretarias/upload/saude/arquivos/ceinfo/sinasc/SemSINASC231_5Apreset__DVISAT_CBO_SINASC_final.pdf
+    consultado: 2026-09-25
+  censo2000_doc:
+    titulo: "Censo Demográfico 2000, microdados da amostra — Documentação (IBGE, 1_Documentacao_20170908.zip)"
+    url: https://ftp.ibge.gov.br/Censos/Censo_Demografico_2000/Microdados/1_Documentacao_20170908.zip
+    consultado: 2026-09-25
+  novo_caged_layout:
+    titulo: "Layout Não-identificado Novo Caged Movimentação (MTE/PDET), aba origemdainformação"
+    url: "ftp://ftp.mtps.gov.br/pdet/microdados/NOVO%20CAGED/"
+    consultado: 2026-09-25
+  mto_siop:
+    titulo: "Manual Técnico de Orçamento (SOF/SIOP), cap. 4 — esfera orçamentária 10/20/30"
+    url: https://www1.siop.planejamento.gov.br/mto/doku.php/mto:cap4
+    consultado: 2026-09-25
+  ofac_dat_spec:
+    titulo: "OFAC SDN legacy file formats (dat_spec.txt): null = '-0-'"
+    url: https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/dat_spec.txt
+    consultado: 2026-09-25
+  anatel_ibc:
+    titulo: "Índice Brasileiro de Conectividade — página e metodologia (Anatel)"
+    url: https://www.gov.br/anatel/pt-br/regulado/universalizacao/indice-brasileiro-conectiviadade-ibc
+    consultado: 2026-09-25
+  comex_ncm_unidade:
+    titulo: "Comex Stat — tabela auxiliar NCM_UNIDADE.csv (MDIC/SECEX)"
+    url: https://balanca.economia.gov.br/balanca/bd/tabelas/NCM_UNIDADE.csv
+    consultado: 2026-09-25
   espelho:
     titulo: "Tabela de referência do próprio espelho, conferida por join medido no beelink"
     url: https://basedosdados.org
@@ -454,9 +486,12 @@ entradas:
     verificado: "2026-09-25: ano=2020, 904.569 com 7 dígitos, 4.878.540 NULL (egressos e quem não declarou escola)"
 
   - tabela: br_inep_enem.microdados
-    colunas: [id_municipio_residencia]
-    status: pendente
-    nota: "Código de município, mas 100% NULL em ano=2020 (5.783.109 linhas). Não conferido em outros anos; não usar para 2020+ sem checar o preenchimento."
+    colunas: [id_municipio_residencia, sigla_uf_residencia]
+    status: padrao_externo
+    significado: "Município (IBGE, 7 dígitos) e UF (sigla) de residência do inscrito — só de 1998 a 2007"
+    fonte: espelho
+    verificado: "2026-09-25 (2ª rodada): preenchidas 100% de 1998 a 2005, ~95% em 2006–2007, e 0 linhas de 2008 a 2023 (todos os anos, não só 2020)"
+    nota: "Armadilha: vazias desde 2008. Para 2008+ a única geografia do inscrito é a da prova (id_municipio_prova) ou da escola (id_municipio_escola) — nenhuma é residência."
 
   # --- Rótulos por extenso (não é código) ------------------------------------
   - tabela: br_inpe_prodes.municipio_bioma
@@ -554,3 +589,701 @@ entradas:
     colunas: [serie]
     status: pendente
     nota: "Valores {4,5,9,12,13,14}. br_inep_saeb.dicionario só decodifica serie da tabela proficiencia, com OUTRO código (3 = 3º ano EM, 5 = 5º EF, 9 = 9º EF). 5 e 9 batem; 4, 12, 13 e 14 não têm fonte achada (API do Base dos Dados descreve a coluna só como 'Série/Ano Escolar'). Não reusar o dicionário da proficiencia aqui."
+
+  # ===========================================================================
+  # 2ª rodada do estágio 4 — 2026-09-25, as 189 colunas nao_verificado com uso
+  # observado (sql ou docs > 0) em schema_dict_prioridade.json. Valores medidos
+  # no beelink (tabelas > 20M linhas: amostra das primeiras 3M, e depois por ano
+  # onde a amostra veio vazia).
+  # ===========================================================================
+
+  # --- Códigos decodificados com fonte oficial -------------------------------
+  - tabela: br_ms_sinasc.microdados
+    colunas: [origem]
+    status: documentado
+    significado: Banco de dados de origem do registro (campo ORIGEM)
+    valores: {"1": Oracle, "2": FTP, "3": SEAD}
+    fonte: sinasc_estrutura
+    verificado: "2026-09-25: ano=2020, 1 → 2.728.089, 2 → 2.056. Vazio antes de 2010 (o campo nasceu em 2010)"
+    nota: "Metadado do sistema, não característica do nascimento."
+
+  - tabela: br_ms_sinasc.microdados
+    colunas: [pre_natal]
+    status: documentado
+    significado: "Número de consultas de pré-natal (CONSPRENAT) — contagem, não a faixa CONSULTAS 1–4"
+    valores: {"99": Ignorado}
+    fonte: sinasc_estrutura
+    verificado: "2026-09-25: ano=2020, 0 a 80 (moda 8), 99 → 13.452 ignorados, NULL 51.661. Vazio em 2005; preenchido a partir de 2011"
+    nota: "Excluir 99 antes de tirar média. Valores acima de ~40 são implausíveis (poucas dezenas de linhas). A faixa categórica está em pre_natal_agr."
+
+  - tabela: br_ms_sinasc.microdados
+    colunas: [inicio_pre_natal]
+    status: documentado
+    significado: "Mês de gestação em que a mãe iniciou o pré-natal (MESPRENAT)"
+    valores: {"99": Ignorado}
+    fonte: sinasc_estrutura
+    verificado: "2026-09-25: ano=2020, '01'..'09' com zero à esquerda (02 → 1.052.877, 01 → 590.029), 99 → 67.685. Preenchido a partir de 2011"
+
+  - tabela: br_ms_sinasc.microdados
+    colunas: [semana_gestacao, gestacoes_ant]
+    status: nao_e_codigo
+    significado: "SEMAGESTAC (semanas de gestação) e QTDGESTANT (gestações anteriores): números"
+    fonte: sinasc_estrutura
+    verificado: "2026-09-25: ano=2020, semana 39 → 784.396 (moda); gestações anteriores 0 → 960.034. Ambos vazios antes de 2010"
+    nota: "A faixa categórica de semanas (GESTACAO 1–6) está em gestacao_agr."
+
+  - tabela: br_ms_sinasc.microdados
+    colunas: [id_uf_mae]
+    status: padrao_externo
+    significado: "UF de NATURALIDADE da mãe (CODUFNATU), código IBGE de 2 dígitos — não a UF de residência"
+    fonte: sinasc_estrutura
+    verificado: "2026-09-25: preenchida a partir de 2013 (campo criado em 2013). Bate 100% com substr(id_municipio_mae,1,2) e só 84,3% com a UF de id_municipio_residencia (2013, 2015, 2020)"
+    nota: "Armadilha: o nome sugere residência. Para a UF de residência use substr(id_municipio_residencia,1,2)."
+
+  - tabela: br_ms_sinasc.microdados
+    colunas: [id_pais_mae]
+    status: pendente
+    nota: "Deveria ser o país de nascimento da mãe (NATURALMAE), mas para mãe brasileira o valor é '8' + código IBGE da UF (835 = SP, 831 = MG: 471.888 e 250.072 em 2020, iguais às contagens de id_uf_mae). Não é código de país; mãe estrangeira não conferida."
+
+  - tabela: br_ms_sinasc.microdados
+    colunas: [id_pais_residencia]
+    status: pendente
+    nota: "CODPAISRES. Em todo ano preenchido vale só '1' (presumivelmente Brasil; código não achado na estrutura). 100% NULL em 2014, 2015 e 2017 — antes de 2010 não existe. Não serve para separar residentes no exterior."
+
+  - tabela: br_ms_sinasc.microdados
+    colunas: [ocupacao_mae]
+    status: padrao_externo
+    significado: "Ocupação da mãe. 2006+: CBO 2002 (6 dígitos) mais os códigos especiais do SINASC 999991–999994. Até 2005: CBO antiga de 5 dígitos"
+    valores: {"999991": Estudante, "999992": Dona de casa, "999993": Aposentada/pensionista, "999994": Desempregada}
+    fonte: sinasc_cbo_sp
+    verificado: "2026-09-25: 2020 → 999992 1.099.708 (40% das preenchidas), 999991 132.787; 6 dígitos em 2010 e 2020, 5 dígitos em 2005 (2.799.013), vazio em 2000 e antes"
+    nota: "Duas classificações sob o mesmo nome: não juntar 2005 com 2010 pela CBO. Os 99999x não existem na CBO 2002 — filtrar antes de juntar com a tabela de ocupações."
+
+  - tabela: br_ms_sinasc.microdados
+    colunas: [codigo_estabelecimento]
+    status: padrao_externo
+    significado: "Código CNES do estabelecimento do nascimento, 7 dígitos"
+    fonte: espelho
+    verificado: "2026-09-25: ano=2020, 5.483 de 5.502 códigos distintos (99,7%) casam com br_ms_cnes.estabelecimento.id_estabelecimento_cnes. Preenchido a partir de ~2000"
+
+  - tabela: br_ms_sinasc.microdados
+    colunas: [sequencial_nascimento]
+    status: nao_e_codigo
+    verificado: "2026-09-25: número sequencial do registro (CONTADOR), ~486 mil valores distintos na amostra"
+
+  - tabela: br_me_caged.microdados_movimentacao
+    colunas: [origem_informacao]
+    status: documentado
+    significado: Sistema de onde veio a movimentação no Novo CAGED
+    valores: {"1": eSocial, "2": CAGED, "3": Empregador Web}
+    fonte: novo_caged_layout
+    verificado: "2026-09-25: 2020 → 1: 26.022.748, 2: 2.861.188, 3: 79.048; 2024 → 1: 48.991.220, 3: 4.820 (o CAGED antigo some)"
+
+  - tabela: br_ibge_censo_demografico.microdados_pessoa_2000
+    colunas: [v0404]
+    status: documentado
+    significado: "Número da família à qual a pessoa pertence dentro do domicílio (V0404)"
+    valores: {"0": Individual em domicílio coletivo, "1": 1ª família, "2": 2ª família}
+    fonte: censo2000_doc
+    verificado: "2026-09-25: amostra de 3M → 1: 2.830.598, 2: 145.589, 3: 14.914, 0: 6.616, 4..9 residuais"
+    nota: "É ordinal de família, não categoria: 'v0404 = 1' não é 'chefe de família' (isso é v0402/v0403)."
+
+  - tabela: br_ibge_censo_demografico.microdados_domicilio_2000
+    colunas: [situacao_setor]
+    status: documentado
+    significado: Situação do setor censitário (V1005)
+    valores: {"1": Área urbanizada de vila ou cidade, "2": Área não urbanizada de vila ou cidade, "3": Área urbanizada isolada, "4": Rural - extensão urbana, "5": Rural - povoado, "6": Rural - núcleo, "7": Rural - outros aglomerados, "8": Rural - exclusive aglomerados}
+    fonte: censo2000_doc
+    verificado: "2026-09-25: 1 → 4.112.246, 8 → 982.285, 5 → 103.857, 2 → 38.154, 3 → 32.124, 4 → 28.886, 6 → 4.259, 7 → 2.900"
+    nota: "1–3 = urbano, 4–8 = rural (é assim que o IBGE deriva V1006)."
+
+  - tabela: br_ibge_censo_demografico.microdados_domicilio_2000
+    colunas: [tipo_setor]
+    status: documentado
+    significado: Tipo do setor censitário (V1007)
+    valores: {"0": Comum ou não especial, "1": Aglomerado subnormal, "2": Quartéis/bases militares, "3": Alojamentos/acampamentos, "4": Embarcações, "5": Aldeia indígena, "6": Penitenciárias/presídios, "7": Asilos/orfanatos/conventos/hospitais}
+    fonte: censo2000_doc
+    verificado: "2026-09-25: 0 → 5.117.974, 1 → 167.780, 6 → 9.876, 7 → 5.664, 5 → 1.883, 3 → 856, 2 → 660, 4 → 18"
+    nota: "tipo_setor = 1 é o recorte de favela (aglomerado subnormal) do Censo 2000."
+
+  - tabela: br_ibge_censo_demografico.microdados_pessoa_2010
+    colunas: [situacao_setor]
+    status: pendente
+    nota: "100% NULL no espelho (20.635.472 linhas). O código existe no Censo 2010, mas a coluna veio vazia do Base dos Dados. Não é decodificável: é dado ausente."
+  - tabela: br_ibge_censo_demografico.microdados_domicilio_2010
+    colunas: [situacao_setor]
+    status: pendente
+    nota: "100% NULL no espelho (6.192.332 linhas), como na tabela de pessoas de 2010."
+
+  - tabela: br_siop_orcamento.dados
+    colunas: [Esfera]
+    status: documentado
+    significado: Esfera orçamentária da ação
+    valores: {"10": Orçamento Fiscal, "20": Orçamento da Seguridade Social, "30": Orçamento de Investimento das estatais}
+    fonte: mto_siop
+    verificado: "2026-09-25: 10 → 4.454, 20 → 916, 30 → 240 (5.610 linhas)"
+
+  - tabela: global_ofac_sanctions.sanctions
+    colunas: [sdn_type]
+    status: documentado
+    significado: "Tipo da entrada SDN. '-0- ' (com espaço) é o NULO do formato legado da OFAC — na prática, entidade (empresa/organização)"
+    valores: {"-0- ": nulo (entidade), individual: pessoa física, vessel: embarcação, aircraft: aeronave}
+    fonte: ofac_dat_spec
+    verificado: "2026-09-25: '-0- ' 9.793, individual 7.495, vessel 1.497, aircraft 344"
+    nota: "Filtrar entidades por sdn_type = 'entity' devolve zero: use sdn_type = '-0- ' (com o espaço). As outras colunas deste arquivo usam o mesmo nulo."
+
+  - tabela: br_anatel_indice_brasileiro_conectividade.municipio
+    colunas: [fibra]
+    status: documentado
+    significado: "Presença de backhaul de fibra óptica no município, já normalizada para 0–100"
+    valores: {"0": sem backhaul de fibra, "100": com backhaul de fibra, "50": categoria intermediária (só em 2024)}
+    fonte: anatel_ibc
+    verificado: "2026-09-25: 2021–2023 só {0,100}; 2024 → 100: 3.113, 50: 1.250, 0: 1.207. 2022 e 2023 têm contagens idênticas (1.287/4.283)"
+    nota: "A metodologia 2024 passou a variável para 3 categorias; a definição exata do 50 não foi conferida no relatório metodológico. Não comparar a distribuição de 2024 com a de antes."
+
+  - tabela: br_anatel_indice_brasileiro_conectividade.municipio
+    colunas: [hhi_smp]
+    status: nao_e_codigo
+    significado: "Competitividade da telefonia móvel: INVERSO do HHI, normalizado para 0–100 (maior = mais competitivo)"
+    fonte: anatel_ibc
+    verificado: "2026-09-25: 101 valores inteiros de 0 a 100"
+    nota: "O nome sugere HHI (maior = mais concentrado); aqui é o contrário."
+
+  - tabela: br_mjsp_ckan.procon
+    colunas: [Tipo]
+    status: documentado
+    significado: Tipo de pessoa do fornecedor reclamado
+    valores: {"1": Pessoa jurídica, "0": Pessoa física}
+    fonte: espelho
+    verificado: "2026-09-25: Tipo=1 → NumeroCNPJ de 14 dígitos (8.356) ou 12–13 sem zeros à esquerda; Tipo=0 → 10–11 dígitos (CPF sem zero à esquerda), 26 linhas"
+    nota: "Decode inferido pela forma do documento, conferido linha a linha, sem dicionário oficial do SINDEC. NumeroCNPJ perdeu zeros à esquerda: lpad(NumeroCNPJ,14,'0') antes de juntar com CNPJ."
+
+  - tabela: br_minc_salic.entidades
+    colunas: [proponente]
+    status: documentado
+    significado: "A entidade já propôs algum projeto no SALIC"
+    valores: {"1": sim (projetos_count > 0), "0": não}
+    fonte: espelho
+    verificado: "2026-09-25: proponente=1 ⇔ projetos_count>0 em 54.526 de 54.526; proponente=0 ⇔ projetos_count=0 em 66.373 de 66.373; NULL junto com projetos_count NULL (96.744)"
+  - tabela: br_minc_salic.entidades
+    colunas: [patrocinador]
+    status: pendente
+    nota: "Flag 0/1 (1 → 152.793, 0 → 64.850), sem NULL e sem coluna irmã que a explique como proponente/projetos_count. Provavelmente 'já incentivou/patrocinou', não confirmado."
+
+  - tabela: br_ms_sinan_malaria.microdados_malaria
+    colunas: [ASSINTOM]
+    status: pendente
+    nota: "Valores {1,2,9,''}. Não está no dicionário v5 (que tem AT_SINTOMA: 1 com sintomas, 2 sem sintomas). Provável 'assintomático?' com 1=Sim — o que inverteria o sentido de AT_SINTOMA. Não usar sem fonte."
+
+  - tabela: br_mg_belohorizonte_smfa_iptu.iptu
+    colunas: [padrao_acabamento]
+    status: pendente
+    nota: "P1..P5 e TE. TE = terreno: aparece só com tipo_ocupacao='Territorial' (797.388 de 797.388). A ordem de P1 a P5 (baixo→alto?) não foi conferida na legislação do IPTU de BH."
+
+  # --- Padrão externo (UF, município, CNES, ISO, estações) --------------------
+  - tabela: br_cgu_emendas_parlamentares.microdados
+    colunas: [sigla_uf_gasto]
+    status: padrao_externo
+    significado: Sigla da UF do gasto
+    fonte: espelho
+    verificado: "2026-09-25: 27 siglas, 0 fora de br_bd_diretorios_brasil.uf.sigla; NULL 5.853 (emendas nacionais/exterior — ver localidade)"
+  - tabela: br_saude_bps.dados
+    colunas: [uf_da_instituicao]
+    status: padrao_externo
+    significado: Sigla da UF
+    fonte: espelho
+    verificado: "2026-09-25: 24 siglas, 0 fora da tabela de UF"
+  - tabela: br_ok_queridodiario.diarios
+    colunas: [state_code]
+    status: padrao_externo
+    significado: Sigla da UF
+    fonte: espelho
+    verificado: "2026-09-25: 26 siglas, 0 fora da tabela de UF"
+  - tabela: br_cnpq_bolsas.microdados
+    colunas: [sigla_uf_destino, sigla_uf_origem]
+    status: padrao_externo
+    significado: Sigla da UF
+    fonte: espelho
+    verificado: "2026-09-25: origem 0 fora da tabela de UF; destino tem 'EXTERIOR' (1.145) além das 27 siglas"
+  - tabela: br_ana_outorgas.captacoes
+    colunas: [ing_sg_ufmunicipio]
+    status: padrao_externo
+    significado: Sigla da UF do município da captação
+    fonte: espelho
+    verificado: "2026-09-25: 27 siglas, 0 fora da tabela de UF (tabela sem view: ler por read_parquet)"
+  - tabela: br_ana_outorgas.lancamentos
+    colunas: [ing_sg_ufmunicipio]
+    status: padrao_externo
+    significado: Sigla da UF do município do lançamento
+    fonte: espelho
+    verificado: "2026-09-25: 25 siglas (tabela sem view: ler por read_parquet)"
+  - tabela: br_ms_sinan_esquistossomose.microdados_esquistossomose
+    colunas: [SG_UF]
+    status: padrao_externo
+    significado: "UF de residência, código IBGE de 2 dígitos (não sigla)"
+    fonte: sinan_esquistossomose_v5
+    verificado: "2026-09-25: 0 valores fora de br_bd_diretorios_brasil.uf.id_uf, 7 vazios"
+  - tabela: br_ms_sinan_malaria.microdados_malaria
+    colunas: [SG_UF]
+    status: padrao_externo
+    significado: "UF de residência — SIGLA de 2004 a 2006 e código IBGE de 2 dígitos de 2007 em diante"
+    fonte: sinan_malaria_v5
+    verificado: "2026-09-25: numérico 55.008 (NU_ANO 2007–2024), sigla 11.574 (2004–2006), vazio 1.738"
+    nota: "Armadilha: dois formatos na mesma coluna. Agrupar por SG_UF conta ES e 32 como UFs diferentes."
+  - tabela: br_ms_sih.aihs_reduzidas
+    colunas: [id_municipio_gestor]
+    status: padrao_externo
+    significado: "Município gestor, código IBGE de 6 dígitos (sem verificador), como os outros id_municipio_* desta tabela"
+    fonte: espelho
+    verificado: "2026-09-25: ano=2020, 2.010 de 2.011 códigos distintos casam com id_municipio_6. NULL em ~45% da amostra (gestão estadual)"
+  - tabela: br_ms_sisvan.microdados
+    colunas: [cnes]
+    status: padrao_externo
+    significado: Código CNES do estabelecimento, 7 dígitos
+    fonte: espelho
+    verificado: "2026-09-25: ano=2020, 42.889 de 42.891 distintos casam com br_ms_cnes.estabelecimento.id_estabelecimento_cnes"
+    nota: "'0' é sentinela (sem estabelecimento), não CNES."
+  - tabela: br_inmet_bdmep.microdados
+    colunas: [id_estacao]
+    status: padrao_externo
+    significado: "Código de estação do INMET (A001...). Metadados em br_inmet_bdmep.estacao"
+    fonte: espelho
+    verificado: "2026-09-25: 621 estações distintas no microdados, só 565 casam com estacao"
+    nota: "56 estações sem metadado (A301, A915, A418, A615, A808... cada uma com ~160 mil linhas): INNER JOIN com estacao perde as medições delas sem aviso."
+  - tabela: world_oecd_public_finance.country
+    colunas: [country]
+    status: padrao_externo
+    significado: Código de país ISO 3166-1 alfa-3
+    fonte: espelho
+    verificado: "2026-09-25: 36 códigos de 3 letras (SVN, FRA, CAN...)"
+  - tabela: br_cgu_licitacao_contrato.licitacao
+    colunas: [id_orgao_superior]
+    status: padrao_externo
+    significado: "Código SIAFI do órgão superior (26000 = MEC, 52000 = Defesa); nome na coluna irmã nome_orgao_superior"
+    fonte: espelho
+    verificado: "2026-09-25: 51 códigos de 5 dígitos, 26000 → 612.833 = nome 'Ministério da Educação' → 612.833"
+  - tabela: br_cgu_licitacao_contrato.contrato_compra
+    colunas: [id_orgao_superior]
+    status: padrao_externo
+    significado: "Código SIAFI do órgão superior; nome em nome_orgao_superior"
+    fonte: espelho
+    verificado: "2026-09-25: 42 códigos, 26000 → 139.179 = 'Ministério da Educação' → 139.179"
+  - tabela: br_me_rais_identificada.estabelecimentos
+    colunas: [porte]
+    status: documentado
+    significado: Porte da empresa (código da Receita Federal)
+    valores: {"1": Micro empresa, "3": Empresa de pequeno porte, "5": Demais}
+    fonte: espelho
+    verificado: "2026-09-25: 1 → 1.658.742, 5 → 849.520, 3 → 491.738 (amostra 3M); mesmo código de br_me_cnpj.dicionario (nome_coluna='porte')"
+  - tabela: br_me_rais_identificada.estabelecimentos
+    colunas: [situacao_cadastral_codigo]
+    status: documentado
+    significado: Situação cadastral do CNPJ (código da Receita Federal); o rótulo está em situacao_cadastral_descricao
+    valores: {"1": Nula, "2": Ativa, "3": Suspensa, "4": Inapta, "8": Baixada}
+    fonte: espelho
+    verificado: "2026-09-25: 2 → 2.527.043, 4 → 359.932, 8 → 97.132, 3 → 15.754, 1 → 139; mesmo código de br_me_cnpj.dicionario (nome_coluna='situacao_cadastral')"
+  - tabela: br_me_siconfi.municipio_receitas_orcamentarias
+    colunas: [id_conta_bd]
+    status: documentado
+    significado: "Conta de receita harmonizada pelo Base dos Dados (ementário, notação 1.1.1.2.0.00.00.00); rótulo na coluna irmã conta_bd"
+    fonte: espelho
+    verificado: "2026-09-25: 51 contas; 1.0.0.0.0.00.00.00 = 'Receitas Orçamentárias'. NULL em ~77% das linhas: só as contas que o BD harmonizou (ex. 2022: 133.377 de 689.132)"
+    nota: "Os níveis se empilham (1.0 ⊃ 1.1 ⊃ 1.1.1): somar todas as contas conta várias vezes. Filtrar por id_conta_bd IS NOT NULL e escolher UM nível."
+  - tabela: br_ans_beneficiario.informacao_consolidada
+    colunas: [codigo_operadora]
+    status: padrao_externo
+    significado: "Registro ANS da operadora (6 dígitos, com zero à esquerda)"
+    fonte: espelho
+    verificado: "2026-09-25: 783 códigos na amostra; 301949 → 264.938 = razao_social 'Odontoprev S/A' → 264.938"
+
+  # --- Sentinelas e defeitos de import em colunas que não são código ----------
+  - tabela: world_wb_mides.pagamento
+    colunas: [documento_credor]
+    status: nao_e_codigo
+    significado: CPF/CNPJ do credor, sem zeros à esquerda
+    verificado: "2026-09-25: '99999999999' 606.303, '00000000000000' 61.032, '99999999999999' 56.550 na amostra de 3M; CNPJs com 13 dígitos ('2016439000138')"
+    nota: "Sentinelas 999…/000… não são credores reais — excluir antes de rankear. lpad(documento_credor,14,'0') antes de juntar com CNPJ."
+  - tabela: world_wb_mides.licitacao_item
+    colunas: [documento]
+    status: nao_e_codigo
+    significado: CPF/CNPJ do participante, sem zeros à esquerda
+    verificado: "2026-09-25: CNPJs de 13 dígitos ('9485574000171'), NULL 207.179 na amostra"
+  - tabela: world_wb_mides.pagamento
+    colunas: [fonte, orgao]
+    status: pendente
+    nota: "Código de fonte de recurso e de órgão do orçamento LOCAL de cada município (fonte: '1', '00', '100', '99'…; orgao: '54900'…). Não há tabela nacional: o mesmo código significa coisas diferentes em entes diferentes. Não agrupar entre municípios."
+  - tabela: br_rf_cno.microdados
+    colunas: [id_responsavel, nome_empresarial]
+    status: nao_e_codigo
+    verificado: "2026-09-25: CNPJ/CPF e nome do responsável"
+    nota: "Ausência gravada como o TEXTO 'nan' (1.908.898 de 3M na amostra), não NULL: IS NULL não acha. Filtrar <> 'nan'."
+  - tabela: br_rf_cno.microdados
+    colunas: [nome_responsavel, bairro, logradouro]
+    status: nao_e_codigo
+    verificado: "2026-09-25: texto livre ('nan' textual também aparece em nome_responsavel)"
+  - tabela: br_ans_beneficiario.informacao_consolidada
+    colunas: [razao_social, cobertura_assistencia_beneficiario, contratacao_beneficiario, modalidade_operadora, segmentacao_beneficiario, tipo_vinculo]
+    status: nao_e_codigo
+    verificado: "2026-09-25: rótulos por extenso, mas cada categoria aparece DUAS vezes: com acento corrompido e sem acento ('Ma©dico-Hospitalar' 1.286.764 + 'Medico-Hospitalar' 875.452; 'Cooperativa Madica' + 'Cooperativa Medica'; 'Bradesco Saa\\x9ade' + 'Bradesco Saude')"
+    nota: "Mojibake de import: agrupar pelo texto parte a mesma categoria em duas. Normalizar (strip_accents + remover bytes altos) ou agrupar por codigo_operadora."
+  - tabela: br_mj_consumidorgovbr.reclamacoes
+    colunas: ["Nota do Consumidor"]
+    status: nao_e_codigo
+    significado: Nota de 1 a 5 dada pelo consumidor
+    verificado: "2026-09-25: '1'..'5' e '1.0'..'5.0' misturados ('5' 1.519.104 + '5.0' 133.026); NULL 5.579.151"
+    nota: "Defeito de import: CAST(\"Nota do Consumidor\" AS DOUBLE) antes de agrupar ou tirar média."
+  - tabela: br_mj_consumidorgovbr.reclamacoes
+    colunas: [Respondida, "Faixa Etária", Gestor]
+    status: nao_e_codigo
+    verificado: "2026-09-25: Respondida S/N; faixa etária e gestor por extenso"
+  - tabela: br_siop_orcamento.localizadores
+    colunas: [Origem]
+    status: nao_e_codigo
+    verificado: "2026-09-25: PLOA, Emenda, Crédito Extraordinário, Crédito Especial"
+    nota: "Mojibake: gravado 'CrÃ©dito ExtraordinÃ¡rio'. Mesmo defeito de import já registrado para os nomes de coluna do br_siop_orcamento."
+  - tabela: br_sp_saopaulo_geosampa_iptu.iptu
+    colunas: [ano_construcao_corrigida]
+    status: nao_e_codigo
+    significado: Ano de construção
+    verificado: "2026-09-25: '0' → 159.374 = exatamente os imóveis com finalidade_imovel 'Terreno' (159.374)"
+    nota: "0 = terreno sem construção, não ano 0: excluir antes de calcular idade média."
+  - tabela: br_ibge_censo_2022.populacao_grupo_idade_uf
+    colunas: [grupo_idade]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 14 faixas por extenso, que se sobrepõem: '15 a 19 anos' convive com '15 a 17 anos' e '18 e 19 anos'"
+    nota: "Somar todas as faixas conta os 15–19 duas vezes. Escolher um recorte."
+  - tabela: br_inep_sinopse_estatistica_educacao_basica.docente_localizacao
+    colunas: [etapa_ensino]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 12 rótulos hierárquicos: 'Educação Básica' (total) ⊃ 'Ensino Fundamental' ⊃ 'Anos Iniciais'/'Anos Finais'; 'Educação Infantil' ⊃ Creche/Pré-Escola"
+    nota: "Somar as etapas conta o mesmo docente em vários níveis. Filtrar um nível só (ex.: etapa_ensino = 'Educação Básica' para o total)."
+  - tabela: br_ibama_ctf.app
+    colunas: [potenc_de_pol_da_atividade]
+    status: nao_e_codigo
+    significado: "Potencial de poluição da atividade (Lei 6.938/81, Anexo VIII): Pequeno, Médio, Alto"
+    verificado: "2026-09-25: '...' 594.900, Médio 451.588, Alto 374.080, Pequeno 27.688"
+    nota: "'...' (41%) é marcador de ausência, não uma quarta categoria nem 'baixo'."
+  - tabela: br_anp_precos_combustiveis.microdados
+    colunas: [unidade_medida]
+    status: nao_e_codigo
+    verificado: "2026-09-25: R$/litro 12.057.415, R$/13kg 4.114.022 (GLP), R$/m3 238.079 (GNV)"
+    nota: "Três unidades na mesma coluna de preço: nunca tirar média de preço sem filtrar produto."
+  - tabela: br_cgu_servidores_executivo_federal.cadastro_servidores
+    colunas: [funcao, orgsup_exercicio, origem]
+    status: nao_e_codigo
+    verificado: "2026-09-25: rótulos por extenso; origem ∈ {SIAPE, Militares, BACEN}; 'Sem informação' é o vazio (funcao 91% na amostra)"
+  - tabela: br_cgu_viagens.viagem
+    colunas: [nome_do_orgao_superior]
+    status: nao_e_codigo
+    verificado: "2026-09-25: nome do ministério; 'Sem informação' 1.141.056 (tabela sem view: read_parquet)"
+  - tabela: br_anatel_banda_larga_fixa.microdados
+    colunas: [tecnologia, empresa, acessos]
+    status: nao_e_codigo
+    verificado: "2026-09-25: tecnologia (FTTH, xDSL…, 32 rótulos), nome da empresa, contagem de acessos"
+    nota: "empresa não é normalizada: 'OI' e 'Oi S.a. - em Recuperacao Judicial' são o mesmo grupo; 'Fibra' e 'FTTH' também se sobrepõem em tecnologia."
+  - tabela: br_sfb_sicar.area_imovel
+    colunas: [id_imovel]
+    status: nao_e_codigo
+    significado: "Número do recibo do CAR: UF-código IBGE do município (7)-hash"
+    verificado: "2026-09-25: 'GO-5215603-972A…'; o mesmo id aparece até 6 vezes"
+    nota: "Não é único por linha: COUNT(DISTINCT id_imovel), não COUNT(*), para contar imóveis. O município sai de split_part(id_imovel,'-',2)."
+  - tabela: br_rf_cafir.imoveis_rurais
+    colunas: [distrito, id_imovel_receita_federal, nome]
+    status: nao_e_codigo
+    verificado: "2026-09-25: texto livre e NIRF (identificador do imóvel na Receita, NULL em 72% da amostra)"
+  - tabela: br_pgfn_dividaativa.divida
+    colunas: [TIPO_DEVEDOR]
+    status: nao_e_codigo
+    significado: Papel do devedor na inscrição (principal, corresponsável, solidário)
+    verificado: "2026-09-25: PRINCIPAL 28.536.654, CORRESPONSAVEL 13.746.984, Principal 4.275.566, SOLIDARIO 47.881 (46,6M linhas)"
+    nota: "Caixa misturada: 'PRINCIPAL' e 'Principal' são o mesmo papel — filtrar com upper(TIPO_DEVEDOR) = 'PRINCIPAL'. Corresponsáveis e solidários repetem a inscrição do principal: somar valor sem esse filtro conta a mesma dívida mais de uma vez."
+  - tabela: br_ms_sih.aihs_reduzidas
+    colunas: [origem_nome_estabelecimento]
+    status: nao_e_codigo
+    significado: "De onde o espelho tirou o nome do estabelecimento: 'cnpj_aih' ou 'cnes'"
+    verificado: "2026-09-25: cnpj_aih 2.303.953, cnes 284.942, NULL 411.105"
+
+  # --- Rótulo por extenso, número, nome, data, metadado ----------------------
+  - tabela: br_me_cnpj.dicionario
+    colunas: [nome_coluna, id_tabela]
+    status: nao_e_codigo
+    verificado: "2026-09-25: metadado — nome da coluna/tabela decodificada"
+  - tabela: br_ms_sim.dicionario
+    colunas: [nome_coluna, id_tabela]
+    status: nao_e_codigo
+    verificado: "2026-09-25: metadado"
+  - tabela: br_me_rais.dicionario
+    colunas: [nome_coluna, id_tabela]
+    status: nao_e_codigo
+    verificado: "2026-09-25: metadado"
+  - tabela: br_seeg_emissoes.dicionario
+    colunas: [coluna, tabela]
+    status: nao_e_codigo
+    verificado: "2026-09-25: metadado"
+  - tabela: br_ibge_censo_demografico.dicionario
+    colunas: [id_tabela]
+    status: nao_e_codigo
+    verificado: "2026-09-25: metadado (microdados_pessoa_1991...)"
+  - tabela: br_bd_metadados.bigquery_tables
+    colunas: [project_id, type]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 'basedosdados'; table/view"
+  - tabela: br_me_rais.microdados_vinculos
+    colunas: [mes_admissao, mes_desligamento]
+    status: nao_e_codigo
+    verificado: "2026-09-25: mês 1..12; NULL quando não houve admissão/desligamento no ano"
+  - tabela: br_tce_rj.contratos_municipio
+    colunas: [AnoContrato]
+    status: nao_e_codigo
+    verificado: "2026-09-25: ano 2022–2026"
+  - tabela: br_me_cnpj.estabelecimentos
+    colunas: [tipo_logradouro]
+    status: nao_e_codigo
+    verificado: "2026-09-25: texto livre (RUA, AVENIDA… e lixo como '10A RUA'), 347 valores na amostra"
+  - tabela: br_ibama_ctf.app
+    colunas: [situacao_cadastral]
+    status: nao_e_codigo
+    verificado: "2026-09-25: Ativa, Encerrado, Suspenso…, Cadastramento indevido"
+  - tabela: br_cgu_emendas_parlamentares.microdados
+    colunas: [nome_subfuncao, nome_funcao, localidade]
+    status: nao_e_codigo
+    verificado: "2026-09-25: rótulos por extenso; localidade só preenchida (Nacional, Exterior, regiões) quando não há UF — NULL 83.880"
+  - tabela: br_mobilidados_indicadores.tempo_deslocamento_casa_trabalho
+    colunas: [tempo_medio_deslocamento]
+    status: nao_e_codigo
+    verificado: "2026-09-25: minutos (21–50), gravado como texto"
+  - tabela: br_sp_saopaulo_geosampa_iptu.iptu
+    colunas: [bairro, logradouro, finalidade_imovel]
+    status: nao_e_codigo
+    verificado: "2026-09-25: texto livre / rótulo por extenso"
+  - tabela: br_inep_enem.microdados
+    colunas: [id_municipio_prova]
+    status: padrao_externo
+    significado: Código IBGE de município (7 dígitos) onde a prova foi feita
+    fonte: espelho
+    verificado: "2026-09-25: 1.761 códigos de 7 dígitos na amostra (3550308 = São Paulo)"
+  - tabela: world_olympedia_olympics.athlete_event_result
+    colunas: [edition, medal]
+    status: nao_e_codigo
+    verificado: "2026-09-25: '2020 Summer Olympics'…; Gold/Silver/Bronze, NULL = sem medalha"
+  - tabela: br_ibge_pam.lavoura_permanente
+    colunas: [produto]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 38 produtos por extenso"
+  - tabela: br_ibge_pam.lavoura_temporaria
+    colunas: [produto]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 33 produtos por extenso"
+  - tabela: br_ibge_pevs.producao_extracao_vegetal
+    colunas: [produto]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 41 produtos por extenso, unidades diferentes (lenha em m³, carvão em t) — não somar quantidades entre produtos"
+  - tabela: br_ibge_pevs.producao_silvicultura
+    colunas: [produto]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 15 produtos por extenso"
+  - tabela: br_rj_isp_estatisticas_seguranca.evolucao_mensal_municipio
+    colunas: [regiao]
+    status: nao_e_codigo
+    verificado: "2026-09-25: Interior, Baixada Fluminense, Grande Niterói, Capital"
+  - tabela: global_opensanctions.entities
+    colunas: [schema]
+    status: nao_e_codigo
+    verificado: "2026-09-25: tipos do modelo FollowTheMoney (Person, Company, LegalEntity, Vessel…)"
+  - tabela: br_ibge_amc.municipio_de_para
+    colunas: [ano_de, ano_para]
+    status: nao_e_codigo
+    verificado: "2026-09-25: anos de censo (1872–2010)"
+  - tabela: br_saude_bps.dados
+    colunas: [unidade_de_fornecimento, modalidade_da_compra]
+    status: nao_e_codigo
+    verificado: "2026-09-25: rótulos por extenso (COMPRIMIDO, FRASCO…; Pregão, Dispensa…)"
+    nota: "Preço unitário depende de unidade_de_fornecimento: não comparar preço de 'CAIXA' com 'COMPRIMIDO'."
+  - tabela: br_simet_educacao_conectada.escola
+    colunas: [faixa_velocidade]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 4 faixas por extenso"
+  - tabela: br_mdr_snis.prestador_agua_esgoto
+    colunas: [natureza_juridica, abrangencia]
+    status: nao_e_codigo
+    verificado: "2026-09-25: rótulos por extenso (não é o código CONCLA de natureza jurídica)"
+  - tabela: br_cgu_fef.microdados
+    colunas: [sorteio_ciclo_fef, tipo_constatacao]
+    status: nao_e_codigo
+    verificado: "2026-09-25: número do sorteio ('022'…'040'); Falha Média/Grave/Formal, Informação"
+  - tabela: br_ce_fortaleza_sefin_iptu.face_quadra
+    colunas: [pavimentacao]
+    status: nao_e_codigo
+    verificado: "2026-09-25: Asfalto, Pedra rust(ica), Sem Pavimentação…"
+  - tabela: br_bndes_operacoes_contratadas.operacoes_nao_automaticas
+    colunas: [porte_cliente]
+    status: nao_e_codigo
+    verificado: "2026-09-25: GRANDE, MÉDIA, PEQUENA, MICRO, SEM PORTE"
+  - tabela: br_ms_sim.microdados
+    colunas: [idade_mae]
+    status: nao_e_codigo
+    verificado: "2026-09-25: idade em anos; NULL em ~97% (só óbitos fetais/infantis têm mãe informada)"
+  - tabela: br_cnj_estatisticas_poder_judiciario.recursos_financeiros
+    colunas: [ramo_justica]
+    status: nao_e_codigo
+    verificado: "2026-09-25: Estadual, Trabalho, Eleitoral, Federal, Superior, Militar"
+  - tabela: br_inea_boletim.boletins
+    colunas: [ano_arquivo, n_empresas, n_processos]
+    status: nao_e_codigo
+    verificado: "2026-09-25: ano e contagens (tabela sem view: read_parquet)"
+  - tabela: br_inea_boletim.tipos_documento
+    colunas: [tipo_documento]
+    status: nao_e_codigo
+    verificado: "2026-09-25: rótulo por extenso (licença de operação, notificação…)"
+  - tabela: br_ibge_censo_2022.populacao_idade_sexo
+    colunas: [grupo_idade]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 21 faixas por extenso"
+  - tabela: br_ibge_censo_2022.caracteristica_domicilio_grupo_idade_raca_tipo_domicilio
+    colunas: [tipo_domicilio]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 6 rótulos por extenso"
+  - tabela: br_ibge_censo_2022.caracteristica_domicilio_grupo_idade_raca_esgotamento_sanitario
+    colunas: [grupo_idade, tipo_esgotamento_sanitario]
+    status: nao_e_codigo
+    verificado: "2026-09-25: rótulos por extenso; esgotamento tem categorias agregadas ('Rede geral, rede pluvial ou fossa ligada à rede') ao lado das desagregadas — não somar todas"
+  - tabela: br_bcb_estban.municipio
+    colunas: [instituicao, agencias_esperadas, agencias_processadas]
+    status: nao_e_codigo
+    verificado: "2026-09-25: nome do banco e contagens"
+  - tabela: br_bcb_estban.agencia
+    colunas: [instituicao]
+    status: nao_e_codigo
+    verificado: "2026-09-25: nome do banco"
+  - tabela: br_ms_sisvan.microdados
+    colunas: [estado_nutricional_adulto, estado_nutricional_imc_idade_crianca]
+    status: nao_e_codigo
+    verificado: "2026-09-25: rótulos por extenso (Eutrofia, Sobrepeso, Obesidade Grau I…)"
+  - tabela: br_ms_populacao.municipio
+    colunas: [grupo_idade]
+    status: nao_e_codigo
+    verificado: "2026-09-25: faixas quinquenais '0-4 anos'… (formato diferente do censo 2022: '0 a 4 anos')"
+  - tabela: br_inep_educacao_especial.etapa_ensino
+    colunas: [etapa_ensino, tipo_classe]
+    status: nao_e_codigo
+    verificado: "2026-09-25: rótulos por extenso; Classes Comuns/Exclusivas"
+  - tabela: br_inep_ideb.escola
+    colunas: [ensino]
+    status: nao_e_codigo
+    verificado: "2026-09-25: fundamental, medio"
+  - tabela: br_inep_saeb.municipio
+    colunas: [disciplina]
+    status: nao_e_codigo
+    verificado: "2026-09-25: LP (Língua Portuguesa), MT (Matemática)"
+  - tabela: br_tcu_inidoneos.empresas
+    colunas: [NOME, PROCESSO]
+    status: nao_e_codigo
+    verificado: "2026-09-25: nome da empresa e número do processo TCU"
+  - tabela: br_cgu_licitacao_contrato.licitacao
+    colunas: [modalidade_compra, nome_orgao_superior]
+    status: nao_e_codigo
+    verificado: "2026-09-25: rótulos por extenso"
+  - tabela: br_cgu_licitacao_contrato.contrato_compra
+    colunas: [nome_orgao_superior]
+    status: nao_e_codigo
+    verificado: "2026-09-25: nome do ministério"
+  - tabela: br_cgu_licitacao_contrato.licitacao_participante
+    colunas: [nome_participante, modalidade_compra, nome_unidade_gestora]
+    status: nao_e_codigo
+    verificado: "2026-09-25: texto livre; 'Sigiloso' (17.365 na amostra) é participante oculto, não nome"
+  - tabela: br_geobr_mapas.unidade_conservacao
+    colunas: [qualidade]
+    status: nao_e_codigo
+    verificado: "2026-09-25: Correto/Aproximado/Esquemático, com a explicação por extenso"
+  - tabela: br_cgu_servidores_executivo_federal.remuneracao
+    colunas: [nome]
+    status: nao_e_codigo
+    verificado: "2026-09-25: nome do servidor"
+  - tabela: br_mg_belohorizonte_smfa_iptu.iptu
+    colunas: [frequencia_coleta, tipo_ocupacao]
+    status: nao_e_codigo
+    verificado: "2026-09-25: rótulos por extenso"
+  - tabela: br_minc_salic.projetos
+    colunas: [enquadramento, mecanismo, created_at, updated_at]
+    status: nao_e_codigo
+    verificado: "2026-09-25: Artigo 18 / Artigo 26 (da Lei Rouanet); Mecenato, FNC…; datas"
+    nota: "created_at/updated_at são datas de carga, não do projeto: 110 mil linhas em 2013-12-15..17 e picos em 1º de janeiro."
+  - tabela: br_minc_salic.entidades
+    colunas: [projetos_count]
+    status: nao_e_codigo
+    verificado: "2026-09-25: contagem de projetos"
+  - tabela: br_minc_salic.areas
+    colunas: [nome]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 7 áreas culturais por extenso"
+  - tabela: br_siop_orcamento.dados
+    colunas: [Direta, Novo, Tipo]
+    status: nao_e_codigo
+    verificado: "2026-09-25: Sim/Não; Atividade, Projeto, Operações Especiais, Reserva de Contingência"
+  - tabela: br_tce_rj.contratos_estado
+    colunas: [Unidade]
+    status: nao_e_codigo
+    verificado: "2026-09-25: nome da unidade gestora"
+  - tabela: br_mjsp_ckan.procon
+    colunas: [Regiao]
+    status: nao_e_codigo
+    verificado: "2026-09-25: nome da região"
+  - tabela: br_fipe_veiculos.precos
+    colunas: [vehicle_type]
+    status: nao_e_codigo
+    verificado: "2026-09-25: cars, motorcycles, trucks"
+  - tabela: br_mjsp_sinesp.ocorrencias
+    colunas: [regiao, vítimas]
+    status: nao_e_codigo
+    verificado: "2026-09-25: regiao só 'NORTE' (823 linhas — a tabela cobre só a região Norte); vítimas é contagem"
+  - tabela: br_ibge_censo2022_raca.instrucao
+    colunas: [variavel]
+    status: nao_e_codigo
+    verificado: "2026-09-25: constante 'Pessoas de 18 anos ou mais de idade'"
+  - tabela: br_cgu_pe_de_meia.pe_de_meia
+    colunas: [mes_referencia]
+    status: nao_e_codigo
+    verificado: "2026-09-25: AAAAMM"
+  - tabela: br_me_comex_stat.ncm_exportacao
+    colunas: [id_unidade]
+    status: documentado
+    significado: "Unidade estatística da quantidade (quantidade_estatistica) do NCM — tabela NCM_UNIDADE do Comex Stat"
+    valores: {"10": Quilograma líquido, "11": Número (unidade), "12": Milheiro, "13": Pares, "14": Metro, "15": Metro quadrado, "16": Metro cúbico, "17": Litro, "18": Mil quilowatt-hora, "19": Quilate, "20": Dúzia, "21": Tonelada métrica líquida, "22": Grama líquido, "23": Bilhões de unidades internacionais, "24": Quilograma bruto}
+    fonte: comex_ncm_unidade
+    verificado: "2026-09-25: 13 códigos no dado, todos na tabela oficial (10 → 1.759.233, 11 → 1.050.448, 13 → 59.061…)"
+    nota: "Quantidade estatística em unidades diferentes por NCM: nunca somar entre NCMs de unidades distintas — use o peso líquido (kg) para agregar."
+  - tabela: br_mec_sisu.microdados
+    colunas: [tipo_cota]
+    status: documentado
+    significado: "Sigla da cota da Lei 12.711/2012; a descrição completa está em modalidade_concorrencia"
+    valores: {"PPI": Pretos, pardos ou indígenas, "PP": Pretos ou pardos, "I": Indígenas, "D": Escola pública (sem recorte racial), "PPID": PPI com deficiência, "PPD": PP com deficiência, "DD": Com deficiência}
+    fonte: espelho
+    verificado: "2026-09-25: ano=2022, cada sigla casa com as frases de modalidade_concorrencia (PPI → 'autodeclarados pretos. pardos ou indígenas'…). Preenchida só em 2021–2022; NULL em 2017–2020 e na ampla concorrência"
+    nota: "Valores com espaço à direita ('PPI ', 'D   '): comparar com trim(tipo_cota). A sigla NÃO separa renda ≤ 1,5 SM de 'independentemente da renda' — isso só está em modalidade_concorrencia."
+  - tabela: br_ms_sinasc.microdados
+    colunas: [id_municipio_mae]
+    status: padrao_externo
+    significado: "Município de NATURALIDADE da mãe (CODMUNNATU), código IBGE de 7 dígitos — não residência"
+    fonte: sinasc_estrutura
+    verificado: "2026-09-25: ano=2020, 5.539 de 5.540 códigos distintos casam com br_bd_diretorios_brasil.municipio.id_municipio"
+  - tabela: br_tse_filiacao_partidaria.microdados
+    colunas: [situacao_registro]
+    status: nao_e_codigo
+    verificado: "2026-09-25: Regular 16.479.345, Cancelado 596.240, Suspenso 98.179"
+    nota: "Contar filiados sem filtrar situacao_registro = 'Regular' inclui cancelados."
+  - tabela: br_me_comex_stat.dicionario
+    colunas: [nome_coluna]
+    status: nao_e_codigo
+    verificado: "2026-09-25: metadado (id_pais, id_via, id_urf)"
+  - tabela: br_cnj_improbidade_administrativa.condenacao
+    colunas: [tribunal]
+    status: nao_e_codigo
+    verificado: "2026-09-25: 34 nomes de tribunal por extenso"
+  - tabela: br_me_caged.dicionario
+    colunas: [id_tabela, nome_coluna]
+    status: nao_e_codigo
+    verificado: "2026-09-25: metadado"
+  - tabela: br_me_comex_stat.dicionario
+    colunas: [id_tabela]
+    status: nao_e_codigo
+    verificado: "2026-09-25: metadado"
