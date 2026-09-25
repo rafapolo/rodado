@@ -3,89 +3,19 @@
   "generated_by": "scripts/prioriza_schema_dict_status.py",
   "fonte": "docs/context/schema_dict_status.json (label nao_verificado)",
   "sinais": {
-   "consultas_sql_lidas": 1904,
-   "harness_consultar": 601,
-   "claude_run_sql_ou_bash_duckdb": 1303,
-   "describe_table_lidos": 402,
+   "consultas_sql_lidas": 1927,
+   "harness_consultar": 606,
+   "claude_run_sql_ou_bash_duckdb": 1321,
+   "describe_table_lidos": 404,
    "docs_versionados_lidos": 162
   },
-  "nao_verificado_total": 8536,
-  "com_uso_observado_sql_ou_docs": 255,
-  "com_uso_em_sql": 119,
+  "nao_verificado_total": 8359,
+  "com_uso_observado_sql_ou_docs": 87,
+  "com_uso_em_sql": 14,
   "formula": "10*sql + 5*docs + 1*desc + 0.5*perg + 0.5*log10(linhas+1)",
   "top": 300
  },
  "ranking": [
-  {
-   "coluna": "br_cgu_emendas_parlamentares.microdados.sigla_uf_gasto",
-   "score": 136.47,
-   "sql": 13,
-   "docs": 0,
-   "desc": 4,
-   "perg": 0,
-   "linhas": 88991,
-   "reason": "candidato real: ~28 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_me_cnpj.dicionario.nome_coluna",
-   "score": 131.47,
-   "sql": 13,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 853,
-   "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_minc_salic.entidades.proponente",
-   "score": 78.67,
-   "sql": 7,
-   "docs": 1,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 217643,
-   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_bd_metadados.bigquery_tables.project_id",
-   "score": 71.64,
-   "sql": 7,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 1908,
-   "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_me_cnpj.dicionario.id_tabela",
-   "score": 71.47,
-   "sql": 7,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 853,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ms_sih.aihs_reduzidas.origem_nome_estabelecimento",
-   "score": 70.15,
-   "sql": 5,
-   "docs": 1,
-   "desc": 11,
-   "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_inep_enem.microdados.id_municipio_residencia",
-   "score": 69.02,
-   "sql": 6,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 108132056,
-   "reason": "column_codes.yaml (pendente): Código de município, mas 100% NULL em ano=2020 (5.783.109 linhas). Não conferido em outros anos; não usar para 2020+ sem checar o preenchimento."
-  },
   {
    "coluna": "br_minc_salic.entidades.patrocinador",
    "score": 68.67,
@@ -94,7 +24,7 @@
    "desc": 1,
    "perg": 0,
    "linhas": 217643,
-   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "reason": "column_codes.yaml (pendente): Flag 0/1 (1 → 152.793, 0 → 64.850), sem NULL e sem coluna irmã que a explique como proponente/projetos_count. Provavelmente 'já incentivou/patrocinou', não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.REL_SEXUAL",
@@ -107,106 +37,6 @@
    "reason": "column_codes.yaml (pendente): Valores {'',1,2,3,8,9}, preenchido só de 2009 a ~2021 (4.242.249 vazios de 4.939.266). Não está no dicionário v5 vigente nem no 5.0 não vigente: é campo de ficha anterior. Significado dos códigos NÃO confirmado — não usar sem o dicionário da ficha 2009–2014."
   },
   {
-   "coluna": "br_bd_metadados.bigquery_tables.type",
-   "score": 61.64,
-   "sql": 6,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 1908,
-   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "world_wb_mides.pagamento.documento_credor",
-   "score": 60.3,
-   "sql": 3,
-   "docs": 5,
-   "desc": 0,
-   "perg": 2,
-   "linhas": 392731053,
-   "reason": "tabela grande (~392.731.053 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_seeg_emissoes.dicionario.coluna",
-   "score": 56.61,
-   "sql": 5,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 1645,
-   "reason": "candidato real: ~10 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_saude_bps.dados.uf_da_instituicao",
-   "score": 52.77,
-   "sql": 5,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 342716,
-   "reason": "candidato real: ~27 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ms_sinasc.microdados.id_uf_mae",
-   "score": 47.97,
-   "sql": 4,
-   "docs": 0,
-   "desc": 4,
-   "perg": 0,
-   "linhas": 85559034,
-   "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_cgu_servidores_executivo_federal.cadastro_servidores.funcao",
-   "score": 44.11,
-   "sql": 4,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 168131529,
-   "reason": "tabela grande (~168.131.529 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_me_rais.microdados_vinculos.mes_admissao",
-   "score": 42.66,
-   "sql": 1,
-   "docs": 0,
-   "desc": 28,
-   "perg": 0,
-   "linhas": 2071895691,
-   "reason": "tabela grande (~2.071.895.691 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_me_rais.microdados_vinculos.mes_desligamento",
-   "score": 42.66,
-   "sql": 1,
-   "docs": 0,
-   "desc": 28,
-   "perg": 0,
-   "linhas": 2071895691,
-   "reason": "tabela grande (~2.071.895.691 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_tce_rj.contratos_municipio.AnoContrato",
-   "score": 42.49,
-   "sql": 4,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 96376,
-   "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ms_sim.dicionario.nome_coluna",
-   "score": 41.38,
-   "sql": 4,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 569,
-   "reason": "candidato real: ~39 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
    "coluna": "br_inep_saeb.municipio.serie",
    "score": 39.15,
    "sql": 3,
@@ -217,244 +47,24 @@
    "reason": "column_codes.yaml (pendente): Valores {4,5,9,12,13,14}. br_inep_saeb.dicionario só decodifica serie da tabela proficiencia, com OUTRO código (3 = 3º ano EM, 5 = 5º EF, 9 = 9º EF). 5 e 9 batem; 4, 12, 13 e 14 não têm fonte achada (API do Base dos Dados descreve a coluna só como 'Série/Ano Escolar'). Não reusar o dicionário da proficiencia aqui."
   },
   {
-   "coluna": "world_oecd_public_finance.country.country",
-   "score": 38.71,
-   "sql": 3,
-   "docs": 1,
-   "desc": 0,
-   "perg": 4,
-   "linhas": 2646,
-   "reason": "candidato real: ~40 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_me_cnpj.estabelecimentos.tipo_logradouro",
-   "score": 38.7,
-   "sql": 3,
-   "docs": 0,
-   "desc": 4,
-   "perg": 0,
-   "linhas": 2540728606,
-   "reason": "tabela grande (~2.540.728.606 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ibama_ctf.app.situacao_cadastral",
-   "score": 38.08,
-   "sql": 3,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 1448256,
-   "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ms_sinasc.microdados.codigo_estabelecimento",
+   "coluna": "br_ms_sinasc.microdados.id_pais_residencia",
    "score": 37.97,
    "sql": 3,
    "docs": 0,
    "desc": 4,
    "perg": 0,
    "linhas": 85559034,
-   "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ok_queridodiario.diarios.state_code",
-   "score": 37.68,
-   "sql": 3,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 231899,
-   "reason": "candidato real: ~27 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_cgu_emendas_parlamentares.microdados.nome_subfuncao",
-   "score": 36.47,
-   "sql": 3,
-   "docs": 0,
-   "desc": 4,
-   "perg": 0,
-   "linhas": 88991,
-   "reason": "candidato real: ~88 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_me_siconfi.municipio_receitas_orcamentarias.id_conta_bd",
-   "score": 35.64,
-   "sql": 1,
-   "docs": 0,
-   "desc": 22,
-   "perg": 0,
-   "linhas": 19376027,
-   "reason": "candidato real: ~46 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_anp_precos_combustiveis.microdados.unidade_medida",
-   "score": 35.61,
-   "sql": 3,
-   "docs": 0,
-   "desc": 2,
-   "perg": 0,
-   "linhas": 16409523,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_sp_saopaulo_geosampa_iptu.iptu.bairro",
-   "score": 33.99,
-   "sql": 3,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 93430758,
-   "reason": "tabela grande (~93.430.758 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_inmet_bdmep.microdados.id_estacao",
-   "score": 33.96,
-   "sql": 2,
-   "docs": 2,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 84514656,
-   "reason": "tabela grande (~84.514.656 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_me_rais.dicionario.nome_coluna",
-   "score": 33.92,
-   "sql": 3,
-   "docs": 0,
-   "desc": 2,
-   "perg": 0,
-   "linhas": 6900,
-   "reason": "candidato real: ~37 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_minc_salic.entidades.projetos_count",
-   "score": 33.67,
-   "sql": 3,
-   "docs": 0,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 217643,
-   "reason": "candidato real: ~96 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_minc_salic.projetos.created_at",
-   "score": 33.65,
-   "sql": 3,
-   "docs": 0,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 196539,
-   "reason": "candidato real: ~45 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "reason": "column_codes.yaml (pendente): CODPAISRES. Em todo ano preenchido vale só '1' (presumivelmente Brasil; código não achado na estrutura). 100% NULL em 2014, 2015 e 2017 — antes de 2010 não existe. Não serve para separar residentes no exterior."
   },
   {
    "coluna": "br_me_rais.microdados_vinculos.ano_chegada_brasil",
-   "score": 32.66,
+   "score": 34.66,
    "sql": 0,
    "docs": 0,
-   "desc": 28,
+   "desc": 30,
    "perg": 0,
    "linhas": 2071895691,
    "reason": "tabela grande (~2.071.895.691 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ana_outorgas.captacoes.ing_sg_ufmunicipio",
-   "score": 32.63,
-   "sql": 2,
-   "docs": 2,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 181917,
-   "reason": "candidato real: ~28 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_seeg_emissoes.dicionario.tabela",
-   "score": 31.61,
-   "sql": 3,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 1645,
-   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_mobilidados_indicadores.tempo_deslocamento_casa_trabalho.tempo_medio_deslocamento",
-   "score": 31.18,
-   "sql": 3,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 229,
-   "reason": "candidato real: ~43 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_me_caged.microdados_movimentacao.origem_informacao",
-   "score": 30.18,
-   "sql": 1,
-   "docs": 0,
-   "desc": 16,
-   "perg": 0,
-   "linhas": 232160525,
-   "reason": "tabela grande (~232.160.525 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_inep_enem.microdados.id_municipio_prova",
-   "score": 29.02,
-   "sql": 2,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 108132056,
-   "reason": "tabela grande (~108.132.056 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ms_sinasc.microdados.sequencial_nascimento",
-   "score": 27.97,
-   "sql": 2,
-   "docs": 0,
-   "desc": 4,
-   "perg": 0,
-   "linhas": 85559034,
-   "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_anatel_indice_brasileiro_conectividade.municipio.fibra",
-   "score": 27.17,
-   "sql": 1,
-   "docs": 3,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 22280,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ana_outorgas.lancamentos.ing_sg_ufmunicipio",
-   "score": 27.02,
-   "sql": 2,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 10855,
-   "reason": "candidato real: ~25 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_cgu_emendas_parlamentares.microdados.localidade",
-   "score": 26.47,
-   "sql": 2,
-   "docs": 0,
-   "desc": 4,
-   "perg": 0,
-   "linhas": 88991,
-   "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_cgu_emendas_parlamentares.microdados.nome_funcao",
-   "score": 26.47,
-   "sql": 2,
-   "docs": 0,
-   "desc": 4,
-   "perg": 0,
-   "linhas": 88991,
-   "reason": "candidato real: ~30 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "world_wb_mides.pagamento.fonte",
@@ -464,337 +74,17 @@
    "desc": 0,
    "perg": 2,
    "linhas": 392731053,
-   "reason": "tabela grande (~392.731.053 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "reason": "column_codes.yaml (pendente): Código de fonte de recurso e de órgão do orçamento LOCAL de cada município (fonte: '1', '00', '100', '99'…; orgao: '54900'…). Não há tabela nacional: o mesmo código significa coisas diferentes em entes diferentes. Não agrupar entre municípios."
   },
   {
-   "coluna": "world_olympedia_olympics.athlete_event_result.edition",
-   "score": 25.25,
-   "sql": 2,
-   "docs": 0,
-   "desc": 0,
-   "perg": 5,
-   "linhas": 316834,
-   "reason": "candidato real: ~64 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "world_olympedia_olympics.athlete_event_result.medal",
-   "score": 25.25,
-   "sql": 2,
-   "docs": 0,
-   "desc": 0,
-   "perg": 5,
-   "linhas": 316834,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ms_sih.aihs_reduzidas.id_municipio_gestor",
-   "score": 25.15,
-   "sql": 0,
-   "docs": 2,
-   "desc": 11,
-   "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_me_rais_identificada.estabelecimentos.porte",
-   "score": 24.78,
-   "sql": 1,
-   "docs": 2,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 36161488,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_tse_filiacao_partidaria.microdados.situacao_registro",
-   "score": 24.62,
-   "sql": 2,
-   "docs": 0,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 17173764,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ibge_pam.lavoura_permanente.produto",
-   "score": 24.52,
-   "sql": 1,
-   "docs": 2,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 10734658,
-   "reason": "candidato real: ~40 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ibge_pam.lavoura_temporaria.produto",
-   "score": 24.49,
-   "sql": 1,
-   "docs": 2,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 9362529,
-   "reason": "candidato real: ~38 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_cnpq_bolsas.microdados.sigla_uf_destino",
-   "score": 24.23,
-   "sql": 2,
-   "docs": 0,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 2839708,
-   "reason": "candidato real: ~30 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_rj_isp_estatisticas_seguranca.evolucao_mensal_municipio.regiao",
-   "score": 24.06,
-   "sql": 2,
-   "docs": 0,
-   "desc": 2,
-   "perg": 0,
-   "linhas": 13432,
-   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_sp_saopaulo_geosampa_iptu.iptu.ano_construcao_corrigida",
-   "score": 23.99,
+   "coluna": "br_mg_belohorizonte_smfa_iptu.iptu.padrao_acabamento",
+   "score": 23.67,
    "sql": 2,
    "docs": 0,
    "desc": 0,
    "perg": 0,
-   "linhas": 93430758,
-   "reason": "tabela grande (~93.430.758 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_minc_salic.projetos.mecanismo",
-   "score": 23.65,
-   "sql": 2,
-   "docs": 0,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 196539,
-   "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ms_sinan_esquistossomose.microdados_esquistossomose.SG_UF",
-   "score": 23.61,
-   "sql": 2,
-   "docs": 0,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 169721,
-   "reason": "candidato real: ~30 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "global_opensanctions.entities.schema",
-   "score": 23.56,
-   "sql": 2,
-   "docs": 0,
-   "desc": 0,
-   "perg": 1,
-   "linhas": 1316073,
-   "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ibama_ctf.app.potenc_de_pol_da_atividade",
-   "score": 23.08,
-   "sql": 2,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 1448256,
-   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ms_sinasc.microdados.origem",
-   "score": 22.97,
-   "sql": 0,
-   "docs": 3,
-   "desc": 4,
-   "perg": 0,
-   "linhas": 85559034,
-   "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ms_sinasc.microdados.pre_natal",
-   "score": 22.97,
-   "sql": 1,
-   "docs": 1,
-   "desc": 4,
-   "perg": 0,
-   "linhas": 85559034,
-   "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ibge_pevs.producao_extracao_vegetal.produto",
-   "score": 22.83,
-   "sql": 1,
-   "docs": 2,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 463825,
-   "reason": "candidato real: ~40 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ibge_amc.municipio_de_para.ano_de",
-   "score": 22.82,
-   "sql": 2,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 434070,
-   "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ibge_amc.municipio_de_para.ano_para",
-   "score": 22.82,
-   "sql": 2,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 434070,
-   "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_saude_bps.dados.unidade_de_fornecimento",
-   "score": 22.77,
-   "sql": 2,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 342716,
-   "reason": "candidato real: ~42 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_simet_educacao_conectada.escola.faixa_velocidade",
-   "score": 22.57,
-   "sql": 2,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 137914,
-   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_mdr_snis.prestador_agua_esgoto.natureza_juridica",
-   "score": 22.55,
-   "sql": 1,
-   "docs": 2,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 125845,
-   "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_cgu_fef.microdados.sorteio_ciclo_fef",
-   "score": 22.46,
-   "sql": 1,
-   "docs": 2,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 82664,
-   "reason": "candidato real: ~24 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ce_fortaleza_sefin_iptu.face_quadra.pavimentacao",
-   "score": 22.42,
-   "sql": 2,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 68932,
-   "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_bndes_operacoes_contratadas.operacoes_nao_automaticas.porte_cliente",
-   "score": 22.19,
-   "sql": 2,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 23483,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ms_sim.microdados.idade_mae",
-   "score": 21.75,
-   "sql": 0,
-   "docs": 2,
-   "desc": 8,
-   "perg": 0,
-   "linhas": 31242595,
-   "reason": "candidato real: ~84 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ibge_censo_demografico.dicionario.id_tabela",
-   "score": 21.74,
-   "sql": 2,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 2954,
-   "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_cnj_estatisticas_poder_judiciario.recursos_financeiros.ramo_justica",
-   "score": 21.54,
-   "sql": 2,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 1189,
-   "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_inea_boletim.boletins.ano_arquivo",
-   "score": 21.52,
-   "sql": 2,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 1081,
-   "reason": "consulta de cardinalidade falhou no beelink: \u001b[90m-- Loading resources from /home/polo/.duckdbrc\n\u001b[00mBinder Error: Referenced column \"element\" not found in FROM clause!\nCandidate bindings: \"boletim\"\n\nLINE 1: ...tinct(\"n_empresas\") AS \"n_empresas\", approx_count_distinct(\"element\") AS \"element\" FROM read_parquet('~/rodado/br_inea...\n                                                                      ^"
-  },
-  {
-   "coluna": "br_inea_boletim.boletins.n_empresas",
-   "score": 21.52,
-   "sql": 2,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 1081,
-   "reason": "consulta de cardinalidade falhou no beelink: \u001b[90m-- Loading resources from /home/polo/.duckdbrc\n\u001b[00mBinder Error: Referenced column \"element\" not found in FROM clause!\nCandidate bindings: \"boletim\"\n\nLINE 1: ...tinct(\"n_empresas\") AS \"n_empresas\", approx_count_distinct(\"element\") AS \"element\" FROM read_parquet('~/rodado/br_inea...\n                                                                      ^"
-  },
-  {
-   "coluna": "br_inea_boletim.boletins.n_processos",
-   "score": 21.52,
-   "sql": 2,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 1081,
-   "reason": "consulta de cardinalidade falhou no beelink: \u001b[90m-- Loading resources from /home/polo/.duckdbrc\n\u001b[00mBinder Error: Referenced column \"element\" not found in FROM clause!\nCandidate bindings: \"boletim\"\n\nLINE 1: ...tinct(\"n_empresas\") AS \"n_empresas\", approx_count_distinct(\"element\") AS \"element\" FROM read_parquet('~/rodado/br_inea...\n                                                                      ^"
-  },
-  {
-   "coluna": "br_ibge_censo_2022.populacao_grupo_idade_uf.grupo_idade",
-   "score": 21.29,
-   "sql": 2,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 378,
-   "reason": "candidato real: ~12 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_bcb_estban.municipio.instituicao",
-   "score": 20.2,
-   "sql": 1,
-   "docs": 1,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 256170669,
-   "reason": "tabela grande (~256.170.669 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 21463811,
+   "reason": "column_codes.yaml (pendente): P1..P5 e TE. TE = terreno: aparece só com tipo_ocupacao='Territorial' (797.388 de 797.388). A ordem de P1 a P5 (baixo→alto?) não foi conferida na legislação do IPTU de BH."
   },
   {
    "coluna": "br_seeg.emissoes_municipais.agrupamento",
@@ -827,244 +117,14 @@
    "reason": "consulta de cardinalidade falhou no beelink: \u001b[90m-- Loading resources from /home/polo/.duckdbrc\n\u001b[00mIO Error: No files found that match the pattern \"~/rodado/br_seeg/emissoes_municipais/**/*.parquet\"\n\nLINE 1: ...pamento\", approx_count_distinct(\"gas_id\") AS \"gas_id\" FROM read_parquet('~/rodado/br_seeg/emissoes_municipais/**/*...\n                                                                      ^"
   },
   {
-   "coluna": "br_me_rais_identificada.estabelecimentos.situacao_cadastral_codigo",
-   "score": 19.78,
-   "sql": 1,
-   "docs": 1,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 36161488,
-   "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ms_sisvan.microdados.estado_nutricional_adulto",
-   "score": 19.3,
+   "coluna": "br_ibge_censo_demografico.microdados_domicilio_2010.situacao_setor",
+   "score": 18.4,
    "sql": 1,
    "docs": 1,
    "desc": 0,
    "perg": 0,
-   "linhas": 406253792,
-   "reason": "tabela grande (~406.253.792 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ibge_censo_2022.populacao_idade_sexo.grupo_idade",
-   "score": 19.2,
-   "sql": 1,
-   "docs": 0,
-   "desc": 6,
-   "perg": 0,
-   "linhas": 2495360,
-   "reason": "candidato real: ~20 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_anatel_banda_larga_fixa.microdados.tecnologia",
-   "score": 18.88,
-   "sql": 1,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 57824623,
-   "reason": "tabela grande (~57.824.623 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_mj_consumidorgovbr.reclamacoes.Nota do Consumidor",
-   "score": 18.5,
-   "sql": 1,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 10167141,
-   "reason": "candidato real: ~10 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_mj_consumidorgovbr.reclamacoes.Respondida",
-   "score": 18.5,
-   "sql": 1,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 10167141,
-   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ms_populacao.municipio.grupo_idade",
-   "score": 18.35,
-   "sql": 1,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 4919222,
-   "reason": "candidato real: ~15 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_inep_educacao_especial.etapa_ensino.etapa_ensino",
-   "score": 18.22,
-   "sql": 1,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 2784180,
-   "reason": "candidato real: ~17 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_inep_educacao_especial.etapa_ensino.tipo_classe",
-   "score": 18.22,
-   "sql": 1,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 2784180,
-   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_cgu_licitacao_contrato.licitacao.id_orgao_superior",
-   "score": 18.12,
-   "sql": 0,
-   "docs": 2,
-   "desc": 5,
-   "perg": 0,
-   "linhas": 1715344,
-   "reason": "candidato real: ~53 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_inep_ideb.escola.ensino",
-   "score": 18.03,
-   "sql": 0,
-   "docs": 3,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 1164507,
-   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ms_sinasc.microdados.id_pais_residencia",
-   "score": 17.97,
-   "sql": 1,
-   "docs": 0,
-   "desc": 4,
-   "perg": 0,
-   "linhas": 85559034,
-   "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_cgu_licitacao_contrato.contrato_compra.id_orgao_superior",
-   "score": 17.84,
-   "sql": 0,
-   "docs": 3,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 472638,
-   "reason": "candidato real: ~40 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_mdr_snis.prestador_agua_esgoto.abrangencia",
-   "score": 17.55,
-   "sql": 1,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 125845,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ibge_pevs.producao_silvicultura.produto",
-   "score": 17.49,
-   "sql": 1,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 94626,
-   "reason": "candidato real: ~15 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_cgu_fef.microdados.tipo_constatacao",
-   "score": 17.46,
-   "sql": 1,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 82664,
-   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_cnj_improbidade_administrativa.condenacao.tribunal",
-   "score": 17.36,
-   "sql": 1,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 53342,
-   "reason": "candidato real: ~35 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_tcu_inidoneos.empresas.NOME",
-   "score": 16.99,
-   "sql": 0,
-   "docs": 3,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 93,
-   "reason": "candidato real: ~85 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_tcu_inidoneos.empresas.PROCESSO",
-   "score": 16.99,
-   "sql": 0,
-   "docs": 3,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 93,
-   "reason": "candidato real: ~59 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_sfb_sicar.area_imovel.id_imovel",
-   "score": 16.95,
-   "sql": 1,
-   "docs": 0,
-   "desc": 3,
-   "perg": 0,
-   "linhas": 79325829,
-   "reason": "tabela grande (~79.325.829 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_cgu_licitacao_contrato.licitacao_participante.nome_participante",
-   "score": 16.94,
-   "sql": 0,
-   "docs": 2,
-   "desc": 3,
-   "perg": 0,
-   "linhas": 74372781,
-   "reason": "tabela grande (~74.372.781 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_geobr_mapas.unidade_conservacao.qualidade",
-   "score": 16.64,
-   "sql": 0,
-   "docs": 3,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 1934,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ans_beneficiario.informacao_consolidada.razao_social",
-   "score": 16.18,
-   "sql": 0,
-   "docs": 2,
-   "desc": 0,
-   "perg": 3,
-   "linhas": 2307338481,
-   "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_pgfn_dividaativa.divida.TIPO_DEVEDOR",
-   "score": 15.83,
-   "sql": 1,
-   "docs": 0,
-   "desc": 2,
-   "perg": 0,
-   "linhas": 46607085,
-   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 6192332,
+   "reason": "column_codes.yaml (pendente): 100% NULL no espelho (6.192.332 linhas), como na tabela de pessoas de 2010."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.cep_paciente",
@@ -1315,106 +375,6 @@
    "perg": 0,
    "linhas": 200147614,
    "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ibge_censo2022_raca.instrucao.variavel",
-   "score": 14.61,
-   "sql": 1,
-   "docs": 0,
-   "desc": 2,
-   "perg": 0,
-   "linhas": 167130,
-   "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_rf_cno.microdados.id_responsavel",
-   "score": 14.36,
-   "sql": 0,
-   "docs": 2,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 534056673,
-   "reason": "tabela grande (~534.056.673 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ms_sisvan.microdados.cnes",
-   "score": 14.3,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 406253792,
-   "reason": "tabela grande (~406.253.792 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ms_sisvan.microdados.estado_nutricional_imc_idade_crianca",
-   "score": 14.3,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 406253792,
-   "reason": "tabela grande (~406.253.792 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_inep_saeb.municipio.disciplina",
-   "score": 14.15,
-   "sql": 0,
-   "docs": 2,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 1994588,
-   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_cgu_servidores_executivo_federal.cadastro_servidores.orgsup_exercicio",
-   "score": 14.11,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 168131529,
-   "reason": "tabela grande (~168.131.529 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_cgu_servidores_executivo_federal.remuneracao.nome",
-   "score": 14.1,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 155419806,
-   "reason": "tabela grande (~155.419.806 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_sp_saopaulo_geosampa_iptu.iptu.finalidade_imovel",
-   "score": 13.99,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 93430758,
-   "reason": "tabela grande (~93.430.758 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_sp_saopaulo_geosampa_iptu.iptu.logradouro",
-   "score": 13.99,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 93430758,
-   "reason": "tabela grande (~93.430.758 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_me_rais.dicionario.id_tabela",
-   "score": 13.92,
-   "sql": 1,
-   "docs": 0,
-   "desc": 2,
-   "perg": 0,
-   "linhas": 6900,
-   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.alarme_dor_abdominal",
@@ -1867,86 +827,6 @@
    "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
-   "coluna": "br_mg_belohorizonte_smfa_iptu.iptu.frequencia_coleta",
-   "score": 13.67,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 21463811,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_mg_belohorizonte_smfa_iptu.iptu.padrao_acabamento",
-   "score": 13.67,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 21463811,
-   "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_mg_belohorizonte_smfa_iptu.iptu.tipo_ocupacao",
-   "score": 13.67,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 21463811,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_minc_salic.projetos.enquadramento",
-   "score": 13.65,
-   "sql": 1,
-   "docs": 0,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 196539,
-   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_minc_salic.projetos.updated_at",
-   "score": 13.65,
-   "sql": 1,
-   "docs": 0,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 196539,
-   "reason": "candidato real: ~38 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_cgu_viagens.viagem.nome_do_orgao_superior",
-   "score": 13.5,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 9853564,
-   "reason": "candidato real: ~33 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ms_sinan_malaria.microdados_malaria.SG_UF",
-   "score": 13.42,
-   "sql": 1,
-   "docs": 0,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 68320,
-   "reason": "candidato real: ~58 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ibge_censo_2022.caracteristica_domicilio_grupo_idade_raca_tipo_domicilio.tipo_domicilio",
-   "score": 13.27,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 3509100,
-   "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
    "coluna": "br_me_rais.microdados_estabelecimentos.subatividade_ibge",
    "score": 13.19,
    "sql": 0,
@@ -1955,206 +835,6 @@
    "perg": 0,
    "linhas": 245274703,
    "reason": "tabela grande (~245.274.703 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_cgu_licitacao_contrato.licitacao.modalidade_compra",
-   "score": 13.12,
-   "sql": 0,
-   "docs": 1,
-   "desc": 5,
-   "perg": 0,
-   "linhas": 1715344,
-   "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_cgu_licitacao_contrato.licitacao.nome_orgao_superior",
-   "score": 13.12,
-   "sql": 0,
-   "docs": 1,
-   "desc": 5,
-   "perg": 0,
-   "linhas": 1715344,
-   "reason": "candidato real: ~49 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ms_sinasc.microdados.gestacoes_ant",
-   "score": 12.97,
-   "sql": 0,
-   "docs": 1,
-   "desc": 4,
-   "perg": 0,
-   "linhas": 85559034,
-   "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ms_sinasc.microdados.inicio_pre_natal",
-   "score": 12.97,
-   "sql": 0,
-   "docs": 1,
-   "desc": 4,
-   "perg": 0,
-   "linhas": 85559034,
-   "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ms_sinasc.microdados.ocupacao_mae",
-   "score": 12.97,
-   "sql": 0,
-   "docs": 1,
-   "desc": 4,
-   "perg": 0,
-   "linhas": 85559034,
-   "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ms_sinasc.microdados.semana_gestacao",
-   "score": 12.97,
-   "sql": 0,
-   "docs": 1,
-   "desc": 4,
-   "perg": 0,
-   "linhas": 85559034,
-   "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_siop_orcamento.dados.Direta",
-   "score": 12.87,
-   "sql": 0,
-   "docs": 2,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 5610,
-   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_siop_orcamento.dados.Esfera",
-   "score": 12.87,
-   "sql": 0,
-   "docs": 2,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 5610,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_siop_orcamento.dados.Novo",
-   "score": 12.87,
-   "sql": 0,
-   "docs": 2,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 5610,
-   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_siop_orcamento.dados.Tipo",
-   "score": 12.87,
-   "sql": 0,
-   "docs": 2,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 5610,
-   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_cgu_licitacao_contrato.contrato_compra.nome_orgao_superior",
-   "score": 12.84,
-   "sql": 0,
-   "docs": 2,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 472638,
-   "reason": "candidato real: ~41 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_saude_bps.dados.modalidade_da_compra",
-   "score": 12.77,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 342716,
-   "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "global_ofac_sanctions.sanctions.sdn_type",
-   "score": 12.64,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 1,
-   "linhas": 19129,
-   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_tce_rj.contratos_estado.Unidade",
-   "score": 12.28,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 36583,
-   "reason": "candidato real: ~95 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_anatel_indice_brasileiro_conectividade.municipio.hhi_smp",
-   "score": 12.17,
-   "sql": 0,
-   "docs": 2,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 22280,
-   "reason": "candidato real: ~98 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_mjsp_ckan.procon.Regiao",
-   "score": 12.07,
-   "sql": 0,
-   "docs": 2,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 13803,
-   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_mjsp_ckan.procon.Tipo",
-   "score": 12.07,
-   "sql": 0,
-   "docs": 2,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 13803,
-   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_fipe_veiculos.precos.vehicle_type",
-   "score": 12.03,
-   "sql": 0,
-   "docs": 2,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 11289,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_cgu_licitacao_contrato.licitacao_participante.modalidade_compra",
-   "score": 11.94,
-   "sql": 0,
-   "docs": 1,
-   "desc": 3,
-   "perg": 0,
-   "linhas": 74372781,
-   "reason": "tabela grande (~74.372.781 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_cgu_licitacao_contrato.licitacao_participante.nome_unidade_gestora",
-   "score": 11.94,
-   "sql": 0,
-   "docs": 1,
-   "desc": 3,
-   "perg": 0,
-   "linhas": 74372781,
-   "reason": "tabela grande (~74.372.781 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sim.microdados.semanas_gestacao",
@@ -2187,136 +867,6 @@
    "reason": "candidato real: ~10 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
-   "coluna": "br_inea_boletim.tipos_documento.tipo_documento",
-   "score": 11.71,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 2572,
-   "reason": "candidato real: ~61 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_mjsp_sinesp.ocorrencias.regiao",
-   "score": 11.46,
-   "sql": 0,
-   "docs": 2,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 823,
-   "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_mjsp_sinesp.ocorrencias.vítimas",
-   "score": 11.46,
-   "sql": 0,
-   "docs": 2,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 823,
-   "reason": "candidato real: ~26 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ms_sim.dicionario.id_tabela",
-   "score": 11.38,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 569,
-   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_bcb_estban.agencia.instituicao",
-   "score": 11.32,
-   "sql": 0,
-   "docs": 1,
-   "desc": 2,
-   "perg": 0,
-   "linhas": 443814039,
-   "reason": "tabela grande (~443.814.039 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ans_beneficiario.informacao_consolidada.cobertura_assistencia_beneficiario",
-   "score": 11.18,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 3,
-   "linhas": 2307338481,
-   "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ans_beneficiario.informacao_consolidada.codigo_operadora",
-   "score": 11.18,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 3,
-   "linhas": 2307338481,
-   "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ans_beneficiario.informacao_consolidada.contratacao_beneficiario",
-   "score": 11.18,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 3,
-   "linhas": 2307338481,
-   "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ans_beneficiario.informacao_consolidada.modalidade_operadora",
-   "score": 11.18,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 3,
-   "linhas": 2307338481,
-   "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ans_beneficiario.informacao_consolidada.segmentacao_beneficiario",
-   "score": 11.18,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 3,
-   "linhas": 2307338481,
-   "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ans_beneficiario.informacao_consolidada.tipo_vinculo",
-   "score": 11.18,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 3,
-   "linhas": 2307338481,
-   "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_siop_orcamento.localizadores.Origem",
-   "score": 10.95,
-   "sql": 0,
-   "docs": 1,
-   "desc": 4,
-   "perg": 0,
-   "linhas": 8054,
-   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_minc_salic.areas.nome",
-   "score": 10.45,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 7,
-   "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
    "coluna": "world_wb_mides.pagamento.orgao",
    "score": 10.3,
    "sql": 0,
@@ -2324,27 +874,7 @@
    "desc": 0,
    "perg": 2,
    "linhas": 392731053,
-   "reason": "tabela grande (~392.731.053 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_bcb_estban.municipio.agencias_esperadas",
-   "score": 10.2,
-   "sql": 0,
-   "docs": 1,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 256170669,
-   "reason": "tabela grande (~256.170.669 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_bcb_estban.municipio.agencias_processadas",
-   "score": 10.2,
-   "sql": 0,
-   "docs": 1,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 256170669,
-   "reason": "tabela grande (~256.170.669 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "reason": "column_codes.yaml (pendente): Código de fonte de recurso e de órgão do orçamento LOCAL de cada município (fonte: '1', '00', '100', '99'…; orgao: '54900'…). Não há tabela nacional: o mesmo código significa coisas diferentes em entes diferentes. Não agrupar entre municípios."
   },
   {
    "coluna": "br_seeg.emissoes_municipais.gas",
@@ -2387,26 +917,6 @@
    "reason": "consulta de cardinalidade falhou no beelink: \u001b[90m-- Loading resources from /home/polo/.duckdbrc\n\u001b[00mIO Error: No files found that match the pattern \"~/rodado/br_seeg/emissoes_municipais/**/*.parquet\"\n\nLINE 1: ...pamento\", approx_count_distinct(\"gas_id\") AS \"gas_id\" FROM read_parquet('~/rodado/br_seeg/emissoes_municipais/**/*...\n                                                                      ^"
   },
   {
-   "coluna": "world_wb_mides.licitacao_item.documento",
-   "score": 9.85,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 2,
-   "linhas": 50287199,
-   "reason": "tabela grande (~50.287.199 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_me_comex_stat.ncm_exportacao.id_unidade",
-   "score": 9.74,
-   "sql": 0,
-   "docs": 1,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 30295557,
-   "reason": "candidato real: ~15 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
    "coluna": "br_me_cnpj.empresas.ente_federativo",
    "score": 9.69,
    "sql": 0,
@@ -2417,56 +927,6 @@
    "reason": "tabela grande (~2.411.104.671 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
-   "coluna": "br_rf_cno.microdados.bairro",
-   "score": 9.36,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 534056673,
-   "reason": "tabela grande (~534.056.673 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_rf_cno.microdados.logradouro",
-   "score": 9.36,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 534056673,
-   "reason": "tabela grande (~534.056.673 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_rf_cno.microdados.nome_empresarial",
-   "score": 9.36,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 534056673,
-   "reason": "tabela grande (~534.056.673 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_rf_cno.microdados.nome_responsavel",
-   "score": 9.36,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 534056673,
-   "reason": "tabela grande (~534.056.673 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_cnpq_bolsas.microdados.sigla_uf_origem",
-   "score": 9.23,
-   "sql": 0,
-   "docs": 1,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 2839708,
-   "reason": "candidato real: ~28 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
    "coluna": "br_ibge_censo_2022.populacao_idade_sexo.forma_declaracao_idade",
    "score": 9.2,
    "sql": 0,
@@ -2475,96 +935,6 @@
    "perg": 0,
    "linhas": 2495360,
    "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_rf_cafir.imoveis_rurais.distrito",
-   "score": 9.12,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 169935535,
-   "reason": "tabela grande (~169.935.535 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_rf_cafir.imoveis_rurais.id_imovel_receita_federal",
-   "score": 9.12,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 169935535,
-   "reason": "tabela grande (~169.935.535 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_rf_cafir.imoveis_rurais.nome",
-   "score": 9.12,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 169935535,
-   "reason": "tabela grande (~169.935.535 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_cgu_servidores_executivo_federal.cadastro_servidores.origem",
-   "score": 9.11,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 168131529,
-   "reason": "tabela grande (~168.131.529 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_inep_enem.microdados.sigla_uf_residencia",
-   "score": 9.02,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 108132056,
-   "reason": "tabela grande (~108.132.056 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_cgu_pe_de_meia.pe_de_meia.mes_referencia",
-   "score": 8.9,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 64047519,
-   "reason": "tabela grande (~64.047.519 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_anatel_banda_larga_fixa.microdados.acessos",
-   "score": 8.88,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 57824623,
-   "reason": "tabela grande (~57.824.623 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_anatel_banda_larga_fixa.microdados.empresa",
-   "score": 8.88,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 57824623,
-   "reason": "tabela grande (~57.824.623 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_mec_sisu.microdados.tipo_cota",
-   "score": 8.77,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 34700256,
-   "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_me_cnpj.estabelecimentos.ddd_1",
@@ -2654,47 +1024,7 @@
    "desc": 0,
    "perg": 0,
    "linhas": 20635472,
-   "reason": "candidato real: ~0 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ibge_censo_demografico.microdados_pessoa_2000.v0404",
-   "score": 8.65,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 20274411,
-   "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_inep_sinopse_estatistica_educacao_basica.docente_localizacao.etapa_ensino",
-   "score": 8.62,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 17768470,
-   "reason": "candidato real: ~12 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_mj_consumidorgovbr.reclamacoes.Faixa Etária",
-   "score": 8.5,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 10167141,
-   "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_mj_consumidorgovbr.reclamacoes.Gestor",
-   "score": 8.5,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 10167141,
-   "reason": "candidato real: ~27 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "reason": "column_codes.yaml (pendente): 100% NULL no espelho (20.635.472 linhas). O código existe no Censo 2010, mas a coluna veio vazia do Base dos Dados. Não é decodificável: é dado ausente."
   },
   {
    "coluna": "br_ms_sinan_malaria.microdados_malaria.ASSINTOM",
@@ -2704,57 +1034,7 @@
    "desc": 1,
    "perg": 0,
    "linhas": 68320,
-   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ibge_censo_demografico.microdados_domicilio_2010.situacao_setor",
-   "score": 8.4,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 6192332,
-   "reason": "candidato real: ~0 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ibge_censo_2022.caracteristica_domicilio_grupo_idade_raca_esgotamento_sanitario.grupo_idade",
-   "score": 8.36,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 5263650,
-   "reason": "candidato real: ~20 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ibge_censo_2022.caracteristica_domicilio_grupo_idade_raca_esgotamento_sanitario.tipo_esgotamento_sanitario",
-   "score": 8.36,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 5263650,
-   "reason": "candidato real: ~10 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ibge_censo_demografico.microdados_domicilio_2000.situacao_setor",
-   "score": 8.36,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 5304711,
-   "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ibge_censo_demografico.microdados_domicilio_2000.tipo_setor",
-   "score": 8.36,
-   "sql": 0,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 5304711,
-   "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "reason": "column_codes.yaml (pendente): Valores {1,2,9,''}. Não está no dicionário v5 (que tem AT_SINTOMA: 1 com sintomas, 2 sem sintomas). Provável 'assintomático?' com 1=Sim — o que inverteria o sentido de AT_SINTOMA. Não usar sem fonte."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.ATEND_MULH",
@@ -3015,6 +1295,1726 @@
    "perg": 0,
    "linhas": 4939266,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
+  },
+  {
+   "coluna": "br_ms_sinan_violencia.microdados_violencia.EVOLUCAO",
+   "score": 8.35,
+   "sql": 0,
+   "docs": 0,
+   "desc": 5,
+   "perg": 0,
+   "linhas": 4939266,
+   "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ms_sinan_violencia.microdados_violencia.LESAO_CORP",
+   "score": 8.35,
+   "sql": 0,
+   "docs": 0,
+   "desc": 5,
+   "perg": 0,
+   "linhas": 4939266,
+   "reason": "candidato real: ~15 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ms_sinan_violencia.microdados_violencia.LESAO_NAT",
+   "score": 8.35,
+   "sql": 0,
+   "docs": 0,
+   "desc": 5,
+   "perg": 0,
+   "linhas": 4939266,
+   "reason": "candidato real: ~16 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ms_sinan_violencia.microdados_violencia.NDUPLIC",
+   "score": 8.35,
+   "sql": 0,
+   "docs": 0,
+   "desc": 5,
+   "perg": 0,
+   "linhas": 4939266,
+   "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ms_sinan_violencia.microdados_violencia.NUM_ENVOLV",
+   "score": 8.35,
+   "sql": 0,
+   "docs": 0,
+   "desc": 5,
+   "perg": 0,
+   "linhas": 4939266,
+   "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ms_sinan_violencia.microdados_violencia.PEN_ANAL",
+   "score": 8.35,
+   "sql": 0,
+   "docs": 0,
+   "desc": 5,
+   "perg": 0,
+   "linhas": 4939266,
+   "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
+  },
+  {
+   "coluna": "br_ms_sinan_violencia.microdados_violencia.PEN_ORAL",
+   "score": 8.35,
+   "sql": 0,
+   "docs": 0,
+   "desc": 5,
+   "perg": 0,
+   "linhas": 4939266,
+   "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
+  },
+  {
+   "coluna": "br_ms_sinan_violencia.microdados_violencia.PEN_VAGINA",
+   "score": 8.35,
+   "sql": 0,
+   "docs": 0,
+   "desc": 5,
+   "perg": 0,
+   "linhas": 4939266,
+   "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
+  },
+  {
+   "coluna": "br_ms_sinan_violencia.microdados_violencia.REDE_SAU",
+   "score": 8.35,
+   "sql": 0,
+   "docs": 0,
+   "desc": 5,
+   "perg": 0,
+   "linhas": 4939266,
+   "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
+  },
+  {
+   "coluna": "br_ms_sinan_violencia.microdados_violencia.REL_IRMAO",
+   "score": 8.35,
+   "sql": 0,
+   "docs": 0,
+   "desc": 5,
+   "perg": 0,
+   "linhas": 4939266,
+   "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
+  },
+  {
+   "coluna": "br_ms_sinan_violencia.microdados_violencia.SEX_ASSEDI",
+   "score": 8.35,
+   "sql": 0,
+   "docs": 0,
+   "desc": 5,
+   "perg": 0,
+   "linhas": 4939266,
+   "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
+  },
+  {
+   "coluna": "br_ms_sinan_violencia.microdados_violencia.SEX_PUDOR",
+   "score": 8.35,
+   "sql": 0,
+   "docs": 0,
+   "desc": 5,
+   "perg": 0,
+   "linhas": 4939266,
+   "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
+  },
+  {
+   "coluna": "br_ms_sinan_violencia.microdados_violencia.TPUNINOT",
+   "score": 8.35,
+   "sql": 0,
+   "docs": 0,
+   "desc": 5,
+   "perg": 0,
+   "linhas": 4939266,
+   "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ms_sinan.microdados_influenza_srag.escolaridade",
+   "score": 8.29,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 3724213,
+   "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ms_sinan.microdados_influenza_srag.sistema",
+   "score": 8.29,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 3724213,
+   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_caixa_sinapi.insumos.classificacao",
+   "score": 8.15,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 1962674,
+   "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_caixa_sinapi.insumos.unidade",
+   "score": 8.15,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 1962674,
+   "reason": "candidato real: ~21 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_mp_pep.cargos_funcoes.cce_e_fce",
+   "score": 8.13,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 1799733,
+   "reason": "candidato real: ~60 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_mp_pep.cargos_funcoes.das_e_correlatas",
+   "score": 8.13,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 1799733,
+   "reason": "candidato real: ~63 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_mp_pep.cargos_funcoes.natureza_juridica",
+   "score": 8.13,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 1799733,
+   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_mp_pep.cargos_funcoes.regiao",
+   "score": 8.13,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 1799733,
+   "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_cgu_licitacao_contrato.licitacao.id_modalidade_compra",
+   "score": 8.12,
+   "sql": 0,
+   "docs": 0,
+   "desc": 5,
+   "perg": 0,
+   "linhas": 1715344,
+   "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_cgu_licitacao_contrato.licitacao.situacao_licitacao",
+   "score": 8.12,
+   "sql": 0,
+   "docs": 0,
+   "desc": 5,
+   "perg": 0,
+   "linhas": 1715344,
+   "reason": "candidato real: ~39 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ibge_censo2022_religiao.mulheres_fecundidade_completa.variavel",
+   "score": 8.1,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 1604448,
+   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_inep_ideb.escola.anos_escolares",
+   "score": 8.03,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 1164507,
+   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_comprasgov_sicaf.fornecedores.ufSigla",
+   "score": 7.99,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 957885,
+   "reason": "candidato real: ~28 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ms_sinasc.microdados.cartorio",
+   "score": 7.97,
+   "sql": 0,
+   "docs": 0,
+   "desc": 4,
+   "perg": 0,
+   "linhas": 85559034,
+   "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ms_sinasc.microdados.codigo_anomalia",
+   "score": 7.97,
+   "sql": 0,
+   "docs": 0,
+   "desc": 4,
+   "perg": 0,
+   "linhas": 85559034,
+   "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ms_sinasc.microdados.idade_pai",
+   "score": 7.97,
+   "sql": 0,
+   "docs": 0,
+   "desc": 4,
+   "perg": 0,
+   "linhas": 85559034,
+   "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ms_sinasc.microdados.paridade",
+   "score": 7.97,
+   "sql": 0,
+   "docs": 0,
+   "desc": 4,
+   "perg": 0,
+   "linhas": 85559034,
+   "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ms_sinasc.microdados.registro_cartorio",
+   "score": 7.97,
+   "sql": 0,
+   "docs": 0,
+   "desc": 4,
+   "perg": 0,
+   "linhas": 85559034,
+   "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ms_sinasc.microdados.serie_escolar_mae",
+   "score": 7.97,
+   "sql": 0,
+   "docs": 0,
+   "desc": 4,
+   "perg": 0,
+   "linhas": 85559034,
+   "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ms_sinasc.microdados.versao_sistema",
+   "score": 7.97,
+   "sql": 0,
+   "docs": 0,
+   "desc": 4,
+   "perg": 0,
+   "linhas": 85559034,
+   "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ibge_censo_2022.alfabetizacao_grupo_idade_sexo_raca.alfabetizacao",
+   "score": 7.95,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 779800,
+   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ibge_censo_2022.alfabetizacao_grupo_idade_sexo_raca.grupo_idade",
+   "score": 7.95,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 779800,
+   "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_siop_orcamento.dados.Origem",
+   "score": 7.87,
+   "sql": 0,
+   "docs": 1,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 5610,
+   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_cgu_licitacao_contrato.contrato_compra.id_modalidade_licitacao",
+   "score": 7.84,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 472638,
+   "reason": "candidato real: ~10 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_cgu_licitacao_contrato.contrato_compra.modalidade",
+   "score": 7.84,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 472638,
+   "reason": "candidato real: ~12 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_cgu_licitacao_contrato.contrato_compra.modalidade_licitacao",
+   "score": 7.84,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 472638,
+   "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_cgu_licitacao_contrato.contrato_compra.situacao_contrato",
+   "score": 7.84,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 472638,
+   "reason": "candidato real: ~17 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ibge_censo_2022.setor_censitario.v00177",
+   "score": 7.84,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 468099,
+   "reason": "candidato real: ~78 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ibge_pevs.producao_extracao_vegetal.unidade",
+   "score": 7.83,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 463825,
+   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "world_iea_pirls.home_context.country_iso3_code",
+   "score": 7.81,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 413387,
+   "reason": "candidato real: ~60 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "world_iea_pirls.home_context.version",
+   "score": 7.81,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 413387,
+   "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "world_iea_timss.home_context_grade_4.country_m49",
+   "score": 7.8,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 395961,
+   "reason": "candidato real: ~66 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "world_iea_timss.home_context_grade_4.version",
+   "score": 7.8,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 395961,
+   "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_poder360_pesquisas.microdados.cargo",
+   "score": 7.6,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 162075,
+   "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_poder360_pesquisas.microdados.tipo",
+   "score": 7.6,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 162075,
+   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_me_estoque_divida_publica.microdados.classe_carteira",
+   "score": 7.55,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 124419,
+   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_me_estoque_divida_publica.microdados.tipo_divida",
+   "score": 7.55,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 124419,
+   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_tce_rj.contratos_municipio.TipoPessoa",
+   "score": 7.49,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 96376,
+   "reason": "candidato real: ~0 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_cgu_fef.microdados.ano_evento",
+   "score": 7.46,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 82664,
+   "reason": "candidato real: ~15 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_cgu_fef.microdados.funcao",
+   "score": 7.46,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 82664,
+   "reason": "candidato real: ~40 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_cnj_improbidade_administrativa.condenacao.situacao",
+   "score": 7.36,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 53342,
+   "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_anvisa_cmed.precos.cap",
+   "score": 7.35,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 51140,
+   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_anvisa_cmed.precos.lista",
+   "score": 7.35,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 51140,
+   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_mme_consumo_energia_eletrica.uf.tipo_consumo",
+   "score": 7.29,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 38880,
+   "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_saude_farmaciapopular.estabelecimentos.codigo_uf",
+   "score": 7.25,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 31029,
+   "reason": "candidato real: ~21 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_anatel_indice_brasileiro_conectividade.municipio.hhi_scm",
+   "score": 7.17,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 22280,
+   "reason": "candidato real: ~98 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_bcb_penalidades.penalidades.Situacao",
+   "score": 7.11,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 16822,
+   "reason": "candidato real: ~12 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_bd_diretorios_mundo.nomenclatura_comum_mercosul.id_unidade",
+   "score": 7.07,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 13744,
+   "reason": "candidato real: ~15 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_inep_enem.dicionario.cobertura_temporal",
+   "score": 7.06,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 13057,
+   "reason": "candidato real: ~62 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_rj_isp_estatisticas_seguranca.taxa_evolucao_mensal_municipio.regiao",
+   "score": 7.04,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 12144,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_inep_saeb.proficiencia.amostra",
+   "score": 6.99,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 93981653,
+   "reason": "tabela grande (~93.981.653 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_inep_saeb.proficiencia.estrato",
+   "score": 6.99,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 93981653,
+   "reason": "tabela grande (~93.981.653 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_sfb_sicar.area_imovel.condicao",
+   "score": 6.95,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 79325829,
+   "reason": "tabela grande (~79.325.829 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_sfb_sicar.area_imovel.modulos_fiscais",
+   "score": 6.95,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 79325829,
+   "reason": "tabela grande (~79.325.829 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_cgu_licitacao_contrato.licitacao_participante.descricao_item_compra",
+   "score": 6.94,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 74372781,
+   "reason": "tabela grande (~74.372.781 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_cgu_licitacao_contrato.licitacao_participante.id_item_compra",
+   "score": 6.94,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 74372781,
+   "reason": "tabela grande (~74.372.781 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_cgu_licitacao_contrato.licitacao_participante.id_modalidade_compra",
+   "score": 6.94,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 74372781,
+   "reason": "tabela grande (~74.372.781 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_cgu_licitacao_contrato.licitacao_participante.nome_orgao",
+   "score": 6.94,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 74372781,
+   "reason": "tabela grande (~74.372.781 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_brasilapi.ddd_cidades.state",
+   "score": 6.87,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 5565,
+   "reason": "candidato real: ~28 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_datahackers_state_data.microdados.p1_i",
+   "score": 6.82,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 4271,
+   "reason": "candidato real: ~21 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_datahackers_state_data.microdados.p1_i_1",
+   "score": 6.82,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 4271,
+   "reason": "candidato real: ~24 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_datahackers_state_data.microdados.p1_i_2",
+   "score": 6.82,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 4271,
+   "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_datahackers_state_data.microdados.p1_k",
+   "score": 6.82,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 4271,
+   "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_cvm_administradores_carteira.pessoa_juridica.situacao",
+   "score": 6.74,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 2985,
+   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_inep_ideb.uf.anos_escolares",
+   "score": 6.74,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 2970,
+   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_inep_ideb.uf.ensino",
+   "score": 6.74,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 2970,
+   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_fbsp_absp.violencia_escola.item",
+   "score": 6.64,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 1917,
+   "reason": "candidato real: ~16 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_fbsp_absp.violencia_escola.tema",
+   "score": 6.64,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 1917,
+   "reason": "candidato real: ~19 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_geobr_mapas.unidade_conservacao.esfera",
+   "score": 6.64,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 1934,
+   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_mma_extincao.fauna_ameacada.lista_2014",
+   "score": 6.55,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 1258,
+   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_me_cnpj.socios.nome_representante_legal",
+   "score": 6.51,
+   "sql": 0,
+   "docs": 0,
+   "desc": 2,
+   "perg": 0,
+   "linhas": 1040152210,
+   "reason": "tabela grande (~1.040.152.210 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_tce_rj.penalidades_ressarcimento_estado.TipoEnte",
+   "score": 6.49,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 948,
+   "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_cgu_emendas_parlamentares.microdados.id_funcao",
+   "score": 6.47,
+   "sql": 0,
+   "docs": 0,
+   "desc": 4,
+   "perg": 0,
+   "linhas": 88991,
+   "reason": "candidato real: ~24 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_cgu_emendas_parlamentares.microdados.id_plano_orcamentario",
+   "score": 6.47,
+   "sql": 0,
+   "docs": 0,
+   "desc": 4,
+   "perg": 0,
+   "linhas": 88991,
+   "reason": "candidato real: ~60 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_cgu_emendas_parlamentares.microdados.id_subfuncao",
+   "score": 6.47,
+   "sql": 0,
+   "docs": 0,
+   "desc": 4,
+   "perg": 0,
+   "linhas": 88991,
+   "reason": "candidato real: ~97 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_inep_saeb.brasil.disciplina",
+   "score": 6.47,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 856,
+   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_mjsp_sinesp.ocorrencias.cód_ibge",
+   "score": 6.46,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 823,
+   "reason": "candidato real: ~21 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_inep_ideb.regiao.anos_escolares",
+   "score": 6.37,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 550,
+   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_inep_ideb.regiao.ensino",
+   "score": 6.37,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 550,
+   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_inep_ideb.regiao.regiao",
+   "score": 6.37,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 550,
+   "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_rj_isp_estatisticas_seguranca.taxa_letalidade.regiao",
+   "score": 6.29,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 383,
+   "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_tce_es.obras_publicas.Situacao",
+   "score": 6.2,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 250,
+   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_tce_es.obras_publicas.Unidade",
+   "score": 6.2,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 250,
+   "reason": "candidato real: ~10 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ans_beneficiario.informacao_consolidada.abrangencia_beneficiario",
+   "score": 6.18,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 3,
+   "linhas": 2307338481,
+   "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ans_beneficiario.informacao_consolidada.codigo_plano",
+   "score": 6.18,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 3,
+   "linhas": 2307338481,
+   "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ans_beneficiario.informacao_consolidada.faixa_etaria_reajuste",
+   "score": 6.18,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 3,
+   "linhas": 2307338481,
+   "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ans_beneficiario.informacao_consolidada.tipo_vigencia_plano",
+   "score": 6.18,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 3,
+   "linhas": 2307338481,
+   "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_inep_ana.dicionario.chave",
+   "score": 6.18,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 224,
+   "reason": "candidato real: ~32 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_inep_ana.dicionario.cobertura_temporal",
+   "score": 6.18,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 224,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_inep_ana.dicionario.nome_coluna",
+   "score": 6.18,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 224,
+   "reason": "candidato real: ~67 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_inep_ideb.brasil.anos_escolares",
+   "score": 6.07,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 140,
+   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_inep_ideb.brasil.ensino",
+   "score": 6.07,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 140,
+   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_siop_orcamento.localizadores.Esfera",
+   "score": 5.95,
+   "sql": 0,
+   "docs": 0,
+   "desc": 4,
+   "perg": 0,
+   "linhas": 8054,
+   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_siop_orcamento.localizadores.Novo",
+   "score": 5.95,
+   "sql": 0,
+   "docs": 0,
+   "desc": 4,
+   "perg": 0,
+   "linhas": 8054,
+   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_me_caged.microdados_movimentacao_excluida.ano_competencia_movimentacao",
+   "score": 5.86,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 515023,
+   "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_me_caged.microdados_movimentacao_excluida.ano_declaracao_movimentacao",
+   "score": 5.86,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 515023,
+   "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_me_caged.microdados_movimentacao_excluida.grau_instrucao",
+   "score": 5.86,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 515023,
+   "reason": "candidato real: ~12 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_me_caged.microdados_movimentacao_excluida.mes_competencia_movimentacao",
+   "score": 5.86,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 515023,
+   "reason": "candidato real: ~13 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_me_caged.microdados_movimentacao_excluida.mes_declaracao_movimentacao",
+   "score": 5.86,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 515023,
+   "reason": "candidato real: ~13 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_me_caged.microdados_movimentacao_excluida.origem_informacao",
+   "score": 5.86,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 515023,
+   "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_me_caged.microdados_movimentacao_excluida.saldo_movimentacao",
+   "score": 5.86,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 515023,
+   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_me_caged.microdados_movimentacao_excluida.tamanho_estabelecimento_janeiro",
+   "score": 5.86,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 515023,
+   "reason": "candidato real: ~10 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_me_caged.microdados_movimentacao_excluida.tipo_deficiencia",
+   "score": 5.86,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 515023,
+   "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_me_caged.microdados_movimentacao_excluida.tipo_empregador",
+   "score": 5.86,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 515023,
+   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_me_caged.microdados_movimentacao_excluida.tipo_movimentacao",
+   "score": 5.86,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 515023,
+   "reason": "candidato real: ~15 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_pgfn_dividaativa.divida.TIPO_SITUACAO_INSCRICAO",
+   "score": 5.83,
+   "sql": 0,
+   "docs": 0,
+   "desc": 2,
+   "perg": 0,
+   "linhas": 46607085,
+   "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_pgfn_dividaativa.divida.UF_DEVEDOR",
+   "score": 5.83,
+   "sql": 0,
+   "docs": 0,
+   "desc": 2,
+   "perg": 0,
+   "linhas": 46607085,
+   "reason": "candidato real: ~30 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_pgfn_dividaativa.divida.UNIDADE_RESPONSAVEL",
+   "score": 5.83,
+   "sql": 0,
+   "docs": 0,
+   "desc": 2,
+   "perg": 0,
+   "linhas": 46607085,
+   "reason": "candidato real: ~73 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ibge_censo2022_religiao.uniao_conjugal_natureza.dimensao_principal",
+   "score": 5.72,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 278550,
+   "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ibge_censo2022_religiao.uniao_conjugal_natureza.id_religiao_sidra",
+   "score": 5.72,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 278550,
+   "reason": "candidato real: ~10 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ibge_censo2022_religiao.uniao_conjugal_natureza.variavel",
+   "score": 5.72,
+   "sql": 0,
+   "docs": 0,
+   "desc": 3,
+   "perg": 0,
+   "linhas": 278550,
+   "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_mec_prouni.dicionario.chave",
+   "score": 5.66,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 20,
+   "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ibge_pib.brasil_antigo.pib",
+   "score": 5.59,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 14,
+   "reason": "candidato real: ~13 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_bd_diretorios_data_tempo.mes.nome",
+   "score": 5.56,
+   "sql": 0,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 12,
+   "reason": "candidato real: ~12 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "world_wb_mides.pagamento.id_empenho_bd",
+   "score": 5.3,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 2,
+   "linhas": 392731053,
+   "reason": "tabela grande (~392.731.053 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "world_wb_mides.pagamento.id_liquidacao",
+   "score": 5.3,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 2,
+   "linhas": 392731053,
+   "reason": "tabela grande (~392.731.053 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "world_wb_mides.pagamento.id_liquidacao_bd",
+   "score": 5.3,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 2,
+   "linhas": 392731053,
+   "reason": "tabela grande (~392.731.053 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "world_wb_mides.pagamento.id_pagamento",
+   "score": 5.3,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 2,
+   "linhas": 392731053,
+   "reason": "tabela grande (~392.731.053 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "world_wb_mides.pagamento.id_pagamento_bd",
+   "score": 5.3,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 2,
+   "linhas": 392731053,
+   "reason": "tabela grande (~392.731.053 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "world_wb_mides.pagamento.nome_credor",
+   "score": 5.3,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 2,
+   "linhas": 392731053,
+   "reason": "tabela grande (~392.731.053 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "world_wb_mides.liquidacao.documento_responsavel",
+   "score": 5.28,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 2,
+   "linhas": 357301758,
+   "reason": "tabela grande (~357.301.758 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "world_wb_mides.liquidacao.id_empenho_bd",
+   "score": 5.28,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 2,
+   "linhas": 357301758,
+   "reason": "tabela grande (~357.301.758 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "world_wb_mides.liquidacao.id_liquidacao",
+   "score": 5.28,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 2,
+   "linhas": 357301758,
+   "reason": "tabela grande (~357.301.758 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "world_wb_mides.liquidacao.id_liquidacao_bd",
+   "score": 5.28,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 2,
+   "linhas": 357301758,
+   "reason": "tabela grande (~357.301.758 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "world_wb_mides.liquidacao.nome_responsavel",
+   "score": 5.28,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 2,
+   "linhas": 357301758,
+   "reason": "tabela grande (~357.301.758 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "world_wb_mides.liquidacao.orgao",
+   "score": 5.28,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 2,
+   "linhas": 357301758,
+   "reason": "tabela grande (~357.301.758 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "global_icij_offshoreleaks.relationships.rel_type",
+   "score": 5.26,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 4,
+   "linhas": 3339267,
+   "reason": "candidato real: ~15 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "global_icij_offshoreleaks.relationships.sourceID",
+   "score": 5.26,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 4,
+   "linhas": 3339267,
+   "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "global_icij_offshoreleaks.relationships.status",
+   "score": 5.26,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 4,
+   "linhas": 3339267,
+   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "world_olympedia_olympics.athlete_event_result.edition_id",
+   "score": 5.25,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 5,
+   "linhas": 316834,
+   "reason": "candidato real: ~60 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "world_wb_mides.empenho.acao",
+   "score": 5.24,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 2,
+   "linhas": 303323046,
+   "reason": "tabela grande (~303.323.046 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "world_wb_mides.empenho.descricao",
+   "score": 5.24,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 2,
+   "linhas": 303323046,
+   "reason": "tabela grande (~303.323.046 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "world_wb_mides.empenho.id_empenho_bd",
+   "score": 5.24,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 2,
+   "linhas": 303323046,
+   "reason": "tabela grande (~303.323.046 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "world_wb_mides.empenho.id_licitacao_bd",
+   "score": 5.24,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 2,
+   "linhas": 303323046,
+   "reason": "tabela grande (~303.323.046 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "world_wb_mides.empenho.orgao",
+   "score": 5.24,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 2,
+   "linhas": 303323046,
+   "reason": "tabela grande (~303.323.046 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "world_wb_mides.empenho.programa",
+   "score": 5.24,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 2,
+   "linhas": 303323046,
+   "reason": "tabela grande (~303.323.046 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "world_olympedia_olympics.athlete_bio.sex",
+   "score": 5.1,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 5,
+   "linhas": 155861,
+   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ms_sia.psicossocial.ano_atendimento",
+   "score": 5.07,
+   "sql": 0,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 138059411,
+   "reason": "tabela grande (~138.059.411 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ms_sia.psicossocial.ano_processamento",
+   "score": 5.07,
+   "sql": 0,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 138059411,
+   "reason": "tabela grande (~138.059.411 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ms_sia.psicossocial.etnia_paciente",
+   "score": 5.07,
+   "sql": 0,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 138059411,
+   "reason": "tabela grande (~138.059.411 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ms_sia.psicossocial.id_classificacao_servico",
+   "score": 5.07,
+   "sql": 0,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 138059411,
+   "reason": "tabela grande (~138.059.411 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ms_sia.psicossocial.id_estabelecimento_cnes_familia",
+   "score": 5.07,
+   "sql": 0,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 138059411,
+   "reason": "tabela grande (~138.059.411 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ms_sia.psicossocial.id_municipio_residencia_paciente",
+   "score": 5.07,
+   "sql": 0,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 138059411,
+   "reason": "tabela grande (~138.059.411 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ms_sia.psicossocial.id_procedimento_ambulatorial",
+   "score": 5.07,
+   "sql": 0,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 138059411,
+   "reason": "tabela grande (~138.059.411 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ms_sia.psicossocial.id_servico_especializado",
+   "score": 5.07,
+   "sql": 0,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 138059411,
+   "reason": "tabela grande (~138.059.411 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ms_sia.psicossocial.idade_paciente",
+   "score": 5.07,
+   "sql": 0,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 138059411,
+   "reason": "tabela grande (~138.059.411 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ms_sia.psicossocial.mes_atendimento",
+   "score": 5.07,
+   "sql": 0,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 138059411,
+   "reason": "tabela grande (~138.059.411 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ms_sia.psicossocial.mes_processamento",
+   "score": 5.07,
+   "sql": 0,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 138059411,
+   "reason": "tabela grande (~138.059.411 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ms_sia.psicossocial.motivo_saida_permanencia",
+   "score": 5.07,
+   "sql": 0,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 138059411,
+   "reason": "tabela grande (~138.059.411 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_ms_sia.psicossocial.permanencia_atendimento",
+   "score": 5.07,
+   "sql": 0,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 138059411,
+   "reason": "tabela grande (~138.059.411 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "global_icij_offshoreleaks.entities.company_type",
+   "score": 4.96,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 4,
+   "linhas": 814344,
+   "reason": "candidato real: ~74 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "global_icij_offshoreleaks.entities.jurisdiction",
+   "score": 4.96,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 4,
+   "linhas": 814344,
+   "reason": "candidato real: ~96 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "global_icij_offshoreleaks.entities.service_provider",
+   "score": 4.96,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 4,
+   "linhas": 814344,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "global_icij_offshoreleaks.entities.sourceID",
+   "score": 4.96,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 4,
+   "linhas": 814344,
+   "reason": "candidato real: ~25 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "global_icij_offshoreleaks.entities.status",
+   "score": 4.96,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 4,
+   "linhas": 814344,
+   "reason": "candidato real: ~85 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "global_icij_offshoreleaks.entities.valid_until",
+   "score": 4.96,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 4,
+   "linhas": 814344,
+   "reason": "candidato real: ~67 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "global_icij_offshoreleaks.officers.note",
+   "score": 4.94,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 4,
+   "linhas": 771315,
+   "reason": "candidato real: ~24 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "global_icij_offshoreleaks.officers.sourceID",
+   "score": 4.94,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 4,
+   "linhas": 771315,
+   "reason": "candidato real: ~25 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "global_icij_offshoreleaks.officers.valid_until",
+   "score": 4.94,
+   "sql": 0,
+   "docs": 0,
+   "desc": 0,
+   "perg": 4,
+   "linhas": 771315,
+   "reason": "candidato real: ~85 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   }
  ]
 }
