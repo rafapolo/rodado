@@ -33,7 +33,7 @@ import { capRows } from "./sqlguard.ts";
 import { textoFaixa } from "./anos.ts";
 import { inservivel } from "./catalogo.ts";
 import { metrica, listaMetricas } from "./metricas.ts";
-import { descreve, tabelaTexto, dicaMunicipio } from "./formato.ts";
+import { descreve, tabelaTexto, dicaMunicipio, dicaColunaInexistente } from "./formato.ts";
 import { faltando } from "./recortes.ts";
 import { garanteValores } from "./valores.ts";
 import { notaTabela, notaColuna, calculosDaTabela } from "./semantica.ts";
@@ -226,7 +226,8 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
           if (!v0.ok) return erro(`REJEITADA (${v0.camada}): ${v0.erro}`);
         }
       }
-      return erro(`REJEITADA (explain): ${ex.erro}`);
+      const tabs = tabelasDaSql(sql).map((ref) => ({ ref, cols: (colunas(ref) ?? []).map((c) => c.name) }));
+      return erro(`REJEITADA (explain): ${ex.erro}${dicaColunaInexistente(ex.erro ?? "", tabs)}`);
     }
 
     const r = await runSqlSsh(sql);
@@ -306,11 +307,23 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     // Medido 2026-09-24, caso 6 da rodada B2: a SQL tinha `COUNT(*) AS n` sete
     // vezes e a prosa não citou nenhuma. Numa pergunta de pesquisa o n é quanto
     // da amostra a conclusão cobre — sem ele na resposta, ninguém confere o join.
-    if (PESQUISA && Object.keys(capado.rows[0] ?? {}).some((k) => k.toLowerCase() === "n")) {
+    // B14, medido 2026-09-25: com o lembrete do n, 44/50 respostas citaram o n,
+    // e só 8/50 o coeficiente — a prosa dizia "correlação positiva fraca" sem o
+    // número. O que não se pede não vem; o r entra no mesmo lembrete.
+    const colunas = Object.keys(capado.rows[0] ?? {}).map((k) => k.toLowerCase());
+    const temN = colunas.includes("n");
+    const coef = Object.keys(capado.rows[0] ?? {}).filter((k) => /^(r|rho|corr\w*|correla\w*|r_\w+)$/i.test(k));
+    if (PESQUISA && (temN || coef.length)) {
       const n = extraiN(capado.rows as Record<string, unknown>[]);
-      alertas.push(`Se este resultado sustenta a resposta, escreva nela o n — quantos municípios entraram na medida` +
-        (n !== undefined && capado.rows.length === 1 ? ` (aqui, n=${n})` : ", somando os grupos se houver mais de um") +
-        `. Uma conclusão sem o tamanho da amostra não dá para conferir.`);
+      const pedeN = temN
+        ? "o n — quantos municípios entraram na medida" +
+          (n !== undefined && capado.rows.length === 1 ? ` (aqui, n=${n})` : ", somando os grupos se houver mais de um")
+        : "";
+      const pedeR = coef.length
+        ? `o coeficiente como número, com duas casas (${coef.map((k) => `${k}=${(capado.rows[0] as Record<string, unknown>)[k]}`).join(", ")})`
+        : "";
+      alertas.push(`Se este resultado sustenta a resposta, escreva nela ${[pedeR, pedeN].filter(Boolean).join(" e ")}. ` +
+        `"Correlação fraca" sem o número, ou conclusão sem o tamanho da amostra, não dá para conferir.`);
     }
     const municipio = dicaMunicipio(capado.rows as Record<string, unknown>[]);
     if (municipio) alertas.push(municipio);

@@ -90,7 +90,13 @@ async function rodaUmaVez(sql: string): Promise<SqlResult> {
     // no mesmo .duckdb — inclusive as read-only. Várias sessões consultam este
     // mirror ao mesmo tempo. (O porte original em web/src/beelink.ts perdeu esta
     // flag que mcp_server.py:310 tem; ver feedback_duckdb_readonly_no_kill.)
-    proc = Bun.spawn(["ssh", HOST, `${DUCKDB_BIN} -readonly -json ${DUCKDB_PATH}`], {
+    // O timeout daqui mata o ssh, não o duckdb remoto: sem terminal, ele não
+    // recebe SIGHUP e segue. Medido 2026-09-25: três duckdb órfãos da rodada B2
+    // (pai = systemd) rodando havia 6h30 a ~400% de CPU cada, e o aquecimento
+    // do llama-server passou de 0,5 s para 40 s. O `timeout` remoto mata o
+    // processo no próprio beelink, 10 s depois do prazo daqui.
+    proc = Bun.spawn(["ssh", HOST,
+      `timeout -s KILL ${Math.ceil(TIMEOUT_MS / 1000) + 10} ${DUCKDB_BIN} -readonly -json ${DUCKDB_PATH}`], {
       stdin: new TextEncoder().encode(stdin),
       stdout: "pipe",
       stderr: "pipe",

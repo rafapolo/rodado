@@ -152,3 +152,36 @@ export function dicaMunicipio(rows: Record<string, unknown>[]): string {
   return "id_municipio é o código IBGE de 7 dígitos, não o nome. Para responder com o nome do município, " +
     "junte com br_bd_diretorios_brasil.municipio (colunas id_municipio, nome, sigla_uf).";
 }
+
+/**
+ * B16 — a coluna que o DuckDB não achou, com as colunas REAIS parecidas das
+ * tabelas da consulta. Medido 2026-09-25, 75 sessões da rodada B2: 65 rejeições
+ * de coluna inexistente, a maior fonte de turno perdido. As `Candidate bindings`
+ * do DuckDB já vinham (51 das 65), mas casam por grafia: para
+ * `quantidade_vinculos_ativos` na RAIS sugeriam `quantidade_horas_contratadas`,
+ * e a coluna certa era `vinculo_ativo_3112`; para `nome` sugeriam colunas de
+ * gestor, e o nome do município vem do diretório.
+ */
+export function dicaColunaInexistente(erro: string, tabelas: { ref: string; cols: string[] }[]): string {
+  const m = /(?:Referenced column|does not have a column named|column)\s+\\?"([A-Za-z_]\w*)\\?"/i.exec(erro);
+  if (!m) return "";
+  const falta = m[1]!.toLowerCase();
+  const partes: string[] = [];
+  if (/^(nome|nome_municipio|municipio|municipio_nome|nome_uf)$/.test(falta)) {
+    partes.push("nome de município ou estado não está nas tabelas de dado: junte br_bd_diretorios_brasil.municipio " +
+      "(id_municipio, nome, sigla_uf) por id_municipio.");
+  }
+  const raiz = (t: string) => t.slice(0, 5);
+  // termos que aparecem em metade das colunas e não distinguem nenhuma
+  const VAGOS = new Set(["quant", "valor", "total", "numer", "indic", "codig", "media", "taxa"]);
+  const pedacos = falta.split("_").filter((t) => t.length >= 4).map(raiz).filter((t) => !VAGOS.has(t));
+  for (const t of tabelas) {
+    const parecidas = t.cols.filter((c) => c.toLowerCase().split("_").some((p) => p.length >= 4 && pedacos.includes(raiz(p))));
+    if (parecidas.length) partes.push(`colunas reais de ${t.ref} com o mesmo termo: ${parecidas.slice(0, 12).join(", ")}.`);
+  }
+  if (!partes.length && tabelas.length) {
+    partes.push(`'${falta}' não é coluna de ${tabelas.map((t) => t.ref).join(", ")}. Se é coluna de uma CTE sua, ` +
+      "confira o nome que a CTE projeta (o AS dela); senão, descrever_tabela mostra as colunas reais.");
+  }
+  return partes.length ? `\n\nDica: ${partes.join(" ")}` : "";
+}
