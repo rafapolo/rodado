@@ -187,3 +187,7 @@ test("SEM_DADO reconhece 'contém dados apenas até' e 'não é possível inform
   expect(avalia(r, "SEM_DADO", "Quantos óbitos por agressão o SIM registrou em 2024?").certo).toBe(true);
   expect(avalia("O SIM registrou 45.000 óbitos por agressão em 2024.", "SEM_DADO", "q").certo).toBe(false);
 });
+
+test("SEM_DADO reconhece 'só contém dados a partir de 2020' (CAGED 2019, 2026-09-25)", () => {
+  expect(avalia("Como o dataset do CAGED no espelho só contém dados a partir de 2020, não há saldo de 2019.", "SEM_DADO", "q").certo).toBe(true);
+});

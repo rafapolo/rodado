@@ -148,6 +148,7 @@ const DIZ_SEM_DADO = new RegExp([
   // informar" — resposta certa lida como erro.
   "(contem|tem|possui|traz) (dados|registros|informac\\w*)? ?(apenas |somente |so )?ate",
   "nao e possivel (informar|responder|calcular|obter|determinar|saber|apurar)",
+  "(so|apenas|somente) (contem|tem|possui|cobre|traz) (dados |registros )?(a partir de|desde)",
 ].join("|"));
 
 export function alvos(esperado: string): (AlvoNum | AlvoTexto | AlvoSemDado)[] {
