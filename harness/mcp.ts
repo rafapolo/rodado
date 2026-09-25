@@ -25,7 +25,7 @@ import { listaDatasets, tabelasDe, colunasDe, resolveDataset, COLUNAS_PARTICAO, 
 import {
   portao, checaExplain, alertasDeSanidade, faixasCitadas,
   juncoesSemPonte, mensagemSemPonte, assinaturaJuncao, sugestao, semComentarios, repara, NOTA_AMOSTRA,
-  perguntaDePesquisa, checaRanking, extraiN,
+  perguntaDePesquisa, checaRanking, extraiN, fonteTrocada,
 } from "./portao.ts";
 import { dicasDeJoin } from "./pontes.ts";
 import { runSqlSsh } from "./beelink.ts";
@@ -324,6 +324,12 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
         : "";
       alertas.push(`Se este resultado sustenta a resposta, escreva nela ${[pedeR, pedeN].filter(Boolean).join(" e ")}. ` +
         `"Correlação fraca" sem o número, ou conclusão sem o tamanho da amostra, não dá para conferir.`);
+    }
+    // Pergunta direta que nomeia uma fonte, respondida com outra (CAGED 2019
+    // pela RAIS, holdout3 2026-09-25). Pesquisa cruza fontes por desenho: fica fora.
+    if (PERGUNTA && !PESQUISA) {
+      const troca = fonteTrocada(PERGUNTA, sql);
+      if (troca) alertas.push(troca);
     }
     const municipio = dicaMunicipio(capado.rows as Record<string, unknown>[]);
     if (municipio) alertas.push(municipio);
