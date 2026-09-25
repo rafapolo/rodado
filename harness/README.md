@@ -365,6 +365,19 @@ coisas que as diretas não mediam:
 - **Não mexer no código com a rodada viva.** Cada pergunta sobe um `mcp.ts`
   novo; editar no meio mistura duas versões na mesma rodada.
 
+## Quem redige: o modelo apura, uma pessoa escreve (B8, 2026-09-25)
+
+`harness/redige.ts` isola a redação: dá ao Gemma só a ficha de fatos de uma
+análise publicada (cada frase com número) e mede a prosa. Em
+`o-salario-nao-explica.md` saíram 1.812 palavras com estrutura, contra-argumento
+e "o que os dados não permitem concluir", e só 1 número fora da ficha — pela
+métrica automática, quase passa. Lida contra a publicada, falhou onde a métrica
+não enxerga: **número certo no sujeito errado** ("R$ 491 mil em empresas" de
+Arthur Lira posto na seção de outro deputado), um valor de empréstimo virou
+"salário líquido", e 42 meses + três 13º viraram "48 meses". Decisão: o harness
+**apura**; a análise publicada é escrita por uma pessoa. Conferir número contra
+a ficha não basta para prosa sobre pessoas nomeadas — o erro é de atribuição.
+
 ## Módulos
 
 | Arquivo | Papel |
