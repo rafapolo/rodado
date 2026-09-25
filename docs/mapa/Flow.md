@@ -22,7 +22,7 @@ flowchart LR
     subgraph doms["Domínios"]
         direction TB
         D_referencia["Diretórios e tabelas de referência<br/>10 datasets"]
-        D_saude["Saúde<br/>28 datasets"]
+        D_saude["Saúde<br/>27 datasets"]
         D_educacao["Educação e ciência<br/>20 datasets"]
         D_economia["Trabalho, empresas e economia<br/>45 datasets"]
         D_governo["Governo, orçamento e compras<br/>38 datasets"]
@@ -31,7 +31,7 @@ flowchart LR
         D_territorio["Território, ambiente e infraestrutura<br/>27 datasets"]
         D_demografia["Demografia e indicadores sociais<br/>18 datasets"]
         D_internacional["Internacional, cultura e esporte<br/>9 datasets"]
-        D_outros["Outros<br/>11 datasets"]
+        D_outros["Outros<br/>12 datasets"]
     end
     subgraph g_territ_rio["Território"]
         direction TB
@@ -88,10 +88,10 @@ flowchart LR
     D_justica -->|"7"| MUNICIPIO
     D_justica -->|"3"| PESSOA_CPF
     D_justica -->|"9"| UF
-    D_outros -->|"5"| EMPRESA_CNPJ
+    D_outros -->|"6"| EMPRESA_CNPJ
     D_outros -->|"9"| MUNICIPIO
-    D_outros -->|"5"| PESSOA_CPF
-    D_outros -->|"8"| UF
+    D_outros -->|"6"| PESSOA_CPF
+    D_outros -->|"9"| UF
     D_politica -->|"4"| EMPRESA_CNPJ
     D_politica -->|"5"| MUNICIPIO
     D_politica -->|"6"| PARTIDO
@@ -101,8 +101,8 @@ flowchart LR
     D_referencia -->|"5"| UF
     D_saude -->|"7"| CNES
     D_saude -->|"7"| EMPRESA_CNPJ
-    D_saude -->|"24"| MUNICIPIO
-    D_saude -->|"23"| UF
+    D_saude -->|"23"| MUNICIPIO
+    D_saude -->|"22"| UF
     D_territorio -->|"3"| CID10
     D_territorio -->|"5"| EMPRESA_CNPJ
     D_territorio -->|"20"| MUNICIPIO
@@ -173,7 +173,7 @@ flowchart LR
 
 ## Saúde
 
-28 datasets · 1 sem ligação documentada
+27 datasets · 1 sem ligação documentada
 
 ```mermaid
 flowchart LR
@@ -199,7 +199,6 @@ flowchart LR
     saude_br_ms_sinan_zika["ms_sinan_zika"]
     saude_br_ms_sinasc["ms_sinasc"]
     saude_br_ms_sipni_doses_historicas["ms_sipni_doses_historicas"]
-    saude_br_ms_sipni_microdados["ms_sipni_microdados"]
     saude_br_ms_sisvan["ms_sisvan"]
     saude_br_ms_vacinacao_covid19["ms_vacinacao_covid19"]
     saude_br_saude_bps["saude_bps"]
@@ -280,8 +279,6 @@ flowchart LR
     saude_br_ms_sinasc --> saude_UF
     saude_br_ms_sipni_doses_historicas -.-> saude_MUNICIPIO
     saude_br_ms_sipni_doses_historicas -.-> saude_UF
-    saude_br_ms_sipni_microdados -.-> saude_MUNICIPIO
-    saude_br_ms_sipni_microdados -.-> saude_UF
     saude_br_ms_sisvan --> saude_MUNICIPIO
     saude_br_ms_sisvan --> saude_UF
     saude_br_ms_vacinacao_covid19 -.-> saude_CNES
@@ -1029,7 +1026,7 @@ flowchart LR
 
 ## Outros
 
-11 datasets · 1 sem ligação documentada
+12 datasets · 1 sem ligação documentada
 
 ```mermaid
 flowchart LR
@@ -1039,6 +1036,7 @@ flowchart LR
     outros_br_incra_acervo["incra_acervo"]
     outros_br_mds_cadunico["mds_cadunico"]
     outros_br_minc_salic["minc_salic"]
+    outros_br_mte_listasuja["mte_listasuja"]
     outros_br_pncp["pncp"]
     outros_br_sedec_desastres["sedec_desastres"]
     outros_br_senatran_frota["senatran_frota"]
@@ -1053,6 +1051,7 @@ flowchart LR
         direction TB
         outros_EMPRESA_CNPJ(["EMPRESA_CNPJ"])
         outros_PESSOA_CPF(["PESSOA_CPF"])
+        outros_CNAE(["CNAE"])
     end
     subgraph outros_g_estado_e_economia["Estado e economia"]
         direction TB
@@ -1079,6 +1078,10 @@ flowchart LR
     outros_br_minc_salic --> outros_EMPRESA_CNPJ
     outros_br_minc_salic -.-> outros_PESSOA_CPF
     outros_br_minc_salic -.-> outros_UF
+    outros_br_mte_listasuja --> outros_CNAE
+    outros_br_mte_listasuja --> outros_EMPRESA_CNPJ
+    outros_br_mte_listasuja --> outros_PESSOA_CPF
+    outros_br_mte_listasuja --> outros_UF
     outros_br_pncp --> outros_EMPRESA_CNPJ
     outros_br_pncp -.-> outros_MUNICIPIO
     outros_br_pncp -.-> outros_UF
