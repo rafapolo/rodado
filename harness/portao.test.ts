@@ -552,3 +552,18 @@ describe("B15 — janela e agregado no GROUP BY (rodada B2, 2026-09-25)", () => 
     expect(portao("SELECT sigla_uf, SUM(pib) AS s FROM br_ibge_pib.municipio WHERE ano = 2020 GROUP BY 1").camada).not.toBe("group-by");
   });
 });
+
+describe("camada valor — literal que a coluna não tem (triagem B2, 2026-09-25)", () => {
+  test("'Preto'/'Pardo' no Censo 2022, que guarda 'Preta'/'Parda'", () => {
+    const v = portao("SELECT id_municipio, SUM(populacao) AS p FROM br_ibge_censo_2022.populacao_grupo_idade_sexo_raca WHERE cor_raca IN ('Preto','Pardo') GROUP BY 1");
+    expect(v.camada).toBe("valor");
+    expect(v.erro).toContain("'Preta'");
+  });
+  test("o valor certo passa", () => {
+    expect(portao("SELECT id_municipio, SUM(populacao) AS p FROM br_ibge_censo_2022.populacao_grupo_idade_sexo_raca WHERE cor_raca IN ('Preta','Parda') GROUP BY 1").ok).toBe(true);
+  });
+  test("valor de outra coluna ('finais (6-9)' é anos_escolares, não ensino)", () => {
+    const v = portao("SELECT id_municipio, ideb FROM br_inep_ideb.municipio WHERE ano = 2019 AND ensino = 'finais (6-9)' LIMIT 10");
+    expect(v.camada).toBe("valor");
+  });
+});

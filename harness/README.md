@@ -28,15 +28,15 @@ flowchart TD
     S2 --> S4["modelo escreve SQL"]
     S3 -.-> S4
 
-    S4 --> G{{"consultar → PORTÃO<br/>portao.ts"}}
-    G -->|"erro de forma<br/>(LIMIT, dataset sem tabela)"| FIX["repara() conserta<br/>e avisa"]
+    S4 --> G{{"consultar → PORTÃO<br/>portao.ts · 13 camadas"}}
+    G -->|"erro de forma<br/>(LIMIT, n, dataset sem tabela)"| FIX["repara() conserta<br/>e avisa"]
     FIX --> X
-    G -->|"erro de significado<br/>(partição, CID, coluna)"| S4
-    G -->|passa| X["executa no beelink<br/>beelink.ts · -readonly"]
+    G -->|"erro de significado<br/>(partição, CID, coluna, ano,<br/>valor, GROUP BY, ranking)"| S4
+    G -->|passa| X["executa no beelink<br/>beelink.ts · -readonly<br/>timeout remoto: sem órfão"]
 
-    X --> A{{"alertas junto do resultado<br/>zero linhas, n=0, recorte da pergunta<br/>não aplicado, nota da tabela"}}
+    X --> A{{"alertas junto do resultado<br/>zero linhas, n=0, grupo como total,<br/>zero com != (NULL), recorte não aplicado,<br/>nota da tabela · pesquisa: escreva r e n"}}
     A -->|"modelo corrige"| S4
-    A --> OUT["resposta em prosa<br/>número, recorte, órgão de origem"]
+    A --> OUT["resposta em prosa<br/>número, recorte, órgão de origem<br/>pesquisa: r e n"]
 
     style G fill:#c0392b,color:#fff,stroke:#7b241c
     style A fill:#8e6f1e,color:#fff,stroke:#5c4813
@@ -61,33 +61,46 @@ As camadas rodam em ordem de custo — as locais primeiro, para que as tentativa
 de reparo sejam gastas em erro real e não em ida à rede:
 
 ```mermaid
-flowchart LR
-    SQL["SQL do modelo"] --> L1
+flowchart TD
+    SQL["SQL do modelo"] --> F
 
-    L1["1 · read-only<br/>sqlguard.ts"] --> L2
-    L2["2 · tabela existe<br/>FROM dataset sem tabela"] --> L3
-    L3["3 · coluna existe<br/>coluna inventada"] --> L4
-    L4["4 · filtro de partição<br/>catalog.parquet: rows"] --> L5
-    L5["5 · LIMIT<br/>se não agrega"] --> L6
-    L6["6 · codificação<br/>CID, coded_differently"] --> L7
-    L7["7 · EXPLAIN<br/>única ida ao beelink"] --> OK["executa"]
+    subgraph F["forma e existência — local, portao.ts"]
+        direction LR
+        L1["1 · read-only"] --> L2["2 · inservível"] --> L3["3 · tabela existe"] --> L4["4 · coluna existe"] --> L5["5 · partição"] --> L6["6 · LIMIT"]
+    end
 
-    L1 & L2 & L3 & L4 & L5 & L6 & L7 -.->|"rejeita"| REP["mensagem que<br/>ensina o conserto"]
-    REP -.->|"máx. 3 tentativas"| SQL
+    subgraph S["significado — local, portao.ts"]
+        direction LR
+        L7["7 · codificação<br/>CID sem ponto"] --> L8["8 · ano<br/>fora da faixa"] --> L9["9 · valor<br/>literal inexistente"] --> L10["10 · GROUP BY<br/>janela/agregado"] --> L11["11 · amostra<br/>COUNT(*) AS n"]
+    end
 
-    style L4 fill:#c0392b,color:#fff
-    style L6 fill:#c0392b,color:#fff
+    subgraph B["contexto e beelink — mcp.ts"]
+        direction LR
+        L12["12 · ranking<br/>só pergunta de pesquisa"] --> L13["13 · EXPLAIN<br/>+ colunas reais parecidas"]
+    end
+
+    F --> S --> B --> OK["executa"]
+    F & S & B -.->|"rejeita"| REP["mensagem que ensina o conserto<br/>volta como resultado de ferramenta,<br/>e o modelo reescreve a SQL"]
+
+    style L5 fill:#c0392b,color:#fff
+    style L7 fill:#c0392b,color:#fff
+    style L9 fill:#c0392b,color:#fff
+    style L10 fill:#c0392b,color:#fff
+    style L12 fill:#c0392b,color:#fff
     style REP fill:#8e6f1e,color:#fff
     style OK fill:#1e6f42,color:#fff
 ```
 
-As duas camadas em vermelho existem por causa de erros **que o Gemma cometeu de
-verdade**, medidos no beelink em 2026-09-01:
+As camadas em vermelho existem por causa de erros **que o Gemma cometeu de
+verdade**, medidos no beelink:
 
 | Camada | O que o modelo escreveu | Por que é caro |
 |---|---|---|
-| **4 · partição** | `SELECT COUNT(*) FROM br_ms_sim.microdados` — sua primeira tool call | Varredura completa segura o lock do DuckDB por horas. O incidente de 2h do `AGENTS.md` tem exatamente esta forma. |
-| **6 · codificação** | `causa_basica BETWEEN 'X60' AND 'X84'` | CID é guardado **sem ponto** (`X840`), e `'X840' > 'X84'` — o grupo X84 some inteiro. **726 contra 789 reais: 8% a menos, com número plausível.** |
+| **5 · partição** (2026-09-01) | `SELECT COUNT(*) FROM br_ms_sim.microdados` — sua primeira tool call | Varredura completa segura o lock do DuckDB por horas. O incidente de 2h do `AGENTS.md` tem exatamente esta forma. |
+| **7 · codificação** (2026-09-01) | `causa_basica BETWEEN 'X60' AND 'X84'` | CID é guardado **sem ponto** (`X840`), e `'X840' > 'X84'` — o grupo X84 some inteiro. **726 contra 789 reais: 8% a menos, com número plausível.** |
+| **9 · valor** (2026-09-25) | `cor_raca IN ('Preto', 'Pardo')` no Censo 2022, que guarda `'Preta'`/`'Parda'` | Filtro vazio parece junção vazia: 10 de 58 casos de pesquisa desistiram "sem chave" com a junção certa. Recusa só quando a lista de valores da coluna é completa; relida contra 248 consultas que devolveram linha, nenhum falso positivo. |
+| **10 · GROUP BY** (2026-09-25) | `GROUP BY ntile(4) OVER (...)` | 16 turnos perdidos em 75 sessões; a recusa vem com o molde de faixas copiável. |
+| **12 · ranking** (2026-09-24) | `ORDER BY score DESC LIMIT 10` cruzando quatro fontes, numa pergunta "municípios com mais X têm Y?" | 7 dos 8 primeiros casos de pesquisa fecharam numa lista de exemplos, sem medida sobre os municípios e sem `n`. |
 
 O segundo é o modo de falha que importa: não dá erro, dá um número que passa
 despercebido. `harness/portao.test.ts` trava os dois casos.
@@ -168,12 +181,12 @@ Onde cada peça fica, de fora para dentro:
 flowchart TD
     L["pergunte.ts / lote.ts<br/>um processo pi por pergunta;<br/>processo novo se ele morrer"] --> D
     D["Pi — o laço<br/>turno do modelo → executa ferramenta → devolve → repete"]
-    D <-->|"cada turno"| G["guarda.ts<br/>repete o turno que volta vazio"]
+    D <-->|"cada turno"| G["guarda.ts<br/>repete o turno que volta vazio<br/>ou só com tokens de molde"]
     G <--> M["llama-server (Gemma)"]
     D <-->|"chamada de ferramenta<br/>(pi-mcp-adapter)"| T["mcp.ts — as ferramentas"]
     T --> C["consultar"]
-    C --> P{{"PORTÃO<br/>7 camadas"}}
-    P -->|passa| B["DuckDB no beelink"]
+    C --> P{{"PORTÃO<br/>13 camadas"}}
+    P -->|passa| B["DuckDB no beelink<br/>timeout -s KILL remoto"]
     P -.->|"rejeita: texto que<br/>ensina o conserto"| T
 
     style P fill:#c0392b,color:#fff,stroke:#7b241c
@@ -328,7 +341,7 @@ resposta. Detalhe em [`tasks/harness_tasks.md`](../tasks/harness_tasks.md), "Ré
 | Arquivo | Papel |
 |---|---|
 | `catalogo.ts` | `catalog.parquet` (linhas por tabela → camada 4) + schema local (colunas). Cache em `dados/catalogo.json`; `bun harness/catalogo.ts --atualiza` |
-| `portao.ts` | as 7 camadas, e `repara()` para o erro de forma |
+| `portao.ts` | as 11 camadas locais (a 12ª, ranking de pesquisa, e a 13ª, EXPLAIN, rodam em `mcp.ts`), e `repara()` para o erro de forma |
 | `sqlguard.ts` | `checkReadOnly` + `capRows` — porte fiel de `mcp_server.py`, trazido de `ask-web` |
 | `beelink.ts` | executor SSH+DuckDB, **com `-readonly`** e com acesso a arquivo travado em `~/rodado` (`enable_external_access=false` + `lock_configuration`: um `read_text('~/.ssh/...')` escrito pelo modelo passava por `checkReadOnly`); despejo no NVMe, não no `/tmp` (tmpfs) do beelink |
 | `metricas.ts` | os 12 cálculos verificados de `metrics.yaml` — busca exata por nome ou sinônimo, nunca por similaridade |

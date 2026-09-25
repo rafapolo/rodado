@@ -306,6 +306,28 @@ function checaCodificacao(sql: string): Veredito {
   return OK;
 }
 
+/**
+ * Camada `valor` — literal de texto que a coluna não tem, em qualquer coluna.
+ *
+ * A conferência de literal existia só para `CODIFICADAS` (sexo, raca_cor...).
+ * Medido 2026-09-25, triagem de 58 casos da rodada B2: 10 desistiram depois de
+ * junções que voltaram vazias, e 68 consultas de zero linha tinham
+ * `id_municipio = id_municipio` — a junção estava certa; o vazio vinha do
+ * filtro, como `cor_raca IN ('Preto', 'Pardo')` no Censo 2022, que guarda
+ * 'Preta'/'Parda' (e `valores.json` já sabia). Só recusa quando cada tabela com
+ * a coluna tem a lista COMPLETA (dicionário inteiro, ou `valores` sem amostra).
+ */
+function checaValores(sql: string): Veredito {
+  const cols = new Set<string>();
+  for (const m of sql.matchAll(/\b(?:\w+\.)?([a-z_]\w*)\s*(?:=\s*'|IN\s*\(\s*')/gi)) cols.add(m[1]!.toLowerCase());
+  for (const col of cols) {
+    if (CODIFICADAS.has(col)) continue; // a camada de codificação cuida
+    const r = literalConferido(sql, col);
+    if (typeof r === "string") return { ok: false, camada: "valor", erro: r.replace("não tem o código", "não tem o valor").replace("Códigos válidos", "Valores guardados") };
+  }
+  return OK;
+}
+
 /** true: todo literal comparado com `col` é chave do dicionário de cada tabela
  *  citada que tem a coluna; string: a mensagem de recusa; undefined: sem dicionário. */
 function literalConferido(sql: string, col: string): true | string | undefined {
@@ -1088,7 +1110,7 @@ export function portao(sql: string): Veredito {
   if (leitura) return { ok: false, camada: "read-only", erro: leitura };
 
   // Aposentada antes de inexistente: a mensagem diz para onde o dado foi.
-  for (const camada of [checaInservivel, checaTabelas, checaColunas, checaParticao, checaLimite, checaCodificacao, checaAno, checaGroupBy, checaAmostra]) {
+  for (const camada of [checaInservivel, checaTabelas, checaColunas, checaParticao, checaLimite, checaCodificacao, checaAno, checaValores, checaGroupBy, checaAmostra]) {
     const v = camada(sql);
     if (!v.ok) return v;
   }
