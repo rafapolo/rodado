@@ -90,7 +90,7 @@
   <p>Each capability below is backed by a concrete, deployed piece of this project — not a claim, a running system.</p>
   <div class="grid-cards">
     <div class="card"><div class="label">End-to-end delivery</div><p>Scraping and mirroring pipelines + semantic layer + 17-tool MCP interface, in daily use as a single-engineer project.</p></div>
-    <div class="card"><div class="label">Data engineering</div><p>1,046 tables across 237 datasets (39.7 billion rows, ~898 GB) — 741 mirrored from Base dos Dados, 305 scraped independently — with a canonical join-key graph and partition-aware query patterns.</p></div>
+    <div class="card"><div class="label">Data engineering</div><p>1,050 tables across 238 datasets (39.7 billion rows, ~898 GB) — 741 mirrored from Base dos Dados, 309 scraped independently — with a canonical join-key graph and partition-aware query patterns.</p></div>
     <div class="card"><div class="label">Ontology design</div><p>8 business object types (Municipality, Company, Person, Contract…) with typed relationships, 60 documented join concepts and 21 catalogued false friends.</p></div>
     <div class="card"><div class="label">Application development</div><p><code>mcp_server.py</code> — 18 MCP tools over stdio for schema browsing, join resolution, named metrics and read-only SQL.</p></div>
     <div class="card"><div class="label">AI / ML enablement</div><p>Table discovery by a compact dataset catalog placed in the model's prompt — 88% of questions land on the right dataset, against ~53% for the embedding search it replaced.</p></div>
@@ -243,14 +243,14 @@ ORDER BY contratos_federais_2023_2025 DESC</pre>
   <div class="grid-cards">
     <div class="card"><div class="label">Users</div><p>Analysts · policy teams · researchers · journalists</p></div>
     <div class="card"><div class="label">Agent</div><p>Claude Desktop / Claude Code · <code>mcp/mcp_server.py</code> over stdio · 17 tools: schema browsing, join resolution, named metrics, read-only SQL, per-theme lookups</p></div>
-    <div class="card"><div class="label">Semantic</div><p><code>rodado-schema.json</code> (1,045 tables) · <code>bridges.yaml</code> + <code>join_keys.md</code> · 12 named metrics · 3 rollup hierarchies · 47 domain overviews</p></div>
+    <div class="card"><div class="label">Semantic</div><p><code>rodado-schema.json</code> (1,048 tables) · <code>bridges.yaml</code> + <code>join_keys.md</code> · 12 named metrics · 3 rollup hierarchies · 47 domain overviews</p></div>
     <div class="card"><div class="label">Query</div><p><code>ssh beelink '~/bin/duckdb -readonly'</code> · no persistent server process · statement guard before every call</p></div>
-    <div class="card"><div class="label">Storage</div><p>Local disk · Parquet + zstd · 1,046 tables · ~898 GB · DuckDB reads the files directly, no import</p></div>
+    <div class="card"><div class="label">Storage</div><p>Local disk · Parquet + zstd · 1,050 tables · ~898 GB · DuckDB reads the files directly, no import</p></div>
     <div class="card"><div class="label">Catalog</div><p><code>_rodado_metadata</code> view: rows, source, status and provenance for every table, rebuilt after each sync</p></div>
   </div>
 
   <h2>Table selection</h2>
-  <p>With 1,046 tables, the hard step is picking the handful worth reading before any SQL is written — the step that keeps a large schema from producing hallucinated joins. The local harness puts the whole dataset catalog in the prompt (~2k tokens, cached after the first question) and lands on the right dataset 88% of the time. An embedding index over ~8 synthetic questions per table scored ~53% on the same measure and was removed.</p>
+  <p>With 1,050 tables, the hard step is picking the handful worth reading before any SQL is written — the step that keeps a large schema from producing hallucinated joins. The local harness puts the whole dataset catalog in the prompt (~2k tokens, cached after the first question) and lands on the right dataset 88% of the time. An embedding index over ~8 synthetic questions per table scored ~53% on the same measure and was removed.</p>
   <div class="pills">
     <span class="pill">catalog in prompt</span>
     <span class="pill">88% dataset hit rate</span>
@@ -299,7 +299,7 @@ ORDER BY contratos_federais_2023_2025 DESC</pre>
 <footer>
   <div class="footer-inner">
     <a href="/">Índice temático</a>
-    <span>1,046 tables · ~898 GB · DuckDB + Parquet</span>
+    <span>1,050 tables · ~898 GB · DuckDB + Parquet</span>
   </div>
 </footer>
 
