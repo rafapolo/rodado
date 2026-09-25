@@ -4,14 +4,14 @@
     "caveat_provenance_notes": "match contra provenance_notes é best-effort e fraco pra dataset espelhado (nota é boilerplate); não é triagem exaustiva",
     "column_codes": {
       "applied_by": "scripts/aplica_column_codes.py",
-      "columns": 186,
+      "columns": 370,
       "source": "docs/context/column_codes.yaml"
     },
     "counts_by_label": {
-      "documentado_em_outro_lugar": 2549,
-      "nao_e_codigo": 15872,
-      "nao_verificado": 8536,
-      "padrao_externo": 1306
+      "documentado_em_outro_lugar": 2566,
+      "nao_e_codigo": 16009,
+      "nao_verificado": 8359,
+      "padrao_externo": 1329
     },
     "generated_by": "scripts/gera_schema_dict_status.py",
     "llm_triage": {
@@ -139,8 +139,9 @@
       "reason": "cardinalidade medida ~6267 valores distintos (> 100) — não parece código"
     },
     "br_ana_outorgas.captacoes.ing_sg_ufmunicipio": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~28 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Sigla da UF do município da captação — fonte: https://basedosdados.org"
     },
     "br_ana_outorgas.lancamentos.emp_nm_empreendimento": {
       "label": "nao_e_codigo",
@@ -171,8 +172,9 @@
       "reason": "candidato real: ~12 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ana_outorgas.lancamentos.ing_sg_ufmunicipio": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~25 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Sigla da UF do município do lançamento — fonte: https://basedosdados.org"
     },
     "br_ana_outorgas.lancamentos.int_nm_corpohidrico": {
       "label": "nao_e_codigo",
@@ -1539,8 +1541,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_anatel_banda_larga_fixa.microdados.acessos": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~57.824.623 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: tecnologia (FTTH, xDSL…, 32 rótulos), nome da empresa, contagem de acessos"
     },
     "br_anatel_banda_larga_fixa.microdados.ano": {
       "label": "nao_e_codigo",
@@ -1551,8 +1554,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_anatel_banda_larga_fixa.microdados.empresa": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~57.824.623 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: tecnologia (FTTH, xDSL…, 32 rótulos), nome da empresa, contagem de acessos"
     },
     "br_anatel_banda_larga_fixa.microdados.id_municipio": {
       "label": "padrao_externo",
@@ -1575,8 +1579,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_anatel_banda_larga_fixa.microdados.tecnologia": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~57.824.623 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: tecnologia (FTTH, xDSL…, 32 rótulos), nome da empresa, contagem de acessos"
     },
     "br_anatel_banda_larga_fixa.microdados.transmissao": {
       "label": "nao_verificado",
@@ -1591,16 +1596,18 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_anatel_indice_brasileiro_conectividade.municipio.fibra": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Presença de backhaul de fibra óptica no município, já normalizada para 0–100 — fonte: https://www.gov.br/anatel/pt-br/regulado/universalizacao/indice-brasileiro-conectiviadade-ibc"
     },
     "br_anatel_indice_brasileiro_conectividade.municipio.hhi_scm": {
       "label": "nao_verificado",
       "reason": "candidato real: ~98 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_anatel_indice_brasileiro_conectividade.municipio.hhi_smp": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~98 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): Competitividade da telefonia móvel: INVERSO do HHI, normalizado para 0–100 (maior = mais competitivo) — fonte: https://www.gov.br/anatel/pt-br/regulado/universalizacao/indice-brasileiro-conectiviadade-ibc"
     },
     "br_anatel_indice_brasileiro_conectividade.municipio.id_municipio": {
       "label": "padrao_externo",
@@ -2802,8 +2809,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_anp_precos_combustiveis.microdados.unidade_medida": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: R$/litro 12.057.415, R$/13kg 4.114.022 (GLP), R$/m3 238.079 (GNV)"
     },
     "br_ans_beneficiario.informacao_consolidada.abrangencia_beneficiario": {
       "label": "nao_verificado",
@@ -2818,20 +2826,23 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_ans_beneficiario.informacao_consolidada.cobertura_assistencia_beneficiario": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso, mas cada categoria aparece DUAS vezes: com acento corrompido e sem acento ('Ma©dico-Hospitalar' 1.286.764 + 'Medico-Hospitalar' 875.452; 'Cooperativa Madica' + 'Cooperativa Medica'; 'Bradesco Saa\\x9ade' + 'Bradesco Saude')"
     },
     "br_ans_beneficiario.informacao_consolidada.codigo_operadora": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Registro ANS da operadora (6 dígitos, com zero à esquerda) — fonte: https://basedosdados.org"
     },
     "br_ans_beneficiario.informacao_consolidada.codigo_plano": {
       "label": "nao_verificado",
       "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_ans_beneficiario.informacao_consolidada.contratacao_beneficiario": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso, mas cada categoria aparece DUAS vezes: com acento corrompido e sem acento ('Ma©dico-Hospitalar' 1.286.764 + 'Medico-Hospitalar' 875.452; 'Cooperativa Madica' + 'Cooperativa Medica'; 'Bradesco Saa\\x9ade' + 'Bradesco Saude')"
     },
     "br_ans_beneficiario.informacao_consolidada.data_carga": {
       "label": "nao_e_codigo",
@@ -2854,8 +2865,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_ans_beneficiario.informacao_consolidada.modalidade_operadora": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso, mas cada categoria aparece DUAS vezes: com acento corrompido e sem acento ('Ma©dico-Hospitalar' 1.286.764 + 'Medico-Hospitalar' 875.452; 'Cooperativa Madica' + 'Cooperativa Medica'; 'Bradesco Saa\\x9ade' + 'Bradesco Saude')"
     },
     "br_ans_beneficiario.informacao_consolidada.quantidade_beneficiario_aderido": {
       "label": "nao_e_codigo",
@@ -2870,12 +2882,14 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_ans_beneficiario.informacao_consolidada.razao_social": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso, mas cada categoria aparece DUAS vezes: com acento corrompido e sem acento ('Ma©dico-Hospitalar' 1.286.764 + 'Medico-Hospitalar' 875.452; 'Cooperativa Madica' + 'Cooperativa Medica'; 'Bradesco Saa\\x9ade' + 'Bradesco Saude')"
     },
     "br_ans_beneficiario.informacao_consolidada.segmentacao_beneficiario": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso, mas cada categoria aparece DUAS vezes: com acento corrompido e sem acento ('Ma©dico-Hospitalar' 1.286.764 + 'Medico-Hospitalar' 875.452; 'Cooperativa Madica' + 'Cooperativa Medica'; 'Bradesco Saa\\x9ade' + 'Bradesco Saude')"
     },
     "br_ans_beneficiario.informacao_consolidada.sexo": {
       "label": "documentado_em_outro_lugar",
@@ -2890,8 +2904,9 @@
       "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_ans_beneficiario.informacao_consolidada.tipo_vinculo": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~2.307.338.481 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso, mas cada categoria aparece DUAS vezes: com acento corrompido e sem acento ('Ma©dico-Hospitalar' 1.286.764 + 'Medico-Hospitalar' 875.452; 'Cooperativa Madica' + 'Cooperativa Medica'; 'Bradesco Saa\\x9ade' + 'Bradesco Saude')"
     },
     "br_anvisa_cmed.precos.analise_recursal": {
       "label": "nao_verificado",
@@ -3330,8 +3345,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_bcb_estban.agencia.instituicao": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~443.814.039 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: nome do banco"
     },
     "br_bcb_estban.agencia.mes": {
       "label": "nao_e_codigo",
@@ -3362,12 +3378,14 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_bcb_estban.municipio.agencias_esperadas": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~256.170.669 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: nome do banco e contagens"
     },
     "br_bcb_estban.municipio.agencias_processadas": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~256.170.669 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: nome do banco e contagens"
     },
     "br_bcb_estban.municipio.ano": {
       "label": "nao_e_codigo",
@@ -3382,8 +3400,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_bcb_estban.municipio.instituicao": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~256.170.669 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: nome do banco e contagens"
     },
     "br_bcb_estban.municipio.mes": {
       "label": "nao_e_codigo",
@@ -5606,8 +5625,9 @@
       "reason": "cardinalidade medida ~2216 valores distintos (> 100) — não parece código"
     },
     "br_bd_metadados.bigquery_tables.project_id": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 'basedosdados'; table/view"
     },
     "br_bd_metadados.bigquery_tables.row_count": {
       "label": "nao_e_codigo",
@@ -5622,8 +5642,9 @@
       "reason": "cardinalidade medida ~1649 valores distintos (> 100) — não parece código"
     },
     "br_bd_metadados.bigquery_tables.type": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 'basedosdados'; table/view"
     },
     "br_bd_metadados.external_links.availability": {
       "label": "nao_verificado",
@@ -6038,8 +6059,9 @@
       "reason": "bridges.yaml concepts.nome_municipio -> br_bd_diretorios_brasil.municipio.nome"
     },
     "br_bndes_operacoes_contratadas.operacoes_nao_automaticas.porte_cliente": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: GRANDE, MÉDIA, PEQUENA, MICRO, SEM PORTE"
     },
     "br_bndes_operacoes_contratadas.operacoes_nao_automaticas.prazo_amortizacao": {
       "label": "nao_e_codigo",
@@ -7713,8 +7735,9 @@
       "reason": "cardinalidade medida ~296 valores distintos (> 100) — não parece código"
     },
     "br_ce_fortaleza_sefin_iptu.face_quadra.pavimentacao": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: Asfalto, Pedra rust(ica), Sem Pavimentação…"
     },
     "br_cgu_beneficios_cidadao.auxilio_brasil.ano_competencia": {
       "judged_by": "llm",
@@ -8634,8 +8657,9 @@
       "reason": "candidato real: ~97 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_cgu_emendas_parlamentares.microdados.localidade": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso; localidade só preenchida (Nacional, Exterior, regiões) quando não há UF — NULL 83.880"
     },
     "br_cgu_emendas_parlamentares.microdados.nome_acao": {
       "label": "nao_e_codigo",
@@ -8646,8 +8670,9 @@
       "reason": "cardinalidade medida ~1534 valores distintos (> 100) — não parece código"
     },
     "br_cgu_emendas_parlamentares.microdados.nome_funcao": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~30 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso; localidade só preenchida (Nacional, Exterior, regiões) quando não há UF — NULL 83.880"
     },
     "br_cgu_emendas_parlamentares.microdados.nome_plano_orcamentario": {
       "label": "nao_e_codigo",
@@ -8658,16 +8683,18 @@
       "reason": "cardinalidade medida ~161 valores distintos (> 100) — não parece código"
     },
     "br_cgu_emendas_parlamentares.microdados.nome_subfuncao": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~88 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso; localidade só preenchida (Nacional, Exterior, regiões) quando não há UF — NULL 83.880"
     },
     "br_cgu_emendas_parlamentares.microdados.numero_emenda": {
       "label": "nao_e_codigo",
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_cgu_emendas_parlamentares.microdados.sigla_uf_gasto": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~28 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Sigla da UF do gasto — fonte: https://basedosdados.org"
     },
     "br_cgu_emendas_parlamentares.microdados.tipo_emenda": {
       "column_codes": true,
@@ -8715,16 +8742,18 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_cgu_fef.microdados.sorteio_ciclo_fef": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~24 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: número do sorteio ('022'…'040'); Falha Média/Grave/Formal, Informação"
     },
     "br_cgu_fef.microdados.subfuncao": {
       "label": "nao_e_codigo",
       "reason": "cardinalidade medida ~156 valores distintos (> 100) — não parece código"
     },
     "br_cgu_fef.microdados.tipo_constatacao": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: número do sorteio ('022'…'040'); Falha Média/Grave/Formal, Informação"
     },
     "br_cgu_fef.microdados.unidade_examinada": {
       "label": "nao_e_codigo",
@@ -8879,8 +8908,9 @@
       "reason": "bridges.yaml concepts.id_orgao -> br_cgu_licitacao_contrato.licitacao"
     },
     "br_cgu_licitacao_contrato.contrato_compra.id_orgao_superior": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~40 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Código SIAFI do órgão superior; nome em nome_orgao_superior — fonte: https://basedosdados.org"
     },
     "br_cgu_licitacao_contrato.contrato_compra.id_unidade_gestora": {
       "label": "padrao_externo",
@@ -8911,8 +8941,9 @@
       "reason": "cardinalidade medida ~267 valores distintos (> 100) — não parece código"
     },
     "br_cgu_licitacao_contrato.contrato_compra.nome_orgao_superior": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~41 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: nome do ministério"
     },
     "br_cgu_licitacao_contrato.contrato_compra.nome_unidade_gestora": {
       "label": "nao_e_codigo",
@@ -9051,8 +9082,9 @@
       "reason": "bridges.yaml concepts.id_orgao -> br_cgu_licitacao_contrato.licitacao"
     },
     "br_cgu_licitacao_contrato.licitacao.id_orgao_superior": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~53 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Código SIAFI do órgão superior (26000 = MEC, 52000 = Defesa); nome na coluna irmã nome_orgao_superior — fonte: https://basedosdados.org"
     },
     "br_cgu_licitacao_contrato.licitacao.id_unidade_gestora": {
       "label": "padrao_externo",
@@ -9063,16 +9095,18 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_cgu_licitacao_contrato.licitacao.modalidade_compra": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso"
     },
     "br_cgu_licitacao_contrato.licitacao.nome_orgao": {
       "label": "nao_e_codigo",
       "reason": "cardinalidade medida ~312 valores distintos (> 100) — não parece código"
     },
     "br_cgu_licitacao_contrato.licitacao.nome_orgao_superior": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~49 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso"
     },
     "br_cgu_licitacao_contrato.licitacao.nome_unidade_gestora": {
       "label": "nao_e_codigo",
@@ -9235,20 +9269,23 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_cgu_licitacao_contrato.licitacao_participante.modalidade_compra": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~74.372.781 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: texto livre; 'Sigiloso' (17.365 na amostra) é participante oculto, não nome"
     },
     "br_cgu_licitacao_contrato.licitacao_participante.nome_orgao": {
       "label": "nao_verificado",
       "reason": "tabela grande (~74.372.781 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_cgu_licitacao_contrato.licitacao_participante.nome_participante": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~74.372.781 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: texto livre; 'Sigiloso' (17.365 na amostra) é participante oculto, não nome"
     },
     "br_cgu_licitacao_contrato.licitacao_participante.nome_unidade_gestora": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~74.372.781 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: texto livre; 'Sigiloso' (17.365 na amostra) é participante oculto, não nome"
     },
     "br_cgu_licitacao_contrato.licitacao_participante.numero_processo": {
       "label": "nao_e_codigo",
@@ -9371,8 +9408,9 @@
       "reason": "tabela grande (~64.047.519 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_cgu_pe_de_meia.pe_de_meia.mes_referencia": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~64.047.519 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: AAAAMM"
     },
     "br_cgu_pe_de_meia.pe_de_meia.nis_beneficiario": {
       "label": "nao_verificado",
@@ -10363,8 +10401,9 @@
       "reason": "tabela grande (~168.131.529 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_cgu_servidores_executivo_federal.cadastro_servidores.funcao": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~168.131.529 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso; origem ∈ {SIAPE, Militares, BACEN}; 'Sem informação' é o vazio (funcao 91% na amostra)"
     },
     "br_cgu_servidores_executivo_federal.cadastro_servidores.id_atividade": {
       "label": "nao_verificado",
@@ -10440,16 +10479,18 @@
       "reason": "tabela grande (~168.131.529 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_cgu_servidores_executivo_federal.cadastro_servidores.orgsup_exercicio": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~168.131.529 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso; origem ∈ {SIAPE, Militares, BACEN}; 'Sem informação' é o vazio (funcao 91% na amostra)"
     },
     "br_cgu_servidores_executivo_federal.cadastro_servidores.orgsup_lotacao": {
       "label": "nao_verificado",
       "reason": "tabela grande (~168.131.529 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_cgu_servidores_executivo_federal.cadastro_servidores.origem": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~168.131.529 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso; origem ∈ {SIAPE, Militares, BACEN}; 'Sem informação' é o vazio (funcao 91% na amostra)"
     },
     "br_cgu_servidores_executivo_federal.cadastro_servidores.padrao_cargo": {
       "label": "nao_verificado",
@@ -10744,8 +10785,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_cgu_servidores_executivo_federal.remuneracao.nome": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~155.419.806 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: nome do servidor"
     },
     "br_cgu_servidores_executivo_federal.remuneracao.origem": {
       "label": "nao_verificado",
@@ -10992,8 +11034,9 @@
       "reason": "cardinalidade medida ~955781 valores distintos (> 100) — não parece código"
     },
     "br_cgu_viagens.viagem.nome_do_orgao_superior": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~33 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: nome do ministério; 'Sem informação' 1.141.056 (tabela sem view: read_parquet)"
     },
     "br_cgu_viagens.viagem.nome_orgao_solicitante": {
       "label": "nao_e_codigo",
@@ -11108,8 +11151,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_cnj_estatisticas_poder_judiciario.recursos_financeiros.ramo_justica": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: Estadual, Trabalho, Eleitoral, Federal, Superior, Militar"
     },
     "br_cnj_estatisticas_poder_judiciario.recursos_financeiros.sigla_tribunal": {
       "label": "nao_e_codigo",
@@ -11296,8 +11340,9 @@
       "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_cnj_improbidade_administrativa.condenacao.tribunal": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~35 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 34 nomes de tribunal por extenso"
     },
     "br_cnj_improbidade_administrativa.condenacao.vara_juizados_1": {
       "label": "nao_e_codigo",
@@ -11420,12 +11465,14 @@
       "reason": "cardinalidade medida ~5002 valores distintos (> 100) — não parece código"
     },
     "br_cnpq_bolsas.microdados.sigla_uf_destino": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~30 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Sigla da UF — fonte: https://basedosdados.org"
     },
     "br_cnpq_bolsas.microdados.sigla_uf_origem": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~28 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Sigla da UF — fonte: https://basedosdados.org"
     },
     "br_cnpq_bolsas.microdados.subarea_conhecimento": {
       "label": "nao_e_codigo",
@@ -13864,8 +13911,9 @@
       "reason": "cardinalidade medida ~12419 valores distintos (> 100) — não parece código"
     },
     "br_fipe_veiculos.precos.vehicle_type": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: cars, motorcycles, trucks"
     },
     "br_firjan_ifgf.ranking.ano": {
       "label": "nao_e_codigo",
@@ -14460,8 +14508,9 @@
       "reason": "cardinalidade medida ~286 valores distintos (> 100) — não parece código"
     },
     "br_geobr_mapas.unidade_conservacao.qualidade": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: Correto/Aproximado/Esquemático, com a explicação por extenso"
     },
     "br_geobr_mapas.unidade_conservacao.sigla_grupo": {
       "label": "nao_verificado",
@@ -15362,16 +15411,18 @@
       "reason": "bridges.yaml concepts.municipio -> br_bd_diretorios_brasil.municipio.nome"
     },
     "br_ibama_ctf.app.potenc_de_pol_da_atividade": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): Potencial de poluição da atividade (Lei 6.938/81, Anexo VIII): Pequeno, Médio, Alto"
     },
     "br_ibama_ctf.app.razao_social": {
       "label": "nao_e_codigo",
       "reason": "cardinalidade medida ~844416 valores distintos (> 100) — não parece código"
     },
     "br_ibama_ctf.app.situacao_cadastral": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: Ativa, Encerrado, Suspenso…, Cadastramento indevido"
     },
     "br_ibama_ctf.app.uf": {
       "label": "padrao_externo",
@@ -16078,12 +16129,14 @@
       "reason": "cardinalidade medida ~63753 valores distintos (> 100) — não parece código"
     },
     "br_ibge_amc.municipio_de_para.ano_de": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: anos de censo (1872–2010)"
     },
     "br_ibge_amc.municipio_de_para.ano_para": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: anos de censo (1872–2010)"
     },
     "br_ibge_amc.municipio_de_para.id_amc": {
       "label": "nao_e_codigo",
@@ -16208,8 +16261,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_ibge_censo2022_raca.instrucao.variavel": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: constante 'Pessoas de 18 anos ou mais de idade'"
     },
     "br_ibge_censo2022_religiao.alfabetizacao_idade.ano": {
       "label": "nao_e_codigo",
@@ -16975,8 +17029,9 @@
       "reason": "mesmo conceito de bridges.yaml coded_differently.raca_cor, só com a ordem das palavras trocada — ver a entrada raca_cor: código numérico difere por fonte, decodificar via br_ibge_censo_2022.dicionario"
     },
     "br_ibge_censo_2022.caracteristica_domicilio_grupo_idade_raca_esgotamento_sanitario.grupo_idade": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~20 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso; esgotamento tem categorias agregadas ('Rede geral, rede pluvial ou fossa ligada à rede') ao lado das desagregadas — não somar todas"
     },
     "br_ibge_censo_2022.caracteristica_domicilio_grupo_idade_raca_esgotamento_sanitario.id_municipio": {
       "label": "padrao_externo",
@@ -16987,8 +17042,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_ibge_censo_2022.caracteristica_domicilio_grupo_idade_raca_esgotamento_sanitario.tipo_esgotamento_sanitario": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~10 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso; esgotamento tem categorias agregadas ('Rede geral, rede pluvial ou fossa ligada à rede') ao lado das desagregadas — não somar todas"
     },
     "br_ibge_censo_2022.caracteristica_domicilio_grupo_idade_raca_ligacao_abastecimento_agua.ano": {
       "label": "nao_e_codigo",
@@ -17037,8 +17093,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_ibge_censo_2022.caracteristica_domicilio_grupo_idade_raca_tipo_domicilio.tipo_domicilio": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 6 rótulos por extenso"
     },
     "br_ibge_censo_2022.dicionario.chave": {
       "label": "nao_verificado",
@@ -17152,8 +17209,9 @@
       "reason": "bridges.yaml coded_differently.sexo: mesmo conceito, código numérico difere por fonte e por ano — RAIS usa 1=masculino/2=feminino/9=ignorado; CAGED usa 1=masculino/3=feminino (tabela recente) mas 01/02 (tabela antiga); ENEM já usou 0=masculino/ 1=feminino numérico E, em outros anos, letras M/F. Sempre decodificar via `{dataset}.dicionario WHERE nome_coluna='sexo'` daquela tabela específica antes de filtrar — nunca reusar o código de outra tabela."
     },
     "br_ibge_censo_2022.populacao_grupo_idade_uf.grupo_idade": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~12 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 14 faixas por extenso, que se sobrepõem: '15 a 19 anos' convive com '15 a 17 anos' e '18 e 19 anos'"
     },
     "br_ibge_censo_2022.populacao_grupo_idade_uf.populacao": {
       "label": "nao_e_codigo",
@@ -17168,8 +17226,9 @@
       "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ibge_censo_2022.populacao_idade_sexo.grupo_idade": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~20 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 21 faixas por extenso"
     },
     "br_ibge_censo_2022.populacao_idade_sexo.id_municipio": {
       "label": "padrao_externo",
@@ -22924,8 +22983,9 @@
       "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ibge_censo_demografico.dicionario.id_tabela": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: metadado (microdados_pessoa_1991...)"
     },
     "br_ibge_censo_demografico.dicionario.nome_coluna": {
       "label": "nao_e_codigo",
@@ -23112,12 +23172,14 @@
       "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ibge_censo_demografico.microdados_domicilio_2000.situacao_setor": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Situação do setor censitário (V1005) — fonte: https://ftp.ibge.gov.br/Censos/Censo_Demografico_2000/Microdados/1_Documentacao_20170908.zip"
     },
     "br_ibge_censo_demografico.microdados_domicilio_2000.tipo_setor": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Tipo do setor censitário (V1007) — fonte: https://ftp.ibge.gov.br/Censos/Censo_Demografico_2000/Microdados/1_Documentacao_20170908.zip"
     },
     "br_ibge_censo_demografico.microdados_domicilio_2000.v0110": {
       "label": "nao_verificado",
@@ -23328,8 +23390,9 @@
       "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ibge_censo_demografico.microdados_domicilio_2010.situacao_setor": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~0 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): 100% NULL no espelho (6.192.332 linhas), como na tabela de pessoas de 2010."
     },
     "br_ibge_censo_demografico.microdados_domicilio_2010.v0203": {
       "label": "nao_verificado",
@@ -23808,8 +23871,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_ibge_censo_demografico.microdados_pessoa_2000.v0404": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Número da família à qual a pessoa pertence dentro do domicílio (V0404) — fonte: https://ftp.ibge.gov.br/Censos/Censo_Demografico_2000/Microdados/1_Documentacao_20170908.zip"
     },
     "br_ibge_censo_demografico.microdados_pessoa_2000.v0416": {
       "label": "nao_verificado",
@@ -24436,8 +24500,9 @@
       "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ibge_censo_demografico.microdados_pessoa_2010.situacao_setor": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~0 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): 100% NULL no espelho (20.635.472 linhas). O código existe no Censo 2010, mas a coluna veio vazia do Base dos Dados. Não é decodificável: é dado ausente."
     },
     "br_ibge_censo_demografico.microdados_pessoa_2010.v0605": {
       "label": "nao_verificado",
@@ -51439,8 +51504,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_ibge_pam.lavoura_permanente.produto": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~40 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 38 produtos por extenso"
     },
     "br_ibge_pam.lavoura_permanente.sigla_uf": {
       "label": "padrao_externo",
@@ -51463,8 +51529,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_ibge_pam.lavoura_temporaria.produto": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~38 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 33 produtos por extenso"
     },
     "br_ibge_pam.lavoura_temporaria.sigla_uf": {
       "label": "padrao_externo",
@@ -51479,8 +51546,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_ibge_pevs.producao_extracao_vegetal.produto": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~40 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 41 produtos por extenso, unidades diferentes (lenha em m³, carvão em t) — não somar quantidades entre produtos"
     },
     "br_ibge_pevs.producao_extracao_vegetal.quantidade": {
       "label": "nao_e_codigo",
@@ -51507,8 +51575,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_ibge_pevs.producao_silvicultura.produto": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~15 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 15 produtos por extenso"
     },
     "br_ibge_pevs.producao_silvicultura.quantidade": {
       "label": "nao_e_codigo",
@@ -53860,8 +53929,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_inea_boletim.boletins.ano_arquivo": {
-      "label": "nao_verificado",
-      "reason": "consulta de cardinalidade falhou no beelink: \u001b[90m-- Loading resources from /home/polo/.duckdbrc\n\u001b[00mBinder Error: Referenced column \"element\" not found in FROM clause!\nCandidate bindings: \"boletim\"\n\nLINE 1: ...tinct(\"n_empresas\") AS \"n_empresas\", approx_count_distinct(\"element\") AS \"element\" FROM read_parquet('~/rodado/br_inea...\n                                                                      ^"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: ano e contagens (tabela sem view: read_parquet)"
     },
     "br_inea_boletim.boletins.boletim": {
       "label": "documentado_em_outro_lugar",
@@ -53876,12 +53946,14 @@
       "reason": "consulta de cardinalidade falhou no beelink: \u001b[90m-- Loading resources from /home/polo/.duckdbrc\n\u001b[00mBinder Error: Referenced column \"element\" not found in FROM clause!\nCandidate bindings: \"boletim\"\n\nLINE 1: ...tinct(\"n_empresas\") AS \"n_empresas\", approx_count_distinct(\"element\") AS \"element\" FROM read_parquet('~/rodado/br_inea...\n                                                                      ^"
     },
     "br_inea_boletim.boletins.n_empresas": {
-      "label": "nao_verificado",
-      "reason": "consulta de cardinalidade falhou no beelink: \u001b[90m-- Loading resources from /home/polo/.duckdbrc\n\u001b[00mBinder Error: Referenced column \"element\" not found in FROM clause!\nCandidate bindings: \"boletim\"\n\nLINE 1: ...tinct(\"n_empresas\") AS \"n_empresas\", approx_count_distinct(\"element\") AS \"element\" FROM read_parquet('~/rodado/br_inea...\n                                                                      ^"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: ano e contagens (tabela sem view: read_parquet)"
     },
     "br_inea_boletim.boletins.n_processos": {
-      "label": "nao_verificado",
-      "reason": "consulta de cardinalidade falhou no beelink: \u001b[90m-- Loading resources from /home/polo/.duckdbrc\n\u001b[00mBinder Error: Referenced column \"element\" not found in FROM clause!\nCandidate bindings: \"boletim\"\n\nLINE 1: ...tinct(\"n_empresas\") AS \"n_empresas\", approx_count_distinct(\"element\") AS \"element\" FROM read_parquet('~/rodado/br_inea...\n                                                                      ^"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: ano e contagens (tabela sem view: read_parquet)"
     },
     "br_inea_boletim.boletins.pdf": {
       "label": "documentado_em_outro_lugar",
@@ -53936,8 +54008,9 @@
       "reason": "nome da coluna aparece no provenance_notes do dataset (conferir antes de confiar — best-effort)"
     },
     "br_inea_boletim.tipos_documento.tipo_documento": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~61 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulo por extenso (licença de operação, notificação…)"
     },
     "br_inep_ana.dicionario.chave": {
       "label": "nao_verificado",
@@ -57583,8 +57656,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_inep_educacao_especial.etapa_ensino.etapa_ensino": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~17 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso; Classes Comuns/Exclusivas"
     },
     "br_inep_educacao_especial.etapa_ensino.id_municipio": {
       "label": "padrao_externo",
@@ -57599,8 +57673,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_inep_educacao_especial.etapa_ensino.tipo_classe": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso; Classes Comuns/Exclusivas"
     },
     "br_inep_educacao_especial.faixa_etaria.ano": {
       "label": "nao_e_codigo",
@@ -57860,13 +57935,14 @@
       "reason": "column_codes.yaml (padrao_externo): Código IBGE de município da escola, 7 dígitos — fonte: https://basedosdados.org"
     },
     "br_inep_enem.microdados.id_municipio_prova": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~108.132.056 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Código IBGE de município (7 dígitos) onde a prova foi feita — fonte: https://basedosdados.org"
     },
     "br_inep_enem.microdados.id_municipio_residencia": {
       "column_codes": true,
-      "label": "nao_verificado",
-      "reason": "column_codes.yaml (pendente): Código de município, mas 100% NULL em ano=2020 (5.783.109 linhas). Não conferido em outros anos; não usar para 2020+ sem checar o preenchimento."
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Município (IBGE, 7 dígitos) e UF (sigla) de residência do inscrito — só de 1998 a 2007 — fonte: https://basedosdados.org"
     },
     "br_inep_enem.microdados.nome_certificadora": {
       "label": "nao_verificado",
@@ -57905,8 +57981,9 @@
       "reason": "tabela grande (~108.132.056 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_inep_enem.microdados.sigla_uf_residencia": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~108.132.056 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Município (IBGE, 7 dígitos) e UF (sigla) de residência do inscrito — só de 1998 a 2007 — fonte: https://basedosdados.org"
     },
     "br_inep_enem.questionario_socioeconomico_1998.id_inscricao": {
       "label": "padrao_externo",
@@ -58373,8 +58450,9 @@
       "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_inep_ideb.escola.ensino": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: fundamental, medio"
     },
     "br_inep_ideb.escola.id_escola": {
       "label": "padrao_externo",
@@ -59679,8 +59757,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_inep_saeb.municipio.disciplina": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: LP (Língua Portuguesa), MT (Matemática)"
     },
     "br_inep_saeb.municipio.id_municipio": {
       "label": "padrao_externo",
@@ -59908,8 +59987,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_inep_sinopse_estatistica_educacao_basica.docente_localizacao.etapa_ensino": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~12 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 12 rótulos hierárquicos: 'Educação Básica' (total) ⊃ 'Ensino Fundamental' ⊃ 'Anos Iniciais'/'Anos Finais'; 'Educação Infantil' ⊃ Creche/Pré-Escola"
     },
     "br_inep_sinopse_estatistica_educacao_basica.docente_localizacao.id_municipio": {
       "label": "padrao_externo",
@@ -60252,8 +60332,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_inmet_bdmep.microdados.id_estacao": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~84.514.656 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Código de estação do INMET (A001...). Metadados em br_inmet_bdmep.estacao — fonte: https://basedosdados.org"
     },
     "br_inmet_bdmep.microdados.mes": {
       "label": "nao_e_codigo",
@@ -60821,8 +60902,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_mdr_snis.prestador_agua_esgoto.abrangencia": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso (não é o código CONCLA de natureza jurídica)"
     },
     "br_mdr_snis.prestador_agua_esgoto.ano": {
       "label": "nao_e_codigo",
@@ -60845,8 +60927,9 @@
       "reason": "cardinalidade medida ~2523 valores distintos (> 100) — não parece código"
     },
     "br_mdr_snis.prestador_agua_esgoto.natureza_juridica": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso (não é o código CONCLA de natureza jurídica)"
     },
     "br_mdr_snis.prestador_agua_esgoto.populacao_atendida_agua": {
       "label": "nao_e_codigo",
@@ -60985,12 +61068,14 @@
       "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_me_caged.dicionario.id_tabela": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: metadado"
     },
     "br_me_caged.dicionario.nome_coluna": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~37 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: metadado"
     },
     "br_me_caged.dicionario.valor": {
       "label": "nao_e_codigo",
@@ -61029,8 +61114,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_me_caged.microdados_movimentacao.origem_informacao": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~232.160.525 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Sistema de onde veio a movimentação no Novo CAGED — fonte: ftp://ftp.mtps.gov.br/pdet/microdados/NOVO%20CAGED/"
     },
     "br_me_caged.microdados_movimentacao.sigla_uf": {
       "label": "padrao_externo",
@@ -61329,12 +61415,14 @@
       "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_me_cnpj.dicionario.id_tabela": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: metadado — nome da coluna/tabela decodificada"
     },
     "br_me_cnpj.dicionario.nome_coluna": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: metadado — nome da coluna/tabela decodificada"
     },
     "br_me_cnpj.dicionario.valor": {
       "label": "nao_e_codigo",
@@ -61495,8 +61583,9 @@
       "reason": "tabela grande (~2.540.728.606 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_me_cnpj.estabelecimentos.tipo_logradouro": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~2.540.728.606 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: texto livre (RUA, AVENIDA… e lixo como '10A RUA'), 347 valores na amostra"
     },
     "br_me_cnpj.simples.cnpj_basico": {
       "label": "nao_e_codigo",
@@ -61574,12 +61663,14 @@
       "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_me_comex_stat.dicionario.id_tabela": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: metadado"
     },
     "br_me_comex_stat.dicionario.nome_coluna": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: metadado (id_pais, id_via, id_urf)"
     },
     "br_me_comex_stat.dicionario.valor": {
       "label": "nao_e_codigo",
@@ -61658,8 +61749,9 @@
       "reason": "bridges.yaml concepts.id_ncm -> br_bd_diretorios_mundo.nomenclatura_comum_mercosul"
     },
     "br_me_comex_stat.ncm_exportacao.id_unidade": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~15 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Unidade estatística da quantidade (quantidade_estatistica) do NCM — tabela NCM_UNIDADE do Comex Stat — fonte: https://balanca.economia.gov.br/balanca/bd/tabelas/NCM_UNIDADE.csv"
     },
     "br_me_comex_stat.ncm_exportacao.mes": {
       "label": "nao_e_codigo",
@@ -61766,12 +61858,14 @@
       "reason": "candidato real: ~32 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_me_rais.dicionario.id_tabela": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: metadado"
     },
     "br_me_rais.dicionario.nome_coluna": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~37 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: metadado"
     },
     "br_me_rais.dicionario.valor": {
       "label": "nao_e_codigo",
@@ -61884,12 +61978,14 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_me_rais.microdados_vinculos.mes_admissao": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~2.071.895.691 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: mês 1..12; NULL quando não houve admissão/desligamento no ano"
     },
     "br_me_rais.microdados_vinculos.mes_desligamento": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~2.071.895.691 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: mês 1..12; NULL quando não houve admissão/desligamento no ano"
     },
     "br_me_rais.microdados_vinculos.natureza_juridica": {
       "column_codes": true,
@@ -61942,8 +62038,9 @@
       "reason": "cardinalidade medida ~2461791 valores distintos (> 100) — não parece código"
     },
     "br_me_rais_identificada.estabelecimentos.porte": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Porte da empresa (código da Receita Federal) — fonte: https://basedosdados.org"
     },
     "br_me_rais_identificada.estabelecimentos.quantidade_vinculos_ativos": {
       "label": "nao_e_codigo",
@@ -61958,8 +62055,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_me_rais_identificada.estabelecimentos.situacao_cadastral_codigo": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Situação cadastral do CNPJ (código da Receita Federal); o rótulo está em situacao_cadastral_descricao — fonte: https://basedosdados.org"
     },
     "br_me_rais_identificada.estabelecimentos.situacao_cadastral_descricao": {
       "column_codes": true,
@@ -62349,8 +62447,9 @@
       "reason": "column_codes.yaml (documentado): Estágio da receita: bruta realizada e deduções (FUNDEB, transferências constitucionais, outras) em linhas separadas. Receita líquida = brutas − deduções; somar tudo mistura sinal — fonte: https://www.planalto.gov.br/ccivil_03/leis/l4320.htm"
     },
     "br_me_siconfi.municipio_receitas_orcamentarias.id_conta_bd": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~46 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Conta de receita harmonizada pelo Base dos Dados (ementário, notação 1.1.1.2.0.00.00.00); rótulo na coluna irmã conta_bd — fonte: https://basedosdados.org"
     },
     "br_me_siconfi.municipio_receitas_orcamentarias.id_municipio": {
       "label": "padrao_externo",
@@ -62693,8 +62792,9 @@
       "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_mec_sisu.microdados.tipo_cota": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Sigla da cota da Lei 12.711/2012; a descrição completa está em modalidade_concorrencia — fonte: https://basedosdados.org"
     },
     "br_mec_sisu.microdados.turno": {
       "label": "nao_e_codigo",
@@ -62733,8 +62833,9 @@
       "reason": "cardinalidade medida ~383887 valores distintos (> 100) — não parece código"
     },
     "br_mg_belohorizonte_smfa_iptu.iptu.frequencia_coleta": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso"
     },
     "br_mg_belohorizonte_smfa_iptu.iptu.indice_cadastral": {
       "label": "nao_e_codigo",
@@ -62749,8 +62850,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_mg_belohorizonte_smfa_iptu.iptu.padrao_acabamento": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): P1..P5 e TE. TE = terreno: aparece só com tipo_ocupacao='Territorial' (797.388 de 797.388). A ordem de P1 a P5 (baixo→alto?) não foi conferida na legislação do IPTU de BH."
     },
     "br_mg_belohorizonte_smfa_iptu.iptu.poligono": {
       "label": "nao_e_codigo",
@@ -62765,8 +62867,9 @@
       "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_mg_belohorizonte_smfa_iptu.iptu.tipo_ocupacao": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso"
     },
     "br_mg_belohorizonte_smfa_iptu.iptu.tipologia": {
       "label": "nao_verificado",
@@ -62781,8 +62884,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_minc_salic.areas.nome": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 7 áreas culturais por extenso"
     },
     "br_minc_salic.areas.urlized": {
       "label": "nao_verificado",
@@ -62865,20 +62969,23 @@
       "reason": "cardinalidade medida ~200906 valores distintos (> 100) — não parece código"
     },
     "br_minc_salic.entidades.patrocinador": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Flag 0/1 (1 → 152.793, 0 → 64.850), sem NULL e sem coluna irmã que a explique como proponente/projetos_count. Provavelmente 'já incentivou/patrocinou', não confirmado."
     },
     "br_minc_salic.entidades.projetos_count": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~96 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: contagem de projetos"
     },
     "br_minc_salic.entidades.projetos_liberados": {
       "label": "nao_verificado",
       "reason": "candidato real: ~48 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_minc_salic.entidades.proponente": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): A entidade já propôs algum projeto no SALIC — fonte: https://basedosdados.org"
     },
     "br_minc_salic.entidades.responsavel": {
       "label": "nao_e_codigo",
@@ -62961,12 +63068,14 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_minc_salic.projetos.created_at": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~45 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: Artigo 18 / Artigo 26 (da Lei Rouanet); Mecenato, FNC…; datas"
     },
     "br_minc_salic.projetos.enquadramento": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: Artigo 18 / Artigo 26 (da Lei Rouanet); Mecenato, FNC…; datas"
     },
     "br_minc_salic.projetos.entidade_id": {
       "label": "nao_e_codigo",
@@ -62989,8 +63098,9 @@
       "reason": "cardinalidade medida ~3081 valores distintos (> 100) — não parece código"
     },
     "br_minc_salic.projetos.mecanismo": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: Artigo 18 / Artigo 26 (da Lei Rouanet); Mecenato, FNC…; datas"
     },
     "br_minc_salic.projetos.nome": {
       "label": "nao_e_codigo",
@@ -63029,8 +63139,9 @@
       "reason": "bridges.yaml concepts.uf -> br_bd_diretorios_brasil.uf.sigla"
     },
     "br_minc_salic.projetos.updated_at": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~38 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: Artigo 18 / Artigo 26 (da Lei Rouanet); Mecenato, FNC…; datas"
     },
     "br_minc_salic.projetos.urlized": {
       "label": "nao_e_codigo",
@@ -63125,12 +63236,14 @@
       "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_mj_consumidorgovbr.reclamacoes.Faixa Etária": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: Respondida S/N; faixa etária e gestor por extenso"
     },
     "br_mj_consumidorgovbr.reclamacoes.Gestor": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~27 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: Respondida S/N; faixa etária e gestor por extenso"
     },
     "br_mj_consumidorgovbr.reclamacoes.Gestor\tCanal de Origem\tRegião\tUF\tCidade\tSexo\tFaixa Etária\tAno Abertura\tMês Abertura\tData Abertura\tData Resposta\tData Análise\tData Recusa\tData Finalização\tPrazo Resposta\tPrazo Analise Gestor\tTempo Resposta\tNome Fantasia\tSegmento de Mercado\tÁrea\tAssunto\tGrupo Problema\tProblema\tComo Comprou Contratou\tProcurou Empresa\tRespondida\tSituação\tAvaliação Reclamação\tNota do Consumidor\tAnálise da Recusa": {
       "label": "nao_e_codigo",
@@ -63177,8 +63290,9 @@
       "reason": "cardinalidade medida ~1523 valores distintos (> 100) — não parece código"
     },
     "br_mj_consumidorgovbr.reclamacoes.Nota do Consumidor": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~10 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): Nota de 1 a 5 dada pelo consumidor"
     },
     "br_mj_consumidorgovbr.reclamacoes.Prazo Analise Gestor": {
       "label": "nao_verificado",
@@ -63201,8 +63315,9 @@
       "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_mj_consumidorgovbr.reclamacoes.Respondida": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: Respondida S/N; faixa etária e gestor por extenso"
     },
     "br_mj_consumidorgovbr.reclamacoes.Segmento de Mercado": {
       "label": "nao_verificado",
@@ -63305,16 +63420,18 @@
       "reason": "cardinalidade medida ~1342 valores distintos (> 100) — não parece código"
     },
     "br_mjsp_ckan.procon.Regiao": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: nome da região"
     },
     "br_mjsp_ckan.procon.SexoConsumidor": {
       "label": "nao_verificado",
       "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_mjsp_ckan.procon.Tipo": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Tipo de pessoa do fornecedor reclamado — fonte: https://basedosdados.org"
     },
     "br_mjsp_ckan.procon.UF": {
       "label": "padrao_externo",
@@ -63365,16 +63482,18 @@
       "reason": "bridges.yaml concepts.municipio -> br_bd_diretorios_brasil.municipio.nome"
     },
     "br_mjsp_sinesp.ocorrencias.regiao": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: regiao só 'NORTE' (823 linhas — a tabela cobre só a região Norte); vítimas é contagem"
     },
     "br_mjsp_sinesp.ocorrencias.sigla_uf": {
       "label": "padrao_externo",
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_mjsp_sinesp.ocorrencias.vítimas": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~26 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: regiao só 'NORTE' (823 linhas — a tabela cobre só a região Norte); vítimas é contagem"
     },
     "br_mjsp_sinesp.ocorrencias_uf.ano": {
       "label": "nao_e_codigo",
@@ -82650,8 +82769,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_mobilidados_indicadores.tempo_deslocamento_casa_trabalho.tempo_medio_deslocamento": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~43 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: minutos (21–50), gravado como texto"
     },
     "br_mobilidados_indicadores.transporte_media_alta_capacidade.ano": {
       "label": "nao_e_codigo",
@@ -88959,8 +89079,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_ms_populacao.municipio.grupo_idade": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~15 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: faixas quinquenais '0-4 anos'… (formato diferente do censo 2022: '0 a 4 anos')"
     },
     "br_ms_populacao.municipio.id_municipio": {
       "label": "padrao_externo",
@@ -89470,8 +89591,9 @@
       "reason": "column_codes.yaml (padrao_externo): Código IBGE de município com 6 dígitos (SEM dígito verificador), apesar do nome id_municipio. Junta com br_bd_diretorios_brasil.municipio.id_municipio_6 — fonte: https://basedosdados.org"
     },
     "br_ms_sih.aihs_reduzidas.id_municipio_gestor": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Município gestor, código IBGE de 6 dígitos (sem verificador), como os outros id_municipio_* desta tabela — fonte: https://basedosdados.org"
     },
     "br_ms_sih.aihs_reduzidas.id_municipio_paciente": {
       "column_codes": true,
@@ -89520,8 +89642,9 @@
       "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: nomes, texto livre"
     },
     "br_ms_sih.aihs_reduzidas.origem_nome_estabelecimento": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): De onde o espelho tirou o nome do estabelecimento: 'cnpj_aih' ou 'cnes'"
     },
     "br_ms_sih.aihs_reduzidas.quantidade_dias": {
       "label": "nao_e_codigo",
@@ -89796,12 +89919,14 @@
       "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ms_sim.dicionario.id_tabela": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: metadado"
     },
     "br_ms_sim.dicionario.nome_coluna": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~39 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: metadado"
     },
     "br_ms_sim.dicionario.valor": {
       "label": "nao_e_codigo",
@@ -89939,8 +90064,9 @@
       "reason": "cardinalidade medida ~2788 valores distintos (> 100) — não parece código"
     },
     "br_ms_sim.microdados.idade_mae": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~84 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: idade em anos; NULL em ~97% (só óbitos fetais/infantis têm mãe informada)"
     },
     "br_ms_sim.microdados.linha_a": {
       "label": "nao_e_codigo",
@@ -91118,8 +91244,9 @@
       "reason": "cardinalidade medida ~1756 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_esquistossomose.microdados_esquistossomose.SG_UF": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~30 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): UF de residência, código IBGE de 2 dígitos (não sigla) — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/Esquistossomose/DIC_DADOS_Esquistossomose_v5.pdf"
     },
     "br_ms_sinan_esquistossomose.microdados_esquistossomose.SG_UF_NOT": {
       "label": "nao_verificado",
@@ -91189,8 +91316,9 @@
       "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ms_sinan_malaria.microdados_malaria.ASSINTOM": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "reason": "column_codes.yaml (pendente): Valores {1,2,9,''}. Não está no dicionário v5 (que tem AT_SINTOMA: 1 com sintomas, 2 sem sintomas). Provável 'assintomático?' com 1=Sim — o que inverteria o sentido de AT_SINTOMA. Não usar sem fonte."
     },
     "br_ms_sinan_malaria.microdados_malaria.AT_ATIVIDA": {
       "label": "nao_verificado",
@@ -91524,8 +91652,9 @@
       "reason": "cardinalidade medida ~1499 valores distintos (> 100) — não parece código"
     },
     "br_ms_sinan_malaria.microdados_malaria.SG_UF": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~58 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): UF de residência — SIGLA de 2004 a 2006 e código IBGE de 2 dígitos de 2007 em diante — fonte: http://portalsinan.saude.gov.br/images/documentos/Agravos/Malaria/DIC_DADOS_Malaria_v5.pdf"
     },
     "br_ms_sinan_malaria.microdados_malaria.SG_UF_NOT": {
       "label": "nao_verificado",
@@ -92372,8 +92501,9 @@
       "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_ms_sinasc.microdados.codigo_estabelecimento": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Código CNES do estabelecimento do nascimento, 7 dígitos — fonte: https://basedosdados.org"
     },
     "br_ms_sinasc.microdados.data_cadastro": {
       "label": "nao_e_codigo",
@@ -92412,8 +92542,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_ms_sinasc.microdados.gestacoes_ant": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): SEMAGESTAC (semanas de gestação) e QTDGESTANT (gestações anteriores): números — fonte: https://diaad.s3.sa-east-1.amazonaws.com/sinasc/SINASC+-+Estrutura.pdf"
     },
     "br_ms_sinasc.microdados.hora_nascimento": {
       "column_codes": true,
@@ -92421,8 +92552,9 @@
       "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: idade em anos e hora (hhmm) — número, não código"
     },
     "br_ms_sinasc.microdados.id_municipio_mae": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Município de NATURALIDADE da mãe (CODMUNNATU), código IBGE de 7 dígitos — não residência — fonte: https://diaad.s3.sa-east-1.amazonaws.com/sinasc/SINASC+-+Estrutura.pdf"
     },
     "br_ms_sinasc.microdados.id_municipio_nascimento": {
       "column_codes": true,
@@ -92435,12 +92567,14 @@
       "reason": "column_codes.yaml (padrao_externo): Código IBGE de município, 7 dígitos. Junta com br_bd_diretorios_brasil.municipio.id_municipio — fonte: https://basedosdados.org"
     },
     "br_ms_sinasc.microdados.id_pais_residencia": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "reason": "column_codes.yaml (pendente): CODPAISRES. Em todo ano preenchido vale só '1' (presumivelmente Brasil; código não achado na estrutura). 100% NULL em 2014, 2015 e 2017 — antes de 2010 não existe. Não serve para separar residentes no exterior."
     },
     "br_ms_sinasc.microdados.id_uf_mae": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): UF de NATURALIDADE da mãe (CODUFNATU), código IBGE de 2 dígitos — não a UF de residência — fonte: https://diaad.s3.sa-east-1.amazonaws.com/sinasc/SINASC+-+Estrutura.pdf"
     },
     "br_ms_sinasc.microdados.idade_mae": {
       "column_codes": true,
@@ -92452,20 +92586,23 @@
       "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_ms_sinasc.microdados.inicio_pre_natal": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Mês de gestação em que a mãe iniciou o pré-natal (MESPRENAT) — fonte: https://diaad.s3.sa-east-1.amazonaws.com/sinasc/SINASC+-+Estrutura.pdf"
     },
     "br_ms_sinasc.microdados.numero_lote": {
       "label": "nao_e_codigo",
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_ms_sinasc.microdados.ocupacao_mae": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Ocupação da mãe. 2006+: CBO 2002 (6 dígitos) mais os códigos especiais do SINASC 999991–999994. Até 2005: CBO antiga de 5 dígitos — fonte: https://drive.prefeitura.sp.gov.br/cidade/secretarias/upload/saude/arquivos/ceinfo/sinasc/SemSINASC231_5Apreset__DVISAT_CBO_SINASC_final.pdf"
     },
     "br_ms_sinasc.microdados.origem": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Banco de dados de origem do registro (campo ORIGEM) — fonte: https://diaad.s3.sa-east-1.amazonaws.com/sinasc/SINASC+-+Estrutura.pdf"
     },
     "br_ms_sinasc.microdados.paridade": {
       "label": "nao_verificado",
@@ -92476,8 +92613,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_ms_sinasc.microdados.pre_natal": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Número de consultas de pré-natal (CONSPRENAT) — contagem, não a faixa CONSULTAS 1–4 — fonte: https://diaad.s3.sa-east-1.amazonaws.com/sinasc/SINASC+-+Estrutura.pdf"
     },
     "br_ms_sinasc.microdados.quantidade_filhos_mortos": {
       "label": "nao_e_codigo",
@@ -92500,12 +92638,14 @@
       "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_ms_sinasc.microdados.semana_gestacao": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): SEMAGESTAC (semanas de gestação) e QTDGESTANT (gestações anteriores): números — fonte: https://diaad.s3.sa-east-1.amazonaws.com/sinasc/SINASC+-+Estrutura.pdf"
     },
     "br_ms_sinasc.microdados.sequencial_nascimento": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~85.559.034 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: número sequencial do registro (CONTADOR), ~486 mil valores distintos na amostra"
     },
     "br_ms_sinasc.microdados.serie_escolar_mae": {
       "label": "nao_verificado",
@@ -92548,16 +92688,18 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_ms_sisvan.microdados.cnes": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~406.253.792 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Código CNES do estabelecimento, 7 dígitos — fonte: https://basedosdados.org"
     },
     "br_ms_sisvan.microdados.data_acompanhamento": {
       "label": "nao_e_codigo",
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_ms_sisvan.microdados.estado_nutricional_adulto": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~406.253.792 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso (Eutrofia, Sobrepeso, Obesidade Grau I…)"
     },
     "br_ms_sisvan.microdados.estado_nutricional_altura_idade_adolescente": {
       "label": "nao_verificado",
@@ -92580,8 +92722,9 @@
       "reason": "tabela grande (~406.253.792 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_ms_sisvan.microdados.estado_nutricional_imc_idade_crianca": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~406.253.792 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso (Eutrofia, Sobrepeso, Obesidade Grau I…)"
     },
     "br_ms_sisvan.microdados.estado_nutricional_peso_altura_crianca": {
       "label": "nao_verificado",
@@ -92668,8 +92811,9 @@
       "reason": "cardinalidade medida ~183193 valores distintos (> 100) — não parece código"
     },
     "br_ok_queridodiario.diarios.state_code": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~27 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Sigla da UF — fonte: https://basedosdados.org"
     },
     "br_ok_queridodiario.diarios.territory_id": {
       "label": "nao_e_codigo",
@@ -92720,8 +92864,9 @@
       "reason": "cardinalidade medida ~237 valores distintos (> 100) — não parece código"
     },
     "br_pgfn_dividaativa.divida.TIPO_DEVEDOR": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): Papel do devedor na inscrição (principal, corresponsável, solidário)"
     },
     "br_pgfn_dividaativa.divida.TIPO_PESSOA": {
       "column_codes": true,
@@ -92937,8 +93082,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_rf_cafir.imoveis_rurais.distrito": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~169.935.535 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: texto livre e NIRF (identificador do imóvel na Receita, NULL em 72% da amostra)"
     },
     "br_rf_cafir.imoveis_rurais.endereco": {
       "label": "nao_verificado",
@@ -92949,16 +93095,18 @@
       "reason": "tabela grande (~169.935.535 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_rf_cafir.imoveis_rurais.id_imovel_receita_federal": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~169.935.535 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: texto livre e NIRF (identificador do imóvel na Receita, NULL em 72% da amostra)"
     },
     "br_rf_cafir.imoveis_rurais.id_municipio": {
       "label": "padrao_externo",
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_rf_cafir.imoveis_rurais.nome": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~169.935.535 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: texto livre e NIRF (identificador do imóvel na Receita, NULL em 72% da amostra)"
     },
     "br_rf_cafir.imoveis_rurais.sigla_uf": {
       "label": "padrao_externo",
@@ -93021,8 +93169,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_rf_cno.microdados.bairro": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~534.056.673 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: texto livre ('nan' textual também aparece em nome_responsavel)"
     },
     "br_rf_cno.microdados.caixa_postal": {
       "label": "nao_verificado",
@@ -93073,24 +93222,28 @@
       "reason": "bridges.yaml concepts.id_pais -> br_bd_diretorios_mundo.pais"
     },
     "br_rf_cno.microdados.id_responsavel": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~534.056.673 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: CNPJ/CPF e nome do responsável"
     },
     "br_rf_cno.microdados.logradouro": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~534.056.673 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: texto livre ('nan' textual também aparece em nome_responsavel)"
     },
     "br_rf_cno.microdados.nome_empresarial": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~534.056.673 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: CNPJ/CPF e nome do responsável"
     },
     "br_rf_cno.microdados.nome_pais": {
       "label": "nao_verificado",
       "reason": "tabela grande (~534.056.673 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "br_rf_cno.microdados.nome_responsavel": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~534.056.673 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: texto livre ('nan' textual também aparece em nome_responsavel)"
     },
     "br_rf_cno.microdados.numero_logradouro": {
       "label": "nao_e_codigo",
@@ -93797,8 +93950,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_rj_isp_estatisticas_seguranca.evolucao_mensal_municipio.regiao": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: Interior, Baixada Fluminense, Grande Niterói, Capital"
     },
     "br_rj_isp_estatisticas_seguranca.evolucao_mensal_municipio.tipo_fase": {
       "label": "nao_verificado",
@@ -94382,8 +94536,9 @@
       "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_saude_bps.dados.modalidade_da_compra": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso (COMPRIMIDO, FRASCO…; Pregão, Dispensa…)"
     },
     "br_saude_bps.dados.nome_da_instituicao": {
       "label": "nao_e_codigo",
@@ -94398,12 +94553,14 @@
       "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_saude_bps.dados.uf_da_instituicao": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~27 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Sigla da UF — fonte: https://basedosdados.org"
     },
     "br_saude_bps.dados.unidade_de_fornecimento": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~42 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: rótulos por extenso (COMPRIMIDO, FRASCO…; Pregão, Dispensa…)"
     },
     "br_saude_bps.dados.unidade_de_medida": {
       "label": "nao_verificado",
@@ -94610,12 +94767,14 @@
       "reason": "candidato real: ~0 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_seeg_emissoes.dicionario.coluna": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~10 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: metadado"
     },
     "br_seeg_emissoes.dicionario.tabela": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: metadado"
     },
     "br_seeg_emissoes.dicionario.valor": {
       "label": "nao_e_codigo",
@@ -95069,8 +95228,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_sfb_sicar.area_imovel.id_imovel": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~79.325.829 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): Número do recibo do CAR: UF-código IBGE do município (7)-hash"
     },
     "br_sfb_sicar.area_imovel.id_municipio": {
       "label": "padrao_externo",
@@ -95129,8 +95289,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_simet_educacao_conectada.escola.faixa_velocidade": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: 4 faixas por extenso"
     },
     "br_simet_educacao_conectada.escola.id_escola": {
       "label": "padrao_externo",
@@ -95364,12 +95525,14 @@
       "reason": "bug de import, não falta de dicionário: nome de coluna veio com encoding corrompido (mojibake) do CSV original do SIOP — existe uma versão correta coexistindo (ex.: 'funcao' ao lado de 'FunÃ§Ã£o'). Não é candidato a pesquisa externa, é limpeza de dado."
     },
     "br_siop_orcamento.dados.Direta": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: Sim/Não; Atividade, Projeto, Operações Especiais, Reserva de Contingência"
     },
     "br_siop_orcamento.dados.Esfera": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Esfera orçamentária da ação — fonte: https://www1.siop.planejamento.gov.br/mto/doku.php/mto:cap4"
     },
     "br_siop_orcamento.dados.Especificação do Produto": {
       "label": "nao_e_codigo",
@@ -95395,8 +95558,9 @@
       "reason": "bug de import, não falta de dicionário: nome de coluna veio com encoding corrompido (mojibake) do CSV original do SIOP — existe uma versão correta coexistindo (ex.: 'funcao' ao lado de 'FunÃ§Ã£o'). Não é candidato a pesquisa externa, é limpeza de dado."
     },
     "br_siop_orcamento.dados.Novo": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: Sim/Não; Atividade, Projeto, Operações Especiais, Reserva de Contingência"
     },
     "br_siop_orcamento.dados.Origem": {
       "label": "nao_verificado",
@@ -95429,8 +95593,9 @@
       "reason": "candidato real: ~18 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_siop_orcamento.dados.Tipo": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: Sim/Não; Atividade, Projeto, Operações Especiais, Reserva de Contingência"
     },
     "br_siop_orcamento.dados.Tipo de Padronização": {
       "judged_by": "llm",
@@ -95518,8 +95683,9 @@
       "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_siop_orcamento.localizadores.Origem": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: PLOA, Emenda, Crédito Extraordinário, Crédito Especial"
     },
     "br_siop_orcamento.localizadores.Programa": {
       "label": "nao_e_codigo",
@@ -95628,8 +95794,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_sp_saopaulo_geosampa_iptu.iptu.ano_construcao_corrigida": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~93.430.758 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): Ano de construção"
     },
     "br_sp_saopaulo_geosampa_iptu.iptu.ano_inicio_vida_contribuinte": {
       "label": "nao_verificado",
@@ -95648,8 +95815,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_sp_saopaulo_geosampa_iptu.iptu.bairro": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~93.430.758 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: texto livre / rótulo por extenso"
     },
     "br_sp_saopaulo_geosampa_iptu.iptu.cep": {
       "label": "nao_e_codigo",
@@ -95664,12 +95832,14 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_sp_saopaulo_geosampa_iptu.iptu.finalidade_imovel": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~93.430.758 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: texto livre / rótulo por extenso"
     },
     "br_sp_saopaulo_geosampa_iptu.iptu.logradouro": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~93.430.758 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: texto livre / rótulo por extenso"
     },
     "br_sp_saopaulo_geosampa_iptu.iptu.mes_inicio_vida_contribuinte": {
       "label": "nao_verificado",
@@ -96296,8 +96466,9 @@
       "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_tce_rj.contratos_estado.Unidade": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~95 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: nome da unidade gestora"
     },
     "br_tce_rj.contratos_estado.ValorTotalEmpenhado": {
       "label": "nao_e_codigo",
@@ -96312,8 +96483,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_tce_rj.contratos_municipio.AnoContrato": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: ano 2022–2026"
     },
     "br_tce_rj.contratos_municipio.CNPJCPFContratado": {
       "label": "nao_e_codigo",
@@ -96660,12 +96832,14 @@
       "reason": "bridges.yaml concepts.municipio -> br_bd_diretorios_brasil.municipio.nome"
     },
     "br_tcu_inidoneos.empresas.NOME": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~85 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: nome da empresa e número do processo TCU"
     },
     "br_tcu_inidoneos.empresas.PROCESSO": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~59 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: nome da empresa e número do processo TCU"
     },
     "br_tcu_inidoneos.empresas.UF": {
       "label": "padrao_externo",
@@ -99812,8 +99986,9 @@
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_tse_filiacao_partidaria.microdados.situacao_registro": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: Regular 16.479.345, Cancelado 596.240, Suspenso 98.179"
     },
     "br_tse_filiacao_partidaria.microdados.titulo_eleitor": {
       "label": "nao_e_codigo",
@@ -100754,8 +100929,9 @@
       "reason": "cardinalidade medida ~18438 valores distintos (> 100) — não parece código"
     },
     "global_ofac_sanctions.sanctions.sdn_type": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "documentado_em_outro_lugar",
+      "reason": "column_codes.yaml (documentado): Tipo da entrada SDN. '-0- ' (com espaço) é o NULO do formato legado da OFAC — na prática, entidade (empresa/organização) — fonte: https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/dat_spec.txt"
     },
     "global_ofac_sanctions.sanctions.title": {
       "label": "nao_e_codigo",
@@ -100838,8 +101014,9 @@
       "reason": "nome da coluna aparece no provenance_notes do dataset (conferir antes de confiar — best-effort)"
     },
     "global_opensanctions.entities.schema": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: tipos do modelo FollowTheMoney (Person, Company, LegalEntity, Vessel…)"
     },
     "mundo_transfermarkt_competicoes.brasileirao_serie_a.ano_campeonato": {
       "judged_by": "llm",
@@ -116879,8 +117056,9 @@
       "reason": "LLM: campo do estudo PISA (OCDE), nome em inglês autoexplicativo — confirmado por amostra"
     },
     "world_oecd_public_finance.country.country": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~40 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "padrao_externo",
+      "reason": "column_codes.yaml (padrao_externo): Código de país ISO 3166-1 alfa-3 — fonte: https://basedosdados.org"
     },
     "world_oecd_public_finance.country.indicator_fiscal_council": {
       "label": "nao_verificado",
@@ -116955,8 +117133,9 @@
       "reason": "cardinalidade medida ~259 valores distintos (> 100) — não parece código"
     },
     "world_olympedia_olympics.athlete_event_result.edition": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~64 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: '2020 Summer Olympics'…; Gold/Silver/Bronze, NULL = sem medalha"
     },
     "world_olympedia_olympics.athlete_event_result.edition_id": {
       "label": "nao_verificado",
@@ -116967,8 +117146,9 @@
       "reason": "cardinalidade medida ~968 valores distintos (> 100) — não parece código"
     },
     "world_olympedia_olympics.athlete_event_result.medal": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): 2026-09-25: '2020 Summer Olympics'…; Gold/Silver/Bronze, NULL = sem medalha"
     },
     "world_olympedia_olympics.athlete_event_result.position": {
       "label": "nao_e_codigo",
@@ -118071,8 +118251,9 @@
       "reason": "tabela grande (~50.287.199 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
     },
     "world_wb_mides.licitacao_item.documento": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~50.287.199 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): CPF/CNPJ do participante, sem zeros à esquerda"
     },
     "world_wb_mides.licitacao_item.id_dispensa": {
       "label": "nao_verificado",
@@ -118291,12 +118472,14 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "world_wb_mides.pagamento.documento_credor": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~392.731.053 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "column_codes": true,
+      "label": "nao_e_codigo",
+      "reason": "column_codes.yaml (nao_e_codigo): CPF/CNPJ do credor, sem zeros à esquerda"
     },
     "world_wb_mides.pagamento.fonte": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "tabela grande (~392.731.053 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "reason": "column_codes.yaml (pendente): Código de fonte de recurso e de órgão do orçamento LOCAL de cada município (fonte: '1', '00', '100', '99'…; orgao: '54900'…). Não há tabela nacional: o mesmo código significa coisas diferentes em entes diferentes. Não agrupar entre municípios."
     },
     "world_wb_mides.pagamento.id_empenho": {
       "label": "padrao_externo",
@@ -118351,8 +118534,9 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "world_wb_mides.pagamento.orgao": {
+      "column_codes": true,
       "label": "nao_verificado",
-      "reason": "tabela grande (~392.731.053 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "reason": "column_codes.yaml (pendente): Código de fonte de recurso e de órgão do orçamento LOCAL de cada município (fonte: '1', '00', '100', '99'…; orgao: '54900'…). Não há tabela nacional: o mesmo código significa coisas diferentes em entes diferentes. Não agrupar entre municípios."
     },
     "world_wb_mides.pagamento.sigla_uf": {
       "label": "padrao_externo",
