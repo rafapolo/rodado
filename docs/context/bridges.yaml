@@ -167,6 +167,13 @@ coded_differently:
       de categorias (alguns fundem "solteiro" com "mora com companheiro",
       outros não). Decodificar via `{dataset}.dicionario` daquela tabela.
     seen_in: 4 datasets (br_ms_sim, br_inep_saeb, br_inep_enem, br_tse_eleicoes)
+  coufinf:
+    reason: UF provável da fonte de infecção nos microdados SINAN, mas o FORMATO muda por agravo —
+      `br_ms_sinan_malaria` guarda a SIGLA (AC, AM, PA...), `br_ms_sinan_esquistossomose` guarda o
+      código IBGE numérico (11..53). Juntar ou empilhar os dois pelo COUFINF sem converter devolve
+      zero ou mistura. Converter pela `br_bd_diretorios_brasil.uf` (sigla_uf <-> id_uf). Medido em
+      2026-09-25; decode completo em docs/context/column_codes.yaml.
+    seen_in: 2 datasets (br_ms_sinan_malaria, br_ms_sinan_esquistossomose)
   faixa_etaria:
     reason: mesmo conceito, mas os LIMITES de cada faixa (não só a ordem)
       mudam por fonte — br_me_rais usa faixas de 5 anos, br_inep_enem usa
@@ -1593,3 +1600,24 @@ bridges:
     verified: 246 dos 251 códigos de `ncm_exportacao` casam (2026-08-23)
     concept: sigla_pais_iso3
     join_expr: '{s}.sigla_pais_iso3 = {d}.sigla_iso3'
+  - table: world_iea_pirls.home_context / school_context / student_achievement / student_context / student_teacher_link / teacher_context / within_country_scoring_reliability
+    column: country_iso3_code
+    format: 'Apesar do nome, NÃO é ISO3: é o IDCNTRY do IEA, numérico (M49 sem zero à esquerda, ''840'',
+      ''76''), mais códigos próprios do IEA para entidades subnacionais (926 Inglaterra, 928, 956/957
+      Bélgica flamenga/francesa, 411). Juntar com `pais.sigla_iso3` devolve zero. O Brasil (76) não está
+      no PIRLS espelhado'
+    expr: lpad(country_iso3_code, 3, '0') = lpad(p.id_m49, 3, '0')
+    verified: 46 dos 51 códigos de `student_achievement` casam com `pais.id_m49`; os 5 de fora são
+      as entidades subnacionais do IEA (2026-09-25)
+    concept: id_pais
+    join_expr: lpad({s}.country_iso3_code, 3, '0') = lpad({d}.id_m49, 3, '0')
+  - table: world_iea_timss.home_context_grade_4 / school_context_grade_4 / school_context_grade_8 / student_achievement_grade_4 / student_achievement_grade_8 / student_context_grade_4 / student_context_grade_8 / teacher_context_grade_4 / teacher_mathematics_grade_8 / teacher_science_grade_8
+    column: country_m49
+    format: IDCNTRY do IEA, numérico como texto (M49 + códigos subnacionais do IEA, ex. 926). Mesmo
+      código que o `country_iso3_code` do PIRLS, com o nome certo. Brasil = '76', presente no TIMSS
+      2023 (22.130 alunos do 4º ano, 22.770 do 8º)
+    expr: lpad(country_m49, 3, '0') = lpad(p.id_m49, 3, '0')
+    verified: 43 dos 44 códigos de `student_achievement_grade_8` casam com `pais.id_m49`; fora só o
+      926 (2026-09-25)
+    concept: id_pais
+    join_expr: lpad({s}.country_m49, 3, '0') = lpad({d}.id_m49, 3, '0')
