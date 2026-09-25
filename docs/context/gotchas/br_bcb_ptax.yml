@@ -1,0 +1,18 @@
+dataset: br_bcb_ptax
+gotchas:
+  - id: moeda_da_epoca
+    resumo: "Cotações antes de 1994-07 estão na moeda brasileira da época (cruzeiro, cruzado, cruzeiro real...), sem conversão para real. Não compare direto com valores pós-Real."
+    tabelas: [cotacao_dolar_dia, cotacao_moeda_dia]
+    severidade: silencioso
+    verificado: "série desde 1984-11-29 sem coluna de conversão — medido 2026-09-25"
+  - id: ptax_e_o_fechamento
+    resumo: "Em cotacao_moeda_dia, a PTAX do dia é tipo_boletim = 'Fechamento'. Há também Abertura, Intermediário e 'Fechamento Interbancário' (desde 1999-10); média de todos os boletins não é a PTAX."
+    tabelas: [cotacao_moeda_dia]
+    colunas: [tipo_boletim]
+    severidade: silencioso
+    verificado: "USD Fechamento bate cotacao_dolar_dia em 10.470 de 10.476 dias; os 6 restantes têm dois fechamentos no dia — medido 2026-09-25"
+  - id: so_dez_moedas
+    resumo: "O serviço só traz 10 moedas (AUD, CAD, CHF, DKK, EUR, GBP, JPY, NOK, SEK, USD). Peso argentino, yuan e o resto do boletim de ~150 moedas não estão aqui."
+    tabelas: [moedas, cotacao_moeda_dia]
+    severidade: erro
+    verificado: "moedas: 10 linhas; ARS e CNY voltam vazias da API — medido 2026-09-25"
