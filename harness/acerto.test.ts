@@ -173,3 +173,11 @@ test("leCelula lê a célula pt-BR de hoje e a crua das sessões antigas", () =>
   expect([leCelula("115.879"), leCelula("115879"), leCelula("-0,2734"), leCelula("0.4312"), leCelula("NULL")])
     .toEqual([115879, 115879, -0.2734, 0.4312, undefined]);
 });
+
+test("SEM_DADO: certo é dizer que o espelho não tem o dado (B13)", () => {
+  const q = "Qual foi o PIB do município de Campinas em 2023?";
+  expect(avalia("O PIB municipal do IBGE no espelho vai apenas até 2021; não há dados de 2023.", "SEM_DADO", q).certo).toBe(true);
+  expect(avalia("Os dados de 2023 ainda não foram publicados pelo IBGE.", "SEM_DADO", q).certo).toBe(true);
+  expect(avalia("O PIB de Campinas em 2023 foi de R$ 70,2 bilhões.", "SEM_DADO", q).certo).toBe(false);
+  expect(avalia("", "SEM_DADO", q).eco).toBe(false);
+});
