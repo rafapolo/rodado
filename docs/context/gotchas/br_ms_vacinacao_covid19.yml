@@ -1,0 +1,11 @@
+dataset: br_ms_vacinacao_covid19
+gotchas:
+  - id: sem_dose_nem_paciente
+    resumo: "Só há o diretório de postos: dose, vacina e paciente não estão no espelho."
+    detalhe: >
+      O dicionario descreve microdados_paciente e microdados_vacinacao, que
+      nunca foram trazidas. microdados_estabelecimento dá densidade de
+      postos, não cobertura vacinal.
+    colunas: []
+    severidade: erro
+    verificado: "~/rodado/br_ms_vacinacao_covid19/ tem só dicionario/ e microdados_estabelecimento/; o dicionario referencia microdados_paciente e microdados_vacinacao — medido 2026-09-25"

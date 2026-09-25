@@ -1,0 +1,19 @@
+dataset: br_ana_outorgas
+gotchas:
+  - id: vazao_em_m3h
+    resumo: "int_qt_vazaomedia está em m³/h, não m³/s. Divida por 3600."
+    detalhe: >
+      Lida como m³/s, a soma das captações passa de 20 milhões de m³/s, cem
+      vezes a vazão do Amazonas. Em m³/h dá 5.718 m³/s, e mesmo isso é o
+      bruto: captacoes não carrega datas de vigência nem volume anual, então
+      não dá para tirar outorga vencida nem registro impossível ali
+      (lancamentos tem out_dt_outorgafinal e int_qt_volumeanual).
+    tabelas: [captacoes, lancamentos]
+    colunas: [int_qt_vazaomedia]
+    severidade: silencioso
+    verificado: "captacoes: 181.917 linhas, soma 20.584.537 (= 5.718 m³/s se m³/h) — medido 2026-09-25"
+  - id: sem_view
+    resumo: "O dataset não tem view no DuckDB: leia por read_parquet('~/rodado/br_ana_outorgas/<tabela>/*.parquet')."
+    colunas: []
+    severidade: erro
+    verificado: "SELECT em br_ana_outorgas.captacoes: Catalog Error, schema não existe; read_parquet no disco funciona — medido 2026-09-25"

@@ -1,0 +1,13 @@
+dataset: br_inep_formacao_docente
+gotchas:
+  - id: modalidade_soma_percentual
+    resumo: "Filtre sempre modalidade: cada UF/grupo tem 7 linhas, uma por etapa de ensino."
+    detalhe: >
+      `percentual` é por etapa (educacao infantil, fundamental anos
+      iniciais/finais/total, ensino medio total, EJA fundamental, EJA medio).
+      Um GROUP BY sem modalidade soma as 7 e passa de 100%. Escolha a etapa
+      da pergunta (ex. modalidade = 'ensino fundamental total').
+    tabelas: [uf, regiao, brasil]
+    colunas: [modalidade, percentual]
+    severidade: silencioso
+    verificado: "br_inep_formacao_docente.uf: soma de percentual por (ano, sigla_uf, grupo, rede, tipo_localizacao) chega a 618,8; com modalidade no grupo, máximo 100,0 — medido 2026-09-25"
