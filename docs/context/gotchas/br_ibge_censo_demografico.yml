@@ -1,0 +1,19 @@
+dataset: br_ibge_censo_demografico
+gotchas:
+  - id: censo2022_publico_sem_municipio
+    resumo: "Os microdados de 2022 (acesso público) só têm UF: sem município nem área de ponderação. Recorte municipal do Censo 2022 vem de br_ibge_censo_2022 (agregados), não daqui."
+    tabelas: [microdados_pessoa_2022, microdados_domicilio_2022, microdados_familia_2022, microdados_mortalidade_2022]
+    severidade: erro
+    verificado: "colunas geográficas: id_regiao, id_uf, sigla_uf — medido 2026-09-25"
+  - id: censo2022_amostra_com_peso
+    resumo: "É amostra (~10,6% das pessoas). Contar com SUM(peso_amostral), nunca count(*): o peso soma 203.080.756, a população oficial."
+    tabelas: [microdados_pessoa_2022, microdados_domicilio_2022, microdados_familia_2022, microdados_mortalidade_2022]
+    colunas: [peso_amostral]
+    severidade: silencioso
+    verificado: "count(*) pessoas 21.538.508; SUM(peso_amostral) 203.080.756 — medido 2026-09-25"
+  - id: censo2022_controle_por_uf
+    resumo: "controle só é único dentro da UF. Juntar domicílio e pessoa por (id_uf, controle), não só controle."
+    tabelas: [microdados_pessoa_2022, microdados_domicilio_2022, microdados_familia_2022]
+    colunas: [controle, id_uf]
+    severidade: silencioso
+    verificado: "7.689.914 pares (id_uf, controle) distintos nas pessoas = linhas de domicílio — medido 2026-09-25"
