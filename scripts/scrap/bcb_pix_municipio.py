@@ -2,7 +2,8 @@
 """
 Fetch BCB Pix transactions per município (Olinda OData service) -> Parquet -> beelink.
 
-Item 4 of tasks/fontes_novas.md, previously logged as "endpoint quebrado do
+Item 4 of the old tasks/fontes_novas.md (now the appendix of
+tasks/plans/datasets_to_scrap.md), previously logged as "endpoint quebrado do
 lado do BCB" -- it isn't. `TransacoesPixPorMunicipio` is exposed only as an
 OData v4 composable FunctionImport, not a plain entity set:
 
