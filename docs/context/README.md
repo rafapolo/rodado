@@ -15,6 +15,7 @@ a fonte e regenere. A coluna "Gerado por" diz qual é a fonte de cada um.
 | `bridges.yaml` | **A fonte única do conhecimento de join.** 78 pontes (a coluna que significa a mesma coisa sob outro nome, com a expressão que converte uma ponta na outra), 60 conceitos-hub, 21 `false_friends`, 9 `coded_differently`, `concept_aliases` | — escrito à mão |
 | `metrics.yaml` | 12 cálculos nomeados: expressão DuckDB, grain, unidade, sinônimos pt-BR, `required_filters`, `verified` | — escrito à mão |
 | `hierarchies.yaml` | Rollup de município→UF→região, CNAE e CID-10. CNAE e CID são prefixais: o pai sai de `substr()`, sem join | — escrito à mão |
+| `column_codes.yaml` | O significado dos códigos de colunas que nenhuma outra fonte decodificava (estágio 4 de `tasks/generate-full-schema-dict.md`): 69 entradas, 186 colunas, cada uma com `status` (`documentado`/`padrao_externo`/`nao_e_codigo`/`pendente`), valores, URL da fonte oficial e o que foi medido no beelink. `describe_table` devolve no bloco `column_codes` | — escrito à mão |
 
 Três coisas destes arquivos valem mais que o resto:
 
@@ -39,7 +40,8 @@ Três coisas destes arquivos valem mais que o resto:
 | `join_keys.md` | O render do `bridges.yaml` + as chaves auto-detectadas: 430 seções. `mcp_server.get_join_keys()` fatia este arquivo por `###`, então todo h3 tem que ser um nome de coluna de verdade | `gera_join_keys.py` |
 | `metrics.json` | O `metrics.yaml` em JSON, consumido por `build_ask_web_assets.ts` no branch `ask-web`. O MCP lê o YAML direto | `gera_metrics_json.py` |
 | `dicionario_coverage.json` | Quais colunas de quais tabelas têm decode chave→valor em `{dataset}.dicionario` — 45 datasets, 168 tabelas, 6.256 colunas | `gera_dicionario_coverage.py` |
-| `schema_dict_status.json` | Estágios 1+2 de `tasks/generate-full-schema-dict.md` + uma passada de leitura humana/LLM (não regex): toda coluna STRING/INTEGER fora do `dicionario_coverage.json` etiquetada — 28.263 colunas: **8.690 `nao_verificado`** (sem fonte de significado em lugar nenhum — a etiqueta que importa), 15.842 `nao_e_codigo`, 2.442 `documentado_em_outro_lugar`, 1.289 `padrao_externo`. `describe_table` lê e expõe `nao_verificado_warning` por tabela | `gera_schema_dict_status.py` + `llm_triage_schema_dict_status.py` |
+| `schema_dict_status.json` | Estágios 1+2 de `tasks/generate-full-schema-dict.md` + uma passada de leitura humana/LLM (não regex) + o estágio 4 (`column_codes.yaml`): toda coluna STRING/INTEGER fora do `dicionario_coverage.json` etiquetada — 28.263 colunas: **8.536 `nao_verificado`** (sem fonte de significado em lugar nenhum — a etiqueta que importa), 15.872 `nao_e_codigo`, 2.549 `documentado_em_outro_lugar`, 1.306 `padrao_externo`. `describe_table` lê e expõe `nao_verificado_warning` por tabela | `gera_schema_dict_status.py` + `llm_triage_schema_dict_status.py` + `aplica_column_codes.py` |
+| `schema_dict_prioridade.json` | Estágio 3: as 300 colunas `nao_verificado` mais usadas de verdade — SQL das sessões do harness e das transcrições do Claude Code, docs versionados, `describe_table`, `perguntas.md` e tamanho da tabela. Diz por onde o estágio 4 continua. As duas primeiras fontes só existem na máquina local; num clone novo o ranking sai só com docs e tamanho | `prioriza_schema_dict_status.py` |
 
 ## Referência e apoio
 
@@ -62,6 +64,8 @@ python3 scripts/valida_metrics.py          # confere metrics.yaml + hierarchies.
 python3 scripts/gera_dicionario_coverage.py  # beelink      -> dicionario_coverage.json
 python3 scripts/gera_schema_dict_status.py   # beelink + dicionario_coverage.json + bridges.yaml + hierarchies.yaml -> schema_dict_status.json
 python3 scripts/llm_triage_schema_dict_status.py  # passada de leitura humana/LLM sobre o resultado acima — rodar sempre depois, não é automático
+python3 scripts/aplica_column_codes.py       # column_codes.yaml -> schema_dict_status.json (depois dos dois acima, que o sobrescrevem)
+python3 scripts/prioriza_schema_dict_status.py  # uso real -> schema_dict_prioridade.json (fila do estágio 4)
 ```
 
 `sync_mcp_schema.py` é o passo que se esquece: sem ele o `mcp_server.py` segue
