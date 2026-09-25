@@ -271,6 +271,37 @@ concept_aliases:
     sigla_iso3: sigla_pais_iso3
     id_m49: id_pais
 
+  # Fontes raspadas em 2026-09-24: colunas que guardam o mesmo valor do conceito
+  # sob outro nome (a ponte com a expressão de conversão está em `bridges`).
+  # Município por NOME (rntrc, ciot, assentamentos) fica de fora: não é o mesmo
+  # valor, só junta por strip_accents + UF.
+  br_aneel_dadosabertos.siga_empreendimentos_geracao:
+    SigUFPrincipal: sigla_uf
+  br_aneel_dadosabertos.empreendimento_geracao_distribuida:
+    SigUF: sigla_uf
+    CodMunicipioIbge: id_municipio
+    NumCNPJDistribuidora: cnpj
+  br_aneel_dadosabertos.indicadores_continuidade:
+    NumCNPJ: cnpj
+  br_aneel_dadosabertos.indicadores_continuidade_compensacao:
+    NumCNPJ: cnpj
+  br_aneel_dadosabertos.tarifas_homologadas:
+    NumCNPJDistribuidora: cnpj
+  br_antt_dadosabertos.ciot:
+    uf_origem: sigla_uf
+  br_antt_dadosabertos.rntrc:
+    uf: sigla_uf
+    cpfcnpjtransportador: cnpj
+  br_antt_dadosabertos.rntrc_veiculos:
+    UF do Veículo: sigla_uf
+  br_incra_acervo.assentamentos:
+    uf: sigla_uf
+  br_incra_acervo.sigef_parcelas:
+    municipio_: id_municipio
+    sigla_uf_arquivo: sigla_uf
+  br_incra_acervo.snci_parcelas:
+    sigla_uf_arquivo: sigla_uf
+
 concepts:
   id_municipio:
     category: municipio
@@ -1057,6 +1088,41 @@ bridges:
       `id_municipio`; achado respondendo tema 46, 2026-08-25
     concept: id_municipio
     join_expr: '{s}.id_municipio_campus = {d}.id_municipio'
+  - table: br_incra_acervo.sigef_parcelas
+    column: municipio_
+    format: 7-digit IBGE code stored as INTEGER (o nome truncado vem do DBF do shapefile)
+    expr: CAST(municipio_ AS VARCHAR) = m.id_municipio
+    verified: 5.530 de 5.530 códigos distintos casam, 0 nulos em 1.841.258 parcelas — 2026-09-25
+    concept: id_municipio
+    join_expr: CAST({s}.municipio_ AS VARCHAR) = {d}.id_municipio
+  - table: br_aneel_dadosabertos.empreendimento_geracao_distribuida
+    column: CodMunicipioIbge
+    format: 7-digit IBGE code stored as BIGINT
+    expr: CAST(CodMunicipioIbge AS VARCHAR) = m.id_municipio
+    verified: 5.567 de 5.568 códigos distintos casam — 2026-09-25
+    concept: id_municipio
+    join_expr: CAST({s}.CodMunicipioIbge AS VARCHAR) = {d}.id_municipio
+  - table: br_incra_acervo.assentamentos
+    column: municipio + uf
+    format: nome em caixa alta sem acento (`MOSSORO`), sem código IBGE
+    expr: upper(strip_accents(trim(municipio))) = upper(strip_accents(m.nome)) AND uf = m.sigla_uf
+    verified: 1.905 de 1.971 pares município/UF distintos (96,7%) — 2026-09-25
+    concept: id_municipio
+    join_expr: upper(strip_accents(trim({s}.municipio))) = upper(strip_accents({d}.nome)) AND {s}.uf = {d}.sigla_uf
+  - table: br_antt_dadosabertos.ciot
+    column: municipio_origem + uf_origem / municipio_destino + uf_destino
+    format: nome com acento e caixa mista (`Barra do Piraí`), sem código IBGE; são duas pontas, origem e destino do frete
+    expr: upper(strip_accents(trim(municipio_origem))) = upper(strip_accents(m.nome)) AND uf_origem = m.sigla_uf
+    verified: origem 4.373 de 4.414 pares distintos (99,1%), destino 5.476 de 5.534 (99,0%), em 2025 — 2026-09-25
+    concept: id_municipio
+    join_expr: upper(strip_accents(trim({s}.municipio_origem))) = upper(strip_accents({d}.nome)) AND {s}.uf_origem = {d}.sigla_uf
+  - table: br_antt_dadosabertos.rntrc
+    column: municipio + uf
+    format: nome em caixa alta com acento (`UNIÃO DOS PALMARES`), sem código IBGE — município do endereço do transportador
+    expr: upper(strip_accents(trim(municipio))) = upper(strip_accents(m.nome)) AND uf = m.sigla_uf
+    verified: 5.438 de 5.452 pares distintos (99,7%) — 2026-09-25
+    concept: id_municipio
+    join_expr: upper(strip_accents(trim({s}.municipio))) = upper(strip_accents({d}.nome)) AND {s}.uf = {d}.sigla_uf
   uf:
   - table: br_mj_consumidorgovbr.reclamacoes
     column: '"UF"'
@@ -1203,6 +1269,60 @@ bridges:
     verified: 12.044 of 12.044 Brazil-destination rows parsed (12.944
       total rows, 900 international) — found answering tema 51, T51-2,
       2026-08-25
+  - table: br_aneel_dadosabertos.siga_empreendimentos_geracao
+    column: SigUFPrincipal
+    description: 2-letter code — UF principal da usina (usina que cruza divisa tem outras UFs só em texto)
+    verified: 27 de 27 UFs, 25.133 de 25.133 usinas — 2026-09-25
+    concept: sigla_uf
+    join_expr: '{s}.SigUFPrincipal = {d}.sigla_uf'
+  - table: br_aneel_dadosabertos.empreendimento_geracao_distribuida
+    column: SigUF
+    description: 2-letter code — direct
+    verified: 27 de 27 UFs — 2026-09-25
+    concept: sigla_uf
+    join_expr: '{s}.SigUF = {d}.sigla_uf'
+  - table: br_antt_dadosabertos.ciot
+    column: uf_origem
+    description: 2-letter code — UF de origem do frete; `uf_destino` é a outra ponta, mesma forma
+    verified: 27 de 27 UFs; 690 de 2,4M linhas de 2025 com UF nula — 2026-09-25
+    concept: sigla_uf
+    join_expr: '{s}.uf_origem = {d}.sigla_uf'
+  - table: br_antt_dadosabertos.ciot
+    column: uf_destino
+    description: 2-letter code — UF de destino do frete
+    verified: 27 de 27 UFs; 818 de 2,4M linhas de 2025 com UF nula — 2026-09-25
+    concept: sigla_uf
+    join_expr: '{s}.uf_destino = {d}.sigla_uf'
+  - table: br_antt_dadosabertos.rntrc
+    column: uf
+    description: 2-letter code — direct
+    verified: 27 de 27 UFs; 122 de 1.174.540 transportadores com UF nula — 2026-09-25
+    concept: sigla_uf
+    join_expr: '{s}.uf = {d}.sigla_uf'
+  - table: br_antt_dadosabertos.rntrc_veiculos
+    column: '"UF do Veículo"'
+    description: 2-letter code — direct; nome de coluna com espaço e acento, manter as aspas
+    verified: 27 de 27 UFs, todas as 97.591 linhas — 2026-09-25
+    concept: sigla_uf
+    join_expr: '{s}."UF do Veículo" = {d}.sigla_uf'
+  - table: br_incra_acervo.assentamentos
+    column: uf
+    description: 2-letter code — direct
+    verified: 27 de 27 UFs, todos os 8.216 projetos — 2026-09-25
+    concept: sigla_uf
+    join_expr: '{s}.uf = {d}.sigla_uf'
+  - table: br_incra_acervo.sigef_parcelas
+    column: sigla_uf_arquivo
+    description: 2-letter code — a UF do arquivo por estado de onde a parcela veio (coluna adicionada no ETL)
+    verified: 27 de 27 UFs, todas as 1.841.258 parcelas — 2026-09-25
+    concept: sigla_uf
+    join_expr: '{s}.sigla_uf_arquivo = {d}.sigla_uf'
+  - table: br_incra_acervo.snci_parcelas
+    column: sigla_uf_arquivo
+    description: 2-letter code — a UF do arquivo por estado (coluna adicionada no ETL)
+    verified: 27 de 27 UFs, todos os 52.817 imóveis — 2026-09-25
+    concept: sigla_uf
+    join_expr: '{s}.sigla_uf_arquivo = {d}.sigla_uf'
   identity:
   - table: br_ms_sih.aihs_reduzidas
     column: cnpj_estabelecimento / cnpj_mantenedora
@@ -1423,6 +1543,27 @@ bridges:
       tema 52, T52-1/T52-2, 2026-08-25
     concept: cnpj
     join_expr: '{s}.cnpj_cliente = {d}.cnpj'
+  - table: br_aneel_dadosabertos.indicadores_continuidade / indicadores_continuidade_compensacao / empreendimento_geracao_distribuida
+    column: NumCNPJ / NumCNPJDistribuidora
+    description: CNPJ da distribuidora guardado como **número** (BIGINT/DOUBLE) — o zero à esquerda some; 33 dos 117 CNPJs distintos do DEC/FEC chegam com 13 dígitos. Sem `lpad` a distribuidora não casa em silêncio
+    expr: lpad(CAST(NumCNPJ AS BIGINT)::VARCHAR, 14, '0') = e.cnpj
+    verified: 'dígito verificador válido em 116 de 117 (DEC/FEC) e 115 de 115 (compensação) depois do lpad; não conferido contra br_me_cnpj.estabelecimentos (varrer os 3.353 arquivos por ~110 CNPJs não compensa) — 2026-09-25'
+    concept: cnpj
+    join_expr: lpad(CAST({s}.NumCNPJ AS BIGINT)::VARCHAR, 14, '0') = {d}.cnpj
+  - table: br_aneel_dadosabertos.tarifas_homologadas
+    column: NumCNPJDistribuidora
+    description: 14-digit CNPJ as VARCHAR, sem pontuação — direto (aqui o CSV veio como texto e o zero ficou)
+    expr: NumCNPJDistribuidora = e.cnpj
+    verified: 'dígito verificador válido em 115 de 115, todos com 14 dígitos — 2026-09-25'
+    concept: cnpj
+    join_expr: '{s}.NumCNPJDistribuidora = {d}.cnpj'
+  - table: br_antt_dadosabertos.rntrc
+    column: cpfcnpjtransportador
+    description: '**mistura CNPJ formatado (`36.012.088/0001-09`) com CPF mascarado (`086.***.***-30`)** — o transportador autônomo (TAC) é pessoa física e só aparece com CPF truncado, que não junta com nada. Tirar a pontuação e ficar só com 14 dígitos; os 10 valores de 11 dígitos sem máscara são CPF'
+    expr: regexp_replace(cpfcnpjtransportador, '[^0-9]', '', 'g') = e.cnpj AND cpfcnpjtransportador NOT LIKE '%*%'
+    verified: 'dígito verificador válido em 336.127 de 336.137 valores sem máscara (os 10 restantes têm 11 dígitos: CPF); não conferido contra br_me_cnpj.estabelecimentos — 2026-09-25'
+    concept: cnpj
+    join_expr: regexp_replace({s}.cpfcnpjtransportador, '[^0-9]', '', 'g') = {d}.cnpj
   estacao:
   - table: br_inmet_bdmep.microdados
     column: id_estacao
