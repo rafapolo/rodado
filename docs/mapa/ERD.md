@@ -2,13 +2,13 @@
 
 🇬🇧 [English version](ERD_EN.md)
 
-Mapa de entidades e relações das 1045 tabelas (236 datasets) do espelho. Gerado por `scripts/gera_erd.py` a partir de `schemas.json` em 2026-09-25 — não edite à mão, regenere.
+Mapa de entidades e relações das 1048 tabelas (236 datasets) do espelho. Gerado por `scripts/gera_erd.py` a partir de `schemas.json` em 2026-09-25 — não edite à mão, regenere.
 
 As expressões de join, o formato de cada chave e as pegadinhas estão em [`docs/context/join_keys.md`](docs/context/join_keys.md). Este arquivo é o mapa; aquele é o manual.
 
 ## Como ler
 
-Um único `erDiagram` com 1045 tabelas seria ilegível, então o modelo sobe um nível:
+Um único `erDiagram` com 1048 tabelas seria ilegível, então o modelo sobe um nível:
 
 - **entidade = dataset**; **atributo = uma das tabelas** dele;
 - o *tipo* do atributo lista as chaves que aquela tabela carrega (`mun`, `uf`, `cnpj`, `cnes`, `escola`, `setor`, `cep`, `cpf`, `cnae`, `cbo`, `cid`, `ncm`, `pais`, `partido`, `orgao`, `ug`, `funcprog`, `ano`, `mes`), ou `sem_chave` quando não há nenhuma;
@@ -75,7 +75,7 @@ erDiagram
 | domínio | datasets | tabelas | conectados |
 |---|---|---|---|
 | Diretórios e tabelas de referência | 10 | 71 | 9 |
-| Saúde | 28 | 63 | 27 |
+| Saúde | 27 | 62 | 26 |
 | Educação e ciência | 20 | 140 | 17 |
 | Trabalho, empresas e economia | 45 | 127 | 37 |
 | Governo, orçamento e compras | 38 | 185 | 33 |
@@ -84,8 +84,8 @@ erDiagram
 | Território, ambiente e infraestrutura | 27 | 110 | 23 |
 | Demografia e indicadores sociais | 18 | 124 | 16 |
 | Internacional, cultura e esporte | 9 | 25 | 3 |
-| Outros | 11 | 56 | 10 |
-| **total** | **236** | **1045** | **196** |
+| Outros | 12 | 60 | 11 |
+| **total** | **236** | **1048** | **196** |
 
 40 datasets não têm chave documentada alguma; 291 tabelas individuais não carregam chave nenhuma (ambas as listas no fim).
 
@@ -221,7 +221,7 @@ erDiagram
 
 ## Saúde
 
-28 datasets · 63 tabelas
+27 datasets · 62 tabelas
 
 **1/2**
 
@@ -285,10 +285,11 @@ erDiagram
     UF ||--o{ br_ms_sinasc : "sigla_uf"
     MUNICIPIO ||..o{ br_ms_sipni_doses_historicas : "MUNIC"
     UF ||..o{ br_ms_sipni_doses_historicas : "UF"
-    MUNICIPIO ||..o{ br_ms_sipni_microdados : "co_municipio_paciente +3"
-    UF ||..o{ br_ms_sipni_microdados : "uf"
     MUNICIPIO ||--o{ br_ms_sisvan : "id_municipio"
     UF ||--o{ br_ms_sisvan : "sigla_uf"
+    CNES ||..o{ br_ms_vacinacao_covid19 : "id_estabelecimento"
+    MUNICIPIO ||--o{ br_ms_vacinacao_covid19 : "id_municipio"
+    UF ||--o{ br_ms_vacinacao_covid19 : "sigla_uf"
     br_ans_beneficiario {
         mun_uf_cnpj_ano_mes informacao_consolidada "2.3B linhas"
     }
@@ -391,12 +392,13 @@ erDiagram
     br_ms_sipni_doses_historicas {
         mun_uf_ano_mes doses_agregadas "93.8M linhas"
     }
-    br_ms_sipni_microdados {
-        mun_uf_ano_mes vacinacao_2020 "102.4M linhas"
-    }
     br_ms_sisvan {
         sem_chave dicionario "55 linhas"
         mun_uf_ano_mes microdados "406.3M linhas"
+    }
+    br_ms_vacinacao_covid19 {
+        sem_chave dicionario "114 linhas"
+        mun_uf_cnes microdados_estabelecimento "805.8k linhas"
     }
 ```
 
@@ -404,18 +406,11 @@ erDiagram
 
 ```mermaid
 erDiagram
-    CNES ||..o{ br_ms_vacinacao_covid19 : "id_estabelecimento"
-    MUNICIPIO ||--o{ br_ms_vacinacao_covid19 : "id_municipio"
-    UF ||--o{ br_ms_vacinacao_covid19 : "sigla_uf"
     EMPRESA_CNPJ ||--o{ br_saude_bps : "cnpj_do_fabricante +2"
     MUNICIPIO ||..o{ br_saude_bps : "nome_do_munica­pio_da_instituicao"
     EMPRESA_CNPJ ||..o{ br_saude_farmaciapopular : "numero_cnpj +1"
     MUNICIPIO ||..o{ br_saude_farmaciapopular : "codigo_municipio"
     UF ||..o{ br_saude_farmaciapopular : "codigo_uf"
-    br_ms_vacinacao_covid19 {
-        sem_chave dicionario "114 linhas"
-        mun_uf_cnes microdados_estabelecimento "805.8k linhas"
-    }
     br_saude_bps {
         mun_cnpj_ano dados "342.7k linhas"
     }
@@ -2175,7 +2170,7 @@ erDiagram
 
 ## Outros
 
-11 datasets · 56 tabelas
+12 datasets · 60 tabelas
 
 ```mermaid
 erDiagram
@@ -2199,6 +2194,10 @@ erDiagram
     EMPRESA_CNPJ ||--o{ br_minc_salic : "cnpjcpf"
     PESSOA_CPF ||..o{ br_minc_salic : "cnpjcpf"
     UF ||..o{ br_minc_salic : "uf +1"
+    CNAE ||--o{ br_mte_listasuja : "cnae +1"
+    EMPRESA_CNPJ ||--o{ br_mte_listasuja : "cnpj +1"
+    PESSOA_CPF ||--o{ br_mte_listasuja : "cpf"
+    UF ||--o{ br_mte_listasuja : "sigla_uf"
     EMPRESA_CNPJ ||--o{ br_pncp : "cnpj"
     MUNICIPIO ||..o{ br_pncp : "codigoIbge +1"
     UF ||..o{ br_pncp : "ufSigla"
@@ -2275,6 +2274,12 @@ erDiagram
         uf projetos "196.5k linhas"
         sem_chave recibos "245.6k linhas"
         sem_chave segmentos "106 linhas"
+    }
+    br_mte_listasuja {
+        uf_cnpj_cpf_ano ceac "12 linhas"
+        uf_cnpj_cpf_ano ceac_historico "36 linhas"
+        uf_cnpj_cpf_cnae_ano empregadores "578 linhas"
+        uf_cnpj_cpf_cnae_ano empregadores_historico "578 linhas"
     }
     br_pncp {
         mun_uf_cnpj_ano contratos "5M linhas"

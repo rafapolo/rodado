@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**237 datasets, 1.046 tabelas, 39.671.955.642 linhas.** 4 com data de frescor conferida (de 237).
+**238 datasets, 1.050 tabelas, 39.671.956.846 linhas.** 4 com data de frescor conferida (de 238).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -136,7 +136,7 @@
 | `br_mapbiomas_estatisticas` | MapBiomas — estatísticas de cobertura e transição de uso do solo | 6 | 1.219.409 | — | Base dos Dados |
 | `br_mc_indicadores` | Ministério das Cidades — transferências a municípios | 1 | 1.118.855 | — | Base dos Dados |
 | `br_mdr_snis` | SNIS/MDR — indicadores de água e esgoto por município e prestador de serviço | 2 | 245.101 | — | Base dos Dados |
-| `br_mds_cadunico` | CadÚnico (MDS) — 139 indicadores municipais mensais do Cadastro Único: famílias e pessoas por faixa de renda, grupos tradicionais, domicílio, Bolsa Família | 2 | 350.069.349 | — | CadÚnico — indicadores municipais (VIS DATA 3, MDS/SAGI) |
+| `br_mds_cadunico` | CadÚnico (MDS) — indicadores municipais mensais do Cadastro Único e Bolsa Família | 2 | 350.069.349 | — | CadÚnico — indicadores municipais (VIS DATA 3, MDS/SAGI) |
 | `br_me_caged` | Ministério do Trabalho — CAGED, movimentação de empregos formais (admissões/demissões) | 4 | 240.703.713 | — | Base dos Dados |
 | `br_me_clima_organizacional` | Ministério da Economia — pesquisa de clima organizacional no serviço público | 1 | 16.436 | — | Base dos Dados |
 | `br_me_cno` | Cadastro Nacional de Obras (CNO) — obras e vínculos de trabalhadores da construção | 3 | 1.020.894 | — | Base dos Dados |
@@ -184,6 +184,7 @@
 | `br_ms_sipni_microdados` | SI-PNI — microdados de vacinação individual (2020) | 1 | 102.423.524 | — | Base dos Dados |
 | `br_ms_sisvan` | SISVAN — Sistema de Vigilância Alimentar e Nutricional | 2 | 406.253.847 | — | Base dos Dados |
 | `br_ms_vacinacao_covid19` | Ministério da Saúde — vacinação contra covid-19 | 2 | 805.917 | — | Base dos Dados |
+| `br_mte_listasuja` | MTE — Lista Suja do trabalho escravo (Cadastro de Empregadores) e CEAC, com CNPJ/CPF | 4 | 1.204 | — | MTE — Lista Suja do Trabalho Escravo (Cadastro de Empregadores) + CEAC |
 | `br_ok_queridodiario` | Querido Diário — metadados de diários oficiais municipais | 1 | 231.899 | — | Querido Diário |
 | `br_ok_queridodiario_texto` | Querido Diário — texto integral das edições de diários oficiais municipais | 1 | 231.897 | — | Querido Diário — texto integral das edições |
 | `br_pgfn_dividaativa` | PGFN — dívida ativa da União (tributária, FGTS, previdenciária) | 1 | 46.607.085 | — | PGFN |
