@@ -86,7 +86,7 @@ RN 72,4%, SP 71,9%.
 - **T02-2 ✅ 🟠** INSE × ENEM/IDEB (município, n=2.254): **INSE × redação +0,27; INSE × IDEB AF +0,14**; controlando INSE, IDEB × ENEM cai de +0,20 para **+0,17** — o nível socioeconômico explica o desempenho tanto quanto (ou mais que) o fluxo medido pelo IDEB.
 - **T02-3 ✅ 🟡** Rural × urbano no ENEM 2022: nos 491 municípios com os dois pares comparáveis, escolas rurais ficam **~32 pontos atrás na redação**; a defasagem é maior no tercil mais pobre (**37,2**) que no mais rico (**32,3**).
 - **T02-4 ✅ 🟡** Participação no ENEM (presentes/pop 15–24, n=2.254): média 1,1%; **× IDEB AF +0,315**, × nota do próprio município +0,13, × PIB pc −0,005 — participação acompanha aprendizado, não renda.
-- **T02-5 ✅ ⚪** ΔIDEB 2017→2021 × Δln PIB pc: **r = −0,07 (n=4.739)** — evolução do IDEB não segue ciclos econômicos municipais.
+- **T02-5 ⏳** A pergunta (população jovem 2010→2022 × matrícula × IDEB) segue **sem resposta**: o achado registrado aqui era de outra pergunta — ΔIDEB 2017→2021 × Δln PIB pc, **r = −0,07 (n=4.739)**, a evolução do IDEB não segue ciclos econômicos municipais. Achado na leitura par a par do harness em 2026-09-24 (`tasks/harness_tasks.md` B18); fora dos casos do harness até ser respondida.
 
 ## 03 · Saúde
 
@@ -306,7 +306,7 @@ o item 4 é respondível por **tempo de serviço** em vez de idade.
 
 ## 30 · Estrutura Produtiva
 
-- **T30-1 ✅ 🟠 (parcial)** Empresas/100k × rendimento médio: **+0,24 (n=5.570)** — mercados com mais empresas pagam melhor. Concentração de capital social pendente. *(A13)*
+- **T30-1 ◐ 🟠** Empresas/100k × rendimento médio: **+0,24 (n=5.570)** — mercados com mais empresas pagam melhor. **O que a pergunta pede — concentração de capital social (setores dominados por poucas gigantes) × salário e emprego — segue pendente**; o número acima responde só a densidade de empresas. Rebaixado de ✅ para ◐ em 2026-09-24 (`tasks/harness_tasks.md` B18); fora dos casos do harness até ser respondida. *(A13)*
 - **T30-2 ✅ 🟠 (2026-08-27)** Microempresas ativas per capita (`br_me_cnpj.porte='1'`, snapshot 2025-09, matriz, média nacional 7.167/100 mil hab) × crescimento de vínculos RAIS 2012→2022 por município: **r = −0,10 (n=5.557 municípios com ≥20 vínculos em 2012)** — fraco e no sentido oposto ao esperado: mais microempresa per capita não acompanha maior crescimento formal, se algo é levemente pior.
 - **T30-3 ✅ ⚪ (2026-08-27)** Taxa líquida de abertura de empresas (aberturas−baixas, via datas em `br_me_cnpj.estabelecimentos` snapshot único 2025-09, painel município×ano 2011-2020) × crescimento do PIB municipal nominal: correlação contemporânea **r = 0,043**; um ano depois **r = 0,076** (n≈50-56 mil pares município-ano) — ambas fracas, mas a defasada é a maior das duas, um sinal (fraco) de antecipação, não de coincidência pura.
 - **T30-4 ✅ 🟢 (2026-08-27)** Empresas com sócio formalmente estrangeiro (`br_me_cnpj.socios.tipo='3'`, dez/2021, 8.877 CNPJs distintos) × emprego formal (`br_me_rais_identificada.estabelecimentos` 2021): só **192 (2,2%) aparecem como estabelecimento empregador na RAIS**, contra uma taxa-base de 15,5% entre todos os 20,4 milhões de CNPJ ativos do país (3,16M/20,4M) — empresa com sócio estrangeiro tem ~7x menos chance de ser empregadora direta, consistente com boa parte sendo veículo de investimento/holding sem operação própria (mesmo padrão achado em T48-2 para offshores do ICIJ). Entre as 192 que empregam, a comparação por CNAE (n pequeno, máx. 18 por divisão) não mostra padrão consistente de empregar mais nem menos que a média nacional do setor.
@@ -1292,7 +1292,7 @@ numa sessão, não a reconstrução de coorte/causal completa).
   2.400.000ms, SIGKILL) — não travou infraestrutura (llama-server seguiu
   saudável depois), o laço agêntico simplesmente não convergiu numa cadeia de
   5 fontes dentro do orçamento. Consistente com o padrão já registrado em
-  `tasks/harness/backlog.md` item 2 (casos multi-tabela custam ~36 min/caso e
+  `tasks/harness_tasks.md` B2 (casos multi-tabela custam ~36 min/caso e
   às vezes voltam vazios mesmo assim) — essa é a pergunta mais exigente que já
   foi testada no harness, então o resultado é o esperado, não uma surpresa.
   Não respondida por este método; componentes já medidos manualmente:
