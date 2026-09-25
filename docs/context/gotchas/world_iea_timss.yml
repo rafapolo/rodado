@@ -1,0 +1,14 @@
+dataset: world_iea_timss
+gotchas:
+  - id: subnacional_sem_pais
+    resumo: "Entidades subnacionais vêm com country_m49 nulo (26.658 alunos do 8º ano). Excluir antes de ranquear países."
+    tabelas: [student_achievement_grade_8, student_achievement_grade_4]
+    colunas: [country_m49]
+    severidade: silencioso
+    verificado: "grupo country_m49 NULL com 26.658 alunos no 8º ano — medido 2026-09-25"
+  - id: sexo_nome_diferente
+    resumo: "O sexo se chama sex_students em student_achievement_grade_4 e student_sex no resto. Código: 1 = menina, 2 = menino."
+    tabelas: [student_achievement_grade_4]
+    colunas: [sex_students]
+    severidade: erro
+    verificado: "dictionary: sex_students e student_sex, 1 = Girl, 2 = Boy — medido 2026-09-25"

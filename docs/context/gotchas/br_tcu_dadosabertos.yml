@@ -1,0 +1,14 @@
+dataset: br_tcu_dadosabertos
+gotchas:
+  - id: data_sessao_texto
+    resumo: "dataSessao é texto dd/mm/aaaa: min/max direto na coluna devolve datas erradas. Converter com strptime."
+    tabelas: [dados]
+    colunas: [dataSessao]
+    severidade: silencioso
+    verificado: "min/max textual 01/04/2025 e 31/07/2024; com strptime 2024-07-23 a 2026-07-08 — medido 2026-09-25"
+  - id: sem_cnpj_no_texto
+    resumo: "O acórdão não traz CNPJ: 2 de 36.499 sumários, e 24.995 (os de relação) vêm sem sumário. Ligar a empresa pelo número do acórdão (ponte em bridges.yaml), não por CNPJ."
+    tabelas: [dados]
+    colunas: [sumario, numeroAcordao, anoAcordao, colegiado]
+    severidade: erro
+    verificado: "regex de CNPJ em sumario+titulo: 2 acórdãos; ponte DELIBERACAO ↔ numero/ano/colegiado casa 4 de 4 inidôneos na janela — medido 2026-09-25"
