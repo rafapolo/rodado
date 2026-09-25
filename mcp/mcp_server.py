@@ -107,7 +107,7 @@ with open(DICIONARIO_COVERAGE_PATH, encoding="utf-8") as f:
 # código (baixa cardinalidade) mas não têm fonte de significado conhecida em
 # nenhum mecanismo acima — nem dicionario, nem bridges.yaml, nem
 # hierarchies.yaml. Generaliza o alerta manual que
-# tasks/harness/backlog.md item 9 escreveu à mão pra
+# tasks/harness_tasks.md B9 escreveu à mão pra
 # br_ms_sim.circunstancia_obito (subcontava suicídio, 749 contra 789 reais,
 # sem nenhum mecanismo avisando) num aviso que soa pra qualquer tabela.
 _NAO_VERIFICADO_BY_TABLE: dict = {}
@@ -498,10 +498,10 @@ mcp = FastMCP("rodado")
 def list_datasets() -> dict:
     """List all datasets in the unified catalog, with their table counts.
 
-    190 datasets, 782 tables total: the Base dos Dados mirror (RAIS, SIM, TSE,
+    236 datasets, 1045 tables total: the Base dos Dados mirror (RAIS, SIM, TSE,
     CGU, IBGE, INEP and others) plus independently-scraped sources filling
     gaps Base dos Dados doesn't cover (SICAF, SINAN Violência, EU/UN
-    Sanctions, Consumidor.gov.br and more — see tasks/datasets_to_scrap.md
+    Sanctions, Consumidor.gov.br and more — see tasks/plans/datasets_to_scrap.md
     for provenance). Use this to get oriented before drilling into a
     specific dataset with list_tables().
     """

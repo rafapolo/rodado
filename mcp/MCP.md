@@ -6,7 +6,7 @@ Desktop/Claude Code) — não é uma API REST, é uma lista de funções que um
 modelo de linguagem chama em sequência, decidindo a cada passo qual chamar a
 seguir a partir do resultado da anterior.
 
-Números de hoje: 233 datasets, 1.029 tabelas, 60 conceitos de join
+Números de hoje (2026-09-25): 236 datasets, 1.045 tabelas, 60 conceitos de join
 documentados, 20 false friends, 7 métricas nomeadas, 3 hierarquias de rollup,
 17 ferramentas ao todo. Nunca abre conexão DuckDB local — toda query roda no
 `~/bin/duckdb` do beelink via SSH (ver `_run_sql_ssh`). Tudo local: parquet

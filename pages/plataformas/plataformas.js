@@ -25,7 +25,7 @@
     var html = '<h1>Plataformas</h1>' +
       '<p class="dek">Painel, mapa e rede navegáveis: o dado inteiro, não só o ' +
       'recorte que uma análise fechada usou. Saem do mesmo espelho local de ' +
-      '1.029 tabelas públicas que alimenta as <a href="/analises/">análises</a> ' +
+      '1.046 tabelas públicas que alimenta as <a href="/analises/">análises</a> ' +
       '— a diferença é que aqui você explora, em vez de ler uma conclusão.</p>' +
       '<div class="teaser">';
     items.forEach(function (it) {
