@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**233 datasets, 1.029 tabelas, 39.245.598.931 linhas.** 4 com data de frescor conferida (de 233).
+**237 datasets, 1.046 tabelas, 39.671.955.642 linhas.** 4 com data de frescor conferida (de 237).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -16,11 +16,12 @@
 | `br_anac_dadosabertos` | ANAC — registro de aeronaves, voos e pontualidade | 3 | 129.666 | 2026-06-01 | ANAC |
 | `br_anatel_banda_larga_fixa` | Densidade de acessos de banda larga fixa por município/UF (Anatel) | 4 | 58.902.377 | — | Base dos Dados |
 | `br_anatel_indice_brasileiro_conectividade` | Índice Brasileiro de Conectividade por município (Anatel) | 1 | 22.280 | — | Base dos Dados |
-| `br_aneel_dadosabertos` | ANEEL — empreendimentos de geração distribuída (mini/microgeração solar, eólica etc.) | 1 | 4.692.466 | — | ANEEL — geração distribuída (empreendimentos) |
+| `br_aneel_dadosabertos` | ANEEL — geração distribuída, usinas (SIGA), tarifas homologadas e indicadores de continuidade DEC/FEC | 8 | 40.910.593 | — | ANEEL — usinas SIGA, tarifas homologadas, DEC/FEC |
 | `br_anm` | ANM/SIGMINE — processos minerários, CFEM (royalties de mineração) e licenciamento | 22 | 8.324.108 | — | ANM / SIGMINE — títulos minerários e CFEM |
 | `br_anp_combustiveis` | ANP — preços de combustíveis por posto/revenda | 1 | 2.006.614 | — | ANP combustíveis (preços revenda/distribuição) |
 | `br_anp_precos_combustiveis` | ANP — preços de combustíveis pesquisados (via Base dos Dados) | 1 | 16.409.523 | — | Base dos Dados |
 | `br_ans_beneficiario` | ANS — beneficiários de planos de saúde suplementar | 1 | 2.307.338.481 | — | Base dos Dados |
+| `br_antt_dadosabertos` | ANTT — RNTRC (transportadores e veículos de carga), CIOT e acidentes nas rodovias federais concedidas | 4 | 18.186.812 | — | ANTT — RNTRC, veículos, CIOT, acidentes em rodovias concedidas |
 | `br_anvisa_cmed` | CMED/ANVISA — preços regulados de medicamentos | 1 | 51.140 | — | CMED (preços de medicamentos, ANVISA) |
 | `br_anvisa_consultas` | ANVISA — registros de agrotóxicos, alimentos e produtos regulados | 3 | 101.938 | — | ANVISA (consulta completa) |
 | `br_anvisa_medicamentos_industrializados` | ANVISA — medicamentos industrializados registrados | 1 | 10.000.000 | — | Base dos Dados |
@@ -109,6 +110,7 @@
 | `br_ibge_populacao` | IBGE — estimativas populacionais por município, UF e Brasil | 3 | 192.080 | — | Base dos Dados |
 | `br_ibge_ppm` | IBGE — Pesquisa Pecuária Municipal (rebanhos, aquicultura, produção animal) | 4 | 2.455.095 | — | Base dos Dados |
 | `br_ieps_saude` | IEPS — indicadores de saúde por município e região de saúde | 5 | 73.980 | — | Base dos Dados |
+| `br_incra_acervo` | INCRA — parcelas certificadas no SIGEF (por UF) e projetos de assentamento, com centroide e área | 3 | 1.902.291 | — | INCRA — parcelas SIGEF, imóveis SNCI, assentamentos |
 | `br_inea_boletim` | INEA-RJ — boletins de serviço de licenciamento ambiental, atos e texto extraído dos PDFs | 5 | 24.743 | — | INEA — boletins de serviço, texto dos PDFs (validade/condicionantes) |
 | `br_inep_ana` | INEP — Avaliação Nacional da Alfabetização | 3 | 98.778 | — | Base dos Dados |
 | `br_inep_avaliacao_alfabetizacao` | INEP — avaliação da alfabetização e metas por município/UF | 7 | 3.902.954 | — | Base dos Dados |
@@ -134,6 +136,7 @@
 | `br_mapbiomas_estatisticas` | MapBiomas — estatísticas de cobertura e transição de uso do solo | 6 | 1.219.409 | — | Base dos Dados |
 | `br_mc_indicadores` | Ministério das Cidades — transferências a municípios | 1 | 1.118.855 | — | Base dos Dados |
 | `br_mdr_snis` | SNIS/MDR — indicadores de água e esgoto por município e prestador de serviço | 2 | 245.101 | — | Base dos Dados |
+| `br_mds_cadunico` | CadÚnico (MDS) — 139 indicadores municipais mensais do Cadastro Único: famílias e pessoas por faixa de renda, grupos tradicionais, domicílio, Bolsa Família | 2 | 350.069.349 | — | CadÚnico — indicadores municipais (VIS DATA 3, MDS/SAGI) |
 | `br_me_caged` | Ministério do Trabalho — CAGED, movimentação de empregos formais (admissões/demissões) | 4 | 240.703.713 | — | Base dos Dados |
 | `br_me_clima_organizacional` | Ministério da Economia — pesquisa de clima organizacional no serviço público | 1 | 16.436 | — | Base dos Dados |
 | `br_me_cno` | Cadastro Nacional de Obras (CNO) — obras e vínculos de trabalhadores da construção | 3 | 1.020.894 | — | Base dos Dados |
@@ -152,7 +155,7 @@
 | `br_mg_belohorizonte_smfa_iptu` | Prefeitura de Belo Horizonte — cadastro de IPTU | 2 | 21.463.825 | — | Base dos Dados |
 | `br_minc_salic` | MinC — SALIC/Lei Rouanet, projetos culturais incentivados | 8 | 839.316 | — | SALIC/Lei Rouanet (MinC) |
 | `br_mj_consumidorgovbr` | Consumidor.gov.br — reclamações de consumidores contra empresas | 1 | 10.167.141 | — | Consumidor.gov.br |
-| `br_mjsp_ckan` | MJSP — Procon (reclamações Sindec) e Infopen (censo penitenciário legado) | 2 | 13.803 | — | MJSP CKAN (broader) |
+| `br_mjsp_ckan` | MJSP — Procon (reclamações Sindec) e Infopen (censo penitenciário legado) | 2 | 15.317 | — | MJSP CKAN (broader) |
 | `br_mjsp_procurados` | MJSP — lista de procurados do projeto Captura Nacional | 1 | 195 | — | Procurados (MJSP/Interpol) |
 | `br_mjsp_sinesp` | SINESP — ocorrências registradas de segurança pública | 2 | 23.843 | 2022-12-01 | SINESP/MJSP |
 | `br_mjsp_sisdepen` | SISDEPEN — população carcerária por unidade prisional | 1 | 38.364 | — | MJSP SISDEPEN (população carcerária) |
@@ -199,6 +202,7 @@
 | `br_senado_dados_abertos` | Senado Federal — senadores, votações, discursos, comissões | 18 | 619.782 | — | Base dos Dados |
 | `br_senado_dados_abertos_administrativos` | Senado Federal — dados administrativos (CEAPS, remuneração de servidores) | 12 | 309.684 | — | Base dos Dados |
 | `br_senado_dadosabertos` | Senado Federal — comissões, matérias, senadores e votações (fonte alternativa) | 4 | 166.049 | — | Senado (geral) |
+| `br_senatran_frota` | SENATRAN — frota de veículos por município e tipo, mensal desde 2013 | 1 | 19.978.618 | — | SENATRAN — frota de veículos por município e tipo |
 | `br_sfb_sicar` | SICAR/SFB — Cadastro Ambiental Rural | 5 | 81.893.549 | — | Base dos Dados |
 | `br_simet_educacao_conectada` | Programa Educação Conectada — conectividade de internet em escolas | 1 | 137.914 | — | Base dos Dados |
 | `br_siop_orcamento` | SIOP — Sistema Integrado de Planejamento e Orçamento federal | 4 | 36.922 | — | SIOP |

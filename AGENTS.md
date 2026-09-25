@@ -4,7 +4,7 @@ This file provides guidance to coding agents (Claude Code, Pi, and others) when 
 
 ## Project Overview
 
-**baseldosdados** mirrors public Brazilian government tables from [Base dos Dados](https://basedosdados.org) — stored as Parquet+zstd in `~/rodado` on beelink — and extends that mirror with independently-scraped sources that fill the remaining gaps (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/datasets_to_scrap.md` for the full catalog and provenance of every source). 1029 tables (233 datasets, 39,25 bilhões de linhas) as of 2026-09-04 — 741 espelhadas do Base dos Dados, 288 raspadas pelo projeto. A DuckDB view `_rodado_metadata` on beelink tracks each table's rows, source, status, and provenance; `_rodado_datasets` aggregates by dataset. DuckDB queries the data on-demand without local imports.
+**baseldosdados** mirrors public Brazilian government tables from [Base dos Dados](https://basedosdados.org) — stored as Parquet+zstd in `~/rodado` on beelink — and extends that mirror with independently-scraped sources that fill the remaining gaps (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/done/datasets_to_scrap_done.md` for the provenance of every scraped source and `tasks/plans/datasets_to_scrap.md` for the queue). 1046 tables (237 datasets, 39,67 bilhões de linhas) as of 2026-09-25 — 741 espelhadas do Base dos Dados, 305 raspadas pelo projeto. A DuckDB view `_rodado_metadata` on beelink tracks each table's rows, source, status, and provenance; `_rodado_datasets` aggregates by dataset. DuckDB queries the data on-demand without local imports.
 
 ## Commands
 
@@ -36,12 +36,12 @@ Caddyfile` finds them.
 `mcp/mcp_server.py` is the current interface — see `mcp/MCP.md`.
 
 ### `docs/mapa/ERD.md` — the map
-One mermaid `erDiagram` per domain covering all 1023 tables: entity = dataset, attribute = table, edge = join key to a reference hub (solid = direct, dashed = needs normalization). Lists what connects to nothing. `ERD.md` is pt-BR (default), `ERD_EN.md` is the English twin — both generated from the same data by `scripts/gera_erd.py`.
+One mermaid `erDiagram` per domain covering all 1045 tables: entity = dataset, attribute = table, edge = join key to a reference hub (solid = direct, dashed = needs normalization). Lists what connects to nothing. `ERD.md` is pt-BR (default), `ERD_EN.md` is the English twin — both generated from the same data by `scripts/gera_erd.py`.
 
 ### `docs/context/` — Schema metadata
 Um `README.md` na própria pasta descreve arquivo por arquivo, quem gera cada um e a ordem do regen.
-- `all_tables.txt` — as 904 `dataset.tabela`, uma por linha, incluindo as 8 nativas do `.duckdb` que não têm parquet. Gerado por `scripts/build_metadata_catalog.py` — era um despejo do `bq ls` da era BigQuery que ninguém regenerava
-- `rodado-schema.json` — full schema (2.0 MB, 233 datasets / 1029 tabelas). Renomeado de `basedosdados-schema.json` — o nome antigo mentia escopo (parquet só) desde que `gera_schemas.py` passou a incluir as 7 tabelas `duckdb_native` (sem parquet, lidas direto de dentro de `basedosdados.duckdb`) que antes ficavam invisíveis por o script só varrer diretório
+- `all_tables.txt` — as 1.046 `dataset.tabela`, uma por linha, incluindo as 8 nativas do `.duckdb` que não têm parquet. Gerado por `scripts/build_metadata_catalog.py` — era um despejo do `bq ls` da era BigQuery que ninguém regenerava
+- `rodado-schema.json` — full schema (2.1 MB, 236 datasets / 1045 tabelas). Renomeado de `basedosdados-schema.json` — o nome antigo mentia escopo (parquet só) desde que `gera_schemas.py` passou a incluir as 7 tabelas `duckdb_native` (sem parquet, lidas direto de dentro de `basedosdados.duckdb`) que antes ficavam invisíveis por o script só varrer diretório
 - `bridges.yaml` — **a fonte única do conhecimento de join**. Conceitos-hub, as 78 pontes (coluna que significa a mesma coisa sob outro nome), os `false_friends`, os `coded_differently` (mesmo conceito, código numérico diverge por dataset/ano — `sexo`, `raca_cor`, `estado_civil`... achado ao vivo num teste cego do MCP, ver `tasks/done/mcp_search_refino.md`) e os `concept_aliases`. Editar aqui; `join_keys.md` é gerado
 - `join_keys.md` — o render de `bridges.yaml` + as chaves auto-detectadas do `schemas.json`: 157 colunas de join ao todo. Gerado por `scripts/gera_join_keys.py` — regenerar, nunca editar à mão
 - `metrics.yaml` / `metrics.json` — 12 cálculos nomeados (expressão DuckDB, grain, unidade, sinônimos pt-BR, `required_filters`, `verified`). O `.json` é gerado do `.yaml` por `scripts/gera_metrics_json.py`; `mcp_server.py` lê o `.yaml` diretamente. A TUI Rust que lia o `.json` foi removida (`ask/` apagado em `58ab7c7`, 2026-08-23); hoje quem consome o `.json` é `scripts/build_ask_web_assets.ts`, que empacota `metrics.json` + `bridges.yaml` em `web/static/index/semantica.json` — vive só no branch `ask-web` (remoto, não mesclado), não neste checkout em `main`
@@ -191,10 +191,10 @@ Gerado por `scripts/build_metadata_catalog.py`, que também recria as views `_ro
 | `dataset`, `table` | identificação; `dataset.table` é o caminho DuckDB |
 | `source_name` / `source_url` / `source_type` | procedência. `Base dos Dados` + `mirror` para o espelho; nome do órgão + formato para o que o projeto raspa |
 | `rows`, `num_files`, `size_bytes` | medidos via `parquet_metadata`, incluindo tabelas particionadas; para `duckdb_native` o `rows` vem de um `count(*)` no DuckDB |
-| `scrape_date` | data do `datasets_to_scrap.md`, ou o mtime do parquet mais recente |
+| `scrape_date` | data do `done/datasets_to_scrap_done.md`, ou o mtime do parquet mais recente |
 | `status` | `mirrored`, `done`, `blocked → mcp-todo`, `view_orfa`… |
 | `source` | `disk` (parquet local, contado por `parquet_metadata`), `duckdb_native` (sem parquet, mas a view lê tabela nativa dentro do `.duckdb` — contado pelo próprio DuckDB) ou `view_only` (sem parquet **e** sem linhas) |
-| `provenance_notes` | notas do `datasets_to_scrap.md`, truncadas em 500 chars |
+| `provenance_notes` | notas do `done/datasets_to_scrap_done.md`, truncadas em 500 chars |
 
 Ao contar tabelas ou linhas, filtre **`source <> 'view_only'`** — nunca `source = 'disk'`.
 
@@ -218,13 +218,15 @@ python3 scripts/build_atlas.py /tmp/atlas.html   # também emite a cópia autoco
 
 ## `tasks/` — local, fora do git
 
-`tasks/` está no `.gitignore` desde 2026-09-24: existe só no disco desta máquina, sem histórico. `tasks/README.md` é o índice único do que está **em andamento**: o projeto na raiz de `tasks/`, o harness em `tasks/harness/` (era `harness/tasks/`), os planos que ainda não começaram em `tasks/plans/`. Plano que começa a rodar vai para `tasks/`; mudou o status de um arquivo, mude a linha dele no índice na mesma edição. Como não há `git log` para recuperar nada, **apagar um arquivo de `tasks/` é definitivo** — o que ele ensinou vai antes para um lugar versionado (`harness/README.md`, `docs/`). Scripts que leem dali (`build_metadata_catalog.py` lê `tasks/datasets_to_scrap.md`) seguem funcionando localmente.
+`tasks/` está no `.gitignore` desde 2026-09-24: existe só no disco desta máquina, sem histórico. `tasks/README.md` é o índice único do que está **em andamento**: o projeto na raiz de `tasks/`, o harness em `tasks/harness_tasks.md` (era `harness/tasks/`, depois a pasta `tasks/harness/`), os planos que ainda não começaram em `tasks/plans/`. Plano que começa a rodar vai para `tasks/`; mudou o status de um arquivo, mude a linha dele no índice na mesma edição. Como não há `git log` para recuperar nada, **apagar um arquivo de `tasks/` é definitivo** — o que ele ensinou vai antes para um lugar versionado (`harness/README.md`, `docs/`). Scripts que leem dali (`build_metadata_catalog.py` lê `tasks/done/datasets_to_scrap_done.md` e, se existir, `tasks/plans/datasets_to_scrap.md`) seguem funcionando localmente e toleram a ausência dos arquivos num clone novo.
 
 ## beelink: `~/.duckdbrc` e a trava de arquivo
 
 Desde 2026-09-24, o `~/.duckdbrc` do beelink tem `memory_limit = '8GB'` (o limite é **por processo**, e o llama-server ocupa ~20 dos 27 GB), `threads = 8` (8 núcleos físicos), `enable_progress_bar = false`, `autoinstall_known_extensions = false` e o despejo em `~/duckdb_tmp` no NVMe, com teto de 100 GB. O `SECRET healthbr` vem entre `.output /dev/null` e `.output`: sem isso o `CREATE SECRET` imprime uma tabela no stdout de toda sessão e quebra o `-json` do `run_sql` e do harness. **Nunca** apontar `temp_directory` para `/dev/shm` nem `/tmp`: os dois são tmpfs, e despejar lá é despejar na RAM. Em 2026-09-24 havia 10 GB de despejo órfão em `/dev/shm` com o swap 100% cheio, e o OOM killer matou o llama-server. Nenhuma chave vai no `.duckdbrc`.
 
 `mcp_server.py` (`_run_sql_ssh`) e `harness/beelink.ts` abrem cada sessão com `allowed_directories` em `~/rodado` e `~/duckdb_tmp`, o prefixo `s3://healthbr-data/`, `enable_external_access=false` e `lock_configuration=true`: a SQL vem de um modelo, e um `SELECT * FROM read_text('~/.ssh/...')` passa pela checagem de somente-leitura. Ferramenta nova que leia fora de `~/rodado` precisa entrar na lista, não desligar a trava.
+
+**Corrigiu um parquet, recrie a view que o lê.** A view guarda no catálogo os nomes e tipos de coluna do momento em que foi criada. Em 2026-09-24, `information_schema.columns` e `duckdb_columns()` falhavam no `.duckdb` inteiro (`Invalid unicode (byte sequence mismatch)`) porque a view `br_mjsp_ckan.infopen` ainda tinha os nomes de coluna com bytes inválidos, de antes do patch de footer de 2026-09-10 no parquet. `DESCRIBE` não acusa, porque religa a view contra o parquet atual; só `duckdb_columns()` lê o nome guardado. Um `WHERE` não isola a tabela culpada (a função materializa o catálogo todo antes de filtrar): bisecte por `DROP` numa cópia do arquivo. A correção é reexecutar o próprio SQL da view (`duckdb_views().sql`) como `CREATE OR REPLACE VIEW`, pelo CLI `~/bin/duckdb`, com ninguém segurando o arquivo.
 
 ## Environment Variables
 

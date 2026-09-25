@@ -226,7 +226,7 @@
       'contas de campanha, óbitos do SUS — registros públicos cruzados uns com ' +
       'os outros até aparecer o que nenhum deles mostra sozinho.</p>' +
       // ponte pro módulo irmão: mesmo espelho de dados, uso diferente
-      '<p class="lede">Cada uma sai do mesmo espelho local de 1.029 tabelas ' +
+      '<p class="lede">Cada uma sai do mesmo espelho local de 1.046 tabelas ' +
       'públicas — RAIS, SIM, TSE, CGU, IBGE, Receita Federal e outras, mais ' +
       'de 77 raspadas de forma independente — consultado sob demanda por ' +
       'DuckDB, e fecha uma pergunta com um número. Quem quiser o dado ' +
