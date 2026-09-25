@@ -1,0 +1,33 @@
+# Terceiro conjunto separado (harness_tasks.md B13), escrito DEPOIS da rodada B2:
+# as formas que os dois primeiros não cobriam — série temporal, comparação entre
+# estados, pergunta SEM resposta no espelho (gabarito SEM_DADO, ver acerto.ts) e
+# taxa composta que agora tem métrica verificada (metrics.yaml). Nenhuma nota nem
+# regra foi escrita a partir delas. Gabarito conferido no beelink em 2026-09-25,
+# cada número por duas vias.
+#
+# nascidos vivos Brasil 2015→2022: 3.017.490 → 2.560.319 = −15,15% (count(*) e soma dos grupos por UF: iguais)
+# óbitos Brasil 2015→2022: 1.264.175 → 1.507.077 = +19,21% (count(*) e soma por UF: iguais)
+# população MG 2010→2021: 19.597.330 → 21.411.923 = +9,26% (tabela de UF e soma dos municípios: iguais)
+# nascidos 2020, MG × BA: MG 247.192 por residência (247.198 pelo sigla_uf do SINASC) × BA 188.960 (iguais nas duas)
+# óbitos por agressão X85–Y09 2019, PE × CE: PE 3.394 por residência (3.474 pelo sigla_uf do SIM) × CE 2.399 (iguais)
+# PIB per capita 2020, PR × SC: SC 48.159,24 (349.275.015.538 / 7.252.502) × PR 42.366,71; PIB da UF e soma dos municípios batem a R$ 6 mil
+# saldo CAGED 2021, RS × PR: PR 178.581 × RS 155.913 (por sigla_uf e por prefixo do id_municipio: iguais)
+# SEM_DADO — PIB municipal: br_ibge_pib.municipio vai de 2002 a 2021, nenhum outro dataset tem PIB municipal
+# SEM_DADO — SIM: br_ms_sim.microdados vai de 1996 a 2022
+# SEM_DADO — CAGED: o novo CAGED do espelho começa em 2020 (movimentacao, _excluida e _fora_prazo: 2020–2025); o antigo não está aqui
+# taxa de homicídio AL 2019: 1.115 (residência e sigla_uf iguais) / 3.337.357 × 100 mil = 33,41
+# mortalidade infantil AM 2021: 1.153 óbitos < 1 ano (iguais nas duas) / 78.428 nascidos por residência = 14,70‰ (14,81 pelos 77.839 do sigla_uf)
+# mortalidade infantil BA 2020: 2.424 por residência (2.429 pelo sigla_uf) / 188.960 = 12,83‰
+Qual foi a variação percentual do número de nascidos vivos no Brasil entre 2015 e 2022?	15,15~0,1
+Como variou o número total de óbitos registrados no Brasil entre 2015 e 2022, em percentual?	19,21~0,1
+Quanto cresceu, em percentual, a população estimada de Minas Gerais entre 2010 e 2021?	9,26~0,1
+Em 2020, nasceram mais bebês de mães residentes em Minas Gerais ou na Bahia, e quantos no estado que teve mais?	247192~0,1%
+Qual estado teve mais óbitos por agressão (CID-10 X85 a Y09) em 2019, Pernambuco ou Ceará, e quantos foram?	3394|3474
+Entre Paraná e Santa Catarina, qual teve o maior PIB per capita em 2020, e de quanto?	48159,24~0,5%
+Qual estado teve o maior saldo de empregos formais do CAGED em 2021, Rio Grande do Sul ou Paraná, e de quanto?	178581
+Qual foi o PIB do município de Campinas em 2023?	SEM_DADO
+Quantos óbitos por agressão (CID-10 X85 a Y09) o SIM registrou no Brasil em 2024?	SEM_DADO
+Qual foi o saldo de empregos formais do CAGED no Brasil em 2019?	SEM_DADO
+Qual foi a taxa de homicídios (CID-10 X85 a Y09) por 100 mil habitantes em Alagoas em 2019?	33,41~0,1
+Qual foi a taxa de mortalidade infantil do Amazonas em 2021, por mil nascidos vivos?	14,70~0,05|14,81~0,05
+Qual foi a taxa de mortalidade infantil da Bahia em 2020, por mil nascidos vivos?	12,83~0,05

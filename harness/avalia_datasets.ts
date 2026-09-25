@@ -185,7 +185,12 @@ if (import.meta.main) {
 
   const arg2 = Bun.argv.indexOf("--n");
   const lim = arg2 > -1 ? Number(Bun.argv[arg2 + 1]) : Infinity;
+  // --ids T19-1,T46-3: só esses — remedir um grupo de desambiguação sem pagar
+  // as 274 (o de bolsas, 2026-09-25, eram 5 casos).
+  const argIds = Bun.argv.indexOf("--ids");
+  const ids = argIds > -1 ? new Set(Bun.argv[argIds + 1]!.split(",")) : undefined;
   const casos = carregaTodasPerguntas()
+    .filter((c) => !ids || ids.has(c.id))
     .map((c) => ({ ...c, gabarito: "", suspeito: false } as Caso))
     .slice(0, lim);
 
