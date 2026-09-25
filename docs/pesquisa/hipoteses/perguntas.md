@@ -681,6 +681,55 @@ inventário local de `tasks/espelho_subutilizado.md`, Parte I.
 4. O TIMSS 2023, primeira participação do Brasil, põe o país no mesmo lugar que o PISA 2022 e o SAEB? *(n=3: world_iea_timss, world_oecd_pisa, inep_saeb)*
 5. Reclamação no consumidor.gov.br por habitante segue a conectividade (IBC) mais que a renda, como outro caso de registro que mede o acesso ao canal e não o fenômeno? *(n=3: mj_consumidorgovbr, anatel_indice_brasileiro_conectividade, ibge_pib\*)*
 
+
+## 84 · Orçamento, Receita e Execução Federal (Portal da Transparência)
+
+1. A receita prevista na LOA bate com o orçamento atualizado do mesmo ano, e em quais anos as duas séries se descolam? *(n=2: cgu_orcamento_publico, cgu_receitas_publicas)*
+2. Qual a distância entre o orçamento atualizado e a despesa efetivamente realizada por órgão superior em 2024, e quais órgãos executam menos de 80%? *(n=1: cgu_orcamento_publico)*
+3. Municípios bem avaliados na Escala Brasil Transparente (EBT) recebem mais transferências voluntárias ou têm menos pendências no CAUC? *(n=3: cgu_ebt, transferegov_siconv\*, tesouro_cauc\*)*
+4. Quanto os municípios de uma UF empenharam, liquidaram e pagaram em saúde em 2022, e quanto ficou em restos a pagar? *(n=1: me_siconfi\*)*
+5. A nota da EBT de um município acompanha o tamanho da prefeitura (servidores na RAIS) ou é independente de porte? *(n=2: cgu_ebt, me_rais\*)*
+
+## 85 · Bolsa Família 2004–2020 e o CadÚnico
+
+1. Como evoluíram o número de famílias e o valor pago do Bolsa Família por região de 2004 a 2020, e em que ano cada região atingiu o pico? *(n=1: mc_indicadores)*
+2. O valor pago por município em 2019 bate entre os indicadores do Ministério da Cidadania e o pagamento registrado pela CGU? *(n=2: mc_indicadores, cgu_beneficios_cidadao\*)*
+3. A cobertura do Bolsa Família (famílias atendidas ÷ famílias do CadÚnico com renda de até ½ salário mínimo) é maior no Nordeste mesmo controlando por renda média municipal? *(n=3: mc_indicadores, mds_cadunico, ibge_pib\*)*
+4. Na transição para o Auxílio Brasil e o Novo Bolsa Família, quais municípios perderam ou ganharam mais famílias beneficiárias entre 2020 e 2023? *(n=2: mc_indicadores, cgu_novo_bolsa_familia\*)*
+5. Municípios com maior cobertura do Bolsa Família em 2010 tiveram maior queda da mortalidade infantil até 2019? *(n=3: mc_indicadores, ms_sim\*, ms_sinasc\*)*
+
+## 86 · Educação Internacional: TIMSS, PIRLS e o SAEB
+
+1. Como o desempenho do Brasil em matemática no TIMSS 2023 (4º e 8º ano) se compara aos países latino-americanos da amostra? *(n=1: iea_timss)*
+2. No TIMSS 2023, alunos brasileiros de escolas com maior proporção de estudantes em desvantagem econômica (questionário da escola) têm desempenho menor, e o tamanho dessa diferença lembra a diferença por nível socioeconômico no SAEB? *(n=2: iea_timss, inep_saeb\*)*
+3. Como o Brasil se sai em leitura no PIRLS comparado ao Chile e a Portugal? *(n=1: iea_pirls)*
+4. Os países que vão melhor em matemática no 4º ano do TIMSS 2023 mantêm a posição no 8º, e onde fica o Brasil nessa passagem? *(n=1: iea_timss)*
+5. A diferença entre meninos e meninas em matemática no TIMSS brasileiro aparece também no ENEM? *(n=2: iea_timss, inep_enem\*)*
+
+## 87 · Tribunais Superiores: STJ e TCU
+
+1. Quantas decisões e acórdãos o STJ publicou em 2021, e quais os assuntos mais frequentes? *(n=1: stj_dadosabertos)*
+2. Qual a proporção de decisões monocráticas contra acórdãos no STJ por mês de 2021, e há sazonalidade de recesso? *(n=1: stj_dadosabertos)*
+3. Que fração dos acórdãos do TCU de 2024–2026 é "acórdão de relação" (processamento em lote) contra julgamento individual? *(n=1: tcu_dadosabertos)*
+4. Empresas citadas em acórdãos do TCU aparecem também na lista de inidôneos ou nas sanções da CGU? *(n=3: tcu_dadosabertos, tcu_inidoneos\*, cgu_sancoes)*
+5. Como o volume de decisões do STJ em 2021 se distribui entre as classes processuais (REsp, AREsp, HC)? *(n=1: stj_dadosabertos)*
+
+## 88 · Rede Hidrográfica e Reservatórios (ANA)
+
+1. Quantos trechos de rio de ordem de Strahler ≥ 7 existem por bacia, e quais bacias concentram os rios maiores? *(n=1: ana_bho)*
+2. Seguindo a topologia da BHO rio abaixo, quantas outorgas de lançamento de efluente existem a montante de cada captação para abastecimento público? *(n=2: ana_bho, ana_outorgas\*)*
+3. Como evoluiu o volume útil médio dos reservatórios do SIN por subsistema de 2000 a 2021, e quais anos foram de crise? *(n=1: ana_reservatorios)*
+4. A queda do volume útil nos reservatórios coincide com a queda de vazão nas estações fluviométricas da mesma bacia? *(n=2: ana_reservatorios, ana_telemetria\*)*
+5. Qual reservatório passou mais meses abaixo de 20% do volume útil desde 2000? *(n=1: ana_reservatorios)*
+
+## 89 · Registros que Enganam na Soma: Clima Organizacional, Consumidor e Nomes
+
+1. Quantos servidores federais responderam à pesquisa de clima organizacional, e qual a satisfação média por órgão? *(n=1: me_clima_organizacional)*
+2. Quantas reclamações o consumidor.gov.br recebeu por ano de 2019 a 2025, e qual a taxa de resposta das empresas? *(n=1: mj_consumidorgovbr)*
+3. Os estados com mais reclamações no consumidor.gov.br por habitante são os mesmos com mais reclamações no PROCON? *(n=3: mj_consumidorgovbr, mjsp_ckan\*, ibge_populacao\*)*
+4. Quais os 10 nomes mais comuns do Brasil segundo o Censo 2010, e quantas pessoas eles somam? *(n=1: ibge_nomes_brasil)*
+5. Em que UFs os nomes mais frequentes diferem mais do ranking nacional? *(n=1: ibge_nomes_brasil)*
+
 ---
 
 # Perguntas multi-dataset simultâneos
