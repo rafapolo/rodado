@@ -117,6 +117,7 @@ export function avalia(
   const cands = candidatos(resposta);
   const texto = semAcento(resposta);
   const certo = as.some((a) => {
+    if (a.tipo === "sem_dado") return DIZ_SEM_DADO.test(texto);
     if (a.tipo === "texto") return texto.includes(semAcento(a.valor));
     if (!a.tol) return achados.includes(a.valor);
     const margem = a.relativo ? a.tol * Math.abs(a.valor) : a.tol;
@@ -133,9 +134,21 @@ export function avalia(
  */
 interface AlvoNum { tipo: "num"; valor: number; tol: number; relativo: boolean }
 interface AlvoTexto { tipo: "texto"; valor: string }
+/** `SEM_DADO`: o certo é dizer que o espelho não tem o dado (ano fora da
+ *  cobertura, variável que não existe). B13, 2026-09-25: nenhum dos 43 casos
+ *  diretos media isso — e inventar um número plausível é o erro mais caro. */
+interface AlvoSemDado { tipo: "sem_dado" }
 
-export function alvos(esperado: string): (AlvoNum | AlvoTexto)[] {
+const DIZ_SEM_DADO = new RegExp([
+  "nao ha (dados?|registros?|informac)", "nao (existem?|constam?|possui|tem|temos|encontrei|encontramos) (os )?(dados?|registros?|informac)",
+  "nao (esta|estao) disponive", "indisponive", "sem dados?", "nao cobre", "nao abrange", "fora da cobertura",
+  "(vai|cobre|chega|vao|cobrem|chegam) (apenas |somente |so )?ate", "disponive(l|is) (apenas |somente |so )?ate",
+  "ainda nao (foi|foram) (publicad|divulgad|disponibilizad)", "nao (foi|foram) (publicad|divulgad)",
+].join("|"));
+
+export function alvos(esperado: string): (AlvoNum | AlvoTexto | AlvoSemDado)[] {
   return esperado.split("|").map((x) => x.trim()).filter(Boolean).map((x) => {
+    if (x === "SEM_DADO") return { tipo: "sem_dado" as const };
     const [base, tol] = x.split("~").map((y) => y.trim());
     const v = /^-?[\d.,\s]+$/.test(base!) ? normalizaNumero(base!) : undefined;
     if (v === undefined) return { tipo: "texto", valor: x };
