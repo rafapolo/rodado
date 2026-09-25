@@ -318,6 +318,7 @@ ATLAS_DATASET_THEME = {
     "br_ms_sipni_microdados": "saude",
     "br_ms_sisvan": "saude",
     "br_ms_vacinacao_covid19": "saude",
+    "br_mte_listasuja": "seguranca",
     "br_ok_queridodiario": "governo",
     "br_ok_queridodiario_texto": "governo",
     "br_pgfn_dividaativa": "governo",
