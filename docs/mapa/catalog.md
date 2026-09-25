@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**238 datasets, 1.050 tabelas, 39.671.956.846 linhas.** 4 com data de frescor conferida (de 238).
+**239 datasets, 1.066 tabelas, 39.817.884.049 linhas.** 1 dataset(s) sem descrição. 4 com data de frescor conferida (de 239).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -28,9 +28,10 @@
 | `br_ba_feiradesantana_camara_leis` | Câmara Municipal de Feira de Santana — leis municipais | 1 | 6.033 | — | Base dos Dados |
 | `br_bcb_desenrola` | BCB — programa Desenrola Brasil (renegociação de dívidas de pessoa física) | 1 | 12.751 | — | BCB Desenrola Brasil |
 | `br_bcb_estban` | BCB ESTBAN — estatísticas bancárias por agência/município | 3 | 699.984.822 | — | Base dos Dados |
-| `br_bcb_ifdata` | BCB IF.data — indicadores financeiros de instituições financeiras | 3 | 488.982 | — | Base dos Dados |
+| `br_bcb_ifdata` | BCB IF.data — indicadores financeiros de instituições financeiras | 5 | 55.700.812 | — | BCB — IF.data (valores e cadastro por instituição) |
 | `br_bcb_penalidades` | BCB — penalidades aplicadas a instituições financeiras | 1 | 16.822 | — | BCB Penalties |
 | `br_bcb_pix_municipio` | BCB — volume de transações Pix por município, separado por perfil pagador/recebedor PF/PJ | 1 | 395.447 | — | BCB — Estatísticas do Pix por município |
+| `br_bcb_ptax` | _(sem descrição)_ | 3 | 804.590 | — | BCB — PTAX (cotações diárias) |
 | `br_bcb_scrdata` | BCB SCR.data — carteira de crédito do Sistema de Informações de Crédito | 1 | 43.061.984 | — | BCB SCR.data |
 | `br_bcb_sgs` | BCB SGS — séries temporais macroeconômicas (câmbio, Selic, inflação etc.) | 1 | 25.066 | 2026-08-26 | BACEN/BCB SGS séries |
 | `br_bcb_sicor` | BCB SICOR — operações de crédito rural | 11 | 759.657.502 | — | Base dos Dados |
@@ -91,7 +92,7 @@
 | `br_ibge_censo2022_raca` | IBGE Censo 2022 — cor/raça cruzada com instrução e fecundidade, por município | 2 | 1.415.034 | — | Censo 2022 — Cor ou raça × instrução/fecundidade |
 | `br_ibge_censo2022_religiao` | IBGE Censo 2022 — religião e recortes demográficos associados | 15 | 6.451.488 | — | Censo 2022 — Religião (pacote completo) |
 | `br_ibge_censo_2022` | IBGE — Censo Demográfico 2022, agregados por setor censitário e município | 16 | 138.805.409 | — | Base dos Dados |
-| `br_ibge_censo_demografico` | IBGE — microdados dos Censos Demográficos 1970 a 2010 | 33 | 145.684.505 | — | Base dos Dados |
+| `br_ibge_censo_demografico` | IBGE — microdados dos Censos Demográficos 1970 a 2010 | 38 | 181.894.256 | — | IBGE — Censo Demográfico 2022, microdados da amostra (acesso público) |
 | `br_ibge_cnefe` | IBGE — Cadastro Nacional de Endereços para Fins Estatísticos, Censo 2022 (endereço a endereço) | 1 | 111.102.875 | — | CNEFE Censo 2022 (microdado completo) |
 | `br_ibge_estadic` | IBGE — Pesquisa de Informações Básicas Estaduais (ESTADIC) | 8 | 3.044 | — | Base dos Dados |
 | `br_ibge_inpc` | IBGE — Índice Nacional de Preços ao Consumidor | 4 | 608.478 | — | Base dos Dados |
@@ -104,7 +105,7 @@
 | `br_ibge_pevs` | IBGE — Produção da Extração Vegetal e da Silvicultura | 2 | 558.451 | — | Base dos Dados |
 | `br_ibge_pib` | IBGE — PIB municipal e estadual | 7 | 190.805 | — | Base dos Dados |
 | `br_ibge_pnad` | IBGE — PNAD, microdados compatibilizados históricos | 3 | 9.587.801 | — | Base dos Dados |
-| `br_ibge_pnad_covid` | IBGE — PNAD-COVID19, só o dicionário de variáveis: os microdados não estão no espelho | 1 | 554 | — | Base dos Dados |
+| `br_ibge_pnad_covid` | IBGE — PNAD-COVID19, microdados mensais de mai a nov/2020 (2,65 mi pessoas, pesar por v1032) e o dicionário | 2 | 2.651.013 | — | IBGE — PNAD COVID19, microdados mensais mai–nov/2020 |
 | `br_ibge_pnadc` | IBGE — PNAD Contínua, mercado de trabalho e rendimento | 14 | 31.529.302 | — | Base dos Dados |
 | `br_ibge_pof` | IBGE — Pesquisa de Orçamentos Familiares | 14 | 2.238.882 | — | Base dos Dados |
 | `br_ibge_populacao` | IBGE — estimativas populacionais por município, UF e Brasil | 3 | 192.080 | — | Base dos Dados |
@@ -154,7 +155,7 @@
 | `br_mec_sisu` | MEC SISU — microdados de inscrição no Sistema de Seleção Unificada | 1 | 34.700.256 | — | Base dos Dados |
 | `br_mg_belohorizonte_smfa_iptu` | Prefeitura de Belo Horizonte — cadastro de IPTU | 2 | 21.463.825 | — | Base dos Dados |
 | `br_minc_salic` | MinC — SALIC/Lei Rouanet, projetos culturais incentivados | 8 | 839.316 | — | SALIC/Lei Rouanet (MinC) |
-| `br_mj_consumidorgovbr` | Consumidor.gov.br — reclamações contra empresas, 2014–2025 (2019 só com 2 meses, 2025 parcial) | 1 | 10.167.141 | — | Consumidor.gov.br |
+| `br_mj_consumidorgovbr` | Consumidor.gov.br — reclamações contra empresas, 2014–2025 (2025 parcial; os arquivos de 2019 vêm sem Data Abertura, usar Data Finalização; Data Finalização mistura ISO (2020–2025) e dd/mm/aaaa (2014–2021) — parsear os dois) | 1 | 10.167.141 | — | Consumidor.gov.br |
 | `br_mjsp_ckan` | MJSP — Procon (reclamações Sindec) e Infopen (censo penitenciário legado) | 2 | 15.317 | — | MJSP CKAN (broader) |
 | `br_mjsp_procurados` | MJSP — lista de procurados do projeto Captura Nacional | 1 | 195 | — | Procurados (MJSP/Interpol) |
 | `br_mjsp_sinesp` | SINESP — ocorrências registradas de segurança pública | 2 | 23.843 | 2022-12-01 | SINESP/MJSP |
@@ -204,7 +205,7 @@
 | `br_senado_dados_abertos_administrativos` | Senado Federal — dados administrativos (CEAPS, remuneração de servidores) | 12 | 309.684 | — | Base dos Dados |
 | `br_senado_dadosabertos` | Senado Federal — comissões, matérias, senadores e votações (fonte alternativa) | 4 | 166.049 | — | Senado (geral) |
 | `br_senatran_frota` | SENATRAN — frota de veículos por município e tipo, mensal desde 2013 | 1 | 19.978.618 | — | SENATRAN — frota de veículos por município e tipo |
-| `br_sfb_sicar` | SICAR/SFB — Cadastro Ambiental Rural | 5 | 81.893.549 | — | Base dos Dados |
+| `br_sfb_sicar` | SICAR/SFB — Cadastro Ambiental Rural | 10 | 132.944.122 | — | SFB — SICAR, as 5 tabelas restantes, sem geometria |
 | `br_simet_educacao_conectada` | Programa Educação Conectada — conectividade de internet em escolas | 1 | 137.914 | — | Base dos Dados |
 | `br_siop_orcamento` | SIOP — Sistema Integrado de Planejamento e Orçamento federal | 4 | 36.922 | — | SIOP |
 | `br_sp_saopaulo_geosampa_iptu` | Prefeitura de São Paulo — cadastro de IPTU (GeoSampa) | 1 | 93.430.758 | — | Base dos Dados |
@@ -235,7 +236,7 @@
 | `un_sanctions` | ONU — lista de sanções | 1 | 1.002 | — | UN Sanctions |
 | `us_harvard_ned` | Harvard NED — eleições parlamentares e presidenciais internacionais | 2 | 6.309 | — | Base dos Dados |
 | `world_ampas_oscar` | Oscar (AMPAS) — demografia de vencedores | 1 | 415 | — | Base dos Dados |
-| `world_iea_pirls` | IEA PIRLS — avaliação internacional de leitura do 4º ano, 51 países, sem o Brasil | 8 | 1.941.828 | — | Base dos Dados |
+| `world_iea_pirls` | IEA PIRLS — avaliação internacional de leitura do 4º ano, 51 países, sem o Brasil nem outro país latino-americano (filtrar pirls_type = Normal) | 8 | 1.941.828 | — | Base dos Dados |
 | `world_iea_timss` | IEA TIMSS 2023 — matemática e ciências do 4º e 8º anos, 59 países, com o Brasil | 11 | 1.929.595 | — | Base dos Dados |
 | `world_imdb_movies` | IMDB — filmes mais bem avaliados por ano | 1 | 33.600 | — | Base dos Dados |
 | `world_oecd_pisa` | OCDE PISA — avaliação internacional de estudantes | 1 | 1.745.082 | — | Base dos Dados |
