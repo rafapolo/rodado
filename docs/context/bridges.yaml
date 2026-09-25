@@ -826,6 +826,12 @@ concepts:
     description: Administrative process number. Free-form text across sources — normalize digits before
       joining.
     canonical_table: —
+  numero_acordao_tcu:
+    category: governo
+    description: Número de acórdão do TCU (número + ano + colegiado). Liga a deliberação que declarou uma
+      empresa inidônea ao texto do acórdão. Nenhuma das duas pontas tem CNPJ em comum com a outra além
+      do próprio inidôneo — o texto do TCU quase nunca cita CNPJ (2 de 36.499 sumários).
+    canonical_table: br_tcu_dadosabertos.dados
   sigla_partido:
     category: politica
     description: Party abbreviation. The join between electoral results, party affiliation and Câmara
@@ -1571,6 +1577,17 @@ bridges:
     verified: 'dígito verificador válido em 336.127 de 336.137 valores sem máscara (os 10 restantes têm 11 dígitos: CPF); não conferido contra br_me_cnpj.estabelecimentos — 2026-09-25'
     concept: cnpj
     join_expr: regexp_replace({s}.cpfcnpjtransportador, '[^0-9]', '', 'g') = {d}.cnpj
+  - table: br_tcu_inidoneos.empresas
+    column: '"DELIBERACAO"'
+    description: 'texto `AC-002326/2024-PL`: número com zeros à esquerda, ano, colegiado (`PL`, `1C`,
+      `2C`). Extrair as três partes para casar com `br_tcu_dadosabertos.dados`, que guarda
+      `numeroAcordao` sem zeros, `anoAcordao` e `colegiado` por extenso (`Plenário`, `Primeira Câmara`,
+      `Segunda Câmara`). O `dados` só cobre sessões de 2024-07-23 a 2026-07-08.'
+    concept: numero_acordao_tcu
+    join_expr: TRY_CAST(regexp_extract({s}."DELIBERACAO", 'AC-0*(\d+)/', 1) AS INT) = TRY_CAST({d}.numeroAcordao AS INT) AND regexp_extract({s}."DELIBERACAO", '/(\d{4})-', 1) = {d}.anoAcordao AND regexp_extract({s}."DELIBERACAO", '-([A-Z0-9]+)$', 1) = CASE {d}.colegiado WHEN 'Plenário' THEN 'PL' WHEN 'Primeira Câmara' THEN '1C' ELSE '2C' END
+    verified: 4 de 4 inidôneos com acórdão dentro da janela do `dados` casam (todos do Plenário, todos
+      tipo `ACÓRDÃO`, nenhum `ACÓRDÃO DE RELAÇÃO`); os 3 de jan/2024 caem antes da janela
+      (2026-09-25, tema 87)
   estacao:
   - table: br_inmet_bdmep.microdados
     column: id_estacao
@@ -1605,7 +1622,9 @@ bridges:
     format: 'Apesar do nome, NÃO é ISO3: é o IDCNTRY do IEA, numérico (M49 sem zero à esquerda, ''840'',
       ''76''), mais códigos próprios do IEA para entidades subnacionais (926 Inglaterra, 928, 956/957
       Bélgica flamenga/francesa, 411). Juntar com `pais.sigla_iso3` devolve zero. O Brasil (76) não está
-      no PIRLS espelhado'
+      no PIRLS espelhado, nem nenhum país latino-americano. `pirls_type` separa `Normal` de `Bridge`
+      (amostra-ponte em papel): sem `WHERE pirls_type = ''Normal''` a média de Portugal sai 525 em vez
+      dos 520 oficiais'
     expr: lpad(country_iso3_code, 3, '0') = lpad(p.id_m49, 3, '0')
     verified: 46 dos 51 códigos de `student_achievement` casam com `pais.id_m49`; os 5 de fora são
       as entidades subnacionais do IEA (2026-09-25)
@@ -1615,7 +1634,8 @@ bridges:
     column: country_m49
     format: IDCNTRY do IEA, numérico como texto (M49 + códigos subnacionais do IEA, ex. 926). Mesmo
       código que o `country_iso3_code` do PIRLS, com o nome certo. Brasil = '76', presente no TIMSS
-      2023 (22.130 alunos do 4º ano, 22.770 do 8º)
+      2023 (22.130 alunos do 4º ano, 22.770 do 8º). O sexo do aluno se chama `sex_students` em `student_achievement_grade_4`
+      e `student_sex` nas outras tabelas (1 = menina, 2 = menino)
     expr: lpad(country_m49, 3, '0') = lpad(p.id_m49, 3, '0')
     verified: 43 dos 44 códigos de `student_achievement_grade_8` casam com `pais.id_m49`; fora só o
       926 (2026-09-25)
