@@ -1,0 +1,18 @@
+dataset: br_stj_dadosabertos
+gotchas:
+  - id: linhas_duplicadas
+    resumo: "count(*) superconta: 549.243 linhas para 532.182 documentos. Conte por SeqDocumento distinto."
+    detalhe: >
+      17.061 linhas são repetidas, e nem DISTINCT * resolve: 4.279 documentos
+      aparecem com linhas diferentes entre si (536.461 linhas distintas). Por
+      SeqDocumento: 431.040 decisões monocráticas e 101.142 acórdãos.
+    tabelas: [documentos]
+    colunas: [SeqDocumento]
+    severidade: silencioso
+    verificado: "count(*) 549.243, count(DISTINCT SeqDocumento) 532.182, linhas distintas 536.461 — medido 2026-09-25"
+  - id: so_2021
+    resumo: "Só cobre 2021 (04/01 a 20/12). Não é série histórica do STJ."
+    tabelas: [documentos]
+    colunas: [dataPublicacao]
+    severidade: silencioso
+    verificado: "min/max de dataPublicacao 2021-01-04 / 2021-12-20 — medido 2026-09-25"

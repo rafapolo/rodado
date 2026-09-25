@@ -1,0 +1,18 @@
+dataset: br_ana_reservatorios
+gotchas:
+  - id: volume_util_nulo_e_fora_de_faixa
+    resumo: "57% das linhas não têm proporcao_volume_util (usina a fio d'água); ~5 mil têm valor impossível (−646 a 407). Filtrar [−50, 105] antes de mínimos e contagens abaixo de limiar."
+    detalhe: >
+      Dos 16.369 valores fora de [−50, 100], 11.367 estão entre 100 e 105
+      (reservatório vertendo, plausível). Na média anual o filtro muda no
+      máximo 1,2 ponto; em mínimos e "meses abaixo de 20%" muda o resultado
+      (Retiro Baixo chega a −83,8% sem filtro).
+    tabelas: [sin]
+    colunas: [proporcao_volume_util]
+    severidade: silencioso
+    verificado: "659.712 nulas de 1.157.621; 16.369 fora de [−50,100], 11.367 entre 100 e 105 — medido 2026-09-25"
+  - id: sem_subsistema_nem_bacia
+    resumo: "Não há subsistema do SIN nem código de bacia. Agregar por subsistema ou cruzar com estação fluviométrica exige mapear o reservatório à mão."
+    tabelas: [sin]
+    severidade: erro
+    verificado: "colunas: data, id/nome_reservatorio, cota, vazões, proporcao_volume_util; série 2000-01-01 a 2022-01-12 — medido 2026-09-25"

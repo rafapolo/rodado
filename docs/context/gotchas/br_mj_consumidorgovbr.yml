@@ -1,0 +1,20 @@
+dataset: br_mj_consumidorgovbr
+gotchas:
+  - id: 2019_sem_data_abertura
+    resumo: "Os arquivos semestrais de 2019 (780.179 linhas) vêm sem Data Abertura. Contar por ano pela Data Abertura faz 2019 parecer ter 2 meses; use Data Finalização."
+    tabelas: [reclamacoes]
+    colunas: ["Data Abertura", "Data Finalização", arquivo_origem]
+    severidade: silencioso
+    verificado: "Data Abertura nula em 780.179 linhas, todas de '2019_1º/2º Semestre', todas com Data Finalização em 2019 — medido 2026-09-25"
+  - id: data_finalizacao_dois_formatos
+    resumo: "Data Finalização mistura ISO (2020–2025, 7,19 mi) e dd/mm/aaaa (2014–2021, 2,98 mi). Parsear os dois formatos."
+    tabelas: [reclamacoes]
+    colunas: ["Data Finalização"]
+    severidade: silencioso
+    verificado: "7.189.230 ISO, 2.977.908 dd/mm/aaaa, 3 nulas — medido 2026-09-25"
+  - id: ano_abertura_com_ponto_zero
+    resumo: "Ano Abertura mistura '2020' e '2020.0'. Filtrar pelo ano da Data Abertura, não por igualdade na coluna."
+    tabelas: [reclamacoes]
+    colunas: ["Ano Abertura"]
+    severidade: silencioso
+    verificado: "2020 e 2021 aparecem nas duas grafias — medido 2026-09-25"
