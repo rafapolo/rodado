@@ -137,6 +137,61 @@ próprio `build_metadata_catalog.py` avisa no stderr (`N dataset(s) missing a
 description`) — a linha existe no catalog e no `catalog.md` com a coluna
 `description` vazia, não quebra o regen, mas fica feio até alguém preencher.
 
+## 8. Tabela ou dataset novo → as contagens cravadas no texto mudam
+
+O número de tabelas, datasets e linhas não vem só do catálogo: ele está
+**escrito à mão** em doc, página e script de imagem, e nada o atualiza. Depois
+que `build_metadata_catalog.py` rodar, tire os números novos do próprio
+catálogo (nunca de conta de cabeça):
+
+```sql
+SELECT count(DISTINCT dataset) AS datasets, count(*) AS tabelas, sum(rows) AS linhas
+FROM _rodado_metadata WHERE source <> 'view_only';
+```
+
+e ache toda ocorrência da contagem **antiga** — não confie numa lista fixa de
+arquivos, ela envelhece:
+
+```bash
+grep -rlE '1[.,]050|238 datasets|39,67' --exclude-dir={node_modules,.git,tasks,.claude} . | grep -vE '\.json$|sitemap\.xml$'
+```
+
+Em 2026-09-25 isso dava: `AGENTS.md` (topo e seção de `docs/context/`),
+`README.md`, `docs/context/README.md`, `pages/{index,en,mcp,mcp-en,technical}.html`,
+`pages/analises/viewer.js`, `pages/plataformas/plataformas.js` (e a página de
+plataforma que repete o número), `scripts/gera_seo.py` e
+`scripts/gera_og_image.py`. Os dois scripts **geram** — depois de editá-los,
+rodar os dois (`gera_og_image.py` regrava `pages/assets/og*.png`, `gera_seo.py`
+o `sitemap.xml` e o `<head>` das páginas). Pt-BR escreve `1.050`, inglês
+`1,050`: trocar os dois. Um commit só, como o `4d55edf`.
+
+## 9. Dataset novo → ligar no atlas (2D e 3D)
+
+O atlas (`pages/atlas/`, as vistas grade, temas e 3D saem do mesmo
+`schema_graph.json`) só mostra o dataset **ligado** se duas coisas estiverem
+certas — e nenhuma falha em voz alta:
+
+1. **Tema.** Dataset sem entrada no mapa de temas de `scripts/gera_schema_graph.py`
+   cai em `outros`, longe dos irmãos. Dê o tema do irmão mais próximo (lista de
+   sanção → `seguranca`, como `br_cgu_sancoes`; ver `bbf44fd`).
+2. **Chave de join.** A aresta sai da coluna com nome canônico (`cnpj`,
+   `cnpj_basico`, `cpf`, `id_municipio`, `sigla_uf`…). Coluna com outro nome
+   (`NumCNPJ`, `SigUFPrincipal`, `CodMunicipioIbge`) precisa de ponte em
+   `docs/context/bridges.yaml` **conferida no beelink** e da entrada em
+   `concept_aliases` — sem ela o atlas não desenha a aresta (ver `58327d1`).
+
+Depois: `gera_join_keys.py` → `gera_schema_graph.py` → `build_atlas.py`, e
+conferir no `schema_graph.json` que o dataset tem tema diferente de `outros`
+e ao menos uma aresta:
+
+```bash
+python3 -c "import json;g=json.load(open('pages/atlas/schema_graph.json'));print([d for d in g['datasets'] if d['n']=='<dataset>'])"
+# esperado: "dom" diferente de "outros" e "nk" (chaves de join) > 0
+```
+
+Abrir `rodado.xyz/atlas?db=<dataset>` (ou o `index.html` local) e olhar a vista
+3D: o nó tem que aparecer preso às chaves, não solto na borda.
+
 ## Ordem completa, resumida
 
 ```
@@ -147,4 +202,7 @@ scrape novo/retomado
   -> 3. algum job que devia continuar rodando parou sozinho? (ps aux + tail do log)
   -> 4. contagem bate com o esperado da fonte? (checar duplicata de arquivo antes de aceitar um número grande demais)
   -> 5. algum zip multi-membro ficou pra trás? (inspecionar antes de descartar)
+  -> 6. source_url com https:// na linha do done.md (antes do passo 2, que a lê)
+  -> 8. contagens cravadas em doc/página/og atualizadas pelo catálogo novo (grep da contagem antiga)
+  -> 9. dataset ligado no atlas: tema fora de `outros` + chave canônica ou ponte com concept_aliases
 ```
