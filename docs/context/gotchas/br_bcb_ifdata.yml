@@ -1,0 +1,20 @@
+dataset: br_bcb_ifdata
+gotchas:
+  - id: um_tipo_e_um_relatorio
+    resumo: "Filtre um tipo_instituicao e um numero_relatorio antes de somar: a mesma conta ('Ativo Total') aparece no Resumo e no Ativo, e os tipos 1 (prudencial), 2 (financeiro) e 3 (individual) contam o mesmo banco de novo. Sem filtro, o ativo do sistema dobra."
+    tabelas: [relatorio]
+    colunas: [tipo_instituicao, numero_relatorio, conta, saldo]
+    severidade: silencioso
+    verificado: "ativo total Resumo tipo 1 = R$ 17,05 tri em 2024-12; carteira de crédito tipo 3 bate SGS 20539 com ±0,4% — medido 2026-09-25"
+  - id: conta_muda_de_codigo
+    resumo: "O código de conta muda entre trimestres (layout novo a partir de 2025-09). Filtre a conta dentro do trimestre, não compare código entre anos."
+    tabelas: [relatorio]
+    colunas: [conta, nome_coluna]
+    severidade: silencioso
+    verificado: "layout de 202509 diferente do de 202506 — medido 2026-09-25"
+  - id: instituicao_da_bd_nao_casa
+    resumo: "cadastro e relatorio usam cod_inst de 8 caracteres (CNPJ básico com zeros ou C00xxxxx). A tabela instituicao (Base dos Dados) usa id_instituicao recodificado: C0080099 vira 1000080099 e o CNPJ perde os zeros (7221678). Não junte uma com a outra."
+    tabelas: [cadastro, relatorio, instituicao]
+    colunas: [cod_inst, id_instituicao]
+    severidade: erro
+    verificado: "cadastro: Banco do Brasil = '00000000', Itaú prudencial = 'C0080099'; instituicao: Itaú prudencial id_instituicao = '1000080099' — medido 2026-09-25"
