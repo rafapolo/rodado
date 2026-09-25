@@ -930,6 +930,41 @@ export function checaRanking(sql: string): Veredito {
 
 export type Linha = Record<string, unknown>;
 
+/**
+ * Fonte que a pergunta nomeia → prefixo dos datasets dela. Medido 2026-09-25,
+ * holdout3: "saldo do CAGED em 2019" (o CAGED do espelho começa em 2020) foi
+ * respondido duas vezes com a RAIS — a segunda depois de uma nota dizendo "não
+ * troque pela RAIS", com o modelo afirmando que a nota mandava. Regra escrita
+ * não segurou; o aviso vai junto do resultado que ele está prestes a usar.
+ */
+const FONTES: [RegExp, string, string][] = [
+  [/\bCAGED\b/i, "br_me_caged", "CAGED"], [/\bRAIS\b/i, "br_me_rais", "RAIS"],
+  [/\bSINASC\b/i, "br_ms_sinasc", "SINASC"], [/\bSIM\b/, "br_ms_sim", "SIM"],
+  [/\bCNES\b/i, "br_ms_cnes", "CNES"], [/\bSIH\b/, "br_ms_sih", "SIH"],
+  [/\bSINAN\b/i, "br_ms_sinan", "SINAN"], [/\bENEM\b/i, "br_inep_enem", "ENEM"],
+  [/\bIDEB\b/i, "br_inep_ideb", "IDEB"], [/\bPNAD\b/i, "br_ibge_pnad", "PNAD"],
+  [/\bPRODES\b/i, "br_inpe_prodes", "PRODES"], [/\bANP\b/, "br_anp_", "ANP"],
+];
+
+/**
+ * A fonte nomeada na pergunta que a consulta não tocou — para pergunta direta.
+ * Só com agregado (consulta com cara de resposta); exploração e DISTINCT passam.
+ */
+export function fonteTrocada(pergunta: string, sql: string): string | undefined {
+  if (!/\b(COUNT|SUM|AVG)\s*\(/i.test(sql)) return undefined;
+  const usadas = tabelasCitadas(sql).map((t) => t.toLowerCase());
+  for (const [re, prefixo, nome] of FONTES) {
+    if (!re.test(pergunta) || usadas.some((t) => t.startsWith(prefixo))) continue;
+    const outras = [...new Set(usadas.filter((t) => t.includes(".") && !t.startsWith("br_bd_diretorios")).map((t) => t.split(".")[0]))];
+    if (!outras.length) continue;
+    return `A pergunta pede o ${nome}, e esta consulta não usa ${prefixo}* — usa ${outras.join(", ")}. ` +
+      `Se o ${nome} não tem o dado pedido (ano ou recorte fora da cobertura), a resposta certa é dizer isso; ` +
+      `um número de outra fonte, mesmo parecido, responde outra pergunta. Se usar outra fonte, diga qual e ` +
+      `que ela NÃO é o ${nome}.`;
+  }
+  return undefined;
+}
+
 /** Código IBGE da UF → sigla. */
 export const UF_IBGE: Record<string, string> = {
   "11": "RO", "12": "AC", "13": "AM", "14": "RR", "15": "PA", "16": "AP", "17": "TO",

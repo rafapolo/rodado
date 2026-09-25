@@ -7,7 +7,7 @@ import { expect, test, describe } from "bun:test";
 import {
   portao, alertasDeSanidade,
   juncoesSemPonte, mensagemSemPonte, assinaturaJuncao,
-  perguntaDePesquisa, checaRanking,
+  perguntaDePesquisa, checaRanking, fonteTrocada,
 } from "./portao.ts";
 
 describe("camada read-only (sqlguard)", () => {
@@ -573,4 +573,22 @@ test("código de UF filtrado vira sigla no alerta (holdout3: '41','26' era PR e 
     [{ id_uf_mae: "41", n: 148581 }, { id_uf_mae: "26", n: 142122 }]).join(" ");
   expect(a).toContain("41 = PR");
   expect(a).toContain("26 = PE");
+});
+
+describe("fonte trocada — pergunta direta nomeia uma fonte e a SQL usa outra (holdout3, 2026-09-25)", () => {
+  const q = "Qual foi o saldo de empregos formais do CAGED no Brasil em 2019?";
+  test("CAGED pedido, RAIS consultada: avisa", () => {
+    const a = fonteTrocada(q, "SELECT COUNT(*) AS n FROM br_me_rais.microdados_vinculos WHERE ano = 2019 AND vinculo_ativo_3112 = '1'");
+    expect(a).toContain("não usa br_me_caged");
+    expect(a).toContain("br_me_rais");
+  });
+  test("CAGED pedido e consultado: calado", () => {
+    expect(fonteTrocada(q, "SELECT SUM(saldo_movimentacao) FROM br_me_caged.microdados_movimentacao WHERE ano = 2021")).toBeUndefined();
+  });
+  test("exploração sem agregado: calado", () => {
+    expect(fonteTrocada(q, "SELECT DISTINCT ano FROM br_me_rais.microdados_vinculos")).toBeUndefined();
+  });
+  test("SIM não casa 'sim' minúsculo da prosa", () => {
+    expect(fonteTrocada("Houve mais óbitos, sim ou não, em 2020 no RAIS?", "SELECT COUNT(*) FROM br_me_rais.microdados_vinculos WHERE ano=2020")).toBeUndefined();
+  });
 });
