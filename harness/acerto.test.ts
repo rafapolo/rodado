@@ -181,3 +181,9 @@ test("SEM_DADO: certo é dizer que o espelho não tem o dado (B13)", () => {
   expect(avalia("O PIB de Campinas em 2023 foi de R$ 70,2 bilhões.", "SEM_DADO", q).certo).toBe(false);
   expect(avalia("", "SEM_DADO", q).eco).toBe(false);
 });
+
+test("SEM_DADO reconhece 'contém dados apenas até' e 'não é possível informar' (holdout3, 2026-09-25)", () => {
+  const r = "Não é possível informar o número de óbitos por agressão registrados pelo SIM em 2024, pois a base de microdados disponível no espelho contém dados apenas até o ano de **2022**.";
+  expect(avalia(r, "SEM_DADO", "Quantos óbitos por agressão o SIM registrou em 2024?").certo).toBe(true);
+  expect(avalia("O SIM registrou 45.000 óbitos por agressão em 2024.", "SEM_DADO", "q").certo).toBe(false);
+});
