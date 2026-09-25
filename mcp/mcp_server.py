@@ -104,7 +104,7 @@ with open(HIERARCHIES_PATH, encoding="utf-8") as f:
 with open(DICIONARIO_COVERAGE_PATH, encoding="utf-8") as f:
     _DICIONARIO_COVERAGE: dict = json.load(f).get("tables", {})
 
-# tasks/generate-full-schema-dict.md: colunas STRING/INTEGER que parecem
+# tasks/done/generate-full-schema-dict.md: colunas STRING/INTEGER que parecem
 # código (baixa cardinalidade) mas não têm fonte de significado conhecida em
 # nenhum mecanismo acima — nem dicionario, nem bridges.yaml, nem
 # hierarchies.yaml. Generaliza o alerta manual que
@@ -122,7 +122,7 @@ if SCHEMA_DICT_STATUS_PATH.exists():
         _NAO_VERIFICADO_BY_TABLE.setdefault(_tid, []).append(_colname)
 
 
-# tasks/generate-full-schema-dict.md estágio 4: o significado dos códigos
+# tasks/done/generate-full-schema-dict.md estágio 4: o significado dos códigos
 # pesquisado à mão, com fonte oficial e valores medidos no beelink
 # (docs/context/column_codes.yaml). dataset.table -> lista de entradas.
 _COLUMN_CODES_BY_TABLE: dict = {}
@@ -596,7 +596,7 @@ def describe_table(table: str) -> dict:
         easy to find, and silent. Treat a flagged column the same way —
         don't trust what the name implies, confirm against the source before
         using it. See docs/context/schema_dict_status.json for the full
-        reasoning per column (tasks/generate-full-schema-dict.md).
+        reasoning per column (tasks/done/generate-full-schema-dict.md).
       * `column_codes` — the researched meaning of this table's code columns
         (docs/context/column_codes.yaml): value -> label, the official source
         URL, what was measured on beelink, and traps found while checking
