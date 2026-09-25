@@ -1,0 +1,13 @@
+dataset: world_iea_pirls
+gotchas:
+  - id: sem_brasil
+    resumo: "O PIRLS espelhado não tem o Brasil nem nenhum país latino-americano (51 códigos IEA). Pergunta sobre o Brasil não tem resposta aqui."
+    colunas: [country_iso3_code]
+    severidade: erro
+    verificado: "51 códigos distintos em student_achievement, nenhum 76/152/32/484/170 — medido 2026-09-25"
+  - id: amostra_ponte
+    resumo: "Filtrar pirls_type = 'Normal'. A amostra-ponte ('Bridge', em papel) entra na média e desloca o país: Portugal sai 525 em vez dos 520 oficiais."
+    tabelas: [student_achievement]
+    colunas: [pirls_type]
+    severidade: silencioso
+    verificado: "Portugal Normal 519,8, Bridge 530,8; Espanha Normal 521,2 — oficiais 520 e 521 — medido 2026-09-25"

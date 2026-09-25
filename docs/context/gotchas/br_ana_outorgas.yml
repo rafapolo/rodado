@@ -12,8 +12,3 @@ gotchas:
     colunas: [int_qt_vazaomedia]
     severidade: silencioso
     verificado: "captacoes: 181.917 linhas, soma 20.584.537 (= 5.718 m³/s se m³/h) — medido 2026-09-25"
-  - id: sem_view
-    resumo: "O dataset não tem view no DuckDB: leia por read_parquet('~/rodado/br_ana_outorgas/<tabela>/*.parquet')."
-    colunas: []
-    severidade: erro
-    verificado: "SELECT em br_ana_outorgas.captacoes: Catalog Error, schema não existe; read_parquet no disco funciona — medido 2026-09-25"

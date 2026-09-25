@@ -66,7 +66,9 @@ def main():
             continue
         remote_dir = f"~/rodado/{dataset}/{table}"
         files_raw = sh(
-            f"find {remote_dir} -maxdepth 1 -name '*.parquet' 2>/dev/null"
+            # sem -maxdepth: tabela particionada (`bacia=10/data_0.parquet`) também é
+            # tabela; com -maxdepth 1 as séries da ANA ficavam sem view (2026-09-25)
+            f"find {remote_dir} -name '*.parquet' 2>/dev/null"
         ).strip()
         files = sorted(f for f in files_raw.split("\n") if f)
         # find with ~ over ssh needs expansion -- resolve to absolute /home/... paths

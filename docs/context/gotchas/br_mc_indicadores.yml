@@ -1,0 +1,18 @@
+dataset: br_mc_indicadores
+gotchas:
+  - id: ministerio_da_cidadania
+    resumo: "É o Ministério da Cidadania, não o das Cidades: Bolsa Família e CadÚnico por município e mês, 2004 a set/2020."
+    severidade: erro
+    verificado: "valor pago 2019 bate município a município com cgu_beneficios_cidadao.bolsa_familia_pagamento (5.570/5.570, R$ 31,159 bi) — medido 2026-09-25"
+  - id: valor_2020_auxilio
+    resumo: "De abril/2020 em diante valor_pago_pbf cai 96% (R$ 0,10–0,11 bi/mês com 14,3 mi famílias): o Auxílio Emergencial pagou no lugar. A soma de 2020 não mede o programa."
+    tabelas: [transferencias_municipio]
+    colunas: [valor_pago_pbf]
+    severidade: silencioso
+    verificado: "mar/2020 R$ 2,505 bi, abr/2020 R$ 0,113 bi — medido 2026-09-25"
+  - id: cadunico_so_desde_2012
+    resumo: "familias_cadastradas_cu e pessoas_cadastradas_cu só existem a partir de ago/2012."
+    tabelas: [transferencias_municipio]
+    colunas: [familias_cadastradas_cu, pessoas_cadastradas_cu]
+    severidade: silencioso
+    verificado: "0 valores não nulos antes de 2012 — medido 2026-09-25"
