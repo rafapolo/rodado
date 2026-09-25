@@ -930,6 +930,14 @@ export function checaRanking(sql: string): Veredito {
 
 export type Linha = Record<string, unknown>;
 
+/** Código IBGE da UF → sigla. */
+export const UF_IBGE: Record<string, string> = {
+  "11": "RO", "12": "AC", "13": "AM", "14": "RR", "15": "PA", "16": "AP", "17": "TO",
+  "21": "MA", "22": "PI", "23": "CE", "24": "RN", "25": "PB", "26": "PE", "27": "AL", "28": "SE", "29": "BA",
+  "31": "MG", "32": "ES", "33": "RJ", "35": "SP", "41": "PR", "42": "SC", "43": "RS",
+  "50": "MS", "51": "MT", "52": "GO", "53": "DF",
+};
+
 /** Os 5.570 municípios do país — o teto natural de um resultado por município. */
 export const MUNICIPIOS_BR = 5570;
 
@@ -1013,6 +1021,20 @@ export function alertasDeSanidade(sql: string, linhas: Linha[]): string[] {
       `Média (AVG) sobre tabela de unidade menor, e o dataset tem tabela já agregada: ${agregadas.join(", ")}. ` +
       `Se a pergunta é sobre o Brasil, um estado ou uma região, leia o valor pronto dessa tabela — ` +
       `a média dos índices de escolas, municípios ou estados NÃO é o índice do agregado.`);
+  }
+
+  // Medido 2026-09-25, holdout3: "MG ou BA?" filtrado com id_uf_mae IN ('41',
+  // '26') — Paraná e Pernambuco. A consulta roda, devolve dois números
+  // plausíveis, e o modelo respondeu 148.581 para MG (são 247.192). O código
+  // IBGE da UF não é adivinhável; dizer quais estados foram filtrados basta.
+  const ufs = new Set<string>();
+  for (const m of sql.matchAll(/\bid_uf\w*\s*(?:=\s*'?(\d{2})'?|IN\s*\(([^)]*)\))/gi)) {
+    const lista = m[1] ? [m[1]] : (m[2] ?? "").match(/\d{2}/g) ?? [];
+    for (const c of lista) if (UF_IBGE[c]) ufs.add(c);
+  }
+  if (ufs.size) {
+    alertas.push(`Os códigos de UF filtrados são ${[...ufs].map((c) => `${c} = ${UF_IBGE[c]}`).join(", ")}. ` +
+      `Confira se são os estados da pergunta — o código IBGE não segue a ordem alfabética (MG = 31, BA = 29, SP = 35, RJ = 33).`);
   }
 
   const prim = linhas[0];

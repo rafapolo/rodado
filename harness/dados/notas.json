@@ -12,12 +12,12 @@
     "tipo_obito_ocorrencia": "momento do óbito em relação a gravidez/parto (óbito materno), NÃO a idade de quem morreu"
   },
   "br_me_caged.microdados_movimentacao": {
-    "*": "uma linha por movimentação (admissão ou desligamento)",
+    "*": "uma linha por movimentação (admissão ou desligamento). Começa em 2020 (o Novo CAGED): o espelho não tem o CAGED antigo, então saldo de 2019 ou antes não existe aqui — diga isso, não troque pela RAIS.",
     "saldo_movimentacao": "+1 admissão, -1 desligamento. Saldo de empregos = SUM(saldo_movimentacao)",
     "tipo_movimentacao": "desde 2020 a maioria das admissões vem como '97' (fora do dicionário) — NÃO conte admissão/desligamento por este código; use saldo_movimentacao (1 ou -1)"
   },
   "br_me_rais.microdados_vinculos": {
-    "*": "uma linha por vínculo no ano; 2 bilhões de linhas — filtre sempre por ano, e por sigla_uf quando o recorte for estadual",
+    "*": "uma linha por vínculo no ano; 2 bilhões de linhas — filtre sempre por ano, e por sigla_uf quando o recorte for estadual. NÃO é o CAGED: se a pergunta pede o saldo do CAGED de um ano antes de 2020, esse dado não está no espelho — não o substitua por admissões − desligamentos da RAIS; diga que não há o dado (medido 2026-09-25: 'CAGED 2019' respondido com 369.928 tirado da RAIS).",
     "vinculo_ativo_3112": "'1' = ativo em 31/12: o estoque de emprego formal é COUNT(*) FILTER (WHERE vinculo_ativo_3112 = '1')",
     "valor_remuneracao_dezembro": "em R$. As colunas terminadas em _sm são o mesmo valor em SALÁRIOS MÍNIMOS — responda em R$ salvo se a pergunta pedir salários mínimos",
     "valor_remuneracao_media": "em R$ (média do ano). _sm = em salários mínimos"

@@ -567,3 +567,10 @@ describe("camada valor — literal que a coluna não tem (triagem B2, 2026-09-25
     expect(v.camada).toBe("valor");
   });
 });
+
+test("código de UF filtrado vira sigla no alerta (holdout3: '41','26' era PR e PE, não MG e BA)", () => {
+  const a = alertasDeSanidade("SELECT id_uf_mae, COUNT(*) AS n FROM br_ms_sinasc.microdados WHERE ano = 2020 AND id_uf_mae IN ('41', '26') GROUP BY id_uf_mae",
+    [{ id_uf_mae: "41", n: 148581 }, { id_uf_mae: "26", n: 142122 }]).join(" ");
+  expect(a).toContain("41 = PR");
+  expect(a).toContain("26 = PE");
+});
