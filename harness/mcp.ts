@@ -310,8 +310,8 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     // B14, medido 2026-09-25: com o lembrete do n, 44/50 respostas citaram o n,
     // e só 8/50 o coeficiente — a prosa dizia "correlação positiva fraca" sem o
     // número. O que não se pede não vem; o r entra no mesmo lembrete.
-    const colunas = Object.keys(capado.rows[0] ?? {}).map((k) => k.toLowerCase());
-    const temN = colunas.includes("n");
+    const nomes = Object.keys(capado.rows[0] ?? {}).map((k) => k.toLowerCase());
+    const temN = nomes.includes("n");
     const coef = Object.keys(capado.rows[0] ?? {}).filter((k) => /^(r|rho|corr\w*|correla\w*|r_\w+)$/i.test(k));
     if (PESQUISA && (temN || coef.length)) {
       const n = extraiN(capado.rows as Record<string, unknown>[]);
