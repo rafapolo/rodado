@@ -188,6 +188,14 @@ manual bookkeeping.
 
 ## Step 4 — Fetch missing tables safely
 
+**Tabela com `GEOGRAPHY`: não troque a geometria por centroide sem medir.**
+`ST_CENTROID`/`ST_AREA` fazem o BigQuery ler a coluna de geometria inteira, então
+o dry-run de `SELECT ST_CENTROID(geometria), ...` custa o mesmo que puxar o WKT.
+No SICAR (2026-09-25), as 5 tabelas davam 272,6 GB com centroide e 6,4 GB sem a
+geometria. Faça o dry-run com e sem a função geográfica antes de escolher. O
+SICAR veio sem geometria nem centroide, e a localização sai por `id_imovel` →
+`area_imovel.geometria`, que já estava no disco (`scripts/sync/sicar_sem_geometria.py`).
+
 Use `scripts/sync/gcp_to_beelink_sync.py <missing_list_file>`. It:
 
 1. Looks up schema + `numRows` via `bq show` (metadata, free) — skips if `numRows` alone
