@@ -25,7 +25,7 @@ import { listaDatasets, tabelasDe, colunasDe, resolveDataset, COLUNAS_PARTICAO, 
 import {
   portao, checaExplain, alertasDeSanidade, faixasCitadas,
   juncoesSemPonte, mensagemSemPonte, assinaturaJuncao, sugestao, semComentarios, repara, NOTA_AMOSTRA,
-  perguntaDePesquisa, checaRanking, extraiN, fonteTrocada,
+  perguntaDePesquisa, checaRanking, extraiN, fonteTrocada, avisoRejeicaoRepetida, coeficienteVazio, COLUNA_COEFICIENTE,
 } from "./portao.ts";
 import { dicasDeJoin } from "./pontes.ts";
 import { runSqlSsh } from "./beelink.ts";
@@ -78,6 +78,8 @@ const PERGUNTA = Bun.env.HARNESS_PERGUNTA ?? "";
 const PESQUISA = perguntaDePesquisa(PERGUNTA);
 /** A mesma consulta, só com outro LIMIT: medido rodando 3x seguidas sem mudar nada. */
 const jaRodadas = new Set<string>();
+/** Quantas vezes cada SQL (sem LIMIT) já foi rejeitada — B24, ver `avisoRejeicaoRepetida`. */
+const rejeitadas = new Map<string, number>();
 /** Tabelas cuja nota e cálculo verificado o modelo já viu nesta pergunta. */
 const semanticaVista = new Set<string>();
 const semLimite = (s: string) => s.replace(/\blimit\s+\d+/gi, "").replace(/\s+/g, " ").trim().toLowerCase();
@@ -203,13 +205,20 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     // O portão. A rejeição vira resultado de ferramenta — é assim que o laço
     // agêntico vira o mecanismo de reparo, sem código de retry meu.
     const original = sql;
+    const recusa = (msg: string) => {
+      const k = semLimite(original);
+      const vezes = (rejeitadas.get(k) ?? 0) + 1;
+      rejeitadas.set(k, vezes);
+      const aviso = avisoRejeicaoRepetida(vezes);
+      return erro(aviso ? `${msg}\n\n${aviso}` : msg);
+    };
     const reparo = repara(original);
     sql = reparo.sql;
     const v = portao(sql);
-    if (!v.ok) return erro(`REJEITADA (${v.camada}): ${v.erro}`);
+    if (!v.ok) return recusa(`REJEITADA (${v.camada}): ${v.erro}`);
     if (PESQUISA) {
       const vr = checaRanking(sql);
-      if (!vr.ok) return erro(`REJEITADA (${vr.camada}): ${vr.erro}`);
+      if (!vr.ok) return recusa(`REJEITADA (${vr.camada}): ${vr.erro}`);
     }
 
     const ex = await checaExplain(sql, runSqlSsh);
@@ -223,11 +232,11 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
         const ex2 = await checaExplain(semN.sql, runSqlSsh);
         if (ex2.ok) {
           const v0 = portao(semN.sql);
-          if (!v0.ok) return erro(`REJEITADA (${v0.camada}): ${v0.erro}`);
+          if (!v0.ok) return recusa(`REJEITADA (${v0.camada}): ${v0.erro}`);
         }
       }
       const tabs = tabelasDaSql(sql).map((ref) => ({ ref, cols: (colunas(ref) ?? []).map((c) => c.name) }));
-      return erro(`REJEITADA (explain): ${ex.erro}${dicaColunaInexistente(ex.erro ?? "", tabs)}`);
+      return recusa(`REJEITADA (explain): ${ex.erro}${dicaColunaInexistente(ex.erro ?? "", tabs)}`);
     }
 
     const r = await runSqlSsh(sql);
@@ -312,8 +321,14 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     // número. O que não se pede não vem; o r entra no mesmo lembrete.
     const nomes = Object.keys(capado.rows[0] ?? {}).map((k) => k.toLowerCase());
     const temN = nomes.includes("n");
-    const coef = Object.keys(capado.rows[0] ?? {}).filter((k) => /^(r|rho|corr\w*|correla\w*|r_\w+)$/i.test(k));
-    if (PESQUISA && (temN || coef.length)) {
+    // B22: corr() NULL ou ±1 não é resultado a escrever — o lembrete abaixo
+    // pedia "escreva o coeficiente (r=null)"; agora só pede os coeficientes válidos.
+    const vazio = coeficienteVazio(capado.rows as Record<string, unknown>[]);
+    if (vazio) alertas.push(vazio);
+    const linha0 = (capado.rows[0] ?? {}) as Record<string, unknown>;
+    const coef = Object.keys(linha0).filter((k) => COLUNA_COEFICIENTE.test(k) &&
+      linha0[k] !== null && linha0[k] !== "" && Number.isFinite(Number(linha0[k])) && Math.abs(Number(linha0[k])) < 0.99999);
+    if (PESQUISA && (coef.length || (temN && !vazio))) {
       const n = extraiN(capado.rows as Record<string, unknown>[]);
       const pedeN = temN
         ? "o n — quantos municípios entraram na medida" +
