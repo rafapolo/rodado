@@ -7,7 +7,7 @@ import { expect, test, describe } from "bun:test";
 import {
   portao, alertasDeSanidade,
   juncoesSemPonte, mensagemSemPonte, assinaturaJuncao,
-  perguntaDePesquisa, checaRanking, fonteTrocada,
+  perguntaDePesquisa, checaRanking, fonteTrocada, coeficienteVazio, correlacaoExtensiva,
 } from "./portao.ts";
 
 describe("camada read-only (sqlguard)", () => {
@@ -455,6 +455,24 @@ describe("repara — o portão conserta a forma em vez de gastar um turno", () =
     const sql = "SELECT COUNT(*) FROM br_ms_sim.microdados WHERE ano = 2020";
     expect(repara(sql)).toEqual({ sql, notas: [] });
   });
+  // B24, T03-1 da B19: o UNION ALL dentro de uma subconsulta dentro da CTE
+  // (parênteses aninhados, com COUNT(*) dentro) parecia UNION no nível de fora,
+  // e o COUNT(*) AS n não era acrescentado.
+  test("UNION aninhado numa CTE não impede o COUNT(*) AS n no SELECT final", () => {
+    const sql = `WITH b AS (SELECT id_municipio, SUM(cnt) AS total FROM (
+        SELECT id_municipio, COUNT(*) AS cnt FROM br_ibge_pib.municipio WHERE ano = 2020 GROUP BY 1
+        UNION ALL
+        SELECT id_municipio, COUNT(*) FROM br_ibge_populacao.municipio WHERE ano = 2020 GROUP BY 1
+      ) GROUP BY 1)
+      SELECT CORR(total, total) AS r FROM b`;
+    const r = repara(sql);
+    expect(r.sql).toContain("AS r, COUNT(*) AS n\nFROM b");
+  });
+  test("UNION no nível de fora continua sem COUNT(*) enfiado", () => {
+    const r = repara(`SELECT AVG(pib) AS m FROM br_ibge_pib.municipio WHERE ano = 2020
+      UNION ALL SELECT AVG(pib) AS m FROM br_ibge_pib.municipio WHERE ano = 2021`);
+    expect(r.notas).toEqual([]);
+  });
 });
 
 test("AVG sobre a tabela de UFs aponta a tabela Brasil (IDEB 3,8 contra 3,9)", () => {
@@ -551,6 +569,48 @@ describe("B15 — janela e agregado no GROUP BY (rodada B2, 2026-09-25)", () => 
   test("GROUP BY posicional e por coluna passam", () => {
     expect(portao("SELECT sigla_uf, SUM(pib) AS s FROM br_ibge_pib.municipio WHERE ano = 2020 GROUP BY 1").camada).not.toBe("group-by");
   });
+  // B24, T03-1 da B19: o GROUP BY do 1º ramo de um UNION ALL engolia o SELECT
+  // do 2º ramo (`GROUP BY 1 UNION ALL SELECT id, COUNT(*)`), e a SQL válida
+  // foi rejeitada 12 vezes seguidas até o teto de 1.500 s.
+  test("GROUP BY antes de UNION ALL não lê o agregado do ramo seguinte", () => {
+    const sql = `SELECT id_municipio, SUM(cnt) AS total FROM (
+      SELECT id_municipio, COUNT(*) AS cnt FROM br_ibge_pib.municipio WHERE ano = 2020 GROUP BY 1
+      UNION ALL
+      SELECT id_municipio, COUNT(*) FROM br_ibge_populacao.municipio WHERE ano = 2020 GROUP BY 1
+    ) GROUP BY 1`;
+    expect(portao(sql).camada).not.toBe("group-by");
+  });
+  test("agregado no GROUP BY de um ramo de UNION continua rejeitado", () => {
+    const sql = `SELECT sigla_uf, COUNT(*) AS n FROM br_ibge_pib.municipio WHERE ano = 2020 GROUP BY 1
+      UNION ALL SELECT sigla_uf, COUNT(*) AS n FROM br_ibge_pib.municipio WHERE ano = 2021 GROUP BY sigla_uf, SUM(pib)`;
+    expect(portao(sql).camada).toBe("group-by");
+  });
+});
+
+describe("B24 — a mesma SQL rejeitada de novo (T03-1 10x, T16-4 8x na B19)", () => {
+  const { avisoRejeicaoRepetida } = require("./portao.ts");
+  test("1ª rejeição não ganha aviso", () => {
+    expect(avisoRejeicaoRepetida(1)).toBeUndefined();
+  });
+  test("da 2ª em diante diz que é repetição e manda mudar ou parar", () => {
+    const a = avisoRejeicaoRepetida(3);
+    expect(a).toContain("3ª vez");
+    expect(a).toContain("pare e responda");
+  });
+});
+
+describe("B24 — coluna com acento sem aspas (T16-4 da B19)", () => {
+  // `d.Função` virava a coluna inexistente `Fun`: o \w do JS é só ASCII. A SQL
+  // foi rejeitada 10 vezes com "Coluna inexistente: Fun, Subfun, A".
+  test("coluna real com acento passa", () => {
+    const v = portao("SELECT d.Função, d.Subfunção, d.Ação, COUNT(*) AS n FROM br_siop_orcamento.dados d GROUP BY 1, 2, 3");
+    expect(v.camada).not.toBe("coluna");
+  });
+  test("coluna inventada com acento continua rejeitada, com o nome inteiro", () => {
+    const v = portao("SELECT d.Funçãozinha, COUNT(*) AS n FROM br_siop_orcamento.dados d GROUP BY 1");
+    expect(v.camada).toBe("coluna");
+    expect(v.erro).toContain("Funçãozinha");
+  });
 });
 
 describe("camada valor — literal que a coluna não tem (triagem B2, 2026-09-25)", () => {
@@ -590,5 +650,74 @@ describe("fonte trocada — pergunta direta nomeia uma fonte e a SQL usa outra (
   });
   test("SIM não casa 'sim' minúsculo da prosa", () => {
     expect(fonteTrocada("Houve mais óbitos, sim ou não, em 2020 no RAIS?", "SELECT COUNT(*) FROM br_me_rais.microdados_vinculos WHERE ano=2020")).toBeUndefined();
+  });
+});
+
+describe("coeficienteVazio — corr() NULL não é resultado a escrever (B22, B19 2026-09-26)", () => {
+  test("T03-2: r NULL com n=3602 — aponta pares, não linhas", () => {
+    const a = coeficienteVazio([{ r_leitos: null, r_equipes: null, n: 3602 }]);
+    expect(a).toContain("r_leitos, r_equipes voltou NULL embora n=3602");
+    expect(a).toContain("regr_count");
+    expect(a).toContain("Não escreva esse coeficiente");
+  });
+  test("T09-1: r NULL com n=0", () => {
+    expect(coeficienteVazio([{ r: null, n: 0 }])).toContain("r voltou NULL");
+  });
+  test("T38-2: r = 1,0000000000000009 é degenerado", () => {
+    expect(coeficienteVazio([{ r: 1.0000000000000009, n: 27 }])).toContain("deu ±1");
+  });
+  test("coeficiente de verdade, mesmo alto (população × eleitorado 0,998): calado", () => {
+    expect(coeficienteVazio([{ r: 0.998, n: 5570 }])).toBeUndefined();
+    expect(coeficienteVazio([{ r: -0.27, n: 5460 }])).toBeUndefined();
+  });
+  test("sem coluna de coeficiente: calado", () => {
+    expect(coeficienteVazio([{ total: null, n: 0 }])).toBeUndefined();
+  });
+  test("NaN do -json também conta como vazio", () => {
+    expect(coeficienteVazio([{ corr_pib: "NaN", n: 10 }])).toContain("corr_pib voltou NULL");
+  });
+});
+
+describe("B23 — corr() sobre contagem crua (rodada B19, sinal trocado, 2026-09-26)", () => {
+  // SQLs do Gemma na B19, encurtadas só no que não muda o que o detector lê.
+  test("T29-3: emendas somadas por COALESCE de um SUM, dois níveis de alias", () => {
+    const sql = `WITH e AS (SELECT id_municipio_gasto AS id_municipio, ano_emenda, SUM(valor_liquidado) as total_emendas
+      FROM br_cgu_emendas_parlamentares.microdados WHERE ano_emenda BETWEEN 2014 AND 2024 GROUP BY 1, 2),
+    d AS (SELECT m.id_municipio, m.margem_votos, COALESCE(e.total_emendas, 0) as valor_emendas FROM m LEFT JOIN e ON m.id_municipio = e.id_municipio)
+    SELECT corr(margem_votos, valor_emendas) as r, COUNT(*) as n FROM d WHERE valor_emendas > 0`;
+    expect(correlacaoExtensiva(sql)).toEqual(["valor_emendas"]);
+    expect(alertasDeSanidade(sql, [{ r: 0.2154, n: 1808 }]).some((a) => a.includes("contagem ou soma crua"))).toBe(true);
+  });
+  test("T08-1: COUNT(DISTINCT nis) contra gasto per capita — só a contagem é apontada", () => {
+    const sql = `WITH beneficiarios AS (SELECT id_municipio, COUNT(DISTINCT nis_favorecido) AS n_beneficiarios
+      FROM br_cgu_beneficios_cidadao.novo_bolsa_familia WHERE ano_referencia = 2023 GROUP BY id_municipio)
+    SELECT corr(b.n_beneficiarios, (g.total_social_empenhado / NULLIF(p.total_pop, 0)) * 100) AS r_gasto,
+      corr(b.n_beneficiarios, v.pct_baixa_instrucao) AS r_vuln, COUNT(DISTINCT b.id_municipio) AS n
+    FROM beneficiarios b JOIN g ON TRUE`;
+    expect(correlacaoExtensiva(sql)).toEqual(["b.n_beneficiarios"]);
+  });
+  test("T15-3: COUNT(CASE ...) de sobrenomes repetidos", () => {
+    const sql = `WITH s AS (SELECT id_municipio, COUNT(CASE WHEN freq >= 2 THEN 1 END) as qtd_sobrenomes_recorrentes FROM f GROUP BY 1)
+    SELECT CORR(s.qtd_sobrenomes_recorrentes, p.pib_pc) AS r, COUNT(*) AS n FROM s JOIN p ON s.id_municipio = p.id_municipio`;
+    expect(correlacaoExtensiva(sql)).toEqual(["s.qtd_sobrenomes_recorrentes"]);
+  });
+  test("taxas e per capita não disparam (T08-3, T31-3, pib per capita)", () => {
+    expect(correlacaoExtensiva(`SELECT corr(r.receita_propria_total / NULLIF(p.total_pop, 0), f.receita_federal_total / NULLIF(p.total_pop, 0)) AS r, COUNT(*) AS n FROM r`)).toEqual([]);
+    expect(correlacaoExtensiva(`WITH m AS (SELECT id, 1000.0 * COUNT(*) FILTER (WHERE idade < 1) / NULLIF(MAX(nasc), 0) AS tmi FROM x GROUP BY 1)
+      SELECT corr(m.tmi, v.ivs) AS r, COUNT(*) AS n FROM m JOIN v ON TRUE`)).toEqual([]);
+    expect(correlacaoExtensiva(`WITH p AS (SELECT id_municipio, SUM(pib) / NULLIF(SUM(populacao), 0) AS pib_pc FROM t GROUP BY 1)
+      SELECT corr(pib_pc, AVG_x) AS r, COUNT(*) AS n FROM p`)).toEqual([]);
+  });
+  test("T81-3: apelido de tabela igual ao nome da coluna não é definição", () => {
+    expect(correlacaoExtensiva(`SELECT corr(esf.proporcao_cobertura, ideb.ideb) AS r, COUNT(*) AS n
+      FROM br_ms_atencao_basica.municipio AS esf JOIN br_inep_ideb.municipio AS ideb ON esf.id_municipio = ideb.id_municipio`)).toEqual([]);
+  });
+  test("total contra total não dispara: às vezes é a pergunta (T22-1 focos × km² desmatados)", () => {
+    expect(correlacaoExtensiva(`WITH f AS (SELECT id_municipio, COUNT(*) AS total_focos FROM q GROUP BY 1),
+      d AS (SELECT id_municipio, SUM(area) AS desmatamento FROM p GROUP BY 1)
+      SELECT corr(total_focos, desmatamento) AS r, COUNT(*) AS n FROM f JOIN d USING (id_municipio)`)).toEqual([]);
+  });
+  test("limite conhecido: coluna crua de tabela, sem alias, não é seguida", () => {
+    expect(correlacaoExtensiva("SELECT corr(populacao, pib) AS r, COUNT(*) AS n FROM br_ibge_pib.municipio WHERE ano = 2021")).toEqual([]);
   });
 });

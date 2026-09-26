@@ -178,7 +178,10 @@ function checaColunas(sql: string): Veredito {
   const semTabelas = refs.reduce((acc, r) => acc.split(r).join(" "), sql);
 
   const suspeitas = new Set<string>();
-  for (const [, col] of semTabelas.matchAll(/\b[A-Za-z_][\w]*\.([A-Za-z_][\w]*)\b/g)) {
+  // A coluna aceita letra com acento (\p{L}): o DuckDB aceita `d.Função` sem
+  // aspas, e com \w ASCII o portão lia `Fun` e rejeitava coluna real — B24,
+  // T16-4 da B19, 10 rejeições seguidas de "Coluna inexistente: Fun, Subfun, A".
+  for (const [, col] of semTabelas.matchAll(/\b[A-Za-z_][\w]*\.([\p{L}_][\p{L}\p{N}_]*)/gu)) {
     const c = col.toLowerCase();
     if (!conhecidas.has(c) && !RESERVADAS.has(c) && !/^\d/.test(c)) suspeitas.add(col);
   }
@@ -444,7 +447,14 @@ function fromExterno(sql: string, inicio: number): number | undefined {
   return undefined;
 }
 
-const temUniao = (sql: string) => /\b(UNION|INTERSECT|EXCEPT)\b/i.test(sql.replace(/\([^()]*\)/g, ""));
+/** UNION no nível de fora. Tira os parênteses de dentro para fora até não
+ *  sobrar nenhum: uma passada só deixava o UNION de uma subconsulta dentro de
+ *  CTE à mostra (B24, T03-1 da B19), e o COUNT(*) AS n não era acrescentado. */
+const temUniao = (sql: string) => {
+  let s = sql, antes;
+  do { antes = s; s = s.replace(/\([^()]*\)/g, " "); } while (s !== antes);
+  return /\b(UNION|INTERSECT|EXCEPT)\b/i.test(s);
+};
 
 /* ------------------------------------------------------------------ *
  *  Escopos — a máquina que as camadas 7 e 8 compartilham.
@@ -738,6 +748,21 @@ export function juncoesSemPonte(sql: string): JuncaoSemPonte[] {
   return achados;
 }
 
+/**
+ * A MESMA SQL mandada de novo depois de rejeitada. B24, medido na B19: T03-1
+ * reenviou a consulta idêntica 10 vezes e T16-4 8 vezes, cada vez um turno de
+ * ~90 s, até o teto de 1.500 s — `jaRodadas` só vê SQL que rodou, e o
+ * orçamento de 30 consultas não chega antes do teto a esse ritmo. Da 2ª vez
+ * em diante a rejeição diz que é repetição e manda mudar a consulta ou parar.
+ */
+export function avisoRejeicaoRepetida(vezes: number): string | undefined {
+  if (vezes < 2) return undefined;
+  return `⚠ Esta é a ${vezes}ª vez que ESTA MESMA consulta é mandada e rejeitada pelo mesmo motivo. ` +
+    `Reenviar sem mudar nada devolve a mesma rejeição. Mude a parte que a mensagem acima aponta, ` +
+    `ou reescreva a consulta de outro jeito (outra tabela, CTE mais simples); se não houver como, ` +
+    `pare e responda com o que já apurou, dizendo o que não deu para calcular.`;
+}
+
 /** Mensagem que ensina o próximo passo, não só aponta o buraco. */
 export function mensagemSemPonte(achados: JuncaoSemPonte[]): string {
   return achados.map((a) =>
@@ -880,8 +905,10 @@ export const MOLDE_FAIXAS =
  */
 function checaGroupBy(sql: string): Veredito {
   for (const seg of segmentos(sql)) {
-    const m = /\bGROUP\s+BY\b([\s\S]*?)(?=\bHAVING\b|\bORDER\s+BY\b|\bLIMIT\b|\bQUALIFY\b|\bWINDOW\b|$)/i.exec(seg);
-    if (!m) continue;
+    // Um segmento pode ter vários ramos de UNION, cada um com o seu GROUP BY.
+    // B24 (T03-1 da B19): sem parar no UNION, o GROUP BY do 1º ramo engolia o
+    // `SELECT id, COUNT(*)` do 2º e a SQL válida era rejeitada 12 vezes.
+    for (const m of seg.matchAll(/\bGROUP\s+BY\b([\s\S]*?)(?=\bHAVING\b|\bORDER\s+BY\b|\bLIMIT\b|\bQUALIFY\b|\bWINDOW\b|\bUNION\b|\bINTERSECT\b|\bEXCEPT\b|$)/gi)) {
     const g = m[1]!;
     if (/\bOVER\b/i.test(g) || /\b(ntile|row_number|rank|dense_rank|percent_rank|cume_dist|lag|lead)\s*\(/i.test(g)) {
       return { ok: false, camada: "group-by",
@@ -891,6 +918,7 @@ function checaGroupBy(sql: string): Veredito {
       return { ok: false, camada: "group-by",
         erro: "Agregado dentro do GROUP BY — o DuckDB não aceita. Agrupe pelas colunas de grupo (ou pela faixa) e " +
           `deixe SUM/COUNT/AVG só no SELECT. Para faixas de um valor agregado, agregue numa CTE primeiro: ${MOLDE_FAIXAS}` };
+    }
     }
   }
   return OK;
@@ -988,6 +1016,43 @@ export function extraiN(linhas: Linha[]): number | undefined {
   if (chave === undefined) return linhas.length > 1 ? linhas.length : undefined;
   const v = Number(prim[chave]);
   return Number.isFinite(v) ? v : undefined;
+}
+
+/** Coluna de coeficiente pelo nome: `r`, `rho`, `corr_*`, `correlacao*`, `r_*`. */
+export const COLUNA_COEFICIENTE = /^(r|rho|corr\w*|correla\w*|r_\w+)$/i;
+
+/**
+ * B22, medido na B19 (2026-09-26): dos 35 casos com `r` publicado que não
+ * citaram coeficiente nenhum, **12 tinham rodado `corr()` com sucesso — e ele
+ * voltou NULL** (37 de 38 resultados de `corr()` nesses casos). Omissão de um
+ * `r` de verdade quase não existe: quando o coeficiente veio numérico, 27 de
+ * 28 respostas o citaram. Em 14 desses NULL o `n` era grande (3.602, 5.570):
+ * `COUNT(*)` conta linhas, não pares — um LEFT JOIN que não casou deixa uma
+ * das pontas toda NULL, e `corr()` ignora o par. O lembrete ainda pedia
+ * "escreva o coeficiente (r=null) e o n (aqui, n=3602)".
+ *
+ * Devolve o alerta quando algum coeficiente da 1ª linha é NULL/NaN, ou
+ * degenerado (|r| ≥ 0,99999 — exato, não "alto": população × eleitorado dá 0,998 de verdade; uma ponta é função da outra, ou só 2 pontos).
+ */
+export function coeficienteVazio(linhas: Linha[]): string | undefined {
+  const prim = linhas[0];
+  if (!prim) return undefined;
+  const coef = Object.keys(prim).filter((k) => COLUNA_COEFICIENTE.test(k));
+  if (!coef.length) return undefined;
+  const nulos = coef.filter((k) => prim[k] === null || prim[k] === undefined || prim[k] === "" || !Number.isFinite(Number(prim[k])));
+  const degenerados = coef.filter((k) => !nulos.includes(k) && Math.abs(Number(prim[k])) >= 0.99999);
+  if (!nulos.length && !degenerados.length) return undefined;
+  const n = extraiN(linhas);
+  const partes: string[] = [];
+  if (nulos.length) {
+    partes.push(`${nulos.join(", ")} voltou NULL${n ? ` embora n=${n}` : ""}: nenhum município teve as duas pontas preenchidas (ou uma delas é constante). ` +
+      `COUNT(*) conta linhas, não pares — conte os pares com regr_count(y, x) e cada ponta com COUNT(x), COUNT(y) para achar a vazia. ` +
+      `A causa comum é um LEFT JOIN que não casou (código de município em outro formato ou com outro nome de coluna, ano sem dado numa das tabelas).`);
+  }
+  if (degenerados.length) {
+    partes.push(`${degenerados.join(", ")} deu ±1: uma ponta é função da outra (mesma coluna dos dois lados, razão sobre o mesmo denominador) ou sobraram 2 pontos.`);
+  }
+  return `${partes.join(" ")} Não escreva esse coeficiente na resposta: conserte a consulta, ou diga que a medida não foi possível e por quê.`;
 }
 
 /** Colunas cujo valor é numérico em toda linha — candidatas a somar. */
@@ -1129,6 +1194,9 @@ export function alertasDeSanidade(sql: string, linhas: Linha[]): string[] {
     );
   }
 
+  const extensivas = correlacaoExtensiva(sql);
+  if (extensivas.length) alertas.push(mensagemExtensiva(extensivas));
+
   for (const [k, v] of Object.entries(prim)) {
     const x = Number(v);
     if (/^(corr|correlacao|r|r2|rho)$/i.test(k) && Number.isFinite(x) && Math.abs(x) > 0.95) {
@@ -1141,6 +1209,89 @@ export function alertasDeSanidade(sql: string, linhas: Linha[]): string[] {
     }
   }
   return alertas;
+}
+
+/** Argumentos de nível zero de uma chamada, a partir do índice logo depois do `(`. */
+function argumentosDe(sql: string, inicio: number): string[] {
+  const args: string[] = [];
+  let prof = 0, atual = "";
+  for (let i = inicio; i < sql.length; i++) {
+    const ch = sql[i]!;
+    if (ch === "(") prof++;
+    else if (ch === ")") { if (prof === 0) { args.push(atual.trim()); return args; } prof--; }
+    else if (ch === "," && prof === 0) { args.push(atual.trim()); atual = ""; continue; }
+    atual += ch;
+  }
+  return args;
+}
+
+/** A expressão de um item de SELECT que projeta `alias` (`<expr> AS alias`), ou undefined. */
+function definicaoDe(sql: string, alias: string): string | undefined {
+  const re = new RegExp(`\\bAS\\s+${alias}\\b`, "gi");
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(sql))) {
+    // Anda para trás até a vírgula ou o SELECT de nível zero que abre o item.
+    let prof = 0, i = m.index - 1;
+    for (; i >= 0; i--) {
+      const ch = sql[i]!;
+      if (ch === ")") prof++;
+      else if (ch === "(") { if (prof === 0) break; prof--; }
+      else if (ch === "," && prof === 0) break;
+      else if (prof === 0 && /\bSELECT\s*$/i.test(sql.slice(Math.max(0, i - 6), i + 1))) break;
+    }
+    const expr = sql.slice(i + 1, m.index).replace(/^\s*(DISTINCT\s+)?/i, "").trim();
+    // `FROM br_inep_ideb.municipio AS ideb` é apelido de tabela, não de coluna:
+    // o recuo atravessaria o FROM e leria o item anterior (T81-3, falso positivo).
+    if (expr && !/\b(FROM|JOIN)\b/i.test(expr)) return expr;
+  }
+  return undefined;
+}
+
+/** A expressão é uma contagem/soma crua: COUNT/SUM sem nenhuma divisão. */
+function ehExtensiva(sql: string, expr: string, visto = new Set<string>()): boolean {
+  if (expr.includes("/")) return false;
+  if (/^\s*(COUNT|SUM)\s*\(/i.test(expr)) return true;
+  // Um nível de embrulho: `COALESCE(total, 0)`, `b.total`, `total` → segue o alias.
+  const m = /^\s*(?:COALESCE\s*\(\s*)?(?:\w+\.)?(\w+)\s*(?:,\s*0\s*\))?\s*$/i.exec(expr);
+  if (!m || visto.has(m[1]!.toLowerCase())) return false;
+  visto.add(m[1]!.toLowerCase());
+  const def = definicaoDe(sql, m[1]!);
+  return def !== undefined && ehExtensiva(sql, def, visto);
+}
+
+/**
+ * harness_tasks.md B23, rodada B19 (2026-09-26). Três dos cinco casos de sinal
+ * trocado correlacionaram uma contagem ou soma crua por município — beneficiários,
+ * sobrenomes repetidos, emendas em R$ — contra outra variável. Contagem crua mede
+ * o porte do município antes de medir o fenômeno. T29-3, remedido no beelink: a
+ * SQL do modelo dá r=+0,22 (n=1.808); a mesma SQL com emenda per capita e margem
+ * em % dá +0,013, o publicado é +0,018. O alerta cita a coluna e manda normalizar;
+ * não rejeita, porque correlacionar totais pode ser a pergunta.
+ */
+export function correlacaoExtensiva(sql: string): string[] {
+  const limpo = semComentarios(sql);
+  const achadas = new Set<string>();
+  const re = /\bcorr\s*\(/gi;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(limpo))) {
+    // Só o par misto (um total contra uma taxa). Total contra total é às vezes a
+    // pergunta — focos × km² desmatados (T22-1), emendas × despesa (T21-4) — e o
+    // publicado mediu assim; o alerta ali mandaria o modelo para longe dele.
+    const args = argumentosDe(limpo, m.index + m[0].length);
+    const ext = args.filter((a) => ehExtensiva(limpo, a));
+    if (args.length === 2 && ext.length === 1) achadas.add(ext[0]!.replace(/\s+/g, " "));
+  }
+  return [...achadas];
+}
+
+export function mensagemExtensiva(args: string[]): string {
+  return (
+    `corr() sobre contagem ou soma crua (${args.join(", ")}): um total por município ` +
+    `cresce com a população, e o r mede o porte antes do fenômeno. Medido aqui: margem ` +
+    `de votos × emendas em R$ deu r=+0,22; com margem em % e emenda per capita, +0,01. ` +
+    `Divida pela população (ou pelo total do mesmo município) antes de correlacionar, ` +
+    `a menos que a pergunta seja mesmo sobre totais.`
+  );
 }
 
 /**
