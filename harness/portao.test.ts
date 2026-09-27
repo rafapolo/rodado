@@ -721,3 +721,111 @@ describe("B23 — corr() sobre contagem crua (rodada B19, sinal trocado, 2026-09
     expect(correlacaoExtensiva("SELECT corr(populacao, pib) AS r, COUNT(*) AS n FROM br_ibge_pib.municipio WHERE ano = 2021")).toEqual([]);
   });
 });
+
+// B25: toda SQL rejeitada da B19 reaplicada offline no portão. Cada falso
+// positivo vem com a SQL real e um par que prova que o erro de verdade segue
+// rejeitado.
+describe("B25 — falsos positivos da B19", () => {
+  test("coluna: nome pontuado dentro de literal não é alias.coluna (T81-2)", () => {
+    const v = portao(
+      "SELECT 'br_ibge_pib.municipio' as fonte_pib, 'br_mc_indicadores.transferencias_municipio' as fonte_pbf " +
+      "FROM br_bd_diretorios_brasil.municipio LIMIT 1",
+    );
+    expect(v.ok).toBe(true);
+  });
+  test("par: a mesma coluna fora do literal segue inexistente", () => {
+    const v = portao("SELECT m.transferencias_municipio FROM br_bd_diretorios_brasil.municipio m LIMIT 1");
+    expect(v.camada).toBe("coluna");
+  });
+
+  test("partição: espiada SELECT * LIMIT 5 passa (T30-2, T35-4)", () => {
+    expect(portao("SELECT * FROM br_me_cnpj.estabelecimentos LIMIT 5").ok).toBe(true);
+    expect(portao("SELECT * FROM br_me_rais_identificada.estabelecimentos LIMIT 5").ok).toBe(true);
+  });
+  test("par: DISTINCT sobre os 2,5 bi do CNPJ lê tudo e segue exigindo filtro (T36-2)", () => {
+    const v = portao("SELECT DISTINCT cnae_fiscal_principal FROM br_me_cnpj.estabelecimentos LIMIT 100");
+    expect(v.camada).toBe("particao");
+  });
+  test("partição: DISTINCT de código em tabela abaixo de 100M passa (T21-4, T77-5)", () => {
+    expect(portao("SELECT DISTINCT conta_bd FROM br_me_siconfi.municipio_receitas_orcamentarias LIMIT 20").ok).toBe(true);
+    expect(portao(
+      "SELECT DISTINCT conta_bd FROM br_me_siconfi.municipio_receitas_orcamentarias WHERE conta_bd LIKE '%CFEM%' LIMIT 20",
+    ).ok).toBe(true);
+  });
+  test("par: somar sem ano em tabela com partição de tempo soma todos os anos (T11-2)", () => {
+    const v = portao(
+      "WITH investimento_municipio AS (SELECT id_municipio, sigla_uf, SUM(valor) AS investimento_saneamento_empenhado " +
+      "FROM br_me_siconfi.municipio_despesas_funcao WHERE estagio = 'Despesas Empenhadas' GROUP BY 1, 2) " +
+      "SELECT corr(i.investimento_saneamento_empenhado, i.investimento_saneamento_empenhado) AS r, COUNT(*) AS n FROM investimento_municipio i",
+    );
+    expect(v.camada).toBe("particao");
+  });
+
+  test("ranking: ordenar por ano é olhar a série, não ranking (T22-2)", () => {
+    const sql =
+      "WITH o AS (SELECT ano, mes, id_municipio, COUNT(*) AS total_obitos FROM br_ms_sim.microdados WHERE ano = 2021 GROUP BY 1, 2, 3), " +
+      "f AS (SELECT ano, mes, id_municipio, COUNT(*) AS total_focos FROM br_inpe_queimadas.microdados WHERE ano = 2021 GROUP BY 1, 2, 3) " +
+      "SELECT o.ano, o.mes, o.total_obitos, f.total_focos FROM o JOIN f ON o.id_municipio = f.id_municipio " +
+      "ORDER BY o.ano, o.mes LIMIT 10";
+    expect(checaRanking(sql).ok).toBe(true);
+  });
+  test("ranking: 'quais UFs' no grão de UF não é amostra de municípios (T15-5)", () => {
+    const sql =
+      "WITH p AS (SELECT sigla_uf, AVG(valor_item) AS pat FROM br_tse_eleicoes.bens_candidato WHERE ano = 2024 GROUP BY 1), " +
+      "e AS (SELECT sigla_uf_gasto, SUM(valor_empenhado) AS total_emendas FROM br_cgu_emendas_parlamentares.microdados WHERE ano_emenda = 2023 GROUP BY 1) " +
+      "SELECT p.sigla_uf, p.pat, e.total_emendas FROM p JOIN e ON p.sigla_uf = e.sigla_uf_gasto ORDER BY p.pat DESC LIMIT 10";
+    expect(checaRanking(sql).ok).toBe(true);
+  });
+  test("par: top 10 de municípios juntando duas fontes segue rejeitado (T13-2)", () => {
+    const sql =
+      "WITH p AS (SELECT id_municipio, SUM(pib) AS pib FROM br_ibge_pib.municipio WHERE ano = 2021 GROUP BY 1), " +
+      "c AS (SELECT id_municipio, SUM(saldo_movimentacao) AS saldo FROM br_me_caged.microdados_movimentacao WHERE ano = 2023 GROUP BY 1) " +
+      "SELECT p.id_municipio, p.pib, c.saldo FROM p JOIN c ON p.id_municipio = c.id_municipio ORDER BY p.pib DESC LIMIT 10";
+    expect(checaRanking(sql).camada).toBe("ranking");
+  });
+});
+
+describe("B28 — filiação nacional sem recorte de UF (T15-3)", () => {
+  test("agregar a filiação do país sozinha numa CTE passa", () => {
+    const v = portao(
+      "WITH filiados AS (SELECT id_municipio, COUNT(*) AS total_filiados, COUNT(DISTINCT regexp_extract(nome, ' ([^ ]+)$')) AS sobrenomes " +
+      "FROM br_tse_filiacao_partidaria.microdados WHERE situacao_registro = 'Regular' GROUP BY 1), " +
+      "pib AS (SELECT id_municipio, SUM(pib) AS pib FROM br_ibge_pib.municipio WHERE ano = 2021 GROUP BY 1) " +
+      "SELECT corr(f.sobrenomes, p.pib) AS r, COUNT(*) AS n FROM filiados f JOIN pib p ON f.id_municipio = p.id_municipio",
+    );
+    expect(v.ok).toBe(true);
+  });
+  test("par: filiação crua num JOIN sem UF segue rejeitada, e a mensagem ensina o caminho nacional", () => {
+    const v = portao(
+      "SELECT f.id_municipio, COUNT(*) AS n FROM br_tse_filiacao_partidaria.microdados f " +
+      "JOIN br_ibge_pib.municipio p ON f.id_municipio = p.id_municipio WHERE p.ano = 2021 GROUP BY 1",
+    );
+    expect(v.camada).toBe("particao");
+    expect(v.erro).toContain("não recorte um estado");
+  });
+  test("par: acima de 100M a mensagem não oferece o caminho sem filtro", () => {
+    const v = portao("SELECT COUNT(*) FROM br_ms_sih.aihs_reduzidas");
+    expect(v.camada).toBe("particao");
+    expect(v.erro).not.toContain("não recorte um estado");
+  });
+});
+
+describe("B29 — DISTINCT ano sem ORDER BY (T15-3)", () => {
+  const { repara } = require("./portao.ts");
+  test("o DISTINCT final de ano ganha ORDER BY ano DESC antes do LIMIT", () => {
+    const r = repara(
+      "WITH pib_pop AS (SELECT DISTINCT ano FROM br_ibge_pib.municipio LIMIT 5)\nSELECT DISTINCT ano FROM br_ibge_pib.municipio LIMIT 5;",
+    );
+    expect(r.sql).toEndWith("SELECT DISTINCT ano FROM br_ibge_pib.municipio\nORDER BY ano DESC LIMIT 5");
+    expect(r.notas.join(" ")).toContain("ORDER BY ano DESC");
+  });
+  test("várias colunas de tempo, com WHERE (T07-2)", () => {
+    const r = repara("SELECT DISTINCT ano, mes FROM br_bcb_estban.municipio WHERE sigla_uf = 'SP' LIMIT 10");
+    expect(r.sql).toContain("ORDER BY ano DESC, mes DESC LIMIT 10");
+  });
+  test("par: com ORDER BY, ou coluna que não é tempo, não mexe", () => {
+    expect(repara("SELECT DISTINCT ano FROM br_ibge_pib.municipio ORDER BY ano LIMIT 5").notas).toEqual([]);
+    const r = repara("SELECT DISTINCT ano, raca_cor FROM br_ipea_avs.municipio LIMIT 20");
+    expect(r.sql).not.toContain("ORDER BY");
+  });
+});
