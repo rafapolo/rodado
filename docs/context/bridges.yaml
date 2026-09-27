@@ -1136,6 +1136,48 @@ bridges:
     verified: 5.438 de 5.452 pares distintos (99,7%) — 2026-09-25
     concept: id_municipio
     join_expr: upper(strip_accents(trim({s}.municipio))) = upper(strip_accents({d}.nome)) AND {s}.uf = {d}.sigla_uf
+  - table: br_transferegov.planos_acao
+    column: codigo_ibge_municipio_ente_recebedor_plano_acao
+    format: 7-digit IBGE code stored as BIGINT — município que recebe o plano de ação. `br_transferegov.transferencias` não tem município nem UF; chega aqui por `id_plano_acao`
+    expr: CAST(codigo_ibge_municipio_ente_recebedor_plano_acao AS VARCHAR) = m.id_municipio
+    verified: 5.570 de 5.570 códigos distintos casam o diretório; as 4.248 linhas de `transferencias` (2019–2020) casam `planos_acao` por `id_plano_acao` — 2026-09-27
+    concept: id_municipio
+    join_expr: CAST({s}.codigo_ibge_municipio_ente_recebedor_plano_acao AS VARCHAR) = {d}.id_municipio
+  - table: br_inpe_deter.avisos
+    column: GEOCODIBGE
+    format: 7-digit IBGE code (VARCHAR). `MUNICIPALI`, ao lado, é o NOME do município — juntar por ela contra um código dá zero linhas
+    expr: GEOCODIBGE = m.id_municipio
+    verified: 1.567 de 1.567 códigos distintos casam o diretório — 2026-09-27
+    concept: id_municipio
+    join_expr: '{s}.GEOCODIBGE = {d}.id_municipio'
+  - table: br_ibama_autos.auto_infracao
+    column: cod_municipio
+    format: 7-digit IBGE code (VARCHAR) — junta direto com `br_inpe_deter.avisos.GEOCODIBGE`
+    expr: cod_municipio = m.id_municipio
+    verified: 1.850 de 1.851 códigos distintos de 2023 casam o diretório; 665 deles também estão no DETER — 2026-09-27
+    concept: id_municipio
+    join_expr: '{s}.cod_municipio = {d}.id_municipio'
+  - table: br_pncp.contratos
+    column: unidadeOrgao.codigoIbge
+    format: 7-digit IBGE code (VARCHAR) dentro do STRUCT `unidadeOrgao` — município da unidade contratante. `orgaoEntidade` não tem código de município (só cnpj, razaoSocial, poderId, esferaId)
+    expr: unidadeOrgao.codigoIbge = m.id_municipio
+    verified: 3.550 de 3.550 códigos distintos de ano_publicacao=2024 casam o diretório — 2026-09-27
+    concept: id_municipio
+    join_expr: '{s}.unidadeOrgao.codigoIbge = {d}.id_municipio'
+  - table: br_ok_queridodiario_texto.diarios
+    column: territory_id
+    format: 7-digit IBGE code stored as BIGINT (em `br_ok_queridodiario.diarios` a mesma coluna é VARCHAR)
+    expr: CAST(territory_id AS VARCHAR) = m.id_municipio
+    verified: 524 municípios, 231.897 edições com texto — 2026-09-27
+    concept: id_municipio
+    join_expr: CAST({s}.territory_id AS VARCHAR) = {d}.id_municipio
+  - table: br_bcb_sicor.recurso_publico_complemento_operacao
+    column: id_municipio
+    format: 7-digit IBGE code (VARCHAR). `operacao` e `liberacao` não têm município; chegam aqui por (id_referencia_bacen, numero_ordem). Cobre só as operações com recurso público
+    expr: id_municipio = m.id_municipio
+    verified: 'ano_emissao=2022: 1.544.701 de 1.990.945 operações casam (R$ 127,4 bi de R$ 362,0 bi em valor_parcela_credito), 5.430 municípios; a chave (id_referencia_bacen, numero_ordem) é única no complemento — 2026-09-27'
+    concept: id_municipio
+    join_expr: '{s}.id_municipio = {d}.id_municipio'
   uf:
   - table: br_mj_consumidorgovbr.reclamacoes
     column: '"UF"'
@@ -1588,6 +1630,13 @@ bridges:
     verified: 4 de 4 inidôneos com acórdão dentro da janela do `dados` casam (todos do Plenário, todos
       tipo `ACÓRDÃO`, nenhum `ACÓRDÃO DE RELAÇÃO`); os 3 de jan/2024 caem antes da janela
       (2026-09-25, tema 87)
+  - table: br_camara_dados_abertos.deputado
+    column: nome
+    description: 'a Câmara não publica CPF nem título de eleitor: o único elo com o TSE é o nome parlamentar, que é o `nome_urna` do candidato. De `candidatos`, `titulo_eleitoral` leva a `bens_candidato.titulo_eleitoral_candidato` e aos resultados. `proposicao_autor.id_deputado` é o id da Câmara — casa com `deputado.id_deputado`, com nada do TSE'
+    expr: upper(strip_accents(trim(d.nome))) = upper(strip_accents(trim(c.nome_urna))) AND c.ano = 2022 AND c.cargo = 'deputado federal'
+    verified: 554 dos 647 deputados da legislatura 57 casam um candidato de 2022 (565 pares — homônimos existem, desempate por UF via `proposicao_autor.sigla_uf_autor`) — 2026-09-27
+    concept: nome_urna
+    join_expr: upper(strip_accents(trim({s}.nome))) = upper(strip_accents(trim({d}.nome_urna)))
   estacao:
   - table: br_inmet_bdmep.microdados
     column: id_estacao

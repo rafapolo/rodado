@@ -1,0 +1,25 @@
+dataset: br_me_siconfi
+gotchas:
+  - id: funcao_08_assistencia
+    resumo: "Assistência Social é a função 08 (id_conta_bd '3.08.000'); a 13 é Cultura."
+    detalhe: >
+      id_conta_bd segue '3.<função>.<subfunção>' da Portaria 42/1999: '3.08.000'
+      é a função inteira e '3.08.241'…'3.08.999' são as subfunções. Filtre pelo
+      código, não por ILIKE '%assist%': 'Assistência Hospitalar e Ambulatorial'
+      (3.10.302) é Saúde e 'Assistência aos Povos Indígenas' (3.14.423) é
+      Direitos da Cidadania. Não some função com as próprias subfunções.
+    tabelas: [municipio_despesas_funcao]
+    colunas: [id_conta_bd, conta_bd]
+    severidade: silencioso
+    verificado: "2021: '3.08.000' = Assistência Social (24.480 linhas), '3.13.000' = Cultura (19.673); ILIKE '%assist%' também pega 3.10.302 e 3.14.423 — medido 2026-09-26. 2023, Despesas Pagas: 3.08.000 = R$ 30,3 bi em 5.356 municípios, 3.13.000 = R$ 10,6 bi em 5.143 — medido 2026-09-27"
+  - id: estagio_multiplica
+    resumo: "Cada despesa aparece em até 5 estágios; filtre um estagio_bd antes de somar."
+    detalhe: >
+      estagio_bd traz 'Despesas Empenhadas', 'Despesas Liquidadas', 'Despesas
+      Pagas', 'Inscrição de Restos a Pagar Processados' e 'Inscrição de Restos a
+      Pagar Não Processados' para a mesma função no mesmo município. Somar valor
+      sem filtrar estagio_bd conta a despesa várias vezes.
+    tabelas: [municipio_despesas_funcao]
+    colunas: [estagio_bd, valor]
+    severidade: silencioso
+    verificado: "2023: os 5 estágios presentes na tabela — medido 2026-09-27"
