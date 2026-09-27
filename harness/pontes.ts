@@ -34,6 +34,49 @@ function bridges() {
   return _b!;
 }
 
+/**
+ * O campo `table` de uma ponte, aberto nas tabelas que ele cobre, como globs.
+ * `bridges.yaml` abrevia (B33): "ds.a / b" (b herda o dataset), "ds.x_mutuario /
+ * _cooperado" (sufixo troca o último pedaço), "ds.*" e "ds.contratos_*", e
+ * "br_cgu_garantia_safra / pe_de_meia" (datasets inteiros; o 2º herda "br_cgu_").
+ * Antes o casamento era `p.table === ref`, e essas 17 pontes nunca chegavam.
+ */
+export function tabelasDaPonte(campo: string): string[] {
+  const partes = campo.split("/").map((x) => x.trim()).filter(Boolean);
+  if (!partes.length) return [];
+  const out: string[] = [];
+  const primeira = partes[0]!;
+  if (!primeira.includes(".")) {
+    // datasets inteiros
+    const prefixo = primeira.split("_").slice(0, 2).join("_") + "_";
+    for (const p of partes) {
+      const ds = p.includes(".") ? p.split(".")[0]! : (p.startsWith(prefixo) ? p : prefixo + p);
+      out.push(p.includes(".") ? p : `${ds}.*`);
+    }
+    return out;
+  }
+  let ds = primeira.split(".")[0]!;
+  let anterior = primeira.split(".").slice(1).join(".");
+  out.push(primeira);
+  for (const p of partes.slice(1)) {
+    if (p.includes(".")) { ds = p.split(".")[0]!; anterior = p.split(".").slice(1).join("."); out.push(p); continue; }
+    const tabela = p.startsWith("_") ? anterior.replace(/_[^_]+$/, "") + p : p;
+    out.push(`${ds}.${tabela}`);
+    anterior = tabela;
+  }
+  return out;
+}
+
+/** `ref` (dataset.tabela) está coberta pelo campo `table` da ponte. */
+export function casaTabela(campo: string, ref: string): boolean {
+  const r = ref.toLowerCase();
+  return tabelasDaPonte(campo.toLowerCase()).some((g) => {
+    if (!g.includes("*")) return g === r;
+    const re = new RegExp("^" + g.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "[^.]*") + "$");
+    return re.test(r);
+  });
+}
+
 /** Chaves de join que valem por convenção quando nenhuma ponte especial existe. */
 const CANONICAS = ["id_municipio", "sigla_uf", "ano", "id_uf"];
 
@@ -49,7 +92,7 @@ export function conceitoDaColuna(ref: string, coluna: string): string | undefine
   const b = bridges();
   for (const [conceito, pontes] of Object.entries(b.bridges ?? {})) {
     for (const p of pontes ?? []) {
-      if (p.table === ref && p.column.toLowerCase() === col) return p.concept ?? conceito;
+      if (casaTabela(p.table, ref) && p.column.toLowerCase() === col) return p.concept ?? conceito;
     }
   }
   return CANONICAS.includes(col) ? col : undefined;
@@ -61,11 +104,12 @@ export function dicasDeJoin(tabelas: string[]): string {
 
   for (const [conceito, pontes] of Object.entries(b.bridges ?? {})) {
     for (const p of pontes ?? []) {
-      if (!tabelas.includes(p.table)) continue;
+      const alvo = tabelas.find((t) => casaTabela(p.table, t));
+      if (!alvo) continue;
       const expr = p.join_expr ?? p.expr;
       if (!expr) continue;
       linhas.push(
-        `  ${p.table}.${p.column} é ${p.concept ?? conceito}: ${expr}` +
+        `  ${alvo}.${p.column} é ${p.concept ?? conceito}: ${expr}` +
         (p.verified ? `  [conferido: ${p.verified}]` : ""),
       );
     }
