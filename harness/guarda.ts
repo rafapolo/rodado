@@ -24,7 +24,9 @@
  */
 import {
   semOrigem, valoresVistos, textosDaConversa, pedidoDeReescrita, chaveDaSessao, consultou,
+  coeficientesSemOrigem,
 } from "./confere.ts";
+import { garanteTunel } from "./modelo.ts";
 
 export interface Chamada { nome: string; argumentos: Record<string, unknown> }
 
@@ -210,7 +212,8 @@ export function sobeGuarda(opcoes: { upstream?: string; tentativas?: number; por
 
   /** A requisição de reescrita, ou `undefined` se todo número da resposta tem origem. */
   function reescrita(corpo: object, msgs: Msgs, resposta: string): string | undefined {
-    const faltam = semOrigem(resposta, valoresVistos(textosDaConversa(msgs)));
+    const textos = textosDaConversa(msgs);
+    const faltam = [...new Set([...semOrigem(resposta, valoresVistos(textos)), ...coeficientesSemOrigem(resposta, textos)])];
     if (!faltam.length) return undefined;
     stats.corrigidos++;
     const chave = chaveDaSessao(msgs);
@@ -258,7 +261,11 @@ export function sobeGuarda(opcoes: { upstream?: string; tentativas?: number; por
                 body: tentativa === 1 ? texto : semCanal(texto), signal: aborta.signal,
               });
             } catch (e) {
-              if (tentativa < maxTentativas) { stats.repetidos++; continue; }
+              // Transporte caído (ECONNRESET, ConnectionRefused): o túnel ssh
+              // morreu com o llama-server de pé. Medido 2026-09-27, T22-2: as 4
+              // tentativas saíam em milissegundos contra a porta fechada e o caso
+              // inteiro (3 processos, 48 min) morria. Reabre antes de repetir.
+              if (tentativa < maxTentativas) { stats.repetidos++; await garanteTunel(); continue; }
               ctl.error(e); return;
             }
             if (!res.ok || !res.body) {
