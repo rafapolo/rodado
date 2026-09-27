@@ -483,7 +483,20 @@ Cada flag aí é uma medição, não gosto:
   operação de atenção domina o que economiza em banda. Prefill 15,8 → 50,5 t/s.
 - **`--cache-ram 1024`**: o padrão (8 GiB de conversas guardadas na RAM do host)
   levou o servidor ao OOM killer em 2026-09-22 — ver `tasks/harness_tasks.md`, "Operar",
-  "Memória do beelink". O binário é o do llama.cpp `f072b10`.
+  "Memória do beelink". O binário de referência é o do llama.cpp `6b790a9`
+  desde a B19 (2026-09-26), que rodou inteira nele; as medições anteriores
+  (guarda, raciocínio, KV) foram feitas no `f072b10`. `servidor.sh status`
+  avisa quando o que está no ar não é o `LLAMA_COMMIT`.
+- **`--ctx-checkpoints` no padrão (32)**: o Gemma 4 tem 25 das 30 camadas com
+  janela deslizante, e o slot só volta ao fim do prefixo por um checkpoint.
+  Cada requisição cria ~2; um caso de 16+ requisições esgota os 32 e o caso
+  seguinte relê o prefixo inteiro (~4.500 tokens, 71–89 s), com os tokens do
+  prefixo casando (`f_sim_best` 0,98–0,999). Medido no log de 2026-09-26
+  (6b790a9): 0/92 releituras depois de conversa de ≤15 requisições, 79/91 com
+  ≥16. `lote.ts` imprime isso como nota, não como aviso de prefixo variável
+  (`TURNOS_CHECKPOINTS` em `acerto.ts`). Subir o teto não foi testado: cada
+  checkpoint é ~300 MiB na conta (1.536 células × 25 camadas × 8 KiB), na RAM
+  que já levou o servidor ao OOM.
 
 Do mac, abra o túnel antes (o servidor escuta só em loopback, de propósito):
 

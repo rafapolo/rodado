@@ -33,9 +33,11 @@ LIMIAR_MS="${LIMIAR_MS:-10000}"
 # slot já reaproveita o prefixo sozinho; o cache no host só guardava conversas
 # velhas que nunca voltam. O beelink também roda o DuckDB das consultas.
 CACHE_RAM="${CACHE_RAM:-1024}"
-# O commit que as medições da guarda usam (README, "A guarda"). f072b10 traz o
-# conserto upstream da gramática de tool call do Gemma 4 (PR #29115).
-LLAMA_COMMIT="${LLAMA_COMMIT:-f072b10}"
+# O build de referência. f072b10 (conserto upstream da gramática de tool call do
+# Gemma 4, PR #29115) é o das medições até 2026-09-24 (README, "A guarda");
+# 6b790a9 entrou no meio da B2 e rodou a B19 inteira — referência desde a B19,
+# 2026-09-26.
+LLAMA_COMMIT="${LLAMA_COMMIT:-6b790a9}"
 
 estado() {
   local cfg
