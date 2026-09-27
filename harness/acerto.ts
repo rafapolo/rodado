@@ -312,17 +312,43 @@ export function trocasDeBuild(
 export const LIMIAR_PREFILL = Number(Bun.env.HARNESS_LIMIAR_PREFILL ?? 2000);
 
 /**
+ * Acima disto o caso anterior esgota os checkpoints de SWA do llama-server e o
+ * próximo relê o prefixo inteiro — sem nada variável no prefixo.
+ *
+ * O Gemma 4 tem 25 das 30 camadas com janela deslizante (1.024 tokens): o slot
+ * não volta atrás no KV dessas camadas sem um checkpoint, e o llama-server
+ * guarda no máximo 32 por slot (`--ctx-checkpoints`), ~2 por requisição. Medido
+ * no log de 2026-09-26 (6b790a9, 198 inícios de conversa): com a conversa
+ * anterior em ≤15 requisições, 0/92 releram o prefixo; com ≥16, 79/91. O
+ * `f_sim_best` dessas requisições é 0,98–0,999 — os tokens do prefixo casavam.
+ * Na B19 (87 casos): 3/51 avisos depois de caso com <16 turnos, 32/35 com ≥16.
+ * Subir `--ctx-checkpoints` custaria RAM (~300 MiB por checkpoint pela conta
+ * 25 camadas × 8 cabeças KV × 256 × K+V × f16 × 1.536 células), não medido.
+ */
+export const TURNOS_CHECKPOINTS = Number(Bun.env.HARNESS_TURNOS_CHECKPOINTS ?? 16);
+
+/**
  * Reprova um prefill de tamanho de prefixo. **Só vale depois do aquecimento** —
  * o primeiro caso prefila o prefixo inteiro por definição, e acusá-lo seria
  * ruído garantido em toda rodada.
+ *
+ * `turnosAnterior` são as requisições do caso anterior (`guarda.turnos`). Com
+ * `TURNOS_CHECKPOINTS` ou mais a releitura é o limite de checkpoints, esperada:
+ * vira nota, não aviso. O custo medido é o do prefixo lido a ~63 t/s — 71 a
+ * 89 s por caso (mediana dos casos da B19: 640 s contra 487 s), não 7x.
  */
 export function avisaPrefill(
   tokens: number[],
   limiar = LIMIAR_PREFILL,
+  turnosAnterior?: number,
 ): string | undefined {
   const pior = Math.max(0, ...tokens);
   if (pior <= limiar) return undefined;
-  return `AVISO: prefill de ${pior} tokens (limiar ${limiar}) — cache de prefixo quebrado. A resposta continua certa e a rodada fica ~7x mais lenta; procure o que entrou variável no prefixo (timestamp, ordem não determinística)`;
+  const custo = `~${Math.round(pior / 63)} s a mais neste caso`;
+  if (turnosAnterior !== undefined && turnosAnterior >= TURNOS_CHECKPOINTS) {
+    return `nota: prefill de ${pior} tokens (${custo}) — o caso anterior teve ${turnosAnterior} requisições e esgotou os checkpoints de SWA do llama-server (--ctx-checkpoints 32). Esperado, não é prefixo variável`;
+  }
+  return `AVISO: prefill de ${pior} tokens (limiar ${limiar}) — cache de prefixo quebrado (${custo}). A resposta continua certa; procure o que entrou variável no prefixo (timestamp, ordem não determinística)`;
 }
 
 // -- o prefill quando não volta pelo stdout: o log do llama-server no beelink --
