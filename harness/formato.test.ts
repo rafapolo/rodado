@@ -90,3 +90,21 @@ test("B16: coluna inventada ganha as colunas reais parecidas (RAIS, rodada B2)",
   expect(dicaColunaInexistente('Referenced column "nome" not found', [])).toContain("br_bd_diretorios_brasil.municipio");
   expect(dicaColunaInexistente("Parser Error: syntax error", [])).toBe("");
 });
+
+test("T07-2: coluna que existe em OUTRA tabela da consulta — nomeia a que a linha lê", () => {
+  const e = 'Binder Error: Referenced column "sigla_uf" not found in FROM clause!\nCandidate bindings: "id_municipio", "va", "va_industria", "impostos_liquidos", "va_agropecuaria"';
+  const d = dicaColunaInexistente(e, [
+    { ref: "br_ibge_pib.municipio", cols: ["ano", "id_municipio", "pib", "impostos_liquidos", "va", "va_agropecuaria", "va_industria"] },
+    { ref: "br_bcb_estban.municipio", cols: ["ano", "mes", "sigla_uf", "id_municipio", "agencias_processadas"] },
+  ]);
+  expect(d).toContain("'sigla_uf' existe em br_bcb_estban.municipio, mas não em br_ibge_pib.municipio");
+  expect(d).toContain("é essa tabela que a linha do erro lê");
+  expect(d).not.toContain("com o mesmo termo");
+});
+
+test("T74-1: campo de struct listado como coluna solta — a nota diz o caminho", () => {
+  const e = 'Binder Error: Values list "p" does not have a column named "codigoIbge"';
+  const d = dicaColunaInexistente(e, [{ ref: "br_pncp.contratos", cols: ["codigoIbge", "municipioNome", "valorGlobal"] }]);
+  expect(d).toContain("unidadeOrgao.codigoIbge");
+  expect(d).not.toContain("existe em br_pncp.contratos");
+});

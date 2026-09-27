@@ -23,7 +23,7 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import { listaDatasets, tabelasDe, colunasDe, resolveDataset, COLUNAS_PARTICAO, tabelaPrincipal } from "./catalogo.ts";
 import {
-  portao, checaExplain, alertasDeSanidade, faixasCitadas,
+  portao, checaExplain, alertasDeSanidade, alertaDeEscala, faixasCitadas,
   juncoesSemPonte, mensagemSemPonte, assinaturaJuncao, sugestao, semComentarios, repara, NOTA_AMOSTRA,
   perguntaDePesquisa, checaRanking, extraiN, fonteTrocada, avisoRejeicaoRepetida, coeficienteVazio, COLUNA_COEFICIENTE,
 } from "./portao.ts";
@@ -37,7 +37,7 @@ import { criaPrazo, avisoDoAmbiente } from "./prazo.ts";
 import { descreve, tabelaTexto, dicaMunicipio, dicaColunaInexistente } from "./formato.ts";
 import { faltando } from "./recortes.ts";
 import { garanteValores } from "./valores.ts";
-import { notaTabela, notaColuna, calculosDaTabela } from "./semantica.ts";
+import { notaTabela, notaColuna, calculosDaTabela, sugereDatasets } from "./semantica.ts";
 import { colunasDe as colunas } from "./catalogo.ts";
 
 const tabelasDaSql = (sql: string) =>
@@ -155,8 +155,15 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
   if (name === "listar_datasets") return texto(listaDatasets().join("\n"));
 
   if (name === "listar_tabelas") {
-    const ds = resolveDataset(arg.dataset ?? "");
-    if (!ds) return erro(`Dataset '${arg.dataset}' não existe. Os nomes estão no CATÁLOGO do system prompt.`);
+    // `dataset.tabela` no lugar do dataset (rerun de 2026-09-27: br_ibge_censo_2022_raca.instrucao,
+    // br_mobilidados_indicadores.tempo_deslocamento_casa_trabalho) resolve pelo dataset.
+    const ds = resolveDataset(arg.dataset ?? "") ?? resolveDataset((arg.dataset ?? "").split(".")[0]!);
+    if (!ds) {
+      const parecidos = sugereDatasets(arg.dataset ?? "");
+      return erro(`Dataset '${arg.dataset}' não existe.` +
+        (parecidos.length ? ` Datasets com esse nome: ${parecidos.join(", ")} — confira o nome exato.` : "") +
+        ` Os nomes estão no CATÁLOGO do system prompt.`);
+    }
     const linhas = tabelasDe(ds).map((t) => {
       const cols = colunasDe(`${ds}.${t.tabela}`) ?? [];
       const part = cols.filter((c) => (COLUNAS_PARTICAO as readonly string[]).includes(c.name.toLowerCase()));
@@ -285,7 +292,7 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     // correlação suspeita) grudados ANTES dos dados, no mesmo texto — nenhum
     // rejeita, mas o modelo só corrige o que vê.
     executadas.push(sql);
-    const alertas = alertasDeSanidade(sql, capado.rows);
+    const alertas = alertasDeSanidade(sql, capado.rows, PERGUNTA);
     if (reparo.notas.length) alertas.unshift(`Ajustei a consulta antes de rodar: ${reparo.notas.join("; ")}.`);
     // Medido 2026-09-23: o modelo foi direto ao consultar, sem descrever_tabela,
     // e contou todos os vínculos da RAIS (186.571) em vez dos ativos em 31/12
@@ -344,8 +351,19 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
       const pedeR = coef.length
         ? `o coeficiente como número, com duas casas (${coef.map((k) => `${k}=${(capado.rows[0] as Record<string, unknown>)[k]}`).join(", ")})`
         : "";
-      alertas.push(`Se este resultado sustenta a resposta, escreva nela ${[pedeR, pedeN].filter(Boolean).join(" e ")}. ` +
-        `"Correlação fraca" sem o número, ou conclusão sem o tamanho da amostra, não dá para conferir.`);
+      // Com alerta de escala acima, o lembrete pedia "escreva o coeficiente" do
+      // mesmo r que o alerta condenava — e o modelo obedecia ao lembrete: nas
+      // sessões de 2026-09-26/27, 5 de 6 respostas com o alerta de total cru
+      // citaram o r alertado, e só 1 refez a consulta normalizada (T15-3: 0,14,
+      // publicado −0,18).
+      if (coef.length && alertaDeEscala(sql, PERGUNTA)) {
+        alertas.push(`NÃO escreva este coeficiente na resposta: o alerta de escala acima diz que ele mede ` +
+          `o porte dos municípios, não a relação pedida. Refaça a consulta com as pontas normalizadas e ` +
+          `escreva o r dela` + (pedeN ? `, com ${pedeN}` : "") + `; se não for possível normalizar, diga isso na resposta.`);
+      } else {
+        alertas.push(`Se este resultado sustenta a resposta, escreva nela ${[pedeR, pedeN].filter(Boolean).join(" e ")}. ` +
+          `"Correlação fraca" sem o número, ou conclusão sem o tamanho da amostra, não dá para conferir.`);
+      }
     }
     // Pergunta direta que nomeia uma fonte, respondida com outra (CAGED 2019
     // pela RAIS, holdout3 2026-09-25). Pesquisa cruza fontes por desenho: fica fora.

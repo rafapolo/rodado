@@ -23,8 +23,8 @@
  * erros são mecânicos.
  */
 import { checkReadOnly } from "./sqlguard.ts";
-import { colunasDe, linhasDe, particoesDe, inservivel, LIMIAR_PARTICAO, tabelaPrincipal } from "./catalogo.ts";
-import { sugereTabelas, DIRETORIOS } from "./semantica.ts";
+import { colunasDe, linhasDe, particoesDe, inservivel, LIMIAR_PARTICAO, tabelaPrincipal, resolveDataset } from "./catalogo.ts";
+import { sugereTabelas, sugereDatasets, tabelasDoDataset, DIRETORIOS } from "./semantica.ts";
 import { codigos } from "./dicionarios.ts";
 import { valores } from "./valores.ts";
 import { faixaDeAnos, type Faixa } from "./anos.ts";
@@ -116,11 +116,49 @@ function tabelasAgregadas(sql: string): string[] {
   return [...out];
 }
 
-/** "Parecidas: ..." para um nome inventado, e onde estão os nomes de lugar. */
+/**
+ * "Parecidas: ..." para um nome inventado, e onde estão os nomes de lugar.
+ *
+ * Dataset certo com tabela errada (ou sem tabela) lista as tabelas DAQUELE
+ * dataset: 'br_ibge_populacao' e 'br_ibge_pib' sem tabela foram os dois erros
+ * de tabela mais frequentes das rodadas de 2026-09-25 a 27 (8 e 7 sessões), e a
+ * busca por parecença devolvia tabelas do Censo, porque 'populacao' casava o
+ * nome da tabela deles e não o `municipio` de br_ibge_populacao. Dataset
+ * inexistente sugere datasets pelo termo distintivo (`br_me_sicor` → br_bcb_sicor).
+ */
 export function sugestao(ref: string): string {
+  const semTabela = !ref.includes(".");
+  const ds = resolveDataset(ref.split(".")[0]!);
+  if (ds) {
+    const tabs = tabelasDoDataset(ds);
+    const lugar = /municip|cidade|estado|\buf\b|diretori|nome/i.test(ref.split(".")[1] ?? "") ? ` ${DIRETORIOS}` : "";
+    return ` (${semTabela ? `'${ref}' é o dataset; ` : ""}tabelas de ${ds}: ${tabs.join(", ")})` + lugar.replace(/\.$/, "");
+  }
+  const dss = sugereDatasets(ref);
+  if (dss.length) return ` (datasets com esse nome: ${dss.join(", ")} — confira o nome exato no CATÁLOGO)`;
   const s = sugereTabelas(ref);
   const lugar = /municip|cidade|estado|\buf\b|diretori|nome/i.test(ref) ? ` ${DIRETORIOS}` : "";
   return (s.length ? ` (parecidas que existem: ${s.join(", ")})` : "") + lugar.replace(/\.$/, "");
+}
+
+/** O CTE definido a até 2 edições de `ref` (erro de grafia), ou undefined. */
+function cteParecida(ref: string, ctes: Set<string>): string | undefined {
+  const a = ref.toLowerCase();
+  for (const c of ctes) if (c !== a && distancia(a, c) <= 2 && Math.min(a.length, c.length) >= 5) return c;
+  return undefined;
+}
+
+/** Distância de edição (Levenshtein), para nomes curtos. */
+function distancia(a: string, b: string): number {
+  let ant = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i];
+    for (let j = 1; j <= b.length; j++) {
+      cur[j] = Math.min(ant[j]! + 1, cur[j - 1]! + 1, ant[j - 1]! + (a[i - 1] === b[j - 1] ? 0 : 1));
+    }
+    ant = cur;
+  }
+  return ant[b.length]!;
 }
 
 /** Camada 2 — o modelo escreveu `FROM dataset` sem a tabela? */
@@ -129,7 +167,12 @@ function checaTabelas(sql: string): Veredito {
   for (const ref of tabelasCitadas(sql)) {
     if (ref.includes("(")) continue;
     if (!ref.includes(".")) {
-      ruins.push(`'${ref}' não tem tabela — escreva dataset.tabela`);
+      // CTE com erro de grafia: `estban_agencies` para a `estban_agencias`
+      // definida. A mensagem antiga ("escreva dataset.tabela") mandou o modelo
+      // procurar tabela e ele reenviou a mesma SQL 4x (T07-2, 2026-09-27).
+      const cte = cteParecida(ref, ctesDefinidos(sql));
+      if (cte) ruins.push(`'${ref}' não é tabela nem CTE — você definiu a CTE '${cte}'; confira a grafia`);
+      else ruins.push(`'${ref}' não tem tabela — escreva dataset.tabela${sugestao(ref)}`);
       continue;
     }
     if (colunasDe(ref) === null) ruins.push(`'${ref}' não existe no espelho${sugestao(ref)}`);
@@ -223,6 +266,32 @@ export function naoSomavel(col: string): boolean {
 }
 
 /** Camada 4 — filtro de partição em tabela grande. O que evita o lock de horas. */
+/**
+ * Código de município do TSE igualado a código IBGE. Rodadas de 2026-09-25 a 27:
+ * 4 sessões (T05-1 nas três rodadas, T05-5) juntaram `id_municipio_tse` com o
+ * `id_municipio` do PIB/população ou do transferegov, e todas voltaram zero
+ * linha ou r NULL. As duas numerações não se encontram (35 é Porto Velho no TSE),
+ * e as tabelas de br_tse_eleicoes já trazem `id_municipio` (IBGE) ao lado.
+ */
+const COD_TSE = /\b(?:\w+\.)?id_municipio_tse\w*\b/i;
+export function checaCodigoTse(sql: string): Veredito {
+  const limpo = semComentarios(sql).replace(/'(?:[^']|'')*'/g, "''");
+  const ident = String.raw`(?:CAST\s*\(\s*)?(?:\w+\.)?\w+`;
+  const re = new RegExp(String.raw`(${ident})\s*=\s*(${ident})`, "gi");
+  for (const [, a, b] of limpo.matchAll(re)) {
+    const [tse, outro] = COD_TSE.test(a!) ? [a!, b!] : COD_TSE.test(b!) ? [b!, a!] : [];
+    if (!tse || /_tse/i.test(outro!) || !/municip|ibge/i.test(outro!)) continue;
+    return {
+      ok: false, camada: "codigo-tse",
+      erro: `${tse.trim()} = ${outro!.trim()}: id_municipio_tse é o código do TSE (numeração própria, que ` +
+        `repete entre UFs), não o IBGE de 7 dígitos — igualar os dois dá zero linha. As tabelas de ` +
+        `br_tse_eleicoes também têm id_municipio (IBGE): junte por ele. Sem ele, passe por ` +
+        `br_bd_diretorios_brasil.municipio (id_municipio_tse + sigla_uf → id_municipio).`,
+    };
+  }
+  return OK;
+}
+
 function checaParticao(sql: string): Veredito {
   const upper = sql.toUpperCase();
   for (const ref of tabelasCitadas(sql)) {
@@ -1171,7 +1240,7 @@ function colunasNumericas(linhas: Linha[]): string[] {
  * num log. A única desta família que rejeita é a camada 8 (`n` ausente), porque
  * lá não há leitura legítima: é forma da consulta, não julgamento do número.
  */
-export function alertasDeSanidade(sql: string, linhas: Linha[]): string[] {
+export function alertasDeSanidade(sql: string, linhas: Linha[], pergunta = ""): string[] {
   const alertas: string[] = [];
 
   // harness_tasks.md B9, medido em 2026-09-03 ao vivo (não procurado — apareceu
@@ -1284,6 +1353,10 @@ export function alertasDeSanidade(sql: string, linhas: Linha[]): string[] {
 
   const extensivas = correlacaoExtensiva(sql);
   if (extensivas.length) alertas.push(mensagemExtensiva(extensivas));
+  const totais = totaisSobPedidoDeTaxa(sql, pergunta);
+  if (totais.length) alertas.push(mensagemTotais(totais));
+  const parteTodo = correlacaoParteTodo(sql);
+  if (parteTodo.length) alertas.push(mensagemParteTodo(parteTodo));
 
   for (const [k, v] of Object.entries(prim)) {
     const x = Number(v);
@@ -1372,6 +1445,86 @@ export function correlacaoExtensiva(sql: string): string[] {
   return [...achadas];
 }
 
+/**
+ * `corr(x / y, x)`: uma ponta é razão que contém a outra (numerador ou
+ * denominador), e o r sai da aritmética, não do dado. T35-4, rerun de
+ * 2026-09-27: corr(renda_media / tempo, renda_media) deu 0,68 e a resposta
+ * leu como "tempo × renda" — o publicado é −0,40.
+ */
+export function correlacaoParteTodo(sql: string): string[][] {
+  const limpo = semComentarios(sql);
+  const pares: string[][] = [];
+  const re = /\bcorr\s*\(/gi;
+  let m: RegExpExecArray | null;
+  const nome = (s: string) => /^\s*(?:\w+\.)?(\w+)\s*$/.exec(s)?.[1]?.toLowerCase();
+  while ((m = re.exec(limpo))) {
+    const args = argumentosDe(limpo, m.index + m[0].length);
+    if (args.length !== 2) continue;
+    for (const [a, b] of [[args[0]!, args[1]!], [args[1]!, args[0]!]]) {
+      const alvo = nome(b);
+      if (!alvo || !a.includes("/")) continue;
+      const termos = a.toLowerCase().split(/[^\w.]+/).map((t) => t.split(".").pop());
+      if (termos.includes(alvo)) { pares.push([a.replace(/\s+/g, " "), b.trim()]); break; }
+    }
+  }
+  return pares;
+}
+
+/**
+ * A pergunta pede taxa, proporção ou controle por população — e a SQL
+ * correlaciona dois totais crus. Total contra total fica calado quando a
+ * pergunta é sobre volume (B23: focos × km² desmatados em T22-1, emendas ×
+ * receita em T21-4 foram publicados assim). Medido nas sessões de 2026-09-25 a
+ * 27: dos casos com corr() de dois totais, a pista na pergunta separa os dois
+ * grupos sem erro — dispara em T08-1, T28-5, T03-1, T22-2, T59-4 (publicado
+ * normalizado; o modelo deu 0,85 e 0,92 onde o publicado é −0,08 e per capita)
+ * e fica calado em T22-1, T21-4, T06-2, T59-1, T07-1 (publicado em totais).
+ */
+export const PEDE_TAXA = /controlad|per capita|proporç|proporcion|\btaxa|por habitante|razão|relativ/i;
+export function totaisSobPedidoDeTaxa(sql: string, pergunta: string): string[][] {
+  // "PIB per capita" nomeia uma variável que já é taxa, não pede normalizar as
+  // outras (T05-1: patrimônio × proposições, no grão do deputado).
+  const pista = pergunta.replace(/pib\s+per\s+capita/gi, "");
+  return PEDE_TAXA.test(pista) ? correlacaoDeTotais(sql) : [];
+}
+
+export function mensagemTotais(pares: string[][]): string {
+  return (
+    `corr() entre dois totais crus (${pares.map((p) => p.join(" × ")).join("; ")}), e a pergunta pede ` +
+    `taxa, proporção ou controle por população. Dois totais por município crescem juntos com o porte: ` +
+    `o r sai alto e positivo e mede o tamanho do município, não o fenômeno (medido aqui: beneficiários × ` +
+    `gasto social deu 0,85; o publicado, per capita, é −0,08). Divida cada lado pela população ` +
+    `(ou pela base que a pergunta nomeia) e correlacione as taxas.`
+  );
+}
+
+export function mensagemParteTodo(pares: string[][]): string {
+  return (
+    `corr() de uma razão com um dos próprios termos (${pares.map((p) => p.join(" × ")).join("; ")}): ` +
+    `o r sai da aritmética — x/y cresce com x por construção —, não do dado. Para a relação entre as ` +
+    `duas variáveis, correlacione uma com a outra (ex.: corr(tempo, renda)).`
+  );
+}
+
+/** Algum alerta de escala (total cru, dois totais sob pedido de taxa, razão com o próprio termo)? */
+export function alertaDeEscala(sql: string, pergunta = ""): boolean {
+  return correlacaoExtensiva(sql).length > 0 || totaisSobPedidoDeTaxa(sql, pergunta).length > 0 ||
+    correlacaoParteTodo(sql).length > 0;
+}
+
+/** Os pares de `corr()` em que as DUAS pontas são contagem/soma crua. */
+export function correlacaoDeTotais(sql: string): string[][] {
+  const limpo = semComentarios(sql);
+  const pares: string[][] = [];
+  const re = /\bcorr\s*\(/gi;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(limpo))) {
+    const args = argumentosDe(limpo, m.index + m[0].length);
+    if (args.length === 2 && args.every((a) => ehExtensiva(limpo, a))) pares.push(args.map((a) => a.replace(/\s+/g, " ")));
+  }
+  return pares;
+}
+
 export function mensagemExtensiva(args: string[]): string {
   return (
     `corr() sobre contagem ou soma crua (${args.join(", ")}): um total por município ` +
@@ -1406,7 +1559,7 @@ export function portao(sql: string): Veredito {
   if (leitura) return { ok: false, camada: "read-only", erro: leitura };
 
   // Aposentada antes de inexistente: a mensagem diz para onde o dado foi.
-  for (const camada of [checaInservivel, checaTabelas, checaColunas, checaParticao, checaLimite, checaCodificacao, checaAno, checaValores, checaGroupBy, checaAmostra]) {
+  for (const camada of [checaInservivel, checaTabelas, checaColunas, checaCodigoTse, checaParticao, checaLimite, checaCodificacao, checaAno, checaValores, checaGroupBy, checaAmostra]) {
     const v = camada(sql);
     if (!v.ok) return v;
   }
