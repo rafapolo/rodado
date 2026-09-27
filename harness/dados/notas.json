@@ -71,5 +71,68 @@
   "br_cgu_gas_do_povo.gas_do_povo": {
     "*": "uma linha por vale retirado. ano_mes é TEXTO 'AAAAMM' (202511 é piloto com 10 municípios; de 202601 em diante, nacional); valor_beneficio é TEXTO com vírgula decimal ('105,35'): CAST(replace(valor_beneficio, ',', '.') AS DOUBLE). NÃO tem id_municipio.",
     "codigo_municipio_siafi": "código SIAFI de 4 dígitos, NÃO é o IBGE e não tem tabela de correspondência — nunca compare com id_municipio. Junte por nome + UF: upper(strip_accents(nome_municipio)) = upper(strip_accents(m.nome)) AND uf = m.sigla_uf com br_bd_diretorios_brasil.municipio m — casa 5.517 de 5.532 municípios em 202607 (medido 2026-09-24)."
+  },
+  "br_ms_sih.aihs_reduzidas": {
+    "id_municipio_paciente": "código de 6 dígitos (sem o dígito verificador), não o id_municipio de 7 das outras tabelas — igualar direto dá 0 linhas. Converta: JOIN br_bd_diretorios_brasil.municipio d ON d.id_municipio_6 = id_municipio_paciente, e junte o resto por d.id_municipio",
+    "id_municipio_estabelecimento": "6 dígitos, como id_municipio_paciente: passe por br_bd_diretorios_brasil.municipio.id_municipio_6 antes de juntar com tabela de 7 dígitos"
+  },
+  "br_ms_sinan_violencia.microdados_violencia": {
+    "id_municip": "município de NOTIFICAÇÃO, 6 dígitos (VARCHAR) — igualar com id_municipio de 7 dá 0 linhas; converta por br_bd_diretorios_brasil.municipio.id_municipio_6",
+    "id_mn_resi": "município de RESIDÊNCIA da vítima, 6 dígitos (VARCHAR) — converta por br_bd_diretorios_brasil.municipio.id_municipio_6 antes de juntar com tabela de 7 dígitos"
+  },
+  "br_inpe_deter.avisos": {
+    "*": "um polígono de alerta por linha, sem coluna ano (use VIEW_DATE, DATE, 2016-08 a 2026-08); área no município em AREAMUNKM; desmatamento = CLASSNAME IN ('DESMATAMENTO_CR','DESMATAMENTO_VEG')",
+    "municipali": "NOME do município (texto), não código — para juntar use GEOCODIBGE",
+    "geocodibge": "id_municipio de 7 dígitos (VARCHAR): junta direto com br_ibama_autos.auto_infracao.cod_municipio e com id_municipio"
+  },
+  "br_ibama_autos.auto_infracao": {
+    "cod_municipio": "id_municipio de 7 dígitos (VARCHAR): junta direto com br_inpe_deter.avisos.GEOCODIBGE (não com MUNICIPALI, que é nome)"
+  },
+  "br_ok_queridodiario.diarios": {
+    "*": "uma linha por edição publicada, 524 municípios; NÃO tem tamanho do diário — o texto e texto_bytes estão em br_ok_queridodiario_texto.diarios",
+    "edition": "rótulo livre da edição ('Volume 9 - Nº. BAC20240726', ou vazio), não número de páginas"
+  },
+  "br_ok_queridodiario_texto.diarios": {
+    "territory_id": "BIGINT aqui (VARCHAR na br_ok_queridodiario.diarios): CAST(territory_id AS VARCHAR) = id_municipio",
+    "texto_bytes": "tamanho do texto da edição em bytes — 231.897 edições, média 60,6 mil"
+  },
+  "br_pncp.contratos": {
+    "*": "município do órgão contratante em unidadeOrgao.codigoIbge (id_municipio de 7 dígitos, VARCHAR; 3.550 municípios em 2024) — orgaoEntidade não tem código de município. Fornecedor = niFornecedor; partição ano_publicacao"
+  },
+  "br_bcb_estban.municipio": {
+    "*": "faltam anos no espelho: 1996, 2003, 2005, 2007, 2011, 2013, 2015, 2017, 2019 e 2021 (o último é 2023). br_ibge_pib.municipio vai só até 2021: juntar por ano = ano com ESTBAN 2021 dá 0 linhas; use um ano que os dois têm (2020, mes = 12)"
+  },
+  "br_inep_enem.microdados": {
+    "nota_objetiva": "formato antigo da prova: vazia nos anos recentes (2021: 0 de 3,39 mi preenchidas). Use nota_ciencias_natureza, nota_ciencias_humanas, nota_linguagens_codigos, nota_matematica, nota_redacao",
+    "id_municipio_escola": "só de quem declarou escola (2021: 813.806 de 3,39 mi inscritos, 5.538 municípios); para o município do participante use id_municipio_residencia"
+  },
+  "br_cgu_beneficios_cidadao.novo_bolsa_familia": {
+    "ano_competencia": "só o ANO (BIGINT, ex.: 2024); o mês fica em mes_competencia — '202401' não casa nada"
+  },
+  "br_me_siconfi.municipio_despesas_funcao": {
+    "id_conta_bd": "'3.<função>.<subfunção>': '3.08.000' Assistência Social, '3.10.000' Saúde, '3.12.000' Educação, '3.13.000' Cultura; '3.08.241' em diante são subfunções — não some função com as próprias subfunções",
+    "conta_bd": "nome da função/subfunção; ILIKE '%assist%' também pega 'Assistência Hospitalar e Ambulatorial' (3.10.302, Saúde) e 'Assistência aos Povos Indígenas' (3.14.423) — filtre por id_conta_bd",
+    "estagio_bd": "a mesma despesa aparece em até 5 estágios (Empenhadas, Liquidadas, Pagas e duas de Restos a Pagar); filtre UM, ex.: 'Despesas Pagas' — 2023: Assistência Social paga R$ 30,3 bi em 5.356 municípios"
+  },
+  "br_bcb_sicor.operacao": {
+    "*": "uma linha por operação de crédito rural, SEM município; o município está em br_bcb_sicor.recurso_publico_complemento_operacao.id_municipio, junte por (id_referencia_bacen, numero_ordem) — 2022: 1,54 mi de 1,99 mi operações casam, 5.430 municípios"
+  },
+  "br_bcb_sicor.liberacao": {
+    "id_referencia_bacen": "id da OPERAÇÃO, não município. Município: br_bcb_sicor.recurso_publico_complemento_operacao.id_municipio por (id_referencia_bacen, numero_ordem)"
+  },
+  "br_transferegov.transferencias": {
+    "*": "empenhos de 2019–2020 (ano_empenho é VARCHAR), 4.248 linhas, sem município nem UF do recebedor — junte por id_plano_acao a br_transferegov.planos_acao (casam todas) e use codigo_ibge_municipio_ente_recebedor_plano_acao (BIGINT) / uf_ente_recebedor_plano_acao"
+  },
+  "br_camara_dados_abertos.deputado": {
+    "*": "sem CPF nem título de eleitor. Elo com o TSE: upper(strip_accents(nome)) = upper(strip_accents(br_tse_eleicoes.candidatos.nome_urna)) com ano=2022 e cargo='deputado federal' — 554 dos 647 da legislatura 57; de candidatos, titulo_eleitoral leva a bens_candidato.titulo_eleitoral_candidato"
+  },
+  "br_camara_dados_abertos.proposicao_autor": {
+    "id_deputado": "id da Câmara: casa com br_camara_dados_abertos.deputado.id_deputado, nunca com coluna do TSE"
+  },
+  "br_mobilidados_indicadores.tempo_deslocamento_casa_trabalho": {
+    "*": "uma onda só, ano = 2010, 229 municípios (227 casam o diretório) — junte com a outra tabela sem ano = ano"
+  },
+  "br_inep_educacao_especial.matricula_aee": {
+    "*": "grão UF × rede (Pública/Privada), sem id_municipio nem escola; quantidade_matricula é o público-alvo da educação especial, não a matrícula total da rede"
   }
 }
