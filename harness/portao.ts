@@ -217,6 +217,11 @@ function checaColunas(sql: string): Veredito {
   };
 }
 
+/** Coluna de tempo ou de código: somar não dá total de nada (B36). */
+export function naoSomavel(col: string): boolean {
+  return /^(ano|mes|dia|trimestre|semestre|semana)(_|$)|^(id|cod|codigo|sigla)(_|$)/i.test(col);
+}
+
 /** Camada 4 — filtro de partição em tabela grande. O que evita o lock de horas. */
 function checaParticao(sql: string): Veredito {
   const upper = sql.toUpperCase();
@@ -226,9 +231,16 @@ function checaParticao(sql: string): Veredito {
     if (linhas === null || linhas < LIMIAR_PARTICAO) continue;
     const parts = particoesDe(ref);
     if (!parts.length) continue;
-    const temFiltro = parts.some((p) =>
-      new RegExp(`\\b${p.toUpperCase()}\\s*(=|IN|BETWEEN|>|<|>=|<=)`).test(upper),
+    // B34, T22-2 da B19: a CTE lia br_ms_sim.microdados inteira e só um
+    // `WHERE o.ano = 2021` de fora satisfazia a busca na SQL toda. O filtro tem
+    // que estar no escopo (CTE/subconsulta) que lê a tabela — como checaAno faz.
+    const filtra = (txt: string) => parts.some((p) =>
+      new RegExp(`\\b${p.toUpperCase()}\\s*(=|IN|BETWEEN|>|<|>=|<=)`).test(txt.toUpperCase()),
     );
+    const ctes = ctesDefinidos(sql);
+    const escopos = segmentos(sql).filter((s) =>
+      refsDoEscopo(s, ctes).some((r) => r.ref.toLowerCase() === ref.toLowerCase()));
+    const temFiltro = escopos.length ? escopos.every(filtra) : filtra(upper);
     if (!temFiltro && !scanBarato(sql, ref, linhas)) {
       return {
         ok: false,
@@ -1241,7 +1253,8 @@ export function alertasDeSanidade(sql: string, linhas: Linha[]): string[] {
   // Ranking explícito (ORDER BY ... LIMIT) já declara que quer grupos: o aviso
   // ali só gastava tokens — disparou 9x numa pergunta de "qual município".
   if (linhas.length > 1 && /\bGROUP\s+BY\b/i.test(sql) && !/\bORDER\s+BY\b[\s\S]*\bLIMIT\s+\d+/i.test(sql)) {
-    const num = colunasNumericas(linhas);
+    // B36: ano/mês e códigos não são quantidade — "Somando a coluna 'ano' … 10049".
+    const num = colunasNumericas(linhas).filter((k) => !naoSomavel(k));
     const alvo = num.find((k) => k.toLowerCase() === "n") ?? (num.length === 1 ? num[0] : undefined);
     const soma = alvo
       ? ` Somando a coluna '${alvo}' nas ${linhas.length} linhas: ` +
