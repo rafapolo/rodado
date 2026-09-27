@@ -35,6 +35,25 @@ export interface EntradaCatalogo {
 export interface Coluna {
   name: string;
   type: string;
+  /** Campos de uma coluna STRUCT (B37): `unidadeOrgao` tem `codigoIbge`, e a
+   *  SQL escreve `c.unidadeOrgao.codigoIbge`. Antes o schema achatava o struct
+   *  e listava `codigoIbge` como coluna solta — o portão aceitava
+   *  `c.codigoIbge` e o beelink recusava (32 rejeições na B19). */
+  fields?: Coluna[];
+}
+
+/** `unidadeOrgao.codigoIbge`, … — os caminhos pontuados dos campos de struct. */
+export function camposPontuados(cols: Coluna[]): string[] {
+  const out: string[] = [];
+  const desce = (prefixo: string, cs: Coluna[]) => {
+    for (const c of cs) {
+      const nome = `${prefixo}${c.name}`;
+      if (c.fields?.length) desce(`${nome}.`, c.fields);
+      else if (prefixo) out.push(nome);
+    }
+  };
+  desce("", cols);
+  return out;
 }
 
 /** Acima disto o portão exige filtro de partição. Uma varredura cheia numa
