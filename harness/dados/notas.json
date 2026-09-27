@@ -60,7 +60,8 @@
     "cargo": "minúsculo: 'prefeito', 'vereador', 'governador'..."
   },
   "br_tse_eleicoes.candidatos": {
-    "cargo": "minúsculo: 'prefeito', 'vereador', 'governador'..."
+    "cargo": "minúsculo: 'prefeito', 'vereador', 'governador'...",
+    "situacao": "status do REGISTRO da candidatura ('deferido', 'indeferido', 'renuncia'), NÃO o resultado: 'eleito' não existe aqui e o filtro dá 0 linhas. Quem se elegeu está em br_tse_eleicoes.resultados_candidato.resultado — deputado: 'eleito por qp' ou 'eleito por media' (2022 federal: 513); prefeito: 'eleito'. Junte por titulo_eleitoral = resultados_candidato.titulo_eleitoral_candidato, mesmo ano e cargo (513 de 513, 2026-09-27)"
   },
   "br_inmet_bdmep.microdados": {
     "*": "uma linha por estação por HORA, sem município: a cidade sai de br_inmet_bdmep.estacao (JOIN ON id_estacao, depois id_municipio). O NOME da estação pode citar outro município — vale estacao.id_municipio, nunca o nome. Clima de uma cidade = AVG sobre o ano, só estações com o ano quase completo (COUNT(*) > 6000 leituras)",
@@ -158,5 +159,10 @@
   },
   "br_tse_filiacao_partidaria.microdados": {
     "*": "FILIADOS a partido (17,2M), não candidatos nem eleitos. Sobrenome/dinastia entre ELEITOS: br_tse_eleicoes.resultados_candidato (resultado eleito) JOIN br_tse_eleicoes.candidatos ON ano, sigla_uf e sequencial = sequencial_candidato, pelo nome — vereadores eleitos 2020: 58.143, todos com nome, 5.565 municípios (2026-09-27)"
+  },
+  "br_inep_indicadores_educacionais.escola": {
+    "*": "indicadores de FLUXO e de oferta por escola, sem nota de prova e sem contagem de educação especial. Proficiência SAEB está em br_inep_saeb; público da educação especial em br_inep_educacao_especial.matricula_aee (grão UF × rede)",
+    "atu_ef_anos_finais": "ATU = média de ALUNOS POR TURMA (2021: média 23,7), não quantidade de alunos de algum grupo; o mesmo vale para todo atu_*",
+    "ied_ef_anos_finais_nivel_1": "IED = Indicador de Esforço Docente: % dos professores da escola em cada nível 1–6 (os seis somam 100, conferido 2021), não nota do SAEB"
   }
 }
