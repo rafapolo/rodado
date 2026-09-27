@@ -91,6 +91,61 @@ export function semOrigem(resposta: string, vistos: number[]): string[] {
   return [...new Set(citados(resposta).filter((c) => !isento(c) && !confere(c, vistos)).map((c) => c.texto))];
 }
 
+/**
+ * Coeficiente citado sem ter saído de uma coluna de coeficiente. Medido na
+ * remedição 2 (2026-09-27, T31-3): a sessão listou 200 linhas de taxa × IVS,
+ * nunca rodou corr(), e a resposta escreveu "r = −0,15 (n = 5.565)". A
+ * conferência geral deu o 0,15 por apurado porque algum IVS da listagem valia
+ * 0,15. Um r só tem origem numa coluna de coeficiente (`r`, `corr_*`, `rho`…)
+ * de um resultado; qualquer outro valor igual é coincidência.
+ */
+const COLUNA_COEF = /^(r|rho|corr\w*|correla\w*|r_\w+)$/i;
+const R_CITADO = /(?<![\p{L}\p{N}_])(?:r|ρ|rho)(?:_[\p{L}\p{N}_]+)?\s*(?:=|≈|:)\s*\$?\s*([−–-]?\s*\d+(?:[.,]\d+)?)/giu;
+
+function numeroDe(bruto: string): number {
+  const t = bruto.replace(/[−–]/g, "-").replace(/\s/g, "");
+  return Number(t.includes(",") ? t.replace(/\./g, "").replace(",", ".") : t);
+}
+
+/** Valores das colunas de coeficiente nos resultados de consulta. */
+export function coeficientesVistos(textos: string[]): number[] {
+  const out: number[] = [];
+  for (const texto of textos) {
+    const m = CABECALHO.exec(texto);
+    if (!m) continue;
+    const linhas = texto.slice(m.index).split("\n").slice(1).filter((l) => l.includes("|"));
+    if (!linhas.length) continue;
+    const cab = linhas[0]!.split("|").map((c) => c.trim());
+    const idx = cab.map((c, i) => (COLUNA_COEF.test(c) ? i : -1)).filter((i) => i >= 0);
+    if (!idx.length) continue;
+    for (const l of linhas.slice(1)) {
+      const cel = l.split("|").map((c) => c.trim());
+      for (const i of idx) {
+        const v = numeroDe(cel[i] ?? "");
+        if (Number.isFinite(v)) out.push(v);
+      }
+    }
+  }
+  return out;
+}
+
+/** Os "r = X" da resposta que não batem com nenhum coeficiente apurado. */
+export function coeficientesSemOrigem(resposta: string, textos: string[]): string[] {
+  const vistos = coeficientesVistos(textos);
+  const faltam: string[] = [];
+  for (const m of resposta.matchAll(R_CITADO)) {
+    const bruto = m[1]!;
+    const v = numeroDe(bruto);
+    if (!Number.isFinite(v) || Math.abs(v) > 1) continue;
+    const casas = (bruto.split(/[.,]/)[1] ?? "").length;
+    // Uma unidade na última casa: aceita arredondar e truncar (T07-2 escreveu
+    // 0,03 para 0,0355 — o número é aquele, só cortado).
+    const tol = 10 ** -casas + 1e-9;
+    if (!vistos.some((x) => Math.abs(x - v) <= tol)) faltam.push(m[0].trim());
+  }
+  return [...new Set(faltam)];
+}
+
 export const MARCA = "[conferência de números]";
 
 export function pedidoDeReescrita(faltam: string[]): string {

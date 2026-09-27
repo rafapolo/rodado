@@ -8,7 +8,7 @@ import {
   portao, alertasDeSanidade,
   juncoesSemPonte, mensagemSemPonte, assinaturaJuncao,
   perguntaDePesquisa, checaRanking, fonteTrocada, coeficienteVazio, correlacaoExtensiva, naoSomavel,
-  checaCodigoTse, correlacaoParteTodo, totaisSobPedidoDeTaxa, alertaDeEscala, sugestao,
+  checaCodigoTse, correlacaoParteTodo, totaisSobPedidoDeTaxa, alertaDeEscala, sugestao, dicaCodigo6,
 } from "./portao.ts";
 import { colunasDe } from "./catalogo.ts";
 
@@ -830,6 +830,16 @@ describe("B28 — filiação nacional sem recorte de UF (T15-3)", () => {
     expect(v.camada).toBe("particao");
     expect(v.erro).toContain("não recorte um estado");
   });
+  test("tabela com partição de tempo não recebe a oferta da CTE sem filtro (T08-4, remedição 2)", () => {
+    const sql = "WITH o AS (SELECT id_municipio_residencia AS id_municipio, COUNT(*) AS obitos FROM br_ms_sim.microdados " +
+      "WHERE substr(causa_basica, 1, 3) BETWEEN 'I00' AND 'I99' GROUP BY 1) " +
+      "SELECT corr(o.obitos, p.pib) AS r, COUNT(*) AS n FROM o JOIN br_ibge_pib.municipio p ON o.id_municipio = p.id_municipio WHERE p.ano = 2021";
+    const v = portao(sql);
+    expect(v.camada).toBe("particao");
+    expect(v.erro).not.toContain("assim o filtro não é exigido");
+    expect(v.erro).toContain("filtre só o tempo (ano = 2020)");
+    expect(portao(sql.replace("GROUP BY 1)", "AND ano = 2021 GROUP BY 1)")).camada).not.toBe("particao");
+  });
   test("par: acima de 100M a mensagem não oferece o caminho sem filtro", () => {
     const v = portao("SELECT COUNT(*) FROM br_ms_sih.aihs_reduzidas");
     expect(v.camada).toBe("particao");
@@ -997,5 +1007,24 @@ describe("rerun de 2026-09-27 — sinal trocado e r ausente (TRACE)", () => {
     expect(v.ok).toBe(false);
     expect(v.erro).toContain("escreva dataset.tabela");
     expect(v.erro).not.toContain("você definiu a CTE");
+  });
+});
+
+describe("dicaCodigo6 — junção vazia por código de 6 dígitos (remedição 2)", () => {
+  test("T24-1: id_municipio_paciente renomeado e juntado com id_municipio de 7", () => {
+    const sql = "WITH b AS (SELECT s.id_municipio_paciente AS id_municipio_ref, COUNT(*) AS t FROM br_ms_sih.aihs_reduzidas s " +
+      "WHERE s.ano = 2022 GROUP BY 1), l AS (SELECT id_municipio, SUM(quantidade_total) AS q FROM br_ms_cnes.leito WHERE ano = 2022 GROUP BY 1) " +
+      "SELECT corr(b.t, l.q) AS r FROM b LEFT JOIN l ON b.id_municipio_ref = l.id_municipio";
+    expect(dicaCodigo6(sql)).toContain("id_municipio_paciente é código de município de 6 dígitos");
+  });
+  test("T28-5: id_municipio (7) do SAEB igualado a id_municipio_6", () => {
+    const sql = "SELECT m.id_municipio_6, AVG(p.proficiencia) FROM br_inep_saeb.proficiencia p " +
+      "JOIN br_bd_diretorios_brasil.municipio m ON CAST(p.id_municipio AS VARCHAR) = m.id_municipio_6 GROUP BY 1";
+    expect(dicaCodigo6(sql)).toContain("id_municipio_6 foi igualado a um id_municipio");
+  });
+  test("par: a conversão certa não gera dica", () => {
+    const sql = "SELECT d.id_municipio, COUNT(*) FROM br_ms_sih.aihs_reduzidas s " +
+      "JOIN br_bd_diretorios_brasil.municipio d ON d.id_municipio_6 = s.id_municipio_paciente WHERE s.ano = 2022 GROUP BY 1";
+    expect(dicaCodigo6(sql)).toBeUndefined();
   });
 });

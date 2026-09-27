@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { semOrigem, valoresVistos, citados, textosDaConversa, apurado, pedidoDeReescrita } from "./confere.ts";
+import { semOrigem, valoresVistos, citados, textosDaConversa, apurado, pedidoDeReescrita, coeficientesSemOrigem } from "./confere.ts";
 
 const vistos = (...t: string[]) => valoresVistos(t);
 
@@ -79,5 +79,25 @@ describe("textosDaConversa — B26, o 5.570 do T31-3 vinha do alerta do harness"
   test("o pedido de reescrita da guarda não vira origem do número que ele cita", () => {
     const c = [...conversa, { role: "assistant", content: RESPOSTA }, { role: "user", content: pedidoDeReescrita(["5.570"]) }];
     expect(semOrigem(RESPOSTA, vistosEm(c as typeof conversa))).toEqual(["5.570"]);
+  });
+});
+
+describe("coeficientesSemOrigem (remedição 2, T31-3)", () => {
+  const listagem = "200 linhas, mostrando 200 (números em pt-BR):\nid_municipio | taxa_mortalidade | ivs\n5103403 | 12,4 | 0,261\n1505908 | 11,9 | 0,15";
+  const corr = "1 linha(s) (números em pt-BR):\nr | n\n-0,38475928632984613 | 52.736";
+
+  test("r escrito sem corr() rodado é sem origem, mesmo com o valor numa coluna qualquer", () => {
+    expect(coeficientesSemOrigem("A correlação é de **$r = -0,15$** (n = 5.565).", [listagem])).toEqual(["r = -0,15"]);
+  });
+  test("r que saiu de uma coluna de coeficiente confere", () => {
+    expect(coeficientesSemOrigem("revelou r = −0,38 (n = 52.736)", [corr])).toEqual([]);
+  });
+  test("truncado na última casa confere (T07-2: 0,0355 escrito 0,03)", () => {
+    const uf = "27 linha(s) (números em pt-BR):\nsigla_uf | r | n\nMG | 0,035541995334024246 | 447";
+    expect(coeficientesSemOrigem("Minas Gerais ($r = 0,03$)", [uf])).toEqual([]);
+  });
+  test("coluna corr_* também vale; número fora de [-1, 1] não é coeficiente", () => {
+    const t = "1 linha(s):\ncorr_pib_credito | n\n0,74 | 5503";
+    expect(coeficientesSemOrigem("r = 0,74 com n = 5503 e r² = 55", [t])).toEqual([]);
   });
 });

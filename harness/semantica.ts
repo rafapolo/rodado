@@ -9,7 +9,7 @@
  * CASE sobre tipo_movimentacao em vez de SUM(saldo_movimentacao), que é a
  * definição verificada. Mostrar a definição junto da tabela dispensa a chamada.
  */
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { parse } from "yaml";
 import { listaDatasets, tabelasDe } from "./catalogo.ts";
 
@@ -25,8 +25,47 @@ function notas(): Notas {
   return _notas;
 }
 
-export const notaTabela = (tabela: string) => notas()[tabela.toLowerCase()]?.["*"] ?? "";
+/**
+ * Armadilhas por dataset (`docs/context/gotchas/*.yml`, escritas à mão, cada uma
+ * com `verificado` medido no beelink). Até 2026-09-27 só o MCP Python as lia; o
+ * harness, que é quem responde as 87, nunca as via. Entra o `resumo`, curto,
+ * junto da nota da tabela — o `detalhe` fica no arquivo.
+ */
+interface Gotcha { resumo?: string; tabelas?: string[]; verificado?: string }
+let _gotchas: Map<string, string[]> | null = null;
+function gotchas(): Map<string, string[]> {
+  if (_gotchas) return _gotchas;
+  _gotchas = new Map();
+  const dir = `${RAIZ}docs/context/gotchas`;
+  if (!existsSync(dir)) return _gotchas;
+  for (const f of readdirSync(dir).filter((x) => x.endsWith(".yml"))) {
+    const y = parse(readFileSync(`${dir}/${f}`, "utf8")) as { dataset?: string; gotchas?: Gotcha[] };
+    if (!y?.dataset) continue;
+    for (const g of y.gotchas ?? []) {
+      if (!g.resumo || !g.verificado) continue;
+      const tabelas = g.tabelas?.length ? g.tabelas : tabelasDe(y.dataset).map((t) => t.tabela);
+      for (const t of tabelas) {
+        const id = `${y.dataset}.${t}`.toLowerCase();
+        _gotchas.set(id, [...(_gotchas.get(id) ?? []), g.resumo.replace(/\s+/g, " ").trim()]);
+      }
+    }
+  }
+  return _gotchas;
+}
+
+export const notaTabela = (tabela: string) =>
+  [notas()[tabela.toLowerCase()]?.["*"] ?? "", ...(gotchas().get(tabela.toLowerCase()) ?? []).map((g) => `ARMADILHA: ${g}`)]
+    .filter(Boolean).join(" · ");
 export const notaColuna = (tabela: string, coluna: string) => notas()[tabela.toLowerCase()]?.[coluna.toLowerCase()] ?? "";
+
+/** Colunas que as notas dizem ser código de município de 6 dígitos (SIH, SINAN): lidas das notas, não listadas à mão. */
+export function colunasDeSeisDigitos(): Set<string> {
+  const out = new Set<string>();
+  for (const cols of Object.values(notas())) {
+    for (const [c, txt] of Object.entries(cols)) if (c !== "*" && /6 d[íi]gitos/.test(txt)) out.add(c.toLowerCase());
+  }
+  return out;
+}
 
 interface Metrica { source_table?: string; expression?: string; required_filters?: string[]; unit?: string }
 let _metricas: Record<string, Metrica> | null = null;

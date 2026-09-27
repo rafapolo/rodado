@@ -25,7 +25,7 @@ import { listaDatasets, tabelasDe, colunasDe, resolveDataset, COLUNAS_PARTICAO, 
 import {
   portao, checaExplain, alertasDeSanidade, alertaDeEscala, faixasCitadas,
   juncoesSemPonte, mensagemSemPonte, assinaturaJuncao, sugestao, semComentarios, repara, NOTA_AMOSTRA,
-  perguntaDePesquisa, checaRanking, extraiN, fonteTrocada, avisoRejeicaoRepetida, coeficienteVazio, COLUNA_COEFICIENTE,
+  perguntaDePesquisa, checaRanking, extraiN, fonteTrocada, avisoRejeicaoRepetida, coeficienteVazio, COLUNA_COEFICIENTE, dicaCodigo6,
 } from "./portao.ts";
 import { dicasDeJoin } from "./pontes.ts";
 import { runSqlSsh } from "./beelink.ts";
@@ -39,6 +39,7 @@ import { faltando } from "./recortes.ts";
 import { garanteValores } from "./valores.ts";
 import { notaTabela, notaColuna, calculosDaTabela, sugereDatasets } from "./semantica.ts";
 import { colunasDe as colunas } from "./catalogo.ts";
+import { fontesDaPergunta } from "./fontes.ts";
 
 const tabelasDaSql = (sql: string) =>
   [...new Set([...sql.matchAll(/\b(?:FROM|JOIN)\s+([a-z_][\w]*\.[a-z_][\w]*)/gi)].map((m) => m[1]!.toLowerCase()))]
@@ -77,6 +78,13 @@ const executadas: string[] = [];
 const PERGUNTA = Bun.env.HARNESS_PERGUNTA ?? "";
 /** Relação entre variáveis em muitos municípios — cobra medida sobre todos, com n. */
 const PESQUISA = perguntaDePesquisa(PERGUNTA);
+/** Onde moram as fontes que a pergunta nomeia (fontes.ts): vai uma vez, na 1ª resposta de catálogo. */
+let fontesPendentes = fontesDaPergunta(PERGUNTA);
+function comFontes(corpo: string): string {
+  if (!fontesPendentes) return corpo;
+  const f = fontesPendentes; fontesPendentes = "";
+  return `${f}\n\n${corpo}`;
+}
 /** A mesma consulta, só com outro LIMIT: medido rodando 3x seguidas sem mudar nada. */
 const jaRodadas = new Set<string>();
 /** Quantas vezes cada SQL (sem LIMIT) já foi rejeitada — B24, ver `avisoRejeicaoRepetida`. */
@@ -183,7 +191,7 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
       linhas.push("", `Tabela principal, já descrita (as outras: descrever_tabela):`,
         descreve(principal, cols, textoFaixa(principal), "", PERGUNTA) + (dicas ? `\n\n${dicas}` : ""));
     }
-    return texto(linhas.join("\n"));
+    return texto(comFontes(linhas.join("\n")));
   }
 
   if (name === "descrever_tabela") {
@@ -192,7 +200,7 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     await garanteValores(arg.tabela!, cols);
     semanticaVista.add(arg.tabela!.toLowerCase());
     const dicas = dicasDeJoin([arg.tabela!]);
-    return texto(descreve(arg.tabela!, cols, textoFaixa(arg.tabela!), arg.filtro ?? "", PERGUNTA) + (dicas ? `\n\n${dicas}` : ""));
+    return texto(comFontes(descreve(arg.tabela!, cols, textoFaixa(arg.tabela!), arg.filtro ?? "", PERGUNTA) + (dicas ? `\n\n${dicas}` : "")));
   }
 
   if (name === "definicao_de_calculo") {
@@ -275,6 +283,8 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
       // acima soa como "você errou o tipo" e não é isso — é que a chave pode
       // nem existir. Diz isso explicitamente em vez de convidar a tentar de novo.
       if (semPonte.length) partes.push(mensagemSemPonte(semPonte));
+      const seis = dicaCodigo6(sql);
+      if (seis) partes.push(seis);
       // E quando é a MESMA junção repetindo, nem a mensagem mais clara ajuda —
       // o que falta é parar, não explicar melhor.
       if (repeticoes >= LIMIAR_REPETICAO) {
@@ -338,7 +348,7 @@ servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
     // B22: corr() NULL ou ±1 não é resultado a escrever — o lembrete abaixo
     // pedia "escreva o coeficiente (r=null)"; agora só pede os coeficientes válidos.
     const vazio = coeficienteVazio(capado.rows as Record<string, unknown>[]);
-    if (vazio) alertas.push(vazio);
+    if (vazio) { alertas.push(vazio); const seis = dicaCodigo6(sql); if (seis) alertas.push(seis); }
     const linha0 = (capado.rows[0] ?? {}) as Record<string, unknown>;
     const coef = Object.keys(linha0).filter((k) => COLUNA_COEFICIENTE.test(k) &&
       linha0[k] !== null && linha0[k] !== "" && Number.isFinite(Number(linha0[k])) && Math.abs(Number(linha0[k])) < 0.99999);
