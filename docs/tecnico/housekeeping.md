@@ -263,6 +263,12 @@ valem conferir em todo dataset novo:
 - **município fora da tabela principal** (SICOR em
   `recurso_publico_complemento_operacao`, transferegov em `planos_acao`,
   PNCP dentro do struct `unidadeOrgao`);
+- **código de município do TSE** (`id_municipio_tse`) igualado ao IBGE dá
+  zero casamentos: as tabelas do TSE já trazem `id_municipio` (IBGE) ao lado;
+- **coluna dentro de struct** (PNCP `unidadeOrgao.codigoIbge`): o
+  `rodado-schema.json` lista achatada, e `p.codigoIbge` falha no beelink;
+- **linha agregada misturada com as de detalhe** (AVS: a linha do município é
+  `udh = 'geral'`, São Paulo tem 1.594 linhas);
 - **código de conta com prefixo ambíguo** (SICONFI: `3.08` é Assistência
   Social, `3.13` é Cultura; `ILIKE '%assist%'` pega saúde junto).
 
