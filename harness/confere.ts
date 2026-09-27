@@ -104,23 +104,54 @@ type Parte = string | { type?: string; text?: string }[] | null | undefined;
 interface Mensagem {
   role?: string;
   content?: Parte;
-  tool_calls?: { function?: { arguments?: string } }[];
+  tool_call_id?: string;
+  tool_calls?: { id?: string; function?: { name?: string; arguments?: string } }[];
 }
 
 const textoDe = (p: Parte) =>
   typeof p === "string" ? p : Array.isArray(p) ? p.map((x) => x.text ?? "").join("\n") : "";
 
+/** O cabeçalho que `tabelaTexto` põe antes das linhas: "1 linha(s)", "5565 linhas, mostrando 200". */
+const CABECALHO = /^\d+ linha\(s\)|^\d+ linhas, mostrando \d+/m;
+
 /**
- * O que a requisição mostrou ao modelo, fora o system prompt: pergunta,
- * resultados de ferramenta e os argumentos que ele mesmo mandou (a SQL tem
- * os códigos e limiares que a resposta pode repetir).
+ * Só a parte de um resultado de ferramenta que veio da consulta.
+ *
+ * Medido 2026-09-26 (B19, T31-3): a resposta saiu com "n = 5.570" e nenhuma
+ * consulta devolveu 5.570 — o número estava no alerta que o próprio harness
+ * pôs em cima do resultado ("⚠ n=15212 passa dos 5.570 municípios do país").
+ * A conferência lia o texto inteiro da ferramenta e deu o número por apurado.
+ * O mesmo vale para "573 no lugar de 789" no alerta de GROUP BY, os limites
+ * do orçamento, as faixas de ano do zero-linhas e o aviso de prazo: prosa do
+ * harness não é resultado. Fica o cabeçalho em diante; sem cabeçalho (erro,
+ * rejeição, formato antigo), saem o erro inteiro e as linhas de alerta.
+ */
+export function apurado(texto: string): string {
+  const m = CABECALHO.exec(texto);
+  if (m) return texto.slice(m.index);
+  if (/^\s*Error:/.test(texto)) return "";
+  return texto.split("\n").filter((l) => !/^\s*[⚠⏱]/.test(l)).join("\n");
+}
+
+/**
+ * O que pode dar origem a um número da resposta: a pergunta, o que as
+ * consultas devolveram e os argumentos que o modelo mesmo mandou (a SQL tem
+ * os códigos e limiares que a resposta pode repetir). Fica de fora o system
+ * prompt, a prosa do modelo (um número escrito antes não se confirma sozinho),
+ * o pedido de reescrita da guarda, e ferramenta que não é `consultar`
+ * (catálogo e notas de coluna são descrição, não apuração).
  */
 export function textosDaConversa(mensagens: Mensagem[]): string[] {
+  const nomes = new Map<string, string>();
+  for (const m of mensagens) for (const t of m.tool_calls ?? []) if (t.id) nomes.set(t.id, t.function?.name ?? "");
   const out: string[] = [];
   for (const m of mensagens) {
-    if (m.role === "system") continue;
-    out.push(textoDe(m.content));
     for (const t of m.tool_calls ?? []) out.push(t.function?.arguments ?? "");
+    const texto = textoDe(m.content);
+    if (m.role === "user" && !texto.startsWith(MARCA)) out.push(texto);
+    if (m.role !== "tool") continue;
+    const nome = m.tool_call_id ? nomes.get(m.tool_call_id) : undefined;
+    if (nome === undefined || /consultar$/.test(nome)) out.push(apurado(texto));
   }
   return out;
 }
