@@ -175,7 +175,9 @@ function checaColunas(sql: string): Veredito {
 
   // `dataset.tabela` casa com o mesmo padrão de `alias.coluna` — sem tirar as
   // referências de tabela, `br_ms_sim.microdados` vira "coluna inexistente".
-  const semTabelas = refs.reduce((acc, r) => acc.split(r).join(" "), sql);
+  // Literal de texto sai também: `'br_ibge_pib.municipio' AS fonte` não é
+  // alias.coluna (B25, T81-2 da B19: "Coluna inexistente: municipio").
+  const semTabelas = refs.reduce((acc, r) => acc.split(r).join(" "), sql.replace(/'(?:[^']|'')*'/g, "''"));
 
   const suspeitas = new Set<string>();
   // A coluna aceita letra com acento (\p{L}): o DuckDB aceita `d.Função` sem
@@ -227,18 +229,62 @@ function checaParticao(sql: string): Veredito {
     const temFiltro = parts.some((p) =>
       new RegExp(`\\b${p.toUpperCase()}\\s*(=|IN|BETWEEN|>|<|>=|<=)`).test(upper),
     );
-    if (!temFiltro) {
+    if (!temFiltro && !scanBarato(sql, ref, linhas)) {
       return {
         ok: false,
         camada: "particao",
         erro:
           `${ref} tem ${(linhas / 1e6).toFixed(1)}M linhas e exige filtro de partição. ` +
           `Adicione um predicado em: ${parts.join(", ")}. ` +
-          `Ex.: WHERE ${exemploParticao(parts)}.`,
+          `Ex.: WHERE ${exemploParticao(parts)}.` +
+          // B28, T15-3: o exemplo 'RJ' levou o modelo a medir filiação só em SP
+          // numa pergunta sobre o país. Abaixo do teto, o caminho nacional existe.
+          (linhas < LIMIAR_SEM_FILTRO
+            ? ` Se a pergunta é sobre o país, não recorte um estado (o recorte muda a pergunta): ` +
+              `agregue ${ref} sozinha numa CTE, sem JOIN (ex.: SELECT id_municipio, COUNT(*) ... GROUP BY 1), ` +
+              `e junte o resultado depois — assim o filtro não é exigido.`
+            : ""),
       };
     }
   }
   return OK;
+}
+
+/**
+ * Até aqui um scan inteiro custa segundos no DuckDB (siconfi 19–27M, sicar 79M,
+ * filiação 17M). O que travou o beelink por horas foi join sem filtro contra as
+ * tabelas de bilhões do CNPJ, que continuam acima do teto.
+ */
+const LIMIAR_SEM_FILTRO = 100_000_000;
+const AGREGA = /\b(GROUP\s+BY|DISTINCT|COUNT|SUM|AVG|MIN|MAX)\b/i;
+
+/**
+ * Leitura sem filtro de partição que não custa o que o filtro evita, nem mistura
+ * anos (B25: das 27 rejeições de partição da B19, 12 eram assim):
+ *  - espiada: `SELECT ... FROM t LIMIT n`, uma tabela, sem agregar nem ordenar —
+ *    o DuckDB para de ler no n-ésimo registro;
+ *  - `SELECT DISTINCT col ... LIMIT n` de uma tabela abaixo de LIMIAR_SEM_FILTRO:
+ *    listar os códigos de `conta_bd` não depende de ano;
+ *  - agregação de tabela cuja partição é só de lugar, abaixo do teto e lida
+ *    sozinha no seu escopo (CTE ou subconsulta sem JOIN): o país inteiro por
+ *    município (B28, T15-3). Com partição de tempo, somar sem filtro soma todos
+ *    os anos — aí o filtro é a pergunta, não custo, e segue exigido.
+ */
+function scanBarato(sql: string, ref: string, linhas: number): boolean {
+  const limite = /\bLIMIT\s+(\d+)\s*$/i.exec(sql);
+  if (
+    limite && Number(limite[1]) <= 1000 && tabelasCitadas(sql).length === 1 &&
+    !/\b(GROUP\s+BY|COUNT|SUM|AVG|MIN|MAX|ORDER\s+BY|JOIN|OVER|WITH)\b/i.test(sql)
+  ) {
+    const distinct = /\bDISTINCT\b/i.test(sql);
+    if (linhas < LIMIAR_SEM_FILTRO ? true : !distinct && !/\bWHERE\b/i.test(sql)) return true;
+  }
+  if (linhas >= LIMIAR_SEM_FILTRO) return false;
+  if (!particoesDe(ref).every((p) => ["sigla_uf", "uf"].includes(p))) return false;
+  const ctes = ctesDefinidos(sql);
+  const alvo = ref.toLowerCase();
+  const escopos = segmentos(sql).filter((s) => refsDoEscopo(s, ctes).some((r) => r.ref.toLowerCase() === alvo));
+  return escopos.length > 0 && escopos.every((s) => AGREGA.test(s) && !/\bJOIN\b/i.test(s));
 }
 
 const EXEMPLO: Record<string, string> = {
@@ -388,9 +434,32 @@ export function semComentarios(sql: string): string {
  */
 export const NOTA_AMOSTRA = "acrescentei COUNT(*) AS n ao SELECT final";
 
+/**
+ * B29, T15-3: `SELECT DISTINCT ano FROM br_ibge_pib.municipio LIMIT 5` devolveu
+ * 5 anos quaisquer, e o modelo tomou 2016 pelo mais recente (a tabela vai a
+ * 2021). O DISTINCT final só de colunas de tempo, sem ORDER BY, ganha
+ * `ORDER BY <cols> DESC` — o topo passa a ser o mais recente.
+ */
+const COLUNA_TEMPO = /^(?:\w+\.)?(ano|mes|data|dia|semana|trimestre)(_\w+)?$/i;
+function ordenaTempo(sql: string): { sql: string; chaves: string } | undefined {
+  const m = /\bSELECT\s+DISTINCT\s+([\w.\s,]+?)\s+FROM\s+[\w.]+(?:\s+(?:AS\s+)?\w+)?(?:\s+WHERE\s+[^()]*?)?(\s+LIMIT\s+\d+)?$/i.exec(sql);
+  // Depois de UNION o ORDER BY valeria para a união toda, não para este SELECT.
+  if (!m || /\bUNION\b/i.test(sql)) return undefined;
+  const cols = m[1]!.split(",").map((c) => c.trim());
+  if (!cols.length || !cols.every((c) => COLUNA_TEMPO.test(c))) return undefined;
+  const chaves = cols.map((c) => `${c} DESC`).join(", ");
+  const corte = m[2] ? sql.length - m[2].length : sql.length;
+  return { sql: `${sql.slice(0, corte)}\nORDER BY ${chaves}${m[2] ?? ""}`, chaves };
+}
+
 export function repara(sql: string, opcoes: { amostra?: boolean } = {}): { sql: string; notas: string[] } {
   const notas: string[] = [];
   let atual = sql.trim().replace(/;\s*$/, "");
+  const tempo = ordenaTempo(atual);
+  if (tempo) {
+    atual = tempo.sql;
+    notas.push(`acrescentei ORDER BY ${tempo.chaves} (sem ordem, os primeiros anos do DISTINCT não são os mais recentes)`);
+  }
   for (let i = 0; i < 4; i++) {
     const v = portao(atual);
     if (v.ok) break;
@@ -928,6 +997,12 @@ export function checaRanking(sql: string): Veredito {
   const externo = segmentos(sql).at(-1) ?? sql;
   if (!/\bORDER\s+BY\b[\s\S]*\bLIMIT\s+\d+/i.test(externo)) return OK;
   if (DERIVADAS.test(externo) || /\bAS\s+"?n"?\b/i.test(externo)) return OK;
+  // B25: ordenar primeiro por tempo é olhar a série, não ranking (T06-2, T22-2
+  // da B19: `ORDER BY i.ano, ... LIMIT 5`); e no grão de UF as 27 cabem na tela,
+  // e "quais UFs" é a própria pergunta (T15-5: 3 rejeições seguidas).
+  const chave = /\bORDER\s+BY\s+(?:\w+\.)?(\w+)/i.exec(externo.slice(externo.search(/\bORDER\s+BY\b[^()]*$/i)))?.[1];
+  if (chave && /^(ano|mes|data|dia|semana|trimestre)(_\w+)?$/i.test(chave)) return OK;
+  if (/\b(sigla_uf|uf)\b/i.test(externo) && !/\bid_municipio\w*\b/i.test(externo)) return OK;
   const fontes = new Set(
     tabelasCitadas(sql)
       .filter((r) => r.includes(".") && !/^br_bd_diretorios/i.test(r))
