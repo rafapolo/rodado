@@ -33,6 +33,15 @@ python3 scripts/sync/cria_views_novas.py lista.txt
 ```
 
 Idempotente — pula o que já tem view, então rodar de novo é sempre seguro.
+
+A checagem por dataset não pega o que ninguém lembrou de conferir. Em
+2026-09-27 uma varredura geral achou **18 tabelas com parquet e sem view**
+(`br_cgu_viagens.*`, `br_cgu_pe_de_meia.pe_de_meia`,
+`br_cgu_garantia_safra.garantia_safra`, `br_minc_salic.*`…), listadas no
+`rodado-schema.json`, que o modelo nomeava e o beelink não achava. De tempos
+em tempos, varra tudo: diretórios com `.parquet` em `~/rodado/<dataset>/<tabela>/`
+contra `SELECT table_schema, table_name FROM information_schema.tables`, e
+passe a diferença para `cria_views_novas.py`.
 (`repara_views_beelink.py` é o script irmão: conserta view que já existe e
 saiu de sincronia com o disco; não cria view nova do zero — são scripts
 diferentes para dois problemas diferentes.)
@@ -44,6 +53,27 @@ Depois que a view existir, roda a cadeia inteira documentada na seção
 `sync_mcp_schema.py` → `build_metadata_catalog.py` → `gera_join_keys.py` (e
 o resto, se o schema mudou o bastante). `sync_mcp_schema.py` é o passo mais
 esquecido: sem ele, `describe_table` continua mentindo sobre colunas novas.
+
+O harness do Gemma (`harness/`) guarda **o seu próprio** cache do catálogo e das
+faixas de ano, e não relê nada disso sozinho:
+
+```bash
+bun harness/catalogo.ts --atualiza   # linhas por tabela e colunas, do beelink
+bun harness/anos.ts --atualiza       # faixa de anos por tabela
+```
+
+Não regenere `rodado-schema.json` nem os caches do harness com uma rodada
+do harness no ar: cada caso relê os arquivos, e a régua muda no meio.
+
+**Tipo de coluna no `rodado-schema.json` (2026-09-27).** `gera_schemas.py`
+lia `parquet_schema()`, que dá o tipo **físico**: DATE e TIMESTAMP viravam
+INTEGER, DECIMAL virava STRING, e coluna de struct aparecia achatada como
+coluna de topo (`br_pncp.contratos.codigoIbge`, que na verdade é
+`unidadeOrgao.codigoIbge`). Eram 820 colunas com tipo errado; 35 consultas
+do harness passaram no catálogo local e falharam no beelink por isso. Enquanto
+o gerador não ler tipo lógico (`DESCRIBE SELECT * FROM read_parquet(...)`),
+não confie no tipo que o arquivo diz para DATE/TIMESTAMP/DECIMAL/struct —
+confira com `DESCRIBE` no beelink.
 
 ## 3. Um job que devia continuar rodando — ainda está rodando?
 
@@ -192,6 +222,55 @@ python3 -c "import json;g=json.load(open('pages/atlas/schema_graph.json'));print
 Abrir `rodado.xyz/atlas?db=<dataset>` (ou o `index.html` local) e olhar a vista
 3D: o nó tem que aparecer preso às chaves, não solto na borda.
 
+## 10. Consertou um parquet → a view guarda os nomes de coluna antigos
+
+A view grava no catálogo nomes e tipos de coluna do momento em que foi
+criada. `DESCRIBE` religa contra o parquet atual e não acusa; só
+`duckdb_columns()` mostra o nome guardado. Em 2026-09-27 três views estavam
+assim (`br_bd_diretorios_mundo.pais`, `br_bd_diretorios_brasil.cid_10`,
+`br_me_rais_identificada.estabelecimentos`); em 2026-09-24 uma delas
+(`br_mjsp_ckan.infopen`, bytes inválidos no nome) derrubava
+`information_schema.columns` no arquivo inteiro. Depois de mexer em qualquer
+parquet que já tem view, compare os dois:
+
+```sql
+-- nomes guardados na view
+SELECT column_name FROM duckdb_columns() WHERE schema_name='<dataset>' AND table_name='<tabela>';
+-- contra o que o parquet tem hoje
+DESCRIBE <dataset>.<tabela>;
+```
+
+Divergiu: reexecute o próprio SQL da view (`duckdb_views().sql`) como
+`CREATE OR REPLACE VIEW`, ou `scripts/repara_views_beelink.py`, com ninguém
+segurando o arquivo e o SQL antigo salvo antes (ver `AGENTS.md`, "beelink:
+`~/.duckdbrc` e a trava de arquivo").
+
+## 11. Armadilha achada → vai para os **dois** canais de conhecimento
+
+O que se aprende sobre um dataset chega ao modelo por dois caminhos que não se
+leem: `docs/context/gotchas/<dataset>.yml` é lido pelo `mcp_server.py`
+(`describe_table`), e `harness/dados/notas.json` é lido pelo harness do Gemma.
+Uma armadilha escrita só num deles não existe para o outro. Tipos de
+armadilha que custaram casos inteiros na rodada B19 (2026-09-26/27) e que
+valem conferir em todo dataset novo:
+
+- **ano faltando no meio da série** (ESTBAN não tem 1996, 2003, 2005, 2007,
+  2011, 2013, 2015, 2017, 2019, 2021): `anos.ts` dá mínimo e máximo, não o buraco;
+- **coluna vazia num ano** (ENEM `nota_objetiva` 0 de 3,39 mi em 2021): o
+  `corr()` volta NULL com n alto;
+- **código de município com 6 dígitos** (SINAN `ID_MUNICIP`, SIH
+  `id_municipio_paciente`) contra o de 7 do resto do espelho;
+- **município fora da tabela principal** (SICOR em
+  `recurso_publico_complemento_operacao`, transferegov em `planos_acao`,
+  PNCP dentro do struct `unidadeOrgao`);
+- **código de conta com prefixo ambíguo** (SICONFI: `3.08` é Assistência
+  Social, `3.13` é Cultura; `ILIKE '%assist%'` pega saúde junto).
+
+Cada entrada leva `verificado` com o número medido no beelink e a data.
+Ponte nova em `bridges.yaml`: a forma abreviada (`ds.a / b`, `ds.*`) passou a
+chegar ao harness em 2026-09-27 (`harness/pontes.ts`, B33); antes, só nome
+exato de tabela chegava.
+
 ## Ordem completa, resumida
 
 ```
@@ -205,4 +284,7 @@ scrape novo/retomado
   -> 6. source_url com https:// na linha do done.md (antes do passo 2, que a lê)
   -> 8. contagens cravadas em doc/página/og atualizadas pelo catálogo novo (grep da contagem antiga)
   -> 9. dataset ligado no atlas: tema fora de `outros` + chave canônica ou ponte com concept_aliases
+  -> 10. mexeu em parquet que já tinha view? duckdb_columns() contra DESCRIBE; divergiu, recria a view
+  -> 11. armadilha achada vai para gotchas/<dataset>.yml E harness/dados/notas.json, com verificado
+  (fora de rodada do harness: bun harness/catalogo.ts --atualiza e bun harness/anos.ts --atualiza depois do item 2)
 ```
