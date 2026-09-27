@@ -210,6 +210,33 @@ export function dicaColunaInexistente(erro: string, tabelas: { ref: string; cols
     partes.push("nome de município ou estado não está nas tabelas de dado: junte br_bd_diretorios_brasil.municipio " +
       "(id_municipio, nome, sigla_uf) por id_municipio.");
   }
+  // A coluna EXISTE, exata, em outra tabela da consulta: a dica "colunas reais
+  // com o mesmo termo: sigla_uf" dizia que estava tudo certo, e o modelo reenviou
+  // a mesma SQL 6 vezes (T07-2, rerun de 2026-09-27: sigla_uf pedida de
+  // br_ibge_pib.municipio, que não tem; quem tem é br_bcb_estban.municipio).
+  // Medido nas sessões de 2026-09-25 a 27: 17 rejeições em 6 sessões com essa dica.
+  // As `Candidate bindings` do DuckDB dizem qual tabela a linha lê.
+  // Campo de STRUCT aparece como coluna solta no catálogo, mas não existe solto:
+  // a nota da coluna diz isso e vale mais que a lista (br_pncp.contratos).
+  const temExata = tabelas.filter((t) => t.cols.some((c) => c.toLowerCase() === falta) &&
+    !/STRUCT/.test(notaColuna(t.ref, falta)));
+  if (temExata.length) {
+    const cands = (/Candidate bindings:\s*([^\n]+)/i.exec(erro)?.[1] ?? "")
+      .split(",").map((c) => c.replace(/["\s]/g, "").split(".").pop()!.toLowerCase()).filter(Boolean);
+    const semEla = tabelas.filter((t) => !temExata.includes(t));
+    const lida = semEla.find((t) => cands.length && cands.every((c) => t.cols.some((x) => x.toLowerCase() === c)));
+    partes.push(`'${falta}' existe em ${temExata.map((t) => t.ref).join(", ")}, mas não em ` +
+      `${(lida ? [lida] : semEla).map((t) => t.ref).join(", ") || "o escopo onde foi escrita"}` +
+      (lida ? " — é essa tabela que a linha do erro lê (as candidatas do DuckDB são colunas dela)" : "") +
+      `. Tire '${falta}' desse escopo, ou pegue-a de ${temExata[0]!.ref} pela junção.`);
+  }
+  // Nota curada da coluna (ex.: br_pncp.contratos.codigoIbge é campo do struct
+  // unidadeOrgao — o catálogo lista a folha e o DuckDB não acha a coluna solta).
+  for (const t of tabelas) {
+    const n = notaColuna(t.ref, falta);
+    if (n) partes.push(`Nota de ${t.ref}.${falta}: ${n}`);
+  }
+  if (temExata.length) return `\n\nDica: ${partes.join(" ")}`;
   const raiz = (t: string) => t.slice(0, 5);
   // termos que aparecem em metade das colunas e não distinguem nenhuma
   const VAGOS = new Set(["quant", "valor", "total", "numer", "indic", "codig", "media", "taxa"]);

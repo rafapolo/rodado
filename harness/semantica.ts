@@ -69,6 +69,36 @@ export function sugereTabelas(ref: string, n = 3): string[] {
   return cand.sort((a, b) => b[1] - a[1]).slice(0, n).map(([id]) => id);
 }
 
+/**
+ * Datasets com o termo distintivo de um nome inventado (`br_me_sicor` → o
+ * `sicor` de `br_bcb_sicor`). Rerun de 2026-09-27, T07-1: o modelo tentou
+ * `br_me_sicor`, o erro só dizia "não existe" e ele concluiu que o SICOR não
+ * está no espelho — a pergunta inteira morreu ali. O órgão (`me`, `ibge`, `ms`)
+ * pesa pouco: é o que o modelo mais erra e o que menos distingue.
+ */
+export function sugereDatasets(ref: string, n = 3): string[] {
+  const ds = ref.toLowerCase().split(".")[0]!;
+  const alvo = [...new Set(ds.split("_").filter((t) => t.length >= 3 && t !== "br"))];
+  if (!alvo.length) return [];
+  const cand: [string, number][] = [];
+  for (const d of listaDatasets()) {
+    const partes = d.toLowerCase().split("_").slice(1);
+    let s = 0;
+    for (const a of alvo) {
+      const i = partes.indexOf(a);
+      if (i < 0) continue;
+      s += i === 0 && partes.length > 1 ? 1 : 2 * a.length; // 1º pedaço é o órgão
+    }
+    if (s > 1) cand.push([d, s]);
+  }
+  return cand.sort((a, b) => b[1] - a[1]).slice(0, n).map(([d]) => d);
+}
+
+/** As tabelas de um dataset, como `dataset.tabela`, até `n`. */
+export function tabelasDoDataset(ds: string, n = 8): string[] {
+  return tabelasDe(ds).map((t) => `${ds}.${t.tabela}`).slice(0, n);
+}
+
 /** Onde estão os nomes: o erro mais frequente é código no lugar do nome. */
 export const DIRETORIOS =
   "Nomes: município em br_bd_diretorios_brasil.municipio (id_municipio, nome, sigla_uf); " +

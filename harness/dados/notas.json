@@ -42,7 +42,8 @@
   "br_tse_eleicoes.resultados_candidato": {
     "*": "uma linha por candidato por turno. tipo_eleicao separa a ordinária das suplementares. Eleito no 2º turno aparece como 'eleito' em turno = 2: para contar eleitos NÃO filtre turno.",
     "cargo": "minúsculo: 'prefeito', 'vereador', 'governador'...",
-    "resultado": "eleito = resultado IN ('eleito', 'eleito por qp', 'eleito por media') — os dois últimos são os de cargo proporcional (vereador, deputado)"
+    "resultado": "eleito = resultado IN ('eleito', 'eleito por qp', 'eleito por media') — os dois últimos são os de cargo proporcional (vereador, deputado)",
+    "titulo_eleitoral_candidato": "título de eleitor, não nome: para casar com br_camara_dados_abertos.deputado (que só tem nome) passe por br_tse_eleicoes.candidatos (titulo_eleitoral → nome_urna)"
   },
   "br_inpe_queimadas.microdados": {
     "*": "uma linha por foco de calor (satélite de referência)"
@@ -78,7 +79,10 @@
   },
   "br_ms_sinan_violencia.microdados_violencia": {
     "id_municip": "município de NOTIFICAÇÃO, 6 dígitos (VARCHAR) — igualar com id_municipio de 7 dá 0 linhas; converta por br_bd_diretorios_brasil.municipio.id_municipio_6",
-    "id_mn_resi": "município de RESIDÊNCIA da vítima, 6 dígitos (VARCHAR) — converta por br_bd_diretorios_brasil.municipio.id_municipio_6 antes de juntar com tabela de 7 dígitos"
+    "id_mn_resi": "município de RESIDÊNCIA da vítima, 6 dígitos (VARCHAR) — converta por br_bd_diretorios_brasil.municipio.id_municipio_6 antes de juntar com tabela de 7 dígitos",
+    "nu_idade_n": "idade CODIFICADA (VARCHAR): 1º dígito é a unidade (1 hora, 2 dia, 3 mês, 4 ano), o resto a quantidade — '4015' = 15 anos. Adolescentes 10–19: NU_IDADE_N BETWEEN '4010' AND '4019' (2022: 19.047 das 61.676 lesões autoprovocadas)",
+    "nu_ano": "VAZIO ('') em 100% de 2020 — WHERE NU_ANO='2020' dá zero linha e CAST(NU_ANO AS INT) falha. Filtre ano por ano_sinan (BIGINT, certo em todos os anos)",
+    "les_autop": "lesão autoprovocada: '1' sim, '2' não, '8' não se aplica, '9' ignorado, '' vazio (VARCHAR)"
   },
   "br_inpe_deter.avisos": {
     "*": "um polígono de alerta por linha, sem coluna ano (use VIEW_DATE, DATE, 2016-08 a 2026-08); área no município em AREAMUNKM; desmatamento = CLASSNAME IN ('DESMATAMENTO_CR','DESMATAMENTO_VEG')",
@@ -97,7 +101,17 @@
     "texto_bytes": "tamanho do texto da edição em bytes — 231.897 edições, média 60,6 mil"
   },
   "br_pncp.contratos": {
-    "*": "município do órgão contratante em unidadeOrgao.codigoIbge (id_municipio de 7 dígitos, VARCHAR; 3.550 municípios em 2024) — orgaoEntidade não tem código de município. Fornecedor = niFornecedor; partição ano_publicacao"
+    "*": "município do órgão contratante em unidadeOrgao.codigoIbge (id_municipio de 7 dígitos, VARCHAR; 3.550 municípios em 2024) — orgaoEntidade não tem código de município. Fornecedor = niFornecedor; partição ano_publicacao · as colunas codigoIbge, municipioNome, ufSigla, cnpj, razaoSocial, id, nome da lista são CAMPOS de struct (unidadeOrgao, orgaoEntidade, tipoContrato, categoriaProcesso): c.unidadeOrgao.codigoIbge — 662.847 de 662.847 contratos de 2024 preenchidos (2026-09-27)",
+    "codigoibge": "campo do STRUCT unidadeOrgao, não coluna solta: escreva c.unidadeOrgao.codigoIbge (p.codigoIbge dá 'does not have a column'). O mesmo campo existe em unidadeSubRogada",
+    "municipionome": "campo do STRUCT unidadeOrgao, não coluna solta: escreva c.unidadeOrgao.municipioNome (p.municipioNome dá 'does not have a column'). O mesmo campo existe em unidadeSubRogada",
+    "ufsigla": "campo do STRUCT unidadeOrgao, não coluna solta: escreva c.unidadeOrgao.ufSigla (p.ufSigla dá 'does not have a column'). O mesmo campo existe em unidadeSubRogada",
+    "ufnome": "campo do STRUCT unidadeOrgao, não coluna solta: escreva c.unidadeOrgao.ufNome (p.ufNome dá 'does not have a column'). O mesmo campo existe em unidadeSubRogada",
+    "codigounidade": "campo do STRUCT unidadeOrgao, não coluna solta: escreva c.unidadeOrgao.codigoUnidade (p.codigoUnidade dá 'does not have a column'). O mesmo campo existe em unidadeSubRogada",
+    "nomeunidade": "campo do STRUCT unidadeOrgao, não coluna solta: escreva c.unidadeOrgao.nomeUnidade (p.nomeUnidade dá 'does not have a column'). O mesmo campo existe em unidadeSubRogada",
+    "cnpj": "campo do STRUCT orgaoEntidade (órgão contratante), não coluna solta: escreva c.orgaoEntidade.cnpj. O mesmo campo existe em orgaoSubRogado",
+    "razaosocial": "campo do STRUCT orgaoEntidade (órgão contratante), não coluna solta: escreva c.orgaoEntidade.razaoSocial. O mesmo campo existe em orgaoSubRogado",
+    "poderid": "campo do STRUCT orgaoEntidade (órgão contratante), não coluna solta: escreva c.orgaoEntidade.poderId. O mesmo campo existe em orgaoSubRogado",
+    "esferaid": "campo do STRUCT orgaoEntidade (órgão contratante), não coluna solta: escreva c.orgaoEntidade.esferaId. O mesmo campo existe em orgaoSubRogado"
   },
   "br_bcb_estban.municipio": {
     "*": "faltam anos no espelho: 1996, 2003, 2005, 2007, 2011, 2013, 2015, 2017, 2019 e 2021 (o último é 2023). br_ibge_pib.municipio vai só até 2021: juntar por ano = ano com ESTBAN 2021 dá 0 linhas; use um ano que os dois têm (2020, mes = 12)"
@@ -134,5 +148,15 @@
   },
   "br_inep_educacao_especial.matricula_aee": {
     "*": "grão UF × rede (Pública/Privada), sem id_municipio nem escola; quantidade_matricula é o público-alvo da educação especial, não a matrícula total da rede"
+  },
+  "br_ipea_avs.municipio": {
+    "*": "linha do MUNICÍPIO é udh = 'geral' (5.565 por ano); as demais são UDHs (bairros de região metropolitana — São Paulo tem 1.594 linhas em 2010). Anos 2000 e 2010: filtre um. Recorte total: raca_cor='total', sexo='total', localizacao='total'",
+    "ivs": "o Índice de Vulnerabilidade Social (0 a 1, maior = mais vulnerável); ivs_infraestrutura_urbana, ivs_capital_humano e ivs_renda_trabalho são as três dimensões dele. proporcao_vulnerabilidade_socioeconomica é outro indicador (% de pessoas), não o IVS"
+  },
+  "br_tse_eleicoes.detalhes_votacao_municipio": {
+    "*": "uma linha por município e turno (prefeito 2020: 5.661 linhas, 5.568 municípios no 1º turno, 66 no 2º): comparecimento, votos válidos, brancos e nulos do MUNICÍPIO — não tem voto de candidato. Margem entre 1º e 2º colocados sai de resultados_candidato_municipio.votos (turno = 1)"
+  },
+  "br_tse_filiacao_partidaria.microdados": {
+    "*": "FILIADOS a partido (17,2M), não candidatos nem eleitos. Sobrenome/dinastia entre ELEITOS: br_tse_eleicoes.resultados_candidato (resultado eleito) JOIN br_tse_eleicoes.candidatos ON ano, sigla_uf e sequencial = sequencial_candidato, pelo nome — vereadores eleitos 2020: 58.143, todos com nome, 5.565 municípios (2026-09-27)"
   }
 }
