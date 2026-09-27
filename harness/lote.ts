@@ -250,13 +250,14 @@ export async function roda(casos: Caso[], aoCaso?: (feitos: Saida[]) => void, bu
     // de teste de `servidor.sh aquece`, e com `-np 1` ela tira o prefixo do laço
     // do slot — o 1º caso paga o prefixo inteiro sempre (~4.500 tokens, medido
     // 2026-09-24). Do segundo em diante, prefixo inteiro prefilado é cache
-    // quebrado: a rodada continua CERTA e fica ~7x mais lenta.
+    // quebrado (~70 s a mais no caso) — ou, depois de um caso de 16+
+    // requisições, o limite de checkpoints de SWA (`TURNOS_CHECKPOINTS`).
     // Olha a 1ª requisição do caso, onde o prefixo é lido — não o maior prefill:
     // numa pergunta de pesquisa um resultado de ferramenta grande no meio da
     // conversa passa do limiar sem cache nenhum quebrado (6.830 tokens medidos
     // em 2026-09-24).
     if (i > 0 && prefillInicial) {
-      const aviso = avisaPrefill([prefillInicial]);
+      const aviso = avisaPrefill([prefillInicial], LIMIAR_PREFILL, out[i - 1]?.guarda?.turnos);
       if (aviso) console.log(`      ${aviso}`);
     }
   }

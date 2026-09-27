@@ -6,7 +6,7 @@ import { expect, test, describe } from "bun:test";
 import {
   nsDaSessao, leCelula, commitDoBuild, trocasDeBuild,
   avalia, bate, numeros, normalizaNumero, casoEcoa,
-  avisaConfigDivergente, avisaPrefill, extraiPrefills, LIMIAR_PREFILL,
+  avisaConfigDivergente, avisaPrefill, extraiPrefills, LIMIAR_PREFILL, TURNOS_CHECKPOINTS,
 } from "./acerto.ts";
 
 describe("fronteira de número", () => {
@@ -107,6 +107,21 @@ describe("prefill", () => {
     expect(avisaPrefill([97, 6849])).toContain("6849");
     expect(LIMIAR_PREFILL).toBeGreaterThan(248);
     expect(LIMIAR_PREFILL).toBeLessThan(6849);
+  });
+
+  test("depois de caso longo o prefixo relido é o limite de checkpoints, não aviso", () => {
+    // B19: 32/35 releituras vieram depois de caso com 16+ requisições, 3/51 antes
+    const nota = avisaPrefill([4528], LIMIAR_PREFILL, 24);
+    expect(nota).toStartWith("nota:");
+    expect(nota).toContain("checkpoints");
+    expect(avisaPrefill([4528], LIMIAR_PREFILL, 11)).toStartWith("AVISO:");
+    expect(avisaPrefill([4528])).toStartWith("AVISO:");
+    expect(avisaPrefill([4528], LIMIAR_PREFILL, TURNOS_CHECKPOINTS - 1)).toStartWith("AVISO:");
+  });
+
+  test("o custo dito é o medido (~63 t/s), não 7x", () => {
+    expect(avisaPrefill([4528])).toContain("~72 s");
+    expect(avisaPrefill([4528])).not.toContain("7x");
   });
 
   test("extraiPrefills lê a linha real do llama-server", () => {
