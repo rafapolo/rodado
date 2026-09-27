@@ -41,24 +41,44 @@ export async function atualiza(): Promise<number> {
     .map((e) => `${e.dataset}.${e.tabela}`)
     .filter((id) => (colunasDe(id) ?? []).some((c) => c.name.toLowerCase() === "ano"));
 
+  const antes = carrega();
   const out: Record<string, Faixa> = {};
   let feitas = 0;
+  const guarda = (linhas: Record<string, unknown>[] | undefined) => {
+    for (const linha of linhas ?? []) {
+      const lo = Number(linha.lo), hi = Number(linha.hi);
+      if (Number.isFinite(lo) && Number.isFinite(hi)) out[String(linha.t)] = { min: lo, max: hi };
+    }
+  };
+  const sqlDe = (id: string) => `SELECT '${id}' AS t, min(ano) AS lo, max(ano) AS hi FROM ${id}`;
   // Uma consulta por lote de tabelas: min/max de `ano` é barato num parquet
   // particionado (lê só a estatística do arquivo), mas 600 idas de ssh não são.
   const LOTE = 25;
   for (let i = 0; i < alvos.length; i += LOTE) {
     const lote = alvos.slice(i, i + LOTE);
-    const sql = lote
-      .map((id) => `SELECT '${id}' AS t, min(ano) AS lo, max(ano) AS hi FROM ${id}`)
-      .join("\nUNION ALL\n");
-    const r = await runSqlSsh(sql);
-    if (r.error) { console.error(`lote ${i}: ${r.error.slice(0, 120)}`); continue; }
-    for (const linha of r.rows ?? []) {
-      const lo = Number(linha.lo), hi = Number(linha.hi);
-      if (Number.isFinite(lo) && Number.isFinite(hi)) out[String(linha.t)] = { min: lo, max: hi };
+    const r = await runSqlSsh(lote.map(sqlDe).join("\nUNION ALL\n"));
+    if (!r.error) guarda(r.rows);
+    else {
+      // Uma tabela lenta derruba o lote inteiro (2026-09-27: as views SIPNI,
+      // que leem do R2 remoto, estouravam 120 s e levavam 23 tabelas junto).
+      // Refaz uma a uma; a que falhar sozinha mantém a faixa que já tinha.
+      console.error(`lote ${i}: ${r.error.slice(0, 120)} — refazendo tabela a tabela`);
+      for (const id of lote) {
+        const u = await runSqlSsh(sqlDe(id));
+        if (!u.error) guarda(u.rows);
+        else if (antes[id]) { out[id] = antes[id]; console.error(`  ${id}: falhou, mantida a faixa anterior`); }
+        else console.error(`  ${id}: ${u.error.slice(0, 80)}`);
+      }
     }
     feitas += lote.length;
     console.error(`  ${feitas}/${alvos.length}`);
+  }
+  // As tabelas sem coluna `ano` vêm de `--outras` (ano_mes, ano_competencia…):
+  // refazer o cache do zero apagava as 19 (Bolsa Família, arrecadação, ISP).
+  // Mantém as que seguem no catálogo.
+  const noCatalogo = new Set(catalogo().map((e) => `${e.dataset}.${e.tabela}`));
+  for (const [id, f] of Object.entries(antes)) {
+    if (!out[id] && !alvos.includes(id) && noCatalogo.has(id)) out[id] = f;
   }
   writeFileSync(CACHE, JSON.stringify(out));
   _f = out;
