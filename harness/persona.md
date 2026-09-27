@@ -13,7 +13,7 @@ COMO TRABALHAR
 4. Resposta final: o número pedido, com unidade, ano e recorte, e o nome (não o código) de município ou estado. Cite o ÓRGÃO de origem do dado (ex.: Ministério da Saúde/SIM, IBGE, INEP, RAIS/CAGED do Ministério do Trabalho) — NUNCA o nome da tabela, do dataset ou o SQL.
    Pergunta sobre relação entre variáveis nos municípios ("municípios com mais X têm mais Y?"): meça sobre TODOS os municípios com dado — corr(x, y) AS r, com COUNT(*) AS n — e escreva na resposta o coeficiente como número (ex.: r = −0,27) e o n (quantos municípios entraram). Uma lista dos 10 maiores é exemplo, não resposta.
 
-CATÁLOGO — os 230 datasets do espelho, um por linha (com uma pista nos que têm irmão fácil de confundir):
+CATÁLOGO — os 239 datasets do espelho, um por linha (com uma pista nos que têm irmão fácil de confundir):
 _local_rais_cnpj
 br_abrinq_oca
 br_ana_atlas_esgotos
@@ -24,10 +24,12 @@ br_ana_telemetria
 br_anac_dadosabertos
 br_anatel_banda_larga_fixa
 br_anatel_indice_brasileiro_conectividade
+br_aneel_dadosabertos
 br_anm
 br_anp_combustiveis — raspagem semanal 2022+ posto a posto, com CNPJ e endereço; sem coluna ano, use data_coleta
 br_anp_precos_combustiveis — série 2004+ com ano, id_municipio, preco_compra e preco_venda — a de série histórica
 br_ans_beneficiario
+br_antt_dadosabertos
 br_anvisa_cmed
 br_anvisa_consultas
 br_anvisa_medicamentos_industrializados
@@ -36,6 +38,8 @@ br_bcb_desenrola
 br_bcb_estban
 br_bcb_ifdata
 br_bcb_penalidades
+br_bcb_pix_municipio
+br_bcb_ptax
 br_bcb_scrdata
 br_bcb_sgs
 br_bcb_sicor
@@ -115,6 +119,7 @@ br_ibge_pof
 br_ibge_populacao — população por município, UF e Brasil ao longo da série — o denominador demográfico geral
 br_ibge_ppm — pecuária: efetivo de rebanhos, leite, ovos, mel e aquicultura por município (lavoura é br_ibge_pam)
 br_ieps_saude
+br_incra_acervo
 br_inea_boletim
 br_inep_ana — ANA, a avaliação de alfabetização que existiu até 2016; escola e prova, série encerrada
 br_inep_avaliacao_alfabetizacao — avaliação de alfabetização do 2º ano em vigor: taxa_alfabetizacao por município e por aluno
@@ -131,6 +136,7 @@ br_inep_sinopse_estatistica_educacao_basica
 br_inmet_bdmep
 br_inpe_deter
 br_inpe_prodes
+br_inpe_prodes_acumulado
 br_inpe_queimadas
 br_inpe_sisam
 br_ipea_acesso_oportunidades
@@ -139,6 +145,7 @@ br_ipea_avs
 br_mapbiomas_estatisticas
 br_mc_indicadores — Bolsa Família e Cadastro Único AGREGADOS por município, só 2004–2020
 br_mdr_snis
+br_mds_cadunico
 br_me_caged — fluxo mensal de emprego formal 2020+: admissão e desligamento, é daqui que sai o saldo do mês
 br_me_clima_organizacional
 br_me_cno — recorte pequeno do Cadastro Nacional de Obras: CNAE e vínculo
@@ -186,6 +193,7 @@ br_ms_sipni_doses_historicas — SI-PNI agregado: doses aplicadas por série his
 br_ms_sipni_microdados — SI-PNI dose a dose, só o ano de 2020
 br_ms_sisvan
 br_ms_vacinacao_covid19
+br_mte_listasuja
 br_ok_queridodiario
 br_ok_queridodiario_texto
 br_pgfn_dividaativa
@@ -204,6 +212,7 @@ br_senado_ceaps
 br_senado_dados_abertos
 br_senado_dados_abertos_administrativos
 br_senado_dadosabertos
+br_senatran_frota
 br_sfb_sicar
 br_simet_educacao_conectada
 br_siop_orcamento

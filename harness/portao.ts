@@ -24,7 +24,7 @@
  */
 import { checkReadOnly } from "./sqlguard.ts";
 import { colunasDe, camposPontuados, linhasDe, particoesDe, inservivel, LIMIAR_PARTICAO, tabelaPrincipal, resolveDataset } from "./catalogo.ts";
-import { sugereTabelas, sugereDatasets, tabelasDoDataset, DIRETORIOS } from "./semantica.ts";
+import { sugereTabelas, sugereDatasets, tabelasDoDataset, DIRETORIOS, colunasDeSeisDigitos } from "./semantica.ts";
 import { codigos } from "./dicionarios.ts";
 import { valores } from "./valores.ts";
 import { faixaDeAnos, type Faixa } from "./anos.ts";
@@ -327,11 +327,18 @@ function checaParticao(sql: string): Veredito {
           `Ex.: WHERE ${exemploParticao(parts)}.` +
           // B28, T15-3: o exemplo 'RJ' levou o modelo a medir filiação só em SP
           // numa pergunta sobre o país. Abaixo do teto, o caminho nacional existe.
-          (linhas < LIMIAR_SEM_FILTRO
-            ? ` Se a pergunta é sobre o país, não recorte um estado (o recorte muda a pergunta): ` +
-              `agregue ${ref} sozinha numa CTE, sem JOIN (ex.: SELECT id_municipio, COUNT(*) ... GROUP BY 1), ` +
-              `e junte o resultado depois — assim o filtro não é exigido.`
-            : ""),
+          // Remedição 2 (2026-09-27), T08-4: br_ms_sim.microdados (ano, sigla_uf)
+          // recebia a oferta da CTE sozinha, o modelo a seguiu três vezes e três
+          // vezes foi rejeitado — scanBarato só aceita a CTE quando TODA partição é
+          // de lugar. Com partição de tempo, o caminho nacional é filtrar só ela.
+          (linhas >= LIMIAR_SEM_FILTRO ? ""
+            : parts.every((p) => ["sigla_uf", "uf"].includes(p))
+              ? ` Se a pergunta é sobre o país, não recorte um estado (o recorte muda a pergunta): ` +
+                `agregue ${ref} sozinha numa CTE, sem JOIN (ex.: SELECT id_municipio, COUNT(*) ... GROUP BY 1), ` +
+                `e junte o resultado depois — assim o filtro não é exigido.`
+              : ` Basta UMA das partições: se a pergunta é sobre o país, não recorte um estado (o recorte ` +
+                `muda a pergunta) — filtre só o tempo (${exemploParticao(parts.filter((p) => !["sigla_uf", "uf"].includes(p)))}), ` +
+                `dentro da CTE ou subconsulta que lê ${ref}.`),
       };
     }
   }
@@ -1197,6 +1204,32 @@ export const COLUNA_COEFICIENTE = /^(r|rho|corr\w*|correla\w*|r_\w+)$/i;
  * Devolve o alerta quando algum coeficiente da 1ª linha é NULL/NaN, ou
  * degenerado (|r| ≥ 0,99999 — exato, não "alto": população × eleitorado dá 0,998 de verdade; uma ponta é função da outra, ou só 2 pontos).
  */
+/**
+ * A causa provável de junção vazia quando há código de município de 6 dígitos.
+ * Remedição 2 (2026-09-27): T24-1 renomeou id_municipio_paciente (SIH, 6
+ * dígitos) para id_municipio_ref e juntou com o id_municipio de 7 do CNES e do
+ * PIB — 5.570 linhas, 0 com leito, r NULL; T28-5 fez o inverso, igualou o
+ * id_municipio (7) do SAEB a id_municipio_6. As notas dizem os dois formatos,
+ * o modelo as leu e errou; o alerta de r NULL dizia "código em outro formato"
+ * sem apontar qual. Só entra junto de resultado vazio ou coeficiente NULL.
+ */
+export function dicaCodigo6(sql: string): string | undefined {
+  const limpo = semComentarios(sql).replace(/'(?:[^']|'')*'/g, "''");
+  const re = /(?:\w+\.)?id_municipio_6\s*=\s*(?:CAST\s*\(\s*)?(?:\w+\.)?id_municipio\b|(?:CAST\s*\(\s*)?(?:\w+\.)?id_municipio\b(?:\s+AS\s+\w+\s*\))?\s*=\s*(?:\w+\.)?id_municipio_6\b/i;
+  if (re.test(limpo)) {
+    return `id_municipio_6 foi igualado a um id_municipio: id_municipio tem 7 dígitos (IBGE com verificador), id_municipio_6 tem 6 — nunca casam. ` +
+      `Use id_municipio_6 do diretório só contra as colunas de 6 dígitos (SIH id_municipio_paciente/estabelecimento, SINAN id_mn_resi/id_municip) ` +
+      `e junte o resto pelo id_municipio do diretório.`;
+  }
+  const seis = [...colunasDeSeisDigitos()].filter((c) => new RegExp(`\\b${c}\\b`, "i").test(limpo));
+  if (seis.length && !/\bid_municipio_6\b/i.test(limpo)) {
+    return `${seis.join(", ")} é código de município de 6 dígitos (sem o verificador), e esta consulta não passa por ` +
+      `br_bd_diretorios_brasil.municipio.id_municipio_6 — junto de um id_municipio de 7 dígitos (CNES, PIB, população), nenhuma linha casa, ` +
+      `mesmo depois de renomear a coluna. Converta: JOIN br_bd_diretorios_brasil.municipio d ON d.id_municipio_6 = ${seis[0]}, e use d.id_municipio.`;
+  }
+  return undefined;
+}
+
 export function coeficienteVazio(linhas: Linha[]): string | undefined {
   const prim = linhas[0];
   if (!prim) return undefined;

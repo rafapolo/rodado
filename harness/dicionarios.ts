@@ -13,6 +13,7 @@
  */
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { runSqlSsh } from "./beelink.ts";
+import { parse } from "yaml";
 
 const RAIZ = new URL("..", import.meta.url).pathname;
 const COBERTURA = `${RAIZ}docs/context/dicionario_coverage.json`;
@@ -30,9 +31,33 @@ function cache(): Cache {
   return _cache!;
 }
 
+/**
+ * O que foi pesquisado à mão em `docs/context/column_codes.yaml` (status
+ * `documentado`: fonte oficial + valores medidos no beelink). Até 2026-09-27 só
+ * o MCP Python lia o arquivo; o harness decodificava só o que tem
+ * `{dataset}.dicionario`. Todas as listas cabem inline (≤ 15 valores).
+ */
+let _pesquisa: Record<string, Record<string, [string, string][]>> | null = null;
+function pesquisa(): Record<string, Record<string, [string, string][]>> {
+  if (_pesquisa) return _pesquisa;
+  _pesquisa = {};
+  const arq = `${RAIZ}docs/context/column_codes.yaml`;
+  if (!existsSync(arq)) return _pesquisa;
+  const y = parse(readFileSync(arq, "utf8")) as { entradas?: { tabela: string; colunas: string[]; status: string; valores?: Record<string, string | null> }[] };
+  for (const e of y.entradas ?? []) {
+    if (e.status !== "documentado" || !e.valores) continue;
+    const pares = Object.entries(e.valores).filter(([, v]) => v != null && String(v).trim() !== "")
+      .map(([k, v]) => [k, String(v).replace(/\s+/g, " ").trim()] as [string, string]);
+    if (!pares.length) continue;
+    const t = (_pesquisa[e.tabela.toLowerCase()] ??= {});
+    for (const c of e.colunas) t[c.toLowerCase()] ??= pares;
+  }
+  return _pesquisa;
+}
+
 /** Os códigos de uma coluna, ou undefined se ela não é decodificável. */
 export function codigos(tabela: string, coluna: string): { total: number; previa: [string, string][] } | undefined {
-  const c = cache()[tabela.toLowerCase()]?.[coluna.toLowerCase()];
+  const c = cache()[tabela.toLowerCase()]?.[coluna.toLowerCase()] ?? pesquisa()[tabela.toLowerCase()]?.[coluna.toLowerCase()];
   if (!c) return undefined;
   return Array.isArray(c) ? { total: c.length, previa: c } : c;
 }
