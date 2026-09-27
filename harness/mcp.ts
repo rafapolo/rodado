@@ -33,6 +33,7 @@ import { capRows } from "./sqlguard.ts";
 import { textoFaixa } from "./anos.ts";
 import { inservivel } from "./catalogo.ts";
 import { metrica, listaMetricas } from "./metricas.ts";
+import { criaPrazo, avisoDoAmbiente } from "./prazo.ts";
 import { descreve, tabelaTexto, dicaMunicipio, dicaColunaInexistente } from "./formato.ts";
 import { faltando } from "./recortes.ts";
 import { garanteValores } from "./valores.ts";
@@ -138,8 +139,14 @@ const FERRAMENTAS = [
 
 servidor.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: FERRAMENTAS }));
 
-const texto = (s: string) => ({ content: [{ type: "text" as const, text: s }] });
-const erro = (s: string) => ({ content: [{ type: "text" as const, text: s }], isError: true });
+/** B27: perto do teto da tentativa, todo resultado vem com a ordem de responder (`prazo.ts`). */
+const prazo = criaPrazo(avisoDoAmbiente(Bun.env));
+const comPrazo = (s: string) => {
+  const aviso = prazo.aviso();
+  return aviso ? `${aviso}\n\n${s}` : s;
+};
+const texto = (s: string) => ({ content: [{ type: "text" as const, text: comPrazo(s) }] });
+const erro = (s: string) => ({ content: [{ type: "text" as const, text: comPrazo(s) }], isError: true });
 
 servidor.setRequestHandler(CallToolRequestSchema, async (req) => {
   const { name, arguments: a } = req.params;

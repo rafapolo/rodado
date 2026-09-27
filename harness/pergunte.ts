@@ -48,13 +48,15 @@ if (!await garanteTunel()) {
 
 async function tenta(): Promise<{ code: number; texto: string }> {
   const { cmd, env } = comandoPi(pergunta, guarda.url);
+  const tetoMs = Number(Bun.env.HARNESS_TIMEOUT_MS ?? 2_400_000);
   const proc = Bun.spawn(cmd, {
     cwd: RAIZ,
-    env,
+    // o aviso de prazo do mcp.ts (B27) mede contra este teto, não o do lote
+    env: { ...env, HARNESS_TETO_MIN: String(tetoMs / 60_000) },
     stdin: "ignore",
     stdout: "pipe",
     stderr: "inherit",
-    timeout: Number(Bun.env.HARNESS_TIMEOUT_MS ?? 2_400_000),
+    timeout: tetoMs,
     killSignal: "SIGKILL",
   });
   // "pipe" em vez de "inherit" só para poder medir se saiu algo — o texto
