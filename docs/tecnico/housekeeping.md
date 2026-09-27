@@ -65,15 +65,16 @@ bun harness/anos.ts --atualiza       # faixa de anos por tabela
 Não regenere `rodado-schema.json` nem os caches do harness com uma rodada
 do harness no ar: cada caso relê os arquivos, e a régua muda no meio.
 
-**Tipo de coluna no `rodado-schema.json` (2026-09-27).** `gera_schemas.py`
+**Tipo de coluna no `rodado-schema.json`.** Até 2026-09-27 `gera_schemas.py`
 lia `parquet_schema()`, que dá o tipo **físico**: DATE e TIMESTAMP viravam
 INTEGER, DECIMAL virava STRING, e coluna de struct aparecia achatada como
-coluna de topo (`br_pncp.contratos.codigoIbge`, que na verdade é
-`unidadeOrgao.codigoIbge`). Eram 820 colunas com tipo errado; 35 consultas
-do harness passaram no catálogo local e falharam no beelink por isso. Enquanto
-o gerador não ler tipo lógico (`DESCRIBE SELECT * FROM read_parquet(...)`),
-não confie no tipo que o arquivo diz para DATE/TIMESTAMP/DECIMAL/struct —
-confira com `DESCRIBE` no beelink.
+coluna de topo (`br_pncp.contratos.codigoIbge`, que é `unidadeOrgao.codigoIbge`).
+Eram 820 colunas com tipo errado, e 35 consultas do harness passaram no
+catálogo local e falharam no beelink. Desde `9756dc7` ele lê `DESCRIBE` da
+**view** (é o que o modelo e o beelink enxergam; o primeiro parquet engana
+quando os arquivos têm layouts diferentes, como em `br_inpe_deter.avisos`) e
+só cai no primeiro parquet quando não há view. O que sobrar de divergência
+entre o schema e `duckdb_columns()` é, em geral, view velha no beelink (item 10).
 
 ## 3. Um job que devia continuar rodando — ainda está rodando?
 
