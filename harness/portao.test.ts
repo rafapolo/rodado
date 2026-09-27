@@ -7,7 +7,7 @@ import { expect, test, describe } from "bun:test";
 import {
   portao, alertasDeSanidade,
   juncoesSemPonte, mensagemSemPonte, assinaturaJuncao,
-  perguntaDePesquisa, checaRanking, fonteTrocada, coeficienteVazio, correlacaoExtensiva,
+  perguntaDePesquisa, checaRanking, fonteTrocada, coeficienteVazio, correlacaoExtensiva, naoSomavel,
 } from "./portao.ts";
 
 describe("camada read-only (sqlguard)", () => {
@@ -827,5 +827,69 @@ describe("B29 — DISTINCT ano sem ORDER BY (T15-3)", () => {
     expect(repara("SELECT DISTINCT ano FROM br_ibge_pib.municipio ORDER BY ano LIMIT 5").notas).toEqual([]);
     const r = repara("SELECT DISTINCT ano, raca_cor FROM br_ipea_avs.municipio LIMIT 20");
     expect(r.sql).not.toContain("ORDER BY");
+  });
+});
+
+describe("B34 — filtro de partição no escopo que lê a tabela (T22-2)", () => {
+  test("T22-2: a CTE lê o SIM inteiro e só o WHERE de fora filtra ano — rejeita", () => {
+    const v = portao(
+      "WITH o AS (SELECT ano, mes, id_municipio_residencia AS id_municipio, COUNT(*) AS total_obitos FROM br_ms_sim.microdados GROUP BY 1, 2, 3) " +
+      "SELECT o.id_municipio, SUM(o.total_obitos) AS obitos, COUNT(*) AS n FROM o WHERE o.ano = 2021 GROUP BY 1",
+    );
+    expect(v.camada).toBe("particao");
+  });
+  test("par: o mesmo com o filtro dentro da CTE passa", () => {
+    const v = portao(
+      "WITH o AS (SELECT ano, mes, id_municipio_residencia AS id_municipio, COUNT(*) AS total_obitos FROM br_ms_sim.microdados WHERE ano = 2021 GROUP BY 1, 2, 3) " +
+      "SELECT o.id_municipio, SUM(o.total_obitos) AS obitos, COUNT(*) AS n FROM o GROUP BY 1",
+    );
+    expect(v.ok).toBe(true);
+  });
+  test("filtro por apelido no mesmo escopo do JOIN passa", () => {
+    const v = portao(
+      "SELECT s.id_municipio_residencia, COUNT(*) AS n FROM br_ms_sim.microdados s JOIN br_ibge_pib.municipio p " +
+      "ON s.id_municipio_residencia = p.id_municipio AND p.ano = 2021 WHERE s.ano = 2021 GROUP BY 1",
+    );
+    expect(v.ok).toBe(true);
+  });
+  test("subconsulta com filtro próprio passa", () => {
+    const v = portao(
+      "SELECT id_municipio, nome FROM br_bd_diretorios_brasil.municipio WHERE id_municipio IN " +
+      "(SELECT id_municipio_residencia FROM br_ms_sim.microdados WHERE ano = 2020 GROUP BY 1)",
+    );
+    expect(v.ok).toBe(true);
+  });
+  test("tabela lida em dois escopos, um sem filtro: rejeita", () => {
+    const v = portao(
+      "WITH a AS (SELECT id_municipio_residencia AS id_municipio, COUNT(*) AS x FROM br_ms_sim.microdados WHERE ano = 2021 GROUP BY 1), " +
+      "b AS (SELECT id_municipio_residencia AS id_municipio, COUNT(*) AS y FROM br_ms_sim.microdados GROUP BY 1) " +
+      "SELECT corr(a.x, b.y) AS r, COUNT(*) AS n FROM a JOIN b ON a.id_municipio = b.id_municipio",
+    );
+    expect(v.camada).toBe("particao");
+  });
+  test("as exceções da B25 seguem valendo: espiada e agregação nacional de tabela só por UF", () => {
+    expect(portao("SELECT * FROM br_me_cnpj.estabelecimentos LIMIT 5").ok).toBe(true);
+    expect(portao(
+      "WITH filiados AS (SELECT id_municipio, COUNT(*) AS total_filiados FROM br_tse_filiacao_partidaria.microdados GROUP BY 1), " +
+      "pib AS (SELECT id_municipio, SUM(pib) AS pib FROM br_ibge_pib.municipio WHERE ano = 2021 GROUP BY 1) " +
+      "SELECT corr(f.total_filiados / p.pib, p.pib) AS r, COUNT(*) AS n FROM filiados f JOIN pib p ON f.id_municipio = p.id_municipio",
+    ).camada).not.toBe("particao");
+  });
+});
+
+describe("B36 — a anotação de GROUP BY não soma ano nem código", () => {
+  test("naoSomavel: tempo e código fora; quantidade dentro", () => {
+    for (const c of ["ano", "mes", "ano_emenda", "id_municipio", "cod_ibge", "codigo_ibge", "sigla_uf", "id"]) expect(naoSomavel(c)).toBe(true);
+    for (const c of ["n", "total", "valor", "anos_estudo", "populacao", "idade"]) expect(naoSomavel(c)).toBe(false);
+  });
+  test("GROUP BY ano sem outra coluna numérica: não diz 'Somando a coluna ano'", () => {
+    const a = alertasDeSanidade("SELECT ano FROM br_ms_sim.microdados WHERE ano >= 2020 GROUP BY ano",
+      [{ ano: 2020 }, { ano: 2021 }, { ano: 2022 }, { ano: 2023 }, { ano: 2024 }]);
+    expect(a.join(" ")).not.toContain("Somando a coluna 'ano'");
+  });
+  test("par: com ano e uma quantidade, soma a quantidade", () => {
+    const a = alertasDeSanidade("SELECT ano, SUM(x) AS total FROM br_ms_sim.microdados WHERE ano >= 2020 GROUP BY ano",
+      [{ ano: 2020, total: 10 }, { ano: 2021, total: 5 }]);
+    expect(a.join(" ")).toContain("Somando a coluna 'total' nas 2 linhas: 15");
   });
 });
