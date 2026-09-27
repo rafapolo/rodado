@@ -6,11 +6,11 @@
  */
 import type { CappedResult } from "./sqlguard.ts";
 import { legenda, codigos } from "./dicionarios.ts";
-import { COLUNAS_PARTICAO } from "./catalogo.ts";
+import { COLUNAS_PARTICAO, camposPontuados } from "./catalogo.ts";
 import { notaTabela, notaColuna, calculosDaTabela } from "./semantica.ts";
 import { valores } from "./valores.ts";
 
-export interface Coluna { name: string; type: string }
+export interface Coluna { name: string; type: string; fields?: Coluna[] }
 
 const PARTICAO = new Set<string>(COLUNAS_PARTICAO);
 const CURTO: Record<string, string> = {
@@ -78,7 +78,11 @@ export function descreve(tabela: string, cols: Coluna[], sufixo = "", filtro = "
     const cod = leg && !completa(c) ? ` (${codigos(tabela, c.name)?.total ?? "?"} códigos)` : leg;
     const v = leg ? undefined : valores(tabela, c.name);
     const vs = v ? ` — valores${v.amostra ? " (amostra)" : ""}: ${v.lista.map((x) => `'${x}'`).join(", ")}` : "";
-    return `  ${c.name}: ${curto(c.type)}${cod}${vs}${n ? ` — NOTA: ${n}` : ""}`;
+    // Struct mostra o caminho inteiro de cada campo, que é como a SQL o escreve
+    // (`c.unidadeOrgao.codigoIbge`) — B37.
+    const campos = c.fields?.length
+      ? ` — campos (use o caminho inteiro): ${camposPontuados([c]).join(", ")}` : "";
+    return `  ${c.name}: ${curto(c.type)}${campos}${cod}${vs}${n ? ` — NOTA: ${n}` : ""}`;
   };
   const avisoCodigos = compacta && codificadas.some((c) => !completa(c))
     ? [`  (colunas marcadas "(N códigos)": os códigos saem com descrever_tabela e filtro=<nome da coluna>)`] : [];

@@ -10,6 +10,32 @@ import {
   perguntaDePesquisa, checaRanking, fonteTrocada, coeficienteVazio, correlacaoExtensiva, naoSomavel,
   checaCodigoTse, correlacaoParteTodo, totaisSobPedidoDeTaxa, alertaDeEscala, sugestao,
 } from "./portao.ts";
+import { colunasDe } from "./catalogo.ts";
+
+// B37: o schema achatava struct e listava `codigoIbge` como coluna de
+// br_pncp.contratos; o portão aceitava `c.codigoIbge` e o beelink recusava
+// (32 rejeições na B19, T74-1 e T81-4). Com o struct no schema: o caminho
+// inteiro passa, a folha solta é recusada e a dica mostra o caminho. Pula com
+// o rodado-schema.json antigo (sem `fields`), que não tem como saber.
+describe("camada coluna — campo de struct (B37)", () => {
+  const temStruct = (colunasDe("br_pncp.contratos") ?? []).some((c) => c.name === "unidadeOrgao" && c.fields?.length);
+  test.skipIf(!temStruct)("c.unidadeOrgao.codigoIbge e unidadeOrgao.codigoIbge passam a camada coluna", () => {
+    for (const sql of [
+      "SELECT c.unidadeOrgao.codigoIbge AS id_municipio, COUNT(*) AS n FROM br_pncp.contratos c GROUP BY 1",
+      "SELECT unidadeOrgao.codigoIbge AS id_municipio, COUNT(*) AS n FROM br_pncp.contratos GROUP BY 1",
+    ]) expect(portao(sql).camada).not.toBe("coluna");
+  });
+  test.skipIf(!temStruct)("c.codigoIbge solto é recusado e a dica traz unidadeOrgao.codigoIbge", () => {
+    const v = portao("SELECT c.codigoIbge AS id_municipio, COUNT(*) AS n FROM br_pncp.contratos c GROUP BY 1");
+    expect(v.ok).toBe(false);
+    expect(v.camada).toBe("coluna");
+    expect(v.erro).toContain("unidadeOrgao.codigoIbge");
+  });
+  test.skipIf(!temStruct)("campo inventado depois do pai ainda é recusado", () => {
+    const v = portao("SELECT unidadeOrgao.codigo_inventado AS x, COUNT(*) AS n FROM br_pncp.contratos GROUP BY 1");
+    expect(v.camada).toBe("coluna");
+  });
+});
 
 describe("camada read-only (sqlguard)", () => {
   test("rejeita escrita", () => {

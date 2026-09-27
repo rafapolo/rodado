@@ -23,7 +23,7 @@
  * erros são mecânicos.
  */
 import { checkReadOnly } from "./sqlguard.ts";
-import { colunasDe, linhasDe, particoesDe, inservivel, LIMIAR_PARTICAO, tabelaPrincipal, resolveDataset } from "./catalogo.ts";
+import { colunasDe, camposPontuados, linhasDe, particoesDe, inservivel, LIMIAR_PARTICAO, tabelaPrincipal, resolveDataset } from "./catalogo.ts";
 import { sugereTabelas, sugereDatasets, tabelasDoDataset, DIRETORIOS } from "./semantica.ts";
 import { codigos } from "./dicionarios.ts";
 import { valores } from "./valores.ts";
@@ -204,8 +204,13 @@ function checaInservivel(sql: string): Veredito {
 function checaColunas(sql: string): Veredito {
   const refs = tabelasCitadas(sql).filter((r) => r.includes("."));
   const conhecidas = new Set<string>();
+  // Campo de struct só vale depois do pai (`unidadeOrgao.codigoIbge`), nunca
+  // solto (`c.codigoIbge`) — B37.
+  const campos = new Set<string>();
   for (const r of refs) {
-    for (const c of colunasDe(r) ?? []) conhecidas.add(c.name.toLowerCase());
+    const cols = colunasDe(r) ?? [];
+    for (const c of cols) conhecidas.add(c.name.toLowerCase());
+    for (const p of camposPontuados(cols)) campos.add(p.toLowerCase());
   }
   if (!conhecidas.size) return OK;
 
@@ -226,8 +231,9 @@ function checaColunas(sql: string): Veredito {
   // A coluna aceita letra com acento (\p{L}): o DuckDB aceita `d.Função` sem
   // aspas, e com \w ASCII o portão lia `Fun` e rejeitava coluna real — B24,
   // T16-4 da B19, 10 rejeições seguidas de "Coluna inexistente: Fun, Subfun, A".
-  for (const [, col] of semTabelas.matchAll(/\b[A-Za-z_][\w]*\.([\p{L}_][\p{L}\p{N}_]*)/gu)) {
+  for (const [, pai, col] of semTabelas.matchAll(/\b([A-Za-z_][\w]*)\.([\p{L}_][\p{L}\p{N}_]*)/gu)) {
     const c = col.toLowerCase();
+    if (campos.has(`${pai!.toLowerCase()}.${c}`)) continue;
     if (!conhecidas.has(c) && !RESERVADAS.has(c) && !/^\d/.test(c)) suspeitas.add(col);
   }
   if (!suspeitas.size) return OK;
@@ -241,7 +247,8 @@ function checaColunas(sql: string): Veredito {
   // corta o laço.
   const inventadas = [...suspeitas];
   const dicas = refs.map((r) => {
-    const cols = (colunasDe(r) ?? []).map((c) => c.name);
+    const todas = colunasDe(r) ?? [];
+    const cols = [...todas.map((c) => c.name), ...camposPontuados(todas)];
     const parecidas = cols.filter((c) =>
       inventadas.some((i) => {
         const a = i.toLowerCase(), b = c.toLowerCase();

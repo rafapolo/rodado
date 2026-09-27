@@ -1,5 +1,18 @@
 import { expect, test, describe } from "bun:test";
-import { resolveDataset, listaDatasets } from "./catalogo.ts";
+import { resolveDataset, listaDatasets, camposPontuados } from "./catalogo.ts";
+
+describe("camposPontuados — struct do schema (B37)", () => {
+  test("campo de struct sai com o caminho do pai; coluna simples não entra", () => {
+    const cols = [
+      { name: "valor", type: "FLOAT" },
+      { name: "unidadeOrgao", type: "STRUCT", fields: [
+        { name: "codigoIbge", type: "STRING" },
+        { name: "sub", type: "STRUCT", fields: [{ name: "x", type: "INTEGER" }] },
+      ] },
+    ];
+    expect(camposPontuados(cols)).toEqual(["unidadeOrgao.codigoIbge", "unidadeOrgao.sub.x"]);
+  });
+});
 
 describe("resolveDataset — os erros de grafia medidos", () => {
   test("nome exato passa", () => {

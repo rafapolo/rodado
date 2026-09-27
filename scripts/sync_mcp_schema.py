@@ -25,13 +25,16 @@ physical names — so this normalizes every column.
 """
 
 import json
+import os
 import sys
 from collections import Counter
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-SRC = REPO / "docs" / "context" / "schemas.json"
-DST = REPO / "docs" / "context" / "rodado-schema.json"
+# SCHEMAS_IN / MCP_SCHEMA_OUT sobrepoem origem e destino — para gerar numa
+# copia e comparar antes de trocar o arquivo que o harness e o MCP leem.
+SRC = Path(os.environ.get("SCHEMAS_IN") or REPO / "docs" / "context" / "schemas.json")
+DST = Path(os.environ.get("MCP_SCHEMA_OUT") or REPO / "docs" / "context" / "rodado-schema.json")
 
 # physical/native type -> logical type used by the MCP schema. Parquet
 # physical types (INT64, BYTE_ARRAY, …) and DuckDB logical types (VARCHAR,
@@ -55,9 +58,90 @@ TYPE_MAP = {
     "TINYINT": "INTEGER",
     "UINTEGER": "INTEGER",
     "REAL": "FLOAT",
+    "INTEGER": "INTEGER",
+    "USMALLINT": "INTEGER",
+    "UTINYINT": "INTEGER",
+    "DECIMAL": "FLOAT",
+    "NUMERIC": "FLOAT",
     "DATE": "DATE",
     "TIMESTAMP": "TIMESTAMP",
+    "TIMESTAMP_S": "TIMESTAMP",
+    "TIMESTAMP_MS": "TIMESTAMP",
+    "TIMESTAMP_NS": "TIMESTAMP",
+    "TIMESTAMP WITH TIME ZONE": "TIMESTAMP",
+    "TIME": "TIME",
+    "TIME WITH TIME ZONE": "TIME",
+    "INTERVAL": "INTERVAL",
+    "BLOB": "BLOB",
+    "UUID": "STRING",
+    "GEOMETRY": "GEOMETRY",
+    # coluna toda nula: o DuckDB a tipa como NULL (B35: 227 colunas)
+    "NULL": "NULL",
+    '"NULL"': "NULL",
 }
+
+
+def _split_top(s: str) -> list[str]:
+    """Separa por virgula no nivel de cima, respeitando parenteses e aspas."""
+    out, cur, depth, quote = [], [], 0, False
+    for ch in s:
+        if ch == '"':
+            quote = not quote
+        elif not quote and ch == "(":
+            depth += 1
+        elif not quote and ch == ")":
+            depth -= 1
+        elif not quote and ch == "," and depth == 0:
+            out.append("".join(cur).strip())
+            cur = []
+            continue
+        cur.append(ch)
+    if "".join(cur).strip():
+        out.append("".join(cur).strip())
+    return out
+
+
+def _field(item: str) -> tuple[str, str]:
+    """`nome TIPO` ou `"nome com espaco" TIPO` -> (nome, TIPO)."""
+    item = item.strip()
+    if item.startswith('"'):
+        end = item.index('"', 1)
+        return item[1:end], item[end + 1:].strip()
+    nome, _, tipo = item.partition(" ")
+    return nome, tipo.strip()
+
+
+def logico(tipo: str, unmapped: Counter) -> dict:
+    """Tipo do DuckDB (ou fisico do parquet, em schemas.json antigo) ->
+    entrada do schema do MCP: {"type": ...} e, para STRUCT, {"fields": [...]}.
+
+    Struct fica como UMA coluna com os campos dentro, nao achatado: achatar foi
+    o que fez `br_pncp.contratos` listar `codigoIbge` como coluna solta, o
+    portao aceitar `c.codigoIbge` e o beelink recusar (B35, 32 rejeicoes).
+    """
+    t = tipo.strip()
+    if t.endswith("[]"):
+        inner = logico(t[:-2], unmapped)
+        out = {"type": "LIST", "element": inner["type"]}
+        if "fields" in inner:
+            out["fields"] = inner["fields"]
+        return out
+    up = t.upper()
+    if up.startswith("STRUCT(") and t.endswith(")"):
+        fields = []
+        for item in _split_top(t[len("STRUCT("):-1]):
+            nome, sub = _field(item)
+            fields.append({"name": nome, **logico(sub, unmapped)})
+        return {"type": "STRUCT", "fields": fields}
+    if up.startswith("MAP("):
+        return {"type": "MAP"}
+    # DECIMAL(18,2) etc — tira o parametro
+    lookup = up.split("(", 1)[0] if "(" in up else up
+    lg = TYPE_MAP.get(lookup)
+    if lg is None:
+        unmapped[t] += 1
+        lg = t
+    return {"type": lg}
 
 
 def main() -> int:
@@ -106,14 +190,7 @@ def main() -> int:
             continue
         cols = []
         for col in meta.get("columns", []):
-            phys = col.get("type", "")
-            # DECIMAL(18,2) etc — strip params, DuckDB's only parametrized type
-            lookup = phys.split("(", 1)[0] if "(" in phys else phys
-            logical = TYPE_MAP.get(lookup)
-            if logical is None:
-                unmapped[phys] += 1
-                logical = phys
-            cols.append({"name": col["name"], "type": logical})
+            cols.append({"name": col["name"], **logico(col.get("type", ""), unmapped)})
         out.setdefault(dataset, {})[table] = cols
 
     n_tables = sum(len(t) for t in out.values())
@@ -124,7 +201,7 @@ def main() -> int:
         encoding="utf-8",
     )
 
-    print(f"{DST.relative_to(REPO)}")
+    print(f"{DST}")
     print(f"  datasets : {len(out)}")
     print(f"  tables   : {n_tables}  (was {old_count})")
     print(f"  columns  : {n_cols}")
