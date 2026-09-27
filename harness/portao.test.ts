@@ -8,6 +8,7 @@ import {
   portao, alertasDeSanidade,
   juncoesSemPonte, mensagemSemPonte, assinaturaJuncao,
   perguntaDePesquisa, checaRanking, fonteTrocada, coeficienteVazio, correlacaoExtensiva, naoSomavel,
+  checaCodigoTse, correlacaoParteTodo, totaisSobPedidoDeTaxa, alertaDeEscala, sugestao,
 } from "./portao.ts";
 
 describe("camada read-only (sqlguard)", () => {
@@ -891,5 +892,84 @@ describe("B36 — a anotação de GROUP BY não soma ano nem código", () => {
     const a = alertasDeSanidade("SELECT ano, SUM(x) AS total FROM br_ms_sim.microdados WHERE ano >= 2020 GROUP BY ano",
       [{ ano: 2020, total: 10 }, { ano: 2021, total: 5 }]);
     expect(a.join(" ")).toContain("Somando a coluna 'total' nas 2 linhas: 15");
+  });
+});
+
+describe("rerun de 2026-09-27 — sinal trocado e r ausente (TRACE)", () => {
+  test("T05-5: código TSE igualado a código IBGE é recusado, com o id_municipio da própria tabela", () => {
+    const v = checaCodigoTse(`WITH g AS (SELECT r.id_municipio_tse FROM br_tse_eleicoes.resultados_candidato_municipio r WHERE r.ano = 2020),
+      t AS (SELECT CAST(p.codigo_ibge_municipio_ente_recebedor_plano_acao AS VARCHAR) as id_municipio_str FROM br_transferegov.planos_acao p)
+      SELECT CORR(g.x, t.y) AS r, COUNT(*) AS n FROM g JOIN t ON g.id_municipio_tse = t.id_municipio_str`);
+    expect(v.ok).toBe(false);
+    expect(v.erro).toContain("id_municipio (IBGE)");
+  });
+  test("T05-1: db.id_municipio_tse = m.id_municipio (PIB) é recusado", () => {
+    expect(checaCodigoTse("SELECT 1 FROM d db LEFT JOIN m ON db.id_municipio_tse = m.id_municipio").ok).toBe(false);
+  });
+  test("TSE com TSE, e TSE com literal, passam", () => {
+    expect(checaCodigoTse(`SELECT m.nome FROM br_tse_eleicoes.detalhes_votacao_municipio v JOIN mun m
+      ON v.id_municipio_tse = m.id_municipio_tse AND v.sigla_uf = m.sigla_uf`).ok).toBe(true);
+    expect(checaCodigoTse("SELECT * FROM br_tse_eleicoes.candidatos WHERE id_municipio_tse = '71072'").ok).toBe(true);
+    expect(checaCodigoTse("SELECT * FROM a JOIN b ON a.id_municipio = b.id_municipio").ok).toBe(true);
+  });
+
+  test("T35-4: corr(renda/tempo, renda) é razão contra o próprio termo", () => {
+    const sql = `WITH base AS (SELECT r.id_municipio, AVG(r.valor_remuneracao_media) AS renda_media, t.tempo_medio_deslocamento AS tempo
+      FROM br_me_rais.microdados_vinculos r JOIN br_mobilidados_indicadores.tempo_deslocamento_casa_trabalho t ON r.id_municipio = t.id_municipio
+      WHERE r.ano = 2022 AND t.ano = 2010 GROUP BY r.id_municipio, t.tempo_medio_deslocamento)
+      SELECT corr(renda_media / tempo, renda_media) AS r, COUNT(*) AS n FROM base`;
+    expect(correlacaoParteTodo(sql)).toEqual([["renda_media / tempo", "renda_media"]]);
+    expect(alertasDeSanidade(sql, [{ r: 0.6797, n: 227 }]).some((a) => a.includes("próprios termos"))).toBe(true);
+  });
+  test("razões independentes e variável contra variável não disparam", () => {
+    expect(correlacaoParteTodo("SELECT corr(renda_media, tempo) AS r, COUNT(*) AS n FROM b")).toEqual([]);
+    expect(correlacaoParteTodo("SELECT corr(obitos / pop, focos / area) AS r, COUNT(*) AS n FROM b")).toEqual([]);
+  });
+
+  // T22-2 (pergunta pede controle por população) × T22-1 (publicado em totais).
+  const totXtot = `WITH o AS (SELECT id_municipio, COUNT(*) AS obitos_resp FROM x GROUP BY 1),
+    f AS (SELECT id_municipio, COUNT(*) AS num_focos FROM y GROUP BY 1)
+    SELECT corr(o.obitos_resp, f.num_focos) AS r, COUNT(*) AS n FROM o JOIN f USING (id_municipio)`;
+  test("T22-2: dois totais sob pergunta que pede controle por população disparam", () => {
+    const p = "A mortalidade respiratória (SIM) sobe nos meses/municípios de pico de fogo (QUEIMADAS), controlada pela população do Censo?";
+    expect(totaisSobPedidoDeTaxa(totXtot, p)).toEqual([["o.obitos_resp", "f.num_focos"]]);
+    expect(alertasDeSanidade(totXtot, [{ r: 0.5, n: 5000 }], p).some((a) => a.includes("dois totais crus"))).toBe(true);
+    expect(alertaDeEscala(totXtot, p)).toBe(true);
+  });
+  test("T22-1 (totais publicados) e T05-1 ('PIB per capita' nomeia variável) ficam calados", () => {
+    expect(totaisSobPedidoDeTaxa(totXtot, "Municípios recordistas de focos de calor (QUEIMADAS) perderam mais vegetação (PRODES)?")).toEqual([]);
+    expect(totaisSobPedidoDeTaxa(totXtot, "Deputados com maior patrimônio autorizam mais proposições e representam municípios de maior PIB per capita?")).toEqual([]);
+    expect(alertaDeEscala(totXtot, "")).toBe(false);
+  });
+  test("T15-3: total cru contra taxa conta como alerta de escala (o lembrete deixa de pedir o r)", () => {
+    const sql = `WITH d AS (SELECT id_municipio, COUNT(DISTINCT sobrenome) as qtd FROM s GROUP BY 1),
+      p AS (SELECT id_municipio, SUM(pib) / NULLIF(SUM(populacao), 0) as pib_per_capita FROM t GROUP BY 1)
+      SELECT corr(d.qtd, p.pib_per_capita) as r, COUNT(*) as n FROM d JOIN p ON d.id_municipio = p.id_municipio`;
+    expect(alertaDeEscala(sql)).toBe(true);
+  });
+
+  test("dataset sem tabela lista as tabelas dele (br_ibge_populacao: 8 sessões)", () => {
+    expect(sugestao("br_ibge_populacao")).toContain("br_ibge_populacao.municipio");
+    const v = portao("SELECT id_municipio, populacao FROM br_ibge_populacao WHERE ano = 2021");
+    expect(v.ok).toBe(false);
+    expect(v.erro).toContain("br_ibge_populacao.municipio");
+  });
+  test("tabela errada de dataset certo lista as do dataset, não as do Censo", () => {
+    expect(sugestao("br_ibge_populacao.municipios")).toContain("br_ibge_populacao.municipio");
+  });
+  test("T07-1: dataset com órgão errado sugere o certo (br_me_sicor → br_bcb_sicor)", () => {
+    expect(sugestao("br_me_sicor.microdados")).toContain("br_bcb_sicor");
+  });
+  test("T07-2: CTE com erro de grafia aponta a CTE definida", () => {
+    const v = portao(`WITH estban_agencias AS (SELECT id_municipio, SUM(agencias_processadas) AS total FROM br_bcb_estban.municipio WHERE ano = 2020 AND mes = 12 GROUP BY 1)
+      SELECT e.total, COUNT(*) AS n FROM estban_agencies e GROUP BY 1`);
+    expect(v.ok).toBe(false);
+    expect(v.erro).toContain("você definiu a CTE 'estban_agencias'");
+  });
+  test("nome sem tabela e sem CTE parecida continua pedindo dataset.tabela", () => {
+    const v = portao("WITH base AS (SELECT 1 AS x) SELECT x, COUNT(*) AS n FROM tabela_que_nao_existe GROUP BY 1");
+    expect(v.ok).toBe(false);
+    expect(v.erro).toContain("escreva dataset.tabela");
+    expect(v.erro).not.toContain("você definiu a CTE");
   });
 });
