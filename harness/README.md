@@ -365,6 +365,42 @@ coisas que as diretas não mediam:
 - **Não mexer no código com a rodada viva.** Cada pergunta sobe um `mcp.ts`
   novo; editar no meio mistura duas versões na mesma rodada.
 
+## Remedições da B19 — o que os traces ensinaram (2026-09-26/28)
+
+Três rodadas sobre os mesmos casos (B19 das 87; duas remedições dos 27 que
+falharam; B40 parada em 59/87) e a leitura dos traces caso a caso:
+
+- **Rodada de 27 casos não separa conserto de ruído.** Entre as duas
+  remedições, sem mudança de código no caso, T38-2 foi de perto a sinal
+  trocado e T06-2/T08-3 perderam o `r`. Na B40 contra a B19, nos mesmos 59:
+  7 casos melhoraram e 5 pioraram, e o agregado mexeu pouco (r citado 22→25,
+  mesmo sinal 18→21, a ≤0,15 16→16). Um caso só vira "consertado" repetindo.
+- **Leia o trace antes de chamar de falha do modelo.** T22-2 "sem resposta"
+  era o túnel ssh caído no meio do caso; a guarda repetia 4 vezes em
+  milissegundos contra a porta fechada. Agora ela reabre o túnel antes.
+- **Nota que o modelo leu não impede o erro.** Várias falhas tinham nota certa
+  na tela (SIH de 6 dígitos, IVS) e erraram mesmo assim. O que funcionou foi o
+  aviso no momento do erro, com a causa nomeada: `dicaCodigo6` junto de r NULL,
+  `coeficientesSemOrigem` na resposta. Mesma lição de
+  `feedback_licao_e_conhecimento_nao_regra`.
+- **Mensagem do portão que oferece saída tem que aceitar a saída.** A recusa de
+  partição ensinava "agregue sozinha numa CTE" também para `br_ms_sim` (tempo +
+  UF), onde `scanBarato` nunca aceita: o modelo obedeceu e foi recusado 3 vezes.
+- **Conferir número não confere coeficiente.** A guarda aceitava "r = −0,15"
+  porque algum IVS da listagem valia 0,15. O `r` só tem origem numa coluna de
+  coeficiente.
+- **Artefato gerado envelhece calado.** `persona.md` ficou em 230 datasets de
+  25/09 a 27/09 (o espelho tinha 239): a B19 e as remedições rodaram sem
+  CadÚnico, Pix e PTAX no catálogo. `bun harness/persona.ts --confere` entra na
+  cadeia de regeneração.
+- **Conhecimento escrito num canal não chegava ao outro.** `gotchas/*.yml` e
+  `column_codes.yaml` só eram lidos pelo MCP Python; o harness, que responde as
+  87, não os via. `semantica.ts` e `dicionarios.ts` agora leem os dois.
+- **Sigla da pergunta não basta para achar o dataset.** O modelo não abriu
+  `br_bcb_sicor` numa pergunta que dizia "(SICOR)", e disse que `hhi_smp` não
+  existe. `fontes.ts` resolve sigla e coluna entre crases na 1ª resposta de
+  catálogo, fora do system prompt (que tem de ficar byte-idêntico).
+
 ## Quem redige: o modelo apura, uma pessoa escreve (B8, 2026-09-25)
 
 `harness/redige.ts` isola a redação: dá ao Gemma só a ficha de fatos de uma
