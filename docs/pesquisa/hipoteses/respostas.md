@@ -75,7 +75,7 @@ RN 72,4%, SP 71,9%.
 
 ## 02 · Educação
 
-> ⚠️ `bun harness/casos.ts` marca T02-1…T02-4 como suspeitos: cada gabarito casa
+> ⚠️ `bun harness/casos.ts` (branch `harness-gemma`) marca T02-1…T02-4 como suspeitos: cada gabarito casa
 > por palavra-chave com mais de uma pergunta de `perguntas.md` (IDEB, ENEM, PIB e
 > INSE aparecem nas 4). O emparelhamento numeração↔conteúdo aqui não está
 > confirmado — revisão humana pendente (ver T05 em 2026-09-01 para um caso onde a

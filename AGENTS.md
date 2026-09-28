@@ -35,6 +35,8 @@ Caddyfile` finds them.
 
 `mcp/mcp_server.py` is the current interface — see `mcp/MCP.md`.
 
+O harness TS de apuração (pi + Gemma 4 local) vive no branch `harness-gemma`, fora de `main`.
+
 ### `docs/mapa/ERD.md` — the map
 One mermaid `erDiagram` per domain covering all 1048 tables: entity = dataset, attribute = table, edge = join key to a reference hub (solid = direct, dashed = needs normalization). Lists what connects to nothing. `ERD.md` is pt-BR (default), `ERD_EN.md` is the English twin — both generated from the same data by `scripts/gera_erd.py`.
 
@@ -92,8 +94,8 @@ schema antigo em `docs/context/rodado-schema.json` e não enxerga nenhuma coluna
 nova — `describe_table` mente calado.
 
 `schemas.json` e `rodado-schema.json` ficam **fora do git** (`.gitignore`, purgados do
-histórico em 2026-09-24): um clone novo não os tem, e `mcp_server.py`/`harness/` só
-funcionam depois de `gera_schemas.py` + `sync_mcp_schema.py`.
+histórico em 2026-09-24): um clone novo não os tem, e `mcp_server.py` só
+funciona depois de `gera_schemas.py` + `sync_mcp_schema.py`.
 
 `join_keys.md` e `metrics.json` são **gerados** — editar o YAML, nunca a saída. `valida_metrics.py` separa hard de soft como o firewall de `run_sql`: DML na expressão rejeita, coluna ausente só avisa, porque `_check_read_only` revalida antes de executar.
 
@@ -103,7 +105,7 @@ funcionam depois de `gera_schemas.py` + `sync_mcp_schema.py`.
 `n=X: dataset_a, dataset_b*`, nunca editado por script);
 `docs/pesquisa/hipoteses/respostas.md` é o log de trabalho vivo — cada pergunta
 respondida no beelink muda o status ali (`✅`/`◐`/`⏳` por `T<tema>-<item>`), e
-`harness/casos.ts` lê os dois para montar os casos do harness. Um item `⏳`
+o harness (branch `harness-gemma`) lê os dois para montar seus casos. Um item `⏳`
 costuma vir com o motivo exato no próprio texto (dado corrompido, tabela
 ausente, sem chave compartilhada) — a seção "Bloqueios mapeados" ao fim de
 `respostas.md` cataloga o que está estruturalmente bloqueado (precisa de
@@ -222,13 +224,13 @@ python3 scripts/build_atlas.py /tmp/atlas.html   # também emite a cópia autoco
 
 ## `tasks/` — local, fora do git
 
-`tasks/` está no `.gitignore` desde 2026-09-24: existe só no disco desta máquina, sem histórico. `tasks/README.md` é o índice único do que está **em andamento**: o projeto na raiz de `tasks/`, o harness em `tasks/harness_tasks.md` (era `harness/tasks/`, depois a pasta `tasks/harness/`), os planos que ainda não começaram em `tasks/plans/`. Plano que começa a rodar vai para `tasks/`; mudou o status de um arquivo, mude a linha dele no índice na mesma edição. Como não há `git log` para recuperar nada, **apagar um arquivo de `tasks/` é definitivo** — o que ele ensinou vai antes para um lugar versionado (`harness/README.md`, `docs/`). Scripts que leem dali (`build_metadata_catalog.py` lê `tasks/done/datasets_to_scrap_done.md` e, se existir, `tasks/plans/datasets_to_scrap.md`) seguem funcionando localmente e toleram a ausência dos arquivos num clone novo.
+`tasks/` está no `.gitignore` desde 2026-09-24: existe só no disco desta máquina, sem histórico. `tasks/README.md` é o índice único do que está **em andamento**: o projeto na raiz de `tasks/`, o harness em `tasks/harness_tasks.md` (era `harness/tasks/`, depois a pasta `tasks/harness/`), os planos que ainda não começaram em `tasks/plans/`. Plano que começa a rodar vai para `tasks/`; mudou o status de um arquivo, mude a linha dele no índice na mesma edição. Como não há `git log` para recuperar nada, **apagar um arquivo de `tasks/` é definitivo** — o que ele ensinou vai antes para um lugar versionado (`docs/`). Scripts que leem dali (`build_metadata_catalog.py` lê `tasks/done/datasets_to_scrap_done.md` e, se existir, `tasks/plans/datasets_to_scrap.md`) seguem funcionando localmente e toleram a ausência dos arquivos num clone novo.
 
 ## beelink: `~/.duckdbrc` e a trava de arquivo
 
 Desde 2026-09-24, o `~/.duckdbrc` do beelink tem `memory_limit = '8GB'` (o limite é **por processo**, e o llama-server ocupa ~20 dos 27 GB), `threads = 8` (8 núcleos físicos), `enable_progress_bar = false`, `autoinstall_known_extensions = false` e o despejo em `~/duckdb_tmp` no NVMe, com teto de 100 GB. O `SECRET healthbr` vem entre `.output /dev/null` e `.output`: sem isso o `CREATE SECRET` imprime uma tabela no stdout de toda sessão e quebra o `-json` do `run_sql` e do harness. **Nunca** apontar `temp_directory` para `/dev/shm` nem `/tmp`: os dois são tmpfs, e despejar lá é despejar na RAM. Em 2026-09-24 havia 10 GB de despejo órfão em `/dev/shm` com o swap 100% cheio, e o OOM killer matou o llama-server. Nenhuma chave vai no `.duckdbrc`.
 
-`mcp_server.py` (`_run_sql_ssh`) e `harness/beelink.ts` abrem cada sessão com `allowed_directories` em `~/rodado` e `~/duckdb_tmp`, o prefixo `s3://healthbr-data/`, `enable_external_access=false` e `lock_configuration=true`: a SQL vem de um modelo, e um `SELECT * FROM read_text('~/.ssh/...')` passa pela checagem de somente-leitura. Ferramenta nova que leia fora de `~/rodado` precisa entrar na lista, não desligar a trava.
+`mcp_server.py` (`_run_sql_ssh`) — e `harness/beelink.ts`, no branch `harness-gemma` — abrem cada sessão com `allowed_directories` em `~/rodado` e `~/duckdb_tmp`, o prefixo `s3://healthbr-data/`, `enable_external_access=false` e `lock_configuration=true`: a SQL vem de um modelo, e um `SELECT * FROM read_text('~/.ssh/...')` passa pela checagem de somente-leitura. Ferramenta nova que leia fora de `~/rodado` precisa entrar na lista, não desligar a trava.
 
 **Corrigiu um parquet, recrie a view que o lê.** A view guarda no catálogo os nomes e tipos de coluna do momento em que foi criada. Em 2026-09-24, `information_schema.columns` e `duckdb_columns()` falhavam no `.duckdb` inteiro (`Invalid unicode (byte sequence mismatch)`) porque a view `br_mjsp_ckan.infopen` ainda tinha os nomes de coluna com bytes inválidos, de antes do patch de footer de 2026-09-10 no parquet. `DESCRIBE` não acusa, porque religa a view contra o parquet atual; só `duckdb_columns()` lê o nome guardado. Um `WHERE` não isola a tabela culpada (a função materializa o catálogo todo antes de filtrar): bisecte por `DROP` numa cópia do arquivo. A correção é reexecutar o próprio SQL da view (`duckdb_views().sql`) como `CREATE OR REPLACE VIEW`, pelo CLI `~/bin/duckdb`, com ninguém segurando o arquivo.
 

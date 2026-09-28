@@ -54,25 +54,9 @@ Depois que a view existir, roda a cadeia inteira documentada na seção
 o resto, se o schema mudou o bastante). `sync_mcp_schema.py` é o passo mais
 esquecido: sem ele, `describe_table` continua mentindo sobre colunas novas.
 
-O harness do Gemma (`harness/`) guarda **o seu próprio** cache do catálogo e das
-faixas de ano, e não relê nada disso sozinho:
-
-```bash
-bun harness/catalogo.ts --atualiza   # linhas por tabela e colunas, do beelink
-bun harness/anos.ts --atualiza       # faixa de anos por tabela
-bun harness/persona.ts               # o CATÁLOGO do system prompt (--confere diz se está velho)
-```
-
-`persona.md` lista os datasets no system prompt e não se regenera sozinho: de
-25/09 a 27/09 ele ficou em 230 datasets com o espelho em 239, e três rodadas do
-harness não viram CadÚnico, Pix nem PTAX. Depois de regenerar,
-`./harness/servidor.sh aquece-laco` refaz o cache do prefixo.
-
-`anos.ts --atualiza` refaz tabela a tabela o lote que falhar (as views SIPNI
-leem do R2 remoto e estouram 120 s) e mantém as faixas de `--outras`.
-
-Não regenere `rodado-schema.json` nem os caches do harness com uma rodada
-do harness no ar: cada caso relê os arquivos, e a régua muda no meio.
+O harness do Gemma vive no branch `harness-gemma` e guarda **o seu próprio**
+cache do catálogo, das faixas de ano e do `persona.md` — o `housekeeping`
+daquele branch diz como regenerá-los.
 
 **Tipo de coluna no `rodado-schema.json`.** Até 2026-09-27 `gera_schemas.py`
 lia `parquet_schema()`, que dá o tipo **físico**: DATE e TIMESTAMP viravam
@@ -259,7 +243,7 @@ segurando o arquivo e o SQL antigo salvo antes (ver `AGENTS.md`, "beelink:
 
 O que se aprende sobre um dataset chega ao modelo por dois caminhos que não se
 leem: `docs/context/gotchas/<dataset>.yml` é lido pelo `mcp_server.py`
-(`describe_table`), e `harness/dados/notas.json` é lido pelo harness do Gemma.
+(`describe_table`), e `harness/dados/notas.json` é lido pelo harness do Gemma (branch `harness-gemma`).
 Uma armadilha escrita só num deles não existe para o outro. Tipos de
 armadilha que custaram casos inteiros na rodada B19 (2026-09-26/27) e que
 valem conferir em todo dataset novo:
@@ -284,7 +268,7 @@ valem conferir em todo dataset novo:
 
 Cada entrada leva `verificado` com o número medido no beelink e a data.
 Ponte nova em `bridges.yaml`: a forma abreviada (`ds.a / b`, `ds.*`) passou a
-chegar ao harness em 2026-09-27 (`harness/pontes.ts`, B33); antes, só nome
+chegar ao harness em 2026-09-27 (`harness/pontes.ts`, branch `harness-gemma`, B33); antes, só nome
 exato de tabela chegava.
 
 ## Ordem completa, resumida
@@ -301,6 +285,5 @@ scrape novo/retomado
   -> 8. contagens cravadas em doc/página/og atualizadas pelo catálogo novo (grep da contagem antiga)
   -> 9. dataset ligado no atlas: tema fora de `outros` + chave canônica ou ponte com concept_aliases
   -> 10. mexeu em parquet que já tinha view? duckdb_columns() contra DESCRIBE; divergiu, recria a view
-  -> 11. armadilha achada vai para gotchas/<dataset>.yml E harness/dados/notas.json, com verificado
-  (fora de rodada do harness: bun harness/catalogo.ts --atualiza, bun harness/anos.ts --atualiza e bun harness/persona.ts depois do item 2)
+  -> 11. armadilha achada vai para gotchas/<dataset>.yml E harness/dados/notas.json (branch harness-gemma), com verificado
 ```

@@ -159,7 +159,7 @@ amigável" quebraria exatamente esse laço de correção laranja.
 A busca semântica que existia (`search_tables`, sobre um índice doc2query de
 6.464 perguntas sintéticas) saiu em 2026-09-24: acertava o dataset em ~53%
 das perguntas, contra 88% do catálogo de datasets posto direto no prompt pelo
-harness (`harness/catalogo.ts`), cobria só 832 das 1.029 tabelas e era ~4% das
+harness (`harness/catalogo.ts`, hoje no branch `harness-gemma`), cobria só 832 das 1.029 tabelas e era ~4% das
 chamadas. Achar a tabela hoje é `list_datasets` → `list_tables` →
 `describe_table`.
 
