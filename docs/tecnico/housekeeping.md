@@ -60,7 +60,16 @@ faixas de ano, e não relê nada disso sozinho:
 ```bash
 bun harness/catalogo.ts --atualiza   # linhas por tabela e colunas, do beelink
 bun harness/anos.ts --atualiza       # faixa de anos por tabela
+bun harness/persona.ts               # o CATÁLOGO do system prompt (--confere diz se está velho)
 ```
+
+`persona.md` lista os datasets no system prompt e não se regenera sozinho: de
+25/09 a 27/09 ele ficou em 230 datasets com o espelho em 239, e três rodadas do
+harness não viram CadÚnico, Pix nem PTAX. Depois de regenerar,
+`./harness/servidor.sh aquece-laco` refaz o cache do prefixo.
+
+`anos.ts --atualiza` refaz tabela a tabela o lote que falhar (as views SIPNI
+leem do R2 remoto e estouram 120 s) e mantém as faixas de `--outras`.
 
 Não regenere `rodado-schema.json` nem os caches do harness com uma rodada
 do harness no ar: cada caso relê os arquivos, e a régua muda no meio.
@@ -293,5 +302,5 @@ scrape novo/retomado
   -> 9. dataset ligado no atlas: tema fora de `outros` + chave canônica ou ponte com concept_aliases
   -> 10. mexeu em parquet que já tinha view? duckdb_columns() contra DESCRIBE; divergiu, recria a view
   -> 11. armadilha achada vai para gotchas/<dataset>.yml E harness/dados/notas.json, com verificado
-  (fora de rodada do harness: bun harness/catalogo.ts --atualiza e bun harness/anos.ts --atualiza depois do item 2)
+  (fora de rodada do harness: bun harness/catalogo.ts --atualiza, bun harness/anos.ts --atualiza e bun harness/persona.ts depois do item 2)
 ```
