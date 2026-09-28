@@ -56,4 +56,4 @@ Este projeto oferece uma visão integrada do ecossistema de dados públicos bras
 
 ## Referências Adicionais
 
-- [schema.md](../schema.md) — Índice completo de todas as tabelas e variáveis
+- [schema.md](../../pesquisa/relatorio-social/schema.md) — Índice completo de todas as tabelas e variáveis

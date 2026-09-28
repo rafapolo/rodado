@@ -466,8 +466,8 @@ conecta, nem deveria, aos 107 mil judeus contados pelo Censo.
 
 **Projeto relacionado:**
 
-[![Shutafut — rede de empresas israelenses no Brasil](/analises/shutafut/demo.jpg)](/analises/shutafut/)
+[![Shutafut — rede de empresas israelenses no Brasil](/plataformas/shutafut/demo.jpg)](/plataformas/shutafut/)
 
-[**Shutafut — Empresas Israelenses no Brasil**](/analises/shutafut/) · visualização em rede
+[**Shutafut — Empresas Israelenses no Brasil**](/plataformas/shutafut/) · visualização em rede
 de 394 empresas israelenses e 391 brasileiras operando no país, com seus sócios, estruturas
 de propriedade e atividades econômicas, navegável por CNAE e por linha do tempo.

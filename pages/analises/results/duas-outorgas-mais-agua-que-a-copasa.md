@@ -174,4 +174,4 @@ consultados em agosto de 2026. O mapa da rede de drenagem que originou esta apur
 [Todos os rios do Brasil](../rios-do-brasil/); quanto do que esses rios carregam já saiu de uma
 estação de tratamento, no modo esgoto do mesmo mapa. Se os rios de onde sai a água estão
 minguando ao longo do século é a pergunta de
-[Estes rios estão secando?](../rios-do-brasil/series.html).*
+[Estes rios estão secando?](/plataformas/rios-do-brasil/series.html).*

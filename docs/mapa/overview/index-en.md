@@ -48,4 +48,4 @@ This project provides an integrated view of the Brazilian public data ecosystem,
 
 ## Additional References
 
-- [schema.md](../schema.md) — Complete index of all tables and variables
+- [schema.md](../../pesquisa/relatorio-social/schema.md) — Complete index of all tables and variables
