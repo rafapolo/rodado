@@ -26,6 +26,7 @@ import array
 import gzip
 import json
 import random
+import struct
 import sys
 from pathlib import Path
 
@@ -35,21 +36,24 @@ DEFAULT_CAP = 2_000_000
 
 
 def read_points(path):
-    """Read a struct-of-arrays .bin.gz (see extrai_estados_cnpj.py's
-    write_points_soa): n lngs (f32), then n lats (f32), then n weights (u16),
-    each block a whole multiple of its element size — total bytes always
-    divisible by 10, so n = len(data) // 10 recovers the point count with no
-    header needed."""
+    """Read a RAW2 struct-of-arrays .bin.gz (see extrai_estados_cnpj.py's
+    write_points_soa): b"RAW2", u32 n, then n lngs (f32), n lats (f32),
+    n weights (u16) and n years-since-1900 (u8)."""
     with gzip.open(path, "rb") as f:
         data = f.read()
-    n = len(data) // 10
+    if data[:4] != b"RAW2":
+        raise SystemExit(f"{path}: layout antigo, sem ano; rode extrai_estados_cnpj.py de novo")
+    n = struct.unpack_from("<I", data, 4)[0]
+    o = 8
     lngs = array.array("f")
-    lngs.frombytes(data[0 : 4 * n])
+    lngs.frombytes(data[o : o + 4 * n])
     lats = array.array("f")
-    lats.frombytes(data[4 * n : 8 * n])
+    lats.frombytes(data[o + 4 * n : o + 8 * n])
     weights = array.array("H")
-    weights.frombytes(data[8 * n : 10 * n])
-    return list(zip(lngs, lats, weights))
+    weights.frombytes(data[o + 8 * n : o + 10 * n])
+    years = array.array("B")
+    years.frombytes(data[o + 10 * n : o + 11 * n])
+    return list(zip(lngs, lats, weights, years))
 
 
 def main():
@@ -92,10 +96,13 @@ def main():
     lngs = array.array("f", (p[0] for p in all_points))
     lats = array.array("f", (p[1] for p in all_points))
     weights = array.array("H", (p[2] for p in all_points))
+    years = array.array("B", (p[3] for p in all_points))
     with gzip.open(out_path, "wb", compresslevel=9) as f:
+        f.write(b"RAW2" + struct.pack("<I", len(all_points)))
         f.write(lngs.tobytes())
         f.write(lats.tobytes())
         f.write(weights.tobytes())
+        f.write(years.tobytes())
 
     meta["BR"] = {
         "n_points": len(all_points),
