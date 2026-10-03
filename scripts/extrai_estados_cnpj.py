@@ -33,6 +33,7 @@ import array
 import gzip
 import json
 import os
+import struct
 import subprocess
 import sys
 from pathlib import Path
@@ -50,15 +51,23 @@ DB_PATH = os.environ.get("DB_PATH", "~/rodado/basedosdados.duckdb")
 # the browser read each block directly as a typed-array view with no parsing
 # loop. `array.array` uses native byte order, which is little-endian on every
 # real deployment target (x86/ARM) and matches the JS side's `true` (little-
-# endian) DataView/TypedArray reads.
+# endian) DataView/TypedArray reads. Since RAW2 the file opens with b"RAW2" and
+# u32 n, and a fourth block of n u8 years-since-1900 follows the weights.
 def write_points_soa(path, pontos):
     lngs = array.array("f", (p["lng"] for p in pontos))
     lats = array.array("f", (p["lat"] for p in pontos))
     weights = array.array("H", (min(p["weight"], 65535) for p in pontos))
+    # Year the point's oldest establishment opened, as years since 1900 (the
+    # query floors it at 1900; DuckDB data tops out well under 1900 + 255).
+    years = array.array("B", (min(max(p["yr"] - 1900, 0), 255) for p in pontos))
     with gzip.open(path, "wb", compresslevel=9) as f:
+        # RAW2 header: the legacy layout had none and was told apart from this
+        # one by length alone, which is ambiguous once a fourth block exists.
+        f.write(b"RAW2" + struct.pack("<I", len(pontos)))
         f.write(lngs.tobytes())
         f.write(lats.tobytes())
         f.write(weights.tobytes())
+        f.write(years.tobytes())
 
 
 def ssh_duckdb(sql):
@@ -136,7 +145,8 @@ estab AS (
     row_number() OVER () AS rid,
     cep,
     trim(regexp_replace(upper(trim(strip_accents(logradouro))), '\\b(DA|DE|DO|DOS|DAS)\\b', '', 'g')) AS log_norm,
-    TRY_CAST(regexp_replace(numero, '[^0-9]', '') AS INTEGER) AS num_norm
+    TRY_CAST(regexp_replace(numero, '[^0-9]', '') AS INTEGER) AS num_norm,
+    GREATEST(year(data_inicio_atividade), 1900) AS yr
   FROM br_me_cnpj.estabelecimentos
   WHERE sigla_uf = '{uf}'
     AND situacao_cadastral = '2'
@@ -205,10 +215,11 @@ resolved AS (
     END AS lng
   FROM interp
 )
-SELECT round(lng, 6) AS lng, round(lat, 6) AS lat, COUNT(*) AS weight
-FROM resolved
-WHERE lat IS NOT NULL AND lng IS NOT NULL
-GROUP BY round(lng, 6), round(lat, 6);
+SELECT round(r.lng, 6) AS lng, round(r.lat, 6) AS lat, COUNT(*) AS weight,
+  MIN(e.yr) AS yr
+FROM resolved r JOIN estab e USING (rid)
+WHERE r.lat IS NOT NULL AND r.lng IS NOT NULL
+GROUP BY round(r.lng, 6), round(r.lat, 6);
 """
 
 
