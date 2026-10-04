@@ -13,7 +13,7 @@ estabelecimento não aparece no mapa — não há fallback por centroide de CEP.
 | AP | 49,910 | 34,356 | 68.8% | 23,940 | 0.18 MB |
 | BA | 1,244,878 | 758,146 | 60.9% | 473,289 | 3.45 MB |
 | CE | 728,165 | 447,001 | 61.4% | 288,053 | 2.06 MB |
-| DF | 458,771 | 0 | 0.0% | 0 | 0.00 MB ⚠️ sem cobertura no CNEFE |
+| DF | 458,771 | 157,983 | 34.4% | 27,553 | 0.19 MB |
 | ES | 578,732 | 387,564 | 67.0% | 209,215 | 1.45 MB |
 | GO | 996,789 | 385,145 | 38.6% | 187,444 | 1.36 MB |
 | MA | 366,072 | 223,020 | 60.9% | 143,805 | 1.05 MB |
@@ -34,6 +34,5 @@ estabelecimento não aparece no mapa — não há fallback por centroide de CEP.
 | SE | 167,458 | 116,585 | 69.6% | 71,492 | 0.48 MB |
 | SP | 8,223,982 | 5,952,172 | 72.4% | 3,327,873 | 23.88 MB |
 | TO | 175,266 | 62,892 | 35.9% | 44,377 | 0.32 MB |
-| **Brasil** | **26,863,736** | **18,132,402** | **67.5%** | **10,493,511** | **75.32 MB** |
+| **Brasil** | **26,863,736** | **18,290,385** | **68.1%** | **10,521,064** | **75.51 MB** |
 
-⚠️ **DF**: 0 pontos — `br_ibge_censo_2022.cadastro_enderecos` não tem nenhuma linha para essa(s) UF(s) no mirror atual (gap na fonte/sync, não um bug de join). Essas UFs são omitidas de `meta.json` e não geram página.

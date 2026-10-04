@@ -36,12 +36,13 @@ DEFAULT_CAP = 2_000_000
 
 
 def read_points(path):
-    """Read a RAW2 struct-of-arrays .bin.gz (see extrai_estados_cnpj.py's
-    write_points_soa): b"RAW2", u32 n, then n lngs (f32), n lats (f32),
-    n weights (u16) and n years-since-1900 (u8)."""
+    """Read a RAW2/RAW3 struct-of-arrays .bin.gz (see extrai_estados_cnpj.py's
+    write_points_soa): b"RAW2"/b"RAW3", u32 n, then n lngs (f32), n lats (f32),
+    n weights (u16), n years-since-1900 (u8) and, in RAW3, n CNAE section
+    masks (u32). RAW2 points get an empty mask."""
     with gzip.open(path, "rb") as f:
         data = f.read()
-    if data[:4] != b"RAW2":
+    if data[:4] not in (b"RAW2", b"RAW3"):
         raise SystemExit(f"{path}: layout antigo, sem ano; rode extrai_estados_cnpj.py de novo")
     n = struct.unpack_from("<I", data, 4)[0]
     o = 8
@@ -53,7 +54,12 @@ def read_points(path):
     weights.frombytes(data[o + 8 * n : o + 10 * n])
     years = array.array("B")
     years.frombytes(data[o + 10 * n : o + 11 * n])
-    return list(zip(lngs, lats, weights, years))
+    masks = array.array("I")
+    if data[:4] == b"RAW3":
+        masks.frombytes(data[o + 11 * n : o + 15 * n])
+    else:
+        masks.extend([0] * n)
+    return list(zip(lngs, lats, weights, years, masks))
 
 
 def main():
@@ -67,6 +73,7 @@ def main():
     all_points = []
     n_estab_ativos = 0
     n_estab_geolocalizados = 0
+    setores = {}
     lngs_min = lats_min = float("inf")
     lngs_max = lats_max = float("-inf")
 
@@ -76,6 +83,10 @@ def main():
         all_points.extend(pts)
         n_estab_ativos += meta[uf]["n_estab_ativos"]
         n_estab_geolocalizados += meta[uf]["n_estab_geolocalizados"]
+        for sec, c in meta[uf].get("setores", {}).items():
+            acc = setores.setdefault(sec, {"ativos": 0, "geo": 0})
+            acc["ativos"] += c["ativos"]
+            acc["geo"] += c["geo"]
         bbox = meta[uf]["bbox"]
         if bbox:
             lngs_min = min(lngs_min, bbox[0])
@@ -97,12 +108,14 @@ def main():
     lats = array.array("f", (p[1] for p in all_points))
     weights = array.array("H", (p[2] for p in all_points))
     years = array.array("B", (p[3] for p in all_points))
+    masks = array.array("I", (p[4] for p in all_points))
     with gzip.open(out_path, "wb", compresslevel=9) as f:
-        f.write(b"RAW2" + struct.pack("<I", len(all_points)))
+        f.write(b"RAW3" + struct.pack("<I", len(all_points)))
         f.write(lngs.tobytes())
         f.write(lats.tobytes())
         f.write(weights.tobytes())
         f.write(years.tobytes())
+        f.write(masks.tobytes())
 
     meta["BR"] = {
         "n_points": len(all_points),
@@ -110,6 +123,8 @@ def main():
         "n_estab_geolocalizados": n_estab_geolocalizados,
         "bbox": [lngs_min, lats_min, lngs_max, lats_max],
     }
+    if setores:
+        meta["BR"]["setores"] = dict(sorted(setores.items()))
     META_PATH.write_text(json.dumps(meta, ensure_ascii=False))
 
     print(f"Done: {out_path} ({out_path.stat().st_size / 1e6:.2f} MB)")
