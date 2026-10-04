@@ -18,8 +18,12 @@ on:
   # push só naquele repo não redeploya sozinho; precisa de um push em
   # pages/**, um workflow_dispatch, ou um dos dois eventos acima para levar a
   # atualização.
+  #
+  # /plataformas/brasilumen vem de rafapolo/brasilumen, pelo mesmo
+  # repository_dispatch. O data/ dele não está no git: sai do bucket privado
+  # do brasilumen (Hetzner), que o pre-push de lá atualiza antes de cada push.
   repository_dispatch:
-    types: [tse-bens-updated, rios-updated]
+    types: [tse-bens-updated, rios-updated, brasilumen-updated]
 
 permissions:
   contents: read
@@ -71,6 +75,34 @@ jobs:
         run: |
           cd pages/plataformas/rios-do-brasil
           rm -rf .git .github .gitignore pipeline README.md screenshot.png
+      - name: Checkout brasilumen
+        uses: actions/checkout@v7
+        with:
+          repository: rafapolo/brasilumen
+          ref: ${{ github.event.action == 'brasilumen-updated' && github.event.client_payload.sha || '' }}
+          path: pages/plataformas/brasilumen
+      - name: Remove arquivos não-públicos do brasilumen
+        run: |
+          cd pages/plataformas/brasilumen
+          rm -rf .git .github .githooks .gitignore .nojekyll scripts README.md tasks.md screenshot.webp
+      # Sem os segredos do bucket o brasilumen sai do artefato em vez de ir ao
+      # ar sem dados — e o resto do site publica normalmente.
+      - name: data/ do brasilumen, do bucket
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.BRASILUMEN_S3_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.BRASILUMEN_S3_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: hel1
+          # O Hetzner recusa os checksums CRC que o AWS CLI novo manda por padrão.
+          AWS_REQUEST_CHECKSUM_CALCULATION: when_required
+          AWS_RESPONSE_CHECKSUM_VALIDATION: when_required
+        run: |
+          if [ -z "$AWS_ACCESS_KEY_ID" ]; then
+            echo "::warning::BRASILUMEN_S3_ACCESS_KEY_ID não está definido; /plataformas/brasilumen fica fora deste deploy."
+            rm -rf pages/plataformas/brasilumen
+            exit 0
+          fi
+          aws s3 sync s3://brasilumen/data/ pages/plataformas/brasilumen/data/ --endpoint-url https://hel1.your-objectstorage.com --no-progress
+          test -s pages/plataformas/brasilumen/data/meta.json
       # pet16704 vive em git.rodado.xyz (Gitea próprio, não GitHub), então
       # actions/checkout não serve — é um clone raso comum, sem credencial
       # porque o repo aceita clone anônimo.
