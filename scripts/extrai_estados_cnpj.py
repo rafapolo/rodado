@@ -70,7 +70,8 @@ DB_PATH = os.environ.get("DB_PATH", "~/rodado/basedosdados.duckdb")
 # endian) DataView/TypedArray reads. Since RAW2 the file opens with b"RAW2" and
 # u32 n, and a fourth block of n u8 years-since-1900 follows the weights.
 # RAW3 adds a fifth block: n u32 masks, bit k set when the address has at
-# least one establishment in CNAE section SECOES[k] (A..U).
+# least one establishment in CNAE section SECOES[k] (A..U). RAW4 adds a sixth:
+# n u8 masks of the CNEFE address kinds around the point (bit k = kind k+1).
 def write_points_soa(path, pontos):
     lngs = array.array("f", (p["lng"] for p in pontos))
     lats = array.array("f", (p["lat"] for p in pontos))
@@ -80,15 +81,17 @@ def write_points_soa(path, pontos):
     years = array.array("B", (min(max(p["yr"] - 1900, 0), 255) for p in pontos))
     masks = array.array("I", (p["mask"] for p in pontos))
     assert masks.itemsize == 4
+    esps = array.array("B", (p["esp"] for p in pontos))
     with gzip.open(path, "wb", compresslevel=9) as f:
         # RAW2 header: the legacy layout had none and was told apart from this
         # one by length alone, which is ambiguous once a fourth block exists.
-        f.write(b"RAW3" + struct.pack("<I", len(pontos)))
+        f.write(b"RAW4" + struct.pack("<I", len(pontos)))
         f.write(lngs.tobytes())
         f.write(lats.tobytes())
         f.write(weights.tobytes())
         f.write(years.tobytes())
         f.write(masks.tobytes())
+        f.write(esps.tobytes())
 
 
 def ssh_duckdb(sql):
@@ -467,12 +470,23 @@ resolved AS (
 """ + SEGUNDA_PASSADA_SQL
 
 # rows per point and CNAE section: extract_uf folds them into a point with
-# a section mask, and sums the per-section counts
-PONTOS_SQL = RESOLVE_SQL + """
+# a section mask, and sums the per-section counts.
+# esp: the CNEFE address kinds (tipo_especie 1..8, bit k-1) the census saw in
+# the point's ~11 m cell (lat/lng rounded to 4 decimals). Taken by place, not
+# through the match, so every tier gets it alike; 0 when the cell has none.
+PONTOS_SQL = RESOLVE_SQL + """,
+esp_cel AS (
+  SELECT round(TRY_CAST(latitude AS DOUBLE), 4) AS cla, round(TRY_CAST(longitude AS DOUBLE), 4) AS clo,
+    bit_or(1 << (TRY_CAST(tipo_especie AS INTEGER) - 1)) AS esp
+  FROM br_ibge_censo_2022.cadastro_enderecos
+  WHERE sigla_uf = '{uf}' AND TRY_CAST(tipo_especie AS INTEGER) BETWEEN 1 AND 8
+  GROUP BY 1, 2
+)
 SELECT round(r.lng, 6) AS lng, round(r.lat, 6) AS lat, sec, COUNT(*) AS weight,
-  MIN(yr) AS yr
+  MIN(yr) AS yr, coalesce(bit_or(c.esp), 0) AS esp
 FROM (SELECT rid, yr, """ + SECAO_SQL + """ AS sec FROM estab) e
 JOIN resolved_all r USING (rid)
+LEFT JOIN esp_cel c ON c.cla = round(r.lat, 4) AND c.clo = round(r.lng, 4)
 GROUP BY round(r.lng, 6), round(r.lat, 6), sec;
 """
 
@@ -490,6 +504,7 @@ def extract_uf(uf, use_ssh):
     total_rows = run_query(TOTAL_ATIVOS_SQL.format(uf=uf), use_ssh)
     n_estab_ativos = sum(r["total"] for r in total_rows)
     setores = {s: {"ativos": 0, "geo": 0} for s in SECOES}
+    cruzado = [[0] * 8 for _ in SECOES]
     for r in total_rows:
         setores[SECOES[r["sec"]]]["ativos"] = r["total"]
 
@@ -503,11 +518,17 @@ def extract_uf(uf, use_ssh):
         key = (r["lng"], r["lat"])
         p = by_point.get(key)
         if p is None:
-            p = by_point[key] = {"lng": r["lng"], "lat": r["lat"], "weight": 0, "yr": r["yr"], "mask": 0}
+            p = by_point[key] = {"lng": r["lng"], "lat": r["lat"], "weight": 0, "yr": r["yr"], "mask": 0, "esp": 0}
         p["weight"] += r["weight"]
         p["yr"] = min(p["yr"], r["yr"])
         p["mask"] |= 1 << r["sec"]
+        p["esp"] |= r["esp"]
         setores[SECOES[r["sec"]]]["geo"] += r["weight"]
+        # establishments by section x CNEFE kind, for the page's figures
+        # under both filters (an address of several kinds counts in each)
+        for k in range(8):
+            if r["esp"] >> k & 1:
+                cruzado[r["sec"]][k] += r["weight"]
     pontos = list(by_point.values())
 
     n_estab_geolocalizados = sum(p["weight"] for p in pontos)
@@ -536,6 +557,8 @@ def extract_uf(uf, use_ssh):
         "n_estab_geolocalizados": n_estab_geolocalizados,
         "match_rate": match_rate,
         "setores": setores,
+        "especies": [sum(row[k] for row in cruzado) for k in range(8)],
+        "cruzado": cruzado,
         "n_points": n_points,
         "bbox": bbox,
         "file_size": file_size,
@@ -637,6 +660,8 @@ def main():
                 "n_estab_geolocalizados": s["n_estab_geolocalizados"],
                 "bbox": s["bbox"],
                 "setores": s["setores"],
+                "especies": s["especies"],
+                "cruzado": s["cruzado"],
             }
         stats.append(s)
 
