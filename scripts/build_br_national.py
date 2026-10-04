@@ -42,7 +42,7 @@ def read_points(path):
     masks (u32). RAW2 points get an empty mask."""
     with gzip.open(path, "rb") as f:
         data = f.read()
-    if data[:4] not in (b"RAW2", b"RAW3"):
+    if data[:4] not in (b"RAW2", b"RAW3", b"RAW4"):
         raise SystemExit(f"{path}: layout antigo, sem ano; rode extrai_estados_cnpj.py de novo")
     n = struct.unpack_from("<I", data, 4)[0]
     o = 8
@@ -55,11 +55,16 @@ def read_points(path):
     years = array.array("B")
     years.frombytes(data[o + 10 * n : o + 11 * n])
     masks = array.array("I")
-    if data[:4] == b"RAW3":
+    if data[:4] in (b"RAW3", b"RAW4"):
         masks.frombytes(data[o + 11 * n : o + 15 * n])
     else:
         masks.extend([0] * n)
-    return list(zip(lngs, lats, weights, years, masks))
+    esps = array.array("B")
+    if data[:4] == b"RAW4":
+        esps.frombytes(data[o + 15 * n : o + 16 * n])
+    else:
+        esps.extend([0] * n)
+    return list(zip(lngs, lats, weights, years, masks, esps))
 
 
 def main():
@@ -74,6 +79,8 @@ def main():
     n_estab_ativos = 0
     n_estab_geolocalizados = 0
     setores = {}
+    especies = [0] * 8
+    cruzado = [[0] * 8 for _ in range(21)]
     lngs_min = lats_min = float("inf")
     lngs_max = lats_max = float("-inf")
 
@@ -87,6 +94,11 @@ def main():
             acc = setores.setdefault(sec, {"ativos": 0, "geo": 0})
             acc["ativos"] += c["ativos"]
             acc["geo"] += c["geo"]
+        for k, c in enumerate(meta[uf].get("especies", [])):
+            especies[k] += c
+        for i, row in enumerate(meta[uf].get("cruzado", [])):
+            for k, c in enumerate(row):
+                cruzado[i][k] += c
         bbox = meta[uf]["bbox"]
         if bbox:
             lngs_min = min(lngs_min, bbox[0])
@@ -109,13 +121,15 @@ def main():
     weights = array.array("H", (p[2] for p in all_points))
     years = array.array("B", (p[3] for p in all_points))
     masks = array.array("I", (p[4] for p in all_points))
+    esps = array.array("B", (p[5] for p in all_points))
     with gzip.open(out_path, "wb", compresslevel=9) as f:
-        f.write(b"RAW3" + struct.pack("<I", len(all_points)))
+        f.write(b"RAW4" + struct.pack("<I", len(all_points)))
         f.write(lngs.tobytes())
         f.write(lats.tobytes())
         f.write(weights.tobytes())
         f.write(years.tobytes())
         f.write(masks.tobytes())
+        f.write(esps.tobytes())
 
     meta["BR"] = {
         "n_points": len(all_points),
@@ -125,6 +139,9 @@ def main():
     }
     if setores:
         meta["BR"]["setores"] = dict(sorted(setores.items()))
+    if any(especies):
+        meta["BR"]["especies"] = especies
+        meta["BR"]["cruzado"] = cruzado
     META_PATH.write_text(json.dumps(meta, ensure_ascii=False))
 
     print(f"Done: {out_path} ({out_path.stat().st_size / 1e6:.2f} MB)")
