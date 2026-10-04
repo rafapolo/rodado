@@ -78,11 +78,19 @@ DESCRICOES = {
         "dados públicos — o dado inteiro para explorar, não só o recorte de uma "
         "análise fechada."
     ),
+    "plataformas/en.html": (
+        "Navigable dashboards, maps and networks built on the same mirror of "
+        "Brazilian public data — the whole data to explore, not just the slice "
+        "a finished analysis used."
+    ),
 }
 
-# os índices de analises/ e plataformas/: hub, não artigo, e sem gêmea em inglês
+# os índices de analises/ e plataformas/: hub, não artigo. Só o de plataformas
+# tem gêmea em inglês (en.html, na mesma pasta: divide o JSON, o CSS e as imagens)
 INDICE_ANALISES = "analises/index.html"
 INDICE_PLATAFORMAS = "plataformas/index.html"
+INDICE_PLATAFORMAS_EN = "plataformas/en.html"
+INDICES = (INDICE_ANALISES, INDICE_PLATAFORMAS, INDICE_PLATAFORMAS_EN)
 
 SITE_NAME = "rodado"
 
@@ -109,6 +117,8 @@ def contraparte(path: Path) -> Path | None:
         "en.html": "index.html",
         "mcp.html": "mcp-en.html",
         "mcp-en.html": "mcp.html",
+        INDICE_PLATAFORMAS: INDICE_PLATAFORMAS_EN,
+        INDICE_PLATAFORMAS_EN: INDICE_PLATAFORMAS,
     }
     if rel in mapa:
         alvo = PAGES / mapa[rel]
@@ -123,7 +133,10 @@ def contraparte(path: Path) -> Path | None:
 
 def is_en(path: Path) -> bool:
     rel = path.relative_to(PAGES).as_posix()
-    return rel in {"en.html", "mcp-en.html", "technical.html"} or rel.startswith("temas-en/")
+    return (
+        rel in {"en.html", "mcp-en.html", "technical.html", INDICE_PLATAFORMAS_EN}
+        or rel.startswith("temas-en/")
+    )
 
 
 def extrai(pattern: str, texto: str) -> str | None:
@@ -211,7 +224,7 @@ def bloco(path: Path, titulo: str, descricao: str) -> str:
 
     linhas += [
         '<meta property="og:type" content="website">'
-        if (path.parent == PAGES or rel in (INDICE_ANALISES, INDICE_PLATAFORMAS))
+        if (path.parent == PAGES or rel in INDICES)
         and not is_analise(path)
         else '<meta property="og:type" content="article">',
         f'<meta property="og:site_name" content="{SITE_NAME}">',
@@ -246,13 +259,13 @@ def bloco(path: Path, titulo: str, descricao: str) -> str:
             f'"inLanguage":"{"en" if en else "pt-BR"}"}}'
             "</script>"
         )
-    elif rel in (INDICE_ANALISES, INDICE_PLATAFORMAS):
+    elif rel in INDICES:
         linhas.append(
             '<script type="application/ld+json">'
             '{"@context":"https://schema.org","@type":"CollectionPage",'
             f'"name":"{e(social)}","description":"{e(descricao)}",'
             f'"url":"{e(url)}","image":"{e(imagem)}",'
-            '"inLanguage":"pt-BR",'
+            f'"inLanguage":"{"en" if en else "pt-BR"}",'
             f'"isPartOf":{{"@type":"WebSite","name":"{SITE_NAME}","url":"{BASE}/"}}}}'
             "</script>"
         )
@@ -395,6 +408,8 @@ def alvos() -> list[Path]:
     # slugs removidos, que só o commit de quem removeu devia limpar.
     for secao in ("analises", "plataformas"):
         arquivos.append(PAGES / secao / "index.html")
+        if secao == "plataformas":
+            arquivos.append(PAGES / INDICE_PLATAFORMAS_EN)
         slugs = {item["slug"] for item in manifest_da_secao(secao)}
         arquivos += sorted(
             p for p in (PAGES / secao).glob("*/index.html")
