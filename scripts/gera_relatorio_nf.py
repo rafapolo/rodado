@@ -527,10 +527,17 @@ CABECA = """<!doctype html>
       <div class="links">
         <a href="/#temas">Temas</a>
         <a href="/analises/">Análises</a>
-        <a href="../../mcp.html">MCP</a>
-        <a href="https://xn--2dk.xyz/dataviz/">DataViz Hub</a>
+        <a href="/plataformas/">Plataformas</a>
+        <a href="/atlas/">Atlas</a>
+        <a class="mcp-link" href="/mcp.html">MCP</a>
+        <a href="https://xn--2dk.xyz/">DataViz</a>
       </div>
       <div class="nav-controls">
+        <div class="lang-switch">
+          <span class="lang-current">PT</span>
+          <span class="lang-sep">/</span>
+          <a href="/en.html" class="lang-link">EN</a>
+        </div>
         <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema claro/escuro" type="button"><i class="fa-solid fa-moon"></i></button>
       </div>
     </div>
@@ -549,6 +556,7 @@ RODAPE = """</main>
   <div class="footer-inner">
     <a href="/">Índice temático</a>
     <span>Dados: fontes públicas oficiais / DuckDB</span>
+    <a class="footer-by" href="https://extrapolo.com">por extrapolo.com</a>
   </div>
 </footer>
 
