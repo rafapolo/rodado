@@ -19,7 +19,7 @@ on:
   # pages/**, um workflow_dispatch, ou um dos dois eventos acima para levar a
   # atualização.
   #
-  # /plataformas/brasilumen vem de rafapolo/brasilumen, pelo mesmo
+  # /plataformas/brasilumen vem de rafapolo/brasilume, pelo mesmo
   # repository_dispatch. O data/ dele não está no git: sai do bucket privado
   # do brasilumen (Hetzner), que o pre-push de lá atualiza antes de cada push.
   repository_dispatch:
@@ -78,7 +78,7 @@ jobs:
       - name: Checkout brasilumen
         uses: actions/checkout@v7
         with:
-          repository: rafapolo/brasilumen
+          repository: rafapolo/brasilume
           ref: ${{ github.event.action == 'brasilumen-updated' && github.event.client_payload.sha || '' }}
           path: pages/plataformas/brasilumen
       - name: Remove arquivos não-públicos do brasilumen
