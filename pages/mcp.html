@@ -28,14 +28,11 @@
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="manifest" href="https://rodado.xyz/site.webmanifest">
-<meta name="theme-color" content="#9c3b2e">
+<meta name="theme-color" content="#f9f8f5">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
 <!-- seo:end -->
 <!-- head:start (gerado por scripts/gera_seo.py — não editar à mão) -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="preload" href="assets/fonts/public-sans-latin-400-800.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/site.css">
 <link rel="stylesheet" href="assets/mcp-theme.css">
 <script defer src="https://cloud.umami.is/script.js" data-website-id="d2597bf7-73e0-4e7e-b353-1202d9f72b7d"></script>
@@ -97,8 +94,8 @@
           </div>
         </div>
         <div class="filters">
-          <input type="search" id="toolSearch" oninput="applyFilters()" placeholder="Buscar tabelas, colunas…" class="search-input">
-          <select id="categoryFilter" onchange="applyFilters()" class="category-select">
+          <input type="search" id="toolSearch" aria-label="Buscar tabelas e colunas" oninput="applyFilters()" placeholder="Buscar tabelas, colunas…" class="search-input">
+          <select id="categoryFilter" aria-label="Filtrar por categoria" onchange="applyFilters()" class="category-select">
             <option value="">Todas as categorias</option>
             <option value="Desigualdade &amp; Sociedade">Desigualdade &amp; Sociedade</option><option value="Educação &amp; Ciência">Educação &amp; Ciência</option><option value="Saúde">Saúde</option><option value="Política, Justiça &amp; Segurança">Política, Justiça &amp; Segurança</option><option value="Estado &amp; Políticas Públicas">Estado &amp; Políticas Públicas</option><option value="Economia &amp; Trabalho">Economia &amp; Trabalho</option><option value="Território &amp; Ambiente">Território &amp; Ambiente</option>
           </select>

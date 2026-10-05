@@ -30,13 +30,12 @@ HEAD_CLOSE = "<!-- head:end -->"
 
 # O <head> que toda página compartilha. `{p}` vira "../" nas subpastas.
 # Fonte única: mexa aqui, rode o script, vale para as 94 páginas.
+# Fontes e ícones moram no próprio site.css (@font-face local + ícones como
+# máscara SVG): Google Fonts e o all.min.css do Font Awesome bloqueavam a
+# renderização. O preload adianta a fonte do texto, a única acima da dobra.
 COMUM = [
-    '<link rel="preconnect" href="https://fonts.googleapis.com">',
-    '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
-    '<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500'
-    '&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">',
-    '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/'
-    '6.5.2/css/all.min.css">',
+    '<link rel="preload" href="{p}assets/fonts/public-sans-latin-400-800.woff2" '
+    'as="font" type="font/woff2" crossorigin>',
     '<link rel="stylesheet" href="{p}assets/site.css">',
     '<link rel="stylesheet" href="{p}assets/mcp-theme.css">',
     '<script defer src="https://cloud.umami.is/script.js" '
@@ -50,6 +49,7 @@ MARCAS_COMUNS = (
     "fonts.googleapis.com",
     "fonts.gstatic.com",
     "font-awesome",
+    "assets/fonts/",
     "assets/site.css",
     "assets/mcp-theme.css",
     "cloud.umami.is",
@@ -245,7 +245,7 @@ def bloco(path: Path, titulo: str, descricao: str) -> str:
         f'<link rel="icon" type="image/png" sizes="16x16" href="{prefixo}assets/favicon-16.png">',
         f'<link rel="apple-touch-icon" href="{prefixo}assets/apple-touch-icon.png">',
         f'<link rel="manifest" href="{BASE}/site.webmanifest">',
-        '<meta name="theme-color" content="#9c3b2e">',
+        '<meta name="theme-color" content="#f9f8f5">',
         '<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">',
     ]
 
