@@ -15,6 +15,7 @@ não duplica nada.
 """
 
 import html
+import json
 import re
 from datetime import date
 from pathlib import Path
@@ -131,11 +132,22 @@ def contraparte(path: Path) -> Path | None:
     return alvo if alvo.exists() else None
 
 
+def _analises_en() -> set[str]:
+    """análises com "lang": "en" no manifest (ver gera_analises.py)"""
+    manifest = PAGES / "analises" / "results" / "manifest.json"
+    if not manifest.exists():
+        return set()
+    return {f"analises/{i['slug']}/index.html"
+            for i in json.loads(manifest.read_text(encoding="utf-8"))
+            if i.get("lang") == "en"}
+
+
 def is_en(path: Path) -> bool:
     rel = path.relative_to(PAGES).as_posix()
     return (
         rel in {"en.html", "mcp-en.html", "technical.html", INDICE_PLATAFORMAS_EN}
         or rel.startswith("temas-en/")
+        or rel in _analises_en()
     )
 
 

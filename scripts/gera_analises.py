@@ -26,7 +26,7 @@ MANIFEST = ANALISES / "results" / "manifest.json"
 AVISO = "<!-- gerado por scripts/gera_analises.py — não editar à mão -->"
 
 MODELO = """<!doctype html>
-<html lang="pt-br">
+<html lang="{lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -55,9 +55,7 @@ MODELO = """<!doctype html>
       </div>
       <div class="nav-controls">
         <div class="lang-switch">
-          <span class="lang-current">PT</span>
-          <span class="lang-sep">/</span>
-          <a href="/en.html" class="lang-link">EN</a>
+          {lang_switch}
         </div>
         <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema claro/escuro" type="button"><i class="fa-solid fa-moon"></i></button>
       </div>
@@ -66,8 +64,8 @@ MODELO = """<!doctype html>
 </nav>
 
 <main>
-  <p class="eyebrow" id="eyebrow">Análises</p>
-  <p class="meta">rodado em {rodado_em}</p>
+  <p class="eyebrow" id="eyebrow">{eyebrow}</p>
+  <p class="meta">{rodado_rot} {rodado_em}</p>
   <div id="doc" data-slug="{slug}" data-base="../"><p class="doc-msg">Carregando…</p></div>
 </main>
 
@@ -85,6 +83,20 @@ MODELO = """<!doctype html>
 </body>
 </html>
 """
+
+
+# análise com "lang": "en" no manifest sai com o html, o seletor de idioma e os
+# rótulos fixos em inglês; sem o campo, é pt-br como sempre foi
+IDIOMA = {
+    "pt-br": dict(
+        lang_switch='<span class="lang-current">PT</span>\n          <span class="lang-sep">/</span>\n'
+                    '          <a href="/en.html" class="lang-link">EN</a>',
+        eyebrow="Análises", rodado_rot="rodado em"),
+    "en": dict(
+        lang_switch='<a href="/analises/" class="lang-link">PT</a>\n          <span class="lang-sep">/</span>\n'
+                    '          <span class="lang-current">EN</span>',
+        eyebrow="Analysis", rodado_rot="run on"),
+}
 
 
 def escapa(texto: str) -> str:
@@ -117,6 +129,8 @@ def main() -> None:
                 dek=escapa(item["dek"]),
                 slug=escapa(slug),
                 rodado_em=escapa(item.get("rodado_em", "")),
+                lang=item.get("lang", "pt-br"),
+                **IDIOMA[item.get("lang", "pt-br")],
             ),
             encoding="utf-8",
         )
