@@ -91,7 +91,7 @@
     <div class="card"><div class="label">End-to-end delivery</div><p>Scraping and mirroring pipelines + semantic layer + 17-tool MCP interface, in daily use as a single-engineer project.</p></div>
     <div class="card"><div class="label">Data engineering</div><p>1,050 tables across 238 datasets (39.7 billion rows, ~898 GB) — 741 mirrored from Base dos Dados, 309 scraped independently — with a canonical join-key graph and partition-aware query patterns.</p></div>
     <div class="card"><div class="label">Ontology design</div><p>8 business object types (Municipality, Company, Person, Contract…) with typed relationships, 60 documented join concepts and 21 catalogued false friends.</p></div>
-    <div class="card"><div class="label">Application development</div><p><code>mcp_server.py</code> — 18 MCP tools over stdio for schema browsing, join resolution, named metrics and read-only SQL.</p></div>
+    <div class="card"><div class="label">Application development</div><p><code>mcp_server.py</code> — 17 MCP tools over stdio for schema browsing, join resolution, named metrics and read-only SQL.</p></div>
     <div class="card"><div class="label">AI / ML enablement</div><p>Table discovery by a compact dataset catalog placed in the model's prompt — 88% of questions land on the right dataset, against ~53% for the embedding search it replaced.</p></div>
     <div class="card"><div class="label">Read-only enforcement</div><p>Statement guard in <code>mcp_server.py</code> before any SSH call, and every DuckDB session opened with <code>-readonly</code>.</p></div>
     <div class="card"><div class="label">Operational durability</div><p>Resumable, checkpointed scrapers. A metadata catalog records rows, source and provenance for every table, and schemas are regenerated after each sync.</p></div>
@@ -257,23 +257,55 @@ ORDER BY contratos_federais_2023_2025 DESC</pre>
   </div>
 
   <h2>Palantir Foundry mapping</h2>
-  <p>This is not a Foundry deployment — it's an open-source system that reproduces the same architectural layers and mental model, for readers who know Foundry and want a quick translation.</p>
+  <p>Not a Foundry deployment. rodado is an open-source system built around the same idea: datasets alone are not enough. You need a typed semantic layer that says what the data <em>means</em>, and tools that act on that meaning instead of on table names. The table translates each layer for readers who know Foundry.</p>
   <div class="data-table-wrap">
     <table>
-      <thead><tr><th>rodado component</th><th>Foundry equivalent</th></tr></thead>
+      <thead><tr><th>Foundry layer</th><th>Foundry primitive</th><th>rodado counterpart</th></tr></thead>
       <tbody>
-        <tr><td>Scrapers + Base dos Dados mirror sync</td><td>External data connectors</td></tr>
-        <tr><td>Parquet files on beelink</td><td>Foundry datasets</td></tr>
-        <tr><td>DuckDB engine + views</td><td>Foundry query engine</td></tr>
-        <tr><td>rodado-schema.json</td><td>Ontology schema registry</td></tr>
-        <tr><td>bridges.yaml / join_keys.md entity graph</td><td>Object type links / property mappings</td></tr>
-        <tr><td>metrics.yaml / hierarchies.yaml</td><td>Semantic metrics &amp; rollups</td></tr>
-        <tr><td>mcp_server.py tools</td><td>AIP Agent tool actions</td></tr>
-        <tr><td>_rodado_metadata catalog</td><td>Data lineage / catalog</td></tr>
-        <tr><td>overview/ domain narratives</td><td>Business context documentation</td></tr>
+        <tr><td>Data integration</td><td>Data Connection sources &amp; syncs</td><td>Base dos Dados mirror sync + independent scrapers (309 tables), resumable and checkpointed</td></tr>
+        <tr><td></td><td>Datasets</td><td>One Parquet+zstd directory per table, 1,050 tables. No dataset versions or transactions</td></tr>
+        <tr><td></td><td>Data Lineage &amp; metadata</td><td><code>_rodado_metadata</code> catalog: rows, size, source URL, scrape date, status, provenance</td></tr>
+        <tr><td></td><td>Pipeline schedules</td><td>An ordered regeneration chain, run by hand after each sync</td></tr>
+        <tr><td>Ontology</td><td>Object types</td><td>61 hub concepts in <code>bridges.yaml</code>: municipality, state, company, person, station… Objects stay virtual (rows, not an indexed object store)</td></tr>
+        <tr><td></td><td>Link types</td><td><code>resolve_join(a, b)</code> returns a ready <code>ON</code> clause, including the key normalization (e.g. un-padded CNPJ) that Foundry would push into a transform</td></tr>
+        <tr><td></td><td>Interfaces</td><td>Anything carrying <code>id_municipio</code> rolls up to state and region, a natural <code>HasMunicipality</code> interface</td></tr>
+        <tr><td></td><td>Shared property / value types</td><td>13 <code>coded_differently</code> concepts (sex, race codes change by dataset and year), column code books and per-dataset decode dictionaries</td></tr>
+        <tr><td></td><td>—</td><td>21 catalogued <em>false friends</em>: same column name, different meaning (<code>valor</code> in 91 tables). A guard against links that only look valid</td></tr>
+        <tr><td></td><td>Functions</td><td>15 named metrics and CNAE / CID-10 / territorial rollups, each with a dated <code>verified</code> measurement</td></tr>
+        <tr><td></td><td>Object Views</td><td><code>describe_table</code>: columns, decodable codes, gotchas and coded-value warnings in one call, built for an agent reader</td></tr>
+        <tr><td>Data quality</td><td>Data Expectations &amp; Health Checks</td><td>Per-dataset gotchas (26 datasets), each measured on real data. Returned to the agent, not enforced at build time</td></tr>
+        <tr><td>AIP</td><td>Ontology MCP / AIP Agent tools</td><td><code>mcp_server.py</code>: 17 read-only MCP tools. An external agent reads through the semantic layer, not raw tables</td></tr>
+        <tr><td></td><td>AIP Evals</td><td>Local evaluation harness (Gemma 4): 88% dataset hit rate vs ~53% for the embedding search it replaced. Each failure becomes a bridge or a note, not a prompt rule</td></tr>
+        <tr><td>Governance</td><td>Markings / restricted views</td><td>Read-only sessions, statement guard, allow-listed directories, locked configuration. Applies to the whole session, not per row</td></tr>
+        <tr><td>Applications</td><td>Vertex</td><td><a href="/atlas/">Atlas</a>: bipartite table↔key graph (2,151 edges instead of 89,598 table pairs)</td></tr>
+        <tr><td></td><td>Workshop / Notepad / Contour</td><td>Published analyses and FDR-corrected research runs. Reports, not operational apps</td></tr>
       </tbody>
     </table>
   </div>
+
+  <h3>Solved by hand here, by construction in Foundry</h3>
+  <div class="grid-cards">
+    <div class="card"><div class="label">Keys at query time</div><p>Sources are mirrored as they come, so key cleaning lives in the bridge: <code>resolve_join</code> replaces the naive <code>a.cnpj = b.cnpj</code> instead of competing with it.</p></div>
+    <div class="card"><div class="label">Semantic drift</div><p>The same code means different things in different datasets or years. rodado warns about this at query time; Foundry would fix it once, in a transform.</p></div>
+    <div class="card"><div class="label">Every claim measured</div><p>Bridges, metrics, hierarchies and gotchas each record what matched on the real data, with a date. This plays the role of Data Expectations, but a failure shows up as a warning, not a failed build.</p></div>
+  </div>
+
+  <h3>What a Foundry deployment would add</h3>
+  <div class="grid-cards">
+    <div class="card"><div class="label">Action types</div><p>rodado is read-only by design. A compliance workflow (flag a supplier for review) needs write-back, an inbox and an audit trail.</p></div>
+    <div class="card"><div class="label">Materialized objects</div><p>Indexed object storage, so a single company or municipality can be fetched without scanning tables.</p></div>
+    <div class="card"><div class="label">Orchestration</div><p>Scheduled, incremental builds with staleness tracking, instead of a manual regeneration chain.</p></div>
+    <div class="card"><div class="label">Granular security</div><p>Markings and row-level policies for CPF-bearing data, plus branching for ontology changes.</p></div>
+  </div>
+
+  <h3>Porting sketch</h3>
+  <ol>
+    <li>Sync the Parquet tables as datasets through Data Connection.</li>
+    <li>Write transforms that apply each bridge normalization and emit clean keys. Turn each gotcha into a Data Expectation.</li>
+    <li>Ontology: object types for the hub concepts (Municipality, Company, Person [marked], Establishment, PublicContract, HealthEvent), link types from the bridges, and an interface for anything located in a municipality.</li>
+    <li>Turn the named metrics into functions, each tested against its recorded measurement. Move the harness cases into AIP Evals.</li>
+    <li>Build a Workshop app for the supplier integrity check, with an action type that routes a flagged company to review.</li>
+  </ol>
 
   <h2>Data quality &amp; governance</h2>
   <div class="grid-cards">

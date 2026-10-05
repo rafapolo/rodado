@@ -269,16 +269,51 @@ Tests: `pytest mcp/` (the ssh subprocess and the embedding model are mocked — 
 
 ## Palantir Foundry mapping
 
-Not a Foundry deployment — an open-source system that reproduces the same architectural layers, documented here for readers who know Foundry and want a quick translation.
+Not a Foundry deployment. rodado is an open-source system built around the same idea as Foundry: raw datasets are not enough. You also need a typed semantic layer that says what the data *means*, plus tools that act on that meaning instead of on table names. This section translates each layer for readers who know Foundry. It also shows where rodado had to solve problems Foundry solves by construction, and what a real Foundry port would add.
 
-| rodado component | Foundry equivalent |
-|-----------------|-------------------|
-| Parquet files on beelink | Foundry datasets |
-| DuckDB engine + views | Foundry query engine |
-| `rodado-schema.json` | Ontology schema registry |
-| `join_keys.md`/`bridges.yaml` entity graph | Object type links / property mappings |
-| `mcp_server.py` | AIP Agent tool actions |
-| `overview/` domain narratives | Business context / documentation |
+### Layer by layer
+
+| Foundry layer | Foundry primitive | rodado counterpart | Notes |
+|---|---|---|---|
+| Data integration | Data Connection sources and syncs | Base dos Dados mirror sync + independent scrapers (309 tables), resumable and checkpointed | Each scraped source records its URL and scrape date |
+| | Datasets (versioned Parquet) | One Parquet+zstd directory per table on beelink, 1,050 tables | No transactions or dataset versions; the COLD backup is add-only, not a history |
+| | Data Lineage, dataset metadata | `_rodado_metadata` catalog: rows, files, bytes, `source_url`, `scrape_date`, `status`, provenance | Rebuilt after every sync by `build_metadata_catalog.py` |
+| | Pipeline schedules | The ordered regeneration chain (`gera_schemas.py` → `sync_mcp_schema.py` → … → `build_atlas.py`) | Run by hand. Foundry would schedule it and track staleness |
+| Ontology | Object types + properties | Hub concepts in `bridges.yaml` (61): municipality, state, company, person, station, country… | Objects stay virtual: rows in tables, not an indexed object store |
+| | Link types | `bridges.yaml` + `resolve_join(a, b)`, which returns a ready-made `ON` clause | Foundry links need clean, equal keys. rodado's bridges carry the *normalization expression* (e.g. un-padded CNPJ), which a Foundry port would move into a transform |
+| | Interfaces (polymorphism) | A concept shared by hundreds of tables, e.g. anything carrying `id_municipio` can roll up to state and region | Maps naturally to an interface like `HasMunicipality` |
+| | Shared property types / value types | `coded_differently` (13 concepts, e.g. `sexo`, `raca_cor`, whose codes change by dataset and year) + `column_codes.yaml` + per-dataset `dicionario` decode | Foundry enforces one type per shared property; rodado documents the divergence and warns at query time |
+| | (no native primitive) | `false_friends` (21): same column name, different meaning (`valor` in 91 tables) | A guard against links that *look* valid. In Foundry this would mean deliberately separate property types |
+| | Functions on objects | `metrics.yaml` (15 named metrics, all with a `verified` measurement) and `hierarchies.yaml` (CNAE, CID-10, municipality → state → region rollups) | `get_metric`, `rollup` |
+| | Object Views | `describe_table`: columns, decodable codes, gotchas and coded-value warnings in one call | Built for an agent reader, not a human |
+| Data quality | Data Expectations + Health Checks | `docs/context/gotchas/*.yml` (26 datasets), each entry with a `verificado` measurement on real data; `valida_metrics.py` | Documented and returned to the agent, **not enforced at build time** |
+| AIP | Ontology MCP / AIP Agent tools | `mcp/mcp_server.py`: 17 read-only MCP tools (schema, joins, metrics, rollups, SQL, per-domain lookups) | Same idea as Palantir's Ontology MCP: an external agent reads through the semantic layer |
+| | AIP Evals | The local evaluation harness (Gemma 4 on beelink): dataset hit rate 88% with the catalog in the prompt vs ~53% for the embedding search it replaced; blind MCP tests | Each failure becomes a bridge, gotcha or note, not a prompt rule |
+| Governance | Markings, restricted views, read-only scopes | `-readonly` sessions, statement guard, `allowed_directories`, `enable_external_access=false`, `lock_configuration=true` | Access control for the whole session, not per row. CPF/CNPJ are read-only, with no export endpoint |
+| Applications | Vertex / graph exploration | [Atlas](https://rodado.xyz/atlas): bipartite table↔key graph (2,151 edges instead of 89,598 table pairs) | |
+| | Workshop / Notepad / Contour | Published analyses (`pages/analises/`) and the municipal-panel research runs (FDR-corrected triples) | Reports, not operational apps |
+
+### What rodado solves that Foundry solves by construction
+
+- **Key normalization at query time.** Foundry pushes key cleaning into pipelines, so link types join on equal keys. rodado mirrors sources as they come, so it keeps the conversion in the bridge (`resolve_join` *replaces* the naive `a.cnpj = b.cnpj`).
+- **Semantic drift across years.** The same code means different things in different datasets or years. Foundry would fix this once, in a transform. rodado fixes it at query time and warns about it.
+- **Every claim is measured.** Every bridge, metric, hierarchy parent and gotcha carries what matched when it was run on the real data, with a date. This plays the role of Data Expectations. The difference: a failed check in rodado shows up as a warning, not a failed build.
+
+### What a Foundry deployment would add
+
+- **Action types / write-back.** rodado is read-only by design. A compliance workflow ("flag this supplier for review") needs actions, an inbox and an audit trail.
+- **Materialized objects.** Indexed object storage, so a single company or municipality can be fetched without scanning tables.
+- **Orchestration.** Scheduled, incremental builds with staleness tracking, instead of a manual regeneration chain.
+- **Granular security.** Markings and row-level policies for CPF-bearing data, instead of one lock for the whole session.
+- **Branching.** Change the ontology and pipelines on a branch, without touching production.
+
+### Porting sketch
+
+1. Sync the Parquet tables as Foundry datasets through Data Connection.
+2. Write transforms that apply each `bridges.yaml` normalization and emit clean keys. Turn each `gotchas/*.yml` entry into a Data Expectation on the output.
+3. Build the ontology: object types for the hub concepts (Municipality, Company, Person [marked], Establishment, PublicContract, HealthEvent); link types from the bridges; an interface for anything located in a municipality.
+4. Turn `metrics.yaml` into functions, each with a unit test built from its `verified` measurement. Move the harness cases into AIP Evals.
+5. Build one Workshop application around Workflow 1 (supplier integrity check), with an action type that routes a flagged company to review.
 
 ---
 
