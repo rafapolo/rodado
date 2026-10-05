@@ -106,6 +106,8 @@ LARGURA_UTIL = W - 2 * PAD
 FOOTER_Y = H - PAD - 46  # onde entra o fio do rodapé; nada pode passar daqui
 MESES = ("janeiro fevereiro março abril maio junho julho agosto setembro "
          "outubro novembro dezembro").split()
+MONTHS = ("january february march april may june july august september "
+          "october november december").split()
 
 # Charter não tem nenhuma seta (U+2190-2193, U+2194), e os títulos/deks usam
 # bastante "↔" e "→". Sem isto virariam tofu no cartão. O travessão serve para
@@ -165,12 +167,15 @@ def corta(linhas: list[str], maximo: int) -> list[str]:
 
 
 def eyebrow_de(item: dict) -> str:
+    # análise com "lang": "en" no manifest leva o sobretítulo em inglês
+    en = item.get("lang") == "en"
+    rotulo, meses = ("ANALYSIS", MONTHS) if en else ("ANÁLISE", MESES)
     data = item.get("date") or ""
     try:
         ano, mes = data.split("-")
-        return f"ANÁLISE · {MESES[int(mes) - 1].upper()} {ano}"
+        return f"{rotulo} · {meses[int(mes) - 1].upper()} {ano}"
     except (ValueError, IndexError):
-        return "ANÁLISE"
+        return rotulo
 
 
 def spec_da_analise(item: dict) -> dict:
