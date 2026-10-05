@@ -66,7 +66,6 @@ MODELO = """<!doctype html>
 </nav>
 
 <main>
-  <a class="voltar" href="../">&larr; voltar às análises</a>
   <p class="eyebrow" id="eyebrow">Análises</p>
   <p class="meta">rodado em {rodado_em}</p>
   <div id="doc" data-slug="{slug}" data-base="../"><p class="doc-msg">Carregando…</p></div>
