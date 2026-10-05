@@ -12,3 +12,24 @@ gotchas:
     colunas: [causa_basica, circunstancia_obito]
     severidade: silencioso
     verificado: "RJ 2020: 789 por causa_basica X60-X84, 749 por circunstancia_obito='2', 0 fora do CID — medido 2026-09-25"
+  - id: codigos_como_float
+    resumo: "codigo_estabelecimento e raca_cor vêm como texto de float ('2000733.0', '4.0'): normalize antes de comparar."
+    detalhe: >
+      Comparar codigo_estabelecimento com o CNES (7 dígitos, texto) casa 0%.
+      Use lpad(regexp_replace(codigo_estabelecimento, '\.0$', ''), 7, '0');
+      aí casa 72% dos óbitos de 2022 (óbitos em domicílio não têm
+      estabelecimento). raca_cor tem o mesmo formato ('1.0'...'5.0').
+    tabelas: [microdados]
+    colunas: [codigo_estabelecimento, raca_cor]
+    severidade: silencioso
+    verificado: "2022: casamento com br_ms_cnes.estabelecimento 0% cru, 71,9% normalizado; preenchido 73,0% — medido 2026-10-05"
+  - id: idade_impossivel
+    resumo: "idade (anos com fração) tem valores negativos e acima de 120: filtre 0 <= idade antes de contar óbitos infantis."
+    detalhe: >
+      Em 2022: 1.006 registros com idade negativa (mínimo -1,82), 6.165 acima de
+      120 (máximo 220) e 36.846 nulos. idade < 1 sem o piso conta os negativos
+      como óbitos infantis.
+    tabelas: [microdados]
+    colunas: [idade]
+    severidade: silencioso
+    verificado: "2022: idade < 1 = 30.791; com idade >= 0 e município = 29.764 (1.006 negativos + 21 sem município) — medido 2026-10-05"
