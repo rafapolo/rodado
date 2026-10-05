@@ -1,0 +1,47 @@
+dataset: br_ms_sih
+gotchas:
+  - id: sigla_uf_nula
+    resumo: "Em aihs_reduzidas, sigla_uf é BIGINT e vem nula: a UF sai do município (id_municipio_paciente ou _estabelecimento)."
+    detalhe: >
+      Filtrar ou agrupar por sigla_uf devolve tudo como NULL, sem erro. Use os
+      dois primeiros dígitos do município (código IBGE da UF) ou junte com
+      br_bd_diretorios_brasil.municipio.
+    tabelas: [aihs_reduzidas]
+    colunas: [sigla_uf]
+    severidade: silencioso
+    verificado: "ano = 2024, CID A90-A91: 159.331 AIH, todas com sigla_uf NULL — medido 2026-10-05"
+  - id: municipio_seis_digitos
+    resumo: "Em aihs_reduzidas, id_municipio_paciente tem 6 dígitos (sem verificador): junte por id_municipio_6, não id_municipio."
+    detalhe: >
+      SINAN e SIM usam o código IBGE de 7 dígitos; a SIH, o de 6. Um join direto
+      com id_municipio não casa nada. br_bd_diretorios_brasil.municipio tem as
+      duas colunas (id_municipio e id_municipio_6).
+    tabelas: [aihs_reduzidas]
+    colunas: [id_municipio_paciente, id_municipio_estabelecimento]
+    severidade: silencioso
+    verificado: "ano = 2024, CID A91: 9.759 de 9.759 com length(id_municipio_paciente) = 6 — medido 2026-10-05"
+  - id: ano_e_competencia
+    resumo: "Em aihs_reduzidas, ano/mes são a competência de cobrança, não a data da internação: use year(data_internacao) para série por ocorrência."
+    detalhe: >
+      AIH de internação em dezembro é paga em janeiro ou depois. Filtrar ano =
+      2024 perde as internações de 2024 cobradas em 2025 e inclui as de 2023
+      cobradas em 2024. Para uma série por ano de internação, filtre um ano de
+      competência a mais e agrupe por year(data_internacao). O espelho tem 2025
+      só até junho (competência).
+    tabelas: [aihs_reduzidas]
+    colunas: [ano, mes, data_internacao]
+    severidade: silencioso
+    verificado: "CID A90-A91, competência 2024: 157.500 internadas em 2024 + 1.831 em 2023; competência 2025 vai de mes 1 a 6 — medido 2026-10-05"
+  - id: cid_categoria_ou_subcategoria
+    resumo: "Em aihs_reduzidas, o CID principal está em cid_principal_categoria OU em cid_principal_subcategoria, nunca nos dois: use coalesce."
+    detalhe: >
+      A categoria (3 caracteres) só vem preenchida quando o diagnóstico não tem
+      subcategoria; nos outros ~90% só a subcategoria (4 caracteres) existe.
+      Filtrar cid_principal_categoria perde nove internações em dez. Use
+      coalesce(cid_principal_categoria, substr(cid_principal_subcategoria, 1, 3)).
+      A90 e A91 não têm subcategoria, por isso contagens de dengue pela
+      categoria saem certas.
+    tabelas: [aihs_reduzidas]
+    colunas: [cid_principal_categoria, cid_principal_subcategoria]
+    severidade: silencioso
+    verificado: "2022: categoria 1.341.611 + subcategoria 11.179.303 = 12.520.914 AIH (total); 0 linhas com as duas — medido 2026-10-05"

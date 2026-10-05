@@ -1,0 +1,36 @@
+dataset: br_ms_sia
+gotchas:
+  - id: id_paciente_proto_e_municipio
+    resumo: "Em producao_ambulatorial, id_paciente_proto não é ID de paciente: é o município de residência (6 dígitos)."
+    detalhe: >
+      Junho de 2022, registros individualizados: 5.613 valores distintos, dos
+      quais 5.570 casam com id_municipio_6 do diretório IBGE. Vem vazio ('') no
+      BPA consolidado (instrumento_registro = 'C'), que não tem paciente. Não
+      serve para contar pacientes nem para ligar registros entre si.
+    tabelas: [producao_ambulatorial]
+    colunas: [id_paciente_proto, instrumento_registro]
+    severidade: silencioso
+    verificado: "jun/2022: 5.613 distintos, 5.570 = id_municipio_6; BPA-C: 1 valor distinto (vazio) — medido 2026-10-05"
+  - id: raca_cor_ordem_propria
+    resumo: "Em producao_ambulatorial, raca_cor_paciente 3 = parda e 4 = amarela — o inverso do SIM, SINASC, SINAN e SISVAN."
+    detalhe: >
+      Dicionário da SIA: 1 branca, 2 preta, 3 parda, 4 amarela, 5 indígena,
+      0 não exigido, 99 sem informação. Nos demais sistemas do MS, 3 = amarela e
+      4 = parda. Empilhar ou comparar por código troca o maior grupo do país por
+      um dos menores, sem erro. Decodifique cada fonte pelo próprio dicionario.
+    tabelas: [producao_ambulatorial]
+    colunas: [raca_cor_paciente]
+    severidade: silencioso
+    verificado: "2022: código 3 = 25,9%, 4 = 5,5%; br_ms_sia.dicionario 3 = parda — medido 2026-10-05"
+  - id: bpa_consolidado_sem_paciente
+    resumo: "Em producao_ambulatorial, o BPA consolidado (instrumento_registro = 'C') não tem CID, idade de paciente nem residência."
+    detalhe: >
+      É produção agregada por procedimento: em junho de 2022, 6,3 milhões de
+      linhas e 190 milhões de procedimentos aprovados (57% do total), sem CID.
+      Só BPA-I, APAC, RAAS têm dado de paciente; mesmo neles, o CID vem em 33%
+      dos registros. Contar linhas não é contar atendimentos: some
+      quantidade_aprovada_procedimento.
+    tabelas: [producao_ambulatorial]
+    colunas: [instrumento_registro, cid_principal_categoria, quantidade_aprovada_procedimento]
+    severidade: silencioso
+    verificado: "jun/2022: BPA-C 6.313.904 linhas, 189.762.245 procedimentos, 0 com CID; total 331.287.982 procedimentos — medido 2026-10-05"
