@@ -32,7 +32,7 @@ body { background: var(--bg); }
 .stats { display: flex; flex-wrap: wrap; gap: 32px; }
 .stat-num { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
 .stat-label { font-size: 13px; color: var(--ink-soft); margin-top: 6px; letter-spacing: 0.02em; }
-.stat-label .muted { opacity: 0.7; }
+.stat-label .muted { color: var(--ink-faint); }  /* opacity 0.7 derrubava o contraste para 3,5:1 */
 .filters { display: flex; flex-wrap: wrap; gap: 10px; }
 .search-input, .category-select { font-family: 'Public Sans', system-ui, sans-serif; font-size: 15px; color: var(--ink); background: var(--card-bg); border: 1px solid var(--rule); border-radius: 10px; padding: 13px 18px; }
 .search-input { width: 220px; }
@@ -69,6 +69,8 @@ body { background: var(--bg); }
 .card-id-row { margin-top: 14px; }
 .card-id { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 12px; line-height: 1.6; color: var(--accent); background: var(--bg-raised); border: 1px solid var(--rule); border-radius: 7px; padding: 7px 10px; word-break: break-word; }
 .card-desc { font-size: 12px; line-height: 1.55; color: var(--ink-soft); margin: 14px 0 6px; }
+/* identificador longo (dependencia_administrativa_escola) não tem onde quebrar e vazava do cartão */
+.card-desc code, .card-cruz-item code { word-break: break-word; overflow-wrap: anywhere; }
 .card-cruz-block { margin-top: 4px; padding-top: 12px; border-top: 1px solid var(--rule); }
 .card-cruz-heading { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 8px; }
 .card-cruz-list { list-style: none; margin: 0; padding: 0; }

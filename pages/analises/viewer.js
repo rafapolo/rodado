@@ -189,6 +189,12 @@
   function renderDoc(name) {
     return fetchText(base + 'results/' + name + '.md').then(function (md) {
       docEl.innerHTML = marked.parse(md);
+      // gráficos abaixo do primeiro só baixam perto da tela; o markdown não
+      // carrega width/height, então isso é o que segura o peso inicial
+      docEl.querySelectorAll('img').forEach(function (img, i) {
+        img.decoding = 'async';
+        if (i > 0) img.loading = 'lazy';
+      });
       enhance();
       var h1 = docEl.querySelector('h1');
       if (h1) {
