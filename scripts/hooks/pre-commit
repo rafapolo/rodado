@@ -19,6 +19,15 @@ set -e
 RAIZ=$(git rev-parse --show-toplevel)
 cd "$RAIZ"
 
+# PNG de gráfico entrando no commit: reduz para 256 cores antes (otimiza_png.py
+# explica o porquê). Vem antes do filtro de análise porque um plot_*.py rodado
+# sozinho só põe PNG no stage, sem .md nem manifest.
+PNGS=$(git diff --cached --name-only --diff-filter=ACMR -- 'pages/*.png')
+if [ -n "$PNGS" ]; then
+    echo "$PNGS" | tr '\n' '\0' | xargs -0 python3 scripts/otimiza_png.py
+    echo "$PNGS" | tr '\n' '\0' | xargs -0 git add --
+fi
+
 # só roda se o que está no stage for conteúdo de análise
 TOCOU=$(git diff --cached --name-only --diff-filter=ACMR \
         -- 'pages/analises/results/*.md' \

@@ -545,9 +545,6 @@ CABECA = """<!doctype html>
 </nav>
 
 <main class="wide" style="max-width:none;padding:0">
-  <div style="max-width:1180px;margin:0 auto;padding:1.4rem 1.5rem 0">
-    <a class="voltar" href="../">&larr; voltar às análises</a>
-  </div>
 """
 
 RODAPE = """</main>
