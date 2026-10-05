@@ -19,7 +19,7 @@ on:
   # pages/**, um workflow_dispatch, ou um dos dois eventos acima para levar a
   # atualização.
   #
-  # /plataformas/brasilumen vem de rafapolo/brasilume, pelo mesmo
+  # /plataformas/brasilume vem de rafapolo/brasilume, pelo mesmo
   # repository_dispatch. O data/ dele não está no git: sai do bucket privado
   # do brasilumen (Hetzner), que o pre-push de lá atualiza antes de cada push.
   repository_dispatch:
@@ -75,19 +75,19 @@ jobs:
         run: |
           cd pages/plataformas/rios-do-brasil
           rm -rf .git .github .gitignore pipeline README.md screenshot.png
-      - name: Checkout brasilumen
+      - name: Checkout brasilume
         uses: actions/checkout@v7
         with:
           repository: rafapolo/brasilume
           ref: ${{ github.event.action == 'brasilumen-updated' && github.event.client_payload.sha || '' }}
-          path: pages/plataformas/brasilumen
-      - name: Remove arquivos não-públicos do brasilumen
+          path: pages/plataformas/brasilume
+      - name: Remove arquivos não-públicos do brasilume
         run: |
-          cd pages/plataformas/brasilumen
+          cd pages/plataformas/brasilume
           rm -rf .git .github .githooks .gitignore .nojekyll scripts README.md tasks.md screenshot.webp
-      # Sem os segredos do bucket o brasilumen sai do artefato em vez de ir ao
+      # Sem os segredos do bucket o brasilume sai do artefato em vez de ir ao
       # ar sem dados — e o resto do site publica normalmente.
-      - name: data/ do brasilumen, do bucket
+      - name: data/ do brasilume, do bucket
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.BRASILUMEN_S3_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.BRASILUMEN_S3_SECRET_ACCESS_KEY }}
@@ -97,12 +97,12 @@ jobs:
           AWS_RESPONSE_CHECKSUM_VALIDATION: when_required
         run: |
           if [ -z "$AWS_ACCESS_KEY_ID" ]; then
-            echo "::warning::BRASILUMEN_S3_ACCESS_KEY_ID não está definido; /plataformas/brasilumen fica fora deste deploy."
-            rm -rf pages/plataformas/brasilumen
+            echo "::warning::BRASILUMEN_S3_ACCESS_KEY_ID não está definido; /plataformas/brasilume fica fora deste deploy."
+            rm -rf pages/plataformas/brasilume
             exit 0
           fi
-          aws s3 sync s3://brasilumen/data/ pages/plataformas/brasilumen/data/ --endpoint-url https://hel1.your-objectstorage.com --no-progress
-          test -s pages/plataformas/brasilumen/data/meta.json
+          aws s3 sync s3://brasilumen/data/ pages/plataformas/brasilume/data/ --endpoint-url https://hel1.your-objectstorage.com --no-progress
+          test -s pages/plataformas/brasilume/data/meta.json
       # pet16704 vive em git.rodado.xyz (Gitea próprio, não GitHub), então
       # actions/checkout não serve — é um clone raso comum, sem credencial
       # porque o repo aceita clone anônimo.
