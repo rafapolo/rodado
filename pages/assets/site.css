@@ -453,10 +453,9 @@ footer a { color: var(--ink-faint); }
 footer a:hover { color: var(--accent); }
 footer .footer-by { margin-left: auto; }
 
-@media (max-width: 600px) {
-  body { font-size: 17px; }
-  h1 { font-size: 1.8rem; }
-  main { padding: 2rem 1.2rem 3.5rem; }
+/* o menu numa linha só precisa de ~630px (medido em 2026-10-05, PT e EN);
+   entre 600 e 630 os controles caíam sozinhos numa segunda linha */
+@media (max-width: 720px) {
   /* topo em duas linhas: marca + idioma/tema em cima, links numa faixa que
      rola de lado embaixo — todos os itens ficam visíveis, sem menu escondido */
   .site-nav { padding: 0.8rem 1.2rem 0; }
@@ -473,6 +472,12 @@ footer .footer-by { margin-left: auto; }
     mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
   }
   .site-nav .links::-webkit-scrollbar { display: none; }
+}
+
+@media (max-width: 600px) {
+  body { font-size: 17px; }
+  h1 { font-size: 1.8rem; }
+  main { padding: 2rem 1.2rem 3.5rem; }
   /* rodapé empilhado; o crédito fecha a lista, separado por um filete */
   footer { padding: 1.8rem 1.2rem 2.4rem; }
   footer .footer-inner { flex-direction: column; gap: 0.6rem; }
