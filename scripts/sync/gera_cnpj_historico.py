@@ -144,7 +144,7 @@ def gera_scd2(tb, destino, limite=None):
     saida = f"{destino}/{tb}_historico"
     # fora de ~/rodado: o backup para o COLD copia tudo o que está lá, a cada 6h
     trab = f"{TRABALHO}/{'teste_' if destino == TESTE else ''}{tb}"
-    sh(f"mkdir -p {trab} {saida}")
+    sh(f"mkdir -p {trab}")
     print(f"{tb}: {len(rs)} retratos, {rs[0]}..{rs[-1]}; {len(cols)} colunas", flush=True)
 
     def mes(m, alias=""):
@@ -194,8 +194,12 @@ def gera_scd2(tb, destino, limite=None):
         copia(f"SELECT {q(chave)}, {ult} AS fim FROM read_parquet('{trab}/h_{ult}.parquet')",
               f"fecha_{ult}.parquet")
 
-    # montagem: cada abertura casa com o primeiro fechamento da chave a partir dela
-    feitos = set(sh(f"ls {saida}").split())
+    # montagem: cada abertura casa com o primeiro fechamento da chave a partir dela.
+    # Grava no trabalho e só vai para ~/rodado conferida: em 2026-10-07 uma montagem
+    # reprovada ficou no espelho, legível por read_parquet.
+    mont = f"{trab}/montagem"
+    sh(f"mkdir -p {mont}")
+    feitos = set(sh(f"ls {mont}").split())
     total = no_ultimo = 0
     for d in "0123456789":
         arq = f"p{d}.parquet"
@@ -205,10 +209,10 @@ SELECT a.inicio, f.fim, a.* EXCLUDE (inicio)
 FROM (SELECT * FROM read_parquet('{trab}/abre_*.parquet') WHERE starts_with({q(chave)}, '{d}')) a
 ASOF JOIN (SELECT * FROM read_parquet('{trab}/fecha_*.parquet') WHERE starts_with({q(chave)}, '{d}')) f
   ON a.{q(chave)} = f.{q(chave)} AND f.fim >= a.inicio
-) TO '{saida}/.{arq}' (FORMAT parquet, COMPRESSION zstd);""")
-            sh(f"mv {saida}/.{arq} {saida}/{arq}")
+) TO '{mont}/.{arq}' (FORMAT parquet, COMPRESSION zstd);""")
+            sh(f"mv {mont}/.{arq} {mont}/{arq}")
         c = duck(f"SELECT count(*) n, count(*) FILTER (fim = {ult}) u "
-                 f"FROM read_parquet('{saida}/{arq}');")[0]
+                 f"FROM read_parquet('{mont}/{arq}');")[0]
         total += c["n"]
         no_ultimo += c["u"]
         print(f"  montagem {d}: {c['n']:,} períodos", flush=True)
@@ -218,8 +222,9 @@ ASOF JOIN (SELECT * FROM read_parquet('{trab}/fecha_*.parquet') WHERE starts_wit
     print(f"{tb}_historico: {total:,} períodos (aberturas {aberturas:,}); vigentes em {ult}: "
           f"{no_ultimo:,}, original {orig:,} -> {'OK' if ok else 'NAO BATE'}", flush=True)
     if not ok:
-        raise RuntimeError("conferência falhou; .trabalho mantido")
-    print(f"conferido. Trabalho intermediário em {trab} (apagar à mão depois de olhar).")
+        raise RuntimeError(f"conferência falhou; nada publicado, montagem em {mont}")
+    publica(mont, saida)
+    print(f"conferido e publicado em {saida}. Intermediários em {trab} (apagar à mão).")
 
 
 def gera_socios(prefixos, destino):
@@ -231,8 +236,10 @@ def gera_socios(prefixos, destino):
     print(f"{tb}: {len(rs)} retratos, {rs[0]}..{rs[-1]}; {len(cols)} colunas", flush=True)
     fonte = f"{ROOT}/{tb}/*.parquet"
     saida = f"{destino}/{tb}_historico"
-    sh(f"mkdir -p {saida}")
-    feitos = set(sh(f"ls {saida}").split())
+    # pedaços no trabalho; o conjunto só vai para ~/rodado com os 100 conferidos
+    trab = f"{TRABALHO}/{'teste_' if destino == TESTE else ''}{tb}"
+    sh(f"mkdir -p {trab}")
+    feitos = set(sh(f"ls {trab}").split())
     for p in prefixos:
         arq = f"p{p}.parquet"
         if arq in feitos:
@@ -240,7 +247,7 @@ def gera_socios(prefixos, destino):
             continue
         filtro = f"starts_with({q(chave)}, '{p}')"
         corpo = sql_socios(fonte, filtro, cols, valores_r)
-        stg = f"{saida}/.{arq}"
+        stg = f"{trab}/.{arq}"
         t = time.time()
         # "Out of buffer" apareceu uma vez e sumiu ao repetir (2026-10-07)
         for tentativa in range(3):
@@ -261,10 +268,26 @@ SELECT (SELECT count(*) FROM read_parquet('{stg}') WHERE no_ultimo_retrato) AS h
         if conf["hist"] != conf["orig"]:
             raise RuntimeError(f"{tb} {p}: último retrato não bate: histórico {conf['hist']:,}"
                                f" x original {conf['orig']:,}; staging em {stg}")
-        sh(f"mv {stg} {saida}/{arq}")
-        tam = sh(f"du -b {saida}/{arq} | cut -f1").strip()
+        sh(f"mv {stg} {trab}/{arq}")
+        tam = sh(f"du -b {trab}/{arq} | cut -f1").strip()
         print(f"  {p}: {conf['linhas']:,} linhas, último retrato {conf['hist']:,} = original, "
               f"{int(tam)/1e6:,.0f} MB, {time.time()-t:,.0f}s", flush=True)
+    todos = {f"p{i:02d}.parquet" for i in range(100)}
+    if todos <= set(sh(f"ls {trab}").split()):
+        sh(f"mkdir -p {trab}/montagem && mv {trab}/p*.parquet {trab}/montagem/")
+        publica(f"{trab}/montagem", saida)
+        print(f"socios_historico: os 100 pedaços conferidos, publicado em {saida}", flush=True)
+    else:
+        print(f"socios_historico: pedaços em {trab}; publica quando os 100 estiverem lá",
+              flush=True)
+
+
+def publica(origem, saida):
+    """Move o diretório conferido para o destino; recusa sobrescrever."""
+    if sh(f"test -e {saida} && echo existe || true").strip():
+        raise RuntimeError(f"{saida} já existe; mova-o antes de publicar")
+    sh(f"mkdir -p {os.path.dirname(saida)} && mv {origem} {saida} && "
+       f"chmod 775 {saida} && chmod 664 {saida}/*.parquet")
 
 
 def main():
