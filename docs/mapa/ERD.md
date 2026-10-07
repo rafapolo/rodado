@@ -758,7 +758,7 @@ erDiagram
         uf_cnae dados "43.1M linhas"
     }
     br_bcb_sgs {
-        sem_chave series "25.1k linhas"
+        sem_chave series "25.2k linhas"
     }
     br_bcb_sicor {
         sem_chave dicionario "408 linhas"
@@ -1540,7 +1540,7 @@ erDiagram
         mun_uf_cep_ano perfil_eleitorado_local_votacao "6M linhas"
         mun_uf_ano perfil_eleitorado_municipio_zona "40.9M linhas"
         mun_uf_ano perfil_eleitorado_secao "588.5M linhas"
-        mun_uf_cnpj_cpf_cnae_partido_ano receitas_candidato "15.3M linhas"
+        mun_uf_cnpj_cpf_cnae_partido_ano receitas_candidato "15.5M linhas"
         mun_uf_cnpj_cpf_cnae_partido_ano receitas_comite "341.7k linhas"
         mun_uf_cnpj_cpf_cnae_partido_ano receitas_orgao_partidario "250.1k linhas"
         mun_uf_partido_ano resultados_candidato "3.1M linhas"

@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**239 datasets, 1.071 tabelas, 39.828.798.222 linhas.** 1 dataset(s) sem descrição. 4 com data de frescor conferida (de 239).
+**239 datasets, 1.071 tabelas, 39.828.969.679 linhas.** 1 dataset(s) sem descrição. 4 com data de frescor conferida (de 239).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -33,7 +33,7 @@
 | `br_bcb_pix_municipio` | BCB — volume de transações Pix por município, separado por perfil pagador/recebedor PF/PJ | 1 | 395.447 | — | BCB — Estatísticas do Pix por município |
 | `br_bcb_ptax` | _(sem descrição)_ | 3 | 804.590 | — | BCB — PTAX (cotações diárias) |
 | `br_bcb_scrdata` | BCB SCR.data — carteira de crédito do Sistema de Informações de Crédito | 1 | 43.061.984 | — | BCB SCR.data |
-| `br_bcb_sgs` | BCB SGS — séries temporais macroeconômicas (câmbio, Selic, inflação etc.) | 1 | 25.066 | 2026-08-26 | BACEN/BCB SGS séries |
+| `br_bcb_sgs` | BCB SGS — séries temporais macroeconômicas (câmbio, Selic, inflação etc.) | 1 | 25.169 | 2026-10-06 | BACEN/BCB SGS séries |
 | `br_bcb_sicor` | BCB SICOR — operações de crédito rural | 11 | 759.657.502 | — | Base dos Dados |
 | `br_bd_diretorios_brasil` | Base dos Dados — diretórios de referência (CEP, CNAE, CID, município etc.) | 23 | 1.951.703 | — | Base dos Dados |
 | `br_bd_diretorios_data_tempo` | Base dos Dados — diretório de calendário/tempo | 11 | 1.922.812 | — | Base dos Dados |
@@ -223,7 +223,7 @@
 | `br_transferegov` | TransfereGov — planos de ação, programas e transferências (API normalizada) | 3 | 30.346 | — | TransfereGov |
 | `br_transferegov_siconv` | TransfereGov/SICONV — convênios, contratos de repasse e execução física/financeira completa | 62 | 69.060.758 | — | Transferegov/SICONV completo |
 | `br_trase_supply_chain` | Trase — cadeia de suprimentos de soja e carne bovina, do frigorífico/esmagadora à origem | 7 | 1.824.843 | — | Base dos Dados |
-| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 23 | 1.514.381.653 | — | Base dos Dados |
+| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 23 | 1.514.553.007 | — | Base dos Dados |
 | `br_tse_filiacao_partidaria` | TSE — filiação partidária | 2 | 41.840.389 | — | Base dos Dados |
 | `eu_sanctions` | União Europeia — lista de sanções | 1 | 42.347 | — | EU Sanctions |
 | `global_ibge_tabua_mares` | IBGE — tábua de marés | 2 | 1.261.446 | — | Tábua de Marés |

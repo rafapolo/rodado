@@ -1,0 +1,19 @@
+dataset: br_inpe_prodes_acumulado
+gotchas:
+  - id: amazonia_legal_duplica
+    resumo: "Não some bioma_arquivo='amazonia_legal' com os biomas: ele sobrepõe a Amazônia e parte do Cerrado."
+    tabelas: [desmatamento]
+    colunas: [bioma_arquivo]
+    severidade: silencioso
+    verificado: "desde 2023: amazonia 18.979 km², amazonia_legal 19.532 km² — medido 2026-10-07"
+  - id: incremento_municipio_desde_2017
+    resumo: "incremento_municipio começa em 2017. Antes disso, use br_inpe_prodes.municipio_bioma."
+    detalhe: >
+      Derivado dos polígonos pelo centroide. A Amazônia só tem polígono anual
+      desde 2008 e as classes antigas do Cerrado são máscaras de vários anos,
+      então antes de 2017 o total não fecha com a série oficial. O ano PRODES
+      vai de agosto a julho: 2023 é metade governo anterior.
+    tabelas: [incremento_municipio]
+    colunas: [ano, area_km2]
+    severidade: erro
+    verificado: "2017–2023 contra br_inpe_prodes.municipio_bioma: total a <0,3%, r=1,00 por município; 2015 dava 17 mil km² contra 22 mil — medido 2026-10-07"

@@ -1,0 +1,26 @@
+dataset: br_ibama_embargos_novo
+gotchas:
+  - id: datas_impossiveis
+    resumo: "dat_embargo é texto e tem anos impossíveis (2925, 2090, 2080, 2063). Converta com try_strptime e corte no presente."
+    tabelas: [termo_embargo]
+    colunas: [dat_embargo]
+    severidade: silencioso
+    verificado: "max(dat_embargo) = '2925-09-25 15:10:00'; a maior data real é 2026-10-06 — medido 2026-10-07"
+  - id: cancelados
+    resumo: "6.307 termos estão cancelados (sit_cancelado = 'S'). Tire antes de contar embargos."
+    tabelas: [termo_embargo]
+    colunas: [sit_cancelado]
+    severidade: silencioso
+    verificado: "sit_cancelado: S 6.307, N 110.439 — medido 2026-10-07"
+  - id: area_embargada_texto
+    resumo: "qtd_area_embargada é texto com vírgula decimal, preenchida em 62% dos termos. Converta com replace(',', '.')."
+    detalhe: >
+      A nota antiga de scripts/hipoteses/20_conhecidos.sql ("100% nula") era da
+      raspagem de 09/2026 e não vale mais. A unidade não vem declarada; a
+      magnitude (soma de 11,1 milhões, máximo 131.239) é compatível com
+      hectares. Há valores repetidos suspeitos (3,1256 em 1.709 termos) e
+      541 termos com 0,0000.
+    tabelas: [termo_embargo]
+    colunas: [qtd_area_embargada]
+    severidade: silencioso
+    verificado: "72.075 de 116.746 preenchidos, todos numéricos após replace; soma 11.067.885 — medido 2026-10-07"
