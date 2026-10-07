@@ -467,6 +467,25 @@ def _probe_freshness_dates(freshness_map):
 # Merge and write
 # ---------------------------------------------------------------------------
 
+def load_fontes() -> dict:
+    """{(dataset, tabela): url} e {(dataset, None): url} do campo `fonte` de
+    docs/context/privado/source_freshness_checks.yaml — a fonte original de onde o dado é
+    baixado hoje. Chave `dataset.tabela` vale para a tabela; chave `dataset.*`
+    vale para todas as tabelas do dataset."""
+    import yaml
+    path = REPO_ROOT / "docs" / "context" / "privado" / "source_freshness_checks.yaml"
+    if not path.exists():
+        return {}
+    out = {}
+    for chave, c in (yaml.safe_load(path.read_text()) or {}).items():
+        if not isinstance(c, dict) or not c.get("fonte"):
+            continue
+        ds, _, tb = chave.partition(".")
+        out[(ds, None if tb in ("", "*") else tb)] = c["fonte"]
+        out.setdefault((ds, None), c["fonte"])
+    return out
+
+
 def build_catalog():
     # Resolved rows (done/mcp-live/excluded) live in the done/ split file, not
     # the active one (see its 2026-08-24 split header) — merge both, or every
@@ -484,6 +503,7 @@ def build_catalog():
     if queue.exists():
         scraped_info.update(parse_markdown_table(queue))
     ddl_tables = parse_ddl_tables(REPO_ROOT / "docs" / "context" / "schema_ddl.sql")
+    fontes = load_fontes()
     beelink_tables = get_tables_from_beelink()
 
     if not beelink_tables:
@@ -586,7 +606,12 @@ def build_catalog():
         arrays["table"].append(t["table"])
         arrays["description"].append(description)
         arrays["source_name"].append(info.get("source_name", ""))
-        arrays["source_url"].append(info.get("source_url", ""))
+        # a fonte original declarada no YAML versionado vence a primeira URL achada na
+        # linha do datasets_to_scrap_done.md (local, fora do git, e com a última linha
+        # do dataset vencendo — o que deixava fonte morta no catálogo depois de uma troca)
+        # o padrão de dataset não vale para tabela espelhada do Base dos Dados no mesmo dataset
+        padrao_ds = None if info.get("status") == "mirrored" else fontes.get((ds, None))
+        arrays["source_url"].append(fontes.get((ds, t["table"])) or padrao_ds or info.get("source_url", ""))
         arrays["source_type"].append(info.get("source_type", ""))
         arrays["rows"].append(t["rows"])
         arrays["num_files"].append(t["num_files"])

@@ -6,7 +6,7 @@ Compara o dado mais recente da FONTE com o que o espelho tem. Só reporta.
     python3 scripts/checa_frescor_fontes.py br_cgu_    # só as que começam assim
     python3 scripts/checa_frescor_fontes.py --md       # tabela em markdown
 
-Lê docs/context/source_freshness_checks.yaml (como perguntar à fonte) e, do
+Lê docs/context/privado/source_freshness_checks.yaml (como perguntar à fonte) e, do
 catálogo no beelink (`_rodado_metadata`), o `last_date` de cada tabela — a
 data mais recente DENTRO do dado, que vem de dataset_freshness.yaml — ou, na
 falta dele, o `scrape_date`. Para cada entrada imprime o que a fonte diz, o
@@ -35,7 +35,7 @@ from pathlib import Path
 import yaml
 
 RAIZ = Path(__file__).resolve().parent.parent
-CHECKS = RAIZ / "docs/context/source_freshness_checks.yaml"
+CHECKS = RAIZ / "docs/context/privado/source_freshness_checks.yaml"
 BEELINK = os.environ.get("BEELINK_HOST", "beelink")
 UA = "Mozilla/5.0 (rodado-scraper)"
 
@@ -90,6 +90,9 @@ def catalogo():
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     md = "--md" in sys.argv
+    if not CHECKS.exists():
+        print(f"{CHECKS} não existe — a pasta privado/ fica fora do git e não vem num clone novo", file=sys.stderr)
+        return 1
     checks = yaml.safe_load(CHECKS.read_text())
     cat = catalogo()
     linhas = []
