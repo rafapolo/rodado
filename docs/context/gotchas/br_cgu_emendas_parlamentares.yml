@@ -1,0 +1,58 @@
+dataset: br_cgu_emendas_parlamentares
+gotchas:
+  - id: destino_municipal_so_em_por_favorecido
+    resumo: "microdados.id_municipio_gasto não diz para onde a emenda foi. O destino por município está em por_favorecido."
+    detalhe: >
+      A "localidade do gasto" das emendas vem como "Sem informação", "Nacional"
+      ou o nível de UF na maior parte do valor, e nas emendas Pix
+      (transferências especiais) quase sempre: o dinheiro cai no caixa da
+      prefeitura e o Portal não registra o município ali. Quem recebeu cada
+      pagamento, com UF e município, está em por_favorecido.
+    tabelas: [microdados, emendas]
+    colunas: [id_municipio_gasto, id_municipio, localidade]
+    severidade: silencioso
+    verificado: "microdados: 89,7% dos R$ 302,5 bi empenhados sem código IBGE de 7 dígitos em id_municipio_gasto — medido 2026-10-07"
+
+  - id: banco_mandatario_infla_brasilia
+    resumo: "Em por_favorecido, R$ 33,9 bi de 2023–2025 foram pagos ao Banco do Brasil em Brasília como mandatário, não a Brasília. Filtre natureza municipal para olhar destino."
+    detalhe: >
+      Somar valor_recebido por id_municipio do favorecido põe em Brasília o
+      dinheiro que o Banco do Brasil repassa como mandatário (natureza
+      "Sociedade de Economia Mista"). Para o destino municipal, use
+      regexp_matches(natureza_juridica_favorecido, '^Munic|Municipal'), que
+      pega prefeitura e fundos municipais: R$ 58,6 bi em 2023–2025, R$ 21,4 bi
+      deles em emendas Pix.
+    tabelas: [por_favorecido]
+    colunas: [natureza_juridica_favorecido, id_municipio, valor_recebido]
+    severidade: silencioso
+    verificado: "2023–2025: Sociedade de Economia Mista R$ 33,9 bi, todo BANCO DO BRASIL SA/DF; natureza municipal R$ 58,6 bi (Pix R$ 21,4 bi) — medido 2026-10-07"
+
+  - id: id_municipio_por_nome
+    resumo: "por_favorecido.id_municipio foi casado por nome + UF; 0,46% do valor ficou nulo."
+    detalhe: >
+      O CSV do Portal traz só o nome do município do favorecido. O casamento
+      com br_bd_diretorios_brasil.municipio ignora acento, caixa e pontuação,
+      mas não acompanha nome antigo (EMBU/SP, hoje Embu das Artes) nem os
+      valores "Sem informação" e "Inválido" da própria fonte.
+    tabelas: [por_favorecido]
+    colunas: [id_municipio, municipio_favorecido]
+    severidade: silencioso
+    verificado: "9.753 de 826.056 linhas sem id_municipio, 0,46% do valor — medido 2026-10-07"
+
+  - id: emendas_mais_nova_que_microdados
+    resumo: "emendas (Portal) e microdados (Base dos Dados) são a mesma tabela; emendas vai até 2026, microdados para em 2025. Prefira emendas."
+    tabelas: [emendas, microdados]
+    severidade: silencioso
+    verificado: "emendas 2014–2026, 94.627 linhas; microdados 2014–2025, 88.991 linhas — medido 2026-10-07"
+
+  - id: autor_nem_sempre_parlamentar
+    resumo: "nome_autor_emenda inclui RELATOR GERAL, comissões (COM. ...), bancadas (BANCADA DE ...) e 'Sem informação' — 54% do valor empenhado não tem parlamentar individual."
+    detalhe: >
+      Ranking de "maiores autores" sem filtrar dá Relator Geral (R$ 47,4 bi,
+      2016–2022) e "Sem informação" (R$ 33,1 bi, 2014–2020) no topo. Para
+      parlamentar, filtre tipo_emenda ILIKE 'Emenda Individual%' e tire
+      'Sem informação'.
+    tabelas: [emendas, microdados, por_favorecido]
+    colunas: [nome_autor_emenda, tipo_emenda]
+    severidade: silencioso
+    verificado: "emendas: 54,0% do empenhado com autor RELATOR GERAL/COM./BANCADA/Sem informação; Relator R$ 47,4 bi, Sem informação R$ 33,1 bi — medido 2026-10-07"
