@@ -23293,6 +23293,57 @@ CREATE TABLE br_tse_eleicoes.bens_candidato (
   valor_item DOUBLE
 ); -- ~/rodado/br_tse_eleicoes/bens_candidato/
 
+-- 2026-10-07: espelhadas do Base dos Dados (tasks/plans/espelho_bd_lacunas.md), schema lido do parquet
+CREATE TABLE br_tse_eleicoes.pesquisa_eleitoral (
+  ano BIGINT,
+  sigla_uf VARCHAR,
+  id_municipio VARCHAR,
+  id_municipio_tse VARCHAR,
+  id_eleicao VARCHAR,
+  tipo_eleicao VARCHAR,
+  id_pesquisa VARCHAR,
+  cnpj_empresa VARCHAR,
+  nome_empresa VARCHAR,
+  nome_fantasia_empresa VARCHAR,
+  pesquisa_propria VARCHAR,
+  cargos VARCHAR,
+  data_registro DATE,
+  hora_registro TIME WITH TIME ZONE,
+  data_inicio DATE,
+  data_fim DATE,
+  data_divulgacao DATE,
+  quantidade_entrevistados BIGINT,
+  valor_pesquisa DOUBLE,
+  registro_conre_estatistico VARCHAR,
+  nome_estatistico VARCHAR,
+  descricao_metodologia VARCHAR,
+  descricao_plano_amostral VARCHAR,
+  descricao_sistema_controle VARCHAR,
+  descricao_area_abrangencia VARCHAR
+); -- ~/rodado/br_tse_eleicoes/pesquisa_eleitoral/
+
+CREATE TABLE br_tse_eleicoes.pesquisa_eleitoral_contratante (
+  ano BIGINT,
+  sigla_uf VARCHAR,
+  id_pesquisa VARCHAR,
+  id_contratante VARCHAR,
+  cpf_cnpj_contratante VARCHAR,
+  nome_contratante VARCHAR,
+  contratante_pagante VARCHAR,
+  valor_pago DOUBLE,
+  origem_recurso VARCHAR
+); -- ~/rodado/br_tse_eleicoes/pesquisa_eleitoral_contratante/
+
+CREATE TABLE br_tse_eleicoes.pesquisa_eleitoral_pagante (
+  ano BIGINT,
+  sigla_uf VARCHAR,
+  id_pesquisa VARCHAR,
+  id_contratante VARCHAR,
+  cpf_cnpj_pagante VARCHAR,
+  nome_pagante VARCHAR,
+  origem_recurso VARCHAR
+); -- ~/rodado/br_tse_eleicoes/pesquisa_eleitoral_pagante/
+
 CREATE TABLE br_tse_eleicoes.candidatos (
   ano INT,
   id_eleicao VARCHAR,

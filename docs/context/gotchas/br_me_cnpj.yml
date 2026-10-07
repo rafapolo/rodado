@@ -33,3 +33,27 @@ gotchas:
     colunas: [documento, cpf_representante_legal]
     severidade: silencioso
     verificado: "documento 1.120.187.656 de 1.358.102.261; cpf_representante_legal 8.038.086 de 9.610.047 linhas completadas — medido 2026-10-07"
+  - id: data_dia_um_nos_meses_novos
+    resumo: "A coluna data não é o dia do retrato nos meses vindos do br_rf_cnpj: é sempre o dia 1. Use ano e mes como chave do retrato."
+    detalhe: >
+      Desde 2026-10-07 os retratos 2023-04 e 2025-10 em diante vêm do
+      br_rf_cnpj, o nome novo do mesmo cadastro no Base dos Dados (arquivos
+      rf_<aaaamm>_*.parquet). Lá a data do retrato é data_referencia, com dia 1;
+      nos retratos antigos, data é o dia real da publicação da Receita
+      (2025-09-14, por exemplo). Agrupar ou ordenar por data mistura as duas
+      convenções; ano*100+mes não.
+    colunas: [data, ano, mes]
+    severidade: silencioso
+    verificado: "socios 2026-09: data = 2026-09-01 em todas as 28.341.092 linhas; socios 2025-09 (antigo): data = 2025-09-14 — medido 2026-10-07"
+  - id: linha_duplicada_no_retrato
+    resumo: "Uma mesma empresa pode aparecer mais de uma vez no mesmo retrato, até com versões diferentes. count(*) não é número de empresas."
+    detalhe: >
+      O espelho herda do Base dos Dados linhas repetidas. Há duplicata
+      idêntica (a mesma linha em dois arquivos) e há versão vazia ao lado da
+      real: razao_social NULL e natureza_juridica 0000 junto da linha
+      verdadeira. Para contar empresas use count(DISTINCT cnpj_basico); para
+      escolher uma versão, fique com a que tem menos colunas vazias.
+    tabelas: [empresas]
+    colunas: [cnpj_basico, razao_social, natureza_juridica]
+    severidade: silencioso
+    verificado: "empresas 2022-09: cnpj_basico 08464718 duas vezes, idêntico (51.127.182 linhas, 51.127.181 chaves); 2025-05: 10959550 com a linha real e duas vazias (razao_social NULL, natureza 0000) — medido 2026-10-07"
