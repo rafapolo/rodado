@@ -367,8 +367,8 @@ def _run_sql_ssh(sql: str) -> dict:
     # (it is a SELECT). With external access off, only ~/rodado (the parquet)
     # and the spill directory the ~/.duckdbrc points at stay readable, and
     # lock_configuration stops the query itself from undoing it. Tested on
-    # beelink 2026-09-24: views, read_parquet with ~ and hive, the native
-    # cpf_lookup table and spilling work; read_text/read_csv outside
+    # beelink 2026-09-24: views, read_parquet with ~ and hive, native
+    # tables and spilling work; read_text/read_csv outside
     # ~/rodado, `../`, glob and `SET enable_external_access=true` all fail.
     stdin_payload = (
         "SET enable_progress_bar=false;\n"
