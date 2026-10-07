@@ -276,7 +276,7 @@ Not a Foundry deployment. rodado is an open-source system built around the same 
 | Foundry layer | Foundry primitive | rodado counterpart | Notes |
 |---|---|---|---|
 | Data integration | Data Connection sources and syncs | Base dos Dados mirror sync + independent scrapers (309 tables), resumable and checkpointed | Each scraped source records its URL and scrape date |
-| | Datasets (versioned Parquet) | One Parquet+zstd directory per table on beelink, 1,050 tables | No transactions or dataset versions; the COLD backup is add-only, not a history |
+| | Datasets (versioned Parquet) | One Parquet+zstd directory per table on beelink, 1,069 tables | No transactions or dataset versions; the COLD backup is add-only, not a history |
 | | Data Lineage, dataset metadata | `_rodado_metadata` catalog: rows, files, bytes, `source_url`, `scrape_date`, `status`, provenance | Rebuilt after every sync by `build_metadata_catalog.py` |
 | | Pipeline schedules | The ordered regeneration chain (`gera_schemas.py` → `sync_mcp_schema.py` → … → `build_atlas.py`) | Run by hand. Foundry would schedule it and track staleness |
 | Ontology | Object types + properties | Hub concepts in `bridges.yaml` (61): municipality, state, company, person, station, country… | Objects stay virtual: rows in tables, not an indexed object store |
