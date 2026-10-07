@@ -222,6 +222,15 @@ python3 scripts/build_atlas.py /tmp/atlas.html   # também emite a cópia autoco
 - **Cor = tema**, nunca chave. Só 4 matizes passam o gate all-pairs de CVD, então os 10 temas dependem de território rotulado + isolamento por clique; a cor reforça, não carrega sozinha.
 - Depois de qualquer sync que mude tabelas: `gera_schemas.py` → `build_metadata_catalog.py` → `gera_schema_graph.py` → `build_atlas.py`.
 
+## O que é só local — `scripts/scrap/` e `docs/context/privado/`
+
+Desde 2026-10-07 os scrapers (`scripts/scrap/`) e o mapa de fontes e macetes de coleta
+(`docs/context/privado/source_freshness_checks.yaml`) ficam **fora do git**, a pedido:
+são meses de trabalho para chegar a cada fonte (endpoints não documentados, contornos de
+WAF, proxy BR) e o repositório é público. Um clone novo não os tem. O que já tinha sido
+publicado de `scripts/scrap/` continua no histórico até essa data. Nada que dependa
+deles pode ser obrigatório no caminho de quem só consulta o espelho.
+
 ## `tasks/` — local, fora do git
 
 `tasks/` está no `.gitignore` desde 2026-09-24: existe só no disco desta máquina, sem histórico. `tasks/README.md` é o índice único do que está **em andamento**: o projeto na raiz de `tasks/`, o harness em `tasks/harness_tasks.md` (era `harness/tasks/`, depois a pasta `tasks/harness/`), os planos que ainda não começaram em `tasks/plans/`. Plano que começa a rodar vai para `tasks/`; mudou o status de um arquivo, mude a linha dele no índice na mesma edição. Como não há `git log` para recuperar nada, **apagar um arquivo de `tasks/` é definitivo** — o que ele ensinou vai antes para um lugar versionado (`docs/`). Scripts que leem dali (`build_metadata_catalog.py` lê `tasks/done/datasets_to_scrap_done.md` e, se existir, `tasks/plans/datasets_to_scrap.md`) seguem funcionando localmente e toleram a ausência dos arquivos num clone novo.
