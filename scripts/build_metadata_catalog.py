@@ -536,6 +536,12 @@ def build_catalog():
     for t in beelink_tables:
         ds = t["dataset"]
         info = scraped_info.get(ds)
+        # A provenance row names a dataset, not a table: a dataset that got a
+        # scraped table next to mirrored ones (br_cgu_emendas_parlamentares,
+        # br_tse_eleicoes) would relabel the mirrored ones as scraped. A table
+        # confirmed in the Base dos Dados snapshot stays mirrored.
+        if (ds, t["table"]) in ddl_tables:
+            info = None
 
         if info is None:
             # Not independently scraped => mirrored from Base dos Dados.
