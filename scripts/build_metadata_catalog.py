@@ -624,27 +624,46 @@ def build_catalog():
     )
     print(f"Pushed to beelink: ~/rodado/_rodado_metadata/catalog.parquet", file=sys.stderr)
 
-    write_all_tables(beelink_tables)
+    write_datasets_md(beelink_tables, arrays)
     refresh_views()
 
 
-def write_all_tables(beelink_tables):
-    """Emite docs/context/all_tables.txt — a lista chapada de `dataset.tabela`.
+def write_datasets_md(beelink_tables, arrays):
+    """Emite docs/context/datasets.md — um dataset por linha, com a data da última
+    atualização. Substitui o all_tables.txt (lista chapada de `dataset.tabela`).
 
-    Era um despejo do `bq ls` da era BigQuery (535 linhas, com
-    `logs.cloudaudit_*` e `test_dataset.test_table` dentro) que nenhum script
-    lia e ninguem regenerava. Sai daqui porque o catalogo e a unica fonte que
-    enxerga as duas metades: o parquet em disco e as tabelas nativas dentro do
-    `.duckdb`, que nao tem parquet nenhum e por isso o `gera_schemas.py` nao
-    ve."""
-    names = sorted(
-        f"{t['dataset']}.{t['table']}"
-        for t in beelink_tables
-        if t["source"] != "view_only"
-    )
-    out = REPO_ROOT / "docs" / "context" / "all_tables.txt"
-    out.write_text("\n".join(names) + "\n", encoding="utf-8")
-    print(f"Wrote {len(names)} tables to {out}", file=sys.stderr)
+    `last_update` é o mtime do parquet mais recente do dataset: muda quando um
+    arquivo é trocado de verdade, inclusive pelo gate de scripts/scrap/atualiza_fonte.py,
+    que não mexe no `scrape_date`. Sem parquet (tabela nativa do `.duckdb`), vale o
+    `scrape_date` do catálogo."""
+    por_ds = {}
+    scrape = {(d, t): sd for d, t, sd in zip(arrays["dataset"], arrays["table"], arrays["scrape_date"])}
+    for t in beelink_tables:
+        if t["source"] == "view_only":
+            continue
+        d = por_ds.setdefault(t["dataset"], {"tabelas": 0, "linhas": 0, "last_update": ""})
+        d["tabelas"] += 1
+        d["linhas"] += t.get("rows") or 0
+        data = (t.get("mtime") or scrape.get((t["dataset"], t["table"])) or "")[:10]
+        d["last_update"] = max(d["last_update"], data)
+    linhas = [
+        "# Datasets do espelho",
+        "",
+        "Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo — não editar à mão.",
+        "`last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do",
+        "`.duckdb`, sem parquet, o `scrape_date` do catálogo).",
+        "",
+        f"{len(por_ds)} datasets, {sum(d['tabelas'] for d in por_ds.values())} tabelas.",
+        "",
+        "| dataset | tabelas | linhas | last_update |",
+        "|---|---:|---:|---|",
+    ]
+    for ds in sorted(por_ds):
+        d = por_ds[ds]
+        linhas.append(f"| `{ds}` | {d['tabelas']} | {d['linhas']:,} | {d['last_update'] or '—'} |".replace(",", "."))
+    out = REPO_ROOT / "docs" / "context" / "datasets.md"
+    out.write_text("\n".join(linhas) + "\n", encoding="utf-8")
+    print(f"Wrote {len(por_ds)} datasets to {out}", file=sys.stderr)
 
 
 # ---------------------------------------------------------------------------

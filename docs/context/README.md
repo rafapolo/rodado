@@ -35,7 +35,7 @@ Três coisas destes arquivos valem mais que o resto:
 
 | Arquivo | O que é | Gerado por |
 |---|---|---|
-| `all_tables.txt` | 1050 `dataset.tabela`, uma por linha — a lista chapada, incluindo as 8 tabelas nativas do `.duckdb` que não têm parquet | `build_metadata_catalog.py` |
+| `datasets.md` | um dataset por linha com tabelas, linhas e `last_update` (data do parquet mais recente no beelink); substituiu o `all_tables.txt` em 2026-10-07 | `build_metadata_catalog.py` |
 | `schemas.json` | Schema físico bruto do beelink (caminho, arquivos e tipos por tabela), 4 MB — a entrada de `sync_mcp_schema.py`, `gera_join_keys.py`, `gera_erd.py`, `gera_flow.py` e `gera_schema_graph.py`. Estava na raiz do repo até 2026-09-24 | `scripts/gera_schemas.py` (beelink) |
 | `rodado-schema.json` | Schema completo que o `describe_table` do MCP lê (239 datasets, 1.071 tabelas, 43.512 colunas) — inclui as 7 tabelas `duckdb_native` sem parquet (`br_ms_sipni_*`, `politicos.contato`; `_local_rais_cnpj` fica de fora, é infra), que `gera_schemas.py` não enxergava antes por só varrer diretório. Renomeado de `basedosdados-schema.json`: cobria só a porção espelhada, e o nome sobrou depois que o mecanismo passou a incluir tabela raspada e nativa também | `sync_mcp_schema.py`, a partir de `schemas.json` na raiz. Fora do git (`.gitignore`) — gerar localmente |
 | `join_keys.md` | O render do `bridges.yaml` + as chaves auto-detectadas: 430 seções. `mcp_server.get_join_keys()` fatia este arquivo por `###`, então todo h3 tem que ser um nome de coluna de verdade | `gera_join_keys.py` |
@@ -58,7 +58,7 @@ Depois de qualquer sync que mude tabelas, nesta ordem, da raiz do repo:
 ```bash
 python3 scripts/gera_schemas.py            # beelink        -> schemas.json (na raiz)
 python3 scripts/sync_mcp_schema.py         # schemas.json   -> rodado-schema.json
-python3 scripts/build_metadata_catalog.py  # beelink        -> catalog.parquet + views + all_tables.txt
+python3 scripts/build_metadata_catalog.py  # beelink        -> catalog.parquet + views + datasets.md
 python3 scripts/gera_join_keys.py          # bridges.yaml   -> join_keys.md
 python3 scripts/gera_metrics_json.py       # metrics.yaml   -> metrics.json
 python3 scripts/valida_metrics.py          # confere metrics.yaml + hierarchies.yaml
