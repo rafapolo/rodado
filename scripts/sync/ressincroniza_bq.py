@@ -11,7 +11,7 @@ do `bq` não carrega tipo, então 154 colunas de 38 tabelas chegaram como string
 `rsync` ainda levou junto o nome do tempfile — 80 `tmp*.parquet` largados ao lado do
 export bom, fazendo as views lerem os dois.
 
-Aqui o JSON não entra no caminho: `QueryJob.to_arrow()` devolve Arrow **já tipado**
+Aqui o JSON não entra no caminho: a Storage Read API devolve Arrow **já tipado**
 direto da API de resultados do BigQuery, e o Parquet sai daí. Sem inferência, sem
 round-trip por texto.
 
@@ -32,14 +32,20 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
+import urllib.error
 import urllib.request
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
+import bq_quota  # noqa: E402
 
 BEELINK = os.environ.get("BEELINK_HOST", "beelink")
 ROOT = "/home/polo/rodado"
 BILLING_PROJECT = "raspa-491716"
 BQ_PROJECT = "basedosdados"
 LINHAS_POR_SHARD = 500_000
+LINHAS_POR_ROW_GROUP = 122_880  # o padrão do DuckDB
 
 
 def sh(cmd, timeout=1800, check=False):
@@ -55,19 +61,59 @@ def exige_sandbox():
     A exceção que permite BigQuery neste repo vale só enquanto for impossível gerar
     custo. Ligou billing, a exceção acaba — então isto é checagem, não formalidade.
     """
-    tok = subprocess.run(["gcloud", "auth", "print-access-token"],
-                         capture_output=True, text=True, timeout=120).stdout.strip()
+    tok = ""
+    if shutil.which("gcloud"):
+        tok = subprocess.run(["gcloud", "auth", "print-access-token"],
+                             capture_output=True, text=True, timeout=120).stdout.strip()
     if not tok:
-        sys.exit("não consegui um token do gcloud — rode `gcloud auth login`")
+        # sem o SDK instalado, o token sai das credenciais ADC
+        # (~/.config/gcloud/application_default_credentials.json)
+        import google.auth
+        import google.auth.transport.requests
+        cred, _ = google.auth.default(scopes=["https://www.googleapis.com/auth/cloud-platform"])
+        cred.refresh(google.auth.transport.requests.Request())
+        tok = cred.token
+    if not tok:
+        sys.exit("não consegui um token — rode `gcloud auth application-default login`")
     req = urllib.request.Request(
         f"https://cloudbilling.googleapis.com/v1/projects/{BILLING_PROJECT}/billingInfo",
         headers={"Authorization": f"Bearer {tok}"})
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        info = json.load(resp)
+    for tentativa in range(6):
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                info = json.load(resp)
+            break
+        except urllib.error.HTTPError as exc:
+            # a API de billing limita chamadas seguidas (429); sem resposta, não roda
+            if exc.code != 429 or tentativa == 5:
+                raise
+            time.sleep(20 * (tentativa + 1))
     if info.get("billingEnabled"):
         sys.exit(f"billing ATIVO em {BILLING_PROJECT} — a exceção de BigQuery do "
                  f"AGENTS.md não vale mais. Abortando.")
     print(f"  sandbox confirmado: billingEnabled=false em {BILLING_PROJECT}")
+
+
+# Bytes lógicos do BigQuery por byte de Parquet+zstd no espelho. Medido em 2026-10-07
+# em 33 tabelas espelhadas acima de 20M linhas: mediana 8,4, pior caso 2,65
+# (`br_cgu_beneficios_cidadao.bpc`). A trava usa o pior caso.
+RAZAO_PESSIMISTA = 2.5
+
+
+def exige_espaco(estimado, reserva_gb):
+    """Recusa a tabela se, depois dela, o disco do beelink ficar abaixo da reserva.
+
+    A reserva existe porque `~/duckdb_tmp` (teto de 100 GB) mora no mesmo NVMe.
+    Devolve None se cabe, ou a mensagem de recusa.
+    """
+    out = sh(f"df -B1 --output=avail {ROOT} | tail -1", timeout=60).strip()
+    if not out.isdigit():
+        return "não consegui ler o espaço livre do beelink"
+    livre, precisa = int(out), estimado / RAZAO_PESSIMISTA
+    if livre - precisa < reserva_gb * 1e9:
+        return (f"sem espaço: livre {livre/1e9:.1f} GB, a tabela pede até "
+                f"{precisa/1e9:.1f} GB e a reserva é {reserva_gb:.0f} GB")
+    return None
 
 
 def duck(sql, timeout=1800):
@@ -88,38 +134,83 @@ def bytes_query(client, bq, ds, tb):
         return f"erro: {str(exc)[:80]}"
 
 
-def escreve_shards(tabela, destino, pq):
-    """Grava o Arrow em shards `0000000000NN.parquet`, ZSTD, como o resto do espelho."""
-    n = tabela.num_rows
-    nomes = []
-    for i, ini in enumerate(range(0, max(n, 1), LINHAS_POR_SHARD)):
-        pedaco = tabela.slice(ini, LINHAS_POR_SHARD)
-        nome = f"{i:012d}.parquet"
-        pq.write_table(pedaco, str(destino / nome), compression="zstd")
-        nomes.append(nome)
-        if n == 0:
-            break
-    return nomes
+def escreve_shards(lotes, destino, pq):
+    """Grava os lotes Arrow em shards `0000000000NN.parquet`, ZSTD, como o resto do espelho.
+
+    Escreve à medida que os lotes chegam, mas junta-os em row groups de
+    LINHAS_POR_ROW_GROUP: a Storage Read API entrega lotes de poucas centenas de
+    linhas numa tabela larga, e um row group por lote deixou arquivos com 1.200 row
+    groups de ~830 linhas, cujos metadados fizeram uma view com `union_by_name`
+    passar de 18 GB de memória (2026-10-07). Devolve (linhas, schema); schema None
+    se a tabela veio vazia.
+    """
+    import pyarrow as pa
+    n = no_shard = i = 0
+    w = schema = None
+    buf, no_buf = [], 0
+
+    def descarrega():
+        nonlocal buf, no_buf
+        if buf:
+            w.write_table(pa.Table.from_batches(buf), row_group_size=LINHAS_POR_ROW_GROUP)
+        buf, no_buf = [], 0
+
+    for lote in lotes:
+        if w is None:
+            schema = lote.schema
+            w = pq.ParquetWriter(str(destino / f"{i:012d}.parquet"), schema,
+                                 compression="zstd")
+        buf.append(lote)
+        no_buf += lote.num_rows
+        n += lote.num_rows
+        no_shard += lote.num_rows
+        if no_buf >= LINHAS_POR_ROW_GROUP:
+            descarrega()
+        if no_shard >= LINHAS_POR_SHARD:
+            descarrega()
+            w.close()
+            w, no_shard, i = None, 0, i + 1
+    if w is not None:
+        descarrega()
+        w.close()
+    return n, schema
 
 
-def ressincroniza(client, bq, pq, alvo, backup_dir, aplicar):
+def ressincroniza(client, leitor, bq, pq, alvo, backup_dir, aplicar, estimado=0, reserva_gb=100.0):
     ds, tb = alvo.split(".", 1)
     remoto = f"{ROOT}/{ds}/{tb}"
     antes = duck(f"SELECT count(*) n FROM read_parquet('{remoto}/*.parquet');")
     n_antes = antes[0]["n"] if antes else 0
 
-    tabela = client.query(f"SELECT * FROM `{BQ_PROJECT}.{ds}.{tb}`").to_arrow()
-    n_bq = tabela.num_rows
-    tipadas = sum(1 for f in tabela.schema if str(f.type) != "string")
-    print(f"  {alvo:52} {n_antes:>10,} -> {n_bq:>10,}  ({n_bq - n_antes:+,})  "
-          f"{tipadas}/{len(tabela.schema)} col tipadas")
     if not aplicar:
+        # sem --apply, só o metadado: nenhuma query, nenhuma cota
+        n_bq = client.get_table(f"{BQ_PROJECT}.{ds}.{tb}").num_rows
+        print(f"  {alvo:52} {n_antes:>10,} -> {n_bq:>10,}  ({n_bq - n_antes:+,})")
         return {"tabela": alvo, "antes": n_antes, "depois": n_bq, "aplicado": False}
+
+    falta = exige_espaco(estimado, reserva_gb)
+    if falta:
+        return {"tabela": alvo, "erro": falta}
+    if not bq_quota.reserve(estimado):
+        return {"tabela": alvo, "erro": f"cota do mês: {bq_quota.status()}"}
 
     with tempfile.TemporaryDirectory() as tmp:
         local = Path(tmp) / tb
         local.mkdir()
-        escreve_shards(tabela, local, pq)
+        # Storage Read API, em streaming: pela REST vêm ~4 mil linhas/s (medido em
+        # 2026-10-07), e uma tabela grande não cabe em memória de uma vez
+        lotes = (client.query(f"SELECT * FROM `{BQ_PROJECT}.{ds}.{tb}`").result()
+                 .to_arrow_iterable(bqstorage_client=leitor))
+        n_bq, schema = escreve_shards(lotes, local, pq)
+        if schema is None:
+            # tabela vazia: um shard vazio, com o schema que o BigQuery devolve
+            vazio = (client.query(f"SELECT * FROM `{BQ_PROJECT}.{ds}.{tb}` LIMIT 0")
+                     .result().to_arrow())
+            pq.write_table(vazio, str(local / f"{0:012d}.parquet"), compression="zstd")
+            schema = vazio.schema
+        tipadas = sum(1 for f in schema if str(f.type) != "string")
+        print(f"  {alvo:52} {n_antes:>10,} -> {n_bq:>10,}  ({n_bq - n_antes:+,})  "
+              f"{tipadas}/{len(schema)} col tipadas", flush=True)
         sh(f"rm -rf {remoto}.novo && mkdir -p {remoto}.novo", check=True)
         # sem --chmod: o rsync do macOS (openrsync, "2.6.9 compatible") não tem a
         # flag. O modo vai para 664 no beelink, depois da troca.
@@ -131,8 +222,9 @@ def ressincroniza(client, bq, pq, alvo, backup_dir, aplicar):
             return {"tabela": alvo, "erro": f"rsync: {r.stderr[:200]}"}
 
     # troca: o antigo vai inteiro para o backup, nunca para o lixo
-    sh(f"mkdir -p {backup_dir}/{ds} && "
-       f"mv {remoto} {backup_dir}/{ds}/{tb} && "
+    # tabela nova não tem o que guardar
+    sh(f"if [ -d {remoto} ]; then mkdir -p {backup_dir}/{ds} && "
+       f"mv {remoto} {backup_dir}/{ds}/{tb}; fi && "
        f"mv {remoto}.novo {remoto} && "
        f"chmod 775 {remoto} && chmod 664 {remoto}/*.parquet", check=True)
 
@@ -150,6 +242,9 @@ def main():
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--max-gb", type=float, default=20.0,
                     help="recusa tabela cuja query passe disto (padrão 20 GB)")
+    ap.add_argument("--reserva-gb", type=float, default=100.0,
+                    help="espaço que tem de sobrar no beelink depois de cada tabela "
+                         "(padrão 100 GB)")
     a = ap.parse_args()
 
     alvos = list(a.tabelas)
@@ -164,16 +259,20 @@ def main():
     import warnings
     warnings.filterwarnings("ignore")
     from google.cloud import bigquery as bq
+    from google.cloud import bigquery_storage
     import pyarrow.parquet as pq
 
     exige_sandbox()
     client = bq.Client(project=BILLING_PROJECT)
+    leitor = bigquery_storage.BigQueryReadClient()
 
     print(f"\nEstimando ({len(alvos)} tabelas)…")
     total = 0
+    estimados = {}
     for t in alvos:
         ds, tb = t.split(".", 1)
         b = bytes_query(client, bq, ds, tb)
+        estimados[t] = b if isinstance(b, int) else 0
         if isinstance(b, str):
             print(f"  {t:52} {b}")
         elif b is None:
@@ -191,11 +290,18 @@ def main():
 
     res = []
     for t in alvos:
-        try:
-            res.append(ressincroniza(client, bq, pq, t, backup, a.apply))
-        except Exception as exc:                                  # noqa: BLE001
-            print(f"  {t:52} ERRO {str(exc)[:120]}")
-            res.append({"tabela": t, "erro": str(exc)[:200]})
+        # o stream da Storage API cai às vezes no meio ("503 Stream removed",
+        # 2026-10-07); até a troca nada mudou no espelho, então repetir é seguro
+        for tentativa in range(3):
+            try:
+                res.append(ressincroniza(client, leitor, bq, pq, t, backup, a.apply,
+                                         estimados[t], a.reserva_gb))
+                break
+            except Exception as exc:                              # noqa: BLE001
+                print(f"  {t:52} ERRO (tentativa {tentativa + 1}/3) {str(exc)[:120]}",
+                      flush=True)
+                if tentativa == 2:
+                    res.append({"tabela": t, "erro": str(exc)[:200]})
 
     erros = [r for r in res if r.get("erro")]
     feitos = [r for r in res if r.get("aplicado")]
