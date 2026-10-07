@@ -4,7 +4,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
 
-247 datasets, 1182 tabelas.
+248 datasets, 1197 tabelas.
 
 | dataset | tabelas | linhas | last_update |
 |---|---:|---:|---|
@@ -14,12 +14,12 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ana_bho` | 1 | 462.539 | 2026-08-10 |
 | `br_ana_outorgas` | 2 | 192.772 | 2026-10-07 |
 | `br_ana_reservatorios` | 1 | 1.157.621 | 2026-07-05 |
-| `br_ana_telemetria` | 13 | 165.625.437 | 2026-09-02 |
+| `br_ana_telemetria` | 13 | 165.719.332 | 2026-10-07 |
 | `br_anac_dadosabertos` | 3 | 640.209 | 2026-10-07 |
 | `br_anatel_banda_larga_fixa` | 4 | 58.902.377 | 2026-08-23 |
 | `br_anatel_indice_brasileiro_conectividade` | 1 | 22.280 | 2026-07-05 |
-| `br_aneel_dadosabertos` | 8 | 40.910.593 | 2026-09-24 |
-| `br_anm` | 22 | 8.324.108 | 2026-10-07 |
+| `br_aneel_dadosabertos` | 8 | 41.046.676 | 2026-10-07 |
+| `br_anm` | 22 | 8.380.445 | 2026-10-07 |
 | `br_anp_combustiveis` | 1 | 2.205.259 | 2026-10-07 |
 | `br_anp_precos_combustiveis` | 1 | 16.409.523 | 2026-07-05 |
 | `br_ans_beneficiario` | 1 | 2.307.338.481 | 2026-07-05 |
@@ -41,6 +41,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_bd_diretorios_data_tempo` | 11 | 1.922.812 | 2026-07-05 |
 | `br_bd_diretorios_mundo` | 4 | 20.648 | 2026-08-23 |
 | `br_bd_diretorios_us` | 11 | 267.721 | 2026-07-09 |
+| `br_bd_execucao_estadual` | 12 | 15.376.366 | 2026-10-07 |
 | `br_bd_metadados` | 7 | 123.379 | 2026-08-23 |
 | `br_bd_vizinhanca` | 2 | 523.926 | 2026-07-05 |
 | `br_bndes_operacoes_contratadas` | 5 | 2.408.157 | 2026-10-07 |
@@ -76,7 +77,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_comprasgov_catmatcatser` | 2 | 252.825 | 2026-10-07 |
 | `br_comprasgov_sicaf` | 1 | 962.016 | 2026-10-07 |
 | `br_cvm_administradores_carteira` | 3 | 16.126 | 2026-07-09 |
-| `br_cvm_fundos` | 1 | 46.806 | 2026-10-07 |
+| `br_cvm_fundos` | 4 | 184.408 | 2026-10-07 |
 | `br_cvm_oferta_publica_distribuicao` | 1 | 27.486 | 2026-07-05 |
 | `br_datahackers_state_data` | 1 | 4.271 | 2026-07-05 |
 | `br_datasus_cid10` | 6 | 15.672 | 2026-07-10 |
@@ -86,7 +87,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_firjan_ifgf` | 1 | 55.680 | 2026-07-09 |
 | `br_geobr_mapas` | 25 | 984.345 | 2026-07-05 |
 | `br_ggb_relatorio_lgbtqi` | 5 | 145 | 2026-07-09 |
-| `br_ibama_autos` | 8 | 3.021.141 | 2026-09-01 |
+| `br_ibama_autos` | 8 | 3.097.591 | 2026-10-07 |
 | `br_ibama_ctf` | 2 | 1.473.755 | 2026-09-01 |
 | `br_ibama_embargos_novo` | 8 | 978.346 | 2026-10-07 |
 | `br_ibge_amc` | 1 | 434.070 | 2026-07-09 |
@@ -143,7 +144,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_me_caged` | 4 | 240.703.713 | 2026-07-06 |
 | `br_me_clima_organizacional` | 1 | 16.436 | 2026-07-09 |
 | `br_me_cno` | 3 | 1.020.894 | 2026-07-09 |
-| `br_me_cnpj` | 5 | 7.542.413.399 | 2026-10-07 |
+| `br_me_cnpj` | 5 | 8.083.936.256 | 2026-10-07 |
 | `br_me_comex_stat` | 5 | 129.489.938 | 2026-07-06 |
 | `br_me_estoque_divida_publica` | 1 | 124.419 | 2026-07-09 |
 | `br_me_exportadoras_importadoras` | 1 | 3 | 2026-07-09 |
@@ -194,10 +195,10 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ms_vacinacao_covid19` | 2 | 805.917 | 2026-07-09 |
 | `br_mte_listasuja` | 4 | 1.656 | 2026-10-07 |
 | `br_ok_queridodiario` | 1 | 320.424 | 2026-10-07 |
-| `br_ok_queridodiario_texto` | 1 | 231.897 | 2026-09-01 |
+| `br_ok_queridodiario_texto` | 1 | 320.422 | 2026-10-07 |
 | `br_ons_estimativa_custos` | 5 | 1.407.872 | 2026-10-07 |
 | `br_pgfn_dividaativa` | 1 | 49.702.198 | 2026-10-07 |
-| `br_pncp` | 1 | 5.043.371 | 2026-09-04 |
+| `br_pncp` | 1 | 5.229.507 | 2026-10-07 |
 | `br_poder360_pesquisas` | 1 | 162.075 | 2026-07-07 |
 | `br_rf_arrecadacao` | 5 | 535.465 | 2026-07-07 |
 | `br_rf_cafir` | 2 | 169.935.565 | 2026-07-07 |

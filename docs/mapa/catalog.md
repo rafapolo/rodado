@@ -2,21 +2,22 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**242 datasets, 1.174 tabelas, 41.014.117.642 linhas.** 9 dataset(s) sem descrição. 4 com data de frescor conferida (de 242).
+**248 datasets, 1.197 tabelas, 41.952.269.718 linhas.** 10 dataset(s) sem descrição. 4 com data de frescor conferida (de 248).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
+| `_local_rais_cnpj` | RAIS de estabelecimentos cruzada com CNPJ, 2010-2021 | 1 | 40.626.223 | — | RAIS estabelecimentos por CNPJ 2010–2021 (import local) |
 | `br_abrinq_oca` | Observatório da Criança e do Adolescente (Fundação Abrinq) — indicadores de primeira infância por município | 1 | 55.700 | — | Base dos Dados |
 | `br_ana_atlas_esgotos` | Atlas Esgotos da ANA — diagnóstico de coleta e tratamento de esgoto por município | 1 | 5.570 | — | Base dos Dados |
 | `br_ana_bho` | Base Hidrográfica Ottocodificada da ANA — topologia de trechos de rio | 1 | 462.539 | — | ANA Base Hidrográfica Ottocodificada (topologia) |
 | `br_ana_outorgas` | Outorgas de uso da água (captação e lançamento) da ANA | 2 | 192.772 | — | ANA outorgas de uso da água |
 | `br_ana_reservatorios` | ANA — boletim diário dos 162 reservatórios do Sistema Interligado Nacional (cota, vazões, % do volume útil), 2000 a jan/2022 | 1 | 1.157.621 | — | Base dos Dados |
-| `br_ana_telemetria` | Telemetria da ANA — séries de vazão, cota e chuva de estações de monitoramento de rios | 13 | 165.625.437 | — | ANA telemetria (rios/chuva) |
+| `br_ana_telemetria` | Telemetria da ANA — séries de vazão, cota e chuva de estações de monitoramento de rios | 13 | 165.719.332 | — | ANA telemetria (rios/chuva) |
 | `br_anac_dadosabertos` | ANAC — registro de aeronaves, voos e pontualidade | 3 | 640.209 | 2026-08-01 | ANAC |
 | `br_anatel_banda_larga_fixa` | Densidade de acessos de banda larga fixa por município/UF (Anatel) | 4 | 58.902.377 | — | Base dos Dados |
 | `br_anatel_indice_brasileiro_conectividade` | Índice Brasileiro de Conectividade por município (Anatel) | 1 | 22.280 | — | Base dos Dados |
-| `br_aneel_dadosabertos` | ANEEL — geração distribuída, usinas (SIGA), tarifas homologadas e indicadores de continuidade DEC/FEC | 8 | 40.910.593 | — | ANEEL — usinas SIGA, tarifas homologadas, DEC/FEC |
-| `br_anm` | ANM/SIGMINE — processos minerários, CFEM (royalties de mineração) e licenciamento | 22 | 8.324.108 | — | ANM / SIGMINE — títulos minerários e CFEM |
+| `br_aneel_dadosabertos` | ANEEL — geração distribuída, usinas (SIGA), tarifas homologadas e indicadores de continuidade DEC/FEC | 8 | 41.046.676 | — | ANEEL — usinas SIGA, tarifas homologadas, DEC/FEC |
+| `br_anm` | ANM/SIGMINE — processos minerários, CFEM (royalties de mineração) e licenciamento | 22 | 8.380.445 | — | ANM / SIGMINE — títulos minerários e CFEM |
 | `br_anp_combustiveis` | ANP — preços de combustíveis por posto/revenda | 1 | 2.205.259 | — | ANP combustíveis (preços revenda/distribuição) |
 | `br_anp_precos_combustiveis` | ANP — preços de combustíveis pesquisados (via Base dos Dados) | 1 | 16.409.523 | — | Base dos Dados |
 | `br_ans_beneficiario` | ANS — beneficiários de planos de saúde suplementar | 1 | 2.307.338.481 | — | Base dos Dados |
@@ -25,7 +26,7 @@
 | `br_anvisa_consultas` | ANVISA — registros de agrotóxicos, alimentos e produtos regulados | 3 | 101.284 | — | ANVISA (consulta completa) |
 | `br_anvisa_medicamentos_industrializados` | ANVISA — medicamentos industrializados registrados | 1 | 10.000.000 | — | Base dos Dados |
 | `br_ba_feiradesantana_camara_leis` | Câmara Municipal de Feira de Santana — leis municipais | 1 | 6.033 | — | Base dos Dados |
-| `br_bcb_desenrola` | BCB — programa Desenrola Brasil (renegociação de dívidas de pessoa física) | 1 | 12.751 | — | BCB Desenrola Brasil |
+| `br_bcb_desenrola` | BCB — programa Desenrola Brasil (renegociação de dívidas de pessoa física) | 1 | 13.638 | — | BCB Desenrola Brasil |
 | `br_bcb_estban` | BCB ESTBAN — estatísticas bancárias por agência/município | 3 | 699.984.822 | — | Base dos Dados |
 | `br_bcb_ifdata` | BCB IF.data — indicadores financeiros de instituições financeiras | 5 | 55.700.812 | — | BCB — IF.data (valores e cadastro por instituição) |
 | `br_bcb_penalidades` | BCB — penalidades aplicadas a instituições financeiras | 1 | 16.963 | — | BCB Penalties |
@@ -38,6 +39,7 @@
 | `br_bd_diretorios_data_tempo` | Base dos Dados — diretório de calendário/tempo | 11 | 1.922.812 | — | Base dos Dados |
 | `br_bd_diretorios_mundo` | Base dos Dados — diretórios internacionais (país, NCM, sistema harmonizado) | 4 | 20.648 | — | Base dos Dados |
 | `br_bd_diretorios_us` | Base dos Dados — diretórios de referência dos EUA | 11 | 267.721 | — | Base dos Dados |
+| `br_bd_execucao_estadual` | _(sem descrição)_ | 12 | 15.376.366 | — | Base dos Dados |
 | `br_bd_metadados` | Base dos Dados — metadados do próprio catálogo original (tabelas, organizações) | 7 | 123.379 | — | Base dos Dados |
 | `br_bd_vizinhanca` | Base dos Dados — vizinhança geográfica de municípios e UFs | 2 | 523.926 | — | Base dos Dados |
 | `br_bndes_operacoes_contratadas` | BNDES — operações de crédito contratadas | 5 | 2.408.157 | — | Base dos Dados |
@@ -73,7 +75,7 @@
 | `br_comprasgov_catmatcatser` | ComprasGov — catálogo de materiais e serviços padronizados (CATMAT/CATSER) | 2 | 252.825 | — | CATMAT/CATSER (catálogo de materiais/serviços) |
 | `br_comprasgov_sicaf` | SICAF — cadastro de fornecedores habilitados a contratar com o governo | 1 | 962.016 | — | SICAF fornecedores |
 | `br_cvm_administradores_carteira` | CVM — administradores de carteira de valores mobiliários | 3 | 16.126 | — | Base dos Dados |
-| `br_cvm_fundos` | CVM — cadastro de fundos de investimento | 1 | 46.806 | 2026-10-05 | CVM Fundos |
+| `br_cvm_fundos` | CVM — cadastro de fundos de investimento | 4 | 184.408 | 2026-10-05 | CVM Fundos |
 | `br_cvm_oferta_publica_distribuicao` | CVM — ofertas públicas de distribuição de valores mobiliários | 1 | 27.486 | — | Base dos Dados |
 | `br_datahackers_state_data` | Data Hackers — pesquisa State of Data sobre o mercado de dados no Brasil | 1 | 4.271 | — | Base dos Dados |
 | `br_datasus_cid10` | DATASUS — tabela de códigos CID-10 e CID-O | 6 | 15.672 | — | CID-10 (tabela de códigos, DATASUS) |
@@ -83,7 +85,7 @@
 | `br_firjan_ifgf` | FIRJAN — Índice de Gestão Fiscal municipal | 1 | 55.680 | — | Base dos Dados |
 | `br_geobr_mapas` | geobr — malhas geográficas oficiais do IBGE (municípios, UFs, biomas, terras indígenas etc.) | 25 | 984.345 | — | Base dos Dados |
 | `br_ggb_relatorio_lgbtqi` | Grupo Gay da Bahia — relatório de mortes de pessoas LGBTQI+ | 5 | 145 | — | Base dos Dados |
-| `br_ibama_autos` | IBAMA — autos de infração ambiental | 8 | 3.021.141 | — | IBAMA — autos de infração |
+| `br_ibama_autos` | IBAMA — autos de infração ambiental | 8 | 3.097.591 | — | IBAMA — autos de infração |
 | `br_ibama_ctf` | IBAMA — Cadastro Técnico Federal de atividades potencialmente poluidoras | 2 | 1.473.755 | — | IBAMA — CTF/APP (atividades potencialmente poluidoras) |
 | `br_ibama_embargos_novo` | IBAMA — termos de embargo ambiental | 8 | 978.346 | — | IBAMA — termos de embargo (re-raspagem) |
 | `br_ibge_amc` | IBGE — correspondência de áreas mínimas comparáveis entre municípios ao longo do tempo | 1 | 434.070 | — | Base dos Dados |
@@ -140,7 +142,7 @@
 | `br_me_caged` | Ministério do Trabalho — CAGED, movimentação de empregos formais (admissões/demissões) | 4 | 240.703.713 | — | Base dos Dados |
 | `br_me_clima_organizacional` | Ministério da Economia — pesquisa de clima organizacional no serviço público | 1 | 16.436 | — | Base dos Dados |
 | `br_me_cno` | Cadastro Nacional de Obras (CNO) — obras e vínculos de trabalhadores da construção | 3 | 1.020.894 | — | Base dos Dados |
-| `br_me_cnpj` | Receita Federal — cadastro completo de empresas, estabelecimentos, sócios e Simples Nacional | 5 | 7.398.780.378 | — | Base dos Dados |
+| `br_me_cnpj` | Receita Federal — cadastro completo de empresas, estabelecimentos, sócios e Simples Nacional | 5 | 8.083.936.256 | — | Base dos Dados |
 | `br_me_comex_stat` | Comex Stat — exportação e importação por município e NCM | 5 | 129.489.938 | — | Base dos Dados |
 | `br_me_estoque_divida_publica` | Tesouro Nacional — estoque da dívida pública federal | 1 | 124.419 | — | Base dos Dados |
 | `br_me_exportadoras_importadoras` | dicionário de empresas exportadoras e importadoras | 1 | 3 | — | Base dos Dados |
@@ -184,14 +186,17 @@
 | `br_ms_sinan_violencia` | SINAN — notificação compulsória de violência doméstica, sexual e outras | 1 | 4.939.266 | — | SINAN Violência (violência doméstica, sexual e/ou outras) |
 | `br_ms_sinan_zika` | SINAN — notificação compulsória de zika | 1 | 607.162 | — | SINAN Zika |
 | `br_ms_sinasc` | SINASC — Sistema de Informações sobre Nascidos Vivos | 2 | 85.559.448 | — | Base dos Dados |
+| `br_ms_sipni_dicionarios` | SI-PNI — dicionários de cobertura vacinal | 4 | 224 | — | SI-PNI dicionários (healthbr-data) |
+| `br_ms_sipni_doses_historicas` | SI-PNI — doses de vacina aplicadas, série histórica agregada | 1 | 93.785.056 | — | SI-PNI doses históricas (healthbr-data) |
+| `br_ms_sipni_microdados` | SI-PNI — microdados de vacinação individual (2020) | 1 | 102.423.524 | — | SI-PNI microdados (healthbr-data) |
 | `br_ms_sisvan` | SISVAN — Sistema de Vigilância Alimentar e Nutricional | 2 | 406.253.847 | — | Base dos Dados |
 | `br_ms_vacinacao_covid19` | Ministério da Saúde — vacinação contra covid-19 | 2 | 805.917 | — | Base dos Dados |
 | `br_mte_listasuja` | MTE — Lista Suja do trabalho escravo (Cadastro de Empregadores) e CEAC, com CNPJ/CPF | 4 | 1.656 | — | MTE — Lista Suja do Trabalho Escravo (Cadastro de Empregadores) + CEAC |
 | `br_ok_queridodiario` | Querido Diário — metadados de diários oficiais municipais | 1 | 320.424 | — | Querido Diário |
-| `br_ok_queridodiario_texto` | Querido Diário — texto integral das edições de diários oficiais municipais | 1 | 231.897 | — | Querido Diário — texto integral das edições |
+| `br_ok_queridodiario_texto` | Querido Diário — texto integral das edições de diários oficiais municipais | 1 | 320.422 | — | Querido Diário — texto integral das edições |
 | `br_ons_estimativa_custos` | _(sem descrição)_ | 5 | 1.407.872 | — | Base dos Dados |
 | `br_pgfn_dividaativa` | PGFN — dívida ativa da União (tributária, FGTS, previdenciária) | 1 | 49.702.198 | — | PGFN |
-| `br_pncp` | PNCP — Portal Nacional de Contratações Públicas, licitações e contratos de todos os entes | 1 | 5.043.371 | — | PNCP — Portal Nacional de Contratações Públicas |
+| `br_pncp` | PNCP — Portal Nacional de Contratações Públicas, licitações e contratos de todos os entes | 1 | 5.229.507 | — | PNCP — Portal Nacional de Contratações Públicas |
 | `br_poder360_pesquisas` | Poder360 — pesquisas eleitorais | 1 | 162.075 | — | Base dos Dados |
 | `br_rf_arrecadacao` | Receita Federal — arrecadação tributária federal | 5 | 535.465 | — | Base dos Dados |
 | `br_rf_cafir` | Receita Federal — Cadastro de Imóveis Rurais (CAFIR) | 2 | 169.935.565 | — | Base dos Dados |
@@ -226,7 +231,7 @@
 | `br_transferegov` | TransfereGov — planos de ação, programas e transferências (API normalizada) | 3 | 30.346 | — | TransfereGov |
 | `br_transferegov_siconv` | TransfereGov/SICONV — convênios, contratos de repasse e execução física/financeira completa | 62 | 69.060.758 | — | Transferegov/SICONV completo |
 | `br_trase_supply_chain` | Trase — cadeia de suprimentos de soja e carne bovina, do frigorífico/esmagadora à origem | 7 | 1.824.843 | — | Base dos Dados |
-| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 26 | 1.514.711.816 | — | Base dos Dados |
+| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 26 | 1.514.713.042 | — | Base dos Dados |
 | `br_tse_filiacao_partidaria` | TSE — filiação partidária | 2 | 41.840.389 | — | Base dos Dados |
 | `br_ufmg_censo_demografico_1872` | _(sem descrição)_ | 58 | 1.251.630 | — | Base dos Dados |
 | `eu_sanctions` | União Europeia — lista de sanções | 1 | 43.891 | — | EU Sanctions |
@@ -236,6 +241,7 @@
 | `global_opensanctions` | OpenSanctions — consolidado mundial de listas de sanções e PEP | 1 | 1.230.314 | — | OpenSanctions |
 | `mundo_transfermarkt_competicoes` | Transfermarkt — Campeonato Brasileiro Série A e Copa do Brasil | 2 | 9.054 | — | Base dos Dados |
 | `mundo_transfermarkt_competicoes_internacionais` | Transfermarkt — Champions League | 1 | 2.572 | — | Base dos Dados |
+| `politicos` | Base dos Dados — contatos de políticos | 1 | 7.664 | — | Políticos — contato (Câmara + Senado) |
 | `un_sanctions` | ONU — lista de sanções | 1 | 1.010 | — | UN Sanctions |
 | `us_harvard_ned` | Harvard NED — eleições parlamentares e presidenciais internacionais | 2 | 6.309 | — | Base dos Dados |
 | `world_ampas_oscar` | Oscar (AMPAS) — demografia de vencedores | 1 | 415 | — | Base dos Dados |
