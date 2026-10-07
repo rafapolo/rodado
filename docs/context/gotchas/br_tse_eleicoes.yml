@@ -1,0 +1,25 @@
+dataset: br_tse_eleicoes
+gotchas:
+  - id: receitas_2026_parciais
+    resumo: "As receitas de 2026 são do ciclo em aberto: relatórios de 72 h e parciais, sem as prestações finais. Não compare total com 2022 como se fosse fechado."
+    detalhe: >
+      Carregadas do CDN do TSE por scripts/scrap/tse_receitas_2026.py, que
+      substitui o arquivo a cada rodada. Os campos *_orig (doador originário)
+      ficam nulos, como em 2022. sequencial_receita se repete quando uma doação
+      estimável é rateada entre itens — não deduplique por ele.
+    tabelas: [receitas_candidato]
+    colunas: [tipo_prestacao_contas, sequencial_receita]
+    severidade: silencioso
+    verificado: "ano=2026: 171.354 linhas, R$ 6,49 bi, 479 linhas 'final' — medido 2026-10-07"
+  - id: receitas_2026_data_futura
+    resumo: "66 receitas de 2026 têm data_receita depois da carga (até 29/11/2026). Erro do prestador, mantido como veio."
+    tabelas: [receitas_candidato]
+    colunas: [data_receita]
+    severidade: silencioso
+    verificado: "66 linhas com data_receita > 2026-10-07 na carga de 2026-10-07"
+  - id: doacao_presidencial_2022_pix
+    resumo: "Em 2022, a campanha de Bolsonaro tem 392 mil receitas (Pix de pessoa física) e a de Lula 533. Contar doações mede o canal, não o apoio."
+    tabelas: [receitas_candidato]
+    colunas: [cargo, sigla_partido, origem_receita]
+    severidade: silencioso
+    verificado: "ano=2022, cargo='presidente': PL 392.138 linhas / R$ 125,0 mi; PT 533 / R$ 135,5 mi — medido 2026-10-07"

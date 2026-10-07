@@ -1,0 +1,20 @@
+dataset: br_inpe_queimadas
+gotchas:
+  - id: duas_origens
+    resumo: "Até 2025-02-12 os focos vêm do Base dos Dados; de 2025-02-13 em diante, direto do INPE."
+    detalhe: >
+      A costura foi conferida (jan/2025 e 01–12/02/2025 batem foco a foco),
+      mas o tipo de data_hora é VARCHAR na view, porque o arquivo do INPE foi
+      gravado como texto: compare com strings 'AAAA-MM-DD HH:MM:SS' ou converta
+      com strptime. Antes desta carga, 2025-02-13 a 2025-12-31 simplesmente
+      não existiam e jan–mai/2026 vinham sem município.
+    tabelas: [microdados]
+    colunas: [data_hora]
+    severidade: silencioso
+    verificado: "2025: 3.463.949 focos, 2026 até 07/10: 2.157.888, todos com id_municipio — medido 2026-10-07"
+  - id: sentinela_999
+    resumo: "dias_sem_chuva e risco_fogo usam -999 como 'sem dado'. Filtre antes de tirar média."
+    tabelas: [microdados]
+    colunas: [dias_sem_chuva, risco_fogo]
+    severidade: silencioso
+    verificado: "2025 (fonte INPE): 39.109 dias_sem_chuva e 27.242 risco_fogo = -999 — medido 2026-10-07"
