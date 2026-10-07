@@ -12,3 +12,16 @@ gotchas:
     colunas: [int_qt_vazaomedia]
     severidade: silencioso
     verificado: "captacoes: 181.917 linhas, soma 20.584.537 (= 5.718 m³/s se m³/h) — medido 2026-09-25"
+  - id: cpf_completado
+    resumo: "A coluna de CPF mistura CPF completo (completado pelo projeto) e CPF mascarado. count(DISTINCT cpf) conta máscara como pessoa."
+    detalhe: >
+      O CPF mascarado da fonte foi trocado pelo completo só quando nome
+      idêntico, dígitos visíveis e unicidade garantiam a pessoa
+      (scripts/completa_cpf.py, housekeeping item 12). O resto ficou
+      mascarado: filtre regexp_full_match(col, '[0-9]{11}') para ter só os
+      completos, e não trate a máscara como identificador — ela repete entre
+      pessoas diferentes.
+    tabelas: [captacoes, lancamentos]
+    colunas: [emp_nu_cpfcnpj]
+    severidade: silencioso
+    verificado: "captacoes 103.775 de 143.425; lancamentos 1.363 de 1.872 linhas completadas — medido 2026-10-07"
