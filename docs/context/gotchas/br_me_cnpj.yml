@@ -20,3 +20,16 @@ gotchas:
     colunas: [capital_social]
     severidade: silencioso
     verificado: "124 linhas com capital_social = 999999999999 em cada um dos 9 snapshots de 2025 (jan a set) — medido 2026-09-25"
+  - id: cpf_completado
+    resumo: "A coluna de CPF mistura CPF completo (completado pelo projeto) e CPF mascarado. count(DISTINCT cpf) conta máscara como pessoa."
+    detalhe: >
+      O CPF mascarado da fonte foi trocado pelo completo só quando nome
+      idêntico, dígitos visíveis e unicidade garantiam a pessoa
+      (scripts/completa_cpf.py, housekeeping item 12). O resto ficou
+      mascarado: filtre regexp_full_match(col, '[0-9]{11}') para ter só os
+      completos, e não trate a máscara como identificador — ela repete entre
+      pessoas diferentes.
+    tabelas: [socios]
+    colunas: [documento, cpf_representante_legal]
+    severidade: silencioso
+    verificado: "documento 1.120.187.656 de 1.358.102.261; cpf_representante_legal 8.038.086 de 9.610.047 linhas completadas — medido 2026-10-07"

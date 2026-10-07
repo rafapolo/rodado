@@ -1,0 +1,15 @@
+dataset: br_bcb_penalidades
+gotchas:
+  - id: cpf_completado
+    resumo: "A coluna de CPF mistura CPF completo (completado pelo projeto) e CPF mascarado. count(DISTINCT cpf) conta máscara como pessoa."
+    detalhe: >
+      O CPF mascarado da fonte foi trocado pelo completo só quando nome
+      idêntico, dígitos visíveis e unicidade garantiam a pessoa
+      (scripts/completa_cpf.py, housekeeping item 12). O resto ficou
+      mascarado: filtre regexp_full_match(col, '[0-9]{11}') para ter só os
+      completos, e não trate a máscara como identificador — ela repete entre
+      pessoas diferentes.
+    tabelas: [penalidades]
+    colunas: [CPF_CNPJ]
+    severidade: silencioso
+    verificado: "11.914 de 13.128 linhas completadas — medido 2026-10-07"
