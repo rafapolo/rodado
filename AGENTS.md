@@ -42,7 +42,7 @@ One mermaid `erDiagram` per domain covering all 1071 tables: entity = dataset, a
 
 ### `docs/context/` — Schema metadata
 Um `README.md` na própria pasta descreve arquivo por arquivo, quem gera cada um e a ordem do regen.
-- `all_tables.txt` — as 1.071 `dataset.tabela`, uma por linha, incluindo as 8 nativas do `.duckdb` que não têm parquet. Gerado por `scripts/build_metadata_catalog.py` — era um despejo do `bq ls` da era BigQuery que ninguém regenerava
+- `datasets.md` — um dataset por linha (tabelas, linhas, `last_update` = data do parquet mais recente no beelink), regenerado por `scripts/build_metadata_catalog.py` a cada rodada; substituiu o `all_tables.txt` (lista chapada de `dataset.tabela`) em 2026-10-07
 - `rodado-schema.json` — full schema (2.3 MB, 239 datasets / 1071 tabelas). Renomeado de `basedosdados-schema.json` — o nome antigo mentia escopo (parquet só) desde que `gera_schemas.py` passou a incluir as 7 tabelas `duckdb_native` (sem parquet, lidas direto de dentro de `basedosdados.duckdb`) que antes ficavam invisíveis por o script só varrer diretório
 - `bridges.yaml` — **a fonte única do conhecimento de join**. Conceitos-hub, as 78 pontes (coluna que significa a mesma coisa sob outro nome), os `false_friends`, os `coded_differently` (mesmo conceito, código numérico diverge por dataset/ano — `sexo`, `raca_cor`, `estado_civil`... achado ao vivo num teste cego do MCP, ver `tasks/done/mcp_search_refino.md`) e os `concept_aliases`. Editar aqui; `join_keys.md` é gerado
 - `join_keys.md` — o render de `bridges.yaml` + as chaves auto-detectadas do `schemas.json`: 157 colunas de join ao todo. Gerado por `scripts/gera_join_keys.py` — regenerar, nunca editar à mão
@@ -75,7 +75,7 @@ Regenerar, na ordem, depois de qualquer sync que mude tabelas:
 ```bash
 python3 scripts/gera_schemas.py            # beelink        -> schemas.json
 python3 scripts/sync_mcp_schema.py         # schemas.json   -> docs/context/rodado-schema.json
-python3 scripts/build_metadata_catalog.py  # beelink        -> catalog.parquet + views + all_tables.txt
+python3 scripts/build_metadata_catalog.py  # beelink        -> catalog.parquet + views + datasets.md
 python3 scripts/gera_catalog_md.py         # catalog.parquet -> docs/mapa/catalog.md (ver docs/tecnico/housekeeping.md item 7)
 python3 scripts/gera_join_keys.py          # bridges.yaml   -> docs/context/join_keys.md
 python3 scripts/gera_metrics_json.py       # metrics.yaml   -> docs/context/metrics.json
