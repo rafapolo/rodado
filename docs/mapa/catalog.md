@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**239 datasets, 1.069 tabelas, 39.820.208.932 linhas.** 1 dataset(s) sem descrição. 4 com data de frescor conferida (de 239).
+**239 datasets, 1.071 tabelas, 39.828.798.222 linhas.** 1 dataset(s) sem descrição. 4 com data de frescor conferida (de 239).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -86,7 +86,7 @@
 | `br_ggb_relatorio_lgbtqi` | Grupo Gay da Bahia — relatório de mortes de pessoas LGBTQI+ | 5 | 145 | — | Base dos Dados |
 | `br_ibama_autos` | IBAMA — autos de infração ambiental | 8 | 3.021.141 | — | IBAMA — autos de infração |
 | `br_ibama_ctf` | IBAMA — Cadastro Técnico Federal de atividades potencialmente poluidoras | 2 | 1.473.755 | — | IBAMA — CTF/APP (atividades potencialmente poluidoras) |
-| `br_ibama_embargos_novo` | IBAMA — termos de embargo ambiental | 8 | 892.279 | — | IBAMA — termos de embargo (re-raspagem) |
+| `br_ibama_embargos_novo` | IBAMA — termos de embargo ambiental | 8 | 978.346 | — | IBAMA — termos de embargo (re-raspagem) |
 | `br_ibge_amc` | IBGE — correspondência de áreas mínimas comparáveis entre municípios ao longo do tempo | 1 | 434.070 | — | Base dos Dados |
 | `br_ibge_cbo_2002` | IBGE — Classificação Brasileira de Ocupações 2002 | 2 | 177.556 | — | Base dos Dados |
 | `br_ibge_censo2022_raca` | IBGE Censo 2022 — cor/raça cruzada com instrução e fecundidade, por município | 2 | 1.415.034 | — | Censo 2022 — Cor ou raça × instrução/fecundidade |
@@ -126,15 +126,15 @@
 | `br_inep_saeb` | INEP — SAEB, proficiência de alunos por etapa/disciplina | 11 | 200.886.659 | — | Base dos Dados |
 | `br_inep_sinopse_estatistica_educacao_basica` | INEP — sinopse estatística da educação básica | 18 | 114.748.803 | — | Base dos Dados |
 | `br_inmet_bdmep` | INMET — Banco de Dados Meteorológicos, séries por estação | 2 | 84.515.289 | — | Base dos Dados |
-| `br_inpe_deter` | INPE DETER — alertas quase em tempo real de desmatamento | 1 | 686.136 | — | INPE DETER (avisos de desmatamento) |
+| `br_inpe_deter` | INPE DETER — alertas quase em tempo real de desmatamento | 1 | 699.077 | — | INPE DETER (avisos de desmatamento) |
 | `br_inpe_prodes` | INPE PRODES — desmatamento anual agregado por município e bioma | 1 | 156.864 | — | Base dos Dados |
-| `br_inpe_prodes_acumulado` | INPE PRODES — polígonos de desmatamento acumulado por bioma, geometria em centroide | 1 | 7.598.548 | — | INPE PRODES acumulado (desmatamento por bioma) |
-| `br_inpe_queimadas` | INPE — focos de queimada detectados por satélite | 1 | 17.812.710 | — | Base dos Dados |
+| `br_inpe_prodes_acumulado` | INPE PRODES — polígonos de desmatamento acumulado por bioma, geometria em centroide | 2 | 7.641.257 | — | INPE PRODES acumulado (desmatamento por bioma) |
+| `br_inpe_queimadas` | INPE — focos de queimada detectados por satélite | 1 | 23.086.637 | — | Base dos Dados |
 | `br_inpe_sisam` | INPE SISAM — qualidade do ar | 1 | 158.705.816 | — | Base dos Dados |
 | `br_ipea_acesso_oportunidades` | IPEA — grade H3 das 20 maiores cidades, 2019: população por renda e raça e contagem de escolas e unidades de saúde por hexágono (sem os indicadores de tempo de acesso) | 1 | 336.427 | — | Base dos Dados |
 | `br_ipea_atlasviolencia` | IPEA — Atlas da Violência, indicadores de homicídio e letalidade | 2 | 3.006 | — | Atlas da Violência (IPEA) |
 | `br_ipea_avs` | IPEA — Atlas da Vulnerabilidade Social | 1 | 319.681 | — | Base dos Dados |
-| `br_mapbiomas_estatisticas` | MapBiomas — estatísticas de cobertura e transição de uso do solo | 6 | 1.219.409 | — | Base dos Dados |
+| `br_mapbiomas_estatisticas` | MapBiomas — estatísticas de cobertura e transição de uso do solo | 7 | 4.393.055 | — | MapBiomas — cobertura por município, coleção 11 |
 | `br_mc_indicadores` | Ministério da Cidadania — Bolsa Família e CadÚnico por município e mês (famílias, pessoas, valor pago), 2004 a set/2020 | 1 | 1.118.855 | — | Base dos Dados |
 | `br_mdr_snis` | SNIS/MDR — indicadores de água e esgoto por município e prestador de serviço | 2 | 245.101 | — | Base dos Dados |
 | `br_mds_cadunico` | CadÚnico (MDS) — indicadores municipais mensais do Cadastro Único e Bolsa Família | 2 | 350.069.349 | — | CadÚnico — indicadores municipais (VIS DATA 3, MDS/SAGI) |
