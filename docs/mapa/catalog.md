@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**239 datasets, 1.066 tabelas, 39.817.884.049 linhas.** 1 dataset(s) sem descrição. 4 com data de frescor conferida (de 239).
+**239 datasets, 1.069 tabelas, 39.820.208.932 linhas.** 1 dataset(s) sem descrição. 4 com data de frescor conferida (de 239).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -53,7 +53,7 @@
 | `br_cgu_cartao_pagamento` | CGU — gastos com cartão de pagamento do governo federal | 4 | 3.075.035 | — | Base dos Dados |
 | `br_cgu_dados_abertos` | CGU — metadados do catálogo dados.gov.br (conjuntos, recursos, organizações), foto de fev/2024 | 3 | 89.771 | — | Base dos Dados |
 | `br_cgu_ebt` | CGU — Escala Brasil Transparente 360°, nota de transparência de 665 municípios avaliados e das 27 UFs, 2020 e 2021 | 2 | 1.384 | — | Base dos Dados |
-| `br_cgu_emendas_parlamentares` | CGU — emendas parlamentares ao orçamento federal | 1 | 88.991 | — | Base dos Dados |
+| `br_cgu_emendas_parlamentares` | CGU — emendas parlamentares ao orçamento federal | 4 | 1.094.987 | — | Portal da Transparência — Emendas parlamentares por favorecido e convênios |
 | `br_cgu_fef` | CGU — Fundo de Erradicação da Pobreza e sorteios de fiscalização | 3 | 84.945 | — | Base dos Dados |
 | `br_cgu_garantia_safra` | Garantia-Safra — pagamentos aos agricultores familiares do semiárido | 1 | 33.522.915 | — | Portal - Garantia-Safra |
 | `br_cgu_gas_do_povo` | Gás do Povo — pagamentos do benefício de gás de cozinha | 1 | 20.817.231 | — | Gás do Povo (CGU) |
@@ -91,8 +91,8 @@
 | `br_ibge_cbo_2002` | IBGE — Classificação Brasileira de Ocupações 2002 | 2 | 177.556 | — | Base dos Dados |
 | `br_ibge_censo2022_raca` | IBGE Censo 2022 — cor/raça cruzada com instrução e fecundidade, por município | 2 | 1.415.034 | — | Censo 2022 — Cor ou raça × instrução/fecundidade |
 | `br_ibge_censo2022_religiao` | IBGE Censo 2022 — religião e recortes demográficos associados | 15 | 6.451.488 | — | Censo 2022 — Religião (pacote completo) |
-| `br_ibge_censo_2022` | IBGE — Censo Demográfico 2022, agregados por setor censitário e município | 16 | 138.805.409 | — | Base dos Dados |
-| `br_ibge_censo_demografico` | IBGE — microdados dos Censos Demográficos 1970 a 2010 | 38 | 181.894.256 | — | IBGE — Censo Demográfico 2022, microdados da amostra (acesso público) |
+| `br_ibge_censo_2022` | IBGE — Censo Demográfico 2022, agregados por setor censitário e município | 16 | 140.124.296 | — | Base dos Dados |
+| `br_ibge_censo_demografico` | IBGE — microdados dos Censos Demográficos 1970 a 2010 | 38 | 181.894.256 | — | Base dos Dados |
 | `br_ibge_cnefe` | IBGE — Cadastro Nacional de Endereços para Fins Estatísticos, Censo 2022 (endereço a endereço) | 1 | 111.102.875 | — | CNEFE Censo 2022 (microdado completo) |
 | `br_ibge_estadic` | IBGE — Pesquisa de Informações Básicas Estaduais (ESTADIC) | 8 | 3.044 | — | Base dos Dados |
 | `br_ibge_inpc` | IBGE — Índice Nacional de Preços ao Consumidor | 4 | 608.478 | — | Base dos Dados |
@@ -223,7 +223,7 @@
 | `br_transferegov` | TransfereGov — planos de ação, programas e transferências (API normalizada) | 3 | 30.346 | — | TransfereGov |
 | `br_transferegov_siconv` | TransfereGov/SICONV — convênios, contratos de repasse e execução física/financeira completa | 62 | 69.060.758 | — | Transferegov/SICONV completo |
 | `br_trase_supply_chain` | Trase — cadeia de suprimentos de soja e carne bovina, do frigorífico/esmagadora à origem | 7 | 1.824.843 | — | Base dos Dados |
-| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 23 | 1.514.381.653 | — | TSE ciclo de 2026 (em aberto) |
+| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 23 | 1.514.381.653 | — | Base dos Dados |
 | `br_tse_filiacao_partidaria` | TSE — filiação partidária | 2 | 41.840.389 | — | Base dos Dados |
 | `eu_sanctions` | União Europeia — lista de sanções | 1 | 42.347 | — | EU Sanctions |
 | `global_ibge_tabua_mares` | IBGE — tábua de marés | 2 | 1.261.446 | — | Tábua de Marés |

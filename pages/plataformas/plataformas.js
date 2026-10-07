@@ -16,7 +16,7 @@
     contagem: ' platforms',
     dek: 'Navigable dashboards, maps and networks: the whole data, not just the ' +
       'slice a finished analysis used. They come from the same local mirror of ' +
-      '1,050 public tables that feeds the <a href="/analises/">analyses</a> ' +
+      '1,069 public tables that feeds the <a href="/analises/">analyses</a> ' +
       '— the difference is that here you explore, instead of reading a ' +
       'conclusion. The platforms themselves are in Portuguese.'
   } : {
@@ -25,7 +25,7 @@
     contagem: ' plataformas',
     dek: 'Painel, mapa e rede navegáveis: o dado inteiro, não só o ' +
       'recorte que uma análise fechada usou. Saem do mesmo espelho local de ' +
-      '1.050 tabelas públicas que alimenta as <a href="/analises/">análises</a> ' +
+      '1.069 tabelas públicas que alimenta as <a href="/analises/">análises</a> ' +
       '— a diferença é que aqui você explora, em vez de ler uma conclusão.'
   };
 
