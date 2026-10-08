@@ -2,13 +2,13 @@
 
 🇬🇧 [English version](ERD_EN.md)
 
-Mapa de entidades e relações das 1071 tabelas (239 datasets) do espelho. Gerado por `scripts/gera_erd.py` a partir de `schemas.json` em 2026-10-07 — não edite à mão, regenere.
+Mapa de entidades e relações das 1234 tabelas (251 datasets) do espelho. Gerado por `scripts/gera_erd.py` a partir de `schemas.json` em 2026-10-08 — não edite à mão, regenere.
 
 As expressões de join, o formato de cada chave e as pegadinhas estão em [`docs/context/join_keys.md`](docs/context/join_keys.md). Este arquivo é o mapa; aquele é o manual.
 
 ## Como ler
 
-Um único `erDiagram` com 1071 tabelas seria ilegível, então o modelo sobe um nível:
+Um único `erDiagram` com 1234 tabelas seria ilegível, então o modelo sobe um nível:
 
 - **entidade = dataset**; **atributo = uma das tabelas** dele;
 - o *tipo* do atributo lista as chaves que aquela tabela carrega (`mun`, `uf`, `cnpj`, `cnes`, `escola`, `setor`, `cep`, `cpf`, `cnae`, `cbo`, `cid`, `ncm`, `pais`, `partido`, `orgao`, `ug`, `funcprog`, `ano`, `mes`), ou `sem_chave` quando não há nenhuma;
@@ -74,26 +74,26 @@ erDiagram
 
 | domínio | datasets | tabelas | conectados |
 |---|---|---|---|
-| Diretórios e tabelas de referência | 10 | 71 | 9 |
+| Diretórios e tabelas de referência | 11 | 90 | 10 |
 | Saúde | 28 | 63 | 27 |
-| Educação e ciência | 20 | 140 | 17 |
-| Trabalho, empresas e economia | 46 | 132 | 37 |
+| Educação e ciência | 20 | 144 | 17 |
+| Trabalho, empresas e economia | 46 | 139 | 37 |
 | Governo, orçamento e compras | 38 | 185 | 33 |
-| Política e eleições | 9 | 95 | 9 |
-| Justiça, segurança e sanções | 21 | 52 | 12 |
-| Território, ambiente e infraestrutura | 27 | 117 | 23 |
+| Política e eleições | 9 | 126 | 9 |
+| Justiça, segurança e sanções | 23 | 62 | 14 |
+| Território, ambiente e infraestrutura | 28 | 118 | 24 |
 | Demografia e indicadores sociais | 18 | 130 | 17 |
 | Internacional, cultura e esporte | 9 | 25 | 3 |
-| Outros | 13 | 61 | 11 |
-| **total** | **239** | **1071** | **198** |
+| Outros | 21 | 152 | 17 |
+| **total** | **251** | **1234** | **208** |
 
-41 datasets não têm chave documentada alguma; 294 tabelas individuais não carregam chave nenhuma (ambas as listas no fim).
+43 datasets não têm chave documentada alguma; 323 tabelas individuais não carregam chave nenhuma (ambas as listas no fim).
 
 ---
 
 ## Diretórios e tabelas de referência
 
-10 datasets · 71 tabelas
+11 datasets · 90 tabelas
 
 **1/2**
 
@@ -112,9 +112,6 @@ erDiagram
     NCM_SH ||--o{ br_bd_diretorios_mundo : "id_ncm +3"
     UF ||..o{ br_bd_diretorios_mundo : "sigla"
     MUNICIPIO ||..o{ br_bd_diretorios_us : "city"
-    UF ||..o{ br_bd_metadados : "state"
-    MUNICIPIO ||--o{ br_bd_vizinhanca : "id_municipio_1 +1"
-    UF ||--o{ br_bd_vizinhanca : "sigla_uf_1 +1"
     br_bd_diretorios_brasil {
         sem_chave area_conhecimento "875 linhas"
         cbo cbo_1994 "2.4k linhas"
@@ -172,6 +169,48 @@ erDiagram
         sem_chave school "102.3k linhas"
         sem_chave school_district "19.6k linhas"
     }
+```
+
+**2/2**
+
+```mermaid
+erDiagram
+    CID10 ||..o{ br_bd_execucao_estadual : "categoria"
+    EMPRESA_CNPJ ||..o{ br_bd_execucao_estadual : "documento"
+    FUNCAO_PROGRAMA ||..o{ br_bd_execucao_estadual : "nome_acao +3"
+    MUNICIPIO ||--o{ br_bd_execucao_estadual : "id_municipio"
+    ORGAO ||--o{ br_bd_execucao_estadual : "id_orgao"
+    UF ||--o{ br_bd_execucao_estadual : "sigla_uf"
+    UNIDADE_GESTORA ||--o{ br_bd_execucao_estadual : "id_unidade_gestora"
+    UF ||..o{ br_bd_metadados : "state"
+    MUNICIPIO ||--o{ br_bd_vizinhanca : "id_municipio_1 +1"
+    UF ||--o{ br_bd_vizinhanca : "sigla_uf_1 +1"
+    MUNICIPIO ||..o{ br_brasilapi : "city"
+    UF ||..o{ br_brasilapi : "state"
+    CID10 ||..o{ br_datasus_cid10 : "CAT"
+    MUNICIPIO ||--o{ br_ibge_amc : "id_municipio"
+    CBO ||--o{ br_ibge_cbo_2002 : "cbo_2002"
+    br_bd_execucao_estadual {
+        uf_ug_ano contrato "281.2k linhas"
+        uf_ug_ano contrato_fiscal "94k linhas"
+        uf_ano contrato_item "84.1k linhas"
+        uf_orgao_ug_ano_mes despesa "125.4M linhas"
+        uf_orgao_ug_ano despesa_anual "4.8M linhas"
+        uf_orgao_ug_funcprog_ano_mes despesa_dotacao "176.5k linhas"
+        uf_orgao_ug_ano_mes despesa_mensal "2.2M linhas"
+        uf dicionario "10.4k linhas"
+        uf_ano_mes empenho_credor "1.1M linhas"
+        uf_orgao_ug_ano fornecedor_sancionado "2.1k linhas"
+        uf_cid_orgao_ano_mes licitacao "601.3k linhas"
+        uf_ano licitacao_item "3.5M linhas"
+        uf_cnpj_cid_ano licitacao_participante "2.5M linhas"
+        uf_ug_ano_mes liquidacao "17.1M linhas"
+        uf_ug_ano_mes nota_fiscal "1.4M linhas"
+        uf_ano_mes nota_fiscal_item "2M linhas"
+        uf_ug_ano_mes pagamento "32.3M linhas"
+        mun_uf_orgao_ano plano_contratacao_item "1.6M linhas"
+        uf relacionamentos "1.4M linhas"
+    }
     br_bd_metadados {
         sem_chave bigquery_tables "1.9k linhas"
         sem_chave external_links "1.3k linhas"
@@ -185,21 +224,10 @@ erDiagram
         mun_ano municipio "522.8k linhas"
         uf_ano uf "1.1k linhas"
     }
-```
-
-**2/2**
-
-```mermaid
-erDiagram
-    MUNICIPIO ||..o{ br_brasilapi : "city"
-    UF ||..o{ br_brasilapi : "state"
-    CID10 ||..o{ br_datasus_cid10 : "CAT"
-    MUNICIPIO ||--o{ br_ibge_amc : "id_municipio"
-    CBO ||--o{ br_ibge_cbo_2002 : "cbo_2002"
     br_brasilapi {
-        sem_chave bancos "481 linhas"
+        sem_chave bancos "473 linhas"
         mun_uf ddd_cidades "5.6k linhas"
-        sem_chave feriados "100 linhas"
+        sem_chave feriados "108 linhas"
         sem_chave taxas_referencia "3 linhas"
     }
     br_datasus_cid10 {
@@ -293,12 +321,12 @@ erDiagram
         mun_uf_cnpj_ano_mes informacao_consolidada "2.3B linhas"
     }
     br_anvisa_cmed {
-        cnpj precos "51.1k linhas"
+        cnpj precos "52.8k linhas"
     }
     br_anvisa_consultas {
         sem_chave agrotoxicos "9.7k linhas"
         cnpj alimentos "49k linhas"
-        sem_chave registros "43.3k linhas"
+        sem_chave registros "42.7k linhas"
     }
     br_anvisa_medicamentos_industrializados {
         mun_uf_ano_mes microdados "10M linhas"
@@ -367,16 +395,16 @@ erDiagram
         mun_uf_ano microdados_esquistossomose "169.7k linhas"
     }
     br_ms_sinan_febre_amarela {
-        mun_uf_ano microdados_febre_amarela "39.5k linhas"
+        mun_uf_ano microdados_febre_amarela "82.8k linhas"
     }
     br_ms_sinan_malaria {
-        mun_uf_ano microdados_malaria "68.3k linhas"
+        mun_uf_ano microdados_malaria "71.2k linhas"
     }
     br_ms_sinan_violencia {
         mun_uf_ano microdados_violencia "4.9M linhas"
     }
     br_ms_sinan_zika {
-        mun_uf_ano microdados_zika "605k linhas"
+        mun_uf_ano microdados_zika "607.2k linhas"
     }
     br_ms_sinasc {
         sem_chave dicionario "414 linhas"
@@ -417,16 +445,16 @@ erDiagram
         mun_uf_cnes microdados_estabelecimento "805.8k linhas"
     }
     br_saude_bps {
-        mun_cnpj_ano dados "342.7k linhas"
+        mun_cnpj_ano dados "371.1k linhas"
     }
     br_saude_farmaciapopular {
-        mun_uf_cnpj estabelecimentos "31k linhas"
+        mun_uf_cnpj estabelecimentos "32.6k linhas"
     }
 ```
 
 ## Educação e ciência
 
-20 datasets · 140 tabelas
+20 datasets · 144 tabelas
 
 **1/3**
 
@@ -506,6 +534,7 @@ erDiagram
 
 ```mermaid
 erDiagram
+    ESCOLA ||--o{ br_inep_enem : "id_escola"
     MUNICIPIO ||--o{ br_inep_enem : "id_municipio_prova +2"
     UF ||--o{ br_inep_enem : "sigla_uf_prova +3"
     UF ||--o{ br_inep_formacao_docente : "sigla_uf"
@@ -521,6 +550,7 @@ erDiagram
     br_inep_enem {
         sem_chave dicionario "13.1k linhas"
         mun_uf_ano microdados "108.1M linhas"
+        mun_uf_ano participantes "9.1M linhas"
         sem_chave questionario_socioeconomico_1998 "150.9k linhas"
         sem_chave questionario_socioeconomico_1999 "309k linhas"
         sem_chave questionario_socioeconomico_2000 "378.4k linhas"
@@ -547,6 +577,9 @@ erDiagram
         sem_chave questionario_socioeconomico_2021 "3.4M linhas"
         sem_chave questionario_socioeconomico_2022 "3.5M linhas"
         sem_chave questionario_socioeconomico_2023 "3.9M linhas"
+        sem_chave questionario_socioeconomico_2024 "4.3M linhas"
+        sem_chave questionario_socioeconomico_2025 "4.8M linhas"
+        mun_uf_escola_ano resultados "9.1M linhas"
     }
     br_inep_formacao_docente {
         ano brasil "5k linhas"
@@ -673,7 +706,7 @@ erDiagram
 
 ## Trabalho, empresas e economia
 
-46 datasets · 132 tabelas
+46 datasets · 139 tabelas
 
 **1/3**
 
@@ -701,7 +734,8 @@ erDiagram
     MUNICIPIO ||--o{ br_bcb_sicor : "id_municipio +1"
     PESSOA_CPF ||--o{ br_bcb_sicor : "cpf"
     UF ||--o{ br_bcb_sicor : "sigla_uf +1"
-    EMPRESA_CNPJ ||--o{ br_bndes_operacoes_contratadas : "cnpj_cliente +2"
+    CID10 ||..o{ br_bndes_operacoes_contratadas : "categoria"
+    EMPRESA_CNPJ ||--o{ br_bndes_operacoes_contratadas : "cnpj_cliente +3"
     MUNICIPIO ||--o{ br_bndes_operacoes_contratadas : "id_municipio"
     UF ||--o{ br_bndes_operacoes_contratadas : "sigla_uf"
     EMPRESA_CNPJ ||--o{ br_brasilio_holdings : "cnpj +1"
@@ -712,27 +746,21 @@ erDiagram
     EMPRESA_CNPJ ||--o{ br_cvm_administradores_carteira : "cnpj"
     MUNICIPIO ||..o{ br_cvm_administradores_carteira : "municipio"
     UF ||--o{ br_cvm_administradores_carteira : "sigla_uf"
-    EMPRESA_CNPJ ||..o{ br_cvm_fundos : "CNPJ_ADMIN +5"
-    PESSOA_CPF ||..o{ br_cvm_fundos : "CPF_CNPJ_GESTOR"
+    EMPRESA_CNPJ ||..o{ br_cvm_fundos : "CNPJ_ADMIN +12"
+    PESSOA_CPF ||..o{ br_cvm_fundos : "CPF_CNPJ_GESTOR +1"
     EMPRESA_CNPJ ||--o{ br_cvm_oferta_publica_distribuicao : "cnpj_lider +2"
     MUNICIPIO ||..o{ br_cvm_oferta_publica_distribuicao : "data_comunicado +1"
     UF ||..o{ br_datahackers_state_data : "p1_i_1"
     MUNICIPIO ||--o{ br_firjan_ifgf : "id_municipio"
     UF ||--o{ br_firjan_ifgf : "sigla_uf"
-    CID10 ||..o{ br_ibge_inpc : "categoria"
-    MUNICIPIO ||--o{ br_ibge_inpc : "id_municipio"
-    UF ||--o{ br_ibge_inpc : "sigla_uf"
-    CID10 ||..o{ br_ibge_ipca : "categoria"
-    MUNICIPIO ||--o{ br_ibge_ipca : "id_municipio"
-    UF ||--o{ br_ibge_ipca : "sigla_uf"
     br_anp_combustiveis {
-        mun_uf_cep_cnpj precos "2M linhas"
+        mun_uf_cep_cnpj precos "2.2M linhas"
     }
     br_anp_precos_combustiveis {
         mun_uf_cnpj_ano microdados "16.4M linhas"
     }
     br_bcb_desenrola {
-        sem_chave dados "12.8k linhas"
+        sem_chave dados "13.6k linhas"
     }
     br_bcb_estban {
         mun_uf_cnpj_ano_mes agencia "443.8M linhas"
@@ -747,11 +775,11 @@ erDiagram
         ano_mes relatorio "54.7M linhas"
     }
     br_bcb_pix_municipio {
-        mun_uf_ano transacoes "395.4k linhas"
+        mun_uf_ano transacoes "401k linhas"
     }
     br_bcb_ptax {
         sem_chave cotacao_dolar_dia "10.5k linhas"
-        sem_chave cotacao_moeda_dia "794.1k linhas"
+        sem_chave cotacao_moeda_dia "794.5k linhas"
         sem_chave moedas "10 linhas"
     }
     br_bcb_scrdata {
@@ -763,6 +791,8 @@ erDiagram
     br_bcb_sicor {
         sem_chave dicionario "408 linhas"
         sem_chave empreendimento "3.3k linhas"
+        sem_chave fonte_recurso "37 linhas"
+        cnpj instituicao_financeira "650 linhas"
         ano_mes liberacao "21M linhas"
         uf_cnpj_funcprog_ano_mes operacao "27.2M linhas"
         ano_mes operacoes_desclassificadas "12.7k linhas"
@@ -775,6 +805,8 @@ erDiagram
     }
     br_bndes_operacoes_contratadas {
         mun_uf_ano operacoes_administracao_publica "4.7k linhas"
+        uf_cnpj_cid_ano operacoes_exportacao_bens "2.4k linhas"
+        uf_cnpj_cid_ano operacoes_exportacao_servicos "652 linhas"
         mun_uf_cnpj_ano operacoes_indiretas_automaticas "2.4M linhas"
         mun_uf_cnpj operacoes_nao_automaticas "23.5k linhas"
     }
@@ -782,7 +814,7 @@ erDiagram
         cnpj holdings "515.2k linhas"
     }
     br_caixa_sinapi {
-        uf_mes insumos "2M linhas"
+        uf_mes insumos "2.2M linhas"
     }
     br_caixa_sorteios {
         sem_chave megasena "15.3k linhas"
@@ -798,6 +830,9 @@ erDiagram
     }
     br_cvm_fundos {
         cnpj_cpf fundos "46.8k linhas"
+        cnpj registro_classe "36.8k linhas"
+        cnpj_cpf registro_fundo "90.5k linhas"
+        sem_chave registro_subclasse "10.3k linhas"
     }
     br_cvm_oferta_publica_distribuicao {
         mun_cnpj dia "27.5k linhas"
@@ -815,22 +850,10 @@ erDiagram
         ano_mes igp_og_mes "652 linhas"
     }
     br_fipe_veiculos {
-        sem_chave precos "11.3k linhas"
+        sem_chave precos "11.4k linhas"
     }
     br_firjan_ifgf {
         mun_uf_ano ranking "55.7k linhas"
-    }
-    br_ibge_inpc {
-        ano_mes mes_brasil "558 linhas"
-        cid_ano_mes mes_categoria_brasil "30.4k linhas"
-        mun_uf_cid_ano_mes mes_categoria_municipio "273.6k linhas"
-        uf_cid_ano_mes mes_categoria_rm "304k linhas"
-    }
-    br_ibge_ipca {
-        ano_mes mes_brasil "549 linhas"
-        cid_ano_mes mes_categoria_brasil "31.1k linhas"
-        mun_uf_cid_ano_mes mes_categoria_municipio "279.7k linhas"
-        uf_cid_ano_mes mes_categoria_rm "310.8k linhas"
     }
 ```
 
@@ -838,6 +861,12 @@ erDiagram
 
 ```mermaid
 erDiagram
+    CID10 ||..o{ br_ibge_inpc : "categoria"
+    MUNICIPIO ||--o{ br_ibge_inpc : "id_municipio"
+    UF ||--o{ br_ibge_inpc : "sigla_uf"
+    CID10 ||..o{ br_ibge_ipca : "categoria"
+    MUNICIPIO ||--o{ br_ibge_ipca : "id_municipio"
+    UF ||--o{ br_ibge_ipca : "sigla_uf"
     CID10 ||..o{ br_ibge_ipca15 : "categoria"
     MUNICIPIO ||--o{ br_ibge_ipca15 : "id_municipio"
     UF ||--o{ br_ibge_ipca15 : "sigla_uf"
@@ -877,11 +906,18 @@ erDiagram
     MUNICIPIO ||--o{ br_me_rais_identificada : "id_municipio"
     UF ||--o{ br_me_rais_identificada : "sigla_uf"
     UF ||--o{ br_mme_consumo_energia_eletrica : "sigla_uf"
-    MUNICIPIO ||--o{ br_rf_arrecadacao : "id_municipio"
-    UF ||--o{ br_rf_arrecadacao : "sigla_uf"
-    CEP ||--o{ br_rf_cafir : "cep"
-    MUNICIPIO ||--o{ br_rf_cafir : "id_municipio"
-    UF ||--o{ br_rf_cafir : "sigla_uf"
+    br_ibge_inpc {
+        ano_mes mes_brasil "558 linhas"
+        cid_ano_mes mes_categoria_brasil "30.4k linhas"
+        mun_uf_cid_ano_mes mes_categoria_municipio "273.6k linhas"
+        uf_cid_ano_mes mes_categoria_rm "304k linhas"
+    }
+    br_ibge_ipca {
+        ano_mes mes_brasil "549 linhas"
+        cid_ano_mes mes_categoria_brasil "31.1k linhas"
+        mun_uf_cid_ano_mes mes_categoria_municipio "279.7k linhas"
+        uf_cid_ano_mes mes_categoria_rm "310.8k linhas"
+    }
     br_ibge_ipca15 {
         ano_mes mes_brasil "302 linhas"
         cid_ano_mes mes_categoria_brasil "29.9k linhas"
@@ -938,10 +974,10 @@ erDiagram
     }
     br_me_cnpj {
         sem_chave dicionario "853 linhas"
-        cnpj_ano_mes empresas "2.4B linhas"
-        mun_uf_cep_cnpj_cnae_pais_ano_mes estabelecimentos "2.5B linhas"
-        cnpj simples "47.7M linhas"
-        cnpj_cpf_pais_ano_mes socios "1B linhas"
+        cnpj_ano_mes empresas "3.3B linhas"
+        mun_uf_cep_cnpj_cnae_pais_ano_mes estabelecimentos "3.4B linhas"
+        cnpj simples "50.4M linhas"
+        cnpj_cpf_pais_ano_mes socios "1.4B linhas"
     }
     br_me_comex_stat {
         sem_chave dicionario "1.7k linhas"
@@ -968,23 +1004,17 @@ erDiagram
     br_mme_consumo_energia_eletrica {
         uf_ano_mes uf "38.9k linhas"
     }
-    br_rf_arrecadacao {
-        ano_mes cnae "2.5k linhas"
-        ano_mes ir_ipi "408 linhas"
-        mun_uf_ano_mes itr "516.4k linhas"
-        ano_mes natureza_juridica "8.2k linhas"
-        uf_ano_mes uf "7.9k linhas"
-    }
-    br_rf_cafir {
-        sem_chave dicionario "30 linhas"
-        mun_uf_cep imoveis_rurais "169.9M linhas"
-    }
 ```
 
 **3/3**
 
 ```mermaid
 erDiagram
+    MUNICIPIO ||--o{ br_rf_arrecadacao : "id_municipio"
+    UF ||--o{ br_rf_arrecadacao : "sigla_uf"
+    CEP ||--o{ br_rf_cafir : "cep"
+    MUNICIPIO ||--o{ br_rf_cafir : "id_municipio"
+    UF ||--o{ br_rf_cafir : "sigla_uf"
     CEP ||--o{ br_rf_cno : "cep"
     CID10 ||..o{ br_rf_cno : "categoria"
     CNAE ||--o{ br_rf_cno : "cnae_2_subclasse"
@@ -998,6 +1028,17 @@ erDiagram
     MUNICIPIO ||..o{ br_trase_supply_chain : "municipality_id +4"
     PESSOA_CPF ||..o{ br_trase_supply_chain : "cnpj_cpf"
     UF ||..o{ br_trase_supply_chain : "state"
+    br_rf_arrecadacao {
+        ano_mes cnae "2.5k linhas"
+        ano_mes ir_ipi "408 linhas"
+        mun_uf_ano_mes itr "516.4k linhas"
+        ano_mes natureza_juridica "8.2k linhas"
+        uf_ano_mes uf "7.9k linhas"
+    }
+    br_rf_cafir {
+        sem_chave dicionario "30 linhas"
+        mun_uf_cep imoveis_rurais "169.9M linhas"
+    }
     br_rf_cno {
         cid areas "679.1M linhas"
         cnae cnaes "579.1M linhas"
@@ -1114,7 +1155,7 @@ erDiagram
         sem_chave sorteio "40 linhas"
     }
     br_cgu_garantia_safra {
-        mun_uf_mes garantia_safra "33.5M linhas"
+        mun_uf_mes garantia_safra "33.6M linhas"
     }
     br_cgu_gas_do_povo {
         mun_uf_cnpj_cpf_ano_mes gas_do_povo "20.8M linhas"
@@ -1130,13 +1171,13 @@ erDiagram
         cnpj_cpf_orgao_ug_ano_mes licitacao_participante "74.4M linhas"
     }
     br_cgu_novo_bolsa_familia {
-        mun_uf_cpf_ano_mes novo_bolsa_familia "821.3M linhas"
+        mun_uf_cpf_ano_mes novo_bolsa_familia "840.2M linhas"
     }
     br_cgu_orcamento_publico {
         orgao_ug_funcprog_ano orcamento "289.4k linhas"
     }
     br_cgu_pe_de_meia {
-        mun_uf_cpf_mes pe_de_meia "64M linhas"
+        mun_uf_cpf_mes pe_de_meia "86.1M linhas"
     }
     br_cgu_pessoal_executivo_federal {
         cnpj_cpf_orgao_ug_ano_mes terceirizados "732.3k linhas"
@@ -1153,7 +1194,7 @@ erDiagram
         sem_chave dicionario "4 linhas"
     }
     br_cgu_seguro_defeso {
-        mun_uf_cpf_mes seguro_defeso "42.1M linhas"
+        mun_uf_cpf_mes seguro_defeso "43.4M linhas"
     }
     br_cgu_servidores_executivo_federal {
         cpf_ano_mes afastamentos "7.7M linhas"
@@ -1209,17 +1250,17 @@ erDiagram
     MUNICIPIO ||..o{ br_tesouro_cauc : "Código IBGE"
     UF ||..o{ br_tesouro_cauc : "UF"
     br_cgu_viagens {
-        sem_chave pagamento "16.7M linhas"
+        sem_chave pagamento "16.8M linhas"
         sem_chave passagem "5.2M linhas"
-        uf trecho "20.9M linhas"
-        cpf_orgao viagem "9.9M linhas"
+        uf trecho "21.2M linhas"
+        cpf_orgao viagem "10M linhas"
     }
     br_comprasgov_catmatcatser {
-        ncm materiais "247.9k linhas"
+        ncm materiais "249.8k linhas"
         sem_chave servicos "3k linhas"
     }
     br_comprasgov_sicaf {
-        mun_uf_cnpj_cpf_cnae fornecedores "957.9k linhas"
+        mun_uf_cnpj_cpf_cnae fornecedores "962k linhas"
     }
     br_me_estoque_divida_publica {
         ano_mes microdados "124.4k linhas"
@@ -1255,38 +1296,38 @@ erDiagram
         uf_ano_mes cargos_funcoes "1.8M linhas"
     }
     br_ok_queridodiario {
-        mun_uf diarios "231.9k linhas"
+        mun_uf diarios "320.4k linhas"
     }
     br_ok_queridodiario_texto {
-        mun_uf diarios "231.9k linhas"
+        mun_uf diarios "320.4k linhas"
     }
     br_siop_orcamento {
-        sem_chave alteracoes_orcamentarias "9.8k linhas"
+        sem_chave alteracoes_orcamentarias "10.1k linhas"
         sem_chave dados "5.6k linhas"
         mun_uf localizadores "8.1k linhas"
         sem_chave planos_orcamentarios "13.5k linhas"
     }
     br_tce_es {
-        ano_mes aquisicoes_mensais "130 linhas"
-        ano julgamento_contas "11.1k linhas"
-        cid_ano lista_responsaveis "778 linhas"
+        ano_mes aquisicoes_mensais "133 linhas"
+        ano julgamento_contas "11.7k linhas"
+        cid_ano lista_responsaveis "734 linhas"
         mun_cnpj obras_publicas "250 linhas"
         ano resultados_fiscalizacoes "156 linhas"
     }
     br_tce_pi {
         sem_chave despesas_total "17 linhas"
-        sem_chave licitacoes_estado "18 linhas"
+        sem_chave licitacoes_estado "17 linhas"
         uf orgaos "130 linhas"
         mun prefeituras "224 linhas"
         sem_chave receitas_total "17 linhas"
     }
     br_tce_rj {
-        cnpj_cpf_ano contratos_estado "36.6k linhas"
-        mun_cnpj_cpf_ano contratos_municipio "96.4k linhas"
-        mun_ano_mes convenios_estado "2.8k linhas"
+        cnpj_cpf_ano contratos_estado "39.2k linhas"
+        mun_cnpj_cpf_ano contratos_municipio "137.2k linhas"
+        mun_ano_mes convenios_estado "2.9k linhas"
         mun gastos_com_pessoal "2.6k linhas"
-        mun_ano_mes licitacoes "40.1k linhas"
-        ano penalidades_ressarcimento_estado "948 linhas"
+        mun_ano_mes licitacoes "42.7k linhas"
+        ano penalidades_ressarcimento_estado "1.1k linhas"
     }
     br_tce_sp {
         mun municipios "644 linhas"
@@ -1295,7 +1336,7 @@ erDiagram
         sem_chave pautas "50 linhas"
     }
     br_tcu_dadosabertos {
-        ano dados "36.5k linhas"
+        ano dados "37.7k linhas"
     }
     br_tesouro_capag {
         uf estados "247 linhas"
@@ -1399,9 +1440,9 @@ erDiagram
 
 ## Política e eleições
 
-9 datasets · 95 tabelas
+9 datasets · 126 tabelas
 
-**1/2**
+**1/3**
 
 ```mermaid
 erDiagram
@@ -1462,7 +1503,7 @@ erDiagram
         mun_uf_partido_ano microdados "162.1k linhas"
     }
     br_senado_ceaps {
-        cnpj_cpf_ano_mes despesas "393.5k linhas"
+        cnpj_cpf_ano_mes despesas "396.8k linhas"
     }
     br_senado_dados_abertos {
         sem_chave bloco "6 linhas"
@@ -1486,31 +1527,48 @@ erDiagram
     }
 ```
 
-**2/2**
+**2/3**
 
 ```mermaid
 erDiagram
-    EMPRESA_CNPJ ||..o{ br_senado_dados_abertos_administrativos : "documento +1"
+    CID10 ||..o{ br_senado_dados_abertos_administrativos : "categoria"
+    EMPRESA_CNPJ ||..o{ br_senado_dados_abertos_administrativos : "cpf_cnpj +3"
     ORGAO ||--o{ br_senado_dados_abertos_administrativos : "codigo_orgao"
     PARTIDO ||--o{ br_senado_dados_abertos_administrativos : "sigla_partido"
-    PESSOA_CPF ||..o{ br_senado_dados_abertos_administrativos : "cpf_cnpj_fornecedor"
+    PESSOA_CPF ||--o{ br_senado_dados_abertos_administrativos : "cpf"
     UF ||--o{ br_senado_dados_abertos_administrativos : "sigla_uf"
     UF ||..o{ br_senado_dadosabertos : "Sigla +1"
-    CEP ||--o{ br_tse_eleicoes : "cep"
-    CNAE ||--o{ br_tse_eleicoes : "cnae_2_doador +5"
-    EMPRESA_CNPJ ||--o{ br_tse_eleicoes : "cnpj_candidato +1"
-    MUNICIPIO ||--o{ br_tse_eleicoes : "id_municipio +4"
-    PARTIDO ||--o{ br_tse_eleicoes : "sigla_partido"
-    PESSOA_CPF ||--o{ br_tse_eleicoes : "cpf +2"
-    UF ||--o{ br_tse_eleicoes : "sigla_uf +3"
-    MUNICIPIO ||--o{ br_tse_filiacao_partidaria : "id_municipio +1"
-    PARTIDO ||--o{ br_tse_filiacao_partidaria : "sigla_partido"
-    PESSOA_CPF ||--o{ br_tse_filiacao_partidaria : "cpf"
-    UF ||--o{ br_tse_filiacao_partidaria : "sigla_uf"
     br_senado_dados_abertos_administrativos {
+        sem_chave ata_acionamento "2.9k linhas"
+        cnpj_cpf contratacao "12.9k linhas"
+        sem_chave contratacao_documento_fiscal "14.4k linhas"
+        sem_chave contratacao_garantia "2.5k linhas"
+        sem_chave contratacao_item "61.2k linhas"
+        sem_chave contratacao_orgao_gestor "7.3k linhas"
+        sem_chave contratacao_pagamento "10.2k linhas"
+        sem_chave contratacao_pagamento_empenho "12.7k linhas"
+        sem_chave contrato_aditivo "7.5k linhas"
         cnpj_cpf_ano_mes despesa_ceaps "26.1k linhas"
         sem_chave dicionario "205 linhas"
+        sem_chave diretor_coordenador "234 linhas"
+        cnpj_cpf empresa "2.9k linhas"
+        sem_chave estagiario "462 linhas"
+        sem_chave licitacao "2.8k linhas"
+        sem_chave licitacao_detalhamento "7.5k linhas"
+        cpf menor_aprendiz "80 linhas"
+        cid_ano pensionista "2.1k linhas"
+        cid_ano_mes previsao_aposentadoria "1.9k linhas"
+        cid quadro_pessoal "195 linhas"
         uf_partido senador "681 linhas"
+        sem_chave senador_aposentado_pensionista "188 linhas"
+        sem_chave senador_auxilio_moradia "85 linhas"
+        sem_chave senador_escritorio_apoio "82 linhas"
+        sem_chave senador_gabinete "81 linhas"
+        cid_ano servidor "23k linhas"
+        cid servidor_aposentado "3.6k linhas"
+        cid servidor_ativo "6.7k linhas"
+        cid servidor_cedido "247 linhas"
+        sem_chave servidor_exonerado "4.8k linhas"
         ano_mes servidor_hora_extra "7.9k linhas"
         ano_mes servidor_hora_extra_dia "83.4k linhas"
         ano_mes servidor_remuneracao "178.2k linhas"
@@ -1520,17 +1578,35 @@ erDiagram
         ano suprido_movimentacao_subtipo "4.7k linhas"
         ano suprido_transacao "1.6k linhas"
         ano suprido_transacao_objeto "3k linhas"
+        cpf terceirizado "3.2k linhas"
     }
     br_senado_dadosabertos {
-        uf comissoes "220 linhas"
-        sem_chave materias "162.1k linhas"
+        uf comissoes "216 linhas"
+        sem_chave materias "162.9k linhas"
         sem_chave senadores "81 linhas"
         uf_ano votacoes "3.6k linhas"
     }
+```
+
+**3/3**
+
+```mermaid
+erDiagram
+    CEP ||--o{ br_tse_eleicoes : "cep"
+    CNAE ||--o{ br_tse_eleicoes : "cnae_2_doador +5"
+    EMPRESA_CNPJ ||--o{ br_tse_eleicoes : "cnpj_empresa +2"
+    MUNICIPIO ||--o{ br_tse_eleicoes : "id_municipio +4"
+    PARTIDO ||--o{ br_tse_eleicoes : "sigla_partido"
+    PESSOA_CPF ||--o{ br_tse_eleicoes : "cpf +2"
+    UF ||--o{ br_tse_eleicoes : "sigla_uf +3"
+    MUNICIPIO ||--o{ br_tse_filiacao_partidaria : "id_municipio +1"
+    PARTIDO ||--o{ br_tse_filiacao_partidaria : "sigla_partido"
+    PESSOA_CPF ||--o{ br_tse_filiacao_partidaria : "cpf"
+    UF ||--o{ br_tse_filiacao_partidaria : "sigla_uf"
     br_tse_eleicoes {
         uf_ano bens_candidato "5.1M linhas"
         mun_uf_cpf_partido_ano candidatos "3.4M linhas"
-        sem_chave carga_2026 "40 linhas"
+        sem_chave carga_2026 "50 linhas"
         mun_uf_cnpj_cpf_cnae_partido_ano despesas_candidato "32.4M linhas"
         mun_uf_ano detalhes_votacao_municipio "337.1k linhas"
         mun_uf_ano detalhes_votacao_municipio_zona "375.7k linhas"
@@ -1540,6 +1616,9 @@ erDiagram
         mun_uf_cep_ano perfil_eleitorado_local_votacao "6M linhas"
         mun_uf_ano perfil_eleitorado_municipio_zona "40.9M linhas"
         mun_uf_ano perfil_eleitorado_secao "588.5M linhas"
+        mun_uf_cnpj_ano pesquisa_eleitoral "55.8k linhas"
+        uf_cnpj_cpf_ano pesquisa_eleitoral_contratante "56.5k linhas"
+        uf_cnpj_cpf_ano pesquisa_eleitoral_pagante "46.5k linhas"
         mun_uf_cnpj_cpf_cnae_partido_ano receitas_candidato "15.5M linhas"
         mun_uf_cnpj_cpf_cnae_partido_ano receitas_comite "341.7k linhas"
         mun_uf_cnpj_cpf_cnae_partido_ano receitas_orgao_partidario "250.1k linhas"
@@ -1560,7 +1639,9 @@ erDiagram
 
 ## Justiça, segurança e sanções
 
-21 datasets · 52 tabelas
+23 datasets · 62 tabelas
+
+**1/2**
 
 ```mermaid
 erDiagram
@@ -1572,6 +1653,11 @@ erDiagram
     MUNICIPIO ||--o{ br_fbsp_absp : "id_municipio"
     UF ||--o{ br_fbsp_absp : "sigla_uf"
     UF ||..o{ br_mj_consumidorgovbr : "UF"
+    MUNICIPIO ||--o{ br_mj_sinesp : "id_municipio"
+    UF ||--o{ br_mj_sinesp : "sigla_uf"
+    CID10 ||..o{ br_mj_sisdepen : "categoria"
+    MUNICIPIO ||--o{ br_mj_sisdepen : "id_municipio"
+    UF ||--o{ br_mj_sisdepen : "sigla_uf"
     EMPRESA_CNPJ ||..o{ br_mjsp_ckan : "NumeroCNPJ +1"
     MUNICIPIO ||..o{ br_mjsp_ckan : "Município +1"
     UF ||..o{ br_mjsp_ckan : "UF"
@@ -1590,7 +1676,7 @@ erDiagram
     PESSOA_CPF ||..o{ br_tcu_inidoneos : "CPF +1"
     UF ||..o{ br_tcu_inidoneos : "UF"
     br_bcb_penalidades {
-        cnpj_cpf penalidades "16.8k linhas"
+        cnpj_cpf penalidades "17k linhas"
     }
     br_cnj_estatisticas_poder_judiciario {
         uf_ano recursos_financeiros "1.2k linhas"
@@ -1615,14 +1701,28 @@ erDiagram
         ano valores_nacional "2.9k linhas"
     }
     br_mj_consumidorgovbr {
-        uf_ano reclamacoes "10.2M linhas"
+        uf_ano reclamacoes "15.4M linhas"
+    }
+    br_mj_sinesp {
+        sem_chave dicionario "92 linhas"
+        mun_uf_ano_mes municipio_mes "8.8M linhas"
+        uf_ano_mes uf_mes "291.7k linhas"
+    }
+    br_mj_sisdepen {
+        uf_ano cobertura "513 linhas"
+        sem_chave dicionario "20 linhas"
+        mun_uf_cid_ano populacao_caracteristica "1.8M linhas"
+        mun_uf_ano populacao_prisional "1M linhas"
+        uf_ano uf_semestre "513 linhas"
+        mun_uf_ano unidade_crosswalk "28.8k linhas"
+        mun_uf_ano unidade_prisional "201.8k linhas"
     }
     br_mjsp_ckan {
         mun_uf infopen "1.5k linhas"
         uf_cnpj_ano procon "13.8k linhas"
     }
     br_mjsp_procurados {
-        uf procurados "195 linhas"
+        uf procurados "188 linhas"
     }
     br_mjsp_sinesp {
         mun_uf_mes ocorrencias "823 linhas"
@@ -1632,7 +1732,7 @@ erDiagram
         mun_uf_cep_ano populacao_carceraria "38.4k linhas"
     }
     br_pgfn_dividaativa {
-        cnpj_cpf_cid divida "46.6M linhas"
+        cnpj_cpf_cid divida "49.7M linhas"
     }
     br_rj_isp_estatisticas_seguranca {
         ano_mes armas_apreendidas_mensal "31.4k linhas"
@@ -1655,30 +1755,36 @@ erDiagram
         sem_chave dicionario "47 linhas"
     }
     br_stj_dadosabertos {
-        sem_chave documentos "549.2k linhas"
+        sem_chave documentos "3.6M linhas"
     }
     br_tcu_inidoneos {
-        mun_uf_cnpj_cpf empresas "93 linhas"
-        mun_uf_cpf inabilitados_funcao_publica "721 linhas"
-        mun_uf_cpf resp_contas_julgadas_irreg_implicacao_eleitoral "9.7k linhas"
-        mun_uf_cnpj_cpf resp_contas_julgadas_irregulares "34.9k linhas"
+        mun_uf_cnpj_cpf empresas "128 linhas"
+        mun_uf_cpf inabilitados_funcao_publica "781 linhas"
+        mun_uf_cpf resp_contas_julgadas_irreg_implicacao_eleitoral "9.2k linhas"
+        mun_uf_cnpj_cpf resp_contas_julgadas_irregulares "47.9k linhas"
     }
     eu_sanctions {
-        sem_chave sanctions "42.3k linhas"
+        sem_chave sanctions "43.9k linhas"
     }
     global_icij_offshoreleaks {
         sem_chave addresses "402.2k linhas"
         sem_chave entities "814.3k linhas"
-        sem_chave intermediaries "25.6k linhas"
+        sem_chave intermediaries "26.8k linhas"
         sem_chave officers "771.3k linhas"
         sem_chave other "3k linhas"
         sem_chave relationships "3.3M linhas"
     }
     global_ofac_sanctions {
-        sem_chave sanctions "19.1k linhas"
+        sem_chave sanctions "19.4k linhas"
     }
+```
+
+**2/2**
+
+```mermaid
+erDiagram
     global_opensanctions {
-        sem_chave entities "1.3M linhas"
+        sem_chave entities "1.2M linhas"
     }
     un_sanctions {
         sem_chave sanctions "1k linhas"
@@ -1687,7 +1793,7 @@ erDiagram
 
 ## Território, ambiente e infraestrutura
 
-27 datasets · 117 tabelas
+28 datasets · 118 tabelas
 
 **1/2**
 
@@ -1732,7 +1838,7 @@ erDiagram
         mun_uf estacoes_inventario_2023 "37.8k linhas"
         mun_uf inventario "37.8k linhas"
         sem_chave series_chuva_diaria "69.8M linhas"
-        sem_chave series_chuva_mensal "2.5M linhas"
+        sem_chave series_chuva_mensal "2.6M linhas"
         sem_chave series_cota_diaria "47.8M linhas"
         sem_chave series_cota_mensal "1.7M linhas"
         sem_chave series_cota_mensal_completa "1.8M linhas"
@@ -1743,9 +1849,9 @@ erDiagram
         mes series_vazoes_mensal "1.3M linhas"
     }
     br_anac_dadosabertos {
-        sem_chave pontualidade "12.9k linhas"
-        sem_chave rab "34.6k linhas"
-        sem_chave voos "82.1k linhas"
+        sem_chave pontualidade "13.8k linhas"
+        sem_chave rab "35k linhas"
+        sem_chave voos "591.4k linhas"
     }
     br_anatel_banda_larga_fixa {
         ano_mes densidade_brasil "193 linhas"
@@ -1784,14 +1890,14 @@ erDiagram
         cid_ano unidade_conservacao "1.9k linhas"
     }
     br_ibama_autos {
-        sem_chave aie_enquadramento "521k linhas"
-        sem_chave aie_enquadramentocomp "35.1k linhas"
-        ano anexo "703.7k linhas"
-        mun_uf_cnpj_cpf_ano auto_infracao "704k linhas"
-        sem_chave bioma "292.2k linhas"
+        sem_chave aie_enquadramento "531.8k linhas"
+        sem_chave aie_enquadramentocomp "35.8k linhas"
+        ano anexo "722.8k linhas"
+        mun_uf_cnpj_cpf_ano auto_infracao "711.8k linhas"
+        sem_chave bioma "294.5k linhas"
         sem_chave coordenada "73k linhas"
-        ano enquadramento "653.8k linhas"
-        sem_chave especime "38.2k linhas"
+        ano enquadramento "689.8k linhas"
+        sem_chave especime "38.1k linhas"
     }
 ```
 
@@ -1822,6 +1928,7 @@ erDiagram
     MUNICIPIO ||--o{ br_mdr_snis : "id_municipio"
     UF ||--o{ br_mdr_snis : "sigla_uf"
     CID10 ||..o{ br_mma_extincao : "categoria"
+    MUNICIPIO ||--o{ br_mma_sinpatinhas : "id_municipio"
     MUNICIPIO ||--o{ br_mobilidados_indicadores : "id_municipio"
     UF ||--o{ br_mobilidados_indicadores : "sigla_uf"
     CID10 ||..o{ br_seeg_emissoes : "categoria +1"
@@ -1883,6 +1990,9 @@ erDiagram
     br_mma_extincao {
         cid fauna_ameacada "1.3k linhas"
         cid flora_ameacada "6.4k linhas"
+    }
+    br_mma_sinpatinhas {
+        mun microdados "930.4k linhas"
     }
     br_mobilidados_indicadores {
         mun_uf_ano comprometimento_renda_tarifa_transp_publico "351 linhas"
@@ -2202,9 +2312,9 @@ erDiagram
 
 ## Outros
 
-13 datasets · 61 tabelas
+21 datasets · 152 tabelas
 
-**1/2**
+**1/3**
 
 ```mermaid
 erDiagram
@@ -2225,18 +2335,12 @@ erDiagram
     MUNICIPIO ||..o{ br_incra_acervo : "municipio +2"
     UF ||--o{ br_incra_acervo : "sigla_uf_arquivo"
     MUNICIPIO ||--o{ br_mds_cadunico : "id_municipio"
-    CEP ||--o{ br_minc_salic : "cep"
-    EMPRESA_CNPJ ||--o{ br_minc_salic : "cnpjcpf"
-    PESSOA_CPF ||..o{ br_minc_salic : "cnpjcpf"
-    UF ||..o{ br_minc_salic : "uf +1"
-    CNAE ||--o{ br_mte_listasuja : "cnae +1"
-    EMPRESA_CNPJ ||--o{ br_mte_listasuja : "cnpj +1"
-    PESSOA_CPF ||--o{ br_mte_listasuja : "cpf"
-    UF ||--o{ br_mte_listasuja : "sigla_uf"
-    MUNICIPIO ||--o{ br_sedec_desastres : "id_municipio"
-    UF ||--o{ br_sedec_desastres : "sigla_uf"
-    MUNICIPIO ||--o{ br_senatran_frota : "id_municipio"
-    UF ||--o{ br_senatran_frota : "sigla_uf"
+    EMPRESA_CNPJ ||--o{ br_mgi_compras_publicas : "cnpj +7"
+    MUNICIPIO ||--o{ br_mgi_compras_publicas : "id_municipio"
+    NCM_SH ||..o{ br_mgi_compras_publicas : "codigo_ncm +1"
+    ORGAO ||--o{ br_mgi_compras_publicas : "codigo_orgao +2"
+    PESSOA_CPF ||--o{ br_mgi_compras_publicas : "cpf +4"
+    UF ||--o{ br_mgi_compras_publicas : "sigla_uf"
     _export {
         uf_ano rais
     }
@@ -2244,11 +2348,11 @@ erDiagram
         mun_cnpj_cpf empreendimento_geracao_distribuida "4.7M linhas"
         cnpj_ano indicadores_continuidade "16.3M linhas"
         cnpj_ano indicadores_continuidade_atributos "776.2k linhas"
-        cnpj_ano indicadores_continuidade_compensacao "18.6M linhas"
+        cnpj_ano indicadores_continuidade_compensacao "18.7M linhas"
         sem_chave indicadores_continuidade_dominio "484 linhas"
         cnpj_ano indicadores_continuidade_limite "263.4k linhas"
-        sem_chave siga_empreendimentos_geracao "25.1k linhas"
-        cnpj tarifas_homologadas "328.1k linhas"
+        sem_chave siga_empreendimentos_geracao "25k linhas"
+        cnpj tarifas_homologadas "332.2k linhas"
     }
     br_anm {
         mun_uf_cnpj_cpf_ano_mes cfem_cfem_arrecadacao "2.4M linhas"
@@ -2256,23 +2360,23 @@ erDiagram
         mun_uf_cnpj_cpf_ano_mes cfem_cfem_arrecadacao_2007_2011 "364.8k linhas"
         mun_uf_cnpj_cpf_ano_mes cfem_cfem_arrecadacao_2012_2016 "500.4k linhas"
         mun_uf_cnpj_cpf_ano_mes cfem_cfem_arrecadacao_2017_2021 "625.5k linhas"
-        mun_uf_cnpj_cpf_ano_mes cfem_cfem_arrecadacao_2022_2026 "717.5k linhas"
+        mun_uf_cnpj_cpf_ano_mes cfem_cfem_arrecadacao_2022_2026 "744.2k linhas"
         mun_uf_cnpj_cpf_ano_mes cfem_cfem_autuacao "21k linhas"
         ano_mes cfem_cfem_distribuicao "2.2M linhas"
-        mun_cnpj_cpf scm_alvara_de_pesquisa "111.3k linhas"
-        mun_cnpj_cpf scm_cessoes_de_direitos "55.1k linhas"
+        mun_cnpj_cpf scm_alvara_de_pesquisa "112.1k linhas"
+        mun_cnpj_cpf scm_cessoes_de_direitos "55.3k linhas"
         sem_chave scm_guia_de_utilizacao_autorizada "12.3k linhas"
-        mun_cnpj_cpf scm_licenciamento "21.5k linhas"
+        mun_cnpj_cpf scm_licenciamento "21.6k linhas"
         mun_cnpj_cpf scm_plg "3.2k linhas"
         mun_cnpj_cpf scm_portaria_de_lavra "15.5k linhas"
         mun_cnpj_cpf scm_registro_de_extracao_publicado "4k linhas"
-        mun_cnpj_cpf scm_relatorio_de_pesquisa_aprovado "15.7k linhas"
+        mun_cnpj_cpf scm_relatorio_de_pesquisa_aprovado "15.9k linhas"
         mun_cnpj_cpf scm_requerimento_de_lavra "21.4k linhas"
         mun_cnpj_cpf scm_requerimento_de_licenciamento "9.1k linhas"
-        mun_cnpj_cpf scm_requerimento_de_pesquisa "19.1k linhas"
+        mun_cnpj_cpf scm_requerimento_de_pesquisa "18.9k linhas"
         mun_cnpj_cpf scm_requerimento_de_plg "19.3k linhas"
-        mun_cnpj_cpf scm_requerimento_de_registro_de_extracao_protocolizado "2.3k linhas"
-        uf_ano sigmine_processos_minerarios "940.6k linhas"
+        mun_cnpj_cpf scm_requerimento_de_registro_de_extracao_protocolizado "2.4k linhas"
+        uf_ano sigmine_processos_minerarios "942k linhas"
     }
     br_antt_dadosabertos {
         sem_chave acidentes_rodovias "1M linhas"
@@ -2296,6 +2400,49 @@ erDiagram
         sem_chave indicadores_catalogo "139 linhas"
         mun indicadores_municipio "350.1M linhas"
     }
+    br_mgi_compras_publicas {
+        ncm catalogo_material "345.3k linhas"
+        sem_chave catalogo_servico "3k linhas"
+        orgao_ano compra_sem_licitacao "5.2M linhas"
+        cnpj_cpf_orgao_ano compra_sem_licitacao_item "4.8M linhas"
+        sem_chave dicionario "82 linhas"
+        mun_uf_cnpj_cpf fornecedor "962k linhas"
+        mun_ano licitacao "940.7k linhas"
+        cnpj_cpf_ano licitacao_item "4.7M linhas"
+        ano licitacao_item_pregao "24.8M linhas"
+        orgao_ano licitacao_pregao "1.1M linhas"
+        cnpj_orgao orgao "12.1k linhas"
+        ano pregao_item_evento "16.3M linhas"
+        cnpj_cpf_ano pregao_item_oferta "18.7M linhas"
+        mun_uf_cnpj_orgao unidade_administrativa "45.7k linhas"
+    }
+    br_mgi_pncp {
+        sem_chave dicionario "224 linhas"
+    }
+```
+
+**2/3**
+
+```mermaid
+erDiagram
+    CEP ||--o{ br_minc_salic : "cep"
+    EMPRESA_CNPJ ||--o{ br_minc_salic : "cnpjcpf"
+    PESSOA_CPF ||..o{ br_minc_salic : "cnpjcpf"
+    UF ||..o{ br_minc_salic : "uf +1"
+    MUNICIPIO ||--o{ br_mps_beneficios : "id_municipio"
+    UF ||--o{ br_mps_beneficios : "sigla_uf"
+    CNAE ||--o{ br_mte_listasuja : "cnae +1"
+    EMPRESA_CNPJ ||--o{ br_mte_listasuja : "cnpj +1"
+    PESSOA_CPF ||--o{ br_mte_listasuja : "cpf"
+    UF ||--o{ br_mte_listasuja : "sigla_uf"
+    UF ||--o{ br_ons_avaliacao_operacao : "sigla_uf"
+    MUNICIPIO ||--o{ br_prf_acidentes : "id_municipio"
+    UF ||--o{ br_prf_acidentes : "sigla_uf"
+    MUNICIPIO ||--o{ br_sedec_desastres : "id_municipio"
+    UF ||--o{ br_sedec_desastres : "sigla_uf"
+    UF ||--o{ br_senatran_estatisticas : "sigla_uf"
+    MUNICIPIO ||--o{ br_senatran_frota : "id_municipio"
+    UF ||--o{ br_senatran_frota : "sigla_uf"
     br_minc_salic {
         sem_chave areas "7 linhas"
         sem_chave cidades "5.6k linhas"
@@ -2306,31 +2453,120 @@ erDiagram
         sem_chave recibos "245.6k linhas"
         sem_chave segmentos "106 linhas"
     }
+    br_mps_beneficios {
+        mun_uf_ano_mes beneficio_concedido_municipio_mes "26.3M linhas"
+        mun_uf_ano_mes beneficio_mantido_municipio_mes "54.7M linhas"
+        sem_chave dicionario_especie "67 linhas"
+    }
     br_mte_listasuja {
-        uf_cnpj_cpf_ano ceac "12 linhas"
-        uf_cnpj_cpf_ano ceac_historico "36 linhas"
-        uf_cnpj_cpf_cnae_ano empregadores "578 linhas"
-        uf_cnpj_cpf_cnae_ano empregadores_historico "578 linhas"
+        uf_cnpj_cpf_ano ceac "13 linhas"
+        uf_cnpj_cpf_ano ceac_historico "49 linhas"
+        uf_cnpj_cpf_cnae_ano empregadores "508 linhas"
+        uf_cnpj_cpf_cnae_ano empregadores_historico "1.1k linhas"
+    }
+    br_ons_avaliacao_operacao {
+        ano_mes energia_armazenada_reservatorio "633.3k linhas"
+        ano_mes energia_natural_afluente "1.3M linhas"
+        ano_mes geracao_termica_motivo_despacho "10.4M linhas"
+        uf_ano_mes geracao_usina "71.1M linhas"
+        sem_chave reservatorio "159 linhas"
+        uf_ano_mes restricao_operacao_usinas_eolicas "6.3M linhas"
+    }
+    br_ons_estimativa_custos {
+        ano_mes balanco_energia_subsistemas "1.1M linhas"
+        ano_mes balanco_energia_subsistemas_dessem "38.2k linhas"
+        ano_mes custo_marginal_operacao_semanal "4k linhas"
+        ano_mes custo_marginal_operacao_semi_horario "285.9k linhas"
+        ano_mes custo_variavel_unitario_usinas_termicas "21.4k linhas"
     }
     br_pncp {
-        ano contratos "5M linhas"
+        ano contratos "5.2M linhas"
+    }
+    br_prf_acidentes {
+        mun_uf_ano ocorrencia "2.2M linhas"
+        mun_uf_ano pessoa "5.2M linhas"
+        mun_uf_ano pessoa_causa_tipo "4.5M linhas"
     }
     br_sedec_desastres {
         mun_uf reconhecimentos_vigentes "1.2k linhas"
     }
+    br_senatran_estatisticas {
+        uf_ano_mes uf_tipo "159.3k linhas"
+    }
     br_senatran_frota {
-        mun_uf_ano_mes municipio_tipo "20M linhas"
+        mun_uf_ano_mes municipio_tipo "20.1M linhas"
     }
 ```
 
-**2/2**
+**3/3**
 
 ```mermaid
 erDiagram
+    MUNICIPIO ||--o{ br_ufmg_censo_demografico_1872 : "id_municipio_1872"
     MUNICIPIO ||..o{ politicos : "municipio_nascimento"
     PARTIDO ||..o{ politicos : "partido"
     PESSOA_CPF ||--o{ politicos : "cpf"
     UF ||..o{ politicos : "uf"
+    br_ufmg_censo_demografico_1872 {
+        sem_chave dicionario "1.8k linhas"
+        mun_ano domicilio_corrigido_municipio "636 linhas"
+        mun_ano domicilio_corrigido_paroquia "1.4k linhas"
+        ano domicilio_corrigido_provincia "21 linhas"
+        mun_ano domicilio_original_municipio "636 linhas"
+        mun_ano domicilio_original_paroquia "1.4k linhas"
+        ano domicilio_original_provincia "21 linhas"
+        mun_ano estrangeiro_nacionalidade_corrigido_municipio "19.1k linhas"
+        mun_ano estrangeiro_nacionalidade_corrigido_paroquia "43.2k linhas"
+        ano estrangeiro_nacionalidade_corrigido_provincia "630 linhas"
+        mun_ano estrangeiro_nacionalidade_original_municipio "19.7k linhas"
+        mun_ano estrangeiro_nacionalidade_original_paroquia "44.6k linhas"
+        ano estrangeiro_nacionalidade_original_provincia "651 linhas"
+        mun_ano homem_origem_brasileira_corrigido_municipio "15.3k linhas"
+        mun_ano homem_origem_brasileira_corrigido_paroquia "34.6k linhas"
+        ano homem_origem_brasileira_corrigido_provincia "504 linhas"
+        mun_ano homem_origem_brasileira_original_municipio "16.5k linhas"
+        mun_ano homem_origem_brasileira_original_paroquia "37.4k linhas"
+        ano homem_origem_brasileira_original_provincia "546 linhas"
+        mun_ano mulher_origem_brasileira_corrigido_municipio "15.3k linhas"
+        mun_ano mulher_origem_brasileira_corrigido_paroquia "34.6k linhas"
+        ano mulher_origem_brasileira_corrigido_provincia "504 linhas"
+        mun_ano mulher_origem_brasileira_original_municipio "16.5k linhas"
+        mun_ano mulher_origem_brasileira_original_paroquia "37.4k linhas"
+        ano mulher_origem_brasileira_original_provincia "546 linhas"
+        mun_ano municipio "642 linhas"
+        mun_ano paroquia "1.5k linhas"
+        mun_ano populacao_ausente_idade_corrigido_municipio "19.7k linhas"
+        mun_ano populacao_ausente_idade_corrigido_paroquia "44.6k linhas"
+        ano populacao_ausente_idade_corrigido_provincia "651 linhas"
+        mun_ano populacao_ausente_idade_original_municipio "21.6k linhas"
+        mun_ano populacao_ausente_idade_original_paroquia "49k linhas"
+        ano populacao_ausente_idade_original_provincia "714 linhas"
+        mun_ano populacao_geral_corrigido_municipio "15.3k linhas"
+        mun_ano populacao_geral_corrigido_paroquia "34.6k linhas"
+        ano populacao_geral_corrigido_provincia "504 linhas"
+        mun_ano populacao_geral_original_municipio "15.3k linhas"
+        mun_ano populacao_geral_original_paroquia "34.6k linhas"
+        ano populacao_geral_original_provincia "504 linhas"
+        mun_ano populacao_presente_idade_corrigido_municipio "19.7k linhas"
+        mun_ano populacao_presente_idade_corrigido_paroquia "44.6k linhas"
+        ano populacao_presente_idade_corrigido_provincia "651 linhas"
+        mun_ano populacao_presente_idade_original_municipio "21.6k linhas"
+        mun_ano populacao_presente_idade_original_paroquia "49k linhas"
+        ano populacao_presente_idade_original_provincia "714 linhas"
+        mun_ano populacao_total_idade_corrigido_municipio "19.7k linhas"
+        mun_ano populacao_total_idade_corrigido_paroquia "44.6k linhas"
+        ano populacao_total_idade_corrigido_provincia "651 linhas"
+        mun_ano profissao_corrigido_municipio "24.8k linhas"
+        mun_ano profissao_corrigido_paroquia "56.2k linhas"
+        ano profissao_corrigido_provincia "819 linhas"
+        mun_ano profissao_original_municipio "26.1k linhas"
+        mun_ano profissao_original_paroquia "59k linhas"
+        ano profissao_original_provincia "861 linhas"
+        ano provincia "21 linhas"
+        mun_ano resumo_geral_corrigido_municipio "90.9k linhas"
+        mun_ano resumo_geral_corrigido_paroquia "205.9k linhas"
+        ano resumo_geral_corrigido_provincia "3k linhas"
+    }
     politicos {
         mun_uf_cpf_partido contato "7.7k linhas"
     }
@@ -2340,7 +2576,7 @@ erDiagram
 
 ## Sem ligação documentada
 
-### Datasets (41)
+### Datasets (43)
 
 Nenhuma coluna reconhecida como chave de nenhum hub. Alguns são séries nacionais sem recorte geográfico ou de entidade (índices de preço, cotações, agregados nacionais); o resto são fontes raspadas cujo identificador ainda não foi mapeado — esses são os candidatos às próximas pontes no `join_keys.md`.
 
@@ -2365,7 +2601,9 @@ Nenhuma coluna reconhecida como chave de nenhum hub. Alguns são séries naciona
 - `br_me_sic` — `dicionario`, `transferencia`
 - `br_me_siorg` — `remuneracao`
 - `br_mec_prouni` — `dicionario`
+- `br_mgi_pncp` — `dicionario`
 - `br_ms_sipni_dicionarios` — `cobertura_indicadores`, `doses_tipo`, `faixa_etaria`, `vacinas`
+- `br_ons_estimativa_custos` — `balanco_energia_subsistemas`, `balanco_energia_subsistemas_dessem`, `custo_marginal_operacao_semanal`, `custo_marginal_operacao_semi_horario`, `custo_variavel_unitario_usinas_termicas`
 - `br_pncp` — `contratos`
 - `br_stf_corte_aberta` — `decisoes`, `dicionario`
 - `br_stj_dadosabertos` — `documentos`
@@ -2386,8 +2624,8 @@ Nenhuma coluna reconhecida como chave de nenhum hub. Alguns são séries naciona
 - `world_imdb_movies` — `top_movies_per_year`
 - `world_sofascore_competicoes_futebol` — `brasileirao_serie_a`, `uefa_champions_league`
 
-### Tabelas (294)
+### Tabelas (323)
 
 Tabelas que não carregam chave alguma, inclusive dentro de datasets que se conectam pelas outras tabelas (dicionários, agregados nacionais, metadados):
 
-`br_ana_bho.topologia`, `br_ana_reservatorios.sin`, `br_ana_telemetria.series_chuva_diaria`, `br_ana_telemetria.series_chuva_mensal`, `br_ana_telemetria.series_cota_diaria`, `br_ana_telemetria.series_cota_mensal`, `br_ana_telemetria.series_cota_mensal_completa`, `br_ana_telemetria.series_vazao_diaria`, `br_ana_telemetria.series_vazao_mensal`, `br_ana_telemetria.series_vazao_mensal_completa`, `br_anac_dadosabertos.pontualidade`, `br_anac_dadosabertos.rab`, `br_anac_dadosabertos.voos`, `br_aneel_dadosabertos.indicadores_continuidade_dominio`, `br_aneel_dadosabertos.siga_empreendimentos_geracao`, `br_anm.scm_guia_de_utilizacao_autorizada`, `br_antt_dadosabertos.acidentes_rodovias`, `br_anvisa_consultas.agrotoxicos`, `br_anvisa_consultas.registros`, `br_bcb_desenrola.dados`, `br_bcb_estban.dicionario`, `br_bcb_ifdata.dicionario`, `br_bcb_ptax.cotacao_dolar_dia`, `br_bcb_ptax.cotacao_moeda_dia`, `br_bcb_ptax.moedas`, `br_bcb_sgs.series`, `br_bcb_sicor.dicionario`, `br_bcb_sicor.empreendimento`, `br_bd_diretorios_brasil.area_conhecimento`, `br_bd_diretorios_brasil.curso_superior`, `br_bd_diretorios_brasil.etnia_indigena`, `br_bd_diretorios_brasil.natureza_juridica`, `br_bd_diretorios_brasil.subatividade_ibge`, `br_bd_diretorios_data_tempo.bimestre`, `br_bd_diretorios_data_tempo.dia`, `br_bd_diretorios_data_tempo.hora`, `br_bd_diretorios_data_tempo.minuto`, `br_bd_diretorios_data_tempo.segundo`, `br_bd_diretorios_data_tempo.semestre`, `br_bd_diretorios_data_tempo.tempo`, `br_bd_diretorios_data_tempo.trimestre`, `br_bd_diretorios_mundo.pais`, `br_bd_diretorios_us.cbsa_2023`, `br_bd_diretorios_us.census_tract_2020`, `br_bd_diretorios_us.congress_member`, `br_bd_diretorios_us.congressional_district_119`, `br_bd_diretorios_us.county`, `br_bd_diretorios_us.naics_2022`, `br_bd_diretorios_us.place`, `br_bd_diretorios_us.puma_2020`, `br_bd_diretorios_us.school`, `br_bd_diretorios_us.school_district`, `br_bd_metadados.bigquery_tables`, `br_bd_metadados.external_links`, `br_bd_metadados.information_requests`, `br_bd_metadados.organizations`, `br_bd_metadados.resources`, `br_bd_metadados.tables`, `br_brasilapi.bancos`, `br_brasilapi.feriados`, `br_brasilapi.taxas_referencia`, `br_caixa_sorteios.megasena`, `br_camara_dados_abertos.deputado_profissao`, `br_camara_dados_abertos.evento`, `br_camara_dados_abertos.evento_orgao`, `br_camara_dados_abertos.evento_presenca_deputado`, `br_camara_dados_abertos.evento_requerimento`, `br_camara_dados_abertos.frente`, `br_camara_dados_abertos.frente_deputado`, `br_camara_dados_abertos.funcionario`, `br_camara_dados_abertos.sigla_partido`, `br_camara_dados_abertos.votacao`, `br_camara_dados_abertos.votacao_orientacao_bancada`, `br_cgu_cartao_pagamento.dicionario`, `br_cgu_dados_abertos.conjunto`, `br_cgu_dados_abertos.recurso`, `br_cgu_fef.sorteio`, `br_cgu_sancoes.acordos_leniencia_efeitos`, `br_cgu_sancoes.dicionario`, `br_cgu_viagens.pagamento`, `br_cgu_viagens.passagem`, `br_cnpq_bolsas.dicionario`, `br_comprasgov_catmatcatser.servicos`, `br_cvm_administradores_carteira.pessoa_fisica`, `br_datasus_cid10.capitulos`, `br_datasus_cid10.cid_o_grupos`, `br_datasus_cid10.grupos`, `br_datasus_cid10.subcategorias`, `br_fipe_veiculos.precos`, `br_geobr_mapas.amazonia_legal`, `br_geobr_mapas.pais`, `br_geobr_mapas.regiao`, `br_ibama_autos.aie_enquadramento`, `br_ibama_autos.aie_enquadramentocomp`, `br_ibama_autos.bioma`, `br_ibama_autos.coordenada`, `br_ibama_autos.especime`, `br_ibama_embargos_novo.coordenadas`, `br_ibama_embargos_novo.enquadramento`, `br_ibama_embargos_novo.enquadramento_complementar`, `br_ibama_embargos_novo.itens`, `br_ibama_embargos_novo.termo_de_embargo_anexo`, `br_ibge_censo_2022.dicionario`, `br_ibge_censo_demografico.dicionario`, `br_ibge_estadic.dicionario`, `br_ibge_pnad.dicionario`, `br_ibge_pnad_covid.dicionario`, `br_ibge_pnadc.dicionario`, `br_ibge_pof.cadastro_de_produtos_2017`, `br_ibge_pof.dicionario`, `br_inea_boletim.atos_pdf`, `br_inea_boletim.empresas`, `br_inea_boletim.processos`, `br_inea_boletim.tipos_documento`, `br_inep_ana.dicionario`, `br_inep_avaliacao_alfabetizacao.dicionario`, `br_inep_censo_educacao_superior.dicionario`, `br_inep_censo_escolar.dicionario`, `br_inep_enem.dicionario`, `br_inep_enem.questionario_socioeconomico_1998`, `br_inep_enem.questionario_socioeconomico_1999`, `br_inep_enem.questionario_socioeconomico_2000`, `br_inep_enem.questionario_socioeconomico_2001`, `br_inep_enem.questionario_socioeconomico_2002`, `br_inep_enem.questionario_socioeconomico_2003`, `br_inep_enem.questionario_socioeconomico_2004`, `br_inep_enem.questionario_socioeconomico_2005`, `br_inep_enem.questionario_socioeconomico_2006`, `br_inep_enem.questionario_socioeconomico_2007`, `br_inep_enem.questionario_socioeconomico_2008`, `br_inep_enem.questionario_socioeconomico_2009`, `br_inep_enem.questionario_socioeconomico_2010`, `br_inep_enem.questionario_socioeconomico_2011`, `br_inep_enem.questionario_socioeconomico_2012`, `br_inep_enem.questionario_socioeconomico_2013`, `br_inep_enem.questionario_socioeconomico_2014`, `br_inep_enem.questionario_socioeconomico_2015`, `br_inep_enem.questionario_socioeconomico_2016`, `br_inep_enem.questionario_socioeconomico_2017`, `br_inep_enem.questionario_socioeconomico_2018`, `br_inep_enem.questionario_socioeconomico_2019`, `br_inep_enem.questionario_socioeconomico_2020`, `br_inep_enem.questionario_socioeconomico_2021`, `br_inep_enem.questionario_socioeconomico_2022`, `br_inep_enem.questionario_socioeconomico_2023`, `br_inep_formacao_docente.dicionario`, `br_inep_indicador_nivel_socioeconomico.dicionario`, `br_inep_saeb.dicionario`, `br_inep_sinopse_estatistica_educacao_basica.dicionario`, `br_ipea_atlasviolencia.series`, `br_mapbiomas_estatisticas.classe`, `br_mds_cadunico.indicadores_catalogo`, `br_me_caged.dicionario`, `br_me_cno.dicionario`, `br_me_cno.microdados_vinculo`, `br_me_cnpj.dicionario`, `br_me_comex_stat.dicionario`, `br_me_exportadoras_importadoras.dicionario`, `br_me_rais.dicionario`, `br_me_siape.servidores_executivo_federal`, `br_me_sic.dicionario`, `br_me_siorg.remuneracao`, `br_mec_prouni.dicionario`, `br_mg_belohorizonte_smfa_iptu.dicionario`, `br_minc_salic.areas`, `br_minc_salic.cidades`, `br_minc_salic.incentivos`, `br_minc_salic.recibos`, `br_minc_salic.segmentos`, `br_ms_cnes.dicionario`, `br_ms_pns.dicionario`, `br_ms_sia.dicionario`, `br_ms_sih.dicionario`, `br_ms_sim.dicionario`, `br_ms_sinan.dicionario`, `br_ms_sinasc.dicionario`, `br_ms_sipni_dicionarios.cobertura_indicadores`, `br_ms_sipni_dicionarios.doses_tipo`, `br_ms_sipni_dicionarios.faixa_etaria`, `br_ms_sipni_dicionarios.vacinas`, `br_ms_sisvan.dicionario`, `br_ms_vacinacao_covid19.dicionario`, `br_rf_cafir.dicionario`, `br_rf_cno.dicionario`, `br_rf_cno.vinculos`, `br_seeg_emissoes.dicionario`, `br_senado_dados_abertos.bloco`, `br_senado_dados_abertos.lideranca`, `br_senado_dados_abertos.mesa`, `br_senado_dados_abertos.senador_cargo`, `br_senado_dados_abertos.senador_comissao`, `br_senado_dados_abertos_administrativos.dicionario`, `br_senado_dadosabertos.materias`, `br_senado_dadosabertos.senadores`, `br_sfb_sicar.dicionario`, `br_siop_orcamento.alteracoes_orcamentarias`, `br_siop_orcamento.dados`, `br_siop_orcamento.planos_orcamentarios`, `br_stf_corte_aberta.dicionario`, `br_stj_dadosabertos.documentos`, `br_tce_pi.despesas_total`, `br_tce_pi.licitacoes_estado`, `br_tce_pi.receitas_total`, `br_tce_to.pautas`, `br_tesouro_cauc.legenda_itens`, `br_transferegov_siconv.app_parceriasgov_necessidades_aprovadas`, `br_transferegov_siconv.siconv_acomp_obras_valores_itens_medicao`, `br_transferegov_siconv.siconv_contrato`, `br_transferegov_siconv.siconv_contrato_cipi`, `br_transferegov_siconv.siconv_coordenadas_obra`, `br_transferegov_siconv.siconv_dados_obrasgov_geral`, `br_transferegov_siconv.siconv_desbloqueio_cr`, `br_transferegov_siconv.siconv_dl`, `br_transferegov_siconv.siconv_emenda`, `br_transferegov_siconv.siconv_empenho`, `br_transferegov_siconv.siconv_empenho_cipi`, `br_transferegov_siconv.siconv_empenho_desembolso`, `br_transferegov_siconv.siconv_historico_projeto_basico`, `br_transferegov_siconv.siconv_historico_situacao`, `br_transferegov_siconv.siconv_ingresso_contrapartida`, `br_transferegov_siconv.siconv_inst_cont_contratos_lotes_empresas`, `br_transferegov_siconv.siconv_inst_cont_metas_submetas_po`, `br_transferegov_siconv.siconv_inst_cont_proposta_aio`, `br_transferegov_siconv.siconv_itens_dl`, `br_transferegov_siconv.siconv_itens_licitacao`, `br_transferegov_siconv.siconv_justificativas_proposta`, `br_transferegov_siconv.siconv_licitacao`, `br_transferegov_siconv.siconv_obtv_convenente`, `br_transferegov_siconv.siconv_pagamento`, `br_transferegov_siconv.siconv_pagamento_tributo`, `br_transferegov_siconv.siconv_pergunta_selecao_pac`, `br_transferegov_siconv.siconv_programa_proponentes`, `br_transferegov_siconv.siconv_programa_proposta`, `br_transferegov_siconv.siconv_projeto_basico_acffo`, `br_transferegov_siconv.siconv_projeto_basico_lae`, `br_transferegov_siconv.siconv_projeto_basico_metas`, `br_transferegov_siconv.siconv_projeto_basico_proposta`, `br_transferegov_siconv.siconv_projeto_basico_submetas`, `br_transferegov_siconv.siconv_proposta_formalizacao_pac`, `br_transferegov_siconv.siconv_proposta_selecao_pac`, `br_transferegov_siconv.siconv_prorroga_oficio`, `br_transferegov_siconv.siconv_resposta_selecao_pac`, `br_transferegov_siconv.siconv_resumo_fisico_financeiro`, `br_transferegov_siconv.siconv_solicitacao_ajuste_pt`, `br_transferegov_siconv.siconv_solicitacao_alteracao`, `br_transferegov_siconv.siconv_solicitacao_rendimento_aplicacao`, `br_transferegov_siconv.siconv_termo_aditivo`, `br_transferegov_siconv.siconv_vrpl_lotes_fornecedores_licitacao`, `br_transferegov_siconv.siconv_vrpl_metas_submetas`, `br_transferegov_siconv.siconv_vrpl_proposta_licitacao`, `br_tse_eleicoes.carga_2026`, `br_tse_eleicoes.dicionario`, `eu_sanctions.sanctions`, `global_ibge_tabua_mares.estacoes`, `global_ibge_tabua_mares.previsao`, `global_icij_offshoreleaks.addresses`, `global_icij_offshoreleaks.entities`, `global_icij_offshoreleaks.intermediaries`, `global_icij_offshoreleaks.officers`, `global_icij_offshoreleaks.other`, `global_icij_offshoreleaks.relationships`, `global_ofac_sanctions.sanctions`, `global_opensanctions.entities`, `mundo_transfermarkt_competicoes_internacionais.champions_league`, `un_sanctions.sanctions`, `us_harvard_ned.parliamentary_elections`, `us_harvard_ned.presidential_elections`, `world_ampas_oscar.winner_demographics`, `world_iea_pirls.dictionary`, `world_iea_pirls.home_context`, `world_iea_pirls.school_context`, `world_iea_pirls.student_achievement`, `world_iea_pirls.student_context`, `world_iea_pirls.student_teacher_link`, `world_iea_pirls.teacher_context`, `world_iea_pirls.within_country_scoring_reliability`, `world_iea_timss.dictionary`, `world_iea_timss.home_context_grade_4`, `world_iea_timss.school_context_grade_4`, `world_iea_timss.school_context_grade_8`, `world_iea_timss.student_achievement_grade_4`, `world_iea_timss.student_achievement_grade_8`, `world_iea_timss.student_context_grade_4`, `world_iea_timss.student_context_grade_8`, `world_iea_timss.teacher_context_grade_4`, `world_iea_timss.teacher_mathematics_grade_8`, `world_iea_timss.teacher_science_grade_8`, `world_imdb_movies.top_movies_per_year`, `world_olympedia_olympics.athlete_event_result`, `world_olympedia_olympics.country`, `world_olympedia_olympics.result`, `world_wb_mides.dicionario`, `world_wwf_hydrosheds.basins_atlas`, `world_wwf_hydrosheds.rivers_atlas`
+`br_ana_bho.topologia`, `br_ana_reservatorios.sin`, `br_ana_telemetria.series_chuva_diaria`, `br_ana_telemetria.series_chuva_mensal`, `br_ana_telemetria.series_cota_diaria`, `br_ana_telemetria.series_cota_mensal`, `br_ana_telemetria.series_cota_mensal_completa`, `br_ana_telemetria.series_vazao_diaria`, `br_ana_telemetria.series_vazao_mensal`, `br_ana_telemetria.series_vazao_mensal_completa`, `br_anac_dadosabertos.pontualidade`, `br_anac_dadosabertos.rab`, `br_anac_dadosabertos.voos`, `br_aneel_dadosabertos.indicadores_continuidade_dominio`, `br_aneel_dadosabertos.siga_empreendimentos_geracao`, `br_anm.scm_guia_de_utilizacao_autorizada`, `br_antt_dadosabertos.acidentes_rodovias`, `br_anvisa_consultas.agrotoxicos`, `br_anvisa_consultas.registros`, `br_bcb_desenrola.dados`, `br_bcb_estban.dicionario`, `br_bcb_ifdata.dicionario`, `br_bcb_ptax.cotacao_dolar_dia`, `br_bcb_ptax.cotacao_moeda_dia`, `br_bcb_ptax.moedas`, `br_bcb_sgs.series`, `br_bcb_sicor.dicionario`, `br_bcb_sicor.empreendimento`, `br_bcb_sicor.fonte_recurso`, `br_bd_diretorios_brasil.area_conhecimento`, `br_bd_diretorios_brasil.curso_superior`, `br_bd_diretorios_brasil.etnia_indigena`, `br_bd_diretorios_brasil.natureza_juridica`, `br_bd_diretorios_brasil.subatividade_ibge`, `br_bd_diretorios_data_tempo.bimestre`, `br_bd_diretorios_data_tempo.dia`, `br_bd_diretorios_data_tempo.hora`, `br_bd_diretorios_data_tempo.minuto`, `br_bd_diretorios_data_tempo.segundo`, `br_bd_diretorios_data_tempo.semestre`, `br_bd_diretorios_data_tempo.tempo`, `br_bd_diretorios_data_tempo.trimestre`, `br_bd_diretorios_mundo.pais`, `br_bd_diretorios_us.cbsa_2023`, `br_bd_diretorios_us.census_tract_2020`, `br_bd_diretorios_us.congress_member`, `br_bd_diretorios_us.congressional_district_119`, `br_bd_diretorios_us.county`, `br_bd_diretorios_us.naics_2022`, `br_bd_diretorios_us.place`, `br_bd_diretorios_us.puma_2020`, `br_bd_diretorios_us.school`, `br_bd_diretorios_us.school_district`, `br_bd_metadados.bigquery_tables`, `br_bd_metadados.external_links`, `br_bd_metadados.information_requests`, `br_bd_metadados.organizations`, `br_bd_metadados.resources`, `br_bd_metadados.tables`, `br_brasilapi.bancos`, `br_brasilapi.feriados`, `br_brasilapi.taxas_referencia`, `br_caixa_sorteios.megasena`, `br_camara_dados_abertos.deputado_profissao`, `br_camara_dados_abertos.evento`, `br_camara_dados_abertos.evento_orgao`, `br_camara_dados_abertos.evento_presenca_deputado`, `br_camara_dados_abertos.evento_requerimento`, `br_camara_dados_abertos.frente`, `br_camara_dados_abertos.frente_deputado`, `br_camara_dados_abertos.funcionario`, `br_camara_dados_abertos.sigla_partido`, `br_camara_dados_abertos.votacao`, `br_camara_dados_abertos.votacao_orientacao_bancada`, `br_cgu_cartao_pagamento.dicionario`, `br_cgu_dados_abertos.conjunto`, `br_cgu_dados_abertos.recurso`, `br_cgu_fef.sorteio`, `br_cgu_sancoes.acordos_leniencia_efeitos`, `br_cgu_sancoes.dicionario`, `br_cgu_viagens.pagamento`, `br_cgu_viagens.passagem`, `br_cnpq_bolsas.dicionario`, `br_comprasgov_catmatcatser.servicos`, `br_cvm_administradores_carteira.pessoa_fisica`, `br_cvm_fundos.registro_subclasse`, `br_datasus_cid10.capitulos`, `br_datasus_cid10.cid_o_grupos`, `br_datasus_cid10.grupos`, `br_datasus_cid10.subcategorias`, `br_fipe_veiculos.precos`, `br_geobr_mapas.amazonia_legal`, `br_geobr_mapas.pais`, `br_geobr_mapas.regiao`, `br_ibama_autos.aie_enquadramento`, `br_ibama_autos.aie_enquadramentocomp`, `br_ibama_autos.bioma`, `br_ibama_autos.coordenada`, `br_ibama_autos.especime`, `br_ibama_embargos_novo.coordenadas`, `br_ibama_embargos_novo.enquadramento`, `br_ibama_embargos_novo.enquadramento_complementar`, `br_ibama_embargos_novo.itens`, `br_ibama_embargos_novo.termo_de_embargo_anexo`, `br_ibge_censo_2022.dicionario`, `br_ibge_censo_demografico.dicionario`, `br_ibge_estadic.dicionario`, `br_ibge_pnad.dicionario`, `br_ibge_pnad_covid.dicionario`, `br_ibge_pnadc.dicionario`, `br_ibge_pof.cadastro_de_produtos_2017`, `br_ibge_pof.dicionario`, `br_inea_boletim.atos_pdf`, `br_inea_boletim.empresas`, `br_inea_boletim.processos`, `br_inea_boletim.tipos_documento`, `br_inep_ana.dicionario`, `br_inep_avaliacao_alfabetizacao.dicionario`, `br_inep_censo_educacao_superior.dicionario`, `br_inep_censo_escolar.dicionario`, `br_inep_enem.dicionario`, `br_inep_enem.questionario_socioeconomico_1998`, `br_inep_enem.questionario_socioeconomico_1999`, `br_inep_enem.questionario_socioeconomico_2000`, `br_inep_enem.questionario_socioeconomico_2001`, `br_inep_enem.questionario_socioeconomico_2002`, `br_inep_enem.questionario_socioeconomico_2003`, `br_inep_enem.questionario_socioeconomico_2004`, `br_inep_enem.questionario_socioeconomico_2005`, `br_inep_enem.questionario_socioeconomico_2006`, `br_inep_enem.questionario_socioeconomico_2007`, `br_inep_enem.questionario_socioeconomico_2008`, `br_inep_enem.questionario_socioeconomico_2009`, `br_inep_enem.questionario_socioeconomico_2010`, `br_inep_enem.questionario_socioeconomico_2011`, `br_inep_enem.questionario_socioeconomico_2012`, `br_inep_enem.questionario_socioeconomico_2013`, `br_inep_enem.questionario_socioeconomico_2014`, `br_inep_enem.questionario_socioeconomico_2015`, `br_inep_enem.questionario_socioeconomico_2016`, `br_inep_enem.questionario_socioeconomico_2017`, `br_inep_enem.questionario_socioeconomico_2018`, `br_inep_enem.questionario_socioeconomico_2019`, `br_inep_enem.questionario_socioeconomico_2020`, `br_inep_enem.questionario_socioeconomico_2021`, `br_inep_enem.questionario_socioeconomico_2022`, `br_inep_enem.questionario_socioeconomico_2023`, `br_inep_enem.questionario_socioeconomico_2024`, `br_inep_enem.questionario_socioeconomico_2025`, `br_inep_formacao_docente.dicionario`, `br_inep_indicador_nivel_socioeconomico.dicionario`, `br_inep_saeb.dicionario`, `br_inep_sinopse_estatistica_educacao_basica.dicionario`, `br_ipea_atlasviolencia.series`, `br_mapbiomas_estatisticas.classe`, `br_mds_cadunico.indicadores_catalogo`, `br_me_caged.dicionario`, `br_me_cno.dicionario`, `br_me_cno.microdados_vinculo`, `br_me_cnpj.dicionario`, `br_me_comex_stat.dicionario`, `br_me_exportadoras_importadoras.dicionario`, `br_me_rais.dicionario`, `br_me_siape.servidores_executivo_federal`, `br_me_sic.dicionario`, `br_me_siorg.remuneracao`, `br_mec_prouni.dicionario`, `br_mg_belohorizonte_smfa_iptu.dicionario`, `br_mgi_compras_publicas.catalogo_servico`, `br_mgi_compras_publicas.dicionario`, `br_mgi_pncp.dicionario`, `br_minc_salic.areas`, `br_minc_salic.cidades`, `br_minc_salic.incentivos`, `br_minc_salic.recibos`, `br_minc_salic.segmentos`, `br_mj_sinesp.dicionario`, `br_mj_sisdepen.dicionario`, `br_mps_beneficios.dicionario_especie`, `br_ms_cnes.dicionario`, `br_ms_pns.dicionario`, `br_ms_sia.dicionario`, `br_ms_sih.dicionario`, `br_ms_sim.dicionario`, `br_ms_sinan.dicionario`, `br_ms_sinasc.dicionario`, `br_ms_sipni_dicionarios.cobertura_indicadores`, `br_ms_sipni_dicionarios.doses_tipo`, `br_ms_sipni_dicionarios.faixa_etaria`, `br_ms_sipni_dicionarios.vacinas`, `br_ms_sisvan.dicionario`, `br_ms_vacinacao_covid19.dicionario`, `br_ons_avaliacao_operacao.reservatorio`, `br_rf_cafir.dicionario`, `br_rf_cno.dicionario`, `br_rf_cno.vinculos`, `br_seeg_emissoes.dicionario`, `br_senado_dados_abertos.bloco`, `br_senado_dados_abertos.lideranca`, `br_senado_dados_abertos.mesa`, `br_senado_dados_abertos.senador_cargo`, `br_senado_dados_abertos.senador_comissao`, `br_senado_dados_abertos_administrativos.ata_acionamento`, `br_senado_dados_abertos_administrativos.contratacao_documento_fiscal`, `br_senado_dados_abertos_administrativos.contratacao_garantia`, `br_senado_dados_abertos_administrativos.contratacao_item`, `br_senado_dados_abertos_administrativos.contratacao_orgao_gestor`, `br_senado_dados_abertos_administrativos.contratacao_pagamento`, `br_senado_dados_abertos_administrativos.contratacao_pagamento_empenho`, `br_senado_dados_abertos_administrativos.contrato_aditivo`, `br_senado_dados_abertos_administrativos.dicionario`, `br_senado_dados_abertos_administrativos.diretor_coordenador`, `br_senado_dados_abertos_administrativos.estagiario`, `br_senado_dados_abertos_administrativos.licitacao`, `br_senado_dados_abertos_administrativos.licitacao_detalhamento`, `br_senado_dados_abertos_administrativos.senador_aposentado_pensionista`, `br_senado_dados_abertos_administrativos.senador_auxilio_moradia`, `br_senado_dados_abertos_administrativos.senador_escritorio_apoio`, `br_senado_dados_abertos_administrativos.senador_gabinete`, `br_senado_dados_abertos_administrativos.servidor_exonerado`, `br_senado_dadosabertos.materias`, `br_senado_dadosabertos.senadores`, `br_sfb_sicar.dicionario`, `br_siop_orcamento.alteracoes_orcamentarias`, `br_siop_orcamento.dados`, `br_siop_orcamento.planos_orcamentarios`, `br_stf_corte_aberta.dicionario`, `br_stj_dadosabertos.documentos`, `br_tce_pi.despesas_total`, `br_tce_pi.licitacoes_estado`, `br_tce_pi.receitas_total`, `br_tce_to.pautas`, `br_tesouro_cauc.legenda_itens`, `br_transferegov_siconv.app_parceriasgov_necessidades_aprovadas`, `br_transferegov_siconv.siconv_acomp_obras_valores_itens_medicao`, `br_transferegov_siconv.siconv_contrato`, `br_transferegov_siconv.siconv_contrato_cipi`, `br_transferegov_siconv.siconv_coordenadas_obra`, `br_transferegov_siconv.siconv_dados_obrasgov_geral`, `br_transferegov_siconv.siconv_desbloqueio_cr`, `br_transferegov_siconv.siconv_dl`, `br_transferegov_siconv.siconv_emenda`, `br_transferegov_siconv.siconv_empenho`, `br_transferegov_siconv.siconv_empenho_cipi`, `br_transferegov_siconv.siconv_empenho_desembolso`, `br_transferegov_siconv.siconv_historico_projeto_basico`, `br_transferegov_siconv.siconv_historico_situacao`, `br_transferegov_siconv.siconv_ingresso_contrapartida`, `br_transferegov_siconv.siconv_inst_cont_contratos_lotes_empresas`, `br_transferegov_siconv.siconv_inst_cont_metas_submetas_po`, `br_transferegov_siconv.siconv_inst_cont_proposta_aio`, `br_transferegov_siconv.siconv_itens_dl`, `br_transferegov_siconv.siconv_itens_licitacao`, `br_transferegov_siconv.siconv_justificativas_proposta`, `br_transferegov_siconv.siconv_licitacao`, `br_transferegov_siconv.siconv_obtv_convenente`, `br_transferegov_siconv.siconv_pagamento`, `br_transferegov_siconv.siconv_pagamento_tributo`, `br_transferegov_siconv.siconv_pergunta_selecao_pac`, `br_transferegov_siconv.siconv_programa_proponentes`, `br_transferegov_siconv.siconv_programa_proposta`, `br_transferegov_siconv.siconv_projeto_basico_acffo`, `br_transferegov_siconv.siconv_projeto_basico_lae`, `br_transferegov_siconv.siconv_projeto_basico_metas`, `br_transferegov_siconv.siconv_projeto_basico_proposta`, `br_transferegov_siconv.siconv_projeto_basico_submetas`, `br_transferegov_siconv.siconv_proposta_formalizacao_pac`, `br_transferegov_siconv.siconv_proposta_selecao_pac`, `br_transferegov_siconv.siconv_prorroga_oficio`, `br_transferegov_siconv.siconv_resposta_selecao_pac`, `br_transferegov_siconv.siconv_resumo_fisico_financeiro`, `br_transferegov_siconv.siconv_solicitacao_ajuste_pt`, `br_transferegov_siconv.siconv_solicitacao_alteracao`, `br_transferegov_siconv.siconv_solicitacao_rendimento_aplicacao`, `br_transferegov_siconv.siconv_termo_aditivo`, `br_transferegov_siconv.siconv_vrpl_lotes_fornecedores_licitacao`, `br_transferegov_siconv.siconv_vrpl_metas_submetas`, `br_transferegov_siconv.siconv_vrpl_proposta_licitacao`, `br_tse_eleicoes.carga_2026`, `br_tse_eleicoes.dicionario`, `br_ufmg_censo_demografico_1872.dicionario`, `eu_sanctions.sanctions`, `global_ibge_tabua_mares.estacoes`, `global_ibge_tabua_mares.previsao`, `global_icij_offshoreleaks.addresses`, `global_icij_offshoreleaks.entities`, `global_icij_offshoreleaks.intermediaries`, `global_icij_offshoreleaks.officers`, `global_icij_offshoreleaks.other`, `global_icij_offshoreleaks.relationships`, `global_ofac_sanctions.sanctions`, `global_opensanctions.entities`, `mundo_transfermarkt_competicoes_internacionais.champions_league`, `un_sanctions.sanctions`, `us_harvard_ned.parliamentary_elections`, `us_harvard_ned.presidential_elections`, `world_ampas_oscar.winner_demographics`, `world_iea_pirls.dictionary`, `world_iea_pirls.home_context`, `world_iea_pirls.school_context`, `world_iea_pirls.student_achievement`, `world_iea_pirls.student_context`, `world_iea_pirls.student_teacher_link`, `world_iea_pirls.teacher_context`, `world_iea_pirls.within_country_scoring_reliability`, `world_iea_timss.dictionary`, `world_iea_timss.home_context_grade_4`, `world_iea_timss.school_context_grade_4`, `world_iea_timss.school_context_grade_8`, `world_iea_timss.student_achievement_grade_4`, `world_iea_timss.student_achievement_grade_8`, `world_iea_timss.student_context_grade_4`, `world_iea_timss.student_context_grade_8`, `world_iea_timss.teacher_context_grade_4`, `world_iea_timss.teacher_mathematics_grade_8`, `world_iea_timss.teacher_science_grade_8`, `world_imdb_movies.top_movies_per_year`, `world_olympedia_olympics.athlete_event_result`, `world_olympedia_olympics.country`, `world_olympedia_olympics.result`, `world_wb_mides.dicionario`, `world_wwf_hydrosheds.basins_atlas`, `world_wwf_hydrosheds.rivers_atlas`
