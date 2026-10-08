@@ -267,7 +267,7 @@ Desde 2026-10-04, o llama-server (Gemma, `127.0.0.1:8099`) não fica mais sempre
 
 Essa regra é sobre **servir consultas de dado** — nunca usar BigQuery pra isso, sem exceção.
 
-Existe uma **única exceção, estritamente escopada**: manutenção do mirror do beelink (`scripts/sync-with-source.md`), usando **somente `bq query` em modo Sandbox gratuito** (sem conta de billing, cota mensal ~900GB/1TB), nunca `bq extract` nem qualquer operação que dependa de billing ativo. Essa exceção existe só porque o Sandbox sem billing tem custo zero garantido.
+Existe uma **única exceção, estritamente escopada**: manutenção do mirror do beelink (`scripts/sync-with-source.md`), usando **somente consulta interativa em modo Sandbox gratuito** (sem conta de billing, cota mensal ~900GB/1TB) — `bq query` ou a mesma consulta com o resultado lido pela Storage Read API, que funciona sem billing e é o que `scripts/sync/ressincroniza_bq.py` usa (confirmado a pedido em 2026-10-08) —, nunca `bq extract` nem qualquer operação que dependa de billing ativo. Essa exceção existe só porque o Sandbox sem billing tem custo zero garantido.
 
 **Se billing for ativado em qualquer projeto GCP usado aqui, essa exceção acaba imediatamente — volta a ser JAMAIS, sem exceção nenhuma**, já que o que torna o uso pontual de BigQuery seguro hoje é justamente a impossibilidade de gerar custo.
 

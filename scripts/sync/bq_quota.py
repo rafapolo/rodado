@@ -8,6 +8,7 @@ against the public basedosdados project should call reserve() with the dry-run b
 estimate *before* running the real query, and stop for the month if it returns False.
 """
 
+import fcntl
 import json
 from datetime import datetime, timezone
 from pathlib import Path
@@ -34,7 +35,9 @@ def _load():
 
 
 def _save(data):
-    STATE_FILE.write_text(json.dumps(data))
+    tmp = STATE_FILE.with_suffix(".tmp")
+    tmp.write_text(json.dumps(data))
+    tmp.replace(STATE_FILE)   # troca atômica: quem lê nunca vê o arquivo pela metade
 
 
 def remaining_bytes():
@@ -44,13 +47,18 @@ def remaining_bytes():
 
 def reserve(bytes_needed):
     """Reserve bytes against this month's budget. Returns False if it would exceed
-    the budget (caller should skip/defer, not run the query)."""
-    data = _load()
-    if data["bytes_used"] + bytes_needed > MONTHLY_BUDGET_BYTES:
-        return False
-    data["bytes_used"] += bytes_needed
-    _save(data)
-    return True
+    the budget (caller should skip/defer, not run the query).
+
+    O flock cobre o ler-somar-gravar: sem ele, dois scripts de sync ao mesmo tempo
+    perdiam a reserva um do outro (aconteceu em 2026-10-07)."""
+    with open(STATE_FILE.with_suffix(".lock"), "w") as trava:
+        fcntl.flock(trava, fcntl.LOCK_EX)
+        data = _load()
+        if data["bytes_used"] + bytes_needed > MONTHLY_BUDGET_BYTES:
+            return False
+        data["bytes_used"] += bytes_needed
+        _save(data)
+        return True
 
 
 def status():

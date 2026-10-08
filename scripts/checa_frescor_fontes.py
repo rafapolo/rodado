@@ -9,7 +9,7 @@ Compara o dado mais recente da FONTE com o que o espelho tem. Só reporta.
 Lê docs/context/privado/source_freshness_checks.yaml (como perguntar à fonte) e, do
 catálogo no beelink (`_rodado_metadata`), o `last_date` de cada tabela — a
 data mais recente DENTRO do dado, que vem de dataset_freshness.yaml — ou, na
-falta dele, o `scrape_date`. Para cada entrada imprime o que a fonte diz, o
+falta dele, o `updated_at` (parquet mais novo da tabela). Para cada entrada imprime o que a fonte diz, o
 que o espelho tem e o comando do gate (scripts/scrap/atualiza_fonte.py) que
 atualizaria. Não roda scraper e não grava nada: é a Fase 1 de
 tasks/automatizar_atualizacao_fontes.md — automatizar a checagem, não a
@@ -17,7 +17,7 @@ correção.
 
 Dois avisos de leitura:
   - `http_last_modified` diz quando o ARQUIVO da fonte mudou, não a data do
-    dado; compara-se com o scrape_date. Fonte regravada todo dia aparece
+    dado; compara-se com o updated_at. Fonte regravada todo dia aparece
     sempre "à frente" — o que importa é a distância.
   - comparação é sempre entre datas, nunca entre strings: "31/12/2025" >
     "26/08/2026" alfabeticamente, e foi assim que uma checagem manual do BCB
@@ -81,7 +81,8 @@ TIPOS = {"http_json": http_json, "http_last_modified": http_last_modified, "rege
 
 def catalogo():
     sql = ("SET enable_progress_bar=false; "
-           "SELECT dataset || '.' || \"table\" AS t, last_date, scrape_date FROM _rodado_metadata;")
+           "SELECT dataset || '.' || \"table\" AS t, last_date, scrape_date, "
+           "CAST(updated_at AS VARCHAR) AS updated_at FROM _rodado_metadata;")
     out = subprocess.run(["ssh", BEELINK, "~/bin/duckdb -readonly -json ~/rodado/basedosdados.duckdb"],
                          input=sql, capture_output=True, text=True, timeout=180).stdout
     return {r["t"]: r for r in json.loads(out[out.index("["):])}
@@ -101,7 +102,8 @@ def main():
             continue
         meta = cat.get(tabela, {})
         espelho = (meta.get("last_date") or "")[:10]
-        raspado = (meta.get("scrape_date") or "")[:10]
+        # updated_at = parquet mais novo da tabela (quando regravamos); scrape_date é a 1ª coleta e não anda
+        raspado = (meta.get("updated_at") or meta.get("scrape_date") or "")[:10]
         tipo = c["check"]
         fonte, estado = "", ""
         if tipo == "dead":
@@ -125,12 +127,12 @@ def main():
         linhas.append((tabela, tipo, fonte, espelho, raspado, estado, comando, c.get("nota", "")))
 
     if md:
-        print("| tabela | fonte | espelho (dado) | raspado em | estado |\n|---|---|---|---|---|")
+        print("| tabela | fonte | espelho (dado) | regravado em | estado |\n|---|---|---|---|---|")
         for t, _, f, e, r, s, _, _ in linhas:
             print(f"| `{t}` | {f or '—'} | {e or '—'} | {r or '—'} | {s} |")
         return 0
     for t, tipo, f, e, r, s, cmd, nota in linhas:
-        print(f"{s:<26} {t}\n{'':26} fonte={f or '—'} ({tipo})  espelho={e or '—'}  raspado={r or '—'}")
+        print(f"{s:<26} {t}\n{'':26} fonte={f or '—'} ({tipo})  espelho={e or '—'}  regravado={r or '—'}")
         if s.startswith("fonte +") and cmd:
             print(f"{'':26} $ python3 scripts/scrap/{cmd}")
         if nota and (s.startswith(("fonte +", "ERRO")) or tipo in ("manual", "dead")):

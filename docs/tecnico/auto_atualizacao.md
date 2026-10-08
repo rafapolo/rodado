@@ -25,7 +25,7 @@ linhas; nada a lia.) Não confundir com:
 
 | Família | Tabelas | Como saber se a fonte andou | Como trazer | Estado |
 |---|---|---|---|---|
-| Espelho do Base dos Dados | ~900 | metadado do BigQuery (`numRows`, `modified`; grátis, sem job) contra o catálogo; `updated_at` do dataset na API de busca do BD | partição nova (`ano`, `data_referencia`, `data_extracao`): `scripts/sync/sync_drifted_incremental.py`; tabela pequena: `scripts/sync/ressincroniza_bq.py`; CNPJ: `scripts/sync/atualiza_cnpj_rf.py` | scripts prontos, nada agendado |
+| Espelho do Base dos Dados | ~900 | `scripts/sync/checa_espelho_bd.py`: metadado do BigQuery (`numRows`, `modified`; grátis, sem job) contra o catálogo; `updated_at` do dataset na API de busca do BD | partição nova (`ano`, `data_referencia`, `data_extracao`): `scripts/sync/sync_drifted_incremental.py`; tabela pequena: `scripts/sync/ressincroniza_bq.py`; CNPJ: `scripts/sync/atualiza_cnpj_rf.py` | scripts prontos, nada agendado |
 | Raspadas | ~330 | `scripts/checa_frescor_fontes.py`: pergunta à fonte (JSON, Last-Modified, regex ou nota manual), uma entrada por tabela no YAML de frescor | `scripts/scrap/atualiza_fonte.py <scraper>`: roda o scraper em staging, compara nome de arquivo, schema, linhas e data máxima, e só troca com `--promover` | checagem pronta, troca manual de propósito |
 
 O YAML de frescor (fonte, checagem e flags do gate de cada tabela) e os
@@ -65,11 +65,9 @@ BR gratuito, que saturam com concorrência (um worker por proxy).
 
 **Download do Base dos Dados (passo 3): poucos processos, cada um rápido.**
 
-- O controle de cota (`scripts/sync/bq_quota.py`, um JSON com
-  read-modify-write sem trava) **não aguenta dois processos**. Para paralelizar,
-  ou se põe um `flock` em volta de `reserve()`, ou se usa um processo só com um
-  pool de threads interno. Até isso existir, rodar os scripts de sync um de cada
-  vez.
+- O controle de cota (`scripts/sync/bq_quota.py`) tem `flock` em volta de
+  `reserve()` desde 2026-10-08; antes disso dois processos perdiam a reserva um
+  do outro. A cota aguenta paralelo; a banda e o beelink é que limitam.
 - A velocidade vem da Storage Read API, não do número de processos: com ela
   foram ~3,6 M linhas/min por tabela (contra ~4 mil linhas/s pela REST). Dois ou
   três downloads simultâneos já enchem uma conexão doméstica; mais que isso só
@@ -138,10 +136,15 @@ razoável, quando os itens em aberto abaixo estiverem resolvidos:
 
 ## Em aberto
 
-1. Trava no `bq_quota.reserve()` para permitir downloads paralelos.
-2. Script de checagem do espelho do BD (metadado do BigQuery contra o
-   catálogo), irmão do `checa_frescor_fontes.py`.
-3. Entradas no YAML de frescor para as 8 raspadas que não têm.
-4. `last_date` (data dentro do dado) para mais tabelas, em
+1. Entradas no YAML de frescor para as 8 raspadas que não têm.
+2. `last_date` (data dentro do dado) para mais tabelas, em
    `dataset_freshness.yaml`: é ela que diz se estamos atrás da fonte.
-5. Teste de memória do beelink.
+3. Teste de memória do beelink.
+4. `checa_espelho_bd.py` não enxerga as tabelas que no BigQuery são VIEW (127 em
+   2026-10-08): o metadado de view não traz contagem.
+
+Fechados em 2026-10-08: a trava no `bq_quota.reserve()` (`flock` + gravação
+atômica; 400 reservas de 8 processos somaram 400) e o script de checagem do
+espelho do BD. Na primeira rodada ele achou 216 tabelas atrás (4,72 bi de linhas,
+~1.060 GB de cota), 14 em que o BigQuery tem menos linhas que o disco e 16 que
+sumiram da fonte.
