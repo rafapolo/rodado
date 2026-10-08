@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**248 datasets, 1.197 tabelas, 41.952.269.718 linhas.** 10 dataset(s) sem descrição. 4 com data de frescor conferida (de 248).
+**251 datasets, 1.234 tabelas, 42.504.918.873 linhas.** 4 com data de frescor conferida (de 251).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -31,7 +31,7 @@
 | `br_bcb_ifdata` | BCB IF.data — indicadores financeiros de instituições financeiras | 5 | 55.700.812 | — | BCB — IF.data (valores e cadastro por instituição) |
 | `br_bcb_penalidades` | BCB — penalidades aplicadas a instituições financeiras | 1 | 16.963 | — | BCB Penalties |
 | `br_bcb_pix_municipio` | BCB — volume de transações Pix por município, separado por perfil pagador/recebedor PF/PJ | 1 | 401.019 | — | BCB — Estatísticas do Pix por município |
-| `br_bcb_ptax` | _(sem descrição)_ | 3 | 804.947 | — | BCB — PTAX (cotações diárias) |
+| `br_bcb_ptax` | BCB PTAX — cotação de fechamento do dólar e das demais moedas, diária, via Olinda | 3 | 804.947 | — | BCB — PTAX (cotações diárias) |
 | `br_bcb_scrdata` | BCB SCR.data — carteira de crédito do Sistema de Informações de Crédito | 1 | 43.061.984 | — | BCB SCR.data |
 | `br_bcb_sgs` | BCB SGS — séries temporais macroeconômicas (câmbio, Selic, inflação etc.) | 1 | 25.169 | 2026-10-06 | BACEN/BCB SGS séries |
 | `br_bcb_sicor` | BCB SICOR — operações de crédito rural | 13 | 759.658.189 | — | Base dos Dados |
@@ -39,7 +39,7 @@
 | `br_bd_diretorios_data_tempo` | Base dos Dados — diretório de calendário/tempo | 11 | 1.922.812 | — | Base dos Dados |
 | `br_bd_diretorios_mundo` | Base dos Dados — diretórios internacionais (país, NCM, sistema harmonizado) | 4 | 20.648 | — | Base dos Dados |
 | `br_bd_diretorios_us` | Base dos Dados — diretórios de referência dos EUA | 11 | 267.721 | — | Base dos Dados |
-| `br_bd_execucao_estadual` | _(sem descrição)_ | 12 | 15.376.366 | — | Base dos Dados |
+| `br_bd_execucao_estadual` | Execução orçamentária e compras dos governos estaduais (Base dos Dados) — despesa, empenho, liquidação, pagamento, contratos, licitações e notas fiscais | 19 | 196.476.239 | — | Base dos Dados |
 | `br_bd_metadados` | Base dos Dados — metadados do próprio catálogo original (tabelas, organizações) | 7 | 123.379 | — | Base dos Dados |
 | `br_bd_vizinhanca` | Base dos Dados — vizinhança geográfica de municípios e UFs | 2 | 523.926 | — | Base dos Dados |
 | `br_bndes_operacoes_contratadas` | BNDES — operações de crédito contratadas | 5 | 2.408.157 | — | Base dos Dados |
@@ -119,7 +119,7 @@
 | `br_inep_censo_educacao_superior` | INEP — Censo da Educação Superior | 3 | 3.891.339 | — | Base dos Dados |
 | `br_inep_censo_escolar` | INEP — Censo Escolar, escolas e turmas | 3 | 43.155.409 | — | Base dos Dados |
 | `br_inep_educacao_especial` | INEP — indicadores de educação especial/inclusiva | 15 | 12.213.008 | — | Base dos Dados |
-| `br_inep_enem` | INEP — microdados do ENEM | 28 | 216.277.169 | — | Base dos Dados |
+| `br_inep_enem` | INEP — microdados do ENEM | 32 | 243.708.317 | — | Base dos Dados |
 | `br_inep_formacao_docente` | INEP — formação de docentes da educação básica | 4 | 164.105 | — | Base dos Dados |
 | `br_inep_ideb` | INEP — Índice de Desenvolvimento da Educação Básica | 5 | 1.492.158 | — | Base dos Dados |
 | `br_inep_indicador_nivel_socioeconomico` | INEP — indicador de nível socioeconômico das escolas | 5 | 528.410 | — | Base dos Dados |
@@ -142,7 +142,7 @@
 | `br_me_caged` | Ministério do Trabalho — CAGED, movimentação de empregos formais (admissões/demissões) | 4 | 240.703.713 | — | Base dos Dados |
 | `br_me_clima_organizacional` | Ministério da Economia — pesquisa de clima organizacional no serviço público | 1 | 16.436 | — | Base dos Dados |
 | `br_me_cno` | Cadastro Nacional de Obras (CNO) — obras e vínculos de trabalhadores da construção | 3 | 1.020.894 | — | Base dos Dados |
-| `br_me_cnpj` | Receita Federal — cadastro completo de empresas, estabelecimentos, sócios e Simples Nacional | 5 | 8.083.936.256 | — | Base dos Dados |
+| `br_me_cnpj` | Receita Federal — cadastro completo de empresas, estabelecimentos, sócios e Simples Nacional | 5 | 8.158.553.996 | — | Base dos Dados |
 | `br_me_comex_stat` | Comex Stat — exportação e importação por município e NCM | 5 | 129.489.938 | — | Base dos Dados |
 | `br_me_estoque_divida_publica` | Tesouro Nacional — estoque da dívida pública federal | 1 | 124.419 | — | Base dos Dados |
 | `br_me_exportadoras_importadoras` | dicionário de empresas exportadoras e importadoras | 1 | 3 | — | Base dos Dados |
@@ -155,21 +155,22 @@
 | `br_mec_prouni` | MEC ProUni — dicionário de variáveis do programa | 1 | 20 | — | Base dos Dados |
 | `br_mec_sisu` | MEC SISU — microdados de inscrição no Sistema de Seleção Unificada | 1 | 34.700.256 | — | Base dos Dados |
 | `br_mg_belohorizonte_smfa_iptu` | Prefeitura de Belo Horizonte — cadastro de IPTU | 2 | 21.463.825 | — | Base dos Dados |
-| `br_mgi_pncp` | _(sem descrição)_ | 1 | 224 | — | Base dos Dados |
+| `br_mgi_compras_publicas` | Compras públicas federais do Compras.gov.br (MGI) — licitações, pregões, itens, ofertas, compras sem licitação, fornecedores e catálogo de materiais e serviços | 14 | 77.946.539 | — | Base dos Dados |
+| `br_mgi_pncp` | Portal Nacional de Contratações Públicas (PNCP) via Base dos Dados — dicionário de códigos (as tabelas grandes estão sob acesso restrito no BD) | 1 | 224 | — | Base dos Dados |
 | `br_minc_salic` | MinC — SALIC/Lei Rouanet, projetos culturais incentivados | 8 | 839.316 | — | SALIC/Lei Rouanet (MinC) |
 | `br_mj_consumidorgovbr` | Consumidor.gov.br — reclamações contra empresas, 2014–2025 (2025 parcial; os arquivos de 2019 vêm sem Data Abertura, usar Data Finalização; Data Finalização mistura ISO (2020–2025) e dd/mm/aaaa (2014–2021) — parsear os dois) | 1 | 15.392.507 | — | Consumidor.gov.br |
-| `br_mj_sinesp` | _(sem descrição)_ | 2 | 291.754 | — | Base dos Dados |
-| `br_mj_sisdepen` | _(sem descrição)_ | 7 | 3.059.458 | — | Base dos Dados |
+| `br_mj_sinesp` | SINESP (MJSP) via Base dos Dados — ocorrências criminais e vítimas por município e mês e por UF e mês | 3 | 9.097.924 | — | Base dos Dados |
+| `br_mj_sisdepen` | SISDEPEN (MJSP) via Base dos Dados — unidades prisionais, população prisional e suas características por semestre | 7 | 3.059.458 | — | Base dos Dados |
 | `br_mjsp_ckan` | MJSP — Procon (reclamações Sindec) e Infopen (censo penitenciário legado) | 2 | 15.317 | — | MJSP CKAN (broader) |
 | `br_mjsp_procurados` | MJSP — lista de procurados do projeto Captura Nacional | 1 | 188 | — | Procurados (MJSP/Interpol) |
 | `br_mjsp_sinesp` | SINESP — ocorrências registradas de segurança pública | 2 | 23.843 | 2022-12-01 | SINESP/MJSP |
 | `br_mjsp_sisdepen` | SISDEPEN — população carcerária por unidade prisional | 1 | 38.364 | — | MJSP SISDEPEN (população carcerária) |
 | `br_mma_extincao` | MMA — listas oficiais de fauna e flora ameaçadas de extinção | 2 | 7.676 | — | Base dos Dados |
-| `br_mma_sinpatinhas` | _(sem descrição)_ | 1 | 930.442 | — | Base dos Dados |
+| `br_mma_sinpatinhas` | SinPatinhas (MMA) — cadastro nacional de cães e gatos, microdados | 1 | 930.442 | — | Base dos Dados |
 | `br_mme_consumo_energia_eletrica` | MME — consumo de energia elétrica por UF | 1 | 38.880 | — | Base dos Dados |
 | `br_mobilidados_indicadores` | MobiliDados — indicadores de mobilidade urbana (transporte, ciclovia, acidentes) | 10 | 671.362 | — | Base dos Dados |
 | `br_mp_pep` | Ministério do Planejamento — cargos e funções do Poder Executivo federal | 1 | 1.799.733 | — | Base dos Dados |
-| `br_mps_beneficios` | _(sem descrição)_ | 1 | 67 | — | Base dos Dados |
+| `br_mps_beneficios` | Benefícios do INSS concedidos e mantidos por município e mês, com o dicionário de espécies | 3 | 81.063.055 | — | Base dos Dados |
 | `br_ms_atencao_basica` | Ministério da Saúde — indicadores de atenção básica por município | 1 | 901.944 | — | Base dos Dados |
 | `br_ms_cnes` | CNES — Cadastro Nacional de Estabelecimentos de Saúde | 14 | 1.272.716.224 | — | Base dos Dados |
 | `br_ms_imunizacoes` | Ministério da Saúde — cobertura vacinal por município | 1 | 149.124 | — | Base dos Dados |
@@ -194,10 +195,12 @@
 | `br_mte_listasuja` | MTE — Lista Suja do trabalho escravo (Cadastro de Empregadores) e CEAC, com CNPJ/CPF | 4 | 1.656 | — | MTE — Lista Suja do Trabalho Escravo (Cadastro de Empregadores) + CEAC |
 | `br_ok_queridodiario` | Querido Diário — metadados de diários oficiais municipais | 1 | 320.424 | — | Querido Diário |
 | `br_ok_queridodiario_texto` | Querido Diário — texto integral das edições de diários oficiais municipais | 1 | 320.422 | — | Querido Diário — texto integral das edições |
-| `br_ons_estimativa_custos` | _(sem descrição)_ | 5 | 1.407.872 | — | Base dos Dados |
+| `br_ons_avaliacao_operacao` | ONS — avaliação da operação do Sistema Interligado Nacional (geração por usina, térmicas por motivo de despacho, restrição de eólicas, energia armazenada e afluente por reservatório) | 6 | 89.805.415 | — | Base dos Dados |
+| `br_ons_estimativa_custos` | ONS — estimativas de custo da operação (balanço de energia por subsistema, custo marginal semanal e semi-horário, custo variável das térmicas) | 5 | 1.407.872 | — | Base dos Dados |
 | `br_pgfn_dividaativa` | PGFN — dívida ativa da União (tributária, FGTS, previdenciária) | 1 | 49.702.198 | — | PGFN |
 | `br_pncp` | PNCP — Portal Nacional de Contratações Públicas, licitações e contratos de todos os entes | 1 | 5.229.507 | — | PNCP — Portal Nacional de Contratações Públicas |
 | `br_poder360_pesquisas` | Poder360 — pesquisas eleitorais | 1 | 162.075 | — | Base dos Dados |
+| `br_prf_acidentes` | Acidentes em rodovias federais (PRF) — ocorrências, pessoas envolvidas e causas | 3 | 11.879.282 | — | Base dos Dados |
 | `br_rf_arrecadacao` | Receita Federal — arrecadação tributária federal | 5 | 535.465 | — | Base dos Dados |
 | `br_rf_cafir` | Receita Federal — Cadastro de Imóveis Rurais (CAFIR) | 2 | 169.935.565 | — | Base dos Dados |
 | `br_rf_cno` | Receita Federal — Cadastro Nacional de Obras | 5 | 1.856.072.409 | — | Base dos Dados |
@@ -211,7 +214,7 @@
 | `br_senado_dados_abertos` | Senado Federal — senadores, votações, discursos, comissões | 18 | 619.782 | — | Base dos Dados |
 | `br_senado_dados_abertos_administrativos` | Senado Federal — dados administrativos (CEAPS, remuneração de servidores) | 40 | 501.152 | — | Base dos Dados |
 | `br_senado_dadosabertos` | Senado Federal — comissões, matérias, senadores e votações (fonte alternativa) | 4 | 166.837 | — | Senado (geral) |
-| `br_senatran_estatisticas` | _(sem descrição)_ | 1 | 159.327 | — | Base dos Dados |
+| `br_senatran_estatisticas` | Frota de veículos por UF e tipo (SENATRAN, via Base dos Dados) | 1 | 159.327 | — | Base dos Dados |
 | `br_senatran_frota` | SENATRAN — frota de veículos por município e tipo, mensal desde 2013 | 1 | 20.101.202 | — | SENATRAN — frota de veículos por município e tipo |
 | `br_sfb_sicar` | SICAR/SFB — Cadastro Ambiental Rural | 10 | 132.944.122 | — | SFB — SICAR, as 5 tabelas restantes, sem geometria |
 | `br_simet_educacao_conectada` | Programa Educação Conectada — conectividade de internet em escolas | 1 | 137.914 | — | Base dos Dados |
@@ -233,7 +236,7 @@
 | `br_trase_supply_chain` | Trase — cadeia de suprimentos de soja e carne bovina, do frigorífico/esmagadora à origem | 7 | 1.824.843 | — | Base dos Dados |
 | `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 26 | 1.514.713.042 | — | Base dos Dados |
 | `br_tse_filiacao_partidaria` | TSE — filiação partidária | 2 | 41.840.389 | — | Base dos Dados |
-| `br_ufmg_censo_demografico_1872` | _(sem descrição)_ | 58 | 1.251.630 | — | Base dos Dados |
+| `br_ufmg_censo_demografico_1872` | Recenseamento Geral do Império do Brasil de 1872 (UFMG) por província, município e paróquia, nos dados originais e corrigidos | 58 | 1.251.630 | — | Base dos Dados |
 | `eu_sanctions` | União Europeia — lista de sanções | 1 | 43.891 | — | EU Sanctions |
 | `global_ibge_tabua_mares` | IBGE — tábua de marés | 2 | 1.261.446 | — | Tábua de Marés |
 | `global_icij_offshoreleaks` | ICIJ Offshore Leaks — empresas offshore, intermediários e beneficiários | 6 | 5.356.929 | — | ICIJ Offshore Leaks |

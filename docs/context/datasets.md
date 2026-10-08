@@ -4,7 +4,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
 
-248 datasets, 1197 tabelas.
+251 datasets, 1234 tabelas.
 
 | dataset | tabelas | linhas | last_update |
 |---|---:|---:|---|
@@ -41,7 +41,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_bd_diretorios_data_tempo` | 11 | 1.922.812 | 2026-07-05 |
 | `br_bd_diretorios_mundo` | 4 | 20.648 | 2026-08-23 |
 | `br_bd_diretorios_us` | 11 | 267.721 | 2026-07-09 |
-| `br_bd_execucao_estadual` | 12 | 15.376.366 | 2026-10-07 |
+| `br_bd_execucao_estadual` | 19 | 196.476.239 | 2026-10-07 |
 | `br_bd_metadados` | 7 | 123.379 | 2026-08-23 |
 | `br_bd_vizinhanca` | 2 | 523.926 | 2026-07-05 |
 | `br_bndes_operacoes_contratadas` | 5 | 2.408.157 | 2026-10-07 |
@@ -121,7 +121,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_inep_censo_educacao_superior` | 3 | 3.891.339 | 2026-07-05 |
 | `br_inep_censo_escolar` | 3 | 43.155.409 | 2026-07-05 |
 | `br_inep_educacao_especial` | 15 | 12.213.008 | 2026-07-05 |
-| `br_inep_enem` | 28 | 216.277.169 | 2026-07-06 |
+| `br_inep_enem` | 32 | 243.708.317 | 2026-10-07 |
 | `br_inep_formacao_docente` | 4 | 164.105 | 2026-07-09 |
 | `br_inep_ideb` | 5 | 1.492.158 | 2026-07-06 |
 | `br_inep_indicador_nivel_socioeconomico` | 5 | 528.410 | 2026-07-09 |
@@ -144,7 +144,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_me_caged` | 4 | 240.703.713 | 2026-07-06 |
 | `br_me_clima_organizacional` | 1 | 16.436 | 2026-07-09 |
 | `br_me_cno` | 3 | 1.020.894 | 2026-07-09 |
-| `br_me_cnpj` | 5 | 8.083.936.256 | 2026-10-07 |
+| `br_me_cnpj` | 5 | 8.158.553.996 | 2026-10-07 |
 | `br_me_comex_stat` | 5 | 129.489.938 | 2026-07-06 |
 | `br_me_estoque_divida_publica` | 1 | 124.419 | 2026-07-09 |
 | `br_me_exportadoras_importadoras` | 1 | 3 | 2026-07-09 |
@@ -157,10 +157,11 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_mec_prouni` | 1 | 20 | 2026-07-06 |
 | `br_mec_sisu` | 1 | 34.700.256 | 2026-07-06 |
 | `br_mg_belohorizonte_smfa_iptu` | 2 | 21.463.825 | 2026-07-06 |
+| `br_mgi_compras_publicas` | 14 | 77.946.539 | 2026-10-07 |
 | `br_mgi_pncp` | 1 | 224 | 2026-10-07 |
 | `br_minc_salic` | 8 | 839.316 | 2026-10-07 |
 | `br_mj_consumidorgovbr` | 1 | 15.392.507 | 2026-10-07 |
-| `br_mj_sinesp` | 2 | 291.754 | 2026-10-07 |
+| `br_mj_sinesp` | 3 | 9.097.924 | 2026-10-07 |
 | `br_mj_sisdepen` | 7 | 3.059.458 | 2026-10-07 |
 | `br_mjsp_ckan` | 2 | 15.317 | 2026-09-10 |
 | `br_mjsp_procurados` | 1 | 188 | 2026-10-07 |
@@ -171,7 +172,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_mme_consumo_energia_eletrica` | 1 | 38.880 | 2026-07-06 |
 | `br_mobilidados_indicadores` | 10 | 671.362 | 2026-07-09 |
 | `br_mp_pep` | 1 | 1.799.733 | 2026-07-06 |
-| `br_mps_beneficios` | 1 | 67 | 2026-10-07 |
+| `br_mps_beneficios` | 3 | 81.063.055 | 2026-10-07 |
 | `br_ms_atencao_basica` | 1 | 901.944 | 2026-07-09 |
 | `br_ms_cnes` | 14 | 1.272.716.224 | 2026-08-26 |
 | `br_ms_imunizacoes` | 1 | 149.124 | 2026-07-09 |
@@ -196,10 +197,12 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_mte_listasuja` | 4 | 1.656 | 2026-10-07 |
 | `br_ok_queridodiario` | 1 | 320.424 | 2026-10-07 |
 | `br_ok_queridodiario_texto` | 1 | 320.422 | 2026-10-07 |
+| `br_ons_avaliacao_operacao` | 6 | 89.805.415 | 2026-10-07 |
 | `br_ons_estimativa_custos` | 5 | 1.407.872 | 2026-10-07 |
 | `br_pgfn_dividaativa` | 1 | 49.702.198 | 2026-10-07 |
 | `br_pncp` | 1 | 5.229.507 | 2026-10-07 |
 | `br_poder360_pesquisas` | 1 | 162.075 | 2026-07-07 |
+| `br_prf_acidentes` | 3 | 11.879.282 | 2026-10-07 |
 | `br_rf_arrecadacao` | 5 | 535.465 | 2026-07-07 |
 | `br_rf_cafir` | 2 | 169.935.565 | 2026-07-07 |
 | `br_rf_cno` | 5 | 1.856.072.409 | 2026-07-09 |
