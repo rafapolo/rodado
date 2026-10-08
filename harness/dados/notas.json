@@ -164,5 +164,13 @@
     "*": "indicadores de FLUXO e de oferta por escola, sem nota de prova e sem contagem de educação especial. Proficiência SAEB está em br_inep_saeb; público da educação especial em br_inep_educacao_especial.matricula_aee (grão UF × rede)",
     "atu_ef_anos_finais": "ATU = média de ALUNOS POR TURMA (2021: média 23,7), não quantidade de alunos de algum grupo; o mesmo vale para todo atu_*",
     "ied_ef_anos_finais_nivel_1": "IED = Indicador de Esforço Docente: % dos professores da escola em cada nível 1–6 (os seis somam 100, conferido 2021), não nota do SAEB"
+  },
+  "br_me_cnpj.socios": {
+    "data": "Nos retratos 2023-04 e 2025-10 em diante (vindos do br_rf_cnpj, arquivos rf_*) data é SEMPRE o dia 1; nos retratos antigos é o dia real da publicação (ex.: 2025-09-14). Não agrupe nem ordene por data: use ano*100+mes como chave do retrato (2026-09: data=2026-09-01 em 28.341.092 linhas)",
+    "documento": "CPF misto: completo (completado pelo projeto) e mascarado. Para só completos use regexp_full_match(documento,'[0-9]{11}'); a máscara repete entre pessoas diferentes, count(DISTINCT documento) conta máscara como pessoa"
+  },
+  "br_me_cnpj.empresas": {
+    "cnpj_basico": "Empresa pode aparecer mais de uma vez no mesmo retrato (duplicata idêntica ou versão vazia ao lado da real: razao_social NULL e natureza_juridica 0000). count(*) não é nº de empresas: use count(DISTINCT cnpj_basico); entre versões, fique com a de menos colunas vazias (2022-09: 51.127.182 linhas, 51.127.181 chaves)",
+    "data": "Nos retratos vindos do br_rf_cnpj (2023-04, 2025-10 em diante) é sempre o dia 1; use ano e mes como chave do retrato"
   }
 }
