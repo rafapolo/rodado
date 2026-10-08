@@ -567,7 +567,7 @@ mcp = FastMCP("rodado")
 def list_datasets() -> dict:
     """List all datasets in the unified catalog, with their table counts.
 
-    239 datasets, 1071 tables total: the Base dos Dados mirror (RAIS, SIM, TSE,
+    251 datasets, 1234 tables total: the Base dos Dados mirror (RAIS, SIM, TSE,
     CGU, IBGE, INEP and others) plus independently-scraped sources filling
     gaps Base dos Dados doesn't cover (SICAF, SINAN Violência, EU/UN
     Sanctions, Consumidor.gov.br and more — see tasks/plans/datasets_to_scrap.md
