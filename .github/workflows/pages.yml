@@ -120,6 +120,22 @@ jobs:
           # o fallback do repo para servidor local sem pasta acima; ignorado)
           cp -r /tmp/pet16704/resumos pages/plataformas/resumos
           rm -rf /tmp/pet16704
+      # /plataformas/eleicoes vem de dataviz/eleicoes no repo rafapolo/xyz
+      # (público); só o que o navegador usa vai ao ar, sem scripts de build.
+      - name: Checkout xyz (dataviz/eleicoes)
+        uses: actions/checkout@v7
+        with:
+          repository: rafapolo/xyz
+          path: /tmp/xyz
+          sparse-checkout: dataviz/eleicoes
+      - name: Monta eleicoes
+        run: |
+          mkdir -p pages/plataformas/eleicoes
+          cd /tmp/xyz/dataviz/eleicoes
+          cp -r index.html app.min.js og.png brasil.geojson data.json \
+             data_presidente_2026.json data_presidente_2026_zonas.json secoes \
+             "$GITHUB_WORKSPACE/pages/plataformas/eleicoes/"
+          rm -rf /tmp/xyz
       - name: Setup Pages
         uses: actions/configure-pages@v6
       - name: Upload artifact
