@@ -28,7 +28,6 @@ import subprocess
 import sys
 import tempfile
 import yaml
-from datetime import date
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -228,7 +227,7 @@ for dsdir in br_* global_* world_* mundo_* eu_* un_* us_*; do
     # arquivo direto no diretorio, entao as tabelas planas seguem contando igual.
     # data do parquet mais recente: e a unica "quando foi espelhado" que
     # existe para as tabelas do Base dos Dados, que nao tem scrape_date.
-    mt=$(find "$tbdir" -name '*.parquet' -printf '%TY-%Tm-%Td\n' 2>/dev/null | sort -r | head -1)
+    mt=$(find "$tbdir" -name '*.parquet' -printf '%TY-%Tm-%Td %TH:%TM\n' 2>/dev/null | sort -r | head -1)
     result=$(~/bin/duckdb -csv -c "SET enable_progress_bar=false;
 WITH pm AS (
   SELECT file_name, row_group_id, row_group_num_rows, total_compressed_size
@@ -259,14 +258,16 @@ done
             ["scp", local_script, f"{BEELINK_HOST}:{remote_script}"],
             capture_output=True, timeout=15, check=True,
         )
+        # 600 s deixou de bastar em 2026-10-07 (1.234 tabelas, ~8.500 arquivos só no
+        # CNPJ): a varredura estourou e o catálogo saiu com tudo view_only, 0 linhas.
         proc = subprocess.run(
             ["ssh", BEELINK_HOST, f"bash {remote_script}"],
-            capture_output=True, timeout=600,
+            capture_output=True, timeout=3600,
         )
         subprocess.run(["ssh", BEELINK_HOST, f"rm {remote_script}"], capture_output=True, timeout=10)
     except (subprocess.TimeoutExpired, subprocess.CalledProcessError) as e:
-        print(f"Deploy/run error: {e}", file=sys.stderr)
-        return []
+        # sem a varredura do disco não há catálogo: abortar, nunca publicar vazio
+        sys.exit(f"varredura do disco no beelink falhou ({e}); nada foi gravado nem publicado")
     finally:
         shutil.rmtree(os.path.dirname(local_script), ignore_errors=True)
 
@@ -295,6 +296,10 @@ done
                     }
             except (ValueError, IndexError):
                 pass
+
+    if not tables:
+        sys.exit("varredura do disco no beelink não devolveu nenhuma tabela "
+                 f"(exit {proc.returncode}); nada foi gravado nem publicado")
 
     # Phase 2: DuckDB schemas/views that don't have disk dirs
     sql = """
@@ -516,7 +521,6 @@ def build_catalog():
     total_rows = sum(t["rows"] for t in beelink_tables)
     print(f"Total rows: {total_rows:,}", file=sys.stderr)
 
-    today = date.today().isoformat()
 
     import pyarrow as pa
     import pyarrow.parquet as pq
@@ -574,7 +578,7 @@ def build_catalog():
                 "source_url": BD_SEARCH_URL.format(dataset=ds),
                 "source_type": BD_SOURCE_TYPE,
                 "status": "mirrored",
-                "scrape_date": t.get("mtime", ""),
+                "scrape_date": t.get("mtime", "")[:10],
                 "notes": (
                     "Espelho do Base dos Dados; schema confirmado em "
                     "docs/context/schema_ddl.sql."
@@ -616,12 +620,17 @@ def build_catalog():
         arrays["rows"].append(t["rows"])
         arrays["num_files"].append(t["num_files"])
         arrays["size_bytes"].append(t["size_bytes"])
-        arrays["scrape_date"].append(info.get("scrape_date", "") or t.get("mtime", ""))
+        arrays["scrape_date"].append(info.get("scrape_date", "") or t.get("mtime", "")[:10])
         arrays["last_date"].append(freshness_dates.get((ds, t["table"]), ""))
         arrays["status"].append(status)
         arrays["provenance_notes"].append(notes[:500])
         arrays["source"].append(t["source"])
-        arrays["updated_at"].append(today)
+        # quando NÓS regravamos a tabela pela última vez: data e hora do parquet mais
+        # novo no beelink (muda no sync do BD, na raspagem e no gate do
+        # atualiza_fonte.py, que não mexe no scrape_date). Até 2026-10-08 isto era a
+        # data da regeneração do catálogo, igual em todas as linhas. Sem parquet
+        # (tabela nativa do .duckdb), o scrape_date.
+        arrays["updated_at"].append(t.get("mtime") or info.get("scrape_date", "") or "")
 
     print(f"  {n_bd} tables attributed to {BD_SOURCE_NAME}", file=sys.stderr)
     if missing_descriptions:
