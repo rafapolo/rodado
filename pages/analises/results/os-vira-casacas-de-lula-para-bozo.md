@@ -178,6 +178,48 @@ teste, para que municípios vizinhos, quase idênticos, não se ajudem a acertar
 indicadores acrescentam 0,03 a UF e porte, e praticamente nada a quem já sabe a margem de
 2022.**
 
+## 6. E por seção eleitoral?
+
+![Vira-casacas em quatro recortes: municípios, zonas, locais de votação e seções](/analises/img/vira-casacas-secoes-recortes.png)
+
+O mapa de eleições também mostra o resultado por zona, por local de votação e por seção.
+Com a mesma regra (Lula na frente em 2022 e Flávio na frente em 2026), a contagem muda
+com o recorte:
+
+| recorte | vira-casacas | total | fatia |
+|---|---:|---:|---:|
+| municípios | 703 | 5.571 | 12,6% |
+| zonas eleitorais | 737 | 6.034 | 12,2% |
+| locais de votação | 6.211 | 68.701 | 9,0% |
+| seções eleitorais | 37.136 | 412.405 | 9,0% |
+
+- O TSE renumera e remaneja urnas entre as eleições, então só **412.405 das 497.897
+  seções** de 2026 têm correspondente em 2022. A fatia de 9,0% é sobre essas; sobre o
+  total seria 7,5%.
+- Essas 37.136 seções estão em **2.824 municípios, 50,7% dos 5.571** (51,1% dos 5.530 com
+  seção comparável). Só 703 viraram no agregado municipal: em cerca de 2.121 municípios o
+  resultado municipal não mudou, mas houve seção que virou.
+- O caminho inverso (Bolsonaro em 2022, Lula em 2026) existe aqui: 2.869 seções, em 327
+  municípios. No agregado municipal não houve nenhum.
+
+![Municípios por fatia das suas seções comparáveis que viraram](/analises/img/vira-casacas-secoes-distribuicao.png)
+
+"Alguma seção virou" é um critério frouxo, porque um município tem em média 89 seções. A
+medida mais informativa é a fatia das seções do município que viraram:
+
+| fatia das seções comparáveis que viraram | municípios | % dos 5.530 |
+|---|---:|---:|
+| nenhuma | 2.706 | 48,9% |
+| mais de 0% | 2.824 | 51,1% |
+| mais de 10% | 1.873 | 33,9% |
+| mais de 25% | 1.046 | 18,9% |
+| mais de 50% | 307 | 5,6% |
+
+Entre os municípios com alguma seção virada, a fatia mediana é de 18%. Os 307 em que a
+maioria das seções virou são em geral pequenos (mediana de 14 seções comparáveis). A
+leitura é que a virada é mais disseminada do que o mapa municipal sugere, mas em metade
+dos municípios com seção virada ela atinge menos de um quinto das seções.
+
 ## Limites
 
 - **Associação, não causa.** Nada aqui diz por que algum eleitor mudou de voto. Os dados
