@@ -19,8 +19,12 @@ nunca para o lixo. Isso só é feito quando cada arquivo antigo tem uma partiç�
 só; arquivo que mistura partições é recusado e listado.
 
 O parquet novo sai no tipo de coluna que o disco já tem (a view guarda o schema
-da criação). Coluna que só existe de um dos lados, ou valor que não converte,
-recusa a tabela.
+da criação). Coluna que só o disco tem, ou valor que não converte, recusa a
+tabela. Coluna que só o BigQuery tem (a fonte acrescentou) entra nas partições
+trazidas, no tipo em que veio, e é avisada: as views leem com `union_by_name`,
+então ela fica NULL nas partições antigas até a tabela inteira ser ressincronizada.
+(`TIME` gravado pelo pyarrow é lido pelo DuckDB como `TIME WITH TIME ZONE`; os dois
+nomes dão o mesmo tipo de parquet.)
 
 Nada entra em `~/rodado` antes de a contagem do que foi enviado bater com a do
 BigQuery. Arquivo novo tem nome novo, então depois é preciso
@@ -42,7 +46,7 @@ from ressincroniza_bq import (BEELINK, BILLING_PROJECT, BQ_PROJECT, ROOT, duck, 
 
 ARROW = {"BIGINT": "int64", "INTEGER": "int32", "SMALLINT": "int16", "TINYINT": "int8",
          "DOUBLE": "float64", "FLOAT": "float32", "VARCHAR": "string", "BOOLEAN": "bool_",
-         "DATE": "date32", "TIME": "time64[us]", "TIMESTAMP": "timestamp[us]",
+         "DATE": "date32", "TIME": "time64[us]", "TIME WITH TIME ZONE": "time64[us]", "TIMESTAMP": "timestamp[us]",
          "TIMESTAMP WITH TIME ZONE": "timestamp[us, tz=UTC]", "BLOB": "binary"}
 
 
@@ -124,8 +128,12 @@ def planeja(client, bq, alvo):
 def conforma(pa, lotes, alvo_schema):
     """Converte cada lote para o schema do disco; estoura se um valor não converte."""
     for lote in lotes:
-        yield from (pa.Table.from_batches([lote]).select(alvo_schema.names)
-                    .cast(alvo_schema).to_batches())
+        t = pa.Table.from_batches([lote])
+        novo = t.select(alvo_schema.names).cast(alvo_schema)
+        for nome in t.schema.names:           # coluna que a fonte acrescentou: vai como veio
+            if nome not in alvo_schema.names:
+                novo = novo.append_column(t.schema.field(nome), t.column(nome))
+        yield from novo.to_batches()
 
 
 def aplica(client, leitor, bq, pa, pq, plano, backup, reserva_gb):
@@ -143,10 +151,12 @@ def aplica(client, leitor, bq, pa, pq, plano, backup, reserva_gb):
         campos.append(pa.field(c["column_name"], ta))
     alvo_schema = pa.schema(campos)
     cols_bq = {f.name for f in client.get_table(f"{BQ_PROJECT}.{ds}.{tb}").schema}
-    if cols_bq != set(alvo_schema.names):
-        return {"tabela": alvo, "erro": "colunas diferem: só no BigQuery "
-                f"{sorted(cols_bq - set(alvo_schema.names))}, só no disco "
+    if set(alvo_schema.names) - cols_bq:
+        return {"tabela": alvo, "erro": "colunas só no disco: "
                 f"{sorted(set(alvo_schema.names) - cols_bq)}"}
+    if cols_bq - set(alvo_schema.names):
+        print(f"      coluna nova na fonte, NULL nas partições antigas: "
+              f"{sorted(cols_bq - set(alvo_schema.names))}", flush=True)
 
     feitas = []
     for m in plano["mudou"]:
