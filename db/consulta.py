@@ -14,6 +14,7 @@ import decimal
 import io
 import json
 import os
+import re
 import threading
 import time
 import uuid
@@ -30,8 +31,8 @@ _catalogo_trava = threading.Lock()
 
 SQL_CATALOGO = r"""
 SELECT v.schema_name AS dataset, v.view_name AS tabela, m.rows AS linhas,
-       m.description AS descricao, m.source_name AS fonte,
-       format_bytes(m.size_bytes::BIGINT) AS tamanho
+       m.description AS descricao, m.source_name AS fonte, nullif(m.source_url, '') AS url,
+       nullif(m.scrape_date, '') AS atualizado, m.num_files AS arquivos
 FROM duckdb_views() v
 LEFT JOIN _rodado_metadata m ON m.dataset = v.schema_name AND m."table" = v.view_name
 WHERE NOT v.internal AND v.schema_name NOT LIKE '\_%' ESCAPE '\'
@@ -111,16 +112,22 @@ class Handler(BaseHTTPRequestHandler):
         con = rodado_sql.conecta()
         try:
             linhas = con.sql(f'DESCRIBE "{partes[0]}"."{partes[1]}"').fetchall()
+            sql = con.execute("SELECT sql FROM duckdb_views() WHERE schema_name = ? AND view_name = ?",
+                              partes).fetchone()
         except duckdb.Error as e:
             return self._json({"erro": str(e)}, 400)
         finally:
             con.close()
-        self._json([{"coluna": l[0], "tipo": l[1]} for l in linhas])
+        # partição hive de verdade: `/chave=valor/` no caminho dos arquivos da view
+        hive = set(re.findall(r"/([A-Za-z_]\w*)=[^/']+/", sql[0] if sql else ""))
+        self._json([{"coluna": l[0], "tipo": l[1], "particao": l[0] in hive} for l in linhas])
 
     def do_GET(self):
         url = urlparse(self.path)
         if url.path == "/health":
             return self._responde(200, "ok\n")
+        if url.path == "/ping":  # mede a ida e volta até o beelink (o /health o proxy responde sozinho)
+            return self._responde(200, "pong\n", extra={"Cache-Control": "no-store"})
         if url.path == "/":
             with open(PAGINA, "rb") as f:
                 return self._responde(200, f.read(), "text/html; charset=utf-8",

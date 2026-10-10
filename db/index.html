@@ -66,7 +66,29 @@
   .tb > summary .linhas { color: var(--peach); float: right; }
   .usar { color: var(--green); cursor: pointer; margin-left: 6px; visibility: hidden; }
   .tb > summary:hover .usar { visibility: visible; }
-  .info { padding: 2px 8px 4px 34px; color: var(--subtext0); white-space: normal; }
+  .info { padding: 4px 8px 6px 34px; color: var(--subtext0); white-space: normal; }
+  .info .fatos b { color: var(--peach); font-weight: 400; }
+  .info a { color: var(--blue); text-decoration: none; }
+  .info a:hover { text-decoration: underline; }
+  .acoes { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+  .acoes button { font: inherit; font-size: 11px; color: var(--text); background: var(--base);
+    border: 1px solid var(--surface0); border-radius: 4px; padding: 1px 6px; cursor: pointer; }
+  .acoes button:hover { border-color: var(--mauve); color: var(--mauve); }
+  .acoes button[data-cola="amostra"] { color: var(--green); }
+  .aviso { margin-top: 5px; padding: 3px 6px; border-left: 2px solid var(--peach); background: var(--crust);
+    color: var(--peach); border-radius: 0 4px 4px 0; }
+  .aviso code { color: var(--text); }
+  .buscacol { width: 100%; margin-top: 5px; padding: 2px 6px; background: var(--base); color: var(--text);
+    border: 1px solid var(--surface0); border-radius: 4px; font: inherit; }
+  .buscacol::placeholder { color: var(--overlay2); }
+  .info.erro { color: var(--red); }
+  .dsinfo { padding: 2px 8px 6px 22px; color: var(--subtext0); }
+  .dsinfo .desc { margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .dsinfo.aberta .desc { -webkit-line-clamp: unset; display: block; }
+  .dsinfo .mais { background: none; border: 0; padding: 0; color: var(--blue); font: inherit; cursor: pointer; }
+  .etq { font-size: 10px; padding: 0 4px; border-radius: 3px; margin-left: 6px; align-self: center; }
+  .etq.particao { color: var(--crust); background: var(--mauve); }
+  .etq.filtre { color: var(--peach); border: 1px solid var(--peach); }
   .coluna { padding: 0 8px 0 34px; display: flex; gap: 8px; cursor: pointer; }
   .coluna .tipo { color: var(--overlay2); margin-left: auto; }
   .vazio { padding: 8px; color: var(--overlay1); }
@@ -117,6 +139,8 @@
     .tb > summary { padding-left: 24px; }
     .coluna { padding: 6px 10px 6px 40px; }
     .usar { visibility: visible; padding: 0 6px; }
+    .acoes button { font-size: 13px; min-height: 36px; padding: 0 10px; }
+    .buscacol { font-size: 16px; padding: 6px 8px; }
   }
   @media (hover: none) { .usar { visibility: visible; } }
 </style>
@@ -190,7 +214,7 @@ function desenha(filtro) {
   const abrir = f.length > 0 && grupos.size <= 30;
   let html = "";
   for (const [ds, tabelas] of grupos) {
-    html += `<details class="ds"${abrir ? " open" : ""}><summary role="treeitem" aria-level="1">${esc(ds)} <span class="n">(${tabelas.length})</span></summary>`;
+    html += `<details class="ds"${abrir ? " open" : ""}><summary role="treeitem" aria-level="1" title="${esc((catalogo.find(x => x.dataset === ds && x.descricao) || {}).descricao || "")}">${esc(ds)} <span class="n">(${tabelas.length})</span></summary>`;
     for (const t of tabelas) {
       html += `<details class="tb" data-t="${esc(ds + "." + t.tabela)}"><summary role="treeitem" aria-level="2"><span class="nome">${esc(t.tabela)}</span>`
         + `<span class="usar" role="button" aria-label="colar FROM ${esc(ds + "." + t.tabela)} no terminal" title="colar no terminal">▶</span>`
@@ -215,24 +239,105 @@ arvore.addEventListener("dblclick", e => {
   const s = e.target.closest(".tb > summary");
   if (s) { e.preventDefault(); cola(`FROM ${s.parentElement.dataset.t} LIMIT 10;`); }
 });
+const GRANDE = 50e6;          // acima disto, aviso para filtrar
+const FILTRAVEL = 10e6;       // acima disto, ano/mes/sigla_uf ganham a etiqueta "filtre"
+const FILTROS = ["ano", "mes", "sigla_uf"];
+const COLUNAS_COM_BUSCA = 40;
+const numero = n => n == null ? "?" : n.toLocaleString("pt-BR");
+const data = d => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(d || ""); return m ? `${m[3]}/${m[2]}/${m[1]}` : ""; };
+const linkSeguro = u => /^https?:\/\//i.test(u || "") ? u : "";
+
+function htmlDataset(ds) {
+  const t = catalogo.find(x => x.dataset === ds && x.descricao);
+  if (!t) return "";
+  return `<div class="dsinfo"><p class="desc">${esc(t.descricao)}</p>`
+    + `<button class="mais" type="button" aria-expanded="false">mais…</button></div>`;
+}
+
+function htmlTabela(t, cols) {
+  const fonte = linkSeguro(t.url)
+    ? `<a href="${esc(t.url)}" target="_blank" rel="noopener noreferrer" title="${esc(t.url)}">${esc(t.fonte || "fonte")} <span aria-hidden="true">↗</span></a>`
+    : esc(t.fonte || "");
+  const fatos = [t.linhas != null && `<b>${numero(t.linhas)}</b> linhas`, data(t.atualizado) && `atualizado ${data(t.atualizado)}`, fonte]
+    .filter(Boolean).join(" · ");
+  const nomes = new Set(cols.map(c => c.coluna));
+  const filtros = [...cols.filter(c => c.particao).map(c => c.coluna), ...FILTROS.filter(f => nomes.has(f))];
+  const filtrosUnicos = [...new Set(filtros)];
+  let html = `<div class="info"><div class="fatos">${fatos}</div>`
+    + `<div class="acoes" role="group" aria-label="ações da tabela">`
+    + `<button type="button" data-cola="amostra" aria-label="colar amostra de ${esc(t.dataset + "." + t.tabela)} no terminal">▶ amostra</button>`
+    + `<button type="button" data-cola="describe">DESCRIBE</button>`
+    + `<button type="button" data-cola="summarize">SUMMARIZE</button>`
+    + `<button type="button" data-cola="copia" aria-label="copiar o nome ${esc(t.dataset + "." + t.tabela)}">⧉ nome</button>`
+    + `</div>`;
+  if ((t.linhas || 0) >= GRANDE)
+    html += `<div class="aviso" role="note">⚑ ${numero(t.linhas)} linhas — `
+      + (filtrosUnicos.length ? `filtre por ${filtrosUnicos.map(f => `<code>${esc(f)}</code>`).join(", ")}` : "use LIMIT ou agregue")
+      + `; sem filtro passa dos ${300} s</div>`;
+  if (cols.length > COLUNAS_COM_BUSCA)
+    html += `<input class="buscacol" type="search" placeholder="filtrar ${cols.length} colunas…" aria-label="filtrar as colunas de ${esc(t.tabela)}">`;
+  html += `</div>`;
+  html += cols.map(c => {
+    const etiqueta = c.particao ? `<span class="etq particao" title="partição: filtrar por ela pula arquivos inteiros">partição</span>`
+      : (FILTROS.includes(c.coluna) && (t.linhas || 0) >= FILTRAVEL) ? `<span class="etq filtre" title="filtre por esta coluna em tabelas grandes">filtre</span>` : "";
+    return `<div class="coluna" role="treeitem" aria-level="3" tabindex="-1" data-c="${esc(c.coluna)}" title="colar o nome no terminal">`
+      + `<span class="nomecol">${esc(c.coluna)}</span>${etiqueta}<span class="tipo">${esc(c.tipo)}</span></div>`;
+  }).join("");
+  return html;
+}
+
 arvore.addEventListener("toggle", async e => {
-  const tb = e.target;
-  if (!tb.classList?.contains("tb") || !tb.open || tb.dataset.ok) return;
-  tb.dataset.ok = 1;
-  const t = catalogo.find(x => x.dataset + "." + x.tabela === tb.dataset.t) || {};
-  let html = "";
-  const meta = [t.descricao, t.fonte && "fonte: " + t.fonte, t.tamanho && "parquet: " + t.tamanho].filter(Boolean);
-  if (meta.length) html += `<div class="info">${meta.map(esc).join(" · ")}</div>`;
+  const det = e.target;
+  if (!det.open || det.dataset.ok) return;
+  if (det.classList?.contains("ds")) {
+    det.dataset.ok = 1;
+    det.querySelector(":scope > summary").insertAdjacentHTML("afterend", htmlDataset(det.querySelector(":scope > summary").firstChild.textContent.trim()));
+    return;
+  }
+  if (!det.classList?.contains("tb")) return;
+  det.dataset.ok = 1;
+  const t = catalogo.find(x => x.dataset + "." + x.tabela === det.dataset.t) || {};
+  let html;
   try {
-    const r = await fetch(location.origin + "/colunas?t=" + encodeURIComponent(tb.dataset.t));
+    const r = await fetch(location.origin + "/colunas?t=" + encodeURIComponent(det.dataset.t));
     const cols = await r.json();
     if (cols.erro) throw new Error(cols.erro);
-    html += cols.map(c => `<div class="coluna" role="treeitem" aria-level="3" tabindex="-1" data-c="${esc(c.coluna)}" title="colar o nome no terminal"><span>${esc(c.coluna)}</span><span class="tipo">${esc(c.tipo)}</span></div>`).join("");
+    html = htmlTabela(t, cols);
   } catch (err) {
-    html += `<div class="info">erro ao ler colunas: ${esc(err.message)}</div>`;
+    html = `<div class="info erro">erro ao ler colunas: ${esc(err.message)}</div>`;
   }
-  tb.insertAdjacentHTML("beforeend", html);
+  det.insertAdjacentHTML("beforeend", html);
 }, true);
+
+// ações do .info, "mais…" da descrição e filtro de colunas
+arvore.addEventListener("click", e => {
+  const b = e.target.closest("[data-cola]");
+  if (b) {
+    const alvo = b.closest(".tb").dataset.t;
+    const sql = { amostra: `FROM ${alvo} LIMIT 10;`, describe: `DESCRIBE ${alvo};`, summarize: `SUMMARIZE ${alvo};` }[b.dataset.cola];
+    if (sql) cola(sql);
+    else {
+      navigator.clipboard?.writeText(alvo).catch(() => {});
+      b.textContent = "✓ copiado";
+      setTimeout(() => { b.textContent = "⧉ nome"; }, 1200);
+    }
+    e.stopPropagation();
+    return;
+  }
+  const mais = e.target.closest(".mais");
+  if (mais) {
+    const aberto = mais.parentElement.classList.toggle("aberta");
+    mais.textContent = aberto ? "menos" : "mais…";
+    mais.setAttribute("aria-expanded", aberto);
+  }
+}, true);
+arvore.addEventListener("input", e => {
+  if (!e.target.classList.contains("buscacol")) return;
+  const f = e.target.value.trim().toLowerCase();
+  e.target.closest(".tb").querySelectorAll(".coluna").forEach(c => { c.hidden = f && !c.dataset.c.toLowerCase().includes(f); });
+});
+// teclas digitadas no filtro de colunas não navegam a árvore
+arvore.addEventListener("keydown", e => { if (e.target.classList?.contains("buscacol") && e.key !== "Escape") e.stopPropagation(); }, true);
 
 // JetBrains Mono dentro do iframe do ttyd (mesma origem): copia o <link> e,
 // quando a fonte carregar, troca a família para o xterm re-medir as células.
