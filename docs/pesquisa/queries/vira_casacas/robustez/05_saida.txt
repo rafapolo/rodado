@@ -1,0 +1,52 @@
+L1 esparso (C=0.004) -> 8 indicadores:
+ pdm_share                  -0.259
+c22_analfabetismo_15mais   -0.257
+nbf_share_dom              -0.205
+pib_pc                      0.116
+credito_pc                  0.115
+c22_share_branca            0.113
+div_nomes                   0.039
+pix_ticket_pf               0.018
+
+AUC (sem margem22) log_pop+UF: 0.906 | só os esparsos: 0.929 | log_pop+UF+esparsos: 0.944
+
+faixa margem22 (0,17.9]: vira=667 LL=182
+  mediana log_pop vira/LL: 8.86 9.67 | pop mediana: 7022 15788
+  AUC margem22 só: 0.835 | log_pop+UF: 0.744 | margem22+log_pop+UF: 0.907 | margem22+log_pop+UF+esparsos: 0.931
+
+Lasso contínuo d_lula (alpha=0.2) -> 17 indicadores (p.p. por DP):
+ credito_pc         -0.690
+div_nomes          -0.379
+c22_razao_homens   -0.261
+log_densidade       0.228
+pix_ticket_pf      -0.204
+templos_1000dom     0.176
+c22_share_branca   -0.171
+pib_pc             -0.165
+share_agro         -0.113
+suic_100k          -0.065
+agro_1000dom       -0.050
+d_ivs               0.037
+vac_polio          -0.029
+ideb               -0.016
+rais_sec_Q         -0.013
+rais_sec_A         -0.012
+taxa_aprovacao     -0.011
+R² CV base: 0.448 | base+esparsos: 0.552 | só esparsos+log_pop+plula22 (sem UF): 0.417
+
+MG: vira=175 LL=452 | margem22 mediana vira/LL: 6.6 / 32.4
+                   var   med_vira     med_LL    rbis      p      q
+         nbf_share_dom     0.1165     0.1817 -0.4999 0.0000 0.0000
+      c22_share_branca     0.4461     0.2698  0.4804 0.0000 0.0000
+         pix_ticket_pf   212.9523   176.0033  0.4524 0.0000 0.0000
+            credito_pc  6765.8406  4355.7011  0.1634 0.0015 0.0020
+                pib_pc 25483.4819 16102.7342  0.4811 0.0000 0.0000
+            share_agro     0.2174     0.1606  0.1073 0.0370 0.0403
+            rais_sec_A     0.1029     0.0990  0.0373 0.4688 0.4688
+    rais_share_publico     0.2400     0.3918 -0.3885 0.0000 0.0000
+            rais_sec_C     0.1208     0.0414  0.3781 0.0000 0.0000
+      c22_share_60mais     0.1910     0.1985 -0.1397 0.0066 0.0079
+         log_densidade     3.3198     2.8852  0.2674 0.0000 0.0000
+rais_emprego_formal_pc     0.1848     0.1232  0.4458 0.0000 0.0000
+
+pflavio/pdir por grupo: {'BF': 0.969, 'LL': 0.956, 'empate': 0.966, 'vira': 0.967}
