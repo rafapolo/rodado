@@ -577,3 +577,75 @@ def test_rollup_refuses_to_invent_a_non_positional_parent():
 def test_rollup_unknown_edge_lists_the_documented_ones():
     r = m.rollup("subclasse", "planeta")
     assert "error" in r and r["available"]
+
+
+# ---------------------------------------------------------------------------
+# In-process backend (MCP_BACKEND=inprocess) — real DuckDB over a tmp parquet
+# ---------------------------------------------------------------------------
+
+@pytest.fixture
+def inprocess(tmp_path, monkeypatch):
+    duckdb = pytest.importorskip("duckdb")
+    root = tmp_path / "root"
+    (root / "br_ibge_pib" / "municipio").mkdir(parents=True)
+    duckdb.sql(
+        "COPY (SELECT 2020 + i % 2 AS ano, (i * 1.5)::DECIMAL(18,2) AS pib FROM range(10) t(i)) "
+        f"TO '{root}/br_ibge_pib/municipio/a.parquet'"
+    )
+    (tmp_path / "fora.txt").write_text("segredo")
+    monkeypatch.setattr(m, "BACKEND", "inprocess")
+    monkeypatch.setattr(m, "DATA_ROOT", str(root))
+    monkeypatch.setattr(m, "INPROCESS_TEMP_DIR", str(tmp_path / "tmp"))
+    monkeypatch.setattr(m, "_inproc_conn", None)
+    return tmp_path
+
+
+def test_inprocess_resolves_catalog_names_and_rodado_paths(inprocess):
+    by_name = m.run_sql("SELECT ano, sum(pib) AS pib FROM br_ibge_pib.municipio GROUP BY 1 ORDER BY 1")
+    assert by_name["rows"] == [{"ano": 2020, "pib": 30}, {"ano": 2021, "pib": 37.5}]
+    assert by_name["rewritten_tables"] == ["br_ibge_pib.municipio"]
+    by_path = m.run_sql("SELECT count(*) AS n FROM read_parquet('~/rodado/br_ibge_pib/municipio/*.parquet')")
+    assert by_path["rows"] == [{"n": 10}]
+
+
+def test_inprocess_sandbox_denies_files_outside_the_data_root(inprocess):
+    for sql in (
+        f"SELECT * FROM read_text('{inprocess}/fora.txt')",
+        f"SELECT * FROM read_text('{inprocess}/root/../fora.txt')",
+        "SELECT * FROM duckdb_secrets()",
+    ):
+        assert "error" in m.run_sql(sql), sql
+
+
+def test_inprocess_backend_refuses_writes_whatever_the_caller(inprocess):
+    # the path the friendly tools take: straight to the backend, no run_sql
+    probe = inprocess / "root" / "probe.parquet"
+    for sql in (
+        f"COPY (SELECT 1) TO '{probe}'",
+        f"SELECT 1; COPY (SELECT 1) TO '{probe}'",
+    ):
+        assert "error" in m._run_sql(sql), sql
+    assert not probe.exists()
+
+
+def test_inprocess_reads_hive_partitions_and_drifted_schemas(inprocess):
+    duckdb = pytest.importorskip("duckdb")
+    base = inprocess / "root" / "br_ibge_pib" / "uf"
+    (base / "ano=2021").mkdir(parents=True)
+    (base / "ano=2022").mkdir()
+    duckdb.sql(f"COPY (SELECT 'SP' AS sigla_uf, 1 AS pib) TO '{base}/ano=2021/a.parquet'")
+    duckdb.sql(f"COPY (SELECT 'SP' AS sigla_uf, 2 AS pib, 9 AS nova) TO '{base}/ano=2022/a.parquet'")
+    r = m.run_sql("SELECT ano, pib, nova FROM br_ibge_pib.uf ORDER BY ano")
+    assert r["rows"] == [{"ano": 2021, "pib": 1, "nova": None}, {"ano": 2022, "pib": 2, "nova": 9}]
+
+
+def test_inprocess_query_timeout_frees_the_slot(inprocess, monkeypatch):
+    monkeypatch.setattr(m, "INPROCESS_QUERY_TIMEOUT", 0.5)
+    r = m.run_sql("SELECT sum(hash(i)) FROM range(100000000000) t(i)")
+    assert "timed out" in r["error"]
+    assert m.run_sql("SELECT 1 AS ok")["rows"] == [{"ok": 1}]
+
+
+def test_http_auth_maps_tokens_to_callers(monkeypatch):
+    monkeypatch.setenv("MCP_HTTP_TOKENS", "agente-a:tok1, agente-b:tok2")
+    assert m._http_tokens() == {"tok1": "agente-a", "tok2": "agente-b"}

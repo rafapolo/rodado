@@ -8,7 +8,8 @@ seguir a partir do resultado da anterior.
 
 Números de hoje (2026-09-25): 236 datasets, 1.048 tabelas, 60 conceitos de join
 documentados, 20 false friends, 7 métricas nomeadas, 3 hierarquias de rollup,
-17 ferramentas ao todo. Nunca abre conexão DuckDB local — toda query roda no
+17 ferramentas ao todo. No modo padrão nunca abre conexão DuckDB local (o modo
+remoto da seção 6 é a exceção) — toda query roda no
 `~/bin/duckdb` do beelink via SSH (ver `_run_sql_ssh`). Tudo local: parquet
 em disco no beelink, sem storage em nuvem — é lá que dado recém-raspado
 aparece primeiro.
@@ -219,3 +220,72 @@ todos fechados em 2026-08-24:
 O que ficou documentado como *não* mexer: `run_sql` devolve erro cru (seção
 2), `get_metric` é lookup direto sem parser de frase, `resolve_join` rejeita
 explicitamente em vez de silenciar false friends.
+
+## 6 · Modo remoto: HTTP + DuckDB em processo
+
+O modo padrão (stdio + SSH para o beelink) atende uma sessão por processo. Para
+servir agentes externos existe um segundo modo, ligado só por variável de
+ambiente: o servidor embute o DuckDB (`MCP_BACKEND=inprocess`) e fala MCP por
+HTTP (`MCP_TRANSPORT=http`, transporte *streamable HTTP*, sem sessão).
+
+```mermaid
+flowchart LR
+    A[agente externo] -- "HTTPS + Bearer" --> P[proxy TLS]
+    P -- "HTTP local" --> S["mcp_server.py\n(token, fila, timeout)"]
+    S -- "1 cursor por chamada" --> D[("DuckDB em memória\n1 processo")]
+    D --> F["MCP_DATA_ROOT\n(disco local ou s3://)"]
+```
+
+- **Um processo, várias consultas.** Cada chamada roda numa thread e pega um
+  cursor da mesma instância: um teto de memória, um pool de threads, nenhuma
+  trava entre processos. `MCP_MAX_CONCURRENCY` (padrão 2) limita as consultas
+  simultâneas; as demais esperam até `MCP_QUEUE_TIMEOUT` segundos.
+- **Sem views.** O banco é em memória; `run_sql` reescreve `dataset.tabela`
+  para `read_parquet()` antes de executar, e todo `~/rodado/` vira
+  `MCP_DATA_ROOT`. Criar 1.234 views sobre S3 leria o footer de toda tabela na
+  subida.
+- **Mesma trava do modo SSH.** `allowed_directories` só com a raiz dos dados e
+  o diretório de despejo, `enable_external_access=false`,
+  `lock_configuration=true`. A checagem de somente-leitura roda em **toda**
+  consulta deste backend, não só nas do `run_sql` — as ferramentas
+  `consultar_*` interpolam texto do chamador, e a trava de arquivo permite
+  gravar sob a raiz tanto quanto ler. O `SECRET` do S3 tem `SCOPE` na raiz e
+  `duckdb_secrets()` é recusado; ainda assim, use uma credencial só de leitura.
+- **Leitura como a das views.** Cada tabela vira
+  `read_parquet('<raiz>/<dataset>/<tabela>/**/*.parquet', hive_partitioning=true, union_by_name=true)`,
+  as mesmas opções de 1.241 das 1.246 views do beelink.
+- **Um token por agente.** `MCP_HTTP_TOKENS="nome:token,nome2:token2"`; o nome
+  vai no campo `caller` do log de chamadas. `/healthz` responde sem token.
+- **`MCP_HTTP_ALLOWED_HOSTS`** precisa ter o nome público: atrás de proxy o
+  `Host` não é `localhost`, e o SDK devolve 421.
+
+| Variável | Padrão | O que é |
+|---|---|---|
+| `MCP_BACKEND` | `ssh` | `inprocess` embute o DuckDB |
+| `MCP_DATA_ROOT` | `~/rodado` | diretório local ou `s3://bucket` |
+| `MCP_TRANSPORT` | `stdio` | `http` sobe o uvicorn |
+| `MCP_HTTP_HOST` / `MCP_HTTP_PORT` | `127.0.0.1` / `8000` | onde escutar |
+| `MCP_HTTP_TOKENS` | — | obrigatório no modo http |
+| `MCP_HTTP_ALLOWED_HOSTS` | — | nomes públicos aceitos no `Host` |
+| `MCP_MEMORY_LIMIT` / `MCP_THREADS` | `3GB` / `4` | limites do DuckDB (o `~/.duckdbrc` não vale aqui) |
+| `MCP_TEMP_DIR` / `MCP_MAX_TEMP` | `/tmp/rodado_duckdb_tmp` / `8GB` | despejo em disco — nunca um tmpfs |
+| `MCP_QUERY_TIMEOUT` | `115` | segundos até interromper a consulta |
+| `MCP_S3_KEY_ID` / `MCP_S3_SECRET` / `MCP_S3_ENDPOINT` / `MCP_S3_REGION` | — | só com raiz `s3://` |
+
+O agente se conecta assim:
+
+```json
+{ "mcpServers": { "rodado": {
+    "type": "http",
+    "url": "https://<host>/mcp",
+    "headers": { "Authorization": "Bearer <token>" } } } }
+```
+
+Imagem: `docker build -f mcp/Dockerfile .` a partir da raiz do repo.
+
+Medido em 2026-10-09 lendo o bucket do Hetzner a partir de uma VM na mesma
+região, com o sync do espelho em andamento: tabela de um arquivo responde em
+menos de 1 s, mas tabela com centenas de arquivos (CAGED, 689; RAIS, 2.974)
+estoura o timeout, porque alguns objetos ficam dezenas de segundos sem
+responder e a consulta espera pelo mais lento. Repetir a medição com o sync
+parado antes de expor o modo S3 a alguém.
