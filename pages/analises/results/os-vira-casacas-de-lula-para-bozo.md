@@ -64,6 +64,16 @@ Minas Gerais tem o maior número absoluto (175), seguida de Rio Grande do Sul (1
 Paraná (91), São Paulo (88) e Goiás (68). Piauí, Pernambuco, Paraíba e Sergipe não tiveram
 nenhum. Saber só a UF já separa os dois grupos com AUC de 0,89.
 
+A geografia não é efeito da direita mais dividida em 2026. Em todas as UFs Flávio ficou
+com 94% a 98% do voto somado da direita, e a mediana é praticamente a mesma nos
+vira-casacas (96,7%) e nos municípios que Lula manteve (95,6%).
+
+O perfil também aparece dentro de uma UF só. Minas Gerais tem os dois grupos em número
+suficiente (175 vira-casacas e 452 que Lula manteve). Lá, como no país, os vira-casacas
+têm menos Bolsa Família (12% × 18% dos domicílios), mais população branca (45% × 27%),
+Pix de valor médio mais alto, mais indústria e menos emprego público. A exceção é o
+emprego formal na agropecuária, que em Minas é igual nos dois grupos (10% × 10%).
+
 ## 3. O perfil, e quanto dele resiste aos controles
 
 ![Diferença entre vira-casacas e municípios que Lula manteve, antes e depois de restringir aos de margem comparável](/analises/img/vira-casacas-perfil.png)
@@ -118,6 +128,14 @@ diferentes em menos coisas:
 Mesmo esses efeitos são moderados: cada desvio-padrão do indicador muda de 3 a 8 pontos
 percentuais a chance de o município ter virado.
 
+Uma segunda passada, feita de forma independente, chegou ao mesmo retrato. Ela usou a
+posição relativa de cada município em cada indicador, em vez do valor bruto, para que
+poucos casos extremos não puxem o resultado, e comparou municípios vizinhos como grupo,
+não como casos independentes. Quando se pede ao modelo que escolha só uns poucos
+indicadores entre todos, ele escolhe oito, e todos são o mesmo eixo: Pé-de-Meia,
+analfabetismo, Bolsa Família, PIB per capita, crédito rural, população branca, variedade
+de nomes dados aos recém-nascidos e valor médio do Pix.
+
 ## 4. Economia: o que a estrutura setorial diz
 
 Para a composição setorial usamos o emprego formal de 2024 por seção e divisão da CNAE em
@@ -141,27 +159,39 @@ cada município, mais a fatia da agropecuária no PIB municipal e o crédito rur
 - **O único indicador econômico que resiste é o crédito rural por hectare.** O que pesa é
   o agro capitalizado, não o tamanho do agro: a fatia da agropecuária no PIB e o emprego
   formal no agro caem para perto de zero quando se compara municípios de mesma margem.
+  Na segunda passada, com a margem de 2022 controlada, o emprego formal no agro chega a
+  inverter de sinal: é um pouco **menor** nos vira-casacas (cada desvio-padrão a mais
+  reduz em 2 p.p. a chance de ter virado). "O agro virou o município" não se sustenta.
 
 A economia pesa mais quando a pergunta é **o quanto** Lula caiu, e não **se** o município
 virou. Nos 5.570 municípios, comparando dentro da mesma UF e controlando o porte e o voto
 de Lula em 2022:
 
-| a cada 1 desvio-padrão a mais de… | variação do voto em Lula, 2022 → 2026 |
-|---|---:|
-| domicílios no Bolsa Família | **+1,2 p.p.** (caiu menos) |
-| emprego formal no setor público | **+0,9 p.p.** |
-| população preta | +0,4 p.p. |
-| agropecuária no PIB | **−0,7 p.p.** (caiu mais) |
-| crédito rural por habitante | −0,6 p.p. |
-| emprego formal na agropecuária | −0,5 p.p. |
-| população branca | −0,9 p.p. |
-| PIB per capita | −0,3 p.p. |
-| emprego no comércio | −0,3 p.p. |
-| emprego no setor financeiro | −0,2 p.p. |
-| arrecadação de royalties de mineração por habitante | −0,2 p.p. |
+| a cada 1 desvio-padrão a mais de… | variação do voto em Lula, 2022 → 2026 | pela posição relativa¹ |
+|---|---:|---:|
+| domicílios no Bolsa Família | **+1,2 p.p.** (caiu menos) | +0,7 p.p. |
+| emprego formal no setor público | **+0,9 p.p.** | +0,8 p.p. |
+| população preta | +0,4 p.p. | +0,4 p.p. |
+| agropecuária no PIB | **−0,7 p.p.** (caiu mais) | −0,8 p.p. |
+| crédito rural por habitante | −0,6 p.p. | **−1,1 p.p.** |
+| emprego formal na agropecuária | −0,5 p.p. | −0,6 p.p. |
+| população branca | −0,9 p.p. | −1,1 p.p. |
+| PIB per capita | −0,3 p.p. | −0,9 p.p. |
+| emprego no comércio | −0,3 p.p. | −0,3 p.p. |
+| emprego no setor financeiro | −0,2 p.p. | −0,4 p.p. |
+| arrecadação de royalties de mineração por habitante | −0,2 p.p. | —² |
 
-Todos esses coeficientes passam na correção por múltiplos testes. Juntos, os indicadores
-elevam a parte explicada da queda de Lula de 45% (só UF, porte e voto de 2022) para 60%.
+¹ Segunda passada: cada indicador entra pela posição do município no ranking, e não pelo
+valor bruto, e a incerteza trata como grupo os municípios da mesma região imediata. Os
+sinais não mudam. O tamanho muda onde a distribuição tem cauda longa: o crédito rural por
+habitante, que vai de zero a centenas de milhares de reais, passa a ser o maior efeito
+da tabela.
+² Fora da segunda passada, porque falta o dado em mais de 30% dos municípios.
+
+Todos esses coeficientes passam na correção por múltiplos testes, nas duas versões.
+Juntos, os indicadores elevam a parte explicada da queda de Lula de 45% (só UF, porte e
+voto de 2022) para 58% a 60%, e para 55% quando o modelo é testado em regiões que não
+viu.
 
 ## 5. Quanto disso é explicável
 
@@ -172,11 +202,16 @@ elevam a parte explicada da queda de Lula de 45% (só UF, porte e voto de 2022) 
 | UF, porte e ~130 indicadores | 0,94 |
 | só a margem de 2022 | **0,98** |
 | margem de 2022, UF, porte e indicadores | 0,99 |
+| só os 8 indicadores do eixo de vulnerabilidade, sem UF nem porte | 0,93 |
+| entre os de margem comparável: margem de 2022, UF e porte | 0,91 |
+| entre os de margem comparável: margem de 2022, UF, porte e os 8 indicadores | 0,93 |
 
 O AUC foi medido em validação cruzada que separa regiões imediatas inteiras entre treino e
 teste, para que municípios vizinhos, quase idênticos, não se ajudem a acertar. **Os
 indicadores acrescentam 0,03 a UF e porte, e praticamente nada a quem já sabe a margem de
-2022.**
+2022.** O único ganho real aparece entre os municípios que Lula ganhou por até 18 p.p.: ali
+a margem sozinha separa menos (os vira-casacas são também menores, com mediana de 7 mil
+habitantes contra 16 mil), e os oito indicadores levam o AUC de 0,91 para 0,93.
 
 ## 6. E por seção eleitoral?
 
