@@ -2,13 +2,13 @@
 
 🇬🇧 [English version](ERD_EN.md)
 
-Mapa de entidades e relações das 1390 tabelas (255 datasets) do espelho. Gerado por `scripts/gera_erd.py` a partir de `schemas.json` em 2026-10-10 — não edite à mão, regenere.
+Mapa de entidades e relações das 1388 tabelas (253 datasets) do espelho. Gerado por `scripts/gera_erd.py` a partir de `schemas.json` em 2026-10-10 — não edite à mão, regenere.
 
 As expressões de join, o formato de cada chave e as pegadinhas estão em [`docs/context/join_keys.md`](docs/context/join_keys.md). Este arquivo é o mapa; aquele é o manual.
 
 ## Como ler
 
-Um único `erDiagram` com 1390 tabelas seria ilegível, então o modelo sobe um nível:
+Um único `erDiagram` com 1388 tabelas seria ilegível, então o modelo sobe um nível:
 
 - **entidade = dataset**; **atributo = uma das tabelas** dele;
 - o *tipo* do atributo lista as chaves que aquela tabela carrega (`mun`, `uf`, `cnpj`, `cnes`, `escola`, `setor`, `cep`, `cpf`, `cnae`, `cbo`, `cid`, `ncm`, `pais`, `partido`, `orgao`, `ug`, `funcprog`, `ano`, `mes`), ou `sem_chave` quando não há nenhuma;
@@ -84,8 +84,8 @@ erDiagram
 | Território, ambiente e infraestrutura | 28 | 118 | 24 |
 | Demografia e indicadores sociais | 18 | 155 | 17 |
 | Internacional, cultura e esporte | 9 | 25 | 3 |
-| Outros | 23 | 155 | 19 |
-| **total** | **255** | **1390** | **212** |
+| Outros | 21 | 153 | 17 |
+| **total** | **253** | **1388** | **210** |
 
 43 datasets não têm chave documentada alguma; 329 tabelas individuais não carregam chave nenhuma (ambas as listas no fim).
 
@@ -2482,17 +2482,12 @@ erDiagram
 
 ## Outros
 
-23 datasets · 155 tabelas
+21 datasets · 153 tabelas
 
 **1/3**
 
 ```mermaid
 erDiagram
-    UF ||..o{ _export : "uf"
-    CEP ||--o{ _staging : "cep"
-    MUNICIPIO ||--o{ _staging : "id_municipio +1"
-    SETOR_CENSITARIO ||--o{ _staging : "id_setor_censitario"
-    UF ||--o{ _staging : "sigla_uf"
     EMPRESA_CNPJ ||..o{ br_aneel_dadosabertos : "NumCNPJ +2"
     MUNICIPIO ||..o{ br_aneel_dadosabertos : "CodUFibge +2"
     PESSOA_CPF ||..o{ br_aneel_dadosabertos : "NumCPFCNPJ"
@@ -2515,12 +2510,6 @@ erDiagram
     ORGAO ||--o{ br_mgi_compras_publicas : "codigo_orgao +2"
     PESSOA_CPF ||--o{ br_mgi_compras_publicas : "cpf +4"
     UF ||--o{ br_mgi_compras_publicas : "sigla_uf"
-    _export {
-        uf_ano rais
-    }
-    _staging {
-        mun_uf_setor_cep_ano eleicoes_setor
-    }
     br_aneel_dadosabertos {
         mun_cnpj_cpf empreendimento_geracao_distribuida "4.7M linhas"
         cnpj_ano indicadores_continuidade "16.3M linhas"
@@ -2593,6 +2582,9 @@ erDiagram
         cnpj_cpf_ano pregao_item_oferta "18.7M linhas"
         mun_uf_cnpj_orgao unidade_administrativa "45.7k linhas"
     }
+    br_mgi_pncp {
+        sem_chave dicionario "224 linhas"
+    }
 ```
 
 **2/3**
@@ -2621,9 +2613,6 @@ erDiagram
     UF ||--o{ br_senatran_estatisticas : "sigla_uf"
     MUNICIPIO ||--o{ br_senatran_frota : "id_municipio"
     UF ||--o{ br_senatran_frota : "sigla_uf"
-    br_mgi_pncp {
-        sem_chave dicionario "224 linhas"
-    }
     br_minc_salic {
         sem_chave areas "7 linhas"
         sem_chave cidades "5.6k linhas"

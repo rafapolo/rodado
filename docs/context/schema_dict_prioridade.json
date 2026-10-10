@@ -3,15 +3,15 @@
   "generated_by": "scripts/prioriza_schema_dict_status.py",
   "fonte": "docs/context/schema_dict_status.json (label nao_verificado)",
   "sinais": {
-   "consultas_sql_lidas": 3191,
+   "consultas_sql_lidas": 3193,
    "harness_consultar": 2207,
-   "claude_run_sql_ou_bash_duckdb": 984,
+   "claude_run_sql_ou_bash_duckdb": 986,
    "describe_table_lidos": 1223,
    "docs_versionados_lidos": 137
   },
-  "nao_verificado_total": 11556,
-  "com_uso_observado_sql_ou_docs": 259,
-  "com_uso_em_sql": 179,
+  "nao_verificado_total": 11550,
+  "com_uso_observado_sql_ou_docs": 257,
+  "com_uso_em_sql": 177,
   "formula": "10*sql + 5*docs + 1*desc + 0.5*perg + 0.5*log10(linhas+1)",
   "top": 300
  },
@@ -487,16 +487,6 @@
    "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
-   "coluna": "_staging.eleicoes_setor.metodo_setor",
-   "score": 40.0,
-   "sql": 4,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 0,
-   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
    "coluna": "br_cgu_gas_do_povo.gas_do_povo.ano_mes",
    "score": 38.66,
    "sql": 3,
@@ -735,16 +725,6 @@
    "perg": 0,
    "linhas": 699077,
    "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "_staging.eleicoes_setor.origem_coordenada",
-   "score": 30.0,
-   "sql": 3,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 0,
-   "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_me_rais.microdados_estabelecimentos.subatividade_ibge",
@@ -3015,6 +2995,26 @@
    "perg": 0,
    "linhas": 201775,
    "reason": "candidato real: ~21 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ibge_censo2022_raca.instrucao.dimensao_principal",
+   "score": 12.61,
+   "sql": 0,
+   "docs": 0,
+   "desc": 10,
+   "perg": 0,
+   "linhas": 167130,
+   "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ibge_censo2022_raca.instrucao.id_cor_raca_sidra",
+   "score": 12.61,
+   "sql": 0,
+   "docs": 0,
+   "desc": 10,
+   "perg": 0,
+   "linhas": 167130,
+   "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   }
  ]
 }

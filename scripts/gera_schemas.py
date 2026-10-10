@@ -84,7 +84,8 @@ SKIP_DATASETS = {
 tables = []
 for ds in sorted(os.listdir(ROOT)):
     dspath = os.path.join(ROOT, ds)
-    if not os.path.isdir(dspath) or ds.startswith(".") or ds in SKIP_DATASETS:
+    # `_staging`, `_export`, `_rodado_metadata`: diretório que começa com `_` é de trabalho
+    if not os.path.isdir(dspath) or ds.startswith((".", "_")) or ds in SKIP_DATASETS:
         continue
     for tbl in sorted(os.listdir(dspath)):
         tblpath = os.path.join(dspath, tbl)
@@ -283,7 +284,8 @@ def run_local():
     tables = []
     for ds in sorted(os.listdir(LOCAL_MOUNT)):
         dspath = os.path.join(LOCAL_MOUNT, ds)
-        if not os.path.isdir(dspath) or ds.startswith(".") or ds in SKIP_DATASETS:
+        # `_staging`, `_export`, `_rodado_metadata`: diretório que começa com `_` é de trabalho
+    if not os.path.isdir(dspath) or ds.startswith((".", "_")) or ds in SKIP_DATASETS:
             continue
         for tbl in sorted(os.listdir(dspath)):
             tblpath = os.path.join(dspath, tbl)

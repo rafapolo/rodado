@@ -8,10 +8,10 @@
       "source": "docs/context/column_codes.yaml"
     },
     "counts_by_label": {
-      "documentado_em_outro_lugar": 10637,
-      "nao_e_codigo": 25058,
-      "nao_verificado": 11556,
-      "padrao_externo": 1714
+      "documentado_em_outro_lugar": 10636,
+      "nao_e_codigo": 25045,
+      "nao_verificado": 11550,
+      "padrao_externo": 1706
     },
     "generated_by": "scripts/gera_schema_dict_status.py",
     "llm_triage": {
@@ -43,121 +43,9 @@
     },
     "plan": "tasks/done/generate-full-schema-dict.md",
     "scope": "colunas STRING/INTEGER fora de dicionario_coverage.json — FLOAT/BOOLEAN não entram (contínuo/autoexplicativo)",
-    "total_columns_labeled": 48965
+    "total_columns_labeled": 48937
   },
   "columns": {
-    "_export.rais.adm": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~24424 valores distintos (> 100) — não parece código"
-    },
-    "_export.rais.ano": {
-      "label": "nao_e_codigo",
-      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
-    },
-    "_export.rais.ativos": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~33579 valores distintos (> 100) — não parece código"
-    },
-    "_export.rais.desl": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~25505 valores distintos (> 100) — não parece código"
-    },
-    "_export.rais.esc": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-    },
-    "_export.rais.gg": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~12 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-    },
-    "_export.rais.idade": {
-      "label": "nao_e_codigo",
-      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
-    },
-    "_export.rais.raca": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-    },
-    "_export.rais.rem_n": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~43928 valores distintos (> 100) — não parece código"
-    },
-    "_export.rais.secao": {
-      "label": "padrao_externo",
-      "reason": "hierarchies.yaml cnae -> br_bd_diretorios_brasil.cnae_2"
-    },
-    "_export.rais.setor": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-    },
-    "_export.rais.sexo": {
-      "label": "documentado_em_outro_lugar",
-      "reason": "bridges.yaml coded_differently.sexo: mesmo conceito, código numérico difere por fonte e por ano — RAIS usa 1=masculino/2=feminino/9=ignorado; CAGED usa 1=masculino/3=feminino (tabela recente) mas 01/02 (tabela antiga); ENEM já usou 0=masculino/ 1=feminino numérico E, em outros anos, letras M/F. Sempre decodificar via `{dataset}.dicionario WHERE nome_coluna='sexo'` daquela tabela específica antes de filtrar — nunca reusar o código de outra tabela. Só na saúde, em 2022 — br_ms_sih grava por extenso ('Feminino'/'Masculino'), br_ms_sim e br_ms_sinasc usam 1/2 (0 = ignorado), br_ms_sia, br_ms_sinan e br_ms_sisvan usam F/M; em br_ms_sinan.microdados_influenza_srag o campo é nulo em todas as linhas (medido 2026-10-05)."
-    },
-    "_export.rais.uf": {
-      "label": "padrao_externo",
-      "reason": "bridges.yaml concept_aliases.br_incra_acervo.assentamentos -> concept sigla_uf"
-    },
-    "_staging.eleicoes_setor.ano": {
-      "label": "nao_e_codigo",
-      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
-    },
-    "_staging.eleicoes_setor.bairro": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~41903 valores distintos (> 100) — não parece código"
-    },
-    "_staging.eleicoes_setor.cep": {
-      "label": "nao_e_codigo",
-      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
-    },
-    "_staging.eleicoes_setor.eleitores_secao": {
-      "label": "padrao_externo",
-      "reason": "nível CNAE — hierarchies.yaml cnae"
-    },
-    "_staging.eleicoes_setor.endereco": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~111333 valores distintos (> 100) — não parece código"
-    },
-    "_staging.eleicoes_setor.id_municipio": {
-      "label": "padrao_externo",
-      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
-    },
-    "_staging.eleicoes_setor.id_municipio_tse": {
-      "label": "padrao_externo",
-      "reason": "bridges.yaml concepts.id_municipio_tse -> br_bd_diretorios_brasil.municipio.id_municipio_tse"
-    },
-    "_staging.eleicoes_setor.id_setor_censitario": {
-      "label": "padrao_externo",
-      "reason": "bridges.yaml concepts.id_setor_censitario -> br_bd_diretorios_brasil.setor_censitario_2022"
-    },
-    "_staging.eleicoes_setor.local_nome": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~100996 valores distintos (> 100) — não parece código"
-    },
-    "_staging.eleicoes_setor.local_numero": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~397 valores distintos (> 100) — não parece código"
-    },
-    "_staging.eleicoes_setor.metodo_setor": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-    },
-    "_staging.eleicoes_setor.origem_coordenada": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-    },
-    "_staging.eleicoes_setor.secao": {
-      "label": "padrao_externo",
-      "reason": "hierarchies.yaml cnae -> br_bd_diretorios_brasil.cnae_2"
-    },
-    "_staging.eleicoes_setor.sigla_uf": {
-      "label": "padrao_externo",
-      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
-    },
-    "_staging.eleicoes_setor.zona": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~420 valores distintos (> 100) — não parece código"
-    },
     "br_abrinq_oca.municipio_primeira_infancia.ano": {
       "label": "nao_e_codigo",
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
