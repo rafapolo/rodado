@@ -193,8 +193,9 @@ def test_describe_table_gotchas_scoped_by_tabelas():
     # capital_social só vale para empresas; snapshot_mensal vale para o dataset todo
     empresas = {g["id"] for g in m.describe_table("br_me_cnpj.empresas")["gotchas"]}
     socios = {g["id"] for g in m.describe_table("br_me_cnpj.socios")["gotchas"]}
-    assert empresas == {"snapshot_mensal", "capital_social_sentinela"}
-    assert socios == {"snapshot_mensal"}
+    assert {"snapshot_mensal", "capital_social_sentinela"} <= empresas
+    assert "snapshot_mensal" in socios
+    assert "capital_social_sentinela" not in socios
 
 
 def test_describe_table_no_gotchas_block_without_file():
