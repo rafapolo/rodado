@@ -242,7 +242,7 @@ flowchart LR
   simultâneas; as demais esperam até `MCP_QUEUE_TIMEOUT` segundos.
 - **Sem views.** O banco é em memória; `run_sql` reescreve `dataset.tabela`
   para `read_parquet()` antes de executar, e todo `~/rodado/` vira
-  `MCP_DATA_ROOT`. Criar 1.234 views sobre S3 leria o footer de toda tabela na
+  `MCP_DATA_ROOT`. Criar 1.389 views sobre S3 leria o footer de toda tabela na
   subida.
 - **Mesma trava do modo SSH.** `allowed_directories` só com a raiz dos dados e
   o diretório de despejo, `enable_external_access=false`,

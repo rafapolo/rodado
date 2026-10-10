@@ -459,7 +459,7 @@ def _inprocess_connection():
     """The one DuckDB instance of this process; callers take a cursor() each.
 
     The embedded engine does not read ~/.duckdbrc, so every limit is set here.
-    No views are created: binding 1.234 views over S3 would list and read the
+    No views are created: binding 1.389 views over S3 would list and read the
     footer of every table at startup. Catalog names reach the parquet through
     run_sql's read_parquet() rewrite instead, bound lazily per query.
     """
@@ -767,7 +767,7 @@ mcp = FastMCP("rodado")
 def list_datasets() -> dict:
     """List all datasets in the unified catalog, with their table counts.
 
-    251 datasets, 1234 tables total: the Base dos Dados mirror (RAIS, SIM, TSE,
+    254 datasets, 1389 tables total: the Base dos Dados mirror (RAIS, SIM, TSE,
     CGU, IBGE, INEP and others) plus independently-scraped sources filling
     gaps Base dos Dados doesn't cover (SICAF, SINAN Violência, EU/UN
     Sanctions, Consumidor.gov.br and more — see tasks/plans/datasets_to_scrap.md

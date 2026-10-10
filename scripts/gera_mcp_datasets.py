@@ -3,7 +3,7 @@
 
     python3 scripts/gera_mcp_datasets.py
 
-Os 43 cards da página destacam ~100 tabelas; o espelho tem 251 datasets. Esta
+Os 43 cards da página destacam ~100 tabelas; o espelho tem 254 datasets. Esta
 seção lista todos, um por linha (descrição, tabelas, linhas, fonte), agrupados
 pelo tema do atlas, com link para `rodado.xyz/atlas?db=<dataset>`.
 
