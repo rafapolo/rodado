@@ -1,0 +1,28 @@
+dataset: br_cvm_cia_aberta
+gotchas:
+  - id: dois_exercicios_por_documento
+    resumo: "Cada DFP/ITR traz o exercício ÚLTIMO e o PENÚLTIMO lado a lado. Somar VL_CONTA sem filtrar ORDEM_EXERC = 'ÚLTIMO' dobra o valor."
+    detalhe: >
+      O documento de 2024 repete, como PENÚLTIMO, os números de 2023 (já
+      reapresentados). Para série histórica use sempre ORDEM_EXERC = 'ÚLTIMO' e
+      DT_REFER como a data; o PENÚLTIMO serve para ver reapresentação.
+    tabelas: [dfp_dre_con, dfp_dre_ind, dfp_bpa_con, dfp_bpa_ind, dfp_bpp_con, dfp_bpp_ind, dfp_dfc_mi_con, dfp_dfc_md_con, dfp_dva_con, dfp_dra_con, dfp_dmpl_con, itr_dre_con, itr_bpa_con, itr_bpp_con]
+    colunas: [ORDEM_EXERC, VL_CONTA, DT_REFER]
+    severidade: silencioso
+    verificado: "dfp_dre_con: 225.926 linhas ÚLTIMO e 225.102 PENÚLTIMO; Petrobras (CD_CVM 009512) em 2024-12-31, conta 3.01: ÚLTIMO 490.829.000 e PENÚLTIMO 511.994.000 (mil reais) — medido 2026-10-10"
+  - id: escala_moeda
+    resumo: "VL_CONTA vem em milhares de reais na maioria das linhas e em reais nas demais: multiplique por 1000 quando ESCALA_MOEDA = 'MIL' antes de somar empresas."
+    tabelas: [dfp_dre_con, dfp_dre_ind, dfp_bpa_con, dfp_bpp_con, itr_dre_con, itr_bpa_con, itr_bpp_con]
+    colunas: [VL_CONTA, ESCALA_MOEDA]
+    severidade: silencioso
+    verificado: "dfp_dre_con: 439.460 linhas em MIL e 11.568 em UNIDADE — medido 2026-10-10"
+  - id: cnpj_pontuado
+    resumo: "CNPJ_CIA e CNPJ_Companhia vêm com pontuação (00.000.000/0001-91). Para ligar ao cadastro da Receita, tire a pontuação; CD_CVM é texto com zero à esquerda."
+    detalhe: >
+      DFP, ITR, IPE e o cadastro chamam a coluna de CNPJ_CIA; FRE, FCA, VLMO e
+      CGVN chamam de CNPJ_Companhia. Entre tabelas da própria CVM, junte por
+      CD_CVM (DFP/ITR/cadastro) ou pelo CNPJ pontuado como está.
+    tabelas: [cadastro, dfp_documentos, itr_documentos, fre_documentos, fca_geral]
+    colunas: [CNPJ_CIA, CNPJ_Companhia, CD_CVM]
+    severidade: erro
+    verificado: "cadastro: 2.678 linhas, todas no formato pontuado; 2.515 de 2.531 CNPJs distintos casam com a matriz em br_me_cnpj.estabelecimentos depois de regexp_replace(CNPJ_CIA, '\\D', '', 'g') — medido 2026-10-10"

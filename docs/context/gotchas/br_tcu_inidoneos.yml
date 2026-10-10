@@ -1,0 +1,14 @@
+dataset: br_tcu_inidoneos
+gotchas:
+  - id: cargo_funcao_congelado
+    resumo: "CARGO/FUNCAO parou de ser publicado pelo TCU em 2026-10: quem entrou na lista depois vem sem cargo. NULL não é 'sem cargo'."
+    detalhe: >
+      A lista de responsáveis com contas julgadas irregulares para fins
+      eleitorais deixou de trazer a coluna na fonte. O espelho mantém o valor
+      que já tinha, casado por CPF + PROCESSO (chave única na tabela); linha
+      nova fica NULL. Para contar por cargo, restrinja a quem tem o valor e
+      diga que o recorte é de quem estava na lista até 2026-10-07.
+    tabelas: [resp_contas_julgadas_irreg_implicacao_eleitoral]
+    colunas: [CARGO/FUNCAO]
+    severidade: silencioso
+    verificado: "9.201 linhas, 6.731 com CARGO/FUNCAO e 2.470 sem; dos 6.732 valores da versão de 2026-10-07, 6.731 seguem na lista — medido 2026-10-10"
