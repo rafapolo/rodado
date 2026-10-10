@@ -14,9 +14,14 @@ import re
 import shutil
 import signal
 import sys
+import threading
 import time
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "vendor"))
+# Sem CPR (pedido de posição do cursor): a resposta faria Suíça -> Helsinque -> Suíça a cada
+# prompt (~240 ms), se misturava com texto colado e, quando se perdia, a tela parava de
+# atualizar até a próxima tecla.
+os.environ.setdefault("PROMPT_TOOLKIT_NO_CPR", "1")
 
 import duckdb  # noqa: E402
 
@@ -166,12 +171,19 @@ if PromptSession:
                 pass
 
         def _colunas_de(self, alvo):
+            """Colunas de uma tabela citada. A 1ª leitura (~100 ms) vai para uma thread:
+            a tecla nunca espera, e as colunas entram na sugestão seguinte."""
             if alvo not in self.colunas:
-                ds, tb = alvo.split(".", 1)
-                try:
-                    self.colunas[alvo] = [(c[0], c[1]) for c in _consulta_simples(f'DESCRIBE "{ds}"."{tb}"')]
-                except duckdb.Error:
-                    self.colunas[alvo] = []
+                self.colunas[alvo] = []  # marca como "buscando"
+
+                def busca():
+                    ds, tb = alvo.split(".", 1)
+                    try:
+                        self.colunas[alvo] = [(c[0], c[1]) for c in _consulta_simples(f'DESCRIBE "{ds}"."{tb}"')]
+                    except duckdb.Error:
+                        pass
+
+                threading.Thread(target=busca, daemon=True).start()
             return self.colunas[alvo]
 
         def get_completions(self, documento, evento):

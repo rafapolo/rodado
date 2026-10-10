@@ -4,7 +4,10 @@ O espelho do beelink acessível pela web, com senha (HTTP basic auth), só leitu
 
 - `https://db.rodado.xyz/` — terminal SQL no navegador (ttyd em `/tty/`) com a árvore
   dos datasets à direita: busca, tabelas com nº de linhas, colunas ao abrir, ▶ ou duplo
-  clique cola `FROM dataset.tabela LIMIT 10;` no terminal, clique na coluna cola o nome
+  clique cola `FROM dataset.tabela LIMIT 10;` no terminal, clique na coluna cola o nome.
+  Ao abrir a tabela: linhas exatas, data de atualização e fonte, atalhos para amostra,
+  `DESCRIBE` e `SUMMARIZE`, aviso acima de 50 milhões de linhas e as colunas de partição
+  ou de filtro recomendado (`ano`, `mes`, `sigla_uf`)
 - `https://db.rodado.xyz/query` — SQL por HTTP:
 
 ```bash
@@ -52,7 +55,7 @@ flowchart LR
 |---|---|---|
 | Conexão travada (núcleo) | beelink `~/rodado_db/` | `rodado_sql.py` |
 | Terminal (via ttyd): SQL colorido ao digitar, Enter envia no `;`, Tab completa dataset/tabela/coluna | beelink; `prompt_toolkit` 3.0.51 + `wcwidth` em `~/rodado_db/vendor/` (rodas Python puro, sem venv: o beelink não tem `ensurepip` nem sudo) | `terminal.py` |
-| Página com a árvore, `/catalogo.json` (cache 10 min), `/colunas`, `/query` | beelink, `127.0.0.1:18081` | `consulta.py`, `index.html` |
+| Página com a árvore, `/catalogo.json` (cache 10 min), `/colunas`, `/query`, `/ping` | beelink, `127.0.0.1:18081` | `consulta.py`, `index.html` |
 | ttyd + endpoint + túnel, cada um reiniciando sozinho | beelink, tmux `rodado_db`, cron a cada 5 min | `servico.sh` |
 | Senha e roteamento | finland, app haloy `rodado-db` | `proxy/` |
 
@@ -94,9 +97,28 @@ Trocar a senha: gravar a nova em `/root/rodado-db/.senha`, refazer o hash com
 `docker run --rm -i caddy:2.10.2-alpine caddy hash-password < .senha > .senha_hash` e
 redeploy.
 
+## Latência ao digitar
+
+Medido em 2026-10-10. O processamento de cada tecla no beelink leva ~5 ms; o resto é rede:
+navegador → finland (Helsinque) → túnel → beelink e volta. `/ping` vai até o beelink e
+`/health` o Caddy responde sozinho, então a diferença entre os dois, numa conexão
+reaproveitada, é o custo do túnel: ~120 ms com o upload de casa livre (70 ms × 190 ms).
+Com o sync do S3 saturando o upload, o RTT do túnel foi a 148 ms com retransmissões e a
+tecla a ~240 ms.
+
+- `PROMPT_TOOLKIT_NO_CPR=1`: sem isso cada prompt pede a posição do cursor e espera a
+  resposta atravessar a rede.
+- A completação nunca espera consulta: as colunas de uma tabela citada são lidas numa
+  thread e entram na sugestão seguinte. `complete_in_thread=True` foi testado e descartado
+  (um Tab que chega durante a completação anterior é ignorado).
+- Túnel interativo (`ssh -tt` + `IPQoS lowdelay`, para ligar `TCP_NODELAY`) não deu ganho;
+  ficou `-N` sem pty, que pede menos permissão.
+- O que resolveria de vez, e não foi feito: editar o SQL no navegador (realce e
+  autocompletar a partir do `/catalogo.json`) e mandar ao terminal só no Enter.
+
 ## Testes de UI e UX
 
-`db/testes/` roda 36 testes contra o site no ar (Bun + `playwright-core` com o Chrome
+`db/testes/` roda 42 testes contra o site no ar (Bun + `playwright-core` com o Chrome
 instalado, nada é baixado), com a régua da auditoria de acessibilidade do swissviz:
 
 - **API:** 401 sem senha em toda rota, formatos, limite, recusa de escrita e de arquivo
