@@ -232,7 +232,7 @@ describe("desktop", () => {
   test("a11y: contraste WCAG AA em todo texto da árvore e do cabeçalho", async () => {
     const primeiro = p.locator(".ds > summary").first();
     await primeiro.click();
-    await p.locator(".ds[open] .tb > summary").first().click();
+    await p.locator(".ds[open] .tb > summary .nome").first().click();
     await p.waitForSelector(".tb[open] .coluna");
     const r = await auditaContraste(p, "aside *");
     expect(r.total).toBeGreaterThan(20);
@@ -299,14 +299,71 @@ describe("desktop", () => {
   test("abrir uma tabela lista colunas com tipo, descrição e fonte", async () => {
     await p.locator("#busca").fill("secao_setor");
     await p.waitForTimeout(400);
-    await p.locator(".tb summary").first().click();
+    await p.locator(".tb summary .nome").first().click();
     await p.waitForSelector(".tb[open] .coluna");
     expect(await p.locator(".tb[open] .coluna").count()).toBe(18);
     expect(await p.locator(".tb[open] .coluna .tipo").first().textContent()).toBe("INTEGER");
   });
 
+  test(".info: fatos numa linha, fonte como link, ações e sem repetir a descrição do dataset", async () => {
+    await p.locator("#busca").fill("diretorios_brasil.uf");
+    await p.waitForTimeout(400);
+    const tbUf = p.locator('.tb[data-t="br_bd_diretorios_brasil.uf"]');
+    await tbUf.locator("summary .nome").click();
+    await tbUf.locator(".info .fatos").waitFor();
+    const info = tbUf.locator(".info");
+    expect(await info.locator(".fatos").textContent()).toMatch(/^[\d.]+ linhas · atualizado \d{2}\/\d{2}\/\d{4}/);
+    const href = await info.locator(".fatos a").getAttribute("href");
+    expect(href).toMatch(/^https?:\/\//);
+    expect(await info.locator(".fatos a").getAttribute("rel")).toContain("noopener");
+    expect(await info.locator(".acoes button").allTextContents()).toEqual(["▶ amostra", "DESCRIBE", "SUMMARIZE", "⧉ nome"]);
+    const descDs = (await p.locator(".ds[open] > .dsinfo .desc").textContent())!.trim();
+    expect(descDs.length).toBeGreaterThan(10);
+    expect(await info.textContent()).not.toContain(descDs.slice(0, 30)); // descrição fica no dataset, não se repete
+    // a descrição aparece uma vez, no dataset, cortada em 2 linhas com "mais…"
+    expect(await p.locator(".ds[open] > .dsinfo").count()).toBe(1);
+    const mais = p.locator(".ds[open] > .dsinfo .mais");
+    await mais.click();
+    expect(await mais.getAttribute("aria-expanded")).toBe("true");
+    await mais.click();
+  });
+
+  test(".info: DESCRIBE cola no terminal", async () => {
+    await p.locator('.tb[data-t="br_bd_diretorios_brasil.uf"] [data-cola="describe"]').click();
+    await esperaTerminal(p, "DESCRIBE br_bd_diretorios_brasil.uf;");
+    await p.frameLocator("#terminal").locator(".xterm-helper-textarea").press("Enter");
+    await esperaTerminal(p, /regiao\s+│ VARCHAR/);
+  });
+
+  test(".info: tabela grande avisa para filtrar e marca ano/mes como filtro", async () => {
+    await p.locator("#busca").fill("cnpj");
+    await p.waitForTimeout(400);
+    const tb = p.locator('.tb[data-t="br_me_cnpj.estabelecimentos"]');
+    await tb.locator("summary .nome").click();
+    await tb.locator(".aviso").waitFor({ timeout: 30_000 });
+    expect(await tb.locator(".aviso").textContent()).toMatch(/linhas — (filtre por|use LIMIT)/);
+    expect(await tb.locator(".coluna .etq").count()).toBeGreaterThan(0);
+    await tb.locator("summary .nome").click();
+  });
+
+  test(".info: partição hive ganha etiqueta e coluna longa ganha filtro", async () => {
+    await p.locator("#busca").fill("series_chuva_diaria");
+    await p.waitForTimeout(400);
+    const tb = p.locator('.tb[data-t="br_ana_telemetria.series_chuva_diaria"]');
+    await tb.locator("summary .nome").click();
+    await tb.locator(".coluna").first().waitFor();
+    expect(await tb.locator('.coluna[data-c="bacia"] .etq.particao').count()).toBe(1);
+    await tb.locator("summary .nome").click();
+    await p.locator("#busca").fill("secao_setor");
+    await p.waitForTimeout(400);
+  });
+
   test("▶ cola a consulta no terminal e Enter executa", async () => {
-    await p.locator(".tb[open] summary .usar").click();
+    await p.locator("#busca").fill("secao_setor");
+    await p.waitForTimeout(400);
+    const linha = p.locator('.tb[data-t="br_rodado_eleicoes.secao_setor"] > summary');
+    await linha.hover(); // o ▶ aparece no hover, como para uma pessoa
+    await linha.locator(".usar").click();
     await esperaTerminal(p, "FROM br_rodado_eleicoes.secao_setor LIMIT 10;");
     await p.frameLocator("#terminal").locator(".xterm-helper-textarea").press("Enter");
     await esperaTerminal(p, /10 rows/);
@@ -336,6 +393,36 @@ describe("desktop", () => {
     });
     expect(cores).not.toBeNull();
     expect(cores![0]).not.toBe(cores![1]);
+  });
+
+  test("terminal: eco por tecla não passa muito da latência da rede", async () => {
+    await esperaTerminal(p, /(rodado|\.\.\.)>\s*$/);
+    const r = await p.evaluate(async () => {
+      const term = (document.getElementById("terminal") as any).contentWindow.term;
+      const linha = () => { const b = term.buffer.active; return b.getLine(b.baseY + b.cursorY).translateToString(true); };
+      const tempos: number[] = [];
+      for (const ch of "SELECTxsecao_setor.anoxWHERE") {
+        const antes = linha(), t0 = performance.now();
+        term.input(ch, true);
+        while (linha() === antes && performance.now() - t0 < 3000) await new Promise((r) => setTimeout(r, 1));
+        tempos.push(performance.now() - t0);
+      }
+      term.input("\x03", true);
+      // ida e volta pura até o beelink pelo mesmo caminho (proxy + túnel); mediana de 5
+      const redes: number[] = [];
+      for (let i = 0; i < 5; i++) {
+        const t0 = performance.now();
+        await fetch(location.origin + "/ping", { cache: "no-store" });
+        redes.push(performance.now() - t0);
+      }
+      redes.sort((a, b) => a - b);
+      return { tempos, rede: redes[2] };
+    });
+    const ord = [...r.tempos].sort((a, b) => a - b);
+    const mediana = ord[ord.length >> 1];
+    // a rede é o piso; o processamento por tecla (5 ms medido no beelink) tem de caber em +60 ms
+    expect(mediana).toBeLessThan(r.rede * 1.3 + 60);
+    expect(ord[ord.length - 1]).toBeLessThan(2000);
   });
 
   test("terminal: autocompletar com Tab", async () => {
@@ -435,6 +522,17 @@ describe("celular (iPhone 14)", () => {
         .map((b) => ({ t: b.textContent, r: b.getBoundingClientRect() }))
         .filter(({ r }) => r.height < 36 || r.width < 36).map((x) => x.t));
     expect(pequenos).toEqual([]);
+  });
+
+  test(".info no celular: ações com alvo de toque de 36 px", async () => {
+    await p.locator("[data-acao=arvore]").tap();
+    await p.locator("#busca").fill("diretorios_brasil.uf");
+    await p.waitForTimeout(400);
+    const tb = p.locator('.tb[data-t="br_bd_diretorios_brasil.uf"]');
+    await tb.locator("summary .nome").tap();
+    await tb.locator(".acoes button").first().waitFor();
+    const alturas = await tb.locator(".acoes button").evaluateAll((bs) => bs.map((b) => b.getBoundingClientRect().height));
+    expect(Math.min(...alturas)).toBeGreaterThanOrEqual(36);
   });
 
   test("busca com 16 px (o iOS não dá zoom no foco)", async () => {
