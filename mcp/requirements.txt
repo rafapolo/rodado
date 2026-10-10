@@ -1,10 +1,13 @@
 # Deps for mcp_server.py — documentation only, since these are already
 # present in the ambient interpreter used by this project.
-# Deliberately no `duckdb`/`requests`: the server never touches DuckDB or
-# HTTP directly, it shells out to `ssh beelink` for every query.
+# No `duckdb` for the default backend: it shells out to `ssh beelink` for
+# every query. MCP_BACKEND=inprocess embeds DuckDB and MCP_TRANSPORT=http
+# serves it with uvicorn — those two need the last two lines (see Dockerfile).
 mcp>=1.28.1
 pyyaml>=6.0        # docs/context/bridges.yaml
 pytest>=9.1.1  # dev only — mcp/test_mcp_server.py
+duckdb==1.5.5      # inprocess backend only
+uvicorn>=0.30      # http transport only
 
 # pydantic-core must match the installed pydantic exactly or *every* import of
 # pydantic raises SystemError, which takes the whole MCP server down (mcp

@@ -7,11 +7,15 @@ delegated to the DuckDB CLI on beelink over SSH (the project's only data
 source since 2026-07-09: local Parquet on beelink, no cloud storage — this
 is where newly-scraped datasets land first).
 """
+import contextvars
+import decimal
 import difflib
 import functools
+import hmac
 import json
 import os
 import re
+import shlex
 import subprocess
 import threading
 import time
@@ -32,6 +36,32 @@ BEELINK_DUCKDB_BIN = os.environ.get("MCP_BEELINK_DUCKDB_BIN", "~/bin/duckdb")
 BEELINK_DUCKDB_PATH = os.environ.get("MCP_BEELINK_DUCKDB_PATH", "~/rodado/basedosdados.duckdb")
 # Absolute home on beelink: DuckDB's allowed_directories wants absolute paths.
 BEELINK_HOME = os.environ.get("MCP_BEELINK_HOME", "/home/polo")
+# "ssh" (default) shells out to beelink for every query. "inprocess" embeds
+# DuckDB in this process and reads the parquet itself — for a host that has
+# the data (local disk or an S3 mirror) and serves several callers over HTTP:
+# one process means one memory cap, one shared thread pool and no
+# cross-process file lock, so queries run side by side.
+BACKEND = os.environ.get("MCP_BACKEND", "ssh")
+# Where `~/rodado/<dataset>/<table>/*.parquet` lives for the inprocess
+# backend: a local directory or an `s3://bucket` prefix. Every `~/rodado/`
+# in a query is rewritten to this, so the paths in the docstrings, in
+# describe_table and in the friendly tools stay valid on any host.
+DATA_ROOT = os.environ.get("MCP_DATA_ROOT", "~/rodado").rstrip("/")
+INPROCESS_MEMORY_LIMIT = os.environ.get("MCP_MEMORY_LIMIT", "3GB")
+INPROCESS_THREADS = int(os.environ.get("MCP_THREADS", "4"))
+INPROCESS_TEMP_DIR = os.environ.get("MCP_TEMP_DIR", "/tmp/rodado_duckdb_tmp")
+INPROCESS_MAX_TEMP = os.environ.get("MCP_MAX_TEMP", "8GB")
+# Heavy scans already use every core, so more than a couple at once only
+# makes all of them slower; the rest wait in line up to QUEUE_TIMEOUT.
+INPROCESS_MAX_CONCURRENCY = int(os.environ.get("MCP_MAX_CONCURRENCY", "2"))
+INPROCESS_QUEUE_TIMEOUT = float(os.environ.get("MCP_QUEUE_TIMEOUT", "60"))
+INPROCESS_QUERY_TIMEOUT = float(os.environ.get("MCP_QUERY_TIMEOUT", "115"))
+# fetchall() on an unfiltered billion-row SELECT would take the process (and
+# every other caller) down; _cap_rows trims far below this anyway.
+INPROCESS_MAX_FETCH = int(os.environ.get("MCP_MAX_FETCH", "50000"))
+# "stdio" (default) or "http" (streamable HTTP behind a TLS proxy, bearer
+# token per caller in MCP_HTTP_TOKENS="name:token,name2:token2").
+TRANSPORT = os.environ.get("MCP_TRANSPORT", "stdio")
 # Survey mirrors (SISDEPEN: 3.957 cols) would flood an LLM's context if
 # describe_table returned every column, so wide tables are capped.
 DESCRIBE_MAX_COLS = int(os.environ.get("MCP_DESCRIBE_MAX_COLS", "150"))
@@ -408,6 +438,147 @@ def _run_sql_ssh(sql: str) -> dict:
         return {"error": f"Non-JSON response from beelink: {stdout[:2000]}"}
 
 
+# ---------------------------------------------------------------------------
+# In-process backend (MCP_BACKEND=inprocess)
+# ---------------------------------------------------------------------------
+
+_inproc_conn = None
+_inproc_conn_lock = threading.Lock()
+_inproc_slots = threading.BoundedSemaphore(INPROCESS_MAX_CONCURRENCY)
+
+
+def _data_root() -> str:
+    return DATA_ROOT if "://" in DATA_ROOT else os.path.abspath(os.path.expanduser(DATA_ROOT))
+
+
+def _sql_str(value: str) -> str:
+    return "'" + value.replace("'", "''") + "'"
+
+
+def _inprocess_connection():
+    """The one DuckDB instance of this process; callers take a cursor() each.
+
+    The embedded engine does not read ~/.duckdbrc, so every limit is set here.
+    No views are created: binding 1.234 views over S3 would list and read the
+    footer of every table at startup. Catalog names reach the parquet through
+    run_sql's read_parquet() rewrite instead, bound lazily per query.
+    """
+    global _inproc_conn
+    with _inproc_conn_lock:
+        if _inproc_conn is not None:
+            return _inproc_conn
+        import duckdb
+
+        root = _data_root()
+        os.makedirs(INPROCESS_TEMP_DIR, exist_ok=True)
+        # Secrets persisted in the host's ~/.duckdb are loaded lazily, on the
+        # first S3 read — after the sandbox is up, where reading that
+        # directory is itself denied and fails the query. This process only
+        # ever uses the secret it creates below.
+        con = duckdb.connect(":memory:", config={"allow_persistent_secrets": "false"})
+        con.execute(f"SET memory_limit={_sql_str(INPROCESS_MEMORY_LIMIT)}")
+        con.execute(f"SET threads={INPROCESS_THREADS}")
+        con.execute(f"SET temp_directory={_sql_str(INPROCESS_TEMP_DIR)}")
+        con.execute(f"SET max_temp_directory_size={_sql_str(INPROCESS_MAX_TEMP)}")
+        con.execute("SET enable_progress_bar=false")
+        # Footers are re-read on every query otherwise — on S3 that is one
+        # round trip per file, per query.
+        con.execute("SET enable_object_cache=true")
+        con.execute("SET parquet_metadata_cache=true")
+        if root.startswith("s3://"):
+            con.execute("LOAD httpfs")
+            con.execute("SET enable_http_metadata_cache=true")
+            # SCOPE: the key answers for this prefix only. The same key can
+            # write to the bucket when it is the sync's, so it must never be
+            # readable through SQL — duckdb_secrets() redacts it and
+            # lock_configuration below keeps allow_unredacted_secrets off.
+            con.execute(
+                "CREATE SECRET rodado_s3 (TYPE S3"
+                f", KEY_ID {_sql_str(os.environ['MCP_S3_KEY_ID'])}"
+                f", SECRET {_sql_str(os.environ['MCP_S3_SECRET'])}"
+                f", ENDPOINT {_sql_str(os.environ['MCP_S3_ENDPOINT'])}"
+                f", REGION {_sql_str(os.environ.get('MCP_S3_REGION', 'us-east-1'))}"
+                f", URL_STYLE {_sql_str(os.environ.get('MCP_S3_URL_STYLE', 'path'))}"
+                f", SCOPE {_sql_str(root + '/')})"
+            )
+        # Same sandbox as the ssh backend: the SQL comes from a model.
+        con.execute(
+            f"SET allowed_directories=[{_sql_str(root + '/')}, {_sql_str(INPROCESS_TEMP_DIR + '/')}]"
+        )
+        con.execute("SET enable_external_access=false")
+        con.execute("SET lock_configuration=true")
+        _inproc_conn = con
+        return con
+
+
+def _json_cell(value):
+    # Match what the CLI's -json mode prints, so both backends return the
+    # same shapes: DECIMAL as a number, everything else non-JSON as text.
+    if isinstance(value, decimal.Decimal):
+        return int(value) if value == value.to_integral_value() else float(value)
+    return str(value)
+
+
+def _run_sql_inprocess(sql: str) -> dict:
+    import duckdb
+
+    # Every statement, not only run_sql's: the friendly tools interpolate
+    # caller strings into SQL, this cursor would run a second statement, and
+    # the sandbox allows writing under the data root as much as reading it.
+    error = _check_read_only(sql)
+    if error is None and re.search(r"duckdb_secrets|which_secret", sql, re.IGNORECASE):
+        error = "Secret introspection is not allowed."
+    if error:
+        return {"error": error}
+    sql = sql.replace("~/rodado/", _data_root() + "/")
+    if not _inproc_slots.acquire(timeout=INPROCESS_QUEUE_TIMEOUT):
+        return {
+            "error": f"Server busy: {INPROCESS_MAX_CONCURRENCY} queries already running "
+            f"and none finished in {INPROCESS_QUEUE_TIMEOUT:.0f}s. Retry shortly."
+        }
+    try:
+        cur = _inprocess_connection().cursor()
+        # Stands in for the `timeout -k 5 115` of the ssh backend: without it
+        # one runaway query would hold a slot forever.
+        timed_out = threading.Event()
+
+        def _interrupt():
+            timed_out.set()
+            cur.interrupt()
+
+        timer = threading.Timer(INPROCESS_QUERY_TIMEOUT, _interrupt)
+        timer.start()
+        try:
+            cur.execute(sql)
+            cols = [d[0] for d in cur.description or []]
+            fetched = cur.fetchmany(INPROCESS_MAX_FETCH)
+        except duckdb.Error as exc:
+            if timed_out.is_set():
+                return {"error": f"Query timed out after {INPROCESS_QUERY_TIMEOUT:.0f}s."}
+            return {"error": str(exc)}
+        finally:
+            timer.cancel()
+            cur.close()
+    finally:
+        _inproc_slots.release()
+    rows = [dict(zip(cols, row)) for row in fetched]
+    return {"rows": json.loads(json.dumps(rows, default=_json_cell))}
+
+
+def _run_sql(sql: str) -> dict:
+    if BACKEND == "inprocess":
+        return _run_sql_inprocess(sql)
+    return _run_sql_ssh(sql)
+
+
+def _curl_argv(cmd: str) -> list[str]:
+    # The live-API tools build a `curl ...` line for beelink's shell. The
+    # inprocess backend runs it here, split into argv — no shell involved.
+    if BACKEND == "inprocess":
+        return shlex.split(cmd)
+    return ["ssh", BEELINK_HOST, cmd]
+
+
 # SQL keywords that can legally follow a table reference — anything else after
 # `FROM dataset.table` is a user alias we must preserve when rewriting.
 _POST_TABLE_KEYWORDS = frozenset(
@@ -483,6 +654,17 @@ def _cap_rows(rows: list, max_rows: int) -> dict:
     return out
 
 
+def _read_expr(tid: str) -> str:
+    if BACKEND != "inprocess":
+        return f"read_parquet('{_PARQUET_GLOBS[tid]}')"
+    # With no views, this expression is the table. 1.241 of beelink's 1.246
+    # views read with hive_partitioning + union_by_name (measured 2026-10-09):
+    # a bare `*.parquet` would drop the partition columns of a hive-laid
+    # table and break on files whose schema drifted.
+    glob = _PARQUET_GLOBS[tid].replace("/*.parquet", "/**/*.parquet")
+    return f"read_parquet('{glob}', hive_partitioning=true, union_by_name=true)"
+
+
 def _rewrite_to_read_parquet(sql: str) -> tuple[str, list[str]]:
     """Replace catalog `dataset.table` references with read_parquet() globs.
 
@@ -497,7 +679,7 @@ def _rewrite_to_read_parquet(sql: str) -> tuple[str, list[str]]:
     def _sub(m: re.Match) -> str:
         tid = m.group(1)
         rewritten.append(tid)
-        replacement = f"read_parquet('{_PARQUET_GLOBS[tid]}')"
+        replacement = _read_expr(tid)
         rest = sql[m.end():].lstrip()
         next_token = re.match(r"[A-Za-z_][A-Za-z_0-9]*", rest)
         has_alias = bool(next_token) and next_token.group(0).upper() not in _POST_TABLE_KEYWORDS
@@ -519,6 +701,7 @@ def _rewrite_to_read_parquet(sql: str) -> tuple[str, list[str]]:
 # ---------------------------------------------------------------------------
 
 _call_log_lock = threading.Lock()
+_caller: contextvars.ContextVar[str | None] = contextvars.ContextVar("caller", default=None)
 
 
 def _log_call(name: str, elapsed_ms: float, response: object) -> None:
@@ -528,6 +711,10 @@ def _log_call(name: str, elapsed_ms: float, response: object) -> None:
         size = -1
     entry = {"ts": round(time.time(), 3), "tool": name,
              "elapsed_ms": round(elapsed_ms, 1), "response_bytes": size}
+    # Over HTTP there is a caller to tag: the name its bearer token maps to.
+    caller = _caller.get()
+    if caller:
+        entry["caller"] = caller
     try:
         CALL_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
         with _call_log_lock, open(CALL_LOG_PATH, "a", encoding="utf-8") as f:
@@ -552,7 +739,20 @@ def _instrumented(fn):
         result = fn(*args, **kwargs)
         _log_call(fn.__name__, (time.monotonic() - start) * 1000, result)
         return result
-    return wrapper
+
+    if TRANSPORT != "http":
+        return wrapper
+
+    # FastMCP awaits async tools and calls sync ones inline, on the event
+    # loop: over HTTP a sync tool would make every other caller wait for it.
+    # A worker thread per call is what lets queries actually overlap.
+    @functools.wraps(fn)
+    async def async_wrapper(*args, **kwargs):
+        import anyio
+
+        return await anyio.to_thread.run_sync(functools.partial(wrapper, *args, **kwargs))
+
+    return async_wrapper
 
 
 # ---------------------------------------------------------------------------
@@ -1058,7 +1258,20 @@ def run_sql(sql: str, max_rows: int = 500) -> dict:
     if error:
         return {"error": error}
 
-    result = _run_sql_ssh(sql)
+    if BACKEND == "inprocess":
+        # No views in this backend, so a catalog name can only ever resolve
+        # through the rewrite: do it up front instead of failing first and
+        # then reporting the catalog error when the retry is what failed.
+        direct_sql, rewritten = _rewrite_to_read_parquet(sql)
+        result = _run_sql(direct_sql)
+        if "error" in result:
+            return result
+        out = _cap_rows(result["rows"], max_rows)
+        if rewritten:
+            out["rewritten_tables"] = rewritten
+        return out
+
+    result = _run_sql(sql)
     # Two recoverable failure modes: the table has no view in the DuckDB
     # catalog (scraped datasets), or the view is a stale leftover pointing at
     # a bucket that no longer exists. Both are fixed by querying the local
@@ -1068,7 +1281,7 @@ def run_sql(sql: str, max_rows: int = 500) -> dict:
     if "error" in result and any(marker in result["error"] for marker in _recoverable):
         fallback_sql, rewritten = _rewrite_to_read_parquet(sql)
         if rewritten:
-            retry = _run_sql_ssh(fallback_sql)
+            retry = _run_sql(fallback_sql)
             if "error" not in retry:
                 out = _cap_rows(retry["rows"], max_rows)
                 out["rewritten_tables"] = rewritten
@@ -1142,7 +1355,7 @@ def consultar_cnpj(cnpj: str, max_rows: int = 20, offset: int = 0) -> dict:
     max_rows = _clamp_max_rows(max_rows)
     offset = max(0, int(offset or 0))
 
-    empresa = _run_sql_ssh(
+    empresa = _run_sql(
         f"SELECT cnpj_basico, razao_social, natureza_juridica, "
         f"qualificacao_responsavel, capital_social "
         f"FROM read_parquet('{_CNPJ_BASE}/empresas/*.parquet') "
@@ -1155,14 +1368,14 @@ def consultar_cnpj(cnpj: str, max_rows: int = 20, offset: int = 0) -> dict:
 
     # LIMIT n+1 so a full page signals truncation without a COUNT round-trip;
     # ORDER BY makes offset-based paging stable across calls.
-    estabelecimentos = _run_sql_ssh(
+    estabelecimentos = _run_sql(
         f"SELECT cnpj, identificador_matriz_filial, nome_fantasia, "
         f"situacao_cadastral, data_situacao_cadastral, sigla_uf, cep "
         f"FROM read_parquet('{_CNPJ_BASE}/estabelecimentos/*.parquet') "
         f"WHERE cnpj_basico = '{basico}' ORDER BY cnpj "
         f"LIMIT {max_rows + 1} OFFSET {offset}"
     )
-    socios = _run_sql_ssh(
+    socios = _run_sql(
         f"SELECT nome, documento, qualificacao, data "
         f"FROM read_parquet('{_CNPJ_BASE}/socios/*.parquet') "
         f"WHERE cnpj_basico = '{basico}' ORDER BY nome "
@@ -1199,7 +1412,7 @@ def consultar_cep(cep: str) -> dict:
     cmd = f"curl -s --max-time 10 https://viacep.com.br/ws/{digits}/json/"
     try:
         proc = subprocess.run(
-            ["ssh", BEELINK_HOST, cmd], capture_output=True, timeout=15
+            _curl_argv(cmd), capture_output=True, timeout=15
         )
     except subprocess.TimeoutExpired:
         return {"error": "Query timed out after 15s (ssh beelink -> viacep.com.br)."}
@@ -1247,7 +1460,7 @@ def consultar_divida_ativa(
     where_cpfcnpj = f"CPF_CNPJ LIKE '%{digits}%'"
     cat_filter = f" AND categoria = '{categoria}'" if categoria else ""
 
-    result = _run_sql_ssh(
+    result = _run_sql(
         f"SELECT CPF_CNPJ, NOME_DEVEDOR, TIPO_PESSOA, TIPO_DEVEDOR, "
         f"UF_DEVEDOR, VALOR_CONSOLIDADO, SITUACAO_INSCRICAO, "
         f"RECEITA_PRINCIPAL, DATA_INSCRICAO, INDICADOR_AJUIZADO, categoria "
@@ -1304,7 +1517,7 @@ def consultar_precos_combustivel(
 
     where = " WHERE " + " AND ".join(and_clauses) if and_clauses else ""
 
-    result = _run_sql_ssh(
+    result = _run_sql(
         f"SELECT cnpj, razao, municipio, estado, bandeira, produto, "
         f"preco_revenda, data_coleta "
         f"FROM read_parquet('~/rodado/br_anp_combustiveis/precos/*.parquet'){where} "
@@ -1364,7 +1577,7 @@ def consultar_jurisprudencia_stj(
 
     where = " WHERE " + " AND ".join(and_clauses) if and_clauses else ""
 
-    result = _run_sql_ssh(
+    result = _run_sql(
         f"SELECT SeqDocumento, dataPublicacao, tipoDocumento, processo, "
         f"NM_MINISTRO, assunto, teor "
         f"FROM read_parquet('~/rodado/br_stj_dadosabertos/documentos/*.parquet'){where} "
@@ -1424,7 +1637,7 @@ def consultar_populacao_carceraria(
         where = " WHERE ciclo_arquivo LIKE 'ciclo%'"
         if uf:
             where += f" AND uf = '{uf.strip().upper()}'"
-        result = _run_sql_ssh(
+        result = _run_sql(
             f"SELECT ciclo_arquivo AS ciclo, SUM({pop}) AS presos, SUM({cap}) AS vagas, "
             f"SUM({prov}) AS provisorios FROM {src}{where} "
             f"GROUP BY 1 ORDER BY 1 LIMIT {max_rows + 1}"
@@ -1441,7 +1654,7 @@ def consultar_populacao_carceraria(
     where = f" WHERE ciclo_arquivo = '{(ciclo or 'ciclo_19_2025_h2').strip()}' AND uf IS NOT NULL"
     if uf:
         where += f" AND uf = '{uf.strip().upper()}'"
-    result = _run_sql_ssh(
+    result = _run_sql(
         f"SELECT uf, SUM({pop}) AS presos, SUM({cap}) AS vagas, SUM({prov}) AS provisorios, "
         f"ROUND(SUM({pop}) * 100.0 / NULLIF(SUM({cap}), 0), 1) AS ocupacao_pct, "
         f"ROUND(SUM({prov}) * 100.0 / NULLIF(SUM({pop}), 0), 1) AS provisorios_pct, "
@@ -1534,7 +1747,7 @@ def consultar_painelprecos(
     cmd = f"curl -s --max-time 15 '{url}'"
     try:
         proc = subprocess.run(
-            ["ssh", BEELINK_HOST, cmd], capture_output=True, timeout=20
+            _curl_argv(cmd), capture_output=True, timeout=20
         )
     except subprocess.TimeoutExpired:
         return {"error": "Query timed out after 20s (ssh beelink -> compras.gov.br)."}
@@ -1562,5 +1775,83 @@ def consultar_painelprecos(
     }
 
 
+# ---------------------------------------------------------------------------
+# HTTP transport (MCP_TRANSPORT=http) — streamable HTTP for remote agents
+# ---------------------------------------------------------------------------
+
+
+def _http_tokens() -> dict[str, str]:
+    """MCP_HTTP_TOKENS="name:token,name2:token2" -> {token: name}."""
+    tokens = {}
+    for pair in os.environ.get("MCP_HTTP_TOKENS", "").split(","):
+        name, sep, token = pair.strip().partition(":")
+        if sep and name and token:
+            tokens[token] = name
+    return tokens
+
+
+class _BearerAuth:
+    """ASGI wrapper: one bearer token per caller, /healthz left open."""
+
+    def __init__(self, app, tokens: dict[str, str]):
+        self.app = app
+        self.tokens = tokens
+
+    async def __call__(self, scope, receive, send):
+        if scope["type"] != "http":
+            return await self.app(scope, receive, send)
+        if scope["path"] == "/healthz":
+            return await self._plain(send, 200, b"ok")
+        header = dict(scope["headers"]).get(b"authorization", b"").decode("latin-1")
+        scheme, _, given = header.partition(" ")
+        caller = None
+        if scheme.lower() == "bearer":
+            for token, name in self.tokens.items():
+                if hmac.compare_digest(given.strip().encode(), token.encode()):
+                    caller = name
+        if caller is None:
+            return await self._plain(send, 401, b"unauthorized", [(b"www-authenticate", b"Bearer")])
+        _caller.set(caller)
+        return await self.app(scope, receive, send)
+
+    @staticmethod
+    async def _plain(send, status: int, body: bytes, extra: list | None = None):
+        headers = [(b"content-type", b"text/plain"), (b"content-length", str(len(body)).encode())]
+        await send({"type": "http.response.start", "status": status, "headers": headers + (extra or [])})
+        await send({"type": "http.response.body", "body": body})
+
+
+def _http_app():
+    from mcp.server.transport_security import TransportSecuritySettings
+
+    tokens = _http_tokens()
+    if not tokens:
+        raise SystemExit("MCP_TRANSPORT=http needs MCP_HTTP_TOKENS=\"name:token[,name:token]\".")
+    # No session to pin a caller to one process: any request is answerable
+    # on its own, which is what survives a restart behind a proxy.
+    mcp.settings.stateless_http = True
+    mcp.settings.json_response = True
+    # FastMCP only accepts Host: localhost by default, and behind a TLS proxy
+    # the Host is the public name — list it or every request is a 421.
+    public = [h.strip() for h in os.environ.get("MCP_HTTP_ALLOWED_HOSTS", "").split(",") if h.strip()]
+    mcp.settings.transport_security = TransportSecuritySettings(
+        enable_dns_rebinding_protection=True,
+        allowed_hosts=public + ["127.0.0.1:*", "localhost:*"],
+        allowed_origins=[f"https://{h}" for h in public],
+    )
+    return _BearerAuth(mcp.streamable_http_app(), tokens)
+
+
 if __name__ == "__main__":
-    mcp.run()
+    if TRANSPORT == "http":
+        import uvicorn
+
+        if BACKEND == "inprocess":
+            _inprocess_connection()  # fail at startup, not on the first call
+        uvicorn.run(
+            _http_app(),
+            host=os.environ.get("MCP_HTTP_HOST", "127.0.0.1"),
+            port=int(os.environ.get("MCP_HTTP_PORT", "8000")),
+        )
+    else:
+        mcp.run()
