@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**251 datasets, 1.234 tabelas, 42.504.918.873 linhas.** 4 com data de frescor conferida (de 251).
+**251 datasets, 1.240 tabelas, 42.506.857.885 linhas.** 4 com data de frescor conferida (de 251).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -33,7 +33,7 @@
 | `br_bcb_pix_municipio` | BCB — volume de transações Pix por município, separado por perfil pagador/recebedor PF/PJ | 1 | 401.019 | — | BCB — Estatísticas do Pix por município |
 | `br_bcb_ptax` | BCB PTAX — cotação de fechamento do dólar e das demais moedas, diária, via Olinda | 3 | 804.947 | — | BCB — PTAX (cotações diárias) |
 | `br_bcb_scrdata` | BCB SCR.data — carteira de crédito do Sistema de Informações de Crédito | 1 | 43.061.984 | — | BCB SCR.data |
-| `br_bcb_sgs` | BCB SGS — séries temporais macroeconômicas (câmbio, Selic, inflação etc.) | 1 | 25.169 | 2026-10-06 | BACEN/BCB SGS séries |
+| `br_bcb_sgs` | BCB SGS — séries temporais macroeconômicas (câmbio, Selic, inflação etc.) | 1 | 25.174 | 2026-10-07 | BACEN/BCB SGS séries |
 | `br_bcb_sicor` | BCB SICOR — operações de crédito rural | 13 | 759.658.189 | — | Base dos Dados |
 | `br_bd_diretorios_brasil` | Base dos Dados — diretórios de referência (CEP, CNAE, CID, município etc.) | 23 | 1.951.703 | — | Base dos Dados |
 | `br_bd_diretorios_data_tempo` | Base dos Dados — diretório de calendário/tempo | 11 | 1.922.812 | — | Base dos Dados |
@@ -75,7 +75,7 @@
 | `br_comprasgov_catmatcatser` | ComprasGov — catálogo de materiais e serviços padronizados (CATMAT/CATSER) | 2 | 252.825 | — | CATMAT/CATSER (catálogo de materiais/serviços) |
 | `br_comprasgov_sicaf` | SICAF — cadastro de fornecedores habilitados a contratar com o governo | 1 | 962.016 | — | SICAF fornecedores |
 | `br_cvm_administradores_carteira` | CVM — administradores de carteira de valores mobiliários | 3 | 16.126 | — | Base dos Dados |
-| `br_cvm_fundos` | CVM — cadastro de fundos de investimento | 4 | 184.408 | 2026-10-05 | CVM Fundos |
+| `br_cvm_fundos` | CVM — cadastro de fundos de investimento | 4 | 184.408 | 2026-10-06 | CVM Fundos |
 | `br_cvm_oferta_publica_distribuicao` | CVM — ofertas públicas de distribuição de valores mobiliários | 1 | 27.486 | — | Base dos Dados |
 | `br_datahackers_state_data` | Data Hackers — pesquisa State of Data sobre o mercado de dados no Brasil | 1 | 4.271 | — | Base dos Dados |
 | `br_datasus_cid10` | DATASUS — tabela de códigos CID-10 e CID-O | 6 | 15.672 | — | CID-10 (tabela de códigos, DATASUS) |
@@ -92,7 +92,7 @@
 | `br_ibge_cbo_2002` | IBGE — Classificação Brasileira de Ocupações 2002 | 2 | 177.556 | — | Base dos Dados |
 | `br_ibge_censo2022_raca` | IBGE Censo 2022 — cor/raça cruzada com instrução e fecundidade, por município | 2 | 1.415.034 | — | Censo 2022 — Cor ou raça × instrução/fecundidade |
 | `br_ibge_censo2022_religiao` | IBGE Censo 2022 — religião e recortes demográficos associados | 15 | 6.451.488 | — | Censo 2022 — Religião (pacote completo) |
-| `br_ibge_censo_2022` | IBGE — Censo Demográfico 2022, agregados por setor censitário e município | 16 | 140.124.296 | — | Base dos Dados |
+| `br_ibge_censo_2022` | IBGE — Censo Demográfico 2022, agregados por setor censitário e município | 22 | 142.061.767 | — | Base dos Dados |
 | `br_ibge_censo_demografico` | IBGE — microdados dos Censos Demográficos 1970 a 2010 | 38 | 181.894.256 | — | Base dos Dados |
 | `br_ibge_cnefe` | IBGE — Cadastro Nacional de Endereços para Fins Estatísticos, Censo 2022 (endereço a endereço) | 1 | 111.102.875 | — | CNEFE Censo 2022 (microdado completo) |
 | `br_ibge_estadic` | IBGE — Pesquisa de Informações Básicas Estaduais (ESTADIC) | 8 | 3.044 | — | Base dos Dados |
@@ -241,7 +241,7 @@
 | `global_ibge_tabua_mares` | IBGE — tábua de marés | 2 | 1.261.446 | — | Tábua de Marés |
 | `global_icij_offshoreleaks` | ICIJ Offshore Leaks — empresas offshore, intermediários e beneficiários | 6 | 5.356.929 | — | ICIJ Offshore Leaks |
 | `global_ofac_sanctions` | OFAC (EUA) — lista de sanções | 1 | 19.363 | — | OFAC |
-| `global_opensanctions` | OpenSanctions — consolidado mundial de listas de sanções e PEP | 1 | 1.230.314 | — | OpenSanctions |
+| `global_opensanctions` | OpenSanctions — consolidado mundial de listas de sanções e PEP | 1 | 1.231.850 | — | OpenSanctions |
 | `mundo_transfermarkt_competicoes` | Transfermarkt — Campeonato Brasileiro Série A e Copa do Brasil | 2 | 9.054 | — | Base dos Dados |
 | `mundo_transfermarkt_competicoes_internacionais` | Transfermarkt — Champions League | 1 | 2.572 | — | Base dos Dados |
 | `politicos` | Base dos Dados — contatos de políticos | 1 | 7.664 | — | Políticos — contato (Câmara + Senado) |
