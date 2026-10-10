@@ -1,0 +1,33 @@
+# Proxy do db.rodado.xyz no finland: HTTPS fica com o haloy, a senha fica aqui
+# e vale para o terminal (/) e para o curl (/query). O dado está no beelink, que
+# chega por túnel SSH na interface da rede do haloy (172.18.0.1).
+{
+	admin off
+	auto_https off
+}
+
+:8080 {
+	handle /health {
+		respond "ok" 200
+	}
+
+	handle {
+		basic_auth {
+			{$DB_USUARIO} {$DB_SENHA_HASH}
+		}
+		# /tty/ é o ttyd (terminal, com websocket); o resto — página com a
+		# árvore de datasets, /catalogo.json, /colunas e /query — é o consulta.py.
+		handle /tty* {
+			reverse_proxy 172.18.0.1:18080 {
+				flush_interval -1
+			}
+		}
+		handle {
+			reverse_proxy 172.18.0.1:18081 {
+				transport http {
+					read_timeout 320s
+				}
+			}
+		}
+	}
+}

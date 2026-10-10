@@ -35,6 +35,11 @@ Caddyfile` finds them.
 
 `mcp/mcp_server.py` is the current interface — see `mcp/MCP.md`.
 
+Since 2026-10-09 the same beelink data is also reachable at `https://db.rodado.xyz`
+(password, read-only): a browser SQL terminal and `POST /query` for curl, proxied by
+haloy on finland through a reverse SSH tunnel — see `db/README.md`. It is a
+locked-down Python front end, not the DuckDB CLI.
+
 O harness TS de apuração (pi + Gemma 4 local) vive no branch `harness-gemma`, fora de `main`.
 
 ### `docs/mapa/ERD.md` — the map

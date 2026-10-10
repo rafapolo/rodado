@@ -1,0 +1,16 @@
+name: rodado-db
+server: haloy.tocador.cc
+api_token:
+  from:
+    env: HALOY_API_TOKEN
+port: 8080
+health_check_path: /health
+domains:
+  - domain: db.rodado.xyz
+env:
+  - name: DB_USUARIO
+    from:
+      env: DB_USUARIO
+  - name: DB_SENHA_HASH
+    from:
+      env: DB_SENHA_HASH
