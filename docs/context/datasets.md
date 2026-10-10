@@ -4,7 +4,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
 
-251 datasets, 1234 tabelas.
+251 datasets, 1240 tabelas.
 
 | dataset | tabelas | linhas | last_update |
 |---|---:|---:|---|
@@ -35,7 +35,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_bcb_pix_municipio` | 1 | 401.019 | 2026-10-07 |
 | `br_bcb_ptax` | 3 | 804.947 | 2026-10-07 |
 | `br_bcb_scrdata` | 1 | 43.061.984 | 2026-09-02 |
-| `br_bcb_sgs` | 1 | 25.169 | 2026-10-07 |
+| `br_bcb_sgs` | 1 | 25.174 | 2026-10-08 |
 | `br_bcb_sicor` | 13 | 759.658.189 | 2026-10-07 |
 | `br_bd_diretorios_brasil` | 23 | 1.951.703 | 2026-08-23 |
 | `br_bd_diretorios_data_tempo` | 11 | 1.922.812 | 2026-07-05 |
@@ -77,7 +77,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_comprasgov_catmatcatser` | 2 | 252.825 | 2026-10-07 |
 | `br_comprasgov_sicaf` | 1 | 962.016 | 2026-10-07 |
 | `br_cvm_administradores_carteira` | 3 | 16.126 | 2026-07-09 |
-| `br_cvm_fundos` | 4 | 184.408 | 2026-10-07 |
+| `br_cvm_fundos` | 4 | 184.408 | 2026-10-08 |
 | `br_cvm_oferta_publica_distribuicao` | 1 | 27.486 | 2026-07-05 |
 | `br_datahackers_state_data` | 1 | 4.271 | 2026-07-05 |
 | `br_datasus_cid10` | 6 | 15.672 | 2026-07-10 |
@@ -94,7 +94,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ibge_cbo_2002` | 2 | 177.556 | 2026-07-09 |
 | `br_ibge_censo2022_raca` | 2 | 1.415.034 | 2026-07-18 |
 | `br_ibge_censo2022_religiao` | 15 | 6.451.488 | 2026-07-18 |
-| `br_ibge_censo_2022` | 16 | 140.124.296 | 2026-10-04 |
+| `br_ibge_censo_2022` | 22 | 142.061.767 | 2026-10-08 |
 | `br_ibge_censo_demografico` | 38 | 181.894.256 | 2026-09-25 |
 | `br_ibge_cnefe` | 1 | 111.102.875 | 2026-09-02 |
 | `br_ibge_estadic` | 8 | 3.044 | 2026-07-09 |
@@ -243,7 +243,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `global_ibge_tabua_mares` | 2 | 1.261.446 | 2026-10-07 |
 | `global_icij_offshoreleaks` | 6 | 5.356.929 | 2026-10-07 |
 | `global_ofac_sanctions` | 1 | 19.363 | 2026-10-07 |
-| `global_opensanctions` | 1 | 1.230.314 | 2026-10-07 |
+| `global_opensanctions` | 1 | 1.231.850 | 2026-10-08 |
 | `mundo_transfermarkt_competicoes` | 2 | 9.054 | 2026-07-09 |
 | `mundo_transfermarkt_competicoes_internacionais` | 1 | 2.572 | 2026-07-09 |
 | `politicos` | 1 | 7.664 | 2026-07-22 |
