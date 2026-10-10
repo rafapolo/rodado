@@ -1,0 +1,30 @@
+dataset: br_ibge_censo_2022
+gotchas:
+  - id: sigilo_e_null
+    resumo: "Nas tabelas agregados_* e setor_censitario_*, NULL é sigilo estatístico ('X' na fonte) ou não se aplica ('.'), nunca zero. Somar áreas pequenas dá menos que o total do município."
+    detalhe: >
+      Para total de município use agregados_municipio, não a soma de bairros,
+      distritos ou setores. As variáveis v* têm o mesmo significado em todos os
+      níveis e estão descritas em agregados_dicionario_variaveis; as de
+      indígenas e quilombolas (v01500 em diante) não existem em setor_censitario.
+    tabelas: [agregados_municipio, agregados_distrito, agregados_subdistrito, agregados_bairro]
+    colunas: [pessoas]
+    severidade: silencioso
+    verificado: "agregados_municipio: 5.570 linhas, soma de pessoas 203.080.756 (o total oficial do Censo 2022); São Paulo 11.451.999 — medido 2026-10-10"
+  - id: bairro_repetido
+    resumo: "id_bairro não é chave única em agregados_bairro: o bairro 3205200069 (São Torquato, Vila Velha/ES) vem em duas linhas, uma por subdistrito. A chave é id_bairro + id_subdistrito."
+    tabelas: [agregados_bairro]
+    colunas: [id_bairro, id_subdistrito]
+    severidade: silencioso
+    verificado: "17.576 linhas, 17.575 id_bairro distintos; as duas linhas de 3205200069 têm 1.632 e 2.444 pessoas — medido 2026-10-10"
+  - id: favela_e_por_setor
+    resumo: "População e domicílios de uma favela não estão numa tabela própria: some as variáveis de setor_censitario pelos setores de favela_setor. A cobertura de bairro é parcial (só município que tem bairro oficial)."
+    detalhe: >
+      favela_setor liga cada setor censitário a uma Favela ou Comunidade Urbana
+      (id_favela, 11 dígitos). favela_entorno_cobertura traz só os moradores com
+      informação de entorno. agregados_bairro cobre os municípios que têm bairro
+      na base territorial do IBGE, não o país inteiro.
+    tabelas: [favela_setor, favela_entorno_cobertura, agregados_bairro]
+    colunas: [id_favela, id_setor_censitario]
+    severidade: silencioso
+    verificado: "favela_setor: 33.272 setores em 12.348 favelas, todos presentes em setor_censitario; favela_entorno_cobertura: 12.348 linhas — medido 2026-10-10"

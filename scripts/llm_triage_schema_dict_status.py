@@ -43,6 +43,7 @@ arquivo — esta passada não é idempotente automaticamente, precisa rodar
 depois, sempre.
 """
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -102,6 +103,12 @@ SISDEPEN_MOJIBAKE_REASON = (
     "(ex.: 'funcao' ao lado de 'FunÃ§Ã£o'). Não é candidato a pesquisa externa, é limpeza de dado."
 )
 
+AGREGADOS_2022_REASON = (
+    "LLM: variável do produto 'Agregados por Setores Censitários' do Censo 2022. O dicionário "
+    "oficial do IBGE está no próprio espelho, em br_ibge_censo_2022.agregados_dicionario_variaveis "
+    "(coluna -> tema e descrição); conferido em 2026-10-10 que toda coluna v* das tabelas "
+    "agregados_* tem linha lá."
+)
 SETOR_CENSITARIO_REASON = (
     "código V-prefixado do produto \"Agregados por Setores Censitários\" do Censo 2010 (IBGE). "
     "O IBGE publica dicionário oficial de variáveis pra este produto — achado via busca "
@@ -130,6 +137,10 @@ def main():
             changed["nao_e_codigo"] += 1
             continue
 
+        if dataset == "br_ibge_censo_2022" and table.startswith("agregados_") and re.fullmatch(r"v\d+", col.lower()):
+            info.update(label="documentado_em_outro_lugar", reason=AGREGADOS_2022_REASON, judged_by="llm")
+            changed["documentado_em_outro_lugar"] += 1
+            continue
         if dataset == "br_ibge_censo_demografico" and table.startswith("setor_censitario") and col.lower().startswith("v"):
             info.update(label="documentado_em_outro_lugar", reason=SETOR_CENSITARIO_REASON, judged_by="llm")
             changed["documentado_em_outro_lugar"] += 1

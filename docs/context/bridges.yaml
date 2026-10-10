@@ -1485,6 +1485,24 @@ bridges:
     verified: 8 of 41.106 br_cvm_fundos.fundos CNPJs have federal dívida ativa,
       R$121,6 milhões total — found answering tasks/respostas_pendentes.md
       T45-2, 2026-08-25
+  - table: br_cvm_cia_aberta.cadastro / dfp_documentos / itr_documentos
+    column: '"CNPJ_CIA"'
+    description: 'pontuado (`00.000.000/0001-91`). DFP, ITR, IPE e o cadastro chamam de `CNPJ_CIA`;
+      FRE, FCA, VLMO e CGVN chamam de `CNPJ_Companhia`. Entre tabelas da CVM, junte por `CD_CVM`
+      ou pelo CNPJ pontuado como está.'
+    concept: cnpj
+    join_expr: regexp_replace({s}."CNPJ_CIA", '[^0-9]', '', 'g') = {d}.cnpj
+    verified: 2.515 de 2.531 CNPJs distintos de `cadastro` casam com a matriz em
+      `br_me_cnpj.estabelecimentos` no retrato mais recente (2026-10-10)
+  - table: br_ans_operadoras.operadoras_ativas / operadoras_canceladas
+    column: '"CNPJ"'
+    description: 14 dígitos sem pontuação — direto. Em `penalidades` a mesma coluna vem pontuada.
+      As demais tabelas do dataset não têm CNPJ, só o registro ANS da operadora.
+    concept: cnpj
+    join_expr: '{s}."CNPJ" = {d}.cnpj'
+    verified: 1.105 linhas em ativas e 3.078 em canceladas, todas com 14 dígitos; 2.296 de
+      2.635 CNPJs de `penalidades` (depois de tirar a pontuação) casam com esse cadastro
+      (2026-10-10)
   - table: br_tcu_inidoneos.empresas / resp_contas_julgadas_irregulares
     column: '"CPF_CNPJ"'
     description: 'mixed: some rows punctuated, some bare. Normalize with `lpad(regexp_replace(x, ''[^0-9]'',
