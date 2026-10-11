@@ -5,6 +5,10 @@
     python3 scripts/sync/gera_cnpj_historico.py --tabela estabelecimentos
     python3 scripts/sync/gera_cnpj_historico.py --tabela empresas
 
+    # no próprio beelink, sem depender do laptop:
+    scp scripts/sync/gera_cnpj_historico.py beelink:scrap_tmp/ &&
+    ssh beelink 'tmux new -d -s cnpj "BEELINK_HOST=local python3 ~/scrap_tmp/gera_cnpj_historico.py --tabela socios"'
+
 Por que existe: `br_me_cnpj` guarda o cadastro inteiro da Receita uma vez por mês
 (56 retratos, ~256 GB em 2026-10). Guardar só o último perde o que só aparece entre
 um retrato e outro: a Receita não publica data de saída de sócio, e
@@ -55,6 +59,12 @@ GRAO_SOCIOS = ["cnpj_basico", "tipo", "documento", "nome", "qualificacao"]
 FORA = {"ano", "mes", "data"}
 
 
+def remoto(cmd):
+    """No laptop, o comando vai por ssh; com BEELINK_HOST=local (rodando no próprio beelink,
+    num tmux, para não depender do laptop nem da rede), roda direto."""
+    return ["bash", "-c", cmd] if BEELINK == "local" else ["ssh", BEELINK, cmd]
+
+
 def duck(sql, timeout=7200, tentativas=4):
     # "Out of buffer" e "ZSTD Decompression failure" aparecem de vez em quando numa
     # leitura que, repetida, passa (2026-10-07: ~1 em dezenas de consultas pesadas, nas
@@ -62,7 +72,7 @@ def duck(sql, timeout=7200, tentativas=4):
     # disco — e com resultado determinístico quando passa). Causa não achada. Repetir
     # com espera é seguro porque o erro é explícito e o resultado final é conferido.
     for t in range(tentativas):
-        r = subprocess.run(["ssh", BEELINK, f"{DUCKDB} -init /dev/null -json"],
+        r = subprocess.run(remoto(f"{DUCKDB} -init /dev/null -json"),
                            input=PREFIXO + sql + "\n.quit\n",
                            capture_output=True, text=True, timeout=timeout)
         erro = (r.stderr or r.stdout).strip()[-600:]
@@ -96,7 +106,7 @@ def copia_dupla(sql, destino, tentativas=3):
 
 
 def sh(cmd, timeout=600):
-    r = subprocess.run(["ssh", BEELINK, cmd], capture_output=True, text=True, timeout=timeout)
+    r = subprocess.run(remoto(cmd), capture_output=True, text=True, timeout=timeout)
     if r.returncode != 0:
         raise RuntimeError(r.stderr.strip()[:400])
     return r.stdout
