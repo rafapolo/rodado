@@ -124,7 +124,8 @@ tecla a ~240 ms.
 - Duas conexões vivas no mesmo processo dividem a mesma instância do DuckDB: a segunda
   falhava com `configuration has been locked` quando a thread de colunas do autocompletar
   ainda estava aberta (bastava colar e dar Enter rápido). `rodado_sql.conecta()` agora
-  aceita a trava já posta, depois de conferir que o acesso externo segue desligado.
+  configura sob uma trava de processo e, na instância já configurada, só confere que o
+  acesso externo segue desligado e a configuração travada.
 
 ## Testes de UI e UX
 
