@@ -44,19 +44,31 @@
 		file_server
 	}
 
-	# Link curto público (/q/<id>): o id só existe porque alguém com senha salvou aquele SQL
-	# (POST /q passa pela senha, abaixo). Sem senha, só a página de leitura, o SQL e o
-	# resultado daquele id — nunca /query, /colunas nem o terminal.
-	@link_publico {
-		method GET
-		path_regexp ^/q/[A-Za-z0-9_-]{8,16}(/sql|/dados)?$
+	# Link curto /q/<id>: quem abre um link que existe (o SQL salvo em /dados/q/<id>.sql, no
+	# volume deste container) entra como quem tem o token — terminal completo, a pedido — e a
+	# página executa o SQL. Um id que não existe cai na senha, como qualquer outra rota:
+	# sem a conferência do arquivo, qualquer /q/xxxxxxxx abriria o site.
+	@link_q {
+		path_regexp qid ^/q/([A-Za-z0-9_-]{8,16})$
+		expression `"{$DB_TOKEN}" != ""`
 	}
-	handle @link_publico {
-		header Referrer-Policy "same-origin"
-		reverse_proxy 127.0.0.1:18081 {
-			transport http {
-				read_timeout 320s
+	handle @link_q {
+		@existe file {
+			root /dados/q
+			try_files {re.qid.1}.sql
+		}
+		handle @existe {
+			header {
+				Set-Cookie "rodado_token={$DB_TOKEN}; Path=/; Max-Age=2592000; HttpOnly; Secure; SameSite=Lax"
+				Cache-Control "no-store"
 			}
+			import app
+		}
+		handle {
+			basic_auth {
+				{$DB_USUARIO} {$DB_SENHA_HASH}
+			}
+			import app
 		}
 	}
 

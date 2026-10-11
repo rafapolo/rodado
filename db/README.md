@@ -16,14 +16,15 @@ nem dependência do beelink ligado.
   antes de colar). `?z=` é o mesmo com o SQL comprimido em deflate cru antes do base64url,
   25–60% mais curto (a página descomprime com `DecompressionStream`); `db/link.py -z` gera.
   `?q=<id>` abre no terminal o SQL de um link curto
-- `https://db.rodado.xyz/q/<id>` — **link curto público**, sem senha nem token: uma página
-  só de leitura com o SQL e o resultado dele (até 1.000 linhas, guardado por 10 min, com
-  CSV). O botão de link à esquerda do ▶ no editor salva a consulta escrita (ou a última
-  executada) com `POST /q` e copia o link; pelo terminal, `db/link.py consulta.sql`. O id
-  são os 8 primeiros caracteres base64url do sha256 do SQL (o mesmo SQL dá o mesmo link) e o
-  SQL fica em `/dados/q/<id>.sql`, no volume. Salvar exige senha ou token e só aceita um
-  comando de leitura; sem senha, o Caddy libera apenas `GET /q/<id>`, `/q/<id>/sql` e
-  `/q/<id>/dados` — quem recebe o link não roda nenhuma outra consulta (`q.html`)
+- `https://db.rodado.xyz/q/<id>` — **link curto**: abre o terminal normal e executa o SQL
+  salvo. O botão de link à esquerda do ▶ no editor salva a consulta escrita (ou a última
+  executada) com `POST /q` e copia o link; pelo terminal, `db/link.py consulta.sql`. O id são
+  os 8 primeiros caracteres base64url do sha256 do SQL (o mesmo SQL dá o mesmo link) e o SQL
+  fica em `/dados/q/<id>.sql`, no volume. Salvar exige senha ou token e só aceita um comando
+  de leitura. **Quem abre um link que existe entra sem senha e, a pedido, com o acesso de
+  quem tem o token** (o Caddy grava o cookie do token): o link curto é um convite para o
+  espelho inteiro, não só para aquela consulta. O Caddy confere o arquivo do id antes
+  (`file` em `/dados/q`); um id que não existe cai na senha
 - `?token=<token>` em qualquer URL dispensa a senha: `https://db.rodado.xyz/?token=…&query=…`
   é um link que um terceiro abre e já vê o resultado. O token fica em
   `/root/rodado-db/.token` no finland (nunca no repositório); o primeiro acesso o grava num

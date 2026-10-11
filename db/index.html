@@ -234,7 +234,7 @@
       aria-label="consulta SQL: Enter executa, Shift+Enter quebra a linha, Tab completa, seta para cima traz a anterior"
       placeholder="escreva a consulta aqui · Enter executa · Shift+Enter nova linha · Tab completa · ↑ anterior"></textarea>
   </div>
-  <button id="compartilha" type="button" aria-label="copiar link público com esta consulta e o resultado" title="copiar link público com esta consulta e o resultado"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 9.5a3 3 0 0 0 4.2 0l2.6-2.6a3 3 0 0 0-4.2-4.2L8 3.8"/><path d="M9.5 6.5a3 3 0 0 0-4.2 0L2.7 9.1a3 3 0 0 0 4.2 4.2L8 12.2"/></svg></button>
+  <button id="compartilha" type="button" aria-label="copiar link que abre e executa esta consulta" title="copiar link que abre e executa esta consulta"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 9.5a3 3 0 0 0 4.2 0l2.6-2.6a3 3 0 0 0-4.2-4.2L8 3.8"/><path d="M9.5 6.5a3 3 0 0 0-4.2 0L2.7 9.1a3 3 0 0 0 4.2 4.2L8 12.2"/></svg></button>
   <button id="executa" type="button" aria-label="executar a consulta (Enter)" title="executar (Enter)">▶</button>
   <ul id="sugestoes" role="listbox" aria-label="sugestões de dataset, tabela, coluna e palavra-chave" hidden></ul>
 </div>
@@ -482,11 +482,12 @@ termFrame.addEventListener("load", async () => {
 
 // ?query=<base64 do SQL> roda ao abrir: link pronto para uma consulta (base64 ou base64url, UTF-8).
 // ?z=<base64 do SQL comprimido em deflate cru> é o mesmo, 25–60% mais curto.
-// ?q=<id> é o SQL salvo de um link curto /q/<id> (o "abrir no terminal" da página pública).
+// /q/<id> (link curto) e ?q=<id> executam o SQL salvo por POST /q.
 async function sqlDaUrl() {
   const p = new URLSearchParams(location.search);
-  if (p.has("q")) {
-    const r = await fetch(location.origin + "/q/" + encodeURIComponent(p.get("q")) + "/sql");
+  const id = location.pathname.match(/^\/q\/([\w-]{8,16})$/)?.[1] || p.get("q");
+  if (id) {
+    const r = await fetch(location.origin + "/q/" + encodeURIComponent(id) + "/sql");
     if (!r.ok) throw new Error("link não encontrado");
     return (await r.text()).trim();
   }
@@ -659,9 +660,8 @@ sugestoes.addEventListener("pointerdown", e => {
 });
 document.getElementById("executa").addEventListener("click", () => { executa(); sql.focus(); });
 
-// link curto público que mostra a consulta do editor (ou a última executada, se o editor está
-// vazio) e o resultado dela: POST /q salva o SQL e devolve o id; /q/<id> abre sem senha e sem
-// token, e não roda nenhuma outra consulta
+// link curto da consulta do editor (ou da última executada, se o editor está vazio): POST /q
+// salva o SQL e devolve o id; /q/<id> abre o terminal e executa, sem pedir senha a quem recebe
 async function linkDaConsulta(texto) {
   const r = await fetch(location.origin + "/q", { method: "POST", body: texto });
   const d = await r.json();
@@ -688,7 +688,7 @@ compartilha.addEventListener("click", async () => {
   status.textContent = "link copiado";
   compartilha.classList.add("ok");
   compartilha.title = "link copiado";
-  setTimeout(() => { compartilha.classList.remove("ok"); compartilha.title = "copiar link público com esta consulta e o resultado"; }, 1500);
+  setTimeout(() => { compartilha.classList.remove("ok"); compartilha.title = "copiar link que abre e executa esta consulta"; }, 1500);
   sql.focus();
 });
 

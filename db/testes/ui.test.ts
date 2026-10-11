@@ -215,7 +215,7 @@ describe("API /query", () => {
 
 // ---------------------------------------------------------------- desktop
 
-describe("link curto público /q/<id>", () => {
+describe("link curto /q/<id>", () => {
   const SQL = "SELECT sigla, nome FROM br_bd_diretorios_brasil.uf WHERE sigla IN ('SP', 'RJ') ORDER BY 1";
   const salva = (sql: string, auth: string | null = AUTH) =>
     fetch(BASE + "/q", { method: "POST", body: sql, headers: auth ? { Authorization: auth } : {} });
@@ -236,34 +236,22 @@ describe("link curto público /q/<id>", () => {
     }
   });
 
-  test("sem senha: página, SQL e resultado do id, e nada além", async () => {
+  test("id que não existe pede senha; /q/<id>/sql sem senha nem cookie também", async () => {
     const { id } = (await (await salva(SQL)).json()) as { id: string };
-    const pagina = await fetch(`${BASE}/q/${id}`);
-    expect(pagina.status).toBe(200);
-    expect(await pagina.text()).toContain("consulta salva");
-    expect(await (await fetch(`${BASE}/q/${id}/sql`)).text()).toBe(SQL);
-    const d = (await (await fetch(`${BASE}/q/${id}/dados`)).json()) as any;
-    expect(d.colunas).toEqual(["sigla", "nome"]);
-    expect(d.linhas).toEqual([["RJ", "Rio de Janeiro"], ["SP", "São Paulo"]]);
-    expect(d.truncado).toBe(false);
-    expect((await fetch(`${BASE}/q/naoexiste`)).status).toBe(404);
-    for (const caminho of [`/q/${id}/../query`, `/q/${id}/outra`, "/q", `/query?q=${encodeURIComponent(SQL)}`, "/colunas?t=br_bd_diretorios_brasil.uf"])
+    for (const caminho of ["/q/naoexiste", "/q/AAAAAAAA", `/q/${id}/sql`, "/q"])
       expect((await fetch(BASE + caminho)).status, caminho).toBe(401);
   });
 
-  test("a página pública mostra o SQL e a tabela, sem pedir senha", async () => {
+  test("sem senha, /q/<id> abre o terminal normal, executa o SQL e dá acesso a tudo (a pedido)", async () => {
     const { id } = (await (await salva(SQL)).json()) as { id: string };
-    const ctx = await navegador.newContext({ viewport: { width: 390, height: 844 } });
+    const ctx = await navegador.newContext({ viewport: { width: 1440, height: 900 } });   // sem senha nem token
     try {
       const p = await ctx.newPage();
       await p.goto(`${BASE}/q/${id}`, { waitUntil: "domcontentloaded" });
-      await p.locator("#tabela table").waitFor({ timeout: 60_000 });
-      expect(await p.locator("#sql").textContent()).toBe(SQL);
-      expect(await p.locator("#tabela td").first().textContent()).toBe("RJ");
-      expect(await p.locator("#status").textContent()).toMatch(/^2 linhas/);
-      expect(await p.locator("#terminal").getAttribute("href")).toBe(`/?q=${id}`);
-      // sem rolagem horizontal da página no celular: a tabela rola dentro da própria caixa
-      expect(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      await esperaTerminal(p, /São Paulo/);
+      expect(new URL(p.url()).pathname).toBe(`/q/${id}`);
+      const r = await p.evaluate(async () => (await fetch("/query", { method: "POST", body: "SELECT 42 AS ok" })).json());
+      expect(r).toEqual([{ ok: 42 }]);
     } finally { await ctx.close(); }
   });
 });
@@ -785,7 +773,7 @@ describe("link ?query= / ?z= / ?q= roda ao abrir", () => {
     } finally { await ctx.close(); }
   });
 
-  test("botão de link ao lado do ▶ copia um /q/<id> público com a consulta do editor e o resultado", async () => {
+  test("botão de link ao lado do ▶ copia um /q/<id> que abre o terminal e executa, sem senha", async () => {
     const ctx = await contexto({ viewport: { width: 1440, height: 900 }, permissions: ["clipboard-read", "clipboard-write"] });
     try {
       const p = await abre(ctx);
@@ -797,12 +785,11 @@ describe("link ?query= / ?z= / ?q= roda ao abrir", () => {
       const url = await p.evaluate(() => navigator.clipboard.readText());
       expect(url).toMatch(/^https:\/\/[^/]+\/q\/[\w-]{8}$/);
       expect(await p.locator("#sql").inputValue()).toBe(SQL);          // compartilhar não executa nem apaga
-      const anonimo = await navegador.newContext();                    // sem senha nem token
+      const anonimo = await navegador.newContext({ viewport: { width: 1440, height: 900 } });   // sem senha nem token
       try {
         const outra = await anonimo.newPage();
         await outra.goto(url, { waitUntil: "domcontentloaded" });
-        await outra.locator("#tabela table").waitFor({ timeout: 60_000 });
-        expect(await outra.locator("#tabela td").first().textContent()).toBe("ação ✓ >>?");
+        await esperaTerminal(outra, RESULTADO);
       } finally { await anonimo.close(); }
     } finally { await ctx.close(); }
   });
