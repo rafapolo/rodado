@@ -91,12 +91,75 @@ def _ocioso(*_):
     os._exit(0)
 
 
+class Girando:
+    """Indicador "⠹ rodando… 3,2 s" enquanto a consulta não devolve nada.
+
+    Lida do S3, uma consulta fria leva de 10 a 15 s sem nenhum sinal de vida. rel.show()
+    executa e imprime numa chamada só, mas imprime pelo sys.stdout do Python: durante a
+    consulta ele é trocado por este objeto, e a primeira escrita (a tabela, um aviso) apaga
+    o indicador antes de passar. Consulta rápida não pisca: só aparece depois de 0,3 s.
+    """
+
+    QUADROS = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
+
+    def __init__(self):
+        self._real = sys.stdout
+        self._fim = threading.Event()
+        self._trava = threading.Lock()
+        self._desenhou = False
+        self._thread = threading.Thread(target=self._gira, daemon=True)
+
+    def _gira(self):
+        inicio = time.monotonic()
+        if self._fim.wait(0.3):
+            return
+        i = 0
+        while True:
+            with self._trava:
+                if self._fim.is_set():
+                    return
+                seg = f"{time.monotonic() - inicio:.1f}".replace(".", ",")
+                self._real.write(f"\r{CINZA}{self.QUADROS[i % len(self.QUADROS)]} rodando… {seg} s{FIM}\x1b[K")
+                self._real.flush()
+                self._desenhou = True
+            i += 1
+            if self._fim.wait(0.1):
+                return
+
+    def _para(self):
+        with self._trava:
+            if not self._fim.is_set():
+                self._fim.set()
+                if self._desenhou:
+                    self._real.write("\r\x1b[K")
+
+    def write(self, texto):
+        self._para()
+        return self._real.write(texto)
+
+    def flush(self):
+        self._real.flush()
+
+    def __getattr__(self, nome):
+        return getattr(self._real, nome)
+
+    def __enter__(self):
+        sys.stdout = self
+        self._thread.start()
+        return self
+
+    def __exit__(self, *_):
+        self._para()
+        sys.stdout = self._real
+        self._real.flush()
+
+
 def mostra(sql: str, linhas: int):
     con = rodado_sql.conecta()
     try:
         for comando in rodado_sql.separa(con, sql):
             inicio = time.monotonic()
-            with rodado_sql.Cronometro(con) as crono:
+            with rodado_sql.Cronometro(con) as crono, Girando():
                 try:
                     rel = con.sql(comando.query)
                     largura = shutil.get_terminal_size((120, 40)).columns
