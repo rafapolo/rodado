@@ -3,7 +3,7 @@
 Lê SQL até o `;`, roda pelo núcleo travado de rodado_sql.py e imprime a tabela
 como o CLI do DuckDB. Sem os comandos de ponto do CLI: só os daqui.
 
-A entrada é do prompt_toolkit (em vendor/, Python puro — o beelink não tem
+A entrada é do prompt_toolkit (instalado na imagem; vendor/ era o jeito no beelink, sem
 ensurepip nem sudo para um venv): SQL colorido enquanto se digita, várias
 linhas até o `;` e autocompletar de dataset, tabela e coluna. Sem ele, cai
 no input() com readline.

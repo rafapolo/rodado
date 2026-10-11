@@ -7,6 +7,9 @@ port: 8080
 health_check_path: /health
 domains:
   - domain: db.rodado.xyz
+# o catálogo leva ~30 min para montar: fica no volume entre um deploy e outro
+volumes:
+  - "rodado-db-dados:/dados"
 env:
   - name: DB_USUARIO
     from:
@@ -17,3 +20,9 @@ env:
   - name: DB_TOKEN
     from:
       env: DB_TOKEN
+  - name: S3_KEY
+    from:
+      env: S3_KEY
+  - name: S3_SECRET
+    from:
+      env: S3_SECRET

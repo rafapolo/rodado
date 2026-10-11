@@ -4,8 +4,8 @@
     curl -u rodado:SENHA 'https://db.rodado.xyz/query?formato=csv' --data-binary @consulta.sql
     curl -u rodado:SENHA -G https://db.rodado.xyz/query --data-urlencode 'q=SELECT 42'
 
-A senha é cobrada pelo proxy no finland; este servidor só escuta em 127.0.0.1
-do beelink e chega lá pelo túnel SSH.
+A senha é cobrada pelo Caddy do mesmo container (finland); este servidor só escuta
+em 127.0.0.1 dentro dele.
 """
 
 import csv
@@ -129,7 +129,7 @@ class Handler(BaseHTTPRequestHandler):
         url = urlparse(self.path)
         if url.path == "/health":
             return self._responde(200, "ok\n")
-        if url.path == "/ping":  # mede a ida e volta até o beelink (o /health o proxy responde sozinho)
+        if url.path == "/ping":  # mede a ida e volta até o servidor Python (o /health o Caddy responde sozinho)
             return self._responde(200, "pong\n", extra={"Cache-Control": "no-store"})
         if url.path == "/":
             with open(PAGINA, "rb") as f:
@@ -187,9 +187,9 @@ class Handler(BaseHTTPRequestHandler):
                         rel = con.sql(comandos[0].query)
                         colunas = rel.columns
                         if formato == "parquet":
-                            # Gravado pelo servidor (não pela SQL do usuário) dentro de
-                            # ~/duckdb_tmp, a única pasta gravável da conexão travada.
-                            arq = os.path.join(rodado_sql.HOME, "duckdb_tmp", "web", f"r_{uuid.uuid4().hex}.parquet")
+                            # Gravado pelo servidor (não pela SQL do usuário) dentro do
+                            # temp_directory, a única pasta gravável da conexão travada.
+                            arq = os.path.join(rodado_sql.TEMP, f"r_{uuid.uuid4().hex}.parquet")
                             try:
                                 rel.limit(limite).write_parquet(arq, compression="zstd")
                                 with open(arq, "rb") as f:

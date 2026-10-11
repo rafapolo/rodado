@@ -1,6 +1,8 @@
 # db.rodado.xyz — terminal SQL e endpoint para curl
 
-O espelho do beelink acessível pela web, com senha (HTTP basic auth), só leitura.
+O espelho acessível pela web, com senha (HTTP basic auth), só leitura. Desde 2026-10-11 lê do
+bucket `s3://baseldosdados` (Hetzner, Helsinque), a cópia que o beelink sincroniza — sem túnel
+nem dependência do beelink ligado.
 
 - `https://db.rodado.xyz/` — terminal SQL no navegador (ttyd em `/tty/`) com a árvore
   dos datasets à direita e um editor de SQL embaixo (digitação local, Enter executa):
@@ -20,7 +22,7 @@ O espelho do beelink acessível pela web, com senha (HTTP basic auth), só leitu
   é um link que um terceiro abre e já vê o resultado. O token fica em
   `/root/rodado-db/.token` no finland (nunca no repositório); o primeiro acesso o grava num
   cookie `HttpOnly` de 30 dias, porque o iframe do terminal, o websocket e os `fetch` da
-  página não carregam o `?token`. O Caddy tira o `token` da URL antes do beelink e manda
+  página não carregam o `?token`. O Caddy tira o `token` da URL antes do app e manda
   `Referrer-Policy: same-origin`. Sem `DB_TOKEN` no deploy, o token fica desligado.
 - `https://db.rodado.xyz/query` — SQL por HTTP:
 
@@ -51,7 +53,7 @@ FROM rodado('SELECT ano, count(*) FROM br_rodado_eleicoes.secao_setor GROUP BY 1
 CREATE TABLE uf AS FROM rodado('FROM br_bd_diretorios_brasil.uf');  -- e junta com dado local
 ```
 
-A consulta roda no beelink; só o resultado atravessa (agregue lá, não traga tabela bruta).
+A consulta roda no finland, lendo do bucket; só o resultado atravessa (agregue lá, não traga tabela bruta).
 
 ## Como funciona
 
@@ -59,39 +61,52 @@ A consulta roda no beelink; só o resultado atravessa (agregue lá, não traga t
 flowchart LR
   C[navegador / curl] -->|HTTPS| H[haloy no finland<br/>certificado]
   H --> P[container rodado-db<br/>Caddy + senha]
-  P -->|172.18.0.1:18080 / :18081| T[túnel SSH reverso]
-  T --> B1[ttyd + terminal.py<br/>beelink]
-  T --> B2[consulta.py<br/>beelink]
-  B1 & B2 --> D[(basedosdados.duckdb<br/>read_only)]
+  P -->|127.0.0.1:18080 / :18081| A[ttyd + terminal.py<br/>consulta.py]
+  A --> D[(/dados/catalogo.duckdb<br/>views → S3)]
+  D -->|httpfs| S[(s3://baseldosdados<br/>Hetzner hel1)]
+  B[beelink<br/>s3_sync_rodado.sh] -->|parquet + _db/views.json| S
+  K[catalogo.py] -->|a cada 15 min| D
 ```
 
 | Peça | Onde | Arquivo |
 |---|---|---|
-| Conexão travada (núcleo) | beelink `~/rodado_db/` | `rodado_sql.py` |
-| Terminal (via ttyd): SQL colorido ao digitar, Enter envia no `;`, Tab completa dataset/tabela/coluna | beelink; `prompt_toolkit` 3.0.51 + `wcwidth` em `~/rodado_db/vendor/` (rodas Python puro, sem venv: o beelink não tem `ensurepip` nem sudo) | `terminal.py` |
-| Página com a árvore, `/catalogo.json` (cache 10 min), `/colunas`, `/query`, `/ping` | beelink, `127.0.0.1:18081` | `consulta.py`, `index.html` |
-| ttyd + endpoint + túnel, cada um reiniciando sozinho | beelink, tmux `rodado_db`, cron a cada 5 min | `servico.sh` |
-| Senha, token e roteamento | finland, app haloy `rodado-db` | `proxy/` |
-| Prévia de link (og:title/og:image) sem senha, só para robôs de pré-visualização (WhatsApp, Slack, Telegram…) em `/` | finland, mesmo app | `proxy/og.html` |
+| Conexão travada (núcleo) | container | `rodado_sql.py` |
+| Terminal (via ttyd): SQL colorido ao digitar, Enter envia no `;`, Tab completa dataset/tabela/coluna | container, até 4 abas | `terminal.py` |
+| Página com a árvore, `/catalogo.json` (cache 10 min), `/colunas`, `/query`, `/ping` | container, `127.0.0.1:18081` | `consulta.py`, `index.html` |
+| Catálogo: as views do beelink com os caminhos trocados para o bucket | container, volume `rodado-db-dados` | `catalogo.py` |
+| Exporta o SQL das views para `~/rodado/_db/views.json` | beelink, antes de cada `s3_sync_rodado.sh` | `exporta_views.py` |
+| Sobe tudo, cada peça reiniciando sozinha; Caddy em primeiro plano | container | `inicia.sh`, `Dockerfile` |
+| Senha, token e roteamento | finland, app haloy `rodado-db` | `proxy/Caddyfile`, `haloy.yml` |
+| Prévia de link (og:title/og:image) sem senha, só para robôs de pré-visualização (WhatsApp, Slack, Telegram…) em `/` | mesmo container | `proxy/og.html` |
+
+**Catálogo.** As views do beelink citam cada parquet pelo caminho (`/home/polo/rodado/...`).
+`exporta_views.py` grava o SQL delas em `~/rodado/_db/views.json` e a sincronização com o S3 o
+leva para o bucket junto com os parquet. `catalogo.py` confere o arquivo a cada 15 min e, quando
+muda, recria as views num `.duckdb` novo com `s3://baseldosdados/` no lugar do caminho local, e o
+troca por rename atômico; a próxima consulta já abre o novo. Criar uma view lê o rodapé de cada
+parquet que ela cita (79 mil arquivos): a montagem leva perto de meia hora, por isso o catálogo
+mora num volume e sobrevive ao redeploy. A sincronização apaga do bucket os arquivos órfãos
+só no fim; se um parquet foi renomeado no beelink, o catálogo do finland ainda cita o nome
+antigo até a remontagem terminar, e uma consulta nesse intervalo pode falhar por arquivo
+ausente. Fora do catálogo: as 6 views do SIPNI (bucket
+`healthbr-data`, sem segredo aqui) e a tabela nativa `main.cpf_lookup`, que vive dentro do
+`.duckdb` do beelink e não tem parquet.
 
 **Não é o CLI do DuckDB, de propósito.** O `-safe` do CLI trava a configuração antes de
-qualquer `-cmd`, então não dá para liberar só `~/rodado`; sem ele, `.shell` é um shell no
-beelink e `COPY ... TO '~/rodado/...'` sobrescreve parquet do espelho (que o sync do S3 e o
-backup do COLD propagariam). O núcleo abre uma conexão `read_only` por consulta, desliga o
-acesso externo, trava a configuração e só aceita o que o parser do DuckDB classifica como
-SELECT (inclui DESCRIBE, SHOW, SUMMARIZE e FROM primeiro). Conexão por consulta também evita que uma aba esquecida segure o arquivo ou
-enxergue views velhas depois de um reparo. As 6 views do SIPNI (bucket `healthbr-data`)
-não funcionam aqui: o segredo delas vive no `~/.duckdbrc`, que não é lido.
+qualquer `-cmd`, então não dá para liberar só os prefixos das tabelas; sem ele, `.shell` é um
+shell no container. O núcleo abre uma instância `read_only` do catálogo por processo, carrega o
+httpfs e o segredo do bucket, desliga o acesso externo, trava a configuração e só aceita o que o
+parser do DuckDB classifica como SELECT (inclui DESCRIBE, SHOW, SUMMARIZE e FROM primeiro). Cada
+consulta é um cursor dessa instância: o cache de rodapés de parquet e de metadados HTTP
+sobrevive entre consultas. A chave vai num `SECRET` (nunca em `SET s3_*`, que `current_setting()`
+mostraria), e `duckdb_secrets()` está entre as funções recusadas.
 
-**Nenhum arquivo é lido direto, só as views.** `~/rodado` não tem só parquet: tem scripts,
-logs, docs, o próprio `.duckdb` e sobras de staging, e `~/duckdb_tmp` tem o despejo das
-outras sessões. Duas camadas independentes, auditadas em 2026-10-11 (`read_text` de
-`~/rodado/scripts/` e `glob` do despejo alheio passavam antes):
+**Nenhum arquivo é lido direto, só as views.** O bucket espelha `~/rodado` inteiro: tem também
+scripts, logs, docs, o `.duckdb` do beelink e sobras de staging. Duas camadas independentes:
 
-1. `allowed_directories` é a lista exata dos diretórios de tabela que as views leem, tirada
-   do corpo delas (`duckdb_views()`) a cada instância — não `~/rodado` inteiro. O
-   `temp_directory` o DuckDB acrescenta sozinho; o `.duckdb` aberto também fica legível
-   por ele, e é a camada 2 que barra.
+1. `allowed_directories` é a lista exata dos prefixos de tabela que as views leem
+   (`s3://baseldosdados/<dataset>/<tabela>/`), tirada do corpo delas (`duckdb_views()`) a cada
+   instância — não o bucket inteiro.
 2. Antes de executar, a árvore do parser (`json_serialize_sql`, que enxerga CTE, LATERAL,
    UNION e nome entre aspas) é percorrida e a consulta é recusada se chamar função de
    arquivo (`read_*`, `parquet_*`, `*_scan`, `glob`, `sniff_csv`, `st_read`…), função que
@@ -99,61 +114,51 @@ outras sessões. Duas camadas independentes, auditadas em 2026-10-11 (`read_text
    `FROM '<caminho>'`. Se a consulta não serializa, não roda.
 
 Além disso, `autoload_known_extensions` e `autoinstall_known_extensions` ficam desligados:
-citar `st_read` não carrega o spatial.
+citar `st_read` não carrega o spatial (o httpfs vem instalado na imagem e é carregado antes da trava).
 
-Recursos por consulta: 6 GB de memória, 4 threads, despejo em `~/duckdb_tmp/web` (até
-30 GB). Terminal: até 12 abas, sessão fecha após 30 min parada.
+Recursos: o finland tem 4 núcleos e 7 GB, divididos com gitea, opengist e uqt. Cada processo
+(endpoint, cada aba do terminal) tem uma instância de até 1,5 GB, 16 threads — ler do S3 é
+esperar rede, não CPU: a mesma consulta caiu de 23 s para 4 s de 4 para 16 threads — e despejo
+em `/tmp/duckdb` até 3 GB. Terminal: até 4 abas, sessão fecha após 30 min parada.
 
-**Túnel.** O beelink está atrás de NAT e abre `ssh -R` para o usuário `tunel` do finland
-com a chave `~/.ssh/rodado_tunel`. No finland, a chave só pode abrir as duas portas, só na
-interface da rede do haloy (`permitlisten` no `authorized_keys` e `GatewayPorts
-clientspecified` num `Match User tunel` no fim do `sshd_config`), sem shell. Nunca em
-`0.0.0.0`: o INPUT do finland é ACCEPT, e a porta pularia a senha.
+**Desempenho.** Medido em 2026-10-11 com a consulta de despesas de candidatos com a Meta
+(257 arquivos): 0,6 s no disco do beelink, 4–15 s pelo bucket. Varredura de tabela grande é
+proporcionalmente mais lenta — filtre por partição (`ano`, `mes`, `sigla_uf`) e agregue.
 
-O mesmo `Match User tunel` tem `ClientAliveInterval 30` e `ClientAliveCountMax 3`. Sem
-isso, quando o IP público do beelink muda, a sessão antiga continua viva no finland
-segurando as duas portas, e toda reconexão falha com `remote port forwarding failed for
-listen port 18080` (o site ficou fora do ar de 2026-10-10 a 2026-10-11 assim). Com as
-duas linhas, a sessão órfã cai em cerca de 90 s. Se acontecer de novo: `ss -tlnp | grep
-1808` no finland mostra o PID do `sshd-session` que segura as portas; mate só esse PID.
+O túnel SSH reverso do beelink (usuário `tunel` no finland) foi desligado na mesma data.
 
 ## Operação
 
 ```bash
-# beelink: logs e reinício
-ssh beelink 'tail ~/logs/rodado_db/{consulta,terminal,tunel}.log'
-ssh beelink 'tmux kill-session -t rodado_db'   # o cron sobe de novo em até 5 min
+# logs (catálogo, endpoint, terminal e Caddy saem todos no log do container)
+ssh finland 'docker logs --tail 50 $(docker ps -qf name=rodado-db)'
 
-# atualizar o código no beelink (o laço reinicia o processo que cair)
-scp db/rodado_sql.py db/terminal.py db/consulta.py db/servico.sh db/index.html beelink:rodado_db/
-
-# finland: senha em /root/rodado-db/.senha, hash em .senha_hash; redeploy do proxy
-ssh finland 'cd /root/rodado-db && set -a && . /etc/haloy/.env && set +a &&
+# deploy: código para o finland e haloy deploy (o S3_KEY/S3_SECRET vêm de /root/rodado-db/.s3)
+scp db/{Dockerfile,haloy.yml,inicia.sh,rodado_sql.py,consulta.py,terminal.py,catalogo.py,index.html} finland:/root/rodado-db/
+scp db/proxy/{Caddyfile,og.html} finland:/root/rodado-db/proxy/
+ssh finland 'cd /root/rodado-db && set -a && . /etc/haloy/.env && . ./.s3 && set +a &&
   DB_USUARIO=rodado DB_SENHA_HASH="$(cat .senha_hash)" DB_TOKEN="$(cat .token)" haloy deploy -c haloy.yml'
+
+# catálogo: depois de uma sincronização, forçar a remontagem sem esperar os 15 min
+ssh finland 'docker exec $(docker ps -qf name=rodado-db) python3 catalogo.py --uma-vez'
 ```
+
+No beelink, `~/scripts/s3_sync_rodado.sh` chama `python3 ~/rodado_db/exporta_views.py` antes
+de subir os arquivos (atualizar com `scp db/exporta_views.py beelink:rodado_db/`).
 
 Trocar a senha: gravar a nova em `/root/rodado-db/.senha`, refazer o hash com
 `docker run --rm -i caddy:2.10.2-alpine caddy hash-password < .senha > .senha_hash` e
 redeploy.
 Trocar o token (revoga todos os links e cookies já entregues): `openssl rand -hex 24 > .token` e
 redeploy.
+Trocar a chave do bucket: `/root/rodado-db/.s3` (`S3_KEY=`, `S3_SECRET=`) e redeploy.
 
 ## Latência ao digitar
-
-Medido em 2026-10-10. O processamento de cada tecla no beelink leva ~5 ms; o resto é rede:
-navegador → finland (Helsinque) → túnel → beelink e volta. `/ping` vai até o beelink e
-`/health` o Caddy responde sozinho, então a diferença entre os dois, numa conexão
-reaproveitada, é o custo do túnel: ~120 ms com o upload de casa livre (70 ms × 190 ms).
-Com o sync do S3 saturando o upload, o RTT do túnel foi a 148 ms com retransmissões e a
-tecla a ~240 ms.
 
 - `PROMPT_TOOLKIT_NO_CPR=1`: sem isso cada prompt pede a posição do cursor e espera a
   resposta atravessar a rede.
 - A completação nunca espera consulta: as colunas de uma tabela citada são lidas numa
-  thread e entram na sugestão seguinte. `complete_in_thread=True` foi testado e descartado
-  (um Tab que chega durante a completação anterior é ignorado).
-- Túnel interativo (`ssh -tt` + `IPQoS lowdelay`, para ligar `TCP_NODELAY`) não deu ganho;
-  ficou `-N` sem pty, que pede menos permissão.
+  thread e entram na sugestão seguinte.
 - O que resolveu de vez (2026-10-11): o editor de SQL embaixo do terminal. A consulta é
   escrita no navegador, com realce e autocompletar a partir do `/catalogo.json` e do
   `/colunas`, e só o Enter a manda ao terminal (colada inteira, com `;` no fim se faltar).
@@ -179,7 +184,7 @@ instalado, nada é baixado), com a régua da auditoria de acessibilidade do swis
   painel, `:focus-visible`, `aria-live` na busca, árvore navegável por teclado (↓ da busca,
   ↑ ↓ → ← Esc, Shift+Enter cola), colunas, ▶ colando e executando, SQL colorido,
   autocompletar, recusa de escrita, divisor por mouse e teclado com largura lembrada,
-  moldura, sem rolagem horizontal; e o editor (digitação sem ida ao beelink, realce,
+  moldura, sem rolagem horizontal; e o editor (digitação sem ida ao servidor, realce,
   Tab em tabela e coluna, várias linhas, histórico).
 - **Celular (iPhone 14):** terminal em tela cheia, alvos de toque de 36 px ou mais, busca
   com 16 px, bottom sheet que fecha tocando fora, no ✕ e com Esc, ▶ visível sem hover,
