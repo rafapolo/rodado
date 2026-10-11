@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**254 datasets, 1.389 tabelas, 43.047.779.354 linhas.** 4 com data de frescor conferida (de 254).
+**254 datasets, 1.397 tabelas, 44.021.651.227 linhas.** 4 com data de frescor conferida (de 254).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -94,7 +94,7 @@
 | `br_ibge_cbo_2002` | IBGE — Classificação Brasileira de Ocupações 2002 | 2 | 177.556 | — | Base dos Dados |
 | `br_ibge_censo2022_raca` | IBGE Censo 2022 — cor/raça cruzada com instrução e fecundidade, por município | 2 | 1.415.034 | — | Censo 2022 — Cor ou raça × instrução/fecundidade |
 | `br_ibge_censo2022_religiao` | IBGE Censo 2022 — religião e recortes demográficos associados | 15 | 6.451.488 | — | Censo 2022 — Religião (pacote completo) |
-| `br_ibge_censo_2022` | IBGE — Censo Demográfico 2022, agregados por setor censitário e município | 41 | 142.247.430 | — | Base dos Dados |
+| `br_ibge_censo_2022` | IBGE — Censo Demográfico 2022, agregados por setor censitário e município | 47 | 171.441.122 | — | Base dos Dados |
 | `br_ibge_censo_demografico` | IBGE — microdados dos Censos Demográficos 1970 a 2010 | 38 | 181.895.148 | — | Base dos Dados |
 | `br_ibge_cnefe` | IBGE — Cadastro Nacional de Endereços para Fins Estatísticos, Censo 2022 (endereço a endereço) | 1 | 111.102.875 | — | CNEFE Censo 2022 (microdado completo) |
 | `br_ibge_estadic` | IBGE — Pesquisa de Informações Básicas Estaduais (ESTADIC) | 8 | 3.044 | — | Base dos Dados |
@@ -141,10 +141,10 @@
 | `br_mc_indicadores` | Ministério da Cidadania — Bolsa Família e CadÚnico por município e mês (famílias, pessoas, valor pago), 2004 a set/2020 | 1 | 1.118.855 | — | Base dos Dados |
 | `br_mdr_snis` | SNIS/MDR — indicadores de água e esgoto por município e prestador de serviço | 2 | 245.101 | — | Base dos Dados |
 | `br_mds_cadunico` | CadÚnico (MDS) — indicadores municipais mensais do Cadastro Único e Bolsa Família | 2 | 350.069.349 | — | CadÚnico — indicadores municipais (VIS DATA 3, MDS/SAGI) |
-| `br_me_caged` | Ministério do Trabalho — CAGED, movimentação de empregos formais (admissões/demissões) | 4 | 241.129.397 | — | Base dos Dados |
+| `br_me_caged` | Ministério do Trabalho — CAGED, movimentação de empregos formais (admissões/demissões) | 4 | 298.358.844 | — | Base dos Dados |
 | `br_me_clima_organizacional` | Ministério da Economia — pesquisa de clima organizacional no serviço público | 1 | 16.436 | — | Base dos Dados |
 | `br_me_cno` | Cadastro Nacional de Obras (CNO) — obras e vínculos de trabalhadores da construção | 3 | 1.020.894 | — | Base dos Dados |
-| `br_me_cnpj` | Receita Federal — cadastro completo de empresas, estabelecimentos, sócios e Simples Nacional | 5 | 8.158.553.996 | — | Base dos Dados |
+| `br_me_cnpj` | Receita Federal — cadastro completo de empresas, estabelecimentos, sócios e Simples Nacional | 6 | 8.238.578.487 | — | Base dos Dados |
 | `br_me_comex_stat` | Comex Stat — exportação e importação por município e NCM | 5 | 133.659.718 | — | Base dos Dados |
 | `br_me_estoque_divida_publica` | Tesouro Nacional — estoque da dívida pública federal | 1 | 124.419 | — | Base dos Dados |
 | `br_me_exportadoras_importadoras` | dicionário de empresas exportadoras e importadoras | 1 | 3 | — | Base dos Dados |
@@ -199,7 +199,7 @@
 | `br_ok_queridodiario_texto` | Querido Diário — texto integral das edições de diários oficiais municipais | 1 | 320.422 | — | Querido Diário — texto integral das edições |
 | `br_ons_avaliacao_operacao` | ONS — avaliação da operação do Sistema Interligado Nacional (geração por usina, térmicas por motivo de despacho, restrição de eólicas, energia armazenada e afluente por reservatório) | 6 | 89.805.415 | — | Base dos Dados |
 | `br_ons_estimativa_custos` | ONS — estimativas de custo da operação (balanço de energia por subsistema, custo marginal semanal e semi-horário, custo variável das térmicas) | 5 | 1.407.872 | — | Base dos Dados |
-| `br_pgfn_dividaativa` | PGFN — dívida ativa da União (tributária, FGTS, previdenciária) | 1 | 49.702.198 | — | PGFN |
+| `br_pgfn_dividaativa` | PGFN — dívida ativa da União (tributária, FGTS, previdenciária) | 2 | 857.126.441 | — | PGFN |
 | `br_pncp` | PNCP — Portal Nacional de Contratações Públicas, licitações e contratos de todos os entes | 1 | 5.229.507 | — | PNCP — Portal Nacional de Contratações Públicas |
 | `br_poder360_pesquisas` | Poder360 — pesquisas eleitorais | 1 | 162.075 | — | Base dos Dados |
 | `br_prf_acidentes` | Acidentes em rodovias federais (PRF) — ocorrências, pessoas envolvidas e causas | 3 | 11.879.282 | — | Base dos Dados |
