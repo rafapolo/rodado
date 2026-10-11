@@ -202,7 +202,7 @@ describe("desktop", () => {
   afterAll(async () => ctx?.close());
 
   test("carrega catálogo inteiro e o terminal conectado", async () => {
-    expect(await p.title()).toBe("rodado SQL");
+    expect(await p.title()).toBe("Rodado SQL");
     const ds = await p.locator(".ds").count();
     expect(ds).toBeGreaterThan(200);
     expect(await p.locator("#resumo").textContent()).toMatch(/\d+ ds · \d+ tab · [\d,]+ (bi|mi)/);
@@ -316,25 +316,28 @@ describe("desktop", () => {
     const href = await info.locator(".fatos a").getAttribute("href");
     expect(href).toMatch(/^https?:\/\//);
     expect(await info.locator(".fatos a").getAttribute("rel")).toBeNull();
-    expect(await info.locator(".acoes button").allTextContents()).toEqual(["▶ amostra", "DESCRIBE", "SUMMARIZE", "⧉ nome"]);
+    expect(await info.locator(".acoes button").allTextContents()).toEqual(["▶ amostra", "▶ DESCRIBE", "▶ SUMMARIZE"]);
     const descDs = (await p.locator(".ds[open] > .dsinfo .desc").textContent())!.trim();
     expect(descDs.length).toBeGreaterThan(10);
     expect(await info.textContent()).not.toContain(descDs.slice(0, 30)); // descrição fica no dataset, não se repete
-    // a descrição aparece uma vez, no dataset, cortada em 2 linhas com "mais…"
+    // a descrição aparece uma vez, no dataset, cortada em 2 linhas; "mais…" só quando o corte esconde texto
     expect(await p.locator(".ds[open] > .dsinfo").count()).toBe(1);
+    const desc = p.locator(".ds[open] > .dsinfo .desc");
+    const corta = await desc.evaluate(d => d.scrollHeight > d.clientHeight + 1);
     const mais = p.locator(".ds[open] > .dsinfo .mais");
-    await mais.click();
-    expect(await mais.getAttribute("aria-expanded")).toBe("true");
-    await mais.click();
+    expect(await mais.count()).toBe(corta ? 1 : 0);
+    if (corta) {
+      await mais.click();
+      expect(await mais.getAttribute("aria-expanded")).toBe("true");
+      await mais.click();
+    }
   });
 
-  test(".info: DESCRIBE vai para o editor e Enter executa", async () => {
-    await p.locator('.tb[data-t="br_bd_diretorios_brasil.uf"] [data-cola="describe"]').click();
-    expect(await p.locator("#sql").inputValue()).toBe("DESCRIBE br_bd_diretorios_brasil.uf;");
-    expect(await p.evaluate(() => document.activeElement?.id)).toBe("sql");
-    await p.keyboard.press("Enter");
+  test(".info: ▶ DESCRIBE executa direto e devolve o foco ao editor vazio", async () => {
+    await p.locator('.tb[data-t="br_bd_diretorios_brasil.uf"] [data-roda="describe"]').click();
     await esperaTerminal(p, /regiao\s+│ VARCHAR/);
     expect(await p.locator("#sql").inputValue()).toBe("");
+    expect(await p.evaluate(() => document.activeElement?.id)).toBe("sql");
   });
 
   test(".info: tabela grande avisa para filtrar e marca ano/mes como filtro", async () => {
@@ -423,6 +426,8 @@ describe("desktop", () => {
 
   test("editor: Tab sem sugestão aberta segue a navegação por foco", async () => {
     await p.locator("#sql").focus();
+    await p.keyboard.press("Tab");
+    expect(await p.evaluate(() => document.activeElement?.id)).toBe("compartilha");
     await p.keyboard.press("Tab");
     expect(await p.evaluate(() => document.activeElement?.id)).toBe("executa");
   });

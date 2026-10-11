@@ -122,15 +122,12 @@
   summary:hover .n, summary:focus-visible .n, .coluna:hover .tipo, .coluna:focus-visible .tipo,
   summary:hover::before, summary:focus-visible::before { color: var(--subtext0); }
   .tb > summary { padding-left: 20px; }
-  /* tabela aberta: um bloco só — fundo próprio, filete à esquerda, nome preso no topo enquanto
-     as colunas rolam, e um separador da cor da moldura abaixo da última coluna */
-  .tb[open] { background: var(--crust); box-shadow: inset 2px 0 var(--mauve);
-    border-bottom: 1px solid var(--moldura); padding-bottom: 4px; margin-bottom: 2px; }
-  .tb[open] > summary { position: sticky; top: 0; z-index: 1; background: var(--crust);
+  /* tabela aberta: filete à esquerda e nome preso no topo enquanto as colunas rolam */
+  .tb[open] { box-shadow: inset 2px 0 var(--mauve); padding-bottom: 4px; margin-bottom: 2px; }
+  .tb[open] > summary { position: sticky; top: 0; z-index: 1; background: var(--mantle);
     box-shadow: inset 2px 0 var(--mauve); }
   .tb[open] > summary:hover, .tb[open] > summary:focus-visible { background: var(--surface0); }
   .tb[open] > summary .nome { font-weight: 700; }
-  .tb[open] .aviso { background: var(--mantle); }
   .tb > summary .nome { color: var(--blue); }
   .tb > summary .linhas { color: var(--peach); float: right; }
   .usar { color: var(--green); cursor: pointer; margin-left: 6px; visibility: hidden; }
