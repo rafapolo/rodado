@@ -28,3 +28,23 @@ gotchas:
     colunas: [id_favela, id_setor_censitario]
     severidade: silencioso
     verificado: "favela_setor: 33.272 setores em 12.348 favelas, todos presentes em setor_censitario; favela_entorno_cobertura: 12.348 linhas — medido 2026-10-10"
+  - id: sidra_formato_longo
+    resumo: "sidra_recortes é formato longo com todos os cruzamentos de 245 tabelas do SIDRA: sempre filtre id_tabela e fixe TODAS as classificações (categoria_N = 'Total' nas que não interessam), senão a soma conta a mesma pessoa várias vezes."
+    detalhe: >
+      Cada linha é uma célula: tabela, localidade (Brasil ou UF), variável e até seis pares
+      classificacao_N / categoria_N. A categoria 'Total' de cada classificação convive com as
+      partes. valor NULL com simbolo preenchido é sigilo ('X') ou dado inexistente ('...').
+      sidra_recortes_tabelas diz o que cada id_tabela mede, quais classificações tem, se
+      existe por município na fonte (tem_municipio) e se entrou (no_espelho): 20 tabelas de
+      etnia e língua indígena passam de 5 milhões de células e ficaram só no índice.
+    tabelas: [sidra_recortes, sidra_recortes_tabelas]
+    colunas: [id_tabela, categoria_1, categoria_2, valor, simbolo]
+    severidade: silencioso
+    verificado: "27.358.290 células de 245 tabelas, 27.270 com símbolo no lugar do valor; tabela 9608, Brasil, Total × Total = 1.694.836 pessoas indígenas (o número oficial); índice com 314 tabelas, 245 no espelho — medido 2026-10-11"
+  - id: setor_pct_em_tabelas_separadas
+    resumo: "Indígenas e quilombolas por setor não estão em setor_censitario: ficam em setor_censitario_{pessoas,domicilios}_{indigenas,quilombolas}, com as variáveis v01500 em diante descritas em agregados_dicionario_variaveis."
+    tabelas: [setor_censitario, setor_censitario_pessoas_indigenas, setor_censitario_domicilios_indigenas, setor_censitario_pessoas_quilombolas, setor_censitario_domicilios_quilombolas]
+    colunas: [id_setor_censitario]
+    severidade: erro
+    verificado: "458.772 setores em cada uma das quatro, todos presentes em setor_censitario; v03196 (pessoas quilombolas) soma 1.317.569 por setor, igual à soma de agregados_municipio — medido 2026-10-11"
+
