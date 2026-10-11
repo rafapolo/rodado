@@ -285,7 +285,7 @@ def run_local():
     for ds in sorted(os.listdir(LOCAL_MOUNT)):
         dspath = os.path.join(LOCAL_MOUNT, ds)
         # `_staging`, `_export`, `_rodado_metadata`: diretório que começa com `_` é de trabalho
-    if not os.path.isdir(dspath) or ds.startswith((".", "_")) or ds in SKIP_DATASETS:
+        if not os.path.isdir(dspath) or ds.startswith((".", "_")) or ds in SKIP_DATASETS:
             continue
         for tbl in sorted(os.listdir(dspath)):
             tblpath = os.path.join(dspath, tbl)
