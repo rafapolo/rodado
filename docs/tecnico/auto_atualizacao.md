@@ -1,4 +1,4 @@
-# docs/tecnico/auto_atualizacao.md — como manter as 1.389 tabelas em dia
+# docs/tecnico/auto_atualizacao.md — como manter as 1.397 tabelas em dia
 
 Irmão de [`housekeeping.md`](housekeeping.md): aquele é a checklist **depois**
 de um dado novo entrar; este é como fazer o dado entrar de novo quando a fonte
