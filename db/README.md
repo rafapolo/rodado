@@ -125,7 +125,7 @@ em `/tmp/duckdb` até 3 GB. Terminal: até 4 abas, sessão fecha após 30 min pa
 (257 arquivos): 0,6 s no disco do beelink, 4–15 s pelo bucket. Varredura de tabela grande é
 proporcionalmente mais lenta — filtre por partição (`ano`, `mes`, `sigla_uf`) e agregue.
 
-O túnel SSH reverso do beelink (usuário `tunel` no finland) foi desligado na mesma data.
+O túnel SSH reverso do beelink foi desligado na mesma data, e removidos o usuário `tunel` e o bloco `Match User tunel` do `sshd_config` no finland e a chave `~/.ssh/rodado_tunel` no beelink.
 
 ## Operação
 
