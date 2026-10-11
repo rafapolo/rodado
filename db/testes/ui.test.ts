@@ -328,11 +328,13 @@ describe("desktop", () => {
     await mais.click();
   });
 
-  test(".info: DESCRIBE cola no terminal", async () => {
+  test(".info: DESCRIBE vai para o editor e Enter executa", async () => {
     await p.locator('.tb[data-t="br_bd_diretorios_brasil.uf"] [data-cola="describe"]').click();
-    await esperaTerminal(p, "DESCRIBE br_bd_diretorios_brasil.uf;");
-    await p.frameLocator("#terminal").locator(".xterm-helper-textarea").press("Enter");
+    expect(await p.locator("#sql").inputValue()).toBe("DESCRIBE br_bd_diretorios_brasil.uf;");
+    expect(await p.evaluate(() => document.activeElement?.id)).toBe("sql");
+    await p.keyboard.press("Enter");
     await esperaTerminal(p, /regiao\s+│ VARCHAR/);
+    expect(await p.locator("#sql").inputValue()).toBe("");
   });
 
   test(".info: tabela grande avisa para filtrar e marca ano/mes como filtro", async () => {
@@ -358,17 +360,71 @@ describe("desktop", () => {
     await p.waitForTimeout(400);
   });
 
-  test("▶ cola a consulta no terminal e Enter executa", async () => {
+  test("▶ põe a consulta no editor e Enter executa", async () => {
     await p.locator("#busca").fill("secao_setor");
     await p.waitForTimeout(400);
     const linha = p.locator('.tb[data-t="br_rodado_eleicoes.secao_setor"] > summary');
     await linha.hover(); // o ▶ aparece no hover, como para uma pessoa
     await linha.locator(".usar").click();
-    await esperaTerminal(p, "FROM br_rodado_eleicoes.secao_setor LIMIT 10;");
-    await p.frameLocator("#terminal").locator(".xterm-helper-textarea").press("Enter");
+    expect(await p.locator("#sql").inputValue()).toBe("FROM br_rodado_eleicoes.secao_setor LIMIT 10;");
+    await p.keyboard.press("Enter");
     await esperaTerminal(p, /10 rows/);
     await p.locator("#busca").fill("");
     await p.waitForTimeout(300);
+  });
+
+  test("editor: digitar é local, não passa pelo terminal até o Enter", async () => {
+    await esperaTerminal(p, /(rodado|\.\.\.)>\s*$/);
+    const antes = await textoTerminal(p);
+    await p.locator("#sql").focus();
+    const t0 = Date.now();
+    await p.keyboard.type("SELECT 40 + 2 AS local_sem_rede", { delay: 0 });
+    const ms = Date.now() - t0;
+    expect(await p.locator("#sql").inputValue()).toBe("SELECT 40 + 2 AS local_sem_rede");
+    expect(ms).toBeLessThan(1500);                                  // 31 teclas; pelo terminal seriam ~4 s
+    expect(await textoTerminal(p)).toBe(antes);                     // nada foi ao beelink
+    // realce: a palavra-chave ganha a classe .k, o número .n
+    expect(await p.locator("#realce .k").first().textContent()).toBe("SELECT");
+    expect(await p.locator("#realce .n").count()).toBe(2);
+    await p.keyboard.press("Enter");                                // sem ; no fim: o editor acrescenta
+    await esperaTerminal(p, /local_sem_rede[\s\S]*│\s+42\s+│/);
+    expect(await p.locator("#sql").inputValue()).toBe("");
+  });
+
+  test("editor: Tab completa dataset.tabela e coluna da tabela citada", async () => {
+    await p.locator("#sql").focus();
+    await p.keyboard.type("FROM br_rodado_eleicoes.setor_l");
+    await p.locator("#sugestoes li").first().waitFor();
+    expect(await p.locator("#sql").getAttribute("aria-expanded")).toBe("true");
+    await p.keyboard.press("Tab");
+    expect(await p.locator("#sql").inputValue()).toBe("FROM br_rodado_eleicoes.setor_local");
+    await p.keyboard.type(" SELECT distancia_c");
+    await p.locator('#sugestoes li:has-text("distancia_centroide_m")').waitFor({ timeout: 10_000 });
+    await p.keyboard.press("Tab");
+    expect(await p.locator("#sql").inputValue()).toBe("FROM br_rodado_eleicoes.setor_local SELECT distancia_centroide_m");
+    await p.keyboard.type(" LIMIT 1");
+    await p.keyboard.press("Enter");
+    await esperaTerminal(p, /distancia_centroide_m[\s\S]*\(\d+\.\d\d s\)/);
+  });
+
+  test("editor: Shift+Enter quebra a linha e ↑ traz a consulta anterior", async () => {
+    await p.locator("#sql").focus();
+    await p.keyboard.type("SELECT 'duas'");
+    await p.keyboard.press("Shift+Enter");
+    await p.keyboard.type("  || '_linhas' AS junto");
+    expect((await p.locator("#sql").inputValue()).split("\n").length).toBe(2);
+    await p.keyboard.press("Enter");
+    await esperaTerminal(p, /│\s+duas_linhas\s+│/);
+    await p.keyboard.press("ArrowUp");
+    expect(await p.locator("#sql").inputValue()).toBe("SELECT 'duas'\n  || '_linhas' AS junto;");
+    await p.keyboard.press("ArrowDown");
+    expect(await p.locator("#sql").inputValue()).toBe("");
+  });
+
+  test("editor: Tab sem sugestão aberta segue a navegação por foco", async () => {
+    await p.locator("#sql").focus();
+    await p.keyboard.press("Tab");
+    expect(await p.evaluate(() => document.activeElement?.id)).toBe("executa");
   });
 
   test("terminal: consulta em várias linhas, cores e tempo", async () => {
