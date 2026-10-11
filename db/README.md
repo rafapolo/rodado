@@ -11,7 +11,11 @@ O espelho do beelink acessível pela web, com senha (HTTP basic auth), só leitu
   ou de filtro recomendado (`ano`, `mes`, `sigla_uf`)
 - `https://db.rodado.xyz/?query=<base64 do SQL>` — link que abre o terminal e já executa a
   consulta (base64 ou base64url, com ou sem `=`, texto em UTF-8; espera o prompt `rodado>`
-  antes de colar). Gerar: `printf %s "$SQL" | base64 | tr -d '\n' | tr '+/' '-_' | tr -d =`
+  antes de colar). `?z=` é o mesmo com o SQL comprimido em deflate cru antes do base64url,
+  25–60% mais curto (a página descomprime com `DecompressionStream`). Gerar:
+  `db/link.py consulta.sql` (`-t` acrescenta o token)
+  ou o botão de link à esquerda do ▶ no editor, que copia o `?z=` da consulta escrita (ou da
+  última executada) e repete o `?token=` se a página foi aberta com ele
 - `?token=<token>` em qualquer URL dispensa a senha: `https://db.rodado.xyz/?token=…&query=…`
   é um link que um terceiro abre e já vê o resultado. O token fica em
   `/root/rodado-db/.token` no finland (nunca no repositório); o primeiro acesso o grava num
@@ -148,7 +152,7 @@ tecla a ~240 ms.
 
 ## Testes de UI e UX
 
-`db/testes/` roda 49 testes contra o site no ar (Bun + `playwright-core` com o Chrome
+`db/testes/` roda 52 testes contra o site no ar (Bun + `playwright-core` com o Chrome
 instalado, nada é baixado), com a régua da auditoria de acessibilidade do swissviz:
 
 - **API:** 401 sem senha em toda rota, formatos, limite, recusa de escrita e de arquivo
@@ -162,8 +166,9 @@ instalado, nada é baixado), com a régua da auditoria de acessibilidade do swis
 - **Celular (iPhone 14):** terminal em tela cheia, alvos de toque de 36 px ou mais, busca
   com 16 px, bottom sheet que fecha tocando fora, no ✕ e com Esc, ▶ visível sem hover,
   barra de teclas (`;`, ⏎, Ctrl-C) e contraste AA.
-- **Link `?query=`:** base64 padrão com `+` cru na URL (desktop, entra no histórico),
-  base64url no celular, acento e ✓ no SQL, base64 inválido avisa e não executa.
+- **Link `?query=` / `?z=`:** base64 padrão com `+` cru na URL (desktop, entra no histórico),
+  base64url no celular, acento e ✓ no SQL, `?z=` comprimido, botão de link copiando um `?z=` que executa, e base64 ou deflate inválido
+  avisa e não executa.
 
 ```bash
 db/testes/roda.sh            # busca a senha no finland

@@ -34,20 +34,22 @@
     --surface0: #313244; --surface1: #45475a; --overlay0: #6c7086; --overlay1: #7f849c; --overlay2: #9399b2;
     --subtext0: #a6adc8; --text: #cdd6f4;
     --blue: #89b4fa; --mauve: #cba6f7; --peach: #fab387; --green: #a6e3a1; --red: #f38ba8;
+    --moldura: rgb(144 157 235);
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; background: var(--base); color: var(--text);
     font: 12px/1.45 "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; }
   body { display: flex; overflow: hidden; }
   /* moldura da página inteira, por cima de tudo e sem roubar clique nem espaço */
-  html::after { content: ""; position: fixed; inset: 0; border: 2px solid rgb(144 157 235);
+  html::after { content: ""; position: fixed; inset: 0; border: 2px solid var(--moldura);
     pointer-events: none; z-index: 100; }
   #esquerda { flex: 1; min-width: 0; height: 100%; display: flex; flex-direction: column; }
   #terminal { flex: 1; min-height: 0; width: 100%; border: 0; background: var(--base); }
   /* editor de SQL: a digitação é local (sem ida e volta ao beelink); só o Enter manda ao terminal */
   #editor { position: relative; flex: 0 0 auto; border-top: 1px solid var(--surface0); background: var(--mantle);
     padding: 6px 8px 6px 6px; display: flex; gap: 6px; align-items: flex-start; }
-  #editor::before { content: "sql>"; color: var(--mauve); padding-top: 4px; flex: 0 0 auto; }
+  /* "sql>" preso ao pé, na altura da última linha (5px = padding + borda do campo) */
+  #editor::before { content: "sql>"; color: var(--mauve); align-self: flex-end; padding-bottom: 5px; flex: 0 0 auto; }
   #campo { position: relative; flex: 1; min-width: 0; }
   #realce, #sql { margin: 0; padding: 4px 6px; border: 1px solid transparent; border-radius: 4px; width: 100%;
     font: inherit; line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 2; }
@@ -62,9 +64,16 @@
   #realce .k { color: var(--mauve); font-weight: 700; } #realce .s { color: var(--green); }
   #realce .n { color: var(--peach); } #realce .c { color: var(--overlay1); font-style: italic; }
   #realce .t { color: var(--blue); }
-  #executa { flex: 0 0 auto; font: inherit; color: var(--green); background: var(--base); border: 1px solid var(--surface0);
-    border-radius: 4px; padding: 4px 8px; cursor: pointer; }
+  /* os dois botões: mesma caixa, da altura de uma linha do editor, presos ao pé quando ele cresce */
+  #executa, #compartilha { flex: 0 0 auto; align-self: flex-end; display: grid; place-items: center;
+    width: 30px; height: calc(1.45em + 10px); padding: 0; font: inherit; background: var(--base);
+    border: 1px solid var(--surface0); border-radius: 4px; cursor: pointer; }
+  #executa { color: var(--green); }
   #executa:hover { border-color: var(--green); }
+  #compartilha { color: var(--blue); margin-right: 2px; }
+  #compartilha:hover { border-color: var(--blue); }
+  #compartilha svg { width: 13px; height: 13px; }
+  #compartilha.ok { color: var(--green); border-color: var(--green); }
   #sugestoes { position: absolute; left: 44px; bottom: 100%; margin: 0 0 2px; padding: 2px 0; list-style: none;
     min-width: 260px; max-width: min(640px, 90%); max-height: 220px; overflow-y: auto; background: var(--crust);
     border: 1px solid var(--surface1); border-radius: 6px; z-index: 5; box-shadow: 0 -6px 20px #0006; }
@@ -103,12 +112,25 @@
   details > summary::-webkit-details-marker { display: none; }
   details > summary::before { content: "▸ "; color: var(--overlay2); }
   details[open] > summary::before { content: "▾ "; color: var(--mauve); }
+  /* colunas carregando: o girador ocupa o lugar do ▾, sem empurrar o nome */
+  .tb > summary[aria-busy=true]::before { content: ""; display: inline-block; width: 10px; height: 10px;
+    margin-right: calc(2ch - 10px); vertical-align: -1px; border: 2px solid var(--surface1);
+    border-top-color: var(--mauve); border-radius: 50%; animation: gira .7s linear infinite; }
   summary:hover, .coluna:hover { background: var(--surface0); }
   /* texto secundário: overlay2 no mantle (6,2:1) e subtext0 sobre o surface0 do hover/foco (5,6:1) — AA nos dois */
   .ds > summary .n { color: var(--overlay2); }
   summary:hover .n, summary:focus-visible .n, .coluna:hover .tipo, .coluna:focus-visible .tipo,
   summary:hover::before, summary:focus-visible::before { color: var(--subtext0); }
   .tb > summary { padding-left: 20px; }
+  /* tabela aberta: um bloco só — fundo próprio, filete à esquerda, nome preso no topo enquanto
+     as colunas rolam, e um separador da cor da moldura abaixo da última coluna */
+  .tb[open] { background: var(--crust); box-shadow: inset 2px 0 var(--mauve);
+    border-bottom: 1px solid var(--moldura); padding-bottom: 4px; margin-bottom: 2px; }
+  .tb[open] > summary { position: sticky; top: 0; z-index: 1; background: var(--crust);
+    box-shadow: inset 2px 0 var(--mauve); }
+  .tb[open] > summary:hover, .tb[open] > summary:focus-visible { background: var(--surface0); }
+  .tb[open] > summary .nome { font-weight: 700; }
+  .tb[open] .aviso { background: var(--mantle); }
   .tb > summary .nome { color: var(--blue); }
   .tb > summary .linhas { color: var(--peach); float: right; }
   .usar { color: var(--green); cursor: pointer; margin-left: 6px; visibility: hidden; }
@@ -127,7 +149,7 @@
     border: 2px solid var(--surface1); border-top-color: var(--mauve); border-radius: 50%;
     animation: gira .7s linear infinite; }
   @keyframes gira { to { transform: rotate(360deg); } }
-  @media (prefers-reduced-motion: reduce) { .gira { animation-duration: 2s; } }
+  @media (prefers-reduced-motion: reduce) { .gira, .tb > summary[aria-busy=true]::before { animation-duration: 2s; } }
   .aviso { margin-top: 5px; padding: 3px 6px; border-left: 2px solid var(--peach); background: var(--crust);
     color: var(--peach); border-radius: 0 4px 4px 0; }
   .aviso code { color: var(--text); }
@@ -144,6 +166,9 @@
   .etq.filtre { color: var(--peach); border: 1px solid var(--peach); }
   .coluna { padding: 0 8px 0 34px; display: flex; gap: 8px; cursor: pointer; }
   .coluna .tipo { color: var(--overlay2); margin-left: auto; }
+  /* etiqueta encostada à direita, logo antes do tipo */
+  .coluna .etq { margin-left: auto; }
+  .coluna .etq + .tipo { margin-left: 0; }
   .vazio { padding: 8px; color: var(--overlay1); }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
     clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
@@ -212,6 +237,7 @@
       aria-label="consulta SQL: Enter executa, Shift+Enter quebra a linha, Tab completa, seta para cima traz a anterior"
       placeholder="escreva a consulta aqui · Enter executa · Shift+Enter nova linha · Tab completa · ↑ anterior"></textarea>
   </div>
+  <button id="compartilha" type="button" aria-label="copiar link que abre e executa esta consulta" title="copiar link que executa esta consulta"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 9.5a3 3 0 0 0 4.2 0l2.6-2.6a3 3 0 0 0-4.2-4.2L8 3.8"/><path d="M9.5 6.5a3 3 0 0 0-4.2 0L2.7 9.1a3 3 0 0 0 4.2 4.2L8 12.2"/></svg></button>
   <button id="executa" type="button" aria-label="executar a consulta (Enter)" title="executar (Enter)">▶</button>
   <ul id="sugestoes" role="listbox" aria-label="sugestões de dataset, tabela, coluna e palavra-chave" hidden></ul>
 </div>
@@ -349,7 +375,7 @@ function htmlDataset(ds) {
 
 function htmlTabela(t, cols) {
   const fonte = linkSeguro(t.url)
-    ? `<a href="${esc(t.url)}" target="_blank" rel="noopener noreferrer" title="${esc(t.url)}">${esc(t.fonte || "fonte")} <span aria-hidden="true">↗</span></a>`
+    ? `<a href="${esc(t.url)}" target="_blank" title="${esc(t.url)}">${esc(t.fonte || "fonte")} <span aria-hidden="true">↗</span></a>`
     : esc(t.fonte || "");
   const fatos = [t.linhas != null && `<b>${numero(t.linhas)}</b> linhas`, data(t.atualizado) && `atualizado ${data(t.atualizado)}`, fonte]
     .filter(Boolean).join(" · ");
@@ -392,7 +418,6 @@ arvore.addEventListener("toggle", async e => {
   det.dataset.ok = 1;
   const t = catalogo.find(x => x.dataset + "." + x.tabela === det.dataset.t) || {};
   const resumo = det.querySelector(":scope > summary");
-  resumo.querySelector(".nome").insertAdjacentHTML("afterend", `<span class="gira" aria-hidden="true"></span>`);
   resumo.setAttribute("aria-busy", "true");
   let html;
   try {
@@ -403,7 +428,6 @@ arvore.addEventListener("toggle", async e => {
   } catch (err) {
     html = `<div class="info erro">erro ao ler colunas: ${esc(err.message)}</div>`;
   }
-  resumo.querySelector(".gira")?.remove();
   resumo.removeAttribute("aria-busy");
   det.insertAdjacentHTML("beforeend", html);
 }, true);
@@ -459,18 +483,24 @@ termFrame.addEventListener("load", async () => {
   rodaDaUrl(term);
 });
 
-// ?query=<base64 do SQL> roda ao abrir: link pronto para uma consulta (base64 ou base64url, UTF-8)
-function sqlDaUrl() {
+// ?query=<base64 do SQL> roda ao abrir: link pronto para uma consulta (base64 ou base64url, UTF-8).
+// ?z=<base64 do SQL comprimido em deflate cru> é o mesmo, 25–60% mais curto.
+async function sqlDaUrl() {
+  const p = new URLSearchParams(location.search);
+  const nome = p.has("z") ? "z" : "query";
   // URLSearchParams lê "+" como espaço; no base64 ele é dígito
-  const b64 = new URLSearchParams(location.search).get("query")?.trim().replace(/ /g, "+");
+  const b64 = p.get(nome)?.trim().replace(/ /g, "+");
   if (!b64) return null;
   const bin = atob(b64.replace(/-/g, "+").replace(/_/g, "/").replace(/=+$/, ""));
-  return new TextDecoder("utf-8", { fatal: true }).decode(Uint8Array.from(bin, c => c.charCodeAt(0))).trim();
+  let bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+  if (nome === "z")
+    bytes = new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer());
+  return new TextDecoder("utf-8", { fatal: true }).decode(bytes).trim();
 }
 async function rodaDaUrl(term) {
   let texto;
-  try { texto = sqlDaUrl(); }
-  catch (_) { term.write("\r\n\x1b[31m?query= não é base64 de um texto UTF-8 válido\x1b[0m\r\n"); return; }
+  try { texto = await sqlDaUrl(); }
+  catch (_) { term.write("\r\n\x1b[31m?query= ou ?z= não traz um SQL válido (base64, e deflate no ?z=)\x1b[0m\r\n"); return; }
   if (!texto) return;
   // colado antes do prompt, o texto se perde: espera o "rodado>" aparecer no terminal
   const temPrompt = () => {
@@ -625,6 +655,33 @@ sugestoes.addEventListener("pointerdown", e => {
   if (li) { e.preventDefault(); aceita(+li.dataset.n); sql.focus(); }
 });
 document.getElementById("executa").addEventListener("click", () => { executa(); sql.focus(); });
+
+// link que abre e executa a consulta do editor (ou a última executada, se o editor está vazio):
+// ?z= é o SQL em deflate cru + base64url, o inverso de sqlDaUrl(); o ?token= da página vai junto
+async function linkDaConsulta(texto) {
+  const z = new Uint8Array(await new Response(new Blob([new TextEncoder().encode(texto)]).stream()
+    .pipeThrough(new CompressionStream("deflate-raw"))).arrayBuffer());
+  let bin = "";
+  for (const b of z) bin += String.fromCharCode(b);
+  const token = new URLSearchParams(location.search).get("token");
+  return location.origin + "/?" + (token ? "token=" + encodeURIComponent(token) + "&" : "")
+    + "z=" + btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+const compartilha = document.getElementById("compartilha");
+compartilha.addEventListener("click", async () => {
+  const texto = sql.value.trim() || historico.at(-1);
+  const status = document.getElementById("status");
+  if (!texto) { status.textContent = "nada para compartilhar: escreva ou execute uma consulta"; sql.focus(); return; }
+  const url = await linkDaConsulta(texto);
+  let copiado = false;
+  try { await navigator.clipboard.writeText(url); copiado = true; } catch (_) {}
+  if (!copiado) { prompt("link da consulta:", url); return; }      // sem permissão de área de transferência
+  status.textContent = "link copiado";
+  compartilha.classList.add("ok");
+  compartilha.title = "link copiado";
+  setTimeout(() => { compartilha.classList.remove("ok"); compartilha.title = "copiar link que executa esta consulta"; }, 1500);
+  sql.focus();
+});
 
 // celular: painel da árvore, barra de teclas e altura que acompanha o teclado virtual
 const celular = matchMedia("(max-width: 760px), (pointer: coarse) and (max-width: 1024px)");

@@ -315,7 +315,7 @@ describe("desktop", () => {
     expect(await info.locator(".fatos").textContent()).toMatch(/^[\d.]+ linhas · atualizado \d{2}\/\d{2}\/\d{4}/);
     const href = await info.locator(".fatos a").getAttribute("href");
     expect(href).toMatch(/^https?:\/\//);
-    expect(await info.locator(".fatos a").getAttribute("rel")).toContain("noopener");
+    expect(await info.locator(".fatos a").getAttribute("rel")).toBeNull();
     expect(await info.locator(".acoes button").allTextContents()).toEqual(["▶ amostra", "DESCRIBE", "SUMMARIZE", "⧉ nome"]);
     const descDs = (await p.locator(".ds[open] > .dsinfo .desc").textContent())!.trim();
     expect(descDs.length).toBeGreaterThan(10);
@@ -656,16 +656,16 @@ describe("celular (iPhone 14)", () => {
 
 // ---------------------------------------------------------------- link ?query=<base64>
 
-describe("link ?query=<base64> roda ao abrir", () => {
+describe("link ?query= / ?z= roda ao abrir", () => {
   // o base64 padrão deste SQL tem "+" (que a URL lê como espaço) e o texto tem acento e ✓
   const SQL = "SELECT 'ação ✓ >>?' AS r, 40 + 2 AS n;";
   const padrao = Buffer.from(SQL).toString("base64");
   const url64 = padrao.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
   const RESULTADO = /ação ✓ >>\?\s+│\s+42/;
 
-  async function abreCom(ctx: BrowserContext, b64: string): Promise<Page> {
+  async function abreCom(ctx: BrowserContext, b64: string, param = `query=${b64}`): Promise<Page> {
     const p = await ctx.newPage();
-    await p.goto(`${BASE}/?query=${b64}`, { waitUntil: "domcontentloaded" });
+    await p.goto(`${BASE}/?${param}`, { waitUntil: "domcontentloaded" });
     return p;
   }
 
@@ -688,11 +688,46 @@ describe("link ?query=<base64> roda ao abrir", () => {
     } finally { await ctx.close(); }
   });
 
+  test("?z= (deflate cru + base64url) descomprime e executa", async () => {
+    const z = Bun.deflateSync(Buffer.from(SQL), { level: 9 });       // deflate cru, como o CompressionStream("deflate-raw")
+    const ctx = await contexto({ viewport: { width: 1440, height: 900 } });
+    try {
+      await esperaTerminal(await abreCom(ctx, "", "z=" + Buffer.from(z).toString("base64url")), RESULTADO);
+    } finally { await ctx.close(); }
+  });
+
+  test("botão de link ao lado do ▶ copia um ?z= que abre e executa a consulta do editor", async () => {
+    const ctx = await contexto({ viewport: { width: 1440, height: 900 }, permissions: ["clipboard-read", "clipboard-write"] });
+    try {
+      const p = await abre(ctx);
+      const caixas = await p.evaluate(() => ["compartilha", "executa"].map(id => document.getElementById(id)!.getBoundingClientRect().left));
+      expect(caixas[0]).toBeLessThan(caixas[1]);                   // à esquerda do ▶
+      await p.locator("#sql").fill(SQL);
+      await p.locator("#compartilha").click();
+      await p.waitForFunction(() => document.getElementById("status")?.textContent === "link copiado");
+      const url = await p.evaluate(() => navigator.clipboard.readText());
+      expect(url).toMatch(/^https:\/\/[^/]+\/\?z=[\w-]+$/);
+      expect(await p.locator("#sql").inputValue()).toBe(SQL);          // compartilhar não executa nem apaga
+      const outra = await ctx.newPage();
+      await outra.goto(url, { waitUntil: "domcontentloaded" });
+      await esperaTerminal(outra, RESULTADO);
+    } finally { await ctx.close(); }
+  });
+
+  test("?z= que não é deflate avisa e não executa", async () => {
+    const ctx = await contexto({ viewport: { width: 1440, height: 900 } });
+    try {
+      const p = await abreCom(ctx, "", "z=" + url64);
+      await esperaTerminal(p, "?query= ou ?z= não traz um SQL válido");
+      expect(await p.evaluate(() => localStorage.getItem("rodado.historico"))).toBeNull();
+    } finally { await ctx.close(); }
+  });
+
   test("base64 inválido avisa no terminal e não executa nada", async () => {
     const ctx = await contexto({ viewport: { width: 1440, height: 900 } });
     try {
       const p = await abreCom(ctx, "%FF%FE");
-      await esperaTerminal(p, "?query= não é base64");
+      await esperaTerminal(p, "?query= ou ?z= não traz um SQL válido");
       expect(await p.evaluate(() => localStorage.getItem("rodado.historico"))).toBeNull();
     } finally { await ctx.close(); }
   });
