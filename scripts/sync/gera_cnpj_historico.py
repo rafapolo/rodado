@@ -44,7 +44,9 @@ TRABALHO = "/home/polo/scrap_tmp/cnpj_historico_trabalho"
 # lê e grava parquet, então usa um binário 1.5.6 à parte, sem o ~/.duckdbrc (que
 # carrega extensões da 1.5.4) e com as mesmas configurações dele, explícitas.
 DUCKDB = "~/bin/duckdb-1.5.6"
-PREFIXO = ("SET enable_progress_bar=false; SET memory_limit='16GB'; SET threads=14; "
+# CNPJ_MEM / CNPJ_THREADS: baixar quando outra carga divide o beelink (padrão: máquina livre)
+PREFIXO = (f"SET enable_progress_bar=false; SET memory_limit='{os.environ.get('CNPJ_MEM', '16GB')}'; "
+           f"SET threads={os.environ.get('CNPJ_THREADS', '14')}; "
            "SET temp_directory='/home/polo/duckdb_tmp'; "
            "SET max_temp_directory_size='100GB';\n")
 
@@ -73,6 +75,24 @@ def duck(sql, timeout=7200, tentativas=4):
         print(f"    leitura falhou ({erro.splitlines()[-1][:80]}), repetindo "
               f"({t + 1}/{tentativas - 1}): {sql.strip()[:70]!r}", flush=True)
         time.sleep(30)
+
+
+def copia_dupla(sql, destino, tentativas=3):
+    """Grava `sql` em `destino` e só aceita se uma segunda execução der a mesma coisa.
+
+    Em 2026-10-07 o beelink devolveu, uma vez e sem erro, 2 linhas a mais numa junção que
+    refeita 4 vezes deu sempre o outro número. Então cada etapa roda duas vezes: a que grava
+    o parquet e uma que só calcula a impressão digital (linhas + soma do hash de cada linha)
+    direto da consulta. Diferença apaga o arquivo e repete."""
+    for t in range(tentativas):
+        duck(f"COPY ({sql}) TO '{destino}' (FORMAT parquet, COMPRESSION zstd);")
+        a = duck(f"SELECT count(*) AS n, sum(hash(t)::HUGEINT)::VARCHAR AS s FROM read_parquet('{destino}') t;")[0]
+        b = duck(f"SELECT count(*) AS n, sum(hash(t)::HUGEINT)::VARCHAR AS s FROM ({sql}) t;")[0]
+        if a == b:
+            return a["n"]
+        print(f"    as duas execuções diferem ({a} x {b}), repetindo ({t + 1}/{tentativas}): {destino}", flush=True)
+        sh(f"rm -f {destino}")
+    raise RuntimeError(f"duas execuções nunca bateram: {destino}")
 
 
 def sh(cmd, timeout=600):
@@ -143,7 +163,9 @@ def gera_scd2(tb, destino, limite=None):
     fonte = f"{ROOT}/{tb}/*.parquet"
     saida = f"{destino}/{tb}_historico"
     # fora de ~/rodado: o backup para o COLD copia tudo o que está lá, a cada 6h
-    trab = f"{TRABALHO}/{'teste_' if destino == TESTE else ''}{tb}"
+    # v2_: os intermediários de 2026-10-07 (sem a verificação dupla) têm um `abre_202504` de
+    # empresas comprovadamente errado; não são reaproveitados
+    trab = f"{TRABALHO}/{'teste_' if destino == TESTE else 'v2_'}{tb}"
     sh(f"mkdir -p {trab}")
     print(f"{tb}: {len(rs)} retratos, {rs[0]}..{rs[-1]}; {len(cols)} colunas", flush=True)
 
@@ -154,7 +176,7 @@ def gera_scd2(tb, destino, limite=None):
         return nome not in sh(f"ls {trab}").split()
 
     def copia(sql, nome):
-        duck(f"COPY ({sql}) TO '{trab}/.{nome}' (FORMAT parquet, COMPRESSION zstd);")
+        copia_dupla(sql, f"{trab}/.{nome}")
         sh(f"mv {trab}/.{nome} {trab}/{nome}")
 
     lista = ", ".join("e." + q(c) for c in cols)
@@ -204,12 +226,12 @@ def gera_scd2(tb, destino, limite=None):
     for d in "0123456789":
         arq = f"p{d}.parquet"
         if arq not in feitos:
-            duck(f"""COPY (
+            copia_dupla(f"""
 SELECT a.inicio, f.fim, a.* EXCLUDE (inicio)
 FROM (SELECT * FROM read_parquet('{trab}/abre_*.parquet') WHERE starts_with({q(chave)}, '{d}')) a
 ASOF JOIN (SELECT * FROM read_parquet('{trab}/fecha_*.parquet') WHERE starts_with({q(chave)}, '{d}')) f
   ON a.{q(chave)} = f.{q(chave)} AND f.fim >= a.inicio
-) TO '{mont}/.{arq}' (FORMAT parquet, COMPRESSION zstd);""")
+""", f"{mont}/.{arq}")
             sh(f"mv {mont}/.{arq} {mont}/{arq}")
         c = duck(f"SELECT count(*) n, count(*) FILTER (fim = {ult}) u "
                  f"FROM read_parquet('{mont}/{arq}');")[0]
@@ -237,7 +259,7 @@ def gera_socios(prefixos, destino):
     fonte = f"{ROOT}/{tb}/*.parquet"
     saida = f"{destino}/{tb}_historico"
     # pedaços no trabalho; o conjunto só vai para ~/rodado com os 100 conferidos
-    trab = f"{TRABALHO}/{'teste_' if destino == TESTE else ''}{tb}"
+    trab = f"{TRABALHO}/{'teste_' if destino == TESTE else 'v2_'}{tb}"
     sh(f"mkdir -p {trab}")
     feitos = set(sh(f"ls {trab}").split())
     for p in prefixos:
@@ -252,7 +274,7 @@ def gera_socios(prefixos, destino):
         # "Out of buffer" apareceu uma vez e sumiu ao repetir (2026-10-07)
         for tentativa in range(3):
             try:
-                duck(f"COPY ({corpo}) TO '{stg}' (FORMAT parquet, COMPRESSION zstd);")
+                copia_dupla(corpo, stg)
                 break
             except RuntimeError as exc:
                 if tentativa == 2:
