@@ -4,7 +4,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
 
-254 datasets, 1389 tabelas.
+254 datasets, 1397 tabelas.
 
 | dataset | tabelas | linhas | last_update |
 |---|---:|---:|---|
@@ -96,7 +96,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ibge_cbo_2002` | 2 | 177.556 | 2026-07-09 |
 | `br_ibge_censo2022_raca` | 2 | 1.415.034 | 2026-07-18 |
 | `br_ibge_censo2022_religiao` | 15 | 6.451.488 | 2026-07-18 |
-| `br_ibge_censo_2022` | 41 | 142.247.430 | 2026-10-10 |
+| `br_ibge_censo_2022` | 47 | 171.441.122 | 2026-10-11 |
 | `br_ibge_censo_demografico` | 38 | 181.895.148 | 2026-10-09 |
 | `br_ibge_cnefe` | 1 | 111.102.875 | 2026-09-02 |
 | `br_ibge_estadic` | 8 | 3.044 | 2026-07-09 |
@@ -143,10 +143,10 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_mc_indicadores` | 1 | 1.118.855 | 2026-07-09 |
 | `br_mdr_snis` | 2 | 245.101 | 2026-07-06 |
 | `br_mds_cadunico` | 2 | 350.069.349 | 2026-09-24 |
-| `br_me_caged` | 4 | 241.129.397 | 2026-10-09 |
+| `br_me_caged` | 4 | 298.358.844 | 2026-10-11 |
 | `br_me_clima_organizacional` | 1 | 16.436 | 2026-07-09 |
 | `br_me_cno` | 3 | 1.020.894 | 2026-07-09 |
-| `br_me_cnpj` | 5 | 8.158.553.996 | 2026-10-07 |
+| `br_me_cnpj` | 6 | 8.238.578.487 | 2026-10-11 |
 | `br_me_comex_stat` | 5 | 133.659.718 | 2026-10-09 |
 | `br_me_estoque_divida_publica` | 1 | 124.419 | 2026-07-09 |
 | `br_me_exportadoras_importadoras` | 1 | 3 | 2026-07-09 |
@@ -201,7 +201,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ok_queridodiario_texto` | 1 | 320.422 | 2026-10-07 |
 | `br_ons_avaliacao_operacao` | 6 | 89.805.415 | 2026-10-07 |
 | `br_ons_estimativa_custos` | 5 | 1.407.872 | 2026-10-07 |
-| `br_pgfn_dividaativa` | 1 | 49.702.198 | 2026-10-07 |
+| `br_pgfn_dividaativa` | 2 | 857.126.441 | 2026-10-11 |
 | `br_pncp` | 1 | 5.229.507 | 2026-10-07 |
 | `br_poder360_pesquisas` | 1 | 162.075 | 2026-10-09 |
 | `br_prf_acidentes` | 3 | 11.879.282 | 2026-10-07 |
