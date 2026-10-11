@@ -4,7 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1e1e2e">
-<title>rodado SQL</title>
+<title>Rodado SQL</title>
+<meta name="description" content="Terminal SQL no navegador sobre o espelho do rodado: 1.397 tabelas e 44 bilhões de linhas de dados públicos brasileiros, em DuckDB, só leitura.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="rodado">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://db.rodado.xyz/">
+<meta property="og:title" content="Rodado SQL">
+<meta property="og:description" content="Terminal SQL no navegador sobre o espelho do rodado: 1.397 tabelas e 44 bilhões de linhas de dados públicos brasileiros, em DuckDB, só leitura.">
+<meta property="og:image" content="https://rodado.xyz/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="rodado — Brasil em números, retratos dos dados oficiais">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Rodado SQL">
+<meta name="twitter:description" content="Terminal SQL no navegador sobre o espelho do rodado: 1.397 tabelas e 44 bilhões de linhas de dados públicos brasileiros, em DuckDB, só leitura.">
+<meta name="twitter:image" content="https://rodado.xyz/assets/og.png">
+<link rel="icon" href="https://rodado.xyz/assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="https://rodado.xyz/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://rodado.xyz/assets/favicon-16.png">
+<link rel="apple-touch-icon" href="https://rodado.xyz/assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link id="fonte" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap">
@@ -102,7 +121,13 @@
   .acoes button { font: inherit; font-size: 11px; color: var(--text); background: var(--base);
     border: 1px solid var(--surface0); border-radius: 4px; padding: 1px 6px; cursor: pointer; }
   .acoes button:hover { border-color: var(--mauve); color: var(--mauve); }
-  .acoes button[data-cola="amostra"] { color: var(--green); }
+  .acoes button .play { color: var(--green); }
+  /* girando enquanto algo carrega: no item da tabela (colunas) e no catálogo */
+  .gira { display: inline-block; width: 9px; height: 9px; margin: 0 6px; vertical-align: -1px;
+    border: 2px solid var(--surface1); border-top-color: var(--mauve); border-radius: 50%;
+    animation: gira .7s linear infinite; }
+  @keyframes gira { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .gira { animation-duration: 2s; } }
   .aviso { margin-top: 5px; padding: 3px 6px; border-left: 2px solid var(--peach); background: var(--crust);
     color: var(--peach); border-radius: 0 4px 4px 0; }
   .aviso code { color: var(--text); }
@@ -163,8 +188,9 @@
       margin-left: -18px; border-radius: 2px; background: var(--surface1); }
     #resumo { display: none; }
     #busca { font-size: 16px; padding: 6px 8px; } /* 16px: o iOS não dá zoom no foco */
-    #fecha { display: block; background: none; border: 0; color: var(--subtext0); font-size: 18px;
-      min-width: 40px; height: 40px; border-radius: 6px; }
+    #fecha { display: grid; place-items: center; background: none; border: 0; color: #fff; padding: 0;
+      min-width: 40px; height: 40px; cursor: pointer; }
+    #fecha svg { width: 14px; height: 14px; }
     details > summary { padding: 7px 10px; }
     .tb > summary { padding-left: 24px; }
     .coluna { padding: 6px 10px 6px 40px; }
@@ -199,9 +225,9 @@
     <input id="busca" type="search" placeholder="filtrar…" autocomplete="off"
       aria-label="filtrar datasets, tabelas e descrições (↓ entra na árvore)" aria-controls="arvore">
     <span id="resumo" aria-live="polite"></span>
-    <button id="fecha" aria-label="fechar a árvore de datasets"><span aria-hidden="true">✕</span></button>
+    <button id="fecha" aria-label="fechar a árvore de datasets"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></button>
   </header>
-  <div id="arvore" role="tree" aria-label="árvore de datasets"><div class="vazio">carregando catálogo…</div></div>
+  <div id="arvore" role="tree" aria-label="árvore de datasets"><div class="vazio"><span class="gira" aria-hidden="true"></span>carregando catálogo…</div></div>
   <div id="status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
 </aside>
 <div id="fundo"></div>
@@ -244,6 +270,20 @@ function cola(texto) {
   try {
     const term = f.contentWindow.term;
     term.paste(texto);
+    fechaArvore();
+    term.focus();
+  } catch (e) {
+    navigator.clipboard?.writeText(texto);
+  }
+}
+
+// botões da tabela (amostra, DESCRIBE, SUMMARIZE): cola e já executa
+function roda(texto) {
+  if (editorVisivel()) { cola(texto); executa(); return; }
+  try {
+    const term = document.getElementById("terminal").contentWindow.term;
+    term.paste(texto);
+    term.input("\r", true);
     fechaArvore();
     term.focus();
   } catch (e) {
@@ -318,10 +358,8 @@ function htmlTabela(t, cols) {
   const filtrosUnicos = [...new Set(filtros)];
   let html = `<div class="info"><div class="fatos">${fatos}</div>`
     + `<div class="acoes" role="group" aria-label="ações da tabela">`
-    + `<button type="button" data-cola="amostra" aria-label="colar amostra de ${esc(t.dataset + "." + t.tabela)} no terminal">▶ amostra</button>`
-    + `<button type="button" data-cola="describe">DESCRIBE</button>`
-    + `<button type="button" data-cola="summarize">SUMMARIZE</button>`
-    + `<button type="button" data-cola="copia" aria-label="copiar o nome ${esc(t.dataset + "." + t.tabela)}">⧉ nome</button>`
+    + ["amostra", "DESCRIBE", "SUMMARIZE"].map(a =>
+      `<button type="button" data-roda="${a.toLowerCase()}" aria-label="rodar ${a} de ${esc(t.dataset + "." + t.tabela)}"><span class="play" aria-hidden="true">▶</span> ${a}</button>`).join("")
     + `</div>`;
   if ((t.linhas || 0) >= GRANDE)
     html += `<div class="aviso" role="note">⚑ ${numero(t.linhas)} linhas — `
@@ -345,11 +383,17 @@ arvore.addEventListener("toggle", async e => {
   if (det.classList?.contains("ds")) {
     det.dataset.ok = 1;
     det.querySelector(":scope > summary").insertAdjacentHTML("afterend", htmlDataset(det.querySelector(":scope > summary").firstChild.textContent.trim()));
+    // "mais…" só quando as 2 linhas cortam a descrição
+    const desc = det.querySelector(":scope > .dsinfo .desc");
+    if (desc && desc.scrollHeight <= desc.clientHeight + 1) desc.nextElementSibling.remove();
     return;
   }
   if (!det.classList?.contains("tb")) return;
   det.dataset.ok = 1;
   const t = catalogo.find(x => x.dataset + "." + x.tabela === det.dataset.t) || {};
+  const resumo = det.querySelector(":scope > summary");
+  resumo.querySelector(".nome").insertAdjacentHTML("afterend", `<span class="gira" aria-hidden="true"></span>`);
+  resumo.setAttribute("aria-busy", "true");
   let html;
   try {
     const r = await fetch(location.origin + "/colunas?t=" + encodeURIComponent(det.dataset.t));
@@ -359,21 +403,17 @@ arvore.addEventListener("toggle", async e => {
   } catch (err) {
     html = `<div class="info erro">erro ao ler colunas: ${esc(err.message)}</div>`;
   }
+  resumo.querySelector(".gira")?.remove();
+  resumo.removeAttribute("aria-busy");
   det.insertAdjacentHTML("beforeend", html);
 }, true);
 
 // ações do .info, "mais…" da descrição e filtro de colunas
 arvore.addEventListener("click", e => {
-  const b = e.target.closest("[data-cola]");
+  const b = e.target.closest("[data-roda]");
   if (b) {
     const alvo = b.closest(".tb").dataset.t;
-    const sql = { amostra: `FROM ${alvo} LIMIT 10;`, describe: `DESCRIBE ${alvo};`, summarize: `SUMMARIZE ${alvo};` }[b.dataset.cola];
-    if (sql) cola(sql);
-    else {
-      navigator.clipboard?.writeText(alvo).catch(() => {});
-      b.textContent = "✓ copiado";
-      setTimeout(() => { b.textContent = "⧉ nome"; }, 1200);
-    }
+    roda({ amostra: `FROM ${alvo} LIMIT 10;`, describe: `DESCRIBE ${alvo};`, summarize: `SUMMARIZE ${alvo};` }[b.dataset.roda]);
     e.stopPropagation();
     return;
   }
@@ -416,7 +456,32 @@ termFrame.addEventListener("load", async () => {
   term.options.fontFamily = '"JetBrains Mono", monospace';
   term.fit?.();
   if (editorVisivel()) sql.focus();      // no desktop o teclado começa no editor, não no terminal
+  rodaDaUrl(term);
 });
+
+// ?query=<base64 do SQL> roda ao abrir: link pronto para uma consulta (base64 ou base64url, UTF-8)
+function sqlDaUrl() {
+  // URLSearchParams lê "+" como espaço; no base64 ele é dígito
+  const b64 = new URLSearchParams(location.search).get("query")?.trim().replace(/ /g, "+");
+  if (!b64) return null;
+  const bin = atob(b64.replace(/-/g, "+").replace(/_/g, "/").replace(/=+$/, ""));
+  return new TextDecoder("utf-8", { fatal: true }).decode(Uint8Array.from(bin, c => c.charCodeAt(0))).trim();
+}
+async function rodaDaUrl(term) {
+  let texto;
+  try { texto = sqlDaUrl(); }
+  catch (_) { term.write("\r\n\x1b[31m?query= não é base64 de um texto UTF-8 válido\x1b[0m\r\n"); return; }
+  if (!texto) return;
+  // colado antes do prompt, o texto se perde: espera o "rodado>" aparecer no terminal
+  const temPrompt = () => {
+    const b = term.buffer.active;
+    for (let i = 0; i < b.length; i++) if (b.getLine(i)?.translateToString().includes("rodado>")) return true;
+    return false;
+  };
+  for (let i = 0; i < 150 && !temPrompt(); i++) await new Promise(r => setTimeout(r, 100));
+  if (editorVisivel()) { sql.value = texto; atualizaEditor(); executa(); sql.focus(); }
+  else roda(/;\s*$/.test(texto) || texto.startsWith(".") ? texto : texto + ";");
+}
 
 
 // ---------------------------------------------------------------- editor de SQL (desktop)

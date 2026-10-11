@@ -9,6 +9,15 @@ O espelho do beelink acessível pela web, com senha (HTTP basic auth), só leitu
   Ao abrir a tabela: linhas exatas, data de atualização e fonte, atalhos para amostra,
   `DESCRIBE` e `SUMMARIZE`, aviso acima de 50 milhões de linhas e as colunas de partição
   ou de filtro recomendado (`ano`, `mes`, `sigla_uf`)
+- `https://db.rodado.xyz/?query=<base64 do SQL>` — link que abre o terminal e já executa a
+  consulta (base64 ou base64url, com ou sem `=`, texto em UTF-8; espera o prompt `rodado>`
+  antes de colar). Gerar: `printf %s "$SQL" | base64 | tr -d '\n' | tr '+/' '-_' | tr -d =`
+- `?token=<token>` em qualquer URL dispensa a senha: `https://db.rodado.xyz/?token=…&query=…`
+  é um link que um terceiro abre e já vê o resultado. O token fica em
+  `/root/rodado-db/.token` no finland (nunca no repositório); o primeiro acesso o grava num
+  cookie `HttpOnly` de 30 dias, porque o iframe do terminal, o websocket e os `fetch` da
+  página não carregam o `?token`. O Caddy tira o `token` da URL antes do beelink e manda
+  `Referrer-Policy: same-origin`. Sem `DB_TOKEN` no deploy, o token fica desligado.
 - `https://db.rodado.xyz/query` — SQL por HTTP:
 
 ```bash
@@ -58,7 +67,8 @@ flowchart LR
 | Terminal (via ttyd): SQL colorido ao digitar, Enter envia no `;`, Tab completa dataset/tabela/coluna | beelink; `prompt_toolkit` 3.0.51 + `wcwidth` em `~/rodado_db/vendor/` (rodas Python puro, sem venv: o beelink não tem `ensurepip` nem sudo) | `terminal.py` |
 | Página com a árvore, `/catalogo.json` (cache 10 min), `/colunas`, `/query`, `/ping` | beelink, `127.0.0.1:18081` | `consulta.py`, `index.html` |
 | ttyd + endpoint + túnel, cada um reiniciando sozinho | beelink, tmux `rodado_db`, cron a cada 5 min | `servico.sh` |
-| Senha e roteamento | finland, app haloy `rodado-db` | `proxy/` |
+| Senha, token e roteamento | finland, app haloy `rodado-db` | `proxy/` |
+| Prévia de link (og:title/og:image) sem senha, só para robôs de pré-visualização (WhatsApp, Slack, Telegram…) em `/` | finland, mesmo app | `proxy/og.html` |
 
 **Não é o CLI do DuckDB, de propósito.** O `-safe` do CLI trava a configuração antes de
 qualquer `-cmd`, então não dá para liberar só `~/rodado`; sem ele, `.shell` é um shell no
@@ -79,6 +89,13 @@ interface da rede do haloy (`permitlisten` no `authorized_keys` e `GatewayPorts
 clientspecified` num `Match User tunel` no fim do `sshd_config`), sem shell. Nunca em
 `0.0.0.0`: o INPUT do finland é ACCEPT, e a porta pularia a senha.
 
+O mesmo `Match User tunel` tem `ClientAliveInterval 30` e `ClientAliveCountMax 3`. Sem
+isso, quando o IP público do beelink muda, a sessão antiga continua viva no finland
+segurando as duas portas, e toda reconexão falha com `remote port forwarding failed for
+listen port 18080` (o site ficou fora do ar de 2026-10-10 a 2026-10-11 assim). Com as
+duas linhas, a sessão órfã cai em cerca de 90 s. Se acontecer de novo: `ss -tlnp | grep
+1808` no finland mostra o PID do `sshd-session` que segura as portas; mate só esse PID.
+
 ## Operação
 
 ```bash
@@ -91,11 +108,13 @@ scp db/rodado_sql.py db/terminal.py db/consulta.py db/servico.sh db/index.html b
 
 # finland: senha em /root/rodado-db/.senha, hash em .senha_hash; redeploy do proxy
 ssh finland 'cd /root/rodado-db && set -a && . /etc/haloy/.env && set +a &&
-  DB_USUARIO=rodado DB_SENHA_HASH="$(cat .senha_hash)" haloy deploy -c haloy.yml'
+  DB_USUARIO=rodado DB_SENHA_HASH="$(cat .senha_hash)" DB_TOKEN="$(cat .token)" haloy deploy -c haloy.yml'
 ```
 
 Trocar a senha: gravar a nova em `/root/rodado-db/.senha`, refazer o hash com
 `docker run --rm -i caddy:2.10.2-alpine caddy hash-password < .senha > .senha_hash` e
+redeploy.
+Trocar o token (revoga todos os links e cookies já entregues): `openssl rand -hex 24 > .token` e
 redeploy.
 
 ## Latência ao digitar
@@ -129,7 +148,7 @@ tecla a ~240 ms.
 
 ## Testes de UI e UX
 
-`db/testes/` roda 46 testes contra o site no ar (Bun + `playwright-core` com o Chrome
+`db/testes/` roda 49 testes contra o site no ar (Bun + `playwright-core` com o Chrome
 instalado, nada é baixado), com a régua da auditoria de acessibilidade do swissviz:
 
 - **API:** 401 sem senha em toda rota, formatos, limite, recusa de escrita e de arquivo
@@ -143,6 +162,8 @@ instalado, nada é baixado), com a régua da auditoria de acessibilidade do swis
 - **Celular (iPhone 14):** terminal em tela cheia, alvos de toque de 36 px ou mais, busca
   com 16 px, bottom sheet que fecha tocando fora, no ✕ e com Esc, ▶ visível sem hover,
   barra de teclas (`;`, ⏎, Ctrl-C) e contraste AA.
+- **Link `?query=`:** base64 padrão com `+` cru na URL (desktop, entra no histórico),
+  base64url no celular, acento e ✓ no SQL, base64 inválido avisa e não executa.
 
 ```bash
 db/testes/roda.sh            # busca a senha no finland

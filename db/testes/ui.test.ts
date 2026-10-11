@@ -653,3 +653,47 @@ describe("celular (iPhone 14)", () => {
     await p.keyboard.press("Escape");
   });
 });
+
+// ---------------------------------------------------------------- link ?query=<base64>
+
+describe("link ?query=<base64> roda ao abrir", () => {
+  // o base64 padrão deste SQL tem "+" (que a URL lê como espaço) e o texto tem acento e ✓
+  const SQL = "SELECT 'ação ✓ >>?' AS r, 40 + 2 AS n;";
+  const padrao = Buffer.from(SQL).toString("base64");
+  const url64 = padrao.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  const RESULTADO = /ação ✓ >>\?\s+│\s+42/;
+
+  async function abreCom(ctx: BrowserContext, b64: string): Promise<Page> {
+    const p = await ctx.newPage();
+    await p.goto(`${BASE}/?query=${b64}`, { waitUntil: "domcontentloaded" });
+    return p;
+  }
+
+  test("base64 padrão com + cru na URL: executa no desktop e vai para o histórico", async () => {
+    expect(padrao).toContain("+");
+    const ctx = await contexto({ viewport: { width: 1440, height: 900 } });
+    try {
+      const p = await abreCom(ctx, padrao);
+      await esperaTerminal(p, RESULTADO);
+      expect(await p.locator("#sql").inputValue()).toBe("");
+      expect(await p.evaluate(() => JSON.parse(localStorage.getItem("rodado.historico") || "[]").at(-1))).toBe(SQL);
+    } finally { await ctx.close(); }
+  });
+
+  test("base64url sem padding: executa no celular, direto no terminal", async () => {
+    const { defaultBrowserType: _, ...iphone } = devices["iPhone 14"];
+    const ctx = await contexto(iphone);
+    try {
+      await esperaTerminal(await abreCom(ctx, url64), RESULTADO);
+    } finally { await ctx.close(); }
+  });
+
+  test("base64 inválido avisa no terminal e não executa nada", async () => {
+    const ctx = await contexto({ viewport: { width: 1440, height: 900 } });
+    try {
+      const p = await abreCom(ctx, "%FF%FE");
+      await esperaTerminal(p, "?query= não é base64");
+      expect(await p.evaluate(() => localStorage.getItem("rodado.historico"))).toBeNull();
+    } finally { await ctx.close(); }
+  });
+});

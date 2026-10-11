@@ -1,4 +1,4 @@
-# Proxy do db.rodado.xyz no finland: HTTPS fica com o haloy, a senha fica aqui
+# Proxy do db.rodado.xyz no finland: HTTPS fica com o haloy, a senha (ou o token) fica aqui
 # e vale para o terminal (/) e para o curl (/query). O dado está no beelink, que
 # chega por túnel SSH na interface da rede do haloy (172.18.0.1).
 {
@@ -6,28 +6,62 @@
 	auto_https off
 }
 
+# Rotas para o beelink, depois da autenticação (senha ou token).
+# /tty/ é o ttyd (terminal, com websocket); o resto — página com a árvore de
+# datasets, /catalogo.json, /colunas e /query — é o consulta.py.
+(beelink) {
+	# o token nunca chega ao beelink nem vaza no Referer para as fontes do Google
+	uri query -token
+	header Referrer-Policy "same-origin"
+	handle /tty* {
+		reverse_proxy 172.18.0.1:18080 {
+			flush_interval -1
+		}
+	}
+	handle {
+		reverse_proxy 172.18.0.1:18081 {
+			transport http {
+				read_timeout 320s
+			}
+		}
+	}
+}
+
 :8080 {
 	handle /health {
 		respond "ok" 200
+	}
+
+	# Robôs de pré-visualização de link recebem só as meta tags (og.html), sem senha:
+	# com o 401 eles não leriam o og:title/og:image do index.html.
+	@previa {
+		path /
+		header_regexp User-Agent (?i)(facebookexternalhit|facebot|twitterbot|slackbot|whatsapp|telegrambot|discordbot|linkedinbot|skypeuripreview|redditbot|mastodon|bluesky|cardyb|iframely|embedly|applebot|googlebot|bingbot|signal)
+	}
+	handle @previa {
+		root * /srv
+		rewrite * /og.html
+		file_server
+	}
+
+	# Quem tem o token entra sem a senha: ?token=<DB_TOKEN> em qualquer URL (link para
+	# terceiros, curl). O primeiro acesso grava o token num cookie HttpOnly, porque o
+	# iframe do terminal, o websocket e os fetch da página não levam o ?token. Sem
+	# DB_TOKEN no ambiente o token fica desligado (senão "?token=" vazio passaria).
+	@token expression `"{$DB_TOKEN}" != "" && ({query.token} == "{$DB_TOKEN}" || {cookie.rodado_token} == "{$DB_TOKEN}")`
+	handle @token {
+		@token_na_url expression `{query.token} == "{$DB_TOKEN}"`
+		header @token_na_url {
+			Set-Cookie "rodado_token={$DB_TOKEN}; Path=/; Max-Age=2592000; HttpOnly; Secure; SameSite=Lax"
+			Cache-Control "no-store"
+		}
+		import beelink
 	}
 
 	handle {
 		basic_auth {
 			{$DB_USUARIO} {$DB_SENHA_HASH}
 		}
-		# /tty/ é o ttyd (terminal, com websocket); o resto — página com a
-		# árvore de datasets, /catalogo.json, /colunas e /query — é o consulta.py.
-		handle /tty* {
-			reverse_proxy 172.18.0.1:18080 {
-				flush_interval -1
-			}
-		}
-		handle {
-			reverse_proxy 172.18.0.1:18081 {
-				transport http {
-					read_timeout 320s
-				}
-			}
-		}
+		import beelink
 	}
 }
