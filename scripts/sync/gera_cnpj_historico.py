@@ -132,11 +132,18 @@ def q(c):
 def sql_socios(fonte, filtro, cols, valores_r):
     resto = [c for c in cols if c not in GRAO_SOCIOS]
     grao = ", ".join(q(c) for c in GRAO_SOCIOS)
-    ultimos = ",\n  ".join(f"arg_max({q(c)}, k) AS {q(c)}" for c in resto)
+    # O mesmo sócio aparece com duas versões no mesmo retrato (1.425 grupos só no prefixo 03,
+    # 2026-10-11): `arg_max(c, k)` escolhia uma ao acaso, coluna a coluna, e a verificação dupla
+    # nunca batia. Desempate como em h_<m>: menos colunas vazias, depois o maior hash. Um
+    # arg_max só, devolvendo a linha inteira: um por coluna estourou 8 GB no prefixo 02.
+    linha = ", ".join(f"{q(c)}: {q(c)}" for c in resto)
+    ultimos = f"arg_max({{{linha}}}, {{'k': k, 'n': -nulos, 'h': h}}) AS _u"
+    nulos = " + ".join(f"(s.{q(c)} IS NULL)::INT" for c in resto)
     return f"""
 WITH r(retrato, k) AS (VALUES {valores_r}),
 s AS (
-  SELECT r.k, {", ".join("s." + q(c) for c in cols)}
+  SELECT r.k, hash({", ".join("s." + q(c) for c in resto)}) AS h, {nulos} AS nulos,
+    {", ".join("s." + q(c) for c in cols)}
   FROM read_parquet('{fonte}') s JOIN r ON r.retrato = s.ano*100+s.mes
   WHERE {filtro}
 ),
@@ -145,7 +152,7 @@ g AS (
   {ultimos}
   FROM s GROUP BY ALL
 )
-SELECT g.* EXCLUDE (k1, k2),
+SELECT g.* EXCLUDE (k1, k2, _u), unnest(g._u),
   r1.retrato AS primeiro_retrato, r2.retrato AS ultimo_retrato,
   k2 - k1 + 1 AS n_retratos_esperados,
   k2 = (SELECT max(k) FROM r) AS no_ultimo_retrato
