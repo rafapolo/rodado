@@ -4,7 +4,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
 
-254 datasets, 1397 tabelas.
+254 datasets, 1398 tabelas.
 
 | dataset | tabelas | linhas | last_update |
 |---|---:|---:|---|
@@ -146,7 +146,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_me_caged` | 4 | 298.358.844 | 2026-10-11 |
 | `br_me_clima_organizacional` | 1 | 16.436 | 2026-07-09 |
 | `br_me_cno` | 3 | 1.020.894 | 2026-07-09 |
-| `br_me_cnpj` | 6 | 8.238.578.487 | 2026-10-11 |
+| `br_me_cnpj` | 7 | 8.438.244.513 | 2026-10-11 |
 | `br_me_comex_stat` | 5 | 133.659.718 | 2026-10-09 |
 | `br_me_estoque_divida_publica` | 1 | 124.419 | 2026-07-09 |
 | `br_me_exportadoras_importadoras` | 1 | 3 | 2026-07-09 |
@@ -239,7 +239,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_transferegov` | 3 | 30.346 | 2026-08-26 |
 | `br_transferegov_siconv` | 62 | 69.060.758 | 2026-09-02 |
 | `br_trase_supply_chain` | 7 | 1.824.843 | 2026-07-18 |
-| `br_tse_eleicoes` | 26 | 1.709.201.786 | 2026-10-09 |
+| `br_tse_eleicoes` | 26 | 1.709.213.497 | 2026-10-11 |
 | `br_tse_filiacao_partidaria` | 2 | 42.201.443 | 2026-10-09 |
 | `br_ufmg_censo_demografico_1872` | 58 | 1.251.630 | 2026-10-07 |
 | `eu_sanctions` | 1 | 43.891 | 2026-10-09 |
