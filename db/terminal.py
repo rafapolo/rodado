@@ -294,7 +294,7 @@ def main():
             elif cmd == ".datasets":
                 _roda(ATALHOS[".datasets"], 10_000)
             elif cmd in (".tabelas", ".tables") and args and args[0].isidentifier():
-                _roda(ATALHOS[".tabelas"].format(args[0]), 10_000)
+                _roda(ATALHOS[".tabelas"].format(args[0].replace("'", "''")), 10_000)
             else:
                 avisa(PESSEGO, "atalho desconhecido — .ajuda lista os que existem")
             continue
