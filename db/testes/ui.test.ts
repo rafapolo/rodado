@@ -215,6 +215,59 @@ describe("API /query", () => {
 
 // ---------------------------------------------------------------- desktop
 
+describe("link curto público /q/<id>", () => {
+  const SQL = "SELECT sigla, nome FROM br_bd_diretorios_brasil.uf WHERE sigla IN ('SP', 'RJ') ORDER BY 1";
+  const salva = (sql: string, auth: string | null = AUTH) =>
+    fetch(BASE + "/q", { method: "POST", body: sql, headers: auth ? { Authorization: auth } : {} });
+
+  test("salvar exige senha; o mesmo SQL dá sempre o mesmo id", async () => {
+    expect((await salva(SQL, null)).status).toBe(401);
+    const a = (await (await salva(SQL)).json()) as { id: string; url: string };
+    const b = (await (await salva(SQL)).json()) as { id: string; url: string };
+    expect(a.id).toMatch(/^[\w-]{8}$/);
+    expect(a.url).toBe(`/q/${a.id}`);
+    expect(b.id).toBe(a.id);
+  });
+
+  test("salvar recusa escrita e vários comandos", async () => {
+    for (const sql of ["CREATE TABLE t AS SELECT 1", "SELECT 1; SELECT 2", "SELECT * FROM read_text('/etc/passwd')"]) {
+      const r = await salva(sql);
+      expect(r.status, sql).toBe(400);
+    }
+  });
+
+  test("sem senha: página, SQL e resultado do id, e nada além", async () => {
+    const { id } = (await (await salva(SQL)).json()) as { id: string };
+    const pagina = await fetch(`${BASE}/q/${id}`);
+    expect(pagina.status).toBe(200);
+    expect(await pagina.text()).toContain("consulta salva");
+    expect(await (await fetch(`${BASE}/q/${id}/sql`)).text()).toBe(SQL);
+    const d = (await (await fetch(`${BASE}/q/${id}/dados`)).json()) as any;
+    expect(d.colunas).toEqual(["sigla", "nome"]);
+    expect(d.linhas).toEqual([["RJ", "Rio de Janeiro"], ["SP", "São Paulo"]]);
+    expect(d.truncado).toBe(false);
+    expect((await fetch(`${BASE}/q/naoexiste`)).status).toBe(404);
+    for (const caminho of [`/q/${id}/../query`, `/q/${id}/outra`, "/q", `/query?q=${encodeURIComponent(SQL)}`, "/colunas?t=br_bd_diretorios_brasil.uf"])
+      expect((await fetch(BASE + caminho)).status, caminho).toBe(401);
+  });
+
+  test("a página pública mostra o SQL e a tabela, sem pedir senha", async () => {
+    const { id } = (await (await salva(SQL)).json()) as { id: string };
+    const ctx = await navegador.newContext({ viewport: { width: 390, height: 844 } });
+    try {
+      const p = await ctx.newPage();
+      await p.goto(`${BASE}/q/${id}`, { waitUntil: "domcontentloaded" });
+      await p.locator("#tabela table").waitFor({ timeout: 60_000 });
+      expect(await p.locator("#sql").textContent()).toBe(SQL);
+      expect(await p.locator("#tabela td").first().textContent()).toBe("RJ");
+      expect(await p.locator("#status").textContent()).toMatch(/^2 linhas/);
+      expect(await p.locator("#terminal").getAttribute("href")).toBe(`/?q=${id}`);
+      // sem rolagem horizontal da página no celular: a tabela rola dentro da própria caixa
+      expect(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    } finally { await ctx.close(); }
+  });
+});
+
 describe("desktop", () => {
   let ctx: BrowserContext;
   let p: Page;
@@ -684,7 +737,7 @@ describe("celular (iPhone 14)", () => {
 
 // ---------------------------------------------------------------- link ?query=<base64>
 
-describe("link ?query= / ?z= roda ao abrir", () => {
+describe("link ?query= / ?z= / ?q= roda ao abrir", () => {
   // o base64 padrão deste SQL tem "+" (que a URL lê como espaço) e o texto tem acento e ✓
   const SQL = "SELECT 'ação ✓ >>?' AS r, 40 + 2 AS n;";
   const padrao = Buffer.from(SQL).toString("base64");
@@ -724,7 +777,15 @@ describe("link ?query= / ?z= roda ao abrir", () => {
     } finally { await ctx.close(); }
   });
 
-  test("botão de link ao lado do ▶ copia um ?z= que abre e executa a consulta do editor", async () => {
+  test("?q=<id> abre o SQL salvo no terminal e executa", async () => {
+    const { id } = (await (await fetch(BASE + "/q", { method: "POST", body: SQL, headers: { Authorization: AUTH } })).json()) as { id: string };
+    const ctx = await contexto({ viewport: { width: 1440, height: 900 } });
+    try {
+      await esperaTerminal(await abreCom(ctx, "", "q=" + id), RESULTADO);
+    } finally { await ctx.close(); }
+  });
+
+  test("botão de link ao lado do ▶ copia um /q/<id> público com a consulta do editor e o resultado", async () => {
     const ctx = await contexto({ viewport: { width: 1440, height: 900 }, permissions: ["clipboard-read", "clipboard-write"] });
     try {
       const p = await abre(ctx);
@@ -734,11 +795,15 @@ describe("link ?query= / ?z= roda ao abrir", () => {
       await p.locator("#compartilha").click();
       await p.waitForFunction(() => document.getElementById("status")?.textContent === "link copiado");
       const url = await p.evaluate(() => navigator.clipboard.readText());
-      expect(url).toMatch(/^https:\/\/[^/]+\/\?z=[\w-]+$/);
+      expect(url).toMatch(/^https:\/\/[^/]+\/q\/[\w-]{8}$/);
       expect(await p.locator("#sql").inputValue()).toBe(SQL);          // compartilhar não executa nem apaga
-      const outra = await ctx.newPage();
-      await outra.goto(url, { waitUntil: "domcontentloaded" });
-      await esperaTerminal(outra, RESULTADO);
+      const anonimo = await navegador.newContext();                    // sem senha nem token
+      try {
+        const outra = await anonimo.newPage();
+        await outra.goto(url, { waitUntil: "domcontentloaded" });
+        await outra.locator("#tabela table").waitFor({ timeout: 60_000 });
+        expect(await outra.locator("#tabela td").first().textContent()).toBe("ação ✓ >>?");
+      } finally { await anonimo.close(); }
     } finally { await ctx.close(); }
   });
 
@@ -746,7 +811,7 @@ describe("link ?query= / ?z= roda ao abrir", () => {
     const ctx = await contexto({ viewport: { width: 1440, height: 900 } });
     try {
       const p = await abreCom(ctx, "", "z=" + url64);
-      await esperaTerminal(p, "?query= ou ?z= não traz um SQL válido");
+      await esperaTerminal(p, "?query=, ?z= ou ?q= não traz um SQL válido");
       expect(await p.evaluate(() => localStorage.getItem("rodado.historico"))).toBeNull();
     } finally { await ctx.close(); }
   });
@@ -755,7 +820,7 @@ describe("link ?query= / ?z= roda ao abrir", () => {
     const ctx = await contexto({ viewport: { width: 1440, height: 900 } });
     try {
       const p = await abreCom(ctx, "%FF%FE");
-      await esperaTerminal(p, "?query= ou ?z= não traz um SQL válido");
+      await esperaTerminal(p, "?query=, ?z= ou ?q= não traz um SQL válido");
       expect(await p.evaluate(() => localStorage.getItem("rodado.historico"))).toBeNull();
     } finally { await ctx.close(); }
   });

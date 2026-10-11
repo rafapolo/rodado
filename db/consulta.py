@@ -8,9 +8,11 @@ A senha é cobrada pelo Caddy do mesmo container (finland); este servidor só es
 em 127.0.0.1 dentro dele.
 """
 
+import base64
 import csv
 import datetime
 import decimal
+import hashlib
 import io
 import json
 import os
@@ -26,6 +28,19 @@ import duckdb
 import rodado_sql
 
 PAGINA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
+PAGINA_Q = os.path.join(os.path.dirname(os.path.abspath(__file__)), "q.html")
+
+# Link curto /q/<id>: o SQL salvo por quem tem senha fica em DIR_Q/<id>.sql, no volume.
+# O id é o começo do sha256 do texto (o mesmo SQL dá sempre o mesmo link) e só cresce se
+# colidir. Sem senha (o Caddy libera só estas rotas) dá para ver o SQL e o resultado dele,
+# até LIMITE_Q linhas, guardado por CACHE_Q segundos: o link não roda nenhuma outra consulta.
+DIR_Q = os.environ.get("RODADO_DIR_Q", "/dados/q")
+ROTA_Q = re.compile(r"^/q/([A-Za-z0-9_-]{8,16})(/sql|/dados)?$")
+LIMITE_Q = 1000
+CACHE_Q = 600
+_cache_q = {}                  # id -> (instante, corpo json)
+_travas_q = {}
+_travas_q_trava = threading.Lock()
 _catalogo = {"em": 0.0, "json": b""}
 _catalogo_trava = threading.Lock()
 
@@ -114,7 +129,12 @@ class Handler(BaseHTTPRequestHandler):
             return self._json({"erro": "use dataset.tabela"}, 400)
         con = rodado_sql.conecta()
         try:
-            linhas = con.sql(f'DESCRIBE "{partes[0]}"."{partes[1]}"').fetchall()
+            # duckdb_columns() lê os nomes e tipos guardados no catálogo quando a view foi criada;
+            # DESCRIBE religaria a view e releria do S3 o rodapé de cada arquivo (4 mil no CNPJ)
+            linhas = con.execute("SELECT column_name, data_type FROM duckdb_columns() "
+                                 "WHERE schema_name = ? AND table_name = ? ORDER BY column_index", partes).fetchall()
+            if not linhas:
+                return self._json({"erro": f"tabela {alvo} não existe"}, 400)
             sql = con.execute("SELECT sql FROM duckdb_views() WHERE schema_name = ? AND view_name = ?",
                               partes).fetchone()
         except duckdb.Error as e:
@@ -125,8 +145,95 @@ class Handler(BaseHTTPRequestHandler):
         hive = set(re.findall(r"/([A-Za-z_]\w*)=[^/']+/", sql[0] if sql else ""))
         self._json([{"coluna": l[0], "tipo": l[1], "particao": l[0] in hive} for l in linhas])
 
+    def _salva_q(self):
+        tamanho = int(self.headers.get("Content-Length") or 0)
+        if tamanho > 64_000:
+            return self._erro(413, "SQL grande demais para link")
+        sql = self.rfile.read(tamanho).decode("utf-8", errors="replace").strip()
+        if not sql:
+            return self._erro(400, "SQL vazio")
+        try:
+            con = rodado_sql.conecta()
+            try:
+                if len(rodado_sql.separa(con, sql)) != 1:
+                    return self._erro(400, "um comando por link")
+            finally:
+                con.close()
+        except rodado_sql.ConsultaRecusada as e:
+            return self._erro(400, f"recusado: {e}")
+        os.makedirs(DIR_Q, exist_ok=True)
+        h = base64.urlsafe_b64encode(hashlib.sha256(sql.encode()).digest()).decode()
+        for n in range(8, 17):
+            caminho = os.path.join(DIR_Q, h[:n] + ".sql")
+            try:
+                with open(caminho, "x", encoding="utf-8") as f:   # "x": falha se já existe
+                    f.write(sql)
+                break
+            except FileExistsError:
+                with open(caminho, encoding="utf-8") as f:
+                    if f.read() == sql:
+                        break                                     # mesmo SQL, mesmo link
+        else:
+            return self._erro(500, "colisão de id")
+        self._json({"id": h[:n], "url": f"/q/{h[:n]}"})
+
+    def _q(self, ident, parte):
+        caminho = os.path.join(DIR_Q, ident + ".sql")
+        if not os.path.exists(caminho):
+            return self._erro(404, "link não encontrado")
+        if not parte:
+            with open(PAGINA_Q, "rb") as f:
+                return self._responde(200, f.read(), "text/html; charset=utf-8", {"Cache-Control": "no-cache"})
+        with open(caminho, encoding="utf-8") as f:
+            sql = f.read()
+        if parte == "/sql":
+            return self._responde(200, sql, extra={"Cache-Control": "no-cache"})
+        with _travas_q_trava:
+            trava = _travas_q.setdefault(ident, threading.Lock())
+        with trava:                   # dez abas abrindo o mesmo link rodam a consulta uma vez
+            em, corpo = _cache_q.get(ident, (0.0, None))
+            if corpo is None or time.time() - em > CACHE_Q:
+                corpo = self._roda_q(sql)
+                if corpo is None:
+                    return
+                em = time.time()
+                _cache_q[ident] = (em, corpo)
+        self._responde(200, corpo, "application/json; charset=utf-8",
+                       {"Cache-Control": "no-cache", "X-Resultado-De": str(int(em))})
+
+    def _roda_q(self, sql):
+        if not SIMULTANEAS.acquire(timeout=60):
+            return self._erro(429, "muitas consultas ao mesmo tempo; tente de novo")
+        inicio = time.monotonic()
+        try:
+            con = rodado_sql.conecta()
+            try:
+                comando = rodado_sql.separa(con, sql)[0]
+                with rodado_sql.Cronometro(con) as crono:
+                    try:
+                        rel = con.sql(comando.query)
+                        colunas, linhas = rel.columns, rel.fetchmany(LIMITE_Q + 1)
+                    except duckdb.InterruptException:
+                        if crono.estourou:
+                            return self._erro(504, f"tempo limite de {rodado_sql.TEMPO_LIMITE} s estourado")
+                        raise
+            finally:
+                con.close()
+        except rodado_sql.ConsultaRecusada as e:
+            return self._erro(400, f"recusado: {e}")
+        except duckdb.Error as e:
+            return self._erro(400, str(e))
+        finally:
+            SIMULTANEAS.release()
+        return json.dumps({"colunas": colunas, "linhas": linhas[:LIMITE_Q], "truncado": len(linhas) > LIMITE_Q,
+                           "segundos": round(time.monotonic() - inicio, 3)},
+                          ensure_ascii=False, default=_json_valor).encode()
+
     def do_GET(self):
         url = urlparse(self.path)
+        rota = ROTA_Q.match(url.path)
+        if rota:
+            return self._q(rota.group(1), rota.group(2))
         if url.path == "/health":
             return self._responde(200, "ok\n")
         if url.path == "/ping":  # mede a ida e volta até o servidor Python (o /health o Caddy responde sozinho)
@@ -152,6 +259,8 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         url = urlparse(self.path)
+        if url.path.rstrip("/") == "/q":
+            return self._salva_q()
         if url.path.rstrip("/") != "/query":
             return self._erro(404, "use /query")
         params = parse_qs(url.query)

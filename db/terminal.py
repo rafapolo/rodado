@@ -242,7 +242,11 @@ if PromptSession:
                 def busca():
                     ds, tb = alvo.split(".", 1)
                     try:
-                        self.colunas[alvo] = [(c[0], c[1]) for c in _consulta_simples(f'DESCRIBE "{ds}"."{tb}"')]
+                        # do catálogo, sem religar a view (DESCRIBE releria os rodapés do S3)
+                        ds, tb = ds.replace("'", "''"), tb.replace("'", "''")
+                        self.colunas[alvo] = _consulta_simples(
+                            "SELECT column_name, data_type FROM duckdb_columns() "
+                            f"WHERE schema_name = '{ds}' AND table_name = '{tb}' ORDER BY column_index")
                     except duckdb.Error:
                         pass
 

@@ -1,38 +1,48 @@
 #!/usr/bin/env python3
-"""Link do db.rodado.xyz que abre o terminal e já executa uma consulta.
+"""Link público do db.rodado.xyz para uma consulta: https://db.rodado.xyz/q/<id>.
 
     db/link.py consulta.sql            # ou o SQL pela entrada padrão
-    db/link.py -t consulta.sql         # com ?token= (lido no finland): abre sem senha
+    db/link.py -z consulta.sql         # link antigo ?z=, autocontido (abre o terminal, pede senha)
 
-O SQL vai em ?z= (deflate cru + base64url), 25–60% mais curto que o ?query= em base64
-puro; a página descomprime com DecompressionStream("deflate-raw"). O token dá acesso ao
-espelho inteiro, não só a esta consulta: só passe o link com -t a quem pode tê-lo.
+O SQL é salvo no servidor (POST /q, autenticado com o token lido no finland) e o link
+abre sem senha nem token uma página só com esse SQL e o resultado dele (até 1.000 linhas,
+guardado por 10 min). Quem recebe não ganha acesso a nenhuma outra consulta.
+
+O ?z= leva o SQL na própria URL (deflate cru + base64url) e não depende de nada salvo,
+mas abre o terminal, que pede a senha.
 """
 import argparse
 import base64
+import json
 import subprocess
 import sys
+import urllib.request
 import zlib
 
-BASE = "https://db.rodado.xyz/"
+BASE = "https://db.rodado.xyz"
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("arquivo", nargs="?", help="arquivo .sql (sem ele, lê da entrada padrão)")
-    ap.add_argument("-t", "--token", action="store_true", help="inclui ?token= (ssh finland)")
+    ap.add_argument("-z", action="store_true", help="link ?z= autocontido em vez do link curto")
     a = ap.parse_args()
     sql = (open(a.arquivo, encoding="utf-8").read() if a.arquivo else sys.stdin.read()).strip()
     if not sql:
         sys.exit("SQL vazio")
-    c = zlib.compressobj(9, zlib.DEFLATED, -15)           # -15: deflate cru, sem cabeçalho zlib
-    z = base64.urlsafe_b64encode(c.compress(sql.encode()) + c.flush()).rstrip(b"=").decode()
-    params = f"z={z}"
-    if a.token:
-        token = subprocess.run(["ssh", "finland", "cat /root/rodado-db/.token"],
-                               capture_output=True, text=True, check=True).stdout.strip()
-        params = f"token={token}&{params}"
-    print(BASE + "?" + params)
+    if a.z:
+        c = zlib.compressobj(9, zlib.DEFLATED, -15)           # -15: deflate cru, sem cabeçalho zlib
+        z = base64.urlsafe_b64encode(c.compress(sql.encode()) + c.flush()).rstrip(b"=").decode()
+        print(f"{BASE}/?z={z}")
+        return
+    token = subprocess.run(["ssh", "finland", "cat /root/rodado-db/.token"],
+                           capture_output=True, text=True, check=True).stdout.strip()
+    req = urllib.request.Request(f"{BASE}/q?token={token}", data=sql.encode(), method="POST")
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            print(BASE + json.load(r)["url"])
+    except urllib.error.HTTPError as e:
+        sys.exit(json.load(e).get("erro", str(e)))
 
 
 if __name__ == "__main__":

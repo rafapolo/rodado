@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1e1e2e">
+<title>Consulta — Rodado SQL</title>
+<meta name="description" content="Uma consulta SQL salva sobre o espelho do rodado: dados públicos brasileiros, só leitura.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="rodado">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Consulta — Rodado SQL">
+<meta property="og:description" content="Uma consulta SQL salva sobre o espelho do rodado: dados públicos brasileiros, só leitura.">
+<meta property="og:image" content="https://rodado.xyz/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://rodado.xyz/assets/favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+  /* Catppuccin Mocha — https://catppuccin.com/palette (os mesmos tokens do index.html) */
+  :root {
+    --base: #1e1e2e; --mantle: #181825; --crust: #11111b;
+    --surface0: #313244; --surface1: #45475a; --overlay2: #9399b2;
+    --subtext0: #a6adc8; --text: #cdd6f4;
+    --blue: #89b4fa; --mauve: #cba6f7; --peach: #fab387; --green: #a6e3a1; --red: #f38ba8;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--base); color: var(--text); }
+  body { font: 13px/1.5 "JetBrains Mono", Menlo, monospace; padding: 16px; max-width: 100%; }
+  a { color: var(--blue); }
+  :focus-visible { outline: 2px solid var(--mauve); outline-offset: 2px; }
+  header { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
+  h1 { font-size: 14px; margin: 0; color: var(--mauve); }
+  h1 a { color: inherit; text-decoration: none; }
+  header nav { display: flex; flex-wrap: wrap; gap: 8px; }
+  button, .botao { font: inherit; color: var(--text); background: var(--surface0); border: 1px solid var(--surface1);
+    border-radius: 4px; padding: 6px 10px; min-height: 36px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; }
+  button:hover, .botao:hover { background: var(--surface1); }
+  pre { margin: 0 0 12px; padding: 10px 12px; background: var(--mantle); border-left: 2px solid var(--mauve);
+    white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; }
+  #status { color: var(--subtext0); margin: 0 0 8px; min-height: 1.5em; }
+  #status.erro { color: var(--red); white-space: pre-wrap; }
+  #status .aviso { color: var(--peach); }
+  .tabela { overflow: auto; max-height: 75vh; border: 1px solid var(--surface0); }
+  table { border-collapse: collapse; min-width: 100%; }
+  th, td { padding: 3px 10px; text-align: left; white-space: nowrap; border-bottom: 1px solid var(--surface0); }
+  th { position: sticky; top: 0; background: var(--crust); color: var(--mauve); font-weight: 700; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.nulo { color: var(--overlay2); }
+  tbody tr:hover { background: var(--mantle); }
+  @media (max-width: 600px) { body { padding: 12px; font-size: 12px; } }
+</style>
+</head>
+<body>
+<header>
+  <h1><a href="https://rodado.xyz/">rodado</a> · consulta salva</h1>
+  <nav aria-label="ações">
+    <button type="button" id="copia">copiar SQL</button>
+    <button type="button" id="csv" disabled>baixar CSV</button>
+    <a class="botao" id="terminal" href="/" title="abre esta consulta no terminal SQL (pede senha)">abrir no terminal ↗</a>
+  </nav>
+</header>
+<main>
+  <pre id="sql" aria-label="SQL da consulta">…</pre>
+  <p id="status" role="status" aria-live="polite"></p>
+  <div class="tabela" id="tabela" tabindex="0" role="region" aria-label="resultado" hidden></div>
+</main>
+<script>
+const id = location.pathname.split("/")[2];
+const status = document.getElementById("status");
+const numero = new Intl.NumberFormat("pt-BR");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+let resultado = null;
+
+document.getElementById("terminal").href = "/?q=" + encodeURIComponent(id);
+
+// o mesmo indicador do terminal: só aparece se a consulta passar de 0,3 s
+function gira() {
+  const quadros = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏", inicio = performance.now();
+  let i = 0;
+  const t = setInterval(() => {
+    const s = (performance.now() - inicio) / 1000;
+    if (s > 0.3) status.textContent = `${quadros[i++ % quadros.length]} rodando… ${s.toFixed(1).replace(".", ",")} s`;
+  }, 100);
+  return () => clearInterval(t);
+}
+
+function celula(v) {
+  if (v === null) return `<td class="nulo">NULL</td>`;
+  if (typeof v === "number") return `<td class="num">${numero.format(v)}</td>`;
+  return `<td>${esc(typeof v === "object" ? JSON.stringify(v) : v)}</td>`;
+}
+
+async function carrega() {
+  const r = await fetch(`/q/${encodeURIComponent(id)}/sql`);
+  if (!r.ok) { status.className = "erro"; status.textContent = "link não encontrado"; document.getElementById("sql").textContent = ""; return; }
+  const texto = await r.text();
+  document.getElementById("sql").textContent = texto;
+  document.getElementById("copia").onclick = async () => {
+    try { await navigator.clipboard.writeText(texto); status.textContent = "SQL copiado"; } catch (_) {}
+  };
+  const para = gira();
+  let d;
+  try {
+    const resp = await fetch(`/q/${encodeURIComponent(id)}/dados`);
+    d = await resp.json();
+    if (d.erro) throw new Error(d.erro);
+    d.de = Number(resp.headers.get("X-Resultado-De")) * 1000 || Date.now();
+  } catch (e) {
+    para(); status.className = "erro"; status.textContent = e.message; return;
+  }
+  para();
+  resultado = d;
+  const hora = new Date(d.de).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+  status.innerHTML = `${numero.format(d.linhas.length)} ${d.linhas.length === 1 ? "linha" : "linhas"}`
+    + (d.truncado ? ` <span class="aviso">(cortado em ${numero.format(d.linhas.length)}; abra no terminal para ver tudo)</span>` : "")
+    + ` · ${String(d.segundos).replace(".", ",")} s · resultado das ${hora}`;
+  const tab = document.getElementById("tabela");
+  tab.innerHTML = `<table><thead><tr>${d.colunas.map(c => `<th scope="col">${esc(c)}</th>`).join("")}</tr></thead>`
+    + `<tbody>${d.linhas.map(l => `<tr>${l.map(celula).join("")}</tr>`).join("")}</tbody></table>`;
+  tab.hidden = false;
+  document.getElementById("csv").disabled = false;
+}
+
+document.getElementById("csv").onclick = () => {
+  if (!resultado) return;
+  const campo = v => v === null ? "" : /[",\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : String(v);
+  const csv = [resultado.colunas, ...resultado.linhas].map(l => l.map(campo).join(",")).join("\n") + "\n";
+  const a = Object.assign(document.createElement("a"), {
+    href: URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" })), download: `rodado-${id}.csv` });
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+
+carrega();
+</script>
+</body>
+</html>

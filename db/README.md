@@ -14,10 +14,16 @@ nem dependência do beelink ligado.
 - `https://db.rodado.xyz/?query=<base64 do SQL>` — link que abre o terminal e já executa a
   consulta (base64 ou base64url, com ou sem `=`, texto em UTF-8; espera o prompt `rodado>`
   antes de colar). `?z=` é o mesmo com o SQL comprimido em deflate cru antes do base64url,
-  25–60% mais curto (a página descomprime com `DecompressionStream`). Gerar:
-  `db/link.py consulta.sql` (`-t` acrescenta o token)
-  ou o botão de link à esquerda do ▶ no editor, que copia o `?z=` da consulta escrita (ou da
-  última executada) e repete o `?token=` se a página foi aberta com ele
+  25–60% mais curto (a página descomprime com `DecompressionStream`); `db/link.py -z` gera.
+  `?q=<id>` abre no terminal o SQL de um link curto
+- `https://db.rodado.xyz/q/<id>` — **link curto público**, sem senha nem token: uma página
+  só de leitura com o SQL e o resultado dele (até 1.000 linhas, guardado por 10 min, com
+  CSV). O botão de link à esquerda do ▶ no editor salva a consulta escrita (ou a última
+  executada) com `POST /q` e copia o link; pelo terminal, `db/link.py consulta.sql`. O id
+  são os 8 primeiros caracteres base64url do sha256 do SQL (o mesmo SQL dá o mesmo link) e o
+  SQL fica em `/dados/q/<id>.sql`, no volume. Salvar exige senha ou token e só aceita um
+  comando de leitura; sem senha, o Caddy libera apenas `GET /q/<id>`, `/q/<id>/sql` e
+  `/q/<id>/dados` — quem recebe o link não roda nenhuma outra consulta (`q.html`)
 - `?token=<token>` em qualquer URL dispensa a senha: `https://db.rodado.xyz/?token=…&query=…`
   é um link que um terceiro abre e já vê o resultado. O token fica em
   `/root/rodado-db/.token` no finland (nunca no repositório); o primeiro acesso o grava num
