@@ -178,10 +178,28 @@ describe("API /query", () => {
     }
   });
 
-  test("arquivos fora de ~/rodado não são lidos", async () => {
-    const r = await q("SELECT * FROM read_text('/home/polo/.ssh/rodado_tunel')");
-    expect(r.status).toBe(400);
-    expect(((await r.json()) as any).erro).toContain("disabled by configuration");
+  test("nenhum arquivo é lido direto: só as views, nem dentro de ~/rodado", async () => {
+    for (const sql of [
+      "SELECT * FROM read_text('/home/polo/.ssh/rodado_tunel')",
+      "SELECT * FROM read_text('/home/polo/rodado/scripts/_enrich.sql')",
+      "SELECT size FROM read_blob('/home/polo/rodado/basedosdados.duckdb')",
+      "SELECT * FROM glob('/home/polo/duckdb_tmp/*')",
+      "SELECT * FROM \"READ_TEXT\"('/etc/passwd')",
+      "SELECT * FROM br_bd_diretorios_brasil.uf u, LATERAL (SELECT * FROM glob(u.sigla))",
+      "WITH a AS (SELECT * FROM read_csv('/etc/hostname')) FROM a",
+      "FROM '/home/polo/rodado/br_bd_diretorios_brasil/uf/x.parquet'",
+      "SELECT * FROM query('SELECT 1')",
+      "SELECT * FROM json_execute_serialized_sql('{}')",
+      "SELECT * FROM st_read('/etc/passwd')",
+      "SELECT * FROM sqlite_scan('/tmp/x.db', 't')",
+      "FROM cnefe_map('/home/polo/rodado/basedosdados.duckdb', 'SP')",   // macro do banco que é um read_csv(path)
+    ]) {
+      const r = await q(sql);
+      expect(r.status, sql).toBe(400);
+      expect(((await r.json()) as any).erro, sql).toMatch(/não é permitido/);
+    }
+    // macros sem arquivo dentro seguem valendo
+    expect(await (await q("SELECT fx(37) AS f, sitio('C50') AS s")).json()).toEqual([{ f: 35, s: "Mama" }]);
   });
 
   test("dado conhecido bate: 156,45 mi de eleitores em 2022", async () => {

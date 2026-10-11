@@ -77,12 +77,29 @@ flowchart LR
 **Não é o CLI do DuckDB, de propósito.** O `-safe` do CLI trava a configuração antes de
 qualquer `-cmd`, então não dá para liberar só `~/rodado`; sem ele, `.shell` é um shell no
 beelink e `COPY ... TO '~/rodado/...'` sobrescreve parquet do espelho (que o sync do S3 e o
-backup do COLD propagariam). O núcleo abre uma conexão `read_only` por consulta, libera só
-`~/rodado` e `~/duckdb_tmp`, desliga o acesso externo, trava a configuração e só aceita o
-que o parser do DuckDB classifica como SELECT (inclui DESCRIBE, SHOW, SUMMARIZE e FROM
-primeiro). Conexão por consulta também evita que uma aba esquecida segure o arquivo ou
+backup do COLD propagariam). O núcleo abre uma conexão `read_only` por consulta, desliga o
+acesso externo, trava a configuração e só aceita o que o parser do DuckDB classifica como
+SELECT (inclui DESCRIBE, SHOW, SUMMARIZE e FROM primeiro). Conexão por consulta também evita que uma aba esquecida segure o arquivo ou
 enxergue views velhas depois de um reparo. As 6 views do SIPNI (bucket `healthbr-data`)
 não funcionam aqui: o segredo delas vive no `~/.duckdbrc`, que não é lido.
+
+**Nenhum arquivo é lido direto, só as views.** `~/rodado` não tem só parquet: tem scripts,
+logs, docs, o próprio `.duckdb` e sobras de staging, e `~/duckdb_tmp` tem o despejo das
+outras sessões. Duas camadas independentes, auditadas em 2026-10-11 (`read_text` de
+`~/rodado/scripts/` e `glob` do despejo alheio passavam antes):
+
+1. `allowed_directories` é a lista exata dos diretórios de tabela que as views leem, tirada
+   do corpo delas (`duckdb_views()`) a cada instância — não `~/rodado` inteiro. O
+   `temp_directory` o DuckDB acrescenta sozinho; o `.duckdb` aberto também fica legível
+   por ele, e é a camada 2 que barra.
+2. Antes de executar, a árvore do parser (`json_serialize_sql`, que enxerga CTE, LATERAL,
+   UNION e nome entre aspas) é percorrida e a consulta é recusada se chamar função de
+   arquivo (`read_*`, `parquet_*`, `*_scan`, `glob`, `sniff_csv`, `st_read`…), função que
+   executa SQL embutido (`query`, `query_table`, `json_execute_serialized_sql`) ou
+   `FROM '<caminho>'`. Se a consulta não serializa, não roda.
+
+Além disso, `autoload_known_extensions` e `autoinstall_known_extensions` ficam desligados:
+citar `st_read` não carrega o spatial.
 
 Recursos por consulta: 6 GB de memória, 4 threads, despejo em `~/duckdb_tmp/web` (até
 30 GB). Terminal: até 12 abas, sessão fecha após 30 min parada.
@@ -155,8 +172,9 @@ tecla a ~240 ms.
 `db/testes/` roda 52 testes contra o site no ar (Bun + `playwright-core` com o Chrome
 instalado, nada é baixado), com a régua da auditoria de acessibilidade do swissviz:
 
-- **API:** 401 sem senha em toda rota, formatos, limite, recusa de escrita e de arquivo
-  fora de `~/rodado`, e um número conhecido (156.454.011 eleitores em 2022).
+- **API:** 401 sem senha em toda rota, formatos, limite, recusa de escrita e de qualquer
+  leitura direta de arquivo (scripts e `.duckdb` em `~/rodado`, despejo alheio, LATERAL,
+  CTE, nome entre aspas, `FROM '<caminho>'`, `query()`, `st_read`), e um número conhecido (156.454.011 eleitores em 2022).
 - **Desktop:** zero controles sem nome acessível, contraste WCAG AA em todo texto do
   painel, `:focus-visible`, `aria-live` na busca, árvore navegável por teclado (↓ da busca,
   ↑ ↓ → ← Esc, Shift+Enter cola), colunas, ▶ colando e executando, SQL colorido,
