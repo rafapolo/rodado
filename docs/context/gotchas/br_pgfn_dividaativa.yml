@@ -1,0 +1,24 @@
+dataset: br_pgfn_dividaativa
+gotchas:
+  - id: trimestre_e_retrato_do_estoque
+    resumo: "divida_trimestres é um retrato do estoque de inscrições a cada trimestre, não o que foi inscrito no trimestre: somar trimestres conta a mesma dívida várias vezes. Escolha um trimestre ou compare dois."
+    detalhe: >
+      Cada trimestre traz todas as inscrições em aberto naquela data. Para fluxo (o que
+      entrou ou saiu), compare NUMERO_INSCRICAO entre dois trimestres. `divida` tem só o
+      trimestre mais recente, igual ao último de divida_trimestres.
+    tabelas: [divida_trimestres, divida]
+    colunas: [trimestre, NUMERO_INSCRICAO, VALOR_CONSOLIDADO]
+    severidade: silencioso
+    verificado: "26 trimestres de 2020 T1 a 2026 T2, 807.424.243 linhas; o estoque cresce de 23,7 milhões de inscrições (2020 T1) a 49,7 milhões (2026 T2) — medido 2026-10-11"
+  - id: trimestres_falsos_na_fonte
+    resumo: "2020 T3 é cópia exata de 2020 T2, e 2022 T4 não tem a categoria nao_previdenciario (a fonte dá 404). Não leia variação entre esses trimestres."
+    tabelas: [divida_trimestres]
+    colunas: [trimestre, categoria]
+    severidade: silencioso
+    verificado: "2020 T2 e T3: 24.607.286 linhas cada e a mesma soma de hash de (CPF_CNPJ, NUMERO_INSCRICAO, VALOR_CONSOLIDADO, SITUACAO_INSCRICAO), e os três zips da fonte com o mesmo tamanho em bytes; 2022 T4: 6.401.148 linhas, só fgts e previdenciario — medido 2026-10-11"
+  - id: uf_unidade_responsavel_descartada
+    resumo: "De 2020 T4 a 2022 T3 a fonte trazia também UF_UNIDADE_RESPONSAVEL, que ficou fora para manter o schema de divida. A UF do devedor está em UF_DEVEDOR em todos os trimestres."
+    tabelas: [divida_trimestres]
+    colunas: [UF_DEVEDOR]
+    severidade: silencioso
+    verificado: "aviso do conversor em todos os trimestres de 2020 T4 a 2022 T3 — medido 2026-10-11"
