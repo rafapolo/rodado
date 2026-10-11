@@ -35,10 +35,12 @@ Caddyfile` finds them.
 
 `mcp/mcp_server.py` is the current interface — see `mcp/MCP.md`.
 
-Since 2026-10-09 the same beelink data is also reachable at `https://db.rodado.xyz`
-(password, read-only): a browser SQL terminal and `POST /query` for curl, proxied by
-haloy on finland through a reverse SSH tunnel — see `db/README.md`. It is a
-locked-down Python front end, not the DuckDB CLI.
+Since 2026-10-09 the same data is also reachable at `https://db.rodado.xyz`
+(password, read-only): a browser SQL terminal and `POST /query` for curl. Since
+2026-10-11 it runs entirely in a haloy container on finland reading the
+`s3://baseldosdados` copy (no SSH tunnel to beelink anymore; `db/exporta_views.py`
+ships the view SQL with each S3 sync and `db/catalogo.py` rebuilds the catalog) —
+see `db/README.md`. It is a locked-down Python front end, not the DuckDB CLI.
 
 O harness TS de apuração (pi + Gemma 4 local) vive no branch `harness-gemma`, fora de `main`.
 
@@ -269,7 +271,7 @@ Desde 2026-10-04, o llama-server (Gemma, `127.0.0.1:8099`) não fica mais sempre
 
 **NUNCA usar BigQuery, GCP ou `bq` CLI. JAMAIS. Toda consulta de dados vai pelo DuckDB no beelink via SSH (`ssh beelink`). Não importa o tamanho da tabela, a complexidade do join ou se "é mais fácil" no BigQuery — DuckDB único.**
 
-**NUNCA consultar pelo S3/Hetzner.** O bucket `s3://baseldosdados` existe só como cópia de segurança do espelho (o beelink envia para lá com `~/scripts/s3_sync_rodado.sh`, alias `hzS3` do `mc`); nenhuma consulta passa por ele, e toda view do DuckDB que ainda referencie `s3://baseldosdados` está obsoleta. Para tabela cuja view aponta para S3, use `read_parquet('~/rodado/<dataset>/<table>/*.parquet')` com o caminho local do beelink.
+**S3/Hetzner só para o `db.rodado.xyz`.** O bucket `s3://baseldosdados` é a cópia do espelho que o beelink envia com `~/scripts/s3_sync_rodado.sh` (alias `hzS3` do `mc`). Desde 2026-10-11, a pedido, o `db.rodado.xyz` (`db/`) é o **único** consumidor autorizado a consultar por ele (roda no finland, sem túnel para o beelink). Todo o resto (agentes, `mcp_server.py`, harness, scripts, análises) continua **NUNCA** consultando pelo S3: vai pelo beelink, e toda view do DuckDB no beelink que ainda referencie `s3://baseldosdados` está obsoleta — use `read_parquet('~/rodado/<dataset>/<table>/*.parquet')` com o caminho local. Lembrete de custo: o antigo `db.xn--2dk.xyz` saiu do S3 por lentidão de throughput do httpfs em scan OLAP, não por latência (ver "Architecture"); consulta pesada no `db.rodado.xyz` vai sentir isso.
 
 Essa regra é sobre **servir consultas de dado** — nunca usar BigQuery pra isso, sem exceção.
 
@@ -282,6 +284,7 @@ Existe uma **única exceção, estritamente escopada**: manutenção do mirror d
 ## Key Conventions
 
 - **Never use GCP, BigQuery, or `bq` CLI for queries** — all data access goes through DuckDB only.
+- **Never query through S3/Hetzner** — the only exception is the `db.rodado.xyz` front end (`db/`), which may read `s3://baseldosdados` instead of tunneling to beelink. Agents, MCP, harness and scripts always go through beelink.
 - **SSH to beelink** for all SQL queries — `ssh beelink '~/bin/duckdb -readonly -json ~/rodado/basedosdados.duckdb'` (SQL piped over stdin, SET enable_progress_bar=false first). Always pass `-readonly`: DuckDB takes an exclusive file lock even for a bare SELECT unless told otherwise, and multiple sessions query this same file concurrently — a non-readonly connection blocks every other one, including read-only attempts, until it disconnects. See `feedback_duckdb_readonly_no_kill` — never kill the process holding the lock, it's very likely another session's real work, not a stuck query. beelink is the project's only data source — everything is local parquet + DuckDB, no live web service. Set BEELINK_HOST env var if the hostname differs.
 - DuckDB always runs read-only; no writes to the database from queries.
 - Queries on large tables must filter on partition columns (`ano`, `mes`, `sigla_uf`) — this is enforced in prompts.

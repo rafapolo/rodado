@@ -1,13 +1,15 @@
 """Núcleo do db.rodado.xyz: uma conexão DuckDB travada por consulta.
 
 Usado pelo terminal (terminal.py, via ttyd) e pelo endpoint HTTP (consulta.py).
-Roda no beelink, onde está o dado. Não é o CLI do DuckDB de propósito: o
-`-safe` do CLI trava a configuração antes de qualquer `-cmd`, então não dá para
-liberar só `~/rodado`; sem ele, `.shell` vira shell no beelink e
-`COPY ... TO '~/rodado/...'` sobrescreve parquet do espelho.
+Roda no container do finland e lê os parquet do bucket s3://baseldosdados (Hetzner,
+mesma região), por um catálogo de views montado por catalogo.py. Não é o CLI do
+DuckDB de propósito: o `-safe` do CLI trava a configuração antes de qualquer `-cmd`,
+então não dá para liberar só os prefixos das tabelas; sem ele, `.shell` vira shell.
 
-Cada consulta abre e fecha a própria conexão `read_only`: uma aba esquecida não
-segura o arquivo nem enxerga views velhas depois de um reparo.
+O processo guarda uma instância `read_only` do catálogo e cada consulta é um cursor
+dela: o cache de rodapés de parquet e de metadados HTTP sobrevive entre consultas
+(sem ele, cada uma relê pela rede o rodapé de centenas de arquivos). Quando
+catalogo.py troca o arquivo, a próxima consulta abre uma instância nova.
 """
 
 import json
@@ -17,17 +19,19 @@ import threading
 
 import duckdb
 
-HOME = os.path.expanduser("~")
-BANCO = os.environ.get("RODADO_DB", f"{HOME}/rodado/basedosdados.duckdb")
+BANCO = os.environ.get("RODADO_DB", "/dados/catalogo.duckdb")
+RAIZ = os.environ.get("RODADO_RAIZ", "s3://baseldosdados/")   # onde as views do catálogo leem
 TEMPO_LIMITE = int(os.environ.get("RODADO_TEMPO_LIMITE", "300"))
+TEMP = os.environ.get("RODADO_TEMP", "/tmp/duckdb")
 
-# Mais magro que o ~/.duckdbrc (16 GB / 14 threads): várias sessões web
-# convivem com o llama-server e com as consultas das outras sessões.
+# O finland tem 4 núcleos e 7 GB divididos com gitea, opengist e uqt. As threads passam
+# dos núcleos de propósito: ler do S3 é esperar requisição, não CPU (a mesma consulta caiu
+# de 23 s para 4 s indo de 4 para 16 threads).
 _CONFIG = {
-    "memory_limit": os.environ.get("RODADO_MEMORIA", "6GB"),
-    "threads": int(os.environ.get("RODADO_THREADS", "4")),
-    "temp_directory": f"{HOME}/duckdb_tmp/web",
-    "max_temp_directory_size": "30GB",
+    "memory_limit": os.environ.get("RODADO_MEMORIA", "1500MB"),
+    "threads": int(os.environ.get("RODADO_THREADS", "16")),
+    "temp_directory": TEMP,
+    "max_temp_directory_size": os.environ.get("RODADO_TEMP_MAX", "3GB"),
 }
 
 # Só SELECT: DESCRIBE, SHOW, SUMMARIZE, FROM-first e os PRAGMA de leitura o
@@ -78,29 +82,28 @@ def _carrega_macros(con) -> set:
 
 
 def _diretorios_das_views(con) -> list:
-    """Os diretórios que as views leem, um por tabela: é só isso que a consulta pode abrir.
+    """Os prefixos que as views leem, um por tabela: é só isso que a consulta pode abrir.
 
-    `~/rodado` inteiro tem também scripts, logs, o próprio .duckdb e sobras de staging;
-    liberar o diretório de cada tabela deixa tudo isso fora do alcance de read_text/read_blob.
+    O bucket espelha ~/rodado do beelink inteiro: tem também scripts, logs, o .duckdb de
+    lá e sobras de staging; liberar o prefixo de cada tabela deixa tudo isso fora do
+    alcance de read_text/read_blob.
     """
-    raiz = os.path.join(HOME, "rodado") + os.sep
     dirs = set()
     for (sql,) in con.execute("SELECT sql FROM duckdb_views() WHERE NOT internal").fetchall():
         for lit in re.findall(r"'([^']*)'", sql or ""):
-            if not (lit.startswith("~/rodado/") or lit.startswith(raiz)):
+            if not lit.startswith(RAIZ):
                 continue
             partes = []
-            for parte in os.path.expanduser(lit).split("/"):
+            for parte in lit[len(RAIZ):].split("/"):
                 if any(ch in parte for ch in "*?[{"):
                     break
                 partes.append(parte)
-            caminho = os.path.normpath("/".join(partes) or "/")
-            if not os.path.isdir(caminho):      # arquivo citado pelo nome: libera a pasta dele
-                caminho = os.path.dirname(caminho)
-            caminho = caminho.rstrip("/") + "/"
-            # uma view que lesse ~/rodado/*.parquet abriria a raiz inteira: essa não entra
-            if caminho.startswith(raiz) and caminho != raiz:
-                dirs.add(caminho)
+            if partes and "." in partes[-1]:    # arquivo citado pelo nome: libera a pasta dele
+                partes.pop()
+            partes = [p for p in partes if p]
+            # uma view que lesse a raiz do bucket abriria tudo: essa não entra
+            if partes:
+                dirs.add(RAIZ + "/".join(partes) + "/")
     return sorted(dirs)
 
 
@@ -108,33 +111,68 @@ class ConsultaRecusada(Exception):
     pass
 
 
-def conecta() -> duckdb.DuckDBPyConnection:
-    os.makedirs(_CONFIG["temp_directory"], exist_ok=True)
+_instancia = {"con": None, "arquivo": None}
+
+
+def _abre() -> duckdb.DuckDBPyConnection:
+    """Abre e trava a instância. A ordem importa: extensão e segredo antes de desligar o
+    acesso externo, allowed_directories antes disso, e a trava por último, para a própria
+    consulta não poder desfazer nada. O temp_directory o DuckDB acrescenta sozinho à lista;
+    nenhuma extensão é carregada nem instalada por uma função citada na consulta (st_read
+    puxaria o spatial). A chave vai num SECRET, nunca em SET s3_*: current_setting() a
+    mostraria, e duckdb_secrets() está na lista de funções recusadas."""
+    os.makedirs(TEMP, exist_ok=True)
     con = duckdb.connect(BANCO, read_only=True, config=_CONFIG)
-    # A ordem importa: allowed_directories antes de desligar o acesso externo,
-    # e a trava por último, para a própria consulta não poder desfazer nada.
-    # Duas conexões vivas no mesmo processo dividem a mesma instância do banco (o terminal abre
-    # uma segunda na thread que busca colunas para o autocompletar). Na instância já configurada
-    # os SET falham ("configuration has been locked", ou "cannot change allowed_directories when
-    # enable_external_access is disabled"); a trava de processo impede que duas configurem ao
-    # mesmo tempo, e quem chega depois só confere que a instância está como queremos.
-    # O temp_directory o próprio DuckDB acrescenta à lista; nenhuma extensão é carregada
-    # nem instalada por conta de uma função citada na consulta (st_read puxaria o spatial).
+    try:
+        con.execute("SET autoinstall_known_extensions=false")
+        con.execute("SET autoload_known_extensions=false")
+        con.execute("LOAD httpfs")
+        con.execute("SET parquet_metadata_cache=true")
+        con.execute("SET enable_http_metadata_cache=true")
+        con.execute(segredo_s3("rodado_s3"))
+        con.execute("SET allowed_directories=?", [_diretorios_das_views(con)])
+        con.execute("SET enable_external_access=false")
+        con.execute("SET lock_configuration=true")
+    except BaseException:
+        con.close()
+        raise
+    return con
+
+
+def _literal(v: str) -> str:
+    return "'" + v.replace("'", "''") + "'"
+
+
+def segredo_s3(nome: str) -> str:
+    """CREATE SECRET do bucket, com a chave do ambiente (S3_KEY/S3_SECRET, do deploy)."""
+    return (f"CREATE SECRET {nome} (TYPE s3, KEY_ID {_literal(os.environ['S3_KEY'])}, "
+            f"SECRET {_literal(os.environ['S3_SECRET'])}, "
+            f"ENDPOINT {_literal(os.environ.get('S3_ENDPOINT', 'hel1.your-objectstorage.com'))}, "
+            f"REGION {_literal(os.environ.get('S3_REGIAO', 'hel1'))}, URL_STYLE 'path', "
+            f"SCOPE {_literal(RAIZ)})")
+
+
+def conecta() -> duckdb.DuckDBPyConnection:
+    """Um cursor da instância do processo; fechá-lo não fecha a instância.
+
+    Abre outra quando catalogo.py troca o arquivo (rename atômico: o inode muda). A
+    instância antiga continua viva enquanto algum cursor dela não fechar.
+    """
     with _TRAVA:
-        try:
-            con.execute("SET autoinstall_known_extensions=false")
-            con.execute("SET autoload_known_extensions=false")
-            dirs = _diretorios_das_views(con)
-            con.execute("SET allowed_directories=?", [dirs])
-            con.execute("SET enable_external_access=false")
-            con.execute("SET lock_configuration=true")
-        except duckdb.Error:
-            externo, travado, carrega = con.execute(
-                "SELECT current_setting('enable_external_access'), current_setting('lock_configuration'), "
-                "current_setting('autoload_known_extensions')").fetchone()
-            if externo or not travado or carrega:
-                con.close()
-                raise
+        st = os.stat(BANCO)
+        arquivo = (st.st_ino, st.st_mtime_ns)
+        if _instancia["con"] is None or _instancia["arquivo"] != arquivo:
+            _instancia["con"] = _abre()
+            _instancia["arquivo"] = arquivo
+            global _macros_de_arquivo
+            _macros_de_arquivo = None
+        base = _instancia["con"]
+    con = base.cursor()
+    externo, travado = con.execute(
+        "SELECT current_setting('enable_external_access'), current_setting('lock_configuration')").fetchone()
+    if externo or not travado:
+        con.close()
+        raise RuntimeError("instância sem trava")
     return con
 
 

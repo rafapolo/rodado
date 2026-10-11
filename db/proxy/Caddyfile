@@ -1,25 +1,25 @@
 # Proxy do db.rodado.xyz no finland: HTTPS fica com o haloy, a senha (ou o token) fica aqui
-# e vale para o terminal (/) e para o curl (/query). O dado está no beelink, que
-# chega por túnel SSH na interface da rede do haloy (172.18.0.1).
+# e vale para o terminal (/) e para o curl (/query). ttyd e consulta.py rodam no mesmo
+# container (inicia.sh) e leem o dado do bucket s3://baseldosdados.
 {
 	admin off
 	auto_https off
 }
 
-# Rotas para o beelink, depois da autenticação (senha ou token).
+# Rotas para o app, depois da autenticação (senha ou token).
 # /tty/ é o ttyd (terminal, com websocket); o resto — página com a árvore de
 # datasets, /catalogo.json, /colunas e /query — é o consulta.py.
-(beelink) {
-	# o token nunca chega ao beelink nem vaza no Referer para as fontes do Google
+(app) {
+	# o token nunca chega ao app nem vaza no Referer para as fontes do Google
 	uri query -token
 	header Referrer-Policy "same-origin"
 	handle /tty* {
-		reverse_proxy 172.18.0.1:18080 {
+		reverse_proxy 127.0.0.1:18080 {
 			flush_interval -1
 		}
 	}
 	handle {
-		reverse_proxy 172.18.0.1:18081 {
+		reverse_proxy 127.0.0.1:18081 {
 			transport http {
 				read_timeout 320s
 			}
@@ -55,13 +55,13 @@
 			Set-Cookie "rodado_token={$DB_TOKEN}; Path=/; Max-Age=2592000; HttpOnly; Secure; SameSite=Lax"
 			Cache-Control "no-store"
 		}
-		import beelink
+		import app
 	}
 
 	handle {
 		basic_auth {
 			{$DB_USUARIO} {$DB_SENHA_HASH}
 		}
-		import beelink
+		import app
 	}
 }

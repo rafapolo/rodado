@@ -165,7 +165,7 @@ describe("API /query", () => {
 
   test("só leitura: COPY, SET, ATTACH, INSTALL e vários comandos são recusados", async () => {
     for (const sql of [
-      "COPY (SELECT 1) TO '/home/polo/rodado/x.csv'",
+      "COPY (SELECT 1) TO '/dados/x.csv'",
       "SET threads = 1",
       "ATTACH 'x.duckdb'",
       "INSTALL httpfs",
@@ -178,21 +178,26 @@ describe("API /query", () => {
     }
   });
 
-  test("nenhum arquivo é lido direto: só as views, nem dentro de ~/rodado", async () => {
+  test("nenhum arquivo é lido direto: só as views, nem dentro do bucket", async () => {
     for (const sql of [
-      "SELECT * FROM read_text('/home/polo/.ssh/rodado_tunel')",
-      "SELECT * FROM read_text('/home/polo/rodado/scripts/_enrich.sql')",
-      "SELECT size FROM read_blob('/home/polo/rodado/basedosdados.duckdb')",
-      "SELECT * FROM glob('/home/polo/duckdb_tmp/*')",
+      "SELECT * FROM read_text('/app/rodado_sql.py')",
+      "SELECT size FROM read_blob('/dados/catalogo.duckdb')",
+      "SELECT * FROM glob('/tmp/duckdb/*')",
+      "SELECT * FROM read_text('s3://baseldosdados/_db/views.json')",
+      "SELECT size FROM read_blob('s3://baseldosdados/basedosdados.duckdb')",
+      "SELECT * FROM glob('s3://baseldosdados/*')",
+      "FROM 's3://baseldosdados/br_bd_diretorios_brasil/uf/000000000000.parquet'",
+      "SELECT * FROM duckdb_secrets()",
+      "SELECT * FROM which_secret('s3://baseldosdados/x', 's3')",
       "SELECT * FROM \"READ_TEXT\"('/etc/passwd')",
       "SELECT * FROM br_bd_diretorios_brasil.uf u, LATERAL (SELECT * FROM glob(u.sigla))",
       "WITH a AS (SELECT * FROM read_csv('/etc/hostname')) FROM a",
-      "FROM '/home/polo/rodado/br_bd_diretorios_brasil/uf/x.parquet'",
+      "FROM '/dados/br_bd_diretorios_brasil/uf/x.parquet'",
       "SELECT * FROM query('SELECT 1')",
       "SELECT * FROM json_execute_serialized_sql('{}')",
       "SELECT * FROM st_read('/etc/passwd')",
       "SELECT * FROM sqlite_scan('/tmp/x.db', 't')",
-      "FROM cnefe_map('/home/polo/rodado/basedosdados.duckdb', 'SP')",   // macro do banco que é um read_csv(path)
+      "FROM cnefe_map('/dados/catalogo.duckdb', 'SP')",   // macro do banco que é um read_csv(path), se existir
     ]) {
       const r = await q(sql);
       expect(r.status, sql).toBe(400);
@@ -403,7 +408,7 @@ describe("desktop", () => {
     const ms = Date.now() - t0;
     expect(await p.locator("#sql").inputValue()).toBe("SELECT 40 + 2 AS local_sem_rede");
     expect(ms).toBeLessThan(1500);                                  // 31 teclas; pelo terminal seriam ~4 s
-    expect(await textoTerminal(p)).toBe(antes);                     // nada foi ao beelink
+    expect(await textoTerminal(p)).toBe(antes);                     // nada foi ao servidor
     // realce: a palavra-chave ganha a classe .k, o número .n
     expect(await p.locator("#realce .k").first().textContent()).toBe("SELECT");
     expect(await p.locator("#realce .n").count()).toBe(2);
@@ -487,7 +492,7 @@ describe("desktop", () => {
         tempos.push(performance.now() - t0);
       }
       term.input("\x03", true);
-      // ida e volta pura até o beelink pelo mesmo caminho (proxy + túnel); mediana de 5
+      // ida e volta pura até o consulta.py pelo mesmo caminho (haloy + Caddy); mediana de 5
       const redes: number[] = [];
       for (let i = 0; i < 5; i++) {
         const t0 = performance.now();
@@ -499,7 +504,7 @@ describe("desktop", () => {
     });
     const ord = [...r.tempos].sort((a, b) => a - b);
     const mediana = ord[ord.length >> 1];
-    // a rede é o piso; o processamento por tecla (5 ms medido no beelink) tem de caber em +60 ms
+    // a rede é o piso; o processamento por tecla (5 ms medido) tem de caber em +60 ms
     expect(mediana).toBeLessThan(r.rede * 1.3 + 60);
     expect(ord[ord.length - 1]).toBeLessThan(2000);
   });
