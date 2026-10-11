@@ -3,8 +3,9 @@
 O espelho do beelink acessível pela web, com senha (HTTP basic auth), só leitura.
 
 - `https://db.rodado.xyz/` — terminal SQL no navegador (ttyd em `/tty/`) com a árvore
-  dos datasets à direita: busca, tabelas com nº de linhas, colunas ao abrir, ▶ ou duplo
-  clique cola `FROM dataset.tabela LIMIT 10;` no terminal, clique na coluna cola o nome.
+  dos datasets à direita e um editor de SQL embaixo (digitação local, Enter executa):
+  busca, tabelas com nº de linhas, colunas ao abrir, ▶ ou duplo clique põe
+  `FROM dataset.tabela LIMIT 10;` no editor, clique na coluna insere o nome.
   Ao abrir a tabela: linhas exatas, data de atualização e fonte, atalhos para amostra,
   `DESCRIBE` e `SUMMARIZE`, aviso acima de 50 milhões de linhas e as colunas de partição
   ou de filtro recomendado (`ano`, `mes`, `sigla_uf`)
@@ -113,12 +114,21 @@ tecla a ~240 ms.
   (um Tab que chega durante a completação anterior é ignorado).
 - Túnel interativo (`ssh -tt` + `IPQoS lowdelay`, para ligar `TCP_NODELAY`) não deu ganho;
   ficou `-N` sem pty, que pede menos permissão.
-- O que resolveria de vez, e não foi feito: editar o SQL no navegador (realce e
-  autocompletar a partir do `/catalogo.json`) e mandar ao terminal só no Enter.
+- O que resolveu de vez (2026-10-11): o editor de SQL embaixo do terminal. A consulta é
+  escrita no navegador, com realce e autocompletar a partir do `/catalogo.json` e do
+  `/colunas`, e só o Enter a manda ao terminal (colada inteira, com `;` no fim se faltar).
+  Shift+Enter quebra a linha, Tab aceita a sugestão, ↑ na primeira linha traz a consulta
+  anterior (histórico no `localStorage`), Ctrl-C sem seleção interrompe a consulta. A
+  árvore à direita passou a escrever no editor. No celular não há editor: a digitação
+  segue no terminal, com a barra de teclas.
+- Duas conexões vivas no mesmo processo dividem a mesma instância do DuckDB: a segunda
+  falhava com `configuration has been locked` quando a thread de colunas do autocompletar
+  ainda estava aberta (bastava colar e dar Enter rápido). `rodado_sql.conecta()` agora
+  aceita a trava já posta, depois de conferir que o acesso externo segue desligado.
 
 ## Testes de UI e UX
 
-`db/testes/` roda 42 testes contra o site no ar (Bun + `playwright-core` com o Chrome
+`db/testes/` roda 46 testes contra o site no ar (Bun + `playwright-core` com o Chrome
 instalado, nada é baixado), com a régua da auditoria de acessibilidade do swissviz:
 
 - **API:** 401 sem senha em toda rota, formatos, limite, recusa de escrita e de arquivo
@@ -127,7 +137,8 @@ instalado, nada é baixado), com a régua da auditoria de acessibilidade do swis
   painel, `:focus-visible`, `aria-live` na busca, árvore navegável por teclado (↓ da busca,
   ↑ ↓ → ← Esc, Shift+Enter cola), colunas, ▶ colando e executando, SQL colorido,
   autocompletar, recusa de escrita, divisor por mouse e teclado com largura lembrada,
-  moldura, sem rolagem horizontal.
+  moldura, sem rolagem horizontal; e o editor (digitação sem ida ao beelink, realce,
+  Tab em tabela e coluna, várias linhas, histórico).
 - **Celular (iPhone 14):** terminal em tela cheia, alvos de toque de 36 px ou mais, busca
   com 16 px, bottom sheet que fecha tocando fora, no ✕ e com Esc, ▶ visível sem hover,
   barra de teclas (`;`, ⏎, Ctrl-C) e contraste AA.

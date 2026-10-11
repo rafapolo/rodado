@@ -43,9 +43,22 @@ def conecta() -> duckdb.DuckDBPyConnection:
     con = duckdb.connect(BANCO, read_only=True, config=_CONFIG)
     # A ordem importa: allowed_directories antes de desligar o acesso externo,
     # e a trava por último, para a própria consulta não poder desfazer nada.
-    con.execute(f"SET allowed_directories=['{HOME}/rodado/', '{HOME}/duckdb_tmp/']")
-    con.execute("SET enable_external_access=false")
-    con.execute("SET lock_configuration=true")
+    try:
+        con.execute(f"SET allowed_directories=['{HOME}/rodado/', '{HOME}/duckdb_tmp/']")
+        con.execute("SET enable_external_access=false")
+        con.execute("SET lock_configuration=true")
+    except duckdb.Error as e:
+        # Duas conexões vivas no mesmo processo dividem a mesma instância do banco: se a outra
+        # (a thread que busca colunas para o autocompletar) já travou a configuração, o SET
+        # falha aqui. A trava é da instância, então basta conferir que ela está como queremos.
+        if "locked" not in str(e):
+            con.close()
+            raise
+        externo, travado = con.execute(
+            "SELECT current_setting('enable_external_access'), current_setting('lock_configuration')").fetchone()
+        if externo or not travado:
+            con.close()
+            raise
     return con
 
 

@@ -23,7 +23,35 @@
   /* moldura da página inteira, por cima de tudo e sem roubar clique nem espaço */
   html::after { content: ""; position: fixed; inset: 0; border: 2px solid rgb(144 157 235);
     pointer-events: none; z-index: 100; }
-  #terminal { flex: 1; min-width: 0; border: 0; height: 100%; background: var(--base); }
+  #esquerda { flex: 1; min-width: 0; height: 100%; display: flex; flex-direction: column; }
+  #terminal { flex: 1; min-height: 0; width: 100%; border: 0; background: var(--base); }
+  /* editor de SQL: a digitação é local (sem ida e volta ao beelink); só o Enter manda ao terminal */
+  #editor { position: relative; flex: 0 0 auto; border-top: 1px solid var(--surface0); background: var(--mantle);
+    padding: 6px 8px 6px 6px; display: flex; gap: 6px; align-items: flex-start; }
+  #editor::before { content: "sql>"; color: var(--mauve); padding-top: 4px; flex: 0 0 auto; }
+  #campo { position: relative; flex: 1; min-width: 0; }
+  #realce, #sql { margin: 0; padding: 4px 6px; border: 1px solid transparent; border-radius: 4px; width: 100%;
+    font: inherit; line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 2; }
+  #realce { position: absolute; inset: 0; overflow: hidden; pointer-events: none; color: var(--text);
+    background: var(--base); border-color: var(--surface0); }
+  #sql { position: relative; display: block; resize: none; overflow-y: auto; max-height: 40vh; background: transparent;
+    color: transparent; caret-color: var(--text); scrollbar-width: thin; }
+  #sql::placeholder { color: var(--overlay2); }
+  #sql::selection { background: #585b7099; }
+  #sql:focus { outline: none; }
+  #campo:focus-within #realce { border-color: var(--mauve); }
+  #realce .k { color: var(--mauve); font-weight: 700; } #realce .s { color: var(--green); }
+  #realce .n { color: var(--peach); } #realce .c { color: var(--overlay1); font-style: italic; }
+  #realce .t { color: var(--blue); }
+  #executa { flex: 0 0 auto; font: inherit; color: var(--green); background: var(--base); border: 1px solid var(--surface0);
+    border-radius: 4px; padding: 4px 8px; cursor: pointer; }
+  #executa:hover { border-color: var(--green); }
+  #sugestoes { position: absolute; left: 44px; bottom: 100%; margin: 0 0 2px; padding: 2px 0; list-style: none;
+    min-width: 260px; max-width: min(640px, 90%); max-height: 220px; overflow-y: auto; background: var(--crust);
+    border: 1px solid var(--surface1); border-radius: 6px; z-index: 5; box-shadow: 0 -6px 20px #0006; }
+  #sugestoes li { display: flex; gap: 12px; padding: 1px 8px; cursor: pointer; white-space: nowrap; }
+  #sugestoes li .meta { margin-left: auto; color: var(--subtext0); }
+  #sugestoes li[aria-selected=true], #sugestoes li:hover { background: var(--surface0); }
   /* divisor: 1px visível, 9px de área de pegar; realça no hover e enquanto arrasta */
   #arrasta { position: relative; flex: 0 0 1px; background: var(--surface0); cursor: col-resize;
     transition: background .15s; z-index: 2; }
@@ -100,6 +128,7 @@
   summary:focus-visible, .coluna:focus-visible { background: var(--surface0); }
   #arrasta:focus-visible { background: var(--mauve); outline: none; }
   button:focus-visible, #busca:focus-visible { outline: 2px solid var(--mauve); outline-offset: 1px; }
+  #sql:focus-visible { outline: none; }
   .vazio.erro { color: var(--red); }
   #teclas, #fundo, #fecha { display: none; }
 
@@ -107,7 +136,8 @@
   @media (max-width: 760px), (pointer: coarse) and (max-width: 1024px) {
     html, body { height: var(--altura, 100dvh); }
     body { flex-direction: column; position: fixed; inset: 0 0 auto 0; }
-    #terminal { flex: 1; height: auto; min-height: 0; }
+    #esquerda { flex: 1; height: auto; min-height: 0; }
+    #editor { display: none; }   /* no celular a digitação segue no terminal, com a barra de teclas */
     #arrasta { display: none; }
     #teclas { display: flex; gap: 6px; padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
       background: var(--mantle); border-top: 1px solid var(--surface0); overflow-x: auto;
@@ -146,12 +176,25 @@
 </style>
 </head>
 <body>
+<div id="esquerda">
 <iframe id="terminal" src="/tty/" title="terminal SQL (DuckDB, só leitura)"></iframe>
+<div id="editor" role="group" aria-label="editor de SQL">
+  <div id="campo">
+    <pre id="realce" aria-hidden="true"></pre>
+    <textarea id="sql" rows="1" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"
+      role="combobox" aria-expanded="false" aria-controls="sugestoes" aria-autocomplete="list"
+      aria-label="consulta SQL: Enter executa, Shift+Enter quebra a linha, Tab completa, seta para cima traz a anterior"
+      placeholder="escreva a consulta aqui · Enter executa · Shift+Enter nova linha · Tab completa · ↑ anterior"></textarea>
+  </div>
+  <button id="executa" type="button" aria-label="executar a consulta (Enter)" title="executar (Enter)">▶</button>
+  <ul id="sugestoes" role="listbox" aria-label="sugestões de dataset, tabela, coluna e palavra-chave" hidden></ul>
+</div>
+</div>
 <div id="arrasta" role="separator" aria-orientation="vertical" aria-controls="painel" tabindex="0"
   aria-label="redimensionar a árvore de datasets (setas ← →, Enter volta ao padrão)"
   title="arraste para redimensionar · duplo clique volta ao padrão"></div>
 <aside id="painel" aria-label="datasets e tabelas">
-  <header style="position:relative" title="clique na tabela: colunas · ▶ ou duplo clique: cola no terminal · clique na coluna: cola o nome">
+  <header style="position:relative" title="clique na tabela: colunas · ▶ ou duplo clique: põe a consulta no editor · clique na coluna: insere o nome">
     <b>rodado</b>
     <input id="busca" type="search" placeholder="filtrar…" autocomplete="off"
       aria-label="filtrar datasets, tabelas e descrições (↓ entra na árvore)" aria-controls="arvore">
@@ -186,7 +229,17 @@ const fmt = n => n == null ? "" : n >= 1e9 ? (n / 1e9).toFixed(1).replace(".", "
   : n >= 1e3 ? (n / 1e3).toFixed(0) + " mil" : String(n);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 
+// consulta inteira (termina em ;) substitui o que está no editor; nome de coluna entra no cursor.
+// No celular não há editor: vai direto para o terminal, como sempre foi.
 function cola(texto) {
+  if (editorVisivel()) {
+    if (/;\s*$/.test(texto) || !sql.value) sql.value = texto;
+    else sql.setRangeText(texto, sql.selectionStart, sql.selectionEnd, "end");
+    sql.focus();
+    if (/;\s*$/.test(texto)) sql.setSelectionRange(sql.value.length, sql.value.length);
+    atualizaEditor();
+    return;
+  }
   const f = document.getElementById("terminal");
   try {
     const term = f.contentWindow.term;
@@ -362,7 +415,151 @@ termFrame.addEventListener("load", async () => {
   if (!term) return;
   term.options.fontFamily = '"JetBrains Mono", monospace';
   term.fit?.();
+  if (editorVisivel()) sql.focus();      // no desktop o teclado começa no editor, não no terminal
 });
+
+
+// ---------------------------------------------------------------- editor de SQL (desktop)
+const sql = document.getElementById("sql");
+const realce = document.getElementById("realce");
+const sugestoes = document.getElementById("sugestoes");
+const editorVisivel = () => document.getElementById("editor").offsetParent !== null;
+const PALAVRAS = ("SELECT FROM WHERE GROUP BY ORDER HAVING LIMIT OFFSET JOIN LEFT RIGHT INNER FULL OUTER CROSS ON USING AS AND OR NOT "
+  + "IN IS NULL LIKE ILIKE BETWEEN CASE WHEN THEN ELSE END DISTINCT UNION ALL EXCEPT INTERSECT WITH DESC ASC DESCRIBE SUMMARIZE "
+  + "SHOW COUNT SUM AVG MIN MAX CAST TRY_CAST COALESCE QUALIFY OVER PARTITION EXISTS TRUE FALSE PIVOT UNPIVOT").split(" ");
+const EH_PALAVRA = new Set(PALAVRAS);
+const colunasDe = {};            // dataset.tabela -> [{coluna, tipo}] (vazio enquanto busca)
+let tabelasConhecidas = new Set(), datasets = [];
+let historico = [], posHist = -1, rascunho = "", itens = [], escolhido = -1;
+try { historico = JSON.parse(localStorage.getItem("rodado.historico") || "[]"); } catch (_) {}
+
+function pinta(texto) {
+  return texto.replace(/(--[^\n]*)|('(?:[^']|'')*'?)|(\b\d+(?:\.\d+)?\b)|([A-Za-z_][\w]*(?:\.[A-Za-z_][\w]*)?)|([&<>])/g,
+    (m, com, str, num, pal, simb) => {
+      if (simb) return esc(simb);
+      if (com) return `<span class="c">${esc(com)}</span>`;
+      if (str) return `<span class="s">${esc(str)}</span>`;
+      if (num) return `<span class="n">${num}</span>`;
+      if (EH_PALAVRA.has(pal.toUpperCase())) return `<span class="k">${pal}</span>`;
+      if (tabelasConhecidas.has(pal)) return `<span class="t">${pal}</span>`;
+      return pal;
+    });
+}
+
+function atualizaEditor() {
+  realce.innerHTML = pinta(sql.value) + "\n";      // a quebra final mantém a altura da última linha vazia
+  const antes = sql.offsetHeight;
+  sql.style.height = "auto";
+  sql.style.height = Math.min(sql.scrollHeight + 2, innerHeight * 0.4) + "px";
+  realce.scrollTop = sql.scrollTop;
+  if (sql.offsetHeight !== antes) { cancelAnimationFrame(quadro); quadro = requestAnimationFrame(refit); }
+  sugere();
+}
+
+function pedeColunas(tabela) {
+  if (colunasDe[tabela]) return;
+  colunasDe[tabela] = [];
+  fetch(location.origin + "/colunas?t=" + encodeURIComponent(tabela)).then(r => r.json())
+    .then(cols => { if (Array.isArray(cols)) { colunasDe[tabela] = cols; sugere(); } }).catch(() => {});
+}
+
+function sugere() {
+  const ate = sql.value.slice(0, sql.selectionStart);
+  const palavra = (/[\w.]+$/.exec(ate) || [""])[0];
+  itens = [];
+  const citadas = (sql.value.match(/\b\w+\.\w+\b/g) || []).filter(t => tabelasConhecidas.has(t));
+  citadas.forEach(pedeColunas);
+  if (palavra.length >= 2 && sql.selectionStart === sql.selectionEnd) {
+    const p = palavra.toLowerCase();
+    if (palavra.includes(".")) {
+      for (const t of tabelasConhecidas) if (t.startsWith(p) && t !== p) itens.push({ texto: t, meta: "tabela" });
+    } else {
+      const vistas = new Set();
+      for (const t of citadas) for (const c of colunasDe[t] || [])
+        if (c.coluna.toLowerCase().startsWith(p) && c.coluna.toLowerCase() !== p && !vistas.has(c.coluna)) {
+          vistas.add(c.coluna); itens.push({ texto: c.coluna, meta: c.tipo.toLowerCase() });
+        }
+      for (const d of datasets) if (d.startsWith(p)) itens.push({ texto: d + ".", meta: "dataset" });
+      for (const k of PALAVRAS) if (k.toLowerCase().startsWith(p) && k.toLowerCase() !== p) itens.push({ texto: k, meta: "" });
+    }
+  }
+  itens = itens.slice(0, 12).map(i => ({ ...i, troca: palavra.length }));
+  escolhido = itens.length ? 0 : -1;
+  desenhaSugestoes();
+}
+
+function desenhaSugestoes() {
+  sugestoes.hidden = !itens.length;
+  sql.setAttribute("aria-expanded", String(!!itens.length));
+  sugestoes.innerHTML = itens.map((i, n) =>
+    `<li role="option" id="sug${n}" data-n="${n}" aria-selected="${n === escolhido}"><span>${esc(i.texto)}</span><span class="meta">${esc(i.meta)}</span></li>`).join("");
+  if (escolhido >= 0) { sql.setAttribute("aria-activedescendant", "sug" + escolhido); sugestoes.children[escolhido]?.scrollIntoView({ block: "nearest" }); }
+  else sql.removeAttribute("aria-activedescendant");
+}
+
+function aceita(n) {
+  const i = itens[n];
+  if (!i) return false;
+  const fim = sql.selectionStart;
+  sql.setRangeText(i.texto, fim - i.troca, fim, "end");
+  atualizaEditor();
+  return true;
+}
+
+function executa() {
+  let texto = sql.value.trim();
+  const term = termFrame.contentWindow.term;
+  if (!term) return;
+  if (!texto) { term.input("\r", true); return; }      // Enter vazio ainda serve ao terminal
+  if (!texto.startsWith(".") && !texto.endsWith(";")) texto += ";";
+  term.paste(texto);
+  term.input("\r", true);
+  historico = historico.filter(h => h !== texto);
+  historico.push(texto);
+  historico = historico.slice(-100);
+  try { localStorage.setItem("rodado.historico", JSON.stringify(historico)); } catch (_) {}
+  posHist = -1;
+  sql.value = "";
+  atualizaEditor();
+}
+
+function anda(dir) {                 // histórico: ↑ na primeira linha, ↓ na última
+  if (!historico.length) return false;
+  if (posHist < 0) { if (dir > 0) return false; rascunho = sql.value; posHist = historico.length; }
+  posHist += dir;
+  if (posHist >= historico.length) { posHist = -1; sql.value = rascunho; }
+  else { posHist = Math.max(0, posHist); sql.value = historico[posHist]; }
+  sql.setSelectionRange(sql.value.length, sql.value.length);
+  atualizaEditor();
+  itens = []; desenhaSugestoes();
+  return true;
+}
+
+sql.addEventListener("input", () => { posHist = -1; atualizaEditor(); });
+sql.addEventListener("scroll", () => { realce.scrollTop = sql.scrollTop; });
+sql.addEventListener("click", sugere);
+sql.addEventListener("blur", () => setTimeout(() => { itens = []; desenhaSugestoes(); }, 150));
+sql.addEventListener("keydown", e => {
+  const aberto = itens.length > 0;
+  if (e.key === "Tab" && !e.shiftKey && aberto) { e.preventDefault(); aceita(escolhido); }
+  else if (e.key === "Escape" && aberto) { e.preventDefault(); e.stopPropagation(); itens = []; desenhaSugestoes(); }
+  else if ((e.key === "ArrowDown" || e.key === "ArrowUp") && aberto && itens.length > 1) {
+    e.preventDefault();
+    escolhido = (escolhido + (e.key === "ArrowDown" ? 1 : -1) + itens.length) % itens.length;
+    desenhaSugestoes();
+  }
+  else if (e.key === "ArrowUp" && !sql.value.slice(0, sql.selectionStart).includes("\n")) { if (anda(-1)) e.preventDefault(); }
+  else if (e.key === "ArrowDown" && posHist >= 0 && !sql.value.slice(sql.selectionEnd).includes("\n")) { if (anda(1)) e.preventDefault(); }
+  else if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); executa(); }
+  else if (e.key === "c" && e.ctrlKey && sql.selectionStart === sql.selectionEnd) {      // Ctrl-C sem seleção: interrompe a consulta
+    e.preventDefault(); termFrame.contentWindow.term?.input("\x03", true);
+  }
+});
+sugestoes.addEventListener("pointerdown", e => {
+  const li = e.target.closest("li");
+  if (li) { e.preventDefault(); aceita(+li.dataset.n); sql.focus(); }
+});
+document.getElementById("executa").addEventListener("click", () => { executa(); sql.focus(); });
 
 // celular: painel da árvore, barra de teclas e altura que acompanha o teclado virtual
 const celular = matchMedia("(max-width: 760px), (pointer: coarse) and (max-width: 1024px)");
@@ -480,6 +677,9 @@ addEventListener("resize", () => { cancelAnimationFrame(quadro); quadro = reques
 
 fetch(location.origin + "/catalogo.json").then(r => r.json()).then(d => {
   catalogo = d;
+  tabelasConhecidas = new Set(d.map(t => t.dataset + "." + t.tabela));
+  datasets = [...new Set(d.map(t => t.dataset))];
+  atualizaEditor();
   const ds = new Set(d.map(t => t.dataset)).size;
   const linhas = d.reduce((s, t) => s + (t.linhas || 0), 0);
   document.getElementById("resumo").textContent = `${ds} ds · ${d.length} tab · ${fmt(linhas)}`;
