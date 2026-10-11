@@ -44,6 +44,22 @@
 		file_server
 	}
 
+	# Link curto público (/q/<id>): o id só existe porque alguém com senha salvou aquele SQL
+	# (POST /q passa pela senha, abaixo). Sem senha, só a página de leitura, o SQL e o
+	# resultado daquele id — nunca /query, /colunas nem o terminal.
+	@link_publico {
+		method GET
+		path_regexp ^/q/[A-Za-z0-9_-]{8,16}(/sql|/dados)?$
+	}
+	handle @link_publico {
+		header Referrer-Policy "same-origin"
+		reverse_proxy 127.0.0.1:18081 {
+			transport http {
+				read_timeout 320s
+			}
+		}
+	}
+
 	# Quem tem o token entra sem a senha: ?token=<DB_TOKEN> em qualquer URL (link para
 	# terceiros, curl). O primeiro acesso grava o token num cookie HttpOnly, porque o
 	# iframe do terminal, o websocket e os fetch da página não levam o ?token. Sem
