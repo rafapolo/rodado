@@ -209,6 +209,37 @@ custou tempo:
   vale a versão de data mais recente;
 - chave "única" da fonte que repete: um bairro de Vila Velha vem uma vez por
   subdistrito. Conferir unicidade antes de juntar arquivos pela chave.
+- queda de rede no beelink mata o que estiver baixando: em 2026-10-11, das 00h10 às 08h,
+  o sync do S3 e um download de 25 GB morreram por falha de DNS, e o laptop dormindo não
+  viu. Rodar download longo no `tmux` do beelink, com retomada (`curl -C -`), e
+  `caffeinate` no laptop;
+- host que limita a banda por conexão (a PGFN entrega ~0,6 MB/s) pede download em
+  paralelo, não em série;
+- a API do SIDRA recusa pedido acima de 50 mil valores e não avisa o tamanho antes: dividir
+  por categoria e por localidade até caber, e pôr teto por tabela (as de etnia × língua
+  passam de 1 bilhão de células);
+- `pip install` no beelink é recusado (PEP 668) e não há sudo: o que precisa de biblioteca
+  que não está lá (ler `.7z`, por exemplo) roda no laptop.
+
+## O mês recente que o Base dos Dados fecha: buscar na origem
+
+Decidido em 2026-10-11, a pedido: em vez do BD Pro, raspar da origem as tabelas em que o
+mês recente importa.
+
+- **Novo CAGED** (feito): `scripts/scrap/mte_novo_caged.py` baixa do FTP do MTE os meses
+  posteriores ao último do disco e grava no schema das três tabelas de `br_me_caged`. Os
+  13 meses trazidos (2025-08 a 2026-08) somam 56.316.636 linhas, exatamente o que o
+  metadado do BigQuery dizia faltar, o que confirma que a diferença era a parte fechada.
+- **Dívida ativa** (feito): os 26 trimestres saem de `dadosabertos.pgfn.gov.br`, sem cota,
+  para `br_pgfn_dividaativa.divida_trimestres`; pelo BigQuery seriam 183 GB.
+- **SICOR** (bloqueado): a lista de arquivos está numa API do site do BCB, mas o servidor
+  de arquivos devolveu 503 de toda saída testada em 2026-10-10 e 11.
+
+Três coisas que valem para qualquer fonte nova desse tipo: converter para o schema da
+tabela que já existe e conferir um mês que os dois lados têm, linha a linha, antes de
+acrescentar; gravar com nome de arquivo próprio (`mte_<aaaamm>.parquet`), para a origem de
+cada mês ficar visível no disco; e rodar `repara_views_beelink.py --apply` depois, porque
+arquivo novo fica fora da view.
 
 ## Agendar
 
