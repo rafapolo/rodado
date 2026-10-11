@@ -28,19 +28,13 @@ import duckdb
 import rodado_sql
 
 PAGINA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
-PAGINA_Q = os.path.join(os.path.dirname(os.path.abspath(__file__)), "q.html")
 
 # Link curto /q/<id>: o SQL salvo por quem tem senha fica em DIR_Q/<id>.sql, no volume.
 # O id é o começo do sha256 do texto (o mesmo SQL dá sempre o mesmo link) e só cresce se
-# colidir. Sem senha (o Caddy libera só estas rotas) dá para ver o SQL e o resultado dele,
-# até LIMITE_Q linhas, guardado por CACHE_Q segundos: o link não roda nenhuma outra consulta.
+# colidir. /q/<id> é a página do terminal, que busca /q/<id>/sql e executa; o Caddy dá a
+# quem abre um link que existe o mesmo acesso de quem tem o token.
 DIR_Q = os.environ.get("RODADO_DIR_Q", "/dados/q")
-ROTA_Q = re.compile(r"^/q/([A-Za-z0-9_-]{8,16})(/sql|/dados)?$")
-LIMITE_Q = 1000
-CACHE_Q = 600
-_cache_q = {}                  # id -> (instante, corpo json)
-_travas_q = {}
-_travas_q_trava = threading.Lock()
+ROTA_Q = re.compile(r"^/q/([A-Za-z0-9_-]{8,16})(/sql)?$")
 _catalogo = {"em": 0.0, "json": b""}
 _catalogo_trava = threading.Lock()
 
@@ -182,52 +176,10 @@ class Handler(BaseHTTPRequestHandler):
         if not os.path.exists(caminho):
             return self._erro(404, "link não encontrado")
         if not parte:
-            with open(PAGINA_Q, "rb") as f:
+            with open(PAGINA, "rb") as f:
                 return self._responde(200, f.read(), "text/html; charset=utf-8", {"Cache-Control": "no-cache"})
         with open(caminho, encoding="utf-8") as f:
-            sql = f.read()
-        if parte == "/sql":
-            return self._responde(200, sql, extra={"Cache-Control": "no-cache"})
-        with _travas_q_trava:
-            trava = _travas_q.setdefault(ident, threading.Lock())
-        with trava:                   # dez abas abrindo o mesmo link rodam a consulta uma vez
-            em, corpo = _cache_q.get(ident, (0.0, None))
-            if corpo is None or time.time() - em > CACHE_Q:
-                corpo = self._roda_q(sql)
-                if corpo is None:
-                    return
-                em = time.time()
-                _cache_q[ident] = (em, corpo)
-        self._responde(200, corpo, "application/json; charset=utf-8",
-                       {"Cache-Control": "no-cache", "X-Resultado-De": str(int(em))})
-
-    def _roda_q(self, sql):
-        if not SIMULTANEAS.acquire(timeout=60):
-            return self._erro(429, "muitas consultas ao mesmo tempo; tente de novo")
-        inicio = time.monotonic()
-        try:
-            con = rodado_sql.conecta()
-            try:
-                comando = rodado_sql.separa(con, sql)[0]
-                with rodado_sql.Cronometro(con) as crono:
-                    try:
-                        rel = con.sql(comando.query)
-                        colunas, linhas = rel.columns, rel.fetchmany(LIMITE_Q + 1)
-                    except duckdb.InterruptException:
-                        if crono.estourou:
-                            return self._erro(504, f"tempo limite de {rodado_sql.TEMPO_LIMITE} s estourado")
-                        raise
-            finally:
-                con.close()
-        except rodado_sql.ConsultaRecusada as e:
-            return self._erro(400, f"recusado: {e}")
-        except duckdb.Error as e:
-            return self._erro(400, str(e))
-        finally:
-            SIMULTANEAS.release()
-        return json.dumps({"colunas": colunas, "linhas": linhas[:LIMITE_Q], "truncado": len(linhas) > LIMITE_Q,
-                           "segundos": round(time.monotonic() - inicio, 3)},
-                          ensure_ascii=False, default=_json_valor).encode()
+            return self._responde(200, f.read(), extra={"Cache-Control": "no-cache"})
 
     def do_GET(self):
         url = urlparse(self.path)

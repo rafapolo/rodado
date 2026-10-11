@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Link público do db.rodado.xyz para uma consulta: https://db.rodado.xyz/q/<id>.
+"""Link curto do db.rodado.xyz para uma consulta: https://db.rodado.xyz/q/<id>.
 
     db/link.py consulta.sql            # ou o SQL pela entrada padrão
-    db/link.py -z consulta.sql         # link antigo ?z=, autocontido (abre o terminal, pede senha)
+    db/link.py -z consulta.sql         # link antigo ?z=, autocontido (pede senha)
 
-O SQL é salvo no servidor (POST /q, autenticado com o token lido no finland) e o link
-abre sem senha nem token uma página só com esse SQL e o resultado dele (até 1.000 linhas,
-guardado por 10 min). Quem recebe não ganha acesso a nenhuma outra consulta.
+O SQL é salvo no servidor (POST /q, autenticado com o token lido no finland). O link abre
+o terminal normal e executa a consulta; quem o abre entra sem senha e, a pedido, com o
+mesmo acesso de quem tem o token (o espelho inteiro, por 30 dias de cookie).
 
 O ?z= leva o SQL na própria URL (deflate cru + base64url) e não depende de nada salvo,
-mas abre o terminal, que pede a senha.
+mas pede a senha.
 """
 import argparse
 import base64
