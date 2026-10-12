@@ -32,6 +32,15 @@ _CONFIG = {
     "threads": int(os.environ.get("RODADO_THREADS", "16")),
     "temp_directory": TEMP,
     "max_temp_directory_size": os.environ.get("RODADO_TEMP_MAX", "3GB"),
+    # Sob dezenas de requisições simultâneas, o S3 do Hetzner deixa algumas paradas sem
+    # responder (um GET de 9 MB que sozinho leva 0,1 s). No padrão (30 s, 3 retries, com
+    # keep-alive) a nova tentativa reaproveitava a conexão travada e a consulta morria em
+    # ~124 s com "Timeout was reached" — 3 de 4 vezes em br_tse_eleicoes.despesas_candidato,
+    # 2026-10-12. Timeout curto + conexão nova a cada requisição: 4 de 4, em 12–38 s.
+    "http_timeout": int(os.environ.get("RODADO_HTTP_TIMEOUT", "10")),
+    "http_retries": 8,
+    "http_retry_backoff": 1.5,
+    "http_keep_alive": False,
 }
 
 # Só SELECT: DESCRIBE, SHOW, SUMMARIZE, FROM-first e os PRAGMA de leitura o
