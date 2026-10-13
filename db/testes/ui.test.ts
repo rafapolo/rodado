@@ -35,6 +35,12 @@ async function abre(ctx: BrowserContext): Promise<Page> {
   return p;
 }
 
+/** A busca filtra sem abrir nada: quem quer ver as tabelas abre o dataset. */
+async function abreDs(p: Page, ds: string) {
+  const d = p.locator(`.ds[data-ds="${ds}"]`);
+  if (!(await d.evaluate((e) => (e as HTMLDetailsElement).open))) await d.locator(":scope > summary").click();
+}
+
 const contexto = (extra: Parameters<Browser["newContext"]>[0] = {}) =>
   navegador.newContext({ httpCredentials: { username: USUARIO, password: SENHA }, ...extra });
 
@@ -333,6 +339,7 @@ describe("desktop", () => {
     await p.waitForTimeout(400);
     expect(await p.locator(".ds").count()).toBe(1);
     expect(await p.locator(".ds summary").first().textContent()).toContain("br_rodado_eleicoes");
+    expect(await p.locator(".ds[open]").count()).toBe(0); // filtrar não abre o dataset
     await p.locator("#busca").fill("zzzz_nao_existe");
     await p.waitForTimeout(400);
     expect(await p.locator("#arvore").textContent()).toContain("nada encontrado");
@@ -358,7 +365,8 @@ describe("desktop", () => {
     expect(cor).toBe(mauve);
     // o nome do dataset segue inteiro para quem lê o texto, e a descrição ainda abre
     expect(await p.locator(".ds summary").first().textContent()).toContain("br_rodado_eleicoes");
-    expect(await p.locator(".ds[open] > .dsinfo").count()).toBeGreaterThan(0);
+    await abreDs(p, "br_rodado_eleicoes");
+    await p.locator(".ds[open] > .dsinfo").first().waitFor(); // entra no evento toggle, logo depois do clique
     await p.locator("#busca").fill("");
     await p.waitForTimeout(300);
     expect(await p.locator("#arvore mark").count()).toBe(0);
@@ -370,6 +378,7 @@ describe("desktop", () => {
     await p.locator("#busca").focus();
     await p.keyboard.press("ArrowDown");
     expect(await p.evaluate(() => document.activeElement?.closest(".ds") !== null)).toBe(true);
+    await p.keyboard.press("ArrowRight"); // o dataset vem fechado
     await p.keyboard.press("ArrowDown");
     expect(await p.evaluate(() => (document.activeElement?.closest(".tb") as HTMLElement)?.dataset.t)).toMatch(/^br_rodado_eleicoes\./);
     await p.keyboard.press("ArrowRight");
@@ -387,6 +396,7 @@ describe("desktop", () => {
   test("abrir uma tabela lista colunas com tipo, descrição e fonte", async () => {
     await p.locator("#busca").fill("secao_setor");
     await p.waitForTimeout(400);
+    await abreDs(p, "br_rodado_eleicoes");
     await p.locator(".tb summary .nome").first().click();
     await p.waitForSelector(".tb[open] .coluna");
     expect(await p.locator(".tb[open] .coluna").count()).toBe(18);
@@ -396,6 +406,7 @@ describe("desktop", () => {
   test(".info: fatos numa linha, fonte como link, ações e sem repetir a descrição do dataset", async () => {
     await p.locator("#busca").fill("diretorios_brasil.uf");
     await p.waitForTimeout(400);
+    await abreDs(p, "br_bd_diretorios_brasil");
     const tbUf = p.locator('.tb[data-t="br_bd_diretorios_brasil.uf"]');
     await tbUf.locator("summary .nome").click();
     await tbUf.locator(".info .fatos").waitFor();
@@ -431,6 +442,7 @@ describe("desktop", () => {
   test(".info: tabela grande avisa para filtrar e marca ano/mes como filtro", async () => {
     await p.locator("#busca").fill("cnpj");
     await p.waitForTimeout(400);
+    await abreDs(p, "br_me_cnpj");
     const tb = p.locator('.tb[data-t="br_me_cnpj.estabelecimentos"]');
     await tb.locator("summary .nome").click();
     await tb.locator(".aviso").waitFor({ timeout: 30_000 });
@@ -442,6 +454,7 @@ describe("desktop", () => {
   test(".info: partição hive ganha etiqueta e coluna longa ganha filtro", async () => {
     await p.locator("#busca").fill("series_chuva_diaria");
     await p.waitForTimeout(400);
+    await abreDs(p, "br_ana_telemetria");
     const tb = p.locator('.tb[data-t="br_ana_telemetria.series_chuva_diaria"]');
     await tb.locator("summary .nome").click();
     await tb.locator(".coluna").first().waitFor();
@@ -454,6 +467,7 @@ describe("desktop", () => {
   test("▶ põe a consulta no editor e Enter executa", async () => {
     await p.locator("#busca").fill("secao_setor");
     await p.waitForTimeout(400);
+    await abreDs(p, "br_rodado_eleicoes");
     const linha = p.locator('.tb[data-t="br_rodado_eleicoes.secao_setor"] > summary');
     await linha.hover(); // o ▶ aparece no hover, como para uma pessoa
     await linha.locator(".usar").click();
@@ -677,6 +691,7 @@ describe("celular (iPhone 14)", () => {
     await p.locator("[data-acao=arvore]").tap();
     await p.locator("#busca").fill("diretorios_brasil.uf");
     await p.waitForTimeout(400);
+    await abreDs(p, "br_bd_diretorios_brasil");
     const tb = p.locator('.tb[data-t="br_bd_diretorios_brasil.uf"]');
     await tb.locator("summary .nome").tap();
     await tb.locator(".acoes button").first().waitFor();
@@ -710,6 +725,7 @@ describe("celular (iPhone 14)", () => {
     await p.locator("[data-acao=arvore]").tap();
     await p.locator("#busca").fill("diretorios_brasil.uf");
     await p.waitForTimeout(400);
+    await abreDs(p, "br_bd_diretorios_brasil");
     const usar = p.locator('.tb[data-t="br_bd_diretorios_brasil.uf"] .usar');
     expect(await usar.evaluate((e) => getComputedStyle(e).visibility)).toBe("visible");
     await usar.tap();
