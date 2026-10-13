@@ -33,7 +33,7 @@
     --base: #1e1e2e; --mantle: #181825; --crust: #11111b;
     --surface0: #313244; --surface1: #45475a; --overlay0: #6c7086; --overlay1: #7f849c; --overlay2: #9399b2;
     --subtext0: #a6adc8; --text: #cdd6f4;
-    --blue: #89b4fa; --mauve: #cba6f7; --peach: #fab387; --green: #a6e3a1; --red: #f38ba8;
+    --blue: #89b4fa; --mauve: #cba6f7; --peach: #fab387; --green: #a6e3a1; --yellow: #f9e2af; --red: #f38ba8;
     --moldura: rgb(144 157 235);
   }
   * { box-sizing: border-box; }
@@ -132,6 +132,9 @@
   /* trecho que casou com o filtro */
   #arvore mark { background: var(--mauve); color: var(--crust); }
   .tb > summary .linhas { color: var(--peach); float: right; }
+  /* onde a tabela mora: verde = SSD do servidor (rápido), amarelo = bucket S3; ◐ = dataset misto */
+  .onde { margin-right: 4px; font-size: 9px; vertical-align: 1px; }
+  .onde.ssd { color: var(--green); } .onde.s3 { color: var(--yellow); }
   .usar { color: var(--green); cursor: pointer; margin-left: 6px; visibility: hidden; }
   .tb > summary:hover .usar { visibility: visible; }
   .info { padding: 4px 8px 6px 34px; color: var(--subtext0); white-space: normal; }
@@ -331,6 +334,10 @@ function marca(nome, f, base = nome, desloc = 0) {
   return html + esc(nome.slice(pos));
 }
 
+const onde = ssd => ssd
+  ? '<span class="onde ssd" role="img" aria-label="no SSD" title="no SSD do servidor: leitura rápida">●</span>'
+  : '<span class="onde s3" role="img" aria-label="no S3" title="no bucket S3: leitura mais lenta">●</span>';
+
 function desenha(filtro) {
   const f = filtro.trim().toLowerCase();
   const grupos = new Map();
@@ -347,9 +354,12 @@ function desenha(filtro) {
   let html = "";
   for (const [ds, tabelas] of grupos) {
     const comPonto = f && tabelas.find(t => (ds + "." + t.tabela).toLowerCase().includes(f));
-    html += `<details class="ds" data-ds="${esc(ds)}"><summary role="treeitem" aria-level="1" title="${esc((catalogo.find(x => x.dataset === ds && x.descricao) || {}).descricao || "")}">${marca(ds, f, comPonto ? ds + "." + comPonto.tabela : ds)} <span class="n">(${tabelas.length})</span></summary>`;
+    const nSsd = tabelas.filter(t => t.ssd).length;
+    const ondeDs = nSsd === tabelas.length ? onde(true) : nSsd === 0 ? onde(false)
+      : `<span class="onde ssd" role="img" aria-label="${nSsd} de ${tabelas.length} tabelas no SSD" title="${nSsd} de ${tabelas.length} tabelas no SSD, o resto no S3">◐</span>`;
+    html += `<details class="ds" data-ds="${esc(ds)}"><summary role="treeitem" aria-level="1" title="${esc((catalogo.find(x => x.dataset === ds && x.descricao) || {}).descricao || "")}">${ondeDs}${marca(ds, f, comPonto ? ds + "." + comPonto.tabela : ds)} <span class="n">(${tabelas.length})</span></summary>`;
     for (const t of tabelas) {
-      html += `<details class="tb" data-t="${esc(ds + "." + t.tabela)}"><summary role="treeitem" aria-level="2"><span class="nome">${marca(t.tabela, f, ds + "." + t.tabela, ds.length + 1)}</span>`
+      html += `<details class="tb" data-t="${esc(ds + "." + t.tabela)}"><summary role="treeitem" aria-level="2">${onde(t.ssd)}<span class="nome">${marca(t.tabela, f, ds + "." + t.tabela, ds.length + 1)}</span>`
         + `<span class="usar" role="button" aria-label="colar FROM ${esc(ds + "." + t.tabela)} no terminal" title="colar no terminal">▶</span>`
         + `<span class="linhas" aria-label="${esc(fmt(t.linhas))} linhas">${fmt(t.linhas)}</span></summary></details>`;
     }
