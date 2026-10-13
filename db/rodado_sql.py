@@ -21,6 +21,9 @@ import duckdb
 
 BANCO = os.environ.get("RODADO_DB", "/dados/catalogo.duckdb")
 RAIZ = os.environ.get("RODADO_RAIZ", "s3://baseldosdados/")   # onde as views do catálogo leem
+# Gambiarra: tabela com cópia no SSD do finland (volume, /dados/local/<dataset>/<tabela>/) é
+# lida de lá e não do bucket; catalogo.py troca o caminho ao montar a view.
+LOCAL = os.environ.get("RODADO_LOCAL", "/dados/local/")
 TEMPO_LIMITE = int(os.environ.get("RODADO_TEMPO_LIMITE", "300"))
 TEMP = os.environ.get("RODADO_TEMP", "/tmp/duckdb")
 
@@ -100,10 +103,11 @@ def _diretorios_das_views(con) -> list:
     dirs = set()
     for (sql,) in con.execute("SELECT sql FROM duckdb_views() WHERE NOT internal").fetchall():
         for lit in re.findall(r"'([^']*)'", sql or ""):
-            if not lit.startswith(RAIZ):
+            raiz = next((r for r in (RAIZ, LOCAL) if lit.startswith(r)), None)
+            if not raiz:
                 continue
             partes = []
-            for parte in lit[len(RAIZ):].split("/"):
+            for parte in lit[len(raiz):].split("/"):
                 if any(ch in parte for ch in "*?[{"):
                     break
                 partes.append(parte)
@@ -112,7 +116,7 @@ def _diretorios_das_views(con) -> list:
             partes = [p for p in partes if p]
             # uma view que lesse a raiz do bucket abriria tudo: essa não entra
             if partes:
-                dirs.add(RAIZ + "/".join(partes) + "/")
+                dirs.add(raiz + "/".join(partes) + "/")
     return sorted(dirs)
 
 
