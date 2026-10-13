@@ -135,8 +135,13 @@ def _abre() -> duckdb.DuckDBPyConnection:
     puxaria o spatial). A chave vai num SECRET, nunca em SET s3_*: current_setting() a
     mostraria, e duckdb_secrets() está na lista de funções recusadas."""
     os.makedirs(TEMP, exist_ok=True)
-    con = duckdb.connect(BANCO, read_only=True, config=_CONFIG)
+    # Instância :memory: nova + ATTACH, nunca duckdb.connect(BANCO): o DuckDB reaproveita a
+    # instância viva do mesmo caminho, e depois que catalogo.py troca o arquivo isso devolvia
+    # a antiga, já travada — todo SET daqui falhava e /catalogo.json dava 500 até reiniciar.
+    con = duckdb.connect(":memory:", config=_CONFIG)
     try:
+        con.execute(f"ATTACH {_literal(BANCO)} AS catalogo (READ_ONLY)")
+        con.execute("USE catalogo")
         con.execute("SET autoinstall_known_extensions=false")
         con.execute("SET autoload_known_extensions=false")
         con.execute("LOAD httpfs")
@@ -181,6 +186,7 @@ def conecta() -> duckdb.DuckDBPyConnection:
             _macros_de_arquivo = None
         base = _instancia["con"]
     con = base.cursor()
+    con.execute("USE catalogo")   # o USE vale por conexão: cada cursor nasce em memory
     externo, travado = con.execute(
         "SELECT current_setting('enable_external_access'), current_setting('lock_configuration')").fetchone()
     if externo or not travado:
