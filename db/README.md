@@ -99,6 +99,24 @@ ausente. Fora do catálogo: as 6 views do SIPNI (bucket
 `healthbr-data`, sem segredo aqui) e a tabela nativa `main.cpf_lookup`, que vive dentro do
 `.duckdb` do beelink e não tem parquet.
 
+**SSD.** Parte das tabelas é lida do disco do finland, não do bucket: todo parquet que existir em
+`/dados/local/<dataset>/<tabela>/` (volume `rodado-db-dados`), com o mesmo caminho relativo do
+bucket, entra na view no lugar do `s3://`. A troca é arquivo por arquivo, então uma tabela pode
+ficar parte no SSD e parte no S3. A marca do catálogo inclui a lista de cópias: copiar ou apagar um
+parquet ali remonta o catálogo na volta seguinte dos 15 min, sem passo manual. Desde 2026-10-13 o
+SSD tem `br_rodado_indicadores_municipais`, `br_rodado_eleicoes`, `br_tse_filiacao_partidaria` e
+`br_tse_eleicoes` menos `resultados_candidato_secao` e `perfil_eleitorado_secao` (6 GB juntas):
+29 tabelas, 7,3 GB, num disco de 75 GB com ~8 GB livres. A consulta do link do 2º turno
+(`/q/14QDGArQ`) caiu de 41 s para 0,9 s. Na árvore, ● verde = SSD e ● amarelo = S3. A legenda
+filtra, e `onde:ssd` / `onde:s3` na busca fazem o mesmo.
+
+`ssd_copia.sh` (no finland, em `/root/rodado-db`) baixa do bucket os arquivos de `ssd_lista.txt`
+e baixa de novo os que mudaram de tamanho. Isso cobre o arquivo reescrito com o mesmo nome no
+beelink, como as receitas de 2026; uma reescrita com o mesmo tamanho exato passaria despercebida.
+O `aws` CLI cortou sempre no mesmo ponto um arquivo de 24 MB
+(`perfil_eleitorado_local_votacao/000000000007.parquet`, `IncompleteRead` na troca do pedaço de
+8 MB); esse veio do beelink por `scp`, com o sha256 conferido.
+
 **Não é o CLI do DuckDB, de propósito.** O `-safe` do CLI trava a configuração antes de
 qualquer `-cmd`, então não dá para liberar só os prefixos das tabelas; sem ele, `.shell` é um
 shell no container. O núcleo abre uma instância `read_only` do catálogo por processo, carrega o
@@ -148,6 +166,11 @@ ssh finland 'cd /root/rodado-db && set -a && . /etc/haloy/.env && . ./.s3 && set
 
 # catálogo: depois de uma sincronização, forçar a remontagem sem esperar os 15 min
 ssh finland 'docker exec $(docker ps -qf name=rodado-db) python3 catalogo.py --uma-vez'
+
+# SSD: acrescente a ssd_lista.txt os caminhos relativos ao bucket (dataset/tabela/arquivo.parquet)
+# que as views citam: os literais 's3://baseldosdados/...' de duckdb_views() em /dados/catalogo.duckdb
+scp db/ssd_copia.sh finland:/root/rodado-db/
+ssh finland 'cd /root/rodado-db && nohup ./ssd_copia.sh > ssd_copia.log 2>&1 &'   # o catálogo remonta sozinho depois
 ```
 
 No beelink, `~/scripts/s3_sync_rodado.sh` chama `python3 ~/rodado_db/exporta_views.py` antes

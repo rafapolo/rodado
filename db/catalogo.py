@@ -121,12 +121,22 @@ def monta(conteudo) -> str:
     return f"{len(views) - len(falhas)} views, {len(falhas)} fora"
 
 
+def copias_locais() -> str:
+    """Os parquet completos em /dados/local (sem os .parcial de uma cópia em andamento):
+    copiar ou apagar um deles muda a marca e remonta o catálogo na volta seguinte."""
+    achados = []
+    for raiz, _, arquivos in os.walk(rodado_sql.LOCAL):
+        achados += [os.path.join(raiz, a) for a in arquivos if a.endswith(".parquet")]
+    return "\n".join(sorted(achados))
+
+
 def rodada():
-    texto, sha = baixa_views()
+    texto, sha_views = baixa_views()
+    sha = hashlib.sha256((sha_views + "\n" + copias_locais()).encode()).hexdigest()
     atual = open(MARCA).read().strip() if os.path.exists(MARCA) and os.path.exists(BANCO) else ""
     if sha == atual:
         return False
-    log(f"views.json mudou ({sha[:12]}): montando o catálogo")
+    log(f"views.json ou cópias no SSD mudaram ({sha[:12]}): montando o catálogo")
     resumo = monta(json.loads(texto))
     with open(MARCA, "w") as f:
         f.write(sha + "\n")
