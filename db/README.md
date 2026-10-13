@@ -89,10 +89,17 @@ flowchart LR
 **Catálogo.** As views do beelink citam cada parquet pelo caminho (`/home/polo/rodado/...`).
 `exporta_views.py` grava o SQL delas em `~/rodado/_db/views.json` e a sincronização com o S3 o
 leva para o bucket junto com os parquet. `catalogo.py` confere o arquivo a cada 15 min e, quando
-muda, recria as views num `.duckdb` novo com `s3://baseldosdados/` no lugar do caminho local, e o
-troca por rename atômico; a próxima consulta já abre o novo. Criar uma view lê o rodapé de cada
-parquet que ela cita (79 mil arquivos): a montagem leva perto de meia hora, por isso o catálogo
-mora num volume e sobrevive ao redeploy. A sincronização apaga do bucket os arquivos órfãos
+muda, monta um `.duckdb` novo com `s3://baseldosdados/` no lugar do caminho local e o troca por
+rename atômico; a próxima consulta já abre o novo. Criar uma view lê o rodapé de cada parquet
+que ela cita (79 mil arquivos): do zero, a montagem leva ~25 min. Por isso ela é **incremental**
+desde 2026-10-13. Copia o catálogo atual e recria só as views cujo SQL final mudou (com o
+caminho do bucket ou do SSD já trocado), cria as novas e apaga as que sumiram.
+`catalogo.duckdb.fontes.json` guarda o hash do SQL de cada view criada. Uma view que falha fica
+fora dele e é tentada de novo na montagem seguinte; quando a falha é timeout do bucket, a marca
+não é gravada e a montagem seguinte vem na próxima volta. Medido: tirar uma tabela do SSD e
+devolver levou 2 s cada (4 views recriadas), contra 22 min da montagem completa.
+`--completo` monta tudo do zero. Uma trava de arquivo impede dois montadores ao mesmo tempo (o
+laço do container e um `--uma-vez` manual). O catálogo mora num volume e sobrevive ao redeploy. A sincronização apaga do bucket os arquivos órfãos
 só no fim; se um parquet foi renomeado no beelink, o catálogo do finland ainda cita o nome
 antigo até a remontagem terminar, e uma consulta nesse intervalo pode falhar por arquivo
 ausente. Fora do catálogo: as 6 views do SIPNI (bucket
@@ -103,7 +110,8 @@ ausente. Fora do catálogo: as 6 views do SIPNI (bucket
 `/dados/local/<dataset>/<tabela>/` (volume `rodado-db-dados`), com o mesmo caminho relativo do
 bucket, entra na view no lugar do `s3://`. A troca é arquivo por arquivo, então uma tabela pode
 ficar parte no SSD e parte no S3. A marca do catálogo inclui a lista de cópias: copiar ou apagar um
-parquet ali remonta o catálogo na volta seguinte dos 15 min, sem passo manual. Desde 2026-10-13 o
+parquet ali remonta o catálogo (só as views afetadas) na volta seguinte dos 15 min, sem passo
+manual, ou na hora com `catalogo.py --uma-vez`. Desde 2026-10-13 o
 SSD tem `br_rodado_indicadores_municipais`, `br_rodado_eleicoes`, `br_tse_filiacao_partidaria` e
 `br_tse_eleicoes` menos `resultados_candidato_secao` e `perfil_eleitorado_secao` (6 GB juntas):
 29 tabelas, 7,3 GB, num disco de 75 GB com ~8 GB livres. A consulta do link do 2º turno
@@ -164,7 +172,8 @@ scp db/proxy/{Caddyfile,og.html} finland:/root/rodado-db/proxy/
 ssh finland 'cd /root/rodado-db && set -a && . /etc/haloy/.env && . ./.s3 && set +a &&
   DB_USUARIO=rodado DB_SENHA_HASH="$(cat .senha_hash)" DB_TOKEN="$(cat .token)" haloy deploy -c haloy.yml'
 
-# catálogo: depois de uma sincronização, forçar a remontagem sem esperar os 15 min
+# catálogo: depois de uma sincronização ou de uma cópia no SSD, remontar sem esperar os 15 min
+# (incremental: segundos; com --completo, do zero: ~25 min)
 ssh finland 'docker exec $(docker ps -qf name=rodado-db) python3 catalogo.py --uma-vez'
 
 # SSD: acrescente a ssd_lista.txt os caminhos relativos ao bucket (dataset/tabela/arquivo.parquet)
