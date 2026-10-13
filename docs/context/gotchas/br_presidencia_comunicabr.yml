@@ -1,0 +1,50 @@
+dataset: br_presidencia_comunicabr
+gotchas:
+  - id: uma_coleta_por_arquivo
+    resumo: "Cada rodada do raspador grava um parquet novo (coleta_AAAA-MM-DD) com a série 2023–2026 inteira, revista pela fonte. Duas coletas na view = cada valor contado duas vezes. Filtrar data_coleta = max(data_coleta)."
+    tabelas: [municipio, uf, brasil]
+    colunas: [data_coleta]
+    severidade: silencioso
+    verificado: "1 coleta (2026-10-13) no disco hoje; municipio 1.551.434 linhas — medido 2026-10-13"
+  - id: total_e_partes_na_mesma_coluna
+    resumo: "Um programa traz o total e as partes como variáveis irmãs: somar valor por programa conta duas vezes. Ex.: BPC = BPC - Idoso + BPC - PCD. Filtrar uma variavel antes de somar."
+    tabelas: [municipio, uf, brasil]
+    colunas: [programa, variavel, valor]
+    severidade: silencioso
+    verificado: "Nova Friburgo 2025: Total de Beneficiados BPC 3.775 = Idoso 1.703 + PCD 2.072 — medido 2026-10-13"
+  - id: quantidade_e_valor_em_blocos_diferentes
+    resumo: "Bolsa Família, BPC, Auxílio-Gás e Seguro-Desemprego aparecem em dois blocos: a quantidade em PROTEÇÃO SOCIAL e o valor em R$ em TRANSFERÊNCIAS AOS CIDADÃOS. Não é duplicata, mas filtrar por bloco esconde metade do programa."
+    tabelas: [municipio, uf, brasil]
+    colunas: [bloco, programa]
+    severidade: erro
+    verificado: "Nova Friburgo 2025: Bolsa Família 8.072 famílias (PROTEÇÃO SOCIAL) e R$ 73.931.653 (TRANSFERÊNCIAS AOS CIDADÃOS) — medido 2026-10-13"
+  - id: uf_nao_e_soma_dos_municipios
+    resumo: "A linha da UF quase sempre é a soma dos municípios (±1% em 10.668 de 11.351 pares UF×variável×ano), mas não em variável de rede estadual (PNATE/PDDE 'Estudantes Atendidos', mediana 0,64), de média ('Valor Médio Contrato', 7,2) ou de alfabetização (1,99). Usar a tabela uf para total estadual, nunca somar uf com municipio."
+    tabelas: [municipio, uf]
+    colunas: [valor]
+    severidade: silencioso
+    verificado: "soma de municipio / valor de uf por sigla_uf×programa×variavel×ano, unidades R$ e QTD — medido 2026-10-13"
+  - id: programa_so_na_uf
+    resumo: "10 programas existem só nas tabelas uf/brasil, sem linha municipal: FNSP, FUNPEN, Ligue 180, PNRA, Concessão Florestal, Crédito do Trabalhador, Acredita no Primeiro Passo, Desenrola Pequenos Negócios, Bolsa Residência Médica e Multi. Ausência em municipio não é zero."
+    tabelas: [municipio, uf]
+    colunas: [programa]
+    severidade: erro
+    verificado: "EXCEPT de (bloco, programa) entre uf e municipio: 10 pares — medido 2026-10-13"
+  - id: percentual_em_fracao_e_acima_de_1
+    resumo: "unidade '%' vem como fração (0,4780 = 47,8%). Cobertura vacinal passa de 1 em 42% das células (máximo 4,25): é dose aplicada sobre nascidos estimados, não teto de 100%."
+    tabelas: [municipio, uf, brasil]
+    colunas: [unidade, valor]
+    severidade: silencioso
+    verificado: "Cobertura Vacinal *: 28.028 de 66.836 células > 1, max 4,25; Percentual de Mulheres Nova Friburgo 0,5220 — medido 2026-10-13"
+  - id: ano_corrente_parcial
+    resumo: "2026 vai só até o mês do campo ref, que muda por variável (19 valores distintos, de 06/2024 a 09/2026). Comparar 2026 com 2025 cheio, ou ler ref como 'dado até', é erro. Valores monetários são nominais (rodapé do painel)."
+    tabelas: [municipio, uf, brasil]
+    colunas: [ano, ref, valor]
+    severidade: silencioso
+    verificado: "ref distintos no csv: 19; Desenrola Brasil ref 06/2024, Bolsa Família 09/2026 — medido 2026-10-13"
+  - id: unidades_he_e_dolar
+    resumo: "unidade 'HE' = hectares (IBAMA hectares embargados, ICMBio área fiscalizada, PNRA área de assentamento); 'U$' = dólares, só no saldo da balança comercial da tabela brasil."
+    tabelas: [municipio, uf, brasil]
+    colunas: [unidade]
+    severidade: silencioso
+    verificado: "unidade HE em 3 programas, U$ em 1 (Balança Comercial, brasil, 2023 = 98,9 bi) — medido 2026-10-13"

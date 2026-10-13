@@ -336,6 +336,7 @@ ATLAS_DATASET_THEME = {
     "br_pgfn_dividaativa": "governo",
     "br_pncp": "governo",
     "br_poder360_pesquisas": "politica",
+    "br_presidencia_comunicabr": "governo",
     "br_prf_acidentes": "seguranca",
     "br_rf_arrecadacao": "governo",
     "br_rf_cafir": "territorio",
