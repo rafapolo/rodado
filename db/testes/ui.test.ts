@@ -340,6 +340,30 @@ describe("desktop", () => {
     await p.waitForTimeout(300);
   });
 
+  test("busca realça em mauve o trecho casado, no dataset e na tabela", async () => {
+    await p.locator("#busca").fill("eleicoes.secao");
+    await p.waitForTimeout(400);
+    const marcas = await p.locator("#arvore mark").allTextContents();
+    expect(marcas).toContain("eleicoes");
+    expect(marcas).toContain("secao");
+    const [cor, mauve] = await p.evaluate(() => {
+      const m = document.querySelector("#arvore mark")!;
+      const ref = document.createElement("i");
+      ref.style.color = "var(--mauve)";
+      document.body.append(ref);
+      const par = [getComputedStyle(m).color, getComputedStyle(ref).color];
+      ref.remove();
+      return par;
+    });
+    expect(cor).toBe(mauve);
+    // o nome do dataset segue inteiro para quem lê o texto, e a descrição ainda abre
+    expect(await p.locator(".ds summary").first().textContent()).toContain("br_rodado_eleicoes");
+    expect(await p.locator(".ds[open] > .dsinfo").count()).toBeGreaterThan(0);
+    await p.locator("#busca").fill("");
+    await p.waitForTimeout(300);
+    expect(await p.locator("#arvore mark").count()).toBe(0);
+  });
+
   test("teclado: ↓ da busca entra na árvore, ↑/↓ navegam, → abre, ← fecha", async () => {
     await p.locator("#busca").fill("br_rodado_eleicoes");
     await p.waitForTimeout(400);
