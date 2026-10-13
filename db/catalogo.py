@@ -118,7 +118,9 @@ def monta(conteudo) -> str:
     os.replace(novo, BANCO)
     for f in falhas:
         log(f"fora do catálogo: {f}")
-    return f"{len(views) - len(falhas)} views, {len(falhas)} fora"
+    # timeout do bucket é passageiro: a view volta na próxima montagem (ver rodada)
+    passageiras = sum("Timeout was reached" in f for f in falhas)
+    return f"{len(views) - len(falhas)} views, {len(falhas)} fora", passageiras
 
 
 def copias_locais() -> str:
@@ -137,7 +139,12 @@ def rodada():
     if sha == atual:
         return False
     log(f"views.json ou cópias no SSD mudaram ({sha[:12]}): montando o catálogo")
-    resumo = monta(json.loads(texto))
+    resumo, passageiras = monta(json.loads(texto))
+    if passageiras:
+        # sem gravar a marca, a volta seguinte monta de novo: senão a tabela que caiu por
+        # timeout ficaria fora até a próxima mudança (br_ms_sia.producao_ambulatorial, 2026-10-13)
+        log(f"catálogo pronto: {resumo}; {passageiras} por timeout, monta de novo na próxima volta")
+        return True
     with open(MARCA, "w") as f:
         f.write(sha + "\n")
     log(f"catálogo pronto: {resumo}")
