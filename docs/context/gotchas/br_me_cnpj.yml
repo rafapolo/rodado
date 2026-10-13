@@ -5,7 +5,9 @@ gotchas:
     detalhe: >
       As partições ano/mes não são fluxo, são fotografias completas da base
       da Receita. Contar empresas num ano inteiro sem fixar mes multiplica
-      pelo número de meses carregados.
+      pelo número de meses carregados. As tabelas *_historico já são
+      compactas e não têm ano/mes.
+    tabelas: [empresas, estabelecimentos, socios]
     colunas: [ano, mes]
     severidade: silencioso
     verificado: "empresas: 60,9M linhas em 2025-01 e 64,5M em 2025-09, cada mês de 2025 com o cadastro inteiro — medido 2026-09-25"
@@ -29,7 +31,7 @@ gotchas:
       mascarado: filtre regexp_full_match(col, '[0-9]{11}') para ter só os
       completos, e não trate a máscara como identificador — ela repete entre
       pessoas diferentes.
-    tabelas: [socios]
+    tabelas: [socios, socios_historico]
     colunas: [documento, cpf_representante_legal]
     severidade: silencioso
     verificado: "documento 1.120.187.656 de 1.358.102.261; cpf_representante_legal 8.038.086 de 9.610.047 linhas completadas — medido 2026-10-07"
@@ -42,6 +44,7 @@ gotchas:
       nos retratos antigos, data é o dia real da publicação da Receita
       (2025-09-14, por exemplo). Agrupar ou ordenar por data mistura as duas
       convenções; ano*100+mes não.
+    tabelas: [empresas, estabelecimentos, socios]
     colunas: [data, ano, mes]
     severidade: silencioso
     verificado: "socios 2026-09: data = 2026-09-01 em todas as 28.341.092 linhas; socios 2025-09 (antigo): data = 2025-09-14 — medido 2026-10-07"
@@ -57,3 +60,52 @@ gotchas:
     colunas: [cnpj_basico, razao_social, natureza_juridica]
     severidade: silencioso
     verificado: "empresas 2022-09: cnpj_basico 08464718 duas vezes, idêntico (51.127.182 linhas, 51.127.181 chaves); 2025-05: 10959550 com a linha real e duas vazias (razao_social NULL, natureza 0000) — medido 2026-10-07"
+  - id: historico_retrato_e_aaaamm
+    resumo: "Nas tabelas *_historico o retrato é ano*100+mes (202609). Vigente = fim = 202609 (empresas, estabelecimentos) ou no_ultimo_retrato (sócios)."
+    detalhe: >
+      empresas_historico e estabelecimentos_historico são SCD tipo 2: uma linha
+      por período em que nenhuma coluna mudou, com inicio e fim. socios_historico
+      tem uma linha por (cnpj_basico, tipo, documento, nome, qualificacao), com
+      primeiro_retrato, ultimo_retrato, n_retratos e n_retratos_esperados. Para o
+      cadastro atual, sem as duplicatas do retrato mensal, filtre fim = 202609 ou
+      no_ultimo_retrato. Ex-sócio = NOT no_ultimo_retrato: a Receita não publica
+      data de saída, então ultimo_retrato é o último mês em que o vínculo apareceu.
+      Mudar qualificação ou nome abre outra linha em socios_historico.
+    tabelas: [empresas_historico, estabelecimentos_historico, socios_historico]
+    colunas: [inicio, fim, primeiro_retrato, ultimo_retrato, no_ultimo_retrato]
+    severidade: silencioso
+    verificado: "socios_historico 35.024.175 linhas, 28.340.770 com no_ultimo_retrato = vínculos distintos do retrato 2026-09 (28.341.092 linhas, 322 duplicadas); empresas_historico fim=202609: 70.081.764 linhas = CNPJs distintos — medido 2026-10-13"
+  - id: socios_retrato_2024_09_incompleto
+    resumo: "socios 2024-09 tem só 11,3M empresas (13,95M em 2024-08): ~4,6M vínculos faltam, trocados por linhas repetidas. Em socios_historico isso vira buraco falso."
+    detalhe: >
+      O retrato tem quase o mesmo número de linhas do mês anterior, mas
+      19,9M vínculos distintos contra 24,5M: falta um pedaço do cadastro e o
+      total foi completado com duplicatas. Não use 2024-09 como retrato de
+      sócios. Em socios_historico, quem existia antes e depois aparece com
+      n_retratos = n_retratos_esperados - 1; quase todos os 4,8M vínculos com
+      n_retratos < n_retratos_esperados são isso, não saída e volta real.
+    tabelas: [socios, socios_historico]
+    colunas: [ano, mes, n_retratos, n_retratos_esperados]
+    severidade: silencioso
+    verificado: "socios 2024-08: 24.527.683 linhas, 24.527.575 vínculos, 13.954.175 empresas; 2024-09: 24.527.679 linhas, 19.904.674 vínculos, 11.314.719 empresas; amostra de vínculos com buraco de 1 mês: o mês faltante é 202409 — medido 2026-10-13"
+  - id: estabelecimentos_retrato_2024_10_incompleto
+    resumo: "estabelecimentos 2024-10 tem 64,5M linhas mas só 59,9M CNPJs (62,6M em 2024-09). Em estabelecimentos_historico isso fecha ~2,7M períodos falsos em fim = 202409."
+    detalhe: >
+      Mesmo defeito do retrato de sócios 2024-09, um mês depois: parte do
+      cadastro falta e o total vem de linhas repetidas. Os estabelecimentos que
+      faltam têm o período fechado em 202409 e reaberto em 202411. Ao medir
+      baixas, mudanças de endereço ou de CNAE perto dessa data, desconte o pico.
+    tabelas: [estabelecimentos, estabelecimentos_historico]
+    colunas: [ano, mes, inicio, fim]
+    severidade: silencioso
+    verificado: "estabelecimentos 2024-09: 62.634.862 CNPJs distintos; 2024-10: 64.528.600 linhas, 59.893.804 distintos; estabelecimentos_historico com fim=202409: 3.521.049 períodos contra 474.586 a 938.294 em 202410-202412 — medido 2026-10-13"
+  - id: socios_retratos_2023_04_e_2024_11
+    resumo: "socios 2023-04 é cópia de 2023-03 (mesmos 22.549.631 vínculos), e 2024-11 tem cada linha duas vezes (49,9M linhas). Não conte variação mensal nesses meses."
+    detalhe: >
+      Nenhum dos dois distorce socios_historico (o histórico desduplica e a
+      cópia só repete o mês), mas uma série mensal de entradas ou saídas de
+      sócios mostra zero em 2023-04 e dobra em 2024-11 se contar linhas.
+    tabelas: [socios]
+    colunas: [ano, mes]
+    severidade: silencioso
+    verificado: "socios 2023-03 e 2023-04: 22.549.631 vínculos distintos e 12.420.984 empresas nos dois; 2024-11: 49.867.180 linhas, 24.933.483 vínculos — medido 2026-10-13"

@@ -15,14 +15,19 @@ schema antigo, em vez de baixar 1,1 TB de novo sob outro nome.
 
 Cada mês entra como arquivos `rf_<aaaamm>_<NNNN>.parquet` ao lado dos numerados
 (`000000000000.parquet`), nome fora da faixa que os outros scripts de sync usam. Nada
-existente é tocado. O que falta é decidido pelo disco: mês com `rf_<aaaamm>_*` ou com
-linhas daquele `ano`/`mes` nos arquivos antigos é pulado.
+existente é tocado. O que falta é decidido pelo disco: só entram meses **depois** do
+mais recente que está lá. Desde 2026-10-13 o disco guarda só o último retrato (o passado
+vive em `*_historico`), então "o que a origem tem e o disco não" seria a série inteira
+de novo, ~1,1 TB. Mês antigo só com `--mes` explícito.
 
 As linhas vêm em streaming (`to_arrow_iterable`, pela Storage Read API), um mês de `estabelecimentos` tem
 ~72 M linhas e não cabe em memória de uma vez.
 
-Depois de rodar: `python3 scripts/repara_views_beelink.py --apply` (as views listam os
-arquivos um a um e não enxergam os novos sozinhas).
+Depois de rodar, para cada mês novo, na ordem:
+
+    python3 scripts/sync/gera_cnpj_historico.py --tabela empresas --anexa   # idem estabelecimentos, socios
+    # conferido o histórico, apagar o retrato anterior (rf_<anterior>_*) das 3 tabelas
+    python3 scripts/repara_views_beelink.py --apply   # as views listam os arquivos um a um
 """
 import argparse
 import subprocess
@@ -144,9 +149,12 @@ def main():
     erros = []
     for tb in a.tabela or TABELAS:
         origem = meses_origem(client, tb)
-        faltam = sorted(set(origem) - meses_locais(tb), reverse=True)  # o mais recente primeiro
+        locais = meses_locais(tb)
         if a.mes:
-            faltam = [m for m in faltam if m in a.mes]
+            faltam = sorted((set(origem) - locais) & set(a.mes), reverse=True)
+        else:
+            # só o que é mais novo que o disco: o passado foi apagado de propósito
+            faltam = sorted((m for m in origem if not locais or m > max(locais)), reverse=True)
         print(f"\n{DESTINO}.{tb}: faltam {len(faltam)} meses, "
               f"{sum(origem[m] for m in faltam):,} linhas: {' '.join(faltam)}", flush=True)
         if not a.apply:

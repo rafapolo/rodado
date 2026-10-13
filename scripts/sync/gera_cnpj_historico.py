@@ -57,6 +57,13 @@ PREFIXO = (f"SET enable_progress_bar=false; SET memory_limit='{os.environ.get('C
 CHAVE = {"socios": "cnpj_basico", "estabelecimentos": "cnpj", "empresas": "cnpj_basico"}
 GRAO_SOCIOS = ["cnpj_basico", "tipo", "documento", "nome", "qualificacao"]
 FORA = {"ano", "mes", "data"}
+# Retratos quebrados na origem, pulados com --pula-retrato (2026-10-13): socios 202409 tem
+# 19,9M vínculos distintos contra 24,5M de 202408, completados com linhas repetidas;
+# estabelecimentos 202410 tem 59,9M CNPJs contra 62,6M de 202409. Mantidos, viram
+# buraco falso (sócios) e fechamento falso (estabelecimentos) no histórico.
+PULA = set()
+SUBSTITUI = False
+ATE = None  # --ate: só retratos <= este (para testar o --anexa contra o histórico completo)
 
 
 def remoto(cmd):
@@ -113,8 +120,9 @@ def sh(cmd, timeout=600):
 
 
 def colunas(tb):
-    r = duck(f"SELECT column_name c FROM (DESCRIBE SELECT * FROM "
-             f"read_parquet('{ROOT}/{tb}/000000000000.parquet'));")
+    # o primeiro arquivo do retrato mais recente: desde 2026-10-13 só ele fica no disco
+    arq = sh(f"ls {ROOT}/{tb}/*.parquet | tail -1").strip()
+    r = duck(f"SELECT column_name c FROM (DESCRIBE SELECT * FROM read_parquet('{arq}'));")
     return [x["c"] for x in r if x["c"] not in FORA]
 
 
@@ -122,7 +130,13 @@ def retratos(tb):
     """Os retratos presentes, em ordem, com o índice sequencial k (1..n)."""
     r = duck(f"SELECT DISTINCT ano*100+mes AS m FROM read_parquet('{ROOT}/{tb}/*.parquet') "
              f"ORDER BY 1;", timeout=3600)
-    return [x["m"] for x in r]
+    return [x["m"] for x in r if x["m"] not in PULA and (ATE is None or x["m"] <= ATE)]
+
+
+def nome_trabalho(tb, destino):
+    """Pasta de intermediários; pular retrato muda o resultado, então muda a pasta."""
+    sufixo = "".join(f"_sem{m}" for m in sorted(PULA))
+    return f"{TRABALHO}/{'teste_' if destino == TESTE else 'v2_'}{tb}{sufixo}"
 
 
 def q(c):
@@ -182,9 +196,10 @@ def gera_scd2(tb, destino, limite=None):
     # fora de ~/rodado: o backup para o COLD copia tudo o que está lá, a cada 6h
     # v2_: os intermediários de 2026-10-07 (sem a verificação dupla) têm um `abre_202504` de
     # empresas comprovadamente errado; não são reaproveitados
-    trab = f"{TRABALHO}/{'teste_' if destino == TESTE else 'v2_'}{tb}"
+    trab = nome_trabalho(tb, destino)
     sh(f"mkdir -p {trab}")
-    print(f"{tb}: {len(rs)} retratos, {rs[0]}..{rs[-1]}; {len(cols)} colunas", flush=True)
+    print(f"{tb}: {len(rs)} retratos, {rs[0]}..{rs[-1]}; {len(cols)} colunas"
+          + (f"; pulando {sorted(PULA)}" if PULA else ""), flush=True)
 
     def mes(m, alias=""):
         return f"{alias}ano = {m // 100} AND {alias}mes = {m % 100}"
@@ -272,11 +287,12 @@ def gera_socios(prefixos, destino):
     cols = colunas(tb)
     rs = retratos(tb)
     valores_r = ", ".join(f"({m}, {i})" for i, m in enumerate(rs, 1))
-    print(f"{tb}: {len(rs)} retratos, {rs[0]}..{rs[-1]}; {len(cols)} colunas", flush=True)
+    print(f"{tb}: {len(rs)} retratos, {rs[0]}..{rs[-1]}; {len(cols)} colunas"
+          + (f"; pulando {sorted(PULA)}" if PULA else ""), flush=True)
     fonte = f"{ROOT}/{tb}/*.parquet"
     saida = f"{destino}/{tb}_historico"
     # pedaços no trabalho; o conjunto só vai para ~/rodado com os 100 conferidos
-    trab = f"{TRABALHO}/{'teste_' if destino == TESTE else 'v2_'}{tb}"
+    trab = nome_trabalho(tb, destino)
     sh(f"mkdir -p {trab}")
     feitos = set(sh(f"ls {trab}").split())
     for p in prefixos:
@@ -321,10 +337,142 @@ SELECT (SELECT count(*) FROM read_parquet('{stg}') WHERE no_ultimo_retrato) AS h
               flush=True)
 
 
-def publica(origem, saida):
-    """Move o diretório conferido para o destino; recusa sobrescrever."""
+def anexa(tb, destino, prefixos=None):
+    """Acrescenta ao histórico os retratos mais novos que ele, sem reler o passado.
+
+    É o caminho mensal desde 2026-10-13, quando os retratos antigos saíram do disco: o
+    histórico publicado é a base, o retrato novo é comparado só com o que está vigente
+    nele. Mesmo resultado de regerar tudo (conferido assim: histórico até 202608 +
+    anexa(202609) = histórico completo). Grava no trabalho e publica por cima, com o
+    antigo indo para o trabalho; depois rode repara_views_beelink.py --apply, porque os
+    nomes dos arquivos mudam."""
+    chave = CHAVE[tb]
+    cols = colunas(tb)
+    saida = f"{destino}/{tb}_historico"
+    base = f"{saida}/*.parquet"
+    so_pref = (lambda a="": " AND (" + " OR ".join(
+        f"starts_with({a}{q(chave)}, '{p}')" for p in prefixos) + ")") if prefixos else (lambda a="": "")
+    if tb == "socios":
+        ult = duck(f"SELECT max(ultimo_retrato) u FROM read_parquet('{base}');")[0]["u"]
+    else:
+        ult = duck(f"SELECT max(fim) u FROM read_parquet('{base}');")[0]["u"]
+    novos = [m for m in retratos(tb) if m > ult]
+    if not novos:
+        print(f"{tb}_historico: já vai até {ult}, nada a anexar", flush=True)
+        return
+    fonte = f"{ROOT}/{tb}/*.parquet"
+    for m in novos:
+        trab = f"{TRABALHO}/anexa_{tb}_{m}{'_teste' if destino == TESTE else ''}"
+        sh(f"rm -rf {trab} && mkdir -p {trab}/montagem")
+        t = time.time()
+        filtro_mes = f"ano = {m // 100} AND mes = {m % 100}"
+        if tb == "socios":
+            n_ok = _anexa_socios(cols, base, fonte, filtro_mes, ult, m, trab, so_pref)
+        else:
+            n_ok = _anexa_scd2(tb, chave, cols, base, fonte, filtro_mes, ult, m, trab, so_pref)
+        print(f"{tb}_historico + {m}: vigentes {n_ok:,} = original, {time.time()-t:,.0f}s", flush=True)
+        publica(f"{trab}/montagem", saida, substitui=True)
+        ult = m
+    print(f"{tb}_historico vai até {ult}. Rode repara_views_beelink.py --apply.", flush=True)
+
+
+def _anexa_scd2(tb, chave, cols, base, fonte, filtro_mes, ult, m, trab, so_pref):
+    resto = [c for c in cols if c != chave]
+    nulos = " + ".join(f"({q(c)} IS NULL)::INT" for c in resto)
+    lista = ", ".join(q(c) for c in cols)
+    # uma versão por chave no retrato novo, com o mesmo desempate do gera_scd2
+    h_novo = f"{trab}/h_{m}.parquet"
+    copia_dupla(f"SELECT {q(chave)}, arg_min(h, {{'n': nulos, 'h': h}}) AS h FROM ("
+                f"SELECT {q(chave)}, {hash_cols(cols, chave)} AS h, {nulos} AS nulos "
+                f"FROM read_parquet('{fonte}') WHERE {filtro_mes}{so_pref()}) GROUP BY 1", h_novo)
+    total = vig = 0
+    for d in "0123456789":
+        pd = f"starts_with({q(chave)}, '{d}')"
+        sql = f"""
+SELECT v.inicio,
+       CASE WHEN v.fim = {ult} AND n.h = {hash_cols(cols, chave, 'v.')} THEN {m} ELSE v.fim END AS fim,
+       {", ".join("v." + q(c) for c in cols)}
+FROM (SELECT * FROM read_parquet('{base}') WHERE {pd}) v
+LEFT JOIN (SELECT * FROM read_parquet('{h_novo}') WHERE {pd}) n USING ({q(chave)})
+UNION ALL
+SELECT {m} AS inicio, {m} AS fim, {", ".join("e." + q(c) for c in cols)}
+FROM (SELECT DISTINCT {", ".join("e." + q(c) for c in cols)}
+      FROM read_parquet('{fonte}') e
+      JOIN read_parquet('{h_novo}') c ON c.{q(chave)} = e.{q(chave)} AND c.h = {hash_cols(cols, chave, 'e.')}
+      WHERE {filtro_mes} AND starts_with(e.{q(chave)}, '{d}')) e
+LEFT JOIN (SELECT {q(chave)}, {hash_cols(cols, chave)} AS h FROM read_parquet('{base}')
+           WHERE fim = {ult} AND {pd}) p
+  ON p.{q(chave)} = e.{q(chave)} AND p.h = {hash_cols(cols, chave, 'e.')}
+WHERE p.{q(chave)} IS NULL"""
+        arq = f"{trab}/montagem/p{d}.parquet"
+        total += copia_dupla(sql, arq)
+        vig += duck(f"SELECT count(*) n FROM read_parquet('{arq}') WHERE fim = {m};")[0]["n"]
+    orig = duck(f"SELECT count(*) n FROM read_parquet('{h_novo}');")[0]["n"]
+    if vig != orig:
+        raise RuntimeError(f"{tb} {m}: vigentes {vig:,} x original {orig:,}; nada publicado, em {trab}")
+    print(f"  {total:,} períodos", flush=True)
+    return vig
+
+
+def _anexa_socios(cols, base, fonte, filtro_mes, ult, m, trab, so_pref):
+    resto = [c for c in cols if c not in GRAO_SOCIOS]
+    grao = ", ".join(q(c) for c in GRAO_SOCIOS)
+    igual = " AND ".join(f"n.{q(c)} IS NOT DISTINCT FROM v.{q(c)}" for c in GRAO_SOCIOS)
+    nulos = " + ".join(f"({q(c)} IS NULL)::INT" for c in resto)
+    linha = ", ".join(f"{q(c)}: {q(c)}" for c in resto)
+    # o retrato novo agrupado pelo grão, com o desempate do sql_socios
+    novo = f"{trab}/novo_{m}.parquet"
+    copia_dupla(f"""
+SELECT {grao}, arg_max({{{linha}}}, {{'n': -nulos, 'h': h}}) AS _u
+FROM (SELECT *, hash({", ".join(q(c) for c in resto)}) AS h, {nulos} AS nulos
+      FROM read_parquet('{fonte}') WHERE {filtro_mes}{so_pref()})
+GROUP BY ALL""", novo)
+    # índice k de cada retrato: n_retratos_esperados conta retratos, não meses
+    rs = [x["r"] for x in duck(
+        f"SELECT DISTINCT r FROM (SELECT primeiro_retrato r FROM read_parquet('{base}') "
+        f"UNION SELECT ultimo_retrato FROM read_parquet('{base}')) ORDER BY 1;")]
+    k = ", ".join(f"({r}, {i})" for i, r in enumerate(rs + [m], 1))
+    vig = 0
+    for d in "0123456789":
+        pd = f"starts_with({q('cnpj_basico')}, '{d}')"
+        sql = f"""
+WITH k(r, i) AS (VALUES {k}),
+n AS (SELECT * FROM read_parquet('{novo}') WHERE {pd}),
+v AS (SELECT * FROM read_parquet('{base}') WHERE {pd})
+SELECT {", ".join("v." + q(c) for c in GRAO_SOCIOS)},
+       v.n_retratos + (n.cnpj_basico IS NOT NULL)::INT AS n_retratos,
+       {", ".join(f"CASE WHEN n.cnpj_basico IS NOT NULL THEN n._u.{q(c)} ELSE v.{q(c)} END AS {q(c)}" for c in resto)},
+       v.primeiro_retrato,
+       CASE WHEN n.cnpj_basico IS NOT NULL THEN {m} ELSE v.ultimo_retrato END AS ultimo_retrato,
+       CASE WHEN n.cnpj_basico IS NOT NULL
+            THEN v.n_retratos_esperados + (SELECT i FROM k WHERE r = {m}) - ku.i
+            ELSE v.n_retratos_esperados END AS n_retratos_esperados,
+       n.cnpj_basico IS NOT NULL AS no_ultimo_retrato
+FROM v JOIN k ku ON ku.r = v.ultimo_retrato
+LEFT JOIN n ON {igual}
+UNION ALL
+SELECT {", ".join("n." + q(c) for c in GRAO_SOCIOS)}, 1,
+       {", ".join(f"n._u.{q(c)}" for c in resto)},
+       {m}, {m}, 1, true
+FROM n WHERE NOT EXISTS (SELECT 1 FROM v WHERE {igual})"""
+        arq = f"{trab}/montagem/p{d}.parquet"
+        copia_dupla(sql, arq)
+        vig += duck(f"SELECT count(*) n FROM read_parquet('{arq}') WHERE no_ultimo_retrato;")[0]["n"]
+    orig = duck(f"SELECT count(*) n FROM read_parquet('{novo}');")[0]["n"]
+    if vig != orig:
+        raise RuntimeError(f"socios {m}: vigentes {vig:,} x original {orig:,}; nada publicado, em {trab}")
+    return vig
+
+
+def publica(origem, saida, substitui=None):
+    """Move o diretório conferido para o destino; recusa sobrescrever, salvo com
+    --substitui, que tira o antigo de ~/rodado (para o trabalho) só agora, já conferido o novo."""
     if sh(f"test -e {saida} && echo existe || true").strip():
-        raise RuntimeError(f"{saida} já existe; mova-o antes de publicar")
+        if not (SUBSTITUI if substitui is None else substitui):
+            raise RuntimeError(f"{saida} já existe; mova-o antes de publicar (ou --substitui)")
+        velho = f"{TRABALHO}/substituido_{os.path.basename(saida)}_{time.strftime('%Y%m%d%H%M')}"
+        sh(f"mv {saida} {velho}")
+        print(f"anterior movido para {velho} (apagar à mão)", flush=True)
     sh(f"mkdir -p {os.path.dirname(saida)} && mv {origem} {saida} && "
        f"chmod 775 {saida} && chmod 664 {saida}/*.parquet")
 
@@ -337,8 +485,22 @@ def main():
     ap.add_argument("--retratos", type=int,
                     help="só os N primeiros retratos (para testar com --teste)")
     ap.add_argument("--teste", action="store_true", help=f"grava em {TESTE}, fora do espelho")
+    ap.add_argument("--pula-retrato", type=int, action="append", default=[],
+                    help="retrato aaaamm quebrado na origem, fora do histórico; repetível")
+    ap.add_argument("--substitui", action="store_true",
+                    help="publica por cima do histórico existente (o antigo vai para o trabalho)")
+    ap.add_argument("--anexa", action="store_true",
+                    help="acrescenta ao histórico publicado os retratos mais novos que ele (uso mensal)")
+    ap.add_argument("--ate", type=int, help="só retratos <= aaaamm (teste do --anexa)")
     a = ap.parse_args()
+    global SUBSTITUI, ATE
+    PULA.update(a.pula_retrato)
+    SUBSTITUI = a.substitui
+    ATE = a.ate
     destino = TESTE if a.teste else ROOT
+    if a.anexa:
+        anexa(a.tabela, destino, a.prefixo)
+        return 0
     if a.tabela == "socios":
         # 1 dígito (~140 M linhas por pedaço) estourou os 16 GB do DuckDB no
         # GROUP BY com arg_max (2026-10-07); 2 dígitos dão ~1 min por pedaço
