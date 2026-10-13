@@ -44,12 +44,14 @@ SELECT v.schema_name AS dataset, v.view_name AS tabela, m.rows AS linhas,
          THEN 'catálogo do espelho: _rodado_metadata tem uma linha por tabela (linhas, fonte, data, status, '
            || 'procedência), _rodado_datasets uma por dataset' END) AS descricao,
        m.source_name AS fonte, nullif(m.source_url, '') AS url,
-       nullif(m.scrape_date, '') AS atualizado, m.num_files AS arquivos
+       nullif(m.scrape_date, '') AS atualizado, m.num_files AS arquivos,
+       -- a view lê do SSD do finland (cópia em /dados/local, ver catalogo.py) ou do bucket
+       contains(v.sql, '{LOCAL}') AS ssd
 FROM duckdb_views() v
 LEFT JOIN _rodado_metadata m ON m.dataset = v.schema_name AND m."table" = v.view_name
 WHERE NOT v.internal AND v.schema_name NOT LIKE '\_%' ESCAPE '\'
 ORDER BY v.schema_name <> 'main', 1, 2  -- o catálogo (main._rodado_*) primeiro na árvore
-"""
+""".replace("{LOCAL}", rodado_sql.LOCAL.replace("'", "''"))
 
 PORTA = int(os.environ.get("RODADO_PORTA_CONSULTA", "18081"))
 LIMITE_PADRAO = 10_000
