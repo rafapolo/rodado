@@ -135,6 +135,15 @@
   /* onde a tabela mora: verde = SSD do servidor (rápido), amarelo = bucket S3; ◐ = dataset misto */
   .onde { margin-right: 4px; font-size: 9px; vertical-align: 1px; }
   .onde.ssd { color: var(--green); } .onde.s3 { color: var(--yellow); }
+  /* legenda: também filtra (onde:ssd / onde:s3 na busca) */
+  #legenda { display: flex; gap: 6px; padding: 3px 8px; border-bottom: 1px solid var(--surface0); font-size: 11px; }
+  #legenda button { background: none; border: 1px solid transparent; border-radius: 4px; padding: 1px 6px;
+    color: var(--subtext0); font: inherit; cursor: pointer; }
+  #legenda button:hover { background: var(--surface0); }
+  #legenda button[aria-pressed=true] { border-color: var(--mauve); color: var(--text); }
+  #legenda .onde { font-size: 9px; }
+  #legenda .n { color: var(--overlay2); }
+  #legenda button:hover .n, #legenda button[aria-pressed=true] .n { color: var(--subtext0); }
   .usar { color: var(--green); cursor: pointer; margin-left: 6px; visibility: hidden; }
   .tb > summary:hover .usar { visibility: visible; }
   .info { padding: 4px 8px 6px 34px; color: var(--subtext0); white-space: normal; }
@@ -179,8 +188,9 @@
   :focus-visible { outline: 2px solid var(--mauve); outline-offset: -2px; border-radius: 3px; }
   summary:focus-visible, .coluna:focus-visible { background: var(--surface0); }
   #arrasta:focus-visible { background: var(--mauve); outline: none; }
-  button:focus-visible, #busca:focus-visible { outline: 2px solid var(--mauve); outline-offset: 1px; }
-  #sql:focus-visible { outline: none; }
+  button:focus-visible { outline: 2px solid var(--mauve); outline-offset: 1px; }
+  /* campos de texto: o foco é só a borda fina mauve, sem anel por cima */
+  #sql:focus-visible, #busca:focus-visible { outline: none; }
   .vazio.erro { color: var(--red); }
   #teclas, #fundo, #fecha { display: none; }
 
@@ -255,6 +265,10 @@
     <span id="resumo" aria-live="polite"></span>
     <button id="fecha" aria-label="fechar a árvore de datasets"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></button>
   </header>
+  <div id="legenda" role="group" aria-label="onde as tabelas são lidas">
+    <button type="button" data-onde="ssd" aria-pressed="false" title="tabelas no SSD do servidor: leitura rápida · clique para filtrar"><span class="onde ssd" aria-hidden="true">●</span> SSD <span class="n" id="n-ssd"></span></button>
+    <button type="button" data-onde="s3" aria-pressed="false" title="tabelas no bucket S3: leitura mais lenta · clique para filtrar"><span class="onde s3" aria-hidden="true">●</span> S3 <span class="n" id="n-s3"></span></button>
+  </div>
   <div id="arvore" role="tree" aria-label="árvore de datasets"><div class="vazio"><span class="gira" aria-hidden="true"></span>carregando catálogo…</div></div>
   <div id="status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
 </aside>
@@ -338,16 +352,22 @@ const onde = ssd => ssd
   ? '<span class="onde ssd" role="img" aria-label="no SSD" title="no SSD do servidor: leitura rápida">●</span>'
   : '<span class="onde s3" role="img" aria-label="no S3" title="no bucket S3: leitura mais lenta">●</span>';
 
+const ONDE = /(?:^|\s)onde:(ssd|s3)(?=\s|$)/;
+
 function desenha(filtro) {
-  const f = filtro.trim().toLowerCase();
+  const bruto = filtro.trim().toLowerCase();
+  const so = (ONDE.exec(bruto) || [])[1];                    // onde:ssd / onde:s3 na busca
+  const f = bruto.replace(ONDE, " ").trim();
+  for (const b of document.querySelectorAll("#legenda button")) b.setAttribute("aria-pressed", String(b.dataset.onde === so));
   const grupos = new Map();
   for (const t of catalogo) {
+    if (so && (so === "ssd") !== !!t.ssd) continue;
     if (f && !(t.dataset + "." + t.tabela + " " + (t.descricao || "") + " " + (t.fonte || "")).toLowerCase().includes(f)) continue;
     if (!grupos.has(t.dataset)) grupos.set(t.dataset, []);
     grupos.get(t.dataset).push(t);
   }
   const nTab = [...grupos.values()].reduce((s, g) => s + g.length, 0);
-  document.getElementById("status").textContent = f
+  document.getElementById("status").textContent = bruto
     ? `${nTab} ${nTab === 1 ? "tabela" : "tabelas"} em ${grupos.size} ${grupos.size === 1 ? "dataset" : "datasets"}`
     : "";
   if (!grupos.size) { arvore.innerHTML = '<div class="vazio">nada encontrado</div>'; return; }
@@ -401,7 +421,8 @@ function htmlTabela(t, cols) {
   const fonte = linkSeguro(t.url)
     ? `<a href="${esc(t.url)}" target="_blank" title="${esc(t.url)}">${esc(t.fonte || "fonte")} <span aria-hidden="true">↗</span></a>`
     : esc(t.fonte || "");
-  const fatos = [t.linhas != null && `<b>${numero(t.linhas)}</b> linhas`, data(t.atualizado) && `atualizado ${data(t.atualizado)}`, fonte]
+  const fatos = [t.linhas != null && `<b>${numero(t.linhas)}</b> linhas`, data(t.atualizado) && `atualizado ${data(t.atualizado)}`,
+    t.ssd ? `${onde(true)}lida do SSD` : `${onde(false)}lida do S3, mais lenta`, fonte]
     .filter(Boolean).join(" · ");
   const nomes = new Set(cols.map(c => c.coluna));
   const filtros = [...cols.filter(c => c.particao).map(c => c.coluna), ...FILTROS.filter(f => nomes.has(f))];
@@ -787,6 +808,13 @@ arvore.addEventListener("keydown", e => {
 document.addEventListener("keydown", e => { if (e.key === "Escape") fechaArvore(); });
 
 let espera;
+document.getElementById("legenda").addEventListener("click", e => {
+  const b = e.target.closest("button[data-onde]");
+  if (!b) return;
+  const resto = busca.value.replace(ONDE, " ").trim();
+  busca.value = b.getAttribute("aria-pressed") === "true" ? resto : `onde:${b.dataset.onde} ${resto}`.trim();
+  desenha(busca.value);
+});
 busca.addEventListener("input", () => { clearTimeout(espera); espera = setTimeout(() => desenha(busca.value), 120); });
 
 // redimensionar o painel: refit ao vivo, largura lembrada, duplo clique volta ao padrão
@@ -841,6 +869,9 @@ fetch(location.origin + "/catalogo.json").then(r => r.json()).then(d => {
   const ds = new Set(d.map(t => t.dataset)).size;
   const linhas = d.reduce((s, t) => s + (t.linhas || 0), 0);
   document.getElementById("resumo").textContent = `${ds} ds · ${d.length} tab · ${fmt(linhas)}`;
+  const nSsd = d.filter(t => t.ssd).length;
+  document.getElementById("n-ssd").textContent = `(${nSsd.toLocaleString("pt-BR")})`;
+  document.getElementById("n-s3").textContent = `(${(d.length - nSsd).toLocaleString("pt-BR")})`;
   desenha("");
 }).catch(err => { arvore.innerHTML = `<div class="vazio erro">erro ao carregar catálogo: ${esc(err.message)}</div>`; });
 ajustaAltura();
