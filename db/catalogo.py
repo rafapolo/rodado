@@ -17,6 +17,7 @@ import concurrent.futures
 import hashlib
 import json
 import os
+import re
 import sys
 import time
 
@@ -30,6 +31,7 @@ MARCA = BANCO + ".sha256"
 INTERVALO = int(os.environ.get("RODADO_CATALOGO_INTERVALO", "900"))
 PARALELO = int(os.environ.get("RODADO_CATALOGO_PARALELO", "8"))
 LOCAIS = ("'/home/polo/rodado/", "'~/rodado/")
+_NO_BUCKET = re.compile("'" + re.escape(rodado_sql.RAIZ) + "([^']+)'")
 
 
 def log(msg):
@@ -55,7 +57,9 @@ def baixa_views():
 def para_s3(sql: str) -> str:
     for local in LOCAIS:
         sql = sql.replace(local, "'" + rodado_sql.RAIZ)
-    return sql
+    # parquet com cópia em /dados/local (mesmo caminho relativo do bucket) é lido do SSD
+    return _NO_BUCKET.sub(lambda m: "'" + rodado_sql.LOCAL + m[1] + "'"
+                          if os.path.isfile(rodado_sql.LOCAL + m[1]) else m[0], sql)
 
 
 def monta(conteudo) -> str:
