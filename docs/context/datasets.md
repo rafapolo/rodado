@@ -4,7 +4,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
 
-255 datasets, 1402 tabelas.
+256 datasets, 1403 tabelas.
 
 | dataset | tabelas | linhas | last_update |
 |---|---:|---:|---|
@@ -146,7 +146,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_me_caged` | 4 | 298.358.844 | 2026-10-11 |
 | `br_me_clima_organizacional` | 1 | 16.436 | 2026-07-09 |
 | `br_me_cno` | 3 | 1.020.894 | 2026-07-09 |
-| `br_me_cnpj` | 8 | 1.897.047.756 | 2026-10-13 |
+| `br_me_cnpj` | 8 | 533.889.400 | 2026-10-13 |
 | `br_me_comex_stat` | 5 | 133.659.718 | 2026-10-09 |
 | `br_me_estoque_divida_publica` | 1 | 124.419 | 2026-07-09 |
 | `br_me_exportadoras_importadoras` | 1 | 3 | 2026-07-09 |
@@ -212,6 +212,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_rf_dirpf` | 2 | 35.356 | 2026-09-04 |
 | `br_rj_isp_estatisticas_seguranca` | 14 | 167.979 | 2026-10-09 |
 | `br_rodado_eleicoes` | 2 | 2.205.734 | 2026-10-09 |
+| `br_rodado_indicadores_municipais` | 1 | 12.382.056 | 2026-10-13 |
 | `br_saude_bps` | 1 | 371.128 | 2026-10-07 |
 | `br_saude_farmaciapopular` | 1 | 32.592 | 2026-10-07 |
 | `br_sedec_desastres` | 1 | 20.380 | 2026-10-09 |
