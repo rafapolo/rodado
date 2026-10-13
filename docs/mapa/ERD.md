@@ -2,13 +2,13 @@
 
 🇬🇧 [English version](ERD_EN.md)
 
-Mapa de entidades e relações das 1396 tabelas (253 datasets) do espelho. Gerado por `scripts/gera_erd.py` a partir de `schemas.json` em 2026-10-11 — não edite à mão, regenere.
+Mapa de entidades e relações das 1401 tabelas (254 datasets) do espelho. Gerado por `scripts/gera_erd.py` a partir de `schemas.json` em 2026-10-13 — não edite à mão, regenere.
 
 As expressões de join, o formato de cada chave e as pegadinhas estão em [`docs/context/join_keys.md`](docs/context/join_keys.md). Este arquivo é o mapa; aquele é o manual.
 
 ## Como ler
 
-Um único `erDiagram` com 1396 tabelas seria ilegível, então o modelo sobe um nível:
+Um único `erDiagram` com 1401 tabelas seria ilegível, então o modelo sobe um nível:
 
 - **entidade = dataset**; **atributo = uma das tabelas** dele;
 - o *tipo* do atributo lista as chaves que aquela tabela carrega (`mun`, `uf`, `cnpj`, `cnes`, `escola`, `setor`, `cep`, `cpf`, `cnae`, `cbo`, `cid`, `ncm`, `pais`, `partido`, `orgao`, `ug`, `funcprog`, `ano`, `mes`), ou `sem_chave` quando não há nenhuma;
@@ -77,15 +77,15 @@ erDiagram
 | Diretórios e tabelas de referência | 11 | 90 | 10 |
 | Saúde | 29 | 73 | 28 |
 | Educação e ciência | 20 | 144 | 17 |
-| Trabalho, empresas e economia | 47 | 258 | 38 |
+| Trabalho, empresas e economia | 47 | 260 | 38 |
 | Governo, orçamento e compras | 38 | 185 | 33 |
 | Política e eleições | 9 | 126 | 9 |
 | Justiça, segurança e sanções | 23 | 63 | 14 |
 | Território, ambiente e infraestrutura | 28 | 118 | 24 |
 | Demografia e indicadores sociais | 18 | 161 | 17 |
 | Internacional, cultura e esporte | 9 | 25 | 3 |
-| Outros | 21 | 153 | 17 |
-| **total** | **253** | **1396** | **210** |
+| Outros | 22 | 156 | 18 |
+| **total** | **254** | **1401** | **211** |
 
 43 datasets não têm chave documentada alguma; 330 tabelas individuais não carregam chave nenhuma (ambas as listas no fim).
 
@@ -721,7 +721,7 @@ erDiagram
 
 ## Trabalho, empresas e economia
 
-47 datasets · 258 tabelas
+47 datasets · 260 tabelas
 
 **1/4**
 
@@ -1143,11 +1143,13 @@ erDiagram
     UF ||..o{ br_trase_supply_chain : "state"
     br_me_cnpj {
         sem_chave dicionario "853 linhas"
-        cnpj_ano_mes empresas "3.3B linhas"
+        cnpj_ano_mes empresas "70.1M linhas"
         cnpj empresas_historico "80M linhas"
-        mun_uf_cep_cnpj_cnae_pais_ano_mes estabelecimentos "3.4B linhas"
+        mun_uf_cep_cnpj_cnae_pais_ano_mes estabelecimentos "73.4M linhas"
+        mun_uf_cep_cnpj_cnae_pais estabelecimentos_historico "196.7M linhas"
         cnpj simples "50.4M linhas"
         cnpj_cpf_pais_ano_mes socios "1.4B linhas"
+        cnpj_cpf_pais socios_historico "35M linhas"
     }
     br_me_comex_stat {
         sem_chave dicionario "1.7k linhas"
@@ -2496,7 +2498,7 @@ erDiagram
 
 ## Outros
 
-21 datasets · 153 tabelas
+22 datasets · 156 tabelas
 
 **1/3**
 
@@ -2616,6 +2618,8 @@ erDiagram
     PESSOA_CPF ||--o{ br_mte_listasuja : "cpf"
     UF ||--o{ br_mte_listasuja : "sigla_uf"
     UF ||--o{ br_ons_avaliacao_operacao : "sigla_uf"
+    MUNICIPIO ||--o{ br_presidencia_comunicabr : "id_municipio"
+    UF ||--o{ br_presidencia_comunicabr : "sigla_uf"
     MUNICIPIO ||--o{ br_prf_acidentes : "id_municipio"
     UF ||--o{ br_prf_acidentes : "sigla_uf"
     CEP ||--o{ br_rodado_eleicoes : "cep"
@@ -2665,6 +2669,11 @@ erDiagram
     }
     br_pncp {
         ano contratos "5.2M linhas"
+    }
+    br_presidencia_comunicabr {
+        ano brasil "594 linhas"
+        mun_uf_ano municipio "1.6M linhas"
+        uf_ano uf "14.5k linhas"
     }
     br_prf_acidentes {
         mun_uf_ano ocorrencia "2.2M linhas"
