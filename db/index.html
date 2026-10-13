@@ -129,6 +129,8 @@
   .tb[open] > summary:hover, .tb[open] > summary:focus-visible { background: var(--surface0); }
   .tb[open] > summary .nome { font-weight: 700; }
   .tb > summary .nome { color: var(--blue); }
+  /* trecho que casou com o filtro */
+  #arvore mark { background: none; color: var(--mauve); }
   .tb > summary .linhas { color: var(--peach); float: right; }
   .usar { color: var(--green); cursor: pointer; margin-left: 6px; visibility: hidden; }
   .tb > summary:hover .usar { visibility: visible; }
@@ -314,6 +316,21 @@ function roda(texto) {
   }
 }
 
+// nome com os trechos que casam com o filtro em <mark>. O filtro casa em "dataset.tabela", então a busca
+// corre em `base` e só a fatia que cabe ao nome (a partir de `desloc`) é marcada: "cnpj.emp" pinta as duas pontas.
+function marca(nome, f, base = nome, desloc = 0) {
+  if (!f) return esc(nome);
+  const alvo = base.toLowerCase();
+  let html = "", pos = 0;
+  for (let i = alvo.indexOf(f); i >= 0; i = alvo.indexOf(f, i + f.length)) {
+    const a = Math.max(i - desloc, pos), b = Math.min(i + f.length - desloc, nome.length);
+    if (b <= a) continue;
+    html += esc(nome.slice(pos, a)) + "<mark>" + esc(nome.slice(a, b)) + "</mark>";
+    pos = b;
+  }
+  return html + esc(nome.slice(pos));
+}
+
 function desenha(filtro) {
   const f = filtro.trim().toLowerCase();
   const grupos = new Map();
@@ -330,9 +347,10 @@ function desenha(filtro) {
   const abrir = f.length > 0 && grupos.size <= 30;
   let html = "";
   for (const [ds, tabelas] of grupos) {
-    html += `<details class="ds"${abrir ? " open" : ""}><summary role="treeitem" aria-level="1" title="${esc((catalogo.find(x => x.dataset === ds && x.descricao) || {}).descricao || "")}">${esc(ds)} <span class="n">(${tabelas.length})</span></summary>`;
+    const comPonto = f && tabelas.find(t => (ds + "." + t.tabela).toLowerCase().includes(f));
+    html += `<details class="ds" data-ds="${esc(ds)}"${abrir ? " open" : ""}><summary role="treeitem" aria-level="1" title="${esc((catalogo.find(x => x.dataset === ds && x.descricao) || {}).descricao || "")}">${marca(ds, f, comPonto ? ds + "." + comPonto.tabela : ds)} <span class="n">(${tabelas.length})</span></summary>`;
     for (const t of tabelas) {
-      html += `<details class="tb" data-t="${esc(ds + "." + t.tabela)}"><summary role="treeitem" aria-level="2"><span class="nome">${esc(t.tabela)}</span>`
+      html += `<details class="tb" data-t="${esc(ds + "." + t.tabela)}"><summary role="treeitem" aria-level="2"><span class="nome">${marca(t.tabela, f, ds + "." + t.tabela, ds.length + 1)}</span>`
         + `<span class="usar" role="button" aria-label="colar FROM ${esc(ds + "." + t.tabela)} no terminal" title="colar no terminal">▶</span>`
         + `<span class="linhas" aria-label="${esc(fmt(t.linhas))} linhas">${fmt(t.linhas)}</span></summary></details>`;
     }
@@ -405,7 +423,7 @@ arvore.addEventListener("toggle", async e => {
   if (!det.open || det.dataset.ok) return;
   if (det.classList?.contains("ds")) {
     det.dataset.ok = 1;
-    det.querySelector(":scope > summary").insertAdjacentHTML("afterend", htmlDataset(det.querySelector(":scope > summary").firstChild.textContent.trim()));
+    det.querySelector(":scope > summary").insertAdjacentHTML("afterend", htmlDataset(det.dataset.ds));
     // "mais…" só quando as 2 linhas cortam a descrição
     const desc = det.querySelector(":scope > .dsinfo .desc");
     if (desc && desc.scrollHeight <= desc.clientHeight + 1) desc.nextElementSibling.remove();
