@@ -340,7 +340,7 @@ describe("desktop", () => {
     await p.waitForTimeout(300);
   });
 
-  test("busca realça em mauve o trecho casado, no dataset e na tabela", async () => {
+  test("busca realça com fundo mauve o trecho casado, no dataset e na tabela", async () => {
     await p.locator("#busca").fill("eleicoes.secao");
     await p.waitForTimeout(400);
     const marcas = await p.locator("#arvore mark").allTextContents();
@@ -349,9 +349,9 @@ describe("desktop", () => {
     const [cor, mauve] = await p.evaluate(() => {
       const m = document.querySelector("#arvore mark")!;
       const ref = document.createElement("i");
-      ref.style.color = "var(--mauve)";
+      ref.style.backgroundColor = "var(--mauve)";
       document.body.append(ref);
-      const par = [getComputedStyle(m).color, getComputedStyle(ref).color];
+      const par = [getComputedStyle(m).backgroundColor, getComputedStyle(ref).backgroundColor];
       ref.remove();
       return par;
     });
