@@ -4,7 +4,9 @@ Painel municipal **em formato longo**: uma linha por município × indicador × 
 dimensão, com 987 indicadores de 17 seções (demografia, economia, saúde, educação, segurança,
 política…) para os 5.571 municípios. São 12.382.056 linhas numa única tabela,
 `br_rodado_indicadores_municipais.municipio`. O documento serve para escrever SQL (dialeto
-**DuckDB**) contra `https://db.rodado.xyz` e para cruzar o painel com `br_tse_eleicoes`.
+**DuckDB**) contra `https://db.rodado.xyz`. Todos os exemplos usam só esta tabela, inclusive os de
+eleição: a seção `politica` traz prefeitos e câmaras eleitos em 2024, eleitorado de 2026,
+filiados e financiamento de campanha.
 
 Medido em 2026-10-13. Os números de linhas, anos e municípios abaixo vêm de consulta, não de
 documentação da fonte.
@@ -34,8 +36,7 @@ curl --data-binary @consulta.sql 'https://db.rodado.xyz/query?token=TOKEN&format
 - O DuckDB aceita `max(x) FILTER (cond)`, `arg_max(valor, ano)`, `QUALIFY`, `GROUP BY ALL`,
   `ntile()`, `corr()`. Todos os exemplos abaixo usam esses recursos.
 
-Todos os exemplos foram executados no db.rodado.xyz em 2026-10-13, em menos de 2 s, menos o 10
-(32 s na primeira execução, 0,6 s na segunda, com o cache de rodapés de parquet quente). A saída mostrada é a real.
+Todos os exemplos foram executados no db.rodado.xyz em 2026-10-13, em menos de 0,3 s. A saída mostrada é a real.
 
 ## Exemplos — só o painel
 
@@ -200,238 +201,205 @@ Sudeste,1668,6.51,21.4,-0.31
 Sul,1180,6.69,12.7,-0.24
 ```
 
-## Exemplos — painel × TSE (eleições)
+## Exemplos — eleições, com a seção `politica` do painel
 
-A chave é `id_municipio` (IBGE, 7 dígitos, `VARCHAR`), a mesma nas duas bases. No 1º turno de
-2026 (4/out) foram ao 2º turno para presidente (25/out) **Flávio Bolsonaro (PL, 22)**, com
-47,03% dos válidos, e **Lula (PT, 13)**, com 45,16%. Há 2º turno de governador em AC, AM, DF,
-ES, RJ, RN e TO.
+`prefeito.*` e `camara_municipal.*` são da eleição municipal de 2024; `eleitorado.*`,
+`genero.N` e `instrucao.N` são o retrato do cadastro eleitoral de 2026; `filiados.*`, de
+ago/2026. Resultado da eleição geral de 2026 (presidente, governador) **não** está no painel.
 
-### 6. Voto presidencial de 2026 por quintil de % de evangélicos
-
-```sql
--- 1º turno de 2026 para presidente por faixa de % de evangélicos no município (Censo 2022)
--- Flávio Bolsonaro (PL, 22) x Lula (PT, 13), % dos votos válidos somados na faixa
-WITH evang AS (
-  SELECT id_municipio, valor AS pct_evangelicos
-  FROM br_rodado_indicadores_municipais.municipio
-  WHERE indicador = 'censo_extra.religiao.grupos.pct' AND dimensao = 'religiao=Evangélicas'
-), voto AS (
-  SELECT id_municipio,
-    sum(votos) FILTER (numero_candidato = '22') AS v22,
-    sum(votos) FILTER (numero_candidato = '13') AS v13,
-    sum(votos) AS validos
-  FROM br_tse_eleicoes.resultados_candidato_municipio
-  WHERE ano = 2026 AND turno = 1 AND cargo = 'presidente' AND id_municipio IS NOT NULL
-  GROUP BY id_municipio
-), q AS (
-  SELECT *, ntile(5) OVER (ORDER BY pct_evangelicos) AS quintil FROM evang JOIN voto USING (id_municipio)
-)
-SELECT quintil, count(*) AS municipios,
-  round(min(pct_evangelicos), 1) AS evang_de, round(max(pct_evangelicos), 1) AS evang_ate,
-  round(100 * sum(v22) / sum(validos), 1) AS pct_22,
-  round(100 * sum(v13) / sum(validos), 1) AS pct_13
-FROM q GROUP BY quintil ORDER BY quintil;
-```
-
-Saída (CSV, primeiras linhas):
-
-```
-quintil,municipios,evang_de,evang_ate,pct_22,pct_13
-1,1114,1.3,13.5,32.3,62.1
-2,1114,13.5,19.0,39.3,54.3
-3,1114,19.0,24.8,44.3,47.4
-4,1114,24.8,31.4,50.1,41.6
-5,1114,31.4,88.7,52.8,39.2
-```
-
-### 7. Escolaridade do eleitorado (códigos do TSE no painel) × abstenção
+### 6. Escolaridade do eleitorado × abstenção na eleição de prefeito de 2024
 
 ```sql
--- Escolaridade do eleitorado x abstenção no 1º turno de 2026 (presidente)
--- instrucao.N são os códigos do TSE: 1 analfabeto, 2 lê e escreve, 3 fundamental incompleto ... 8 superior completo, 0 não informado
-WITH esc AS (
+-- Escolaridade do eleitorado (2026) x abstenção na eleição de prefeito de 2024, por decil de municípios
+-- instrucao.N são códigos do TSE: 1 analfabeto, 2 lê e escreve, 3 fundamental incompleto ... 8 superior completo, 0 não informado
+-- prefeito.* é o turno decisivo: nas 51 cidades com 2º turno, os números são do 2º turno
+WITH b AS (
   SELECT id_municipio,
     sum(valor) FILTER (indicador IN ('instrucao.1', 'instrucao.2', 'instrucao.3')) AS ate_fund_incompleto,
     sum(valor) FILTER (indicador = 'instrucao.8') AS superior,
-    sum(valor) AS eleitores
+    sum(valor) FILTER (indicador LIKE 'instrucao.%') AS eleitores,
+    max(valor) FILTER (indicador = 'prefeito.abstencoes') AS abstencoes,
+    max(valor) FILTER (indicador = 'prefeito.aptos') AS aptos
   FROM br_rodado_indicadores_municipais.municipio
-  WHERE secao = 'politica' AND indicador LIKE 'instrucao.%' AND ano = 2026
+  WHERE secao = 'politica' AND (indicador LIKE 'instrucao.%' OR indicador IN ('prefeito.abstencoes', 'prefeito.aptos'))
   GROUP BY id_municipio
-), abst AS (
-  SELECT id_municipio, abstencoes, aptos
-  FROM br_tse_eleicoes.detalhes_votacao_municipio
-  WHERE ano = 2026 AND turno = 1 AND cargo = 'presidente' AND id_municipio IS NOT NULL
 ), d AS (
-  SELECT *, ntile(10) OVER (ORDER BY ate_fund_incompleto / eleitores) AS decil FROM esc JOIN abst USING (id_municipio)
+  SELECT *, ntile(10) OVER (ORDER BY ate_fund_incompleto / eleitores) AS decil FROM b WHERE aptos > 0
 )
 SELECT decil, count(*) AS municipios,
   round(100 * sum(ate_fund_incompleto) / sum(eleitores), 1) AS pct_ate_fund_incompleto,
   round(100 * sum(superior) / sum(eleitores), 1) AS pct_superior,
-  round(100 * sum(abstencoes) / sum(aptos), 1) AS pct_abstencao
+  round(100 * sum(abstencoes) / sum(aptos), 1) AS pct_abstencao_2024
 FROM d GROUP BY decil ORDER BY decil;
 ```
 
 Saída (CSV, primeiras linhas):
 
 ```
-decil,municipios,pct_ate_fund_incompleto,pct_superior,pct_abstencao
-1,557,21.1,15.5,20.9
-2,557,31.2,9.0,20.6
-3,557,34.8,7.8,21.0
-4,557,38.1,7.3,20.7
-5,557,40.9,6.7,20.6
-6,557,43.5,6.0,20.4
-7,557,46.1,5.5,20.6
+decil,municipios,pct_ate_fund_incompleto,pct_superior,pct_abstencao_2024
+1,557,21.2,15.3,26.3
+2,557,31.2,8.9,21.4
+3,557,34.8,7.8,20.9
+4,557,38.1,7.3,19.3
+5,557,40.9,6.7,17.7
+6,557,43.5,6.0,16.6
+7,557,46.1,5.5,16.5
 …
 ```
 
-O resultado é um achado nulo: a abstenção fica em ~21% em todos os decis.
-
-### 8. Partido do prefeito eleito em 2024 × voto para presidente em 2026
+### 7. Que municípios cada partido governa: perfil das prefeituras de 2024
 
 ```sql
--- Partido do prefeito eleito em 2024 x voto para presidente no 1º turno de 2026
--- (prefeito.eleito.partido guarda o partido em texto, não em valor)
-WITH pref AS (
-  SELECT id_municipio, texto AS partido_prefeito
+-- Que municípios cada partido governa: perfil (medianas) das prefeituras por partido do prefeito eleito em 2024
+-- (prefeito.eleito.partido está em texto, não em valor)
+WITH b AS (
+  SELECT id_municipio,
+    any_value(texto) FILTER (indicador = 'prefeito.eleito.partido') AS partido,
+    max(valor) FILTER (indicador = 'censo_2022.populacao') AS pop,
+    max(valor) FILTER (indicador = 'pib.pib_per_capita.valor') AS pib_pc,
+    max(valor) FILTER (indicador = 'bolsa_familia.familias') / max(valor) FILTER (indicador = 'censo_2022.domicilios') AS cob_pbf,
+    arg_max(valor, ano) FILTER (indicador = 'ideb.iniciais.ideb') AS ideb
   FROM br_rodado_indicadores_municipais.municipio
-  WHERE indicador = 'prefeito.eleito.partido' AND ano = 2024
-), voto AS (
-  SELECT id_municipio,
-    sum(votos) FILTER (numero_candidato = '22') AS v22,
-    sum(votos) FILTER (numero_candidato = '13') AS v13,
-    sum(votos) AS validos
-  FROM br_tse_eleicoes.resultados_candidato_municipio
-  WHERE ano = 2026 AND turno = 1 AND cargo = 'presidente' AND id_municipio IS NOT NULL
+  WHERE indicador IN ('prefeito.eleito.partido', 'censo_2022.populacao', 'pib.pib_per_capita.valor',
+                      'bolsa_familia.familias', 'censo_2022.domicilios', 'ideb.iniciais.ideb')
   GROUP BY id_municipio
 )
-SELECT partido_prefeito, count(*) AS prefeituras,
-  round(100 * sum(v22) / sum(validos), 1) AS pct_22,
-  round(100 * sum(v13) / sum(validos), 1) AS pct_13,
-  count(*) FILTER (v22 > v13) AS municipios_22_a_frente,
-  count(*) FILTER (v13 > v22) AS municipios_13_a_frente
-FROM pref JOIN voto USING (id_municipio)
-GROUP BY partido_prefeito
-HAVING count(*) >= 100
-ORDER BY pct_22 DESC;
+SELECT partido, count(*) AS prefeituras, sum(pop)::BIGINT AS populacao_governada,
+  median(pop)::INT AS pop_mediana, median(pib_pc)::INT AS pib_pc_mediano,
+  round(100 * median(cob_pbf), 1) AS pbf_mediano_pct, round(median(ideb), 1) AS ideb_mediano
+FROM b WHERE partido IS NOT NULL
+GROUP BY partido HAVING count(*) >= 100
+ORDER BY populacao_governada DESC;
 ```
 
 Saída (CSV, primeiras linhas):
 
 ```
-partido_prefeito,prefeituras,pct_22,pct_13,municipios_22_a_frente,municipios_13_a_frente
-PL,514,56.3,35.6,411,103
-PP,747,49.2,43.8,439,308
-PSD,884,49.1,42.8,486,397
-PODE,127,48.9,42.4,80,47
-REPUBLICANOS,432,48.5,43.9,203,228
-PSDB,274,47.8,44.8,166,108
-AVANTE,136,45.5,47.2,28,108
+partido,prefeituras,populacao_governada,pop_mediana,pib_pc_mediano,pbf_mediano_pct,ideb_mediano
+PSD,884,35067885,10460,31915,21.1,6.4
+MDB,854,34820069,10364,29463,32.2,6.1
+PL,514,25192173,13962,44151,15.5,6.5
+UNIÃO,583,21183953,10426,31665,30.0,6.1
+PP,747,19036262,10560,33212,24.0,6.3
+REPUBLICANOS,432,13186064,10440,27751,31.8,6.2
+PT,251,9603832,12065,16176,52.5,6.0
 …
 ```
 
-### 9. Variação de Lula entre os 1º turnos de 2022 e 2026, por cobertura do Bolsa Família
+### 8. Câmaras municipais de 2024: cadeiras por partido e votos por vereador eleito
 
 ```sql
--- Quanto Lula (13) ganhou ou perdeu do 1º turno de 2022 para o de 2026, por faixa de cobertura do Bolsa Família
--- (famílias no PBF em jul/2025 ÷ domicílios do Censo 2022; mesma régua, 1º turno x 1º turno)
-WITH pbf AS (
-  SELECT id_municipio,
-    max(valor) FILTER (indicador = 'bolsa_familia.familias') / max(valor) FILTER (indicador = 'censo_2022.domicilios') AS cobertura
+-- Câmaras municipais eleitas em 2024: cadeiras de cada partido por região e quantos votos o partido
+-- precisou por cadeira. camara_municipal.bancadas.votos soma SÓ os votos dos vereadores eleitos do partido
+-- (não o voto total do partido); camara_municipal.* guarda a última eleição de cada município: filtre ano = 2024
+WITH reg AS (
+  SELECT id_municipio, texto AS regiao FROM br_rodado_indicadores_municipais.municipio
+  WHERE secao = 'municipio' AND indicador = 'regiao'
+), banc AS (
+  SELECT id_municipio, regexp_extract(dimensao, 'partido=([^;]+)', 1) AS partido,
+    max(valor) FILTER (indicador = 'camara_municipal.bancadas.cadeiras') AS cadeiras,
+    max(valor) FILTER (indicador = 'camara_municipal.bancadas.votos') AS votos_eleitos
   FROM br_rodado_indicadores_municipais.municipio
-  WHERE indicador IN ('bolsa_familia.familias', 'censo_2022.domicilios')
-  GROUP BY id_municipio
-), voto AS (
-  SELECT id_municipio,
-    sum(votos) FILTER (ano = 2022 AND numero_candidato = '13') AS v13_22, sum(votos) FILTER (ano = 2022) AS val_22,
-    sum(votos) FILTER (ano = 2026 AND numero_candidato = '13') AS v13_26, sum(votos) FILTER (ano = 2026) AS val_26
-  FROM br_tse_eleicoes.resultados_candidato_municipio
-  WHERE ano IN (2022, 2026) AND turno = 1 AND cargo = 'presidente' AND id_municipio IS NOT NULL
-  GROUP BY id_municipio
-), q AS (
-  SELECT *, ntile(5) OVER (ORDER BY cobertura) AS quintil FROM pbf JOIN voto USING (id_municipio)
+  WHERE indicador IN ('camara_municipal.bancadas.cadeiras', 'camara_municipal.bancadas.votos') AND ano = 2024
+  GROUP BY 1, 2
+), r AS (
+  SELECT regiao, partido, sum(cadeiras) AS cadeiras, sum(votos_eleitos) AS votos_eleitos,
+    100 * sum(cadeiras) / sum(sum(cadeiras)) OVER (PARTITION BY regiao) AS pct_cadeiras
+  FROM banc JOIN reg USING (id_municipio)
+  GROUP BY regiao, partido
 )
-SELECT quintil, count(*) AS municipios,
-  round(100 * min(cobertura), 1) AS pbf_de, round(100 * max(cobertura), 1) AS pbf_ate,
-  round(100 * sum(v13_22) / sum(val_22), 1) AS pct_13_2022,
-  round(100 * sum(v13_26) / sum(val_26), 1) AS pct_13_2026,
-  round(100 * (sum(v13_26) / sum(val_26) - sum(v13_22) / sum(val_22)), 1) AS variacao_pp
-FROM q GROUP BY quintil ORDER BY quintil;
+SELECT regiao, partido, cadeiras::INT AS cadeiras, round(pct_cadeiras, 1) AS pct_cadeiras,
+  round(votos_eleitos / cadeiras)::INT AS votos_por_vereador_eleito
+FROM r
+WHERE partido IN ('PL', 'PT', 'PSD', 'MDB', 'PP', 'UNIÃO')
+ORDER BY regiao, cadeiras DESC;
 ```
 
 Saída (CSV, primeiras linhas):
 
 ```
-quintil,municipios,pbf_de,pbf_ate,pct_13_2022,pct_13_2026,variacao_pp
-1,1114,0.5,12.2,34.6,30.3,-4.3
-2,1114,12.2,20.6,42.9,39.8,-3.1
-3,1114,20.6,37.5,50.4,47.2,-3.2
-4,1114,37.5,57.7,63.2,59.5,-3.7
-5,1114,57.7,147.2,72.5,68.6,-3.9
+regiao,partido,cadeiras,pct_cadeiras,votos_por_vereador_eleito
+Centro-Oeste,UNIÃO,869,18.1,498
+Centro-Oeste,MDB,774,16.1,544
+Centro-Oeste,PP,552,11.5,523
+Centro-Oeste,PL,510,10.6,603
+Centro-Oeste,PSD,238,5.0,435
+Centro-Oeste,PT,85,1.8,996
+Nordeste,MDB,2502,13.3,710
+…
 ```
 
-### 10. 2º turno de governador: finalistas, 1º turno e onde está o eleitorado
+### 9. Mulheres e pessoas negras: eleitorado × candidaturas municipais, por UF
 
 ```sql
--- 2º turno de governador em 2026: as UFs com disputa, os dois finalistas, o 1º turno e onde está o eleitorado
--- (resultado = '2º turno' marca os finalistas; eleitorado.aptos e capital_uf vêm do painel municipal)
--- fora_da_soma = comparecimento - válidos - brancos - nulos: votos que não estão em candidato nenhum do arquivo
--- (no RJ, 274 mil — padrão de votos anulados sub judice). Sem eles no denominador, o 1º colocado do RJ passa de 50%.
-WITH fin AS (
-  SELECT sigla_uf, numero_candidato, any_value(sigla_partido) AS partido, sum(votos) AS votos
-  FROM br_tse_eleicoes.resultados_candidato_municipio
-  WHERE ano = 2026 AND turno = 1 AND cargo = 'governador' AND resultado = '2º turno'
-  GROUP BY ALL
-), nomes AS (
-  SELECT sigla_uf, numero AS numero_candidato, any_value(nome_urna) AS nome_urna
-  FROM br_tse_eleicoes.candidatos
-  WHERE ano = 2026 AND cargo = 'governador'
-  GROUP BY ALL
-), validos AS (
-  SELECT sigla_uf, sum(votos_validos) AS validos, sum(aptos) AS aptos, sum(abstencoes) AS abstencoes,
-    sum(comparecimento - votos_validos - votos_brancos - votos_nulos) AS fora_da_soma
-  FROM br_tse_eleicoes.detalhes_votacao_municipio
-  WHERE ano = 2026 AND turno = 1 AND cargo = 'governador'
-  GROUP BY sigla_uf
-), eleitorado AS (
-  SELECT sigla_uf,
-    sum(apt) FILTER (cap = 1) / sum(apt) AS pct_eleitorado_capital,
-    count(*) FILTER (apt >= 200000) AS municipios_200mil_eleitores
-  FROM (
-    SELECT id_municipio, any_value(sigla_uf) AS sigla_uf,
-      max(valor) FILTER (indicador = 'eleitorado.aptos') AS apt,
-      max(valor) FILTER (indicador = 'capital_uf') AS cap
-    FROM br_rodado_indicadores_municipais.municipio
-    WHERE indicador IN ('eleitorado.aptos', 'capital_uf')
-    GROUP BY id_municipio
-  ) GROUP BY sigla_uf
-)
-SELECT f.sigla_uf AS uf, f.numero_candidato AS numero, n.nome_urna, f.partido,
-  round(100 * f.votos / v.validos, 1) AS pct_validos_1t,
-  v.fora_da_soma, round(100 * f.votos / (v.validos + v.fora_da_soma), 1) AS pct_com_fora_da_soma,
-  v.aptos AS eleitores, round(100 * v.abstencoes / v.aptos, 1) AS pct_abstencao_1t,
-  round(100 * e.pct_eleitorado_capital, 1) AS pct_eleitorado_na_capital,
-  e.municipios_200mil_eleitores
-FROM fin f
-JOIN validos v USING (sigla_uf)
-JOIN eleitorado e USING (sigla_uf)
-LEFT JOIN nomes n USING (sigla_uf, numero_candidato)
-ORDER BY uf, pct_validos_1t DESC;
+-- Mulheres no eleitorado (2026) x mulheres entre as candidaturas municipais de 2024, por UF
+-- genero.N é código do TSE: 2 masculino, 4 feminino, 0 não informado
+SELECT sigla_uf AS uf,
+  round(100 * sum(valor) FILTER (indicador = 'genero.4') / sum(valor) FILTER (indicador LIKE 'genero.%'), 1) AS pct_eleitoras,
+  round(100 * sum(valor) FILTER (indicador = 'camara_municipal.perfil_candidatos.feminino' AND ano = 2024)
+            / sum(valor) FILTER (indicador = 'camara_municipal.perfil_candidatos.candidatos' AND ano = 2024), 1) AS pct_candidatas_2024,
+  round(100 * sum(valor) FILTER (indicador = 'camara_municipal.perfil_candidatos.negros' AND ano = 2024)
+            / sum(valor) FILTER (indicador = 'camara_municipal.perfil_candidatos.candidatos' AND ano = 2024), 1) AS pct_candidaturas_negras_2024
+FROM br_rodado_indicadores_municipais.municipio
+WHERE secao = 'politica'
+  AND (indicador LIKE 'genero.%' OR indicador IN ('camara_municipal.perfil_candidatos.feminino',
+       'camara_municipal.perfil_candidatos.candidatos', 'camara_municipal.perfil_candidatos.negros'))
+GROUP BY sigla_uf
+ORDER BY pct_candidatas_2024;
 ```
 
 Saída (CSV, primeiras linhas):
 
 ```
-uf,numero,nome_urna,partido,pct_validos_1t,fora_da_soma,pct_com_fora_da_soma,eleitores,pct_abstencao_1t,pct_eleitorado_na_capital,municipios_200mil_eleitores
-AC,11,Mailza Assis,PP,49.8,0,49.8,613316,20.4,44.0,1
-AC,10,Alan Rick,REPUBLICANOS,32.3,0,32.3,613316,20.4,44.0,1
-AM,55,Omar Aziz,PSD,40.6,0,40.6,2796053,20.2,52.6,1
-AM,22,Professora Maria Do Carmo,PL,24.5,0,24.5,2796053,20.2,52.6,1
-DF,11,Celina Leão,PP,50.0,1843,49.9,2243988,19.0,100.0,1
-DF,13,Leandro Grass,PT,34.5,1843,34.5,2243988,19.0,100.0,1
-ES,10,Lorenzo Pazolini,REPUBLICANOS,49.6,0,49.6,2987584,21.4,8.9,4
+uf,pct_eleitoras,pct_candidatas_2024,pct_candidaturas_negras_2024
+AL,53.5,33.4,66.5
+MG,52.5,33.6,54.1
+PI,51.7,33.6,74.0
+ES,52.8,33.7,54.0
+RJ,54.0,33.8,50.1
+PB,52.9,33.9,59.4
+BA,52.8,33.9,80.5
 …
+```
+
+### 10. Dinheiro de campanha para prefeito por eleitor, por porte do município
+
+```sql
+-- Dinheiro de campanha para prefeito em 2024 por eleitor, por porte do município,
+-- com a força do prefeito eleito (votos ÷ aptos) e o voto branco + nulo
+WITH b AS (
+  SELECT id_municipio,
+    max(valor) FILTER (indicador = 'censo_2022.populacao') AS pop,
+    max(valor) FILTER (indicador = 'camara_municipal.financiamento.receita' AND ano = 2024 AND dimensao = 'cargo=prefeito') AS receita_prefeito,
+    max(valor) FILTER (indicador = 'prefeito.aptos') AS aptos,
+    max(valor) FILTER (indicador = 'prefeito.comparecimento') AS comparecimento,
+    max(valor) FILTER (indicador = 'prefeito.eleito.votos') AS votos_eleito,
+    max(valor) FILTER (indicador = 'prefeito.votos_brancos') + max(valor) FILTER (indicador = 'prefeito.votos_nulos') AS brancos_nulos
+  FROM br_rodado_indicadores_municipais.municipio
+  WHERE indicador IN ('censo_2022.populacao', 'camara_municipal.financiamento.receita', 'prefeito.aptos',
+                      'prefeito.comparecimento', 'prefeito.eleito.votos', 'prefeito.votos_brancos', 'prefeito.votos_nulos')
+  GROUP BY id_municipio
+)
+SELECT CASE WHEN pop < 10000 THEN '1. até 10 mil' WHEN pop < 50000 THEN '2. 10–50 mil'
+            WHEN pop < 200000 THEN '3. 50–200 mil' WHEN pop < 1000000 THEN '4. 200 mil–1 mi' ELSE '5. 1 mi ou mais' END AS porte,
+  count(*) AS municipios,
+  round(sum(receita_prefeito) / sum(aptos), 2) AS receita_prefeito_por_eleitor,
+  round(median(receita_prefeito / aptos), 2) AS mediana_por_eleitor,
+  round(100 * sum(votos_eleito) / sum(aptos), 1) AS pct_aptos_no_eleito,
+  round(100 * sum(brancos_nulos) / sum(comparecimento), 1) AS pct_brancos_nulos
+FROM b WHERE aptos > 0
+GROUP BY porte ORDER BY porte;
+```
+
+Saída (CSV, primeiras linhas):
+
+```
+porte,municipios,receita_prefeito_por_eleitor,mediana_por_eleitor,pct_aptos_no_eleito,pct_brancos_nulos
+1. até 10 mil,2499,41.24,39.44,50.0,4.6
+2. 10–50 mil,2416,23.89,23.41,45.3,5.0
+3. 50–200 mil,503,20.13,17.38,41.7,7.1
+4. 200 mil–1 mi,136,25.03,20.93,41.1,8.4
+5. 1 mi ou mais,14,21.75,22.39,39.5,8.9
 ```
 
 ## Modelo de dados
@@ -513,44 +481,25 @@ Para descobrir indicadores sem ler a árvore inteira:
     são unidades diferentes. Para ranquear serve; como "% de domicílios", é aproximação.
 11. **`financas_campanha` de 2026 não é municipal.** Em 2026 existe uma única linha no país
     (o total nacional, R$ 4,49 bi em despesas). O recorte por município vale só para 2024. Para
-    2026, use `br_tse_eleicoes.despesas_candidato` (parcial: o ciclo ainda está aberto).
+    2026, o painel não tem recorte municipal.
 12. **`genero.N` e `instrucao.N` (seção `politica`, eleitorado de 2026) são códigos do TSE.**
     `genero`: 0 não informado, 2 masculino, 4 feminino. `instrucao`: 0 não informado,
     1 analfabeto, 2 lê e escreve, 3 fundamental incompleto, 4 fundamental completo, 5 médio
     incompleto, 6 médio completo, 7 superior incompleto, 8 superior completo. A soma dos
-    códigos é `eleitorado.aptos` (Rio de Janeiro: 4.950.429 nos dois), igual a
-    `br_tse_eleicoes.perfil_eleitorado_municipio_zona` de 2026.
-13. **`eleitorado.aptos` ≠ `aptos` do resultado.** O painel traz o retrato do cadastro
-    (Rio: 4.950.429); `detalhes_votacao_municipio` traz o aptos do dia da eleição (4.952.612).
-    Use o segundo para taxas de abstenção e comparecimento.
-
-## Cruzando com `br_tse_eleicoes`
-
-| tabela | grão | filtros obrigatórios | usar para |
-|---|---|---|---|
-| `resultados_candidato_municipio` | candidato × município × turno | `ano`, `turno`, `cargo` | votos por candidato: `numero_candidato`, `sigla_partido`, `resultado` (`'2º turno'`, `'eleito'`, `'nao eleito'`…), `votos` |
-| `detalhes_votacao_municipio` | cargo × município × turno | `ano`, `turno`, `cargo` | `aptos`, `comparecimento`, `abstencoes`, `votos_validos`, `votos_brancos`, `votos_nulos` |
-| `perfil_eleitorado_municipio_zona` | zona × sexo × idade × instrução… | `ano` | eleitorado detalhado (o painel já tem o agregado por município) |
-| `candidatos` | candidatura | `ano`, `cargo` | `nome_urna`, `numero`, `sigla_partido`, `sigla_uf`, perfil do candidato |
-| `br_rodado_eleicoes.secao_setor` | seção eleitoral × setor censitário | — | descer abaixo do município |
-
-- `cargo` em minúsculas: `'presidente'`, `'governador'`, `'senador'`, `'deputado federal'`,
-  `'prefeito'`, `'vereador'`. `turno` é inteiro (1, 2). `numero_candidato` é texto (`'13'`).
-- **Filtre `id_municipio IS NOT NULL`.** O voto no exterior vem com município nulo (187 linhas
-  em `detalhes_votacao_municipio` de presidente em 2026).
-- **Percentuais de 2026 com voto sub judice.** No 1º turno de 2026 para governador do RJ, o
-  comparecimento passa da soma de válidos + brancos + nulos em 274.411 votos, que não aparecem
-  em candidato nenhum (padrão de voto anulado sub judice). Calculado sobre os válidos do
-  arquivo, o 1º colocado aparece com 50,9%, embora o TSE o mande ao 2º turno; com os 274 mil no
-  denominador, 49,3%. No DF a diferença é de 1.843 votos. Para presidente, a soma fecha exata.
-  Confira com `comparecimento - votos_validos - votos_brancos - votos_nulos`, como no exemplo 10.
-- Conferido: a soma dos votos por candidato em `resultados_candidato_municipio` é igual a
-  `votos_validos` de `detalhes_votacao_municipio` nos 5.570 municípios (presidente, 1º turno
-  de 2026), sem nenhuma diferença.
-- O painel já traz eleição pronta na seção `politica`: prefeito eleito em 2024 (`prefeito.*`),
-  câmara municipal 2020–2024 (`camara_municipal.*`), filiados por partido e sexo
-  (`filiados.*`), eleitorado de 2026 (`eleitorado.*`, `genero.N`, `instrucao.N`) e
-  deputados nascidos no município (`deputados_nascidos.*`).
+    códigos é `eleitorado.aptos` (Rio de Janeiro: 4.950.429 nos dois).
+13. **`eleitorado.aptos` (2026) ≠ `prefeito.aptos` (2024).** São dois cadastros, de datas
+    diferentes (Rio: 4.950.429 em 2026 e 5.009.373 em 2024). Para abstenção e comparecimento de
+    2024, use `prefeito.aptos`.
+14. **`prefeito.*` é o turno que decidiu.** Nas 51 cidades com 2º turno em 2024
+    (`prefeito.turno = 2`), aptos, abstenções, brancos, nulos e votos do eleito são do 2º turno
+    (São Paulo: 2.940.360 abstenções, do 2º turno). Nas demais, do 1º.
+15. **`camara_municipal.*` também é "última eleição".** 5.513 municípios têm 2024 e 55 só têm
+    2020, sem 2024. **Não dá para comparar 2020 com 2024** somando por ano: filtre `ano = 2024`.
+    O DF não tem câmara municipal nem prefeito.
+16. **`camara_municipal.bancadas.votos` soma só os votos dos vereadores eleitos** do partido,
+    não o voto total da legenda (São Paulo, PL: 457.797, a soma dos seus eleitos, de um total
+    de ~561 mil votos do partido; no país, 47 milhões contra 108 milhões de votos para
+    vereador). Serve para "votos por vereador eleito", não para fatia de votos.
 
 ## Árvore dos indicadores
 
