@@ -127,7 +127,7 @@
   summary:hover, .coluna:hover { background: var(--surface0); }
   /* texto secundário: overlay2 no mantle (6,2:1) e subtext0 sobre o surface0 do hover/foco (5,6:1) — AA nos dois */
   .ds > summary .n { color: var(--overlay2); }
-  /* dataset aberto: filete rosa descendo do ▾ até o fim do bloco, para separar vários abertos */
+  /* dataset aberto: filete rosa tracejado descendo do ▾ até o fim do bloco, para separar vários abertos */
   /* o nome do dataset aberto fica preso no topo (z-index 3) e o da tabela aberta, logo abaixo dele;
      o filete passa por cima (z-index 2) do nome preso da tabela e do fundo do hover */
   :root { --recuo-ds: 8px; --alto-ds: calc(1.45em + 2px); }
@@ -136,7 +136,7 @@
   .ds[open] > summary:hover, .ds[open] > summary:focus-visible { background: var(--surface0); }
   .ds[open] .tb[open] > summary { top: var(--alto-ds); }
   .ds[open]::after { content: ""; position: absolute; left: calc(var(--recuo-ds) + 0.5ch - 1px);
-    top: var(--alto-ds); bottom: 4px; width: 2px; background: var(--pink); pointer-events: none; z-index: 2; }
+    top: var(--alto-ds); bottom: 4px; border-left: 2px dashed var(--pink); pointer-events: none; z-index: 2; }
   .ds[open] > summary::before { color: var(--pink); }
   summary:hover .n, summary:focus-visible .n, .coluna:hover .tipo, .coluna:focus-visible .tipo,
   summary:hover::before, summary:focus-visible::before { color: var(--subtext0); }
