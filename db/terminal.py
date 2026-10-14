@@ -340,13 +340,11 @@ LOGO = r"""
 # Mauve -> rosa -> pêssego, uma cor por linha do logo
 DEGRADE = [_cor(c) for c in ("cba6f7", "d9a4e8", "f5c2e7", "f2b8b5", "fab387")]
 
-# Contado do catálogo desta instância, não fixo: só o que se consulta daqui.
-SQL_RESUMO = r"""
-SELECT count(*), count(DISTINCT v.schema_name), coalesce(sum(m.rows), 0),
-       count(DISTINCT m.source_name)
-FROM duckdb_views() v
-LEFT JOIN _rodado_metadata m ON m.dataset = v.schema_name AND m."table" = v.view_name
-WHERE NOT v.internal AND v.schema_name NOT LIKE '\_%' ESCAPE '\' AND v.schema_name <> 'main'
+# Lido do _rodado_metadata (o catalog.parquet do build_metadata_catalog.py), já contado:
+# nada de varrer as views a cada sessão. Fora o que é só view sem dado, como no AGENTS.md.
+SQL_RESUMO = """
+SELECT count(*), count(DISTINCT dataset), coalesce(sum(rows), 0), count(DISTINCT source_name)
+FROM _rodado_metadata WHERE source <> 'view_only'
 """
 
 
@@ -382,11 +380,11 @@ def _resumo(tab, ds, linhas, fontes):
 
 
 def _abertura():
-    """Logo na hora; a linha de números gira enquanto o catálogo responde e então
-    sobe de zero até o valor real."""
+    """Logo na hora; a linha de números sobe de zero até o valor do catálogo (com um
+    spinner só se o catálogo demorar a responder)."""
     for cor, linha in zip(DEGRADE, LOGO):
         print(f"{cor}{linha}{FIM}")
-    print(f"{CINZA}= {FIM}espelho de dados públicos brasileiros{CINZA} ={FIM}")
+    print(f"\n{CINZA}= {FIM}espelho de dados públicos brasileiros{CINZA} ={FIM}")
 
     resultado = []
 
@@ -398,6 +396,7 @@ def _abertura():
 
     busca = threading.Thread(target=conta, daemon=True)
     busca.start()
+    busca.join(0.3)
     i = 0
     while busca.is_alive() and i < 300:  # 30 s no máximo
         sys.stdout.write(f"\r  {CINZA}{Girando.QUADROS[i % len(Girando.QUADROS)]} contando o catálogo…{FIM}\x1b[K")
