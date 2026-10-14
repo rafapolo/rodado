@@ -65,7 +65,7 @@
   #realce .n { color: var(--peach); } #realce .c { color: var(--overlay1); font-style: italic; }
   #realce .t { color: var(--blue); }
   /* os dois botões: mesma caixa, da altura de uma linha do editor, presos ao pé quando ele cresce */
-  #executa, #compartilha { flex: 0 0 auto; align-self: flex-end; display: grid; place-items: center;
+  #executa, #compartilha, #exporta { flex: 0 0 auto; align-self: flex-end; display: grid; place-items: center;
     width: 30px; height: calc(1.45em + 10px); padding: 0; font: inherit; background: var(--base);
     border: 1px solid var(--surface0); border-radius: 4px; cursor: pointer; }
   #executa { color: var(--green); }
@@ -74,6 +74,11 @@
   #compartilha:hover { border-color: var(--blue); }
   #compartilha svg { width: 13px; height: 13px; }
   #compartilha.ok { color: var(--green); border-color: var(--green); }
+  #exporta { color: var(--peach); margin-right: 2px; }
+  #exporta:hover { border-color: var(--peach); }
+  #exporta svg { width: 13px; height: 13px; }
+  #exporta.ok { color: var(--green); border-color: var(--green); }
+  #exporta[aria-busy=true] { opacity: .5; cursor: progress; }
   #sugestoes { position: absolute; left: 44px; bottom: 100%; margin: 0 0 2px; padding: 2px 0; list-style: none;
     min-width: 260px; max-width: min(640px, 90%); max-height: 220px; overflow-y: auto; background: var(--crust);
     border: 1px solid var(--surface1); border-radius: 6px; z-index: 5; box-shadow: 0 -6px 20px #0006; }
@@ -250,6 +255,7 @@
       placeholder="escreva a consulta aqui · Enter executa · Shift+Enter nova linha · Tab completa · ↑ anterior"></textarea>
   </div>
   <button id="compartilha" type="button" aria-label="copiar link que abre e executa esta consulta" title="copiar link que abre e executa esta consulta"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 9.5a3 3 0 0 0 4.2 0l2.6-2.6a3 3 0 0 0-4.2-4.2L8 3.8"/><path d="M9.5 6.5a3 3 0 0 0-4.2 0L2.7 9.1a3 3 0 0 0 4.2 4.2L8 12.2"/></svg></button>
+  <button id="exporta" type="button" aria-label="baixar o último resultado em CSV (até 250 linhas)" title="baixar o último resultado em CSV (até 250 linhas)"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5v8"/><path d="M4.5 7 8 10.5 11.5 7"/><path d="M2.5 13.5h11"/></svg></button>
   <button id="executa" type="button" aria-label="executar a consulta (Enter)" title="executar (Enter)">▶</button>
   <ul id="sugestoes" role="listbox" aria-label="sugestões de dataset, tabela, coluna e palavra-chave" hidden></ul>
 </div>
@@ -763,6 +769,41 @@ compartilha.addEventListener("click", async () => {
   compartilha.title = "link copiado";
   setTimeout(() => { compartilha.classList.remove("ok"); compartilha.title = "copiar link que abre e executa esta consulta"; }, 1500);
   sql.focus();
+});
+
+// CSV do último resultado: roda de novo pelo /query a última consulta executada (não os
+// comandos de ponto) e baixa até LIMITE_CSV linhas
+const LIMITE_CSV = 250;
+const exporta = document.getElementById("exporta");
+exporta.addEventListener("click", async () => {
+  const status = document.getElementById("status");
+  const texto = historico.findLast(h => !h.startsWith("."));
+  if (!texto) { status.textContent = "nada para exportar: execute uma consulta antes"; sql.focus(); return; }
+  if (exporta.getAttribute("aria-busy") === "true") return;
+  exporta.setAttribute("aria-busy", "true");
+  status.textContent = "gerando CSV…";
+  try {
+    const r = await fetch(`/query?formato=csv&limite=${LIMITE_CSV}`, { method: "POST", body: texto });
+    if (!r.ok) {
+      let msg = `erro ${r.status}`;
+      try { msg = (await r.json()).erro || msg; } catch (_) {}
+      throw new Error(msg);
+    }
+    const blob = await r.blob();
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `rodado-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-")}.csv`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    const n = r.headers.get("X-Linhas"), cortado = r.headers.get("X-Truncado") === "1";
+    status.textContent = `CSV baixado: ${n ?? "?"} linhas${cortado ? ` (cortado em ${LIMITE_CSV})` : ""}`;
+    exporta.classList.add("ok");
+    setTimeout(() => exporta.classList.remove("ok"), 1500);
+  } catch (e) {
+    status.textContent = `CSV: ${e.message}`;
+  } finally {
+    exporta.removeAttribute("aria-busy");
+  }
 });
 
 // celular: painel da árvore, barra de teclas e altura que acompanha o teclado virtual
