@@ -5,21 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1e1e2e">
 <title>Rodado SQL</title>
-<meta name="description" content="Terminal SQL no navegador sobre o espelho do rodado: 1.397 tabelas e 44 bilhões de linhas de dados públicos brasileiros, em DuckDB, só leitura.">
+<meta name="description" content="Terminal SQL no navegador sobre o espelho do rodado: 1.403 tabelas · 256 datasets · 103 fontes · 743 GB de dados públicos brasileiros, em DuckDB, só leitura.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="rodado">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:url" content="https://db.rodado.xyz/">
 <meta property="og:title" content="Rodado SQL">
-<meta property="og:description" content="Terminal SQL no navegador sobre o espelho do rodado: 1.397 tabelas e 44 bilhões de linhas de dados públicos brasileiros, em DuckDB, só leitura.">
-<meta property="og:image" content="https://rodado.xyz/assets/og.png">
+<meta property="og:description" content="Terminal SQL no navegador sobre o espelho do rodado: 1.403 tabelas · 256 datasets · 103 fontes · 743 GB de dados públicos brasileiros, em DuckDB, só leitura.">
+<meta property="og:image" content="https://rodado.xyz/assets/og-db.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="rodado — Brasil em números, retratos dos dados oficiais">
+<meta property="og:image:alt" content="Terminal SQL do rodado: logo ASCII e 1.403 tabelas · 256 datasets · 743 GB · 103 fontes">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Rodado SQL">
-<meta name="twitter:description" content="Terminal SQL no navegador sobre o espelho do rodado: 1.397 tabelas e 44 bilhões de linhas de dados públicos brasileiros, em DuckDB, só leitura.">
-<meta name="twitter:image" content="https://rodado.xyz/assets/og.png">
+<meta name="twitter:description" content="Terminal SQL no navegador sobre o espelho do rodado: 1.403 tabelas · 256 datasets · 103 fontes · 743 GB de dados públicos brasileiros, em DuckDB, só leitura.">
+<meta name="twitter:image" content="https://rodado.xyz/assets/og-db.png">
 <link rel="icon" href="https://rodado.xyz/assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="https://rodado.xyz/assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="https://rodado.xyz/assets/favicon-16.png">
@@ -35,6 +35,8 @@
     --subtext0: #a6adc8; --text: #cdd6f4;
     --blue: #89b4fa; --mauve: #cba6f7; --peach: #fab387; --green: #a6e3a1; --yellow: #f9e2af; --red: #f38ba8;
     --moldura: rgb(144 157 235);
+    /* fundo do terminal: azul-noite no centro, caindo para o crust nas bordas */
+    --fundo-terminal: radial-gradient(circle, #1f2c4a, #13131d);
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; background: var(--base); color: var(--text);
@@ -44,7 +46,7 @@
   html::after { content: ""; position: fixed; inset: 0; border: 2px solid var(--moldura);
     pointer-events: none; z-index: 100; }
   #esquerda { flex: 1; min-width: 0; height: 100%; display: flex; flex-direction: column; }
-  #terminal { flex: 1; min-height: 0; width: 100%; border: 0; background: var(--base); }
+  #terminal { flex: 1; min-height: 0; width: 100%; border: 0; background: var(--fundo-terminal); }
   /* editor de SQL: a digitação é local (sem ida e volta ao beelink); só o Enter manda ao terminal */
   #editor { position: relative; flex: 0 0 auto; border-top: 1px solid var(--surface0); background: var(--mantle);
     padding: 6px 8px 6px 6px; display: flex; gap: 6px; align-items: flex-start; }
@@ -515,8 +517,11 @@ termFrame.addEventListener("load", async () => {
   const doc = termFrame.contentDocument;
   doc.head.appendChild(doc.importNode(document.getElementById("fonte"), true));
   const css = doc.createElement("style");
+  // o tema do ttyd tem fundo transparente (inicia.sh): o degradê fica no body, atrás do xterm
+  const fundo = getComputedStyle(document.documentElement).getPropertyValue("--fundo-terminal");
   css.textContent = `
-    html, body, #terminal-container, .xterm, .xterm-viewport { background: #1e1e2e !important; }
+    html, body { background: ${fundo} !important; }
+    #terminal-container, .xterm, .xterm-viewport { background: transparent !important; }
     #terminal-container { padding: 4px 0 0 6px; box-sizing: border-box; }
     .xterm-viewport { scrollbar-width: thin; scrollbar-color: #313244 transparent; }
     .xterm-viewport::-webkit-scrollbar { width: 8px; }
