@@ -130,7 +130,7 @@
   /* dataset aberto: filete rosa tracejado descendo do ▾ até o fim do bloco, para separar vários abertos */
   /* o nome do dataset aberto fica preso no topo (z-index 3) e o da tabela aberta, logo abaixo dele;
      o filete passa por cima (z-index 2) do nome preso da tabela e do fundo do hover */
-  :root { --recuo-ds: 8px; --alto-ds: calc(1.45em + 2px); }
+  :root { --recuo-ds: 8px; --recuo-tb: 20px; --alto-ds: calc(1.45em + 2px); }
   .ds[open] { position: relative; padding-bottom: 4px; }
   .ds[open] > summary { position: sticky; top: 0; z-index: 3; background: var(--mantle); }
   .ds[open] > summary:hover, .ds[open] > summary:focus-visible { background: var(--surface0); }
@@ -141,10 +141,12 @@
   summary:hover .n, summary:focus-visible .n, .coluna:hover .tipo, .coluna:focus-visible .tipo,
   summary:hover::before, summary:focus-visible::before { color: var(--subtext0); }
   .tb > summary { padding-left: 20px; }
-  /* tabela aberta: filete à esquerda e nome preso no topo enquanto as colunas rolam */
-  .tb[open] { box-shadow: inset 2px 0 var(--mauve); padding-bottom: 4px; margin-bottom: 2px; }
-  .tb[open] > summary { position: sticky; top: 0; z-index: 1; background: var(--mantle);
-    box-shadow: inset 2px 0 var(--mauve); }
+  /* tabela aberta: nome preso no topo enquanto as colunas rolam */
+  .tb[open] { position: relative; padding-bottom: 4px; margin-bottom: 2px; }
+  .tb[open] > summary { position: sticky; top: 0; z-index: 1; background: var(--mantle); }
+  /* árvore: tracejado mauve descendo do ▾ da tabela pelas colunas, como o rosa do dataset */
+  .tb[open]::after { content: ""; position: absolute; left: calc(var(--recuo-tb) + 0.5ch - 1px);
+    top: var(--alto-ds); bottom: 4px; border-left: 2px dashed var(--mauve); pointer-events: none; z-index: 2; }
   .tb[open] > summary:hover, .tb[open] > summary:focus-visible { background: var(--surface0); }
   .tb[open] > summary .nome { font-weight: 700; }
   .tb > summary .nome { color: var(--blue); }
@@ -248,7 +250,7 @@
       min-width: 40px; height: 40px; cursor: pointer; }
     #fecha svg { width: 14px; height: 14px; }
     details > summary { padding: 7px 10px; }
-    :root { --recuo-ds: 10px; --alto-ds: calc(1.45em + 14px); }
+    :root { --recuo-ds: 10px; --recuo-tb: 24px; --alto-ds: calc(1.45em + 14px); }
     .tb > summary { padding-left: 24px; }
     .coluna { padding: 6px 10px 6px 40px; }
     .usar { visibility: visible; padding: 0 6px; }
