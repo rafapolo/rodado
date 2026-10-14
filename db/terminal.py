@@ -422,7 +422,7 @@ DEGRADE = [_cor(c) for c in ("cba6f7", "d9a4e8", "f5c2e7", "f2b8b5", "fab387")]
 # Lido do _rodado_metadata (o catalog.parquet do build_metadata_catalog.py), já contado:
 # nada de varrer as views a cada sessão. Fora o que é só view sem dado, como no AGENTS.md.
 SQL_RESUMO = """
-SELECT count(*), count(DISTINCT dataset), coalesce(sum(rows), 0), count(DISTINCT source_name)
+SELECT count(*), count(DISTINCT dataset), coalesce(sum(size_bytes), 0), count(DISTINCT source_name)
 FROM _rodado_metadata WHERE source <> 'view_only'
 """
 
@@ -440,17 +440,18 @@ def _milhar(n):
     return f"{n:,}".replace(",", ".")
 
 
-def _linhas_curto(n):
-    if n >= 1e9:
-        return f"{n / 1e9:.1f}".replace(".", ",") + " bi"
-    if n >= 1e6:
-        return f"{n / 1e6:.1f}".replace(".", ",") + " mi"
-    return _milhar(int(n))
+def _tamanho(n):
+    """Bytes em unidade decimal, como o disco: 743 GB, 1,2 TB."""
+    for limite, unidade in ((1e12, "TB"), (1e9, "GB"), (1e6, "MB")):
+        if n >= limite:
+            v = n / limite
+            return (f"{v:.1f}".replace(".", ",") if v < 100 else f"{v:.0f}") + f" {unidade}"
+    return f"{int(n)} B"
 
 
-def _resumo(tab, ds, linhas, fontes):
+def _resumo(tab, ds, tamanho, fontes):
     partes = [(_milhar(tab), "tabelas"), (_milhar(ds), "datasets"),
-              (_linhas_curto(linhas), "linhas"), (_milhar(fontes), "fontes")]
+              (_tamanho(tamanho), "de dados"), (_milhar(fontes), "fontes")]
     # numa tela estreita (celular) a linha quebraria e o \r da animação deixaria lixo
     largura = shutil.get_terminal_size().columns - 3
     while len(partes) > 1 and len(" · ".join(f"{n} {r}" for n, r in partes)) > largura:
@@ -460,7 +461,7 @@ def _resumo(tab, ds, linhas, fontes):
 
 # O resumo muda só quando catalogo.py troca o arquivo: fica guardado por (inode, mtime) do
 # catálogo, e a abertura não espera a 1ª conexão ao DuckDB (~1 s) para mostrar os números.
-RESUMO_GUARDADO = os.path.join(rodado_sql.TEMP, "resumo_abertura.json")
+RESUMO_GUARDADO = os.path.join(rodado_sql.TEMP, "resumo_abertura_v2.json")
 
 
 def _chave_catalogo():
