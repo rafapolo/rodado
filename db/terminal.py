@@ -9,6 +9,7 @@ linhas até o `;` e autocompletar de dataset, tabela e coluna. Sem ele, cai
 no input() com readline.
 """
 
+import base64
 import io
 import json
 import os
@@ -210,6 +211,8 @@ def colore_tabela(texto):
 
 
 def mostra(sql: str, linhas: int):
+    """Roda e imprime cada comando; devolve o SQL do último se todos terminaram, senão None."""
+    ultimo = None
     con = rodado_sql.conecta()
     try:
         for comando in rodado_sql.separa(con, sql):
@@ -229,21 +232,34 @@ def mostra(sql: str, linhas: int):
                     sys.stdout.write(colore_tabela(buf.getvalue()))
                 except (duckdb.InterruptException, KeyboardInterrupt):
                     avisa(PESSEGO, "tempo limite estourado" if crono.estourou else "interrompido")
-                    return
+                    return None
             avisa(CINZA, f"({time.monotonic() - inicio:.2f} s)")
+            ultimo = comando.query
     finally:
         con.close()
+    return ultimo
+
+
+def _sinal(sql=None):
+    """OSC 7771, invisível no terminal: avisa a página (index.html) se a última consulta deu
+    certo — com o SQL, em base64, para o botão de CSV refazê-la — ou não (sem SQL)."""
+    dado = base64.b64encode(sql.encode()).decode() if sql else ""
+    sys.stdout.write(f"\x1b]7771;{dado}\x07")
+    sys.stdout.flush()
 
 
 def _roda(sql: str, linhas: int):
+    ultimo = None
     try:
-        mostra(sql, linhas)
+        ultimo = mostra(sql, linhas)
     except rodado_sql.ConsultaRecusada as e:
         avisa(VERMELHO, f"recusado: {e}")
     except KeyboardInterrupt:
         avisa(PESSEGO, "interrompido")
     except duckdb.Error as e:
         avisa(VERMELHO, str(e))
+    finally:
+        _sinal(ultimo)
 
 
 def _consulta_simples(sql):
