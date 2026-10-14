@@ -428,6 +428,7 @@ FROM _rodado_metadata WHERE source <> 'view_only'
 
 
 ATLAS = "https://rodado.xyz/atlas/?mode=temas"
+SITE = "https://rodado.xyz"
 AJUDA_LINK = "rodado:.ajuda"   # esquema próprio: o linkHandler do index.html roda o comando
 
 
@@ -530,7 +531,7 @@ def _abertura():
                 time.sleep(0.02)
         sys.stdout.write("\n")
     sep = f" {CINZA}·{FIM} "
-    print(f"  {CINZA}DuckDB só em leitura{FIM}{sep}{_link(AJUDA_LINK, '[ajuda]')}{sep}{_link(ATLAS, '[atlas]')}\n")
+    print(f"  {CINZA}DuckDB só em leitura{FIM}{sep}{_link(AJUDA_LINK, '[ajuda]')}{sep}{_link(ATLAS, '[atlas]')}{sep}{_link(SITE, '[xyz]')}\n")
 
 
 def main():
