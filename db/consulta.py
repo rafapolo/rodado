@@ -19,6 +19,7 @@ import os
 import re
 import threading
 import time
+import unicodedata
 import uuid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
@@ -41,6 +42,18 @@ _catalogo = {"em": 0.0, "json": b""}
 _catalogo_trava = threading.Lock()
 _guia = {"em": 0.0, "texto": b""}
 _guia_trava = threading.Lock()
+# /tabelas: o catálogo enxuto para LLM, um dataset por linha (o /catalogo.json tem ~460 KB,
+# ~140 mil tokens, e é da árvore da página). A descrição é por dataset — as tabelas repetem a
+# mesma —, sem a fonte que abre a frase ("IBGE — PIB municipal"), sem url, data nem arquivos.
+_tabelas = {"em": 0.0, "linhas": []}
+_tabelas_trava = threading.Lock()
+SQL_TABELAS = r"""
+SELECT dataset, max(CASE WHEN contains(description, ' — ') THEN split_part(description, ' — ', 2)
+                         ELSE description END) AS descricao,
+       list({'t': "table", 'n': coalesce(rows, 0)} ORDER BY "table") AS tabelas
+FROM _rodado_metadata WHERE source <> 'view_only' AND dataset NOT LIKE '\_%' ESCAPE '\'
+GROUP BY 1 ORDER BY 1
+"""
 
 SQL_GUIA_RESUMO = """
 SELECT count(*), count(DISTINCT dataset), coalesce(sum(size_bytes), 0), count(DISTINCT source_name)
@@ -94,6 +107,17 @@ def _linhas(n):
         if n >= limite:
             return f"{n / limite:.1f} {nome} linhas".replace(".", ",")
     return f"{int(n)} linhas"
+
+
+def _sem_acento(texto):
+    return "".join(c for c in unicodedata.normalize("NFD", texto.lower()) if not unicodedata.combining(c))
+
+
+def _curto(n):
+    for limite, nome in ((1e9, "bi"), (1e6, "mi"), (1e3, "mil")):
+        if n >= limite:
+            return f"{n / limite:.3g} {nome}".replace(".", ",")
+    return str(int(n))
 
 
 def _json_valor(v):
@@ -173,6 +197,28 @@ class Handler(BaseHTTPRequestHandler):
                 _guia["texto"] = modelo.encode()
                 _guia["em"] = time.time()
             return _guia["texto"]
+
+    def _lista_tabelas(self, params):
+        with _tabelas_trava:
+            if time.time() - _tabelas["em"] > 600:
+                con = rodado_sql.conecta()
+                try:
+                    dados = con.sql(SQL_TABELAS).fetchall()
+                finally:
+                    con.close()
+                _tabelas["linhas"] = [
+                    (ds, f"{ds} — {desc or '?'}: " + ", ".join(f"{t['t']} ({_curto(t['n'])})" for t in tabs))
+                    for ds, desc, tabs in dados]
+                _tabelas["em"] = time.time()
+            linhas = _tabelas["linhas"]
+        dataset = (params.get("dataset") or [""])[0].strip()
+        busca = _sem_acento((params.get("busca") or [""])[0].strip())
+        if dataset:
+            linhas = [l for l in linhas if l[0] == dataset]
+        if busca:
+            linhas = [l for l in linhas if all(p in _sem_acento(l[1]) for p in busca.split())]
+        corpo = "".join(l[1] + "\n" for l in linhas) or "nenhum dataset casou\n"
+        self._responde(200, corpo, extra={"Cache-Control": "private, max-age=600"})
 
     def _colunas(self, alvo):
         partes = alvo.split(".")
@@ -260,6 +306,11 @@ class Handler(BaseHTTPRequestHandler):
             try:
                 return self._responde(200, self._guia(), "text/markdown; charset=utf-8",
                                       {"Cache-Control": "public, max-age=600"})
+            except duckdb.Error as e:
+                return self._json({"erro": str(e)}, 500)
+        if url.path == "/tabelas":
+            try:
+                return self._lista_tabelas(parse_qs(url.query))
             except duckdb.Error as e:
                 return self._json({"erro": str(e)}, 500)
         if url.path == "/colunas":
