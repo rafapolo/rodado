@@ -44,7 +44,7 @@ resposta. Sem credencial a resposta é `401`. Nos exemplos abaixo, `$AUTH` é `-
 ```bash
 curl $AUTH --data-binary 'SELECT sigla_uf, count(*) n FROM br_bd_diretorios_brasil.municipio GROUP BY 1 ORDER BY 2 DESC' \
   https://db.rodado.xyz/query
-curl $AUTH 'https://db.rodado.xyz/query?formato=csv&limite=100000' --data-binary @consulta.sql
+curl $AUTH 'https://db.rodado.xyz/query?formato=csv' --data-binary @consulta.sql
 curl $AUTH -G https://db.rodado.xyz/query --data-urlencode 'q=DESCRIBE br_inep_ideb.municipio'
 ```
 
@@ -72,12 +72,15 @@ status 400 (SQL inválido ou recusado), 429 (servidor cheio: espere e repita), 5
 
 ## 4. Exportar
 
+Cada requisição devolve no máximo {limite_maximo} linhas. Para mais que isso, agregue no servidor
+ou fatie (uma requisição por `ano`, `sigla_uf`… ou com `ORDER BY` + `OFFSET`), sempre uma por vez.
+
 - **CSV/TSV/Parquet direto**: `?formato=csv` (ou `tsv`, `parquet`) e `-o arquivo`:
-  `curl $AUTH 'https://db.rodado.xyz/query?formato=parquet&limite=1000000' --data-binary @q.sql -o r.parquet`
+  `curl $AUTH 'https://db.rodado.xyz/query?formato=parquet&limite=10000' --data-binary @q.sql -o r.parquet`
 - **Python (Polars)**:
   ```python
   import io, os, polars as pl, requests
-  r = requests.post("https://db.rodado.xyz/query", params={"formato": "parquet", "limite": 1_000_000},
+  r = requests.post("https://db.rodado.xyz/query", params={"formato": "parquet", "limite": 10_000},
                     data=sql.encode(), auth=("rodado", os.environ["RODADO_SENHA"]), timeout=330)
   r.raise_for_status(); df = pl.read_parquet(io.BytesIO(r.content))
   ```
@@ -87,7 +90,7 @@ status 400 (SQL inválido ou recusado), 429 (servidor cheio: espere e repita), 5
     EXTRA_HTTP_HEADERS MAP {'Authorization': 'Basic ' || to_base64(('rodado:' || getenv('RODADO_SENHA'))::BLOB)});
   SET force_download = true;
   CREATE MACRO rodado(q) AS TABLE
-    FROM read_parquet('https://db.rodado.xyz/query?formato=parquet&limite=1000000&q=' || url_encode(q));
+    FROM read_parquet('https://db.rodado.xyz/query?formato=parquet&limite=10000&q=' || url_encode(q));
   FROM rodado('SELECT ano, count(*) FROM br_ms_sim.microdados WHERE ano >= 2020 GROUP BY 1');
   ```
 - **Link para humanos**: `curl $AUTH --data-binary 'SELECT ...' https://db.rodado.xyz/q` devolve

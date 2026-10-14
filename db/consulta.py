@@ -82,13 +82,13 @@ ORDER BY v.schema_name <> 'main', 1, 2  -- o catálogo (main._rodado_*) primeiro
 
 PORTA = int(os.environ.get("RODADO_PORTA_CONSULTA", "18081"))
 LIMITE_PADRAO = 10_000
-LIMITE_MAXIMO = 1_000_000
+LIMITE_MAXIMO = 10_000
 N_SIMULTANEAS = int(os.environ.get("RODADO_SIMULTANEAS", "4"))
 SIMULTANEAS = threading.BoundedSemaphore(N_SIMULTANEAS)
 
 USO = """\
 POST /query com o SQL no corpo (ou GET /query?q=...). Só leitura, um comando por vez.
-Parâmetros: formato=json|csv|tsv|parquet (padrão json), limite=N linhas (padrão 10000, máx. 1000000).
+Parâmetros: formato=json|csv|tsv|parquet (padrão json), limite=N linhas (padrão e máximo 10000).
 Cabeçalhos da resposta: X-Linhas, X-Truncado, X-Segundos.
 Exemplo: curl -u usuario:senha --data-binary 'DESCRIBE br_bd_diretorios_brasil.municipio' https://db.rodado.xyz/query
 """
