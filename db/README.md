@@ -39,12 +39,12 @@ nem dependência do beelink ligado.
 
 ```bash
 curl -u rodado:SENHA --data-binary 'FROM br_bd_diretorios_brasil.uf' https://db.rodado.xyz/query
-curl -u rodado:SENHA 'https://db.rodado.xyz/query?formato=csv&limite=100000' --data-binary @consulta.sql
+curl -u rodado:SENHA 'https://db.rodado.xyz/query?formato=csv' --data-binary @consulta.sql
 curl -u rodado:SENHA -G https://db.rodado.xyz/query --data-urlencode 'q=DESCRIBE br_me_cnpj.empresas'
 ```
 
 `formato` = `json` (padrão, lista de objetos), `csv`, `tsv` ou `parquet`; `limite` = linhas
-devolvidas (padrão 10.000, máx. 1.000.000). Os cabeçalhos `X-Linhas`, `X-Truncado` e
+devolvidas (padrão e máximo 10.000). Os cabeçalhos `X-Linhas`, `X-Truncado` e
 `X-Segundos` trazem quantas linhas vieram, se o limite cortou e quanto levou. Um comando
 por requisição, 300 s no máximo, 4 consultas simultâneas.
 
@@ -58,7 +58,7 @@ CREATE SECRET rodado (TYPE http, SCOPE 'https://db.rodado.xyz',
   EXTRA_HTTP_HEADERS MAP {'Authorization': 'Basic ' || to_base64('rodado:SENHA'::BLOB)});
 SET force_download = true;  -- uma requisição só; sem isso, cada leitura por faixa reexecutaria a consulta
 CREATE MACRO rodado(q) AS TABLE
-  FROM read_parquet('https://db.rodado.xyz/query?formato=parquet&limite=1000000&q=' || url_encode(q));
+  FROM read_parquet('https://db.rodado.xyz/query?formato=parquet&limite=10000&q=' || url_encode(q));
 
 FROM rodado('SELECT ano, count(*) FROM br_rodado_eleicoes.secao_setor GROUP BY 1');
 CREATE TABLE uf AS FROM rodado('FROM br_bd_diretorios_brasil.uf');  -- e junta com dado local

@@ -258,7 +258,7 @@
       placeholder="escreva a consulta aqui · Enter executa · Shift+Enter nova linha · Tab completa · ↑ anterior"></textarea>
   </div>
   <button id="compartilha" type="button" aria-label="copiar link que abre e executa esta consulta" title="copiar link que abre e executa esta consulta"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 9.5a3 3 0 0 0 4.2 0l2.6-2.6a3 3 0 0 0-4.2-4.2L8 3.8"/><path d="M9.5 6.5a3 3 0 0 0-4.2 0L2.7 9.1a3 3 0 0 0 4.2 4.2L8 12.2"/></svg></button>
-  <button id="exporta" type="button" aria-label="baixar o último resultado em CSV (até 250 linhas)" title="baixar o último resultado em CSV (até 250 linhas)"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5v8"/><path d="M4.5 7 8 10.5 11.5 7"/><path d="M2.5 13.5h11"/></svg></button>
+  <button id="exporta" type="button" aria-label="baixar o último resultado em CSV (até 1.000 linhas)" title="baixar o último resultado em CSV (até 1.000 linhas)"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5v8"/><path d="M4.5 7 8 10.5 11.5 7"/><path d="M2.5 13.5h11"/></svg></button>
   <button id="executa" type="button" aria-label="executar a consulta (Enter)" title="executar (Enter)">▶</button>
   <ul id="sugestoes" role="listbox" aria-label="sugestões de dataset, tabela, coluna e palavra-chave" hidden></ul>
 </div>
@@ -780,7 +780,7 @@ compartilha.addEventListener("click", async () => {
 
 // CSV do último resultado: roda de novo pelo /query a última consulta executada (não os
 // comandos de ponto) e baixa até LIMITE_CSV linhas
-const LIMITE_CSV = 250;
+const LIMITE_CSV = 1000;
 const exporta = document.getElementById("exporta");
 // O terminal.py manda um OSC 7771 ao fim de cada consulta: o SQL em base64 se deu certo,
 // vazio se deu erro, foi recusada ou interrompida. Sem resultado bom, o botão fica desligado
