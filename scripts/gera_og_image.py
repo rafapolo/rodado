@@ -226,7 +226,7 @@ def gera_analises(raiz: Path) -> int:
 DB_RESUMO = [("1.403", "tabelas"), ("256", "datasets"), ("743 GB", "de dados"), ("103", "fontes")]
 JETBRAINS = str(Path.home() / "Library/Fonts/JetBrainsMono-Regular.ttf")
 JETBRAINS_BOLD = str(Path.home() / "Library/Fonts/JetBrainsMono-Bold.ttf")
-DB_CENTRO, DB_BORDA = (31, 44, 74), (19, 19, 29)        # #1f2c4a -> #13131d
+DB_CENTRO, DB_BORDA = (33, 33, 52), (24, 24, 37)        # #222237ab sobre o --base #1e1e2e -> #181825
 DB_MOLDURA = (144, 157, 235)
 DB_TEXTO, DB_CINZA, DB_PESSEGO, DB_MAUVE, DB_VERDE = "#cdd6f4", "#9399b2", "#fab387", "#cba6f7", "#a6e3a1"
 DB_DEGRADE = ["#cba6f7", "#d9a4e8", "#f5c2e7", "#f2b8b5", "#fab387"]
