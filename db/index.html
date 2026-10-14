@@ -135,8 +135,8 @@
   .ds[open] > summary { position: sticky; top: 0; z-index: 3; background: var(--mantle); }
   .ds[open] > summary:hover, .ds[open] > summary:focus-visible { background: var(--surface0); }
   .ds[open] .tb[open] > summary { top: var(--alto-ds); }
-  .ds[open]::after { content: ""; position: absolute; left: calc(var(--recuo-ds) + 0.5ch - 1px);
-    top: var(--alto-ds); bottom: 4px; border-left: 2px dashed var(--pink); pointer-events: none; z-index: 2; }
+  .ds[open]::after { content: ""; position: absolute; left: calc(var(--recuo-ds) + 0.5ch - 0.5px);
+    top: var(--alto-ds); bottom: 4px; border-left: 1px dashed var(--pink); pointer-events: none; z-index: 2; }
   .ds[open] > summary::before { color: var(--pink); }
   summary:hover .n, summary:focus-visible .n, .coluna:hover .tipo, .coluna:focus-visible .tipo,
   summary:hover::before, summary:focus-visible::before { color: var(--subtext0); }
@@ -146,8 +146,8 @@
   .tb[open] > summary { position: sticky; top: 0; z-index: 1; background: var(--mantle); }
   /* árvore: tracejado mauve descendo do ▾ da tabela pelas colunas, como o rosa do dataset; z-index 0:
      passa por cima das colunas e por baixo do nome preso da tabela (z-index 1) */
-  .tb[open]::after { content: ""; position: absolute; left: calc(var(--recuo-tb) + 0.5ch - 1px);
-    top: var(--alto-ds); bottom: 4px; border-left: 2px dashed var(--mauve); pointer-events: none; z-index: 0; }
+  .tb[open]::after { content: ""; position: absolute; left: calc(var(--recuo-tb) + 0.5ch - 0.5px);
+    top: var(--alto-ds); bottom: 4px; border-left: 1px dashed var(--mauve); pointer-events: none; z-index: 0; }
   .tb[open] > summary:hover, .tb[open] > summary:focus-visible { background: var(--surface0); }
   .tb[open] > summary .nome { font-weight: 700; }
   .tb > summary .nome { color: var(--blue); }
