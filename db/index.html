@@ -194,9 +194,7 @@
   .buscacol::placeholder { color: var(--overlay2); }
   .info.erro { color: var(--red); }
   .dsinfo { padding: 5px 8px 4px 24px; color: var(--subtext0); }
-  .dsinfo .desc { margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .dsinfo.aberta .desc { -webkit-line-clamp: unset; display: block; }
-  .dsinfo .mais { background: none; border: 0; padding: 0; color: var(--blue); font: inherit; cursor: pointer; }
+  .dsinfo .desc { margin: 0; }
   .etq { font-size: 10px; padding: 0 4px; border-radius: 3px; margin-left: 6px; align-self: center; }
   .etq.particao { color: var(--crust); background: var(--mauve); }
   .etq.filtre { color: var(--peach); border: 1px solid var(--peach); }
@@ -441,8 +439,7 @@ function htmlDataset(ds) {
   const t = catalogo.find(x => x.dataset === ds && x.descricao);
   if (!t) return "";
   const desc = t.descricao.trim().replace(/[\s.;:,]*$/, "") + ".";   // a descrição sempre fecha com ponto
-  return `<div class="dsinfo"><p class="desc">${esc(desc)}</p>`
-    + `<button class="mais" type="button" aria-expanded="false">mais…</button></div>`;
+  return `<div class="dsinfo"><p class="desc">${esc(desc)}</p></div>`;
 }
 
 function htmlTabela(t, cols) {
@@ -482,9 +479,6 @@ arvore.addEventListener("toggle", async e => {
   if (det.classList?.contains("ds")) {
     det.dataset.ok = 1;
     det.querySelector(":scope > summary").insertAdjacentHTML("afterend", htmlDataset(det.dataset.ds));
-    // "mais…" só quando as 2 linhas cortam a descrição
-    const desc = det.querySelector(":scope > .dsinfo .desc");
-    if (desc && desc.scrollHeight <= desc.clientHeight + 1) desc.nextElementSibling.remove();
     return;
   }
   if (!det.classList?.contains("tb")) return;
@@ -505,7 +499,7 @@ arvore.addEventListener("toggle", async e => {
   det.insertAdjacentHTML("beforeend", html);
 }, true);
 
-// ações do .info, "mais…" da descrição e filtro de colunas
+// ações do .info e filtro de colunas
 arvore.addEventListener("click", e => {
   const b = e.target.closest("[data-roda]");
   if (b) {
@@ -513,12 +507,6 @@ arvore.addEventListener("click", e => {
     roda({ amostra: `FROM ${alvo} LIMIT 10;`, describe: `DESCRIBE ${alvo};`, summarize: `SUMMARIZE ${alvo};` }[b.dataset.roda]);
     e.stopPropagation();
     return;
-  }
-  const mais = e.target.closest(".mais");
-  if (mais) {
-    const aberto = mais.parentElement.classList.toggle("aberta");
-    mais.textContent = aberto ? "menos" : "mais…";
-    mais.setAttribute("aria-expanded", aberto);
   }
 }, true);
 arvore.addEventListener("input", e => {

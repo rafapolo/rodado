@@ -422,17 +422,12 @@ describe("desktop", () => {
     const descDs = (await p.locator(".ds[open] > .dsinfo .desc").textContent())!.trim();
     expect(descDs.length).toBeGreaterThan(10);
     expect(await info.textContent()).not.toContain(descDs.slice(0, 30)); // descrição fica no dataset, não se repete
-    // a descrição aparece uma vez, no dataset, cortada em 2 linhas; "mais…" só quando o corte esconde texto
+    // a descrição aparece uma vez, no dataset, inteira (sem corte nem "mais…") e terminando em ponto
     expect(await p.locator(".ds[open] > .dsinfo").count()).toBe(1);
     const desc = p.locator(".ds[open] > .dsinfo .desc");
-    const corta = await desc.evaluate(d => d.scrollHeight > d.clientHeight + 1);
-    const mais = p.locator(".ds[open] > .dsinfo .mais");
-    expect(await mais.count()).toBe(corta ? 1 : 0);
-    if (corta) {
-      await mais.click();
-      expect(await mais.getAttribute("aria-expanded")).toBe("true");
-      await mais.click();
-    }
+    expect(await desc.evaluate(d => d.scrollHeight <= d.clientHeight + 1)).toBe(true);
+    expect(await p.locator(".ds[open] > .dsinfo .mais").count()).toBe(0);
+    expect(descDs.endsWith(".")).toBe(true);
   });
 
   test(".info: ▶ DESCRIBE executa direto e devolve o foco ao editor vazio", async () => {
