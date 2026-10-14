@@ -331,14 +331,13 @@ def _entrada():
 
 
 LOGO = r"""
-               _           _
- _ __ ___   __| | __ _  __| | ___
-| '__/ _ \ / _` |/ _` |/ _` |/ _ \
-| | | (_) | (_| | (_| | (_| | (_) |
-|_|  \___/ \__,_|\__,_|\__,_|\___/
+             _         _
+ _ _ ___  __| |__ _ __| |___
+| '_/ _ \/ _` / _` / _` / _ \
+|_| \___/\__,_\__,_\__,_\___/
 """.strip("\n").splitlines()
 # Mauve -> rosa -> pêssego, uma cor por linha do logo
-DEGRADE = [_cor(c) for c in ("cba6f7", "d9a4e8", "f5c2e7", "f2b8b5", "fab387")]
+DEGRADE = [_cor(c) for c in ("cba6f7", "f5c2e7", "f2b8b5", "fab387")]
 
 # Contado do catálogo desta instância, não fixo: só o que se consulta daqui.
 SQL_RESUMO = r"""
@@ -351,10 +350,11 @@ WHERE NOT v.internal AND v.schema_name NOT LIKE '\_%' ESCAPE '\' AND v.schema_na
 
 
 ATLAS = "https://rodado.xyz/atlas/?mode=temas"
+AJUDA_LINK = "rodado:.ajuda"   # esquema próprio: o linkHandler do index.html roda o comando
 
 
 def _link(url, texto):
-    """Hyperlink OSC 8; index.html abre em nova aba (linkHandler do xterm)."""
+    """Hyperlink OSC 8; o linkHandler do index.html abre http(s) em nova aba e roda rodado:<cmd>."""
     return f"\x1b]8;;{url}\x1b\\{MAUVE}{texto}{FIM}\x1b]8;;\x1b\\"
 
 
@@ -383,10 +383,9 @@ def _resumo(tab, ds, linhas, fontes):
 def _abertura():
     """Logo na hora; a linha de números gira enquanto o catálogo responde e então
     sobe de zero até o valor real."""
-    print()
     for cor, linha in zip(DEGRADE, LOGO):
         print(f"{cor}{linha}{FIM}")
-    print(f"\n{CINZA}= {FIM}espelho de dados públicos brasileiros{CINZA} ={FIM}")
+    print(f"{CINZA}= {FIM}espelho de dados públicos brasileiros{CINZA} ={FIM}")
 
     resultado = []
 
@@ -417,11 +416,8 @@ def _abertura():
             if p < passos:
                 time.sleep(0.03)
         sys.stdout.write("\n")
-    rodape = "DuckDB, só leitura · .ajuda para os comandos"
-    if len(f"  {rodape} · [atlas]") <= shutil.get_terminal_size().columns:
-        print(f"  {CINZA}{rodape} ·{FIM} {_link(ATLAS, '[atlas]')}\n")
-    else:  # tela estreita: o link desce uma linha em vez de quebrar no meio
-        print(f"  {CINZA}{rodape}{FIM}\n  {_link(ATLAS, '[atlas]')}\n")
+    sep = f" {CINZA}·{FIM} "
+    print(f"  {CINZA}DuckDB só em leitura{FIM}{sep}{_link(AJUDA_LINK, '[ajuda]')}{sep}{_link(ATLAS, '[atlas]')}\n")
 
 
 def main():
