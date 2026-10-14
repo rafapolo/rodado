@@ -9,6 +9,8 @@ linhas até o `;` e autocompletar de dataset, tabela e coluna. Sem ele, cai
 no input() com readline.
 """
 
+import io
+import json
 import os
 import re
 import shutil
@@ -154,6 +156,59 @@ class Girando:
         self._real.flush()
 
 
+# Cor de cada célula pelo tipo da coluna, no degradê da abertura (mauve -> pêssego).
+LILAS, ROSA, SALMAO = (_cor(c) for c in ("d9a4e8", "f5c2e7", "f2b8b5"))
+NEGRITO = "\x1b[1m"
+
+
+def _cor_do_tipo(tipo):
+    t = tipo.strip().lower()
+    if t.endswith("]") or t.startswith(("struct", "map", "union", "bool")):
+        return LILAS
+    if t.startswith(("date", "time", "interval")):
+        return MAUVE
+    if t.startswith(("double", "float", "real", "decimal", "numeric")):
+        return SALMAO
+    if re.match(r"u?(tiny|small|big|huge)?int", t):
+        return PESSEGO
+    return ROSA   # varchar, uuid, blob, enum…
+
+
+def colore_tabela(texto):
+    """Pinta a saída de rel.show(): borda e rodapé em cinza, nome da coluna em negrito, tipo e
+    valor na cor do tipo, NULL e as elipses (· …) em cinza. As colunas saem das posições do ┬
+    da borda de cima, não do │ — um valor pode conter │. Linha de largura diferente da borda
+    (caractere largo, emoji) sai sem cor nas células, para não pintar coluna errada."""
+    linhas = texto.split("\n")
+    if not linhas or not linhas[0].startswith("┌"):
+        return texto
+    borda = linhas[0]
+    cortes = [i for i, c in enumerate(borda) if c in "┌┬┐"]
+    fatias = list(zip(cortes, cortes[1:]))
+    cores, saida, corpo = None, [], 0
+    for linha in linhas:
+        if len(linha) != len(borda) or linha[0] in "┌├└":
+            # borda, separador, rodapé ("60 rows (6 shown)"), linha desalinhada
+            saida.append(f"{CINZA}{linha}{FIM}" if linha else linha)
+            continue
+        if linha[0] != "│":
+            saida.append(linha)
+            continue
+        celulas = [linha[a + 1:b] for a, b in fatias]
+        if corpo == 0:
+            pintadas = [f"{NEGRITO}{c}{FIM}" for c in celulas]
+        elif corpo == 1:
+            cores = [_cor_do_tipo(c) for c in celulas]
+            pintadas = [f"{cor}{c}{FIM}" for cor, c in zip(cores, celulas)]
+        else:
+            pintadas = [f"{CINZA if c.strip() in ('NULL', '·', '…') else cor}{c}{FIM}"
+                        for cor, c in zip(cores, celulas)]
+        corpo += 1
+        barra = f"{CINZA}│{FIM}"
+        saida.append(barra + barra.join(pintadas) + barra)
+    return "\n".join(saida)
+
+
 def mostra(sql: str, linhas: int):
     con = rodado_sql.conecta()
     try:
@@ -163,7 +218,15 @@ def mostra(sql: str, linhas: int):
                 try:
                     rel = con.sql(comando.query)
                     largura = shutil.get_terminal_size((120, 40)).columns
-                    rel.show(max_width=largura, max_rows=linhas)
+                    # show() imprime pelo sys.stdout: captura para colorir; o indicador
+                    # segue girando até a tabela pronta ser escrita
+                    buf, tela = io.StringIO(), sys.stdout
+                    sys.stdout = buf
+                    try:
+                        rel.show(max_width=largura, max_rows=linhas)
+                    finally:
+                        sys.stdout = tela
+                    sys.stdout.write(colore_tabela(buf.getvalue()))
                 except (duckdb.InterruptException, KeyboardInterrupt):
                     avisa(PESSEGO, "tempo limite estourado" if crono.estourou else "interrompido")
                     return
@@ -379,6 +442,33 @@ def _resumo(tab, ds, linhas, fontes):
     return f" {CINZA}·{FIM} ".join(f"{PESSEGO}{n}{FIM} {r}" for n, r in partes)
 
 
+# O resumo muda só quando catalogo.py troca o arquivo: fica guardado por (inode, mtime) do
+# catálogo, e a abertura não espera a 1ª conexão ao DuckDB (~1 s) para mostrar os números.
+RESUMO_GUARDADO = os.path.join(rodado_sql.TEMP, "resumo_abertura.json")
+
+
+def _chave_catalogo():
+    st = os.stat(rodado_sql.BANCO)
+    return [st.st_ino, st.st_mtime_ns]
+
+
+def _resumo_guardado():
+    try:
+        with open(RESUMO_GUARDADO) as f:
+            dados = json.load(f)
+        return dados["valores"] if dados["catalogo"] == _chave_catalogo() else None
+    except (OSError, ValueError, KeyError):
+        return None
+
+
+def _guarda_resumo(valores):
+    os.makedirs(rodado_sql.TEMP, exist_ok=True)
+    tmp = f"{RESUMO_GUARDADO}.{os.getpid()}"
+    with open(tmp, "w") as f:
+        json.dump({"catalogo": _chave_catalogo(), "valores": [int(v or 0) for v in valores]}, f)
+    os.replace(tmp, RESUMO_GUARDADO)
+
+
 def _abertura():
     """Logo na hora; a linha de números sobe de zero até o valor do catálogo (com um
     spinner só se o catálogo demorar a responder)."""
@@ -387,11 +477,17 @@ def _abertura():
     print(f"\n{CINZA}= {FIM}espelho de dados públicos brasileiros{CINZA} ={FIM}")
 
     resultado = []
+    guardado = _resumo_guardado()
+    if guardado:
+        resultado.append(guardado)
 
     def conta():
+        if resultado:
+            return
         try:
             resultado.extend(_consulta_simples(SQL_RESUMO))
-        except duckdb.Error:
+            _guarda_resumo(resultado[0])
+        except (duckdb.Error, OSError):
             pass  # sem números: o terminal abre do mesmo jeito
 
     busca = threading.Thread(target=conta, daemon=True)
@@ -407,14 +503,14 @@ def _abertura():
         sys.stdout.write("\r\x1b[K")
     else:
         alvo = [float(x or 0) for x in resultado[0]]
-        passos = 12
+        passos = 8
         for p in range(1, passos + 1):
             f = 1 - (1 - p / passos) ** 3  # desacelera no fim
             vals = [int(v * f) if p < passos else int(v) for v in alvo]
             sys.stdout.write(f"\r  {_resumo(*vals)}\x1b[K")
             sys.stdout.flush()
             if p < passos:
-                time.sleep(0.03)
+                time.sleep(0.02)
         sys.stdout.write("\n")
     sep = f" {CINZA}·{FIM} "
     print(f"  {CINZA}DuckDB só em leitura{FIM}{sep}{_link(AJUDA_LINK, '[ajuda]')}{sep}{_link(ATLAS, '[atlas]')}\n")
