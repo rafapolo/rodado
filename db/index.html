@@ -523,10 +523,27 @@ termFrame.addEventListener("load", async () => {
   const term = termFrame.contentWindow.term;
   if (!term) return;
   term.options.fontFamily = '"JetBrains Mono", monospace';
-  term.fit?.();
+  // links OSC 8 do terminal.py (o [atlas] da abertura): nova aba, sem o confirm() padrão do xterm
+  term.options.linkHandler = { activate: (_, uri) => window.open(uri, "_blank", "noopener"), allowNonHttpProtocols: false };
+  ajustaFonte(term);
+  addEventListener("resize", () => ajustaFonte(term));
   if (editorVisivel()) sql.focus();      // no desktop o teclado começa no editor, não no terminal
   rodaDaUrl(term);
 });
+
+// Tela estreita (celular): diminui a fonte até caberem COLUNAS_MIN colunas — o logo da
+// abertura e a linha de números do terminal.py — sem descer de FONTE_MIN.
+const FONTE = 12, FONTE_MIN = 9, COLUNAS_MIN = 62;
+function ajustaFonte(term) {
+  let px = FONTE;
+  term.options.fontSize = px;
+  term.fit?.();
+  while (term.cols < COLUNAS_MIN && px > FONTE_MIN) {
+    px = Math.max(FONTE_MIN, px - 0.5);
+    term.options.fontSize = px;
+    term.fit?.();
+  }
+}
 
 // ?query=<base64 do SQL> roda ao abrir: link pronto para uma consulta (base64 ou base64url, UTF-8).
 // ?z=<base64 do SQL comprimido em deflate cru> é o mesmo, 25–60% mais curto.

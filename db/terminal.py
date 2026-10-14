@@ -330,9 +330,103 @@ def _entrada():
     return lambda: sessao.prompt(ANSI(f"{MAUVE}rodado>{FIM} ")).strip()
 
 
+LOGO = r"""
+               _           _
+ _ __ ___   __| | __ _  __| | ___
+| '__/ _ \ / _` |/ _` |/ _` |/ _ \
+| | | (_) | (_| | (_| | (_| | (_) |
+|_|  \___/ \__,_|\__,_|\__,_|\___/
+""".strip("\n").splitlines()
+# Mauve -> rosa -> pêssego, uma cor por linha do logo
+DEGRADE = [_cor(c) for c in ("cba6f7", "d9a4e8", "f5c2e7", "f2b8b5", "fab387")]
+
+# Contado do catálogo desta instância, não fixo: só o que se consulta daqui.
+SQL_RESUMO = r"""
+SELECT count(*), count(DISTINCT v.schema_name), coalesce(sum(m.rows), 0),
+       count(DISTINCT m.source_name)
+FROM duckdb_views() v
+LEFT JOIN _rodado_metadata m ON m.dataset = v.schema_name AND m."table" = v.view_name
+WHERE NOT v.internal AND v.schema_name NOT LIKE '\_%' ESCAPE '\' AND v.schema_name <> 'main'
+"""
+
+
+ATLAS = "https://rodado.xyz/atlas/?mode=temas"
+
+
+def _link(url, texto):
+    """Hyperlink OSC 8; index.html abre em nova aba (linkHandler do xterm)."""
+    return f"\x1b]8;;{url}\x1b\\{MAUVE}{texto}{FIM}\x1b]8;;\x1b\\"
+
+
+def _milhar(n):
+    return f"{n:,}".replace(",", ".")
+
+
+def _linhas_curto(n):
+    if n >= 1e9:
+        return f"{n / 1e9:.1f}".replace(".", ",") + " bi"
+    if n >= 1e6:
+        return f"{n / 1e6:.1f}".replace(".", ",") + " mi"
+    return _milhar(int(n))
+
+
+def _resumo(tab, ds, linhas, fontes):
+    partes = [(_milhar(tab), "tabelas"), (_milhar(ds), "datasets"),
+              (_linhas_curto(linhas), "linhas"), (_milhar(fontes), "fontes")]
+    # numa tela estreita (celular) a linha quebraria e o \r da animação deixaria lixo
+    largura = shutil.get_terminal_size().columns - 3
+    while len(partes) > 1 and len(" · ".join(f"{n} {r}" for n, r in partes)) > largura:
+        partes.pop()
+    return f" {CINZA}·{FIM} ".join(f"{PESSEGO}{n}{FIM} {r}" for n, r in partes)
+
+
+def _abertura():
+    """Logo na hora; a linha de números gira enquanto o catálogo responde e então
+    sobe de zero até o valor real."""
+    print()
+    for cor, linha in zip(DEGRADE, LOGO):
+        print(f"{cor}{linha}{FIM}")
+    print(f"\n{CINZA}= {FIM}espelho de dados públicos brasileiros{CINZA} ={FIM}")
+
+    resultado = []
+
+    def conta():
+        try:
+            resultado.extend(_consulta_simples(SQL_RESUMO))
+        except duckdb.Error:
+            pass  # sem números: o terminal abre do mesmo jeito
+
+    busca = threading.Thread(target=conta, daemon=True)
+    busca.start()
+    i = 0
+    while busca.is_alive() and i < 300:  # 30 s no máximo
+        sys.stdout.write(f"\r  {CINZA}{Girando.QUADROS[i % len(Girando.QUADROS)]} contando o catálogo…{FIM}\x1b[K")
+        sys.stdout.flush()
+        busca.join(0.1)
+        i += 1
+    if not resultado:
+        sys.stdout.write("\r\x1b[K")
+    else:
+        alvo = [float(x or 0) for x in resultado[0]]
+        passos = 12
+        for p in range(1, passos + 1):
+            f = 1 - (1 - p / passos) ** 3  # desacelera no fim
+            vals = [int(v * f) if p < passos else int(v) for v in alvo]
+            sys.stdout.write(f"\r  {_resumo(*vals)}\x1b[K")
+            sys.stdout.flush()
+            if p < passos:
+                time.sleep(0.03)
+        sys.stdout.write("\n")
+    rodape = "DuckDB, só leitura · .ajuda para os comandos"
+    if len(f"  {rodape} · [atlas]") <= shutil.get_terminal_size().columns:
+        print(f"  {CINZA}{rodape} ·{FIM} {_link(ATLAS, '[atlas]')}\n")
+    else:  # tela estreita: o link desce uma linha em vez de quebrar no meio
+        print(f"  {CINZA}{rodape}{FIM}\n  {_link(ATLAS, '[atlas]')}\n")
+
+
 def main():
     signal.signal(signal.SIGALRM, _ocioso)
-    print(f"{MAUVE}rodado{FIM} — espelho de dados públicos brasileiros {CINZA}(DuckDB, só leitura · .ajuda){FIM}")
+    _abertura()
     le = _entrada()
     linhas = 40
     while True:
