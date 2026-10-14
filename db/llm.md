@@ -50,7 +50,7 @@ curl $AUTH -G https://db.rodado.xyz/query --data-urlencode 'q=DESCRIBE br_inep_i
 
 | parâmetro | valores |
 |---|---|
-| corpo do POST (ou `q=` no GET) | o SQL, **um comando por requisição** |
+| corpo do POST (ou `q=` no GET) | o SQL, **um comando por requisição**, até 512 KB |
 | `formato` | `json` (padrão, lista de objetos), `csv`, `tsv`, `parquet` |
 | `limite` | linhas devolvidas: padrão {limite_padrao}, máximo {limite_maximo} |
 

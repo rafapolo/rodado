@@ -331,8 +331,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._erro(404, "use /query")
         params = parse_qs(url.query)
         tamanho = int(self.headers.get("Content-Length") or 0)
-        if tamanho > 1_000_000:
-            return self._erro(413, "SQL grande demais")
+        if tamanho > 512 * 1024:
+            return self._erro(413, "SQL grande demais (máximo 512 KB)")
         corpo = self.rfile.read(tamanho).decode("utf-8", errors="replace")
         # curl -d 'q=...' manda formulário; --data-binary manda o SQL cru.
         if corpo.startswith("q=") and "form-urlencoded" in (self.headers.get("Content-Type") or ""):
