@@ -5,6 +5,7 @@ Reproduz a identidade do site: papel creme, tipografia Charter, régua cor ferru
 
 Saída:
   pages/assets/og.png, og-en.png          o cartão do site
+  pages/assets/og-db.png                  o cartão do terminal db.rodado.xyz (escuro, logo ASCII)
   pages/analises/img/og-<slug>.png        um cartão por análise, do manifest.json
 
 As figuras das análises não servem como cartão: são gráficos de 1:1 a 1,5:1 que o
@@ -218,6 +219,79 @@ def gera_analises(raiz: Path) -> int:
     return n
 
 
+# --- cartão do terminal (db.rodado.xyz) --------------------------------------
+# Repete a abertura do terminal.py: o logo ASCII em degradê mauve -> pêssego sobre o
+# fundo radial do index.html (--fundo-terminal), com a moldura lavanda da página.
+
+DB_RESUMO = [("1.403", "tabelas"), ("256", "datasets"), ("743 GB", "de dados"), ("103", "fontes")]
+JETBRAINS = str(Path.home() / "Library/Fonts/JetBrainsMono-Regular.ttf")
+JETBRAINS_BOLD = str(Path.home() / "Library/Fonts/JetBrainsMono-Bold.ttf")
+DB_CENTRO, DB_BORDA = (31, 44, 74), (19, 19, 29)        # #1f2c4a -> #13131d
+DB_MOLDURA = (144, 157, 235)
+DB_TEXTO, DB_CINZA, DB_PESSEGO, DB_MAUVE, DB_VERDE = "#cdd6f4", "#9399b2", "#fab387", "#cba6f7", "#a6e3a1"
+DB_DEGRADE = ["#cba6f7", "#d9a4e8", "#f5c2e7", "#f2b8b5", "#fab387"]
+DB_LOGO = r"""
+               _           _
+ _ __ ___   __| | __ _  __| | ___
+| '__/ _ \ / _` |/ _` |/ _` |/ _ \
+| | | (_) | (_| | (_| | (_| | (_) |
+|_|  \___/ \__,_|\__,_|\__,_|\___/
+""".strip("\n").splitlines()
+
+
+def fundo_radial(w: int, h: int, centro, borda) -> Image.Image:
+    """radial-gradient(circle, centro, borda) do CSS: a borda chega no canto mais distante."""
+    pequeno = Image.new("RGB", (w // 4, h // 4))
+    px = pequeno.load()
+    cx, cy = pequeno.width / 2, pequeno.height / 2
+    raio = (cx ** 2 + cy ** 2) ** 0.5
+    for y in range(pequeno.height):
+        for x in range(pequeno.width):
+            f = min(1.0, ((x - cx) ** 2 + (y - cy) ** 2) ** 0.5 / raio)
+            px[x, y] = tuple(round(a + (b - a) * f) for a, b in zip(centro, borda))
+    return pequeno.resize((w, h), Image.BICUBIC)
+
+
+def build_db() -> Image.Image:
+    img = fundo_radial(W, H, DB_CENTRO, DB_BORDA)
+    d = ImageDraw.Draw(img)
+    d.rectangle([0, 0, W - 1, H - 1], outline=DB_MOLDURA, width=6)
+
+    f_logo = load(JETBRAINS_BOLD, 34)
+    f = load(JETBRAINS, 27)
+    f_b = load(JETBRAINS_BOLD, 27)
+    x0, y = 84, 70
+    for cor, linha in zip(DB_DEGRADE, DB_LOGO):
+        d.text((x0, y), linha, font=f_logo, fill=cor)
+        y += 44
+
+    def segmentos(x, y, partes):
+        for texto, cor, fonte in partes:
+            d.text((x, y), texto, font=fonte, fill=cor)
+            x += d.textlength(texto, font=fonte)
+
+    y += 34
+    segmentos(x0, y, [("= ", DB_CINZA, f), ("espelho de dados públicos brasileiros", DB_TEXTO, f), (" =", DB_CINZA, f)])
+    y += 46
+    partes = []
+    for i, (n, rotulo) in enumerate(DB_RESUMO):
+        if i:
+            partes.append((" · ", DB_CINZA, f))
+        partes += [(n, DB_PESSEGO, f_b), (f" {rotulo}", DB_TEXTO, f)]
+    segmentos(x0, y, partes)
+
+    y += 74
+    segmentos(x0, y, [("rodado> ", DB_MAUVE, f_b), ("SELECT * FROM br_me_cnpj.empresas LIMIT 5;", DB_TEXTO, f)])
+    d.rectangle([x0, y + 50, x0 + 15, y + 82], fill="#f5e0dc")   # cursor
+
+    # rodapé: endereço à direita, como no cartão do site
+    rod = "db.rodado.xyz"
+    f_url = load(JETBRAINS_BOLD, 30)
+    d.text((W - 84 - d.textlength(rod, font=f_url), H - 84), rod, font=f_url, fill=DB_PESSEGO)
+    d.text((x0, H - 80), "SQL no navegador · DuckDB · só leitura", font=load(JETBRAINS, 24), fill=DB_CINZA)
+    return img
+
+
 def main() -> None:
     raiz = Path(__file__).resolve().parent.parent
     out_dir = raiz / "pages" / "assets"
@@ -226,6 +300,9 @@ def main() -> None:
         path = out_dir / name
         build(spec).save(path, "PNG", optimize=True)
         print(f"{path}  {path.stat().st_size // 1024} KB")
+    path = out_dir / "og-db.png"
+    build_db().save(path, "PNG", optimize=True)
+    print(f"{path}  {path.stat().st_size // 1024} KB")
     n = gera_analises(raiz)
     print(f"{len(VARIANTS)} cartões do site · {n} cartões de análise")
 
