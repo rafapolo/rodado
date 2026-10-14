@@ -9,7 +9,9 @@ própria. Tudo passa por HTTP: descobrir tabelas, ler o schema, consultar, expor
 
 ## 1. Credencial
 
-Toda rota além desta página pede **uma** destas, que quem te pediu a tarefa precisa te dar:
+**Até 26/10/2026 o acesso está aberto**: nenhuma rota pede credencial e os exemplos abaixo
+funcionam sem o `$AUTH`. Depois disso, toda rota além desta página pede **uma** destas, que
+quem te pediu a tarefa precisa te dar:
 
 - usuário e senha (HTTP Basic): `curl -u rodado:$RODADO_SENHA ...`
 - token: `?token=$RODADO_TOKEN` em qualquer URL
@@ -19,11 +21,11 @@ resposta. Sem credencial a resposta é `401`. Nos exemplos abaixo, `$AUTH` é `-
 
 ## 2. O fluxo que funciona
 
-1. **Descobrir** que tabelas existem — catálogo inteiro, uma linha por tabela:
-   `curl $AUTH https://db.rodado.xyz/catalogo.json`
-   (campos: `dataset`, `tabela`, `linhas`, `descricao`, `fonte`, `url`, `atualizado`). Ou por SQL:
-   `FROM _rodado_datasets` (uma linha por dataset) e `FROM _rodado_metadata` (uma por tabela,
-   com procedência). A lista de datasets está no fim desta página.
+1. **Descobrir** que tabelas existem — texto, um dataset por linha, com a descrição e as
+   tabelas com o número de linhas (~60 KB inteiro; filtre para gastar pouco contexto):
+   `curl $AUTH 'https://db.rodado.xyz/tabelas?busca=vacina'` (palavras no nome ou na descrição)
+   ou `?dataset=br_me_cnpj`. A procedência de cada tabela está em `FROM _rodado_metadata`.
+   A lista de datasets está no fim desta página.
 2. **Ler o schema** de uma tabela — colunas, tipos e quais são partição:
    `curl $AUTH 'https://db.rodado.xyz/colunas?t=br_me_cnpj.empresas'`
    → `[{"coluna": "...", "tipo": "VARCHAR", "particao": false}, ...]`.
@@ -108,6 +110,6 @@ status 400 (SQL inválido ou recusado), 429 (servidor cheio: espere e repita), 5
 
 ## 6. Datasets
 
-`dataset` · tabelas · linhas · fonte. Detalhe por tabela em `/catalogo.json`.
+`dataset` · tabelas · linhas · fonte. As tabelas de cada um em `/tabelas?dataset=<dataset>`.
 
 {datasets}

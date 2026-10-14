@@ -25,6 +25,10 @@ nem dependência do beelink ligado.
   quem tem o token** (o Caddy grava o cookie do token): o link curto é um convite para o
   espelho inteiro, não só para aquela consulta. O Caddy confere o arquivo do id antes
   (`file` em `/dados/q`); um id que não existe cai na senha
+- **Até 26/10/2026 inclusive o site inteiro está aberto, sem senha nem token** (a pedido):
+  `@aberto` no `proxy/Caddyfile` compara `{time.now.unix}` com 1793070000 (2026-10-27 00:00
+  -03:00). Passada a hora, a senha e o token voltam sozinhos, sem deploy; o aviso em `llm.md`
+  e o bloco `@aberto` podem sair depois
 - `?token=<token>` em qualquer URL dispensa a senha: `https://db.rodado.xyz/?token=…&query=…`
   é um link que um terceiro abre e já vê o resultado. O token fica em
   `/root/rodado-db/.token` no finland (nunca no repositório); o primeiro acesso o grava num
@@ -79,7 +83,7 @@ flowchart LR
 |---|---|---|
 | Conexão travada (núcleo) | container | `rodado_sql.py` |
 | Terminal (via ttyd): SQL colorido ao digitar, Enter envia no `;`, Tab completa dataset/tabela/coluna | container, até 4 abas | `terminal.py` |
-| Página com a árvore, `/catalogo.json` (cache 10 min), `/colunas`, `/query`, `/ping` | container, `127.0.0.1:18081` | `consulta.py`, `index.html` |
+| Página com a árvore, `/catalogo.json` (cache 10 min), `/tabelas` (o catálogo enxuto do `/llm`), `/colunas`, `/query`, `/ping` | container, `127.0.0.1:18081` | `consulta.py`, `index.html` |
 | Catálogo: as views do beelink com os caminhos trocados para o bucket | container, volume `rodado-db-dados` | `catalogo.py` |
 | Exporta o SQL das views para `~/rodado/_db/views.json` | beelink, antes de cada `s3_sync_rodado.sh` | `exporta_views.py` |
 | Sobe tudo, cada peça reiniciando sozinha; Caddy em primeiro plano | container | `inicia.sh`, `Dockerfile` |
