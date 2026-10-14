@@ -28,6 +28,8 @@ import duckdb
 import rodado_sql
 
 PAGINA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
+# /llm: guia público para agentes; o modelo em llm.md recebe os números e a lista de datasets
+GUIA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "llm.md")
 
 # Link curto /q/<id>: o SQL salvo por quem tem senha fica em DIR_Q/<id>.sql, no volume.
 # O id é o começo do sha256 do texto (o mesmo SQL dá sempre o mesmo link) e só cresce se
@@ -37,6 +39,18 @@ DIR_Q = os.environ.get("RODADO_DIR_Q", "/dados/q")
 ROTA_Q = re.compile(r"^/q/([A-Za-z0-9_-]{8,16})(/sql)?$")
 _catalogo = {"em": 0.0, "json": b""}
 _catalogo_trava = threading.Lock()
+_guia = {"em": 0.0, "texto": b""}
+_guia_trava = threading.Lock()
+
+SQL_GUIA_RESUMO = """
+SELECT count(*), count(DISTINCT dataset), coalesce(sum(size_bytes), 0), count(DISTINCT source_name)
+FROM _rodado_metadata WHERE source <> 'view_only'
+"""
+SQL_GUIA_DATASETS = """
+SELECT dataset, count(*), coalesce(sum(rows), 0), mode(source_name)
+FROM _rodado_metadata WHERE source <> 'view_only'
+GROUP BY 1 ORDER BY 1
+"""
 
 SQL_CATALOGO = r"""
 SELECT v.schema_name AS dataset, v.view_name AS tabela, m.rows AS linhas,
@@ -56,7 +70,8 @@ ORDER BY v.schema_name <> 'main', 1, 2  -- o catálogo (main._rodado_*) primeiro
 PORTA = int(os.environ.get("RODADO_PORTA_CONSULTA", "18081"))
 LIMITE_PADRAO = 10_000
 LIMITE_MAXIMO = 1_000_000
-SIMULTANEAS = threading.BoundedSemaphore(int(os.environ.get("RODADO_SIMULTANEAS", "4")))
+N_SIMULTANEAS = int(os.environ.get("RODADO_SIMULTANEAS", "4"))
+SIMULTANEAS = threading.BoundedSemaphore(N_SIMULTANEAS)
 
 USO = """\
 POST /query com o SQL no corpo (ou GET /query?q=...). Só leitura, um comando por vez.
@@ -64,6 +79,21 @@ Parâmetros: formato=json|csv|tsv|parquet (padrão json), limite=N linhas (padr�
 Cabeçalhos da resposta: X-Linhas, X-Truncado, X-Segundos.
 Exemplo: curl -u usuario:senha --data-binary 'DESCRIBE br_bd_diretorios_brasil.municipio' https://db.rodado.xyz/query
 """
+
+
+def _milhar(n):
+    return f"{int(n):,}".replace(",", ".")
+
+
+def _gb(n):
+    return f"{n / 1e12:.1f} TB".replace(".", ",") if n >= 1e12 else f"{n / 1e9:.0f} GB"
+
+
+def _linhas(n):
+    for limite, nome in ((1e9, "bi"), (1e6, "mi"), (1e3, "mil")):
+        if n >= limite:
+            return f"{n / limite:.1f} {nome} linhas".replace(".", ",")
+    return f"{int(n)} linhas"
 
 
 def _json_valor(v):
@@ -118,6 +148,31 @@ class Handler(BaseHTTPRequestHandler):
                 _catalogo["json"] = json.dumps(dados, ensure_ascii=False, default=_json_valor).encode()
                 _catalogo["em"] = time.time()
             return _catalogo["json"]
+
+    def _guia(self):
+        with _guia_trava:
+            if time.time() - _guia["em"] > 600:
+                con = rodado_sql.conecta()
+                try:
+                    tab, ds, tamanho, fontes = con.sql(SQL_GUIA_RESUMO).fetchone()
+                    datasets = con.sql(SQL_GUIA_DATASETS).fetchall()
+                finally:
+                    con.close()
+                with open(GUIA, encoding="utf-8") as f:
+                    modelo = f.read()
+                valores = {
+                    "resumo": f"{_milhar(tab)} tabelas · {_milhar(ds)} datasets · {_milhar(fontes)} fontes · "
+                              f"{_gb(tamanho)}",
+                    "gerado": time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime()),
+                    "limite_padrao": _milhar(LIMITE_PADRAO), "limite_maximo": _milhar(LIMITE_MAXIMO),
+                    "tempo": rodado_sql.TEMPO_LIMITE, "simultaneas": N_SIMULTANEAS,
+                    "datasets": "\n".join(f"- `{d}` · {n} · {_linhas(l)} · {f or '?'}" for d, n, l, f in datasets),
+                }
+                for chave, valor in valores.items():   # format() quebraria nas chaves do SQL do guia
+                    modelo = modelo.replace("{" + chave + "}", str(valor))
+                _guia["texto"] = modelo.encode()
+                _guia["em"] = time.time()
+            return _guia["texto"]
 
     def _colunas(self, alvo):
         partes = alvo.split(".")
@@ -199,6 +254,12 @@ class Handler(BaseHTTPRequestHandler):
         if url.path == "/catalogo.json":
             try:
                 return self._responde(200, self._catalogo(), "application/json; charset=utf-8")
+            except duckdb.Error as e:
+                return self._json({"erro": str(e)}, 500)
+        if url.path in ("/llm", "/llm.md", "/llms.txt"):
+            try:
+                return self._responde(200, self._guia(), "text/markdown; charset=utf-8",
+                                      {"Cache-Control": "public, max-age=600"})
             except duckdb.Error as e:
                 return self._json({"erro": str(e)}, 500)
         if url.path == "/colunas":

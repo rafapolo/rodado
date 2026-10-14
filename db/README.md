@@ -167,7 +167,7 @@ O túnel SSH reverso do beelink foi desligado na mesma data, e removidos o usuá
 ssh finland 'docker logs --tail 50 $(docker ps -qf name=rodado-db)'
 
 # deploy: código para o finland e haloy deploy (o S3_KEY/S3_SECRET vêm de /root/rodado-db/.s3)
-scp db/{Dockerfile,haloy.yml,inicia.sh,rodado_sql.py,consulta.py,terminal.py,catalogo.py,index.html} finland:/root/rodado-db/
+scp db/{Dockerfile,haloy.yml,inicia.sh,rodado_sql.py,consulta.py,terminal.py,catalogo.py,index.html,llm.md} finland:/root/rodado-db/
 scp db/proxy/{Caddyfile,og.html} finland:/root/rodado-db/proxy/
 ssh finland 'cd /root/rodado-db && set -a && . /etc/haloy/.env && . ./.s3 && set +a &&
   DB_USUARIO=rodado DB_SENHA_HASH="$(cat .senha_hash)" DB_TOKEN="$(cat .token)" haloy deploy -c haloy.yml'

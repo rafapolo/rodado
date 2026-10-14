@@ -44,6 +44,13 @@
 		file_server
 	}
 
+	# Guia para agentes (/llm, e /llms.txt, o nome que eles procuram): público, sem senha.
+	# Só explica a API; os dados continuam atrás da senha ou do token.
+	@guia path /llm /llm.md /llms.txt
+	handle @guia {
+		reverse_proxy 127.0.0.1:18081
+	}
+
 	# Link curto /q/<id>: quem abre um link que existe (o SQL salvo em /dados/q/<id>.sql, no
 	# volume deste container) entra como quem tem o token — terminal completo, a pedido — e a
 	# página executa o SQL. Um id que não existe cai na senha, como qualquer outra rota:

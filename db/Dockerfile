@@ -14,7 +14,7 @@ RUN python -c "import duckdb; duckdb.connect().execute('INSTALL httpfs')"
 WORKDIR /app
 COPY proxy/Caddyfile /etc/caddy/Caddyfile
 COPY proxy/og.html /srv/og.html
-COPY rodado_sql.py consulta.py terminal.py catalogo.py index.html inicia.sh ./
+COPY rodado_sql.py consulta.py terminal.py catalogo.py index.html llm.md inicia.sh ./
 ENV RODADO_DB=/dados/catalogo.duckdb PROMPT_TOOLKIT_NO_CPR=1
 EXPOSE 8080
 CMD ["./inicia.sh"]
