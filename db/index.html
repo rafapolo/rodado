@@ -326,8 +326,12 @@ function cola(texto) {
 }
 
 // botões da tabela (amostra, DESCRIBE, SUMMARIZE): cola e já executa
+let ultimaConsulta = null;   // a última que foi ao terminal (não os comandos de ponto), para o CSV
+const anota = texto => { if (!texto.trim().startsWith(".")) ultimaConsulta = texto.trim(); };
+
 function roda(texto) {
   if (editorVisivel()) { cola(texto); executa(); return; }
+  anota(texto);
   try {
     const term = document.getElementById("terminal").contentWindow.term;
     term.paste(texto);
@@ -690,6 +694,7 @@ function executa() {
   if (!term) return;
   if (!texto) { term.input("\r", true); return; }      // Enter vazio ainda serve ao terminal
   if (!texto.startsWith(".") && !texto.endsWith(";")) texto += ";";
+  anota(texto);
   term.paste(texto);
   term.input("\r", true);
   historico = historico.filter(h => h !== texto);
@@ -777,7 +782,7 @@ const LIMITE_CSV = 250;
 const exporta = document.getElementById("exporta");
 exporta.addEventListener("click", async () => {
   const status = document.getElementById("status");
-  const texto = historico.findLast(h => !h.startsWith("."));
+  const texto = ultimaConsulta || historico.findLast(h => !h.startsWith("."));
   if (!texto) { status.textContent = "nada para exportar: execute uma consulta antes"; sql.focus(); return; }
   if (exporta.getAttribute("aria-busy") === "true") return;
   exporta.setAttribute("aria-busy", "true");
