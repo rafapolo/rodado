@@ -122,7 +122,7 @@
   details[open] > summary::before { content: "▾ "; color: var(--mauve); }
   /* colunas carregando: o girador ocupa o lugar do ▾, sem empurrar o nome */
   .tb > summary[aria-busy=true]::before { content: ""; display: inline-block; width: 10px; height: 10px;
-    margin-right: calc(2ch - 10px); vertical-align: -1px; border: 2px solid var(--surface1);
+    margin-right: calc(2ch - 10px); vertical-align: -1px; flex: none; align-self: center; border: 2px solid var(--surface1);
     border-top-color: var(--mauve); border-radius: 50%; animation: gira .7s linear infinite; }
   summary:hover, .coluna:hover { background: var(--surface0); }
   /* texto secundário: overlay2 no mantle (6,2:1) e subtext0 sobre o surface0 do hover/foco (5,6:1) — AA nos dois */
@@ -153,7 +153,10 @@
   .tb > summary .nome { color: var(--blue); }
   /* trecho que casou com o filtro */
   #arvore mark { background: var(--mauve); color: var(--crust); }
-  .tb > summary .linhas { color: var(--peach); float: right; }
+  /* como .nomecol e .tipo na coluna: o nome empurra o número de linhas, em vez de passar por baixo dele */
+  .tb > summary { display: flex; align-items: baseline; gap: 0; }
+  .tb > summary::before { flex: 0 0 2ch; white-space: pre; }
+  .tb > summary .linhas { color: var(--peach); margin-left: auto; padding-left: 8px; }
   /* onde a tabela mora: verde = SSD do servidor (rápido), amarelo = bucket S3; ◐ = dataset misto */
   .onde { margin-right: 4px; font-size: 9px; vertical-align: 1px; }
   .onde.ssd { color: var(--green); } .onde.s3 { color: var(--yellow); }
