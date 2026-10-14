@@ -523,8 +523,16 @@ termFrame.addEventListener("load", async () => {
   const term = termFrame.contentWindow.term;
   if (!term) return;
   term.options.fontFamily = '"JetBrains Mono", monospace';
-  // links OSC 8 do terminal.py (o [atlas] da abertura): nova aba, sem o confirm() padrão do xterm
-  term.options.linkHandler = { activate: (_, uri) => window.open(uri, "_blank", "noopener"), allowNonHttpProtocols: false };
+  // links OSC 8 do terminal.py: [atlas] abre em nova aba (sem o confirm() padrão do xterm),
+  // [ajuda] é rodado:.ajuda e roda o comando
+  term.options.linkHandler = {
+    allowNonHttpProtocols: true,
+    activate: (_, uri) => {
+      // direto no terminal, sem passar pelo editor: não mexe no rascunho de quem está escrevendo
+      if (uri.startsWith("rodado:")) { term.paste(uri.slice(7)); term.input("\r", true); }
+      else if (/^https?:/.test(uri)) window.open(uri, "_blank", "noopener");
+    },
+  };
   ajustaFonte(term);
   addEventListener("resize", () => ajustaFonte(term));
   if (editorVisivel()) sql.focus();      // no desktop o teclado começa no editor, não no terminal
