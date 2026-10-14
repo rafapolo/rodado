@@ -190,7 +190,7 @@
     border: 1px solid var(--surface0); border-radius: 4px; font: inherit; }
   .buscacol::placeholder { color: var(--overlay2); }
   .info.erro { color: var(--red); }
-  .dsinfo { padding: 2px 8px 6px 22px; color: var(--subtext0); }
+  .dsinfo { padding: 5px 8px 4px 24px; color: var(--subtext0); }
   .dsinfo .desc { margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .dsinfo.aberta .desc { -webkit-line-clamp: unset; display: block; }
   .dsinfo .mais { background: none; border: 0; padding: 0; color: var(--blue); font: inherit; cursor: pointer; }
@@ -437,7 +437,8 @@ const linkSeguro = u => /^https?:\/\//i.test(u || "") ? u : "";
 function htmlDataset(ds) {
   const t = catalogo.find(x => x.dataset === ds && x.descricao);
   if (!t) return "";
-  return `<div class="dsinfo"><p class="desc">${esc(t.descricao)}</p>`
+  const desc = t.descricao.trim().replace(/[\s.;:,]*$/, "") + ".";   // a descrição sempre fecha com ponto
+  return `<div class="dsinfo"><p class="desc">${esc(desc)}</p>`
     + `<button class="mais" type="button" aria-expanded="false">mais…</button></div>`;
 }
 
