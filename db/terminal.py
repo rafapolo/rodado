@@ -331,13 +331,14 @@ def _entrada():
 
 
 LOGO = r"""
-             _         _
- _ _ ___  __| |__ _ __| |___
-| '_/ _ \/ _` / _` / _` / _ \
-|_| \___/\__,_\__,_\__,_\___/
+               _           _
+ _ __ ___   __| | __ _  __| | ___
+| '__/ _ \ / _` |/ _` |/ _` |/ _ \
+| | | (_) | (_| | (_| | (_| | (_) |
+|_|  \___/ \__,_|\__,_|\__,_|\___/
 """.strip("\n").splitlines()
 # Mauve -> rosa -> pêssego, uma cor por linha do logo
-DEGRADE = [_cor(c) for c in ("cba6f7", "f5c2e7", "f2b8b5", "fab387")]
+DEGRADE = [_cor(c) for c in ("cba6f7", "d9a4e8", "f5c2e7", "f2b8b5", "fab387")]
 
 # Contado do catálogo desta instância, não fixo: só o que se consulta daqui.
 SQL_RESUMO = r"""
