@@ -123,14 +123,17 @@ describe("API /query", () => {
   const q = (sql: string, params = "", auth = AUTH) =>
     fetch(`${BASE}/query${params}`, { method: "POST", body: sql, headers: auth ? { Authorization: auth } : {} });
 
-  test("sem senha devolve 401, inclusive na página e no terminal", async () => {
-    for (const caminho of ["/query", "/", "/tty/", "/catalogo.json"]) {
+  // acesso aberto até 26/10/2026 inclusive (proxy/Caddyfile, @aberto); depois volta o 401
+  const aberto = Date.now() < 1793070000 * 1000;
+  test(aberto ? "sem senha entra, até 26/10/2026" : "sem senha devolve 401, inclusive na página e no terminal", async () => {
+    for (const caminho of ["/query", "/", "/tty/", "/catalogo.json", "/tabelas"]) {
       const r = await fetch(BASE + caminho);
-      expect(r.status, caminho).toBe(401);
+      if (aberto) expect(r.status, caminho).not.toBe(401);
+      else expect(r.status, caminho).toBe(401);
     }
   });
 
-  test("senha errada devolve 401", async () => {
+  test.skipIf(aberto)("senha errada devolve 401", async () => {
     const r = await q("SELECT 1", "", "Basic " + Buffer.from("rodado:errada").toString("base64"));
     expect(r.status).toBe(401);
   });
