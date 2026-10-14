@@ -459,7 +459,7 @@ def _inprocess_connection():
     """The one DuckDB instance of this process; callers take a cursor() each.
 
     The embedded engine does not read ~/.duckdbrc, so every limit is set here.
-    No views are created: binding 1.397 views over S3 would list and read the
+    No views are created: binding 1.403 views over S3 would list and read the
     footer of every table at startup. Catalog names reach the parquet through
     run_sql's read_parquet() rewrite instead, bound lazily per query.
     """
