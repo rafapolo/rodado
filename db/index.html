@@ -79,6 +79,7 @@
   #exporta svg { width: 13px; height: 13px; }
   #exporta.ok { color: var(--green); border-color: var(--green); }
   #exporta[aria-busy=true] { opacity: .5; cursor: progress; }
+  #exporta:disabled { color: var(--surface2); border-color: var(--surface0); cursor: not-allowed; }
   #sugestoes { position: absolute; left: 44px; bottom: 100%; margin: 0 0 2px; padding: 2px 0; list-style: none;
     min-width: 260px; max-width: min(640px, 90%); max-height: 220px; overflow-y: auto; background: var(--crust);
     border: 1px solid var(--surface1); border-radius: 6px; z-index: 5; box-shadow: 0 -6px 20px #0006; }
@@ -326,12 +327,8 @@ function cola(texto) {
 }
 
 // botões da tabela (amostra, DESCRIBE, SUMMARIZE): cola e já executa
-let ultimaConsulta = null;   // a última que foi ao terminal (não os comandos de ponto), para o CSV
-const anota = texto => { if (!texto.trim().startsWith(".")) ultimaConsulta = texto.trim(); };
-
 function roda(texto) {
   if (editorVisivel()) { cola(texto); executa(); return; }
-  anota(texto);
   try {
     const term = document.getElementById("terminal").contentWindow.term;
     term.paste(texto);
@@ -533,6 +530,7 @@ termFrame.addEventListener("load", async () => {
   const term = termFrame.contentWindow.term;
   if (!term) return;
   term.options.fontFamily = '"JetBrains Mono", monospace';
+  term.parser.registerOscHandler(7771, dado => { marcaResultado(dado); return true; });
   // links OSC 8 do terminal.py: [atlas] abre em nova aba (sem o confirm() padrão do xterm),
   // [ajuda] é rodado:.ajuda e roda o comando
   term.options.linkHandler = {
@@ -694,7 +692,6 @@ function executa() {
   if (!term) return;
   if (!texto) { term.input("\r", true); return; }      // Enter vazio ainda serve ao terminal
   if (!texto.startsWith(".") && !texto.endsWith(";")) texto += ";";
-  anota(texto);
   term.paste(texto);
   term.input("\r", true);
   historico = historico.filter(h => h !== texto);
@@ -780,11 +777,20 @@ compartilha.addEventListener("click", async () => {
 // comandos de ponto) e baixa até LIMITE_CSV linhas
 const LIMITE_CSV = 250;
 const exporta = document.getElementById("exporta");
+// O terminal.py manda um OSC 7771 ao fim de cada consulta: o SQL em base64 se deu certo,
+// vazio se deu erro, foi recusada ou interrompida. Sem resultado bom, o botão fica desligado
+// — vale também para o que se digita direto no terminal.
+let ultimaConsulta = null;
+function marcaResultado(dado) {
+  try { ultimaConsulta = dado ? new TextDecoder().decode(Uint8Array.from(atob(dado), c => c.charCodeAt(0))) : null; }
+  catch (_) { ultimaConsulta = null; }
+  exporta.disabled = !ultimaConsulta;
+}
+marcaResultado("");
 exporta.addEventListener("click", async () => {
   const status = document.getElementById("status");
-  const texto = ultimaConsulta || historico.findLast(h => !h.startsWith("."));
-  if (!texto) { status.textContent = "nada para exportar: execute uma consulta antes"; sql.focus(); return; }
-  if (exporta.getAttribute("aria-busy") === "true") return;
+  const texto = ultimaConsulta;
+  if (!texto || exporta.getAttribute("aria-busy") === "true") return;
   exporta.setAttribute("aria-busy", "true");
   status.textContent = "gerando CSV…";
   try {
