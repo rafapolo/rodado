@@ -144,9 +144,10 @@
   /* tabela aberta: nome preso no topo enquanto as colunas rolam */
   .tb[open] { position: relative; padding-bottom: 4px; margin-bottom: 2px; }
   .tb[open] > summary { position: sticky; top: 0; z-index: 1; background: var(--mantle); }
-  /* árvore: tracejado mauve descendo do ▾ da tabela pelas colunas, como o rosa do dataset */
+  /* árvore: tracejado mauve descendo do ▾ da tabela pelas colunas, como o rosa do dataset; z-index 0:
+     passa por cima das colunas e por baixo do nome preso da tabela (z-index 1) */
   .tb[open]::after { content: ""; position: absolute; left: calc(var(--recuo-tb) + 0.5ch - 1px);
-    top: var(--alto-ds); bottom: 4px; border-left: 2px dashed var(--mauve); pointer-events: none; z-index: 2; }
+    top: var(--alto-ds); bottom: 4px; border-left: 2px dashed var(--mauve); pointer-events: none; z-index: 0; }
   .tb[open] > summary:hover, .tb[open] > summary:focus-visible { background: var(--surface0); }
   .tb[open] > summary .nome { font-weight: 700; }
   .tb > summary .nome { color: var(--blue); }
