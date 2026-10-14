@@ -88,12 +88,12 @@
   #sugestoes li { display: flex; gap: 12px; padding: 1px 8px; cursor: pointer; white-space: nowrap; }
   #sugestoes li .meta { margin-left: auto; color: var(--subtext0); }
   #sugestoes li[aria-selected=true], #sugestoes li:hover { background: var(--surface0); }
-  /* divisor: 1px visível, 9px de área de pegar; realça no hover e enquanto arrasta */
-  #arrasta { position: relative; flex: 0 0 1px; background: var(--surface0); cursor: col-resize;
+  /* divisor: 1px visível, 9px de área de pegar; já aceso em mauve, como no hover e enquanto arrasta */
+  #arrasta { position: relative; flex: 0 0 1px; background: var(--mauve); cursor: col-resize;
     transition: background .15s; z-index: 2; }
   #arrasta::before { content: ""; position: absolute; inset: 0 -4px; }
   #arrasta::after { content: ""; position: absolute; top: 50%; left: -2px; width: 5px; height: 28px;
-    margin-top: -14px; border-radius: 3px; background: var(--surface1); transition: background .15s; }
+    margin-top: -14px; border-radius: 3px; background: var(--mauve); transition: background .15s; }
   #arrasta:hover, body.arrastando #arrasta { background: var(--mauve); }
   #arrasta:hover::after, body.arrastando #arrasta::after { background: var(--mauve); }
   body.arrastando, body.arrastando * { cursor: col-resize !important; user-select: none; }
