@@ -100,6 +100,24 @@ ou I/O sob carga); até achar:
   o original); nada vai para `~/rodado` antes de conferido;
 - teste de memória (memtest86+) pendente.
 
+**2026-10-14/15: acontece também com uma carga só.** Na regravação das 12
+tabelas enriquecidas com CPF (`scripts/sync/rezstd.py`), sozinha no beelink,
+houve três segfaults (`python3` e `duckdb`, em `/var/log/kern.log`), `Out of
+buffer`, checksum de bloco do `.duckdb` errado numa leitura e certo nas
+seguintes, `cmp` acusando diferença entre dois arquivos que outro `cmp` deu
+iguais, e **parquet gravado com bit trocado**: um ano inteiro ilegível
+(`ZSTD Decompression failure` em toda leitura) e, pior, arquivos legíveis com
+uma linha errada (um `ano_competencia` virado `NULL`, um CPF de outra pessoa).
+Nada disso é determinístico: o mesmo arquivo, regravado, passava. E já tinha
+acontecido em julho sem ninguém ver: o `bolsa_familia_pagamento` enriquecido
+em 2026-07-18 tinha duas linhas corrompidas, e oito das doze tabelas
+enriquecidas não batiam com o próprio original. O que funcionou: conferir
+**cada arquivo** contra o mesmo recorte da fonte (contagem e soma de
+`hash()` de todas as colunas, que é aditiva, então o esperado de todos os
+recortes sai de uma passada só) e regravar até bater. Arquivo grande demais
+nunca passa (o SP do Bolsa Família, 157 M linhas, precisou de cinco
+tentativas): dividir em recortes de ~20 M linhas.
+
 ## Armadilhas da rodada de 2026-10-07
 
 - **Stream que trava sem erro.** A Storage Read API às vezes fica em

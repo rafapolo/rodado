@@ -271,6 +271,32 @@ Ponte nova em `bridges.yaml`: a forma abreviada (`ds.a / b`, `ds.*`) passou a
 chegar ao harness em 2026-09-27 (`harness/pontes.ts`, branch `harness-gemma`, B33); antes, só nome
 exato de tabela chegava.
 
+## 12. Tabela com a mesma pessoa em muitas linhas → ordenar por pessoa ao gravar
+
+Painel de pagamento (uma linha por pessoa × mês) comprime pelo dicionário do
+parquet, e o dicionário só funciona se as repetições caem no mesmo row group.
+Ordenado por ano, mês e UF, cada pessoa aparece uma vez por row group, e
+`cpf`, `nis` e `nome` caem para `PLAIN`: o `auxilio_brasil` foi de 3,19 GB
+(snappy, na ordem de saída de um join) para 6,01 GB em zstd. Ordenado por
+UF, município, **pessoa**, ano e mês, foi para 0,98 GB. Medido em 2026-10-15:
+
+| tabela | antes | depois |
+|---|---:|---:|
+| `br_cgu_beneficios_cidadao.bolsa_familia_pagamento` | 47,98 GB | 2,00 GB |
+| `br_cgu_beneficios_cidadao.novo_bolsa_familia` | 19,40 GB | 1,33 GB |
+| `br_cgu_beneficios_cidadao.bpc` | 17,45 GB | 1,21 GB |
+| `br_cgu_servidores_executivo_federal.cadastro_servidores` | 9,66 GB | 0,84 GB |
+| `br_cgu_beneficios_cidadao.auxilio_emergencial` | 7,51 GB | 5,07 GB |
+
+O ganho depende de quantas vezes a pessoa se repete: o auxílio emergencial,
+com poucas parcelas por pessoa, ganhou pouco. Um arquivo por UF mantém a
+pessoa inteira num arquivo e deixa a ordenação caber na memória; UF acima de
+60 M linhas vai em 16 recortes por `hash(id_municipio)` (ou da pessoa, se não
+houver município). Receita completa, com a conferência por recorte que a RAM
+do beelink exige, em `scripts/sync/rezstd.py`. Antes de trocar o codec de
+uma tabela, medir: em 2 arquivos de 384 o zstd saiu maior que o snappy, e
+eles ficaram como estavam.
+
 ## Ordem completa, resumida
 
 ```
