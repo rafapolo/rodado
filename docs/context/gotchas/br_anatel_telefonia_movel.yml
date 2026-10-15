@@ -1,0 +1,26 @@
+dataset: br_anatel_telefonia_movel
+gotchas:
+  - id: densidade_por_100_habitantes
+    resumo: "A densidade do móvel é acessos por 100 HABITANTES (Densidades.pdf da Anatel), não por domicílio como diz a descrição do Base dos Dados; por domicílio é a da banda larga fixa e da TV. Passa de 100 porque há mais chips que pessoas."
+    tabelas: [densidade_brasil, densidade_uf, densidade_municipio]
+    colunas: [densidade]
+    severidade: silencioso
+    verificado: "Brasil 2026-08: 103,135; 2022-12: 212.925.716 acessos ÷ 104,857 = 203,06 mi hab, a população do Censo 2022 — medido 2026-10-15"
+  - id: densidade_com_meses_vazios
+    resumo: "A Anatel não publicou a densidade nacional de 2023-01 a 2026-03 nem 88 meses de UF (2005–2009 e 2023–2026): a linha existe com densidade nula. Não é zero; calcular por acessos ÷ população, se preciso, e marcar como calculado."
+    tabelas: [densidade_brasil, densidade_uf]
+    colunas: [densidade]
+    severidade: silencioso
+    verificado: "densidade_brasil: 39 de 259 nulos, 202301–202603; densidade_uf: 88 de 6.028 — medido 2026-10-15"
+  - id: dois_ddd
+    resumo: "microdados tem ddd (Código Nacional, da área do município) e ddd_chip (o DDD do número). 16% dos acessos têm chip de outro DDD; agregar por um ou pelo outro muda a distribuição por DDD, não o total."
+    tabelas: [microdados]
+    colunas: [ddd, ddd_chip]
+    severidade: aviso
+    verificado: "2024-12: ddd = ddd_chip em 268.604 linhas / 221,95 mi acessos; diferentes em 2.030.910 / 41,47 mi (19×11: 1,62 mi; 11×19: 1,13 mi) — medido 2026-10-15"
+  - id: acessos_nulo_nao_e_zero
+    resumo: "Acessos vem vazio em parte das linhas: é nulo na fonte, não zero. count(acessos) e count(*) diferem."
+    tabelas: [microdados]
+    colunas: [acessos]
+    severidade: aviso
+    verificado: "1.650.821 de 176.986.031 linhas com acessos nulo — medido 2026-10-15"
