@@ -1,0 +1,20 @@
+dataset: br_bcb_sicor
+gotchas:
+  - id: proagro_sem_ano_na_fonte
+    resumo: "Os arquivos do Proagro não trazem ano: ano_emissao/mes_emissao vêm da operacao pelo id_referencia_bacen (a emissão mais antiga, porque operacao repete o id). Operação fora do espelho fica sem ano: filtrar por ano descarta essas linhas."
+    tabelas: [proagro_cop, proagro_complemento_cop, proagro_rcp, proagro_complemento_rcp, proagro_rcp_gleba, proagro_parcela, proagro_sumula_julgamento]
+    colunas: [ano_emissao, mes_emissao]
+    severidade: silencioso
+    verificado: "proagro_parcela: 292.781 de 13.432.346 sem ano (2,2%); demais tabelas 0,5–1% — medido 2026-10-15"
+  - id: proagro_cop_chave_repetida
+    resumo: "(id_referencia_bacen, numero_ordem) não é único no COP: há comunicado repetido. Não use o par como chave sem deduplicar."
+    tabelas: [proagro_cop]
+    colunas: [id_referencia_bacen, numero_ordem]
+    severidade: silencioso
+    verificado: "1.007.340 linhas, 11.260 a mais que pares distintos — medido 2026-10-15"
+  - id: proagro_gleba_wkt_invalido
+    resumo: "geometria é o WKT da fonte (POLYGON com Z sem a etiqueta) convertido para 2D; 2% dos polígonos não convertem e ficam com geometria nula e geometria_original preenchida."
+    tabelas: [proagro_rcp_gleba]
+    colunas: [geometria, geometria_original]
+    severidade: aviso
+    verificado: "36.975 de 1.764.450 com geometria nula, todos com geometria_original — medido 2026-10-15"
