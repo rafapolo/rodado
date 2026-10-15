@@ -35,3 +35,17 @@ gotchas:
     colunas: [sequencial, sequencial_candidato]
     severidade: silencioso
     verificado: "127 candidaturas da Lista Suja geraram 276 linhas de resultado só por ano+sequencial; com UF e eleição, uma por candidatura — medido 2026-10-15"
+  - id: dois_id_eleicao_no_ano_geral
+    resumo: "Em ano de eleição geral há dois id_eleicao com a mesma data e o mesmo tipo_eleicao: um federal (só presidente) e um estadual (governador, senador e deputados). Não é duplicata. Somar por número ou partido sem filtrar cargo junta presidente, governador e deputados."
+    detalhe: >
+      O número 13 em SP/2026 soma 23.543.008 votos sem filtro de cargo: são
+      9.505.413 para presidente (6257), 8.423.656 para governador (6259),
+      3.146.068 para deputado estadual e 2.467.871 para deputado federal. Não há
+      linha repetida, e SP tem 34,1 mi de aptos, não ~9 mi. Filtre sempre por
+      cargo. Em 2026 há duas vagas de senador, cada eleitor dá dois votos, e os
+      votos nominais para senador passam do comparecimento (43,5 mi contra
+      26,4 mi em SP).
+    tabelas: [resultados_candidato_secao, resultados_candidato, detalhes_votacao_secao]
+    colunas: [id_eleicao, cargo, numero_candidato, numero_partido]
+    severidade: silencioso
+    verificado: "ano=2026, SP: 15.718.756 linhas = 15.718.756 chaves (município, zona, seção, cargo, número, turno); 6257 presidente / 6259 demais; aptos 34.122.892 (pres.) — medido 2026-10-15"
