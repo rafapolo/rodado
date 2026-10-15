@@ -13,3 +13,9 @@ gotchas:
     colunas: [cpf]
     severidade: silencioso
     verificado: "152.734 de 189.136 linhas completadas — medido 2026-10-07"
+  - id: duplica_mgi
+    resumo: "fornecedores é o mesmo cadastro de br_mgi_compras_publicas.fornecedor; não some os dois."
+    tabelas: [fornecedores]
+    colunas: [cnpj]
+    severidade: silencioso
+    verificado: "772.020 de 772.073 CNPJs do MGI casam, mesmo ativo — medido 2026-10-15"

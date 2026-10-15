@@ -1,0 +1,20 @@
+dataset: br_prf_acidentes
+gotchas:
+  - id: sem_vitimas_quebra_2015
+    resumo: "Acidentes 'Sem Vítimas' caem 90% entre 2010 e 2023, com a quebra em 2014–2016: a série de acidentes não é comparável antes e depois. Compare com classificacao_acidente <> 'Sem Vítimas', ou use mortos."
+    tabelas: [ocorrencia, pessoa, pessoa_causa_tipo]
+    colunas: [classificacao_acidente]
+    severidade: silencioso
+    verificado: "Sem Vítimas 113.118 (2010) → 98.312 (2014) → 58.411 (2015) → 34.478 (2016) → 10.963 (2023); com vítimas 69.359 → 56.802 — medido 2026-10-15"
+  - id: pessoa_causa_tipo_multiplica
+    resumo: "pessoa_causa_tipo tem uma linha por pessoa × causa × tipo de acidente: contar linhas multiplica vítimas. Use pessoa, ou count(DISTINCT id_pessoa)."
+    tabelas: [pessoa_causa_tipo]
+    colunas: [id_pessoa, indicador_morto]
+    severidade: silencioso
+    verificado: "2023: 26.552 linhas de morto para 5.627 mortos distintos (= pessoa = sum(quantidade_mortos) de ocorrencia) — medido 2026-10-15"
+  - id: so_rodovia_federal
+    resumo: "É só a malha federal: os mortos da PRF são 16% dos óbitos de transporte do SIM, de 2,5% (AM) a 25,8% (AC). Não é taxa de mortalidade no trânsito do município."
+    tabelas: [ocorrencia]
+    colunas: [quantidade_mortos, sigla_uf]
+    severidade: aviso
+    verificado: "2023: 5.627 mortos PRF × 34.881 óbitos SIM V01–V89 por UF de ocorrência — medido 2026-10-15"
