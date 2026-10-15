@@ -372,6 +372,7 @@ ATLAS_DATASET_THEME = {
     "br_transferegov_siconv": "governo",
     "br_trase_supply_chain": "meio_ambiente",
     "br_rodado_eleicoes": "politica",
+    "br_rodado_indicadores_municipais": "governo",
     "br_tse_eleicoes": "politica",
     "br_tse_filiacao_partidaria": "politica",
     "br_ufmg_censo_demografico_1872": "populacao",
