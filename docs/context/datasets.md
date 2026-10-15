@@ -4,7 +4,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
 
-256 datasets, 1403 tabelas.
+256 datasets, 1391 tabelas.
 
 | dataset | tabelas | linhas | last_update |
 |---|---:|---:|---|
@@ -53,7 +53,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_camara_dados_abertos` | 30 | 14.637.072 | 2026-10-09 |
 | `br_capes_bolsas` | 1 | 146.036 | 2026-10-07 |
 | `br_ce_fortaleza_sefin_iptu` | 1 | 68.932 | 2026-07-05 |
-| `br_cgu_beneficios_cidadao` | 11 | 6.609.911.240 | 2026-10-09 |
+| `br_cgu_beneficios_cidadao` | 6 | 3.321.211.133 | 2026-10-09 |
 | `br_cgu_cartao_pagamento` | 4 | 3.213.220 | 2026-10-09 |
 | `br_cgu_dados_abertos` | 3 | 89.771 | 2026-07-05 |
 | `br_cgu_ebt` | 2 | 1.384 | 2026-07-09 |
@@ -69,7 +69,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_cgu_receitas_publicas` | 1 | 1.529.345 | 2026-07-05 |
 | `br_cgu_sancoes` | 6 | 24.579 | 2026-10-09 |
 | `br_cgu_seguro_defeso` | 1 | 43.418.500 | 2026-10-07 |
-| `br_cgu_servidores_executivo_federal` | 14 | 854.747.588 | 2026-10-09 |
+| `br_cgu_servidores_executivo_federal` | 7 | 426.454.972 | 2026-07-18 |
 | `br_cgu_viagens` | 4 | 53.192.569 | 2026-10-07 |
 | `br_clp_ranking_competitividade` | 2 | 9.431 | 2026-07-09 |
 | `br_cnj_estatisticas_poder_judiciario` | 1 | 1.189 | 2026-07-09 |
