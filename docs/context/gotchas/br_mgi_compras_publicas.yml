@@ -1,0 +1,20 @@
+dataset: br_mgi_compras_publicas
+gotchas:
+  - id: cpf_vencedor_com_letras
+    resumo: "Em compra_sem_licitacao_item, 12,8% de cpf_vencedor trazem letras no lugar dos dígitos ('***RANGEI**'): pedaço de nome, não CPF. Em licitacao_item o CPF vem inteiro."
+    tabelas: [compra_sem_licitacao_item, licitacao_item]
+    colunas: [cpf_vencedor]
+    severidade: silencioso
+    verificado: "compra_sem_licitacao_item: 53.088 com letra, 361.977 na máscara ***######** de 415.065; licitacao_item: 7.630 de 8.536 com 11 dígitos — medido 2026-10-15"
+  - id: compras_terminam_em_2024
+    resumo: "licitacao_item e compra_sem_licitacao_item vão até 2024: compra depois disso está em contratacao/contratacao_item (Lei 14.133, lote SEGES) ou no PNCP (br_mgi_pncp, br_pncp)."
+    tabelas: [licitacao_item, compra_sem_licitacao_item]
+    colunas: [ano]
+    severidade: aviso
+    verificado: "max(ano) = 2024 nas duas — medido 2026-10-15"
+  - id: fornecedor_duplica_sicaf
+    resumo: "fornecedor é o mesmo cadastro de br_comprasgov_sicaf.fornecedores (extração de 04/10/2026). Não some os dois."
+    tabelas: [fornecedor]
+    colunas: [cnpj]
+    severidade: silencioso
+    verificado: "772.020 de 772.073 CNPJs no SICAF, mesmo indicador de ativo — medido 2026-10-15"

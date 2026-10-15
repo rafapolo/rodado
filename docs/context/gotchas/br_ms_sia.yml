@@ -34,3 +34,9 @@ gotchas:
     colunas: [instrumento_registro, cid_principal_categoria, quantidade_aprovada_procedimento]
     severidade: silencioso
     verificado: "jun/2022: BPA-C 6.313.904 linhas, 189.762.245 procedimentos, 0 com CID; total 331.287.982 procedimentos — medido 2026-10-05"
+  - id: meses_ausentes_por_municipio
+    resumo: "Em producao_ambulatorial, um município pode faltar num mês em que o resto da UF está presente; somar o ano subconta. Confira count(DISTINCT mes) antes de comparar anos."
+    tabelas: [producao_ambulatorial]
+    colunas: [ano, mes, id_municipio]
+    severidade: silencioso
+    verificado: "Nova Friburgo sem jan/24, out/24 e fev/25 (só 1.573 linhas tardias daqueles meses de realização); RJ tem 69–92 de 92 municípios por mês — medido 2026-10-15"

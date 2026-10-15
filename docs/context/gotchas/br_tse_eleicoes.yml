@@ -23,3 +23,15 @@ gotchas:
     colunas: [cargo, sigla_partido, origem_receita]
     severidade: silencioso
     verificado: "ano=2022, cargo='presidente': PL 392.138 linhas / R$ 125,0 mi; PT 533 / R$ 135,5 mi — medido 2026-10-07"
+  - id: cpf_candidato_2024_pela_metade
+    resumo: "Em candidatos de 2024, metade das linhas vem sem CPF (vereador 48% preenchido). Cruzamento por CPF em 2024 subconta."
+    tabelas: [candidatos]
+    colunas: [cpf]
+    severidade: silencioso
+    verificado: "2024: 230.724 com CPF de 462.821; vereador 208.320 de 431.577; 2020: 555.034 de 557.313 — medido 2026-10-15"
+  - id: sequencial_nao_unico
+    resumo: "sequencial_candidato não é único no ano: o join com resultados_candidato precisa de ano + sequencial + sigla_uf + id_eleicao, senão infla os resultados."
+    tabelas: [candidatos, resultados_candidato]
+    colunas: [sequencial, sequencial_candidato]
+    severidade: silencioso
+    verificado: "127 candidaturas da Lista Suja geraram 276 linhas de resultado só por ano+sequencial; com UF e eleição, uma por candidatura — medido 2026-10-15"

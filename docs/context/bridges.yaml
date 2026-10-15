@@ -874,6 +874,15 @@ concepts:
 # prefixo do SNIS) e continuam só descritas.
 bridges:
   municipio:
+  - table: br_mj_sinesp.municipio_mes
+    column: quantidade_vitimas (tipo_ocorrencia = 'morte_no_transito', abrangência PRF)
+    format: 'é o microdado da PRF agregado: mesmo número de mortos por município e ano que
+      `br_prf_acidentes.ocorrencia`. O SINESP atrasa no ano corrente (2026: 1.408 × 4.121)'
+    expr: s.id_municipio = p.id_municipio AND s.ano = p.ano
+    verified: '2023: 1.320 de 1.360 municípios com morte idênticos; anual 2015–2025 com diferença
+      máxima de 31 (5.596 × 5.627 em 2023) — 2026-10-15'
+    concept: id_municipio
+    join_expr: '{s}.id_municipio = {d}.id_municipio AND {s}.ano = {d}.ano'
   - table: br_ms_sipni_doses_historicas.doses_agregadas
     column: MUNIC
     format: 7-digit IBGE code. This table lives *inside* `basedosdados.duckdb`, not as parquet, so it
@@ -1189,6 +1198,15 @@ bridges:
     concept: id_municipio
     join_expr: '{s}.id_municipio = {d}.id_municipio'
   uf:
+  - table: br_senatran_estatisticas.uf_tipo
+    column: tipo_veiculo
+    description: 'mesmos números de br_senatran_frota.municipio_tipo somada por UF, mas com outro
+      rótulo de tipo ("caminhao trator" × caminhao_trator, "chassi plataforma" × chassi_plataf,
+      "trator esteira" × trator_estei, hífen × sublinhado) e sem a linha total'
+    expr: "CASE tipo_veiculo WHEN 'chassi plataforma' THEN 'chassi_plataf' WHEN 'trator esteira' THEN 'trator_estei' ELSE regexp_replace(tipo_veiculo,'[ -]','_','g') END = m.tipo_veiculo"
+    verified: '88.451 de 88.452 células ano×mês×UF×tipo idênticas, 2013–2025 (a única diferença:
+      TO, ago/2013, utilitário, 2.025 × 2.031) — 2026-10-15'
+    concept: sigla_uf
   - table: br_mj_consumidorgovbr.reclamacoes
     column: '"UF"'
     description: 2-letter code — direct join to `sigla_uf`
@@ -1389,6 +1407,33 @@ bridges:
     concept: sigla_uf
     join_expr: '{s}.sigla_uf_arquivo = {d}.sigla_uf'
   identity:
+  - table: br_mte_listasuja.empregadores / empregadores_historico
+    column: cnpj
+    description: 'CNPJ de 14 dígitos sem pontuação; `cnpj_basico` já vem separado. `cpf_cnpj` mistura
+      os dois e só `tipo_documento` separa'
+    expr: cnpj = e.cnpj
+    verified: '211 de 211 CNPJs distintos achados em br_me_cnpj.estabelecimentos; CNAE igual ao da RF
+      em 179 (185 na divisão) — 2026-10-15'
+    concept: cnpj
+    join_expr: '{s}.cnpj = {d}.cnpj'
+  - table: br_mte_listasuja.empregadores / empregadores_historico
+    column: cpf
+    description: 'CPF inteiro, 11 dígitos. Junta por igualdade com TSE (candidatos, filiação, receitas)
+      e SICOR. Contra fonte mascarada (MGI `***######**`, PGFN `XXX###.###XX`) a máscara sozinha
+      não identifica: exige nome igual'
+    expr: cpf = c.cpf
+    verified: 'exato: 46 em br_tse_eleicoes.candidatos, 113 na filiação, 124 no SICOR. Mascarado
+      contra br_mgi_compras_publicas.fornecedor: 72 só pela máscara, 6 com nome; contra
+      br_pgfn_dividaativa.divida: 312 com NOME_DEVEDOR exato — 2026-10-15'
+    concept: cpf
+    join_expr: '{s}.cpf = {d}.cpf'
+  - table: br_mgi_compras_publicas.pregao_item_oferta
+    column: cnpj_cpf_fornecedor
+    description: 'CNPJ com pontuação (`45.740.175/0001-73`); limpar antes de juntar'
+    expr: regexp_replace(cnpj_cpf_fornecedor, '[^0-9]', '', 'g') = e.cnpj
+    verified: 'casou 5 empresas da Lista Suja (34 ofertas) só depois da limpeza — 2026-10-15'
+    concept: cnpj
+    join_expr: "regexp_replace({s}.cnpj_cpf_fornecedor, '[^0-9]', '', 'g') = {d}.cnpj"
   - table: br_ms_sih.aihs_reduzidas
     column: cnpj_estabelecimento / cnpj_mantenedora
     description: 'CNPJ de 14 dígitos, mas **37.115.348 linhas (18,5%) chegam com 13** —

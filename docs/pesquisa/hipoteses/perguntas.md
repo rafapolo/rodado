@@ -730,6 +730,22 @@ inventário local de `tasks/espelho_subutilizado.md`, Parte I.
 4. Quais os 10 nomes mais comuns do Brasil segundo o Censo 2010, e quantas pessoas eles somam? *(n=1: ibge_nomes_brasil)*
 5. Em que UFs os nomes mais frequentes diferem mais do ranking nacional? *(n=1: ibge_nomes_brasil)*
 
+## 90 · Trânsito: Frota, Rodovias Federais e Mortes (SENATRAN, PRF, SINESP)
+
+1. Que fração dos óbitos por acidente de transporte do SIM em 2023 aparece no registro da PRF e no das polícias estaduais (SINESP), por UF? *(n=4: prf_acidentes, mj_sinesp, ms_sim\*, bd_diretorios_brasil\*)*
+2. Municípios com mais motocicletas por habitante (SENATRAN) têm mais óbitos de motociclista por 100 mil (SIM, V20–V29), controlando porte, renda e UF? *(n=4: senatran_frota, ms_sim\*, ibge_populacao\*, ibge_pib\*)*
+3. A queda de dois terços nos acidentes registrados pela PRF desde 2011 é queda de acidente ou de registro — o que acontece no mesmo período com os acidentes sem vítima, com os mortos da PRF e com os óbitos de transporte do SIM? *(n=2: prf_acidentes, ms_sim\*)*
+4. Roubo e furto de veículos por 10 mil veículos da frota, por UF em 2023: quais estados lideram, e a taxa acompanha a participação das motos na frota? *(n=3: mj_sinesp, senatran_estatisticas, ibge_populacao\*)*
+5. As mortes em rodovia federal que o SINESP publica por município são as mesmas do microdado da PRF, município a município e ano a ano? *(n=2: mj_sinesp, prf_acidentes)*
+
+## 91 · Lista Suja do Trabalho Escravo: o Mesmo Empregador em Outros Cadastros
+
+1. Quantos empregadores da Lista Suja estão cadastrados como fornecedores do governo federal, quantos seguem habilitados a licitar, e quanto já venceram em compras federais? *(n=2: mte_listasuja, mgi_compras_publicas)*
+2. Em quais setores (CNAE) a Lista Suja é sobrerrepresentada em relação ao cadastro de empresas ativas? *(n=2: mte_listasuja, me_cnpj\*)*
+3. As empresas da Lista Suja estão mais inscritas na dívida ativa da União do que empresas ativas do mesmo setor e da mesma idade? *(n=3: mte_listasuja, pgfn_dividaativa\*, me_cnpj\*)*
+4. Os empregadores da lista tomaram crédito rural com recurso público, algum depois da inclusão, e quantos têm também embargo ambiental do IBAMA ou sanção da CGU? *(n=4: mte_listasuja, bcb_sicor\*, ibama_embargos_novo\*, cgu_sancoes\*)*
+5. Empregadores pessoa física da lista foram candidatos, eleitos, filiados ou doadores de campanha mais que os demais produtores rurais? *(n=4: mte_listasuja, tse_eleicoes\*, tse_filiacao_partidaria\*, bcb_sicor\*)*
+
 ---
 
 # Perguntas multi-dataset simultâneos
