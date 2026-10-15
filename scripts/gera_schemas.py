@@ -22,7 +22,7 @@ from pathlib import Path
 BEELINK_DATA = "/home/polo/rodado"
 BEELINK_HOST = "beelink"
 DUCKDB = os.path.expanduser("~/bin/duckdb")
-LOCAL_MOUNT = "/Volumes/homelab/rodado"
+LOCAL_MOUNT = os.path.expanduser("~/mnt/homelab/rodado")
 # Ancorado na raiz do repositorio, nao no cwd. Relativo, rodar de dentro de
 # `scripts/` deixava uma copia morta em `scripts/schemas.json` — foi o que
 # aconteceu (782 tabelas, julho, lida por ninguem). Todos os consumidores
