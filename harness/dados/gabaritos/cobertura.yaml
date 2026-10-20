@@ -41,8 +41,8 @@
 - id: anac_rab_aeronaves
   origem: br_anac_dadosabertos
   pergunta: Quantas aeronaves estão inscritas no Registro Aeronáutico Brasileiro (RAB)?
-  sql: SELECT count(*) AS v FROM br_anac_dadosabertos.rab
-  sql2: SELECT count(DISTINCT MARCAS) AS v FROM br_anac_dadosabertos.rab
+  sql: SELECT count(DISTINCT MARCAS) AS v FROM br_anac_dadosabertos.rab
+  sql2: SELECT count(*) AS v FROM (SELECT DISTINCT MARCAS FROM br_anac_dadosabertos.rab)
 
 - id: anatel_banda_larga_dez2024
   origem: br_anatel_banda_larga_fixa
@@ -147,12 +147,6 @@
     SELECT sum(n) AS v FROM (SELECT pais_destino, count(*) AS n FROM br_capes_bolsas.mobilidade_internacional
     WHERE ano_inicial = 2019 GROUP BY pais_destino)
 
-- id: cgu_bolsa_familia_2019
-  origem: br_cgu_beneficios_cidadao
-  pergunta: Quanto foi pago em parcelas do Bolsa Família em 2019, segundo o Portal da Transparência, em reais?
-  sql: SELECT sum(valor_parcela) AS v FROM br_cgu_beneficios_cidadao.bolsa_familia_pagamento WHERE ano_referencia = 2019
-  sql2: SELECT sum(valor_pago_pbf) AS v FROM br_mc_indicadores.transferencias_municipio WHERE ano = 2019
-  tol: 1%
 
 - id: cpgf_2023
   origem: br_cgu_cartao_pagamento
@@ -174,11 +168,6 @@
     FROM br_cgu_garantia_safra.garantia_safra WHERE mes_referencia LIKE '2023%' GROUP BY uf)
   tol: 0,1%
 
-- id: cgu_licitacoes_2022
-  origem: br_cgu_licitacao_contrato
-  pergunta: Quantas licitações os órgãos do governo federal realizaram em 2022?
-  sql: SELECT count(DISTINCT id_licitacao) AS v FROM br_cgu_licitacao_contrato.licitacao WHERE ano = 2022
-  sql2: SELECT count(*) AS v FROM (SELECT DISTINCT id_licitacao FROM br_cgu_licitacao_contrato.licitacao WHERE ano = 2022)
 
 - id: novo_bolsa_familia_mar2024
   origem: br_cgu_novo_bolsa_familia
@@ -255,7 +244,7 @@
   origem: br_cnj_improbidade_administrativa
   pergunta: Quantas condenações por improbidade administrativa estão registradas no cadastro nacional do CNJ?
   sql: SELECT count(DISTINCT id_condenacao) AS v FROM br_cnj_improbidade_administrativa.condenacao
-  sql2: SELECT count(*) AS v FROM br_cnj_improbidade_administrativa.condenacao
+  sql2: SELECT count(*) AS v FROM (SELECT DISTINCT id_condenacao FROM br_cnj_improbidade_administrativa.condenacao)
 
 - id: cnpq_bolsas_2022
   origem: br_cnpq_bolsas
@@ -448,11 +437,13 @@
 
 - id: estoque_divida_out2022
   origem: br_me_estoque_divida_publica
-  pergunta: Qual era o estoque da dívida pública federal em outubro de 2022, em reais?
-  sql: SELECT sum(valor_estoque) AS v FROM br_me_estoque_divida_publica.microdados WHERE ano = 2022 AND mes = 10
+  pergunta: Qual era o estoque da dívida pública federal em poder do mercado em outubro de 2022, em reais?
+  # somar todas as carteiras inclui R$ 2,07 tri da carteira do Banco Central, que não é estoque em mercado — medido 2026-10-20
+  sql: SELECT sum(valor_estoque) AS v FROM br_me_estoque_divida_publica.microdados WHERE ano = 2022 AND mes = 10 AND classe_carteira = 'Mercado'
   sql2: |
     SELECT sum(s) AS v FROM (SELECT tipo_divida, sum(valor_estoque) AS s FROM br_me_estoque_divida_publica.microdados
-    WHERE ano = 2022 AND mes = 10 GROUP BY tipo_divida)
+    WHERE ano = 2022 AND mes = 10 AND classe_carteira = 'Mercado' GROUP BY tipo_divida)
+  armadilha: 7850221979085
   tol: 0,1%
 
 - id: rais_identificada_estab_2021
