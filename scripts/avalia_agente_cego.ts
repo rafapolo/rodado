@@ -164,8 +164,9 @@ async function roda(caso: Caso) {
       const rotas = Object.fromEntries(ROTAS.map((r) => [r, saida.split(r).length - 1]));
       return {
         id: caso.id, pergunta: caso.pergunta, esperado: caso.esperado, resposta: final ?? null, vaza: vaza(caso.esperado),
-        // o agente viu os avisos do /query? só com curl -i / -D; sem isso eles não chegam
-        viu_avisos: saida.split("X-Avisos").length - 1,
+        // o agente viu os avisos do /query? no cabeçalho só com curl -i / -D; no corpo, desde
+        // 2026-10-20, sempre que pede sem `formato` (o campo "avisos" com algo dentro)
+        viu_avisos: saida.split("X-Avisos").length - 1 + (saida.match(/"avisos":\s*\[\s*"/g)?.length ?? 0),
         certo: final ? certo(final, caso.esperado) : false, segundos, tentativa, rotas,
         cauda: saida.slice(-1500),
       };

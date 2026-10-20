@@ -43,7 +43,9 @@ curl -u rodado:SENHA 'https://db.rodado.xyz/query?formato=csv' --data-binary @co
 curl -u rodado:SENHA -G https://db.rodado.xyz/query --data-urlencode 'q=DESCRIBE br_me_cnpj.empresas'
 ```
 
-`formato` = `json` (padrão, lista de objetos), `csv`, `tsv` ou `parquet`; `limite` = linhas
+Sem `formato`, o corpo é `{"linhas": [...], "avisos": [...], "contexto": [...], "truncado": ...}`,
+com as armadilhas medidas das tabelas citadas junto do resultado; `formato` = `json` (só a lista
+de objetos, como era o padrão até 2026-10-20), `csv`, `tsv` ou `parquet`; `limite` = linhas
 devolvidas (padrão e máximo 10.000). Os cabeçalhos `X-Linhas`, `X-Truncado` e
 `X-Segundos` trazem quantas linhas vieram, se o limite cortou e quanto levou. Um comando
 por requisição, 300 s no máximo, 4 consultas simultâneas.
