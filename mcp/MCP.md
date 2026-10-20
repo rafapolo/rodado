@@ -8,11 +8,29 @@ seguir a partir do resultado da anterior.
 
 Números de hoje (2026-09-25): 236 datasets, 1.048 tabelas, 60 conceitos de join
 documentados, 20 false friends, 7 métricas nomeadas, 3 hierarquias de rollup,
-17 ferramentas ao todo. No modo padrão nunca abre conexão DuckDB local (o modo
-remoto da seção 6 é a exceção) — toda query roda no
-`~/bin/duckdb` do beelink via SSH (ver `_run_sql_ssh`). Tudo local: parquet
-em disco no beelink, sem storage em nuvem — é lá que dado recém-raspado
-aparece primeiro.
+17 ferramentas ao todo.
+
+**Aberto desde 2026-10-20.** O modo padrão (`MCP_BACKEND=http`) manda toda
+consulta para a API pública `https://db.rodado.xyz/query` — a mesma que o guia
+[`/llm`](https://db.rodado.xyz/llm) ensina. Não precisa de SSH, de acesso ao
+beelink nem de dado local: basta este repositório (público) para ter
+`mcp_server.py` e `docs/context/`. Os avisos medidos do db (`X-Avisos`) voltam
+no campo `avisos` de cada resultado, e a consulta que cita coluna de armadilha
+`[erro]` volta recusada com `error`, `dica` e `avisos` até o agente repetir com
+`ciente=True`. Os modos `ssh` (DuckDB CLI no beelink, onde dado recém-raspado
+aparece primeiro) e `inprocess` (seção 6) continuam para quem tem o dado.
+
+### Usar
+
+```bash
+git clone https://github.com/rafapolo/rodado && cd rodado
+python3 -m venv .venv && .venv/bin/pip install -r mcp/requirements.txt
+claude mcp add rodado -- "$PWD/.venv/bin/python" "$PWD/mcp/mcp_server.py"
+```
+
+Até 26/10/2026 o db não pede credencial. Depois disso, passe uma das duas no
+ambiente do servidor: `RODADO_TOKEN` (vai como `?token=`) ou `RODADO_SENHA`
+(HTTP Basic, usuário `rodado`). `RODADO_URL` troca o endereço da API.
 
 ## Como ler este documento
 
@@ -179,14 +197,14 @@ chamadas. Achar a tabela hoje é `list_datasets` → `list_tables` →
 | `get_metric` | `metrics.yaml` (7 métricas) | Cálculo nomeado — SQL, grão, filtros obrigatórios — por nome ou sinônimo pt-BR |
 | `list_metrics` | `metrics.yaml` | Todas as métricas nomeadas |
 | `rollup` | `hierarchies.yaml` (3 hierarquias) | Expressão pra subir um código de classificação um nível (CNAE, CID-10) |
-| `run_sql` | beelink via SSH | Execução real — só SELECT/WITH, fallback automático pra `read_parquet()` |
+| `run_sql` | `db.rodado.xyz/query` (ou beelink via SSH) | Execução real — só SELECT/WITH; devolve `avisos` do db e aceita `ciente=True` para a armadilha `[erro]` |
 | `consultar_cnpj` | `br_me_cnpj/*` (parquet) | Empresa + estabelecimentos + sócios por CNPJ |
-| `consultar_cep` | ViaCEP (live, via SSH) | Endereço por CEP — não há base bulk pra espelhar |
+| `consultar_cep` | ViaCEP (live; via SSH só no modo `ssh`) | Endereço por CEP — não há base bulk pra espelhar |
 | `consultar_divida_ativa` | `br_pgfn_dividaativa/divida` | Dívida ativa federal por CPF/CNPJ |
 | `consultar_precos_combustivel` | `br_anp_combustiveis/precos` | Preço de combustível por posto/produto/data |
 | `consultar_jurisprudencia_stj` | `br_stj_dadosabertos/documentos` | Decisões do STJ por processo/ministro/assunto |
 | `consultar_populacao_carceraria` | `br_mjsp_sisdepen/populacao_carceraria` | Censo prisional por UF/ciclo |
-| `consultar_painelprecos` | ComprasGov (live, via SSH) | Preço de compra pública por código CATMAT/CATSER — API por item, sem "tabela completa" pra espelhar |
+| `consultar_painelprecos` | ComprasGov (live; via SSH só no modo `ssh`) | Preço de compra pública por código CATMAT/CATSER — API por item, sem "tabela completa" pra espelhar |
 
 ## 5 · Onde isso já quebrou, e o que foi corrigido
 
@@ -223,7 +241,7 @@ explicitamente em vez de silenciar false friends.
 
 ## 6 · Modo remoto: HTTP + DuckDB em processo
 
-O modo padrão (stdio + SSH para o beelink) atende uma sessão por processo. Para
+O modo `ssh` (stdio + SSH para o beelink) atende uma sessão por processo. Para
 servir agentes externos existe um segundo modo, ligado só por variável de
 ambiente: o servidor embute o DuckDB (`MCP_BACKEND=inprocess`) e fala MCP por
 HTTP (`MCP_TRANSPORT=http`, transporte *streamable HTTP*, sem sessão).
@@ -261,7 +279,7 @@ flowchart LR
 
 | Variável | Padrão | O que é |
 |---|---|---|
-| `MCP_BACKEND` | `ssh` | `inprocess` embute o DuckDB |
+| `MCP_BACKEND` | `http` | `http` usa a API do db.rodado.xyz; `ssh`, o beelink; `inprocess` embute o DuckDB |
 | `MCP_DATA_ROOT` | `~/rodado` | diretório local ou `s3://bucket` |
 | `MCP_TRANSPORT` | `stdio` | `http` sobe o uvicorn |
 | `MCP_HTTP_HOST` / `MCP_HTTP_PORT` | `127.0.0.1` / `8000` | onde escutar |

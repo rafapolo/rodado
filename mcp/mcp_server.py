@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
-"""MCP server exposing the Base dos Dados catalog (docs/context/) and the
-beelink DuckDB mirror as tools for Claude Desktop/Claude Code.
+"""MCP server exposing the rodado catalog (docs/context/) and the mirror's
+data as tools for Claude Desktop/Claude Code and any other MCP client.
 
-Never opens its own DuckDB connection locally — all SQL execution is
-delegated to the DuckDB CLI on beelink over SSH (the project's only data
-source since 2026-07-09: local Parquet on beelink, no cloud storage — this
-is where newly-scraped datasets land first).
+Open by default: every query goes to the public API at https://db.rodado.xyz
+(`MCP_BACKEND=http`), the same `/query` the `/llm` guide teaches — no SSH, no
+local data, nothing to install beyond this file and docs/context/. The db's
+measured warnings (`X-Avisos`) and its refusal of SQL that touches an `[erro]`
+gotcha come back in each tool result. `MCP_BACKEND=ssh` (DuckDB CLI on beelink)
+and `inprocess` (embedded DuckDB over local or S3 parquet) remain for the hosts
+that hold the data.
 """
+import base64
 import contextvars
 import decimal
 import difflib
@@ -19,6 +23,9 @@ import shlex
 import subprocess
 import threading
 import time
+import urllib.error
+import urllib.parse
+import urllib.request
 from pathlib import Path
 from typing import Optional
 
@@ -36,12 +43,20 @@ BEELINK_DUCKDB_BIN = os.environ.get("MCP_BEELINK_DUCKDB_BIN", "~/bin/duckdb")
 BEELINK_DUCKDB_PATH = os.environ.get("MCP_BEELINK_DUCKDB_PATH", "~/rodado/basedosdados.duckdb")
 # Absolute home on beelink: DuckDB's allowed_directories wants absolute paths.
 BEELINK_HOME = os.environ.get("MCP_BEELINK_HOME", "/home/polo")
-# "ssh" (default) shells out to beelink for every query. "inprocess" embeds
+# "http" (default) sends every query to the public db.rodado.xyz API: open,
+# nothing local but docs/context/. "ssh" shells out to beelink. "inprocess" embeds
 # DuckDB in this process and reads the parquet itself — for a host that has
 # the data (local disk or an S3 mirror) and serves several callers over HTTP:
 # one process means one memory cap, one shared thread pool and no
 # cross-process file lock, so queries run side by side.
-BACKEND = os.environ.get("MCP_BACKEND", "ssh")
+BACKEND = os.environ.get("MCP_BACKEND", "http")
+# http backend: the API root and, once the db asks for one again, a credential
+# — RODADO_TOKEN (?token=) or RODADO_SENHA (Basic, user `rodado`). Never logged.
+DB_URL = os.environ.get("RODADO_URL", "https://db.rodado.xyz").rstrip("/")
+# The db stops a query at 300 s; give the reply room to arrive.
+HTTP_TIMEOUT = float(os.environ.get("MCP_HTTP_TIMEOUT", "330"))
+# /query hands back at most this many rows per request.
+HTTP_MAX_ROWS = 10_000
 # Where `~/rodado/<dataset>/<table>/*.parquet` lives for the inprocess
 # backend: a local directory or an `s3://bucket` prefix. Every `~/rodado/`
 # in a query is rewritten to this, so the paths in the docstrings, in
@@ -565,7 +580,79 @@ def _run_sql_inprocess(sql: str) -> dict:
     return {"rows": json.loads(json.dumps(rows, default=_json_cell))}
 
 
-def _run_sql(sql: str) -> dict:
+# ---------------------------------------------------------------------------
+# HTTP backend (MCP_BACKEND=http, the default): the public db.rodado.xyz API
+# ---------------------------------------------------------------------------
+
+# The friendly tools and the ssh fallback name parquet globs; /query refuses
+# any function that opens a file but has a view per table, so a glob under
+# ~/rodado/<dataset>/<table>/ becomes that view.
+_READ_PARQUET_RE = re.compile(
+    r"read_parquet\(\s*'~/rodado/([A-Za-z0-9_]+)/([A-Za-z0-9_]+)/[^']*'(?:\s*,[^()]*)?\)"
+)
+
+
+def _parquet_to_views(sql: str) -> str:
+    return _READ_PARQUET_RE.sub(lambda mt: f"{mt.group(1)}.{mt.group(2)}", sql)
+
+
+def _http_request(path: str, params: dict, body: bytes | None = None):
+    params = dict(params)
+    if os.environ.get("RODADO_TOKEN"):
+        params["token"] = os.environ["RODADO_TOKEN"]
+    req = urllib.request.Request(f"{DB_URL}{path}?{urllib.parse.urlencode(params)}", data=body)
+    if os.environ.get("RODADO_SENHA"):
+        cred = base64.b64encode(f"rodado:{os.environ['RODADO_SENHA']}".encode()).decode()
+        req.add_header("Authorization", f"Basic {cred}")
+    return urllib.request.urlopen(req, timeout=HTTP_TIMEOUT)
+
+
+def _run_sql_http(sql: str, limite: int = HTTP_MAX_ROWS, ciente: bool = False) -> dict:
+    """POST /query. Rows as the other backends return them, plus `avisos` (the
+    X-Avisos header, one measured warning per item). A 400 keeps the body's
+    `dica` and `avisos`: that is where the db explains a refused gotcha."""
+    error = _check_read_only(sql)
+    if error:
+        return {"error": error}
+    params = {"formato": "json", "limite": max(1, min(int(limite), HTTP_MAX_ROWS))}
+    if ciente:
+        params["ciente"] = "1"
+    body = _parquet_to_views(sql).encode("utf-8")
+    for tentativa in range(2):
+        try:
+            with _http_request("/query", params, body) as resp:
+                rows = json.loads(resp.read().decode("utf-8") or "[]")
+                avisos = [a for a in (resp.headers.get("X-Avisos") or "").split(" || ") if a]
+                out = {"rows": rows}
+                if avisos:
+                    out["avisos"] = avisos
+                if resp.headers.get("X-Truncado") == "1":
+                    out["server_truncated"] = True
+                return out
+        except urllib.error.HTTPError as exc:
+            if exc.code == 429 and tentativa == 0:
+                time.sleep(5)  # the db runs 4 queries at once, for everyone
+                continue
+            if exc.code == 401:
+                return {"error": "db.rodado.xyz asked for a credential: set RODADO_TOKEN or "
+                                 "RODADO_SENHA in this server's environment (see /llm, section 1)."}
+            try:
+                corpo = json.loads(exc.read().decode("utf-8"))
+            except (ValueError, UnicodeDecodeError):
+                corpo = {}
+            out = {"error": corpo.get("erro") or f"db.rodado.xyz answered HTTP {exc.code}"}
+            for k in ("dica", "avisos"):
+                if corpo.get(k):
+                    out[k] = corpo[k]
+            return out
+        except (urllib.error.URLError, TimeoutError) as exc:
+            return {"error": f"Could not reach {DB_URL}: {getattr(exc, 'reason', exc)}"}
+    return {"error": "db.rodado.xyz is busy (HTTP 429 twice); retry shortly."}
+
+
+def _run_sql(sql: str, **http_opts) -> dict:
+    if BACKEND == "http":
+        return _run_sql_http(sql, **http_opts)
     if BACKEND == "inprocess":
         return _run_sql_inprocess(sql)
     return _run_sql_ssh(sql)
@@ -573,8 +660,8 @@ def _run_sql(sql: str) -> dict:
 
 def _curl_argv(cmd: str) -> list[str]:
     # The live-API tools build a `curl ...` line for beelink's shell. The
-    # inprocess backend runs it here, split into argv — no shell involved.
-    if BACKEND == "inprocess":
+    # inprocess and http backends run it here, split into argv — no shell involved.
+    if BACKEND in ("inprocess", "http"):
         return shlex.split(cmd)
     return ["ssh", BEELINK_HOST, cmd]
 
@@ -1208,25 +1295,37 @@ def rollup(code_column: str, to_level: str) -> dict:
 
 @mcp.tool()
 @_instrumented
-def run_sql(sql: str, max_rows: int = 500) -> dict:
-    """Run a read-only SQL query against beelink's DuckDB mirror over SSH —
-    local Parquet on beelink is the project's only data source (no cloud
-    storage), and where newly-scraped datasets land first. This server
-    never opens its own DuckDB connection.
+def run_sql(sql: str, max_rows: int = 500, ciente: bool = False) -> dict:
+    """Run a read-only DuckDB SQL query over the rodado mirror (1.400 tables of
+    Brazilian public data). By default it goes to the open API at
+    https://db.rodado.xyz — tables are `dataset.table` views; functions that
+    open files (read_parquet, read_csv, glob) are refused there.
 
     Only SELECT/WITH queries are allowed; everything else is rejected before
-    any SSH call.
+    any call.
 
-    Results are truncated client-side to `max_rows` AND to a serialized-size
-    budget, whichever binds first. The size budget is the one that matters:
+    The reply may carry `avisos`: measured pitfalls of the tables and columns
+    this query touches (the wrong-but-plausible column, the snapshot that is
+    not a flow, the code that changes between datasets). Read them before
+    trusting the numbers. When the query cites a column of an `[erro]`
+    pitfall — one that returns a plausible wrong answer, like an old `ano` on
+    the CNPJ snapshot — the db refuses it with `error`, `dica` and `avisos`:
+    fix the query, or, if it already handles that pitfall, repeat it with
+    `ciente=True`. Never set `ciente` without reading the pitfall.
+
+    Results are truncated to `max_rows` AND to a serialized-size budget,
+    whichever binds first. The size budget is the one that matters:
     `SELECT *` on a wide table (455 columns) at the default row cap would
     otherwise return millions of tokens. When it trips, the reply carries
     `truncated`, `returned`/`total` and a `note` — project the columns you
     need or aggregate in SQL rather than raising `max_rows`.
 
     Query discipline (per this project's conventions):
+    - Call describe_table() first: it lists the columns and the dataset's
+      measured pitfalls (`gotchas`) before them.
     - Always filter large tables on partition columns (ano, mes, sigla_uf)
-      to avoid timeouts.
+      to avoid timeouts; a big table without partitions is read whole on
+      every query, whatever the filter — aggregate everything in one query.
     - Before hand-writing a per-capita/rate/ratio, call list_metrics() /
       get_metric() first — a wrong unit assumption is easy to make and hard
       to notice. `pib_per_capita` exists exactly because `pib` itself is
@@ -1242,21 +1341,21 @@ def run_sql(sql: str, max_rows: int = 500) -> dict:
     - Before reporting results: state the expected order of magnitude,
       flag any row that exceeds it, and verify counts two independent ways.
     - SQL dialect is DuckDB, not BigQuery.
-    - A handful of views in beelink's basedosdados.duckdb are stale leftovers
-      from before the local-parquet migration and still point at a bucket
-      that no longer exists; if a query on a view looks wrong, check
-      `SELECT sql FROM duckdb_views() WHERE view_name='...'` and fall back to
-      `read_parquet('~/rodado/<dataset>/<table>/*.parquet')` directly.
-
-    Not every catalog table has a view inside basedosdados.duckdb (scraped
-    datasets land on disk first). When DuckDB reports a Catalog Error, the
-    query is automatically retried with each known `dataset.table` reference
-    rewritten to its read_parquet() glob, so plain catalog names work either
-    way; the response carries `rewritten_tables` when that happened.
     """
     error = _check_read_only(sql)
     if error:
         return {"error": error}
+
+    if BACKEND == "http":
+        result = _run_sql(sql, limite=max_rows + 1, ciente=ciente)
+        if "error" in result:
+            return result
+        out = _cap_rows(result["rows"], max_rows)
+        if result.get("server_truncated"):
+            out["truncated"] = True
+        if result.get("avisos"):
+            out["avisos"] = result["avisos"]
+        return out
 
     if BACKEND == "inprocess":
         # No views in this backend, so a catalog name can only ever resolve
@@ -1376,7 +1475,7 @@ def consultar_cnpj(cnpj: str, max_rows: int = 20, offset: int = 0) -> dict:
         f"LIMIT {max_rows + 1} OFFSET {offset}"
     )
     socios = _run_sql(
-        f"SELECT nome, documento, qualificacao, data "
+        f"SELECT nome, documento, qualificacao, data_entrada_sociedade "
         f"FROM read_parquet('{_CNPJ_BASE}/socios/*.parquet') "
         f"WHERE cnpj_basico = '{basico}' ORDER BY nome "
         f"LIMIT {max_rows + 1} OFFSET {offset}"
@@ -1579,7 +1678,7 @@ def consultar_jurisprudencia_stj(
 
     result = _run_sql(
         f"SELECT SeqDocumento, dataPublicacao, tipoDocumento, processo, "
-        f"NM_MINISTRO, assunto, teor "
+        f"NM_MINISTRO, assuntos, teor "
         f"FROM read_parquet('~/rodado/br_stj_dadosabertos/documentos/*.parquet'){where} "
         f"ORDER BY dataPublicacao DESC LIMIT {max_rows + 1} OFFSET {offset}"
     )
