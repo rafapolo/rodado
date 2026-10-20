@@ -44,15 +44,29 @@ body { background: var(--bg); }
 .tools-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
 .tools-title { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; margin: 0; }
 .tools-desc { font-size: 13px; line-height: 1.6; color: var(--ink-soft); margin: 0 0 18px; max-width: 80ch; }
-.tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; align-items: start; }
-.tools-list { list-style: none; margin: 0; padding: 0; font-size: 12.5px; line-height: 1.6; color: var(--ink-soft); }
-.tools-list li { padding: 3px 0; }
+.tools-list { list-style: none; margin: 0; padding: 0; font-size: 12.5px; line-height: 1.6; color: var(--ink-soft); columns: 2 320px; column-gap: 32px; }
+.tools-list li { padding: 3px 0; break-inside: avoid; }
 .tools-list code { font-family: 'IBM Plex Mono', monospace; color: var(--accent); }
-.tools-config { background: var(--bg-raised); border: 1px solid var(--rule); border-radius: 7px; overflow: hidden; }
-.tools-config-head { display: flex; align-items: center; justify-content: space-between; padding: 5px 8px 5px 12px; border-bottom: 1px solid var(--rule); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); }
-.tools-copy { font: inherit; letter-spacing: 0.04em; color: var(--accent); background: none; border: 1px solid var(--rule); border-radius: 5px; padding: 2px 8px; cursor: pointer; }
-.tools-copy:hover { border-color: var(--accent); }
-.tools-config pre { font-family: 'IBM Plex Mono', monospace; font-size: 12px; line-height: 1.45; color: var(--accent); padding: 10px 12px; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.tools-copy { flex: none; font: 600 11px/1 'IBM Plex Mono', monospace; letter-spacing: 0.04em; color: var(--accent); background: var(--card-bg); border: 1px solid var(--rule); border-radius: 5px; padding: 6px 10px; cursor: pointer; }
+.tools-copy:hover, .tools-copy:focus-visible { border-color: var(--accent); }
+
+/* ── conectar: um cliente MCP por aba ── */
+
+.connect { margin-top: 28px; max-width: 760px; }
+.connect-title { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
+.connect-title i { color: var(--accent); }
+.connect-box { background: var(--card-bg); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+.connect-tabs { display: flex; overflow-x: auto; border-bottom: 1px solid var(--rule); scrollbar-width: none; }
+.connect-tab { flex: none; font-family: inherit; font-size: 12.5px; font-weight: 600; line-height: 1; color: var(--ink-soft); background: none; border: 0; border-bottom: 2px solid transparent; padding: 11px 14px 10px; cursor: pointer; white-space: nowrap; }
+.connect-tab:hover { color: var(--ink); }
+.connect-tab[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); }
+.connect-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.connect-panel { padding: 12px 14px 14px; }
+.connect-hint { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 8px; }
+.connect-hint code { font-family: 'IBM Plex Mono', monospace; color: var(--accent); }
+.connect-cmd { display: flex; align-items: flex-start; gap: 10px; background: var(--bg-raised); border: 1px solid var(--rule); border-radius: 7px; padding: 8px 8px 8px 12px; }
+.connect-cmd pre { flex: 1; min-width: 0; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; line-height: 1.5; color: var(--accent); margin: 2px 0; white-space: pre-wrap; overflow-wrap: break-word; }
+@media (max-width: 520px) { .connect-cmd { flex-direction: column; align-items: stretch; } .connect-cmd .tools-copy { align-self: flex-end; } }
 .tools-note { font-size: 12px; line-height: 1.5; color: var(--ink-faint); margin: 8px 0 0; }
 .tools-note code { font-family: 'IBM Plex Mono', monospace; color: var(--accent); }
 
