@@ -78,6 +78,29 @@
       <h1 class="page-title">Brazilian public-data catalog, served as an MCP server</h1>
       <p class="lead">A thematic index over 1,403 Brazilian public tables — RAIS, SIM, TSE, CGU, IBGE, INEP and more — queryable directly with <strong>DuckDB</strong>. Each card below is a research theme; each row inside it is a table you can query.</p>
       <p class="lead-note">The catalog includes a growing set of independently-collected sources — international sanctions lists (EU, UN, OFAC, OpenSanctions), ICIJ Offshore Leaks, SICAF, SINAN Violência, Consumidor.gov.br, PGFN active debt and state Courts of Accounts — see the full catalog of these sources.</p>
+      <div class="header-bottom">
+        <div class="stats">
+          <div>
+            <div class="stat-num">43</div>
+            <div class="stat-label">themes</div>
+          </div>
+          <div>
+            <div class="stat-num">1,403</div>
+            <div class="stat-label">tables across 256 datasets <span class="muted">· <a href="#datasets">all listed below</a></span></div>
+          </div>
+          <div>
+            <div class="stat-num">Open</div>
+            <div class="stat-label">queries the public <a href="https://db.rodado.xyz/llm">db.rodado.xyz</a> API</div>
+          </div>
+        </div>
+        <div class="filters">
+          <input type="search" id="toolSearch" aria-label="Search tables and columns" oninput="applyFilters()" placeholder="Search tables, columns…" class="search-input">
+          <select id="categoryFilter" aria-label="Filter by category" onchange="applyFilters()" class="category-select">
+            <option value="">All categories</option>
+            <option value="Inequality &amp; Society">Inequality &amp; Society</option><option value="Education &amp; Science">Education &amp; Science</option><option value="Health">Health</option><option value="Politics, Justice &amp; Security">Politics, Justice &amp; Security</option><option value="State &amp; Public Policy">State &amp; Public Policy</option><option value="Economy &amp; Labor">Economy &amp; Labor</option><option value="Territory &amp; Environment">Territory &amp; Environment</option>
+          </select>
+        </div>
+      </div>
       <section class="connect" aria-labelledby="connect-title">
         <h2 class="connect-title" id="connect-title"><i class="fa-solid fa-plug"></i> Connect your agent</h2>
         <div class="connect-box">
@@ -106,29 +129,6 @@ claude mcp add rodado -- uv run "$PWD/mcp/mcp_server.py"</pre><button type="butt
         </div>
         <p class="tools-note">Hosted and public: nothing to install, no SSH, no local data. Credential required from 2026-10-27 — see <a href="https://github.com/rafapolo/rodado/blob/main/mcp/MCP.md">mcp/MCP.md</a>.</p>
       </section>
-      <div class="header-bottom">
-        <div class="stats">
-          <div>
-            <div class="stat-num">43</div>
-            <div class="stat-label">themes</div>
-          </div>
-          <div>
-            <div class="stat-num">1,403</div>
-            <div class="stat-label">tables across 256 datasets <span class="muted">· <a href="#datasets">all listed below</a></span></div>
-          </div>
-          <div>
-            <div class="stat-num">Open</div>
-            <div class="stat-label">queries the public <a href="https://db.rodado.xyz/llm">db.rodado.xyz</a> API</div>
-          </div>
-        </div>
-        <div class="filters">
-          <input type="search" id="toolSearch" aria-label="Search tables and columns" oninput="applyFilters()" placeholder="Search tables, columns…" class="search-input">
-          <select id="categoryFilter" aria-label="Filter by category" onchange="applyFilters()" class="category-select">
-            <option value="">All categories</option>
-            <option value="Inequality &amp; Society">Inequality &amp; Society</option><option value="Education &amp; Science">Education &amp; Science</option><option value="Health">Health</option><option value="Politics, Justice &amp; Security">Politics, Justice &amp; Security</option><option value="State &amp; Public Policy">State &amp; Public Policy</option><option value="Economy &amp; Labor">Economy &amp; Labor</option><option value="Territory &amp; Environment">Territory &amp; Environment</option>
-          </select>
-        </div>
-      </div>
     </header>
 
     <section class="tools-panel">
