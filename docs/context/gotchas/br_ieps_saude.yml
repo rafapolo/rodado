@@ -1,0 +1,8 @@
+dataset: br_ieps_saude
+gotchas:
+  - id: municipio_sem_contagens
+    resumo: "No nível municipio, as contagens (n_leito_sus, n_hosp, n_obitos, n_med_ch, num_familias_bf…) estão 100% vazias. Use as tabelas uf ou brasil, ou o CNES."
+    tabelas: [municipio, regiao_saude, macrorregiao]
+    colunas: [n_leito_sus, n_hosp, n_obitos, n_med_ch, num_familias_bf, n_leitouti_sus]
+    severidade: erro
+    verificado: "municipio: n_leito_sus preenchido em 0 de 66.840 linhas, 19 colunas 100% nulas; regiao_saude e macrorregiao: 12 cada — medido 2026-10-20"
