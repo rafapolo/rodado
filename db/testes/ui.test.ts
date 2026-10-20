@@ -143,7 +143,7 @@ describe("API /query", () => {
   });
 
   test("JSON com cabeçalhos de linhas, corte e tempo", async () => {
-    const r = await q("SELECT sigla FROM br_bd_diretorios_brasil.uf ORDER BY 1");
+    const r = await q("SELECT sigla FROM br_bd_diretorios_brasil.uf ORDER BY 1", "?formato=json");
     expect(r.status).toBe(200);
     const d = (await r.json()) as { sigla: string }[];
     expect(d.length).toBe(27);
@@ -151,6 +151,16 @@ describe("API /query", () => {
     expect(r.headers.get("x-linhas")).toBe("27");
     expect(r.headers.get("x-truncado")).toBe("0");
     expect(Number(r.headers.get("x-segundos"))).toBeGreaterThanOrEqual(0);
+  });
+
+  test("sem formato, os avisos medidos vêm no corpo junto das linhas", async () => {
+    const r = await q("SELECT ano, count(*) AS n FROM br_fgv_igp.igp_m_mes GROUP BY 1 ORDER BY 1 LIMIT 1", "?ciente=1");
+    expect(r.status).toBe(200);
+    const d = (await r.json()) as { linhas: unknown[]; avisos: string[]; contexto: string[]; truncado: boolean };
+    expect(d.linhas.length).toBe(1);
+    expect(d.truncado).toBe(false);
+    expect(d.avisos.some((a) => a.includes("igp_m_mes"))).toBe(true);
+    expect(d.contexto[0]).toContain("/contexto?dataset=br_fgv_igp");
   });
 
   test("CSV, TSV e limite", async () => {
@@ -169,7 +179,7 @@ describe("API /query", () => {
 
   test("GET com q= funciona (curl -G)", async () => {
     const r = await fetch(`${BASE}/query?q=${encodeURIComponent("SELECT 42 AS ok")}`, { headers: { Authorization: AUTH } });
-    expect(await r.json()).toEqual([{ ok: 42 }]);
+    expect((await r.json()).linhas).toEqual([{ ok: 42 }]);
   });
 
   test("só leitura: COPY, SET, ATTACH, INSTALL e vários comandos são recusados", async () => {
@@ -260,7 +270,7 @@ describe("link curto /q/<id>", () => {
       await esperaTerminal(p, /São Paulo/);
       expect(new URL(p.url()).pathname).toBe(`/q/${id}`);
       const r = await p.evaluate(async () => (await fetch("/query", { method: "POST", body: "SELECT 42 AS ok" })).json());
-      expect(r).toEqual([{ ok: 42 }]);
+      expect(r.linhas).toEqual([{ ok: 42 }]);
     } finally { await ctx.close(); }
   });
 });

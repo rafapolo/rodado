@@ -16,7 +16,7 @@ própria. Tudo passa por HTTP: descobrir tabelas, ler o schema, consultar, expor
 4. **contexto → `/contexto?dataset=<dataset>&tabela=<tabela>`** (armadilhas medidas, códigos, joins)
 5. **ensaio → `POST /confere`** com a SQL: diz, sem executar, se a tabela existe, se a partição
    está filtrada e que armadilha medida a consulta toca
-6. consulta → `POST /query`, agregando no servidor; leia o cabeçalho `X-Avisos` (`curl -i`). Se a SQL
+6. consulta → `POST /query`, agregando no servidor; leia os `avisos` que vêm junto das `linhas`. Se a SQL
    cita coluna de uma armadilha `[erro]`, o `/query` recusa com 400 e a armadilha no corpo — leia,
    corrija ou, se a consulta já trata disso, repita com `?ciente=1`
 7. conferência → a lista da seção 2b, antes de responder
@@ -77,8 +77,9 @@ resposta. Sem credencial a resposta é `401`. Nos exemplos abaixo, `$AUTH` é `-
 6. **Ensaiar e consultar.** `curl $AUTH --data-binary @q.sql https://db.rodado.xyz/confere`
    devolve `{"tabelas": [{"tabela", "linhas", "particoes", "filtra_particao"}], "problemas": [...],
    "avisos": [...], "colunas_nao_achadas": [...]}` em milissegundos: resolva os `problemas`
-   antes de mandar ao `/query`. Toda resposta do `/query` traz o mesmo `X-Avisos` (sem acento,
-   separado por `||`) e `X-Contexto`; um erro traz `dica` e `avisos` no corpo.
+   antes de mandar ao `/query`. A resposta do `/query` traz no corpo `{"linhas": [...], "avisos":
+   [...], "contexto": [...], "truncado": ...}`: os `avisos` são as armadilhas medidas das tabelas
+   e colunas que a SQL cita — leia antes de usar o número. Um erro traz `dica` e `avisos` no corpo.
 7. **Conferir** antes de afirmar — seção 2b.
 
 ## 2b. Conferência antes de responder
@@ -117,11 +118,12 @@ curl $AUTH -G https://db.rodado.xyz/query --data-urlencode 'q=DESCRIBE br_inep_i
 | parâmetro | valores |
 |---|---|
 | corpo do POST (ou `q=` no GET) | o SQL, **um comando por requisição**, até 512 KB |
-| `formato` | `json` (padrão, lista de objetos), `csv`, `tsv`, `parquet` |
+| `formato` | sem ele: `{"linhas", "avisos", "contexto", "truncado"}`; `json` (só a lista de linhas), `csv`, `tsv`, `parquet` |
 | `limite` | linhas devolvidas: padrão {limite_padrao}, máximo {limite_maximo} |
 
 Cabeçalhos da resposta: `X-Linhas` (quantas vieram), `X-Truncado` (`1` se o limite cortou —
-então agregue ou aumente o `limite`), `X-Segundos`. Erro vem como `{"erro": "..."}` com
+então agregue ou aumente o `limite`), `X-Segundos`, e os avisos também em `X-Avisos` (sem acento,
+separados por `||`) — o único lugar onde eles aparecem em `csv`, `tsv`, `parquet` e `json`. Erro vem como `{"erro": "..."}` com
 status 400 (SQL inválido ou recusado — inclusive a consulta que cita coluna de armadilha `[erro]`:
 o corpo traz a armadilha e a `dica`; repita com `?ciente=1` depois de tratar dela), 429 (servidor cheio: espere e repita), 504 (estourou
 {tempo} s).

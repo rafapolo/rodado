@@ -99,8 +99,10 @@ SIMULTANEAS = threading.BoundedSemaphore(N_SIMULTANEAS)
 USO = """\
 Guia para agentes (comece por ele): https://db.rodado.xyz/llm
 POST /query com o SQL no corpo (ou GET /query?q=...). Só leitura, um comando por vez.
-Parâmetros: formato=json|csv|tsv|parquet (padrão json), limite=N linhas (padrão e máximo 10000).
-Cabeçalhos da resposta: X-Linhas, X-Truncado, X-Segundos.
+Parâmetros: formato=json|csv|tsv|parquet, limite=N linhas (padrão e máximo 10000).
+Sem formato, a resposta é {"linhas": [...], "avisos": [...], "contexto": [...], "truncado": ...}:
+os avisos medidos das tabelas citadas vêm no corpo. formato=json devolve só a lista de linhas.
+Cabeçalhos da resposta: X-Linhas, X-Truncado, X-Segundos, X-Avisos, X-Contexto.
 Exemplo: curl -u usuario:senha --data-binary 'DESCRIBE br_bd_diretorios_brasil.municipio' https://db.rodado.xyz/query
 """
 
@@ -707,6 +709,10 @@ class Handler(BaseHTTPRequestHandler):
         self._executa(corpo, params)
 
     def _executa(self, sql, params):
+        # Sem `formato`, o JSON vem embrulhado com os avisos no corpo: o agente que só lê o corpo
+        # (curl sem -i) via X-Avisos não via nada, e 163 das 189 armadilhas (as que não são [erro]) não recusam a consulta.
+        # formato=json explícito continua a lista pura, que o MCP e scripts já leem.
+        embrulha = not params.get("formato")
         formato = (params.get("formato") or ["json"])[0]
         if formato not in ("json", "csv", "tsv", "parquet"):
             return self._erro(400, "formato deve ser json, csv, tsv ou parquet")
@@ -790,8 +796,12 @@ class Handler(BaseHTTPRequestHandler):
             "X-Segundos": f"{time.monotonic() - inicio:.3f}",
         }
         if formato == "json":
-            corpo = json.dumps([dict(zip(colunas, l)) for l in linhas],
-                               ensure_ascii=False, default=_json_valor) + "\n"
+            registros = [dict(zip(colunas, l)) for l in linhas]
+            if embrulha:
+                registros = {"linhas": registros, "avisos": avisos,
+                             "contexto": [f"/contexto?dataset={d}&tabela={t}" for d, t in tabelas],
+                             "truncado": truncado}
+            corpo = json.dumps(registros, ensure_ascii=False, default=_json_valor) + "\n"
             return self._responde(200, corpo, "application/json; charset=utf-8", extra)
         saida = io.StringIO()
         w = csv.writer(saida, delimiter="\t" if formato == "tsv" else ",", lineterminator="\n")
