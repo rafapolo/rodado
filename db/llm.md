@@ -16,7 +16,9 @@ própria. Tudo passa por HTTP: descobrir tabelas, ler o schema, consultar, expor
 4. **contexto → `/contexto?dataset=<dataset>&tabela=<tabela>`** (armadilhas medidas, códigos, joins)
 5. **ensaio → `POST /confere`** com a SQL: diz, sem executar, se a tabela existe, se a partição
    está filtrada e que armadilha medida a consulta toca
-6. consulta → `POST /query`, agregando no servidor; leia o cabeçalho `X-Avisos` (`curl -i`)
+6. consulta → `POST /query`, agregando no servidor; leia o cabeçalho `X-Avisos` (`curl -i`). Se a SQL
+   cita coluna de uma armadilha `[erro]`, o `/query` recusa com 400 e a armadilha no corpo — leia,
+   corrija ou, se a consulta já trata disso, repita com `?ciente=1`
 7. conferência → a lista da seção 2b, antes de responder
 
 **Orçamento de contexto.** Nunca baixe `/tabelas` sem filtro (~60 KB) nem `/catalogo.json`
@@ -114,7 +116,8 @@ curl $AUTH -G https://db.rodado.xyz/query --data-urlencode 'q=DESCRIBE br_inep_i
 
 Cabeçalhos da resposta: `X-Linhas` (quantas vieram), `X-Truncado` (`1` se o limite cortou —
 então agregue ou aumente o `limite`), `X-Segundos`. Erro vem como `{"erro": "..."}` com
-status 400 (SQL inválido ou recusado), 429 (servidor cheio: espere e repita), 504 (estourou
+status 400 (SQL inválido ou recusado — inclusive a consulta que cita coluna de armadilha `[erro]`:
+o corpo traz a armadilha e a `dica`; repita com `?ciente=1` depois de tratar dela), 429 (servidor cheio: espere e repita), 504 (estourou
 {tempo} s).
 
 **Regras do SQL** (dialeto DuckDB, não BigQuery nem Postgres):
@@ -126,6 +129,9 @@ status 400 (SQL inválido ou recusado), 429 (servidor cheio: espere e repita), 5
 - Tabela grande (dezenas de milhões de linhas ou mais) exige filtro na partição — as colunas
   com `"particao": true` em `/colunas`, em geral `ano`, `mes`, `sigla_uf`. Sem isso a consulta
   lê o dataset inteiro e estoura o tempo.
+- Tabela grande **sem** partição (o `/confere` avisa) é lida inteira a cada consulta, com
+  qualquer filtro: `count(DISTINCT causa_basica)` do SIM só para SP levou 73 s. Agregue tudo
+  numa consulta só em vez de uma por recorte.
 - `SUMMARIZE` e `count(DISTINCT ...)` numa tabela enorme são caros: faça numa partição.
 
 ## 4. Exportar

@@ -810,7 +810,7 @@ exporta.addEventListener("click", async () => {
   exporta.setAttribute("aria-busy", "true");
   status.textContent = "gerando CSV…";
   try {
-    const r = await fetch(`/query?formato=csv&limite=${LIMITE_CSV}`, { method: "POST", body: texto });
+    const r = await fetch(`/query?formato=csv&limite=${LIMITE_CSV}&ciente=1`, { method: "POST", body: texto });
     if (!r.ok) {
       let msg = `erro ${r.status}`;
       try { msg = (await r.json()).erro || msg; } catch (_) {}
