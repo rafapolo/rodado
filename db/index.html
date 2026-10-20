@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#1e1e2e">
 <title>Rodado SQL</title>
 <meta name="description" content="Terminal SQL no navegador sobre o espelho do rodado: 1.403 tabelas · 256 datasets · 103 fontes · 743 GB de dados públicos brasileiros, em DuckDB, só leitura.">
+<link rel="alternate" type="text/markdown" href="/llm" title="guia da API para agentes de IA">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="rodado">
 <meta property="og:locale" content="pt_BR">
@@ -263,6 +264,9 @@
 </style>
 </head>
 <body>
+<!-- Para agentes que leem o HTML em vez de rodar o terminal: o texto sai do layout, não da
+     árvore (leitores de tela e extratores de texto o encontram). -->
+<p style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap">Agentes de IA: esta página é um terminal interativo. Para consultar por HTTP, leia o guia em <a href="/llm">https://db.rodado.xyz/llm</a>.</p>
 <div id="esquerda">
 <iframe id="terminal" src="/tty/" title="terminal SQL (DuckDB, só leitura)"></iframe>
 <div id="editor" role="group" aria-label="editor de SQL">

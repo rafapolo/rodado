@@ -32,6 +32,17 @@
 		respond "ok" 200
 	}
 
+	# Todo agente que chega aqui (inclusive no 401) recebe o caminho do guia no cabeçalho.
+	header Link `</llm>; rel="describedby"; type="text/markdown"`
+
+	# O 401 do basic_auth vinha vazio: um agente sem senha não sabia por onde seguir.
+	handle_errors 401 {
+		respond <<TXT
+			401: este endpoint pede credencial (usuário e senha HTTP Basic, ou ?token=).
+			Agentes: o guia público da API está em https://db.rodado.xyz/llm
+			TXT 401
+	}
+
 	# Robôs de pré-visualização de link recebem só as meta tags (og.html), sem senha:
 	# com o 401 eles não leriam o og:title/og:image do index.html.
 	@previa {
@@ -45,9 +56,19 @@
 	}
 
 	# Guia para agentes (/llm, e /llms.txt, o nome que eles procuram): público, sem senha.
-	# Só explica a API; os dados continuam atrás da senha ou do token.
-	@guia path /llm /llm.md /llms.txt
+	# Só explica a API; os dados continuam atrás da senha ou do token. /robots.txt aponta
+	# para ele.
+	@guia path /llm /llm.md /llms.txt /.well-known/llms.txt /robots.txt
 	handle @guia {
+		reverse_proxy 127.0.0.1:18081
+	}
+	# / pedido como markdown (e não HTML) é um agente: recebe o guia, não o terminal
+	@guia_md {
+		path /
+		header Accept *text/markdown*
+		not header Accept *text/html*
+	}
+	handle @guia_md {
 		reverse_proxy 127.0.0.1:18081
 	}
 

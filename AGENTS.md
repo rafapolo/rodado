@@ -89,6 +89,7 @@ python3 scripts/gera_metrics_json.py       # metrics.yaml   -> docs/context/metr
 python3 scripts/valida_metrics.py          # confere metrics.yaml + hierarchies.yaml
 python3 scripts/gera_schema_graph.py       # -> pages/atlas/schema_graph.json
 python3 scripts/build_atlas.py             # -> pages/atlas/index.html
+python3 scripts/gera_contexto_db.py        # gotchas + YAML + atlas + respostas -> db/contexto.json (/contexto, /exemplos do db.rodado.xyz; redistribuir)
 python3 scripts/gera_mcp_datasets.py       # catalog.parquet + schema_graph.json -> seção "Todos os datasets" de pages/mcp.html
 python3 scripts/gera_dicionario_coverage.py  # beelink -> docs/context/dicionario_coverage.json (rerodar quando um dicionario mudar)
 python3 scripts/gera_schema_dict_status.py   # beelink + dicionario_coverage.json + bridges.yaml + hierarchies.yaml -> docs/context/schema_dict_status.json
