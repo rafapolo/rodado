@@ -32,6 +32,7 @@ const DIR = `${import.meta.dir}/dados/gabaritos`;
 const CACHE = `${DIR}/medido.json`;
 const SAIDA = `${import.meta.dir}/dados/gabaritos.tsv`;
 const PARALELO = 3;
+const CATALOGO = `${import.meta.dir}/dados/catalogo.json`;
 
 export interface Candidato {
   id: string;
@@ -96,6 +97,25 @@ function batem(a: number, b: number, tol?: string): boolean {
   return Math.abs(a - b) <= Math.max(abs, rel * Math.max(Math.abs(a), Math.abs(b)));
 }
 
+/**
+ * A tolerância do gabarito cobre todas as vias que bateram: se `sql2` ou `doc`
+ * passou dentro de 0,5% sem ser idêntico, quem responder pelo outro caminho (ou
+ * repetir o número do gotcha) não pode ser marcado errado. Mantém a forma da
+ * tolerância do caso (absoluta ou %) e só a alarga.
+ */
+function toleraVias(v: number, outras: (number | undefined)[], tol?: string): string | undefined {
+  const dif = Math.max(0, ...outras.filter((x): x is number => x !== undefined).map((x) => Math.abs(v - x)));
+  const virgula = (n: number) => n.toString().replace(".", ",");
+  if (tol && !tol.endsWith("%")) {
+    const abs = Number(tol.replace(",", "."));
+    return `~${virgula(dif > abs ? Math.ceil(dif * 100) / 100 : abs)}`;
+  }
+  const rel = tol ? Number(tol.replace("%", "").replace(",", ".")) : 0;
+  const precisa = dif ? Math.ceil((dif / Math.abs(v)) * 1000) / 10 : 0;
+  const final = Math.max(rel, precisa);
+  return final ? `~${virgula(final)}%` : undefined;
+}
+
 function fmt(v: number, casas?: number): string {
   const c = casas ?? (Number.isInteger(v) ? 0 : 2);
   return v.toFixed(c).replace(".", ",");
@@ -124,6 +144,10 @@ async function main() {
   await Promise.all(Array.from({ length: PARALELO }, trabalhador));
   if (so) return;
 
+  // dataset que o catálogo do harness (cache de catalogo.ts) ainda não lista: o caso mede o
+  // cache velho, não o harness — marca no comentário até `catalogo.ts --atualiza` + persona
+  const noCatalogo = new Set((JSON.parse(readFileSync(CATALOGO, "utf8")) as { dataset: string }[]).map((t) => t.dataset));
+  const semCatalogo = (c: Candidato) => noCatalogo.has(c.origem.split(/[/ ]/)[0]!) ? "" : " [fora do catálogo do harness]";
   const aceitos: string[] = [];
   const recusados: string[] = [];
   for (const c of todos) {
@@ -133,13 +157,13 @@ async function main() {
     if (m.erro || m.v === undefined) { recusa(m.erro ?? "sem valor"); continue; }
     if (c.vazio) {
       if (m.v !== 0) { recusa(`devia estar vazio, veio ${m.v}`); continue; }
-      aceitos.push(`# ${c.id} [${c.origem}] vazio: ${m.v} linhas (${m.em})\n${c.pergunta}\tSEM_DADO`);
+      aceitos.push(`# ${c.id} [${c.origem}]${semCatalogo(c)} vazio: ${m.v} linhas (${m.em})\n${c.pergunta}\tSEM_DADO`);
       continue;
     }
     if (c.sem_dado_ano !== undefined) {
       const fora = c.antes ? c.sem_dado_ano < m.v : c.sem_dado_ano > m.v;
       if (!fora) { recusa(`ano ${c.sem_dado_ano} está dentro da série (${c.antes ? "mín" : "máx"} ${m.v})`); continue; }
-      aceitos.push(`# ${c.id} [${c.origem}] ${c.antes ? "mín" : "máx"}(ano) = ${m.v} (${m.em})\n${c.pergunta}\tSEM_DADO`);
+      aceitos.push(`# ${c.id} [${c.origem}]${semCatalogo(c)} ${c.antes ? "mín" : "máx"}(ano) = ${m.v} (${m.em})\n${c.pergunta}\tSEM_DADO`);
       continue;
     }
     if (c.sql2 && (m.v2 === undefined || !batem(m.v, m.v2, c.tol))) { recusa(`vias discordam: ${m.v} × ${m.v2}`); continue; }
@@ -147,15 +171,11 @@ async function main() {
     if (!c.sql2 && c.doc === undefined) { recusa("uma via só (falta sql2 ou doc)"); continue; }
     if (m.v === 0) { recusa("v = 0: filtro que não casa nada parece resposta"); continue; }
     if (c.armadilha !== undefined && batem(m.v, c.armadilha)) { recusa(`a armadilha dá o mesmo número (${c.armadilha})`); continue; }
-    // vias que batem dentro de 0,5% mas não são idênticas: o gabarito aceita as duas
-    let tol = c.tol;
-    if (!tol && c.sql2 && m.v2 !== undefined && m.v !== m.v2) {
-      tol = `${(Math.ceil((Math.abs(m.v - m.v2) / Math.abs(m.v)) * 1000) / 10).toString().replace(".", ",")}%`;
-    }
-    const esperado = fmt(m.v, c.casas) + (tol ? `~${tol}` : "");
+    const base = fmt(m.v, c.casas);
+    const esperado = base + (toleraVias(Number(base.replace(",", ".")), [m.v, m.v2, c.doc], c.tol) ?? "");
     if (numeros(c.pergunta).some((n) => batem(n, m.v!))) { recusa(`eco: ${m.v} está na pergunta`); continue; }
     const vias = [c.sql2 ? `sql2 ${m.v2}` : "", c.doc !== undefined ? `doc ${c.doc}` : "", c.armadilha !== undefined ? `armadilha ${c.armadilha}` : ""].filter(Boolean).join("; ");
-    aceitos.push(`# ${c.id} [${c.origem}] v = ${m.v} (${vias}) — ${m.em}\n${c.pergunta}\t${esperado}`);
+    aceitos.push(`# ${c.id} [${c.origem}]${semCatalogo(c)} v = ${m.v} (${vias}) — ${m.em}\n${c.pergunta}\t${esperado}`);
   }
 
   const cab = [

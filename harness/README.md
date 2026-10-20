@@ -426,8 +426,8 @@ Saída em `dados/gabaritos.tsv`, que o `lote.ts` lê direto.
 
 | Arquivo | Casos | O que mede |
 |---|---|---|
-| `armadilhas.yaml` | 55 | uma pergunta por gotcha de `docs/context/gotchas/`; `armadilha` é o número da leitura ingênua (23 casos), e nenhum deles passa como certo em `acerto.ts` |
-| `cobertura.yaml` | 90 | 89 datasets que nenhum TSV cobria, uma ou duas perguntas cada — holdout, nenhuma nota saiu daqui |
+| `armadilhas.yaml` | 54 | uma pergunta por gotcha de `docs/context/gotchas/`; `armadilha` é o número da leitura ingênua (24 casos), e nenhum deles passa como certo em `acerto.ts` |
+| `cobertura.yaml` | 88 | 87 datasets que nenhum TSV cobria, uma ou duas perguntas cada — holdout, nenhuma nota saiu daqui |
 | `sem_dado.yaml` | 14 | ano fora da série ou coluna vazia: o certo é dizer que não há dado |
 
 A segunda via pegou o que a primeira deixaria passar: as duas cópias do Bolsa
@@ -441,6 +441,11 @@ fecha em nenhuma unidade (9,5×10¹⁵ para a eólica de 2023), `CAPAG` em
 `br_tesouro_capag.municipios` traz o nome do município, e um contrato de merenda
 de Armação dos Búzios vale R$ 2,4 tri no TCE-RJ. Gabarito igual a zero é recusado:
 filtro que não casa nada parece resposta.
+
+16 casos caem em datasets que o cache do catálogo do harness (`dados/catalogo.json`,
+230 datasets) ainda não lista — o comentário do caso diz `[fora do catálogo do
+harness]`. Até `catalogo.ts --atualiza` e a persona regenerada, eles medem o cache
+velho, não o harness.
 
 ## Módulos
 

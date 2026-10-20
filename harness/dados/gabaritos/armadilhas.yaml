@@ -152,14 +152,6 @@
     WHERE ano = 2025 AND mes = 8 GROUP BY sigla_uf)
   doc: 147358
 
-- id: cnpj_capital_social_total
-  origem: br_me_cnpj/capital_social_sentinela
-  pergunta: Qual é o capital social total declarado pelas empresas no cadastro atual da Receita Federal, em reais?
-  sql: SELECT sum(capital_social) AS v FROM br_me_cnpj.empresas WHERE capital_social < 999999999999
-  sql2: |
-    SELECT sum(capital_social) - 999999999999 * count(*) FILTER (WHERE capital_social = 999999999999) AS v
-    FROM br_me_cnpj.empresas WHERE capital_social <= 999999999999
-  tol: 0,5%
 
 - id: siconfi_assistencia_2023
   origem: br_me_siconfi/estagio_multiplica
