@@ -54,7 +54,8 @@ gotchas:
       Qualquer SUM, média ou HHI sobre capital_social distorce o CNAE/UF onde
       elas caem. Filtre capital_social < 999999999999 ou trate como nulo.
       Mesmo sem a sentinela a soma não fecha: 906 empresas declaram R$ 100 bi
-      ou mais e somam R$ 128,8 tri, contra R$ 16,7 tri de todas as outras.
+      ou mais e somam R$ 128,8 tri; as que declaram menos de R$ 10 bi somam
+      R$ 16,7 tri.
       Soma ou média de capital_social precisa de corte de outlier (ou mediana).
     tabelas: [empresas, empresas_historico]
     colunas: [capital_social]
