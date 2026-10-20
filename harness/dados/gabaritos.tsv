@@ -1,0 +1,323 @@
+# Gabaritos gerados por harness/gabaritos.ts a partir de dados/gabaritos/*.yaml — NÃO editar à mão.
+# Cada número foi medido no beelink (DuckDB -readonly) e conferido por uma segunda via: outra
+# consulta (sql2) e/ou o número registrado antes no gotcha (doc). `armadilha` é o que dá a
+# leitura ingênua. As perguntas de armadilhas.yaml testam se o harness USA o gotcha que já recebe;
+# as de cobertura.yaml e sem_dado.yaml são holdout: nenhuma nota foi escrita a partir delas.
+# ana_vazao_captada [br_ana_outorgas/vazao_em_m3h] v = 5717.926895833347 (doc 5718; armadilha 20584537) — 2026-10-20
+Qual é a vazão total, em metros cúbicos por segundo, somando todas as outorgas de captação de água registradas pela ANA?	5717,93~1%
+# anatel_densidade_2026_08 [br_anatel_telefonia_movel/densidade_por_100_habitantes] v = 103.13502609787 (sql2 103.13502609787; doc 103.135) — 2026-10-20
+Quantos acessos de telefonia móvel por 100 habitantes o Brasil tinha em agosto de 2026?	103,1~0,1
+# ans_beneficiarios_dez2022 [br_ans_beneficiario/data_carga_sobreposta] v = 50063444 (doc 50100000; armadilha 75400000) — 2026-10-20
+Quantos beneficiários de planos de saúde médico-hospitalares havia no Brasil em dezembro de 2022?	50063444~1%
+# sicor_proagro_comunicacoes [br_bcb_sicor/proagro_cop_chave_repetida] v = 996080 (sql2 996080; doc 996080; armadilha 1007340) — 2026-10-20
+Quantas comunicações de ocorrência de perdas do Proagro, distintas, existem no SICOR do Banco Central?	996080
+# emendas_municipios_2023_2025 [br_cgu_emendas_parlamentares/banco_mandatario_infla_brasilia] v = 58759612085.219986 (doc 58600000000) — 2026-10-20
+Quanto dinheiro de emendas parlamentares chegou a prefeituras e fundos municipais entre 2023 e 2025, em reais?	58759612085,22~1%
+# cvm_petrobras_receita_2024 [br_cvm_cia_aberta/dois_exercicios_por_documento] v = 490829000000 (doc 490829000000; armadilha 511994000000) — 2026-10-20
+Qual foi a receita de venda de bens e serviços consolidada da Petrobras no exercício de 2024, segundo as demonstrações entregues à CVM, em reais?	490829000000~0,5%
+# ibama_area_embargada [br_ibama_embargos_novo/area_embargada_texto] v = 11067885.291999841 (doc 11067885) — 2026-10-20
+Somando todos os termos de embargo do Ibama, qual é a área total embargada, em hectares?	11067885,29~1%
+# censo2022_pop_sao_paulo [br_ibge_censo_2022/sigilo_e_null] v = 11451999 (doc 11451999) — 2026-10-20
+Qual é a população do município de São Paulo segundo o Censo 2022?	11451999
+# censo2022_quilombolas [br_ibge_censo_2022/setor_pct_em_tabelas_separadas] v = 1317569 (doc 1317569) — 2026-10-20
+Quantas pessoas quilombolas o Censo 2022 contou no Brasil, somando os setores censitários?	1317569
+# censo2022_indigenas_sidra [br_ibge_censo_2022/sidra_formato_longo] v = 1694836 (doc 1694836) — 2026-10-20
+Quantas pessoas indígenas o Censo 2022 contou no Brasil?	1694836
+# censo2022_amostra_populacao [br_ibge_censo_demografico/censo2022_amostra_com_peso] v = 203080756 (doc 203080756; armadilha 21538508) — 2026-10-20
+Segundo os microdados da amostra do Censo 2022, quantas pessoas residiam no Brasil?	203080756~0,1%
+# pnadcovid_populacao_maio [br_ibge_pnad_covid/pesar_por_v1032] v = 210869401 (doc 210869401; armadilha 349306) — 2026-10-20
+Qual era a população estimada pela PNAD COVID-19 em maio de 2020?	210869401~0,1%
+# pnadc_ocupados_2025t3 [br_ibge_pnadc/pesar_por_v1028] v = 102433241 (doc 102400000) — 2026-10-20
+Quantas pessoas estavam ocupadas no Brasil no terceiro trimestre de 2025, segundo a PNAD Contínua?	102433241~0,5%
+# saeb_mt_9ano_2023 [br_inep_saeb/agregado_para_em_2021] v = 257.12110680336343 (doc 258) — 2026-10-20
+Qual foi a proficiência média em Matemática dos alunos do 9º ano no Saeb 2023?	257,1~0,5
+# deter_pantanal_queimada [br_inpe_deter/pantanal_e_queimada] v = 16457 (sql2 16457; doc 16457) — 2026-10-20
+Dos alertas do DETER no Pantanal, quantos são de cicatriz de queimada, e não de desmatamento?	16457
+# queimadas_focos_2025 [br_inpe_queimadas/duas_origens] v = 3463949 (sql2 3463949; doc 3463949) — 2026-10-20
+Quantos focos de queimada o INPE registrou no Brasil em 2025?	3463949
+# bolsa_familia_pago_2019 [br_mc_indicadores/ministerio_da_cidadania] v = 31159235696 (doc 31159000000) — 2026-10-20
+Quanto o Bolsa Família pagou às famílias em 2019, somando todos os municípios, em reais?	31159235696~0,5%
+# caged_saldo_ago2025 [br_me_caged/duas_origens_na_mesma_tabela] v = 147358 (sql2 147358; doc 147358) — 2026-10-20
+Qual foi o saldo de empregos formais declarados no prazo ao Novo CAGED em agosto de 2025?	147358
+# cnpj_capital_social_total [br_me_cnpj/capital_social_sentinela] v = 158935615687433.8 (sql2 158935615687450.38) — 2026-10-20
+Qual é o capital social total declarado pelas empresas no cadastro atual da Receita Federal, em reais?	158935615687433,81~0,5%
+# siconfi_assistencia_2023 [br_me_siconfi/estagio_multiplica] v = 31146450319.509995 (sql2 31146450319.509964) — 2026-10-20
+Quanto os municípios brasileiros efetivamente pagaram em Assistência Social em 2023, em reais?	31146450319,51~1%
+# sinesp_roubo_veiculo_2023 [br_mj_sinesp/abrangencia_mistura_policias] v = 135041 (doc 135041) — 2026-10-20
+Quantos roubos de veículo as polícias estaduais registraram no Brasil em 2023?	135041
+# sia_procedimentos_jun2022 [br_ms_sia/bpa_consolidado_sem_paciente] v = 331287982 (doc 331287982) — 2026-10-20
+Quantos procedimentos ambulatoriais o SUS aprovou em junho de 2022?	331287982
+# sih_internacoes_2022 [br_ms_sih/cid_categoria_ou_subcategoria] v = 12520914 (sql2 12520914; doc 12520914) — 2026-10-20
+Quantas autorizações de internação hospitalar (AIH) o SUS processou em 2022?	12520914
+# sih_dengue_competencia_2024 [br_ms_sih/ano_e_competencia] v = 159331 (doc 159331) — 2026-10-20
+Quantas internações por dengue (CID-10 A90 e A91) o SUS registrou na competência de 2024?	159331
+# sim_obitos_infantis_2022 [br_ms_sim/idade_impossivel] v = 29659 (sql2 29659) — 2026-10-20
+Quantos óbitos de menores de 1 ano o SIM registrou no Brasil em 2022?	29659
+# sinan_dengue_descartados_2019 [br_ms_sinan/dengue_classificacao_com_espaco] v = 707830 (doc 707830; armadilha 0) — 2026-10-20
+Quantas notificações de dengue de 2019 foram descartadas após investigação?	707830
+# sinan_dengue_provaveis_2024 [br_ms_sinan/dengue_sem_descartados_desde_2022] v = 6434137 (sql2 6434137; doc 6434137) — 2026-10-20
+Quantos casos prováveis de dengue o Brasil teve em 2024?	6434137
+# sinan_violencia_2020 [br_ms_sinan_violencia/nu_ano_vazio_2020] v = 326503 (doc 326503; armadilha 0) — 2026-10-20
+Quantas notificações de violência interpessoal ou autoprovocada o SINAN registrou em 2020?	326503
+# prf_mortos_2023 [br_prf_acidentes/pessoa_causa_tipo_multiplica] v = 5627 (doc 5627; armadilha 26552) — 2026-10-20
+Quantas pessoas morreram em acidentes nas rodovias federais em 2023, segundo a PRF?	5627
+# senatran_frota_dez2023 [br_senatran_frota/linha_total_dobra_soma] v = 119227657 (sql2 119227657; doc 119227657; armadilha 238455314) — 2026-10-20
+Qual era a frota total de veículos do Brasil em dezembro de 2023?	119227657
+# stj_decisoes_2021 [br_stj_dadosabertos/linhas_duplicadas] v = 533230 (doc 532182; armadilha 550291) — 2026-10-20
+Quantas decisões do STJ publicadas em 2021 estão nos dados abertos do tribunal?	533230
+# tse_sp_2026_lula_presidente [br_tse_eleicoes/dois_id_eleicao_no_ano_geral] v = 9505413 (sql2 9505413; doc 9505413; armadilha 17929069) — 2026-10-20
+Quantos votos o candidato de número 13 recebeu para presidente no estado de São Paulo no primeiro turno de 2026?	9505413
+# tse_pt_presidente_2022 [br_tse_eleicoes/doacao_presidencial_2022_pix] v = 135539287.82 (doc 135500000) — 2026-10-20
+Quanto a campanha presidencial do PT arrecadou em receitas em 2022, em reais?	135539287,82~0,5%
+# comunicabr_bpc_nova_friburgo [br_presidencia_comunicabr/total_e_partes_na_mesma_coluna] v = 3775 (sql2 3775; doc 3775; armadilha 7550) — 2026-10-20
+Quantas pessoas recebiam o BPC em Nova Friburgo (RJ) em 2025?	3775
+# pgfn_inscricoes_2026t2 [br_pgfn_dividaativa/trimestre_e_retrato_do_estoque] v = 49702198 (sql2 49702198; doc 49700000) — 2026-10-20
+Quantas inscrições em dívida ativa da União estavam em aberto no segundo trimestre de 2026?	49702198~0,5%
+# anatel_acessos_dez2024 [br_anatel_telefonia_movel/acessos_nulo_nao_e_zero] v = 263421871 (sql2 263421871; doc 263420000) — 2026-10-20
+Quantos acessos de telefonia móvel ativos o Brasil tinha em dezembro de 2024?	263421871~0,5%
+# ans_ressarcimento_cobrado [br_ans_operadoras/ressarcimento_em_duas_tabelas] v = 12550170811.72293 (doc 12550000000; armadilha 25100000000) — 2026-10-20
+Quanto a ANS cobrou das operadoras de planos de saúde em ressarcimento ao SUS por atendimentos de 2001 a 2025, em reais?	12550170811,72~0,5%
+# ifdata_ativo_total_2024 [br_bcb_ifdata/um_tipo_e_um_relatorio] v = 17049311299713.02 (doc 17050000000000; armadilha 52044495246985) — 2026-10-20
+Qual era o ativo total do sistema financeiro brasileiro (conglomerados prudenciais e instituições independentes) em dezembro de 2024, em reais?	17049311299713,02~0,5%
+# ptax_venda_30dez2024 [br_bcb_ptax/ptax_e_o_fechamento] v = 6.1923 (sql2 6.1923) — 2026-10-20
+Qual foi a cotação PTAX de venda do dólar em 30 de dezembro de 2024?	6,1923~0,001
+# emendas_relator_geral [br_cgu_emendas_parlamentares/autor_nem_sempre_parlamentar] v = 47400810171.10001 (doc 47400000000) — 2026-10-20
+Quanto foi empenhado em emendas de relator-geral do orçamento, somando todos os anos, em reais?	47400810171,10~0,5%
+# ibama_embargos_cancelados [br_ibama_embargos_novo/cancelados] v = 6307 (doc 6307) — 2026-10-20
+Quantos termos de embargo do Ibama foram cancelados?	6307
+# censo2022_favelas [br_ibge_censo_2022/favela_e_por_setor] v = 12348 (sql2 12348; doc 12348; armadilha 33272) — 2026-10-20
+Quantas favelas e comunidades urbanas o Censo 2022 identificou no Brasil?	12348
+# pnadc_populacao_2025t1 [br_ibge_pnadc/populacao_cai_em_2025] v = 212524885 (doc 212500000) — 2026-10-20
+Qual era a população residente estimada pela PNAD Contínua no primeiro trimestre de 2025?	212524885~0,5%
+# prodes_amazonia_2023 [br_inpe_prodes_acumulado/amazonia_legal_duplica] v = 7801.959763510095 (sql2 7802.007653249341; armadilha 15818) — 2026-10-20
+Quantos quilômetros quadrados de floresta foram desmatados no bioma Amazônia no ano PRODES de 2023?	7801,96~0,5%
+# bolsa_familia_pago_mar2020 [br_mc_indicadores/valor_2020_auxilio] v = 2505415999 (doc 2505000000) — 2026-10-20
+Quanto o Bolsa Família pagou em março de 2020, em reais?	2505415999~0,5%
+# cnpj_empresas_atuais [br_me_cnpj/so_o_ultimo_retrato] v = 70081764 (sql2 70081764; doc 70081764) — 2026-10-20
+Quantas empresas (CNPJ básico) existem no cadastro atual da Receita Federal?	70081764
+# cnpj_ex_socios [br_me_cnpj/historico_como_ler] v = 6681803 (sql2 6681803; doc 6681803) — 2026-10-20
+Quantos vínculos de sócio que existiam desde novembro de 2021 já não aparecem no cadastro atual da Receita?	6681803
+# listasuja_empregadores_atual [br_mte_listasuja/historico_sao_retratos] v = 508 (sql2 508; doc 508; armadilha 1086) — 2026-10-20
+Quantos empregadores constam na versão mais recente da Lista Suja do trabalho escravo?	508
+# comunicabr_bf_familias_nova_friburgo [br_presidencia_comunicabr/quantidade_e_valor_em_blocos_diferentes] v = 8072 (doc 8072) — 2026-10-20
+Quantas famílias recebiam o Bolsa Família em Nova Friburgo (RJ) em 2025?	8072
+# cafir_imoveis_set2025 [br_rf_cafir/snapshot_mensal] v = 10157996 (sql2 10157996; doc 10157996) — 2026-10-20
+Quantos imóveis rurais estavam no cadastro CAFIR da Receita Federal em setembro de 2025?	10157996
+# cno_obras_ultima_extracao [br_rf_cno/snapshot_por_extracao] v = 3006410 (doc 3006410) — 2026-10-20
+Quantas obras constam no Cadastro Nacional de Obras (CNO) da Receita, na extração mais recente?	3006410
+# sicar_imoveis_out2025 [br_sfb_sicar/area_imovel_e_serie_mensal] v = 8195400 (sql2 8195400; doc 8186157) — 2026-10-20
+Quantos imóveis rurais estavam inscritos no Cadastro Ambiental Rural (CAR) em outubro de 2025?	8195400~0,5%
+# tse_candidatos_2024 [br_tse_eleicoes/cpf_candidato_2024_pela_metade] v = 462821 (doc 462821; armadilha 230724) — 2026-10-20
+Quantas candidaturas foram registradas nas eleições municipais de 2024?	462821
+# sinan_dengue_menor1ano_2024 [br_ms_sinan/dengue_idade_com_unidade] v = 51277 (sql2 51314; armadilha 0) — 2026-10-20
+Quantos casos prováveis de dengue em bebês com menos de 1 ano de idade o Brasil teve em 2024?	51277~0,1%
+# igpm_2022_mes_trocado [br_fgv_igp (achado 2026-10-20, sem gotcha ainda)] v = 5.451285572594822 (sql2 5.4512855725947995) — 2026-10-20
+Qual foi a variação acumulada do IGP-M em 2022, em percentual?	5,45~0,05
+# abrinq_pre_escola_2019 [br_abrinq_oca] v = 5217686 (sql2 5217686) — 2026-10-20
+Quantas crianças estavam matriculadas na pré-escola no Brasil em 2019, somando os municípios, segundo o Observatório da Criança e do Adolescente da Abrinq?	5217686
+# ana_esgoto_vazao_total [br_ana_atlas_esgotos] v = 304697.00000000047 (sql2 304682.80000000075) — 2026-10-20
+Segundo o Atlas Esgotos da ANA, qual é a vazão total de esgoto gerada nas áreas urbanas dos municípios brasileiros, em litros por segundo?	304697,00~1%
+# ana_bho_trechos [br_ana_bho] v = 462539 (sql2 462539) — 2026-10-20
+Quantos trechos de drenagem tem a Base Hidrográfica Ottocodificada da ANA?	462539
+# ana_telemetria_estacoes_chuva [br_ana_telemetria] v = 5389 (sql2 5389) — 2026-10-20
+Quantas estações da ANA têm série de chuva diária registrada?	5389
+# anac_voos_cancelados_2026 [br_anac_dadosabertos] v = 20711 (sql2 20711) — 2026-10-20
+Quantos voos foram cancelados no Brasil entre janeiro e setembro de 2026, segundo os dados de voos da ANAC?	20711
+# anac_rab_aeronaves [br_anac_dadosabertos] v = 35024 (sql2 34926) — 2026-10-20
+Quantas aeronaves estão inscritas no Registro Aeronáutico Brasileiro (RAB)?	35024~0,3%
+# anatel_banda_larga_dez2024 [br_anatel_banda_larga_fixa] v = 51990701 (sql2 51990701) — 2026-10-20
+Quantos acessos de banda larga fixa o Brasil tinha em dezembro de 2024?	51990701
+# anatel_ibc_medio_2024 [br_anatel_indice_brasileiro_conectividade] v = 52.39940215439862 (sql2 52.39940215439862) — 2026-10-20
+Qual foi o Índice Brasileiro de Conectividade (IBC) médio dos municípios brasileiros em 2024?	52,40~0,05
+# anm_cfem_2023 [br_anm] v = 6858059226.110068 (sql2 6858059226.109991) — 2026-10-20
+Quanto foi arrecadado de CFEM, os royalties da mineração, em 2023, em reais?	6858059226,11~0,5%
+# antt_ciot_2024 [br_antt_dadosabertos] v = 18963427 (sql2 18963427) — 2026-10-20
+Quantos CIOTs (códigos de operação de transporte de carga) foram emitidos no Brasil em 2024?	18963427
+# bcb_penalidades_multas [br_bcb_penalidades] v = 1857217909.5999978 (sql2 1857217909.5999997) — 2026-10-20
+Qual é o valor total das multas aplicadas em primeira instância pelo Banco Central em processos administrativos sancionadores, em reais?	1857217909,60~0,1%
+# pix_pagador_pf_dez2024 [br_bcb_pix_municipio] v = 983902249067.1322 (sql2 983902249067.1299) — 2026-10-20
+Qual foi o valor total pago via Pix por pessoas físicas no Brasil em dezembro de 2024, em reais?	983902249067,13~0,1%
+# scr_carteira_dez2024 [br_bcb_scrdata] v = 6688616692283.383 (sql2 6688616695371.909) — 2026-10-20
+Qual era o saldo da carteira ativa de crédito do sistema financeiro no Brasil em dezembro de 2024, segundo o SCR.data do Banco Central, em reais?	6688616692283,38~0,5%
+# execucao_estadual_pe_2023 [br_bd_execucao_estadual] v = 24740336441.932137 (sql2 24740336441.92982) — 2026-10-20
+Quanto o governo do estado de Pernambuco pagou a credores em 2023, somando as ordens de pagamento, em reais?	24740336441,93~0,1%
+# bndes_indiretas_2023 [br_bndes_operacoes_contratadas] v = 34008421008 (sql2 34008421008) — 2026-10-20
+Qual foi o valor total das operações indiretas automáticas contratadas pelo BNDES em 2023, em reais?	34008421008~0,1%
+# megasena_concursos [br_caixa_sorteios] v = 2549 (sql2 2549) — 2026-10-20
+Quantos concursos da Mega-Sena constam nos resultados da Caixa?	2549
+# camara_cota_2023 [br_camara_dados_abertos] v = 246941551.13999137 (sql2 246941551.13999993) — 2026-10-20
+Quanto os deputados federais gastaram da cota para o exercício da atividade parlamentar em 2023, em valor líquido?	246941551,14~0,1%
+# capes_mobilidade_2019 [br_capes_bolsas] v = 4040 (sql2 4040) — 2026-10-20
+Quantas bolsas de mobilidade internacional da CAPES começaram em 2019?	4040
+# cgu_bolsa_familia_2019 [br_cgu_beneficios_cidadao] v = 31159235696 (sql2 31159235696) — 2026-10-20
+Quanto foi pago em parcelas do Bolsa Família em 2019, segundo o Portal da Transparência, em reais?	31159235696~1%
+# cpgf_2023 [br_cgu_cartao_pagamento] v = 90642839.97999975 (sql2 90642839.97999996) — 2026-10-20
+Quanto os órgãos do governo federal gastaram com o cartão de pagamento (CPGF) em 2023, em reais?	90642839,98~0,1%
+# garantia_safra_2023 [br_cgu_garantia_safra] v = 399520230 (sql2 399520230) — 2026-10-20
+Quanto foi pago a agricultores pelo Garantia-Safra em 2023, em reais?	399520230~0,1%
+# cgu_licitacoes_2022 [br_cgu_licitacao_contrato] v = 6558 (sql2 6558) — 2026-10-20
+Quantas licitações os órgãos do governo federal realizaram em 2022?	6558
+# orcamento_saude_2023 [br_cgu_orcamento_publico] v = 185463246583.9997 (sql2 185463246584.00003) — 2026-10-20
+Qual foi o orçamento atualizado do governo federal para a função Saúde em 2023, em reais?	185463246584,00~0,1%
+# pe_de_meia_2024 [br_cgu_pe_de_meia] v = 5587440225 (sql2 5587440225) — 2026-10-20
+Quanto o programa Pé-de-Meia pagou a estudantes em 2024, em reais?	5587440225~0,1%
+# terceirizados_jan2022 [br_cgu_pessoal_executivo_federal] v = 71667 (sql2 71667) — 2026-10-20
+Quantos trabalhadores terceirizados prestavam serviço ao Executivo federal em janeiro de 2022?	71667~0,5%
+# receitas_uniao_2023 [br_cgu_receitas_publicas] v = 4305719008249.265 (sql2 4305719008249.2705) — 2026-10-20
+Qual foi a receita realizada pelos órgãos do governo federal em 2023, segundo o Portal da Transparência, em reais?	4305719008249,27~0,1%
+# ceis_sancoes [br_cgu_sancoes] v = 19131 (sql2 19131) — 2026-10-20
+Quantas sanções estão registradas no Cadastro de Empresas Inidôneas e Suspensas (CEIS)?	19131~0,5%
+# seguro_defeso_2023 [br_cgu_seguro_defeso] v = 5255238027.629999 (sql2 5255238027.630003) — 2026-10-20
+Quanto foi pago de seguro-defeso a pescadores artesanais em 2023, em reais?	5255238027,63~0,1%
+# servidores_dez2024 [br_cgu_servidores_executivo_federal] v = 1232918 (sql2 1232919) — 2026-10-20
+Quantos servidores tinham remuneração registrada no Executivo federal em dezembro de 2024?	1232918~0,1%
+# cnj_improbidade_condenacoes [br_cnj_improbidade_administrativa] v = 53335 (sql2 53342) — 2026-10-20
+Quantas condenações por improbidade administrativa estão registradas no cadastro nacional do CNJ?	53335~0,1%
+# cnpq_bolsas_2022 [br_cnpq_bolsas] v = 227257 (sql2 227257) — 2026-10-20
+Quantas bolsas e auxílios o CNPq concedeu em 2022?	227257
+# sicaf_fornecedores_ativos [br_comprasgov_sicaf] v = 826570 (sql2 826570) — 2026-10-20
+Quantos fornecedores ativos estão cadastrados no SICAF, o cadastro de fornecedores do governo federal?	826570
+# cvm_fundos_funcionando [br_cvm_fundos] v = 33768 (sql2 33768; armadilha 34454) — 2026-10-20
+Quantos fundos de investimento estão em funcionamento normal no cadastro da CVM?	33768
+# fbsp_cvli_2021 [br_fbsp_absp] v = 41918 (sql2 41918) — 2026-10-20
+Quantos crimes violentos letais intencionais (CVLI) o Anuário Brasileiro de Segurança Pública registrou no Brasil em 2021?	41918~1%
+# igpm_2020 [br_fgv_igp] v = 23.13835112605256 (sql2 23.138351126052605) — 2026-10-20
+Qual foi a variação acumulada do IGP-M em 2020, em percentual?	23,14~0,05
+# firjan_ifgf_2022 [br_firjan_ifgf] v = 0.6249974932034695 (sql2 0.6249974932034695) — 2026-10-20
+Qual foi o Índice Firjan de Gestão Fiscal médio dos municípios brasileiros em 2022?	0,625~0,005
+# ibama_multas_2023 [br_ibama_autos] v = 4972075535.540018 (sql2 4972075535.539999) — 2026-10-20
+Qual foi o valor total das multas em autos de infração do Ibama lavrados em 2023 e não cancelados, em reais?	4972075535,54~0,1%
+# ibama_ctf_ativas [br_ibama_ctf] v = 901152 (sql2 901152) — 2026-10-20
+Quantas atividades potencialmente poluidoras estão com cadastro ativo no Cadastro Técnico Federal do Ibama?	901152
+# cnefe_enderecos_acre [br_ibge_cnefe] v = 410524 (sql2 410524) — 2026-10-20
+Quantos endereços o Cadastro Nacional de Endereços para Fins Estatísticos (CNEFE) do Censo 2022 lista no Acre?	410524
+# ipca_2023 [br_ibge_ipca] v = 4.62 (sql2 4.621113930566767) — 2026-10-20
+Qual foi a inflação oficial medida pelo IPCA no acumulado de 2023, em percentual?	4,62~0,03
+# pam_soja_2023 [br_ibge_pam] v = 152144238 (sql2 152144238) — 2026-10-20
+Quantas toneladas de soja o Brasil produziu em 2023, segundo a Produção Agrícola Municipal do IBGE?	152144238
+# ppm_bovinos_2024 [br_ibge_ppm] v = 238213713 (sql2 238213713) — 2026-10-20
+Qual era o efetivo de bovinos (rebanho) do Brasil em 2024, segundo a Pesquisa da Pecuária Municipal?	238213713
+# ieps_leitos_sus_2021 [br_ieps_saude] v = 347271 (sql2 347271) — 2026-10-20
+Quantos leitos do SUS havia no Brasil em 2021, segundo o IEPS Data?	347271~0,5%
+# incra_sigef_parcelas [br_incra_acervo] v = 1841258 (sql2 1841258) — 2026-10-20
+Quantas parcelas de imóveis rurais georreferenciadas constam no SIGEF do Incra?	1841258~0,5%
+# alfabetizacao_publica_2024 [br_inep_avaliacao_alfabetizacao] v = 59.2 (sql2 59.199710801621606) — 2026-10-20
+Qual foi a taxa de crianças alfabetizadas ao fim do 2º ano do ensino fundamental na rede pública brasileira em 2024, em percentual?	59,2~0,5
+# ies_2023 [br_inep_censo_educacao_superior] v = 2580 (sql2 2580) — 2026-10-20
+Quantas instituições de ensino superior havia no Brasil em 2023, segundo o Censo da Educação Superior?	2580
+# educacao_especial_comuns_2024 [br_inep_educacao_especial] v = 1923692 (sql2 1923692; armadilha 1955026) — 2026-10-20
+Quantas matrículas de educação especial em classes comuns (inclusão) havia no Brasil em 2024?	1923692
+# nomes_maria [br_ibge_nomes_brasil] v = 11734129 (sql2 11734129) — 2026-10-20
+Quantas pessoas chamadas Maria nascidas até 2010 o Censo 2010 contou no Brasil?	11734129
+# inmet_estacoes [br_inmet_bdmep] v = 633 (sql2 633) — 2026-10-20
+Quantas estações meteorológicas automáticas do INMET constam no cadastro de estações do BDMEP?	633
+# ipea_aop_pessoas [br_ipea_acesso_oportunidades] v = 43640521 (sql2 43241009) — 2026-10-20
+Quantas pessoas vivem nas áreas urbanas cobertas pelo projeto Acesso a Oportunidades do Ipea (dados de 2019)?	43640521~1%
+# mapbiomas_floresta_2023 [br_mapbiomas_estatisticas] v = 511299400.5076674 (sql2 511299400.50766754) — 2026-10-20
+Quantos hectares de floresta o Brasil tinha em 2023, segundo o MapBiomas?	511299400,51~0,1%
+# snis_agua_2022 [br_mdr_snis] v = 170966418 (sql2 170966418) — 2026-10-20
+Quantas pessoas eram atendidas por abastecimento de água no Brasil em 2022, segundo o SNIS?	170966418
+# cadunico_familias_dez2024 [br_mds_cadunico] v = 41539082 (sql2 41539082) — 2026-10-20
+Quantas famílias estavam inscritas no Cadastro Único em dezembro de 2024?	41539082
+# comex_exportacao_2024 [br_me_comex_stat] v = 339747841646 (sql2 339747841646) — 2026-10-20
+Quanto o Brasil exportou em 2024, em dólares (valor FOB)?	339747841646~0,1%
+# estoque_divida_out2022 [br_me_estoque_divida_publica] v = 7850221979085.507 (sql2 7850221979085.511) — 2026-10-20
+Qual era o estoque da dívida pública federal em outubro de 2022, em reais?	7850221979085,51~0,1%
+# rais_identificada_estab_2021 [br_me_rais_identificada] v = 2778942 (sql2 2778943) — 2026-10-20
+Quantos estabelecimentos (CNPJ completos) declararam a RAIS referente a 2021?	2778942~0,1%
+# sisdepen_presos_2025s1 [br_mj_sisdepen] v = 938072 (sql2 938072) — 2026-10-20
+Quantas pessoas estavam presas no sistema prisional brasileiro no primeiro semestre de 2025, segundo o SISDEPEN?	938072
+# fauna_ameacada [br_mma_extincao] v = 1258 (sql2 1258) — 2026-10-20
+Quantas espécies e subespécies da fauna brasileira estão na lista oficial de espécies ameaçadas de extinção do MMA?	1258
+# sinpatinhas_gatos [br_mma_sinpatinhas] v = 341920 (sql2 341920) — 2026-10-20
+Quantos gatos estão cadastrados no SinPatinhas, o cadastro nacional de cães e gatos?	341920
+# consumo_energia_2023 [br_mme_consumo_energia_eletrica] v = 531012496 (sql2 531012116) — 2026-10-20
+Qual foi o consumo total de energia elétrica no Brasil em 2023, em MWh, segundo a EPE?	531012496~0,5%
+# pep_cce_dez2023 [br_mp_pep] v = 37952 (sql2 37952) — 2026-10-20
+Quantos cargos comissionados executivos e funções comissionadas executivas (CCE e FCE) estavam ocupados no Executivo federal em dezembro de 2023?	37952
+# inss_aposentadoria_idade_dez2024 [br_mps_beneficios] v = 13165773 (sql2 13165773; armadilha 386) — 2026-10-20
+Quantas aposentadorias por idade o INSS mantinha em dezembro de 2024?	13165773
+# esf_cobertura_dez2020 [br_ms_atencao_basica] v = 63.62719975350603 (sql2 63.62716442544717) — 2026-10-20
+Qual era a cobertura populacional da Estratégia Saúde da Família no Brasil em dezembro de 2020, em percentual?	63,6~0,2
+# ms_populacao_2022 [br_ms_populacao] v = 210862983 (sql2 210862983) — 2026-10-20
+Qual era a população estimada do Brasil em 2022, segundo as estimativas populacionais usadas pelo Ministério da Saúde?	210862983
+# chikungunya_2024 [br_ms_sinan_chikungunya] v = 425534 (sql2 425534) — 2026-10-20
+Quantas notificações de chikungunya o SINAN registrou em 2024?	425534~0,5%
+# zika_2016 [br_ms_sinan_zika] v = 273904 (sql2 273904) — 2026-10-20
+Quantas notificações de zika o SINAN registrou em 2016?	273904~0,5%
+# febre_amarela_2018 [br_ms_sinan_febre_amarela] v = 4733 (sql2 4733) — 2026-10-20
+Quantas notificações de febre amarela o SINAN registrou em 2018?	4733~0,5%
+# sisvan_2023 [br_ms_sisvan] v = 50544072 (sql2 50544072) — 2026-10-20
+Quantos acompanhamentos do estado nutricional o SISVAN registrou em 2023?	50544072
+# queridodiario_municipios [br_ok_queridodiario] v = 524 (sql2 524) — 2026-10-20
+De quantos municípios o projeto Querido Diário reúne diários oficiais?	524
+# arrecadacao_irpf_2023 [br_rf_arrecadacao] v = 58582332401.18002 (sql2 58582332401.18) — 2026-10-20
+Quanto a Receita Federal arrecadou de Imposto de Renda da Pessoa Física (IRPF) em 2023, em reais?	58582332401,18~0,1%
+# isp_rj_homicidios_2023 [br_rj_isp_estatisticas_seguranca] v = 3293 (sql2 3293) — 2026-10-20
+Quantos homicídios dolosos o Instituto de Segurança Pública registrou no estado do Rio de Janeiro em 2023?	3293
+# pncp_contratos_2023 [br_pncp] v = 279839 (sql2 279839) — 2026-10-20
+Quantos contratos assinados em 2023 foram publicados no Portal Nacional de Contratações Públicas (PNCP)?	279839
+# eleitores_secoes_2022 [br_rodado_eleicoes] v = 156454011 (sql2 156454011) — 2026-10-20
+Quantos eleitores estavam registrados nas seções eleitorais das eleições gerais de 2022?	156454011
+# bps_compras_2023 [br_saude_bps] v = 4957629106.071702 (sql2 4957629106.071699) — 2026-10-20
+Qual foi o valor total das compras de medicamentos e insumos de saúde registradas no Banco de Preços em Saúde em 2023, em reais?	4957629106,07~0,1%
+# farmacia_popular_estab [br_saude_farmaciapopular] v = 32592 (sql2 32592) — 2026-10-20
+Quantos estabelecimentos fazem parte da rede do programa Farmácia Popular?	32592~0,5%
+# desastres_reconhecimentos [br_sedec_desastres] v = 20380 (sql2 20380) — 2026-10-20
+Quantos reconhecimentos federais de situação de emergência ou estado de calamidade pública estão vigentes, segundo a Defesa Civil nacional?	20380
+# ceaps_senado_2023 [br_senado_ceaps] v = 29024400.29000003 (sql2 29024400.289999995) — 2026-10-20
+Quanto os senadores gastaram com a Cota para o Exercício da Atividade Parlamentar dos Senadores (CEAPS) em 2023, em reais?	29024400,29~0,1%
+# senatran_frota_uf_dez2024 [br_senatran_estatisticas] v = 123974520 (sql2 123974520) — 2026-10-20
+Qual era a frota total de veículos registrada no Brasil em dezembro de 2024, somando todas as UFs?	123974520~0,1%
+# iptu_sp_2024 [br_sp_saopaulo_geosampa_iptu] v = 3649510 (sql2 3649510) — 2026-10-20
+Quantos imóveis constavam no cadastro do IPTU da cidade de São Paulo em 2024?	3649510~0,5%
+# stf_decisoes_2024 [br_stf_corte_aberta] v = 72731 (sql2 72731) — 2026-10-20
+Quantas decisões o Supremo Tribunal Federal proferiu em 2024?	72731~0,5%
+# tcu_acordaos_2025 [br_tcu_dadosabertos] v = 18556 (sql2 18556) — 2026-10-20
+Quantos acórdãos do Tribunal de Contas da União de 2025 estão nos dados abertos do tribunal?	18556
+# transferegov_planos_repasse [br_transferegov] v = 35115663138.12977 (sql2 35115663138.12977) — 2026-10-20
+Qual é o valor total de repasses previsto nos planos de ação das transferências especiais registrados no Transferegov, em reais?	35115663138,13~0,5%
+# filiados_regulares [br_tse_filiacao_partidaria] v = 16184485 (sql2 16184485) — 2026-10-20
+Quantas filiações partidárias regulares havia no Brasil na extração mais recente do TSE?	16184485
+# censo1872_escravizados [br_ufmg_censo_demografico_1872] v = 1510806 (sql2 1510806; doc 1510806) — 2026-10-20
+Quantas pessoas escravizadas o Recenseamento Geral do Império de 1872 contou?	1510806
+# eu_sancoes_entidades [eu_sanctions] v = 6241 (sql2 6241) — 2026-10-20
+Quantas pessoas e entidades distintas estão na lista consolidada de sanções financeiras da União Europeia?	6241
+# ofac_sdn [global_ofac_sanctions] v = 19416 (sql2 19416) — 2026-10-20
+Quantos nomes estão na lista SDN (Specially Designated Nationals) da OFAC, do Tesouro americano?	19416
+# brasileirao_publico_2023 [mundo_transfermarkt_competicoes] v = 10290849 (sql2 10290849) — 2026-10-20
+Qual foi o público total pagante dos jogos do Brasileirão Série A de 2023?	10290849
+# brasileirao_gols_2023 [world_sofascore_competicoes_futebol] v = 946 (sql2 946) — 2026-10-20
+Quantos gols foram marcados no Campeonato Brasileiro Série A de 2023?	946
+# pisa_brasil_2022 [world_oecd_pisa] v = 10798 (sql2 10798) — 2026-10-20
+Quantos estudantes brasileiros fizeram as provas do PISA 2022?	10798
+# mides_sc_pagamentos_2023 [world_wb_mides] v = 33722250770.577225 (sql2 33722250770.57998) — 2026-10-20
+Quanto os municípios de Santa Catarina pagaram em despesas em 2023, segundo a base MiDES do Banco Mundial, em reais?	33722250770,58~0,1%
+# srag_sexo_vazio [br_ms_sinan/srag_sexo_vazio] vazio: 0 linhas (2026-10-20)
+Quantos casos de SRAG notificados no SINAN foram em mulheres?	SEM_DADO
+# pirls_brasil [world_iea_pirls/sem_brasil] vazio: 0 linhas (2026-10-20)
+Qual foi a pontuação média dos alunos brasileiros no PIRLS?	SEM_DADO
+# compras_mgi_2025 [br_mgi_compras_publicas/compras_terminam_em_2024] máx(ano) = 2024 (2026-10-20)
+Quantos itens de licitação o governo federal homologou em 2025, segundo os dados de compras públicas?	SEM_DADO
+# firjan_ifgf_2024 [br_firjan_ifgf] máx(ano) = 2022 (2026-10-20)
+Qual foi o Índice Firjan de Gestão Fiscal de Niterói em 2024?	SEM_DADO
+# ebt_2023 [br_cgu_ebt] máx(ano) = 2021 (2026-10-20)
+Qual foi a nota de Minas Gerais na Escala Brasil Transparente da CGU em 2023?	SEM_DADO
+# clp_ranking_2024 [br_clp_ranking_competitividade] máx(ano) = 2022 (2026-10-20)
+Qual foi a colocação de Santa Catarina no Ranking de Competitividade dos Estados do CLP em 2024?	SEM_DADO
+# cnj_despesa_2023 [br_cnj_estatisticas_poder_judiciario] máx(ano) = 2021 (2026-10-20)
+Quanto o Poder Judiciário gastou com magistrados em 2023, segundo o Justiça em Números do CNJ?	SEM_DADO
+# ivs_2020 [br_ipea_avs] máx(ano) = 2010 (2026-10-20)
+Qual era o Índice de Vulnerabilidade Social (IVS) do Ipea para o município de Recife em 2020?	SEM_DADO
+# ana_2019 [br_inep_ana] máx(ano) = 2016 (2026-10-20)
+Qual foi a proficiência média em matemática na Avaliação Nacional da Alfabetização (ANA) de 2019?	SEM_DADO
+# sisam_pm25_2023 [br_inpe_sisam] máx(ano) = 2019 (2026-10-20)
+Qual foi a concentração média de PM2,5 em São Paulo em 2023, segundo o SISAM do INPE?	SEM_DADO
+# anvisa_controlados_2023 [br_anvisa_medicamentos_industrializados] máx(ano) = 2021 (2026-10-20)
+Quantas unidades de medicamentos industrializados controlados foram vendidas no Brasil em 2023, segundo o SNGPC da Anvisa?	SEM_DADO
+# snis_2024 [br_mdr_snis] máx(ano) = 2022 (2026-10-20)
+Quantas pessoas eram atendidas com coleta de esgoto no Brasil em 2024, segundo o SNIS?	SEM_DADO
+# ifgf_antes_2013 [br_firjan_ifgf] mín(ano) = 2013 (2026-10-20)
+Qual foi o Índice Firjan de Gestão Fiscal de Campinas em 2008?	SEM_DADO
+# pep_2025_dez [br_mp_pep] máx(ano) = 2023.12 (2026-10-20)
+Quantos cargos comissionados executivos (CCE) estavam ocupados no governo federal em dezembro de 2025?	SEM_DADO

@@ -1,0 +1,458 @@
+# Uma pergunta por gotcha de docs/context/gotchas/ — a resposta ingênua cai na armadilha
+# (`armadilha`), a certa é `sql`. `doc` é o número do campo `verificado` do gotcha.
+# Medido e convertido em TSV por harness/gabaritos.ts.
+
+- id: ana_vazao_captada
+  origem: br_ana_outorgas/vazao_em_m3h
+  pergunta: Qual é a vazão total, em metros cúbicos por segundo, somando todas as outorgas de captação de água registradas pela ANA?
+  sql: SELECT sum(int_qt_vazaomedia) / 3600 AS v FROM br_ana_outorgas.captacoes
+  doc: 5718
+  tol: 1%
+  armadilha: 20584537
+
+- id: anatel_densidade_2026_08
+  origem: br_anatel_telefonia_movel/densidade_por_100_habitantes
+  pergunta: Quantos acessos de telefonia móvel por 100 habitantes o Brasil tinha em agosto de 2026?
+  sql: SELECT max(densidade) AS v FROM br_anatel_telefonia_movel.densidade_brasil WHERE ano = 2026 AND mes = 8
+  sql2: SELECT min(densidade) AS v FROM br_anatel_telefonia_movel.densidade_brasil WHERE ano = 2026 AND mes = 8
+  doc: 103.135
+  tol: "0,1"
+  casas: 1
+
+- id: ans_beneficiarios_dez2022
+  origem: br_ans_beneficiario/data_carga_sobreposta
+  pergunta: Quantos beneficiários de planos de saúde médico-hospitalares havia no Brasil em dezembro de 2022?
+  sql: |
+    SELECT sum(quantidade_beneficiario_ativo) AS v FROM br_ans_beneficiario.informacao_consolidada
+    WHERE ano = 2022 AND mes = 12 AND cobertura_assistencia_beneficiario ILIKE '%dico%ospital%'
+      AND data_carga = (SELECT max(data_carga) FROM br_ans_beneficiario.informacao_consolidada WHERE ano = 2022 AND mes = 12)
+  doc: 50100000
+  tol: 1%
+  armadilha: 75400000
+
+- id: sicor_proagro_comunicacoes
+  origem: br_bcb_sicor/proagro_cop_chave_repetida
+  pergunta: Quantas comunicações de ocorrência de perdas do Proagro, distintas, existem no SICOR do Banco Central?
+  sql: SELECT count(DISTINCT (id_referencia_bacen, numero_ordem)) AS v FROM br_bcb_sicor.proagro_cop
+  sql2: SELECT count(*) AS v FROM (SELECT DISTINCT id_referencia_bacen, numero_ordem FROM br_bcb_sicor.proagro_cop)
+  doc: 996080
+  armadilha: 1007340
+
+- id: emendas_municipios_2023_2025
+  origem: br_cgu_emendas_parlamentares/banco_mandatario_infla_brasilia
+  pergunta: Quanto dinheiro de emendas parlamentares chegou a prefeituras e fundos municipais entre 2023 e 2025, em reais?
+  sql: |
+    SELECT sum(valor_recebido) AS v FROM br_cgu_emendas_parlamentares.por_favorecido
+    WHERE ano BETWEEN 2023 AND 2025 AND regexp_matches(natureza_juridica_favorecido, '^Munic|Municipal')
+  doc: 58600000000
+  tol: 1%
+
+- id: cvm_petrobras_receita_2024
+  origem: br_cvm_cia_aberta/dois_exercicios_por_documento
+  pergunta: Qual foi a receita de venda de bens e serviços consolidada da Petrobras no exercício de 2024, segundo as demonstrações entregues à CVM, em reais?
+  sql: |
+    SELECT VL_CONTA * 1000 AS v FROM br_cvm_cia_aberta.dfp_dre_con
+    WHERE CD_CVM = '009512' AND DT_REFER = DATE '2024-12-31' AND CD_CONTA = '3.01' AND ORDEM_EXERC = 'ÚLTIMO'
+  doc: 490829000000
+  tol: 0,5%
+  armadilha: 511994000000
+
+- id: ibama_area_embargada
+  origem: br_ibama_embargos_novo/area_embargada_texto
+  pergunta: Somando todos os termos de embargo do Ibama, qual é a área total embargada, em hectares?
+  sql: SELECT sum(try_cast(replace(qtd_area_embargada, ',', '.') AS DOUBLE)) AS v FROM br_ibama_embargos_novo.termo_embargo
+  doc: 11067885
+  tol: 1%
+
+- id: censo2022_pop_sao_paulo
+  origem: br_ibge_censo_2022/sigilo_e_null
+  pergunta: Qual é a população do município de São Paulo segundo o Censo 2022?
+  sql: SELECT pessoas AS v FROM br_ibge_censo_2022.agregados_municipio WHERE id_municipio = '3550308'
+  doc: 11451999
+
+- id: censo2022_quilombolas
+  origem: br_ibge_censo_2022/setor_pct_em_tabelas_separadas
+  pergunta: Quantas pessoas quilombolas o Censo 2022 contou no Brasil, somando os setores censitários?
+  sql: SELECT sum(v03196) AS v FROM br_ibge_censo_2022.setor_censitario_pessoas_quilombolas
+  doc: 1317569
+
+- id: censo2022_indigenas_sidra
+  origem: br_ibge_censo_2022/sidra_formato_longo
+  pergunta: Quantas pessoas indígenas o Censo 2022 contou no Brasil?
+  sql: |
+    SELECT max(valor) AS v FROM br_ibge_censo_2022.sidra_recortes
+    WHERE id_tabela = 9608 AND nivel ILIKE 'Brasil' AND coalesce(categoria_1, 'Total') = 'Total' AND coalesce(categoria_2, 'Total') = 'Total'
+      AND coalesce(categoria_3, 'Total') = 'Total' AND coalesce(categoria_4, 'Total') = 'Total'
+  doc: 1694836
+
+- id: censo2022_amostra_populacao
+  origem: br_ibge_censo_demografico/censo2022_amostra_com_peso
+  pergunta: Segundo os microdados da amostra do Censo 2022, quantas pessoas residiam no Brasil?
+  sql: SELECT round(sum(peso_amostral)) AS v FROM br_ibge_censo_demografico.microdados_pessoa_2022
+  doc: 203080756
+  tol: 0,1%
+  armadilha: 21538508
+
+- id: pnadcovid_populacao_maio
+  origem: br_ibge_pnad_covid/pesar_por_v1032
+  pergunta: Qual era a população estimada pela PNAD COVID-19 em maio de 2020?
+  sql: SELECT round(sum(v1032)) AS v FROM br_ibge_pnad_covid.microdados WHERE ano = 2020 AND mes = 5
+  doc: 210869401
+  tol: 0,1%
+  armadilha: 349306
+
+- id: pnadc_ocupados_2025t3
+  origem: br_ibge_pnadc/pesar_por_v1028
+  pergunta: Quantas pessoas estavam ocupadas no Brasil no terceiro trimestre de 2025, segundo a PNAD Contínua?
+  sql: SELECT round(sum(V1028)) AS v FROM br_ibge_pnadc.microdados WHERE ano = 2025 AND trimestre = 3 AND VD4002 = '1'
+  doc: 102400000
+  tol: 0,5%
+
+- id: saeb_mt_9ano_2023
+  origem: br_inep_saeb/agregado_para_em_2021
+  pergunta: Qual foi a proficiência média em Matemática dos alunos do 9º ano no Saeb 2023?
+  sql: |
+    SELECT sum(proficiencia_saeb * peso_aluno) / sum(peso_aluno) AS v FROM br_inep_saeb.aluno_ef_9ano
+    WHERE ano = 2023 AND disciplina = 'MT' AND proficiencia_saeb IS NOT NULL
+  doc: 258.0
+  tol: "0,5"
+  casas: 1
+
+- id: deter_pantanal_queimada
+  origem: br_inpe_deter/pantanal_e_queimada
+  pergunta: Dos alertas do DETER no Pantanal, quantos são de cicatriz de queimada, e não de desmatamento?
+  sql: |
+    SELECT count(DISTINCT FID) AS v FROM br_inpe_deter.avisos
+    WHERE bioma_arquivo ILIKE '%pantanal%' AND coalesce(CLASSNAME, class_name) = 'cicatriz de queimada'
+  sql2: |
+    SELECT count(*) AS v FROM br_inpe_deter.avisos
+    WHERE bioma_arquivo ILIKE '%pantanal%' AND class_name = 'cicatriz de queimada'
+  doc: 16457
+
+- id: queimadas_focos_2025
+  origem: br_inpe_queimadas/duas_origens
+  pergunta: Quantos focos de queimada o INPE registrou no Brasil em 2025?
+  sql: SELECT count(*) AS v FROM br_inpe_queimadas.microdados WHERE ano = 2025
+  sql2: SELECT count(*) AS v FROM br_inpe_queimadas.microdados WHERE data_hora >= '2025-01-01' AND data_hora < '2026-01-01'
+  doc: 3463949
+
+- id: bolsa_familia_pago_2019
+  origem: br_mc_indicadores/ministerio_da_cidadania
+  pergunta: Quanto o Bolsa Família pagou às famílias em 2019, somando todos os municípios, em reais?
+  sql: SELECT sum(valor_pago_pbf) AS v FROM br_mc_indicadores.transferencias_municipio WHERE ano = 2019
+  doc: 31159000000
+  tol: 0,5%
+
+- id: caged_saldo_ago2025
+  origem: br_me_caged/duas_origens_na_mesma_tabela
+  pergunta: Qual foi o saldo de empregos formais declarados no prazo ao Novo CAGED em agosto de 2025?
+  sql: SELECT sum(saldo_movimentacao) AS v FROM br_me_caged.microdados_movimentacao WHERE ano = 2025 AND mes = 8
+  sql2: |
+    SELECT sum(s) AS v FROM (SELECT sigla_uf, sum(saldo_movimentacao) AS s FROM br_me_caged.microdados_movimentacao
+    WHERE ano = 2025 AND mes = 8 GROUP BY sigla_uf)
+  doc: 147358
+
+- id: cnpj_capital_social_total
+  origem: br_me_cnpj/capital_social_sentinela
+  pergunta: Qual é o capital social total declarado pelas empresas no cadastro atual da Receita Federal, em reais?
+  sql: SELECT sum(capital_social) AS v FROM br_me_cnpj.empresas WHERE capital_social < 999999999999
+  sql2: |
+    SELECT sum(capital_social) - 999999999999 * count(*) FILTER (WHERE capital_social = 999999999999) AS v
+    FROM br_me_cnpj.empresas WHERE capital_social <= 999999999999
+  tol: 0,5%
+
+- id: siconfi_assistencia_2023
+  origem: br_me_siconfi/estagio_multiplica
+  pergunta: Quanto os municípios brasileiros efetivamente pagaram em Assistência Social em 2023, em reais?
+  sql: |
+    SELECT sum(valor) AS v FROM br_me_siconfi.municipio_despesas_funcao
+    WHERE ano = 2023 AND id_conta_bd = '3.08.000' AND estagio_bd = 'Despesas Pagas'
+  sql2: |
+    SELECT sum(valor) AS v FROM br_me_siconfi.municipio_despesas_funcao
+    WHERE ano = 2023 AND id_conta_bd LIKE '3.08.%' AND id_conta_bd <> '3.08.000' AND estagio_bd = 'Despesas Pagas'
+  tol: 1%
+
+- id: sinesp_roubo_veiculo_2023
+  origem: br_mj_sinesp/abrangencia_mistura_policias
+  pergunta: Quantos roubos de veículo as polícias estaduais registraram no Brasil em 2023?
+  sql: |
+    SELECT sum(quantidade_ocorrencias) AS v FROM br_mj_sinesp.uf_mes
+    WHERE ano = 2023 AND tipo_ocorrencia = 'roubo_de_veiculo' AND abrangencia = 'Estadual'
+  doc: 135041
+
+- id: sia_procedimentos_jun2022
+  origem: br_ms_sia/bpa_consolidado_sem_paciente
+  pergunta: Quantos procedimentos ambulatoriais o SUS aprovou em junho de 2022?
+  sql: SELECT sum(quantidade_aprovada_procedimento) AS v FROM br_ms_sia.producao_ambulatorial WHERE ano = 2022 AND mes = 6
+  doc: 331287982
+
+- id: sih_internacoes_2022
+  origem: br_ms_sih/cid_categoria_ou_subcategoria
+  pergunta: Quantas autorizações de internação hospitalar (AIH) o SUS processou em 2022?
+  sql: SELECT count(*) AS v FROM br_ms_sih.aihs_reduzidas WHERE ano = 2022
+  sql2: |
+    SELECT count(*) FILTER (WHERE cid_principal_categoria IS NOT NULL) + count(*) FILTER (WHERE cid_principal_subcategoria IS NOT NULL) AS v
+    FROM br_ms_sih.aihs_reduzidas WHERE ano = 2022
+  doc: 12520914
+
+- id: sih_dengue_competencia_2024
+  origem: br_ms_sih/ano_e_competencia
+  pergunta: Quantas internações por dengue (CID-10 A90 e A91) o SUS registrou na competência de 2024?
+  sql: |
+    SELECT count(*) AS v FROM br_ms_sih.aihs_reduzidas
+    WHERE ano = 2024 AND coalesce(cid_principal_categoria, substr(cid_principal_subcategoria, 1, 3)) IN ('A90', 'A91')
+  doc: 159331
+
+- id: sim_obitos_infantis_2022
+  origem: br_ms_sim/idade_impossivel
+  pergunta: Quantos óbitos de menores de 1 ano o SIM registrou no Brasil em 2022?
+  sql: SELECT count(*) AS v FROM br_ms_sim.microdados WHERE ano = 2022 AND idade >= 0 AND idade < 1
+  sql2: |
+    SELECT sum(n) AS v FROM (SELECT sigla_uf, count(*) AS n FROM br_ms_sim.microdados
+    WHERE ano = 2022 AND idade >= 0 AND idade < 1 GROUP BY sigla_uf)
+
+- id: sinan_dengue_descartados_2019
+  origem: br_ms_sinan/dengue_classificacao_com_espaco
+  pergunta: Quantas notificações de dengue de 2019 foram descartadas após investigação?
+  sql: SELECT count(*) AS v FROM br_ms_sinan.microdados_dengue WHERE ano = 2019 AND trim(classificacao_final) = '5'
+  doc: 707830
+  armadilha: 0
+
+- id: sinan_dengue_provaveis_2024
+  origem: br_ms_sinan/dengue_sem_descartados_desde_2022
+  pergunta: Quantos casos prováveis de dengue o Brasil teve em 2024?
+  sql: SELECT count(*) AS v FROM br_ms_sinan.microdados_dengue WHERE ano = 2024 AND coalesce(trim(classificacao_final), '') <> '5'
+  sql2: SELECT count(*) AS v FROM br_ms_sinan.microdados_dengue WHERE ano = 2024
+  doc: 6434137
+
+- id: sinan_violencia_2020
+  origem: br_ms_sinan_violencia/nu_ano_vazio_2020
+  pergunta: Quantas notificações de violência interpessoal ou autoprovocada o SINAN registrou em 2020?
+  sql: SELECT count(*) AS v FROM br_ms_sinan_violencia.microdados_violencia WHERE ano_sinan = 2020
+  doc: 326503
+  armadilha: 0
+
+- id: prf_mortos_2023
+  origem: br_prf_acidentes/pessoa_causa_tipo_multiplica
+  pergunta: Quantas pessoas morreram em acidentes nas rodovias federais em 2023, segundo a PRF?
+  sql: SELECT sum(quantidade_mortos) AS v FROM br_prf_acidentes.ocorrencia WHERE ano = 2023
+  doc: 5627
+  armadilha: 26552
+
+- id: senatran_frota_dez2023
+  origem: br_senatran_frota/linha_total_dobra_soma
+  pergunta: Qual era a frota total de veículos do Brasil em dezembro de 2023?
+  sql: |
+    SELECT sum(quantidade) AS v FROM br_senatran_frota.municipio_tipo
+    WHERE ano = 2023 AND mes = 12 AND tipo_veiculo ILIKE 'total%'
+  sql2: |
+    SELECT sum(quantidade) AS v FROM br_senatran_frota.municipio_tipo
+    WHERE ano = 2023 AND mes = 12 AND tipo_veiculo NOT ILIKE 'total%'
+  doc: 119227657
+  armadilha: 238455314
+
+- id: stj_decisoes_2021
+  origem: br_stj_dadosabertos/linhas_duplicadas
+  pergunta: Quantas decisões do STJ publicadas em 2021 estão nos dados abertos do tribunal?
+  sql: SELECT count(DISTINCT SeqDocumento) AS v FROM br_stj_dadosabertos.documentos WHERE dataPublicacao LIKE '2021%'
+  doc: 532182
+  armadilha: 550291
+
+- id: tse_sp_2026_lula_presidente
+  origem: br_tse_eleicoes/dois_id_eleicao_no_ano_geral
+  pergunta: Quantos votos o candidato de número 13 recebeu para presidente no estado de São Paulo no primeiro turno de 2026?
+  sql: |
+    SELECT sum(votos) AS v FROM br_tse_eleicoes.resultados_candidato_secao
+    WHERE ano = 2026 AND turno = 1 AND sigla_uf = 'SP' AND cargo = 'presidente' AND numero_candidato = '13'
+  sql2: |
+    SELECT sum(s) AS v FROM (SELECT id_municipio, sum(votos) AS s FROM br_tse_eleicoes.resultados_candidato_secao
+    WHERE ano = 2026 AND turno = 1 AND sigla_uf = 'SP' AND cargo = 'presidente' AND numero_candidato = '13' GROUP BY id_municipio)
+  doc: 9505413
+  armadilha: 17929069
+
+- id: tse_pt_presidente_2022
+  origem: br_tse_eleicoes/doacao_presidencial_2022_pix
+  pergunta: Quanto a campanha presidencial do PT arrecadou em receitas em 2022, em reais?
+  sql: |
+    SELECT sum(valor_receita) AS v FROM br_tse_eleicoes.receitas_candidato
+    WHERE ano = 2022 AND cargo ILIKE 'presidente' AND sigla_partido = 'PT'
+  doc: 135500000
+  tol: 0,5%
+
+- id: comunicabr_bpc_nova_friburgo
+  origem: br_presidencia_comunicabr/total_e_partes_na_mesma_coluna
+  pergunta: Quantas pessoas recebiam o BPC em Nova Friburgo (RJ) em 2025?
+  sql: |
+    SELECT sum(valor) AS v FROM br_presidencia_comunicabr.municipio
+    WHERE id_municipio = '3303401' AND ano = 2025 AND programa ILIKE '%BPC%' AND variavel = 'Total de Beneficiados BPC'
+  sql2: |
+    SELECT sum(valor) AS v FROM br_presidencia_comunicabr.municipio
+    WHERE id_municipio = '3303401' AND ano = 2025 AND programa ILIKE '%BPC%' AND variavel ILIKE 'Total de Beneficiados BPC - %'
+  doc: 3775
+  armadilha: 7550
+
+- id: pgfn_inscricoes_2026t2
+  origem: br_pgfn_dividaativa/trimestre_e_retrato_do_estoque
+  pergunta: Quantas inscrições em dívida ativa da União estavam em aberto no segundo trimestre de 2026?
+  sql: SELECT count(*) AS v FROM br_pgfn_dividaativa.divida
+  sql2: SELECT count(*) AS v FROM br_pgfn_dividaativa.divida_trimestres WHERE trimestre = (SELECT max(trimestre) FROM br_pgfn_dividaativa.divida_trimestres)
+  doc: 49700000
+  tol: 0,5%
+
+- id: anatel_acessos_dez2024
+  origem: br_anatel_telefonia_movel/acessos_nulo_nao_e_zero
+  pergunta: Quantos acessos de telefonia móvel ativos o Brasil tinha em dezembro de 2024?
+  sql: SELECT sum(acessos) AS v FROM br_anatel_telefonia_movel.microdados WHERE ano = 2024 AND mes = 12
+  sql2: |
+    SELECT sum(s) AS v FROM (SELECT sigla_uf, sum(acessos) AS s FROM br_anatel_telefonia_movel.microdados
+    WHERE ano = 2024 AND mes = 12 GROUP BY sigla_uf)
+  doc: 263420000
+  tol: 0,5%
+
+- id: ans_ressarcimento_cobrado
+  origem: br_ans_operadoras/ressarcimento_em_duas_tabelas
+  pergunta: Quanto a ANS cobrou das operadoras de planos de saúde em ressarcimento ao SUS por atendimentos de 2001 a 2025, em reais?
+  sql: SELECT sum(VALOR_COBRADO) AS v FROM br_ans_operadoras.ressarcimento_sus_atendimentos
+  doc: 12550000000
+  tol: 0,5%
+  armadilha: 25100000000
+
+- id: ifdata_ativo_total_2024
+  origem: br_bcb_ifdata/um_tipo_e_um_relatorio
+  pergunta: Qual era o ativo total do sistema financeiro brasileiro (conglomerados prudenciais e instituições independentes) em dezembro de 2024, em reais?
+  sql: |
+    SELECT sum(saldo) AS v FROM br_bcb_ifdata.relatorio
+    WHERE ano_mes = 202412 AND tipo_instituicao = 1 AND numero_relatorio = 1 AND nome_coluna = 'Ativo Total'
+  doc: 17050000000000
+  tol: 0,5%
+  armadilha: 52044495246985
+
+- id: ptax_venda_30dez2024
+  origem: br_bcb_ptax/ptax_e_o_fechamento
+  pergunta: Qual foi a cotação PTAX de venda do dólar em 30 de dezembro de 2024?
+  sql: SELECT cotacao_venda AS v FROM br_bcb_ptax.cotacao_dolar_dia WHERE data = DATE '2024-12-30'
+  sql2: |
+    SELECT cotacao_venda AS v FROM br_bcb_ptax.cotacao_moeda_dia
+    WHERE moeda = 'USD' AND data = DATE '2024-12-30' AND tipo_boletim ILIKE 'Fechamento%'
+  tol: "0,001"
+  casas: 4
+
+- id: emendas_relator_geral
+  origem: br_cgu_emendas_parlamentares/autor_nem_sempre_parlamentar
+  pergunta: Quanto foi empenhado em emendas de relator-geral do orçamento, somando todos os anos, em reais?
+  sql: SELECT sum(valor_empenhado) AS v FROM br_cgu_emendas_parlamentares.emendas WHERE nome_autor_emenda = 'RELATOR GERAL'
+  doc: 47400000000
+  tol: 0,5%
+
+- id: ibama_embargos_cancelados
+  origem: br_ibama_embargos_novo/cancelados
+  pergunta: Quantos termos de embargo do Ibama foram cancelados?
+  sql: SELECT count(*) AS v FROM br_ibama_embargos_novo.termo_embargo WHERE sit_cancelado = 'S'
+  doc: 6307
+
+- id: censo2022_favelas
+  origem: br_ibge_censo_2022/favela_e_por_setor
+  pergunta: Quantas favelas e comunidades urbanas o Censo 2022 identificou no Brasil?
+  sql: SELECT count(DISTINCT id_favela) AS v FROM br_ibge_censo_2022.favela_setor
+  sql2: SELECT count(*) AS v FROM br_ibge_censo_2022.favela_entorno_cobertura
+  doc: 12348
+  armadilha: 33272
+
+- id: pnadc_populacao_2025t1
+  origem: br_ibge_pnadc/populacao_cai_em_2025
+  pergunta: Qual era a população residente estimada pela PNAD Contínua no primeiro trimestre de 2025?
+  sql: SELECT round(sum(V1028)) AS v FROM br_ibge_pnadc.microdados WHERE ano = 2025 AND trimestre = 1
+  doc: 212500000
+  tol: 0,5%
+
+- id: prodes_amazonia_2023
+  origem: br_inpe_prodes_acumulado/amazonia_legal_duplica
+  pergunta: Quantos quilômetros quadrados de floresta foram desmatados no bioma Amazônia no ano PRODES de 2023?
+  sql: SELECT sum(area_km) AS v FROM br_inpe_prodes_acumulado.desmatamento WHERE year = 2023 AND bioma_arquivo = 'amazonia'
+  sql2: SELECT sum(area_km2) AS v FROM br_inpe_prodes_acumulado.incremento_municipio WHERE ano = 2023 AND bioma = 'Amazônia'
+  tol: 0,5%
+  armadilha: 15818
+
+- id: bolsa_familia_pago_mar2020
+  origem: br_mc_indicadores/valor_2020_auxilio
+  pergunta: Quanto o Bolsa Família pagou em março de 2020, em reais?
+  sql: SELECT sum(valor_pago_pbf) AS v FROM br_mc_indicadores.transferencias_municipio WHERE ano = 2020 AND mes = 3
+  doc: 2505000000
+  tol: 0,5%
+
+- id: cnpj_empresas_atuais
+  origem: br_me_cnpj/so_o_ultimo_retrato
+  pergunta: Quantas empresas (CNPJ básico) existem no cadastro atual da Receita Federal?
+  sql: SELECT count(*) AS v FROM br_me_cnpj.empresas
+  sql2: SELECT count(*) AS v FROM br_me_cnpj.empresas_historico WHERE fim = (SELECT max(fim) FROM br_me_cnpj.empresas_historico)
+  doc: 70081764
+
+- id: cnpj_ex_socios
+  origem: br_me_cnpj/historico_como_ler
+  pergunta: Quantos vínculos de sócio que existiam desde novembro de 2021 já não aparecem no cadastro atual da Receita?
+  sql: SELECT count(*) AS v FROM br_me_cnpj.socios_historico WHERE NOT no_ultimo_retrato
+  sql2: SELECT count(*) - count(*) FILTER (WHERE no_ultimo_retrato) AS v FROM br_me_cnpj.socios_historico
+  doc: 6681803
+
+- id: listasuja_empregadores_atual
+  origem: br_mte_listasuja/historico_sao_retratos
+  pergunta: Quantos empregadores constam na versão mais recente da Lista Suja do trabalho escravo?
+  sql: SELECT count(*) AS v FROM br_mte_listasuja.empregadores
+  sql2: SELECT count(*) AS v FROM br_mte_listasuja.empregadores_historico WHERE data_coleta = (SELECT max(data_coleta) FROM br_mte_listasuja.empregadores_historico)
+  doc: 508
+  armadilha: 1086
+
+- id: comunicabr_bf_familias_nova_friburgo
+  origem: br_presidencia_comunicabr/quantidade_e_valor_em_blocos_diferentes
+  pergunta: Quantas famílias recebiam o Bolsa Família em Nova Friburgo (RJ) em 2025?
+  sql: |
+    SELECT sum(valor) AS v FROM br_presidencia_comunicabr.municipio
+    WHERE id_municipio = '3303401' AND ano = 2025 AND programa ILIKE 'Bolsa Fam%' AND unidade = 'QTD' AND variavel ILIKE '%fam%'
+  doc: 8072
+
+- id: cafir_imoveis_set2025
+  origem: br_rf_cafir/snapshot_mensal
+  pergunta: Quantos imóveis rurais estavam no cadastro CAFIR da Receita Federal em setembro de 2025?
+  sql: SELECT count(*) AS v FROM br_rf_cafir.imoveis_rurais WHERE data_referencia = DATE '2025-09-02'
+  sql2: SELECT count(*) AS v FROM br_rf_cafir.imoveis_rurais WHERE year(data_referencia) = 2025 AND month(data_referencia) = 9
+  doc: 10157996
+
+- id: cno_obras_ultima_extracao
+  origem: br_rf_cno/snapshot_por_extracao
+  pergunta: Quantas obras constam no Cadastro Nacional de Obras (CNO) da Receita, na extração mais recente?
+  sql: SELECT count(*) AS v FROM br_rf_cno.microdados WHERE data_extracao = (SELECT max(data_extracao) FROM br_rf_cno.microdados)
+  doc: 3006410
+
+- id: sicar_imoveis_out2025
+  origem: br_sfb_sicar/area_imovel_e_serie_mensal
+  pergunta: Quantos imóveis rurais estavam inscritos no Cadastro Ambiental Rural (CAR) em outubro de 2025?
+  sql: SELECT count(*) AS v FROM br_sfb_sicar.area_imovel WHERE data_extracao = DATE '2025-10-15'
+  sql2: SELECT count(*) AS v FROM br_sfb_sicar.area_imovel WHERE data_extracao = (SELECT max(data_extracao) FROM br_sfb_sicar.area_imovel)
+  doc: 8186157
+  tol: 0,5%
+
+- id: tse_candidatos_2024
+  origem: br_tse_eleicoes/cpf_candidato_2024_pela_metade
+  pergunta: Quantas candidaturas foram registradas nas eleições municipais de 2024?
+  sql: SELECT count(*) AS v FROM br_tse_eleicoes.candidatos WHERE ano = 2024
+  doc: 462821
+  armadilha: 230724
+
+- id: sinan_dengue_menor1ano_2024
+  origem: br_ms_sinan/dengue_idade_com_unidade
+  pergunta: Quantos casos prováveis de dengue em bebês com menos de 1 ano de idade o Brasil teve em 2024?
+  sql: |
+    SELECT count(*) AS v FROM br_ms_sinan.microdados_dengue
+    WHERE ano = 2024 AND coalesce(trim(classificacao_final), '') <> '5' AND substr(idade_paciente, 1, 1) IN ('1', '2', '3')
+  sql2: |
+    SELECT count(*) FILTER (WHERE idade_paciente IS NOT NULL AND idade_paciente NOT LIKE '4-%') AS v FROM br_ms_sinan.microdados_dengue
+    WHERE ano = 2024 AND coalesce(trim(classificacao_final), '') <> '5'
+  armadilha: 0
+
+- id: igpm_2022_mes_trocado
+  origem: br_fgv_igp (achado 2026-10-20, sem gotcha ainda)
+  pergunta: Qual foi a variação acumulada do IGP-M em 2022, em percentual?
+  # igp_m_ano termina em 2021; 2022 só existe em igp_m_mes, com ano e mes trocados (ano = 12, mes = 2022)
+  sql: SELECT variacao_acumulada_ano AS v FROM br_fgv_igp.igp_m_mes WHERE mes = 2022 AND ano = 12
+  sql2: SELECT (exp(sum(ln(1 + variacao_mensal / 100))) - 1) * 100 AS v FROM br_fgv_igp.igp_m_mes WHERE mes = 2022
+  tol: "0,05"
