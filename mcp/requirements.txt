@@ -3,7 +3,7 @@
 # No `duckdb` for the default backend: it shells out to `ssh beelink` for
 # every query. MCP_BACKEND=inprocess embeds DuckDB and MCP_TRANSPORT=http
 # serves it with uvicorn — those two need the last two lines (see Dockerfile).
-mcp>=1.28.1
+mcp>=1.28.1,<2  # 2.x renomeou FastMCP para MCPServer
 pyyaml>=6.0        # docs/context/bridges.yaml
 pytest>=9.1.1  # dev only — mcp/test_mcp_server.py
 duckdb==1.5.5      # inprocess backend only

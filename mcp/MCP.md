@@ -23,10 +23,23 @@ aparece primeiro) e `inprocess` (seção 6) continuam para quem tem o dado.
 ### Usar
 
 ```bash
-git clone https://github.com/rafapolo/rodado && cd rodado
-python3 -m venv .venv && .venv/bin/pip install -r mcp/requirements.txt
-claude mcp add rodado -- "$PWD/.venv/bin/python" "$PWD/mcp/mcp_server.py"
+git clone --depth 1 https://github.com/rafapolo/rodado && cd rodado
+claude mcp add rodado -- uv run "$PWD/mcp/mcp_server.py"
 ```
+
+As dependências (`mcp<2`, `pyyaml`) estão no cabeçalho PEP 723 do próprio
+`mcp_server.py`, e o `uv` as instala sozinho na primeira execução. O `mcp` 2.x
+renomeou o `FastMCP` e quebra o servidor, por isso o teto `<2` aqui e em
+`requirements.txt`. Sem `uv`, o caminho antigo continua valendo:
+`python3 -m venv .venv && .venv/bin/pip install -r mcp/requirements.txt` e
+`.venv/bin/python` no lugar de `uv run`.
+
+Um clone novo não tem `docs/context/rodado-schema.json` (fica fora do git). No
+modo `http`, o servidor monta o schema na primeira subida com uma consulta a
+`information_schema.columns` no db (~1 s) e grava o arquivo, que passa a ser
+lido dali. Os tipos vêm com o nome do DuckDB (`VARCHAR`, `BIGINT`), não o do
+BigQuery (`STRING`, `INTEGER`) do arquivo gerado por `sync_mcp_schema.py`.
+Para atualizar, apague o arquivo.
 
 Até 26/10/2026 o db não pede credencial. Depois disso, passe uma das duas no
 ambiente do servidor: `RODADO_TOKEN` (vai como `?token=`) ou `RODADO_SENHA`
@@ -283,7 +296,8 @@ flowchart LR
 | `MCP_DATA_ROOT` | `~/rodado` | diretório local ou `s3://bucket` |
 | `MCP_TRANSPORT` | `stdio` | `http` sobe o uvicorn |
 | `MCP_HTTP_HOST` / `MCP_HTTP_PORT` | `127.0.0.1` / `8000` | onde escutar |
-| `MCP_HTTP_TOKENS` | — | obrigatório no modo http |
+| `MCP_HTTP_TOKENS` | — | obrigatório no modo http, salvo com `MCP_HTTP_BEHIND_AUTH=1` |
+| `MCP_HTTP_BEHIND_AUTH` | — | `1` dispensa o Bearer: quem autentica é o proxy da frente (o caso de `db.rodado.xyz/mcp`) |
 | `MCP_HTTP_ALLOWED_HOSTS` | — | nomes públicos aceitos no `Host` |
 | `MCP_MEMORY_LIMIT` / `MCP_THREADS` | `3GB` / `4` | limites do DuckDB (o `~/.duckdbrc` não vale aqui) |
 | `MCP_TEMP_DIR` / `MCP_MAX_TEMP` | `/tmp/rodado_duckdb_tmp` / `8GB` | despejo em disco — nunca um tmpfs |
@@ -300,6 +314,25 @@ O agente se conecta assim:
 ```
 
 Imagem: `docker build -f mcp/Dockerfile .` a partir da raiz do repo.
+
+### Hospedado em `https://db.rodado.xyz/mcp`
+
+Desde 2026-10-20 o mesmo servidor roda dentro do container do `db.rodado.xyz`
+(`db/inicia.sh`, porta interna 18082), e conectar é uma linha, sem clonar nada:
+
+```bash
+claude mcp add --transport http rodado https://db.rodado.xyz/mcp
+```
+
+Ali ele usa `MCP_BACKEND=http` com `RODADO_URL=http://127.0.0.1:18081`: a
+consulta vai direto ao `consulta.py` do próprio container, sem voltar pela
+internet, e devolve os mesmos `avisos` e recusas. Não há Bearer próprio
+(`MCP_HTTP_BEHIND_AUTH=1`): `/mcp` fica atrás da autenticação do Caddy, a mesma
+de `/query` — aberto até 26/10/2026; depois, `?token=` na URL
+(`https://db.rodado.xyz/mcp?token=…`) ou HTTP Basic no cabeçalho
+(`--header "Authorization: Basic …"` no `claude mcp add`). Os arquivos de
+`docs/context/` que ele lê vão para a imagem no deploy (`db/README.md`,
+"Operação"); mudou um YAML ou o schema, refaça o deploy do `db`.
 
 Medido em 2026-10-09 lendo o bucket do Hetzner a partir de uma VM na mesma
 região, com o sync do espelho em andamento: tabela de um arquivo responde em

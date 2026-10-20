@@ -7,7 +7,7 @@
 }
 
 # Rotas para o app, depois da autenticação (senha ou token).
-# /tty/ é o ttyd (terminal, com websocket); o resto — página com a árvore de
+# /tty/ é o ttyd (terminal, com websocket); /mcp, o servidor MCP; o resto — página com a árvore de
 # datasets, /catalogo.json, /colunas e /query — é o consulta.py.
 (app) {
 	# o token nunca chega ao app nem vaza no Referer para as fontes do Google
@@ -16,6 +16,16 @@
 	handle /tty* {
 		reverse_proxy 127.0.0.1:18080 {
 			flush_interval -1
+		}
+	}
+	# /mcp é o servidor MCP (streamable HTTP, mcp/mcp_server.py); a consulta dele leva
+	# até os 300 s do consulta.py
+	handle /mcp* {
+		reverse_proxy 127.0.0.1:18082 {
+			flush_interval -1
+			transport http {
+				read_timeout 340s
+			}
 		}
 	}
 	handle {

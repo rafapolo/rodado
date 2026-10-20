@@ -19,6 +19,11 @@ laco catalogo python3 catalogo.py &
 espera() { until [ -s "$RODADO_DB" ]; do sleep 15; done; "$@"; }
 
 laco consulta espera python3 consulta.py &
+# MCP por HTTP em /mcp: atrás da mesma senha/token do Caddy (sem bearer próprio) e
+# consultando o consulta.py daqui de dentro, sem voltar pela internet
+laco mcp env MCP_TRANSPORT=http MCP_BACKEND=http MCP_HTTP_BEHIND_AUTH=1 \
+  MCP_HTTP_HOST=127.0.0.1 MCP_HTTP_PORT=18082 MCP_HTTP_ALLOWED_HOSTS=db.rodado.xyz \
+  RODADO_URL=http://127.0.0.1:18081 python3 mcp/mcp_server.py &
 # Catppuccin Mocha (https://catppuccin.com/palette); a JetBrains Mono quem carrega é a
 # página (index.html injeta a fonte no iframe e troca a família depois que ela chega).
 # Fundo transparente (allowTransparency): o degradê radial vem do CSS que index.html injeta.

@@ -48,6 +48,12 @@ devolvidas (padrão e máximo 10.000). Os cabeçalhos `X-Linhas`, `X-Truncado` e
 `X-Segundos` trazem quantas linhas vieram, se o limite cortou e quanto levou. Um comando
 por requisição, 300 s no máximo, 4 consultas simultâneas.
 
+- `https://db.rodado.xyz/mcp` — o servidor MCP (`mcp/mcp_server.py`, *streamable HTTP*), atrás
+  da mesma senha/token: `claude mcp add --transport http rodado https://db.rodado.xyz/mcp`
+  (depois de 26/10, com `?token=` na URL ou HTTP Basic no cabeçalho). Roda no container em
+  127.0.0.1:18082 e consulta o `consulta.py` daqui de dentro (`RODADO_URL=http://127.0.0.1:18081`),
+  sem Bearer próprio (`MCP_HTTP_BEHIND_AUTH=1`). Ver `mcp/MCP.md`, seção 6
+
 ### Do DuckDB local
 
 Não existe protocolo de servidor no DuckDB; o CLI local lê o resultado em parquet por
@@ -91,6 +97,7 @@ flowchart LR
 | Catálogo: as views do beelink com os caminhos trocados para o bucket | container, volume `rodado-db-dados` | `catalogo.py` |
 | Exporta o SQL das views para `~/rodado/_db/views.json` | beelink, antes de cada `s3_sync_rodado.sh` | `exporta_views.py` |
 | Sobe tudo, cada peça reiniciando sozinha; Caddy em primeiro plano | container | `inicia.sh`, `Dockerfile` |
+| Servidor MCP em `/mcp` (17 ferramentas, consulta o endpoint daqui de dentro) | container, 127.0.0.1:18082 | `mcp/mcp_server.py`, `inicia.sh` |
 | Senha, token e roteamento | finland, app haloy `rodado-db` | `proxy/Caddyfile`, `haloy.yml` |
 | Prévia de link (og:title/og:image) sem senha, só para robôs de pré-visualização (WhatsApp, Slack, Telegram…) em `/` | mesmo container | `proxy/og.html` |
 
@@ -171,12 +178,18 @@ O túnel SSH reverso do beelink foi desligado na mesma data, e removidos o usuá
 ## Operação
 
 ```bash
-# logs (catálogo, endpoint, terminal e Caddy saem todos no log do container)
+# logs (catálogo, endpoint, terminal, MCP e Caddy saem todos no log do container)
 ssh finland 'docker logs --tail 50 $(docker ps -qf name=rodado-db)'
 
 # deploy: código para o finland e haloy deploy (o S3_KEY/S3_SECRET vêm de /root/rodado-db/.s3)
 scp db/{Dockerfile,haloy.yml,inicia.sh,rodado_sql.py,consulta.py,terminal.py,catalogo.py,index.html,llm.md,contexto.json} finland:/root/rodado-db/
 scp db/proxy/{Caddyfile,og.html} finland:/root/rodado-db/proxy/
+# o MCP de /mcp: o servidor e a camada semântica que ele lê, arquivo por arquivo
+# (nunca docs/context/privado/); rodado-schema.json fica fora do git, gere antes
+ssh finland 'mkdir -p /root/rodado-db/mcp/context/gotchas && rm -f /root/rodado-db/mcp/context/gotchas/*'
+scp mcp/mcp_server.py finland:/root/rodado-db/mcp/
+scp docs/context/{rodado-schema.json,join_keys.md,bridges.yaml,metrics.yaml,hierarchies.yaml,dicionario_coverage.json,schema_dict_status.json,column_codes.yaml} finland:/root/rodado-db/mcp/context/
+scp docs/context/gotchas/* finland:/root/rodado-db/mcp/context/gotchas/
 ssh finland 'cd /root/rodado-db && set -a && . /etc/haloy/.env && . ./.s3 && set +a &&
   DB_USUARIO=rodado DB_SENHA_HASH="$(cat .senha_hash)" DB_TOKEN="$(cat .token)" haloy deploy -c haloy.yml'
 

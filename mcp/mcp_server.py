@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["mcp>=1.28.1,<2", "pyyaml>=6.0"]
+# ///
 """MCP server exposing the rodado catalog (docs/context/) and the mirror's
 data as tools for Claude Desktop/Claude Code and any other MCP client.
 
@@ -109,8 +113,47 @@ DESCRIBE_MAX_GOTCHAS = 8
 # Catalog loaders (loaded once at startup — small enough to hold in memory)
 # ---------------------------------------------------------------------------
 
-with open(SCHEMA_PATH, encoding="utf-8") as f:
-    _SCHEMA: dict = json.load(f)  # {dataset: {table: [{name, type, description}, ...]}}
+def _http_request(path: str, params: dict, body: bytes | None = None):
+    params = dict(params)
+    if os.environ.get("RODADO_TOKEN"):
+        params["token"] = os.environ["RODADO_TOKEN"]
+    req = urllib.request.Request(f"{DB_URL}{path}?{urllib.parse.urlencode(params)}", data=body)
+    if os.environ.get("RODADO_SENHA"):
+        cred = base64.b64encode(f"rodado:{os.environ['RODADO_SENHA']}".encode()).decode()
+        req.add_header("Authorization", f"Basic {cred}")
+    return urllib.request.urlopen(req, timeout=HTTP_TIMEOUT)
+
+
+# A fresh clone has no rodado-schema.json (it stays out of git): the http
+# backend asks the db for the same map once, in ~1 s, and keeps it as the file.
+# Types come back as DuckDB names (VARCHAR, BIGINT) — only compared to each other.
+_SCHEMA_SQL = """
+SELECT table_schema AS d, table_name AS t,
+       list({'name': column_name, 'type': data_type} ORDER BY ordinal_position) AS c
+FROM information_schema.columns
+WHERE table_schema NOT IN ('main', 'information_schema', 'pg_catalog')
+  AND NOT starts_with(table_schema, '_')
+GROUP BY 1, 2
+"""
+
+
+def _load_schema() -> dict:
+    if SCHEMA_PATH.exists():
+        with open(SCHEMA_PATH, encoding="utf-8") as f:
+            return json.load(f)
+    if BACKEND != "http":
+        raise SystemExit(f"{SCHEMA_PATH} is missing: run scripts/gera_schemas.py + scripts/sync_mcp_schema.py.")
+    with _http_request("/query", {"formato": "json", "limite": HTTP_MAX_ROWS},
+                       _SCHEMA_SQL.encode("utf-8")) as resp:
+        rows = json.loads(resp.read().decode("utf-8"))
+    schema: dict = {}
+    for r in sorted(rows, key=lambda r: (r["d"], r["t"])):
+        schema.setdefault(r["d"], {})[r["t"]] = r["c"]
+    SCHEMA_PATH.write_text(json.dumps(schema, ensure_ascii=False), encoding="utf-8")
+    return schema
+
+
+_SCHEMA: dict = _load_schema()  # {dataset: {table: [{name, type, description}, ...]}}
 
 _ALL_TABLE_IDS = [f"{ds}.{tbl}" for ds, tables in _SCHEMA.items() for tbl in tables]
 
@@ -594,17 +637,6 @@ _READ_PARQUET_RE = re.compile(
 
 def _parquet_to_views(sql: str) -> str:
     return _READ_PARQUET_RE.sub(lambda mt: f"{mt.group(1)}.{mt.group(2)}", sql)
-
-
-def _http_request(path: str, params: dict, body: bytes | None = None):
-    params = dict(params)
-    if os.environ.get("RODADO_TOKEN"):
-        params["token"] = os.environ["RODADO_TOKEN"]
-    req = urllib.request.Request(f"{DB_URL}{path}?{urllib.parse.urlencode(params)}", data=body)
-    if os.environ.get("RODADO_SENHA"):
-        cred = base64.b64encode(f"rodado:{os.environ['RODADO_SENHA']}".encode()).decode()
-        req.add_header("Authorization", f"Basic {cred}")
-    return urllib.request.urlopen(req, timeout=HTTP_TIMEOUT)
 
 
 def _run_sql_http(sql: str, limite: int = HTTP_MAX_ROWS, ciente: bool = False) -> dict:
@@ -1924,8 +1956,13 @@ def _http_app():
     from mcp.server.transport_security import TransportSecuritySettings
 
     tokens = _http_tokens()
-    if not tokens:
-        raise SystemExit("MCP_TRANSPORT=http needs MCP_HTTP_TOKENS=\"name:token[,name:token]\".")
+    # MCP_HTTP_BEHIND_AUTH=1: the proxy in front (db.rodado.xyz's Caddy) already
+    # decides who gets in, with the same open window, password and token as
+    # /query — a bearer of our own on top would be a second, different lock.
+    behind_auth = os.environ.get("MCP_HTTP_BEHIND_AUTH") == "1"
+    if not tokens and not behind_auth:
+        raise SystemExit("MCP_TRANSPORT=http needs MCP_HTTP_TOKENS=\"name:token[,name:token]\" "
+                         "(or MCP_HTTP_BEHIND_AUTH=1 behind an authenticating proxy).")
     # No session to pin a caller to one process: any request is answerable
     # on its own, which is what survives a restart behind a proxy.
     mcp.settings.stateless_http = True
@@ -1938,7 +1975,8 @@ def _http_app():
         allowed_hosts=public + ["127.0.0.1:*", "localhost:*"],
         allowed_origins=[f"https://{h}" for h in public],
     )
-    return _BearerAuth(mcp.streamable_http_app(), tokens)
+    app = mcp.streamable_http_app()
+    return app if behind_auth else _BearerAuth(app, tokens)
 
 
 if __name__ == "__main__":
