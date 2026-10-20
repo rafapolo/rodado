@@ -1,0 +1,38 @@
+dataset: br_ibge_pnadc
+gotchas:
+  - id: pesar_por_v1028
+    resumo: "Microdado é amostra: some V1028 (peso calibrado), nunca count(*). V1027 é o peso sem calibração e não estima população."
+    tabelas: [microdados, educacao, rendimentos_outras_fontes]
+    colunas: [V1028, V1027]
+    severidade: silencioso
+    verificado: "2025-T3: sum(V1028) com VD4002='1' = 102,4 mi ocupados (= IBGE); count(*) do trimestre = 490.488 — medido 2026-10-19"
+  - id: sem_municipio
+    resumo: "Não há id_municipio nos microdados; o mais fino é id_uf + capital + rm_ride. As tabelas ano_municipio_* cobrem só as 27 capitais, de 2012 a 2019."
+    tabelas: [microdados, ano_municipio_grupo_idade, ano_municipio_raca_cor]
+    colunas: [capital, rm_ride, id_municipio]
+    severidade: silencioso
+    verificado: "count(DISTINCT id_municipio) em ano_municipio_grupo_idade = 27 (capitais), anos 2012–2019 — medido 2026-10-19"
+  - id: deflator_nulo_desde_2021t4
+    resumo: "As colunas de deflator habitual e efetivo (acréscimo da Base dos Dados) vêm NULL de 2021-T4 em diante: série real de rendimento até hoje exige deflator externo (Deflatores.zip do IBGE)."
+    tabelas: [microdados]
+    colunas: [habitual, efetivo]
+    severidade: silencioso
+    verificado: "primeiro trimestre com count(habitual)=0 é 2021-T4, e segue nulo até 2025-T3; em 2012-T1 habitual vai de 1,65 a 1,81 — medido 2026-10-19"
+  - id: populacao_cai_em_2025
+    resumo: "A população estimada cai de 217,5 mi (2024-T4) para 212,5 mi (2025-T1): mudança de pesos, não de pessoas. Totais absolutos não se comparam entre os dois lados; taxas mudam pouco."
+    tabelas: [microdados]
+    colunas: [V1028]
+    severidade: silencioso
+    verificado: "sum(V1028) 2024-T4 = 217,5 mi, 2025-T1 = 212,5 mi; a causa provável (repesagem pelo Censo 2022) não foi conferida na nota do IBGE — medido 2026-10-19"
+  - id: amostra_menor_na_pandemia
+    resumo: "A amostra caiu de ~570 mil para 320–370 mil pessoas por trimestre de 2020-T2 a 2021-T2 (entrevista por telefone): estimativas desse período têm erro maior."
+    tabelas: [microdados]
+    colunas: [V1028]
+    severidade: silencioso
+    verificado: "count(*) 2019-T4 = 542.802, 2021-T1 = 319.898, 2022-T1 = 475.193 — medido 2026-10-19"
+  - id: variavel_trocada_por_versao_a
+    resumo: "Perguntas reformuladas mudam de coluna: V3003 vale até 2015-T3 e V3003A dali em diante (idem V3009/V3009A, V4006/V4006A, V4072/V4072A, VD4023/VD4030...). Fora do período a coluna vem NULL — série longa precisa juntar as duas."
+    tabelas: [microdados]
+    colunas: [V3003, V3003A, V3009, V3009A, V4006, V4006A, VD4004, VD4004A, VD4023, VD4030]
+    severidade: silencioso
+    verificado: "2014-T1: V3003 preenchida 154.056, V3003A 0; 2020-T1: V3003 0, V3003A 116.288 — medido 2026-10-19"

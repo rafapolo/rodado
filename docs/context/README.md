@@ -50,6 +50,7 @@ Três coisas destes arquivos valem mais que o resto:
 |---|---|
 | `schema_ddl.sql` | Snapshot DDL parcial (527 tabelas, 109 datasets) da porção espelhada do **Base dos Dados**. Serve de referência de procedência para `build_metadata_catalog.py` — cobre parte do mirror, não todo ele |
 | `censo/` | 38 markdowns por tabela do censo IBGE, usados como contexto de prompt |
+| `pnad/` | Dicionário por tabela da PNAD Contínua, com as descrições do dicionário oficial do IBGE e números conferidos contra o divulgado — hoje só `br_ibge_pnadc.microdados.md`. As armadilhas medidas ficam em `gotchas/br_ibge_pnadc.yml` |
 
 ## Ordem do regen
 
