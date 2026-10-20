@@ -178,7 +178,7 @@ if COLUMN_CODES_PATH.exists():
 # continua sendo a errada, classe que os quatro avisos estruturais acima não
 # pegam (circunstancia_obito tem dicionario, e ainda assim subconta). Só entra
 # gotcha com `verificado`: sem o que foi medido e quando, é folclore.
-GOTCHA_SEVERIDADES = {"silencioso", "erro", "custo"}
+GOTCHA_SEVERIDADES = {"silencioso", "erro", "custo", "aviso"}
 
 
 def _load_gotchas(gotchas_dir: Path) -> dict:
