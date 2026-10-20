@@ -14,6 +14,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import mcp_server as m
 
 
+@pytest.fixture(autouse=True)
+def _ssh_backend(monkeypatch):
+    # Most tests mock the ssh subprocess; the http backend (the default) has
+    # its own tests below, which switch BACKEND back to "http".
+    monkeypatch.setattr(m, "BACKEND", "ssh")
+
+
 # ---------------------------------------------------------------------------
 # Config — env var defaults and overrides (module-level, so re-import fresh)
 # ---------------------------------------------------------------------------
@@ -650,3 +657,85 @@ def test_inprocess_query_timeout_frees_the_slot(inprocess, monkeypatch):
 def test_http_auth_maps_tokens_to_callers(monkeypatch):
     monkeypatch.setenv("MCP_HTTP_TOKENS", "agente-a:tok1, agente-b:tok2")
     assert m._http_tokens() == {"tok1": "agente-a", "tok2": "agente-b"}
+
+
+# ---------------------------------------------------------------------------
+# http backend — the public db.rodado.xyz API (urlopen mocked)
+# ---------------------------------------------------------------------------
+
+class _Resp:
+    def __init__(self, rows, headers=None):
+        self._body = json.dumps(rows).encode()
+        self.headers = headers or {}
+
+    def read(self):
+        return self._body
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+
+def _http_error(code, body):
+    import io
+    import urllib.error
+    return urllib.error.HTTPError("https://db.rodado.xyz/query", code, "x", {}, io.BytesIO(json.dumps(body).encode()))
+
+
+def test_http_is_the_default_backend():
+    import importlib
+    assert importlib.reload(m).BACKEND == "http"
+
+
+def test_parquet_globs_become_views():
+    sql = ("SELECT * FROM read_parquet('~/rodado/br_me_cnpj/empresas/*.parquet') a "
+           "JOIN read_parquet('~/rodado/br_x/y/**/*.parquet', hive_partitioning=true, union_by_name=true) b ON 1=1")
+    assert m._parquet_to_views(sql) == "SELECT * FROM br_me_cnpj.empresas a JOIN br_x.y b ON 1=1"
+
+
+def test_http_run_sql_carries_avisos_and_ciente(monkeypatch):
+    monkeypatch.setattr(m, "BACKEND", "http")
+    seen = {}
+
+    def fake(req, timeout):
+        seen["url"], seen["body"] = req.full_url, req.data.decode()
+        return _Resp([{"n": 1}], {"X-Avisos": "a [erro]: um || b: dois", "X-Truncado": "0"})
+
+    with patch.object(m.urllib.request, "urlopen", fake):
+        out = m.run_sql("SELECT count(*) n FROM read_parquet('~/rodado/d/t/*.parquet')", max_rows=5, ciente=True)
+    assert out["rows"] == [{"n": 1}]
+    assert out["avisos"] == ["a [erro]: um", "b: dois"]
+    assert "ciente=1" in seen["url"] and "limite=6" in seen["url"]
+    assert seen["body"] == "SELECT count(*) n FROM d.t"
+
+
+def test_http_refusal_keeps_dica_and_avisos(monkeypatch):
+    monkeypatch.setattr(m, "BACKEND", "http")
+    err = _http_error(400, {"erro": "armadilha", "dica": "repita com ?ciente=1", "avisos": ["x [erro]: y"]})
+    with patch.object(m.urllib.request, "urlopen", side_effect=err):
+        out = m.run_sql("SELECT 1")
+    assert out == {"error": "armadilha", "dica": "repita com ?ciente=1", "avisos": ["x [erro]: y"]}
+
+
+def test_http_401_names_the_credential(monkeypatch):
+    monkeypatch.setattr(m, "BACKEND", "http")
+    with patch.object(m.urllib.request, "urlopen", side_effect=_http_error(401, {})):
+        out = m.run_sql("SELECT 1")
+    assert "RODADO_TOKEN" in out["error"]
+
+
+def test_http_sends_credential_from_env(monkeypatch):
+    monkeypatch.setattr(m, "BACKEND", "http")
+    monkeypatch.setenv("RODADO_SENHA", "s3gredo")
+    seen = {}
+
+    def fake(req, timeout):
+        seen["auth"] = req.get_header("Authorization")
+        return _Resp([])
+
+    with patch.object(m.urllib.request, "urlopen", fake):
+        m.run_sql("SELECT 1")
+    import base64
+    assert seen["auth"] == "Basic " + base64.b64encode(b"rodado:s3gredo").decode()

@@ -21,6 +21,12 @@ própria. Tudo passa por HTTP: descobrir tabelas, ler o schema, consultar, expor
    corrija ou, se a consulta já trata disso, repita com `?ciente=1`
 7. conferência → a lista da seção 2b, antes de responder
 
+**Prefere MCP?** O mesmo espelho, com as mesmas armadilhas e recusas, como ferramentas MCP
+(`describe_table`, `resolve_join`, `get_metric`, `run_sql`…), aberto e sem nada local além do
+repositório público: `git clone https://github.com/rafapolo/rodado` e
+`claude mcp add rodado -- python3 mcp/mcp_server.py` (`pip install -r mcp/requirements.txt`
+antes). Detalhes em `mcp/MCP.md`.
+
 **Orçamento de contexto.** Nunca baixe `/tabelas` sem filtro (~60 KB) nem `/catalogo.json`
 (~460 KB, é da página): filtre por `tema`, `busca` ou `dataset`. Não leia os YAML de
 `docs/context/` no GitHub (centenas de KB): `/contexto` entrega a fatia do dataset que interessa.
