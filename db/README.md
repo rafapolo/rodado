@@ -83,7 +83,11 @@ flowchart LR
 |---|---|---|
 | Conexão travada (núcleo) | container | `rodado_sql.py` |
 | Terminal (via ttyd): SQL colorido ao digitar, Enter envia no `;`, Tab completa dataset/tabela/coluna | container, até 4 abas | `terminal.py` |
-| Página com a árvore, `/catalogo.json` (cache 10 min), `/tabelas` (o catálogo enxuto do `/llm`), `/colunas`, `/query`, `/ping` | container, `127.0.0.1:18081` | `consulta.py`, `index.html` |
+| Página com a árvore, `/catalogo.json` (cache 10 min), `/tabelas` (o catálogo enxuto do `/llm`, filtrável por `tema`, `busca`, `dataset`), `/contexto`, `/colunas`, `/query`, `/ping` | container, `127.0.0.1:18081` | `consulta.py`, `index.html` |
+| Guia público para agentes em `/llm` (também `/llms.txt`, `/.well-known/llms.txt` e `/` pedido com `Accept: text/markdown`); o 401 e o cabeçalho `Link` de toda resposta apontam para ele | container, sem senha | `llm.md`, `proxy/Caddyfile` |
+| `/contexto?dataset=X[&tabela=Y]`: armadilhas medidas, códigos de coluna, pontes de join e métricas do dataset, em markdown; `/contexto` sozinho traz as regras gerais. Vem de `contexto.json`, que `scripts/gera_contexto_db.py` gera de `docs/context/` (nunca de `privado/`) — regerar e redistribuir depois de editar gotchas, `bridges.yaml`, `metrics.yaml`, `column_codes.yaml` ou o atlas | container | `contexto.json`, `consulta.py` |
+| `POST /confere` (ou `GET ?q=`): ensaia a SQL sem executar — tabelas que existem, linhas, partição filtrada ou não, colunas não achadas e os avisos medidos. O `/query` devolve os mesmos avisos no cabeçalho `X-Avisos` (sem acento, `\|\|` entre eles) e `X-Contexto`; erro 400/504 traz `dica` e `avisos` no corpo | container | `consulta.py` |
+| `/exemplos?busca=`: os resultados conferidos de `docs/pesquisa/hipoteses/respostas.md` e as perguntas diretas de treino do harness mais parecidos com a busca (radicais + IDF). Os holdouts ficam fora: são a régua de `scripts/avalia_agente_cego.ts` | container | `contexto.json`, `consulta.py` |
 | Catálogo: as views do beelink com os caminhos trocados para o bucket | container, volume `rodado-db-dados` | `catalogo.py` |
 | Exporta o SQL das views para `~/rodado/_db/views.json` | beelink, antes de cada `s3_sync_rodado.sh` | `exporta_views.py` |
 | Sobe tudo, cada peça reiniciando sozinha; Caddy em primeiro plano | container | `inicia.sh`, `Dockerfile` |
@@ -171,7 +175,7 @@ O túnel SSH reverso do beelink foi desligado na mesma data, e removidos o usuá
 ssh finland 'docker logs --tail 50 $(docker ps -qf name=rodado-db)'
 
 # deploy: código para o finland e haloy deploy (o S3_KEY/S3_SECRET vêm de /root/rodado-db/.s3)
-scp db/{Dockerfile,haloy.yml,inicia.sh,rodado_sql.py,consulta.py,terminal.py,catalogo.py,index.html,llm.md} finland:/root/rodado-db/
+scp db/{Dockerfile,haloy.yml,inicia.sh,rodado_sql.py,consulta.py,terminal.py,catalogo.py,index.html,llm.md,contexto.json} finland:/root/rodado-db/
 scp db/proxy/{Caddyfile,og.html} finland:/root/rodado-db/proxy/
 ssh finland 'cd /root/rodado-db && set -a && . /etc/haloy/.env && . ./.s3 && set +a &&
   DB_USUARIO=rodado DB_SENHA_HASH="$(cat .senha_hash)" DB_TOKEN="$(cat .token)" haloy deploy -c haloy.yml'

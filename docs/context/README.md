@@ -67,6 +67,7 @@ python3 scripts/gera_schema_dict_status.py   # beelink + dicionario_coverage.jso
 python3 scripts/llm_triage_schema_dict_status.py  # passada de leitura humana/LLM sobre o resultado acima — rodar sempre depois, não é automático
 python3 scripts/aplica_column_codes.py       # column_codes.yaml -> schema_dict_status.json (depois dos dois acima, que o sobrescrevem)
 python3 scripts/prioriza_schema_dict_status.py  # uso real -> schema_dict_prioridade.json (fila do estágio 4)
+python3 scripts/gera_contexto_db.py          # gotchas + YAML + atlas + respostas -> ../../db/contexto.json (db.rodado.xyz)
 ```
 
 `schema_dict_status.json` não se atualiza sozinho quando um dataset some. Em
