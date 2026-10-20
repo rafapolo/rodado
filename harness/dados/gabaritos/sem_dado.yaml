@@ -1,0 +1,88 @@
+# Perguntas cuja resposta certa é "o espelho não tem esse dado" (gabarito SEM_DADO).
+# `sem_dado_ano`: o ano pedido fica fora da faixa medida por `sql` (max(ano), ou min com `antes`).
+# `vazio: true`: `sql` conta o que existiria (coluna preenchida, país presente) e tem de dar 0.
+
+- id: srag_sexo_vazio
+  origem: br_ms_sinan/srag_sexo_vazio
+  pergunta: Quantos casos de SRAG notificados no SINAN foram em mulheres?
+  sql: SELECT count(sexo) AS v FROM br_ms_sinan.microdados_influenza_srag
+  vazio: true
+
+- id: pirls_brasil
+  origem: world_iea_pirls/sem_brasil
+  pergunta: Qual foi a pontuação média dos alunos brasileiros no PIRLS?
+  sql: SELECT count(*) FILTER (WHERE country_iso3_code IN ('BRA', '076', '76')) AS v FROM world_iea_pirls.student_achievement
+  vazio: true
+
+- id: compras_mgi_2025
+  origem: br_mgi_compras_publicas/compras_terminam_em_2024
+  pergunta: Quantos itens de licitação o governo federal homologou em 2025, segundo os dados de compras públicas?
+  sql: SELECT max(ano) AS v FROM br_mgi_compras_publicas.licitacao_item
+  sem_dado_ano: 2025
+
+- id: firjan_ifgf_2024
+  origem: br_firjan_ifgf
+  pergunta: Qual foi o Índice Firjan de Gestão Fiscal de Niterói em 2024?
+  sql: SELECT max(ano) AS v FROM br_firjan_ifgf.ranking
+  sem_dado_ano: 2024
+
+- id: ebt_2023
+  origem: br_cgu_ebt
+  pergunta: Qual foi a nota de Minas Gerais na Escala Brasil Transparente da CGU em 2023?
+  sql: SELECT max(ano) AS v FROM br_cgu_ebt.uf
+  sem_dado_ano: 2023
+
+- id: clp_ranking_2024
+  origem: br_clp_ranking_competitividade
+  pergunta: Qual foi a colocação de Santa Catarina no Ranking de Competitividade dos Estados do CLP em 2024?
+  sql: SELECT max(ano) AS v FROM br_clp_ranking_competitividade.nota_geral_uf
+  sem_dado_ano: 2024
+
+- id: cnj_despesa_2023
+  origem: br_cnj_estatisticas_poder_judiciario
+  pergunta: Quanto o Poder Judiciário gastou com magistrados em 2023, segundo o Justiça em Números do CNJ?
+  sql: SELECT max(ano) AS v FROM br_cnj_estatisticas_poder_judiciario.recursos_financeiros
+  sem_dado_ano: 2023
+
+- id: ivs_2020
+  origem: br_ipea_avs
+  pergunta: Qual era o Índice de Vulnerabilidade Social (IVS) do Ipea para o município de Recife em 2020?
+  sql: SELECT max(ano) AS v FROM br_ipea_avs.municipio
+  sem_dado_ano: 2020
+
+- id: ana_2019
+  origem: br_inep_ana
+  pergunta: Qual foi a proficiência média em matemática na Avaliação Nacional da Alfabetização (ANA) de 2019?
+  sql: SELECT max(ano) AS v FROM br_inep_ana.escola
+  sem_dado_ano: 2019
+
+- id: sisam_pm25_2023
+  origem: br_inpe_sisam
+  pergunta: Qual foi a concentração média de PM2,5 em São Paulo em 2023, segundo o SISAM do INPE?
+  sql: SELECT max(ano) AS v FROM br_inpe_sisam.microdados
+  sem_dado_ano: 2023
+
+- id: anvisa_controlados_2023
+  origem: br_anvisa_medicamentos_industrializados
+  pergunta: Quantas unidades de medicamentos industrializados controlados foram vendidas no Brasil em 2023, segundo o SNGPC da Anvisa?
+  sql: SELECT max(ano) AS v FROM br_anvisa_medicamentos_industrializados.microdados
+  sem_dado_ano: 2023
+
+- id: snis_2024
+  origem: br_mdr_snis
+  pergunta: Quantas pessoas eram atendidas com coleta de esgoto no Brasil em 2024, segundo o SNIS?
+  sql: SELECT max(ano) AS v FROM br_mdr_snis.municipio_agua_esgoto
+  sem_dado_ano: 2024
+
+- id: ifgf_antes_2013
+  origem: br_firjan_ifgf
+  pergunta: Qual foi o Índice Firjan de Gestão Fiscal de Campinas em 2008?
+  sql: SELECT min(ano) AS v FROM br_firjan_ifgf.ranking
+  sem_dado_ano: 2008
+  antes: true
+
+- id: pep_2025_dez
+  origem: br_mp_pep
+  pergunta: Quantos cargos comissionados executivos (CCE) estavam ocupados no governo federal em dezembro de 2025?
+  sql: SELECT max(ano * 100 + mes) / 100 AS v FROM br_mp_pep.cargos_funcoes WHERE mes = 12
+  sem_dado_ano: 2025

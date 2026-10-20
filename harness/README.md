@@ -414,6 +414,34 @@ Arthur Lira posto na seção de outro deputado), um valor de empréstimo virou
 **apura**; a análise publicada é escrita por uma pessoa. Conferir número contra
 a ficha não basta para prosa sobre pessoas nomeadas — o erro é de atribuição.
 
+## Gabaritos gerados — a régua além das fontes grandes (2026-10-20)
+
+Os quatro TSVs escritos à mão somam 55 perguntas e quase todas caem em SIM,
+SINASC, RAIS, Censo, PIB e CAGED. `gabaritos.ts` gera mais régua sem deixar o
+número nas mãos de quem escreve a pergunta: cada caso em `dados/gabaritos/*.yaml`
+traz a pergunta e a SQL; o número sai do beelink na hora e só vale se uma
+segunda via concordar — outra consulta (`sql2`: outra tabela, as partes que somam
+o todo, a decomposição por UF ou mês) ou o número medido antes no gotcha (`doc`).
+Saída em `dados/gabaritos.tsv`, que o `lote.ts` lê direto.
+
+| Arquivo | Casos | O que mede |
+|---|---|---|
+| `armadilhas.yaml` | 55 | uma pergunta por gotcha de `docs/context/gotchas/`; `armadilha` é o número da leitura ingênua (23 casos), e nenhum deles passa como certo em `acerto.ts` |
+| `cobertura.yaml` | 90 | 89 datasets que nenhum TSV cobria, uma ou duas perguntas cada — holdout, nenhuma nota saiu daqui |
+| `sem_dado.yaml` | 14 | ano fora da série ou coluna vazia: o certo é dizer que não há dado |
+
+A segunda via pegou o que a primeira deixaria passar: as duas cópias do Bolsa
+Família (`br_cgu_novo_bolsa_familia` e `br_cgu_beneficios_cidadao`) divergem em
+2,8% em março de 2024 (o caso ficou de fora); `br_fgv_igp.igp_*_mes` tem `ano` e
+`mes` trocados; `etapa_ensino` da educação especial soma 31 mil matrículas a mais
+que as outras três tabelas. A conferência de ordem de grandeza pegou o resto:
+`especie_beneficio_rotulo` do INSS vem truncado (o filtro óbvio acha 386
+aposentadorias por idade, e não 13,2 milhões), a coluna `geracao` do ONS não
+fecha em nenhuma unidade (9,5×10¹⁵ para a eólica de 2023), `CAPAG` em
+`br_tesouro_capag.municipios` traz o nome do município, e um contrato de merenda
+de Armação dos Búzios vale R$ 2,4 tri no TCE-RJ. Gabarito igual a zero é recusado:
+filtro que não casa nada parece resposta.
+
 ## Módulos
 
 | Arquivo | Papel |
@@ -436,6 +464,7 @@ a ficha não basta para prosa sobre pessoas nomeadas — o erro é de atribuiç�
 | `formato.ts` | como as ferramentas escrevem para o modelo: descrição compacta (códigos só nas colunas ligadas à pergunta), resultado em tabela de texto |
 | `sessao.ts` | lê uma sessão do Pi como transcrição (cada chamada, a SQL inteira, o resultado) |
 | `lote.ts` | benchmark de perguntas abertas; grava o resultado a cada caso |
+| `gabaritos.ts` | mede no beelink as perguntas de `dados/gabaritos/*.yaml` por duas vias e escreve `dados/gabaritos.tsv`; cache por hash da SQL em `dados/gabaritos/medido.json` |
 
 ## Procedência e uma correção
 
@@ -477,6 +506,7 @@ bun harness/anos.ts --atualiza       # faixa de anos por tabela
 
 bun harness/avalia_datasets.ts       # escolha de dataset nas 274 perguntas
 bun harness/lote.ts <arquivo>        # perguntas abertas pelo Pi, com gabarito
+bun harness/gabaritos.ts             # remede o que mudou em dados/gabaritos/*.yaml -> dados/gabaritos.tsv
 ```
 
 O arquivo de perguntas do `lote.ts` é uma por linha, com o
