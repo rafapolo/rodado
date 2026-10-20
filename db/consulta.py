@@ -323,6 +323,45 @@ def _avisos(tabelas, colunas):
     return list(dict.fromkeys(avisos))
 
 
+def _bloqueios(tabelas, colunas):
+    """As armadilhas `[erro]` presas a colunas que a consulta cita: o resultado sai plausível e
+    errado (zero linhas, código trocado), então o /query recusa até o agente dizer `ciente=1`.
+    A `[erro]` sem `colunas` vale para qualquer consulta do dataset e fica só no aviso."""
+    bloqueios = []
+    for ds, t in tabelas:
+        for g in CONTEXTO["datasets"].get(ds, {}).get("gotchas", []):
+            if g.get("severidade") != "erro" or not g.get("colunas"):
+                continue
+            if g.get("tabelas") and t not in g["tabelas"]:
+                continue
+            if colunas & {c.lower() for c in g["colunas"]}:
+                bloqueios.append(f"{ds}.{t} [erro]: {g['resumo']}")
+    return list(dict.fromkeys(bloqueios))
+
+
+def _tamanho(con, tabelas, colunas):
+    """Linhas e partição de cada tabela citada → (itens do /confere, problemas, avisos). Tabela
+    grande particionada sem filtro na partição é problema; tabela grande sem partição é aviso:
+    nenhum filtro poupa leitura (`sigla_uf = 'SP'` no SIM, 36 mi linhas, levou 73 s)."""
+    itens, problemas, avisos = [], [], []
+    for ds, t in tabelas:
+        linhas = con.execute('SELECT rows FROM _rodado_metadata WHERE dataset = ? AND "table" = ?',
+                             [ds, t]).fetchone()
+        part = _particoes(con, ds, t)
+        item = {"tabela": f"{ds}.{t}", "linhas": linhas[0] if linhas else None,
+                "particoes": sorted(part), "filtra_particao": bool(part & colunas)}
+        n = item["linhas"] or 0
+        if part and not item["filtra_particao"] and n > 50_000_000:
+            problemas.append(f"{ds}.{t} tem {_curto(n)} linhas e a consulta não cita "
+                             f"a partição ({', '.join(sorted(part))}): vai ler tudo e estourar o tempo")
+        elif not part and n > 20_000_000:
+            avisos.append(f"{ds}.{t} tem {_curto(n)} linhas e não é particionada: nenhum filtro evita "
+                          f"ler a tabela inteira (dezenas de segundos por consulta); agregue no servidor, "
+                          f"cite só as colunas necessárias e evite count(DISTINCT) e SUMMARIZE")
+        itens.append(item)
+    return itens, problemas, avisos
+
+
 def _ascii(texto):
     """Cabeçalho HTTP só leva latin-1 com segurança; o aviso vai sem acento."""
     return _sem_acento_mantem_caixa(texto).encode("ascii", "replace").decode()
@@ -507,7 +546,7 @@ class Handler(BaseHTTPRequestHandler):
                 if len(comandos) != 1:
                     return self._erro(400, "um comando por requisição")
                 tabelas, colunas = _referencias(con, comandos[0].query)
-                saida, conhecidas, problemas = [], set(), []
+                existentes, conhecidas, problemas = [], set(), []
                 for ds, t in tabelas:
                     cols = {c.lower() for (c,) in con.execute(
                         "SELECT column_name FROM duckdb_columns() WHERE schema_name = ? AND table_name = ?",
@@ -516,15 +555,11 @@ class Handler(BaseHTTPRequestHandler):
                         problemas.append(f"{ds}.{t} não existe; procure em /tabelas?busca=")
                         continue
                     conhecidas |= cols
-                    linhas = con.execute('SELECT rows FROM _rodado_metadata WHERE dataset = ? AND "table" = ?',
-                                         [ds, t]).fetchone()
-                    part = _particoes(con, ds, t)
-                    item = {"tabela": f"{ds}.{t}", "linhas": linhas[0] if linhas else None,
-                            "particoes": sorted(part), "filtra_particao": bool(part & colunas)}
-                    if part and not item["filtra_particao"] and (item["linhas"] or 0) > 50_000_000:
-                        problemas.append(f"{ds}.{t} tem {_curto(item['linhas'])} linhas e a consulta não cita "
-                                         f"a partição ({', '.join(sorted(part))}): vai ler tudo e estourar o tempo")
-                    saida.append(item)
+                    existentes.append((ds, t))
+                saida, grandes, lentas = _tamanho(con, existentes, colunas)
+                problemas += grandes
+                problemas += [f"{b} — o /query recusa até você repetir com ?ciente=1"
+                              for b in _bloqueios(tabelas, colunas)]
                 desconhecidas = sorted(colunas - conhecidas) if conhecidas else []
             finally:
                 con.close()
@@ -532,7 +567,7 @@ class Handler(BaseHTTPRequestHandler):
             return self._erro(400, f"recusado: {e}")
         except duckdb.Error as e:
             return self._erro(400, str(e))
-        self._json({"tabelas": saida, "problemas": problemas, "avisos": _avisos(tabelas, colunas),
+        self._json({"tabelas": saida, "problemas": problemas, "avisos": lentas + _avisos(tabelas, colunas),
                     "colunas_nao_achadas": desconhecidas,  # pode ser alias da própria consulta
                     "contexto": [f"/contexto?dataset={d}&tabela={t}" for d, t in tabelas]})
 
@@ -691,6 +726,17 @@ class Handler(BaseHTTPRequestHandler):
                     return self._erro(400, "um comando por requisição")
                 tabelas, colunas = _referencias(con, comandos[0].query)
                 avisos = _avisos(tabelas, colunas)
+                bloqueios = _bloqueios(tabelas, colunas)
+                if bloqueios and (params.get("ciente") or [""])[0] != "1":
+                    return self._erro(400, "a consulta cita coluna de armadilha medida que dá resultado "
+                                           "errado sem erro: " + " || ".join(bloqueios),
+                                      dica=("leia " + ", ".join(f"/contexto?dataset={d}&tabela={t}" for d, t in tabelas)
+                                            + "; se a consulta já trata disso, repita com ?ciente=1"),
+                                      avisos=avisos)
+                try:
+                    avisos = _tamanho(con, tabelas, colunas)[2] + avisos
+                except duckdb.Error:  # tabela que não existe: o erro de verdade vem da consulta
+                    pass
                 with rodado_sql.Cronometro(con) as crono:
                     try:
                         rel = con.sql(comandos[0].query)
