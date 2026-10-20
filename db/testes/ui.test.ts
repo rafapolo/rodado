@@ -5,8 +5,9 @@
 //
 //   RODADO_SENHA=... bun test            (ou ./roda.sh, que busca a senha no finland)
 //
-// Usa o Chrome instalado (channel "chrome"): nenhum navegador é baixado.
+// Usa o Chromium headless que o Playwright já guarda em cache — nunca o Chrome instalado.
 
+import { readdirSync } from "node:fs";
 import { afterAll, beforeAll, beforeEach, describe, expect, test } from "bun:test";
 import { chromium, devices, type Browser, type BrowserContext, type Page } from "playwright-core";
 
@@ -19,7 +20,14 @@ if (!SENHA) throw new Error("defina RODADO_SENHA (ou rode ./roda.sh)");
 
 let navegador: Browser;
 beforeAll(async () => {
-  navegador = await chromium.launch({ channel: "chrome", headless: true });
+  // Nunca o Chrome instalado: cada execução morta deixa ~1,5 GB em code_sign_clone. Usa o
+  // headless shell que o Playwright guarda em ~/Library/Caches/ms-playwright (ou RODADO_CHROMIUM).
+  const cache = `${process.env.HOME}/Library/Caches/ms-playwright`;
+  const shell = readdirSync(cache).filter((d) => d.startsWith("chromium_headless_shell-")).sort().at(-1);
+  const executablePath = process.env.RODADO_CHROMIUM ??
+    (shell ? `${cache}/${shell}/chrome-headless-shell-mac-arm64/chrome-headless-shell` : undefined);
+  if (!executablePath) throw new Error("sem Chromium do Playwright: bunx playwright install chromium-headless-shell");
+  navegador = await chromium.launch({ executablePath, headless: true });
 });
 afterAll(async () => {
   await navegador?.close();
@@ -120,7 +128,8 @@ const auditaContraste = (p: Page, seletor: string) =>
 // ---------------------------------------------------------------- API (curl)
 
 describe("API /query", () => {
-  const q = (sql: string, params = "", auth = AUTH) =>
+  // formato=json: a lista pura; sem formato o corpo vem embrulhado com os avisos (teste próprio abaixo)
+  const q = (sql: string, params = "?formato=json", auth = AUTH) =>
     fetch(`${BASE}/query${params}`, { method: "POST", body: sql, headers: auth ? { Authorization: auth } : {} });
 
   // acesso aberto até 26/10/2026 inclusive (proxy/Caddyfile, @aberto); depois volta o 401
@@ -134,7 +143,7 @@ describe("API /query", () => {
   });
 
   test.skipIf(aberto)("senha errada devolve 401", async () => {
-    const r = await q("SELECT 1", "", "Basic " + Buffer.from("rodado:errada").toString("base64"));
+    const r = await q("SELECT 1", "?formato=json", "Basic " + Buffer.from("rodado:errada").toString("base64"));
     expect(r.status).toBe(401);
   });
 
@@ -143,7 +152,7 @@ describe("API /query", () => {
   });
 
   test("JSON com cabeçalhos de linhas, corte e tempo", async () => {
-    const r = await q("SELECT sigla FROM br_bd_diretorios_brasil.uf ORDER BY 1", "?formato=json");
+    const r = await q("SELECT sigla FROM br_bd_diretorios_brasil.uf ORDER BY 1");
     expect(r.status).toBe(200);
     const d = (await r.json()) as { sigla: string }[];
     expect(d.length).toBe(27);
