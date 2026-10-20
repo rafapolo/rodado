@@ -89,8 +89,8 @@
             <div class="stat-label">tabelas em 256 datasets <span class="muted">· <a href="#datasets">todos listados abaixo</a></span></div>
           </div>
           <div>
-            <div class="stat-num">Restrito</div>
-            <div class="stat-label">acesso a membros selecionados</div>
+            <div class="stat-num">Aberto</div>
+            <div class="stat-label">consulta a API pública <a href="https://db.rodado.xyz/llm">db.rodado.xyz</a></div>
           </div>
         </div>
         <div class="filters">
@@ -108,28 +108,31 @@
         <span class="card-icon"><i class="fa-solid fa-plug"></i></span>
         <h2 class="tools-title">As ferramentas do servidor</h2>
       </div>
-      <p class="tools-desc">Oito ferramentas MCP expõem o catálogo e o espelho DuckDB. Nomes de tabela do catálogo funcionam direto no SQL: quando não há view no banco, a consulta é reescrita automaticamente para os arquivos Parquet locais.</p>
+      <p class="tools-desc">Dezessete ferramentas MCP expõem o catálogo, a camada semântica (junções, métricas, hierarquias) e o espelho DuckDB. Por padrão toda consulta vai para a API pública <a href="https://db.rodado.xyz/llm">db.rodado.xyz</a>: os avisos medidos sobre as tabelas e colunas consultadas voltam em <code>avisos</code>, e a consulta que cita coluna de armadilha que dá resultado errado sem erro volta recusada, com a explicação, até ser repetida com <code>ciente=True</code>.</p>
       <div class="tools-grid">
         <ul class="tools-list">
-          <li><code>list_datasets()</code> — os 256 datasets com contagem de tabelas</li>
+          <li><code>list_datasets()</code> — os datasets do catálogo, com contagem de tabelas</li>
           <li><code>list_tables(dataset)</code> — tabelas de um dataset, com sugestões de nome</li>
-          <li><code>describe_table(tabela)</code> — colunas, tipos, descrições e caminho Parquet</li>
+          <li><code>describe_table(tabela)</code> — colunas e tipos, com as armadilhas medidas do dataset antes delas</li>
           <li><code>get_join_keys(coluna?)</code> — chaves de junção documentadas entre datasets</li>
-          <li><code>run_sql(sql)</code> — SQL somente-leitura (SELECT/WITH) no espelho DuckDB</li>
+          <li><code>resolve_join(a, b)</code> — cláusula <code>ON</code> pronta entre duas tabelas, com a normalização da chave</li>
+          <li><code>explain_column(coluna)</code> — por que uma coluna comum (<code>valor</code>, <code>sexo</code>) não junta nem decodifica entre datasets</li>
+          <li><code>get_metric(nome) · list_metrics()</code> — cálculos nomeados (população, PIB per capita, saldo do CAGED)</li>
+          <li><code>rollup(coluna, nível)</code> — subir um código CNAE ou CID-10 um nível</li>
+          <li><code>run_sql(sql, ciente?)</code> — SQL somente-leitura (SELECT/WITH), com as armadilhas medidas em <code>avisos</code></li>
           <li><code>consultar_cnpj(cnpj)</code> — empresa, estabelecimentos e sócios pela base da Receita</li>
-          <li><code>consultar_cep(cep)</code> — endereço via ViaCEP</li>
+          <li><code>consultar_divida_ativa · consultar_precos_combustivel · consultar_jurisprudencia_stj · consultar_populacao_carceraria</code> — atalhos sem SQL sobre PGFN, ANP, STJ e SISDEPEN</li>
+          <li><code>consultar_cep(cep) · consultar_painelprecos(código)</code> — ao vivo, no ViaCEP e no Painel de Preços do ComprasGov</li>
         </ul>
         <div>
-          <div class="tools-config-label">Conectar (Claude Desktop / Claude Code)</div>
-          <pre class="tools-config">{
-  "mcpServers": {
-    "rodado": {
-      "command": "python3",
-      "args": ["/caminho/para/rodado/mcp/mcp_server.py"]
-    }
-  }
-}</pre>
-          <p class="tools-note">Requer acesso SSH ao espelho de dados — restrito a membros selecionados. O catálogo de schemas e chaves de junção é público no repositório.</p>
+          <div class="tools-config-label">Conectar (Claude Code)</div>
+          <pre class="tools-config">git clone https://github.com/rafapolo/rodado
+cd rodado
+python3 -m venv .venv
+.venv/bin/pip install -r mcp/requirements.txt
+claude mcp add rodado -- \
+  "$PWD/.venv/bin/python" "$PWD/mcp/mcp_server.py"</pre>
+          <p class="tools-note">Aberto: sem SSH e sem dado local; só o repositório, que é público. Sem credencial até 26/10/2026; depois, passe <code>RODADO_TOKEN</code> ou <code>RODADO_SENHA</code> no ambiente do servidor. Detalhes em <a href="https://github.com/rafapolo/rodado/blob/main/mcp/MCP.md">mcp/MCP.md</a>.</p>
         </div>
       </div>
     </section>

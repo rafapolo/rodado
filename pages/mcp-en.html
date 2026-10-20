@@ -89,8 +89,8 @@
             <div class="stat-label">tables across 256 datasets <span class="muted">· <a href="#datasets">all listed below</a></span></div>
           </div>
           <div>
-            <div class="stat-num">Restricted</div>
-            <div class="stat-label">access limited to selected members</div>
+            <div class="stat-num">Open</div>
+            <div class="stat-label">queries the public <a href="https://db.rodado.xyz/llm">db.rodado.xyz</a> API</div>
           </div>
         </div>
         <div class="filters">
@@ -108,28 +108,31 @@
         <span class="card-icon"><i class="fa-solid fa-plug"></i></span>
         <h2 class="tools-title">The server's tools</h2>
       </div>
-      <p class="tools-desc">Eight MCP tools expose the catalog and the DuckDB mirror. Catalog table names work directly in SQL: when a table has no view in the database, the query is automatically rewritten against the local Parquet files.</p>
+      <p class="tools-desc">Seventeen MCP tools expose the catalog, the semantic layer (joins, metrics, hierarchies) and the DuckDB mirror. By default every query goes to the public <a href="https://db.rodado.xyz/llm">db.rodado.xyz</a> API: the measured pitfalls of the tables and columns it touches come back in <code>avisos</code>, and a query that cites a column of a pitfall that yields a wrong answer without an error is refused, with the explanation, until it is repeated with <code>ciente=True</code>.</p>
       <div class="tools-grid">
         <ul class="tools-list">
-          <li><code>list_datasets()</code> — all 256 datasets with table counts</li>
-          <li><code>list_tables(dataset)</code> — a dataset's tables, with name suggestions</li>
-          <li><code>describe_table(table)</code> — columns, types, descriptions and Parquet path</li>
+          <li><code>list_datasets()</code> — the catalog datasets, with table counts</li>
+          <li><code>list_tables(dataset)</code> — tables of a dataset, with name suggestions</li>
+          <li><code>describe_table(table)</code> — columns and types, preceded by the dataset's measured pitfalls</li>
           <li><code>get_join_keys(column?)</code> — documented join keys across datasets</li>
-          <li><code>run_sql(sql)</code> — read-only SQL (SELECT/WITH) on the DuckDB mirror</li>
-          <li><code>consultar_cnpj(cnpj)</code> — company, branches and partners from the full registry</li>
-          <li><code>consultar_cep(cep)</code> — address lookup via ViaCEP</li>
+          <li><code>resolve_join(a, b)</code> — a ready <code>ON</code> clause between two tables, with key normalization</li>
+          <li><code>explain_column(column)</code> — why a common column (<code>valor</code>, <code>sexo</code>) does not join or decode across datasets</li>
+          <li><code>get_metric(name) · list_metrics()</code> — named calculations (population, GDP per capita, CAGED net jobs)</li>
+          <li><code>rollup(column, level)</code> — roll a CNAE or ICD-10 code up one level</li>
+          <li><code>run_sql(sql, ciente?)</code> — read-only SQL (SELECT/WITH), with measured pitfalls in <code>avisos</code></li>
+          <li><code>consultar_cnpj(cnpj)</code> — company, establishments and partners from the Federal Revenue registry</li>
+          <li><code>consultar_divida_ativa · consultar_precos_combustivel · consultar_jurisprudencia_stj · consultar_populacao_carceraria</code> — SQL-free shortcuts over PGFN, ANP, STJ and SISDEPEN</li>
+          <li><code>consultar_cep(cep) · consultar_painelprecos(code)</code> — live, on ViaCEP and ComprasGov's price panel</li>
         </ul>
         <div>
-          <div class="tools-config-label">Connect (Claude Desktop / Claude Code)</div>
-          <pre class="tools-config">{
-  "mcpServers": {
-    "rodado": {
-      "command": "python3",
-      "args": ["/path/to/rodado/mcp/mcp_server.py"]
-    }
-  }
-}</pre>
-          <p class="tools-note">Requires SSH access to the data mirror — restricted to selected members. The schema catalog and join keys are public in the repository.</p>
+          <div class="tools-config-label">Connect (Claude Code)</div>
+          <pre class="tools-config">git clone https://github.com/rafapolo/rodado
+cd rodado
+python3 -m venv .venv
+.venv/bin/pip install -r mcp/requirements.txt
+claude mcp add rodado -- \
+  "$PWD/.venv/bin/python" "$PWD/mcp/mcp_server.py"</pre>
+          <p class="tools-note">Open: no SSH and no local data; just the repository, which is public. No credential until 2026-10-26; after that, set <code>RODADO_TOKEN</code> or <code>RODADO_SENHA</code> in the server environment. Details in <a href="https://github.com/rafapolo/rodado/blob/main/mcp/MCP.md">mcp/MCP.md</a>.</p>
         </div>
       </div>
     </section>
