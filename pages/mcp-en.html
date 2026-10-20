@@ -78,6 +78,34 @@
       <h1 class="page-title">Brazilian public-data catalog, served as an MCP server</h1>
       <p class="lead">A thematic index over 1,403 Brazilian public tables — RAIS, SIM, TSE, CGU, IBGE, INEP and more — queryable directly with <strong>DuckDB</strong>. Each card below is a research theme; each row inside it is a table you can query.</p>
       <p class="lead-note">The catalog includes a growing set of independently-collected sources — international sanctions lists (EU, UN, OFAC, OpenSanctions), ICIJ Offshore Leaks, SICAF, SINAN Violência, Consumidor.gov.br, PGFN active debt and state Courts of Accounts — see the full catalog of these sources.</p>
+      <section class="connect" aria-labelledby="connect-title">
+        <h2 class="connect-title" id="connect-title"><i class="fa-solid fa-plug"></i> Connect your agent</h2>
+        <div class="connect-box">
+          <div class="connect-tabs" role="tablist" aria-label="MCP client"><button type="button" role="tab" class="connect-tab" id="tab-claude-code" aria-controls="painel-claude-code" aria-selected="true" tabindex="0">Claude Code</button><button type="button" role="tab" class="connect-tab" id="tab-claude-app" aria-controls="painel-claude-app" aria-selected="false" tabindex="-1">Claude.ai / Desktop</button><button type="button" role="tab" class="connect-tab" id="tab-cursor" aria-controls="painel-cursor" aria-selected="false" tabindex="-1">Cursor</button><button type="button" role="tab" class="connect-tab" id="tab-vscode" aria-controls="painel-vscode" aria-selected="false" tabindex="-1">VS Code</button><button type="button" role="tab" class="connect-tab" id="tab-local" aria-controls="painel-local" aria-selected="false" tabindex="-1">Local</button></div>
+          <div class="connect-panel" role="tabpanel" id="painel-claude-code" aria-labelledby="tab-claude-code">
+            <p class="connect-hint">In a terminal:</p>
+            <div class="connect-cmd"><pre>claude mcp add --transport http rodado https://db.rodado.xyz/mcp</pre><button type="button" class="tools-copy" aria-label="Copy">copy</button></div>
+          </div>
+          <div class="connect-panel" role="tabpanel" id="painel-claude-app" aria-labelledby="tab-claude-app" hidden>
+            <p class="connect-hint">Settings → Connectors → Add custom connector, and paste the URL:</p>
+            <div class="connect-cmd"><pre>https://db.rodado.xyz/mcp</pre><button type="button" class="tools-copy" aria-label="Copy">copy</button></div>
+          </div>
+          <div class="connect-panel" role="tabpanel" id="painel-cursor" aria-labelledby="tab-cursor" hidden>
+            <p class="connect-hint">In <code>~/.cursor/mcp.json</code>:</p>
+            <div class="connect-cmd"><pre>{"mcpServers": {"rodado": {"url": "https://db.rodado.xyz/mcp"}}}</pre><button type="button" class="tools-copy" aria-label="Copy">copy</button></div>
+          </div>
+          <div class="connect-panel" role="tabpanel" id="painel-vscode" aria-labelledby="tab-vscode" hidden>
+            <p class="connect-hint">In a terminal:</p>
+            <div class="connect-cmd"><pre>code --add-mcp '{"name":"rodado","type":"http","url":"https://db.rodado.xyz/mcp"}'</pre><button type="button" class="tools-copy" aria-label="Copy">copy</button></div>
+          </div>
+          <div class="connect-panel" role="tabpanel" id="painel-local" aria-labelledby="tab-local" hidden>
+            <p class="connect-hint">In a clone, with <code>uv</code>:</p>
+            <div class="connect-cmd"><pre>git clone --depth 1 https://github.com/rafapolo/rodado &amp;&amp; cd rodado
+claude mcp add rodado -- uv run "$PWD/mcp/mcp_server.py"</pre><button type="button" class="tools-copy" aria-label="Copy">copy</button></div>
+          </div>
+        </div>
+        <p class="tools-note">Hosted and public: nothing to install, no SSH, no local data. Credential required from 2026-10-27 — see <a href="https://github.com/rafapolo/rodado/blob/main/mcp/MCP.md">mcp/MCP.md</a>.</p>
+      </section>
       <div class="header-bottom">
         <div class="stats">
           <div>
@@ -109,8 +137,7 @@
         <h2 class="tools-title">The server's tools</h2>
       </div>
       <p class="tools-desc">Seventeen MCP tools expose the catalog, the semantic layer (joins, metrics, hierarchies) and the DuckDB mirror. By default every query goes to the public <a href="https://db.rodado.xyz/llm">db.rodado.xyz</a> API: the measured pitfalls of the tables and columns it touches come back in <code>avisos</code>, and a query that cites a column of a pitfall that yields a wrong answer without an error is refused, with the explanation, until it is repeated with <code>ciente=True</code>.</p>
-      <div class="tools-grid">
-        <ul class="tools-list">
+      <ul class="tools-list">
           <li><code>list_datasets()</code> — the catalog datasets, with table counts</li>
           <li><code>list_tables(dataset)</code> — tables of a dataset, with name suggestions</li>
           <li><code>describe_table(table)</code> — columns and types, preceded by the dataset's measured pitfalls</li>
@@ -123,15 +150,7 @@
           <li><code>consultar_cnpj(cnpj)</code> — company, establishments and partners from the Federal Revenue registry</li>
           <li><code>consultar_divida_ativa · consultar_precos_combustivel · consultar_jurisprudencia_stj · consultar_populacao_carceraria</code> — SQL-free shortcuts over PGFN, ANP, STJ and SISDEPEN</li>
           <li><code>consultar_cep(cep) · consultar_painelprecos(code)</code> — live, on ViaCEP and ComprasGov's price panel</li>
-        </ul>
-        <div>
-          <div class="tools-config">
-            <div class="tools-config-head"><span>Connect (Claude Code)</span><button type="button" class="tools-copy" aria-label="Copy command">copy</button></div>
-            <pre>claude mcp add --transport http rodado https://db.rodado.xyz/mcp</pre>
-          </div>
-          <p class="tools-note">Hosted: nothing to install. To run it locally, <code>uv run mcp/mcp_server.py</code> in a clone. Credential required from 2026-10-27 — see <a href="https://github.com/rafapolo/rodado/blob/main/mcp/MCP.md">mcp/MCP.md</a>.</p>
-        </div>
-      </div>
+      </ul>
     </section>
 
     <!-- datasets:inicio -->
@@ -1165,20 +1184,43 @@ function applyFilters() {
   });
   document.querySelector('.ds-empty').hidden = found > 0;
 }
-document.querySelectorAll('.tools-copy').forEach(button => {
-  button.addEventListener('click', async () => {
-    const pre = button.closest('.tools-config').querySelector('pre');
+document.querySelectorAll('.tools-copy').forEach(botao => {
+  botao.addEventListener('click', async () => {
+    const pre = botao.parentElement.querySelector('pre');
     try {
       await navigator.clipboard.writeText(pre.textContent);
-      button.textContent = 'copied';
+      botao.textContent = 'copied';
     } catch {
-      // no clipboard permission: leave it selected for Ctrl+C
+      // sem permissão de área de transferência: deixa selecionado para o Ctrl+C
       getSelection().selectAllChildren(pre);
-      button.textContent = 'selected';
+      botao.textContent = 'selected';
     }
-    setTimeout(() => { button.textContent = 'copy'; }, 1500);
+    setTimeout(() => { botao.textContent = 'copy'; }, 1500);
   });
 });
+// abas de cliente MCP: setas trocam, a escolhida fica lembrada neste navegador
+const abas = [...document.querySelectorAll('.connect-tab')];
+function escolheAba(aba, foco) {
+  abas.forEach(t => {
+    const sim = t === aba;
+    t.setAttribute('aria-selected', sim);
+    t.tabIndex = sim ? 0 : -1;
+    document.getElementById(t.getAttribute('aria-controls')).hidden = !sim;
+  });
+  if (foco) aba.focus();
+  try { localStorage.setItem('rodado-mcp-cliente', aba.id); } catch {}
+}
+abas.forEach((aba, i) => {
+  aba.addEventListener('click', () => escolheAba(aba));
+  aba.addEventListener('keydown', e => {
+    const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+    if (d) escolheAba(abas[(i + d + abas.length) % abas.length], true);
+  });
+});
+try {
+  const salva = document.getElementById(localStorage.getItem('rodado-mcp-cliente'));
+  if (salva && abas.includes(salva)) escolheAba(salva);
+} catch {}
 </script>
 <script src="assets/theme-toggle.js"></script>
 </body></html>

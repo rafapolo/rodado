@@ -78,6 +78,34 @@
       <h1 class="page-title">Catálogo de dados públicos brasileiros, exposto como servidor MCP</h1>
       <p class="lead">Um índice temático sobre 1.403 tabelas públicas brasileiras — RAIS, SIM, TSE, CGU, IBGE, INEP e outras — consultáveis diretamente com <strong>DuckDB</strong>. Cada card abaixo é um tema de pesquisa; cada linha dentro dele é uma tabela consultável.</p>
       <p class="lead-note">O catálogo inclui um conjunto crescente de fontes coletadas independentemente — sanções internacionais (UE, ONU, OFAC, OpenSanctions), ICIJ Offshore Leaks, SICAF, SINAN Violência, Consumidor.gov.br, dívida ativa da PGFN e Tribunais de Contas estaduais — ver o catálogo completo dessas fontes.</p>
+      <section class="connect" aria-labelledby="connect-title">
+        <h2 class="connect-title" id="connect-title"><i class="fa-solid fa-plug"></i> Conectar ao seu agente</h2>
+        <div class="connect-box">
+          <div class="connect-tabs" role="tablist" aria-label="Cliente MCP"><button type="button" role="tab" class="connect-tab" id="tab-claude-code" aria-controls="painel-claude-code" aria-selected="true" tabindex="0">Claude Code</button><button type="button" role="tab" class="connect-tab" id="tab-claude-app" aria-controls="painel-claude-app" aria-selected="false" tabindex="-1">Claude.ai / Desktop</button><button type="button" role="tab" class="connect-tab" id="tab-cursor" aria-controls="painel-cursor" aria-selected="false" tabindex="-1">Cursor</button><button type="button" role="tab" class="connect-tab" id="tab-vscode" aria-controls="painel-vscode" aria-selected="false" tabindex="-1">VS Code</button><button type="button" role="tab" class="connect-tab" id="tab-local" aria-controls="painel-local" aria-selected="false" tabindex="-1">Local</button></div>
+          <div class="connect-panel" role="tabpanel" id="painel-claude-code" aria-labelledby="tab-claude-code">
+            <p class="connect-hint">Num terminal:</p>
+            <div class="connect-cmd"><pre>claude mcp add --transport http rodado https://db.rodado.xyz/mcp</pre><button type="button" class="tools-copy" aria-label="Copiar">copiar</button></div>
+          </div>
+          <div class="connect-panel" role="tabpanel" id="painel-claude-app" aria-labelledby="tab-claude-app" hidden>
+            <p class="connect-hint">Configurações → Conectores → Adicionar conector personalizado, e cole a URL:</p>
+            <div class="connect-cmd"><pre>https://db.rodado.xyz/mcp</pre><button type="button" class="tools-copy" aria-label="Copiar">copiar</button></div>
+          </div>
+          <div class="connect-panel" role="tabpanel" id="painel-cursor" aria-labelledby="tab-cursor" hidden>
+            <p class="connect-hint">Em <code>~/.cursor/mcp.json</code>:</p>
+            <div class="connect-cmd"><pre>{"mcpServers": {"rodado": {"url": "https://db.rodado.xyz/mcp"}}}</pre><button type="button" class="tools-copy" aria-label="Copiar">copiar</button></div>
+          </div>
+          <div class="connect-panel" role="tabpanel" id="painel-vscode" aria-labelledby="tab-vscode" hidden>
+            <p class="connect-hint">Num terminal:</p>
+            <div class="connect-cmd"><pre>code --add-mcp '{"name":"rodado","type":"http","url":"https://db.rodado.xyz/mcp"}'</pre><button type="button" class="tools-copy" aria-label="Copiar">copiar</button></div>
+          </div>
+          <div class="connect-panel" role="tabpanel" id="painel-local" aria-labelledby="tab-local" hidden>
+            <p class="connect-hint">Num clone, com <code>uv</code>:</p>
+            <div class="connect-cmd"><pre>git clone --depth 1 https://github.com/rafapolo/rodado &amp;&amp; cd rodado
+claude mcp add rodado -- uv run "$PWD/mcp/mcp_server.py"</pre><button type="button" class="tools-copy" aria-label="Copiar">copiar</button></div>
+          </div>
+        </div>
+        <p class="tools-note">Hospedado e público: nada a instalar, sem SSH nem dado local. Credencial só a partir de 27/10/2026 — ver <a href="https://github.com/rafapolo/rodado/blob/main/mcp/MCP.md">mcp/MCP.md</a>.</p>
+      </section>
       <div class="header-bottom">
         <div class="stats">
           <div>
@@ -109,8 +137,7 @@
         <h2 class="tools-title">As ferramentas do servidor</h2>
       </div>
       <p class="tools-desc">Dezessete ferramentas MCP expõem o catálogo, a camada semântica (junções, métricas, hierarquias) e o espelho DuckDB. Por padrão toda consulta vai para a API pública <a href="https://db.rodado.xyz/llm">db.rodado.xyz</a>: os avisos medidos sobre as tabelas e colunas consultadas voltam em <code>avisos</code>, e a consulta que cita coluna de armadilha que dá resultado errado sem erro volta recusada, com a explicação, até ser repetida com <code>ciente=True</code>.</p>
-      <div class="tools-grid">
-        <ul class="tools-list">
+      <ul class="tools-list">
           <li><code>list_datasets()</code> — os datasets do catálogo, com contagem de tabelas</li>
           <li><code>list_tables(dataset)</code> — tabelas de um dataset, com sugestões de nome</li>
           <li><code>describe_table(tabela)</code> — colunas e tipos, com as armadilhas medidas do dataset antes delas</li>
@@ -123,15 +150,7 @@
           <li><code>consultar_cnpj(cnpj)</code> — empresa, estabelecimentos e sócios pela base da Receita</li>
           <li><code>consultar_divida_ativa · consultar_precos_combustivel · consultar_jurisprudencia_stj · consultar_populacao_carceraria</code> — atalhos sem SQL sobre PGFN, ANP, STJ e SISDEPEN</li>
           <li><code>consultar_cep(cep) · consultar_painelprecos(código)</code> — ao vivo, no ViaCEP e no Painel de Preços do ComprasGov</li>
-        </ul>
-        <div>
-          <div class="tools-config">
-            <div class="tools-config-head"><span>Conectar (Claude Code)</span><button type="button" class="tools-copy" aria-label="Copiar comandos">copiar</button></div>
-            <pre>claude mcp add --transport http rodado https://db.rodado.xyz/mcp</pre>
-          </div>
-          <p class="tools-note">Hospedado: nada a instalar. Para rodar local, <code>uv run mcp/mcp_server.py</code> num clone. Credencial só a partir de 27/10/2026 — ver <a href="https://github.com/rafapolo/rodado/blob/main/mcp/MCP.md">mcp/MCP.md</a>.</p>
-        </div>
-      </div>
+      </ul>
     </section>
 
     <!-- datasets:inicio -->
@@ -1167,7 +1186,7 @@ function applyFilters() {
 }
 document.querySelectorAll('.tools-copy').forEach(botao => {
   botao.addEventListener('click', async () => {
-    const pre = botao.closest('.tools-config').querySelector('pre');
+    const pre = botao.parentElement.querySelector('pre');
     try {
       await navigator.clipboard.writeText(pre.textContent);
       botao.textContent = 'copiado';
@@ -1179,6 +1198,29 @@ document.querySelectorAll('.tools-copy').forEach(botao => {
     setTimeout(() => { botao.textContent = 'copiar'; }, 1500);
   });
 });
+// abas de cliente MCP: setas trocam, a escolhida fica lembrada neste navegador
+const abas = [...document.querySelectorAll('.connect-tab')];
+function escolheAba(aba, foco) {
+  abas.forEach(t => {
+    const sim = t === aba;
+    t.setAttribute('aria-selected', sim);
+    t.tabIndex = sim ? 0 : -1;
+    document.getElementById(t.getAttribute('aria-controls')).hidden = !sim;
+  });
+  if (foco) aba.focus();
+  try { localStorage.setItem('rodado-mcp-cliente', aba.id); } catch {}
+}
+abas.forEach((aba, i) => {
+  aba.addEventListener('click', () => escolheAba(aba));
+  aba.addEventListener('keydown', e => {
+    const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+    if (d) escolheAba(abas[(i + d + abas.length) % abas.length], true);
+  });
+});
+try {
+  const salva = document.getElementById(localStorage.getItem('rodado-mcp-cliente'));
+  if (salva && abas.includes(salva)) escolheAba(salva);
+} catch {}
 </script>
 <script src="assets/theme-toggle.js"></script>
 </body></html>
