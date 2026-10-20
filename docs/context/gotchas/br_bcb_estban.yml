@@ -1,0 +1,22 @@
+dataset: br_bcb_estban
+gotchas:
+  - id: verbetes_agregados_na_agencia
+    resumo: "Em agencia, parte dos id_verbete são grupos colados ('401402403…419'), a soma das subcontas. Somar todos os verbetes conta o mesmo dinheiro duas vezes."
+    detalhe: >
+      Cinco grupos aparecem uma vez por agência ('144145146147152',
+      '401402403404411412413414415416417418419', '444445446447456458',
+      '461467468', '481482483484485487'), ~17% das linhas. Filtre o verbete
+      de interesse (ex. '420' = poupança) ou exclua length(id_verbete) > 4.
+    tabelas: [agencia]
+    colunas: [id_verbete]
+    severidade: silencioso
+    verificado: "dez/2024: cada um dos 5 grupos em 15.695 agências; 125.560 de 706.275 linhas com id_verbete de mais de 4 caracteres — medido 2026-10-20"
+  - id: agencia_2025_quebrada
+    resumo: "Os meses de 2025 em agencia não fecham: a poupança salta de R$ 1,03 tri (dez/2024) para R$ 1,91 tri (jan/2025) com o mesmo número de agências, e fev–mar perdem agências. Use até dez/2024."
+    detalhe: >
+      Jan/2025 tem ainda 50 linhas acima de R$ 1 tri (Santander, verbete 711,
+      R$ 481 tri). municipio termina em dez/2023.
+    tabelas: [agencia, municipio]
+    colunas: [valor, ano, mes]
+    severidade: silencioso
+    verificado: "verbete '420': dez/2024 R$ 1.026,1 bi em 15.695 agências; jan/2025 R$ 1.908,5 bi em 15.660; fev 1.529,8 bi em 13.617; mar 1.466,1 bi em 11.237; municipio max ano*100+mes = 202312 — medido 2026-10-20"

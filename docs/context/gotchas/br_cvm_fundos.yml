@@ -1,0 +1,14 @@
+dataset: br_cvm_fundos
+gotchas:
+  - id: fundos_e_cadastro_antigo
+    resumo: "fundos é o cadastro anterior à RCVM 175 (22 em funcionamento normal). O cadastro vivo é registro_fundo / registro_classe."
+    tabelas: [fundos, registro_fundo, registro_classe]
+    colunas: [SIT, Situacao]
+    severidade: silencioso
+    verificado: "fundos: 22 com SIT = 'EM FUNCIONAMENTO NORMAL'; registro_fundo: 33.768 CNPJs distintos com Situacao = 'Em Funcionamento Normal' — medido 2026-10-20"
+  - id: registro_fundo_repetido
+    resumo: "registro_fundo tem linhas repetidas: conte CNPJ_Fundo distinto, não linhas."
+    tabelas: [registro_fundo]
+    colunas: [CNPJ_Fundo, ID_Registro_Fundo]
+    severidade: silencioso
+    verificado: "Em Funcionamento Normal: 34.454 linhas, 33.768 CNPJ_Fundo e ID_Registro_Fundo distintos — medido 2026-10-20"

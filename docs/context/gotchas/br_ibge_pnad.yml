@@ -1,0 +1,8 @@
+dataset: br_ibge_pnad
+gotchas:
+  - id: renda_nominal_vazia
+    resumo: "renda_mensal_familia, renda_mensal_domiciliar e as versões deflacionadas estão 100% vazias. Só renda_mensal_domiciliar_compativel_1992 tem valor."
+    tabelas: [microdados_compatibilizados_pessoa, microdados_compatibilizados_domicilio]
+    colunas: [renda_mensal_familia, renda_mensal_familia_deflacionado, renda_mensal_domiciliar, renda_domicilio_deflacionado, renda_mensal_domiciliar_compativel_1992]
+    severidade: erro
+    verificado: "domicílio: renda_mensal_domiciliar 0 de 1.877.416, compativel_1992 1.826.956; pessoa: renda_mensal_familia 0 em todos os anos — medido 2026-10-20"

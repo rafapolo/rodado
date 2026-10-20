@@ -1,0 +1,13 @@
+dataset: br_fgv_igp
+gotchas:
+  - id: ano_e_mes_trocados
+    resumo: "Em igp_m_mes, igp_di_mes e igp_og_mes a coluna ano guarda o mês e mes guarda o ano. WHERE ano = 2020 devolve zero linhas."
+    detalhe: >
+      igp_m_mes, igp_di_mes e igp_og_mes: ano vai de 1 a 12 e mes de 1944 a
+      2023. Filtre mes = <ano> AND ano = <mês>. igp_10_mes está certa. As
+      tabelas anuais (igp_*_ano) estão certas, mas param em 2021: 2022 só existe
+      nas mensais.
+    tabelas: [igp_m_mes, igp_di_mes, igp_og_mes]
+    colunas: [ano, mes]
+    severidade: erro
+    verificado: "igp_m_mes: ano de 1 a 12, mes de 1989 a 2023 (407 linhas); igp_m_ano termina em 2021; igp_10_mes: ano 1993–2023, mes 1–12 (certa); IGP-M 2020 = 23,14% nas duas, pelo produto dos meses com mes = 2020 — medido 2026-10-20"

@@ -53,10 +53,13 @@ gotchas:
       124 empresas têm exatamente R$ 999.999.999.999 (quase um PIB inteiro).
       Qualquer SUM, média ou HHI sobre capital_social distorce o CNAE/UF onde
       elas caem. Filtre capital_social < 999999999999 ou trate como nulo.
+      Mesmo sem a sentinela a soma não fecha: 906 empresas declaram R$ 100 bi
+      ou mais e somam R$ 128,8 tri, contra R$ 16,7 tri de todas as outras.
+      Soma ou média de capital_social precisa de corte de outlier (ou mediana).
     tabelas: [empresas, empresas_historico]
     colunas: [capital_social]
     severidade: silencioso
-    verificado: "124 linhas com capital_social = 999999999999 em empresas (retrato 2026-09) — medido 2026-10-13"
+    verificado: "124 linhas com capital_social = 999999999999 em empresas (retrato 2026-09) — medido 2026-10-13; 906 com capital_social entre 1e11 e a sentinela somam R$ 128,8 tri, as abaixo de 1e10 R$ 16,7 tri — medido 2026-10-20"
   - id: cpf_completado
     resumo: "A coluna de CPF mistura CPF completo (completado pelo projeto) e CPF mascarado. count(DISTINCT cpf) conta máscara como pessoa."
     detalhe: >

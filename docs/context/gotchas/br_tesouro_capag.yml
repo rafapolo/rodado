@@ -1,0 +1,13 @@
+dataset: br_tesouro_capag
+gotchas:
+  - id: colunas_deslocadas
+    resumo: "Cabeçalho deslocado: a coluna UF traz o código IBGE do município e a coluna CAPAG traz o nome. A nota final da CAPAG não está na tabela."
+    detalhe: >
+      "Código Município Completo" e "Nome_Município" vêm 100% nulas; o código
+      está em "UF" e o nome em "CAPAG". Nota 1, Nota 2 e Nota 3 (A/B/C) e os
+      indicadores parecem no lugar certo; a classificação final e a sigla da UF
+      se perderam. Para UF, use substr("UF", 1, 2) como código IBGE do estado.
+    tabelas: [municipios]
+    colunas: [CAPAG, UF, Código Município Completo, Nome_Município]
+    severidade: erro
+    verificado: "5.568 linhas, 0 com CAPAG em A/B/C/D; Niterói: UF = 3303302, CAPAG = 'Niterói', Notas 1-3 = A — medido 2026-10-20"

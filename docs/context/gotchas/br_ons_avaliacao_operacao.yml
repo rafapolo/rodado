@@ -1,0 +1,13 @@
+dataset: br_ons_avaliacao_operacao
+gotchas:
+  - id: geracao_vezes_1e8
+    resumo: "geracao vem multiplicada por 10^8: divida por 1e8 para ter MWmed por hora (e a soma no ano em MWh)."
+    detalhe: >
+      Lagoa dos Ventos em 2023: máximo 68.111.700.000, mediana 31.958.650.000 —
+      681 MW e 320 MW depois de dividir por 1e8, compatível com o complexo.
+      A soma da eólica em 2023 dá 9,46e15; dividida, 94,6 TWh, perto dos ~96 TWh
+      publicados. Sem a correção qualquer total sai 100 milhões de vezes maior.
+    tabelas: [geracao_usina]
+    colunas: [geracao]
+    severidade: silencioso
+    verificado: "2023, tipo_usina = 'EOLIELETRICA': 191 usinas, 1.455.192 linhas horárias, sum(geracao) = 9,463e15 -> 94,6 TWh após /1e8 — medido 2026-10-20"

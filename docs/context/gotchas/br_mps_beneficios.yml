@@ -1,0 +1,13 @@
+dataset: br_mps_beneficios
+gotchas:
+  - id: rotulo_truncado
+    resumo: "especie_beneficio_rotulo vem cortado em 20 caracteres e especie_beneficio é NULL nas maiores espécies: filtre pelo rótulo truncado ('Aposentadoria por Id%')."
+    detalhe: >
+      Em dez/2024 as aposentadorias por idade (13,2 milhões) estão sob o rótulo
+      'Aposentadoria por Id' com especie_beneficio NULL. Um filtro pelo nome
+      oficial ('Aposent. por Idade%') acha um rótulo residual com 386
+      benefícios — número plausível o bastante para passar.
+    tabelas: [beneficio_mantido_municipio_mes, beneficio_concedido_municipio_mes]
+    colunas: [especie_beneficio, especie_beneficio_rotulo]
+    severidade: silencioso
+    verificado: "dez/2024, mantidos: 'Aposentadoria por Id' = 13.165.773 (especie_beneficio NULL); 'Aposent. por Idade%' = 386 — medido 2026-10-20"
