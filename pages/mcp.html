@@ -118,21 +118,18 @@
           <li><code>resolve_join(a, b)</code> — cláusula <code>ON</code> pronta entre duas tabelas, com a normalização da chave</li>
           <li><code>explain_column(coluna)</code> — por que uma coluna comum (<code>valor</code>, <code>sexo</code>) não junta nem decodifica entre datasets</li>
           <li><code>get_metric(nome) · list_metrics()</code> — cálculos nomeados (população, PIB per capita, saldo do CAGED)</li>
-          <li><code>rollup(coluna, nível)</code> — subir um código CNAE ou CID-10 um nível</li>
+          <li><code>rollup(nível, nível_acima)</code> — expressão SQL que agrega CNAE, CID-10 ou município a um nível acima (subclasse → divisão, município → UF)</li>
           <li><code>run_sql(sql, ciente?)</code> — SQL somente-leitura (SELECT/WITH), com as armadilhas medidas em <code>avisos</code></li>
           <li><code>consultar_cnpj(cnpj)</code> — empresa, estabelecimentos e sócios pela base da Receita</li>
           <li><code>consultar_divida_ativa · consultar_precos_combustivel · consultar_jurisprudencia_stj · consultar_populacao_carceraria</code> — atalhos sem SQL sobre PGFN, ANP, STJ e SISDEPEN</li>
           <li><code>consultar_cep(cep) · consultar_painelprecos(código)</code> — ao vivo, no ViaCEP e no Painel de Preços do ComprasGov</li>
         </ul>
         <div>
-          <div class="tools-config-label">Conectar (Claude Code)</div>
-          <pre class="tools-config">git clone https://github.com/rafapolo/rodado
-cd rodado
-python3 -m venv .venv
-.venv/bin/pip install -r mcp/requirements.txt
-claude mcp add rodado -- \
-  "$PWD/.venv/bin/python" "$PWD/mcp/mcp_server.py"</pre>
-          <p class="tools-note">Aberto: sem SSH e sem dado local; só o repositório, que é público. Sem credencial até 26/10/2026; depois, passe <code>RODADO_TOKEN</code> ou <code>RODADO_SENHA</code> no ambiente do servidor. Detalhes em <a href="https://github.com/rafapolo/rodado/blob/main/mcp/MCP.md">mcp/MCP.md</a>.</p>
+          <div class="tools-config">
+            <div class="tools-config-head"><span>Conectar (Claude Code)</span><button type="button" class="tools-copy" aria-label="Copiar comandos">copiar</button></div>
+            <pre>claude mcp add --transport http rodado https://db.rodado.xyz/mcp</pre>
+          </div>
+          <p class="tools-note">Hospedado: nada a instalar. Para rodar local, <code>uv run mcp/mcp_server.py</code> num clone. Credencial só a partir de 27/10/2026 — ver <a href="https://github.com/rafapolo/rodado/blob/main/mcp/MCP.md">mcp/MCP.md</a>.</p>
         </div>
       </div>
     </section>
@@ -1168,6 +1165,20 @@ function applyFilters() {
   });
   document.querySelector('.ds-empty').hidden = achados > 0;
 }
+document.querySelectorAll('.tools-copy').forEach(botao => {
+  botao.addEventListener('click', async () => {
+    const pre = botao.closest('.tools-config').querySelector('pre');
+    try {
+      await navigator.clipboard.writeText(pre.textContent);
+      botao.textContent = 'copiado';
+    } catch {
+      // sem permissão de área de transferência: deixa selecionado para o Ctrl+C
+      getSelection().selectAllChildren(pre);
+      botao.textContent = 'selecionado';
+    }
+    setTimeout(() => { botao.textContent = 'copiar'; }, 1500);
+  });
+});
 </script>
 <script src="assets/theme-toggle.js"></script>
 </body></html>
