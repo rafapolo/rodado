@@ -258,13 +258,6 @@
   sql: SELECT count(*) AS v FROM br_comprasgov_sicaf.fornecedores WHERE ativo
   sql2: SELECT count(*) - count(*) FILTER (WHERE NOT ativo OR ativo IS NULL) AS v FROM br_comprasgov_sicaf.fornecedores
 
-- id: cvm_fundos_funcionando
-  origem: br_cvm_fundos
-  pergunta: Quantos fundos de investimento estão em funcionamento normal no cadastro da CVM?
-  # a tabela antiga `fundos` (pré-RCVM 175) dá 22, e registro_fundo tem 686 linhas repetidas (34.454) — medido 2026-10-20
-  sql: SELECT count(DISTINCT CNPJ_Fundo) AS v FROM br_cvm_fundos.registro_fundo WHERE Situacao = 'Em Funcionamento Normal'
-  sql2: SELECT count(DISTINCT ID_Registro_Fundo) AS v FROM br_cvm_fundos.registro_fundo WHERE Situacao = 'Em Funcionamento Normal'
-  armadilha: 34454
 
 - id: fbsp_cvli_2021
   origem: br_fbsp_absp
@@ -275,13 +268,6 @@
     FROM br_fbsp_absp.uf WHERE ano = 2021
   tol: 1%
 
-- id: igpm_2020
-  origem: br_fgv_igp
-  pergunta: Qual foi a variação acumulada do IGP-M em 2020, em percentual?
-  sql: SELECT variacao_anual AS v FROM br_fgv_igp.igp_m_ano WHERE ano = 2020
-  # nas tabelas *_mes, ano e mes vêm trocados (ano = 12, mes = 2020) — medido 2026-10-20
-  sql2: SELECT (exp(sum(ln(1 + variacao_mensal / 100))) - 1) * 100 AS v FROM br_fgv_igp.igp_m_mes WHERE mes = 2020
-  tol: "0,05"
 
 - id: firjan_ifgf_2022
   origem: br_firjan_ifgf
@@ -367,13 +353,6 @@
   sql: SELECT count(*) AS v FROM br_inep_censo_educacao_superior.ies WHERE ano = 2023
   sql2: SELECT count(DISTINCT id_ies) AS v FROM br_inep_censo_educacao_superior.ies WHERE ano = 2023
 
-- id: educacao_especial_comuns_2024
-  origem: br_inep_educacao_especial
-  pergunta: Quantas matrículas de educação especial em classes comuns (inclusão) havia no Brasil em 2024?
-  # etapa_ensino soma 1.955.026, 31 mil a mais que localizacao, tempo_ensino e sexo_raca_cor (1.923.692) — medido 2026-10-20
-  sql: SELECT sum(quantidade_matricula) AS v FROM br_inep_educacao_especial.localizacao WHERE ano = 2024 AND tipo_classe = 'Classes Comuns'
-  sql2: SELECT sum(quantidade_matricula) AS v FROM br_inep_educacao_especial.sexo_raca_cor WHERE ano = 2024 AND tipo_classe = 'Classes Comuns'
-  armadilha: 1955026
 
 - id: nomes_maria
   origem: br_ibge_nomes_brasil
@@ -435,16 +414,6 @@
     WHERE ano = 2024 GROUP BY mes)
   tol: 0,1%
 
-- id: estoque_divida_out2022
-  origem: br_me_estoque_divida_publica
-  pergunta: Qual era o estoque da dívida pública federal em poder do mercado em outubro de 2022, em reais?
-  # somar todas as carteiras inclui R$ 2,07 tri da carteira do Banco Central, que não é estoque em mercado — medido 2026-10-20
-  sql: SELECT sum(valor_estoque) AS v FROM br_me_estoque_divida_publica.microdados WHERE ano = 2022 AND mes = 10 AND classe_carteira = 'Mercado'
-  sql2: |
-    SELECT sum(s) AS v FROM (SELECT tipo_divida, sum(valor_estoque) AS s FROM br_me_estoque_divida_publica.microdados
-    WHERE ano = 2022 AND mes = 10 AND classe_carteira = 'Mercado' GROUP BY tipo_divida)
-  armadilha: 7850221979085
-  tol: 0,1%
 
 - id: rais_identificada_estab_2021
   origem: br_me_rais_identificada
@@ -490,17 +459,6 @@
     SELECT sum(s) AS v FROM (SELECT sexo, sum(cce_e_fce) AS s FROM br_mp_pep.cargos_funcoes
     WHERE ano = 2023 AND mes = 12 GROUP BY sexo)
 
-- id: inss_aposentadoria_idade_dez2024
-  origem: br_mps_beneficios
-  pergunta: Quantas aposentadorias por idade o INSS mantinha em dezembro de 2024?
-  sql: |
-    SELECT sum(quantidade) AS v FROM br_mps_beneficios.beneficio_mantido_municipio_mes
-    WHERE ano = 2024 AND mes = 12 AND especie_beneficio_rotulo ILIKE 'Aposentadoria por Id%'
-  # o rótulo vem truncado em 20 caracteres e especie_beneficio é NULL nessas linhas; 'Aposent. por Idade%' pega 386 — medido 2026-10-20
-  armadilha: 386
-  sql2: |
-    SELECT sum(s) AS v FROM (SELECT clientela, sum(quantidade) AS s FROM br_mps_beneficios.beneficio_mantido_municipio_mes
-    WHERE ano = 2024 AND mes = 12 AND especie_beneficio_rotulo ILIKE 'Aposentadoria por Id%' GROUP BY clientela)
 
 - id: esf_cobertura_dez2020
   origem: br_ms_atencao_basica

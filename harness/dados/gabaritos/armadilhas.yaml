@@ -448,3 +448,60 @@
   sql: SELECT variacao_acumulada_ano AS v FROM br_fgv_igp.igp_m_mes WHERE mes = 2022 AND ano = 12
   sql2: SELECT (exp(sum(ln(1 + variacao_mensal / 100))) - 1) * 100 AS v FROM br_fgv_igp.igp_m_mes WHERE mes = 2022
   tol: "0,05"
+
+- id: igpm_2020
+  origem: br_fgv_igp/ano_e_mes_trocados
+  pergunta: Qual foi a variação acumulada do IGP-M em 2020, em percentual?
+  sql: SELECT variacao_anual AS v FROM br_fgv_igp.igp_m_ano WHERE ano = 2020
+  # nas tabelas *_mes, ano e mes vêm trocados (ano = 12, mes = 2020) — medido 2026-10-20
+  sql2: SELECT (exp(sum(ln(1 + variacao_mensal / 100))) - 1) * 100 AS v FROM br_fgv_igp.igp_m_mes WHERE mes = 2020
+  tol: "0,05"
+
+- id: educacao_especial_comuns_2024
+  origem: br_inep_educacao_especial/etapa_ensino_soma_a_mais
+  pergunta: Quantas matrículas de educação especial em classes comuns (inclusão) havia no Brasil em 2024?
+  # etapa_ensino soma 1.955.026, 31 mil a mais que localizacao, tempo_ensino e sexo_raca_cor (1.923.692) — medido 2026-10-20
+  sql: SELECT sum(quantidade_matricula) AS v FROM br_inep_educacao_especial.localizacao WHERE ano = 2024 AND tipo_classe = 'Classes Comuns'
+  sql2: SELECT sum(quantidade_matricula) AS v FROM br_inep_educacao_especial.sexo_raca_cor WHERE ano = 2024 AND tipo_classe = 'Classes Comuns'
+  armadilha: 1955026
+
+- id: cvm_fundos_funcionando
+  origem: br_cvm_fundos/fundos_e_cadastro_antigo
+  pergunta: Quantos fundos de investimento estão em funcionamento normal no cadastro da CVM?
+  # a tabela antiga `fundos` (pré-RCVM 175) dá 22, e registro_fundo tem 686 linhas repetidas (34.454) — medido 2026-10-20
+  sql: SELECT count(DISTINCT CNPJ_Fundo) AS v FROM br_cvm_fundos.registro_fundo WHERE Situacao = 'Em Funcionamento Normal'
+  sql2: SELECT count(DISTINCT ID_Registro_Fundo) AS v FROM br_cvm_fundos.registro_fundo WHERE Situacao = 'Em Funcionamento Normal'
+  armadilha: 34454
+
+- id: estoque_divida_out2022
+  origem: br_me_estoque_divida_publica/carteira_do_banco_central
+  pergunta: Qual era o estoque da dívida pública federal em poder do mercado em outubro de 2022, em reais?
+  # somar todas as carteiras inclui R$ 2,07 tri da carteira do Banco Central, que não é estoque em mercado — medido 2026-10-20
+  sql: SELECT sum(valor_estoque) AS v FROM br_me_estoque_divida_publica.microdados WHERE ano = 2022 AND mes = 10 AND classe_carteira = 'Mercado'
+  sql2: |
+    SELECT sum(s) AS v FROM (SELECT tipo_divida, sum(valor_estoque) AS s FROM br_me_estoque_divida_publica.microdados
+    WHERE ano = 2022 AND mes = 10 AND classe_carteira = 'Mercado' GROUP BY tipo_divida)
+  armadilha: 7850221979085
+  tol: 0,1%
+
+- id: inss_aposentadoria_idade_dez2024
+  origem: br_mps_beneficios/rotulo_truncado
+  pergunta: Quantas aposentadorias por idade o INSS mantinha em dezembro de 2024?
+  sql: |
+    SELECT sum(quantidade) AS v FROM br_mps_beneficios.beneficio_mantido_municipio_mes
+    WHERE ano = 2024 AND mes = 12 AND especie_beneficio_rotulo ILIKE 'Aposentadoria por Id%'
+  # o rótulo vem truncado em 20 caracteres e especie_beneficio é NULL nessas linhas; 'Aposent. por Idade%' pega 386 — medido 2026-10-20
+  armadilha: 386
+  sql2: |
+    SELECT sum(s) AS v FROM (SELECT clientela, sum(quantidade) AS s FROM br_mps_beneficios.beneficio_mantido_municipio_mes
+    WHERE ano = 2024 AND mes = 12 AND especie_beneficio_rotulo ILIKE 'Aposentadoria por Id%' GROUP BY clientela)
+
+- id: ons_eolica_2023
+  origem: br_ons_avaliacao_operacao/geracao_vezes_1e8
+  pergunta: Quanta energia as usinas eólicas geraram no Brasil em 2023, em MWh, segundo o ONS?
+  sql: SELECT sum(geracao) / 1e8 AS v FROM br_ons_avaliacao_operacao.geracao_usina WHERE ano = 2023 AND tipo_usina = 'EOLIELETRICA'
+  sql2: |
+    SELECT sum(geracao_eolica_verificada) / 1e8 AS v FROM br_ons_estimativa_custos.balanco_energia_subsistemas
+    WHERE ano = 2023 AND id_subsistema = 'SIN'
+  tol: 1%
+  armadilha: 9463016220000000

@@ -426,8 +426,8 @@ Saída em `dados/gabaritos.tsv`, que o `lote.ts` lê direto.
 
 | Arquivo | Casos | O que mede |
 |---|---|---|
-| `armadilhas.yaml` | 54 | uma pergunta por gotcha de `docs/context/gotchas/`; `armadilha` é o número da leitura ingênua (24 casos), e nenhum deles passa como certo em `acerto.ts` |
-| `cobertura.yaml` | 88 | 87 datasets que nenhum TSV cobria, uma ou duas perguntas cada — holdout, nenhuma nota saiu daqui |
+| `armadilhas.yaml` | 60 | uma pergunta por gotcha de `docs/context/gotchas/`; `armadilha` é o número da leitura ingênua (25 casos), e nenhum deles passa como certo em `acerto.ts` |
+| `cobertura.yaml` | 83 | 82 datasets que nenhum TSV cobria, uma ou duas perguntas cada — holdout, nenhuma nota saiu daqui |
 | `sem_dado.yaml` | 14 | ano fora da série ou coluna vazia: o certo é dizer que não há dado |
 
 A segunda via pegou o que a primeira deixaria passar: as duas cópias do Bolsa
@@ -436,11 +436,12 @@ Família (`br_cgu_novo_bolsa_familia` e `br_cgu_beneficios_cidadao`) divergem em
 `mes` trocados; `etapa_ensino` da educação especial soma 31 mil matrículas a mais
 que as outras três tabelas. A conferência de ordem de grandeza pegou o resto:
 `especie_beneficio_rotulo` do INSS vem truncado (o filtro óbvio acha 386
-aposentadorias por idade, e não 13,2 milhões), a coluna `geracao` do ONS não
-fecha em nenhuma unidade (9,5×10¹⁵ para a eólica de 2023), `CAPAG` em
+aposentadorias por idade, e não 13,2 milhões), a coluna `geracao` do ONS vem
+em MWmed × 10⁸ (9,5×10¹⁵ para a eólica de 2023), `CAPAG` em
 `br_tesouro_capag.municipios` traz o nome do município, e um contrato de merenda
 de Armação dos Búzios vale R$ 2,4 tri no TCE-RJ. Gabarito igual a zero é recusado:
-filtro que não casa nada parece resposta.
+filtro que não casa nada parece resposta. Os achados viraram gotchas no `main` (2026-10-20), e os
+cinco casos de cobertura que eles tocam passaram para `armadilhas.yaml`: deixaram de ser holdout.
 
 16 casos caem em datasets que o cache do catálogo do harness (`dados/catalogo.json`,
 230 datasets) ainda não lista — o comentário do caso diz `[fora do catálogo do
