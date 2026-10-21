@@ -33,7 +33,7 @@
     "*": "uma linha por estabelecimento POR MÊS: para contar estabelecimentos filtre ano e mes e use COUNT(DISTINCT id_estabelecimento_cnes)"
   },
   "br_cgu_novo_bolsa_familia.novo_bolsa_familia": {
-    "*": "uma linha por pagamento. ano_mes é TEXTO 'AAAAMM' ('202403'); uf é a sigla; valor_parcela é TEXTO com vírgula decimal ('800,00'): some com CAST(replace(valor_parcela, ',', '.') AS DOUBLE). Famílias = COUNT(DISTINCT nis_favorecido). NÃO tem id_municipio: para cruzar por município, use br_cgu_beneficios_cidadao.novo_bolsa_familia (id_municipio IBGE, os 5.570 municípios em 2023–2025) ou junte por nome + UF (ver codigo_municipio_siafi)",
+    "*": "uma linha por pagamento. ano_mes é TEXTO 'AAAAMM' ('202403'); uf é a sigla; valor_parcela é DOUBLE em reais: SUM(valor_parcela), sem replace. Famílias = COUNT(DISTINCT nis_favorecido). NÃO tem id_municipio: para cruzar por município, use br_cgu_beneficios_cidadao.novo_bolsa_familia (id_municipio IBGE, os 5.570 municípios em 2023–2025) ou junte por nome + UF (ver codigo_municipio_siafi)",
     "codigo_municipio_siafi": "código SIAFI de 4 dígitos, NÃO é o IBGE e não tem tabela de correspondência — nunca compare com id_municipio. Junte por nome + UF: upper(strip_accents(nome_municipio)) = upper(strip_accents(m.nome)) AND uf = m.sigla_uf com br_bd_diretorios_brasil.municipio m (5.554 de 5.570 municípios em 202306, conferido 2026-09-24)"
   },
   "br_inep_censo_escolar.escola": {
@@ -71,7 +71,7 @@
     "quantidade_matriculas": "turma sem etapa_ensino (atividade complementar, AEE) repete aluno já contado — total de estudantes: escola.quantidade_matricula_educacao_basica, ou turma com etapa_ensino IS NOT NULL"
   },
   "br_cgu_gas_do_povo.gas_do_povo": {
-    "*": "uma linha por vale retirado. ano_mes é TEXTO 'AAAAMM' (202511 é piloto com 10 municípios; de 202601 em diante, nacional); valor_beneficio é TEXTO com vírgula decimal ('105,35'): CAST(replace(valor_beneficio, ',', '.') AS DOUBLE). NÃO tem id_municipio.",
+    "*": "uma linha por vale retirado. ano_mes é TEXTO 'AAAAMM' (202511 é piloto com 10 municípios; de 202601 em diante, nacional); valor_beneficio é DOUBLE em reais: SUM(valor_beneficio), sem replace. NÃO tem id_municipio.",
     "codigo_municipio_siafi": "código SIAFI de 4 dígitos, NÃO é o IBGE e não tem tabela de correspondência — nunca compare com id_municipio. Junte por nome + UF: upper(strip_accents(nome_municipio)) = upper(strip_accents(m.nome)) AND uf = m.sigla_uf com br_bd_diretorios_brasil.municipio m — casa 5.517 de 5.532 municípios em 202607 (medido 2026-09-24)."
   },
   "br_ms_sih.aihs_reduzidas": {
@@ -136,7 +136,7 @@
     "id_referencia_bacen": "id da OPERAÇÃO, não município. Município: br_bcb_sicor.recurso_publico_complemento_operacao.id_municipio por (id_referencia_bacen, numero_ordem)"
   },
   "br_transferegov.transferencias": {
-    "*": "empenhos de 2019–2020 (ano_empenho é VARCHAR), 4.248 linhas, sem município nem UF do recebedor — junte por id_plano_acao a br_transferegov.planos_acao (casam todas) e use codigo_ibge_municipio_ente_recebedor_plano_acao (BIGINT) / uf_ente_recebedor_plano_acao"
+    "*": "empenhos de 2019–2020 (ano_empenho é INTEGER), 4.248 linhas, sem município nem UF do recebedor — junte por id_plano_acao a br_transferegov.planos_acao (casam todas) e use codigo_ibge_municipio_ente_recebedor_plano_acao (BIGINT) / uf_ente_recebedor_plano_acao"
   },
   "br_camara_dados_abertos.deputado": {
     "*": "sem CPF nem título de eleitor. Elo com o TSE: upper(strip_accents(nome)) = upper(strip_accents(br_tse_eleicoes.candidatos.nome_urna)) com ano=2022 e cargo='deputado federal' — 554 dos 647 da legislatura 57; de candidatos, titulo_eleitoral leva a bens_candidato.titulo_eleitoral_candidato"

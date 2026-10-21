@@ -1,7 +1,7 @@
 # Uma ou duas perguntas por dataset que nenhum TSV nem gotcha cobria. A segunda via
 # (`sql2`) chega ao mesmo número por outro caminho: outra tabela, as partes que somam o
 # todo, ou a decomposição por UF/mês. Holdout: nenhuma nota do harness foi escrita daqui.
-# Valores em texto com vírgula decimal: try_cast(replace(replace(x, '.', ''), ',', '.') AS DOUBLE).
+# Valores em texto com vírgula decimal: x.
 
 - id: abrinq_pre_escola_2019
   origem: br_abrinq_oca
@@ -63,19 +63,19 @@
   origem: br_anm
   pergunta: Quanto foi arrecadado de CFEM, os royalties da mineração, em 2023, em reais?
   sql: |
-    SELECT sum(try_cast(replace(replace(valorrecolhido, '.', ''), ',', '.') AS DOUBLE)) AS v
+    SELECT sum(valorrecolhido) AS v
     FROM br_anm.cfem_cfem_arrecadacao WHERE ano = '2023'
   sql2: |
-    SELECT sum(try_cast(replace(replace(valorrecolhido, '.', ''), ',', '.') AS DOUBLE)) AS v
+    SELECT sum(valorrecolhido) AS v
     FROM br_anm.cfem_cfem_arrecadacao_2022_2026 WHERE ano = '2023'
   tol: 0,5%
 
 - id: antt_ciot_2024
   origem: br_antt_dadosabertos
   pergunta: Quantos CIOTs (códigos de operação de transporte de carga) foram emitidos no Brasil em 2024?
-  sql: SELECT sum(try_cast(quantidade_ciots AS BIGINT)) AS v FROM br_antt_dadosabertos.ciot WHERE ano = 2024
+  sql: SELECT sum(quantidade_ciots) AS v FROM br_antt_dadosabertos.ciot WHERE ano = 2024
   sql2: |
-    SELECT sum(s) AS v FROM (SELECT mes, sum(try_cast(quantidade_ciots AS BIGINT)) AS s FROM br_antt_dadosabertos.ciot
+    SELECT sum(s) AS v FROM (SELECT mes, sum(quantidade_ciots) AS s FROM br_antt_dadosabertos.ciot
     WHERE ano = 2024 GROUP BY mes)
 
 - id: bcb_penalidades_multas
@@ -98,11 +98,11 @@
   origem: br_bcb_scrdata
   pergunta: Qual era o saldo da carteira ativa de crédito do sistema financeiro no Brasil em dezembro de 2024, segundo o SCR.data do Banco Central, em reais?
   sql: |
-    SELECT sum(try_cast(replace(replace(carteira_ativa, '.', ''), ',', '.') AS DOUBLE)) AS v
+    SELECT sum(carteira_ativa) AS v
     FROM br_bcb_scrdata.dados WHERE data_base = '2024-12-31'
   sql2: |
-    SELECT sum(try_cast(replace(replace(carteira_a_vencer, '.', ''), ',', '.') AS DOUBLE))
-         + sum(try_cast(replace(replace(carteira_vencida, '.', ''), ',', '.') AS DOUBLE)) AS v
+    SELECT sum(carteira_a_vencer)
+         + sum(carteira_vencida) AS v
     FROM br_bcb_scrdata.dados WHERE data_base = '2024-12-31'
   tol: 0,5%
 
@@ -161,10 +161,10 @@
   origem: br_cgu_garantia_safra
   pergunta: Quanto foi pago a agricultores pelo Garantia-Safra em 2023, em reais?
   sql: |
-    SELECT sum(try_cast(replace(replace(valor_parcela, '.', ''), ',', '.') AS DOUBLE)) AS v
+    SELECT sum(valor_parcela) AS v
     FROM br_cgu_garantia_safra.garantia_safra WHERE mes_referencia LIKE '2023%'
   sql2: |
-    SELECT sum(s) AS v FROM (SELECT uf, sum(try_cast(replace(replace(valor_parcela, '.', ''), ',', '.') AS DOUBLE)) AS s
+    SELECT sum(s) AS v FROM (SELECT uf, sum(valor_parcela) AS s
     FROM br_cgu_garantia_safra.garantia_safra WHERE mes_referencia LIKE '2023%' GROUP BY uf)
   tol: 0,1%
 
@@ -173,7 +173,7 @@
   origem: br_cgu_novo_bolsa_familia
   pergunta: Quanto o Bolsa Família pagou às famílias em março de 2024, em reais?
   sql: |
-    SELECT sum(try_cast(replace(replace(valor_parcela, '.', ''), ',', '.') AS DOUBLE)) AS v
+    SELECT sum(valor_parcela) AS v
     FROM br_cgu_novo_bolsa_familia.novo_bolsa_familia WHERE mes_competencia = '202403'
   sql2: |
     SELECT sum(valor_parcela) AS v FROM br_cgu_beneficios_cidadao.novo_bolsa_familia
@@ -193,11 +193,11 @@
   origem: br_cgu_pe_de_meia
   pergunta: Quanto o programa Pé-de-Meia pagou a estudantes em 2024, em reais?
   sql: |
-    SELECT sum(try_cast(replace(replace(valor_parcela, '.', ''), ',', '.') AS DOUBLE)) AS v
-    FROM br_cgu_pe_de_meia.pe_de_meia WHERE mes_folha LIKE '2024%'
+    SELECT sum(valor_parcela) AS v
+    FROM br_cgu_pe_de_meia.pe_de_meia WHERE mes_folha BETWEEN 202401 AND 202412
   sql2: |
-    SELECT sum(s) AS v FROM (SELECT uf, sum(try_cast(replace(replace(valor_parcela, '.', ''), ',', '.') AS DOUBLE)) AS s
-    FROM br_cgu_pe_de_meia.pe_de_meia WHERE mes_folha LIKE '2024%' GROUP BY uf)
+    SELECT sum(s) AS v FROM (SELECT uf, sum(valor_parcela) AS s
+    FROM br_cgu_pe_de_meia.pe_de_meia WHERE mes_folha BETWEEN 202401 AND 202412 GROUP BY uf)
   tol: 0,1%
 
 - id: terceirizados_jan2022
@@ -227,10 +227,10 @@
   origem: br_cgu_seguro_defeso
   pergunta: Quanto foi pago de seguro-defeso a pescadores artesanais em 2023, em reais?
   sql: |
-    SELECT sum(try_cast(replace(replace(valor_parcela, '.', ''), ',', '.') AS DOUBLE)) AS v
+    SELECT sum(valor_parcela) AS v
     FROM br_cgu_seguro_defeso.seguro_defeso WHERE mes_referencia LIKE '2023%'
   sql2: |
-    SELECT sum(s) AS v FROM (SELECT uf, sum(try_cast(replace(replace(valor_parcela, '.', ''), ',', '.') AS DOUBLE)) AS s
+    SELECT sum(s) AS v FROM (SELECT uf, sum(valor_parcela) AS s
     FROM br_cgu_seguro_defeso.seguro_defeso WHERE mes_referencia LIKE '2023%' GROUP BY uf)
   tol: 0,1%
 
@@ -281,10 +281,10 @@
   origem: br_ibama_autos
   pergunta: Qual foi o valor total das multas em autos de infração do Ibama lavrados em 2023 e não cancelados, em reais?
   sql: |
-    SELECT sum(try_cast(replace(replace(val_auto_infracao, '.', ''), ',', '.') AS DOUBLE)) AS v
+    SELECT sum(val_auto_infracao) AS v
     FROM br_ibama_autos.auto_infracao WHERE ano = 2023 AND sit_cancelado = 'N'
   sql2: |
-    SELECT sum(s) AS v FROM (SELECT uf, sum(try_cast(replace(replace(val_auto_infracao, '.', ''), ',', '.') AS DOUBLE)) AS s
+    SELECT sum(s) AS v FROM (SELECT uf, sum(val_auto_infracao) AS s
     FROM br_ibama_autos.auto_infracao WHERE ano = 2023 AND sit_cancelado = 'N' GROUP BY uf)
   tol: 0,1%
 
@@ -482,21 +482,21 @@
   origem: br_ms_sinan_chikungunya
   pergunta: Quantas notificações de chikungunya o SINAN registrou em 2024?
   sql: SELECT count(*) AS v FROM br_ms_sinan_chikungunya.microdados_chikungunya WHERE NU_ANO = '2024'
-  sql2: SELECT count(*) AS v FROM br_ms_sinan_chikungunya.microdados_chikungunya WHERE DT_NOTIFIC LIKE '2024%'
+  sql2: SELECT count(*) AS v FROM br_ms_sinan_chikungunya.microdados_chikungunya WHERE year(DT_NOTIFIC) = 2024
   tol: 0,5%
 
 - id: zika_2016
   origem: br_ms_sinan_zika
   pergunta: Quantas notificações de zika o SINAN registrou em 2016?
   sql: SELECT count(*) AS v FROM br_ms_sinan_zika.microdados_zika WHERE NU_ANO = '2016'
-  sql2: SELECT count(*) AS v FROM br_ms_sinan_zika.microdados_zika WHERE DT_NOTIFIC LIKE '2016%'
+  sql2: SELECT count(*) AS v FROM br_ms_sinan_zika.microdados_zika WHERE year(DT_NOTIFIC) = 2016
   tol: 0,5%
 
 - id: febre_amarela_2018
   origem: br_ms_sinan_febre_amarela
   pergunta: Quantas notificações de febre amarela o SINAN registrou em 2018?
   sql: SELECT count(*) AS v FROM br_ms_sinan_febre_amarela.microdados_febre_amarela WHERE NU_ANO = '2018'
-  sql2: SELECT count(*) AS v FROM br_ms_sinan_febre_amarela.microdados_febre_amarela WHERE DT_NOTIFIC LIKE '2018%'
+  sql2: SELECT count(*) AS v FROM br_ms_sinan_febre_amarela.microdados_febre_amarela WHERE year(DT_NOTIFIC) = 2018
   tol: 0,5%
 
 - id: sisvan_2023

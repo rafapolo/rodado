@@ -60,7 +60,7 @@
 - id: ibama_area_embargada
   origem: br_ibama_embargos_novo/area_embargada_texto
   pergunta: Somando todos os termos de embargo do Ibama, qual é a área total embargada, em hectares?
-  sql: SELECT sum(try_cast(replace(qtd_area_embargada, ',', '.') AS DOUBLE)) AS v FROM br_ibama_embargos_novo.termo_embargo
+  sql: SELECT sum(qtd_area_embargada) AS v FROM br_ibama_embargos_novo.termo_embargo
   doc: 11067885
   tol: 1%
 
@@ -246,7 +246,7 @@
 - id: stj_decisoes_2021
   origem: br_stj_dadosabertos/linhas_duplicadas
   pergunta: Quantas decisões do STJ publicadas em 2021 estão nos dados abertos do tribunal?
-  sql: SELECT count(DISTINCT SeqDocumento) AS v FROM br_stj_dadosabertos.documentos WHERE dataPublicacao LIKE '2021%'
+  sql: SELECT count(DISTINCT SeqDocumento) AS v FROM br_stj_dadosabertos.documentos WHERE year(dataPublicacao) = 2021
   doc: 532182
   armadilha: 550291
 
