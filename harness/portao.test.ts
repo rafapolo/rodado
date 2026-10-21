@@ -769,8 +769,10 @@ describe("B25 — falsos positivos da B19", () => {
     expect(portao("SELECT * FROM br_me_cnpj.estabelecimentos LIMIT 5").ok).toBe(true);
     expect(portao("SELECT * FROM br_me_rais_identificada.estabelecimentos LIMIT 5").ok).toBe(true);
   });
-  test("par: DISTINCT sobre os 2,5 bi do CNPJ lê tudo e segue exigindo filtro (T36-2)", () => {
-    const v = portao("SELECT DISTINCT cnae_fiscal_principal FROM br_me_cnpj.estabelecimentos LIMIT 100");
+  // Era br_me_cnpj.estabelecimentos (2,5 bi com os retratos mensais); desde 2026-10-13
+  // ela tem um retrato só (73M) e o DISTINCT passa de direito. A RAIS segue com 2,2 bi.
+  test("par: DISTINCT sobre os 2,2 bi da RAIS lê tudo e segue exigindo filtro (T36-2)", () => {
+    const v = portao("SELECT DISTINCT cbo_2002 FROM br_me_rais.microdados_vinculos LIMIT 100");
     expect(v.camada).toBe("particao");
   });
   test("partição: DISTINCT de código em tabela abaixo de 100M passa (T21-4, T77-5)", () => {

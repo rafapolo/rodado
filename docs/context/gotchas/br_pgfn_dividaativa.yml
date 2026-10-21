@@ -22,9 +22,9 @@ gotchas:
     colunas: [UF_DEVEDOR]
     severidade: silencioso
     verificado: "aviso do conversor em todos os trimestres de 2020 T4 a 2022 T3 — medido 2026-10-11"
-  - id: valor_consolidado_texto
-    resumo: "VALOR_CONSOLIDADO é VARCHAR: sum() direto falha. Use TRY_CAST(VALOR_CONSOLIDADO AS DOUBLE)."
+  - id: valor_consolidado_double
+    resumo: "VALOR_CONSOLIDADO é DOUBLE desde 2026-10-21 (era texto com ponto decimal): some direto. SQL antigo com regexp_replace(VALOR_CONSOLIDADO, '\\.', '') tira o ponto decimal do DOUBLE e multiplica o valor por 100 sem erro."
     tabelas: [divida, divida_trimestres]
     colunas: [VALOR_CONSOLIDADO]
-    severidade: aviso
-    verificado: "typeof = VARCHAR em divida, 2026 T2 — medido 2026-10-15"
+    severidade: silencioso
+    verificado: "typeof = DOUBLE nas duas; divida soma R$ 7,385 tri em 49.702.198 linhas, igual à leitura do texto original com ponto decimal (a leitura pt-BR dava 100x) — medido 2026-10-21"
