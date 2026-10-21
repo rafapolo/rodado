@@ -1,0 +1,21 @@
+dataset: br_comprasgov_sicaf
+gotchas:
+  - id: cpf_completado
+    resumo: "A coluna de CPF mistura CPF completo (completado pelo projeto) e CPF mascarado. count(DISTINCT cpf) conta máscara como pessoa."
+    detalhe: >
+      O CPF mascarado da fonte foi trocado pelo completo só quando nome
+      idêntico, dígitos visíveis e unicidade garantiam a pessoa
+      (procedimento local, fora do repositório). O resto ficou
+      mascarado: filtre regexp_full_match(col, '[0-9]{11}') para ter só os
+      completos, e não trate a máscara como identificador — ela repete entre
+      pessoas diferentes.
+    tabelas: [fornecedores]
+    colunas: [cpf]
+    severidade: silencioso
+    verificado: "152.734 de 189.136 linhas completadas — medido 2026-10-07"
+  - id: duplica_mgi
+    resumo: "fornecedores é o mesmo cadastro de br_mgi_compras_publicas.fornecedor; não some os dois."
+    tabelas: [fornecedores]
+    colunas: [cnpj]
+    severidade: silencioso
+    verificado: "772.020 de 772.073 CNPJs do MGI casam, mesmo ativo — medido 2026-10-15"

@@ -1,0 +1,27 @@
+dataset: br_inpe_deter
+gotchas:
+  - id: pantanal_e_queimada
+    resumo: "No Pantanal, 68% dos alertas são cicatriz de queimada, não desmatamento. Filtre a classe antes de somar área."
+    detalhe: >
+      A classe vem em CLASSNAME (Amazônia, Cerrado) ou class_name (Pantanal,
+      não-floresta), conforme o arquivo de origem: use
+      coalesce(CLASSNAME, class_name). Somar AREAMUNKM sem filtro mistura
+      fogo com supressão de vegetação, e o Pantanal sozinho passa a pesar como
+      se fosse fronteira de desmatamento.
+    tabelas: [avisos]
+    colunas: [CLASSNAME, class_name, AREAMUNKM]
+    severidade: silencioso
+    verificado: "pantanal: 16.457 de 24.155 alertas com class_name='cicatriz de queimada' — medido 2026-10-07"
+  - id: municipio_por_centroide
+    resumo: "Em Pantanal e não-floresta, o município vem do centroide: o polígono inteiro cai num só município."
+    detalhe: >
+      Os shapes desses dois biomas não trazem município. GEOCODIBGE foi
+      preenchido pelo município que contém o centroide, e AREAMUNKM = area_km.
+      Na Amazônia e no Cerrado, ao contrário, o INPE parte o polígono por
+      município: um alerta vira várias linhas e AREAMUNKM é a fatia de cada um.
+      Contar alertas por count(*) nesses dois biomas conta pedaços, não alertas
+      (use count(DISTINCT FID)).
+    tabelas: [avisos]
+    colunas: [GEOCODIBGE, AREAMUNKM, FID]
+    severidade: silencioso
+    verificado: "pantanal 24.152 e nao_floresta_amz 79.677 alertas com município pelo centroide — medido 2026-10-07"

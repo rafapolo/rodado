@@ -1,0 +1,8 @@
+dataset: br_ms_cnes
+gotchas:
+  - id: competencia_final_99
+    resumo: "mes_competencia_final = 99 (e o ano correspondente) quer dizer 'ainda vigente', não um mês. Filtre ou trate como aberto antes de comparar datas."
+    tabelas: [habilitacao, incentivos, regra_contratual, gestao_metas, estabelecimento_ensino, estabelecimento_filantropico]
+    colunas: [mes_competencia_final]
+    severidade: silencioso
+    verificado: "habilitacao: 4.304.563 de 4.785.178 linhas com mes_competencia_final = 99; estabelecimento_filantropico: todas — medido 2026-10-20"

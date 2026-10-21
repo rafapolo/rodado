@@ -1,0 +1,8 @@
+dataset: br_pncp
+gotchas:
+  - id: ano_contrato_corrompido
+    resumo: "anoContrato tem valores impossíveis (até 26042024, uma data colada): use year(dataAssinatura)."
+    tabelas: [contratos]
+    colunas: [anoContrato, dataAssinatura]
+    severidade: aviso
+    verificado: "72 de 5.229.507 linhas com anoContrato fora de 2000–2030 (máx 26042024) — medido 2026-10-20"

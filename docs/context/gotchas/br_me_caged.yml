@@ -1,0 +1,15 @@
+dataset: br_me_caged
+gotchas:
+  - id: duas_origens_na_mesma_tabela
+    resumo: "Até 2025-07 as três tabelas são espelho do Base dos Dados; de 2025-08 em diante vêm direto do MTE, no mesmo schema. Nada muda na consulta, mas id_municipio NULL tem outro peso depois da troca."
+    detalhe: >
+      O Base dos Dados fecha os meses recentes; os arquivos mte_<aaaamm>.parquet são o
+      CAGEDMOV, CAGEDFOR e CAGEDEXC de cada mês baixados do FTP do MTE e convertidos.
+      Na conversão, código de município que o diretório do IBGE não conhece vira NULL
+      (com sigla_uf preservada); some por sigla_uf se o município não for o recorte.
+      microdados_movimentacao traz só o declarado dentro do prazo: o saldo "com ajuste"
+      divulgado depois soma fora_prazo e desconta excluida.
+    tabelas: [microdados_movimentacao, microdados_movimentacao_fora_prazo, microdados_movimentacao_excluida]
+    colunas: [id_municipio, saldo_movimentacao, ano, mes]
+    severidade: silencioso
+    verificado: "julho de 2025 convertido da fonte = 4.373.105 linhas, as mesmas do disco, 4 linhas diferentes; 13 meses do MTE (2025-08 a 2026-08) somam 56.316.636 linhas, exatamente o que o metadado do BigQuery dizia faltar; agosto de 2025: saldo +147.358, 441 linhas sem município; agosto de 2026: 1.346 sem município — medido 2026-10-11"

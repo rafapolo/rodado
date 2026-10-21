@@ -1,0 +1,8 @@
+dataset: br_ipea_acesso_oportunidades
+gotchas:
+  - id: renda_quase_vazia
+    resumo: "decil_de_renda e quintil_de_renda estão 100% vazios e renda_domiciliar_pc vem em só 19% dos hexágonos. Recorte por renda não é possível aqui."
+    tabelas: [estatisticas_2019]
+    colunas: [decil_de_renda, quintil_de_renda, renda_domiciliar_pc]
+    severidade: erro
+    verificado: "336.427 hexágonos: decil 0, quintil 0, renda_domiciliar_pc 64.983 preenchidos — medido 2026-10-20"

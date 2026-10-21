@@ -84,6 +84,8 @@ export interface Rodada {
   casos: Saida[];
   /** onde o build do llama.cpp mudou no meio da rodada — vazio/ausente = não mudou */
   trocasDeBuild?: { caso: number; de: string; para: string }[];
+  /** o que `HARNESS_ABLA` desligou nesta rodada (semantica.ts) — ausente = nada */
+  abla?: string;
 }
 
 /**
@@ -318,6 +320,7 @@ if (import.meta.main) {
     .map((l) => { const [p, e] = l.split("\t"); return { pergunta: p!.trim(), esperado: e?.trim() }; });
   const config = await configServidor();
   console.log(`${casos.length} perguntas pelo Pi — ${rotuloConfig(config)}`);
+  if (Bun.env.HARNESS_ABLA) console.log(`ABLAÇÃO: ${Bun.env.HARNESS_ABLA}`);
   if (!config) console.log("AVISO: sem a config do servidor, o TEMPO desta rodada não é comparável com nenhuma outra");
   console.log(`limiar de prefill: ${LIMIAR_PREFILL} tokens\n`);
   // Gravado a cada caso, não só no fim: as rodadas de 2026-09-03 dos casos com
@@ -326,6 +329,7 @@ if (import.meta.main) {
   const grava = (casosFeitos: Saida[]) =>
     writeFileSync(saida, JSON.stringify({
       gerado: new Date().toISOString(), config, cliente: "pi", casos: casosFeitos,
+      ...(Bun.env.HARNESS_ABLA ? { abla: Bun.env.HARNESS_ABLA } : {}),
       trocasDeBuild: trocasDeBuild(casosFeitos.map((c) => c.build), config?.build),
     } satisfies Rodada, null, 1));
   const r = await roda(casos, grava, config?.build);

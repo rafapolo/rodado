@@ -1,0 +1,14 @@
+dataset: br_ons_estimativa_custos
+gotchas:
+  - id: sin_e_soma_dos_subsistemas
+    resumo: "balanco_energia_subsistemas traz o SIN (Sistema Interligado Nacional) como um quinto subsistema, que já é a soma dos outros quatro. Somar tudo dobra o total; filtre id_subsistema = 'SIN' ou exclua-o."
+    tabelas: [balanco_energia_subsistemas]
+    colunas: [id_subsistema, subsistema]
+    severidade: silencioso
+    verificado: "2023, eólica: N 1,8 + NE 87,3 + S 5,7 + SE 0,1 = 94,9 TWh = SIN 94,9 TWh; 24 horas × 5 subsistemas = 120 linhas por dia — medido 2026-10-20"
+  - id: geracao_vezes_1e8
+    resumo: "As colunas de geração e carga vêm em MWmed × 10^8, como em br_ons_avaliacao_operacao: divida por 1e8 (a soma horária no ano dá MWh)."
+    tabelas: [balanco_energia_subsistemas]
+    colunas: [geracao_eolica_verificada, geracao_hidraulica_verificada, geracao_termica_verificada, geracao_fotovoltaica_verificada, carga_verificada]
+    severidade: silencioso
+    verificado: "2023, id_subsistema = 'SIN': sum(geracao_eolica_verificada) / 1e8 = 94,9 TWh, igual ao total de geracao_usina em br_ons_avaliacao_operacao (94,6 TWh) — medido 2026-10-20"
