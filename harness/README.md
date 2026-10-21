@@ -448,6 +448,54 @@ cinco casos de cobertura que eles tocam passaram para `armadilhas.yaml`: deixara
 harness]`. Até `catalogo.ts --atualiza` e a persona regenerada, eles medem o cache
 velho, não o harness.
 
+## Gotchas medidas por ablação (2026-10-21)
+
+Desde a B40 o `descrever_tabela` recebe o `resumo` de cada gotcha de
+`docs/context/gotchas/` como `ARMADILHA: …`. Para saber o que isso vale,
+`HARNESS_ABLA` desliga uma gotcha, uma nota ou um alerta por item (`semantica.ts`,
+`ablado()`), e o lote grava o que foi desligado em `abla`. Gemma 4 26B q4,
+`-np 1 -c 32768`, llama.cpp `6b790a9`. As rodadas estão em `benchmarks/lote_2026-10-21*.json`.
+
+**10 perguntas de `armadilhas.yaml`, cada uma com as gotchas ligadas e desligadas.**
+Os casos foram escolhidos com a resposta ingênua numérica e sem nota em `notas.json` para a tabela:
+
+| Caso | Ligadas | Desligadas |
+|---|---|---|
+| `ana_vazao_captada` | ✓ 5.717,93 m³/s | ✗ 20.584.536,83, a vazão em m³/h somada como m³/s |
+| `ans_beneficiarios_dez2022` | ✓ 50.063.444 | ✗ 75.405.189, as duas `data_carga` somadas |
+| `senatran_frota_dez2023` | ✓ 119.227.657 | ✗ 238.455.314, a linha de total somada junto |
+| censo 2022, SINAN dengue, PRF, PRODES | ✓ | ✓ |
+| CVM Petrobras, STJ, INSS | ✗ | ✗ |
+| **Total** | **7/10** | **4/10** |
+
+As três viradas devolveram, com as gotchas desligadas, **exatamente** o número da
+armadilha, e nenhum caso piorou com elas ligadas. Os três que erraram nos dois
+braços não são falha da gotcha:
+- **CVM:** o modelo usou o ITR trimestral em vez da DFP anual.
+- **STJ:** seguiu as duas gotchas, mas acrescentou por conta própria um filtro
+  `tipoDocumento = 'DECISAO'`; a pergunta é ambígua.
+- **INSS:** nunca abriu `br_mps_beneficios`. A gotcha só chega a quem descreve a
+  tabela, e descoberta errada passa por fora dela.
+
+**O caso do SIM não isola a gotcha.** Com a nota de `causa_basica` (faixa X60–X84)
+ligada, a pergunta dos suicídios no RJ em 2020 deu 789 em 3/3 com a gotcha e em
+3/3 sem ela: a nota resolve sozinha. Desligando também essa nota, deu 749 em 2/2
+sem a gotcha. Com ela, deu 1/2 na coluna certa, mas com a faixa do CID errada
+(X85–Y09, 4.237); a outra rodada continuou no 749, puxada pelo dicionário que
+decodifica `circunstancia_obito` '2' como "Suicídio". Uma ARMADILHA genérica perde
+para um decode concreto; a nota com a faixa exata ganha dos dois.
+
+O que fica:
+1. **Gotcha resolve armadilha de leitura** (unidade, duplicidade, linha de
+   total) quando o modelo chega à tabela.
+2. **Não resolve descoberta.** Esse é o próximo gargalo nos casos que erram
+   dos dois lados.
+3. **Contra um decode tentador, a gotcha precisa trazer a expressão certa**, não
+   só proibir a coluna errada.
+
+São 10 casos com uma rodada cada. As remedições da B19 mostram oscilação grande
+de um caso para outro, então o +3 é sinal, não medida fina.
+
 ## Módulos
 
 | Arquivo | Papel |
