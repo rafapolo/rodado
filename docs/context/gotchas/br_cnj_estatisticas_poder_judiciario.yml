@@ -1,0 +1,15 @@
+dataset: br_cnj_estatisticas_poder_judiciario
+gotchas:
+  - id: medias_corrompidas_desde_2015
+    resumo: "As colunas despesa_media_* (magistrado, servidor, terceirizado, estagiário) estão corrompidas de 2015 em diante, com valores na casa de 10^14. Antes de 2015 vêm 0 ou NULL."
+    detalhe: >
+      Mediana de despesa_media_magistrado por ano: 0 em 2011–2014 e ~5e14 de 2015
+      a 2021. As colunas execucao_orcamentaria_* também têm valores até ~1e15.
+      Os totais (despesa_rh, despesa_pessoal_encargos, despesa_total_justica_estadual)
+      têm medianas plausíveis, mas também outliers: despesa_total_justica_estadual
+      passa de R$ 200 bi em 137 tribunal-anos e chega a R$ 6,1 tri. Corte
+      outliers antes de somar.
+    tabelas: [recursos_financeiros]
+    colunas: [despesa_media_magistrado, despesa_media_servidor, despesa_media_terceirizado, despesa_media_estagiario]
+    severidade: erro
+    verificado: "despesa_media_magistrado > 1e7 em 90–96 de 97 linhas por ano de 2015 a 2021, mediana 4,8e14 a 5,4e14; 0 linhas de 2009 a 2014; despesa_total_justica_estadual > 2e11 em 137 de 1.189 linhas, máx 6,13e12 — medido 2026-10-20"

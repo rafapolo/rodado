@@ -1,0 +1,14 @@
+dataset: br_mte_listasuja
+gotchas:
+  - id: historico_sao_retratos
+    resumo: "empregadores_historico é a soma dos retratos coletados (hoje dois), não a lista desde 2003: o mesmo empregador aparece uma vez por coleta. Conte DISTINCT cpf_cnpj; a primeira inclusão mais antiga é 2023-10-05."
+    tabelas: [empregadores_historico, ceac_historico]
+    colunas: [data_coleta, cpf_cnpj, data_primeira_inclusao]
+    severidade: silencioso
+    verificado: "1.086 linhas = 578 (25/09) + 508 (09/10/2026); 647 documentos distintos; trabalhadores somados 8.692 × 4.703 + 3.989 por retrato — medido 2026-10-15"
+  - id: pessoa_fisica_e_ente_publico
+    resumo: "Dois terços são CPF (436 de 647), 81 deles em serviço doméstico (CNAE 97), e há ente público na lista (Estado de Rondônia). Cruzar só contra o cadastro CNPJ perde a maioria."
+    tabelas: [empregadores, empregadores_historico]
+    colunas: [tipo_documento, cnae]
+    severidade: aviso
+    verificado: "211 CNPJ × 436 CPF distintos; 81 CPFs com divisão 97 — medido 2026-10-15"

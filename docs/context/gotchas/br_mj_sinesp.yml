@@ -1,0 +1,26 @@
+dataset: br_mj_sinesp
+gotchas:
+  - id: uf_mes_nao_e_soma_de_municipio
+    resumo: "As duas tabelas cobrem indicadores diferentes. Homicídio, morte no trânsito e suicídio estão em municipio_mes; uf_mes traz resíduos (790 homicídios em 2015–2026). Roubo e furto de veículo, roubo de carga e tráfico só existem em uf_mes."
+    tabelas: [uf_mes, municipio_mes]
+    colunas: [tipo_ocorrencia, quantidade_vitimas, quantidade_ocorrencias]
+    severidade: silencioso
+    verificado: "homicidio_doloso: municipio_mes 481.819 vítimas × uf_mes 790; roubo_de_veiculo só em uf_mes (2.069.542) — medido 2026-10-15"
+  - id: vitimas_ou_ocorrencias
+    resumo: "Cada tipo preenche só uma das colunas: crimes contra a pessoa em quantidade_vitimas, patrimônio e operações em quantidade_ocorrencias. A outra vem nula."
+    tabelas: [municipio_mes, uf_mes]
+    colunas: [quantidade_vitimas, quantidade_ocorrencias]
+    severidade: silencioso
+    verificado: "homicidio_doloso, suicidio, morte_no_transito: ocorrências NULL; mandado_de_prisao_cumprido, roubo_de_veiculo: vítimas NULL — medido 2026-10-15"
+  - id: transito_estadual_cobertura_desigual
+    resumo: "morte_no_transito_exceto_homicidio_doloso (polícia estadual) vai de 21% (PI) a 126% (CE) dos óbitos de transporte do SIM, de forma estável por ano: não serve para comparar UFs."
+    tabelas: [municipio_mes]
+    colunas: [tipo_ocorrencia, quantidade_vitimas]
+    severidade: silencioso
+    verificado: "2023 por UF de ocorrência: Brasil 23.725 × 34.881 (68%); CE 1.732 × 1.374; PI 225 × 1.045; CE acima de 100% em 2019–2023 — medido 2026-10-15"
+  - id: abrangencia_mistura_policias
+    resumo: "abrangencia separa polícia estadual, PRF e PF no mesmo tipo; as linhas da PF vêm com valor nulo nos crimes de veículo. Filtre a abrangência antes de somar."
+    tabelas: [uf_mes, municipio_mes]
+    colunas: [abrangencia]
+    severidade: aviso
+    verificado: "uf_mes 2023, roubo_de_veiculo: 'Estadual' 135.041, 'Polícia Federal' NULL — medido 2026-10-15"

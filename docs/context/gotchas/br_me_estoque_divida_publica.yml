@@ -1,0 +1,8 @@
+dataset: br_me_estoque_divida_publica
+gotchas:
+  - id: carteira_do_banco_central
+    resumo: "Somar todas as classe_carteira inclui a carteira do Banco Central (~R$ 2 tri). Para estoque da DPF em mercado, filtre classe_carteira = 'Mercado'."
+    tabelas: [microdados]
+    colunas: [classe_carteira, valor_estoque]
+    severidade: silencioso
+    verificado: "out/2022: Mercado R$ 5,78 tri (interna 5,53 + externa 0,25), Banco Central R$ 2,07 tri, soma R$ 7,85 tri — medido 2026-10-20"

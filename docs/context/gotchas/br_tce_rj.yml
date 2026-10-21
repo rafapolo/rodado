@@ -1,0 +1,8 @@
+dataset: br_tce_rj
+gotchas:
+  - id: valor_contrato_digitado_errado
+    resumo: "ValorContrato tem erros de digitação de trilhões: um contrato de merenda de Armação dos Búzios vale R$ 2,43 tri. Corte outliers antes de somar."
+    tabelas: [contratos_municipio]
+    colunas: [ValorContrato]
+    severidade: silencioso
+    verificado: "AnoContrato 2023: soma R$ 2,32 tri, dos quais R$ 2,43 tri num contrato de merenda de ARMACAO DOS BUZIOS — medido 2026-10-20"

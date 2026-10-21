@@ -15,6 +15,24 @@ import { listaDatasets, tabelasDe } from "./catalogo.ts";
 
 const RAIZ = new URL("..", import.meta.url).pathname;
 
+/**
+ * Ablação, para medir o que cada pedaço de conhecimento vale (plano de gotchas,
+ * Fase 0 e 2): `HARNESS_ABLA` é uma lista separada por vírgula do que desligar.
+ *
+ *     gotchas                      todas as armadilhas de docs/context/gotchas/
+ *     gotchas:<dataset>            as de um dataset
+ *     nota:<dataset.tabela>        a nota da tabela (`*` em notas.json)
+ *     nota:<dataset.tabela.coluna> a nota de uma coluna
+ *     alerta:<nome>                um alerta do portão (`alerta:circunstancia_obito`)
+ *
+ * Lida a cada chamada, não no import: o processo do MCP herda o env do lote.
+ */
+export function ablado(item: string): boolean {
+  const lista = (Bun.env.HARNESS_ABLA ?? "").toLowerCase().split(",").map((x) => x.trim()).filter(Boolean);
+  item = item.toLowerCase();
+  return lista.includes(item) || (item.startsWith("gotchas:") && lista.includes("gotchas"));
+}
+
 type Notas = Record<string, Record<string, string>>;
 let _notas: Notas | null = null;
 function notas(): Notas {
@@ -53,10 +71,14 @@ function gotchas(): Map<string, string[]> {
   return _gotchas;
 }
 
-export const notaTabela = (tabela: string) =>
-  [notas()[tabela.toLowerCase()]?.["*"] ?? "", ...(gotchas().get(tabela.toLowerCase()) ?? []).map((g) => `ARMADILHA: ${g}`)]
-    .filter(Boolean).join(" · ");
-export const notaColuna = (tabela: string, coluna: string) => notas()[tabela.toLowerCase()]?.[coluna.toLowerCase()] ?? "";
+export const notaTabela = (tabela: string) => {
+  const t = tabela.toLowerCase();
+  const daTabela = ablado(`nota:${t}`) ? "" : notas()[t]?.["*"] ?? "";
+  const armadilhas = ablado(`gotchas:${t.split(".")[0]}`) ? [] : gotchas().get(t) ?? [];
+  return [daTabela, ...armadilhas.map((g) => `ARMADILHA: ${g}`)].filter(Boolean).join(" · ");
+};
+export const notaColuna = (tabela: string, coluna: string) =>
+  ablado(`nota:${tabela}.${coluna}`) ? "" : notas()[tabela.toLowerCase()]?.[coluna.toLowerCase()] ?? "";
 
 /** Colunas que as notas dizem ser código de município de 6 dígitos (SIH, SINAN): lidas das notas, não listadas à mão. */
 export function colunasDeSeisDigitos(): Set<string> {

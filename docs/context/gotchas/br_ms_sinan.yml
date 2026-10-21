@@ -1,0 +1,78 @@
+dataset: br_ms_sinan
+gotchas:
+  - id: dengue_classificacao_com_espaco
+    resumo: "Em microdados_dengue, classificacao_final ganha espaço à direita a partir de 2014 ('5 ', '8 '): compare com trim()."
+    detalhe: >
+      Até 2013 os códigos vêm limpos ('5' descartado, '8' inconclusivo). De 2014
+      em diante os de um dígito vêm com espaço ('1 ', '5 ', '8 ') e os de dois
+      ('10', '11', '12') não. classificacao_final = '5' não acha nenhum
+      descartado e devolve a série inteira como "provável". Use
+      trim(classificacao_final). Os códigos também mudam em 2014: 10/11/12 =
+      dengue / com sinais de alarme / grave (OMS 2009); antes, 1-4 = clássica,
+      com complicações, FHD, síndrome do choque.
+    tabelas: [microdados_dengue]
+    colunas: [classificacao_final]
+    severidade: silencioso
+    verificado: "2019: '5 ' = 707.830, '5' = 0; 2013: '5' = 561.799 — medido 2026-10-05"
+  - id: dengue_sem_descartados_desde_2022
+    resumo: "Em microdados_dengue, a partir de 2022 o arquivo não traz descartados: 'notificações' antes e depois não são comparáveis."
+    detalhe: >
+      Até 2021 o arquivo tem todas as notificações (~30-50% descartadas). De 2022
+      em diante só vem o que não foi descartado (casos prováveis). count(*) por
+      ano dá um salto falso. Para uma série homogênea, filtre
+      coalesce(trim(classificacao_final),'') <> '5' em todos os anos.
+    tabelas: [microdados_dengue]
+    colunas: [classificacao_final, ano]
+    severidade: silencioso
+    verificado: "descartados ('5 '): 2021 = 478.368, 2022 = 0, 2024 = 0; prováveis 2024 = 6.434.137 (MS publicou ~6,5 mi) — medido 2026-10-05"
+  - id: dengue_espirito_santo_ausente_2021_2024
+    resumo: "Em microdados_dengue, o Espírito Santo quase some entre 2021 e 2024: o estado notificou em sistema próprio."
+    detalhe: >
+      Residentes do ES têm 64.735 casos prováveis em 2019 e 32, 66, 252 e 575 em
+      2021-2024; volta a 34.891 em 2025. A SIH mostra 2.515 e 2.669 internações
+      por dengue de residentes do ES em 2023 e 2024, então a doença não sumiu.
+      Exclua o ES (ou trate como ausente) em qualquer comparação por UF ou
+      município nesses anos.
+    tabelas: [microdados_dengue]
+    colunas: [id_municipio_residencia, sigla_uf_notificacao]
+    severidade: silencioso
+    verificado: "prováveis de residentes do ES: 2019 = 64.735, 2024 = 575; SIH A90-A91 ES 2024 = 2.669 — medido 2026-10-05"
+  - id: dengue_idade_com_unidade
+    resumo: "Em microdados_dengue, idade_paciente é texto '<unidade>-<valor>' ('4-024' = 24 anos); não converta direto para número."
+    detalhe: >
+      A unidade vem antes do hífen: 4 = anos, 3 = meses, 2 = dias, 1 = horas.
+      try_cast(idade_paciente AS INT) dá nulo para tudo. Anos =
+      substr(idade_paciente, 3) quando começa por '4-'; o resto é menor de 1 ano.
+    tabelas: [microdados_dengue]
+    colunas: [idade_paciente]
+    severidade: erro
+    verificado: "2024: valores mais frequentes '4-024' (123.809), '4-023', '4-026' — medido 2026-10-05"
+  - id: dengue_comorbidade_so_desde_2017
+    resumo: "Em microdados_dengue, possui_diabetes/possui_hipertensao etc. são vazios até 2015 e só ficam usáveis em 2017."
+    detalhe: >
+      Proporção vazia ou '9' em possui_diabetes entre os prováveis: 2014 = 100%,
+      2015 = 98%, 2016 = 54%, 2017 = 17%, 2024 = 2%. O campo é mais bem
+      preenchido em caso grave, o que infla o risco relativo de quem tem
+      comorbidade registrada.
+    tabelas: [microdados_dengue]
+    colunas: [possui_diabetes, possui_hipertensao, possui_doenca_renal]
+    severidade: silencioso
+    verificado: "possui_diabetes vazio/9 entre prováveis: 2014 = 100%, 2017 = 17,4%, 2024 = 1,8% — medido 2026-10-05"
+  - id: srag_sexo_vazio
+    resumo: "Em microdados_influenza_srag, sexo é nulo em todos os registros (2009-2022)."
+    detalhe: >
+      3.724.213 linhas, 0 com sexo. Nenhuma estratificação por sexo é possível
+      nesta tabela.
+    tabelas: [microdados_influenza_srag]
+    colunas: [sexo]
+    severidade: erro
+    verificado: "count(sexo) = 0 de 3.724.213 — medido 2026-10-05"
+  - id: srag_residencia_seis_digitos
+    resumo: "Em microdados_influenza_srag, o município de residência está só em id_municipio_6_residencia; id_municipio_residencia é nulo."
+    detalhe: >
+      Em 2022, id_municipio_residencia vem nulo em 100% e id_municipio_6_residencia
+      preenchido em 99,98%. Junte pelo id_municipio_6 do diretório.
+    tabelas: [microdados_influenza_srag]
+    colunas: [id_municipio_residencia, id_municipio_6_residencia]
+    severidade: silencioso
+    verificado: "2022: id_municipio_residencia 0 de 416.945; id_municipio_6_residencia 416.859 — medido 2026-10-05"

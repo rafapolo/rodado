@@ -1,0 +1,36 @@
+dataset: br_ans_operadoras
+gotchas:
+  - id: registro_ans_muda_de_nome_e_perde_zero
+    resumo: "A chave entre as tabelas é o registro ANS da operadora (6 dígitos), que muda de nome por tabela e às vezes vem sem o zero à esquerda. Junte por lpad(x, 6, '0')."
+    detalhe: >
+      REGISTRO_OPERADORA no cadastro, nas demandas NIP, em penalidades e no
+      ressarcimento; REG_ANS nas demonstrações contábeis; CD_OPERADORA em
+      ressarcimento_sus_hc; CODIGO_OPERADORA em ressarcimento_sus_indice_pagamento.
+      O cadastro está em duas tabelas: operadoras_ativas e operadoras_canceladas
+      (una as duas antes de juntar, senão as operadoras que fecharam somem).
+    tabelas: [operadoras_ativas, operadoras_canceladas, penalidades, demandas_nip, demonstracoes_contabeis, ressarcimento_sus_hc, ressarcimento_sus_indice_pagamento, ressarcimento_sus_atendimentos, ressarcimento_sus_beneficiarios]
+    colunas: [REGISTRO_OPERADORA, REG_ANS, CD_OPERADORA, CODIGO_OPERADORA]
+    severidade: silencioso
+    verificado: "penalidades: registro com 5 e 6 caracteres, 2.304 de 2.304 operadoras casam com ativas+canceladas depois do lpad; ressarcimento_sus_hc: 2.873 de 3.031 casam sem lpad e 3.031 com — medido 2026-10-10"
+  - id: cnpj_so_no_cadastro
+    resumo: "CNPJ só existe em operadoras_ativas, operadoras_canceladas (14 dígitos) e penalidades (pontuado, 3 linhas truncadas). Para as outras tabelas, chegue ao CNPJ pelo registro ANS."
+    tabelas: [operadoras_ativas, operadoras_canceladas, penalidades]
+    colunas: [CNPJ]
+    severidade: erro
+    verificado: "ativas 1.105 e canceladas 3.078 linhas, todas com 14 dígitos; penalidades: 111.826 de 111.928 linhas no formato 00.000.000/0000-00, 98 sem CNPJ, 3 truncadas; 2.296 de 2.635 CNPJs de penalidades casam com o cadastro — medido 2026-10-10"
+  - id: plano_de_contas_hierarquico
+    resumo: "demonstracoes_contabeis traz o plano de contas inteiro, com conta-pai e conta-filha na mesma tabela: somar VL_SALDO_FINAL sem fixar CD_CONTA_CONTABIL conta o mesmo valor várias vezes. VL_SALDO_INICIAL só existe de 2021-10 em diante."
+    detalhe: >
+      Uma linha por operadora, trimestre (DATA é o primeiro dia do trimestre) e
+      conta. A conta '1' é o ativo total, '12' o circulante, e assim por diante:
+      filtre uma conta (ou um nível, pelo comprimento do código) antes de somar.
+    tabelas: [demonstracoes_contabeis]
+    colunas: [CD_CONTA_CONTABIL, VL_SALDO_FINAL, VL_SALDO_INICIAL, DATA]
+    severidade: silencioso
+    verificado: "52.498.420 linhas, 2001 a 2026, códigos de conta com 9 comprimentos diferentes; VL_SALDO_INICIAL preenchido em 14.815.215 linhas, a primeira em 2021-10-01; 155.525 linhas em branco da fonte descartadas na carga — medido 2026-10-10"
+  - id: ressarcimento_em_duas_tabelas
+    resumo: "ressarcimento_sus_atendimentos e ressarcimento_sus_beneficiarios descrevem os mesmos atendimentos (mesma contagem) por dois ângulos: cobrança ao lado da operadora e perfil do beneficiário. Não some as duas."
+    tabelas: [ressarcimento_sus_atendimentos, ressarcimento_sus_beneficiarios]
+    colunas: [NUM_ATENDIMENTO, VALOR_COBRADO, VL_RESSARC]
+    severidade: silencioso
+    verificado: "10.507.502 linhas em cada uma; VALOR_COBRADO soma R$ 12,55 bi (competências 2001-02 a 2025-06), contra R$ 13,20 bi de cobrado acumulado até 2026/09 em ressarcimento_sus_cobranca_arrecadacao — medido 2026-10-10"

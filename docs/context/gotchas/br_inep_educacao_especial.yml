@@ -1,0 +1,8 @@
+dataset: br_inep_educacao_especial
+gotchas:
+  - id: etapa_ensino_soma_a_mais
+    resumo: "etapa_ensino soma ~1,6% a mais de matrículas que localizacao, tempo_ensino e sexo_raca_cor. Para o total, use uma das outras três."
+    tabelas: [etapa_ensino, localizacao, tempo_ensino, sexo_raca_cor]
+    colunas: [quantidade_matricula]
+    severidade: silencioso
+    verificado: "2024, Classes Comuns: etapa_ensino 1.955.026; localizacao, tempo_ensino e sexo_raca_cor 1.923.692 — medido 2026-10-20"

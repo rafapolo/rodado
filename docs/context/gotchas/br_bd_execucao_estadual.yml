@@ -1,0 +1,23 @@
+dataset: br_bd_execucao_estadual
+gotchas:
+  - id: pe_2009_quatrilhoes
+    resumo: "36 linhas de despesa de PE em 2009 somam R$ 15 quatrilhões (valor_pago >= 1e12). Exclua valor_pago >= 1e12 antes de somar."
+    detalhe: >
+      Todo o resto da tabela, todos os estados e anos, soma R$ 6,8 tri. Sem o
+      corte, qualquer total de PE ou nacional fica 2.000 vezes maior.
+    tabelas: [despesa]
+    colunas: [valor_pago]
+    severidade: silencioso
+    verificado: "36 linhas, todas PE/2009, R$ 15.181 tri; resto da tabela R$ 6,84 tri — medido 2026-10-20"
+  - id: mes_nulo_e_mes_0_13
+    resumo: "Em despesa, PE vem com mes NULL em 3,9 milhões de linhas (R$ 577 bi) e há mes 0 e 13 (abertura e encerramento). Série mensal perde ou distorce esses valores."
+    tabelas: [despesa]
+    colunas: [mes, ano]
+    severidade: silencioso
+    verificado: "mes NULL: 3.936.052 linhas, só PE (2011–2026), R$ 576,9 bi; mes 0: 17.506 linhas; mes 13: 28.517 — medido 2026-10-20"
+  - id: licitacao_valor_referencia_absurdo
+    resumo: "Uma licitação tem valor_referencia de R$ 81,8 tri: corte outliers antes de somar."
+    tabelas: [licitacao]
+    colunas: [valor_referencia]
+    severidade: silencioso
+    verificado: "1 linha com valor_referencia >= 1e11, R$ 81,76 tri — medido 2026-10-20"

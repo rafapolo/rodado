@@ -24,7 +24,7 @@
  */
 import { checkReadOnly } from "./sqlguard.ts";
 import { colunasDe, camposPontuados, linhasDe, particoesDe, inservivel, LIMIAR_PARTICAO, tabelaPrincipal, resolveDataset } from "./catalogo.ts";
-import { sugereTabelas, sugereDatasets, tabelasDoDataset, DIRETORIOS, colunasDeSeisDigitos } from "./semantica.ts";
+import { sugereTabelas, sugereDatasets, tabelasDoDataset, DIRETORIOS, colunasDeSeisDigitos, ablado } from "./semantica.ts";
 import { codigos } from "./dicionarios.ts";
 import { valores } from "./valores.ts";
 import { faixaDeAnos, type Faixa } from "./anos.ts";
@@ -1292,7 +1292,7 @@ export function alertasDeSanidade(sql: string, linhas: Linha[], pergunta = ""): 
   // preenchido. O modelo achou o número errado, plausível, sem o portão
   // acusar nada: é a mesma classe da camada 6 (codificação), só que num
   // campo que ela não cobre.
-  if (/\bcircunstancia_obito\b/i.test(sql) && !/\bcausa_basica\b/i.test(sql)) {
+  if (/\bcircunstancia_obito\b/i.test(sql) && !/\bcausa_basica\b/i.test(sql) && !ablado("alerta:circunstancia_obito")) {
     alertas.push(
       "circunstancia_obito classifica causa de óbito, mas está SUB-PREENCHIDO: " +
       "medido em RJ 2020, circunstancia_obito='2' (Suicídio) deu 749 contra 789 " +

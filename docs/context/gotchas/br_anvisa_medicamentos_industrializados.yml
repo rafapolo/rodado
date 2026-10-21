@@ -1,0 +1,8 @@
+dataset: br_anvisa_medicamentos_industrializados
+gotchas:
+  - id: tabela_cortada_em_10_milhoes
+    resumo: "microdados tem exatamente 10.000.000 de linhas e 2021 vem com um quarto do volume dos anos anteriores: é um recorte, não o SNGPC inteiro. Não use para totais nacionais."
+    tabelas: [microdados]
+    colunas: [ano, quantidade_vendida]
+    severidade: aviso
+    verificado: "count(*) = 10.000.000; 2020: 1.740.885 linhas, 2021: 386.527 — medido 2026-10-20"

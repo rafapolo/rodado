@@ -1,0 +1,15 @@
+dataset: br_cgu_beneficios_cidadao
+gotchas:
+  - id: cpf_completado
+    resumo: "A coluna de CPF mistura CPF completo (completado pelo projeto) e CPF mascarado. count(DISTINCT cpf) conta máscara como pessoa."
+    detalhe: >
+      O CPF mascarado da fonte foi trocado pelo completo só quando nome
+      idêntico, dígitos visíveis e unicidade garantiam a pessoa
+      (procedimento local, fora do repositório). O resto ficou
+      mascarado: filtre regexp_full_match(col, '[0-9]{11}') para ter só os
+      completos, e não trate a máscara como identificador — ela repete entre
+      pessoas diferentes.
+    tabelas: [auxilio_emergencial, bpc]
+    colunas: [cpf_responsavel, cpf_beneficiario, cpf_representante]
+    severidade: silencioso
+    verificado: "cpf_responsavel 105.881.828 de 160.840.838; cpf_beneficiario 2.344.315 dos 37.981.027 que setembro deixou; bpc.cpf_representante 208.707.374 de 346.357.411 linhas completadas — medido 2026-10-07"

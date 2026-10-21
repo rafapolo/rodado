@@ -1,0 +1,51 @@
+dataset: br_tse_eleicoes
+gotchas:
+  - id: receitas_2026_parciais
+    resumo: "As receitas de 2026 são do ciclo em aberto: relatórios de 72 h e parciais, sem as prestações finais. Não compare total com 2022 como se fosse fechado."
+    detalhe: >
+      Carregadas do CDN do TSE por scripts/scrap/tse_receitas_2026.py, que
+      substitui o arquivo a cada rodada. Os campos *_orig (doador originário)
+      ficam nulos, como em 2022. sequencial_receita se repete quando uma doação
+      estimável é rateada entre itens — não deduplique por ele.
+    tabelas: [receitas_candidato]
+    colunas: [tipo_prestacao_contas, sequencial_receita]
+    severidade: silencioso
+    verificado: "ano=2026: 171.354 linhas, R$ 6,49 bi, 479 linhas 'final' — medido 2026-10-07"
+  - id: receitas_2026_data_futura
+    resumo: "66 receitas de 2026 têm data_receita depois da carga (até 29/11/2026). Erro do prestador, mantido como veio."
+    tabelas: [receitas_candidato]
+    colunas: [data_receita]
+    severidade: silencioso
+    verificado: "66 linhas com data_receita > 2026-10-07 na carga de 2026-10-07"
+  - id: doacao_presidencial_2022_pix
+    resumo: "Em 2022, a campanha de Bolsonaro tem 392 mil receitas (Pix de pessoa física) e a de Lula 533. Contar doações mede o canal, não o apoio."
+    tabelas: [receitas_candidato]
+    colunas: [cargo, sigla_partido, origem_receita]
+    severidade: silencioso
+    verificado: "ano=2022, cargo='presidente': PL 392.138 linhas / R$ 125,0 mi; PT 533 / R$ 135,5 mi — medido 2026-10-07"
+  - id: cpf_candidato_2024_pela_metade
+    resumo: "Em candidatos de 2024, metade das linhas vem sem CPF (vereador 48% preenchido). Cruzamento por CPF em 2024 subconta."
+    tabelas: [candidatos]
+    colunas: [cpf]
+    severidade: silencioso
+    verificado: "2024: 230.724 com CPF de 462.821; vereador 208.320 de 431.577; 2020: 555.034 de 557.313 — medido 2026-10-15"
+  - id: sequencial_nao_unico
+    resumo: "sequencial_candidato não é único no ano: o join com resultados_candidato precisa de ano + sequencial + sigla_uf + id_eleicao, senão infla os resultados."
+    tabelas: [candidatos, resultados_candidato]
+    colunas: [sequencial, sequencial_candidato]
+    severidade: silencioso
+    verificado: "127 candidaturas da Lista Suja geraram 276 linhas de resultado só por ano+sequencial; com UF e eleição, uma por candidatura — medido 2026-10-15"
+  - id: dois_id_eleicao_no_ano_geral
+    resumo: "Em ano de eleição geral há dois id_eleicao com a mesma data e o mesmo tipo_eleicao: um federal (só presidente) e um estadual (governador, senador e deputados). Não é duplicata. Somar por número ou partido sem filtrar cargo junta presidente, governador e deputados."
+    detalhe: >
+      O número 13 em SP/2026 soma 23.543.008 votos sem filtro de cargo: são
+      9.505.413 para presidente (6257), 8.423.656 para governador (6259),
+      3.146.068 para deputado estadual e 2.467.871 para deputado federal. Não há
+      linha repetida, e SP tem 34,1 mi de aptos, não ~9 mi. Filtre sempre por
+      cargo. Em 2026 há duas vagas de senador, cada eleitor dá dois votos, e os
+      votos nominais para senador passam do comparecimento (43,5 mi contra
+      26,4 mi em SP).
+    tabelas: [resultados_candidato_secao, resultados_candidato, detalhes_votacao_secao]
+    colunas: [id_eleicao, cargo, numero_candidato, numero_partido]
+    severidade: silencioso
+    verificado: "ano=2026, SP: 15.718.756 linhas = 15.718.756 chaves (município, zona, seção, cargo, número, turno); 6257 presidente / 6259 demais; aptos 34.122.892 (pres.) — medido 2026-10-15"
