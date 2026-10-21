@@ -194,6 +194,10 @@ FLAG_TEMP=""
 FLAG_LOG=""
 [[ "${LOGPROMPTS:-0}" == "1" ]] && FLAG_LOG="--verbose --log-prompts-dir /tmp/llmlogs"
 
+# 2026-10-21: subia o modelo com o ~/.duckdbrc em 16 GB/14 threads (modo sem
+# modelo), e uma consulta pesada de outra sessão somada aos ~20 GB do llama
+# estoura os 27 GB. duckdb-modo é o mesmo que ~/bin/llama-on chama.
+ssh "$HOST" '~/bin/duckdb-modo modelo' >/dev/null || echo "AVISO: duckdb-modo modelo falhou — confira ~/.duckdbrc no $HOST" >&2
 echo "subindo: -c $CTX -np $SLOTS --cache-ram $CACHE_RAM  (thinking off, KV em f16)${FLAG_JINJA:+, $FLAG_JINJA}${FLAG_TEMP:+, $FLAG_TEMP}${FLAG_LOG:+, $FLAG_LOG}"
 [[ -n "$FLAG_LOG" ]] && ssh "$HOST" "mkdir -p /tmp/llmlogs"
 # Cada flag é medida, não gosto — ver harness/README.md.
