@@ -73,7 +73,7 @@ MODELO = """<!doctype html>
   <div class="footer-inner">
     <a href="/">Índice temático</a>
     <span>Dados: fontes públicas oficiais / DuckDB</span>
-    <a class="footer-by" href="https://extrapolo.com">por extrapolo.com</a>
+    <span class="footer-by">por <a href="https://extrapolo.com" target="_blank" rel="noopener">extrapolo.com</a></span>
   </div>
 </footer>
 
