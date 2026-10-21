@@ -63,7 +63,7 @@ COPY (SELECT TRY_CAST(substr(p.id_car,3,7) AS BIGINT) AS id_municipio,
   TO '__OUT__/v_sicor.csv' (HEADER);
 
 COPY (SELECT s.id_municipio, count(DISTINCT n.cpf_favorecido) AS nbf_familias,
-        sum(TRY_CAST(replace(replace(n.valor_parcela,'.',''),',','.') AS DOUBLE)) AS nbf_valor
+        sum(n.valor_parcela) AS nbf_valor  -- DOUBLE desde 2026-10-21 (era texto pt-BR)
       FROM read_parquet('~/rodado/br_cgu_novo_bolsa_familia/novo_bolsa_familia/202607.parquet') n
       JOIN siafi s ON s.codigo_municipio_siafi = n.codigo_municipio_siafi GROUP BY 1)
   TO '__OUT__/v_nbf.csv' (HEADER);

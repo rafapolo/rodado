@@ -1232,7 +1232,7 @@ em `docs/context/bridges.yaml`.**
 - **`br_sedec_desastres` só tem reconhecimentos vigentes** (jan–jul/2026, 1.237 linhas), não série histórica — bloqueia qualquer pergunta sobre recorrência ou defasagem temporal de desastre.
 - **`br_ok_queridodiario` cobre 9,4% dos municípios**, enviesado para grandes, ricos e de serviços (× densidade agropecuária = −0,57). Não representa o Brasil municipal.
 - **`br_anm.scm_*` (SIGMINE processos) não tem código IBGE** — só `municipio_s` em texto livre, frequentemente com vários municípios na mesma célula. Cruzamento territorial exige normalização prévia.
-- **`br_bcb_scrdata.dados` traz valores como VARCHAR com vírgula decimal e ponto de milhar** — `TRY_CAST` direto retorna NULL silenciosamente; usar `replace(replace(x,'.',''),',','.')`.
+- **`br_bcb_scrdata.dados` trazia valores como VARCHAR com vírgula decimal e ponto de milhar** — desde 2026-10-21 são DOUBLE: some direto. O `replace(replace(x,'.',''),',','.')` de antes, aplicado ao DOUBLE, tira o ponto decimal e multiplica o valor por 100 sem erro.
 - **`br_ibge_cnefe.enderecos` não tem nulo em CEP nem logradouro** nos 111 milhões de registros — exceção positiva neste espelho.
 - **Mapeamento SIAFI→IBGE**: as tabelas do Portal da Transparência (Novo Bolsa Família, Gás do Povo, Seguro-Defeso, Pé-de-Meia, Garantia-Safra) usam `codigo_municipio_siafi`, não `id_municipio`. O join por nome normalizado + UF contra `br_bd_diretorios_brasil.municipio` recupera **5.556 dos 5.571** códigos.
 

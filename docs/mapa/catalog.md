@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**256 datasets, 1.391 tabelas, 32.613.929.672 linhas.** 4 com data de frescor conferida (de 256).
+**262 datasets, 1.461 tabelas, 33.639.668.528 linhas.** 4 com data de frescor conferida (de 262).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -16,6 +16,7 @@
 | `br_anac_dadosabertos` | ANAC — registro de aeronaves, voos e pontualidade | 3 | 728.529 | 2026-09-01 | ANAC |
 | `br_anatel_banda_larga_fixa` | Densidade de acessos de banda larga fixa por município/UF (Anatel) | 4 | 63.650.648 | — | Base dos Dados |
 | `br_anatel_indice_brasileiro_conectividade` | Índice Brasileiro de Conectividade por município (Anatel) | 1 | 22.280 | — | Base dos Dados |
+| `br_anatel_telefonia_movel` | Anatel — telefonia móvel (SMP): acessos por município, empresa, tecnologia e modalidade, mês a mês desde 2019 (177 mi linhas), séries por DDD 2005–2018 e densidade por 100 habitantes | 6 | 177.559.396 | — | Anatel — telefonia móvel (SMP): microdados de acessos, densidades, modalidade e tecnologia |
 | `br_aneel_dadosabertos` | ANEEL — geração distribuída, usinas (SIGA), tarifas homologadas e indicadores de continuidade DEC/FEC | 8 | 41.046.676 | — | ANEEL — usinas SIGA, tarifas homologadas, DEC/FEC |
 | `br_anm` | ANM/SIGMINE — processos minerários, CFEM (royalties de mineração) e licenciamento | 22 | 8.380.445 | — | ANM / SIGMINE — títulos minerários e CFEM |
 | `br_anp_combustiveis` | ANP — preços de combustíveis por posto/revenda | 1 | 2.205.259 | — | ANP combustíveis (preços revenda/distribuição) |
@@ -27,6 +28,7 @@
 | `br_anvisa_consultas` | ANVISA — registros de agrotóxicos, alimentos e produtos regulados | 3 | 101.284 | — | ANVISA (consulta completa) |
 | `br_anvisa_medicamentos_industrializados` | ANVISA — medicamentos industrializados registrados | 1 | 10.000.000 | — | Base dos Dados |
 | `br_ba_feiradesantana_camara_leis` | Câmara Municipal de Feira de Santana — leis municipais | 1 | 6.033 | — | Base dos Dados |
+| `br_bcb_agencia` | BCB — agências bancárias, retrato mensal 2007–2024 (endereço, município, instituição) e o retrato atual do Olinda | 2 | 4.113.708 | — | Base dos Dados |
 | `br_bcb_desenrola` | BCB — programa Desenrola Brasil (renegociação de dívidas de pessoa física) | 1 | 13.638 | — | BCB Desenrola Brasil |
 | `br_bcb_estban` | BCB ESTBAN — estatísticas bancárias por agência/município | 3 | 699.984.822 | — | Base dos Dados |
 | `br_bcb_ifdata` | BCB IF.data — indicadores financeiros de instituições financeiras | 5 | 55.700.812 | — | BCB — IF.data (valores e cadastro por instituição) |
@@ -35,7 +37,7 @@
 | `br_bcb_ptax` | BCB PTAX — cotação de fechamento do dólar e das demais moedas, diária, via Olinda | 3 | 805.100 | — | BCB — PTAX (cotações diárias) |
 | `br_bcb_scrdata` | BCB SCR.data — carteira de crédito do Sistema de Informações de Crédito | 1 | 43.061.984 | — | BCB SCR.data |
 | `br_bcb_sgs` | BCB SGS — séries temporais macroeconômicas (câmbio, Selic, inflação etc.) | 1 | 25.179 | 2026-10-09 | BACEN/BCB SGS séries |
-| `br_bcb_sicor` | BCB SICOR — operações de crédito rural | 13 | 764.019.378 | — | Base dos Dados |
+| `br_bcb_sicor` | BCB SICOR — operações de crédito rural | 20 | 783.767.017 | — | Base dos Dados |
 | `br_bd_diretorios_brasil` | Base dos Dados — diretórios de referência (CEP, CNAE, CID, município etc.) | 23 | 1.964.404 | — | Base dos Dados |
 | `br_bd_diretorios_data_tempo` | Base dos Dados — diretório de calendário/tempo | 11 | 1.922.812 | — | Base dos Dados |
 | `br_bd_diretorios_mundo` | Base dos Dados — diretórios internacionais (país, NCM, sistema harmonizado) | 4 | 20.648 | — | Base dos Dados |
@@ -43,7 +45,8 @@
 | `br_bd_execucao_estadual` | Execução orçamentária e compras dos governos estaduais (Base dos Dados) — despesa, empenho, liquidação, pagamento, contratos, licitações e notas fiscais | 19 | 196.476.239 | — | Base dos Dados |
 | `br_bd_metadados` | Base dos Dados — metadados do próprio catálogo original (tabelas, organizações) | 7 | 123.379 | — | Base dos Dados |
 | `br_bd_vizinhanca` | Base dos Dados — vizinhança geográfica de municípios e UFs | 2 | 523.926 | — | Base dos Dados |
-| `br_bndes_operacoes_contratadas` | BNDES — operações de crédito contratadas | 5 | 2.424.364 | — | Base dos Dados |
+| `br_bndes_desembolsos` | BNDES — desembolsos mensais por setor, porte, UF e produto | 1 | 3.762.192 | — | Base dos Dados |
+| `br_bndes_operacoes_contratadas` | BNDES — operações de crédito contratadas | 6 | 2.432.028 | — | Base dos Dados |
 | `br_brasilapi` | BrasilAPI — bancos, DDDs, feriados nacionais, taxas de referência | 4 | 6.149 | — | BrasilAPI |
 | `br_brasilio_holdings` | Brasil.IO — estrutura societária de holdings empresariais | 1 | 515.191 | — | Brasil.IO holdings |
 | `br_caixa_sinapi` | SINAPI/Caixa — custos e insumos de construção civil | 1 | 2.159.399 | — | SINAPI (custos/insumos de construção civil) |
@@ -54,6 +57,7 @@
 | `br_cgu_beneficios_cidadao` | CGU — benefícios sociais federais (Bolsa Família, Auxílio Emergencial, BPC etc.) | 6 | 3.321.211.133 | — | Base dos Dados |
 | `br_cgu_cartao_pagamento` | CGU — gastos com cartão de pagamento do governo federal | 4 | 3.213.220 | — | Base dos Dados |
 | `br_cgu_dados_abertos` | CGU — metadados do catálogo dados.gov.br (conjuntos, recursos, organizações), foto de fev/2024 | 3 | 89.771 | — | Base dos Dados |
+| `br_cgu_despesas_publicas` | CGU/Portal da Transparência — execução da despesa federal (empenhado, liquidado, pago, restos a pagar) e recebimentos por favorecido, mês a mês desde 2014 | 2 | 130.395.546 | — | Base dos Dados |
 | `br_cgu_ebt` | CGU — Escala Brasil Transparente 360°, nota de transparência de 665 municípios avaliados e das 27 UFs, 2020 e 2021 | 2 | 1.384 | — | Base dos Dados |
 | `br_cgu_emendas_parlamentares` | CGU — emendas parlamentares ao orçamento federal | 4 | 1.094.989 | — | Portal da Transparência — Emendas parlamentares por favorecido e convênios |
 | `br_cgu_fef` | CGU — Fundo de Erradicação da Pobreza e sorteios de fiscalização | 3 | 84.945 | — | Base dos Dados |
@@ -77,7 +81,7 @@
 | `br_comprasgov_sicaf` | SICAF — cadastro de fornecedores habilitados a contratar com o governo | 1 | 962.016 | — | SICAF fornecedores |
 | `br_cvm_administradores_carteira` | CVM — administradores de carteira de valores mobiliários | 3 | 16.419 | — | Base dos Dados |
 | `br_cvm_cia_aberta` | CVM — companhias abertas (cadastro, demonstrações financeiras, formulário de referência, administradores e remuneração) | 118 | 70.967.743 | — | CVM — companhias abertas (cadastro, DFP, ITR, FRE, FCA, IPE, VLMO, CGVN, recompra de ações) |
-| `br_cvm_fundos` | CVM — cadastro de fundos de investimento | 4 | 184.408 | 2026-10-07 | CVM Fundos |
+| `br_cvm_fundos` | CVM — cadastro de fundos de investimento | 39 | 440.462.914 | 2026-10-07 | CVM Fundos |
 | `br_cvm_oferta_publica_distribuicao` | CVM — ofertas públicas de distribuição de valores mobiliários | 1 | 27.486 | — | Base dos Dados |
 | `br_datahackers_state_data` | Data Hackers — pesquisa State of Data sobre o mercado de dados no Brasil | 1 | 4.271 | — | Base dos Dados |
 | `br_datasus_cid10` | DATASUS — tabela de códigos CID-10 e CID-O | 6 | 15.672 | — | CID-10 (tabela de códigos, DATASUS) |
@@ -85,6 +89,7 @@
 | `br_fgv_igp` | FGV — índices de preços (IGP-M, IGP-DI e variantes) | 7 | 2.536 | — | Base dos Dados |
 | `br_fipe_veiculos` | FIPE — tabela de preços de referência de veículos | 1 | 11.425 | — | FIPE veículos |
 | `br_firjan_ifgf` | FIRJAN — Índice de Gestão Fiscal municipal | 1 | 55.680 | — | Base dos Dados |
+| `br_fnde_fundeb` | FNDE/SIOPE — indicadores legais e educacionais de estados e municípios (aplicação em MDE, Fundeb, pessoal), anual até 2016 e bimestral desde 2017 | 2 | 15.063.256 | — | Base dos Dados |
 | `br_geobr_mapas` | geobr — malhas geográficas oficiais do IBGE (municípios, UFs, biomas, terras indígenas etc.) | 25 | 984.345 | — | Base dos Dados |
 | `br_ggb_relatorio_lgbtqi` | Grupo Gay da Bahia — relatório de mortes de pessoas LGBTQI+ | 5 | 145 | — | Base dos Dados |
 | `br_ibama_autos` | IBAMA — autos de infração ambiental | 8 | 3.097.591 | — | IBAMA — autos de infração |
@@ -156,9 +161,10 @@
 | `br_me_siorg` | SIORG — remuneração de cargos em comissão da administração federal | 1 | 258 | — | Base dos Dados |
 | `br_mec_prouni` | MEC ProUni — dicionário de variáveis do programa | 1 | 20 | — | Base dos Dados |
 | `br_mec_sisu` | MEC SISU — microdados de inscrição no Sistema de Seleção Unificada | 1 | 34.700.256 | — | Base dos Dados |
+| `br_mf_divida_ativa` | PGFN — estoque trimestral da dívida ativa do FGTS e previdenciária, uma linha por inscrição e devedor (via Base dos Dados) | 2 | 143.151.652 | — | Base dos Dados |
 | `br_mg_belohorizonte_smfa_iptu` | Prefeitura de Belo Horizonte — cadastro de IPTU | 2 | 21.463.825 | — | Base dos Dados |
-| `br_mgi_compras_publicas` | Compras públicas federais do Compras.gov.br (MGI) — licitações, pregões, itens, ofertas, compras sem licitação, fornecedores e catálogo de materiais e serviços | 14 | 77.946.539 | — | Base dos Dados |
-| `br_mgi_pncp` | Portal Nacional de Contratações Públicas (PNCP) via Base dos Dados — dicionário de códigos (as tabelas grandes estão sob acesso restrito no BD) | 1 | 224 | — | Base dos Dados |
+| `br_mgi_compras_publicas` | Compras públicas federais do Compras.gov.br (MGI) — licitações, pregões, itens, ofertas, compras sem licitação, fornecedores e catálogo de materiais e serviços | 19 | 97.765.275 | — | Base dos Dados |
+| `br_mgi_pncp` | Portal Nacional de Contratações Públicas (PNCP) via Base dos Dados — dicionário de códigos (as tabelas grandes estão sob acesso restrito no BD) | 4 | 1.491.321 | — | Base dos Dados |
 | `br_minc_salic` | MinC — SALIC/Lei Rouanet, projetos culturais incentivados | 8 | 839.316 | — | SALIC/Lei Rouanet (MinC) |
 | `br_mj_consumidorgovbr` | Consumidor.gov.br — reclamações contra empresas, 2014–2025 (2025 parcial; os arquivos de 2019 vêm sem Data Abertura, usar Data Finalização; Data Finalização mistura ISO (2020–2025) e dd/mm/aaaa (2014–2021) — parsear os dois) | 1 | 15.392.507 | — | Consumidor.gov.br |
 | `br_mj_sinesp` | SINESP (MJSP) via Base dos Dados — ocorrências criminais e vítimas por município e mês e por UF e mês | 3 | 9.097.924 | — | Base dos Dados |
@@ -180,7 +186,7 @@
 | `br_ms_populacao` | Ministério da Saúde — estimativas populacionais por município | 1 | 4.919.222 | — | Base dos Dados |
 | `br_ms_sia` | SIA/SUS — produção ambulatorial e psicossocial | 3 | 6.298.035.211 | — | Base dos Dados |
 | `br_ms_sih` | SIH/SUS — Autorizações de Internação Hospitalar (AIH) | 3 | 2.619.388.412 | — | Base dos Dados |
-| `br_ms_sim` | SIM — Sistema de Informações sobre Mortalidade | 3 | 36.451.963 | — | Base dos Dados |
+| `br_ms_sim` | SIM — Sistema de Informações sobre Mortalidade | 6 | 106.800.444 | — | Base dos Dados |
 | `br_ms_sinan` | SINAN — notificação compulsória de dengue e influenza/SRAG | 3 | 38.468.299 | — | Base dos Dados |
 | `br_ms_sinan_chikungunya` | SINAN — notificação compulsória de chikungunya | 1 | 2.507.780 | — | SINAN Chikungunya |
 | `br_ms_sinan_esquistossomose` | SINAN — notificação compulsória de esquistossomose | 1 | 169.721 | — | SINAN Esquistossomose |
@@ -209,7 +215,7 @@
 | `br_rf_cno` | Receita Federal — Cadastro Nacional de Obras | 5 | 1.922.151.722 | — | Base dos Dados |
 | `br_rf_dirpf` | Receita Federal — fundos habilitados e repasses via destinação de IRPF (FDCA/FDI) | 2 | 35.356 | — | Receita Federal — DIRPF repasses FDCA/FDI (valores) |
 | `br_rj_isp_estatisticas_seguranca` | ISP-RJ — estatísticas de segurança pública do estado do Rio de Janeiro | 14 | 167.979 | — | Base dos Dados |
-| `br_rodado_eleicoes` | Rodado — ponte entre seção eleitoral (TSE, 2022 e 2026) e setor censitário do Censo 2022 | 2 | 2.205.734 | — | TSE — locais de votação (coordenada por seção, 2022 e 2026) cruzados com a malha de setores do Censo 2022: ponte seção ↔ setor censitário |
+| `br_rodado_eleicoes` | Rodado — ponte entre seção eleitoral (TSE, 2022 e 2026) e setor censitário do Censo 2022 | 3 | 2.206.717 | — | TSE — seções cujo local de votação do 2º turno de 2026 difere do 1º, com o % de Lula e Flávio no 1º turno |
 | `br_rodado_indicadores_municipais` | Rodado — os indicadores do painel municipal em formato longo: 987 indicadores em 19 seções (segurança, saúde, educação, benefícios…) para os 5.571 municípios, uma linha por município × indicador × ano/mês/dimensão | 1 | 12.382.056 | — | Base dos Dados |
 | `br_saude_bps` | Boletim de Pessoal da Saúde — dados de profissionais de saúde | 1 | 371.128 | — | BPS |
 | `br_saude_farmaciapopular` | Farmácia Popular — estabelecimentos credenciados | 1 | 32.592 | — | Farmácia Popular |

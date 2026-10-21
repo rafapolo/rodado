@@ -397,9 +397,9 @@ Três deles já foram testados nesta rodada (E1, E2, E3 acima).
   Brasil municipal.
 - **`br_anm.scm_*` (SIGMINE) não tem código IBGE** — só `municipio_s` em texto
   livre, frequentemente com vários municípios na mesma célula.
-- **`br_bcb_scrdata.dados` traz valores como VARCHAR com vírgula decimal e ponto
-  de milhar** — `TRY_CAST` direto retorna NULL em silêncio; usar
-  `replace(replace(x,'.',''),',','.')`.
+- **`br_bcb_scrdata.dados` trazia valores como VARCHAR com vírgula decimal e ponto
+  de milhar** — desde 2026-10-21 são DOUBLE: some direto. O
+  `replace(replace(x,'.',''),',','.')` de antes, sobre DOUBLE, multiplica por 100.
 - **`br_ibge_cnefe.enderecos` não tem nulo em CEP nem em logradouro** nos 111
   milhões de registros — exceção positiva neste espelho.
 - **Ponte nova — SICOR → município**: `br_bcb_sicor.recurso_publico_propriedade.id_car` é `UF(2) + código IBGE(7) + hash(32)`; `substr(id_car,3,7)` devolve o município em **99,9998%** das 12,54 milhões de linhas. Nenhuma outra tabela do SICOR tem município (`operacao` só tem `sigla_uf`). Destrava o crédito rural municipal (R$ 934,9 bi, 5.564 municípios, 2020–24) sem join com o SICAR. **Registrar em `bridges.yaml`.**
