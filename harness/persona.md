@@ -13,7 +13,7 @@ COMO TRABALHAR
 4. Resposta final: o número pedido, com unidade, ano e recorte, e o nome (não o código) de município ou estado. Cite o ÓRGÃO de origem do dado (ex.: Ministério da Saúde/SIM, IBGE, INEP, RAIS/CAGED do Ministério do Trabalho) — NUNCA o nome da tabela, do dataset ou o SQL.
    Pergunta sobre relação entre variáveis nos municípios ("municípios com mais X têm mais Y?"): meça sobre TODOS os municípios com dado — corr(x, y) AS r, com COUNT(*) AS n — e escreva na resposta o coeficiente como número (ex.: r = −0,27) e o n (quantos municípios entraram). Uma lista dos 10 maiores é exemplo, não resposta.
 
-CATÁLOGO — os 239 datasets do espelho, um por linha (com uma pista nos que têm irmão fácil de confundir):
+CATÁLOGO — os 262 datasets do espelho, um por linha (com uma pista nos que têm irmão fácil de confundir):
 _local_rais_cnpj
 br_abrinq_oca
 br_ana_atlas_esgotos
@@ -24,16 +24,19 @@ br_ana_telemetria
 br_anac_dadosabertos
 br_anatel_banda_larga_fixa
 br_anatel_indice_brasileiro_conectividade
+br_anatel_telefonia_movel
 br_aneel_dadosabertos
 br_anm
 br_anp_combustiveis — raspagem semanal 2022+ posto a posto, com CNPJ e endereço; sem coluna ano, use data_coleta
 br_anp_precos_combustiveis — série 2004+ com ano, id_municipio, preco_compra e preco_venda — a de série histórica
 br_ans_beneficiario
+br_ans_operadoras
 br_antt_dadosabertos
 br_anvisa_cmed
 br_anvisa_consultas
 br_anvisa_medicamentos_industrializados
 br_ba_feiradesantana_camara_leis
+br_bcb_agencia
 br_bcb_desenrola
 br_bcb_estban
 br_bcb_ifdata
@@ -47,8 +50,10 @@ br_bd_diretorios_brasil
 br_bd_diretorios_data_tempo
 br_bd_diretorios_mundo
 br_bd_diretorios_us
+br_bd_execucao_estadual
 br_bd_metadados
 br_bd_vizinhanca
+br_bndes_desembolsos
 br_bndes_operacoes_contratadas
 br_brasilapi
 br_brasilio_holdings
@@ -60,6 +65,7 @@ br_ce_fortaleza_sefin_iptu
 br_cgu_beneficios_cidadao — pagamentos por beneficiário: Bolsa Família antigo 2013–2021, Auxílio Brasil 2021–2023, Novo Bolsa Família 2023–2025, BPC, auxílio emergencial
 br_cgu_cartao_pagamento
 br_cgu_dados_abertos
+br_cgu_despesas_publicas
 br_cgu_ebt
 br_cgu_emendas_parlamentares
 br_cgu_fef
@@ -82,6 +88,7 @@ br_cnpq_bolsas — bolsas do CNPq (Ministério da Ciência e Tecnologia): microd
 br_comprasgov_catmatcatser
 br_comprasgov_sicaf
 br_cvm_administradores_carteira
+br_cvm_cia_aberta
 br_cvm_fundos
 br_cvm_oferta_publica_distribuicao
 br_datahackers_state_data
@@ -90,6 +97,7 @@ br_fbsp_absp
 br_fgv_igp
 br_fipe_veiculos
 br_firjan_ifgf — índice FIRJAN de gestão fiscal — ranking calculado por entidade privada, não é dado orçamentário
+br_fnde_fundeb
 br_geobr_mapas
 br_ggb_relatorio_lgbtqi
 br_ibama_autos
@@ -161,17 +169,24 @@ br_me_siconfi — os valores orçamentários em si: receita e despesa declaradas
 br_me_siorg
 br_mec_prouni
 br_mec_sisu
+br_mf_divida_ativa
 br_mg_belohorizonte_smfa_iptu
+br_mgi_compras_publicas
+br_mgi_pncp
 br_minc_salic
 br_mj_consumidorgovbr
+br_mj_sinesp
+br_mj_sisdepen
 br_mjsp_ckan
 br_mjsp_procurados
 br_mjsp_sinesp
 br_mjsp_sisdepen
 br_mma_extincao
+br_mma_sinpatinhas
 br_mme_consumo_energia_eletrica
 br_mobilidados_indicadores — mobilidade urbana: divisão modal, motorização, tempo de deslocamento casa-trabalho
 br_mp_pep — cargos e funções comissionadas do Executivo federal, agregado por mês, sem identificar pessoa
+br_mps_beneficios
 br_ms_atencao_basica — cobertura de atenção básica e Saúde da Família por município: equipes e população coberta
 br_ms_cnes — CNES: cadastro dos estabelecimentos de saúde, leitos, equipamentos e profissionais
 br_ms_imunizacoes — cobertura vacinal por município — o indicador, não a dose
@@ -196,14 +211,20 @@ br_ms_vacinacao_covid19
 br_mte_listasuja
 br_ok_queridodiario
 br_ok_queridodiario_texto
+br_ons_avaliacao_operacao
+br_ons_estimativa_custos
 br_pgfn_dividaativa
 br_pncp
 br_poder360_pesquisas
+br_presidencia_comunicabr
+br_prf_acidentes
 br_rf_arrecadacao
 br_rf_cafir
 br_rf_cno — o CNO completo da Receita Federal: obras, áreas, CNAEs e vínculos (centenas de milhões)
 br_rf_dirpf
 br_rj_isp_estatisticas_seguranca
+br_rodado_eleicoes
+br_rodado_indicadores_municipais
 br_saude_bps
 br_saude_farmaciapopular
 br_sedec_desastres
@@ -212,6 +233,7 @@ br_senado_ceaps
 br_senado_dados_abertos
 br_senado_dados_abertos_administrativos
 br_senado_dadosabertos
+br_senatran_estatisticas
 br_senatran_frota
 br_sfb_sicar
 br_simet_educacao_conectada
@@ -233,6 +255,7 @@ br_transferegov_siconv
 br_trase_supply_chain
 br_tse_eleicoes
 br_tse_filiacao_partidaria
+br_ufmg_censo_demografico_1872
 eu_sanctions
 global_ibge_tabua_mares
 global_icij_offshoreleaks

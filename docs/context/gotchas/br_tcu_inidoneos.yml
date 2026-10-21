@@ -13,8 +13,8 @@ gotchas:
     severidade: silencioso
     verificado: "9.201 linhas, 6.731 com CARGO/FUNCAO e 2.470 sem; dos 6.732 valores da versão de 2026-10-07, 6.731 seguem na lista — medido 2026-10-10"
   - id: datas_texto_ddmmaaaa
-    resumo: "DATA TRANSITO JULGADO e afins são texto dd/mm/aaaa: min/max direto dá datas erradas. Use strptime."
+    resumo: "Em resp_contas_julgadas_irregulares, DATA TRANSITO JULGADO e afins seguem texto dd/mm/aaaa (3 datas impossíveis, ano 0202, barraram a conversão): min/max direto dá datas erradas, use strptime. Em empresas e inabilitados_funcao_publica já são DATE desde 2026-10-21 — strptime ali dá erro."
     tabelas: [resp_contas_julgadas_irregulares, inabilitados_funcao_publica, empresas]
     colunas: ["DATA TRANSITO JULGADO", "DATA FINAL"]
     severidade: silencioso
-    verificado: "Nova Friburgo: min/max textual 02/04/2010–30/12/2010; com strptime 2001-03-09–2016-09-16 — medido 2026-10-15"
+    verificado: "Nova Friburgo: min/max textual 02/04/2010–30/12/2010; com strptime 2001-03-09–2016-09-16 — medido 2026-10-15; tipos medidos 2026-10-21: VARCHAR em resp_contas_julgadas_irregulares (min textual 01/01/1997), DATE em empresas (2021-10-19 a 2026-08-25) e inabilitados (2018-01-27 a 2026-09-29)"
