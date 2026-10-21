@@ -19,7 +19,7 @@
 # cada entrada não-nula, grava em catalog.parquet.last_date. Editar aqui,
 # nunca no parquet.
 
-br_bcb_sgs.series: "strptime(date, '%d/%m/%Y')::DATE"        # verificado 2026-09-04: SEM gap — dado real vai até 2026-08-26 (9 dias, normal pra série diária). Achado errado numa checagem manual anterior por comparar a coluna `date` (VARCHAR "DD/MM/YYYY") como string em vez de data — "31/12/2025" > "26/08/2026" alfabeticamente. Corrigido; nunca comparar essa coluna sem strptime
+br_bcb_sgs.series: date                                       # DATE desde 2026-10-21 (era texto dd/mm/aaaa). verificado 2026-09-04: SEM gap — dado real vai até 2026-08-26 (9 dias, normal pra série diária). Achado errado numa checagem manual anterior por comparar a coluna `date` (VARCHAR "DD/MM/YYYY") como string em vez de data — "31/12/2025" > "26/08/2026" alfabeticamente. Corrigido; nunca comparar essa coluna sem strptime
 br_anac_dadosabertos.voos: '"Partida Real"'                   # verificado 2026-09-04: fonte tem VRA de julho/2026 (sistemas.anac.gov.br), nosso mirror parava em junho/2026
 br_mjsp_sinesp.ocorrencias: '"mes/ano"'                       # verificado 2026-09-04: max no nosso mirror é dez/2022 — fonte (dados.mj.gov.br) está morta (NXDOMAIN, mesmo host do Consumidor.gov.br), gap real mas não upgradável sem achar host novo
 br_cvm_fundos.fundos: DT_PATRIM_LIQ                            # verificado 2026-09-04: coluna é por-fundo (último patrimônio líquido reportado por cada fundo), não uma data de corte única; fonte (dados.cvm.gov.br/cad_fi.csv) é atualizada diariamente

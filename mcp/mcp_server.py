@@ -1597,7 +1597,7 @@ def consultar_divida_ativa(
         f"RECEITA_PRINCIPAL, DATA_INSCRICAO, INDICADOR_AJUIZADO, categoria "
         f"FROM read_parquet('~/rodado/br_pgfn_dividaativa/divida/*.parquet') "
         f"WHERE {where_cpfcnpj}{cat_filter} "
-        f"ORDER BY CAST(regexp_replace(regexp_replace(VALOR_CONSOLIDADO, '\\.', ''), ',', '.') AS double) DESC "
+        f"ORDER BY VALOR_CONSOLIDADO DESC "  # DOUBLE desde 2026-10-21; o texto vinha com ponto decimal
         f"LIMIT {max_rows + 1} OFFSET {offset}"
     )
     if "error" in result:

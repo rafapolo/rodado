@@ -48,11 +48,11 @@ COPY (SELECT id_municipio_residencia AS id_municipio, ano, count(*) AS nascidos
 
 -- ============================================================ H14 ========
 -- SCR.data: inadimplencia da carteira de credito RURAL por UF x mes.
--- Numeros vem em VARCHAR com virgula decimal E ponto de milhar -- casts na
--- 91_parciais/40_cadeias ja usam esse padrao, replicado aqui.
+-- Os valores sao DOUBLE desde 2026-10-21 (eram VARCHAR com virgula decimal e ponto
+-- de milhar); o replace() antigo sobre DOUBLE tiraria o ponto decimal e multiplicaria por 100.
 COPY (SELECT uf, data_base,
-        replace(replace(carteira_inadimplencia,'.',''),',','.') AS inadimplencia_raw,
-        replace(replace(carteira_ativa,'.',''),',','.') AS ativa_raw
+        carteira_inadimplencia AS inadimplencia_raw,
+        carteira_ativa AS ativa_raw
       FROM br_bcb_scrdata.dados
       WHERE modalidade = 'Financiamentos rurais  (ex-financiamentos rurais e agroindustriais)'
         AND uf IS NOT NULL)

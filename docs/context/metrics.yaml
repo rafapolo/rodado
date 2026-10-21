@@ -306,9 +306,8 @@ metrics:
       `(EXP(SUM(LN(1+TRY_CAST(value AS DOUBLE)/100)))-1)*100`, nunca somar
       nem usar o valor de um mês isolado como se fosse a taxa anual. As
       colunas reais da tabela são `value` (VARCHAR, precisa `TRY_CAST` —
-      não `valor`) e `date` (string `dd/mm/aaaa`, não `ano`/`mes`
-      separados — extraia com `strptime(date, '%d/%m/%Y')` antes de
-      filtrar por ano).
+      não `valor`) e `date` (DATE desde 2026-10-21 — era string
+      `dd/mm/aaaa`; não há `ano`/`mes` separados, filtre com `year(date)`).
 
   br_fgv_igp_mes_ano_mes_trocados:
     # aviso, não métrica: não tem expressão nem sinônimo, e os testes e o
