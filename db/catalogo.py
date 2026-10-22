@@ -135,13 +135,17 @@ def monta(conteudo):
                     repetir.append(r)
                 if feitas % 100 == 0:
                     log(f"{feitas}/{len(mudaram)} views em {time.monotonic() - inicio:.0f} s")
-        # conflito de escrita no catálogo entre threads: uma segunda tentativa, em série
+        # conflito de escrita no catálogo entre threads, ou view que cita outra view ainda não
+        # criada (br_cgu_novo_bolsa_familia.novo_bolsa_familia = pagamento JOIN favorecido):
+        # novas tentativas em série enquanto alguma passar
+        while repetir:
+            antes, repetir = len(repetir), [r for r in (cria(par) for par, _ in repetir) if r]
+            if len(repetir) == antes:
+                break
         falhou = set()
-        for par, _ in repetir:
-            r = cria(par)
-            if r:
-                falhou.add(par[0])
-                falhas.append(f"{par[0]}: {r[1]}")
+        for par, erro in repetir:
+            falhou.add(par[0])
+            falhas.append(f"{par[0]}: {erro}")
         for nome, (_, _, sql) in mudaram:
             if nome in falhou:
                 fontes.pop(nome, None)

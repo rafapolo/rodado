@@ -4,7 +4,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
 
-262 datasets, 1461 tabelas.
+262 datasets, 1471 tabelas.
 
 | dataset | tabelas | linhas | last_update |
 |---|---:|---:|---|
@@ -63,16 +63,16 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_cgu_ebt` | 2 | 1.384 | 2026-07-09 |
 | `br_cgu_emendas_parlamentares` | 4 | 1.094.989 | 2026-10-21 |
 | `br_cgu_fef` | 3 | 84.945 | 2026-07-09 |
-| `br_cgu_garantia_safra` | 1 | 33.553.853 | 2026-10-21 |
+| `br_cgu_garantia_safra` | 3 | 36.210.983 | 2026-10-22 |
 | `br_cgu_gas_do_povo` | 1 | 20.817.231 | 2026-10-21 |
 | `br_cgu_licitacao_contrato` | 8 | 100.216.979 | 2026-10-09 |
-| `br_cgu_novo_bolsa_familia` | 1 | 840.156.267 | 2026-10-21 |
+| `br_cgu_novo_bolsa_familia` | 3 | 870.222.152 | 2026-10-21 |
 | `br_cgu_orcamento_publico` | 1 | 341.269 | 2026-10-09 |
-| `br_cgu_pe_de_meia` | 1 | 86.125.204 | 2026-10-21 |
+| `br_cgu_pe_de_meia` | 4 | 97.981.384 | 2026-10-22 |
 | `br_cgu_pessoal_executivo_federal` | 1 | 732.269 | 2026-10-07 |
 | `br_cgu_receitas_publicas` | 1 | 1.529.345 | 2026-07-05 |
 | `br_cgu_sancoes` | 6 | 24.579 | 2026-10-09 |
-| `br_cgu_seguro_defeso` | 1 | 43.418.500 | 2026-10-21 |
+| `br_cgu_seguro_defeso` | 3 | 47.401.185 | 2026-10-22 |
 | `br_cgu_servidores_executivo_federal` | 7 | 426.454.972 | 2026-07-18 |
 | `br_cgu_viagens` | 4 | 53.192.569 | 2026-10-21 |
 | `br_clp_ranking_competitividade` | 2 | 9.431 | 2026-07-09 |
@@ -217,7 +217,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_rf_cno` | 5 | 1.922.151.722 | 2026-10-09 |
 | `br_rf_dirpf` | 2 | 35.356 | 2026-10-21 |
 | `br_rj_isp_estatisticas_seguranca` | 14 | 167.979 | 2026-10-09 |
-| `br_rodado_eleicoes` | 3 | 2.206.717 | 2026-10-19 |
+| `br_rodado_eleicoes` | 4 | 2.207.100 | 2026-10-21 |
 | `br_rodado_indicadores_municipais` | 1 | 12.382.056 | 2026-10-13 |
 | `br_saude_bps` | 1 | 371.128 | 2026-10-21 |
 | `br_saude_farmaciapopular` | 1 | 32.592 | 2026-10-21 |

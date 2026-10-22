@@ -9,7 +9,7 @@ gotchas:
       mascarado: filtre regexp_full_match(col, '[0-9]{11}') para ter só os
       completos, e não trate a máscara como identificador — ela repete entre
       pessoas diferentes.
-    tabelas: [novo_bolsa_familia]
+    tabelas: [novo_bolsa_familia, favorecido]
     colunas: [cpf_favorecido]
     severidade: silencioso
     verificado: "457.170.327 de 688.107.627 linhas completadas — medido 2026-10-07"
@@ -24,3 +24,18 @@ gotchas:
     colunas: [valor_parcela, mes_competencia]
     severidade: aviso
     verificado: "mar/2024: 13.399.004.244 aqui × 13.028.687.949 em br_cgu_beneficios_cidadao.novo_bolsa_familia — medido 2026-10-20"
+  - id: agregue_pela_pagamento
+    resumo: "novo_bolsa_familia é uma view (pagamento JOIN favorecido). Soma, contagem e agrupamento sem nome/CPF/NIS vão direto na pagamento: pela view o join custa 3–7x mais."
+    detalhe: >
+      Desde 2026-10-22 a tabela é normalizada: favorecido guarda um trio
+      (NIS, CPF, nome) por linha com um favorecido_id inteiro, e pagamento
+      guarda o mês com favorecido_id no lugar das três colunas (14,84 GiB
+      viraram 3,25). A view novo_bolsa_familia devolve as mesmas 10 colunas
+      de antes, mas o DuckDB não elimina o join mesmo quando a consulta não
+      usa a pessoa. Para contar favorecidos distintos, count(DISTINCT
+      favorecido_id) na pagamento conta trios; o mesmo NIS pode ter mais de
+      um trio (CPF ou nome diferente entre meses).
+    tabelas: [novo_bolsa_familia, pagamento, favorecido]
+    colunas: [favorecido_id, valor_parcela]
+    severidade: aviso
+    verificado: "total por mês: 0,86 s antes da troca, 5,88 s pela view, 0,95 s na pagamento; por CPF 3,44 s antes e 0,51 s depois; 30.065.885 trios para 840.156.267 pagamentos — medido 2026-10-21/22"

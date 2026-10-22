@@ -13,6 +13,9 @@ Rows carry a `source` column:
   - `duckdb_native` no parquet, but the view reads a native table inside
                     basedosdados.duckdb and has rows; counted via DuckDB
   - `view_only`     no parquet and no rows — genuinely orphaned
+  - `view_derivada` no parquet: the view only joins other tables that have parquet
+                    (novo_bolsa_familia = pagamento JOIN favorecido); rows=0 so the
+                    same rows are not counted twice
 
 Counting tables or rows means filtering `source <> 'view_only'`, not
 `source = 'disk'`: the latter drops ~93,8M real rows of br_ms_sipni.
@@ -364,6 +367,13 @@ ORDER BY table_schema, table_name;
     # parquet_metadata reports 0 because there is no parquet, not because there
     # is no data. So ask DuckDB instead of assuming.
     no_parquet = [k for k, v in tables.items() if v["source"] == "view_only"]
+    # Uma view que só junta outras views com parquet (br_cgu_novo_bolsa_familia.novo_bolsa_familia
+    # = pagamento JOIN favorecido, desde 2026-10-22) tem linhas, mas são as mesmas da
+    # pagamento: contá-las somaria 840 mi de linhas duas vezes. Fica listada, com rows=0.
+    derivadas = _views_derivadas(no_parquet, {k for k, v in tables.items() if v["source"] == "disk"})
+    for key in derivadas:
+        tables[key]["source"] = "view_derivada"
+    no_parquet = [k for k in no_parquet if k not in derivadas]
     if no_parquet:
         counts = _count_via_duckdb(no_parquet)
         for key in no_parquet:
@@ -377,6 +387,28 @@ ORDER BY table_schema, table_name;
                 tables[key]["probe"] = "empty"
 
     return list(tables.values())
+
+
+def _views_derivadas(keys, com_parquet):
+    """As views de `keys` cujo SQL não lê arquivo e só cita, em FROM/JOIN, tabelas com parquet."""
+    if not keys:
+        return set()
+    lista = ", ".join(f"('{d}', '{t}')" for d, t in keys)
+    proc = subprocess.run(
+        ["ssh", BEELINK_HOST, "~/bin/duckdb -readonly -json ~/rodado/basedosdados.duckdb"],
+        input=("SET enable_progress_bar=false;\nSELECT schema_name AS d, view_name AS t, sql FROM duckdb_views() "
+               f"WHERE (schema_name, view_name) IN ({lista});\n").encode(), capture_output=True, timeout=60)
+    try:
+        views = json.loads(proc.stdout.decode()[proc.stdout.decode().index("["):])
+    except ValueError:
+        return set()
+    out = set()
+    for v in views:
+        sql = v["sql"] or ""
+        alvos = re.findall(r"\b(?:FROM|JOIN)\s+\"?(\w+)\"?\.\"?(\w+)\"?", sql, flags=re.I)
+        if "read_parquet" not in sql and alvos and all(a in com_parquet for a in alvos):
+            out.add((v["d"], v["t"]))
+    return out
 
 
 def _count_via_duckdb(keys):
@@ -595,6 +627,9 @@ def build_catalog():
             # report it as mirrored data.
             status = "view_orfa"
             notes = ("View DuckDB sem parquet local e sem linhas. " + notes).strip()
+        elif t["source"] == "view_derivada":
+            notes = ("View que junta outras tabelas deste dataset (sem parquet próprio); as linhas "
+                     "estão contadas na tabela de fatos, aqui ficam 0 para não somar duas vezes. " + notes).strip()
         elif t["source"] == "duckdb_native":
             # Real data, just not stored as parquet: the view reads a native
             # table inside basedosdados.duckdb. Counted via DuckDB, not
