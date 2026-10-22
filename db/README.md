@@ -208,6 +208,25 @@ ssh finland 'cd /root/rodado-db && nohup ./ssd_copia.sh > ssd_copia.log 2>&1 &' 
 No beelink, `~/scripts/s3_sync_rodado.sh` chama `python3 ~/rodado_db/exporta_views.py` antes
 de subir os arquivos (atualizar com `scp db/exporta_views.py beelink:rodado_db/`).
 
+### Bucket em zstd 19 (desde 2026-10-22)
+
+O bucket e o SSD **não são cópia byte a byte do beelink**. O `compacta.py` roda no finland pelo
+cron, de hora em hora, sob `flock`. Ele regrava cada parquet do bucket em zstd 19 (o beelink
+grava em 3 a 9), confere linhas, hash de todas as linhas e tipos, e sobe no mesmo nome. A cópia
+do SSD é trocada junto. O espelho fica ~20% menor, e a leitura não muda: o zstd descomprime na
+mesma velocidade em qualquer nível. O progresso fica em `s3://baseldosdados/_db/compactados.json`.
+
+- O `s3_sync_check.py` do beelink lê esse manifesto e não reenvia arquivo comprimido.
+- Arquivo que mudou no beelink sobe de novo no tamanho original e é recomprimido na hora seguinte.
+- Ficam de fora `br_tse_eleicoes`, `br_ms_sia` e `br_ibge_pnadc`, que encolhem ~4%. Também fica de
+  fora o arquivo com metadado próprio (GeoParquet...).
+
+```bash
+scp db/compacta.py finland:/root/rodado-db/
+ssh finland 'cd /root/rodado-db && python3 compacta.py --status; tail compacta.log'
+# cron: 0 * * * * cd /root/rodado-db && flock -n compacta.lock nice -n 19 ionice -c3 python3 compacta.py >> compacta.log 2>&1
+```
+
 Trocar a senha: gravar a nova em `/root/rodado-db/.senha`, refazer o hash com
 `docker run --rm -i caddy:2.10.2-alpine caddy hash-password < .senha > .senha_hash` e
 redeploy.
