@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**262 datasets, 1.461 tabelas, 33.639.668.528 linhas.** 4 com data de frescor conferida (de 262).
+**262 datasets, 1.471 tabelas, 33.688.230.791 linhas.** 4 com data de frescor conferida (de 262).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -61,16 +61,16 @@
 | `br_cgu_ebt` | CGU — Escala Brasil Transparente 360°, nota de transparência de 665 municípios avaliados e das 27 UFs, 2020 e 2021 | 2 | 1.384 | — | Base dos Dados |
 | `br_cgu_emendas_parlamentares` | CGU — emendas parlamentares ao orçamento federal | 4 | 1.094.989 | — | Portal da Transparência — Emendas parlamentares por favorecido e convênios |
 | `br_cgu_fef` | CGU — Fundo de Erradicação da Pobreza e sorteios de fiscalização | 3 | 84.945 | — | Base dos Dados |
-| `br_cgu_garantia_safra` | Garantia-Safra — pagamentos aos agricultores familiares do semiárido | 1 | 33.553.853 | — | Portal - Garantia-Safra |
+| `br_cgu_garantia_safra` | Garantia-Safra — pagamentos aos agricultores familiares do semiárido | 3 | 36.210.983 | — | Portal - Garantia-Safra |
 | `br_cgu_gas_do_povo` | Gás do Povo — pagamentos do benefício de gás de cozinha | 1 | 20.817.231 | — | Gás do Povo (CGU) |
 | `br_cgu_licitacao_contrato` | CGU — licitações e contratos do governo federal | 8 | 100.216.979 | — | Base dos Dados |
-| `br_cgu_novo_bolsa_familia` | Novo Bolsa Família — pagamentos mensais por beneficiário | 1 | 840.156.267 | — | Novo Bolsa Família (CGU) |
+| `br_cgu_novo_bolsa_familia` | Novo Bolsa Família — pagamentos mensais por beneficiário | 3 | 870.222.152 | — | Novo Bolsa Família (CGU) |
 | `br_cgu_orcamento_publico` | CGU — orçamento federal por órgão, programa, ação e elemento: inicial, atualizado, empenhado e realizado, 2014–2024 | 1 | 341.269 | — | Base dos Dados |
-| `br_cgu_pe_de_meia` | Pé-de-Meia — pagamentos do programa de incentivo à permanência escolar | 1 | 86.125.204 | — | Portal - Pe-de-Meia |
+| `br_cgu_pe_de_meia` | Pé-de-Meia — pagamentos do programa de incentivo à permanência escolar | 4 | 97.981.384 | — | Portal - Pe-de-Meia |
 | `br_cgu_pessoal_executivo_federal` | CGU — terceirizados do Poder Executivo federal | 1 | 732.269 | — | Base dos Dados |
 | `br_cgu_receitas_publicas` | CGU — receitas federais previstas, lançadas e realizadas por órgão e natureza, 2013–2024 | 1 | 1.529.345 | — | Base dos Dados |
 | `br_cgu_sancoes` | CGU — sanções administrativas (CEIS, CNEP, CEPIM, acordos de leniência) | 6 | 24.579 | — | Base dos Dados |
-| `br_cgu_seguro_defeso` | Seguro-Defeso — pagamentos aos pescadores artesanais durante o defeso | 1 | 43.418.500 | — | Portal - Seguro-Defeso |
+| `br_cgu_seguro_defeso` | Seguro-Defeso — pagamentos aos pescadores artesanais durante o defeso | 3 | 47.401.185 | — | Portal - Seguro-Defeso |
 | `br_cgu_servidores_executivo_federal` | CGU — cadastro e remuneração de servidores do Poder Executivo federal | 7 | 426.454.972 | — | Base dos Dados |
 | `br_cgu_viagens` | CGU — viagens a serviço de servidores federais | 4 | 53.192.569 | — | Portal - Viagens |
 | `br_clp_ranking_competitividade` | CLP — ranking de competitividade dos estados | 2 | 9.431 | — | Base dos Dados |
@@ -215,7 +215,7 @@
 | `br_rf_cno` | Receita Federal — Cadastro Nacional de Obras | 5 | 1.922.151.722 | — | Base dos Dados |
 | `br_rf_dirpf` | Receita Federal — fundos habilitados e repasses via destinação de IRPF (FDCA/FDI) | 2 | 35.356 | — | Receita Federal — DIRPF repasses FDCA/FDI (valores) |
 | `br_rj_isp_estatisticas_seguranca` | ISP-RJ — estatísticas de segurança pública do estado do Rio de Janeiro | 14 | 167.979 | — | Base dos Dados |
-| `br_rodado_eleicoes` | Rodado — ponte entre seção eleitoral (TSE, 2022 e 2026) e setor censitário do Censo 2022 | 3 | 2.206.717 | — | TSE — seções cujo local de votação do 2º turno de 2026 difere do 1º, com o % de Lula e Flávio no 1º turno |
+| `br_rodado_eleicoes` | Rodado — ponte entre seção eleitoral (TSE, 2022 e 2026) e setor censitário do Censo 2022 | 4 | 2.207.100 | — | TSE — seções com local de votação diferente entre o 1º e o 2º turno de 2026 (versão de 21/10), com distância e voto do 1º turno |
 | `br_rodado_indicadores_municipais` | Rodado — os indicadores do painel municipal em formato longo: 987 indicadores em 19 seções (segurança, saúde, educação, benefícios…) para os 5.571 municípios, uma linha por município × indicador × ano/mês/dimensão | 1 | 12.382.056 | — | Base dos Dados |
 | `br_saude_bps` | Boletim de Pessoal da Saúde — dados de profissionais de saúde | 1 | 371.128 | — | BPS |
 | `br_saude_farmaciapopular` | Farmácia Popular — estabelecimentos credenciados | 1 | 32.592 | — | Farmácia Popular |
