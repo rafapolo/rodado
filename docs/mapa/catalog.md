@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**262 datasets, 1.473 tabelas, 33.688.477.699 linhas.** 4 com data de frescor conferida (de 262).
+**271 datasets, 1.512 tabelas, 33.808.159.160 linhas.** 9 dataset(s) sem descrição. 4 com data de frescor conferida (de 271).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -22,7 +22,7 @@
 | `br_anp_combustiveis` | ANP — preços de combustíveis por posto/revenda | 1 | 2.205.259 | — | ANP combustíveis (preços revenda/distribuição) |
 | `br_anp_precos_combustiveis` | ANP — preços de combustíveis pesquisados (via Base dos Dados) | 1 | 16.887.683 | — | Base dos Dados |
 | `br_ans_beneficiario` | ANS — beneficiários de planos de saúde suplementar | 1 | 2.307.338.481 | — | Base dos Dados |
-| `br_ans_operadoras` | ANS — operadoras de planos de saúde (cadastro, reclamações, penalidades, ressarcimento ao SUS, demonstrações contábeis) | 10 | 76.809.754 | — | ANS — operadoras de planos de saúde (cadastro, demandas NIP, penalidades, ressarcimento ao SUS, demonstrações contábeis) |
+| `br_ans_operadoras` | ANS — operadoras de planos de saúde (cadastro, reclamações, penalidades, ressarcimento ao SUS, demonstrações contábeis) | 18 | 111.128.794 | — | ANS — pastas restantes da raiz PDA (SIP, IGR, histórico de planos, características dos produtos, painel de precificação, TISS dados de planos) |
 | `br_antt_dadosabertos` | ANTT — RNTRC (transportadores e veículos de carga), CIOT e acidentes nas rodovias federais concedidas | 4 | 18.186.812 | — | ANTT — RNTRC, veículos, CIOT, acidentes em rodovias concedidas |
 | `br_anvisa_cmed` | CMED/ANVISA — preços regulados de medicamentos | 1 | 52.816 | — | CMED (preços de medicamentos, ANVISA) |
 | `br_anvisa_consultas` | ANVISA — registros de agrotóxicos, alimentos e produtos regulados | 3 | 101.284 | — | ANVISA (consulta completa) |
@@ -107,10 +107,12 @@
 | `br_ibge_ipca` | IBGE — Índice de Preços ao Consumidor Amplo | 4 | 676.915 | — | Base dos Dados |
 | `br_ibge_ipca15` | IBGE — IPCA-15, prévia mensal do IPCA | 4 | 397.247 | — | Base dos Dados |
 | `br_ibge_ipp` | IBGE — Índice de Preços ao Produtor | 6 | 5.118 | — | Base dos Dados |
+| `br_ibge_lspa` | _(sem descrição)_ | 2 | 76.725 | — | Base dos Dados |
 | `br_ibge_munic` | IBGE — Pesquisa de Informações Básicas Municipais (MUNIC) | 7 | 852.056 | — | Base dos Dados |
 | `br_ibge_nomes_brasil` | IBGE — frequência de nomes por município, Censo 2010 (nomes raros suprimidos: soma 145 mi de 191 mi) | 1 | 1.959.116 | — | Base dos Dados |
 | `br_ibge_pam` | IBGE — Produção Agrícola Municipal, lavouras permanentes e temporárias | 2 | 20.097.187 | — | Base dos Dados |
 | `br_ibge_pevs` | IBGE — Produção da Extração Vegetal e da Silvicultura | 2 | 558.451 | — | Base dos Dados |
+| `br_ibge_pia` | _(sem descrição)_ | 2 | 1.004.426 | — | Base dos Dados |
 | `br_ibge_pib` | IBGE — PIB municipal e estadual | 7 | 201.871 | — | Base dos Dados |
 | `br_ibge_pnad` | IBGE — PNAD, microdados compatibilizados históricos | 3 | 9.587.801 | — | Base dos Dados |
 | `br_ibge_pnad_covid` | IBGE — PNAD-COVID19, microdados mensais de mai a nov/2020 (2,65 mi pessoas, pesar por v1032) e o dicionário | 2 | 2.651.013 | — | IBGE — PNAD COVID19, microdados mensais mai–nov/2020 |
@@ -118,8 +120,9 @@
 | `br_ibge_pof` | IBGE — Pesquisa de Orçamentos Familiares | 14 | 2.238.882 | — | Base dos Dados |
 | `br_ibge_populacao` | IBGE — estimativas populacionais por município, UF e Brasil | 3 | 192.080 | — | Base dos Dados |
 | `br_ibge_ppm` | IBGE — Pesquisa Pecuária Municipal (rebanhos, aquicultura, produção animal) | 4 | 3.111.747 | — | Base dos Dados |
+| `br_icmbio_embargos` | _(sem descrição)_ | 1 | 14.806 | — | ICMBio — embargos |
 | `br_ieps_saude` | IEPS — indicadores de saúde por município e região de saúde | 5 | 73.980 | — | Base dos Dados |
-| `br_incra_acervo` | INCRA — parcelas certificadas no SIGEF (por UF) e projetos de assentamento, com centroide e área | 3 | 1.902.291 | — | INCRA — parcelas SIGEF, imóveis SNCI, assentamentos |
+| `br_incra_acervo` | INCRA — parcelas certificadas no SIGEF (por UF) e projetos de assentamento, com centroide e área | 6 | 3.830.361 | — | INCRA — polígonos de SIGEF, SNCI e assentamentos |
 | `br_inea_boletim` | INEA-RJ — boletins de serviço de licenciamento ambiental, atos e texto extraído dos PDFs | 5 | 24.743 | — | INEA — boletins de serviço, texto dos PDFs (validade/condicionantes) |
 | `br_inep_ana` | INEP — Avaliação Nacional da Alfabetização | 3 | 98.778 | — | Base dos Dados |
 | `br_inep_avaliacao_alfabetizacao` | INEP — avaliação da alfabetização e metas por município/UF | 7 | 3.902.954 | — | Base dos Dados |
@@ -134,9 +137,9 @@
 | `br_inep_saeb` | INEP — SAEB, proficiência de alunos por etapa/disciplina | 11 | 200.886.659 | — | Base dos Dados |
 | `br_inep_sinopse_estatistica_educacao_basica` | INEP — sinopse estatística da educação básica | 18 | 121.127.598 | — | Base dos Dados |
 | `br_inmet_bdmep` | INMET — Banco de Dados Meteorológicos, séries por estação | 2 | 84.515.289 | — | Base dos Dados |
-| `br_inpe_deter` | INPE DETER — alertas quase em tempo real de desmatamento | 1 | 699.077 | — | INPE DETER (avisos de desmatamento) |
+| `br_inpe_deter` | INPE DETER — alertas quase em tempo real de desmatamento | 2 | 1.398.154 | — | INPE DETER (avisos de desmatamento) |
 | `br_inpe_prodes` | INPE PRODES — desmatamento anual agregado por município e bioma | 1 | 156.864 | — | Base dos Dados |
-| `br_inpe_prodes_acumulado` | INPE PRODES — polígonos de desmatamento acumulado por bioma, geometria em centroide | 2 | 7.641.257 | — | INPE PRODES acumulado (desmatamento por bioma) |
+| `br_inpe_prodes_acumulado` | INPE PRODES — polígonos de desmatamento acumulado por bioma, geometria em centroide | 3 | 14.457.350 | — | INPE — polígonos do PRODES (6 biomas) e do DETER |
 | `br_inpe_queimadas` | INPE — focos de queimada detectados por satélite | 1 | 23.086.637 | — | Base dos Dados |
 | `br_inpe_sisam` | INPE SISAM — qualidade do ar | 1 | 158.705.816 | — | Base dos Dados |
 | `br_ipea_acesso_oportunidades` | IPEA — grade H3 das 20 maiores cidades, 2019: população por renda e raça e contagem de escolas e unidades de saúde por hexágono (sem os indicadores de tempo de acesso) | 1 | 336.427 | — | Base dos Dados |
@@ -165,7 +168,7 @@
 | `br_mg_belohorizonte_smfa_iptu` | Prefeitura de Belo Horizonte — cadastro de IPTU | 2 | 21.463.825 | — | Base dos Dados |
 | `br_mgi_compras_publicas` | Compras públicas federais do Compras.gov.br (MGI) — licitações, pregões, itens, ofertas, compras sem licitação, fornecedores e catálogo de materiais e serviços | 19 | 97.765.275 | — | Base dos Dados |
 | `br_mgi_pncp` | Portal Nacional de Contratações Públicas (PNCP) via Base dos Dados — dicionário de códigos (as tabelas grandes estão sob acesso restrito no BD) | 4 | 1.491.321 | — | Base dos Dados |
-| `br_minc_salic` | MinC — SALIC/Lei Rouanet, projetos culturais incentivados | 10 | 1.086.224 | — | SALIC/Lei Rouanet (MinC) |
+| `br_minc_salic` | MinC — SALIC/Lei Rouanet, projetos culturais incentivados | 18 | 4.370.266 | — | SALIC/Lei Rouanet (MinC) |
 | `br_mj_consumidorgovbr` | Consumidor.gov.br — reclamações contra empresas, 2014–2025 (2025 parcial; os arquivos de 2019 vêm sem Data Abertura, usar Data Finalização; Data Finalização mistura ISO (2020–2025) e dd/mm/aaaa (2014–2021) — parsear os dois) | 1 | 15.392.507 | — | Consumidor.gov.br |
 | `br_mj_sinesp` | SINESP (MJSP) via Base dos Dados — ocorrências criminais e vítimas por município e mês e por UF e mês | 3 | 9.097.924 | — | Base dos Dados |
 | `br_mj_sisdepen` | SISDEPEN (MJSP) via Base dos Dados — unidades prisionais, população prisional e suas características por semestre | 7 | 3.059.458 | — | Base dos Dados |
@@ -173,6 +176,7 @@
 | `br_mjsp_procurados` | MJSP — lista de procurados do projeto Captura Nacional | 1 | 188 | — | Procurados (MJSP/Interpol) |
 | `br_mjsp_sinesp` | SINESP — ocorrências registradas de segurança pública | 2 | 23.843 | 2022-12-01 | SINESP/MJSP |
 | `br_mjsp_sisdepen` | SISDEPEN — população carcerária por unidade prisional | 1 | 38.364 | — | MJSP SISDEPEN (população carcerária) |
+| `br_mma_cnuc` | _(sem descrição)_ | 1 | 44.508 | — | MMA — Cadastro Nacional de Unidades de Conservação (CNUC), todas as fotos |
 | `br_mma_extincao` | MMA — listas oficiais de fauna e flora ameaçadas de extinção | 2 | 7.676 | — | Base dos Dados |
 | `br_mma_sinpatinhas` | SinPatinhas (MMA) — cadastro nacional de cães e gatos, microdados | 1 | 930.442 | — | Base dos Dados |
 | `br_mme_consumo_energia_eletrica` | MME — consumo de energia elétrica por UF | 1 | 38.880 | — | Base dos Dados |
@@ -210,10 +214,12 @@
 | `br_poder360_pesquisas` | Poder360 — pesquisas eleitorais | 1 | 162.075 | — | Base dos Dados |
 | `br_presidencia_comunicabr` | Presidência — ComunicaBR, painel de 84 programas federais (Bolsa Família, MCMV, PNAE, Mais Médicos, Plano Safra…) por município, UF e Brasil, 2023–2026, agregado e com ref por variável; um parquet por coleta | 3 | 1.566.488 | — | Presidência — ComunicaBR, painel de indicadores dos programas federais por município |
 | `br_prf_acidentes` | Acidentes em rodovias federais (PRF) — ocorrências, pessoas envolvidas e causas | 3 | 11.879.282 | — | Base dos Dados |
+| `br_prf_infracoes` | _(sem descrição)_ | 1 | 63.217.947 | — | PRF — infrações (autos) em rodovias federais |
 | `br_rf_arrecadacao` | Receita Federal — arrecadação tributária federal | 5 | 535.465 | — | Base dos Dados |
 | `br_rf_cafir` | Receita Federal — Cadastro de Imóveis Rurais (CAFIR) | 2 | 169.935.565 | — | Base dos Dados |
 | `br_rf_cno` | Receita Federal — Cadastro Nacional de Obras | 5 | 1.922.151.722 | — | Base dos Dados |
 | `br_rf_dirpf` | Receita Federal — fundos habilitados e repasses via destinação de IRPF (FDCA/FDI) | 2 | 35.356 | — | Receita Federal — DIRPF repasses FDCA/FDI (valores) |
+| `br_rf_simples_estatisticas` | _(sem descrição)_ | 2 | 4.287.160 | — | Base dos Dados |
 | `br_rj_isp_estatisticas_seguranca` | ISP-RJ — estatísticas de segurança pública do estado do Rio de Janeiro | 14 | 167.979 | — | Base dos Dados |
 | `br_rodado_eleicoes` | Rodado — ponte entre seção eleitoral (TSE, 2022 e 2026) e setor censitário do Censo 2022 | 4 | 2.207.100 | — | TSE — seções com local de votação diferente entre o 1º e o 2º turno de 2026 (versão de 21/10), com distância e voto do 1º turno |
 | `br_rodado_indicadores_municipais` | Rodado — os indicadores do painel municipal em formato longo: 987 indicadores em 19 seções (segurança, saúde, educação, benefícios…) para os 5.571 municípios, uma linha por município × indicador × ano/mês/dimensão | 1 | 12.382.056 | — | Base dos Dados |
@@ -221,12 +227,15 @@
 | `br_saude_farmaciapopular` | Farmácia Popular — estabelecimentos credenciados | 1 | 32.592 | — | Farmácia Popular |
 | `br_sedec_desastres` | SEDEC/Defesa Civil — reconhecimentos vigentes de situação de emergência ou calamidade | 1 | 20.380 | — | Base dos Dados |
 | `br_seeg_emissoes` | SEEG — emissões estimadas de gases de efeito estufa por município e setor | 3 | 183.668.150 | — | Base dos Dados |
+| `br_sema_mt_embargos` | _(sem descrição)_ | 2 | 27.093 | — | SEMA-MT — áreas embargadas e desembargadas |
+| `br_semas_pa_ldi` | _(sem descrição)_ | 1 | 5.387 | — | SEMAS-PA — Lista de Desmatamento Ilegal (LDI) |
 | `br_senado_ceaps` | Senado Federal — Cota para Exercício da Atividade Parlamentar (CEAPS) | 1 | 396.755 | — | Senado CEAPS (cota parlamentar) |
 | `br_senado_dados_abertos` | Senado Federal — senadores, votações, discursos, comissões | 18 | 612.322 | — | Base dos Dados |
 | `br_senado_dados_abertos_administrativos` | Senado Federal — dados administrativos (CEAPS, remuneração de servidores) | 40 | 641.617 | — | Base dos Dados |
 | `br_senado_dadosabertos` | Senado Federal — comissões, matérias, senadores e votações (fonte alternativa) | 4 | 166.837 | — | Senado (geral) |
 | `br_senatran_estatisticas` | Frota de veículos por UF e tipo (SENATRAN, via Base dos Dados) | 1 | 159.327 | — | Base dos Dados |
 | `br_senatran_frota` | SENATRAN — frota de veículos por município e tipo, mensal desde 2013 | 1 | 20.101.202 | — | SENATRAN — frota de veículos por município e tipo |
+| `br_sfb_cnfp` | _(sem descrição)_ | 1 | 12.874 | — | SFB — Cadastro Nacional de Florestas Públicas 2025 |
 | `br_sfb_sicar` | SICAR/SFB — Cadastro Ambiental Rural | 10 | 132.944.211 | — | SFB — SICAR, as 5 tabelas restantes, sem geometria |
 | `br_simet_educacao_conectada` | Programa Educação Conectada — conectividade de internet em escolas | 1 | 137.914 | — | Base dos Dados |
 | `br_siop_orcamento` | SIOP — Sistema Integrado de Planejamento e Orçamento federal | 4 | 37.247 | — | SIOP |
@@ -245,7 +254,7 @@
 | `br_transferegov` | TransfereGov — planos de ação, programas e transferências (API normalizada) | 3 | 30.346 | — | TransfereGov |
 | `br_transferegov_siconv` | TransfereGov/SICONV — convênios, contratos de repasse e execução física/financeira completa | 62 | 69.060.758 | — | Transferegov/SICONV completo |
 | `br_trase_supply_chain` | Trase — cadeia de suprimentos de soja e carne bovina, do frigorífico/esmagadora à origem | 7 | 1.824.843 | — | Base dos Dados |
-| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 26 | 1.709.213.497 | — | Base dos Dados |
+| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 31 | 1.713.157.710 | — | Base dos Dados |
 | `br_tse_filiacao_partidaria` | TSE — filiação partidária | 2 | 42.201.443 | — | Base dos Dados |
 | `br_ufmg_censo_demografico_1872` | Recenseamento Geral do Império do Brasil de 1872 (UFMG) por província, município e paróquia, nos dados originais e corrigidos | 58 | 1.251.630 | — | Base dos Dados |
 | `eu_sanctions` | União Europeia — lista de sanções | 1 | 43.891 | — | EU Sanctions |

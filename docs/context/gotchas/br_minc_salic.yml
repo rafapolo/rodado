@@ -40,3 +40,49 @@ gotchas:
     colunas: [origem, situacao, aprovado, providencia]
     severidade: silencioso
     verificado: "projetos 153.748 dump_2017 + 60.282 api_salic; entre 2014 e hoje mudaram situacao 932, aprovado 504, providencia 773 — medido 2026-10-25"
+  - id: api_e_legado_sao_tabelas_diferentes
+    resumo: "Dois blocos que não se somam: legado 2000–2016 (projetos/entidades/incentivos/recibos) e API 2019–2026 (projetos_api/captacoes/pagamentos/incentivadores). 2017–2018 não existe em nenhum."
+    detalhe: >
+      O legado vem dos dumps do Mostre; a API do SALIC só lista PRONAC de
+      164380 em diante (19xxxx+, 1 projeto de 2016 e 1 de 2018), e o detalhe
+      de qualquer PRONAC fora dela responde 503. Série de captação por ano:
+      incentivos (até 2014-12) e captacoes (2019+) com um buraco no meio —
+      não é queda. projetos (legado) também tem 60.282 linhas de origem
+      api_salic, uma cópia de 2026-08 de projetos_api com menos colunas;
+      para 2019+ use projetos_api.
+    tabelas: [projetos, projetos_api, incentivos, captacoes]
+    colunas: [origem, pronac]
+    severidade: silencioso
+    verificado: "projetos_api 63.350 (19xx–26xx + 2), captacoes 194.557, incentivos até 2014-12-30 — medido 2026-10-25"
+  - id: captacoes_fecham_com_valor_captado
+    resumo: "sum(captacoes.valor) por pronac == projetos_api.valor_captado em 100% dos projetos com captação: os dois servem, e o detalhe é o que traz doador e data."
+    detalhe: >
+      Conferido projeto a projeto na coleta. Alguns recibos são anteriores
+      ao ano do PRONAC (149 linhas): projeto renumerado ou captação
+      transferida, não erro de parse.
+    tabelas: [captacoes, projetos_api]
+    colunas: [valor, valor_captado, data_recibo]
+    severidade: aviso
+    verificado: "18.291 de 18.291 projetos, R$ 15,58 bi dos dois lados; 149 recibos antes do ano do PRONAC — medido 2026-10-25"
+  - id: pagamento_ao_proprio_proponente
+    resumo: "Em 126.966 pagamentos (R$ 1,48 bi, 8.304 projetos) o fornecedor é o próprio proponente — custo de administração, coordenação, captação, INSS. Não é indício por si."
+    detalhe: >
+      A Lei Rouanet admite remunerar o proponente por administração e
+      captação dentro de limites; filtrar fornecedor_cgccpf <> proponente_cgccpf
+      antes de procurar fornecedor ligado ao proponente. Itens mais comuns:
+      "Custos de Administração", "Coordenação Geral", "Produtor executivo".
+    tabelas: [pagamentos, pagamentos_detalhe]
+    colunas: [cgccpf, fornecedor_cgccpf, proponente_cgccpf, nome]
+    severidade: silencioso
+    verificado: "126.966 linhas, R$ 1,48 bi, 8.304 projetos — medido 2026-10-25"
+  - id: pagamentos_datas_e_nomes
+    resumo: "pagamentos.data_pagamento tem 1.905 datas impossíveis (1900-01-26 a 9093-09-18) e nm_arquivo tem mojibake (Ã‡ por Ç) em 540.755 linhas."
+    detalhe: >
+      Datas digitadas errado na prestação de contas (R$ 13,3 mi do total);
+      filtre por faixa plausível antes de agregar por mês. nm_arquivo é o nome
+      do comprovante como o SALIC guardou, com UTF-8 relido como Latin-1 —
+      não serve para busca textual sem consertar.
+    tabelas: [pagamentos]
+    colunas: [data_pagamento, nm_arquivo]
+    severidade: silencioso
+    verificado: "618 antes de 2018, 1.287 depois de 2026-10-25; 540.755 nm_arquivo com 'Ã' — medido 2026-10-25"
