@@ -213,6 +213,7 @@ PAGINA_Q = r"""<!doctype html>
   .card:hover { border-color: var(--surface1); }
   .card .desc { color: var(--text); font-weight: 700; line-height: 1.45; display: -webkit-box;
     -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+  a.desc:hover { color: var(--mauve); text-decoration: none; }
   .card .desc.sem { color: var(--subtext0); font-weight: 400; }
   .card.aberto .desc { -webkit-line-clamp: unset; }
   .mais { background: none; border: 0; color: var(--overlay1); font: inherit; padding: 0; cursor: pointer; align-self: flex-start; }
@@ -225,17 +226,13 @@ PAGINA_Q = r"""<!doctype html>
   .tabelas { display: flex; flex-wrap: wrap; gap: 4px; }
   .tabelas a { color: var(--overlay1); background: var(--base); border-radius: 4px; padding: 1px 6px; font-size: 11px; max-width: 100%; overflow-wrap: anywhere; }
   .tabelas a:hover { color: var(--blue); text-decoration: none; }
-  .acoes { display: flex; gap: 6px; margin-top: auto; padding-top: 2px; }
   .btn { background: var(--surface0); color: var(--text); border: 0; border-radius: 6px; padding: 6px 10px;
     font: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
   .btn:hover { background: var(--surface1); text-decoration: none; }
-  .btn.primario { background: var(--mauve); color: var(--crust); font-weight: 700; }
-  .btn.primario:hover { filter: brightness(1.08); }
-  .btn.ok { color: var(--green); }
-  .id { margin-left: auto; color: var(--overlay0); align-self: center; font-size: 11px; }
-  pre { background: var(--crust); border-radius: 6px; padding: 10px; margin: 0; overflow: auto; max-height: 360px;
-    white-space: pre; font-family: inherit; font-size: 11px; line-height: 1.5; color: var(--subtext0); }
-  pre .c { color: var(--overlay0); } pre .k { color: var(--mauve); } pre .s { color: var(--green); }
+  .btn.ok, .id.ok { color: var(--green); }
+  .id { margin-left: auto; align-self: center; background: none; border: 0; padding: 2px 0; font: inherit; font-size: 11px;
+    color: var(--overlay0); cursor: copy; white-space: nowrap; }
+  .id:hover { color: var(--text); }
 
   /* tabela */
   .tabela { overflow-x: auto; border: 1px solid var(--surface0); border-radius: 10px; }
@@ -246,11 +243,10 @@ PAGINA_Q = r"""<!doctype html>
   th { color: var(--overlay1); font-weight: 400; background: var(--mantle); white-space: nowrap; }
   th[data-ordem] { cursor: pointer; } th[data-ordem]:hover { color: var(--text); }
   td.n, th.n { text-align: right; white-space: nowrap; }
-  td.desc { min-width: 280px; }
-  td.desc .sem { color: var(--subtext0); }
+  td a.desc { display: block; min-width: 280px; color: var(--text); }
+  td a.desc.sem { color: var(--subtext0); }
   td .t-rapido { color: var(--green); } td .t-medio { color: var(--yellow); }
   td .t-lento { color: var(--peach); } td .t-falhou { color: var(--red); } td .t-medindo { color: var(--overlay1); }
-  tr.sqlrow td { background: var(--crust); padding: 0; } tr.sqlrow pre { border-radius: 0; max-height: 420px; }
   @media (max-width: 420px) { .cards { grid-template-columns: 1fr; } }
 </style></head><body>
 <header>
@@ -299,10 +295,6 @@ function tempo(i) {
   }
   return i.erro ? { txt: "falhou", cls: "t-falhou", dica: i.erro } : { txt: "medindo…", cls: "t-medindo", dica: "na fila de medição" };
 }
-function realca(sql) {   // realce mínimo: comentário, palavra-chave, texto entre aspas
-  return esc(sql).replace(/(--[^\n]*)|('(?:[^']|'')*')|\b(SELECT|FROM|WHERE|WITH|AS|JOIN|LEFT|INNER|ON|GROUP BY|ORDER BY|HAVING|LIMIT|UNION|ALL|AND|OR|NOT|IN|CASE|WHEN|THEN|ELSE|END|DISTINCT|USING|OVER|PARTITION BY|DESC|ASC|IS|NULL|BETWEEN|LIKE|ILIKE)\b/gi,
-    (m, c, s, k) => c ? `<span class="c">${c}</span>` : s ? `<span class="s">${s}</span>` : `<span class="k">${k}</span>`);
-}
 const url = i => location.origin + i.url;
 const descricao = i => i.descricao ? esc(i.descricao) : esc((i.sql.trim().split("\n")[0] || "").slice(0, 200));
 
@@ -310,32 +302,25 @@ function card(i) {
   const q = quando(i.criado_em), t = tempo(i);
   const tabs = (i.tabelas || []).map(n => `<a href="/?query=${btoa(unescape(encodeURIComponent("DESCRIBE " + n)))}" target="_blank" rel="noopener" title="abrir ${esc(n)} no terminal">${esc(n)}</a>`).join("");
   return `<article class="card" data-id="${i.id}">
-    <div class="desc${i.descricao ? "" : " sem"}" title="${esc(i.descricao)}">${descricao(i)}</div>
+    <a class="desc${i.descricao ? "" : " sem"}" href="${i.url}" target="_blank" rel="noopener" title="abrir a consulta">${descricao(i)}</a>
     ${i.descricao.length > 220 ? `<button class="mais" data-acao="mais">ler tudo</button>` : ""}
     <div class="metricas">
       <span class="chip" title="${esc(q.abs)}">criado <b>${esc(q.rel)}</b></span>
       <span class="chip" title="aberturas do link">cliques <b>${num.format(i.cliques)}</b></span>
       <span class="chip ${t.cls}" title="${esc(t.dica)}">tempo <b>${esc(t.txt)}</b></span>
+      <button class="id" data-acao="copia" title="copiar o link">${i.id}</button>
     </div>
     ${tabs ? `<div class="tabelas">${tabs}</div>` : ""}
-    <div class="sql" hidden><pre>${realca(i.sql)}</pre></div>
-    <div class="acoes">
-      <a class="btn primario" href="${i.url}" target="_blank" rel="noopener">▶ abrir</a>
-      <button class="btn" data-acao="copia">copiar link</button>
-      <button class="btn" data-acao="sql">SQL</button>
-      <span class="id">${i.id}</span>
-    </div>
   </article>`;
 }
 function linha(i) {
   const q = quando(i.criado_em), t = tempo(i);
   return `<tr data-id="${i.id}">
-    <td><a href="${i.url}" target="_blank" rel="noopener">${i.id}</a></td>
-    <td class="desc"><span class="${i.descricao ? "" : "sem"}">${descricao(i)}</span></td>
+    <td><button class="id" data-acao="copia" title="copiar o link">${i.id}</button></td>
+    <td><a class="desc${i.descricao ? "" : " sem"}" href="${i.url}" target="_blank" rel="noopener" title="abrir a consulta">${descricao(i)}</a></td>
     <td class="n" title="${esc(q.abs)}">${esc(q.rel)}</td>
     <td class="n">${num.format(i.cliques)}</td>
     <td class="n"><span class="${t.cls}" title="${esc(t.dica)}">${esc(t.txt)}</span></td>
-    <td class="n"><button class="btn" data-acao="copia">copiar</button> <button class="btn" data-acao="sql">SQL</button></td>
   </tr>`;
 }
 
@@ -357,7 +342,7 @@ function desenha() {
   $("#lista").innerHTML = estado.vista === "cards"
     ? `<div class="cards">${itens.map(card).join("")}</div>`
     : `<div class="tabela"><table><thead><tr><th>link</th><th>descrição</th><th class="n" data-ordem="criado_em">criado</th>
-       <th class="n" data-ordem="cliques">cliques</th><th class="n" data-ordem="segundos">tempo</th><th></th></tr></thead>
+       <th class="n" data-ordem="cliques">cliques</th><th class="n" data-ordem="segundos">tempo</th></tr></thead>
        <tbody>${itens.map(linha).join("")}</tbody></table></div>`;
 }
 function guarda() { try { localStorage.setItem("rodado.qindex", JSON.stringify({ ordem: estado.ordem, vista: estado.vista })); } catch (_) {} }
@@ -381,15 +366,6 @@ $("#lista").addEventListener("click", async e => {
     setTimeout(() => { b.textContent = antes; b.classList.remove("ok"); }, 1400);
   } else if (b.dataset.acao === "mais") {
     el.classList.toggle("aberto"); b.textContent = el.classList.contains("aberto") ? "recolher" : "ler tudo";
-  } else if (b.dataset.acao === "sql") {
-    if (el.tagName === "TR") {
-      const prox = el.nextElementSibling;
-      if (prox?.classList.contains("sqlrow")) { prox.remove(); b.textContent = "SQL"; return; }
-      el.insertAdjacentHTML("afterend", `<tr class="sqlrow"><td colspan="6"><pre>${realca(i.sql)}</pre></td></tr>`);
-      b.textContent = "fechar";
-    } else {
-      const s = el.querySelector(".sql"); s.hidden = !s.hidden; b.textContent = s.hidden ? "SQL" : "fechar";
-    }
   }
 });
 desenha();
