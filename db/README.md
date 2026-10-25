@@ -25,7 +25,7 @@ nem dependência do beelink ligado.
   quem tem o token** (o Caddy grava o cookie do token): o link curto é um convite para o
   espelho inteiro, não só para aquela consulta. O Caddy confere o arquivo do id antes
   (`file` em `/dados/q`); um id que não existe cai na senha
-- `https://db.rodado.xyz/llm/index` — **todos os links curtos**, do mais novo para o mais
+- `https://db.rodado.xyz/index` — **todos os links curtos**, do mais novo para o mais
   antigo: descrição (o bloco de comentários `--` que abre o SQL), criação, cliques (aberturas de
   `/q/<id>`) e tempo de execução; `?formato=json` para agentes. Fica atrás da senha, ao contrário
   do `/llm`: cada link da lista abre o espelho inteiro. Os números vivem em `/dados/q/<id>.json`;
