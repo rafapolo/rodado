@@ -25,8 +25,12 @@ on:
   # /plataformas/brasilume vem de rafapolo/brasilume, pelo mesmo
   # repository_dispatch. O data/ dele não está no git: sai do bucket privado
   # do brasilumen (Hetzner), que o pre-push de lá atualiza antes de cada push.
+  #
+  # /plataformas/datative vem de rafapolo/datative: o site estático é gerado
+  # aqui (build:graph + build:site) a partir dos static/entities/*.json já
+  # commitados lá, pelo mesmo repository_dispatch.
   repository_dispatch:
-    types: [tse-bens-updated, rios-updated, brasilumen-updated, eleicoes-updated]
+    types: [tse-bens-updated, rios-updated, brasilumen-updated, eleicoes-updated, datative-updated]
 
 permissions:
   contents: read
@@ -139,6 +143,27 @@ jobs:
              data_presidente_2026.json data_presidente_2026_zonas.json secoes \
              "$GITHUB_WORKSPACE/pages/plataformas/eleicoes/"
           rm -rf "$GITHUB_WORKSPACE/_xyz"
+      - name: Checkout datative
+        uses: actions/checkout@v7
+        with:
+          repository: rafapolo/datative
+          ref: ${{ github.event.action == 'datative-updated' && github.event.client_payload.sha || '' }}
+          path: _datative
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      # Os links do datative são relativos (build-site.ts), então o dist/
+      # funciona sob /plataformas/datative/ como funcionava sob /datative/.
+      - name: Monta datative
+        run: |
+          cd _datative
+          bun install --frozen-lockfile
+          bun run build:graph
+          bun run build:site
+          mkdir -p "$GITHUB_WORKSPACE/pages/plataformas/datative"
+          cp -r dist/. "$GITHUB_WORKSPACE/pages/plataformas/datative/"
+          rm -rf "$GITHUB_WORKSPACE/_datative"
       - name: Setup Pages
         uses: actions/configure-pages@v6
       - name: Upload artifact
