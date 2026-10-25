@@ -159,53 +159,243 @@ def _lista_q():
     return itens
 
 
+# dataset.tabela citado no SQL: os prefixos dos datasets do espelho (br_, world_, ...), para não
+# pegar alias.coluna (d.ano, s.cnpj_basico)
+TABELA_NO_SQL = re.compile(r"\b((?:br|world|global|mundo|us|un|eu|politicos|_rodado|_local)[a-z0-9_]*\.[a-z_][a-z0-9_]*)\b(?!\s*\()")
+
+
 def _pagina_q(itens):
-    def tempo(i):
-        if i["segundos"] is not None:
-            s = i["segundos"]
-            return f"{s:.1f} s" if s < 60 else f"{s / 60:.1f} min"
-        return "falhou" if i["erro"] else "medindo…"
-    linhas = []
+    """Cards (padrão) ou tabela, montados no navegador a partir da lista embutida."""
     for i in itens:
-        desc = html.escape(i["descricao"]) or f'<span class="sem">{html.escape(i["sql"].strip().splitlines()[0][:160])}</span>'
-        erro = f' title="{html.escape(i["erro"])}"' if i["erro"] else ""
-        linhas.append(
-            f'<tr><td><a href="{i["url"]}" target="_blank" rel="noopener">{i["id"]}</a></td>'
-            f'<td class="desc">{desc}<details><summary>SQL</summary><pre>{html.escape(i["sql"])}</pre></details></td>'
-            f'<td class="n">{i["criado_em"][:16].replace("T", " ")}</td>'
-            f'<td class="n">{i["cliques"]}</td><td class="n"{erro}>{tempo(i)}</td></tr>')
-    return f"""<!doctype html>
+        i["tabelas"] = sorted(set(TABELA_NO_SQL.findall(i["sql"].lower())))
+    dados = json.dumps(itens, ensure_ascii=False, default=_json_valor).replace("</", "<\\/")
+    return (PAGINA_Q.replace("__DADOS__", dados)
+            .replace("__LIMITE__", f"{LIMITE_PADRAO:,}".replace(",", ".")))
+
+
+PAGINA_Q = r"""<!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>rodado — consultas salvas</title>
+<meta name="theme-color" content="#1e1e2e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap">
 <style>
-  :root {{ --base: #1e1e2e; --mantle: #181825; --surface0: #313244; --overlay1: #7f849c;
-    --text: #cdd6f4; --blue: #89b4fa; --mauve: #cba6f7; }}
-  body {{ margin: 0; padding: 24px 16px; background: var(--base); color: var(--text);
-    font: 12px/1.5 "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; }}
-  h1 {{ font-size: 14px; color: var(--mauve); margin: 0 0 4px; }}
-  p {{ color: var(--overlay1); margin: 0 0 16px; }}
-  .tabela {{ overflow-x: auto; }}
-  table {{ border-collapse: collapse; width: 100%; max-width: 1200px; }}
-  th, td {{ text-align: left; vertical-align: top; padding: 6px 10px; border-bottom: 1px solid var(--surface0); }}
-  th {{ color: var(--overlay1); font-weight: 400; position: sticky; top: 0; background: var(--base); }}
-  td.n, th.n {{ text-align: right; white-space: nowrap; }}
-  td.desc {{ min-width: 260px; }}
-  a {{ color: var(--blue); }}
-  .sem {{ color: var(--overlay1); }}
-  summary {{ color: var(--overlay1); cursor: pointer; margin-top: 4px; }}
-  pre {{ background: var(--mantle); padding: 8px; overflow-x: auto; white-space: pre; margin: 4px 0 0; }}
+  :root { --base: #1e1e2e; --mantle: #181825; --crust: #11111b; --surface0: #313244; --surface1: #45475a;
+    --overlay0: #6c7086; --overlay1: #7f849c; --subtext0: #a6adc8; --text: #cdd6f4;
+    --blue: #89b4fa; --mauve: #cba6f7; --green: #a6e3a1; --yellow: #f9e2af; --peach: #fab387; --red: #f38ba8; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--base); color: var(--text);
+    font: 12px/1.5 "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header { position: sticky; top: 0; z-index: 2; background: color-mix(in srgb, var(--base) 92%, transparent);
+    backdrop-filter: blur(6px); border-bottom: 1px solid var(--surface0); padding: 14px 16px 12px; }
+  .topo { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; max-width: 1400px; margin: 0 auto; }
+  h1 { font-size: 14px; color: var(--mauve); margin: 0; }
+  h1 a { color: inherit; }
+  .resumo { color: var(--overlay1); }
+  .controles { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; max-width: 1400px; margin: 10px auto 0; }
+  input[type=search] { flex: 1 1 240px; min-width: 0; background: var(--mantle); color: var(--text);
+    border: 1px solid var(--surface0); border-radius: 6px; padding: 7px 10px; font: inherit; }
+  input[type=search]:focus { outline: none; border-color: var(--mauve); }
+  .grupo { display: inline-flex; border: 1px solid var(--surface0); border-radius: 6px; overflow: hidden; }
+  .grupo button { background: var(--mantle); color: var(--subtext0); border: 0; padding: 7px 10px; font: inherit; cursor: pointer; }
+  .grupo button + button { border-left: 1px solid var(--surface0); }
+  .grupo button[aria-pressed=true] { background: var(--surface0); color: var(--text); }
+  main { max-width: 1400px; margin: 0 auto; padding: 16px; }
+  .vazio { color: var(--overlay1); padding: 40px 0; text-align: center; }
+
+  /* cards */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
+  .card { background: var(--mantle); border: 1px solid var(--surface0); border-radius: 10px; padding: 14px;
+    display: flex; flex-direction: column; gap: 10px; min-width: 0; transition: border-color .15s; }
+  .card:hover { border-color: var(--surface1); }
+  .card .desc { color: var(--text); font-weight: 700; line-height: 1.45; display: -webkit-box;
+    -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+  .card .desc.sem { color: var(--subtext0); font-weight: 400; }
+  .card.aberto .desc { -webkit-line-clamp: unset; }
+  .mais { background: none; border: 0; color: var(--overlay1); font: inherit; padding: 0; cursor: pointer; align-self: flex-start; }
+  .metricas { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 99px;
+    background: var(--base); border: 1px solid var(--surface0); color: var(--subtext0); white-space: nowrap; }
+  .chip b { color: var(--text); font-weight: 700; }
+  .t-rapido b { color: var(--green); } .t-medio b { color: var(--yellow); }
+  .t-lento b { color: var(--peach); } .t-falhou b { color: var(--red); } .t-medindo b { color: var(--overlay1); }
+  .tabelas { display: flex; flex-wrap: wrap; gap: 4px; }
+  .tabelas a { color: var(--overlay1); background: var(--base); border-radius: 4px; padding: 1px 6px; font-size: 11px; max-width: 100%; overflow-wrap: anywhere; }
+  .tabelas a:hover { color: var(--blue); text-decoration: none; }
+  .acoes { display: flex; gap: 6px; margin-top: auto; padding-top: 2px; }
+  .btn { background: var(--surface0); color: var(--text); border: 0; border-radius: 6px; padding: 6px 10px;
+    font: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .btn:hover { background: var(--surface1); text-decoration: none; }
+  .btn.primario { background: var(--mauve); color: var(--crust); font-weight: 700; }
+  .btn.primario:hover { filter: brightness(1.08); }
+  .btn.ok { color: var(--green); }
+  .id { margin-left: auto; color: var(--overlay0); align-self: center; font-size: 11px; }
+  pre { background: var(--crust); border-radius: 6px; padding: 10px; margin: 0; overflow: auto; max-height: 360px;
+    white-space: pre; font-family: inherit; font-size: 11px; line-height: 1.5; color: var(--subtext0); }
+  pre .c { color: var(--overlay0); } pre .k { color: var(--mauve); } pre .s { color: var(--green); }
+
+  /* tabela */
+  .tabela { overflow-x: auto; border: 1px solid var(--surface0); border-radius: 10px; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--surface0); }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr:hover { background: var(--mantle); }
+  th { color: var(--overlay1); font-weight: 400; background: var(--mantle); white-space: nowrap; }
+  th[data-ordem] { cursor: pointer; } th[data-ordem]:hover { color: var(--text); }
+  td.n, th.n { text-align: right; white-space: nowrap; }
+  td.desc { min-width: 280px; }
+  td.desc .sem { color: var(--subtext0); }
+  td .t-rapido { color: var(--green); } td .t-medio { color: var(--yellow); }
+  td .t-lento { color: var(--peach); } td .t-falhou { color: var(--red); } td .t-medindo { color: var(--overlay1); }
+  tr.sqlrow td { background: var(--crust); padding: 0; } tr.sqlrow pre { border-radius: 0; max-height: 420px; }
+  @media (max-width: 420px) { .cards { grid-template-columns: 1fr; } }
 </style></head><body>
-<h1>consultas salvas · /q/</h1>
-<p>{len(itens)} links, do mais novo para o mais antigo · tempo = uma execução no servidor (até {LIMITE_PADRAO:,} linhas) ·
-cliques = aberturas do link · <a href="/llm/index?formato=json">json</a></p>
-<div class="tabela"><table>
-<thead><tr><th>link</th><th>descrição</th><th class="n">criado em</th><th class="n">cliques</th><th class="n">tempo</th></tr></thead>
-<tbody>
-{chr(10).join(linhas)}
-</tbody></table></div>
+<header>
+  <div class="topo">
+    <h1><a href="/">rodado</a> · consultas salvas</h1>
+    <span class="resumo" id="resumo"></span>
+  </div>
+  <div class="controles">
+    <input type="search" id="busca" placeholder="buscar na descrição, no SQL ou nas tabelas  ( / )" autocomplete="off">
+    <div class="grupo" id="ordem" role="group" aria-label="ordenar">
+      <button data-v="criado_em" aria-pressed="true">recentes</button>
+      <button data-v="cliques">cliques</button>
+      <button data-v="segundos">tempo</button>
+    </div>
+    <div class="grupo" id="vista" role="group" aria-label="vista">
+      <button data-v="cards" aria-pressed="true">cards</button>
+      <button data-v="tabela">tabela</button>
+    </div>
+    <a class="btn" href="/llm/index?formato=json" target="_blank" rel="noopener">json</a>
+  </div>
+</header>
+<main id="lista"></main>
+<script>
+const ITENS = __DADOS__;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const semAcento = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const rel = new Intl.RelativeTimeFormat("pt-BR", { numeric: "auto" });
+const abs = new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "short", timeZone: "America/Sao_Paulo" });
+const num = new Intl.NumberFormat("pt-BR");
+let estado = { busca: "", ordem: "criado_em", vista: "cards" };
+try { Object.assign(estado, JSON.parse(localStorage.getItem("rodado.qindex") || "{}"), { busca: "" }); } catch (_) {}
+for (const i of ITENS) i._busca = semAcento([i.descricao, i.sql, i.id, (i.tabelas || []).join(" ")].join(" "));
+
+function quando(iso) {
+  const d = new Date(iso), s = (d - Date.now()) / 1000;
+  const [n, u] = Math.abs(s) < 3600 ? [s / 60, "minute"] : Math.abs(s) < 86400 ? [s / 3600, "hour"]
+    : Math.abs(s) < 86400 * 45 ? [s / 86400, "day"] : [s / 86400 / 30, "month"];
+  return { rel: rel.format(Math.round(n), u), abs: abs.format(d) };
+}
+function tempo(i) {
+  if (i.segundos != null) {
+    const s = i.segundos;
+    return { txt: s < 1 ? `${Math.round(s * 1000)} ms` : s < 60 ? `${s.toFixed(1).replace(".", ",")} s` : `${(s / 60).toFixed(1).replace(".", ",")} min`,
+             cls: s < 5 ? "t-rapido" : s < 30 ? "t-medio" : "t-lento", dica: `medido ${i.medido_em ? quando(i.medido_em).abs : ""}` };
+  }
+  return i.erro ? { txt: "falhou", cls: "t-falhou", dica: i.erro } : { txt: "medindo…", cls: "t-medindo", dica: "na fila de medição" };
+}
+function realca(sql) {   // realce mínimo: comentário, palavra-chave, texto entre aspas
+  return esc(sql).replace(/(--[^\n]*)|('(?:[^']|'')*')|\b(SELECT|FROM|WHERE|WITH|AS|JOIN|LEFT|INNER|ON|GROUP BY|ORDER BY|HAVING|LIMIT|UNION|ALL|AND|OR|NOT|IN|CASE|WHEN|THEN|ELSE|END|DISTINCT|USING|OVER|PARTITION BY|DESC|ASC|IS|NULL|BETWEEN|LIKE|ILIKE)\b/gi,
+    (m, c, s, k) => c ? `<span class="c">${c}</span>` : s ? `<span class="s">${s}</span>` : `<span class="k">${k}</span>`);
+}
+const url = i => location.origin + i.url;
+const descricao = i => i.descricao ? esc(i.descricao) : esc((i.sql.trim().split("\n")[0] || "").slice(0, 200));
+
+function card(i) {
+  const q = quando(i.criado_em), t = tempo(i);
+  const tabs = (i.tabelas || []).map(n => `<a href="/?query=${btoa(unescape(encodeURIComponent("DESCRIBE " + n)))}" target="_blank" rel="noopener" title="abrir ${esc(n)} no terminal">${esc(n)}</a>`).join("");
+  return `<article class="card" data-id="${i.id}">
+    <div class="desc${i.descricao ? "" : " sem"}" title="${esc(i.descricao)}">${descricao(i)}</div>
+    ${i.descricao.length > 220 ? `<button class="mais" data-acao="mais">ler tudo</button>` : ""}
+    <div class="metricas">
+      <span class="chip" title="${esc(q.abs)}">criado <b>${esc(q.rel)}</b></span>
+      <span class="chip" title="aberturas do link">cliques <b>${num.format(i.cliques)}</b></span>
+      <span class="chip ${t.cls}" title="${esc(t.dica)}">tempo <b>${esc(t.txt)}</b></span>
+    </div>
+    ${tabs ? `<div class="tabelas">${tabs}</div>` : ""}
+    <div class="sql" hidden><pre>${realca(i.sql)}</pre></div>
+    <div class="acoes">
+      <a class="btn primario" href="${i.url}" target="_blank" rel="noopener">▶ abrir</a>
+      <button class="btn" data-acao="copia">copiar link</button>
+      <button class="btn" data-acao="sql">SQL</button>
+      <span class="id">${i.id}</span>
+    </div>
+  </article>`;
+}
+function linha(i) {
+  const q = quando(i.criado_em), t = tempo(i);
+  return `<tr data-id="${i.id}">
+    <td><a href="${i.url}" target="_blank" rel="noopener">${i.id}</a></td>
+    <td class="desc"><span class="${i.descricao ? "" : "sem"}">${descricao(i)}</span></td>
+    <td class="n" title="${esc(q.abs)}">${esc(q.rel)}</td>
+    <td class="n">${num.format(i.cliques)}</td>
+    <td class="n"><span class="${t.cls}" title="${esc(t.dica)}">${esc(t.txt)}</span></td>
+    <td class="n"><button class="btn" data-acao="copia">copiar</button> <button class="btn" data-acao="sql">SQL</button></td>
+  </tr>`;
+}
+
+function ordena(a, b) {
+  const k = estado.ordem;
+  if (k === "criado_em") return b.criado_em.localeCompare(a.criado_em);
+  if (k === "cliques") return b.cliques - a.cliques || b.criado_em.localeCompare(a.criado_em);
+  return (b.segundos ?? -1) - (a.segundos ?? -1);
+}
+function desenha() {
+  const termos = semAcento(estado.busca).split(/\s+/).filter(Boolean);
+  const itens = ITENS.filter(i => termos.every(t => i._busca.includes(t))).sort(ordena);
+  const total = ITENS.reduce((s, i) => s + i.cliques, 0);
+  $("#resumo").textContent = (itens.length === ITENS.length ? `${ITENS.length} links` : `${itens.length} de ${ITENS.length} links`)
+    + ` · ${num.format(total)} cliques · tempo = uma execução no servidor, até __LIMITE__ linhas`;
+  for (const b of document.querySelectorAll("#ordem button")) b.setAttribute("aria-pressed", b.dataset.v === estado.ordem);
+  for (const b of document.querySelectorAll("#vista button")) b.setAttribute("aria-pressed", b.dataset.v === estado.vista);
+  if (!itens.length) { $("#lista").innerHTML = `<div class="vazio">nenhum link casa com “${esc(estado.busca)}”</div>`; return; }
+  $("#lista").innerHTML = estado.vista === "cards"
+    ? `<div class="cards">${itens.map(card).join("")}</div>`
+    : `<div class="tabela"><table><thead><tr><th>link</th><th>descrição</th><th class="n" data-ordem="criado_em">criado</th>
+       <th class="n" data-ordem="cliques">cliques</th><th class="n" data-ordem="segundos">tempo</th><th></th></tr></thead>
+       <tbody>${itens.map(linha).join("")}</tbody></table></div>`;
+}
+function guarda() { try { localStorage.setItem("rodado.qindex", JSON.stringify({ ordem: estado.ordem, vista: estado.vista })); } catch (_) {} }
+
+$("#busca").addEventListener("input", e => { estado.busca = e.target.value; desenha(); });
+$("#ordem").addEventListener("click", e => { if (e.target.dataset.v) { estado.ordem = e.target.dataset.v; guarda(); desenha(); } });
+$("#vista").addEventListener("click", e => { if (e.target.dataset.v) { estado.vista = e.target.dataset.v; guarda(); desenha(); } });
+document.addEventListener("keydown", e => {
+  if (e.key === "/" && document.activeElement !== $("#busca")) { e.preventDefault(); $("#busca").focus(); }
+  if (e.key === "Escape" && document.activeElement === $("#busca")) { e.target.value = ""; estado.busca = ""; desenha(); }
+});
+$("#lista").addEventListener("click", async e => {
+  const th = e.target.closest("th[data-ordem]");
+  if (th) { estado.ordem = th.dataset.ordem; guarda(); desenha(); return; }
+  const b = e.target.closest("[data-acao]");
+  if (!b) return;
+  const el = b.closest("[data-id]"), i = ITENS.find(x => x.id === el.dataset.id);
+  if (b.dataset.acao === "copia") {
+    try { await navigator.clipboard.writeText(url(i)); } catch (_) { return; }
+    const antes = b.textContent; b.textContent = "copiado ✓"; b.classList.add("ok");
+    setTimeout(() => { b.textContent = antes; b.classList.remove("ok"); }, 1400);
+  } else if (b.dataset.acao === "mais") {
+    el.classList.toggle("aberto"); b.textContent = el.classList.contains("aberto") ? "recolher" : "ler tudo";
+  } else if (b.dataset.acao === "sql") {
+    if (el.tagName === "TR") {
+      const prox = el.nextElementSibling;
+      if (prox?.classList.contains("sqlrow")) { prox.remove(); b.textContent = "SQL"; return; }
+      el.insertAdjacentHTML("afterend", `<tr class="sqlrow"><td colspan="6"><pre>${realca(i.sql)}</pre></td></tr>`);
+      b.textContent = "fechar";
+    } else {
+      const s = el.querySelector(".sql"); s.hidden = !s.hidden; b.textContent = s.hidden ? "SQL" : "fechar";
+    }
+  }
+});
+desenha();
+</script>
 </body></html>
-""".replace(f"{LIMITE_PADRAO:,}", f"{LIMITE_PADRAO:,}".replace(",", "."))
+"""
 _catalogo = {"em": 0.0, "json": b""}
 _catalogo_trava = threading.Lock()
 _guia = {"em": 0.0, "texto": b""}
