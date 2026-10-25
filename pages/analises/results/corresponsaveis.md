@@ -1,8 +1,10 @@
 # Corresponsáveis: o que os registros públicos acrescentam à rede de Willer Tomaz
 
 Duas apurações de outubro de 2026 mapearam a rede em torno do advogado Willer
-Tomaz: o relatório *A Rede de Flávio*, do coletivo DemocraciaBR, e a reportagem
-*Uma sala e 90 empresas*, da Agência Pública. As duas partem do quadro de sócios
+Tomaz: o relatório [*A Rede de Flávio*](https://democraciabr.codeberg.page/quem-e-flavio-bolsonaro/relatorio/index.html),
+do coletivo DemocraciaBR, e a reportagem
+[*Uma sala e 90 empresas*](https://apublica.org/2026/10/uma-sala-e-90-empresas-o-mapa-que-liga-flavio-bolsonaro-willer-tomaz-e-o-careca-do-inss/),
+da Agência Pública. As duas partem do quadro de sócios
 da Receita Federal e do endereço de uma sala em Águas Claras (DF). Esta análise
 refaz esse cruzamento e o estende a cadastros públicos que nenhuma das duas
 consultou: a dívida ativa da União, a cota parlamentar do Senado e da Câmara e o
@@ -228,8 +230,10 @@ Atividade Parlamentar (CEAPS); Câmara dos Deputados — cota parlamentar; Tribu
 Superior Eleitoral — despesas de campanha (2018 a 2026, prestações até
 11/10/2026); Agência Nacional de Aviação Civil — Registro Aeronáutico
 Brasileiro (julho de 2026); Portal da Transparência — emendas parlamentares.
-Apurações comparadas: DemocraciaBR, "A Rede de Flávio" (versão de 22/10/2026);
-Agência Pública, "Uma sala e 90 empresas" (24/10/2026); UOL (02/10/2026).
+Apurações comparadas: DemocraciaBR, ["A Rede de Flávio"](https://democraciabr.codeberg.page/quem-e-flavio-bolsonaro/relatorio/index.html)
+(versão de 22/10/2026); Agência Pública,
+["Uma sala e 90 empresas"](https://apublica.org/2026/10/uma-sala-e-90-empresas-o-mapa-que-liga-flavio-bolsonaro-willer-tomaz-e-o-careca-do-inss/)
+(24/10/2026); UOL (02/10/2026).
 Nenhum CPF é reproduzido.*
 
 **Refaça cada número.** Os links de consulta abrem o terminal do rodado e executam a consulta; os da rede abrem, no Datative, o grafo da entidade com tudo o que ela cruza nos cadastros públicos. A coleção completa está em [Rede Willer Tomaz](https://rodado.xyz/plataformas/datative/?c=rede-willer-tomaz).
