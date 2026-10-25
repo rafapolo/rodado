@@ -18,3 +18,27 @@ gotchas:
     colunas: [geometria, geometria_original]
     severidade: aviso
     verificado: "36.975 de 1.764.450 com geometria nula, todos com geometria_original — medido 2026-10-15"
+  - id: operacao_sem_municipio
+    resumo: "operacao não tem município: só recurso_publico_complemento_operacao o traz, e só para crédito de recurso controlado/equalizado. LCA livre, recursos livres e BNDES livre ficam sem município."
+    tabelas: [operacao, recurso_publico_complemento_operacao]
+    colunas: [id_municipio, id_fonte_recurso]
+    severidade: silencioso
+    verificado: "safra 2023/24: R$ 421,7 bi no total (bate com o anuário do BCB), R$ 135,7 bi com município; fonte 430 (LCA livre) R$ 166,2 bi com R$ 0,9 bi com município — medido 2026-10-22 (bragro)"
+  - id: mutuario_sem_numero_ordem
+    resumo: "recurso_publico_mutuario é chaveado só por id_referencia_bacen (sem numero_ordem) e traz vários mutuários por operação: o tomador é o de primeiro_mutuario = 'S'."
+    tabelas: [recurso_publico_mutuario]
+    colunas: [id_referencia_bacen, primeiro_mutuario]
+    severidade: aviso
+    verificado: "17,8 M linhas; 'N' em 28 mil — medido 2026-10-22 (bragro)"
+  - id: dicionario_duplicado
+    resumo: "dicionario repete cada chave de id_programa duas vezes: deduplique antes de juntar."
+    tabelas: [dicionario]
+    colunas: [chave]
+    severidade: aviso
+    verificado: "id_programa: 40 linhas para 20 chaves — medido 2026-10-22 (bragro)"
+  - id: datas_de_plantio
+    resumo: "operacao.data_inicio_plantio e data_fim_colheita vêm em ~70% do custeio agrícola com município, com poucas datas absurdas; servem para calendário agrícola (moda do plantio da soja: outubro)."
+    tabelas: [operacao]
+    colunas: [data_inicio_plantio, data_fim_colheita]
+    severidade: aviso
+    verificado: "soja: 1,17 M de 1,62 M operações com data, 83 fora de 2010–2027; ciclo médio 173 dias — medido 2026-10-22 (bragro)"

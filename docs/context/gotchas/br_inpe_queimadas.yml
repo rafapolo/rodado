@@ -18,3 +18,9 @@ gotchas:
     colunas: [dias_sem_chuva, risco_fogo]
     severidade: silencioso
     verificado: "2025 (fonte INPE): 39.109 dias_sem_chuva e 27.242 risco_fogo = -999 — medido 2026-10-07"
+  - id: todos_os_satelites_desde_2023
+    resumo: "Até 2022 só há a série do satélite de referência (satelite NULL); de 2023 em diante vêm todos os satélites, ~30× mais focos. Para série comparável, filtre satelite = 'AQUA_M-T' de 2023 em diante."
+    tabelas: [microdados]
+    colunas: [satelite]
+    severidade: silencioso
+    verificado: "2022: 200.763 focos (todos NULL); 2024: 8.148.844 no total, 278.341 do AQUA_M-T — medido 2026-10-22 (bragro)"

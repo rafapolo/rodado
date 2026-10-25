@@ -1,0 +1,8 @@
+dataset: br_cgu_garantia_safra
+gotchas:
+  - id: siafi_com_zero_a_esquerda
+    resumo: "codigo_municipio_siafi vem com zero à esquerda ('0512') e br_bd_diretorios_brasil.municipio.id_municipio_rf sem: juntar como texto perde 221 de 1.327 municípios. Junte como inteiro (try_cast ... AS INTEGER)."
+    tabelas: [garantia_safra]
+    colunas: [codigo_municipio_siafi]
+    severidade: silencioso
+    verificado: "como texto casam 1.106 de 1.327 códigos; como inteiro, 1.327 — medido 2026-10-21"

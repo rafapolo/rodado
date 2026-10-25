@@ -1,0 +1,8 @@
+dataset: br_ibge_pib
+gotchas:
+  - id: sem_va_por_setor_2022_2023
+    resumo: "municipio de 2022 e 2023 traz só pib e impostos: va e va_agropecuaria (e os outros setores) vêm NULL nos 5.570 municípios. Valores em R$, não em R$ mil."
+    tabelas: [municipio]
+    colunas: [va, va_agropecuaria]
+    severidade: silencioso
+    verificado: "VA agropecuário 2021: R$ 591 bi; 2022 e 2023: 5.570 nulos — medido 2026-10-22 (bragro)"

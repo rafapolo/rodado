@@ -1,0 +1,20 @@
+dataset: br_geobr_mapas
+gotchas:
+  - id: limite_vizinhanca_sao_bairros
+    resumo: "limite_vizinhanca não é a divisa entre municípios: são os limites dos bairros (vizinhanças) do Censo, 14.832 polígonos intraurbanos."
+    tabelas: [limite_vizinhanca]
+    colunas: [geometria]
+    severidade: aviso
+    verificado: "14.832 linhas com id_vizinhanca e nome_vizinhanca — medido 2026-10-22 (bragro)"
+  - id: bioma_2019_sem_amazonia
+    resumo: "bioma traz 2004 e 2019; em 2019 a Amazônia vem com geometria NULL. Use a de 2004."
+    tabelas: [bioma]
+    colunas: [geometria, ano]
+    severidade: silencioso
+    verificado: "2019, Amazônia: ST_NPoints NULL — medido 2026-10-22 (bragro)"
+  - id: semiarido_por_municipio
+    resumo: "semiarido são os 1.262 municípios, um polígono cada: a união deixa frestas (furos) entre vizinhos; um buffer de ida e volta (0,003°) fecha."
+    tabelas: [semiarido]
+    colunas: [geometria]
+    severidade: aviso
+    verificado: "1.262 municípios — medido 2026-10-22 (bragro)"

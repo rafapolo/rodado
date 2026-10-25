@@ -1,0 +1,20 @@
+dataset: br_mapbiomas_estatisticas
+gotchas:
+  - id: cobertura_repete_por_bioma
+    resumo: "cobertura_municipio_classe tem uma linha por município × ano × classe × BIOMA: município que atravessa dois biomas aparece duas vezes. Some area_ha por município, nunca pegue uma linha."
+    tabelas: [cobertura_municipio_classe]
+    colunas: [bioma, area_ha]
+    severidade: silencioso
+    verificado: "3.173.646 linhas, 2.799.275 combinações município × ano × classe — medido 2026-10-21"
+  - id: transicao_decenal_ano_fim_e_km2
+    resumo: "Em transicao_municipio_de_para_decenal, ano é o FIM da década (2000 = 1990→2000, também 2010 e 2020) e area está em km², não em ha como na cobertura."
+    tabelas: [transicao_municipio_de_para_decenal]
+    colunas: [ano, area]
+    severidade: silencioso
+    verificado: "Sorriso, soma de 'para soja' (todas as origens, inclusive soja→soja) × 100 contra a cobertura de soja no ano-fim: 2000 = 415.800 ha / 373.880 (+11%), 2010 = 562.365 / 525.883 (+7%), 2020 = 559.102 / 525.605 (+6%); 'de soja' em 2000 = 129.307 contra cobertura 1990 = 126.990 (+2%). A transição fica 2–11% acima da cobertura, provavelmente por vir de outra coleção — use para proporção de origens, não para somar com a cobertura — medido 2026-10-21"
+  - id: classes_fora_da_legenda
+    resumo: "A tabela classe lista 36 classes, mas a cobertura usa também 6 (floresta alagável, 37,9 M ha em 2024), 7, 35 (dendê), 75, 84 e 91, que não estão na legenda; id_classe 0 aparece com área zero. Um JOIN com classe descarta essa área calado."
+    tabelas: [cobertura_municipio_classe, classe]
+    colunas: [id_classe]
+    severidade: aviso
+    verificado: "classes 6 (37,93 M ha em 2024), 7 (0,04), 35 (0,25), 75 (0,04), 84 (0,01), 91 (0,03) presentes na cobertura e ausentes de classe — medido 2026-10-21"

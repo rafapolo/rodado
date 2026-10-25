@@ -12,3 +12,9 @@ gotchas:
     colunas: [id_imovel_receita_federal]
     severidade: silencioso
     verificado: "data_referencia 2025-09-02: 6.270.208 NULL de 10.157.996, 3.887.782 ids distintos — medido 2026-09-25"
+  - id: area_sem_unidade
+    resumo: "A area não fecha em unidade nenhuma: os imóveis ativos da data mais recente somam 9,0 bilhões (o Brasil tem 851 M ha). Use só contagens."
+    tabelas: [imoveis_rurais]
+    colunas: [area]
+    severidade: silencioso
+    verificado: "2025-09-02, situacao_imovel '02': 8,8 M imóveis, soma de area 9,0 bi — medido 2026-10-22 (bragro)"
