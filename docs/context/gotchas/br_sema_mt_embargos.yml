@@ -1,0 +1,26 @@
+dataset: br_sema_mt_embargos
+gotchas:
+  - id: duas_camadas
+    resumo: "areas_embargadas junta duas camadas da SEMA-MT: 'sema' (sistema antigo, lavraturas de 2010 a 2024-08) e 'siga' (SIGA, de 2022-10 em diante). No período comum, o mesmo embargo pode estar nas duas; a área (area_ha) não se soma entre camadas."
+    tabelas: [areas_embargadas]
+    colunas: [camada, data_embargo, area_ha]
+    severidade: silencioso
+    verificado: "sema 8.359 áreas (2010-03-22 a 2024-08-06, 681.112 ha); siga 11.833 (2022-10-03 a 2026-10-24, 1.318.740 ha) — medido 2026-10-25 (chao)"
+  - id: sem_data_de_desembargo
+    resumo: "Não há data de desembargo. areas_desembargadas traz só a área e a data do embargo original; areas_embargadas é a lista de hoje. Para 'embargo vigente numa data passada', a leitura possível é: vigente da lavratura em diante."
+    tabelas: [areas_embargadas, areas_desembargadas]
+    colunas: [data_embargo]
+    severidade: aviso
+    verificado: "areas_desembargadas: sema 4.727, siga 2.174, sem coluna de data de desembargo — medido 2026-10-25 (chao)"
+  - id: data_so_com_ano
+    resumo: "Na camada 'sema', 176 lavraturas vêm como '00/00/AAAA': data_embargo foi gravada como 31/12 daquele ano (a leitura conservadora para 'vigente na data')."
+    tabelas: [areas_embargadas]
+    colunas: [data_embargo]
+    severidade: aviso
+    verificado: "176 de 8.359 na camada sema com DAT_LAVRAT '00/00/AAAA' — medido 2026-10-25 (chao)"
+  - id: situacao_e_do_processo
+    resumo: "situacao (só no SIGA) é a fase do processo do auto ('TRIAGEM...', 'Instrução e julgamento'), não diz se o embargo caiu."
+    tabelas: [areas_embargadas]
+    colunas: [situacao]
+    severidade: aviso
+    verificado: "siga: TRIAGEM 5.944, PROVIDÊNCIAS 1.733, Instrução e julgamento 1.543, nulo 2.245 — medido 2026-10-25 (chao)"
