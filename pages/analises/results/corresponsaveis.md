@@ -34,7 +34,10 @@ O dado novo é a forma. A mesma inscrição aparece com uma empresa como devedor
 principal e as outras como **corresponsáveis**. **Em 454 das 532 inscrições
 (R$ 17,1 milhões), as cinco empresas aparecem ao mesmo tempo.** A
 corresponsabilidade indica que, para a Procuradoria-Geral da Fazenda Nacional,
-as cinco são cobradas como um grupo só.
+as cinco são cobradas como um grupo só. A própria Procuradoria publica um
+[termo de transação](https://www.gov.br/pgfn/pt-br/assuntos/divida-ativa-da-uniao/transparencia-fiscal-1/painel-dos-parcelamentos/termos-de-transacao/1a-regiao/SumrioRdioeTVDifusoradoMaranhoLTDARdioCurimLTDARdioCaxiasJotaComunicaoDifusoraComunicaesSA.pdf/view)
+assinado em conjunto pelas cinco, sem os valores. Não encontramos reportagem
+com o tamanho da dívida nem com a corresponsabilidade.
 
 | Empresa | Inscrições em que aparece | Valor (contando a dívida compartilhada) |
 |---|---:|---:|
@@ -93,24 +96,7 @@ estado. Abastecer em posto de colega não é ilícito. O registro só mostra par
 onde a verba foi. O relatório trata de outro posto da família, o Petro São
 Francisco, e não deste.
 
-## 4. A fornecedora de R$ 3,7 milhões de Flávio já devia à União quando foi contratada
-
-A Aurea Tecnologia e Soluções (CNPJ 57.780.367) declara capital social de
-R$ 1.000. O relatório já a apontava pelo capital baixo. A dívida ativa acrescenta
-uma data.
-
-- **15/06/2026:** a Procuradoria inscreve a Aurea na dívida ativa da União com
-  13 inscrições, que somam **R$ 602.248,40** (IRPJ, CSLL, contribuição
-  previdenciária e IRRF). Todas estão na situação "ativa a ser cobrada".
-- **20/08/2026:** a campanha presidencial de Flávio Bolsonaro registra duas
-  despesas com a Aurea, de R$ 2.152.105 e R$ 1.547.895, por "implantação e
-  operação do super hub de produção — TV celular". Total: **R$ 3,7 milhões**.
-
-A lei eleitoral não proíbe campanha de contratar empresa com dívida tributária.
-O ponto é a combinação: capital de R$ 1 mil, débito federal de R$ 602 mil
-inscrito dois meses antes e um contrato de R$ 3,7 milhões.
-
-## 5. O 3131-3131 e o telefone da Voga nunca aparecem juntos
+## 4. O 3131-3131 e o telefone da Voga nunca aparecem juntos
 
 Em várias seções, o relatório trata o número 61 3131-3131 como telefone da Voga
 Serviços Contábeis. Ele também registra, na seção 29, que o telefone próprio da
@@ -136,11 +122,14 @@ O telefone que é de fato da Voga leva a um elo que o relatório não cita: a
 **Aragão e Tomaz Advogados Associados**, sociedade de Willer Tomaz com o
 ex-ministro da Justiça Eugênio Aragão desde 18/09/2018, registrada num
 escritório virtual da Av. Paulista, 1636, usa no cadastro o 61 3964-0691. A
+sociedade em si já foi
+[noticiada pelo ICL](https://iclnoticias.com.br/gestor-offshore-flavio-escritorio-willer-tomaz/);
+o telefone da Voga no cadastro dela, não. A
 Pública revelou que Willer advoga para a Voga num processo trabalhista. Pelo
 cadastro, a relação também corre no sentido inverso: o contato do escritório
 contábil está na sociedade de advocacia de Willer.
 
-## 6. A "Bonsucesso" mudou de nome, de capital e de cidade
+## 5. A "Bonsucesso" mudou de nome, de capital e de cidade
 
 As duas apurações citam a Bonsucesso Consultoria S/A. Hoje ela não aparece com
 esse nome. Pelo histórico do mesmo CNPJ (58.311.064):
@@ -167,6 +156,15 @@ titular da Voga.
   que o valor complementava o auxílio-moradia de uma casa da WT onde o senador
   mora. O relatório da DemocraciaBR não traz esse pagamento. Na base pública
   da cota, o tipo de despesa desses lançamentos vem em branco.
+- **A Aurea.** A Aurea Tecnologia e Soluções, fornecedora de R$ 3,7 milhões da
+  campanha presidencial de Flávio Bolsonaro (duas despesas de 20/08/2026, por
+  "implantação e operação do super hub de produção — TV celular"), declara
+  capital de R$ 1.000 e foi inscrita na dívida ativa da União em 15/06/2026:
+  13 inscrições, R$ 602.248,40, todas "ativa a ser cobrada". A
+  [Revista Fórum](https://revistaforum.com.br/politica/campanha-flavio-bolsonaro-divida/)
+  e o [Portal JT](https://www.portaljt.com.br/post/26-0110-b-nc) já publicaram a
+  combinação de capital baixo, dívida e contrato; os registros confirmam e
+  acrescentam a data da inscrição, dois meses antes do contrato.
 - **As aeronaves.** O relatório mostra que o helicóptero PS-FBC, da Direção
   Táxi Aéreo, tem como operador no Registro Aeronáutico a campanha de Juscelino
   Filho em 2026. O número de série do registro, **1191**, é o mesmo da despesa
@@ -243,9 +241,9 @@ Nenhum CPF é reproduzido.*
 | 1. Dívida ativa do grupo de mídia | [sem repetição](https://db.rodado.xyz/q/8JdPomGO) · [por empresa](https://db.rodado.xyz/q/ZwJKWklE) · [sociedades de Willer](https://db.rodado.xyz/q/Dmyw9Zk1) | [TV Difusora](https://rodado.xyz/plataformas/datative/e-06275598.html) · [Difusora Comunicação](https://rodado.xyz/plataformas/datative/e-08661220.html) · [Rádio Curimã](https://rodado.xyz/plataformas/datative/e-07158751.html) · [Rádio Caxias](https://rodado.xyz/plataformas/datative/e-63432751.html) · [Jota Comunicação](https://rodado.xyz/plataformas/datative/e-23412791.html) · [Willer Tomaz](https://rodado.xyz/plataformas/datative/e-23d51e27cd82d78d.html) |
 | 2. Jota e Rocha Holding no mesmo endereço | [endereços mês a mês](https://db.rodado.xyz/q/xsmYrsnr) · [diretoria da Jota](https://db.rodado.xyz/q/zh_XJZuM) | [Rocha Holding](https://rodado.xyz/plataformas/datative/e-50570260.html) · [Weverton Rocha](https://rodado.xyz/plataformas/datative/e-b6825aa80e924ac8.html) |
 | 3. Cota de Eliziane Gama no posto | [reembolsos](https://db.rodado.xyz/q/wgb6Z4b2) · [sócios e razão social](https://db.rodado.xyz/q/uTmGldXW) | [F de A S Campos (Petro São José)](https://rodado.xyz/plataformas/datative/e-35711858.html) · [Eliziane Gama](https://rodado.xyz/plataformas/datative/e-dcd84b93a80f3a26.html) |
-| 4. Aurea | [capital, dívida e contratos](https://db.rodado.xyz/q/bindF0nn) | [Aurea Tecnologia](https://rodado.xyz/plataformas/datative/e-57780367.html) · [Flávio Bolsonaro](https://rodado.xyz/plataformas/datative/e-365a1398378c1993.html) |
-| 5. Telefones da Voga | [combinações de contato](https://db.rodado.xyz/q/7U-p2c1w) · [cadastro da Voga e da Aragão e Tomaz](https://db.rodado.xyz/q/Zs5JYdUM) · [sócios da Aragão e Tomaz](https://db.rodado.xyz/q/KGIEEEpH) | [Voga](https://rodado.xyz/plataformas/datative/e-10943907.html) · [Aragão e Tomaz](https://rodado.xyz/plataformas/datative/e-31624699.html) · [Eugênio Aragão](https://rodado.xyz/plataformas/datative/e-4835e0d6aa1cac6f.html) |
-| 6. Bonsucesso / Neoverde | [nome, capital e quadro](https://db.rodado.xyz/q/ANfQQrUa) | [Neoverde Alliance](https://rodado.xyz/plataformas/datative/e-58311064.html) · [Lidia Mazelli](https://rodado.xyz/plataformas/datative/e-7b3a3934ba2aa572.html) |
+| 4. Telefones da Voga | [combinações de contato](https://db.rodado.xyz/q/7U-p2c1w) · [cadastro da Voga e da Aragão e Tomaz](https://db.rodado.xyz/q/Zs5JYdUM) · [sócios da Aragão e Tomaz](https://db.rodado.xyz/q/KGIEEEpH) | [Voga](https://rodado.xyz/plataformas/datative/e-10943907.html) · [Aragão e Tomaz](https://rodado.xyz/plataformas/datative/e-31624699.html) · [Eugênio Aragão](https://rodado.xyz/plataformas/datative/e-4835e0d6aa1cac6f.html) |
+| 5. Bonsucesso / Neoverde | [nome, capital e quadro](https://db.rodado.xyz/q/ANfQQrUa) | [Neoverde Alliance](https://rodado.xyz/plataformas/datative/e-58311064.html) · [Lidia Mazelli](https://rodado.xyz/plataformas/datative/e-7b3a3934ba2aa572.html) |
+| Aurea | [capital, dívida e contratos](https://db.rodado.xyz/q/bindF0nn) | [Aurea Tecnologia](https://rodado.xyz/plataformas/datative/e-57780367.html) · [Flávio Bolsonaro](https://rodado.xyz/plataformas/datative/e-365a1398378c1993.html) |
 | Ciro Nogueira e a WT | [reembolsos](https://db.rodado.xyz/q/qVY0tmaG) · [administradores da WT](https://db.rodado.xyz/q/WYhUK-DW) | [WT Administração](https://rodado.xyz/plataformas/datative/e-05238819.html) · [Ciro Nogueira](https://rodado.xyz/plataformas/datative/e-49d9790f123252e8.html) |
 | Aeronaves | [registro aeronáutico](https://db.rodado.xyz/q/ssNhIFiB) · [despesas de campanha](https://db.rodado.xyz/q/B8JZ53e2) | [Jet Line](https://rodado.xyz/plataformas/datative/e-10332184.html) · [Direção Táxi Aéreo](https://rodado.xyz/plataformas/datative/e-43143216.html) · [Juscelino Filho](https://rodado.xyz/plataformas/datative/e-5d9e0c1b43546019.html) |
 | Em contexto | [dívida do grupo Camilo](https://db.rodado.xyz/q/yxVuSgt8) · [cota da Câmara à Hanbellseg](https://db.rodado.xyz/q/3-T4M5MV) | [Prospect](https://rodado.xyz/plataformas/datative/e-44722047.html) · [Antônio Carlos Camilo Antunes](https://rodado.xyz/plataformas/datative/e-b5eecdbc929bb1da.html) · [Hanbellseg](https://rodado.xyz/plataformas/datative/e-61300011.html) · [Marangoni](https://rodado.xyz/plataformas/datative/e-61176392a128d138.html) · [Adilson Barroso](https://rodado.xyz/plataformas/datative/e-8dca70d5329a29bc.html) |
