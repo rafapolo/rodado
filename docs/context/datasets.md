@@ -4,7 +4,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
 
-262 datasets, 1473 tabelas.
+271 datasets, 1512 tabelas.
 
 | dataset | tabelas | linhas | last_update |
 |---|---:|---:|---|
@@ -24,7 +24,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_anp_combustiveis` | 1 | 2.205.259 | 2026-10-21 |
 | `br_anp_precos_combustiveis` | 1 | 16.887.683 | 2026-10-09 |
 | `br_ans_beneficiario` | 1 | 2.307.338.481 | 2026-07-05 |
-| `br_ans_operadoras` | 10 | 76.809.754 | 2026-10-21 |
+| `br_ans_operadoras` | 18 | 111.128.794 | 2026-10-25 |
 | `br_antt_dadosabertos` | 4 | 18.186.812 | 2026-10-21 |
 | `br_anvisa_cmed` | 1 | 52.816 | 2026-10-21 |
 | `br_anvisa_consultas` | 3 | 101.284 | 2026-10-21 |
@@ -109,10 +109,12 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ibge_ipca` | 4 | 676.915 | 2026-10-09 |
 | `br_ibge_ipca15` | 4 | 397.247 | 2026-10-09 |
 | `br_ibge_ipp` | 6 | 5.118 | 2026-07-09 |
+| `br_ibge_lspa` | 2 | 76.725 | 2026-10-25 |
 | `br_ibge_munic` | 7 | 852.056 | 2026-07-09 |
 | `br_ibge_nomes_brasil` | 1 | 1.959.116 | 2026-07-09 |
 | `br_ibge_pam` | 2 | 20.097.187 | 2026-07-05 |
 | `br_ibge_pevs` | 2 | 558.451 | 2026-07-05 |
+| `br_ibge_pia` | 2 | 1.004.426 | 2026-10-25 |
 | `br_ibge_pib` | 7 | 201.871 | 2026-10-09 |
 | `br_ibge_pnad` | 3 | 9.587.801 | 2026-07-05 |
 | `br_ibge_pnad_covid` | 2 | 2.651.013 | 2026-09-25 |
@@ -120,8 +122,9 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ibge_pof` | 14 | 2.238.882 | 2026-07-09 |
 | `br_ibge_populacao` | 3 | 192.080 | 2026-07-05 |
 | `br_ibge_ppm` | 4 | 3.111.747 | 2026-10-09 |
+| `br_icmbio_embargos` | 1 | 14.806 | 2026-10-25 |
 | `br_ieps_saude` | 5 | 73.980 | 2026-07-09 |
-| `br_incra_acervo` | 3 | 1.902.291 | 2026-10-21 |
+| `br_incra_acervo` | 6 | 3.830.361 | 2026-10-25 |
 | `br_inea_boletim` | 5 | 24.743 | 2026-09-04 |
 | `br_inep_ana` | 3 | 98.778 | 2026-07-09 |
 | `br_inep_avaliacao_alfabetizacao` | 7 | 3.902.954 | 2026-07-05 |
@@ -136,9 +139,9 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_inep_saeb` | 11 | 200.886.659 | 2026-07-06 |
 | `br_inep_sinopse_estatistica_educacao_basica` | 18 | 121.127.598 | 2026-10-09 |
 | `br_inmet_bdmep` | 2 | 84.515.289 | 2026-07-09 |
-| `br_inpe_deter` | 1 | 699.077 | 2026-10-07 |
+| `br_inpe_deter` | 2 | 1.398.154 | 2026-10-25 |
 | `br_inpe_prodes` | 1 | 156.864 | 2026-07-06 |
-| `br_inpe_prodes_acumulado` | 2 | 7.641.257 | 2026-10-07 |
+| `br_inpe_prodes_acumulado` | 3 | 14.457.350 | 2026-10-25 |
 | `br_inpe_queimadas` | 1 | 23.086.637 | 2026-10-07 |
 | `br_inpe_sisam` | 1 | 158.705.816 | 2026-07-06 |
 | `br_ipea_acesso_oportunidades` | 1 | 336.427 | 2026-07-09 |
@@ -167,7 +170,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_mg_belohorizonte_smfa_iptu` | 2 | 21.463.825 | 2026-07-06 |
 | `br_mgi_compras_publicas` | 19 | 97.765.275 | 2026-10-21 |
 | `br_mgi_pncp` | 4 | 1.491.321 | 2026-10-16 |
-| `br_minc_salic` | 10 | 1.086.224 | 2026-10-25 |
+| `br_minc_salic` | 18 | 4.370.266 | 2026-10-25 |
 | `br_mj_consumidorgovbr` | 1 | 15.392.507 | 2026-10-21 |
 | `br_mj_sinesp` | 3 | 9.097.924 | 2026-10-07 |
 | `br_mj_sisdepen` | 7 | 3.059.458 | 2026-10-07 |
@@ -175,6 +178,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_mjsp_procurados` | 1 | 188 | 2026-10-21 |
 | `br_mjsp_sinesp` | 2 | 23.843 | 2026-07-10 |
 | `br_mjsp_sisdepen` | 1 | 38.364 | 2026-10-21 |
+| `br_mma_cnuc` | 1 | 44.508 | 2026-10-25 |
 | `br_mma_extincao` | 2 | 7.676 | 2026-07-09 |
 | `br_mma_sinpatinhas` | 1 | 930.442 | 2026-10-07 |
 | `br_mme_consumo_energia_eletrica` | 1 | 38.880 | 2026-07-06 |
@@ -207,15 +211,17 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ok_queridodiario_texto` | 1 | 320.422 | 2026-10-21 |
 | `br_ons_avaliacao_operacao` | 6 | 89.805.415 | 2026-10-07 |
 | `br_ons_estimativa_custos` | 5 | 1.407.872 | 2026-10-07 |
-| `br_pgfn_dividaativa` | 2 | 857.126.441 | 2026-10-21 |
+| `br_pgfn_dividaativa` | 2 | 857.126.441 | 2026-10-25 |
 | `br_pncp` | 1 | 5.229.507 | 2026-10-07 |
 | `br_poder360_pesquisas` | 1 | 162.075 | 2026-10-09 |
 | `br_presidencia_comunicabr` | 3 | 1.566.488 | 2026-10-13 |
 | `br_prf_acidentes` | 3 | 11.879.282 | 2026-10-07 |
+| `br_prf_infracoes` | 1 | 63.217.947 | 2026-10-25 |
 | `br_rf_arrecadacao` | 5 | 535.465 | 2026-07-07 |
 | `br_rf_cafir` | 2 | 169.935.565 | 2026-07-07 |
 | `br_rf_cno` | 5 | 1.922.151.722 | 2026-10-09 |
 | `br_rf_dirpf` | 2 | 35.356 | 2026-10-21 |
+| `br_rf_simples_estatisticas` | 2 | 4.287.160 | 2026-10-25 |
 | `br_rj_isp_estatisticas_seguranca` | 14 | 167.979 | 2026-10-09 |
 | `br_rodado_eleicoes` | 4 | 2.207.100 | 2026-10-21 |
 | `br_rodado_indicadores_municipais` | 1 | 12.382.056 | 2026-10-13 |
@@ -223,12 +229,15 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_saude_farmaciapopular` | 1 | 32.592 | 2026-10-21 |
 | `br_sedec_desastres` | 1 | 20.380 | 2026-10-09 |
 | `br_seeg_emissoes` | 3 | 183.668.150 | 2026-07-08 |
+| `br_sema_mt_embargos` | 2 | 27.093 | 2026-10-25 |
+| `br_semas_pa_ldi` | 1 | 5.387 | 2026-10-25 |
 | `br_senado_ceaps` | 1 | 396.755 | 2026-10-07 |
 | `br_senado_dados_abertos` | 18 | 612.322 | 2026-10-09 |
 | `br_senado_dados_abertos_administrativos` | 40 | 641.617 | 2026-10-09 |
 | `br_senado_dadosabertos` | 4 | 166.837 | 2026-10-21 |
 | `br_senatran_estatisticas` | 1 | 159.327 | 2026-10-07 |
 | `br_senatran_frota` | 1 | 20.101.202 | 2026-10-07 |
+| `br_sfb_cnfp` | 1 | 12.874 | 2026-10-25 |
 | `br_sfb_sicar` | 10 | 132.944.211 | 2026-10-09 |
 | `br_simet_educacao_conectada` | 1 | 137.914 | 2026-07-09 |
 | `br_siop_orcamento` | 4 | 37.247 | 2026-10-21 |
@@ -247,7 +256,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_transferegov` | 3 | 30.346 | 2026-10-21 |
 | `br_transferegov_siconv` | 62 | 69.060.758 | 2026-10-21 |
 | `br_trase_supply_chain` | 7 | 1.824.843 | 2026-07-18 |
-| `br_tse_eleicoes` | 26 | 1.709.213.497 | 2026-10-11 |
+| `br_tse_eleicoes` | 31 | 1.713.157.710 | 2026-10-25 |
 | `br_tse_filiacao_partidaria` | 2 | 42.201.443 | 2026-10-09 |
 | `br_ufmg_censo_demografico_1872` | 58 | 1.251.630 | 2026-10-07 |
 | `eu_sanctions` | 1 | 43.891 | 2026-10-21 |
