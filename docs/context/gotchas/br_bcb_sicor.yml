@@ -54,3 +54,19 @@ gotchas:
     colunas: [geometria]
     severidade: aviso
     verificado: "amostra de 3.066 glebas 2023/24: 3.018 num CAR, 503 em dois ou mais; 2.754 de 3.016 com id_car caem no CAR declarado — medido 2026-10-25 (chao)"
+  - id: registro_muda_em_2023
+    resumo: "A partir da safra 2023/24 a gleba e o CAR do SICOR passam a concordar muito mais: a operação cuja área financiada passa da área dos CARs declarados cai de ~2% para 0,2%, e a gleba fora do CAR declarado de ~20% para 6%. É mudança de registro, não do campo: não compare antes e depois como série."
+    detalhe: >
+      Não é efeito da foto do CAR: com a foto 2024-10-04 (mais próxima das
+      safras) o degrau é o mesmo. Divergência gleba × código por UF: PA 40%,
+      AC 40%, MT 38%; RS 11%, PR 10%, MS 9% (operações com os dois, 2017–2025).
+    tabelas: [recurso_publico_propriedade, recurso_publico_gleba, operacao]
+    colunas: [id_car, geometria, area_financiada]
+    severidade: aviso
+    verificado: "área financiada > 1,1 × CARs (foto 2024-10-04): 2,18% em 2019, 1,09% em 2022, 0,17% em 2023, 0,05% em 2024; gleba fora do CAR declarado: 20,7% em 2021, 13,8% em 2023, 6,3% em 2024 — medido 2026-10-25 (chao)"
+  - id: proagro_liga_imovel_antes_de_2019
+    resumo: "As glebas do Proagro (proagro_rcp_gleba) ligam ao imóvel do CAR as perdas de 2016–2018, que o id_car (vazio até 2018) e a gleba do SICOR cobrem só em parte."
+    tabelas: [proagro_rcp_gleba, proagro_rcp]
+    colunas: [geometria]
+    severidade: aviso
+    verificado: "perdas com operação no CAR pela ponte código/gleba do SICOR: 28% em 2016, 55% em 2017, 84% em 2018, ~100% de 2019 em diante; 98–100% delas têm gleba do Proagro — medido 2026-10-25 (chao)"

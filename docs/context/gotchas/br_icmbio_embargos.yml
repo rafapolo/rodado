@@ -1,0 +1,20 @@
+dataset: br_icmbio_embargos
+gotchas:
+  - id: varias_feicoes_por_embargo
+    resumo: "termo_embargo tem uma linha por feição, não por embargo: o embargo é numero_emb + serie, e um embargo pode ter muitas feições. Conte e una por essa chave."
+    tabelas: [termo_embargo]
+    colunas: [numero_emb, serie, geometria]
+    severidade: silencioso
+    verificado: "14.806 feições, 6.398 embargos distintos (numero_emb || serie); 272 feições sem geometria e 13 GEOMETRYCOLLECTION — medido 2026-10-25 (chao)"
+  - id: sem_desembargo
+    resumo: "Não há data de desembargo. julgamento é texto livre sobre o auto de infração ('Homologado 1ª instancia', 'Anulado 1ª instancia, Embargo mantido'); o embargo quase sempre fica. Tratar como vigente desde data é a leitura possível."
+    tabelas: [termo_embargo]
+    colunas: [julgamento, data]
+    severidade: aviso
+    verificado: "julgamento nulo em 12.832 de 14.806; menos de 30 citam anulação ou cancelamento, quase todos com 'Embargo mantido/homologado'; data nula em 5 — medido 2026-10-25 (chao)"
+  - id: area_texto
+    resumo: "area é texto ('0', 'Não informada'); use area_calc_ha, calculada do polígono em EPSG:5880."
+    tabelas: [termo_embargo]
+    colunas: [area, area_calc_ha]
+    severidade: aviso
+    verificado: "area_calc_ha soma 952.901 ha nas 14.534 feições com geometria — medido 2026-10-25 (chao)"

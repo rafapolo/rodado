@@ -31,3 +31,14 @@ gotchas:
     colunas: [CLASSNAME, class_name]
     severidade: silencioso
     verificado: "CLASSNAME NULL em 103.838 avisos, todos com class_name — medido 2026-10-22 (bragro)"
+  - id: avisos_poligono_mesma_coleta
+    resumo: "avisos_poligono tem o polígono dos mesmos shapefiles de avisos (coleta de 2026-10-07): junte pela chave (bioma_arquivo, OGC_FID). A classe já vem numa coluna só e em caixa alta ('SUPRESSÃO COM SOLO EXPOSTO', 'DESMATAMENTO_CR')."
+    detalhe: >
+      Amazônia e Cerrado continuam partidos por município (area_km é AREAMUNKM,
+      a fatia); Pantanal e não-floresta vêm inteiros (area_km = AREA_KM). Ao
+      regravar avisos com uma coleta nova, regrave avisos_poligono junto
+      (scripts/scrap/poligonos_ambientais.sh deter), senão o OGC_FID deixa de casar.
+    tabelas: [avisos_poligono]
+    colunas: [bioma_arquivo, OGC_FID, classe, area_km]
+    severidade: silencioso
+    verificado: "amazonia 461.074, cerrado 134.165, nao_floresta_amz 79.683, pantanal 24.155 linhas, iguais às de avisos — medido 2026-10-25 (chao)"
