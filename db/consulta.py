@@ -50,7 +50,7 @@ SEM_TEMA = "outros"
 # quem abre um link que existe o mesmo acesso de quem tem o token.
 DIR_Q = os.environ.get("RODADO_DIR_Q", "/dados/q")
 ROTA_Q = re.compile(r"^/q/([A-Za-z0-9_-]{8,16})(/sql)?$")
-# Ao lado de cada <id>.sql, <id>.json guarda o que /llm/index mostra: cliques (aberturas de
+# Ao lado de cada <id>.sql, <id>.json guarda o que /index mostra: cliques (aberturas de
 # /q/<id>), criado_em e quanto a consulta leva para rodar (segundos, medido por _mede_q logo
 # depois de salvar e refeito a cada /query com o mesmo texto).
 _meta_q_trava = threading.Lock()
@@ -270,7 +270,7 @@ PAGINA_Q = r"""<!doctype html>
       <button data-v="cards" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>cards</button>
       <button data-v="tabela"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>tabela</button>
     </div>
-    <a class="btn" href="/llm/index?formato=json" target="_blank" rel="noopener">json</a>
+    <a class="btn" href="/index?formato=json" target="_blank" rel="noopener">json</a>
   </div>
 </header>
 <main id="lista"></main>
@@ -992,7 +992,9 @@ class Handler(BaseHTTPRequestHandler):
             return self._q(rota.group(1), rota.group(2))
         if url.path == "/health":
             return self._responde(200, "ok\n")
-        if url.path.rstrip("/") == "/llm/index":   # atrás da senha: cada link abre o site inteiro
+        if url.path.rstrip("/") == "/llm/index":   # endereço antigo da lista, de antes de 2026-10-25
+            return self._responde(301, "", extra={"Location": "/index" + (f"?{url.query}" if url.query else "")})
+        if url.path.rstrip("/") == "/index":   # atrás da senha: cada link abre o site inteiro
             itens = _lista_q()
             if (parse_qs(url.query).get("formato") or [""])[0] == "json":
                 return self._json(itens)
