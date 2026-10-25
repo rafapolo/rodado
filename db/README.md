@@ -25,6 +25,14 @@ nem dependência do beelink ligado.
   quem tem o token** (o Caddy grava o cookie do token): o link curto é um convite para o
   espelho inteiro, não só para aquela consulta. O Caddy confere o arquivo do id antes
   (`file` em `/dados/q`); um id que não existe cai na senha
+- `https://db.rodado.xyz/llm/index` — **todos os links curtos**, do mais novo para o mais
+  antigo: descrição (o bloco de comentários `--` que abre o SQL), criação, cliques (aberturas de
+  `/q/<id>`) e tempo de execução; `?formato=json` para agentes. Fica atrás da senha, ao contrário
+  do `/llm`: cada link da lista abre o espelho inteiro. Os números vivem em `/dados/q/<id>.json`;
+  o tempo é medido por uma fila de um consumidor só no `consulta.py` (uma das consultas
+  simultâneas, até 10.000 linhas) logo depois de salvar e na subida, para os links ainda sem
+  medida, e é refeito por todo `/query` com o mesmo texto de um link. Cliques contam só a partir
+  do deploy (os de antes estavam só no log do container)
 - **Até 26/10/2026 inclusive o site inteiro está aberto, sem senha nem token** (a pedido):
   `@aberto` no `proxy/Caddyfile` compara `{time.now.unix}` com 1793070000 (2026-10-27 00:00
   -03:00). Passada a hora, a senha e o token voltam sozinhos, sem deploy; o aviso em `llm.md`

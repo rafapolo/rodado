@@ -187,6 +187,10 @@ consulta exploratória que ficou pelo caminho.
 
 - **Salve a SQL final, a que deu o número citado**, depois do `/query` bem-sucedido: o link
   executa de novo, então a consulta tem que rodar dentro de {tempo} s (filtro de partição).
+- **Abra o SQL com um comentário `-- ` que diga o que a consulta responde** (uma ou duas linhas):
+  é a descrição do link em `/llm/index`, que lista todos os links salvos com criação, cliques e
+  tempo de execução (`/llm/index?formato=json`). Antes de escrever uma consulta nova, veja ali se
+  alguém já respondeu a mesma pergunta.
 - Um comando por link, até 64 KB. A mesma SQL dá sempre o mesmo id: repetir o `POST` não duplica.
 - Quem abre um link que existe entra sem senha e roda aquela consulta; não ponha no SQL nada
   que não deva ir para quem recebe a resposta (dado pessoal fora do que a pergunta pedia,
