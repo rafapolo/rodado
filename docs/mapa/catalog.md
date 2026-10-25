@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**262 datasets, 1.471 tabelas, 33.688.230.791 linhas.** 4 com data de frescor conferida (de 262).
+**262 datasets, 1.473 tabelas, 33.688.477.699 linhas.** 4 com data de frescor conferida (de 262).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -165,7 +165,7 @@
 | `br_mg_belohorizonte_smfa_iptu` | Prefeitura de Belo Horizonte — cadastro de IPTU | 2 | 21.463.825 | — | Base dos Dados |
 | `br_mgi_compras_publicas` | Compras públicas federais do Compras.gov.br (MGI) — licitações, pregões, itens, ofertas, compras sem licitação, fornecedores e catálogo de materiais e serviços | 19 | 97.765.275 | — | Base dos Dados |
 | `br_mgi_pncp` | Portal Nacional de Contratações Públicas (PNCP) via Base dos Dados — dicionário de códigos (as tabelas grandes estão sob acesso restrito no BD) | 4 | 1.491.321 | — | Base dos Dados |
-| `br_minc_salic` | MinC — SALIC/Lei Rouanet, projetos culturais incentivados | 8 | 839.316 | — | SALIC/Lei Rouanet (MinC) |
+| `br_minc_salic` | MinC — SALIC/Lei Rouanet, projetos culturais incentivados | 10 | 1.086.224 | — | SALIC/Lei Rouanet (MinC) |
 | `br_mj_consumidorgovbr` | Consumidor.gov.br — reclamações contra empresas, 2014–2025 (2025 parcial; os arquivos de 2019 vêm sem Data Abertura, usar Data Finalização; Data Finalização mistura ISO (2020–2025) e dd/mm/aaaa (2014–2021) — parsear os dois) | 1 | 15.392.507 | — | Consumidor.gov.br |
 | `br_mj_sinesp` | SINESP (MJSP) via Base dos Dados — ocorrências criminais e vítimas por município e mês e por UF e mês | 3 | 9.097.924 | — | Base dos Dados |
 | `br_mj_sisdepen` | SISDEPEN (MJSP) via Base dos Dados — unidades prisionais, população prisional e suas características por semestre | 7 | 3.059.458 | — | Base dos Dados |

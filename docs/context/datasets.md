@@ -4,7 +4,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
 
-262 datasets, 1471 tabelas.
+262 datasets, 1473 tabelas.
 
 | dataset | tabelas | linhas | last_update |
 |---|---:|---:|---|
@@ -167,7 +167,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_mg_belohorizonte_smfa_iptu` | 2 | 21.463.825 | 2026-07-06 |
 | `br_mgi_compras_publicas` | 19 | 97.765.275 | 2026-10-21 |
 | `br_mgi_pncp` | 4 | 1.491.321 | 2026-10-16 |
-| `br_minc_salic` | 8 | 839.316 | 2026-10-21 |
+| `br_minc_salic` | 10 | 1.086.224 | 2026-10-25 |
 | `br_mj_consumidorgovbr` | 1 | 15.392.507 | 2026-10-21 |
 | `br_mj_sinesp` | 3 | 9.097.924 | 2026-10-07 |
 | `br_mj_sisdepen` | 7 | 3.059.458 | 2026-10-07 |
