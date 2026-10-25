@@ -197,11 +197,11 @@ def test_describe_table_carries_dataset_gotchas_first():
 
 
 def test_describe_table_gotchas_scoped_by_tabelas():
-    # capital_social só vale para empresas; snapshot_mensal vale para o dataset todo
+    # capital_social só vale para empresas; so_o_ultimo_retrato vale para as três tabelas vigentes
     empresas = {g["id"] for g in m.describe_table("br_me_cnpj.empresas")["gotchas"]}
     socios = {g["id"] for g in m.describe_table("br_me_cnpj.socios")["gotchas"]}
-    assert {"snapshot_mensal", "capital_social_sentinela"} <= empresas
-    assert "snapshot_mensal" in socios
+    assert {"so_o_ultimo_retrato", "capital_social_sentinela"} <= empresas
+    assert "so_o_ultimo_retrato" in socios
     assert "capital_social_sentinela" not in socios
 
 
