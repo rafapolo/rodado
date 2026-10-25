@@ -20,6 +20,8 @@ própria. Tudo passa por HTTP: descobrir tabelas, ler o schema, consultar, expor
    cita coluna de uma armadilha `[erro]`, o `/query` recusa com 400 e a armadilha no corpo — leia,
    corrija ou, se a consulta já trata disso, repita com `?ciente=1`
 7. conferência → a lista da seção 2b, antes de responder
+8. **link → `POST /q` com cada SQL que sustenta a resposta** e cite `https://db.rodado.xyz/q/<id>`
+   junto do número (seção 4b) — vale para qualquer pergunta, mesmo que ninguém tenha pedido link
 
 **Prefere MCP?** O mesmo espelho, com as mesmas armadilhas e recusas, como ferramentas MCP
 (`describe_table`, `resolve_join`, `get_metric`, `run_sql`…), aberto e sem nada local além do
@@ -104,7 +106,8 @@ resposta:
 7. **Se o dado não existe no espelho, diga isso.** Não troque silenciosamente por outra fonte
    ou outro ano; diga qual seria a fonte certa e o que foi usado no lugar.
 8. **Na resposta**: o número, a fonte original (`_rodado_metadata.source_name`), o recorte
-   (período, território, filtros) e as ressalvas do `/contexto` que se aplicaram.
+   (período, território, filtros), as ressalvas do `/contexto` que se aplicaram e o **link
+   `/q/<id>` da consulta que gerou o número** (seção 4b), para quem lê conferir e refazer.
 
 ## 3. Consultar: `POST /query`
 
@@ -165,8 +168,30 @@ ou fatie (uma requisição por `ano`, `sigla_uf`… ou com `ORDER BY` + `OFFSET`
     FROM read_parquet('https://db.rodado.xyz/query?formato=parquet&limite=10000&q=' || url_encode(q));
   FROM rodado('SELECT ano, count(*) FROM br_ms_sim.microdados WHERE ano >= 2020 GROUP BY 1');
   ```
-- **Link para humanos**: `curl $AUTH --data-binary 'SELECT ...' https://db.rodado.xyz/q` devolve
-  `{"url": "/q/<id>"}`; `https://db.rodado.xyz/q/<id>` abre o terminal já com a consulta rodando.
+- **Link para humanos**: ver a seção 4b.
+
+## 4b. Toda resposta leva o link `/q/` da consulta
+
+Quem te fez a pergunta quer o número **e** o caminho até ele. Por isso, ao responder qualquer
+pergunta com estes dados — mesmo que ninguém tenha pedido link —, salve cada SQL que sustenta a
+resposta e cite o link curto ao lado do número que ela produziu:
+
+```bash
+curl $AUTH --data-binary @q.sql https://db.rodado.xyz/q      # → {"id": "14QDGArQ", "url": "/q/14QDGArQ"}
+```
+
+`https://db.rodado.xyz/q/<id>` abre o terminal do navegador com a consulta já rodando: quem lê
+confere o número, muda o filtro e refaz, sem copiar SQL. Na resposta, prefixe o domínio
+(`https://db.rodado.xyz/q/14QDGArQ`), um link por número ou tabela de resultado — não um por
+consulta exploratória que ficou pelo caminho.
+
+- **Salve a SQL final, a que deu o número citado**, depois do `/query` bem-sucedido: o link
+  executa de novo, então a consulta tem que rodar dentro de {tempo} s (filtro de partição).
+- Um comando por link, até 64 KB. A mesma SQL dá sempre o mesmo id: repetir o `POST` não duplica.
+- Quem abre um link que existe entra sem senha e roda aquela consulta; não ponha no SQL nada
+  que não deva ir para quem recebe a resposta (dado pessoal fora do que a pergunta pedia,
+  credencial, comentário interno).
+- Sem acesso a HTTP de escrita? Mostre a SQL em bloco de código e diga que o link não foi gerado.
 
 ## 5. Armadilhas que já custaram caro
 
