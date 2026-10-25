@@ -165,7 +165,7 @@ TABELA_NO_SQL = re.compile(r"\b((?:br|world|global|mundo|us|un|eu|politicos|_rod
 
 
 def _pagina_q(itens):
-    """Cards (padrão) ou tabela, montados no navegador a partir da lista embutida."""
+    """Tabela (padrão) ou cards, montados no navegador a partir da lista embutida."""
     for i in itens:
         i["tabelas"] = sorted(set(TABELA_NO_SQL.findall(i["sql"].lower())))
     dados = json.dumps(itens, ensure_ascii=False, default=_json_valor).replace("</", "<\\/")
@@ -267,10 +267,9 @@ PAGINA_Q = r"""<!doctype html>
       <button data-v="segundos"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="14" r="7"/><path d="M12 10v4M10 3h4M18 7l1.5-1.5"/></svg>tempo</button>
     </div>
     <div class="grupo" id="vista" role="group" aria-label="vista">
-      <button data-v="cards" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>cards</button>
-      <button data-v="tabela"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>tabela</button>
+      <button data-v="cards"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>cards</button>
+      <button data-v="tabela" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>tabela</button>
     </div>
-    <a class="btn" href="/index?formato=json" target="_blank" rel="noopener">json</a>
   </div>
 </header>
 <main id="lista"></main>
@@ -282,7 +281,7 @@ const semAcento = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 const rel = new Intl.RelativeTimeFormat("pt-BR", { numeric: "auto" });
 const abs = new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "short", timeZone: "America/Sao_Paulo" });
 const num = new Intl.NumberFormat("pt-BR");
-let estado = { busca: "", ordem: "criado_em", vista: "cards" };
+let estado = { busca: "", ordem: "criado_em", vista: "tabela" };
 try { Object.assign(estado, JSON.parse(localStorage.getItem("rodado.qindex") || "{}"), { busca: "" }); } catch (_) {}
 for (const i of ITENS) i._busca = semAcento([i.descricao, i.sql, i.id, (i.tabelas || []).join(" ")].join(" "));
 
@@ -627,6 +626,11 @@ def _referencias(con, sql):
     return tabelas, colunas
 
 
+# Tabelas grandes sem partição gravadas em ordem de uma coluna: filtrar por ela pula row groups
+# pelo min/max. divida: cnpj_basico desde 2026-10-25 (19 s com regexp_replace(CPF_CNPJ) -> 0,05 s)
+ORDENADA_POR = {("br_pgfn_dividaativa", "divida"): "cnpj_basico"}
+
+
 def _particoes(con, dataset, tabela):
     """Partição hive de verdade: `/chave=valor/` no caminho dos arquivos da view."""
     sql = con.execute("SELECT sql FROM duckdb_views() WHERE schema_name = ? AND view_name = ?",
@@ -700,6 +704,13 @@ def _tamanho(con, tabelas, colunas):
         if part and not item["filtra_particao"] and n > 50_000_000:
             problemas.append(f"{ds}.{t} tem {_curto(n)} linhas e a consulta não cita "
                              f"a partição ({', '.join(sorted(part))}): vai ler tudo e estourar o tempo")
+        elif (ds, t) in ORDENADA_POR and ORDENADA_POR[(ds, t)] in colunas:
+            pass   # filtra pela coluna da ordem: o min/max dos row groups pula quase tudo
+        elif (ds, t) in ORDENADA_POR:
+            c = ORDENADA_POR[(ds, t)]
+            avisos.append(f"{ds}.{t} tem {_curto(n)} linhas e está ordenada por {c}: filtre por {c} "
+                          f"(= ou IN) e ela lê só os blocos certos (décimos de segundo); qualquer outro "
+                          f"filtro, ou função em volta da coluna, lê a tabela inteira")
         elif not part and n > 20_000_000:
             avisos.append(f"{ds}.{t} tem {_curto(n)} linhas e não é particionada: nenhum filtro evita "
                           f"ler a tabela inteira (dezenas de segundos por consulta); agregue no servidor, "

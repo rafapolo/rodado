@@ -28,3 +28,13 @@ gotchas:
     colunas: [VALOR_CONSOLIDADO]
     severidade: silencioso
     verificado: "typeof = DOUBLE nas duas; divida soma R$ 7,385 tri em 49.702.198 linhas, igual à leitura do texto original com ponto decimal (a leitura pt-BR dava 100x) — medido 2026-10-21"
+  - id: filtrar_por_cnpj_basico
+    resumo: "Para achar empresas em divida, filtre por cnpj_basico (raiz de 8 dígitos, só pessoa jurídica, NULL em pessoa física), nunca por substr(regexp_replace(CPF_CNPJ, '[^0-9]', '', 'g'), 1, 8): a tabela está ordenada por cnpj_basico e o filtro nela pula quase todos os blocos; a regexp limpa as 49,7 milhões de linhas a cada consulta."
+    detalhe: >
+      CPF_CNPJ vem formatado ('06.275.598/0001-08'). cnpj_basico existe desde 2026-10-25,
+      gravado pelo scraper. Para um CPF, o filtro cru com prefixo (CPF_CNPJ LIKE '...') também
+      é rápido; o que custa é a função em volta da coluna.
+    tabelas: [divida]
+    colunas: [cnpj_basico, CPF_CNPJ]
+    severidade: aviso
+    verificado: "cinco raízes no db.rodado.xyz: 19,2 s com a regexp, 0,05 s com cnpj_basico IN (...), mesmas 10 linhas; 32.339.322 linhas de pessoa jurídica, todas com cnpj_basico de 8 dígitos — medido 2026-10-25"
