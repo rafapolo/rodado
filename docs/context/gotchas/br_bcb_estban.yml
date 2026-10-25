@@ -20,3 +20,9 @@ gotchas:
     colunas: [valor, ano, mes]
     severidade: silencioso
     verificado: "verbete '420': dez/2024 R$ 1.026,1 bi em 15.695 agências; jan/2025 R$ 1.908,5 bi em 15.660; fev 1.529,8 bi em 13.617; mar 1.466,1 bi em 11.237; municipio max ano*100+mes = 202312 — medido 2026-10-20"
+  - id: municipio_anos_faltando
+    resumo: "municipio não tem os anos ímpares a partir de 2003 (2003, 2005, …, 2021), cai pela metade em 2020 e, de 2022 em diante, só traz o verbete 163 (164–166 somem)."
+    tabelas: [municipio]
+    colunas: [ano, id_verbete]
+    severidade: silencioso
+    verificado: "financiamentos rurais (163–166) em dez.: 2018 R$ 513,1 bi, 2020 R$ 275,0 bi, 2023 R$ 543,2 bi; anos presentes 1988–2002, 2004, 2006, 2008–2010, 2012, …, 2022, 2023 — medido 2026-10-22 (bragro)"

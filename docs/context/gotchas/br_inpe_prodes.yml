@@ -1,0 +1,8 @@
+dataset: br_inpe_prodes
+gotchas:
+  - id: municipio_bioma_acumulado
+    resumo: "municipio_bioma.desmatado é o ACUMULADO até o ano, uma linha por bioma do município: o incremento é a diferença ano a ano, somando os biomas."
+    tabelas: [municipio_bioma]
+    colunas: [desmatado]
+    severidade: silencioso
+    verificado: "Sorriso: 5.692 km² em 2000, 6.918 em 2023 — medido 2026-10-22 (bragro)"

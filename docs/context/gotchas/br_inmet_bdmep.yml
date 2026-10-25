@@ -1,0 +1,14 @@
+dataset: br_inmet_bdmep
+gotchas:
+  - id: horas_sem_chuva_medida
+    resumo: "precipitacao_total é NULL em ~30% das horas, e há anos quase vazios que somam perto de zero. Exija cobertura (ex.: ≥ 90% das horas) antes de somar o ano."
+    tabelas: [microdados]
+    colunas: [precipitacao_total]
+    severidade: silencioso
+    verificado: "2020: 1.544.399 de 5.173.776 horas NULL; Sorriso 2005 e 2015: 1 mm no ano — medido 2026-10-22 (bragro)"
+  - id: geolocalizacao_eixos_trocados
+    resumo: "estacao.geolocalizacao é POINT(lat lon), com os eixos trocados: ST_X dá a latitude."
+    tabelas: [estacao]
+    colunas: [geolocalizacao]
+    severidade: silencioso
+    verificado: "Manaus: POINT(-3.10333333 -60.01638888) — medido 2026-10-22 (bragro)"

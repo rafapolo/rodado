@@ -1,0 +1,14 @@
+dataset: br_trase_supply_chain
+gotchas:
+  - id: numeros_em_texto
+    resumo: "soy_total_export, fob_usd, beef_equivalent_tonnes, soy_deforestation_exposure e as emissões são VARCHAR: try_cast para DOUBLE antes de somar."
+    tabelas: [soy_beans, beef]
+    colunas: [soy_total_export, fob_usd, beef_equivalent_tonnes]
+    severidade: aviso
+    verificado: "soja 2020: 121,8 Mt — medido 2026-10-22 (bragro)"
+  - id: municipio_de_producao
+    resumo: "municipality_id_production é onde a soja ou o gado foi produzido, não a sede da exportadora (como no Comex). Soja 2004–2020, carne 2015–2017."
+    tabelas: [soy_beans, beef]
+    colunas: [municipality_id_production]
+    severidade: aviso
+    verificado: "carne 2017: 1,90 Mt em equivalente de carcaça — medido 2026-10-22 (bragro)"

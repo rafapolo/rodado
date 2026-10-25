@@ -1,0 +1,14 @@
+dataset: br_inpe_sisam
+gotchas:
+  - id: chuva_so_na_leitura_das_0h
+    resumo: "Quatro leituras por dia (0, 6, 12, 18 h); precipitacao_dia só vem na das 0 h, as outras são NULL. Some só essa leitura para a chuva do ano."
+    tabelas: [microdados]
+    colunas: [precipitacao_dia, data_hora]
+    severidade: aviso
+    verificado: "2000–2019, 5.572 municípios, 1.460 leituras por ano — medido 2026-10-22 (bragro)"
+  - id: modelo_nao_pluviometro
+    resumo: "A chuva é saída de modelo e satélite, não medição: serve para anomalia no mesmo lugar, mal para valor absoluto."
+    tabelas: [microdados]
+    colunas: [precipitacao_dia]
+    severidade: aviso
+    verificado: "Sorriso 2015: 623 mm no SISAM; a estação do INMET da cidade marca ~1.000–2.200 mm nos anos completos — medido 2026-10-22 (bragro)"

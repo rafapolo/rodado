@@ -1,0 +1,26 @@
+dataset: br_ibge_pam
+gotchas:
+  - id: area_plantada_so_desde_1988
+    resumo: "area_plantada (temporária) e area_destinada_colheita (permanente) são nulas de 1974 a 1987: a PAM só passou a perguntar a área plantada em 1988. Série longa de área precisa cair para area_colhida antes de 1988, e dizer isso."
+    tabelas: [lavoura_temporaria, lavoura_permanente]
+    colunas: [area_plantada, area_destinada_colheita, area_colhida]
+    severidade: silencioso
+    verificado: "soja: 0 municípios com area_plantada em 1974–1987, 1.150 em 1988; area_colhida 1987 = 9,1 M ha, area_plantada 1988 = 10,5 M ha — medido 2026-10-21"
+  - id: valor_em_mil_e_moeda_da_epoca
+    resumo: "valor_producao está em R$ mil e, antes de 1994, na moeda da época (cruzeiro, cruzado, cruzeiro real) sem conversão: somar a série atravessando 1994 compara moedas diferentes."
+    tabelas: [lavoura_temporaria, lavoura_permanente]
+    colunas: [valor_producao]
+    severidade: silencioso
+    verificado: "soja: sum(valor_producao) 1993 = 0,1 M, 1994 = 3,8 M, 2024 = 260,2 M (R$ 260 bi) — medido 2026-10-21"
+  - id: frutas_trocam_de_unidade_em_2001
+    resumo: "quantidade_produzida das lavouras permanentes muda de unidade em 2001 (frutas em mil frutos até 2000, toneladas depois): a laranja cai de 106.651 mil para 16.983 mil de um ano para o outro. Não emende a série de quantidade das permanentes atravessando 2001."
+    tabelas: [lavoura_permanente]
+    colunas: [quantidade_produzida]
+    severidade: silencioso
+    verificado: "laranja Brasil 2000 = 106.651 mil, 2001 = 16.983 mil, área 857 → 825 mil ha — medido 2026-10-21"
+  - id: cafe_total_e_partes
+    resumo: "café vem em três produtos: 'Café (em grão) Total', 'Arábica' e 'Canephora'. Somar todos os produtos da tabela conta o café duas vezes; use o Total ou as duas partes."
+    tabelas: [lavoura_permanente]
+    colunas: [produto]
+    severidade: silencioso
+    verificado: "Arábica e Canephora nulos em 2000–2001, Total preenchido — medido 2026-10-21"

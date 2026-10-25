@@ -1,0 +1,8 @@
+dataset: br_seeg_emissoes
+gotchas:
+  - id: gas_e_dicionario
+    resumo: "gas tem só '1' e '2', e o dicionário dá dois nomes para cada chave (numerações misturadas). gas = '2' com emissao_ar5 bate com o SEEG publicado. setor 1 = agropecuária, 3 = mudança de uso da terra; tipo 2 = emissão, 4 e 5 = remoção."
+    tabelas: [municipio, dicionario]
+    colunas: [gas, setor, tipo, categoria]
+    severidade: silencioso
+    verificado: "2022, gas '2', setor 1, tipo 2: 617 Mt CO2e; categorias 9 (entérica) 399, 28 (solos) 178, 14 (dejetos) 29, 5 (arroz) 10 — medido 2026-10-22 (bragro)"

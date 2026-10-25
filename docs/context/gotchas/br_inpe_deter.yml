@@ -25,3 +25,9 @@ gotchas:
     colunas: [GEOCODIBGE, AREAMUNKM, FID]
     severidade: silencioso
     verificado: "pantanal 24.152 e nao_floresta_amz 79.677 alertas com município pelo centroide — medido 2026-10-07"
+  - id: classe_em_duas_colunas
+    resumo: "A classe está em CLASSNAME (Amazônia, Cerrado) ou em class_name (Pantanal, não-floresta), com nomes diferentes ('DESMATAMENTO_CR' × 'supressão com solo exposto'). Use coalesce e mapeie as duas grafias."
+    tabelas: [avisos]
+    colunas: [CLASSNAME, class_name]
+    severidade: silencioso
+    verificado: "CLASSNAME NULL em 103.838 avisos, todos com class_name — medido 2026-10-22 (bragro)"

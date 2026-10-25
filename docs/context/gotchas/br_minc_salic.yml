@@ -13,3 +13,30 @@ gotchas:
     colunas: [cnpjcpf]
     severidade: silencioso
     verificado: "65.925 de 83.718 linhas completadas — medido 2026-10-07"
+  - id: numero_repetido
+    resumo: "numero (PRONAC) não é chave única em projetos: 110 números aparecem em duas linhas. Juntar por numero duplica."
+    detalhe: >
+      214.030 linhas e 213.920 numero distintos — 110 pares, todos dentro
+      das linhas de origem dump_2017. A chave da linha é id; para casar com
+      outra fonte da Lei Rouanet por PRONAC, desempate o par antes (e lembre
+      que os 4.955 numero 111xxxx de origem dump_2017 são código de edital, não
+      PRONAC; já os de 7 dígitos com prefixo 23/24/25, de origem api_salic, são
+      PRONAC de verdade — ano com mais de 9.999 projetos).
+    tabelas: [projetos]
+    colunas: [numero, id]
+    severidade: silencioso
+    verificado: "110 grupos de 2 linhas, 214.030 linhas — medido 2026-10-25"
+  - id: origem_e_retrato_2014
+    resumo: "projetos/entidades juntam dois mundos (origem = dump_2017 | api_salic); projetos_2014/entidades_2014 são o retrato de 2014-02-12, não um ano de fluxo."
+    detalhe: >
+      dump_2017 é o banco legado (projetos até 2016, incentivos e recibos só
+      dele); api_salic são os projetos 2024-2026 da API do SALIC, sem
+      captação (incentivos/recibos não os cobrem) — somar captação por ano
+      depois de 2016 dá zero, não queda. Os *_2014 são o mesmo cadastro
+      visto em fevereiro de 2014: sirva-se deles para o estado anterior de
+      um projeto (situacao, aprovado, providencia), nunca some-os com a
+      tabela atual — os 126.969 ids estão todos nela também.
+    tabelas: [projetos, entidades, projetos_2014, entidades_2014]
+    colunas: [origem, situacao, aprovado, providencia]
+    severidade: silencioso
+    verificado: "projetos 153.748 dump_2017 + 60.282 api_salic; entre 2014 e hoje mudaram situacao 932, aprovado 504, providencia 773 — medido 2026-10-25"

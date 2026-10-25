@@ -13,3 +13,9 @@ gotchas:
     colunas: [cpf_favorecido]
     severidade: silencioso
     verificado: "21.042.406 de 29.299.818 linhas completadas — medido 2026-10-07"
+  - id: contar_por_nis
+    resumo: "Conte pescadores por nis_favorecido (o CPF mistura completo e mascarado). O município vem do código SIAFI, que junta com o diretório como inteiro, como no Garantia-Safra."
+    tabelas: [seguro_defeso]
+    colunas: [nis_favorecido, codigo_municipio_siafi]
+    severidade: aviso
+    verificado: "2024: 1.112.240 pescadores, R$ 5,9 bi — medido 2026-10-22 (bragro)"
