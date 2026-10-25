@@ -13,10 +13,12 @@ import csv
 import datetime
 import decimal
 import hashlib
+import html
 import io
 import json
 import math
 import os
+import queue
 import re
 import threading
 import time
@@ -48,6 +50,162 @@ SEM_TEMA = "outros"
 # quem abre um link que existe o mesmo acesso de quem tem o token.
 DIR_Q = os.environ.get("RODADO_DIR_Q", "/dados/q")
 ROTA_Q = re.compile(r"^/q/([A-Za-z0-9_-]{8,16})(/sql)?$")
+# Ao lado de cada <id>.sql, <id>.json guarda o que /llm/index mostra: cliques (aberturas de
+# /q/<id>), criado_em e quanto a consulta leva para rodar (segundos, medido por _mede_q logo
+# depois de salvar e refeito a cada /query com o mesmo texto).
+_meta_q_trava = threading.Lock()
+_fila_q = queue.Queue()
+BRT = datetime.timezone(datetime.timedelta(hours=-3))
+
+
+def _meta_q(ident):
+    try:
+        with open(os.path.join(DIR_Q, ident + ".json"), encoding="utf-8") as f:
+            return json.load(f)
+    except (FileNotFoundError, ValueError):
+        return {}
+
+
+def _anota_q(ident, **campos):
+    """Mescla campos no <id>.json; cliques=1 soma em vez de substituir."""
+    with _meta_q_trava:
+        meta = _meta_q(ident)
+        if campos.pop("clique", False):
+            meta["cliques"] = meta.get("cliques", 0) + 1
+        meta.update(campos)
+        tmp = os.path.join(DIR_Q, f".{ident}.json.tmp")
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(meta, f, ensure_ascii=False)
+        os.replace(tmp, os.path.join(DIR_Q, ident + ".json"))
+
+
+def _id_salvo(sql):
+    """O id de /q/ que guarda exatamente este SQL, ou None (o mesmo cálculo de _salva_q)."""
+    sql = sql.strip()
+    h = base64.urlsafe_b64encode(hashlib.sha256(sql.encode()).digest()).decode()
+    for n in range(8, 17):
+        try:
+            with open(os.path.join(DIR_Q, h[:n] + ".sql"), encoding="utf-8") as f:
+                if f.read() == sql:
+                    return h[:n]
+        except FileNotFoundError:
+            return None
+    return None
+
+
+def _descricao_q(sql):
+    """O bloco de comentários `--` que abre o SQL é a descrição (é como os links são escritos)."""
+    linhas = []
+    for l in sql.splitlines():
+        l = l.strip()
+        if not l.startswith("--"):
+            break
+        linhas.append(l.lstrip("-").strip())
+    return " ".join(x for x in linhas if x)
+
+
+def _mede_q():
+    """Fila de um consumidor só: roda cada link salvo uma vez e anota os segundos. Ocupa uma
+    das SIMULTANEAS, como qualquer consulta, e traz no máximo LIMITE_PADRAO linhas, o que o
+    link mostra."""
+    while True:
+        ident = _fila_q.get()
+        try:
+            with open(os.path.join(DIR_Q, ident + ".sql"), encoding="utf-8") as f:
+                sql = f.read()
+        except FileNotFoundError:
+            continue
+        with SIMULTANEAS:
+            inicio = time.monotonic()
+            resultado = {}
+            try:
+                con = rodado_sql.conecta()
+                try:
+                    with rodado_sql.Cronometro(con) as crono:
+                        try:
+                            con.sql(rodado_sql.separa(con, sql)[0].query).fetchmany(LIMITE_PADRAO)
+                        except duckdb.InterruptException:
+                            if not crono.estourou:
+                                raise
+                            resultado["erro"] = f"estourou {rodado_sql.TEMPO_LIMITE} s"
+                finally:
+                    con.close()
+            except Exception as e:   # o consumidor não pode morrer: os links seguintes ficariam sem tempo
+                resultado["erro"] = (str(e).splitlines() or [type(e).__name__])[0][:200]
+            if "erro" not in resultado:
+                resultado["erro"] = None
+                resultado["segundos"] = round(time.monotonic() - inicio, 3)
+        _anota_q(ident, medido_em=datetime.datetime.now(BRT).isoformat(timespec="seconds"), **resultado)
+
+
+def _lista_q():
+    """Todos os links salvos, do mais novo para o mais antigo."""
+    itens = []
+    for nome in os.listdir(DIR_Q) if os.path.isdir(DIR_Q) else []:
+        if not nome.endswith(".sql"):
+            continue
+        ident = nome[:-4]
+        caminho = os.path.join(DIR_Q, nome)
+        with open(caminho, encoding="utf-8") as f:
+            sql = f.read()
+        meta = _meta_q(ident)
+        criado = meta.get("criado_em") or datetime.datetime.fromtimestamp(
+            os.path.getmtime(caminho), BRT).isoformat(timespec="seconds")
+        itens.append({"id": ident, "url": f"/q/{ident}", "descricao": _descricao_q(sql),
+                      "criado_em": criado, "cliques": meta.get("cliques", 0),
+                      "segundos": meta.get("segundos"), "erro": meta.get("erro"),
+                      "medido_em": meta.get("medido_em"), "sql": sql})
+    itens.sort(key=lambda i: i["criado_em"], reverse=True)
+    return itens
+
+
+def _pagina_q(itens):
+    def tempo(i):
+        if i["segundos"] is not None:
+            s = i["segundos"]
+            return f"{s:.1f} s" if s < 60 else f"{s / 60:.1f} min"
+        return "falhou" if i["erro"] else "medindo…"
+    linhas = []
+    for i in itens:
+        desc = html.escape(i["descricao"]) or f'<span class="sem">{html.escape(i["sql"].strip().splitlines()[0][:160])}</span>'
+        erro = f' title="{html.escape(i["erro"])}"' if i["erro"] else ""
+        linhas.append(
+            f'<tr><td><a href="{i["url"]}" target="_blank" rel="noopener">{i["id"]}</a></td>'
+            f'<td class="desc">{desc}<details><summary>SQL</summary><pre>{html.escape(i["sql"])}</pre></details></td>'
+            f'<td class="n">{i["criado_em"][:16].replace("T", " ")}</td>'
+            f'<td class="n">{i["cliques"]}</td><td class="n"{erro}>{tempo(i)}</td></tr>')
+    return f"""<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rodado — consultas salvas</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+  :root {{ --base: #1e1e2e; --mantle: #181825; --surface0: #313244; --overlay1: #7f849c;
+    --text: #cdd6f4; --blue: #89b4fa; --mauve: #cba6f7; }}
+  body {{ margin: 0; padding: 24px 16px; background: var(--base); color: var(--text);
+    font: 12px/1.5 "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; }}
+  h1 {{ font-size: 14px; color: var(--mauve); margin: 0 0 4px; }}
+  p {{ color: var(--overlay1); margin: 0 0 16px; }}
+  .tabela {{ overflow-x: auto; }}
+  table {{ border-collapse: collapse; width: 100%; max-width: 1200px; }}
+  th, td {{ text-align: left; vertical-align: top; padding: 6px 10px; border-bottom: 1px solid var(--surface0); }}
+  th {{ color: var(--overlay1); font-weight: 400; position: sticky; top: 0; background: var(--base); }}
+  td.n, th.n {{ text-align: right; white-space: nowrap; }}
+  td.desc {{ min-width: 260px; }}
+  a {{ color: var(--blue); }}
+  .sem {{ color: var(--overlay1); }}
+  summary {{ color: var(--overlay1); cursor: pointer; margin-top: 4px; }}
+  pre {{ background: var(--mantle); padding: 8px; overflow-x: auto; white-space: pre; margin: 4px 0 0; }}
+</style></head><body>
+<h1>consultas salvas · /q/</h1>
+<p>{len(itens)} links, do mais novo para o mais antigo · tempo = uma execução no servidor (até {LIMITE_PADRAO:,} linhas) ·
+cliques = aberturas do link · <a href="/llm/index?formato=json">json</a></p>
+<div class="tabela"><table>
+<thead><tr><th>link</th><th>descrição</th><th class="n">criado em</th><th class="n">cliques</th><th class="n">tempo</th></tr></thead>
+<tbody>
+{chr(10).join(linhas)}
+</tbody></table></div>
+</body></html>
+""".replace(f"{LIMITE_PADRAO:,}", f"{LIMITE_PADRAO:,}".replace(",", "."))
 _catalogo = {"em": 0.0, "json": b""}
 _catalogo_trava = threading.Lock()
 _guia = {"em": 0.0, "texto": b""}
@@ -625,6 +783,9 @@ class Handler(BaseHTTPRequestHandler):
                         break                                     # mesmo SQL, mesmo link
         else:
             return self._erro(500, "colisão de id")
+        if not _meta_q(h[:n]):
+            _anota_q(h[:n], criado_em=datetime.datetime.now(BRT).isoformat(timespec="seconds"), cliques=0)
+            _fila_q.put(h[:n])
         self._json({"id": h[:n], "url": f"/q/{h[:n]}"})
 
     def _q(self, ident, parte):
@@ -632,6 +793,7 @@ class Handler(BaseHTTPRequestHandler):
         if not os.path.exists(caminho):
             return self._erro(404, "link não encontrado")
         if not parte:
+            _anota_q(ident, clique=True)
             with open(PAGINA, "rb") as f:
                 return self._responde(200, f.read(), "text/html; charset=utf-8", {"Cache-Control": "no-cache"})
         with open(caminho, encoding="utf-8") as f:
@@ -644,6 +806,11 @@ class Handler(BaseHTTPRequestHandler):
             return self._q(rota.group(1), rota.group(2))
         if url.path == "/health":
             return self._responde(200, "ok\n")
+        if url.path.rstrip("/") == "/llm/index":   # atrás da senha: cada link abre o site inteiro
+            itens = _lista_q()
+            if (parse_qs(url.query).get("formato") or [""])[0] == "json":
+                return self._json(itens)
+            return self._responde(200, _pagina_q(itens), "text/html; charset=utf-8", {"Cache-Control": "no-store"})
         if url.path == "/ping":  # mede a ida e volta até o servidor Python (o /health o Caddy responde sozinho)
             return self._responde(200, "pong\n", extra={"Cache-Control": "no-store"})
         # / para quem pede markdown (agentes) e não HTML: o terminal da página não serve a eles
@@ -787,6 +954,9 @@ class Handler(BaseHTTPRequestHandler):
             return self._responde(200, dados, "application/vnd.apache.parquet",
                                   {**_cabecalhos_de_aviso(tabelas, avisos),
                                    "X-Segundos": f"{time.monotonic() - inicio:.3f}"})
+        if (ident := _id_salvo(sql)):   # o mesmo texto de um link: atualiza o tempo dele
+            _anota_q(ident, segundos=round(time.monotonic() - inicio, 3), erro=None,
+                     medido_em=datetime.datetime.now(BRT).isoformat(timespec="seconds"))
         truncado = len(linhas) > limite
         linhas = linhas[:limite]
         extra = {
@@ -814,5 +984,11 @@ class Handler(BaseHTTPRequestHandler):
 if __name__ == "__main__":
     ThreadingHTTPServer.daemon_threads = True
     srv = ThreadingHTTPServer(("127.0.0.1", PORTA), Handler)
+    # links salvos antes do <id>.json (ou ainda sem tempo): medidos em fila, um de cada vez
+    if os.path.isdir(DIR_Q):
+        for nome in sorted(os.listdir(DIR_Q)):
+            if nome.endswith(".sql") and "segundos" not in _meta_q(nome[:-4]) and not _meta_q(nome[:-4]).get("erro"):
+                _fila_q.put(nome[:-4])
+    threading.Thread(target=_mede_q, daemon=True).start()
     print(f"escutando em 127.0.0.1:{PORTA}", flush=True)
     srv.serve_forever()
