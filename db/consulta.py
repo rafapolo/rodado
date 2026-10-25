@@ -200,7 +200,9 @@ PAGINA_Q = r"""<!doctype html>
     border: 1px solid var(--surface0); border-radius: 6px; padding: 7px 10px; font: inherit; }
   input[type=search]:focus { outline: none; border-color: var(--mauve); }
   .grupo { display: inline-flex; border: 1px solid var(--surface0); border-radius: 6px; overflow: hidden; }
-  .grupo button { background: var(--mantle); color: var(--subtext0); border: 0; padding: 7px 10px; font: inherit; cursor: pointer; }
+  .grupo button { background: var(--mantle); color: var(--subtext0); border: 0; padding: 7px 10px; font: inherit; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px; }
+  .grupo svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   .grupo button + button { border-left: 1px solid var(--surface0); }
   .grupo button[aria-pressed=true] { background: var(--surface0); color: var(--text); }
   main { max-width: 1400px; margin: 0 auto; padding: 16px; }
@@ -260,13 +262,13 @@ PAGINA_Q = r"""<!doctype html>
   <div class="controles">
     <input type="search" id="busca" placeholder="buscar na descrição, no SQL ou nas tabelas  ( / )" autocomplete="off">
     <div class="grupo" id="ordem" role="group" aria-label="ordenar">
-      <button data-v="criado_em" aria-pressed="true">recentes</button>
-      <button data-v="cliques">cliques</button>
-      <button data-v="segundos">tempo</button>
+      <button data-v="criado_em" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>recentes</button>
+      <button data-v="cliques"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3l14 7-6 2-2 6z"/></svg>cliques</button>
+      <button data-v="segundos"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="14" r="7"/><path d="M12 10v4M10 3h4M18 7l1.5-1.5"/></svg>tempo</button>
     </div>
     <div class="grupo" id="vista" role="group" aria-label="vista">
-      <button data-v="cards" aria-pressed="true">cards</button>
-      <button data-v="tabela">tabela</button>
+      <button data-v="cards" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>cards</button>
+      <button data-v="tabela"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>tabela</button>
     </div>
     <a class="btn" href="/llm/index?formato=json" target="_blank" rel="noopener">json</a>
   </div>
@@ -366,8 +368,8 @@ addEventListener("resize", () => {
 function guarda() { try { localStorage.setItem("rodado.qindex", JSON.stringify({ ordem: estado.ordem, vista: estado.vista })); } catch (_) {} }
 
 $("#busca").addEventListener("input", e => { estado.busca = e.target.value; desenha(); });
-$("#ordem").addEventListener("click", e => { if (e.target.dataset.v) { estado.ordem = e.target.dataset.v; guarda(); desenha(); } });
-$("#vista").addEventListener("click", e => { if (e.target.dataset.v) { estado.vista = e.target.dataset.v; guarda(); desenha(); } });
+$("#ordem").addEventListener("click", e => { const b = e.target.closest("button"); if (b) { estado.ordem = b.dataset.v; guarda(); desenha(); } });
+$("#vista").addEventListener("click", e => { const b = e.target.closest("button"); if (b) { estado.vista = b.dataset.v; guarda(); desenha(); } });
 document.addEventListener("keydown", e => {
   if (e.key === "/" && document.activeElement !== $("#busca")) { e.preventDefault(); $("#busca").focus(); }
   if (e.key === "Escape" && document.activeElement === $("#busca")) { e.target.value = ""; estado.busca = ""; desenha(); }
