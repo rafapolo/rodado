@@ -6,12 +6,12 @@ gotchas:
     colunas: [data_referencia]
     severidade: silencioso
     verificado: "2025-07-02, 2025-08-02 e 2025-09-02 com 10,1M a 10,2M linhas cada — medido 2026-09-25"
-  - id: id_imovel_nulo
-    resumo: "id_imovel_receita_federal é NULL em ~62% das linhas: não serve de chave para o cadastro inteiro."
+  - id: id_imovel_nomes_trocados
+    resumo: "Os nomes das chaves estão trocados: id_imovel_receita_federal guarda o código INCRA/SNCR de 13 dígitos (nulo em 62%) e id_imovel_incra guarda o NIRF/CIB de 8 dígitos (sempre preenchido). Junte SIGEF, SNCI e SICOR.id_sncr pela primeira; SICOR.id_cib pela segunda."
     tabelas: [imoveis_rurais]
-    colunas: [id_imovel_receita_federal]
+    colunas: [id_imovel_receita_federal, id_imovel_incra]
     severidade: silencioso
-    verificado: "data_referencia 2025-09-02: 6.270.208 NULL de 10.157.996, 3.887.782 ids distintos — medido 2026-09-25"
+    verificado: "2025-09-02: 6.270.208 NULL de 10.157.996 em id_imovel_receita_federal (13 dígitos, 3.887.782 distintos); id_imovel_incra com 8 dígitos em 169,9 mi de 169,9 mi linhas. SIGEF codigo_imo casa 704.130 de 997.105 (71%) com a de 13 e 0 com a de 8; SICOR id_cib casa 379.751 de 586.632 (65%) com a de 8 — medido 2026-10-25 (chao)"
   - id: area_sem_unidade
     resumo: "A area não fecha em unidade nenhuma: os imóveis ativos da data mais recente somam 9,0 bilhões (o Brasil tem 851 M ha). Use só contagens."
     tabelas: [imoveis_rurais]

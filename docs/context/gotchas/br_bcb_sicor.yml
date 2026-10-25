@@ -42,3 +42,15 @@ gotchas:
     colunas: [data_inicio_plantio, data_fim_colheita]
     severidade: aviso
     verificado: "soja: 1,17 M de 1,62 M operações com data, 83 fora de 2010–2027; ciclo médio 173 dias — medido 2026-10-22 (bragro)"
+  - id: id_car_sem_hifen
+    resumo: "recurso_publico_propriedade.id_car é o código do CAR sem os hífens: junte com replace(area_imovel.id_imovel, '-', ''). Vazio até 2017, 3% em 2018; daí em diante 95–99% e casa quase todo com a foto 2025-10-15 do CAR. Uma operação traz vários CARs (média 1,65): reparta o valor antes de somar por imóvel."
+    tabelas: [recurso_publico_propriedade]
+    colunas: [id_car]
+    severidade: silencioso
+    verificado: "2019–2024: 100,0% das linhas com id_car casam com a foto 2025-10-15 (99,3–99,8% sem cancelados); 2018: 51.568 linhas, 90%; amostra 2023/24: 3.053 operações, 935 com mais de um CAR — medido 2026-10-25 (chao)"
+  - id: gleba_dentro_do_car
+    resumo: "O centroide da gleba cai num polígono do CAR em 98% das glebas 2023/24, e no CAR que a própria operação declara em ~91%. 16% caem em mais de um CAR (os CARs se sobrepõem)."
+    tabelas: [recurso_publico_gleba]
+    colunas: [geometria]
+    severidade: aviso
+    verificado: "amostra de 3.066 glebas 2023/24: 3.018 num CAR, 503 em dois ou mais; 2.754 de 3.016 com id_car caem no CAR declarado — medido 2026-10-25 (chao)"

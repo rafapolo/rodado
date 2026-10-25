@@ -24,3 +24,15 @@ gotchas:
     colunas: [qtd_area_embargada]
     severidade: silencioso
     verificado: "72.075 de 116.746 preenchidos, soma 11.067.885, máximo 131.239 — igual à soma do texto com replace medida em 2026-10-07; DOUBLE medido 2026-10-21"
+  - id: coordenada_fora_do_brasil
+    resumo: "num_latitude_tad/num_longitude_tad são texto e trazem pontos fora do Brasil (lon 0, lat -135). Filtre pela caixa do país antes de cruzar por ponto; só ~56% dos pontos válidos caem num CAR, contra 90% dos polígonos."
+    tabelas: [termo_embargo]
+    colunas: [num_latitude_tad, num_longitude_tad]
+    severidade: silencioso
+    verificado: "não cancelados sem polígono: 52.366, 39.684 com coordenada, 34.806 na caixa -74..-28 × -34..6; 19.236 desses caem num CAR. Com polígono: 51.128 de 56.679 tocam um CAR, 3,25 CARs por embargo — medido 2026-10-25 (chao)"
+  - id: seq_tad_repetido
+    resumo: "termo_embargo repete seq_tad (116.746 linhas, 113.648 termos), às vezes com geometrias diferentes. Deduplique por seq_tad antes de contar ou somar área."
+    tabelas: [termo_embargo]
+    colunas: [seq_tad, geom_area_embargada]
+    severidade: silencioso
+    verificado: "não cancelados com WKT: 58.026 pares (seq_tad, wkt) para 56.680 termos; 1 WKT não vira geometria nem com ST_MakeValid — medido 2026-10-25 (chao)"

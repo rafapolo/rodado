@@ -22,3 +22,15 @@ gotchas:
     tabelas: [area_imovel]
     severidade: silencioso
     verificado: "foto 2025-10-15: 8.186.157 imóveis, 822,8 mi ha (715,8 sem cancelados) — medido 2026-09-25"
+  - id: id_imovel_repete_na_foto
+    resumo: "Na foto 2025-10-15 o id_imovel aparece 8.195.400 vezes para 8.186.157 ids: há 9.243 repetições. Deduplique por id_imovel."
+    tabelas: [area_imovel]
+    colunas: [id_imovel]
+    severidade: silencioso
+    verificado: "8.195.400 linhas, 8.186.157 distintos, todos com 43 caracteres — medido 2026-10-25 (chao)"
+  - id: poligonos_sobrepostos
+    resumo: "Os imóveis do CAR se sobrepõem: o CAR é autodeclarado. Um ponto ou polígono cai em vários imóveis; some pela origem (gleba, embargo, alerta), não por imóvel, ou use maior sobreposição."
+    tabelas: [area_imovel]
+    colunas: [geometria]
+    severidade: silencioso
+    verificado: "amostra de 2.034 imóveis não cancelados: 1.219 sobrepõem outro em >1% da área, 711 em >10%, 470 em >50%, 246 inteiros dentro de outro — medido 2026-10-25 (chao)"

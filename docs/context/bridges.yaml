@@ -867,6 +867,32 @@ concepts:
     category: classificacao
     description: CNAE 1.0 activity code — the pre-2007 vintage, still used by older RAIS files.
     canonical_table: br_bd_diretorios_brasil.cnae_1
+  id_imovel_car:
+    category: geo
+    description: 'Código do imóvel no CAR (`UF-IBGE7-HASH32`, 43 caracteres com hífens). É a única
+      malha de imóveis rurais do espelho: o polígono está em `br_sfb_sicar.area_imovel.geometria`.'
+    canonical_table: br_sfb_sicar.area_imovel
+    notes:
+    - '`area_imovel` tem 10 fotos mensais: fixe `data_extracao` (2025-10-15: 8.195.400 linhas para
+      8.186.157 ids; o id repete em 9.243 casos).'
+    - '`br_bcb_sicor.recurso_publico_propriedade.id_car` é o mesmo código **sem os hífens** (41
+      caracteres): junte por `replace(id_imovel, ''-'', '''') = id_car`. Preenchido em 95–99% das
+      linhas desde 2019 e em 3% em 2018; antes, vazio.'
+    - Uma operação do SICOR tem em média 1,65 CARs (31% têm mais de um). Juntar por `id_car` e somar
+      R$ multiplica o valor; reparta por operação.
+    - 'Os polígonos do CAR se sobrepõem: numa amostra de 2.034 imóveis ativos, 60% sobrepõem outro
+      CAR em mais de 1% da área e 12% estão inteiros dentro de outro. Cruzamento espacial precisa
+      de "maior sobreposição vence" ou de deduplicar pelo outro lado.'
+  codigo_imovel_sncr:
+    category: geo
+    description: 'Código do imóvel no SNCR/INCRA (13 dígitos). Liga SIGEF, SNCI, CAFIR e SICOR, mas
+      não o CAR.'
+    canonical_table: br_rf_cafir.imoveis_rurais
+    notes:
+    - 'No CAFIR os nomes estão trocados: o código INCRA de 13 dígitos está em
+      `id_imovel_receita_federal`, e o NIRF/CIB de 8 dígitos em `id_imovel_incra`.'
+    - '`sigef_parcelas.codigo_imo` e `snci_parcelas.cod_imovel` são esse código (13 dígitos, 99,3%
+      das parcelas do SIGEF).'
 # `expr` é o que sai renderizado no markdown, para leitura humana.
 # `join_expr` é a mesma coisa para a máquina: {s} e {d} são os aliases das duas
 # pontas, e resolve_join substitui os dois. 35 das 54 pontes têm join_expr; as
@@ -1727,6 +1753,36 @@ bridges:
     verified: hub — 2026-09-24
     concept: id_estacao
     join_expr: '{s}.id_estacao = {d}.id_estacao'
+  imovel:
+  - table: br_bcb_sicor.recurso_publico_propriedade
+    column: id_car
+    format: código do CAR sem os hífens (41 caracteres, `PR41209038912555E66A2493FB164644B0EEC9518`).
+      Vazio antes de 2018. Uma operação traz vários CARs (média 1,65); para somar R$ por imóvel,
+      reparta o valor da operação entre eles
+    expr: replace(c.id_imovel, '-', '') = p.id_car
+    verified: 'casa com a foto 2025-10-15 do CAR em 100,0% das linhas com id_car de 2019 a 2024
+      (99,4% em 2025, 90% em 2018); o centroide da gleba 2023/24 cai no polígono desse CAR em 2.754
+      de 3.016 glebas (91%, cota otimista: a gleba pode cair em mais de um CAR) — 2026-10-25 (chao)'
+    concept: id_imovel_car
+    join_expr: replace({d}.id_imovel, '-', '') = {s}.id_car
+  - table: br_incra_acervo.sigef_parcelas / snci_parcelas
+    column: codigo_imo / cod_imovel
+    format: código SNCR de 13 dígitos. Casa com o CAFIR pela coluna de nome trocado,
+      `id_imovel_receita_federal`
+    expr: s.codigo_imo = f.id_imovel_receita_federal
+    verified: 'SIGEF: 704.130 de 997.105 códigos distintos (71%); SNCI: 37.797 de 49.535 (76%),
+      contra a foto 2025-09-02 do CAFIR — 2026-10-25 (chao)'
+    concept: codigo_imovel_sncr
+    join_expr: '{s}.codigo_imo = {d}.id_imovel_receita_federal'
+  - table: br_bcb_sicor.recurso_publico_propriedade
+    column: id_sncr / id_cib
+    format: id_sncr tem 13 dígitos (código INCRA); id_cib tem 8 (NIRF), com 694 mil linhas
+      `000000000` de 9 dígitos que são vazio
+    expr: p.id_sncr = f.id_imovel_receita_federal; p.id_cib = f.id_imovel_incra
+    verified: 'id_sncr: 309.912 de 445.805 distintos (70%) no CAFIR e 102.384 (23%) no SIGEF;
+      id_cib: 379.751 de 586.632 (65%) no CAFIR — 2026-10-25 (chao)'
+    concept: codigo_imovel_sncr
+    join_expr: '{s}.id_sncr = {d}.id_imovel_receita_federal'
   pais:
   - table: br_me_comex_stat.municipio_exportacao / municipio_importacao / ncm_exportacao / ncm_importacao
     column: sigla_pais_iso3
