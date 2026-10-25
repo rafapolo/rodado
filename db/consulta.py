@@ -207,7 +207,9 @@ PAGINA_Q = r"""<!doctype html>
   .vazio { color: var(--overlay1); padding: 40px 0; text-align: center; }
 
   /* cards */
-  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
+  /* colunas montadas no script: cada card vai para a mais curta, e a altura é a do conteúdo */
+  .cards { display: grid; grid-template-columns: repeat(var(--colunas, 1), minmax(0, 1fr)); gap: 12px; align-items: start; }
+  .coluna { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
   .card { background: var(--mantle); border: 1px solid var(--surface0); border-radius: 10px; padding: 14px;
     display: flex; flex-direction: column; gap: 10px; min-width: 0; transition: border-color .15s; }
   .card:hover { border-color: var(--surface1); }
@@ -230,7 +232,9 @@ PAGINA_Q = r"""<!doctype html>
     font: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
   .btn:hover { background: var(--surface1); text-decoration: none; }
   .btn.ok, .id.ok { color: var(--green); }
-  .id { margin-left: auto; align-self: center; background: none; border: 0; padding: 2px 0; font: inherit; font-size: 11px;
+  .rodape { display: flex; align-items: flex-end; gap: 8px; margin-top: auto; }
+  .rodape .tabelas { flex: 1; min-width: 0; }
+  .id { margin-left: auto; background: none; border: 0; padding: 2px 0; font: inherit; font-size: 11px;
     color: var(--overlay0); cursor: copy; white-space: nowrap; }
   .id:hover { color: var(--text); }
 
@@ -247,7 +251,6 @@ PAGINA_Q = r"""<!doctype html>
   td a.desc.sem { color: var(--subtext0); }
   td .t-rapido { color: var(--green); } td .t-medio { color: var(--yellow); }
   td .t-lento { color: var(--peach); } td .t-falhou { color: var(--red); } td .t-medindo { color: var(--overlay1); }
-  @media (max-width: 420px) { .cards { grid-template-columns: 1fr; } }
 </style></head><body>
 <header>
   <div class="topo">
@@ -308,9 +311,11 @@ function card(i) {
       <span class="chip" title="${esc(q.abs)}">criado <b>${esc(q.rel)}</b></span>
       <span class="chip" title="aberturas do link">cliques <b>${num.format(i.cliques)}</b></span>
       <span class="chip ${t.cls}" title="${esc(t.dica)}">tempo <b>${esc(t.txt)}</b></span>
+    </div>
+    <div class="rodape">
+      <div class="tabelas">${tabs}</div>
       <button class="id" data-acao="copia" title="copiar o link">${i.id}</button>
     </div>
-    ${tabs ? `<div class="tabelas">${tabs}</div>` : ""}
   </article>`;
 }
 function linha(i) {
@@ -339,12 +344,25 @@ function desenha() {
   for (const b of document.querySelectorAll("#ordem button")) b.setAttribute("aria-pressed", b.dataset.v === estado.ordem);
   for (const b of document.querySelectorAll("#vista button")) b.setAttribute("aria-pressed", b.dataset.v === estado.vista);
   if (!itens.length) { $("#lista").innerHTML = `<div class="vazio">nenhum link casa com “${esc(estado.busca)}”</div>`; return; }
-  $("#lista").innerHTML = estado.vista === "cards"
-    ? `<div class="cards">${itens.map(card).join("")}</div>`
-    : `<div class="tabela"><table><thead><tr><th>link</th><th>descrição</th><th class="n" data-ordem="criado_em">criado</th>
+  if (estado.vista === "cards") return empilha(itens);
+  $("#lista").innerHTML = `<div class="tabela"><table><thead><tr><th>link</th><th>descrição</th><th class="n" data-ordem="criado_em">criado</th>
        <th class="n" data-ordem="cliques">cliques</th><th class="n" data-ordem="segundos">tempo</th></tr></thead>
        <tbody>${itens.map(linha).join("")}</tbody></table></div>`;
 }
+const LARGURA_CARD = 340, VAO = 12;
+function empilha(itens) {   // um card de cada vez na coluna mais curta: a ordem segue da esquerda para a direita
+  $("#lista").innerHTML = `<div class="cards"></div>`;
+  const box = $(".cards"), n = Math.max(1, Math.floor((box.clientWidth + VAO) / (LARGURA_CARD + VAO)));
+  box.style.setProperty("--colunas", n);
+  const colunas = Array.from({ length: n }, () => box.appendChild(Object.assign(document.createElement("div"), { className: "coluna" })));
+  for (const i of itens) colunas.reduce((a, b) => b.offsetHeight < a.offsetHeight ? b : a).insertAdjacentHTML("beforeend", card(i));
+}
+addEventListener("resize", () => {
+  const box = $(".cards");
+  if (!box) return;
+  const n = Math.max(1, Math.floor((box.clientWidth + VAO) / (LARGURA_CARD + VAO)));
+  if (n !== Number(box.style.getPropertyValue("--colunas"))) desenha();
+});
 function guarda() { try { localStorage.setItem("rodado.qindex", JSON.stringify({ ordem: estado.ordem, vista: estado.vista })); } catch (_) {} }
 
 $("#busca").addEventListener("input", e => { estado.busca = e.target.value; desenha(); });
