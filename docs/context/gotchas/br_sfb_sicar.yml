@@ -34,3 +34,15 @@ gotchas:
     colunas: [geometria]
     severidade: silencioso
     verificado: "amostra de 2.034 imóveis não cancelados: 1.219 sobrepõem outro em >1% da área, 711 em >10%, 470 em >50%, 246 inteiros dentro de outro — medido 2026-10-25 (chao)"
+  - id: condicao_e_a_analise
+    resumo: "A situação de análise do CAR já está em area_imovel.condicao: 'Aguardando analise' (79% dos imóveis), 'Em analise', 'Analisado, ...' e 'Cancelado ...'. Não precisa de fonte externa para separar o CAR só declarado do analisado; a adesão ao PRA não está no espelho."
+    tabelas: [area_imovel]
+    colunas: [condicao, status]
+    severidade: aviso
+    verificado: "foto 2025-10-15: 6.458.436 imóveis AT 'Aguardando analise' (433,4 Mha); 'Analisado, aguardando atendimento a notificacao' 803.813 em AT/PE/SU; 'Analisado, em conformidade' 276.709 — medido 2026-10-25 (chao)"
+  - id: bahia_sem_analise
+    resumo: "Na Bahia, todo imóvel está 'Aguardando analise' (ou cancelado): o estado analisa no sistema próprio e a situação não chega ao SICAR federal. Leia 0% de análise na BA como falta de dado, não como nada analisado."
+    tabelas: [area_imovel]
+    colunas: [condicao, sigla_uf]
+    severidade: silencioso
+    verificado: "foto 2025-10-15, BA: 1.236.652 imóveis AT/PE/SU, todos 'Aguardando analise'; nas outras UFs a fração analisada (por imóvel) vai de 0,0% (PE, RS) a 69% (SP) — medido 2026-10-25 (chao)"

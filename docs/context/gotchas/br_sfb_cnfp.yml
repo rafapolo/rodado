@@ -1,0 +1,20 @@
+dataset: br_sfb_cnfp
+gotchas:
+  - id: tipo_b_e_nao_destinada
+    resumo: "tipo = 'TIPO B' é a floresta pública não destinada (todas 'GLEBA ARRECADADA'); 'TIPO A' é a destinada (TI, UC, assentamento, uso militar). Para grilagem declarada, cruze o CAR com o tipo B."
+    tabelas: [florestas_publicas]
+    colunas: [tipo, categoria]
+    severidade: aviso
+    verificado: "CNFP 2025: TIPO A 11.132 feições, 274,3 Mha; TIPO B 1.742, 48,1 Mha — medido 2026-10-25 (chao)"
+  - id: categorias_sobrepostas
+    resumo: "Categorias compostas ('TI / PARNA', 'PA / APA') marcam sobreposição de destinações: somar area_ha por categoria simples conta a mesma terra duas vezes. Não some com br_geobr_mapas.terra_indigena ou unidade_conservacao."
+    tabelas: [florestas_publicas]
+    colunas: [categoria, area_ha]
+    severidade: silencioso
+    verificado: "TI 110,8 Mha mais 'TI / PARNA' 4,9, 'TI / FLOTA' 2,0, 'TI / APA' 2,0 e outras — medido 2026-10-25 (chao)"
+  - id: car_sobre_nao_destinada
+    resumo: "CAR sobre floresta pública não destinada: somar a interseção imóvel a imóvel conta duas vezes o CAR sobreposto. Para a área tocada, limite a fração a 1 por feição do CNFP (é um teto, não a união)."
+    tabelas: [florestas_publicas]
+    colunas: [tipo, geometria]
+    severidade: silencioso
+    verificado: "tipo B × CAR não cancelado (foto 2025-10-15): 230.839 pares; soma das interseções 42,8 Mha; limitada a 1 por feição 36,1 Mha (AM 24,2, PA 6,3) de 48,8 Mha — medido 2026-10-25 (chao)"

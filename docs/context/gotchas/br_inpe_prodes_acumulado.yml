@@ -17,3 +17,14 @@ gotchas:
     colunas: [ano, area_km2]
     severidade: erro
     verificado: "2017–2023 contra br_inpe_prodes.municipio_bioma: total a <0,3%, r=1,00 por município; 2015 dava 17 mil km² contra 22 mil — medido 2026-10-07"
+  - id: poligono_versao_nova
+    resumo: "desmatamento_poligono é a versão do catálogo de 2026 (v20261016 para Amazônia e Cerrado), mais nova que desmatamento (centroide, coleta de 09/2026): os totais não batem linha a linha, e o Cerrado já traz o ano 2026."
+    detalhe: >
+      Seis biomas (sem amazonia_legal, que duplica). Na fonte, main_class mistura
+      'desmatamento' e 'DESMATAMENTO' no mesmo arquivo; aqui foi passada para caixa
+      alta. Junte por uuid, não por OGC_FID. A coluna versao diz de que arquivo veio.
+      Ano PRODES = agosto a julho.
+    tabelas: [desmatamento_poligono]
+    colunas: [main_class, year, uuid, versao]
+    severidade: silencioso
+    verificado: "amazonia 802.312 polígonos (2008–2025), cerrado 2.388.715 (2002–2026), caatinga 2.260.564, mata_atlantica 1.113.709, pampa 213.638, pantanal 37.155; na Amazônia da fonte, 549.350 'desmatamento' e 252.962 'DESMATAMENTO' — medido 2026-10-25 (chao)"

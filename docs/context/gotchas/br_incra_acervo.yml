@@ -1,0 +1,14 @@
+dataset: br_incra_acervo
+gotchas:
+  - id: poligono_coleta_mais_nova
+    resumo: "sigef_poligono, snci_poligono e assentamentos_poligono são de outra coleta (2026-10-25) que as tabelas de atributos (sigef_parcelas etc.): há parcela com polígono e sem atributo. Junte pela chave (parcela_co, num_certif, cd_sipra) com LEFT JOIN, nunca pelo OGC_FID."
+    tabelas: [sigef_poligono, snci_poligono, assentamentos_poligono]
+    colunas: [parcela_co, num_certif, cd_sipra]
+    severidade: aviso
+    verificado: "sigef_poligono 1.867.095 contra 1.841.258 em sigef_parcelas; snci 52.761 contra 52.817; assentamentos 8.214 contra 8.216 — medido 2026-10-25 (chao)"
+  - id: centroide_subestima_certificacao
+    resumo: "Medir a certificação do imóvel do CAR pelo centroide da parcela subestima: com o polígono (metade ou mais do imóvel coberta por parcelas do SIGEF) são 45% mais imóveis."
+    tabelas: [sigef_poligono, sigef_parcelas]
+    colunas: [geometria, lat, lon]
+    severidade: aviso
+    verificado: "CAR não cancelado, foto 2025-10-15: 1.199.463 imóveis com centroide de parcela dentro; 1.740.081 com cobertura >= 50% pelo polígono — medido 2026-10-25 (chao)"
