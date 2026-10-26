@@ -19,3 +19,17 @@ gotchas:
     colunas: [nis_favorecido, codigo_municipio_siafi]
     severidade: aviso
     verificado: "2024: 1.112.240 pescadores, R$ 5,9 bi — medido 2026-10-22 (bragro)"
+  - id: agregue_pela_pagamento
+    resumo: "seguro_defeso é uma view (pagamento JOIN favorecido). Soma, contagem e agrupamento sem nome/CPF/NIS/RGP vão direto na pagamento: pela view o join custa ~9x mais."
+    detalhe: >
+      Desde 2026-10-22 a tabela é normalizada: favorecido guarda CPF, NIS,
+      RGP e nome por linha com um favorecido_id inteiro, e pagamento guarda o
+      mês com favorecido_id no lugar das quatro colunas. A view seguro_defeso
+      devolve as mesmas colunas de antes, mas o DuckDB não elimina o join
+      mesmo quando a consulta não usa a pessoa. count(DISTINCT favorecido_id)
+      na pagamento conta combinações, não pescadores: para pescadores, conte
+      nis_favorecido (ver contar_por_nis).
+    tabelas: [seguro_defeso, pagamento, favorecido]
+    colunas: [favorecido_id, valor_parcela]
+    severidade: aviso
+    verificado: "total por mês (161 meses, R$ 48,98 bi nos dois caminhos): 0,93 s pela view, 0,10 s na pagamento; 3.982.685 combinações (2.182.852 NIS distintos) para 43.418.500 pagamentos — medido 2026-10-26"

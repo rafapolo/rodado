@@ -23,6 +23,7 @@ caiu (reboot, OOM), a próxima retoma do manifesto. Prioridade baixa, 3 threads.
 
     python3 compacta.py --status     # quanto falta, sem mexer em nada
     python3 compacta.py --max 3      # só os 3 primeiros da fila (teste)
+    python3 compacta.py --sobe CHAVE ARQUIVO BYTES_ORIGINAL LINHAS   # comprimido fora (ver sobe)
 """
 import json
 import os
@@ -162,7 +163,46 @@ def comprime(con, chave, tamanho):
     return {"orig": tamanho, "z": z, "linhas": a[1], "quando": time.strftime("%Y-%m-%d")}
 
 
+def sobe(chave, arquivo, orig, linhas):
+    """Sobe um arquivo comprimido fora daqui (largo demais para os 2 GB do finland).
+
+    Quem comprimiu já conferiu linhas, hash e tipos contra o original, como `comprime`. Aqui só se
+    confere que o bucket ainda tem o original (`orig` bytes), que o arquivo tem `linhas` linhas,
+    e a subida. Pega a trava do cron: com uma passada em curso, o manifesto dela (na memória)
+    apagaria esta entrada na próxima gravação.
+    """
+    import fcntl
+    trava = open(f"{BASE}/compacta.lock", "a")
+    try:
+        fcntl.flock(trava, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        sys.exit("compacta.py está rodando: espere a passada acabar")
+    z = os.path.getsize(arquivo)
+    if tamanho_no_bucket(chave) != orig:
+        sys.exit(f"{chave}: o bucket não tem mais o original de {orig} bytes")
+    lit = "'" + arquivo.replace("'", "''") + "'"
+    n = duckdb.connect().execute(f"SELECT sum(num_rows) FROM parquet_file_metadata({lit})").fetchone()[0]
+    if n != linhas:
+        sys.exit(f"{chave}: o arquivo tem {n} linhas, esperava {linhas}")
+    aws("s3", "cp", "--only-show-errors", arquivo, f"{BUCKET}/{chave}")
+    if tamanho_no_bucket(chave) != z:
+        sys.exit(f"{chave}: subida não conferiu")
+    local = f"{SSD}/{chave}"
+    if os.path.exists(local) and os.path.getsize(local) == orig:
+        shutil.copyfile(arquivo, local + ".parcial")
+        os.chown(local + ".parcial", 1000, 1000)
+        os.replace(local + ".parcial", local)
+    m = le_manifesto()
+    m[chave] = {"orig": orig, "z": z, "linhas": linhas, "quando": time.strftime("%Y-%m-%d"), "fora": True}
+    grava_manifesto(m)
+    os.utime(CATALOGO)
+    log(f"{chave}: {orig / 2**20:.1f} -> {z / 2**20:.1f} MiB ({100 * z / orig:.0f}%), comprimido fora")
+
+
 def main():
+    if "--sobe" in sys.argv:  # --sobe CHAVE ARQUIVO BYTES_ORIGINAL LINHAS
+        i = sys.argv.index("--sobe")
+        return sobe(sys.argv[i + 1], sys.argv[i + 2], int(sys.argv[i + 3]), int(sys.argv[i + 4]))
     os.makedirs(TMP, exist_ok=True)
     objs, m = listagem(), le_manifesto()
     falta = fila(objs, m)
