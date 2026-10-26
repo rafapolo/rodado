@@ -26,3 +26,8 @@ env:
   - name: S3_SECRET
     from:
       env: S3_SECRET
+  # 10 s (o padrão do rodado_sql.py) x 8 tentativas cobre ~80 s; em 2026-10-26 o bucket travou
+  # requisições por ~100 s, e o count(*) de tabelas com mais de mil arquivos (sicor, estban) caía.
+  # Com keep-alive desligado, cada tentativa abre conexão nova: 30 s não repete a falha de 12/10.
+  - name: RODADO_HTTP_TIMEOUT
+    value: "30"
