@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**271 datasets, 1.512 tabelas, 33.808.159.160 linhas.** 9 dataset(s) sem descrição. 4 com data de frescor conferida (de 271).
+**276 datasets, 1.608 tabelas, 34.664.124.949 linhas.** 14 dataset(s) sem descrição. 4 com data de frescor conferida (de 276).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -100,6 +100,7 @@
 | `br_ibge_censo2022_raca` | IBGE Censo 2022 — cor/raça cruzada com instrução e fecundidade, por município | 2 | 1.415.034 | — | Censo 2022 — Cor ou raça × instrução/fecundidade |
 | `br_ibge_censo2022_religiao` | IBGE Censo 2022 — religião e recortes demográficos associados | 15 | 6.451.488 | — | Censo 2022 — Religião (pacote completo) |
 | `br_ibge_censo_2022` | IBGE — Censo Demográfico 2022, agregados por setor censitário e município | 47 | 171.441.122 | — | Base dos Dados |
+| `br_ibge_censo_agropecuario` | _(sem descrição)_ | 2 | 211.522.252 | — | Base dos Dados |
 | `br_ibge_censo_demografico` | IBGE — microdados dos Censos Demográficos 1970 a 2010 | 38 | 181.895.148 | — | Base dos Dados |
 | `br_ibge_cnefe` | IBGE — Cadastro Nacional de Endereços para Fins Estatísticos, Censo 2022 (endereço a endereço) | 1 | 111.102.875 | — | CNEFE Censo 2022 (microdado completo) |
 | `br_ibge_estadic` | IBGE — Pesquisa de Informações Básicas Estaduais (ESTADIC) | 8 | 3.044 | — | Base dos Dados |
@@ -110,7 +111,10 @@
 | `br_ibge_lspa` | _(sem descrição)_ | 2 | 76.725 | — | Base dos Dados |
 | `br_ibge_munic` | IBGE — Pesquisa de Informações Básicas Municipais (MUNIC) | 7 | 852.056 | — | Base dos Dados |
 | `br_ibge_nomes_brasil` | IBGE — frequência de nomes por município, Censo 2010 (nomes raros suprimidos: soma 145 mi de 191 mi) | 1 | 1.959.116 | — | Base dos Dados |
+| `br_ibge_pac` | _(sem descrição)_ | 2 | 504.016 | — | Base dos Dados |
+| `br_ibge_paic` | _(sem descrição)_ | 2 | 370.915 | — | Base dos Dados |
 | `br_ibge_pam` | IBGE — Produção Agrícola Municipal, lavouras permanentes e temporárias | 2 | 20.097.187 | — | Base dos Dados |
+| `br_ibge_pas` | _(sem descrição)_ | 2 | 812.172 | — | Base dos Dados |
 | `br_ibge_pevs` | IBGE — Produção da Extração Vegetal e da Silvicultura | 2 | 558.451 | — | Base dos Dados |
 | `br_ibge_pia` | _(sem descrição)_ | 2 | 1.004.426 | — | Base dos Dados |
 | `br_ibge_pib` | IBGE — PIB municipal e estadual | 7 | 201.871 | — | Base dos Dados |
@@ -208,6 +212,7 @@
 | `br_ok_queridodiario` | Querido Diário — metadados de diários oficiais municipais | 1 | 320.424 | — | Querido Diário |
 | `br_ok_queridodiario_texto` | Querido Diário — texto integral das edições de diários oficiais municipais | 1 | 320.422 | — | Querido Diário — texto integral das edições |
 | `br_ons_avaliacao_operacao` | ONS — avaliação da operação do Sistema Interligado Nacional (geração por usina, térmicas por motivo de despacho, restrição de eólicas, energia armazenada e afluente por reservatório) | 6 | 89.805.415 | — | Base dos Dados |
+| `br_ons_dados_abertos` | _(sem descrição)_ | 87 | 642.725.055 | — | Base dos Dados |
 | `br_ons_estimativa_custos` | ONS — estimativas de custo da operação (balanço de energia por subsistema, custo marginal semanal e semi-horário, custo variável das térmicas) | 5 | 1.407.872 | — | Base dos Dados |
 | `br_pgfn_dividaativa` | PGFN — dívida ativa da União (tributária, FGTS, previdenciária) | 2 | 857.126.441 | — | PGFN |
 | `br_pncp` | PNCP — Portal Nacional de Contratações Públicas, licitações e contratos de todos os entes | 1 | 5.229.507 | — | PNCP — Portal Nacional de Contratações Públicas |
@@ -221,7 +226,7 @@
 | `br_rf_dirpf` | Receita Federal — fundos habilitados e repasses via destinação de IRPF (FDCA/FDI) | 2 | 35.356 | — | Receita Federal — DIRPF repasses FDCA/FDI (valores) |
 | `br_rf_simples_estatisticas` | _(sem descrição)_ | 2 | 4.287.160 | — | Base dos Dados |
 | `br_rj_isp_estatisticas_seguranca` | ISP-RJ — estatísticas de segurança pública do estado do Rio de Janeiro | 14 | 167.979 | — | Base dos Dados |
-| `br_rodado_eleicoes` | Rodado — ponte entre seção eleitoral (TSE, 2022 e 2026) e setor censitário do Censo 2022 | 4 | 2.207.100 | — | TSE — seções com local de votação diferente entre o 1º e o 2º turno de 2026 (versão de 21/10), com distância e voto do 1º turno |
+| `br_rodado_eleicoes` | Rodado — ponte entre seção eleitoral (TSE, 2022 e 2026) e setor censitário do Censo 2022 | 5 | 2.207.335 | — | IBGE CNEFE 2022 × TSE locais de votação 2026 — coordenada estimada para os locais que o TSE não georreferenciou |
 | `br_rodado_indicadores_municipais` | Rodado — os indicadores do painel municipal em formato longo: 987 indicadores em 19 seções (segurança, saúde, educação, benefícios…) para os 5.571 municípios, uma linha por município × indicador × ano/mês/dimensão | 1 | 12.382.056 | — | Base dos Dados |
 | `br_saude_bps` | Boletim de Pessoal da Saúde — dados de profissionais de saúde | 1 | 371.128 | — | BPS |
 | `br_saude_farmaciapopular` | Farmácia Popular — estabelecimentos credenciados | 1 | 32.592 | — | Farmácia Popular |
@@ -254,7 +259,7 @@
 | `br_transferegov` | TransfereGov — planos de ação, programas e transferências (API normalizada) | 3 | 30.346 | — | TransfereGov |
 | `br_transferegov_siconv` | TransfereGov/SICONV — convênios, contratos de repasse e execução física/financeira completa | 62 | 69.060.758 | — | Transferegov/SICONV completo |
 | `br_trase_supply_chain` | Trase — cadeia de suprimentos de soja e carne bovina, do frigorífico/esmagadora à origem | 7 | 1.824.843 | — | Base dos Dados |
-| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 31 | 1.713.157.710 | — | Base dos Dados |
+| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 31 | 1.713.188.854 | — | Base dos Dados |
 | `br_tse_filiacao_partidaria` | TSE — filiação partidária | 2 | 42.201.443 | — | Base dos Dados |
 | `br_ufmg_censo_demografico_1872` | Recenseamento Geral do Império do Brasil de 1872 (UFMG) por província, município e paróquia, nos dados originais e corrigidos | 58 | 1.251.630 | — | Base dos Dados |
 | `eu_sanctions` | União Europeia — lista de sanções | 1 | 43.891 | — | EU Sanctions |
