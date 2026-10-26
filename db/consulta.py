@@ -700,7 +700,15 @@ def _bloqueios(tabelas, colunas):
     return list(dict.fromkeys(bloqueios))
 
 
-def _tamanho(con, tabelas, colunas):
+def _chave_embrulhada(sql, chave):
+    """A chave de ordenação dentro de função (regexp_replace(cpf, ...), lpad, trim, CAST...) ou num
+    LIKE com curinga no começo: o filtro deixa de pular row groups e lê a tabela inteira."""
+    c = rf'(?:[\w"]+\.)?"?{re.escape(chave)}"?'
+    funcao = rf"\b(?:regexp_replace|lpad|rpad|ltrim|rtrim|trim|substr|substring|replace|upper|lower|cast|try_cast|strip_accents|left|right)\s*\(\s*{c}\b"
+    return bool(re.search(funcao, sql, re.I) or re.search(rf"{c}\s+i?like\s+'%", sql, re.I))
+
+
+def _tamanho(con, tabelas, colunas, sql=""):
     """Linhas e partição de cada tabela citada → (itens do /confere, problemas, avisos). Tabela
     grande particionada sem filtro na partição é problema; tabela grande sem partição é aviso:
     nenhum filtro poupa leitura (`sigla_uf = 'SP'` no SIM, 36 mi linhas, levou 73 s)."""
@@ -716,7 +724,10 @@ def _tamanho(con, tabelas, colunas):
             problemas.append(f"{ds}.{t} tem {_curto(n)} linhas e a consulta não cita "
                              f"a partição ({', '.join(sorted(part))}): vai ler tudo e estourar o tempo")
         elif (ds, t) in ORDENADA_POR and ORDENADA_POR[(ds, t)] in colunas:
-            pass   # filtra pela coluna da ordem: o min/max dos row groups pula quase tudo
+            c = ORDENADA_POR[(ds, t)]
+            if _chave_embrulhada(sql, c):   # cita a chave, mas de um jeito que não pula nada
+                avisos.append(f"{ds}.{t} está ordenada por {c}, mas a consulta usa {c} dentro de função "
+                              f"ou LIKE '%...': assim ela lê a tabela inteira. Compare {c} cru (= ou IN)")
         elif (ds, t) in ORDENADA_POR:
             c = ORDENADA_POR[(ds, t)]
             avisos.append(f"{ds}.{t} tem {_curto(n)} linhas e está ordenada por {c}: filtre por {c} "
@@ -924,7 +935,7 @@ class Handler(BaseHTTPRequestHandler):
                         continue
                     conhecidas |= cols
                     existentes.append((ds, t))
-                saida, grandes, lentas = _tamanho(con, existentes, colunas)
+                saida, grandes, lentas = _tamanho(con, existentes, colunas, sql)
                 problemas += grandes
                 problemas += [f"{b} — o /query recusa até você repetir com ?ciente=1"
                               for b in _bloqueios(tabelas, colunas)]
@@ -1117,7 +1128,7 @@ class Handler(BaseHTTPRequestHandler):
                                             + "; se a consulta já trata disso, repita com ?ciente=1"),
                                       avisos=avisos)
                 try:
-                    avisos = _tamanho(con, tabelas, colunas)[2] + avisos
+                    avisos = _tamanho(con, tabelas, colunas, comandos[0].query)[2] + avisos
                 except duckdb.Error:  # tabela que não existe: o erro de verdade vem da consulta
                     pass
                 with rodado_sql.Cronometro(con) as crono:
