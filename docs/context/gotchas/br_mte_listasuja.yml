@@ -12,3 +12,15 @@ gotchas:
     colunas: [tipo_documento, cnae]
     severidade: aviso
     verificado: "211 CNPJ × 436 CPF distintos; 81 CPFs com divisão 97 — medido 2026-10-15"
+  - id: municipio_pelo_texto
+    resumo: "Não há código de município: só o texto `estabelecimento` ('FAZENDA X, ZONA RURAL, BARROLÂNDIA/TO'). A tabela derivada empregadores_municipio casa o nome de município da UF que termina mais à direita no texto, depois um nome parecido (Jaro-Winkler ≥ 0,93, para erros de grafia), Brasília no DF e, por último, o CNPJ. Não use o município do CNPJ como local: é a sede, e diverge do local da fiscalização em 40% dos casos."
+    tabelas: [empregadores_historico, empregadores_municipio]
+    colunas: [estabelecimento, sigla_uf, cnpj]
+    severidade: silencioso
+    verificado: "660 casos distintos (documento × estabelecimento × ano): 611 pelo texto, 5 parecidos, 7 no DF, 2 pelo CNPJ, 35 sem município (quase todos 'RESIDÊNCIA DE …', serviço doméstico); 344 de 345 do campo (CNAE 01–03) casam; o CNPJ diverge em 88 de 216 — medido 2026-10-26 (scripts/sync/listasuja_municipio.sql)"
+  - id: acao_fiscal_desde_2020
+    resumo: "As ações fiscais da lista vão de 2020 a 2026: quem entra na lista já foi julgado em processo administrativo, e a lista guarda cada empregador por dois anos. Antes de 2020 a ausência não é zero, é falta de dado."
+    tabelas: [empregadores, empregadores_historico, empregadores_municipio]
+    colunas: [ano_acao_fiscal]
+    severidade: aviso
+    verificado: "min(ano_acao_fiscal) = 2020, max = 2026 nos 660 casos distintos — medido 2026-10-26"

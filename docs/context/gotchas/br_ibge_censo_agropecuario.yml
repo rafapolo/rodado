@@ -1,0 +1,20 @@
+dataset: br_ibge_censo_agropecuario
+gotchas:
+  - id: municipio_so_em_recorte
+    resumo: "Por município, o SIDRA do Censo 2017 só cabe em recortes: em `sidra` estão 5 das 498 tabelas com nível N6 (o cruzamento inteiro passa de bilhões de células). `sidra_municipio` tem 10 recortes (coluna `recorte`): uma classificação aberta e as outras no Total (categoria de nível 0). Filtre o Total das demais classificações, senão soma categorias de hierarquias diferentes."
+    tabelas: [sidra, sidra_municipio]
+    colunas: [recorte, id_categoria_1, id_categoria_2, id_categoria_3, id_categoria_4, id_categoria_5, id_categoria_6]
+    severidade: silencioso
+    verificado: "590.526 linhas; a soma dos municípios bate com a linha Brasil da 6753: 5.073.324 estabelecimentos e 3.897.408 familiares, exatos — medido 2026-10-26 (ibge_sidra.py recorte)"
+  - id: sigilo_x
+    resumo: "O IBGE publica `X` (sigilo) onde o município tem 1 ou 2 informantes: `valor` vem NULL e `simbolo` = 'X'. Porcentagem com numerador ou denominador em X fica sem valor, não 0. `...` é não disponível (município sem estabelecimento ou criado depois de 2017)."
+    tabelas: [sidra_municipio]
+    colunas: [valor, simbolo]
+    severidade: silencioso
+    verificado: "X em 4.409 valores do recorte tipologia da 6753 e 14.145 do de condição do produtor; a área somada fica 0,2 M ha abaixo do Brasil (351,1 contra 351,3 M ha); '...' em 8 municípios, entre eles Nilópolis (3303203) e Boa Esperança do Norte (5101837) — medido 2026-10-26"
+  - id: estabelecimento_nao_e_imovel
+    resumo: "Estabelecimento agropecuário é a unidade de produção sob uma administração: um imóvel pode ter vários, e um estabelecimento pode juntar vários imóveis. Não compare direto com o CAR, o CAFIR ou o SIGEF. 'Agricultura familiar' é a tipologia do Censo (Lei 11.326), não a DAP nem o CAF; a 6962 traz a DAP à parte."
+    tabelas: [sidra, sidra_municipio]
+    colunas: [categoria_1]
+    severidade: aviso
+    verificado: "definição do Censo Agropecuário 2017 (notas metodológicas do IBGE); tipologia com 8 categorias (familiar sim e não, Pronaf B, Pronaf V, não pronafiano, Pronamp sim e não) — 2026-10-26"

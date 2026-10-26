@@ -4,7 +4,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
 
-276 datasets, 1608 tabelas.
+276 datasets, 1610 tabelas.
 
 | dataset | tabelas | linhas | last_update |
 |---|---:|---:|---|
@@ -102,7 +102,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ibge_censo2022_raca` | 2 | 1.415.034 | 2026-07-18 |
 | `br_ibge_censo2022_religiao` | 15 | 6.451.488 | 2026-07-18 |
 | `br_ibge_censo_2022` | 47 | 171.441.122 | 2026-10-11 |
-| `br_ibge_censo_agropecuario` | 2 | 211.522.252 | 2026-10-26 |
+| `br_ibge_censo_agropecuario` | 3 | 212.112.778 | 2026-10-26 |
 | `br_ibge_censo_demografico` | 38 | 181.895.148 | 2026-10-09 |
 | `br_ibge_cnefe` | 1 | 111.102.875 | 2026-10-21 |
 | `br_ibge_estadic` | 8 | 3.044 | 2026-07-09 |
@@ -122,7 +122,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ibge_pib` | 7 | 201.871 | 2026-10-09 |
 | `br_ibge_pnad` | 3 | 9.587.801 | 2026-07-05 |
 | `br_ibge_pnad_covid` | 2 | 2.651.013 | 2026-09-25 |
-| `br_ibge_pnadc` | 14 | 31.529.302 | 2026-07-09 |
+| `br_ibge_pnadc` | 14 | 29.867.248 | 2026-07-09 |
 | `br_ibge_pof` | 14 | 2.238.882 | 2026-07-09 |
 | `br_ibge_populacao` | 3 | 192.080 | 2026-07-05 |
 | `br_ibge_ppm` | 4 | 3.111.747 | 2026-10-09 |
@@ -195,7 +195,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ms_pns` | 3 | 521.059 | 2026-07-06 |
 | `br_ms_populacao` | 1 | 4.919.222 | 2026-07-06 |
 | `br_ms_sia` | 3 | 6.298.035.211 | 2026-07-06 |
-| `br_ms_sih` | 3 | 2.619.388.412 | 2026-08-26 |
+| `br_ms_sih` | 3 | 2.619.388.412 | 2026-10-26 |
 | `br_ms_sim` | 6 | 106.800.444 | 2026-10-15 |
 | `br_ms_sinan` | 3 | 38.468.299 | 2026-07-07 |
 | `br_ms_sinan_chikungunya` | 1 | 2.507.780 | 2026-10-21 |
@@ -210,7 +210,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ms_sipni_microdados` | 1 | 102.423.524 | 2026-07-26 |
 | `br_ms_sisvan` | 2 | 406.253.847 | 2026-07-07 |
 | `br_ms_vacinacao_covid19` | 2 | 805.917 | 2026-07-09 |
-| `br_mte_listasuja` | 4 | 1.656 | 2026-10-09 |
+| `br_mte_listasuja` | 5 | 2.316 | 2026-10-26 |
 | `br_ok_queridodiario` | 1 | 320.424 | 2026-10-21 |
 | `br_ok_queridodiario_texto` | 1 | 320.422 | 2026-10-21 |
 | `br_ons_avaliacao_operacao` | 6 | 89.805.415 | 2026-10-07 |
