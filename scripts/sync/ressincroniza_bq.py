@@ -46,6 +46,19 @@ BILLING_PROJECT = "raspa-491716"
 BQ_PROJECT = "basedosdados"
 LINHAS_POR_SHARD = 500_000
 LINHAS_POR_ROW_GROUP = 122_880  # o padrão do DuckDB
+# Tabelas lidas pelo db.rodado.xyz direto do S3 e buscadas por pessoa/empresa: depois da troca,
+# ordena_tabela.py as regrava em ordem da chave (busca fria de 12-36 s para ~0,5 s, 2026-10-25).
+# ORDER BY no BigQuery não serve: sem LIMIT, numa tabela de bilhão de linhas estoura o Sandbox.
+ORDEM_DE_BUSCA = {
+    "br_cgu_licitacao_contrato.licitacao_participante": ("cpf_cnpj_participante", "id_licitacao"),
+    "br_cgu_servidores_executivo_federal.cadastro_servidores": ("cpf", "nome"),
+    "br_cgu_servidores_executivo_federal.remuneracao": ("cpf", "nome"),
+    "br_cgu_beneficios_cidadao.bpc": ("nis_favorecido", "cpf_favorecido"),
+    "br_cgu_beneficios_cidadao.auxilio_brasil": ("nis_favorecido", "cpf_favorecido"),
+    "br_cgu_beneficios_cidadao.novo_bolsa_familia": ("nis_favorecido", "cpf_favorecido"),
+    "br_cgu_beneficios_cidadao.bolsa_familia_pagamento": ("nis_favorecido", "cpf_favorecido"),
+    "br_cgu_beneficios_cidadao.auxilio_emergencial": ("cpf_beneficiario", "nis_beneficiario"),
+}
 
 
 def sh(cmd, timeout=1800, check=False):
@@ -232,6 +245,13 @@ def ressincroniza(client, leitor, bq, pq, alvo, backup_dir, aplicar, estimado=0,
     n_dep = dep[0]["n"] if dep else -1
     if n_dep != n_bq:
         return {"tabela": alvo, "erro": f"conferência falhou: disco {n_dep} x BQ {n_bq}"}
+    if alvo in ORDEM_DE_BUSCA:
+        with open(Path(__file__).parent / "ordena_tabela.py") as f:
+            o = subprocess.run(["ssh", BEELINK, "nice", "python3", "-", remoto, *ORDEM_DE_BUSCA[alvo]],
+                               stdin=f, capture_output=True, text=True, timeout=7200)
+        if o.returncode != 0:
+            return {"tabela": alvo, "erro": f"ordenação: {(o.stderr or o.stdout)[-300:]}"}
+        print(f"  {o.stdout.strip()}", flush=True)
     return {"tabela": alvo, "antes": n_antes, "depois": n_dep, "aplicado": True}
 
 
