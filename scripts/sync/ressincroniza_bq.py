@@ -247,7 +247,9 @@ def ressincroniza(client, leitor, bq, pq, alvo, backup_dir, aplicar, estimado=0,
         return {"tabela": alvo, "erro": f"conferência falhou: disco {n_dep} x BQ {n_bq}"}
     if alvo in ORDEM_DE_BUSCA:
         with open(Path(__file__).parent / "ordena_tabela.py") as f:
-            o = subprocess.run(["ssh", BEELINK, "nice", "python3", "-", remoto, *ORDEM_DE_BUSCA[alvo]],
+            # --mb 100: os shards de 500 mil linhas viram ~150 arquivos, e no S3 cada um é um rodapé
+            # a ler na busca fria; o repara_views_beelink.py do fim recria a view
+            o = subprocess.run(["ssh", BEELINK, "nice", "python3", "-", remoto, *ORDEM_DE_BUSCA[alvo], "--mb", "100"],
                                stdin=f, capture_output=True, text=True, timeout=7200)
         if o.returncode != 0:
             return {"tabela": alvo, "erro": f"ordenação: {(o.stderr or o.stdout)[-300:]}"}

@@ -3,12 +3,15 @@
 
 Roda NO beelink (o ressincroniza_bq.py o chama por ssh depois da troca):
 
-    python3 ordena_tabela.py ~/rodado/<dataset>/<tabela> <chave> [desempate]
+    python3 ordena_tabela.py ~/rodado/<dataset>/<tabela> <chave> [desempate] [--mb 100]
 
-Ordem global, e cada arquivo existente recebe uma faixa contígua da chave: a busca por um
-valor cai num arquivo só, e dentro dele o min/max dos row groups pula o resto. Medido em
-2026-10-25 na licitacao_participante lida do S3 pelo db.rodado.xyz: 12-21 s -> 0,4 s.
-Os nomes ficam os mesmos, então a view do beelink segue válida e não sobra órfão no COLD.
+Ordem global, e cada arquivo recebe uma faixa contígua da chave: a busca por um valor cai
+num arquivo só, e dentro dele o min/max dos row groups pula o resto. Sem --mb, os nomes ficam
+os mesmos (a view do beelink segue válida, nenhum órfão no COLD). Com --mb N, junta em
+arquivos de ~N MB e apaga os nomes que sobram — aí rode repara_views_beelink.py --apply.
+Lido do S3 pelo db.rodado.xyz, cada arquivo custa um rodapé na busca fria: a
+licitacao_participante (2026-10-26) levava 36 s desordenada, 16-23 s ordenada em 408
+arquivos e 2,3 s em 8 (0,3-0,5 s com cache).
 
 Só troca depois de conferir contagem, colunas e soma de hash de todas as linhas.
 """
@@ -21,7 +24,7 @@ import sys
 import duckdb
 
 
-def ordena(diretorio, chave, desempate=None):
+def ordena(diretorio, chave, desempate=None, mb=None):
     diretorio = os.path.expanduser(diretorio.rstrip("/"))
     orig = sorted(glob.glob(f"{diretorio}/*.parquet"))
     if not orig:
@@ -40,19 +43,20 @@ def ordena(diretorio, chave, desempate=None):
     if chave not in colunas:
         sys.exit(f"{chave} não é coluna de {diretorio}")
     n = con.execute(f"SELECT count(*) FROM {fonte}").fetchone()[0]
-    faixa = max(1, math.ceil(n / len(orig)))
+    saida = orig
+    if mb:   # menos arquivos, nunca mais: os nomes de saída são os primeiros da lista atual
+        saida = orig[:max(1, min(len(orig), math.ceil(sum(map(os.path.getsize, orig)) / (mb * 1e6))))]
+    faixa = max(1, math.ceil(n / len(saida)))
     shutil.rmtree(tmp, ignore_errors=True)
     con.execute(f"""COPY (SELECT * EXCLUDE (__r), __r // {faixa} AS __parte FROM (
                       SELECT *, row_number() OVER (ORDER BY {ordem}) - 1 AS __r FROM {fonte}))
                     TO '{tmp}' (FORMAT parquet, PARTITION_BY (__parte), COMPRESSION zstd, ROW_GROUP_SIZE 122880)""")
-    # o PARTITION_BY grava mais de um arquivo por faixa quando ela é grande (491 para 408 na
-    # licitacao_participante): junta cada faixa num arquivo só, na ordem
+    # o PARTITION_BY acerta o conteúdo de cada faixa, mas não a ordem dentro dela, e grava mais
+    # de um arquivo quando ela é grande (491 para 408 na licitacao_participante): cada faixa é
+    # regravada num arquivo só, ordenado, para os row groups não se sobreporem
     partes = []
     for d in sorted(glob.glob(f"{tmp}/__parte=*"), key=lambda d: int(d.rsplit("=", 1)[1])):
         arqs = sorted(glob.glob(f"{d}/*.parquet"))
-        if len(arqs) == 1:
-            partes.append(arqs[0])
-            continue
         junto = f"{d}.parquet"
         con.execute(f"""COPY (SELECT * FROM read_parquet({[*arqs]}, hive_partitioning=false) ORDER BY {ordem})
                         TO '{junto}' (FORMAT parquet, COMPRESSION zstd, ROW_GROUP_SIZE 122880)""")
@@ -63,22 +67,29 @@ def ordena(diretorio, chave, desempate=None):
     marca = "SELECT count(*), sum(hash(t)::HUGEINT) FROM read_parquet({}, union_by_name=true, hive_partitioning=false) t"
     m0, m1 = con.execute(marca.format(lista)).fetchone(), con.execute(marca.format(nlista)).fetchone()
     c1 = [r[0] for r in con.execute(f"DESCRIBE SELECT * FROM read_parquet({nlista}, union_by_name=true, hive_partitioning=false)").fetchall()]
-    if m0 != m1 or c1 != colunas or len(partes) > len(orig):
+    if m0 != m1 or c1 != colunas or len(partes) > len(saida):
         shutil.rmtree(tmp, ignore_errors=True)
-        sys.exit(f"conferência falhou, nada trocado: {m0} x {m1}, {len(partes)} partes para {len(orig)} arquivos")
+        sys.exit(f"conferência falhou, nada trocado: {m0} x {m1}, {len(partes)} partes para {len(saida)} arquivos")
     # arquivos que sobrarem (tabela com menos linhas que arquivos) ficam com zero linhas e o mesmo schema
-    for i, destino in enumerate(orig):
+    for i, destino in enumerate(saida):
         if i < len(partes):
             os.replace(partes[i], destino)
         else:
             con.execute(f"COPY (SELECT * FROM read_parquet('{destino}') LIMIT 0) TO '{destino}.vazio' (FORMAT parquet)")
             os.replace(f"{destino}.vazio", destino)
+    for velho in orig[len(saida):]:   # só com --mb: o conteúdo já está nos arquivos de saída
+        os.remove(velho)
     shutil.rmtree(tmp, ignore_errors=True)
     shutil.rmtree(despejo, ignore_errors=True)
-    print(f"ordenada por {ordem}: {n} linhas em {len(orig)} arquivos de até {faixa}")
+    print(f"ordenada por {ordem}: {n} linhas em {len(saida)} arquivos de até {faixa}"
+          + (f" (eram {len(orig)}: rode repara_views_beelink.py --apply)" if len(saida) < len(orig) else ""))
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
+    args = sys.argv[1:]
+    mb = None
+    if "--mb" in args:
+        i = args.index("--mb"); mb = float(args[i + 1]); del args[i:i + 2]
+    if len(args) < 2:
         sys.exit(__doc__)
-    ordena(sys.argv[1], sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else None)
+    ordena(args[0], args[1], args[2] if len(args) > 2 else None, mb)
