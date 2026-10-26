@@ -13,3 +13,12 @@ gotchas:
     colunas: [cpf_instituidor_pensao, cpf_representante_legal]
     severidade: silencioso
     verificado: "instituidor 16.473.155 de 24.628.365; representante 1.271.733 de 1.702.995 linhas completadas — medido 2026-10-07"
+  - id: ordenada_pela_chave
+    resumo: "cadastro_servidores e remuneracao estão ordenadas por cpf em cada arquivo: filtre pela coluna crua (= ou IN) e o min/max dos row groups pula quase tudo. Função em volta da coluna (regexp_replace, LIKE '%...') lê a tabela inteira."
+    tabelas: [cadastro_servidores, remuneracao]
+    colunas: [cpf]
+    severidade: aviso
+    detalhe: >
+      remuneracao está em 26 arquivos numerados com faixas contíguas de cpf; cadastro_servidores
+      segue um arquivo por UF, cada um ordenado.
+    verificado: "zero row groups sobrepostos em cpf nos 43 + 26 arquivos, soma de hash de todas as linhas igual antes e depois de cada troca — medido 2026-10-26; busca por um CPF no db.rodado.xyz em ~6 s com cache (era 28 s)"

@@ -628,7 +628,18 @@ def _referencias(con, sql):
 
 # Tabelas grandes sem partição gravadas em ordem de uma coluna: filtrar por ela pula row groups
 # pelo min/max. divida: cnpj_basico desde 2026-10-25 (19 s com regexp_replace(CPF_CNPJ) -> 0,05 s)
-ORDENADA_POR = {("br_pgfn_dividaativa", "divida"): "cnpj_basico"}
+ORDENADA_POR = {
+    ("br_pgfn_dividaativa", "divida"): "cnpj_basico",
+    # 2026-10-26: busca por pessoa lida do S3, de 14-36 s para 0,3-6 s com cache
+    ("br_cgu_licitacao_contrato", "licitacao_participante"): "cpf_cnpj_participante",
+    ("br_cgu_servidores_executivo_federal", "cadastro_servidores"): "cpf",
+    ("br_cgu_servidores_executivo_federal", "remuneracao"): "cpf",
+    ("br_cgu_beneficios_cidadao", "novo_bolsa_familia"): "nis_favorecido",
+    ("br_cgu_beneficios_cidadao", "bolsa_familia_pagamento"): "nis_favorecido",
+    ("br_cgu_beneficios_cidadao", "bpc"): "nis_favorecido",
+    ("br_cgu_beneficios_cidadao", "auxilio_brasil"): "nis_favorecido",
+    ("br_cgu_beneficios_cidadao", "auxilio_emergencial"): "cpf_beneficiario",
+}
 
 
 def _particoes(con, dataset, tabela):

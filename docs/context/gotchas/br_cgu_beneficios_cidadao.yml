@@ -13,3 +13,14 @@ gotchas:
     colunas: [cpf_responsavel, cpf_beneficiario, cpf_representante]
     severidade: silencioso
     verificado: "cpf_responsavel 105.881.828 de 160.840.838; cpf_beneficiario 2.344.315 dos 37.981.027 que setembro deixou; bpc.cpf_representante 208.707.374 de 346.357.411 linhas completadas — medido 2026-10-07"
+  - id: ordenada_pela_chave
+    resumo: "Cada arquivo destas tabelas está ordenado pela chave da pessoa: nis_favorecido em novo_bolsa_familia, bolsa_familia_pagamento, bpc e auxilio_brasil; cpf_beneficiario em auxilio_emergencial. Filtre pela coluna crua (= ou IN): o min/max dos row groups pula quase tudo. Função em volta da coluna (regexp_replace, lpad, LIKE '%...') lê a tabela inteira."
+    tabelas: [novo_bolsa_familia, bolsa_familia_pagamento, bpc, auxilio_brasil, auxilio_emergencial]
+    colunas: [nis_favorecido, cpf_beneficiario]
+    severidade: aviso
+    detalhe: >
+      novo_bolsa_familia, auxilio_brasil e auxilio_emergencial estão em arquivos numerados de
+      ~100 MB com faixas contíguas da chave (a busca cai num arquivo); bpc e
+      bolsa_familia_pagamento seguem um arquivo por UF, cada um ordenado (a busca lê um row
+      group por arquivo). O nome do arquivo não diz mais a UF nas três primeiras: filtre por sigla_uf.
+    verificado: "zero row groups sobrepostos na chave em todos os arquivos das cinco tabelas, e a soma de hash de todas as linhas igual antes e depois de cada troca — medido 2026-10-26; no db.rodado.xyz, busca por um NIS em 2–6 s com cache (era 31 s em novo_bolsa_familia)"
