@@ -8,7 +8,8 @@ Roda NO beelink (o ressincroniza_bq.py o chama por ssh depois da troca):
 Ordem global, e cada arquivo recebe uma faixa contígua da chave: a busca por um valor cai
 num arquivo só, e dentro dele o min/max dos row groups pula o resto. Sem --mb, os nomes ficam
 os mesmos (a view do beelink segue válida, nenhum órfão no COLD). Com --mb N, junta em
-arquivos de ~N MB e apaga os nomes que sobram — aí rode repara_views_beelink.py --apply.
+arquivos numerados de ~N MB, numa pasta nova trocada inteira — aí rode
+repara_views_beelink.py --apply.
 Lido do S3 pelo db.rodado.xyz, cada arquivo custa um rodapé na busca fria: a
 licitacao_participante (2026-10-26) levava 36 s desordenada, 16-23 s ordenada em 408
 arquivos e 2,3 s em 8 (0,3-0,5 s com cache).
@@ -44,8 +45,9 @@ def ordena(diretorio, chave, desempate=None, mb=None):
         sys.exit(f"{chave} não é coluna de {diretorio}")
     n = con.execute(f"SELECT count(*) FROM {fonte}").fetchone()[0]
     saida = orig
-    if mb:   # menos arquivos, nunca mais: os nomes de saída são os primeiros da lista atual
-        saida = orig[:max(1, min(len(orig), math.ceil(sum(map(os.path.getsize, orig)) / (mb * 1e6))))]
+    if mb:   # arquivos de ~mb MB, numerados: AC.parquet com NIS do país inteiro seria um nome mentiroso
+        k = max(1, math.ceil(sum(map(os.path.getsize, orig)) / (mb * 1e6)))
+        saida = [f"{diretorio}/{i:012d}.parquet" for i in range(k)]
     faixa = max(1, math.ceil(n / len(saida)))
     shutil.rmtree(tmp, ignore_errors=True)
     con.execute(f"""COPY (SELECT * EXCLUDE (__r), __r // {faixa} AS __parte FROM (
@@ -70,19 +72,31 @@ def ordena(diretorio, chave, desempate=None, mb=None):
     if m0 != m1 or c1 != colunas or len(partes) > len(saida):
         shutil.rmtree(tmp, ignore_errors=True)
         sys.exit(f"conferência falhou, nada trocado: {m0} x {m1}, {len(partes)} partes para {len(saida)} arquivos")
-    # arquivos que sobrarem (tabela com menos linhas que arquivos) ficam com zero linhas e o mesmo schema
-    for i, destino in enumerate(saida):
-        if i < len(partes):
-            os.replace(partes[i], destino)
-        else:
-            con.execute(f"COPY (SELECT * FROM read_parquet('{destino}') LIMIT 0) TO '{destino}.vazio' (FORMAT parquet)")
-            os.replace(f"{destino}.vazio", destino)
-    for velho in orig[len(saida):]:   # só com --mb: o conteúdo já está nos arquivos de saída
-        os.remove(velho)
+    if mb:
+        # pasta nova montada ao lado e trocada inteira: os nomes mudam, e nenhum leitor vê metade
+        nova, velha = f"{tmp}_final", f"{tmp}_velha"
+        os.makedirs(nova)
+        for i, p in enumerate(partes):
+            os.replace(p, f"{nova}/{i:012d}.parquet")
+        os.chmod(nova, os.stat(diretorio).st_mode & 0o7777)
+        for f in glob.glob(f"{nova}/*.parquet"):
+            os.chmod(f, 0o664)
+        os.rename(diretorio, velha)
+        os.rename(nova, diretorio)
+        shutil.rmtree(velha)
+        saida = partes
+    else:
+        # arquivos que sobrarem (tabela com menos linhas que arquivos) ficam com zero linhas e o mesmo schema
+        for i, destino in enumerate(saida):
+            if i < len(partes):
+                os.replace(partes[i], destino)
+            else:
+                con.execute(f"COPY (SELECT * FROM read_parquet('{destino}') LIMIT 0) TO '{destino}.vazio' (FORMAT parquet)")
+                os.replace(f"{destino}.vazio", destino)
     shutil.rmtree(tmp, ignore_errors=True)
     shutil.rmtree(despejo, ignore_errors=True)
     print(f"ordenada por {ordem}: {n} linhas em {len(saida)} arquivos de até {faixa}"
-          + (f" (eram {len(orig)}: rode repara_views_beelink.py --apply)" if len(saida) < len(orig) else ""))
+          + (f" (eram {len(orig)}, nomes novos: rode repara_views_beelink.py --apply)" if mb else ""))
 
 
 if __name__ == "__main__":
