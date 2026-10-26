@@ -95,7 +95,7 @@ def write_points_soa(path, pontos):
 
 
 def ssh_duckdb(sql):
-    cmd = ["ssh", BEELINK, f"~/bin/duckdb -json {DB_PATH}"]
+    cmd = ["ssh", BEELINK, f"~/bin/duckdb -json -readonly {DB_PATH}"]
     proc = subprocess.run(cmd, input=sql.encode(), capture_output=True, timeout=7200)
     if proc.returncode != 0:
         raise RuntimeError(f"SSH/DuckDB failed:\n{proc.stderr.decode()}")
