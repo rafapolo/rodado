@@ -34,3 +34,16 @@ gotchas:
     colunas: [NUM_ATENDIMENTO, VALOR_COBRADO, VL_RESSARC]
     severidade: silencioso
     verificado: "10.507.502 linhas em cada uma; VALOR_COBRADO soma R$ 12,55 bi (competências 2001-02 a 2025-06), contra R$ 13,20 bi de cobrado acumulado até 2026/09 em ressarcimento_sus_cobranca_arrecadacao — medido 2026-10-10"
+  - id: sip_trimestre_dois_formatos
+    resumo: "sip_mapa_assistencial.ID_TRIMESTRE é '202001' até 2023 e '2024-01' de 2024 em diante. Para série ordenada, normalize com replace(ID_TRIMESTRE, '-', '')."
+    tabelas: [sip_mapa_assistencial]
+    colunas: [ID_TRIMESTRE]
+    severidade: erro
+    verificado: "108.502 linhas sem hífen (2020–2023) e 48.290 com hífen (2024–2025) — medido 2026-10-25"
+  - id: igr_operadora_pequena
+    resumo: "IGR (reclamações por 100 mil beneficiários) explode em operadora pequena: uma reclamação com poucos beneficiários dá IGR de milhares (máximo 9,1 milhões). Pondere por QTD_BENEFICIARIOS ou filtre porte antes de ranquear."
+    tabelas: [igr]
+    colunas: [IGR, QTD_BENEFICIARIOS, QTD_RECLAMACOES]
+    severidade: silencioso
+    verificado: "129.188 linhas; 484 com IGR > 1.000; 17.501 com menos de 1.000 beneficiários; máximo 9.100.000 — medido 2026-10-25"
+

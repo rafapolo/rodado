@@ -1,0 +1,20 @@
+dataset: br_mma_cnuc
+gotchas:
+  - id: fotos_nao_fluxo
+    resumo: "unidades_conservacao tem uma linha por UC POR FOTO semestral (16 fotos, 2018-01 a 2026-07). Contar ou somar área sem filtrar data_referencia multiplica tudo por ~16: use WHERE data_referencia = (SELECT max(data_referencia) ...)."
+    tabelas: [unidades_conservacao]
+    colunas: [data_referencia, codigo_uc]
+    severidade: erro
+    verificado: "44.508 linhas no total; 3.576 UCs e 263,2 mi ha de area_soma_biomas na foto 2026-07-01; codigo_uc único dentro de cada foto — medido 2026-10-25"
+  - id: colunas_que_entram_e_saem
+    resumo: "O MMA muda o cabeçalho a cada foto (20 a 51 colunas): orgao_gestor, bioma_declarado, reserva_da_biosfera, codigo_wdpa e outras existem só em algumas fotos e ficam NULL nas demais. Área por bioma (amazonia, cerrado...) está em hectares em todas."
+    tabelas: [unidades_conservacao]
+    colunas: [orgao_gestor, bioma_declarado, codigo_wdpa, amazonia, area_soma_biomas]
+    severidade: silencioso
+    verificado: "65 colunas na união; orgao_gestor presente em 10 das 16 fotos; area_soma_biomas soma de 254,5 mi ha (2018) a 263,2 mi ha (2026-07) — medido 2026-10-25"
+  - id: municipios_texto_livre
+    resumo: "municipios_abrangidos é texto livre ('Município (UF), ...'), sem código IBGE. Cruzar com município exige parsear o texto; uma UC cobre vários municípios."
+    tabelas: [unidades_conservacao]
+    colunas: [municipios_abrangidos]
+    severidade: silencioso
+    verificado: "coluna presente em todas as 16 fotos, sem id_municipio em nenhuma — medido 2026-10-25"

@@ -4,7 +4,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
 
-271 datasets, 1512 tabelas.
+276 datasets, 1608 tabelas.
 
 | dataset | tabelas | linhas | last_update |
 |---|---:|---:|---|
@@ -56,7 +56,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_camara_dados_abertos` | 30 | 14.637.072 | 2026-10-09 |
 | `br_capes_bolsas` | 1 | 146.036 | 2026-10-07 |
 | `br_ce_fortaleza_sefin_iptu` | 1 | 68.932 | 2026-07-05 |
-| `br_cgu_beneficios_cidadao` | 6 | 3.321.211.133 | 2026-10-09 |
+| `br_cgu_beneficios_cidadao` | 6 | 3.321.211.133 | 2026-10-26 |
 | `br_cgu_cartao_pagamento` | 4 | 3.213.220 | 2026-10-09 |
 | `br_cgu_dados_abertos` | 3 | 89.771 | 2026-07-05 |
 | `br_cgu_despesas_publicas` | 2 | 130.395.546 | 2026-10-15 |
@@ -65,7 +65,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_cgu_fef` | 3 | 84.945 | 2026-07-09 |
 | `br_cgu_garantia_safra` | 3 | 36.210.983 | 2026-10-22 |
 | `br_cgu_gas_do_povo` | 1 | 20.817.231 | 2026-10-21 |
-| `br_cgu_licitacao_contrato` | 8 | 100.216.979 | 2026-10-09 |
+| `br_cgu_licitacao_contrato` | 8 | 100.216.979 | 2026-10-26 |
 | `br_cgu_novo_bolsa_familia` | 3 | 870.222.152 | 2026-10-21 |
 | `br_cgu_orcamento_publico` | 1 | 341.269 | 2026-10-09 |
 | `br_cgu_pe_de_meia` | 4 | 97.981.384 | 2026-10-22 |
@@ -73,7 +73,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_cgu_receitas_publicas` | 1 | 1.529.345 | 2026-07-05 |
 | `br_cgu_sancoes` | 6 | 24.579 | 2026-10-09 |
 | `br_cgu_seguro_defeso` | 3 | 47.401.185 | 2026-10-22 |
-| `br_cgu_servidores_executivo_federal` | 7 | 426.454.972 | 2026-07-18 |
+| `br_cgu_servidores_executivo_federal` | 7 | 426.454.972 | 2026-10-26 |
 | `br_cgu_viagens` | 4 | 53.192.569 | 2026-10-21 |
 | `br_clp_ranking_competitividade` | 2 | 9.431 | 2026-07-09 |
 | `br_cnj_estatisticas_poder_judiciario` | 1 | 1.189 | 2026-07-09 |
@@ -102,6 +102,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ibge_censo2022_raca` | 2 | 1.415.034 | 2026-07-18 |
 | `br_ibge_censo2022_religiao` | 15 | 6.451.488 | 2026-07-18 |
 | `br_ibge_censo_2022` | 47 | 171.441.122 | 2026-10-11 |
+| `br_ibge_censo_agropecuario` | 2 | 211.522.252 | 2026-10-26 |
 | `br_ibge_censo_demografico` | 38 | 181.895.148 | 2026-10-09 |
 | `br_ibge_cnefe` | 1 | 111.102.875 | 2026-10-21 |
 | `br_ibge_estadic` | 8 | 3.044 | 2026-07-09 |
@@ -112,7 +113,10 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ibge_lspa` | 2 | 76.725 | 2026-10-25 |
 | `br_ibge_munic` | 7 | 852.056 | 2026-07-09 |
 | `br_ibge_nomes_brasil` | 1 | 1.959.116 | 2026-07-09 |
+| `br_ibge_pac` | 2 | 504.016 | 2026-10-25 |
+| `br_ibge_paic` | 2 | 370.915 | 2026-10-25 |
 | `br_ibge_pam` | 2 | 20.097.187 | 2026-07-05 |
+| `br_ibge_pas` | 2 | 812.172 | 2026-10-25 |
 | `br_ibge_pevs` | 2 | 558.451 | 2026-07-05 |
 | `br_ibge_pia` | 2 | 1.004.426 | 2026-10-25 |
 | `br_ibge_pib` | 7 | 201.871 | 2026-10-09 |
@@ -210,6 +214,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ok_queridodiario` | 1 | 320.424 | 2026-10-21 |
 | `br_ok_queridodiario_texto` | 1 | 320.422 | 2026-10-21 |
 | `br_ons_avaliacao_operacao` | 6 | 89.805.415 | 2026-10-07 |
+| `br_ons_dados_abertos` | 87 | 642.725.055 | 2026-10-25 |
 | `br_ons_estimativa_custos` | 5 | 1.407.872 | 2026-10-07 |
 | `br_pgfn_dividaativa` | 2 | 857.126.441 | 2026-10-25 |
 | `br_pncp` | 1 | 5.229.507 | 2026-10-07 |
@@ -223,7 +228,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_rf_dirpf` | 2 | 35.356 | 2026-10-21 |
 | `br_rf_simples_estatisticas` | 2 | 4.287.160 | 2026-10-25 |
 | `br_rj_isp_estatisticas_seguranca` | 14 | 167.979 | 2026-10-09 |
-| `br_rodado_eleicoes` | 4 | 2.207.100 | 2026-10-21 |
+| `br_rodado_eleicoes` | 5 | 2.207.335 | 2026-10-26 |
 | `br_rodado_indicadores_municipais` | 1 | 12.382.056 | 2026-10-13 |
 | `br_saude_bps` | 1 | 371.128 | 2026-10-21 |
 | `br_saude_farmaciapopular` | 1 | 32.592 | 2026-10-21 |
@@ -256,7 +261,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_transferegov` | 3 | 30.346 | 2026-10-21 |
 | `br_transferegov_siconv` | 62 | 69.060.758 | 2026-10-21 |
 | `br_trase_supply_chain` | 7 | 1.824.843 | 2026-07-18 |
-| `br_tse_eleicoes` | 31 | 1.713.157.710 | 2026-10-25 |
+| `br_tse_eleicoes` | 31 | 1.713.188.854 | 2026-10-26 |
 | `br_tse_filiacao_partidaria` | 2 | 42.201.443 | 2026-10-09 |
 | `br_ufmg_censo_demografico_1872` | 58 | 1.251.630 | 2026-10-07 |
 | `eu_sanctions` | 1 | 43.891 | 2026-10-21 |

@@ -1,0 +1,26 @@
+dataset: br_prf_infracoes
+gotchas:
+  - id: colunas_por_periodo
+    resumo: "As colunas mudam com o layout da PRF: hora só de 2015 em diante, codigo_infracao de 2017, numero_auto de 2019, quantidade_infracoes de 2020, sigla_uf_placa some em 2021, modelo_veiculo some em 2019. Antes do ano em que a coluna aparece ela é NULL, não zero."
+    tabelas: [infracoes]
+    colunas: [hora, codigo_infracao, numero_auto, quantidade_infracoes, sigla_uf_placa, modelo_veiculo]
+    severidade: silencioso
+    verificado: "hora preenchida 0 em 2014, 5.408.965 em 2015; sigla_uf_placa 0 em 2021; quantidade_infracoes = 1 em 5.182.534 de 5.182.537 linhas de 2020 — medido 2026-10-25"
+  - id: hora_dois_formatos
+    resumo: "hora é HH:MM:SS até 2018 e só a hora cheia ('14') de 2019 em diante. Para série por hora do dia use split_part(hora, ':', 1)::INT."
+    tabelas: [infracoes]
+    colunas: [hora]
+    severidade: erro
+    verificado: "2018: 7.356.131 com ':' e 28 sem; 2019: 0 com ':' e 5.742.110 sem — medido 2026-10-25"
+  - id: medicao_tipo_x_valor
+    resumo: "medicao_realizada (valor medido, ex. velocidade) só existe até 2018; de 2019 em diante a PRF publica tipo_medicao ('Nenhuma', 'Veiculo') no lugar. Excesso de velocidade comparável entre os dois períodos é medicao_considerada/excesso_verificado."
+    tabelas: [infracoes]
+    colunas: [medicao_realizada, tipo_medicao, medicao_considerada, excesso_verificado]
+    severidade: erro
+    verificado: "medicao_realizada preenchida em 5.803.154 linhas de 2017 e em 0 de 2020 e 2021 — medido 2026-10-25"
+  - id: municipio_por_nome
+    resumo: "A PRF publica só o nome do município; id_municipio foi casado por nome + UF com o diretório (99,6% das linhas). O resto fica NULL — filtre por municipio/sigla_uf se precisar de tudo."
+    tabelas: [infracoes]
+    colunas: [id_municipio, municipio]
+    severidade: silencioso
+    verificado: "63.217.947 linhas, 99,57% com id_municipio; por ano de 99,1% (2020) a 99,8% — medido 2026-10-25"
