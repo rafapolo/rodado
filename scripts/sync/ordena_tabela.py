@@ -26,7 +26,9 @@ def ordena(diretorio, chave, desempate=None):
     orig = sorted(glob.glob(f"{diretorio}/*.parquet"))
     if not orig:
         sys.exit(f"nenhum parquet em {diretorio}")
-    tmp = f"{diretorio}.ordenando"
+    # fora de ~/rodado: o rsync do COLD (a cada 6 h, sem --delete) levaria as partes para lá e
+    # elas ficariam órfãs para sempre. Mesmo disco, então o os.replace segue atômico
+    tmp = os.path.expanduser(f"~/duckdb_tmp/ordenando_{os.path.basename(diretorio)}_{os.getpid()}")
     # temp_directory próprio: dois processos no mesmo ~/duckdb_tmp colidiram nos arquivos de
     # despejo e os dois morreram com "Could not read enough bytes" (2026-10-25)
     despejo = os.path.expanduser(f"~/duckdb_tmp/ordena_{os.getpid()}")
