@@ -229,11 +229,46 @@ mesma velocidade em qualquer nível. O progresso fica em `s3://baseldosdados/_db
 - Ficam de fora `br_tse_eleicoes`, `br_ms_sia` e `br_ibge_pnadc`, que encolhem ~4%. Também fica de
   fora o arquivo com metadado próprio (GeoParquet...).
 
+O que a conferência de 2026-10-26 achou:
+
+- **Erro (`!`) no `compacta.log` não deixa arquivo inconsistente.** Foram 133 `CalledProcessError`
+  do `aws s3 cp` em 17,8 mil arquivos, cada um num arquivo diferente e tentado de novo na passada
+  seguinte. Em 131 o bucket seguia com o tamanho do beelink. Nos outros 2 o upload tinha caído
+  antes do erro: o arquivo ficou em z19 no bucket, mas fora do manifesto. Conferido linha a linha
+  (contagem e hash), sem diferença. O `s3_sync_check.py` os põe em `a_subir`; o sync sobe o
+  original e a passada seguinte recomprime.
+- **Comprimido em `a_subir` sem mudança no beelink é a janela do manifesto.** O manifesto vai ao
+  bucket a cada 5 minutos, e o que foi comprimido nessa janela aparece como "a subir". Em
+  2026-10-26 foram 7 assim, mais os 2 do item acima; os outros 564 tinham mudado no beelink.
+- **OOM com `memory_limit='2GB'`** em arquivo grande (`microdados_pessoa_2022/35_SP`, Querido
+  Diário 3304557, SISDEPEN): falha de novo a cada passada. Enquanto ninguém os marcar como
+  `pulado`, a fila não chega a zero. O que pesa é a largura, não o tamanho: o SISDEPEN tem 14 MB
+  e mais de 3 mil colunas. Com 3 GB e 1 thread, passou de 15 min sem terminar (2,6 GB de RSS,
+  712 MB de despejo). No finland, mais memória não resolve.
+- **O despejo do DuckDB (`compacta_tmp/spill/`) só é apagado no fim da passada.** Em 2026-10-23,
+  um arquivo encheu o disco ("No space left on device"). Os 4,3 GB de despejo dele ficaram
+  presos no processo, que roda desde 22/10, e o finland passou dias a 92–95%.
+- **Tabela com mais de ~1.000 arquivos só no bucket pode estourar o timeout, comprimida ou não.**
+  Às vezes o bucket da Hetzner trava uma requisição por até 100 s: 16 downloads em paralelo
+  deram 0,8 MiB/s, e meia hora depois os mesmos 32 voltaram a 1–5 s. O `http_timeout` de 10 s
+  com 8 tentativas não aguenta isso. O `count(*)` do `br_bcb_sicor.saldo` (1.711 arquivos) caiu
+  três vezes e passou na quarta. A `br_bcb_estban.agencia`, nunca comprimida, falhou igual.
+  Para conferir conteúdo, use uma amostra de arquivos ou baixe com `aws s3 cp`, que tenta de novo.
+
 ```bash
 scp db/compacta.py finland:/root/rodado-db/
 ssh finland 'cd /root/rodado-db && python3 compacta.py --status; tail compacta.log'
 # cron: 0 * * * * cd /root/rodado-db && flock -n compacta.lock nice -n 19 ionice -c3 python3 compacta.py >> compacta.log 2>&1
 ```
+
+**Reiniciar o Docker derruba o proxy.** O `haloyd.service` tem `Requires=docker.service`:
+`systemctl stop docker` o para junto, e `systemctl start docker` não o sobe de volta. Em
+2026-10-26 os 4 sites ficaram 3 min fora do ar até um `systemctl start haloyd`. Depois de mexer
+no dockerd, rode sempre `systemctl start haloyd` e teste os domínios. Desde esse dia o
+`/etc/docker/daemon.json` traz `max-size` 50m e `max-file` 3, para o log do gitea não voltar a
+1,3 GB. Os 4 containers que estavam no ar receberam a mesma configuração direto no
+`hostconfig.json`, com o dockerd parado e sem recriar nada (backup em
+`/root/docker-hostconfig-bak-2026-10-26/`).
 
 Trocar a senha: gravar a nova em `/root/rodado-db/.senha`, refazer o hash com
 `docker run --rm -i caddy:2.10.2-alpine caddy hash-password < .senha > .senha_hash` e

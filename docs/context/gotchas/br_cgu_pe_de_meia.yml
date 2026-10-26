@@ -13,3 +13,18 @@ gotchas:
     colunas: [cpf_responsavel, cpf_beneficiario]
     severidade: silencioso
     verificado: "cpf_responsavel 41.171.919 de 62.611.892; cpf_beneficiario 5.173.414 de 14.001.562 linhas completadas — medido 2026-10-07"
+  - id: agregue_pela_pagamento
+    resumo: "pe_de_meia é uma view (pagamento JOIN beneficiario JOIN responsavel). Soma, contagem e agrupamento sem nome/CPF/NIS vão direto na pagamento: pela view os dois joins custam ~19x mais."
+    detalhe: >
+      Desde 2026-10-22 a tabela é normalizada: beneficiario e responsavel
+      guardam NIS, CPF e nome com um id inteiro cada, e pagamento guarda o
+      mês, o incentivo e a etapa com beneficiario_id e responsavel_id no
+      lugar das seis colunas. A view pe_de_meia devolve as mesmas colunas de
+      antes, mas o DuckDB não elimina os joins mesmo quando a consulta não
+      usa a pessoa. count(DISTINCT beneficiario_id) na pagamento conta
+      trios (NIS, CPF, nome), não estudantes: o mesmo NIS pode ter mais de
+      um trio.
+    tabelas: [pe_de_meia, pagamento, beneficiario, responsavel]
+    colunas: [beneficiario_id, responsavel_id, valor_parcela]
+    severidade: aviso
+    verificado: "total por mês (26 meses, R$ 22,63 bi nos dois caminhos): 3,09 s pela view, 0,16 s na pagamento; 3.310.986 trios de beneficiário (2.892.736 NIS distintos) e 8.545.194 responsáveis para 86.125.204 pagamentos — medido 2026-10-26"

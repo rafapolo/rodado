@@ -6,3 +6,18 @@ gotchas:
     colunas: [codigo_municipio_siafi]
     severidade: silencioso
     verificado: "como texto casam 1.106 de 1.327 códigos; como inteiro, 1.327 — medido 2026-10-21"
+  - id: agregue_pela_pagamento
+    resumo: "garantia_safra é uma view (pagamento JOIN favorecido). Soma, contagem e agrupamento sem nome/NIS vão direto na pagamento: pela view o join custa ~9x mais."
+    detalhe: >
+      Desde 2026-10-22 a tabela é normalizada: favorecido guarda um par
+      (NIS, nome) por linha com um favorecido_id inteiro, e pagamento guarda
+      o mês com favorecido_id no lugar das duas colunas. A view
+      garantia_safra devolve as mesmas colunas de antes, mas o DuckDB não
+      elimina o join mesmo quando a consulta não usa a pessoa. Para contar
+      agricultores distintos, count(DISTINCT favorecido_id) na pagamento
+      conta pares; o mesmo NIS pode ter mais de um par (nome diferente entre
+      meses).
+    tabelas: [garantia_safra, pagamento, favorecido]
+    colunas: [favorecido_id, valor_parcela]
+    severidade: aviso
+    verificado: "total por mês (162 meses, R$ 9,18 bi nos dois caminhos): 0,86 s pela view, 0,10 s na pagamento; 2.655.471 pares (2.642.402 NIS distintos) para 33.555.512 pagamentos — medido 2026-10-26"
