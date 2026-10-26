@@ -254,6 +254,18 @@ O que a conferência de 2026-10-26 achou:
   com 8 tentativas não aguenta isso. O `count(*)` do `br_bcb_sicor.saldo` (1.711 arquivos) caiu
   três vezes e passou na quarta. A `br_bcb_estban.agencia`, nunca comprimida, falhou igual.
   Para conferir conteúdo, use uma amostra de arquivos ou baixe com `aws s3 cp`, que tenta de novo.
+  Em 2026-10-26 o timeout passou para 30 s (`RODADO_HTTP_TIMEOUT` no `haloy.yml`). Logo depois
+  do deploy, o sicor passou de primeira em 47 s e a estban em 226 s.
+- **Arquivo com um bloco (row group) maior que a memória do container não abre, comprimido ou
+  não.** O Querido Diário do Rio (`territory_id=3304557/data.parquet`) tem 769 diários num único
+  bloco de 1.060 MiB descomprimido. Com o teto de 1,3 GiB do container, qualquer leitura de
+  `texto` dá Out of Memory, tanto no original quanto no z19 (conferido nos dois). Só resolve
+  regravando o arquivo no beelink com blocos menores.
+- **Os largos demais para o finland são comprimidos no beelink** e sobem com
+  `compacta.py --sobe CHAVE ARQUIVO BYTES_ORIGINAL LINHAS`. Ele pega a trava do cron e recusa
+  rodar com uma passada em curso, que guarda o manifesto na memória e o regravaria por cima. Em
+  2026-10-26 foram assim o SISDEPEN (3.957 colunas, 96%), o Censo 2022 pessoa SP (91%) e o
+  Querido Diário 3304557 (66%), com a passada parada pelo PID logo depois de gravar o manifesto.
 
 ```bash
 scp db/compacta.py finland:/root/rodado-db/
