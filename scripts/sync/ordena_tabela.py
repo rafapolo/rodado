@@ -45,8 +45,18 @@ def ordena(diretorio, chave, desempate=None):
     con.execute(f"""COPY (SELECT * EXCLUDE (__r), __r // {faixa} AS __parte FROM (
                       SELECT *, row_number() OVER (ORDER BY {ordem}) - 1 AS __r FROM {fonte}))
                     TO '{tmp}' (FORMAT parquet, PARTITION_BY (__parte), COMPRESSION zstd, ROW_GROUP_SIZE 122880)""")
-    partes = sorted(glob.glob(f"{tmp}/__parte=*/*.parquet"),
-                    key=lambda p: int(p.split("__parte=")[1].split("/")[0]))
+    # o PARTITION_BY grava mais de um arquivo por faixa quando ela é grande (491 para 408 na
+    # licitacao_participante): junta cada faixa num arquivo só, na ordem
+    partes = []
+    for d in sorted(glob.glob(f"{tmp}/__parte=*"), key=lambda d: int(d.rsplit("=", 1)[1])):
+        arqs = sorted(glob.glob(f"{d}/*.parquet"))
+        if len(arqs) == 1:
+            partes.append(arqs[0])
+            continue
+        junto = f"{d}.parquet"
+        con.execute(f"""COPY (SELECT * FROM read_parquet({[*arqs]}, hive_partitioning=false) ORDER BY {ordem})
+                        TO '{junto}' (FORMAT parquet, COMPRESSION zstd, ROW_GROUP_SIZE 122880)""")
+        partes.append(junto)
     nlista = "[" + ",".join(f"'{p}'" for p in partes) + "]"
     # hive_partitioning=false: o caminho __parte=N/ faria o DuckDB acrescentar a coluna __parte
     # às linhas, e a soma de hash não bateria nunca
