@@ -267,8 +267,7 @@ ssh finland 'cd /root/rodado-db && python3 compacta.py --status; tail compacta.l
 no dockerd, rode sempre `systemctl start haloyd` e teste os domínios. Desde esse dia o
 `/etc/docker/daemon.json` traz `max-size` 50m e `max-file` 3, para o log do gitea não voltar a
 1,3 GB. Os 4 containers que estavam no ar receberam a mesma configuração direto no
-`hostconfig.json`, com o dockerd parado e sem recriar nada (backup em
-`/root/docker-hostconfig-bak-2026-10-26/`).
+`hostconfig.json`, com o dockerd parado e sem recriar nada.
 
 Trocar a senha: gravar a nova em `/root/rodado-db/.senha`, refazer o hash com
 `docker run --rm -i caddy:2.10.2-alpine caddy hash-password < .senha > .senha_hash` e
