@@ -1,0 +1,14 @@
+dataset: br_ibge_lspa
+gotchas:
+  - id: so_uf_e_mensal
+    resumo: "O LSPA não existe por município: só Brasil, grande região e UF (N1, N2, N3). E é uma previsão que muda a cada levantamento mensal (`periodo` aaaamm): filtre o último periodo, e diga de que mês é o número."
+    tabelas: [sidra]
+    colunas: [id_nivel, periodo]
+    severidade: silencioso
+    verificado: "tabela 1618: só id_nivel 1 e 3; levantamento 202609 com Safra 2025 e Safra 2026; soja do MT, Safra 2025 = 12.788.611 ha — medido 2026-10-26"
+  - id: produto_em_safras
+    resumo: "Milho (1ª e 2ª), feijão (1ª a 3ª), amendoim e batata-inglesa vêm em safras separadas, e o café em arábica e canephora; a PAM não separa. Some antes de comparar. As linhas 0 (Total) e 39428 ('1 Cereais, leguminosas e oleaginosas') são agregados e somariam duas vezes."
+    tabelas: [sidra]
+    colunas: [categoria_2, id_categoria_2]
+    severidade: silencioso
+    verificado: "37 produtos na 1618, 26 itens da PAM depois de somar as safras; gergelim e canola não têm item na PAM — medido 2026-10-26"

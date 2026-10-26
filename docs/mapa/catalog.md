@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**276 datasets, 1.608 tabelas, 34.664.124.949 linhas.** 14 dataset(s) sem descrição. 4 com data de frescor conferida (de 276).
+**276 datasets, 1.610 tabelas, 34.663.054.081 linhas.** 14 dataset(s) sem descrição. 4 com data de frescor conferida (de 276).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -100,7 +100,7 @@
 | `br_ibge_censo2022_raca` | IBGE Censo 2022 — cor/raça cruzada com instrução e fecundidade, por município | 2 | 1.415.034 | — | Censo 2022 — Cor ou raça × instrução/fecundidade |
 | `br_ibge_censo2022_religiao` | IBGE Censo 2022 — religião e recortes demográficos associados | 15 | 6.451.488 | — | Censo 2022 — Religião (pacote completo) |
 | `br_ibge_censo_2022` | IBGE — Censo Demográfico 2022, agregados por setor censitário e município | 47 | 171.441.122 | — | Base dos Dados |
-| `br_ibge_censo_agropecuario` | _(sem descrição)_ | 2 | 211.522.252 | — | Base dos Dados |
+| `br_ibge_censo_agropecuario` | _(sem descrição)_ | 3 | 212.112.778 | — | Base dos Dados |
 | `br_ibge_censo_demografico` | IBGE — microdados dos Censos Demográficos 1970 a 2010 | 38 | 181.895.148 | — | Base dos Dados |
 | `br_ibge_cnefe` | IBGE — Cadastro Nacional de Endereços para Fins Estatísticos, Censo 2022 (endereço a endereço) | 1 | 111.102.875 | — | CNEFE Censo 2022 (microdado completo) |
 | `br_ibge_estadic` | IBGE — Pesquisa de Informações Básicas Estaduais (ESTADIC) | 8 | 3.044 | — | Base dos Dados |
@@ -120,7 +120,7 @@
 | `br_ibge_pib` | IBGE — PIB municipal e estadual | 7 | 201.871 | — | Base dos Dados |
 | `br_ibge_pnad` | IBGE — PNAD, microdados compatibilizados históricos | 3 | 9.587.801 | — | Base dos Dados |
 | `br_ibge_pnad_covid` | IBGE — PNAD-COVID19, microdados mensais de mai a nov/2020 (2,65 mi pessoas, pesar por v1032) e o dicionário | 2 | 2.651.013 | — | IBGE — PNAD COVID19, microdados mensais mai–nov/2020 |
-| `br_ibge_pnadc` | IBGE — PNAD Contínua, mercado de trabalho e rendimento | 14 | 31.529.302 | — | Base dos Dados |
+| `br_ibge_pnadc` | IBGE — PNAD Contínua, mercado de trabalho e rendimento | 14 | 29.867.248 | — | Base dos Dados |
 | `br_ibge_pof` | IBGE — Pesquisa de Orçamentos Familiares | 14 | 2.238.882 | — | Base dos Dados |
 | `br_ibge_populacao` | IBGE — estimativas populacionais por município, UF e Brasil | 3 | 192.080 | — | Base dos Dados |
 | `br_ibge_ppm` | IBGE — Pesquisa Pecuária Municipal (rebanhos, aquicultura, produção animal) | 4 | 3.111.747 | — | Base dos Dados |
@@ -208,7 +208,7 @@
 | `br_ms_sipni_microdados` | SI-PNI — microdados de vacinação individual (2020) | 1 | 102.423.524 | — | SI-PNI microdados (healthbr-data) |
 | `br_ms_sisvan` | SISVAN — Sistema de Vigilância Alimentar e Nutricional | 2 | 406.253.847 | — | Base dos Dados |
 | `br_ms_vacinacao_covid19` | Ministério da Saúde — vacinação contra covid-19 | 2 | 805.917 | — | Base dos Dados |
-| `br_mte_listasuja` | MTE — Lista Suja do trabalho escravo (Cadastro de Empregadores) e CEAC, com CNPJ/CPF | 4 | 1.656 | — | MTE — Lista Suja do Trabalho Escravo (Cadastro de Empregadores) + CEAC |
+| `br_mte_listasuja` | MTE — Lista Suja do trabalho escravo (Cadastro de Empregadores) e CEAC, com CNPJ/CPF | 5 | 2.316 | — | MTE — Lista Suja do Trabalho Escravo (Cadastro de Empregadores) + CEAC |
 | `br_ok_queridodiario` | Querido Diário — metadados de diários oficiais municipais | 1 | 320.424 | — | Querido Diário |
 | `br_ok_queridodiario_texto` | Querido Diário — texto integral das edições de diários oficiais municipais | 1 | 320.422 | — | Querido Diário — texto integral das edições |
 | `br_ons_avaliacao_operacao` | ONS — avaliação da operação do Sistema Interligado Nacional (geração por usina, térmicas por motivo de despacho, restrição de eólicas, energia armazenada e afluente por reservatório) | 6 | 89.805.415 | — | Base dos Dados |
