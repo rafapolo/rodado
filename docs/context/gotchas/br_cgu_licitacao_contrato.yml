@@ -1,0 +1,8 @@
+dataset: br_cgu_licitacao_contrato
+gotchas:
+  - id: ordenada_pela_chave
+    resumo: "licitacao_participante está ordenada por cpf_cnpj_participante, em 8 arquivos de faixas contíguas: filtre pela coluna crua (= ou IN) e a busca lê um arquivo só. Função em volta da coluna (regexp_replace, substr, LIKE '%...') lê a tabela inteira."
+    tabelas: [licitacao_participante]
+    colunas: [cpf_cnpj_participante]
+    severidade: aviso
+    verificado: "8 arquivos, faixas sem sobreposição e zero row groups sobrepostos, soma de hash das 74.372.781 linhas igual à dos 408 originais; no db.rodado.xyz, busca por um CNPJ em 2,3 s fria e 0,3–0,5 s com cache (era 36 s) — medido 2026-10-26"
