@@ -22,7 +22,7 @@ ANOS = "2020,2021,2022"
 def ssh_duckdb(sql):
     cmd = [
         "ssh", BEELINK,
-        f"~/bin/duckdb -json {DB_PATH}"
+        f"~/bin/duckdb -json -readonly {DB_PATH}"
     ]
     proc = subprocess.run(
         cmd, input=sql.encode(), capture_output=True, timeout=600

@@ -51,7 +51,7 @@ COLUMN_ALIASES = {
 
 
 def _query(sql: str, timeout: int = 120) -> list:
-    cmd = ["ssh", BEELINK_HOST, f"{BEELINK_DUCKDB_BIN} -json {BEELINK_DUCKDB_PATH}"]
+    cmd = ["ssh", BEELINK_HOST, f"{BEELINK_DUCKDB_BIN} -json -readonly {BEELINK_DUCKDB_PATH}"]
     out = subprocess.run(cmd, input=sql, capture_output=True, text=True, timeout=timeout)
     if out.returncode != 0:
         sys.exit(f"beelink query failed: {out.stderr.strip()[:500]}")

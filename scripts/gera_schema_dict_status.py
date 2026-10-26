@@ -118,7 +118,7 @@ def _norm(s: str) -> str:
 
 
 def _query(sql: str, timeout: int = 120) -> list:
-    cmd = ["ssh", BEELINK_HOST, f"{BEELINK_DUCKDB_BIN} -json {BEELINK_DUCKDB_PATH}"]
+    cmd = ["ssh", BEELINK_HOST, f"{BEELINK_DUCKDB_BIN} -json -readonly {BEELINK_DUCKDB_PATH}"]
     out = subprocess.run(cmd, input=sql, capture_output=True, text=True, timeout=timeout)
     if out.returncode != 0:
         raise RuntimeError(out.stderr.strip()[:500])
