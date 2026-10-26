@@ -48,24 +48,34 @@ def ordena(diretorio, chave, desempate=None, mb=None):
     if mb:   # arquivos de ~mb MB, numerados: AC.parquet com NIS do país inteiro seria um nome mentiroso
         k = max(1, math.ceil(sum(map(os.path.getsize, orig)) / (mb * 1e6)))
         saida = [f"{diretorio}/{i:012d}.parquet" for i in range(k)]
-    faixa = max(1, math.ceil(n / len(saida)))
+    # limites das faixas pelos quantis da chave; cada faixa é um COPY com WHERE ... ORDER BY.
+    # Nada de PARTITION_BY: no DuckDB 1.5 ele gravou arquivos corrompidos em tabelas grandes
+    # ("dictionary offset out of range", soma de hash errada, segfault — 2026-10-26)
+    k = len(saida)
+    q = ", ".join(str(i / k) for i in range(1, k))
+    limites = con.execute(f'SELECT quantile_disc("{chave}", [{q}]) FROM {fonte} WHERE "{chave}" IS NOT NULL'
+                          ).fetchone()[0] if k > 1 else []
+    limites = sorted(set(v for v in (limites or []) if v is not None))   # chave repetida demais junta faixas
     shutil.rmtree(tmp, ignore_errors=True)
-    con.execute(f"""COPY (SELECT * EXCLUDE (__r), __r // {faixa} AS __parte FROM (
-                      SELECT *, row_number() OVER (ORDER BY {ordem}) - 1 AS __r FROM {fonte}))
-                    TO '{tmp}' (FORMAT parquet, PARTITION_BY (__parte), COMPRESSION zstd, ROW_GROUP_SIZE 122880)""")
-    # o PARTITION_BY acerta o conteúdo de cada faixa, mas não a ordem dentro dela, e grava mais
-    # de um arquivo quando ela é grande (491 para 408 na licitacao_participante): cada faixa é
-    # regravada num arquivo só, ordenado, para os row groups não se sobreporem
+    os.makedirs(tmp)
+    c = f'"{chave}"'
+    lit = lambda v: repr(v) if isinstance(v, (int, float)) else "'" + str(v).replace("'", "''") + "'"
     partes = []
-    for d in sorted(glob.glob(f"{tmp}/__parte=*"), key=lambda d: int(d.rsplit("=", 1)[1])):
-        arqs = sorted(glob.glob(f"{d}/*.parquet"))
-        junto = f"{d}.parquet"
-        con.execute(f"""COPY (SELECT * FROM read_parquet({[*arqs]}, hive_partitioning=false) ORDER BY {ordem})
-                        TO '{junto}' (FORMAT parquet, COMPRESSION zstd, ROW_GROUP_SIZE 122880)""")
-        partes.append(junto)
+    for i in range(len(limites) + 1):
+        conds = []
+        if i > 0:
+            conds.append(f"{c} >= {lit(limites[i - 1])}")
+        if i < len(limites):
+            conds.append(f"{c} < {lit(limites[i])}")
+        onde = " AND ".join(conds) or "true"
+        if i == len(limites):
+            onde = f"({onde}) OR {c} IS NULL"
+        destino = f"{tmp}/{i:012d}.parquet"
+        con.execute(f"""COPY (SELECT * FROM {fonte} WHERE {onde} ORDER BY {ordem})
+                        TO '{destino}' (FORMAT parquet, COMPRESSION zstd, ROW_GROUP_SIZE 122880)""")
+        partes.append(destino)
+    faixa = math.ceil(n / len(partes))
     nlista = "[" + ",".join(f"'{p}'" for p in partes) + "]"
-    # hive_partitioning=false: o caminho __parte=N/ faria o DuckDB acrescentar a coluna __parte
-    # às linhas, e a soma de hash não bateria nunca
     marca = "SELECT count(*), sum(hash(t)::HUGEINT) FROM read_parquet({}, union_by_name=true, hive_partitioning=false) t"
     m0, m1 = con.execute(marca.format(lista)).fetchone(), con.execute(marca.format(nlista)).fetchone()
     c1 = [r[0] for r in con.execute(f"DESCRIBE SELECT * FROM read_parquet({nlista}, union_by_name=true, hive_partitioning=false)").fetchall()]
