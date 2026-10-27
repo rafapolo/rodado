@@ -1,0 +1,74 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ieps_saude
+tabelas:
+  municipio:
+    grao: "um município × ano, com indicadores de saúde (cobertura, taxas, gastos per capita)"
+    chave: "ano, id_municipio"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2010–2021"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", sigla_uf: "UF", nome: "nome do município"}}
+    medidas:
+      - {coluna: "cob_ab, cob_acs, cob_esf, cob_priv, cob_vac_*", o_que: "coberturas (atenção básica, agentes comunitários, saúde da família, plano privado, vacinas)", unidade: "% (0 a 100)", soma: nao}
+      - {coluna: "tx_*", o_que: "taxas (mortalidade, internação, leitos, médicos, enfermeiros), prontas para comparar", unidade: "taxa; denominador por tipo não medido", soma: nao}
+      - {coluna: "desp_*_pc_*, gasto_pbf_pc_def, pct_desp_recp_saude_mun", o_que: "despesa per capita e % da receita gasta em saúde; sufixo _def indica valor deflacionado", unidade: "R$ per capita ou %", soma: nao}
+      - {coluna: "n_leito_nsus, n_leitouti_nsus", o_que: "contagem de leitos não SUS (as demais contagens n_* e num_familias_bf são 100% nulas aqui)", unidade: "leitos", soma: sim}
+    filtros_tipicos:
+      - "ano BETWEEN 2014 AND 2020 para pct_prenatal_adeq (vazio em 2010–2013 e 2021); cob_vac_hepa/hepb só existem de 2014 a 2021"
+      - "ano <= 2020 para tx_mort*, pct_mort_maldef, pct_prenatal_* (nulos em 2021)"
+    use_para: "comparar indicadores de saúde entre municípios e anos"
+    nao_use_para: "contagens de leitos SUS, internações, médicos ou famílias do Bolsa Família (vazias: ver gotcha municipio_sem_contagens) e óbitos absolutos (gotcha obitos_e_medicos_vazios)"
+    rascunho: [unidades das taxas e do deflator, use_para, nao_use_para]
+    verificado: "66.840 linhas = 66.840 distintos de (ano, id_municipio); 5.570 municípios por ano em 12 anos; contagem não nula por ano: tx_mort 0 em 2021, pct_prenatal_adeq 0 em 2010–2013 e 2021, cob_vac_hepa 0 em 2010–2013 — medido 2026-10-27"
+  regiao_saude:
+    grao: "uma região de saúde × ano"
+    chave: "ano, id_regiao_saude"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2010–2021"}
+    territorio: {nivel: outro, colunas: {id_regiao_saude: "código da região de saúde (5 dígitos)", nome_regiao_saude: "nome", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: "n_enf, n_med, n_hosp, n_hosp_csap, n_leito_sus, n_leito_nsus, n_leitouti_sus, n_leitouti_nsus, num_familias_bf", o_que: "contagens absolutas (enfermeiros, médicos, internações, leitos, UTI, famílias no Bolsa Família)", unidade: "unidades", soma: sim}
+      - {coluna: "cob_*, tx_*, pct_*, desp_*", o_que: "mesmas coberturas, taxas e gastos per capita de municipio", unidade: "% ou taxa", soma: nao}
+    filtros_tipicos: ["ano <= 2020 para tx_mort* e pct_prenatal_*; ano entre 2014 e 2020 para pct_prenatal_adeq"]
+    use_para: "indicadores e contagens de saúde por região de saúde"
+    nao_use_para: "n_obitos*, n_enf_ch, n_med_ch (100% nulos; gotcha obitos_e_medicos_vazios) e despesa por UF (desp_*_uf é nula aqui)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "5.400 linhas = 5.400 distintos de (ano, id_regiao_saude); 450 regiões por ano — medido 2026-10-27"
+  macrorregiao:
+    grao: "uma macrorregião de saúde × ano"
+    chave: "ano, id_macrorregiao"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2010–2021"}
+    territorio: {nivel: outro, colunas: {id_macrorregiao: "código da macrorregião de saúde", nome_macrorregiao: "nome", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: "n_enf, n_med, n_hosp, n_hosp_csap, n_leito_*, n_leitouti_*, num_familias_bf", o_que: "contagens absolutas", unidade: "unidades", soma: sim}
+      - {coluna: "cob_*, tx_*, pct_*, desp_*", o_que: "coberturas, taxas e gastos per capita", unidade: "% ou taxa", soma: nao}
+    filtros_tipicos: ["ano <= 2020 para tx_mort*"]
+    use_para: "indicadores e contagens de saúde por macrorregião"
+    nao_use_para: "n_obitos*, n_*_ch e despesa por UF (100% nulos)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.404 linhas = 1.404 distintos de (ano, id_macrorregiao); 117 por ano — medido 2026-10-27"
+  uf:
+    grao: "uma UF × ano"
+    chave: "ano, sigla_uf"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2010–2021"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF"}}
+    medidas:
+      - {coluna: "n_enf, n_med, n_hosp, n_hosp_csap, n_leito_*, n_leitouti_*, num_familias_bf", o_que: "contagens absolutas", unidade: "unidades", soma: sim}
+      - {coluna: "desp_*_pc_uf, pct_desp_recp_saude_uf, tx_mort_inf_ibge", o_que: "despesa estadual per capita e % da receita; mortalidade infantil (preenchidas só aqui e em brasil quando existem)", unidade: "R$ per capita, %, taxa", soma: nao}
+      - {coluna: "cob_*, tx_*, pct_*", o_que: "coberturas e taxas", unidade: "% ou taxa", soma: nao}
+    filtros_tipicos: ["ano <= 2020 para tx_mort*; desp_* tem 3,7% de nulos (12 linhas = uma UF em todos os anos; qual UF não foi medido)"]
+    use_para: "indicadores de saúde por UF, inclusive despesa estadual per capita"
+    nao_use_para: "n_obitos*, n_enf_ch, n_med_ch (100% nulos)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "324 linhas = 324 distintos de (ano, sigla_uf) = 27 × 12 — medido 2026-10-27"
+  brasil:
+    grao: "o Brasil inteiro × ano"
+    chave: "ano"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2010–2021"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: "n_enf, n_med, n_hosp, n_hosp_csap, n_leito_*, n_leitouti_*, num_familias_bf", o_que: "contagens nacionais", unidade: "unidades", soma: sim}
+      - {coluna: "cob_*, tx_*, pct_*, desp_*", o_que: "coberturas, taxas e gastos per capita nacionais", unidade: "% ou taxa", soma: nao}
+    filtros_tipicos: ["ano <= 2020 para tx_mort*"]
+    use_para: "série nacional de referência para comparar UFs e municípios"
+    nao_use_para: "n_obitos*, n_enf_ch, n_med_ch (100% nulos)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "12 linhas = 12 anos distintos — medido 2026-10-27"

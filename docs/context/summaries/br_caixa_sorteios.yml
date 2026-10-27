@@ -1,0 +1,14 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_caixa_sorteios
+tabelas:
+  megasena:
+    grao: "uma bola sorteada (ordem 1 a 6) de um concurso da Mega-Sena"
+    chave: "concurso, ordem (15.294 linhas = 15.294 distintos, medido)"
+    tempo: {natureza: serie_de_periodos, coluna: data, cobertura: "1996-03-11–2022-12-17 (2.549 concursos; VARCHAR 'AAAA-MM-DD')"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["concurso, bola e ordem são VARCHAR: use CAST(concurso AS INT) para ordenar (senão '999' > '2549')", "ordem IN ('1','2','3','4','5','6'), 2.549 linhas cada"]
+    use_para: "frequência de dezenas, e quais dezenas saíram em cada concurso."
+    nao_use_para: "prêmios, ganhadores ou arrecadação: a tabela só tem as bolas; ordem é a de sorteio, não a ordem crescente."
+    rascunho: [use_para, nao_use_para]
+    verificado: "15.294 linhas = 6 × 2.549 concursos; bola de 1 a 60 em todas; todo concurso tem 6 bolas distintas; 1 data por concurso (2.549 datas) — medido 2026-10-27"

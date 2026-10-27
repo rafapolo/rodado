@@ -32,9 +32,11 @@ TOP_ATE = 50
 
 def duck(sql, timeout=1800):
     r = subprocess.run(["ssh", "beelink", "~/bin/duckdb -readonly -json ~/rodado/basedosdados.duckdb"],
-                       input="SET enable_progress_bar=false;\nSET threads=8;\n" + sql, capture_output=True, text=True, timeout=timeout)
+                       input="SET enable_progress_bar=false;\nSET threads=8;\n" + sql, capture_output=True, text=True,
+                       errors="replace", timeout=timeout)
     if r.returncode or "Error" in r.stderr:
-        raise RuntimeError(r.stderr[-800:])
+        erro = [l for l in r.stderr.splitlines() if "Error" in l]
+        raise RuntimeError(erro[0].split("\x1b[00m")[-1] if erro else f"duckdb saiu com {r.returncode} sem mensagem (memória?)")
     out = r.stdout[r.stdout.find("["):] if "[" in r.stdout else "[]"
     return json.loads(out)
 
@@ -70,9 +72,32 @@ def num(v):
         return v
 
 
+def resumo_manual(ds, tb, q):
+    """O que o SUMMARIZE devolve, sem o desvio-padrão, uma consulta por coluna."""
+    out = []
+    for c in duck(f"DESCRIBE {ds}.{tb};"):
+        n, t = c["column_name"], c["column_type"]
+        numerica = re.match(r"(BIG|SMALL|TINY|U)?INT|DOUBLE|FLOAT|DECIMAL|HUGEINT", t)
+        extra = (f", avg(\"{n}\") avg, quantile_cont(\"{n}\", 0.25) q25, quantile_cont(\"{n}\", 0.5) q50, "
+                 f"quantile_cont(\"{n}\", 0.75) q75") if numerica else ", NULL avg, NULL q25, NULL q50, NULL q75"
+        r = duck(f"SELECT min(\"{n}\")::VARCHAR min, max(\"{n}\")::VARCHAR max, approx_count_distinct(\"{n}\") approx_unique, "
+                 f"100.0 * count(*) FILTER (\"{n}\" IS NULL) / greatest(count(*), 1) null_percentage{extra} FROM {q};")[0]
+        out.append({"column_name": n, "column_type": t, **r})
+    return out
+
+
 def perfil_tabela(ds, tb, linhas):
     q, como = fonte(ds, tb, linhas)
-    resumo = duck(f"SUMMARIZE SELECT * FROM {q};", timeout=3600)
+    try:
+        resumo = duck(f"SUMMARIZE SELECT * FROM {q};", timeout=3600)
+    except RuntimeError as e:
+        # o SUMMARIZE estoura no desvio-padrão de double enorme, e sem memória em tabela larga:
+        # refaz coluna a coluna, sem desvio, numa amostra menor
+        if "STDDEV" not in str(e) and "sem mensagem" not in str(e):
+            raise
+        if "sem mensagem" in str(e):
+            q, como = f"(SELECT * FROM {q} USING SAMPLE 200000 ROWS (reservoir, 42))", como + ", reduzida a 200 mil linhas (faltou memória)"
+        resumo = resumo_manual(ds, tb, q)
     colunas, poucas = {}, []
     for c in resumo:
         nome, tipo = c["column_name"], c["column_type"]

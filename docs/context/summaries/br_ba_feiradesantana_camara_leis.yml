@@ -1,0 +1,16 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ba_feiradesantana_camara_leis
+tabelas:
+  microdados:
+    grao: "uma norma municipal (lei, decreto legislativo, resolução etc.) de Feira de Santana com título, resumo e texto"
+    chave: "titulo (6.033 linhas = 6.033 distintos)"
+    tempo: {natureza: sem_tempo, coluna: "nenhuma coluna de data (o ano está só dentro do titulo, ex.: 'RESOLUÇÃO Nº 99/1976')", cobertura: "ano só no texto do titulo"}
+    territorio: {nivel: municipio, colunas: {}}
+    filtros_tipicos:
+      - "categoria: 'Leis Ordinárias' (3.367), 'Decretos Legislativos' (1.428), 'Resoluções' (523), 'Lei Promulgada' (345), 'Decretos' (218), 'Leis Complementares' (124), 'Emendas à Lei Orgânica' (27); 9 valores no total"
+      - "resumo tem texto com acento corrompido (ex.: 'â€œ') em parte das linhas; busque com ILIKE e sem acento"
+    use_para: "buscar e contar normas municipais por categoria e por termo no texto"
+    nao_use_para: "análise temporal confiável (não há data estruturada) ou comparação com outros municípios"
+    rascunho: [use_para, nao_use_para]
+    verificado: "6.033 linhas; titulo 6.033 distintos; (categoria, titulo) 6.033 distintos — medido 2026-10-27"

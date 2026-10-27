@@ -1,0 +1,95 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibge_pib
+tabelas:
+  municipio:
+    grao: "um município × ano (PIB a preços correntes e valor adicionado por setor)"
+    chave: "(id_municipio, ano) — 122.466 linhas = 122.466 distintos (medido)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2002–2023"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (VARCHAR)"}}
+    medidas:
+      - {coluna: pib, o_que: "PIB a preços correntes", unidade: "R$ (não R$ mil)", soma: sim}
+      - {coluna: va, o_que: "valor adicionado bruto total", unidade: "R$", soma: sim}
+      - {coluna: va_agropecuaria, o_que: "valor adicionado da agropecuária", unidade: "R$", soma: sim}
+      - {coluna: va_industria, o_que: "valor adicionado da indústria", unidade: "R$", soma: sim}
+      - {coluna: va_servicos, o_que: "valor adicionado dos serviços (exclusive administração pública)", unidade: "R$", soma: sim}
+      - {coluna: va_adespss, o_que: "valor adicionado da administração, defesa, educação e saúde públicas e seguridade social", unidade: "R$", soma: sim}
+      - {coluna: impostos_liquidos, o_que: "impostos líquidos de subsídios", unidade: "R$", soma: sim}
+    filtros_tipicos: ["ano <= 2021 para qualquer análise por setor: em 2022 e 2023 va e todos os va_* são NULL nos 5.570 municípios (gotcha sem_va_por_setor_2022_2023)", "pib total do país: 2020 = R$ 7,61 tri, 2021 = R$ 9,01 tri, 2023 = R$ 10,94 tri"]
+    use_para: "PIB e estrutura setorial por município e ano; VA agropecuário municipal até 2021."
+    nao_use_para: "VA por setor em 2022 e 2023 (NULL), ou comparar com tabelas _antigo sem notar a mudança de série."
+    rascunho: [use_para, nao_use_para, "descrição dos va_* além dos nomes"]
+    verificado: "122.466 linhas e pares distintos; ano 2020: 5.570 linhas, va em 5.570; 2022 e 2023: 5.570 linhas, 0 com va; va NULL em 9,1% das linhas (os anos 2022 e 2023); 1 linha com pib negativo — medido 2026-10-27"
+  municipio_antigo:
+    grao: "um município × ano da série antiga (base anterior de metodologia)"
+    chave: "(id_municipio, ano) — 77.910 linhas = 77.910 distintos (medido)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1999–2012"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (VARCHAR)"}}
+    medidas:
+      - {coluna: pib, o_que: "PIB a preços correntes", unidade: "R$", soma: sim}
+      - {expressao: "va, va_agropecuaria, va_industria, va_servicos, va_adespss, impostos_liquidos", o_que: "mesmos componentes de municipio", unidade: "R$", soma: sim}
+    filtros_tipicos: ["ano <= 2012; 5.565 municípios por ano (o município atual tem 5.570)"]
+    use_para: "PIB municipal histórico de 1999 a 2012 na metodologia antiga."
+    nao_use_para: "emendar com municipio (2002–2023) como se fosse a mesma série; os anos 2002–2012 existem nas duas e diferem de metodologia."
+    rascunho: [use_para, nao_use_para]
+    verificado: "77.910 linhas e pares distintos (14 anos × 5.565 municípios) — medido 2026-10-27"
+  uf:
+    grao: "uma UF × ano (PIB e VA por setor)"
+    chave: "(id_uf, ano) — 513 linhas = 513 distintos, 27 UFs × 19 anos (medido)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2002–2020"}
+    territorio: {nivel: uf, colunas: {id_uf: "código IBGE da UF, 2 dígitos (VARCHAR)", sigla_uf: "sigla"}}
+    medidas:
+      - {expressao: "pib, va, va_agropecuaria, va_industria, va_servicos, va_adespss, impostos_liquidos", o_que: "mesmos componentes de municipio", unidade: "R$", soma: sim}
+    filtros_tipicos: ["ano <= 2020: não há UF depois de 2020, enquanto municipio vai a 2023"]
+    use_para: "PIB e VA setorial estadual de 2002 a 2020."
+    nao_use_para: "anos de 2021 em diante (use a soma de municipio, que traz pib mas não va depois de 2021)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "513 linhas, 513 pares (id_uf, ano) distintos, 27 siglas; soma de pib em 2020 = R$ 7,6096 tri, praticamente igual à soma municipal de 2020 (7.609.597.000.019 contra 7.609.597.005.000) — medido 2026-10-27"
+  uf_antigo:
+    grao: "uma UF × ano da série antiga"
+    chave: "(id_uf, ano) — 378 linhas = 378 distintos (medido)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1999–2012"}
+    territorio: {nivel: uf, colunas: {id_uf: "código IBGE da UF (VARCHAR)"}}
+    medidas:
+      - {expressao: "pib, va, va_agropecuaria, va_industria, va_servicos, va_adespss, impostos_liquidos", o_que: "mesmos componentes de uf", unidade: "R$", soma: sim}
+    filtros_tipicos: ["ano <= 2012"]
+    use_para: "PIB estadual histórico na metodologia antiga."
+    nao_use_para: "emendar com uf sem notar a troca de metodologia."
+    rascunho: [use_para, nao_use_para]
+    verificado: "378 linhas e pares distintos (27 UFs × 14 anos) — medido 2026-10-27"
+  regiao_antigo:
+    grao: "uma grande região × ano da série antiga"
+    chave: "(id_regiao, ano) — 70 linhas = 70 distintos (5 regiões × 14 anos, medido)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1999–2012"}
+    territorio: {nivel: regiao, colunas: {id_regiao: "1 a 5 (VARCHAR): significado dos códigos não documentado no cartão"}}
+    medidas:
+      - {expressao: "pib, va, va_agropecuaria, va_industria, va_servicos, va_adespss, impostos_liquidos", o_que: "mesmos componentes de uf", unidade: "R$", soma: sim}
+    filtros_tipicos: ["ano <= 2012"]
+    use_para: "PIB por grande região, 1999–2012."
+    nao_use_para: "séries recentes."
+    rascunho: [use_para, nao_use_para]
+    verificado: "70 linhas, 70 pares distintos — medido 2026-10-27"
+  brasil_antigo:
+    grao: "um ano (PIB do Brasil, série antiga)"
+    chave: "ano — 14 linhas = 14 anos (medido); ano é VARCHAR"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1999–2012"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {expressao: "pib, va, va_agropecuaria, va_industria, va_servicos, va_adespss, impostos_liquidos", o_que: "mesmos componentes de uf", unidade: "R$", soma: sim}
+    filtros_tipicos: ["ano = '2012' (texto, não inteiro)"]
+    use_para: "PIB nacional 1999–2012."
+    nao_use_para: "séries recentes."
+    rascunho: [use_para, nao_use_para]
+    verificado: "14 linhas e 14 anos distintos; pib = va + impostos_liquidos em 1999 e 2000 — medido 2026-10-27"
+  gini:
+    grao: "uma UF × ano com o índice de Gini da concentração do PIB e do VA por setor entre os municípios"
+    chave: "(id_uf, ano) — 520 linhas = 520 distintos, 26 UFs × 20 anos (medido)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2002–2021"}
+    territorio: {nivel: uf, colunas: {id_uf: "código IBGE da UF (VARCHAR); o DF (53) não está na tabela"}}
+    medidas:
+      - {expressao: "gini_pib, gini_va_agro, gini_va_industria, gini_va_servicos, gini_va_adespss", o_que: "índice de Gini entre os municípios da UF (rascunho: base do cálculo não documentada)", unidade: "índice de 0 a 1", soma: nao}
+    filtros_tipicos: ["ano = 2021 para o último"]
+    use_para: "concentração intra-estadual do PIB e do VA por setor."
+    nao_use_para: "somar ou ponderar (é índice); consultar o DF (ausente)."
+    rascunho: [use_para, nao_use_para, "definição do gini"]
+    verificado: "520 linhas e pares distintos, 26 id_uf distintos (falta 53 = DF), ano 2002–2021 — medido 2026-10-27"

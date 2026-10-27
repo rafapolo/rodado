@@ -1,0 +1,24 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibge_cbo_2002
+tabelas:
+  perfil_ocupacional:
+    grao: "uma atividade (tarefa) de uma ocupação CBO, dentro de um grupo de atividades (A, B, C...)"
+    chave: "(cbo_2002, grande_area, atividade) — 169.836 linhas = 169.836 chaves distintas; (cbo_2002, atividade) sozinha NÃO é única (39.569 distintas)"
+    tempo: {natureza: sem_tempo, coluna: "", cobertura: "CBO 2002"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos: ["cbo_2002 = '225125' (código de 6 dígitos como TEXTO, com zero à esquerda: '020105')", "grande_area é a LETRA do grupo de atividades da ocupação (A–Z, 16 letras), não a grande área ocupacional da CBO; descricao_grande_area é o título do grupo (ex. A = 'Realizar consulta e atendimento médico' em 225125); atividade é o número (texto) dentro do grupo"]
+    use_para: "listar as tarefas que compõem cada ocupação da CBO 2002 (2.641 ocupações)."
+    nao_use_para: "contar empregos ou ocupações por grupo CBO: o nome das colunas engana, e cada ocupação tem várias linhas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "169.836 linhas; 2.641 cbo_2002 distintos; 20.332 pares (cbo_2002, grande_area) — medido 2026-10-27"
+  sinonimo:
+    grao: "um nome alternativo (sinônimo) de uma ocupação CBO"
+    chave: "(cbo_2002, sinonimo) — 7.720 linhas = 7.720 chaves distintas"
+    tempo: {natureza: sem_tempo, coluna: "", cobertura: "CBO 2002"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos: ["cbo_2002 como texto de 6 dígitos"]
+    use_para: "achar o código CBO a partir de um nome popular da ocupação."
+    nao_use_para: "descrição oficial da ocupação: esta tabela não tem título; 10 códigos daqui nem aparecem em perfil_ocupacional."
+    rascunho: [use_para, nao_use_para]
+    verificado: "7.720 linhas, 7.720 chaves; 10 cbo_2002 sem linha em perfil_ocupacional — medido 2026-10-27. Não há tabela com o título oficial da ocupação neste dataset."

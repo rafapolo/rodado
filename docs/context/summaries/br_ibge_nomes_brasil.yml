@@ -1,0 +1,34 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibge_nomes_brasil
+tabelas:
+  quantidade_municipio_nome_2010:
+    grao: um município × um nome próprio (nascidos até o Censo 2010 com esse nome no município)
+    chave: id_municipio, nome
+    tempo:
+      natureza: sem_tempo
+      coluna: nenhuma (acumulado de nascimentos até 2010)
+      cobertura: até 2010
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos (VARCHAR); 5565 municípios distintos
+    medidas:
+    - coluna: quantidade_nascimentos_ate_2010
+      o_que: pessoas com aquele nome no município (a coluna fala em nascimentos, é a contagem do Censo 2010)
+      unidade: pessoas
+      soma: sim
+    filtros_tipicos:
+    - 'nome vem capitalizado e, nos exemplos medidos, sem acento (''Ademir'', ''Andre'', ''Antonio''): confira o
+      valor antes de filtrar'
+    - 'nomes raros foram suprimidos: o menor valor é 10, e a soma total é 144.969.670 (não é a população do país)'
+    use_para: Frequência de um nome por município (soma em município/UF dá o total do nome nos municípios onde passou
+      do corte).
+    nao_use_para: Não use como população nem para nomes raros (abaixo de 10 por município não aparecem); não há
+      ano nem sexo.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - se TODOS os nomes vêm sem acento (só 3 amostras vistas)
+    verificado: 1959116 linhas = 1959116 distintos de (id_municipio, nome); soma 144969670; mínimo 10; 5565 municípios
+      — medido 2026-10-27

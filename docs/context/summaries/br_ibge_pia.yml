@@ -1,0 +1,20 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibge_pia
+tabelas:
+  sidra:
+    grao: "uma célula do SIDRA da PIA (Pesquisa Industrial Anual): tabela × localidade × período × variável × categorias"
+    chave: "(id_tabela, id_localidade, periodo, id_variavel, id_categoria_1, id_categoria_2) — 1.004.359 linhas = 1.004.359 distintos (medido)"
+    tempo: {natureza: serie_anual, coluna: periodo, cobertura: "1996–2024 (VARCHAR; cada id_tabela cobre um subconjunto, ver sidra_tabelas)"}
+    territorio: {nivel: outro, colunas: {id_nivel: "'1' Brasil, '3' Unidade da Federação", nivel: "nome do nível", id_localidade: "1 = Brasil, 11 a 53 = UF (código IBGE)", localidade: "nome"}}
+    medidas:
+      - {coluna: valor, o_que: "o valor da variável da linha; o significado e a unidade dependem de id_variavel/unidade", unidade: "varia por linha: Mil Reais, Unidades, Pessoas, Percentual, % ou Coeficiente", soma: "só entre linhas da mesma variável, da mesma unidade e do mesmo id_nivel; nunca entre variáveis, nunca Brasil com UF"}
+    filtros_tipicos: ["id_tabela e id_variavel juntos: sem eles a linha mistura unidades", "id_nivel = '3' para UF ou '1' para Brasil (VARCHAR)", "periodo = '2022' (texto)", "valor IS NOT NULL: 25,9% de valor é NULL e simbolo diz por quê (dados suprimidos ou indisponíveis)", "categoria_1 = 'Total' para o total da classificação (ex.: CNAE 2.0)", "unidade = 'Mil Reais' para valores monetários (61 variáveis têm essa unidade)"]
+    use_para: "indústria por UF e Brasil: número de empresas, pessoal ocupado, receitas, custos e valor da transformação industrial, por CNAE ou porte."
+    nao_use_para: "análise municipal (não há município); somar variáveis diferentes ou percentuais; interpretar simbolo sem ver a nota do SIDRA."
+    rascunho: [use_para, nao_use_para, "significado dos símbolos"]
+    verificado: "1.004.359 linhas e chaves distintas; id_nivel '3' 785.808 linhas (27 UFs) e '1' 218.551 (Brasil); valor NULL em 100% das linhas com simbolo (...: 173.432, X: 67.135, A: 18.339, B: 550, Z: 375, C: 48, D: 8); classificacao_3 a 7 sempre NULL — medido 2026-10-27"
+  sidra_tabelas:
+    grao: "uma tabela do SIDRA (id_tabela) com seu catálogo: pesquisa, período, variáveis, classificações e tamanho"
+    chave: "id_tabela — 67 linhas = 67 distintos (medido)"
+    use_para: "descobrir qual id_tabela tem a variável e o período que se quer antes de consultar sidra."

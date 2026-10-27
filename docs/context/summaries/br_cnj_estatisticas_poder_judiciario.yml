@@ -1,0 +1,24 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_cnj_estatisticas_poder_judiciario
+tabelas:
+  recursos_financeiros:
+    grao: "um tribunal × ano (Justiça em Números do CNJ), com despesas, orçamento, pessoal e receitas"
+    chave: "(ano, sigla_tribunal) — 1.189 linhas = 1.189 distintos; id_tribunal NÃO serve: (ano, id_tribunal) tem só 1.130 distintos (id repetido entre tribunais)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2009–2021 (61 tribunais em 2009 e 2010, 97 de 2011 a 2021)"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF do tribunal (nula em 41,8% das linhas: tribunais superiores, federais e trabalhistas regionais sem UF)"}}
+    medidas:
+      - {coluna: despesa_total_justica_estadual, o_que: "despesa total do tribunal", unidade: "R$", soma: sim}
+      - {coluna: despesa_rh, o_que: "despesa com recursos humanos", unidade: "R$", soma: sim}
+      - {coluna: despesa_pessoal_encargos, o_que: "despesa com pessoal e encargos", unidade: "R$", soma: sim}
+      - {coluna: quantidade_servidores, o_que: "quantidade de servidores", unidade: "pessoas", soma: sim}
+      - {coluna: cargos_magistrados_providos, o_que: "cargos de magistrado providos", unidade: "pessoas", soma: sim}
+      - {coluna: gastos_totais, o_que: "gastos totais; só 30 valores distintos por ano para 97 tribunais (não é por tribunal) e muda de escala em 2019 (mediana 2,7e12 até 2018, 2,8e9 depois): NÃO use", unidade: "R$ (escala inconsistente)", soma: nao}
+      - {coluna: "proporcao_* e despesa_total_pib, despesa_total_justica_pc", o_que: "razões (fração da despesa total, do PIB, por habitante)", unidade: "razão", soma: nao}
+    filtros_tipicos:
+      - "ramo_justica = 'Estadual' (364 linhas, 28 tribunais), 'Trabalho' (325), 'Eleitoral' (308), 'Federal' (78), 'Superior' (48), 'Militar Estadual' (44), 'Militar Uniao' (22)"
+      - "ano = <ano>: um tribunal por linha; sem filtro de ano, somas misturam 13 anos"
+    use_para: "comparar despesa total e despesa com pessoal entre tribunais e anos, depois de cortar outliers"
+    nao_use_para: "despesa_media_* e execucao_orcamentaria_* (valores corrompidos, gotcha medias_corrompidas_desde_2015) e gastos_totais"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.189 linhas, 1.189 distintos (ano, sigla_tribunal), 1.130 de (ano, id_tribunal); gastos_totais com 30 distintos por ano; anos 2009–2021 — medido 2026-10-27. Ver gotcha medias_corrompidas_desde_2015"

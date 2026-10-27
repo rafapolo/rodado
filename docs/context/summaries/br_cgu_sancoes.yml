@@ -1,0 +1,68 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_cgu_sancoes
+tabelas:
+  ceis:
+    grao: "uma sanção do Cadastro de Empresas Inidôneas e Suspensas (CEIS) aplicada a uma pessoa física ou jurídica"
+    chave: "codigo_sancao — 19.131 linhas = 19.131 distintos"
+    tempo: {natureza: retrato_atual, coluna: data_inicio_sancao, cobertura: "2003-01-28–2026-04-02 (início da sanção); extração em 2026-10-03"}
+    territorio: {nivel: uf, colunas: {sigla_uf_orgao: "UF do órgão sancionador (nula em 3,1%)", esfera_orgao: "esfera do órgão sancionador: FEDERAL, ESTADUAL ou MUNICIPAL"}}
+    filtros_tipicos:
+      - "categoria_sancao = 'Impedimento/proibição de contratar com prazo determinado' (14.259 de 19.131); demais: 'Suspensão' 2.115, 'Declaração de Inidoneidade sem prazo determinado' 1.380, 'Declaração de Inidoneidade com prazo determinado' 1.140, 'Impedimento/proibição de contratar sem prazo determinado' 149, 'Demissão' 61"
+      - "sanção vigente: data_final_sancao IS NULL (1.957, sem prazo) OR data_final_sancao >= <data de hoje> (16.121 em 2026-10-27); a tabela guarda sanções vencidas também"
+      - "tipo_pessoa = 'J' (10.343) ou 'F' (8.776); 12 nulos"
+    use_para: "listar e contar empresas e pessoas sancionadas e as sanções ainda vigentes, por categoria, órgão ou UF"
+    nao_use_para: "somar valores (não há valor de multa no CEIS; veja cnep) ou contar sancionados distintos por linha (o mesmo CPF/CNPJ tem várias sanções)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "19.131 linhas, 19.131 codigo_sancao distintos; 1.957 sem data final; 16.121 com data final >= 2026-10-27 — medido 2026-10-27"
+  cnep:
+    grao: "uma sanção do Cadastro Nacional de Empresas Punidas (CNEP, Lei Anticorrupção) aplicada a uma pessoa jurídica ou física"
+    chave: "codigo_sancao — 1.592 linhas = 1.592 distintos"
+    tempo: {natureza: retrato_atual, coluna: data_inicio_sancao, cobertura: "2016-01-27–2026-03-29; extração em 2026-10-03"}
+    territorio: {nivel: uf, colunas: {sigla_uf_orgao: "UF do órgão sancionador (nula em 39,8%)", esfera_orgao: "FEDERAL, ESTADUAL ou MUNICIPAL"}}
+    medidas:
+      - {coluna: valor_multa, o_que: "valor da multa aplicada; 0 quando a sanção não é multa (688 linhas com 0)", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "categoria_sancao = 'Multa' (904 linhas); outras: 'Publicação extraordinária da decisão condenatória' 636, 'Proibição de receber incentivos, subsídios, subvenções, doações ou empréstimos' 23, 'Suspensão/Interdição das atividades com prazo determinado' 10, 'Dissolução compulsória da PJ' 8, 'Perdimento de bens' 6"
+    use_para: "somar multas da Lei Anticorrupção e contar empresas punidas por categoria, órgão ou UF"
+    nao_use_para: "somar multas misturando com CEIS (cadastros distintos) ou contar CNPJs sem considerar que uma empresa tem várias sanções"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.592 linhas, 1.592 codigo_sancao distintos, soma valor_multa R$ 2,71 bi, 688 com valor 0 — medido 2026-10-27"
+  cepim:
+    grao: "um impedimento de entidade privada sem fins lucrativos de receber recursos federais (CEPIM), por convênio"
+    chave: "(cnpj_entidade, numero_convenio) — 3.530 linhas = 3.530 distintos; 1.945 entidades distintas"
+    tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "extração em 2026-08-27 (mais antiga que ceis/cnep)"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos:
+      - "motivo_impedimento: 29 motivos em MAIÚSCULAS, p. ex. 'INSTAURACAO DE TOMADA DE CONTAS ESPECIAL', 'NAO APRESENTACAO DA PRESTACAO DE CONTAS', 'MOTIVO NÃO ESPECIFICADO'"
+      - "orgao_concedente: 28 valores terminando em ' - Unidades com vínculo direto'"
+    use_para: "contar entidades e convênios impedidos por motivo ou órgão concedente"
+    nao_use_para: "valores do convênio (não há) ou localização por UF (não há)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "3.530 linhas, 3.530 (cnpj_entidade, numero_convenio) distintos, 1.945 cnpj_entidade — medido 2026-10-27"
+  acordos_leniencia:
+    grao: "um acordo de leniência × empresa signatária (um acordo pode ter várias empresas)"
+    chave: "(id_acordo, cnpj_sancionado) — 146 linhas = 146 distintos; 52 acordos distintos"
+    tempo: {natureza: serie_de_periodos, coluna: data_inicio_acordo, cobertura: "2017-07-10–2025-11-05; término até 2047-12-31"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos:
+      - "situacao_acordo = 'Em Execução' (109 linhas) ou 'Cumprido' (37)"
+    use_para: "listar acordos de leniência e as empresas, datas e situação"
+    nao_use_para: "somar valores: o valor do acordo só aparece em texto livre (termos_acordo)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "146 linhas, 52 id_acordo distintos, 146 (id_acordo, cnpj_sancionado) — medido 2026-10-27"
+  acordos_leniencia_efeitos:
+    grao: "um efeito (benefício ou obrigação) concedido por um acordo de leniência"
+    chave: "(id_acordo, efeito) — 176 linhas = 176 distintos, 57 acordos"
+    tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "extração em 2026-08-28"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos:
+      - "efeito: 12 valores, p. ex. 'Adoção, aplicação ou aperfeiçoamento do programa de integridade', 'Remissão da multa (§ 2º, inc. III, art. 16, Lei nº 12.846/13)', 'Outros'"
+    use_para: "ver os efeitos de cada acordo (junte a acordos_leniencia por id_acordo)"
+    nao_use_para: "contar acordos: só 57 aparecem aqui, de 52 em acordos_leniencia (a diferença não foi investigada; extrações de datas diferentes)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "176 linhas, 176 (id_acordo, efeito), 57 id_acordo distintos — medido 2026-10-27"
+  dicionario:
+    grao: "uma linha por código de coluna do dataset (4 linhas)"
+    use_para: "traduzir códigos do dataset"
+    verificado: "4 linhas — medido 2026-10-27"

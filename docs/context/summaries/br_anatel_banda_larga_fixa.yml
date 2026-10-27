@@ -1,0 +1,50 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_anatel_banda_larga_fixa
+tabelas:
+  densidade_brasil:
+    grao: "um mês (Brasil)"
+    chave: "ano, mes"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2007-03–2025-09 (193 meses; meses nem todos presentes antes de 2011)"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: densidade, o_que: "acessos de banda larga fixa por 100 domicílios (a unidade exata não foi conferida aqui)", unidade: "acessos por 100 domicílios (não conferida)", soma: nao}
+    use_para: "evolução nacional da densidade de banda larga fixa"
+    nao_use_para: "somar densidades; comparar com a densidade do móvel (outra base)"
+    rascunho: [unidade, use_para, nao_use_para]
+    verificado: "193 linhas = 193 (ano, mes) distintos — medido 2026-10-27"
+  densidade_uf:
+    grao: "uma UF × mês"
+    chave: "ano, mes, sigla_uf"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2007–2025"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "sigla da UF"}}
+    medidas:
+      - {coluna: densidade, o_que: "densidade de banda larga fixa da UF", unidade: "mesma de densidade_brasil", soma: nao}
+    use_para: "densidade de banda larga fixa por UF ao longo do tempo"
+    nao_use_para: "somar densidades entre UFs"
+    rascunho: [use_para, nao_use_para]
+    verificado: "5.211 linhas = 5.211 (ano, mes, sigla_uf) distintos — medido 2026-10-27"
+  densidade_municipio:
+    grao: "um município × mês"
+    chave: "ano, mes, id_municipio"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2007-03–2025-09 (193 meses distintos; há anos só com trimestres)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (texto)", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: densidade, o_que: "densidade de banda larga fixa do município", unidade: "mesma de densidade_brasil", soma: nao}
+    filtros_tipicos: ["ano = 2025 AND mes = 9 para o último retrato"]
+    use_para: "densidade de banda larga fixa por município"
+    nao_use_para: "somar densidades; acessos absolutos (use microdados)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.072.350 linhas = 1.072.350 (ano, mes, id_municipio) distintos — medido 2026-10-27"
+  microdados:
+    grao: "um conjunto de acessos de banda larga fixa por município × mês × empresa × tecnologia × velocidade × produto"
+    chave: "nenhuma: em ano = 2026, mes = 1 há 698.274 linhas para 237.684 combinações de (município, cnpj, tecnologia, transmissão, velocidade, produto)"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "última partição medida: 2026-01–2026-02 (histórico anterior em outras partições)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (texto)", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: acessos, o_que: "número de acessos de banda larga fixa", unidade: "acessos", soma: sim}
+    filtros_tipicos: ["ano = 2026 (partição; a tabela tem 62,6 mi de linhas)", "tecnologia = 'FTTH' (795.346 no perfil)", "velocidade = '> 34Mbps' (texto literal)", "produto = 'internet' (1.191.666; há 'linha dedicada', 'outros', 'm2m')", "porte_empresa = 'Pequeno Porte' ou 'Grande Porte'"]
+    use_para: "acessos por empresa, tecnologia e faixa de velocidade por município"
+    nao_use_para: "contar linhas como acessos; somar meses diferentes (cada mês é um retrato do estoque); empresa não é normalizada (ver column_codes)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "ano = 2026: 1.397.962 linhas, 1.101.272 distintas, soma de acessos 112.302.051 (jan 55.845.849; fev 56.456.202) — medido 2026-10-27"

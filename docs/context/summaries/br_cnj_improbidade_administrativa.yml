@@ -1,0 +1,22 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_cnj_improbidade_administrativa
+tabelas:
+  condenacao:
+    grao: "uma condenação por improbidade administrativa (condenado × processo), do Cadastro Nacional de Condenações do CNJ"
+    chave: "id_condenacao — quase única: 53.342 linhas para 53.335 distintos (7 repetidas); id_pessoa/id_processo repetem (41.558 pessoas e 37.065 processos distintos)"
+    tempo: {natureza: serie_de_periodos, coluna: data_propositura, cobertura: "1992-01-01–2024-02-15 (data_cadastro 2008–2024-02-26; data_pena 1993–2024)"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF (nula em 8,4% das linhas)", tribunal: "tribunal por extenso (35 valores)", comarca: "comarca (nula em 30%)"}}
+    medidas:
+      - {coluna: valor_multa, o_que: "valor da multa civil; nulo quando não houve multa (teve_multa = false); há valor-sentinela 111111111111.11", unidade: "R$", soma: sim}
+      - {coluna: valor_ressarcimento, o_que: "valor a ressarcir ao erário; 2 linhas com sentinela ~888888888888.88", unidade: "R$", soma: sim}
+      - {coluna: valor_perda_bens, o_que: "valor da perda de bens; máximo 888888888.88 parece sentinela", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "teve_multa = true (34.314 linhas, 64%), teve_ressarcimento = true (15.700; NULL nas outras 37.642), teve_perda_cargo = true (7.809), teve_inelegivel e proibicao_* são booleanos"
+      - "tipo_pessoa = 'Física' ou 'Jurídica'; esfera_processo = 'Estadual', 'Federal' ou 'Militar'; instancia = '1 grau', '2 grau' ou 'Militar'"
+      - "situacao = 'Ativo' e tipo_julgamento = 'Trânsito em julgado' são os únicos valores (filtrar não muda nada)"
+      - "valor_multa < 1e9 para tirar o sentinela 111111111111,11 (1 linha acima de 1e9; soma restante R$ 3,77 bi)"
+    use_para: "contar condenações e condenados e somar multas e ressarcimentos por tribunal, UF, esfera ou ano da propositura"
+    nao_use_para: "somar valores sem cortar sentinelas, ou contar pessoas por nome (pessoal) — use id_pessoa"
+    rascunho: [use_para, nao_use_para, "interpretação de sentinelas como valores fictícios"]
+    verificado: "53.342 linhas, 53.335 id_condenacao distintos, 41.558 id_pessoa, 37.065 id_processo; multa true 34.314; soma valor_multa com sentinela R$ 114,9 bi, sem R$ 3,77 bi; ressarcimento sem sentinelas R$ 9,27 bi — medido 2026-10-27"

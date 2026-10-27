@@ -1,0 +1,33 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_clp_ranking_competitividade
+tabelas:
+  nota_geral_municipio:
+    grao: "um município × pilar/dimensão do ranking de competitividade (415 municípios × 17 pilares, só 2022)"
+    chave: "(id_municipio, pilar_dimensao) — 7.055 linhas = 7.055 distintos"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2022–2022"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (VARCHAR)", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: nota_geral, o_que: "nota do município no pilar ou dimensão (0 a 97,88)", unidade: "pontos", soma: nao}
+      - {coluna: colocacao, o_que: "posição do município no ranking daquele pilar (1 a 415)", unidade: "posição", soma: nao}
+    filtros_tipicos:
+      - "pilar_dimensao = 'Ranking Geral' para a nota geral do município (valor literal do top do perfil; 415 linhas)"
+      - "pilar_dimensao LIKE 'Dimensão:%' para as 3 dimensões (Economia, Instituições, Sociedade); os demais são pilares. Que pilar pertence a que dimensão não está documentado"
+    use_para: "comparar a nota e a colocação de municípios (só os 415 maiores) em 2022, por pilar"
+    nao_use_para: "somar ou tirar média de notas entre pilares, ou analisar série temporal (um ano só)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "7.055 linhas, 7.055 distintos (id_municipio, pilar_dimensao), 415 municípios, 17 pilares com 415 linhas cada — medido 2026-10-27"
+  nota_geral_uf:
+    grao: "uma UF × pilar × ano do ranking de competitividade dos estados (27 UFs × 11 pilares × 8 anos)"
+    chave: "(ano, sigla_uf, pilar) — 2.376 linhas = 2.376 distintos"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2015–2022"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF"}}
+    medidas:
+      - {coluna: nota_geral, o_que: "nota da UF no pilar (0 a 100)", unidade: "pontos", soma: nao}
+      - {coluna: colocacao, o_que: "posição da UF no pilar naquele ano (1 a 27)", unidade: "posição", soma: nao}
+    filtros_tipicos:
+      - "pilar = 'Ranking Geral' para a nota geral da UF; sem esse filtro cada UF aparece 11 vezes por ano"
+    use_para: "evolução da nota e da colocação de cada estado por pilar de 2015 a 2022"
+    nao_use_para: "somar notas entre pilares ou anos"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2.376 linhas, 2.376 distintos (ano, sigla_uf, pilar); 11 pilares × 216 linhas — medido 2026-10-27"

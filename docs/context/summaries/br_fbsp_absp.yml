@@ -1,0 +1,48 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_fbsp_absp
+tabelas:
+  uf:
+    grao: "um estado × ano (27 UFs × 2007–2021)"
+    chave: "(ano, sigla_uf)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2007–2021"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "sigla da UF"}}
+    medidas:
+      - {coluna: quantidade_morte_violenta_intencional, o_que: "mortes violentas intencionais (MVI) no ano", unidade: "mortes", soma: sim}
+      - {coluna: quantidade_vitima_homicidio_doloso, o_que: "vítimas de homicídio doloso", unidade: "vítimas", soma: sim}
+      - {coluna: quantidade_ocorrencia_homicidio_doloso, o_que: "ocorrências de homicídio doloso (não vítimas)", unidade: "ocorrências", soma: sim}
+      - {coluna: quantidade_cvli, o_que: "crimes violentos letais intencionais", unidade: "ocorrências", soma: sim}
+      - {coluna: despesa_empenhada_seguranca_publica, o_que: "despesa empenhada em segurança pública", unidade: "R$ (significado da moeda/preço não documentado)", soma: sim}
+      - {coluna: quantidade_populacao_sistema_penitenciario, o_que: "população no sistema penitenciário", unidade: "pessoas, retrato", soma: sim}
+    filtros_tipicos: ["ano = 2021 para o último ano"]
+    use_para: "série estadual de violência letal, crimes patrimoniais, apreensão de armas e gasto em segurança, 2007–2021."
+    nao_use_para: "análise municipal ou taxas por 100 mil: não há população na tabela; somar vitima e ocorrencia de homicídio como se fossem iguais."
+    rascunho: [use_para, nao_use_para]
+    verificado: "405 linhas = 405 distintos de (ano,sigla_uf), 27 UFs por ano; nulos: quantidade_feminicidio 4,44%, roubo_carga 14,07%, roubo_instituicao_financeira 13,09% — medido 2026-10-27"
+  municipio:
+    grao: "um município (as 27 capitais) × ano (2016–2021)"
+    chave: "(ano, id_municipio)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2016–2021"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (27 distintos, só capitais)", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: quantidade_mortes_violentas_intencionais, o_que: "mortes violentas intencionais", unidade: "mortes", soma: sim}
+      - {coluna: quantidade_homicidio_doloso, o_que: "homicídios dolosos", unidade: "ocorrências/vítimas (não documentado)", soma: sim}
+      - {coluna: quantidade_mortes_intervencao_policial, o_que: "mortes por intervenção policial", unidade: "mortes", soma: sim}
+      - {coluna: proporcao_mortes_intenvencao_policial_x_mortes_violentas_intencionais, o_que: "proporção de mortes por intervenção policial nas MVI (nome com erro de grafia 'intenvencao' mantido)", unidade: "valores 0–37, provavelmente percentual (não documentado)", soma: nao}
+    filtros_tipicos: ["grupo é NULL em 54 das 162 linhas (1/3); valores 'Grupo 1'..'Grupo 4': significado não documentado"]
+    use_para: "violência nas capitais por ano, 2016–2021."
+    nao_use_para: "ranking de municípios do país: só 27 capitais; somar a coluna de proporção."
+    rascunho: [use_para, nao_use_para]
+    verificado: "162 linhas = 162 distintos de (ano,id_municipio); 27 municípios, 6 anos — medido 2026-10-27"
+  violencia_escola:
+    grao: "um estado × tema × item de resposta (pesquisa 2021, formato longo)"
+    chave: "(uf, tema, item)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2021–2021"}
+    territorio: {nivel: uf, colunas: {uf: "sigla da UF (27)"}}
+    medidas:
+      - {coluna: quantidade_escola, o_que: "número de escolas que deram a resposta 'item' ao tema, na UF", unidade: "escolas (DOUBLE, 2,97% nulos)", soma: sim}
+    filtros_tipicos: ["tema = 'Bullying (ameaças ou ofensas verbais)' (um tema por vez: somar entre temas mistura perguntas diferentes)", "item é a resposta ('Nunca','Poucas vezes','Várias vezes','Sem resposta'; escalas 'Adequado'..'Muito inadequado'; 'Sim'/'Não'); 'Sem resposta' (405) e 'Sem Resposta' (27) são grafias distintas", "tema = 'Proporção de escolas com projeto no tema' tem itens 'Bullying','Homofobia','Machismo','Uso de drogas','Violência','Relações étnico-raciais/racismo' (27 cada)"]
+    use_para: "contagem de escolas por resposta de uma pesquisa de violência escolar em 2021, por UF."
+    nao_use_para: "total de escolas da UF sem filtrar tema: cada tema repete as mesmas escolas, somar entre temas multiplica."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1917 linhas = 1917 distintos de (uf,tema,item); 17 temas (a maioria com 108 linhas = 27 UFs × 4 itens); ano só 2021 — medido 2026-10-27"

@@ -1,0 +1,43 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_cvm_administradores_carteira
+tabelas:
+  pessoa_fisica:
+    grao: "um registro de pessoa física como administrador/gestor de carteira na CVM (inclui cancelados)"
+    chave: "nenhuma: sem identificador (só nome); 6.683 linhas, 6.372 nomes distintos, 6.665 distintos de (nome, data_registro)"
+    tempo: {natureza: serie_de_periodos, coluna: data_registro, cobertura: "1986-05-23–2026-04-08"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos:
+      - "situacao = 'EM FUNCIONAMENTO NORMAL' para registros ativos (3.786); 'CANCELADA' 2.837, 'SUSPENSO(A) - A PEDIDO' 49, 'INTERVENTOR' 8, 'AFASTADO - TERMO DE COMPROMISSO' 2, 'SUSPENSO(A) - DECISAO JUDICIAL' 1"
+      - "data_cancelamento IS NULL dá 3.846 = ativos normais (3.786) + suspensos/afastados/interventores (60); só 'CANCELADA' tem data_cancelamento"
+      - "categoria_registro = 'Gestor de Carteira' (nula em 29,3%)"
+    use_para: "contar gestores pessoas físicas registrados, ativos ou cancelados, por ano de registro"
+    nao_use_para: "contar pessoas distintas (sem CPF: homônimos e re-registros) ou localizar por UF (não há)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "6.683 linhas, 6.372 nomes distintos, 3.786 em funcionamento normal — medido 2026-10-27"
+  pessoa_juridica:
+    grao: "um registro de pessoa jurídica como administrador fiduciário e/ou gestor de carteira na CVM (inclui cancelados)"
+    chave: "(cnpj, data_registro) — 3.009 linhas = 3.009 distintos; cnpj sozinho repete (2.901 distintos: empresa registrada mais de uma vez)"
+    tempo: {natureza: serie_de_periodos, coluna: data_registro, cobertura: "1988-06-20–2026-04-07"}
+    territorio: {nivel: municipio, colunas: {municipio: "nome do município da sede (nulo em 0,23%)", sigla_uf: "UF da sede"}}
+    medidas:
+      - {coluna: "CAST(valor_patrimonial_liquido AS DOUBLE)", o_que: "patrimônio líquido declarado; coluna VARCHAR, nula em 82% (data_patrimonio_liquido de 1990 a 2025)", unidade: "R$", soma: nao}
+    filtros_tipicos:
+      - "situacao = 'EM FUNCIONAMENTO NORMAL' para registros ativos (1.521, todos com data_cancelamento nulo e CNPJs distintos); 'CANCELADA' 1.484, 'LIQUIDACAO EXTRAJUDICIAL' 2, 'SUSPENSO(A) - DECISAO ADM' 1, 'AFASTADO - TERMO DE COMPROMISSO' 1"
+      - "categoria_registro entre as ativas: 'Gestor de Carteira' 1.379, 'Administrador Fiduciario' 62, 'Administrador Fiduciario e Gestor de Carteira' 80"
+      - "controle_acionario = 'PRIVADO', 'ESTATAL' ou 'PRIVADO HOLDING' (nulo em 3,3%)"
+    use_para: "contar gestoras e administradoras fiduciárias ativas por UF, município, categoria ou controle acionário"
+    nao_use_para: "somar patrimônio líquido (declarado por poucas empresas e por datas diferentes) ou contar empresas pelo CNPJ sem filtrar a situação"
+    rascunho: [use_para, nao_use_para, "somar patrimônio (não medido)"]
+    verificado: "3.009 linhas, 2.901 cnpj distintos, 3.009 (cnpj, data_registro); 1.521 em funcionamento normal com 1.521 CNPJs distintos — medido 2026-10-27"
+  responsavel:
+    grao: "um diretor responsável (por uma função regulatória) de uma pessoa jurídica registrada, identificado pelo cnpj da empresa"
+    chave: "nenhuma: 6.727 linhas; (cnpj, tipo) tem 6.205 distintos e (cnpj, tipo, nome) 6.567"
+    tempo: {natureza: retrato_atual}
+    territorio: {nivel: nenhum}
+    filtros_tipicos:
+      - "tipo: 18 funções, p. ex. 'DIRETOR DE CONTROLES INTERNOS (COMPLIANCE)', 'DIRETOR RESPONSAVEL PELA GESTAO DE RISCO', 'DIRETOR RESPONSAVEL PELA RESOLUCAO 50 (PLDFT)'"
+    use_para: "saber quem são os diretores responsáveis por função de cada gestora (junte a pessoa_juridica por cnpj)"
+    nao_use_para: "contar empresas: só 1.822 CNPJs aparecem, de 2.901 em pessoa_juridica; nem inferir quais são ativas"
+    rascunho: [use_para, nao_use_para, "tempo: retrato_atual (a tabela não tem data)"]
+    verificado: "6.727 linhas, 1.822 cnpj distintos, 6.205 de (cnpj, tipo) — medido 2026-10-27"

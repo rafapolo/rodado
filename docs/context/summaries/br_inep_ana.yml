@@ -1,0 +1,40 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_inep_ana
+tabelas:
+  escola:
+    grao: "uma escola × edição da ANA (resultados do 3º ano do EF)"
+    chave: "ano, id_escola"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2014–2016 (só as edições 2014 e 2016)"}
+    territorio: {nivel: ponto, colunas: {id_escola: "código INEP da escola (8 dígitos)", id_municipio: "código IBGE de 7 dígitos", id_uf: "código IBGE da UF (2 dígitos)", id_regiao: "região (1 a 5)"}}
+    medidas:
+      - {coluna: "media_lp_leitura, media_lp_escrita, media_mt", o_que: "proficiência média da escola em leitura, escrita e matemática", unidade: "pontos de escala", soma: nao}
+      - {coluna: "nivel_1_* a nivel_5_* (lp_leitura, lp_escrita, mt)", o_que: "percentual de alunos em cada nível de proficiência (escrita vai até o nível 5, leitura e matemática até o 4)", unidade: "%", soma: nao}
+      - {coluna: "escola_similar_nivel_*", o_que: "mesmo percentual para o grupo de escolas de nível socioeconômico semelhante (18,92% nulos)", unidade: "%", soma: nao}
+      - {coluna: "numero_matriculados_censo, numero_presentes_lp/mt, numero_validos_lp/mt", o_que: "contagens de alunos matriculados, presentes e com resultado válido", unidade: "alunos", soma: sim}
+      - {coluna: "taxa_participacao_lp, taxa_participacao_mt", o_que: "presentes sobre matriculados; vai até 193,9, então passa de 100", unidade: "%", soma: nao}
+    filtros_tipicos:
+      - "ano = 2016 (49.357 linhas em 2014; 48.717 em 2016)"
+      - "rede = '3' (Municipal, 80.995 linhas); '1' Federal, '2' Estadual, '4' Privada (dicionário, tabela alunos)"
+      - "tipo_area = '2' (Interior, 86.391) ou '1' (Capital)"
+      - "nivel_socio_economico: o código muda por edição (2014: '8' Muito Baixo a '14' Muito Alto; 2016: '15' Muito Baixo a '21' Muito Alto); nulo em 18,9% — não compare códigos entre anos"
+      - "tipo_localizacao '1' (70.630) / '2' (27.444): significado não documentado"
+    use_para: "desempenho e distribuição de níveis de alfabetização por escola em 2014 e 2016"
+    nao_use_para: "série longa (só duas edições) ou somar/mediar percentuais de escolas sem ponderar por numero_validos_*"
+    rascunho: [use_para, nao_use_para, "pontos de escala", "escrita vai até nível 5 (visto nas colunas)"]
+    verificado: "98.074 linhas = 98.074 distintos de (ano, id_escola); nivel_socio_economico por ano conferido (2014: códigos 8–14; 2016: 15–21) — medido 2026-10-27"
+  prova:
+    grao: "um item de prova × tipo de prova (posição na prova da ANA)"
+    chave: "ano, item, tipo_prova"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2014–2016"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "disciplina = '1' (Língua Portuguesa) ou '2' (Matemática), conforme o dicionário"
+      - "tipo_prova = '1' (Prova Regular, cadernos 1 a 16, 320 linhas); '2', '3', '4' são provas especiais"
+    use_para: "ver gabarito, bloco, posição e descritor de cada item aplicado"
+    nao_use_para: "resultado de alunos ou escolas; contar itens únicos por count(*) (item repete entre tipos de prova: 343 itens em 480 linhas por ano)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "480 linhas = 480 distintos de (ano, item, tipo_prova) e de (ano, tipo_prova, bloco, posicao, disciplina); 343 (ano, item) distintos — medido 2026-10-27"
+  dicionario:
+    grao: "um código de coluna (id_tabela, nome_coluna, chave) com seu significado"
+    use_para: "traduzir códigos (rede, tipo_area, nivel_socio_economico, disciplina, tipo_prova)"

@@ -1,0 +1,42 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_mj_sinesp
+tabelas:
+  municipio_mes:
+    grao: "um município × mês × tipo de ocorrência × abrangência (polícia que registra)"
+    chave: "ano, mes, id_municipio, tipo_ocorrencia, abrangencia (única: 8.806.170 linhas = 8.806.170 distintos)"
+    tempo: {natureza: serie_mensal, coluna: "ano + mes", cobertura: "2015-01–2026-08"}
+    territorio:
+      nivel: municipio
+      colunas: {id_municipio: "código IBGE de 7 dígitos, VARCHAR", sigla_uf: "UF do município"}
+    medidas:
+      - {coluna: quantidade_vitimas, o_que: "vítimas do crime; preenchida só nos crimes contra a pessoa (homicidio_doloso, feminicidio, latrocinio, suicidio, morte_no_transito*, morte_a_esclarecer, tentativa_*, lesao_corporal_seguida_de_morte)", unidade: "pessoas", soma: sim}
+      - {coluna: quantidade_ocorrencias, o_que: "ocorrências; só em mandado_de_prisao_cumprido (nos demais tipos é NULL)", unidade: "ocorrências", soma: sim}
+      - {coluna: "quantidade_vitimas_feminino / _masculino / _sexo_nao_informado", o_que: "vítimas por sexo; têm NULLs próprios, então a soma dos três pode ficar abaixo de quantidade_vitimas", unidade: "pessoas", soma: sim}
+    filtros_tipicos:
+      - "tipo_ocorrencia = 'homicidio_doloso' (12 tipos; os demais valores aparecem no perfil e na medição)"
+      - "abrangencia = 'Estadual' para crimes de polícia estadual; 'Polícia Rodoviária Federal' só em morte_no_transito, 'Polícia Federal' só em mandado_de_prisao_cumprido"
+      - "situacao_registro = 'reportado' para dado efetivamente informado; 'zero_estrutural' e 'nao_reportado' são os outros dois valores (significado não documentado; nao_reportado tem vítimas e ocorrências sempre NULL)"
+    use_para: "série de homicídios e outras mortes violentas por município e mês, e de mandados de prisão cumpridos."
+    nao_use_para: "somar com uf_mes (indicadores diferentes, ver gotcha uf_mes_nao_e_soma_de_municipio) nem comparar UFs por morte_no_transito_exceto_homicidio_doloso (ver transito_estadual_cobertura_desigual)."
+    rascunho: [use_para, nao_use_para, "significado de zero_estrutural e nao_reportado"]
+    verificado: "8.806.170 linhas; chave de 5 colunas com 8.806.170 distintos; homicidio_doloso Estadual 779.800 linhas e 481.819 vítimas; PRF só em morte_no_transito (774.230 linhas, 65.461 vítimas); PF só em mandado_de_prisao_cumprido (233.940 linhas, 3.855 ocorrências); 2026 vai até o mês 8; anos 2017–2024 têm 735.240 linhas cada; homicidio_doloso: soma dos três sexos 478.284 < 481.819 por NULLs — medido 2026-10-27. Gotchas: abrangencia_mistura_policias, vitimas_ou_ocorrencias, uf_mes_nao_e_soma_de_municipio, transito_estadual_cobertura_desigual"
+  uf_mes:
+    grao: "uma UF × mês × tipo de ocorrência × abrangência × (arma, agente, faixa etária quando o tipo as detalha)"
+    chave: "ano, mes, sigla_uf, tipo_ocorrencia, abrangencia, arma, agente, faixa_etaria (única: 291.662 linhas = 291.662 distintos; arma, agente e faixa_etaria são NULL fora dos tipos que as usam, então a chave depende de NULLs)"
+    tempo: {natureza: serie_mensal, coluna: "ano + mes", cobertura: "2015-01–2026-xx (a cobertura exata de 2026 não foi medida; o ano tem meses incompletos)"}
+    territorio:
+      nivel: uf
+      colunas: {sigla_uf: "sigla da UF"}
+    medidas:
+      - {coluna: quantidade_vitimas, o_que: "vítimas; preenchida nos tipos contra a pessoa (homicidio_doloso, estupro, estupro_de_vulneravel, pessoa_desaparecida, pessoa_localizada, morte_de_agente_do_estado, morte_por_intervencao_de_agente_do_estado, suicidio_de_agente_do_estado, etc.)", unidade: "pessoas", soma: sim}
+      - {coluna: quantidade_ocorrencias, o_que: "ocorrências; preenchida nos tipos de patrimônio e operações (roubo_de_veiculo, furto_de_veiculo, roubo_de_carga, roubo_a_instituicao_financeira, trafico_de_drogas, apreensao_de_arma_de_fogo, mandado_de_prisao_cumprido, atendimento_pre_hospitalar, etc.)", unidade: "ocorrências", soma: sim}
+      - {coluna: peso_apreendido, o_que: "peso apreendido; só em apreensao_de_cocaina e apreensao_de_maconha; unidade não documentada no banco", unidade: "não documentada", soma: sim}
+    filtros_tipicos:
+      - "tipo_ocorrencia = 'roubo_de_veiculo' (30 tipos; roubo/furto de veículo, roubo de carga e tráfico só existem aqui)"
+      - "abrangencia = 'Estadual' antes de somar: 'Polícia Federal' e 'Polícia Rodoviária Federal' entram no mesmo tipo (ver abrangencia_mistura_policias)"
+      - "tipo_ocorrencia = 'apreensao_de_arma_de_fogo' separa por arma (Pistola, Fuzil, Revolver...); sem filtrar arma, soma-se todas as armas"
+    use_para: "indicadores por UF e mês que não existem por município: roubo/furto de veículo, roubo de carga, tráfico, apreensões, mortes de agentes do Estado."
+    nao_use_para: "total de homicídios do país (o grosso está em municipio_mes; aqui há só resíduo) nem somar tipos de vítimas com tipos de ocorrências."
+    rascunho: [use_para, nao_use_para, "unidade de peso_apreendido", "cobertura de 2026"]
+    verificado: "291.662 linhas; chave de 8 colunas com 291.662 distintos; 30 tipos (contagem de não-nulos de vítimas/ocorrências/peso por tipo conferida); roubo_de_veiculo 7.548 linhas, 3.622 com quantidade_ocorrencias; ano 2015–2026 — medido 2026-10-27. Gotchas: uf_mes_nao_e_soma_de_municipio, vitimas_ou_ocorrencias, abrangencia_mistura_policias"

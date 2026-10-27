@@ -1,0 +1,28 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_mds_cadunico
+tabelas:
+  indicadores_catalogo:
+    grao: "um indicador do catálogo do CadÚnico (VisData), com níveis, periodicidade e número de linhas"
+    chave: "id_indicador (139 linhas = 139 distintos; indicador (texto) tem 138 distintos)"
+    tempo: {natureza: sem_tempo, coluna: nenhuma, cobertura: "catálogo"}
+    territorio: {nivel: nenhum, colunas: {}}
+    use_para: "achar o id_indicador pelo nome antes de consultar indicadores_municipio"
+    nao_use_para: "valores: aqui há só metadados"
+    rascunho: [use_para, nao_use_para]
+    verificado: "139 linhas, 139 id_indicador distintos; periodicidade 'Mês' (79) ou 'Mês#Ano' (60) — medido 2026-10-27."
+  indicadores_municipio:
+    grao: "um município × mês de referência × indicador × variável (formato longo)"
+    chave: "(id_municipio, referencia, id_indicador, variavel)"
+    tempo: {natureza: serie_mensal, coluna: referencia, cobertura: "2012-08-01–2026-09-01"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos"}}
+    medidas:
+      - {coluna: valor, o_que: "valor da variável: contagem de famílias/pessoas, mas também taxas em % (ex.: 'Taxa de atualização de todo o Cadastro Único' = 84,39 em SP)", unidade: "depende de variavel", soma: nao}
+    filtros_tipicos:
+      - "referencia = '2026-09-01' (DATE, sempre dia 1; a tabela tem 350 milhões de linhas, sempre filtre referencia)"
+      - "filtre por id_indicador ou por variavel exata (texto longo): o valor de uma taxa não se soma com contagens"
+      - "para totais, escolha uma variável de contagem (ex.: 'Famílias cadastradas no Cadastro Único', SP 2026-09 = 1.819.188)"
+    use_para: "perfil do CadÚnico e Bolsa Família por município e mês desde ago/2012"
+    nao_use_para: "somar valor sem escolher a variável, ou o período 2004–2011 (use br_mc_indicadores para até 2020)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "350.069.210 linhas; referencia 170 meses de 2012-08 a 2026-09; em 2026-09-01: 2.592.929 linhas = 2.592.929 distintos da chave, 5.571 municípios, 109 id_indicador, 488 variáveis — medido 2026-10-27."

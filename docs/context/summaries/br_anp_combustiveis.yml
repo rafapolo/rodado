@@ -1,0 +1,24 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_anp_combustiveis
+tabelas:
+  precos:
+    grao: "um preço de revenda coletado num posto (cnpj) × produto × data de coleta"
+    chave: "nenhuma confirmada: (cnpj, produto, data_coleta) tem 2.205.239 combinações em 2.205.259 linhas (20 repetem)"
+    tempo: {natureza: serie_diaria, coluna: data_coleta, cobertura: "2024-03-11–2026-10-02"}
+    territorio:
+      nivel: ponto
+      colunas:
+        cnpj: "CNPJ do posto/revenda (dado pessoal: só contagens no perfil)"
+        municipio: "nome do município em caixa alta, sem código IBGE"
+        estado: "nome do estado por extenso em caixa alta e sem acento (ex.: SAO PAULO), não a sigla"
+    medidas:
+      - {coluna: preco_revenda, o_que: "preço de revenda ao consumidor no posto", unidade: "R$ por litro; R$ por 13 kg no GLP; R$ por m³ no GNV (ver unidade_medida)", soma: nao}
+    filtros_tipicos:
+      - "produto = 'GASOLINA COMUM' (caixa alta; vocabulário diferente de br_anp_precos_combustiveis, que usa 'Gasolina'): médias de preço só têm sentido dentro de um produto"
+      - "unidade_medida = 'R$ / litro' (com espaços ao redor da barra) exclui GLP ('R$ / 13 kg') e GNV ('R$ / m³')"
+      - "produtos existentes: GASOLINA COMUM, GASOLINA ADITIVADA, ETANOL, DIESEL S10, DIESEL S500, GLP, GNV"
+    use_para: "preço médio de revenda por produto, município ou estado nas coletas de 2024-03 em diante"
+    nao_use_para: "série histórica longa (começa em 2024-03; para 2004 em diante use br_anp_precos_combustiveis.microdados) ou preço de distribuição/compra"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2.205.259 linhas, 608 datas de coleta, 19.490 CNPJs distintos; média de preco_revenda: gasolina comum 6,27, etanol 4,39, diesel S10 6,41, GLP 109,41 (R$/13 kg), GNV 4,73; municipio nunca nulo — medido 2026-10-27"

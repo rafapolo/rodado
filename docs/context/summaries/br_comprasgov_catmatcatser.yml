@@ -1,0 +1,31 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_comprasgov_catmatcatser
+tabelas:
+  materiais:
+    grao: "um item de material do catálogo CATMAT, com sua hierarquia grupo > classe > PDM (padrão descritivo de material)"
+    chave: "codigoItem — 249.804 linhas = 249.804 distintos"
+    tempo: {natureza: retrato_atual, coluna: dataHoraAtualizacao, cobertura: "2021-10-16–2026-10-06 (data da última atualização do item)"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos:
+      - "statusItem = true: todas as 249.804 linhas já são true, filtrar não muda nada"
+      - "itemSustentavel = true: 541 itens sustentáveis"
+      - "codigo_ncm IS NOT NULL: só 80.738 itens têm NCM (169.066 nulos); descricao_ncm é 100% nula"
+      - "colunas em camelCase com maiúscula (codigoItem, statusItem, itemSustentavel, dataHoraAtualizacao): entre aspas duplas se o DuckDB reclamar"
+    use_para: "consultar a descrição, o grupo, a classe e o PDM de um item pelo codigoItem (ex.: para interpretar itens de compras)"
+    nao_use_para: "preços ou quantidades (não há); nem datas de compra: dataHoraAtualizacao é atualização do cadastro"
+    rascunho: [use_para, nao_use_para]
+    verificado: "249.804 linhas, 249.804 codigoItem distintos, statusItem true em todas, 541 sustentáveis, 169.066 sem NCM — medido 2026-10-27"
+  servicos:
+    grao: "um serviço do catálogo CATSER, com sua hierarquia seção > divisão > grupo > classe > subclasse"
+    chave: "codigoServico — 3.021 linhas = 3.021 distintos"
+    tempo: {natureza: retrato_atual, coluna: dataHoraAtualizacao, cobertura: "2021-10-16–2026-10-05"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos:
+      - "statusServico = true: todas as 3.021 linhas já são true"
+      - "exclusivoCentralCompras = true: 3 serviços"
+      - "codigoClasse e codigoSubclasse são nulos em 23% e 98% das linhas (hierarquia incompleta)"
+    use_para: "consultar nome, grupo e classe de um serviço pelo codigoServico"
+    nao_use_para: "valores ou quantidades contratadas (não há)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "3.021 linhas, 3.021 codigoServico distintos, 3 exclusivos da central de compras — medido 2026-10-27"

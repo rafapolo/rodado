@@ -1,0 +1,22 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_bcb_pix_municipio
+tabelas:
+  transacoes:
+    grao: "um município × mês, com valor e quantidade de Pix por perfil (pagador/recebedor, PF/PJ)"
+    chave: "AnoMes, Municipio_Ibge (401.019 linhas = 401.019 distintos); 1 linha por mês tem Municipio_Ibge nulo ('N/D', 'NAO INFORMADO')"
+    tempo: {natureza: serie_mensal, coluna: "AnoMes (inteiro AAAAMM)", cobertura: "202011–202610 (72 meses)"}
+    territorio: {nivel: municipio, colunas: {Municipio_Ibge: "código IBGE de 7 dígitos (BIGINT)", Municipio: "nome em maiúsculas", Estado: "nome da UF por extenso, em maiúsculas", Sigla_Regiao: "sigla da região"}}
+    medidas:
+      - {coluna: "VL_PagadorPF, VL_PagadorPJ", o_que: "valor pago por pessoas físicas e jurídicas no município", unidade: "R$", soma: sim}
+      - {coluna: "VL_RecebedorPF, VL_RecebedorPJ", o_que: "valor recebido por PF e PJ", unidade: "R$", soma: sim}
+      - {coluna: "QT_PagadorPF, QT_PagadorPJ, QT_RecebedorPF, QT_RecebedorPJ", o_que: "quantidade de transações", unidade: "transações", soma: sim}
+      - {coluna: "QT_PES_PagadorPF, QT_PES_PagadorPJ, QT_PES_RecebedorPF, QT_PES_RecebedorPJ", o_que: "pessoas distintas no mês no município", unidade: "pessoas", soma: nao}
+    filtros_tipicos:
+      - "valor total pago = VL_PagadorPF + VL_PagadorPJ; em 202412 soma R$ 2,329 tri e bate com a soma de recebedor (R$ 2,329 tri)"
+      - "AnoMes é inteiro: AnoMes = 202412"
+      - "o município 'N/D' (Municipio_Ibge nulo) tem 72 linhas de região 'Nao informado'; exclua para análise territorial"
+    use_para: "volume e quantidade de Pix por município e mês, e perfil PF/PJ"
+    nao_use_para: "somar QT_PES_* entre meses ou municípios (pessoas repetem) ou fluxo entre municípios (só o total de cada um)"
+    rascunho: [use_para, nao_use_para, "QT_PES_* como pessoas distintas"]
+    verificado: "401.019 linhas, chave única; 202011 R$ 25,1 bi pagos em 5.569 municípios, 202609 R$ 3,22 tri em 5.572 — medido 2026-10-27"

@@ -1,0 +1,41 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_cgu_seguro_defeso
+tabelas:
+  favorecido:
+    grao: "uma combinação distinta de CPF × NIS × RGP × nome de um beneficiário do seguro-defeso (dimensão da pagamento); NÃO é uma pessoa"
+    chave: "favorecido_id (3.982.685 linhas = 3.982.685 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: nenhum}
+    use_para: "obter CPF, NIS, RGP e nome a partir do favorecido_id da pagamento; para contar pescadores use nis_favorecido (ver gotcha contar_por_nis)"
+    nao_use_para: "contar pescadores por count(DISTINCT favorecido_id), que conta combinações (3,98 mi) e não pessoas (2,18 mi NIS)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "3.982.685 linhas, 3.982.685 favorecido_id distintos — medido 2026-10-27"
+  pagamento:
+    grao: "uma parcela de seguro-defeso paga a um favorecido_id num mês de referência e município"
+    chave: "nenhuma: (mes_referencia, favorecido_id, codigo_municipio_siafi) tem 25.144.850 distintos em 43.418.500 linhas; há repetição (em 202401, 58.641 grupos com mês, favorecido, município e valor idênticos)"
+    tempo: {natureza: serie_mensal, coluna: mes_referencia, cobertura: "201301–202608"}
+    territorio: {nivel: municipio, colunas: {uf: "UF do pagamento (vazia em 121 linhas)", codigo_municipio_siafi: "código SIAFI de 4 dígitos (vazio em 121 linhas); não é código IBGE", nome_municipio: "nome do município"}}
+    medidas:
+      - {coluna: valor_parcela, o_que: "valor da parcela paga", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "mes_referencia LIKE '2024%' — mes_referencia é VARCHAR 'AAAAMM'; para um ano use prefixo (2024: 4.230.934 linhas, R$ 5,89 bi, 12 meses)"
+      - "valor_parcela > 0 se quiser só pagamentos: há 124.868 linhas negativas (estornos/devoluções, significado não documentado)"
+    use_para: "somar o valor pago e contar parcelas por mês, UF ou município; agregue direto na pagamento (mais rápida que a view seguro_defeso)"
+    nao_use_para: "contar pescadores (count(DISTINCT favorecido_id) conta combinações); use a view seguro_defeso e nis_favorecido para isso"
+    rascunho: [use_para, nao_use_para]
+    verificado: "43.418.500 linhas; chave composta 25.144.850 distintos (não única); 124.868 valores negativos; 121 linhas sem UF/município — medido 2026-10-27. Ver gotchas contar_por_nis e agregue_pela_pagamento"
+  seguro_defeso:
+    grao: "view pagamento JOIN favorecido: uma parcela paga × (CPF, NIS, RGP, nome) do beneficiário; mesmo grão da pagamento"
+    chave: "nenhuma: mesmas 43.418.500 linhas da pagamento, que não tem chave única"
+    tempo: {natureza: serie_mensal, coluna: mes_referencia, cobertura: "201301–202608"}
+    territorio: {nivel: municipio, colunas: {uf: "UF (vazia em 121 linhas)", codigo_municipio_siafi: "código SIAFI de 4 dígitos", nome_municipio: "nome do município"}}
+    medidas:
+      - {coluna: valor_parcela, o_que: "valor da parcela paga", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "mes_referencia LIKE '2024%' — VARCHAR 'AAAAMM'"
+      - "regexp_full_match(cpf_favorecido, '[0-9]{11}') para só CPFs completos (gotcha cpf_completado)"
+    use_para: "consultas que precisam de NIS, CPF, RGP ou nome do pescador; contar pescadores por count(DISTINCT nis_favorecido)"
+    nao_use_para: "somas e contagens simples por mês/UF/município, que ficam ~9x mais rápidas na pagamento (gotcha agregue_pela_pagamento)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "count(*) = 43.418.500, igual à pagamento — medido 2026-10-27"

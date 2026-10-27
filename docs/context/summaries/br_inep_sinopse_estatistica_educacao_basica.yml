@@ -1,0 +1,384 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_inep_sinopse_estatistica_educacao_basica
+tabelas:
+  dicionario:
+    grao: um valor decodificado por tabela, coluna e código (id_tabela, nome_coluna, chave, valor)
+    use_para: traduzir códigos e rótulos de colunas das tabelas de matrícula (etapa_ensino, serie, faixa_etaria, raca_cor, tempo_ensino).
+  docente_deficiencia:
+    grao: docentes por município × ano × etapa × tipo de deficiência atendida
+    chave: ano, id_municipio, etapa_ensino, deficiencia (122562 linhas, 122562 distintas em ano = 2025)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2012–2025
+    territorio: &id001
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos
+        sigla_uf: UF
+    medidas:
+    - coluna: quantidade_docente
+      o_que: docentes que atendem alunos com a deficiência
+      unidade: docentes
+      soma: sim
+    filtros_tipicos:
+    - etapa_ensino IN ('Educação Especial - Classes Comuns','Educação Especial - Classes Exclusivas') — só esses 2 valores
+    - 'deficiencia: 11 rótulos por extenso (Baixa Visão, Cegueira, Surdez, Deficiência Intelectual...)'
+    use_para: docentes de educação especial por deficiência.
+    nao_use_para: 'totalizar docentes distintos: o mesmo docente pode atender mais de uma deficiência.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '2025: 122.562 linhas = 122.562 chaves; anos 2012–2025 — medido 2026-10-27'
+  docente_escolaridade:
+    grao: docentes por município × ano × etapa × escolaridade
+    chave: ano, id_municipio, etapa_ensino, escolaridade (428967 linhas, 428967 distintas em ano = 2025)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2025
+    territorio: *id001
+    medidas:
+    - coluna: quantidade_docente
+      o_que: docentes com aquela escolaridade na etapa
+      unidade: docentes
+      soma: sim
+    filtros_tipicos:
+    - 'etapa_ensino: 10 rótulos, uma delas ''Educação Básica'' (total); A etapa_ensino é hierárquica e as linhas se sobrepõem: some UMA etapa só (ex.: ''Educação Básica'' para o total); o total não é a soma das etapas porque o docente que atua em várias etapas é contado em cada uma.'
+    - 'escolaridade: Ensino Fundamental, Ensino Médio, Graduação - Com/Sem Licenciatura, Pós Graduação - Especialização/Mestrado/Doutorado'
+    use_para: perfil de formação dos docentes por município.
+    nao_use_para: somar etapas entre si.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '2025: 428.967 linhas = 428.967 chaves; tabela de 8,1 milhões de linhas, medida só em 2025 — medido 2026-10-27'
+  docente_etapa_ensino:
+    grao: docentes por município × ano × etapa × tipo de classe × rede
+    chave: ano, id_municipio, etapa_ensino, tipo_classe, rede (1136484 linhas, 1136484 distintas em ano = 2025)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2025
+    territorio: *id001
+    medidas:
+    - coluna: quantidade_docente
+      o_que: docentes na etapa e tipo de classe; rede NULL em 56% das linhas (linhas sem recorte de rede)
+      unidade: docentes
+      soma: sim
+    filtros_tipicos:
+    - 'rede IS NULL e rede IN (''Estadual'',''Federal'',''Municipal'',''Privada'',''Pública'') são recortes diferentes: filtre explicitamente; ''Pública'' contém Estadual+Federal+Municipal sem dupla contagem de docentes'
+    - 'etapa_ensino: 10 rótulos, hierárquicos; tipo_classe: 47 rótulos (Anos Iniciais, Anos Finais, Creche, cursos FIC...)'
+    use_para: docentes por etapa e tipo de classe.
+    nao_use_para: somar rede NULL com as redes, nem etapas entre si.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '2025: 1.136.484 linhas = 1.136.484 chaves (incluindo rede NULL: 635.094 linhas, 501.390 com rede); 36 tipo_classe com rede NULL, 18 com rede — medido 2026-10-27'
+  docente_faixa_etaria_sexo:
+    grao: docentes por município × ano × etapa × faixa etária × sexo
+    chave: ano, id_municipio, etapa_ensino, faixa_etaria, sexo (857934 linhas, 857934 distintas em ano = 2025)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2025
+    territorio: *id001
+    medidas:
+    - coluna: quantidade_docente
+      o_que: docentes no recorte
+      unidade: docentes
+      soma: sim
+    filtros_tipicos:
+    - sexo IN ('Feminino','Masculino')
+    - 'faixa_etaria: Até 24 anos, 25 a 29 anos, 30 a 39 anos, 40 a 49 anos, 50 a 54 anos, 55 a 59 anos, 60 anos ou mais; etapa_ensino hierárquica (11 rótulos, uma é ''Educação Básica'')'
+    use_para: distribuição etária e por sexo dos docentes.
+    nao_use_para: somar etapas entre si.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '2025: 857.934 linhas = 857.934 chaves — medido 2026-10-27'
+  docente_localizacao:
+    grao: docentes por município × ano × etapa × rede × localização
+    chave: ano, id_municipio, etapa_ensino, rede, localizacao (1002780 linhas, 1002780 distintas em ano = 2025)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2025
+    territorio: *id001
+    medidas:
+    - coluna: quantidade_docente
+      o_que: docentes no recorte
+      unidade: docentes
+      soma: sim
+    filtros_tipicos:
+    - 'localizacao IN (''Total'',''Urbana'',''Rural''): ''Total'' já soma Urbana e Rural — escolha um'
+    - rede = 'Pública' (acento) contém Estadual+Federal+Municipal; Estadual+Federal+Municipal em 2025 nacional (2.092.901) > Pública (2.028.092) porque docente em duas redes é contado em cada uma
+    - etapa_ensino = 'Educação Básica' para o total; 12 rótulos hierárquicos (Educação Infantil ⊃ Creche/Pré-Escola; Ensino Fundamental ⊃ Anos Iniciais/Finais)
+    use_para: docentes por rede e localização.
+    nao_use_para: somar redes ou etapas entre si (dupla contagem).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '2025: 1.002.780 linhas = 1.002.780 chaves; nacional Educação Básica Total: Estadual 703.576, Federal 39.988, Municipal 1.349.337, Privada 594.175, Pública 2.028.092 — medido 2026-10-27'
+  docente_regime_contrato:
+    grao: docentes por município × ano × etapa × rede × regime de contrato
+    chave: ano, id_municipio, etapa_ensino, rede, regime_contrato (668520 linhas, 668520 distintas em ano = 2025)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2011–2025
+    territorio: *id001
+    medidas:
+    - coluna: quantidade_docente
+      o_que: docentes no recorte
+      unidade: docentes
+      soma: sim
+    filtros_tipicos:
+    - rede IN ('Estadual','Federal','Municipal') — só redes públicas
+    - regime_contrato IN ('Concursado','Contrato CLT','Contrato Temporário','Contrato Terceirizado')
+    - 'etapa_ensino: 10 rótulos hierárquicos; grafia ''Educação Basica'' (sem acento) aparece no top de 2025'
+    use_para: vínculo contratual de docentes de escolas públicas.
+    nao_use_para: docentes da rede privada (ausente).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '2025: 668.520 linhas = 668.520 chaves; anos 2011–2025 — medido 2026-10-27'
+  educacao_especial_etapa_ensino:
+    grao: alunos da educação especial por município × ano × tipo de classe × etapa
+    chave: ano, id_municipio, tipo_classe, etapa_ensino (155960 linhas, 155960 distintas em ano = 2023)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2023
+    territorio: *id001
+    medidas:
+    - coluna: quantidade_matricula
+      o_que: matrículas de educação especial (DECIMAL, valores inteiros)
+      unidade: matrículas
+      soma: sim
+    filtros_tipicos:
+    - tipo_classe IN ('Classes Comuns','Classes Exclusivas')
+    - 'etapa_ensino: 13 rótulos com travessão ''–'' (EJA – Ensino Fundamental...), diferente do hífen ''-'' das outras tabelas'
+    use_para: matrículas de educação especial por etapa.
+    nao_use_para: 'somar tipo_classe sem decidir: Comuns (inclusão) e Exclusivas são recortes disjuntos mas separados.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '2023: 155.960 linhas = 155.960 chaves; anos 2007–2023 — medido 2026-10-27'
+  educacao_especial_faixa_etaria:
+    grao: alunos da educação especial por município × ano × tipo de classe × faixa etária
+    chave: ano, id_municipio, tipo_classe, faixa_etaria (1135920 linhas, 1135920 distintas)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2023
+    territorio: *id001
+    medidas:
+    - coluna: quantidade_matricula
+      o_que: matrículas de educação especial
+      unidade: matrículas
+      soma: sim
+    filtros_tipicos:
+    - faixa_etaria IN ('Até 14 anos','15 a 17 anos','18 a 24 anos','25 a 29 anos','30 a 34 anos','35 anos ou mais ') — o último tem espaço no final
+    use_para: educação especial por faixa etária.
+    nao_use_para: dados depois de 2023 (série acaba lá).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 1.135.920 linhas = 1.135.920 chaves; anos 2007–2023 — medido 2026-10-27
+  educacao_especial_localizacao:
+    grao: alunos da educação especial por município × ano × tipo de classe × rede × localização
+    chave: ano, id_municipio, tipo_classe, rede, localizacao (1514560 linhas, 1514560 distintas)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2023
+    territorio: *id001
+    medidas:
+    - coluna: quantidade_matricula
+      o_que: matrículas de educação especial
+      unidade: matrículas
+      soma: sim
+    filtros_tipicos:
+    - rede IN ('Estadual','Federal','Municipal','Privada'); localizacao IN ('Urbana','Rural') (sem 'Total')
+    use_para: educação especial por rede e localização.
+    nao_use_para: dados depois de 2023.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 1.514.560 linhas = 1.514.560 chaves; anos 2007–2023 — medido 2026-10-27
+  educacao_especial_sexo_raca_cor:
+    grao: alunos da educação especial por município × ano × tipo de classe × sexo × raça/cor
+    chave: ano, id_municipio, tipo_classe, sexo, raca_cor (133680 linhas, 133680 distintas em ano = 2023)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2023
+    territorio: *id001
+    medidas:
+    - coluna: quantidade_matricula
+      o_que: matrículas de educação especial
+      unidade: matrículas
+      soma: sim
+    filtros_tipicos:
+    - 'raca_cor: Amarela, Branca, Indígena, Não declarada, Parda, Preta; sexo IN (''Feminino'',''Masculino'')'
+    use_para: educação especial por sexo e raça/cor.
+    nao_use_para: dados depois de 2023.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '2023: 133.680 linhas = 133.680 chaves; anos 2007–2023 — medido 2026-10-27'
+  educacao_especial_tempo_ensino:
+    grao: alunos da educação especial por município × ano × tipo de classe × rede × tempo de ensino
+    chave: ano, id_municipio, tipo_classe, rede, tempo_ensino (1514560 linhas, 1514560 distintas)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2023
+    territorio: *id001
+    medidas:
+    - coluna: quantidade_matricula
+      o_que: matrículas de educação especial
+      unidade: matrículas
+      soma: sim
+    filtros_tipicos:
+    - tempo_ensino IN ('Integral','Parcial'); rede IN ('Estadual','Federal','Municipal','Privada')
+    use_para: educação especial em tempo integral × parcial.
+    nao_use_para: dados depois de 2023.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 1.514.560 linhas = 1.514.560 chaves; anos 2007–2023 — medido 2026-10-27
+  educacao_especial_tipo_deficiencia:
+    grao: alunos da educação especial por município × ano × tipo de classe × tipo de deficiência
+    chave: ano, id_municipio, tipo_classe, tipo_deficiencia (111400 linhas, 111400 distintas em ano = 2023)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2023
+    territorio: *id001
+    medidas:
+    - coluna: quantidade_matricula
+      o_que: matrículas por deficiência
+      unidade: matrículas
+      soma: sim
+    filtros_tipicos:
+    - 'tipo_deficiencia: 10 rótulos (Baixa Visão, Cegueira, Deficiência Intelectual, Transtorno do Espectro Autista, Altas Habilidade/Superdotação...)'
+    use_para: matrículas de educação especial por deficiência.
+    nao_use_para: totalizar alunos distintos (o aluno com mais de uma deficiência é contado em cada).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '2023: 111.400 linhas = 111.400 chaves; todas as matrículas são inteiras — medido 2026-10-27'
+  etapa_ensino_serie:
+    grao: matrículas por município × ano × rede × etapa × série
+    chave: ano, id_municipio, rede, etapa_ensino, serie (646236 linhas, 646236 distintas em ano = 2025)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2025
+    territorio: *id001
+    medidas:
+    - coluna: quantidade_matricula
+      o_que: matrículas na etapa/série
+      unidade: matrículas
+      soma: sim
+    filtros_tipicos:
+    - rede IN ('Estadual','Federal','Municipal','Privada')
+    - 'serie é NULL em 52% das linhas (etapas sem série: EJA, Creche, Pré-Escola, Profissional): para essas, use etapa_ensino'
+    - 'etapa_ensino: 18 rótulos disjuntos (Ensino Fundamental - Anos Iniciais, Anos Finais, Ensino Médio Regular, Educação Profissional - ...)'
+    use_para: matrículas por etapa e série; etapas aqui são disjuntas e somam o total.
+    nao_use_para: série onde serie é NULL.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '2025: 646.236 linhas = 646.236 chaves; nacional 2025: anos iniciais 14.514.244, finais 11.292.523, médio regular 7.370.879 — medido 2026-10-27'
+  faixa_etaria:
+    grao: matrículas por município × ano × etapa × faixa etária
+    chave: ano, id_municipio, etapa_ensino, faixa_etaria (200556 linhas, 200556 distintas em ano = 2025)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2025
+    territorio: *id001
+    medidas:
+    - coluna: quantidade_matricula
+      o_que: matrículas no recorte
+      unidade: matrículas
+      soma: sim
+    filtros_tipicos:
+    - 'etapa_ensino: 7 rótulos disjuntos (Educação Infantil - Creche, Pré-Escola, EJA, Ensino Fundamental - Anos Iniciais/Finais, Ensino Médio Regular, Educação Profissional)'
+    - 'faixa_etaria: 17 rótulos, e cada etapa usa os seus (EJA: ''15 a 17 anos''...; creche: ''Até 5 anos'' etc.)'
+    use_para: idade dos alunos por etapa.
+    nao_use_para: comparar faixas entre etapas (rótulos diferentes por etapa).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos (exemplos de faixa por etapa)
+    verificado: '2025: 200.556 linhas = 200.556 chaves; nacional por etapa igual a etapa_ensino_serie (fundamental iniciais 14.514.244) — medido 2026-10-27'
+  localizacao:
+    grao: matrículas por município × ano × rede × etapa × localização
+    chave: ano, id_municipio, rede, etapa_ensino, localizacao (401112 linhas, 401112 distintas em ano = 2025)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2025
+    territorio: *id001
+    medidas:
+    - coluna: quantidade_matricula
+      o_que: matrículas no recorte
+      unidade: matrículas
+      soma: sim
+    filtros_tipicos:
+    - localizacao IN ('Urbana','Rural') (sem total)
+    - 'etapa_ensino: 9 rótulos; inclui ''Educação Especial - Classes Comuns/Exclusivas'', que se sobrepõem às demais etapas — não some tudo junto'
+    use_para: matrículas urbana × rural.
+    nao_use_para: somar as etapas incluindo Educação Especial (dupla contagem).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '2025: 401.112 linhas = 401.112 chaves — medido 2026-10-27'
+  sexo_raca_cor:
+    grao: matrículas por município × ano × etapa × sexo × raça/cor
+    chave: ano, id_municipio, etapa_ensino, sexo, raca_cor (601668 linhas, 601668 distintas em ano = 2025)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2025
+    territorio: *id001
+    medidas:
+    - coluna: quantidade_matricula
+      o_que: matrículas no recorte
+      unidade: matrículas
+      soma: sim
+    filtros_tipicos:
+    - 'raca_cor: Amarela, Branca, Indígena, Não declarada, Parda, Preta; sexo IN (''Feminino'',''Masculino'')'
+    - 'etapa_ensino: 9 rótulos, com Educação Especial sobreposta às demais'
+    use_para: perfil de sexo e cor/raça das matrículas.
+    nao_use_para: somar etapas incluindo Educação Especial.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '2025: 601.668 linhas = 601.668 chaves — medido 2026-10-27'
+  tempo_ensino:
+    grao: matrículas por município × ano × rede × tempo de ensino × etapa
+    chave: ano, id_municipio, rede, tempo_ensino, etapa_ensino (311976 linhas, 311976 distintas em ano = 2025)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2025
+    territorio: *id001
+    medidas:
+    - coluna: quantidade_matricula
+      o_que: matrículas no recorte
+      unidade: matrículas
+      soma: sim
+    filtros_tipicos:
+    - tempo_ensino IN ('Integral','Parcial')
+    - 'rede IN (''Estadual'',''Federal'',''Municipal'',''Privada''); etapa_ensino: 6 rótulos (inclui Educação Especial sobreposta)'
+    use_para: matrículas em tempo integral.
+    nao_use_para: somar etapas incluindo Educação Especial.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '2025: 311.976 linhas = 311.976 chaves — medido 2026-10-27'

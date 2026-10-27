@@ -1,0 +1,19 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_cgu_receitas_publicas
+tabelas:
+  receitas:
+    grao: "uma linha de receita federal por unidade gestora × classificação (categoria, origem, espécie, detalhamento) × data de lançamento, com valores previsto, lançado e realizado"
+    chave: "nenhuma: 1.529.345 linhas distintas entre si, mas só 1.529.163 combinações de (ano_exercicio, codigo_unidade_gestora, categoria_economica, origem, especie, detalhamento, data_lancamento), ou seja 182 repetidas"
+    tempo: {natureza: serie_anual, coluna: ano_exercicio, cobertura: "2013–2024 (data_lancamento 2013-12-31 a 2024-12-07; 2013–2015 só têm lançamento em 31/12, a partir de 2016 há datas ao longo do ano)"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: valor_realizado, o_que: "receita arrecadada (realizada)", unidade: "R$", soma: sim}
+      - {coluna: valor_previsto, o_que: "receita prevista; zero em 98% das linhas (1.504.137 de 1.529.345), então só faz sentido somada por ano/órgão", unidade: "R$", soma: sim}
+      - {coluna: valor_lancado, o_que: "receita lançada (a constituir); nula/zero em 99% das linhas e pode ser negativa (soma de 2023: R$ -295,8 bi)", unidade: "R$", soma: sim}
+      - {coluna: percentual_realizado, o_que: "percentual realizado informado pela fonte; não bate com 100*realizado/previsto na maioria das linhas (só 25.202 batem)", unidade: "%", soma: nao}
+    filtros_tipicos: ["ano_exercicio = 2023: inteiro", "categoria_economica = 'Receitas Correntes' (1.462.584 linhas); outros valores: 'Receitas de Capital', 'Receitas Correntes - intra-orçamentárias', 'Receitas de Capital - intra-orçamentárias', 'Sem informação'", "origem = 'Receita de Serviços' (479.518) ou 'Impostos, Taxas e Contribuições de Melhoria' (126.155): texto com acento e vírgula"]
+    use_para: "somar a receita realizada e a prevista por ano, órgão, origem ou espécie."
+    nao_use_para: "ler percentual_realizado por linha, ou comparar valor_previsto com valor_realizado linha a linha (a previsão está concentrada em poucas linhas)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.529.345 linhas; soma por ano em R$ bi (previsto/lançado/realizado): 2013 2.175/1.143/1.894, 2016 2.953/326/2.840, 2024 5.414/8,9/4.503; 2016–2024 com 142–195 mil linhas por ano, 2013–2015 com ~4,5 mil — medido 2026-10-27"

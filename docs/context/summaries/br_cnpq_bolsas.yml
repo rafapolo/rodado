@@ -1,0 +1,24 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_cnpq_bolsas
+tabelas:
+  microdados:
+    grao: "um processo (bolsa ou auxílio) de um beneficiário do CNPq num ano, com o valor pago naquele ano"
+    chave: "nenhuma: (ano, processo) tem 2.673.013 distintos em 2.839.708 linhas (166.695 linhas repetidas); acrescentar modalidade e beneficiário não separa"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2002–2022"}
+    territorio: {nivel: uf, colunas: {sigla_uf_destino: "UF da instituição de destino (onde a bolsa é executada)", sigla_uf_origem: "UF da instituição de origem (nula em 0,89%)", pais_destino: "país de destino, código de 3 letras ('BRA')"}}
+    medidas:
+      - {coluna: valor, o_que: "valor pago no ano ao processo", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "ano = <ano>: o mesmo processo reaparece em cada ano de vigência; sem filtro, soma plurianual (2022: 227.257 linhas, R$ 1,70 bi)"
+      - "modalidade tem espaço no fim: 'IC ' e 'PQ ' (com espaço), 'ICJ', 'GD ', 'GM ' (IC 91.127 linhas e R$ 135 mi em 2022); significados em br_cnpq_bolsas.dicionario"
+      - "linha_fomento é código VARCHAR: '13' = Bolsas de Iniciação Científica, '14' = IC Júnior, '20' = Produtividade em Pesquisa, '9' = Doutorado (dicionario)"
+      - "pais_destino = 'BRA' para bolsas no país (226.489 de 227.257 em 2022)"
+    use_para: "somar o investimento do CNPq e contar bolsas por ano, modalidade, grande área, UF ou instituição"
+    nao_use_para: "contar bolsistas distintos pelo nome (pessoal) ou somar anos como se cada processo fosse uma bolsa distinta"
+    rascunho: [use_para, nao_use_para, "valor = pago no ano (deduzido)"]
+    verificado: "2.839.708 linhas, 2.673.013 distintos (ano, processo), 1.342.055 processos distintos; valor total R$ 28,6 bi; 2022: 227.257 linhas, R$ 1,70 bi, 136 com valor 0 — medido 2026-10-27"
+  dicionario:
+    grao: "uma linha por (tabela, coluna, código) com o significado dos códigos de microdados (99 linhas)"
+    use_para: "traduzir linha_fomento, modalidade e demais códigos de microdados"
+    verificado: "99 linhas — medido 2026-10-27"

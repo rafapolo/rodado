@@ -1,0 +1,111 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibge_pam
+tabelas:
+  lavoura_temporaria:
+    grao: um município × ano × produto de lavoura temporária
+    chave: ano, id_municipio, produto
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 1974–2024
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos (VARCHAR)
+        sigla_uf: UF do município
+    medidas:
+    - coluna: area_plantada
+      o_que: área plantada (nula até 1987; ver gotcha area_plantada_so_desde_1988)
+      unidade: hectares
+      soma: sim
+    - coluna: area_colhida
+      o_que: área colhida
+      unidade: hectares
+      soma: sim
+    - coluna: quantidade_produzida
+      o_que: quantidade produzida
+      unidade: 'toneladas (medido: rendimento × área colhida bate nos produtos testados)'
+      soma: sim
+    - coluna: rendimento_medio_producao
+      o_que: quantidade ÷ área colhida
+      unidade: 'kg/ha (medido: quantidade*1000/area_colhida bate)'
+      soma: nao
+    - coluna: valor_producao
+      o_que: valor da produção
+      unidade: R$ mil (moeda da época antes de 1994; ver gotcha valor_em_mil_e_moeda_da_epoca)
+      soma: sim
+    filtros_tipicos:
+    - 'a tabela é uma grade município × produto (inclui municípios sem produção, com medidas nulas: ~80–88% de nulos
+      em 2024); filtre quantidade_produzida IS NOT NULL (ou valor_producao) para ficar com quem produziu'
+    - 'produto é o nome por extenso, com acento e às vezes asterisco: ''Soja (em grão)'', ''Milho (em grão)'', ''Cana-de-açúcar'',
+      ''Feijão (em grão)'', ''Arroz (em casca)'', ''Abacaxi*'' (quantidade em toneladas; frutos marcados com ''*''
+      podem estar em mil frutos, não medido)'
+    - feijão e milho aparecem como um só produto cada (1ª/2ª safra não separadas; o LSPA separa)
+    use_para: Produção, área e valor de lavoura temporária por município e ano, e rankings de municípios/UFs por
+      produto.
+    nao_use_para: Não some produtos diferentes na quantidade (unidades e produtos distintos) nem série de valor
+      atravessando 1994 sem deflacionar; não é previsão (use br_ibge_lspa).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - unidade das frutas com asterisco
+    verificado: 'ano=2024:  183579 linhas = 183579 distintos de (id_municipio, produto); 33 produtos (Alfafa fenada,
+      Cana para forragem, Rami: 0 municípios com produção em 2024), 5563 municípios, 35735 linhas com quantidade_produzida
+      e 35732 com valor; 3 linhas com quantidade sem valor. Chave com ano conferida em 1980 e 2000 (367158 = 367158).
+      Soja 2024: 144.473.768 t, 46,2 M ha plantados, valor 260.233.559 (R$ mil). Cobertura 1974–2024 (51 anos) —
+      medido 2026-10-27'
+  lavoura_permanente:
+    grao: um município × ano × produto de lavoura permanente
+    chave: ano, id_municipio, produto
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 1974–2024
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos (VARCHAR)
+        sigla_uf: UF do município
+    medidas:
+    - coluna: area_destinada_colheita
+      o_que: área destinada à colheita (nula até 1987; ver gotcha area_plantada_so_desde_1988)
+      unidade: hectares
+      soma: sim
+    - coluna: area_colhida
+      o_que: área colhida
+      unidade: hectares
+      soma: sim
+    - coluna: quantidade_produzida
+      o_que: quantidade produzida
+      unidade: toneladas (frutas em mil frutos até 2000 nas permanentes; ver gotcha frutas_trocam_de_unidade_em_2001)
+      soma: sim
+    - coluna: rendimento_medio_producao
+      o_que: quantidade ÷ área colhida
+      unidade: 'kg/ha (medido: quantidade*1000/area_colhida bate)'
+      soma: nao
+    - coluna: valor_producao
+      o_que: valor da produção
+      unidade: R$ mil (moeda da época antes de 1994; ver gotcha valor_em_mil_e_moeda_da_epoca)
+      soma: sim
+    filtros_tipicos:
+    - 'a tabela é uma grade município × produto (inclui municípios sem produção, com medidas nulas: ~80–88% de nulos
+      em 2024); filtre quantidade_produzida IS NOT NULL (ou valor_producao) para ficar com quem produziu'
+    - 'produto é o nome por extenso, com acento e às vezes asterisco: ''Laranja'', ''Banana (cacho)'', ''Café (em
+      grão) Total'', ''Café (em grão) Arábica'', ''Café (em grão) Canephora'', ''Uva'' (quantidade em toneladas;
+      frutos marcados com ''*'' podem estar em mil frutos, não medido)'
+    - 'café: ''Café (em grão) Total'' = Arábica + Canephora; não some os três (gotcha cafe_total_e_partes)'
+    - 'área: a coluna é area_destinada_colheita (permanente), não area_plantada'
+    use_para: Produção, área e valor de lavoura permanente por município e ano, e rankings de municípios/UFs por
+      produto.
+    nao_use_para: Não some produtos diferentes na quantidade (unidades e produtos distintos) nem série de valor
+      atravessando 1994 sem deflacionar; não é previsão (use br_ibge_lspa).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - unidade das frutas com asterisco
+    verificado: 'ano=2024: 210558 linhas = 210558 distintos de (id_municipio, produto); 38 produtos (café entra
+      como Total, Arábica e Canephora); 5541 municípios, 25308 linhas com quantidade e valor; 3 produtos sem produção
+      em 2024 (Algodão arbóreo, Borracha látex líquido, Caju). Chave com ano conferida em 1980 e 2000 (420964 =
+      420964). Café Total 2024 = 3.387.724 t; Arábica 2.393.732 + Canephora 993.992. Cobertura 1974–2024 (51 anos)
+      — medido 2026-10-27'

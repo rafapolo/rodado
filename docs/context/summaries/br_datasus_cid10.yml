@@ -1,0 +1,60 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_datasus_cid10
+tabelas:
+  capitulos:
+    grao: "um capítulo da CID-10 (22 capítulos)"
+    chave: "NUMCAP (22 linhas = 22 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: nenhum}
+    use_para: "traduzir o capítulo (faixa CATINIC–CATFIM de categorias) em descrição, ex.: ligar um código CID ao capítulo por comparação de texto."
+    nao_use_para: "contar doenças ou casos: não há medida, é só tabela de códigos."
+    rascunho: [use_para, nao_use_para]
+    verificado: "22 linhas, 22 distintos de NUMCAP; coluna C5 é 100% nula — medido 2026-10-27"
+  grupos:
+    grao: "um grupo de categorias da CID-10 (faixa CATINIC–CATFIM dentro de um capítulo)"
+    chave: "(CATINIC, CATFIM)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: nenhum}
+    use_para: "dar o nome do grupo (ex.: faixa A00–A09) a uma categoria de 3 caracteres por intervalo de códigos."
+    nao_use_para: "juntar com igualdade a uma categoria: o grupo é um intervalo, use CAT BETWEEN CATINIC AND CATFIM."
+    rascunho: [use_para, nao_use_para]
+    verificado: "275 linhas, 275 distintos de (CATINIC,CATFIM); C4 100% nula — medido 2026-10-27"
+  codigos:
+    grao: "uma categoria de 3 caracteres da CID-10 (ex.: A00)"
+    chave: "CAT"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["CLASSIF = '*' (83 categorias, asterisco) ou '+' (2, adaga): sistema dagger/asterisco; vazio ('') é a maioria (1960); significado de '*'/'+' pelo padrão da CID-10, não por dicionário no banco"]
+    use_para: "descrever a categoria CAT (DESCRICAO, DESCRABREV) de um diagnóstico de 3 caracteres."
+    nao_use_para: "diagnósticos de 4 caracteres: esses estão em subcategorias."
+    rascunho: [filtros_tipicos, use_para, nao_use_para]
+    verificado: "2045 linhas, 2045 distintos de CAT; EXCLUIDOS e C6 100% nulas — medido 2026-10-27"
+  subcategorias:
+    grao: "uma subcategoria de 4 caracteres da CID-10 (ex.: A000)"
+    chave: "SUBCAT"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["RESTRSEXO = 'F' (758) ou 'M' (116): código restrito a um sexo; '' (11577) sem restrição", "CAUSAOBITO = 'N' (1291): código que não pode ser causa básica de óbito; '' (11160) pode", "SUBCAT sem ponto: 'A000', não 'A00.0' (o ponto só aparece em DESCRABREV)"]
+    use_para: "traduzir o código CID de 4 caracteres de uma tabela de saúde (SIM/SIH) em descrição e regras de uso."
+    nao_use_para: "contar casos: não há medida."
+    rascunho: [filtros_tipicos, use_para, nao_use_para]
+    verificado: "12451 linhas, 12451 distintos de SUBCAT; RESTRSEXO: ''=11577, F=758, M=116; CAUSAOBITO: ''=11160, N=1291; C8 100% nula — medido 2026-10-27"
+  cid_o_categorias:
+    grao: "uma categoria morfológica da CID-O (códigos M8000/0 a M9989/1, tipo de neoplasia)"
+    chave: "CAT"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: nenhum}
+    use_para: "descrever o código de morfologia de tumor (CID-O) com a referência cruzada REFER."
+    nao_use_para: "diagnóstico CID-10 comum (A00–Z99): use codigos/subcategorias."
+    rascunho: [use_para, nao_use_para]
+    verificado: "816 linhas, 816 distintos de CAT (e de (CAT,DESCRICAO)); C3 100% nula — medido 2026-10-27"
+  cid_o_grupos:
+    grao: "um grupo de morfologia da CID-O (faixa CATINIC–CATFIM, ex.: M800–M804)"
+    chave: "nenhuma: 63 linhas, 61 pares (CATINIC,CATFIM) distintos; M980 e M959 repetem (2 linhas cada, grupos de um só código)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: nenhum}
+    use_para: "dar o nome do grupo de morfologia por intervalo de códigos."
+    nao_use_para: "chave única por (CATINIC,CATFIM): há duplicatas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "63 linhas, 61 distintos de (CATINIC,CATFIM), duplicados: M980, M959; C4 100% nula — medido 2026-10-27"

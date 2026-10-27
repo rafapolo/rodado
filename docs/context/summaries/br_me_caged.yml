@@ -1,0 +1,50 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_me_caged
+tabelas:
+  microdados_movimentacao:
+    grao: "uma movimentação de emprego formal (admissão ou desligamento) declarada no prazo, Novo CAGED"
+    chave: "nenhuma: não há identificador do vínculo; em ano = 2026, mes = 8 há 4.423.299 linhas e 4.198.013 combinações das 22 colunas de atributos, 225.286 linhas repetem"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2020–2026-08"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (NULL se o IBGE não reconhece o código)", sigla_uf: "UF, inclui 'UF não identificada'"}}
+    medidas:
+      - {coluna: saldo_movimentacao, o_que: "+1 admissão, -1 desligamento; a soma é o saldo líquido de empregos", unidade: "vínculos", soma: sim}
+      - {coluna: salario_mensal, o_que: "salário contratual do mês", unidade: "R$", soma: nao}
+      - {coluna: horas_contratuais, o_que: "horas semanais", unidade: "horas", soma: nao}
+    filtros_tipicos:
+      - "ano e mes numéricos; a tabela tem 288 milhões de linhas, sempre filtre ano"
+      - "saldo_movimentacao = 1 admissões, -1 desligamentos (números, não texto)"
+      - "sexo = '1' homem, '3' mulher, '9' não identificado (texto)"
+      - "tipo_movimentacao como texto: '10' primeiro emprego, '20' reemprego, '25' prazo determinado, '31' sem justa causa, '40' a pedido, '97' (o mais frequente em 2026, 1.126.760 no perfil) não consta no dicionario: significado não documentado, '98' desligamento ignorado"
+      - "saldo líquido 'com ajuste' = esta tabela + fora_prazo - excluida (gotcha duas_origens_na_mesma_tabela)"
+    use_para: "saldo de empregos, admissões e desligamentos por município, setor (cnae_2_secao), sexo etc."
+    nao_use_para: "contar pessoas distintas (não há id do trabalhador) ou o saldo ajustado sem somar fora_prazo e descontar excluida"
+    rascunho: [use_para, nao_use_para, "leitura dos códigos de tipo_movimentacao além de 97"]
+    verificado: "288.477.161 linhas; ano 2020–2026; saldo 2024 = 1.676.514, 2025 = 1.256.997; 2026-08: 4.423.299 linhas, 4.198.013 distintos; no perfil de 2026 saldo 1: 1.127.446 e -1: 1.057.389 — medido 2026-10-27. Gotcha: duas_origens_na_mesma_tabela."
+  microdados_movimentacao_fora_prazo:
+    grao: "mesmo grão de microdados_movimentacao, para movimentações declaradas fora do prazo (indicador_fora_prazo = 1)"
+    chave: "nenhuma: sem identificador do vínculo, como microdados_movimentacao"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2020-02–2026-08 (mes = mês de declaração; ano_competencia_movimentacao e mes_competencia_movimentacao dão o mês a que pertence)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: saldo_movimentacao, o_que: "+1 admissão, -1 desligamento", unidade: "vínculos", soma: sim}
+    filtros_tipicos: ["ano = <ano>", "indicador_fora_prazo = 1 em todas as linhas (numérico)"]
+    use_para: "completar o saldo com ajuste dos meses de competência"
+    nao_use_para: "saldo do mês sozinho (some com microdados_movimentacao e desconte excluida)"
+    rascunho: [use_para, nao_use_para, "campo tempo.coluna: ano/mes são declaração, competência nas colunas ano_competencia_*"]
+    verificado: "9.177.253 linhas; mes mínimo 202002, máximo 202608 em (ano*100+mes); indicador_fora_prazo = 1 em 100% do perfil de 2026 — medido 2026-10-27."
+  microdados_movimentacao_excluida:
+    grao: "mesmo grão de microdados_movimentacao, para movimentações excluídas pelo empregador depois"
+    chave: "nenhuma: sem identificador do vínculo"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2020–2026"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (NULL em 0,39%)", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: saldo_movimentacao, o_que: "+1 admissão, -1 desligamento a descontar do saldo", unidade: "vínculos", soma: sim}
+    filtros_tipicos: ["indicador_exclusao = 1 em todas as linhas"]
+    use_para: "descontar do saldo ajustado"
+    nao_use_para: "saldo de emprego por si só"
+    rascunho: [use_para, nao_use_para]
+    verificado: "699.106 linhas; indicador_exclusao = 1 em 699.106 — medido 2026-10-27."
+  dicionario:
+    grao: "uma chave (código) × coluna × tabela do dataset, com o texto do significado"
+    use_para: "decodificar sexo, raca_cor, categoria, tipo_movimentacao, saldo_movimentacao; colunas id_tabela, nome_coluna, chave, cobertura_temporal, valor"

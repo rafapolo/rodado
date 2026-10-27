@@ -1,0 +1,17 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ana_bho
+tabelas:
+  topologia:
+    grao: "um trecho de rio da Base Hidrográfica Ottocodificada"
+    chave: "COTRECHO"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: outro, colunas: {COBACIA: "código de ottobacia do trecho", NUTRJUS: "COTRECHO do trecho a jusante"}}
+    medidas:
+      - {coluna: NUAREAMONT, o_que: "área de drenagem a montante do trecho", unidade: "não documentada (provável km²)", soma: nao}
+      - {coluna: NUSTRAHLER, o_que: "ordem de Strahler do trecho (1 a 9)", unidade: "ordem", soma: nao}
+    filtros_tipicos: ["NUSTRAHLER = 1 para cabeceiras (232.022 trechos no perfil)"]
+    use_para: "navegar a rede de drenagem (trecho → jusante) e ordenar rios por Strahler"
+    nao_use_para: "ligar a municípios ou estações: não há coluna de município nem de estação"
+    rascunho: [unidade de NUAREAMONT, use_para, nao_use_para]
+    verificado: "462.539 linhas = 462.539 COTRECHO distintos (e distintos de (COTRECHO, NUTRJUS)); NUSTRAHLER 1–9 — medido 2026-10-27"

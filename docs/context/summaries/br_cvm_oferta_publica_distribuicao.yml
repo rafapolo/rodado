@@ -1,0 +1,23 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_cvm_oferta_publica_distribuicao
+tabelas:
+  dia:
+    grao: "uma oferta pública de distribuição dispensada de registro (rito ICVM 476) encerrada, de uma série/classe de um ativo emitido por um emissor, com ofertante e líder"
+    chave: "nenhuma exata: não há identificador (numero_processo e numero_registro_oferta são 100% nulos); a linha inteira repete em 95 casos (27.486 linhas, 27.391 distintas) e (cnpj_emissor, tipo_ativo, emissao, serie, data_inicio_oferta, data_encerramento_oferta, valor_total, quantidade_total) tem 27.276 distintos"
+    tempo: {natureza: serie_diaria, coluna: data_encerramento_oferta, cobertura: "2012-06-21–2025-01-24 (data_inicio_oferta 2008-06-17–2022-12-30; data_comunicado 2015-12-02–2025-01-24)"}
+    territorio: {nivel: nenhum, colunas: {cnpj_emissor: "emissor (CNPJ, dado pessoal no perfil)", cnpj_ofertante: "ofertante", cnpj_lider: "coordenador líder"}}
+    medidas:
+      - {coluna: valor_total, o_que: "valor total ofertado em reais; coluna VARCHAR no banco (use try_cast(valor_total as double)); 3.437 linhas têm valor 0", unidade: "R$ (reais, não milhares; escala não documentada, deduzida do perfil)", soma: sim}
+      - {coluna: quantidade_total, o_que: "quantidade de ativos ofertados (VARCHAR; cota, debênture, CRI etc.)", unidade: "unidades do ativo", soma: nao}
+      - {coluna: preco_unitario, o_que: "preço unitário (VARCHAR)", unidade: "R$ por unidade", soma: nao}
+    filtros_tipicos:
+      - "tipo_oferta = 'Primaria' (27.162 linhas) emissão nova; 'Secundaria' (324) venda de ativos existentes"
+      - "tipo_ativo = 'DEBENTURES SIMPLES' (3.283), 'CERTIFICADOS DE RECEBIVEIS IMOBILIARIOS - CRI' (3.263), 'CERTIFICADOS DE RECEBIVEIS DO AGRONEGOCIO - CRA' (832), 'NOTAS PROMISSORIAS' (1.370), 'COTAS DE FUNDOS DE INVESTIMENTO FECHADOS' (18.166), 'ACOES ORDINARIAS' (214); valores sem acento, em maiúsculas"
+      - "tipo_societario_emissor = 'Fundo de Investimento' (18.047) para separar fundos de empresas ('Sociedade Anonima de Capital Aberto' 6.217, 'Sociedade Anonima de Capital Fechado' 2.616; nulo em 605)"
+      - "classe_ativo IN ('Senior','Subordinada','Subordinada Mezanino','Outros','Nao Aplicavel') — 'Nao Aplicavel' em 21.484 linhas"
+      - "ano da oferta: year(data_encerramento_oferta) (nunca nula); 9 ofertas em 2012-2013 e 224 em 2015, pico de 7.422 em 2021, 2025 só com 50"
+    use_para: "volume e quantidade de ofertas restritas (ICVM 476) por tipo de ativo e ano de encerramento."
+    nao_use_para: "ofertas registradas (ICVM 400/160) ou ofertas em andamento: rito_oferta = 'ICVM 476' e modalidade_oferta = 'Dispensada de Registro' em todas as 27.486 linhas, e todas têm ultimo_comunicado = 'Comunicado de Encerramento'."
+    rascunho: [use_para, nao_use_para, "unidade de valor_total (R$)", "significado de classe_ativo/especie_ativo"]
+    verificado: "27.486 linhas; 27.391 linhas inteiras distintas; 27.276 distintos na chave composta proposta; valor_total sempre convertível (0 falhas de try_cast); soma por ano de encerramento: 2016 R$ 141 bi, 2021 R$ 783 bi, 2025 só 50 ofertas — medido 2026-10-27"

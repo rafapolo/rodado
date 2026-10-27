@@ -1,0 +1,80 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_mapbiomas_estatisticas
+tabelas:
+  classe:
+    grao: "uma classe da legenda MapBiomas (chave → nome em português e inglês)"
+    chave: "chave (36 linhas, 36 distintos)"
+    use_para: "decodificar id_classe (JOIN classe.chave = id_classe::VARCHAR); faltam as classes 6, 7, 35, 75, 84 e 91 que a cobertura usa (gotcha classes_fora_da_legenda)"
+  cobertura_municipio_classe:
+    grao: "um município × bioma × ano × classe de cobertura (coleção 11)"
+    chave: "nenhuma: 3.173.646 linhas e 3.173.605 combinações de (ano, id_municipio, bioma, id_classe); 41 linhas repetem"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1985–2025"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", sigla_uf: "UF", bioma: "Amazônia, Cerrado, Caatinga, Mata Atlântica, Pampa, Pantanal"}}
+    medidas:
+      - {coluna: area_ha, o_que: "área da classe no município, bioma e ano", unidade: "hectares", soma: sim}
+    filtros_tipicos:
+      - "ano = <ano>: sem isso a soma junta 41 anos (Brasil inteiro soma 850,7 Mha por ano)"
+      - "id_classe numérico (BIGINT) aqui, mas VARCHAR nas tabelas de transição e UF"
+      - "some area_ha por município: um município em dois biomas tem duas linhas (gotcha cobertura_repete_por_bioma)"
+    use_para: "área de soja, pastagem, floresta etc. por município e ano"
+    nao_use_para: "transições de uso (use as tabelas transicao_*)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "3.173.646 linhas; 3.173.605 distintos de (ano, id_municipio, bioma, id_classe); soma por ano: 850,7 Mha em 1985, 2024 e 2025 — medido 2026-10-27. Gotchas: cobertura_repete_por_bioma, classes_fora_da_legenda."
+  cobertura_uf_classe:
+    grao: "uma UF × ano × classe de cobertura"
+    chave: "(ano, sigla_uf, id_classe)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1985–2021"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF"}}
+    medidas:
+      - {coluna: area, o_que: "área da classe na UF", unidade: "km² (o Brasil soma 8,5 milhões em 2021; em ha seriam 100 vezes mais)", soma: sim}
+    filtros_tipicos: ["ano = <ano>", "id_classe é VARCHAR (ex.: '15')"]
+    use_para: "cobertura por UF até 2021"
+    nao_use_para: "anos após 2021 (use cobertura_municipio_classe, que vai a 2025, em ha)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "528 linhas em 2021 = 528 distintos de (ano, sigla_uf, id_classe); soma 2021 = 8.506.525 km²; MT 903.114 km² — medido 2026-10-27."
+  transicao_municipio_de_para_decenal:
+    grao: "um município × década × classe de origem × classe de destino"
+    chave: "(ano, id_municipio, id_classe_de, id_classe_para)"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2000, 2010, 2020 (ano é o fim da década)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (NULL em 0,02%)", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: area, o_que: "área que passou de id_classe_de para id_classe_para (inclui permanência de->de)", unidade: "km²", soma: sim}
+    filtros_tipicos: ["ano IN (2000, 2010, 2020), numérico; ano é o FIM do período (gotcha transicao_decenal_ano_fim_e_km2)", "id_classe_de <> id_classe_para para só as mudanças"]
+    use_para: "origem do uso da terra (ex.: de onde veio a soja) por município"
+    nao_use_para: "somar com a cobertura anual (a fonte difere em 2–11%)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "344.660 linhas em 2020 = 344.660 distintos da chave; total 975.145 linhas; soma de 2020 = 8.506.525 km², igual à cobertura UF 2021 — medido 2026-10-27."
+  transicao_uf_de_para_anual:
+    grao: "mesmo grão de transicao_municipio_de_para_decenal, por UF e por ano (transição de um ano para o seguinte)"
+    chave: "(ano, sigla_uf, id_classe_de, id_classe_para)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1986–2021"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF"}}
+    medidas:
+      - {coluna: area, o_que: "área que mudou de classe", unidade: "km² (mesma escala da cobertura UF)", soma: sim}
+    use_para: "transições de uso por UF ano a ano"
+    nao_use_para: "município"
+    rascunho: [use_para, nao_use_para, "ano = ano de chegada"]
+    verificado: "169.091 linhas = 169.091 distintos da chave — medido 2026-10-27."
+  transicao_uf_de_para_decenal:
+    grao: "mesmo grão de transicao_municipio_de_para_decenal, por UF"
+    chave: "(ano, sigla_uf, id_classe_de, id_classe_para)"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2000, 2010, 2020"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF"}}
+    medidas:
+      - {coluna: area, o_que: "área que mudou de classe na década", unidade: "km²", soma: sim}
+    use_para: "transições por UF por década"
+    nao_use_para: "município"
+    rascunho: [use_para, nao_use_para]
+    verificado: "17.396 linhas = 17.396 distintos da chave; MT 2020 soma 903.114 km², igual à cobertura MT 2021 — medido 2026-10-27."
+  transicao_uf_de_para_quinquenal:
+    grao: "mesmo grão de transicao_municipio_de_para_decenal, por UF e quinquênio"
+    chave: "(ano, sigla_uf, id_classe_de, id_classe_para)"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1990–2020 (7 valores, de 5 em 5 anos)"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF"}}
+    medidas:
+      - {coluna: area, o_que: "área que mudou de classe no quinquênio", unidade: "km²", soma: sim}
+    use_para: "transições por UF por quinquênio"
+    nao_use_para: "município"
+    rascunho: [use_para, nao_use_para, "ano como fim do quinquênio (por analogia com o decenal)"]
+    verificado: "38.709 linhas = 38.709 distintos da chave — medido 2026-10-27."

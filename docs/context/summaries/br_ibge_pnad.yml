@@ -1,0 +1,32 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibge_pnad
+tabelas:
+  microdados_compatibilizados_domicilio:
+    grao: "um domicílio × ano da PNAD compatibilizada (amostra)"
+    chave: "(ano, id_domicilio) — 1.877.416 linhas = 1.877.416 distintos (medido)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1997–2015 (sem 2000 e 2010: a PNAD não foi a campo)"}
+    territorio: {nivel: uf, colunas: {id_regiao: "região (1 a 5)", id_uf: "código da UF", sigla_uf: "sigla (27 UFs)", regiao_metropolitana: "0 = não, 1 = sim (BIGINT neste lado)", zona_urbana: "'1' urbana, '0' rural (dicionário)", tipo_zona_domicilio: "'1' região metropolitana, '2' autorrepresentativo, '3' não autorrepresentativo (dicionário)"}}
+    medidas:
+      - {coluna: peso_amostral, o_que: "peso de expansão do domicílio", unidade: "domicílios representados", soma: sim}
+      - {coluna: total_pessoas, o_que: "moradores do domicílio", unidade: "pessoas", soma: "sim, ponderado por peso_amostral"}
+      - {coluna: renda_mensal_domiciliar_compativel_1992, o_que: "renda domiciliar mensal compatibilizada ao padrão de 1992", unidade: "R$ nominais (rascunho: moeda não documentada)", soma: nao}
+    filtros_tipicos: ["zona_urbana = '1' para urbano (texto, não 1)", "especie_domicilio = '1' (particular permanente: 1.872.958 de 1.877.416)", "a renda correta é renda_mensal_domiciliar_compativel_1992: renda_mensal_domiciliar e renda_domicilio_deflacionado são 100% NULL (gotcha renda_nominal_vazia)"]
+    use_para: "condições de moradia (água, esgoto, lixo, bens duráveis) em série longa, com expansão por peso_amostral."
+    nao_use_para: "renda_mensal_domiciliar e versões deflacionadas (100% vazias) ou contagem sem peso_amostral."
+    rascunho: [use_para, nao_use_para, "moeda da renda"]
+    verificado: "1.877.416 linhas, 1.877.416 pares (ano, id_domicilio); anos 1997–2015 sem 2000 e 2010; soma de peso_amostral em todos os anos = 933.043.272 — medido 2026-10-27"
+  microdados_compatibilizados_pessoa:
+    grao: "uma pessoa × ano da PNAD compatibilizada (amostra)"
+    chave: "(ano, id_domicilio, numero_familia, ordem) — em 2015, 356.904 linhas = 356.904 distintos; (id_domicilio, ordem) já basta (medido só em 2015)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1992–2015 (sem 1994, 2000 e 2010)"}
+    territorio: {nivel: uf, colunas: {id_regiao: "região", id_uf: "código da UF", sigla_uf: "sigla", regiao_metropolitana: "'0' ou '1' (texto neste lado)"}}
+    medidas:
+      - {coluna: renda_mensal_todas_fontes, o_que: "renda mensal de todas as fontes da pessoa", unidade: "R$ nominais (rascunho: moeda não documentada)", soma: nao}
+      - {coluna: renda_mensal_todos_trabalhos, o_que: "renda mensal de todos os trabalhos", unidade: "R$ nominais", soma: nao}
+      - {coluna: horas_trabalhadas_semana, o_que: "horas habitualmente trabalhadas por semana", unidade: "horas", soma: nao}
+    filtros_tipicos: ["sexo = '1' homem, '0' mulher (dicionário)", "raca_cor: '2' branca, '4' preta, '6' amarela, '8' parda; '0' tem 1.638 em 2015 e significado não documentado", "trabalhou_semana = '1' para quem trabalhou na semana de referência (13,5% NULL)", "condicao_domicilio = '1' chefe, '2' cônjuge, '3' filho (dicionário)"]
+    use_para: "perfil de pessoas (idade, sexo, raça, escolaridade, trabalho, previdência) na PNAD 1992–2015."
+    nao_use_para: "estimar população ou renda sem peso: esta tabela NÃO tem peso_amostral. Junte com microdados_compatibilizados_domicilio por (ano, id_domicilio); as famílias renda_mensal_familia e *_deflacionado estão 100% vazias, e ocupacao_semana, grupos_ocupacao e atividade_ramo_negocio_agregado também (em 2015)."
+    rascunho: [use_para, "moeda da renda", "significado de raca_cor = 0"]
+    verificado: "7.710.243 linhas no total; em 2015: 356.904 linhas e 356.904 chaves; a junção com domicilio por (ano, id_domicilio) em 2015 devolve as 356.904 pessoas e a soma de peso_amostral = 204.859.405 — medido 2026-10-27"

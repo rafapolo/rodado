@@ -1,0 +1,18 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_cgu_pessoal_executivo_federal
+tabelas:
+  terceirizados:
+    grao: "um trabalhador terceirizado num órgão do Executivo federal num retrato (ano × mês), com a empresa contratada e o contrato"
+    chave: "ano + mes + id_terceirizado (as 732.269 linhas são únicas por essa trinca, incluindo 7 linhas com ano e mes nulos)"
+    tempo: {natureza: soma_de_retratos, coluna: ano, cobertura: "2019–2023, meses '1', '5' e '9' (texto)"}
+    territorio: {nivel: nenhum, colunas: {codigo_unidade_gestora: "código SIAFI da unidade gestora que contrata (texto)", sigla_orgao_trabalho: "órgão onde o terceirizado trabalha"}}
+    medidas:
+      - {coluna: valor_mensal, o_que: "valor mensal pago pelo contrato ao terceirizado; coluna de TEXTO, 77.036 linhas (10,5%) usam vírgula decimal e outras vêm vazias, então CAST direto falha em 77.042", unidade: "R$", soma: sim}
+      - {coluna: custo_mensal, o_que: "custo mensal total do posto para o órgão; TEXTO, 95.747 linhas com vírgula decimal", unidade: "R$", soma: sim}
+      - {coluna: quantidade_horas_trabalhadas_semanais, o_que: "horas semanais; TEXTO com espaços à direita ('44  ') e 'NI  ' quando não informado", unidade: "horas", soma: nao}
+    filtros_tipicos: ["ano = '2023' AND mes = '9': ambos são texto, mes sem zero à esquerda ('1', '5', '9'); 7 linhas têm ano e mes nulos", "regexp_full_match(cpf, '[0-9]{11}'): só CPFs completos (gotcha cpf_completado)", "try_cast(replace(valor_mensal, ',', '.') AS DOUBLE): para somar sem perder as linhas com vírgula"]
+    use_para: "contar terceirizados e somar custo por órgão, empresa ou categoria profissional dentro de um retrato (ano, mes)."
+    nao_use_para: "série mensal contínua ou soma entre meses: os retratos são de jan/mai/set e a contagem por retrato é muito desigual (ex.: 2019-05 tem 6.770 linhas e 2019-01 tem 97.828)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "732.269 linhas, 732.269 trincas (ano, mes, id_terceirizado) distintas e linhas todas distintas; retratos de 5.442 (2022-9) a 97.828 (2019-1) linhas; soma de valor_mensal com vírgula tratada R$ 168,7 mi em 2023-5 e R$ 191,1 mi em 2023-9 — medido 2026-10-27"

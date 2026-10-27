@@ -1,0 +1,642 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_inep_enem
+tabelas:
+  microdados:
+    grao: um inscrito × ano do ENEM (1998–2023); notas, presença e dados cadastrais
+    chave: ano, id_inscricao (108.132.056 linhas, 108.132.056 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 1998–2023
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio_prova: município onde fez a prova (7 dígitos IBGE; sempre preenchido)
+        sigla_uf_prova: UF da prova
+        id_municipio_escola: 'município da escola (NULL se não informou: 74,6% em 2023; zero em 1998–2000)'
+        sigla_uf_escola: UF da escola
+        id_municipio_residencia: município de residência (só 1998–2007; NULL depois)
+        sigla_uf_residencia: UF de residência (só 1998–2007)
+    medidas:
+    - coluna: nota_objetiva
+      o_que: nota da prova objetiva única (1998–2008, antes das 4 áreas)
+      unidade: pontos
+      soma: nao
+    - coluna: nota_ciencias_natureza / nota_ciencias_humanas / nota_linguagens_codigos / nota_matematica
+      o_que: nota por área (2009 em diante); NULL se ausente (nota 0 existe com presença = 1)
+      unidade: pontos (TRI, 0–~1000)
+      soma: nao
+    - coluna: nota_redacao
+      o_que: nota da redação (soma das 5 competências, 0–1000)
+      unidade: pontos
+      soma: nao
+    - coluna: nota_redacao_competencia_1 .. 5
+      o_que: notas por competência da redação (0–200, de 40 em 40)
+      unidade: pontos
+      soma: nao
+    filtros_tipicos:
+    - 'ano = <edição>: obrigatório, a tabela tem 108 milhões de linhas e as colunas mudam de significado por ano'
+    - 'presenca_matematica = ''1'' (e presenca_ciencias_natureza etc.): VARCHAR; ''0'' faltou, ''1'' presente, ''2'' eliminado (dicionario). Em 2023: 1.239.316 faltantes, 2.692.427 presentes, 2.212 eliminados; só os presentes têm nota'
+    - presenca_redacao = '1' para redação válida ('Sem problemas'); '2','3','4','6','7','8','9' são anuladas/em branco/fuga ao tema etc. com nota 0 (dicionario varia por ano)
+    - indicador_treineiro só preenchido em 2015–2022 (NULL nos demais anos); BOOLEAN
+    - 'colunas cadastrais (cor_raca, tipo_escola, faixa_etaria, situacao_conclusao, ensino, estado_civil): códigos VARCHAR cujo significado varia por ano; consultar dicionario com cobertura_temporal'
+    use_para: Notas, presença e perfil dos inscritos do ENEM por edição de 1998 a 2023.
+    nao_use_para: 2024 e 2025 (estão em participantes e resultados); médias sem filtrar presença (NULL e 0 distorcem); comparar nota_objetiva (1998–2008) com notas por área (2009+).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '108.132.056 linhas e 108.132.056 distintos (ano, id_inscricao); 2023: 3.933.955 linhas e distintos; nota_objetiva só em 1998–2008, notas por área só a partir de 2009 (2023: 2.692.427 nota_matematica), residência só 1998–2007, indicador_treineiro só 2015–2022; join com questionario_socioeconomico_2023 por id_inscricao casa 3.933.955 — medido 2026-10-27'
+  participantes:
+    grao: um inscrito × ano do ENEM (2024–2025), dados cadastrais sem notas
+    chave: ano, id_inscricao (9.143.716 linhas, 9.143.716 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2024–2025
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio_prova: município da prova (7 dígitos IBGE)
+        sigla_uf_prova: UF da prova
+    filtros_tipicos:
+    - 'ano IN (2024, 2025): 4.332.944 e 4.810.772 linhas'
+    - 'indicador_treineiro = true: treineiros (2025: 987.650 de 4.810.772 na amostra do perfil ''false'' 3.823.122 / ''true'' 987.650)'
+    - sexo = 'F' | 'M' (letras; no microdados antigo o dicionario lista 0/1, mas o dado é F/M)
+    - 'cor_raca ''0''..''5'', estado_civil ''0''..''4'', situacao_conclusao ''1''..''4'', ensino ''1''|''2''|NULL: significado no dicionario (id_tabela = ''participantes'')'
+    use_para: Perfil dos inscritos de 2024–2025 (idade, sexo, cor/raça, conclusão do ensino médio, treineiro) e junção com os questionarios.
+    nao_use_para: 'Notas (estão em resultados, que NÃO junta com participantes: id_sequencial não é id_inscricao).'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '9.143.716 linhas, 9.143.716 distintos (ano, id_inscricao); 2025: 4.810.772 linhas e distintos; join com questionario_socioeconomico_2025 por id_inscricao casa as 4.810.772 — medido 2026-10-27'
+  resultados:
+    grao: um inscrito anonimizado × ano do ENEM (2024–2025); notas, presença, respostas e gabarito
+    chave: ano, id_sequencial (9.143.716 linhas, 9.143.716 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2024–2025
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio_prova: município da prova
+        sigla_uf_prova: UF da prova
+        id_municipio_escola: município da escola (63,78% NULL)
+        id_escola: código INEP da escola (63,78% NULL)
+        sigla_uf_escola: UF da escola
+    medidas:
+    - coluna: nota_ciencias_natureza / nota_ciencias_humanas / nota_linguagens_codigos / nota_matematica
+      o_que: nota por área; NULL se não presente
+      unidade: pontos
+      soma: nao
+    - coluna: nota_redacao
+      o_que: nota da redação (0–1000); NULL se a redação não foi feita
+      unidade: pontos
+      soma: nao
+    - coluna: nota_redacao_competencia_N, nota_redacao_avaliador_N, nota_redacao_competencia_N_avaliador_M
+      o_que: competências 1–5 e notas por corretor (1–4; 3º e 4º só em casos de discrepância)
+      unidade: pontos
+      soma: nao
+    filtros_tipicos:
+    - 'presenca_matematica = ''1'' (e as outras áreas): VARCHAR; 2025: ''0'' 1.548.487, ''1'' 3.260.336, ''2'' 1.949; só presentes têm nota (3.260.336 não nulas)'
+    - presenca_redacao = '1' ('Sem problemas', 3.245.696 em 2025) para redação válida; '2','3','4','6','7','8','9' têm nota_redacao 0 e são redações anuladas; NULL (1.353.217) = não fez e nota NULL
+    - lingua_estrangeira = '0' Inglês | '1' Espanhol (dicionario)
+    - dependencia_administrativa_escola '1' Federal, '2' Estadual, '3' Municipal, '4' Privada; localizacao_escola '1' Urbana, '2' Rural
+    use_para: Notas por área e redação de 2024–2025, incluindo correção por avaliador.
+    nao_use_para: 'Perfil socioeconômico ou junção com participantes (id_sequencial não casa com id_inscricao: 0 linhas no join em 2025); respostas_* e gabarito_* são texto de 45 letras, não somáveis.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '9.143.716 linhas, 9.143.716 distintos (ano, id_sequencial); 2025: join com participantes por id_sequencial = id_inscricao retornou 0 linhas; contagens de presença e nota de 2025 acima — medido 2026-10-27'
+  questionario_socioeconomico_1998:
+    grao: um inscrito no ENEM 1998 (respostas do questionário socioeconômico); 137 colunas de perguntas
+    chave: id_inscricao
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '1998'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 1998
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 150.944 linhas. id_inscricao com 150.944 distintos — medido 2026-10-27
+  questionario_socioeconomico_1999:
+    grao: um inscrito no ENEM 1999 (respostas do questionário socioeconômico); 129 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '1999'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 1999
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 308.959 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2000:
+    grao: um inscrito no ENEM 2000 (respostas do questionário socioeconômico); 127 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2000'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2000
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 378.421 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2001:
+    grao: um inscrito no ENEM 2001 (respostas do questionário socioeconômico); 242 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2001'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2001
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 1.609.886 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2002:
+    grao: um inscrito no ENEM 2002 (respostas do questionário socioeconômico); 219 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2002'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2002
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 1.820.404 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2003:
+    grao: um inscrito no ENEM 2003 (respostas do questionário socioeconômico); 188 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2003'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2003
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 1.873.079 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2004:
+    grao: um inscrito no ENEM 2004 (respostas do questionário socioeconômico); 205 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2004'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2004
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 1.542.165 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2005:
+    grao: um inscrito no ENEM 2005 (respostas do questionário socioeconômico); 223 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2005'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2005
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 2.991.271 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2006:
+    grao: um inscrito no ENEM 2006 (respostas do questionário socioeconômico); 223 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2006'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2006
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 3.743.370 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2007:
+    grao: um inscrito no ENEM 2007 (respostas do questionário socioeconômico); 223 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2007'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2007
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 3.584.577 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2008:
+    grao: um inscrito no ENEM 2008 (respostas do questionário socioeconômico); 223 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2008'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2008
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 4.018.050 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2009:
+    grao: um inscrito no ENEM 2009 (respostas do questionário socioeconômico); 293 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2009'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2009
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 4.148.720 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2010:
+    grao: um inscrito no ENEM 2010 (respostas do questionário socioeconômico); 57 colunas de perguntas
+    chave: id_inscricao
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2010'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2010
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 4.611.614 linhas. id_inscricao com 4.611.614 distintos — medido 2026-10-27
+  questionario_socioeconomico_2011:
+    grao: um inscrito no ENEM 2011 (respostas do questionário socioeconômico); 75 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2011'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2011
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 5.366.931 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2012:
+    grao: um inscrito no ENEM 2012 (respostas do questionário socioeconômico); 62 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2012'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2012
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 5.791.065 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2013:
+    grao: um inscrito no ENEM 2013 (respostas do questionário socioeconômico); 76 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2013'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2013
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 7.173.563 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2014:
+    grao: um inscrito no ENEM 2014 (respostas do questionário socioeconômico); 76 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2014'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2014
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 8.722.248 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2015:
+    grao: um inscrito no ENEM 2015 (respostas do questionário socioeconômico); 50 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2015'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2015
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 7.746.427 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2016:
+    grao: um inscrito no ENEM 2016 (respostas do questionário socioeconômico); 50 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2016'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2016
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 8.627.179 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2017:
+    grao: um inscrito no ENEM 2017 (respostas do questionário socioeconômico); 27 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2017'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2017
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 6.731.278 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2018:
+    grao: um inscrito no ENEM 2018 (respostas do questionário socioeconômico); 27 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2018'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2018
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 5.513.733 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2019:
+    grao: um inscrito no ENEM 2019 (respostas do questionário socioeconômico); 25 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2019'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2019
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 5.095.171 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2020:
+    grao: um inscrito no ENEM 2020 (respostas do questionário socioeconômico); 25 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2020'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2020
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 5.783.109 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2021:
+    grao: um inscrito no ENEM 2021 (respostas do questionário socioeconômico); 25 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2021'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2021
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 3.389.832 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2022:
+    grao: um inscrito no ENEM 2022 (respostas do questionário socioeconômico); 25 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2022'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2022
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 3.476.105 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2023:
+    grao: um inscrito no ENEM 2023 (respostas do questionário socioeconômico); 25 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2023'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2023
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 3.933.955 (perfil pode ser amostra) — medido 2026-10-27'
+  questionario_socioeconomico_2024:
+    grao: um inscrito no ENEM 2024 (respostas do questionário socioeconômico); 23 colunas de perguntas
+    chave: id_inscricao
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2024'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2024
+    - colunas q001..q023 em minúsculas desde 2023 (Q001.. maiúsculas de 2011 a 2022; 'Q1','Q01' antes); valores são letras 'A','B',... decodificadas no dicionario (id_tabela = nome da tabela)
+    - '2025 também verificado por join: todas as 4.810.772 linhas de questionario_socioeconomico_2025 casam com participantes (ano = 2025) por id_inscricao; 2023: 3.933.955 casam com microdados'
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 4.332.944 linhas. id_inscricao com 4.332.944 distintos — medido 2026-10-27
+  questionario_socioeconomico_2025:
+    grao: um inscrito no ENEM 2025 (respostas do questionário socioeconômico); 23 colunas de perguntas
+    chave: id_inscricao (não medida neste ano; mesmo grão de questionario_socioeconomico_2024)
+    tempo:
+      natureza: sem_tempo
+      coluna: (nenhuma; o ano está no nome da tabela)
+      cobertura: '2025'
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    filtros_tipicos:
+    - junte com microdados por id_inscricao AND ano = 2025
+    use_para: Respostas de múltipla escolha do questionário socioeconômico do ano.
+    nao_use_para: 'Notas e presença (estão em microdados/participantes); empilhar anos sem conferir: as perguntas e letras mudam de ano para ano.'
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 'linhas do perfil: 4.810.772 (perfil pode ser amostra) — medido 2026-10-27'

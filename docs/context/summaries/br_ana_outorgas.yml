@@ -1,0 +1,30 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ana_outorgas
+tabelas:
+  captacoes:
+    grao: "uma outorga de captação de água (sem identificador nem data na tabela)"
+    chave: "nenhuma: 181.917 linhas, só 156.095 distintas (25.822 repetidas por inteiro); não há coluna de id"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: municipio, colunas: {ing_nm_municipio: "nome do município (sem código IBGE)", ing_sg_ufmunicipio: "UF"}}
+    medidas:
+      - {coluna: int_qt_vazaomedia, o_que: "vazão média outorgada", unidade: "m³/h (ver gotcha vazao_em_m3h); 31,6% nulos", soma: sim}
+    filtros_tipicos: ["esfera = 'estadual' (166.011) ou 'federal' (15.906)", "regexp_full_match(emp_nu_cpfcnpj, '[0-9]{11}') para CPF completo (ver gotcha cpf_completado)"]
+    use_para: "volume outorgado de captação por município/UF e esfera"
+    nao_use_para: "outorga vigente ou volume anual: não há datas nem volume; contar linhas conta duplicatas"
+    rascunho: [use_para, nao_use_para]
+    verificado: "181.917 linhas, 156.095 DISTINCT *; 124.379 com vazão — medido 2026-10-27"
+  lancamentos:
+    grao: "uma outorga de lançamento de efluente"
+    chave: "nenhuma: 10.855 linhas, 10.590 distintas (265 repetidas por inteiro)"
+    tempo: {natureza: serie_de_periodos, coluna: "out_dt_outorgainicial, out_dt_outorgafinal", cobertura: "início 1996-08–2027-10; fim até 2061 (epoch em milissegundos, BIGINT, não data)"}
+    territorio: {nivel: ponto, colunas: {int_nu_latitude: "latitude", int_nu_longitude: "longitude", ing_nm_municipio: "município (nome)", ing_sg_ufmunicipio: "UF", ing_nm_regiao_hidro: "região hidrográfica", ing_cd_ottobacia_trecho: "ottobacia do trecho"}}
+    medidas:
+      - {coluna: int_qt_vazaomedia, o_que: "vazão média de lançamento", unidade: "m³/h (ver gotcha vazao_em_m3h)", soma: sim}
+      - {coluna: int_qt_vazaomaxima, o_que: "vazão máxima de lançamento", unidade: "m³/h", soma: nao}
+      - {coluna: int_qt_volumeanual, o_que: "volume anual outorgado", unidade: "m³/ano (não documentada)", soma: sim}
+    filtros_tipicos: ["esfera = 'estadual' (9.946) ou 'federal' (909)", "tsf_ds = 'Operação' (8.115), valor literal com acento", "org_nm = 'SP AGUAS' (8.006; SP concentra 8.200 linhas)", "tfn_ds = 'Esgotamento Sanitário' (1.020)"]
+    use_para: "mapear lançamentos de efluentes por finalidade, órgão e região hidrográfica; to_timestamp(out_dt_outorgafinal/1000) para validade"
+    nao_use_para: "cobertura nacional: SP responde por 8.200 de 10.855 linhas"
+    rascunho: [use_para, nao_use_para, unidade de volumeanual]
+    verificado: "10.855 linhas, 10.590 DISTINCT *; datas convertidas de epoch ms — medido 2026-10-27"

@@ -1,0 +1,23 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_anatel_indice_brasileiro_conectividade
+tabelas:
+  municipio:
+    grao: "um município × ano"
+    chave: "ano, id_municipio"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2021–2024"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (texto)", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: ibc, o_que: "Índice Brasileiro de Conectividade", unidade: "índice 0–100", soma: nao}
+      - {coluna: cobertura_pop_4g5g, o_que: "cobertura da população por 4G/5G", unidade: "%, chega a 120 (máx. medido 120,03)", soma: nao}
+      - {coluna: fibra, o_que: "backhaul de fibra, texto: '0', '50' ou '100' (50 só em 2024; ver column_codes)", unidade: "índice 0–100", soma: nao}
+      - {coluna: densidade_smp, o_que: "densidade de telefonia móvel", unidade: "0–100", soma: nao}
+      - {coluna: hhi_smp, o_que: "competitividade da telefonia móvel (inverso do HHI; maior = mais competitivo)", unidade: "0–100", soma: nao}
+      - {coluna: densidade_scm, o_que: "densidade de banda larga fixa", unidade: "0–100", soma: nao}
+      - {coluna: hhi_scm, o_que: "competitividade da banda larga fixa (inverso do HHI)", unidade: "0–100", soma: nao}
+      - {coluna: adensamento_estacoes, o_que: "adensamento de estações", unidade: "0–100", soma: nao}
+    filtros_tipicos: ["ano = 2024 para o retrato mais recente", "fibra = '100' (texto, não número) para município com backhaul de fibra"]
+    use_para: "comparar conectividade entre municípios e anos (média ponderada ou ranking, nunca soma)"
+    nao_use_para: "contar acessos ou assinantes: são índices normalizados; fibra de 2024 não é comparável com anos anteriores"
+    rascunho: [use_para, nao_use_para, unidade de ibc e das densidades]
+    verificado: "22.280 linhas = 22.280 (ano, id_municipio) distintos; 5.570 municípios × 4 anos; fibra '100' 16.356, '0' 4.674, '50' 1.250 — medido 2026-10-27"

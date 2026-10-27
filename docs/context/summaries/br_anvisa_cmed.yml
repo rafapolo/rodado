@@ -1,0 +1,23 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_anvisa_cmed
+tabelas:
+  precos:
+    grao: "uma apresentação de medicamento × lista de preço (pmc ou pmvg): cada produto aparece duas vezes"
+    chave: "lista, codigo_ggrem (52.816 linhas = 52.816 distintos); codigo_ggrem sozinho tem 26.409 distintos"
+    tempo: {natureza: retrato_atual, coluna: "nenhuma (tabela de preços vigente; a coluna comercializacao_2025 sugere a edição de 2025/2026)", cobertura: "sem data"}
+    territorio: {nivel: nenhum, colunas: {}}
+    medidas:
+      - {coluna: pf_sem_impostos, o_que: "preço de fábrica sem impostos", unidade: "R$ por apresentação", soma: nao}
+      - {coluna: pmc_sem_impostos, o_que: "preço máximo ao consumidor sem impostos (nulo na lista pmvg e em 3.940 linhas de pmc)", unidade: "R$ por apresentação", soma: nao}
+      - {coluna: "pf_<aliq>_pct, pmc_<aliq>_pct (com sufixo _alc)", o_que: "preço com ICMS da alíquota do nome; VARCHAR com vírgula decimal ('37,48') e às vezes asterisco final", unidade: "R$", soma: nao}
+    filtros_tipicos:
+      - "lista = 'pmc' para ter uma linha por produto (26.408); lista = 'pmvg' duplica tudo e não tem pmc_*: contar sem filtrar dobra"
+      - "regime_de_preco = 'Regulado' (47.680) ou 'Liberado' (5.136)"
+      - "comercializacao_2025 = 'Sim' (26.002) para o que está no mercado"
+      - "tipo_de_produto_status_do_produto: 'Genérico', 'Similar', 'Novo', 'Específico', 'Biológico', 'Fitoterápico'; há 100 linhas com '    -     '"
+      - "colunas pf_/pmc_ com ICMS são texto: use try_cast(replace(replace(col, '*', ''), ',', '.') as double)"
+    use_para: "comparar preço de fábrica e teto ao consumidor de medicamentos por substância, laboratório, classe e tipo (genérico, similar)"
+    nao_use_para: "volume de vendas ou série de preços no tempo (retrato único, sem data)"
+    rascunho: [tempo, "significado de pmc e pmvg (PMC = máximo ao consumidor; PMVG = máximo de venda ao governo)", use_para, nao_use_para]
+    verificado: "52.816 linhas = 26.408 pmc + 26.408 pmvg; pmc_sem_impostos preenchido em 22.468 pmc e em 0 pmvg; mediana de pf_sem_impostos 87,145 nas duas listas — medido 2026-10-27"

@@ -1,0 +1,38 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_cgu_garantia_safra
+tabelas:
+  pagamento:
+    grao: "uma parcela do Garantia-Safra paga a um favorecido (agricultor) num mês de referência"
+    chave: "mes_referencia + favorecido_id + codigo_municipio_siafi + valor_parcela (as 33.555.512 linhas são distintas); (mes_referencia, favorecido_id) também é único"
+    tempo: {natureza: serie_mensal, coluna: mes_referencia, cobertura: "201301–202609 (texto AAAAMM; 162 meses)"}
+    territorio: {nivel: municipio, colunas: {uf: "UF do pagamento (11 UFs do semiárido)", codigo_municipio_siafi: "código SIAFI de 4 dígitos com zero à esquerda, não é IBGE (ver gotcha siafi_com_zero_a_esquerda)", nome_municipio: "nome do município"}}
+    medidas:
+      - {coluna: valor_parcela, o_que: "valor da parcela paga", unidade: "R$", soma: sim}
+      - {expressao: "count(*)", o_que: "número de parcelas pagas", unidade: "parcelas", soma: sim}
+    filtros_tipicos: ["mes_referencia BETWEEN '202401' AND '202412': é texto AAAAMM, sem separador", "uf = 'BA': siglas maiúsculas"]
+    use_para: "somar pagamentos e contar parcelas por mês, UF ou município, sem precisar de nome/NIS (ver gotcha agregue_pela_pagamento)."
+    nao_use_para: "saber quem recebeu: o NIS e o nome estão na tabela favorecido."
+    rascunho: [use_para, nao_use_para]
+    verificado: "33.555.512 linhas, 33.555.512 chaves distintas; 162 meses 201301–202609; soma R$ 9.184.840.190 — medido 2026-10-27"
+  favorecido:
+    grao: "um par (NIS, nome) de agricultor, com identificador inteiro favorecido_id"
+    chave: "favorecido_id (também (nis_favorecido, nome_favorecido) é único)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["junte com pagamento por favorecido_id; o mesmo NIS pode ter mais de um par se o nome mudou (ver gotcha agregue_pela_pagamento)"]
+    use_para: "obter NIS e nome do favorecido de uma parcela, ligando por favorecido_id."
+    nao_use_para: "contar agricultores pelo número de linhas: um NIS pode ter vários pares."
+    rascunho: [use_para, nao_use_para]
+    verificado: "2.655.471 linhas = 2.655.471 favorecido_id distintos = 2.655.471 pares (NIS, nome) distintos — medido 2026-10-27"
+  garantia_safra:
+    grao: "uma parcela paga a um agricultor num mês (view: pagamento JOIN favorecido, com NIS e nome)"
+    chave: "mesma de pagamento"
+    tempo: {natureza: serie_mensal, coluna: mes_referencia, cobertura: "201301–202609"}
+    territorio: {nivel: municipio, colunas: {uf: "UF", codigo_municipio_siafi: "código SIAFI com zero à esquerda", nome_municipio: "nome"}}
+    medidas:
+      - {coluna: valor_parcela, o_que: "valor da parcela", unidade: "R$", soma: sim}
+    use_para: "consultas que precisam do NIS ou nome junto da parcela."
+    nao_use_para: "somas e contagens sem pessoa: use pagamento, ~9x mais barato (gotcha agregue_pela_pagamento)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "33.555.512 linhas (o perfil mostra 0 por ser view) — medido 2026-10-27"

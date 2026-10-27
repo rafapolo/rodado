@@ -1,0 +1,42 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_inep_censo_escolar
+tabelas:
+  escola:
+    grao: "uma escola × ano (cadastro, infraestrutura e totais de matrículas, turmas e docentes por etapa)"
+    chave: "ano, id_escola"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2007–2025"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", sigla_uf: "UF", id_escola: "código INEP da escola (8 dígitos)"}}
+    medidas:
+      - {coluna: quantidade_matricula_educacao_basica, o_que: "matrículas totais da escola na educação básica; as colunas quantidade_matricula_* por etapa e série são partes dela", unidade: "alunos", soma: sim}
+      - {coluna: "quantidade_turma_educacao_basica, quantidade_docente_*", o_que: "turmas e docentes da escola", unidade: "turmas / docentes", soma: sim}
+      - {coluna: "quantidade_sala_utilizada*, quantidade_profissional_*, quantidade_equipamento_*", o_que: "salas, profissionais e equipamentos informados pela escola", unidade: "unidades", soma: sim}
+    filtros_tipicos:
+      - "ano = 2025 (214.192 linhas) para o retrato mais recente"
+      - "tipo_situacao_funcionamento = '1' (180.540 escolas em 2025): só esse código tem matrículas (as de '2' e '3' são nulas); significado do código não documentado, '1' parece ser 'em atividade'"
+      - "rede = '3' (Municipal, 128.145), '4' Privada, '2' Estadual, '1' Federal (dicionário)"
+      - "tipo_localizacao = '1' (Urbana, 144.217) / '2' (Rural)"
+      - "indicadores 0/1 (agua_potavel = 1, internet = 1, biblioteca = 1, etc.) são nulos em 15,71% das linhas (33.652, as sem informação, escolas inativas), não zero"
+    use_para: "matrículas por escola, município e rede; infraestrutura (água, internet, biblioteca, laboratório) por escola"
+    nao_use_para: "somar quantidade_* sem tratar o valor 88888 (código de 'não informado', 696 linhas em quantidade_profissional_saude em 2025, 1.893 em quantidade_equipamento_tv); contar escolas sem filtrar tipo_situacao_funcionamento; somar etapas sobrepostas; ~60 colunas de 'etapa_ensino_*', 'organizacao_*' e outras são 100% nulas na partição 2025"
+    rascunho: [use_para, nao_use_para, "88888 como sentinela de não informado", "significado de tipo_situacao_funcionamento"]
+    verificado: "2025: 214.192 linhas = 214.192 distintos de id_escola; escolas 2007–2025 conferidas por ano (de 198.507 a 242.929 linhas); tipo_situacao_funcionamento 1/2/3 = 180.540/29.780/3.872, matrículas só no 1; soma quantidade_matricula_educacao_basica 2025 = 46.018.380 (nula em 35.426 linhas) — medido 2026-10-27"
+  turma:
+    grao: "uma turma × ano"
+    chave: "ano, id_escola, id_turma"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2009–2024 (sem 2025: a escola tem 2025, a turma não)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", sigla_uf: "UF", id_escola: "código INEP da escola"}}
+    medidas:
+      - {coluna: quantidade_matriculas, o_que: "alunos matriculados na turma (mínimo 1, máximo 29.101 em 2024)", unidade: "alunos", soma: sim}
+    filtros_tipicos:
+      - "ano = 2024 (2.595.106 turmas) para o retrato mais recente"
+      - "rede é TEXTO em minúsculas: 'municipal' (1.391.590), 'estadual', 'privada', 'federal' — diferente da escola, onde rede é código '1' a '4'"
+      - "etapa_ensino é código (ex.: '1', '14', '15'), nulo em 14,8%; tabela de significado não conferida"
+      - "tipo_localizacao = '1' (Urbana) / '2' (Rural)"
+    use_para: "matrículas e número de turmas por etapa, rede e município; disciplinas e horário das turmas"
+    nao_use_para: "comparar rede com a da escola sem converter (texto contra código); tipo_turma e dezenas de colunas (educacao_indigena, braille etc.) são 100% nulas; juntar com escola por 2025 (não existe)"
+    rascunho: [use_para, nao_use_para, "significado de etapa_ensino"]
+    verificado: "2024: 2.595.106 linhas = 2.595.106 distintos de id_turma e de (id_escola, id_turma); soma quantidade_matriculas 2024 = 50.547.085 — medido 2026-10-27"
+  dicionario:
+    grao: "um código de coluna (id_tabela, nome_coluna, chave) com seu significado, por tabela (docente, escola, matricula, turma)"
+    use_para: "traduzir códigos (rede, tipo_localizacao, tipo_localizacao_diferenciada); em escola, tipo_localizacao_diferenciada aparece nos dados com '0' (168.068 linhas) sem entrada no dicionário"

@@ -1,0 +1,48 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_inpe_prodes_acumulado
+tabelas:
+  desmatamento:
+    grao: "um polígono de desmatamento PRODES (representado pelo centroide) × bioma_arquivo; o mesmo uuid repete no arquivo amazonia_legal"
+    chave: "(bioma_arquivo, uuid) e (bioma_arquivo, OGC_FID); uuid sozinho NÃO é único"
+    tempo: {natureza: serie_anual, coluna: year, cobertura: "2000–2025"}
+    territorio: {nivel: ponto, colunas: {centroid_lon: "longitude do centroide", centroid_lat: "latitude do centroide", state: "UF, mistura sigla e nome por extenso (BA e BAHIA etc.)", bioma_arquivo: "bioma do arquivo de origem"}}
+    medidas:
+      - {coluna: area_km, o_que: "área do polígono", unidade: "km²", soma: sim}
+    filtros_tipicos:
+      - "main_class = 'DESMATAMENTO' (também há 'RESERVATORIO' e 'QUEIMADA', que não são desmatamento)"
+      - "bioma_arquivo <> 'amazonia_legal' ao somar vários biomas (veja gotcha amazonia_legal_duplica)"
+      - "year = <ano PRODES>; class_name é 'dAAAA' e bate com year em 7.598.533 de 7.598.548 linhas"
+    use_para: "somar área desmatada por ano PRODES e bioma, ou mapear pontos de desmatamento"
+    nao_use_para: "série por município antes de 2017 ou total Brasil somando todos os bioma_arquivo (amazonia_legal duplica); para município use incremento_municipio"
+    rascunho: [use_para, nao_use_para]
+    verificado: "7.598.548 linhas; (bioma_arquivo, uuid) = 7.598.548 distintos; uuid sozinho 6.796.791; (bioma_arquivo, OGC_FID) = 7.598.548; km² DESMATAMENTO por bioma_arquivo: amazonia 134.951, amazonia_legal 139.868, caatinga 125.446, cerrado 326.731, mata_atlantica 63.743, pampa 35.580, pantanal 16.897; Amazônia 2020–2025: 10.348 / 12.174 / 12.467 / 7.802 / 6.069 / 5.108 km² — medido 2026-10-27. Gotcha: amazonia_legal_duplica."
+  desmatamento_poligono:
+    grao: "um polígono de desmatamento PRODES com geometria completa × bioma_arquivo (versão do catálogo de 2026, sem amazonia_legal)"
+    chave: "(bioma_arquivo, uuid); uuid sozinho repete em 2 linhas"
+    tempo: {natureza: serie_anual, coluna: year, cobertura: "2002–2026"}
+    territorio: {nivel: ponto, colunas: {geometria: "polígono (GEOMETRY CRS84)", state: "UF, sigla ou nome por extenso", bioma_arquivo: "bioma do arquivo"}}
+    medidas:
+      - {coluna: area_km, o_que: "área do polígono", unidade: "km²", soma: sim}
+    filtros_tipicos:
+      - "main_class = 'DESMATAMENTO' (caixa alta; também 'RESERVATORIO' e 'QUEIMADA')"
+      - "versao diz o arquivo de origem (v20261016 para Amazônia e Cerrado); veja gotcha poligono_versao_nova"
+    use_para: "análise espacial (interseção com municípios, terras, propriedades) do desmatamento"
+    nao_use_para: "conferir linha a linha com desmatamento: as versões diferem"
+    rascunho: [use_para, nao_use_para]
+    verificado: "6.816.093 linhas; (bioma_arquivo, uuid) = 6.816.093 distintos; uuid sozinho 6.816.091 — medido 2026-10-27. Gotcha: poligono_versao_nova."
+  incremento_municipio:
+    grao: "um município × bioma × ano PRODES (desmatamento incremental do ano, atribuído pelo centroide)"
+    chave: "(ano, id_municipio, bioma)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2017–2025"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (NULL em 39 linhas)", sigla_uf: "UF", bioma: "Amazônia, Cerrado, Caatinga, Mata Atlântica, Pampa, Pantanal"}}
+    medidas:
+      - {coluna: area_km2, o_que: "área desmatada no ano", unidade: "km²", soma: sim}
+      - {coluna: poligonos, o_que: "número de polígonos", unidade: "unidades", soma: sim}
+    filtros_tipicos:
+      - "bioma = 'Amazônia' (com acento, como está no banco)"
+      - "id_municipio IS NOT NULL para análises por município (39 linhas sem município)"
+    use_para: "desmatamento por município e ano a partir de 2017"
+    nao_use_para: "séries anteriores a 2017 (use br_inpe_prodes.municipio_bioma)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "42.709 linhas = 42.709 distintos de (ano, id_municipio, bioma); 39 com id_municipio nulo; Amazônia km² 2020–2025: 10.348 / 12.175 / 12.467 / 7.802 / 6.069 / 5.108, igual a desmatamento (centroide) — medido 2026-10-27. Gotcha: incremento_municipio_desde_2017."

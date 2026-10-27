@@ -1,0 +1,368 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_inep_educacao_especial
+tabelas:
+  brasil_distorcao_idade_serie:
+    grao: um Brasil × ano × etapa de ensino (taxa de distorção idade-série da educação especial)
+    chave: ano, etapa_ensino (45 linhas, 45 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2021
+    territorio:
+      nivel: brasil
+      colunas: {}
+    medidas:
+    - coluna: tdi
+      o_que: taxa de distorção idade-série
+      unidade: '% (0–100)'
+      soma: nao
+    filtros_tipicos:
+    - etapa_ensino = 'Ensino Fundamental – Anos Iniciais' | 'Ensino Fundamental – Anos Finais' | 'Ensino Médio Regular' (travessão longo '–' nas duas primeiras; uma linha por etapa e ano, não some as etapas)
+    use_para: Série nacional da distorção idade-série por etapa.
+    nao_use_para: Somar ou tirar média entre etapas; detalhe por UF (use distorcao_idade_serie).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '45 linhas, 45 distintos (ano, etapa_ensino); ex.: 2021 anos iniciais tdi 36.6 — medido 2026-10-27'
+  brasil_taxa_rendimento:
+    grao: um Brasil × ano × etapa de ensino (taxas de rendimento da educação especial)
+    chave: ano, etapa_ensino (45 linhas, 45 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2021
+    territorio:
+      nivel: brasil
+      colunas: {}
+    medidas:
+    - coluna: taxa_aprovacao
+      o_que: taxa de aprovação
+      unidade: '% (0–100)'
+      soma: nao
+    - coluna: taxa_reprovacao
+      o_que: taxa de reprovação
+      unidade: '% (0–100)'
+      soma: nao
+    - coluna: taxa_abandono
+      o_que: taxa de abandono
+      unidade: '% (0–100)'
+      soma: nao
+    filtros_tipicos:
+    - etapa_ensino = 'Ensino Fundamental – Anos Iniciais' | 'Ensino Fundamental – Anos Finais' | 'Ensino Médio Regular' (uma linha por etapa e ano)
+    use_para: Série nacional de aprovação, reprovação e abandono por etapa.
+    nao_use_para: Somar taxas entre etapas ou UFs; detalhe por UF (use taxa_rendimento).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 45 linhas, 45 distintos (ano, etapa_ensino) — medido 2026-10-27
+  distorcao_idade_serie:
+    grao: um UF × ano × etapa de ensino (taxa de distorção idade-série)
+    chave: ano, sigla_uf, etapa_ensino (1.215 linhas, 1.215 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2021
+    territorio: &id001
+      nivel: uf
+      colunas:
+        sigla_uf: sigla da UF (27 valores)
+    medidas:
+    - coluna: tdi
+      o_que: taxa de distorção idade-série
+      unidade: '% (0–100)'
+      soma: nao
+    filtros_tipicos:
+    - etapa_ensino = 'Ensino Fundamental – Anos Iniciais' | 'Ensino Fundamental – Anos Finais' | 'Ensino Médio Regular' (uma linha por etapa; não some entre etapas)
+    use_para: Distorção idade-série por UF, etapa e ano.
+    nao_use_para: Agregar UFs por soma ou média simples (a taxa não tem peso de matrículas aqui).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 1.215 linhas, 1.215 distintos; 27 UFs; idêntica a uf_distorcao_idade_serie (0 diferenças > 0,5 ponto no join pela chave) — medido 2026-10-27
+  uf_distorcao_idade_serie:
+    grao: mesmo grão de distorcao_idade_serie (um UF × ano × etapa); duplicata da mesma informação
+    chave: ano, sigla_uf, etapa_ensino (1.215 linhas, 1.215 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2021
+    territorio: *id001
+    medidas:
+    - coluna: tdi
+      o_que: taxa de distorção idade-série (DOUBLE; em distorcao_idade_serie é DECIMAL)
+      unidade: '% (0–100)'
+      soma: nao
+    use_para: Equivalente a distorcao_idade_serie; use qualquer uma, não as duas juntas.
+    nao_use_para: Empilhar com distorcao_idade_serie (duplicaria cada linha).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 'join com distorcao_idade_serie pela chave: 0 linhas com |diferença de tdi| > 0,5 — medido 2026-10-27'
+  taxa_rendimento:
+    grao: um UF × ano × etapa de ensino (taxas de rendimento)
+    chave: ano, sigla_uf, etapa_ensino (1.215 linhas, 1.215 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2021
+    territorio: *id001
+    medidas:
+    - coluna: taxa_aprovacao
+      o_que: taxa de aprovação
+      unidade: '% (0–100)'
+      soma: nao
+    - coluna: taxa_reprovacao
+      o_que: taxa de reprovação
+      unidade: '% (0–100)'
+      soma: nao
+    - coluna: taxa_abandono
+      o_que: taxa de abandono
+      unidade: '% (0–100)'
+      soma: nao
+    filtros_tipicos:
+    - etapa_ensino = 'Ensino Fundamental – Anos Iniciais' | 'Ensino Fundamental – Anos Finais' | 'Ensino Médio Regular'
+    use_para: Aprovação, reprovação e abandono por UF, etapa e ano.
+    nao_use_para: Somar taxas entre etapas/UFs.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 1.215 linhas, 1.215 distintos; igual a uf_taxa_rendimento (0 diferenças > 0,5 em taxa_aprovacao no join) — medido 2026-10-27
+  uf_taxa_rendimento:
+    grao: mesmo grão de taxa_rendimento (um UF × ano × etapa); duplicata da mesma informação
+    chave: ano, sigla_uf, etapa_ensino (1.215 linhas, 1.215 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2021
+    territorio: *id001
+    medidas:
+    - coluna: taxa_aprovacao / taxa_reprovacao / taxa_abandono
+      o_que: idênticas às de taxa_rendimento (DOUBLE em vez de DECIMAL)
+      unidade: '% (0–100)'
+      soma: nao
+    use_para: Equivalente a taxa_rendimento; use uma só.
+    nao_use_para: Empilhar com taxa_rendimento.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 'join com taxa_rendimento pela chave: 0 diferenças em taxa_aprovacao — medido 2026-10-27'
+  docente_aee:
+    grao: um município × ano (docentes regentes e de AEE)
+    chave: ano, id_municipio (16.710 linhas, 16.710 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2020–2022
+    territorio: &id002
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos (VARCHAR)
+        sigla_uf: UF do município
+    medidas:
+    - coluna: quantidade_docente_regente
+      o_que: docentes regentes (significado exato não documentado); 17,67% nulos
+      unidade: docentes
+      soma: sim
+    - coluna: quantidade_docente_aee
+      o_que: docentes do atendimento educacional especializado; 17,67% nulos
+      unidade: docentes
+      soma: sim
+    - coluna: quantidade_docente_regente_formacao_continuada
+      o_que: subconjunto dos regentes com formação continuada (significado não documentado); 9,99% nulos
+      unidade: docentes
+      soma: sim
+    - coluna: quantidade_docente_aee_formacao_continuada
+      o_que: subconjunto dos docentes de AEE com formação continuada (não documentado); 41,32% nulos
+      unidade: docentes
+      soma: sim
+    filtros_tipicos:
+    - 'ano IN (2020, 2021, 2022): só esses 3 anos, 5.570 municípios cada'
+    use_para: Docentes de AEE e regentes por município nos anos 2020–2022.
+    nao_use_para: Séries longas (só 3 anos) ou tratar NULL como zero sem checar.
+    rascunho:
+    - medidas.o_que
+    - use_para
+    - nao_use_para
+    verificado: 16.710 linhas = 3 anos × 5.570; chave única — medido 2026-10-27
+  docente_formacao:
+    grao: um município × ano × rede (docentes com formação continuada)
+    chave: ano, id_municipio, rede (230.372 linhas, 230.372 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2012–2023
+    territorio: *id002
+    medidas:
+    - coluna: quantidade_docente_formacao_continuada
+      o_que: docentes com formação continuada (em educação especial, pelo nome do dataset; não documentado)
+      unidade: docentes
+      soma: sim
+    filtros_tipicos:
+    - rede = 'Estadual' | 'Federal' | 'Municipal' | 'Privada' (4 valores literais, 1 linha de cada por município-ano; sem 'Total')
+    use_para: Docentes com formação continuada por município e rede.
+    nao_use_para: Contar docentes em geral; 110.029 linhas têm valor 0 (zero real, não NULL).
+    rascunho:
+    - medidas.o_que
+    - use_para
+    - nao_use_para
+    verificado: 230.372 linhas, chave única; 110.029 linhas com quantidade = 0 — medido 2026-10-27
+  etapa_ensino:
+    grao: um município × ano × tipo de classe × etapa de ensino
+    chave: ano, id_municipio, tipo_classe, etapa_ensino (2.784.180 linhas, 2.784.180 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2024
+    territorio: *id002
+    medidas:
+    - coluna: quantidade_matricula
+      o_que: matrículas de alunos da educação especial na etapa
+      unidade: matrículas
+      soma: sim
+    filtros_tipicos:
+    - tipo_classe = 'Classes Comuns' ou 'Classes Exclusivas' (valores literais; há uma linha de cada por chave; filtre um ou o total soma as duas)
+    - 'etapa_ensino: 15 valores literais com hífen simples (ex.: ''Educação Infantil - Creche'', ''EJA - Ensino Médio'', ''Ensino Fundamental - Anos Finais''); ao contrário das tabelas de taxa, que usam travessão ''–'''
+    use_para: Matrículas de educação especial por etapa de ensino e município.
+    nao_use_para: 'Total de matrículas: soma ~1,6% a mais que localizacao/tempo_ensino/sexo_raca_cor (gotcha etapa_ensino_soma_a_mais); use localizacao para o total.'
+    rascunho:
+    - use_para
+    verificado: '2.784.180 linhas, chave única; ver gotcha etapa_ensino_soma_a_mais (2024 Classes Comuns: etapa 1.955.026 vs 1.923.692) — medido 2026-10-27'
+  faixa_etaria:
+    grao: um município × ano × tipo de classe × faixa etária
+    chave: ano, id_municipio, tipo_classe, faixa_etaria (1.202.760 linhas, 1.202.760 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2024
+    territorio: *id002
+    medidas:
+    - coluna: quantidade_matricula
+      o_que: matrículas da educação especial na faixa etária
+      unidade: matrículas
+      soma: sim
+    filtros_tipicos:
+    - tipo_classe = 'Classes Comuns' ou 'Classes Exclusivas' (valores literais; há uma linha de cada por chave; filtre um ou o total soma as duas)
+    - 'faixa_etaria: ''Até 14 anos'', ''15 a 17 anos'', ''18 a 24 anos'', ''25 a 29 anos'', ''30 a 34 anos'', ''35 anos ou mais'' (6 valores; não se sobrepõem)'
+    use_para: Matrículas por faixa etária; o total bate com localizacao.
+    nao_use_para: Total por etapa de ensino.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 1.202.760 linhas, chave única; 2024 Classes Comuns soma 1.923.692 (= localizacao) — medido 2026-10-27
+  localizacao:
+    grao: um município × ano × tipo de classe × rede × localização (urbana/rural)
+    chave: ano, id_municipio, tipo_classe, rede, localizacao (1.603.680 linhas, 1.603.680 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2024
+    territorio: *id002
+    medidas:
+    - coluna: quantidade_matricula
+      o_que: matrículas da educação especial
+      unidade: matrículas
+      soma: sim
+    filtros_tipicos:
+    - tipo_classe = 'Classes Comuns' ou 'Classes Exclusivas' (valores literais; há uma linha de cada por chave; filtre um ou o total soma as duas)
+    - rede = 'Estadual' | 'Federal' | 'Municipal' | 'Privada'
+    - localizacao = 'Urbana' | 'Rural'
+    use_para: Total de matrículas da educação especial e corte por rede e urbano/rural.
+    nao_use_para: Detalhe por etapa ou deficiência.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 1.603.680 linhas, chave única; 2024 Classes Comuns soma 1.923.692 — medido 2026-10-27
+  tempo_ensino:
+    grao: um município × ano × tipo de classe × rede × tempo de ensino (integral/parcial)
+    chave: ano, id_municipio, tipo_classe, rede, tempo_ensino (1.603.680 linhas, 1.603.680 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2024
+    territorio: *id002
+    medidas:
+    - coluna: quantidade_matricula
+      o_que: matrículas da educação especial
+      unidade: matrículas
+      soma: sim
+    filtros_tipicos:
+    - tipo_classe = 'Classes Comuns' ou 'Classes Exclusivas' (valores literais; há uma linha de cada por chave; filtre um ou o total soma as duas)
+    - rede = 'Estadual' | 'Federal' | 'Municipal' | 'Privada'
+    - tempo_ensino = 'Integral' | 'Parcial'
+    use_para: Matrículas em tempo integral vs parcial; o total bate com localizacao.
+    nao_use_para: Detalhe por etapa ou deficiência.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 1.603.680 linhas, chave única (mesma estrutura de localizacao); total de 2024 Classes Comuns = 1.923.692 segundo o gotcha etapa_ensino_soma_a_mais — medido 2026-10-27
+  sexo_raca_cor:
+    grao: um município × ano × tipo de classe × sexo × raça/cor
+    chave: ano, id_municipio, tipo_classe, sexo, raca_cor (2.361.000 linhas, 2.361.000 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2024
+    territorio: *id002
+    medidas:
+    - coluna: quantidade_matricula
+      o_que: matrículas da educação especial
+      unidade: matrículas
+      soma: sim
+    filtros_tipicos:
+    - tipo_classe = 'Classes Comuns' ou 'Classes Exclusivas' (valores literais; há uma linha de cada por chave; filtre um ou o total soma as duas)
+    - sexo = 'Feminino' | 'Masculino'
+    - raca_cor = 'Amarela' | 'Branca' | 'Indígena' | 'Não declarada' | 'Parda' | 'Preta'
+    use_para: Perfil de sexo e raça/cor das matrículas; o total bate com localizacao.
+    nao_use_para: Detalhe por etapa ou deficiência.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 2.361.000 linhas, chave única; ver gotcha etapa_ensino_soma_a_mais (sexo_raca_cor = 1.923.692 em 2024 Classes Comuns) — medido 2026-10-27
+  tipo_deficiencia:
+    grao: um município × ano × tipo de classe × tipo de deficiência
+    chave: ano, id_municipio, tipo_classe, tipo_deficiencia (2.405.460 linhas, 2.405.460 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2024
+    territorio: *id002
+    medidas:
+    - coluna: quantidade_matricula
+      o_que: matrículas por tipo de deficiência, TEA ou altas habilidades
+      unidade: matrículas (um aluno com mais de uma deficiência conta em cada uma)
+      soma: sim
+    filtros_tipicos:
+    - tipo_classe = 'Classes Comuns' ou 'Classes Exclusivas' (valores literais; há uma linha de cada por chave; filtre um ou o total soma as duas)
+    - 'tipo_deficiencia: 10 valores literais (ex.: ''Baixa Visão'', ''Cegueira'', ''Deficiência Intelectual'', ''Transtorno do Espectro Autista'', ''Altas Habilidade/Superdotação'')'
+    use_para: Matrículas por tipo de deficiência.
+    nao_use_para: 'Total de alunos: as categorias se sobrepõem e a soma excede o total (2024 Classes Comuns: 2.180.461 contra 1.923.692 de localizacao, +13,3%).'
+    rascunho:
+    - use_para
+    verificado: 2.405.460 linhas, chave única; soma 2024 Classes Comuns 2.180.461 vs 1.923.692 (localizacao) — medido 2026-10-27
+  matricula_aee:
+    grao: um UF × ano × rede (matrículas e matrículas em AEE)
+    chave: ano, sigla_uf, rede (216 linhas, 216 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2019–2022
+    territorio: *id001
+    medidas:
+    - coluna: quantidade_matricula
+      o_que: matrículas de alunos da educação especial
+      unidade: matrículas
+      soma: sim
+    - coluna: quantidade_matricula_aee
+      o_que: dessas, matrículas que recebem atendimento educacional especializado (AEE)
+      unidade: matrículas
+      soma: sim
+    filtros_tipicos:
+    - rede = 'Pública' | 'Privada' (não há 'Estadual'/'Municipal' aqui)
+    use_para: Parcela dos alunos de educação especial atendida em AEE, por UF e rede.
+    nao_use_para: 'Séries longas (4 anos); comparar o total com localizacao (outra definição de universo: ex. 2022 aqui 1.527.794).'
+    rascunho:
+    - medidas.o_que
+    - use_para
+    - nao_use_para
+    verificado: 216 linhas = 4 anos × 27 UFs × 2 redes, chave única; matricula_aee > matricula em 1–3 linhas por ano — medido 2026-10-27

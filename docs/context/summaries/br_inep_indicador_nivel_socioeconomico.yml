@@ -1,0 +1,68 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_inep_indicador_nivel_socioeconomico
+tabelas:
+  dicionario:
+    grao: "um valor decodificado por tabela, coluna e código (area, rede, tipo_localizacao, classificacao)"
+    use_para: "traduzir os códigos 0/1/2... de area, rede, tipo_localizacao e as descrições de classificacao."
+  brasil:
+    grao: "um ano × área × rede × tipo de localização, para o Brasil"
+    chave: "ano, area, rede, tipo_localizacao (63 linhas, 63 distintas)"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2021–2021"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: inse, o_que: "INSE médio dos alunos do recorte", unidade: "índice (escala 2019+)", soma: nao}
+      - {coluna: "percentual_nivel_1 .. percentual_nivel_8", o_que: "% de alunos em cada nível do INSE", unidade: "%", soma: nao}
+      - {coluna: quantidade_alunos_inse, o_que: "alunos com INSE calculado no recorte", unidade: "alunos", soma: nao}
+    filtros_tipicos:
+      - "area = '0', rede = '0', tipo_localizacao = '0' para o total (dicionario: 0 = total; area 1 Capital, 2 Interior; tipo_localizacao 1 Urbana, 2 Rural; rede 1 Federal, 2 Estadual, 3 Municipal, 4 Privada, 5 Estadual+Municipal, 6 Federal+Estadual+Municipal)"
+    use_para: "INSE nacional por recorte de rede, área e localização."
+    nao_use_para: "somar quantidade_alunos_inse entre linhas: os códigos 0, 5 e 6 já são totais dos demais."
+    rascunho: [use_para, nao_use_para]
+    verificado: "63 linhas = 63 chaves distintas; só ano 2021 — medido 2026-10-27"
+  uf:
+    grao: "um ano × UF × área × rede × tipo de localização"
+    chave: "ano, sigla_uf, area, rede, tipo_localizacao (3.402 linhas, 3.402 distintas)"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2019–2021"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "sigla da UF"}}
+    medidas:
+      - {coluna: inse, o_que: "INSE médio do recorte", unidade: "índice", soma: nao}
+      - {coluna: "percentual_nivel_1 .. percentual_nivel_8", o_que: "% de alunos por nível (NULL em ~10% das linhas)", unidade: "%", soma: nao}
+      - {coluna: quantidade_alunos_inse, o_que: "alunos com INSE no recorte", unidade: "alunos", soma: nao}
+    filtros_tipicos:
+      - "area = '0' AND rede = '0' AND tipo_localizacao = '0' para o total da UF (códigos como em brasil; os valores são texto)"
+    use_para: "INSE por UF."
+    nao_use_para: "somar linhas com códigos de total (0, 5, 6) junto com as abertas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "3.402 linhas = 3.402 chaves distintas; 1.701 linhas em 2019 e em 2021 — medido 2026-10-27"
+  municipio:
+    grao: "um ano × município × rede × tipo de localização"
+    chave: "ano, id_municipio, rede, tipo_localizacao (169.302 linhas, 169.302 distintas)"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2019–2021"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: inse, o_que: "INSE médio do recorte (0.0 aparece como mínimo: tratar com cuidado)", unidade: "índice", soma: nao}
+      - {coluna: "percentual_nivel_1 .. percentual_nivel_8", o_que: "% de alunos por nível (NULL em 17%)", unidade: "%", soma: nao}
+      - {coluna: quantidade_alunos_inse, o_que: "alunos com INSE no recorte", unidade: "alunos", soma: nao}
+    filtros_tipicos:
+      - "rede = '0' AND tipo_localizacao = '0' para o total do município; rede também tem '5' e '6' (totais combinados)"
+    use_para: "INSE do município, por rede e localização."
+    nao_use_para: "somar quantidade_alunos_inse sem escolher UM recorte (0 e 6 são totais dos demais)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "169.302 linhas = 169.302 chaves distintas; 2019: 69.906, 2021: 99.396 — medido 2026-10-27"
+  escola:
+    grao: "um ano × escola"
+    chave: "ano, id_escola (355.588 linhas, 355.588 distintas)"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2013–2023 (anos 2013, 2015, 2019, 2021, 2023)"}
+    territorio: {nivel: outro, colunas: {id_escola: "código INEP", id_municipio: "IBGE de 7 dígitos", sigla_uf: "UF", area: "1 = Capital, 2 = Interior", tipo_localizacao: "1 = Urbana, 2 = Rural", rede: "1 Federal, 2 Estadual, 3 Municipal, 4 Privada (privada só em 2013/2015)"}}
+    medidas:
+      - {coluna: inse, o_que: "INSE da escola; ESCALA MUDA: 2013 e 2015 variam de 1,44 a 7,66, 2019–2023 de ~2,2 a ~6,9", unidade: "índice", soma: nao}
+      - {coluna: classificacao, o_que: "classe do INSE: 2013/2015 em 7 rótulos (Muito Baixo..Muito Alto), 2019+ em 'Nível I'..'Nível VII'", unidade: "rótulo", soma: nao}
+      - {coluna: quantidade_alunos_inse, o_que: "alunos com INSE na escola", unidade: "alunos", soma: sim}
+    filtros_tipicos:
+      - "ano IN (2019, 2021, 2023) e classificacao LIKE 'Nível%' para a escala nova; 2013/2015 usam Muito Baixo, Baixo, Médio Baixo, Médio, Médio Alto, Alto, Muito Alto"
+      - "percentual_nivel_N é NULL em ~41–54% das linhas (não calculado em 2013/2015)"
+    use_para: "perfil socioeconômico da escola e comparação de escolas na mesma edição."
+    nao_use_para: "comparar inse ou classificacao entre 2013/2015 e 2019+ (escalas diferentes)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "355.588 linhas = 355.588 (ano,id_escola) distintos; contagem por ano: 2013 73.572, 2015 73.572, 2019 68.868, 2021 69.820, 2023 69.756; 2013 e 2015 têm mesmo min/max de inse (1,436–7,664) — medido 2026-10-27"

@@ -1,0 +1,25 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_mj_consumidorgovbr
+tabelas:
+  reclamacoes:
+    grao: "uma reclamação de consumidor contra uma empresa no Consumidor.gov.br (sem identificador na tabela)"
+    chave: "nenhuma: não há coluna de id; a tabela é a concatenação de arquivos (arquivo_origem, 94 valores) e não foi testada unicidade por conjunto de colunas"
+    tempo: {natureza: serie_de_periodos, coluna: "Data Abertura (DATE) ou Data Finalização (VARCHAR, dois formatos)", cobertura: "Data Abertura 2014–2025 (há 1 linha em 1970); Data Finalização 2014–2025, ver gotchas"}
+    territorio:
+      nivel: municipio
+      colunas: {UF: "sigla da UF do consumidor", Cidade: "nome do município do consumidor (texto, com mojibake em acentos; sem código IBGE)", "Região": "região, com espaço sobrando em 'S ' e 'N '"}
+    medidas:
+      - {expressao: "count(*)", o_que: "número de reclamações", unidade: "reclamações", soma: sim}
+      - {coluna: Total, o_que: "constante 1 quando preenchida, NULL em 83% das linhas na amostra; não use no lugar de count(*)", unidade: "reclamações", soma: nao}
+      - {expressao: "CAST(\"Nota do Consumidor\" AS DOUBLE)", o_que: "nota de 1 a 5, gravada ora '5' ora '5.0'", unidade: "nota", soma: nao}
+    filtros_tipicos:
+      - "\"Situação\" IN ('Finalizada avaliada','Finalizada não avaliada') para reclamações concluídas; 'Cancelada' e 'Encerrada' são outros valores"
+      - "Respondida = 'S' (S/N)"
+      - "\"Avaliação Reclamação\" = 'Resolvida' ou 'Não Resolvida' (também existe 'Não Avaliada')"
+      - "\"Grupo Problema\" = 'Cobrança / Contestação' (valor literal com espaços ao redor da barra)"
+      - "ano pela Data Abertura (DATE): year(\"Data Abertura\"); Ano Abertura mistura '2020' e '2020.0'; arquivos de 2019 não têm Data Abertura (ver 2019_sem_data_abertura)"
+    use_para: "contar e caracterizar reclamações por empresa (Nome Fantasia), segmento, área, problema, UF e resultado (resolvida, nota)."
+    nao_use_para: "contagem por ano pela Data Abertura sem tratar 2019 e as linhas sem data, ou análise por município via código IBGE (só há nome de Cidade)."
+    rascunho: [chave, use_para, nao_use_para, "significado de Total"]
+    verificado: "15.392.507 linhas; Data Abertura nula em 6.005.545 (inclui 780.179 de 2019); linhas por ano da Data Abertura: 2020 1.342.805, 2021 1.607.240, 2023 1.530.486; amostra 1% (system, 42) com 135.482 linhas; valores literais de Situação, Respondida, Avaliação Reclamação e Grupo Problema conferidos no perfil (amostra de ~2 mi) — medido 2026-10-27. Gotchas: 2019_sem_data_abertura, data_finalizacao_dois_formatos, ano_abertura_com_ponto_zero"

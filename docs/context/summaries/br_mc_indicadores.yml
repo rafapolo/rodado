@@ -1,0 +1,22 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_mc_indicadores
+tabelas:
+  transferencias_municipio:
+    grao: "um município × mês, de Bolsa Família e CadÚnico (Ministério da Cidadania)"
+    chave: "(ano, mes, id_municipio)"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2004-01–2020-09"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos"}}
+    medidas:
+      - {coluna: valor_pago_pbf, o_que: "valor pago do Bolsa Família no mês", unidade: "R$", soma: sim}
+      - {coluna: familias_beneficiarias_pbf, o_que: "famílias beneficiárias do PBF no mês", unidade: "famílias", soma: nao}
+      - {coluna: pessoas_beneficiarias_pbf, o_que: "pessoas beneficiárias do PBF (vazia antes de 2019 nas amostras medidas)", unidade: "pessoas", soma: nao}
+      - {coluna: familias_cadastradas_cu, o_que: "famílias no CadÚnico", unidade: "famílias", soma: nao}
+      - {coluna: pessoas_cadastradas_cu, o_que: "pessoas no CadÚnico", unidade: "pessoas", soma: nao}
+    filtros_tipicos:
+      - "ano e mes numéricos (mes = 12, não '12'); somar valor_pago_pbf entre meses é válido, as contagens são estoque do mês e não se somam entre meses"
+      - "ano <= 2019 para o valor do programa (de abr/2020 o valor cai 96%, gotcha valor_2020_auxilio)"
+    use_para: "Bolsa Família e CadÚnico por município e mês até set/2020"
+    nao_use_para: "período posterior a set/2020 (use br_mds_cadunico) ou Ministério das Cidades"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.118.855 linhas = 1.118.855 distintos de (ano, mes, id_municipio); último mês 2020-09; 5.570 municípios por mês; dez/2019 valor 2,526 bi; mar/2020 2,505 bi; abr/2020 0,113 bi; set/2020 valor NULL; pessoas_beneficiarias_pbf com 0 preenchidos em 2004, 2008, 2012, 2016 e 66.840 em 2019 — medido 2026-10-27. Gotchas: ministerio_da_cidadania, valor_2020_auxilio, cadunico_so_desde_2012."

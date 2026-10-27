@@ -1,0 +1,92 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibama_embargos_novo
+tabelas:
+  termo_embargo:
+    grao: "um termo de embargo (TAD) do IBAMA, com a geometria da área embargada; pode haver mais de uma linha por termo"
+    chave: "nenhuma: 116.746 linhas, 113.648 seq_tad distintos (3.098 linhas têm seq_tad NULL), 114.727 num_tad distintos; (seq_tad, geom_area_embargada) dá 115.281 — ver gotcha seq_tad_repetido"
+    tempo: {natureza: serie_de_periodos, coluna: dat_embargo, cobertura: "texto 'aaaa-mm-dd hh:mm:ss'; datas reais de 1990 a 2026-10, mas há anos impossíveis (ver gotcha datas_impossiveis)"}
+    territorio: {nivel: municipio, colunas: {cod_municipio: "código IBGE de 7 dígitos (texto)", municipio: "nome", uf: "sigla, 27 valores", num_latitude_tad: "texto, ver gotcha coordenada_fora_do_brasil", num_longitude_tad: "texto", geom_area_embargada: "polígono em WKT (texto), nulo em 49%"}}
+    medidas:
+      - {coluna: qtd_area_embargada, o_que: "área embargada (DOUBLE), unidade não declarada (ver gotcha area_embargada_texto); preenchida em 62%", unidade: "provavelmente hectares (não confirmado)", soma: sim}
+    filtros_tipicos: ["sit_cancelado = 'N' (110.439 linhas; 'S' = 6.307): ver gotcha cancelados", "des_status_formulario = 'Lavrado' (108.588 linhas); 3.098 linhas com status NULL (e seq_tad NULL: 1.853 'N' e 1.245 'S') ", "sit_desembargo = 'S' (19.673 linhas) marca termo desembargado; tipo_desembargo IN ('Administrativo','Judicial') (19.417 e 256); NULL = ainda embargado ou sem informação", "tipo_area: 'Desmatamento' (40.472), 'Atividade' (1.764), 'Outros' (1.469), 'Queimada' (527); NULL em 72.098 linhas; 'Não se Aplica' e 'Não se aplica' são dois rótulos"]
+    use_para: "contar e localizar embargos ambientais por UF/município/ano e somar área embargada, depois de filtrar cancelados e deduplicar seq_tad."
+    nao_use_para: "contar linhas como embargos (duplica seq_tad e inclui cancelados) ou usar dat_embargo como data sem tratar anos impossíveis."
+    rascunho: [use_para, nao_use_para]
+    verificado: "116.746 linhas; 113.648 seq_tad distintos; 108.586 seq_tad distintos entre sit_cancelado='N'; sit_cancelado S 6.307; tipo_area e desembargo medidos — medido 2026-10-27. Gotchas: datas_impossiveis, cancelados, area_embargada_texto, coordenada_fora_do_brasil, seq_tad_repetido"
+  termo_embargo_historico:
+    grao: "uma versão (alteração) de um termo de embargo: cada edição do TAD gera uma linha, com os campos do termo naquele momento"
+    chave: "(seq_tad, seq_hist_tad) — 502.584 linhas = 502.584 chaves distintas; 111.387 seq_tad"
+    tempo: {natureza: serie_de_periodos, coluna: dt_alteracao, cobertura: "2015-09-29 a 2026-10-06"}
+    territorio: {nivel: municipio, colunas: {cod_municipio: "código IBGE (texto)", municipio: "nome", uf: "sigla"}}
+    medidas:
+      - {coluna: qtd_area_embargada, o_que: "área embargada na versão (DOUBLE; nulo em 65%, máximo 775.298.490, valores absurdos)", unidade: "não declarada", soma: nao}
+    filtros_tipicos: ["des_status_formulario = 'Lavrado' (468.663 linhas) — 'Lançado no Sistema' (25.210) é versão anterior à lavratura; 'Cancelado' 7.954", "para o estado atual do termo use termo_embargo, não esta tabela"]
+    use_para: "ver como um termo mudou ao longo do tempo (status, área, desembargo)."
+    nao_use_para: "contar embargos ou somar área: cada termo aparece em várias versões."
+    rascunho: [use_para, nao_use_para]
+    verificado: "502.584 linhas, 502.584 chaves (seq_tad, seq_hist_tad), 111.387 seq_tad — medido 2026-10-27"
+  coordenadas:
+    grao: "um ponto de um polígono de área embargada (vértice), ligado a um termo (seq_tad)"
+    chave: "nenhuma confirmada: 128.498 linhas, seq_ponto_poligono com 124.808 distintos e 2,87% nulo; (seq_tad, seq_poligono, seq_ponto_poligono) dá 124.809"
+    tempo: {natureza: retrato_atual, coluna: ultima_atualizacao_relatorio, cobertura: "2026-10-07"}
+    territorio: {nivel: ponto, colunas: {latitude: "texto, formato não padronizado (vírgula/ponto, sem zero à esquerda)", longitude: "texto", wkt: "POINT (...) em texto"}}
+    medidas:
+      - {coluna: area_poligono, o_que: "área do polígono (DOUBLE; nulo em 32%), unidade não declarada", unidade: "não declarada", soma: nao}
+    filtros_tipicos: ["seq_tad IS NOT NULL (2,87% nulo)", "coordenadas são texto e podem estar fora do Brasil: ver gotcha coordenada_fora_do_brasil"]
+    use_para: "reconstruir geometria dos embargos a partir de vértices."
+    nao_use_para: "contar embargos ou áreas: cada polígono tem muitos vértices; prefira geom_area_embargada de termo_embargo."
+    rascunho: [use_para, nao_use_para]
+    verificado: "128.498 linhas, 124.808 seq_ponto_poligono distintos, 118.648 wkt distintos — medido 2026-10-27"
+  decisao:
+    grao: "uma decisão judicial registrada sobre um termo (embargo ou desembargo)"
+    chave: "(seq_tad, seq_decisao_judicial) — 476 linhas = 476 chaves distintas; 388 seq_tad"
+    tempo: {natureza: serie_de_periodos, coluna: dat_decisao_embargo, cobertura: "texto; datas de 0026-03-11 (ano errado) a 2026-10-01"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos: ["tipo_decisao IN ('Embargo','Desembargo')", "tipo_acao IN ('Inclusão','Alteração'): são lançamentos, não decisões distintas", "sit_cancelado = 'N' (decisões canceladas = 'S')"]
+    use_para: "ver decisões judiciais sobre embargos."
+    nao_use_para: "estimar o total de embargos judiciais: só 476 linhas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "476 linhas, 476 chaves, 388 seq_tad — medido 2026-10-27. Contém nome e cpf_cnpj do interessado (dado pessoal)."
+  enquadramento:
+    grao: "um dispositivo legal (norma, artigo, parágrafo, inciso) em que um termo de embargo foi enquadrado"
+    chave: "nenhuma: 150.662 linhas, 150.647 chaves distintas em (seq_tad, num_tad, norma_tipo, norma_numero, artigo, nu_paragrafo, nu_inciso, cd_alinea, administrativo)"
+    tempo: {natureza: retrato_atual, coluna: ultima_atualizacao_relatorio, cobertura: "2026-10-07"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos: ["norma_tipo/norma_numero: ('Lei','9605') 62.224 + ('Decreto','6514') 55.323 com administrativo='S'; ('Decreto','6514') 33.115 com administrativo='N' (significado de administrativo não documentado)", "seq_tad é 14,8% nulo: ligue por num_tad (texto)"]
+    use_para: "contar embargos por artigo infringido."
+    nao_use_para: "contar termos: cada termo tem vários enquadramentos."
+    rascunho: [use_para, nao_use_para]
+    verificado: "150.662 linhas, 150.647 chaves, 31.112 num_tad distintos — medido 2026-10-27"
+  enquadramento_complementar:
+    grao: "um dispositivo legal complementar (texto livre) citado no termo"
+    chave: "nenhuma: 14.679 linhas, 14.678 chaves distintas (num_tad, nu_lei_comp, nu_artigo_comp, nu_par_inc_al)"
+    tempo: {natureza: retrato_atual, coluna: ultima_atualizacao_relatorio, cobertura: "2026-10-07"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos: ["nu_lei_comp é texto livre sujo ('   6514 ', 'sem Número de 13 de dezembro...'); normalize antes de agrupar", "seq_tad e num_tad começam com apóstrofo (') — ligue com cuidado"]
+    use_para: "ler a base legal complementar em texto livre."
+    nao_use_para: "agregar por lei sem limpar o texto."
+    rascunho: [use_para, nao_use_para]
+    verificado: "14.679 linhas, 14.678 chaves distintas, 11.030 num_tad distintos (aprox.) — medido 2026-10-27"
+  itens:
+    grao: "um item de fiscalização (natureza + item, com ponto/polígono e imóvel) de um termo de embargo"
+    chave: "nenhuma: 48.783 linhas, 48.551 chaves distintas em (seq_tad, natureza, item, wkt, id_poligono, nome_imovel); 47.762 seq_tad"
+    tempo: {natureza: retrato_atual, coluna: ultima_atualizacao_relatorio, cobertura: "2026-10-06"}
+    territorio: {nivel: ponto, colunas: {num_latitude_tad: "texto, 30% nulo", num_longitude_tad: "texto", wkt: "POINT em texto, 31% nulo"}}
+    medidas:
+      - {coluna: qtd_area_embargada, o_que: "área embargada do item (DOUBLE; nulo em 51%, máximo 149.498), unidade não declarada", unidade: "não declarada", soma: nao}
+    filtros_tipicos: ["natureza: Desmatamento (21.711), Atividade de Exploração Florestal (5.792), Florestal (4.563), Empreendimentos (3.745), Poluição / Degradação (3.462), Atividade de Exploração Agropastoril (2.257), e 16 outras", "deter_prodes IN ('Deter','Prodes'): 96% nulo", "embarga_poligono IN ('Sim','Não'): 88% nulo (aqui por extenso; em termo_embargo é 'S'/'N')"]
+    use_para: "ver a natureza do dano (desmatamento, exploração florestal...) por termo."
+    nao_use_para: "somar qtd_area_embargada junto com termo_embargo (mesma área, contada duas vezes)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "48.783 linhas, 48.551 chaves, 47.762 seq_tad; natureza top medida — medido 2026-10-27"
+  termo_de_embargo_anexo:
+    grao: "um anexo (croqui, foto, mapa, imagem, documento) de um termo de embargo"
+    chave: "(seq_tad, seq_anexo_tad) — 15.918 linhas = 15.918 chaves distintas; seq_anexo_tad sozinha repete (3.485 distintos)"
+    tempo: {natureza: retrato_atual, coluna: ultima_atualizacao_relatorio, cobertura: "2026-10-07"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos: ["tipo_anexo IN ('Croqui','Documento','Foto','Imagem','Mapa')", "seq_tad é 2,35% nulo"]
+    use_para: "saber quais termos têm anexos e de que tipo."
+    nao_use_para: "análise de conteúdo: só metadados, no_arquivo_evidencia é nome de arquivo (79% nulo)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "15.918 linhas, 15.918 chaves (seq_tad, seq_anexo_tad) — medido 2026-10-27"

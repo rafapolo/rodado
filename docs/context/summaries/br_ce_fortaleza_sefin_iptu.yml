@@ -1,0 +1,18 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ce_fortaleza_sefin_iptu
+tabelas:
+  face_quadra:
+    grao: "uma face de quadra do cadastro de IPTU de Fortaleza em 2023, com infraestrutura urbana e valor"
+    chave: "id_face_quadra (68.932 linhas = 68.932 distintos, medido)"
+    tempo: {natureza: retrato_atual, coluna: ano, cobertura: "2023–2023"}
+    territorio: {nivel: ponto, colunas: {centroide: "ponto (GEOMETRY) da face; as coordenadas medidas caem em x 48,40–48,52 e y -26,91 a -26,82, não em Fortaleza (lon -38,5, lat -3,7): não confie nelas sem checar", logradouro: "nome do logradouro (texto)"}}
+    medidas:
+      - {coluna: valor, o_que: "valor da face (mínimo 0,83, mediana 51,21, máximo 5.573,49); significado exato (provavelmente valor do metro quadrado/linear para o IPTU) não documentado", unidade: "não documentada", soma: nao}
+    filtros_tipicos:
+      - "pavimentacao = 'Asfalto' (46.594), 'Pedra rust' (14.726), 'Sem Pavimentação' (5.031), 'Paralelepípedo' (2.259); 65 nulos"
+      - "indicador_agua, indicador_esgoto, indicador_galeria_pluvial, indicador_sarjeta, indicador_iluminacao_publica, indicador_arborizacao são BOOLEAN (true/false) com 0,1–0,2% de nulos; ex.: indicador_esgoto = true em 54.883 faces"
+    use_para: "perfil de infraestrutura urbana (pavimento, água, esgoto, drenagem, iluminação, arborização) por face de quadra em Fortaleza"
+    nao_use_para: "mapas pelo centroide sem validar as coordenadas, e somar valor como receita de IPTU"
+    rascunho: [use_para, nao_use_para, "significado e unidade de valor", "significado de metrica"]
+    verificado: "68.932 linhas; 68.932 id_face_quadra distintos; ano único 2023; ST_X 48,403–48,520 e ST_Y -26,907 a -26,819 — medido 2026-10-27"

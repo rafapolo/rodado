@@ -1,0 +1,47 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_anvisa_consultas
+tabelas:
+  agrotoxicos:
+    grao: "um limite máximo de resíduo (LMR) de uma substância numa cultura, por ato legal e início de vigência"
+    chave: "NO_SUBSTANCIA, NO_CULTURA, NU_LMR, DS_ATO_LEGAL, DT_INICIO_VIGENCIA (9.676 linhas = 9.676 distintos); só (NO_SUBSTANCIA, NO_CULTURA) tem 8.336 distintos"
+    tempo: {natureza: serie_de_periodos, coluna: "DT_INICIO_VIGENCIA / DT_FIM_VIGENCIA (VARCHAR 'MM/DD/AAAA 00:00:00')", cobertura: "datas são texto: menor início 01/02/2015; DT_ATUALIZACAO = 08/31/2026 em todas as linhas"}
+    territorio: {nivel: nenhum, colunas: {}}
+    medidas:
+      - {coluna: NU_LMR, o_que: "limite máximo de resíduo (VARCHAR, ex.: '0.0100000000')", unidade: "mg/kg", soma: nao}
+    filtros_tipicos:
+      - "ST_AUTORIZADO = 'SIM' (9.202) ou 'NÃO' (473): uso autorizado da substância na cultura"
+      - "TIPO_LIMITE = 'Limite máximo' (9.011), 'Não estabelecido' (433), 'Limite de tolerância' (231)"
+      - "DT_FIM_VIGENCIA é nulo em 85,83% das linhas (vigência aberta)"
+      - "NU_LMR é texto: cast(NU_LMR as double)"
+    use_para: "consultar quais substâncias têm LMR e uso autorizado em cada cultura"
+    nao_use_para: "volume vendido ou produtos comerciais (é por ingrediente ativo, sem marca)"
+    rascunho: [use_para, nao_use_para, "formato de data MM/DD"]
+    verificado: "9.676 linhas; chave de 5 colunas única; 317 substâncias, 164 culturas; ST_AUTORIZADO SIM 9.202 / NÃO 473 / nulo 1 — medido 2026-10-27"
+  alimentos:
+    grao: "um registro de produto alimentício na ANVISA (processo e número de registro)"
+    chave: "nenhuma: (NU_PROCESSO, NU_REGISTRO_PRODUTO) dá 48.812 distintos em 48.956 linhas (144 repetem); NU_REGISTRO_PRODUTO vazio em 55 linhas"
+    tempo: {natureza: retrato_atual, coluna: DT_VENCIMENTO_REGISTRO, cobertura: "1999-01-08–2032-01-05"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "ST_SITUACAO_REGISTRO = 'Ativo' (8.700) ou 'Inativo' (40.256)"
+      - "DT_FINALIZACAO_PROCESSO é VARCHAR e vazia ('') em 22.511 linhas, não nula"
+      - "DS_CATEGORIA_PRODUTO tem 59 categorias; vazio em 3 linhas"
+    use_para: "contar registros de alimentos por categoria, empresa (CNPJ) e situação"
+    nao_use_para: "vendas ou composição dos produtos"
+    rascunho: [use_para, nao_use_para]
+    verificado: "48.956 linhas; Ativo 8.700 / Inativo 40.256 — medido 2026-10-27"
+  registros:
+    grao: "um registro de medicamento (produto × processo) na ANVISA"
+    chave: "nenhuma: NUMERO_REGISTRO_PRODUTO é nulo em 7.430 de 42.652 linhas e tem 2.424 valores repetidos; NUMERO_PROCESSO tem 32.902 distintos"
+    tempo: {natureza: retrato_atual, coluna: "DATA_VENCIMENTO_REGISTRO (VARCHAR 'MMAAAA', ex.: '122026')", cobertura: "datas de vencimento em texto"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "SITUACAO_REGISTRO = 'Ativo' (14.501) ou 'Inativo' (28.151)"
+      - "CATEGORIA_REGULATORIA: 'Similar' (16.344), 'Genérico' (8.888), 'BAIXO RISCO' (6.593), 'Novo' (3.633), 'Específico' (1.761), 'Fitoterápico' (1.311), nulo 4,3%"
+      - "EMPRESA_DETENTORA_REGISTRO vem como 'CNPJ - razão social' numa coluna só"
+      - "PRINCIPIO_ATIVO nulo em 25,43%; CLASSE_TERAPEUTICA nulo em 19,2%"
+    use_para: "contar registros de medicamentos por categoria regulatória, empresa e situação"
+    nao_use_para: "contar medicamentos distintos pelo número de registro (nulos e repetidos) ou preços (use br_anvisa_cmed)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "42.652 linhas; NUMERO_REGISTRO_PRODUTO 32.798 distintos e 7.430 nulos — medido 2026-10-27"

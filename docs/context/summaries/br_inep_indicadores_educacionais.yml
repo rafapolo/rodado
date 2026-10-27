@@ -1,0 +1,177 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_inep_indicadores_educacionais
+tabelas:
+  brasil:
+    grao: "um ano × localização × rede, para o Brasil (214 colunas de indicadores de fluxo, distorção idade-série, docentes e gestão)"
+    chave: "ano, localizacao, rede (360 linhas, 360 distintas)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2006–2025"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: "atu_*", o_que: "média de alunos por turma, por etapa/ano (atu_ef, atu_em, atu_ei_creche...)", unidade: "alunos por turma", soma: nao}
+      - {coluna: "had_*", o_que: "horas-aula diárias médias, por etapa/ano", unidade: "horas por dia", soma: nao}
+      - {coluna: "tdi_*", o_que: "taxa de distorção idade-série", unidade: "%", soma: nao}
+      - {coluna: "taxa_aprovacao_*, taxa_reprovacao_*, taxa_abandono_*", o_que: "taxas de rendimento por etapa/ano (ef, ef_anos_iniciais, ef_anos_finais, ef_1_ano..ef_9_ano, em, em_1_ano..)", unidade: "%", soma: nao}
+      - {coluna: "tnr_*", o_que: "significado não documentado (sufixos iguais aos de taxa_*, por etapa/ano)", unidade: "%", soma: nao}
+      - {coluna: "dsu_*", o_que: "percentual de docentes com ensino superior, por etapa (dsu_ef, dsu_em, dsu_ei_creche...)", unidade: "%", soma: nao}
+      - {coluna: "afd_*_grupo_1..5", o_que: "indicador de adequação da formação docente por grupo 1..5 (significado dos grupos não documentado)", unidade: "%", soma: nao}
+      - {coluna: "ied_*_nivel_1..6", o_que: "distribuição por nível 1..6 do indicador ied (significado não documentado)", unidade: "%", soma: nao}
+      - {coluna: "icg_nivel_1..6", o_que: "distribuição por nível 1..6 do indicador de complexidade de gestão (unidade não documentada)", unidade: "%", soma: nao}
+      - {coluna: "ird_baixa_regularidade .. ird_alta", o_que: "distribuição por faixa do indicador de regularidade docente (unidade não documentada)", unidade: "%", soma: nao}
+    filtros_tipicos:
+      - "localizacao = 'Total' e rede = 'Total' para o agregado (valores com inicial maiúscula: Total, Urbana, Rural; rede: Total, Publica, Federal, Estadual, Municipal, Privada)"
+      - "rede = 'Publica' sem acento nesta tabela; nas tabelas de município a grafia pode vir 'Pública' (use IN ('Publica','Pública'))"
+    use_para: "série nacional de indicadores educacionais do INEP."
+    nao_use_para: "somar colunas: todas são percentuais, médias ou índices."
+    rascunho: [use_para, nao_use_para, "tnr_*", "afd_*", "ied_*", "icg_*", "ird_*"]
+    verificado: "360 linhas = 360 chaves distintas; anos 2006–2025; 2024: rede Total/localizacao Total taxa_aprovacao_ef 96,0 e tdi_ef 10,9 — medido 2026-10-27"
+  regiao:
+    grao: "um ano × região × localização × rede (mesmas colunas de indicadores de brasil)"
+    chave: "nenhuma: 90 combinações (ano, regiao, localizacao, rede) aparecem 2 vezes, todas em 2021, de 1.800 linhas (1.710 distintas); as linhas repetidas podem diferir em outras colunas"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2006–2024"}
+    territorio: {nivel: regiao, colunas: {regiao: "Centro-Oeste, Nordeste, Norte, Sudeste, Sul"}}
+    medidas:
+      - {coluna: "atu_*, had_*, tdi_*, taxa_*, tnr_*, dsu_*, afd_*, ied_*, icg_*, ird_*", o_que: "mesmos prefixos de brasil", unidade: "%, horas ou alunos por turma", soma: nao}
+    filtros_tipicos:
+      - "localizacao = 'Total' AND rede = 'Total'; para 2021 deduplicar (ex.: GROUP BY chave, avg)"
+    use_para: "indicadores por região."
+    nao_use_para: "somar colunas ou contar linhas em 2021 sem deduplicar."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.800 linhas, 1.710 chaves distintas; 90 repetidas só em 2021; 360 linhas por região — medido 2026-10-27"
+  uf:
+    grao: "um ano × UF × localização × rede (mesmas colunas de indicadores)"
+    chave: "ano, sigla_uf, localizacao, rede (9.021 linhas, 9.021 distintas)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2006–2024"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "sigla da UF (27)"}}
+    medidas:
+      - {coluna: "atu_*, had_*, tdi_*, taxa_*, tnr_*, dsu_*, afd_*, ied_*, icg_*, ird_*", o_que: "mesmos prefixos de brasil", unidade: "%, horas ou alunos por turma", soma: nao}
+    filtros_tipicos:
+      - "localizacao = 'Total' AND rede = 'Total'; nem toda UF tem todas as redes (Federal Rural: 423 linhas contra 511)"
+    use_para: "indicadores por estado."
+    nao_use_para: "somar colunas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "9.021 linhas = 9.021 chaves distintas; 27 UFs, 2006–2024 — medido 2026-10-27"
+  municipio:
+    grao: "um ano × município × localização × rede (mesmas colunas de indicadores)"
+    chave: "ano, id_municipio, localizacao, rede (1.277.948 linhas, 1.277.948 distintas)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2006–2024"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos"}}
+    medidas:
+      - {coluna: "atu_*, had_*, tdi_*, taxa_*, tnr_*, dsu_*, afd_*, ied_*, icg_*, ird_*", o_que: "mesmos prefixos de brasil", unidade: "%, horas ou alunos por turma", soma: nao}
+    filtros_tipicos:
+      - "localizacao = 'Total' AND rede = 'Total' (5.570 municípios em 2024); rede de acento variável: 'Pública' em 2024 neste nível"
+    use_para: "indicadores educacionais por município."
+    nao_use_para: "média simples entre municípios como se fosse a do país (taxas sem peso)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.277.948 linhas = 1.277.948 chaves distintas; 5.570 municípios, 2006–2024 — medido 2026-10-27"
+  escola:
+    grao: "uma escola × ano (indicadores com a mesma família de colunas, sem os de rede agregada)"
+    chave: "ano, id_escola (2024: 179.436 linhas, 179.436 distintas; tabela inteira 3.346.548 linhas)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2007–2024"}
+    territorio: {nivel: outro, colunas: {id_escola: "código INEP", id_municipio: "IBGE de 7 dígitos", localizacao: "urbana/rural (minúsculas aqui)", rede: "estadual, municipal, federal, privada (minúsculas)"}}
+    medidas:
+      - {coluna: "atu_*, had_*, tdi_*, taxa_*, tnr_*, dsu_*, afd_*, ied_*", o_que: "mesmos prefixos de brasil, calculados para a escola; ~42% de NULL em 2024", unidade: "%, horas ou alunos por turma", soma: nao}
+      - {coluna: ird_media_regularidade_docente, o_que: "regularidade média do corpo docente (68% NULL em 2024)", unidade: "índice", soma: nao}
+      - {coluna: icg_nivel_complexidade_gestao_escola, o_que: "nível de complexidade de gestão (99% NULL em 2024; texto)", unidade: "nível", soma: nao}
+    filtros_tipicos:
+      - "ano = 2024 para o retrato mais recente; localizacao IN ('urbana','rural') e rede minúsculas (diferente das agregadas, que usam Total/Urbana/Publica)"
+    use_para: "indicadores de uma escola."
+    nao_use_para: "consultas sem filtrar ano (3,3 milhões de linhas)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "ano 2024: 179.436 linhas = 179.436 id_escola distintos; 2023: 178.601; 2022: 178.519 — medido 2026-10-27"
+  escola_nivel_socioeconomico:
+    grao: "uma escola × ano (2014 ou 2015) com a classificação socioeconômica antiga do INEP"
+    chave: "ano, id_escola (136.830 linhas, 136.830 distintas)"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2014–2015"}
+    territorio: {nivel: outro, colunas: {id_escola: "código INEP", id_municipio: "IBGE", area: "capital, interior ou '0' (52.779 linhas)"}}
+    medidas:
+      - {coluna: valor_inse, o_que: "valor do INSE (escala antiga, 9,55 a 77,24)", unidade: "índice", soma: nao}
+      - {coluna: inse_quantidade_alunos, o_que: "alunos considerados", unidade: "alunos", soma: sim}
+    filtros_tipicos:
+      - "inse_classificacao_2014 e inse_classificacao_2015 são colunas separadas, com ' ' (espaço) no ano que não se aplica: 2014 usa muito baixo..muito alto (minúsculo, sem acento), 2015 usa grupo 1..grupo 6"
+    use_para: "INSE antigo (2014/2015) por escola."
+    nao_use_para: "comparar com br_inep_indicador_nivel_socioeconomico (escala diferente)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "136.830 linhas = 136.830 (ano,id_escola) distintos; 2014 73.572, 2015 63.258 — medido 2026-10-27"
+  brasil_remuneracao_docentes:
+    grao: "um ano × rede × escolaridade dos docentes, Brasil"
+    chave: "ano, rede, escolaridade (120 linhas, 120 distintas)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2014–2021"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: numero_docentes, o_que: "docentes no recorte (50% NULL)", unidade: "docentes", soma: nao}
+      - {coluna: prop_docentes_rais, o_que: "% de docentes encontrados na RAIS", unidade: "%", soma: nao}
+      - {coluna: rem_bruta_rais_media, o_que: "remuneração bruta média (mediana, 1º/3º quartil e desvio-padrão em colunas irmãs)", unidade: "R$ mensais", soma: nao}
+      - {coluna: rem_media_40_horas_semanais, o_que: "remuneração média padronizada para 40 h semanais", unidade: "R$ mensais", soma: nao}
+      - {coluna: carga_horaria_media_semanal, o_que: "carga horária média", unidade: "horas por semana", soma: nao}
+    filtros_tipicos:
+      - "escolaridade IN ('total','superior','sem superior'); rede IN ('estadual','municipal','federal','privada','publica') em minúsculas"
+    use_para: "remuneração docente nacional por rede e escolaridade."
+    nao_use_para: "somar numero_docentes entre redes (publica já contém estadual/municipal/federal; total contém as escolaridades)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "120 linhas = 120 chaves distintas — medido 2026-10-27"
+  uf_remuneracao_docentes:
+    grao: "um ano × UF × rede × escolaridade dos docentes"
+    chave: "ano, sigla_uf, rede, escolaridade (1.944 linhas, 1.944 distintas)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2014–2021"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "sigla da UF"}}
+    medidas:
+      - {coluna: "numero_docentes, prop_docentes_rais, rem_bruta_rais_*, carga_horaria_media_semanal, rem_media_40_horas_semanais", o_que: "mesmas de brasil_remuneracao_docentes", unidade: "docentes, %, R$ mensais, horas", soma: nao}
+    filtros_tipicos:
+      - "rede IN ('estadual','privada','publica') (não há municipal/federal aqui); escolaridade IN ('total','superior','sem superior')"
+    use_para: "remuneração docente por UF."
+    nao_use_para: "somar linhas de escolaridade 'total' com as abertas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.944 linhas = 1.944 chaves distintas; 27 UFs × 72 linhas — medido 2026-10-27"
+  brasil_taxa_transicao:
+    grao: "um ano × localização × rede, Brasil: promoção, repetência, evasão e migração para EJA por série"
+    chave: "ano, localizacao, rede (120 linhas, 120 distintas)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2008–2022"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: "taxa_promocao_*, taxa_repetencia_*, taxa_evasao_*, taxa_migracao_eja_*", o_que: "taxas de transição entre ano t e t+1 por etapa/série (ef, ef_anos_iniciais, ef_anos_finais, ef_1_ano..ef_9_ano, em, em_1_ano..)", unidade: "%", soma: nao}
+    filtros_tipicos:
+      - "localizacao = 'Total' AND rede = 'Total'; a rede pública vem como 'Publica' (2008–2019) e 'Pública' (2020–2022): use IN ('Publica','Pública')"
+    use_para: "fluxo escolar nacional entre anos."
+    nao_use_para: "somar taxas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "120 linhas = 120 chaves distintas; 'Publica' 12 e 'Pública' 3 (por localização) — medido 2026-10-27"
+  regiao_taxa_transicao:
+    grao: "mesmo grão de brasil_taxa_transicao, por região"
+    chave: "ano, regiao, localizacao, rede (600 linhas, 600 distintas)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2008–2022"}
+    territorio: {nivel: regiao, colunas: {regiao: "Centro-Oeste, Nordeste, Norte, Sudeste, Sul"}}
+    medidas:
+      - {coluna: "taxa_promocao_*, taxa_repetencia_*, taxa_evasao_*, taxa_migracao_eja_*", o_que: "taxas de transição", unidade: "%", soma: nao}
+    filtros_tipicos:
+      - "localizacao = 'Total' AND rede = 'Total'; rede pública 'Publica' ou 'Pública' conforme o ano"
+    use_para: "fluxo escolar por região."
+    nao_use_para: "somar taxas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "600 linhas = 600 chaves distintas — medido 2026-10-27"
+  uf_taxa_transicao:
+    grao: "mesmo grão de brasil_taxa_transicao, por UF"
+    chave: "ano, sigla_uf, localizacao, rede (2.025 linhas, 2.025 distintas)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2008–2022"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "sigla da UF"}}
+    medidas:
+      - {coluna: "taxa_promocao_*, taxa_repetencia_*, taxa_evasao_*, taxa_migracao_eja_*", o_que: "taxas de transição", unidade: "%", soma: nao}
+    filtros_tipicos:
+      - "localizacao = 'Total' AND rede = 'Total'"
+    use_para: "fluxo escolar por estado."
+    nao_use_para: "somar taxas."
+    rascunho: [use_para, nao_use_para, filtros_tipicos]
+    verificado: "2.025 linhas = 2.025 chaves distintas — medido 2026-10-27"
+  municipio_taxa_transicao:
+    grao: "mesmo grão de brasil_taxa_transicao, por município"
+    chave: "ano, id_municipio, localizacao, rede (357.746 linhas, 357.746 distintas)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2008–2022"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos"}}
+    medidas:
+      - {coluna: "taxa_evasao_*, taxa_migracao_eja_* (e demais taxas de transição)", o_que: "taxas de transição; ~0–19% NULL", unidade: "%", soma: nao}
+    filtros_tipicos:
+      - "localizacao = 'Total' AND rede = 'Total' (234.528 linhas com rede Total); 'Privada' e 'Publica'/'Pública' existem só onde há escolas"
+    use_para: "fluxo escolar por município."
+    nao_use_para: "média simples entre municípios (sem peso de matrículas)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "357.746 linhas = 357.746 chaves distintas — medido 2026-10-27"

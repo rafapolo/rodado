@@ -1,0 +1,67 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_cgu_viagens
+tabelas:
+  viagem:
+    grao: "uma viagem a serviço (processo de viagem) de um servidor, com valores totais de diárias, passagens, devolução e outros gastos"
+    chave: "identificador_do_processo_de_viagem — quase única: 9.962.318 linhas para 9.962.310 distintos (8 repetidos); com cpf_viajante, 9.962.311"
+    tempo: {natureza: serie_de_periodos, coluna: periodo_data_de_inicio, cobertura: "2011-09-18–2027-02-11 (início); periodo_data_de_fim vai a 2027-12 no perfil"}
+    territorio: {nivel: outro, colunas: {destinos: "texto livre 'cidade/país' dos destinos", codigo_do_orgao_superior: "órgão superior do viajante (código SIAFI de 5 dígitos; '-1' = sem informação, significado não documentado)", codigo_orgao_solicitante: "órgão solicitante"}}
+    medidas:
+      - {coluna: valor_diarias, o_que: "valor das diárias da viagem", unidade: "R$", soma: sim}
+      - {coluna: valor_passagens, o_que: "valor das passagens da viagem", unidade: "R$", soma: sim}
+      - {coluna: valor_devolucao, o_que: "valor devolvido", unidade: "R$", soma: sim}
+      - {coluna: valor_outros_gastos, o_que: "outros gastos", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "situacao = 'Realizada' para viagens realizadas (9.720.623); 'Não realizada' tem 241.690 e 'Sem informação' 5. Com acento, tal como no banco"
+      - "viagem_urgente = 'SIM' / 'NÃO' (VARCHAR em maiúsculas; SIM em 2.517.413 viagens)"
+      - "year(periodo_data_de_inicio) = <ano> para recortar por ano (2014: 1.151.095 viagens; 2025: 811.504)"
+      - "regexp_full_match(cpf_viajante, '[0-9]{11}') só CPFs completos (gotcha cpf_completado)"
+    use_para: "somar gastos com diárias e passagens e contar viagens por órgão, ano, cargo ou situação"
+    nao_use_para: "somar com a tabela pagamento (mesmo dinheiro por outro ângulo) nem contar viajantes distintos por cpf_viajante sem tratar a máscara"
+    rascunho: [use_para, nao_use_para, "valor_devolucao e valor_outros_gastos: significado deduzido do nome"]
+    verificado: "9.962.318 linhas, 9.962.310 distintos de identificador_do_processo_de_viagem; datas de início 2011-09-18–2027-02-11; soma diárias+passagens: 2014 R$ 1,49 bi, 2025 R$ 2,51 bi — medido 2026-10-27. Ver gotcha cpf_completado"
+  pagamento:
+    grao: "um pagamento (diária, passagem, restituição, seguro ou taxa) de um processo de viagem, por unidade gestora pagadora"
+    chave: "nenhuma: 16.836.689 linhas e 16.182.867 distintos de (identificador_do_processo_de_viagem, tipo_de_pagamento, valor, codigo_da_unidade_gestora_pagadora); a tabela não tem data nem número de pagamento"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: nenhum}
+    medidas:
+      - {coluna: "CAST(replace(valor, ',', '.') AS DOUBLE)", o_que: "valor pago; a coluna valor é VARCHAR com vírgula decimal ('406,86')", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "tipo_de_pagamento tem variantes com texto corrompido no banco: 'DIÁRIAS' (10.552.388) e 'DIRIAS' (261); 'RESTITUIÇÃO' (398.716) e 'RESTITUIO' (24); 'Serviço correlato: seguro' (69.857) e 'Servio correlato: seguro' (56); 'PASSAGEM' (5.802.128); 'Taxa de agenciamento' (13.259). Use LIKE 'DI%RIAS' ou junte as variantes"
+    use_para: "somar o valor pago por tipo de pagamento e por órgão/unidade gestora pagadora"
+    nao_use_para: "análise por data ou ano (a tabela não tem data; junte com viagem pelo identificador_do_processo_de_viagem) ou somar junto com viagem.valor_diarias"
+    rascunho: [use_para, nao_use_para]
+    verificado: "16.836.689 linhas, 9.532.554 processos distintos, 16.182.867 combinações da chave tentada — medido 2026-10-27"
+  passagem:
+    grao: "um trecho de passagem comprada (ida ou volta) de um processo de viagem, com valor e taxa de serviço"
+    chave: "nenhuma: 5.214.358 linhas; (identificador_do_processo_de_viagem, numero_da_proposta_pcdp) tem só 2.750.522 distintos (vários bilhetes por viagem)"
+    tempo: {natureza: serie_diaria, coluna: data_da_emissao_compra, cobertura: "2019-12-27–2026-09-01 (nula em 3.209.784 linhas, 61,6%)"}
+    territorio: {nivel: outro, colunas: {uf_origem_ida: "UF por extenso de origem da ida ('' quando vazio)", cidade_origem_ida: "cidade de origem", pais_origem_ida: "país de origem", uf_destino_ida: "UF de destino da ida", cidade_destino_ida: "cidade de destino", pais_destino_ida: "país de destino"}}
+    medidas:
+      - {coluna: valor_da_passagem, o_que: "valor da passagem", unidade: "R$", soma: sim}
+      - {coluna: taxa_de_servico, o_que: "taxa de serviço da emissão", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "meio_de_transporte = 'Aéreo' (maioria; também Rodoviário, Fluvial, Ferroviário, Marítimo, Veículo Oficial, Veículo Próprio)"
+      - "uf_origem_volta = 'Sem informação' para passagem só de ida (domina o top do perfil); '' também ocorre"
+      - "valor_da_passagem pode ser negativo (mín. -630,41 no perfil): remarcação ou reembolso, significado não documentado"
+    use_para: "analisar rotas e custo de passagens (origem, destino, meio de transporte)"
+    nao_use_para: "análise temporal ampla: 61,6% das linhas não têm data de emissão"
+    rascunho: [use_para, nao_use_para, "interpretação de valor negativo"]
+    verificado: "5.214.358 linhas; 3.209.784 sem data_da_emissao_compra; 2.750.522 combinações (processo, proposta) — medido 2026-10-27"
+  trecho:
+    grao: "um trecho (origem → destino) de um processo de viagem"
+    chave: "(identificador_do_processo_de_viagem, sequencia_trecho) — única em 2024 (1.723.361 linhas = 1.723.361 distintos); para as demais partições não medido (tabela de 21 milhões de linhas)"
+    tempo: {natureza: serie_diaria, coluna: origem_data, cobertura: "2011–2027 (maioria 2014–2026)"}
+    territorio: {nivel: outro, colunas: {origem_uf: "UF de origem por extenso", origem_cidade: "cidade de origem", origem_pais: "país de origem", destino_uf: "UF de destino por extenso", destino_cidade: "cidade de destino", destino_pais: "país de destino"}}
+    medidas:
+      - {coluna: numero_diarias, o_que: "número de diárias do trecho (VARCHAR; não medido se tem vírgula decimal)", unidade: "diárias", soma: sim}
+    filtros_tipicos:
+      - "year(origem_data) = <ano> — tabela grande, sempre filtre (2024: 1.723.361 trechos)"
+      - "meio_de_transporte = 'Veículo Oficial' / 'Aéreo' / 'Rodoviário' etc.; há 'Inválido' (48.037 na amostra do perfil)"
+      - "missao = 'Sim' / 'Não' (viagem em missão)"
+    use_para: "rotas e destinos das viagens, por trecho, meio de transporte e data"
+    nao_use_para: "valores em reais (não há coluna de valor); use viagem ou pagamento"
+    rascunho: [use_para, nao_use_para, "unidade e formato de numero_diarias"]
+    verificado: "21.179.204 linhas no perfil; 2024: 1.723.361 linhas e chave (processo, sequencia_trecho) única — medido 2026-10-27"

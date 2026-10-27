@@ -1,0 +1,16 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_bndes_desembolsos
+tabelas:
+  mensal:
+    grao: "desembolsos do BNDES agregados num mês × UF × município × produto × instrumento × porte × setor (uma combinação de categorias)"
+    chave: "ano, mes, sigla_uf, id_municipio, forma_apoio, produto, instrumento_financeiro, indicador_inovacao, porte_empresa, subsetor_cnae_agrupado, subsetor_bndes (3.762.192 linhas = 3.762.192 distintos, medido; é chave de dimensões, a linha é um agregado)"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes (BIGINT)", cobertura: "1995–2026; 2026 só tem meses 1–3"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF do destino", id_municipio: "município IBGE 7 dígitos; nulo em ~1% das linhas de 2025, mas 24% do valor de 2025"}}
+    medidas:
+      - {coluna: valor_desembolsado, o_que: "valor desembolsado no mês na combinação", unidade: "R$ (DOUBLE)", soma: sim}
+    filtros_tipicos: ["forma_apoio = 'INDIRETA' (via agente financeiro, 31.467 na última partição) ou 'DIRETA' (547)", "porte_empresa IN ('MICRO','PEQUENA','MÉDIA','GRANDE'), em maiúsculas", "setor_cnae = 'AGROPECUÁRIA' (e setor_bndes = 'AGROPECUÁRIA')", "produto = 'BNDES AUTOMÁTICO' etc., em maiúsculas com acento", "indicador_inovacao = 'SIM'/'NÃO'"]
+    use_para: "série mensal de desembolsos do BNDES por UF, município, produto, porte e setor."
+    nao_use_para: "valor contratado ou número de operações (veja br_bndes_operacoes_contratadas); id_municipio nulo esconde parte relevante do valor, então a soma por município não fecha com o total por UF."
+    rascunho: [use_para, nao_use_para]
+    verificado: "3.762.192 linhas = 3.762.192 distintos da chave; 2025: 112.748 linhas, 169,7 bi R$, meses 1–12, id_municipio nulo em 1.146 linhas (23,8% do valor); 2026: 32.014 linhas, meses 1–3, 36,2 bi; soma total 2.563 bi — medido 2026-10-27"

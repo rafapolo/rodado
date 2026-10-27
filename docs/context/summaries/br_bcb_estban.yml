@@ -1,0 +1,40 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_bcb_estban
+tabelas:
+  agencia:
+    grao: "uma agência bancária × mês × verbete (conta contábil)"
+    chave: "mes, cnpj_agencia, id_verbete dentro de um ano (ano = 2024: 8.744.670 linhas = 8.744.670 distintos, 16.764 agências)"
+    tempo: {natureza: serie_mensal, coluna: "ano + mes", cobertura: "1988–2025-03 (use até 2024-12; ver gotcha agencia_2025_quebrada)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (VARCHAR) da agência", sigla_uf: "UF", cnpj_agencia: "CNPJ de 14 dígitos da agência", cnpj_basico: "CNPJ básico (8 dígitos) do banco"}}
+    medidas:
+      - {coluna: valor, o_que: "saldo do verbete na agência no fim do mês", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "id_verbete é texto: '420' = depósitos de poupança (dicionario); em 2024-12 soma R$ 1.026,1 bi em 15.695 agências"
+      - "'160' operações de crédito, '399' total do ativo (dicionario)"
+      - "excluir length(id_verbete) > 4 para não somar grupos colados duas vezes (gotcha verbetes_agregados_na_agencia)"
+      - "tabela de 443 milhões de linhas: sempre filtre ano"
+    use_para: "saldo de poupança, crédito e depósitos por agência, município e banco"
+    nao_use_para: "somar todos os verbetes (hierarquia, dupla contagem) ou usar 2025 (ver gotcha)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "ano=2024: 8.744.670 linhas = chave única; 15.695 agências em 2024-12 para cada verbete 420, 160 e 399 — medido 2026-10-27"
+  municipio:
+    grao: "um município × mês × banco (cnpj_basico) × verbete"
+    chave: "mes, id_municipio, cnpj_basico, id_verbete dentro de um ano, só onde id_municipio não é nulo (ano = 2023: 4.788.315 de 4.788.315); 30.690 linhas de 4.819.005 têm id_municipio nulo e repetem a chave"
+    tempo: {natureza: serie_mensal, coluna: "ano + mes", cobertura: "1988–2023-12, com anos ímpares faltando (gotcha municipio_anos_faltando)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (VARCHAR), nulo em 0,6%", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: valor, o_que: "saldo do verbete agregado das agências do banco no município", unidade: "R$", soma: sim}
+      - {coluna: "agencias_esperadas, agencias_processadas", o_que: "agências do banco no município que deviam e que foram lidas", unidade: "agências", soma: nao}
+    filtros_tipicos:
+      - "id_verbete = '420' (poupança): 2023-12 soma R$ 978,2 bi em 8.848 linhas; '399' (total do ativo) R$ 32,16 tri"
+      - "id_municipio is not null para análise territorial"
+      - "tabela de 256 milhões de linhas: filtre ano"
+    use_para: "saldos bancários por município e banco até 2023"
+    nao_use_para: "séries completas (anos faltando) ou dados de 2024 em diante"
+    rascunho: [use_para, nao_use_para]
+    verificado: "ano=2023: 4.819.005 linhas; chave única só com id_municipio não nulo (4.788.315) — medido 2026-10-27"
+  dicionario:
+    grao: "um verbete (id_verbete) com o nome da conta, para agencia e municipio (114 linhas)"
+    use_para: "traduzir id_verbete em nome da conta (ex.: '420' = depositos de poupanca); verbetes colados como '401402...' listam as subcontas separadas por ' | '"
+    verificado: "114 linhas — medido 2026-10-27"

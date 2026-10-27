@@ -1,0 +1,59 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibge_censo_agropecuario
+tabelas:
+  sidra:
+    grao: "uma célula do SIDRA do Censo Agropecuário 2017: tabela × localidade (Brasil, UF ou, em 5 tabelas, município) × variável × combinação de categorias (até 6 classificações)"
+    chave: "(id_tabela, id_nivel, id_localidade, id_variavel, id_categoria_1..6 com nulo como 0), confirmada nas tabelas 6753 (100.352 linhas) e na primeira acima de 8000 (105.840); não medida nas outras 445 (211,5 mi de linhas no total)"
+    tempo: {natureza: sem_tempo, coluna: periodo, cobertura: "2017–2017"}
+    territorio:
+      nivel: outro
+      colunas:
+        id_nivel: "'1' Brasil, '3' Unidade da Federação, '6' Município (texto); misturados na mesma tabela"
+        id_localidade: "código IBGE da localidade (texto): 1 = Brasil, 2 dígitos = UF, 7 dígitos = município"
+        localidade: "nome, com a sigla da UF nos municípios"
+    medidas:
+      - {coluna: valor, o_que: "valor da variável na célula; NULL quando simbolo = 'X' (sigilo), '...' ou '..'", unidade: "coluna unidade (Unidades, Pessoas, Hectares, Cabeças, Mil Reais, ...)", soma: nao}
+    filtros_tipicos:
+      - "id_tabela = <n> e id_variavel = <n>: uma linha mistura variáveis de unidades diferentes; nunca some valor sem fixar variavel/unidade"
+      - "id_nivel = '3' (UF) ou '1' (Brasil) como texto: Brasil e UF coexistem, somar os dois duplica; município (id_nivel = '6') existe só em 5 tabelas (6869, 8552, 8580, 9098, 9220, 46,7 mi de linhas)"
+      - "categorias = 'Total' (id_categoria de nível 0) em todas as classificações menos a que se quer abrir, senão soma hierarquias diferentes (gotcha municipio_so_em_recorte)"
+      - "simbolo IS NULL para células com valor; 'X' = sigilo (gotcha sigilo_x)"
+    use_para: "qualquer cruzamento do Censo 2017 por UF ou Brasil; localizar a tabela certa em sidra_tabelas e filtrar por id_tabela."
+    nao_use_para: "município em geral (use sidra_municipio, cobre 9 variáveis em 10 recortes); somar sem filtrar variável e Total; comparar com CAR/CAFIR (gotcha estabelecimento_nao_e_imovel)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "211.521.516 linhas em 447 id_tabela; id_nivel '3' 158.971.005, '6' 46.662.696 (5 tabelas), '1' 5.887.815; 6753: 100.352 linhas = 100.352 chaves distintas (Brasil 3.584, UF 96.768), unidades Unidades/Pessoas/Hectares — medido 2026-10-27. Gotchas: municipio_so_em_recorte, sigilo_x, estabelecimento_nao_e_imovel"
+  sidra_municipio:
+    grao: "uma célula município × variável × categorias, num dos 10 recortes (coluna recorte) do SIDRA do Censo Agropecuário 2017"
+    chave: "(recorte, id_tabela, id_localidade, id_variavel, id_categoria_1..6 com nulo como 0): 590.526 linhas = 590.526 distintas. SEM recorte não é única (573.813 distintas): as tabelas 6753 e 6846 aparecem em dois recortes cada."
+    tempo: {natureza: sem_tempo, coluna: periodo, cobertura: "2017–2017"}
+    territorio:
+      nivel: municipio
+      colunas:
+        id_localidade: "código IBGE do município, 7 dígitos (texto)"
+        localidade: "nome com a sigla da UF"
+    medidas:
+      - {coluna: valor, o_que: "valor da variável (id_variavel 183 número de estabelecimentos, 184 área, 185 pessoal ocupado, 1990 estabelecimentos com financiamento, 2002 pessoal com laço de parentesco, 2052 estabelecimentos com pessoal com laço, 2372 estabelecimentos com irrigação, 2373 área irrigada, 10099 estabelecimentos com pessoal ocupado)", unidade: "Unidades, Hectares ou Pessoas conforme id_variavel", soma: sim}
+    filtros_tipicos:
+      - "recorte = 'tipologia' e id_tabela = 6753, id_variavel = 183, categoria_1..4 = 'Total': Brasil = 5.073.324 estabelecimentos (soma medida), 5.571 municípios"
+      - "id_variavel = <n>: nunca some Unidades com Hectares; somar só dentro de uma variável"
+      - "todas as classificações = 'Total' (categoria de nível 0) exceto a que se abre: senão soma hierarquias e o Total junto com as partes"
+      - "valor IS NOT NULL: simbolo = 'X' (27.874, sigilo) e '...' (2.246, não disponível) vêm com valor NULL (gotcha sigilo_x)"
+    use_para: "mapas e rankings municipais do Censo 2017 (estabelecimentos, área, agricultura familiar, financiamento, irrigação, pessoal ocupado)."
+    nao_use_para: "recortes que não estão entre os 10; juntar recortes sem filtrar recorte; tratar estabelecimento como imóvel."
+    rascunho: [use_para, nao_use_para]
+    verificado: "590.526 linhas, 590.526 chaves distintas com recorte; 573.813 sem; recortes: tipologia (6885: 66.852; 6753: 89.136), agente_financeiro 122.562, condicao_produtor 89.136, orientacao_tecnica 61.281, associacao 38.997, dap 44.568, sexo_produtor 44.568, irrigacao 22.284, agrotoxico 11.142; valor NULL 27.874 'X' + 2.246 '...'; soma 183 Total da 6753 = 5.073.324 — medido 2026-10-27"
+  sidra_tabelas:
+    grao: "uma tabela SIDRA do Censo Agropecuário 2017 (catálogo de 736 tabelas, 1 linha cada), com assunto, variáveis, classificações e tamanho"
+    chave: "id_tabela: 736 linhas = 736 distintos"
+    tempo: {natureza: sem_tempo, coluna: periodo_inicio, cobertura: "2017–2017"}
+    territorio: {nivel: nenhum}
+    medidas:
+      - {coluna: linhas, o_que: "número de linhas da tabela já carregada em sidra (0 se não carregada)", unidade: "linhas", soma: sim}
+    filtros_tipicos:
+      - "no_espelho = true: 447 tabelas carregadas em sidra (soma de linhas = 211.521.516); false = 289 só no catálogo"
+      - "tem_municipio = true: 498 tabelas têm nível município no SIDRA, mas só 5 estão em sidra (municipio_no_espelho = true)"
+    use_para: "achar o id_tabela certo (por assunto, variaveis ou classificacoes) antes de consultar sidra."
+    nao_use_para: "dados do censo; é só catálogo."
+    rascunho: [use_para, nao_use_para]
+    verificado: "736 linhas = 736 id_tabela; no_espelho true 447 / false 289; municipio_no_espelho true 5; soma de linhas nas 447 = 211.521.516 — medido 2026-10-27"
