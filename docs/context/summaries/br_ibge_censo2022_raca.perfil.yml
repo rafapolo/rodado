@@ -1,0 +1,214 @@
+dataset: br_ibge_censo2022_raca
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  fecundidade_idade:
+    linhas: 1247904
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4689}
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2022'
+        max: '2022'
+        media: 2022
+        quartis: [2022, 2022, 2022]
+        top:
+        - ['2022', 1247904]
+      cor_raca:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Amarela
+        max: Total
+        top:
+        - [Amarela, 178272]
+        - [Branca, 178272]
+        - [Indígena, 178272]
+        - [Parda, 178272]
+        - [Preta, 178272]
+        - [Sem declaração, 178272]
+        - [Total, 178272]
+      id_cor_raca_sidra:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '105167'
+        max: '58898'
+        top:
+        - ['105167', 178272]
+        - ['105168', 178272]
+        - ['105169', 178272]
+        - ['105170', 178272]
+        - ['105171', 178272]
+        - ['105172', 178272]
+        - ['58898', 178272]
+      categoria_principal:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: 12 a 14 anos
+        max: Total
+        top:
+        - [12 a 14 anos, 77994]
+        - [15 a 17 anos, 77994]
+        - [15 a 19 anos, 77994]
+        - [18 ou 19 anos, 77994]
+        - [20 a 24 anos, 77994]
+        - [25 a 29 anos, 77994]
+        - [30 a 34 anos, 77994]
+        - [35 a 39 anos, 77994]
+        - [40 a 44 anos, 77994]
+        - [45 a 49 anos, 77994]
+      id_categoria_principal_sidra:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '104541'
+        max: '58897'
+        top:
+        - ['104541', 77994]
+        - ['104542', 77994]
+        - ['104543', 77994]
+        - ['104544', 77994]
+        - ['104545', 77994]
+        - ['104546', 77994]
+        - ['104547', 77994]
+        - ['104548', 77994]
+        - ['104549', 77994]
+        - ['105109', 77994]
+      dimensao_principal:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Grupos de idade das mulheres
+        max: Grupos de idade das mulheres
+        top:
+        - [Grupos de idade das mulheres, 1247904]
+      valor:
+        tipo: BIGINT
+        nulos_pct: 42.11
+        distintos_aprox: 20750
+        min: '1'
+        max: '7226912'
+        media: 1350.343
+        quartis: [37, 147, 537]
+      variavel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Filhos tidos nascidos vivos pelas mulheres de 12 anos ou mais de idade
+        max: Mulheres de 12 anos ou mais de idade
+        top:
+        - [Filhos tidos nascidos vivos pelas mulheres de 12 anos ou mais de idade, 623952]
+        - [Mulheres de 12 anos ou mais de idade, 623952]
+      id_variavel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '13315'
+        max: '13316'
+        top:
+        - ['13315', 623952]
+        - ['13316', 623952]
+  instrucao:
+    linhas: 167130
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4689}
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2022'
+        max: '2022'
+        media: 2022
+        quartis: [2022, 2022, 2022]
+        top:
+        - ['2022', 167130]
+      cor_raca:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Amarela
+        max: Total
+        top:
+        - [Amarela, 27855]
+        - [Branca, 27855]
+        - [Indígena, 27855]
+        - [Parda, 27855]
+        - [Preta, 27855]
+        - [Total, 27855]
+      id_cor_raca_sidra:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2776'
+        max: '95251'
+        top:
+        - ['2776', 27855]
+        - ['2777', 27855]
+        - ['2778', 27855]
+        - ['2779', 27855]
+        - ['2780', 27855]
+        - ['95251', 27855]
+      categoria_principal:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Fundamental completo e médio incompleto
+        max: Total
+        top:
+        - [Fundamental completo e médio incompleto, 33426]
+        - [Médio completo e superior incompleto, 33426]
+        - [Sem instrução e fundamental incompleto, 33426]
+        - [Superior completo, 33426]
+        - [Total, 33426]
+      id_categoria_principal_sidra:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '120704'
+        max: '99713'
+        top:
+        - ['120704', 33426]
+        - ['9493', 33426]
+        - ['9494', 33426]
+        - ['9495', 33426]
+        - ['99713', 33426]
+      dimensao_principal:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Nível de instrução
+        max: Nível de instrução
+        top:
+        - [Nível de instrução, 167130]
+      valor:
+        tipo: BIGINT
+        nulos_pct: 19.08
+        distintos_aprox: 17771
+        min: '1'
+        max: '9070322'
+        media: 4563.2986
+        quartis: [92, 555, 2265]
+      variavel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Pessoas de 18 anos ou mais de idade
+        max: Pessoas de 18 anos ou mais de idade
+        top:
+        - [Pessoas de 18 anos ou mais de idade, 167130]
+      id_variavel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2667'
+        max: '2667'
+        top:
+        - ['2667', 167130]

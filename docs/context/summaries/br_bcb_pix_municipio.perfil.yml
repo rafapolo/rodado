@@ -1,0 +1,176 @@
+dataset: br_bcb_pix_municipio
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  transacoes:
+    linhas: 401019
+    fonte_do_perfil: tabela inteira
+    colunas:
+      AnoMes: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 74, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Municipio_Ibge:
+        tipo: BIGINT
+        nulos_pct: 0.02
+        distintos_aprox: 6308
+        min: '1100015'
+        max: '5300108'
+        media: 3253875.4903
+        quartis: [2511826, 3146520, 4119152]
+      Municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5976}
+      Estado_Ibge:
+        tipo: BIGINT
+        nulos_pct: 0.02
+        distintos_aprox: 21
+        min: '11'
+        max: '53'
+        media: 32.3806
+        quartis: [25, 31, 41]
+        top:
+        - ['31', 61416]
+        - ['35', 46440]
+        - ['43', 35784]
+        - ['29', 30024]
+        - ['41', 28728]
+        - ['42', 21240]
+        - ['52', 17712]
+        - ['22', 16128]
+        - ['25', 16056]
+        - ['21', 15624]
+      Estado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: ACRE
+        max: TOCANTINS
+        top:
+        - [MINAS GERAIS, 61416]
+        - [SÃO PAULO, 46440]
+        - [RIO GRANDE DO SUL, 35784]
+        - [BAHIA, 30024]
+        - [PARANÁ, 28728]
+        - [SANTA CATARINA, 21240]
+        - [GOIÁS, 17712]
+        - [PIAUÍ, 16128]
+        - [PARAÍBA, 16056]
+        - [MARANHÃO, 15624]
+      Sigla_Regiao:
+        tipo: VARCHAR
+        nulos_pct: 0.02
+        distintos_aprox: 5
+        min: CO
+        max: SU
+        top:
+        - [NE, 129062]
+        - [SE, 120096]
+        - [SU, 85752]
+        - [CO, 33637]
+        - ['NO', 32400]
+        - [null, 72]
+      Regiao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: CENTRO-OESTE
+        max: SUL
+        top:
+        - [NORDESTE, 129062]
+        - [SUDESTE, 120096]
+        - [SUL, 85752]
+        - [CENTRO-OESTE, 33637]
+        - [NORTE, 32400]
+        - [Nao informado, 72]
+      VL_PagadorPF:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 449139
+        min: '435.73'
+        max: '97013599886.24'
+        media: 112278134.3881
+        quartis: [6654692.4583, 17871903.2753, 51092791.7787]
+      QT_PagadorPF:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 214021
+        min: '4'
+        max: '373200700'
+        media: 557810.3964
+        quartis: [27754, 89498, 272252]
+      VL_PagadorPJ:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 384483
+        min: '0.0'
+        max: '630191512993.79'
+        media: 155733882.8856
+        quartis: [1814080.9504, 6492810.5303, 27350210.1522]
+      QT_PagadorPJ:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 88885
+        min: '0'
+        max: '275185491'
+        media: 77099.1948
+        quartis: [1329, 4426, 15792]
+      VL_RecebedorPF:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 315624
+        min: '2939.7'
+        max: '106022205183.09'
+        media: 114412396.8628
+        quartis: [6544891.6789, 17544454.7599, 49839967.5855]
+      QT_RecebedorPF:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 195542
+        min: '10'
+        max: '209962113'
+        media: 365953.3505
+        quartis: [19546, 58542, 176525]
+      VL_RecebedorPJ:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 431349
+        min: '0.0'
+        max: '648518731490.77'
+        media: 153599595.8593
+        quartis: [1750613.7357, 6504379.4934, 27062431.7653]
+      QT_RecebedorPJ:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 131234
+        min: '0'
+        max: '1341475087'
+        media: 268956.24
+        quartis: [3105, 12511, 46563]
+      QT_PES_PagadorPF:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 51118
+        min: '2'
+        max: '9804087'
+        media: 19555.9006
+        quartis: [1819, 4191, 10478]
+      QT_PES_PagadorPJ:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 14732
+        min: '0'
+        max: '1296631'
+        media: 1500.6935
+        quartis: [82, 203, 602]
+      QT_PES_RecebedorPF:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 57322
+        min: '7'
+        max: '9532289'
+        media: 19359.5263
+        quartis: [1796, 4106, 10404]
+      QT_PES_RecebedorPJ:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 15368
+        min: '0'
+        max: '1208487'
+        media: 1411.2653
+        quartis: [78, 194, 577]

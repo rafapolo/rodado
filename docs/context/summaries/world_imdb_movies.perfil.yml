@@ -1,0 +1,130 @@
+dataset: world_imdb_movies
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  top_movies_per_year:
+    linhas: 33600
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 27901}
+      title: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 35752}
+      link: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 30917}
+      year:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 63
+        min: '1960'
+        max: '2024'
+        media: 1992.3936
+        quartis: [1976, 1993, 2009]
+      duration: {tipo: VARCHAR, nulos_pct: 0.66, distintos_aprox: 218, min: 12h 56m, max: X}
+      rating_mpa:
+        tipo: VARCHAR
+        nulos_pct: 23.74
+        distintos_aprox: 27
+        min: 13+
+        max: X
+        top:
+        - [R, 10099]
+        - [null, 7976]
+        - [Not Rated, 4518]
+        - [PG-13, 3780]
+        - [PG, 3473]
+        - [Approved, 981]
+        - [Unrated, 905]
+        - [G, 768]
+        - [TV-MA, 264]
+        - [TV-14, 194]
+      rating_imdb:
+        tipo: DOUBLE
+        nulos_pct: 0.41
+        distintos_aprox: 70
+        min: '1.1'
+        max: '9.6'
+        media: 6.1552
+        quartis: [5.4472, 6.2988, 6.9988]
+      vote:
+        tipo: BIGINT
+        nulos_pct: 0.41
+        distintos_aprox: 1889
+        min: '6'
+        max: '26000000'
+        media: 66372.1085
+        quartis: [520, 14492, 40133]
+      budget:
+        tipo: DOUBLE
+        nulos_pct: 64.84
+        distintos_aprox: 1266
+        min: '1.0'
+        max: '300000000000.0'
+        media: 84543196.7766
+        quartis: [2127293.0861, 9133446.4268, 27030383.3817]
+      gross_world_wide:
+        tipo: DOUBLE
+        nulos_pct: 45.77
+        distintos_aprox: 16638
+        min: '1.0'
+        max: '2923706026.0'
+        media: 38149612.7196
+        quartis: [159388.7504, 2318229.5461, 20941785.6452]
+      gross_us_canada:
+        tipo: DOUBLE
+        nulos_pct: 47.71
+        distintos_aprox: 14910
+        min: '64.0'
+        max: '936662225.0'
+        media: 18082363.475
+        quartis: [85929.9706, 916441.7957, 14037340.6583]
+      gross_opening_weekend:
+        tipo: DOUBLE
+        nulos_pct: 53.8
+        distintos_aprox: 13636
+        min: '11.0'
+        max: '357115007.0'
+        media: 5110081.7926
+        quartis: [14009.0745, 106864.1159, 3769373.2212]
+      director: {tipo: VARCHAR, nulos_pct: 1.07, distintos_aprox: 11592, pessoal: 'só contagens: valores seriam dado pessoal'}
+      writer: {tipo: VARCHAR, nulos_pct: 4.69, distintos_aprox: 25954}
+      star: {tipo: VARCHAR, nulos_pct: 1.41, distintos_aprox: 39385}
+      genre: {tipo: VARCHAR, nulos_pct: 1.14, distintos_aprox: 8358}
+      country_origin: {tipo: VARCHAR, nulos_pct: 1.09, distintos_aprox: 3275}
+      filming_location: {tipo: VARCHAR, nulos_pct: 20.03, distintos_aprox: 13094}
+      production_company: {tipo: VARCHAR, nulos_pct: 4.1, distintos_aprox: 29900, pessoal: 'só contagens: valores seriam dado pessoal'}
+      language: {tipo: VARCHAR, nulos_pct: 1.41, distintos_aprox: 2559}
+      win:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0'
+        max: '0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 33600]
+      nomination:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 273
+        min: '0'
+        max: '433'
+        media: 4.8504
+        quartis: [0, 0, 3]
+      oscar:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '0'
+        max: '11'
+        media: 0.1026
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 31503]
+        - ['1', 1422]
+        - ['2', 363]
+        - ['3', 145]
+        - ['4', 74]
+        - ['5', 45]
+        - ['6', 19]
+        - ['7', 17]
+        - ['8', 5]
+        - ['10', 4]

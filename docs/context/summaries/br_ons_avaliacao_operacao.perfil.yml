@@ -1,0 +1,1197 @@
+dataset: br_ons_avaliacao_operacao
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  energia_armazenada_reservatorio:
+    linhas: 633293
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 7972, min: '2000-01-01', max: '2024-03-01'}
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '2000'
+        max: '2024'
+        media: 2011.6465
+        quartis: [2006, 2012, 2018]
+        top:
+        - ['2022', 26645]
+        - ['2023', 26645]
+        - ['2008', 26352]
+        - ['2012', 26352]
+        - ['2016', 26352]
+        - ['2020', 26352]
+        - ['2006', 26280]
+        - ['2007', 26280]
+        - ['2009', 26280]
+        - ['2010', 26280]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4878
+        quartis: [3, 7, 10]
+        top:
+        - ['1', 55636]
+        - ['3', 53444]
+        - ['12', 53396]
+        - ['7', 53369]
+        - ['5', 53368]
+        - ['8', 53365]
+        - ['10', 53362]
+        - ['11', 51657]
+        - ['4', 51656]
+        - ['6', 51643]
+      reservatorio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 71, min: A. VERMELHA, max: TUCURUI}
+      tipo_reservatorio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Reservatorio com Usina
+        max: Reservatorio sem usina
+        top:
+        - [Reservatorio com Usina, 537411]
+        - [Reservatorio sem usina, 95882]
+      id_reservatorio_planejamento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 73, min: '1', max: '95'}
+      reservatorio_equivalente_energia:
+        tipo: VARCHAR
+        nulos_pct: 65.96
+        distintos_aprox: 13
+        min: BELO MONTE
+        max: nan
+        top:
+        - [null, 417726]
+        - [PARANA, 76762]
+        - [SUDESTE, 56677]
+        - [SUL, 31886]
+        - [IGUACU, 13524]
+        - [NORDESTE, 11932]
+        - [PARANAPANEMA, 6762]
+        - [MADEIRA, 5966]
+        - [NORTE, 3712]
+        - [BELO MONTE, 2983]
+      id_subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: N
+        max: SE
+        top:
+        - [SE, 438308]
+        - [S, 133196]
+        - [NE, 35308]
+        - [N, 26481]
+      subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: NORDESTE
+        max: SUL
+        top:
+        - [SUDESTE, 438308]
+        - [SUL, 133196]
+        - [NORDESTE, 35308]
+        - [NORTE, 26481]
+      id_subsistema_jusante:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: N
+        max: nan
+        top:
+        - [SE, 269491]
+        - [nan, 159094]
+        - [S, 101164]
+        - [NE, 64212]
+        - [N, 39332]
+      subsistema_jusante:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: NORDESTE
+        max: nan
+        top:
+        - [SUDESTE, 269491]
+        - [nan, 159094]
+        - [SUL, 101164]
+        - [NORDESTE, 64212]
+        - [NORTE, 39332]
+      bacia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: AMAZONAS
+        max: URUGUAI
+        top:
+        - [PARANAIBA, 114751]
+        - [PARAIBA DO SUL, 70616]
+        - [TIETE, 61789]
+        - [URUGUAI, 53753]
+        - [GRANDE, 52962]
+        - [IGUACU, 44135]
+        - [SAO FRANCISCO, 44135]
+        - [AMAZONAS, 42308]
+        - [PARANAPANEMA, 35308]
+        - [TOCANTINS, 26481]
+      energia_armazenada_subsistema:
+        tipo: DOUBLE
+        nulos_pct: 10.1
+        distintos_aprox: 170830
+        min: '-11.625'
+        max: '34960.765625'
+        media: 2092.7098
+        quartis: [64.9235, 470.366, 2116.2992]
+      energia_armazenada_jusante_subsistema:
+        tipo: DOUBLE
+        nulos_pct: 25.12
+        distintos_aprox: 18792
+        min: '-14.467'
+        max: '16097.0'
+        media: 250.1777
+        quartis: [0, 0, 0]
+      energia_maxima_armazenada_subsistema:
+        tipo: DOUBLE
+        nulos_pct: 10.1
+        distintos_aprox: 375
+        min: '0.0'
+        max: '35288.0'
+        media: 3912.71
+        quartis: [179.6502, 919.9545, 3794.8796]
+      energia_maxima_armazenada_jusante_subsistema:
+        tipo: DOUBLE
+        nulos_pct: 25.12
+        distintos_aprox: 34
+        min: '0.0'
+        max: '16085.0'
+        media: 429.5536
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 427345]
+        - [null, 159100]
+        - ['16085.0', 6575]
+        - ['486.0', 4947]
+        - ['4657.0', 4599]
+        - ['1009.0', 4108]
+        - ['43.0', 2861]
+        - ['103.0', 2198]
+        - ['144.0', 1976]
+        - ['6470.0', 1976]
+      energia_armazenada_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 162310
+        min: '-18.036'
+        max: '35853.57421875'
+        media: 2068.7694
+        quartis: [9.86, 368.7833, 2002.0475]
+      energia_maxima_armazenada_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 420
+        min: '0.0'
+        max: '41898.08300781'
+        media: 3839.3042
+        quartis: [20.7593, 678.8493, 3553.1885]
+      proporcao_energia_armazenada:
+        tipo: DOUBLE
+        nulos_pct: 10.1
+        distintos_aprox: 120382
+        min: '-71.79'
+        max: '265.35791016'
+        media: 53.3945
+        quartis: [27.1308, 56.57, 82.0014]
+      proporcao_contribuicao_energia_armazenada_bacia:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 327225
+        min: '-0.0377518'
+        max: '1.00000247'
+        media: 0.24
+        quartis: [0.0018, 0.0754, 0.3531]
+      proporcao_contribuicao_energia_maxima_armazenada_bacia:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 466
+        min: '0.0'
+        max: '1.00000005'
+        media: 0.2424
+        quartis: [0.0019, 0.067, 0.3383]
+      proporcao_contribuicao_energia_armazenada_subsistema:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 551667
+        min: '-9.349e-05'
+        max: '0.82497149'
+        media: 0.0446
+        quartis: [0.0002, 0.0079, 0.0305]
+      proporcao_contribuicao_energia_maxima_armazenada_subsistema:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1248
+        min: '0.0'
+        max: '0.61993339'
+        media: 0.0453
+        quartis: [0.0003, 0.0073, 0.0249]
+      proporcao_contribuicao_energia_armazenada_subsistema_jusante:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 40679
+        min: '-0.00105379'
+        max: '0.8316332'
+        media: 0.0112
+        quartis: [0, 0, 0]
+      proporcao_contribuicao_energia_maxima_armazenada_subsistema_jusante:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 48
+        min: '0.0'
+        max: '0.45349408'
+        media: 0.0104
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 586445]
+        - ['0.00082997', 2830]
+        - ['0.00938061', 2830]
+        - ['0.01947538', 2830]
+        - ['0.31046729', 2830]
+        - ['0.37827959', 2401]
+        - ['0.00829642', 2198]
+        - ['0.37511075', 2198]
+        - ['0.00083012', 1934]
+        - ['0.32191246', 1628]
+      proporcao_contribuicao_energia_armazenada_sin:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 544589
+        min: '-0.00025111'
+        max: '0.2378182'
+        media: 0.0139
+        quartis: [0.0001, 0.0027, 0.0144]
+      proporcao_contribuicao_energia_armazenada_maxima_sin:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2209
+        min: '0.0'
+        max: '0.14601874'
+        media: 0.0139
+        quartis: [0.0001, 0.0024, 0.0133]
+  energia_natural_afluente:
+    linhas: 1315067
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 7972, min: '2000-01-01', max: '2024-03-01'}
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '2000'
+        max: '2024'
+        media: 2011.6802
+        quartis: [2006, 2012, 2018]
+        top:
+        - ['2023', 55845]
+        - ['2022', 55331]
+        - ['2008', 54900]
+        - ['2012', 54900]
+        - ['2016', 54900]
+        - ['2020', 54900]
+        - ['2005', 54750]
+        - ['2006', 54750]
+        - ['2007', 54750]
+        - ['2009', 54750]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.488
+        quartis: [3, 6, 10]
+        top:
+        - ['1', 115547]
+        - ['3', 110957]
+        - ['10', 110866]
+        - ['12', 110865]
+        - ['5', 110804]
+        - ['7', 110804]
+        - ['8', 110804]
+        - ['11', 107290]
+        - ['9', 107263]
+        - ['4', 107230]
+      reservatorio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 148, min: 14 DE JULHO, max: XINGO}
+      id_reservatorio: {tipo: VARCHAR, nulos_pct: 0.08, distintos_aprox: 286, min: '1', max: '99.0'}
+      tipo_reservatorio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Fio dagua
+        max: Reservatorio com Usina
+        top:
+        - [Fio dagua, 777656]
+        - [Reservatorio com Usina, 537411]
+      id_subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: N
+        max: SE
+        top:
+        - [SE, 897294]
+        - [S, 255481]
+        - [N, 82849]
+        - [NE, 79443]
+      subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: NORDESTE
+        max: SUL
+        top:
+        - [SUDESTE, 897294]
+        - [SUL, 255481]
+        - [NORTE, 82849]
+        - [NORDESTE, 79443]
+      bacia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: AMAZONAS
+        max: URUGUAI
+        top:
+        - [PARANAIBA, 167713]
+        - [GRANDE, 132405]
+        - [AMAZONAS, 127044]
+        - [PARAIBA DO SUL, 105924]
+        - [URUGUAI, 97888]
+        - [PARANAPANEMA, 97098]
+        - [SAO FRANCISCO, 79443]
+        - [DOCE, 70616]
+        - [IGUACU, 68789]
+        - [JACUI, 62323]
+      reservatorio_equivalente_energia:
+        tipo: VARCHAR
+        nulos_pct: 65.83
+        distintos_aprox: 15
+        min: BELO MONTE
+        max: nan
+        top:
+        - [null, 865758]
+        - [PARANA, 138542]
+        - [SUDESTE, 110401]
+        - [SUL, 66691]
+        - [NORDESTE, 26847]
+        - [PARANAPANEMA, 22540]
+        - [IGUACU, 19866]
+        - [MADEIRA, 17898]
+        - [MANAUS-AMAPA, 11270]
+        - [TELES PIRES, 10538]
+      energia_natural_afluente_bruta:
+        tipo: DOUBLE
+        nulos_pct: 16.16
+        distintos_aprox: 309816
+        min: '0.0'
+        max: '34858.0'
+        media: 440.654
+        quartis: [41.4525, 104.1663, 318.4584]
+      energia_natural_afluente_armazenavel:
+        tipo: DOUBLE
+        nulos_pct: 16.16
+        distintos_aprox: 260613
+        min: '-5995.0'
+        max: '27532.0'
+        media: 386.3501
+        quartis: [37.3294, 94.1124, 289.8307]
+      energia_natural_afluente_longo_termo:
+        tipo: DOUBLE
+        nulos_pct: 25.57
+        distintos_aprox: 8805
+        min: '0.0'
+        max: '16580.573634'
+        media: 478.5513
+        quartis: [62.8171, 137.2124, 406.0092]
+      energia_natural_afluente_queda:
+        tipo: DOUBLE
+        nulos_pct: 16.22
+        distintos_aprox: 298676
+        min: '-342057.0'
+        max: '40177.048'
+        media: 435.7875
+        quartis: [37.8913, 97.8398, 305.8012]
+      proporcao_energia_natural_afluente_bruta:
+        tipo: DOUBLE
+        nulos_pct: 18.7
+        distintos_aprox: 460197
+        min: '0.0'
+        max: '5739.20117188'
+        media: 91.0977
+        quartis: [54.9585, 78.7824, 106.779]
+      proporcao_energia_natural_afluente_armazenavel:
+        tipo: DOUBLE
+        nulos_pct: 18.7
+        distintos_aprox: 431965
+        min: '-608.92'
+        max: '3156.49'
+        media: 80.1723
+        quartis: [50.6092, 73.6733, 99.2489]
+  geracao_termica_motivo_despacho:
+    linhas: 10428670
+    fonte_do_perfil: tabela inteira da última partição (ano = 2024)
+    colunas:
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 54, min: '2024-01-01', max: '2024-02-29'}
+      hora:
+        tipo: TIME WITH TIME ZONE
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: 00:00:00+00
+        max: 23:00:00+00
+        top:
+        - ['00:00:00+00', 5608]
+        - ['01:00:00+00', 5608]
+        - ['02:00:00+00', 5608]
+        - ['03:00:00+00', 5608]
+        - ['04:00:00+00', 5608]
+        - ['05:00:00+00', 5608]
+        - ['06:00:00+00', 5608]
+        - ['07:00:00+00', 5608]
+        - ['08:00:00+00', 5608]
+        - ['09:00:00+00', 5608]
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 134592]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.4816
+        quartis: [1, 1, 2]
+        top:
+        - ['1', 69768]
+        - ['2', 64824]
+      id_subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: N
+        max: SE
+        top:
+        - [SE, 58848]
+        - [NE, 35952]
+        - [N, 22656]
+        - [S, 17136]
+      subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: NORDESTE
+        max: SUL
+        top:
+        - [SUDESTE, 58848]
+        - [NORDESTE, 35952]
+        - [NORTE, 22656]
+        - [SUL, 17136]
+      id_usina_planejamento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 120, min: '1', max: '98'}
+      usina: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 91, min: Angra I, max: Xavantes Aruana}
+      tipo_patamar:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: LEVE
+        max: PESADA
+        top:
+        - [LEVE, 63707]
+        - [MEDIA, 39725]
+        - [PESADA, 31160]
+      atendimento_satisfatorio:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 134592]
+      geracao_programada_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 380
+        min: '0.0'
+        max: '135000000000.0'
+        media: 6334847539.2297
+        quartis: [0, 0, 2469000028.5603]
+      geracao_programada_ordem_merito:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 151
+        min: '0.0'
+        max: '135000000000.0'
+        media: 95623439.729
+        quartis: [0, 0, 0]
+      geracao_programada_referencia_ordem_merito:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 161
+        min: '0.0'
+        max: '135000000000.0'
+        media: 114729618.4023
+        quartis: [0, 0, 0]
+      geracao_programada_inflexibilidade:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 243
+        min: '0.0'
+        max: '135000000000.0'
+        media: 5245525737.0423
+        quartis: [0, 0, 22438810.4241]
+      geracao_programada_razao_eletrica: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 180, pessoal: 'só contagens: valores seriam dado pessoal'}
+      geracao_programada_seguranca_energetica:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0.0'
+        max: '0.0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 134592]
+      geracao_programada_sem_ordem_merito:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0.0'
+        max: '0.0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 134592]
+      geracao_programada_reposicao_perdas:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0.0'
+        max: '0.0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 134592]
+      geracao_programada_exportacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 110
+        min: '0.0'
+        max: '36400000000.0'
+        media: 272375029.7194
+        quartis: [0, 0, 0]
+      geracao_programada_reserva_potencia:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0.0'
+        max: '0.0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 134592]
+      geracao_programada_substituicao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0.0'
+        max: '0.0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 134592]
+      geracao_programada_unit_commitment:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 121
+        min: '0.0'
+        max: '65000000000.0'
+        media: 580830212.7913
+        quartis: [0, 0, 0]
+      geracao_programada_constrained_off:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '0.0'
+        max: '52000000000.0'
+        media: 2759637.2741
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 134571]
+        - ['5000000000.0', 10]
+        - ['52000000000.0', 5]
+        - ['2500000000.0', 3]
+        - ['26000000000.0', 2]
+        - ['1925100000.0', 1]
+      geracao_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 29392
+        min: '0.0'
+        max: '247117200000.0'
+        media: 6230712413.4421
+        quartis: [0, 0, 2037564153.1935]
+      ordem_merito_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 363
+        min: '0.0'
+        max: '135499450000.0'
+        media: 91750960.6812
+        quartis: [0, 0, 0]
+      geracao_inflexibilidade_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 23977
+        min: '0.0'
+        max: '247117200000.0'
+        media: 5198332313.5848
+        quartis: [0, 0, 210209817.9204]
+      geracao_razao_eletrica_verificada: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 1710, pessoal: 'só contagens: valores seriam dado pessoal'}
+      geracao_seguranca_energetica_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0.0'
+        max: '0.0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 134592]
+      geracao_sem_ordem_merito_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0.0'
+        max: '0.0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 134592]
+      geracao_reposicao_perdas_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0.0'
+        max: '0.0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 134592]
+      geracao_exportacao_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 510
+        min: '0.0'
+        max: '36400000000.0'
+        media: 260894329.9007
+        quartis: [0, 0, 0]
+      geracao_reserva_potencia_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0.0'
+        max: '0.0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 134592]
+      geracao_substituicao_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0.0'
+        max: '0.0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 134592]
+      geracao_unit_commitment_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2326
+        min: '0.0'
+        max: '64828150000.0'
+        media: 569253485.7198
+        quartis: [0, 0, 0]
+      geracao_constrained_off_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '0.0'
+        max: '52000000000.0'
+        media: 2708184.7361
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 134573]
+        - ['5000000000.0', 9]
+        - ['52000000000.0', 5]
+        - ['2500000000.0', 3]
+        - ['26000000000.0', 2]
+  geracao_usina:
+    linhas: 71091267
+    fonte_do_perfil: tabela inteira da última partição (ano = 2024)
+    colunas:
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 56, min: '2024-01-01', max: '2024-02-29'}
+      hora:
+        tipo: TIME WITH TIME ZONE
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: 00:00:00+00
+        max: 23:00:00+00
+        top:
+        - ['00:00:00+00', 41019]
+        - ['01:00:00+00', 41019]
+        - ['02:00:00+00', 41019]
+        - ['03:00:00+00', 41019]
+        - ['04:00:00+00', 41019]
+        - ['05:00:00+00', 41019]
+        - ['06:00:00+00', 41019]
+        - ['07:00:00+00', 41019]
+        - ['08:00:00+00', 41019]
+        - ['09:00:00+00', 41019]
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 984456]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.4857
+        quartis: [1, 1, 2]
+        top:
+        - ['1', 506352]
+        - ['2', 478104]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [BA, 126288]
+        - [SP, 106608]
+        - [RN, 104928]
+        - [MG, 77208]
+        - [CE, 62208]
+        - [GO, 56160]
+        - [RS, 54888]
+        - [RJ, 38880]
+        - [PI, 38712]
+        - [MT, 36048]
+      id_subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: N
+        max: SE
+        top:
+        - [NE, 404184]
+        - [SE, 386952]
+        - [S, 112656]
+        - [N, 80664]
+      subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: NORDESTE
+        max: SUL
+        top:
+        - [NORDESTE, 404184]
+        - [SUDESTE, 385512]
+        - [SUL, 112656]
+        - [NORTE, 80664]
+        - [PARAGUAI, 1440]
+      id_empreendimento_aneel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 364, min: '', max: UTN.UR.RJ.0001015.01}
+      usina: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 863, min: 14 de Julho, max: Ype}
+      tipo_usina:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: EOLIELETRICA
+        max: TERMICA
+        top:
+        - [HIDROELETRICA, 298176]
+        - [TERMICA, 289704]
+        - [EOLIELETRICA, 251544]
+        - [FOTOVOLTAICA, 142152]
+        - [NUCLEAR, 2880]
+      tipo_modalidade_operacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: Conjunto de Usinas
+        max: TIPO III
+        top:
+        - [TIPO I, 368664]
+        - [Conjunto de Usinas, 312288]
+        - [Pequenas Usinas (Tipo III), 115200]
+        - [Pequenas Usinas (MMGD), 53280]
+        - [TIPO II-B, 50040]
+        - [TIPO II-A, 46080]
+        - [TIPO III, 30240]
+        - [TIPO II-C, 8664]
+      tipo_combustivel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: Biomassa
+        max: Residuos Industriais
+        top:
+        - [Hidraulica, 298176]
+        - [Eolica, 250104]
+        - [Fotovoltaica, 143592]
+        - [Biomassa, 83784]
+        - [Gas, 77760]
+        - [Oleo Combustivel, 34560]
+        - [Oleo Diesel, 34560]
+        - [Outras Multi-Combustivel, 33120]
+        - [Carvao, 12960]
+        - [Residuos Industriais, 11520]
+      geracao:
+        tipo: DOUBLE
+        nulos_pct: 0.29
+        distintos_aprox: 255182
+        min: '0.0'
+        max: '1096371100000.0'
+        media: 11928171556.846
+        quartis: [0, 1929326033.5846, 8095732648.7342]
+  reservatorio:
+    linhas: 159
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 154, min: '1924-03-01', max: '2023-04-28'}
+      id_subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: N
+        max: SE
+        top:
+        - [SE, 107]
+        - [S, 31]
+        - [NE, 11]
+        - [N, 10]
+      subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: NORDESTE
+        max: SUL
+        top:
+        - [SUDESTE/CENTRO-OESTE, 107]
+        - [SUL, 31]
+        - [NORDESTE, 11]
+        - [NORTE, 10]
+      id_empreendimento_aneel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 156, min: UHE.PH.AL.001510-5.01, max: UHE.PH.TO.028567-6.01}
+      id_reservatorio_planejamento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 159, min: '', max: '99'}
+      id_posto_vazao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 156, min: '', max: '99'}
+      reservatorio_equivalente:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: BELO MONTE
+        max: nan
+        top:
+        - [PARANA, 44]
+        - [SUDESTE, 39]
+        - [SUL, 22]
+        - [NORDESTE, 11]
+        - [PARANAPANEMA, 10]
+        - [IGUACU, 9]
+        - [MADEIRA, 6]
+        - [MANAUS-AMAPA, 5]
+        - [TELES PIRES, 4]
+        - [BELO MONTE, 3]
+      reservatorio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 148, min: 14 DE JULHO, max: XINGO}
+      tipo_reservatorio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: FIO DAGUA
+        max: RESERVATORIO COM USINA DE BOMBEAMENTO
+        top:
+        - [FIO DAGUA, 96]
+        - [RESERVATORIO COM USINA, 62]
+        - [RESERVATORIO COM USINA DE BOMBEAMENTO, 1]
+      usina: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 172, min: 14 DE JULHO, max: XINGO}
+      bacia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: AMAZONAS
+        max: URUGUAI
+        top:
+        - [PARANAIBA, 19]
+        - [AMAZONAS, 16]
+        - [GRANDE, 15]
+        - [PARAIBA DO SUL, 13]
+        - [URUGUAI, 12]
+        - [PARANAPANEMA, 11]
+        - [SAO FRANCISCO, 11]
+        - [DOCE, 8]
+        - [IGUACU, 8]
+        - [JACUI, 8]
+      rio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 66, min: APIACAS, max: XINGU}
+      cota_maxima:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 162
+        min: '21.3'
+        max: '913.0'
+        media: 401.5016
+        quartis: [247.7063, 370.7862, 567.0625]
+      cota_minima:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 154
+        min: '20.3'
+        max: '899.0'
+        media: 394.3724
+        quartis: [243.1438, 368.9737, 558.125]
+      volume_maximo:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 179
+        min: '0.02'
+        max: '54400.0'
+        media: 3798.4882
+        quartis: [91.5531, 632.885, 3353.8875]
+      volume_minimo:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 158
+        min: '0.01'
+        max: '27695.19'
+        media: 1930.6524
+        quartis: [61.9044, 430.9475, 2190.0912]
+      volume_util:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 125
+        min: '0.0'
+        max: '43250.0'
+        media: 2125.8931
+        quartis: [12.2363, 108.005, 1121.0875]
+      produtividade_especifica:
+        tipo: DOUBLE
+        nulos_pct: 1.26
+        distintos_aprox: 140
+        min: '0.0'
+        max: '0.009218'
+        media: 0.0087
+        quartis: [0.0087, 0.0089, 0.009]
+      produtividade_65_volume_util:
+        tipo: DOUBLE
+        nulos_pct: 1.26
+        distintos_aprox: 151
+        min: '0.0'
+        max: '6.3542'
+        media: 0.6726
+        quartis: [0.2406, 0.4127, 0.8105]
+      tipo_perda:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '%'
+        max: nan
+        top:
+        - [m, 152]
+        - ['%', 4]
+        - [nan, 3]
+      perda_carga:
+        tipo: DOUBLE
+        nulos_pct: 1.89
+        distintos_aprox: 129
+        min: '0.0'
+        max: '23.78'
+        media: 1.5547
+        quartis: [0.37, 0.735, 1.6]
+      latitude:
+        tipo: DOUBLE
+        nulos_pct: 1.89
+        distintos_aprox: 157
+        min: '-29.44944444'
+        max: '0.915277778'
+        media: -18.9247
+        quartis: [-23.1419, -20.1428, -16.2671]
+      longitude:
+        tipo: DOUBLE
+        nulos_pct: 1.89
+        distintos_aprox: 143
+        min: '-64.64861111'
+        max: '-37.79694444'
+        media: -49.1235
+        quartis: [-52.06, -49.5097, -45.9457]
+  restricao_operacao_usinas_eolicas:
+    linhas: 6336959
+    fonte_do_perfil: tabela inteira da última partição (ano = 2024)
+    colunas:
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 54, min: '2024-01-01', max: '2024-03-01'}
+      hora:
+        tipo: TIME WITH TIME ZONE
+        nulos_pct: 0
+        distintos_aprox: 39
+        min: 00:00:00+00
+        max: 23:30:00+00
+        top:
+        - ['11:00:00+00', 9131]
+        - ['12:00:00+00', 9131]
+        - ['13:00:00+00', 9131]
+        - ['11:30:00+00', 9129]
+        - ['13:30:00+00', 9129]
+        - ['14:00:00+00', 9129]
+        - ['14:30:00+00', 9129]
+        - ['08:30:00+00', 9128]
+        - ['09:00:00+00', 9128]
+        - ['09:30:00+00', 9128]
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 438031]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        media: 1.5026
+        quartis: [1, 1, 2]
+        top:
+        - ['1', 225447]
+        - ['2', 205000]
+        - ['3', 7584]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: BA
+        max: SC
+        top:
+        - [RN, 160831]
+        - [BA, 126732]
+        - [CE, 55736]
+        - [PI, 33469]
+        - [RS, 27855]
+        - [PE, 13920]
+        - [PB, 11136]
+        - [SC, 5568]
+        - [MA, 2784]
+      id_subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: N
+        max: S
+        top:
+        - [NE, 401824]
+        - [S, 33423]
+        - [N, 2784]
+      subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: NORDESTE
+        max: SUL
+        top:
+        - [NORDESTE, 401824]
+        - [SUL, 33423]
+        - [NORTE, 2784]
+      id_ons: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 173, min: CEECVA, max: RSUEXG}
+      id_empreendimento_aneel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: ''
+        max: EOL.CV.RS.0313025.01
+        top:
+        - ['', 407326]
+        - [EOL.CV.CE.0286311.01, 2805]
+        - [EOL.CV.CE.0286990.01, 2796]
+        - [EOL.CV.CE.0308412.01, 2784]
+        - [EOL.CV.CE.0337560.01, 2784]
+        - [EOL.CV.RN.0284432.01, 2784]
+        - [EOL.CV.RN.0284440.01, 2784]
+        - [EOL.CV.RN.0303399.01, 2784]
+        - [EOL.CV.RN.0304166.01, 2784]
+        - [EOL.CV.RN.0304174.01, 2784]
+      usina: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 129, min: ALEGRIA I, max: XANGRI-LA}
+      tipo_razao_restricao: {tipo: VARCHAR, nulos_pct: 1.73, distintos_aprox: 4, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_origem_restricao:
+        tipo: VARCHAR
+        nulos_pct: 1.73
+        distintos_aprox: 3
+        min: ''
+        max: SIS
+        top:
+        - ['', 409913]
+        - [SIS, 15742]
+        - [null, 7584]
+        - [LOC, 4792]
+      geracao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 149641
+        min: '0.0'
+        max: '675.328'
+        media: 50.1059
+        quartis: [7.449, 26.2625, 63.5611]
+      geracao_limitada:
+        tipo: DOUBLE
+        nulos_pct: 95.31
+        distintos_aprox: 6176
+        min: '0.0'
+        max: '698.933'
+        media: 58.3228
+        quartis: [5.5708, 31.351, 77.8797]
+      disponibilidade:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 90547
+        min: '0.0'
+        max: '1371.403'
+        media: 133.7265
+        quartis: [49.6129, 94.7197, 194.0698]
+      geracao_referencia:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 108297
+        min: '0.0'
+        max: '579.984'
+        media: 40.7667
+        quartis: [4.0021, 19.0223, 50.808]
+      geracao_referencia_final:
+        tipo: DOUBLE
+        nulos_pct: 99.05
+        distintos_aprox: 1387
+        min: '0.0'
+        max: '559.819'
+        media: 36.8074
+        quartis: [0, 0, 43.0824]

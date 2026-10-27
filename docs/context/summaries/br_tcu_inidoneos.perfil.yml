@@ -1,0 +1,134 @@
+dataset: br_tcu_inidoneos
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  empresas:
+    linhas: 127
+    fonte_do_perfil: tabela inteira
+    colunas:
+      NOME: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 150, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CPF_CNPJ: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 117, pessoal: 'só contagens: valores seriam dado pessoal'}
+      PROCESSO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 63, min: 000.157/2024-4, max: 045.577/2012-9}
+      DELIBERACAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 78, min: AC-000029/2024-PL, max: AC-004060/2020-PL}
+      DATA TRANSITO JULGADO: {tipo: DATE, nulos_pct: 0, distintos_aprox: 78, min: '2021-10-19', max: '2026-08-25'}
+      DATA FINAL: {tipo: DATE, nulos_pct: 0, distintos_aprox: 98, min: '2026-10-19', max: '2031-08-08'}
+      DATA ACORDAO: {tipo: DATE, nulos_pct: 0, distintos_aprox: 60, min: '2011-02-16', max: '2026-07-29'}
+      UF:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: ''
+        max: SP
+        top:
+        - [PB, 34]
+        - [CE, 19]
+        - [SP, 14]
+        - [MA, 10]
+        - [PI, 8]
+        - [RJ, 7]
+        - [AL, 6]
+        - [GO, 5]
+        - [PR, 4]
+        - [AM, 3]
+      MUNICIPIO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 49
+        min: ''
+        max: VITORIA
+        top:
+        - [CAMPINA GRANDE, 11]
+        - [FORTALEZA, 11]
+        - [JOAO PESSOA, 9]
+        - [TERESINA, 7]
+        - [ARAPIRACA, 6]
+        - [LAGOA SECA, 6]
+        - [SAO PAULO, 6]
+        - [EUSEBIO, 4]
+        - [SAO GONCALO, 4]
+        - [SAO LUIS, 4]
+  inabilitados_funcao_publica:
+    linhas: 782
+    fonte_do_perfil: tabela inteira
+    colunas:
+      NOME: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 719, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CPF: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 623, pessoal: 'só contagens: valores seriam dado pessoal'}
+      PROCESSO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 528, min: 000.050/2022-9, max: 047.074/2020-5}
+      DELIBERACAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 478, min: AC-000003/2026-PL, max: AC-004060/2020-PL}
+      DATA TRANSITO JULGADO: {tipo: DATE, nulos_pct: 0, distintos_aprox: 478, min: '2018-01-27', max: '2026-09-29'}
+      DATA FINAL: {tipo: DATE, nulos_pct: 0, distintos_aprox: 617, min: '2026-10-10', max: '2034-09-15'}
+      DATA ACORDAO: {tipo: DATE, nulos_pct: 0, distintos_aprox: 282, min: '2008-11-26', max: '2026-08-26'}
+      UF:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: ''
+        max: TO
+        top:
+        - [RJ, 107]
+        - [AM, 73]
+        - [SP, 73]
+        - [PB, 67]
+        - [MA, 58]
+        - [CE, 55]
+        - [DF, 51]
+        - [PR, 37]
+        - [GO, 34]
+        - [MT, 25]
+      MUNICIPIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 281, min: '', max: XIQUE XIQUE}
+  resp_contas_julgadas_irreg_implicacao_eleitoral:
+    linhas: 9201
+    fonte_do_perfil: tabela inteira
+    colunas:
+      NOME: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5679, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CPF: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5767, pessoal: 'só contagens: valores seriam dado pessoal'}
+      PROCESSO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7752}
+      DELIBERACAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5585}
+      DATA TRANSITO JULGADO: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1483, min: '2018-10-04', max: '2026-10-02'}
+      DATA FINAL: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1883, min: '2026-10-04', max: '2034-10-02'}
+      UF:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: ''
+        max: TO
+        top:
+        - [MA, 953]
+        - [SP, 882]
+        - [BA, 576]
+        - [RJ, 576]
+        - [CE, 570]
+        - [PA, 550]
+        - [MG, 504]
+        - [PE, 483]
+        - [AM, 470]
+        - [PB, 436]
+      MUNICIPIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2008}
+      CARGO/FUNCAO: {tipo: VARCHAR, nulos_pct: 26.84, distintos_aprox: 2027}
+  resp_contas_julgadas_irregulares:
+    linhas: 47978
+    fonte_do_perfil: tabela inteira
+    colunas:
+      NOME: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 30274, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CPF_CNPJ: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 24173, pessoal: 'só contagens: valores seriam dado pessoal'}
+      PROCESSO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 29644}
+      DELIBERACAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 27181}
+      DATA TRANSITO JULGADO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11210}
+      UF:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: ''
+        max: TO
+        top:
+        - [MA, 4308]
+        - [SP, 4213]
+        - [BA, 3752]
+        - [RJ, 3504]
+        - [MG, 2998]
+        - [PA, 2567]
+        - [CE, 2355]
+        - [PB, 2229]
+        - [PE, 2202]
+        - [DF, 2124]
+      MUNICIPIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3864}

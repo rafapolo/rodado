@@ -1,0 +1,1152 @@
+dataset: br_ibge_pnad
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  microdados_compatibilizados_domicilio:
+    linhas: 1877416
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '1997'
+        max: '2015'
+        media: 2006.53
+        quartis: [2002, 2006, 2011]
+        top:
+        - ['2009', 121163]
+        - ['2014', 119001]
+        - ['2006', 118590]
+        - ['2008', 118138]
+        - ['2015', 117939]
+        - ['2007', 117858]
+        - ['2013', 116543]
+        - ['2005', 116452]
+        - ['2012', 114906]
+        - ['2004', 112716]
+      id_regiao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['3', 589065]
+        - ['2', 550604]
+        - ['4', 315413]
+        - ['5', 233925]
+        - ['1', 188409]
+      id_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: '11'
+        max: '53'
+        top:
+        - ['35', 223507]
+        - ['31', 183699]
+        - ['43', 161390]
+        - ['29', 158976]
+        - ['33', 146619]
+        - ['26', 116051]
+        - ['52', 108483]
+        - ['41', 102826]
+        - ['23', 102801]
+        - ['15', 87324]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: AC
+        max: SP
+        top:
+        - [SP, 223507]
+        - [MG, 183699]
+        - [RS, 161390]
+        - [BA, 158976]
+        - [RJ, 146619]
+        - [PE, 116051]
+        - [GO, 108483]
+        - [PR, 102826]
+        - [CE, 102801]
+        - [PA, 87324]
+      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1683956}
+      regiao_metropolitana:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3883
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 1148401]
+        - ['1', 729015]
+      zona_urbana:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 1605185]
+        - ['0', 272231]
+      tipo_zona_domicilio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['3', 732158]
+        - ['1', 729015]
+        - ['2', 416243]
+      total_pessoas:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '1'
+        max: '29'
+        media: 3.4117
+        quartis: [2, 3, 4]
+        top:
+        - ['3', 448929]
+        - ['4', 415875]
+        - ['2', 391323]
+        - ['1', 216976]
+        - ['5', 216823]
+        - ['6', 96965]
+        - ['7', 44820]
+        - ['8', 22307]
+        - ['9', 10974]
+        - ['10', 5955]
+      total_pessoas_10_mais:
+        tipo: BIGINT
+        nulos_pct: 5.51
+        distintos_aprox: 23
+        min: '0'
+        max: '21'
+        media: 2.8299
+        quartis: [2, 3, 4]
+        top:
+        - ['2', 645816]
+        - ['3', 409836]
+        - ['4', 279838]
+        - ['1', 236383]
+        - ['5', 122800]
+        - [null, 103484]
+        - ['6', 47680]
+        - ['7', 18697]
+        - ['8', 7572]
+        - ['9', 3152]
+      especie_domicilio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '5'
+        top:
+        - ['1', 1872958]
+        - ['3', 2863]
+        - ['5', 1595]
+      tipo_domicilio:
+        tipo: VARCHAR
+        nulos_pct: 0.24
+        distintos_aprox: 3
+        min: '2'
+        max: '6'
+        top:
+        - ['2', 1656289]
+        - ['4', 207013]
+        - ['6', 9656]
+        - [null, 4458]
+      tipo_parede:
+        tipo: VARCHAR
+        nulos_pct: 0.24
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['1', 1661157]
+        - ['2', 171383]
+        - ['3', 23305]
+        - ['4', 12672]
+        - [null, 4506]
+        - ['5', 4393]
+      tipo_cobertura:
+        tipo: VARCHAR
+        nulos_pct: 0.24
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        top:
+        - ['1', 1437442]
+        - ['2', 389625]
+        - ['4', 24082]
+        - ['6', 15928]
+        - ['3', 4886]
+        - [null, 4528]
+        - ['5', 925]
+      possui_agua_rede:
+        tipo: VARCHAR
+        nulos_pct: 0.24
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 1534243]
+        - ['0', 338665]
+        - [null, 4508]
+      tipo_esgoto:
+        tipo: VARCHAR
+        nulos_pct: 5.06
+        distintos_aprox: 4
+        min: '0'
+        max: '6'
+        top:
+        - ['0', 844799]
+        - ['2', 455732]
+        - ['4', 408200]
+        - [null, 95037]
+        - ['6', 73648]
+      possui_sanitario_exclusivo:
+        tipo: VARCHAR
+        nulos_pct: 5.06
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 1758273]
+        - [null, 95039]
+        - ['0', 24104]
+      lixo_coletado:
+        tipo: VARCHAR
+        nulos_pct: 0.24
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 1616750]
+        - ['0', 256169]
+        - [null, 4497]
+      possui_iluminacao_eletrica:
+        tipo: VARCHAR
+        nulos_pct: 0.24
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 1829819]
+        - ['0', 43081]
+        - [null, 4516]
+      quantidade_comodos:
+        tipo: BIGINT
+        nulos_pct: 0.24
+        distintos_aprox: 29
+        min: '1'
+        max: '30'
+        media: 5.7296
+        quartis: [4, 5, 7]
+        top:
+        - ['5', 504627]
+        - ['6', 368343]
+        - ['4', 278584]
+        - ['7', 222835]
+        - ['3', 136361]
+        - ['8', 132517]
+        - ['9', 65704]
+        - ['2', 50305]
+        - ['10', 42970]
+        - ['11', 20208]
+      quantidade_dormitorios:
+        tipo: BIGINT
+        nulos_pct: 0.24
+        distintos_aprox: 12
+        min: '1'
+        max: '11'
+        media: 1.9168
+        quartis: [1, 2, 2]
+        top:
+        - ['2', 813955]
+        - ['1', 642482]
+        - ['3', 356443]
+        - ['4', 51726]
+        - ['5', 6732]
+        - [null, 4536]
+        - ['6', 1234]
+        - ['7', 226]
+        - ['8', 61]
+        - ['9', 12]
+      possui_sanitario:
+        tipo: VARCHAR
+        nulos_pct: 0.24
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 1782449]
+        - ['0', 90485]
+        - [null, 4482]
+      posse_domicilio:
+        tipo: VARCHAR
+        nulos_pct: 0.24
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 1394870]
+        - ['0', 478063]
+        - [null, 4483]
+      possui_filtro:
+        tipo: VARCHAR
+        nulos_pct: 0.24
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 948520]
+        - ['0', 924331]
+        - [null, 4565]
+      possui_fogao:
+        tipo: VARCHAR
+        nulos_pct: 0.24
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 1853627]
+        - ['0', 19269]
+        - [null, 4520]
+      possui_geladeira:
+        tipo: VARCHAR
+        nulos_pct: 0.24
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 1686593]
+        - ['0', 186277]
+        - [null, 4546]
+      possui_radio:
+        tipo: VARCHAR
+        nulos_pct: 0.24
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 1569032]
+        - ['0', 303836]
+        - [null, 4548]
+      possui_tv:
+        tipo: VARCHAR
+        nulos_pct: 0.26
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 1739987]
+        - ['0', 132607]
+        - [null, 4822]
+      renda_mensal_domiciliar:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1877416]
+      renda_mensal_domiciliar_compativel_1992:
+        tipo: DOUBLE
+        nulos_pct: 2.69
+        distintos_aprox: 12272
+        min: '0.0'
+        max: '352400.0'
+        media: 1840.6317
+        quartis: [495.1757, 998.683, 2041.0687]
+      aluguel:
+        tipo: DOUBLE
+        nulos_pct: 84.18
+        distintos_aprox: 1464
+        min: '1.0'
+        max: '20000.0'
+        media: 332.5466
+        quartis: [149.9358, 250, 400.2067]
+      prestacao:
+        tipo: DOUBLE
+        nulos_pct: 95.49
+        distintos_aprox: 1899
+        min: '1.0'
+        max: '190000.0'
+        media: 384.1165
+        quartis: [79.5851, 199.5855, 447.3975]
+      deflator:
+        tipo: BIGINT
+        nulos_pct: 6.28
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.785
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1381183]
+        - ['0', 378294]
+        - [null, 117939]
+      conversor_moeda:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1877416]
+      renda_domicilio_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1877416]
+      renda_mensal_domiciliar_compativel_1992_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 8.85
+        distintos_aprox: 17271
+        min: '0.0'
+        max: '352400.0'
+        media: 2344.2929
+        quartis: [713.8376, 1329.9932, 2562.4426]
+      aluguel_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 85.28
+        distintos_aprox: 2144
+        min: '1.0'
+        max: '18933.0'
+        media: 417.2564
+        quartis: [200.2294, 319.0855, 505.0173]
+      prestacao_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 95.77
+        distintos_aprox: 2713
+        min: '1.0'
+        max: '235574.0'
+        media: 496.3012
+        quartis: [126.7993, 274.9646, 562.8556]
+      peso_amostral:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 655
+        min: '68.0'
+        max: '1531.0'
+        media: 496.9827
+        quartis: [294.1491, 484.6853, 632.5537]
+  microdados_compatibilizados_pessoa:
+    linhas: 7710243
+    fonte_do_perfil: tabela inteira da última partição (ano = 2015)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2015'
+        max: '2015'
+        media: 2015
+        quartis: [2015, 2015, 2015]
+        top:
+        - ['2015', 356904]
+      id_regiao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['3', 105367]
+        - ['2', 102659]
+        - ['4', 54510]
+        - ['1', 51194]
+        - ['5', 43174]
+      id_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: '11'
+        max: '53'
+        top:
+        - ['35', 40008]
+        - ['31', 32933]
+        - ['43', 26259]
+        - ['29', 26155]
+        - ['33', 25858]
+        - ['15', 22489]
+        - ['26', 21309]
+        - ['52', 20665]
+        - ['41', 18707]
+        - ['23', 17819]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: AC
+        max: SP
+        top:
+        - [SP, 40008]
+        - [MG, 32933]
+        - [RS, 26259]
+        - [BA, 26155]
+        - [RJ, 25858]
+        - [PA, 22489]
+        - [PE, 21309]
+        - [GO, 20665]
+        - [PR, 18707]
+        - [CE, 17819]
+      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 130658}
+      regiao_metropolitana:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['0', 224661]
+        - ['1', 132243]
+      numero_familia: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ordem:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '1'
+        max: '18'
+        media: 2.3951
+        quartis: [1, 2, 3]
+        top:
+        - ['1', 117939]
+        - ['2', 100103]
+        - ['3', 70097]
+        - ['4', 39791]
+        - ['5', 16855]
+        - ['6', 6750]
+        - ['7', 2897]
+        - ['8', 1284]
+        - ['9', 618]
+        - ['10', 284]
+      condicao_domicilio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1'
+        max: '8'
+        top:
+        - ['3', 126206]
+        - ['1', 117939]
+        - ['2', 73725]
+        - ['4', 36508]
+        - ['5', 1934]
+        - ['6', 408]
+        - ['7', 159]
+        - ['8', 25]
+      condicao_familia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1'
+        max: '8'
+        top:
+        - ['3', 127619]
+        - ['1', 123717]
+        - ['2', 76303]
+        - ['4', 27192]
+        - ['5', 1536]
+        - ['6', 381]
+        - ['7', 147]
+        - ['8', 9]
+      numero_membros_familia: {tipo: BIGINT, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['0', 183681]
+        - ['1', 173223]
+      dia_nascimento:
+        tipo: BIGINT
+        nulos_pct: 5.31
+        distintos_aprox: 29
+        min: '1'
+        max: '31'
+        media: 15.2444
+        quartis: [7, 15, 23]
+        top:
+        - [null, 18937]
+        - ['5', 13123]
+        - ['10', 12373]
+        - ['4', 12312]
+        - ['6', 12157]
+        - ['15', 12115]
+        - ['1', 12056]
+        - ['3', 11931]
+        - ['2', 11884]
+        - ['8', 11740]
+      mes_nascimento:
+        tipo: BIGINT
+        nulos_pct: 5.31
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4869
+        quartis: [4, 6, 9]
+        top:
+        - ['5', 30154]
+        - ['3', 29423]
+        - ['8', 29174]
+        - ['6', 28990]
+        - ['4', 28702]
+        - ['7', 28625]
+        - ['10', 28151]
+        - ['9', 27950]
+        - ['1', 27581]
+        - ['12', 27062]
+      ano_nascimento:
+        tipo: BIGINT
+        nulos_pct: 5.31
+        distintos_aprox: 114
+        min: '1899'
+        max: '2015'
+        media: 1980.7397
+        quartis: [1965, 1983, 1998]
+      idade:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 112
+        min: '0'
+        max: '115'
+        media: 34.106
+        quartis: [17, 32, 50]
+      raca_cor:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '0'
+        max: '8'
+        top:
+        - ['8', 171824]
+        - ['2', 148912]
+        - ['4', 33166]
+        - ['0', 1638]
+        - ['6', 1360]
+        - [null, 4]
+      sabe_ler_escrever:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 303976]
+        - ['0', 52928]
+      frequenta_escola:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['0', 259388]
+        - ['1', 97516]
+      serie_frequentada:
+        tipo: VARCHAR
+        nulos_pct: 78.46
+        distintos_aprox: 9
+        min: '1'
+        max: '8'
+        top:
+        - [null, 280013]
+        - ['2', 14817]
+        - ['1', 14472]
+        - ['3', 14067]
+        - ['4', 8936]
+        - ['5', 7392]
+        - ['6', 6314]
+        - ['8', 5518]
+        - ['7', 5375]
+      grau_frequentado:
+        tipo: VARCHAR
+        nulos_pct: 72.68
+        distintos_aprox: 9
+        min: '1'
+        max: '9'
+        top:
+        - [null, 259388]
+        - ['1', 46606]
+        - ['7', 18708]
+        - ['2', 15589]
+        - ['5', 13424]
+        - ['3', 1170]
+        - ['4', 951]
+        - ['9', 686]
+        - ['6', 238]
+        - ['8', 144]
+      ultima_serie_frequentada:
+        tipo: BIGINT
+        nulos_pct: 41
+        distintos_aprox: 9
+        min: '1'
+        max: '8'
+        media: 3.9359
+        quartis: [3, 3, 5]
+        top:
+        - [null, 146327]
+        - ['3', 79938]
+        - ['4', 45413]
+        - ['5', 20926]
+        - ['8', 18716]
+        - ['2', 16461]
+        - ['1', 12489]
+        - ['6', 8867]
+        - ['7', 7767]
+      ultimo_grau_frequentado:
+        tipo: VARCHAR
+        nulos_pct: 35.83
+        distintos_aprox: 9
+        min: '1'
+        max: '9'
+        top:
+        - [null, 127867]
+        - ['5', 82885]
+        - ['4', 68850]
+        - ['6', 34292]
+        - ['1', 29339]
+        - ['2', 5654]
+        - ['3', 3381]
+        - ['9', 1956]
+        - ['7', 1917]
+        - ['8', 763]
+      anos_estudo:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '0'
+        max: '17'
+        media: 6.8465
+        quartis: [2, 7, 11]
+        top:
+        - ['11', 75573]
+        - ['0', 65853]
+        - ['4', 32416]
+        - ['8', 31122]
+        - ['15', 19357]
+        - ['5', 16982]
+        - ['3', 15940]
+        - ['7', 13942]
+        - ['2', 13254]
+        - ['6', 12700]
+      trabalhou_semana:
+        tipo: VARCHAR
+        nulos_pct: 13.53
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 157826]
+        - ['0', 150773]
+        - [null, 48305]
+      tinha_trabalhado_semana:
+        tipo: VARCHAR
+        nulos_pct: 57.76
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - [null, 206131]
+        - ['0', 147931]
+        - ['1', 2842]
+      tinha_outro_trabalho:
+        tipo: VARCHAR
+        nulos_pct: 54.98
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - [null, 196236]
+        - ['0', 155671]
+        - ['1', 4997]
+      ocupacao_semana:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 356904]
+      atividade_ramo_negocio_semana:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 356904]
+      atividade_ramo_negocio_anterior: {tipo: VARCHAR, nulos_pct: 96, distintos_aprox: 182, min: '11000', max: '99888'}
+      possui_carteira_assinada:
+        tipo: VARCHAR
+        nulos_pct: 72.8
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - [null, 259810]
+        - ['1', 65859]
+        - ['0', 31235]
+      renda_mensal_dinheiro:
+        tipo: DOUBLE
+        nulos_pct: 57.33
+        distintos_aprox: 2285
+        min: '5.0'
+        max: '200000.0'
+        media: 1785.6295
+        quartis: [788, 1114.6974, 1929.6108]
+      renda_mensal_produto_mercadoria:
+        tipo: DOUBLE
+        nulos_pct: 99.86
+        distintos_aprox: 100
+        min: '6.0'
+        max: '6000.0'
+        media: 401.619
+        quartis: [80, 200, 400]
+      horas_trabalhadas_semana:
+        tipo: BIGINT
+        nulos_pct: 54.98
+        distintos_aprox: 96
+        min: '1'
+        max: '98'
+        media: 38.6423
+        quartis: [35, 40, 44]
+      renda_mensal_dinheiro_outra:
+        tipo: DOUBLE
+        nulos_pct: 98.72
+        distintos_aprox: 411
+        min: '5.0'
+        max: '50000.0'
+        media: 1725.176
+        quartis: [414.8142, 1000, 1989.263]
+      renda_mensal_produto_outra:
+        tipo: DOUBLE
+        nulos_pct: 99.98
+        distintos_aprox: 30
+        min: '16.0'
+        max: '6000.0'
+        media: 519.8148
+        quartis: [100, 300, 600]
+        top:
+        - [null, 356850]
+        - ['100.0', 6]
+        - ['300.0', 5]
+        - ['200.0', 4]
+        - ['400.0', 4]
+        - ['500.0', 3]
+        - ['1000.0', 2]
+        - ['1200.0', 2]
+        - ['150.0', 2]
+        - ['16.0', 2]
+      horas_trabalhadas_outros_trabalhos:
+        tipo: BIGINT
+        nulos_pct: 98.6
+        distintos_aprox: 64
+        min: '1'
+        max: '96'
+        media: 19.4663
+        quartis: [10, 20, 25]
+      contribui_previdencia:
+        tipo: VARCHAR
+        nulos_pct: 54.98
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - [null, 196236]
+        - ['1', 99984]
+        - ['0', 60684]
+      tipo_instituto_previdencia:
+        tipo: VARCHAR
+        nulos_pct: 71.99
+        distintos_aprox: 3
+        min: '2'
+        max: '6'
+        top:
+        - [null, 256920]
+        - ['2', 88482]
+        - ['4', 5936]
+        - ['6', 5566]
+      tomou_providencia_conseguir_trabalho_semana:
+        tipo: VARCHAR
+        nulos_pct: 14.33
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['0', 273253]
+        - [null, 51147]
+        - ['1', 32504]
+      tomou_providencia_ultimos_2_meses:
+        tipo: VARCHAR
+        nulos_pct: 23.44
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['0', 266651]
+        - [null, 83651]
+        - ['1', 6602]
+      qual_providencia_tomou:
+        tipo: VARCHAR
+        nulos_pct: 93.85
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        top:
+        - [null, 334950]
+        - ['1', 11598]
+        - ['5', 3441]
+        - ['4', 2647]
+        - ['3', 1802]
+        - ['2', 1565]
+        - ['6', 777]
+        - ['7', 124]
+      tinha_carteira_assinada_ultimo_emprego:
+        tipo: VARCHAR
+        nulos_pct: 96.65
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - [null, 344958]
+        - ['1', 7424]
+        - ['0', 4522]
+      renda_aposentadoria:
+        tipo: DOUBLE
+        nulos_pct: 88.92
+        distintos_aprox: 1240
+        min: '20.0'
+        max: '30000.0'
+        media: 1486.9119
+        quartis: [788, 788, 1398.4781]
+      renda_pensao:
+        tipo: DOUBLE
+        nulos_pct: 95.21
+        distintos_aprox: 745
+        min: '15.0'
+        max: '32000.0'
+        media: 1045.5
+        quartis: [723.3153, 788, 900.627]
+      renda_abono_permanente:
+        tipo: DOUBLE
+        nulos_pct: 99.99
+        distintos_aprox: 30
+        min: '150.0'
+        max: '3600.0'
+        media: 990.1569
+        quartis: [392, 788, 1270]
+        top:
+        - [null, 356853]
+        - ['788.0', 5]
+        - ['300.0', 4]
+        - ['500.0', 4]
+        - ['1300.0', 3]
+        - ['3000.0', 3]
+        - ['800.0', 3]
+        - ['200.0', 2]
+        - ['2000.0', 2]
+        - ['400.0', 2]
+      renda_aluguel:
+        tipo: DOUBLE
+        nulos_pct: 99.16
+        distintos_aprox: 184
+        min: '35.0'
+        max: '50000.0'
+        media: 1326.592
+        quartis: [421.0961, 771.1975, 1447.689]
+      renda_outras:
+        tipo: DOUBLE
+        nulos_pct: 91.98
+        distintos_aprox: 959
+        min: '1.0'
+        max: '25000.0'
+        media: 338.7601
+        quartis: [112, 178.4873, 415.6922]
+      renda_mensal_ocupacao_principal:
+        tipo: DOUBLE
+        nulos_pct: 57.22
+        distintos_aprox: 2285
+        min: '5.0'
+        max: '200000.0'
+        media: 1782.3726
+        quartis: [788, 1116.2014, 1922.769]
+      renda_mensal_todos_trabalhos:
+        tipo: DOUBLE
+        nulos_pct: 57.22
+        distintos_aprox: 2808
+        min: '5.0'
+        max: '200000.0'
+        media: 1832.5368
+        quartis: [788, 1135.3728, 1994.4633]
+      renda_mensal_todas_fontes:
+        tipo: DOUBLE
+        nulos_pct: 40.03
+        distintos_aprox: 5271
+        min: '1.0'
+        max: '200000.0'
+        media: 1721.6202
+        quartis: [788, 1000.228, 1769.1439]
+      atividade_ramo_negocio_agregado:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 356904]
+      horas_trabalhadas_todos_trabalhos:
+        tipo: BIGINT
+        nulos_pct: 54.98
+        distintos_aprox: 128
+        min: '1'
+        max: '180'
+        media: 39.276
+        quartis: [36, 40, 44]
+      posicao_ocupacao:
+        tipo: VARCHAR
+        nulos_pct: 55.46
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - [null, 197944]
+        - ['1', 110539]
+        - ['2', 38500]
+        - ['3', 5938]
+        - ['4', 3983]
+      grupos_ocupacao:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 356904]
+      renda_mensal_familia:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 356904]
+      ocupacao_ano_anterior: {tipo: VARCHAR, nulos_pct: 96, distintos_aprox: 327, min: '100', max: '9988'}
+      renda_mensal_dinheiro_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 356904]
+      renda_mensal_produto_mercadoria_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 356904]
+      renda_mensal_dinheiro_outra_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 356904]
+      renda_mensal_produto_mercadoria_outra_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 356904]
+      renda_mensal_ocupacao_principal_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 356904]
+      renda_mensal_todos_trabalhos_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 356904]
+      renda_mensal_todas_fontes_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 356904]
+      renda_mensal_familia_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 356904]
+      renda_aposentadoria_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 356904]
+      renda_pensao_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 356904]
+      renda_abono_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 356904]
+      renda_aluguel_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 356904]
+      renda_outras_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 356904]

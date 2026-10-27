@@ -1,0 +1,283 @@
+dataset: world_olympedia_olympics
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  athlete_bio:
+    linhas: 155861
+    fonte_do_perfil: tabela inteira
+    colunas:
+      athlete_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 160493, pessoal: 'só contagens: valores seriam dado pessoal'}
+      name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 169817, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sex:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Female
+        max: Male
+        top:
+        - [Male, 115527]
+        - [Female, 40334]
+      birth_date: {tipo: DATE, nulos_pct: 4.27, distintos_aprox: 43533, min: '1828-10-25', max: '2009-01-01'}
+      birth_year:
+        tipo: BIGINT
+        nulos_pct: 2.67
+        distintos_aprox: 217
+        min: '1828'
+        max: '2009'
+        media: 1954.9688
+        quartis: [1935, 1963, 1981]
+      height:
+        tipo: DOUBLE
+        nulos_pct: 32.56
+        distintos_aprox: 114
+        min: '127.0'
+        max: '226.0'
+        media: 176.3272
+        quartis: [169.3596, 176, 183]
+      weight:
+        tipo: DOUBLE
+        nulos_pct: 33.18
+        distintos_aprox: 150
+        min: '25.0'
+        max: '198.0'
+        media: 71.8683
+        quartis: [61.8456, 70.3309, 80]
+      country: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 689, min: ' Afghanistan', max: ' Zimbabwe'}
+      country_noc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 259, min: AFG, max: ZIM}
+      description: {tipo: VARCHAR, nulos_pct: 64.8, distintos_aprox: 59727}
+      special_notes: {tipo: VARCHAR, nulos_pct: 61.1, distintos_aprox: 63171}
+  athlete_event_result:
+    linhas: 316834
+    fonte_do_perfil: tabela inteira
+    colunas:
+      edition: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 64, min: 1896 Summer Olympics, max: 2022 Winter Olympics}
+      edition_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60, min: '1', max: '9'}
+      country_noc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 259, min: AFG, max: ZIM}
+      sport: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 113, min: 3x3 Basketball, max: Wushu}
+      event: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 968, min: '0-½ Ton, Open', max: '⅔ mile, Professionals, Men'}
+      result_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6010}
+      athlete: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 169817, pessoal: 'só contagens: valores seriam dado pessoal'}
+      athlete_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 160493, pessoal: 'só contagens: valores seriam dado pessoal'}
+      position: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2589}
+      medal:
+        tipo: VARCHAR
+        nulos_pct: 85.9
+        distintos_aprox: 3
+        min: Bronze
+        max: Silver
+        top:
+        - [null, 272147]
+        - [Gold, 15072]
+        - [Bronze, 14939]
+        - [Silver, 14676]
+      is_team_sport:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 194527]
+        - ['true', 122307]
+  country:
+    linhas: 235
+    fonte_do_perfil: tabela inteira
+    colunas:
+      noc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 259, min: AFG, max: ZIM}
+      name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 209, pessoal: 'só contagens: valores seriam dado pessoal'}
+  game:
+    linhas: 64
+    fonte_do_perfil: tabela inteira
+    colunas:
+      year:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 44
+        min: '1896'
+        max: '2032'
+        media: 1967.75
+        quartis: [1938, 1968, 1999]
+        top:
+        - ['1956', 3]
+        - ['1924', 2]
+        - ['1928', 2]
+        - ['1932', 2]
+        - ['1936', 2]
+        - ['1940', 2]
+        - ['1944', 2]
+        - ['1948', 2]
+        - ['1952', 2]
+        - ['1960', 2]
+      edition: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 77, min: 1896 Summer Olympics, max: 2032 Summer Olympics}
+      edition_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 69, min: '1', max: '9'}
+      city:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 45
+        min: Albertville
+        max: Vancouver
+        top:
+        - [London, 4]
+        - [Athina, 3]
+        - [Los Angeles, 3]
+        - [Paris, 3]
+        - [Beijing, 2]
+        - [Berlin, 2]
+        - [Cortina d'Ampezzo, 2]
+        - [Garmisch-Partenkirchen, 2]
+        - [Helsinki, 2]
+        - [Innsbruck, 2]
+      country_flag_url:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 25
+        min: https://olympedia-flags.s3.eu-central-1.amazonaws.com/AUS.png
+        max: https://olympedia-flags.s3.eu-central-1.amazonaws.com/YUG.png
+        top:
+        - ['https://olympedia-flags.s3.eu-central-1.amazonaws.com/USA.png', 9]
+        - ['https://olympedia-flags.s3.eu-central-1.amazonaws.com/FRA.png', 6]
+        - ['https://olympedia-flags.s3.eu-central-1.amazonaws.com/ITA.png', 5]
+        - ['https://olympedia-flags.s3.eu-central-1.amazonaws.com/GBR.png', 4]
+        - ['https://olympedia-flags.s3.eu-central-1.amazonaws.com/GER.png', 4]
+        - ['https://olympedia-flags.s3.eu-central-1.amazonaws.com/JPN.png', 4]
+        - ['https://olympedia-flags.s3.eu-central-1.amazonaws.com/AUS.png', 3]
+        - ['https://olympedia-flags.s3.eu-central-1.amazonaws.com/CAN.png', 3]
+        - ['https://olympedia-flags.s3.eu-central-1.amazonaws.com/GRE.png', 3]
+        - ['https://olympedia-flags.s3.eu-central-1.amazonaws.com/AUT.png', 2]
+      country_noc:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 25
+        min: AUS
+        max: YUG
+        top:
+        - [USA, 9]
+        - [FRA, 6]
+        - [ITA, 5]
+        - [GBR, 4]
+        - [GER, 4]
+        - [JPN, 4]
+        - [AUS, 3]
+        - [CAN, 3]
+        - [GRE, 3]
+        - [AUT, 2]
+      start_date: {tipo: DATE, nulos_pct: 14.06, distintos_aprox: 57, min: '1896-04-06', max: '2026-02-06'}
+      end_date: {tipo: DATE, nulos_pct: 15.63, distintos_aprox: 70, min: '1896-04-15', max: '2026-02-22'}
+      competition_date: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60, min: ' 1 July – 26 November', max: —}
+      is_held:
+        tipo: VARCHAR
+        nulos_pct: 92.19
+        distintos_aprox: 1
+        min: Not held due to war
+        max: Not held due to war
+        top:
+        - [null, 59]
+        - [Not held due to war, 5]
+  game_medal_tally:
+    linhas: 1807
+    fonte_do_perfil: tabela inteira
+    colunas:
+      year:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 39
+        min: '1896'
+        max: '2022'
+        media: 1979.7443
+        quartis: [1958, 1988, 2008]
+        top:
+        - ['2020', 93]
+        - ['2008', 87]
+        - ['2012', 86]
+        - ['2016', 86]
+        - ['1992', 84]
+        - ['2000', 80]
+        - ['1996', 79]
+        - ['2004', 74]
+        - ['1988', 69]
+        - ['1972', 65]
+      edition: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 62, min: 1896 Summer Olympics, max: 2022 Winter Olympics}
+      edition_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60, min: '1', max: '9'}
+      country: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 154, min: Afghanistan, max: Zimbabwe}
+      country_noc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 176, min: AFG, max: ZIM}
+      gold:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 48
+        min: '0'
+        max: '83'
+        media: 3.7371
+        quartis: [0, 1, 4]
+        top:
+        - ['0', 588]
+        - ['1', 370]
+        - ['2', 218]
+        - ['3', 151]
+        - ['4', 91]
+        - ['5', 57]
+        - ['7', 48]
+        - ['6', 47]
+        - ['8', 37]
+        - ['9', 30]
+      silver:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 41
+        min: '0'
+        max: '85'
+        media: 3.7216
+        quartis: [1, 2, 4]
+        top:
+        - ['0', 450]
+        - ['1', 424]
+        - ['2', 250]
+        - ['3', 144]
+        - ['4', 103]
+        - ['6', 85]
+        - ['5', 78]
+        - ['7', 40]
+        - ['8', 33]
+        - ['10', 32]
+      bronze:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 41
+        min: '0'
+        max: '83'
+        media: 3.9712
+        quartis: [1, 2, 5]
+        top:
+        - ['1', 433]
+        - ['0', 360]
+        - ['2', 278]
+        - ['3', 172]
+        - ['4', 107]
+        - ['5', 75]
+        - ['6', 69]
+        - ['7', 49]
+        - ['9', 39]
+        - ['10', 29]
+      total:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 108
+        min: '1'
+        max: '248'
+        media: 11.43
+        quartis: [2, 5, 13]
+  result:
+    linhas: 7394
+    fonte_do_perfil: tabela inteira
+    colunas:
+      result_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6010}
+      event_title: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1521}
+      edition: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 64, min: 1896 Summer Olympics, max: 2022 Winter Olympics}
+      edition_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60, min: '1', max: '9'}
+      sport: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 113, min: 3x3 Basketball, max: Wushu}
+      result_date: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3112}
+      result_location: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 721, min: '100-km Team Trial Course, Minskoye Shosse, near Moskva', max: 'Östermalms
+          Idrottsplats, Stockholm'}
+      result_participants: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2110}
+      result_format: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 779, min: ' Three runs, total time determined placement.', max: na}
+      result_detail: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 452, min: AUT, max: na}
+      result_description: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7111}

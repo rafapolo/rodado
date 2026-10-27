@@ -1,0 +1,856 @@
+dataset: br_aneel_dadosabertos
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  empreendimento_geracao_distribuida:
+    linhas: 4692466
+    fonte_do_perfil: amostra de 42.622%. ~2.000.000 linhas
+    colunas:
+      DatGeracaoConjuntoDados:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-04'
+        max: '2026-09-04'
+        top:
+        - ['2026-09-04', 2069176]
+      AnmPeriodoReferencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 09/2026
+        max: 09/2026
+        top:
+        - [09/2026, 2069176]
+      NumCNPJDistribuidora: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 104, pessoal: 'só contagens: valores seriam dado pessoal'}
+      SigAgente: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 110, min: CASTRO-DIS, max: Âmbar Amazonas}
+      NomAgente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 113, min: AMBAR ENERGIA AMAZONAS S.A., max: RORAIMA ENERGIA S.A}
+      CodClasseConsumo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: CO
+        max: SP
+        top:
+        - [RE, 1651356]
+        - [CO, 190567]
+        - [RU, 176742]
+        - [IN, 26078]
+        - [REBR, 18096]
+        - [PP, 6041]
+        - [SP, 194]
+        - [IP, 89]
+        - [CPR, 11]
+        - ['RE ', 1]
+      DscClasseConsumo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: Comercial
+        max: Serviço Público
+        top:
+        - [Residencial, 1651357]
+        - [Comercial, 190567]
+        - [Rural, 176742]
+        - [Industrial, 26078]
+        - [REBR, 18096]
+        - [Poder Público, 6041]
+        - [Serviço Público, 194]
+        - [Iluminação pública, 89]
+        - [Consumo Próprio, 11]
+        - ['REBR ', 1]
+      CodSubGrupoTarifario:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2069176]
+      DscSubGrupoTarifario:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: A1
+        max: B4
+        top:
+        - [B1, 1662624]
+        - [B3, 205144]
+        - [B2, 177136]
+        - [A4, 19386]
+        - [AS, 1728]
+        - [A3a, 1123]
+        - [A3A, 776]
+        - [A3, 559]
+        - [B4, 343]
+        - [A1, 275]
+      CodUFibge:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '11'
+        max: '53'
+        media: 34.5183
+        quartis: [29, 35, 42]
+        top:
+        - ['35', 380274]
+        - ['43', 210491]
+        - ['31', 201612]
+        - ['41', 174261]
+        - ['29', 127282]
+        - ['51', 96255]
+        - ['52', 95587]
+        - ['33', 86884]
+        - ['42', 72730]
+        - ['50', 71680]
+      SigUF:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 380274]
+        - [RS, 210491]
+        - [MG, 201612]
+        - [PR, 174261]
+        - [BA, 127282]
+        - [MT, 96255]
+        - [GO, 95587]
+        - [RJ, 86884]
+        - [SC, 72730]
+        - [MS, 71680]
+      CodRegiao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        media: 3.576
+        quartis: [3, 4, 5]
+        top:
+        - ['5', 718589]
+        - ['3', 468205]
+        - ['4', 457482]
+        - ['1', 277860]
+        - ['2', 147040]
+      NomRegiao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Centro Oeste
+        max: Sul
+        top:
+        - [Sudeste, 718589]
+        - [Nordeste, 468205]
+        - [Sul, 457482]
+        - [Centro Oeste, 277860]
+        - [Norte, 147040]
+      CodMunicipioIbge:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6308
+        min: '1100015'
+        max: '5300108'
+        media: 3467371.0261
+        quartis: [2905004, 3514731, 4209971]
+      NomMunicipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5886}
+      CodCEP: {tipo: VARCHAR, nulos_pct: 1.39, distintos_aprox: 93374, pessoal: 'só contagens: valores seriam dado pessoal'}
+      SigTipoConsumidor:
+        tipo: VARCHAR
+        nulos_pct: 1.39
+        distintos_aprox: 2
+        min: PF
+        max: PJ
+        top:
+        - [PF, 1874899]
+        - [PJ, 165509]
+        - [null, 28768]
+      NumCPFCNPJ: {tipo: VARCHAR, nulos_pct: 1.39, distintos_aprox: 1042977, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CodEmpreendimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1783373}
+      DthAtualizaCadastralEmpreend: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4371, min: '1900-01-01', max: '2026-08-27'}
+      SigModalidadeEmpreendimento:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2069176]
+      DscModalidadeHabilitado:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 4
+        min: Auto consumo remoto
+        max: Geracao na propria UC
+        top:
+        - [Geracao na propria UC, 1584228]
+        - [Auto consumo remoto, 472588]
+        - [Compartilhada, 10438]
+        - [Condomínio, 1679]
+        - [null, 243]
+      QtdUCRecebeCredito:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 684
+        min: '1'
+        max: '15766'
+        media: 1.8097
+        quartis: [1, 1, 1]
+      SigTipoGeracao:
+        tipo: VARCHAR
+        nulos_pct: 1.39
+        distintos_aprox: 4
+        min: CGH
+        max: UTE
+        top:
+        - [UFV, 2040075]
+        - [null, 28764]
+        - [UTE, 270]
+        - [CGH, 34]
+        - [EOL, 33]
+      DscFonteGeracao:
+        tipo: VARCHAR
+        nulos_pct: 1.39
+        distintos_aprox: 13
+        min: Bagaço de Cana de Açúcar
+        max: Resíduos Florestais
+        top:
+        - [Radiação solar, 2040075]
+        - [null, 28764]
+        - [Biogás - RA, 169]
+        - [Biogás - RU, 52]
+        - [Potencial hidráulico, 36]
+        - [Cinética do vento, 33]
+        - [Biogás - Floresta, 15]
+        - [Biogás-AGR, 14]
+        - [Bagaço de Cana de Açúcar, 5]
+        - [Casca de Arroz, 4]
+      DscPorte:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Microgeracao
+        max: Minigeracao
+        top:
+        - [Microgeracao, 2059341]
+        - [Minigeracao, 9835]
+      MdaPotenciaInstaladaKW:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 4638
+        min: '0.0'
+        max: '5000.0'
+        media: 11.7081
+        quartis: [4.0005, 5.8455, 8.5251]
+      NomSubEstacao: {tipo: VARCHAR, nulos_pct: 99.94, distintos_aprox: 315, min: AERIS, max: VOT01}
+      NumCoordESub:
+        tipo: DOUBLE
+        nulos_pct: 99.94
+        distintos_aprox: 245
+        min: '-65.34'
+        max: '-37.84'
+        media: -55.8938
+        quartis: [-61.6292, -54.5935, -51.251]
+      NumCoordNSub:
+        tipo: DOUBLE
+        nulos_pct: 99.94
+        distintos_aprox: 214
+        min: '-30.09'
+        max: '3.2'
+        media: -15.8497
+        quartis: [-28.2909, -12.4518, -8.7569]
+      NomTitularEmpreendimento: {tipo: VARCHAR, nulos_pct: 1.39, distintos_aprox: 127854, pessoal: 'só contagens: valores seriam dado pessoal'}
+  indicadores_continuidade:
+    linhas: 16280480
+    fonte_do_perfil: amostra de 12.285%. ~2.000.000 linhas
+    colunas:
+      DatGeracaoConjuntoDados:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-05'
+        max: '2026-10-05'
+        top:
+        - ['2026-10-05', 2098299]
+      IdeConjUndConsumidoras:
+        tipo: BIGINT
+        nulos_pct: 0.04
+        distintos_aprox: 12793
+        min: '1'
+        max: '17531'
+        media: 13173.6612
+        quartis: [12708, 13948, 15160]
+      DscConjUndConsumidoras: {tipo: VARCHAR, nulos_pct: 0.04, distintos_aprox: 10035}
+      SigAgente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 127, min: 'CASTRO-DIS          ', max: 'Âmbar Amazonas      '}
+      NumCNPJ: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 114, pessoal: 'só contagens: valores seriam dado pessoal'}
+      SigIndicador:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: DEC
+        max: NumConsAgt
+        top:
+        - [FEC, 154656]
+        - [DEC, 154379]
+        - [NumCon, 153725]
+        - [FECINC, 81819]
+        - [FECIND, 81574]
+        - [DECINC, 81476]
+        - [DECIPC, 81293]
+        - [FECXN, 81214]
+        - [DECINE, 81201]
+        - [DECXP, 81197]
+      AnoIndice:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '2000'
+        max: '2026'
+        media: 2015.7593
+        quartis: [2011, 2016, 2021]
+        top:
+        - ['2010', 145334]
+        - ['2018', 135168]
+        - ['2015', 122880]
+        - ['2022', 112640]
+        - ['2021', 110592]
+        - ['2016', 108544]
+        - ['2025', 108544]
+        - ['2011', 106496]
+        - ['2023', 104448]
+        - ['2013', 100352]
+      NumPeriodoIndice:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4625
+        quartis: [3, 6, 9]
+        top:
+        - ['7', 178702]
+        - ['2', 176878]
+        - ['4', 176875]
+        - ['1', 176707]
+        - ['6', 176148]
+        - ['5', 176105]
+        - ['3', 175891]
+        - ['8', 174002]
+        - ['11', 172207]
+        - ['12', 171820]
+      VlrIndiceEnviado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 57636
+        min: '-0.63'
+        max: '6579831.0'
+        media: 1805.3533
+        quartis: [0, 0, 0.4455]
+  indicadores_continuidade_atributos:
+    linhas: 776216
+    fonte_do_perfil: tabela inteira
+    colunas:
+      DatGeracaoConjuntoDados:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-05'
+        max: '2026-10-05'
+        top:
+        - ['2026-10-05', 776216]
+      SigAgente: {tipo: VARCHAR, nulos_pct: 1.59, distintos_aprox: 101, min: CEA, max: 'Âmbar Roraima '}
+      NumCNPJ: {tipo: VARCHAR, nulos_pct: 0.17, distintos_aprox: 115, pessoal: 'só contagens: valores seriam dado pessoal'}
+      IdeConjUndConsumidoras: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6949}
+      DscConjUndConsumidoras: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5866}
+      SigIndicador:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: AREA
+        max: TSCT
+        top:
+        - [AREAT, 75449]
+        - [TSCT, 75355]
+        - [PNITT, 75314]
+        - [CMMTCO, 38419]
+        - [CMMTIN, 38419]
+        - [CMMTRE, 38419]
+        - [CMMTRU, 38418]
+        - [CMMTOU, 38414]
+        - [NUCTCO, 38412]
+        - [NUCTOU, 38412]
+      AnoIndice:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '2008'
+        max: '2014'
+        top:
+        - ['2012', 178655]
+        - ['2014', 177009]
+        - ['2013', 176995]
+        - ['2011', 84569]
+        - ['2009', 75161]
+        - ['2010', 63458]
+        - ['2008', 20369]
+      NumPeriodoIndice:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['4', 206409]
+        - ['1', 205172]
+        - ['3', 182819]
+        - ['2', 181816]
+      VlrIndiceEnviado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 328230
+        min: '0.0'
+        max: '31305724.46'
+        media: 20903.1813
+        quartis: [94.5325, 965.2277, 8778.7867]
+  indicadores_continuidade_compensacao:
+    linhas: 18676419
+    fonte_do_perfil: amostra de 10.709%. ~2.000.000 linhas
+    colunas:
+      DatGeracaoConjuntoDados:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-05'
+        max: '2026-10-05'
+        top:
+        - ['2026-10-05', 2090289]
+      SigAgente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 127, min: 'CASTRO-DIS          ', max: 'Âmbar Amazonas      '}
+      NumCNPJ: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 109, pessoal: 'só contagens: valores seriam dado pessoal'}
+      IdeConjUndConsumidoras:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3974
+        min: '964'
+        max: '17531'
+        media: 14675.4584
+        quartis: [13639, 14665, 15680]
+      DscConjUndConsumidoras: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3181}
+      SigIndicador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 111, min: PGUCAT, max: QTUGMTUT}
+      AnoIndice:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 19
+        min: '2011'
+        max: '2026'
+        media: 2019.6914
+        quartis: [2017, 2020, 2023]
+        top:
+        - ['2021', 184320]
+        - ['2019', 174080]
+        - ['2024', 173361]
+        - ['2023', 172032]
+        - ['2020', 167936]
+        - ['2022', 163840]
+        - ['2018', 155648]
+        - ['2025', 147456]
+        - ['2026', 145408]
+        - ['2014', 108737]
+      NumPeriodoIndice:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 5.8575
+        quartis: [3, 5, 9]
+        top:
+        - ['1', 254582]
+        - ['2', 211321]
+        - ['4', 211000]
+        - ['3', 210535]
+        - ['6', 164449]
+        - ['5', 162025]
+        - ['7', 157072]
+        - ['11', 144443]
+        - ['12', 144241]
+        - ['9', 144134]
+      VlrIndiceEnviado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 133054
+        min: '0.0'
+        max: '2120659.82'
+        media: 622.1473
+        quartis: [0, 0, 0]
+  indicadores_continuidade_dominio:
+    linhas: 484
+    fonte_do_perfil: tabela inteira
+    colunas:
+      DatGeracaoConjuntoDados:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-05'
+        max: '2026-10-05'
+        top:
+        - ['2026-10-05', 484]
+      SigIndicador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 754, min: AREA, max: k3}
+      DscIndicador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 426, min: Compensação de UC atendida fora dos limites previstos de DRP ou DRC,
+        max: Índices de Unidades Consumidoras com Tensão Crítica}
+  indicadores_continuidade_limite:
+    linhas: 263401
+    fonte_do_perfil: tabela inteira
+    colunas:
+      DatGeracaoConjuntoDados:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-05'
+        max: '2026-10-05'
+        top:
+        - ['2026-10-05', 263401]
+      SigAgente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 127, min: 'CASTRO-DIS          ', max: 'Âmbar Amazonas      '}
+      NumCNPJ: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 121, pessoal: 'só contagens: valores seriam dado pessoal'}
+      IdeConjUndConsumidoras: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13391}
+      DscConjUndConsumidoras: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10747}
+      SigIndicador:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: DEC
+        max: FEC
+        top:
+        - [FEC, 131701]
+        - [DEC, 131700]
+      AnoLimiteQualidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 37
+        min: '1990'
+        max: '2032'
+        top:
+        - ['2011', 13048]
+        - ['2012', 11968]
+        - ['2003', 11704]
+        - ['2002', 11580]
+        - ['2001', 11532]
+        - ['2004', 10922]
+        - ['2013', 10582]
+        - ['2005', 10418]
+        - ['1997', 9606]
+        - ['2000', 9558]
+      VlrLimite:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2225
+        min: '0.0'
+        max: '900.0'
+        media: 31.0009
+        quartis: [10.0404, 20.0839, 40.1371]
+  siga_empreendimentos_geracao:
+    linhas: 25045
+    fonte_do_perfil: tabela inteira
+    colunas:
+      DatGeracaoConjuntoDados:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-01'
+        max: '2026-10-01'
+        top:
+        - ['2026-10-01', 25045]
+      NomEmpreendimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 26438, pessoal: 'só contagens: valores seriam dado pessoal'}
+      IdeNucleoCEG: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 29635}
+      CodCEG: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 36126}
+      SigUFPrincipal:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [PA, 13204]
+        - [MS, 3020]
+        - [MG, 1299]
+        - [SP, 1194]
+        - [BA, 1163]
+        - [RN, 595]
+        - [CE, 585]
+        - [RS, 536]
+        - [SC, 530]
+        - [PI, 513]
+      SigTipoGeracao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: CGH
+        max: UTN
+        top:
+        - [UFV, 18962]
+        - [UTE, 3055]
+        - [EOL, 1549]
+        - [CGH, 718]
+        - [PCH, 537]
+        - [UHE, 221]
+        - [UTN, 3]
+      DscFaseUsina:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Construção
+        max: Operação
+        top:
+        - [Operação, 22801]
+        - [Construção não iniciada, 2099]
+        - [Construção, 145]
+      DscOrigemCombustivel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Biomassa
+        max: Solar
+        top:
+        - [Solar, 18962]
+        - [Fóssil, 2360]
+        - [Eólica, 1549]
+        - [Hídrica, 1476]
+        - [Biomassa, 695]
+        - [Nuclear, 3]
+      DscFonteCombustivel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: Agroindustriais
+        max: Urânio
+        top:
+        - [Radiação solar, 18962]
+        - [Petróleo, 2144]
+        - [Cinética do vento, 1549]
+        - [Potencial hidráulico, 1476]
+        - [Agroindustriais, 474]
+        - [Gás natural, 191]
+        - [Floresta, 152]
+        - [Resíduos sólidos urbanos, 42]
+        - [Carvão mineral, 21]
+        - [Resíduos animais, 21]
+      DscTipoOutorga:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Autorização
+        max: Registro
+        top:
+        - [Registro, 19682]
+        - [Autorização, 5104]
+        - [Concessão, 259]
+      NomFonteCombustivel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: Bagaço de Cana de Açúcar
+        max: Óleos vegetais
+        top:
+        - [Radiação solar, 18962]
+        - [Óleo Diesel, 2087]
+        - [Cinética do vento, 1549]
+        - [Potencial hidráulico, 1476]
+        - [Bagaço de Cana de Açúcar, 447]
+        - [Gás Natural, 189]
+        - [Resíduos Florestais, 84]
+        - [Óleo Combustível, 34]
+        - [Biogás - RU, 29]
+        - [Licor Negro, 24]
+      DatEntradaOperacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3912, min: '1900-01-03', max: '2026-09-02'}
+      MdaPotenciaOutorgadaKw:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2194
+        min: '0.01'
+        max: '11233100.0'
+        media: 12685.4674
+        quartis: [1, 1.0394, 1344.4413]
+      MdaPotenciaFiscalizadaKw:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1864
+        min: '0'
+        max: '11233100'
+        media: 8813.3546
+        quartis: [1, 1, 140]
+      MdaGarantiaFisicaKw: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 864, min: ',00', max: '9980,00'}
+      IdcGeracaoQualificada:
+        tipo: VARCHAR
+        nulos_pct: 63.71
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [null, 15957]
+        - [Não, 9018]
+        - [Sim, 70]
+      NumCoordNEmpreendimento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 23917
+        min: '-33.72280556'
+        max: '4.715'
+        media: -8.5726
+        quartis: [-17.6815, -3.1645, -1.9423]
+      NumCoordEEmpreendimento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 24866
+        min: '-72.81111111'
+        max: '0.0'
+        media: -48.8689
+        quartis: [-52.4216, -50.5987, -48.2189]
+      DatInicioVigencia: {tipo: DATE, nulos_pct: 78.59, distintos_aprox: 1511, min: '1970-07-17', max: '2032-09-25'}
+      DatFimVigencia: {tipo: DATE, nulos_pct: 78.63, distintos_aprox: 1744, min: '1998-09-15', max: '2063-01-14'}
+      DscPropriRegimePariticipacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5224}
+      DscSubBacia: {tipo: VARCHAR, nulos_pct: 94.19, distintos_aprox: 54, min: ' 15 - Madeira', max: ' 87 - Camaqua, Jacui, lagoa dos Patos e
+          outros'}
+      DscMuninicpios: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2448}
+  tarifas_homologadas:
+    linhas: 332165
+    fonte_do_perfil: tabela inteira
+    colunas:
+      DatGeracaoConjuntoDados:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-07'
+        max: '2026-10-07'
+        top:
+        - ['2026-10-07', 332165]
+      DscREH: {tipo: VARCHAR, nulos_pct: 0.08, distintos_aprox: 1542}
+      SigAgente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 123, min: CASTRO-DIS, max: Âmbar Amazonas}
+      NumCNPJDistribuidora: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 115, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DatInicioVigencia: {tipo: DATE, nulos_pct: 0, distintos_aprox: 619, min: '2010-02-03', max: '2026-09-30'}
+      DatFimVigencia: {tipo: DATE, nulos_pct: 0, distintos_aprox: 712, min: '2011-02-02', max: '2027-09-29'}
+      DscBaseTarifaria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Base Econômica
+        max: Tarifa de Aplicação
+        top:
+        - [Tarifa de Aplicação, 166570]
+        - [Base Econômica, 165595]
+      DscSubGrupo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: A1
+        max: B4
+        top:
+        - [A4, 85886]
+        - [B2, 71572]
+        - [B1, 41692]
+        - [A2, 34663]
+        - [A3a, 25224]
+        - [B3, 23900]
+        - [A3, 19575]
+        - [B4, 10996]
+        - [A1, 7922]
+        - [AS, 5471]
+      DscModalidadeTarifaria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: Azul
+        max: Verde ABRACE LIVRE
+        top:
+        - [Azul, 83610]
+        - [Branca, 72942]
+        - [Convencional, 57476]
+        - [Verde, 37910]
+        - [Geração, 31663]
+        - [Convencional pré-pagamento, 26932]
+        - [Distribuição, 20038]
+        - [Energia suprimento, 516]
+        - [Convencional ABRACE, 328]
+        - [Azul ABRACE CATIVO, 201]
+      DscClasse:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Iluminação pública
+        max: Rural
+        top:
+        - [Não se aplica, 207299]
+        - [Rural, 72176]
+        - [Residencial, 41694]
+        - [Iluminação pública, 10996]
+      DscSubClasse:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: Baixa Renda
+        max: Serviço público de irrigação rural
+        top:
+        - [Não se aplica, 230589]
+        - [Cooperativa de eletrificação rural, 25072]
+        - [Residencial, 23867]
+        - [Serviço público de irrigação rural, 23842]
+        - [Baixa Renda, 9287]
+        - [Iluminação pública – B4a, 5498]
+        - [Iluminação pública – B4b, 5498]
+        - [Residencial Tarifa Social – faixa 01, 2752]
+        - [Residencial Tarifa Social – faixa 02, 2752]
+        - [Residencial Desconto Social – faixa 01, 1504]
+      DscDetalhe:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: <500GWh
+        max: TIPO 02
+        top:
+        - [Não se aplica, 228189]
+        - [APE, 49294]
+        - [SCEE, 48680]
+        - [TIPO 01, 2474]
+        - [TIPO 02, 2472]
+        - [Cooperativas autorizadas, 810]
+        - [<500GWh, 246]
+      NomPostoTarifario:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: Fora ponta
+        max: Ponta úmida
+        top:
+        - [Não se aplica, 135879]
+        - [Ponta, 81299]
+        - [Fora ponta, 81297]
+        - [Intermediário, 24610]
+        - [Fora ponta seca, 2270]
+        - [Fora ponta úmida, 2270]
+        - [Ponta seca, 2270]
+        - [Ponta úmida, 2270]
+      DscUnidadeTerciaria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: MWh
+        max: kW
+        top:
+        - [MWh, 232365]
+        - [kW, 99800]
+      SigAgenteAcessante: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 874, min: ARCELORMITTAL - CEMIG, max: WHITE MARTINS}
+      VlrTUSD:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 50505
+        min: '-122.63'
+        max: '193498.5'
+        media: 296.1071
+        quartis: [14.9911, 104.2703, 407.2997]
+      VlrTE:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 19284
+        min: '-289.92'
+        max: '794.54'
+        media: 94.4537
+        quartis: [0, 28.1913, 187.6877]

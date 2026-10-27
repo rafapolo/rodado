@@ -1,0 +1,706 @@
+dataset: br_mobilidados_indicadores
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  comprometimento_renda_tarifa_transp_publico:
+    linhas: 351
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '2005'
+        max: '2017'
+        media: 2011
+        quartis: [2008, 2011, 2014]
+        top:
+        - ['2005', 27]
+        - ['2006', 27]
+        - ['2007', 27]
+        - ['2008', 27]
+        - ['2009', 27]
+        - ['2010', 27]
+        - ['2011', 27]
+        - ['2012', 27]
+        - ['2013', 27]
+        - ['2014', 27]
+      comprometimento_renda_domesticas_negras:
+        tipo: DOUBLE
+        nulos_pct: 23.08
+        distintos_aprox: 213
+        min: '0.126919659855312'
+        max: '0.301277416244878'
+        media: 0.2043
+        quartis: [0.1756, 0.2032, 0.2334]
+      comprometimento_salario_minimo:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 152
+        min: '0.126903553299492'
+        max: '0.333333333333333'
+        media: 0.2043
+        quartis: [0.1754, 0.1985, 0.228]
+      id_municipio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: '1100205'
+        max: '5300108'
+        top:
+        - ['1100205', 13]
+        - ['1200401', 13]
+        - ['1302603', 13]
+        - ['1400100', 13]
+        - ['1501402', 13]
+        - ['1600303', 13]
+        - ['1721000', 13]
+        - ['2111300', 13]
+        - ['2211001', 13]
+        - ['2304400', 13]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 13]
+        - [AL, 13]
+        - [AM, 13]
+        - [AP, 13]
+        - [BA, 13]
+        - [CE, 13]
+        - [DF, 13]
+        - [ES, 13]
+        - [GO, 13]
+        - [MA, 13]
+      tarifas:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 57
+        min: '1.15'
+        max: '4.05'
+        media: 2.2784
+        quartis: [1.8234, 2.184, 2.7]
+  divisao_modal:
+    linhas: 320
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '1996'
+        max: '2018'
+        media: 2007.1
+        quartis: [2002, 2008, 2012]
+        top:
+        - ['1996', 32]
+        - ['1997', 32]
+        - ['2002', 32]
+        - ['2003', 32]
+        - ['2007', 32]
+        - ['2009', 32]
+        - ['2010', 32]
+        - ['2012', 32]
+        - ['2017', 32]
+        - ['2018', 32]
+      coluna:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Percentual de viagens a pé
+        max: Percentual de viagens em transporte individual motorizado
+        top:
+        - [Percentual de viagens a pé, 80]
+        - [Percentual de viagens em bicicleta, 80]
+        - [Percentual de viagens em transporte coletivo, 80]
+        - [Percentual de viagens em transporte individual motorizado, 80]
+      divisao_modal:
+        tipo: DOUBLE
+        nulos_pct: 83.75
+        distintos_aprox: 31
+        min: 8e-05
+        max: '0.0049'
+        media: 0.0025
+        quartis: [0.0011, 0.0028, 0.0037]
+        top:
+        - [null, 268]
+        - ['0.0001', 4]
+        - ['0.0037', 3]
+        - ['0.0002', 2]
+        - ['0.0003', 2]
+        - ['0.0019', 2]
+        - ['0.002', 2]
+        - ['0.0026', 2]
+        - ['0.0029', 2]
+        - ['0.0033', 2]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: BA
+        max: SP
+        top:
+        - [BA, 40]
+        - [CE, 40]
+        - [DF, 40]
+        - [MG, 40]
+        - [PE, 40]
+        - [PR, 40]
+        - [RJ, 40]
+        - [SP, 40]
+  emissao_co2_material_particulado:
+    linhas: 324
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '2007'
+        max: '2018'
+        media: 2012.5
+        quartis: [2010, 2012, 2016]
+        top:
+        - ['2007', 27]
+        - ['2008', 27]
+        - ['2009', 27]
+        - ['2010', 27]
+        - ['2011', 27]
+        - ['2012', 27]
+        - ['2013', 27]
+        - ['2014', 27]
+        - ['2015', 27]
+        - ['2016', 27]
+      emissao_co2:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 259
+        min: '392'
+        max: '2152'
+        media: 915.0988
+        quartis: [652, 821, 1056]
+      emissao_mp:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 203
+        min: '33'
+        max: '564'
+        media: 140.6698
+        quartis: [78, 108, 167]
+      id_municipio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: '1100205'
+        max: '5300108'
+        top:
+        - ['1100205', 12]
+        - ['1200401', 12]
+        - ['1302603', 12]
+        - ['1400100', 12]
+        - ['1501402', 12]
+        - ['1600303', 12]
+        - ['1721000', 12]
+        - ['2111300', 12]
+        - ['2211001', 12]
+        - ['2304400', 12]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 12]
+        - [AL, 12]
+        - [AM, 12]
+        - [AP, 12]
+        - [BA, 12]
+        - [CE, 12]
+        - [DF, 12]
+        - [ES, 12]
+        - [GO, 12]
+        - [MA, 12]
+  proporcao_domicilios_infra_urbana:
+    linhas: 217
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2010'
+        max: '2010'
+        media: 2010
+        quartis: [2010, 2010, 2010]
+        top:
+        - ['2010', 217]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 169, min: '1100205', max: '5300108'}
+      prop_calcadas:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 131
+        min: '1.28'
+        max: '100.0'
+        media: 51.7345
+        quartis: [30.625, 52.6033, 75]
+      prop_rampas:
+        tipo: DOUBLE
+        nulos_pct: 0.46
+        distintos_aprox: 54
+        min: '0.0'
+        max: '34.0'
+        media: 2.7616
+        quartis: [0, 1, 2.645]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 39]
+        - [MG, 37]
+        - [PR, 29]
+        - [RJ, 21]
+        - [GO, 20]
+        - [CE, 19]
+        - [PE, 14]
+        - [BA, 13]
+        - [PA, 7]
+        - [AC, 1]
+  proporcao_mortes_negras_acidente_transporte:
+    linhas: 668400
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '2000'
+        max: '2019'
+        media: 2009.5
+        quartis: [2005, 2009, 2015]
+        top:
+        - ['2000', 33420]
+        - ['2001', 33420]
+        - ['2002', 33420]
+        - ['2003', 33420]
+        - ['2004', 33420]
+        - ['2005', 33420]
+        - ['2006', 33420]
+        - ['2007', 33420]
+        - ['2008', 33420]
+        - ['2009', 33420]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      indicador:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Ciclistas
+        max: Total
+        top:
+        - [Ciclistas, 111400]
+        - [Motociclistas, 111400]
+        - [Ocupantes de automóvel, 111400]
+        - [Outros, 111400]
+        - [Pedestres, 111400]
+        - [Total, 111400]
+      prop_mortes_negras_acidente_transporte:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3029
+        min: '0.0'
+        max: '100.0'
+        media: 16.9637
+        quartis: [0, 0, 0.0205]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 102360]
+        - [SP, 77400]
+        - [RS, 59640]
+        - [BA, 50040]
+        - [PR, 47880]
+        - [SC, 35400]
+        - [GO, 29520]
+        - [PI, 26880]
+        - [PB, 26760]
+        - [MA, 26040]
+  proporcao_pessoas_prox_infra_cicloviaria:
+    linhas: 378
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2019'
+        max: '2021'
+        media: 2020
+        quartis: [2019, 2020, 2021]
+        top:
+        - ['2019', 189]
+        - ['2021', 189]
+      id_municipio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 31
+        min: '110020'
+        max: '530010'
+        top:
+        - ['110020', 14]
+        - ['120040', 14]
+        - ['130260', 14]
+        - ['140010', 14]
+        - ['150140', 14]
+        - ['160030', 14]
+        - ['172100', 14]
+        - ['211130', 14]
+        - ['221100', 14]
+        - ['230440', 14]
+      indicador:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: PNB 0 1/2
+        max: PNB Mulheres negras
+        top:
+        - [PNB 0 1/2, 54]
+        - [PNB 1 3, 54]
+        - [PNB 1/2 1, 54]
+        - [PNB 3 mais, 54]
+        - [PNB Geral, 54]
+        - [PNB Mulheres menos 1 salário mínimo, 54]
+        - [PNB Mulheres negras, 54]
+      prop_pessoas_proximas_ciclovias:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 49
+        min: '0.0'
+        max: '67.0'
+        media: 14.0317
+        quartis: [4.32, 12.3, 20]
+        top:
+        - ['1.0', 28]
+        - ['0.0', 23]
+        - ['2.0', 18]
+        - ['14.0', 17]
+        - ['15.0', 17]
+        - ['10.0', 15]
+        - ['13.0', 15]
+        - ['11.0', 14]
+        - ['3.0', 14]
+        - ['12.0', 13]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 14]
+        - [AL, 14]
+        - [AM, 14]
+        - [AP, 14]
+        - [BA, 14]
+        - [CE, 14]
+        - [DF, 14]
+        - [ES, 14]
+        - [GO, 14]
+        - [MA, 14]
+  proporcao_pessoas_proximas_pnt:
+    linhas: 630
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '2010'
+        max: '2019'
+        media: 2014.5
+        quartis: [2012, 2014, 2017]
+        top:
+        - ['2010', 63]
+        - ['2011', 63]
+        - ['2012', 63]
+        - ['2013', 63]
+        - ['2014', 63]
+        - ['2015', 63]
+        - ['2016', 63]
+        - ['2017', 63]
+        - ['2018', 63]
+        - ['2019', 63]
+      id_municipio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1501402'
+        max: '5300108'
+        top:
+        - ['1501402', 70]
+        - ['2304400', 70]
+        - ['2611606', 70]
+        - ['2927408', 70]
+        - ['3106200', 70]
+        - ['3304557', 70]
+        - ['3550308', 70]
+        - ['4106902', 70]
+        - ['5300108', 70]
+      indicador:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: PNT 0 1/2
+        max: PNT Mulheres responsáveis por domicílio menos 2 salários mínimos
+        top:
+        - [PNT 0 1/2, 90]
+        - [PNT 1 3, 90]
+        - [PNT 1/2 1, 90]
+        - [PNT 3 mais, 90]
+        - [PNT Geral, 90]
+        - [PNT Mulheres negras, 90]
+        - [PNT Mulheres responsáveis por domicílio menos 2 salários mínimos, 90]
+      prop_pessoas_proximas_pnt:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 45
+        min: '0.0'
+        max: '54.0'
+        media: 13.3714
+        quartis: [5, 11, 20.0703]
+        top:
+        - ['0.0', 126]
+        - ['10.0', 39]
+        - ['8.0', 37]
+        - ['11.0', 28]
+        - ['16.0', 26]
+        - ['6.0', 24]
+        - ['15.0', 23]
+        - ['28.0', 22]
+        - ['12.0', 20]
+        - ['5.0', 20]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: BA
+        max: SP
+        top:
+        - [BA, 70]
+        - [CE, 70]
+        - [DF, 70]
+        - [MG, 70]
+        - [PA, 70]
+        - [PE, 70]
+        - [PR, 70]
+        - [RJ, 70]
+        - [SP, 70]
+  taxa_motorizacao:
+    linhas: 486
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '2001'
+        max: '2018'
+        media: 2009.5
+        quartis: [2005, 2009, 2014]
+        top:
+        - ['2001', 27]
+        - ['2002', 27]
+        - ['2003', 27]
+        - ['2004', 27]
+        - ['2005', 27]
+        - ['2006', 27]
+        - ['2007', 27]
+        - ['2008', 27]
+        - ['2009', 27]
+        - ['2010', 27]
+      id_municipio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: '1100205'
+        max: '5300108'
+        top:
+        - ['1100205', 18]
+        - ['1200401', 18]
+        - ['1302603', 18]
+        - ['1400100', 18]
+        - ['1501402', 18]
+        - ['1600303', 18]
+        - ['1721000', 18]
+        - ['2111300', 18]
+        - ['2211001', 18]
+        - ['2304400', 18]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 18]
+        - [AL, 18]
+        - [AM, 18]
+        - [AP, 18]
+        - [BA, 18]
+        - [CE, 18]
+        - [DF, 18]
+        - [ES, 18]
+        - [GO, 18]
+        - [MA, 18]
+      taxa_motorizacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 499
+        min: '91.5450594461605'
+        max: '797.15947066969'
+        media: 359.2861
+        quartis: [234.4638, 337.8722, 464.2827]
+  tempo_deslocamento_casa_trabalho:
+    linhas: 229
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2010'
+        max: '2010'
+        media: 2010
+        quartis: [2010, 2010, 2010]
+        top:
+        - ['2010', 229]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 179, min: '1100205', max: '5300108'}
+      prop_deslocamento_acima_1_hora:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 76
+        min: '2.0'
+        max: '54.0'
+        media: 16.4385
+        quartis: [7, 13.9078, 24.4167]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 39]
+        - [MG, 38]
+        - [GO, 30]
+        - [PR, 29]
+        - [RJ, 21]
+        - [CE, 19]
+        - [PE, 15]
+        - [BA, 13]
+        - [PA, 7]
+        - [AC, 1]
+      tempo_medio_deslocamento:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 43
+        min: '16'
+        max: '67'
+        media: 35.5371
+        quartis: [26, 34, 45]
+        top:
+        - ['33', 12]
+        - ['23', 10]
+        - ['24', 10]
+        - ['28', 10]
+        - ['46', 10]
+        - ['21', 9]
+        - ['32', 9]
+        - ['36', 9]
+        - ['37', 8]
+        - ['22', 7]
+  transporte_media_alta_capacidade:
+    linhas: 27
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2019'
+        max: '2019'
+        media: 2019
+        quartis: [2019, 2019, 2019]
+        top:
+        - ['2019', 27]
+      id_municipio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1501402'
+        max: '5300108'
+        top:
+        - ['1501402', 3]
+        - ['2304400', 3]
+        - ['2611606', 3]
+        - ['2927408', 3]
+        - ['3106200', 3]
+        - ['3304557', 3]
+        - ['3550308', 3]
+        - ['4106902', 3]
+        - ['5300108', 3]
+      indicador:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Estações de TMA em operação na capital
+        max: Percentual de estações de TMA próximas da infraestrutura cicloviária
+        top:
+        - [Estações de TMA em operação na capital, 9]
+        - [Estações de TMA na área de cobertura da infraestrutura cicloviária, 9]
+        - [Percentual de estações de TMA na área de cobertura da infraestrutura cicloviária, 8]
+        - [Percentual de estações de TMA próximas da infraestrutura cicloviária, 1]
+      prop_tma:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '0.24'
+        max: '233.0'
+        media: 39.3952
+        quartis: [0.6125, 19, 54.25]
+        top:
+        - ['22.0', 3]
+        - ['0.24', 1]
+        - ['0.27', 1]
+        - ['0.38', 1]
+        - ['0.43', 1]
+        - ['0.52', 1]
+        - ['0.58', 1]
+        - ['0.6', 1]
+        - ['0.65', 1]
+        - ['1.0', 1]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: BA
+        max: SP
+        top:
+        - [BA, 3]
+        - [CE, 3]
+        - [DF, 3]
+        - [MG, 3]
+        - [PA, 3]
+        - [PE, 3]
+        - [PR, 3]
+        - [RJ, 3]
+        - [SP, 3]

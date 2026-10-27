@@ -1,0 +1,94 @@
+dataset: br_rodado_indicadores_municipais
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  municipio:
+    linhas: 12382056
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5886, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 244685]
+        - [SP, 193269]
+        - [RS, 139653]
+        - [BA, 124265]
+        - [PR, 116316]
+        - [SC, 83326]
+        - [GO, 71072]
+        - [PB, 63973]
+        - [PI, 62367]
+        - [MA, 57920]
+      secao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: agropecuaria
+        max: transparencia
+        top:
+        - [beneficios, 648594]
+        - [politica, 240500]
+        - [seguranca, 181995]
+        - [economia, 167985]
+        - [empresas, 144820]
+        - [infraestrutura, 127371]
+        - [saude, 53933]
+        - [agropecuaria, 25192]
+        - [meio_ambiente, 19224]
+        - [transparencia, 2580]
+      indicador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 208, min: ano_prefeito, max: top_atividades.ativas}
+      ano:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 1612194]
+      mes:
+        tipo: INTEGER
+        nulos_pct: 34.67
+        distintos_aprox: 10
+        min: '1'
+        max: '9'
+        media: 5.5915
+        quartis: [1, 7, 9]
+        top:
+        - [null, 558958]
+        - ['9', 384722]
+        - ['1', 280941]
+        - ['8', 141253]
+        - ['2', 79986]
+        - ['6', 42921]
+        - ['7', 34013]
+        - ['5', 33682]
+        - ['3', 31191]
+        - ['4', 24527]
+      dimensao: {tipo: VARCHAR, nulos_pct: 59.21, distintos_aprox: 4249}
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0.6
+        distintos_aprox: 273014
+        min: '-4567.1900000000005'
+        max: '740361866434.52'
+        media: 37577150.2291
+        quartis: [8.0246, 139.0423, 2365.1792]
+      texto:
+        tipo: VARCHAR
+        nulos_pct: 99.65
+        distintos_aprox: 3
+        min: '2026-08-04'
+        max: sem prestação de contas no município
+        top:
+        - [null, 1606620]
+        - ['2026-08-04', 5570]
+        - [sem eleição municipal, 2]
+        - [sem prestação de contas no município, 2]

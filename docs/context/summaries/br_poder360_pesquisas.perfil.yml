@@ -1,0 +1,159 @@
+dataset: br_poder360_pesquisas
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  microdados:
+    linhas: 162075
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_pesquisa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10284}
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '2000'
+        max: '2026'
+        media: 2013.2511
+        quartis: [2009, 2014, 2020]
+        top:
+        - ['2022', 29174]
+        - ['2014', 23901]
+        - ['2010', 21023]
+        - ['2016', 20044]
+        - ['2004', 11328]
+        - ['2012', 10838]
+        - ['2020', 9739]
+        - ['2006', 9202]
+        - ['2008', 7562]
+        - ['2000', 7178]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 11.54
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [SP, 25554]
+        - [null, 18701]
+        - [RJ, 11167]
+        - [MG, 10246]
+        - [RS, 7980]
+        - [GO, 7070]
+        - [RE, 6572]
+        - [PE, 6478]
+        - [PR, 5410]
+        - [BA, 4941]
+      nome_municipio: {tipo: VARCHAR, nulos_pct: 57.37, distintos_aprox: 232, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: congresso nacional
+        max: senador
+        top:
+        - [prefeito, 68998]
+        - [presidente, 39725]
+        - [governador, 37767]
+        - [senador, 15581]
+        - [congresso nacional, 4]
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1792, min: '2000-01-01', max: '2023-11-21'}
+      data_referencia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3755}
+      instituto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 400, min: 6Sigma, max: Única Pesquisas}
+      contratante: {tipo: VARCHAR, nulos_pct: 32.82, distintos_aprox: 1061}
+      orgao_registro: {tipo: VARCHAR, nulos_pct: 26.16, distintos_aprox: 255, min: '"211&#170', max: tse}
+      numero_registro: {tipo: VARCHAR, nulos_pct: 25.79, distintos_aprox: 4123, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_entrevistas:
+        tipo: DOUBLE
+        nulos_pct: 0.16
+        distintos_aprox: 854
+        min: '0.0'
+        max: '30180.0'
+        media: 1252.2501
+        quartis: [601.1451, 894.2087, 1502.3438]
+      margem_mais:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 149
+        min: '0.0'
+        max: '95.0'
+        media: 2.5897
+        quartis: [2, 3, 3.131]
+      margem_menos:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 149
+        min: '0.0'
+        max: '95.0'
+        media: 2.5885
+        quartis: [2, 3, 3.1293]
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0.76
+        distintos_aprox: 3
+        min: espontânea
+        max: rejeição
+        top:
+        - [estimulada, 107236]
+        - [espontânea, 32434]
+        - [rejeição, 21172]
+        - [null, 1233]
+      turno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.1388
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 139582]
+        - ['2', 22493]
+      tipo_voto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: votos totais
+        max: votos válidos
+        top:
+        - [votos totais, 157305]
+        - [votos válidos, 4770]
+      id_cenario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 23151}
+      descricao_cenario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 710, min: 2º turno - estimulada, max: rejeição}
+      id_candidato_poder360: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7541}
+      nome_candidato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5273, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 45
+        min: Agir
+        max: sem partido
+        top:
+        - [N/A, 42275]
+        - [PT, 17292]
+        - [PSDB, 13710]
+        - [PMDB, 7824]
+        - [PSB, 7692]
+        - [PSOL, 7455]
+        - [PDT, 6088]
+        - [PSTU, 4888]
+        - [PV, 3538]
+        - [PL, 3130]
+      condicao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2533
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 121019]
+        - ['1', 41056]
+      percentual:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2820
+        min: '0.0'
+        max: '150.0'
+        media: 15.6647
+        quartis: [2.2147, 9.9833, 24.4361]

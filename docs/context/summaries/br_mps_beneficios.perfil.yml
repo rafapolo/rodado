@@ -1,0 +1,334 @@
+dataset: br_mps_beneficios
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  beneficio_concedido_municipio_mes:
+    linhas: 26321475
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 1586393]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1'
+        max: '8'
+        media: 4.7727
+        quartis: [3, 5, 7]
+        top:
+        - ['8', 223831]
+        - ['7', 223080]
+        - ['3', 222849]
+        - ['6', 209848]
+        - ['5', 202735]
+        - ['4', 202451]
+        - ['2', 166415]
+        - ['1', 135184]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0.2
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 223597]
+        - [SP, 192011]
+        - [BA, 129910]
+        - [RS, 124668]
+        - [PR, 109135]
+        - [SC, 89067]
+        - [CE, 73164]
+        - [PE, 67710]
+        - [MA, 59719]
+        - [GO, 57360]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.2, distintos_aprox: 6859}
+      especie_beneficio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '16'
+        max: '96'
+        top:
+        - ['31', 508544]
+        - ['80', 212214]
+        - ['87', 181214]
+        - ['21', 167756]
+        - ['41', 153215]
+        - ['32', 97733]
+        - ['91', 83356]
+        - ['88', 56156]
+        - ['42', 43911]
+        - ['36', 33972]
+      categoria_beneficio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: aposentadoria_especial
+        max: salario_maternidade
+        top:
+        - [auxilio_incapacidade_temporaria, 591900]
+        - [bpc_loas, 237370]
+        - [salario_maternidade, 212214]
+        - [pensao_morte, 168096]
+        - [aposentadoria_idade, 153215]
+        - [aposentadoria_invalidez, 103640]
+        - [auxilio_acidente, 57403]
+        - [aposentadoria_tempo_contribuicao, 49562]
+        - [aposentadoria_especial, 6104]
+        - [auxilio_reclusao, 4605]
+      clientela:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: rural
+        max: urbana
+        top:
+        - [urbana, 1180793]
+        - [rural, 405600]
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: feminino
+        max: masculino
+        top:
+        - [feminino, 880796]
+        - [masculino, 705597]
+      faixa_etaria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: 16 a 19 anos
+        max: até 15 anos
+        top:
+        - [60 a 64 anos, 182093]
+        - [55 a 59 anos, 175944]
+        - [50 a 54 anos, 146249]
+        - [45 a 49 anos, 130935]
+        - [65 a 69 anos, 130911]
+        - [40 a 44 anos, 130006]
+        - [35 a 39 anos, 127322]
+        - [30 a 34 anos, 122962]
+        - [25 a 29 anos, 115755]
+        - [20 a 24 anos, 103508]
+      quantidade:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 926
+        min: '1'
+        max: '2517'
+        media: 3.7545
+        quartis: [1, 1, 3]
+      valor_total_salarios_minimos:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 54149
+        min: '0.0'
+        max: '3177.36'
+        media: 4.5745
+        quartis: [1, 1.2565, 3.0014]
+      valor_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 52263
+        min: '0.0'
+        max: '5150500.56'
+        media: 7415.2844
+        quartis: [1621, 2036.7291, 4865.2251]
+  beneficio_mantido_municipio_mes:
+    linhas: 54741513
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 1111605]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1111605]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0.06
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 157810]
+        - [SP, 138052]
+        - [RS, 94326]
+        - [BA, 87989]
+        - [PR, 82668]
+        - [SC, 65216]
+        - [PE, 44020]
+        - [CE, 43572]
+        - [GO, 41966]
+        - [MA, 41488]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.06, distintos_aprox: 6859}
+      especie_beneficio:
+        tipo: VARCHAR
+        nulos_pct: 45.3
+        distintos_aprox: 37
+        min: '10'
+        max: '96'
+        top:
+        - [null, 503577]
+        - ['21', 209484]
+        - ['87', 156738]
+        - ['31', 89422]
+        - ['36', 53303]
+        - ['88', 36529]
+        - ['91', 16848]
+        - ['80', 10231]
+        - ['25', 9648]
+        - ['11', 8905]
+      especie_beneficio_rotulo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61, min: Abono Permanencia em, max: Vantagens de Servido}
+      categoria_beneficio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: abono_vantagem
+        max: salario_maternidade
+        top:
+        - [pensao_morte, 253688]
+        - [aposentadoria_invalidez, 214881]
+        - [bpc_loas, 193267]
+        - [auxilio_acidente, 107311]
+        - [auxilio_incapacidade_temporaria, 106275]
+        - [aposentadoria_tempo_contribuicao, 83963]
+        - [aposentadoria_idade, 83029]
+        - [aposentadoria_especial, 24473]
+        - [renda_mensal_vitalicia, 20252]
+        - [salario_maternidade, 10231]
+      clientela:
+        tipo: VARCHAR
+        nulos_pct: 0.09
+        distintos_aprox: 2
+        min: rural
+        max: urbana
+        top:
+        - [urbana, 734527]
+        - [rural, 376075]
+        - [null, 1003]
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0.16
+        distintos_aprox: 2
+        min: feminino
+        max: masculino
+        top:
+        - [masculino, 561764]
+        - [feminino, 548106]
+        - [null, 1735]
+      faixa_etaria:
+        tipo: VARCHAR
+        nulos_pct: 0.05
+        distintos_aprox: 12
+        min: 16 a 19 anos
+        max: até 15 anos
+        top:
+        - [70 anos ou mais, 170830]
+        - [65 a 69 anos, 145671]
+        - [60 a 64 anos, 135980]
+        - [55 a 59 anos, 122785]
+        - [50 a 54 anos, 100995]
+        - [45 a 49 anos, 85135]
+        - [40 a 44 anos, 74911]
+        - [35 a 39 anos, 63340]
+        - [30 a 34 anos, 49416]
+        - [até 15 anos, 46593]
+      quantidade:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3763
+        min: '1'
+        max: '239471'
+        media: 36.656
+        quartis: [1, 3, 12]
+      valor_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 405095
+        min: '0.0'
+        max: '776740559.6'
+        media: 74444.7949
+        quartis: [1635.6751, 5903.4148, 21117.3554]
+  dicionario_especie:
+    linhas: 67
+    fonte_do_perfil: tabela inteira
+    colunas:
+      especie_beneficio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 75, min: '1', max: '96'}
+      nome_especie: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 55, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_especie_anterior: {tipo: VARCHAR, nulos_pct: 97.01, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      categoria_beneficio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: abono_vantagem
+        max: salario_maternidade
+        top:
+        - [pensao_morte, 14]
+        - [aposentadoria_invalidez, 9]
+        - [aposentadoria_tempo_contribuicao, 9]
+        - [beneficio_especial_legislacao, 9]
+        - [aposentadoria_idade, 4]
+        - [auxilio_incapacidade_temporaria, 4]
+        - [renda_mensal_vitalicia, 4]
+        - [abono_vantagem, 3]
+        - [auxilio_acidente, 3]
+        - [aposentadoria_especial, 2]
+      natureza_beneficio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: acidentaria
+        max: previdenciaria
+        top:
+        - [previdenciaria, 41]
+        - [indenizatoria, 10]
+        - [acidentaria, 9]
+        - [assistencial, 7]
+      observacao:
+        tipo: VARCHAR
+        nulos_pct: 80.6
+        distintos_aprox: 13
+        min: Aposentadoria por idade compulsória do extinto SASSE, extinta pela Lei 6.430/1977 e mantida apenas para o estoque. Ausente do Dicionário
+          de Dados - Espécies de Benefício publicado em 2025, embora presente nos extratos de concessões até 2012
+        max: Renomeada de Auxílio Doença Previdenciário para Auxílio por Incapacidade Temporária pela EC 103/2019, sem mudança de código
+        top:
+        - [null, 54]
+        - ['Renda mensal vitalícia, extinta pela Lei 8.213/1991 e substituída pelo BPC; estoque residual', 2]
+        - ['Aposentadoria por idade compulsória do extinto SASSE, extinta pela Lei 6.430/1977 e mantida apenas para o estoque. Ausente do Dicionário
+            de Dados - Espécies de Benefício publicado em 2025, embora presente nos extratos de concessões até 2012', 1]
+        - ['Benefício de Prestação Continuada (BPC/LOAS) ao idoso, assistencial e não contributivo. Também presente, em nível de pessoa, no conjunto
+            br_cgu_beneficios_cidadao', 1]
+        - ['Benefício de Prestação Continuada (BPC/LOAS) à pessoa com deficiência, assistencial e não contributivo. Também presente, em nível
+            de pessoa, no conjunto br_cgu_beneficios_cidadao', 1]
+        - [Criado pela Lei 14.176/2021 para beneficiários do BPC que exercem atividade remunerada, 1]
+        - ['Fechada a novos ingressos pela EC 103/2019, que manteve apenas as regras de transição', 1]
+        - ['Pecúlio obrigatório do extinto IPASE, sucedido pelo INSS. Extinto para novas concessões e mantido apenas para o estoque residual.
+            Ausente do Dicionário de Dados - Espécies de Benefício publicado em 2025, embora presente nos extratos de 2026', 1]
+        - ['Pensão especial mensal vitalícia da Lei 10.923/2004, paga pela União', 1]
+        - ['Pensão especial vitalícia da Lei 9.793/1999, paga pela União. O dicionário oficial do MPS a registra sob o rótulo genérico Pensão
+            Indenizatória a Cargo da União; os extratos mensais imprimem o nome da lei', 1]

@@ -1,0 +1,123 @@
+dataset: br_bcb_ptax
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  cotacao_dolar_dia:
+    linhas: 10477
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 9994, min: '1984-12-03', max: '2026-10-09'}
+      cotacao_compra:
+        tipo: DECIMAL(20,5)
+        nulos_pct: 0
+        distintos_aprox: 8188
+        min: '0.82700'
+        max: '71152.00000'
+        media: 804.3691
+        quartis: [2, 3, 5]
+      cotacao_venda:
+        tipo: DECIMAL(20,5)
+        nulos_pct: 0
+        distintos_aprox: 8556
+        min: '0.82900'
+        max: '71153.00000'
+        media: 805.3557
+        quartis: [2, 3, 5]
+      data_hora_cotacao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 11241, min: '1984-12-03 16:38:00', max: '2026-10-09 13:07:30.746597'}
+  cotacao_moeda_dia:
+    linhas: 794613
+    fonte_do_perfil: tabela inteira
+    colunas:
+      moeda:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: AUD
+        max: USD
+        top:
+        - [CHF, 80971]
+        - [GBP, 80956]
+        - [JPY, 80936]
+        - [CAD, 80802]
+        - [DKK, 80776]
+        - [SEK, 80772]
+        - [NOK, 80761]
+        - [AUD, 80724]
+        - [USD, 80614]
+        - [EUR, 67301]
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 9994, min: '1984-11-29', max: '2026-10-09'}
+      tipo_boletim:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Abertura
+        max: Intermediário
+        top:
+        - [Intermediário, 563322]
+        - [Fechamento, 101375]
+        - [Abertura, 101356]
+        - [Fechamento Interbancário, 28560]
+      paridade_compra:
+        tipo: DECIMAL(20,5)
+        nulos_pct: 0
+        distintos_aprox: 182116
+        min: '0.00000'
+        max: '262.42000'
+        media: 14.5856
+        quartis: [1, 2, 7]
+      paridade_venda:
+        tipo: DECIMAL(20,5)
+        nulos_pct: 0
+        distintos_aprox: 166747
+        min: '0.00000'
+        max: '264.25000'
+        media: 14.6281
+        quartis: [1, 2, 7]
+      cotacao_compra:
+        tipo: DECIMAL(20,5)
+        nulos_pct: 0
+        distintos_aprox: 263988
+        min: '0.00000'
+        max: '105468.61000'
+        media: 254.6823
+        quartis: [0, 2, 3]
+      cotacao_venda:
+        tipo: DECIMAL(20,5)
+        nulos_pct: 0
+        distintos_aprox: 334973
+        min: '0.00000'
+        max: '105794.52000'
+        media: 256.4648
+        quartis: [0, 2, 3]
+      data_hora_cotacao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 95202, min: '1984-11-29 19:09:00', max: '2026-10-09 13:07:30.746597'}
+  moedas:
+    linhas: 10
+    fonte_do_perfil: tabela inteira
+    colunas:
+      simbolo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: AUD
+        max: USD
+        top:
+        - [AUD, 1]
+        - [CAD, 1]
+        - [CHF, 1]
+        - [DKK, 1]
+        - [EUR, 1]
+        - [GBP, 1]
+        - [JPY, 1]
+        - [NOK, 1]
+        - [SEK, 1]
+        - [USD, 1]
+      nome_formatado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_moeda:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: A
+        max: B
+        top:
+        - [A, 7]
+        - [B, 3]

@@ -1,0 +1,18 @@
+dataset: br_ibge_nomes_brasil
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  quantidade_municipio_nome_2010:
+    linhas: 1959116
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 31333, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_nascimentos_ate_2010:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6431
+        min: '10'
+        max: '580861'
+        media: 73.9975
+        quartis: [13, 20, 41]

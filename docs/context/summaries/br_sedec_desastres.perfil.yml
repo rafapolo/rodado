@@ -1,0 +1,72 @@
+dataset: br_sedec_desastres
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  reconhecimentos_vigentes:
+    linhas: 20380
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '2026-08-06'
+        max: '2026-10-09'
+        top:
+        - ['2026-08-06', 1237]
+        - ['2026-09-25', 1228]
+        - ['2026-09-26', 1228]
+        - ['2026-09-27', 1217]
+        - ['2026-09-28', 1213]
+        - ['2026-10-03', 1212]
+        - ['2026-09-02', 1207]
+        - ['2026-10-04', 1202]
+        - ['2026-10-02', 1199]
+        - ['2026-10-05', 1193]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: AC
+        max: TO
+        top:
+        - [RS, 3802]
+        - [PB, 2510]
+        - [PE, 2344]
+        - [RN, 1404]
+        - [BA, 1384]
+        - [MG, 1320]
+        - [PR, 1178]
+        - [PI, 1120]
+        - [PA, 775]
+        - [AM, 695]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1485}
+      id_cobrade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 22
+        min: '11321'
+        max: '23120'
+        top:
+        - ['14110', 7614]
+        - ['13214', 5499]
+        - ['14120', 2829]
+        - ['13213', 1450]
+        - ['13215', 1007]
+        - ['12100', 677]
+        - ['15110', 289]
+        - ['12200', 196]
+        - ['15230', 149]
+        - ['12300', 146]
+      nome_cobrade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 25, pessoal: 'só contagens: valores seriam dado pessoal'}
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Estado de Calamidade Pública
+        max: Situação de Emergência
+        top:
+        - [Situação de Emergência, 20361]
+        - [Estado de Calamidade Pública, 19]
+      data_ocorrencia: {tipo: DATE, nulos_pct: 0, distintos_aprox: 272, min: '2026-01-02', max: '2026-10-01'}
+      data_vigencia: {tipo: DATE, nulos_pct: 0, distintos_aprox: 224, min: '2026-08-07', max: '2027-03-31'}

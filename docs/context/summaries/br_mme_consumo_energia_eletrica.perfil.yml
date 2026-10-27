@@ -1,0 +1,85 @@
+dataset: br_mme_consumo_energia_eletrica
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  uf:
+    linhas: 38880
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '2004'
+        max: '2023'
+        media: 2013.5
+        quartis: [2008, 2013, 2018]
+        top:
+        - ['2004', 1944]
+        - ['2005', 1944]
+        - ['2006', 1944]
+        - ['2007', 1944]
+        - ['2008', 1944]
+        - ['2009', 1944]
+        - ['2010', 1944]
+        - ['2011', 1944]
+        - ['2012', 1944]
+        - ['2013', 1944]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.5
+        quartis: [3, 6, 10]
+        top:
+        - ['1', 3240]
+        - ['10', 3240]
+        - ['11', 3240]
+        - ['12', 3240]
+        - ['2', 3240]
+        - ['3', 3240]
+        - ['4', 3240]
+        - ['5', 3240]
+        - ['6', 3240]
+        - ['7', 3240]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 1440]
+        - [AL, 1440]
+        - [AM, 1440]
+        - [AP, 1440]
+        - [BA, 1440]
+        - [CE, 1440]
+        - [DF, 1440]
+        - [ES, 1440]
+        - [GO, 1440]
+        - [MA, 1440]
+      tipo_consumo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Cativo
+        max: Total
+        top:
+        - [Cativo, 6480]
+        - [Comercial, 6480]
+        - [Industrial, 6480]
+        - [Outros, 6480]
+        - [Residencial, 6480]
+        - [Total, 6480]
+      numero_consumidores: {tipo: BIGINT, nulos_pct: 33.33, distintos_aprox: 21762, pessoal: 'só contagens: valores seriam dado pessoal'}
+      consumo:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 36415
+        min: '354'
+        max: '12809742'
+        media: 611732.0067
+        quartis: [85518, 220820, 596026]

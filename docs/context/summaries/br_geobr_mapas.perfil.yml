@@ -1,0 +1,1214 @@
+dataset: br_geobr_mapas
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  amazonia_legal:
+    linhas: 1
+    fonte_do_perfil: tabela inteira
+    colunas:
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 1
+        geometrias: [MULTIPOLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-73.9909, -18.0418, -44.0, 5.2722]
+        pontos_media: 19143
+  area_minima_comparavel_2010:
+    linhas: 3800
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_amc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4060, min: '10001', max: '9074'}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4587, min: '1100015,1100379,1100403,1100346,1100023,1100452,1100031,1100601,1100049,1100700,1100809,1100908,1100056,1100924,1100064,…',
+        max: '5300108'}
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0.03
+        distintos_aprox: 3186
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-73.9904, -33.7521, -28.8361, 5.2718]
+        pontos_media: 229.9429
+  area_risco_desastre:
+    linhas: 8309
+    fonte_do_perfil: tabela inteira
+    colunas:
+      geocodigo_bater: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7202, min: '11001890001', max: '52216010001'}
+      origem:
+        tipo: VARCHAR
+        nulos_pct: 22.52
+        distintos_aprox: 2
+        min: face
+        max: setor
+        top:
+        - [face, 5625]
+        - [null, 1871]
+        - [setor, 813]
+      acuracia:
+        tipo: VARCHAR
+        nulos_pct: 22.52
+        distintos_aprox: 4
+        min: Boa
+        max: regular
+        top:
+        - [regular, 2550]
+        - [boa, 2225]
+        - [null, 1871]
+        - [otima, 1661]
+        - [Boa, 2]
+      observacao:
+        tipo: VARCHAR
+        nulos_pct: 71.54
+        distintos_aprox: 2
+        min: Aglomerado Subnormal
+        max: Sem associacao de dados do Censo Demografico 2010
+        top:
+        - [null, 5944]
+        - [Sem associacao de dados do Censo Demografico 2010, 1871]
+        - [Aglomerado Subnormal, 494]
+      quantidade_poligono:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 96
+        min: '1'
+        max: '735'
+        media: 3.3289
+        quartis: [1, 1, 2]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 715, min: '1100189', max: '5221601'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 27
+        min: AC
+        max: TO
+        top:
+        - [MG, 1630]
+        - [SP, 1434]
+        - [RJ, 868]
+        - [SC, 866]
+        - [ES, 583]
+        - [BA, 568]
+        - [PE, 381]
+        - [AM, 329]
+        - [RS, 310]
+        - [CE, 244]
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 9356
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-72.5844, -32.5724, -34.8082, 2.8729]
+        pontos_media: 14.6281
+  arranjo_populacional:
+    linhas: 953
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_arranjo_populacional: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 324, min: '1100106', max: '5300108'}
+      arranjo_populacional: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 303, min: Adamantina - Lucélia/SP, max: Águas de Lindóia/SP}
+      populacao_urbana_2010:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 905
+        min: '317'
+        max: '11161977'
+        media: 105812.0105
+        quartis: [5384, 18472, 73846]
+      populacao_rural_2010:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 973
+        min: '0'
+        max: '102948'
+        media: 5674.8667
+        quartis: [1125, 2830, 6619]
+      populacao_2010:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 937
+        min: '805'
+        max: '11253503'
+        media: 111486.8772
+        quartis: [7622, 23143, 79795]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 936, min: '1100106', max: '5300108'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 254]
+        - [MG, 116]
+        - [RS, 106]
+        - [SC, 82]
+        - [PR, 65]
+        - [RJ, 58]
+        - [GO, 48]
+        - [PB, 29]
+        - [BA, 25]
+        - [MA, 22]
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 1073
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-70.621, -33.7446, -28.8361, 4.4367]
+        pontos_media: 171.4397
+  bioma:
+    linhas: 17
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2004'
+        max: '2019'
+        media: 2010.1765
+        quartis: [2004, 2004, 2019]
+        top:
+        - ['2004', 10]
+        - ['2019', 7]
+      id_bioma:
+        tipo: VARCHAR
+        nulos_pct: 5.88
+        distintos_aprox: 17
+        min: 000Magua
+        max: PTN
+        top:
+        - [000Magua, 1]
+        - [001Magua, 1]
+        - [002Magua, 1]
+        - [003Magua, 1]
+        - ['1.0', 1]
+        - ['2.0', 1]
+        - ['3.0', 1]
+        - ['4.0', 1]
+        - ['5.0', 1]
+        - ['6.0', 1]
+      nome_bioma: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12, pessoal: 'só contagens: valores seriam dado pessoal'}
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 5.88
+        distintos_aprox: 17
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-73.9806, -35.8075, -25.7463, 7.0538]
+        pontos_media: 70833.1875
+  concentracao_urbana:
+    linhas: 642
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_concentracao_urbana: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 193, min: '1100122', max: '5300108'}
+      concentracao_urbana: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 183, min: Abaetetuba, max: Volta Redonda - Barra Mansa/RJ}
+      populacao_urbana_2010:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 670
+        min: '444'
+        max: '11161977'
+        media: 170267.8925
+        quartis: [12421, 62850, 157156]
+      populacao_rural_2010:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 709
+        min: '0'
+        max: '102948'
+        media: 8426.4813
+        quartis: [1313, 4174, 9512]
+      populacao_2010:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 559
+        min: '1699'
+        max: '11253503'
+        media: 178694.3738
+        quartis: [15883, 74639, 165004]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 700, min: '1100122', max: '5300108'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 177]
+        - [MG, 83]
+        - [RS, 54]
+        - [SC, 50]
+        - [RJ, 49]
+        - [PR, 46]
+        - [GO, 30]
+        - [BA, 22]
+        - [PE, 19]
+        - [CE, 14]
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 615
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-69.3638, -32.6441, -28.8361, 3.606]
+        pontos_media: 185.9377
+  escola:
+    linhas: 222936
+    fonte_do_perfil: tabela inteira
+    colunas:
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 32930]
+        - [MG, 24085]
+        - [BA, 21979]
+        - [MA, 14216]
+        - [RJ, 13275]
+        - [PA, 12584]
+        - [RS, 11702]
+        - [CE, 11123]
+        - [PE, 10969]
+        - [PR, 9995]
+      id_escola: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 214725, min: '11000023', max: '53088034'}
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 166041
+        geometrias: [GEOMETRYCOLLECTION, POINT]
+        caixa_xmin_ymin_xmax_ymax: [-73.0056, -33.6905, -32.4098, 4.7896]
+        pontos_media: 0.687
+  estabelecimentos_saude:
+    linhas: 360177
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2015'
+        max: '2015'
+        media: 2015
+        quartis: [2015, 2015, 2015]
+        top:
+        - ['2015', 360177]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 86599]
+        - [MG, 44940]
+        - [RS, 27423]
+        - [RJ, 26794]
+        - [PR, 26781]
+        - [BA, 18775]
+        - [SC, 18152]
+        - [CE, 12443]
+        - [GO, 10626]
+        - [PE, 10292]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5078, min: '110001', max: '530010'}
+      id_cnes: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 407425, min: '1000012', max: '9997'}
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 150098
+        geometrias: [POINT]
+        caixa_xmin_ymin_xmax_ymax: [-73.3709, -33.735, -32.4083, 4.6014]
+        pontos_media: 1
+  limite_vizinhanca:
+    linhas: 14832
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '11'
+        max: '53'
+        top:
+        - ['35', 2090]
+        - ['43', 2034]
+        - ['31', 1846]
+        - ['42', 1447]
+        - ['33', 1270]
+        - ['23', 1086]
+        - ['51', 827]
+        - ['41', 758]
+        - ['32', 646]
+        - ['26', 527]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 25
+        min: AL
+        max: SP
+        top:
+        - [SP, 2090]
+        - [RS, 2034]
+        - [MG, 1846]
+        - [SC, 1447]
+        - [RJ, 1270]
+        - [CE, 1086]
+        - [MT, 827]
+        - [PR, 758]
+        - [ES, 646]
+        - [PE, 527]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 825, min: '1100015', max: '5300108'}
+      nome_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 750, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_distrito: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 889, min: '110001505', max: '530010805'}
+      nome_distrito: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1031, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_subdistrito: {tipo: VARCHAR, nulos_pct: 0.65, distintos_aprox: 1457, min: '11000150500', max: '53001080530'}
+      nome_subdistrito: {tipo: VARCHAR, nulos_pct: 78.28, distintos_aprox: 578, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_vizinhanca: {tipo: VARCHAR, nulos_pct: 2.36, distintos_aprox: 12870, min: '110001505001', max: '521830005013'}
+      nome_vizinhanca: {tipo: VARCHAR, nulos_pct: 2.36, distintos_aprox: 7373, pessoal: 'só contagens: valores seriam dado pessoal'}
+      referencia_geometria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: district
+        max: subdistrict
+        top:
+        - [neighborhood, 14482]
+        - [subdistrict, 254]
+        - [district, 96]
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0.01
+        distintos_aprox: 14401
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-70.0417, -33.6946, -34.7929, 2.873]
+        pontos_media: 33.6709
+  mesorregiao:
+    linhas: 137
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '11'
+        max: '53'
+        top:
+        - ['35', 15]
+        - ['31', 12]
+        - ['41', 10]
+        - ['23', 7]
+        - ['29', 7]
+        - ['43', 7]
+        - ['15', 6]
+        - ['33', 6]
+        - ['42', 6]
+        - ['21', 5]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 15]
+        - [MG, 12]
+        - [PR, 10]
+        - [BA, 7]
+        - [CE, 7]
+        - [RS, 7]
+        - [PA, 6]
+        - [RJ, 6]
+        - [SC, 6]
+        - [GO, 5]
+      id_mesorregiao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 141, min: '1101', max: '5301'}
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 120
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-73.9904, -33.7521, -28.8359, 5.2718]
+        pontos_media: 1815.3723
+  microrregiao:
+    linhas: 558
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '11'
+        max: '53'
+        top:
+        - ['31', 66]
+        - ['35', 63]
+        - ['41', 39]
+        - ['43', 35]
+        - ['23', 33]
+        - ['29', 32]
+        - ['25', 23]
+        - ['15', 22]
+        - ['51', 22]
+        - ['21', 21]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 66]
+        - [SP, 63]
+        - [PR, 39]
+        - [RS, 35]
+        - [CE, 33]
+        - [BA, 32]
+        - [PB, 23]
+        - [MT, 22]
+        - [PA, 22]
+        - [MA, 21]
+      id_microrregiao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 479, min: '11001', max: '53001'}
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 568
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-73.9904, -33.7511, -28.8478, 5.2718]
+        pontos_media: 884.5753
+  municipio:
+    linhas: 5570
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859, min: '1100015', max: '5300108'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 853]
+        - [SP, 645]
+        - [RS, 497]
+        - [BA, 417]
+        - [PR, 399]
+        - [SC, 295]
+        - [GO, 246]
+        - [PI, 224]
+        - [PB, 223]
+        - [MA, 217]
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 5525
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-73.9904, -33.7512, -28.8478, 5.2718]
+        pontos_media: 224.6707
+  pais:
+    linhas: 1
+    fonte_do_perfil: tabela inteira
+    colunas:
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 1
+        geometrias: [MULTIPOLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-73.9904, -33.7521, -28.8359, 5.2718]
+        pontos_media: 31535
+  pegada_urbana:
+    linhas: 13712
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_pegada_urbana: {tipo: VARCHAR, nulos_pct: 26.71, distintos_aprox: 9464, min: '0', max: '9999'}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 193, min: '1100122', max: '5300108'}
+      densidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Densa
+        max: Pouco densa
+        top:
+        - [Pouco densa, 7610]
+        - [Densa, 6102]
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Outros equipamentos urbanos
+        max: Área urbanizada
+        top:
+        - [Área urbanizada, 12649]
+        - [Outros equipamentos urbanos, 677]
+        - [Vazio intraurbano, 386]
+      area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 12763
+        min: '0.00556792113755'
+        max: '1542.03554006'
+        media: 1.4628
+        quartis: [0.0844, 0.1861, 0.4473]
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 16973
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-67.9584, -32.5071, -34.7933, 3.1991]
+        pontos_media: 34.1375
+  regiao:
+    linhas: 5
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_regiao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['1', 1]
+        - ['2', 1]
+        - ['3', 1]
+        - ['4', 1]
+        - ['5', 1]
+      nome_regiao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 5
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-73.9904, -33.7511, -28.8478, 5.2718]
+        pontos_media: 12359.4
+  regiao_imediata:
+    linhas: 510
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '11'
+        max: '53'
+        top:
+        - ['31', 70]
+        - ['35', 53]
+        - ['43', 43]
+        - ['29', 34]
+        - ['41', 29]
+        - ['42', 24]
+        - ['21', 22]
+        - ['52', 22]
+        - ['15', 21]
+        - ['22', 19]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 70]
+        - [SP, 53]
+        - [RS, 43]
+        - [BA, 34]
+        - [PR, 29]
+        - [SC, 24]
+        - [GO, 22]
+        - [MA, 22]
+        - [PA, 21]
+        - [PI, 19]
+      id_regiao_imediata: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 589, min: '110001', max: '530001'}
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 506
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-73.9904, -33.7521, -28.8359, 5.2718]
+        pontos_media: 877.9686
+  regiao_intermediaria:
+    linhas: 135
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '11'
+        max: '53'
+        top:
+        - ['31', 13]
+        - ['35', 11]
+        - ['29', 10]
+        - ['43', 10]
+        - ['15', 7]
+        - ['42', 7]
+        - ['22', 6]
+        - ['23', 6]
+        - ['41', 6]
+        - ['52', 6]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 13]
+        - [SP, 11]
+        - [BA, 10]
+        - [RS, 10]
+        - [PA, 7]
+        - [SC, 7]
+        - [CE, 6]
+        - [GO, 6]
+        - [PI, 6]
+        - [PR, 6]
+      id_regiao_intermediaria: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 137, min: '1101', max: '5301'}
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 128
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-73.9904, -33.7511, -28.8478, 5.2718]
+        pontos_media: 2083.1185
+  regiao_metropolitana_2017:
+    linhas: 1385
+    fonte_do_perfil: tabela inteira
+    colunas:
+      nome_regiao_metropolitana: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 74, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: AGLO
+        max: RM
+        top:
+        - [RM, 1262]
+        - [AGLO, 55]
+        - [RIDE, 44]
+        - [CM, 24]
+      subcategoria_metropolitana:
+        tipo: VARCHAR
+        nulos_pct: 60.94
+        distintos_aprox: 20
+        min: Colar Metropolitano
+        max: Área de Expansão Metropolitana
+        top:
+        - [null, 844]
+        - [Área de Expansão Metropolitana, 185]
+        - [Núcleo Metropolitano, 120]
+        - [Colar Metropolitano, 40]
+        - [RM Belo Horizonte, 34]
+        - [Sub-região 1, 33]
+        - [Sub-região 2, 24]
+        - [Sub-região 3, 24]
+        - [Sub-região 4, 15]
+        - [Sub-região Leste, 11]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1235, min: '1100205', max: '5300108'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 25
+        min: AL
+        max: TO
+        top:
+        - [SC, 295]
+        - [SP, 198]
+        - [PR, 193]
+        - [PB, 159]
+        - [AL, 84]
+        - [MG, 80]
+        - [RS, 72]
+        - [CE, 46]
+        - [GO, 39]
+        - [TO, 34]
+      legislacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 139, min: Alteração do Artº 2 da Lei nº 13.512, max: inclusão de município -
+          Lei Complementar  78 de 25.03.2010}
+      data_legislacao: {tipo: DATE, nulos_pct: 1.16, distintos_aprox: 115, min: '1973-06-08', max: '2016-12-27'}
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 1398
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-66.8103, -32.6441, -28.8359, 3.7418]
+        pontos_media: 169.6693
+  saude:
+    linhas: 438
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_regiao_saude: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 394, min: '11001', max: '53001'}
+      id_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '11'
+        max: '53'
+        top:
+        - ['31', 77]
+        - ['35', 63]
+        - ['43', 30]
+        - ['29', 28]
+        - ['23', 22]
+        - ['41', 22]
+        - ['21', 19]
+        - ['52', 18]
+        - ['25', 16]
+        - ['42', 16]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 77]
+        - [SP, 63]
+        - [RS, 30]
+        - [BA, 28]
+        - [CE, 22]
+        - [PR, 22]
+        - [MA, 19]
+        - [GO, 18]
+        - [MT, 16]
+        - [PB, 16]
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 377
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-73.9891, -33.7521, -33.894, 5.2707]
+        pontos_media: 395.2648
+  sede_municipal:
+    linhas: 29844
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '1872'
+        max: '2010'
+        media: 1967.1711
+        quartis: [1950, 1970, 1991]
+        top:
+        - ['2010', 5565]
+        - ['1991', 4497]
+        - ['1980', 3991]
+        - ['1970', 3915]
+        - ['1960', 2766]
+        - ['1950', 1890]
+        - ['1940', 1574]
+        - ['1933', 1365]
+        - ['1920', 1301]
+        - ['1911', 1219]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6937, min: '1100015', max: '5300108'}
+      nome_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9018, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: '11'
+        max: '53'
+        top:
+        - ['31', 4943]
+        - ['35', 4358]
+        - ['29', 2587]
+        - ['43', 1937]
+        - ['41', 1791]
+        - ['52', 1423]
+        - ['23', 1287]
+        - ['26', 1256]
+        - ['42', 1237]
+        - ['21', 1105]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0.04
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 4943]
+        - [SP, 4358]
+        - [BA, 2587]
+        - [RS, 1937]
+        - [PR, 1791]
+        - [GO, 1423]
+        - [CE, 1287]
+        - [PE, 1256]
+        - [SC, 1237]
+        - [MA, 1105]
+      id_regiao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['3', 10477]
+        - ['2', 10473]
+        - ['4', 4965]
+        - ['5', 2223]
+        - ['1', 1706]
+      regiao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Centro Oeste
+        max: Sul
+        top:
+        - [Sudeste, 10477]
+        - [Nordeste, 10473]
+        - [Sul, 4965]
+        - [Centro Oeste, 2223]
+        - [Norte, 1706]
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 13108
+        geometrias: [POINT]
+        caixa_xmin_ymin_xmax_ymax: [-72.9165, -33.6876, -32.4351, 4.5854]
+        pontos_media: 1
+  semiarido:
+    linhas: 1262
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1334, min: '2100907', max: '3171600'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: AL
+        max: SE
+        top:
+        - [BA, 278]
+        - [PB, 194]
+        - [PI, 185]
+        - [CE, 175]
+        - [RN, 147]
+        - [PE, 123]
+        - [MG, 91]
+        - [AL, 38]
+        - [SE, 29]
+        - [MA, 2]
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 1414
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-46.6171, -17.9951, -35.2635, -2.684]
+        pontos_media: 124.7876
+  setor_censitario_2010:
+    linhas: 316545
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '11'
+        max: '53'
+        top:
+        - ['35', 68296]
+        - ['31', 32807]
+        - ['33', 28318]
+        - ['29', 24139]
+        - ['43', 22728]
+        - ['41', 17691]
+        - ['23', 13615]
+        - ['26', 12498]
+        - ['42', 12227]
+        - ['52', 9491]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 68296]
+        - [MG, 32807]
+        - [RJ, 28318]
+        - [BA, 24139]
+        - [RS, 22728]
+        - [PR, 17691]
+        - [CE, 13615]
+        - [PE, 12498]
+        - [SC, 12227]
+        - [GO, 9491]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859, min: '1100015', max: '5300108'}
+      nome_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5322, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_distrito: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10184, min: '110001505', max: '530010805'}
+      nome_distrito: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8309, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_subdistrito: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12589, min: '11000150500', max: '53001080530'}
+      nome_subdistrito: {tipo: VARCHAR, nulos_pct: 83.16, distintos_aprox: 724, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_vizinhanca: {tipo: VARCHAR, nulos_pct: 66.35, distintos_aprox: 7373, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_vizinhanca: {tipo: VARCHAR, nulos_pct: 66.35, distintos_aprox: 12870, min: '110001505001', max: '521830005013'}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 349040, min: '110001505000001', max: '530010805300158'}
+      zona:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: RURAL
+        max: URBANO
+        top:
+        - [URBANO, 240216]
+        - [RURAL, 76329]
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 311608
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-73.9904, -33.7521, -28.8359, 5.2718]
+        pontos_media: 30.7068
+  terra_indigena:
+    linhas: 615
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_geografico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 628, min: '1', max: '99'}
+      id_terra_indigena: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 751, min: '10001', max: '9901'}
+      terra_indigena: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 662, min: Acapuri de Cima, max: Ñande Ru Marangatu}
+      etnia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 224, min: Aimore, max: Zuruahã}
+      nome_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 381, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 44
+        min: AC
+        max: TO,PA
+        top:
+        - [AM, 141]
+        - [MT, 66]
+        - [MS, 48]
+        - [PA, 47]
+        - [AC, 30]
+        - [RR, 30]
+        - [RS, 28]
+        - [SP, 27]
+        - [SC, 24]
+        - [BA, 23]
+      area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 658
+        min: '0.0'
+        max: '9664975.48'
+        media: 192112.5113
+        quartis: [1986.0176, 12984.7423, 102682.9985]
+      fase:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Declarada
+        max: Regularizada
+        top:
+        - [Regularizada, 472]
+        - [Declarada, 75]
+        - [Delimitada, 43]
+        - [Encaminhada RI, 10]
+        - [Homologada, 9]
+        - [Em Estudo, 6]
+      modalidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Dominial Indígena
+        max: Tradicionalmente ocupada
+        top:
+        - [Tradicionalmente ocupada, 557]
+        - [Reserva Indígena, 44]
+        - [Dominial Indígena, 8]
+        - [Interditada, 6]
+      reestudo:
+        tipo: VARCHAR
+        nulos_pct: 95.45
+        distintos_aprox: 2
+        min: Principal
+        max: Reestudo
+        top:
+        - [null, 587]
+        - [Reestudo, 26]
+        - [Principal, 2]
+      indicador_faixa_fronteira:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 423]
+        - ['true', 192]
+      id_unidade_administrativa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: '30202001845'
+        max: '30202002408'
+        top:
+        - ['30202001857', 45]
+        - ['30202001871', 45]
+        - ['30202001955', 31]
+        - ['30202002074', 31]
+        - ['30202002025', 30]
+        - ['30202002095', 28]
+        - ['30202001852', 27]
+        - ['30202001962', 27]
+        - ['30202001878', 26]
+        - ['30202002018', 23]
+      sigla_unidade_administrativa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: CR-ALPUR
+        max: CR-XIN
+        top:
+        - [CR-AS, 45]
+        - [CR-MAO, 45]
+        - [CR-LISE, 31]
+        - [CR-RR, 31]
+        - [CR-CGB, 30]
+        - [CR-LIS, 28]
+        - [CR-ATO, 27]
+        - [CR-JUR, 27]
+        - [CR-MPUR, 26]
+        - [CR-PPA, 23]
+      unidade_administrativa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 39
+        min: Coordenacao Regional Alto Purus
+        max: Coordenacao Regional Xingu
+        top:
+        - [Coordenacao Regional De Manaus, 45]
+        - [Coordenacao Regional Do Alto Solimoes, 45]
+        - [Coordenacao Regional Litoral Sudeste, 31]
+        - [Coordenacao Regional Roraima, 31]
+        - [Coordenacao Regional De Cuiaba, 30]
+        - [Coordenacao Regional Litoral Sul, 28]
+        - [Coordenacao Regional Araguaia Tocantins, 27]
+        - [Coordenacao Regional Do Juruá, 27]
+        - [Coordenacao Regional Médio Purus, 26]
+        - [Coordenacao Regional De Ponta Pora, 23]
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 627
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-73.7252, -31.2051, -34.929, 5.2721]
+        pontos_media: 355.735
+  uf:
+    linhas: 27
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '11'
+        max: '53'
+        top:
+        - ['11', 1]
+        - ['12', 1]
+        - ['13', 1]
+        - ['14', 1]
+        - ['15', 1]
+        - ['16', 1]
+        - ['17', 1]
+        - ['21', 1]
+        - ['22', 1]
+        - ['23', 1]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 1]
+        - [AL, 1]
+        - [AM, 1]
+        - [AP, 1]
+        - [BA, 1]
+        - [CE, 1]
+        - [DF, 1]
+        - [ES, 1]
+        - [GO, 1]
+        - [MA, 1]
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 30
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-73.9904, -33.7521, -28.8359, 5.2718]
+        pontos_media: 3674.2963
+  unidade_conservacao:
+    linhas: 1934
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_unidade_conservacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2260, min: '1', max: '999'}
+      unidade_conservacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2343, min: Apa Cabreuva, max: Área De Relevante Interesse Ecológico
+          Águas De São João}
+      id_unidade_conservacao_wcmc: {tipo: VARCHAR, nulos_pct: 73.32, distintos_aprox: 513, min: '10086', max: '9822'}
+      id_cnuc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2098, min: 0000.00.0001, max: 7047.31.3706}
+      id_geografico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2353, min: '10002', max: '9990'}
+      organizacao_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 286, min: Agência Estadual do Meio Ambiente de Pernambuco, max: Superintendência
+          de Administração do Meio Ambiente da Paraíba - PB}
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: Estação Ecológica
+        max: Área de Relevante Interesse Ecológico
+        top:
+        - [Reserva Particular do Patrimônio Natural, 578]
+        - [Parque, 434]
+        - [Área de Proteção Ambiental, 343]
+        - [Floresta, 101]
+        - [Estação Ecológica, 95]
+        - [Reserva Extrativista, 95]
+        - [Refúgio de Vida Silvestre, 75]
+        - [Reserva Biológica, 61]
+        - [Monumento Natural, 58]
+        - [Área de Relevante Interesse Ecológico, 55]
+      sigla_grupo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: PI
+        max: US
+        top:
+        - [US, 1211]
+        - [PI, 723]
+      qualidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Aproximado (O poligono representa uma estimativa dos limites da unidade).
+        max: Esquemático (O poligono é uma representação esquemática da dimensão da unidade).
+        top:
+        - [Correto (O poligono corresponde ao memorial descritivo do ato legal de criação)., 1476]
+        - [Aproximado (O poligono representa uma estimativa dos limites da unidade)., 354]
+        - [Esquemático (O poligono é uma representação esquemática da dimensão da unidade)., 104]
+      esfera:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Estadual
+        max: Municipal
+        top:
+        - [Estadual, 981]
+        - [Federal, 597]
+        - [Municipal, 356]
+      ano_criacao:
+        tipo: BIGINT
+        nulos_pct: 0.36
+        distintos_aprox: 77
+        min: '1914'
+        max: '2019'
+        media: 2002.1536
+        quartis: [1996, 2006, 2011]
+      legislacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2178, min: Constituição nº Art.13 §2º de 05/10/1989, max: Resolução nº Resolução
+          SMA-95 de 15/12/2012}
+      data_ultima: {tipo: DATE, nulos_pct: 0, distintos_aprox: 543, min: '2007-06-27', max: '2020-01-13'}
+      geometria:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 1673
+        geometrias: [GEOMETRYCOLLECTION, MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-73.9907, -32.9234, -25.2909, 5.2723]
+        pontos_media: 137.3077

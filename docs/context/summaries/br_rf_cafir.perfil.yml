@@ -1,0 +1,94 @@
+dataset: br_rf_cafir
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  imoveis_rurais:
+    linhas: 169935535
+    fonte_do_perfil: amostra de 1.177%. ~2.000.000 linhas
+    colunas:
+      data_referencia:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '2023-04-05'
+        max: '2025-09-02'
+        top:
+        - ['2025-02-02', 139264]
+        - ['2023-04-05', 129024]
+        - ['2024-09-03', 126976]
+        - ['2025-09-02', 120832]
+        - ['2025-05-02', 118784]
+        - ['2025-06-02', 118784]
+        - ['2025-03-02', 116736]
+        - ['2025-01-02', 112640]
+        - ['2023-09-12', 110592]
+        - ['2024-10-03', 110592]
+      data_inscricao: {tipo: DATE, nulos_pct: 0.48, distintos_aprox: 5855, min: '1900-01-03', max: '2025-09-01'}
+      id_imovel_receita_federal: {tipo: VARCHAR, nulos_pct: 61.45, distintos_aprox: 746905}
+      id_imovel_incra: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2175677}
+      nome: {tipo: VARCHAR, nulos_pct: 1.62, distintos_aprox: 540315, pessoal: 'só contagens: valores seriam dado pessoal'}
+      area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 21060
+        min: '0.0'
+        max: '998300000.0'
+        media: 3568.2395
+        quartis: [42.6995, 124.0701, 382.2317]
+      status_sncr:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '4'
+        top:
+        - ['3', 1175732]
+        - ['1', 737637]
+        - ['4', 170]
+      tipo_itr:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NAO
+        max: SIM
+        top:
+        - [NAO, 1320500]
+        - [SIM, 593039]
+      situacao_imovel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '02'
+        max: '98'
+        top:
+        - ['02', 1659370]
+        - ['49', 159541]
+        - ['52', 32600]
+        - ['58', 32358]
+        - ['55', 11408]
+        - ['51', 10088]
+        - ['50', 5420]
+        - ['56', 893]
+        - ['98', 544]
+        - ['94', 379]
+      endereco: {tipo: VARCHAR, nulos_pct: 0.4, distintos_aprox: 877667, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cep: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 16466, pessoal: 'só contagens: valores seriam dado pessoal'}
+      distrito: {tipo: VARCHAR, nulos_pct: 42.2, distintos_aprox: 40387}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.23, distintos_aprox: 6308}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [BA, 415744]
+        - [MG, 263174]
+        - [RS, 177323]
+        - [PR, 141093]
+        - [SP, 139264]
+        - [PE, 79676]
+        - [SC, 75698]
+        - [PA, 67371]
+        - [GO, 65039]
+        - [CE, 63291]

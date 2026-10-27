@@ -1,0 +1,517 @@
+dataset: br_antt_dadosabertos
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  acidentes_rodovias:
+    linhas: 1027034
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5906, min: '2010-01-01', max: '2026-07-31'}
+      horario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 49146}
+      n_da_ocorrencia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10759}
+      tipo_de_ocorrencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 41
+        min: ' 2- Aciden'
+        max: sem vítima
+        top:
+        - [sem vítima, 322911]
+        - [com vítima, 151384]
+        - [Sem vítima, 127104]
+        - [Acidente s, 96652]
+        - [Com vítima, 83886]
+        - [Acidente c, 71649]
+        - [3 - Aciden, 59720]
+        - [2 - Aciden, 27333]
+        - [ac02 - Aci, 19414]
+        - [AC03 - Aci, 11651]
+      km: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 225682}
+      trecho: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 141, min: 092/PR, max: Vão Centr}
+      sentido:
+        tipo: VARCHAR
+        nulos_pct: 0.12
+        distintos_aprox: 24
+        min: ' Norte'
+        max: Todos
+        top:
+        - [Norte, 363498]
+        - [Sul, 361861]
+        - [Decrescente, 107586]
+        - [Crescente, 103190]
+        - [Leste, 25288]
+        - [Oeste, 23438]
+        - [Pista Norte, 9005]
+        - [RJ, 8969]
+        - [Pista Sul, 8546]
+        - [JF, 7601]
+      tipo_de_acidente: {tipo: VARCHAR, nulos_pct: 0.18, distintos_aprox: 327, min: ' INCIDENTE - Choque na Praça - Cancela', max: colisão traseira}
+      automovel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 22
+        min: '0'
+        max: '9'
+        top:
+        - ['1', 528130]
+        - ['0', 338707]
+        - ['2', 125529]
+        - ['3', 25371]
+        - ['4', 6609]
+        - ['5', 1776]
+        - ['6', 571]
+        - ['7', 182]
+        - ['8', 79]
+        - ['9', 39]
+      bicicleta:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '0'
+        max: '5'
+        top:
+        - ['0', 1010063]
+        - ['1', 16179]
+        - ['2', 720]
+        - ['3', 61]
+        - ['4', 8]
+        - ['5', 3]
+      caminhao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 14
+        min: '-1'
+        max: '9'
+        top:
+        - ['0', 767863]
+        - ['1', 205663]
+        - ['2', 45801]
+        - ['3', 5696]
+        - ['4', 1487]
+        - ['5', 321]
+        - ['6', 127]
+        - ['7', 31]
+        - ['-1', 20]
+        - ['8', 14]
+      moto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '0'
+        max: '7'
+        top:
+        - ['0', 842672]
+        - ['1', 175542]
+        - ['2', 8347]
+        - ['3', 383]
+        - ['4', 69]
+        - ['5', 15]
+        - ['6', 4]
+        - ['11', 1]
+        - ['7', 1]
+      onibus:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '0'
+        max: '6'
+        top:
+        - ['0', 1000121]
+        - ['1', 25677]
+        - ['2', 1109]
+        - ['3', 106]
+        - ['4', 16]
+        - ['5', 3]
+        - ['6', 2]
+      outros:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '0'
+        max: '9'
+        top:
+        - ['0', 943252]
+        - ['1', 75756]
+        - ['2', 6745]
+        - ['3', 948]
+        - ['4', 240]
+        - ['5', 54]
+        - ['6', 29]
+        - ['7', 7]
+        - ['47', 1]
+        - ['8', 1]
+      tracao_animal:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '0'
+        max: '3'
+        top:
+        - ['0', 1025598]
+        - ['1', 1424]
+        - ['2', 11]
+        - ['3', 1]
+      transporte_de_cargas_especiais:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '0'
+        max: '8'
+        top:
+        - ['0', 1017721]
+        - ['1', 8118]
+        - ['2', 1016]
+        - ['3', 111]
+        - ['4', 36]
+        - ['5', 16]
+        - ['6', 6]
+        - ['7', 4]
+        - ['8', 4]
+        - ['10', 1]
+      trator_maquinas:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '0'
+        max: '7'
+        top:
+        - ['0', 1021488]
+        - ['1', 4061]
+        - ['2', 1122]
+        - ['3', 269]
+        - ['4', 74]
+        - ['5', 13]
+        - ['6', 5]
+        - ['7', 2]
+      utilitarios:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '0'
+        max: '6'
+        top:
+        - ['0', 945540]
+        - ['1', 76791]
+        - ['2', 4398]
+        - ['3', 271]
+        - ['4', 28]
+        - ['5', 5]
+        - ['6', 1]
+      ilesos: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 110, min: '0', max: '99'}
+      levemente_feridos: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 53, min: '0', max: '9'}
+      moderadamente_feridos:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: '0'
+        max: '9'
+        top:
+        - ['0', 927301]
+        - ['1', 83922]
+        - ['2', 12576]
+        - ['3', 1920]
+        - ['4', 735]
+        - ['5', 257]
+        - ['6', 90]
+        - ['10', 88]
+        - ['9', 32]
+        - ['7', 28]
+      gravemente_feridos:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '0'
+        max: '9'
+        top:
+        - ['0', 999786]
+        - ['1', 24011]
+        - ['2', 2582]
+        - ['3', 379]
+        - ['4', 131]
+        - ['5', 65]
+        - ['9', 26]
+        - ['6', 16]
+        - ['10', 14]
+        - ['8', 7]
+      mortos:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 25
+        min: '0'
+        max: '9'
+        top:
+        - ['0', 1004818]
+        - ['1', 19574]
+        - ['2', 1897]
+        - ['3', 419]
+        - ['4', 162]
+        - ['5', 76]
+        - ['6', 28]
+        - ['9', 15]
+        - ['10', 12]
+        - ['7', 8]
+      tipo_de_pista:
+        tipo: VARCHAR
+        nulos_pct: 80.91
+        distintos_aprox: 2
+        min: Marginal
+        max: Principal
+        top:
+        - [null, 830937]
+        - [Principal, 190314]
+        - [Marginal, 5783]
+      concessionaria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 42
+        min: AUTOPISTA FERNÃO DIAS
+        max: WAY_262
+        top:
+        - [AUTOPISTA LITORAL SUL, 129613]
+        - [AUTOPISTA FERNÃO DIAS, 117976]
+        - [AUTOPISTA REGIS BITTENCOURT, 97312]
+        - [CONCEBRA, 56114]
+        - [AUTOPISTA FLUMINENSE, 55936]
+        - [CONCER, 55072]
+        - [VIABAHIA, 50816]
+        - [ECOVIAS CAPIXABA, 49361]
+        - [VIA040, 47300]
+        - [ECO101, 46753]
+  ciot:
+    linhas: 15887647
+    fonte_do_perfil: amostra de 64.979% da última partição (ano = 2026). ~2.000.000 linhas
+    colunas:
+      municipio_origem: {tipo: VARCHAR, nulos_pct: 0.12, distintos_aprox: 5709}
+      uf_origem:
+        tipo: VARCHAR
+        nulos_pct: 0.15
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 575723]
+        - [MG, 262171]
+        - [PR, 211314]
+        - [RS, 168659]
+        - [SC, 164350]
+        - [GO, 81192]
+        - [BA, 75351]
+        - [RJ, 72209]
+        - [MT, 65245]
+        - [PE, 58031]
+      municipio_destino: {tipo: VARCHAR, nulos_pct: 0.14, distintos_aprox: 5886}
+      uf_destino:
+        tipo: VARCHAR
+        nulos_pct: 0.18
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 537519]
+        - [MG, 252440]
+        - [PR, 186432]
+        - [RS, 169812]
+        - [SC, 136748]
+        - [RJ, 93369]
+        - [BA, 86306]
+        - [GO, 81891]
+        - [MT, 69648]
+        - [PE, 56099]
+      ncm_carga: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1116}
+      quantidade_ciots:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1778
+        min: '1'
+        max: '344289'
+        media: 7.8178
+        quartis: [1, 1, 3]
+      quantidade_trc:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 702
+        min: '1'
+        max: '38031'
+        media: 2.908
+        quartis: [1, 1, 2]
+      quantidade_contratantes:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 290
+        min: '1'
+        max: '6393'
+        media: 1.3352
+        quartis: [1, 1, 1]
+      mes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1'
+        max: '8'
+        top:
+        - ['8', 456704]
+        - ['7', 450447]
+        - ['6', 413234]
+        - ['4', 169869]
+        - ['5', 151788]
+        - ['3', 129024]
+        - ['2', 116736]
+        - ['1', 112827]
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 2000629]
+  rntrc:
+    linhas: 1174540
+    fonte_do_perfil: tabela inteira
+    colunas:
+      nome_transportador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1047650, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_rntrc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1239018, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_primeiro_cadastro: {tipo: DATE, nulos_pct: 0, distintos_aprox: 6137, min: '2004-06-14', max: '2026-09-09'}
+      situacao_rntrc:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: ATIVO
+        max: PENDENTE
+        top:
+        - [ATIVO, 906022]
+        - [PENDENTE, 268518]
+      cpfcnpjtransportador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 459353, pessoal: 'só contagens: valores seriam dado pessoal'}
+      categoria_transportador:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: CTC
+        max: TAC
+        top:
+        - [TAC, 838413]
+        - [ETC, 335583]
+        - [CTC, 544]
+      cep: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 349364, pessoal: 'só contagens: valores seriam dado pessoal'}
+      municipio: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 5952}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 342864]
+        - [MG, 135613]
+        - [PR, 99246]
+        - [RS, 98319]
+        - [SC, 69594]
+        - [RJ, 64071]
+        - [GO, 59004]
+        - [BA, 43541]
+        - [MT, 41921]
+        - [ES, 33917]
+      equiparado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [Não, 955580]
+        - [Sim, 218960]
+      data_situacao_rntrc: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3102, min: '2010-02-28', max: '2026-09-10'}
+      referencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 2026-08
+        max: 2026-08
+        top:
+        - [2026-08, 1174540]
+  rntrc_veiculos:
+    linhas: 97591
+    fonte_do_perfil: tabela inteira
+    colunas:
+      Categoria do Transportador:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: CTC:Cooperativa de Transporte de Cargas
+        max: TAC:Transportador Autônomo de Cargas
+        top:
+        - ['TAC:Transportador Autônomo de Cargas', 34875]
+        - ['ETC:Empresa de Transporte de Cargas', 31322]
+        - ['ETC - EQUIPARADO: Empresa de Transporte Rodoviário de Cargas equiparada a TAC', 26234]
+        - ['CTC:Cooperativa de Transporte de Cargas', 5160]
+      Tipo de Veículo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Implemento
+        max: Tração
+        top:
+        - [Tração, 64010]
+        - [Implemento, 33581]
+      UF do Veículo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 8578]
+        - [RS, 7390]
+        - [PR, 6733]
+        - [MG, 6659]
+        - [SC, 6093]
+        - [RJ, 5135]
+        - [GO, 4835]
+        - [MT, 4505]
+        - [BA, 4257]
+        - [ES, 4243]
+      Categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: CAMINHONETA
+        max: UTILITÁRIO LEVE (0,5T A 1,49T)
+        top:
+        - [CAMINHÃO SIMPLES (8T A 29T), 29004]
+        - [SEMI-REBOQUE, 24901]
+        - ['CAMINHÃO LEVE (3,5T A 7,99T)', 18016]
+        - [REBOQUE, 8570]
+        - ['CAMINHONETE / FURGÃO (1,5T A 3,49T)', 7730]
+        - [CAMINHÃO TRATOR, 7623]
+        - [CAMINHONETA, 1016]
+        - ['UTILITÁRIO LEVE (0,5T A 1,49T)', 573]
+        - [SEMI-REBOQUE COM 5ª RODA / BITREM, 97]
+        - [CAMINHÃO TRATOR ESPECIAL, 48]
+      Carroceria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: BASCULANTE / CAÇAMBA
+        max: TRANSPORTE DE VALORES
+        top:
+        - [CARGA SECA / CARROCERIA ABERTA, 16966]
+        - [BAÚ SIMPLES / CARROCERIA FECHADA, 14702]
+        - [BASCULANTE / CAÇAMBA, 8217]
+        - [TANQUE, 6975]
+        - [Não se aplica, 6255]
+        - [MECÂNICO OPERACIONAL, 6207]
+        - [PRANCHA, 5773]
+        - [FURGÃO, 5053]
+        - [PORTA CONTÊINER / PLATAFORMA, 4200]
+        - [OUTRO TIPO NÃO RELACIONADO, 3997]
+      Ano de Fabricação do Veículo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 84, min: '1900', max: '2026'}
+      Quantidade:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1124
+        min: '1'
+        max: '11185'
+        media: 29.3273
+        quartis: [1, 3, 12]

@@ -1,0 +1,218 @@
+dataset: br_sp_saopaulo_geosampa_iptu
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  iptu:
+    linhas: 93430758
+    fonte_do_perfil: amostra de 52.543% da última partição (ano = 2025). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2025'
+        max: '2025'
+        media: 2025
+        quartis: [2025, 2025, 2025]
+        top:
+        - ['2025', 2006241]
+      data_cadastramento:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2025-01-01'
+        max: '2025-01-01'
+        top:
+        - ['2025-01-01', 2006241]
+      numero_notificacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_contribuinte: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2208242, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ano_inicio_vida_contribuinte:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 56
+        min: '1963'
+        max: '2025'
+        media: 1990.3241
+        quartis: [1972, 1989, 2008]
+      mes_inicio_vida_contribuinte:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 1.9808
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1690682]
+        - ['11', 32485]
+        - ['9', 31807]
+        - ['10', 31538]
+        - ['6', 30528]
+        - ['12', 29535]
+        - ['7', 29197]
+        - ['4', 28697]
+        - ['8', 27921]
+        - ['3', 27846]
+      logradouro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 34615, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_imovel: {tipo: BIGINT, nulos_pct: 2.02, distintos_aprox: 7936, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_condominio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51, pessoal: 'só contagens: valores seriam dado pessoal'}
+      complemento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 410897, pessoal: 'só contagens: valores seriam dado pessoal'}
+      bairro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 79448, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cep: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 45679, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ano_construcao_corrigida:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 135
+        min: '0'
+        max: '2024'
+        media: 1944.5338
+        quartis: [1977, 1990, 2005]
+      fator_obsolescencia:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 60
+        min: '0.0'
+        max: '0.99'
+        media: 0.5678
+        quartis: [0.3226, 0.5696, 0.8073]
+      referencia_imovel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 95930}
+      finalidade_imovel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 42
+        min: Apartamento Em Condomínio
+        max: Terreno
+        top:
+        - [Apartamento Em Condomínio, 861935]
+        - [Residência, 575761]
+        - [Garagem (Unidade Autônoma) Em Edifício Em Condomínio De Uso Exclusivamente Residencial, 111290]
+        - ['Residência Coletiva, Exclusive Cortiço (Mais De Uma Residência No Lote)', 109133]
+        - [Escritório/Consultório Em Condomínio (Unidade Autônoma), 76255]
+        - [Terreno, 47409]
+        - [Residência E Outro Uso (Predominância Residencial), 45645]
+        - [Loja, 28799]
+        - [Loja E Residência (Predominância Comercial), 22959]
+        - ['Garagem (Unidade Autônoma) Em Edifício Em Condomínio De Escritórios, Consultórios Ou Misto', 21949]
+      tipo_construcao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: Barracão/Telheiro/Oficina - Padrão A
+        max: Terreno
+        top:
+        - [Residencial Vertical - Padrão C, 662436]
+        - [Residencial Horizontal - Padrão C, 356140]
+        - [Residencial Horizontal - Padrão B, 207527]
+        - [Residencial Vertical - Padrão D, 146748]
+        - [Residencial Horizontal - Padrão A, 144767]
+        - [Residencial Vertical - Padrão B, 95675]
+        - [Comercial Vertical - Padrão C, 69791]
+        - [Comercial Horizontal - Padrão B, 49867]
+        - [Terreno, 47409]
+        - [Residencial Vertical - Padrão A, 44757]
+      tipo_terreno:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: De Duas Ou Mais Frentes
+        max: Terreno Interno
+        top:
+        - [Normal, 1315823]
+        - [De Esquina, 409546]
+        - [De Duas Ou Mais Frentes, 255565]
+        - [Terreno Interno, 12300]
+        - [Lote De Esquina Em Zer, 6483]
+        - [Lote De Fundos, 4710]
+        - [Lote Encravado, 1814]
+      fracao_ideal:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 4004
+        min: '0.0001'
+        max: '1.0'
+        media: 0.4373
+        quartis: [0.0054, 0.0309, 1]
+      area_terreno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 8614
+        min: '1'
+        max: '4307493'
+        media: 4170.0198
+        quartis: [197, 874, 2811]
+      area_construida:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4598
+        min: '0'
+        max: '950328'
+        media: 155.4416
+        quartis: [61, 100, 153]
+      area_ocupada:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4750
+        min: '0'
+        max: '464200'
+        media: 1409.2881
+        quartis: [97, 388, 1369]
+      quantidade_pavimento:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 47
+        min: '0'
+        max: '98'
+        media: 9.2304
+        quartis: [2, 5, 16]
+        top:
+        - ['2', 433552]
+        - ['1', 378036]
+        - ['5', 81716]
+        - ['14', 69789]
+        - ['17', 66887]
+        - ['9', 65758]
+        - ['19', 65157]
+        - ['16', 63432]
+        - ['18', 60618]
+        - ['15', 59488]
+      quantidade_esquina_imovel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '0'
+        max: '9'
+        top:
+        - ['0', 1334647]
+        - ['1', 296526]
+        - ['2', 292107]
+        - ['3', 47252]
+        - ['4', 29005]
+        - ['5', 1987]
+        - ['9', 1634]
+        - ['6', 1453]
+        - ['8', 1437]
+        - ['7', 193]
+      testada_imovel:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 7534
+        min: '0.0'
+        max: '3000.0'
+        media: 38.2611
+        quartis: [6.826, 15.9815, 42.7294]
+      valor_terreno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 8559
+        min: '83'
+        max: '34383'
+        media: 3247.7985
+        quartis: [990, 1646, 3695]
+      valor_construcao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 89
+        min: '0'
+        max: '4360'
+        media: 2374.3731
+        quartis: [1804, 2362, 3245]

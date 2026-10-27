@@ -1,0 +1,233 @@
+dataset: br_mg_belohorizonte_smfa_iptu
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  iptu:
+    linhas: 21463811
+    fonte_do_perfil: amostra de 38.101% da última partição (ano = 2024). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 2073736]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        media: 3.0161
+        quartis: [2, 3, 4]
+        top:
+        - ['3', 691691]
+        - ['4', 374838]
+        - ['2', 340706]
+        - ['1', 333462]
+        - ['5', 333039]
+      indice_cadastral: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 809978}
+      lote: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 350947}
+      zoneamento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: ZA
+        max: ZPAM
+        top:
+        - [ZAP, 637470]
+        - [ZAR2, 628132]
+        - [ZA, 353589]
+        - [ZCBH, 188248]
+        - [ZHIP, 96704]
+        - [ZAR1, 47771]
+        - [ZP2, 34990]
+        - [ZE, 18476]
+        - [ZEIS1, 16286]
+        - [ZP3, 12684]
+      zona_homogenea: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 817, min: BA101, max: VN329}
+      cep: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11167, pessoal: 'só contagens: valores seriam dado pessoal'}
+      endereco: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 374967, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_construtivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: Apartamento
+        max: Vaga De Garagem Residencial
+        top:
+        - [Apartamento, 1007369]
+        - [Casa, 526794]
+        - [Sala, 141122]
+        - [Loja, 133702]
+        - [Lote Vago, 80684]
+        - [Vaga De Garagem Nao Residencial, 61648]
+        - [Barracao, 37794]
+        - [Galpao, 33210]
+        - [Vaga De Garagem Residencial, 26457]
+        - [Casa Com Ocupacao Nao Residencial, 11399]
+      tipo_ocupacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Nao Residencial
+        max: Territorial
+        top:
+        - [Residencial, 1598414]
+        - [Nao Residencial, 394638]
+        - [Territorial, 80684]
+      padrao_acabamento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: P1
+        max: TE
+        top:
+        - [P3, 987105]
+        - [P2, 478328]
+        - [P4, 350952]
+        - [P1, 103661]
+        - [TE, 80684]
+        - [P5, 73003]
+        - [null, 3]
+      tipologia:
+        tipo: VARCHAR
+        nulos_pct: 8.67
+        distintos_aprox: 41
+        min: Alinhamento
+        max: Unidade Condominial Irregular
+        top:
+        - [Frente, 1122489]
+        - [Demais Casos, 406934]
+        - [null, 179769]
+        - [Alinhamento, 165486]
+        - [Loja Comum, 75260]
+        - [Fundos, 28871]
+        - [Loja Em Edificio/Galeria-Frente Para Rua, 24934]
+        - [Territorial, 23239]
+        - [Loja Em Edificio/Galeria-Logradouro, 8864]
+        - [Casa Adaptada, 7985]
+      quantidade_economias:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 89
+        min: '0'
+        max: '400'
+        media: 1.2147
+        quartis: [1, 1, 1]
+      frequencia_coleta:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Coleta Alternada
+        max: Sem Coleta
+        top:
+        - [Coleta Alternada, 1474134]
+        - [Coleta Diaria, 576417]
+        - [Sem Coleta, 23185]
+      indicador_rede_telefonica:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 2043727]
+        - ['false', 30000]
+        - [null, 9]
+      indicador_meio_fio:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 2049842]
+        - ['false', 23885]
+        - [null, 9]
+      indicador_pavimentacao:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 2061709]
+        - ['false', 12020]
+        - [null, 7]
+      indicador_arborizacao:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 1109777]
+        - ['false', 963959]
+      indicador_galeria_pluvial:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 1360721]
+        - ['false', 713015]
+      indicador_iluminacao_publica:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 2057085]
+        - ['false', 16642]
+        - [null, 9]
+      indicador_rede_esgoto:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 2041239]
+        - ['false', 32479]
+        - [null, 18]
+      indicador_agua:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 2055568]
+        - ['false', 18150]
+        - [null, 18]
+      poligono: {tipo: GEOMETRY, nulos_pct: 0.1, distintos_aprox: 312063}
+      fracao_ideal:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 159600
+        min: 1e-06
+        max: '2.0'
+        media: 0.3497
+        quartis: [0.011, 0.0851, 1]
+      area_terreno:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 30194
+        min: '1.7'
+        max: '3232962.68'
+        media: 3104.9143
+        quartis: [360, 596.8834, 1630.7542]
+      area_construida:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 62659
+        min: '0.0'
+        max: '340143.15'
+        media: 160.9623
+        quartis: [56.4419, 107.3076, 190.9233]

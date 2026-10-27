@@ -1,0 +1,334 @@
+dataset: br_presidencia_comunicabr
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  brasil:
+    linhas: 594
+    fonte_do_perfil: tabela inteira
+    colunas:
+      bloco:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: BALANÇA COMERCIAL
+        max: TRANSFERÊNCIAS AOS CIDADÃOS
+        top:
+        - [EDUCAÇÃO, 144]
+        - [SAÚDE, 92]
+        - ['FOMENTO À PRODUÇÃO AGRÍCOLA, PECUÁRIA E PESCA', 64]
+        - [MEIO AMBIENTE E MUDANÇA DO CLIMA, 56]
+        - [INCENTIVO AO DESENVOLVIMENTO PRODUTIVO, 53]
+        - [PROTEÇÃO SOCIAL, 43]
+        - [MULHERES, 27]
+        - [MINHA CASA MINHA VIDA, 21]
+        - [TRANSFERÊNCIAS AOS CIDADÃOS, 19]
+        - [TRABALHO E RENDA, 17]
+      fonte:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: IBGE
+        max: TSE
+        top:
+        - [MEC, 136]
+        - [MS, 108]
+        - [MDS, 57]
+        - [MMA, 56]
+        - [MDA, 36]
+        - [MAPA, 31]
+        - [MCTI, 28]
+        - [MCID, 21]
+        - [MF, 21]
+        - [MTE, 19]
+      programa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 87, min: ACE, max: UPA}
+      variavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 215, min: Agentes Comunitários de Saúde- ACS, max: Áreas Embargadas}
+      unidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '%'
+        max: km2
+        top:
+        - [QTD, 385]
+        - [R$, 178]
+        - ['%', 14]
+        - [HE, 12]
+        - [U$, 4]
+        - [km2, 1]
+      ano:
+        tipo: SMALLINT
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '2023'
+        max: '2026'
+        media: 2024.5808
+        quartis: [2024, 2025, 2026]
+        top:
+        - ['2026', 166]
+        - ['2024', 147]
+        - ['2025', 147]
+        - ['2023', 134]
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 572
+        min: '0.4852'
+        max: '910642362879.63'
+        media: 20681553900.3561
+        quartis: [18268.1953, 472189.8958, 250137974.6607]
+      ref:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: 01/2025
+        max: '2026'
+        top:
+        - [08/2026, 152]
+        - [07/2026, 100]
+        - [06/2026, 93]
+        - [09/2026, 86]
+        - [05/2026, 49]
+        - [03/2026, 22]
+        - [12/2025, 21]
+        - [04/2026, 18]
+        - [06/2025, 9]
+        - [09/2025, 9]
+      data_coleta:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-13'
+        max: '2026-10-13'
+        top:
+        - ['2026-10-13', 594]
+  municipio:
+    linhas: 1551434
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 229250]
+        - [SP, 177616]
+        - [RS, 136294]
+        - [BA, 117985]
+        - [PR, 112358]
+        - [SC, 82946]
+        - [GO, 67184]
+        - [PB, 61757]
+        - [MA, 60350]
+        - [PI, 59932]
+      bloco:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: CULTURA
+        max: TRANSFERÊNCIAS AOS CIDADÃOS
+        top:
+        - [EDUCAÇÃO, 433636]
+        - [SAÚDE, 304280]
+        - [PROTEÇÃO SOCIAL, 190499]
+        - ['FOMENTO À PRODUÇÃO AGRÍCOLA, PECUÁRIA E PESCA', 153796]
+        - [TRANSFERÊNCIAS AOS CIDADÃOS, 105833]
+        - [INCENTIVO AO DESENVOLVIMENTO PRODUTIVO, 96314]
+        - [TRABALHO E RENDA, 58461]
+        - [MINHA CASA MINHA VIDA, 52027]
+        - [DADOS GERAIS, 38995]
+        - [MEIO AMBIENTE E MUDANÇA DO CLIMA, 31730]
+      fonte:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: IBGE
+        max: TSE
+        top:
+        - [MEC, 433761]
+        - [MS, 310400]
+        - [MDS, 239985]
+        - [MAPA, 126998]
+        - [MTE, 80743]
+        - [MF, 76125]
+        - [MCID, 52027]
+        - [MDA, 47536]
+        - [MEMP, 45372]
+        - [IBGE, 33424]
+      programa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 80, min: ACE, max: UPA}
+      variavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 154, min: Agentes Comunitários de Saúde- ACS, max: Áreas Embargadas}
+      unidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '%'
+        max: km2
+        top:
+        - [QTD, 981158]
+        - [R$, 483899]
+        - ['%', 77978]
+        - [km2, 5571]
+        - [HE, 2828]
+      ano:
+        tipo: SMALLINT
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '2023'
+        max: '2026'
+        media: 2024.5434
+        quartis: [2024, 2025, 2026]
+        top:
+        - ['2024', 407262]
+        - ['2026', 403994]
+        - ['2025', 387588]
+        - ['2023', 352590]
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 549320
+        min: '-247644.86'
+        max: '72790941435.46'
+        media: 6768584.5907
+        quartis: [7.6561, 258.6349, 102040.8688]
+      ref:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: 02/2025
+        max: '2026'
+        top:
+        - [09/2026, 315130]
+        - [08/2026, 313694]
+        - [07/2026, 188503]
+        - [05/2026, 174827]
+        - [06/2026, 165946]
+        - [12/2025, 100241]
+        - [09/2025, 50001]
+        - [04/2026, 48181]
+        - [06/2025, 44836]
+        - ['2026', 38995]
+      data_coleta:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-13'
+        max: '2026-10-13'
+        top:
+        - ['2026-10-13', 1551434]
+  uf:
+    linhas: 14460
+    fonte_do_perfil: tabela inteira
+    colunas:
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [BA, 569]
+        - [PE, 558]
+        - [CE, 555]
+        - [PA, 555]
+        - [MG, 554]
+        - [SC, 551]
+        - [MA, 549]
+        - [PR, 546]
+        - [RS, 543]
+        - [PI, 542]
+      bloco:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: CULTURA
+        max: TRANSFERÊNCIAS AOS CIDADÃOS
+        top:
+        - [EDUCAÇÃO, 3629]
+        - [SAÚDE, 2402]
+        - ['FOMENTO À PRODUÇÃO AGRÍCOLA, PECUÁRIA E PESCA', 1404]
+        - [INCENTIVO AO DESENVOLVIMENTO PRODUTIVO, 1247]
+        - [MEIO AMBIENTE E MUDANÇA DO CLIMA, 1198]
+        - [PROTEÇÃO SOCIAL, 1100]
+        - [MULHERES, 609]
+        - [MINHA CASA MINHA VIDA, 546]
+        - [TRANSFERÊNCIAS AOS CIDADÃOS, 513]
+        - [TRABALHO E RENDA, 459]
+      fonte:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: IBGE
+        max: TSE
+        top:
+        - [MEC, 3412]
+        - [MS, 2822]
+        - [MDS, 1479]
+        - [MMA, 1198]
+        - [MDA, 756]
+        - [MAPA, 729]
+        - [MCTI, 596]
+        - [MF, 567]
+        - [MCID, 546]
+        - [MTE, 513]
+      programa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 87, min: ACE, max: UPA}
+      variavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 205, min: Agentes Comunitários de Saúde- ACS, max: Áreas Embargadas}
+      unidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '%'
+        max: km2
+        top:
+        - [QTD, 9417]
+        - [R$, 4371]
+        - ['%', 378]
+        - [HE, 267]
+        - [km2, 27]
+      ano:
+        tipo: SMALLINT
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '2023'
+        max: '2026'
+        media: 2024.5724
+        quartis: [2024, 2025, 2026]
+        top:
+        - ['2026', 3926]
+        - ['2025', 3660]
+        - ['2024', 3639]
+        - ['2023', 3235]
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 8346
+        min: '0.06'
+        max: '251057039426.81'
+        media: 824192957.5633
+        quartis: [392.7816, 14017.1902, 7191261.871]
+      ref:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: 01/2025
+        max: '2026'
+        top:
+        - [08/2026, 3720]
+        - [07/2026, 2471]
+        - [06/2026, 2106]
+        - [09/2026, 2052]
+        - [05/2026, 1312]
+        - [12/2025, 567]
+        - [03/2026, 461]
+        - [04/2026, 407]
+        - [06/2025, 243]
+        - [09/2025, 243]
+      data_coleta:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-13'
+        max: '2026-10-13'
+        top:
+        - ['2026-10-13', 14460]

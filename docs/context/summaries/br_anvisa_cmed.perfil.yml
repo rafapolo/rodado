@@ -1,0 +1,225 @@
+dataset: br_anvisa_cmed
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  precos:
+    linhas: 52816
+    fonte_do_perfil: tabela inteira
+    colunas:
+      lista:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: pmc
+        max: pmvg
+        top:
+        - [pmc, 26408]
+        - [pmvg, 26408]
+      substancia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3199}
+      cnpj: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 240, pessoal: 'só contagens: valores seriam dado pessoal'}
+      laboratorio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 243, min: 1FARMA INDUSTRIA FARMACEUTICA LTDA, max: ÁVITA CARE IMPORTAÇÃO E DISTRIBUIÇÃO
+          DE PRODUTOS LTDA.}
+      codigo_ggrem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 25667}
+      registro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 30208}
+      ean_1: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 22098}
+      ean_2: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1229}
+      ean_3: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 53, min: '    -     ', max: '8901148244344'}
+      produto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6149}
+      apresentacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 16378}
+      classe_terapeutica: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 643, min: A10B4 - ANTIDIABÉTICOS GLITAZONAS, max: V3X9 - OUTRAS PREPARAÇÕES  TERAPÊUTICAS}
+      tipo_de_produto_status_do_produto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '    -     '
+        max: Similar
+        top:
+        - [Genérico, 19434]
+        - [Similar, 17750]
+        - [Novo, 7474]
+        - [Específico, 4134]
+        - [Biológico, 3190]
+        - [Fitoterápico, 642]
+        - ['    -     ', 100]
+        - [Produto de Terapia Avançada, 86]
+        - [Radiofármaco, 6]
+      regime_de_preco:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Liberado
+        max: Regulado
+        top:
+        - [Regulado, 47680]
+        - [Liberado, 5136]
+      pf_sem_impostos:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 14394
+        min: '0.48'
+        max: '7821323.86'
+        media: 12984.8403
+        quartis: [31.3057, 87.6206, 297.3597]
+      pf_0pct:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 16832
+        min: '0.49'
+        max: '8759884.12'
+        media: 14476.9234
+        quartis: [32.9711, 92.1342, 310.992]
+      pf_12_pct: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 17742}
+      pf_12_pct_alc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18676}
+      pf_17_pct: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 19260}
+      pf_17_pct_alc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14280}
+      pf_17_5_pct: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 16908}
+      pf_17_5_pct_alc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 21283}
+      pf_18_pct: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 19840}
+      pf_18_pct_alc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 22329}
+      pf_19_pct: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 17761}
+      pf_19_pct_alc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 19864}
+      pf_19_5_pct: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15815}
+      pf_19_5_pct_alc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 16488}
+      pf_20_pct: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 16449}
+      pf_20_pct_alc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15756}
+      pf_20_5_pct: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 17520}
+      pf_20_5_pct_alc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18530}
+      pf_21_pct: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 17520}
+      pf_21_pct_alc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18185}
+      pf_22_pct: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15794}
+      pf_22_pct_alc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 16007}
+      pf_22_5_pct: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18413}
+      pf_22_5_pct_alc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 16992}
+      pf_23_pct: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13947}
+      pf_23_pct_alc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 16212}
+      pmc_sem_impostos:
+        tipo: DOUBLE
+        nulos_pct: 57.46
+        distintos_aprox: 12566
+        min: '1.68'
+        max: '3142953.89'
+        media: 1750.8025
+        quartis: [38.2907, 94.7045, 267.8099]
+      pmc_0_pct:
+        tipo: DOUBLE
+        nulos_pct: 57.46
+        distintos_aprox: 14806
+        min: '1.7'
+        max: '3415769.38'
+        media: 1866.8823
+        quartis: [39.8236, 97.8492, 277.4087]
+      pmc_12_pct: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 18415}
+      pmc_12_pct_alc: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 14494}
+      pmc_17_pct: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 17487}
+      pmc_17_pct_alc: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 13255}
+      pmc_17_5_pct: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 14811}
+      pmc_17_5_pct_alc: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 13285}
+      pmc_18_pct: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 14219}
+      pmc_18_pct_alc: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 14778}
+      pmc_19_pct: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 16021}
+      pmc_19_pct_alc: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 11761}
+      pmc_19_5_pct: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 16115}
+      pmc_19_5_pct_alc: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 14023}
+      pmc_20_pct: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 12753}
+      pmc_20_pct_alc: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 12296}
+      pmc_20_5_pct: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 13892}
+      pmc_20_5_pct_alc: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 13991}
+      pmc_21_pct: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 12089}
+      pmc_21_pct_alc: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 14204}
+      pmc_22_pct: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 12925}
+      pmc_22_pct_alc: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 15845}
+      pmc_22_5_pct: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 13847}
+      pmc_22_5_pct_alc: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 13476}
+      pmc_23_pct: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 13602}
+      pmc_23_pct_alc: {tipo: VARCHAR, nulos_pct: 50.01, distintos_aprox: 13367}
+      restricao_hospitalar:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [Não, 44926]
+        - [Sim, 7890]
+      cap:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 52816]
+      confaz_87:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [Não, 46866]
+        - [Sim, 5950]
+      icms_0pct:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [Não, 50486]
+        - [Sim, 2330]
+      analise_recursal:
+        tipo: VARCHAR
+        nulos_pct: 99.57
+        distintos_aprox: 20
+        min: (1)
+        max: (AR)
+        top:
+        - [null, 52588]
+        - [(AR), 164]
+        - [(2), 12]
+        - [(4), 8]
+        - [(10), 4]
+        - [(12), 4]
+        - [(17), 4]
+        - [(18), 4]
+        - [(7), 4]
+        - [(9), 4]
+      lista_de_concessao_de_credito_tributario_pis_cofins:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Negativa
+        max: Positiva
+        top:
+        - [Positiva, 34776]
+        - [Negativa, 17942]
+        - [Neutra, 98]
+      comercializacao_2025:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [Não, 26814]
+        - [Sim, 26002]
+      tarja:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '- (*) '
+        max: Tarja Vermelha sob restrição
+        top:
+        - [Tarja Vermelha, 27536]
+        - [Tarja Vermelha sob restrição, 10892]
+        - ['- (*) ', 9266]
+        - [Tarja Sem Tarja, 3648]
+        - [Tarja Preta, 1474]
+      destinacao_comercial:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 52816]

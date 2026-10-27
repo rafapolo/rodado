@@ -1,0 +1,325 @@
+dataset: br_sema_mt_embargos
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  areas_desembargadas:
+    linhas: 6901
+    fonte_do_perfil: tabela inteira
+    colunas:
+      camada:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: sema
+        max: siga
+        top:
+        - [sema, 4727]
+        - [siga, 2174]
+      OGC_FID:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5624
+        min: '0'
+        max: '4726'
+        media: 1960.8683
+        quartis: [863, 1729, 3001]
+      id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5823}
+      OBJECTID:
+        tipo: INTEGER
+        nulos_pct: 31.5
+        distintos_aprox: 4379
+        min: '1'
+        max: '17381'
+        media: 6105.4191
+        quartis: [1192, 2396, 11219]
+      NOME: {tipo: VARCHAR, nulos_pct: 31.5, distintos_aprox: 2741, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CPF_CNPJ: {tipo: VARCHAR, nulos_pct: 31.5, distintos_aprox: 3285, pessoal: 'só contagens: valores seriam dado pessoal'}
+      PROPRIEDAD: {tipo: VARCHAR, nulos_pct: 31.71, distintos_aprox: 3096}
+      DANO: {tipo: VARCHAR, nulos_pct: 31.5, distintos_aprox: 337, min: ' ', max: desmate corte raso de vegetacao nativa sem autorização}
+      ANO_DESMAT: {tipo: VARCHAR, nulos_pct: 31.5, distintos_aprox: 92, min: ' ', max: '2120'}
+      A_INFRAC: {tipo: VARCHAR, nulos_pct: 31.5, distintos_aprox: 3057}
+      T_EMBARGO: {tipo: VARCHAR, nulos_pct: 31.5, distintos_aprox: 3394}
+      DAT_LAVRAT: {tipo: VARCHAR, nulos_pct: 31.5, distintos_aprox: 1124}
+      N_PROCESSO: {tipo: VARCHAR, nulos_pct: 31.5, distintos_aprox: 2848}
+      COORD_X: {tipo: VARCHAR, nulos_pct: 31.52, distintos_aprox: 4077}
+      COORD_Y: {tipo: VARCHAR, nulos_pct: 31.52, distintos_aprox: 4026}
+      FONTE: {tipo: VARCHAR, nulos_pct: 32.17, distintos_aprox: 137, min: ' ', max: sccon}
+      OBS: {tipo: VARCHAR, nulos_pct: 32.21, distintos_aprox: 214, min: ' ', max: ÁREA DE USO RESTRITO}
+      AREA_HA:
+        tipo: DOUBLE
+        nulos_pct: 31.5
+        distintos_aprox: 4825
+        min: '0.004492'
+        max: '27143.5314898'
+        media: 160.9992
+        quartis: [8.7881, 27.1158, 126.2786]
+      geometria: {tipo: 'GEOMETRY(''OGC:CRS84'')', nulos_pct: 0, distintos_aprox: 7571}
+      ID_PADRAO: {tipo: VARCHAR, nulos_pct: 68.5, distintos_aprox: 2042}
+      TIPO_DO_AUTO:
+        tipo: VARCHAR
+        nulos_pct: 68.5
+        distintos_aprox: 1
+        min: Termo de embargo / Interdição
+        max: Termo de embargo / Interdição
+        top:
+        - [null, 4727]
+        - [Termo de embargo / Interdição, 2174]
+      NUMERO_AUTO_INFRACAO: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NUMERO_TERMO_EMBARGO: {tipo: VARCHAR, nulos_pct: 68.5, distintos_aprox: 2326, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NUMERO_PROCESSO: {tipo: VARCHAR, nulos_pct: 68.5, distintos_aprox: 1879, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NUMERO_RELATORIO_TECNICO: {tipo: INTEGER, nulos_pct: 68.5, distintos_aprox: 1889, pessoal: 'só contagens: valores seriam dado pessoal'}
+      MATRICULA_TECNICO: {tipo: VARCHAR, nulos_pct: 68.5, distintos_aprox: 220, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DATA_DO_AUTO: {tipo: TIMESTAMP WITH TIME ZONE, nulos_pct: 68.5, distintos_aprox: 701, min: '2022-10-04 06:00:00+02', max: '2026-07-27 06:00:00+02'}
+      DATA_ENVIO: {tipo: TIMESTAMP WITH TIME ZONE, nulos_pct: 68.5, distintos_aprox: 742, min: '2022-10-04 06:00:00+02', max: '2026-07-27 06:00:00+02'}
+      NOME_RAZAO_SOCIAL: {tipo: VARCHAR, nulos_pct: 68.5, distintos_aprox: 1750, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CPFCNPJ: {tipo: VARCHAR, nulos_pct: 68.5, distintos_aprox: 1997, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NOME_FANTASIA: {tipo: VARCHAR, nulos_pct: 68.56, distintos_aprox: 1897, pessoal: 'só contagens: valores seriam dado pessoal'}
+      MUNICIPIO_DO_DANO: {tipo: VARCHAR, nulos_pct: 68.5, distintos_aprox: 132, min: Acorizal, max: Água Boa}
+      FRENTE:
+        tipo: VARCHAR
+        nulos_pct: 68.5
+        distintos_aprox: 2
+        min: EMPREENDIMENTO
+        max: FLORA
+        top:
+        - [null, 4727]
+        - [FLORA, 2051]
+        - [EMPREENDIMENTO, 123]
+      TIPO:
+        tipo: VARCHAR
+        nulos_pct: 68.5
+        distintos_aprox: 9
+        min: ATIVIDADE UTILIZADORA DE RECURSOS NATURAIS
+        max: UNIDADE DE CONSERVAÇÃO
+        top:
+        - [null, 4727]
+        - [DESMATAMENTO, 1642]
+        - [IMPEDIR OU DIFICULTAR A REGENERAÇÃO NATURAL DA VEGETAÇÃO, 211]
+        - [EMPREENDIMENTO/ATIVIDADE/OBRA SEM LICENÇA OU DESACORDO, 109]
+        - [EXPLORAÇÃO SELETIVA, 91]
+        - [ATIVIDADE UTILIZADORA DE RECURSOS NATURAIS, 88]
+        - [QUEIMADA, 17]
+        - [RECURSOS MINERAIS, 14]
+        - [CORTAR ÁRVORE, 1]
+        - [UNIDADE DE CONSERVAÇÃO, 1]
+      SUBTIPO:
+        tipo: VARCHAR
+        nulos_pct: 68.5
+        distintos_aprox: 25
+        min: 'APF: FAZER FUNCIONAR ATIVIDADE (PECUÁRIA OU AGRICULTURA)'
+        max: ÁREA PASSÍVEL (FORA DA RESERVA LEGAL)
+        top:
+        - [null, 4727]
+        - [OBJETO ESPECIAL PRESERVAÇÃO (SEM LICENÇA/AUTORIZAÇÃO), 736]
+        - [AREA PASSÍVEL (FORA DA RESERVA LEGAL), 491]
+        - [AREA DE RESERVA LEGAL, 251]
+        - [APP, 204]
+        - [LOCAL INDICADO PELA SEMA (EMBARGADA), 113]
+        - [SHAPE - CONSTRUIR/INSTALAR/REFORMAR/AMPLIAR/UNCIONAR, 106]
+        - [CERRADO-PARTE DENTRO/FORA RESERVA LEGAL, 76]
+        - ['APF: FAZER FUNCIONAR ATIVIDADE (PECUÁRIA OU AGRICULTURA)', 61]
+        - [ÁREA DE RESERVA LEGAL, 26]
+      DISPOSITIVO_LEGAL_INFRINGIDO:
+        tipo: VARCHAR
+        nulos_pct: 68.5
+        distintos_aprox: 29
+        min: CONSTRUIR, REFORMAR, AMPLIAR, INSTALAR OU FAZER FUNCIONAR ESTABELECIMENTOS, ATIVIDADES, OBRAS OU SERVIÇOS UTILIZADORES DE RECURSOS
+          AMBIENTAIS, CONSIDERADOS EFETIVA OU POTENCIALMENTE POLUIDORES, SEM LICENÇA OU AUTORIZAÇÃO DOS ÓRGÃOS AMBIENTAIS COMPETENTES, EM DESACORDO
+          COM A LICENÇA OBTIDA OU CONTRARIANDO AS NORMAS LEGAIS E REGULAMENTOS PERTINENTES - Art. 60 da Lei Federal n. 9.605/1998 C/C Art. 66
+          do Decreto Federal n. 6.514/2008.
+        max: "REALIZAR EXTRAÇÃO SELETIVA DE ÁRVORES EM ÁREA DE PRESERVAÇÃO PERMANENTE - APP  (HECTARE) - Art. 39 da Lei Federal n. 9.605/1998\
+          \ C/C Art. 44 do Decreto Federal n. 6.514/2008.\nArt. 44.  Cortar árvores em área considerada de preservação permanente ou cuja espécie\
+          \ seja especialmente protegida, sem permissão da autoridade competente: \nMulta de R$ 5.000,00 (cinco mil reais) a R$ 20.000,00 (vinte\
+          \ mil reais) por hectare ou fração.\n"
+        top:
+        - [null, 4727]
+        - ["DESMATE A CORTE RASO EM ÁREA CONSIDERADA OBJETO DE ESPECIAL PRESERVAÇÃO (SEM AUTORIZAÇÃO OU EM DESACORDO) - Art. 50 da Lei Federal\
+            \ n. 9.605/1998 C/C Art. 50 do Decreto Federal n. 6.514/2008.\nArt. 50.  Destruir ou danificar florestas ou qualquer tipo de vegetação\
+            \ nativa ou de espécies nativas plantadas, objeto de especial preservação, sem autorização ou licença da autoridade ambiental competente:\n\
+            Multa de R$ 5.000,00 (cinco mil reais) por hectare ou fração. \n§ 2° - Para os fins dispostos no art. 49 e no caput deste artigo,\
+            \ são consideradas de especial preservação as florestas e demais formas de vegetação nativa que tenham regime jurídico próprio e especial\
+            \ de conservação ou preservação definido pela legislação. ", 674]
+        - ['DESMATE A CORTE RASO DE VEGETAÇÃO NATIVA EM ÁREA PASSÍVEL DE SUPRESSÃO (FORA DA RESERVA LEGAL) - Art. 52 do Decreto Federal n. 6.514/2008.
+
+            Art. 52.  Desmatar, a corte raso, florestas ou demais formações nativas, fora da reserva legal, sem autorização da autoridade competente:
+
+            Multa de R$ 1.000,00 (mil reais) por hectare ou fração.', 491]
+        - ['DESMATE A CORTE RASO DE VEGETAÇÃO NATIVA EM ÁREA DE RESERVA LEGAL - Art. 51 do Decreto Federal n. 6.514/2008.
+
+            Art. 51.  Destruir, desmatar, danificar ou explorar floresta ou qualquer tipo de vegetação nativa ou de espécies nativas plantadas,
+            em área de reserva legal ou servidão florestal, de domínio público ou privado, sem autorização prévia do órgão ambiental competente
+            ou em desacordo com a concedida:
+
+            Multa de R$ 5.000,00 (cinco mil reais) por hectare ou fração.
+
+            ', 251]
+        - ["DESTRUIR/DANIFICAR VEGETAÇÃO EM ÁREA DE PRESERVAÇÃO PERMANENTE (APP) - Art. 38 da Lei Federal n. 9.605/1998 C/C Art. 43 do Decreto\
+            \ Federal n. 6.514/2008.\nArt. 43.  Destruir ou danificar florestas ou demais formas de vegetação natural ou utilizá-las com infringência\
+            \ das normas de proteção em área considerada de preservação permanente, sem autorização do órgão competente, quando exigível, ou em\
+            \ desacordo com a obtida: \nMulta de R$ 5.000,00 (cinco mil reais) a R$ 50.000,00 (cinquenta mil reais), por hectare ou fração.\n",
+          140]
+        - ["IMPEDIR OU DIFICULTAR A REGENERAÇÃO NATURAL DE VEGETAÇÃO NATIVA EM LOCAL INDICADO PELO ÓRGÃO AMBIENTAL (ÁREA EMBARGADA) - Art. 48\
+            \ da Lei Federal n. 9.605/1998 C/C Art. 48 e 108 do Decreto Federal n. 6.514/2008.\nArt. 48.  Impedir ou dificultar a regeneração\
+            \ natural de florestas ou demais formas de vegetação nativa em unidades de conservação ou outras áreas especialmente protegidas, quando\
+            \ couber, área de preservação permanente, reserva legal ou demais locais cuja regeneração tenha sido indicada pela autoridade ambiental\
+            \ competente: \nMulta de R$ 5.000,00 (cinco mil reais), por hectare ou fração.\nParágrafo único.  O disposto no caput não se aplica\
+            \ para o uso permitido das áreas de preservação permanente.\nArt. 108.  O embargo de obra ou atividade e suas respectivas áreas tem\
+            \ por objetivo impedir a continuidade do dano ambiental, propiciar a regeneração do meio ambiente e dar viabilidade à recuperação\
+            \ da área degradada, devendo restringir-se exclusivamente ao local onde verificou-se a prática do ilícito.", 112]
+        - ['CONSTRUIR, REFORMAR, AMPLIAR, INSTALAR OU FAZER FUNCIONAR ESTABELECIMENTOS, ATIVIDADES, OBRAS OU SERVIÇOS UTILIZADORES DE RECURSOS
+            AMBIENTAIS, CONSIDERADOS EFETIVA OU POTENCIALMENTE POLUIDORES, SEM LICENÇA OU AUTORIZAÇÃO DOS ÓRGÃOS AMBIENTAIS COMPETENTES, EM DESACORDO
+            COM A LICENÇA OBTIDA OU CONTRARIANDO AS NORMAS LEGAIS E REGULAMENTOS PERTINENTES - Art. 60 da Lei Federal n. 9.605/1998 C/C Art. 66
+            do Decreto Federal n. 6.514/2008. Neste dispositivo será inserido arquivo SHAPE de polígono do dano. ', 106]
+        - ["DESMATE A CORTE RASO DE VEGETAÇÃO NATIVA DE CERRADO (SENDO QUE PARTE DO DESMATE É DENTRO E PARTE FORA DA RESERVA LEGAL) - Art. 51\
+            \ e Art. 52 do Decreto Federal n. 6.514/2008.\nCONSIDERANDO QUE A PROPRIEDADE NÃO POSSUI A REGULARIZAÇÃO AMBIENTAL NECESSÁRIA PARA\
+            \ ESTIPULAR A LOCALIZAÇÃO PRECISA DA RESERVA LEGAL,  SERÁ ESTIPULADO UM VALOR MÉDIO DE MULTA POR HECTARE CONFORME LEGISLAÇÃO AMBIENTAL\
+            \ VIGENTE. \nArt. 51.  Destruir, desmatar, danificar ou explorar floresta ou qualquer tipo de vegetação nativa ou de espécies nativas\
+            \ plantadas, em área de reserva legal ou servidão florestal, de domínio público ou privado, sem autorização prévia do órgão ambiental\
+            \ competente ou em desacordo com a concedida:\nMulta de R$ 5.000,00 (cinco mil reais) por hectare ou fração.\nArt. 52.  Desmatar,\
+            \ a corte raso, florestas ou demais formações nativas, fora da reserva legal, sem autorização da autoridade competente:\nMulta de\
+            \ R$ 1.000,00 (mil reais) por hectare ou fração.", 76]
+        - ["IMPEDIR OU DIFICULTAR A REGENERAÇÃO NATURAL DE VEGETAÇÃO NATIVA EM ÁREA DE PRESERVAÇÃO PERMANENTE (APP) - Art. 48 da Lei Federal n.\
+            \ 9.605/1998 C/C Art. 48 do Decreto Federal n. 6.514/2008.\nArt. 48.  Impedir ou dificultar a regeneração natural de florestas ou\
+            \ demais formas de vegetação nativa em unidades de conservação ou outras áreas especialmente protegidas, quando couber, área de preservação\
+            \ permanente, reserva legal ou demais locais cuja regeneração tenha sido indicada pela autoridade ambiental competente: \nMulta de\
+            \ R$ 5.000,00 (cinco mil reais), por hectare ou fração.\nParágrafo único.  O disposto no caput não se aplica para o uso permitido\
+            \ das áreas de preservação permanente.", 63]
+        - ["FAZER FUNCIONAR ATIVIDADE POTENCIALMENTE POLUIDORA (PECUÁRIA E/OU AGRICULTURA) SEM AUTORIZAÇÃO DO ÓRGÃO AMBIENTAL (APF - AUTORIZAÇÃO\
+            \ PROVISÓRIA DE FUNCIONAMENTO RURAL) - Art. 60 da Lei Federal n. 9.605/1998 C/C Art. 66 do Decreto Federal n. 6.514/2008. \nArt. 66.\
+            \  Construir, reformar, ampliar, instalar ou fazer funcionar estabelecimentos, atividades, obras ou serviços utilizadores de recursos\
+            \ ambientais, considerados efetiva ou potencialmente poluidores, sem licença ou autorização dos órgãos ambientais competentes, em\
+            \ desacordo com a licença obtida ou contrariando as normas legais e regulamentos pertinentes: \nMulta de R$ 500,00 (quinhentos reais)\
+            \ a R$ 10.000.000,00 (dez milhões de reais). \nA AUTORIZAÇÃO PROVISÓRIA DE FUNCIONAMENTO RURAL (APF) é regulamentada pelo Decreto\
+            \ Estadual n. 262/2019 e as Instruções Normativas SEMA n. 06/2017 e 03/2018. ", 61]
+      DESCRICAO_DA_OCORRENCIA: {tipo: VARCHAR, nulos_pct: 68.5, distintos_aprox: 2132}
+      LATITUDE: {tipo: VARCHAR, nulos_pct: 68.5, distintos_aprox: 1864}
+      LONGITUDE: {tipo: VARCHAR, nulos_pct: 68.5, distintos_aprox: 1970}
+      ATIVIDADE: {tipo: VARCHAR, nulos_pct: 68.5, distintos_aprox: 205, min: "\tPRODUTOR NA EXPLORACAO AGROPECUARIA", max: rural}
+      ATIVIDADE_EMBARGADA: {tipo: VARCHAR, nulos_pct: 68.5, distintos_aprox: 633, min: "\r\nAGROPECUÁRIA\r\n", max: 'quaisquer atividades agropecuária. '}
+      QUANTIDADE:
+        tipo: DOUBLE
+        nulos_pct: 68.5
+        distintos_aprox: 1955
+        min: '0.014'
+        max: '12083.7049'
+        media: 167.461
+        quartis: [5.6326, 20.2875, 73.7061]
+      UNIDADE_MEDIDA:
+        tipo: VARCHAR
+        nulos_pct: 68.51
+        distintos_aprox: 1
+        min: HECTARE
+        max: HECTARE
+        top:
+        - [null, 4728]
+        - [HECTARE, 2173]
+      VALOR_DA_UNIDADE_MULTA:
+        tipo: DOUBLE
+        nulos_pct: 68.5
+        distintos_aprox: 144
+        min: '0.0'
+        max: '10000000.0'
+        media: 50068.0924
+        quartis: [1000, 5000, 5000]
+      DESCRICAO_AGRAVANTE:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 6901]
+      PERCENTUAL_AGRAVANTE:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 6901]
+      VALOR_TOTAL_DA_MULTA:
+        tipo: DOUBLE
+        nulos_pct: 68.5
+        distintos_aprox: 1581
+        min: '0.0'
+        max: '66386703.47'
+        media: 654111.0975
+        quartis: [11833.4564, 59507.1492, 210767.7457]
+      SITUACAO:
+        tipo: VARCHAR
+        nulos_pct: 69.58
+        distintos_aprox: 10
+        min: ARQUIVAMENTO
+        max: serviços solicitados
+        top:
+        - [null, 4802]
+        - [PROVIDÊNCIAS PROCESSUAIS, 1217]
+        - [TRIAGEM DO PROCESSO DE AUTO DE INFRAÇÃO, 391]
+        - [Instrução e julgamento processual, 282]
+        - [serviços solicitados, 85]
+        - [ARQUIVAMENTO, 45]
+        - [HOMOLOGAÇÃO, 42]
+        - [conciliação, 30]
+        - [consema, 6]
+        - [ARRECADAÇÃO, 1]
+      EMBARGADO:
+        tipo: INTEGER
+        nulos_pct: 68.5
+        distintos_aprox: 1
+        min: '0'
+        max: '0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - [null, 4727]
+        - ['0', 2174]
+  areas_embargadas:
+    linhas: 20192
+    fonte_do_perfil: tabela inteira
+    colunas:
+      camada:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: sema
+        max: siga
+        top:
+        - [siga, 11833]
+        - [sema, 8359]
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10234, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_cnpj: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15516, pessoal: 'só contagens: valores seriam dado pessoal'}
+      propriedade: {tipo: VARCHAR, nulos_pct: 58.72, distintos_aprox: 4107}
+      dano: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11466}
+      ano_desmat: {tipo: VARCHAR, nulos_pct: 58.6, distintos_aprox: 105, min: ' ', max: '2024'}
+      auto_infracao: {tipo: VARCHAR, nulos_pct: 58.61, distintos_aprox: 5363}
+      termo_embargo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18937}
+      data_embargo: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2577, min: '2010-03-22', max: '2026-10-24'}
+      processo: {tipo: VARCHAR, nulos_pct: 5.61, distintos_aprox: 14777}
+      fonte: {tipo: VARCHAR, nulos_pct: 0.41, distintos_aprox: 190, min: ' ', max: sccon}
+      obs: {tipo: VARCHAR, nulos_pct: 0.34, distintos_aprox: 3384}
+      area_ha:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 17060
+        min: '0.0'
+        max: '49578.0'
+        media: 99.0418
+        quartis: [4.8573, 14.8892, 48.3551]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 52.52
+        distintos_aprox: 10
+        min: ARQUIVAMENTO
+        max: serviços solicitados
+        top:
+        - [null, 10604]
+        - [TRIAGEM DO PROCESSO DE AUTO DE INFRAÇÃO, 5944]
+        - [PROVIDÊNCIAS PROCESSUAIS, 1733]
+        - [Instrução e julgamento processual, 1543]
+        - [serviços solicitados, 258]
+        - [conciliação, 59]
+        - [HOMOLOGAÇÃO, 29]
+        - [consema, 19]
+        - [ARQUIVAMENTO, 2]
+        - [ARRECADAÇÃO, 1]
+      geometria: {tipo: 'GEOMETRY(''OGC:CRS84'')', nulos_pct: 0, distintos_aprox: 21098}

@@ -1,0 +1,567 @@
+dataset: br_me_cnpj
+gerado_em: '2026-10-26'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  empresas:
+    linhas: 70081764
+    fonte_do_perfil: amostra de 2,854% da última partição (ano = 2026). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 2048921]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '9'
+        max: '9'
+        media: 9
+        quartis: [9, 9, 9]
+        top:
+        - ['9', 2048921]
+      data:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-01'
+        max: '2026-09-01'
+        top:
+        - ['2026-09-01', 2048921]
+      cnpj_basico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2065787}
+      razao_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1572572, pessoal: 'só contagens: valores seriam dado pessoal'}
+      natureza_juridica: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 78, min: '1015', max: '8885'}
+      qualificacao_responsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 33, pessoal: 'só contagens: valores seriam dado pessoal'}
+      capital_social:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 12837
+        min: '0.0'
+        max: '999999999999.0'
+        media: 3341394.5492
+        quartis: [0.2958, 1510.0967, 10000]
+      porte:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '5'
+        top:
+        - ['1', 1549867]
+        - ['5', 436059]
+        - ['3', 62995]
+      ente_federativo: {tipo: VARCHAR, nulos_pct: 99.89, distintos_aprox: 1508}
+  empresas_historico:
+    linhas: 80024491
+    fonte_do_perfil: amostra de 2,499%. ~2.000.000 linhas
+    colunas:
+      inicio:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 55
+        min: '202111'
+        max: '202609'
+        media: 202224.7194
+        quartis: [202111, 202111, 202310]
+      fim:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 55
+        min: '202111'
+        max: '202609'
+        media: 202579.9097
+        quartis: [202609, 202609, 202609]
+      cnpj_basico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2059607}
+      razao_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2032895, pessoal: 'só contagens: valores seriam dado pessoal'}
+      natureza_juridica: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 75, min: '1015', max: '8885'}
+      qualificacao_responsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 33, pessoal: 'só contagens: valores seriam dado pessoal'}
+      capital_social:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 18579
+        min: '0.0'
+        max: '999999999999.0'
+        media: 4593545.817
+        quartis: [1.0, 2003.3568, 10000.7087]
+      porte:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '5'
+        top:
+        - ['1', 1601822]
+        - ['5', 394392]
+        - ['3', 71401]
+      ente_federativo: {tipo: VARCHAR, nulos_pct: 99.9, distintos_aprox: 1385}
+  estabelecimentos:
+    linhas: 73366147
+    fonte_do_perfil: amostra de 2,726% da última partição (ano = 2026). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 2046817]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '9'
+        max: '9'
+        media: 9
+        quartis: [9, 9, 9]
+        top:
+        - ['9', 2046817]
+      data:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-01'
+        max: '2026-09-01'
+        top:
+        - ['2026-09-01', 2046817]
+      cnpj: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2244208, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_basico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2069928}
+      cnpj_ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3386, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_dv: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 90, pessoal: 'só contagens: valores seriam dado pessoal'}
+      identificador_matriz_filial: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fantasia: {tipo: VARCHAR, nulos_pct: 63.83, distintos_aprox: 636173, pessoal: 'só contagens: valores seriam dado pessoal'}
+      situacao_cadastral:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '8'
+        top:
+        - ['8', 955177]
+        - ['2', 796299]
+        - ['4', 283315]
+        - ['3', 8926]
+        - ['1', 3100]
+      data_situacao_cadastral: {tipo: DATE, nulos_pct: 0.16, distintos_aprox: 13927, min: '1901-01-01', max: '2026-09-13'}
+      motivo_situacao_cadastral:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 50
+        min: '0'
+        max: '9'
+        top:
+        - ['0', 796299]
+        - ['1', 751065]
+        - ['63', 282464]
+        - ['71', 99375]
+        - ['67', 38689]
+        - ['73', 27602]
+        - ['54', 12857]
+        - ['75', 9151]
+        - ['2', 5534]
+        - ['37', 5437]
+      nome_cidade_exterior: {tipo: VARCHAR, nulos_pct: 99.94, distintos_aprox: 510, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_pais: {tipo: VARCHAR, nulos_pct: 96.98, distintos_aprox: 98, min: '105', max: '97'}
+      data_inicio_atividade: {tipo: DATE, nulos_pct: 0, distintos_aprox: 17810, min: '1901-01-01', max: '2026-09-13'}
+      cnae_fiscal_principal: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1514}
+      cnae_fiscal_secundaria: {tipo: VARCHAR, nulos_pct: 52.66, distintos_aprox: 438042}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: AC
+        max: TO
+        top:
+        - [SP, 591343]
+        - [MG, 223320]
+        - [RJ, 175924]
+        - [PR, 141761]
+        - [RS, 139677]
+        - [SC, 99305]
+        - [BA, 99295]
+        - [GO, 72598]
+        - [PE, 60664]
+        - [CE, 57932]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.23, distintos_aprox: 6859}
+      id_municipio_rf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6026}
+      tipo_logradouro: {tipo: VARCHAR, nulos_pct: 1.26, distintos_aprox: 283, pessoal: 'só contagens: valores seriam dado pessoal'}
+      logradouro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 586996, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 38681, pessoal: 'só contagens: valores seriam dado pessoal'}
+      complemento: {tipo: VARCHAR, nulos_pct: 58.91, distintos_aprox: 253990, pessoal: 'só contagens: valores seriam dado pessoal'}
+      bairro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 107099, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cep: {tipo: VARCHAR, nulos_pct: 0.22, distintos_aprox: 471993, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ddd_1: {tipo: VARCHAR, nulos_pct: 16.64, distintos_aprox: 521, pessoal: 'só contagens: valores seriam dado pessoal'}
+      telefone_1: {tipo: VARCHAR, nulos_pct: 16.64, distintos_aprox: 1429619, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ddd_2: {tipo: VARCHAR, nulos_pct: 91.73, distintos_aprox: 89, pessoal: 'só contagens: valores seriam dado pessoal'}
+      telefone_2: {tipo: VARCHAR, nulos_pct: 91.75, distintos_aprox: 97322, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ddd_fax: {tipo: VARCHAR, nulos_pct: 89.25, distintos_aprox: 370, pessoal: 'só contagens: valores seriam dado pessoal'}
+      fax: {tipo: VARCHAR, nulos_pct: 89.25, distintos_aprox: 137318, pessoal: 'só contagens: valores seriam dado pessoal'}
+      email: {tipo: VARCHAR, nulos_pct: 29.68, distintos_aprox: 1093405, pessoal: 'só contagens: valores seriam dado pessoal'}
+      situacao_especial:
+        tipo: VARCHAR
+        nulos_pct: 99.95
+        distintos_aprox: 6
+        min: EM LIQUIDACAO
+        max: RECUPERACAO JUDICIAL
+        top:
+        - [null, 2045717]
+        - [ESPOLIO EV 407, 452]
+        - [FALIDO, 348]
+        - [RECUPERACAO JUDICIAL, 216]
+        - [LIQUIDACAO EXTRA-JUDICIAL, 50]
+        - [EM LIQUIDACAO, 20]
+        - [INTERVENCAO, 7]
+        - [LIQUIDACAO JUDICIAL, 7]
+      data_situacao_especial: {tipo: DATE, nulos_pct: 99.95, distintos_aprox: 1056, min: '1971-05-11', max: '2026-09-04'}
+  estabelecimentos_historico:
+    linhas: 196655712
+    fonte_do_perfil: amostra de 1,017%. ~2.000.000 linhas
+    colunas:
+      inicio:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 55
+        min: '202111'
+        max: '202609'
+        media: 202290.8946
+        quartis: [202111, 202305, 202312]
+      fim:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 55
+        min: '202111'
+        max: '202609'
+        media: 202438.7944
+        quartis: [202304, 202366, 202609]
+      cnpj: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 748710, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_basico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 727867}
+      cnpj_ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1217, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_dv: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 90, pessoal: 'só contagens: valores seriam dado pessoal'}
+      identificador_matriz_filial: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fantasia: {tipo: VARCHAR, nulos_pct: 45.73, distintos_aprox: 322591, pessoal: 'só contagens: valores seriam dado pessoal'}
+      situacao_cadastral:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '8'
+        top:
+        - ['2', 1324402]
+        - ['8', 333661]
+        - ['4', 174300]
+        - ['3', 4957]
+        - ['1', 958]
+      data_situacao_cadastral: {tipo: DATE, nulos_pct: 0.31, distintos_aprox: 13083, min: '1929-07-18', max: '2026-09-13'}
+      motivo_situacao_cadastral:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 40
+        min: ''
+        max: '9'
+        top:
+        - ['0', 806695]
+        - ['', 517707]
+        - ['1', 263875]
+        - ['63', 173982]
+        - ['71', 34257]
+        - ['67', 13479]
+        - ['73', 9102]
+        - ['54', 4177]
+        - ['75', 3145]
+        - ['2', 1854]
+      nome_cidade_exterior: {tipo: VARCHAR, nulos_pct: 99.91, distintos_aprox: 262, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_pais: {tipo: VARCHAR, nulos_pct: 97.57, distintos_aprox: 77, min: '105', max: '97'}
+      data_inicio_atividade: {tipo: DATE, nulos_pct: 0, distintos_aprox: 16844, min: '1906-02-14', max: '2026-09-13'}
+      cnae_fiscal_principal: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1479}
+      cnae_fiscal_secundaria: {tipo: VARCHAR, nulos_pct: 45.93, distintos_aprox: 176112}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: AC
+        max: TO
+        top:
+        - [SP, 534068]
+        - [MG, 196162]
+        - [RJ, 162574]
+        - [PR, 122084]
+        - [RS, 113633]
+        - [BA, 92173]
+        - [SC, 91418]
+        - [GO, 67634]
+        - [PE, 54117]
+        - [CE, 52524]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.33, distintos_aprox: 6859}
+      id_municipio_rf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6026}
+      tipo_logradouro: {tipo: VARCHAR, nulos_pct: 0.9, distintos_aprox: 276, pessoal: 'só contagens: valores seriam dado pessoal'}
+      logradouro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 298130, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18698, pessoal: 'só contagens: valores seriam dado pessoal'}
+      complemento: {tipo: VARCHAR, nulos_pct: 56.34, distintos_aprox: 96073, pessoal: 'só contagens: valores seriam dado pessoal'}
+      bairro: {tipo: VARCHAR, nulos_pct: 0.22, distintos_aprox: 71137, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cep: {tipo: VARCHAR, nulos_pct: 0.32, distintos_aprox: 258525, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ddd_1: {tipo: VARCHAR, nulos_pct: 8.44, distintos_aprox: 292, pessoal: 'só contagens: valores seriam dado pessoal'}
+      telefone_1: {tipo: VARCHAR, nulos_pct: 8.44, distintos_aprox: 506028, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ddd_2: {tipo: VARCHAR, nulos_pct: 91.22, distintos_aprox: 81, pessoal: 'só contagens: valores seriam dado pessoal'}
+      telefone_2: {tipo: VARCHAR, nulos_pct: 91.24, distintos_aprox: 40023, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ddd_fax: {tipo: VARCHAR, nulos_pct: 90.47, distintos_aprox: 224, pessoal: 'só contagens: valores seriam dado pessoal'}
+      fax: {tipo: VARCHAR, nulos_pct: 90.47, distintos_aprox: 47740, pessoal: 'só contagens: valores seriam dado pessoal'}
+      email: {tipo: VARCHAR, nulos_pct: 21.46, distintos_aprox: 486292, pessoal: 'só contagens: valores seriam dado pessoal'}
+      situacao_especial:
+        tipo: VARCHAR
+        nulos_pct: 99.97
+        distintos_aprox: 6
+        min: EM LIQUID.EXTRA-JUDICIAL
+        max: RECUPERACAO JUDICIAL
+        top:
+        - [null, 1837788]
+        - [ESPOLIO EV 407, 212]
+        - [FALIDO, 138]
+        - [RECUPERACAO JUDICIAL, 94]
+        - [LIQUIDACAO EXTRA-JUDICIAL, 21]
+        - [INTERVENCAO, 12]
+        - [EM LIQUIDACAO, 11]
+        - [EM LIQUID.EXTRA-JUDICIAL, 1]
+        - [LIQUIDACAO JUDICIAL, 1]
+      data_situacao_especial: {tipo: DATE, nulos_pct: 99.97, distintos_aprox: 517, min: '1979-04-30', max: '2026-08-05'}
+  simples:
+    linhas: 50396768
+    fonte_do_perfil: amostra de 3,969%. ~2.000.000 linhas
+    colunas:
+      cnpj_basico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2021970}
+      opcao_simples:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5003
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 1077172]
+        - ['0', 1076007]
+      data_opcao_simples: {tipo: DATE, nulos_pct: 0, distintos_aprox: 6036, min: '2007-07-01', max: '2026-09-13'}
+      data_exclusao_simples: {tipo: DATE, nulos_pct: 48.13, distintos_aprox: 6235, min: '2007-07-01', max: '2026-12-31'}
+      opcao_mei:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3405
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 1420119]
+        - ['1', 733060]
+      data_opcao_mei: {tipo: DATE, nulos_pct: 26.83, distintos_aprox: 5906, min: '2009-07-02', max: '2026-09-13'}
+      data_exclusao_mei: {tipo: DATE, nulos_pct: 60.01, distintos_aprox: 5600, min: '2009-07-02', max: '2026-12-31'}
+  socios:
+    linhas: 28341092
+    fonte_do_perfil: amostra de 7,057% da última partição (ano = 2026). ~2.000.000 linhas
+    colunas:
+      cpf_representante_legal: {tipo: VARCHAR, nulos_pct: 96.96, distintos_aprox: 46592, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 2102363]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '9'
+        max: '9'
+        media: 9
+        quartis: [9, 9, 9]
+        top:
+        - ['9', 2102363]
+      data:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-01'
+        max: '2026-09-01'
+        top:
+        - ['2026-09-01', 2102363]
+      cnpj_basico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2141835}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['2', 2045664]
+        - ['1', 55686]
+        - ['3', 1013]
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1770885, pessoal: 'só contagens: valores seriam dado pessoal'}
+      documento: {tipo: VARCHAR, nulos_pct: 0.05, distintos_aprox: 1592886, pessoal: 'só contagens: valores seriam dado pessoal'}
+      qualificacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 40
+        min: '0'
+        max: '8'
+        top:
+        - ['49', 1328264]
+        - ['22', 462205]
+        - ['16', 111972]
+        - ['5', 58968]
+        - ['59', 31620]
+        - ['65', 30384]
+        - ['10', 29337]
+        - ['30', 15841]
+        - ['52', 6162]
+        - ['31', 5456]
+      data_entrada_sociedade: {tipo: DATE, nulos_pct: 0, distintos_aprox: 17203, min: '1900-01-01', max: '2026-09-13'}
+      id_pais: {tipo: VARCHAR, nulos_pct: 99.6, distintos_aprox: 124, min: '105', max: '97'}
+      nome_representante_legal: {tipo: VARCHAR, nulos_pct: 96.96, distintos_aprox: 52747, pessoal: 'só contagens: valores seriam dado pessoal'}
+      qualificacao_representante_legal: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7, pessoal: 'só contagens: valores seriam dado pessoal'}
+      faixa_etaria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '0'
+        max: '9'
+        top:
+        - ['5', 512267]
+        - ['6', 414661]
+        - ['4', 376943]
+        - ['7', 319091]
+        - ['8', 169421]
+        - ['3', 149120]
+        - ['9', 88645]
+        - ['0', 56803]
+        - ['2', 12880]
+        - ['1', 2532]
+  socios_historico:
+    linhas: 35022573
+    fonte_do_perfil: amostra de 5,711%. ~2.000.000 linhas
+    colunas:
+      cnpj_basico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2278468}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['2', 2091787]
+        - ['1', 110055]
+        - ['3', 838]
+      documento: {tipo: VARCHAR, nulos_pct: 0.04, distintos_aprox: 1646208, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 1775071, pessoal: 'só contagens: valores seriam dado pessoal'}
+      qualificacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 42
+        min: '0'
+        max: '9'
+        top:
+        - ['49', 1273073]
+        - ['22', 524804]
+        - ['16', 117659]
+        - ['65', 90198]
+        - ['5', 65335]
+        - ['10', 37422]
+        - ['59', 29592]
+        - ['30', 12663]
+        - ['20', 10432]
+        - ['31', 10090]
+      n_retratos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 49
+        min: '1'
+        max: '55'
+        media: 38.3326
+        quartis: [19, 53, 55]
+        top:
+        - ['55', 1053289]
+        - ['10', 81554]
+        - ['2', 70122]
+        - ['45', 61551]
+        - ['1', 34403]
+        - ['3', 33338]
+        - ['4', 32788]
+        - ['8', 32333]
+        - ['53', 29182]
+        - ['52', 28886]
+      cpf_representante_legal: {tipo: VARCHAR, nulos_pct: 95.53, distintos_aprox: 63518, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_entrada_sociedade: {tipo: DATE, nulos_pct: 0, distintos_aprox: 15271, min: '1900-08-28', max: '2026-09-12'}
+      id_pais: {tipo: VARCHAR, nulos_pct: 99.53, distintos_aprox: 148, min: '105', max: '97'}
+      nome_representante_legal: {tipo: VARCHAR, nulos_pct: 95.53, distintos_aprox: 67095, pessoal: 'só contagens: valores seriam dado pessoal'}
+      qualificacao_representante_legal: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9, pessoal: 'só contagens: valores seriam dado pessoal'}
+      faixa_etaria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '0'
+        max: '9'
+        top:
+        - ['5', 531558]
+        - ['4', 416340]
+        - ['6', 410914]
+        - ['7', 305302]
+        - ['3', 173632]
+        - ['8', 157972]
+        - ['0', 111040]
+        - ['9', 80087]
+        - ['2', 13531]
+        - ['1', 2304]
+      primeiro_retrato:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 51
+        min: '202111'
+        max: '202609'
+        media: 202229.3044
+        quartis: [202111, 202111, 202343]
+      ultimo_retrato:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 52
+        min: '202111'
+        max: '202609'
+        media: 202567.3403
+        quartis: [202609, 202609, 202609]
+      n_retratos_esperados:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 49
+        min: '1'
+        max: '55'
+        media: 38.3915
+        quartis: [19, 53, 55]
+        top:
+        - ['55', 1057185]
+        - ['10', 81481]
+        - ['2', 70085]
+        - ['45', 61650]
+        - ['1', 34403]
+        - ['3', 33275]
+        - ['4', 32724]
+        - ['8', 32224]
+        - ['53', 29232]
+        - ['52', 29058]
+      no_ultimo_retrato:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 1785376]
+        - ['false', 417304]

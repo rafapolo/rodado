@@ -1,0 +1,559 @@
+dataset: br_cvm_fundos
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  balancete: {linhas: 316620509, erro: 'Catalog Error: Table with name balancete does not exist!'}
+  cadastro_historico_admin: {linhas: 85810, erro: 'Catalog Error: Table with name cadastro_historico_admin does not exist!'}
+  cadastro_historico_auditor: {linhas: 104236, erro: 'Catalog Error: Table with name cadastro_historico_auditor does not exist!'}
+  cadastro_historico_classe: {linhas: 62070, erro: 'Catalog Error: Table with name cadastro_historico_classe does not exist!'}
+  cadastro_historico_condom: {linhas: 63707, erro: 'Catalog Error: Table with name cadastro_historico_condom does not exist!'}
+  cadastro_historico_controlador: {linhas: 72184, erro: 'Catalog Error: Table with name cadastro_historico_controlador does not exist!'}
+  cadastro_historico_custodiante: {linhas: 73005, erro: 'Catalog Error: Table with name cadastro_historico_custodiante does not exist!'}
+  cadastro_historico_denom_comerc: {linhas: 81132, erro: 'Catalog Error: Table with name cadastro_historico_denom_comerc does not exist!'}
+  cadastro_historico_denom_social: {linhas: 152374, erro: 'Catalog Error: Table with name cadastro_historico_denom_social does not exist!'}
+  cadastro_historico_diretor_resp: {linhas: 179010, erro: 'Catalog Error: Table with name cadastro_historico_diretor_resp does not exist!'}
+  cadastro_historico_exclusivo: {linhas: 65384, erro: 'Catalog Error: Table with name cadastro_historico_exclusivo does not exist!'}
+  cadastro_historico_exerc_social: {linhas: 507417, erro: 'Catalog Error: Table with name cadastro_historico_exerc_social does not exist!'}
+  cadastro_historico_fic: {linhas: 64451, erro: 'Catalog Error: Table with name cadastro_historico_fic does not exist!'}
+  cadastro_historico_gestor: {linhas: 99812, erro: 'Catalog Error: Table with name cadastro_historico_gestor does not exist!'}
+  cadastro_historico_publico_alvo: {linhas: 42985, erro: 'Catalog Error: Table with name cadastro_historico_publico_alvo does not exist!'}
+  cadastro_historico_rentab: {linhas: 60178, erro: 'Catalog Error: Table with name cadastro_historico_rentab does not exist!'}
+  cadastro_historico_sit: {linhas: 145722, erro: 'Catalog Error: Table with name cadastro_historico_sit does not exist!'}
+  cadastro_historico_taxa_adm: {linhas: 87757, erro: 'Catalog Error: Table with name cadastro_historico_taxa_adm does not exist!'}
+  cadastro_historico_taxa_perfm: {linhas: 43639, erro: 'Catalog Error: Table with name cadastro_historico_taxa_perfm does not exist!'}
+  cadastro_historico_trib_lprazo: {linhas: 56545, erro: 'Catalog Error: Table with name cadastro_historico_trib_lprazo does not exist!'}
+  carteira_blc_1: {linhas: 1950215, erro: 'Catalog Error: Table with name carteira_blc_1 does not exist!'}
+  carteira_blc_2: {linhas: 6799905, erro: 'Catalog Error: Table with name carteira_blc_2 does not exist!'}
+  carteira_blc_3: {linhas: 11336, erro: 'Catalog Error: Table with name carteira_blc_3 does not exist!'}
+  carteira_blc_4: {linhas: 10750928, erro: 'Catalog Error: Table with name carteira_blc_4 does not exist!'}
+  carteira_blc_5: {linhas: 3092818, erro: 'Catalog Error: Table with name carteira_blc_5 does not exist!'}
+  carteira_blc_6: {linhas: 474419, erro: 'Catalog Error: Table with name carteira_blc_6 does not exist!'}
+  carteira_blc_7: {linhas: 3042828, erro: 'Catalog Error: Table with name carteira_blc_7 does not exist!'}
+  carteira_blc_8: {linhas: 9996172, erro: 'Catalog Error: Table with name carteira_blc_8 does not exist!'}
+  carteira_confid: {linhas: 187163, erro: 'Catalog Error: Table with name carteira_confid does not exist!'}
+  carteira_fie: {linhas: 447690, erro: 'Catalog Error: Table with name carteira_fie does not exist!'}
+  carteira_fie_confid: {linhas: 1777, erro: 'Catalog Error: Table with name carteira_fie_confid does not exist!'}
+  carteira_pl: {linhas: 1156670, erro: 'Catalog Error: Table with name carteira_pl does not exist!'}
+  extrato: {linhas: 149489, erro: 'Catalog Error: Table with name extrato does not exist!'}
+  fundos:
+    linhas: 46806
+    fonte_do_perfil: tabela inteira
+    colunas:
+      TP_FUNDO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: FACFIF
+        max: FUNCINE
+        top:
+        - [FI, 29537]
+        - [FIF, 5228]
+        - [FACFIF, 5211]
+        - [FIDC, 1891]
+        - [FIP, 1631]
+        - [FITVM, 842]
+        - [FMIA-CL, 775]
+        - [FII, 518]
+        - [FMIA, 229]
+        - [FIEX, 206]
+      CNPJ_FUNDO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 41786, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DENOM_SOCIAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 44483}
+      DT_REG: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5420, min: '1957-01-18', max: '2024-09-24'}
+      DT_CONST: {tipo: DATE, nulos_pct: 3.92, distintos_aprox: 6849, min: '1942-07-31', max: '2024-09-24'}
+      CD_CVM:
+        tipo: BIGINT
+        nulos_pct: 0.01
+        distintos_aprox: 45252
+        min: '19'
+        max: '599001'
+        media: 157640.5232
+        quartis: [32404, 115776, 249047]
+      DT_CANCEL: {tipo: DATE, nulos_pct: 0.48, distintos_aprox: 5953, min: '1986-05-25', max: '2026-09-30'}
+      SIT:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: CANCELADA
+        max: LIQUIDAÇÃO
+        top:
+        - [CANCELADA, 46579]
+        - [LIQUIDAÇÃO, 105]
+        - [FASE PRÉ-OPERACIONAL, 79]
+        - [EM FUNCIONAMENTO NORMAL, 22]
+        - [INCORPORAÇÃO, 10]
+        - [EM ANÁLISE, 6]
+        - [EM SITUAÇÃO ESPECIAL, 5]
+      DT_INI_SIT: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5953, min: '1986-05-25', max: '2026-09-30'}
+      DT_INI_ATIV: {tipo: DATE, nulos_pct: 43.33, distintos_aprox: 5653, min: '1963-07-01', max: '2025-07-29'}
+      DT_INI_EXERC: {tipo: DATE, nulos_pct: 32.95, distintos_aprox: 547, min: '2003-06-17', max: '2026-10-01'}
+      DT_FIM_EXERC: {tipo: DATE, nulos_pct: 32.95, distintos_aprox: 149, min: '2004-06-16', max: '2027-09-30'}
+      CLASSE:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: ''
+        max: Renda Fixa
+        top:
+        - [Multimercado, 20014]
+        - ['', 13161]
+        - [Ações, 4547]
+        - [Renda Fixa, 3987]
+        - [FIDC, 1172]
+        - [FIP, 839]
+        - [Referenciado, 638]
+        - [FIP Multi, 619]
+        - [FIDC-NP, 524]
+        - [FII, 511]
+      DT_INI_CLASSE: {tipo: DATE, nulos_pct: 28.12, distintos_aprox: 3873, min: '1994-12-01', max: '2025-09-15'}
+      RENTAB_FUNDO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: ''
+        max: Índice de preços
+        top:
+        - ['', 21036]
+        - [DI de um dia, 15586]
+        - [OUTROS, 4005]
+        - [Não se aplica, 2645]
+        - [Ibovespa, 1956]
+        - [Índice de Preços ao Consumidor Amplo (IPCA/IBGE), 323]
+        - [IBrX, 260]
+        - [Taxa Selic, 259]
+        - [Índice Geral de Preços-Mercado (IGP-M), 131]
+        - [Dólar comercial, 110]
+      CONDOM:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: ''
+        max: Fechado
+        top:
+        - [Aberto, 25629]
+        - ['', 13476]
+        - [Fechado, 7701]
+      FUNDO_COTAS:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: ''
+        max: S
+        top:
+        - [N, 19311]
+        - [S, 14338]
+        - ['', 13157]
+      FUNDO_EXCLUSIVO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: ''
+        max: S
+        top:
+        - [N, 23629]
+        - ['', 17269]
+        - [S, 5908]
+      TRIB_LPRAZO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: ''
+        max: S
+        top:
+        - ['', 21025]
+        - [S, 13592]
+        - [N/A, 7021]
+        - [N, 5168]
+      PUBLICO_ALVO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: ''
+        max: Qualificado
+        top:
+        - ['', 32987]
+        - [Profissional, 6247]
+        - [Qualificado, 5788]
+        - [Público Geral, 1784]
+      ENTID_INVEST:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: ''
+        max: S
+        top:
+        - ['', 42694]
+        - [N, 3475]
+        - [S, 637]
+      TAXA_PERFM:
+        tipo: DOUBLE
+        nulos_pct: 68.19
+        distintos_aprox: 48
+        min: '0.0'
+        max: '10000.0'
+        media: 8.0284
+        quartis: [0, 0, 19.9942]
+        top:
+        - [null, 31917]
+        - ['0.0', 9528]
+        - ['20.0', 3695]
+        - ['10.0', 751]
+        - ['15.0', 405]
+        - ['25.0', 131]
+        - ['30.0', 50]
+        - ['5.0', 43]
+        - ['100.0', 36]
+        - ['1.0', 30]
+      INF_TAXA_PERFM: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 907, min: '', max: 'Índice: 70% a.a. do CDI + 30% IMA-B + 0,50% a.a.'}
+      TAXA_ADM:
+        tipo: DOUBLE
+        nulos_pct: 67.7
+        distintos_aprox: 507
+        min: '0.0'
+        max: '450000.0'
+        media: 101.7726
+        quartis: [0.1286, 0.4614, 1.4636]
+      INF_TAXA_ADM: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2772}
+      VL_PATRIM_LIQ:
+        tipo: DOUBLE
+        nulos_pct: 18.08
+        distintos_aprox: 16593
+        min: '-823262296.0'
+        max: '44725694964.22'
+        media: 50586560.844
+        quartis: [0, 0, 3509821.7105]
+      DT_PATRIM_LIQ: {tipo: DATE, nulos_pct: 18.08, distintos_aprox: 4082, min: '1989-12-31', max: '2026-10-07'}
+      DIRETOR: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 137, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CNPJ_ADMIN: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 220, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ADMIN: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 280, min: '', max: ÚNICA ADMINISTRAÇÃO E GESTÃO DE RECURSOS LTDA.}
+      PF_PJ_GESTOR: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CPF_CNPJ_GESTOR: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1396, pessoal: 'só contagens: valores seriam dado pessoal'}
+      GESTOR: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1134, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CNPJ_AUDITOR: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 87, pessoal: 'só contagens: valores seriam dado pessoal'}
+      AUDITOR: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 74, min: '', max: ÁPICE AUDITORES INDEPENDENTES S/S}
+      CNPJ_CUSTODIANTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 99, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CUSTODIANTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 97, min: '', max: XP SERVIÇOS FINANCEIROS DTVM Ltda.}
+      CNPJ_CONTROLADOR: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 101, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CONTROLADOR: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 98, min: '', max: ÓRAMA DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A.}
+      INVEST_CEMPR_EXTER:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: ''
+        max: S
+        top:
+        - [N, 23404]
+        - ['', 17269]
+        - [S, 6133]
+      CLASSE_ANBIMA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 58, min: '', max: Renda Fixa Simples}
+  informe_diario: {linhas: 81549118, erro: 'Catalog Error: Table with name informe_diario does not exist!'}
+  perfil_mensal: {linhas: 2000051, erro: 'Catalog Error: Table with name perfil_mensal does not exist!'}
+  registro_classe:
+    linhas: 36807
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_Registro_Fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 28190}
+      ID_Registro_Classe: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 31754}
+      CNPJ_Classe: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 34435, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Codigo_CVM: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 26259}
+      Data_Registro: {tipo: DATE, nulos_pct: 0, distintos_aprox: 987, min: '2023-04-06', max: '2026-10-06'}
+      Data_Constituicao: {tipo: DATE, nulos_pct: 0.02, distintos_aprox: 4224, min: '1972-06-23', max: '2026-10-06'}
+      Data_Inicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 987, min: '2002-05-27', max: '2026-10-06'}
+      Tipo_Classe:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: Classes de Cotas de Fundos FIAGRO
+        max: Classes de Cotas de Fundos Funcine
+        top:
+        - [Classes de Cotas de Fundos FIF, 26722]
+        - [Classes de Cotas de Fundos FIDC, 5374]
+        - [Classes de Cotas de Fundos FIP, 2518]
+        - [Classes de Cotas de Fundos FII, 1538]
+        - [Classes de Cotas de Fundos FIAGRO, 377]
+        - [Classes de Cotas de Fundos FIIM, 255]
+        - [Classes de Cotas de Fundos FIF (FAPI), 13]
+        - [Classes de Cotas de Fundos Funcine, 8]
+        - [Classes de Cotas de Fundos FICART, 1]
+        - [Classes de Cotas de Fundos FIP (FMIEE), 1]
+      Denominacao_Social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 40278}
+      Situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Cancelado
+        max: Fase Pré-Operacional
+        top:
+        - [Em Funcionamento Normal, 33779]
+        - [Fase Pré-Operacional, 2246]
+        - [Em Liquidação, 745]
+        - [Cancelado, 37]
+      Data_Inicio_Situacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 957, min: '2023-04-24', max: '2026-10-06'}
+      Classificacao:
+        tipo: VARCHAR
+        nulos_pct: 27.44
+        distintos_aprox: 5
+        min: Ações
+        max: Renda Fixa
+        top:
+        - [Multimercado, 14383]
+        - [null, 10099]
+        - [Renda Fixa, 7876]
+        - [Ações, 4289]
+        - [FMP-FGTS, 93]
+        - [Cambial, 67]
+      Indicador_Desempenho:
+        tipo: VARCHAR
+        nulos_pct: 30.27
+        distintos_aprox: 33
+        min: Carteira de ações
+        max: Índice de preços
+        top:
+        - [null, 11142]
+        - [DI de um dia, 10723]
+        - [Não se aplica, 8663]
+        - [OUTROS, 3261]
+        - [Ibovespa, 1309]
+        - [Índice de Mercado Andima todas NTN-B, 595]
+        - [Índice de Preços ao Consumidor Amplo (IPCA/IBGE), 393]
+        - [Índice de Mercado Andima NTN-B até 5 anos, 178]
+        - [IBrX, 111]
+        - [Índice Geral de Preços-Mercado (IGP-M), 105]
+      Classe_Cotas:
+        tipo: VARCHAR
+        nulos_pct: 27.52
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 16770]
+        - [null, 10128]
+        - [S, 9909]
+      Classificacao_Anbima: {tipo: VARCHAR, nulos_pct: 27.69, distintos_aprox: 62, min: Ações Dividendos, max: Renda Fixa Simples}
+      Tributacao_Longo_Prazo:
+        tipo: VARCHAR
+        nulos_pct: 30.61
+        distintos_aprox: 3
+        min: N
+        max: S
+        top:
+        - [N/A, 20981]
+        - [null, 11265]
+        - [S, 3097]
+        - [N, 1464]
+      Entidade_Investimento:
+        tipo: VARCHAR
+        nulos_pct: 72.69
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [null, 26755]
+        - [N, 8340]
+        - [S, 1712]
+      Permitido_Aplicacao_CemPorCento_Exterior:
+        tipo: VARCHAR
+        nulos_pct: 27.52
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 18907]
+        - [null, 10128]
+        - [S, 7772]
+      Classe_ESG:
+        tipo: VARCHAR
+        nulos_pct: 1.07
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 35824]
+        - [S, 591]
+        - [null, 392]
+      Forma_Condominio:
+        tipo: VARCHAR
+        nulos_pct: 10.37
+        distintos_aprox: 2
+        min: Aberto
+        max: Fechado
+        top:
+        - [Aberto, 23226]
+        - [Fechado, 9764]
+        - [null, 3817]
+      Exclusivo:
+        tipo: VARCHAR
+        nulos_pct: 22.4
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 15169]
+        - [S, 13395]
+        - [null, 8243]
+      Publico_Alvo:
+        tipo: VARCHAR
+        nulos_pct: 28.91
+        distintos_aprox: 3
+        min: Profissional
+        max: Qualificado
+        top:
+        - [Profissional, 16863]
+        - [null, 10641]
+        - [Público Geral, 5571]
+        - [Qualificado, 3732]
+      Patrimonio_Liquido:
+        tipo: DOUBLE
+        nulos_pct: 7.7
+        distintos_aprox: 37006
+        min: '-1069883076.03'
+        max: '283235529474.2'
+        media: 498613366.4568
+        quartis: [17706879.9337, 52107762.3276, 183623674.2381]
+      Data_Patrimonio_Liquido: {tipo: DATE, nulos_pct: 7.7, distintos_aprox: 172, min: '2024-07-31', max: '2026-10-05'}
+      CNPJ_Auditor: {tipo: VARCHAR, nulos_pct: 1.06, distintos_aprox: 77, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Auditor: {tipo: VARCHAR, nulos_pct: 1.06, distintos_aprox: 82, min: AQUILA - AUDITORES INDEPENDENTES LTDA, max: YPC AUDITUN S AUDITORIA
+          INDEPENDENTE S/S}
+      CNPJ_Custodiante: {tipo: VARCHAR, nulos_pct: 1.12, distintos_aprox: 73, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Custodiante: {tipo: VARCHAR, nulos_pct: 1.12, distintos_aprox: 89, min: APEX DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A., max: XP
+          SERVIÇOS FINANCEIROS DTVM Ltda.}
+      CNPJ_Controlador: {tipo: VARCHAR, nulos_pct: 27.1, distintos_aprox: 59, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Controlador: {tipo: VARCHAR, nulos_pct: 27.1, distintos_aprox: 65, min: APEX DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A., max: XP
+          SERVIÇOS FINANCEIROS DTVM Ltda.}
+  registro_fundo:
+    linhas: 90502
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_Registro_Fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 90738}
+      CNPJ_Fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 80943, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Codigo_CVM: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 70799}
+      Data_Registro: {tipo: DATE, nulos_pct: 0, distintos_aprox: 6904, min: '1957-01-18', max: '2026-10-06'}
+      Data_Constituicao: {tipo: DATE, nulos_pct: 0.83, distintos_aprox: 8063, min: '1942-07-31', max: '2026-10-06'}
+      Tipo_Fundo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: FACFIF
+        max: FUNCINE
+        top:
+        - [FI, 62401]
+        - [FIDC, 8111]
+        - [FIF, 5229]
+        - [FACFIF, 5211]
+        - [FIP, 4458]
+        - [FII, 2274]
+        - [FITVM, 842]
+        - [FMIA-CL, 775]
+        - [FIAGRO, 398]
+        - [FIIM, 322]
+      Denominacao_Social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 87914}
+      Data_Cancelamento: {tipo: DATE, nulos_pct: 41.61, distintos_aprox: 6248, min: '1986-05-25', max: '2026-10-05'}
+      Situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: Cancelado
+        max: Incorporação
+        top:
+        - [Cancelado, 52844]
+        - [Em Funcionamento Normal, 34454]
+        - [Fase Pré-Operacional, 2323]
+        - [Em Liquidação, 866]
+        - [Incorporação, 9]
+        - [Em Situação Especial, 5]
+        - [Em Análise, 1]
+      Data_Inicio_Situacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 6407, min: '1986-05-25', max: '2026-10-06'}
+      Data_Adaptacao_RCVM175: {tipo: DATE, nulos_pct: 50.84, distintos_aprox: 987, min: '2020-04-23', max: '2026-10-06'}
+      Data_Inicio_Exercicio_Social: {tipo: DATE, nulos_pct: 20.42, distintos_aprox: 1283, min: '2003-06-17', max: '2027-05-31'}
+      Data_Fim_Exercicio_Social: {tipo: DATE, nulos_pct: 20.42, distintos_aprox: 149, min: '2004-06-16', max: '2027-12-31'}
+      Patrimonio_Liquido: {tipo: VARCHAR, nulos_pct: 24.41, distintos_aprox: 37576}
+      Data_Patrimonio_Liquido: {tipo: DATE, nulos_pct: 24.41, distintos_aprox: 4126, min: '1989-12-31', max: '2026-10-02'}
+      Diretor: {tipo: VARCHAR, nulos_pct: 30.46, distintos_aprox: 306, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CNPJ_Administrador: {tipo: VARCHAR, nulos_pct: 28.67, distintos_aprox: 281, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Administrador: {tipo: VARCHAR, nulos_pct: 28.67, distintos_aprox: 294, min: 3FI INVESTIMENTOS LTDA, max: ÚNICA ADMINISTRAÇÃO E GESTÃO DE
+          RECURSOS LTDA.}
+      Tipo_Pessoa_Gestor: {tipo: VARCHAR, nulos_pct: 29.23, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CPF_CNPJ_Gestor: {tipo: VARCHAR, nulos_pct: 29.23, distintos_aprox: 1615, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Gestor: {tipo: VARCHAR, nulos_pct: 29.23, distintos_aprox: 1552, pessoal: 'só contagens: valores seriam dado pessoal'}
+  registro_subclasse:
+    linhas: 10293
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_Registro_Classe: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4023}
+      ID_Subclasse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6986}
+      Codigo_CVM: {tipo: VARCHAR, nulos_pct: 1.49, distintos_aprox: 12103}
+      Data_Constituicao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 691, min: '2014-04-07', max: '2026-10-06'}
+      Data_Inicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 849, min: '2014-04-07', max: '2026-10-06'}
+      Denominacao_Social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7915}
+      Situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Cancelado
+        max: Fase Pré-Operacional
+        top:
+        - [Em Funcionamento Normal, 6148]
+        - [Fase Pré-Operacional, 3740]
+        - [Em Liquidação, 223]
+        - [Em Análise, 181]
+        - [Cancelado, 1]
+      Data_Inicio_Situacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 682, min: '2019-10-17', max: '2026-10-06'}
+      Forma_Condominio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Aberto
+        max: Fechado
+        top:
+        - [Fechado, 7965]
+        - [Aberto, 2328]
+      Exclusivo:
+        tipo: VARCHAR
+        nulos_pct: 0.02
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 9330]
+        - [S, 961]
+        - [null, 2]
+      Publico_Alvo:
+        tipo: VARCHAR
+        nulos_pct: 4.45
+        distintos_aprox: 3
+        min: Profissional
+        max: Qualificado
+        top:
+        - [Profissional, 6745]
+        - [Qualificado, 2534]
+        - [Público Geral, 556]
+        - [null, 458]
+      Previdenciario:
+        tipo: VARCHAR
+        nulos_pct: 5.07
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 9726]
+        - [null, 522]
+        - [S, 45]
+      Exclusivo_INR:
+        tipo: VARCHAR
+        nulos_pct: 4.45
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 9805]
+        - [null, 458]
+        - [S, 30]
+      Exclusivo_Previdencia_Complementar:
+        tipo: VARCHAR
+        nulos_pct: 5.07
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 9766]
+        - [null, 522]
+        - [S, 5]

@@ -1,0 +1,126 @@
+dataset: br_bcb_penalidades
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  penalidades:
+    linhas: 16963
+    fonte_do_perfil: tabela inteira
+    colunas:
+      PAS: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13083}
+      Nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9215, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CPF_CNPJ: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13181, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Data_da_citacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2824, min: '1999-03-05', max: '2026-08-31'}
+      Numero_decisao_1_instancia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12557, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Data_da_decisao_1_instancia: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2261, min: '2013-01-16', max: '2026-10-02'}
+      Tipo_penalidade_1_instancia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: ADMOESTAÇÃO
+        max: PROIBIÇÃO PARA ATUAR
+        top:
+        - [MULTA, 13690]
+        - [NÃO HOUVE PENALIDADE, 1781]
+        - [INABILITAÇÃO, 1349]
+        - [ADVERTÊNCIA, 99]
+        - [PROIBIÇÃO PARA ATUAR, 18]
+        - [DEVOLVER SUBVENÇÃO, 17]
+        - [ADMOESTAÇÃO, 6]
+        - [PROIBIÇÃO DE ATIV/OP, 3]
+      Duracao_da_pena_1_instancia:
+        tipo: DOUBLE
+        nulos_pct: 89.4
+        distintos_aprox: 24
+        min: '0.0'
+        max: '25.0'
+        media: 4.0712
+        quartis: [1, 3, 5.0476]
+        top:
+        - [null, 15165]
+        - ['3.0', 465]
+        - ['0.0', 428]
+        - ['4.0', 193]
+        - ['1.0', 116]
+        - ['6.0', 91]
+        - ['5.0', 87]
+        - ['2.0', 80]
+        - ['8.0', 72]
+        - ['10.0', 53]
+      Valor_da_multa_1_instancia:
+        tipo: DOUBLE
+        nulos_pct: 19.29
+        distintos_aprox: 6631
+        min: '64.14'
+        max: '198048889.54'
+        media: 135662.3747
+        quartis: [3197.9064, 12634.971, 25000]
+      Apresentou_recurso:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NÃO
+        max: SIM
+        top:
+        - [NÃO, 13839]
+        - [SIM, 3124]
+      Numero_decisao_2_instancia: {tipo: VARCHAR, nulos_pct: 79.83, distintos_aprox: 1473, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Data_da_decisao_2_instancia: {tipo: DATE, nulos_pct: 79.83, distintos_aprox: 245, min: '2013-10-11', max: '2026-08-11'}
+      Tipo_penalidade_2_instancia:
+        tipo: VARCHAR
+        nulos_pct: 79.83
+        distintos_aprox: 7
+        min: ADMOESTAÇÃO
+        max: PROIBIÇÃO PARA ATUAR
+        top:
+        - [null, 13541]
+        - [MULTA, 2079]
+        - [INABILITAÇÃO, 634]
+        - [NÃO HOUVE PENALIDADE, 631]
+        - [ADVERTÊNCIA, 62]
+        - [PROIBIÇÃO PARA ATUAR, 12]
+        - [ADMOESTAÇÃO, 3]
+        - [PROIBIÇÃO DE ATIV/OP, 1]
+      Duracao_da_pena_2_instancia:
+        tipo: DOUBLE
+        nulos_pct: 94.18
+        distintos_aprox: 24
+        min: '0.0'
+        max: '25.0'
+        media: 3.7318
+        quartis: [0, 3, 5]
+        top:
+        - [null, 15975]
+        - ['0.0', 341]
+        - ['3.0', 202]
+        - ['4.0', 89]
+        - ['2.0', 46]
+        - ['5.0', 43]
+        - ['6.0', 43]
+        - ['1.0', 33]
+        - ['7.0', 32]
+        - ['10.0', 31]
+      Valor_da_multa_2_instancia:
+        tipo: DOUBLE
+        nulos_pct: 87.74
+        distintos_aprox: 701
+        min: '171.94'
+        max: '198048889.54'
+        media: 433531.4256
+        quartis: [12000.9059, 25000, 50090.5419]
+      Situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: AGUARDANDO INÍCIO DO CUMPRIMENTO
+        max: PENALIDADE EXTINTA
+        top:
+        - [MULTA PAGA, 11926]
+        - [NÃO HOUVE PENALIDADE, 1552]
+        - [PENALIDADE CUMPRIDA, 1107]
+        - [MULTA TRANSFERIDA PARA COBRANÇA, 896]
+        - [PENALIDADE EXTINTA, 689]
+        - [PENALIDADE ESTÁ EM CUMPRIMENTO, 304]
+        - [MULTA VENCIDA E NÃO PAGA, 127]
+        - [AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA, 123]
+        - [PENALIDADE ESTÁ SUSPENSA, 92]
+        - [MULTA ESTÁ EM RECEBIMENTO PARCELADO, 67]

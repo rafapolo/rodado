@@ -1,0 +1,675 @@
+dataset: br_trase_supply_chain
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  beef:
+    linhas: 1497805
+    fonte_do_perfil: tabela inteira
+    colunas:
+      year:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '2015'
+        max: '2017'
+        media: 2016.0104
+        quartis: [2015, 2016, 2017]
+        top:
+        - ['2017', 511369]
+        - ['2015', 495778]
+        - ['2016', 490658]
+      biome:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: AMAZONIA
+        max: UNKNOWN
+        top:
+        - [CERRADO, 626975]
+        - [MATA ATLANTICA, 321910]
+        - [UNKNOWN, 265369]
+        - [AMAZONIA, 223705]
+        - [PAMPA, 45105]
+        - [PANTANAL, 12147]
+        - [CAATINGA, 2594]
+      country_production_iso3_id:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: BRA
+        max: BRA
+        top:
+        - [BRA, 1497805]
+      state_production:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: ' '
+        max: TO
+        top:
+        - [SP, 279348]
+        - [GO, 245247]
+        - [MT, 203288]
+        - [MG, 157235]
+        - [MS, 156153]
+        - [RO, 96079]
+        - [PA, 69527]
+        - [RS, 66811]
+        - [PR, 50968]
+        - [TO, 47142]
+      municipality_name_production: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3298}
+      municipality_id_production: {tipo: VARCHAR, nulos_pct: 17.75, distintos_aprox: 3263}
+      municipality_name_logistics_hub: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 146, min: abaetetuba, max: xinguara}
+      municipality_id_logistics_hub: {tipo: VARCHAR, nulos_pct: 22.5, distintos_aprox: 139, min: '1100023', max: '5220454'}
+      exporter_name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 174, pessoal: 'só contagens: valores seriam dado pessoal'}
+      exporter_group: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 171, pessoal: 'só contagens: valores seriam dado pessoal'}
+      importer_name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2752, pessoal: 'só contagens: valores seriam dado pessoal'}
+      importer_group: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2737, pessoal: 'só contagens: valores seriam dado pessoal'}
+      country_first_import_iso3_id: {tipo: VARCHAR, nulos_pct: 0.03, distintos_aprox: 149, min: ABW, max: ZMB}
+      country_first_import_name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 145, min: ALBANIA, max: ZAMBIA}
+      economic_bloc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 124, min: ALBANIA, max: ZAMBIA}
+      fob_usd:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1791882
+        min: '8.52814854412371e-11'
+        max: '58030873.0'
+        media: 11423.7358
+        quartis: [830.9383, 2043.1777, 6303.3898]
+      beef_equivalent_tonnes:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1336550
+        min: '4.126616495186082e-14'
+        max: '8596.44730840896'
+        media: 4.1122
+        quartis: [0.3356, 0.7826, 2.335]
+      product_description:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: BOVINE OFFALS
+        max: PROCESSED BEEF PRODUCTS
+        top:
+        - [FRESH & FROZEN BEEF PRODUCTS, 1125596]
+        - [BOVINE OFFALS, 168844]
+        - [PROCESSED BEEF PRODUCTS, 114979]
+        - [BOVINE OFFALS / FRESH & FROZEN BEEF PRODUCTS, 76255]
+        - [LIVE CATTLE EXPORTS, 7713]
+        - [FRESH & FROZEN BEEF PRODUCTS / PROCESSED BEEF PRODUCTS, 3604]
+        - [BOVINE OFFALS / FRESH & FROZEN BEEF PRODUCTS / PROCESSED BEEF PRODUCTS, 576]
+        - [BOVINE OFFALS / PROCESSED BEEF PRODUCTS, 238]
+      zero_deforestation_commitments:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: ''
+        max: TAC
+        top:
+        - ['', 1170047]
+        - [G4 & TAC, 162804]
+        - [TAC, 122519]
+        - [G4, 25330]
+        - ['G4 / ', 9958]
+        - [G4 & TAC / TAC, 7147]
+      cattle_deforestation_exposure: {tipo: VARCHAR, nulos_pct: 28.21, distintos_aprox: 954015}
+      co2_emissions_deforestation_5:
+        tipo: DOUBLE
+        nulos_pct: 23.45
+        distintos_aprox: 1183635
+        min: '7.3018749244806e-15'
+        max: '9980624.76172559'
+        media: 552.4862
+        quartis: [4.0057, 26.7564, 134.6735]
+      type:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Beef equivalents
+        max: Beef equivalents
+        top:
+        - [Beef equivalents, 1497805]
+  beef_slaughterhouses:
+    linhas: 7671
+    fonte_do_perfil: tabela inteira
+    colunas:
+      geom_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4609}
+      cartodb_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8000}
+      geom_webmercator_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4511}
+      municipality_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3658}
+      state:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [RS, 1160]
+        - [MG, 742]
+        - [PR, 567]
+        - [SP, 473]
+        - [SC, 459]
+        - [PA, 410]
+        - [PE, 382]
+        - [BA, 371]
+        - [GO, 365]
+        - [MA, 324]
+      address: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6939}
+      slaugtherhouse_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8000}
+      company: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6407, pessoal: 'só contagens: valores seriam dado pessoal'}
+      other_company_names: {tipo: VARCHAR, nulos_pct: 29.59, distintos_aprox: 4200, pessoal: 'só contagens: valores seriam dado pessoal'}
+      multifunctions: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2599}
+      resolution_id:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: ABIEC
+        max: MUNICIPAL CAPITAL
+        top:
+        - [CEP, 6616]
+        - [MUNICIPAL CAPITAL, 747]
+        - [LAPIG, 156]
+        - [IMAZON, 137]
+        - [ABIEC, 15]
+      subclass:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: CONFIRMED SLAUGHTERHOUSE
+        max: UNCONFIRMED SLAUGHTERHOUSE (MULTIFUNCTIONAL FACILITY)
+        top:
+        - [UNCONFIRMED SLAUGHTERHOUSE (MULTIFUNCTIONAL FACILITY), 4309]
+        - [PROBABLE SLAUGHTERHOUSE, 1705]
+        - [CONFIRMED SLAUGHTERHOUSE, 1564]
+        - [UNCONFIRMED SLAUGHTERHOUSE, 93]
+      inspection_level:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: SIE
+        max: UNKNOWN
+        top:
+        - [UNKNOWN, 6684]
+        - [SIF, 496]
+        - [SIE, 448]
+        - [SIM, 43]
+      inspection_number: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 827, min: '', max: POA}
+      tac:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: ''
+        max: SIM
+        top:
+        - ['', 7600]
+        - [SIM, 71]
+      status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: ''
+        max: 'SUSPENSAO
+
+          TEMPORARIA'
+        top:
+        - ['', 7127]
+        - [ATIVO, 299]
+        - [INATIVO, 240]
+        - ['SUSPENSAO
+
+            TEMPORARIA', 4]
+        - [SUSPENSAO, 1]
+      date_sif_registered: {tipo: VARCHAR, nulos_pct: 95.87, distintos_aprox: 135, min: '1911-11-11', max: '2017-12-05'}
+      sif_category: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 64, min: '', max: MATADOURO FRIGORIFICO - C01 / MB5 - MATADOURO DE BOVINO;
+          MATADOURO FRIGORIFICO - C01 / MS5 - MATADOURO DE SUINOS;}
+      point: {tipo: GEOMETRY, nulos_pct: 0, distintos_aprox: 5364}
+  soy_beans:
+    linhas: 311434
+    fonte_do_perfil: tabela inteira
+    colunas:
+      year:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '2004'
+        max: '2020'
+        media: 2014.2491
+        quartis: [2010, 2016, 2019]
+        top:
+        - ['2020', 53958]
+        - ['2019', 53937]
+        - ['2018', 21401]
+        - ['2014', 14974]
+        - ['2006', 14836]
+        - ['2017', 14442]
+        - ['2015', 14415]
+        - ['2016', 14200]
+        - ['2007', 13708]
+        - ['2008', 12781]
+      biome:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: AMAZONIA
+        max: UNKNOWN
+        top:
+        - [MATA ATLANTICA, 135688]
+        - [CERRADO, 109132]
+        - [UNKNOWN, 27649]
+        - [AMAZONIA, 21870]
+        - [PAMPA, 15920]
+        - [PANTANAL, 995]
+        - [CAATINGA, 180]
+      country_production_iso3_id:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: BRA
+        max: BRA
+        top:
+        - [BRA, 311434]
+      state_production:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: ' '
+        max: TO
+        top:
+        - [PR, 67307]
+        - [RS, 49037]
+        - [MT, 46674]
+        - [' ', 27649]
+        - [GO, 23814]
+        - [SP, 23040]
+        - [MG, 20994]
+        - [MS, 16826]
+        - [SC, 11677]
+        - [TO, 8565]
+      municipality_name_production: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2591}
+      municipality_id_production: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3051}
+      municipality_name_logistics_hub: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 824, min: abelardo luz, max: xanxere}
+      municipality_id_logistics_hub: {tipo: VARCHAR, nulos_pct: 13.26, distintos_aprox: 560, min: '1100023', max: '5300108'}
+      export_port:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 41
+        min: ' PORT BRAZIL'
+        max: VITORIA
+        top:
+        - [PARANAGUA, 85958]
+        - [SANTOS, 66650]
+        - [RIO GRANDE, 55168]
+        - [SAO LUIS, 21729]
+        - [VITORIA, 21189]
+        - [SAO FRANCISCO DO SUL, 15223]
+        - [DOMESTIC CONSUMPTION, 12728]
+        - [SALVADOR, 8685]
+        - [SANTAREM, 7156]
+        - [MANAUS, 6217]
+      exporter_name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2091, pessoal: 'só contagens: valores seriam dado pessoal'}
+      exporter_group: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2226, pessoal: 'só contagens: valores seriam dado pessoal'}
+      importer_name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1350, pessoal: 'só contagens: valores seriam dado pessoal'}
+      importer_group: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1208, pessoal: 'só contagens: valores seriam dado pessoal'}
+      country_first_import_iso3_id: {tipo: VARCHAR, nulos_pct: 0.04, distintos_aprox: 163, min: AGO, max: ZAF}
+      country_first_import_name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 157, min: ALBANIA, max: YEMEN}
+      economic_bloc_first_import_name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 138, min: ALBANIA, max: YEMEN}
+      fob_usd:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 256598
+        min: '0.0'
+        max: '686281409.5314459'
+        media: 1252234.0478
+        quartis: [32033.4229, 132587.3239, 627588.4486]
+      soy_total_export:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 309075
+        min: '2.1537508691399007e-26'
+        max: '1799216.3388337316'
+        media: 4395.014
+        quartis: [107.44, 432.3735, 2045.0734]
+      land_use:
+        tipo: DOUBLE
+        nulos_pct: 8.87
+        distintos_aprox: 297286
+        min: '2.5500594597900785'
+        max: '265514.77801852406'
+        media: 1489.2902
+        quartis: [40.394, 160.0265, 739.1466]
+      soy_deforestation_exposure: {tipo: VARCHAR, nulos_pct: 41.54, distintos_aprox: 134738}
+      zero_deforestation_commitments:
+        tipo: VARCHAR
+        nulos_pct: 26.55
+        distintos_aprox: 3
+        min: COMPANY COMMITMENT
+        max: SOY MORATORIUM
+        top:
+        - [NONE, 144011]
+        - [null, 82679]
+        - [COMPANY COMMITMENT, 69942]
+        - [SOY MORATORIUM, 14802]
+      co2_gross_emissions_deforestation_5:
+        tipo: DOUBLE
+        nulos_pct: 41.55
+        distintos_aprox: 178342
+        min: '0.0'
+        max: '3323159.653121696'
+        media: 4263.8888
+        quartis: [0.1006, 25.6343, 374.4071]
+      co2_net_emissions_deforestation_5:
+        tipo: DOUBLE
+        nulos_pct: 41.54
+        distintos_aprox: 123453
+        min: '0.0'
+        max: '2871139.901769601'
+        media: 3741.5016
+        quartis: [0.0899, 22.8641, 331.7351]
+      soy_risk:
+        tipo: DOUBLE
+        nulos_pct: 41.54
+        distintos_aprox: 147785
+        min: '0.0'
+        max: '20507.50273512763'
+        media: 12.5378
+        quartis: [0.0001, 0.0534, 0.87]
+      type:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Soy bean equivalents
+        max: Soy bean equivalents
+        top:
+        - [Soy bean equivalents, 311434]
+  soy_beans_crushing_facilities:
+    linhas: 973
+    fonte_do_perfil: tabela inteira
+    colunas:
+      year:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '2005'
+        max: '2016'
+        media: 2010.8016
+        quartis: [2008, 2011, 2014]
+        top:
+        - ['2013', 93]
+        - ['2016', 92]
+        - ['2014', 90]
+        - ['2015', 90]
+        - ['2012', 85]
+        - ['2011', 81]
+        - ['2010', 77]
+        - ['2005', 76]
+        - ['2007', 76]
+        - ['2006', 74]
+      geom_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 113, min: 0101000020E6100000032670EB6EFE49C0BB7EC16ED86E37C0, max: 0101000020E6100000FF78AF5A99E846C01D3D7E6FD32F28C0}
+      cartodb_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1070}
+      geom_webmercator_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 104, min: 0101000020110F00000043CD1C38C457C195149EF55BF93AC1, max: 0101000020110F0000FEF14AFFDF5354C11C079ED04ADA41C1}
+      municipality_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 75, min: '1100304', max: '5220405'}
+      state:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: AM
+        max: TO
+        top:
+        - [PR, 219]
+        - [RS, 194]
+        - [GO, 146]
+        - [MT, 117]
+        - [SP, 84]
+        - [MS, 54]
+        - [MG, 43]
+        - [BA, 31]
+        - [SC, 28]
+        - [PI, 24]
+      crushing_facility_Id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 115, min: CF001, max: CF145}
+      cnpj: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 125, pessoal: 'só contagens: valores seriam dado pessoal'}
+      company: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 99, pessoal: 'só contagens: valores seriam dado pessoal'}
+      capacity:
+        tipo: BIGINT
+        nulos_pct: 0.51
+        distintos_aprox: 59
+        min: '120'
+        max: '7000'
+        media: 1730.8048
+        quartis: [1000, 1500, 2000]
+      capacity_source:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: ''
+        max: values for 2005 and 2011 are almost identical. no record of any expansion after 2011 and small company http://www.dureino.com.br/novo/dureino.asp
+        top:
+        - ['', 465]
+        - [HINRICHSEN, 239]
+        - [ARY OLEOFAR, 90]
+        - [INTERPOLATED - NO INFORMATION, 82]
+        - [HINRICHSEN / ARY OLEOFAR, 34]
+        - ['http://www.grupocereal.com.br/timeline/', 12]
+        - ['http://www.abiove.org.br/site/_FILES/Portugues/02102012-102007-ranking_cidades_esmagamento_de_oleaginosas.pdf', 9]
+        - ['https://en.calameo.com/read/00376540345ff8d96ae46', 9]
+        - ['http://www.clarionsa.com.br/default.asp?v_lang=pt we dont know the date of the website. but assume no changes', 7]
+        - ['http://afolharegional-afolharegional.blogspot.com/2011/10/olfar-no-topo.html', 5]
+      status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: ATIVA
+        max: ATIVA
+        top:
+        - [ATIVA, 973]
+      point: {tipo: GEOMETRY, nulos_pct: 0, distintos_aprox: 94, min: POINT (-51.98776 -23.43299), max: POINT (-60.091363300000005 -12.7624507)}
+  soy_beans_refining_facilities:
+    linhas: 504
+    fonte_do_perfil: tabela inteira
+    colunas:
+      year:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '2005'
+        max: '2016'
+        media: 2010.6766
+        quartis: [2008, 2011, 2014]
+        top:
+        - ['2016', 50]
+        - ['2014', 47]
+        - ['2015', 45]
+        - ['2013', 43]
+        - ['2005', 42]
+        - ['2006', 42]
+        - ['2007', 41]
+        - ['2009', 40]
+        - ['2012', 40]
+        - ['2008', 39]
+      geom_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51, min: 0101000020E61000000EDD693DCC1F4EC027800169F53028C0, max: 0101000020E6100000FAC54D87D37649C09827BF31634836C0}
+      cartodb_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 505, min: '1', max: '99'}
+      geom_webmercator_id:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 49
+        min: 0101000020110F000001B7E476214656C1A697EBD8F70B49C1
+        max: 0101000020110F0000F75F4939DD5754C180A461C458F941C1
+        top:
+        - [0101000020110F0000118FA7162A8654C16181E6E93E7740C1, 36]
+        - [0101000020110F00009B80DB9877AC55C1E670D481EF9F3EC1, 29]
+        - [0101000020110F000047FB84F4F0CB54C1957343093F0D3CC1, 24]
+        - [0101000020110F000063CD93C3E13857C112AA1BAB8E843CC1, 23]
+        - [0101000020110F0000F75F4939DD5754C180A461C458F941C1, 21]
+        - [0101000020110F0000A5493FBD45FC54C103238297EFB83FC1, 18]
+        - [0101000020110F00007BEA631A4E4455C183EDD49C381246C1, 15]
+        - [0101000020110F000031E7F80C79DE55C151E73A1087CE4AC1, 13]
+        - [0101000020110F00003677F50E805453C1B1F89E8A198D34C1, 13]
+        - [0101000020110F000040D6EDFB22CF53C15A60D24895AE44C1, 13]
+      municipality_id:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 47
+        min: '1100304'
+        max: '5218805'
+        top:
+        - ['3170206', 36]
+        - ['5218805', 29]
+        - ['5201108', 24]
+        - ['5107602', 23]
+        - ['3534302', 21]
+        - ['5211503', 18]
+        - ['4119905', 15]
+        - ['2903201', 13]
+        - ['3550308', 13]
+        - ['4306767', 13]
+      state:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: BA
+        max: SP
+        top:
+        - [SP, 126]
+        - [GO, 100]
+        - [PR, 77]
+        - [MT, 43]
+        - [MG, 36]
+        - [RS, 35]
+        - [BA, 25]
+        - [MS, 15]
+        - [PE, 12]
+        - [PI, 12]
+      company: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 59, pessoal: 'só contagens: valores seriam dado pessoal'}
+      capacity:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 504]
+      point: {tipo: GEOMETRY, nulos_pct: 0, distintos_aprox: 65, min: POINT (-60.2484204070007 -12.0956223310787), max: POINT (-50.9283303384545
+          -22.2827635852514)}
+  soy_beans_storage_facilities:
+    linhas: 3228
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_cpf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3724, pessoal: 'só contagens: valores seriam dado pessoal'}
+      geom_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3208}
+      cartodb_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3701}
+      geom_webmercator_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2700}
+      municipality_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 606, min: '1100023', max: '5300108'}
+      state:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: AL
+        max: TO
+        top:
+        - [MT, 960]
+        - [PR, 588]
+        - [RS, 516]
+        - [BA, 283]
+        - [MS, 234]
+        - [GO, 210]
+        - [MG, 90]
+        - [SP, 89]
+        - [SC, 58]
+        - [MA, 57]
+      company: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1951, pessoal: 'só contagens: valores seriam dado pessoal'}
+      capacity:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2976
+        min: '505'
+        max: '1031800'
+        media: 26349.4727
+        quartis: [5336, 12850, 31595]
+      point: {tipo: 'GEOMETRY(''OGC:CRS84'')', nulos_pct: 0, distintos_aprox: 2876}
+      date: {tipo: DATE, nulos_pct: 26.27, distintos_aprox: 1377, min: '1949-07-14', max: '2017-02-09'}
+      subclass:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: CONFIRMED STORAGE
+        max: CONFIRMED STORAGE
+        top:
+        - [CONFIRMED STORAGE, 3228]
+      dt:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: b1.1
+        max: b1.5, b2.4
+        top:
+        - [b1.5, 1396]
+        - [b1.4, 861]
+        - ['b1.4, b1.5', 217]
+        - ['b1.2, b2.2', 135]
+        - ['b1.2, b1.4, b2.2', 123]
+        - ['b1.2, b1.4', 63]
+        - ['b1.1, b1.2, b1.5, b2.1, b2.2, b2.4', 55]
+        - [b1.2, 51]
+        - ['b1.1, b1.2, b1.4, b1.5, b2.1, b2.2, b2.4', 36]
+        - ['b1.1, b1.2, b1.4, b1.5', 26]
+  soy_beans_storage_facilities_original:
+    linhas: 3228
+    fonte_do_perfil: tabela inteira
+    colunas:
+      geom_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3208}
+      cartodb_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3701}
+      geom_webmercator_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2700}
+      municipality_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 606, min: '1100023', max: '5300108'}
+      state:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: AL
+        max: TO
+        top:
+        - [MT, 960]
+        - [PR, 588]
+        - [RS, 516]
+        - [BA, 283]
+        - [MS, 234]
+        - [GO, 210]
+        - [MG, 90]
+        - [SP, 89]
+        - [SC, 58]
+        - [MA, 57]
+      cnpj_cpf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3485, pessoal: 'só contagens: valores seriam dado pessoal'}
+      company: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1951, pessoal: 'só contagens: valores seriam dado pessoal'}
+      capacity:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2976
+        min: '505'
+        max: '1031800'
+        media: 26349.4727
+        quartis: [5339, 12835, 31655]
+      point: {tipo: GEOMETRY, nulos_pct: 0, distintos_aprox: 2876}
+      date: {tipo: DATE, nulos_pct: 26.27, distintos_aprox: 1377, min: '1949-07-14', max: '2017-02-09'}
+      subclass:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: CONFIRMED STORAGE
+        max: CONFIRMED STORAGE
+        top:
+        - [CONFIRMED STORAGE, 3228]
+      dt:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: b1.1
+        max: b1.5, b2.4
+        top:
+        - [b1.5, 1396]
+        - [b1.4, 861]
+        - ['b1.4, b1.5', 217]
+        - ['b1.2, b2.2', 135]
+        - ['b1.2, b1.4, b2.2', 123]
+        - ['b1.2, b1.4', 63]
+        - ['b1.1, b1.2, b1.5, b2.1, b2.2, b2.4', 55]
+        - [b1.2, 51]
+        - ['b1.1, b1.2, b1.4, b1.5, b2.1, b2.2, b2.4', 36]
+        - ['b1.1, b1.2, b1.4, b1.5', 26]

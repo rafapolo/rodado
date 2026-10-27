@@ -1,0 +1,647 @@
+dataset: br_senado_dadosabertos
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  comissoes:
+    linhas: 216
+    fonte_do_perfil: tabela inteira
+    colunas:
+      Codigo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 245, min: '1306', max: '834'}
+      Sigla: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 209, min: CAE, max: RELSETCMO}
+      Nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 223, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DataInicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 151, min: '1900-01-01', max: '2026-09-25'}
+      Publica:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [S, 206]
+        - [N, 10]
+      CodigoTipoColegiado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: '106'
+        max: '66'
+        top:
+        - ['129', 50]
+        - ['130', 47]
+        - ['110', 33]
+        - ['42', 22]
+        - ['21', 16]
+        - ['66', 13]
+        - ['41', 5]
+        - ['106', 4]
+        - ['107', 4]
+        - ['124', 4]
+      SiglaTipoColegiado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: CCMO
+        max: ÓRGAO
+        top:
+        - [GPAR, 50]
+        - [FPAR, 47]
+        - [CONS, 37]
+        - [MPV, 22]
+        - [PERMANENTE, 16]
+        - [SUBPECOPE, 13]
+        - [PERM, 5]
+        - [CCMO, 4]
+        - [ÓRGAO, 4]
+        - [CT, 3]
+      DescricaoTipoColegiado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: Comissão Parlamentar de Inquérito
+        max: Órgãos de Representação Internacional
+        top:
+        - [Grupo Parlamentar, 50]
+        - [Frente Parlamentar, 47]
+        - [Conselho, 37]
+        - [Comissão de Medida Provisória, 22]
+        - [Comissão Permanente, 21]
+        - [Subcomissão Permanente, 13]
+        - [Comitê da CMO, 4]
+        - [Órgão, 4]
+        - [Comissão Temporária Externa, 3]
+        - [Subcomissão Temporária, 3]
+      SiglaCasa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: CN
+        max: SF
+        top:
+        - [CN, 138]
+        - [SF, 78]
+  materias:
+    linhas: 162921
+    fonte_do_perfil: tabela inteira
+    colunas:
+      autoria: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7528}
+      casaIdentificadora: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigoMateria:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 157140
+        min: '1'
+        max: '175920'
+        media: 88394.9647
+        quartis: [41121, 90661, 133579]
+      dataApresentacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 15903, min: '1946-09-23', max: '2026-10-06'}
+      dataSituacaoAtual: {tipo: VARCHAR, nulos_pct: 3.22, distintos_aprox: 15488}
+      ementa: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 158458}
+      enteIdentificador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 107, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 167904
+        min: '500007'
+        max: '9112499'
+        media: 3731795.6622
+        quartis: [1586851, 2608805, 7659662]
+      identificacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 138509, pessoal: 'só contagens: valores seriam dado pessoal'}
+      situacaoAtual: {tipo: VARCHAR, nulos_pct: 3.21, distintos_aprox: 122, min: AGUARDANDO AUDIÊNCIA PÚBLICA, max: VOTO ENCAMINHADO}
+      tipoConteudo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 191, min: 'Abertura de ciclo de premiação, condecoração ou homenagem', max: Zelar
+          pela preservação da competência legislativa do Congresso Nacional}
+      tipoDocumento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 44, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tramitando:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [Não, 152142]
+        - [Sim, 10779]
+  senadores:
+    linhas: 81
+    fonte_do_perfil: tabela inteira
+    colunas:
+      CodigoParlamentar: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 105, min: '1173', max: '825'}
+      CodigoPublicoNaLegAtual: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 78, min: '800', max: '949'}
+      NomeParlamentar: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 90, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NomeCompletoParlamentar: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 79, pessoal: 'só contagens: valores seriam dado pessoal'}
+      SexoParlamentar:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Feminino
+        max: Masculino
+        top:
+        - [Masculino, 66]
+        - [Feminino, 15]
+      FormaTratamento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'Senador '
+        max: 'Senadora '
+        top:
+        - ['Senador ', 66]
+        - ['Senadora ', 15]
+      UrlFotoParlamentar: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 73, min: 'http://www.senado.leg.br/senadores/img/fotos-oficiais/senador1173.jpg',
+        max: 'http://www.senado.leg.br/senadores/img/fotos-oficiais/senador825.jpg'}
+      UrlPaginaParlamentar: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 83, min: 'http://www25.senado.leg.br/web/senadores/senador/-/perfil/1173',
+        max: 'http://www25.senado.leg.br/web/senadores/senador/-/perfil/825'}
+      EmailParlamentar: {tipo: VARCHAR, nulos_pct: 3.7, distintos_aprox: 82, pessoal: 'só contagens: valores seriam dado pessoal'}
+      SiglaPartidoParlamentar:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: AVANTE
+        max: UNIÃO
+        top:
+        - [PL, 15]
+        - [PSD, 14]
+        - [MDB, 9]
+        - [PT, 9]
+        - [PP, 8]
+        - [PSB, 7]
+        - [REPUBLICANOS, 6]
+        - [PSDB, 4]
+        - [PODE, 3]
+        - [UNIÃO, 3]
+      UfParlamentar:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 3]
+        - [AL, 3]
+        - [AM, 3]
+        - [AP, 3]
+        - [BA, 3]
+        - [CE, 3]
+        - [DF, 3]
+        - [ES, 3]
+        - [GO, 3]
+        - [MA, 3]
+      MembroMesa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [Não, 70]
+        - [Sim, 11]
+      MembroLideranca:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [Não, 49]
+        - [Sim, 32]
+  votacoes:
+    linhas: 3619
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 37
+        min: '1988'
+        max: '2026'
+        media: 2010.7864
+        quartis: [2003, 2011, 2019]
+        top:
+        - ['2020', 223]
+        - ['2021', 200]
+        - ['2019', 193]
+        - ['2003', 192]
+        - ['2011', 190]
+        - ['2007', 177]
+        - ['1999', 148]
+        - ['2023', 148]
+        - ['2013', 139]
+        - ['2017', 137]
+      casaSessao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: SF
+        max: SF
+        top:
+        - [SF, 3619]
+      codigoMateria:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3059
+        min: '597'
+        max: '175732'
+        media: 99058.5554
+        quartis: [66709, 100121, 141143]
+      codigoSessao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1189
+        min: '23'
+        max: '588590'
+        media: 108580.5775
+        quartis: [19452, 21070, 193099]
+      codigoSessaoLegislativa:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 51
+        min: '1'
+        max: '874'
+        media: 688.845
+        quartis: [551, 844, 863]
+      codigoSessaoVotacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3346
+        min: '21'
+        max: '7105'
+        media: 4613.6585
+        quartis: [3933, 4901, 6182]
+      dataApresentacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1624, min: '1988-11-24', max: '2026-09-03'}
+      dataSessao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1204, min: '1991-03-06', max: '2026-09-03'}
+      descricaoVotacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3910}
+      ementa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3331}
+      idProcesso:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2773
+        min: '505744'
+        max: '9105948'
+        media: 4498492.3935
+        quartis: [2635564, 2947178, 7876994]
+      identificacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2428, pessoal: 'só contagens: valores seriam dado pessoal'}
+      informeLegislativo: {tipo: 'STRUCT(casaColegiado VARCHAR, casaEnteAdm VARCHAR, codigoColegiado BIGINT, "data" VARCHAR, id BIGINT, idEnteAdm
+          BIGINT, idEvento BIGINT, nomeColegiado VARCHAR, nomeEnteAdm VARCHAR, numeroAutuacao BIGINT, siglaColegiado VARCHAR, siglaEnteAdm VARCHAR,
+          texto VARCHAR)', nulos_pct: 1.16, distintos_aprox: 3250, min: "{'casaColegiado': CN, 'casaEnteAdm': SF, 'codigoColegiado': 1999, 'data':\
+          \ 2017-11-07, 'id': 1970991, 'idEnteAdm': 13594, 'idEvento': 9974384, 'nomeColegiado': Plenário do Congresso Nacional, 'nomeEnteAdm':\
+          \ Secretaria de Atas e Diários, 'numeroAutuacao': 1, 'siglaColegiado': PLEN, 'siglaEnteAdm': SEADI, 'texto': 'Encaminhado à publicação\
+          \ o Parecer nº 17, de 2017 - CI, relator Senador Eduardo Braga ,favorável.\r\n\r\n(Matéria apreciada na Ordem do Dia, extrapauta, com\
+          \ aquiescência do Plenário)\r\nAprovado o Parecer nº 17, de 2017-CI, com o seguinte resultado: Sim: 58 ; Não: 04; Abst.: 01; Total:\
+          \ 63.\r\nSerá feita a devida comunicação ao Senhor Presidente da República.'}", max: "{'casaColegiado': NULL, 'casaEnteAdm': SF, 'codigoColegiado':\
+          \ NULL, 'data': 2020-06-25, 'id': 2031386, 'idEnteAdm': 13594, 'idEvento': 10091460, 'nomeColegiado': NULL, 'nomeEnteAdm': Secretaria\
+          \ de Atas e Diários, 'numeroAutuacao': 1, 'siglaColegiado': NULL, 'siglaEnteAdm': SEADI, 'texto': '(Sessão Deliberativa Remota realizada\
+          \ no dia 25/06/2020)\r\nEncaminhado à publicação o PLV.\r\nEncaminhados à publicação e indeferidos os seguintes Requerimentos:\r\n-\
+          \ nº 1063, de 2020, do Senador Rogério Carvalho, Líder do PT, de impugnação do art. 4º do PLV;\r\n- nº 1089, de 2020, do Senador Jorge\
+          \ Kajuru, de impugnação do art. 5º do PLV;\r\n- nº 1103, de 2020, do Senador Randolfe Rodrigues, Líder do Rede, de impugnação do art.\
+          \ 5º do PLV.\r\nProferido pelo Senador Omar Aziz, o PAR nº 72/2020-PLEN-SF, favorável ao PLV. \r\nEncaminhados à publicação e deferidos\
+          \ os seguintes Requerimentos:\r\n- nº 1060/2020, da Liderança do PT, que solicita destaque para votação em separado da  Emenda nº 42;\r\
+          \n- nº1094/2020, da Liderança do Podemos, que solicita destaque para votação em separado da  Emenda nº 41;\r\n- nº 1098/2020, da Liderança\
+          \ do Cidadania, que solicita destaque para votação em separado da  Emenda nº 41;\r\n- nº 1107/2020, da Liderança da Rede, que solicita\
+          \ destaque para votação em separado da  Emenda nº 15.\r\nO Senador Rogério Carvalho, Lider do PT, retira o destaque para Emenda nº 42.\r\
+          \nO Senador Randolfe Rodrigues, Lider do Rede, retira o destaque para Emenda nº 15.\r\nA Senadora Eliziane Gama, Lider do Cidadania,\
+          \ retira o destaque para Emenda nº 41.\r\nAprovados, em conjunto, os pressupostos constitucionais de relevância e urgência; adequação\
+          \ financeira e orçamentária e pertinência temática, e o PLV 16/2018, ressalvados os destaques. (Sim – 71, Não – 4, Abst. -1; Presidente\
+          \ – 1, Total – 77.)\r\nRejeitada a Emenda nº 41, destacada. (Sim – 24, Não – 49, Presidente – 1, Total – 74.)\r\nFicam prejudicadas\
+          \ a medida provisória e as emendas a ela apresentadas.\r\nÀ sanção. \r\nSerá feita a devida comunicação à Câmara dos Deputados.\n(Encaminhados\
+          \ à publicação os RQS nº 847 e 1062, de 2012.)\n************* Retificado em 26/06/2020*************\n(No registro da ação legislativa,\
+          \ desconsidere-se, por incorreção, a citação dos Requerimentos nºs 847 e 1062, de 2012.)\r\n(Encaminhados à publicação os RQS nºs 847\
+          \ e 1062, de 2020.)'}"}
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 635, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numeroSessao: {tipo: BIGINT, nulos_pct: 0.14, distintos_aprox: 260, pessoal: 'só contagens: valores seriam dado pessoal'}
+      resultadoVotacao:
+        tipo: VARCHAR
+        nulos_pct: 2.98
+        distintos_aprox: 4
+        min: A
+        max: R
+        top:
+        - [A, 3119]
+        - [R, 389]
+        - [null, 108]
+        - [E, 2]
+        - [P, 1]
+      sequencialSessao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '1'
+        max: '27'
+        media: 4.0204
+        quartis: [1, 3, 5]
+        top:
+        - ['1', 1117]
+        - ['2', 688]
+        - ['3', 452]
+        - ['4', 307]
+        - ['5', 226]
+        - ['6', 163]
+        - ['7', 127]
+        - ['8', 102]
+        - ['9', 82]
+        - ['10', 70]
+      sequencialVotacao:
+        tipo: BIGINT
+        nulos_pct: 75.13
+        distintos_aprox: 1091
+        min: '2023'
+        max: '4419'
+        media: 3877.3744
+        quartis: [3683, 3954, 4192]
+      sigla:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: DEN
+        max: SCD
+        top:
+        - [MSF, 1543]
+        - [PEC, 620]
+        - [OFS, 286]
+        - [PLC, 257]
+        - [PLS, 189]
+        - [PL, 156]
+        - [MPV, 151]
+        - [PLP, 130]
+        - [PDS, 121]
+        - [PLV, 74]
+      siglaTipoSessao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: DEX
+        max: TEM
+        top:
+        - [DOR, 2856]
+        - [DEX, 381]
+        - [SDR, 175]
+        - [ORD, 128]
+        - [EXT, 45]
+        - [NDL, 17]
+        - [ESP, 13]
+        - [TEM, 3]
+        - ['NH ', 1]
+      totalVotosAbstencao:
+        tipo: BIGINT
+        nulos_pct: 51.28
+        distintos_aprox: 12
+        min: '0'
+        max: '46'
+        media: 1.0068
+        quartis: [0, 1, 1]
+        top:
+        - [null, 1856]
+        - ['0', 689]
+        - ['1', 652]
+        - ['2', 287]
+        - ['3', 85]
+        - ['4', 28]
+        - ['5', 7]
+        - ['7', 5]
+        - ['6', 4]
+        - ['8', 3]
+      totalVotosNao:
+        tipo: BIGINT
+        nulos_pct: 49.41
+        distintos_aprox: 41
+        min: '0'
+        max: '48'
+        media: 6.0317
+        quartis: [3, 5, 8]
+        top:
+        - [null, 1788]
+        - ['3', 245]
+        - ['4', 204]
+        - ['2', 201]
+        - ['5', 186]
+        - ['1', 165]
+        - ['6', 154]
+        - ['7', 134]
+        - ['8', 96]
+        - ['9', 79]
+      totalVotosSim:
+        tipo: BIGINT
+        nulos_pct: 49.18
+        distintos_aprox: 54
+        min: '9'
+        max: '78'
+        media: 46.9636
+        quartis: [41, 47, 53]
+      votacaoSecreta:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [S, 1846]
+        - [N, 1773]
+      votos: {tipo: 'STRUCT(codigoParlamentar BIGINT, descricaoVotoParlamentar VARCHAR, nomeParlamentar VARCHAR, sexoParlamentar VARCHAR, siglaPartidoParlamentar
+          VARCHAR, siglaUFParlamentar VARCHAR, siglaVotoParlamentar VARCHAR)[]', nulos_pct: 0.44, distintos_aprox: 3858, min: '[{''codigoParlamentar'':
+          1, ''descricaoVotoParlamentar'': Atividade parlamentar, ''nomeParlamentar'': Ademir Andrade, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PSB, ''siglaUFParlamentar'': PA, ''siglaVotoParlamentar'': AP}, {''codigoParlamentar'': 946, ''descricaoVotoParlamentar'': Atividade
+          parlamentar, ''nomeParlamentar'': Alberto Silva, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': PI,
+          ''siglaVotoParlamentar'': AP}, {''codigoParlamentar'': 1025, ''descricaoVotoParlamentar'': Não Compareceu, ''nomeParlamentar'': Amir
+          Lando, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': RO, ''siglaVotoParlamentar'': NCom}, {''codigoParlamentar'':
+          1002, ''descricaoVotoParlamentar'': Presente – Não registrou voto, ''nomeParlamentar'': Antero Paes de Barros, ''sexoParlamentar'':
+          M, ''siglaPartidoParlamentar'': PSDB, ''siglaUFParlamentar'': MT, ''siglaVotoParlamentar'': P-NRV}, {''codigoParlamentar'': 118, ''descricaoVotoParlamentar'':
+          NULL, ''nomeParlamentar'': Antonio Carlos Júnior, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PFL, ''siglaUFParlamentar'':
+          BA, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 3, ''descricaoVotoParlamentar'': Presente – Não registrou voto, ''nomeParlamentar'':
+          Antonio Carlos Valadares, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSB, ''siglaUFParlamentar'': SE, ''siglaVotoParlamentar'':
+          P-NRV}, {''codigoParlamentar'': 5, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Arlindo Porto, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PTB, ''siglaUFParlamentar'': MG, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 6, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Artur da Tavola, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSDB, ''siglaUFParlamentar'': RJ, ''siglaVotoParlamentar'': Não},
+          {''codigoParlamentar'': 185, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Bello Parga, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PFL, ''siglaUFParlamentar'': MA, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 162, ''descricaoVotoParlamentar'': Licença
+          saúde, ''nomeParlamentar'': Benício Sampaio, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PPB, ''siglaUFParlamentar'': PI, ''siglaVotoParlamentar'':
+          LS}, {''codigoParlamentar'': 9, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Bernardo Cabral, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PFL, ''siglaUFParlamentar'': AM, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 10, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Carlos Bezerra, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': MT, ''siglaVotoParlamentar'': Não},
+          {''codigoParlamentar'': 11, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Carlos Patrocínio, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PTB, ''siglaUFParlamentar'': TO, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 12, ''descricaoVotoParlamentar'': Presente
+          – Não registrou voto, ''nomeParlamentar'': Carlos Wilson, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PTB, ''siglaUFParlamentar'':
+          PE, ''siglaVotoParlamentar'': P-NRV}, {''codigoParlamentar'': 13, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Casildo Maldaner,
+          ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': SC, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'':
+          3072, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Chico Sartori, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSDB,
+          ''siglaUFParlamentar'': RO, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 16, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Edison Lobão, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PFL, ''siglaUFParlamentar'': MA, ''siglaVotoParlamentar'': Não},
+          {''codigoParlamentar'': 1024, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Eduardo Siqueira Campos, ''sexoParlamentar'':
+          M, ''siglaPartidoParlamentar'': PSDB, ''siglaUFParlamentar'': TO, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 17, ''descricaoVotoParlamentar'':
+          NULL, ''nomeParlamentar'': Eduardo Suplicy, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PT, ''siglaUFParlamentar'': SP, ''siglaVotoParlamentar'':
+          Sim}, {''codigoParlamentar'': 19, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Emília Fernandes, ''sexoParlamentar'': F,
+          ''siglaPartidoParlamentar'': PT, ''siglaUFParlamentar'': RS, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 2632, ''descricaoVotoParlamentar'':
+          NULL, ''nomeParlamentar'': Fernando Ribeiro, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': PA, ''siglaVotoParlamentar'':
+          Não}, {''codigoParlamentar'': 25, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Francelino Pereira, ''sexoParlamentar'':
+          M, ''siglaPartidoParlamentar'': PFL, ''siglaUFParlamentar'': MG, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 26, ''descricaoVotoParlamentar'':
+          Presente – Não registrou voto, ''nomeParlamentar'': Freitas Neto, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSDB, ''siglaUFParlamentar'':
+          PI, ''siglaVotoParlamentar'': P-NRV}, {''codigoParlamentar'': 196, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Geraldo
+          Althoff, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PFL, ''siglaUFParlamentar'': SC, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'':
+          540, ''descricaoVotoParlamentar'': Presente – Não registrou voto, ''nomeParlamentar'': Geraldo Cândido, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PT, ''siglaUFParlamentar'': RJ, ''siglaVotoParlamentar'': P-NRV}, {''codigoParlamentar'': 27, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Geraldo Melo, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSDB, ''siglaUFParlamentar'': RN, ''siglaVotoParlamentar'': Sim},
+          {''codigoParlamentar'': 944, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Gilberto Mestrinho, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          MDB, ''siglaUFParlamentar'': AM, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 30, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Gilvam Borges, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': AP, ''siglaVotoParlamentar'': Não},
+          {''codigoParlamentar'': 923, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Heloísa Helena, ''sexoParlamentar'': F, ''siglaPartidoParlamentar'':
+          PT, ''siglaUFParlamentar'': AL, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 34, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Iris Rezende, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': GO, ''siglaVotoParlamentar'': Não},
+          {''codigoParlamentar'': 36, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Jefferson Peres, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PDT, ''siglaUFParlamentar'': AM, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 38, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Jonas Pinheiro, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PFL, ''siglaUFParlamentar'': MT, ''siglaVotoParlamentar'': Não},
+          {''codigoParlamentar'': 948, ''descricaoVotoParlamentar'': Presente – Não registrou voto, ''nomeParlamentar'': Jorge Bornhausen, ''sexoParlamentar'':
+          M, ''siglaPartidoParlamentar'': PFL, ''siglaUFParlamentar'': SC, ''siglaVotoParlamentar'': P-NRV}, {''codigoParlamentar'': 40, ''descricaoVotoParlamentar'':
+          NULL, ''nomeParlamentar'': José Agripino, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PFL, ''siglaUFParlamentar'': RN, ''siglaVotoParlamentar'':
+          Não}, {''codigoParlamentar'': 951, ''descricaoVotoParlamentar'': Presente – Não registrou voto, ''nomeParlamentar'': José Alencar, ''sexoParlamentar'':
+          M, ''siglaPartidoParlamentar'': PL, ''siglaUFParlamentar'': MG, ''siglaVotoParlamentar'': P-NRV}, {''codigoParlamentar'': 43, ''descricaoVotoParlamentar'':
+          NULL, ''nomeParlamentar'': José Eduardo Dutra, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PT, ''siglaUFParlamentar'': SE,
+          ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 44, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': José Fogaça, ''sexoParlamentar'':
+          M, ''siglaPartidoParlamentar'': CIDADANIA, ''siglaUFParlamentar'': RS, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 922,
+          ''descricaoVotoParlamentar'': Presente – Não registrou voto, ''nomeParlamentar'': José Jorge, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PFL, ''siglaUFParlamentar'': PE, ''siglaVotoParlamentar'': P-NRV}, {''codigoParlamentar'': 47, ''descricaoVotoParlamentar'': Presente
+          – Não registrou voto, ''nomeParlamentar'': José Sarney, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'':
+          AP, ''siglaVotoParlamentar'': P-NRV}, {''codigoParlamentar'': 90, ''descricaoVotoParlamentar'': Presente – Não registrou voto, ''nomeParlamentar'':
+          José Serra, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSDB, ''siglaUFParlamentar'': SP, ''siglaVotoParlamentar'': P-NRV},
+          {''codigoParlamentar'': 950, ''descricaoVotoParlamentar'': Presente – Não registrou voto, ''nomeParlamentar'': João Alberto Souza, ''sexoParlamentar'':
+          M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': MA, ''siglaVotoParlamentar'': P-NRV}, {''codigoParlamentar'': 949, ''descricaoVotoParlamentar'':
+          NULL, ''nomeParlamentar'': Juvêncio da Fonseca, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': MS,
+          ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 52, ''descricaoVotoParlamentar'': Licença saúde, ''nomeParlamentar'': Lauro
+          Campos, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PDT, ''siglaUFParlamentar'': DF, ''siglaVotoParlamentar'': LS}, {''codigoParlamentar'':
+          53, ''descricaoVotoParlamentar'': Atividade parlamentar, ''nomeParlamentar'': Leomar Quintanilha, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PFL, ''siglaUFParlamentar'': TO, ''siglaVotoParlamentar'': AP}, {''codigoParlamentar'': 2411, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Lindberg Cury, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PFL, ''siglaUFParlamentar'': DF, ''siglaVotoParlamentar'': Não},
+          {''codigoParlamentar'': 947, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Luiz Otavio, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          MDB, ''siglaUFParlamentar'': PA, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 151, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Luiz Pastore, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': ES, ''siglaVotoParlamentar'': Não},
+          {''codigoParlamentar'': 1022, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Luiz Pontes, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PSDB, ''siglaUFParlamentar'': CE, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 57, ''descricaoVotoParlamentar'': Atividade
+          parlamentar, ''nomeParlamentar'': Lúcio Alcântara, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSDB, ''siglaUFParlamentar'':
+          CE, ''siglaVotoParlamentar'': AP}, {''codigoParlamentar'': 58, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Lúdio Coelho,
+          ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSDB, ''siglaUFParlamentar'': MS, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'':
+          302, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Maguito Vilela, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB,
+          ''siglaUFParlamentar'': GO, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 1023, ''descricaoVotoParlamentar'': Atividade parlamentar,
+          ''nomeParlamentar'': Maria do Carmo Alves, ''sexoParlamentar'': F, ''siglaPartidoParlamentar'': AVANTE, ''siglaUFParlamentar'': SE,
+          ''siglaVotoParlamentar'': AP}, {''codigoParlamentar'': 59, ''descricaoVotoParlamentar'': Licença saúde, ''nomeParlamentar'': Marina
+          Silva, ''sexoParlamentar'': F, ''siglaPartidoParlamentar'': PT, ''siglaUFParlamentar'': AC, ''siglaVotoParlamentar'': LS}, {''codigoParlamentar'':
+          60, ''descricaoVotoParlamentar'': Presente – Não registrou voto, ''nomeParlamentar'': Marluce Pinto, ''sexoParlamentar'': F, ''siglaPartidoParlamentar'':
+          MDB, ''siglaUFParlamentar'': RR, ''siglaVotoParlamentar'': P-NRV}, {''codigoParlamentar'': 61, ''descricaoVotoParlamentar'': Presente
+          – Não registrou voto, ''nomeParlamentar'': Mauro Miranda, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'':
+          GO, ''siglaVotoParlamentar'': P-NRV}, {''codigoParlamentar'': 186, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Moreira
+          Mendes, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PFL, ''siglaUFParlamentar'': RO, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'':
+          952, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Mozarildo Cavalcanti, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PFL, ''siglaUFParlamentar'': RR, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 62, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Nabor Júnior, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': AC, ''siglaVotoParlamentar'': Não},
+          {''codigoParlamentar'': 63, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Ney Suassuna, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          MDB, ''siglaUFParlamentar'': PB, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 1083, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Olivir Gabardo, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSDB, ''siglaUFParlamentar'': PR, ''siglaVotoParlamentar'': Não},
+          {''codigoParlamentar'': 66, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Osmar Dias, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PDT, ''siglaUFParlamentar'': PR, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 942, ''descricaoVotoParlamentar'': Não Compareceu,
+          ''nomeParlamentar'': Paulo Hartung, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSB, ''siglaUFParlamentar'': ES, ''siglaVotoParlamentar'':
+          NCom}, {''codigoParlamentar'': 924, ''descricaoVotoParlamentar'': Presente – Não registrou voto, ''nomeParlamentar'': Paulo Souto, ''sexoParlamentar'':
+          M, ''siglaPartidoParlamentar'': PFL, ''siglaUFParlamentar'': BA, ''siglaVotoParlamentar'': P-NRV}, {''codigoParlamentar'': 68, ''descricaoVotoParlamentar'':
+          Presente – Não registrou voto, ''nomeParlamentar'': Pedro Simon, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'':
+          RS, ''siglaVotoParlamentar'': P-NRV}, {''codigoParlamentar'': 69, ''descricaoVotoParlamentar'': Não Compareceu, ''nomeParlamentar'':
+          Ramez Tebet, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': MS, ''siglaVotoParlamentar'': NCom},
+          {''codigoParlamentar'': 70, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Renan Calheiros, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          MDB, ''siglaUFParlamentar'': AL, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 156, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Ricardo Santos, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSDB, ''siglaUFParlamentar'': ES, ''siglaVotoParlamentar'': Não},
+          {''codigoParlamentar'': 71, ''descricaoVotoParlamentar'': Não Compareceu, ''nomeParlamentar'': Roberto Freire, ''sexoParlamentar'':
+          M, ''siglaPartidoParlamentar'': CIDADANIA, ''siglaUFParlamentar'': PE, ''siglaVotoParlamentar'': NCom}, {''codigoParlamentar'': 72,
+          ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Roberto Requião, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB,
+          ''siglaUFParlamentar'': PR, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 1026, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Roberto Saturnino, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PT, ''siglaUFParlamentar'': RJ, ''siglaVotoParlamentar'': Sim},
+          {''codigoParlamentar'': 73, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Romero Jucá, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PSDB, ''siglaUFParlamentar'': RR, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 74, ''descricaoVotoParlamentar'': Não Compareceu,
+          ''nomeParlamentar'': Romeu Tuma, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PFL, ''siglaUFParlamentar'': SP, ''siglaVotoParlamentar'':
+          NCom}, {''codigoParlamentar'': 75, ''descricaoVotoParlamentar'': Presente – Não registrou voto, ''nomeParlamentar'': Ronaldo Cunha Lima,
+          ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSDB, ''siglaUFParlamentar'': PB, ''siglaVotoParlamentar'': P-NRV}, {''codigoParlamentar'':
+          76, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Sebastião Bala Rocha, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PDT, ''siglaUFParlamentar'': AP, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 77, ''descricaoVotoParlamentar'': Representação
+          em solenidade internac./nac./reg., ''nomeParlamentar'': Sérgio Machado, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'':
+          CE, ''siglaVotoParlamentar'': REP}, {''codigoParlamentar'': 1330, ''descricaoVotoParlamentar'': Atividade parlamentar, ''nomeParlamentar'':
+          Tasso Rosado, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PTB, ''siglaUFParlamentar'': RN, ''siglaVotoParlamentar'': AP}, {''codigoParlamentar'':
+          78, ''descricaoVotoParlamentar'': Presente – Não registrou voto, ''nomeParlamentar'': Teotonio Vilela Filho, ''sexoParlamentar'': M,
+          ''siglaPartidoParlamentar'': PSDB, ''siglaUFParlamentar'': AL, ''siglaVotoParlamentar'': P-NRV}, {''codigoParlamentar'': 982, ''descricaoVotoParlamentar'':
+          NULL, ''nomeParlamentar'': Tião Viana, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PT, ''siglaUFParlamentar'': AC, ''siglaVotoParlamentar'':
+          Sim}, {''codigoParlamentar'': 1050, ''descricaoVotoParlamentar'': Presente – Não registrou voto, ''nomeParlamentar'': Valmir Amaral,
+          ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': DF, ''siglaVotoParlamentar'': P-NRV}, {''codigoParlamentar'':
+          81, ''descricaoVotoParlamentar'': Presente – Não registrou voto, ''nomeParlamentar'': Waldeck Ornelas, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PFL, ''siglaUFParlamentar'': BA, ''siglaVotoParlamentar'': P-NRV}, {''codigoParlamentar'': 140, ''descricaoVotoParlamentar'': NULL,
+          ''nomeParlamentar'': Wellington Roberto, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PTB, ''siglaUFParlamentar'': PB, ''siglaVotoParlamentar'':
+          Não}]', max: '[{''codigoParlamentar'': 5982, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Alessandro Vieira, ''sexoParlamentar'':
+          M, ''siglaPartidoParlamentar'': CIDADANIA, ''siglaUFParlamentar'': SE, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 945,
+          ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Alvaro Dias, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PODE, ''siglaUFParlamentar'':
+          PR, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 5529, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Antonio Anastasia,
+          ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSDB, ''siglaUFParlamentar'': MG, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'':
+          751, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Arolde de Oliveira, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PSD, ''siglaUFParlamentar'': RJ, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 5990, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Carlos Viana, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSD, ''siglaUFParlamentar'': MG, ''siglaVotoParlamentar'': Sim},
+          {''codigoParlamentar'': 470, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Chico Rodrigues, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          DEM, ''siglaUFParlamentar'': RR, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 475, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Confúcio Moura, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': RO, ''siglaVotoParlamentar'': Sim},
+          {''codigoParlamentar'': 5998, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Daniella Ribeiro, ''sexoParlamentar'': F, ''siglaPartidoParlamentar'':
+          PP, ''siglaUFParlamentar'': PB, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 4994, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Eduardo Braga, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': AM, ''siglaVotoParlamentar'': Sim},
+          {''codigoParlamentar'': 5976, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Eduardo Girão, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PODE, ''siglaUFParlamentar'': CE, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 3777, ''descricaoVotoParlamentar'': NULL,
+          ''nomeParlamentar'': Eduardo Gomes, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': TO, ''siglaVotoParlamentar'':
+          Sim}, {''codigoParlamentar'': 5718, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Eliziane Gama, ''sexoParlamentar'': F,
+          ''siglaPartidoParlamentar'': CIDADANIA, ''siglaUFParlamentar'': MA, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 5531, ''descricaoVotoParlamentar'':
+          NULL, ''nomeParlamentar'': Elmano Férrer, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PODE, ''siglaUFParlamentar'': PI, ''siglaVotoParlamentar'':
+          Não}, {''codigoParlamentar'': 22, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Esperidião Amin, ''sexoParlamentar'': M,
+          ''siglaPartidoParlamentar'': PP, ''siglaUFParlamentar'': SC, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 5953, ''descricaoVotoParlamentar'':
+          NULL, ''nomeParlamentar'': Fabiano Contarato, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': REDE, ''siglaUFParlamentar'': ES,
+          ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 5540, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Fernando Bezerra
+          Coelho, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': PE, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'':
+          345, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Flávio Arns, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': REDE,
+          ''siglaUFParlamentar'': PR, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 5894, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Flávio Bolsonaro, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSL, ''siglaUFParlamentar'': RJ, ''siglaVotoParlamentar'': Sim},
+          {''codigoParlamentar'': 5008, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Humberto Costa, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PT, ''siglaUFParlamentar'': PE, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 4770, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Izalci Lucas, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSDB, ''siglaUFParlamentar'': DF, ''siglaVotoParlamentar'': Sim},
+          {''codigoParlamentar'': 5895, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Jorge Kajuru, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PSB, ''siglaUFParlamentar'': GO, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 5350, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Jorginho Mello, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PL, ''siglaUFParlamentar'': SC, ''siglaVotoParlamentar'': Sim},
+          {''codigoParlamentar'': 3361, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': José Maranhão, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          MDB, ''siglaUFParlamentar'': PB, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 90, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          José Serra, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSDB, ''siglaUFParlamentar'': SP, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'':
+          5533, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Lasier Martins, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PODE, ''siglaUFParlamentar'': RS, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 5979, ''descricaoVotoParlamentar'': NULL,
+          ''nomeParlamentar'': Leila Barros, ''sexoParlamentar'': F, ''siglaPartidoParlamentar'': PSB, ''siglaUFParlamentar'': DF, ''siglaVotoParlamentar'':
+          Não}, {''codigoParlamentar'': 5926, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Lucas Barreto, ''sexoParlamentar'': M,
+          ''siglaPartidoParlamentar'': PSD, ''siglaUFParlamentar'': AP, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 1186, ''descricaoVotoParlamentar'':
+          NULL, ''nomeParlamentar'': Luis Carlos Heinze, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PP, ''siglaUFParlamentar'': RS,
+          ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 5585, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Luiz Carlos do
+          Carmo, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': GO, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'':
+          5557, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Mailza Gomes, ''sexoParlamentar'': F, ''siglaPartidoParlamentar'': PP,
+          ''siglaUFParlamentar'': AC, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 5666, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Major Olimpio, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSL, ''siglaUFParlamentar'': SP, ''siglaVotoParlamentar'': Sim},
+          {''codigoParlamentar'': 5376, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Mara Gabrilli, ''sexoParlamentar'': F, ''siglaPartidoParlamentar'':
+          PSDB, ''siglaUFParlamentar'': SP, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 742, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Marcelo Castro, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': MDB, ''siglaUFParlamentar'': PI, ''siglaVotoParlamentar'': Sim},
+          {''codigoParlamentar'': 285, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Marcio Bittar, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          MDB, ''siglaUFParlamentar'': AC, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 5422, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Marcos Rogério, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': DEM, ''siglaUFParlamentar'': RO, ''siglaVotoParlamentar'': Sim},
+          {''codigoParlamentar'': 5942, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Marcos do Val, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          CIDADANIA, ''siglaUFParlamentar'': ES, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 5985, ''descricaoVotoParlamentar'': NULL,
+          ''nomeParlamentar'': Nelsinho Trad, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSD, ''siglaUFParlamentar'': MS, ''siglaVotoParlamentar'':
+          Sim}, {''codigoParlamentar'': 5924, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Oriovisto Guimarães, ''sexoParlamentar'':
+          M, ''siglaPartidoParlamentar'': PODE, ''siglaUFParlamentar'': PR, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 374, ''descricaoVotoParlamentar'':
+          NULL, ''nomeParlamentar'': Paulo Rocha, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PT, ''siglaUFParlamentar'': PA, ''siglaVotoParlamentar'':
+          Sim}, {''codigoParlamentar'': 5502, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Plínio Valério, ''sexoParlamentar'': M,
+          ''siglaPartidoParlamentar'': PSDB, ''siglaUFParlamentar'': AM, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 5012, ''descricaoVotoParlamentar'':
+          NULL, ''nomeParlamentar'': Randolfe Rodrigues, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': REDE, ''siglaUFParlamentar'': AP,
+          ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 5236, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Reguffe, ''sexoParlamentar'':
+          M, ''siglaPartidoParlamentar'': S/Partido, ''siglaUFParlamentar'': DF, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 677,
+          ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Roberto Rocha, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSDB, ''siglaUFParlamentar'':
+          MA, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 5905, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Rodrigo Cunha,
+          ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSDB, ''siglaUFParlamentar'': AL, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'':
+          5732, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Rodrigo Pacheco, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          DEM, ''siglaUFParlamentar'': MG, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 2331, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Rose de Freitas, ''sexoParlamentar'': F, ''siglaPartidoParlamentar'': PODE, ''siglaUFParlamentar'': ES, ''siglaVotoParlamentar'': Sim},
+          {''codigoParlamentar'': 5527, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Simone Tebet, ''sexoParlamentar'': F, ''siglaPartidoParlamentar'':
+          MDB, ''siglaUFParlamentar'': MS, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 5988, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'':
+          Soraya Thronicke, ''sexoParlamentar'': F, ''siglaPartidoParlamentar'': PSL, ''siglaUFParlamentar'': MS, ''siglaVotoParlamentar'': Sim},
+          {''codigoParlamentar'': 5959, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Styvenson Valentim, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'':
+          PODE, ''siglaUFParlamentar'': RN, ''siglaVotoParlamentar'': Não}, {''codigoParlamentar'': 4560, ''descricaoVotoParlamentar'': NULL,
+          ''nomeParlamentar'': Sérgio Petecão, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PSD, ''siglaUFParlamentar'': AC, ''siglaVotoParlamentar'':
+          Sim}, {''codigoParlamentar'': 5899, ''descricaoVotoParlamentar'': NULL, ''nomeParlamentar'': Vanderlan Cardoso, ''sexoParlamentar'':
+          M, ''siglaPartidoParlamentar'': PP, ''siglaUFParlamentar'': GO, ''siglaVotoParlamentar'': Sim}, {''codigoParlamentar'': 1173, ''descricaoVotoParlamentar'':
+          NULL, ''nomeParlamentar'': Wellington Fagundes, ''sexoParlamentar'': M, ''siglaPartidoParlamentar'': PL, ''siglaUFParlamentar'': MT,
+          ''siglaVotoParlamentar'': Sim}]'}

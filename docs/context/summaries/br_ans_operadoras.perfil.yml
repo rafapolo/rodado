@@ -1,0 +1,1846 @@
+dataset: br_ans_operadoras
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  caracteristicas_produtos:
+    linhas: 166402
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PLANO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 168929}
+      CD_PLANO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 155460}
+      NM_PLANO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 97463, pessoal: 'só contagens: valores seriam dado pessoal'}
+      REGISTRO_OPERADORA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3208}
+      RAZAO_SOCIAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2917, pessoal: 'só contagens: valores seriam dado pessoal'}
+      GR_MODALIDADE:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: Administradora
+        max: Seguradora
+        top:
+        - [Medicina De Grupo, 72902]
+        - [Cooperativa Médica, 60975]
+        - [Seguradora, 12526]
+        - [Odontologia De Grupo, 8077]
+        - [Filantropia, 5716]
+        - [Cooperativa Odontológica, 3461]
+        - [Autogestão, 2704]
+        - [Administradora, 41]
+      PORTE_OPERADORA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Grande
+        max: Sem beneficiários
+        top:
+        - [Sem beneficiários, 58923]
+        - [Grande, 53604]
+        - [Médio, 30835]
+        - [Pequeno, 23040]
+      VIGENCIA_PLANO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: A
+        max: P
+        top:
+        - [P, 126932]
+        - [A, 39470]
+      CONTRATACAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Coletivo Empresarial + Coletivo por Adesão
+        max: Individual ou familiar
+        top:
+        - [Coletivo empresarial, 70707]
+        - [Individual ou familiar, 53095]
+        - [Coletivo por adesão, 33493]
+        - [Coletivo Empresarial + Coletivo por Adesão, 5916]
+        - [Individual + Coletivo Empresarial + Coletivo por Adesão, 2134]
+        - [Individual ou Familiar + Coletivo por Adesão, 555]
+        - [Individual ou Familiar + Coletivo Empresarial, 502]
+      GR_CONTRATACAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Coletivo empresarial
+        max: Não Identificado
+        top:
+        - [Coletivo empresarial, 70707]
+        - [Individual ou Familiar, 53095]
+        - [Coletivo por adesão, 33493]
+        - [Não Identificado, 9107]
+      SGMT_ASSISTENCIAL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: Amb + Hosp c/s Obstetrícia
+        max: Referência
+        top:
+        - [Ambulatorial + Hospitalar com obstetrícia, 94256]
+        - [Ambulatorial + Hospitalar sem obstetrícia, 18053]
+        - [Odontológico, 16806]
+        - [Ambulatorial, 9031]
+        - [Hospitalar com obstetrícia, 8440]
+        - [Referência, 8173]
+        - [Ambulatorial + Hospitalar com obstetrícia + Odontológico, 4794]
+        - [Hospitalar sem obstetrícia, 3597]
+        - [Amb + Hosp c/s Obstetrícia, 900]
+        - [Ambulatorial + Odontológico, 802]
+      GR_SGMT_ASSISTENCIAL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Ambulatorial
+        max: Hospitalar
+        top:
+        - [Ambulatorial + Hospitalar, 126905]
+        - [Exclusivamente Odontológico, 16806]
+        - [Hospitalar, 12858]
+        - [Ambulatorial, 9833]
+      LG_ODONTOLOGICO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['0', 142556]
+        - ['1', 23846]
+      OBSTETRICIA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Com Obstetrícia
+        max: Sem Obstetrícia
+        top:
+        - [Com Obstetrícia, 116104]
+        - [Não se Aplica, 26639]
+        - [Sem Obstetrícia, 22642]
+        - [Não Identificado, 1017]
+      COBERTURA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Médico-hospitalar
+        max: Odontológica
+        top:
+        - [Médico-hospitalar, 149596]
+        - [Odontológica, 16806]
+      TIPO_FINANCIAMENTO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Misto
+        max: Pós-estabelecido
+        top:
+        - [Não Informado, 81301]
+        - [Preestabelecido, 80186]
+        - [Pós-estabelecido, 3806]
+        - [Misto, 1109]
+      ABRANGENCIA_COBERTURA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Estadual
+        max: Outras
+        top:
+        - [Grupo de municípios, 84132]
+        - [Nacional, 40131]
+        - [Municipal, 19503]
+        - [Estadual, 14172]
+        - [Grupo de estados, 6233]
+        - [Outras, 2231]
+      ID_GEO_COBERTURA: {tipo: VARCHAR, nulos_pct: 36.52, distintos_aprox: 7219}
+      FATOR_MODERADOR:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Ausente
+        max: Franquia + Coparticipação
+        top:
+        - [Ausente, 116414]
+        - [Coparticipação, 42293]
+        - [Franquia + Coparticipação, 5684]
+        - [Franquia, 2011]
+      ACOMODACAO_HOSPITALAR:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Coletiva
+        max: Não se Aplica
+        top:
+        - [Não Informado, 69900]
+        - [Coletiva, 36230]
+        - [Individual, 33633]
+        - [Não se Aplica, 26639]
+      LIVRE_ESCOLHA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Ausente
+        max: Total
+        top:
+        - [Ausente, 114339]
+        - [Total, 37271]
+        - [Parcial com internação, 9536]
+        - [Parcial sem internação, 5256]
+      SITUACAO_PLANO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Ativo
+        max: Transferido
+        top:
+        - [Cancelado, 64353]
+        - [Suspenso, 44894]
+        - [Ativo, 28953]
+        - [Transferido, 28202]
+      DT_SITUACAO: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5324, min: '1998-12-18', max: '2026-10-23'}
+      DT_REGISTRO_PLANO: {tipo: DATE, nulos_pct: 23.72, distintos_aprox: 5278, min: '1998-11-21', max: '2026-10-23'}
+      DT_ATUALIZACAO:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-25'
+        max: '2026-10-25'
+        top:
+        - ['2026-10-25', 166402]
+  caracteristicas_produtos_municipios:
+    linhas: 884884
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_DETALHE_AREA_GEOGRAFICA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7219}
+      SG_UF:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 180672]
+        - [MG, 164064]
+        - [BA, 74779]
+        - [RS, 62657]
+        - [PR, 54904]
+        - [SC, 35441]
+        - [GO, 34530]
+        - [PE, 32899]
+        - [CE, 29457]
+        - [RJ, 29266]
+      CD_MUNICIPIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5078}
+      NM_MUNICIPIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5869, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NM_REGIAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+  demandas_nip:
+    linhas: 2645613
+    fonte_do_perfil: amostra de 75.597%. ~2.000.000 linhas
+    colunas:
+      NR_DEMANDA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1815998}
+      DT_ABERTURA_DEMANDA: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5362, min: '2011-01-03', max: '2026-08-31'}
+      ANO_REFERENCIA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '2011'
+        max: '2026'
+        top:
+        - ['2024', 304305]
+        - ['2023', 251326]
+        - ['2025', 245230]
+        - ['2022', 179721]
+        - ['2026', 166777]
+        - ['2021', 145305]
+        - ['2020', 114569]
+        - ['2019', 102978]
+        - ['2018', 83055]
+        - ['2016', 77537]
+      MES_REFERENCIA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '01'
+        max: '12'
+        top:
+        - [08, 190912]
+        - ['07', 190434]
+        - ['10', 180629]
+        - ['05', 174047]
+        - ['03', 170156]
+        - ['06', 168262]
+        - [09, 166363]
+        - ['04', 162770]
+        - ['11', 161654]
+        - ['01', 160845]
+      SITUACAO_DEMANDA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 90, min: Alteração Manual, max: Tentativa/Contato Consumidor Registrado}
+      FORMA_CONTATO_ANS:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: Carta/Ofício
+        max: Telefone - Ativo
+        top:
+        - [Telefone, 1158705]
+        - [Site, 751938]
+        - [Pessoal, 44639]
+        - [E-Mail, 37864]
+        - [Carta/Ofício, 5609]
+        - [Outros, 5155]
+        - [Nenhum, 1236]
+        - [Despacho, 697]
+        - [Telefone - Ativo, 260]
+        - [Memorando, 227]
+      ASSUNTO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 241, min: ANS - Agência Nacional de Saúde >> Cobertura >> Rede de Atendimento (rede
+          conveniada), max: Urgencia e Emergencia >> Cobertura nos casos de urgência emergência >> Remoção do paciente nos casos de urgência_emergência
+          >> Por falta de recursos do hospital}
+      REGISTRO_OPERADORA: {tipo: VARCHAR, nulos_pct: 0.03, distintos_aprox: 1588}
+      RAZÃO_SOCIAL_OPERADORA: {tipo: VARCHAR, nulos_pct: 0.03, distintos_aprox: 2008}
+      MODALIDADE_OPERADORA:
+        tipo: VARCHAR
+        nulos_pct: 0.03
+        distintos_aprox: 11
+        min: Administradora
+        max: Seguradora Especializada em Saúde
+        top:
+        - [Medicina de Grupo, 914756]
+        - [Cooperativa Médica, 527597]
+        - [Seguradora Especializada em Saúde, 353764]
+        - [Autogestão, 111191]
+        - [Administradora de Benefícios, 58246]
+        - [Filantropia, 19913]
+        - [Odontologia de Grupo, 18183]
+        - [Cooperativa odontológica, 2118]
+        - [null, 646]
+        - [Seguradora, 210]
+      TIPO_PLANO_CONTRATADO: {tipo: VARCHAR, nulos_pct: 2.03, distintos_aprox: 9, pessoal: 'só contagens: valores seriam dado pessoal'}
+      EPOCA_ADESAO_PLANO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '-'
+        max: POSTERIOR A 1999
+        top:
+        - [POSTERIOR A 1999, 1847319]
+        - [ANTERIOR A 1999, 111497]
+        - ['-', 40792]
+        - [NÃO INFORMADO, 7029]
+      TIPOS_COBERTURAS_CONTRATADAS: {tipo: VARCHAR, nulos_pct: 2.03, distintos_aprox: 15, pessoal: 'só contagens: valores seriam dado pessoal'}
+      IDADE_BENEFICIARIO: {tipo: VARCHAR, nulos_pct: 0.15, distintos_aprox: 454, pessoal: 'só contagens: valores seriam dado pessoal'}
+      SEXO_BENEFICIARIO: {tipo: VARCHAR, nulos_pct: 0.39, distintos_aprox: 3, pessoal: 'só contagens: valores seriam dado pessoal'}
+      UF_BENEFICIARIO: {tipo: VARCHAR, nulos_pct: 0.33, distintos_aprox: 28, pessoal: 'só contagens: valores seriam dado pessoal'}
+      MUNICIPIO_BENEFICIARIO: {tipo: VARCHAR, nulos_pct: 0.33, distintos_aprox: 4795, pessoal: 'só contagens: valores seriam dado pessoal'}
+      UF_LOCAL_ATENDIMENTO:
+        tipo: VARCHAR
+        nulos_pct: 27.52
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [null, 552242]
+        - [SP, 539651]
+        - [RJ, 252131]
+        - [MG, 96873]
+        - [BA, 93892]
+        - [PE, 78908]
+        - [DF, 49173]
+        - [PR, 45074]
+        - [CE, 37782]
+        - [GO, 31328]
+      MUNICIPIO_LOCAL_ATENDIMENTO: {tipo: VARCHAR, nulos_pct: 31.46, distintos_aprox: 4055}
+      CD_MUNICIPIO_LOCAL_ATENDIMENTO: {tipo: VARCHAR, nulos_pct: 31.46, distintos_aprox: 3884}
+      CLASSIFICACAO_NIP:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: EM ANDAMENTO
+        max: RVE
+        top:
+        - [INATIVA, 1463959]
+        - [NÚCLEO, 172781]
+        - [EM ANDAMENTO, 134829]
+        - [NP, 118761]
+        - [NA, 49354]
+        - [RVE, 41549]
+        - [EXCEÇÃO, 25324]
+        - [RETORNO DE FLUXO, 80]
+      NATUREZA_NIP:
+        tipo: VARCHAR
+        nulos_pct: 12.06
+        distintos_aprox: 2
+        min: Assistencial
+        max: Não Assistencial
+        top:
+        - [Assistencial, 1346085]
+        - [Não Assistencial, 418501]
+        - [null, 242051]
+      SITUACAO_NIP: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61, min: Aguardando Abertura de Processo, max: Sugestão de Arquivamento}
+      DT_AUTO: {tipo: DATE, nulos_pct: 93.32, distintos_aprox: 4260, min: '2011-01-14', max: '2026-10-05'}
+      STATUS_AUTO:
+        tipo: VARCHAR
+        nulos_pct: 93.32
+        distintos_aprox: 5
+        min: Anulado
+        max: Vinculado
+        top:
+        - [null, 1872559]
+        - [Finalizado, 107413]
+        - [Anulado, 26634]
+        - [Em Processo, 19]
+        - [Vinculado, 10]
+        - [Migrado, 2]
+      NR_PROCESSO: {tipo: VARCHAR, nulos_pct: 90.89, distintos_aprox: 191576}
+      RESPOSTA_BENEFICIARIO: {tipo: VARCHAR, nulos_pct: 61.26, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+  demonstracoes_contabeis:
+    linhas: 52498420
+    fonte_do_perfil: amostra de 3.81%. ~2.000.000 linhas
+    colunas:
+      DATA: {tipo: DATE, nulos_pct: 0, distintos_aprox: 117, min: '2001-01-01', max: '2026-04-01'}
+      REG_ANS: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2009}
+      CD_CONTA_CONTABIL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 20495}
+      DESCRICAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4725}
+      VL_SALDO_FINAL:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 747739
+        min: '-2492887843.54'
+        max: '32303465603.72'
+        media: 6697285.3634
+        quartis: [0, 14510.5632, 360344.7126]
+      VL_SALDO_INICIAL:
+        tipo: DOUBLE
+        nulos_pct: 73.4
+        distintos_aprox: 155335
+        min: '-2003495757.7'
+        max: '30398454861.61'
+        media: 7526396.1947
+        quartis: [0, 25.4218, 267370.183]
+      DT_CARGA:
+        tipo: VARCHAR
+        nulos_pct: 99.33
+        distintos_aprox: 1
+        min: 21/11/2017 14:15:24
+        max: 21/11/2017 14:15:24
+        top:
+        - [null, 2125824]
+        - ['21/11/2017 14:15:24', 14336]
+  historico_planos:
+    linhas: 354370
+    fonte_do_perfil: tabela inteira
+    colunas:
+      '#ID_PLANO': {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 168929}
+      CD_PLANO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 155460}
+      CD_OPERADORA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3208}
+      DT_INICIO_STATUS: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5930, min: '1998-11-21', max: '2026-09-29'}
+      DT_FIM_STATUS: {tipo: DATE, nulos_pct: 46.89, distintos_aprox: 4060, min: '1999-01-29', max: '2026-09-28'}
+      ID_SITUACAO_PRINCIPAL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['1', 137592]
+        - ['2', 123289]
+        - ['3', 65287]
+        - ['4', 28202]
+      DE_SITUACAO_PRINCIPAL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: ATIVO
+        max: TRANSFERIDO
+        top:
+        - [ATIVO, 137592]
+        - [ATIVO COM COMERCIALIZAÇÃO SUSPENSA, 123289]
+        - [CANCELADO, 65287]
+        - [TRANSFERIDO, 28202]
+  igr:
+    linhas: 129188
+    fonte_do_perfil: tabela inteira
+    colunas:
+      REGISTRO_OPERADORA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1417}
+      RAZAO_SOCIAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1340, pessoal: 'só contagens: valores seriam dado pessoal'}
+      COBERTURA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Assistência médica
+        max: Exclusivamente odontológica
+        top:
+        - [Assistência médica, 85819]
+        - [Exclusivamente odontológica, 43369]
+      IGR:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 8819
+        min: '0.0'
+        max: '9100000.0'
+        media: 266.9592
+        quartis: [0, 0, 9.081]
+      QTD_RECLAMACOES:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1226
+        min: '0'
+        max: '5114'
+        media: 15.502
+        quartis: [0, 0, 2]
+      QTD_BENEFICIARIOS: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 45058, pessoal: 'só contagens: valores seriam dado pessoal'}
+      PORTE_OPERADORA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Grande
+        max: Pequeno
+        top:
+        - [Pequeno, 81861]
+        - [Médio, 34232]
+        - [Grande, 13095]
+      COMPETENCIA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 118, min: 2015-01, max: 2026-09}
+      COMPETENCIA_BENEFICIARIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 118, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DT_ATUALIZACAO:
+        tipo: DATE
+        nulos_pct: 48.97
+        distintos_aprox: 1
+        min: '2026-10-07'
+        max: '2026-10-07'
+        top:
+        - ['2026-10-07', 65922]
+        - [null, 63266]
+  igr_reclamacoes_operadora:
+    linhas: 261382
+    fonte_do_perfil: tabela inteira
+    colunas:
+      Registro ANS: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 967, min: '000027', max: '422959'}
+      Razão Social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 974, min: 2CARE OPERADORA DE SAÚDE LTDA., max: ÚNICA ASSISTENCIA MEDICA LTDA}
+      Beneficiários: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5282}
+      Número Demanda: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 257708}
+      Data Atendimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 314978}
+      Classificação:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: EM ANDAMENTO
+        max: RVE
+        top:
+        - [INATIVA, 190607]
+        - [EM ANDAMENTO, 33044]
+        - [NP, 15252]
+        - [NÚCLEO, 11704]
+        - [NA, 6783]
+        - [RVE, 3992]
+      Natureza Demanda:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Assistencial
+        max: Não Informado
+        top:
+        - [Assistencial, 212092]
+        - [Não Assistencial, 49285]
+        - [Não Informado, 5]
+      Subtema Demanda:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: Atendimento telefônico
+        max: Suspensão e Rescisão Contratuais
+        top:
+        - ['Gerenciamento das Ações de Saúde por Parte da Operadora (autorizações prévias, franquia, co-participação e outros)', 87875]
+        - [Prazos Máximos para Atendimento, 36642]
+        - [Reembolso, 32708]
+        - [Rede de Atendimento (rede conveniada), 28513]
+        - [Rol de Procedimentos e Coberturas (geográfica e assistencial), 22327]
+        - [Suspensão e Rescisão Contratuais, 18758]
+        - [Mensalidade ou Contraprestação Pecuniária, 7325]
+        - [Itens Obrigatórios e Cláusulas Contratuais, 6719]
+        - [Carência, 4300]
+        - ['Contratação/Adesão, Vigência, Manutenção e Renovação', 3025]
+      Competência:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '202210'
+        max: '202210'
+        top:
+        - ['202210', 261382]
+      Data de Atualização:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 14/11/2022 20:18:52
+        max: 14/11/2022 20:18:52
+        top:
+        - ['14/11/2022 20:18:52', 261382]
+  operadoras_ativas:
+    linhas: 1105
+    fonte_do_perfil: tabela inteira
+    colunas:
+      REGISTRO_OPERADORA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1205}
+      CNPJ: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1248, pessoal: 'só contagens: valores seriam dado pessoal'}
+      RAZAO_SOCIAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1091, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NOME_FANTASIA: {tipo: VARCHAR, nulos_pct: 13.67, distintos_aprox: 1039, pessoal: 'só contagens: valores seriam dado pessoal'}
+      MODALIDADE:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: Administradora de Benefícios
+        max: Seguradora Especializada em Saúde
+        top:
+        - [Cooperativa Médica, 262]
+        - [Medicina de Grupo, 252]
+        - [Administradora de Benefícios, 182]
+        - [Autogestão, 141]
+        - [Odontologia de Grupo, 140]
+        - [Cooperativa odontológica, 88]
+        - [Filantropia, 33]
+        - [Seguradora Especializada em Saúde, 7]
+      LOGRADOURO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 895, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NUMERO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 728, pessoal: 'só contagens: valores seriam dado pessoal'}
+      COMPLEMENTO: {tipo: VARCHAR, nulos_pct: 49.68, distintos_aprox: 499, pessoal: 'só contagens: valores seriam dado pessoal'}
+      BAIRRO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 483, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CIDADE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 309, min: Adamantina, max: Águas Lindas de Goiás}
+      UF:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 375]
+        - [RJ, 134]
+        - [MG, 130]
+        - [PR, 64]
+        - [RS, 56]
+        - [BA, 39]
+        - [SC, 36]
+        - [ES, 34]
+        - [DF, 33]
+        - [GO, 28]
+      CEP: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 852, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DDD: {tipo: VARCHAR, nulos_pct: 12.67, distintos_aprox: 64, pessoal: 'só contagens: valores seriam dado pessoal'}
+      TELEFONE: {tipo: VARCHAR, nulos_pct: 12.58, distintos_aprox: 762, pessoal: 'só contagens: valores seriam dado pessoal'}
+      FAX: {tipo: VARCHAR, nulos_pct: 59.37, distintos_aprox: 370, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ENDERECO_ELETRONICO: {tipo: VARCHAR, nulos_pct: 0.09, distintos_aprox: 1182, pessoal: 'só contagens: valores seriam dado pessoal'}
+      REPRESENTANTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 931, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CARGO_REPRESENTANTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 204, pessoal: 'só contagens: valores seriam dado pessoal'}
+      REGIAO_DE_COMERCIALIZACAO:
+        tipo: VARCHAR
+        nulos_pct: 4.34
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        top:
+        - ['5', 503]
+        - ['6', 208]
+        - ['4', 188]
+        - ['3', 69]
+        - ['1', 68]
+        - [null, 48]
+        - ['2', 21]
+      DATA_REGISTRO_ANS: {tipo: DATE, nulos_pct: 0, distintos_aprox: 446, min: '1998-12-16', max: '2026-09-28'}
+  operadoras_canceladas:
+    linhas: 3078
+    fonte_do_perfil: tabela inteira
+    colunas:
+      REGISTRO_OPERADORA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3082}
+      CNPJ: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4429, pessoal: 'só contagens: valores seriam dado pessoal'}
+      RAZAO_SOCIAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3063, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NOME_FANTASIA: {tipo: VARCHAR, nulos_pct: 14.98, distintos_aprox: 2450, pessoal: 'só contagens: valores seriam dado pessoal'}
+      MODALIDADE:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: Administradora
+        max: Seguradora Especializada em Saúde
+        top:
+        - [Medicina de Grupo, 1179]
+        - [Odontologia de Grupo, 792]
+        - [Autogestão, 472]
+        - [Administradora de Benefícios, 136]
+        - [Cooperativa odontológica, 132]
+        - [Cooperativa Médica, 128]
+        - [Filantropia, 122]
+        - [Seguradora, 64]
+        - [Administradora, 44]
+        - [Seguradora Especializada em Saúde, 9]
+      LOGRADOURO: {tipo: VARCHAR, nulos_pct: 0.06, distintos_aprox: 2536, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NUMERO: {tipo: VARCHAR, nulos_pct: 1.4, distintos_aprox: 1494, pessoal: 'só contagens: valores seriam dado pessoal'}
+      COMPLEMENTO: {tipo: VARCHAR, nulos_pct: 56.76, distintos_aprox: 969, pessoal: 'só contagens: valores seriam dado pessoal'}
+      BAIRRO: {tipo: VARCHAR, nulos_pct: 0.26, distintos_aprox: 1356, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CIDADE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 601, min: Aguaí, max: Várzea Grande}
+      UF:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 1074]
+        - [RJ, 426]
+        - [MG, 358]
+        - [RS, 220]
+        - [PR, 195]
+        - [BA, 98]
+        - [SC, 88]
+        - [DF, 73]
+        - [PE, 71]
+        - [ES, 68]
+      CEP: {tipo: VARCHAR, nulos_pct: 0.03, distintos_aprox: 2405, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DDD: {tipo: VARCHAR, nulos_pct: 2.18, distintos_aprox: 115, pessoal: 'só contagens: valores seriam dado pessoal'}
+      TELEFONE: {tipo: VARCHAR, nulos_pct: 1.59, distintos_aprox: 2717, pessoal: 'só contagens: valores seriam dado pessoal'}
+      FAX: {tipo: VARCHAR, nulos_pct: 21.96, distintos_aprox: 2476, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ENDERECO_ELETRONICO: {tipo: VARCHAR, nulos_pct: 17.35, distintos_aprox: 2355, pessoal: 'só contagens: valores seriam dado pessoal'}
+      REPRESENTANTE: {tipo: VARCHAR, nulos_pct: 6.21, distintos_aprox: 2781, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CARGO_REPRESENTANTE: {tipo: VARCHAR, nulos_pct: 10.62, distintos_aprox: 611, pessoal: 'só contagens: valores seriam dado pessoal'}
+      REGIAO_DE_COMERCIALIZACAO:
+        tipo: VARCHAR
+        nulos_pct: 52.27
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        top:
+        - [null, 1609]
+        - ['6', 468]
+        - ['5', 424]
+        - ['4', 382]
+        - ['3', 86]
+        - ['1', 80]
+        - ['2', 29]
+      DATA_REGISTRO_ANS: {tipo: DATE, nulos_pct: 0, distintos_aprox: 692, min: '1998-11-26', max: '2025-10-28'}
+      DATA_DESCREDENCIAMENTO: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1353, min: '1999-09-20', max: '2026-10-09'}
+      MOTIVO_DO_DESCREDENCIAMENTO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: AUSÊNCIA DE SOLICITAÇÃO DE REGISTRO DE PRODUTO
+        max: Por tratar-se de filial
+        top:
+        - [Pedido de cancelamento, 1524]
+        - [Descumprimento da RN n.º 100/2005, 306]
+        - [Liquidação Extrajudicial, 271]
+        - [Deliberação de Diretoria Colegiada, 246]
+        - [Alternat. à Liquidação - Deliberação de Diretoria Colegiada, 192]
+        - [Descumprimento da Circular SUSEP no. 77/1999, 160]
+        - [Por incorporação, 116]
+        - [Ausência de operação, 67]
+        - [Descumprimento de disposição legal, 54]
+        - [Empresa operava com Sistema de Desconto, 37]
+  painel_precificacao:
+    linhas: 32202280
+    fonte_do_perfil: amostra de 6.211%. ~2.000.000 linhas
+    colunas:
+      ID_PLANO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10339}
+      CD_NOTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 17745}
+      NT_TIPO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Múltipla
+        max: Única
+        top:
+        - [Única, 1447203]
+        - [Múltipla, 699101]
+      CD_FAIXA_ETARIA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '1'
+        max: '9'
+        top:
+        - ['4', 215294]
+        - ['3', 215216]
+        - ['2', 215045]
+        - ['1', 214920]
+        - ['5', 214659]
+        - ['6', 214539]
+        - ['10', 214297]
+        - ['7', 214274]
+        - ['9', 214168]
+        - ['8', 213892]
+      ANO_MES: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 167, min: 2013-12, max: 2026-06}
+      VCM:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 117743
+        min: '20.0'
+        max: '52109.53'
+        media: 775.3422
+        quartis: [254.2377, 464.7215, 884.2466]
+      PCT_DESP_ASS:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 121098
+        min: '0.0'
+        max: '111.8569'
+        media: 51.938
+        quartis: [37.7491, 53.5869, 69.5773]
+      PCT_CARREG:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 123158
+        min: '0.0'
+        max: '560.1756'
+        media: 38.1884
+        quartis: [23.9491, 32.7844, 50.9902]
+      PCT_CARREG_ADMIN:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 87012
+        min: '0.0'
+        max: '178.0836'
+        media: 11.7262
+        quartis: [8.1389, 11.3787, 14.9972]
+      PCT_CARREG_COML:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 72439
+        min: '0.0'
+        max: '67.069'
+        media: 7.4897
+        quartis: [2.4166, 5.9754, 10.382]
+      PCT_CARREG_LUCRO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 85783
+        min: '0.0'
+        max: '529.7024'
+        media: 17.7742
+        quartis: [3.9577, 8.6083, 27.9061]
+  penalidades:
+    linhas: 111928
+    fonte_do_perfil: tabela inteira
+    colunas:
+      NR_DEMANDA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 128790}
+      NR_PROCESSO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 100732}
+      TIPO_PROCESSO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Consumidor
+        max: Representação
+        top:
+        - [Consumidor, 100765]
+        - [Representação, 9029]
+        - [Institucional, 1840]
+        - [Olho Vivo, 294]
+      OBJETO:
+        tipo: VARCHAR
+        nulos_pct: 92.54
+        distintos_aprox: 49
+        min: Adaptação dos contratos em Desacordo com a Legislação Art. 68
+        max: Substituição de Entidade Hospitalar
+        top:
+        - [null, 103579]
+        - [DIOPS, 2094]
+        - [SIP, 1829]
+        - [Demonstrações Contábeis e Parecer de auditor independente, 1367]
+        - [Reajuste em plano coletivo, 792]
+        - [Envio periódico de informações sobre beneficiários, 754]
+        - [Operações Contrárias à Lei, 375]
+        - [Redução de Rede Hospitalar, 244]
+        - [Envio de Informações devidas ou solicitadas, 125]
+        - [Contratualização, 115]
+      REGISTRO_OPERADORA: {tipo: VARCHAR, nulos_pct: 0.39, distintos_aprox: 2190}
+      CNPJ: {tipo: VARCHAR, nulos_pct: 0.09, distintos_aprox: 2461, pessoal: 'só contagens: valores seriam dado pessoal'}
+      RAZAO_SOCIAL: {tipo: VARCHAR, nulos_pct: 0.46, distintos_aprox: 2299, pessoal: 'só contagens: valores seriam dado pessoal'}
+      SITUACAO_OPERADORA:
+        tipo: VARCHAR
+        nulos_pct: 0.46
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 74445]
+        - ['2', 36973]
+        - [null, 510]
+      STATUS_DEMANDA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 34
+        min: Aguardando Arquivamento
+        max: Sugestão de Arquivamento
+        top:
+        - [Arquivado, 52683]
+        - [Em Cobrança, 52320]
+        - [Análise de Recurso, 4593]
+        - [Aguardando Recurso da Operadora, 831]
+        - [Aguardando Deliberação da Diretoria Colegiada, 448]
+        - [Aguardando Documentos de Arquivamento, 278]
+        - [Aguardando Finalização do Circuito, 225]
+        - [Sobrestada, 132]
+        - [Aguardando Intimação da Operadora, 84]
+        - [Comunicação de Decisão de 2ª Instância, 65]
+      DT_DECISAO_1A: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4603, min: '2000-03-15', max: '2025-03-31'}
+      DT_PUBLICACAO_1A: {tipo: DATE, nulos_pct: 0.26, distintos_aprox: 3990, min: '2001-09-03', max: '2025-04-03'}
+      DT_PUBLICACAO_1A_FINAL: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3990, min: '2005-01-18', max: '2025-04-03'}
+      VL_MULTA_FIXA_1A:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3593
+        min: '0.0'
+        max: '144584000.0'
+        media: 80429.9547
+        quartis: [39154.749, 60642.0389, 80000]
+      VL_MULTA_DIARIA_1A:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0.0'
+        max: '79200.0'
+        media: 1.7797
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 111915]
+        - ['10000.0', 12]
+        - ['79200.0', 1]
+      VL_TOTAL_APLICADO_1A:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3593
+        min: '0.0'
+        max: '144584000.0'
+        media: 80431.7344
+        quartis: [39156.6242, 60642.6178, 80000]
+      DT_CIENCIA_RECONSIDERA_TOTAL: {tipo: DATE, nulos_pct: 99.3, distintos_aprox: 401, min: '2003-03-07', max: '2024-08-20'}
+      DT_DECISAO_2A: {tipo: DATE, nulos_pct: 72.72, distintos_aprox: 230, min: '2006-03-29', max: '2021-12-07'}
+      DT_PUBLICACAO_2A: {tipo: DATE, nulos_pct: 56.86, distintos_aprox: 970, min: '2001-04-07', max: '2025-04-01'}
+      TIPO_DECISAO_2A:
+        tipo: VARCHAR
+        nulos_pct: 56.54
+        distintos_aprox: 6
+        min: Não Conhecimento do Recurso
+        max: Revisão Administrativa
+        top:
+        - [null, 63279]
+        - [Provimento Negado, 43429]
+        - [Não Conhecimento do Recurso, 2597]
+        - [Provimento Negado com Alteração da Multa, 1354]
+        - [Provimento Dado, 619]
+        - [Provimento Parcial, 367]
+        - [Revisão Administrativa, 283]
+      VL_MULTA_FIXA_2A:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2308
+        min: '0.0'
+        max: '144584000.0'
+        media: 33940.9471
+        quartis: [0, 0, 52131.1355]
+      VL_MULTA_DIARIA_2A:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0.0'
+        max: '52800.0'
+        media: 1.0971
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 111920]
+        - ['10000.0', 7]
+        - ['52800.0', 1]
+      VL_TOTAL_APLICADO_2A:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2308
+        min: '0.0'
+        max: '144584000.0'
+        media: 33942.0443
+        quartis: [0, 0, 52131.1355]
+      VL_MULTA_FINAL_APLICADA:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3581
+        min: '0.0'
+        max: '144584000.0'
+        media: 77077.3843
+        quartis: [37595.8326, 60170.3158, 80000]
+      VL_TOTAL_DESCONTOS:
+        tipo: DOUBLE
+        nulos_pct: 72.91
+        distintos_aprox: 559
+        min: '-2000.0'
+        max: '2550000.0'
+        media: 24909.9791
+        quartis: [13684.101, 24000, 32000]
+      DT_ARQUIVAMENTO: {tipo: DATE, nulos_pct: 52.97, distintos_aprox: 3191, min: '2005-08-10', max: '2025-04-03'}
+      MOTIVO_ARQUIVAMENTO:
+        tipo: VARCHAR
+        nulos_pct: 52.94
+        distintos_aprox: 17
+        min: Consulta esclarecida
+        max: Reparação voluntária e eficaz
+        top:
+        - [null, 59255]
+        - [Decisão condenatória com pagamento de multa, 46724]
+        - [Inexistência de infração, 3501]
+        - [Decisão condenatória transitada em julgado, 831]
+        - [Prescrição, 491]
+        - [Cumprimento Total, 329]
+        - [Reparação voluntária e eficaz, 162]
+        - [Perda de Objeto, 133]
+        - [Extinção do Processo (Artigo 52 / Lei 9784), 118]
+        - [Consulta esclarecida, 99]
+      TIPO_PENALIDADE:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Multa Pecuniária
+        max: Multa Pecuniária e Advertência
+        top:
+        - [Multa Pecuniária, 111505]
+        - [Multa Pecuniária e Advertência, 423]
+      DT_SUSPENSAO_ADM:
+        tipo: DATE
+        nulos_pct: 99.88
+        distintos_aprox: 24
+        min: '2018-09-04'
+        max: '2023-08-15'
+        top:
+        - [null, 111796]
+        - ['2023-08-15', 57]
+        - ['2020-04-09', 14]
+        - ['2020-06-04', 14]
+        - ['2020-09-17', 9]
+        - ['2021-01-15', 7]
+        - ['2021-01-26', 5]
+        - ['2018-09-04', 3]
+        - ['2021-03-16', 3]
+        - ['2020-06-03', 2]
+      DT_SUSPENSAO_JUD: {tipo: DATE, nulos_pct: 87.78, distintos_aprox: 2549, min: '0212-02-02', max: '2025-04-04'}
+      NR_GRU: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 95316}
+      DT_VENC_GRU: {tipo: DATE, nulos_pct: 9.68, distintos_aprox: 2540, min: '2003-10-07', max: '2025-05-06'}
+      VL_GRU:
+        tipo: DOUBLE
+        nulos_pct: 9.68
+        distintos_aprox: 41822
+        min: '0.0'
+        max: '156309762.0'
+        media: 84486.0263
+        quartis: [39390.8773, 57768.4694, 90163.3577]
+      DE_SITUACAO_GRU:
+        tipo: VARCHAR
+        nulos_pct: 9.68
+        distintos_aprox: 5
+        min: Cancelada
+        max: Suspenso
+        top:
+        - [Pendente, 48468]
+        - [Pago, 43526]
+        - [null, 10832]
+        - [Parcelado, 6125]
+        - [Suspenso, 2352]
+        - [Cancelada, 625]
+      DT_PAGTO_A_VISTA_ANS: {tipo: DATE, nulos_pct: 61.11, distintos_aprox: 2974, min: '2005-08-16', max: '2025-04-03'}
+      VL_PAGO_A_VISTA_ANS:
+        tipo: DOUBLE
+        nulos_pct: 61.11
+        distintos_aprox: 11932
+        min: '255.0'
+        max: '4622033.0'
+        media: 62108.5931
+        quartis: [36000, 48000, 70400.8186]
+      DT_VENC_1A_PARC_ANS: {tipo: DATE, nulos_pct: 92.96, distintos_aprox: 209, min: '0222-09-30', max: '2026-08-31'}
+      VL_PARCELAS_ANS_PAGAS:
+        tipo: DOUBLE
+        nulos_pct: 92.96
+        distintos_aprox: 7304
+        min: '0.0'
+        max: '643542539.0'
+        media: 6134746.7553
+        quartis: [1400181.8945, 4121993.7803, 7627276.7666]
+      STATUS_PARCELAMENTO:
+        tipo: VARCHAR
+        nulos_pct: 93.18
+        distintos_aprox: 6
+        min: AVALIANDO
+        max: QUITADO
+        top:
+        - [null, 104300]
+        - [QUITADO, 4333]
+        - [CANCELADO, 2044]
+        - [DEFERIDO, 1024]
+        - [PROPOSTO, 136]
+        - [INDEFERIDO, 65]
+        - [AVALIANDO, 26]
+      DT_INSCRICAO: {tipo: DATE, nulos_pct: 64.45, distintos_aprox: 3062, min: '2004-02-19', max: '2025-04-04'}
+      INSCRITO_DA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NAO
+        max: SIM
+        top:
+        - [NAO, 72141]
+        - [SIM, 39787]
+      ORIGEM_PAGAMENTO:
+        tipo: VARCHAR
+        nulos_pct: 9.68
+        distintos_aprox: 2
+        min: ANS
+        max: DA
+        top:
+        - [ANS, 60688]
+        - [DA, 40408]
+        - [null, 10832]
+      NR_COMPETENCIA_CARGA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '202503'
+        max: '202503'
+        top:
+        - ['202503', 111928]
+  ressarcimento_sus_atendimentos:
+    linhas: 10507502
+    fonte_do_perfil: amostra de 19.034%. ~2.000.000 linhas
+    colunas:
+      COMPETENCIA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 297, min: 2001-02, max: 2025-06}
+      ABI: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 115, min: 100º, max: 9º}
+      NUM_ATENDIMENTO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1925821}
+      TIPO_ATENDIMENTO:
+        tipo: VARCHAR
+        nulos_pct: 0.03
+        distintos_aprox: 2
+        min: '01'
+        max: '02'
+        top:
+        - ['01', 1021559]
+        - ['02', 999193]
+        - [null, 624]
+      REGISTRO_OPERADORA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1535}
+      RAZAO_SOCIAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1757, pessoal: 'só contagens: valores seriam dado pessoal'}
+      MODALIDADE_OPERADORA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: Administradora
+        max: Seguradora Especializada Em Saúde
+        top:
+        - [Medicina De Grupo, 959371]
+        - [Cooperativa Médica, 675545]
+        - [Autogestão, 193820]
+        - [Seguradora Especializada Em Saúde, 123893]
+        - [Filantropia, 68198]
+        - [Seguradora, 434]
+        - [Odontologia De Grupo, 95]
+        - [Administradora, 20]
+      SITUACAO_OPERADORA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Ativa
+        max: Inativa
+        top:
+        - [Ativa, 1647634]
+        - [Inativa, 373742]
+      CD_CNES: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14754}
+      STATUS_ANALISE_ATENDIMENTO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: AVALIANDO EM 1° INSTÂNCIA
+        max: NÃO IMPUGNADA
+        top:
+        - [NÃO IMPUGNADA, 817234]
+        - [DEFERIDA EM 1° INSTÂNCIA, 410874]
+        - [INDEFERIDA EM 2° INSTÂNCIA, 374867]
+        - ['INDEFERIDA EM 1° INSTÂNCIA, SEM RECURSO', 230409]
+        - [DEFERIDA EM 2° INSTÂNCIA, 94507]
+        - [AVALIANDO EM 1° INSTÂNCIA, 67454]
+        - [AVALIANDO EM 2° INSTÂNCIA, 18854]
+        - [IMPUGNADA INTEMPESTIVAMENTE EM 1° INSTÂNCIA, 4221]
+        - [IMPUGNADA INTEMPESTIVAMENTE EM 2° INSTÂNCIA, 2956]
+      VALOR_ATENDIMENTO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 210573
+        min: '0.0'
+        max: '240526.48'
+        media: 1683.6384
+        quartis: [253.9767, 684.6189, 1608.3259]
+      VALOR_COBRADO:
+        tipo: DOUBLE
+        nulos_pct: 25.79
+        distintos_aprox: 197072
+        min: '0.01'
+        max: '225450.0'
+        media: 1601.2508
+        quartis: [240.4579, 648.2088, 1580.7963]
+      GRU_EMITIDA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [Sim, 1500088]
+        - [Não, 521288]
+      NUMERO_GRU: {tipo: VARCHAR, nulos_pct: 25.81, distintos_aprox: 108146, pessoal: 'só contagens: valores seriam dado pessoal'}
+      SITUACAO_GRU:
+        tipo: VARCHAR
+        nulos_pct: 24.24
+        distintos_aprox: 5
+        min: Pago
+        max: suspenso judicialmente (SCPJ)
+        top:
+        - [Pago, 746168]
+        - [null, 490032]
+        - [Parcelado, 320682]
+        - [Pendente, 196763]
+        - [suspenso judicialmente (SCPJ), 193758]
+        - [pendente de pagamento (inclui suspensão SCI), 73973]
+      VALOR_ORIGINAL_GRU:
+        tipo: DOUBLE
+        nulos_pct: 25.81
+        distintos_aprox: 91945
+        min: '0.01'
+        max: '40312637.49'
+        media: 3613279.9292
+        quartis: [138025.0302, 605292.8745, 3184440.6082]
+      VALOR_ATUALIZADO_GRU:
+        tipo: DOUBLE
+        nulos_pct: 89
+        distintos_aprox: 11485
+        min: '48.93'
+        max: '51832693.27'
+        media: 9171989.1533
+        quartis: [430438.7079, 2425177.8935, 11053914.3824]
+      DATA_EMISSAO_GRU: {tipo: DATE, nulos_pct: 25.81, distintos_aprox: 4011, min: '2001-09-24', max: '2026-08-31'}
+      DATA_VENCIMENTO_GRU: {tipo: DATE, nulos_pct: 25.81, distintos_aprox: 2846, min: '2001-11-14', max: '2026-09-30'}
+      DATA_PAGAMENTO_GRU: {tipo: DATE, nulos_pct: 63.08, distintos_aprox: 3990, min: '2001-10-24', max: '2026-08-28'}
+      DATA_DIVIDA_ATIVA: {tipo: DATE, nulos_pct: 88.85, distintos_aprox: 1605, min: '2005-05-11', max: '2026-08-31'}
+      STATUS_PARCELAMENTO:
+        tipo: VARCHAR
+        nulos_pct: 81.76
+        distintos_aprox: 9
+        min: AVALIANDO
+        max: QUITADO
+        top:
+        - [null, 1652711]
+        - [QUITADO, 222090]
+        - [DEFERIDO, 79503]
+        - [DEFERIDO - CANCELADO, 43082]
+        - [PROPOSTO - CANCELADO, 16240]
+        - [AVALIANDO, 3052]
+        - [PROPOSTO, 2786]
+        - [INDEFERIDO, 1872]
+        - [CANCELADO, 40]
+      DATA_ATUALIZACAO_ARQUIVO:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-02'
+        max: '2026-09-02'
+        top:
+        - ['2026-09-02', 2021376]
+  ressarcimento_sus_beneficiarios:
+    linhas: 10507502
+    fonte_do_perfil: amostra de 19.034%. ~2.000.000 linhas
+    colunas:
+      COMPETENCIA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 275, min: 01/2002, max: 12/2024}
+      ABI: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 115, min: 100º, max: 9º}
+      ANO_ABI:
+        tipo: INTEGER
+        nulos_pct: 21.48
+        distintos_aprox: 23
+        min: '2001'
+        max: '2022'
+        media: 2015.7684
+        quartis: [2013, 2017, 2019]
+        top:
+        - [null, 434176]
+        - ['2017', 218598]
+        - ['2018', 196567]
+        - ['2019', 167086]
+        - ['2020', 137819]
+        - ['2016', 117627]
+        - ['2014', 99651]
+        - ['2022', 89253]
+        - ['2021', 83366]
+        - ['2012', 77082]
+      NUM_ATENDIMENTO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2017526}
+      REGISTRO_OPERADORA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1631}
+      TIPO_ATENDIMENTO:
+        tipo: VARCHAR
+        nulos_pct: 0.03
+        distintos_aprox: 2
+        min: '01'
+        max: '02'
+        top:
+        - ['01', 1022998]
+        - ['02', 997719]
+        - [null, 659]
+      UF_BENEFICIARIO: {tipo: VARCHAR, nulos_pct: 0.07, distintos_aprox: 30, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CD_PLANO_NOVO: {tipo: VARCHAR, nulos_pct: 15.66, distintos_aprox: 28268}
+      CD_PLANO_ANTIGO: {tipo: VARCHAR, nulos_pct: 87.08, distintos_aprox: 8066}
+      CONTRATACAO_PLANO:
+        tipo: VARCHAR
+        nulos_pct: 2.74
+        distintos_aprox: 2
+        min: Anterior à Lei
+        max: Posterior à Lei
+        top:
+        - [Posterior à Lei, 1704776]
+        - [Anterior à Lei, 261206]
+        - [null, 55394]
+      ABRANGENCIA_PLANO:
+        tipo: VARCHAR
+        nulos_pct: 2.4
+        distintos_aprox: 5
+        min: Estadual
+        max: Outra
+        top:
+        - [Grupo de municípios, 1019012]
+        - [Nacional, 562900]
+        - [Estadual, 157792]
+        - [Grupo de estados, 117740]
+        - [Municipal, 114796]
+        - [null, 48557]
+        - [Outra, 579]
+      TIPO_CONTRATACAO:
+        tipo: VARCHAR
+        nulos_pct: 2.63
+        distintos_aprox: 11
+        min: Coletivo Empresarial + Coletivo por Adesão
+        max: Individual ou familiar
+        top:
+        - [Coletivo empresarial, 1083010]
+        - [Individual ou familiar, 497174]
+        - [Coletivo por adesão, 304445]
+        - [null, 53081]
+        - [Individual  ou familiar, 36987]
+        - [Coletivo por adesão com patrocínio, 20682]
+        - [Coletivo empresarial com patrocínio, 18840]
+        - [Coletivo por adesão sem patrocínio, 4054]
+        - [Coletivo empresarial sem patrocínio, 1884]
+        - [Coletivo Empresarial + Coletivo por Adesão, 614]
+      SEGMENTACAO_PLANO:
+        tipo: VARCHAR
+        nulos_pct: 2.46
+        distintos_aprox: 5
+        min: Ambulatorial
+        max: Referência
+        top:
+        - [Hospitalar e Ambulatorial, 1662198]
+        - [Referência, 183870]
+        - [Ambulatorial, 109744]
+        - [null, 49686]
+        - [Hospitalar, 15557]
+        - [Odontológico, 321]
+      SEXO_BENEFICIARIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      FAIXA_ETARIA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '00'
+        max: '99'
+        top:
+        - ['22', 150494]
+        - ['23', 142719]
+        - ['20', 126754]
+        - ['24', 125025]
+        - ['18', 123489]
+        - ['16', 113698]
+        - ['10', 107592]
+        - [08, 107144]
+        - ['14', 106418]
+        - ['12', 106066]
+      ESPECIALIDADE:
+        tipo: VARCHAR
+        nulos_pct: 53.59
+        distintos_aprox: 10
+        min: CIRURGIA
+        max: TISIOLOGIA
+        top:
+        - [null, 1083297]
+        - [CIRURGIA, 355889]
+        - [CLÍNICA MÉDICA, 268968]
+        - [OBSTETRÍCIA, 160920]
+        - [PEDIATRIA, 100378]
+        - [PSIQUIATRIA, 25018]
+        - [PSIQUIATRIA EM HOSPITAL DIA, 17417]
+        - [REABILITAÇÃO, 6905]
+        - [PACIENTES SOB CUIDADOS PROLONGADOS, 2195]
+        - [TISIOLOGIA, 389]
+      COD_PROCEDIMENTO: {tipo: VARCHAR, nulos_pct: 0.91, distintos_aprox: 4039}
+      COD_CID: {tipo: VARCHAR, nulos_pct: 9.28, distintos_aprox: 9053}
+      DIAS_PERM_INTERN:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 538
+        min: '0'
+        max: '1829'
+        media: 37.8929
+        quartis: [2, 11, 85]
+      CD_CNES: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 16109}
+      UF_ESTAB:
+        tipo: VARCHAR
+        nulos_pct: 2.33
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 652897]
+        - [MG, 276138]
+        - [RJ, 180532]
+        - [RS, 129060]
+        - [PR, 115766]
+        - [SC, 77125]
+        - [BA, 73538]
+        - [PE, 72031]
+        - [CE, 59275]
+        - [ES, 49163]
+      MUNICIPIO_ESTAB: {tipo: VARCHAR, nulos_pct: 2.33, distintos_aprox: 3763}
+      ESFERA_ESTAB:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '00'
+        max: '04'
+        top:
+        - ['04', 1208103]
+        - ['02', 393638]
+        - ['03', 213283]
+        - ['01', 133226]
+        - ['00', 73126]
+      NATUREZA_ESTAB: {tipo: VARCHAR, nulos_pct: 1.81, distintos_aprox: 69, min: 'ADMINISTRACAO DIRETA DA SAUDE (MS,SES e SMS)', max: Universitário
+          Pesquisas}
+      VL_ATENDIMENTO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 210516
+        min: '0.0'
+        max: '352496.01'
+        media: 1680.2587
+        quartis: [252.2043, 682.7001, 1602.1322]
+      VL_RESSARC:
+        tipo: DOUBLE
+        nulos_pct: 27.2
+        distintos_aprox: 191611
+        min: '0.01'
+        max: '206392.87'
+        media: 1593.8088
+        quartis: [241.208, 644.7001, 1568.9348]
+      VL_PAGO_RESSARC:
+        tipo: DOUBLE
+        nulos_pct: 63.57
+        distintos_aprox: 93711
+        min: '0.01'
+        max: '206392.87'
+        media: 1511.5165
+        quartis: [221.7539, 562.5761, 1470.1717]
+      DT_ATUALIZACAO:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-07-02'
+        max: '2026-07-02'
+        top:
+        - ['2026-07-02', 2021376]
+  ressarcimento_sus_cobranca_arrecadacao:
+    linhas: 1
+    fonte_do_perfil: tabela inteira
+    colunas:
+      COMPETENCIA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 2026/09
+        max: 2026/09
+        top:
+        - [2026/09, 1]
+      VALOR_COBRADO_ACUMULADO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '13203808433.0'
+        max: '13203808433.0'
+        media: 13203808433
+        quartis: [13203808433, 13203808433, 13203808433]
+        top:
+        - ['13203808433.0', 1]
+      VALOR_PAGO_ACUMULADO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '6234911888.64'
+        max: '6234911888.64'
+        media: 6234911888.64
+        quartis: [6234911888.64, 6234911888.64, 6234911888.64]
+        top:
+        - ['6234911888.64', 1]
+      VALOR_PARCELADO_ACUMULADO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2831078256.36'
+        max: '2831078256.36'
+        media: 2831078256.36
+        quartis: [2831078256.36, 2831078256.36, 2831078256.36]
+        top:
+        - ['2831078256.36', 1]
+      INDICE_ADIMPLENCIA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 68,66%
+        max: 68,66%
+        top:
+        - ['68,66%', 1]
+      VALOR_SUSPENSO_JUDICIALMENTE:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1955122206.23'
+        max: '1955122206.23'
+        media: 1955122206.23
+        quartis: [1955122206.23, 1955122206.23, 1955122206.23]
+        top:
+        - ['1955122206.23', 1]
+      VALOR_ENCAMINHADO_DIVIDA_ATIVA:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2712588502.08'
+        max: '2712588502.08'
+        media: 2712588502.08
+        quartis: [2712588502.08, 2712588502.08, 2712588502.08]
+        top:
+        - ['2712588502.08', 1]
+  ressarcimento_sus_hc:
+    linhas: 303834
+    fonte_do_perfil: tabela inteira
+    colunas:
+      CD_OPERADORA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2777}
+      COMPETENCIA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 93, min: '201801', max: '202609'}
+      PORCENTAGEM_HC:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 7051
+        min: '0.0'
+        max: '100.0'
+        media: 35.4369
+        quartis: [0, 24.4696, 69.928]
+  ressarcimento_sus_indice_pagamento:
+    linhas: 230771
+    fonte_do_perfil: tabela inteira
+    colunas:
+      COMPETENCIA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 166, min: 2014/07, max: '202601'}
+      CODIGO_OPERADORA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1529}
+      RAZAO_SOCIAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3971, pessoal: 'só contagens: valores seriam dado pessoal'}
+      SITUACAO_OPERADORA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: Inativa
+        top:
+        - ['2', 54157]
+        - [INATIVA, 47983]
+        - [ATIVA, 45164]
+        - ['1', 35395]
+        - [Inativa, 19670]
+        - [Ativa, 15409]
+        - [I, 7605]
+        - [A, 5388]
+      VALOR_PAGO_ACUMULADO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 35647
+        min: '0.0'
+        max: '573784736.77'
+        media: 1789285.0428
+        quartis: [7.6, 23861.434, 418415.4499]
+      VALOR_PARCELADO_ACUMULADO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 10570
+        min: '0.0'
+        max: '232989567.82'
+        media: 967836.1484
+        quartis: [0, 0, 51906.8225]
+      VALOR_COBRADO_ACUMULADO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 62222
+        min: '0.0'
+        max: '1154358190.42'
+        media: 4187802.2516
+        quartis: [55152.1924, 378192.2658, 2001913.3715]
+      INDICE_ADIMPLENCIA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13819}
+      VALOR_PAGO_ACUMULADO_5ANOS:
+        tipo: DOUBLE
+        nulos_pct: 55.57
+        distintos_aprox: 37790
+        min: '0.0'
+        max: '434545490.02'
+        media: 1550967.4869
+        quartis: [0, 747.5927, 458854.9087]
+      VALOR_PARCELADO_ACUMULADO_5ANOS:
+        tipo: DOUBLE
+        nulos_pct: 55.57
+        distintos_aprox: 7916
+        min: '0.0'
+        max: '104088971.9'
+        media: 628054.5251
+        quartis: [0, 0, 0]
+      VALOR_COBRADO_ACUMULADO_5ANOS:
+        tipo: DOUBLE
+        nulos_pct: 55.57
+        distintos_aprox: 39957
+        min: '0.0'
+        max: '759371197.84'
+        media: 3441451.1136
+        quartis: [0.6668, 138771.6716, 1455629.9522]
+      INDICE_ADIMPLENCIA_5ANOS: {tipo: VARCHAR, nulos_pct: 67.46, distintos_aprox: 6700}
+      DT_ATUALIZACAO: {tipo: DATE, nulos_pct: 55.57, distintos_aprox: 63, min: '2021-09-05', max: '2026-10-05'}
+  sip_mapa_assistencial:
+    linhas: 156792
+    fonte_do_perfil: tabela inteira
+    colunas:
+      PORTE_OPERADORA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '0'
+        max: PEQUENO
+        top:
+        - [PEQUENO, 47620]
+        - [GRANDE, 43128]
+        - [MÉDIO, 41259]
+        - ['0', 24785]
+      GR_MODALIDADE:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: Autogestão
+        max: SEGURADORA
+        top:
+        - [Medicina De Grupo, 34376]
+        - [Cooperativa Médica, 32522]
+        - [Filantropia, 28208]
+        - [Autogestão, 28125]
+        - [SEGURADORA, 19196]
+        - [Odontologia De Grupo, 10630]
+        - [Cooperativa Odontológica, 3735]
+      COBERTURA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: MÉDICO-HOSPITALAR
+        max: ODONTOLÓGICO
+        top:
+        - [MÉDICO-HOSPITALAR, 142427]
+        - [ODONTOLÓGICO, 14365]
+      ID_TRIMESTRE:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '202001'
+        max: 2025-10
+        top:
+        - ['202001', 7471]
+        - ['202004', 7117]
+        - ['202301', 7087]
+        - ['202304', 7087]
+        - ['202104', 7053]
+        - ['202204', 6943]
+        - ['202307', 6841]
+        - ['202101', 6837]
+        - ['202107', 6837]
+        - ['202110', 6748]
+      CONTRATACAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Coletivo Empresarial
+        max: Individual ou familiar
+        top:
+        - [Coletivo Empresarial, 57619]
+        - [Coletivo por Adesão, 50286]
+        - [Individual ou familiar, 48887]
+      ID_ITEM_ASST: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 118, min: A, max: I.11}
+      DE_ITEM_ASST: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 130, min: ACIDENTE VASCULAR CEREBRAL, max: VASECTOMIA}
+      QT_EVENTOS:
+        tipo: BIGINT
+        nulos_pct: 0.8
+        distintos_aprox: 44023
+        min: '0'
+        max: '555603390'
+        media: 272328.9411
+        quartis: [7, 609, 13034]
+      QT_BENEF_FORA_CARENCIA:
+        tipo: BIGINT
+        nulos_pct: 80.14
+        distintos_aprox: 24940
+        min: '1'
+        max: '131255850'
+        media: 1578326.6785
+        quartis: [14706, 123758, 653465]
+      VL_DESPESA_ASST_LIQ:
+        tipo: DOUBLE
+        nulos_pct: 87.78
+        distintos_aprox: 15451
+        min: '0.0'
+        max: '7936224891.39'
+        media: 85054251.0838
+        quartis: [6911.6884, 960377.5505, 27144718.6327]
+      DT_CORTE:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '2023-07-02'
+        max: '2026-06-08'
+        top:
+        - ['2023-07-02', 80759]
+        - ['2024-05-13', 27743]
+        - ['2025-06-16', 24890]
+        - ['2026-06-08', 23400]
+  tiss_planos:
+    linhas: 163742
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PLANO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 182074}
+      VIGENCIA_PLANO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: A
+        max: P
+        top:
+        - [P, 124514]
+        - [A, 39228]
+      GR_CONTRATACAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Coletivo empresarial
+        max: Não identificado
+        top:
+        - [Coletivo empresarial, 68990]
+        - [Individual ou familiar, 52644]
+        - [Coletivo por adesão, 33001]
+        - [Não identificado, 9107]
+      CD_SEGMENTACAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '1'
+        max: '9'
+        top:
+        - ['6', 93076]
+        - ['7', 17842]
+        - ['4', 15824]
+        - ['1', 8992]
+        - ['2', 8344]
+        - ['5', 8090]
+        - ['13', 4735]
+        - ['3', 3587]
+        - ['12', 900]
+        - ['8', 802]
+      TIPO_SEGMENTACAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: Amb + Hosp c/s Obstetrícia
+        max: Referência
+        top:
+        - [Ambulatorial + Hospitalar com obstetrícia, 93076]
+        - [Ambulatorial + Hospitalar sem obstetrícia, 17842]
+        - [Odontológico, 15824]
+        - [Ambulatorial, 8992]
+        - [Hospitalar com obstetrícia, 8344]
+        - [Referência, 8090]
+        - [Ambulatorial + Hospitalar com obstetrícia + Odontológico, 4735]
+        - [Hospitalar sem obstetrícia, 3587]
+        - [Amb + Hosp c/s Obstetrícia, 900]
+        - [Ambulatorial + Odontológico, 802]
+      GR_SGMT_ASSISTENCIAL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Ambulatorial
+        max: Odontológico
+        top:
+        - [Ambulatorial + Hospitalar, 125372]
+        - [Odontológico, 15824]
+        - [Hospitalar, 12752]
+        - [Ambulatorial, 9794]
+      COBERTURA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Assistência Médica
+        max: Exclusivamente Odontológica
+        top:
+        - [Assistência Médica, 147918]
+        - [Exclusivamente Odontológica, 15824]
+      TIPO_FINANCIAMENTO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Misto
+        max: Pós-estabelecido
+        top:
+        - [Não Informado, 80864]
+        - [Preestabelecido, 78201]
+        - [Pós-estabelecido, 3645]
+        - [Misto, 1032]
+      CD_ABRANGENCIA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        top:
+        - ['4', 82964]
+        - ['1', 39078]
+        - ['5', 19347]
+        - ['3', 14070]
+        - ['2', 6058]
+        - ['6', 2225]
+      ABRANGENCIA_COBERTURA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Estadual
+        max: Outras
+        top:
+        - [Grupo de municípios, 82964]
+        - [Nacional, 39078]
+        - [Municipal, 19347]
+        - [Estadual, 14070]
+        - [Grupo de estados, 6058]
+        - [Outras, 2225]
+      FATOR_MODERADOR:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Ausente
+        max: Franquia + Coparticipacão
+        top:
+        - [Ausente, 114938]
+        - [Coparticipacão, 41348]
+        - [Franquia + Coparticipacão, 5458]
+        - [Franquia, 1998]
+      LG_FATOR_MODERADOR:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 114938]
+        - ['0', 48804]
+      ACOMODACAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Coletiva
+        max: Não se Aplica
+        top:
+        - [Não Identificado, 69543]
+        - [Coletiva, 35548]
+        - [Individual, 33033]
+        - [Não se Aplica, 25618]

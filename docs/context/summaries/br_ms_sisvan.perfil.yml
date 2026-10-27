@@ -1,0 +1,293 @@
+dataset: br_ms_sisvan
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  microdados:
+    linhas: 406253792
+    fonte_do_perfil: amostra de 3.957% da última partição (ano = 2023). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2023'
+        max: '2023'
+        media: 2023
+        quartis: [2023, 2023, 2023]
+        top:
+        - ['2023', 2153967]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 7.2528
+        quartis: [5, 8, 10]
+        top:
+        - ['11', 391168]
+        - ['10', 303104]
+        - ['9', 231424]
+        - ['8', 187212]
+        - ['3', 186368]
+        - ['6', 186368]
+        - ['5', 180224]
+        - ['4', 175135]
+        - ['7', 169604]
+        - ['1', 86016]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 287945]
+        - [MG, 222508]
+        - [PR, 150638]
+        - [BA, 150349]
+        - [RJ, 137479]
+        - [RS, 132063]
+        - [CE, 130503]
+        - [SC, 120132]
+        - [MA, 96748]
+        - [AM, 94193]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6737}
+      acompanhamento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2221503}
+      id_individuo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1573471}
+      cnes: {tipo: VARCHAR, nulos_pct: 0.5, distintos_aprox: 42441}
+      idade:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 117
+        min: '0'
+        max: '144'
+        media: 32.3128
+        quartis: [10, 30, 51]
+      fase_vida:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1'
+        max: '8'
+        top:
+        - ['7', 1007955]
+        - ['8', 346470]
+        - ['6', 290031]
+        - ['3', 136546]
+        - ['5', 121837]
+        - ['4', 108756]
+        - ['2', 102254]
+        - ['1', 40118]
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: F
+        max: M
+        top:
+        - [F, 1410513]
+        - [M, 743454]
+      raca_cor:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '1'
+        max: '99'
+        top:
+        - ['1', 705970]
+        - ['4', 618492]
+        - ['3', 380139]
+        - ['99', 337919]
+        - ['2', 97475]
+        - ['5', 13972]
+      povo_comunidade:
+        tipo: VARCHAR
+        nulos_pct: 99.69
+        distintos_aprox: 20
+        min: '1'
+        max: '9'
+        top:
+        - [null, 2147282]
+        - ['21', 6156]
+        - ['18', 246]
+        - ['1', 62]
+        - ['9', 58]
+        - ['4', 42]
+        - ['20', 22]
+        - ['3', 18]
+        - ['2', 16]
+        - ['12', 14]
+      escolaridade:
+        tipo: VARCHAR
+        nulos_pct: 72.41
+        distintos_aprox: 16
+        min: '1'
+        max: '99'
+        top:
+        - [null, 1559600]
+        - ['99', 533675]
+        - ['4', 11180]
+        - ['1', 9144]
+        - ['15', 8906]
+        - ['5', 8024]
+        - ['10', 6331]
+        - ['3', 5261]
+        - ['6', 4832]
+        - ['2', 3615]
+      data_acompanhamento: {tipo: DATE, nulos_pct: 0, distintos_aprox: 375, min: '2023-01-01', max: '2023-12-30'}
+      peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 12629
+        min: '0.1'
+        max: '999.9'
+        media: 57.5327
+        quartis: [37.905, 61.6538, 75.6837]
+      altura:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1702
+        min: '0.1'
+        max: '999.9'
+        media: 146.273
+        quartis: [141.9117, 156.0053, 163.9989]
+      imc:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5807
+        min: '0.03'
+        max: '241.13'
+        media: 24.6596
+        quartis: [18.7618, 24.2721, 29.1442]
+      imc_gestacional:
+        tipo: DOUBLE
+        nulos_pct: 99.99
+        distintos_aprox: 139
+        min: '15.1'
+        max: '49.8'
+        media: 25.8312
+        quartis: [21.6875, 24.8, 28.8125]
+      estado_nutricional_peso_idade_crianca:
+        tipo: VARCHAR
+        nulos_pct: 76.34
+        distintos_aprox: 4
+        min: Baixo peso para a idade
+        max: Peso elevado para a idade
+        top:
+        - [null, 1644437]
+        - [Peso adequado para idade, 439452]
+        - [Peso elevado para a idade, 51026]
+        - [Baixo peso para a idade, 13564]
+        - [Muito baixo peso para a idade, 5488]
+      estado_nutricional_peso_altura_crianca:
+        tipo: VARCHAR
+        nulos_pct: 86.83
+        distintos_aprox: 6
+        min: Magreza
+        max: Sobrepeso
+        top:
+        - [null, 1870243]
+        - [Peso Adequado ou Eutrofico, 183654]
+        - [Risco de sobrepeso, 49799]
+        - [Sobrepeso, 20570]
+        - [Obesidade, 16300]
+        - [Magreza, 7951]
+        - [Magreza acentuada, 5450]
+      estado_nutricional_altura_idade_crianca:
+        tipo: VARCHAR
+        nulos_pct: 76.35
+        distintos_aprox: 3
+        min: Baixa estatura para idade
+        max: Muito baixa estatura para idade
+        top:
+        - [null, 1644481]
+        - [Estatura adequada para a idade, 464225]
+        - [Baixa estatura para idade, 26555]
+        - [Muito baixa estatura para idade, 18706]
+      estado_nutricional_imc_idade_crianca:
+        tipo: VARCHAR
+        nulos_pct: 76.38
+        distintos_aprox: 5
+        min: Eutrofia
+        max: Sobrepeso
+        top:
+        - [null, 1645143]
+        - [Eutrofia, 320254]
+        - [Risco de sobrepeso, 86234]
+        - [Sobrepeso, 45526]
+        - [Obesidade, 29914]
+        - [Magreza, 15729]
+        - [Magreza acentuada, 11167]
+      estado_nutricional_altura_idade_adolescente:
+        tipo: VARCHAR
+        nulos_pct: 86.54
+        distintos_aprox: 3
+        min: Baixa estatura para idade
+        max: Muito baixa estatura para idade
+        top:
+        - [null, 1863936]
+        - [Estatura adequada para a idade, 270034]
+        - [Baixa estatura para idade, 14102]
+        - [Muito baixa estatura para idade, 5895]
+      estado_nutricional_imc_idade_adolescente:
+        tipo: VARCHAR
+        nulos_pct: 86.54
+        distintos_aprox: 5
+        min: Eutrofia
+        max: Sobrepeso
+        top:
+        - [null, 1864079]
+        - [Eutrofia, 185849]
+        - [Risco de sobrepeso, 54602]
+        - [Sobrepeso, 29446]
+        - [Magreza, 9107]
+        - [Obesidade, 8125]
+        - [Magreza acentuada, 2759]
+      estado_nutricional_adulto:
+        tipo: VARCHAR
+        nulos_pct: 53.69
+        distintos_aprox: 6
+        min: Adequado ou eutrófico
+        max: Sobrepeso
+        top:
+        - [null, 1156422]
+        - [Sobrepeso, 341658]
+        - [Adequado ou eutrófico, 296166]
+        - [Obesidade Grau I, 209204]
+        - [Obesidade Grau II, 85000]
+        - [Obesidade Grau III, 45796]
+        - [Baixo peso, 19721]
+      estado_nutricional_idoso:
+        tipo: VARCHAR
+        nulos_pct: 84.03
+        distintos_aprox: 3
+        min: Adequado ou eutrófico
+        max: Sobrepeso
+        top:
+        - [null, 1810029]
+        - [Sobrepeso, 176276]
+        - [Adequado ou eutrófico, 124761]
+        - [Baixo peso, 42901]
+      estado_nutricional_gestantes:
+        tipo: VARCHAR
+        nulos_pct: 98.61
+        distintos_aprox: 4
+        min: Adequado ou eutrófico
+        max: Sobrepeso
+        top:
+        - [null, 2123951]
+        - [Adequado ou eutrófico, 9846]
+        - [Sobrepeso, 8542]
+        - [Obesidade, 7818]
+        - [Baixo peso, 3810]
+      sistema_origem:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '4'
+        top:
+        - ['4', 1853796]
+        - ['2', 264767]
+        - ['1', 35404]

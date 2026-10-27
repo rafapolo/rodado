@@ -1,0 +1,320 @@
+dataset: br_cgu_pe_de_meia
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  beneficiario:
+    linhas: 3310986
+    fonte_do_perfil: amostra de 60.405%. ~2.000.000 linhas
+    colunas:
+      beneficiario_id: {tipo: INTEGER, nulos_pct: 0, distintos_aprox: 1765713, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nis_beneficiario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1930020, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_beneficiario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1151085, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_beneficiario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1150851, pessoal: 'só contagens: valores seriam dado pessoal'}
+  pagamento:
+    linhas: 86125204
+    fonte_do_perfil: amostra de 2.322%. ~2.000.000 linhas
+    colunas:
+      mes_folha:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '202403'
+        max: '202606'
+        media: 202492.9266
+        quartis: [202410, 202505, 202511]
+        top:
+        - ['202507', 112640]
+        - ['202502', 102400]
+        - ['202505', 98304]
+        - ['202410', 96256]
+        - ['202603', 96256]
+        - ['202503', 94208]
+        - ['202509', 92160]
+        - ['202508', 88064]
+        - ['202510', 86016]
+        - ['202606', 86016]
+      mes_referencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '202403'
+        max: '202606'
+        top:
+        - ['202507', 112640]
+        - ['202502', 102400]
+        - ['202505', 98304]
+        - ['202410', 96256]
+        - ['202603', 96256]
+        - ['202503', 94208]
+        - ['202509', 92160]
+        - ['202508', 88064]
+        - ['202510', 86016]
+        - ['202606', 86016]
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [BA, 241432]
+        - [SP, 210087]
+        - [MG, 167936]
+        - [PE, 153610]
+        - [CE, 151784]
+        - [PA, 147456]
+        - [MA, 122151]
+        - [RJ, 118059]
+        - [PI, 77824]
+        - [PR, 68309]
+      codigo_municipio_siafi: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3287}
+      nome_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3065, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_tipo_incentivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '01'
+        max: '04'
+        top:
+        - ['02', 1578786]
+        - ['01', 273232]
+        - ['03', 157776]
+        - ['04', 25918]
+      tipo_incentivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Conclusão
+        max: Matrícula
+        top:
+        - [Frequência, 1578786]
+        - [Matrícula, 273232]
+        - [Conclusão, 157776]
+        - [Enem, 25918]
+      periodo_incentivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: Abril 2024
+        max: Setembro 2025
+        top:
+        - [Ano letivo 2024, 197890]
+        - [Ano letivo 2025, 169268]
+        - [Maio 2025, 108710]
+        - [Julho/Agosto 2024, 93811]
+        - [Julho 2025, 92306]
+        - [Março 2025, 90957]
+        - [Fevereiro 2025, 90742]
+        - [Ano letivo 2026, 89768]
+        - [Junho 2025, 88503]
+        - [Agosto 2025, 82262]
+      codigo_etapa_ensino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '25'
+        max: '74'
+        top:
+        - ['25', 631974]
+        - ['26', 558071]
+        - ['27', 493403]
+        - ['30', 104983]
+        - ['31', 88216]
+        - ['32', 65841]
+        - ['71', 58384]
+        - ['29', 9989]
+        - ['45', 4867]
+        - ['74', 4337]
+      etapa_ensino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: 1º ano - Ensino Médio Regular
+        max: Não seriada - Ensino Técnico
+        top:
+        - [1º ano - Ensino Médio Regular, 634547]
+        - [2º ano - Ensino Médio Regular, 560540]
+        - [3º ano - Ensino Médio Regular, 495481]
+        - [1º ano - Ensino Técnico, 104983]
+        - [2º ano - Ensino Técnico, 88216]
+        - [EJA - Educação de Jovens e Adultos, 71306]
+        - [3º ano - Ensino Técnico, 65841]
+        - [Não seriada - Ensino Médio Regular, 9989]
+        - [4º ano - Ensino Técnico, 2829]
+        - [Não seriada - Ensino Técnico, 1302]
+      data_do_pagamento: {tipo: DATE, nulos_pct: 0, distintos_aprox: 179, min: '2024-03-26', max: '2026-07-06'}
+      valor_parcela:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '-1000.0'
+        max: '1000.0'
+        media: 261.6503
+        quartis: [200, 200, 200]
+        top:
+        - ['200.0', 1832357]
+        - ['1000.0', 156847]
+        - ['225.0', 45579]
+        - ['-1000.0', 929]
+      beneficiario_id: {tipo: INTEGER, nulos_pct: 0, distintos_aprox: 371438, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsavel_id: {tipo: INTEGER, nulos_pct: 0, distintos_aprox: 1878529, pessoal: 'só contagens: valores seriam dado pessoal'}
+  pe_de_meia:
+    linhas: 0
+    fonte_do_perfil: tabela inteira
+    colunas:
+      mes_folha:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '202403'
+        max: '202606'
+        media: 202495.9955
+        quartis: [202411, 202506, 202512]
+        top:
+        - ['202603', 4355234]
+        - ['202606', 4107937]
+        - ['202503', 3909311]
+        - ['202605', 3797707]
+        - ['202505', 3739593]
+        - ['202506', 3674780]
+        - ['202507', 3647501]
+        - ['202502', 3640075]
+        - ['202509', 3544653]
+        - ['202511', 3467222]
+      mes_referencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '202403'
+        max: '202606'
+        top:
+        - ['202603', 4355234]
+        - ['202606', 4107937]
+        - ['202503', 3909311]
+        - ['202605', 3797707]
+        - ['202505', 3739593]
+        - ['202506', 3674780]
+        - ['202507', 3647501]
+        - ['202502', 3640075]
+        - ['202509', 3544653]
+        - ['202511', 3467222]
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 9916179]
+        - [BA, 9081100]
+        - [MG, 6981828]
+        - [PA, 6393001]
+        - [CE, 6237231]
+        - [PE, 6064308]
+        - [RJ, 5915726]
+        - [MA, 5423537]
+        - [AM, 3100045]
+        - [PR, 2825341]
+      codigo_municipio_siafi: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5414}
+      nome_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5179, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nis_beneficiario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3468903, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_beneficiario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1676028, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_beneficiario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1882167, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nis_responsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6781207, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_responsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3953867, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_responsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3716775, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_tipo_incentivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '01'
+        max: '04'
+        top:
+        - ['02', 66107267]
+        - ['01', 12127284]
+        - ['03', 6816296]
+        - ['04', 1074357]
+      tipo_incentivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Conclusão
+        max: Matrícula
+        top:
+        - [Frequência, 66107267]
+        - [Matrícula, 12127284]
+        - [Conclusão, 6816296]
+        - [Enem, 1074357]
+      periodo_incentivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: Abril 2024
+        max: Setembro 2025
+        top:
+        - [Ano letivo 2025, 8044667]
+        - [Ano letivo 2024, 8001072]
+        - [Ano letivo 2026, 3972198]
+        - [Fevereiro 2025, 3634148]
+        - [Março 2025, 3591968]
+        - [Abril 2025, 3540729]
+        - [Fevereiro 2026, 3501052]
+        - [Julho 2025, 3490354]
+        - [Maio 2025, 3478014]
+        - [Março 2026, 3475231]
+      codigo_etapa_ensino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '25'
+        max: '74'
+        top:
+        - ['25', 26926672]
+        - ['26', 23726007]
+        - ['27', 20841288]
+        - ['30', 4119675]
+        - ['31', 3665569]
+        - ['32', 2798670]
+        - ['71', 2568804]
+        - ['29', 410463]
+        - ['45', 186536]
+        - ['74', 174261]
+      etapa_ensino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: 1º ano - Ensino Médio Regular
+        max: Não seriada - Ensino Técnico
+        top:
+        - [1º ano - Ensino Médio Regular, 27049418]
+        - [2º ano - Ensino Médio Regular, 23839095]
+        - [3º ano - Ensino Médio Regular, 20935493]
+        - [1º ano - Ensino Técnico, 4119675]
+        - [2º ano - Ensino Técnico, 3665569]
+        - [EJA - Educação de Jovens e Adultos, 3098578]
+        - [3º ano - Ensino Técnico, 2798670]
+        - [Não seriada - Ensino Médio Regular, 410463]
+        - [4º ano - Ensino Técnico, 99928]
+        - [Não seriada - Ensino Técnico, 80329]
+      data_do_pagamento: {tipo: DATE, nulos_pct: 0, distintos_aprox: 180, min: '2024-03-26', max: '2026-07-06'}
+      valor_parcela:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '-1000.0'
+        max: '1000.0'
+        media: 262.7719
+        quartis: [200, 200, 200]
+        top:
+        - ['200.0', 77282403]
+        - ['1000.0', 6767566]
+        - ['225.0', 2026505]
+        - ['-1000.0', 48730]
+  responsavel:
+    linhas: 8545194
+    fonte_do_perfil: amostra de 23.405%. ~2.000.000 linhas
+    colunas:
+      responsavel_id: {tipo: INTEGER, nulos_pct: 0, distintos_aprox: 2175868, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nis_responsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1578280, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_responsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1516837, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_responsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1300384, pessoal: 'só contagens: valores seriam dado pessoal'}

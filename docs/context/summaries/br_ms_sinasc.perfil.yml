@@ -1,0 +1,665 @@
+dataset: br_ms_sinasc
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  microdados:
+    linhas: 85559034
+    fonte_do_perfil: tabela inteira da última partição (ano = 2023)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2023'
+        max: '2023'
+        media: 2023
+        quartis: [2023, 2023, 2023]
+        top:
+        - ['2023', 986591]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 213262]
+        - [MG, 89575]
+        - [RJ, 65951]
+        - [BA, 58973]
+        - [PR, 57158]
+        - [RS, 48250]
+        - [PA, 48226]
+        - [PE, 42434]
+        - [CE, 41098]
+        - [SC, 38684]
+      sequencial_nascimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 955634}
+      id_municipio_nascimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4491}
+      local_nascimento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 972156]
+        - ['2', 6351]
+        - ['3', 5389]
+        - ['4', 2347]
+        - ['5', 308]
+        - ['9', 40]
+      codigo_estabelecimento: {tipo: VARCHAR, nulos_pct: 0.82, distintos_aprox: 4366}
+      data_nascimento: {tipo: DATE, nulos_pct: 0, distintos_aprox: 178, min: '2023-01-01', max: '2023-06-05'}
+      hora_nascimento: {tipo: TIME WITH TIME ZONE, nulos_pct: 0.06, distintos_aprox: 1023, min: '00:00:00+00', max: '23:59:00+00'}
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        top:
+        - ['1', 505002]
+        - ['2', 481444]
+        - ['0', 145]
+      peso:
+        tipo: BIGINT
+        nulos_pct: 0.01
+        distintos_aprox: 4727
+        min: '100'
+        max: '7000'
+        media: 3151.8375
+        quartis: [2875, 3192, 3497]
+      raca_cor:
+        tipo: VARCHAR
+        nulos_pct: 1.91
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['4', 544392]
+        - ['1', 334040]
+        - ['2', 74520]
+        - [null, 18807]
+        - ['5', 10401]
+        - ['3', 4431]
+      apgar1:
+        tipo: BIGINT
+        nulos_pct: 0.97
+        distintos_aprox: 13
+        min: '0'
+        max: '99'
+        media: 8.4022
+        quartis: [8, 9, 9]
+        top:
+        - ['9', 518469]
+        - ['8', 312129]
+        - ['7', 60362]
+        - ['10', 29480]
+        - ['6', 22289]
+        - ['5', 12625]
+        - [null, 9551]
+        - ['4', 7881]
+        - ['3', 5461]
+        - ['2', 3678]
+      apgar5:
+        tipo: BIGINT
+        nulos_pct: 0.97
+        distintos_aprox: 13
+        min: '0'
+        max: '99'
+        media: 9.3523
+        quartis: [9, 9, 10]
+        top:
+        - ['9', 464815]
+        - ['10', 428865]
+        - ['8', 61807]
+        - ['7', 10861]
+        - [null, 9528]
+        - ['6', 3530]
+        - ['5', 2059]
+        - ['1', 1228]
+        - ['4', 1047]
+        - ['0', 879]
+      id_anomalia:
+        tipo: VARCHAR
+        nulos_pct: 0.54
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 964353]
+        - ['1', 8648]
+        - ['9', 8216]
+        - [null, 5374]
+      codigo_anomalia: {tipo: VARCHAR, nulos_pct: 99.12, distintos_aprox: 1931}
+      semana_gestacao:
+        tipo: BIGINT
+        nulos_pct: 0.96
+        distintos_aprox: 27
+        min: '19'
+        max: '45'
+        media: 38.2486
+        quartis: [38, 39, 39]
+        top:
+        - ['39', 276302]
+        - ['38', 221928]
+        - ['40', 167579]
+        - ['37', 113620]
+        - ['41', 56816]
+        - ['36', 49415]
+        - ['35', 25646]
+        - ['34', 16649]
+        - ['42', 10467]
+        - ['33', 9724]
+      semana_gestacao_estimada:
+        tipo: VARCHAR
+        nulos_pct: 0.96
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['8', 465619]
+        - ['2', 243425]
+        - ['1', 191643]
+        - ['9', 76406]
+        - [null, 9498]
+      gestacao_agr:
+        tipo: VARCHAR
+        nulos_pct: 0.95
+        distintos_aprox: 6
+        min: '1'
+        max: '9'
+        top:
+        - ['5', 836245]
+        - ['4', 107952]
+        - ['6', 16055]
+        - ['3', 10786]
+        - [null, 9418]
+        - ['2', 5493]
+        - ['1', 562]
+        - ['9', 80]
+      tipo_gravidez:
+        tipo: VARCHAR
+        nulos_pct: 0.1
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 963064]
+        - ['2', 22077]
+        - [null, 1033]
+        - ['3', 395]
+        - ['9', 22]
+      tipo_parto:
+        tipo: VARCHAR
+        nulos_pct: 0.08
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 582846]
+        - ['1', 402900]
+        - [null, 826]
+        - ['9', 19]
+      inicio_pre_natal:
+        tipo: VARCHAR
+        nulos_pct: 2.08
+        distintos_aprox: 11
+        min: '01'
+        max: '99'
+        top:
+        - ['02', 415709]
+        - ['01', 223990]
+        - ['03', 166704]
+        - ['04', 62029]
+        - ['05', 34741]
+        - [null, 20485]
+        - ['06', 20424]
+        - ['99', 18254]
+        - ['07', 12130]
+        - [08, 7833]
+      pre_natal:
+        tipo: BIGINT
+        nulos_pct: 1.48
+        distintos_aprox: 47
+        min: '0'
+        max: '99'
+        media: 8.9534
+        quartis: [7, 9, 10]
+        top:
+        - ['10', 145485]
+        - ['8', 132261]
+        - ['9', 129440]
+        - ['7', 106499]
+        - ['6', 81690]
+        - ['11', 75952]
+        - ['12', 65484]
+        - ['5', 53198]
+        - ['4', 34936]
+        - ['13', 32699]
+      pre_natal_agr:
+        tipo: VARCHAR
+        nulos_pct: 0.18
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['4', 750053]
+        - ['3', 170379]
+        - ['2', 46977]
+        - ['1', 14179]
+        - ['9', 3211]
+        - [null, 1792]
+      classificacao_pre_natal:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['5', 673802]
+        - ['2', 149817]
+        - ['4', 60968]
+        - ['3', 60939]
+        - ['9', 35357]
+        - ['1', 5708]
+      quantidade_filhos_vivos:
+        tipo: BIGINT
+        nulos_pct: 1.64
+        distintos_aprox: 24
+        min: '0'
+        max: '99'
+        media: 1.0298
+        quartis: [0, 1, 2]
+        top:
+        - ['0', 403392]
+        - ['1', 317290]
+        - ['2', 150864]
+        - ['3', 57489]
+        - ['4', 22559]
+        - [null, 16154]
+        - ['5', 9873]
+        - ['6', 4605]
+        - ['7', 2202]
+        - ['8', 1099]
+      quantidade_filhos_mortos:
+        tipo: BIGINT
+        nulos_pct: 2.34
+        distintos_aprox: 21
+        min: '0'
+        max: '99'
+        media: 0.2772
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 762621]
+        - ['1', 159152]
+        - ['2', 31636]
+        - [null, 23131]
+        - ['3', 7138]
+        - ['4', 1740]
+        - ['5', 576]
+        - ['6', 248]
+        - ['99', 98]
+        - ['7', 93]
+      id_pais_mae:
+        tipo: VARCHAR
+        nulos_pct: 1.77
+        distintos_aprox: 30
+        min: '811'
+        max: '853'
+        top:
+        - ['835', 183023]
+        - ['831', 90964]
+        - ['829', 74239]
+        - ['833', 62528]
+        - ['841', 54780]
+        - ['815', 51792]
+        - ['843', 49189]
+        - ['826', 47013]
+        - ['821', 46783]
+        - ['823', 44412]
+      id_uf_mae:
+        tipo: VARCHAR
+        nulos_pct: 1.77
+        distintos_aprox: 30
+        min: '11'
+        max: nu
+        top:
+        - ['35', 183023]
+        - ['31', 90964]
+        - ['29', 74239]
+        - ['33', 62528]
+        - ['41', 54780]
+        - ['15', 51792]
+        - ['43', 49189]
+        - ['26', 47013]
+        - ['21', 46783]
+        - ['23', 44412]
+      id_municipio_mae: {tipo: VARCHAR, nulos_pct: 3.11, distintos_aprox: 6633}
+      id_pais_residencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - ['1', 986584]
+        - [null, 7]
+      id_municipio_residencia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      data_nascimento_mae: {tipo: DATE, nulos_pct: 0.76, distintos_aprox: 10952, min: '1957-07-12', max: '2023-04-20'}
+      idade_mae:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 48
+        min: '8'
+        max: '99'
+        media: 27.6155
+        quartis: [22, 27, 33]
+        top:
+        - ['25', 51400]
+        - ['27', 51113]
+        - ['26', 51106]
+        - ['23', 50870]
+        - ['28', 49873]
+        - ['24', 49562]
+        - ['22', 48809]
+        - ['29', 47779]
+        - ['21', 45619]
+        - ['30', 45514]
+      escolaridade_mae:
+        tipo: VARCHAR
+        nulos_pct: 0.46
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['4', 633788]
+        - ['5', 230368]
+        - ['3', 102312]
+        - ['2', 9752]
+        - [null, 4526]
+        - ['9', 3350]
+        - ['1', 2495]
+      serie_escolar_mae:
+        tipo: VARCHAR
+        nulos_pct: 35.3
+        distintos_aprox: 9
+        min: '1'
+        max: '8'
+        top:
+        - [null, 348283]
+        - ['3', 339245]
+        - ['8', 89625]
+        - ['2', 72955]
+        - ['1', 55518]
+        - ['7', 27536]
+        - ['6', 21138]
+        - ['5', 19907]
+        - ['4', 12384]
+      escolaridade_2010_mae:
+        tipo: VARCHAR
+        nulos_pct: 1.07
+        distintos_aprox: 6
+        min: '0'
+        max: '9'
+        top:
+        - ['3', 541331]
+        - ['5', 180059]
+        - ['2', 177924]
+        - ['4', 49283]
+        - ['1', 21718]
+        - [null, 10600]
+        - ['9', 3220]
+        - ['0', 2456]
+      escolaridade_2010_agr_mae:
+        tipo: VARCHAR
+        nulos_pct: 1.07
+        distintos_aprox: 12
+        min: '00'
+        max: '12'
+        top:
+        - ['06', 336116]
+        - [08, 180059]
+        - ['05', 124766]
+        - ['04', 89625]
+        - ['12', 80449]
+        - ['03', 68581]
+        - ['07', 49283]
+        - ['11', 19718]
+        - ['02', 12384]
+        - [null, 10600]
+      estado_civil_mae:
+        tipo: VARCHAR
+        nulos_pct: 0.43
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 497747]
+        - ['2', 308050]
+        - ['5', 156288]
+        - ['4', 15979]
+        - [null, 4207]
+        - ['9', 2722]
+        - ['3', 1598]
+      ocupacao_mae: {tipo: VARCHAR, nulos_pct: 7.33, distintos_aprox: 1885}
+      raca_cor_mae:
+        tipo: VARCHAR
+        nulos_pct: 2.34
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['4', 542210]
+        - ['1', 332136]
+        - ['2', 74460]
+        - [null, 23132]
+        - ['5', 10234]
+        - ['3', 4419]
+      gestacoes_ant:
+        tipo: BIGINT
+        nulos_pct: 1.92
+        distintos_aprox: 39
+        min: '0'
+        max: '99'
+        media: 1.2812
+        quartis: [0, 1, 2]
+        top:
+        - ['0', 347557]
+        - ['1', 295679]
+        - ['2', 171041]
+        - ['3', 82747]
+        - ['4', 37521]
+        - [null, 18964]
+        - ['5', 16824]
+        - ['6', 8095]
+        - ['7', 3970]
+        - ['8', 2002]
+      quantidade_parto_normal:
+        tipo: BIGINT
+        nulos_pct: 2.38
+        distintos_aprox: 42
+        min: '0'
+        max: '99'
+        media: 0.6595
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 627565]
+        - ['1', 180852]
+        - ['2', 84302]
+        - ['3', 37274]
+        - [null, 23472]
+        - ['4', 17053]
+        - ['5', 8037]
+        - ['6', 3920]
+        - ['7', 1966]
+        - ['8', 966]
+      quantidade_parto_cesareo:
+        tipo: BIGINT
+        nulos_pct: 2.61
+        distintos_aprox: 36
+        min: '0'
+        max: '99'
+        media: 0.415
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 669307]
+        - ['1', 213780]
+        - ['2', 61843]
+        - [null, 25702]
+        - ['3', 13095]
+        - ['4', 2150]
+        - ['5', 381]
+        - ['99', 84]
+        - ['6', 77]
+        - ['10', 57]
+      data_ultima_menstruacao: {tipo: DATE, nulos_pct: 52.8, distintos_aprox: 305, min: '2022-02-13', max: '2023-01-17'}
+      tipo_apresentacao:
+        tipo: VARCHAR
+        nulos_pct: 0.86
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 936275]
+        - ['2', 37307]
+        - [null, 8481]
+        - ['9', 2827]
+        - ['3', 1701]
+      inducao_parto:
+        tipo: VARCHAR
+        nulos_pct: 1.17
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 817209]
+        - ['1', 143684]
+        - ['9', 14142]
+        - [null, 11556]
+      cesarea_antes_parto:
+        tipo: VARCHAR
+        nulos_pct: 1.35
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['3', 402919]
+        - ['1', 305350]
+        - ['2', 242842]
+        - ['9', 22142]
+        - [null, 13338]
+      tipo_robson:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '01'
+        max: '11'
+        top:
+        - ['05', 240273]
+        - ['03', 182529]
+        - ['01', 160184]
+        - ['02', 137181]
+        - ['10', 101343]
+        - ['04', 89735]
+        - [08, 22113]
+        - ['11', 19892]
+        - ['07', 18617]
+        - ['06', 13023]
+      idade_pai:
+        tipo: BIGINT
+        nulos_pct: 65.74
+        distintos_aprox: 81
+        min: '9'
+        max: '99'
+        media: 32.1278
+        quartis: [26, 32, 37]
+      cartorio:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 986591]
+      registro_cartorio:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 986591]
+      data_registro_cartorio:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 986591]
+      origem:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - ['1', 986591]
+      numero_lote: {tipo: BIGINT, nulos_pct: 0.04, distintos_aprox: 110, pessoal: 'só contagens: valores seriam dado pessoal'}
+      versao_sistema:
+        tipo: VARCHAR
+        nulos_pct: 0.05
+        distintos_aprox: 5
+        min: 2.2.03
+        max: 3.2.50
+        top:
+        - [3.2.50, 669567]
+        - [3.2.01, 244720]
+        - [3.2.02, 42022]
+        - [3.2.00, 29764]
+        - [null, 444]
+        - [2.2.03, 74]
+      data_cadastro: {tipo: DATE, nulos_pct: 0, distintos_aprox: 203, min: '2002-01-01', max: '2023-12-27'}
+      data_recebimento: {tipo: DATE, nulos_pct: 0.04, distintos_aprox: 153, min: '2023-01-02', max: '2023-06-05'}
+      data_recebimento_original: {tipo: DATE, nulos_pct: 0, distintos_aprox: 153, min: '2023-01-02', max: '2023-06-05'}
+      diferenca_data:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 160
+        min: '0'
+        max: '155'
+        media: 22.5302
+        quartis: [10, 17, 28]
+      data_declaracao: {tipo: DATE, nulos_pct: 1.12, distintos_aprox: 178, min: '2022-01-24', max: '2023-06-05'}
+      funcao_responsavel: {tipo: VARCHAR, nulos_pct: 2.7, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      documento_responsavel: {tipo: VARCHAR, nulos_pct: 0.62, distintos_aprox: 6, pessoal: 'só contagens: valores seriam dado pessoal'}
+      formacao_profissional_responsavel: {tipo: VARCHAR, nulos_pct: 0.75, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      status_dn:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 538789]
+        - ['0', 447801]
+        - [null, 1]
+      status_dn_nova:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 986577]
+        - ['0', 14]
+      paridade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 626024]
+        - ['0', 360567]

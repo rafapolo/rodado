@@ -1,0 +1,1721 @@
+dataset: br_ibge_pnad_covid
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  microdados:
+    linhas: 2650459
+    fonte_do_perfil: amostra de 75.459% da última partição (ano = 2020). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2020'
+        max: '2020'
+        media: 2020
+        quartis: [2020, 2020, 2020]
+        top:
+        - ['2020', 2010757]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '5'
+        max: '11'
+        media: 8.0753
+        quartis: [6, 8, 10]
+        top:
+        - ['8', 314840]
+        - ['7', 308390]
+        - ['11', 305353]
+        - ['10', 285836]
+        - ['9', 272610]
+        - ['6', 270678]
+        - ['5', 253050]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 176041]
+        - [MG, 168724]
+        - [RJ, 165085]
+        - [SC, 121230]
+        - [RS, 118841]
+        - [MA, 113310]
+        - [PR, 103953]
+        - [BA, 97735]
+        - [CE, 83539]
+        - [GO, 79463]
+      id_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '11'
+        max: '53'
+        top:
+        - ['35', 176041]
+        - ['31', 168724]
+        - ['33', 165085]
+        - ['42', 121230]
+        - ['43', 118841]
+        - ['21', 113310]
+        - ['41', 103953]
+        - ['29', 97735]
+        - ['23', 83539]
+        - ['52', 79463]
+      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 129897}
+      capital:
+        tipo: VARCHAR
+        nulos_pct: 75.89
+        distintos_aprox: 30
+        min: '11'
+        max: '53'
+        top:
+        - [null, 1526013]
+        - ['33', 57486]
+        - ['53', 37826]
+        - ['35', 34696]
+        - ['13', 31424]
+        - ['31', 23495]
+        - ['41', 22531]
+        - ['14', 21241]
+        - ['23', 20533]
+        - ['52', 20454]
+      rm_ride:
+        tipo: VARCHAR
+        nulos_pct: 67.3
+        distintos_aprox: 21
+        min: '13'
+        max: '52'
+        top:
+        - [null, 1353290]
+        - ['33', 113810]
+        - ['35', 70279]
+        - ['31', 47092]
+        - ['43', 43392]
+        - ['13', 37619]
+        - ['41', 36498]
+        - ['32', 32248]
+        - ['26', 31195]
+        - ['52', 29708]
+      v1008:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '01'
+        max: '14'
+        top:
+        - ['01', 145150]
+        - ['05', 144959]
+        - ['04', 144640]
+        - [08, 144435]
+        - ['11', 144365]
+        - ['02', 144325]
+        - ['03', 144202]
+        - ['06', 143840]
+        - ['13', 143368]
+        - [09, 143264]
+      v1012:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        media: 2.512
+        quartis: [2, 3, 4]
+        top:
+        - ['2', 508384]
+        - ['4', 507537]
+        - ['3', 504666]
+        - ['1', 490170]
+      v1013:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '5'
+        max: '11'
+        media: 8.0753
+        quartis: [6, 8, 10]
+        top:
+        - ['8', 314840]
+        - ['7', 308390]
+        - ['11', 305353]
+        - ['10', 285836]
+        - ['9', 272610]
+        - ['6', 270678]
+        - ['5', 253050]
+      v1016:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        media: 4.0753
+        quartis: [2, 4, 6]
+        top:
+        - ['4', 314840]
+        - ['3', 308390]
+        - ['7', 305353]
+        - ['6', 285836]
+        - ['5', 272610]
+        - ['2', 270678]
+        - ['1', 253050]
+      estrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 625, min: '1110011', max: '5310220'}
+      upa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13682}
+      v1022:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 1545864]
+        - ['2', 464893]
+      v1023:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['4', 1227287]
+        - ['1', 484744]
+        - ['2', 274375]
+        - ['3', 24351]
+      v1030:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3084
+        min: '6792'
+        max: '3835981'
+        media: 805669.1293
+        quartis: [271487, 585228, 1001663]
+      v1031:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 87620
+        min: '9.1679915209'
+        max: '9166.3514918'
+        media: 491.2245
+        quartis: [231.09, 363.7436, 598.4593]
+      v1032:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 911560
+        min: '8.7271974891'
+        max: '12787.003729'
+        media: 558.242
+        quartis: [259.7399, 413.8773, 680.9906]
+      posest: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 390, min: '1111', max: '5328'}
+      a001:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '1'
+        max: '21'
+        media: 2.3008
+        quartis: [1, 2, 3]
+        top:
+        - ['1', 688991]
+        - ['2', 587858]
+        - ['3', 391146]
+        - ['4', 212336]
+        - ['5', 80975]
+        - ['6', 29193]
+        - ['7', 11539]
+        - ['8', 4711]
+        - ['9', 2031]
+        - ['10', 921]
+      a001a:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 689003]
+        - ['2', 429045]
+        - ['4', 426850]
+        - ['5', 225968]
+        - ['10', 94949]
+        - ['8', 29097]
+        - ['14', 25703]
+        - ['12', 24955]
+        - ['6', 24829]
+        - ['7', 19560]
+      a001b1:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '1'
+        max: '99'
+        media: 19.9192
+        quartis: [8, 16, 24]
+        top:
+        - ['99', 106723]
+        - ['10', 70855]
+        - ['15', 68547]
+        - ['5', 68521]
+        - ['20', 66875]
+        - ['2', 65474]
+        - ['12', 64997]
+        - ['1', 64870]
+        - ['8', 64747]
+        - ['25', 63739]
+      a001b2:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 14
+        min: '1'
+        max: '99'
+        media: 11.3931
+        quartis: [4, 7, 10]
+        top:
+        - ['5', 168328]
+        - ['3', 163458]
+        - ['8', 162774]
+        - ['6', 162307]
+        - ['4', 161882]
+        - ['9', 161456]
+        - ['7', 161206]
+        - ['10', 159862]
+        - ['1', 157762]
+        - ['12', 151331]
+      a001b3:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 117
+        min: '1908'
+        max: '9999'
+        media: 2408.0972
+        quartis: [1967, 1985, 2004]
+      a002:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 117
+        min: '0'
+        max: '111'
+        media: 36.8831
+        quartis: [18, 36, 54]
+      a003:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 1046569]
+        - ['1', 964188]
+      a004:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['4', 981481]
+        - ['1', 841615]
+        - ['2', 167172]
+        - ['3', 12196]
+        - ['5', 7813]
+        - ['9', 480]
+      a005:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1'
+        max: '8'
+        top:
+        - ['2', 671888]
+        - ['5', 451834]
+        - ['1', 214584]
+        - ['7', 192023]
+        - ['4', 188389]
+        - ['3', 133562]
+        - ['6', 105661]
+        - ['8', 52816]
+      a006:
+        tipo: VARCHAR
+        nulos_pct: 75.11
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1510305]
+        - ['1', 307872]
+        - ['2', 192580]
+      a006a:
+        tipo: VARCHAR
+        nulos_pct: 96.84
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1947143]
+        - ['1', 50229]
+        - ['2', 13385]
+      a006b:
+        tipo: VARCHAR
+        nulos_pct: 96.84
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - [null, 1947143]
+        - ['3', 44599]
+        - ['4', 13503]
+        - ['2', 3836]
+        - ['1', 1676]
+      a007:
+        tipo: VARCHAR
+        nulos_pct: 84.77
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - [null, 1704561]
+        - ['1', 241975]
+        - ['3', 47535]
+        - ['4', 9060]
+        - ['2', 7626]
+      a007a:
+        tipo: VARCHAR
+        nulos_pct: 99.95
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        top:
+        - [null, 2009784]
+        - ['2', 308]
+        - ['1', 208]
+        - ['6', 197]
+        - ['5', 193]
+        - ['4', 43]
+        - ['3', 24]
+      a008:
+        tipo: VARCHAR
+        nulos_pct: 87.97
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        top:
+        - [null, 1768782]
+        - ['5', 156211]
+        - ['3', 35548]
+        - ['4', 21349]
+        - ['2', 14816]
+        - ['6', 7943]
+        - ['1', 6108]
+      a009:
+        tipo: VARCHAR
+        nulos_pct: 87.97
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - [null, 1768782]
+        - ['3', 122220]
+        - ['2', 86311]
+        - ['4', 21090]
+        - ['1', 12354]
+      b0011:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1975476]
+        - ['1', 26189]
+        - ['9', 7364]
+        - ['3', 1728]
+      b0012:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1961634]
+        - ['1', 39947]
+        - ['9', 7423]
+        - ['3', 1753]
+      b0013:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1969700]
+        - ['1', 31724]
+        - ['9', 7421]
+        - ['3', 1912]
+      b0014:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1987054]
+        - ['1', 14388]
+        - ['9', 7497]
+        - ['3', 1818]
+      b0015:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1947575]
+        - ['1', 53673]
+        - ['9', 7442]
+        - ['3', 2067]
+      b0016:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1990002]
+        - ['1', 11257]
+        - ['9', 7515]
+        - ['3', 1983]
+      b0017:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1989854]
+        - ['1', 11445]
+        - ['9', 7559]
+        - ['3', 1899]
+      b0018:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1958117]
+        - ['1', 43243]
+        - ['9', 7498]
+        - ['3', 1899]
+      b0019:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1980715]
+        - ['1', 20568]
+        - ['9', 7510]
+        - ['3', 1964]
+      b00110:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1985757]
+        - ['1', 12748]
+        - ['9', 10256]
+        - ['3', 1996]
+      b00111:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1983084]
+        - ['1', 15604]
+        - ['9', 10059]
+        - ['3', 2010]
+      b00112:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1967328]
+        - ['1', 31463]
+        - ['9', 9970]
+        - ['3', 1996]
+      b00113:
+        tipo: VARCHAR
+        nulos_pct: 26.05
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1471290]
+        - [null, 523728]
+        - ['1', 7325]
+        - ['9', 7249]
+        - ['3', 1165]
+      b002:
+        tipo: VARCHAR
+        nulos_pct: 94.04
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1890894]
+        - ['2', 93647]
+        - ['1', 26168]
+        - ['9', 48]
+      b0031:
+        tipo: VARCHAR
+        nulos_pct: 95.34
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1917110]
+        - ['1', 73375]
+        - ['2', 19942]
+        - ['9', 330]
+      b0032:
+        tipo: VARCHAR
+        nulos_pct: 95.34
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1917110]
+        - ['2', 88770]
+        - ['1', 4254]
+        - ['9', 623]
+      b0033:
+        tipo: VARCHAR
+        nulos_pct: 95.34
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1917110]
+        - ['1', 55850]
+        - ['2', 37470]
+        - ['9', 327]
+      b0034:
+        tipo: VARCHAR
+        nulos_pct: 95.34
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1917110]
+        - ['2', 81179]
+        - ['1', 11878]
+        - ['9', 590]
+      b0035:
+        tipo: VARCHAR
+        nulos_pct: 95.34
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1917110]
+        - ['2', 90325]
+        - ['1', 2686]
+        - ['9', 636]
+      b0036:
+        tipo: VARCHAR
+        nulos_pct: 95.34
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1917110]
+        - ['2', 92440]
+        - ['9', 644]
+        - ['1', 563]
+      b0037:
+        tipo: VARCHAR
+        nulos_pct: 95.34
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1917110]
+        - ['2', 90638]
+        - ['1', 2339]
+        - ['9', 670]
+      b0041:
+        tipo: VARCHAR
+        nulos_pct: 98.7
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1984589]
+        - ['2', 13283]
+        - ['1', 12700]
+        - ['9', 185]
+      b0042:
+        tipo: VARCHAR
+        nulos_pct: 98.7
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1984589]
+        - ['2', 20573]
+        - ['1', 5376]
+        - ['9', 219]
+      b0043:
+        tipo: VARCHAR
+        nulos_pct: 98.7
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1984589]
+        - ['2', 20911]
+        - ['1', 5010]
+        - ['9', 247]
+      b0044:
+        tipo: VARCHAR
+        nulos_pct: 98.7
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1984589]
+        - ['2', 23512]
+        - ['1', 2386]
+        - ['9', 270]
+      b0045:
+        tipo: VARCHAR
+        nulos_pct: 98.7
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1984589]
+        - ['2', 24968]
+        - ['1', 914]
+        - ['9', 286]
+      b0046:
+        tipo: VARCHAR
+        nulos_pct: 98.7
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1984589]
+        - ['2', 23269]
+        - ['1', 2623]
+        - ['9', 276]
+      b005:
+        tipo: VARCHAR
+        nulos_pct: 99.44
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1999463]
+        - ['2', 9971]
+        - ['1', 1150]
+        - ['3', 171]
+        - ['9', 2]
+      b006:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 2009607]
+        - ['2', 870]
+        - ['1', 278]
+        - ['9', 2]
+      b007:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1536340]
+        - ['1', 467103]
+        - ['9', 7314]
+      b008:
+        tipo: VARCHAR
+        nulos_pct: 26.05
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1335350]
+        - [null, 523728]
+        - ['1', 146606]
+        - ['9', 5073]
+      b009a:
+        tipo: VARCHAR
+        nulos_pct: 92.71
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1864151]
+        - ['2', 92160]
+        - ['1', 53760]
+        - ['9', 686]
+      b009b:
+        tipo: VARCHAR
+        nulos_pct: 97.33
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1956997]
+        - ['2', 36674]
+        - ['1', 14932]
+        - ['4', 1822]
+        - ['3', 321]
+        - ['9', 11]
+      b009c:
+        tipo: VARCHAR
+        nulos_pct: 92.71
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1864151]
+        - ['2', 76367]
+        - ['1', 69495]
+        - ['9', 744]
+      b009d:
+        tipo: VARCHAR
+        nulos_pct: 96.54
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1941262]
+        - ['2', 55284]
+        - ['1', 13528]
+        - ['4', 378]
+        - ['3', 290]
+        - ['9', 15]
+      b009e:
+        tipo: VARCHAR
+        nulos_pct: 92.71
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1864151]
+        - ['2', 102369]
+        - ['1', 43471]
+        - ['9', 766]
+      b009f:
+        tipo: VARCHAR
+        nulos_pct: 97.84
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1967286]
+        - ['2', 30205]
+        - ['1', 12179]
+        - ['4', 791]
+        - ['3', 281]
+        - ['9', 15]
+      b0101:
+        tipo: VARCHAR
+        nulos_pct: 26.05
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1393880]
+        - [null, 523728]
+        - ['1', 86403]
+        - ['9', 6746]
+      b0102:
+        tipo: VARCHAR
+        nulos_pct: 26.05
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1258941]
+        - [null, 523728]
+        - ['1', 221386]
+        - ['9', 6702]
+      b0103:
+        tipo: VARCHAR
+        nulos_pct: 26.05
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1406084]
+        - [null, 523728]
+        - ['1', 74231]
+        - ['9', 6714]
+      b0104:
+        tipo: VARCHAR
+        nulos_pct: 26.05
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1438337]
+        - [null, 523728]
+        - ['1', 41937]
+        - ['9', 6755]
+      b0105:
+        tipo: VARCHAR
+        nulos_pct: 26.05
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1435963]
+        - [null, 523728]
+        - ['1', 44299]
+        - ['9', 6767]
+      b0106:
+        tipo: VARCHAR
+        nulos_pct: 26.05
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1463954]
+        - [null, 523728]
+        - ['1', 16150]
+        - ['9', 6925]
+      b011:
+        tipo: VARCHAR
+        nulos_pct: 26.05
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['3', 617095]
+        - ['2', 566978]
+        - [null, 523728]
+        - ['4', 248464]
+        - ['1', 47017]
+        - ['9', 7475]
+      c001:
+        tipo: VARCHAR
+        nulos_pct: 17.5
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 955367]
+        - ['1', 703511]
+        - [null, 351879]
+      c002:
+        tipo: VARCHAR
+        nulos_pct: 52.49
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1055390]
+        - ['2', 846973]
+        - ['1', 108394]
+      c003:
+        tipo: VARCHAR
+        nulos_pct: 94.61
+        distintos_aprox: 9
+        min: '1'
+        max: '8'
+        top:
+        - [null, 1902363]
+        - ['1', 79133]
+        - ['4', 7790]
+        - ['2', 7712]
+        - ['6', 4307]
+        - ['8', 4220]
+        - ['3', 2544]
+        - ['7', 1981]
+        - ['5', 707]
+      c004:
+        tipo: VARCHAR
+        nulos_pct: 96.06
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - [null, 1931624]
+        - ['2', 44157]
+        - ['1', 34411]
+        - ['3', 565]
+      c005:
+        tipo: VARCHAR
+        nulos_pct: 97.25
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - [null, 1955527]
+        - ['2', 46062]
+        - ['1', 7418]
+        - ['4', 1065]
+        - ['3', 685]
+      c0051:
+        tipo: BIGINT
+        nulos_pct: 97.71
+        distintos_aprox: 12
+        min: '1'
+        max: '11'
+        media: 3.7667
+        quartis: [2, 3, 5]
+        top:
+        - [null, 1964695]
+        - ['2', 11299]
+        - ['3', 10544]
+        - ['4', 7678]
+        - ['5', 5324]
+        - ['6', 3903]
+        - ['1', 2644]
+        - ['7', 2484]
+        - ['8', 1552]
+        - ['9', 380]
+      c0052:
+        tipo: BIGINT
+        nulos_pct: 99.97
+        distintos_aprox: 13
+        min: '0'
+        max: '11'
+        media: 3.8774
+        quartis: [1, 3, 6]
+        top:
+        - [null, 2010072]
+        - ['0', 128]
+        - ['3', 86]
+        - ['6', 83]
+        - ['1', 79]
+        - ['2', 71]
+        - ['5', 52]
+        - ['4', 47]
+        - ['10', 31]
+        - ['7', 31]
+      c0053:
+        tipo: BIGINT
+        nulos_pct: 99.95
+        distintos_aprox: 21
+        min: '2'
+        max: '25'
+        media: 4.3023
+        quartis: [2, 3, 5]
+        top:
+        - [null, 2009692]
+        - ['2', 392]
+        - ['3', 185]
+        - ['4', 131]
+        - ['5', 123]
+        - ['7', 56]
+        - ['10', 48]
+        - ['6', 46]
+        - ['8', 29]
+        - ['9', 22]
+      c006:
+        tipo: VARCHAR
+        nulos_pct: 60.78
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1222177]
+        - ['2', 739690]
+        - ['1', 48890]
+      c007:
+        tipo: VARCHAR
+        nulos_pct: 60.78
+        distintos_aprox: 9
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1222177]
+        - ['4', 327032]
+        - ['7', 233756]
+        - ['5', 115514]
+        - ['1', 39826]
+        - ['9', 24834]
+        - ['6', 23737]
+        - ['8', 16966]
+        - ['3', 3636]
+        - ['2', 3279]
+      c007a:
+        tipo: VARCHAR
+        nulos_pct: 93.91
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - [null, 1888328]
+        - ['3', 67703]
+        - ['2', 37013]
+        - ['1', 17713]
+      c007b:
+        tipo: VARCHAR
+        nulos_pct: 76.01
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - [null, 1528385]
+        - ['1', 283212]
+        - ['3', 125235]
+        - ['2', 73925]
+      c007c:
+        tipo: VARCHAR
+        nulos_pct: 62.36
+        distintos_aprox: 39
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1253926]
+        - ['36', 80812]
+        - ['12', 79764]
+        - ['18', 52703]
+        - ['1', 39826]
+        - ['34', 39131]
+        - ['24', 33623]
+        - ['7', 29582]
+        - ['3', 29020]
+        - ['35', 28991]
+      c007d:
+        tipo: VARCHAR
+        nulos_pct: 62.36
+        distintos_aprox: 26
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1253926]
+        - ['1', 106330]
+        - ['6', 99988]
+        - ['3', 60694]
+        - ['19', 56258]
+        - ['25', 52536]
+        - ['5', 50635]
+        - ['20', 50553]
+        - ['18', 43232]
+        - ['24', 39826]
+      c007e:
+        tipo: VARCHAR
+        nulos_pct: 98.82
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - [null, 1987020]
+        - ['1', 16926]
+        - ['3', 3637]
+        - ['2', 3174]
+      c007e1:
+        tipo: BIGINT
+        nulos_pct: 99.16
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        media: 2.3059
+        quartis: [1, 2, 3]
+        top:
+        - [null, 1993831]
+        - ['1', 6289]
+        - ['2', 4325]
+        - ['3', 2822]
+        - ['4', 1825]
+        - ['5', 1665]
+      c007e2:
+        tipo: BIGINT
+        nulos_pct: 99.84
+        distintos_aprox: 5
+        min: '6'
+        max: '10'
+        media: 7.781
+        quartis: [6, 8, 9]
+        top:
+        - [null, 2007583]
+        - ['6', 894]
+        - ['10', 717]
+        - ['8', 696]
+        - ['7', 604]
+        - ['9', 263]
+      c007f:
+        tipo: VARCHAR
+        nulos_pct: 99.62
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 2003166]
+        - ['2', 4931]
+        - ['1', 2660]
+      c008:
+        tipo: BIGINT
+        nulos_pct: 62.02
+        distintos_aprox: 105
+        min: '1'
+        max: '120'
+        media: 39.6765
+        quartis: [40, 40, 44]
+      c009:
+        tipo: BIGINT
+        nulos_pct: 62.02
+        distintos_aprox: 107
+        min: '0'
+        max: '120'
+        media: 32.7972
+        quartis: [20, 40, 44]
+      c009a:
+        tipo: VARCHAR
+        nulos_pct: 91.33
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1836339]
+        - ['1', 91892]
+        - ['2', 82526]
+      c010:
+        tipo: VARCHAR
+        nulos_pct: 62.02
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - [null, 1247011]
+        - ['1', 763746]
+      c0101:
+        tipo: VARCHAR
+        nulos_pct: 63.14
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - [null, 1269508]
+        - ['1', 741249]
+      c01011:
+        tipo: VARCHAR
+        nulos_pct: 63.14
+        distintos_aprox: 10
+        min: '0'
+        max: '9'
+        top:
+        - [null, 1269508]
+        - ['4', 330021]
+        - ['5', 181264]
+        - ['6', 102132]
+        - ['2', 53268]
+        - ['3', 29489]
+        - ['1', 25534]
+        - ['7', 13973]
+        - ['0', 5454]
+        - ['8', 95]
+      c01012:
+        tipo: DOUBLE
+        nulos_pct: 63.14
+        distintos_aprox: 3222
+        min: '2.0'
+        max: '250000.0'
+        media: 2238.9148
+        quartis: [1045, 1452.6649, 2442.7922]
+      c0102:
+        tipo: VARCHAR
+        nulos_pct: 99.61
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - [null, 2002861]
+        - ['2', 7896]
+      c01021:
+        tipo: VARCHAR
+        nulos_pct: 99.61
+        distintos_aprox: 9
+        min: '0'
+        max: '7'
+        top:
+        - [null, 2002861]
+        - ['1', 2305]
+        - ['2', 1613]
+        - ['4', 1588]
+        - ['0', 894]
+        - ['5', 575]
+        - ['3', 457]
+        - ['6', 427]
+        - ['7', 37]
+      c01022:
+        tipo: DOUBLE
+        nulos_pct: 99.61
+        distintos_aprox: 205
+        min: '5.0'
+        max: '20000.0'
+        media: 987.1991
+        quartis: [200.1188, 420.46, 1044.9682]
+      c0103:
+        tipo: VARCHAR
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: '3'
+        max: '3'
+        top:
+        - [null, 2010305]
+        - ['3', 452]
+      c0104:
+        tipo: VARCHAR
+        nulos_pct: 99.17
+        distintos_aprox: 1
+        min: '4'
+        max: '4'
+        top:
+        - [null, 1993995]
+        - ['4', 16762]
+      c011a:
+        tipo: VARCHAR
+        nulos_pct: 62.87
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - [null, 1264225]
+        - ['1', 746532]
+      c011a1:
+        tipo: VARCHAR
+        nulos_pct: 63.12
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - [null, 1269137]
+        - ['1', 741620]
+      c011a11:
+        tipo: VARCHAR
+        nulos_pct: 63.12
+        distintos_aprox: 10
+        min: '0'
+        max: '9'
+        top:
+        - [null, 1269137]
+        - ['4', 306836]
+        - ['5', 156448]
+        - ['6', 88804]
+        - ['2', 62956]
+        - ['0', 46294]
+        - ['3', 35237]
+        - ['1', 32544]
+        - ['7', 12413]
+        - ['8', 74]
+      c011a12:
+        tipo: DOUBLE
+        nulos_pct: 63.12
+        distintos_aprox: 3310
+        min: '0.0'
+        max: '280000.0'
+        media: 1991.9866
+        quartis: [908.3, 1203.6799, 2044.2701]
+      c011a2:
+        tipo: VARCHAR
+        nulos_pct: 99.64
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - [null, 2003451]
+        - ['2', 7306]
+      c011a21:
+        tipo: VARCHAR
+        nulos_pct: 99.64
+        distintos_aprox: 9
+        min: '0'
+        max: '7'
+        top:
+        - [null, 2003451]
+        - ['1', 2092]
+        - ['2', 1446]
+        - ['0', 1348]
+        - ['4', 1196]
+        - ['5', 463]
+        - ['3', 438]
+        - ['6', 293]
+        - ['7', 30]
+      c011a22:
+        tipo: DOUBLE
+        nulos_pct: 99.64
+        distintos_aprox: 222
+        min: '0.0'
+        max: '20000.0'
+        media: 820.9503
+        quartis: [161.1236, 355.3235, 941.5909]
+      c012:
+        tipo: VARCHAR
+        nulos_pct: 66.2
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1331051]
+        - ['1', 588843]
+        - ['2', 90863]
+      c013:
+        tipo: VARCHAR
+        nulos_pct: 95.48
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1919894]
+        - ['1', 64892]
+        - ['2', 25971]
+      c014:
+        tipo: VARCHAR
+        nulos_pct: 35.61
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 1087430]
+        - [null, 715931]
+        - ['1', 207396]
+      c015:
+        tipo: VARCHAR
+        nulos_pct: 55.48
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1115625]
+        - ['2', 788520]
+        - ['1', 106612]
+      c016:
+        tipo: VARCHAR
+        nulos_pct: 60.78
+        distintos_aprox: 10
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1222237]
+        - ['4', 288573]
+        - ['1', 156771]
+        - ['3', 112228]
+        - ['8', 99355]
+        - ['2', 57484]
+        - ['7', 43189]
+        - ['6', 12284]
+        - ['10', 11376]
+        - ['9', 3660]
+      c017a:
+        tipo: VARCHAR
+        nulos_pct: 60.78
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1222237]
+        - ['2', 527191]
+        - ['1', 261329]
+      d0011:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 1320664]
+        - ['1', 690093]
+      d0013:
+        tipo: DOUBLE
+        nulos_pct: 65.68
+        distintos_aprox: 1866
+        min: '105.0'
+        max: '50000.0'
+        media: 2295.9175
+        quartis: [1045, 1786.7809, 2185.1365]
+      d0021:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 1910425]
+        - ['1', 100332]
+      d0023:
+        tipo: DOUBLE
+        nulos_pct: 95.01
+        distintos_aprox: 477
+        min: '5.0'
+        max: '15000.0'
+        media: 587.7485
+        quartis: [200, 305.7761, 601.1263]
+      d0031:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 1846464]
+        - ['1', 164293]
+      d0033:
+        tipo: DOUBLE
+        nulos_pct: 91.83
+        distintos_aprox: 462
+        min: '41.0'
+        max: '1050.0'
+        media: 192.7017
+        quartis: [126.7071, 170.9995, 248.6039]
+      d0041:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 1940916]
+        - ['1', 69841]
+      d0043:
+        tipo: DOUBLE
+        nulos_pct: 96.53
+        distintos_aprox: 92
+        min: '1045.0'
+        max: '5200.0'
+        media: 1120.5715
+        quartis: [1045, 1045, 1045]
+      d0051:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 1007594]
+        - ['1', 1003163]
+      d0053:
+        tipo: DOUBLE
+        nulos_pct: 50.11
+        distintos_aprox: 835
+        min: '262.0'
+        max: '10000.0'
+        media: 851.6491
+        quartis: [600, 600, 1200]
+      d0061:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 1971943]
+        - ['1', 38814]
+      d0063:
+        tipo: DOUBLE
+        nulos_pct: 98.07
+        distintos_aprox: 341
+        min: '1045.0'
+        max: '9999.0'
+        media: 1316.0068
+        quartis: [1045, 1099.9853, 1458.112]
+      d0071:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 1912596]
+        - ['1', 98161]
+      d0073:
+        tipo: DOUBLE
+        nulos_pct: 95.12
+        distintos_aprox: 607
+        min: '1.0'
+        max: '40000.0'
+        media: 1502.6322
+        quartis: [499.929, 864.4859, 1530.3782]
+      e001:
+        tipo: VARCHAR
+        nulos_pct: 26.05
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['3', 1371839]
+        - [null, 523728]
+        - ['1', 97594]
+        - ['2', 17596]
+      e0021:
+        tipo: VARCHAR
+        nulos_pct: 95.15
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1913163]
+        - ['1', 76312]
+        - ['2', 21282]
+      e0022:
+        tipo: VARCHAR
+        nulos_pct: 95.15
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1913163]
+        - ['2', 77258]
+        - ['1', 20336]
+      e0023:
+        tipo: VARCHAR
+        nulos_pct: 95.15
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1913163]
+        - ['2', 96140]
+        - ['1', 1454]
+      e0024:
+        tipo: VARCHAR
+        nulos_pct: 95.15
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1913163]
+        - ['2', 96077]
+        - ['1', 1517]
+      f001:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        top:
+        - ['1', 1359840]
+        - ['3', 288825]
+        - ['5', 169860]
+        - ['2', 119080]
+        - ['4', 44398]
+        - ['6', 21771]
+        - ['7', 6983]
+      f0021:
+        tipo: DOUBLE
+        nulos_pct: 85.64
+        distintos_aprox: 618
+        min: '10.0'
+        max: '12000.0'
+        media: 714.2027
+        quartis: [399.9744, 579.4121, 814.9059]
+      f0022:
+        tipo: VARCHAR
+        nulos_pct: 85.64
+        distintos_aprox: 9
+        min: '0'
+        max: '7'
+        top:
+        - [null, 1721932]
+        - ['2', 119942]
+        - ['4', 56034]
+        - ['3', 48163]
+        - ['1', 46902]
+        - ['5', 13349]
+        - ['6', 2451]
+        - ['0', 1975]
+        - ['7', 9]
+      f002a1:
+        tipo: VARCHAR
+        nulos_pct: 26.05
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 1481563]
+        - [null, 523728]
+        - ['2', 5033]
+        - ['3', 433]
+      f002a2:
+        tipo: VARCHAR
+        nulos_pct: 26.05
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 1429742]
+        - [null, 523728]
+        - ['2', 55373]
+        - ['3', 1914]
+      f002a3:
+        tipo: VARCHAR
+        nulos_pct: 26.05
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 1478804]
+        - [null, 523728]
+        - ['2', 7789]
+        - ['3', 436]
+      f002a4:
+        tipo: VARCHAR
+        nulos_pct: 26.05
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['2', 901420]
+        - ['1', 578135]
+        - [null, 523728]
+        - ['3', 7474]
+      f002a5:
+        tipo: VARCHAR
+        nulos_pct: 26.05
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 1464664]
+        - [null, 523728]
+        - ['2', 20743]
+        - ['3', 1622]
+      f0061:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 1910127]
+        - ['2', 92598]
+        - ['9', 8032]
+      f006:
+        tipo: BIGINT
+        nulos_pct: 5
+        distintos_aprox: 16
+        min: '1'
+        max: '99'
+        media: 1.6335
+        quartis: [1, 1, 2]
+        top:
+        - ['1', 1047197]
+        - ['2', 635435]
+        - ['3', 149419]
+        - [null, 100630]
+        - ['4', 52523]
+        - ['5', 17494]
+        - ['6', 4859]
+        - ['7', 2140]
+        - ['8', 523]
+        - ['10', 232]

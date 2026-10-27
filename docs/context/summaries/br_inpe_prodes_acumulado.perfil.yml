@@ -1,0 +1,404 @@
+dataset: br_inpe_prodes_acumulado
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  desmatamento:
+    linhas: 7598548
+    fonte_do_perfil: amostra de 26.321%. ~2.000.000 linhas
+    colunas:
+      OGC_FID:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1212589
+        min: '0'
+        max: '2335920'
+        media: 858744.039
+        quartis: [336368, 703034, 1300359]
+      fid:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1258393
+        min: '2'
+        max: '2335921'
+        media: 851016.7022
+        quartis: [323258, 697918, 1294601]
+      state:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 44
+        min: AC
+        max: TOCANTINS
+        top:
+        - [BA, 215370]
+        - [PA, 214139]
+        - [CE, 173654]
+        - [MARANHÃO, 153659]
+        - [GOIÁS, 102599]
+        - [MG, 97574]
+        - [MINAS GERAIS, 89888]
+        - [TOCANTINS, 84770]
+        - [MATO GROSSO, 79862]
+        - [PE, 79788]
+      path_row: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1826}
+      main_class:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: DESMATAMENTO
+        max: RESERVATORIO
+        top:
+        - [DESMATAMENTO, 2002536]
+        - [RESERVATORIO, 15806]
+        - [QUEIMADA, 2]
+      class_name:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: d2000
+        max: d2025
+        top:
+        - [d2004, 304647]
+        - [d2008, 269208]
+        - [d2006, 205121]
+        - [d2010, 135256]
+        - [d2013, 104749]
+        - [d2016, 86101]
+        - [d2022, 81775]
+        - [d2021, 71337]
+        - [d2019, 70010]
+        - [d2002, 68652]
+      sub_class:
+        tipo: VARCHAR
+        nulos_pct: 77.49
+        distintos_aprox: 24
+        min: corte raso com solo exposto
+        max: mineração
+        top:
+        - [null, 1564002]
+        - [corte raso com solo exposto, 70721]
+        - [d2008, 38675]
+        - [d2019, 31712]
+        - [d2015, 29626]
+        - [d2016, 28322]
+        - [corte raso com vegetação, 27112]
+        - [d2021, 25980]
+        - [d2010, 24899]
+        - [d2020, 24127]
+      def_cloud:
+        tipo: DOUBLE
+        nulos_pct: 78.64
+        distintos_aprox: 26
+        min: '0.0'
+        max: '2023.0'
+        media: 229.8136
+        quartis: [0, 0, 0]
+        top:
+        - [null, 1587287]
+        - ['0.0', 381856]
+        - ['2007.0', 6369]
+        - ['2018.0', 6055]
+        - ['2015.0', 4913]
+        - ['2014.0', 4517]
+        - ['2009.0', 4007]
+        - ['2013.0', 3209]
+        - ['2008.0', 2888]
+        - ['2016.0', 2595]
+      julian_day:
+        tipo: INTEGER
+        nulos_pct: 0.38
+        distintos_aprox: 305
+        min: '1'
+        max: '366'
+        media: 234.5069
+        quartis: [207, 227, 262]
+      image_date: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1960, min: '2000-12-06', max: '2025-12-19'}
+      year:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '2000'
+        max: '2025'
+        media: 2012.151
+        quartis: [2006, 2011, 2018]
+        top:
+        - ['2004', 304646]
+        - ['2008', 269204]
+        - ['2006', 205121]
+        - ['2010', 135256]
+        - ['2013', 104749]
+        - ['2016', 86101]
+        - ['2022', 81775]
+        - ['2021', 71337]
+        - ['2019', 70010]
+        - ['2002', 68651]
+      area_km:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2175665
+        min: '1.4573e-11'
+        max: '195.731712574634'
+        media: 0.1114
+        quartis: [0.0177, 0.0368, 0.0875]
+      scene_id:
+        tipo: INTEGER
+        nulos_pct: 28.71
+        distintos_aprox: 4083
+        min: '0'
+        max: '101292'
+        media: 5803.8136
+        quartis: [493, 868, 1381]
+      source:
+        tipo: VARCHAR
+        nulos_pct: 44.43
+        distintos_aprox: 19
+        min: ANTIGO AMAZIONA
+        max: pampa
+        top:
+        - [null, 896812]
+        - [FA-BIOMAS CAATINGA, 509009]
+        - [FA-BIOMAS MATA ATLANTICA, 260973]
+        - [Amazonia, 117072]
+        - [FA-BIOMAS PAMPA, 61973]
+        - [cerrado, 58590]
+        - [caatinga, 44829]
+        - [antigo cerrado, 41463]
+        - [mata atlantica, 13690]
+        - [FA-BIOMAS PANTANAL, 6161]
+      satellite:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: Alos-2
+        max: sentinel 2B
+        top:
+        - [Landsat8, 692479]
+        - [Landsat, 390992]
+        - [landsat5, 347934]
+        - [Landsat5, 210375]
+        - [landsat8, 151316]
+        - [Sentinel-2, 75153]
+        - [sentinel 2B, 45654]
+        - [LANDSAT-5, 32960]
+        - [LANDSAT-8, 27092]
+        - [sentinel 2, 16343]
+      sensor:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 9
+        min: ETM
+        max: TM
+        top:
+        - [OLI, 1164831]
+        - [TM, 699411]
+        - [MSI, 91570]
+        - [MSIL 1 C, 45654]
+        - [LISS3, 13733]
+        - [LISS 3, 1574]
+        - [ETM, 727]
+        - [SAR, 567]
+        - [null, 264]
+        - [PALSAR-2, 13]
+      uuid: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2090529}
+      centroid_lon:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2639824
+        min: '-73.79500347700417'
+        max: '-11.453422650572914'
+        media: -47.263
+        quartis: [-51.7656, -45.9394, -41.0994]
+      centroid_lat:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2037889
+        min: '-58.62833223687338'
+        max: '5.170046438296143'
+        media: -11.3176
+        quartis: [-15.5731, -9.5522, -5.7512]
+      bioma_arquivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: amazonia
+        max: pantanal
+        top:
+        - [cerrado, 619697]
+        - [caatinga, 587348]
+        - [mata_atlantica, 282624]
+        - [amazonia, 227328]
+        - [amazonia_legal, 227328]
+        - [pampa, 65536]
+        - [pantanal, 8483]
+  desmatamento_poligono:
+    linhas: 6816093
+    fonte_do_perfil: amostra de 29.342%. ~2.000.000 linhas
+    colunas:
+      bioma_arquivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: amazonia
+        max: pantanal
+        top:
+        - [cerrado, 711403]
+        - [caatinga, 681984]
+        - [mata_atlantica, 323181]
+        - [amazonia, 243712]
+        - [pampa, 62086]
+        - [pantanal, 16675]
+      uuid: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2124850}
+      state:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 44
+        min: AC
+        max: TOCANTINS
+        top:
+        - [BA, 253412]
+        - [CE, 192587]
+        - [MARANHÃO, 188601]
+        - [TOCANTINS, 117044]
+        - [PA, 116310]
+        - [MINAS GERAIS, 108610]
+        - [MG, 103913]
+        - [GOIÁS, 91732]
+        - [MATO GROSSO, 90095]
+        - [PE, 81394]
+      path_row: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1791}
+      main_class:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: DESMATAMENTO
+        max: RESERVATORIO
+        top:
+        - [DESMATAMENTO, 2022043]
+        - [RESERVATORIO, 16995]
+        - [QUEIMADA, 3]
+      class_name:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: d2002
+        max: d2026
+        top:
+        - [d2004, 317093]
+        - [d2008, 283077]
+        - [d2006, 197867]
+        - [d2010, 140099]
+        - [d2013, 119767]
+        - [d2016, 91075]
+        - [d2014, 82550]
+        - [d2002, 80148]
+        - [d2018, 72201]
+        - [d2011, 69643]
+      image_date: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2023, min: '2002-03-13', max: '2026-08-28'}
+      year:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '2002'
+        max: '2026'
+        media: 2011.9107
+        quartis: [2006, 2010, 2017]
+        top:
+        - ['2004', 317093]
+        - ['2008', 283077]
+        - ['2006', 197867]
+        - ['2010', 140099]
+        - ['2013', 119767]
+        - ['2016', 91075]
+        - ['2014', 82550]
+        - ['2002', 80148]
+        - ['2018', 72201]
+        - ['2011', 69643]
+      area_km:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1689869
+        min: '1.4573e-11'
+        max: '195.731712574634'
+        media: 0.1077
+        quartis: [0.0168, 0.0325, 0.0769]
+      geometria: {tipo: 'GEOMETRY(''OGC:CRS84'')', nulos_pct: 0, distintos_aprox: 2017526}
+      versao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: v20260717
+        max: v20261016
+        top:
+        - [v20261016, 955115]
+        - [v20260805, 681984]
+        - [v20260806, 323181]
+        - [v20260807, 62086]
+        - [v20260717, 16675]
+  incremento_municipio:
+    linhas: 42709
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '2017'
+        max: '2025'
+        media: 2020.8624
+        quartis: [2019, 2021, 2023]
+        top:
+        - ['2018', 5136]
+        - ['2021', 4989]
+        - ['2020', 4959]
+        - ['2017', 4891]
+        - ['2019', 4844]
+        - ['2022', 4710]
+        - ['2023', 4670]
+        - ['2024', 4349]
+        - ['2025', 4161]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.09, distintos_aprox: 6402}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0.09
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 7012]
+        - [BA, 4128]
+        - [RS, 3716]
+        - [SP, 2418]
+        - [PI, 2205]
+        - [SC, 2116]
+        - [GO, 1956]
+        - [PB, 1952]
+        - [PR, 1910]
+        - [PE, 1687]
+      bioma:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Amazônia
+        max: Pantanal
+        top:
+        - [Mata Atlântica, 17181]
+        - [Caatinga, 10290]
+        - [Cerrado, 9683]
+        - [Amazônia, 3997]
+        - [Pampa, 1418]
+        - [Pantanal, 140]
+      area_km2:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 43695
+        min: '7.8846618839e-05'
+        max: '801.8600742467852'
+        media: 4.5841
+        quartis: [0.0928, 0.4478, 2.257]
+      poligonos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 807
+        min: '1'
+        max: '3079'
+        media: 43.3378
+        quartis: [3, 12, 43]

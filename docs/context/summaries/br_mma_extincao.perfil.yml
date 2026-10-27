@@ -1,0 +1,78 @@
+dataset: br_mma_extincao
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  fauna_ameacada:
+    linhas: 1258
+    fonte_do_perfil: tabela inteira
+    colunas:
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: CR
+        max: VU
+        top:
+        - [VU, 465]
+        - [EN, 425]
+        - [CR, 322]
+        - [CR (PEX), 36]
+        - [EX, 6]
+        - [RE, 3]
+        - [EW, 1]
+      especie_ou_subespecie: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1284}
+      familia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 396, min: Accipitridae, max: Xenopidae}
+      grupo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: anfibios
+        max: repteis
+        top:
+        - [peixes, 388]
+        - [invertebrados_terrestres, 275]
+        - [aves, 263]
+        - [mamiferos, 103]
+        - [invertebrados_aquaticos, 97]
+        - [repteis, 71]
+        - [anfibios, 61]
+      lista_2014:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.8251
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1038]
+        - ['0', 220]
+      ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 115, min: Accipitriformes, max: Zygoptera}
+  flora_ameacada:
+    linhas: 6418
+    fonte_do_perfil: tabela inteira
+    colunas:
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: CR
+        max: VU
+        top:
+        - [EN, 3688]
+        - [CR, 1362]
+        - [VU, 1362]
+        - [CR (PEX), 6]
+      especie_ou_subespecie_variedade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2863}
+      familia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 151, min: Acanthaceae, max: meliaceae}
+      lista_2014:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.6136
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 3938]
+        - ['0', 2480]

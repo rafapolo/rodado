@@ -1,0 +1,321 @@
+dataset: br_cgu_viagens
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  pagamento:
+    linhas: 16836689
+    fonte_do_perfil: amostra de 11.879%. ~2.000.000 linhas
+    colunas:
+      identificador_do_processo_de_viagem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1399035, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      numero_da_proposta_pcdp: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 272918, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_do_orgao_superior:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 36
+        min: '-1'
+        max: '84000'
+        top:
+        - ['26000', 507292]
+        - ['-11', 295613]
+        - ['52000', 231910]
+        - ['30000', 162471]
+        - ['36000', 114414]
+        - ['33000', 104390]
+        - ['25000', 85541]
+        - ['44000', 72070]
+        - ['47000', 57212]
+        - ['22000', 54898]
+      nome_do_orgao_superior: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 39, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_do_orgao_pagador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 197, min: '-11', max: '81000'}
+      nome_do_orgao_pagador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 264, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_da_unidade_gestora_pagadora: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3331}
+      nome_da_unidade_gestora_pagadora: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2323, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_de_pagamento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: DIÁRIAS
+        max: Taxa de agenciamento
+        top:
+        - [DIÁRIAS, 1316061]
+        - [PASSAGEM, 723574]
+        - [RESTITUIÇÃO, 49132]
+        - ['Serviço correlato: seguro', 8785]
+        - [Taxa de agenciamento, 1650]
+      valor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 259001}
+  passagem:
+    linhas: 5214358
+    fonte_do_perfil: amostra de 38.356%. ~2.000.000 linhas
+    colunas:
+      identificador_do_processo_de_viagem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1038346, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      numero_da_proposta_pcdp: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 264168, pessoal: 'só contagens: valores seriam dado pessoal'}
+      meio_de_transporte:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: Aéreo
+        max: Veículo Próprio
+        top:
+        - [Aéreo, 1975584]
+        - [Rodoviário, 91060]
+        - [Fluvial, 15197]
+        - [Ferroviário, 52]
+        - [Veículo Oficial, 17]
+        - [Veículo Próprio, 13]
+        - [Marítimo, 6]
+      pais_origem_ida: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 166, min: Albânia, max: Índia}
+      uf_origem_ida:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: ''
+        max: Tocantins
+        top:
+        - [Distrito Federal, 533285]
+        - [São Paulo, 222959]
+        - [Rio de Janeiro, 208534]
+        - [Minas Gerais, 95920]
+        - [Amazonas, 94665]
+        - [Paraná, 90489]
+        - [Pernambuco, 86959]
+        - [Pará, 79828]
+        - [Rio Grande do Sul, 78710]
+        - [Bahia, 66616]
+      cidade_origem_ida: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2136}
+      pais_destino_ida: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 173, min: Albânia, max: Índia}
+      uf_destino_ida:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: ''
+        max: Tocantins
+        top:
+        - [Distrito Federal, 537102]
+        - [São Paulo, 226117]
+        - [Rio de Janeiro, 203529]
+        - [Minas Gerais, 95851]
+        - [Paraná, 94828]
+        - [Pernambuco, 86408]
+        - [Amazonas, 85160]
+        - [Rio Grande do Sul, 80369]
+        - [Pará, 79545]
+        - [Bahia, 66974]
+      cidade_destino_ida: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2371}
+      pais_origem_volta: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 148, min: Albânia, max: Índia}
+      uf_origem_volta:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: ''
+        max: Tocantins
+        top:
+        - [Sem informação, 1976139]
+        - [Distrito Federal, 29723]
+        - ['', 11277]
+        - [São Paulo, 10799]
+        - [Rio de Janeiro, 9712]
+        - [Amazonas, 4850]
+        - [Paraná, 4609]
+        - [Minas Gerais, 3554]
+        - [Pará, 3227]
+        - [Bahia, 3002]
+      cidade_origem_volta: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1043}
+      pais_destino_volta: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 130, min: Albânia, max: Índia}
+      uf_destino_volta:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: ''
+        max: Tocantins
+        top:
+        - [Sem informação, 1976139]
+        - [Distrito Federal, 31556]
+        - [Rio de Janeiro, 14320]
+        - [São Paulo, 8126]
+        - [Amazonas, 5708]
+        - [Minas Gerais, 4500]
+        - [Paraná, 3219]
+        - [Rio Grande do Sul, 3124]
+        - [Pernambuco, 3088]
+        - [Pará, 3032]
+      cidade_destino_volta: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 681, min: Abatiá, max: Água Boa}
+      valor_da_passagem:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 277987
+        min: '-630.41'
+        max: '307600.96'
+        media: 1165.4702
+        quartis: [425.8196, 761.1737, 1366.499]
+      taxa_de_servico:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 12476
+        min: '0.0'
+        max: '114712.85'
+        media: 7.2093
+        quartis: [0, 0, 0]
+      data_da_emissao_compra: {tipo: DATE, nulos_pct: 60.04, distintos_aprox: 2079, min: '2019-12-27', max: '2026-09-01'}
+      hora_da_emissao_compra: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1269}
+  trecho:
+    linhas: 21179204
+    fonte_do_perfil: amostra de 9.443%. ~2.000.000 linhas
+    colunas:
+      identificador_do_processo_de_viagem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1063736, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      numero_da_proposta_pcdp: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 248888, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sequencia_trecho: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 116, min: '1', max: '99'}
+      origem_data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4950, min: '2014-01-01', max: '2026-11-22'}
+      origem_pais: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 165, min: Afeganistão, max: Índia}
+      origem_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: ''
+        max: Tocantins
+        top:
+        - [São Paulo, 232149]
+        - [Distrito Federal, 196636]
+        - [Minas Gerais, 169641]
+        - [Rio Grande do Sul, 136234]
+        - [Rio de Janeiro, 131549]
+        - [Paraná, 107556]
+        - [Pernambuco, 94121]
+        - [Bahia, 91120]
+        - [Pará, 87190]
+        - [Goiás, 74836]
+      origem_cidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8004}
+      destino_data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4950, min: '2014-01-01', max: '2026-11-22'}
+      destino_pais: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 165, min: Afeganistão, max: Índia}
+      destino_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: ''
+        max: Tocantins
+        top:
+        - [São Paulo, 232103]
+        - [Distrito Federal, 198423]
+        - [Minas Gerais, 169757]
+        - [Rio Grande do Sul, 136751]
+        - [Rio de Janeiro, 131513]
+        - [Paraná, 108545]
+        - [Pernambuco, 94100]
+        - [Bahia, 91036]
+        - [Pará, 87402]
+        - [Goiás, 74917]
+      destino_cidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8004}
+      meio_de_transporte:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: Aéreo
+        max: Veículo Próprio
+        top:
+        - [Veículo Oficial, 1040550]
+        - [Aéreo, 641510]
+        - [Rodoviário, 235462]
+        - [Veículo Próprio, 124932]
+        - [Inválido, 48037]
+        - [Fluvial, 19324]
+        - [Ferroviário, 1891]
+        - [Marítimo, 1082]
+      numero_diarias: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 368, pessoal: 'só contagens: valores seriam dado pessoal'}
+      missao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [Não, 1057097]
+        - [Sim, 1055691]
+  viagem:
+    linhas: 9962318
+    fonte_do_perfil: amostra de 20.076%. ~2.000.000 linhas
+    colunas:
+      identificador_do_processo_de_viagem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1995436, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      numero_da_proposta_pcdp: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 426245, pessoal: 'só contagens: valores seriam dado pessoal'}
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Não realizada
+        max: Realizada
+        top:
+        - [Realizada, 1967081]
+        - [Não realizada, 49594]
+      viagem_urgente:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NÃO
+        max: SIM
+        top:
+        - [NÃO, 1511010]
+        - [SIM, 505665]
+      justificativa_urgencia_viagem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 268909}
+      codigo_do_orgao_superior:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: '-1'
+        max: '84000'
+        top:
+        - ['26000', 538740]
+        - ['30000', 324906]
+        - ['52000', 251885]
+        - ['-1', 227139]
+        - ['33000', 105586]
+        - ['36000', 101962]
+        - ['44000', 83455]
+        - ['47000', 73559]
+        - ['49000', 55562]
+        - ['20000', 32457]
+      nome_do_orgao_superior: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 35, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_orgao_solicitante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 180, min: '-1', max: '91214'}
+      nome_orgao_solicitante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 244, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_viajante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 721510, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 469454, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cargo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1388}
+      funcao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 271, min: '-1', max: Subtenente}
+      descricao_funcao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 204, min: '', max: Subtenentes}
+      periodo_data_de_inicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4950, min: '2014-01-01', max: '2026-11-23'}
+      periodo_data_de_fim: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4950, min: '2014-01-01', max: '2026-12-07'}
+      destinos: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 118431}
+      motivo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1006878}
+      valor_diarias:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 144659
+        min: '0.0'
+        max: '184372.5'
+        media: 1217.4669
+        quartis: [145.8053, 533.2378, 1073.0924]
+      valor_passagens:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 274757
+        min: '0.0'
+        max: '290096.16'
+        media: 690.2966
+        quartis: [0, 0, 767.408]
+      valor_devolucao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 12376
+        min: '0.0'
+        max: '58398.47'
+        media: 18.5131
+        quartis: [0, 0, 0]
+      valor_outros_gastos:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 30207
+        min: '0.0'
+        max: '16488.47'
+        media: 9.5902
+        quartis: [0, 0, 0]

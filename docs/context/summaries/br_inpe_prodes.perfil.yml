@@ -1,0 +1,81 @@
+dataset: br_inpe_prodes
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  municipio_bioma:
+    linhas: 156864
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: '2000'
+        max: '2023'
+        media: 2011.5
+        quartis: [2005, 2011, 2017]
+        top:
+        - ['2000', 6536]
+        - ['2001', 6536]
+        - ['2002', 6536]
+        - ['2003', 6536]
+        - ['2004', 6536]
+        - ['2005', 6536]
+        - ['2006', 6536]
+        - ['2007', 6536]
+        - ['2008', 6536]
+        - ['2009', 6536]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      bioma:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Amazônia
+        max: Pantanal
+        top:
+        - [Mata Atlântica, 73992]
+        - [Cerrado, 34392]
+        - [Caatinga, 29016]
+        - [Amazônia, 13416]
+        - [Pampa, 5520]
+        - [Pantanal, 528]
+      area_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 7602
+        min: '0.0'
+        max: '159482.27399'
+        media: 1299.7853
+        quartis: [156.4526, 336.0449, 853.8034]
+      desmatado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 19944
+        min: '0.0'
+        max: '21299.1'
+        media: 426.7639
+        quartis: [90.9806, 196.4087, 433.2082]
+      vegetacao_natural:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 26163
+        min: '-17.2'
+        max: '151901.6'
+        media: 808.2508
+        quartis: [25.9051, 83.7942, 341.6104]
+      nao_vegetacao_natural:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 303
+        min: '0.0'
+        max: '16957.5'
+        media: 43.3562
+        quartis: [0, 0, 0]
+      hidrografia:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 664
+        min: '0.0'
+        max: '4500.2'
+        media: 21.4141
+        quartis: [0, 0.1, 2.986]

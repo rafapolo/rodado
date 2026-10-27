@@ -1,0 +1,1879 @@
+dataset: br_camara_dados_abertos
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  deputado:
+    linhas: 7889
+    fonte_do_perfil: tabela inteira
+    colunas:
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7831, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_civil: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9595, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_nascimento: {tipo: DATE, nulos_pct: 11.32, distintos_aprox: 6350, min: '1753-10-12', max: '2001-04-10'}
+      data_falecimento: {tipo: DATE, nulos_pct: 44.91, distintos_aprox: 4976, min: '1826-12-21', max: '2026-08-11'}
+      id_municipio_nascimento: {tipo: VARCHAR, nulos_pct: 19.29, distintos_aprox: 1421}
+      sigla_uf_nascimento:
+        tipo: VARCHAR
+        nulos_pct: 12.24
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [null, 966]
+        - [MG, 881]
+        - [SP, 850]
+        - [RJ, 722]
+        - [BA, 551]
+        - [RS, 544]
+        - [PE, 445]
+        - [CE, 400]
+        - [PR, 268]
+        - [MA, 244]
+      id_deputado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9457}
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Feminino
+        max: Masculino
+        top:
+        - [Masculino, 7542]
+        - [Feminino, 347]
+      id_inicial_legislatura: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 57, min: '1', max: '9'}
+      id_final_legislatura: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 57, min: '1', max: '9'}
+      url_site: {tipo: VARCHAR, nulos_pct: 99.2, distintos_aprox: 65, min: 'Site: http://www.franciscoflorianorj.com.br', max: www.zecadirceu.com.br}
+      url_rede_social: {tipo: VARCHAR, nulos_pct: 99.2, distintos_aprox: 65, min: 'Site: http://www.franciscoflorianorj.com.br', max: www.zecadirceu.com.br}
+  deputado_contato:
+    linhas: 7583
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_deputado:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6524
+        min: '2'
+        max: '236518'
+        media: 87674.9011
+        quartis: [2693, 77035, 132003]
+      nome_civil: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9187, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf: {tipo: VARCHAR, nulos_pct: 51.1, distintos_aprox: 4152, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: F
+        max: M
+        top:
+        - [M, 7236]
+        - [F, 347]
+      url_website:
+        tipo: VARCHAR
+        nulos_pct: 99.93
+        distintos_aprox: 5
+        min: http://deputadohirangoncalves.com.br/
+        max: www.deputadoflavianomelo.com.br
+        top:
+        - [null, 7578]
+        - ['http://deputadohirangoncalves.com.br/', 1]
+        - ['https://gabinetona.org/', 1]
+        - ['https://www.amaroneto.com.br/', 1]
+        - [www.aeltonfreitas.com.br, 1]
+        - [www.deputadoflavianomelo.com.br, 1]
+      rede_social: {tipo: VARCHAR, nulos_pct: 92.59, distintos_aprox: 617, min: 'http://facebook.com/bernardosantana1; http://twitter.com/santanabernardo;
+          http://www.youtube.com/depbernardosantana', max: 'https://www.instagram.com/wellingtonroberto.pb'}
+      data_nascimento: {tipo: VARCHAR, nulos_pct: 11.38, distintos_aprox: 6536}
+      data_falecimento:
+        tipo: VARCHAR
+        nulos_pct: 99.49
+        distintos_aprox: 33
+        min: '2003-05-03'
+        max: '2024-05-12'
+        top:
+        - [null, 7544]
+        - ['2003-05-03', 1]
+        - ['2003-06-17', 1]
+        - ['2003-07-27', 1]
+        - ['2003-10-04', 1]
+        - ['2003-12-27', 1]
+        - ['2004-08-09', 1]
+        - ['2005-04-26', 1]
+        - ['2005-08-13', 1]
+        - ['2005-12-12', 1]
+      uf_nascimento:
+        tipo: VARCHAR
+        nulos_pct: 12.33
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [null, 935]
+        - [MG, 846]
+        - [SP, 822]
+        - [RJ, 691]
+        - [BA, 527]
+        - [RS, 510]
+        - [PE, 424]
+        - [CE, 384]
+        - [PR, 260]
+        - [MA, 236]
+      municipio_nascimento: {tipo: VARCHAR, nulos_pct: 17.22, distintos_aprox: 1192}
+      escolaridade:
+        tipo: VARCHAR
+        nulos_pct: 26.32
+        distintos_aprox: 15
+        min: Doutorado
+        max: Superior Incompleto
+        top:
+        - [Superior, 4602]
+        - [null, 1996]
+        - [Secundário, 244]
+        - [Superior Incompleto, 204]
+        - [Pós-Graduação, 177]
+        - [Ensino Médio, 102]
+        - [Mestrado, 84]
+        - [Primário, 44]
+        - [Doutorado, 42]
+        - [Ensino Fundamental, 25]
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7750, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_eleitoral: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7750, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido: {tipo: VARCHAR, nulos_pct: 30.92, distintos_aprox: 96, min: ARENA, max: UPF}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0.46
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [SP, 897]
+        - [MG, 867]
+        - [RJ, 689]
+        - [BA, 548]
+        - [RS, 463]
+        - [PE, 447]
+        - [CE, 362]
+        - [PR, 350]
+        - [MA, 276]
+        - [SC, 229]
+      id_legislatura:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 53
+        min: '1'
+        max: '57'
+        media: 40.1737
+        quartis: [32, 45, 52]
+      email: {tipo: VARCHAR, nulos_pct: 93.23, distintos_aprox: 632, pessoal: 'só contagens: valores seriam dado pessoal'}
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 37.1
+        distintos_aprox: 7
+        min: Afastado
+        max: Vacância
+        top:
+        - [null, 2813]
+        - [Vacância, 2719]
+        - [Fim de Mandato, 986]
+        - [Exercício, 526]
+        - [Suplência, 324]
+        - [Afastado, 189]
+        - [Licença, 22]
+        - [Convocado, 4]
+      condicao_eleitoral:
+        tipo: VARCHAR
+        nulos_pct: 9.82
+        distintos_aprox: 5
+        min: Efetivado
+        max: Titular
+        top:
+        - [Titular, 5383]
+        - [Suplente, 1238]
+        - [null, 745]
+        - [Efetivado, 209]
+        - [Não Eleito, 6]
+        - [Eleito, 2]
+      gabinete_nome: {tipo: VARCHAR, nulos_pct: 93.23, distintos_aprox: 605, pessoal: 'só contagens: valores seriam dado pessoal'}
+      gabinete_predio:
+        tipo: VARCHAR
+        nulos_pct: 93.23
+        distintos_aprox: 3
+        min: '3'
+        max: x
+        top:
+        - [null, 7070]
+        - ['4', 427]
+        - ['3', 82]
+        - [x, 4]
+      gabinete_sala: {tipo: VARCHAR, nulos_pct: 93.23, distintos_aprox: 605, min: '17', max: '987'}
+      gabinete_andar:
+        tipo: VARCHAR
+        nulos_pct: 94.37
+        distintos_aprox: 7
+        min: '2'
+        max: '9'
+        top:
+        - [null, 7156]
+        - ['3', 54]
+        - ['4', 54]
+        - ['8', 54]
+        - ['2', 53]
+        - ['5', 53]
+        - ['6', 53]
+        - ['7', 53]
+        - ['9', 53]
+      gabinete_telefone: {tipo: VARCHAR, nulos_pct: 93.23, distintos_aprox: 425, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_status: {tipo: VARCHAR, nulos_pct: 72.69, distintos_aprox: 377, min: '2003-02-25', max: '2026-09-30'}
+      url_foto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7378}
+  deputado_ocupacao:
+    linhas: 37407
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_deputado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9483}
+      ano_inicio:
+        tipo: BIGINT
+        nulos_pct: 43.42
+        distintos_aprox: 281
+        min: '20'
+        max: '2025'
+        media: 1961.5407
+        quartis: [1945, 1972, 1988]
+      ano_fim:
+        tipo: BIGINT
+        nulos_pct: 64.55
+        distintos_aprox: 259
+        min: '154'
+        max: '2954'
+        media: 1971.7892
+        quartis: [1960, 1981, 1994]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 62.35
+        distintos_aprox: 37
+        min: AC
+        max: TO
+        top:
+        - [null, 23322]
+        - [SP, 2055]
+        - [RJ, 1788]
+        - [MG, 1381]
+        - [DF, 964]
+        - [RS, 751]
+        - [BA, 714]
+        - [PE, 692]
+        - [PR, 597]
+        - [SC, 549]
+      entidade: {tipo: VARCHAR, nulos_pct: 30.39, distintos_aprox: 14491}
+      titulo: {tipo: VARCHAR, nulos_pct: 7.92, distintos_aprox: 11531}
+  deputado_profissao:
+    linhas: 12607
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_deputado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9483}
+      data: {tipo: DATE, nulos_pct: 8.69, distintos_aprox: 350, min: '2015-01-16', max: '2026-10-08'}
+      horario: {tipo: TIME WITH TIME ZONE, nulos_pct: 8.69, distintos_aprox: 1367, min: '07:21:24+00', max: '20:59:27+00'}
+      id_profissao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 189, min: '0', max: '94'}
+      titulo: {tipo: VARCHAR, nulos_pct: 8.69, distintos_aprox: 235, min: Administrador, max: Zootecnista}
+  despesa:
+    linhas: 4874008
+    fonte_do_perfil: amostra de 41.034%. ~2.000.000 linhas
+    colunas:
+      nome_parlamentar: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1603, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf: {tipo: VARCHAR, nulos_pct: 4.33, distintos_aprox: 2057, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_deputado: {tipo: VARCHAR, nulos_pct: 0.21, distintos_aprox: 1602}
+      ano_legislatura:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '2007'
+        max: '2023'
+        media: 2014.5496
+        quartis: [2011, 2015, 2019]
+        top:
+        - ['2011', 599490]
+        - ['2015', 568925]
+        - ['2019', 364623]
+        - ['2023', 270759]
+        - ['2007', 270084]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0.21
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 319887]
+        - [MG, 258626]
+        - [RS, 189697]
+        - [RJ, 180910]
+        - [BA, 159560]
+        - [PR, 149810]
+        - [PE, 103233]
+        - [SC, 89442]
+        - [CE, 73554]
+        - [PA, 53446]
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0.21
+        distintos_aprox: 47
+        min: AVANTE
+        max: UNIÃO
+        top:
+        - [PT, 325379]
+        - [PSDB, 170584]
+        - [PSD, 136427]
+        - [PMDB, 129066]
+        - [PP, 126125]
+        - [PSB, 105000]
+        - [MDB, 104108]
+        - [PR, 101765]
+        - [PL, 100533]
+        - [DEM, 99992]
+      id_legislatura:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '53'
+        max: '57'
+        top:
+        - ['54', 599490]
+        - ['55', 568925]
+        - ['56', 364623]
+        - ['57', 270759]
+        - ['53', 270084]
+      categoria_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: AQUISIÇÃO DE MATERIAL DE ESCRITÓRIO.
+        max: TELEFONIA
+        top:
+        - [COMBUSTÍVEIS E LUBRIFICANTES., 484706]
+        - [PASSAGEM AÉREA - RPA, 442373]
+        - [TELEFONIA, 210641]
+        - [SERVIÇOS POSTAIS, 168694]
+        - [MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR, 155318]
+        - [FORNECIMENTO DE ALIMENTAÇÃO DO PARLAMENTAR, 127179]
+        - ['SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO', 120897]
+        - [PASSAGEM AÉREA - SIGEPA, 96556]
+        - [DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR., 79004]
+        - [LOCAÇÃO DE VEÍCULOS AUTOMOTORES OU FRETAMENTO DE EMBARCAÇÕES, 59049]
+      subcategoria_despesa:
+        tipo: VARCHAR
+        nulos_pct: 76.63
+        distintos_aprox: 4
+        min: Aeronaves
+        max: Veículos Automotores
+        top:
+        - [null, 1589175]
+        - [Veículos Automotores, 473675]
+        - [Sem especificações, 9029]
+        - [Aeronaves, 1702]
+        - [Embarcações, 300]
+      fornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 185719, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_cpf_fornecedor: {tipo: VARCHAR, nulos_pct: 4.66, distintos_aprox: 124504, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_documento_fiscal: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1291372, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_documento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ano_competencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '2008'
+        max: '2026'
+        media: 2016.1062
+        quartis: [2012, 2016, 2019]
+        top:
+        - ['2011', 163727]
+        - ['2015', 157796]
+        - ['2012', 151715]
+        - ['2016', 150466]
+        - ['2013', 149706]
+        - ['2010', 148024]
+        - ['2017', 141946]
+        - ['2014', 136781]
+        - ['2019', 120344]
+        - ['2018', 119789]
+      mes_competencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.5718
+        quartis: [4, 6, 9]
+        top:
+        - ['5', 194413]
+        - ['3', 193939]
+        - ['6', 183578]
+        - ['4', 183144]
+        - ['8', 182287]
+        - ['10', 179173]
+        - ['11', 176745]
+        - ['7', 175660]
+        - ['9', 164912]
+        - ['2', 164292]
+      data_emissao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5953, min: '1959-11-03', max: '2026-04-07'}
+      valor_documento: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 187506, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_retido:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 17129
+        min: '0.0'
+        max: '42250.0'
+        media: 5.0489
+        quartis: [0, 0, 0]
+      valor_liquido:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 213152
+        min: '-20974.7'
+        max: '208320.0'
+        media: 701.6564
+        quartis: [50.1396, 160.7692, 535.6878]
+      numero_parcela: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_passageiro: {tipo: VARCHAR, nulos_pct: 73.85, distintos_aprox: 34509, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao_passagem_aerea: {tipo: VARCHAR, nulos_pct: 73.61, distintos_aprox: 11897}
+      data_pagamento_restituicao: {tipo: TIMESTAMP, nulos_pct: 99.95, distintos_aprox: 338, min: '2012-02-02 00:00:00', max: '2025-05-21 00:00:00'}
+      valor_restituicao:
+        tipo: DOUBLE
+        nulos_pct: 99.95
+        distintos_aprox: 613
+        min: '1.0'
+        max: '73200.0'
+        media: 826.8842
+        quartis: [10.0883, 51.61, 267.4234]
+      url_documento: {tipo: VARCHAR, nulos_pct: 62.63, distintos_aprox: 920292, pessoal: 'só contagens: valores seriam dado pessoal'}
+  evento:
+    linhas: 61416
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_evento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61845}
+      url_documento_pauta: {tipo: VARCHAR, nulos_pct: 5.83, distintos_aprox: 51835, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_inicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5429, min: '1900-01-01', max: '2026-03-24'}
+      horario_inicio: {tipo: TIME WITH TIME ZONE, nulos_pct: 0, distintos_aprox: 11912, min: '00:00:00+00', max: '23:56:00+00'}
+      data_final: {tipo: DATE, nulos_pct: 18.36, distintos_aprox: 5590, min: '1991-02-19', max: '2209-10-29'}
+      horario_final: {tipo: TIME WITH TIME ZONE, nulos_pct: 18.36, distintos_aprox: 11032, min: '00:00:00+00', max: '23:59:11+00'}
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Cancelada
+        max: Suspensa
+        top:
+        - [Encerrada (Final), 40800]
+        - [Encerrada, 9035]
+        - [Cancelada, 7756]
+        - [Encerrada (Termo), 3576]
+        - [Encerrada (Comunicado), 247]
+        - [Suspensa, 2]
+      descricao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 36343}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 40
+        min: Ato Solene de Instalação
+        max: Visita Técnica
+        top:
+        - [Reunião Deliberativa, 25510]
+        - [Audiência Pública, 14246]
+        - [Sessão Deliberativa, 5137]
+        - [Outro Evento, 2517]
+        - [Seminário, 2334]
+        - [Reunião de Instalação e Eleição, 1851]
+        - [Sessão Não Deliberativa Solene, 1535]
+        - [Reunião Técnica, 989]
+        - [Sessão Não Deliberativa de Debates, 980]
+        - [Sessão de Debates, 788]
+      local_externo: {tipo: VARCHAR, nulos_pct: 66.95, distintos_aprox: 4919}
+      nome_local: {tipo: VARCHAR, nulos_pct: 33.13, distintos_aprox: 35, pessoal: 'só contagens: valores seriam dado pessoal'}
+  evento_orgao:
+    linhas: 62772
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_evento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61845}
+      id_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1342}
+      sigla_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1115}
+  evento_presenca_deputado:
+    linhas: 2747941
+    fonte_do_perfil: amostra de 72.782%. ~2.000.000 linhas
+    colunas:
+      id_evento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 45647}
+      data_inicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4402, min: '1900-01-01', max: '2026-03-03'}
+      horario_inicio: {tipo: TIME WITH TIME ZONE, nulos_pct: 0, distintos_aprox: 11614, min: '00:00:00+00', max: '23:56:00+00'}
+      id_deputado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2114}
+  evento_requerimento:
+    linhas: 21565
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_evento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12559}
+      titulo_requerimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15151}
+      id_proposicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18706}
+  frente:
+    linhas: 1433
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_frente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1469}
+      titulo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1360}
+      data_criacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 752, min: '2003-03-12', max: '2025-12-10'}
+      id_legislatura:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '52'
+        max: '57'
+        top:
+        - ['56', 352]
+        - ['55', 345]
+        - ['57', 310]
+        - ['54', 214]
+        - ['52', 113]
+        - ['53', 99]
+      telefone: {tipo: VARCHAR, nulos_pct: 0.07, distintos_aprox: 662, pessoal: 'só contagens: valores seriam dado pessoal'}
+      situacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1720}
+      url_documento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1267, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_coordenador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 471, min: '0', max: '98615'}
+      nome_coordenador: {tipo: VARCHAR, nulos_pct: 0.07, distintos_aprox: 758, pessoal: 'só contagens: valores seriam dado pessoal'}
+      url_foto_coordenador: {tipo: VARCHAR, nulos_pct: 16.33, distintos_aprox: 509, min: 'https://www.camara.leg.br/internet/deputado/bandep/101309.jpg',
+        max: 'https://www.camara.leg.br/internet/deputado/bandep/98615.jpg'}
+  frente_deputado:
+    linhas: 262268
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_frente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1469}
+      titulo_deputado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1380}
+      id_deputado: {tipo: VARCHAR, nulos_pct: 0.1, distintos_aprox: 1343}
+      nome_deputado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1545, pessoal: 'só contagens: valores seriam dado pessoal'}
+      url_foto_deputado: {tipo: VARCHAR, nulos_pct: 0.1, distintos_aprox: 1291}
+  funcionario:
+    linhas: 13471
+    fonte_do_perfil: tabela inteira
+    colunas:
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15278, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cargo: {tipo: VARCHAR, nulos_pct: 3.81, distintos_aprox: 123, min: '0', max: Técnico Legislativo/Policial Legislativo Federal}
+      funcao: {tipo: VARCHAR, nulos_pct: 76.22, distintos_aprox: 772, min: 0 - SEM CARGO, max: FC-6 - SECRETÁRIO-GERAL DA MESA}
+      data_inicio_historico: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2998, min: '1974-09-01', max: '2026-04-07'}
+      data_nomeacao: {tipo: DATE, nulos_pct: 25.07, distintos_aprox: 441, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_publicacao_nomeacao: {tipo: DATE, nulos_pct: 25.07, distintos_aprox: 441, pessoal: 'só contagens: valores seriam dado pessoal'}
+      grupo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Cargo de Natureza Especial
+        max: Secretário Parlamentar
+        top:
+        - [Secretário Parlamentar, 8866]
+        - [Quadro Efetivo - RJU, 2586]
+        - [Cargo de Natureza Especial, 1506]
+        - [Parlamentar, 513]
+      ponto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13871}
+      ato_nomeacao: {tipo: VARCHAR, nulos_pct: 24.14, distintos_aprox: 3, pessoal: 'só contagens: valores seriam dado pessoal'}
+      lotacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1365}
+  legislatura:
+    linhas: 57
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 61
+        min: '1826'
+        max: '2022'
+        media: 1917.7193
+        quartis: [1870, 1911, 1967]
+      id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 58, min: '1', max: '9'}
+      url: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 59, min: 'https://dadosabertos.camara.leg.br/api/v2/legislaturas/%s1', max: 'https://dadosabertos.camara.leg.br/api/v2/legislaturas/%s9'}
+      data_inicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 65, min: '1826-04-29', max: '2023-02-01'}
+      data_final: {tipo: DATE, nulos_pct: 0, distintos_aprox: 62, min: '1830-04-24', max: '2027-01-31'}
+  legislatura_mesa:
+    linhas: 155
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '51'
+        max: '57'
+        top:
+        - ['52', 34]
+        - ['56', 27]
+        - ['55', 24]
+        - ['51', 23]
+        - ['54', 23]
+        - ['53', 13]
+        - ['57', 11]
+      data_inicio:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 25
+        min: '1999-02-02 00:00:00'
+        max: '2023-02-01 00:00:00'
+        top:
+        - ['1999-02-02 00:00:00', 11]
+        - ['2003-02-02 00:00:00', 11]
+        - ['2007-01-02 00:00:00', 11]
+        - ['2009-02-02 00:00:00', 11]
+        - ['2011-02-01 00:00:00', 11]
+        - ['2013-02-04 00:00:00', 11]
+        - ['2015-02-01 00:00:00', 11]
+        - ['2017-02-02 00:00:00', 11]
+        - ['2019-02-01 00:00:00', 11]
+        - ['2023-02-01 00:00:00', 11]
+      data_final:
+        tipo: TIMESTAMP
+        nulos_pct: 7.1
+        distintos_aprox: 29
+        min: '2001-02-14 23:59:59'
+        max: '2023-01-31 23:59:59'
+        top:
+        - ['2001-02-14 23:59:59', 11]
+        - ['2007-01-31 23:59:59', 11]
+        - ['2009-02-02 23:59:59', 11]
+        - ['2013-02-04 23:59:59', 11]
+        - ['2015-01-31 23:59:59', 11]
+        - ['2017-02-02 23:59:59', 11]
+        - ['2019-01-31 23:59:59', 11]
+        - ['2021-02-01 23:59:59', 11]
+        - [null, 11]
+        - ['2003-01-31 23:59:59', 10]
+      id_orgao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '4'
+        max: '4'
+        top:
+        - ['4', 155]
+      url_orgao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: https://dadosabertos.camara.leg.br/api/v2/orgaos/4
+        max: https://dadosabertos.camara.leg.br/api/v2/orgaos/4
+        top:
+        - ['https://dadosabertos.camara.leg.br/api/v2/orgaos/4', 155]
+      sigla_orgao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: MESA
+        max: MESA
+        top:
+        - [MESA, 155]
+      nome_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_deputado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 107, min: '133373', max: '97707'}
+      nome_deputado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 130, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: 1º Secretário
+        max: Presidente
+        top:
+        - [Presidente, 17]
+        - [1º Vice-Presidente, 15]
+        - [3º Secretário, 15]
+        - [2º Secretário, 14]
+        - [2º Vice-Presidente, 14]
+        - [4º Secretário, 14]
+        - [4º Suplente de Secretário, 14]
+        - [1º Secretário, 13]
+        - [1º Suplente de Secretário, 13]
+        - [2º Suplente de Secretário, 13]
+      url_deputado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 104, min: 'https://dadosabertos.camara.leg.br/api/v2/deputados/133373', max: 'https://dadosabertos.camara.leg.br/api/v2/deputados/97707'}
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: DEM
+        max: UNIÃO
+        top:
+        - [PT, 17]
+        - [PSDB, 16]
+        - [PMDB, 15]
+        - [PDT, 11]
+        - [PSB, 11]
+        - [DEM, 9]
+        - [PFL, 9]
+        - [PSD, 9]
+        - [PTB, 8]
+        - [PP**, 7]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: AC
+        max: TO
+        top:
+        - [PE, 24]
+        - [SP, 19]
+        - [MG, 13]
+        - [RJ, 11]
+        - [AL, 10]
+        - [MS, 9]
+        - [PI, 7]
+        - [RO, 7]
+        - [RS, 7]
+        - [PR, 6]
+  licitacao:
+    linhas: 4718
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_licitacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '1999'
+        max: '2026'
+        media: 2013.7111
+        quartis: [2009, 2013, 2018]
+        top:
+        - ['2010', 357]
+        - ['2011', 287]
+        - ['2012', 282]
+        - ['2013', 279]
+        - ['2008', 277]
+        - ['2014', 262]
+        - ['2009', 259]
+        - ['2006', 247]
+        - ['2015', 240]
+        - ['2007', 223]
+      id_licitacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4504}
+      ano_processo:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '1999'
+        max: '2025'
+        media: 2013.0017
+        quartis: [2008, 2012, 2017]
+        top:
+        - ['2010', 353]
+        - ['2011', 285]
+        - ['2006', 281]
+        - ['2009', 281]
+        - ['2012', 280]
+        - ['2013', 269]
+        - ['2008', 267]
+        - ['2007', 256]
+        - ['2015', 254]
+        - ['2014', 240]
+      id_processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3667}
+      objeto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5165}
+      modalidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: Concorrência
+        max: Tomada de Preços
+        top:
+        - [Pregão Eletrônico, 3942]
+        - [Convite, 463]
+        - [Dispensa de Licitação, 198]
+        - [Tomada de Preços, 38]
+        - [Concorrência, 37]
+        - [Credenciamento, 21]
+        - [Concurso, 9]
+        - [Inexigibilidade de Licitação, 6]
+        - [Outros, 4]
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 2.25
+        distintos_aprox: 6
+        min: Maior Desconto
+        max: Técnica e Preço
+        top:
+        - [Menor Preço, 4487]
+        - [null, 106]
+        - [Maior Desconto, 68]
+        - [Maior Lance ou Oferta, 22]
+        - [Técnica e Preço, 14]
+        - [Menor Acréscimo, 10]
+        - [Melhor Técnica, 6]
+        - [Não se aplica, 5]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: Anulada
+        max: Revogada
+        top:
+        - [Julgada, 4303]
+        - [Fracassada, 216]
+        - [Revogada, 54]
+        - [Instrumento convocatório publicado, 49]
+        - [Deserta, 41]
+        - [Anulada, 27]
+        - [Em julgamento, 26]
+        - [Cancelada, 1]
+        - [Incluída, 1]
+      data_abertura: {tipo: DATE, nulos_pct: 69.05, distintos_aprox: 1004, min: '2003-12-03', max: '2026-04-14'}
+      data_publicacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2233, min: '2001-10-30', max: '2026-04-15'}
+      data_autorizacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2833, min: '2001-10-08', max: '2026-04-07'}
+      quantidade_item:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 192
+        min: '0'
+        max: '718'
+        media: 12.7967
+        quartis: [1, 3, 9]
+      quantidade_unidade:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1780
+        min: '0'
+        max: '5100000'
+        media: 23899.6848
+        quartis: [5, 183, 3056]
+      quantidade_proposta:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: '0'
+        max: '28'
+        media: 2.1172
+        quartis: [1, 1, 2]
+        top:
+        - ['1', 2451]
+        - ['2', 710]
+        - ['3', 435]
+        - ['0', 384]
+        - ['4', 251]
+        - ['5', 139]
+        - ['6', 91]
+        - ['7', 71]
+        - ['8', 46]
+        - ['9', 34]
+      quantidade_contrato:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '0'
+        max: '19'
+        media: 0.5428
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 2844]
+        - ['1', 1548]
+        - ['2', 170]
+        - ['3', 81]
+        - ['4', 34]
+        - ['5', 14]
+        - ['6', 8]
+        - ['7', 7]
+        - ['8', 5]
+        - ['11', 2]
+      valor_estimado:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4569
+        min: '0'
+        max: '99553696'
+        media: 1003543.0352
+        quartis: [27353, 84053, 318205]
+      valor_contratado: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 5603, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_pago:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2952
+        min: '0'
+        max: '165194741'
+        media: 949177.9741
+        quartis: [4983, 28513, 127435]
+  licitacao_contrato:
+    linhas: 2655
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_licitacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '2002'
+        max: '2025'
+        media: 2016.4923
+        quartis: [2011, 2018, 2022]
+        top:
+        - ['2023', 324]
+        - ['2022', 252]
+        - ['2019', 228]
+        - ['2021', 188]
+        - ['2020', 148]
+        - ['2013', 130]
+        - ['2006', 117]
+        - ['2010', 116]
+        - ['2011', 116]
+        - ['2012', 111]
+      id_licitacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1440}
+      ano_contrato:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '2002'
+        max: '2025'
+        media: 2016.6573
+        quartis: [2012, 2019, 2022]
+        top:
+        - ['2023', 348]
+        - ['2022', 220]
+        - ['2019', 197]
+        - ['2020', 184]
+        - ['2021', 184]
+        - ['2025', 121]
+        - ['2013', 118]
+        - ['2011', 117]
+        - ['2010', 116]
+        - ['2007', 107]
+      id_contrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 299, min: '1', max: '99'}
+      tipo_contrato:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Ata de Registro de Preços
+        max: Nota de Empenho de Despesa
+        top:
+        - [Contrato, 2503]
+        - [Carta-Contrato, 132]
+        - [Ata de Registro de Preços, 16]
+        - [Nota de Empenho de Despesa, 4]
+      situacao_contrato:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Encerrado
+        max: Vigente
+        top:
+        - [Vencido, 1083]
+        - [Encerrado, 831]
+        - [Vigente, 609]
+        - [Rescindido, 132]
+      descricao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2022}
+      data_assinatura: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1143, min: '2002-05-20', max: '2025-09-04'}
+      data_publicacao: {tipo: DATE, nulos_pct: 0.19, distintos_aprox: 1060, min: '2002-06-18', max: '2025-09-05'}
+      data_inicio_contrato: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1172, min: '2002-05-20', max: '2025-09-04'}
+      data_fim_contrato: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1419, min: '2003-05-19', max: '2030-12-27'}
+      data_fim_ultima_vigencia: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1282, min: '2003-05-19', max: '2030-12-27'}
+      nome_fornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1410, pessoal: 'só contagens: valores seriam dado pessoal'}
+      endereco_fornecedor: {tipo: VARCHAR, nulos_pct: 11.64, distintos_aprox: 748, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cidade_fornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 311, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_uf_fornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 25, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_cnpj_fornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1174, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_original:
+        tipo: BIGINT
+        nulos_pct: 76.61
+        distintos_aprox: 694
+        min: '194'
+        max: '87549240'
+        media: 1600024.066
+        quartis: [21949, 76012, 325042]
+      valor_total:
+        tipo: BIGINT
+        nulos_pct: 76.61
+        distintos_aprox: 668
+        min: '194'
+        max: '87549240'
+        media: 1627864.5556
+        quartis: [21679, 75239, 320798]
+  licitacao_item:
+    linhas: 63921
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_licitacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '1999'
+        max: '2026'
+        media: 2011.9705
+        quartis: [2007, 2011, 2016]
+        top:
+        - ['2006', 5518]
+        - ['2008', 4719]
+        - ['2011', 4358]
+        - ['2010', 4283]
+        - ['2014', 3649]
+        - ['2015', 3510]
+        - ['2004', 3428]
+        - ['2013', 3308]
+        - ['2012', 3188]
+        - ['2018', 3181]
+      id_licitacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5255}
+      id_item: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 340, min: '1', max: '99'}
+      id_sub_item: {tipo: VARCHAR, nulos_pct: 29.47, distintos_aprox: 269, min: '1', max: '99'}
+      descricao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 39679}
+      especificacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 40438}
+      unidade: {tipo: VARCHAR, nulos_pct: 0.6, distintos_aprox: 82, min: AMPOLA, max: VIDRO}
+      quantidade_licitada:
+        tipo: BIGINT
+        nulos_pct: 34.54
+        distintos_aprox: 1962
+        min: '1'
+        max: '3000000'
+        media: 1710.1009
+        quartis: [5, 21, 142]
+      valor_unitario_estimado:
+        tipo: BIGINT
+        nulos_pct: 9.2
+        distintos_aprox: 7348
+        min: '1'
+        max: '71480214'
+        media: 59279.5227
+        quartis: [8, 39, 252]
+      quantidade_contratada: {tipo: BIGINT, nulos_pct: 14.49, distintos_aprox: 2168, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_unitario_contratado: {tipo: BIGINT, nulos_pct: 22.46, distintos_aprox: 4964, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_total_contratado: {tipo: BIGINT, nulos_pct: 14.39, distintos_aprox: 12719, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_cnpj_fornecedor: {tipo: VARCHAR, nulos_pct: 29.9, distintos_aprox: 3683, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fornecedor: {tipo: VARCHAR, nulos_pct: 29.9, distintos_aprox: 4213, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_contrato: {tipo: VARCHAR, nulos_pct: 77.44, distintos_aprox: 320, min: '1.0', max: '99.0'}
+      ano_contrato:
+        tipo: BIGINT
+        nulos_pct: 77.44
+        distintos_aprox: 24
+        min: '2002'
+        max: '2026'
+        media: 2014.1172
+        quartis: [2010, 2013, 2018]
+        top:
+        - [null, 49498]
+        - ['2010', 1105]
+        - ['2013', 1029]
+        - ['2008', 983]
+        - ['2018', 926]
+        - ['2012', 911]
+        - ['2011', 816]
+        - ['2014', 812]
+        - ['2016', 800]
+        - ['2007', 758]
+      tipo_contrato:
+        tipo: VARCHAR
+        nulos_pct: 77.44
+        distintos_aprox: 4
+        min: Ata de Registro de Preços
+        max: Nota de Empenho de Despesa
+        top:
+        - [null, 49498]
+        - [Contrato, 13467]
+        - [Carta-Contrato, 560]
+        - [Ata de Registro de Preços, 389]
+        - [Nota de Empenho de Despesa, 7]
+      situacao_item:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Ativo
+        max: Destacado Liquidação
+        top:
+        - [Ativo, 60130]
+        - [Destacado, 3643]
+        - [Destacado Liquidação, 76]
+        - [Cancelado, 69]
+        - [Cancelado Liquidação, 3]
+      observacao: {tipo: VARCHAR, nulos_pct: 89.26, distintos_aprox: 935, min: A pedido do usuário., max: solicito o cancelamento do item para
+          posterior aquisição.}
+      natureza_despesa:
+        tipo: VARCHAR
+        nulos_pct: 78.32
+        distintos_aprox: 25
+        min: AUXILIO FINANCEIRO A PESQUISADORES
+        max: SERVIÇOS DE TECNOLOGIA DA INFORMAÇÃO E COMUNICAÇÃO – PJ
+        top:
+        - [null, 50065]
+        - [MATERIAL DE CONSUMO, 10777]
+        - [MATERIAL PERMANENTE, 1038]
+        - [EQUIPAMENTOS E MATERIAL PERMANENTE, 806]
+        - [OUTROS SERVICOS DE TERCEIROS-PESSOA JURIDICA, 610]
+        - [OBRAS E INSTALACOES, 174]
+        - [LOCACAO DE MAO-DE-OBRA, 160]
+        - [SERVIÇOS DE TECNOLOGIA DA INFORMAÇÃO E COMUNICAÇÃO – PJ, 78]
+        - ['PREMIACOES CULT., ART., CIENT., DESP. E OUTR.', 67]
+        - [SERVIÇOS DE TECNOLOGIA DA INFORMAÇÃO E COMUNICAÇÃO, 34]
+      programa_trabalho: {tipo: VARCHAR, nulos_pct: 32.64, distintos_aprox: 52, min: ADMINISTRACAO DA UNIDADE, max: 'Reparos e Conservação de
+          Imóveis Funcionais - PROCESSO LEGISLATIVO, FISCALIZAÇÃO E REPRESENTAÇÃO POLÍTICA'}
+  licitacao_pedido:
+    linhas: 2869
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_licitacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: '1999'
+        max: '2026'
+        media: 2017.1541
+        quartis: [2013, 2016, 2021]
+        top:
+        - ['2012', 243]
+        - ['2014', 238]
+        - ['2013', 230]
+        - ['2015', 216]
+        - ['2011', 207]
+        - ['2018', 182]
+        - ['2016', 174]
+        - ['2025', 174]
+        - ['2023', 173]
+        - ['2019', 158]
+      id_licitacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2830}
+      tipo_registo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Pedido
+        max: Solicitação
+        top:
+        - [Pedido, 2826]
+        - [Solicitação, 43]
+      ano_pedido:
+        tipo: BIGINT
+        nulos_pct: 71.42
+        distintos_aprox: 12
+        min: '2014'
+        max: '2025'
+        media: 2022.6427
+        quartis: [2021, 2023, 2024]
+        top:
+        - [null, 2049]
+        - ['2025', 164]
+        - ['2022', 146]
+        - ['2023', 144]
+        - ['2024', 134]
+        - ['2021', 129]
+        - ['2020', 75]
+        - ['2019', 21]
+        - ['2018', 4]
+        - ['2014', 1]
+      id_pedido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1284}
+      data_cadastro: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2218, min: '2010-03-12', max: '2025-12-26'}
+      horario_cadastro: {tipo: TIME WITH TIME ZONE, nulos_pct: 0, distintos_aprox: 2821, min: '00:57:56.233+00', max: '23:59:53.75+00'}
+      id_orgao:
+        tipo: VARCHAR
+        nulos_pct: 87.21
+        distintos_aprox: 21
+        min: '100046.0'
+        max: '6174.0'
+        top:
+        - [null, 2502]
+        - ['537498.0', 178]
+        - ['100846.0', 79]
+        - ['100046.0', 60]
+        - ['100208.0', 24]
+        - ['100292.0', 5]
+        - ['10042.0', 2]
+        - ['101950.0', 2]
+        - ['538803.0', 2]
+        - ['538817.0', 2]
+      orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 223, min: A DISPOSIÇÃO DO SENADO FEDERAL, max: Secretaria-Geral da Mesa}
+      descricao: {tipo: VARCHAR, nulos_pct: 31.09, distintos_aprox: 1901}
+      observacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2769}
+  licitacao_proposta:
+    linhas: 41836
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '1999'
+        max: '2026'
+        media: 2007.8054
+        quartis: [2004, 2005, 2010]
+        top:
+        - ['2004', 9039]
+        - ['2003', 8928]
+        - ['2006', 4835]
+        - ['2005', 4809]
+        - ['2007', 1820]
+        - ['2018', 1043]
+        - ['2009', 889]
+        - ['2008', 824]
+        - ['2010', 787]
+        - ['2019', 755]
+      id_licitacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5255}
+      descricao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14825}
+      quantidade_unidade_licitacao:
+        tipo: BIGINT
+        nulos_pct: 25.96
+        distintos_aprox: 2739
+        min: '1'
+        max: '5100000'
+        media: 3379.5847
+        quartis: [6, 30, 238]
+      valor_estimado:
+        tipo: BIGINT
+        nulos_pct: 84.85
+        distintos_aprox: 5857
+        min: '1'
+        max: '97509444'
+        media: 319957.6547
+        quartis: [1799, 9908, 45842]
+      id_proposta: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14101}
+      unidade_proposta:
+        tipo: BIGINT
+        nulos_pct: 12.13
+        distintos_aprox: 1074
+        min: '1'
+        max: '5100000'
+        media: 2509.1323
+        quartis: [6, 23, 164]
+      valor_proposta:
+        tipo: BIGINT
+        nulos_pct: 63.73
+        distintos_aprox: 7988
+        min: '1'
+        max: '385343168'
+        media: 213959.6117
+        quartis: [417, 2455, 15508]
+      marca_proposta: {tipo: VARCHAR, nulos_pct: 17.03, distintos_aprox: 10976}
+      cpf_cnpj_fornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6028, pessoal: 'só contagens: valores seriam dado pessoal'}
+      fornecedor_situacao: {tipo: VARCHAR, nulos_pct: 1.9, distintos_aprox: 4, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_proposta: {tipo: DATE, nulos_pct: 0.11, distintos_aprox: 3278, min: '2000-12-03', max: '3201-03-14'}
+      validade_proposta:
+        tipo: BIGINT
+        nulos_pct: 19.08
+        distintos_aprox: 41
+        min: '1'
+        max: '365'
+        media: 57.0945
+        quartis: [60, 60, 60]
+        top:
+        - ['60', 28944]
+        - [null, 7981]
+        - ['30', 3196]
+        - ['90', 451]
+        - ['10', 263]
+        - ['20', 253]
+        - ['15', 168]
+        - ['45', 136]
+        - ['180', 85]
+        - ['1', 61]
+  orgao:
+    linhas: 2375
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2567}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1620, pessoal: 'só contagens: valores seriam dado pessoal'}
+      apelido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1649}
+      sigla: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1564}
+      tipo_orgao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: COORDENADORIA DA MULHER
+        max: Órgão da Câmara dos Deputados
+        top:
+        - [Comissão Especial, 1207]
+        - [Subcomissão, 562]
+        - [Comissão Externa, 194]
+        - [Comissão Parlamentar de Inquérito, 142]
+        - [Grupo de Trabalho, 86]
+        - [Comissão Representativa do CN, 50]
+        - [Comissão Permanente, 30]
+        - [Comissão de Sindicância, 25]
+        - [Comissão Mista Permanente, 23]
+        - [Conselho, 13]
+      data_inicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1135, min: '1999-01-29', max: '2026-02-27'}
+      data_instalacao: {tipo: DATE, nulos_pct: 28.04, distintos_aprox: 941, min: '1999-03-23', max: '2026-04-14'}
+      data_final: {tipo: DATE, nulos_pct: 9.77, distintos_aprox: 484, min: '1999-12-14', max: '2026-06-17'}
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 26.06
+        distintos_aprox: 7
+        min: Constituída
+        max: Remetida ao Senado Federal
+        top:
+        - [Extinta, 1492]
+        - [null, 619]
+        - [Parecer aprovado, 100]
+        - [Instalada, 57]
+        - [Desconstituida, 52]
+        - [Criada, 35]
+        - [Constituída, 18]
+        - [Remetida ao Senado Federal, 2]
+      casa:
+        tipo: VARCHAR
+        nulos_pct: 0.08
+        distintos_aprox: 2
+        min: Congresso Nacional
+        max: Câmara dos Deputados
+        top:
+        - [Câmara dos Deputados, 2283]
+        - [Congresso Nacional, 90]
+        - [null, 2]
+      sala: {tipo: VARCHAR, nulos_pct: 56.76, distintos_aprox: 178, min: '-', max: 'Serviço de Comissões Especiais, Anexo II, s/ 168-A'}
+  orgao_deputado:
+    linhas: 93730
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1543}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1392, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1290}
+      nome_deputado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2385, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cargo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 53, min: 1º Coordenador Adjunto, max: Vice-Presidente}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 69.71
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [null, 65340]
+        - [SP, 4305]
+        - [MG, 3389]
+        - [BA, 2730]
+        - [RJ, 2709]
+        - [RS, 2150]
+        - [PR, 1349]
+        - [CE, 1346]
+        - [PE, 1267]
+        - [GO, 1004]
+      data_inicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3772, min: '1999-02-01', max: '2026-03-27'}
+      data_final: {tipo: DATE, nulos_pct: 2.62, distintos_aprox: 4360, min: '1999-02-23', max: '2026-09-16'}
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 68.12
+        distintos_aprox: 23
+        min: AVANTE
+        max: UNIÃO
+        top:
+        - [null, 63847]
+        - [PL, 5449]
+        - [PT, 4397]
+        - [UNIÃO, 3038]
+        - [PP, 2760]
+        - [PSD, 2529]
+        - [REPUBLIC, 2221]
+        - [MDB, 1723]
+        - [PDT, 1119]
+        - [PSDB, 1079]
+  proposicao_autor:
+    linhas: 1913248
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_proposicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1043856}
+      id_deputado: {tipo: VARCHAR, nulos_pct: 10.12, distintos_aprox: 4026}
+      tipo_autor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 34, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_autor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9799, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido: {tipo: VARCHAR, nulos_pct: 9.24, distintos_aprox: 157, min: AA, max: www}
+      sigla_uf_autor: {tipo: VARCHAR, nulos_pct: 9.26, distintos_aprox: 30, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ordem_assinatura: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 468, min: '1', max: '99'}
+      proponente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+  proposicao_microdados:
+    linhas: 957814
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 83
+        min: '1935'
+        max: '2026'
+        media: 2011.6288
+        quartis: [2006, 2015, 2023]
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 15586, min: '1899-12-30', max: '2026-04-08'}
+      horario: {tipo: TIME WITH TIME ZONE, nulos_pct: 0, distintos_aprox: 36018, min: '00:00:00+00', max: '23:59:00+00'}
+      id_proposicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 995554}
+      url: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 908020}
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9865, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 147, min: AA, max: VTS}
+      tipo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 385, min: Adendo, max: Voto em Separado}
+      ementa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 745288}
+      ementa_detalhada: {tipo: VARCHAR, nulos_pct: 93.33, distintos_aprox: 38588}
+      palavra_chave: {tipo: VARCHAR, nulos_pct: 76.22, distintos_aprox: 208293}
+      url_orgao_numerador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2361}
+      url_principal: {tipo: VARCHAR, nulos_pct: 39.1, distintos_aprox: 144585}
+      url_posterior: {tipo: VARCHAR, nulos_pct: 99.11, distintos_aprox: 8457}
+      url_teor_proposicao: {tipo: VARCHAR, nulos_pct: 10.17, distintos_aprox: 866438}
+      data_hora_ultimo_status: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 237008}
+      url_relator_ultimo_status: {tipo: VARCHAR, nulos_pct: 87.88, distintos_aprox: 2198, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_orgao_ultimo_status: {tipo: VARCHAR, nulos_pct: 51.96, distintos_aprox: 647, min: 1SECM, max: SUBZPE}
+      regime_ultimo_status:
+        tipo: VARCHAR
+        nulos_pct: 76.44
+        distintos_aprox: 17
+        min: Art. 223 - CF
+        max: Urgência (art. 223, CF)
+        top:
+        - [null, 732111]
+        - ['Ordinário (Art. 151, III, RICD)', 157147]
+        - ['Prioridade (Art. 151, II, RICD)', 23682]
+        - [Art. 223 - CF, 21031]
+        - ['Urgência (Art. 155, RICD)', 8890]
+        - ['Urgência (art. 223, CF)', 4885]
+        - ['Especial (Art. 202 c/c 191, I, RICD)', 3670]
+        - [Especial, 2773]
+        - [Urgência, 1700]
+        - ['Urgência (Art. 62, CF)', 606]
+      tramitacao_ultimo_status: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 163, min: Abertura de Prazo, max: Votação}
+      situacao_ultimo_status: {tipo: VARCHAR, nulos_pct: 51.96, distintos_aprox: 60, min: <Não Definido>, max: Vetado totalmente}
+      despacho_ultimo_status: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 376906}
+      apreciacao_ultimo_status:
+        tipo: VARCHAR
+        nulos_pct: 2.28
+        distintos_aprox: 10
+        min: Anulada
+        max: Requerimento
+        top:
+        - [Indefinida, 778739]
+        - [Proposição Sujeita à Apreciação do Plenário, 47335]
+        - [Proposição Sujeita à Apreciação Conclusiva pelas Comissões - Art. 24 II, 45064]
+        - [Proposição Sujeita à Apreciação Conclusiva (Parecer 09/90 - CCJR), 25758]
+        - [null, 21853]
+        - [Requerimento, 16234]
+        - [Proposição Sujeita à Apreciação Interna nas Comissões, 8260]
+        - ['Proposição Sujeita à Apreciação Conclusiva pelas Comissões(Art. 24, II, do RICD)', 7890]
+        - [Anulada, 6678]
+        - [Proposição Sujeita à Apreciação do Plenário do Congresso Nacional, 3]
+      sequencia_ultimo_status: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 436, min: '0', max: '99'}
+      url_ultimo_status: {tipo: VARCHAR, nulos_pct: 39.54, distintos_aprox: 446453}
+  proposicao_tema:
+    linhas: 333286
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0.46
+        distintos_aprox: 79
+        min: '1946'
+        max: '2026'
+        media: 2014.1241
+        quartis: [2008, 2019, 2024]
+      id_proposicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 239945}
+      tipo_proposicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 34
+        min: AV
+        max: TVR
+        top:
+        - [PL, 155286]
+        - [RIC, 67133]
+        - [INC, 55228]
+        - [PDC, 12885]
+        - [PDL, 8838]
+        - [PLP, 7511]
+        - [PEC, 4066]
+        - [TVR, 3898]
+        - [MSC, 3889]
+        - [PRC, 3111]
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15132, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: Administração Pública
+        max: Viação, Transporte e Mobilidade
+        top:
+        - [Administração Pública, 34751]
+        - [Saúde, 28347]
+        - [Direitos Humanos e Minorias, 27027]
+        - [Comunicações, 25956]
+        - [Finanças Públicas e Orçamento, 22668]
+        - [Educação, 20939]
+        - [Trabalho e Emprego, 20296]
+        - [Defesa e Segurança, 13661]
+        - [Economia, 13132]
+        - ['Viação, Transporte e Mobilidade', 12826]
+      relevancia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '0'
+        max: '7'
+        media: 0.0252
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 328278]
+        - ['2', 2398]
+        - ['1', 2182]
+        - ['3', 328]
+        - ['4', 67]
+        - ['5', 28]
+        - ['6', 3]
+        - ['7', 2]
+  sigla_partido:
+    linhas: 143
+    fonte_do_perfil: tabela inteira
+    colunas:
+      sigla_partido_antiga: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 137, min: APOIO, max: pt}
+      sigla_partido_nova:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 47
+        min: Avante
+        max: Solidariedade
+        top:
+        - [PCdoB, 8]
+        - [S.PART., 8]
+        - [Solidariedade, 8]
+        - [Republicanos, 7]
+        - [Avante, 6]
+        - [Cidadania, 5]
+        - [Governo, 5]
+        - [MDB, 5]
+        - [PSDB, 5]
+        - [Progressistas, 5]
+  votacao:
+    linhas: 187246
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_votacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 187313}
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3099, min: '1935-04-17', max: '2026-03-03'}
+      data_registro: {tipo: DATE, nulos_pct: 10.12, distintos_aprox: 3010, min: '2003-04-22', max: '2026-07-01'}
+      horario_registro: {tipo: TIME WITH TIME ZONE, nulos_pct: 10.12, distintos_aprox: 36813, min: '00:00:09+00', max: '23:59:43+00'}
+      id_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 726, min: '100001', max: '9170'}
+      sigla_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 659, min: 1SECM, max: TESTECOM}
+      id_evento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15773}
+      aprovacao:
+        tipo: BIGINT
+        nulos_pct: 0.49
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9505
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 177107]
+        - ['0', 9218]
+        - [null, 921]
+      voto_sim:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 512
+        min: '0'
+        max: '505'
+        media: 5.4152
+        quartis: [0, 0, 0]
+      voto_nao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 455
+        min: '0'
+        max: '471'
+        media: 4.3458
+        quartis: [0, 0, 0]
+      voto_outro:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 129
+        min: '0'
+        max: '295'
+        media: 0.3683
+        quartis: [0, 0, 0]
+      descricao: {tipo: VARCHAR, nulos_pct: 0.03, distintos_aprox: 45798}
+      data_hora_ultima_votacao: {tipo: TIMESTAMP, nulos_pct: 90.11, distintos_aprox: 14518, min: '2003-04-23 17:08:34', max: '2026-03-03 21:41:25'}
+      descricao_ultima_votacao: {tipo: VARCHAR, nulos_pct: 89.85, distintos_aprox: 6727}
+      data_hora_ultima_proposicao: {tipo: TIMESTAMP, nulos_pct: 24.53, distintos_aprox: 125656, min: '2003-04-22 18:19:27', max: '2026-09-25 14:46:53'}
+      id_ultima_proposicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 76040}
+      descricao_ultima_proposicao: {tipo: VARCHAR, nulos_pct: 4.94, distintos_aprox: 110696}
+  votacao_objeto:
+    linhas: 795727
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_votacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 155437}
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2684, min: '1935-04-17', max: '2026-03-03'}
+      descricao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 48
+        min: '0                                             Aprovado. 1                                             Aprovado. 2                                             Aprovado.
+          3                                             Aprovado. 4                                             Aprovado. 5                                             Aprovado.
+          6                                             Aprovado. 7                                             Aprovado. 8                                             Aprovado.
+          9                                             Aprovado. 10                                            Aprovado. 11                                            Aprovado.
+          12                                  Aprovado o Parecer. 13    Aprovado o parecer vencedor do Dep. Chico da P... 14    Aprovado o parecer
+          vencedor do Dep. Chico da P... 15    Matéria sobre a mesa. Aprovado requerimento do... 16    Matéria sobre a mesa. Aprovado requerimento
+          do... 17                   Aprovado por Unanimidade o Parecer 18                                             Aprovado 19                                             Aprovado
+          20                                             Aprovado 21                                             Aprovado 22                                             Aprovado
+          23                                             Aprovado 24                                             Aprovado 25     REJEIÇÃO DO PARECER
+          DO RELATOR, DEP PAES LANDIM. 26                   Aprovado por Unanimidade o Parecer 27                   Aprovado por Unanimidade o
+          Parecer 28                   Aprovado por Unanimidade o Parecer 29                   Aprovado por Unanimidade o Parecer 30                   Aprovado
+          por Unanimidade o Parecer 31    Aprovado o Requerimento de Srs. Líderes solici... 32    Aprovado o Requerimento de Srs. Líderes solici...
+          33    Aprovado o Requerimento de Srs. Líderes solici... 34    Aprovado o Requerimento de Srs. Líderes solici... 35    VOTAÇÃO DA DECISÃO
+          DA PRESIDÊNCIA, TORNANDO SE... 36    VOTAÇÃO DA DECISÃO DA PRESIDÊNCIA, TORNANDO SE... 37    VOTAÇÃO DA DECISÃO DA PRESIDÊNCIA, TORNANDO
+          SE... 38    VOTAÇÃO DA DECISÃO DA PRESIDÊNCIA, TORNANDO SE... 39    APROVAÇÃO DA DECISÃO DA PRESIDÊNCIA PELO PLENÁ... 40    APROVAÇÃO
+          DA DECISÃO DA PRESIDÊNCIA PELO PLENÁ... 41    APROVAÇÃO DA DECISÃO DA PRESIDÊNCIA PELO PLENÁ... 42    APROVAÇÃO DA DECISÃO DA PRESIDÊNCIA
+          PELO PLENÁ... 43    DEFERIDO REQUERIMENTO DO DEP CARLOS BATATA, SO... 44    DEFERIDO OF-PRES. 620/01, DA CEIC, SOLICITANDO... 45    Aprovado
+          por Unanimidade o Parecer do Dep. Jai... 46    Aprovado por Unanimidade o Parecer do Dep. Jai... 47    Aprovado por Unanimidade o Parecer
+          do Dep. Jai... 48                             Aprovado o requerimento. '
+        max: '0    Votação, aprovação e envio à Redação Final. DC... 1    Aprovação da redação final nos termos do parec... 2    Aprovação da
+          Redação Final, sem observações. D... '
+        top:
+        - ['0         Aprovado, em apreciação preliminar, o Parecer ... 1         Aprovado, em apreciação preliminar, o Parecer ... 2         Aprovada
+            a Medida Provisória nº 1.257 de 2024,... 3         Aprovada a Medida Provisória nº 1.257 de 2024,... 4         Aprovada a Redação
+            Final assinada pelo relator...                                 ...                         102035    Retirado o REQ n. 6011/2025,
+            em razão do defer... 102036    Retirado o REQ n. 6011/2025, em razão do defer... 102037    Retirado o REQ n. 6011/2025, em razão do
+            defer... 102038    Retirado o REQ n. 6011/2025, em razão do defer... 102039    Retirado o REQ n. 6011/2025, em razão do defer... Name:
+            descricao, Length: 102040, dtype: object', 102040]
+        - ['0        Aprovada, em segundo turno, a Proposta de Emen... 1        Aprovada, em segundo turno, a Proposta de Emen... 2        Aprovada,
+            em segundo turno, a Proposta de Emen... 3        Aprovada, em segundo turno, a Proposta de Emen... 4        Aprovada, em segundo turno,
+            a Proposta de Emen...                                ...                         78489    Aprovado, com alteração, substituindo a
+            transf... 78490    Aprovado, com alteração, substituindo a transf... 78491                                             Aprovado 78492    Aprovado,
+            com alteração, substituindo a transf... 78493                                             Aprovado Name: descricao, Length: 78494,
+            dtype: object', 78494]
+        - ['0        Aprovado o Substitutivo ao Projeto de Lei nº 1... 1        Aprovado o Substitutivo ao Projeto de Lei nº 1... 2        Aprovado
+            o Substitutivo ao Projeto de Lei nº 1... 3        Aprovado o Substitutivo ao Projeto de Lei nº 1... 4        Aprovado o Substitutivo
+            ao Projeto de Lei nº 1...                                ...                         60945    Aprovado o requerimento nº 4990/2024,do
+            Sr. El... 60946    Aprovado o requerimento nº 4990/2024,do Sr. El... 60947    Aprovado o requerimento nº 4990/2024,do Sr. El... 60948    Aprovado
+            o requerimento nº 4990/2024,do Sr. El... 60949    Aprovado o requerimento nº 4990/2024,do Sr. El... Name: descricao, Length: 60950,
+            dtype: object', 60950]
+        - ['0        Aprovada a Redação Final assinada pelo Relator... 1        Aprovada a Redação Final assinada pelo Relator... 2        Aprovada
+            a Redação Final assinada pelo Relator... 3        Aprovada a Redação Final assinada pelo Relator... 4        Aprovada a Redação Final
+            assinada pelo Relator...                                ...                         57258    Aprovada a Redação Final assinada pelo
+            Relator... 57259    Aprovada a Redação Final assinada pelo Relator... 57260    Aprovada a Redação Final assinada pelo Relator... 57261    Aprovada
+            a Redação Final assinada pelo Relator... 57262    Aprovada a Redação Final assinada pelo Relator... Name: descricao, Length: 57263,
+            dtype: object', 57263]
+        - ['0        PRESIDÊNCIA:\r\nDeputado General Peternelli (P... 1        1ª VICE-PRESIDÊNCIA:\r\nDeputado Marcelo Ramos... 2        Rejeitado
+            o Requerimento. Sim: 101 não: 287 ... 3        Rejeitado o Requerimento. Sim: 101 não: 287 ... 4        Rejeitado o Requerimento.
+            Sim: 101 não: 287 ...                                ...                         55431                                            Aprovado.
+            55432                                            Aprovado. 55433                                            Aprovado. 55434    Aprovado.
+            Subscrito pelo Deputado Delegado Ant... 55435    Aprovado. Subscrito pelo Deputado Delegado Ant... Name: descricao, Length: 55436,
+            dtype: object', 55436]
+        - ['0        Rejeitado o Requerimento. Sim: 21 Não: 238 A... 1        Rejeitado o Requerimento. Sim: 21 Não: 238 A... 2        Rejeitado
+            o Requerimento. Sim: 21 Não: 238 A... 3        Rejeitado o Requerimento. Sim: 21 Não: 238 A... 4        Rejeitado o Requerimento.
+            Sim: 21 Não: 238 A...                                ...                         43024                            Aprovada a Redação
+            Final. 43025                            Aprovada a Redação Final. 43026                            Aprovada a Redação Final. 43027                            Aprovada
+            a Redação Final. 43028                                             Aprovado Name: descricao, Length: 43029, dtype: object', 43029]
+        - ['0                      Aprovado por Unanimidade o Parecer. 1                      Aprovado por Unanimidade o Parecer. 2                      Aprovado
+            por Unanimidade o Parecer. 3                      Aprovado por Unanimidade o Parecer. 4                      Aprovado por Unanimidade
+            o Parecer.                                ...                         38741    Aprovado o Parecer com Complementação de Voto,... 38742    Aprovado
+            o Parecer com Complementação de Voto,... 38743                  Aprovado por Unanimidade o Parecer. 38744                  Aprovado
+            por Unanimidade o Parecer. 38745    Recebida a informação requerida.\r\n\r\nArquiv... Name: descricao, Length: 38746, dtype: object',
+          38746]
+        - ['0        Aprovada a Redação Final assinada pela Relator... 1        Aprovada a Redação Final assinada pela Relator... 2        Aprovada
+            a Redação Final assinada pela Relator... 3        Aprovada a Redação Final assinada pela Relator... 4        Aprovada a Redação Final
+            assinada pela Relator...                                ...                         32698      Aprovado o Parecer da Relatora, Dep.
+            Bia Kicis. 32699      Aprovado o Parecer da Relatora, Dep. Bia Kicis. 32700      Aprovado o Parecer da Relatora, Dep. Bia Kicis. 32701      Aprovado
+            o Parecer da Relatora, Dep. Bia Kicis. 32702      Aprovado o Parecer da Relatora, Dep. Bia Kicis. Name: descricao, Length: 32703,
+            dtype: object', 32703]
+        - ['0        Aprovado requerimento do Sr. Aguinaldo Ribeiro... 1        Aprovado requerimento do Sr. Aguinaldo Ribeiro... 2        Aprovado
+            requerimento do Sr. Aguinaldo Ribeiro... 3        Aprovado requerimento do Sr. Aguinaldo Ribeiro... 4                                                Aprovado.                                ...                         30898    Rejeitado
+            o Requerimento. Sim: 11 não: 256 t... 30899    Rejeitado o Requerimento. Sim: 11 não: 256 t... 30900    Rejeitado o Requerimento.
+            Sim: 11 não: 256 t... 30901    Rejeitado o Requerimento. Sim: 11 não: 256 t... 30902    Rejeitado o Requerimento. Sim: 11 não: 256
+            t... Name: descricao, Length: 30903, dtype: object', 30903]
+        - ['0                                Aprovado por unanimidade. 1                                Aprovado por unanimidade. 2                                Aprovado
+            por unanimidade. 3                                Aprovado por unanimidade. 4        Aprovada a Proposta de Emenda à Constituição
+            n...                                ...                         28443    Retirado o REC 470/10, em razão do deferimento... 28444    Retirado
+            o REC 470/10, em razão do deferimento... 28445    Retirado o REC 470/10, em razão do deferimento... 28446    Retirado o REC 470/10,
+            em razão do deferimento... 28447    Retirado o REC 470/10, em razão do deferimento... Name: descricao, Length: 28448, dtype: object',
+          28448]
+      id_proposicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 349286}
+      ano_proposicao:
+        tipo: BIGINT
+        nulos_pct: 57.74
+        distintos_aprox: 47
+        min: '1935'
+        max: '2026'
+        media: 2014.5247
+        quartis: [2010, 2015, 2019]
+        top:
+        - [null, 459417]
+        - ['2015', 59394]
+        - ['2009', 35446]
+        - ['2019', 32317]
+        - ['2011', 23957]
+        - ['2025', 22053]
+        - ['2016', 20404]
+        - ['2017', 16754]
+        - ['2021', 14371]
+        - ['2007', 11638]
+      ementa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 52, min: '0                                                   NaN 1                                                   NaN
+          2                                                   NaN 3     Parecer do Relator, Dep. Renato Vianna, pela c... 4     Parecer do Relator,
+          Dep. ROBERTO TORRES, pela ...                             ...                         82                                                  NaN
+          83                                                  NaN 84                        Dispõe sobre o meio ambiente. 85    PARECER FAVORAVEL
+          DO RELATOR, DEP GEOVAH AMARA... 86    Parecer do Relator, Dep. Adylson Motta, pela c... Name: proposicao_ementa, Length: 87, dtype:
+          object', max: '0   NaN 1   NaN Name: proposicao_ementa, dtype: float64'}
+      codigo_tipo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 218, min: '1000', max: '899'}
+      sigla_tipo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 89, min: ADD, max: VTS}
+      numero: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 6307, pessoal: 'só contagens: valores seriam dado pessoal'}
+      titulo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 370927}
+  votacao_orientacao_bancada:
+    linhas: 101257
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_votacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6903}
+      sigla_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61, min: CAPADR, max: PLEN}
+      descricao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5105}
+      sigla_bancada: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 146, min: AVANTE, max: União}
+      orientacao:
+        tipo: VARCHAR
+        nulos_pct: 6.63
+        distintos_aprox: 5
+        min: Abstenção
+        max: Sim
+        top:
+        - [Sim, 45777]
+        - [Não, 39651]
+        - [null, 6710]
+        - [Obstrução, 5869]
+        - [Liberado, 3240]
+        - [Abstenção, 10]
+  votacao_parlamentar:
+    linhas: 1886190
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_votacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7559}
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1750, min: '2001-12-11', max: '2026-03-03'}
+      horario: {tipo: TIME WITH TIME ZONE, nulos_pct: 0, distintos_aprox: 54209, min: '00:00:00+00', max: '23:59:59+00'}
+      voto:
+        tipo: VARCHAR
+        nulos_pct: 0.22
+        distintos_aprox: 7
+        min: Abstenção
+        max: Sim
+        top:
+        - [Sim, 1009772]
+        - [Não, 807928]
+        - [Obstrução, 52985]
+        - [Abstenção, 6730]
+        - [Artigo 17, 4635]
+        - [null, 4108]
+        - [Favorável com restrições, 29]
+        - [Branco, 3]
+      id_deputado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2114}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2507, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 47
+        min: AVANTE
+        max: UNIÃO
+        top:
+        - [PT, 247515]
+        - [PP, 156864]
+        - [PL, 156712]
+        - [PSD, 121919]
+        - [PSDB, 121788]
+        - [PSB, 98797]
+        - [PMDB, 92809]
+        - [REPUBLICANOS, 86997]
+        - [MDB, 85027]
+        - [PDT, 83439]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 262002]
+        - [MG, 188060]
+        - [RJ, 172725]
+        - [BA, 141271]
+        - [RS, 118343]
+        - [PR, 108662]
+        - [PE, 89234]
+        - [CE, 79371]
+        - [SC, 64365]
+        - [MA, 62371]
+      id_legislatura:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '51'
+        max: '57'
+        top:
+        - ['56', 800095]
+        - ['57', 432340]
+        - ['55', 308714]
+        - ['53', 141801]
+        - ['54', 124776]
+        - ['52', 75783]
+        - ['51', 2681]
+  votacao_proposicao:
+    linhas: 139485
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_votacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 140163}
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3015, min: '1974-08-14', max: '2026-03-03'}
+      descricao: {tipo: VARCHAR, nulos_pct: 0.02, distintos_aprox: 35965}
+      id_proposicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 74105}
+      ano_proposicao:
+        tipo: BIGINT
+        nulos_pct: 0.05
+        distintos_aprox: 46
+        min: '1974'
+        max: '2026'
+        media: 2011.4624
+        quartis: [2004, 2011, 2019]
+        top:
+        - ['2003', 8398]
+        - ['2015', 7546]
+        - ['2023', 7398]
+        - ['2019', 7378]
+        - ['2007', 6865]
+        - ['2021', 6656]
+        - ['2024', 6334]
+        - ['2009', 6323]
+        - ['2002', 6035]
+        - ['2008', 5512]
+      titulo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 56676}
+      ementa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 40
+        min: '0        Dispõe sobre a criação de Zona Franca no Munic... 1        Altera a lei nº 3.999, de 15 de dezembro de 19... 2        Dispõe
+          sobre a regulamentação da profissão de ... 3                     Cria o Grupo Parlamentar do Turismo. 4                     Cria o Grupo
+          Parlamentar do Turismo.                                ...                         10321    Acrescenta o art. 232-A ao Decreto-Lei 1.001,
+          ... 10322    Acrescenta o art. 232-A ao Decreto-Lei 1.001, ... 10323    Acrescenta o art. 232-A ao Decreto-Lei 1.001, ... 10324    Cria
+          Área de Livre Comércio no Município de Gu... 10325    Altera a Lei no 10.741, de 1o de outubro de 20... Name: proposicao_ementa, Length:
+          10326, dtype: object'
+        max: '0    INTRODUZ ALTERAÇÕES NO ARTIGO 60 DO DECRETO-LE... Name: proposicao_ementa, dtype: object'
+        top:
+        - ['0        Dispõe sobre a criação de Zona Franca no Munic... 1        Altera a lei nº 3.999, de 15 de dezembro de 19... 2        Dispõe
+            sobre a regulamentação da profissão de ... 3                     Cria o Grupo Parlamentar do Turismo. 4                     Cria o
+            Grupo Parlamentar do Turismo.                                ...                         10321    Acrescenta o art. 232-A ao Decreto-Lei
+            1.001, ... 10322    Acrescenta o art. 232-A ao Decreto-Lei 1.001, ... 10323    Acrescenta o art. 232-A ao Decreto-Lei 1.001, ... 10324    Cria
+            Área de Livre Comércio no Município de Gu... 10325    Altera a Lei no 10.741, de 1o de outubro de 20... Name: proposicao_ementa, Length:
+            10326, dtype: object', 10326]
+        - ['0       Altera a Lei nº 9.605, de 12 de fevereiro de 1... 1       Altera a Constituição para dispor sobre a ação... 2       Altera
+            os arts. 46 e 65 do Regimento Interno, ... 3       Dispõe sobre conteúdos curriculares da formaçã... 4       Acrescenta  dispositivo  à  lei      n.°
+            8.856...                               ...                         8219    Institui a "Semana Nacional do Uso Consciente ... 8220    Institui
+            a "Semana Nacional do Uso Consciente ... 8221    Dispõe sobre a responsabilidade das empresas p... 8222    Dispõe sobre a responsabilidade
+            das empresas p... 8223    Dispõe sobre a suspensão e cassação da eficáci... Name: proposicao_ementa, Length: 8224, dtype: object',
+          8224]
+        - ['0       Propõe que a Comissão de Fiscalização Financei... 1       Altera o Decreto-lei nº 2.848, de 7 de dezembr... 2       Dispõe
+            sobre as normas gerais relativas a conc... 3       Propõe que a Comissão de Fiscalização Financei... 4       Modifica dispositivos
+            da Lei nº 8.069, de 13 d...                               ...                         7758    Dispõe sobre a isenção do Imposto sobre
+            Import... 7759    Cria Área de Livre Comércio no Município de Gu... 7760    Altera a Lei nº 11.124, de 16 de junho de 2005... 7761    Altera
+            a Lei nº 11.124, de 16 de junho de 2005... 7762    Altera a Lei nº 11.124, de 16 de junho de 2005... Name: proposicao_ementa, Length:
+            7763, dtype: object', 7763]
+        - ['0       Dispõe sobre a obrigatoriedade de as fábricas ... 1       Dispõe sobre a obrigatoriedade de as fábricas ... 2       Dispõe  sobre
+            o trabalho escolar de estudantes... 3       Dispõe  sobre o trabalho escolar de estudantes... 4       Dispõe sobre a proibição de
+            comercialização de...                               ...                         7618    Dispõe sobre a criação de funções comissionada...
+            7619    Dispõe sobre a criação de funções comissionada... 7620    Submete à consideração do Congresso Nacional o... 7621    Submete
+            à consideração do Congresso Nacional o... 7622    Dispõe sobre a obrigatoriedade da marcação da ... Name: proposicao_ementa, Length:
+            7623, dtype: object', 7623]
+        - ['0       Dispõe sobre a obrigatoriedade de divulgação, ... 1       Acrescenta o inciso VI, ao § 1º do art. 15º da... 2       Altera
+            a lei nº 3.999, de 15 de dezembro de 19... 3       Altera a lei nº 3.999, de 15 de dezembro de 19... 4       "Dispõe sobre a obrigatoriedade
+            da concessão d...                               ...                         7425          Cria cadastro nacional de doadores de pele.
+            7426    Altera a Lei nº 10.826 de 22 de dezembro de 20... 7427    Altera a Lei nº 10.826 de 22 de dezembro de 20... 7428    Altera
+            a Lei nº 8.560, de 29 de Dezembro de 19... 7429    Dispõe sobre a criação do Programa de Estímulo... Name: proposicao_ementa, Length:
+            7430, dtype: object', 7430]
+        - ['0       Veda às empresas operadoras de Telefonia Celul... 1       Aprova o ato que autoriza a Associação de Difu... 2       Aprova
+            o ato que autoriza a Associação de Difu... 3       Aprova o ato que outorga permissão à Rádio Alt... 4       Aprova o ato que outorga
+            permissão à Rádio Alt...                               ...                         7007    Estabelece diretrizes para a celebração
+            de con... 7008    Altera o art. 16 da Lei n. 12.512, de 14 de ou... 7009    Susta o art. 52, da Resolução nº 632/14 da ANA... 7010    Susta
+            o art. 52, da Resolução nº 632/14 da ANA... 7011    Altera o § 2º do art. 131 da lei nº 9503 de 23... Name: proposicao_ementa, Length:
+            7012, dtype: object', 7012]
+        - ['0       Veda às empresas operadoras de Telefonia Celul... 1       Dá nova redação ao parágrafo 7º, do art. 226 d... 2       Altera
+            o art. 1º da Lei nº 8.001, de 13 de mar... 3       Altera o art. 1º da Lei nº 8.001, de 13 de mar... 4       Acrescenta o inciso XVI-A
+            ao art. 51 da Lei nº...                               ...                         6692    Designa como "Dia da Inovação", o dia 19
+            de ou... 6693    Torna obrigatória a inclusão, no programa de d... 6694    Altera o art. 2º da Medida Provisória nº 2.156... 6695    Aprova
+            o ato que autoriza a Associação Comunit... 6696    Altera a Lei nº 8.212, de 24 de julho de 1991,... Name: proposicao_ementa, Length:
+            6697, dtype: object', 6697]
+        - ['0       Aprova o ato que autoriza a Associação Comunit... 1       Altera a Lista de serviços anexa à Lei Complem... 2       Proíbe
+            as prestadoras dos serviços móvel celul... 3       Dispõe sobre conteúdos curriculares da formaçã... 4       Acrescenta inciso ao
+            art. 44 da Lei nº 9.394, ...                               ...                         5795    Propõe a fiscalização e controle da
+            Secretaria... 5796    Altera a Lei n.º 9.394, de 20 de dezembro de 1... 5797    Estabelece normas gerais sobre segurança escol...
+            5798    Estabelece normas gerais sobre segurança escol... 5799    Altera a Lei nº 11.124, de 16 de junho de 2005... Name: proposicao_ementa,
+            Length: 5800, dtype: object', 5800]
+        - ['0       Dá nova redação aos dispositivos da Consolidaç... 1       Altera as Leis Complementares nºs 87, de 13 de... 2       Altera
+            as Leis Complementares nºs 87, de 13 de... 3       Altera as Leis Complementares nºs 87, de 13 de... 4       Desvincula, parcialmente,
+            no exercício de 2003...                               ...                         5654    Submete à apreciação do Congresso Nacional
+            o a... 5655    Aprova o ato que outorga concessão à Rede Flor... 5656    Aprova o ato que outorga concessão à Rede Flor... 5657    Aprova
+            o ato que autoriza a Associação em Serv... 5658    Aprova o ato que outorga concessão à Fundação ... Name: proposicao_ementa, Length:
+            5659, dtype: object', 5659]
+        - ['0       Veda às empresas operadoras de Telefonia Celul... 1       Veda às empresas operadoras de Telefonia Celul... 2       Altera
+            a Lei nº 9.656, de 3 de junho de 1998, ... 3       Dispõe sobre a implantação do Programa de Trân... 4       "Altera o inciso II do
+            art. 282 e acrescenta o...                               ...                         5597    Aprova o texto do Acordo sobre Cooperação
+            na Á... 5598    Aprova o texto do Acordo sobre Cooperação na Á... 5599    Aprova o texto do Acordo sobre Cooperação na Á... 5600    Dispõe
+            sobre a criação de funções comissionada... 5601    Dispõe sobre a criação de funções comissionada... Name: proposicao_ementa, Length:
+            5602, dtype: object', 5602]
+      codigo_tipo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 213, min: '1004', max: '876'}
+      sigla_tipo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 65, min: ADD, max: VTS}
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8677, pessoal: 'só contagens: valores seriam dado pessoal'}

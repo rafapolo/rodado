@@ -1,0 +1,182 @@
+dataset: br_ibge_pam
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  lavoura_permanente:
+    linhas: 10734658
+    fonte_do_perfil: tabela inteira da última partição (ano = 2024)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 210558]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 32376]
+        - [SP, 24244]
+        - [RS, 18772]
+        - [BA, 15846]
+        - [PR, 15162]
+        - [SC, 11172]
+        - [GO, 9234]
+        - [PB, 8474]
+        - [PI, 8436]
+        - [MA, 8246]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      produto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 40
+        min: Abacate
+        max: Uva
+        top:
+        - [Abacate, 5541]
+        - [Algodão arbóreo (em caroço), 5541]
+        - [Azeitona, 5541]
+        - [Açaí, 5541]
+        - [Banana (cacho), 5541]
+        - [Borracha (látex coagulado), 5541]
+        - [Borracha (látex líquido), 5541]
+        - [Cacau (em amêndoa), 5541]
+        - [Café (em grão) Arábica, 5541]
+        - [Café (em grão) Canephora, 5541]
+      area_destinada_colheita:
+        tipo: BIGINT
+        nulos_pct: 87.95
+        distintos_aprox: 1266
+        min: '1'
+        max: '61000'
+        media: 301.3417
+        quartis: [3, 10, 47]
+      area_colhida:
+        tipo: BIGINT
+        nulos_pct: 87.98
+        distintos_aprox: 1341
+        min: '1'
+        max: '61000'
+        media: 301.3456
+        quartis: [3, 10, 46]
+      quantidade_produzida:
+        tipo: DOUBLE
+        nulos_pct: 87.98
+        distintos_aprox: 3421
+        min: '1.0'
+        max: '942084.0'
+        media: 1949.2
+        quartis: [19.9721, 71.5965, 346.1007]
+      rendimento_medio_producao:
+        tipo: DOUBLE
+        nulos_pct: 87.98
+        distintos_aprox: 3765
+        min: '44.0'
+        max: '122000.0'
+        media: 10626.3863
+        quartis: [3337.8253, 9049.5259, 14997.2696]
+      valor_producao:
+        tipo: DOUBLE
+        nulos_pct: 87.98
+        distintos_aprox: 5811
+        min: '1.0'
+        max: '3664434.0'
+        media: 9774.2281
+        quartis: [60.6828, 214.7254, 1128.9295]
+  lavoura_temporaria:
+    linhas: 9362529
+    fonte_do_perfil: tabela inteira da última partição (ano = 2024)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 183579]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 28149]
+        - [SP, 21186]
+        - [RS, 16401]
+        - [BA, 13761]
+        - [PR, 13167]
+        - [SC, 9735]
+        - [GO, 8118]
+        - [PI, 7392]
+        - [PB, 7359]
+        - [MA, 7161]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      produto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 38
+        min: Abacaxi*
+        max: Triticale (em grão)
+        top:
+        - [Abacaxi*, 5563]
+        - [Alfafa fenada, 5563]
+        - [Algodão herbáceo (em caroço), 5563]
+        - [Alho, 5563]
+        - [Amendoim (em casca), 5563]
+        - [Arroz (em casca), 5563]
+        - [Aveia (em grão), 5563]
+        - [Batata-doce, 5563]
+        - [Batata-inglesa, 5563]
+        - [Cana para forragem, 5563]
+      area_plantada:
+        tipo: BIGINT
+        nulos_pct: 80.48
+        distintos_aprox: 3245
+        min: '1'
+        max: '600000'
+        media: 2557.5677
+        quartis: [10, 66, 581]
+      area_colhida:
+        tipo: BIGINT
+        nulos_pct: 80.53
+        distintos_aprox: 3326
+        min: '1'
+        max: '599000'
+        media: 2540.6969
+        quartis: [10, 64, 551]
+      quantidade_produzida:
+        tipo: DOUBLE
+        nulos_pct: 80.53
+        distintos_aprox: 7332
+        min: '1.0'
+        max: '9600000.0'
+        media: 30528.834
+        quartis: [56.7341, 337.7398, 2542.8537]
+      rendimento_medio_producao:
+        tipo: DOUBLE
+        nulos_pct: 80.53
+        distintos_aprox: 8174
+        min: '3.0'
+        max: '200000.0'
+        media: 13403.2538
+        quartis: [1934.3561, 4921.7311, 17145.9796]
+      valor_producao:
+        tipo: DOUBLE
+        nulos_pct: 80.54
+        distintos_aprox: 8808
+        min: '1.0'
+        max: '3717069.0'
+        media: 16932.0796
+        quartis: [106.6319, 519.3057, 3593.4627]

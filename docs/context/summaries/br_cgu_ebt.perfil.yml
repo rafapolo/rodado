@@ -1,0 +1,123 @@
+dataset: br_cgu_ebt
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  municipio:
+    linhas: 1330
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2020'
+        max: '2021'
+        media: 2020.5
+        quartis: [2020, 2021, 2021]
+        top:
+        - ['2020', 665]
+        - ['2021', 665]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 614, min: '1100023', max: '5300108'}
+      nota:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 553
+        min: '0.59'
+        max: '10.0'
+        media: 6.7005
+        quartis: [5.405, 6.5528, 8.3239]
+      ranking:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 723
+        min: '1'
+        max: '665'
+        media: 332.3692
+        quartis: [166, 332, 499]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 274]
+        - [MG, 144]
+        - [BA, 96]
+        - [PA, 90]
+        - [RS, 86]
+        - [RJ, 76]
+        - [CE, 72]
+        - [PE, 72]
+        - [PR, 70]
+        - [SC, 58]
+  uf:
+    linhas: 54
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2020'
+        max: '2021'
+        media: 2020.5
+        quartis: [2020, 2020, 2021]
+        top:
+        - ['2020', 27]
+        - ['2021', 27]
+      nota:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 43
+        min: '4.91'
+        max: '10.0'
+        media: 8.5491
+        quartis: [7.47, 8.86, 9.6]
+        top:
+        - ['10.0', 3]
+        - ['9.6', 3]
+        - ['8.8', 2]
+        - ['9.25', 2]
+        - ['9.4', 2]
+        - ['9.74', 2]
+        - ['9.83', 2]
+        - ['4.91', 1]
+        - ['5.92', 1]
+        - ['5.99', 1]
+      ranking:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '1'
+        max: '27'
+        media: 13.7963
+        quartis: [7, 14, 21]
+        top:
+        - ['1', 4]
+        - ['11', 3]
+        - ['12', 3]
+        - ['4', 3]
+        - ['6', 3]
+        - ['8', 3]
+        - ['15', 2]
+        - ['16', 2]
+        - ['17', 2]
+        - ['18', 2]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 2]
+        - [AL, 2]
+        - [AM, 2]
+        - [AP, 2]
+        - [BA, 2]
+        - [CE, 2]
+        - [DF, 2]
+        - [ES, 2]
+        - [GO, 2]
+        - [MA, 2]

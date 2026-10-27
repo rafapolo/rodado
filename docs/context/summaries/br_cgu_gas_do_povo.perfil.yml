@@ -1,0 +1,129 @@
+dataset: br_cgu_gas_do_povo
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  gas_do_povo:
+    linhas: 20817231
+    fonte_do_perfil: amostra de 9.607%. ~2.000.000 linhas
+    colunas:
+      ano_mes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '202511'
+        max: '202607'
+        top:
+        - ['202603', 703611]
+        - ['202607', 392227]
+        - ['202602', 333824]
+        - ['202606', 310646]
+        - ['202605', 217088]
+        - ['202511', 73728]
+        - ['202601', 61440]
+        - ['202604', 20480]
+      mes_referencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '202511'
+        max: '202607'
+        top:
+        - ['202603', 703611]
+        - ['202607', 392227]
+        - ['202602', 333824]
+        - ['202606', 310646]
+        - ['202605', 217088]
+        - ['202511', 73728]
+        - ['202601', 61440]
+        - ['202604', 20480]
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [BA, 271960]
+        - [SP, 231464]
+        - [PE, 181313]
+        - [MG, 160316]
+        - [RJ, 140884]
+        - [PA, 139669]
+        - [CE, 139357]
+        - [MA, 136783]
+        - [AM, 87598]
+        - [PI, 76306]
+      codigo_municipio_siafi: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3170}
+      nome_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3135, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_beneficiario: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 2075452, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1709804, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_estabelecimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 21628, pessoal: 'só contagens: valores seriam dado pessoal'}
+      estabelecimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 17959}
+      quantidade_pessoas_familia:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '1'
+        max: '16'
+        media: 3.1451
+        quartis: [2, 3, 4]
+        top:
+        - ['2', 767957]
+        - ['3', 654331]
+        - ['4', 439075]
+        - ['5', 166383]
+        - ['6', 54530]
+        - ['7', 20148]
+        - ['8', 6961]
+        - ['9', 2414]
+        - ['10', 843]
+        - ['11', 269]
+      periodo_validade_vale_meses:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2'
+        max: '3'
+        top:
+        - ['3', 1422289]
+        - ['2', 690755]
+      data_inicio_vigencia_vale:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '2025-11-24'
+        max: '2026-07-10'
+        top:
+        - ['2026-03-23', 703611]
+        - ['2026-07-10', 392227]
+        - ['2026-02-23', 333824]
+        - ['2026-06-10', 310646]
+        - ['2026-05-10', 217088]
+        - ['2025-11-24', 73728]
+        - ['2026-01-26', 61440]
+        - ['2026-04-10', 20480]
+      data_fim_vigencia_vale:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '2026-02-22'
+        max: '2026-10-09'
+        top:
+        - ['2026-07-09', 704686]
+        - ['2026-06-09', 377024]
+        - ['2026-10-09', 314787]
+        - ['2026-09-09', 244463]
+        - ['2026-08-09', 211072]
+        - ['2026-05-09', 174430]
+        - ['2026-03-22', 61417]
+        - ['2026-04-09', 12854]
+        - ['2026-02-22', 12311]
+      data_retirada_vale: {tipo: DATE, nulos_pct: 0, distintos_aprox: 280, min: '2025-11-24', max: '2026-07-31'}
+      valor_beneficio:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 88
+        min: '89.67'
+        max: '135.7'
+        media: 103.3851
+        quartis: [96.7355, 103.17, 108]

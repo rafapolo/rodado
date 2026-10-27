@@ -1,0 +1,53 @@
+dataset: br_ms_populacao
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  municipio:
+    linhas: 4919222
+    fonte_do_perfil: tabela inteira da última partição (ano = 2025)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2025'
+        max: '2025'
+        media: 2025
+        quartis: [2025, 2025, 2025]
+        top:
+        - ['2025', 189414]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: feminino
+        max: masculino
+        top:
+        - [feminino, 94707]
+        - [masculino, 94707]
+      grupo_idade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: 0-4 anos
+        max: 80-mais
+        top:
+        - [0-4 anos, 11142]
+        - [10-14 anos, 11142]
+        - [15-19 anos, 11142]
+        - [20-24 anos, 11142]
+        - [25-29 anos, 11142]
+        - [30-34 anos, 11142]
+        - [35-39 anos, 11142]
+        - [40-44 anos, 11142]
+        - [45-49 anos, 11142]
+        - [5-9 anos, 11142]
+      populacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9389
+        min: '5'
+        max: '501621'
+        media: 1126.7437
+        quartis: [144, 314, 732]

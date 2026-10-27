@@ -1,0 +1,2625 @@
+dataset: world_sofascore_competicoes_futebol
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  brasileirao_serie_a:
+    linhas: 6846
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '2016'
+        max: '2025'
+        media: 2020.0465
+        quartis: [2018, 2020, 2022]
+        top:
+        - ['2021', 978]
+        - ['2017', 760]
+        - ['2018', 760]
+        - ['2019', 760]
+        - ['2022', 760]
+        - ['2023', 760]
+        - ['2016', 758]
+        - ['2024', 758]
+        - ['2020', 532]
+        - ['2025', 20]
+      id_partida: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4179}
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1055, min: '2016-05-14', max: '2025-03-31'}
+      hora:
+        tipo: TIME WITH TIME ZONE
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: 11:00:00+00
+        max: 22:00:00+00
+        top:
+        - ['16:00:00+00', 1520]
+        - ['19:00:00+00', 1164]
+        - ['20:00:00+00', 638]
+        - ['21:00:00+00', 592]
+        - ['18:30:00+00', 482]
+        - ['21:30:00+00', 458]
+        - ['17:00:00+00', 364]
+        - ['19:30:00+00', 316]
+        - ['11:00:00+00', 304]
+        - ['18:00:00+00', 214]
+      temporada:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: 20/21
+        max: '2025'
+        top:
+        - ['2017', 760]
+        - ['2018', 760]
+        - ['2019', 760]
+        - ['2022', 760]
+        - ['2023', 760]
+        - ['2016', 758]
+        - ['2024', 758]
+        - [20/21, 756]
+        - ['2021', 754]
+        - ['2025', 20]
+      rodada:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 42
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 190]
+        - ['10', 180]
+        - ['11', 180]
+        - ['12', 180]
+        - ['13', 180]
+        - ['14', 180]
+        - ['15', 180]
+        - ['16', 180]
+        - ['17', 180]
+        - ['18', 180]
+      tempo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 3423]
+        - ['2', 3423]
+      time_mandante:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: América Mineiro
+        max: Vitória
+        top:
+        - [Flamengo, 344]
+        - [Palmeiras, 344]
+        - [Atlético Mineiro, 342]
+        - [Corinthians, 342]
+        - [Fluminense, 342]
+        - [São Paulo, 342]
+        - [Athletico, 340]
+        - [Grêmio, 306]
+        - [Botafogo, 304]
+        - [Internacional, 304]
+      time_visitante:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 37
+        min: América Mineiro
+        max: Vitória
+        top:
+        - [Corinthians, 344]
+        - [Atlético Mineiro, 342]
+        - [Flamengo, 342]
+        - [Fluminense, 342]
+        - [Palmeiras, 342]
+        - [São Paulo, 342]
+        - [Athletico, 340]
+        - [Botafogo, 306]
+        - [Grêmio, 304]
+        - [Santos, 304]
+      gols_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '0'
+        max: '5'
+        media: 0.6976
+        quartis: [0, 1, 1]
+        top:
+        - ['0', 3337]
+        - ['1', 2487]
+        - ['2', 821]
+        - ['3', 164]
+        - ['4', 30]
+        - ['5', 7]
+      gols_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '0'
+        max: '4'
+        media: 0.4876
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 4188]
+        - ['1', 2075]
+        - ['2', 499]
+        - ['3', 71]
+        - ['4', 13]
+      posse_bola_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 68
+        min: '0'
+        max: '83'
+        media: 51.5424
+        quartis: [43, 52, 60]
+      posse_bola_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 68
+        min: '0'
+        max: '100'
+        media: 48.443
+        quartis: [40, 48, 57]
+      gol_esperado_mandante:
+        tipo: DOUBLE
+        nulos_pct: 66.43
+        distintos_aprox: 275
+        min: '0.0'
+        max: '3.66'
+        media: 0.7215
+        quartis: [0.3382, 0.6065, 1.0004]
+      gol_esperado_visitante:
+        tipo: DOUBLE
+        nulos_pct: 66.43
+        distintos_aprox: 228
+        min: '0.0'
+        max: '3.1'
+        media: 0.5245
+        quartis: [0.1979, 0.4057, 0.7322]
+      grande_chance_mandante:
+        tipo: DOUBLE
+        nulos_pct: 12.15
+        distintos_aprox: 10
+        min: '0.0'
+        max: '8.0'
+        media: 1.0319
+        quartis: [0, 1, 2]
+        top:
+        - ['0.0', 2262]
+        - ['1.0', 2139]
+        - ['2.0', 1037]
+        - [null, 832]
+        - ['3.0', 398]
+        - ['4.0', 122]
+        - ['5.0', 37]
+        - ['6.0', 9]
+        - ['7.0', 8]
+        - ['8.0', 2]
+      grande_chance_visitante:
+        tipo: DOUBLE
+        nulos_pct: 12.15
+        distintos_aprox: 10
+        min: '0.0'
+        max: '8.0'
+        media: 0.7311
+        quartis: [0, 0.539, 1]
+        top:
+        - ['0.0', 3005]
+        - ['1.0', 2005]
+        - [null, 832]
+        - ['2.0', 726]
+        - ['3.0', 201]
+        - ['4.0', 58]
+        - ['5.0', 12]
+        - ['6.0', 5]
+        - ['7.0', 1]
+        - ['8.0', 1]
+      defesa_goleiro_mandante:
+        tipo: BIGINT
+        nulos_pct: 0.23
+        distintos_aprox: 10
+        min: '0'
+        max: '8'
+        media: 1.3594
+        quartis: [0, 1, 2]
+        top:
+        - ['1', 2271]
+        - ['0', 1936]
+        - ['2', 1496]
+        - ['3', 692]
+        - ['4', 292]
+        - ['5', 95]
+        - ['6', 36]
+        - [null, 16]
+        - ['7', 9]
+        - ['8', 3]
+      defesa_goleiro_visitante:
+        tipo: BIGINT
+        nulos_pct: 0.23
+        distintos_aprox: 12
+        min: '0'
+        max: '10'
+        media: 1.7621
+        quartis: [1, 2, 3]
+        top:
+        - ['1', 2032]
+        - ['2', 1721]
+        - ['0', 1324]
+        - ['3', 949]
+        - ['4', 476]
+        - ['5', 208]
+        - ['6', 82]
+        - ['7', 29]
+        - [null, 16]
+        - ['8', 7]
+      escanteio_mandante:
+        tipo: BIGINT
+        nulos_pct: 0.03
+        distintos_aprox: 18
+        min: '0'
+        max: '15'
+        media: 2.9654
+        quartis: [1, 3, 4]
+        top:
+        - ['2', 1398]
+        - ['3', 1310]
+        - ['1', 1202]
+        - ['4', 912]
+        - ['5', 626]
+        - ['0', 601]
+        - ['6', 387]
+        - ['7', 188]
+        - ['8', 123]
+        - ['9', 48]
+      escanteio_visitante:
+        tipo: BIGINT
+        nulos_pct: 0.03
+        distintos_aprox: 16
+        min: '0'
+        max: '14'
+        media: 2.2614
+        quartis: [1, 2, 3]
+        top:
+        - ['1', 1683]
+        - ['2', 1575]
+        - ['3', 1127]
+        - ['0', 995]
+        - ['4', 722]
+        - ['5', 378]
+        - ['6', 194]
+        - ['7', 95]
+        - ['8', 46]
+        - ['9', 17]
+      passe_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 357
+        min: '0'
+        max: '463'
+        media: 217.461
+        quartis: [175, 215, 257]
+      passe_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 361
+        min: '0'
+        max: '473'
+        media: 205.2203
+        quartis: [164, 200, 242]
+      falta_mandante:
+        tipo: BIGINT
+        nulos_pct: 0.03
+        distintos_aprox: 22
+        min: '0'
+        max: '20'
+        media: 6.9221
+        quartis: [5, 7, 9]
+        top:
+        - ['6', 977]
+        - ['7', 957]
+        - ['5', 906]
+        - ['8', 801]
+        - ['9', 685]
+        - ['4', 634]
+        - ['10', 479]
+        - ['3', 434]
+        - ['11', 303]
+        - ['12', 192]
+      falta_visitante:
+        tipo: BIGINT
+        nulos_pct: 0.03
+        distintos_aprox: 22
+        min: '0'
+        max: '20'
+        media: 6.9923
+        quartis: [5, 7, 9]
+        top:
+        - ['6', 1047]
+        - ['7', 967]
+        - ['5', 862]
+        - ['8', 822]
+        - ['9', 679]
+        - ['4', 624]
+        - ['10', 491]
+        - ['3', 389]
+        - ['11', 323]
+        - ['12', 193]
+      cartao_amarelo_mandante:
+        tipo: BIGINT
+        nulos_pct: 1.49
+        distintos_aprox: 9
+        min: '0'
+        max: '7'
+        media: 1.1716
+        quartis: [0, 1, 2]
+        top:
+        - ['1', 2434]
+        - ['0', 2125]
+        - ['2', 1410]
+        - ['3', 531]
+        - ['4', 179]
+        - [null, 102]
+        - ['5', 53]
+        - ['6', 11]
+        - ['7', 1]
+      cartao_amarelo_visitante:
+        tipo: BIGINT
+        nulos_pct: 1.49
+        distintos_aprox: 10
+        min: '0'
+        max: '8'
+        media: 1.3
+        quartis: [0, 1, 2]
+        top:
+        - ['1', 2371]
+        - ['0', 1867]
+        - ['2', 1528]
+        - ['3', 683]
+        - ['4', 212]
+        - [null, 102]
+        - ['5', 63]
+        - ['6', 14]
+        - ['7', 4]
+        - ['8', 2]
+      cartao_vermelho_mandante:
+        tipo: BIGINT
+        nulos_pct: 78.82
+        distintos_aprox: 4
+        min: '0'
+        max: '3'
+        media: 0.2703
+        quartis: [0, 0, 1]
+        top:
+        - [null, 5396]
+        - ['0', 1085]
+        - ['1', 340]
+        - ['2', 23]
+        - ['3', 2]
+      cartao_vermelho_visitante:
+        tipo: BIGINT
+        nulos_pct: 78.82
+        distintos_aprox: 4
+        min: '0'
+        max: '3'
+        media: 0.3462
+        quartis: [0, 0, 1]
+        top:
+        - [null, 5396]
+        - ['0', 978]
+        - ['1', 444]
+        - ['2', 26]
+        - ['3', 2]
+      finalizacao_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: '0'
+        max: '26'
+        media: 7.3859
+        quartis: [5, 7, 9]
+        top:
+        - ['6', 880]
+        - ['7', 833]
+        - ['5', 781]
+        - ['8', 781]
+        - ['4', 619]
+        - ['9', 600]
+        - ['10', 485]
+        - ['3', 421]
+        - ['11', 366]
+        - ['12', 268]
+      finalizacao_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '0'
+        max: '25'
+        media: 5.6578
+        quartis: [4, 5, 7]
+        top:
+        - ['5', 994]
+        - ['4', 947]
+        - ['6', 878]
+        - ['3', 792]
+        - ['7', 753]
+        - ['2', 524]
+        - ['8', 522]
+        - ['9', 375]
+        - ['1', 276]
+        - ['10', 255]
+      finalizacao_gol_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '0'
+        max: '13'
+        media: 2.4604
+        quartis: [1, 2, 3]
+        top:
+        - ['2', 1707]
+        - ['1', 1484]
+        - ['3', 1359]
+        - ['4', 847]
+        - ['0', 660]
+        - ['5', 461]
+        - ['6', 191]
+        - ['7', 87]
+        - ['8', 36]
+        - ['9', 10]
+      finalizacao_gol_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '0'
+        max: '10'
+        media: 1.8479
+        quartis: [1, 2, 3]
+        top:
+        - ['1', 1975]
+        - ['2', 1734]
+        - ['0', 1222]
+        - ['3', 1026]
+        - ['4', 523]
+        - ['5', 227]
+        - ['6', 96]
+        - ['7', 28]
+        - ['8', 7]
+        - ['9', 5]
+      finalizacao_trave_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '0'
+        max: '4'
+        media: 0.1833
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 5716]
+        - ['1', 1013]
+        - ['2', 110]
+        - ['3', 6]
+        - ['4', 1]
+      finalizacao_trave_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.1304
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 6011]
+        - ['1', 777]
+        - ['2', 58]
+      finalizacao_fora_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '0'
+        max: '13'
+        media: 3.1319
+        quartis: [2, 3, 4]
+        top:
+        - ['3', 1457]
+        - ['2', 1456]
+        - ['4', 1047]
+        - ['1', 1038]
+        - ['5', 681]
+        - ['6', 412]
+        - ['0', 361]
+        - ['7', 223]
+        - ['8', 94]
+        - ['9', 44]
+      finalizacao_fora_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '0'
+        max: '11'
+        media: 2.4278
+        quartis: [1, 2, 3]
+        top:
+        - ['2', 1668]
+        - ['1', 1521]
+        - ['3', 1298]
+        - ['4', 814]
+        - ['0', 739]
+        - ['5', 460]
+        - ['6', 201]
+        - ['7', 85]
+        - ['8', 37]
+        - ['9', 16]
+      chute_bloqueado_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '0'
+        max: '11'
+        media: 1.7936
+        quartis: [1, 2, 3]
+        top:
+        - ['1', 1964]
+        - ['2', 1587]
+        - ['0', 1440]
+        - ['3', 953]
+        - ['4', 499]
+        - ['5', 234]
+        - ['6', 94]
+        - ['7', 56]
+        - ['8', 13]
+        - ['9', 5]
+      chute_bloqueado_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '0'
+        max: '9'
+        media: 1.382
+        quartis: [0, 1, 2]
+        top:
+        - ['1', 2224]
+        - ['0', 2026]
+        - ['2', 1332]
+        - ['3', 750]
+        - ['4', 336]
+        - ['5', 112]
+        - ['6', 49]
+        - ['7', 12]
+        - ['8', 4]
+        - ['9', 1]
+      finalizacao_area_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '0'
+        max: '18'
+        media: 3.9179
+        quartis: [2, 4, 5]
+        top:
+        - ['3', 1127]
+        - ['4', 1042]
+        - ['2', 946]
+        - ['5', 896]
+        - ['6', 632]
+        - ['0', 612]
+        - ['1', 560]
+        - ['7', 438]
+        - ['8', 249]
+        - ['9', 158]
+      finalizacao_area_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '0'
+        max: '21'
+        media: 2.8747
+        quartis: [1, 3, 4]
+        top:
+        - ['2', 1302]
+        - ['3', 1199]
+        - ['1', 1093]
+        - ['0', 931]
+        - ['4', 923]
+        - ['5', 623]
+        - ['6', 341]
+        - ['7', 195]
+        - ['8', 114]
+        - ['9', 64]
+      finalizacao_fora_area_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '0'
+        max: '14'
+        media: 3.0056
+        quartis: [1, 3, 4]
+        top:
+        - ['3', 1334]
+        - ['2', 1282]
+        - ['4', 1036]
+        - ['1', 955]
+        - ['0', 769]
+        - ['5', 667]
+        - ['6', 395]
+        - ['7', 212]
+        - ['8', 108]
+        - ['9', 51]
+      finalizacao_fora_area_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 14
+        min: '0'
+        max: '12'
+        media: 2.4309
+        quartis: [1, 2, 4]
+        top:
+        - ['2', 1502]
+        - ['1', 1301]
+        - ['3', 1241]
+        - ['0', 1059]
+        - ['4', 848]
+        - ['5', 467]
+        - ['6', 237]
+        - ['7', 112]
+        - ['8', 48]
+        - ['9', 19]
+      grande_chance_marcada_mandante:
+        tipo: BIGINT
+        nulos_pct: 31.84
+        distintos_aprox: 6
+        min: '0'
+        max: '5'
+        media: 0.5474
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 2553]
+        - [null, 2180]
+        - ['1', 1726]
+        - ['2', 337]
+        - ['3', 47]
+        - ['4', 2]
+        - ['5', 1]
+      grande_chance_marcada_visitante:
+        tipo: BIGINT
+        nulos_pct: 31.84
+        distintos_aprox: 5
+        min: '0'
+        max: '4'
+        media: 0.3742
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 3137]
+        - [null, 2180]
+        - ['1', 1336]
+        - ['2', 172]
+        - ['3', 18]
+        - ['4', 3]
+      grande_chance_perdida_mandante:
+        tipo: BIGINT
+        nulos_pct: 23.23
+        distintos_aprox: 9
+        min: '0'
+        max: '7'
+        media: 0.6948
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 2670]
+        - ['1', 1800]
+        - [null, 1590]
+        - ['2', 579]
+        - ['3', 159]
+        - ['4', 33]
+        - ['5', 9]
+        - ['7', 4]
+        - ['6', 2]
+      grande_chance_perdida_visitante:
+        tipo: BIGINT
+        nulos_pct: 23.23
+        distintos_aprox: 9
+        min: '0'
+        max: '8'
+        media: 0.5044
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 3204]
+        - [null, 1590]
+        - ['1', 1580]
+        - ['2', 371]
+        - ['3', 85]
+        - ['4', 10]
+        - ['5', 4]
+        - ['6', 1]
+        - ['8', 1]
+      passe_profundidade_mandante:
+        tipo: BIGINT
+        nulos_pct: 49.31
+        distintos_aprox: 6
+        min: '0'
+        max: '5'
+        media: 0.421
+        quartis: [0, 0, 1]
+        top:
+        - [null, 3376]
+        - ['0', 2214]
+        - ['1', 1089]
+        - ['2', 135]
+        - ['3', 27]
+        - ['4', 4]
+        - ['5', 1]
+      passe_profundidade_visitante:
+        tipo: BIGINT
+        nulos_pct: 49.31
+        distintos_aprox: 5
+        min: '0'
+        max: '4'
+        media: 0.3418
+        quartis: [0, 0, 1]
+        top:
+        - [null, 3376]
+        - ['0', 2423]
+        - ['1', 925]
+        - ['2', 107]
+        - ['3', 13]
+        - ['4', 2]
+      falta_terco_final_mandante:
+        tipo: BIGINT
+        nulos_pct: 8.79
+        distintos_aprox: 10
+        min: '0'
+        max: '8'
+        media: 1.5501
+        quartis: [1, 1, 2]
+        top:
+        - ['1', 2070]
+        - ['2', 1513]
+        - ['0', 1361]
+        - ['3', 823]
+        - [null, 602]
+        - ['4', 320]
+        - ['5', 118]
+        - ['6', 31]
+        - ['7', 6]
+        - ['8', 2]
+      falta_terco_final_visitante:
+        tipo: BIGINT
+        nulos_pct: 8.79
+        distintos_aprox: 9
+        min: '0'
+        max: '7'
+        media: 1.2799
+        quartis: [0, 1, 2]
+        top:
+        - ['1', 2144]
+        - ['0', 1797]
+        - ['2', 1410]
+        - ['3', 633]
+        - [null, 602]
+        - ['4', 187]
+        - ['5', 58]
+        - ['6', 14]
+        - ['7', 1]
+      impedimento_mandante:
+        tipo: BIGINT
+        nulos_pct: 7.07
+        distintos_aprox: 9
+        min: '0'
+        max: '7'
+        media: 0.8744
+        quartis: [0, 1, 1]
+        top:
+        - ['0', 2776]
+        - ['1', 2204]
+        - ['2', 941]
+        - [null, 484]
+        - ['3', 325]
+        - ['4', 90]
+        - ['5', 16]
+        - ['6', 8]
+        - ['7', 2]
+      impedimento_visitante:
+        tipo: BIGINT
+        nulos_pct: 7.07
+        distintos_aprox: 9
+        min: '0'
+        max: '7'
+        media: 0.8122
+        quartis: [0, 1, 1]
+        top:
+        - ['0', 2878]
+        - ['1', 2250]
+        - ['2', 889]
+        - [null, 484]
+        - ['3', 261]
+        - ['4', 67]
+        - ['5', 15]
+        - ['6', 1]
+        - ['7', 1]
+      passes_certo_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 368
+        min: '0'
+        max: '422'
+        media: 179.1658
+        quartis: [136, 176, 218]
+      passes_certo_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 344
+        min: '0'
+        max: '429'
+        media: 165.9813
+        quartis: [125, 161, 203]
+      lateral_mandante:
+        tipo: BIGINT
+        nulos_pct: 0.03
+        distintos_aprox: 29
+        min: '0'
+        max: '29'
+        media: 10.4793
+        quartis: [8, 10, 13]
+        top:
+        - ['10', 760]
+        - ['9', 712]
+        - ['8', 672]
+        - ['11', 632]
+        - ['7', 540]
+        - ['12', 532]
+        - ['6', 462]
+        - ['13', 457]
+        - ['14', 388]
+        - ['15', 300]
+      lateral_visitante:
+        tipo: BIGINT
+        nulos_pct: 0.03
+        distintos_aprox: 27
+        min: '1'
+        max: '27'
+        media: 10.0994
+        quartis: [7, 10, 13]
+        top:
+        - ['9', 733]
+        - ['8', 726]
+        - ['10', 691]
+        - ['11', 629]
+        - ['7', 591]
+        - ['12', 550]
+        - ['6', 487]
+        - ['13', 457]
+        - ['14', 367]
+        - ['5', 343]
+      entrada_terco_final_mandante:
+        tipo: BIGINT
+        nulos_pct: 8.44
+        distintos_aprox: 57
+        min: '7'
+        max: '79'
+        media: 27.791
+        quartis: [22, 27, 33]
+      entrada_terco_final_visitante:
+        tipo: BIGINT
+        nulos_pct: 8.44
+        distintos_aprox: 57
+        min: '0'
+        max: '76'
+        media: 25.3208
+        quartis: [20, 25, 30]
+      bola_longa_mandante:
+        tipo: BIGINT
+        nulos_pct: 8.44
+        distintos_aprox: 41
+        min: '1'
+        max: '40'
+        media: 13.4742
+        quartis: [10, 13, 16]
+        top:
+        - [null, 578]
+        - ['12', 556]
+        - ['13', 541]
+        - ['11', 522]
+        - ['14', 510]
+        - ['10', 498]
+        - ['15', 414]
+        - ['9', 407]
+        - ['17', 374]
+        - ['16', 370]
+      bola_longa_visitante:
+        tipo: BIGINT
+        nulos_pct: 8.44
+        distintos_aprox: 34
+        min: '1'
+        max: '34'
+        media: 12.7455
+        quartis: [10, 12, 15]
+        top:
+        - ['12', 632]
+        - [null, 578]
+        - ['13', 570]
+        - ['11', 552]
+        - ['10', 527]
+        - ['14', 488]
+        - ['9', 473]
+        - ['15', 433]
+        - ['8', 388]
+        - ['16', 342]
+      cruzamento_mandante:
+        tipo: BIGINT
+        nulos_pct: 8.44
+        distintos_aprox: 14
+        min: '0'
+        max: '12'
+        media: 2.5766
+        quartis: [1, 2, 4]
+        top:
+        - ['2', 1446]
+        - ['1', 1348]
+        - ['3', 1127]
+        - ['4', 747]
+        - ['0', 676]
+        - [null, 578]
+        - ['5', 445]
+        - ['6', 249]
+        - ['7', 111]
+        - ['8', 65]
+      cruzamento_visitante:
+        tipo: BIGINT
+        nulos_pct: 8.44
+        distintos_aprox: 16
+        min: '0'
+        max: '14'
+        media: 1.8735
+        quartis: [1, 2, 3]
+        top:
+        - ['1', 1743]
+        - ['2', 1497]
+        - ['0', 1253]
+        - ['3', 886]
+        - [null, 578]
+        - ['4', 457]
+        - ['5', 228]
+        - ['6', 117]
+        - ['7', 50]
+        - ['8', 21]
+      duelo_vencido_mandante:
+        tipo: BIGINT
+        nulos_pct: 0.03
+        distintos_aprox: 52
+        min: '26'
+        max: '76'
+        media: 50.4866
+        quartis: [46, 51, 55]
+      duelo_vencido_visitante:
+        tipo: BIGINT
+        nulos_pct: 0.03
+        distintos_aprox: 52
+        min: '24'
+        max: '74'
+        media: 49.515
+        quartis: [45, 49, 54]
+      desarme_sofrido_mandante:
+        tipo: BIGINT
+        nulos_pct: 8.44
+        distintos_aprox: 18
+        min: '0'
+        max: '17'
+        media: 4.4319
+        quartis: [3, 4, 6]
+        top:
+        - ['3', 1091]
+        - ['4', 1039]
+        - ['5', 928]
+        - ['2', 786]
+        - ['6', 647]
+        - [null, 578]
+        - ['7', 477]
+        - ['1', 441]
+        - ['8', 333]
+        - ['9', 165]
+      desarme_sofrido_visitante:
+        tipo: BIGINT
+        nulos_pct: 8.44
+        distintos_aprox: 21
+        min: '0'
+        max: '19'
+        media: 4.5705
+        quartis: [3, 4, 6]
+        top:
+        - ['4', 1077]
+        - ['3', 1008]
+        - ['5', 920]
+        - ['2', 729]
+        - ['6', 709]
+        - [null, 578]
+        - ['7', 506]
+        - ['1', 427]
+        - ['8', 342]
+        - ['9', 188]
+      duelo_chao_mandante:
+        tipo: BIGINT
+        nulos_pct: 0.03
+        distintos_aprox: 37
+        min: '2'
+        max: '41'
+        media: 19.3907
+        quartis: [16, 19, 23]
+        top:
+        - ['18', 552]
+        - ['17', 540]
+        - ['19', 536]
+        - ['20', 516]
+        - ['21', 500]
+        - ['16', 499]
+        - ['22', 420]
+        - ['15', 419]
+        - ['23', 386]
+        - ['14', 334]
+      duelo_chao_visitante:
+        tipo: BIGINT
+        nulos_pct: 0.03
+        distintos_aprox: 39
+        min: '4'
+        max: '41'
+        media: 19.1701
+        quartis: [16, 19, 22]
+        top:
+        - ['18', 551]
+        - ['20', 529]
+        - ['19', 527]
+        - ['17', 517]
+        - ['21', 500]
+        - ['16', 460]
+        - ['15', 424]
+        - ['22', 395]
+        - ['14', 391]
+        - ['23', 354]
+      duelo_aereo_mandante:
+        tipo: BIGINT
+        nulos_pct: 0.03
+        distintos_aprox: 25
+        min: '0'
+        max: '24'
+        media: 7.949
+        quartis: [5, 8, 10]
+        top:
+        - ['8', 761]
+        - ['7', 739]
+        - ['6', 731]
+        - ['9', 694]
+        - ['5', 689]
+        - ['10', 572]
+        - ['4', 541]
+        - ['11', 466]
+        - ['3', 335]
+        - ['12', 328]
+      duelo_aereo_visitante:
+        tipo: BIGINT
+        nulos_pct: 0.03
+        distintos_aprox: 24
+        min: '0'
+        max: '26'
+        media: 7.6806
+        quartis: [5, 7, 10]
+        top:
+        - ['7', 800]
+        - ['6', 786]
+        - ['5', 732]
+        - ['8', 717]
+        - ['9', 639]
+        - ['4', 581]
+        - ['10', 549]
+        - ['11', 399]
+        - ['3', 368]
+        - ['12', 296]
+      drible_mandante:
+        tipo: BIGINT
+        nulos_pct: 8.44
+        distintos_aprox: 22
+        min: '0'
+        max: '20'
+        media: 4.7157
+        quartis: [3, 4, 6]
+        top:
+        - ['4', 1011]
+        - ['3', 934]
+        - ['5', 881]
+        - ['2', 748]
+        - ['6', 695]
+        - [null, 578]
+        - ['7', 514]
+        - ['1', 428]
+        - ['8', 327]
+        - ['9', 221]
+      drible_visitante:
+        tipo: BIGINT
+        nulos_pct: 8.44
+        distintos_aprox: 22
+        min: '0'
+        max: '20'
+        media: 4.4553
+        quartis: [2, 4, 6]
+        top:
+        - ['3', 976]
+        - ['4', 914]
+        - ['5', 846]
+        - ['2', 831]
+        - ['6', 680]
+        - [null, 578]
+        - ['1', 555]
+        - ['7', 468]
+        - ['8', 313]
+        - ['9', 199]
+      desarme_mandante:
+        tipo: BIGINT
+        nulos_pct: 8.44
+        distintos_aprox: 26
+        min: '0'
+        max: '25'
+        media: 8.0451
+        quartis: [6, 8, 10]
+        top:
+        - ['7', 801]
+        - ['8', 738]
+        - ['6', 713]
+        - ['9', 680]
+        - ['5', 594]
+        - [null, 578]
+        - ['10', 542]
+        - ['4', 429]
+        - ['11', 416]
+        - ['12', 294]
+      desarme_visitante:
+        tipo: BIGINT
+        nulos_pct: 8.44
+        distintos_aprox: 25
+        min: '0'
+        max: '24'
+        media: 8.0097
+        quartis: [6, 8, 10]
+        top:
+        - ['8', 772]
+        - ['7', 769]
+        - ['6', 711]
+        - ['9', 655]
+        - ['5', 599]
+        - ['10', 596]
+        - [null, 578]
+        - ['4', 447]
+        - ['11', 414]
+        - ['12', 316]
+      desarme_ganho_mandante:
+        tipo: BIGINT
+        nulos_pct: 8.44
+        distintos_aprox: 76
+        min: '0'
+        max: '100'
+        media: 64.862
+        quartis: [50, 67, 79]
+      desarme_ganho_visitante:
+        tipo: BIGINT
+        nulos_pct: 8.44
+        distintos_aprox: 77
+        min: '0'
+        max: '100'
+        media: 64.0263
+        quartis: [50, 67, 78]
+      interceptacao_mandante: {tipo: BIGINT, nulos_pct: 8.44, distintos_aprox: 22, pessoal: 'só contagens: valores seriam dado pessoal'}
+      interceptacao_visitante: {tipo: BIGINT, nulos_pct: 8.44, distintos_aprox: 21, pessoal: 'só contagens: valores seriam dado pessoal'}
+      recuperacao_bola_mandante:
+        tipo: BIGINT
+        nulos_pct: 53.93
+        distintos_aprox: 31
+        min: '11'
+        max: '49'
+        media: 27.0967
+        quartis: [23, 27, 31]
+        top:
+        - [null, 3692]
+        - ['27', 260]
+        - ['26', 229]
+        - ['28', 222]
+        - ['25', 215]
+        - ['29', 207]
+        - ['30', 199]
+        - ['24', 198]
+        - ['23', 188]
+        - ['31', 166]
+      recuperacao_bola_visitante:
+        tipo: BIGINT
+        nulos_pct: 53.93
+        distintos_aprox: 34
+        min: '9'
+        max: '49'
+        media: 26.5387
+        quartis: [23, 26, 30]
+        top:
+        - [null, 3692]
+        - ['24', 226]
+        - ['25', 224]
+        - ['23', 217]
+        - ['28', 217]
+        - ['27', 211]
+        - ['26', 208]
+        - ['29', 196]
+        - ['30', 189]
+        - ['21', 167]
+      corte_mandante:
+        tipo: BIGINT
+        nulos_pct: 8.44
+        distintos_aprox: 38
+        min: '0'
+        max: '41'
+        media: 8.686
+        quartis: [5, 8, 11]
+        top:
+        - [null, 578]
+        - ['7', 558]
+        - ['6', 557]
+        - ['8', 549]
+        - ['5', 537]
+        - ['9', 490]
+        - ['4', 484]
+        - ['10', 389]
+        - ['3', 368]
+        - ['11', 358]
+      corte_visitante:
+        tipo: BIGINT
+        nulos_pct: 8.44
+        distintos_aprox: 39
+        min: '0'
+        max: '50'
+        media: 10.9335
+        quartis: [7, 10, 14]
+        top:
+        - [null, 578]
+        - ['9', 477]
+        - ['7', 470]
+        - ['8', 465]
+        - ['10', 451]
+        - ['6', 422]
+        - ['11', 408]
+        - ['12', 374]
+        - ['5', 371]
+        - ['13', 339]
+      tiro_meta_mandante:
+        tipo: BIGINT
+        nulos_pct: 0.03
+        distintos_aprox: 17
+        min: '0'
+        max: '14'
+        media: 3.6812
+        quartis: [2, 3, 5]
+        top:
+        - ['3', 1294]
+        - ['2', 1204]
+        - ['4', 1173]
+        - ['5', 899]
+        - ['1', 757]
+        - ['6', 557]
+        - ['7', 344]
+        - ['0', 254]
+        - ['8', 178]
+        - ['9', 109]
+      tiro_meta_visitante:
+        tipo: BIGINT
+        nulos_pct: 0.03
+        distintos_aprox: 20
+        min: '0'
+        max: '18'
+        media: 4.5603
+        quartis: [3, 4, 6]
+        top:
+        - ['4', 1171]
+        - ['3', 1136]
+        - ['5', 1002]
+        - ['6', 834]
+        - ['2', 814]
+        - ['7', 595]
+        - ['1', 431]
+        - ['8', 361]
+        - ['9', 203]
+        - ['10', 103]
+  uefa_champions_league:
+    linhas: 4478
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '2007'
+        max: '2025'
+        media: 2015.9187
+        quartis: [2011, 2016, 2022]
+        top:
+        - ['2023', 342]
+        - ['2024', 334]
+        - ['2022', 308]
+        - ['2017', 292]
+        - ['2018', 290]
+        - ['2008', 258]
+        - ['2012', 258]
+        - ['2015', 254]
+        - ['2009', 252]
+        - ['2014', 252]
+      id_partida: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1941}
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 468, min: '2007-09-18', max: '2025-03-12'}
+      hora:
+        tipo: TIME WITH TIME ZONE
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: 11:00:00+00
+        max: 18:00:00+00
+        top:
+        - ['17:45:00+00', 1050]
+        - ['15:45:00+00', 1012]
+        - ['16:00:00+00', 668]
+        - ['16:45:00+00', 618]
+        - ['17:00:00+00', 486]
+        - ['13:45:00+00', 122]
+        - ['14:45:00+00', 108]
+        - ['15:00:00+00', 100]
+        - ['18:00:00+00', 80]
+        - ['15:30:00+00', 58]
+      temporada:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: 07/08
+        max: 24/25
+        top:
+        - [24/25, 412]
+        - [23/24, 348]
+        - [21/22, 312]
+        - [22/23, 304]
+        - [17/18, 294]
+        - [18/19, 288]
+        - [07/08, 258]
+        - [11/12, 258]
+        - [14/15, 254]
+        - [08/09, 252]
+      rodada:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '1'
+        max: Terceira Rodada De Qualificação
+        top:
+        - [Oitavos-De-Final, 532]
+        - ['1', 516]
+        - ['2', 516]
+        - ['3', 516]
+        - ['4', 516]
+        - ['5', 516]
+        - ['6', 516]
+        - [Quartas De Final, 242]
+        - [Semifinal, 126]
+        - [Quarta Rodada De Qualificação, 116]
+      tempo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['1', 2211]
+        - ['2', 2211]
+        - ['3', 28]
+        - ['4', 28]
+      time_mandante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 167, min: 1. FC Union Berlin, max: ŠK Slovan Bratislava}
+      time_visitante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 166, min: 1. FC Union Berlin, max: ŠK Slovan Bratislava}
+      gols_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '0'
+        max: '6'
+        media: 0.8164
+        quartis: [0, 1, 1]
+        top:
+        - ['0', 2067]
+        - ['1', 1508]
+        - ['2', 640]
+        - ['3', 200]
+        - ['4', 49]
+        - ['5', 12]
+        - ['6', 2]
+      gols_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '0'
+        max: '6'
+        media: 0.6146
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 2533]
+        - ['1', 1332]
+        - ['2', 457]
+        - ['3', 128]
+        - ['4', 21]
+        - ['5', 4]
+        - ['6', 3]
+      posse_bola_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 67
+        min: '12'
+        max: '87'
+        media: 51.2865
+        quartis: [43, 52, 61]
+      posse_bola_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 71
+        min: '13'
+        max: '88'
+        media: 48.7135
+        quartis: [40, 48, 57]
+      gol_esperado_mandante:
+        tipo: DOUBLE
+        nulos_pct: 80.71
+        distintos_aprox: 245
+        min: '0.0'
+        max: '4.58'
+        media: 0.8346
+        quartis: [0.342, 0.6874, 1.1605]
+      gol_esperado_visitante:
+        tipo: DOUBLE
+        nulos_pct: 80.71
+        distintos_aprox: 220
+        min: '0.0'
+        max: '3.01'
+        media: 0.6537
+        quartis: [0.2391, 0.4953, 0.9586]
+      grande_chance_mandante:
+        tipo: DOUBLE
+        nulos_pct: 34.39
+        distintos_aprox: 10
+        min: '0.0'
+        max: '8.0'
+        media: 1.1991
+        quartis: [0, 1, 2]
+        top:
+        - [null, 1540]
+        - ['0.0', 1017]
+        - ['1.0', 958]
+        - ['2.0', 557]
+        - ['3.0', 259]
+        - ['4.0', 94]
+        - ['5.0', 33]
+        - ['6.0', 9]
+        - ['7.0', 9]
+        - ['8.0', 2]
+      grande_chance_visitante:
+        tipo: DOUBLE
+        nulos_pct: 34.39
+        distintos_aprox: 9
+        min: '0.0'
+        max: '7.0'
+        media: 0.9452
+        quartis: [0, 1, 1]
+        top:
+        - [null, 1540]
+        - ['0.0', 1286]
+        - ['1.0', 944]
+        - ['2.0', 434]
+        - ['3.0', 177]
+        - ['4.0', 65]
+        - ['5.0', 19]
+        - ['6.0', 12]
+        - ['7.0', 1]
+      defesa_goleiro_mandante:
+        tipo: BIGINT
+        nulos_pct: 0.18
+        distintos_aprox: 10
+        min: '0'
+        max: '8'
+        media: 1.4002
+        quartis: [0, 1, 2]
+        top:
+        - ['1', 1425]
+        - ['0', 1294]
+        - ['2', 934]
+        - ['3', 477]
+        - ['4', 223]
+        - ['5', 76]
+        - ['6', 27]
+        - ['7', 11]
+        - [null, 8]
+        - ['8', 3]
+      defesa_goleiro_visitante:
+        tipo: BIGINT
+        nulos_pct: 0.18
+        distintos_aprox: 12
+        min: '0'
+        max: '10'
+        media: 1.8096
+        quartis: [1, 2, 3]
+        top:
+        - ['1', 1276]
+        - ['2', 1076]
+        - ['0', 898]
+        - ['3', 623]
+        - ['4', 335]
+        - ['5', 161]
+        - ['6', 71]
+        - ['7', 22]
+        - [null, 8]
+        - ['8', 6]
+      escanteio_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 14
+        min: '0'
+        max: '12'
+        media: 2.7568
+        quartis: [1, 2, 4]
+        top:
+        - ['2', 951]
+        - ['1', 846]
+        - ['3', 795]
+        - ['4', 595]
+        - ['0', 492]
+        - ['5', 385]
+        - ['6', 184]
+        - ['7', 115]
+        - ['8', 67]
+        - ['9', 28]
+      escanteio_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 14
+        min: '0'
+        max: '12'
+        media: 2.117
+        quartis: [1, 2, 3]
+        top:
+        - ['1', 1128]
+        - ['2', 989]
+        - ['0', 802]
+        - ['3', 711]
+        - ['4', 408]
+        - ['5', 213]
+        - ['6', 131]
+        - ['7', 44]
+        - ['8', 32]
+        - ['9', 10]
+      passe_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 438
+        min: '29'
+        max: '582'
+        media: 238.2137
+        quartis: [187, 233, 285]
+      passe_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 422
+        min: '26'
+        max: '550'
+        media: 226.9433
+        quartis: [176, 218, 270]
+      falta_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 22
+        min: '0'
+        max: '19'
+        media: 6.1673
+        quartis: [4, 6, 8]
+        top:
+        - ['5', 625]
+        - ['6', 622]
+        - ['7', 556]
+        - ['4', 550]
+        - ['3', 440]
+        - ['8', 440]
+        - ['9', 339]
+        - ['10', 232]
+        - ['2', 218]
+        - ['11', 131]
+      falta_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '0'
+        max: '16'
+        media: 6.0147
+        quartis: [4, 6, 8]
+        top:
+        - ['6', 660]
+        - ['5', 647]
+        - ['4', 578]
+        - ['7', 554]
+        - ['8', 446]
+        - ['3', 433]
+        - ['9', 335]
+        - ['2', 241]
+        - ['10', 208]
+        - ['11', 121]
+      cartao_amarelo_mandante:
+        tipo: BIGINT
+        nulos_pct: 3.44
+        distintos_aprox: 7
+        min: '0'
+        max: '6'
+        media: 0.9315
+        quartis: [0, 1, 1]
+        top:
+        - ['0', 1733]
+        - ['1', 1559]
+        - ['2', 721]
+        - ['3', 233]
+        - [null, 154]
+        - ['4', 66]
+        - ['5', 8]
+        - ['6', 4]
+      cartao_amarelo_visitante:
+        tipo: BIGINT
+        nulos_pct: 3.44
+        distintos_aprox: 7
+        min: '0'
+        max: '6'
+        media: 1.1411
+        quartis: [0, 1, 2]
+        top:
+        - ['1', 1535]
+        - ['0', 1415]
+        - ['2', 887]
+        - ['3', 356]
+        - [null, 154]
+        - ['4', 102]
+        - ['5', 25]
+        - ['6', 4]
+      cartao_vermelho_mandante:
+        tipo: BIGINT
+        nulos_pct: 83.79
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.2287
+        quartis: [0, 0, 0]
+        top:
+        - [null, 3752]
+        - ['0', 565]
+        - ['1', 156]
+        - ['2', 5]
+      cartao_vermelho_visitante:
+        tipo: BIGINT
+        nulos_pct: 83.79
+        distintos_aprox: 4
+        min: '0'
+        max: '3'
+        media: 0.3182
+        quartis: [0, 0, 1]
+        top:
+        - [null, 3752]
+        - ['0', 503]
+        - ['1', 216]
+        - ['2', 6]
+        - ['3', 1]
+      finalizacao_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 25
+        min: '0'
+        max: '24'
+        media: 7.3622
+        quartis: [5, 7, 9]
+        top:
+        - ['8', 495]
+        - ['6', 481]
+        - ['5', 469]
+        - ['7', 469]
+        - ['4', 419]
+        - ['9', 396]
+        - ['10', 320]
+        - ['3', 297]
+        - ['11', 232]
+        - ['2', 195]
+      finalizacao_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 22
+        min: '0'
+        max: '20'
+        media: 5.7162
+        quartis: [3, 5, 8]
+        top:
+        - ['4', 594]
+        - ['5', 564]
+        - ['6', 518]
+        - ['3', 495]
+        - ['7', 420]
+        - ['2', 389]
+        - ['8', 351]
+        - ['9', 246]
+        - ['1', 234]
+        - ['10', 203]
+      finalizacao_gol_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '0'
+        max: '14'
+        media: 2.63
+        quartis: [1, 2, 4]
+        top:
+        - ['2', 1021]
+        - ['1', 862]
+        - ['3', 843]
+        - ['4', 563]
+        - ['0', 497]
+        - ['5', 343]
+        - ['6', 176]
+        - ['7', 104]
+        - ['8', 47]
+        - ['9', 13]
+      finalizacao_gol_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '0'
+        max: '10'
+        media: 2.017
+        quartis: [1, 2, 3]
+        top:
+        - ['1', 1163]
+        - ['2', 993]
+        - ['0', 835]
+        - ['3', 711]
+        - ['4', 414]
+        - ['5', 197]
+        - ['6', 92]
+        - ['7', 42]
+        - ['8', 18]
+        - ['9', 11]
+      finalizacao_trave_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '0'
+        max: '4'
+        media: 0.1798
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 3751]
+        - ['1', 658]
+        - ['2', 61]
+        - ['3', 7]
+        - ['4', 1]
+      finalizacao_trave_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '0'
+        max: '4'
+        media: 0.1514
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 3873]
+        - ['1', 539]
+        - ['2', 60]
+        - ['3', 5]
+        - ['4', 1]
+      finalizacao_fora_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '0'
+        max: '13'
+        media: 2.9669
+        quartis: [1, 3, 4]
+        top:
+        - ['2', 948]
+        - ['3', 871]
+        - ['1', 802]
+        - ['4', 640]
+        - ['5', 403]
+        - ['0', 321]
+        - ['6', 253]
+        - ['7', 123]
+        - ['8', 68]
+        - ['9', 29]
+      finalizacao_fora_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '0'
+        max: '11'
+        media: 2.3586
+        quartis: [1, 2, 3]
+        top:
+        - ['2', 1091]
+        - ['1', 1042]
+        - ['3', 780]
+        - ['0', 535]
+        - ['4', 511]
+        - ['5', 288]
+        - ['6', 149]
+        - ['7', 51]
+        - ['8', 20]
+        - ['9', 8]
+      chute_bloqueado_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '0'
+        max: '11'
+        media: 1.7653
+        quartis: [1, 1, 3]
+        top:
+        - ['1', 1267]
+        - ['0', 1020]
+        - ['2', 959]
+        - ['3', 650]
+        - ['4', 334]
+        - ['5', 138]
+        - ['6', 63]
+        - ['7', 24]
+        - ['8', 12]
+        - ['9', 9]
+      chute_bloqueado_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '0'
+        max: '10'
+        media: 1.3406
+        quartis: [0, 1, 2]
+        top:
+        - ['1', 1498]
+        - ['0', 1410]
+        - ['2', 784]
+        - ['3', 439]
+        - ['4', 196]
+        - ['5', 99]
+        - ['6', 36]
+        - ['7', 8]
+        - ['8', 5]
+        - ['10', 2]
+      finalizacao_area_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '0'
+        max: '17'
+        media: 4.3115
+        quartis: [2, 4, 6]
+        top:
+        - ['3', 686]
+        - ['4', 682]
+        - ['2', 610]
+        - ['5', 551]
+        - ['6', 457]
+        - ['1', 450]
+        - ['7', 309]
+        - ['8', 224]
+        - ['0', 178]
+        - ['9', 127]
+      finalizacao_area_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '0'
+        max: '16'
+        media: 3.2523
+        quartis: [1, 3, 5]
+        top:
+        - ['2', 796]
+        - ['3', 791]
+        - ['1', 722]
+        - ['4', 583]
+        - ['5', 444]
+        - ['0', 417]
+        - ['6', 292]
+        - ['7', 184]
+        - ['8', 101]
+        - ['9', 77]
+      finalizacao_fora_area_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '0'
+        max: '15'
+        media: 3.0523
+        quartis: [1, 3, 4]
+        top:
+        - ['2', 962]
+        - ['1', 781]
+        - ['3', 778]
+        - ['4', 632]
+        - ['5', 440]
+        - ['0', 342]
+        - ['6', 240]
+        - ['7', 127]
+        - ['8', 93]
+        - ['9', 42]
+      finalizacao_fora_area_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 14
+        min: '0'
+        max: '12'
+        media: 2.4656
+        quartis: [1, 2, 4]
+        top:
+        - ['2', 1009]
+        - ['1', 985]
+        - ['3', 787]
+        - ['0', 567]
+        - ['4', 535]
+        - ['5', 289]
+        - ['6', 161]
+        - ['7', 74]
+        - ['8', 45]
+        - ['9', 16]
+      grande_chance_marcada_mandante:
+        tipo: BIGINT
+        nulos_pct: 45.11
+        distintos_aprox: 5
+        min: '0'
+        max: '4'
+        media: 0.5997
+        quartis: [0, 0, 1]
+        top:
+        - [null, 2020]
+        - ['0', 1323]
+        - ['1', 856]
+        - ['2', 229]
+        - ['3', 40]
+        - ['4', 10]
+      grande_chance_marcada_visitante:
+        tipo: BIGINT
+        nulos_pct: 45.11
+        distintos_aprox: 7
+        min: '0'
+        max: '6'
+        media: 0.4605
+        quartis: [0, 0, 1]
+        top:
+        - [null, 2020]
+        - ['0', 1587]
+        - ['1', 659]
+        - ['2', 171]
+        - ['3', 37]
+        - ['5', 2]
+        - ['4', 1]
+        - ['6', 1]
+      grande_chance_perdida_mandante:
+        tipo: BIGINT
+        nulos_pct: 40.51
+        distintos_aprox: 7
+        min: '0'
+        max: '6'
+        media: 0.7691
+        quartis: [0, 1, 1]
+        top:
+        - [null, 1814]
+        - ['0', 1300]
+        - ['1', 870]
+        - ['2', 356]
+        - ['3', 105]
+        - ['4', 19]
+        - ['5', 8]
+        - ['6', 6]
+      grande_chance_perdida_visitante:
+        tipo: BIGINT
+        nulos_pct: 40.51
+        distintos_aprox: 6
+        min: '0'
+        max: '5'
+        media: 0.6175
+        quartis: [0, 0, 1]
+        top:
+        - [null, 1814]
+        - ['0', 1489]
+        - ['1', 828]
+        - ['2', 251]
+        - ['3', 75]
+        - ['4', 15]
+        - ['5', 6]
+      passe_profundidade_mandante:
+        tipo: BIGINT
+        nulos_pct: 23.94
+        distintos_aprox: 10
+        min: '0'
+        max: '9'
+        media: 0.6415
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 1896]
+        - [null, 1072]
+        - ['1', 1024]
+        - ['2', 358]
+        - ['3', 83]
+        - ['4', 36]
+        - ['5', 6]
+        - ['6', 1]
+        - ['7', 1]
+        - ['9', 1]
+      passe_profundidade_visitante:
+        tipo: BIGINT
+        nulos_pct: 23.94
+        distintos_aprox: 9
+        min: '0'
+        max: '7'
+        media: 0.544
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 2038]
+        - [null, 1072]
+        - ['1', 1010]
+        - ['2', 273]
+        - ['3', 55]
+        - ['4', 21]
+        - ['5', 7]
+        - ['6', 1]
+        - ['7', 1]
+      falta_terco_final_mandante:
+        tipo: BIGINT
+        nulos_pct: 16.3
+        distintos_aprox: 10
+        min: '0'
+        max: '8'
+        media: 1.4709
+        quartis: [1, 1, 2]
+        top:
+        - ['1', 1223]
+        - ['0', 926]
+        - ['2', 878]
+        - [null, 730]
+        - ['3', 470]
+        - ['4', 165]
+        - ['5', 62]
+        - ['6', 15]
+        - ['7', 8]
+        - ['8', 1]
+      falta_terco_final_visitante:
+        tipo: BIGINT
+        nulos_pct: 16.3
+        distintos_aprox: 10
+        min: '0'
+        max: '8'
+        media: 1.1305
+        quartis: [0, 1, 2]
+        top:
+        - ['1', 1304]
+        - ['0', 1282]
+        - [null, 730]
+        - ['2', 727]
+        - ['3', 300]
+        - ['4', 103]
+        - ['5', 28]
+        - ['6', 2]
+        - ['7', 1]
+        - ['8', 1]
+      impedimento_mandante:
+        tipo: BIGINT
+        nulos_pct: 2.81
+        distintos_aprox: 11
+        min: '0'
+        max: '9'
+        media: 1.247
+        quartis: [0, 1, 2]
+        top:
+        - ['0', 1484]
+        - ['1', 1408]
+        - ['2', 799]
+        - ['3', 377]
+        - ['4', 185]
+        - [null, 126]
+        - ['5', 60]
+        - ['6', 28]
+        - ['7', 7]
+        - ['8', 3]
+      impedimento_visitante:
+        tipo: BIGINT
+        nulos_pct: 2.81
+        distintos_aprox: 10
+        min: '0'
+        max: '8'
+        media: 1.1268
+        quartis: [0, 1, 2]
+        top:
+        - ['0', 1598]
+        - ['1', 1443]
+        - ['2', 772]
+        - ['3', 327]
+        - ['4', 150]
+        - [null, 126]
+        - ['5', 42]
+        - ['6', 15]
+        - ['7', 4]
+        - ['8', 1]
+      passes_certo_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 438
+        min: '19'
+        max: '529'
+        media: 197.3577
+        quartis: [144, 190, 244]
+      passes_certo_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 411
+        min: '9'
+        max: '522'
+        media: 185.4632
+        quartis: [133, 176, 229]
+      lateral_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '0'
+        max: '32'
+        media: 10.2903
+        quartis: [7, 10, 13]
+        top:
+        - ['9', 446]
+        - ['10', 442]
+        - ['11', 415]
+        - ['8', 410]
+        - ['7', 399]
+        - ['12', 382]
+        - ['6', 302]
+        - ['13', 290]
+        - ['14', 247]
+        - ['5', 220]
+      lateral_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '0'
+        max: '25'
+        media: 9.7903
+        quartis: [7, 10, 12]
+        top:
+        - ['9', 477]
+        - ['10', 456]
+        - ['8', 450]
+        - ['11', 439]
+        - ['7', 390]
+        - ['6', 333]
+        - ['12', 324]
+        - ['13', 283]
+        - ['5', 241]
+        - ['14', 232]
+      entrada_terco_final_mandante:
+        tipo: BIGINT
+        nulos_pct: 15.59
+        distintos_aprox: 61
+        min: '3'
+        max: '78'
+        media: 31.0294
+        quartis: [24, 30, 38]
+      entrada_terco_final_visitante:
+        tipo: BIGINT
+        nulos_pct: 15.59
+        distintos_aprox: 59
+        min: '3'
+        max: '66'
+        media: 28.2569
+        quartis: [21, 28, 35]
+      bola_longa_mandante:
+        tipo: BIGINT
+        nulos_pct: 15.59
+        distintos_aprox: 43
+        min: '0'
+        max: '53'
+        media: 15.714
+        quartis: [11, 15, 19]
+        top:
+        - [null, 698]
+        - ['14', 268]
+        - ['13', 262]
+        - ['12', 244]
+        - ['15', 239]
+        - ['16', 225]
+        - ['17', 221]
+        - ['11', 218]
+        - ['18', 207]
+        - ['10', 205]
+      bola_longa_visitante:
+        tipo: BIGINT
+        nulos_pct: 15.59
+        distintos_aprox: 43
+        min: '0'
+        max: '51'
+        media: 14.7558
+        quartis: [10, 14, 18]
+        top:
+        - [null, 698]
+        - ['14', 285]
+        - ['12', 273]
+        - ['11', 270]
+        - ['13', 264]
+        - ['10', 239]
+        - ['15', 228]
+        - ['16', 203]
+        - ['17', 196]
+        - ['9', 193]
+      cruzamento_mandante:
+        tipo: BIGINT
+        nulos_pct: 15.59
+        distintos_aprox: 17
+        min: '0'
+        max: '14'
+        media: 2.3701
+        quartis: [1, 2, 3]
+        top:
+        - ['1', 892]
+        - ['2', 793]
+        - [null, 698]
+        - ['3', 647]
+        - ['0', 564]
+        - ['4', 395]
+        - ['5', 234]
+        - ['6', 122]
+        - ['7', 62]
+        - ['8', 41]
+      cruzamento_visitante:
+        tipo: BIGINT
+        nulos_pct: 15.59
+        distintos_aprox: 12
+        min: '0'
+        max: '12'
+        media: 1.7511
+        quartis: [1, 1, 3]
+        top:
+        - ['1', 1025]
+        - ['0', 915]
+        - ['2', 832]
+        - [null, 698]
+        - ['3', 497]
+        - ['4', 285]
+        - ['5', 131]
+        - ['6', 51]
+        - ['7', 26]
+        - ['8', 12]
+      duelo_vencido_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 59
+        min: '17'
+        max: '79'
+        media: 50.5257
+        quartis: [46, 51, 56]
+      duelo_vencido_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 61
+        min: '21'
+        max: '83'
+        media: 49.4728
+        quartis: [44, 49, 54]
+      desarme_sofrido_mandante:
+        tipo: BIGINT
+        nulos_pct: 15.59
+        distintos_aprox: 22
+        min: '0'
+        max: '22'
+        media: 5.3706
+        quartis: [3, 5, 7]
+        top:
+        - [null, 698]
+        - ['4', 543]
+        - ['5', 535]
+        - ['3', 476]
+        - ['6', 467]
+        - ['7', 369]
+        - ['2', 319]
+        - ['8', 264]
+        - ['1', 210]
+        - ['9', 197]
+      desarme_sofrido_visitante:
+        tipo: BIGINT
+        nulos_pct: 15.59
+        distintos_aprox: 23
+        min: '0'
+        max: '26'
+        media: 5.478
+        quartis: [3, 5, 7]
+        top:
+        - [null, 698]
+        - ['4', 561]
+        - ['5', 537]
+        - ['3', 461]
+        - ['6', 435]
+        - ['7', 391]
+        - ['2', 337]
+        - ['8', 277]
+        - ['9', 210]
+        - ['1', 170]
+      duelo_chao_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 45
+        min: '1'
+        max: '45'
+        media: 20.1007
+        quartis: [16, 20, 24]
+        top:
+        - ['20', 309]
+        - ['18', 298]
+        - ['17', 295]
+        - ['19', 294]
+        - ['21', 287]
+        - ['16', 279]
+        - ['22', 265]
+        - ['23', 262]
+        - ['15', 249]
+        - ['24', 220]
+      duelo_chao_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 39
+        min: '2'
+        max: '40'
+        media: 19.7008
+        quartis: [16, 19, 23]
+        top:
+        - ['19', 336]
+        - ['21', 329]
+        - ['17', 308]
+        - ['20', 300]
+        - ['18', 298]
+        - ['16', 281]
+        - ['22', 270]
+        - ['23', 255]
+        - ['15', 246]
+        - ['24', 217]
+      duelo_aereo_mandante:
+        tipo: BIGINT
+        nulos_pct: 0.27
+        distintos_aprox: 24
+        min: '0'
+        max: '24'
+        media: 5.6644
+        quartis: [3, 5, 8]
+        top:
+        - ['3', 542]
+        - ['4', 539]
+        - ['5', 516]
+        - ['6', 496]
+        - ['2', 422]
+        - ['7', 361]
+        - ['8', 325]
+        - ['1', 285]
+        - ['9', 244]
+        - ['10', 188]
+      duelo_aereo_visitante:
+        tipo: BIGINT
+        nulos_pct: 0.27
+        distintos_aprox: 27
+        min: '0'
+        max: '27'
+        media: 5.5132
+        quartis: [3, 5, 8]
+        top:
+        - ['4', 581]
+        - ['3', 560]
+        - ['5', 530]
+        - ['2', 449]
+        - ['6', 448]
+        - ['7', 326]
+        - ['1', 313]
+        - ['8', 307]
+        - ['9', 236]
+        - ['10', 198]
+      drible_mandante:
+        tipo: BIGINT
+        nulos_pct: 15.59
+        distintos_aprox: 22
+        min: '0'
+        max: '19'
+        media: 4.5648
+        quartis: [2, 4, 6]
+        top:
+        - [null, 698]
+        - ['4', 563]
+        - ['2', 546]
+        - ['3', 544]
+        - ['5', 458]
+        - ['6', 386]
+        - ['1', 321]
+        - ['7', 267]
+        - ['8', 181]
+        - ['0', 134]
+      drible_visitante:
+        tipo: BIGINT
+        nulos_pct: 15.59
+        distintos_aprox: 21
+        min: '0'
+        max: '20'
+        media: 4.1701
+        quartis: [2, 4, 6]
+        top:
+        - [null, 698]
+        - ['3', 596]
+        - ['4', 591]
+        - ['2', 553]
+        - ['5', 494]
+        - ['1', 389]
+        - ['6', 355]
+        - ['7', 231]
+        - ['0', 162]
+        - ['8', 155]
+      desarme_mandante:
+        tipo: BIGINT
+        nulos_pct: 15.59
+        distintos_aprox: 27
+        min: '0'
+        max: '31'
+        media: 9.4458
+        quartis: [7, 9, 12]
+        top:
+        - [null, 698]
+        - ['9', 435]
+        - ['7', 376]
+        - ['8', 371]
+        - ['10', 361]
+        - ['6', 313]
+        - ['11', 312]
+        - ['12', 275]
+        - ['5', 264]
+        - ['13', 213]
+      desarme_visitante:
+        tipo: BIGINT
+        nulos_pct: 15.59
+        distintos_aprox: 26
+        min: '0'
+        max: '28'
+        media: 9.5735
+        quartis: [7, 9, 12]
+        top:
+        - [null, 698]
+        - ['8', 422]
+        - ['9', 375]
+        - ['7', 368]
+        - ['10', 353]
+        - ['11', 332]
+        - ['6', 326]
+        - ['12', 266]
+        - ['13', 231]
+        - ['5', 217]
+      desarme_ganho_mandante:
+        tipo: BIGINT
+        nulos_pct: 15.59
+        distintos_aprox: 69
+        min: '0'
+        max: '100'
+        media: 69.3955
+        quartis: [57, 71, 83]
+      desarme_ganho_visitante:
+        tipo: BIGINT
+        nulos_pct: 15.59
+        distintos_aprox: 71
+        min: '0'
+        max: '100'
+        media: 69.0929
+        quartis: [57, 71, 83]
+      interceptacao_mandante: {tipo: BIGINT, nulos_pct: 15.59, distintos_aprox: 27, pessoal: 'só contagens: valores seriam dado pessoal'}
+      interceptacao_visitante: {tipo: BIGINT, nulos_pct: 15.59, distintos_aprox: 26, pessoal: 'só contagens: valores seriam dado pessoal'}
+      recuperacao_bola_mandante:
+        tipo: BIGINT
+        nulos_pct: 35.73
+        distintos_aprox: 47
+        min: '3'
+        max: '59'
+        media: 27.8905
+        quartis: [24, 28, 32]
+        top:
+        - [null, 1600]
+        - ['28', 187]
+        - ['29', 187]
+        - ['26', 179]
+        - ['31', 174]
+        - ['27', 173]
+        - ['32', 156]
+        - ['25', 154]
+        - ['30', 149]
+        - ['22', 124]
+      recuperacao_bola_visitante:
+        tipo: BIGINT
+        nulos_pct: 35.73
+        distintos_aprox: 45
+        min: '1'
+        max: '52'
+        media: 27.1925
+        quartis: [23, 27, 32]
+        top:
+        - [null, 1600]
+        - ['28', 189]
+        - ['24', 188]
+        - ['27', 172]
+        - ['30', 165]
+        - ['26', 160]
+        - ['29', 159]
+        - ['32', 148]
+        - ['31', 145]
+        - ['25', 142]
+      corte_mandante:
+        tipo: BIGINT
+        nulos_pct: 15.59
+        distintos_aprox: 41
+        min: '0'
+        max: '40'
+        media: 9.9397
+        quartis: [5, 9, 13]
+        top:
+        - [null, 698]
+        - ['10', 289]
+        - ['6', 282]
+        - ['5', 271]
+        - ['8', 261]
+        - ['7', 253]
+        - ['4', 251]
+        - ['9', 251]
+        - ['11', 209]
+        - ['12', 185]
+      corte_visitante:
+        tipo: BIGINT
+        nulos_pct: 15.59
+        distintos_aprox: 47
+        min: '0'
+        max: '60'
+        media: 12.2783
+        quartis: [7, 11, 16]
+        top:
+        - [null, 698]
+        - ['6', 249]
+        - ['10', 244]
+        - ['11', 239]
+        - ['7', 225]
+        - ['8', 224]
+        - ['9', 224]
+        - ['13', 218]
+        - ['12', 216]
+        - ['5', 184]
+      tiro_meta_mandante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 14
+        min: '0'
+        max: '12'
+        media: 3.5701
+        quartis: [2, 3, 5]
+        top:
+        - ['3', 872]
+        - ['2', 811]
+        - ['4', 740]
+        - ['5', 544]
+        - ['1', 543]
+        - ['6', 365]
+        - ['7', 211]
+        - ['0', 178]
+        - ['8', 124]
+        - ['9', 53]
+      tiro_meta_visitante:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '0'
+        max: '20'
+        media: 4.3814
+        quartis: [3, 4, 6]
+        top:
+        - ['3', 765]
+        - ['4', 744]
+        - ['5', 608]
+        - ['2', 585]
+        - ['6', 479]
+        - ['1', 337]
+        - ['7', 327]
+        - ['8', 227]
+        - ['9', 144]
+        - ['0', 123]

@@ -1,0 +1,53 @@
+dataset: br_stj_dadosabertos
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  documentos:
+    linhas: 3604791
+    fonte_do_perfil: amostra de 55.482%. ~2.000.000 linhas
+    colunas:
+      SeqDocumento: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 1800735, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dataPublicacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1248, min: '2021-01-11', max: '2026-10-06'}
+      tipoDocumento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numeroRegistro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1776470, pessoal: 'só contagens: valores seriam dado pessoal'}
+      processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1587784}
+      dataRecebimento: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5296, min: '1899-12-30', max: '2026-10-01'}
+      dataDistribuicao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4942, min: '1993-06-02', max: '2026-10-02'}
+      NM_MINISTRO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 50, pessoal: 'só contagens: valores seriam dado pessoal'}
+      recurso:
+        tipo: VARCHAR
+        nulos_pct: 69.89
+        distintos_aprox: 47
+        min: AGRAVO DE INSTRUMENTO
+        max: TutPrv
+        top:
+        - [null, 1390633]
+        - ['AgInt ', 176897]
+        - [AGRAVO INTERNO, 101490]
+        - ['EDcl  ', 96948]
+        - ['AgRg  ', 86666]
+        - [EMBARGOS DE DECLARAÇÃO, 48462]
+        - [AGRAVO REGIMENTAL, 34973]
+        - ['RE    ', 16001]
+        - ['DESIS ', 11286]
+        - [RECURSO EXTRAORDINÁRIO, 8189]
+      teor:
+        tipo: VARCHAR
+        nulos_pct: 0.21
+        distintos_aprox: 12
+        min: Admitindo Embargo
+        max: Outros
+        top:
+        - [Negando, 876349]
+        - [Não Conhecendo, 801228]
+        - [Concedendo, 197491]
+        - [Outros, 103656]
+        - [Admitindo Embargo, 4789]
+        - [null, 4124]
+        - [Deferindo, 1236]
+        - [Concedendo Parcialmente, 576]
+        - [Denegando, 113]
+        - [Não cadastrado CGIN/AMG, 39]
+      descricaoMonocratica: {tipo: VARCHAR, nulos_pct: 25.21, distintos_aprox: 373, min: Acolhidos os Embargos, max: "Tornar sem efeito a afetação\
+          \ do processo \r\n"}
+      assuntos: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 310655}

@@ -1,0 +1,313 @@
+dataset: br_seeg_emissoes
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  municipio:
+    linhas: 165736450
+    fonte_do_perfil: amostra de 66.37% da última partição (ano = 2024). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 1996801]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 315928]
+        - [SP, 267799]
+        - [RS, 191121]
+        - [BA, 139443]
+        - [PR, 125001]
+        - [GO, 94327]
+        - [SC, 86294]
+        - [MT, 81783]
+        - [MA, 80730]
+        - [PI, 72431]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      bioma:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '1'
+        max: '7'
+        top:
+        - ['4', 916671]
+        - ['3', 486620]
+        - ['2', 312469]
+        - ['1', 199961]
+        - ['6', 75088]
+        - ['7', 5992]
+      gas:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 998426]
+        - ['2', 998375]
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '2'
+        max: '4'
+        top:
+        - ['2', 1836709]
+        - ['4', 116482]
+        - ['3', 43610]
+      recorte:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '1'
+        max: '9'
+        top:
+        - ['8', 561651]
+        - ['1', 474284]
+        - ['7', 222065]
+        - ['10', 219878]
+        - ['11', 165888]
+        - ['9', 159067]
+        - ['3', 122411]
+        - ['2', 38945]
+        - ['12', 27618]
+        - ['4', 4936]
+      setor:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['3', 849950]
+        - ['1', 808365]
+        - ['2', 222123]
+        - ['5', 111427]
+        - ['4', 4936]
+      atividade_economica:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '1'
+        max: '9'
+        top:
+        - ['9', 695864]
+        - ['1', 681540]
+        - ['17', 175453]
+        - ['8', 105458]
+        - ['16', 74643]
+        - ['13', 74563]
+        - ['15', 50285]
+        - ['5', 37329]
+        - ['10', 36864]
+        - ['4', 26028]
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '1'
+        max: '9'
+        top:
+        - ['28', 591873]
+        - ['2', 347672]
+        - ['3', 181651]
+        - ['27', 165888]
+        - ['29', 124928]
+        - ['14', 120832]
+        - ['9', 73728]
+        - ['25', 53596]
+        - ['24', 51592]
+        - ['12', 45056]
+      subcategoria: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 55, min: '1', max: '9'}
+      produto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 86, min: '10', max: '99'}
+      detalhamento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 434, min: '103', max: '99'}
+      emissao_ar2:
+        tipo: DOUBLE
+        nulos_pct: 0.03
+        distintos_aprox: 880661
+        min: '-10838494.0'
+        max: '15181464.0'
+        media: 1050.0555
+        quartis: [0, 1.6905, 49.6345]
+      emissao_ar4:
+        tipo: DOUBLE
+        nulos_pct: 2.83
+        distintos_aprox: 1020812
+        min: '-10838494.0'
+        max: '15404309.0'
+        media: 1104.4744
+        quartis: [0, 1.6967, 47.5893]
+      emissao_ar5:
+        tipo: DOUBLE
+        nulos_pct: 0.03
+        distintos_aprox: 801802
+        min: '-10838494.0'
+        max: '15528311.0'
+        media: 1081.6424
+        quartis: [0, 1.6065, 46.5753]
+      emissao_ar6:
+        tipo: DOUBLE
+        nulos_pct: 0.03
+        distintos_aprox: 792978
+        min: '-10838494.0'
+        max: '15481586.0'
+        media: 1080.9169
+        quartis: [0, 1.617, 47.2261]
+  uf:
+    linhas: 17930055
+    fonte_do_perfil: tabela inteira da última partição (ano = 2024)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 326001]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [BA, 22517]
+        - [MG, 22193]
+        - [SP, 20000]
+        - [MT, 19424]
+        - [MS, 17660]
+        - [PR, 16456]
+        - [RS, 16231]
+        - [MA, 15016]
+        - [PA, 14265]
+        - [RN, 12655]
+      bioma:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        top:
+        - ['4', 99160]
+        - ['3', 82265]
+        - ['1', 52929]
+        - ['2', 42599]
+        - ['5', 32736]
+        - ['7', 8637]
+        - ['6', 7675]
+      gas:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '1'
+        max: '9'
+        top:
+        - ['10', 31458]
+        - ['11', 31458]
+        - ['12', 31458]
+        - ['13', 31458]
+        - ['14', 31458]
+        - ['15', 31458]
+        - ['8', 31458]
+        - ['9', 30723]
+        - ['6', 20605]
+        - ['25', 14301]
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '2'
+        max: '5'
+        top:
+        - ['2', 294467]
+        - ['4', 25290]
+        - ['3', 5029]
+        - ['5', 1215]
+      recorte:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '1'
+        max: '9'
+        top:
+        - ['7', 91319]
+        - ['8', 83114]
+        - ['3', 57527]
+        - ['11', 39192]
+        - ['1', 28637]
+        - ['10', 11466]
+        - ['9', 8379]
+        - ['12', 1911]
+        - ['2', 1764]
+        - ['4', 1697]
+      setor:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['3', 179833]
+        - ['2', 92314]
+        - ['1', 45346]
+        - ['5', 6811]
+        - ['4', 1697]
+      atividade_economica:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 98520]
+        - ['9', 54568]
+        - ['8', 38946]
+        - ['17', 32902]
+        - ['5', 28720]
+        - ['7', 18903]
+        - ['16', 11318]
+        - ['4', 8996]
+        - ['15', 8331]
+        - ['6', 5018]
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: '1'
+        max: '9'
+        top:
+        - ['3', 79884]
+        - ['13', 48192]
+        - ['29', 39192]
+        - ['30', 33390]
+        - ['4', 32526]
+        - ['31', 19649]
+        - ['26', 11709]
+        - ['27', 10602]
+        - ['15', 6370]
+        - ['5', 6222]
+      subcategoria: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 65, min: '1', max: '99'}
+      produto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 114, min: '1', max: '99'}
+      detalhamento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 416, min: '1', max: '99'}
+      emissao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 125249
+        min: '-130200000.0'
+        max: '137600000.0'
+        media: 31807.6644
+        quartis: [0, 4.6368, 677.0631]

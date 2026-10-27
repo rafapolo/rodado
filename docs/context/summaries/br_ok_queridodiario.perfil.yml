@@ -1,0 +1,42 @@
+dataset: br_ok_queridodiario
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  diarios:
+    linhas: 320424
+    fonte_do_perfil: tabela inteira
+    colunas:
+      territory_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 446, min: '1100114', max: '5300108'}
+      territory_name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 530, min: Abaré, max: Álvares Florence}
+      state_code:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: AL
+        max: TO
+        top:
+        - [SP, 74974]
+        - [BA, 73377]
+        - [AL, 25815]
+        - [RJ, 22329]
+        - [PR, 20868]
+        - [SE, 18838]
+        - [RS, 14848]
+        - [MG, 11745]
+        - [MA, 10748]
+        - [MS, 9146]
+      date: {tipo: DATE, nulos_pct: 0, distintos_aprox: 982, min: '2023-07-10', max: '2026-10-06'}
+      edition: {tipo: VARCHAR, nulos_pct: 2.96, distintos_aprox: 24380}
+      is_extra_edition:
+        tipo: BOOLEAN
+        nulos_pct: 1.33
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 300682]
+        - ['true', 15482]
+        - [null, 4260]
+      url: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 265436}
+      txt_url: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 327484}
+      scraped_at: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 278062, min: '2023-07-10 11:12:34.006622', max: '2026-10-06 12:18:44.32648'}

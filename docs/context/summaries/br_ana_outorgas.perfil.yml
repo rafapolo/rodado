@@ -1,0 +1,194 @@
+dataset: br_ana_outorgas
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  captacoes:
+    linhas: 181917
+    fonte_do_perfil: tabela inteira
+    colunas:
+      emp_nm_responsavel: {tipo: VARCHAR, nulos_pct: 0.45, distintos_aprox: 113370, pessoal: 'só contagens: valores seriam dado pessoal'}
+      emp_nu_cpfcnpj: {tipo: VARCHAR, nulos_pct: 0.45, distintos_aprox: 103203, pessoal: 'só contagens: valores seriam dado pessoal'}
+      int_qt_vazaomedia:
+        tipo: DOUBLE
+        nulos_pct: 31.63
+        distintos_aprox: 21218
+        min: '0.0'
+        max: '493200.0'
+        media: 165.4985
+        quartis: [1.1712, 5.5034, 50.3222]
+      ing_nm_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6267, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ing_sg_ufmunicipio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 48697]
+        - [PR, 34731]
+        - [SP, 15330]
+        - [TO, 11629]
+        - [CE, 8224]
+        - [SC, 7645]
+        - [BA, 7258]
+        - [RR, 7127]
+        - [MS, 6308]
+        - [GO, 4158]
+      esfera:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: estadual
+        max: federal
+        top:
+        - [estadual, 166011]
+        - [federal, 15906]
+  lancamentos:
+    linhas: 10855
+    fonte_do_perfil: tabela inteira
+    colunas:
+      emp_nm_empreendimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8140, pessoal: 'só contagens: valores seriam dado pessoal'}
+      emp_nm_responsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6192, pessoal: 'só contagens: valores seriam dado pessoal'}
+      emp_nu_cpfcnpj: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7199, pessoal: 'só contagens: valores seriam dado pessoal'}
+      int_qt_vazaomedia:
+        tipo: DOUBLE
+        nulos_pct: 7.21
+        distintos_aprox: 3455
+        min: '0.0'
+        max: '493200.0'
+        media: 350.6565
+        quartis: [2.5727, 13.2662, 63.9693]
+      int_qt_vazaomaxima:
+        tipo: DOUBLE
+        nulos_pct: 0.36
+        distintos_aprox: 3487
+        min: '0.0'
+        max: '493200.0'
+        media: 387.0723
+        quartis: [2.8666, 13.9996, 67.8543]
+      int_qt_volumeanual:
+        tipo: DOUBLE
+        nulos_pct: 7.07
+        distintos_aprox: 4715
+        min: '0.0'
+        max: '4261248000.0'
+        media: 2783283.8892
+        quartis: [2470.8937, 50931.1107, 306610.1626]
+      int_nm_corpohidrico: {tipo: VARCHAR, nulos_pct: 14.78, distintos_aprox: 1528, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ing_nm_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2035, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ing_sg_ufmunicipio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 25
+        min: AL
+        max: TO
+        top:
+        - [SP, 8200]
+        - [CE, 358]
+        - [MT, 238]
+        - [MS, 232]
+        - [MG, 200]
+        - [ES, 190]
+        - [RO, 189]
+        - [BA, 181]
+        - [PR, 161]
+        - [AL, 157]
+      ing_nm_regiao_hidro: {tipo: VARCHAR, nulos_pct: 0.55, distintos_aprox: 12, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ing_cd_ottobacia_trecho: {tipo: VARCHAR, nulos_pct: 0.5, distintos_aprox: 6055}
+      int_nu_latitude:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 11552
+        min: '-33.6933611111'
+        max: '3.1302777778'
+        media: -20.3452
+        quartis: [-23.2666, -22.3881, -20.7701]
+      int_nu_longitude:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 10476
+        min: '-67.5677777778'
+        max: '-34.8250055556'
+        media: -47.549
+        quartis: [-48.9799, -47.3797, -46.4923]
+      tfn_ds:
+        tipo: VARCHAR
+        nulos_pct: 0.13
+        distintos_aprox: 12
+        min: Aproveitamento Hidroelétrico
+        max: Termoelétrica
+        top:
+        - [Outras, 4078]
+        - [Indústria, 2498]
+        - [Consumo Humano, 1955]
+        - [Esgotamento Sanitário, 1020]
+        - [Aquicultura em Tanque Escavado, 536]
+        - [Mineração - Extração de Areia/Cascalho em Leito de Rio, 422]
+        - [Criação Animal, 121]
+        - [Aproveitamento Hidroelétrico, 89]
+        - [Aquicultura em Tanque Rede, 81]
+        - [Termoelétrica, 19]
+      tsf_ds:
+        tipo: VARCHAR
+        nulos_pct: 1.98
+        distintos_aprox: 4
+        min: Construção
+        max: Projeto
+        top:
+        - [Operação, 8115]
+        - [Projeto, 1379]
+        - [Construção, 947]
+        - [null, 215]
+        - [Desativada, 199]
+      tch_ds:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Espelho D'Água
+        max: Rio ou Curso D'Água
+        top:
+        - [Rio ou Curso D'Água, 8362]
+        - [Poço, 1314]
+        - [Espelho D'Água, 1179]
+      out_dt_outorgainicial:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2808
+        min: '840067200000'
+        max: '1823040000000'
+        media: 1421774322616.306
+        quartis: [1235546219075, 1445442801850, 1675595114509]
+      out_dt_outorgafinal:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3615
+        min: '1786320000000'
+        max: '253402128000000'
+        media: 2618557091552.2803
+        quartis: [1873600740537, 1939513383043, 2234724895238]
+      org_nm:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: AESA
+        max: SP AGUAS
+        top:
+        - [SP AGUAS, 8006]
+        - [ANA, 909]
+        - [COGERH, 358]
+        - [IMASUL, 201]
+        - [SEMA, 194]
+        - [SEDAM, 185]
+        - [INEMA, 144]
+        - [AGERH, 141]
+        - [SEMARH, 131]
+        - [IAT, 112]
+      esfera:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: estadual
+        max: federal
+        top:
+        - [estadual, 9946]
+        - [federal, 909]

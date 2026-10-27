@@ -1,0 +1,493 @@
+dataset: br_ibge_ipp
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  mes_categoria_economica:
+    linhas: 495
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '2013'
+        max: '2022'
+        media: 2017.5455
+        quartis: [2015, 2018, 2020]
+        top:
+        - ['2014', 60]
+        - ['2015', 60]
+        - ['2016', 60]
+        - ['2017', 60]
+        - ['2018', 60]
+        - ['2019', 60]
+        - ['2020', 60]
+        - ['2021', 60]
+        - ['2022', 10]
+        - ['2013', 5]
+      categoria_economica:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: BC
+        max: BK
+        top:
+        - [BC, 99]
+        - [BCD, 99]
+        - [BCND, 99]
+        - [BI, 99]
+        - [BK, 99]
+      categoria_economica_descricao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: 'Bens de capital '
+        max: 'Bens intermediários '
+        top:
+        - ['Bens de capital ', 99]
+        - ['Bens de consumo ', 99]
+        - ['Bens de consumo duráveis ', 99]
+        - ['Bens de consumo semiduráveis e não duráveis ', 99]
+        - ['Bens intermediários ', 99]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4545
+        quartis: [3, 6, 10]
+        top:
+        - ['1', 45]
+        - ['12', 45]
+        - ['2', 45]
+        - ['10', 40]
+        - ['11', 40]
+        - ['3', 40]
+        - ['4', 40]
+        - ['5', 40]
+        - ['6', 40]
+        - ['7', 40]
+      numero_indice: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 511, pessoal: 'só contagens: valores seriam dado pessoal'}
+      variacao_anual:
+        tipo: DOUBLE
+        nulos_pct: 1.01
+        distintos_aprox: 399
+        min: '-3.74'
+        max: '35.89'
+        media: 4.6208
+        quartis: [0.9353, 2.8046, 5.8408]
+      variacao_doze_meses:
+        tipo: DOUBLE
+        nulos_pct: 12.12
+        distintos_aprox: 349
+        min: '-4.37'
+        max: '49.35'
+        media: 9.0201
+        quartis: [3.685, 6.6338, 12.189]
+      variacao_mensal:
+        tipo: DOUBLE
+        nulos_pct: 1.01
+        distintos_aprox: 304
+        min: '-2.81'
+        max: '7.82'
+        media: 0.7047
+        quartis: [0.0544, 0.6276, 1.2969]
+  mes_grupo_industrial:
+    linhas: 897
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2018'
+        max: '2022'
+        media: 2020.0513
+        quartis: [2019, 2020, 2021]
+        top:
+        - ['2019', 276]
+        - ['2020', 276]
+        - ['2021', 276]
+        - ['2022', 46]
+        - ['2018', 23]
+      descricao_grupo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: Abate e fabricação de produtos de carne
+        max: Torrefação e moagem de café
+        top:
+        - [Abate e fabricação de produtos de carne, 39]
+        - [Curtimento e outras preparações de couro, 39]
+        - [Fabricação de aparelhos de recepção. reprodução. gravação e amplificação de áudio e vídeo, 39]
+        - [Fabricação de artefatos de concreto. cimento. fibrocimento. gesso e materiais semelhantes, 39]
+        - [Fabricação de automóveis. camionetas e utilitários, 39]
+        - [Fabricação de calçados, 39]
+        - [Fabricação de defensivos agrícolas e desinfestantes domissanitários, 39]
+        - [Fabricação de eletrodomésticos, 39]
+        - [Fabricação de equipamentos de informática e periféricos, 39]
+        - [Fabricação de geradores. transformadores e motores elétricos, 39]
+      grupo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '101'
+        max: '291'
+        top:
+        - ['101', 39]
+        - ['104', 39]
+        - ['105', 39]
+        - ['106', 39]
+        - ['107', 39]
+        - ['108', 39]
+        - ['151', 39]
+        - ['153', 39]
+        - ['201', 39]
+        - ['203', 39]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.3846
+        quartis: [3, 6, 10]
+        top:
+        - ['1', 92]
+        - ['12', 92]
+        - ['2', 92]
+        - ['10', 69]
+        - ['11', 69]
+        - ['3', 69]
+        - ['4', 69]
+        - ['5', 69]
+        - ['6', 69]
+        - ['7', 69]
+      numero_indice: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 928, pessoal: 'só contagens: valores seriam dado pessoal'}
+      variacao_anual:
+        tipo: DOUBLE
+        nulos_pct: 2.56
+        distintos_aprox: 784
+        min: '-14.24'
+        max: '124.39'
+        media: 9.3717
+        quartis: [1.4137, 5.3867, 12.3252]
+      variacao_doze_meses:
+        tipo: DOUBLE
+        nulos_pct: 30.77
+        distintos_aprox: 663
+        min: '-13.59'
+        max: '124.39'
+        media: 20.8535
+        quartis: [7.4698, 14.8978, 27.8066]
+      variacao_mensal:
+        tipo: DOUBLE
+        nulos_pct: 2.56
+        distintos_aprox: 661
+        min: '-10.73'
+        max: '13.85'
+        media: 1.2881
+        quartis: [-0.0912, 0.9113, 2.4136]
+  mes_industria_atividade:
+    linhas: 3381
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '2009'
+        max: '2022'
+        media: 2015.5442
+        quartis: [2012, 2016, 2019]
+        top:
+        - ['2010', 276]
+        - ['2011', 276]
+        - ['2012', 276]
+        - ['2013', 276]
+        - ['2014', 276]
+        - ['2015', 276]
+        - ['2016', 276]
+        - ['2017', 276]
+        - ['2018', 276]
+        - ['2019', 276]
+      descricao_divisao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 22
+        min: CONFECÇÃO DE ARTIGOS DO VESTUÁRIO E ACESSÓRIOS
+        max: PREPARAÇÃO DE COUROS E FABRICAÇÃO DE ARTEFATOS DE COURO. ARTIGOS PARA VIAGEM E CALÇADOS
+        top:
+        - [CONFECÇÃO DE ARTIGOS DO VESTUÁRIO E ACESSÓRIOS, 147]
+        - [FABRICAÇÃO DE BEBIDAS, 147]
+        - [FABRICAÇÃO DE CELULOSE. PAPEL E PRODUTOS DE PAPEL, 147]
+        - [FABRICAÇÃO DE COQUE. DE PRODUTOS DERIVADOS DO PETRÓLEO E DE BIOCOMBUSTÍVEIS, 147]
+        - [FABRICAÇÃO DE EQUIPAMENTOS DE INFORMÁTICA. PRODUTOS ELETRÔNICOS E ÓPTICOS, 147]
+        - [FABRICAÇÃO DE MÁQUINAS E EQUIPAMENTOS, 147]
+        - [FABRICAÇÃO DE MÁQUINAS. APARELHOS E MATERIAIS ELÉTRICOS, 147]
+        - [FABRICAÇÃO DE MÓVEIS, 147]
+        - [FABRICAÇÃO DE OUTROS EQUIPAMENTOS DE TRANSPORTE. EXCETO VEÍCULOS AUTOMOTORES, 147]
+        - [FABRICAÇÃO DE OUTROS PRODUTOS QUÍMICOS, 147]
+      divisao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '10'
+        max: '31'
+        top:
+        - ['10', 147]
+        - ['11', 147]
+        - ['12', 147]
+        - ['13', 147]
+        - ['14', 147]
+        - ['15', 147]
+        - ['16', 147]
+        - ['17', 147]
+        - ['18', 147]
+        - ['19', 147]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4694
+        quartis: [3, 6, 10]
+        top:
+        - ['1', 299]
+        - ['12', 299]
+        - ['2', 299]
+        - ['10', 276]
+        - ['11', 276]
+        - ['3', 276]
+        - ['4', 276]
+        - ['5', 276]
+        - ['6', 276]
+        - ['7', 276]
+      numero_indice: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 3279, pessoal: 'só contagens: valores seriam dado pessoal'}
+      variacao_anual:
+        tipo: DOUBLE
+        nulos_pct: 0.68
+        distintos_aprox: 1647
+        min: '-36.26'
+        max: '72.34'
+        media: 4.1757
+        quartis: [0.1858, 2.4701, 6.1864]
+      variacao_doze_meses:
+        tipo: DOUBLE
+        nulos_pct: 8.16
+        distintos_aprox: 1619
+        min: '-36.01'
+        max: '106.57'
+        media: 7.4014
+        quartis: [1.8303, 5.4294, 10.2511]
+      variacao_mensal:
+        tipo: DOUBLE
+        nulos_pct: 0.68
+        distintos_aprox: 686
+        min: '-20.61'
+        max: '17.16'
+        media: 0.5965
+        quartis: [-0.2807, 0.4415, 1.3288]
+  mes_industria_extrativa:
+    linhas: 147
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '2009'
+        max: '2022'
+        media: 2015.5442
+        quartis: [2012, 2016, 2019]
+        top:
+        - ['2010', 12]
+        - ['2011', 12]
+        - ['2012', 12]
+        - ['2013', 12]
+        - ['2014', 12]
+        - ['2015', 12]
+        - ['2016', 12]
+        - ['2017', 12]
+        - ['2018', 12]
+        - ['2019', 12]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4694
+        quartis: [3, 6, 10]
+        top:
+        - ['1', 13]
+        - ['12', 13]
+        - ['2', 13]
+        - ['10', 12]
+        - ['11', 12]
+        - ['3', 12]
+        - ['4', 12]
+        - ['5', 12]
+        - ['6', 12]
+        - ['7', 12]
+      numero_indice: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 172, pessoal: 'só contagens: valores seriam dado pessoal'}
+      variacao_anual:
+        tipo: DOUBLE
+        nulos_pct: 0.68
+        distintos_aprox: 114
+        min: '-1.62'
+        max: '29.3'
+        media: 4.406
+        quartis: [0.62, 2.575, 5.69]
+      variacao_doze_meses:
+        tipo: DOUBLE
+        nulos_pct: 8.16
+        distintos_aprox: 132
+        min: '-1.16'
+        max: '32.88'
+        media: 8.3187
+        quartis: [4.03, 5.9512, 8.84]
+      variacao_mensal:
+        tipo: DOUBLE
+        nulos_pct: 0.68
+        distintos_aprox: 107
+        min: '-1.68'
+        max: '4.64'
+        media: 0.674
+        quartis: [0.04, 0.5575, 1.13]
+  mes_industria_geral:
+    linhas: 99
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '2013'
+        max: '2022'
+        media: 2017.5455
+        quartis: [2015, 2018, 2020]
+        top:
+        - ['2014', 12]
+        - ['2015', 12]
+        - ['2016', 12]
+        - ['2017', 12]
+        - ['2018', 12]
+        - ['2019', 12]
+        - ['2020', 12]
+        - ['2021', 12]
+        - ['2022', 2]
+        - ['2013', 1]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4545
+        quartis: [3, 6, 10]
+        top:
+        - ['1', 9]
+        - ['12', 9]
+        - ['2', 9]
+        - ['10', 8]
+        - ['11', 8]
+        - ['3', 8]
+        - ['4', 8]
+        - ['5', 8]
+        - ['6', 8]
+        - ['7', 8]
+      numero_indice: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 90, pessoal: 'só contagens: valores seriam dado pessoal'}
+      variacao_anual:
+        tipo: DOUBLE
+        nulos_pct: 1.01
+        distintos_aprox: 87
+        min: '-1.49'
+        max: '28.55'
+        media: 5.3847
+        quartis: [0.35, 2.41, 8.81]
+      variacao_doze_meses:
+        tipo: DOUBLE
+        nulos_pct: 12.12
+        distintos_aprox: 86
+        min: '-1.14'
+        max: '36.78'
+        media: 10.3786
+        quartis: [3.0825, 6.38, 14.9175]
+      variacao_mensal:
+        tipo: DOUBLE
+        nulos_pct: 1.01
+        distintos_aprox: 90
+        min: '-1.62'
+        max: '5.16'
+        media: 0.7819
+        quartis: [0, 0.6, 1.39]
+  mes_industria_transformacao:
+    linhas: 99
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '2013'
+        max: '2022'
+        media: 2017.5455
+        quartis: [2015, 2018, 2020]
+        top:
+        - ['2014', 12]
+        - ['2015', 12]
+        - ['2016', 12]
+        - ['2017', 12]
+        - ['2018', 12]
+        - ['2019', 12]
+        - ['2020', 12]
+        - ['2021', 12]
+        - ['2022', 2]
+        - ['2013', 1]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4545
+        quartis: [3, 6, 10]
+        top:
+        - ['1', 9]
+        - ['12', 9]
+        - ['2', 9]
+        - ['10', 8]
+        - ['11', 8]
+        - ['3', 8]
+        - ['4', 8]
+        - ['5', 8]
+        - ['6', 8]
+        - ['7', 8]
+      numero_indice: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 90, pessoal: 'só contagens: valores seriam dado pessoal'}
+      variacao_anual:
+        tipo: DOUBLE
+        nulos_pct: 1.01
+        distintos_aprox: 116
+        min: '-31.6'
+        max: '68.49'
+        media: 11.2335
+        quartis: [-3.11, 8.365, 22.75]
+      variacao_doze_meses:
+        tipo: DOUBLE
+        nulos_pct: 12.12
+        distintos_aprox: 102
+        min: '-42.06'
+        max: '136.25'
+        media: 21.8516
+        quartis: [-4.8675, 17.56, 39.1675]
+      variacao_mensal:
+        tipo: DOUBLE
+        nulos_pct: 1.01
+        distintos_aprox: 88
+        min: '-17.12'
+        max: '27.91'
+        media: 1.3039
+        quartis: [-3.2, 1.715, 5.72]

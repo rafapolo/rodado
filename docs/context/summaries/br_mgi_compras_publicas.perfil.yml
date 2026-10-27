@@ -1,0 +1,1271 @@
+dataset: br_mgi_compras_publicas
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  ata_registro_preco: {linhas: 402724, erro: 'Catalog Error: Table with name ata_registro_preco does not exist!'}
+  ata_registro_preco_item: {linhas: 2327820, erro: 'Catalog Error: Table with name ata_registro_preco_item does not exist!'}
+  catalogo_material:
+    linhas: 345283
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-04'
+        max: '2026-10-04'
+        top:
+        - ['2026-10-04', 345283]
+      codigo_item: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 462689}
+      codigo_grupo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 76, min: '10', max: '99'}
+      nome_grupo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 65, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_classe: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 629, min: '1005', max: '9999'}
+      nome_classe: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 639, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_pdm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15841}
+      nome_pdm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 17264, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_ncm: {tipo: VARCHAR, nulos_pct: 76.7, distintos_aprox: 560, min: '15180090', max: '96190000'}
+      descricao_ncm:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 345283]
+      descricao_item: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 292611}
+      indicador_item_sustentavel:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 344699]
+        - ['true', 584]
+      indicador_aplica_margem_preferencia:
+        tipo: BOOLEAN
+        nulos_pct: 75.35
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - [null, 260188]
+        - ['true', 51587]
+        - ['false', 33508]
+      indicador_item_ativo:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 249745]
+        - ['false', 95538]
+      data_hora_atualizacao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 64997, min: '2021-10-16 09:43:08.030221', max: '2026-10-02 18:26:35.904334'}
+  catalogo_servico:
+    linhas: 2970
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-04'
+        max: '2026-10-04'
+        top:
+        - ['2026-10-04', 2970]
+      codigo_servico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3006}
+      codigo_secao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['8', 1268]
+        - ['9', 1094]
+        - ['1', 217]
+        - ['6', 148]
+        - ['5', 136]
+        - ['7', 107]
+      nome_secao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_divisao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 33
+        min: '11'
+        max: '97'
+        top:
+        - ['93', 914]
+        - ['87', 436]
+        - ['83', 336]
+        - ['85', 309]
+        - ['54', 136]
+        - ['88', 78]
+        - ['64', 71]
+        - ['73', 71]
+        - ['14', 68]
+        - ['92', 63]
+      nome_divisao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 39, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_grupo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 125, min: '111', max: '979'}
+      nome_grupo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 134, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_classe: {tipo: VARCHAR, nulos_pct: 22.66, distintos_aprox: 206, min: '1111', max: '9799'}
+      nome_classe: {tipo: VARCHAR, nulos_pct: 22.66, distintos_aprox: 220, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_subclasse:
+        tipo: VARCHAR
+        nulos_pct: 96.6
+        distintos_aprox: 43
+        min: '54270'
+        max: '97990'
+        top:
+        - [null, 2869]
+        - ['97990', 18]
+        - ['67811', 7]
+        - ['83111', 6]
+        - ['64322', 5]
+        - ['73310', 5]
+        - ['83569', 5]
+        - ['85250', 5]
+        - ['87153', 5]
+        - ['83112', 4]
+      nome_subclasse: {tipo: VARCHAR, nulos_pct: 96.6, distintos_aprox: 39, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_servico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3169, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_cpc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 285, min: '1111', max: '97990'}
+      indicador_exclusivo_central_compras:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 2967]
+        - ['true', 3]
+      indicador_servico_ativo:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 2894]
+        - ['false', 76]
+      data_hora_atualizacao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 570, min: '2021-10-16 09:09:59.689615', max: '2026-09-29 12:44:52.678073'}
+  compra_sem_licitacao:
+    linhas: 5235862
+    fonte_do_perfil: tabela inteira da última partição (ano = 2025)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2025'
+        max: '2025'
+        media: 2025
+        quartis: [2025, 2025, 2025]
+        top:
+        - ['2025', 24382]
+      id_compra: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 24598}
+      codigo_uasg: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3067}
+      codigo_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1320}
+      numero_aviso: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1188, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 17903, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_modalidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '6'
+        max: '7'
+        top:
+        - ['6', 24050]
+        - ['7', 332]
+      quantidade_total_item:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 102
+        min: '1'
+        max: '174'
+        media: 3.7891
+        quartis: [1, 1, 3]
+      objeto_licitacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 23460}
+      fundamento_legal: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 250, min: 'Fundamento Legal:  Art. 29º, Inciso II da Lei Federal nº 13.303
+          de 2016.', max: 'Fundamento Legal: oArt. 75º, Inciso II da Lei nº 14.133 de 1º/04/2021.'}
+      justificativa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14098}
+      nome_responsavel_declaracao_dispensa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5630, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cargo_responsavel_declaracao_dispensa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2660, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      nome_responsavel_ratificacao: {tipo: VARCHAR, nulos_pct: 98.89, distintos_aprox: 107, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cargo_responsavel_ratificacao: {tipo: VARCHAR, nulos_pct: 98.89, distintos_aprox: 66, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_uasg: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3044, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_orgao_superior: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 140, min: '1000', max: '99900'}
+      lei:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 24382]
+      valor_estimado:
+        tipo: DOUBLE
+        nulos_pct: 14.45
+        distintos_aprox: 13155
+        min: '0.01'
+        max: '28214400000.0'
+        media: 3138580.809
+        quartis: [2158.5543, 6357.6354, 17943.6132]
+      indicador_pertence_14133:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 22996]
+        - ['false', 1386]
+      data_declaracao_dispensa: {tipo: DATE, nulos_pct: 93.38, distintos_aprox: 161, min: '2024-01-02', max: '2025-06-12'}
+      data_ratificacao: {tipo: DATE, nulos_pct: 98.88, distintos_aprox: 99, min: '2024-01-02', max: '2025-06-10'}
+      data_publicacao: {tipo: DATE, nulos_pct: 98.77, distintos_aprox: 91, min: '2025-01-07', max: '2025-06-11'}
+      data_alteracao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 115, min: '2025-01-03 00:00:00', max: '2025-06-12 00:00:00'}
+  compra_sem_licitacao_item:
+    linhas: 4827874
+    fonte_do_perfil: tabela inteira da última partição (ano = 2024)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 35260]
+      id_compra: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 26170}
+      id_compra_item: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 33171}
+      numero_item_material: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 87, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_uasg: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3814}
+      codigo_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1100}
+      numero_aviso: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1568, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 22802, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_modalidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '6'
+        max: '7'
+        top:
+        - ['6', 33858]
+        - ['7', 1402]
+      quantidade_total_item:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 113
+        min: '1'
+        max: '826'
+        media: 4.2413
+        quartis: [1, 1, 3]
+      objeto_licitacao: {tipo: VARCHAR, nulos_pct: 3.26, distintos_aprox: 26664}
+      fundamento_legal: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 260, min: 'Fundamento Legal:  Art. 29º, Inciso II da Lei nº 13.303 de 2016.',
+        max: 'Fundamento Legal: É dispensável a licitação para contratação que envolva valores inferiores a R$ 50.000,00 (cinquenta mil reais).'}
+      justificativa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15549}
+      nome_responsavel_declaracao_dispensa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5777, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cargo_responsavel_declaracao_dispensa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3044, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      nome_responsavel_ratificacao: {tipo: VARCHAR, nulos_pct: 98.06, distintos_aprox: 168, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cargo_responsavel_ratificacao: {tipo: VARCHAR, nulos_pct: 98.06, distintos_aprox: 153, pessoal: 'só contagens: valores seriam dado pessoal'}
+      modalidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Dispensa
+        max: Inexigibilidade
+        top:
+        - [Dispensa, 33858]
+        - [Inexigibilidade, 1402]
+      numero_inciso: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 32, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_item:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: material
+        max: servico
+        top:
+        - [material, 21756]
+        - [servico, 13504]
+      codigo_conjunto_materiais: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14813}
+      nome_conjunto_materiais: {tipo: VARCHAR, nulos_pct: 99.86, distintos_aprox: 11, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_servico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1291}
+      nome_servico: {tipo: VARCHAR, nulos_pct: 62.72, distintos_aprox: 1089, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao_detalhada: {tipo: VARCHAR, nulos_pct: 62.85, distintos_aprox: 7297}
+      marca_material: {tipo: VARCHAR, nulos_pct: 50.55, distintos_aprox: 10891}
+      fabricante:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 35260]
+      unidade_medida: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 95, min: (Doses), max: VEÍCULO}
+      quantidade_material:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1272
+        min: '1.0'
+        max: '6011402.0'
+        media: 1292.1012
+        quartis: [1, 4.2443, 48.5811]
+      valor_estimado:
+        tipo: DOUBLE
+        nulos_pct: 17.53
+        distintos_aprox: 19455
+        min: '0.01'
+        max: '39160000000.0'
+        media: 3084892.5987
+        quartis: [2016.5583, 5749.3708, 16114.6285]
+      valor_estimado_item:
+        tipo: DOUBLE
+        nulos_pct: 20.94
+        distintos_aprox: 16795
+        min: '0.01'
+        max: '671479225.83'
+        media: 131297.2181
+        quartis: [863.9113, 2994.4194, 10064.9535]
+      tipo_fornecedor_vencedor: {tipo: VARCHAR, nulos_pct: 21.66, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fornecedor_vencedor: {tipo: VARCHAR, nulos_pct: 21.66, distintos_aprox: 12502, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_vencedor: {tipo: VARCHAR, nulos_pct: 22.97, distintos_aprox: 10496, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_vencedor: {tipo: VARCHAR, nulos_pct: 98.69, distintos_aprox: 218, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_responsavel_declaracao_dispensa: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_responsavel_ratificacao: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_responsavel_publicacao: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_publicacao: {tipo: DATE, nulos_pct: 97.98, distintos_aprox: 139, min: '2023-12-08', max: '2024-07-23'}
+      data_alteracao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 15211, min: '2024-01-03 16:53:48', max: '2025-06-11 22:15:00'}
+  contratacao: {linhas: 1001583, erro: 'Catalog Error: Table with name contratacao does not exist!'}
+  contratacao_item: {linhas: 9521510, erro: 'Catalog Error: Table with name contratacao_item does not exist!'}
+  contratacao_item_resultado: {linhas: 6565099, erro: 'Catalog Error: Table with name contratacao_item_resultado does not exist!'}
+  fornecedor:
+    linhas: 962012
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-04'
+        max: '2026-10-04'
+        top:
+        - ['2026-10-04', 962012]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0.09
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 193113]
+        - [RJ, 88078]
+        - [MG, 87361]
+        - [PR, 79891]
+        - [RS, 57174]
+        - [BA, 45560]
+        - [DF, 41426]
+        - [SC, 40162]
+        - [PA, 35258]
+        - [GO, 34407]
+      cnpj: {tipo: VARCHAR, nulos_pct: 19.74, distintos_aprox: 779216, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf: {tipo: VARCHAR, nulos_pct: 80.26, distintos_aprox: 180462, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_razao_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1088986, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_cnae: {tipo: VARCHAR, nulos_pct: 19.74, distintos_aprox: 1533}
+      nome_cnae: {tipo: VARCHAR, nulos_pct: 19.74, distintos_aprox: 1302, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_natureza_juridica: {tipo: VARCHAR, nulos_pct: 19.74, distintos_aprox: 72, min: '1015', max: '5029'}
+      natureza_juridica: {tipo: VARCHAR, nulos_pct: 19.75, distintos_aprox: 62, min: ASSOCIAÇÃO PRIVADA, max: ÓRGÃO PÚBLICO DO PODER LEGISLATIVO
+          MUNICIPAL}
+      id_porte_empresa:
+        tipo: VARCHAR
+        nulos_pct: 19.74
+        distintos_aprox: 3
+        min: '1'
+        max: '5'
+        top:
+        - ['1', 502407]
+        - [null, 189938]
+        - ['3', 147358]
+        - ['5', 122309]
+      porte_empresa:
+        tipo: VARCHAR
+        nulos_pct: 19.74
+        distintos_aprox: 3
+        min: DEMAIS
+        max: MICROEMPRESA
+        top:
+        - [MICROEMPRESA, 502407]
+        - [null, 189938]
+        - [EMPRESA DE PEQUENO PORTE, 147358]
+        - [DEMAIS, 122309]
+      nome_municipio: {tipo: VARCHAR, nulos_pct: 0.09, distintos_aprox: 5199, pessoal: 'só contagens: valores seriam dado pessoal'}
+      indicador_habilitado_licitar:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 826104]
+        - ['false', 135908]
+      indicador_fornecedor_ativo: {tipo: BOOLEAN, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+  licitacao:
+    linhas: 940703
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '1997'
+        max: '2025'
+        media: 2012.9505
+        quartis: [2009, 2013, 2018]
+        top:
+        - ['2013', 58666]
+        - ['2010', 56354]
+        - ['2012', 56227]
+        - ['2009', 56194]
+        - ['2014', 54089]
+        - ['2011', 52418]
+        - ['2008', 50745]
+        - ['2015', 44189]
+        - ['2016', 43929]
+        - ['2007', 42590]
+      id_compra: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 872346}
+      identificador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1157705, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_uasg: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4188}
+      numero_aviso: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 35484, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_processo: {tipo: VARCHAR, nulos_pct: 0.11, distintos_aprox: 811941, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_modalidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '1'
+        max: '99'
+        top:
+        - ['5', 831953]
+        - ['2', 46963]
+        - ['1', 28077]
+        - ['3', 25346]
+        - ['99', 5794]
+        - ['4', 1349]
+        - ['22', 487]
+        - ['33', 362]
+        - ['20', 353]
+        - ['44', 19]
+      modalidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: CONCORRÊNCIA
+        max: TOMADA DE PREÇOS POR TÉCNICA E PREÇO
+        top:
+        - [PREGÃO, 831953]
+        - [TOMADA DE PREÇOS, 46963]
+        - [CONVITE, 28077]
+        - [CONCORRÊNCIA, 25346]
+        - [RDC, 5794]
+        - [CONCORRÊNCIA INTERNACIONAL, 1349]
+        - [TOMADA DE PREÇOS POR TÉCNICA E PREÇO, 487]
+        - [CONCORRÊNCIA POR TÉCNICA E PREÇO, 362]
+        - [CONCURSO, 353]
+        - [CONCORRÊNCIA INTERNACIONAL POR TÉCNICA E PREÇO, 19]
+      tipo_pregao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: eletronico
+        max: presencial
+        top:
+        - [eletronico, 793472]
+        - [presencial, 147231]
+      tipo_recurso:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Internacional
+        max: Nacional
+        top:
+        - [Nacional, 939214]
+        - [Internacional, 1489]
+      situacao_aviso:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Divulgado
+        max: Publicado
+        top:
+        - [Publicado, 940590]
+        - [Divulgado, 113]
+      codigo_municipio_uasg: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 542, min: '10111', max: '99678'}
+      objeto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 873460}
+      informacoes_gerais: {tipo: VARCHAR, nulos_pct: 66.9, distintos_aprox: 170374}
+      endereco_entrega_edital: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 167940, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_responsavel: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 42590, pessoal: 'só contagens: valores seriam dado pessoal'}
+      funcao_responsavel: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 36082, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_itens: {tipo: BIGINT, nulos_pct: 2.13, distintos_aprox: 1873, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_estimado_total:
+        tipo: DOUBLE
+        nulos_pct: 20.54
+        distintos_aprox: 405889
+        min: '-19107900.0'
+        max: '7.400000000000035e+16'
+        media: 344883406004.2709
+        quartis: [10532.6635, 39746.5573, 166340.1942]
+      valor_homologado_total:
+        tipo: DOUBLE
+        nulos_pct: 2.13
+        distintos_aprox: 865107
+        min: '0.0'
+        max: '1.1596000000000352e+16'
+        media: 30474771216.7185
+        quartis: [2184.5891, 24178.3665, 126960.978]
+      indicador_pertence_14133:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 897273]
+        - ['true', 43430]
+      data_publicacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 6146, min: '1997-03-14', max: '2025-06-09'}
+      data_entrega_edital: {tipo: DATE, nulos_pct: 0.01, distintos_aprox: 6159, min: '1997-03-04', max: '2025-06-09'}
+      data_entrega_proposta: {tipo: DATE, nulos_pct: 0.01, distintos_aprox: 6159, min: '1997-03-12', max: '2055-07-19'}
+      data_abertura_proposta: {tipo: DATE, nulos_pct: 15.57, distintos_aprox: 5600, min: '1997-03-12', max: '2099-02-27'}
+      data_alteracao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 715842, min: '1997-03-03 11:40:44', max: '2025-06-10 12:29:50'}
+  licitacao_item:
+    linhas: 4738615
+    fonte_do_perfil: tabela inteira da última partição (ano = 2024)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 1]
+      id_compra:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '15306399900002024'
+        max: '15306399900002024'
+        top:
+        - ['15306399900002024', 1]
+      id_compra_item:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1530639990000202400001'
+        max: '1530639990000202400001'
+        top:
+        - ['1530639990000202400001', 1]
+      numero_licitacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_item_licitacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_uasg:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '153063'
+        max: '153063'
+        top:
+        - ['153063', 1]
+      nome_uasg: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_aviso: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_modalidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '99'
+        max: '99'
+        top:
+        - ['99', 1]
+      modalidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: RDC
+        max: RDC
+        top:
+        - [RDC, 1]
+      codigo_item_material:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1]
+      nome_material: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_item_servico:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1619'
+        max: '1619'
+        top:
+        - ['1619', 1]
+      nome_servico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao_item:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: CONSTRUÇÃO BLOCO PADRAO COM 4 PAVIMENTOS do ICEN na cidade de Belém PA, na C idade Universitária José da Silveira Netto  consoante
+          procedimentos descritos neste edital e seus anexos.
+        max: CONSTRUÇÃO BLOCO PADRAO COM 4 PAVIMENTOS do ICEN na cidade de Belém PA, na C idade Universitária José da Silveira Netto  consoante
+          procedimentos descritos neste edital e seus anexos.
+        top:
+        - ['CONSTRUÇÃO BLOCO PADRAO COM 4 PAVIMENTOS do ICEN na cidade de Belém PA, na C idade Universitária José da Silveira Netto  consoante
+            procedimentos descritos neste edital e seus anexos.', 1]
+      unidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: UNIDADE
+        max: UNIDADE
+        top:
+        - [UNIDADE, 1]
+      quantidade:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1.0'
+        max: '1.0'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1.0', 1]
+      valor_estimado:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1]
+      criterio_julgamento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Menor Valor
+        max: Menor Valor
+        top:
+        - [Menor Valor, 1]
+      beneficio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Nao possui tratamento diferenciado para ME/EPP/COOPERATIVA
+        max: Nao possui tratamento diferenciado para ME/EPP/COOPERATIVA
+        top:
+        - [Nao possui tratamento diferenciado para ME/EPP/COOPERATIVA, 1]
+      cnpj_fornecedor: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fornecedor: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_vencedor: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_vencedor_pessoa_fisica: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      indicador_decreto_7174:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 'false'
+        max: 'false'
+        top:
+        - ['false', 1]
+      indicador_sustentavel:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1]
+      data_alteracao:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024-07-12 09:28:00'
+        max: '2024-07-12 09:28:00'
+        top:
+        - ['2024-07-12 09:28:00', 1]
+  licitacao_item_pregao:
+    linhas: 24794084
+    fonte_do_perfil: tabela inteira da última partição (ano = 2025)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2025'
+        max: '2025'
+        media: 2025
+        quartis: [2025, 2025, 2025]
+        top:
+        - ['2025', 1408]
+      id_compra: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 57, min: 07000705000092023, max: '98985905000562023'}
+      id_compra_item: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1288}
+      situacao_item:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: adjudicado
+        max: homologado
+        top:
+        - [homologado, 954]
+        - [cancelado no julgamento, 407]
+        - [cancelado, 18]
+        - [encerrado, 18]
+        - [cancelado na adjudicação, 10]
+        - [adjudicado, 1]
+      descricao_item: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 320, min: ACESSÓRIO PARA EQUIPAMENTO MÉDICO, max: Óculos proteção}
+      descricao_detalhada_item: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 694, min: AUXILIAR DE SAÚDE BUCAL – SEMANA – DIURNO COMPRASNET
+          UNIDADE = HORA, max: "•\tPEÇAS;\r\n•\tMÃO DE OBRA;\r\n•\tTAXA DE ADMINISTRAÇÃO\r\nGERENCIAMENTO E ADMINISTRAÇÃO DA FROTA ENVOLVENDO\
+          \ A MANUTENÇÃO EM GERAL- (PREVENTIVA E CORRETIVA) SENDO: Com fornecimento de peças, equipamentos e acessórios utilizando a implantação\
+          \ e a operação de um sistema informatizado e integrado, via web, compreendendo orçamento dos materiais e serviços especializados de\
+          \ manutenção por intermédio de rede de estabelecimentos credenciados pela Contratada para atender os veículos oficiais da frota do Município\
+          \ de Ji-Paraná/RO com 338 (trezentos e trinta e oito) veículos."}
+      unidade_fornecimento:
+        tipo: VARCHAR
+        nulos_pct: 2.2
+        distintos_aprox: 45
+        min: Balde 18,00 L
+        max: Unidade
+        top:
+        - [Unidade, 1068]
+        - [Metro, 111]
+        - ['UNIDADE 0,00', 45]
+        - [UNIDADE, 41]
+        - [null, 31]
+        - ['Pacote 1,00 KG', 17]
+        - [Par, 15]
+        - ['Pacote 50,00 UN', 11]
+        - [Peça 100 M, 8]
+        - [METRO QUADRADO, 5]
+      quantidade_item:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 319
+        min: '0.0'
+        max: '3081251.0'
+        media: 10413.3082
+        quartis: [2, 7.3283, 433.7099]
+      valor_estimado_item:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1221
+        min: '0.26'
+        max: '81251261.96'
+        media: 556173.7022
+        quartis: [225.3034, 889.7362, 5632.1265]
+      menor_lance:
+        tipo: DOUBLE
+        nulos_pct: 1.28
+        distintos_aprox: 1145
+        min: '0.18'
+        max: '72929850.0'
+        media: 368389.7348
+        quartis: [172.8178, 729.2371, 3125.0964]
+      valor_negociado:
+        tipo: DOUBLE
+        nulos_pct: 95.88
+        distintos_aprox: 56
+        min: '5.0'
+        max: '72928645.86'
+        media: 4680789.5909
+        quartis: [7392, 64724.375, 492866.22]
+      valor_homologado_item:
+        tipo: DOUBLE
+        nulos_pct: 32.24
+        distintos_aprox: 711
+        min: '0.23'
+        max: '72928645.86'
+        media: 331130.2648
+        quartis: [114.9484, 424.0255, 988.087]
+      fornecedor_vencedor: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_responsavel_adjudicacao: {tipo: VARCHAR, nulos_pct: 4.4, distintos_aprox: 28, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_responsavel_homologacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 31, pessoal: 'só contagens: valores seriam dado pessoal'}
+      indicador_decreto_7174:
+        tipo: VARCHAR
+        nulos_pct: 2.2
+        distintos_aprox: 2
+        min: 'FALSE'
+        max: 'TRUE'
+        top:
+        - ['FALSE', 1376]
+        - [null, 31]
+        - ['TRUE', 1]
+      indicador_margem_preferencial:
+        tipo: VARCHAR
+        nulos_pct: 2.2
+        distintos_aprox: 1
+        min: 'FALSE'
+        max: 'FALSE'
+        top:
+        - ['FALSE', 1377]
+        - [null, 31]
+      tratamento_diferenciado:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1408]
+      data_encerramento:
+        tipo: DATE
+        nulos_pct: 7.53
+        distintos_aprox: 49
+        min: '2020-10-16'
+        max: '2025-05-23'
+        top:
+        - ['2025-02-21', 638]
+        - ['2024-12-27', 126]
+        - ['2025-05-23', 119]
+        - [null, 106]
+        - ['2024-08-20', 94]
+        - ['2024-12-06', 45]
+        - ['2025-02-10', 45]
+        - ['2023-03-22', 38]
+        - ['2024-12-19', 38]
+        - ['2025-02-24', 30]
+      data_adjudicacao:
+        tipo: DATE
+        nulos_pct: 4.4
+        distintos_aprox: 27
+        min: '2023-04-14'
+        max: '2025-05-06'
+        top:
+        - ['2023-12-07', 638]
+        - ['2024-12-27', 126]
+        - ['2025-01-03', 119]
+        - ['2025-02-19', 97]
+        - ['2024-03-04', 94]
+        - [null, 62]
+        - ['2024-12-10', 45]
+        - ['2025-02-10', 44]
+        - ['2023-10-05', 38]
+        - ['2024-12-19', 38]
+      data_homologacao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 41
+        min: '2025-01-02'
+        max: '2025-06-06'
+        top:
+        - ['2025-04-04', 640]
+        - ['2025-01-15', 127]
+        - ['2025-05-26', 119]
+        - ['2025-03-26', 97]
+        - ['2025-01-08', 95]
+        - ['2025-01-02', 45]
+        - ['2025-03-13', 44]
+        - ['2025-01-07', 38]
+        - ['2025-06-05', 38]
+        - ['2025-02-11', 28]
+      data_alteracao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 202, min: '2025-01-06 09:31:50.31', max: '2025-06-06 14:47:27.21'}
+  licitacao_pregao:
+    linhas: 1065272
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '2000'
+        max: '2024'
+        media: 2015.2503
+        quartis: [2011, 2015, 2020]
+        top:
+        - ['2022', 89606]
+        - ['2021', 83055]
+        - ['2023', 67013]
+        - ['2013', 66561]
+        - ['2014', 64157]
+        - ['2020', 64055]
+        - ['2012', 60989]
+        - ['2018', 57566]
+        - ['2017', 56379]
+        - ['2016', 55648]
+      id_compra: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1063919}
+      numero: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_uasg:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1065272]
+      nome_uasg: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7023, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1346}
+      nome_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1240, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 826839, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_portaria: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 72597, pessoal: 'só contagens: valores seriam dado pessoal'}
+      situacao_pregao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: aberto
+        max: suspenso
+        top:
+        - [homologado, 872436]
+        - [aberto, 152121]
+        - [deserto, 33652]
+        - [suspenso, 7042]
+        - [fechado, 21]
+      tipo_pregao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: eletronico
+        max: eletronico
+        top:
+        - [eletronico, 1065272]
+      tipo_pregao_compra:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: SISPP
+        max: SISRP
+        top:
+        - [SISPP, 637431]
+        - [SISRP, 427841]
+      objeto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 948031}
+      valor_estimado_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1135587
+        min: '0.0'
+        max: '1.6799400000000324e+21'
+        media: 1577009697913140.2
+        quartis: [33898.799, 125940.1831, 555513.0376]
+      valor_homologado_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 594429
+        min: '0.0'
+        max: '2.7000000000486146e+19'
+        media: 25815591118935.574
+        quartis: [3719.7355, 40583.3968, 224860.6877]
+      indicador_pertence_14133:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 1064584]
+        - ['true', 688]
+      data_portaria: {tipo: DATE, nulos_pct: 0.01, distintos_aprox: 7375, min: '1955-04-28', max: '2025-06-05'}
+      data_edital: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4711, min: '2000-12-29', max: '2024-07-12'}
+      data_inicio_proposta: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 35533, min: '2000-12-28 23:00:00', max: '2025-03-24 08:00:00'}
+      data_fim_proposta: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 65021, min: '1900-01-01 00:00:00', max: '2025-04-07 09:30:00'}
+      data_encerramento: {tipo: TIMESTAMP, nulos_pct: 1.11, distintos_aprox: 1075751, min: '2000-12-29 17:53:42.413', max: '2025-06-11 14:38:05'}
+      data_resultado: {tipo: TIMESTAMP, nulos_pct: 16.43, distintos_aprox: 1033324, min: '2000-12-29 18:17:26.753', max: '2025-06-06 14:47:24.013'}
+      data_alteracao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 68278, min: '2017-10-26 20:28:33.667', max: '2025-06-11 22:15:00'}
+  orgao:
+    linhas: 12056
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-04'
+        max: '2026-10-04'
+        top:
+        - ['2026-10-04', 12056]
+      codigo_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13436}
+      cnpj_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12152, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10980, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_mnemonico_orgao: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 11144, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_orgao_vinculado: {tipo: VARCHAR, nulos_pct: 10.58, distintos_aprox: 1387}
+      cnpj_orgao_vinculado: {tipo: VARCHAR, nulos_pct: 10.58, distintos_aprox: 1270, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_orgao_vinculado: {tipo: VARCHAR, nulos_pct: 10.58, distintos_aprox: 1430, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_orgao_superior: {tipo: VARCHAR, nulos_pct: 12.16, distintos_aprox: 57, min: '12000', max: '99900'}
+      cnpj_orgao_superior: {tipo: VARCHAR, nulos_pct: 12.16, distintos_aprox: 47, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_orgao_superior: {tipo: VARCHAR, nulos_pct: 12.16, distintos_aprox: 65, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_tipo_administracao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '1'
+        max: '8'
+        top:
+        - ['12', 5179]
+        - ['7', 1940]
+        - ['3', 1472]
+        - ['11', 967]
+        - ['15', 904]
+        - ['4', 396]
+        - ['13', 364]
+        - ['14', 317]
+        - ['5', 202]
+        - ['6', 170]
+      nome_tipo_administracao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11, pessoal: 'só contagens: valores seriam dado pessoal'}
+      poder:
+        tipo: VARCHAR
+        nulos_pct: 4.03
+        distintos_aprox: 2
+        min: E
+        max: L
+        top:
+        - [E, 11552]
+        - [null, 486]
+        - [L, 18]
+      esfera:
+        tipo: VARCHAR
+        nulos_pct: 0.27
+        distintos_aprox: 3
+        min: E
+        max: M
+        top:
+        - [M, 8210]
+        - [E, 2660]
+        - [F, 1154]
+        - [null, 32]
+      indicador_uso_sisg:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 11977]
+        - ['false', 79]
+      indicador_orgao_ativo:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 'true'
+        max: 'true'
+        top:
+        - ['true', 12056]
+      data_hora_movimento: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 6584, min: '2000-02-17 16:58:00', max: '2026-10-02 13:27:00'}
+  pregao_item_evento:
+    linhas: 16281712
+    fonte_do_perfil: tabela inteira da última partição (ano = 2024)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 335]
+      id_compra:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: 08000105900022024
+        max: '98583705900022024'
+        top:
+        - ['92550905900052024', 42]
+        - ['92550905900022024', 40]
+        - [08000105900162024, 28]
+        - ['92550905900012024', 28]
+        - ['98583705900022024', 24]
+        - ['92550905900042024', 18]
+        - ['25000505900142024', 16]
+        - [08000105900152024, 12]
+        - ['25000505900112024', 10]
+        - [08000105900142024, 9]
+      numero_item: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 22, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_grupo: {tipo: VARCHAR, nulos_pct: 59.7, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ordem_evento:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        media: 1.7284
+        quartis: [1, 2, 2]
+        top:
+        - ['1', 149]
+        - ['2', 145]
+        - ['3', 27]
+        - ['4', 12]
+        - ['5', 1]
+        - ['6', 1]
+      nome_evento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_hora_evento: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 420, min: '2024-01-09 10:34:49', max: '2024-08-23 16:23:32'}
+      nome_responsavel: {tipo: VARCHAR, nulos_pct: 54.63, distintos_aprox: 7, pessoal: 'só contagens: valores seriam dado pessoal'}
+      observacoes: {tipo: VARCHAR, nulos_pct: 45.07, distintos_aprox: 152, min: 'Adjudicação em grupo da proposta. Fornecedor: 33.529.762 CRISTIANE
+          BISPO SANTOS, CNPJ/CPF: 33.529.762/0001-39, Melhor lance: R$ 277,2000', max: Volta de Fase para Julgamento}
+  pregao_item_oferta:
+    linhas: 18694279
+    fonte_do_perfil: tabela inteira da última partição (ano = 2024)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 266]
+      id_compra:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: 08000105900042024
+        max: '98583705900082024'
+        top:
+        - ['92550905900052024', 168]
+        - ['92550905900022024', 50]
+        - ['98583705900022024', 6]
+        - ['25000505900102024', 4]
+        - ['25000505900142024', 4]
+        - ['98583705900042024', 4]
+        - ['25000505900072024', 3]
+        - ['25000505900132024', 3]
+        - ['98583705900052024', 3]
+        - [08000105900042024, 2]
+      numero_item: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 142, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_cpf_fornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 86, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao_item: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 122, min: '"Açúcar"', max: Óculos proteção}
+      unidade_fornecimento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: Caixa 100,00 UN
+        max: Unidade
+        top:
+        - [Unidade, 220]
+        - [UNIDADE, 14]
+        - [Teste, 7]
+        - [Frasco-Ampola, 4]
+        - [Grama, 4]
+        - ['Frasco 10,00 ML', 2]
+        - ['Sachê 1,00 G', 2]
+        - [Seringa, 2]
+        - ['Caixa 100,00 UN', 1]
+        - [Caixa 500 G, 1]
+      quantidade:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 63
+        min: '1.0'
+        max: '75000030.0'
+        media: 715615.0602
+        quartis: [16.6667, 50, 188.8889]
+      valor_unitario:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 279
+        min: '0.05'
+        max: '8327720.16'
+        media: 52137.9898
+        quartis: [20.0356, 52.2694, 265.7022]
+      valor_global:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 258
+        min: '0.0001'
+        max: '813477.13'
+        media: 4787.6294
+        quartis: [8.6211, 30.09, 127.0111]
+      marca: {tipo: VARCHAR, nulos_pct: 6.02, distintos_aprox: 146, min: 100 LIMITE CABOS, max: vonder}
+      fabricante: {tipo: VARCHAR, nulos_pct: 6.02, distintos_aprox: 148, min: 100 LIMITE CABOS, max: vonder}
+      modelo_versao: {tipo: VARCHAR, nulos_pct: 6.02, distintos_aprox: 226, min: 004802, max: vonder}
+      descricao_detalhada_ofertada: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 335, min: '** NAN COMFOR 1 800G - NESTLE Registro MS: 4.0076.1911
+          Validade: 12 meses ** DIETA INFANTIL ASPECTO FÍSICO: PÓ USO: ENTERAL OU ORAL INDICAÇÃO: 0 A 6 MESES COMPONENTES ADICIONAIS: VIT.,MIN.E
+          FIBRAS ADICIONAIS: C/ LECT.SOJA E/OU LC PUFAS E/OU NUCLEOT. FONTE DE PROTEÍNA: SORO LEITE E CASEÍNA FONTE DE CARBOIDRATO: LACTOSE FONTE
+          DE LIPÍDIOS: ÓLEOS VEGETAIS CARACTERÍSTICAS ADICIONAIS: ISENTO GLÚTEN. LATA DE 400G OU 800G (FÓRMULA DE PARTIDA) COTA RESERVADA DE 12,3%,
+          APROXIMADAMENTE, PARA ME/EPP DO ITEM 1', max: ÓCULOS DE PROTEÇÃO AMPLA VISÃO}
+  unidade_administrativa:
+    linhas: 45735
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-04'
+        max: '2026-10-04'
+        top:
+        - ['2026-10-04', 45735]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: AC
+        max: TO
+        top:
+        - [SP, 5466]
+        - [DF, 5384]
+        - [RJ, 4995]
+        - [MG, 3939]
+        - [RS, 2469]
+        - [PR, 2314]
+        - [PE, 2250]
+        - [BA, 1825]
+        - [PA, 1410]
+        - [SC, 1405]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 44.71, distintos_aprox: 5638}
+      codigo_uasg: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 47977}
+      codigo_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13436}
+      cnpj_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12152, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_orgao_vinculado: {tipo: VARCHAR, nulos_pct: 4.87, distintos_aprox: 1270, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_orgao_superior: {tipo: VARCHAR, nulos_pct: 5.75, distintos_aprox: 47, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_uasg: {tipo: VARCHAR, nulos_pct: 31.79, distintos_aprox: 5379, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_uasg: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 35159, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_municipio_siasg: {tipo: VARCHAR, nulos_pct: 44.13, distintos_aprox: 5080}
+      nome_municipio: {tipo: VARCHAR, nulos_pct: 44.71, distintos_aprox: 5528, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_unidade_polo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1744}
+      nome_unidade_polo: {tipo: VARCHAR, nulos_pct: 85.11, distintos_aprox: 1407, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_unidade_espelho: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1390}
+      nome_unidade_espelho: {tipo: VARCHAR, nulos_pct: 96.5, distintos_aprox: 1173, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_siorg: {tipo: VARCHAR, nulos_pct: 89.26, distintos_aprox: 3157}
+      indicador_uso_sisg:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 23331]
+        - ['true', 22404]
+      indicador_adesao_siasg:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 41199]
+        - ['false', 4536]
+      indicador_uasg_cadastradora:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 23040]
+        - ['false', 22695]
+      indicador_uasg_ativa:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 23590]
+        - ['true', 22145]
+      data_implantacao_sidec: {tipo: TIMESTAMP, nulos_pct: 44.75, distintos_aprox: 3283, min: '1995-07-15 03:00:00', max: '2265-02-27 03:00:00'}
+      data_hora_movimento: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 10483, min: '2010-03-18 10:00:00', max: '2026-10-02 21:35:00'}

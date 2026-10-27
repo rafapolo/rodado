@@ -1,0 +1,80 @@
+dataset: br_senado_ceaps
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  despesas:
+    linhas: 396755
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '2008'
+        max: '2026'
+        media: 2016.9973
+        quartis: [2013, 2017, 2021]
+        top:
+        - ['2012', 30175]
+        - ['2013', 29376]
+        - ['2017', 27023]
+        - ['2016', 26768]
+        - ['2015', 26055]
+        - ['2011', 25574]
+        - ['2018', 24492]
+        - ['2025', 23808]
+        - ['2014', 22002]
+        - ['2019', 21634]
+      mes:
+        tipo: TINYINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.5745
+        quartis: [4, 7, 9]
+        top:
+        - ['5', 37229]
+        - ['8', 36197]
+        - ['6', 35943]
+        - ['3', 35805]
+        - ['4', 35332]
+        - ['7', 34024]
+        - ['10', 33264]
+        - ['11', 33128]
+        - ['9', 32775]
+        - ['2', 30566]
+      cod_senador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 309, min: '1023', max: '982'}
+      nome_senador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 300, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0.08
+        distintos_aprox: 6
+        min: Aluguel de imóveis para escritório político, compreendendo despesas concernentes a eles.
+        max: Serviços de Segurança Privada
+        top:
+        - ['Locomoção, hospedagem, alimentação, combustíveis e lubrificantes', 167244]
+        - ['Passagens aéreas, aquáticas e terrestres nacionais', 79889]
+        - ['Aluguel de imóveis para escritório político, compreendendo despesas concernentes a eles.', 76483]
+        - ['Aquisição de material de consumo para uso no escritório político, inclusive aquisição ou locação de software, despesas postais, aquisição
+            de publicações, locação de móveis e de equipamentos.', 30625]
+        - ['Contratação de consultorias, assessorias, pesquisas, trabalhos técnicos e outros serviços de apoio ao exercício do mandato parlamentar',
+          21544]
+        - [Divulgação da atividade parlamentar, 19652]
+        - [Serviços de Segurança Privada, 984]
+        - [null, 334]
+      cpf_cnpj_fornecedor: {tipo: VARCHAR, nulos_pct: 0.79, distintos_aprox: 27763, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fornecedor: {tipo: VARCHAR, nulos_pct: 0.79, distintos_aprox: 67025, pessoal: 'só contagens: valores seriam dado pessoal'}
+      documento: {tipo: VARCHAR, nulos_pct: 7.1, distintos_aprox: 252860, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data: {tipo: DATE, nulos_pct: 0.79, distintos_aprox: 5953, min: '0023-10-07', max: '5201-05-08'}
+      detalhamento: {tipo: VARCHAR, nulos_pct: 46.57, distintos_aprox: 156283}
+      valor_reembolsado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 107500
+        min: '-4230.43'
+        max: '270000.0'
+        media: 1124.4439
+        quartis: [109.483, 309.8423, 1099.6639]
+      tipo_documento: {tipo: VARCHAR, nulos_pct: 0.79, distintos_aprox: 7, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_documento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 472713, pessoal: 'só contagens: valores seriam dado pessoal'}

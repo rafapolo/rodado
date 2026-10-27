@@ -1,0 +1,660 @@
+dataset: br_inep_ideb
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  brasil:
+    linhas: 154
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '2005'
+        max: '2025'
+        media: 2015
+        quartis: [2009, 2015, 2021]
+        top:
+        - ['2005', 14]
+        - ['2007', 14]
+        - ['2009', 14]
+        - ['2011', 14]
+        - ['2013', 14]
+        - ['2015', 14]
+        - ['2017', 14]
+        - ['2019', 14]
+        - ['2021', 14]
+        - ['2023', 14]
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: estadual
+        max: total
+        top:
+        - [estadual, 33]
+        - [privada, 33]
+        - [publica, 33]
+        - [total, 33]
+        - [municipal, 22]
+      ensino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: fundamental
+        max: medio
+        top:
+        - [fundamental, 110]
+        - [medio, 44]
+      anos_escolares:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: finais (6-9)
+        max: todos (1-4)
+        top:
+        - [finais (6-9), 55]
+        - [iniciais (1-5), 55]
+        - [todos (1-4), 44]
+      taxa_aprovacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 128
+        min: '70.5'
+        max: '99.4'
+        media: 88.9643
+        quartis: [82.35, 91.3, 95.6375]
+      indicador_rendimento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 156
+        min: '0.74056429'
+        max: '0.993999195'
+        media: 0.8949
+        quartis: [0.8313, 0.9171, 0.9553]
+      nota_saeb_matematica:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 166
+        min: '174.86'
+        max: '334.72'
+        media: 250.6041
+        quartis: [227.0162, 251.6475, 265.5813]
+      nota_saeb_lingua_portuguesa:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 148
+        min: '165.07'
+        max: '322.1'
+        media: 242.7568
+        quartis: [214.3725, 247.5625, 265.2413]
+      nota_saeb_media_padronizada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 132
+        min: '4.0645995'
+        max: '7.2272236045'
+        media: 5.3147
+        quartis: [4.5745, 5.1852, 6.0023]
+      ideb:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 37
+        min: '3.0'
+        max: '7.2'
+        media: 4.8104
+        quartis: [3.9, 4.7, 5.775]
+        top:
+        - ['3.4', 9]
+        - ['5.8', 8]
+        - ['3.5', 7]
+        - ['3.9', 7]
+        - ['4.9', 7]
+        - ['3.8', 6]
+        - ['4.2', 6]
+        - ['5.6', 6]
+        - ['6.0', 6]
+        - ['4.0', 5]
+      projecao:
+        tipo: DOUBLE
+        nulos_pct: 36.36
+        distintos_aprox: 37
+        min: '3.1'
+        max: '7.4'
+        media: 4.7449
+        quartis: [3.8, 4.6, 5.5]
+        top:
+        - [null, 56]
+        - ['4.7', 6]
+        - ['3.5', 5]
+        - ['3.9', 5]
+        - ['5.0', 5]
+        - ['3.3', 4]
+        - ['4.4', 4]
+        - ['3.1', 3]
+        - ['3.4', 3]
+        - ['3.6', 3]
+  escola:
+    linhas: 1300821
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '2005'
+        max: '2025'
+        media: 2015.5902
+        quartis: [2010, 2017, 2021]
+        top:
+        - ['2025', 136314]
+        - ['2023', 133702]
+        - ['2021', 131021]
+        - ['2017', 127983]
+        - ['2019', 127983]
+        - ['2005', 107303]
+        - ['2007', 107303]
+        - ['2009', 107303]
+        - ['2011', 107303]
+        - ['2013', 107303]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 166033]
+        - [MG, 126353]
+        - [BA, 115627]
+        - [RS, 88322]
+        - [MA, 79542]
+        - [CE, 76516]
+        - [RJ, 72053]
+        - [PA, 68959]
+        - [PR, 61257]
+        - [PE, 59869]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      id_escola: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 76595}
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: estadual
+        max: privada
+        top:
+        - [municipal, 802743]
+        - [estadual, 488419]
+        - [privada, 6241]
+        - [federal, 3418]
+      ensino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: fundamental
+        max: medio
+        top:
+        - [fundamental, 1194613]
+        - [medio, 106208]
+      anos_escolares:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: finais (6-9)
+        max: todos (1-4)
+        top:
+        - [iniciais (1-5), 691760]
+        - [finais (6-9), 502853]
+        - [todos (1-4), 106208]
+      taxa_aprovacao:
+        tipo: DOUBLE
+        nulos_pct: 29.92
+        distintos_aprox: 894
+        min: '0.0'
+        max: '100.0'
+        media: 89.5085
+        quartis: [84.0704, 92.9307, 98.1637]
+      indicador_rendimento:
+        tipo: DOUBLE
+        nulos_pct: 29.92
+        distintos_aprox: 356685
+        min: '0.013085'
+        max: '1.0'
+        media: 0.8934
+        quartis: [0.8384, 0.9285, 0.9817]
+      nota_saeb_matematica:
+        tipo: DOUBLE
+        nulos_pct: 38.58
+        distintos_aprox: 18950
+        min: '99.89'
+        max: '432.67'
+        media: 227.8677
+        quartis: [203.2942, 229.5397, 251.7863]
+      nota_saeb_lingua_portuguesa:
+        tipo: DOUBLE
+        nulos_pct: 38.58
+        distintos_aprox: 21739
+        min: '103.66'
+        max: '377.85'
+        media: 219.2727
+        quartis: [190.714, 220.2442, 247.0737]
+      nota_saeb_media_padronizada:
+        tipo: DOUBLE
+        nulos_pct: 38.58
+        distintos_aprox: 500794
+        min: '1.350903'
+        max: '10.0'
+        media: 5.149
+        quartis: [4.4452, 5.051, 5.7707]
+      ideb:
+        tipo: DOUBLE
+        nulos_pct: 38.59
+        distintos_aprox: 82
+        min: '0.1'
+        max: '10.0'
+        media: 4.6691
+        quartis: [3.8017, 4.6136, 5.5046]
+      projecao:
+        tipo: DOUBLE
+        nulos_pct: 45.78
+        distintos_aprox: 77
+        min: '0.6'
+        max: '9.5'
+        media: 4.6783
+        quartis: [3.8999, 4.6686, 5.4303]
+  municipio:
+    linhas: 364673
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '2005'
+        max: '2025'
+        media: 2015.967
+        quartis: [2011, 2017, 2021]
+        top:
+        - ['2025', 40682]
+        - ['2023', 40619]
+        - ['2021', 40542]
+        - ['2017', 40464]
+        - ['2019', 40464]
+        - ['2005', 28839]
+        - ['2007', 28839]
+        - ['2009', 28839]
+        - ['2011', 28839]
+        - ['2013', 28839]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 54631]
+        - [SP, 38693]
+        - [RS, 33646]
+        - [BA, 27615]
+        - [PR, 21528]
+        - [SC, 20036]
+        - [GO, 16459]
+        - [PB, 15780]
+        - [PI, 14697]
+        - [MA, 14546]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: estadual
+        max: publica
+        top:
+        - [publica, 139097]
+        - [estadual, 119972]
+        - [municipal, 102829]
+        - [federal, 2775]
+      ensino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: fundamental
+        max: medio
+        top:
+        - [fundamental, 306271]
+        - [medio, 58402]
+      anos_escolares:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: finais (6-9)
+        max: todos (1-4)
+        top:
+        - [iniciais (1-5), 153654]
+        - [finais (6-9), 152617]
+        - [todos (1-4), 58402]
+      taxa_aprovacao:
+        tipo: DOUBLE
+        nulos_pct: 10.05
+        distintos_aprox: 777
+        min: '0.0'
+        max: '100.0'
+        media: 88.9864
+        quartis: [83.2376, 91.8218, 97.3656]
+      indicador_rendimento:
+        tipo: DOUBLE
+        nulos_pct: 10.06
+        distintos_aprox: 209449
+        min: '0.027385'
+        max: '1.0'
+        media: 0.8904
+        quartis: [0.8332, 0.9184, 0.9739]
+      nota_saeb_matematica:
+        tipo: DOUBLE
+        nulos_pct: 15.01
+        distintos_aprox: 13653
+        min: '120.8'
+        max: '414.91'
+        media: 235.1479
+        quartis: [213.6566, 237.9786, 258.7211]
+      nota_saeb_lingua_portuguesa:
+        tipo: DOUBLE
+        nulos_pct: 15.01
+        distintos_aprox: 14555
+        min: '114.4'
+        max: '371.73'
+        media: 226.5674
+        quartis: [200.0452, 229.38, 254.6802]
+      nota_saeb_media_padronizada:
+        tipo: DOUBLE
+        nulos_pct: 15.01
+        distintos_aprox: 144114
+        min: '1.8395'
+        max: '10.0'
+        media: 5.0621
+        quartis: [4.4151, 4.9575, 5.6128]
+      ideb:
+        tipo: DOUBLE
+        nulos_pct: 15.02
+        distintos_aprox: 78
+        min: '0.1'
+        max: '10.0'
+        media: 4.558
+        quartis: [3.7151, 4.4969, 5.299]
+      projecao:
+        tipo: DOUBLE
+        nulos_pct: 47.48
+        distintos_aprox: 71
+        min: '0.6'
+        max: '9.0'
+        media: 4.3974
+        quartis: [3.639, 4.3712, 5.1]
+  regiao:
+    linhas: 605
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '2005'
+        max: '2025'
+        media: 2015
+        quartis: [2009, 2015, 2021]
+        top:
+        - ['2005', 55]
+        - ['2007', 55]
+        - ['2009', 55]
+        - ['2011', 55]
+        - ['2013', 55]
+        - ['2015', 55]
+        - ['2017', 55]
+        - ['2019', 55]
+        - ['2021', 55]
+        - ['2023', 55]
+      regiao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Centro-Oeste
+        max: Sul
+        top:
+        - [Centro-Oeste, 121]
+        - [Nordeste, 121]
+        - [Norte, 121]
+        - [Sudeste, 121]
+        - [Sul, 121]
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: estadual
+        max: total
+        top:
+        - [estadual, 165]
+        - [privada, 165]
+        - [total, 165]
+        - [publica, 110]
+      ensino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: fundamental
+        max: medio
+        top:
+        - [fundamental, 440]
+        - [medio, 165]
+      anos_escolares:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: finais (6-9)
+        max: todos (1-4)
+        top:
+        - [finais (6-9), 220]
+        - [iniciais (1-5), 220]
+        - [todos (1-4), 165]
+      taxa_aprovacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 194
+        min: '66.8'
+        max: '99.6'
+        media: 89.465
+        quartis: [83.0051, 92.7667, 96.409]
+      indicador_rendimento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 544
+        min: '0.668975'
+        max: '0.9956'
+        media: 0.8993
+        quartis: [0.8347, 0.9275, 0.9633]
+      nota_saeb_matematica:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 698
+        min: '156.41'
+        max: '346.42'
+        media: 252.0797
+        quartis: [227.2098, 251.1315, 273.4748]
+      nota_saeb_lingua_portuguesa:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 666
+        min: '149.6'
+        max: '327.86'
+        media: 244.1838
+        quartis: [217.3538, 247.0981, 269.3064]
+      nota_saeb_media_padronizada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 580
+        min: '3.6451139'
+        max: '7.652969'
+        media: 5.3884
+        quartis: [4.7128, 5.3144, 6.0706]
+      ideb:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 47
+        min: '2.6'
+        max: '7.6'
+        media: 4.901
+        quartis: [3.9781, 4.9259, 5.8211]
+        top:
+        - ['4.1', 23]
+        - ['5.9', 22]
+        - ['3.6', 21]
+        - ['5.6', 21]
+        - ['4.2', 20]
+        - ['5.5', 20]
+        - ['3.9', 19]
+        - ['4.4', 19]
+        - ['5.4', 19]
+        - ['6.1', 19]
+      projecao:
+        tipo: DOUBLE
+        nulos_pct: 36.36
+        distintos_aprox: 49
+        min: '2.6'
+        max: '7.6'
+        media: 4.8597
+        quartis: [3.857, 4.7417, 5.834]
+        top:
+        - [null, 220]
+        - ['4.3', 19]
+        - ['4.6', 15]
+        - ['4.9', 14]
+        - ['4.0', 13]
+        - ['4.1', 13]
+        - ['3.3', 12]
+        - ['5.4', 12]
+        - ['3.6', 11]
+        - ['3.7', 11]
+  uf:
+    linhas: 3267
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '2005'
+        max: '2025'
+        media: 2015
+        quartis: [2009, 2015, 2021]
+        top:
+        - ['2005', 297]
+        - ['2007', 297]
+        - ['2009', 297]
+        - ['2011', 297]
+        - ['2013', 297]
+        - ['2015', 297]
+        - ['2017', 297]
+        - ['2019', 297]
+        - ['2021', 297]
+        - ['2023', 297]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 121]
+        - [AL, 121]
+        - [AM, 121]
+        - [AP, 121]
+        - [BA, 121]
+        - [CE, 121]
+        - [DF, 121]
+        - [ES, 121]
+        - [GO, 121]
+        - [MA, 121]
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: estadual
+        max: total
+        top:
+        - [estadual, 891]
+        - [privada, 891]
+        - [total, 891]
+        - [publica, 594]
+      ensino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: fundamental
+        max: medio
+        top:
+        - [fundamental, 2376]
+        - [medio, 891]
+      anos_escolares:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: finais (6-9)
+        max: todos (1-4)
+        top:
+        - [finais (6-9), 1188]
+        - [iniciais (1-5), 1188]
+        - [todos (1-4), 891]
+      taxa_aprovacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 322
+        min: '60.8'
+        max: '99.9'
+        media: 88.6518
+        quartis: [82.098, 91.9353, 96.5336]
+      indicador_rendimento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2975
+        min: '0.60187697'
+        max: '0.999599'
+        media: 0.8916
+        quartis: [0.8292, 0.9203, 0.9657]
+      nota_saeb_matematica:
+        tipo: DOUBLE
+        nulos_pct: 0.8
+        distintos_aprox: 2635
+        min: '148.1'
+        max: '359.7'
+        media: 249.0705
+        quartis: [225.4205, 248.1007, 269.7659]
+      nota_saeb_lingua_portuguesa:
+        tipo: DOUBLE
+        nulos_pct: 0.8
+        distintos_aprox: 2548
+        min: '140.53'
+        max: '333.52'
+        media: 241.6533
+        quartis: [215.7754, 244.2565, 267.3927]
+      nota_saeb_media_padronizada:
+        tipo: DOUBLE
+        nulos_pct: 0.8
+        distintos_aprox: 2879
+        min: '3.2516661'
+        max: '8.1023989'
+        media: 5.2943
+        quartis: [4.5657, 5.1886, 5.9896]
+      ideb:
+        tipo: DOUBLE
+        nulos_pct: 0.8
+        distintos_aprox: 52
+        min: '2.3'
+        max: '8.0'
+        media: 4.778
+        quartis: [3.7915, 4.7502, 5.7]
+      projecao:
+        tipo: DOUBLE
+        nulos_pct: 36.36
+        distintos_aprox: 52
+        min: '2.3'
+        max: '8.0'
+        media: 4.7184
+        quartis: [3.6976, 4.583, 5.6583]

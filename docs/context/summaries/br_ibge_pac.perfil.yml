@@ -1,0 +1,540 @@
+dataset: br_ibge_pac
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  sidra:
+    linhas: 503922
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_tabela:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 92
+        min: '680'
+        max: '10656'
+        media: 2309.4065
+        quartis: [1411, 1418, 3007]
+      id_nivel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 496470]
+        - ['3', 7452]
+      nivel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Brasil
+        max: Unidade da Federação
+        top:
+        - [Brasil, 496470]
+        - [Unidade da Federação, 7452]
+      id_localidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: '1'
+        max: '53'
+        top:
+        - ['1', 496470]
+        - ['11', 276]
+        - ['12', 276]
+        - ['13', 276]
+        - ['14', 276]
+        - ['15', 276]
+        - ['16', 276]
+        - ['17', 276]
+        - ['21', 276]
+        - ['22', 276]
+      localidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: Acre
+        max: Tocantins
+        top:
+        - [Brasil, 496470]
+        - [Acre, 276]
+        - [Alagoas, 276]
+        - [Amapá, 276]
+        - [Amazonas, 276]
+        - [Bahia, 276]
+        - [Ceará, 276]
+        - [Distrito Federal, 276]
+        - [Espírito Santo, 276]
+        - [Goiás, 276]
+      periodo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 34
+        min: '1988'
+        max: '2024'
+        top:
+        - ['2007', 34716]
+        - ['2003', 18270]
+        - ['2004', 18270]
+        - ['2005', 18270]
+        - ['2006', 18270]
+        - ['2019', 16754]
+        - ['2020', 16754]
+        - ['2008', 16446]
+        - ['2009', 16446]
+        - ['2010', 16446]
+      id_variavel:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 400
+        min: '310'
+        max: '1001648'
+        media: 411940.6545
+        quartis: [892, 1496, 1001104]
+      variavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 368, min: Aquisições de ativos tangíveis, max: Variações monetárias passivas -
+          percentual do total geral}
+      unidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: ''
+        max: Unidades
+        top:
+        - [Percentual, 195803]
+        - [Mil Reais, 191720]
+        - [Pessoas, 27359]
+        - [Coeficiente, 26452]
+        - [Unidades, 26028]
+        - ['', 24504]
+        - ['%', 8600]
+        - [Milhões de Cruzeiros, 1296]
+        - [Mil Cruzados Novos, 864]
+        - [Milhões de Cruzados, 864]
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 10.39
+        distintos_aprox: 191339
+        min: '-4161.0'
+        max: '8360635468.0'
+        media: 11689248.8797
+        quartis: [1.5652, 119.3872, 268053.3155]
+      simbolo:
+        tipo: VARCHAR
+        nulos_pct: 89.61
+        distintos_aprox: 9
+        min: '...'
+        max: Z
+        top:
+        - [null, 451575]
+        - ['...', 24504]
+        - [A, 17493]
+        - [B, 7685]
+        - [X, 1391]
+        - [C, 992]
+        - [D, 163]
+        - [E, 67]
+        - [Z, 52]
+      classificacao_1:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: Classes de comércio
+        max: Grandes regiões e unidades da federação de atuação das empresas
+        top:
+        - ['Divisão de comércio, grupo e classe de atividade', 410462]
+        - [Divisão de comércio, 38068]
+        - [Formas de comercialização, 20236]
+        - [Grandes regiões e unidades da federação de atuação das empresas, 14850]
+        - [Classes de comércio, 11880]
+        - [Divisão de comércio e grupo de atividade, 7994]
+        - [Grandes regiões, 432]
+      id_categoria_1:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 188
+        min: '0'
+        max: '106807'
+        media: 65020.357
+        quartis: [6803, 90134, 90163]
+      categoria_1: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 217, min: 1. Total, max: Total}
+      classificacao_2:
+        tipo: VARCHAR
+        nulos_pct: 84.58
+        distintos_aprox: 6
+        min: Divisão de comércio e grupo de atividade
+        max: Participação na receita líquida de revenda
+        top:
+        - [null, 426200]
+        - ['Divisão de comércio, grupo e classe de atividade', 16924]
+        - [Faixas de pessoal ocupado, 16280]
+        - [Divisão de comércio e grupo de atividade, 14850]
+        - [Gêneros de comércio, 11880]
+        - [Grandes regiões e unidades da federação de atuação das empresas, 10164]
+        - ['Faixas de receita total (em R$ 1.000,00)', 4312]
+        - [Participação na receita líquida de revenda, 3312]
+      id_categoria_2:
+        tipo: BIGINT
+        nulos_pct: 84.58
+        distintos_aprox: 156
+        min: '0'
+        max: '106807'
+        media: 70122.8934
+        quartis: [7837, 105540, 106729]
+      categoria_2: {tipo: VARCHAR, nulos_pct: 84.58, distintos_aprox: 162, min: 0 a 4, max: de 76 a 100 %}
+      classificacao_3:
+        tipo: VARCHAR
+        nulos_pct: 99.34
+        distintos_aprox: 1
+        min: Divisão de comércio, grupo e classe de atividade
+        max: Divisão de comércio, grupo e classe de atividade
+        top:
+        - [null, 500610]
+        - ['Divisão de comércio, grupo e classe de atividade', 3312]
+      id_categoria_3:
+        tipo: BIGINT
+        nulos_pct: 99.34
+        distintos_aprox: 25
+        min: '90128'
+        max: '106698'
+        media: 105248.3478
+        quartis: [106681, 106687, 106693]
+        top:
+        - [null, 500610]
+        - ['106678', 144]
+        - ['106679', 144]
+        - ['106680', 144]
+        - ['106681', 144]
+        - ['106682', 144]
+        - ['106683', 144]
+        - ['106684', 144]
+        - ['106685', 144]
+        - ['106686', 144]
+      categoria_3:
+        tipo: VARCHAR
+        nulos_pct: 99.34
+        distintos_aprox: 24
+        min: 1. Total
+        max: 3.5 Comércio de artigos usados
+        top:
+        - [null, 500610]
+        - [1. Total, 144]
+        - [2. Comércio varejista de combustíveis, 144]
+        - [2.1 Combustíveis, 144]
+        - [3. Comércio varejista, 144]
+        - [3.1 Comércio não especializado, 144]
+        - [3.1.1 Hipermercados e supermercados, 144]
+        - [3.1.2 Outros tipos de comércio não especializados com predominância de produtos alimentícios, 144]
+        - [3.1.3 Comércio não especializado sem predominância de produtos alimentícios, 144]
+        - ['3.2 Produtos alimentícios, bebidas e fumo', 144]
+      classificacao_4:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 503922]
+      id_categoria_4:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 503922]
+      categoria_4:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 503922]
+      classificacao_5:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 503922]
+      id_categoria_5:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 503922]
+      categoria_5:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 503922]
+      classificacao_6:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 503922]
+      id_categoria_6:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 503922]
+      categoria_6:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 503922]
+      classificacao_7:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 503922]
+      id_categoria_7:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 503922]
+      categoria_7:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 503922]
+  sidra_tabelas:
+    linhas: 94
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_tabela:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 92
+        min: '680'
+        max: '10656'
+        media: 2850.4681
+        quartis: [744, 1412, 3004]
+      tabela: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 82, min: 'Aquisições e Baixas de ativos tangíveis das empresas comerciais com 20
+          ou mais pessoas ocupadas por divisão de comércio, grupo e classe de atividade', max: Total de gastos com pessoal em empresas comerciais
+          por classes e gêneros de comércio}
+      pesquisa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Pesquisa Anual de Comércio
+        max: Pesquisa Anual de Comércio
+        top:
+        - [Pesquisa Anual de Comércio, 94]
+      assunto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Comércio
+        max: Comércio
+        top:
+        - [Comércio, 94]
+      periodicidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: anual
+        max: anual
+        top:
+        - [anual, 94]
+      periodo_inicio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1988'
+        max: '2024'
+        top:
+        - ['1996', 25]
+        - ['1988', 22]
+        - ['2007', 21]
+        - ['2024', 12]
+        - ['2003', 9]
+        - ['2000', 3]
+        - ['2001', 1]
+        - ['2019', 1]
+      periodo_fim:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1990'
+        max: '2024'
+        top:
+        - ['2023', 20]
+        - ['2007', 19]
+        - ['2024', 12]
+        - ['1990', 11]
+        - ['1995', 11]
+        - ['1996', 11]
+        - ['2002', 7]
+        - ['2020', 2]
+        - ['2000', 1]
+      periodos:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: 1988,1989,1990
+        max: '2024'
+        top:
+        - ['2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023', 19]
+        - ['2024', 12]
+        - ['1988,1989,1990', 11]
+        - ['1988,1989,1990,1992,1993,1994,1995', 11]
+        - ['1996', 11]
+        - ['1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007', 9]
+        - ['2003,2004,2005,2006,2007', 9]
+        - ['1996,1997,1998,1999,2000,2001,2002', 4]
+        - ['2000,2001,2002', 2]
+        - ['2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020', 2]
+      n_periodos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '1'
+        max: '17'
+        media: 7.3511
+        quartis: [2, 5, 12]
+        top:
+        - ['1', 23]
+        - ['17', 19]
+        - ['7', 15]
+        - ['3', 13]
+        - ['5', 11]
+        - ['12', 9]
+        - ['14', 2]
+        - ['2', 1]
+        - ['8', 1]
+      niveis:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N1
+        max: N1,N2,N3
+        top:
+        - [N1, 93]
+        - ['N1,N2,N3', 1]
+      tem_municipio:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 'false'
+        max: 'false'
+        top:
+        - ['false', 94]
+      variaveis: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 73, min: 'Aquisições de ativos tangíveis (Mil Reais) | Aquisições de ativos tangíveis
+          - percentual do total geral (%) | Baixas de ativos tangíveis (Mil Reais) | Baixas de ativos tangíveis - percentual do total geral (%)
+          | Aquisições de terrenos e edificações (Mil Reais) | Aquisições de terrenos e edificações - percentual do total geral (%) | Baixas de
+          terrenos e edificações (Mil Reais) | Baixas de terrenos e edificações - percentual do total geral (%) | Aquisições de máquinas, equipamentos
+          e instalações (Mil Reais) | Aquisições de máquinas, equipamentos e instalações - percentual do total geral (%) | Baixas de máquinas,
+          equipamentos e instalações (Mil Reais) | Baixas de máquinas, equipamentos e instalações - percentual do total geral (%) | Aquisições
+          de meios de transporte (Mil Reais) | Aquisições de meios de transporte - percentual do total geral (%) | Baixas de meios de transporte
+          (Mil Reais) | Baixas de meios de transporte - percentual do total geral (%) | Outras aquisições (Mil Reais) | Outras aquisições - percentual
+          do total geral (%) | Outras baixas (Mil Reais) | Outras baixas - percentual do total geral (%)', max: 'Total de gastos com pessoal em
+          empresas comerciais de médio e grande porte (Milhões de Cruzados [1988], Mil Cruzados Novos [1989], Milhões de Cruzeiros [1990, 1992],
+          Milhões de Cruzeiros Reais [1993], Mil Reais [1994 a 1995]) | Total de gastos com pessoal em empresas comerciais de médio e grande porte
+          - percentual do total geral (%)'}
+      classificacoes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: Classes de comércio (3) | Gêneros de comércio (18)
+        max: Unidade da federação das empresas (28) | Divisão de comércio, grupo e classe de atividade (35)
+        top:
+        - [Classes de comércio (3) | Gêneros de comércio (18), 22]
+        - ['Divisão de comércio, grupo e classe de atividade (48)', 16]
+        - ['Divisão de comércio, grupo e classe de atividade (50)', 15]
+        - [Divisão de comércio e grupo de atividade (19), 7]
+        - ['Divisão de comércio, grupo e classe de atividade (46)', 7]
+        - [Divisão de comércio (4), 4]
+        - [Grandes regiões (6) | Faixas de pessoal ocupado (9), 4]
+        - [Divisão de comércio (4) | Faixas de pessoal ocupado (7), 3]
+        - ['Formas de comercialização (7) | Divisão de comércio, grupo e classe de atividade (22)', 3]
+        - ['Divisão de comércio (4) | Faixas de receita total (em R$ 1.000,00) (7)', 2]
+      celulas_uf:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 61
+        min: '1064'
+        max: '1920800'
+        media: 187535.9574
+        quartis: [9072, 41160, 284592]
+      celulas_municipio:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0'
+        max: '0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 94]
+      nclass:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        media: 1.4787
+        quartis: [1, 1, 2]
+        top:
+        - ['1', 50]
+        - ['2', 43]
+        - ['3', 1]
+      municipio_no_espelho:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 'false'
+        max: 'false'
+        top:
+        - ['false', 94]
+      linhas:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 57
+        min: '0'
+        max: '35700'
+        media: 5360.8723
+        quartis: [324, 1316, 8500]
+      fora:
+        tipo: VARCHAR
+        nulos_pct: 97.87
+        distintos_aprox: 2
+        min: 1,806,420 células em UF (teto 1,000,000)
+        max: 1,920,800 células em UF (teto 1,000,000)
+        top:
+        - [null, 92]
+        - ['1,806,420 células em UF (teto 1,000,000)', 1]
+        - ['1,920,800 células em UF (teto 1,000,000)', 1]
+      no_espelho:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 92]
+        - ['false', 2]

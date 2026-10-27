@@ -1,0 +1,117 @@
+dataset: br_inpe_sisam
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  microdados:
+    linhas: 158705816
+    fonte_do_perfil: amostra de 24.585% da última partição (ano = 2019). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2019'
+        max: '2019'
+        media: 2019
+        quartis: [2019, 2019, 2019]
+        top:
+        - ['2019', 2005406]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 311487]
+        - [SP, 241284]
+        - [RS, 178515]
+        - [BA, 159530]
+        - [PR, 139913]
+        - [SC, 102424]
+        - [PI, 88064]
+        - [GO, 83147]
+        - [PB, 80487]
+        - [PE, 66681]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      data_hora: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 1604, min: '2019-01-01 00:00:00', max: '2019-12-31 18:00:00'}
+      co_ppb:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2005406]
+      no2_ppb:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2005406]
+      o3_ppb:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2005406]
+      pm25_ugm3:
+        tipo: DOUBLE
+        nulos_pct: 50.95
+        distintos_aprox: 2028
+        min: '0.0'
+        max: '1880.9'
+        media: 10.1391
+        quartis: [3.6451, 7.2732, 13.1018]
+      so2_ugm3:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2005406]
+      precipitacao_dia:
+        tipo: DOUBLE
+        nulos_pct: 74.94
+        distintos_aprox: 181
+        min: '0.0'
+        max: '211.0'
+        media: 2.8939
+        quartis: [0, 0, 2]
+      temperatura:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 427
+        min: '-4.2'
+        max: '41.7'
+        media: 22.8065
+        quartis: [19.4061, 22.8147, 26.4146]
+      umidade_relativa:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 118
+        min: '10.0'
+        max: '100.0'
+        media: 72.9228
+        quartis: [60.3109, 76.4978, 88.9634]
+      vento_direcao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 380
+        min: '1'
+        max: '359'
+        media: 137.9529
+        quartis: [72, 117, 177]
+      vento_velocidade:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 140
+        min: '0.0'
+        max: '20.1'
+        media: 3.0589
+        quartis: [1.6999, 2.7, 4.1122]

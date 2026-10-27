@@ -1,0 +1,199 @@
+dataset: br_prf_infracoes
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  infracoes:
+    linhas: 63217947
+    fonte_do_perfil: amostra de 38.158% da última partição (ano = 2021). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2021'
+        max: '2021'
+        media: 2021
+        quartis: [2021, 2021, 2021]
+        top:
+        - ['2021', 2080011]
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 350, min: '2021-01-01', max: '2021-12-31'}
+      hora:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 25
+        min: '0'
+        max: '9'
+        top:
+        - ['10', 199235]
+        - ['16', 186546]
+        - ['11', 172190]
+        - ['15', 170685]
+        - ['9', 165981]
+        - ['17', 152214]
+        - ['14', 130139]
+        - ['8', 118498]
+        - ['12', 102178]
+        - ['13', 99756]
+      numero_auto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2883019, pessoal: 'só contagens: valores seriam dado pessoal'}
+      indicador_abordagem:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: C
+        max: S
+        top:
+        - [S, 1462502]
+        - [C, 617509]
+      indicador_assinatura_auto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 2079927]
+        - [S, 84]
+      indicador_veiculo_estrangeiro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: N
+        max: S
+        top:
+        - [N, 2071925]
+        - [S, 7792]
+        - [NA, 294]
+      sentido_trafego:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: C
+        max: D
+        top:
+        - [C, 1069825]
+        - [D, 1010186]
+      sigla_uf_placa: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [RJ, 364542]
+        - [SP, 280932]
+        - [MG, 268981]
+        - [BA, 183410]
+        - [MS, 141558]
+        - [PR, 100792]
+        - [SC, 91788]
+        - [GO, 86470]
+        - [RS, 75160]
+        - [MT, 74513]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.65, distintos_aprox: 1829}
+      municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2006}
+      br: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 119, min: '010', max: '80'}
+      km:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1139
+        min: '0.0'
+        max: '1210.0'
+        media: 301.0482
+        quartis: [100.4753, 272.5736, 481.348]
+      codigo_infracao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 334, min: '50100', max: '77302'}
+      descricao_infracao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 453, min: Abandonar na via objetos ou substâncias, max: 'Utilizar o pisca-alerta,
+          exceto em imobilizações ou situações de emergência'}
+      enquadramento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 247, min: 162 I, max: 253-A}
+      data_inicio_vigencia:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '2016-11-01'
+        max: '2021-08-09'
+        top:
+        - ['2016-11-01', 2022740]
+        - ['2021-04-12', 51760]
+        - ['2021-08-09', 2526]
+        - ['2021-06-23', 1909]
+        - ['2019-10-07', 741]
+        - ['2018-05-26', 335]
+      data_fim_vigencia:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2080011]
+      medicao_realizada:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2080011]
+      tipo_medicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Alcoolemia
+        max: Veiculo
+        top:
+        - [Veiculo, 1043924]
+        - [Nenhuma, 1022447]
+        - [Peso, 7220]
+        - [Alcoolemia, 4673]
+        - [Dimensão, 1747]
+      medicao_considerada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5518
+        min: '0.0'
+        max: '735800.0'
+        media: 224.5855
+        quartis: [0, 34.5127, 81.8677]
+      excesso_verificado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5417
+        min: '0.0'
+        max: '678800.0'
+        media: 27.3826
+        quartis: [0, 0.873, 5]
+      especie_veiculo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '-1'
+        max: TRAÇÃO
+        top:
+        - ['-1', 861990]
+        - [PASSAGEIRO, 695006]
+        - [CARGA, 265015]
+        - [TRAÇÃO, 112291]
+        - [ESPECIAL, 80966]
+        - [MISTO, 64357]
+        - [NA, 294]
+        - [COMPETIÇÃO, 51]
+        - [COLEÇÃO, 41]
+      marca_veiculo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11237}
+      modelo_veiculo:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2080011]
+      quantidade_infracoes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 2080011]

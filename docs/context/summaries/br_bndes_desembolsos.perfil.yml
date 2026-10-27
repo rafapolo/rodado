@@ -1,0 +1,160 @@
+dataset: br_bndes_desembolsos
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  mensal:
+    linhas: 3762192
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 32014]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        media: 2.1356
+        quartis: [1, 2, 3]
+        top:
+        - ['3', 13024]
+        - ['2', 10307]
+        - ['1', 8683]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [RS, 7659]
+        - [PR, 4471]
+        - [SC, 4106]
+        - [MG, 3425]
+        - [SP, 3339]
+        - [MT, 1373]
+        - [ES, 1277]
+        - [GO, 949]
+        - [BA, 841]
+        - [RJ, 600]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 1.02, distintos_aprox: 4306}
+      forma_apoio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: DIRETA
+        max: INDIRETA
+        top:
+        - [INDIRETA, 31467]
+        - [DIRETA, 547]
+      produto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: BNDES AUTOMÁTICO
+        max: CARTÃO BNDES
+        top:
+        - [BNDES AUTOMÁTICO, 17850]
+        - [BNDES FINAME, 8995]
+        - [BNDES CRÉDITO DIGITAL, 2589]
+        - [CARTÃO BNDES, 1499]
+        - [BNDES CRÉDITO RURAL, 522]
+        - [BNDES FINEM, 233]
+        - [BNDES NÃO REEMBOLSÁVEL, 165]
+        - [BNDES-EXIM, 83]
+        - [BNDES MÁQUINAS E SERVIÇOS, 49]
+        - [BNDES MERCADO DE CAPITAIS, 22]
+      instrumento_financeiro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 83, min: AGENTES REPASSADORES - MAIS MICROCRÉDITO, max: SEGURANÇA
+          PÚBLICA}
+      indicador_inovacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NÃO
+        max: SIM
+        top:
+        - [NÃO, 31464]
+        - [SIM, 550]
+      porte_empresa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: GRANDE
+        max: PEQUENA
+        top:
+        - [PEQUENA, 13262]
+        - [MICRO, 11606]
+        - [MÉDIA, 6015]
+        - [GRANDE, 1131]
+      setor_cnae:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: AGROPECUÁRIA
+        max: INDÚSTRIA EXTRATIVA
+        top:
+        - [AGROPECUÁRIA, 15089]
+        - [COMÉRCIO E SERVIÇOS, 14230]
+        - [INDÚSTRIA DE TRANSFORMAÇÃO, 2650]
+        - [INDÚSTRIA EXTRATIVA, 45]
+      subsetor_cnae_agrupado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 42
+        min: ADMINISTRAÇÃO PÚBLICA
+        max: ÁGUA, ESGOTO E LIXO
+        top:
+        - [AGROPECUÁRIA, 15089]
+        - [COMÉRCIO, 4318]
+        - [TRANSPORTE TERRESTRE, 3938]
+        - [CONSTRUÇÃO, 1463]
+        - ['ATIV IMOBIL, PROFISSIONAL E ADM', 1273]
+        - [ATIV FINANCEIRA E SEGURO, 910]
+        - [ALOJAMENTO E ALIMENTAÇÃO, 577]
+        - [PRODUTOS ALIMENTÍCIOS, 419]
+        - [PRODUTO DE METAL, 315]
+        - [OUTRAS ATIV SERVIÇOS, 309]
+      setor_bndes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: AGROPECUÁRIA
+        max: INFRAESTRUTURA
+        top:
+        - [AGROPECUÁRIA, 15089]
+        - [COMÉRCIO E SERVIÇOS, 9500]
+        - [INFRAESTRUTURA, 4730]
+        - [INDUSTRIA, 2695]
+      subsetor_bndes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: AGROPECUÁRIA
+        max: TÊXTIL E VESTUÁRIO
+        top:
+        - [AGROPECUÁRIA, 15089]
+        - [COMÉRCIO E SERVIÇOS, 9500]
+        - [TRANSPORTE RODOVIÁRIO, 3936]
+        - [OUTRAS, 968]
+        - [ALIMENTO E BEBIDA, 453]
+        - [METALURGIA E PRODUTOS, 352]
+        - [TÊXTIL E VESTUÁRIO, 346]
+        - [CONSTRUÇÃO, 257]
+        - [MECÂNICA, 250]
+        - [ENERGIA ELÉTRICA, 185]
+      valor_desembolsado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 15563
+        min: '19.83'
+        max: '1003470000.0'
+        media: 1131853.6501
+        quartis: [74413.8202, 213109.1053, 573084.3919]

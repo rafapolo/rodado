@@ -1,0 +1,245 @@
+dataset: br_tce_pi
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  despesas_total:
+    linhas: 17
+    fonte_do_perfil: tabela inteira
+    colunas:
+      empenhada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 14
+        min: '3508304506.09'
+        max: '21612654034.68'
+        media: 10631222188.9824
+        quartis: [6343572922.3775, 9015825311.58, 15356565011.505]
+        top:
+        - ['10874886879.27', 1]
+        - ['11531693461.9', 1]
+        - ['14872509280.42', 1]
+        - ['16808732204.76', 1]
+        - ['17197508095.34', 1]
+        - ['20577047311.62', 1]
+        - ['21612654034.68', 1]
+        - ['3508304506.09', 1]
+        - ['4446651951.98', 1]
+        - ['5070338737.93', 1]
+      exercicio:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '2010'
+        max: '2026'
+        media: 2018
+        quartis: [2014, 2018, 2022]
+        top:
+        - ['2010', 1]
+        - ['2011', 1]
+        - ['2012', 1]
+        - ['2013', 1]
+        - ['2014', 1]
+        - ['2015', 1]
+        - ['2016', 1]
+        - ['2017', 1]
+        - ['2018', 1]
+        - ['2019', 1]
+      liquidada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '3383683721.72'
+        max: '21266832200.7'
+        media: 10313730097.5829
+        quartis: [6018276771.8325, 8773739947.99, 14779788994.6]
+        top:
+        - ['10702699432.84', 1]
+        - ['11282285264.03', 1]
+        - ['14547439955.09', 1]
+        - ['15476836113.13', 1]
+        - ['16690581566.43', 1]
+        - ['20284208516.97', 1]
+        - ['21266832200.7', 1]
+        - ['3383683721.72', 1]
+        - ['4188044410.9', 1]
+        - ['4909763538.0', 1]
+      paga:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '3280007752.33'
+        max: '20984085978.76'
+        media: 10038279072.1376
+        quartis: [5764326666.675, 8492466770.39, 14464284404.925]
+        top:
+        - ['10408867181.62', 1]
+        - ['11047939047.66', 1]
+        - ['14255977650.82', 1]
+        - ['15089204667.24', 1]
+        - ['16228851897.53', 1]
+        - ['19933621829.5', 1]
+        - ['20984085978.76', 1]
+        - ['3280007752.33', 1]
+        - ['4172637914.58', 1]
+        - ['4729686976.19', 1]
+  licitacoes_estado:
+    linhas: 17
+    fonte_do_perfil: tabela inteira
+    colunas:
+      previsto:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '72000.0'
+        max: '209020633.47'
+        media: 18136847.1906
+        quartis: [687360.045, 1537248.92, 13888018.265]
+        top:
+        - ['10527517.78', 1]
+        - ['1283942.45', 1]
+        - ['13186164.04', 1]
+        - ['1458460.78', 1]
+        - ['1537248.92', 1]
+        - ['15993580.94', 1]
+        - ['16471084.39', 1]
+        - ['173904.19', 1]
+        - ['209020633.47', 1]
+        - ['27862032.0', 1]
+      data:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '2026-10-07'
+        max: '2026-11-24'
+        top:
+        - ['2026-10-07', 1]
+        - ['2026-10-08', 1]
+        - ['2026-10-09', 1]
+        - ['2026-10-13', 1]
+        - ['2026-10-14', 1]
+        - ['2026-10-15', 1]
+        - ['2026-10-16', 1]
+        - ['2026-10-19', 1]
+        - ['2026-10-20', 1]
+        - ['2026-10-21', 1]
+      link:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '20261007'
+        max: '20261124'
+        top:
+        - ['20261007', 1]
+        - ['20261008', 1]
+        - ['20261009', 1]
+        - ['20261013', 1]
+        - ['20261014', 1]
+        - ['20261015', 1]
+        - ['20261016', 1]
+        - ['20261019', 1]
+        - ['20261020', 1]
+        - ['20261021', 1]
+  orgaos:
+    linhas: 130
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 140, min: '00000', max: '900003'}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 122, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ordem:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.9923
+        quartis: [2, 2, 2]
+        top:
+        - ['2', 129]
+        - ['1', 1]
+      sigla: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 141, min: 1 DIR REG PARNAIBA, max: UNIDADE MISTA DE SAÚDE DE AVELINO LOPES}
+  prefeituras:
+    linhas: 224
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 220
+        min: '118'
+        max: '1767'
+        media: 1472.7009
+        quartis: [1514, 1572, 1636]
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 232, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codIBGE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 214, min: '2200053', max: '2211704'}
+      idMunicipioMapa:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 244
+        min: '1'
+        max: '224'
+        media: 112.5
+        quartis: [56, 112, 168]
+      ods: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 214, min: BRA002022001, max: BRA002022224}
+      urlPrefeitura: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 227, min: 'http://barreirasdopiaui.pi.gov.br/', max: 'https://cajazeirasdopiaui.pi.gov.br/'}
+      urlCamara: {tipo: VARCHAR, nulos_pct: 6.25, distintos_aprox: 244, min: 'http://camaradepiripiri.pi.gov.br/', max: 'https://www.camaradeportoalegredopiaui.pi.gov.br'}
+  receitas_total:
+    linhas: 17
+    fonte_do_perfil: tabela inteira
+    colunas:
+      arrecadada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '3569483637.95'
+        max: '22735952020.31'
+        media: 10749487265.5859
+        quartis: [6401073563.7, 9161645375.46, 15342392345.41]
+        top:
+        - ['10674402188.51', 1]
+        - ['11950315711.19', 1]
+        - ['14884584846.92', 1]
+        - ['16715814840.88', 1]
+        - ['17161352506.54', 1]
+        - ['20436426545.01', 1]
+        - ['22735952020.31', 1]
+        - ['3569483637.95', 1]
+        - ['4616986923.02', 1]
+        - ['5248695334.32', 1]
+      exercicio:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '2010'
+        max: '2026'
+        media: 2018
+        quartis: [2014, 2018, 2022]
+        top:
+        - ['2010', 1]
+        - ['2011', 1]
+        - ['2012', 1]
+        - ['2013', 1]
+        - ['2014', 1]
+        - ['2015', 1]
+        - ['2016', 1]
+        - ['2017', 1]
+        - ['2018', 1]
+        - ['2019', 1]
+      prevista:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '3991632404.69'
+        max: '26302224475.76'
+        media: 12513651071.9888
+        quartis: [7783104503.42, 10808378165.81, 16361718987.17]
+        top:
+        - ['10808378165.81', 1]
+        - ['11530507533.49', 1]
+        - ['12561465135.66', 1]
+        - ['13436306488.23', 1]
+        - ['15537365756.92', 1]
+        - ['18834778677.92', 1]
+        - ['21866913648.13', 1]
+        - ['24408922416.2', 1]
+        - ['26302224475.76', 1]
+        - ['3991632404.69', 1]

@@ -1,0 +1,172 @@
+dataset: br_mp_pep
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  cargos_funcoes:
+    linhas: 1799733
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: '1999'
+        max: '2025'
+        media: 2020.0391
+        quartis: [2019, 2022, 2023]
+        top:
+        - ['2023', 285657]
+        - ['2024', 282238]
+        - ['2022', 206774]
+        - ['2018', 175446]
+        - ['2021', 163126]
+        - ['2020', 162295]
+        - ['2019', 158909]
+        - ['2025', 131944]
+        - ['2017', 14593]
+        - ['2014', 14487]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.9778
+        quartis: [4, 7, 11]
+        top:
+        - ['12', 337238]
+        - ['5', 144851]
+        - ['4', 144395]
+        - ['1', 144217]
+        - ['3', 143255]
+        - ['2', 142144]
+        - ['11', 128914]
+        - ['10', 126578]
+        - ['9', 123765]
+        - ['8', 123055]
+      funcao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: CCX
+        max: FPR
+        top:
+        - [FEX, 602660]
+        - [DAS, 599803]
+        - [FPE, 406917]
+        - [CCX, 180029]
+        - [FCI, 8221]
+        - [FCD, 1229]
+        - [FDI, 715]
+        - [FPR, 159]
+      natureza_juridica:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Administração Direta Federal
+        max: Fundação Federal
+        top:
+        - [Administração Direta Federal, 1082010]
+        - [Autarquia Federal, 486026]
+        - [Fundação Federal, 231697]
+      orgao_superior:
+        tipo: VARCHAR
+        nulos_pct: 0.17
+        distintos_aprox: 42
+        min: Advocacia-Geral Da Uniao
+        max: Vice-Presidencia Da Republica
+        top:
+        - [Presidência da República, 322161]
+        - [Ministério da Economia, 136367]
+        - [Ministério da Saúde, 133135]
+        - [Ministério da Justiça e Segurança Pública, 108848]
+        - [Ministério do Meio Ambiente, 83847]
+        - ['Ministério da Agricultura, Pecuária e Abastecimento', 79252]
+        - [Ministério da Educação, 77312]
+        - ['Ministério da Ciência, Tecnologia, Inovações e Comunicações', 68561]
+        - [Ministerio Do Planejamento E Orcamento, 63658]
+        - [Ministerio Dos Povos Indigenas, 61287]
+      escolaridade_servidor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 40, pessoal: 'só contagens: valores seriam dado pessoal'}
+      orgao: {tipo: VARCHAR, nulos_pct: 0.17, distintos_aprox: 104, min: Advocacia-Geral da União, max: Vice-Presidência da República}
+      regiao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Centro-Oeste
+        max: Sul
+        top:
+        - [Centro-Oeste, 953658]
+        - [Sudeste, 339392]
+        - [Nordeste, 234496]
+        - [Norte, 172793]
+        - [Sul, 99394]
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Feminino
+        max: Masculino
+        top:
+        - [Masculino, 1048618]
+        - [Feminino, 751115]
+      nivel_funcao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 152, min: CCX-0101, max: FPR-0004}
+      subnivel_funcao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 162, min: CCX-0101, max: FPR-0004}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [DF, 878484]
+        - [RJ, 195798]
+        - [SP, 73511]
+        - [MG, 52363]
+        - [PE, 52222]
+        - [PA, 50882]
+        - [BA, 41425]
+        - [AM, 39760]
+        - [RS, 38204]
+        - [CE, 32426]
+      faixa_etaria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: 31 a 40 anos
+        max: Até 30 anos
+        top:
+        - [41 a 50 anos, 534392]
+        - [31 a 40 anos, 457728]
+        - [51 a 60 anos, 444105]
+        - [Acima de 60 anos, 252855]
+        - [Até 30 anos, 110653]
+      raca_cor:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: Amarela
+        max: Preta
+        top:
+        - [Branca, 974118]
+        - [Parda, 590713]
+        - [Preta, 117523]
+        - [Amarela, 54379]
+        - [Não informado, 45072]
+        - [Indígena, 16565]
+        - [Negra, 1363]
+      cce_e_fce:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 60
+        min: '0'
+        max: '64'
+        media: 0.6655
+        quartis: [0, 0, 1]
+      das_e_correlatas:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 63
+        min: '0'
+        max: '79'
+        media: 0.9334
+        quartis: [0, 1, 1]

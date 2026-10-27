@@ -1,0 +1,283 @@
+dataset: br_ana_atlas_esgotos
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  municipio:
+    linhas: 5570
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 853]
+        - [SP, 645]
+        - [RS, 497]
+        - [BA, 417]
+        - [PR, 399]
+        - [SC, 295]
+        - [GO, 246]
+        - [PI, 224]
+        - [PB, 223]
+        - [MA, 217]
+      populacao_urbana_2013:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4183
+        min: '177'
+        max: '11715605'
+        media: 30481.2576
+        quartis: [2946, 6576, 16309]
+      populacao_urbana_2035:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4708
+        min: '179'
+        max: '12219483'
+        media: 36773.4162
+        quartis: [3654, 8320, 20613]
+      prestador_servico_esgotamento_sanitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2494}
+      sigla_prestador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 197, min: AA, max: SISAM}
+      indice_sem_atendimento_sem_coleta_sem_tratamento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3893
+        min: '0.0'
+        max: '1.0'
+        media: 0.466
+        quartis: [0.1124, 0.427, 0.8254]
+      indice_atendimento_solucao_individual: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 2191, pessoal: 'só contagens: valores seriam dado pessoal'}
+      indice_atendimento_com_coleta_sem_tratamento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3042
+        min: '0.0'
+        max: '1.0'
+        media: 0.2073
+        quartis: [0, 0.0203, 0.3116]
+      indice_atendimento_com_coleta_com_tratamento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1518
+        min: '0.0'
+        max: '1.0'
+        media: 0.1908
+        quartis: [0, 0, 0.2563]
+      vazao_sem_coleta_sem_tratamento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 544
+        min: '0.0'
+        max: '6642.3'
+        media: 14.929
+        quartis: [0.7285, 2.554, 7.1287]
+      vazao_solucao_individual: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 416, pessoal: 'só contagens: valores seriam dado pessoal'}
+      vazao_com_coleta_sem_tratamento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 536
+        min: '0.0'
+        max: '4325.5'
+        media: 9.4105
+        quartis: [0, 0.1, 2.2685]
+      vazao_com_coleta_com_tratamento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 891
+        min: '0.0'
+        max: '12976.4'
+        media: 23.7398
+        quartis: [0, 0, 3.2074]
+      vazao_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1081
+        min: '0.2'
+        max: '19783.7'
+        media: 54.7032
+        quartis: [3.4261, 7.5486, 20.9668]
+      carga_gerada_sem_coleta_sem_tratamento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3619
+        min: '0.0'
+        max: '65650.5'
+        media: 432.464
+        quartis: [32.7541, 118.5753, 325.9888]
+      carga_gerada_encaminhada_solucao_individual: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 1654, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      carga_gerada_com_coleta_sem_tratamento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1685
+        min: '0.0'
+        max: '132237.7'
+        media: 297.0354
+        quartis: [0, 5.7429, 103.1343]
+      carga_gerada_com_coleta_com_tratamento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2055
+        min: '0.0'
+        max: '396713.2'
+        media: 706.5055
+        quartis: [0, 0, 127.039]
+      carga_gerada_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5331
+        min: '9.6'
+        max: '604823.0'
+        media: 1633.4358
+        quartis: [159.0912, 353.8442, 878.8972]
+      carga_lancada_sem_coleta_sem_tratamento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3619
+        min: '0.0'
+        max: '65650.5'
+        media: 432.464
+        quartis: [32.7541, 118.5753, 325.9888]
+      carga_lancada_proveniente_solucao_individual: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 1367, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      carga_lancada_com_coleta_sem_tratamento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1685
+        min: '0.0'
+        max: '132237.7'
+        media: 297.0354
+        quartis: [0, 5.7429, 103.1343]
+      carga_lancada_com_coleta_com_tratamento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1629
+        min: '0.0'
+        max: '143905.2'
+        media: 181.7517
+        quartis: [0, 0, 31.5646]
+      carga_lancada_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 4010
+        min: '6.5'
+        max: '256791.5'
+        media: 990.2222
+        quartis: [117.6681, 273.1277, 648.4889]
+      indice_atendimento_etes_2035:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 212
+        min: '0.9'
+        max: '1.0'
+        media: 0.9184
+        quartis: [0.9, 0.9, 0.9]
+      indice_atendimento_solucao_individual_2035: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 261, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      carga_gerada_total_2035:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3555
+        min: '9.7'
+        max: '659852.1'
+        media: 1985.7653
+        quartis: [197.3063, 449.2592, 1113.1205]
+      carga_afluente_ete_2035:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 4388
+        min: '8.7'
+        max: '593866.9'
+        media: 1850.7282
+        quartis: [181.595, 410.4622, 1026.1775]
+      carga_efluente_ete_2035:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2566
+        min: '0.4'
+        max: '108946.7'
+        media: 310.0227
+        quartis: [32.9554, 71.2314, 170.1313]
+      carga_afluente_solucao_individual_2035: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 2060, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      carga_efluente_solucao_individual_2035: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 1262, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      populacao_atendida_2035:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5792
+        min: '161'
+        max: '10997535'
+        media: 34272.7016
+        quartis: [3363, 7601, 19003]
+      investimento_coleta:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5321
+        min: '0.0'
+        max: '1910612291.83'
+        media: 18287536.9139
+        quartis: [2604171.2302, 6059653.8266, 13261553.1791]
+      investimento_tratamento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 4752
+        min: '0.0'
+        max: '1888248278.23'
+        media: 8552018.7544
+        quartis: [656051.5486, 1881399.3069, 4613059.6412]
+      investimento_coleta_tratatamento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5806
+        min: '0.0'
+        max: '2898940776.69'
+        media: 26839555.6683
+        quartis: [3665397.8113, 8181358.8654, 18647309.3659]
+      necessidade_remocao_dbo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Acima de 80%
+        max: Solução conjunta
+        top:
+        - [Entre 60 e 80%, 2969]
+        - [Acima de 80%, 1291]
+        - [Solução conjunta, 524]
+        - [Corpo receptor intermitente ou efêmero, 470]
+        - [Requer solução complementar, 316]
+      tipologia_solucao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Corpo receptor intermitente ou efêmero (Requer alta remoção de patógenos)
+        max: Tratamento secundário convencional
+        top:
+        - [Tratamento secundário convencional, 2969]
+        - [Tratamento secundário avançado, 1291]
+        - [Solução conjunta, 524]
+        - [Corpo receptor intermitente ou efêmero (Requer alta remoção de patógenos), 470]
+        - ['Outras soluções (revisão da classe do rio, corpo receptor alternativo, reuso, etc.)', 316]
+      atencao_fosforo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [Não, 4336]
+        - [Sim, 1234]
+      atencao_nitrogenio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Não
+        max: sim
+        top:
+        - [Não, 4750]
+        - [Sim, 815]
+        - [sim, 5]

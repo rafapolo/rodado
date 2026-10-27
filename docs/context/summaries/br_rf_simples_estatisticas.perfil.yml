@@ -1,0 +1,131 @@
+dataset: br_rf_simples_estatisticas
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  eventos_mes:
+    linhas: 32878
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '2007'
+        max: '2026'
+        media: 2017.5055
+        quartis: [2013, 2018, 2022]
+        top:
+        - ['2013', 2201]
+        - ['2023', 2075]
+        - ['2012', 1968]
+        - ['2021', 1967]
+        - ['2022', 1965]
+        - ['2024', 1955]
+        - ['2025', 1925]
+        - ['2014', 1851]
+        - ['2019', 1817]
+        - ['2017', 1793]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4931
+        quartis: [3, 7, 9]
+        top:
+        - ['1', 2824]
+        - ['8', 2799]
+        - ['12', 2797]
+        - ['7', 2764]
+        - ['9', 2763]
+        - ['3', 2755]
+        - ['2', 2741]
+        - ['6', 2726]
+        - ['11', 2709]
+        - ['5', 2694]
+      codigo_evento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 189, min: E310, max: R391}
+      descricao_evento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 108, min: Desenquadramento de ofício do SIMEI - Atividade econômica vedada,
+        max: SIMEI - Ingresso por opção-empresas novas}
+      ente:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: contribuintes
+        max: total
+        top:
+        - [total, 12410]
+        - [receita_federal, 6694]
+        - [municipios, 5632]
+        - [estados, 5271]
+        - [contribuintes, 2871]
+      total:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2892
+        min: '1'
+        max: '1626207'
+        media: 9321.5379
+        quartis: [2, 8, 65]
+      posicao_consolidada:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2026-10-14'
+        max: '2026-10-25'
+        top:
+        - ['2026-10-25', 31191]
+        - ['2026-10-14', 1687]
+  optantes_municipio:
+    linhas: 4254282
+    fonte_do_perfil: amostra de 47.011%. ~2.000.000 linhas
+    colunas:
+      regime:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: simei_inicio_exercicio
+        max: simples
+        top:
+        - [simples, 611378]
+        - [simei_total, 522488]
+        - [simei_portal, 506685]
+        - [simei_inicio_exercicio, 394847]
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 211, min: '2007-07-31', max: '2026-09-30'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 323438]
+        - [SP, 242939]
+        - [RS, 178636]
+        - [BA, 154978]
+        - [PR, 146193]
+        - [SC, 109017]
+        - [GO, 92562]
+        - [PB, 79846]
+        - [PI, 75472]
+        - [MA, 74449]
+      id_municipio_rf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5414}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      nome_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5179, pessoal: 'só contagens: valores seriam dado pessoal'}
+      optantes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 28610
+        min: '0'
+        max: '2435835'
+        media: 1477.0606
+        quartis: [41, 176, 586]
+      posicao_consolidada:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2026-10-10'
+        max: '2026-10-24'
+        top:
+        - ['2026-10-24', 2006726]
+        - ['2026-10-10', 28672]

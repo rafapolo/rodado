@@ -1,0 +1,2485 @@
+dataset: world_oecd_pisa
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  student:
+    linhas: 2500803
+    fonte_do_perfil: amostra de 79.974%. ~2.000.000 linhas
+    colunas:
+      year:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '2015'
+        max: '2025'
+        media: 2020.5
+        quartis: [2018, 2022, 2025]
+        top:
+        - ['2025', 616206]
+        - ['2018', 491694]
+        - ['2022', 484947]
+        - ['2015', 412931]
+      country_id_iso_3: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 113, min: ALB, max: ZMB}
+      country_id_m49: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 100, min: '100', max: '983'}
+      school_id: {tipo: VARCHAR, nulos_pct: 1.06, distintos_aprox: 30682}
+      student_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 912827}
+      assessment_type:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: 06MS
+        max: 25MS
+        top:
+        - [25MS, 616206]
+        - [07MS, 491694]
+        - [08MS, 484947]
+        - [06MS, 412931]
+      national_centre_code: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 131, min: 000800, max: 089400}
+      stratum: {tipo: VARCHAR, nulos_pct: 4.28, distintos_aprox: 2963}
+      subregion: {tipo: VARCHAR, nulos_pct: 0.56, distintos_aprox: 125, min: 0080000, max: '9830000'}
+      oecd:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        top:
+        - ['0', 1052823]
+        - ['1', 921850]
+        - ['2', 31105]
+      mode_respondent:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 1295381]
+        - ['1', 710397]
+      language_questionnaire: {tipo: VARCHAR, nulos_pct: 2.01, distintos_aprox: 120, min: '113', max: zhs}
+      language_assessment: {tipo: VARCHAR, nulos_pct: 0.72, distintos_aprox: 144, min: '113', max: zhs}
+      form_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 176, min: '1', max: '99'}
+      option_learning_digital_world:
+        tipo: VARCHAR
+        nulos_pct: 69.28
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - [null, 1389572]
+        - ['1', 588132]
+        - ['0', 28074]
+      option_parent_questionnaire:
+        tipo: VARCHAR
+        nulos_pct: 69.28
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - [null, 1389572]
+        - ['0', 476291]
+        - ['1', 139915]
+      option_ict_questionnaire:
+        tipo: VARCHAR
+        nulos_pct: 69.28
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - [null, 1389572]
+        - ['0', 319475]
+        - ['1', 296731]
+      option_foreign_language_assessment:
+        tipo: VARCHAR
+        nulos_pct: 69.28
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - [null, 1389572]
+        - ['0', 479091]
+        - ['1', 137115]
+      option_une_heure:
+        tipo: VARCHAR
+        nulos_pct: 69.28
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - [null, 1389572]
+        - ['0', 498633]
+        - ['1', 117573]
+      international_grade:
+        tipo: VARCHAR
+        nulos_pct: 1.27
+        distintos_aprox: 9
+        min: '10'
+        max: '99'
+        top:
+        - ['10', 1117071]
+        - ['9', 581447]
+        - ['11', 152132]
+        - ['8', 74652]
+        - [null, 25494]
+        - ['98', 22227]
+        - ['7', 19340]
+        - ['12', 7957]
+        - ['96', 5437]
+        - ['13', 20]
+      month_birth:
+        tipo: BIGINT
+        nulos_pct: 70.51
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.5694
+        quartis: [4, 7, 9]
+        top:
+        - [null, 1414345]
+        - ['9', 53287]
+        - ['7', 52051]
+        - ['10', 51716]
+        - ['8', 51226]
+        - ['1', 49428]
+        - ['4', 48953]
+        - ['5', 48767]
+        - ['3', 48313]
+        - ['12', 48302]
+      year_birth:
+        tipo: BIGINT
+        nulos_pct: 69.55
+        distintos_aprox: 4
+        min: '2009'
+        max: '2553'
+        media: 2015.2995
+        quartis: [2009, 2009, 2009]
+        top:
+        - [null, 1394981]
+        - ['2009', 563682]
+        - ['2010', 40108]
+        - ['2552', 4207]
+        - ['2553', 2800]
+      gender:
+        tipo: VARCHAR
+        nulos_pct: 5.8
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 945964]
+        - ['2', 943514]
+        - [null, 116300]
+      effort_put_into_test:
+        tipo: VARCHAR
+        nulos_pct: 31.09
+        distintos_aprox: 10
+        min: '1'
+        max: '9'
+        top:
+        - [null, 623680]
+        - ['8', 321476]
+        - ['10', 290970]
+        - ['7', 241643]
+        - ['9', 227808]
+        - ['6', 127686]
+        - ['5', 88391]
+        - ['4', 34108]
+        - ['3', 20658]
+        - ['1', 18355]
+      effort_would_have_invested:
+        tipo: BIGINT
+        nulos_pct: 72.26
+        distintos_aprox: 11
+        min: '1'
+        max: '10'
+        media: 8.8994
+        quartis: [8, 10, 10]
+        top:
+        - [null, 1449342]
+        - ['10', 296424]
+        - ['9', 109475]
+        - ['8', 66179]
+        - ['7', 34742]
+        - ['6', 18523]
+        - ['5', 15523]
+        - ['4', 5509]
+        - ['1', 4573]
+        - ['3', 3484]
+      occupation_mother: {tipo: VARCHAR, nulos_pct: 30.94, distintos_aprox: 840, min: '0', max: '9999'}
+      occupation_father: {tipo: VARCHAR, nulos_pct: 30.94, distintos_aprox: 840, min: '0', max: '9999'}
+      occupation_parent_1: {tipo: VARCHAR, nulos_pct: 69.28, distintos_aprox: 55, min: '0', max: '999'}
+      occupation_parent_2: {tipo: VARCHAR, nulos_pct: 69.28, distintos_aprox: 55, min: '0', max: '999'}
+      occupation_self: {tipo: VARCHAR, nulos_pct: 0.22, distintos_aprox: 840, min: '0', max: '9999'}
+      grade_compared:
+        tipo: BIGINT
+        nulos_pct: 69.57
+        distintos_aprox: 9
+        min: '-3'
+        max: '5'
+        media: -0.0961
+        quartis: [0, 0, 0]
+        top:
+        - [null, 1395472]
+        - ['0', 443680]
+        - ['-1', 92078]
+        - ['1', 55698]
+        - ['-2', 11841]
+        - ['2', 2982]
+        - ['-3', 2836]
+        - ['3', 808]
+        - ['4', 354]
+        - ['5', 29]
+      age:
+        tipo: DOUBLE
+        nulos_pct: 0.72
+        distintos_aprox: 18
+        min: '15.08'
+        max: '16.42'
+        media: 15.7927
+        quartis: [15.58, 15.7512, 16]
+        top:
+        - ['15.67', 176119]
+        - ['15.58', 174037]
+        - ['15.75', 172834]
+        - ['15.83', 169313]
+        - ['15.5', 169025]
+        - ['15.42', 166163]
+        - ['15.92', 164829]
+        - ['16.0', 163823]
+        - ['16.08', 159940]
+        - ['16.17', 155293]
+      national_study_programme: {tipo: VARCHAR, nulos_pct: 1.03, distintos_aprox: 986, min: 00080001, max: '96020'}
+      country_birth_self: {tipo: VARCHAR, nulos_pct: 0.96, distintos_aprox: 363, min: '000400', max: '999999'}
+      country_birth_mother: {tipo: VARCHAR, nulos_pct: 31.75, distintos_aprox: 345, min: '000400', max: '999999'}
+      country_birth_father: {tipo: VARCHAR, nulos_pct: 31.89, distintos_aprox: 345, min: '000400', max: '999999'}
+      country_birth_parent_1: {tipo: VARCHAR, nulos_pct: 69.28, distintos_aprox: 167, min: '000400', max: '999999'}
+      country_birth_parent_2: {tipo: VARCHAR, nulos_pct: 69.28, distintos_aprox: 167, min: '000400', max: '999999'}
+      language_home: {tipo: VARCHAR, nulos_pct: 2.77, distintos_aprox: 336, min: '105', max: '999'}
+      isced_level:
+        tipo: VARCHAR
+        nulos_pct: 25.13
+        distintos_aprox: 18
+        min: '100'
+        max: '5'
+        top:
+        - ['3', 525532]
+        - [null, 504144]
+        - ['2', 366440]
+        - ['344', 323073]
+        - ['244', 191677]
+        - ['354', 69988]
+        - ['342', 14598]
+        - ['353', 2955]
+        - ['5', 2792]
+        - ['341', 1824]
+      isced_designation:
+        tipo: VARCHAR
+        nulos_pct: 55.39
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - [null, 1110964]
+        - ['1', 742812]
+        - ['2', 73559]
+        - ['3', 52392]
+        - ['4', 26051]
+      isced_orientation:
+        tipo: VARCHAR
+        nulos_pct: 55.39
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - [null, 1110964]
+        - ['1', 745683]
+        - ['3', 110184]
+        - ['4', 25886]
+        - ['2', 13061]
+      mother_isced:
+        tipo: VARCHAR
+        nulos_pct: 34.03
+        distintos_aprox: 11
+        min: '0'
+        max: '9'
+        top:
+        - [null, 682602]
+        - ['6', 308974]
+        - ['4', 253081]
+        - ['5', 196804]
+        - ['2', 128764]
+        - ['3', 107837]
+        - ['8', 81058]
+        - ['9', 67734]
+        - ['1', 61269]
+        - ['7', 49660]
+      father_isced:
+        tipo: VARCHAR
+        nulos_pct: 35.29
+        distintos_aprox: 11
+        min: '0'
+        max: '9'
+        top:
+        - [null, 707855]
+        - ['6', 300604]
+        - ['4', 250535]
+        - ['5', 188107]
+        - ['2', 129124]
+        - ['3', 118149]
+        - ['8', 69812]
+        - ['9', 63012]
+        - ['1', 61755]
+        - ['7', 53081]
+      isced_parent_1:
+        tipo: VARCHAR
+        nulos_pct: 74.73
+        distintos_aprox: 9
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1498937]
+        - ['4', 93216]
+        - ['7', 90410]
+        - ['8', 74152]
+        - ['2', 67612]
+        - ['6', 48775]
+        - ['3', 38688]
+        - ['9', 36062]
+        - ['5', 32580]
+        - ['1', 25346]
+      isced_parent_2:
+        tipo: VARCHAR
+        nulos_pct: 78.97
+        distintos_aprox: 9
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1583982]
+        - ['4', 79749]
+        - ['7', 77143]
+        - ['8', 54676]
+        - ['2', 50309]
+        - ['6', 43296]
+        - ['3', 37373]
+        - ['5', 31251]
+        - ['9', 25892]
+        - ['1', 22107]
+      highest_parent_isced:
+        tipo: VARCHAR
+        nulos_pct: 7.35
+        distintos_aprox: 11
+        min: '0'
+        max: '9'
+        top:
+        - ['6', 443551]
+        - ['4', 324618]
+        - ['5', 233416]
+        - ['8', 175536]
+        - ['7', 152130]
+        - [null, 147515]
+        - ['2', 144415]
+        - ['9', 140368]
+        - ['3', 116103]
+        - ['10', 60523]
+      highest_parent_years_schooling:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2005778]
+      mother_isced_alternate_definition:
+        tipo: VARCHAR
+        nulos_pct: 76.5
+        distintos_aprox: 7
+        min: '0'
+        max: '6'
+        top:
+        - [null, 1534373]
+        - ['6', 152873]
+        - ['4', 120200]
+        - ['5', 68803]
+        - ['2', 55005]
+        - ['3', 32241]
+        - ['1', 27820]
+        - ['0', 14463]
+      father_isced_alternate_definition:
+        tipo: VARCHAR
+        nulos_pct: 76.93
+        distintos_aprox: 7
+        min: '0'
+        max: '6'
+        top:
+        - [null, 1542970]
+        - ['6', 143145]
+        - ['4', 116483]
+        - ['5', 68036]
+        - ['2', 55085]
+        - ['3', 37351]
+        - ['1', 28304]
+        - ['0', 14404]
+      highest_parent_isced_alternate_definition:
+        tipo: VARCHAR
+        nulos_pct: 76.29
+        distintos_aprox: 7
+        min: '0'
+        max: '6'
+        top:
+        - [null, 1530225]
+        - ['6', 199421]
+        - ['4', 112651]
+        - ['5', 72714]
+        - ['2', 39960]
+        - ['3', 27339]
+        - ['1', 17308]
+        - ['0', 6160]
+      highest_parent_international_years_schooling:
+        tipo: BIGINT
+        nulos_pct: 73.78
+        distintos_aprox: 5
+        min: '6'
+        max: '16'
+        media: 13.4947
+        quartis: [12, 14, 16]
+        top:
+        - [null, 1479865]
+        - ['16', 242548]
+        - ['12', 156558]
+        - ['9', 53089]
+        - ['14', 52184]
+        - ['6', 21534]
+      mother_isei:
+        tipo: DOUBLE
+        nulos_pct: 44.73
+        distintos_aprox: 479
+        min: '11.0'
+        max: '89.0'
+        media: 43.253
+        quartis: [20.4371, 38.3811, 67.1468]
+      father_isei:
+        tipo: DOUBLE
+        nulos_pct: 45.12
+        distintos_aprox: 479
+        min: '11.0'
+        max: '89.0'
+        media: 44.0558
+        quartis: [25.8219, 35.9233, 65.0321]
+      isei_parent_1:
+        tipo: DOUBLE
+        nulos_pct: 78.08
+        distintos_aprox: 341
+        min: '11.01'
+        max: '88.96'
+        media: 48.7806
+        quartis: [27.0147, 49.9484, 70.9252]
+      isei_parent_2:
+        tipo: DOUBLE
+        nulos_pct: 83.57
+        distintos_aprox: 341
+        min: '11.01'
+        max: '88.96'
+        media: 46.8905
+        quartis: [26.3167, 43.7097, 69.4237]
+      index_highest_parent_occupation:
+        tipo: DOUBLE
+        nulos_pct: 32.49
+        distintos_aprox: 341
+        min: '11.01'
+        max: '88.96'
+        media: 51.3894
+        quartis: [28.9098, 52.6997, 73.6915]
+      index_immigration_status:
+        tipo: VARCHAR
+        nulos_pct: 7.77
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 1616522]
+        - [null, 155772]
+        - ['2', 118082]
+        - ['3', 115402]
+      duration_early_childhood_education_care:
+        tipo: VARCHAR
+        nulos_pct: 50.36
+        distintos_aprox: 10
+        min: '0'
+        max: '8'
+        top:
+        - [null, 1010190]
+        - ['3', 303414]
+        - ['2', 256352]
+        - ['1', 181090]
+        - ['4', 149150]
+        - ['5', 56125]
+        - ['0', 34229]
+        - ['6', 12587]
+        - ['7', 1662]
+        - ['8', 979]
+      grade_repetition:
+        tipo: VARCHAR
+        nulos_pct: 5.91
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['0', 1656630]
+        - ['1', 230653]
+        - [null, 118495]
+      student_occupational_status:
+        tipo: DOUBLE
+        nulos_pct: 30.78
+        distintos_aprox: 463
+        min: '10.0'
+        max: '89.0'
+        media: 65.3539
+        quartis: [51.3708, 70.3858, 80.7673]
+      learning_time_mathematics:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2005778]
+      learning_time_language:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2005778]
+      learning_time_science:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2005778]
+      learning_time_total:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2005778]
+      school_change:
+        tipo: VARCHAR
+        nulos_pct: 84.41
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        top:
+        - [null, 1693081]
+        - ['0', 197646]
+        - ['1', 68756]
+        - ['2', 46295]
+      number_educational_change:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2005778]
+      body_mass_index:
+        tipo: DOUBLE
+        nulos_pct: 93.56
+        distintos_aprox: 2633
+        min: '7.18'
+        max: '271.27'
+        media: 21.7294
+        quartis: [18.8124, 20.813, 23.4273]
+      index_economic_social_cultural_status:
+        tipo: DOUBLE
+        nulos_pct: 5.25
+        distintos_aprox: 717666
+        min: '-8.1734'
+        max: '7.0749'
+        media: -0.2939
+        quartis: [-1.0498, -0.1863, 0.6046]
+      meta_cognition_understanding_remembering:
+        tipo: DOUBLE
+        nulos_pct: 78.59
+        distintos_aprox: 9
+        min: '-1.64'
+        max: '1.5'
+        media: -0.0806
+        quartis: [-0.94, 0.0992, 0.5841]
+        top:
+        - [null, 1576372]
+        - ['0.45', 73572]
+        - ['-1.64', 65027]
+        - ['-0.6', 53498]
+        - ['1.5', 48987]
+        - ['-0.25', 42668]
+        - ['0.1', 38479]
+        - ['-0.94', 33937]
+        - ['0.8', 33116]
+        - ['1.15', 25220]
+      meta_cognition_summarising:
+        tipo: DOUBLE
+        nulos_pct: 78.58
+        distintos_aprox: 10
+        min: '-1.72'
+        max: '1.36'
+        media: -0.1428
+        quartis: [-0.95, -0.0369, 0.59]
+        top:
+        - [null, 1576044]
+        - ['0.59', 79530]
+        - ['-1.72', 75639]
+        - ['0.21', 55215]
+        - ['-0.18', 53602]
+        - ['0.98', 40781]
+        - ['-0.57', 39584]
+        - ['1.36', 39407]
+        - ['-0.95', 26875]
+        - ['-1.34', 19101]
+      meta_cognition_assess_credibility:
+        tipo: DOUBLE
+        nulos_pct: 78.89
+        distintos_aprox: 7
+        min: '-1.41'
+        max: '1.33'
+        media: -0.161
+        quartis: [-1.3664, -0.199, 0.42]
+        top:
+        - [null, 1582402]
+        - ['-1.41', 107531]
+        - ['-0.5', 73739]
+        - ['1.33', 73149]
+        - ['0.42', 67525]
+        - ['-0.04', 43704]
+        - ['-0.96', 29387]
+        - ['0.87', 28341]
+      ict_home:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2005778]
+      wle_ict_availability_home:
+        tipo: DOUBLE
+        nulos_pct: 87.85
+        distintos_aprox: 2830
+        min: '-6.51177858768053'
+        max: '1.0979273084327104'
+        media: 0.6476
+        quartis: [0.8523, 1.0979, 1.0979]
+      ict_school:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2005778]
+      wle_ict_availability_school:
+        tipo: DOUBLE
+        nulos_pct: 87.45
+        distintos_aprox: 3632
+        min: '-5.689099318270275'
+        max: '0.7396307720836619'
+        media: 0.1875
+        quartis: [0.1814, 0.7396, 0.7396]
+      wle_home_possessions:
+        tipo: DOUBLE
+        nulos_pct: 2.96
+        distintos_aprox: 831053
+        min: '-10.40348704714052'
+        max: '15.2402'
+        media: -0.4311
+        quartis: [-1.1565, -0.3541, 0.3626]
+      wle_cultural_possessions:
+        tipo: DOUBLE
+        nulos_pct: 57.17
+        distintos_aprox: 10381
+        min: '-2.8044'
+        max: '2.6328'
+        media: -0.1312
+        quartis: [-0.7269, -0.1898, 0.4491]
+      wle_home_educational_resources:
+        tipo: DOUBLE
+        nulos_pct: 56.37
+        distintos_aprox: 1971
+        min: '-4.5253'
+        max: '1.2196'
+        media: -0.1917
+        quartis: [-0.9894, -0.1357, 1.1563]
+      wle_family_wealth:
+        tipo: DOUBLE
+        nulos_pct: 56.09
+        distintos_aprox: 73766
+        min: '-7.6352'
+        max: '4.7534'
+        media: -0.3835
+        quartis: [-1.0858, -0.3216, 0.3736]
+      wle_ict_resources:
+        tipo: DOUBLE
+        nulos_pct: 22.84
+        distintos_aprox: 74907
+        min: '-6.0891'
+        max: '5.2875'
+        media: -0.4358
+        quartis: [-1.2236, -0.3681, 0.3407]
+      wle_teacher_support_language:
+        tipo: DOUBLE
+        nulos_pct: 13.86
+        distintos_aprox: 6373
+        min: '-3.2543'
+        max: '1.6486'
+        media: 0.1811
+        quartis: [-0.4922, 0.1465, 1.314]
+      wle_perceived_feedback:
+        tipo: DOUBLE
+        nulos_pct: 60.96
+        distintos_aprox: 2157
+        min: '-1.6391'
+        max: '2.4994'
+        media: 0.1309
+        quartis: [-0.5543, 0.0541, 0.7743]
+      wle_perceived_parents_emotional_support:
+        tipo: DOUBLE
+        nulos_pct: 37.5
+        distintos_aprox: 6789
+        min: '-3.0789'
+        max: '1.6957617896978998'
+        media: -0.1148
+        quartis: [-0.8293, -0.1802, 0.9936]
+      wle_subjective_well_being_sense_belonging:
+        tipo: DOUBLE
+        nulos_pct: 9.69
+        distintos_aprox: 32527
+        min: '-3.8448'
+        max: '3.9838'
+        media: -0.0252
+        quartis: [-0.6225, -0.2243, 0.4556]
+      wle_ict_use_outside_school_leisure:
+        tipo: DOUBLE
+        nulos_pct: 73.48
+        distintos_aprox: 44565
+        min: '-3.7095'
+        max: '4.8595'
+        media: -0.0019
+        quartis: [-0.4777, -0.0584, 0.4149]
+      wle_ict_use_outside_school_work:
+        tipo: DOUBLE
+        nulos_pct: 62.52
+        distintos_aprox: 82512
+        min: '-2.6977'
+        max: '3.6039'
+        media: 0.0819
+        quartis: [-0.4138, 0.0535, 0.5507]
+      wle_ict_use_at_school:
+        tipo: DOUBLE
+        nulos_pct: 74.82
+        distintos_aprox: 28272
+        min: '-2.5431'
+        max: '3.6292'
+        media: 0.0095
+        quartis: [-0.5537, 0.1012, 0.6154]
+      wle_ict_interest:
+        tipo: DOUBLE
+        nulos_pct: 63.02
+        distintos_aprox: 21230
+        min: '-3.0251438546000697'
+        max: '2.8192'
+        media: -0.0302
+        quartis: [-0.5942, -0.0858, 0.4284]
+      wle_ict_competence:
+        tipo: DOUBLE
+        nulos_pct: 75.07
+        distintos_aprox: 3528
+        min: '-2.7056'
+        max: '2.5782'
+        media: -0.0088
+        quartis: [-0.6556, 0.0226, 0.4927]
+      wle_ict_autonomy:
+        tipo: DOUBLE
+        nulos_pct: 75.37
+        distintos_aprox: 4191
+        min: '-2.5144'
+        max: '2.0955'
+        media: -0.004
+        quartis: [-0.6071, 0.0534, 0.3928]
+      wle_ict_social_interaction:
+        tipo: DOUBLE
+        nulos_pct: 63.83
+        distintos_aprox: 6238
+        min: '-2.1764434168617655'
+        max: '2.4281'
+        media: 0.0923
+        quartis: [-0.5113, 0.0868, 0.5226]
+      wle_ai_use_school:
+        tipo: DOUBLE
+        nulos_pct: 74.67
+        distintos_aprox: 1677
+        min: '-1.5821251886895837'
+        max: '2.341831580102804'
+        media: 0.1228
+        quartis: [-0.4045, 0.093, 0.7092]
+      wle_views_regulated_ict_use_school:
+        tipo: DOUBLE
+        nulos_pct: 88.22
+        distintos_aprox: 7575
+        min: '-2.8552736505952394'
+        max: '3.251672270546944'
+        media: 0.2022
+        quartis: [-0.1791, 0.3196, 0.8173]
+      wle_distress_online_content_cyberbullying:
+        tipo: DOUBLE
+        nulos_pct: 90.5
+        distintos_aprox: 21
+        min: '1.0'
+        max: '20.0'
+        media: 8.249
+        quartis: [4.9999, 7.9986, 11]
+        top:
+        - [null, 1815193]
+        - ['10.0', 22647]
+        - ['5.0', 22635]
+        - ['4.0', 14482]
+        - ['6.0', 12930]
+        - ['8.0', 12923]
+        - ['2.0', 12399]
+        - ['7.0', 11366]
+        - ['3.0', 11255]
+        - ['9.0', 10872]
+      wle_environmental_awareness:
+        tipo: DOUBLE
+        nulos_pct: 72.8
+        distintos_aprox: 10705
+        min: '-3.3250614420628106'
+        max: '2.6337116286140128'
+        media: -0.1866
+        quartis: [-0.9037, -0.1981, 0.4582]
+      wle_environment_related_activities:
+        tipo: DOUBLE
+        nulos_pct: 72.55
+        distintos_aprox: 4724
+        min: '-1.2714704620258546'
+        max: '3.99142902086798'
+        media: 0.233
+        quartis: [-0.5267, 0.3376, 0.9342]
+      wle_opportunities_environmental_learning:
+        tipo: DOUBLE
+        nulos_pct: 72.65
+        distintos_aprox: 965
+        min: '-1.6705739358954301'
+        max: '3.0200195939141006'
+        media: 0.2609
+        quartis: [-0.3496, 0.17, 0.9984]
+      working_for_pay:
+        tipo: DOUBLE
+        nulos_pct: 74.2
+        distintos_aprox: 12
+        min: '0.0'
+        max: '10.0'
+        media: 1.4394
+        quartis: [0, 0, 2]
+        top:
+        - [null, 1488267]
+        - ['0.0', 345020]
+        - ['2.0', 39640]
+        - ['4.0', 25560]
+        - ['1.0', 23102]
+        - ['10.0', 19981]
+        - ['3.0', 17999]
+        - ['5.0', 17447]
+        - ['6.0', 13921]
+        - ['8.0', 6450]
+      skipping_school:
+        tipo: DOUBLE
+        nulos_pct: 70.78
+        distintos_aprox: 2
+        min: '0.0'
+        max: '1.0'
+        media: 0.3979
+        quartis: [0, 0, 1]
+        top:
+        - [null, 1419702]
+        - ['0.0', 352852]
+        - ['1.0', 233224]
+      arriving_late_school:
+        tipo: DOUBLE
+        nulos_pct: 71.37
+        distintos_aprox: 3
+        min: '0.0'
+        max: '2.0'
+        media: 0.6639
+        quartis: [0, 0, 1]
+        top:
+        - [null, 1431498]
+        - ['0.0', 295193]
+        - ['1.0', 176885]
+        - ['2.0', 102202]
+      wle_feeling_safe:
+        tipo: DOUBLE
+        nulos_pct: 71.83
+        distintos_aprox: 610
+        min: '-2.7887147243555037'
+        max: '1.1690699982892012'
+        media: 0.1105
+        quartis: [-0.7571, 0.3925, 1.1249]
+      wle_parental_support_learning:
+        tipo: DOUBLE
+        nulos_pct: 84.97
+        distintos_aprox: 54599
+        min: '-5.7675'
+        max: '4.7197'
+        media: -0.0149
+        quartis: [-0.6778, -0.0685, 0.6096]
+      wle_parents_emotional_support:
+        tipo: DOUBLE
+        nulos_pct: 92.78
+        distintos_aprox: 326
+        min: '-3.8153'
+        max: '0.7454'
+        media: -0.0687
+        quartis: [-0.5648, 0.6198, 0.739]
+      wle_parents_perceived_school_quality:
+        tipo: DOUBLE
+        nulos_pct: 83.87
+        distintos_aprox: 17845
+        min: '-3.5671'
+        max: '2.5422'
+        media: 0.1385
+        quartis: [-0.548, 0.0209, 0.8196]
+      wle_school_policies_parental_involvement:
+        tipo: DOUBLE
+        nulos_pct: 89.31
+        distintos_aprox: 10170
+        min: '-3.1223'
+        max: '2.9376'
+        media: 0.042
+        quartis: [-0.6469, 0.0249, 0.5812]
+      wle_previous_parental_support_learning:
+        tipo: DOUBLE
+        nulos_pct: 87.36
+        distintos_aprox: 145536
+        min: '-4.301099527178989'
+        max: '4.7485'
+        media: 0.0738
+        quartis: [-0.527, 0.1346, 0.7315]
+      wle_disciplinay_climate_specific_domain:
+        tipo: DOUBLE
+        nulos_pct: 49.42
+        distintos_aprox: 17100
+        min: '-2.7124'
+        max: '2.3017'
+        media: 0.165
+        quartis: [-0.5634, 0.1107, 0.8928]
+      wle_teacher_directed_instruction:
+        tipo: DOUBLE
+        nulos_pct: 77.8
+        distintos_aprox: 521
+        min: '-2.9425'
+        max: '1.8202'
+        media: 0.2446
+        quartis: [-0.4743, 0.1328, 1.0067]
+      wle_teacher_stimulation_reading:
+        tipo: DOUBLE
+        nulos_pct: 77.22
+        distintos_aprox: 559
+        min: '-2.3003'
+        max: '2.0871'
+        media: 0.1462
+        quartis: [-0.62, 0.1445, 0.7181]
+      wle_adaptation_instruction:
+        tipo: DOUBLE
+        nulos_pct: 77.27
+        distintos_aprox: 58
+        min: '-2.2652'
+        max: '2.0073'
+        media: 0.0602
+        quartis: [-0.5786, 0.1044, 0.5463]
+      wle_perceived_teachers_interest:
+        tipo: DOUBLE
+        nulos_pct: 77.91
+        distintos_aprox: 636
+        min: '-2.2707'
+        max: '1.8245'
+        media: 0.1208
+        quartis: [-0.6008, 0.1744, 0.7438]
+      wle_joy_reading:
+        tipo: DOUBLE
+        nulos_pct: 77.02
+        distintos_aprox: 3128
+        min: '-3.2096'
+        max: '4.0128'
+        media: 0.1548
+        quartis: [-0.4221, 0.1363, 0.7466]
+      wle_reading_self_concept_competence: {tipo: DOUBLE, nulos_pct: 78.33, distintos_aprox: 103, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      wle_reading_self_concept_difficulty: {tipo: DOUBLE, nulos_pct: 78.44, distintos_aprox: 57, pessoal: 'só contagens: valores seriam dado pessoal'}
+      wle_pisa_test_difficulty_perception: {tipo: DOUBLE, nulos_pct: 77.86, distintos_aprox: 70, pessoal: 'só contagens: valores seriam dado pessoal'}
+      wle_competitiveness_perception: {tipo: DOUBLE, nulos_pct: 80.8, distintos_aprox: 91, pessoal: 'só contagens: valores seriam dado pessoal'}
+      wle_cooperation_perception: {tipo: DOUBLE, nulos_pct: 81.38, distintos_aprox: 71, pessoal: 'só contagens: valores seriam dado pessoal'}
+      wle_attitude_towards_school_learning_activities:
+        tipo: DOUBLE
+        nulos_pct: 77.34
+        distintos_aprox: 55
+        min: '-2.5375'
+        max: '1.0844'
+        media: 0.0098
+        quartis: [-0.6583, 0.0281, 1.0844]
+      wle_competitiveness:
+        tipo: DOUBLE
+        nulos_pct: 77.72
+        distintos_aprox: 56
+        min: '-2.345'
+        max: '2.0054'
+        media: 0.0795
+        quartis: [-0.5707, 0.1956, 0.7199]
+      wle_work_mastery:
+        tipo: DOUBLE
+        nulos_pct: 78.12
+        distintos_aprox: 119
+        min: '-2.7365'
+        max: '1.8164'
+        media: 0.1179
+        quartis: [-0.6545, -0.1015, 0.8799]
+      wle_general_fear_failure:
+        tipo: DOUBLE
+        nulos_pct: 78.28
+        distintos_aprox: 68
+        min: '-1.8939'
+        max: '1.8905'
+        media: -0.0181
+        quartis: [-0.687, -0.0143, 0.4637]
+      wle_eudaemonia:
+        tipo: DOUBLE
+        nulos_pct: 79.69
+        distintos_aprox: 67
+        min: '-2.1464'
+        max: '1.7411'
+        media: 0.1485
+        quartis: [-0.569, 0.2621, 0.8144]
+      wle_subjective_well_being_positive_affect:
+        tipo: DOUBLE
+        nulos_pct: 80.47
+        distintos_aprox: 71
+        min: '-3.0666'
+        max: '1.2386'
+        media: 0.109
+        quartis: [-0.5928, 0.1869, 1.2386]
+      wle_resilence:
+        tipo: DOUBLE
+        nulos_pct: 78.46
+        distintos_aprox: 3587
+        min: '-3.205'
+        max: '3.0953'
+        media: 0.0541
+        quartis: [-0.5355, -0.0614, 0.5918]
+      wle_mastery_goal_orientation:
+        tipo: DOUBLE
+        nulos_pct: 78.36
+        distintos_aprox: 134
+        min: '-2.5252'
+        max: '1.8524'
+        media: 0.1089
+        quartis: [-0.5166, 0.1122, 0.6673]
+      wle_self_efficacy_regarding_global_issues:
+        tipo: DOUBLE
+        nulos_pct: 82.08
+        distintos_aprox: 8126
+        min: '-2.7142'
+        max: '2.3535'
+        media: -0.0565
+        quartis: [-0.6407, -0.0456, 0.4499]
+      wle_students_awareness_global_issues:
+        tipo: DOUBLE
+        nulos_pct: 81.72
+        distintos_aprox: 15365
+        min: '-3.5128'
+        max: '2.3015'
+        media: -0.0326
+        quartis: [-0.6832, -0.0549, 0.5533]
+      wle_students_attitudes_towards_immigrants:
+        tipo: DOUBLE
+        nulos_pct: 84.78
+        distintos_aprox: 423
+        min: '-2.264'
+        max: '1.4992'
+        media: 0.0068
+        quartis: [-0.6153, -0.2014, 0.7228]
+      wle_students_interest_learning_other_cultures:
+        tipo: DOUBLE
+        nulos_pct: 83.43
+        distintos_aprox: 1590
+        min: '-2.5546'
+        max: '1.6986'
+        media: 0.1
+        quartis: [-0.4984, 0.1083, 0.7828]
+      wle_perspective_taking:
+        tipo: DOUBLE
+        nulos_pct: 82.23
+        distintos_aprox: 1058
+        min: '-3.2053'
+        max: '1.9097'
+        media: 0.0616
+        quartis: [-0.6617, 0.0477, 0.663]
+      wle_cognitive_flexibility:
+        tipo: DOUBLE
+        nulos_pct: 58.61
+        distintos_aprox: 7966
+        min: '-3.2784'
+        max: '2.162663377326906'
+        media: 0.0198
+        quartis: [-0.6308, -0.0375, 0.4871]
+      wle_respect_people_from_other_cultures:
+        tipo: DOUBLE
+        nulos_pct: 82.94
+        distintos_aprox: 916
+        min: '-3.1739'
+        max: '0.9289'
+        media: -0.017
+        quartis: [-0.6332, 0.1692, 0.9289]
+      wle_intercultural_communication_awareness:
+        tipo: DOUBLE
+        nulos_pct: 82.59
+        distintos_aprox: 10913
+        min: '-2.7948'
+        max: '2.0513'
+        media: -0.0098
+        quartis: [-0.5983, -0.1577, 0.6009]
+      wle_global_mindedness:
+        tipo: DOUBLE
+        nulos_pct: 83.77
+        distintos_aprox: 9831
+        min: '-2.9241'
+        max: '2.7223'
+        media: 0.051
+        quartis: [-0.5045, 0.0118, 0.4361]
+      wle_discriminating_school_climate:
+        tipo: DOUBLE
+        nulos_pct: 85.97
+        distintos_aprox: 715
+        min: '-1.1549'
+        max: '3.1825'
+        media: 0.0813
+        quartis: [-1.153, 0.0677, 0.5936]
+      wle_students_experience_being_bullied:
+        tipo: DOUBLE
+        nulos_pct: 52.62
+        distintos_aprox: 3502
+        min: '-0.8705042970860372'
+        max: '4.042222420302329'
+        media: -0.01
+        quartis: [-0.8655, -0.7823, 0.7492]
+      wle_ict_use_during_lessons:
+        tipo: DOUBLE
+        nulos_pct: 86.53
+        distintos_aprox: 2195
+        min: '-1.2188'
+        max: '2.4394'
+        media: -0.0556
+        quartis: [-1.2188, -0.0215, 0.6145]
+      wle_ict_use_outside_lessons:
+        tipo: DOUBLE
+        nulos_pct: 86.86
+        distintos_aprox: 2336
+        min: '-1.3048'
+        max: '2.4969'
+        media: 0.0467
+        quartis: [-0.8128, 0.1142, 0.6877]
+      wle_carrer_information:
+        tipo: DOUBLE
+        nulos_pct: 90.81
+        distintos_aprox: 12052
+        min: '-5.0622'
+        max: '4.5499'
+        media: -0.0785
+        quartis: [-0.6748, -0.0632, 0.4664]
+      wle_labour_market_information_by_school:
+        tipo: DOUBLE
+        nulos_pct: 91.12
+        distintos_aprox: 258
+        min: '-1.7145'
+        max: '1.9988'
+        media: 0.0389
+        quartis: [-0.9778, -0.0727, 0.6847]
+      wle_labour_market_information_outside_school:
+        tipo: DOUBLE
+        nulos_pct: 91.12
+        distintos_aprox: 196
+        min: '-1.4803'
+        max: '1.4601'
+        media: -0.0821
+        quartis: [-0.7706, -0.1302, 0.7191]
+      wle_financial_matters_confidence:
+        tipo: DOUBLE
+        nulos_pct: 93.47
+        distintos_aprox: 5621
+        min: '-2.1987'
+        max: '2.3216'
+        media: -0.0821
+        quartis: [-0.5238, -0.048, 0.658]
+      wle_financial_matters_confidence_digital_devices:
+        tipo: DOUBLE
+        nulos_pct: 93.8
+        distintos_aprox: 2116
+        min: '-2.1589'
+        max: '2.0781'
+        media: -0.1174
+        quartis: [-0.7413, -0.1108, 0.4078]
+      wle_financial_education_school_lessons:
+        tipo: DOUBLE
+        nulos_pct: 92.98
+        distintos_aprox: 2237
+        min: '-1.5638'
+        max: '2.3166'
+        media: 0.0082
+        quartis: [-0.7121, 0.1055, 0.411]
+      wle_parents_involvement_financial_literacy:
+        tipo: DOUBLE
+        nulos_pct: 93.06
+        distintos_aprox: 593
+        min: '-2.0424'
+        max: '2.4524'
+        media: 0.045
+        quartis: [-0.5494, -0.0261, 0.7017]
+      wle_parents_reading_enjoyment:
+        tipo: DOUBLE
+        nulos_pct: 96.32
+        distintos_aprox: 2438
+        min: '-3.7216'
+        max: '2.2623'
+        media: -0.1852
+        quartis: [-0.9637, -0.2938, 0.4603]
+      wle_parents_attitudes_towards_immigrants:
+        tipo: DOUBLE
+        nulos_pct: 93.53
+        distintos_aprox: 1318
+        min: '-3.2837'
+        max: '1.6155'
+        media: -0.1209
+        quartis: [-0.7833, -0.4189, 0.5401]
+      wle_parents_interest_learking_other_cultures:
+        tipo: DOUBLE
+        nulos_pct: 96.64
+        distintos_aprox: 1056
+        min: '-2.3698'
+        max: '2.1532'
+        media: 0.0318
+        quartis: [-0.5974, -0.0463, 0.6205]
+      wle_parents_awareness_global_issues:
+        tipo: DOUBLE
+        nulos_pct: 96.43
+        distintos_aprox: 5683
+        min: '-3.5607'
+        max: '2.4283'
+        media: -0.0413
+        quartis: [-0.709, -0.0214, 0.5136]
+      wle_body_image:
+        tipo: DOUBLE
+        nulos_pct: 92.94
+        distintos_aprox: 2642
+        min: '-2.6339'
+        max: '2.0843'
+        media: 0.0045
+        quartis: [-0.7056, 0.0764, 0.6111]
+      wle_parents_social_connections:
+        tipo: DOUBLE
+        nulos_pct: 92.61
+        distintos_aprox: 1729
+        min: '-3.4142'
+        max: '1.5055'
+        media: 0.0311
+        quartis: [-0.9914, 0.2661, 0.9078]
+      consider_perspective_before_position:
+        tipo: VARCHAR
+        nulos_pct: 87.71
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - [null, 1759169]
+        - ['4', 113019]
+        - ['3', 65507]
+        - ['5', 34509]
+        - ['2', 21281]
+        - ['1', 12293]
+      understand_classmates_thinking:
+        tipo: VARCHAR
+        nulos_pct: 87.71
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - [null, 1759242]
+        - ['4', 115830]
+        - ['3', 61806]
+        - ['5', 33160]
+        - ['2', 24225]
+        - ['1', 11515]
+      view_things_different_angles:
+        tipo: VARCHAR
+        nulos_pct: 87.75
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - [null, 1760038]
+        - ['4', 106865]
+        - ['3', 74377]
+        - ['5', 32989]
+        - ['2', 23342]
+        - ['1', 8167]
+      imagine_in_somebody_place:
+        tipo: VARCHAR
+        nulos_pct: 87.73
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - [null, 1759723]
+        - ['4', 122712]
+        - ['3', 50830]
+        - ['5', 46818]
+        - ['2', 17340]
+        - ['1', 8355]
+      one_correct_position_disagreement:
+        tipo: VARCHAR
+        nulos_pct: 87.77
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - [null, 1760512]
+        - ['3', 88196]
+        - ['2', 66828]
+        - ['4', 49426]
+        - ['1', 26890]
+        - ['5', 13926]
+      understand_why_people_behave:
+        tipo: VARCHAR
+        nulos_pct: 87.75
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - [null, 1760035]
+        - ['4', 113588]
+        - ['3', 55097]
+        - ['5', 51209]
+        - ['2', 17485]
+        - ['1', 8364]
+      difficult_anticipate_others_think:
+        tipo: VARCHAR
+        nulos_pct: 87.77
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - [null, 1760564]
+        - ['3', 88696]
+        - ['2', 62680]
+        - ['4', 57721]
+        - ['1', 21309]
+        - ['5', 14808]
+      envision_friends_points_of_view:
+        tipo: VARCHAR
+        nulos_pct: 87.73
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - [null, 1759688]
+        - ['4', 117363]
+        - ['3', 62008]
+        - ['5', 39497]
+        - ['2', 17815]
+        - ['1', 9407]
+      final_student_weight:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 216806
+        min: '1.0'
+        max: '5828.957140602381'
+        media: 46.3708
+        quartis: [5.1382, 12.4354, 42.3453]
+      student_weight_1:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 253678
+        min: '0.5'
+        max: '6224.214830495171'
+        media: 46.2521
+        quartis: [3.922, 11.3884, 36.7772]
+      student_weight_2:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 223275
+        min: '0.29289'
+        max: '8781.30385495586'
+        media: 46.4129
+        quartis: [3.8704, 11.4252, 36.847]
+      student_weight_3:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 202866
+        min: '0.29289'
+        max: '7307.104541954648'
+        media: 46.2997
+        quartis: [3.888, 11.3908, 36.6427]
+      student_weight_4:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 200451
+        min: '0.29289'
+        max: '7059.897368454688'
+        media: 46.4441
+        quartis: [3.874, 11.3688, 36.6542]
+      student_weight_5:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 232107
+        min: '0.29289'
+        max: '7497.238636584477'
+        media: 46.298
+        quartis: [3.877, 11.4002, 36.955]
+      student_weight_6:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 228007
+        min: '0.29289'
+        max: '7167.5320168004655'
+        media: 46.3488
+        quartis: [3.882, 11.3746, 36.7885]
+      student_weight_7:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 217293
+        min: '0.29289'
+        max: '9049.661380839005'
+        media: 46.4752
+        quartis: [3.8762, 11.3485, 36.8127]
+      student_weight_8:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 228546
+        min: '0.29289'
+        max: '6705.753344274704'
+        media: 46.3481
+        quartis: [3.8841, 11.3583, 36.6435]
+      student_weight_9:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 238430
+        min: '0.29289'
+        max: '8102.320836809156'
+        media: 46.3756
+        quartis: [3.8804, 11.3498, 36.7369]
+      student_weight_10:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 260306
+        min: '0.29289'
+        max: '5092.128460178837'
+        media: 46.3959
+        quartis: [3.881, 11.3731, 36.6147]
+      student_weight_11:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 241516
+        min: '0.29289'
+        max: '5238.400668246346'
+        media: 46.3351
+        quartis: [3.9074, 11.3698, 36.7773]
+      student_weight_12:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 211320
+        min: '0.29289'
+        max: '5400.143884757439'
+        media: 46.3973
+        quartis: [3.8729, 11.4214, 36.6754]
+      student_weight_13:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 259001
+        min: '0.29289'
+        max: '8697.943855344976'
+        media: 46.2732
+        quartis: [3.8965, 11.3296, 36.7013]
+      student_weight_14:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 203238
+        min: '0.29289'
+        max: '6929.544316737506'
+        media: 46.3766
+        quartis: [3.8857, 11.4193, 36.3773]
+      student_weight_15:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 254031
+        min: '0.29289'
+        max: '9285.03186033754'
+        media: 46.3078
+        quartis: [3.9057, 11.3803, 36.71]
+      student_weight_16:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 221361
+        min: '0.29289'
+        max: '6561.5878429361765'
+        media: 46.3996
+        quartis: [3.8879, 11.3744, 36.7252]
+      student_weight_17:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 240915
+        min: '0.29289'
+        max: '13179.915586117131'
+        media: 46.3951
+        quartis: [3.9041, 11.4208, 36.6782]
+      student_weight_18:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 187042
+        min: '0.29289'
+        max: '8352.260402404074'
+        media: 46.4063
+        quartis: [3.9056, 11.3703, 36.6145]
+      student_weight_19:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 189932
+        min: '0.29289'
+        max: '4395.082899461774'
+        media: 46.3121
+        quartis: [3.8733, 11.3438, 36.7585]
+      student_weight_20:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 216111
+        min: '0.29289'
+        max: '8701.847948213463'
+        media: 46.4055
+        quartis: [3.8772, 11.3894, 36.7372]
+      student_weight_21:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 256047
+        min: '0.29289'
+        max: '8990.323914023247'
+        media: 46.3386
+        quartis: [3.8783, 11.3745, 36.6999]
+      student_weight_22:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 220793
+        min: '0.29289'
+        max: '8595.30689276328'
+        media: 46.4229
+        quartis: [3.868, 11.3386, 36.7224]
+      student_weight_23:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 253035
+        min: '0.29289'
+        max: '6728.091609041371'
+        media: 46.3167
+        quartis: [3.88, 11.3502, 36.6227]
+      student_weight_24:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 251291
+        min: '0.29289'
+        max: '8896.643542857997'
+        media: 46.2926
+        quartis: [3.8752, 11.3621, 36.7837]
+      student_weight_25:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 254240
+        min: '0.29289'
+        max: '7621.981757981488'
+        media: 46.4438
+        quartis: [3.9194, 11.3735, 36.7231]
+      student_weight_26:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 243108
+        min: '0.29289'
+        max: '5395.061238341281'
+        media: 46.4009
+        quartis: [3.884, 11.3564, 36.7946]
+      student_weight_27:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 201179
+        min: '0.29289'
+        max: '10725.367789878595'
+        media: 46.4334
+        quartis: [3.8812, 11.3459, 36.6001]
+      student_weight_28:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 209138
+        min: '0.29289'
+        max: '4449.495578242192'
+        media: 46.2396
+        quartis: [3.9042, 11.3629, 36.6095]
+      student_weight_29:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 234781
+        min: '0.29289'
+        max: '7265.189499615285'
+        media: 46.2924
+        quartis: [3.8777, 11.3623, 36.5529]
+      student_weight_30:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 234959
+        min: '0.29289'
+        max: '5920.922832828527'
+        media: 46.4991
+        quartis: [3.8871, 11.3496, 36.5211]
+      student_weight_31:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 180693
+        min: '0.29289'
+        max: '8787.69834546678'
+        media: 46.3582
+        quartis: [3.8839, 11.3645, 36.7658]
+      student_weight_32:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 167795
+        min: '0.29289'
+        max: '8243.79038874823'
+        media: 46.3916
+        quartis: [3.8938, 11.3711, 36.5348]
+      student_weight_33:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 219915
+        min: '0.29289'
+        max: '5968.783236535511'
+        media: 46.3271
+        quartis: [3.9045, 11.351, 36.7743]
+      student_weight_34:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 205667
+        min: '0.29289'
+        max: '9388.05485377352'
+        media: 46.3594
+        quartis: [3.8778, 11.3755, 36.7034]
+      student_weight_35:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 234354
+        min: '0.29289'
+        max: '8448.263965407687'
+        media: 46.3517
+        quartis: [3.8897, 11.4087, 36.7373]
+      student_weight_36:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 193032
+        min: '0.29289'
+        max: '5683.028420946904'
+        media: 46.4265
+        quartis: [3.8971, 11.3408, 36.7116]
+      student_weight_37:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 207207
+        min: '0.29289'
+        max: '10045.567388918073'
+        media: 46.2573
+        quartis: [3.892, 11.3746, 36.6932]
+      student_weight_38:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 205913
+        min: '0.29289'
+        max: '10941.861039552196'
+        media: 46.5439
+        quartis: [3.8811, 11.3658, 36.8099]
+      student_weight_39:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 217415
+        min: '0.29289'
+        max: '7274.49508815661'
+        media: 46.328
+        quartis: [3.8759, 11.413, 36.6719]
+      student_weight_40:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 204176
+        min: '0.29289'
+        max: '5264.944470656158'
+        media: 46.2924
+        quartis: [3.8969, 11.3801, 36.7367]
+      student_weight_41:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 228276
+        min: '0.29289'
+        max: '11191.883992206347'
+        media: 46.5057
+        quartis: [3.8941, 11.3707, 36.7751]
+      student_weight_42:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 223211
+        min: '0.29289'
+        max: '7292.682682944203'
+        media: 46.2198
+        quartis: [3.9265, 11.3389, 36.6897]
+      student_weight_43:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 197084
+        min: '0.29289'
+        max: '8710.7837734082'
+        media: 46.2824
+        quartis: [3.8725, 11.3787, 36.4967]
+      student_weight_44:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 178795
+        min: '0.29289'
+        max: '7943.067899179887'
+        media: 46.3804
+        quartis: [3.885, 11.3841, 36.7474]
+      student_weight_45:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 207624
+        min: '0.29289'
+        max: '5670.889307240114'
+        media: 46.3443
+        quartis: [3.8932, 11.4777, 36.6778]
+      student_weight_46:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 216685
+        min: '0.29289'
+        max: '9386.363920959093'
+        media: 46.3442
+        quartis: [3.908, 11.3562, 36.7282]
+      student_weight_47:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 190422
+        min: '0.29289'
+        max: '4591.202793448674'
+        media: 46.3239
+        quartis: [3.8938, 11.3599, 36.614]
+      student_weight_48:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 236069
+        min: '0.29289'
+        max: '8977.371561049165'
+        media: 46.3531
+        quartis: [3.9156, 11.3961, 36.5918]
+      student_weight_49:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 227205
+        min: '0.29289'
+        max: '5355.752400669328'
+        media: 46.4625
+        quartis: [3.8923, 11.3561, 36.6882]
+      student_weight_50:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 200062
+        min: '0.29289'
+        max: '8642.991093674764'
+        media: 46.3186
+        quartis: [3.8768, 11.3678, 36.6195]
+      student_weight_51:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 252006
+        min: '0.29289'
+        max: '7396.651607240001'
+        media: 46.3298
+        quartis: [3.8831, 11.3782, 36.6438]
+      student_weight_52:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 185076
+        min: '0.29289'
+        max: '6803.874423865043'
+        media: 46.3517
+        quartis: [3.8944, 11.3812, 36.6406]
+      student_weight_53:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 182567
+        min: '0.29289'
+        max: '8518.048387124101'
+        media: 46.3267
+        quartis: [3.8952, 11.3372, 36.5907]
+      student_weight_54:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 170604
+        min: '0.29289'
+        max: '5970.96023595765'
+        media: 46.2267
+        quartis: [3.8957, 11.358, 36.5524]
+      student_weight_55:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 228613
+        min: '0.29289'
+        max: '5773.92504476758'
+        media: 46.2509
+        quartis: [3.8945, 11.3109, 36.6477]
+      student_weight_56:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 204472
+        min: '0.29289'
+        max: '8445.568824897038'
+        media: 46.3045
+        quartis: [3.8859, 11.3879, 36.6354]
+      student_weight_57:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 205667
+        min: '0.29289'
+        max: '9751.268716050256'
+        media: 46.535
+        quartis: [3.8853, 11.3442, 36.6834]
+      student_weight_58:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 176132
+        min: '0.29289'
+        max: '5739.374485741083'
+        media: 46.3886
+        quartis: [3.904, 11.3654, 36.6764]
+      student_weight_59:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 173043
+        min: '0.29289'
+        max: '11211.712614128566'
+        media: 46.4063
+        quartis: [3.887, 11.344, 36.6938]
+      student_weight_60:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 208715
+        min: '0.29289'
+        max: '8041.354844600008'
+        media: 46.5579
+        quartis: [3.896, 11.3879, 36.7059]
+      student_weight_61:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 207367
+        min: '0.29289'
+        max: '8214.299349094335'
+        media: 46.4671
+        quartis: [3.8986, 11.3829, 36.8008]
+      student_weight_62:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 253449
+        min: '0.29289'
+        max: '4617.537364626214'
+        media: 46.3824
+        quartis: [3.8797, 11.3661, 36.5186]
+      student_weight_63:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 221361
+        min: '0.29289'
+        max: '5113.72891164717'
+        media: 46.4544
+        quartis: [3.8878, 11.3579, 36.719]
+      student_weight_64:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 240224
+        min: '0.29289'
+        max: '5405.305073021067'
+        media: 46.3736
+        quartis: [3.8721, 11.3864, 36.7202]
+      student_weight_65:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 159223
+        min: '0.29289'
+        max: '8102.209004365685'
+        media: 46.2535
+        quartis: [3.8762, 11.3552, 36.7603]
+      student_weight_66:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 175038
+        min: '0.29289'
+        max: '8702.278719845135'
+        media: 46.3937
+        quartis: [3.883, 11.3408, 36.6906]
+      student_weight_67:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 216473
+        min: '0.29289'
+        max: '7644.786680488423'
+        media: 46.2303
+        quartis: [3.9035, 11.3559, 36.6857]
+      student_weight_68:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 266394
+        min: '0.29289'
+        max: '9330.376006138482'
+        media: 46.3837
+        quartis: [3.9166, 11.3909, 36.6652]
+      student_weight_69:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 182503
+        min: '0.29289'
+        max: '5638.782692633782'
+        media: 46.3495
+        quartis: [3.9029, 11.3446, 36.6454]
+      student_weight_70:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 202309
+        min: '0.29289'
+        max: '6843.154787055156'
+        media: 46.4151
+        quartis: [3.9154, 11.3662, 36.6265]
+      student_weight_71:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 317565
+        min: '0.29289'
+        max: '7754.070098398432'
+        media: 46.2943
+        quartis: [3.8861, 11.3954, 36.6531]
+      student_weight_72:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 230244
+        min: '0.29289'
+        max: '7214.857550403287'
+        media: 46.393
+        quartis: [3.9, 11.3636, 36.6718]
+      student_weight_73:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 171777
+        min: '0.29289'
+        max: '9484.17373259417'
+        media: 46.4136
+        quartis: [3.8829, 11.3794, 36.6643]
+      student_weight_74:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 226342
+        min: '0.29289'
+        max: '5579.352411845875'
+        media: 46.3531
+        quartis: [3.8906, 11.3778, 36.6502]
+      student_weight_75:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 220982
+        min: '0.29289'
+        max: '9271.955565571629'
+        media: 46.3142
+        quartis: [3.8999, 11.403, 36.7175]
+      student_weight_76:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 240541
+        min: '0.29289'
+        max: '9980.937876145'
+        media: 46.3307
+        quartis: [3.8835, 11.3433, 36.5327]
+      student_weight_77:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 207986
+        min: '0.29289'
+        max: '5693.43971'
+        media: 46.3536
+        quartis: [3.8779, 11.3889, 36.5609]
+      student_weight_78:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 192051
+        min: '0.29289'
+        max: '11877.094565525997'
+        media: 46.4512
+        quartis: [3.8823, 11.3623, 36.6437]
+      student_weight_79:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 211075
+        min: '0.29289'
+        max: '8663.498807340577'
+        media: 46.3403
+        quartis: [3.8718, 11.3854, 36.6561]
+      student_weight_80:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 198524
+        min: '0.29289'
+        max: '7697.076955903106'
+        media: 46.3577
+        quartis: [3.9198, 11.3979, 36.7252]
+      randomly_assigned_unit_number:
+        tipo: BIGINT
+        nulos_pct: 69.28
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        media: 1.5275
+        quartis: [1, 2, 2]
+        top:
+        - [null, 1389572]
+        - ['1', 302772]
+        - ['2', 301823]
+        - ['3', 11611]
+      randomized_final_variance_stratum:
+        tipo: BIGINT
+        nulos_pct: 69.28
+        distintos_aprox: 76
+        min: '1'
+        max: '80'
+        media: 40.3484
+        quartis: [20, 40, 60]
+      plausible_value_1_mathematics:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 1110441
+        min: '0.0'
+        max: '943.041'
+        media: 447.9076
+        quartis: [370.4479, 443.3305, 521.4526]
+      plausible_value_2_mathematics:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 883675
+        min: '0.0'
+        max: '950.6090167'
+        media: 447.8699
+        quartis: [370.3985, 443.1403, 521.487]
+      plausible_value_3_mathematics:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 963659
+        min: '0.0'
+        max: '980.288601'
+        media: 447.9254
+        quartis: [370.3966, 443.3629, 521.5028]
+      plausible_value_4_mathematics:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 980742
+        min: '0.0'
+        max: '974.6722737'
+        media: 447.9058
+        quartis: [370.3528, 443.3086, 521.4774]
+      plausible_value_5_mathematics:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 906161
+        min: '8.269'
+        max: '939.1150205'
+        media: 447.8199
+        quartis: [370.3656, 443.1358, 521.5382]
+      plausible_value_6_mathematics:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 874940
+        min: '3.281'
+        max: '941.4202071'
+        media: 447.9071
+        quartis: [370.3626, 443.2457, 521.5453]
+      plausible_value_7_mathematics:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 1037911
+        min: '0.0'
+        max: '984.1834451'
+        media: 447.9857
+        quartis: [370.4583, 443.3815, 521.7364]
+      plausible_value_8_mathematics:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 983232
+        min: '0.0'
+        max: '940.019319'
+        media: 447.8941
+        quartis: [370.4023, 443.2711, 521.4087]
+      plausible_value_9_mathematics:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 864684
+        min: '0.0'
+        max: '961.9730896'
+        media: 447.8476
+        quartis: [370.3384, 443.2471, 521.5279]
+      plausible_value_10_mathematics:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 1226996
+        min: '0.0'
+        max: '973.9915355'
+        media: 447.8596
+        quartis: [370.323, 443.2996, 521.4347]
+      plausible_value_1_reading:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 910154
+        min: '-20.65479503'
+        max: '938.681'
+        media: 444.0316
+        quartis: [364.134, 442.8291, 522.5459]
+      plausible_value_2_reading:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 901940
+        min: '0.0'
+        max: '910.364'
+        media: 444.0615
+        quartis: [364.2373, 442.8383, 522.6057]
+      plausible_value_3_reading:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 1017125
+        min: '-9.924658271'
+        max: '940.36'
+        media: 444.0308
+        quartis: [364.1853, 442.8122, 522.5342]
+      plausible_value_4_reading:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 1076499
+        min: '0.0'
+        max: '940.152'
+        media: 443.9697
+        quartis: [364.2733, 442.7583, 522.4292]
+      plausible_value_5_reading:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 1026559
+        min: '0.0'
+        max: '937.394'
+        media: 444.0391
+        quartis: [364.2378, 442.889, 522.4811]
+      plausible_value_6_reading:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 1154739
+        min: '0.0'
+        max: '920.534'
+        media: 444.0093
+        quartis: [364.2055, 442.8561, 522.4594]
+      plausible_value_7_reading:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 1059923
+        min: '0.0'
+        max: '946.0499505'
+        media: 443.9801
+        quartis: [364.0905, 442.7915, 522.5258]
+      plausible_value_8_reading:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 804300
+        min: '0.0'
+        max: '938.387'
+        media: 444.0579
+        quartis: [364.214, 442.826, 522.6524]
+      plausible_value_9_reading:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 1307242
+        min: '0.0'
+        max: '918.182'
+        media: 444.0564
+        quartis: [364.1348, 442.8742, 522.5394]
+      plausible_value_10_reading:
+        tipo: DOUBLE
+        nulos_pct: 0.57
+        distintos_aprox: 1286046
+        min: '0.0'
+        max: '890.08'
+        media: 444.0766
+        quartis: [364.2095, 442.8857, 522.6183]
+      plausible_value_1_science:
+        tipo: DOUBLE
+        nulos_pct: 0.22
+        distintos_aprox: 751434
+        min: '0.0'
+        max: '895.375'
+        media: 455.9126
+        quartis: [377.9143, 451.9627, 530.8508]
+      plausible_value_2_science:
+        tipo: DOUBLE
+        nulos_pct: 0.22
+        distintos_aprox: 797468
+        min: '9.243'
+        max: '905.334'
+        media: 455.8798
+        quartis: [377.8324, 451.9473, 530.8762]
+      plausible_value_3_science:
+        tipo: DOUBLE
+        nulos_pct: 0.22
+        distintos_aprox: 1106092
+        min: '0.0'
+        max: '914.936'
+        media: 455.8047
+        quartis: [377.765, 451.8233, 530.8251]
+      plausible_value_4_science:
+        tipo: DOUBLE
+        nulos_pct: 0.22
+        distintos_aprox: 912298
+        min: '0.0'
+        max: '900.869'
+        media: 455.8667
+        quartis: [377.831, 451.9471, 530.7811]
+      plausible_value_5_science:
+        tipo: DOUBLE
+        nulos_pct: 0.22
+        distintos_aprox: 1011480
+        min: '28.601'
+        max: '913.9585895'
+        media: 455.8834
+        quartis: [377.883, 451.9647, 530.7248]
+      plausible_value_6_science:
+        tipo: DOUBLE
+        nulos_pct: 0.22
+        distintos_aprox: 796239
+        min: '19.266'
+        max: '937.387'
+        media: 455.9121
+        quartis: [377.8587, 451.9892, 530.8742]
+      plausible_value_7_science:
+        tipo: DOUBLE
+        nulos_pct: 0.22
+        distintos_aprox: 940262
+        min: '0.0'
+        max: '911.915'
+        media: 455.8741
+        quartis: [377.8224, 451.949, 530.8359]
+      plausible_value_8_science:
+        tipo: DOUBLE
+        nulos_pct: 0.22
+        distintos_aprox: 871863
+        min: '56.61'
+        max: '891.394'
+        media: 455.842
+        quartis: [377.8458, 451.8853, 530.6802]
+      plausible_value_9_science:
+        tipo: DOUBLE
+        nulos_pct: 0.22
+        distintos_aprox: 897238
+        min: '39.379'
+        max: '923.551252'
+        media: 455.8968
+        quartis: [377.8844, 452.0187, 530.8223]
+      plausible_value_10_science:
+        tipo: DOUBLE
+        nulos_pct: 0.22
+        distintos_aprox: 906161
+        min: '7.07'
+        max: '915.3297153'
+        media: 455.9111
+        quartis: [377.8405, 451.9728, 530.8216]
+      plausible_value_1_environmental_science:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 486750
+        min: '44.48963811'
+        max: '924.4618572'
+        media: 450.7242
+        quartis: [370.7507, 446.3391, 527.1838]
+      plausible_value_2_environmental_science:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 553438
+        min: '52.14040539'
+        max: '916.9011406'
+        media: 450.6818
+        quartis: [370.4713, 446.2072, 527.4255]
+      plausible_value_3_environmental_science:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 515330
+        min: '45.51958146'
+        max: '885.7939563'
+        media: 450.7545
+        quartis: [370.7939, 446.3164, 527.3371]
+      plausible_value_4_environmental_science:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 534489
+        min: '55.27012702'
+        max: '959.0158759'
+        media: 450.7219
+        quartis: [370.6386, 446.2137, 527.286]
+      plausible_value_5_environmental_science:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 600885
+        min: '28.88496121'
+        max: '910.5516467'
+        media: 450.7208
+        quartis: [370.7191, 446.2911, 527.3149]
+      plausible_value_6_environmental_science:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 444747
+        min: '69.15778282'
+        max: '912.1786172'
+        media: 450.8215
+        quartis: [370.6559, 446.3192, 527.473]
+      plausible_value_7_environmental_science:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 571139
+        min: '27.52864751'
+        max: '914.1188291'
+        media: 450.7124
+        quartis: [370.4047, 446.2768, 527.5284]
+      plausible_value_8_environmental_science:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 535216
+        min: '36.5002132'
+        max: '895.0131191'
+        media: 450.7072
+        quartis: [370.5962, 446.3458, 527.4377]
+      plausible_value_9_environmental_science:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 453346
+        min: '53.89630815'
+        max: '920.4637784'
+        media: 450.8364
+        quartis: [370.8251, 446.3622, 527.5139]
+      plausible_value_10_environmental_science:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 465749
+        min: '56.56433104'
+        max: '960.1547216'
+        media: 450.8202
+        quartis: [371.3127, 446.4265, 527.4485]
+      plausible_value_1_ldw:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 693799
+        min: '-142.6352959'
+        max: '922.6176637'
+        media: 466.6146
+        quartis: [393.4146, 472.534, 545.2067]
+      plausible_value_2_ldw:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 669005
+        min: '-97.44453443'
+        max: '885.5515727'
+        media: 466.7007
+        quartis: [393.3824, 472.5786, 545.465]
+      plausible_value_3_ldw:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 495388
+        min: '-73.29151456'
+        max: '904.8056961'
+        media: 466.5648
+        quartis: [393.4087, 472.5771, 545.3084]
+      plausible_value_4_ldw:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 616671
+        min: '-116.7171591'
+        max: '921.061005'
+        media: 466.389
+        quartis: [393.2657, 472.4365, 545.434]
+      plausible_value_5_ldw:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 581649
+        min: '-101.0704288'
+        max: '903.5482112'
+        media: 466.5908
+        quartis: [393.3106, 473.0435, 545.3754]
+      plausible_value_6_ldw:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 622121
+        min: '-115.5987316'
+        max: '919.7562867'
+        media: 466.548
+        quartis: [393.251, 472.5144, 545.41]
+      plausible_value_7_ldw:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 538295
+        min: '-150.6702738'
+        max: '974.3297149'
+        media: 466.5612
+        quartis: [393.2412, 472.3959, 545.3425]
+      plausible_value_8_ldw:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 514773
+        min: '-161.0432238'
+        max: '889.6411907'
+        media: 466.5531
+        quartis: [393.3207, 472.4048, 545.527]
+      plausible_value_9_ldw:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 576615
+        min: '-79.83241391'
+        max: '913.7300958'
+        media: 466.5633
+        quartis: [393.2558, 472.5104, 545.2684]
+      plausible_value_10_ldw:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 570092
+        min: '-99.60201322'
+        max: '896.5811874'
+        media: 466.4471
+        quartis: [393.2847, 472.3276, 545.1445]
+      senate_weight:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 133957
+        min: '0.003469408621839639'
+        max: '12.89587'
+        media: 0.6432
+        quartis: [0.3421, 0.6744, 0.8391]
+      date_database_creation:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2005778]

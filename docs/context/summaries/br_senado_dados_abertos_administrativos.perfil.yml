@@ -1,0 +1,2801 @@
+dataset: br_senado_dados_abertos_administrativos
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  ata_acionamento:
+    linhas: 2886
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 2886]
+      id_contratacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 536, min: '1016', max: '986'}
+      id_acionamento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2681}
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2960, pessoal: 'só contagens: valores seriam dado pessoal'}
+      objeto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 439, min: "A quisição de materiais médico-hospitalares e equipamentos de proteção\
+          \ \r\nindividual (EPI).", max: 'contratação de empresa para locação de grade de alambrado com escoramento, incluídos os serviços de
+          montagem e desmontagem, para manifestações e eventos na área do Congresso Nacional e adjacências'}
+  contratacao:
+    linhas: 12863
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 12863]
+      tipo_contratacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: atas_registro_preco
+        max: notas_empenho
+        top:
+        - [contratos, 8219]
+        - [notas_empenho, 3969]
+        - [atas_registro_preco, 675]
+      id_contratacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9473}
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7476, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_formatado: {tipo: VARCHAR, nulos_pct: 36.1, distintos_aprox: 6816, pessoal: 'só contagens: valores seriam dado pessoal'}
+      status:
+        tipo: VARCHAR
+        nulos_pct: 36.1
+        distintos_aprox: 3
+        min: EM_RENOVACAO
+        max: VIGENTE
+        top:
+        - [ENCERRADO, 5724]
+        - [null, 4644]
+        - [VIGENTE, 2486]
+        - [EM_RENOVACAO, 9]
+      sigla_sub_especie:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: AC
+        max: TT
+        top:
+        - [NE, 3973]
+        - [CT, 3352]
+        - [RP, 1880]
+        - [AC, 1620]
+        - [TCR, 419]
+        - [CD, 413]
+        - [CN, 278]
+        - [PI, 232]
+        - [CC, 163]
+        - [TD, 159]
+      sub_especie:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: Acordo de Cooperação Técnica
+        max: Termo de Transferência
+        top:
+        - [Nota de Empenho, 3973]
+        - [Contrato, 3352]
+        - [Ata de Registro de Preços, 1880]
+        - [Acordo de Cooperação Técnica, 1620]
+        - [Termo de Credenciamento, 419]
+        - [Credenciamento de Entidade de Saúde, 413]
+        - [Convênio, 278]
+        - [Protocolo de Intenções, 232]
+        - [Carta Contrato, 163]
+        - [Termo de Doação, 159]
+      objeto: {tipo: VARCHAR, nulos_pct: 0.05, distintos_aprox: 6269}
+      cpf_cnpj_empresa: {tipo: VARCHAR, nulos_pct: 0.32, distintos_aprox: 5316, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_empresa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4508, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_licitacao: {tipo: VARCHAR, nulos_pct: 31.17, distintos_aprox: 2171, pessoal: 'só contagens: valores seriam dado pessoal'}
+      modalidade_licitacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: Acionamento de ARP
+        max: Tomada de Preços
+        top:
+        - [Acionamento de ARP, 2967]
+        - [Não se Aplica, 2965]
+        - [Pregão Eletrônico, 2673]
+        - [Pregão SRP - SF, 1368]
+        - [Inexigibilidade, 1091]
+        - [Dispensa de Licitação, 552]
+        - [Pregão, 527]
+        - [Inexigibilidade de Licitação, 410]
+        - [Ata Reg. Preços, 118]
+        - [Concorrência, 52]
+      sigla_unidade_gestora:
+        tipo: VARCHAR
+        nulos_pct: 36.1
+        distintos_aprox: 3
+        min: PD
+        max: SSIS
+        top:
+        - [SF, 7561]
+        - [null, 4644]
+        - [SSIS, 406]
+        - [PD, 185]
+        - [SEEP, 67]
+      unidade_gestora:
+        tipo: VARCHAR
+        nulos_pct: 36.1
+        distintos_aprox: 4
+        min: Gráfica do Senado Federal
+        max: Senado Federal
+        top:
+        - [Senado Federal, 7561]
+        - [null, 4644]
+        - [Secretaria do Sistema Integrado de Saúde, 406]
+        - [Prodasen, 185]
+        - [Gráfica do Senado Federal, 67]
+      fundamentacao_legal: {tipo: VARCHAR, nulos_pct: 23.68, distintos_aprox: 744, min: 13019/2014, max: §4º do art. 53 da Lei nº 14.133/2021}
+      processo_principal: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12003}
+      indicador_mao_de_obra:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: nao
+        max: sim
+        top:
+        - [nao, 12589]
+        - [sim, 274]
+      data_assinatura: {tipo: DATE, nulos_pct: 0.61, distintos_aprox: 4212, min: '0021-12-04', max: '2026-09-08'}
+      data_publicacao: {tipo: DATE, nulos_pct: 34.82, distintos_aprox: 3391, min: '0024-08-10', max: '9999-09-09'}
+      data_inicio_vigencia: {tipo: DATE, nulos_pct: 0.47, distintos_aprox: 4409, min: '1997-06-10', max: '2026-09-08'}
+      data_fim_vigencia: {tipo: DATE, nulos_pct: 31.73, distintos_aprox: 4534, min: '2001-06-09', max: '9999-09-09'}
+      data_ultima_atualizacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2668, min: '2007-04-10', max: '2026-09-08'}
+  contratacao_documento_fiscal:
+    linhas: 14428
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 14428]
+      tipo_contratacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: contratos
+        max: contratos
+        top:
+        - [contratos, 14428]
+      id_contratacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 761, min: '1036', max: '980'}
+      id_documento_fiscal: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14326, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9643, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_emissao: {tipo: DATE, nulos_pct: 7.73, distintos_aprox: 1628, min: '0200-02-04', max: '2026-08-21'}
+      data_vencimento: {tipo: DATE, nulos_pct: 6.5, distintos_aprox: 2938, min: '0216-02-11', max: '9999-12-31'}
+  contratacao_garantia:
+    linhas: 2466
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 2466]
+      tipo_contratacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: contratos
+        max: contratos
+        top:
+        - [contratos, 2466]
+      id_contratacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1040}
+      id_garantia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3221}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Depósito em caução
+        max: Títulos da dívida pública
+        top:
+        - [Seguro garantia, 1543]
+        - [Depósito em caução, 514]
+        - [Fiança bancária, 357]
+        - [Retenção em pagamentos, 51]
+        - [Títulos da dívida pública, 1]
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1843
+        min: '0.0'
+        max: '5000000.0'
+        media: 131115.8746
+        quartis: [4132.4552, 20776.7455, 99917.2917]
+      data_vencimento: {tipo: DATE, nulos_pct: 15.57, distintos_aprox: 1594, min: '0002-11-27', max: '9999-12-22'}
+  contratacao_item:
+    linhas: 61155
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 61155]
+      tipo_contratacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: atas_registro_preco
+        max: notas_empenho
+        top:
+        - [notas_empenho, 31802]
+        - [contratos, 22108]
+        - [atas_registro_preco, 7245]
+      id_contratacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5848}
+      id_item: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 44189}
+      numero_item: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 592, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 24748}
+      quantidade:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 4428
+        min: '0.0'
+        max: '16137642.96'
+        media: 1078.0575
+        quartis: [2, 10, 50]
+      data_atualizacao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 61155]
+  contratacao_orgao_gestor:
+    linhas: 7334
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 7334]
+      tipo_contratacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: atas_registro_preco
+        max: notas_empenho
+        top:
+        - [contratos, 3671]
+        - [notas_empenho, 3233]
+        - [atas_registro_preco, 430]
+      id_contratacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4400}
+      sigla_orgao_gestor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 112, pessoal: 'só contagens: valores seriam dado pessoal'}
+      orgao_gestor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 128, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_gestao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Comissão
+        max: Órgão Gestor Substituto
+        top:
+        - [Órgão Gestor, 6168]
+        - [Órgão Gestor Substituto, 679]
+        - [Comissão, 487]
+  contratacao_pagamento:
+    linhas: 10236
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 10236]
+      tipo_contratacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: contratos
+        max: contratos
+        top:
+        - [contratos, 10236]
+      id_contratacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 761, min: '1036', max: '980'}
+      id_pagamento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12203}
+      descricao_despesa: {tipo: VARCHAR, nulos_pct: 1.92, distintos_aprox: 4384}
+      valor_cobrado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 6068
+        min: '0.0'
+        max: '67937896.67'
+        media: 159129.3625
+        quartis: [4363.3107, 15331.8177, 55022.3525]
+      multa:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 221
+        min: '0.0'
+        max: '1547596.74'
+        media: 603.7829
+        quartis: [0, 0, 0]
+      glosa:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 858
+        min: '0.0'
+        max: '6335049.02'
+        media: 2254.933
+        quartis: [0, 0, 0]
+      observacao: {tipo: VARCHAR, nulos_pct: 65.24, distintos_aprox: 2211}
+  contratacao_pagamento_empenho:
+    linhas: 12685
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 12685]
+      tipo_contratacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: contratos
+        max: contratos
+        top:
+        - [contratos, 12685]
+      id_contratacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 706, min: '1036', max: '980'}
+      id_pagamento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11177}
+      id_empenho: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2721}
+      natureza_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: Auxilios
+        max: SERVICOS DE TECNOLOGIA DA INFORMACAO E COMUNICACAO - PJ
+        top:
+        - [OUTROS SERVICOS DE TERCEIROS - PESSOA JURIDICA, 6188]
+        - [SERVICOS DE TECNOLOGIA DA INFORMACAO E COMUNICACAO - PJ, 1700]
+        - [LOCACAO DE MAO-DE-OBRA, 1164]
+        - [MATERIAL DE CONSUMO, 622]
+        - [OBRIGACOES TRIBUTARIAS E CONTRIBUTIVAS, 593]
+        - [Outros Serviços de Terceiros - Pessoa Jurídica, 518]
+        - [OUTRAS DESP.PESSOAL DEC. CONTRATOS TERCEIRIZ., 394]
+        - [DESPESAS DE EXERCICIOS ANTERIORES, 341]
+        - [PASSAGENS E DESPESAS COM LOCOMOCAO, 263]
+        - [OUTROS SERVICOS DE TERCEIROS - PESSOA JURIDICA (INTRA), 242]
+      valor_empenhado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2417
+        min: '0.0'
+        max: '29004813.51'
+        media: 838822.6119
+        quartis: [22650.524, 85422.3644, 352794.2378]
+      valor_liquidado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2417
+        min: '0.0'
+        max: '29004813.51'
+        media: 836178.8832
+        quartis: [22650.524, 85422.3644, 352794.2378]
+      saldo:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '0.0'
+        max: '2769254.83'
+        media: 2643.7288
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 12627]
+        - ['10800.74', 9]
+        - ['149.66', 9]
+        - ['2769254.83', 8]
+        - ['472485.73', 8]
+        - ['6240.96', 8]
+        - ['895.16', 8]
+        - ['930766.52', 8]
+  contrato_aditivo:
+    linhas: 7450
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 7450]
+      id_contratacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2623}
+      id_aditivo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5204}
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 26, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 38.59
+        distintos_aprox: 3473
+        min: '-14993937.93'
+        max: '189069188.0'
+        media: 1213222.7835
+        quartis: [14047.2036, 74576.0633, 410855.7237]
+      data_assinatura: {tipo: DATE, nulos_pct: 0.08, distintos_aprox: 3473, min: '0207-03-22', max: '2027-06-11'}
+      data_publicacao: {tipo: DATE, nulos_pct: 18.17, distintos_aprox: 2977, min: '0001-02-13', max: '9999-09-09'}
+      data_atualizacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3267, min: '2007-05-10', max: '2026-09-08'}
+  despesa_ceaps:
+    linhas: 37461
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2025'
+        max: '2026'
+        media: 2025.3647
+        quartis: [2025, 2025, 2026]
+        top:
+        - ['2025', 23799]
+        - ['2026', 13662]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 5.7698
+        quartis: [3, 5, 8]
+        top:
+        - ['3', 4186]
+        - ['5', 4074]
+        - ['4', 3972]
+        - ['2', 3811]
+        - ['6', 3712]
+        - ['7', 3653]
+        - ['8', 3029]
+        - ['1', 2888]
+        - ['9', 2214]
+        - ['10', 2135]
+      id_despesa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 34739}
+      id_senador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 107, min: '1173', max: '825'}
+      tipo_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0.32
+        distintos_aprox: 6
+        min: Aluguel de imóveis para escritório político, compreendendo despesas concernentes a eles.
+        max: Serviços de Segurança Privada
+        top:
+        - ['Locomoção, hospedagem, alimentação, combustíveis e lubrificantes', 16972]
+        - ['Aluguel de imóveis para escritório político, compreendendo despesas concernentes a eles.', 6214]
+        - ['Passagens aéreas, aquáticas e terrestres nacionais', 4935]
+        - ['Contratação de consultorias, assessorias, pesquisas, trabalhos técnicos e outros serviços de apoio ao exercício do mandato parlamentar',
+          4155]
+        - [Divulgação da atividade parlamentar, 2961]
+        - ['Aquisição de material de consumo para uso no escritório político, inclusive aquisição ou locação de software, despesas postais, aquisição
+            de publicações, locação de móveis e de equipamentos.', 2093]
+        - [null, 120]
+        - [Serviços de Segurança Privada, 11]
+      tipo_documento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      documento: {tipo: VARCHAR, nulos_pct: 4.26, distintos_aprox: 31056, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 746, min: '0202-02-24', max: '2026-12-29'}
+      cpf_cnpj_fornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4044, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6250, pessoal: 'só contagens: valores seriam dado pessoal'}
+      detalhamento: {tipo: VARCHAR, nulos_pct: 62.44, distintos_aprox: 6791}
+      valor_reembolsado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 19476
+        min: '-3132.11'
+        max: '175000.0'
+        media: 1579.4225
+        quartis: [197.4062, 398.3052, 1661.7999]
+  diretor_coordenador:
+    linhas: 234
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 234]
+      sigla_setor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 195, min: AADGER, max: TRSUPL}
+      setor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 223, min: ADVOCACIA DO SENADO FEDERAL, max: SEGUNDA SECRETARIA}
+      sigla_setor_superior:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: ADVOSF
+        max: SGM
+        top:
+        - [DGER, 68]
+        - [SF, 55]
+        - [SGM, 32]
+        - [SECOM, 24]
+        - [CONLEG, 13]
+        - [PRESID, 12]
+        - [CONORF, 11]
+        - [ADVOSF, 9]
+        - [DIRECON, 4]
+        - [IFI, 2]
+      setor_superior:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: ADVOCACIA DO SENADO FEDERAL
+        max: SENADO FEDERAL
+        top:
+        - [DIRETORIA-GERAL, 68]
+        - [SENADO FEDERAL, 55]
+        - [SECRETARIA GERAL DA MESA, 32]
+        - [SECRETARIA DE COMUNICAÇÃO SOCIAL, 24]
+        - [CONSULTORIA LEGISLATIVA, 13]
+        - [PRESIDÊNCIA, 12]
+        - ['CONSULTORIA DE ORÇAMENTOS, FISCALIZAÇÃO E CONTROLE', 11]
+        - [ADVOCACIA DO SENADO FEDERAL, 9]
+        - [DIRETORIA-EXECUTIVA DE GOVERNANÇA CONTRATUAL E LICITATÓRIA, 4]
+        - [INSTITUIÇÃO FISCAL INDEPENDENTE, 2]
+      matricula_titular: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 255, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_titular: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 239, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cargo_titular: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 50, pessoal: 'só contagens: valores seriam dado pessoal'}
+      email_titular: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 229, pessoal: 'só contagens: valores seriam dado pessoal'}
+      referencia_chefia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: FC-3
+        max: SN01
+        top:
+        - [FC-3, 128]
+        - [SN01, 48]
+        - [FC-4, 32]
+        - [FC-6, 10]
+        - [SF03, 6]
+        - [FC-5, 4]
+        - [SF02, 4]
+        - [FC-7, 2]
+      matricula_substituto: {tipo: VARCHAR, nulos_pct: 91.45, distintos_aprox: 21, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_substituto: {tipo: VARCHAR, nulos_pct: 91.45, distintos_aprox: 16, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_inicio_substituicao:
+        tipo: DATE
+        nulos_pct: 91.45
+        distintos_aprox: 9
+        min: '2026-08-03'
+        max: '2026-09-09'
+        top:
+        - [null, 214]
+        - ['2026-09-08', 8]
+        - ['2026-08-31', 2]
+        - ['2026-09-01', 2]
+        - ['2026-09-02', 2]
+        - ['2026-09-09', 2]
+        - ['2026-08-03', 1]
+        - ['2026-08-26', 1]
+        - ['2026-09-05', 1]
+        - ['2026-09-07', 1]
+      data_fim_substituicao:
+        tipo: DATE
+        nulos_pct: 91.45
+        distintos_aprox: 13
+        min: '2026-09-09'
+        max: '2026-10-31'
+        top:
+        - [null, 214]
+        - ['2026-09-09', 3]
+        - ['2026-09-11', 3]
+        - ['2026-09-14', 3]
+        - ['2026-09-18', 2]
+        - ['2026-09-20', 2]
+        - ['2026-09-16', 1]
+        - ['2026-09-17', 1]
+        - ['2026-09-25', 1]
+        - ['2026-09-27', 1]
+      telefone: {tipo: VARCHAR, nulos_pct: 23.08, distintos_aprox: 139, pessoal: 'só contagens: valores seriam dado pessoal'}
+      endereco: {tipo: VARCHAR, nulos_pct: 19.23, distintos_aprox: 43, pessoal: 'só contagens: valores seriam dado pessoal'}
+  empresa:
+    linhas: 2923
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 2923]
+      id_empresa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2945}
+      cpf_cnpj: {tipo: VARCHAR, nulos_pct: 0.44, distintos_aprox: 2990, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2998, pessoal: 'só contagens: valores seriam dado pessoal'}
+  estagiario:
+    linhas: 462
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 462]
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 555, pessoal: 'só contagens: valores seriam dado pessoal'}
+      curso: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 64, min: Administração, max: Turismo}
+      sigla_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 202, min: ADVOSF, max: SPOL}
+      orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 183, min: ADVOCACIA DO SENADO FEDERAL, max: SERVIÇO SENADO VERIFICA}
+  licitacao:
+    linhas: 2753
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 2753]
+      id_licitacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2964}
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2962, pessoal: 'só contagens: valores seriam dado pessoal'}
+      modalidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Concorrência
+        max: Tomada de Preços
+        top:
+        - [Pregão, 2652]
+        - [Tomada de Preços, 26]
+        - [Credenciamento, 21]
+        - [Convite, 18]
+        - [Leilão, 18]
+        - [Concorrência, 17]
+        - [Concurso, 1]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 58.7
+        distintos_aprox: 7
+        min: ANULADA
+        max: SUSPENSA
+        top:
+        - [null, 1616]
+        - [HOMOLOGADA, 999]
+        - [EM ANDAMENTO, 48]
+        - [SUSPENSA, 27]
+        - [ANULADA, 25]
+        - [FRACASSADA, 18]
+        - [REVOGADA, 18]
+        - [DESERTA, 2]
+      objeto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2504}
+      data_abertura: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1905, min: '2006-01-19', max: '2026-09-22'}
+      indicador_registro_preco:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: nao
+        max: sim
+        top:
+        - [nao, 2563]
+        - [sim, 190]
+      orgao_origem:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Prodasen
+        max: Senado Federal
+        top:
+        - [Senado Federal, 2586]
+        - [SEEP, 108]
+        - [Prodasen, 59]
+      edital: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2857}
+  licitacao_detalhamento:
+    linhas: 7524
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 7524]
+      id_licitacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2218}
+      id_detalhamento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7681}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Ata
+        max: Esclarecimento
+        top:
+        - [Comunicado, 5769]
+        - [Ata, 1093]
+        - [Esclarecimento, 662]
+      descricao: {tipo: VARCHAR, nulos_pct: 3.55, distintos_aprox: 4462}
+      data_criacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2454, min: '1965-09-25', max: '2026-09-08'}
+      link: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7455}
+  menor_aprendiz:
+    linhas: 80
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 80]
+      cpf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 76, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 85, pessoal: 'só contagens: valores seriam dado pessoal'}
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Ativo
+        max: Ativo
+        top:
+        - [Ativo, 80]
+      fornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51, min: ATADM, max: SLCN}
+      orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 55, min: ASSESSORIA TÉCNICA E ADMINISTRATIVA (DA, max: SERVIÇO DE TRADUÇÃO E INTERPRETAÇÃO}
+  pensionista:
+    linhas: 2065
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 2065]
+      id_pensionista: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2147}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1806, pessoal: 'só contagens: valores seriam dado pessoal'}
+      vinculo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: COMISSIONADO
+        max: PARLAMENTAR
+        top:
+        - [EFETIVO, 1988]
+        - [PARLAMENTAR, 72]
+        - [COMISSIONADO, 5]
+      fundamento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51, min: EC103-TEMPORÁRIA, max: 'PENSÃO IPC INFORMADO a42,2ªp'}
+      nome_instituidor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1438, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: AL
+        max: TL
+        top:
+        - [AL, 850]
+        - [TL, 825]
+        - [IPC/PSSC, 322]
+        - [CL, 51]
+        - [AX, 10]
+        - [CARGO EM COMISSÃO, 5]
+        - [PARIDADE DEMANDA JUD, 1]
+        - [SP, 1]
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: ANALISTA LEGISLATIVO
+        max: TECNICO LEGISLATIVO
+        top:
+        - [ANALISTA LEGISLATIVO, 850]
+        - [TECNICO LEGISLATIVO, 825]
+        - [PLANO DOS CONGRESSISTAS, 322]
+        - [CONSULTOR LEGISLATIVO, 51]
+        - [AUXILIAR LEGISLATIVO, 10]
+        - [CARGO EM COMISSÃO, 5]
+        - [PENSAO PSSS - PARIDADE POR DAMANDA JUDICIAL, 1]
+        - [SECRETÁRIO PARLAMENTAR, 1]
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0.39
+        distintos_aprox: 33
+        min: ANALISTA DE ADMINISTRAÇÃO
+        max: TÉCNICO LEGISLATIVO
+        top:
+        - [ANALISTA DE PROCESSO LEGISLATIVO, 309]
+        - [ANALISTA LEGISLATIVO, 299]
+        - [APOSENTADORIA SERVIDOR IPC/PSSC, 250]
+        - [TÉCNICO LEGISLATIVO, 185]
+        - [TÉCNICO DE PROCESSO INDUSTRIAL GRÁFICO, 148]
+        - [SEGURANÇA, 130]
+        - [TÉCNICO DE EDIFICAÇÕES, 101]
+        - [TÉCNICO DE PROCESSO LEGISLATIVO, 100]
+        - [POLICIAL LEGISLATIVO FEDERAL, 99]
+        - [APOSENTADORIA PARLAMENTAR IPC/PSSC, 72]
+      codigo_funcao:
+        tipo: VARCHAR
+        nulos_pct: 96.9
+        distintos_aprox: 17
+        min: '10001'
+        max: '1062'
+        top:
+        - [null, 2001]
+        - ['1062', 12]
+        - ['10019', 10]
+        - ['10018', 5]
+        - ['10021', 4]
+        - ['10027', 4]
+        - ['10034', 4]
+        - ['1023', 4]
+        - ['10022', 3]
+        - ['10032', 3]
+      funcao:
+        tipo: VARCHAR
+        nulos_pct: 96.9
+        distintos_aprox: 20
+        min: ARTESANATO (APOSENTADO)
+        max: TAQUÍGRAFO (APOSENTADO)
+        top:
+        - [null, 2001]
+        - [ASSISTENTE TÉCNICO, 12]
+        - [CONTÍNUO (APOSENTADO), 10]
+        - [CHEFE DE SEÇÃO (APOSENTADO), 5]
+        - [ASSISTENTE ADMINISTRATIVO (APOSENTADO), 4]
+        - [AUXILIAR DE GABINETE (APOSENTADO), 4]
+        - [DIRETOR DE SUBSECRETARIA, 4]
+        - [MECANÓGRAFO-REVISOR (APOSENTADO), 4]
+        - [ARTESANATO (APOSENTADO), 3]
+        - [AUXILIAR DE GABINETE PARLAMENTAR (APOSENTADO), 3]
+      ano_exercicio:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 74
+        min: '1919'
+        max: '2024'
+        media: 1975.2475
+        quartis: [1967, 1974, 1984]
+      data_obito: {tipo: DATE, nulos_pct: 2.62, distintos_aprox: 1095, min: '1953-12-20', max: '2026-08-04'}
+      data_inicio_pensao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1407, min: '1953-12-20', max: '2026-08-04'}
+  previsao_aposentadoria:
+    linhas: 1853
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 1853]
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 44
+        min: ADVOGADO
+        max: TÉCNICO DE TECNOLOGIA DA INFORMAÇÃO
+        top:
+        - [ANALISTA DE PROCESSO LEGISLATIVO, 239]
+        - [POLICIAL LEGISLATIVO FEDERAL, 225]
+        - [CONSULTOR DE ASSESSORAMENTO LEGISLATIVO, 197]
+        - [ANALISTA DE ADMINISTRAÇÃO, 191]
+        - [ANALISTA DE TECNOLOGIA DA INFORMAÇÃO, 180]
+        - [ANALISTA DE COMUNICAÇÃO SOCIAL, 135]
+        - [TÉCNICO DE ADMINISTRAÇÃO, 116]
+        - [TÉCNICO DE PROCESSO LEGISLATIVO, 81]
+        - [TÉCNICO DE COMUNICAÇÃO SOCIAL, 60]
+        - [ANALISTA DE REGISTRO E REDAÇÃO PARLAMENTAR, 57]
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: ADVOGADO
+        max: TECNICO LEGISLATIVO
+        top:
+        - [ANALISTA LEGISLATIVO, 962]
+        - [TECNICO LEGISLATIVO, 588]
+        - [CONSULTOR LEGISLATIVO, 248]
+        - [ADVOGADO, 41]
+        - [AUXILIAR LEGISLATIVO, 10]
+        - [SECRETÁRIO PARLAMENTAR, 4]
+      ano_direito:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 76
+        min: '2007'
+        max: '2066'
+        media: 2042.1058
+        quartis: [2034, 2044, 2051]
+      mes_direito:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4436
+        quartis: [3, 6, 10]
+        top:
+        - ['1', 167]
+        - ['11', 167]
+        - ['2', 162]
+        - ['10', 160]
+        - ['4', 160]
+        - ['6', 160]
+        - ['12', 156]
+        - ['5', 154]
+        - ['3', 150]
+        - ['7', 149]
+      quantidade:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '1'
+        max: '11'
+        media: 1.361
+        quartis: [1, 1, 2]
+        top:
+        - ['1', 1389]
+        - ['2', 329]
+        - ['3', 97]
+        - ['4', 22]
+        - ['5', 9]
+        - ['6', 4]
+        - ['11', 1]
+        - ['7', 1]
+        - ['9', 1]
+  quadro_pessoal:
+    linhas: 195
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 195]
+      data_referencia:
+        tipo: DATE
+        nulos_pct: 93.33
+        distintos_aprox: 13
+        min: '2017-12-01'
+        max: '2021-12-01'
+        top:
+        - [null, 182]
+        - ['2017-12-01', 1]
+        - ['2018-04-01', 1]
+        - ['2018-08-01', 1]
+        - ['2018-12-01', 1]
+        - ['2019-04-01', 1]
+        - ['2019-08-01', 1]
+        - ['2019-12-01', 1]
+        - ['2020-04-01', 1]
+        - ['2020-08-01', 1]
+      quadro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: cargo_efetivo
+        max: servidor_estavel
+        top:
+        - [cargo_efetivo, 86]
+        - [pessoal, 52]
+        - [cargo_funcao, 20]
+        - [funcao_comissionada, 14]
+        - [senador, 13]
+        - [servidor_estavel, 10]
+      periodo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: ANTERIOR
+        max: ATUAL
+        top:
+        - [ATUAL, 140]
+        - [ANTERIOR, 55]
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 55.9
+        distintos_aprox: 6
+        min: ADVOGADO
+        max: TECNICO LEGISLATIVO
+        top:
+        - [null, 109]
+        - [ANALISTA LEGISLATIVO, 52]
+        - [TECNICO LEGISLATIVO, 24]
+        - [CONSULTOR LEGISLATIVO, 4]
+        - [ADVOGADO, 2]
+        - [AUXILIAR LEGISLATIVO, 2]
+        - [SECRETÁRIO PARLAMENTAR, 2]
+      classe:
+        tipo: VARCHAR
+        nulos_pct: 73.33
+        distintos_aprox: 3
+        min: --
+        max: INTERMEDIÁRIA
+        top:
+        - [null, 143]
+        - [ESPECIAL, 22]
+        - [INICIAL, 16]
+        - [INTERMEDIÁRIA, 11]
+        - [--, 3]
+      grupo:
+        tipo: VARCHAR
+        nulos_pct: 73.33
+        distintos_aprox: 7
+        min: A
+        max: G
+        top:
+        - [null, 143]
+        - [C, 16]
+        - [E, 16]
+        - [B, 10]
+        - [A, 5]
+        - [G, 3]
+        - [D, 1]
+        - [F, 1]
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 88.21
+        distintos_aprox: 6
+        min: ANALISTA LEGISLATIVO
+        max: TECNICO LEGISLATIVO
+        top:
+        - [null, 172]
+        - [SENADOR DA REPÚBLICA, 13]
+        - [ANALISTA LEGISLATIVO, 2]
+        - [AUXILIAR LEGISLATIVO, 2]
+        - ['CONSULTOR LEGISLATIVO, ADVOGADO DO SENADO FEDERAL', 2]
+        - [SECRETÁRIO PARLAMENTAR, 2]
+        - [TECNICO LEGISLATIVO, 2]
+      nivel:
+        tipo: VARCHAR
+        nulos_pct: 45.64
+        distintos_aprox: 25
+        min: AP-01
+        max: SF03
+        top:
+        - [null, 89]
+        - [III, 58]
+        - [II, 26]
+        - [I, 2]
+        - [AP-01, 1]
+        - [AP-02, 1]
+        - [AP-03, 1]
+        - [AP-04, 1]
+        - [AP-05, 1]
+        - [AP-06, 1]
+      especialidade:
+        tipo: VARCHAR
+        nulos_pct: 55.9
+        distintos_aprox: 48
+        min: ADVOGADO
+        max: TÉCNICO DE TECNOLOGIA DA INFORMAÇÃO
+        top:
+        - [null, 109]
+        - [ADVOGADO, 2]
+        - [ANALISTA DE ADMINISTRAÇÃO, 2]
+        - [ANALISTA DE ARQUIVOLOGIA, 2]
+        - [ANALISTA DE COMUNICAÇÃO SOCIAL, 2]
+        - [ANALISTA DE ENFERMAGEM, 2]
+        - [ANALISTA DE MANUTENÇÃO DE MÁQUINAS GRÁFICAS, 2]
+        - [ANALISTA DE ORÇAMENTO PÚBLICO, 2]
+        - [ANALISTA DE PROCESSO INDUSTRIAL GRÁFICO, 2]
+        - [ANALISTA DE PROCESSO LEGISLATIVO, 2]
+      referencia:
+        tipo: VARCHAR
+        nulos_pct: 92.82
+        distintos_aprox: 7
+        min: FC-1
+        max: FC-7
+        top:
+        - [null, 181]
+        - [FC-1, 2]
+        - [FC-2, 2]
+        - [FC-3, 2]
+        - [FC-4, 2]
+        - [FC-5, 2]
+        - [FC-6, 2]
+        - [FC-7, 2]
+      tabela_vencimento:
+        tipo: VARCHAR
+        nulos_pct: 89.74
+        distintos_aprox: 2
+        min: CARGOS EM COMISSÃO
+        max: FUNCAO COMISSIONADA
+        top:
+        - [null, 175]
+        - [CARGOS EM COMISSÃO, 15]
+        - [FUNCAO COMISSIONADA, 5]
+      plano_carreira:
+        tipo: VARCHAR
+        nulos_pct: 73.33
+        distintos_aprox: 7
+        min: Cargo Isolado
+        max: 'Cargos: Consultor Legislativo, Advogado do Senado Federal'
+        top:
+        - [null, 143]
+        - ['Cargo: Auxiliar Legislativo', 16]
+        - ['Cargo: Técnico Legislativo', 16]
+        - ['Cargo: Analista Legislativo', 10]
+        - ['Cargos: Consultor Legislativo, Advogado do Senado Federal', 5]
+        - [Cargo em Comissão, 3]
+        - [Cargo Isolado, 1]
+        - ['Cargo: Secretário Parlamentar', 1]
+      nivel_escolaridade:
+        tipo: VARCHAR
+        nulos_pct: 73.33
+        distintos_aprox: 4
+        min: Nível --
+        max: Nível III
+        top:
+        - [null, 143]
+        - [Nível II, 17]
+        - [Nível I, 16]
+        - [Nível III, 16]
+        - [Nível --, 3]
+      padrao_nivel_referencia:
+        tipo: VARCHAR
+        nulos_pct: 73.33
+        distintos_aprox: 40
+        min: B15
+        max: SF03
+        top:
+        - [null, 143]
+        - [S45, 3]
+        - [M36, 2]
+        - [S41, 2]
+        - [S42, 2]
+        - [S43, 2]
+        - [S44, 2]
+        - [B15, 1]
+        - [B16, 1]
+        - [B17, 1]
+      quantidade_cargos:
+        tipo: BIGINT
+        nulos_pct: 77.95
+        distintos_aprox: 38
+        min: '1'
+        max: '424'
+        media: 76.8837
+        quartis: [5, 20, 68]
+        top:
+        - [null, 152]
+        - ['5', 5]
+        - ['3', 4]
+        - ['1', 3]
+        - ['2', 2]
+        - ['20', 2]
+        - ['11', 1]
+        - ['12', 1]
+        - ['135', 1]
+        - ['15', 1]
+      quantidade_ocupados:
+        tipo: BIGINT
+        nulos_pct: 45.64
+        distintos_aprox: 48
+        min: '0'
+        max: '634'
+        media: 69.1321
+        quartis: [3, 18, 83]
+        top:
+        - [null, 89]
+        - ['1', 13]
+        - ['5', 7]
+        - ['0', 5]
+        - ['19', 5]
+        - ['2', 5]
+        - ['4', 5]
+        - ['10', 4]
+        - ['3', 4]
+        - ['6', 3]
+      quantidade_vagos:
+        tipo: BIGINT
+        nulos_pct: 8.72
+        distintos_aprox: 45
+        min: '0'
+        max: '853'
+        media: 126.1236
+        quartis: [0, 2, 60]
+        top:
+        - ['0', 74]
+        - [null, 17]
+        - ['853', 16]
+        - ['595', 10]
+        - ['1', 9]
+        - ['2', 8]
+        - ['5', 6]
+        - ['61', 6]
+        - ['4', 4]
+        - ['50', 3]
+      quantidade_subtotal:
+        tipo: BIGINT
+        nulos_pct: 63.08
+        distintos_aprox: 34
+        min: '0'
+        max: '576'
+        media: 99.3889
+        quartis: [0, 3, 146]
+        top:
+        - [null, 123]
+        - ['0', 32]
+        - ['2', 3]
+        - ['4', 3]
+        - ['7', 2]
+        - ['1', 1]
+        - ['101', 1]
+        - ['113', 1]
+        - ['133', 1]
+        - ['141', 1]
+      quantidade_total:
+        tipo: BIGINT
+        nulos_pct: 82.56
+        distintos_aprox: 27
+        min: '0'
+        max: '699'
+        media: 263.5294
+        quartis: [33, 244, 437]
+        top:
+        - [null, 161]
+        - ['2', 3]
+        - ['0', 2]
+        - ['563', 2]
+        - ['576', 2]
+        - ['10', 1]
+        - ['101', 1]
+        - ['113', 1]
+        - ['152', 1]
+        - ['161', 1]
+      quantidade_com_opcao:
+        tipo: BIGINT
+        nulos_pct: 89.74
+        distintos_aprox: 17
+        min: '2'
+        max: '508'
+        media: 72.9
+        quartis: [4, 8, 21]
+        top:
+        - [null, 175]
+        - ['2', 3]
+        - ['3', 2]
+        - ['4', 2]
+        - ['11', 1]
+        - ['14', 1]
+        - ['17', 1]
+        - ['20', 1]
+        - ['22', 1]
+        - ['33', 1]
+      quantidade_sem_opcao:
+        tipo: BIGINT
+        nulos_pct: 89.74
+        distintos_aprox: 7
+        min: '0'
+        max: '11'
+        media: 1.8
+        quartis: [0, 1, 2]
+        top:
+        - [null, 175]
+        - ['0', 9]
+        - ['1', 3]
+        - ['2', 3]
+        - ['4', 2]
+        - ['11', 1]
+        - ['3', 1]
+        - ['5', 1]
+      quantidade_sem_vinculo:
+        tipo: BIGINT
+        nulos_pct: 89.74
+        distintos_aprox: 14
+        min: '0'
+        max: '568'
+        media: 186.7
+        quartis: [1, 166, 292]
+        top:
+        - [null, 175]
+        - ['0', 5]
+        - ['100', 1]
+        - ['133', 1]
+        - ['143', 1]
+        - ['190', 1]
+        - ['2', 1]
+        - ['201', 1]
+        - ['258', 1]
+        - ['261', 1]
+      quantidade_estaveis:
+        tipo: BIGINT
+        nulos_pct: 68.21
+        distintos_aprox: 20
+        min: '0'
+        max: '825'
+        media: 76.5645
+        quartis: [0, 0, 17]
+        top:
+        - [null, 133]
+        - ['0', 39]
+        - ['1', 2]
+        - ['2', 2]
+        - ['133', 1]
+        - ['141', 1]
+        - ['17', 1]
+        - ['226', 1]
+        - ['253', 1]
+        - ['259', 1]
+      quantidade_nao_estaveis:
+        tipo: BIGINT
+        nulos_pct: 68.21
+        distintos_aprox: 16
+        min: '0'
+        max: '528'
+        media: 30.1613
+        quartis: [0, 0, 3]
+        top:
+        - [null, 133]
+        - ['0', 45]
+        - ['3', 3]
+        - ['1', 1]
+        - ['113', 1]
+        - ['12', 1]
+        - ['13', 1]
+        - ['166', 1]
+        - ['179', 1]
+        - ['228', 1]
+      quantidade_total_ativo:
+        tipo: BIGINT
+        nulos_pct: 66.67
+        distintos_aprox: 13
+        min: '0'
+        max: '1647'
+        media: 675.3538
+        quartis: [30, 86, 1491]
+        top:
+        - [null, 130]
+        - ['1647', 16]
+        - ['30', 16]
+        - ['1439', 10]
+        - ['317', 5]
+        - ['0', 4]
+        - ['81', 3]
+        - ['83', 3]
+        - ['85', 3]
+        - ['82', 2]
+      quantidade_aposentados:
+        tipo: BIGINT
+        nulos_pct: 66.67
+        distintos_aprox: 21
+        min: '0'
+        max: '1780'
+        media: 69.9692
+        quartis: [0, 2, 36]
+        top:
+        - [null, 130]
+        - ['0', 24]
+        - ['1', 6]
+        - ['73', 6]
+        - ['2', 5]
+        - ['3', 4]
+        - ['5', 3]
+        - ['67', 3]
+        - ['6', 2]
+        - ['8', 2]
+      quantidade_instituidores_pensao:
+        tipo: BIGINT
+        nulos_pct: 66.67
+        distintos_aprox: 18
+        min: '0'
+        max: '628'
+        media: 33.8923
+        quartis: [0, 1, 32]
+        top:
+        - [null, 130]
+        - ['0', 32]
+        - ['1', 6]
+        - ['72', 5]
+        - ['4', 3]
+        - ['70', 3]
+        - ['71', 3]
+        - ['3', 2]
+        - ['6', 2]
+        - ['2', 1]
+      quantidade_beneficiarios_pensao: {tipo: BIGINT, nulos_pct: 66.67, distintos_aprox: 21, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_total_inativo:
+        tipo: BIGINT
+        nulos_pct: 66.67
+        distintos_aprox: 29
+        min: '0'
+        max: '2313'
+        media: 103.8615
+        quartis: [0, 3, 64]
+        top:
+        - [null, 130]
+        - ['0', 20]
+        - ['1', 5]
+        - ['2', 5]
+        - ['3', 4]
+        - ['139', 3]
+        - ['4', 3]
+        - ['14', 2]
+        - ['143', 2]
+        - ['145', 2]
+  senador:
+    linhas: 681
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_nascimento: {tipo: DATE, nulos_pct: 88.11, distintos_aprox: 79, min: '1943-05-28', max: '1983-02-03'}
+      email: {tipo: VARCHAR, nulos_pct: 88.4, distintos_aprox: 86, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_senador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 751, min: '1023', max: '982'}
+      indicador_em_exercicio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: nao
+        max: sim
+        top:
+        - [nao, 600]
+        - [sim, 81]
+      mandato:
+        tipo: VARCHAR
+        nulos_pct: 88.11
+        distintos_aprox: 2
+        min: 2019 / 2027
+        max: 2023 / 2031
+        top:
+        - [null, 600]
+        - [2019 / 2027, 54]
+        - [2023 / 2031, 27]
+      nome_completo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 693, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_parlamentar: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 640, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Feminino
+        max: Masculino
+        top:
+        - [Masculino, 581]
+        - [Feminino, 100]
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 88.11
+        distintos_aprox: 13
+        min: AVANTE
+        max: UNIÃO
+        top:
+        - [null, 600]
+        - [PL, 16]
+        - [PSD, 14]
+        - [MDB, 9]
+        - [PT, 9]
+        - [PP, 7]
+        - [PSB, 7]
+        - [REPUBLICANOS, 6]
+        - [PSDB, 4]
+        - [PODEMOS, 3]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 88.11
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [null, 600]
+        - [AC, 3]
+        - [AL, 3]
+        - [AM, 3]
+        - [AP, 3]
+        - [BA, 3]
+        - [CE, 3]
+        - [DF, 3]
+        - [ES, 3]
+        - [GO, 3]
+      titular_suplente: {tipo: VARCHAR, nulos_pct: 88.11, distintos_aprox: 3, pessoal: 'só contagens: valores seriam dado pessoal'}
+  senador_aposentado_pensionista:
+    linhas: 188
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 188]
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 140, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_beneficio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: aposentadoria
+        max: pensao
+        top:
+        - [aposentadoria, 117]
+        - [pensao, 71]
+      regime:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: geral
+        max: pssc
+        top:
+        - [ipc, 108]
+        - [geral, 59]
+        - [pssc, 21]
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: EX-SENADOR IPC
+        max: PENSIONISTA-SENADOR
+        top:
+        - [EX-SENADOR IPC, 74]
+        - [PENSIONISTA-SENADOR, 71]
+        - [EX-SENADOR PSSC, 43]
+      data_inicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 95, min: '1966-09-05', max: '2026-02-23'}
+      data_fim:
+        tipo: DATE
+        nulos_pct: 99.47
+        distintos_aprox: 1
+        min: '2030-04-03'
+        max: '2030-04-03'
+        top:
+        - [null, 187]
+        - ['2030-04-03', 1]
+      valor_remuneracao:
+        tipo: DOUBLE
+        nulos_pct: 68.62
+        distintos_aprox: 33
+        min: '9273.23'
+        max: '45306.38'
+        media: 24187.9
+        quartis: [18082.81, 24110.41, 30416.22]
+        top:
+        - [null, 129]
+        - ['18082.81', 6]
+        - ['24110.41', 6]
+        - ['23381.8', 4]
+        - ['9273.23', 4]
+        - ['30416.22', 3]
+        - ['12055.2', 2]
+        - ['17354.19', 2]
+        - ['19871.22', 2]
+        - ['21195.97', 2]
+  senador_auxilio_moradia:
+    linhas: 85
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 85]
+      id_senador: {tipo: VARCHAR, nulos_pct: 1.18, distintos_aprox: 106, min: '1173', max: '825'}
+      indicador_auxilio_moradia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: nao
+        max: nao
+        top:
+        - [nao, 85]
+      indicador_imovel_funcional:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: nao
+        max: sim
+        top:
+        - [sim, 64]
+        - [nao, 21]
+  senador_escritorio_apoio:
+    linhas: 82
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 82]
+      id_senador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 88, min: '1173', max: '825'}
+      nome_escritorio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 93, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_setor:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 82]
+      endereco: {tipo: VARCHAR, nulos_pct: 3.66, distintos_aprox: 75, pessoal: 'só contagens: valores seriam dado pessoal'}
+      telefone: {tipo: VARCHAR, nulos_pct: 74.39, distintos_aprox: 24, pessoal: 'só contagens: valores seriam dado pessoal'}
+  senador_gabinete:
+    linhas: 81
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 81]
+      id_senador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 103, min: '1173', max: '825'}
+      endereco: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 98, pessoal: 'só contagens: valores seriam dado pessoal'}
+      telefones: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 97, pessoal: 'só contagens: valores seriam dado pessoal'}
+      fax: {tipo: VARCHAR, nulos_pct: 98.77, distintos_aprox: 1, pessoal: 'só contagens: valores seriam dado pessoal'}
+      chefe_gabinete: {tipo: VARCHAR, nulos_pct: 17.28, distintos_aprox: 64, pessoal: 'só contagens: valores seriam dado pessoal'}
+  servidor:
+    linhas: 22958
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 22958]
+      id_servidor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 22012, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 20965, pessoal: 'só contagens: valores seriam dado pessoal'}
+      vinculo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: COMISSIONADO
+        max: REQUISITADO
+        top:
+        - [COMISSIONADO, 14643]
+        - [EFETIVO, 7778]
+        - [PARLAMENTAR, 431]
+        - [REQUISITADO, 104]
+        - [EXERCICIO_PROVISORIO, 2]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: APOSENTADO
+        max: DESLIGADO
+        top:
+        - [DESLIGADO, 12285]
+        - [ATIVO, 6747]
+        - [APOSENTADO, 3926]
+      cargo: {tipo: VARCHAR, nulos_pct: 47.67, distintos_aprox: 77, min: ADVOCACIA, max: TÉCNICO DE TECNOLOGIA DA INFORMAÇÃO}
+      especialidade: {tipo: VARCHAR, nulos_pct: 47.67, distintos_aprox: 77, min: ADVOCACIA, max: TÉCNICO DE TECNOLOGIA DA INFORMAÇÃO}
+      padrao:
+        tipo: VARCHAR
+        nulos_pct: 66.63
+        distintos_aprox: 26
+        min: B26
+        max: SVAL
+        top:
+        - [null, 15296]
+        - [S45, 3183]
+        - [M36, 2647]
+        - [SVAL, 531]
+        - [S36, 271]
+        - [S38, 175]
+        - [S39, 126]
+        - [M34, 88]
+        - [M21, 75]
+        - [S43, 65]
+      codigo_categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: ADV
+        max: TL
+        top:
+        - [CARGO EM COMISSÃO, 14643]
+        - [AL, 3435]
+        - [TL, 3199]
+        - [IPC/PSSC, 574]
+        - [CL, 537]
+        - [PARLAMENTAR, 322]
+        - [REQUISITADO, 104]
+        - [AX, 74]
+        - [ADV, 54]
+        - [SP, 8]
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: ADVOGADO
+        max: TECNICO LEGISLATIVO
+        top:
+        - [CARGO EM COMISSÃO, 14643]
+        - [ANALISTA LEGISLATIVO, 3435]
+        - [TECNICO LEGISLATIVO, 3199]
+        - [PLANO DOS CONGRESSISTAS, 574]
+        - [CONSULTOR LEGISLATIVO, 537]
+        - [PARLAMENTAR, 322]
+        - [REQUISITADO SEM CARGO, 104]
+        - [AUXILIAR LEGISLATIVO, 74]
+        - [ADVOGADO, 54]
+        - [SECRETÁRIO PARLAMENTAR, 8]
+      codigo_funcao: {tipo: VARCHAR, nulos_pct: 75.28, distintos_aprox: 89, min: '1000', max: '96'}
+      funcao: {tipo: VARCHAR, nulos_pct: 75.28, distintos_aprox: 76, min: ADVOGADO-GERAL, max: SUBCHEFE DE GABINETE}
+      sigla_lotacao: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 1203}
+      lotacao: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 1592}
+      tipo_cessao:
+        tipo: VARCHAR
+        nulos_pct: 96.79
+        distintos_aprox: 2
+        min: para SF
+        max: pelo SF
+        top:
+        - [null, 22221]
+        - [para SF, 721]
+        - [pelo SF, 16]
+      orgao_origem: {tipo: VARCHAR, nulos_pct: 97.27, distintos_aprox: 290, min: ADVOCACIA GERAL DA UNIÃO, max: 'iINSTITUTO NACIONAL DE METROLOGIA,
+          NORMALIZAÇÃO E QUAL IND'}
+      orgao_destino:
+        tipo: VARCHAR
+        nulos_pct: 99.93
+        distintos_aprox: 12
+        min: AEB
+        max: TRIBUNAL REGIONAL ELEITORAL DE MINAS GERAIS
+        top:
+        - [null, 22942]
+        - [PR, 3]
+        - [STF, 3]
+        - [CÂMARA DOS DEPUTADOS, 2]
+        - [AEB, 1]
+        - [Agência Brasileira de Inteligência - ABIN, 1]
+        - [MCTI, 1]
+        - [MINC, 1]
+        - [MPDFT, 1]
+        - [MT, 1]
+      ano_admissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 79
+        min: '1942'
+        max: '2026'
+        media: 2009.4863
+        quartis: [2005, 2016, 2022]
+  servidor_aposentado:
+    linhas: 3627
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 3627]
+      matricula: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3519, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_quadro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: comissionado
+        max: efetivo
+        top:
+        - [efetivo, 3609]
+        - [comissionado, 18]
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2643, pessoal: 'só contagens: valores seriam dado pessoal'}
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: ADV
+        max: TÉCNICO
+        top:
+        - [TÉCNICO, 1872]
+        - [ANALISTA, 1516]
+        - [CONSULTOR, 175]
+        - [AUXILIAR, 50]
+        - [ADV, 4]
+        - [CARGO EM COMISSÃO, 4]
+        - [SP, 4]
+        - [CARGO ISOLADO, 2]
+      cargo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 52, min: ADVOCACIA, max: TÉCNICO DE TECNOLOGIA DA INFORMAÇÃO}
+      data_aposentadoria: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1834, min: '1970-08-29', max: '2026-09-01'}
+      tipo_aposentadoria:
+        tipo: VARCHAR
+        nulos_pct: 0.06
+        distintos_aprox: 4
+        min: COMPULSÓRIA
+        max: VOLUNTÁRIA
+        top:
+        - [VOLUNTARIA, 2433]
+        - [VOLUNTÁRIA, 994]
+        - [INVALIDEZ, 172]
+        - [COMPULSÓRIA, 26]
+        - [null, 2]
+  servidor_ativo:
+    linhas: 6663
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 6663]
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5310, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_vinculo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: COMISSIONADO
+        max: REQUISITADO
+        top:
+        - [COMISSIONADO, 4243]
+        - [EFETIVO, 2365]
+        - [REQUISITADO, 55]
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 64.51
+        distintos_aprox: 44
+        min: ADVOGADO
+        max: TÉCNICO DE TECNOLOGIA DA INFORMAÇÃO
+        top:
+        - [null, 4298]
+        - [ANALISTA DE PROCESSO LEGISLATIVO, 380]
+        - [POLICIAL LEGISLATIVO FEDERAL, 321]
+        - [ANALISTA DE ADMINISTRAÇÃO, 313]
+        - [CONSULTOR DE ASSESSORAMENTO LEGISLATIVO, 242]
+        - [ANALISTA DE TECNOLOGIA DA INFORMAÇÃO, 228]
+        - [ANALISTA DE COMUNICAÇÃO SOCIAL, 163]
+        - [TÉCNICO DE ADMINISTRAÇÃO, 130]
+        - [TÉCNICO DE PROCESSO LEGISLATIVO, 86]
+        - [TÉCNICO DE COMUNICAÇÃO SOCIAL, 64]
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 64.51
+        distintos_aprox: 6
+        min: ADVOGADO
+        max: TECNICO LEGISLATIVO
+        top:
+        - [null, 4298]
+        - [ANALISTA LEGISLATIVO, 1301]
+        - [TECNICO LEGISLATIVO, 710]
+        - [CONSULTOR LEGISLATIVO, 295]
+        - [ADVOGADO, 44]
+        - [AUXILIAR LEGISLATIVO, 12]
+        - [SECRETÁRIO PARLAMENTAR, 3]
+      funcao: {tipo: VARCHAR, nulos_pct: 14.81, distintos_aprox: 79, min: ADVOGADO-GERAL, max: SUBCHEFE DE GABINETE}
+      data_admissao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2595, min: '1975-01-16', max: '2026-09-08'}
+      jornada_semanal_horas:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '20'
+        max: '40'
+        media: 38.551
+        quartis: [35, 40, 40]
+        top:
+        - ['40', 4878]
+        - ['35', 1707]
+        - ['30', 36]
+        - ['20', 26]
+        - ['25', 16]
+      afastamento:
+        tipo: VARCHAR
+        nulos_pct: 86.72
+        distintos_aprox: 6
+        min: SERVIDOR CEDIDO A OUTRO ÓRGÃO
+        max: SERVIDOR LICENCIADO OU AFASTADO
+        top:
+        - [null, 5778]
+        - [SERVIDOR EM FÉRIAS, 715]
+        - [SERVIDOR LICENCIADO OU AFASTADO, 109]
+        - [SERVIDOR EM LICENÇA CAPACITAÇÃO, 43]
+        - [SERVIDOR CEDIDO A OUTRO ÓRGÃO, 16]
+        - [SERVIDOR DESLIGADO, 1]
+        - [SERVIDOR EM LICENÇA PRÊMIO, 1]
+      isencao_ponto: {tipo: VARCHAR, nulos_pct: 23.1, distintos_aprox: 1727}
+      sigla_lotacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 766, min: AAADVOSF, max: TRSUPL}
+      lotacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 757, min: ADVOCACIA DO SENADO FEDERAL, max: TERCEIRA SECRETARIA}
+      nivel_lotacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2'
+        max: '6'
+        media: 4.0894
+        quartis: [3, 4, 5]
+        top:
+        - ['3', 2423]
+        - ['4', 2207]
+        - ['6', 1139]
+        - ['5', 843]
+        - ['2', 51]
+      hierarquia_lotacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 668, min: SF - Senado Federal / CEPSF - CONSELHO DE ESTUDOS POLÍTICOS
+          DO SENADO FEDERAL, max: SF - Senado Federal / PROMUL - PROCURADORIA ESPECIAL DA MULHER}
+  servidor_cedido:
+    linhas: 247
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 247]
+      matricula: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 245, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_cessao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: cedido da infraero
+        max: cedido pelo senado
+        top:
+        - [cedido para o senado, 178]
+        - [cedido da infraero, 53]
+        - [cedido pelo senado, 16]
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 235, pessoal: 'só contagens: valores seriam dado pessoal'}
+      orgao_origem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 117, min: ADVOCACIA-GERAL DA UNIÃO, max: UNIVERSIDADE FEDERAL DO RIO DE JANEIRO
+          - UFRJ}
+      orgao_destino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: AEB
+        max: TRIBUNAL REGIONAL ELEITORAL DE MINAS GERAIS
+        top:
+        - [SENADO FEDERAL, 231]
+        - [PR, 3]
+        - [STF, 3]
+        - [CÂMARA DOS DEPUTADOS, 2]
+        - [AEB, 1]
+        - [Agência Brasileira de Inteligência - ABIN, 1]
+        - [MCTI, 1]
+        - [MINC, 1]
+        - [MPDFT, 1]
+        - [MT, 1]
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 93.52
+        distintos_aprox: 9
+        min: ADVOGADO
+        max: TÉCNICO DE PROCESSO LEGISLATIVO
+        top:
+        - [null, 231]
+        - [ANALISTA DE TECNOLOGIA DA INFORMAÇÃO, 3]
+        - [ANALISTA DE ADMINISTRAÇÃO, 2]
+        - [ANALISTA DE REGISTRO E REDAÇÃO PARLAMENTAR, 2]
+        - [CONSULTOR DE ASSESSORAMENTO LEGISLATIVO, 2]
+        - [POLICIAL LEGISLATIVO FEDERAL, 2]
+        - [ADVOGADO, 1]
+        - [ANALISTA DE COMUNICAÇÃO SOCIAL, 1]
+        - [BIBLIOTECONOMISTA, 1]
+        - [CONSULTOR DE ASSESSORAMENTO EM ORÇAMENTOS, 1]
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 93.52
+        distintos_aprox: 4
+        min: ADVOGADO
+        max: TECNICO LEGISLATIVO
+        top:
+        - [null, 231]
+        - [ANALISTA LEGISLATIVO, 9]
+        - [CONSULTOR LEGISLATIVO, 3]
+        - [TECNICO LEGISLATIVO, 3]
+        - [ADVOGADO, 1]
+      lotacao: {tipo: VARCHAR, nulos_pct: 6.48, distintos_aprox: 130, min: Assessoria Técnica da DIRECON, max: Serviço de Transportes}
+      data_exercicio: {tipo: DATE, nulos_pct: 6.48, distintos_aprox: 180, min: '1995-03-03', max: '2026-08-07'}
+  servidor_exonerado:
+    linhas: 4767
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 4767]
+      matricula: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4489, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5598, pessoal: 'só contagens: valores seriam dado pessoal'}
+      forma_vacancia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: EXONERAÇÃO
+        max: EXONERAÇÃO A PEDIDO
+        top:
+        - [EXONERAÇÃO, 4317]
+        - [EXONERAÇÃO A PEDIDO, 450]
+      data_exercicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1515, min: '1984-11-23', max: '2026-08-19'}
+      data_vacancia: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1143, min: '2022-01-01', max: '2026-09-08'}
+  servidor_hora_extra:
+    linhas: 12139
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2025'
+        max: '2026'
+        media: 2025.4
+        quartis: [2025, 2025, 2026]
+        top:
+        - ['2025', 7284]
+        - ['2026', 4855]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.3808
+        quartis: [4, 6, 8]
+        top:
+        - ['7', 1811]
+        - ['6', 1497]
+        - ['3', 1431]
+        - ['12', 1316]
+        - ['8', 1233]
+        - ['5', 1189]
+        - ['4', 960]
+        - ['1', 798]
+        - ['10', 502]
+        - ['2', 471]
+      id_hora_extra: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2132}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1441, pessoal: 'só contagens: valores seriam dado pessoal'}
+      mes_ano_prestacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 73, min: 01/2019, max: 12/2025}
+      mes_ano_pagamento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: 01/2025
+        max: 12/2025
+        top:
+        - [12/2025, 1316]
+        - [06/2026, 994]
+        - [07/2025, 985]
+        - [03/2025, 934]
+        - [07/2026, 826]
+        - [08/2026, 778]
+        - [05/2026, 713]
+        - [06/2025, 503]
+        - [10/2025, 502]
+        - [03/2026, 497]
+      valor_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 6927
+        min: '-3522.96'
+        max: '19717.15'
+        media: 2680.7202
+        quartis: [1424.4539, 2636.9717, 3006.26]
+  servidor_hora_extra_dia:
+    linhas: 131151
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2025'
+        max: '2026'
+        media: 2025.4136
+        quartis: [2025, 2025, 2026]
+        top:
+        - ['2025', 76911]
+        - ['2026', 54240]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.3167
+        quartis: [4, 6, 8]
+        top:
+        - ['7', 17171]
+        - ['6', 16913]
+        - ['5', 14386]
+        - ['4', 14111]
+        - ['3', 13499]
+        - ['8', 11158]
+        - ['1', 10645]
+        - ['12', 8304]
+        - ['10', 8251]
+        - ['11', 7907]
+      id_hora_extra: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2132}
+      mes_ano_prestacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 73, min: 01/2019, max: 12/2025}
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1500, min: '2019-01-01', max: '2026-07-26'}
+      quantidade_horas:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1221
+        min: '0.016666666666666666'
+        max: '23.983333333333334'
+        media: 2.1608
+        quartis: [2, 2, 2]
+      sigla_setor_prestacao: {tipo: VARCHAR, nulos_pct: 2.18, distintos_aprox: 374, min: AAADVOSF, max: TRSUPL}
+      setor_prestacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 314, min: Advocacia do Senado Federal, max: Terceira-Secretaria}
+  servidor_remuneracao:
+    linhas: 253849
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2025'
+        max: '2026'
+        media: 2025.4052
+        quartis: [2025, 2025, 2026]
+        top:
+        - ['2025', 150996]
+        - ['2026', 102853]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 5.7733
+        quartis: [3, 6, 8]
+        top:
+        - ['6', 40309]
+        - ['1', 30968]
+        - ['2', 23046]
+        - ['8', 21684]
+        - ['7', 21460]
+        - ['3', 21365]
+        - ['5', 21230]
+        - ['4', 21086]
+        - ['12', 20593]
+        - ['10', 10799]
+      id_remuneracao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10361}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8955, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_folha:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Normal
+        max: Suplementar
+        top:
+        - [Normal, 203549]
+        - [Suplementar, 50300]
+      remuneracao_basica:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 7767
+        min: '-240276.49'
+        max: '534643.83'
+        media: 20336.1031
+        quartis: [3090.06, 19745.8606, 34236.5702]
+      vantagens_pessoais:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 13902
+        min: '-598325.66'
+        max: '250262.91'
+        media: 2892.3211
+        quartis: [0, 0, 4322.6882]
+      funcao_comissionada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2508
+        min: '-357722.96'
+        max: '90701.11'
+        media: 676.3814
+        quartis: [0, 0, 0]
+      gratificacao_natalina:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 13853
+        min: '-14274.77'
+        max: '47376.02'
+        media: 1458.9132
+        quartis: [0, 0, 0]
+      horas_extras:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5799
+        min: '-6012.52'
+        max: '20639.68'
+        media: 123.7119
+        quartis: [0, 0, 0]
+      auxilios:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3381
+        min: '-6839.49'
+        max: '27500.0'
+        media: 960.1172
+        quartis: [0, 89.1188, 1795.8058]
+      diarias:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 930
+        min: '0.0'
+        max: '208627.71'
+        media: 46.9633
+        quartis: [0, 0, 0]
+      vantagens_indenizatorias:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 958
+        min: '-4806.75'
+        max: '139233.56'
+        media: 79.4498
+        quartis: [0, 0, 0]
+      outras_eventuais:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 15232
+        min: '-52107.25'
+        max: '103035.16'
+        media: 1155.9963
+        quartis: [0, 0, 0]
+      abono_permanencia:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 672
+        min: '-1304.98'
+        max: '66546.11'
+        media: 87.9339
+        quartis: [0, 0, 0]
+      faltas:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 282
+        min: '-44820.66'
+        max: '30687.0'
+        media: -3.5254
+        quartis: [0, 0, 0]
+      previdencia:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 19889
+        min: '-128087.36'
+        max: '52435.36'
+        media: -2353.7567
+        quartis: [-5228.3409, -951.64, -267.496]
+      imposto_renda:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 59543
+        min: '-36217.54'
+        max: '103914.87'
+        media: -4049.2602
+        quartis: [-8316.2063, -2304.4938, 0]
+      reversao_teto_constitucional:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 12315
+        min: '-491360.09'
+        max: '266905.02'
+        media: -1297.036
+        quartis: [0, 0, 0]
+      remuneracao_liquida:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 72151
+        min: '-237381.78'
+        max: '342349.26'
+        media: 19028.0352
+        quartis: [5798.3643, 21260.4406, 30024.2613]
+  suprido_ato_concessao:
+    linhas: 340
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2025'
+        max: '2026'
+        media: 2025.4176
+        quartis: [2025, 2025, 2026]
+        top:
+        - ['2025', 198]
+        - ['2026', 142]
+      codigo_ato_concessao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 498, min: '00012025', max: '02142025'}
+      codigo_suprido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 75, min: '14361', max: '979'}
+      nome_suprido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 74, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_orgao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 31
+        min: '10003'
+        max: '9993'
+        top:
+        - ['9932', 108]
+        - ['10557', 56]
+        - ['9931', 24]
+        - ['7075', 16]
+        - ['4988', 15]
+        - ['77', 10]
+        - ['9165', 10]
+        - ['8864', 9]
+        - ['8999', 8]
+        - ['5043', 7]
+      sigla_orgao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 38
+        min: ADVOSF
+        max: STVSEN
+        top:
+        - [SEPDIGN, 108]
+        - [SEPROSS, 56]
+        - [SEPPRES, 24]
+        - [SPOL, 16]
+        - [COARO, 15]
+        - [GBSPSF, 10]
+        - [PRESID, 10]
+        - [SINFRA, 9]
+        - [COGER, 8]
+        - [DIREG, 7]
+      orgao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 39
+        min: ADVOCACIA DO SENADO FEDERAL
+        max: SERVIÇO TÉCNICO DE TV
+        top:
+        - [SERVIÇO DE PROTEÇÃO DE DIGNITÁRIOS, 108]
+        - [SERVIÇO DE PROTEÇÃO DE SENADORES E SERVIDORES, 56]
+        - [SERVIÇO DE PROTEÇÃO PRESIDENCIAL, 24]
+        - [SECRETARIA DE POLÍCIA DO SENADO FEDERAL, 16]
+        - [COORDENAÇÃO DE ADMINISTRAÇÃO DE RESIDÊNCIAS OFICIAIS, 15]
+        - [GABINETE ADMINISTRATIVO DA SPOL, 10]
+        - [PRESIDÊNCIA, 10]
+        - [SECRETARIA DE INFRAESTRUTURA, 9]
+        - [COORDENAÇÃO DE SERVIÇOS GERAIS, 8]
+        - [DIRETORIA-EXECUTIVA DE GESTÃO, 7]
+      matricula_solicitante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 70, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 417, pessoal: 'só contagens: valores seriam dado pessoal'}
+      indicador_regime_especial:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: nao
+        max: sim
+        top:
+        - [sim, 233]
+        - [nao, 107]
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 191, min: '2025-01-03', max: '2026-07-30'}
+      data_publicacao_basf: {tipo: DATE, nulos_pct: 0, distintos_aprox: 191, min: '2025-01-09', max: '2026-08-04'}
+      prazo_aplicacao:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 340]
+      prazo_comprovacao:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 340]
+      data_aplicacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 204, min: '2025-04-03', max: '2026-10-28'}
+      data_comprovacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 151, min: '2025-04-18', max: '2026-11-12'}
+      valor_total_elementos_despesa:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 56
+        min: '80.0'
+        max: '90000.0'
+        media: 24724.3072
+        quartis: [16148.3144, 20000, 40000]
+      valor_total_empenhos:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 58
+        min: '80.0'
+        max: '90000.0'
+        media: 24694.8955
+        quartis: [16148.3144, 20000, 40000]
+      valor_total_transacoes:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 284
+        min: '0.0'
+        max: '73900.0'
+        media: 13549.9822
+        quartis: [2287.6388, 10178.598, 18449.2356]
+      valor_total_movimentacoes:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0.0'
+        max: '0.0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 340]
+      data_processamento:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-08 10:00:04'
+        max: '2026-09-08 10:00:04'
+        top:
+        - ['2026-09-08 10:00:04', 340]
+  suprido_empenho:
+    linhas: 689
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2025'
+        max: '2026'
+        media: 2025.2743
+        quartis: [2025, 2025, 2026]
+        top:
+        - ['2025', 500]
+        - ['2026', 189]
+      codigo_ato_concessao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 347, min: '00012025', max: '02142025'}
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 710, pessoal: 'só contagens: valores seriam dado pessoal'}
+      rubrica:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '339030'
+        max: '449052'
+        top:
+        - ['339030', 261]
+        - ['339039', 218]
+        - ['339033', 156]
+        - ['339040', 30]
+        - ['449052', 24]
+      descricao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Equipamento e Material Permanente
+        max: Serviços de Terceiros de Pessoa Jurídica
+        top:
+        - [Material de Consumo, 261]
+        - [Serviços de Terceiros de Pessoa Jurídica, 218]
+        - [Passagens e Despesas com Locomoção, 156]
+        - [Serviços de Tecnologia da Informação e Comunicação - PJ, 30]
+        - [Equipamento e Material Permanente, 24]
+      valor_concedido:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 81
+        min: '80.0'
+        max: '60000.0'
+        media: 10043.9252
+        quartis: [2504.6186, 5000, 15000]
+      valor_executado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 441
+        min: '0.0'
+        max: '56900.0'
+        media: 5088.865
+        quartis: [0, 751.4923, 4467.8423]
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 164, min: '2025-01-06', max: '2026-08-04'}
+      data_processamento:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-08 10:00:04'
+        max: '2026-09-08 10:00:04'
+        top:
+        - ['2026-09-08 10:00:04', 689]
+  suprido_movimentacao:
+    linhas: 3227
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '2013'
+        max: '2019'
+        media: 2016.9789
+        quartis: [2016, 2017, 2018]
+        top:
+        - ['2018', 833]
+        - ['2017', 637]
+        - ['2019', 633]
+        - ['2016', 445]
+        - ['2015', 402]
+        - ['2014', 190]
+        - ['2013', 87]
+      codigo_ato_concessao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 383, min: '00012013', max: 01112018}
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1012, min: '2013-03-27', max: '2019-12-20'}
+      data_processamento:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-08-22 00:00:00'
+        max: '2026-08-22 00:00:00'
+        top:
+        - ['2026-08-22 00:00:00', 3227]
+      fornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1526, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_movimentacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2780}
+      inscricao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 796, min: 00001891000109, max: '97549727000164'}
+      numero: {tipo: VARCHAR, nulos_pct: 0.06, distintos_aprox: 2909, pessoal: 'só contagens: valores seriam dado pessoal'}
+      rubricas: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 249, min: '33903001', max: '44905251'}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Nota fiscal
+        max: Recibo
+        top:
+        - [Nota fiscal, 3204]
+        - [Recibo, 23]
+      tipo_inscricao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Pessoa física
+        max: Pessoa jurídica
+        top:
+        - [Pessoa física, 1629]
+        - [Pessoa jurídica, 1598]
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2315
+        min: '1.96'
+        max: '12740.0'
+        media: 763.5172
+        quartis: [159.2721, 405.5607, 813.0072]
+  suprido_movimentacao_subtipo:
+    linhas: 4679
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '2013'
+        max: '2019'
+        media: 2016.9808
+        quartis: [2016, 2017, 2018]
+        top:
+        - ['2018', 1479]
+        - ['2017', 928]
+        - ['2016', 689]
+        - ['2019', 681]
+        - ['2015', 552]
+        - ['2014', 262]
+        - ['2013', 88]
+      id_movimentacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2780}
+      id_subtipo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3706}
+      rubrica: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 80, min: '33903001', max: '44905251'}
+      subtipo_despesa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 68, min: Aparelhos e Equipamentos de Comunicação, max: servicos funerários}
+      tipo_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Equipamento e Material Permanente
+        max: Serviços de Terceiros de Pessoa Jurídica
+        top:
+        - [Material de Consumo, 4000]
+        - [Serviços de Terceiros de Pessoa Jurídica, 458]
+        - [Passagens e Despesas com Locomoção, 169]
+        - [Equipamento e Material Permanente, 51]
+        - [Serviços de Tecnologia da Informação e Comunicação - PJ, 1]
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2523
+        min: '0.01'
+        max: '12740.0'
+        media: 691.2963
+        quartis: [138.2975, 354.9868, 796.5974]
+  suprido_transacao:
+    linhas: 2689
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2025'
+        max: '2026'
+        media: 2025.4689
+        quartis: [2025, 2025, 2026]
+        top:
+        - ['2025', 1428]
+        - ['2026', 1261]
+      id_transacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2530}
+      codigo_ato_concessao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 385, min: '00012025', max: '02132025'}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NOTA_FISCAL
+        max: RECIBO
+        top:
+        - [NOTA_FISCAL, 2295]
+        - [RECIBO, 394]
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2641, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_inscricao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Pessoa jurídica
+        max: Pessoa jurídica
+        top:
+        - [Pessoa jurídica, 2689]
+      inscricao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 890, min: '00000000000000', max: '96826375000184'}
+      fornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1079, pessoal: 'só contagens: valores seriam dado pessoal'}
+      rubricas: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 86, min: '33903001', max: '44905242'}
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2057
+        min: '3.2'
+        max: '73900.0'
+        media: 1713.2297
+        quartis: [217.0837, 437.6107, 2279.4115]
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 576, min: '2025-01-07', max: '2026-08-23'}
+      data_processamento:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-08 00:00:00'
+        max: '2026-09-08 00:00:00'
+        top:
+        - ['2026-09-08 00:00:00', 2689]
+  suprido_transacao_objeto:
+    linhas: 3039
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2025'
+        max: '2026'
+        media: 2025.4538
+        quartis: [2025, 2025, 2026]
+        top:
+        - ['2025', 1660]
+        - ['2026', 1379]
+      id_transacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2530}
+      id_objeto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2693}
+      descricao_objeto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 880, min: 1.000 sacos plásticos de 40 x 60 cm, max: óleo desengripante
+          spray}
+      tipo_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Equipamento e Material Permanente
+        max: Serviços de Terceiros de Pessoa Jurídica
+        top:
+        - [Material de Consumo, 2119]
+        - [Passagens e Despesas com Locomoção, 604]
+        - [Serviços de Terceiros de Pessoa Jurídica, 221]
+        - [Serviços de Tecnologia da Informação e Comunicação - PJ, 55]
+        - [Equipamento e Material Permanente, 40]
+      subtipo_despesa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 64, min: Aparelhos e Equipamentos de Comunicação, max: serviços de estacionamento
+          de veículos}
+      rubrica: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 69, min: '33903001', max: '44905242'}
+      quantidade:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 122
+        min: '0.0'
+        max: '41500.0'
+        media: 40.2438
+        quartis: [1, 4.8336, 32.1776]
+      valor_unitario:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1315
+        min: '0.05'
+        max: '27050.0'
+        media: 692.9384
+        quartis: [6.9394, 69.5339, 942.3971]
+      valor_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2263
+        min: '0.99'
+        max: '27050.0'
+        media: 1515.9572
+        quartis: [188.992, 387.3861, 1870.1293]
+  terceirizado:
+    linhas: 3178
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-09-09'
+        max: '2026-09-09'
+        top:
+        - ['2026-09-09', 3178]
+      cpf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2563, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3015, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_contrato:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 42
+        min: '5826'
+        max: '9373'
+        top:
+        - ['7900', 412]
+        - ['8328', 323]
+        - ['7987', 312]
+        - ['7837', 311]
+        - ['6137', 246]
+        - ['8267', 199]
+        - ['6319', 125]
+        - ['7163', 124]
+        - ['9078', 110]
+        - ['9373', 107]
+      numero_contrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 37, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_item_contrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 250, min: '19682', max: '53462'}
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Ativo
+        max: Ativo
+        top:
+        - [Ativo, 3178]
+      empresa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AGRADA CONSTRUCOES E SERVICOS LTDA (AGRADA CONSTRUCOES)
+        max: ÁGIL EMPRESA DE VIGILÂNCIA LTDA.
+        top:
+        - [PLANSUL PLANEJAMENTO E CONSULTORIA LTDA, 581]
+        - [MAIS SERVICOS CONCEITO LTDA (MAIS SERVICOS CONCEITO), 412]
+        - [EDSERV LOCACOES E SERVICOS LTDA (EDSERV), 323]
+        - [GENERAL CONTRACTOR CONSTRUTORA LTDA (HIGHENG CONSTRUTORA), 312]
+        - [ÁGIL EMPRESA DE VIGILÂNCIA LTDA., 311]
+        - [AGRADA CONSTRUCOES E SERVICOS LTDA (AGRADA CONSTRUCOES), 296]
+        - [AMAZON INFORMATICA LTDA (AMAZON INFORMATICA), 110]
+        - ['ENGEMIL ENGENHARIA, EMPREENDIMENTOS, MANUTENÇÃO E INSTALAÇÕES LTDA', 107]
+        - [SOLLO SERVIÇOS LTDA., 80]
+        - [MED MAIS SOLUÇÕES EM SERVIÇOS ESPECIAIS LTDA., 75]
+      sigla_lotacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 345, min: ADVOSF, max: TRSECR}
+      lotacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 347, min: ADVOCACIA DO SENADO FEDERAL, max: ÁGIL EMPRESA DE VIGILÂNCIA LTDA}

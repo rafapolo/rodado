@@ -1,0 +1,589 @@
+dataset: br_tce_rj
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  contratos_estado:
+    linhas: 39210
+    fonte_do_perfil: tabela inteira
+    colunas:
+      Processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 39229}
+      AnoProcesso:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '2023'
+        max: '2026'
+        media: 2024.4022
+        quartis: [2023, 2024, 2025]
+        top:
+        - ['2023', 10614]
+        - ['2025', 10519]
+        - ['2024', 10144]
+        - ['2026', 7933]
+      DataContratacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1271, min: '2023-01-02', max: '2026-10-05'}
+      ValorTotalContrato:
+        tipo: DOUBLE
+        nulos_pct: 0.15
+        distintos_aprox: 25900
+        min: '0.0'
+        max: '99825083.7'
+        media: 1053495.9583
+        quartis: [6176.9891, 33222.1171, 212773.4304]
+      StatusContratacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: Aguard. Liberação
+        max: Encerrado
+        top:
+        - [Ativo, 21825]
+        - [Em Aberto, 15521]
+        - [Encerrado, 587]
+        - [Cancelado, 519]
+        - [Aguard. Liberação, 377]
+        - [Em Aprovação, 174]
+        - [Aguardando publ. PNCP, 154]
+        - [Em Alteração, 45]
+        - [Em Edição, 8]
+      Unidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 95, min: AGENERSA - AG REGUL ENERGIA E SANEAMENTO DO EST RJ, max: UERJ - HOSPITAL
+          UNIVERSITÁRIO - HOSPITAL UNIVERSITARIO PEDRO ERNESTO}
+      Objeto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 26103}
+      Fornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8329, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CPFCNPJ: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6156, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DataInicioVigencia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1219}
+      DataFimVigencia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2064}
+      CriterioJulgamento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Maior Desconto
+        max: Técnica e Preço
+        top:
+        - [Menor Preço, 38959]
+        - [Maior Desconto, 151]
+        - [Menor Preço por Menor Taxa Administrativa Percentual (Lei nº 8.666/93), 94]
+        - [Menor Preço por Taxa de Transação (Lei nº 8.666/93), 4]
+        - [Técnica e Preço, 2]
+      Contratacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 40190}
+      ValorTotalEmpenhado:
+        tipo: DOUBLE
+        nulos_pct: 74.76
+        distintos_aprox: 7994
+        min: '-4693079.04'
+        max: '409418216.49'
+        media: 635854.0817
+        quartis: [3596.8207, 20032.1744, 145977.2841]
+      ValorTotalLiquidado:
+        tipo: DOUBLE
+        nulos_pct: 89.67
+        distintos_aprox: 4294
+        min: '2.03'
+        max: '390647822.39'
+        media: 470368.0858
+        quartis: [3708.8928, 18569.4977, 110817.8148]
+      ValorTotalPago:
+        tipo: DOUBLE
+        nulos_pct: 90.39
+        distintos_aprox: 4270
+        min: '7.47'
+        max: '388870936.03'
+        media: 454958.4189
+        quartis: [3574.1917, 17781.7578, 104579.597]
+  contratos_municipio:
+    linhas: 137157
+    fonte_do_perfil: tabela inteira
+    colunas:
+      Ente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 88, min: ANGRA DOS REIS, max: VOLTA REDONDA}
+      UnidadeGestora: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 87, min: '1', max: '93'}
+      NumeroContrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 28704, pessoal: 'só contagens: valores seriam dado pessoal'}
+      AnoContrato:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '2020'
+        max: '2026'
+        media: 2022.9118
+        quartis: [2021, 2023, 2024]
+        top:
+        - ['2022', 23616]
+        - ['2023', 23208]
+        - ['2024', 20945]
+        - ['2025', 18785]
+        - ['2021', 18250]
+        - ['2020', 17926]
+        - ['2026', 14427]
+      TipoPessoa:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 137157]
+      CNPJCPFContratado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 23140, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Contratado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 45241, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ProcessoLicitatorio: {tipo: VARCHAR, nulos_pct: 43.17, distintos_aprox: 27230}
+      Modalidade:
+        tipo: VARCHAR
+        nulos_pct: 46.17
+        distintos_aprox: 17
+        min: CHAMAMENTO PÚBLICO
+        max: TOMADA DE PREÇOS
+        top:
+        - [null, 63329]
+        - [PREGÃO ELETRÔNICO, 34121]
+        - [PREGÃO PRESENCIAL, 28086]
+        - [TOMADA DE PREÇOS, 3215]
+        - [CONVITE, 2254]
+        - [CHAMAMENTO PÚBLICO, 2148]
+        - [CONCORRÊNCIA (LEI 8.666/93), 1625]
+        - [CONCORRÊNCIA ELETRÔNICA (LEI 14.133/2021), 1281]
+        - [CONCORRÊNCIA PRESENCIAL (LEI 14.133/2021), 437]
+        - [PROCEDIMENTO LICITATÓRIO - LEI No 13.303/16, 232]
+      ProcessoDispensa: {tipo: VARCHAR, nulos_pct: 71.77, distintos_aprox: 29873}
+      TipoContrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 70, min: ALIENAÇÃO DE BENS MÓVEIS, max: TERMO DE UTILIZAÇÃO DE BENS IMÓVEIS}
+      Objeto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 102041}
+      DataAssinaturaContrato: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2387, min: '2020-01-01', max: '2026-12-29'}
+      DataVencimentoContrato: {tipo: VARCHAR, nulos_pct: 0.43, distintos_aprox: 3381}
+      ValorContrato:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 71255
+        min: '-854852900001.63'
+        max: '2429836519092.02'
+        media: 22709287.5403
+        quartis: [7671.9539, 35558.725, 172878.1327]
+      ValorEmpenhado:
+        tipo: DOUBLE
+        nulos_pct: 21.45
+        distintos_aprox: 69540
+        min: '0.01'
+        max: '2141153316.02'
+        media: 983701.0219
+        quartis: [8340.2765, 37908.4796, 194447.5684]
+      ValorLiquidado:
+        tipo: DOUBLE
+        nulos_pct: 21.45
+        distintos_aprox: 50386
+        min: '-81166.7'
+        max: '1073238762.85'
+        media: 627131.4168
+        quartis: [233.3948, 13027.8593, 92608.1359]
+      ValorPago:
+        tipo: DOUBLE
+        nulos_pct: 21.45
+        distintos_aprox: 57204
+        min: '0.0'
+        max: '1051256819.7'
+        media: 605253.407
+        quartis: [5.2036, 11608.4933, 86463.9565]
+      PercentualRecursosUniao:
+        tipo: DOUBLE
+        nulos_pct: 90.21
+        distintos_aprox: 458
+        min: '1.0'
+        max: '100.0'
+        media: 75.1234
+        quartis: [50, 100, 100]
+      UtilizaLei14133:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [Não, 93875]
+        - [Sim, 43282]
+  convenios_estado:
+    linhas: 2917
+    fonte_do_perfil: tabela inteira
+    colunas:
+      Ente:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: ESTADO DO RIO DE JANEIRO
+        max: ESTADO DO RIO DE JANEIRO
+        top:
+        - [ESTADO DO RIO DE JANEIRO, 2917]
+      UnidadeGestora:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 41
+        min: 'ADMINISTRAÇÃO CENTRAL DA UERJ                                                                                                                                                                                                                             '
+        max: 'TRIBUNAL DE JUSTIÇA DO ESTADO DO RIO DE JANEIRO                                                                                                                                                                                                           '
+        top:
+        - ['FUNDO ESPECIAL DO TRIBUNAL DE JUSTICA DO ESTADO DO RIO DE JANEIRO                                                                                                                                                                                         ',
+          1132]
+        - ['MINISTÉRIO PÚBLICO DO ESTADO DO RIO DE JANEIRO                                                                                                                                                                                                            ',
+          588]
+        - ['DEPARTAMENTO DE TRÂNSITO DO ESTADO DO RIO DE JANEIRO                                                                                                                                                                                                      ',
+          283]
+        - ['DEFENSORIA PÚBLICA DO ESTADO DO RIO DE JANEIRO                                                                                                                                                                                                            ',
+          192]
+        - ['TRIBUNAL DE CONTAS DO ESTADO DO RIO DE JANEIRO                                                                                                                                                                                                            ',
+          139]
+        - ['ADMINISTRAÇÃO CENTRAL DA UERJ                                                                                                                                                                                                                             ',
+          98]
+        - ['FUNDO ESPECIAL DA ESCOLA DA MAGISTRATURA DO ESTADO DO RIO DE JANEIRO                                                                                                                                                                                      ',
+          93]
+        - ['FUNDAÇÃO DEPARTAMENTO DE ESTRADAS DE RODAGEM DO ESTADO DO RIO DE JANEIRO                                                                                                                                                                                  ',
+          76]
+        - ['FUNDO ÚNICO DE PREVIDÊNCIA SOCIAL DO ESTADO RIO DE JANEIRO                                                                                                                                                                                                ',
+          34]
+        - ['SECRETARIA DE ESTADO DE POLÍCIA MILITAR                                                                                                                                                                                                                   ',
+          34]
+      SiglaUnidadeGestora:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 49
+        min: AGENERSA
+        max: UERJ
+        top:
+        - [FETJ, 1132]
+        - [MPE, 588]
+        - [DETRAN, 283]
+        - [DPGE, 192]
+        - [TCE-RJ, 139]
+        - [UERJ, 105]
+        - [FEEMERJ, 93]
+        - [DER/RJ, 76]
+        - [RIOPREVI, 34]
+        - [SEPM, 34]
+      MesConvenio:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.9554
+        quartis: [4, 7, 10]
+        top:
+        - ['10', 313]
+        - ['8', 295]
+        - ['12', 290]
+        - ['7', 258]
+        - ['11', 252]
+        - ['9', 250]
+        - ['6', 242]
+        - ['3', 223]
+        - ['1', 219]
+        - ['5', 213]
+      AnoConvenio:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '2019'
+        max: '2026'
+        media: 2021.9715
+        quartis: [2020, 2022, 2024]
+        top:
+        - ['2019', 566]
+        - ['2021', 404]
+        - ['2022', 385]
+        - ['2020', 370]
+        - ['2023', 362]
+        - ['2025', 351]
+        - ['2024', 286]
+        - ['2026', 193]
+      NumeroConvenio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2688, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Objeto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3242}
+      DataExecucaoInicial: {tipo: DATE, nulos_pct: 0.65, distintos_aprox: 1608, min: '2018-01-01', max: '2027-01-02'}
+      DataExecucaoFinal: {tipo: DATE, nulos_pct: 5.79, distintos_aprox: 2135, min: '2019-03-11', max: '2055-06-16'}
+      DataAssinatura: {tipo: DATE, nulos_pct: 0.1, distintos_aprox: 1479, min: '2019-01-07', max: '2026-10-01'}
+      DataPublicacao: {tipo: DATE, nulos_pct: 0.27, distintos_aprox: 1263, min: '2019-01-08', max: '2028-04-28'}
+      ComvenioAditivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Convenio
+        max: Convenio
+        top:
+        - [Convenio, 2917]
+      VeiculoComunicacao: {tipo: VARCHAR, nulos_pct: 0.31, distintos_aprox: 174, min: '0', max: pag. 26 do DOERJ de 13/05/2020}
+      urlPublicacao: {tipo: VARCHAR, nulos_pct: 94.58, distintos_aprox: 108, min: '', max: 'https://www3.tjrj.jus.br/sei/controlador.php?acao=documento_download_anexo&acao_origem=arvore_visualizar&id_anexo=1572244&infra_sistema=100000100&infra_unidade_atual=110000943&infra_hash=950802bc31c109685e8919c766e18e81d452c00851b8d076cbb2436144c1f8ed'}
+      Valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 298
+        min: '0.0'
+        max: '499843106.4'
+        media: 501519.7808
+        quartis: [0, 0, 0]
+      UltimaDataAditivo: {tipo: DATE, nulos_pct: 88.93, distintos_aprox: 263, min: '2020-07-15', max: '2031-12-16'}
+      QuantidadeAditivos:
+        tipo: BIGINT
+        nulos_pct: 88.62
+        distintos_aprox: 7
+        min: '1'
+        max: '8'
+        media: 1.4548
+        quartis: [1, 1, 2]
+        top:
+        - [null, 2585]
+        - ['1', 244]
+        - ['2', 54]
+        - ['3', 19]
+        - ['4', 8]
+        - ['5', 4]
+        - ['8', 2]
+        - ['6', 1]
+      ValorAditivos:
+        tipo: DOUBLE
+        nulos_pct: 89.41
+        distintos_aprox: 62
+        min: '0.0'
+        max: '669230698.8'
+        media: 3212110.2338
+        quartis: [0, 0, 0]
+  gastos_com_pessoal:
+    linhas: 2616
+    fonte_do_perfil: tabela inteira
+    colunas:
+      Exercicio:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2021'
+        max: '2025'
+        media: 2023
+        quartis: [2022, 2023, 2024]
+        top:
+        - ['2023', 526]
+        - ['2022', 524]
+        - ['2024', 524]
+        - ['2021', 521]
+        - ['2025', 521]
+      Ente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 88, min: ANGRA DOS REIS, max: VOLTA REDONDA}
+      Referencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: 1º Quadrimestre
+        max: 3º Quadrimestre
+        top:
+        - [3º Quadrimestre, 841]
+        - [2º Quadrimestre, 800]
+        - [1º Quadrimestre, 799]
+        - [1º Semestre, 110]
+        - [2º Semestre, 66]
+      Poder:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Executivo
+        max: Legislativo
+        top:
+        - [Executivo, 1311]
+        - [Legislativo, 1305]
+      RCL:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1783
+        min: '0.0'
+        max: '347099627400.0'
+        media: 860246011.9304
+        quartis: [129404809.78, 299417904.491, 730971212.142]
+      DespesasPessoal:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2804
+        min: '1526767.27'
+        max: '2528914308.06'
+        media: 139462334.0546
+        quartis: [5399097.5583, 35829750.2591, 124699306.1564]
+      PercentualRCL:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1117
+        min: '0.0'
+        max: '54421.21'
+        media: 153.8693
+        quartis: [2.0293, 12.0991, 44.4601]
+  licitacoes:
+    linhas: 42724
+    fonte_do_perfil: tabela inteira
+    colunas:
+      Ente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 88, min: ANGRA DOS REIS, max: VOLTA REDONDA}
+      Unidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 647, min: AGENCIA SANEAMENTO BASICO MUN RESENDE, max: SÃO JOÃO DA BARRA PREV}
+      Ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '2020'
+        max: '2026'
+        media: 2022.5627
+        quartis: [2021, 2022, 2024]
+        top:
+        - ['2022', 8895]
+        - ['2023', 8306]
+        - ['2021', 7218]
+        - ['2020', 6065]
+        - ['2025', 4771]
+        - ['2024', 4553]
+        - ['2026', 2916]
+      Mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.6122
+        quartis: [4, 7, 9]
+        top:
+        - ['5', 4233]
+        - ['7', 4201]
+        - ['6', 4145]
+        - ['8', 3981]
+        - ['3', 3951]
+        - ['10', 3574]
+        - ['4', 3428]
+        - ['9', 3405]
+        - ['12', 3366]
+        - ['11', 3183]
+      Modalidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: CHAMAMENTO PÚBLICO
+        max: TOMADA DE PREÇOS
+        top:
+        - [PREGÃO ELETRÔNICO, 20354]
+        - [PREGÃO PRESENCIAL, 14283]
+        - [TOMADA DE PREÇOS, 2452]
+        - [CONVITE, 2179]
+        - [CONCORRÊNCIA (LEI 8.666/93), 1067]
+        - [CONCORRÊNCIA ELETRÔNICA (LEI 14.133/2021), 926]
+        - [CHAMAMENTO PÚBLICO, 523]
+        - [DISPENSA ELETRÔNICA (LEI 14.133/2021), 416]
+        - [CONCORRÊNCIA PRESENCIAL (LEI 14.133/2021), 232]
+        - [PROCEDIMENTO LICITATÓRIO - LEI No 13.303/16, 179]
+      Tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: MAIOR DESCONTO
+        max: TÉCNICA E PREÇO
+        top:
+        - [MENOR PREÇO P/ITEM, 26530]
+        - [MENOR PREÇO GLOBAL, 11861]
+        - [MENOR PREÇO P/LOTE, 2906]
+        - [MAIOR DESCONTO, 538]
+        - [MAIOR LANCE OU OFERTA, 306]
+        - [OUTROS CRITÉRIOS DE JULGAMENTO, 219]
+        - [TÉCNICA E PREÇO, 120]
+        - [MELHOR PROJETO, 114]
+        - [MELHOR TÉCNICA, 69]
+        - [NÃO APLICÁVEL, 46]
+      ProcessoLicitatorio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 44176}
+      NumeroEdital: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 20280, pessoal: 'só contagens: valores seriam dado pessoal'}
+      PublicacaoOficial: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5941}
+      DataPublicacaoOficial: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2040, min: '2020-01-02', max: '2026-12-31'}
+      DataHomologacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2040}
+      DataPublicacaoEdital: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2002, min: '2002-12-01', max: '2026-09-28'}
+      Objeto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 42095}
+      Parecer:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 42724]
+      ValorEstimado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 34369
+        min: '0.0'
+        max: '2167978495.34'
+        media: 2410305.4451
+        quartis: [75169.3751, 259740.5234, 975034.5131]
+      AdiadoSineDie:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NÃO
+        max: SIM
+        top:
+        - [NÃO, 42721]
+        - [SIM, 3]
+      OrcamentoSigiloso:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NÃO
+        max: SIM
+        top:
+        - [NÃO, 41387]
+        - [SIM, 1337]
+      PercentualRecursosUniao:
+        tipo: DOUBLE
+        nulos_pct: 84.85
+        distintos_aprox: 456
+        min: '1.0'
+        max: '100.0'
+        media: 77.2933
+        quartis: [50, 100, 100]
+  penalidades_ressarcimento_estado:
+    linhas: 1059
+    fonte_do_perfil: tabela inteira
+    colunas:
+      Processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 358, min: 100002-7/2020, max: 130923-0/2011}
+      AnoCondenacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2022'
+        max: '2026'
+        media: 2023.8451
+        quartis: [2023, 2024, 2025]
+        top:
+        - ['2023', 301]
+        - ['2026', 220]
+        - ['2022', 219]
+        - ['2024', 184]
+        - ['2025', 135]
+      ValorPenalidade:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 223
+        min: '126.89'
+        max: '47277959.66'
+        media: 903079.1875
+        quartis: [3000, 6741.2538, 139907.7334]
+      Condenacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1153}
+      NomeOrgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 66, pessoal: 'só contagens: valores seriam dado pessoal'}
+      TipoEnte:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: ESTADUAL
+        max: ESTADUAL
+        top:
+        - [ESTADUAL, 1059]
+      GrupoNatureza:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: ATA DE REGISTRO DE PREÇOS
+        max: TOMADA DE CONTAS
+        top:
+        - [TOMADA DE CONTAS, 453]
+        - [RELATÓRIO DE AUDITORIA GOVERNAMENTAL, 322]
+        - [REPRESENTAÇÃO, 69]
+        - [TERMO, 47]
+        - [PRESTAÇÃO DE CONTAS, 27]
+        - [REPRESENTAÇÃO DA SGE, 27]
+        - [CONTRATO, 26]
+        - [RELATÓRIO DE INSPEÇÃO, 21]
+        - [ATO DE DISPENSA DE LICITAÇÃO, 16]
+        - [PROMOÇÃO, 11]
+      DataSessao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 235, min: '2021-01-25', max: '2026-09-21'}
+      DataUltimaAtualizacao:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-07 07:38:45.32'
+        max: '2026-10-07 07:38:45.32'
+        top:
+        - ['2026-10-07 07:38:45.32', 1059]

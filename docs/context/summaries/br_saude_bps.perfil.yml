@@ -1,0 +1,163 @@
+dataset: br_saude_bps
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  dados:
+    linhas: 371128
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_da_compra:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '2020'
+        max: '2026'
+        media: 2021.9862
+        quartis: [2021, 2022, 2023]
+        top:
+        - ['2022', 89670]
+        - ['2021', 85164]
+        - ['2020', 84920]
+        - ['2025', 35930]
+        - ['2023', 33869]
+        - ['2024', 29043]
+        - ['2026', 12532]
+      nome_da_instituicao: {tipo: VARCHAR, nulos_pct: 0.13, distintos_aprox: 632, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_da_instituicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 886, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_do_munica­pio_da_instituicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 693, pessoal: 'só contagens: valores seriam dado pessoal'}
+      uf_da_instituicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: AC
+        max: TO
+        top:
+        - [PR, 79930]
+        - [SP, 64965]
+        - [RO, 37868]
+        - [RS, 24190]
+        - [PB, 23526]
+        - [PE, 19664]
+        - [SE, 15630]
+        - [PI, 13567]
+        - [PA, 13095]
+        - [AL, 12514]
+      data_da_compra: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2054, min: '2020-01-01', max: '2026-09-28'}
+      data_da_insercao: {tipo: DATE, nulos_pct: 0.58, distintos_aprox: 2223, min: '2020-01-02', max: '2026-10-06'}
+      codigo_br:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 14845
+        min: '209754'
+        max: '640327'
+        media: 327114.7653
+        quartis: [268327, 274532, 400929]
+      descricao_catmat: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14014}
+      unidade_de_fornecimento:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 42
+        min: AMPOLA
+        max: UNIDADE INTERNACIONAL
+        top:
+        - [COMPRIMIDO, 133812]
+        - [FRASCO, 62030]
+        - [UNIDADE, 55290]
+        - [AMPOLA, 44680]
+        - [CÁPSULA, 16783]
+        - [FRASCO-AMPOLA, 14328]
+        - [BISNAGA, 12242]
+        - [CAIXA, 3867]
+        - [BOLSA, 3832]
+        - [ROLO, 3725]
+      generico:
+        tipo: VARCHAR
+        nulos_pct: 48.66
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [null, 180609]
+        - [S, 105844]
+        - [N, 84675]
+      anvisa: {tipo: VARCHAR, nulos_pct: 48.66, distintos_aprox: 12761}
+      modalidade_da_compra:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: Concorrência
+        max: Tomada de Preços
+        top:
+        - [Pregão, 335472]
+        - [Registro de Preços, 18673]
+        - [Dispensa de Licitação, 13662]
+        - [Tomada de Preços, 1864]
+        - [Concorrência, 710]
+        - [Inexigibilidade de Licitação, 417]
+        - [Concurso, 194]
+        - [Convite, 70]
+        - [Leilão, 65]
+        - [Diálogo Competitivo, 1]
+      tipo_da_compra:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: ADMINISTRATIVA
+        max: JUDICIAL
+        top:
+        - [ADMINISTRATIVA, 364971]
+        - [JUDICIAL, 6157]
+      capacidade:
+        tipo: DOUBLE
+        nulos_pct: 63.58
+        distintos_aprox: 140
+        min: '5.0'
+        max: '500000.0'
+        media: 7626.674
+        quartis: [326.9136, 1506.3315, 9996.8466]
+      unidade_de_medida:
+        tipo: VARCHAR
+        nulos_pct: 63.58
+        distintos_aprox: 16
+        min: CM
+        max: UN
+        top:
+        - [null, 235964]
+        - [ML, 109306]
+        - [G, 14390]
+        - [UN, 5490]
+        - [DOSES, 3570]
+        - [M, 1291]
+        - [L, 640]
+        - [KG, 237]
+        - [MG, 176]
+        - [MCL, 44]
+      unidade_fornecimento_capacidade: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 490, min: 'AMPOLA 0,05 ML', max: UNIDADE INTERNACIONAL}
+      cnpj_do_fornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4041, pessoal: 'só contagens: valores seriam dado pessoal'}
+      fornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3400, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_do_fabricante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2563, pessoal: 'só contagens: valores seriam dado pessoal'}
+      fabricante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2199}
+      quantidade_itens_comprados:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 22989
+        min: '1.0'
+        max: '4356140000.0'
+        media: 175142.25
+        quartis: [262.0634, 1730.9849, 12415.5802]
+      preco_unitario:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 36989
+        min: '0.0001'
+        max: '8191720.0'
+        media: 172.7083
+        quartis: [0.3566, 1.8616, 7.2661]
+      preco_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 78071
+        min: '0.0001'
+        max: '22816000000.0'
+        media: 311210.4792
+        quartis: [714.8079, 2917.5895, 13733.4212]

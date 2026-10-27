@@ -1,0 +1,84 @@
+dataset: br_anp_precos_combustiveis
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  microdados:
+    linhas: 16887683
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 610456]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 163873]
+        - [MG, 67425]
+        - [RJ, 46698]
+        - [RS, 44962]
+        - [PR, 41159]
+        - [BA, 33006]
+        - [GO, 24580]
+        - [PE, 24163]
+        - [SC, 21996]
+        - [CE, 17700]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 468, min: '1100023', max: '5300108'}
+      bairro_revenda: {tipo: VARCHAR, nulos_pct: 0.15, distintos_aprox: 6215, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cep_revenda: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7154, pessoal: 'só contagens: valores seriam dado pessoal'}
+      endereco_revenda: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 20185, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_revenda: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 21325, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_estabelecimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11131, pessoal: 'só contagens: valores seriam dado pessoal'}
+      bandeira_revenda: {tipo: VARCHAR, nulos_pct: 0.08, distintos_aprox: 65, min: Ale, max: Watt}
+      data_coleta: {tipo: DATE, nulos_pct: 0, distintos_aprox: 207, min: '2026-01-01', max: '2026-08-21'}
+      produto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: Diesel
+        max: Gnv
+        top:
+        - [Gasolina, 134624]
+        - [Etanol, 114077]
+        - [Gasolina Aditivada, 104312]
+        - [Glp, 97550]
+        - [Diesel S10, 93887]
+        - [Diesel, 55758]
+        - [Gnv, 10248]
+      unidade_medida:
+        tipo: VARCHAR
+        nulos_pct: 3.25
+        distintos_aprox: 3
+        min: R$/13kg
+        max: R$/m3
+        top:
+        - [R$/litro, 486226]
+        - [R$/13kg, 94471]
+        - [null, 19853]
+        - [R$/m3, 9906]
+      preco_compra:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 610456]
+      preco_venda:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 990
+        min: '2.77'
+        max: '170.0'
+        media: 23.3664
+        quartis: [5.9856, 6.6329, 7.282]

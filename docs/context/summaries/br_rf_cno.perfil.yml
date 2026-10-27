@@ -1,0 +1,213 @@
+dataset: br_rf_cno
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  areas:
+    linhas: 679080010
+    fonte_do_perfil: amostra de 0,295%. ~2.000.000 linhas
+    colunas:
+      data_extracao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 223, min: '2024-08-05', max: '2025-07-28'}
+      id_cno: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1624388}
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Acréscimo
+        max: Reforma
+        top:
+        - [Obra Nova, 1253124]
+        - [Existente, 332548]
+        - [Acréscimo, 198115]
+        - [Demolição, 98394]
+        - [Reforma, 83280]
+      destinacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Casa popular
+        max: Residencial unifamiliar
+        top:
+        - [Residencial unifamiliar, 1256240]
+        - [Comercial salas e lojas, 289411]
+        - [Residencial multifamiliar, 223966]
+        - [Galpão industrial, 108979]
+        - [Casa popular, 60574]
+        - [Conjunto habitacional popular, 14072]
+        - [Edifício de Garagens, 12219]
+      tipo_obra:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Alvenaria
+        max: Mista
+        top:
+        - [Alvenaria, 1798265]
+        - [Mista, 126852]
+        - [Madeira, 40344]
+      tipo_area:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Complementar
+        max: Principal
+        top:
+        - [Principal, 1841071]
+        - [Complementar, 124390]
+      tipo_area_complementar:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Estacionamento Térreo
+        max: Área Complementar do Posto de Gasolina
+        top:
+        - [nan, 1841071]
+        - [Piscina, 52744]
+        - [Estacionamento Térreo, 50768]
+        - [Quadra Esportiva e Poliesportiva, 19040]
+        - [Área Complementar do Posto de Gasolina, 1838]
+      metragem:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 141676
+        min: '0.01'
+        max: '7160370000.0'
+        media: 28386.7407
+        quartis: [63.2699, 126.6645, 263.4685]
+  cnaes:
+    linhas: 579063627
+    fonte_do_perfil: amostra de 0,345%. ~2.000.000 linhas
+    colunas:
+      data_extracao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 220, min: '2024-08-05', max: '2025-07-28'}
+      data_registro: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2561, min: '2018-11-19', max: '2025-07-22'}
+      id_cno: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1432325}
+      cnae_2_subclasse:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '4120400'
+        max: '4399199'
+        top:
+        - ['4120400', 966390]
+        - ['4399103', 673485]
+        - ['4299599', 81033]
+        - ['4311801', 67966]
+        - ['4213800', 42132]
+        - ['4399199', 32476]
+        - ['4211101', 26649]
+        - ['4391600', 16985]
+        - ['4222701', 8546]
+        - ['4299501', 7999]
+  microdados:
+    linhas: 534056673
+    fonte_do_perfil: amostra de 0,374%. ~2.000.000 linhas
+    colunas:
+      data_extracao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 223, min: '2024-08-05', max: '2025-07-28'}
+      data_situacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 16590, min: '1900-01-01', max: '2025-07-25'}
+      data_registro: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2561, min: '2018-11-19', max: '2025-07-26'}
+      data_inicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 19104, min: '1900-01-01', max: '2025-06-27'}
+      data_inicio_responsabilidade: {tipo: DATE, nulos_pct: 0, distintos_aprox: 19104, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_pais:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '105'
+        max: '994'
+        top:
+        - ['105', 1985980]
+        - ['994', 2]
+      nome_pais: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [SP, 610615]
+        - [PR, 277897]
+        - [MG, 249359]
+        - [RS, 205555]
+        - [SC, 123175]
+        - [GO, 92678]
+        - [CE, 61304]
+        - [MT, 43437]
+        - [BA, 39904]
+        - [MS, 32139]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      id_cno: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1358676}
+      id_cno_vinculado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 99, min: '387400175771', max: nan}
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '3'
+        top:
+        - ['15', 1263219]
+        - ['2', 642730]
+        - ['14', 39820]
+        - ['1', 33490]
+        - ['3', 6723]
+      id_responsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 133381, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_responsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1119279, pessoal: 'só contagens: valores seriam dado pessoal'}
+      qualificacao_responsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_empresarial: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 131669, pessoal: 'só contagens: valores seriam dado pessoal'}
+      area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 135825
+        min: '0.01'
+        max: '256500000343.67'
+        media: 146084.5546
+        quartis: [69.3756, 139.5808, 295.2375]
+      unidade_medida:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Outra
+        max: m3
+        top:
+        - [m2, 1884227]
+        - [Outra, 78103]
+        - [km, 11727]
+        - [m3, 8278]
+        - [kva, 1832]
+        - [kw, 1815]
+      bairro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 170867, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cep: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 298302, pessoal: 'só contagens: valores seriam dado pessoal'}
+      logradouro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 557124, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_logradouro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 37, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_logradouro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 41076, pessoal: 'só contagens: valores seriam dado pessoal'}
+      complemento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 373791, pessoal: 'só contagens: valores seriam dado pessoal'}
+      caixa_postal:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '54410010'
+        max: nan
+        top:
+        - [nan, 1985981]
+        - ['54410010', 1]
+  vinculos:
+    linhas: 129951372
+    fonte_do_perfil: amostra de 1.539%. ~2.000.000 linhas
+    colunas:
+      data_extracao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 289, min: '2024-08-05', max: '2026-09-12'}
+      data_registro: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2986, min: '2018-11-19', max: '2026-09-11'}
+      data_inicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 15727, min: '1900-01-01', max: '2026-09-10'}
+      data_fim: {tipo: DATE, nulos_pct: 99.38, distintos_aprox: 1705, min: '1977-01-03', max: '9999-03-30'}
+      id_cno: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 707747}
+      id_responsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 113295, pessoal: 'só contagens: valores seriam dado pessoal'}
+      qualificacao_contribuinte:
+        tipo: VARCHAR
+        nulos_pct: 16.71
+        distintos_aprox: 5
+        min: '109'
+        max: '64'
+        top:
+        - ['53', 1495828]
+        - [null, 328205]
+        - ['110', 93167]
+        - ['64', 18577]
+        - ['109', 14849]
+        - ['111', 13123]

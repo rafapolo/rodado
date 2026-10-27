@@ -1,0 +1,792 @@
+dataset: br_inep_avaliacao_alfabetizacao
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  alunos:
+    linhas: 3867999
+    fonte_do_perfil: amostra de 94.315% da última partição (ano = 2024). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 2012759]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      id_escola: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 46534}
+      id_aluno: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1870307}
+      caderno:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 25
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 109593]
+        - ['7', 102498]
+        - ['2', 102381]
+        - ['6', 102116]
+        - ['5', 101346]
+        - ['4', 98861]
+        - ['17', 97340]
+        - ['14', 97169]
+        - ['12', 97118]
+        - ['10', 96400]
+      serie:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - ['2', 2012759]
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '2'
+        max: '4'
+        top:
+        - ['3', 1747108]
+        - ['2', 265630]
+        - ['4', 21]
+      presenca:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 1760232]
+        - ['0', 252527]
+      preenchimento_caderno:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 1759343]
+        - ['0', 253416]
+      alfabetizado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 1051657]
+        - ['0', 961102]
+      proficiencia:
+        tipo: DOUBLE
+        nulos_pct: 12.59
+        distintos_aprox: 150542
+        min: '593.88'
+        max: '900.89'
+        media: 749.0407
+        quartis: [720.4572, 753.957, 780.401]
+      peso_aluno:
+        tipo: DOUBLE
+        nulos_pct: 12.59
+        distintos_aprox: 664
+        min: '1.0'
+        max: '29.83'
+        media: 1.1392
+        quartis: [1.0305, 1.0925, 1.1902]
+  meta_alfabetizacao_brasil:
+    linhas: 3
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '2023'
+        max: '2025'
+        media: 2024
+        quartis: [2023, 2024, 2025]
+        top:
+        - ['2023', 1]
+        - ['2024', 1]
+        - ['2025', 1]
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Pública
+        max: Pública
+        top:
+        - [Pública, 3]
+      taxa_alfabetizacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '55.9'
+        max: '66.0'
+        media: 60.3667
+        quartis: [56.725, 59.2, 64.3]
+        top:
+        - ['55.9', 1]
+        - ['59.2', 1]
+        - ['66.0', 1]
+      meta_alfabetizacao_2024:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '59.9'
+        max: '60.0'
+        media: 59.9333
+        quartis: [59.9, 59.9, 59.975]
+        top:
+        - ['59.9', 2]
+        - ['60.0', 1]
+      meta_alfabetizacao_2025:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '63.77'
+        max: '64.0'
+        media: 63.8467
+        quartis: [63.77, 63.77, 63.9425]
+        top:
+        - ['63.77', 2]
+        - ['64.0', 1]
+      meta_alfabetizacao_2026:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '67.0'
+        max: '67.47'
+        media: 67.3133
+        quartis: [67.1175, 67.47, 67.47]
+        top:
+        - ['67.47', 2]
+        - ['67.0', 1]
+      meta_alfabetizacao_2027:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '70.97'
+        max: '71.0'
+        media: 70.98
+        quartis: [70.97, 70.97, 70.9925]
+        top:
+        - ['70.97', 2]
+        - ['71.0', 1]
+      meta_alfabetizacao_2028:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '74.0'
+        max: '74.23'
+        media: 74.1533
+        quartis: [74.0575, 74.23, 74.23]
+        top:
+        - ['74.23', 2]
+        - ['74.0', 1]
+      meta_alfabetizacao_2029:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '77.0'
+        max: '77.24'
+        media: 77.16
+        quartis: [77.06, 77.24, 77.24]
+        top:
+        - ['77.24', 2]
+        - ['77.0', 1]
+      meta_alfabetizacao_2030:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '80.0'
+        max: '80.0'
+        media: 80
+        quartis: [80, 80, 80]
+        top:
+        - ['80.0', 3]
+      percentual_participacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '86.0'
+        max: '88.0'
+        media: 87.1233
+        quartis: [86.3425, 87.37, 87.8425]
+        top:
+        - ['86.0', 1]
+        - ['87.37', 1]
+        - ['88.0', 1]
+  meta_alfabetizacao_municipio:
+    linhas: 10704
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2023'
+        max: '2024'
+        media: 2023.5
+        quartis: [2023, 2023, 2024]
+        top:
+        - ['2023', 5352]
+        - ['2024', 5352]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Municipal
+        max: Municipal
+        top:
+        - [Municipal, 10704]
+      taxa_alfabetizacao:
+        tipo: DOUBLE
+        nulos_pct: 1.12
+        distintos_aprox: 3566
+        min: '4.4'
+        max: '100.0'
+        media: 61.7747
+        quartis: [47.6177, 62.4068, 76.7129]
+      meta_alfabetizacao_2024:
+        tipo: DOUBLE
+        nulos_pct: 2.24
+        distintos_aprox: 3404
+        min: '7.94'
+        max: '80.0'
+        media: 62.1517
+        quartis: [52.1347, 64.0746, 75.9224]
+      meta_alfabetizacao_2025:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2047
+        min: '14.05'
+        max: '80.0'
+        media: 65.2454
+        quartis: [57.1441, 66.9406, 76.5522]
+      meta_alfabetizacao_2026:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1998
+        min: '23.65'
+        max: '80.0'
+        media: 68.5578
+        quartis: [62.4209, 69.8816, 77.2737]
+      meta_alfabetizacao_2027:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1891
+        min: '37.0'
+        max: '80.0'
+        media: 71.772
+        quartis: [67.4176, 72.6676, 77.9785]
+      meta_alfabetizacao_2028:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1372
+        min: '52.68'
+        max: '80.0'
+        media: 74.7949
+        quartis: [72.0486, 75.2872, 78.6684]
+      meta_alfabetizacao_2029:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 730
+        min: '67.85'
+        max: '80.0'
+        media: 77.5522
+        quartis: [76.253, 77.7325, 79.3417]
+      meta_alfabetizacao_2030:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '80.0'
+        max: '80.0'
+        media: 80
+        quartis: [80, 80, 80]
+        top:
+        - ['80.0', 10704]
+      nivel_alfabetizacao:
+        tipo: BIGINT
+        nulos_pct: 1.12
+        distintos_aprox: 6
+        min: '0'
+        max: '5'
+        media: 2.6667
+        quartis: [1, 3, 4]
+        top:
+        - ['5', 2059]
+        - ['3', 1898]
+        - ['4', 1810]
+        - ['2', 1783]
+        - ['0', 1605]
+        - ['1', 1429]
+        - [null, 120]
+      percentual_participacao:
+        tipo: DOUBLE
+        nulos_pct: 1.12
+        distintos_aprox: 2167
+        min: '70.0'
+        max: '100.0'
+        media: 90.4278
+        quartis: [86.6942, 91.2171, 95.0736]
+  meta_alfabetizacao_uf:
+    linhas: 81
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '2023'
+        max: '2025'
+        media: 2024
+        quartis: [2023, 2024, 2025]
+        top:
+        - ['2023', 27]
+        - ['2024', 27]
+        - ['2025', 27]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 3]
+        - [AL, 3]
+        - [AM, 3]
+        - [AP, 3]
+        - [BA, 3]
+        - [CE, 3]
+        - [DF, 3]
+        - [ES, 3]
+        - [GO, 3]
+        - [MA, 3]
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Pública
+        max: Pública
+        top:
+        - [Pública, 81]
+      taxa_alfabetizacao:
+        tipo: DOUBLE
+        nulos_pct: 4.94
+        distintos_aprox: 62
+        min: '31.3'
+        max: '85.31'
+        media: 59.0331
+        quartis: [50.8575, 59.13, 67.0075]
+      meta_alfabetizacao_2024:
+        tipo: DOUBLE
+        nulos_pct: 11.11
+        distintos_aprox: 45
+        min: '38.0'
+        max: '80.0'
+        media: 58.2528
+        quartis: [51.4, 57, 65.5]
+        top:
+        - [null, 9]
+        - ['57.0', 6]
+        - ['80.0', 3]
+        - ['38.3', 2]
+        - ['43.4', 2]
+        - ['43.8', 2]
+        - ['47.6', 2]
+        - ['49.5', 2]
+        - ['49.7', 2]
+        - ['50.0', 2]
+      meta_alfabetizacao_2025:
+        tipo: DOUBLE
+        nulos_pct: 3.7
+        distintos_aprox: 42
+        min: '45.9'
+        max: '80.0'
+        media: 62.2026
+        quartis: [56.9, 61.4, 67.4]
+        top:
+        - ['61.0', 4]
+        - ['58.0', 3]
+        - ['71.0', 3]
+        - ['80.0', 3]
+        - [null, 3]
+        - ['45.9', 2]
+        - ['50.2', 2]
+        - ['50.6', 2]
+        - ['53.8', 2]
+        - ['55.4', 2]
+      meta_alfabetizacao_2026:
+        tipo: DOUBLE
+        nulos_pct: 2.47
+        distintos_aprox: 41
+        min: '53.6'
+        max: '80.0'
+        media: 66.2219
+        quartis: [62.2, 65.7, 70.15]
+        top:
+        - ['67.0', 6]
+        - ['61.1', 4]
+        - ['65.0', 4]
+        - ['66.0', 3]
+        - ['69.0', 3]
+        - ['73.0', 3]
+        - ['80.0', 3]
+        - ['53.6', 2]
+        - ['57.0', 2]
+        - ['57.1', 2]
+      meta_alfabetizacao_2027:
+        tipo: DOUBLE
+        nulos_pct: 2.47
+        distintos_aprox: 42
+        min: '61.0'
+        max: '80.0'
+        media: 70.1261
+        quartis: [67.3, 70, 72.9]
+        top:
+        - ['66.5', 4]
+        - ['69.6', 4]
+        - ['70.0', 4]
+        - ['67.0', 3]
+        - ['71.0', 3]
+        - ['80.0', 3]
+        - ['61.2', 2]
+        - ['63.6', 2]
+        - ['63.8', 2]
+        - ['64.0', 2]
+      meta_alfabetizacao_2028:
+        tipo: DOUBLE
+        nulos_pct: 2.47
+        distintos_aprox: 34
+        min: '68.0'
+        max: '80.0'
+        media: 73.7115
+        quartis: [72, 73.4, 75.325]
+        top:
+        - ['74.0', 8]
+        - ['72.0', 6]
+        - ['73.0', 5]
+        - ['71.5', 4]
+        - ['73.4', 4]
+        - ['75.0', 3]
+        - ['80.0', 3]
+        - ['68.3', 2]
+        - ['69.8', 2]
+        - ['69.9', 2]
+      meta_alfabetizacao_2029:
+        tipo: DOUBLE
+        nulos_pct: 2.47
+        distintos_aprox: 25
+        min: '74.6'
+        max: '80.0'
+        media: 77.041
+        quartis: [76.05, 77, 78]
+        top:
+        - ['76.0', 9]
+        - ['77.0', 9]
+        - ['78.0', 8]
+        - ['76.9', 6]
+        - ['76.8', 4]
+        - ['77.6', 4]
+        - ['75.0', 3]
+        - ['80.0', 3]
+        - ['74.6', 2]
+        - ['75.2', 2]
+      meta_alfabetizacao_2030:
+        tipo: DOUBLE
+        nulos_pct: 2.47
+        distintos_aprox: 1
+        min: '80.0'
+        max: '80.0'
+        media: 80
+        quartis: [80, 80, 80]
+        top:
+        - ['80.0', 79]
+        - [null, 2]
+      percentual_participacao:
+        tipo: DOUBLE
+        nulos_pct: 4.94
+        distintos_aprox: 79
+        min: '70.05'
+        max: '98.13'
+        media: 87.376
+        quartis: [84.375, 88.22, 90.2525]
+  municipio:
+    linhas: 23995
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2023'
+        max: '2024'
+        media: 2023.5188
+        quartis: [2023, 2024, 2024]
+        top:
+        - ['2024', 12448]
+        - ['2023', 11547]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      serie:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - ['2', 23995]
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '0'
+        max: '5'
+        top:
+        - ['3', 10896]
+        - ['5', 10466]
+        - ['2', 2235]
+        - ['0', 398]
+      taxa_alfabetizacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5145
+        min: '2.12'
+        max: '100.0'
+        media: 61.4445
+        quartis: [47.1451, 62.2074, 76.5579]
+      media_portugues:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 14288
+        min: '673.2983'
+        max: '868.4554'
+        media: 751.3757
+        quartis: [736.0054, 750.7212, 764.3441]
+      proporcao_aluno_nivel_0:
+        tipo: DOUBLE
+        nulos_pct: 48.12
+        distintos_aprox: 947
+        min: '0.0'
+        max: '30.0'
+        media: 2.2018
+        quartis: [0, 1.5165, 3.2822]
+      proporcao_aluno_nivel_1:
+        tipo: DOUBLE
+        nulos_pct: 48.12
+        distintos_aprox: 1376
+        min: '0.0'
+        max: '50.0'
+        media: 4.3088
+        quartis: [0.8324, 3.3225, 6.4979]
+      proporcao_aluno_nivel_2:
+        tipo: DOUBLE
+        nulos_pct: 48.12
+        distintos_aprox: 1846
+        min: '0.0'
+        max: '47.06'
+        media: 7.7334
+        quartis: [2.8375, 6.5746, 11.3945]
+      proporcao_aluno_nivel_3:
+        tipo: DOUBLE
+        nulos_pct: 48.12
+        distintos_aprox: 2104
+        min: '0.0'
+        max: '59.73'
+        media: 11.275
+        quartis: [5.7713, 10.4288, 16.057]
+      proporcao_aluno_nivel_4:
+        tipo: DOUBLE
+        nulos_pct: 48.12
+        distintos_aprox: 2265
+        min: '0.0'
+        max: '64.71'
+        media: 18.2685
+        quartis: [13.3325, 18.3804, 23.1172]
+      proporcao_aluno_nivel_5:
+        tipo: DOUBLE
+        nulos_pct: 48.12
+        distintos_aprox: 2146
+        min: '0.0'
+        max: '70.0'
+        media: 24.2162
+        quartis: [17.7683, 23.6406, 30.5441]
+      proporcao_aluno_nivel_6:
+        tipo: DOUBLE
+        nulos_pct: 48.12
+        distintos_aprox: 2752
+        min: '0.0'
+        max: '68.75'
+        media: 18.6294
+        quartis: [11.7758, 17.7122, 24.3389]
+      proporcao_aluno_nivel_7:
+        tipo: DOUBLE
+        nulos_pct: 48.12
+        distintos_aprox: 2019
+        min: '0.0'
+        max: '61.54'
+        media: 8.9079
+        quartis: [3.3708, 7.1605, 12.1869]
+      proporcao_aluno_nivel_8:
+        tipo: DOUBLE
+        nulos_pct: 48.12
+        distintos_aprox: 1405
+        min: '0.0'
+        max: '89.71'
+        media: 4.4589
+        quartis: [0, 1.9021, 4.6618]
+  uf:
+    linhas: 145
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2023'
+        max: '2024'
+        media: 2023.5172
+        quartis: [2023, 2024, 2024]
+        top:
+        - ['2024', 75]
+        - ['2023', 70]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 25
+        min: AC
+        max: TO
+        top:
+        - [BA, 7]
+        - [AL, 6]
+        - [AM, 6]
+        - [AP, 6]
+        - [CE, 6]
+        - [ES, 6]
+        - [GO, 6]
+        - [MA, 6]
+        - [MG, 6]
+        - [MS, 6]
+      serie:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - ['2', 145]
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '0'
+        max: '5'
+        top:
+        - ['3', 49]
+        - ['5', 49]
+        - ['2', 46]
+        - ['0', 1]
+      taxa_alfabetizacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 141
+        min: '30.57'
+        max: '86.21'
+        media: 56.374
+        quartis: [47.275, 55.8388, 63.575]
+      media_portugues:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 133
+        min: '712.562'
+        max: '797.34'
+        media: 745.3366
+        quartis: [734.221, 744.8627, 753.4053]
+      proporcao_aluno_nivel_0:
+        tipo: DOUBLE
+        nulos_pct: 48.28
+        distintos_aprox: 67
+        min: '0.0'
+        max: '8.16'
+        media: 3.0496
+        quartis: [1.74, 2.89, 3.885]
+      proporcao_aluno_nivel_1:
+        tipo: DOUBLE
+        nulos_pct: 48.28
+        distintos_aprox: 67
+        min: '1.41'
+        max: '11.74'
+        media: 5.4912
+        quartis: [3.9625, 5.42, 7.1175]
+      proporcao_aluno_nivel_2:
+        tipo: DOUBLE
+        nulos_pct: 48.28
+        distintos_aprox: 57
+        min: '2.44'
+        max: '20.6'
+        media: 9.0257
+        quartis: [5.99, 8.92, 11.0825]
+      proporcao_aluno_nivel_3:
+        tipo: DOUBLE
+        nulos_pct: 48.28
+        distintos_aprox: 45
+        min: '1.52'
+        max: '20.07'
+        media: 12.0115
+        quartis: [8.0325, 12.31, 15.51]
+        top:
+        - [null, 70]
+        - ['19.23', 3]
+        - ['13.33', 2]
+        - ['13.79', 2]
+        - ['13.8', 2]
+        - ['13.92', 2]
+        - ['15.51', 2]
+        - ['17.12', 2]
+        - ['17.21', 2]
+        - ['6.85', 2]
+      proporcao_aluno_nivel_4:
+        tipo: DOUBLE
+        nulos_pct: 48.28
+        distintos_aprox: 63
+        min: '6.11'
+        max: '27.77'
+        media: 19.1283
+        quartis: [16.1975, 18.87, 22.455]
+      proporcao_aluno_nivel_5:
+        tipo: DOUBLE
+        nulos_pct: 48.28
+        distintos_aprox: 70
+        min: '10.14'
+        max: '40.41'
+        media: 23.6471
+        quartis: [18.78, 24.23, 29.0825]
+      proporcao_aluno_nivel_6:
+        tipo: DOUBLE
+        nulos_pct: 48.28
+        distintos_aprox: 81
+        min: '8.24'
+        max: '35.66'
+        media: 16.7496
+        quartis: [13.1275, 15.8, 20.14]
+      proporcao_aluno_nivel_7:
+        tipo: DOUBLE
+        nulos_pct: 48.28
+        distintos_aprox: 66
+        min: '2.1'
+        max: '23.76'
+        media: 7.2915
+        quartis: [3.655, 5.77, 10.0175]
+      proporcao_aluno_nivel_8:
+        tipo: DOUBLE
+        nulos_pct: 48.28
+        distintos_aprox: 63
+        min: '0.0'
+        max: '31.24'
+        media: 3.6047
+        quartis: [0.9225, 1.94, 3.7675]

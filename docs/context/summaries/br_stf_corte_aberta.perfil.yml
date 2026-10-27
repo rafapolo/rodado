@@ -1,0 +1,139 @@
+dataset: br_stf_corte_aberta
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  decisoes:
+    linhas: 2708849
+    fonte_do_perfil: tabela inteira da última partição (ano = 2025)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2025'
+        max: '2025'
+        media: 2025
+        quartis: [2025, 2025, 2025]
+        top:
+        - ['2025', 1068]
+      classe:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: AC
+        max: STP
+        top:
+        - [HC, 390]
+        - [Rcl, 231]
+        - [ARE, 145]
+        - [RE, 93]
+        - [AP, 78]
+        - [RHC, 49]
+        - [Pet, 22]
+        - [ADPF, 13]
+        - [MS, 11]
+        - [ADI, 10]
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1035, pessoal: 'só contagens: valores seriam dado pessoal'}
+      relator: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12, pessoal: 'só contagens: valores seriam dado pessoal'}
+      link: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1247}
+      subgrupo_andamento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Decisão Em Recurso Interno
+        max: Decisão Sobrestamento
+        top:
+        - [Decisão Final, 895]
+        - [Decisão Interlocutória, 137]
+        - [Decisão Em Recurso Interno, 19]
+        - [Decisão Liminar, 14]
+        - [Decisão Sobrestamento, 3]
+      andamento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 42
+        min: Admitidos Embargos De Divergência
+        max: Sobrestado
+        top:
+        - [Negado Seguimento, 524]
+        - [Procedente, 92]
+        - [Não Provido, 66]
+        - [Indeferido, 54]
+        - [Denegada A Ordem, 53]
+        - [Convertido Em Diligência, 40]
+        - [Deferido, 37]
+        - [Não Conhecido(S), 28]
+        - [Provido, 19]
+        - [Decisão (Segredo De Justiça), 18]
+      observacao_andamento_decisao: {tipo: VARCHAR, nulos_pct: 62.73, distintos_aprox: 272, min: '"(...)  Ante O Exposto, Nos Termos Do Art. 21,
+          § 1º, Do Regimento Interno Do Supremo Tribunal Federal, Nego Seguimento Ao Presente Habeas Corpus, Ficando, Por Consequência, Prejudicado
+          O Pedido De Liminar. "', max: '[...]Posto Isso, Nos Termos Do Art. 21, § 1º, Do Ristf, Nego Seguimento Ao Recurso Ordinário Em Habeas
+          Corpus.'}
+      modalidade_julgamento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Monocrática
+        max: Monocrática
+        top:
+        - [Monocrática, 1068]
+      tipo_julgamento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Monocrática
+        max: Monocrática
+        top:
+        - [Monocrática, 1068]
+      meio_tramitacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Eletrônico
+        max: Eletrônico
+        top:
+        - [Eletrônico, 1068]
+      indicador_tramitacao:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 604]
+        - ['true', 464]
+      assunto_processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 675, min: '0 - Direito Administrativo E Outras Matérias De Direito Público
+          || Servidor Público Civil || Reajustes De Remuneração, Proventos Ou Pensão_X000d_1 - Direito Processual Civil E Do Trabalho || Atos
+          Processuais || Nulidade || Nulidade - Não Observância Da Reserva De Plenário', max: 2 - Direito Administrativo E Outras Matérias De
+          Direito Público || Servidor Público Civil || Sistema Remuneratório E Benefícios || Plano De Classificação De Cargos_X000d_3 - Direito
+          Administrativo E Outras Matérias De Direito Público || Servidor Público Civil || Regime Estatutário || Enquadramento_X000d_4 - Direito
+          Administrativo E Outras Matérias De Direito Público || Servidor Público Civil || Sistema Remuneratório E Benefícios || Isonomia/Equivalência
+          Salarial}
+      ramo_direito: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 291, min: Direito Administrativo E Outras Matérias De Direito Público, max: Direito
+          À Educação | Educação Superior}
+      data_autuacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 222, min: '2006-06-26', max: '2025-01-17'}
+      data_decisao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '2025-01-01'
+        max: '2025-01-19'
+        top:
+        - ['2025-01-10', 159]
+        - ['2025-01-14', 149]
+        - ['2025-01-09', 135]
+        - ['2025-01-17', 134]
+        - ['2025-01-07', 120]
+        - ['2025-01-13', 119]
+        - ['2025-01-15', 98]
+        - ['2025-01-16', 77]
+        - ['2025-01-06', 20]
+        - ['2025-01-18', 19]
+      data_baixa_processo:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1068]

@@ -1,0 +1,593 @@
+dataset: br_mapbiomas_estatisticas
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  classe:
+    linhas: 36
+    fonte_do_perfil: tabela inteira
+    colunas:
+      chave:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 39
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 1]
+        - ['10', 1]
+        - ['11', 1]
+        - ['12', 1]
+        - ['13', 1]
+        - ['14', 1]
+        - ['15', 1]
+        - ['18', 1]
+        - ['19', 1]
+        - ['20', 1]
+      valor_en:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 40
+        min: 1. Forest
+        max: 6. Not Observed
+        top:
+        - [1. Forest, 1]
+        - [1.1. Forest Formation, 1]
+        - [1.2. Savanna Formation, 1]
+        - [1.3. Mangrove, 1]
+        - [1.5. Wooded Sandbank Vegetation, 1]
+        - [2. Non Forest Natural Formation, 1]
+        - [2.1. Wetland, 1]
+        - [2.2. Grassland, 1]
+        - [2.3. Hypersaline Tidal Flat, 1]
+        - [2.4. Rocky Outcrop, 1]
+      valor_pt:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 36
+        min: 1. Floresta
+        max: 6. Não observado
+        top:
+        - [1. Floresta, 1]
+        - [1.1 Formação Florestal, 1]
+        - [1.2. Formação Savânica, 1]
+        - [1.3. Mangue, 1]
+        - [1.5. Restinga Arborizada, 1]
+        - [2. Formação Natural não Florestal, 1]
+        - [2.1. Campo Alagado e Área Pantanosa, 1]
+        - [2.2. Formação Campestre, 1]
+        - [2.3. Apicum, 1]
+        - [2.4. Afloramento Rochoso, 1]
+  cobertura_municipio_classe:
+    linhas: 3173646
+    fonte_do_perfil: tabela inteira da última partição (ano = 2025)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2025'
+        max: '2025'
+        media: 2025
+        quartis: [2025, 2025, 2025]
+        top:
+        - ['2025', 77406]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 13273]
+        - [SP, 11029]
+        - [RS, 7144]
+        - [BA, 5389]
+        - [PR, 5008]
+        - [GO, 3483]
+        - [SC, 3294]
+        - [MA, 3025]
+        - [PI, 2951]
+        - [MT, 2875]
+      bioma:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Amazônia
+        max: Pantanal
+        top:
+        - [Mata Atlântica, 36456]
+        - [Cerrado, 18685]
+        - [Caatinga, 11911]
+        - [Amazônia, 7371]
+        - [Pampa, 2716]
+        - [Pantanal, 267]
+      id_classe:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: '0'
+        max: '91'
+        media: 22.7704
+        quartis: [11, 22, 33]
+        top:
+        - ['21', 6448]
+        - ['3', 6430]
+        - ['33', 6405]
+        - ['15', 6342]
+        - ['24', 6052]
+        - ['25', 5961]
+        - ['41', 5725]
+        - ['12', 4619]
+        - ['9', 4248]
+        - ['4', 4141]
+      classe_nivel_0:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Antropic
+        max: Undefined
+        top:
+        - [Antropic, 41533]
+        - [Natural, 29706]
+        - [Natural/Antropic, 5961]
+        - [Undefined, 206]
+      classe_nivel_1:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: 1. Forest
+        max: 7. Not Observed
+        top:
+        - [3. Farming, 33613]
+        - [4. Non vegetated area, 13464]
+        - [1. Forest, 11726]
+        - [2. Herbaceous and Shrubby Vegetation, 11259]
+        - [5. Water, 7138]
+        - [7. Not Observed, 206]
+      classe_nivel_2:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: 1.1. Forest Formation
+        max: 7. Not Observed
+        top:
+        - [3.2. Agriculture, 16575]
+        - [3.4. Mosaic of Uses, 6448]
+        - [1.1. Forest Formation, 6430]
+        - ['5.1. River, Lake and Ocean', 6405]
+        - [3.1. Pasture, 6342]
+        - [4.2. Urban Area, 6052]
+        - [4.6. Other non Vegetated Areas, 5961]
+        - [2.3. Grassland Formation, 4619]
+        - [3.3. Forest Plantation, 4248]
+        - [1.2. Savanna Formation, 4141]
+      classe_nivel_3:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: 1.1. Forest Formation
+        max: 7. Not Observed
+        top:
+        - [3.2.1. Temporary Crop, 11616]
+        - [3.4. Mosaic of Uses, 6448]
+        - [1.1. Forest Formation, 6430]
+        - ['5.1. River, Lake and Ocean', 6405]
+        - [3.1. Pasture, 6342]
+        - [4.2. Urban Area, 6052]
+        - [4.6. Other non Vegetated Areas, 5961]
+        - [3.2.2. Perennial Crop, 4959]
+        - [2.3. Grassland Formation, 4619]
+        - [3.3. Forest Plantation, 4248]
+      classe_nivel_4:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 36
+        min: 1.1. Forest Formation
+        max: 7. Not Observed
+        top:
+        - [3.4. Mosaic of Uses, 6448]
+        - [1.1. Forest Formation, 6430]
+        - ['5.1. River, Lake and Ocean', 6405]
+        - [3.1. Pasture, 6342]
+        - [4.2. Urban Area, 6052]
+        - [4.6. Other non Vegetated Areas, 5961]
+        - [3.2.1.5. Other Temporary Crops, 5725]
+        - [2.3. Grassland Formation, 4619]
+        - [3.3. Forest Plantation, 4248]
+        - [1.2. Savanna Formation, 4141]
+      area_ha:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 78355
+        min: '0.0'
+        max: '13743547.97355598'
+        media: 10990.1677
+        quartis: [30.256, 313.2933, 2972.6695]
+      colecao:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '11'
+        max: '11'
+        media: 11
+        quartis: [11, 11, 11]
+        top:
+        - ['11', 77406]
+  cobertura_uf_classe:
+    linhas: 19032
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 33
+        min: '1985'
+        max: '2021'
+        media: 2003.2402
+        quartis: [1994, 2003, 2013]
+        top:
+        - ['2017', 530]
+        - ['2018', 530]
+        - ['2019', 529]
+        - ['2020', 529]
+        - ['2016', 528]
+        - ['2021', 528]
+        - ['2007', 524]
+        - ['2009', 524]
+        - ['2010', 524]
+        - ['2011', 524]
+      area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 21107
+        min: '0.0008363689575195'
+        max: '1469565.893155101'
+        media: 16537.4866
+        quartis: [25.2079, 429.2865, 4964.5428]
+      id_classe:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: '0'
+        max: '9'
+        top:
+        - ['0', 999]
+        - ['15', 999]
+        - ['24', 999]
+        - ['3', 999]
+        - ['33', 999]
+        - ['41', 984]
+        - ['11', 962]
+        - ['12', 925]
+        - ['4', 925]
+        - ['30', 862]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [BA, 979]
+        - [SP, 965]
+        - [PR, 962]
+        - [RJ, 814]
+        - [PB, 801]
+        - [ES, 799]
+        - [MG, 799]
+        - [PI, 792]
+        - [SE, 792]
+        - [RN, 788]
+  transicao_municipio_de_para_decenal:
+    linhas: 975145
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '2000'
+        max: '2020'
+        media: 2010.3716
+        quartis: [2000, 2010, 2020]
+        top:
+        - ['2020', 344660]
+        - ['2010', 322060]
+        - ['2000', 308425]
+      area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1015708
+        min: '0.0007564608764648'
+        max: '153571.4763509346'
+        media: 26.17
+        quartis: [0.0267, 0.1702, 1.6757]
+      id_classe_de:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: '0'
+        max: '9'
+        top:
+        - ['21', 141235]
+        - ['15', 139551]
+        - ['3', 107089]
+        - ['33', 76451]
+        - ['41', 71471]
+        - ['4', 68688]
+        - ['25', 65876]
+        - ['12', 58378]
+        - ['39', 54027]
+        - ['11', 51516]
+      id_classe_para:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: '0'
+        max: '9'
+        top:
+        - ['21', 120188]
+        - ['15', 112718]
+        - ['3', 95358]
+        - ['24', 73418]
+        - ['33', 72609]
+        - ['41', 69348]
+        - ['25', 65591]
+        - ['4', 58530]
+        - ['39', 54129]
+        - ['12', 53403]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.02, distintos_aprox: 6859}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 160434]
+        - [SP, 132880]
+        - [RS, 99780]
+        - [PR, 77263]
+        - [BA, 63484]
+        - [GO, 55497]
+        - [SC, 54638]
+        - [MA, 33812]
+        - [PI, 32495]
+        - [MT, 32078]
+  transicao_uf_de_para_anual:
+    linhas: 169091
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 33
+        min: '1986'
+        max: '2021'
+        media: 2003.8393
+        quartis: [1995, 2004, 2013]
+        top:
+        - ['2013', 5086]
+        - ['2015', 5011]
+        - ['2014', 5009]
+        - ['2011', 4991]
+        - ['2010', 4962]
+        - ['2012', 4958]
+        - ['2017', 4938]
+        - ['2005', 4922]
+        - ['2016', 4918]
+        - ['2007', 4899]
+      area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 154893
+        min: '0.0007634259643555'
+        max: '1469248.813100545'
+        media: 1811.0658
+        quartis: [0.0515, 0.6079, 10.5475]
+      id_classe_de:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: '0'
+        max: '9'
+        top:
+        - ['15', 13942]
+        - ['33', 13623]
+        - ['21', 13622]
+        - ['3', 12845]
+        - ['11', 11612]
+        - ['25', 11197]
+        - ['41', 11130]
+        - ['12', 11097]
+        - ['4', 10728]
+        - ['39', 6477]
+      id_classe_para:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: '0'
+        max: '9'
+        top:
+        - ['33', 13188]
+        - ['15', 12630]
+        - ['21', 12209]
+        - ['3', 11115]
+        - ['24', 10794]
+        - ['41', 10343]
+        - ['11', 10283]
+        - ['25', 10046]
+        - ['12', 9689]
+        - ['4', 9342]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [BA, 11656]
+        - [SP, 11132]
+        - [MG, 9752]
+        - [PR, 9696]
+        - [RS, 8250]
+        - [RN, 7772]
+        - [SC, 7684]
+        - [MA, 7068]
+        - [ES, 6997]
+        - [CE, 6739]
+  transicao_uf_de_para_decenal:
+    linhas: 17396
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '2000'
+        max: '2020'
+        media: 2010.2989
+        quartis: [2000, 2010, 2020]
+        top:
+        - ['2020', 6048]
+        - ['2010', 5820]
+        - ['2000', 5528]
+      area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 16655
+        min: '0.0008238129272461'
+        max: '1460960.143918211'
+        media: 1466.9796
+        quartis: [0.1224, 1.6438, 29.3315]
+      id_classe_de:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: '0'
+        max: '9'
+        top:
+        - ['15', 1349]
+        - ['33', 1301]
+        - ['21', 1268]
+        - ['3', 1254]
+        - ['11', 1159]
+        - ['25', 1104]
+        - ['41', 1052]
+        - ['12', 1046]
+        - ['4', 1024]
+        - ['39', 701]
+      id_classe_para:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: '0'
+        max: '9'
+        top:
+        - ['33', 1220]
+        - ['15', 1200]
+        - ['24', 1132]
+        - ['21', 1126]
+        - ['3', 1054]
+        - ['41', 1010]
+        - ['11', 1008]
+        - ['25', 992]
+        - ['12', 885]
+        - ['4', 866]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [BA, 1212]
+        - [SP, 1170]
+        - [PR, 1042]
+        - [MG, 934]
+        - [RN, 827]
+        - [SC, 817]
+        - [ES, 771]
+        - [RS, 769]
+        - [CE, 699]
+        - [MA, 692]
+  transicao_uf_de_para_quinquenal:
+    linhas: 38709
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1990'
+        max: '2020'
+        media: 2005.38
+        quartis: [1995, 2005, 2015]
+        top:
+        - ['2015', 5814]
+        - ['2020', 5724]
+        - ['2010', 5680]
+        - ['2005', 5601]
+        - ['2000', 5455]
+        - ['1995', 5222]
+        - ['1990', 5213]
+      area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 38573
+        min: '0.0008047034301758'
+        max: '1464675.095314695'
+        media: 1538.2903
+        quartis: [0.095, 1.275, 22.7993]
+      id_classe_de:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: '0'
+        max: '9'
+        top:
+        - ['15', 3055]
+        - ['33', 2917]
+        - ['21', 2882]
+        - ['3', 2816]
+        - ['11', 2613]
+        - ['25', 2514]
+        - ['41', 2405]
+        - ['12', 2352]
+        - ['4', 2317]
+        - ['39', 1535]
+      id_classe_para:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: '0'
+        max: '9'
+        top:
+        - ['33', 2803]
+        - ['15', 2753]
+        - ['21', 2574]
+        - ['24', 2519]
+        - ['3', 2391]
+        - ['11', 2271]
+        - ['41', 2259]
+        - ['25', 2251]
+        - ['12', 2056]
+        - ['4', 2006]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [BA, 2669]
+        - [SP, 2602]
+        - [PR, 2315]
+        - [MG, 2122]
+        - [RN, 1842]
+        - [SC, 1796]
+        - [RS, 1760]
+        - [ES, 1691]
+        - [CE, 1570]
+        - [MA, 1540]

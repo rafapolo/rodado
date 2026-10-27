@@ -1,0 +1,243 @@
+dataset: br_cnpq_bolsas
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  microdados:
+    linhas: 2839708
+    fonte_do_perfil: tabela inteira da última partição (ano = 2022)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2022'
+        max: '2022'
+        media: 2022
+        quartis: [2022, 2022, 2022]
+        top:
+        - ['2022', 227257]
+      processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 154399}
+      data_inicio_processo: {tipo: DATE, nulos_pct: 0, distintos_aprox: 463, min: '2012-06-01', max: '2024-03-01'}
+      data_fim_processo: {tipo: DATE, nulos_pct: 0, distintos_aprox: 201, min: '2016-08-31', max: '2027-06-30'}
+      beneficiario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 136339, pessoal: 'só contagens: valores seriam dado pessoal'}
+      titulo_projeto: {tipo: VARCHAR, nulos_pct: 15.65, distintos_aprox: 114535}
+      palavra_chave: {tipo: VARCHAR, nulos_pct: 85.44, distintos_aprox: 21453}
+      linha_fomento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '1'
+        max: '9'
+        top:
+        - ['13', 91722]
+        - ['14', 45229]
+        - ['20', 23839]
+        - ['9', 19964]
+        - ['16', 12368]
+        - ['15', 9438]
+        - ['8', 8052]
+        - ['4', 6735]
+        - ['6', 2726]
+        - ['19', 2297]
+      modalidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 39
+        min: ADC
+        max: SWP
+        top:
+        - ['IC ', 91127]
+        - [ICJ, 45229]
+        - ['PQ ', 22763]
+        - ['GD ', 19562]
+        - ['GM ', 12368]
+        - ['IT ', 7130]
+        - [APQ, 6735]
+        - [DTI, 4967]
+        - [PCI, 2755]
+        - [ITI, 2230]
+      categoria_nivel:
+        tipo: VARCHAR
+        nulos_pct: 81.6
+        distintos_aprox: 27
+        min: '1'
+        max: SR
+        top:
+        - [null, 185446]
+        - ['2', 14257]
+        - [A, 4608]
+        - [1D, 3706]
+        - [B, 3095]
+        - [1A, 2691]
+        - [C, 2500]
+        - [1C, 2195]
+        - [1B, 1853]
+        - [SB, 1092]
+      chamada: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 514, min: "\tCENTELHA 2-2022 - PROGRAMA NACIONAL DE APOIO À GERAÇÃO DE EMPREENDIMENTOS\
+          \ INOVADORES - 2022", max: ZIKA2016 - CHAMADA MCTIC/FNDCT-CNPQ/ MEC-CAPES/ MS-DECIT / Nº 14/2016 - PREVENÇÃO E COMBATE AO VÍRUS ZIKA}
+      programa_cnpq: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 138, min: BIODIVERSIDADE E RECURSOS NATURAIS, max: SUBPROGRAMA DE AGRICULTURA
+          FAMILIAR}
+      grande_area_conhecimento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: CIÊNCIAS AGRÁRIAS
+        max: TECNOLOGIAS
+        top:
+        - [CIÊNCIAS EXATAS E DA TERRA, 47359]
+        - [CIÊNCIAS DA SAÚDE, 28845]
+        - [CIÊNCIAS AGRÁRIAS, 27531]
+        - [CIÊNCIAS BIOLÓGICAS, 27461]
+        - [CIÊNCIAS HUMANAS, 25846]
+        - [ENGENHARIAS, 25028]
+        - [OUTRA, 17359]
+        - [CIÊNCIAS SOCIAIS APLICADAS, 14076]
+        - ['LINGÜÍSTICA, LETRAS E ARTES', 7880]
+        - [TECNOLOGIAS, 5845]
+      area_conhecimento: {tipo: VARCHAR, nulos_pct: 0.03, distintos_aprox: 115, min: ADMINISTRAÇÃO, max: ÁREAS TECNOLÓGICAS DE QUÍMICA E GEOCIÊNCIAS}
+      subarea_conhecimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1409}
+      pais_origem:
+        tipo: VARCHAR
+        nulos_pct: 0.67
+        distintos_aprox: 36
+        min: AFS
+        max: URU
+        top:
+        - [BRA, 225226]
+        - [null, 1531]
+        - [EUA, 130]
+        - [ING, 44]
+        - [RFA, 43]
+        - [ESP, 40]
+        - [CAN, 37]
+        - [ESC, 37]
+        - [POR, 35]
+        - [FRA, 31]
+      sigla_uf_origem:
+        tipo: VARCHAR
+        nulos_pct: 0.89
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [RJ, 44714]
+        - [SP, 43610]
+        - [DF, 20349]
+        - [MG, 19207]
+        - [RS, 17866]
+        - [PR, 11487]
+        - [PE, 7986]
+        - [SC, 7585]
+        - [BA, 7153]
+        - [CE, 5860]
+      instituicao_origem: {tipo: VARCHAR, nulos_pct: 0.67, distintos_aprox: 2551}
+      pais_destino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 42
+        min: AFS
+        max: TAI
+        top:
+        - [BRA, 226489]
+        - [EUA, 173]
+        - [ESP, 92]
+        - [POR, 87]
+        - [FRA, 69]
+        - [ING, 56]
+        - [RFA, 49]
+        - [CAN, 39]
+        - [SUE, 34]
+        - [ITA, 30]
+      sigla_uf_destino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [RJ, 44828]
+        - [SP, 43875]
+        - [DF, 20402]
+        - [MG, 19440]
+        - [RS, 17911]
+        - [PR, 11503]
+        - [PE, 8363]
+        - [SC, 7612]
+        - [BA, 7137]
+        - [CE, 5902]
+      municipio_destino: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 717, min: A CORUNA, max: ZURICH}
+      sigla_instituicao_destino: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1876}
+      sigla_instituicao_macro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1661}
+      instituicao_destino: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2836}
+      plano_interno:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 227257]
+      unidade_orcamentaria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: AGENCIA ESPACIAL BRASILEIRA - AEB
+        max: N.I
+        top:
+        - [CONSELHO NAC.DE DESENV.CIENTIF.E TECNOLOGICO, 194860]
+        - [MINISTERIO DA CIDADANIA, 12341]
+        - [FUNDO NACIONAL DE DESENV.CIENT.E TECNOLOGICO, 11579]
+        - [FUNDO NACIONAL DE SAUDE, 2754]
+        - ['MINIST.DA CIENCIA,TECNOL.,INOV.E COMUNICACOES', 2039]
+        - [EMPRESA BRASILEIRA DE PESQUISA AGROPECUARIA, 1114]
+        - [FUNDACAO OSWALDO CRUZ, 614]
+        - [AGENCIA ESPACIAL BRASILEIRA - AEB, 479]
+        - [EMPRESA BRASIL.DE SERV.HOSPITALARES - EBSERH, 398]
+        - [MINISTERIO DA AGRIC.PECUARIA E ABASTECIMENTO, 277]
+      fonte_recurso:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 227257]
+      natureza_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 7
+        min: '339018'
+        max: '44902000'
+        top:
+        - ['339018', 220131]
+        - ['339020', 4332]
+        - ['449020', 2717]
+        - ['44902000', 25]
+        - ['339039', 17]
+        - [null, 13]
+        - ['33902000', 12]
+        - ['339092', 10]
+      programa_ppa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 227257]
+      acao_ppa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 227257]
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5118
+        min: '0.0'
+        max: '13588320.94'
+        media: 7470.4371
+        quartis: [400, 1279.38, 3383.0409]

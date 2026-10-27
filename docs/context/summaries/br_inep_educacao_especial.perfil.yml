@@ -1,0 +1,969 @@
+dataset: br_inep_educacao_especial
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  brasil_distorcao_idade_serie:
+    linhas: 45
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '2007'
+        max: '2021'
+        media: 2014
+        quartis: [2010, 2014, 2018]
+        top:
+        - ['2007', 3]
+        - ['2008', 3]
+        - ['2009', 3]
+        - ['2010', 3]
+        - ['2011', 3]
+        - ['2012', 3]
+        - ['2013', 3]
+        - ['2014', 3]
+        - ['2015', 3]
+        - ['2016', 3]
+      etapa_ensino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Ensino Fundamental – Anos Finais
+        max: Ensino Médio Regular
+        top:
+        - [Ensino Fundamental – Anos Finais, 15]
+        - [Ensino Fundamental – Anos Iniciais, 15]
+        - [Ensino Médio Regular, 15]
+      tdi:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 49
+        min: '36.6'
+        max: '72.2'
+        media: 56.1156
+        quartis: [53.175, 55.8, 59.225]
+        top:
+        - ['54.5', 2]
+        - ['66.5', 2]
+        - ['36.6', 1]
+        - ['41.7', 1]
+        - ['44.9', 1]
+        - ['48.3', 1]
+        - ['48.4', 1]
+        - ['49.5', 1]
+        - ['50.3', 1]
+        - ['51.1', 1]
+  brasil_taxa_rendimento:
+    linhas: 45
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '2007'
+        max: '2021'
+        media: 2014
+        quartis: [2010, 2014, 2018]
+        top:
+        - ['2007', 3]
+        - ['2008', 3]
+        - ['2009', 3]
+        - ['2010', 3]
+        - ['2011', 3]
+        - ['2012', 3]
+        - ['2013', 3]
+        - ['2014', 3]
+        - ['2015', 3]
+        - ['2016', 3]
+      etapa_ensino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Ensino Fundamental – Anos Finais
+        max: Ensino Médio Regular
+        top:
+        - [Ensino Fundamental – Anos Finais, 15]
+        - [Ensino Fundamental – Anos Iniciais, 15]
+        - [Ensino Médio Regular, 15]
+      taxa_aprovacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 41
+        min: '71.60000000000001'
+        max: '97.0'
+        media: 81.0
+        quartis: [77.825, 80.5, 82.5]
+        top:
+        - ['73.7', 2]
+        - ['74.5', 2]
+        - ['79.4', 2]
+        - ['81.7', 2]
+        - ['82.5', 2]
+        - ['71.60000000000001', 1]
+        - ['72.4', 1]
+        - ['73.10000000000001', 1]
+        - ['74.4', 1]
+        - ['74.60000000000001', 1]
+      taxa_reprovacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 39
+        min: '1.4000000000000001'
+        max: '23.8'
+        media: 14.6578
+        quartis: [11.5, 13.9, 19.925]
+        top:
+        - ['13.0', 3]
+        - ['11.5', 2]
+        - ['13.5', 2]
+        - ['14.700000000000001', 2]
+        - ['15.1', 2]
+        - ['16.2', 2]
+        - ['1.4000000000000001', 1]
+        - ['10.700000000000001', 1]
+        - ['10.9', 1]
+        - ['11.200000000000001', 1]
+      taxa_abandono:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: '1.2'
+        max: '7.8'
+        media: 4.3422
+        quartis: [2.9, 4.4, 5.775]
+        top:
+        - ['3.3000000000000003', 4]
+        - ['2.9', 3]
+        - ['4.4', 3]
+        - ['4.5', 3]
+        - ['4.6000000000000005', 3]
+        - ['2.7', 2]
+        - ['4.3', 2]
+        - ['6.1000000000000005', 2]
+        - ['7.1000000000000005', 2]
+        - ['7.4', 2]
+  distorcao_idade_serie:
+    linhas: 1215
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '2007'
+        max: '2021'
+        media: 2014
+        quartis: [2010, 2014, 2018]
+        top:
+        - ['2007', 81]
+        - ['2008', 81]
+        - ['2009', 81]
+        - ['2010', 81]
+        - ['2011', 81]
+        - ['2012', 81]
+        - ['2013', 81]
+        - ['2014', 81]
+        - ['2015', 81]
+        - ['2016', 81]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 45]
+        - [AL, 45]
+        - [AM, 45]
+        - [AP, 45]
+        - [BA, 45]
+        - [CE, 45]
+        - [DF, 45]
+        - [ES, 45]
+        - [GO, 45]
+        - [MA, 45]
+      etapa_ensino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Ensino Fundamental – Anos Finais
+        max: Ensino Médio Regular
+        top:
+        - [Ensino Fundamental – Anos Finais, 405]
+        - [Ensino Fundamental – Anos Iniciais, 405]
+        - [Ensino Médio Regular, 405]
+      tdi:
+        tipo: DECIMAL(38,9)
+        nulos_pct: 0
+        distintos_aprox: 470
+        min: '14.600000000'
+        max: '88.300000000'
+        media: 58.3158
+        quartis: [51, 60, 67]
+  docente_aee:
+    linhas: 16710
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '2020'
+        max: '2022'
+        media: 2021
+        quartis: [2020, 2021, 2022]
+        top:
+        - ['2020', 5570]
+        - ['2021', 5570]
+        - ['2022', 5570]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 2559]
+        - [SP, 1935]
+        - [RS, 1491]
+        - [BA, 1251]
+        - [PR, 1197]
+        - [SC, 885]
+        - [GO, 738]
+        - [PI, 672]
+        - [PB, 669]
+        - [MA, 651]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      quantidade_docente_regente:
+        tipo: DECIMAL(38,9)
+        nulos_pct: 17.67
+        distintos_aprox: 1653
+        min: '17.000000000'
+        max: '142176.000000000'
+        media: 492.3801
+        quartis: [83, 171, 376]
+      quantidade_docente_aee:
+        tipo: DECIMAL(38,9)
+        nulos_pct: 17.67
+        distintos_aprox: 188
+        min: '1.000000000'
+        max: '768.000000000'
+        media: 10.7825
+        quartis: [2, 4, 10]
+      quantidade_docente_regente_formacao_continuada:
+        tipo: BIGINT
+        nulos_pct: 9.99
+        distintos_aprox: 476
+        min: '1'
+        max: '7659'
+        media: 27.1602
+        quartis: [3, 8, 23]
+      quantidade_docente_aee_formacao_continuada:
+        tipo: BIGINT
+        nulos_pct: 41.32
+        distintos_aprox: 143
+        min: '1'
+        max: '516'
+        media: 6.4553
+        quartis: [1, 2, 6]
+  docente_formacao:
+    linhas: 230372
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '2012'
+        max: '2023'
+        media: 2017.6592
+        quartis: [2015, 2018, 2021]
+        top:
+        - ['2023', 20556]
+        - ['2022', 20328]
+        - ['2021', 20016]
+        - ['2020', 19816]
+        - ['2019', 19692]
+        - ['2018', 19356]
+        - ['2017', 19256]
+        - ['2016', 18776]
+        - ['2015', 18460]
+        - ['2014', 18368]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 36272]
+        - [SP, 27136]
+        - [RS, 20956]
+        - [PR, 19136]
+        - [BA, 17012]
+        - [SC, 13488]
+        - [MA, 9520]
+        - [GO, 8956]
+        - [PB, 8628]
+        - [PI, 7520]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Estadual
+        max: Privada
+        top:
+        - [Estadual, 57593]
+        - [Federal, 57593]
+        - [Municipal, 57593]
+        - [Privada, 57593]
+      quantidade_docente_formacao_continuada:
+        tipo: DECIMAL(38,9)
+        nulos_pct: 0
+        distintos_aprox: 449
+        min: '0.000000000'
+        max: '6990.000000000'
+        media: 6.6057
+        quartis: [0, 1, 4]
+  etapa_ensino:
+    linhas: 2784180
+    fonte_do_perfil: tabela inteira da última partição (ano = 2024)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 155960]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 23884]
+        - [SP, 18060]
+        - [RS, 13916]
+        - [BA, 11676]
+        - [PR, 11172]
+        - [SC, 8260]
+        - [GO, 6888]
+        - [PI, 6272]
+        - [PB, 6244]
+        - [MA, 6076]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      tipo_classe:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Classes Comuns
+        max: Classes Exclusivas
+        top:
+        - [Classes Comuns, 77980]
+        - [Classes Exclusivas, 77980]
+      etapa_ensino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: EJA - Ensino Fundamental
+        max: Ensino Médio Normal - Magistério
+        top:
+        - [EJA - Ensino Fundamental, 11140]
+        - [EJA - Ensino Médio, 11140]
+        - [Educação Infantil - Creche, 11140]
+        - [Educação Infantil - Pré-Escola, 11140]
+        - [Educação Profissional - Associada ao Ensino Médio, 11140]
+        - [Educação Profissional - Curso FIC Concomitante, 11140]
+        - [Educação Profissional - Curso FIC Integrado na Modalidade EJA, 11140]
+        - [Educação Profissional - Curso Técnico Concomitante, 11140]
+        - [Educação Profissional - Curso Técnico Subsequente, 11140]
+        - [Ensino Fundamental - Anos Finais, 11140]
+      quantidade_matricula: {tipo: 'DECIMAL(38,9)', nulos_pct: 0, distintos_aprox: 867, pessoal: 'só contagens: valores seriam dado pessoal'}
+  faixa_etaria:
+    linhas: 1202760
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '2007'
+        max: '2024'
+        media: 2015.5018
+        quartis: [2011, 2016, 2020]
+        top:
+        - ['2013', 66840]
+        - ['2014', 66840]
+        - ['2015', 66840]
+        - ['2016', 66840]
+        - ['2017', 66840]
+        - ['2018', 66840]
+        - ['2019', 66840]
+        - ['2020', 66840]
+        - ['2021', 66840]
+        - ['2022', 66840]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 184248]
+        - [SP, 139320]
+        - [RS, 107280]
+        - [BA, 90072]
+        - [PR, 86184]
+        - [SC, 63576]
+        - [GO, 53136]
+        - [PI, 48384]
+        - [PB, 48168]
+        - [MA, 46872]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      tipo_classe:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Classes Comuns
+        max: Classes Exclusivas
+        top:
+        - [Classes Comuns, 601380]
+        - [Classes Exclusivas, 601380]
+      faixa_etaria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: 15 a 17 anos
+        max: Até 14 anos
+        top:
+        - [15 a 17 anos, 200460]
+        - [18 a 24 anos, 200460]
+        - [25 a 29 anos, 200460]
+        - [30 a 34 anos, 200460]
+        - [35 anos ou mais, 200460]
+        - [Até 14 anos, 200460]
+      quantidade_matricula: {tipo: 'DECIMAL(38,9)', nulos_pct: 0, distintos_aprox: 2243, pessoal: 'só contagens: valores seriam dado pessoal'}
+  localizacao:
+    linhas: 1603680
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '2007'
+        max: '2024'
+        media: 2015.5018
+        quartis: [2011, 2016, 2020]
+        top:
+        - ['2013', 89120]
+        - ['2014', 89120]
+        - ['2015', 89120]
+        - ['2016', 89120]
+        - ['2017', 89120]
+        - ['2018', 89120]
+        - ['2019', 89120]
+        - ['2020', 89120]
+        - ['2021', 89120]
+        - ['2022', 89120]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 245664]
+        - [SP, 185760]
+        - [RS, 143040]
+        - [BA, 120096]
+        - [PR, 114912]
+        - [SC, 84768]
+        - [GO, 70848]
+        - [PI, 64512]
+        - [PB, 64224]
+        - [MA, 62496]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      tipo_classe:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Classes Comuns
+        max: Classes Exclusivas
+        top:
+        - [Classes Comuns, 801840]
+        - [Classes Exclusivas, 801840]
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Estadual
+        max: Privada
+        top:
+        - [Estadual, 400920]
+        - [Federal, 400920]
+        - [Municipal, 400920]
+        - [Privada, 400920]
+      localizacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Rural
+        max: Urbana
+        top:
+        - [Rural, 801840]
+        - [Urbana, 801840]
+      quantidade_matricula: {tipo: 'DECIMAL(38,9)', nulos_pct: 0, distintos_aprox: 1873, pessoal: 'só contagens: valores seriam dado pessoal'}
+  matricula_aee:
+    linhas: 216
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '2019'
+        max: '2022'
+        media: 2020.5
+        quartis: [2020, 2020, 2022]
+        top:
+        - ['2019', 54]
+        - ['2020', 54]
+        - ['2021', 54]
+        - ['2022', 54]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 8]
+        - [AL, 8]
+        - [AM, 8]
+        - [AP, 8]
+        - [BA, 8]
+        - [CE, 8]
+        - [DF, 8]
+        - [ES, 8]
+        - [GO, 8]
+        - [MA, 8]
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Privada
+        max: Pública
+        top:
+        - [Privada, 108]
+        - [Pública, 108]
+      quantidade_matricula: {tipo: 'DECIMAL(38,9)', nulos_pct: 0, distintos_aprox: 226, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_aee: {tipo: 'DECIMAL(38,9)', nulos_pct: 0, distintos_aprox: 209, pessoal: 'só contagens: valores seriam dado pessoal'}
+  sexo_raca_cor:
+    linhas: 2361000
+    fonte_do_perfil: tabela inteira da última partição (ano = 2024)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 133680]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 20472]
+        - [SP, 15480]
+        - [RS, 11928]
+        - [BA, 10008]
+        - [PR, 9576]
+        - [SC, 7080]
+        - [GO, 5904]
+        - [PI, 5376]
+        - [PB, 5352]
+        - [MA, 5208]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      tipo_classe:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Classes Comuns
+        max: Classes Exclusivas
+        top:
+        - [Classes Comuns, 66840]
+        - [Classes Exclusivas, 66840]
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Feminino
+        max: Masculino
+        top:
+        - [Feminino, 66840]
+        - [Masculino, 66840]
+      raca_cor:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Amarela
+        max: Preta
+        top:
+        - [Amarela, 22280]
+        - [Branca, 22280]
+        - [Indígena, 22280]
+        - [Não declarada, 22280]
+        - [Parda, 22280]
+        - [Preta, 22280]
+      quantidade_matricula: {tipo: 'DECIMAL(38,9)', nulos_pct: 0, distintos_aprox: 784, pessoal: 'só contagens: valores seriam dado pessoal'}
+  taxa_rendimento:
+    linhas: 1215
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '2007'
+        max: '2021'
+        media: 2014
+        quartis: [2010, 2014, 2018]
+        top:
+        - ['2007', 81]
+        - ['2008', 81]
+        - ['2009', 81]
+        - ['2010', 81]
+        - ['2011', 81]
+        - ['2012', 81]
+        - ['2013', 81]
+        - ['2014', 81]
+        - ['2015', 81]
+        - ['2016', 81]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 45]
+        - [AL, 45]
+        - [AM, 45]
+        - [AP, 45]
+        - [BA, 45]
+        - [CE, 45]
+        - [DF, 45]
+        - [ES, 45]
+        - [GO, 45]
+        - [MA, 45]
+      etapa_ensino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Ensino Fundamental – Anos Finais
+        max: Ensino Médio Regular
+        top:
+        - [Ensino Fundamental – Anos Finais, 405]
+        - [Ensino Fundamental – Anos Iniciais, 405]
+        - [Ensino Médio Regular, 405]
+      taxa_aprovacao:
+        tipo: DECIMAL(38,9)
+        nulos_pct: 0
+        distintos_aprox: 355
+        min: '44.400000000'
+        max: '99.700000000'
+        media: 80.4779
+        quartis: [74, 81, 87]
+      taxa_reprovacao:
+        tipo: DECIMAL(38,9)
+        nulos_pct: 0
+        distintos_aprox: 339
+        min: '0.000000000'
+        max: '46.900000000'
+        media: 14.3123
+        quartis: [8, 13, 19]
+      taxa_abandono:
+        tipo: DECIMAL(38,9)
+        nulos_pct: 0
+        distintos_aprox: 137
+        min: '0.000000000'
+        max: '22.300000000'
+        media: 5.2098
+        quartis: [2, 5, 7]
+  tempo_ensino:
+    linhas: 1603680
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '2007'
+        max: '2024'
+        media: 2015.5018
+        quartis: [2011, 2015, 2020]
+        top:
+        - ['2013', 89120]
+        - ['2014', 89120]
+        - ['2015', 89120]
+        - ['2016', 89120]
+        - ['2017', 89120]
+        - ['2018', 89120]
+        - ['2019', 89120]
+        - ['2020', 89120]
+        - ['2021', 89120]
+        - ['2022', 89120]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 245664]
+        - [SP, 185760]
+        - [RS, 143040]
+        - [BA, 120096]
+        - [PR, 114912]
+        - [SC, 84768]
+        - [GO, 70848]
+        - [PI, 64512]
+        - [PB, 64224]
+        - [MA, 62496]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      tipo_classe:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Classes Comuns
+        max: Classes Exclusivas
+        top:
+        - [Classes Comuns, 801840]
+        - [Classes Exclusivas, 801840]
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Estadual
+        max: Privada
+        top:
+        - [Estadual, 400920]
+        - [Federal, 400920]
+        - [Municipal, 400920]
+        - [Privada, 400920]
+      tempo_ensino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Integral
+        max: Parcial
+        top:
+        - [Integral, 801840]
+        - [Parcial, 801840]
+      quantidade_matricula: {tipo: 'DECIMAL(38,9)', nulos_pct: 0, distintos_aprox: 2195, pessoal: 'só contagens: valores seriam dado pessoal'}
+  tipo_deficiencia:
+    linhas: 2405460
+    fonte_do_perfil: tabela inteira da última partição (ano = 2024)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 111400]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 17060]
+        - [SP, 12900]
+        - [RS, 9940]
+        - [BA, 8340]
+        - [PR, 7980]
+        - [SC, 5900]
+        - [GO, 4920]
+        - [PI, 4480]
+        - [PB, 4460]
+        - [MA, 4340]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      tipo_classe:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Classes Comuns
+        max: Classes Exclusivas
+        top:
+        - [Classes Comuns, 55700]
+        - [Classes Exclusivas, 55700]
+      tipo_deficiencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: Altas Habilidade/Superdotação
+        max: Transtorno do Espectro Autista
+        top:
+        - [Altas Habilidade/Superdotação, 11140]
+        - [Baixa Visão, 11140]
+        - [Cegueira, 11140]
+        - [Deficiência Auditiva, 11140]
+        - [Deficiência Física, 11140]
+        - [Deficiência Intelectual, 11140]
+        - [Deficiência Múltipla, 11140]
+        - [Surdez, 11140]
+        - [Surdocegueira, 11140]
+        - [Transtorno do Espectro Autista, 11140]
+      quantidade_matricula: {tipo: 'DECIMAL(38,9)', nulos_pct: 0, distintos_aprox: 992, pessoal: 'só contagens: valores seriam dado pessoal'}
+  uf_distorcao_idade_serie:
+    linhas: 1215
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '2007'
+        max: '2021'
+        media: 2014
+        quartis: [2010, 2014, 2018]
+        top:
+        - ['2007', 81]
+        - ['2008', 81]
+        - ['2009', 81]
+        - ['2010', 81]
+        - ['2011', 81]
+        - ['2012', 81]
+        - ['2013', 81]
+        - ['2014', 81]
+        - ['2015', 81]
+        - ['2016', 81]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 45]
+        - [AL, 45]
+        - [AM, 45]
+        - [AP, 45]
+        - [BA, 45]
+        - [CE, 45]
+        - [DF, 45]
+        - [ES, 45]
+        - [GO, 45]
+        - [MA, 45]
+      etapa_ensino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Ensino Fundamental – Anos Finais
+        max: Ensino Médio Regular
+        top:
+        - [Ensino Fundamental – Anos Finais, 405]
+        - [Ensino Fundamental – Anos Iniciais, 405]
+        - [Ensino Médio Regular, 405]
+      tdi:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 502
+        min: '14.6'
+        max: '88.3'
+        media: 58.3158
+        quartis: [50.8476, 60.0333, 67.1229]
+  uf_taxa_rendimento:
+    linhas: 1215
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '2007'
+        max: '2021'
+        media: 2014
+        quartis: [2010, 2014, 2018]
+        top:
+        - ['2007', 81]
+        - ['2008', 81]
+        - ['2009', 81]
+        - ['2010', 81]
+        - ['2011', 81]
+        - ['2012', 81]
+        - ['2013', 81]
+        - ['2014', 81]
+        - ['2015', 81]
+        - ['2016', 81]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 45]
+        - [AL, 45]
+        - [AM, 45]
+        - [AP, 45]
+        - [BA, 45]
+        - [CE, 45]
+        - [DF, 45]
+        - [ES, 45]
+        - [GO, 45]
+        - [MA, 45]
+      etapa_ensino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Ensino Fundamental – Anos Finais
+        max: Ensino Médio Regular
+        top:
+        - [Ensino Fundamental – Anos Finais, 405]
+        - [Ensino Fundamental – Anos Iniciais, 405]
+        - [Ensino Médio Regular, 405]
+      taxa_aprovacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 379
+        min: '44.4'
+        max: '99.7'
+        media: 80.4779
+        quartis: [74.1492, 80.8111, 87.3769]
+      taxa_reprovacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 278
+        min: '0.0'
+        max: '46.9'
+        media: 14.3123
+        quartis: [8.3536, 13.2931, 19.3124]
+      taxa_abandono:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 139
+        min: '0.0'
+        max: '22.3'
+        media: 5.2098
+        quartis: [2.4118, 4.715, 7.4061]

@@ -1,0 +1,4198 @@
+dataset: br_tse_eleicoes
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  bens_candidato:
+    linhas: 5108101
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 76144]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [SP, 9998]
+        - [MG, 6523]
+        - [RJ, 5696]
+        - [PR, 5372]
+        - [GO, 3907]
+        - [RS, 3878]
+        - [BA, 3856]
+        - [SC, 3686]
+        - [PE, 2647]
+        - [CE, 2613]
+      id_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '6257'
+        max: '6259'
+        top:
+        - ['6259', 75835]
+        - ['6257', 309]
+      tipo_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: eleicao ordinaria
+        max: eleicao ordinaria
+        top:
+        - [eleicao ordinaria, 76144]
+      data_eleicao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-04'
+        max: '2026-10-04'
+        top:
+        - ['2026-10-04', 76144]
+      titulo_eleitoral_candidato: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sequencial_candidato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14101, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_item:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 50
+        min: Aeronave
+        max: 'Veículo automotor terrestre: caminhão, automóvel, moto, etc.'
+        top:
+        - ['Veículo automotor terrestre: caminhão, automóvel, moto, etc.', 13319]
+        - [Terreno, 7340]
+        - [Casa, 6689]
+        - [Depósito bancário em conta corrente no País, 6406]
+        - [Apartamento, 5496]
+        - [Quotas ou quinhões de capital, 5177]
+        - ['Aplicação de renda fixa (CDB, RDB e outros)', 5094]
+        - [OUTROS BENS E DIREITOS, 4311]
+        - [Outros bens imóveis, 3303]
+        - [Outras aplicações e Investimentos, 3205]
+      descricao_item: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 53550}
+      valor_item:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 41837
+        min: '-38101.07'
+        max: '1109124020.0'
+        media: 419107.6509
+        quartis: [10983.4399, 59130.9984, 201097.3626]
+  candidatos:
+    linhas: 3375714
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 20989]
+      id_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '6257'
+        max: '6259'
+        top:
+        - ['6259', 20961]
+        - ['6257', 28]
+      tipo_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: eleicao ordinaria
+        max: eleicao ordinaria
+        top:
+        - [eleicao ordinaria, 20989]
+      data_eleicao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-04'
+        max: '2026-10-04'
+        top:
+        - ['2026-10-04', 20989]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [SP, 2630]
+        - [RJ, 2055]
+        - [MG, 1832]
+        - [BA, 1224]
+        - [PR, 1090]
+        - [RS, 1054]
+        - [PE, 961]
+        - [GO, 906]
+        - [PA, 741]
+        - [CE, 714]
+      id_municipio:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 20989]
+      id_municipio_tse:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 20989]
+      titulo_eleitoral: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 17674}
+      cpf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 20436, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sequencial: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18680}
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5676, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 19619, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_urna: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 22047, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_partido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 29, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AGIR
+        max: UP
+        top:
+        - [PL, 1647]
+        - [MDB, 1420]
+        - [NOVO, 1309]
+        - [REPUBLICANOS, 1309]
+        - [PODE, 1237]
+        - [PSD, 1134]
+        - [PDT, 1126]
+        - [PT, 1103]
+        - [PSDB, 1094]
+        - [AVANTE, 980]
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: 1º suplente
+        max: vice-presidente
+        top:
+        - [deputado estadual, 11295]
+        - [deputado federal, 7803]
+        - [deputado distrital, 433]
+        - [2º suplente, 350]
+        - [1º suplente, 349]
+        - [senador, 319]
+        - [vice-governador, 211]
+        - [governador, 201]
+        - [presidente, 14]
+        - [vice-presidente, 14]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 20989]
+      data_nascimento: {tipo: DATE, nulos_pct: 0.01, distintos_aprox: 11460, min: '1934-02-14', max: '2007-09-12'}
+      idade:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 20989]
+      genero:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: feminino
+        max: nao divulgavel
+        top:
+        - [masculino, 13619]
+        - [feminino, 7367]
+        - [nao divulgavel, 3]
+      instrucao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: ensino fundamental completo
+        max: superior incompleto
+        top:
+        - [superior completo, 12321]
+        - [ensino medio completo, 4508]
+        - [superior incompleto, 2213]
+        - [ensino medio incompleto, 700]
+        - [ensino fundamental incompleto, 619]
+        - [ensino fundamental completo, 549]
+        - [le e escreve, 76]
+        - [nao divulgavel, 3]
+      ocupacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 198, min: administrador, max: zootecnista}
+      estado_civil:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: casado(a)
+        max: viuvo(a)
+        top:
+        - [casado(a), 10536]
+        - [solteiro(a), 7236]
+        - [divorciado(a), 2696]
+        - [viuvo(a), 325]
+        - [separado(a) judicialmente, 193]
+        - [nao divulgavel, 3]
+      nacionalidade:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 20989]
+      sigla_uf_nascimento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: AC
+        max: ZZ
+        top:
+        - [SP, 2548]
+        - [RJ, 2181]
+        - [MG, 2060]
+        - [BA, 1407]
+        - [PR, 1265]
+        - [RS, 1167]
+        - [PE, 1089]
+        - [CE, 854]
+        - [PA, 851]
+        - [GO, 822]
+      municipio_nascimento:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 20989]
+      email: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      raca:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: amarela
+        max: preta
+        top:
+        - [branca, 10533]
+        - [parda, 7309]
+        - [preta, 2842]
+        - [indigena, 195]
+        - [amarela, 107]
+        - [nao divulgavel, 3]
+  carga_2026:
+    linhas: 50
+    fonte_do_perfil: tabela inteira
+    colunas:
+      run_at:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2026-08-08 08:06:45'
+        max: '2026-10-07 14:17:12'
+        top:
+        - ['2026-08-08 08:06:45', 10]
+        - ['2026-08-16 14:07:07', 10]
+        - ['2026-08-19 13:18:05', 10]
+        - ['2026-08-26 12:53:55', 10]
+        - ['2026-10-07 14:17:12', 10]
+      data:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2026-08-08'
+        max: '2026-10-07'
+        top:
+        - ['2026-08-08', 10]
+        - ['2026-08-16', 10]
+        - ['2026-08-19', 10]
+        - ['2026-08-26', 10]
+        - ['2026-10-07', 10]
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: 1º suplente
+        max: vice-presidente
+        top:
+        - [1º suplente, 5]
+        - [2º suplente, 5]
+        - [deputado distrital, 5]
+        - [deputado estadual, 5]
+        - [deputado federal, 5]
+        - [governador, 5]
+        - [presidente, 5]
+        - [senador, 5]
+        - [vice-governador, 5]
+        - [vice-presidente, 5]
+      candidaturas:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 41
+        min: '3'
+        max: '11295'
+        media: 1852.74
+        quartis: [83, 314, 426]
+        top:
+        - ['13', 4]
+        - ['83', 3]
+        - ['12', 2]
+        - ['14', 2]
+        - ['3', 2]
+        - ['318', 2]
+        - ['319', 2]
+        - ['57', 2]
+        - ['11046', 1]
+        - ['11138', 1]
+      com_declaracao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 39
+        min: '2'
+        max: '7294'
+        media: 1234.7
+        quartis: [62, 214, 276]
+        top:
+        - ['11', 3]
+        - ['12', 3]
+        - ['137', 2]
+        - ['264', 2]
+        - ['10', 1]
+        - ['13', 1]
+        - ['139', 1]
+        - ['143', 1]
+        - ['148', 1]
+        - ['158', 1]
+      itens:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 46
+        min: '24'
+        max: '38113'
+        media: 6862.68
+        quartis: [425, 1298, 2495]
+        top:
+        - ['123', 3]
+        - ['1000', 1]
+        - ['1018', 1]
+        - ['1042', 1]
+        - ['1125', 1]
+        - ['1138', 1]
+        - ['1154', 1]
+        - ['116', 1]
+        - ['1189', 1]
+        - ['1295', 1]
+      valor_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 48
+        min: '35708202.510000005'
+        max: '19050343815.66'
+        media: 3747140893.299
+        quartis: [496443932.15, 1277834739.69, 6314200997.0]
+        top:
+        - ['564169565.0500001', 2]
+        - ['11627877327.560001', 1]
+        - ['1185110246.5600002', 1]
+        - ['12007234956.339998', 1]
+        - ['12743197577.459997', 1]
+        - ['1277326723.06', 1]
+        - ['1278342756.3199997', 1]
+        - ['1281992449.32', 1]
+        - ['1286968966.8', 1]
+        - ['13176596157.93', 1]
+      candidaturas_2022:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '11'
+        max: '16613'
+        media: 2897.2
+        quartis: [223, 253, 607]
+        top:
+        - ['10495', 5]
+        - ['11', 5]
+        - ['12', 5]
+        - ['16613', 5]
+        - ['223', 5]
+        - ['236', 5]
+        - ['239', 5]
+        - ['267', 5]
+        - ['269', 5]
+        - ['607', 5]
+      cobertura:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 51
+        min: '0.24152542372881355'
+        max: '1.3347280334728033'
+        media: 0.8511
+        quartis: [0.6744, 0.8629, 1.1822]
+  despesas_candidato:
+    linhas: 33397551
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 985828]
+      turno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.0132
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 972826]
+        - ['2', 13002]
+      id_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '6257'
+        max: '6259'
+        top:
+        - ['6259', 983762]
+        - ['6257', 2066]
+      tipo_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: eleicao geral federal 2026
+        max: eleicoes gerais estaduais 2026
+        top:
+        - [eleicoes gerais estaduais 2026, 983762]
+        - [eleicao geral federal 2026, 2066]
+      data_eleicao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-04'
+        max: '2026-10-04'
+        top:
+        - ['2026-10-04', 985828]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [SP, 147341]
+        - [RJ, 104154]
+        - [MG, 99077]
+        - [RS, 54565]
+        - [PR, 53942]
+        - [GO, 49178]
+        - [PE, 39905]
+        - [BA, 36407]
+        - [DF, 33682]
+        - [SC, 33363]
+      id_municipio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '5101837'
+        max: '5101837'
+        top:
+        - ['5101837', 985828]
+      id_municipio_tse:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 985828]
+      titulo_eleitoral_candidato: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sequencial_candidato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15720, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_candidato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5511, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_candidato: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_partido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 29, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AGIR
+        max: UP
+        top:
+        - [PL, 160388]
+        - [PSD, 101640]
+        - [PT, 97201]
+        - [REPUBLICANOS, 86683]
+        - [UNIÃO, 85339]
+        - [PP, 68764]
+        - [MDB, 68016]
+        - [PODE, 48432]
+        - [PSB, 40662]
+        - [PSDB, 36066]
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: deputado distrital
+        max: senador
+        top:
+        - [deputado federal, 508166]
+        - [deputado estadual, 371260]
+        - [governador, 46086]
+        - [senador, 44201]
+        - [deputado distrital, 14049]
+        - [presidente, 2066]
+      sequencial_despesa: {tipo: VARCHAR, nulos_pct: 0.45, distintos_aprox: 696961}
+      data_despesa: {tipo: DATE, nulos_pct: 0.45, distintos_aprox: 222, min: '2025-08-25', max: '2028-08-28'}
+      tipo_despesa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 985828]
+      descricao_despesa: {tipo: VARCHAR, nulos_pct: 0.65, distintos_aprox: 403617}
+      origem_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0.45
+        distintos_aprox: 45
+        min: agua
+        max: telefone
+        top:
+        - [atividades de militancia e mobilizacao de rua, 311669]
+        - [despesas com pessoal, 158727]
+        - [publicidade por materiais impressos, 146909]
+        - ['encargos financeiros, taxas bancarias e/ou op. cartao de credito', 68266]
+        - [publicidade por adesivos, 53020]
+        - [combustiveis e lubrificantes, 44751]
+        - [servicos prestados por terceiros, 38537]
+        - [despesa com impulsionamento de conteudos, 29877]
+        - [cessao ou locacao de veiculos, 21023]
+        - [materiais de expediente, 15715]
+      valor_despesa:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 50357
+        min: '0.0'
+        max: '31000000.0'
+        media: 4557.6877
+        quartis: [477.5038, 1478.1407, 2992.8459]
+      tipo_prestacao_contas:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: final
+        max: relatorio financeiro
+        top:
+        - [relatorio financeiro, 643269]
+        - [parcial, 336009]
+        - [final, 6550]
+      data_prestacao_contas:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 37
+        min: '2026-08-21'
+        max: '2026-10-11'
+        top:
+        - ['2026-10-03', 129185]
+        - ['2026-10-02', 125356]
+        - ['2026-10-05', 80546]
+        - ['2026-10-09', 72519]
+        - ['2026-10-04', 63008]
+        - ['2026-10-08', 62793]
+        - ['2026-10-06', 59659]
+        - ['2026-09-13', 54739]
+        - ['2026-10-07', 54245]
+        - ['2026-10-01', 51698]
+      sequencial_prestador_contas: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18712}
+      cnpj_prestador_contas: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18216, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_documento: {tipo: VARCHAR, nulos_pct: 7.59, distintos_aprox: 6, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_documento: {tipo: VARCHAR, nulos_pct: 7.7, distintos_aprox: 106863, pessoal: 'só contagens: valores seriam dado pessoal'}
+      especie_recurso:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 985828]
+      fonte_recurso:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 985828]
+      cpf_cnpj_fornecedor: {tipo: VARCHAR, nulos_pct: 7.46, distintos_aprox: 563405, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fornecedor: {tipo: VARCHAR, nulos_pct: 7.46, distintos_aprox: 568992, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fornecedor_rf: {tipo: VARCHAR, nulos_pct: 7.46, distintos_aprox: 514560, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnae_2_fornecedor: {tipo: VARCHAR, nulos_pct: 60.76, distintos_aprox: 455, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnae_2_fornecedor_classe: {tipo: VARCHAR, nulos_pct: 60.76, distintos_aprox: 455, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnae_2_fornecedor_subclasse: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao_cnae_2_fornecedor: {tipo: VARCHAR, nulos_pct: 60.76, distintos_aprox: 323, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_fornecedor: {tipo: VARCHAR, nulos_pct: 0.45, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      esfera_partidaria_fornecedor: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_uf_fornecedor: {tipo: VARCHAR, nulos_pct: 99.81, distintos_aprox: 30, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_municipio_tse_fornecedor: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sequencial_candidato_fornecedor: {tipo: VARCHAR, nulos_pct: 99.82, distintos_aprox: 1137, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_candidato_fornecedor: {tipo: VARCHAR, nulos_pct: 99.82, distintos_aprox: 647, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_partido_fornecedor: {tipo: VARCHAR, nulos_pct: 99.81, distintos_aprox: 26, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido_fornecedor: {tipo: VARCHAR, nulos_pct: 99.81, distintos_aprox: 26, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cargo_fornecedor: {tipo: VARCHAR, nulos_pct: 99.82, distintos_aprox: 10, pessoal: 'só contagens: valores seriam dado pessoal'}
+  despesas_contratadas_orgao_partidario:
+    linhas: 1096000
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2018'
+        max: '2026'
+        media: 2021.796
+        quartis: [2020, 2022, 2024]
+        top:
+        - ['2020', 453467]
+        - ['2024', 379017]
+        - ['2022', 117243]
+        - ['2018', 82472]
+        - ['2026', 63801]
+      tipo_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: eleicao ordinaria
+        max: suplementar
+        top:
+        - [eleicao ordinaria, 1095584]
+        - [suplementar, 416]
+      tipo_prestacao_contas:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: final
+        max: relatorio financeiro
+        top:
+        - [final, 1021718]
+        - [relatorio financeiro, 51675]
+        - [parcial, 14387]
+        - [regularizacao da omissao, 8220]
+      data_prestacao_contas: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1804, min: '2018-09-11', max: '2026-10-24'}
+      sequencial_prestador_contas: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 21937}
+      cnpj_prestador_contas: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18126, pessoal: 'só contagens: valores seriam dado pessoal'}
+      esfera_partidaria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: federal (estadual/distrital)
+        max: zonal
+        top:
+        - [federal (estadual/distrital), 413366]
+        - [municipal, 410632]
+        - [nacional, 271950]
+        - [zonal, 52]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [BR, 271950]
+        - [SP, 142791]
+        - [MG, 93663]
+        - [RS, 76517]
+        - [RJ, 55135]
+        - [PR, 52936]
+        - [SC, 38370]
+        - [PA, 35895]
+        - [BA, 34064]
+        - [MT, 33776]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 62.53, distintos_aprox: 6186}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 62.53, distintos_aprox: 4149}
+      numero_partido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 34, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 45
+        min: AGIR
+        max: UP
+        top:
+        - [PT, 114709]
+        - [MDB, 88612]
+        - [PSD, 76694]
+        - [PP, 67051]
+        - [PL, 62586]
+        - [PSB, 60417]
+        - [PSDB, 54853]
+        - [REPUBLICANOS, 54689]
+        - [PODE, 54285]
+        - [PDT, 46811]
+      nome_partido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 64, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sequencial_despesa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 919060}
+      data_despesa: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1095, min: '2018-01-01', max: '2026-10-23'}
+      descricao_despesa: {tipo: VARCHAR, nulos_pct: 30.92, distintos_aprox: 311671}
+      origem_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 45
+        min: agua
+        max: telefone
+        top:
+        - [doacoes financeiras a outros candidatos/partidos, 423958]
+        - ['encargos financeiros, taxas bancarias e/ou op. cartao de credito', 194165]
+        - [publicidade por materiais impressos, 178194]
+        - [publicidade por adesivos, 69854]
+        - [despesas com pessoal, 42277]
+        - [servicos prestados por terceiros, 34384]
+        - [servicos contabeis, 27452]
+        - [atividades de militancia e mobilizacao de rua, 27043]
+        - [servicos advocaticios, 24491]
+        - ['producao de programas de radio, televisao ou video', 15833]
+      tipo_documento: {tipo: VARCHAR, nulos_pct: 54.06, distintos_aprox: 6, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_documento: {tipo: VARCHAR, nulos_pct: 54.06, distintos_aprox: 105523, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_fornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_cnpj_fornecedor: {tipo: VARCHAR, nulos_pct: 17.29, distintos_aprox: 452419, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fornecedor: {tipo: VARCHAR, nulos_pct: 17.29, distintos_aprox: 471293, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fornecedor_rf: {tipo: VARCHAR, nulos_pct: 17.29, distintos_aprox: 348883, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnae_2_fornecedor: {tipo: VARCHAR, nulos_pct: 28.28, distintos_aprox: 366, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao_cnae_2_fornecedor: {tipo: VARCHAR, nulos_pct: 28.28, distintos_aprox: 285, pessoal: 'só contagens: valores seriam dado pessoal'}
+      esfera_partidaria_fornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_uf_fornecedor: {tipo: VARCHAR, nulos_pct: 61.34, distintos_aprox: 30, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_municipio_tse_fornecedor: {tipo: VARCHAR, nulos_pct: 69.54, distintos_aprox: 4808, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sequencial_candidato_fornecedor: {tipo: VARCHAR, nulos_pct: 64.08, distintos_aprox: 303563, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      numero_candidato_fornecedor: {tipo: VARCHAR, nulos_pct: 63.19, distintos_aprox: 18417, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cargo_fornecedor: {tipo: VARCHAR, nulos_pct: 63.15, distintos_aprox: 14, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_partido_fornecedor: {tipo: VARCHAR, nulos_pct: 61.35, distintos_aprox: 34, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido_fornecedor: {tipo: VARCHAR, nulos_pct: 61.35, distintos_aprox: 45, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_despesa:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 67105
+        min: '0.0'
+        max: '66708023.0'
+        media: 22981.5854
+        quartis: [96.2725, 918.639, 5063.6515]
+  despesas_pagas_orgao_partidario:
+    linhas: 866927
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2018'
+        max: '2026'
+        media: 2021.8306
+        quartis: [2020, 2022, 2024]
+        top:
+        - ['2020', 356634]
+        - ['2024', 312440]
+        - ['2022', 91648]
+        - ['2018', 60411]
+        - ['2026', 45794]
+      tipo_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: eleicao ordinaria
+        max: suplementar
+        top:
+        - [eleicao ordinaria, 866578]
+        - [suplementar, 349]
+      tipo_prestacao_contas:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: final
+        max: relatorio financeiro
+        top:
+        - [final, 813416]
+        - [relatorio financeiro, 41019]
+        - [regularizacao da omissao, 6799]
+        - [parcial, 5693]
+      data_prestacao_contas: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1787, min: '2018-09-11', max: '2026-10-24'}
+      sequencial_prestador_contas: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 20734}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [BR, 262886]
+        - [SP, 92544]
+        - [MG, 66341]
+        - [RS, 55695]
+        - [PR, 43313]
+        - [RJ, 34040]
+        - [SC, 29812]
+        - [MT, 28313]
+        - [BA, 27711]
+        - [PA, 20679]
+      sequencial_despesa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 906157}
+      sequencial_parcelamento_despesa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 950066}
+      data_pagamento: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1596, min: '2000-12-15', max: '9202-09-25'}
+      descricao_despesa: {tipo: VARCHAR, nulos_pct: 39.09, distintos_aprox: 136387}
+      origem_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 45
+        min: agua
+        max: telefone
+        top:
+        - [doacoes financeiras a outros candidatos/partidos, 423958]
+        - ['encargos financeiros, taxas bancarias e/ou op. cartao de credito', 196223]
+        - [despesas com pessoal, 44923]
+        - [publicidade por materiais impressos, 44891]
+        - [atividades de militancia e mobilizacao de rua, 35165]
+        - [servicos prestados por terceiros, 27709]
+        - [servicos contabeis, 17974]
+        - [publicidade por adesivos, 17707]
+        - [servicos advocaticios, 16110]
+        - ['producao de programas de radio, televisao ou video', 6126]
+      fonte_recurso:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: fundo especial de financiamento de campanha
+        max: outros recursos
+        top:
+        - [fundo especial de financiamento de campanha, 638552]
+        - [outros recursos, 163586]
+        - [fundo partidario, 64789]
+      natureza_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: financeiro
+        max: financeiro
+        top:
+        - [financeiro, 866927]
+      especie_recurso:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: boleto de cobranca
+        max: transferencia eletronica
+        top:
+        - [transferencia eletronica, 473445]
+        - [debito em conta, 185295]
+        - [pix, 101842]
+        - [cheque, 97380]
+        - [boleto de cobranca, 6721]
+        - [em especie, 2069]
+        - [cartao de debito, 145]
+        - [nao informado, 30]
+      tipo_documento: {tipo: VARCHAR, nulos_pct: 68.58, distintos_aprox: 6, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_documento: {tipo: VARCHAR, nulos_pct: 20.69, distintos_aprox: 248410, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_pagamento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 81170
+        min: '0.01'
+        max: '66708023.0'
+        media: 28758.8384
+        quartis: [90.2621, 1538.8594, 8790.7059]
+  detalhes_votacao_municipio:
+    linhas: 371348
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '1994'
+        max: '2026'
+        media: 2011.5657
+        quartis: [2004, 2012, 2020]
+        top:
+        - ['2018', 36897]
+        - ['2022', 36493]
+        - ['2002', 36329]
+        - ['2006', 36005]
+        - ['2014', 35958]
+        - ['2010', 34787]
+        - ['2026', 34268]
+        - ['1998', 24952]
+        - ['1994', 16586]
+        - ['2016', 11366]
+      turno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.1618
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 311250]
+        - ['2', 60098]
+      id_eleicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 491, min: '100', max: '97'}
+      tipo_eleicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 388, min: agua boa mg - 67 ze, max: suplementar viseu-pa 05/02/2023}
+      data_eleicao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 258, min: '1994-10-03', max: '2026-10-25'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: ZZ
+        top:
+        - [MG, 52997]
+        - [SP, 45203]
+        - [RS, 35274]
+        - [BA, 27949]
+        - [PR, 24794]
+        - [SC, 20417]
+        - [GO, 17159]
+        - [PI, 15176]
+        - [PB, 14692]
+        - [MA, 14067]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.5639, distintos_aprox: 6859}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5232}
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: conselheiro distrital
+        max: vereador
+        top:
+        - [presidente, 83185]
+        - [governador, 67193]
+        - [senador, 47392]
+        - [deputado federal, 47251]
+        - [deputado estadual, 47243]
+        - [prefeito, 39998]
+        - [vereador, 39075]
+        - [deputado distrital, 8]
+        - [conselheiro distrital, 3]
+      aptos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 40457
+        min: '1'
+        max: '9322444'
+        media: 24798.4161
+        quartis: [4179, 8036, 16841]
+      secoes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1661
+        min: '-123'
+        max: '51612'
+        media: 74.3308
+        quartis: [12, 25, 55]
+      secoes_agregadas:
+        tipo: BIGINT
+        nulos_pct: 1.6766
+        distintos_aprox: 258
+        min: '-123'
+        max: '830'
+        media: 3.9402
+        quartis: [0, 1, 4]
+      aptos_totalizadas:
+        tipo: BIGINT
+        nulos_pct: 1.6766
+        distintos_aprox: 25358
+        min: '-123'
+        max: '8886195'
+        media: 12976.2969
+        quartis: [0, 2405, 8706]
+      secoes_totalizadas:
+        tipo: BIGINT
+        nulos_pct: 1.6766
+        distintos_aprox: 1233
+        min: '-123'
+        max: '25054'
+        media: 37.5108
+        quartis: [0, 8, 29]
+      comparecimento:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 33294
+        min: '0'
+        max: '7372124'
+        media: 20021.2735
+        quartis: [3387, 6356, 13272]
+      abstencoes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 15576
+        min: '0'
+        max: '2940360'
+        media: 4776.8387
+        quartis: [713, 1574, 3591]
+      votos_validos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 54331
+        min: '0'
+        max: '11466661'
+        media: 18632.3752
+        quartis: [3104.75, 5865, 12350]
+      votos_brancos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 15531
+        min: '0'
+        max: '2321870'
+        media: 1130.9759
+        quartis: [77, 211, 644]
+      votos_nulos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 14687
+        min: '0'
+        max: '3143664'
+        media: 1546.152
+        quartis: [141, 344.5, 887]
+      votos_nominais:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 59764
+        min: '0'
+        max: '11466661'
+        media: 18081.4587
+        quartis: [3013, 5687, 11992]
+      votos_legenda:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9030
+        min: '0'
+        max: '1733700'
+        media: 550.846
+        quartis: [0, 0, 232]
+      proporcao_comparecimento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 135267
+        min: '0.0'
+        max: '99.36926605504587'
+        media: 80.3984
+        quartis: [76.3561, 81.0005, 85.3398]
+      proporcao_votos_validos:
+        tipo: DOUBLE
+        nulos_pct: 0.0875
+        distintos_aprox: 374514
+        min: '0.0'
+        max: nan
+        media: .nan
+        quartis: [87.479, 92.7439, 95.6793]
+      proporcao_votos_brancos:
+        tipo: DOUBLE
+        nulos_pct: 0.0875
+        distintos_aprox: 274368
+        min: '0.0'
+        max: nan
+        media: .nan
+        quartis: [1.4132, 3.0079, 6.5063]
+      proporcao_votos_nulos:
+        tipo: DOUBLE
+        nulos_pct: 0.0875
+        distintos_aprox: 279870
+        min: '0.0'
+        max: nan
+        media: .nan
+        quartis: [2.7652, 4.6414, 8.9567]
+  detalhes_votacao_municipio_zona:
+    linhas: 406431
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '1994'
+        max: '2026'
+        media: 2011.3004
+        quartis: [2004, 2011, 2018]
+        top:
+        - ['2018', 40476]
+        - ['2014', 40474]
+        - ['2006', 40249]
+        - ['2002', 40205]
+        - ['2022', 39967]
+        - ['2010', 39056]
+        - ['2026', 30717]
+        - ['1998', 27673]
+        - ['1994', 17716]
+        - ['2016', 13141]
+      turno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.1525
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 344455]
+        - ['2', 61976]
+      id_eleicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 491, min: '100', max: '97'}
+      tipo_eleicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 388, min: agua boa mg - 67 ze, max: suplementar viseu-pa 05/02/2023}
+      data_eleicao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 258, min: '1994-10-03', max: '2026-10-05'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: ZZ
+        top:
+        - [MG, 55017]
+        - [SP, 54146]
+        - [RS, 36564]
+        - [BA, 29593]
+        - [PR, 26773]
+        - [SC, 21377]
+        - [GO, 18041]
+        - [PI, 15427]
+        - [RJ, 15355]
+        - [PB, 15068]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.49, distintos_aprox: 6859}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5232}
+      zona: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 420, min: '1', max: '99'}
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: conselheiro distrital
+        max: vereador
+        top:
+        - [presidente, 85671]
+        - [governador, 73978]
+        - [senador, 52391]
+        - [deputado federal, 52245]
+        - [deputado estadual, 52098]
+        - [prefeito, 46484]
+        - [vereador, 43414]
+        - [deputado distrital, 147]
+        - [conselheiro distrital, 3]
+      aptos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 45907
+        min: '1'
+        max: '334557'
+        media: 22236.5388
+        quartis: [4497, 9291, 23326]
+      secoes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 973
+        min: '-3'
+        max: '1550'
+        media: 66.5884
+        quartis: [12, 28, 72]
+      secoes_agregadas:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 131
+        min: '-3'
+        max: '304'
+        media: 3.5397
+        quartis: [0, 1, 4]
+      aptos_totalizadas:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 31743
+        min: '-3'
+        max: '334557'
+        media: 11657.4067
+        quartis: [0, 2610, 10625]
+      secoes_totalizadas:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 686
+        min: '-3'
+        max: '753'
+        media: 33.6982
+        quartis: [0, 9, 35]
+      comparecimento:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 44028
+        min: '0'
+        max: '292845'
+        media: 17952.7097
+        quartis: [3636, 7349, 18321]
+      abstencoes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 22155
+        min: '0'
+        max: '75779'
+        media: 4283.5525
+        quartis: [782, 1860, 4937]
+      votos_validos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 66817
+        min: '0'
+        max: '430553'
+        media: 16695.5969
+        quartis: [3333, 6770, 17181]
+      votos_brancos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9728
+        min: '0'
+        max: '108412'
+        media: 1029.2687
+        quartis: [88, 266, 954]
+      votos_nulos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13951
+        min: '0'
+        max: '111834'
+        media: 1404.874
+        quartis: [160, 421, 1273]
+      votos_nominais:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 72960
+        min: '0'
+        max: '430553'
+        media: 16192.2354
+        quartis: [3232, 6575, 16702]
+      votos_legenda:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 8978
+        min: '0'
+        max: '68995'
+        media: 503.2972
+        quartis: [0, 0, 263]
+      proporcao_comparecimento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 153618
+        min: '0.0'
+        max: '99.36926605504587'
+        media: 80.5455
+        quartis: [76.6047, 81.1829, 85.3663]
+      proporcao_votos_validos:
+        tipo: DOUBLE
+        nulos_pct: 0.08
+        distintos_aprox: 387804
+        min: '0.0'
+        max: '189.11860718171926'
+        media: 93.4588
+        quartis: [87.0209, 92.367, 95.4144]
+      proporcao_votos_brancos:
+        tipo: DOUBLE
+        nulos_pct: 0.08
+        distintos_aprox: 345238
+        min: '0.0'
+        max: '110.11826544021025'
+        media: 5.6647
+        quartis: [1.5332, 3.2459, 6.6689]
+      proporcao_votos_nulos:
+        tipo: DOUBLE
+        nulos_pct: 0.08
+        distintos_aprox: 293442
+        min: '0.0'
+        max: '100.0'
+        media: 7.5305
+        quartis: [2.9187, 4.8794, 9.161]
+  detalhes_votacao_secao:
+    linhas: 26442036
+    fonte_do_perfil: amostra de 80.294% da última partição (ano = 2026). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 2012214]
+      turno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 2012214]
+      id_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '6257'
+        max: '6261'
+        top:
+        - ['6259', 1613074]
+        - ['6257', 399133]
+        - ['6261', 7]
+      tipo_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: eleicao conselho distrital 2026
+        max: eleicao ordinaria
+        top:
+        - [eleicao ordinaria, 2012207]
+        - [eleicao conselho distrital 2026, 7]
+      data_eleicao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-04'
+        max: '2026-10-04'
+        top:
+        - ['2026-10-04', 2012214]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: ZZ
+        top:
+        - [SP, 419070]
+        - [MG, 210982]
+        - [RJ, 153769]
+        - [BA, 143964]
+        - [RS, 111373]
+        - [PR, 109752]
+        - [CE, 95561]
+        - [PE, 85249]
+        - [PA, 82859]
+        - [MA, 72708]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.06, distintos_aprox: 6859}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4933}
+      zona: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 396, min: '1', max: '99'}
+      secao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1447}
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: conselheiro distrital
+        max: senador
+        top:
+        - [governador, 404161]
+        - [senador, 404079]
+        - [deputado federal, 402913]
+        - [presidente, 399133]
+        - [deputado estadual, 396423]
+        - [deputado distrital, 5498]
+        - [conselheiro distrital, 7]
+      aptos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 940
+        min: '1'
+        max: '930'
+        media: 316.9499
+        quartis: [281, 327, 362]
+      comparecimento:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 492
+        min: '0'
+        max: '552'
+        media: 250.687
+        quartis: [221, 257, 286]
+      abstencoes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 685
+        min: '0'
+        max: '764'
+        media: 66.2627
+        quartis: [50, 65, 80]
+      votos_nominais:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 976
+        min: '0'
+        max: '845'
+        media: 263.4932
+        quartis: [206, 242, 287]
+      votos_brancos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 173
+        min: '0'
+        max: '177'
+        media: 15.8698
+        quartis: [5, 11, 20]
+      votos_nulos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 174
+        min: '0'
+        max: '195'
+        media: 17.3483
+        quartis: [6, 11, 20]
+      votos_legenda:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 65
+        min: '0'
+        max: '68'
+        media: 4.302
+        quartis: [0, 0, 7]
+      votos_nulos_apu_sep:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0'
+        max: '0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 2012214]
+      proporcao_comparecimento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 22077
+        min: '0.0'
+        max: '100.0'
+        media: 79.2635
+        quartis: [75.9005, 79.692, 83.0582]
+      proporcao_votos_nominais:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 35077
+        min: '16.666666666666668'
+        max: '200.0'
+        media: 105.1967
+        quartis: [87.3497, 92.3155, 97.0872]
+      proporcao_votos_legenda:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 7402
+        min: '0.0'
+        max: '57.142857142857146'
+        media: 1.7401
+        quartis: [0, 0, 3.0557]
+      proporcao_votos_brancos:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 19221
+        min: '0.0'
+        max: '114.1304347826087'
+        media: 6.2585
+        quartis: [2.2992, 4.5083, 7.931]
+      proporcao_votos_nulos:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 21482
+        min: '0.0'
+        max: '96.42857142857143'
+        media: 6.8863
+        quartis: [2.4515, 4.2634, 7.9693]
+  partidos:
+    linhas: 1189547
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '1990'
+        max: '2026'
+        media: 2013.2667
+        quartis: [2008, 2012, 2019]
+        top:
+        - ['2016', 245928]
+        - ['2012', 220147]
+        - ['2008', 193336]
+        - ['2004', 174298]
+        - ['2024', 156788]
+        - ['2020', 137915]
+        - ['2000', 17733]
+        - ['2018', 5984]
+        - ['2014', 5645]
+        - ['2002', 4842]
+      turno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.0014
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1187889]
+        - ['2', 1658]
+      id_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 52.83
+        distintos_aprox: 9
+        min: '143'
+        max: '6259'
+        top:
+        - [null, 628389]
+        - ['220', 245928]
+        - ['619', 156788]
+        - ['426', 137915]
+        - ['297', 5922]
+        - ['143', 5645]
+        - ['546', 4609]
+        - ['6259', 4199]
+        - ['295', 62]
+        - ['544', 50]
+      tipo_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: eleicao ordinaria
+        max: eleicao ordinaria
+        top:
+        - [eleicao ordinaria, 1189547]
+      data_eleicao:
+        tipo: DATE
+        nulos_pct: 52.83
+        distintos_aprox: 7
+        min: '2014-10-05'
+        max: '2026-10-04'
+        top:
+        - [null, 628389]
+        - ['2016-10-02', 245928]
+        - ['2024-10-06', 156788]
+        - ['2020-11-15', 137915]
+        - ['2018-10-07', 5984]
+        - ['2014-10-05', 5645]
+        - ['2022-10-02', 4659]
+        - ['2026-10-04', 4239]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0.02
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 168130]
+        - [SP, 152381]
+        - [BA, 95313]
+        - [PR, 85171]
+        - [RS, 69417]
+        - [MA, 55340]
+        - [GO, 53843]
+        - [SC, 46280]
+        - [PE, 44238]
+        - [CE, 40234]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 3.5, distintos_aprox: 6859}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 3.5, distintos_aprox: 4808}
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: 1º suplente
+        max: vice-presidente
+        top:
+        - [vereador, 385402]
+        - [prefeito, 384230]
+        - [vice-prefeito, 378314]
+        - [deputado federal, 6900]
+        - [governador, 6877]
+        - [deputado estadual, 6596]
+        - [senador, 6181]
+        - [vice-governador, 5096]
+        - [1º suplente, 2834]
+        - [2º suplente, 2834]
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 49, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 69, min: '#NULO#', max: UP}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 88, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_agremiacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: coligacao
+        max: partido isolado
+        top:
+        - [coligacao, 1003934]
+        - [partido isolado, 161368]
+        - [federacao, 24245]
+      sequencial_coligacao: {tipo: VARCHAR, nulos_pct: 4.4, distintos_aprox: 180420}
+      nome_coligacao: {tipo: VARCHAR, nulos_pct: 15.46, distintos_aprox: 85941, pessoal: 'só contagens: valores seriam dado pessoal'}
+      composicao_coligacao: {tipo: VARCHAR, nulos_pct: 4.67, distintos_aprox: 66279}
+      numero_federacao: {tipo: VARCHAR, nulos_pct: 95.6, distintos_aprox: 9, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_federacacao: {tipo: VARCHAR, nulos_pct: 95.4, distintos_aprox: 11, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_federacao:
+        tipo: VARCHAR
+        nulos_pct: 95.4
+        distintos_aprox: 10
+        min: '#NULO'
+        max: PT/PC do B/PV
+        top:
+        - [null, 1134811]
+        - [PT/PC do B/PV, 30219]
+        - [PSDB/CIDADANIA, 15842]
+        - [PSOL/REDE, 4436]
+        - ['#NULO', 2342]
+        - [13-PT/65-PC do B/43-PV, 573]
+        - [44-UNIÃO/11-PP, 364]
+        - [50-PSOL/18-REDE, 332]
+        - [25-PRD/77-SOLIDARIEDADE, 316]
+        - [45-PSDB/23-CIDADANIA, 312]
+      composicao_federacao:
+        tipo: VARCHAR
+        nulos_pct: 95.4
+        distintos_aprox: 10
+        min: '#NULO'
+        max: PT/PC do B/PV
+        top:
+        - [null, 1134811]
+        - [PT/PC do B/PV, 30219]
+        - [PSDB/CIDADANIA, 15842]
+        - [PSOL/REDE, 4436]
+        - ['#NULO', 2342]
+        - [13-PT/65-PC do B/43-PV, 573]
+        - [44-UNIÃO/11-PP, 364]
+        - [50-PSOL/18-REDE, 332]
+        - [25-PRD/77-SOLIDARIEDADE, 316]
+        - [45-PSDB/23-CIDADANIA, 312]
+      situacao_legenda:
+        tipo: VARCHAR
+        nulos_pct: 86.07
+        distintos_aprox: 9
+        min: aguardando julgamento
+        max: pendente julgamento
+        top:
+        - [null, 1023861]
+        - [deferido, 163541]
+        - [deferido com recurso, 829]
+        - [indeferido, 726]
+        - [invalidado, 289]
+        - [indeferido com recurso, 285]
+        - [pendente julgamento, 10]
+        - [aguardando julgamento, 3]
+        - [invalidado com recurso, 3]
+  perfil_eleitorado_local_votacao:
+    linhas: 6484869
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 517179]
+      turno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 517179]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: ZZ
+        top:
+        - [SP, 103904]
+        - [MG, 54193]
+        - [RJ, 38738]
+        - [BA, 37950]
+        - [RS, 27738]
+        - [PR, 27336]
+        - [CE, 25650]
+        - [PE, 22091]
+        - [PA, 22082]
+        - [MA, 19794]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.53, distintos_aprox: 6859}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4933}
+      zona: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 396, min: '1', max: '99'}
+      secao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2750}
+      tipo_secao_agregada:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 499248]
+        - ['2', 17931]
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 392, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 91814, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['1', 513634]
+        - ['4', 3145]
+        - ['3', 245]
+        - ['2', 155]
+      endereco: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 95575, pessoal: 'só contagens: valores seriam dado pessoal'}
+      bairro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 37960, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cep: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 39122, pessoal: 'só contagens: valores seriam dado pessoal'}
+      telefone: {tipo: VARCHAR, nulos_pct: 30.66, distintos_aprox: 54800, pessoal: 'só contagens: valores seriam dado pessoal'}
+      latitude:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 517179]
+      longitude:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 517179]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '5'
+        top:
+        - ['1', 499542]
+        - ['5', 17637]
+      situacao_zona:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '-1'
+        max: '1'
+        top:
+        - ['-1', 512810]
+        - ['1', 4369]
+      situacao_secao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - ['1', 517179]
+      situacao_localidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - ['1', 517179]
+      situacao_secao_acessibilidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['0', 287578]
+        - ['1', 229601]
+      eleitores_secao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 595
+        min: '0'
+        max: '534'
+        media: 306.9449
+        quartis: [270, 323, 359]
+  perfil_eleitorado_municipio_zona:
+    linhas: 41768920
+    fonte_do_perfil: amostra de 46.113% da última partição (ano = 2026). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 2043543]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: ZZ
+        top:
+        - [MG, 292074]
+        - [SP, 290031]
+        - [RS, 143391]
+        - [BA, 139788]
+        - [PR, 138668]
+        - [SC, 97982]
+        - [RJ, 92339]
+        - [PE, 81412]
+        - [GO, 81017]
+        - [CE, 74047]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.98, distintos_aprox: 6859}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4933}
+      situacao_biometria:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2043543]
+      zona: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 396, min: '1', max: '99'}
+      genero:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '4'
+        top:
+        - ['4', 1080058]
+        - ['2', 957405]
+        - ['0', 6080]
+      estado_civil:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '0'
+        max: '9'
+        top:
+        - ['1', 675771]
+        - ['3', 582836]
+        - ['9', 327182]
+        - ['5', 268464]
+        - ['7', 180163]
+        - ['0', 9127]
+      grupo_idade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 22
+        min: '-3'
+        max: '9999'
+        top:
+        - ['6064', 172176]
+        - ['6569', 167619]
+        - ['5559', 167014]
+        - ['5054', 158645]
+        - ['7074', 155882]
+        - ['4549', 150282]
+        - ['4044', 136459]
+        - ['7579', 135492]
+        - ['3539', 118623]
+        - ['8084', 109406]
+      instrucao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '0'
+        max: '8'
+        top:
+        - ['3', 340289]
+        - ['6', 302621]
+        - ['2', 260028]
+        - ['4', 251569]
+        - ['5', 244444]
+        - ['8', 231781]
+        - ['1', 230140]
+        - ['7', 178156]
+        - ['0', 4515]
+      eleitores:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2721
+        min: '1'
+        max: '5731'
+        media: 36.327
+        quartis: [2, 5, 21]
+      eleitores_biometria:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2606
+        min: '0'
+        max: '5570'
+        media: 32.3281
+        quartis: [1, 5, 19]
+      eleitores_deficiencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 134
+        min: '0'
+        max: '292'
+        media: 0.4522
+        quartis: [0, 0, 0]
+  perfil_eleitorado_secao:
+    linhas: 666381663
+    fonte_do_perfil: amostra de 2.567% da última partição (ano = 2026). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 2071296]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: ZZ
+        top:
+        - [SP, 425110]
+        - [MG, 222650]
+        - [RJ, 161785]
+        - [BA, 151583]
+        - [PR, 115218]
+        - [RS, 110219]
+        - [CE, 97247]
+        - [PE, 95761]
+        - [PA, 80618]
+        - [SC, 75628]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.57, distintos_aprox: 6859}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4933}
+      situacao_biometria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: ''
+        max: ''
+        top:
+        - ['', 2071296]
+      zona: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 396, min: '1', max: '99'}
+      secao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2532}
+      genero:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '4'
+        top:
+        - ['4', 1117365]
+        - ['2', 953282]
+        - ['0', 649]
+      estado_civil:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '0'
+        max: '9'
+        top:
+        - ['1', 1036339]
+        - ['3', 748240]
+        - ['9', 154838]
+        - ['5', 94582]
+        - ['7', 36430]
+        - ['0', 867]
+      grupo_idade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 22
+        min: '-3'
+        max: '9999'
+        top:
+        - ['4549', 194459]
+        - ['5054', 187998]
+        - ['4044', 187961]
+        - ['5559', 186173]
+        - ['6064', 182606]
+        - ['3539', 166966]
+        - ['6569', 157149]
+        - ['3034', 147390]
+        - ['7074', 124857]
+        - ['2529', 116319]
+      instrucao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '0'
+        max: '8'
+        top:
+        - ['6', 461779]
+        - ['3', 428706]
+        - ['5', 293474]
+        - ['8', 252532]
+        - ['4', 194770]
+        - ['2', 176318]
+        - ['7', 149572]
+        - ['1', 113613]
+        - ['0', 532]
+      eleitores: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 68, min: '1', max: '9'}
+      eleitores_biometria: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 69, min: '0', max: '9'}
+      eleitores_deficiencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '0'
+        max: '9'
+        top:
+        - ['0', 2021046]
+        - ['1', 48637]
+        - ['2', 1370]
+        - ['3', 146]
+        - ['4', 42]
+        - ['5', 32]
+        - ['6', 12]
+        - ['8', 5]
+        - ['10', 2]
+        - ['7', 2]
+      eleitores_inclusao_nome_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3, pessoal: 'só contagens: valores seriam dado pessoal'}
+  pesquisa_eleitoral:
+    linhas: 55801
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '2012'
+        max: '2026'
+        media: 2019.0512
+        quartis: [2016, 2020, 2024]
+        top:
+        - ['2024', 14893]
+        - ['2012', 10981]
+        - ['2020', 10971]
+        - ['2016', 8259]
+        - ['2026', 3463]
+        - ['2022', 2971]
+        - ['2014', 2456]
+        - ['2018', 1807]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [SP, 7031]
+        - [MG, 4568]
+        - [GO, 4538]
+        - [BR, 4087]
+        - [PI, 3042]
+        - [MA, 2859]
+        - [BA, 2691]
+        - [PR, 2673]
+        - [TO, 2186]
+        - [MT, 2137]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 19.17, distintos_aprox: 5990}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 19.17, distintos_aprox: 4115}
+      id_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 18964]
+        - ['11', 14799]
+        - ['6', 10854]
+        - ['81', 3463]
+        - ['9', 2971]
+        - ['3', 2559]
+        - ['5', 1795]
+        - ['2', 126]
+        - ['8', 117]
+        - ['61', 94]
+      tipo_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: eleicao ordinaria
+        max: eleicoes municipais suplementares 2024
+        top:
+        - [eleicao ordinaria, 55255]
+        - [eleicoes municipais suplementares 2016, 150]
+        - [eleicoes municipais suplementares 2012, 126]
+        - [eleicoes municipais suplementares 2020, 117]
+        - [eleicoes municipais suplementares 2024, 94]
+        - [eleicoes gerais suplementares 2014, 47]
+        - [eleicoes gerais suplementares 2018, 12]
+      id_pesquisa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61360}
+      cnpj_empresa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1386, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_empresa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1490, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fantasia_empresa: {tipo: VARCHAR, nulos_pct: 37.36, distintos_aprox: 987, pessoal: 'só contagens: valores seriam dado pessoal'}
+      pesquisa_propria:
+        tipo: VARCHAR
+        nulos_pct: 42.03
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [null, 23453]
+        - [N, 19247]
+        - [S, 13101]
+      cargos:
+        tipo: VARCHAR
+        nulos_pct: 0.03
+        distintos_aprox: 27
+        min: deputado distrital
+        max: vereador
+        top:
+        - [prefeito, 30409]
+        - ['prefeito, vereador', 14654]
+        - [presidente, 4088]
+        - ['governador, senador', 3066]
+        - ['governador, senador, deputado federal, deputado estadual', 1966]
+        - [governador, 835]
+        - ['governador, senador, deputado federal, deputado estadual, deputado distrital', 242]
+        - ['governador, deputado federal, deputado estadual', 113]
+        - ['governador, senador, deputado federal, deputado distrital', 84]
+        - ['deputado federal, deputado estadual', 75]
+      data_registro: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2101, min: '2012-01-03', max: '2026-10-04'}
+      hora_registro: {tipo: TIME WITH TIME ZONE, nulos_pct: 61.72, distintos_aprox: 15310, min: '00:00:00+00', max: '23:59:59+00'}
+      data_inicio: {tipo: DATE, nulos_pct: 0.06, distintos_aprox: 2270, min: '2011-03-10', max: '2026-10-06'}
+      data_fim: {tipo: DATE, nulos_pct: 0.02, distintos_aprox: 2292, min: '2011-03-11', max: '2026-10-30'}
+      data_divulgacao: {tipo: DATE, nulos_pct: 61.78, distintos_aprox: 896, min: '2022-01-08', max: '2026-10-10'}
+      quantidade_entrevistados:
+        tipo: BIGINT
+        nulos_pct: 0.01
+        distintos_aprox: 1661
+        min: '1'
+        max: '451790'
+        media: 691.5438
+        quartis: [358, 441, 800]
+      valor_pesquisa:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2588
+        min: '0.0'
+        max: '9600000.0'
+        media: 18609.242
+        quartis: [4000.1568, 7000, 14358.565]
+      registro_conre_estatistico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2510}
+      nome_estatistico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2468, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao_metodologia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 27181}
+      descricao_plano_amostral: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 38313}
+      descricao_sistema_controle: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12381}
+      descricao_area_abrangencia: {tipo: VARCHAR, nulos_pct: 16.24, distintos_aprox: 29101}
+  pesquisa_eleitoral_contratante:
+    linhas: 56518
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '2012'
+        max: '2026'
+        media: 2019.0756
+        quartis: [2016, 2020, 2024]
+        top:
+        - ['2024', 15108]
+        - ['2020', 11022]
+        - ['2012', 10981]
+        - ['2016', 8431]
+        - ['2026', 3574]
+        - ['2022', 3019]
+        - ['2014', 2456]
+        - ['2018', 1927]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [SP, 7164]
+        - [MG, 4648]
+        - [GO, 4566]
+        - [BR, 4212]
+        - [PI, 3050]
+        - [MA, 2867]
+        - [BA, 2721]
+        - [PR, 2675]
+        - [TO, 2192]
+        - [MT, 2141]
+      id_pesquisa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61360}
+      id_contratante: {tipo: VARCHAR, nulos_pct: 23.69, distintos_aprox: 29048}
+      cpf_cnpj_contratante: {tipo: VARCHAR, nulos_pct: 21.83, distintos_aprox: 9127, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_contratante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12871, pessoal: 'só contagens: valores seriam dado pessoal'}
+      contratante_pagante:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [S, 35009]
+        - [N, 21509]
+      valor_pago:
+        tipo: DOUBLE
+        nulos_pct: 45.59
+        distintos_aprox: 1863
+        min: '0.0'
+        max: '6800000.0'
+        media: 18258.1613
+        quartis: [4000, 6940.8688, 14165.4037]
+      origem_recurso: {tipo: VARCHAR, nulos_pct: 30.38, distintos_aprox: 2369}
+  pesquisa_eleitoral_pagante:
+    linhas: 46490
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '2012'
+        max: '2026'
+        media: 2018.0116
+        quartis: [2014, 2018, 2021]
+        top:
+        - ['2020', 11022]
+        - ['2012', 10981]
+        - ['2016', 8447]
+        - ['2024', 5087]
+        - ['2026', 3574]
+        - ['2022', 2996]
+        - ['2014', 2456]
+        - ['2018', 1927]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [SP, 7175]
+        - [BR, 4212]
+        - [MG, 3452]
+        - [GO, 3237]
+        - [TO, 2192]
+        - [MA, 2125]
+        - [PI, 2093]
+        - [SC, 1931]
+        - [PR, 1898]
+        - [RN, 1815]
+      id_pesquisa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 42336}
+      id_contratante: {tipo: VARCHAR, nulos_pct: 28.8, distintos_aprox: 17157}
+      cpf_cnpj_pagante: {tipo: VARCHAR, nulos_pct: 27.7, distintos_aprox: 6750, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_pagante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10337, pessoal: 'só contagens: valores seriam dado pessoal'}
+      origem_recurso: {tipo: VARCHAR, nulos_pct: 69.19, distintos_aprox: 2369}
+  receitas_candidato:
+    linhas: 15500731
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 189666]
+      turno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.0131
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 187188]
+        - ['2', 2478]
+      id_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '6257'
+        max: '6259'
+        top:
+        - ['6259', 185014]
+        - ['6257', 4652]
+      tipo_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: eleicao geral federal 2026
+        max: eleicoes gerais estaduais 2026
+        top:
+        - [eleicoes gerais estaduais 2026, 185014]
+        - [eleicao geral federal 2026, 4652]
+      data_eleicao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-04'
+        max: '2026-10-04'
+        top:
+        - ['2026-10-04', 189666]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [SP, 27252]
+        - [MG, 19679]
+        - [RJ, 18540]
+        - [RS, 14443]
+        - [PR, 9912]
+        - [DF, 7674]
+        - [BA, 7387]
+        - [GO, 7368]
+        - [SC, 6975]
+        - [ES, 6379]
+      id_municipio:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 189666]
+      id_municipio_tse:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 189666]
+      titulo_eleitoral_candidato: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sequencial_candidato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15720, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_candidato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5511, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_candidato: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_partido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 29, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AGIR
+        max: UP
+        top:
+        - [PT, 23392]
+        - [PL, 18534]
+        - [PSD, 16191]
+        - [NOVO, 13828]
+        - [MDB, 13757]
+        - [REPUBLICANOS, 13171]
+        - [PSB, 10727]
+        - [UNIÃO, 10556]
+        - [PODE, 10315]
+        - [PSDB, 7198]
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: deputado distrital
+        max: senador
+        top:
+        - [deputado estadual, 100684]
+        - [deputado federal, 64560]
+        - [senador, 7504]
+        - [governador, 7307]
+        - [deputado distrital, 4959]
+        - [presidente, 4652]
+      sequencial_receita: {tipo: VARCHAR, nulos_pct: 1.18, distintos_aprox: 156949}
+      data_receita: {tipo: DATE, nulos_pct: 1.18, distintos_aprox: 124, min: '2026-01-01', max: '2026-12-23'}
+      fonte_receita:
+        tipo: VARCHAR
+        nulos_pct: 1.18
+        distintos_aprox: 3
+        min: fundo especial
+        max: outros recursos
+        top:
+        - [outros recursos, 132355]
+        - [fundo especial, 39282]
+        - [fundo partidario, 15798]
+        - [null, 2231]
+      origem_receita:
+        tipo: VARCHAR
+        nulos_pct: 1.18
+        distintos_aprox: 11
+        min: doacoes para campanha
+        max: recursos proprios
+        top:
+        - [recursos de pessoas fisicas, 96990]
+        - [recursos de partido politico, 58243]
+        - [recursos de outros candidatos, 14565]
+        - [recursos proprios, 14000]
+        - [recursos de financiamento coletivo, 2946]
+        - [null, 2231]
+        - [doacoes pela internet, 447]
+        - [recursos de origens nao identificadas, 137]
+        - [fundo especial de financiamento de campanha, 66]
+        - [doacoes para campanha, 36]
+      natureza_receita:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: estimavel
+        max: financeiro
+        top:
+        - [financeiro, 118385]
+        - [estimavel, 71281]
+      especie_receita:
+        tipo: VARCHAR
+        nulos_pct: 1.18
+        distintos_aprox: 10
+        min: --
+        max: transferencia eletronica
+        top:
+        - [pix, 96277]
+        - [estimado, 71281]
+        - [transferencia eletronica, 19007]
+        - [null, 2231]
+        - [deposito em especie, 383]
+        - [em especie, 191]
+        - [--, 107]
+        - [cheque, 95]
+        - [nao informado, 89]
+        - [boleto de cobranca, 3]
+      situacao_receita:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 189666]
+      descricao_receita: {tipo: VARCHAR, nulos_pct: 61.16, distintos_aprox: 29988}
+      valor_receita:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 11791
+        min: '0.0'
+        max: '35000000.0'
+        media: 35462.5835
+        quartis: [446.0107, 2019.829, 9994.498]
+      sequencial_candidato_doador: {tipo: VARCHAR, nulos_pct: 84.88, distintos_aprox: 7040, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_cnpj_doador: {tipo: VARCHAR, nulos_pct: 1.23, distintos_aprox: 92560, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_uf_doador: {tipo: VARCHAR, nulos_pct: 54.16, distintos_aprox: 30, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_municipio_tse_doador: {tipo: VARCHAR, nulos_pct: 99.72, distintos_aprox: 102, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_doador: {tipo: VARCHAR, nulos_pct: 1.22, distintos_aprox: 94203, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_doador_rf: {tipo: VARCHAR, nulos_pct: 1.22, distintos_aprox: 93116, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cargo_candidato_doador: {tipo: VARCHAR, nulos_pct: 84.88, distintos_aprox: 11, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_partido_doador: {tipo: VARCHAR, nulos_pct: 54.16, distintos_aprox: 29, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido_doador: {tipo: VARCHAR, nulos_pct: 54.16, distintos_aprox: 30, pessoal: 'só contagens: valores seriam dado pessoal'}
+      esfera_partidaria_doador: {tipo: VARCHAR, nulos_pct: 69.27, distintos_aprox: 3, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_candidato_doador: {tipo: VARCHAR, nulos_pct: 84.88, distintos_aprox: 2769, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnae_2_doador: {tipo: VARCHAR, nulos_pct: 59.98, distintos_aprox: 9, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnae_2_doador_classe: {tipo: VARCHAR, nulos_pct: 59.98, distintos_aprox: 9, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnae_2_doador_subclasse: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao_cnae_2_doador: {tipo: VARCHAR, nulos_pct: 59.98, distintos_aprox: 7, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_cnpj_doador_orig: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_doador_orig: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_doador_orig_rf: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_doador_orig: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao_cnae_2_doador_orig: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_administrador: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_administrador: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_recibo_eleitoral: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_documento: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_recibo_doacao: {tipo: VARCHAR, nulos_pct: 37.68, distintos_aprox: 122273, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_documento_doacao: {tipo: VARCHAR, nulos_pct: 38.93, distintos_aprox: 104657, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_prestacao_contas:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: final
+        max: relatorio financeiro
+        top:
+        - [relatorio financeiro, 128747]
+        - [parcial, 41912]
+        - [final, 19007]
+      data_prestacao_contas: {tipo: DATE, nulos_pct: 0, distintos_aprox: 51, min: '2026-08-21', max: '2026-10-25'}
+      sequencial_prestador_contas: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18712}
+      cnpj_prestador_contas: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18216, pessoal: 'só contagens: valores seriam dado pessoal'}
+      entrega_conjunto:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 189666]
+  receitas_candidato_doador_originario:
+    linhas: 833128
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2018'
+        max: '2026'
+        media: 2022.6505
+        quartis: [2020, 2022, 2026]
+        top:
+        - ['2026', 285201]
+        - ['2022', 174230]
+        - ['2020', 145103]
+        - ['2018', 127635]
+        - ['2024', 100959]
+      turno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.2403
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 632902]
+        - ['2', 200226]
+      id_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '295'
+        max: '6268'
+        top:
+        - ['6259', 212513]
+        - ['426', 144983]
+        - ['619', 100935]
+        - ['546', 90730]
+        - ['544', 83500]
+        - ['6257', 72688]
+        - ['295', 65127]
+        - ['297', 62508]
+        - ['610', 95]
+        - ['6268', 23]
+      descricao_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: eleicao geral federal 2018
+        max: suplementar cachoeirinha (rs)
+        top:
+        - [eleicoes gerais estaduais 2026, 212513]
+        - [eleicoes municipais 2020, 144983]
+        - [eleicoes municipais 2024, 100935]
+        - [eleicoes gerais estaduais 2022, 90730]
+        - [eleicao geral federal 2022, 83500]
+        - [eleicao geral federal 2026, 72688]
+        - [eleicao geral federal 2018, 65127]
+        - [eleicoes gerais estaduais 2018, 62508]
+        - [eleicao suplementar brusque set/2023, 95]
+        - [eleicao suplementar cachoeirinha - rs, 23]
+      data_eleicao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '2018-10-07'
+        max: '2026-10-04'
+        top:
+        - ['2026-10-04', 285201]
+        - ['2022-10-02', 174230]
+        - ['2020-11-15', 144983]
+        - ['2018-10-07', 127635]
+        - ['2024-10-06', 100935]
+        - ['2023-09-03', 97]
+        - ['2026-04-12', 23]
+        - ['2020-12-06', 8]
+        - ['2022-10-30', 8]
+        - ['2023-03-05', 3]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [BR, 221315]
+        - [SP, 175398]
+        - [SC, 74522]
+        - [RS, 69431]
+        - [RJ, 62830]
+        - [PR, 48943]
+        - [MG, 44756]
+        - [PE, 31436]
+        - [DF, 17569]
+        - [GO, 12883]
+      tipo_prestacao_contas:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: final
+        max: relatorio financeiro
+        top:
+        - [final, 553087]
+        - [relatorio financeiro, 245533]
+        - [parcial, 34226]
+        - [regularizacao da omissao, 282]
+      data_prestacao_contas: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1752, min: '2018-09-13', max: '2026-10-25'}
+      sequencial_prestador_contas: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 38945}
+      sequencial_receita: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 86618}
+      data_receita: {tipo: DATE, nulos_pct: 0, distintos_aprox: 925, min: '1941-03-24', max: '2026-10-30'}
+      descricao_receita: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 248, min: Doacao por financiamento coletivo (FCC), max: Recursos de pessoas
+          físicas}
+      valor_receita:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 13364
+        min: '0.01'
+        max: '86007939.55'
+        media: 959.0604
+        quartis: [20.0049, 50, 115.6365]
+      cpf_cnpj_doador_orig: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 540881, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_doador_orig: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 567819, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_doador_orig_rf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 495627, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_doador_orig: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnae_2_doador_orig: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao_cnae_2_doador_orig: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+  receitas_comite:
+    linhas: 341684
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '2002'
+        max: '2014'
+        media: 2007.3638
+        quartis: [2004, 2008, 2008]
+        top:
+        - ['2008', 168940]
+        - ['2004', 95986]
+        - ['2012', 35211]
+        - ['2010', 15045]
+        - ['2006', 11141]
+        - ['2014', 9173]
+        - ['2002', 6188]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 4.04
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 66030]
+        - [MG, 56938]
+        - [RS, 31918]
+        - [PR, 23704]
+        - [SC, 21666]
+        - [BA, 17022]
+        - [GO, 14902]
+        - [null, 13816]
+        - [RJ, 9972]
+        - [PA, 9114]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 12.16, distintos_aprox: 6449}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 12.16, distintos_aprox: 4605}
+      tipo_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: eleicao ordinaria
+        max: eleicao ordinaria
+        top:
+        - [eleicao ordinaria, 341684]
+      tipo_comite:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: Comitê Financeiro Distrital/Estadual para Deputado Distrital
+        max: Comitê Financeiro Único
+        top:
+        - [Comitê Financeiro Municipal Único, 192738]
+        - [Comitê Financeiro Único, 46469]
+        - [Comitê Financeiro Municipal para Vereador, 42778]
+        - [Comitê Financeiro Municipal para Prefeito, 29410]
+        - [Comitê Financeiro Nacional para Presidente da República, 12880]
+        - [Comitê Financeiro para Vereador, 8304]
+        - [Comitê Financeiro para Prefeito, 3185]
+        - [Comitê Financeiro Distrital/Estadual para Governador, 2777]
+        - [Comitê Financeiro Nacional para Presidente, 936]
+        - [Comitê Financeiro Distrital/Estadual para Senador da República, 694]
+      sequencial_comite: {tipo: VARCHAR, nulos_pct: 87.01, distintos_aprox: 11609}
+      numero_partido: {tipo: VARCHAR, nulos_pct: 19.2, distintos_aprox: 29, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 38
+        min: DEM
+        max: SD
+        top:
+        - [PMDB, 52086]
+        - [PT, 51402]
+        - [PSDB, 46046]
+        - [PP, 25094]
+        - [PDT, 20249]
+        - [PTB, 18396]
+        - [PSB, 18062]
+        - [DEM, 14701]
+        - [PPS, 13560]
+        - [PR, 12567]
+      data_receita: {tipo: DATE, nulos_pct: 10.31, distintos_aprox: 909, min: '0006-08-04', max: '8200-10-01'}
+      origem_receita:
+        tipo: VARCHAR
+        nulos_pct: 29.9
+        distintos_aprox: 12
+        min: comercializacao de bens e/ou realizacao de eventos
+        max: rendimentos de aplicacoes financeiras
+        top:
+        - [recursos de pessoas fisicas, 133536]
+        - [null, 102174]
+        - [recursos de pessoas juridicas, 44939]
+        - [recursos de outros candidatos/comites, 26613]
+        - [recursos de partido politico, 15516]
+        - [descricao das doacoes relativas a comercializacao, 10463]
+        - [doacoes pela internet, 8237]
+        - [recursos de origens nao identificadas, 148]
+        - [rendimentos de aplicacoes financeiras, 32]
+        - [comercializacao de bens ou realizacao de eventos, 18]
+      fonte_receita:
+        tipo: VARCHAR
+        nulos_pct: 82.61
+        distintos_aprox: 4
+        min: fundo partidario
+        max: outros recursos nao descritos
+        top:
+        - [null, 282255]
+        - [nao especificado, 36694]
+        - [outros recursos nao descritos, 21217]
+        - [fundo partidario, 1510]
+        - [nao informado, 8]
+      natureza_receita:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 13
+        min: --
+        max: transferencia eletronica
+        top:
+        - [estimado, 105915]
+        - [deposito em especie, 87549]
+        - [em especie, 61410]
+        - [cheque, 54293]
+        - [transferencia eletronica, 21400]
+        - [cartao de credito, 8044]
+        - [dinheiro, 2179]
+        - [outros titulos de credito, 481]
+        - [despesa nao quitada, 162]
+        - [recurso de origem nao identificada, 117]
+      situacao_receita:
+        tipo: VARCHAR
+        nulos_pct: 19.31
+        distintos_aprox: 13
+        min: ativa
+        max: suspensa
+        top:
+        - [regular, 221827]
+        - [null, 65986]
+        - [ativa, 25938]
+        - [baixada, 12451]
+        - [cancelado, 8927]
+        - [pendente de regularizacao, 5760]
+        - [suspensa, 273]
+        - [nao batido na rfb, 242]
+        - [sem conexao com srf - cpf, 115]
+        - [inapta, 68]
+      descricao_receita: {tipo: VARCHAR, nulos_pct: 94.76, distintos_aprox: 16560}
+      tipo_documento: {tipo: VARCHAR, nulos_pct: 82.63, distintos_aprox: 49196, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_documento: {tipo: VARCHAR, nulos_pct: 87.96, distintos_aprox: 27942, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_membro: {tipo: VARCHAR, nulos_pct: 50.56, distintos_aprox: 21382, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_membro: {tipo: VARCHAR, nulos_pct: 50.56, distintos_aprox: 18389, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_prestador_contas: {tipo: VARCHAR, nulos_pct: 94.5, distintos_aprox: 556, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_uf_doador: {tipo: VARCHAR, nulos_pct: 98.05, distintos_aprox: 33, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_doador: {tipo: VARCHAR, nulos_pct: 0.05, distintos_aprox: 211565, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_doador_rf: {tipo: VARCHAR, nulos_pct: 87.02, distintos_aprox: 21115, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_cnpj_doador: {tipo: VARCHAR, nulos_pct: 2.74, distintos_aprox: 213020, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_partido_doador: {tipo: VARCHAR, nulos_pct: 99.43, distintos_aprox: 29, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_candidato_doador: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnae_2_doador: {tipo: VARCHAR, nulos_pct: 98.93, distintos_aprox: 329, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnae_2_doador_classe: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnae_2_doador_subclasse: {tipo: VARCHAR, nulos_pct: 98.93, distintos_aprox: 329, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao_cnae_2_doador: {tipo: VARCHAR, nulos_pct: 88.62, distintos_aprox: 769, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_cnpj_doador_orig: {tipo: VARCHAR, nulos_pct: 99.57, distintos_aprox: 487, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_doador_orig: {tipo: VARCHAR, nulos_pct: 99.56, distintos_aprox: 714, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_doador_orig_rf: {tipo: VARCHAR, nulos_pct: 99.57, distintos_aprox: 511, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_doador_orig: {tipo: VARCHAR, nulos_pct: 99.57, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao_cnae_2_doador_orig: {tipo: VARCHAR, nulos_pct: 99.63, distintos_aprox: 144, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_receita:
+        tipo: DOUBLE
+        nulos_pct: 0.01
+        distintos_aprox: 21966
+        min: '0.0'
+        max: '12000000.0'
+        media: 10435.6541
+        quartis: [190.5005, 976.2066, 2769.9868]
+  receitas_orgao_partidario:
+    linhas: 265852
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '2010'
+        max: '2026'
+        media: 2016.9553
+        quartis: [2016, 2016, 2018]
+        top:
+        - ['2016', 141004]
+        - ['2020', 39348]
+        - ['2018', 21522]
+        - ['2010', 16027]
+        - ['2026', 15735]
+        - ['2014', 11993]
+        - ['2012', 10501]
+        - ['2022', 9722]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 3.7
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [SP, 44945]
+        - [RS, 29571]
+        - [MG, 27952]
+        - [PR, 14947]
+        - [SC, 12964]
+        - [BA, 12920]
+        - [PI, 10993]
+        - [TO, 10773]
+        - [null, 9844]
+        - [RJ, 9016]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 73.71, distintos_aprox: 6237}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 73.71, distintos_aprox: 4352}
+      tipo_eleicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 67, min: alto taquari-mt-jul-2017, max: suplementar prefeito vilhena - ro}
+      esfera_partidaria:
+        tipo: VARCHAR
+        nulos_pct: 67.53
+        distintos_aprox: 4
+        min: federal (estadual/distrital)
+        max: zonal
+        top:
+        - [null, 179525]
+        - [municipal, 60489]
+        - [federal (estadual/distrital), 21873]
+        - [nacional, 3870]
+        - [zonal, 95]
+      tipo_diretorio:
+        tipo: VARCHAR
+        nulos_pct: 32.47
+        distintos_aprox: 4
+        min: Direção Estadual/Distrital
+        max: Direção Nacional
+        top:
+        - [Direção Municipal/Comissão Provisória, 133116]
+        - [null, 86327]
+        - [Direção Estadual/Distrital, 34969]
+        - [Direção Municipal, 7211]
+        - [Direção Nacional, 4229]
+      sequencial_diretorio: {tipo: VARCHAR, nulos_pct: 91.54, distintos_aprox: 3119}
+      numero_partido: {tipo: VARCHAR, nulos_pct: 67.53, distintos_aprox: 34, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 50
+        min: AGIR
+        max: UP
+        top:
+        - [PT, 28952]
+        - [PSDB, 20462]
+        - [PMDB, 18542]
+        - [PSB, 18523]
+        - [PSD, 17225]
+        - [DEM, 16923]
+        - [PP, 15597]
+        - [PDT, 11849]
+        - [PTB, 11533]
+        - [MDB, 7925]
+      nome_partido: {tipo: VARCHAR, nulos_pct: 67.53, distintos_aprox: 59, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_recibo_eleitoral: {tipo: VARCHAR, nulos_pct: 48.31, distintos_aprox: 104994, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_documento: {tipo: VARCHAR, nulos_pct: 85.6, distintos_aprox: 46192, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_documento: {tipo: VARCHAR, nulos_pct: 68.44, distintos_aprox: 43567, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_prestacao_contas:
+        tipo: VARCHAR
+        nulos_pct: 67.53
+        distintos_aprox: 3
+        min: final
+        max: relatorio financeiro
+        top:
+        - [null, 179525]
+        - [final, 37647]
+        - [relatorio financeiro, 37496]
+        - [parcial, 11184]
+      data_prestacao_contas: {tipo: DATE, nulos_pct: 67.53, distintos_aprox: 612, min: '2018-09-10', max: '2026-10-24'}
+      sequencial_prestador_contas: {tipo: VARCHAR, nulos_pct: 14.49, distintos_aprox: 64112}
+      cnpj_prestador_contas: {tipo: VARCHAR, nulos_pct: 9.98, distintos_aprox: 56114, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_receita: {tipo: DATE, nulos_pct: 6.45, distintos_aprox: 1349, min: '1990-10-05', max: '2026-10-24'}
+      origem_receita:
+        tipo: VARCHAR
+        nulos_pct: 2.5
+        distintos_aprox: 16
+        min: comercializacao de bens e/ou realizacao de eventos
+        max: rendimentos de aplicacoes financeiras
+        top:
+        - [recursos de pessoas fisicas, 153330]
+        - [recursos de partido politico, 59168]
+        - [recursos de outros candidatos, 26740]
+        - [recursos de pessoas juridicas, 12064]
+        - [null, 6635]
+        - [recursos de outros candidatos/comites, 4876]
+        - [doacoes pela internet, 2006]
+        - [rendimentos de aplicacoes financeiras, 479]
+        - [recursos de origens nao identificadas, 367]
+        - [fundo especial de financiamento de campanha, 119]
+      fonte_receita:
+        tipo: VARCHAR
+        nulos_pct: 2.5
+        distintos_aprox: 5
+        min: fundo especial
+        max: outros recursos nao descritos
+        top:
+        - [outros recursos, 185782]
+        - [nao especificado, 27752]
+        - [fundo partidario, 21703]
+        - [fundo especial, 14777]
+        - [outros recursos nao descritos, 9194]
+        - [null, 6635]
+        - [nao informado, 9]
+      natureza_receita:
+        tipo: VARCHAR
+        nulos_pct: 2.5
+        distintos_aprox: 12
+        min: --
+        max: transferencia eletronica
+        top:
+        - [estimado, 91408]
+        - [financeiro, 61534]
+        - [transferencia eletronica, 40810]
+        - [deposito em especie, 24770]
+        - [estimavel, 18158]
+        - [cheque, 11008]
+        - [boleto de cobranca, 6963]
+        - [null, 6635]
+        - [aplicacao fundo partidario, 2677]
+        - [em especie, 763]
+      especie_receita:
+        tipo: VARCHAR
+        nulos_pct: 70.02
+        distintos_aprox: 13
+        min: --
+        max: transferencia eletronica
+        top:
+        - [null, 186160]
+        - [transferencia eletronica, 38404]
+        - [estimado, 18158]
+        - [deposito em especie, 8560]
+        - [pix, 6942]
+        - [aplicacao fundo partidario, 4201]
+        - [cheque, 1500]
+        - [cartao de credito, 828]
+        - [--, 437]
+        - [em especie, 307]
+      descricao_receita: {tipo: VARCHAR, nulos_pct: 58.6, distintos_aprox: 41410}
+      sequencial_receita: {tipo: VARCHAR, nulos_pct: 70.02, distintos_aprox: 70272}
+      cnae_2_doador: {tipo: VARCHAR, nulos_pct: 66.6, distintos_aprox: 380, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnae_2_doador_classe: {tipo: VARCHAR, nulos_pct: 88.29, distintos_aprox: 10, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnae_2_doador_subclasse: {tipo: VARCHAR, nulos_pct: 78.31, distintos_aprox: 375, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao_cnae_2_doador: {tipo: VARCHAR, nulos_pct: 62.65, distintos_aprox: 629, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_cnpj_doador: {tipo: VARCHAR, nulos_pct: 2.81, distintos_aprox: 132581, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_doador: {tipo: VARCHAR, nulos_pct: 2.81, distintos_aprox: 104372, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_doador_rf: {tipo: VARCHAR, nulos_pct: 8.99, distintos_aprox: 68568, pessoal: 'só contagens: valores seriam dado pessoal'}
+      esfera_partidaria_doador: {tipo: VARCHAR, nulos_pct: 90.17, distintos_aprox: 4, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_uf_doador: {tipo: VARCHAR, nulos_pct: 73.56, distintos_aprox: 2029, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_municipio_doador: {tipo: VARCHAR, nulos_pct: 96.09, distintos_aprox: 1326, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_municipio_tse_doador: {tipo: VARCHAR, nulos_pct: 96.09, distintos_aprox: 1585, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sequencial_candidato_doador: {tipo: VARCHAR, nulos_pct: 98.16, distintos_aprox: 2208, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_candidato_doador: {tipo: VARCHAR, nulos_pct: 89.94, distintos_aprox: 2331, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cargo_candidato_doador: {tipo: VARCHAR, nulos_pct: 98.12, distintos_aprox: 12, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_partido_doador: {tipo: VARCHAR, nulos_pct: 33.87, distintos_aprox: 34, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido_doador: {tipo: VARCHAR, nulos_pct: 88.28, distintos_aprox: 45, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_partido_doador: {tipo: VARCHAR, nulos_pct: 88.28, distintos_aprox: 57, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_recibo_doacao: {tipo: VARCHAR, nulos_pct: 76.37, distintos_aprox: 59949, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_documento_doacao: {tipo: VARCHAR, nulos_pct: 78.82, distintos_aprox: 38573, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_cnpj_doador_orig: {tipo: VARCHAR, nulos_pct: 89.6, distintos_aprox: 16914, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_doador_orig: {tipo: VARCHAR, nulos_pct: 89.6, distintos_aprox: 14255, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_doador_orig: {tipo: VARCHAR, nulos_pct: 89.6, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao_cnae_2_doador_orig: {tipo: VARCHAR, nulos_pct: 99.35, distintos_aprox: 160, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_doador_orig_rf: {tipo: VARCHAR, nulos_pct: 89.62, distintos_aprox: 14868, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_receita:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 19887
+        min: '0.0'
+        max: '881657477.34'
+        media: 76624.1568
+        quartis: [99.9953, 313.9536, 1840.1221]
+  receitas_orgao_partidario_doador_originario:
+    linhas: 263948
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2018'
+        max: '2026'
+        media: 2021.9114
+        quartis: [2018, 2024, 2025]
+        top:
+        - ['2018', 96122]
+        - ['2024', 71390]
+        - ['2026', 66315]
+        - ['2020', 23468]
+        - ['2022', 6653]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [BR, 133486]
+        - [SC, 27480]
+        - [SP, 26017]
+        - [MG, 21283]
+        - [RS, 20780]
+        - [PR, 9078]
+        - [BA, 5127]
+        - [GO, 3837]
+        - [RJ, 3693]
+        - [MT, 1917]
+      tipo_prestacao_contas:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: final
+        max: relatorio financeiro
+        top:
+        - [final, 196981]
+        - [relatorio financeiro, 66126]
+        - [regularizacao da omissao, 664]
+        - [parcial, 177]
+      data_prestacao_contas: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1343, min: '2018-10-23', max: '2026-10-24'}
+      sequencial_prestador_contas: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5895}
+      sequencial_receita: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 16870}
+      data_receita: {tipo: DATE, nulos_pct: 0, distintos_aprox: 566, min: '2017-08-21', max: '2026-10-24'}
+      descricao_receita:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Recursos de Financiamento Coletivo
+        max: Recursos de partido político
+        top:
+        - [Recursos de partido político, 246518]
+        - [Recursos de outros candidatos, 11509]
+        - [Recursos de Financiamento Coletivo, 5921]
+      valor_receita:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 11362
+        min: '0.01'
+        max: '4000000.0'
+        media: 1219.3312
+        quartis: [28.3105, 44.0936, 94.9475]
+      cpf_cnpj_doador_orig: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 82040, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_doador_orig: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 76832, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_doador_orig_rf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 68127, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_doador_orig: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnae_2_doador_orig: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao_cnae_2_doador_orig: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+  rede_social_candidato:
+    linhas: 851922
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2018'
+        max: '2026'
+        media: 2022.4642
+        quartis: [2020, 2024, 2024]
+        top:
+        - ['2024', 413723]
+        - ['2020', 317548]
+        - ['2026', 63250]
+        - ['2022', 44931]
+        - ['2018', 12470]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [SP, 145877]
+        - [PR, 108388]
+        - [RS, 95166]
+        - [MG, 92717]
+        - [SC, 51320]
+        - [RJ, 46479]
+        - [BA, 34625]
+        - [CE, 31542]
+        - [GO, 30486]
+        - [PA, 27896]
+      id_eleicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 146, min: '295', max: '631'}
+      tipo_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: eleicao ordinaria
+        max: eleicao suplementar
+        top:
+        - [eleicao ordinaria, 850669]
+        - [eleicao suplementar, 1253]
+      descricao_eleicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 126, min: eleicao geral federal 2018, max: suplementares de monte alegre/pa}
+      sequencial_candidato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 421720, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ordem:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1072
+        min: '1'
+        max: '913'
+        media: 2.4492
+        quartis: [1, 1, 2]
+      url: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 794809}
+      plataforma:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: bluesky
+        max: youtube
+        top:
+        - [facebook, 391156]
+        - [instagram, 314654]
+        - [outro, 72760]
+        - [tiktok, 23795]
+        - [youtube, 15078]
+        - [x, 14349]
+        - [whatsapp, 7907]
+        - [threads, 4754]
+        - [kwai, 3026]
+        - [linkedin, 2985]
+      data_geracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '2024-11-13'
+        max: '2026-10-25'
+        top:
+        - ['2026-10-24', 458654]
+        - ['2026-01-06', 317548]
+        - ['2026-10-25', 63250]
+        - ['2024-11-13', 12470]
+  resultados_candidato:
+    linhas: 3141599
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 18900]
+      turno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.0007
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 18886]
+        - ['2', 14]
+      id_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '6257'
+        max: '6261'
+        top:
+        - ['6259', 18840]
+        - ['6257', 24]
+        - ['6261', 22]
+        - ['6260', 12]
+        - ['6258', 2]
+      tipo_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: eleicao ordinaria
+        max: eleicao ordinaria municipal - 2026 - 04/10/2026 1º turno
+        top:
+        - [eleicao ordinaria, 18878]
+        - [eleicao ordinaria municipal - 2026 - 04/10/2026 1º turno, 22]
+      data_eleicao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '2026-10-04'
+        max: '2026-10-25'
+        top:
+        - ['2026-10-04', 18874]
+        - ['2026-10-25', 14]
+        - ['2026-10-05', 12]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0.14
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 2409]
+        - [RJ, 1928]
+        - [MG, 1681]
+        - [BA, 1130]
+        - [PR, 1012]
+        - [RS, 983]
+        - [PE, 888]
+        - [GO, 820]
+        - [PA, 661]
+        - [SC, 643]
+      id_municipio:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 18900]
+      id_municipio_tse:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 18900]
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: conselheiro distrital
+        max: senador
+        top:
+        - [deputado estadual, 10677]
+        - [deputado federal, 7263]
+        - [deputado distrital, 415]
+        - [senador, 301]
+        - [governador, 196]
+        - [presidente, 26]
+        - [conselheiro distrital, 22]
+      numero_partido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 41, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0.12
+        distintos_aprox: 30
+        min: AGIR
+        max: UP
+        top:
+        - [PL, 1531]
+        - [MDB, 1298]
+        - [NOVO, 1219]
+        - [REPUBLICANOS, 1206]
+        - [PODE, 1154]
+        - [PSD, 1054]
+        - [PDT, 1052]
+        - [PT, 1047]
+        - [PSDB, 979]
+        - [PSB, 894]
+      titulo_eleitoral_candidato: {tipo: VARCHAR, nulos_pct: 0.31, distintos_aprox: 15825, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sequencial_candidato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15573, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_candidato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5841, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_candidato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18257, pessoal: 'só contagens: valores seriam dado pessoal'}
+      resultado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: 2º turno
+        max: suplente
+        top:
+        - [suplente, 11140]
+        - [nao eleito, 6082]
+        - [eleito por qp, 1287]
+        - [eleito por media, 285]
+        - [eleito, 88]
+        - [2º turno, 18]
+      votos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7802
+        min: '0'
+        max: '64256232'
+        media: 41655.9766
+        quartis: [252, 977, 6886]
+  resultados_candidato_municipio:
+    linhas: 37721699
+    fonte_do_perfil: amostra de 33.456% da última partição (ano = 2026). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 2035893]
+      turno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 2035893]
+      id_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '6257'
+        max: '6261'
+        top:
+        - ['6259', 2012436]
+        - ['6257', 23452]
+        - ['6261', 5]
+      tipo_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: eleicao ordinaria
+        max: eleicao ordinaria municipal - 2026 - 04/10/2026 1º turno
+        top:
+        - [eleicao ordinaria, 2035888]
+        - [eleicao ordinaria municipal - 2026 - 04/10/2026 1º turno, 5]
+      data_eleicao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2026-10-04'
+        max: '2026-10-05'
+        top:
+        - ['2026-10-04', 2012600]
+        - ['2026-10-05', 23293]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: ZZ
+        top:
+        - [SP, 537923]
+        - [MG, 494474]
+        - [RS, 165411]
+        - [BA, 163984]
+        - [PR, 137177]
+        - [GO, 70297]
+        - [SC, 65170]
+        - [RJ, 60018]
+        - [PE, 53980]
+        - [MA, 42472]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.04, distintos_aprox: 6859}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4933}
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: conselheiro distrital
+        max: senador
+        top:
+        - [deputado estadual, 1138616]
+        - [deputado federal, 836489]
+        - [presidente, 23452]
+        - [senador, 23210]
+        - [governador, 13988]
+        - [deputado distrital, 133]
+        - [conselheiro distrital, 5]
+      numero_partido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 32, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AGIR
+        max: UP
+        top:
+        - [PL, 160659]
+        - [NOVO, 136861]
+        - [MDB, 135976]
+        - [PODE, 126674]
+        - [REPUBLICANOS, 117648]
+        - [PDT, 116477]
+        - [PSD, 112148]
+        - [PT, 110763]
+        - [PSDB, 105439]
+        - [PSB, 102586]
+      titulo_eleitoral_candidato: {tipo: VARCHAR, nulos_pct: 0.18, distintos_aprox: 15344, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sequencial_candidato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15573, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_candidato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5676, pessoal: 'só contagens: valores seriam dado pessoal'}
+      resultado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: 2º turno
+        max: suplente
+        top:
+        - [suplente, 1298119]
+        - [nao eleito, 564807]
+        - [eleito por qp, 138752]
+        - [eleito por media, 24315]
+        - [eleito, 5567]
+        - [2º turno, 4333]
+      votos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7999
+        min: '0'
+        max: '2800221'
+        media: 106.6201
+        quartis: [0, 0, 1]
+  resultados_candidato_municipio_zona:
+    linhas: 46794484
+    fonte_do_perfil: amostra de 29.685% da última partição (ano = 2026). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 2018748]
+      turno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 2018748]
+      id_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '6257'
+        max: '6261'
+        top:
+        - ['6259', 1996098]
+        - ['6257', 22643]
+        - ['6261', 7]
+      tipo_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: eleicao ordinaria
+        max: eleicao ordinaria municipal - 2026 - 04/10/2026 1º turno
+        top:
+        - [eleicao ordinaria, 2018741]
+        - [eleicao ordinaria municipal - 2026 - 04/10/2026 1º turno, 7]
+      data_eleicao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2026-10-04'
+        max: '2026-10-05'
+        top:
+        - ['2026-10-04', 1996257]
+        - ['2026-10-05', 22491]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: ZZ
+        top:
+        - [SP, 552325]
+        - [MG, 447387]
+        - [RS, 164193]
+        - [BA, 147980]
+        - [PR, 140366]
+        - [RJ, 103810]
+        - [GO, 66261]
+        - [SC, 63974]
+        - [PE, 58413]
+        - [CE, 39250]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.04, distintos_aprox: 6859}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4933}
+      zona: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 396, min: '1', max: '99'}
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: conselheiro distrital
+        max: senador
+        top:
+        - [deputado estadual, 1129778]
+        - [deputado federal, 827537]
+        - [senador, 22708]
+        - [presidente, 22643]
+        - [governador, 13581]
+        - [deputado distrital, 2494]
+        - [conselheiro distrital, 7]
+      numero_partido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 34, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AGIR
+        max: UP
+        top:
+        - [PL, 159920]
+        - [NOVO, 134999]
+        - [MDB, 132629]
+        - [PODE, 128416]
+        - [REPUBLICANOS, 115746]
+        - [PDT, 115096]
+        - [PSD, 114011]
+        - [PT, 111797]
+        - [PSDB, 104419]
+        - [PSB, 102239]
+      titulo_eleitoral_candidato: {tipo: VARCHAR, nulos_pct: 0.17, distintos_aprox: 15825, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sequencial_candidato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15573, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_candidato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5676, pessoal: 'só contagens: valores seriam dado pessoal'}
+      resultado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: 2º turno
+        max: suplente
+        top:
+        - [suplente, 1291325]
+        - [nao eleito, 556731]
+        - [eleito por qp, 137314]
+        - [eleito por media, 23764]
+        - [eleito, 5428]
+        - [2º turno, 4186]
+      votos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9815
+        min: '0'
+        max: '99880'
+        media: 99.3481
+        quartis: [0, 0, 2]
+  resultados_candidato_secao:
+    linhas: 576811898
+    fonte_do_perfil: amostra de 3.464% da última partição (ano = 2026). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 2114954]
+      turno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 2114954]
+      id_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '6257'
+        max: '6261'
+        top:
+        - ['6259', 2014394]
+        - ['6257', 100556]
+        - ['6261', 4]
+      tipo_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: eleicao conselho distrital 2026
+        max: eleicao ordinaria
+        top:
+        - [eleicao ordinaria, 2114950]
+        - [eleicao conselho distrital 2026, 4]
+      data_eleicao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-04'
+        max: '2026-10-04'
+        top:
+        - ['2026-10-04', 2114954]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: ZZ
+        top:
+        - [SP, 575156]
+        - [RJ, 232690]
+        - [MG, 193453]
+        - [BA, 126808]
+        - [PR, 112316]
+        - [RS, 112257]
+        - [PE, 85854]
+        - [CE, 83907]
+        - [PA, 75850]
+        - [GO, 66446]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.02, distintos_aprox: 6859}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4933}
+      zona: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 396, min: '1', max: '99'}
+      secao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1354}
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: conselheiro distrital
+        max: senador
+        top:
+        - [deputado estadual, 918415]
+        - [deputado federal, 853155]
+        - [senador, 146390]
+        - [presidente, 100556]
+        - [governador, 76942]
+        - [deputado distrital, 19492]
+        - [conselheiro distrital, 4]
+      numero_partido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 29, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: ''
+        max: UP
+        top:
+        - [PL, 392954]
+        - [PT, 262561]
+        - [PSD, 192654]
+        - [REPUBLICANOS, 133831]
+        - [MDB, 131446]
+        - [UNIÃO, 127960]
+        - [PODE, 113517]
+        - [PP, 98282]
+        - [PSB, 91228]
+        - [PSOL, 86663]
+      titulo_eleitoral_candidato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15702, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sequencial_candidato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15715, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_candidato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5355, pessoal: 'só contagens: valores seriam dado pessoal'}
+      votos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 344
+        min: '1'
+        max: '364'
+        media: 11.311
+        quartis: [1, 2, 5]
+  resultados_partido_municipio:
+    linhas: 4129615
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 437411]
+      turno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.0285
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 424959]
+        - ['2', 12452]
+      id_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '6257'
+        max: '6261'
+        top:
+        - ['6259', 355865]
+        - ['6257', 69084]
+        - ['6258', 11514]
+        - ['6260', 938]
+        - ['6261', 10]
+      tipo_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: eleicao ordinaria
+        max: eleicao ordinaria municipal - 2026 - 04/10/2026 1º turno
+        top:
+        - [eleicao ordinaria, 437401]
+        - [eleicao ordinaria municipal - 2026 - 04/10/2026 1º turno, 10]
+      data_eleicao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '2026-10-04'
+        max: '2026-10-25'
+        top:
+        - ['2026-10-04', 257237]
+        - ['2026-10-05', 167722]
+        - ['2026-10-25', 12452]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: ZZ
+        top:
+        - [MG, 78476]
+        - [SP, 54180]
+        - [RS, 39263]
+        - [PR, 31122]
+        - [BA, 30858]
+        - [SC, 23010]
+        - [GO, 18450]
+        - [MA, 16492]
+        - [PI, 16352]
+        - [PE, 14625]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.61, distintos_aprox: 6859}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4933}
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: conselheiro distrital
+        max: senador
+        top:
+        - [deputado federal, 133649]
+        - [deputado estadual, 123323]
+        - [presidente, 80598]
+        - [senador, 57906]
+        - [governador, 41900]
+        - [deputado distrital, 25]
+        - [conselheiro distrital, 10]
+      numero_partido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 41, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AGIR
+        max: UP
+        top:
+        - [PL, 31214]
+        - [PT, 29571]
+        - [UP, 24457]
+        - [PSD, 21390]
+        - [NOVO, 19504]
+        - [PSTU, 19193]
+        - [MISSÃO, 18965]
+        - [PCO, 18152]
+        - [DC, 16546]
+        - [MDB, 16211]
+      votos_nominais:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20776
+        min: '0'
+        max: '3864354'
+        media: 1799.9043
+        quartis: [2, 33, 574]
+      votos_legenda:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2196
+        min: '0'
+        max: '128054'
+        media: 24.4678
+        quartis: [0, 0, 6]
+  resultados_partido_municipio_zona:
+    linhas: 4694955
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 467435]
+      turno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 467435]
+      id_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '6257'
+        max: '6261'
+        top:
+        - ['6259', 391921]
+        - ['6257', 75504]
+        - ['6261', 10]
+      tipo_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: eleicao ordinaria
+        max: eleicao ordinaria municipal - 2026 - 04/10/2026 1º turno
+        top:
+        - [eleicao ordinaria, 467425]
+        - [eleicao ordinaria municipal - 2026 - 04/10/2026 1º turno, 10]
+      data_eleicao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2026-10-04'
+        max: '2026-10-05'
+        top:
+        - ['2026-10-04', 287029]
+        - ['2026-10-05', 180406]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: ZZ
+        top:
+        - [MG, 80820]
+        - [SP, 63878]
+        - [RS, 40194]
+        - [BA, 32400]
+        - [PR, 31996]
+        - [SC, 23940]
+        - [GO, 18907]
+        - [MA, 16502]
+        - [PI, 16330]
+        - [RJ, 16104]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.49, distintos_aprox: 6859}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4933}
+      zona: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 396, min: '1', max: '99'}
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: conselheiro distrital
+        max: senador
+        top:
+        - [deputado federal, 147019]
+        - [deputado estadual, 136008]
+        - [presidente, 75504]
+        - [senador, 63591]
+        - [governador, 44828]
+        - [deputado distrital, 475]
+        - [conselheiro distrital, 10]
+      numero_partido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 41, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AGIR
+        max: UP
+        top:
+        - [PL, 27778]
+        - [UP, 26930]
+        - [PT, 25867]
+        - [PSD, 23367]
+        - [NOVO, 21389]
+        - [PSTU, 21326]
+        - [MISSÃO, 20975]
+        - [PCO, 19950]
+        - [DC, 18127]
+        - [MDB, 17479]
+      votos_nominais:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 21084
+        min: '0'
+        max: '139810'
+        media: 1398.7204
+        quartis: [2, 38, 579]
+      votos_legenda:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1898
+        min: '0'
+        max: '4096'
+        media: 22.8962
+        quartis: [0, 0, 8]
+  resultados_partido_secao:
+    linhas: 234686872
+    fonte_do_perfil: amostra de 8.605% da última partição (ano = 2026). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 2061056]
+      turno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 2061056]
+      id_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '6257'
+        max: '6261'
+        top:
+        - ['6259', 1808388]
+        - ['6257', 252664]
+        - ['6261', 4]
+      tipo_eleicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: eleicao conselho distrital 2026
+        max: eleicao ordinaria
+        top:
+        - [eleicao ordinaria, 2061052]
+        - [eleicao conselho distrital 2026, 4]
+      data_eleicao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-04'
+        max: '2026-10-04'
+        top:
+        - ['2026-10-04', 2061056]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: ZZ
+        top:
+        - [SP, 473585]
+        - [MG, 237340]
+        - [RJ, 198335]
+        - [BA, 124400]
+        - [RS, 115102]
+        - [PR, 107223]
+        - [PE, 92514]
+        - [CE, 85532]
+        - [PA, 76471]
+        - [MA, 70365]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.04, distintos_aprox: 6859}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4933}
+      zona: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 396, min: '1', max: '99'}
+      secao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1553}
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: conselheiro distrital
+        max: senador
+        top:
+        - [deputado federal, 641406]
+        - [deputado estadual, 617584]
+        - [senador, 347694]
+        - [presidente, 252664]
+        - [governador, 190680]
+        - [deputado distrital, 11024]
+        - [conselheiro distrital, 4]
+      numero_partido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 34, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AGIR
+        max: UP
+        top:
+        - [PL, 203874]
+        - [PT, 174273]
+        - [PSD, 168850]
+        - [MISSÃO, 118030]
+        - [REPUBLICANOS, 115476]
+        - [MDB, 112867]
+        - [NOVO, 109979]
+        - [PP, 98935]
+        - [PSOL, 97882]
+        - [PDT, 96563]
+      votos_nominais:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 459
+        min: '0'
+        max: '531'
+        media: 28.4994
+        quartis: [2, 8, 35]
+      votos_legenda:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 43
+        min: '0'
+        max: '46'
+        media: 0.4633
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1593536]
+        - ['1', 266625]
+        - ['2', 93219]
+        - ['3', 44718]
+        - ['4', 24537]
+        - ['5', 14418]
+        - ['6', 8672]
+        - ['7', 5220]
+        - ['8', 3130]
+        - ['9', 2004]
+  vagas:
+    linhas: 102405
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '1994'
+        max: '2026'
+        media: 2013.2881
+        quartis: [2008, 2014, 2020]
+        top:
+        - ['2016', 17054]
+        - ['2012', 16974]
+        - ['2020', 16797]
+        - ['2024', 16707]
+        - ['2008', 11295]
+        - ['2004', 11124]
+        - ['2000', 11118]
+        - ['1996', 240]
+        - ['2014', 193]
+        - ['2026', 189]
+      id_eleicao: {tipo: VARCHAR, nulos_pct: 50.04, distintos_aprox: 186, min: '143', max: '6259'}
+      tipo_eleicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 248, min: agua boa mg - 67ª ze, max: suplementar turmalina}
+      data_eleicao:
+        tipo: DATE
+        nulos_pct: 50.04
+        distintos_aprox: 50
+        min: '2014-10-05'
+        max: '2026-10-04'
+        top:
+        - [null, 51243]
+        - ['2020-11-15', 16707]
+        - ['2024-10-06', 16707]
+        - ['2016-10-02', 16704]
+        - ['2014-10-05', 189]
+        - ['2026-10-04', 189]
+        - ['2018-10-07', 108]
+        - ['2022-10-02', 108]
+        - ['2018-06-03', 46]
+        - ['2018-10-28', 40]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 15530]
+        - [SP, 11792]
+        - [RS, 9074]
+        - [BA, 7574]
+        - [PR, 7273]
+        - [SC, 5369]
+        - [GO, 4511]
+        - [PI, 4276]
+        - [PB, 4063]
+        - [MA, 3965]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 1.07, distintos_aprox: 6859}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 1.07, distintos_aprox: 4808}
+      cargo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: 1 suplente
+        max: vice-prefeito
+        top:
+        - [prefeito, 39600]
+        - [vereador, 39080]
+        - [vice-prefeito, 22629]
+        - [governador, 233]
+        - [senador, 233]
+        - [deputado federal, 231]
+        - [deputado estadual, 223]
+        - [1 suplente, 56]
+        - [2 suplente, 56]
+        - [vice-governador, 56]
+      vagas:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 47
+        min: '1'
+        max: '94'
+        media: 4.6287
+        quartis: [1, 1, 9]
+        top:
+        - ['1', 62686]
+        - ['9', 27734]
+        - ['11', 5274]
+        - ['13', 2334]
+        - ['15', 1179]
+        - ['10', 855]
+        - ['17', 589]
+        - ['21', 369]
+        - ['19', 231]
+        - ['2', 177]

@@ -1,0 +1,579 @@
+dataset: br_fgv_igp
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  igp_10_mes:
+    linhas: 359
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '1993'
+        max: '2023'
+        media: 2008.1253
+        quartis: [2001, 2008, 2016]
+        top:
+        - ['1994', 12]
+        - ['1995', 12]
+        - ['1996', 12]
+        - ['1997', 12]
+        - ['1998', 12]
+        - ['1999', 12]
+        - ['2000', 12]
+        - ['2001', 12]
+        - ['2002', 12]
+        - ['2003', 12]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4958
+        quartis: [3, 6, 10]
+        top:
+        - ['1', 30]
+        - ['10', 30]
+        - ['11', 30]
+        - ['12', 30]
+        - ['2', 30]
+        - ['3', 30]
+        - ['4', 30]
+        - ['5', 30]
+        - ['6', 30]
+        - ['7', 30]
+      indice:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 379
+        min: '3.00022'
+        max: '1220.204'
+        media: 452.1649
+        quartis: [200.1235, 406.9399, 636.8451]
+      variacao_mensal:
+        tipo: DOUBLE
+        nulos_pct: 0.28
+        distintos_aprox: 492
+        min: '-2.2001796908078908'
+        max: '45.41012827710604'
+        media: 1.8451
+        quartis: [0.1723, 0.6021, 1.2046]
+      variacao_12_meses:
+        tipo: DOUBLE
+        nulos_pct: 3.34
+        distintos_aprox: 359
+        min: '-7.8890906766409525'
+        max: '3323.3822852990784'
+        media: 42.2021
+        quartis: [4.7604, 8.0195, 11.8529]
+      variacao_acumulada_ano:
+        tipo: DOUBLE
+        nulos_pct: 0.28
+        distintos_aprox: 333
+        min: '-5.197619356895733'
+        max: '1331.1277427238156'
+        media: 31.037
+        quartis: [1.4768, 3.7984, 7.8408]
+      indice_fechamento_mensal:
+        tipo: DOUBLE
+        nulos_pct: 0.28
+        distintos_aprox: 415
+        min: '3.499471'
+        max: '1216.56708'
+        media: 451.8349
+        quartis: [200.5992, 407.3512, 635.748]
+  igp_di_ano:
+    linhas: 78
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 78
+        min: '1944'
+        max: '2021'
+        media: 1982.5
+        quartis: [1963, 1982, 2002]
+      indice_medio:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 72
+        min: '9.079100583333334e-14'
+        max: '1042.4800833333331'
+        media: 145.6616
+        quartis: [0.0, 0.0, 232.1494]
+      indice:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 75
+        min: '9.827267e-14'
+        max: '1088.489'
+        media: 152.0375
+        quartis: [0.0, 0.0, 270.692]
+      variacao_anual:
+        tipo: DOUBLE
+        nulos_pct: 1.28
+        distintos_aprox: 81
+        min: '-1.4295434021549536'
+        max: '2708.1693892966186'
+        media: 161.9477
+        quartis: [9.2768, 19.9795, 48.7391]
+      indice_fechamento_anual:
+        tipo: DOUBLE
+        nulos_pct: 1.28
+        distintos_aprox: 33
+        min: '0.0'
+        max: '1003.151252'
+        media: 146.3457
+        quartis: [0, 0, 250.791]
+        top:
+        - ['0.0', 42]
+        - ['0.001105', 1]
+        - ['0.010565', 1]
+        - ['0.090261', 1]
+        - ['1.696382', 1]
+        - ['1003.151252', 1]
+        - ['114.982802', 1]
+        - ['128.809681', 1]
+        - ['139.636145', 1]
+        - ['145.992793', 1]
+  igp_di_mes:
+    linhas: 954
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4811
+        quartis: [3, 6, 9]
+        top:
+        - ['1', 80]
+        - ['2', 80]
+        - ['3', 80]
+        - ['4', 80]
+        - ['5', 80]
+        - ['6', 80]
+        - ['10', 79]
+        - ['11', 79]
+        - ['12', 79]
+        - ['7', 79]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 81
+        min: '1944'
+        max: '2023'
+        media: 1983.2516
+        quartis: [1963, 1983, 2003]
+      indice:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 864
+        min: '8.371376e-14'
+        max: '1173.831'
+        media: 164.4461
+        quartis: [0.0, 0.0, 285.7143]
+      variacao_mensal:
+        tipo: DOUBLE
+        nulos_pct: 0.1
+        distintos_aprox: 1331
+        min: '-2.586187907722326'
+        max: '81.31992145520064'
+        media: 4.2545
+        quartis: [0.5757, 1.4829, 3.643]
+      variacao_12_meses:
+        tipo: DOUBLE
+        nulos_pct: 1.26
+        distintos_aprox: 916
+        min: '-7.4420423382923095'
+        max: '6602.455892017592'
+        media: 189.3987
+        quartis: [9.0892, 19.5887, 49.0825]
+      variacao_acumulada_ano:
+        tipo: DOUBLE
+        nulos_pct: 0.1
+        distintos_aprox: 1051
+        min: '-4.964114675588793'
+        max: '2708.1693892966173'
+        media: 61.1948
+        quartis: [3.7436, 8.762, 25.1991]
+      indice_fechamento_mensal:
+        tipo: DOUBLE
+        nulos_pct: 0.1
+        distintos_aprox: 462
+        min: '0.0'
+        max: '1171.62643'
+        media: 164.0416
+        quartis: [0, 0, 285.4609]
+  igp_m_ano:
+    linhas: 33
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: '1989'
+        max: '2021'
+        media: 2005
+        quartis: [1997, 2005, 2013]
+        top:
+        - ['1989', 1]
+        - ['1990', 1]
+        - ['1991', 1]
+        - ['1992', 1]
+        - ['1993', 1]
+        - ['1994', 1]
+        - ['1995', 1]
+        - ['1996', 1]
+        - ['1997', 1]
+        - ['1998', 1]
+      indice_medio:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: '0.00010227061428571429'
+        max: '1055.7949166666665'
+        media: 348.2384
+        quartis: [139.106, 335.0333, 529.3346]
+        top:
+        - ['0.00010227061428571429', 1]
+        - ['0.002127651333333333', 1]
+        - ['0.010852471083333334', 1]
+        - ['0.11794160000000002', 1]
+        - ['1055.7949166666665', 1]
+        - ['117.02008333333333', 1]
+        - ['131.21308333333332', 1]
+        - ['141.73691666666664', 1]
+        - ['147.9135833333333', 1]
+        - ['163.78150000000002', 1]
+      indice:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 37
+        min: '0.000233566'
+        max: '1100.988'
+        media: 363.5711
+        quartis: [143.0775, 335.006, 543.3308]
+        top:
+        - ['0.000233566', 1]
+        - ['0.004203477', 1]
+        - ['0.0234711', 1]
+        - ['0.299133', 1]
+        - ['107.45', 1]
+        - ['1100.988', 1]
+        - ['123.833', 1]
+        - ['135.225', 1]
+        - ['145.695', 1]
+        - ['148.291', 1]
+      variacao_anual:
+        tipo: DOUBLE
+        nulos_pct: 3.03
+        distintos_aprox: 31
+        min: '-1.7192492255360459'
+        max: '2567.45895638395'
+        media: 231.0853
+        quartis: [6.3418, 9.5035, 18.9421]
+        top:
+        - ['-0.5209404449390775', 1]
+        - ['-1.7192492255360459', 1]
+        - ['1.208743070346352', 1]
+        - ['1.7818044545111489', 1]
+        - ['10.38467627038151', 1]
+        - ['10.539166948817025', 1]
+        - ['11.323142949673537', 1]
+        - ['1174.473714482917', 1]
+        - ['12.412762561342138', 1]
+        - ['1246.617789892534', 1]
+      indice_fechamento_anual:
+        tipo: DOUBLE
+        nulos_pct: 3.03
+        distintos_aprox: 34
+        min: '0.000991'
+        max: '1014.473923'
+        media: 356.2537
+        quartis: [143.6748, 337.1816, 536.1621]
+        top:
+        - ['0.000991', 1]
+        - ['0.009933', 1]
+        - ['0.083791', 1]
+        - ['1.544946', 1]
+        - ['1014.473923', 1]
+        - ['115.351011', 1]
+        - ['129.403699', 1]
+        - ['140.362411', 1]
+        - ['146.987269', 1]
+        - ['162.513011', 1]
+  igp_m_mes:
+    linhas: 407
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.5037
+        quartis: [3, 7, 9]
+        top:
+        - ['1', 34]
+        - ['10', 34]
+        - ['11', 34]
+        - ['12', 34]
+        - ['2', 34]
+        - ['3', 34]
+        - ['4', 34]
+        - ['6', 34]
+        - ['7', 34]
+        - ['8', 34]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: '1989'
+        max: '2023'
+        media: 2005.8747
+        quartis: [1997, 2006, 2014]
+        top:
+        - ['1990', 12]
+        - ['1991', 12]
+        - ['1992', 12]
+        - ['1993', 12]
+        - ['1994', 12]
+        - ['1995', 12]
+        - ['1996', 12]
+        - ['1997', 12]
+        - ['1998', 12]
+        - ['1999', 12]
+      indice:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 458
+        min: '3.08619e-05'
+        max: '1193.337'
+        media: 384.6493
+        quartis: [144.9095, 339.8854, 558.2949]
+      variacao_mensal:
+        tipo: DOUBLE
+        nulos_pct: 0.25
+        distintos_aprox: 428
+        min: '-1.0956218656043126'
+        max: '83.94514200124038'
+        media: 4.9156
+        quartis: [0.2612, 0.7386, 1.7103]
+      variacao_12_meses:
+        tipo: DOUBLE
+        nulos_pct: 2.95
+        distintos_aprox: 417
+        min: '-2.1652067525379737'
+        max: '5990.422171026412'
+        media: 272.323
+        quartis: [5.4029, 9.18, 16.4046]
+      variacao_primeiro_decendio:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 227
+        min: '-1.16'
+        max: '36.95'
+        media: 2.4279
+        quartis: [0.1295, 0.441, 1.1445]
+      variacao_segundo_decendio:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 255
+        min: '-1.15'
+        max: '51.92'
+        media: 3.6402
+        quartis: [0.1953, 0.6342, 1.489]
+      variacao_acumulada_ano:
+        tipo: DOUBLE
+        nulos_pct: 0.25
+        distintos_aprox: 408
+        min: '-2.6520329530745124'
+        max: '2567.4589563839495'
+        media: 92.1007
+        quartis: [1.7324, 5.1473, 10.1827]
+      indice_fechamento_mensal:
+        tipo: DOUBLE
+        nulos_pct: 0.25
+        distintos_aprox: 366
+        min: '3.6e-05'
+        max: '1192.108868'
+        media: 384.1611
+        quartis: [145.024, 339.7369, 557.4782]
+  igp_og_ano:
+    linhas: 53
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 50
+        min: '1969'
+        max: '2021'
+        media: 1995
+        quartis: [1982, 1995, 2008]
+        top:
+        - ['1969', 1]
+        - ['1970', 1]
+        - ['1971', 1]
+        - ['1972', 1]
+        - ['1973', 1]
+        - ['1974', 1]
+        - ['1975', 1]
+        - ['1976', 1]
+        - ['1977', 1]
+        - ['1978', 1]
+      indice_medio:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 42
+        min: '0.0'
+        max: '1029.0231666666666'
+        media: 211.8942
+        quartis: [0.0, 116.3482, 388.3111]
+        top:
+        - ['0.0', 10]
+        - ['0.0021908670833333333', 1]
+        - ['0.011500000000000002', 1]
+        - ['0.12533333333333332', 1]
+        - ['1.0000000000000003e-09', 1]
+        - ['1.6666666666666669e-10', 1]
+        - ['1.7500000000000002e-09', 1]
+        - ['1029.0231666666666', 1]
+        - ['116.34816666666667', 1]
+        - ['129.25875', 1]
+      indice:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 45
+        min: '0.0'
+        max: '1074.454'
+        media: 221.1416
+        quartis: [0.0, 121.972, 393.842]
+        top:
+        - ['0.0', 10]
+        - [1e-09, 2]
+        - ['0.000276596', 1]
+        - ['0.004', 1]
+        - ['0.025', 1]
+        - ['0.316', 1]
+        - ['1.294e-06', 1]
+        - ['1.4762e-05', 1]
+        - ['1.4e-08', 1]
+        - ['1.55e-07', 1]
+      variacao_anual:
+        tipo: DOUBLE
+        nulos_pct: 18.8679
+        distintos_aprox: 38
+        min: '-1.3984998547923566'
+        max: inf
+        media: .inf
+        quartis: [7.3272, 11.27, 232.9365]
+        top:
+        - [null, 10]
+        - ['100.0', 2]
+        - ['-0.3937489073274403', 1]
+        - ['-1.3984998547923566', 1]
+        - ['0.0', 1]
+        - ['1.2507662491253901', 1]
+        - ['1.7049061394758258', 1]
+        - ['10.38119805101747', 1]
+        - ['10.693800235310945', 1]
+        - ['1040.8037094281299', 1]
+      indice_fechamento_anual:
+        tipo: DOUBLE
+        nulos_pct: 1.8868
+        distintos_aprox: 37
+        min: '0.0'
+        max: '990.372063'
+        media: 214.1891
+        quartis: [0, 120.6359, 385.9783]
+        top:
+        - ['0.0', 17]
+        - ['0.001052', 1]
+        - ['0.01', 1]
+        - ['0.088882', 1]
+        - ['1.675136', 1]
+        - ['113.724672', 1]
+        - ['127.547087', 1]
+        - ['138.274099', 1]
+        - ['144.567835', 1]
+        - ['159.638287', 1]
+  igp_og_mes:
+    linhas: 652
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4755
+        quartis: [3, 6, 9]
+        top:
+        - ['1', 55]
+        - ['2', 55]
+        - ['3', 55]
+        - ['4', 55]
+        - ['10', 54]
+        - ['11', 54]
+        - ['12', 54]
+        - ['5', 54]
+        - ['6', 54]
+        - ['7', 54]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 53
+        min: '1969'
+        max: '2023'
+        media: 1995.6687
+        quartis: [1982, 1996, 2009]
+      indice:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 487
+        min: '0.0'
+        max: '1158.568'
+        media: 234.4799
+        quartis: [0.0, 125.2545, 399.1145]
+      var_mensal:
+        tipo: DOUBLE
+        nulos_pct: 19.9387
+        distintos_aprox: 501
+        min: '-1.234174916905273'
+        max: inf
+        media: .inf
+        quartis: [0.134, 0.7939, 3.362]
+      variacao_12_meses:
+        tipo: DOUBLE
+        nulos_pct: 19.9387
+        distintos_aprox: 473
+        min: '-2.532374000050719'
+        max: inf
+        media: .inf
+        quartis: [6.509, 11.3628, 215.8462]
+      variacao_acumulada_ano:
+        tipo: DOUBLE
+        nulos_pct: 19.9387
+        distintos_aprox: 452
+        min: '-2.834063844567436'
+        max: inf
+        media: .inf
+        quartis: [1.9993, 6.8696, 50]
+      indice_fechamento_mensal:
+        tipo: DOUBLE
+        nulos_pct: 0.1534
+        distintos_aprox: 478
+        min: '0.0'
+        max: '1156.387949'
+        media: 233.974
+        quartis: [0, 125.2544, 398.9963]

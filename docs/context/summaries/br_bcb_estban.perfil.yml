@@ -1,0 +1,170 @@
+dataset: br_bcb_estban
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  agencia:
+    linhas: 443814039
+    fonte_do_perfil: tabela inteira da última partição (ano = 2025)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2025'
+        max: '2025'
+        media: 2025
+        quartis: [2025, 2025, 2025]
+        top:
+        - ['2025', 1823130]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        media: 1.8908
+        quartis: [1, 2, 3]
+        top:
+        - ['1', 704700]
+        - ['2', 612765]
+        - ['3', 505665]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 490545]
+        - [RS, 171000]
+        - [MG, 169650]
+        - [RJ, 134550]
+        - [PR, 110610]
+        - [BA, 100935]
+        - [SC, 79335]
+        - [PA, 64350]
+        - [GO, 58950]
+        - [PE, 54135]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3093}
+      cnpj_basico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 120, min: '00000000', max: '92894922'}
+      instituicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 116, min: BANCO ABN AMRO CLEARING S.A., max: STATE STREET BR S.A. BCO COMERCIAL}
+      cnpj_agencia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 20938, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_verbete:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 42
+        min: '110'
+        max: '899'
+        top:
+        - ['110', 40514]
+        - ['111', 40514]
+        - ['112', 40514]
+        - ['113', 40514]
+        - ['120', 40514]
+        - ['130', 40514]
+        - ['140', 40514]
+        - ['141142', 40514]
+        - ['144145146147152', 40514]
+        - ['158', 40514]
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 558228
+        min: '-1754892820472.0'
+        max: '481834508990701.0'
+        media: 1408544241.6885
+        quartis: [0, 0, 2324259.6003]
+  municipio:
+    linhas: 256170669
+    fonte_do_perfil: amostra de 41.502% da última partição (ano = 2023). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2023'
+        max: '2023'
+        media: 2023
+        quartis: [2023, 2023, 2023]
+        top:
+        - ['2023', 2071418]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.5483
+        quartis: [4, 7, 10]
+        top:
+        - ['11', 190553]
+        - ['1', 187576]
+        - ['3', 187471]
+        - ['9', 183927]
+        - ['6', 176020]
+        - ['12', 174232]
+        - ['10', 173265]
+        - ['4', 172581]
+        - ['5', 168375]
+        - ['8', 163688]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 392133]
+        - [MG, 242941]
+        - [RS, 230731]
+        - [PR, 142861]
+        - [BA, 112331]
+        - [SC, 106870]
+        - [RJ, 95848]
+        - [GO, 92413]
+        - [PA, 75295]
+        - [ES, 64465]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.81, distintos_aprox: 3218}
+      cnpj_basico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 128, min: '00000000', max: '92894922'}
+      instituicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 134, min: BANCO BARI S.A., max: STATE STREET BR S.A. BCO COMERCIAL}
+      agencias_esperadas:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 75
+        min: '1'
+        max: '416'
+        media: 1.907
+        quartis: [1, 1, 1]
+      agencias_processadas:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 76
+        min: '0'
+        max: '416'
+        media: 1.9009
+        quartis: [1, 1, 1]
+      id_verbete:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 42
+        min: '110'
+        max: '899'
+        top:
+        - ['401402403404411412413414415416417418419', 46064]
+        - ['441442', 46053]
+        - ['460', 46053]
+        - ['167', 46052]
+        - ['444445446447456458', 46052]
+        - ['171', 46050]
+        - ['172', 46048]
+        - ['169', 46046]
+        - ['712', 46045]
+        - ['420', 46044]
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0.58
+        distintos_aprox: 905797
+        min: '-1524721811480.0'
+        max: '8967570252734.0'
+        media: 425954452.5982
+        quartis: [0, 62.7046, 4142644.6854]
