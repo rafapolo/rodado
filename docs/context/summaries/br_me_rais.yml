@@ -1,0 +1,41 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Escrito à mão; o que
+# o catálogo já diz (linhas, fonte, data) e as armadilhas (gotchas/) não se repetem aqui.
+# Plano: tasks/plans/cartao_tabela.md (piloto de 2026-10-26).
+dataset: br_me_rais
+tabelas:
+  microdados_vinculos:
+    grao: "um vínculo de emprego formal × ano-base. Uma pessoa com dois empregos tem duas linhas, e o vínculo desligado no meio do ano também entra"
+    chave: "nenhuma: a RAIS pública não tem identificador de pessoa nem de estabelecimento, e o vínculo não se liga à linha do estabelecimento"
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: "1985–2025"
+    territorio:
+      nivel: municipio
+      colunas: {id_municipio: "do estabelecimento", id_municipio_trabalho: "onde o vínculo trabalha"}
+    medidas:
+      - {expressao: "count(*) FILTER (vinculo_ativo_3112 = '1')", o_que: "estoque de empregos formais em 31/12", soma: sim}
+      - {expressao: "count(*)", o_que: "vínculos que existiram em algum momento do ano (estoque + desligados)", soma: sim}
+      - {coluna: valor_remuneracao_media, unidade: "R$ nominais do ano, média mensal", soma: nao}
+      - {coluna: valor_remuneracao_media_sm, unidade: "salários mínimos do ano", soma: nao}
+    filtros_tipicos: ["vinculo_ativo_3112 = '1' para estoque", "ano = <ano> sempre: são 2,16 bi de linhas, partição por ano"]
+    use_para: "emprego formal e salário por município, setor (cnae_2, subsetor_ibge), ocupação (cbo_2002) e perfil (sexo, idade, raça, instrução)"
+    nao_use_para: "emprego informal; seguir uma pessoa ou um estabelecimento no tempo (sem identificador); saldo de admissões no ano corrente (é o CAGED)"
+    verificado: "ano 2022: 78.488.470 linhas, 52.790.864 com vinculo_ativo_3112 = '1', igual à soma de quantidade_vinculos_ativos dos estabelecimentos; remuneração média dos ativos R$ 3.861 — medido 2026-10-26"
+  microdados_estabelecimentos:
+    grao: "um estabelecimento declarante × ano-base, inclusive o que declarou não ter empregado (RAIS negativa)"
+    chave: "nenhuma: sem CNPJ na versão pública"
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: "1985–2025"
+    territorio:
+      nivel: municipio
+      colunas: {id_municipio: "do estabelecimento"}
+    medidas:
+      - {coluna: quantidade_vinculos_ativos, o_que: "empregos ativos em 31/12", soma: sim}
+      - {expressao: "count(*) FILTER (indicador_rais_negativa = 0)", o_que: "estabelecimentos com empregado", soma: sim}
+    filtros_tipicos: ["indicador_rais_negativa = 0 para contar estabelecimentos que empregam (não `<> 1`: de 2023 em diante há o código 2, também sem empregado)"]
+    use_para: "número e porte de estabelecimentos com emprego formal por município e setor; total de empregos sem ler a tabela de vínculos (10× menor)"
+    nao_use_para: "contar empresas (use br_me_cnpj); comparar a contagem de estabelecimentos de 2022 em diante sem tirar a RAIS negativa"
+    verificado: "RAIS negativa: 4,0 mi de 8,5 mi linhas em 2022, 7,2 de 11,8 mi em 2023, 8,5 de 13,2 mi em 2024 — o salto nas linhas é quase todo declaração negativa, enquanto os empregos vão de 52,8 a 57,1 mi — medido 2026-10-26. Código 2, sem descrição no dicionário: 17.471 linhas em 2023, 19.454 em 2024 e 13.193 em 2025, todas com 0 vínculos ativos; não existe até 2022 — medido 2026-10-27"
