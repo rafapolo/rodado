@@ -45,6 +45,11 @@ CATALOG = REPO_ROOT / "_rodado_metadata" / "catalog.parquet"
 # The graph is viz data, not LLM context — it lives beside the page that
 # serves it, so there is exactly one copy of a 630 KB file in the repo.
 OUTPUT = REPO_ROOT / "pages" / "atlas" / "schema_graph.json"
+# cartões publicados pela página do MCP (gera_summaries_web.py): "dados até" de cada tabela
+SUMMARIES = REPO_ROOT / "pages" / "assets" / "summaries"
+# o que o painel da tabela busca sob demanda, um JSON por dataset
+DETALHES = REPO_ROOT / "pages" / "atlas" / "detalhes"
+CONTEXT = REPO_ROOT / "docs" / "context"
 
 # Columns kept per table. The key columns are always emitted; this caps the
 # rest, because br_mjsp_sisdepen.populacao_carceraria alone has 3.957 of them
@@ -434,6 +439,42 @@ def load_row_counts() -> dict[str, dict]:
     }
 
 
+def add_dataset_info(out_datasets, out_tables):
+    """O que a lista de datasets da página do MCP mostra, para o painel do atlas.
+
+    Por dataset: descrição (`de`), fonte mais frequente das tabelas (`fn`) e a data do
+    dado mais recente (`ate`); por tabela, `ate`. A data vem dos cartões publicados
+    (`pages/assets/summaries/<dataset>.json`, onde a sentinela 9999-12-31 já foi tirada);
+    dataset sem cartão fica sem data."""
+    try:
+        import pyarrow.parquet as pq
+    except ImportError:
+        return
+    if not CATALOG.exists():
+        return
+    por_ds = defaultdict(list)
+    for r in pq.read_table(CATALOG, columns=["dataset", "description", "source_name", "source_url"]).to_pylist():
+        por_ds[r["dataset"]].append(r)
+    for d in out_datasets:
+        linhas = por_ds.get(d["n"], [])
+        desc = next((r["description"] for r in linhas if r["description"]), "")
+        if desc:
+            d["de"] = desc
+        # só o nome: a URL das fontes raspadas é o mapa de coleta, que fica fora do repo
+        nomes = Counter(r["source_name"] for r in linhas if r["source_name"])
+        if nomes:
+            d["fn"] = nomes.most_common(1)[0][0]
+        cartao = SUMMARIES / f"{d['n']}.json"
+        if cartao.exists():
+            c = json.loads(cartao.read_text())
+            if c.get("d"):
+                d["ate"] = c["d"]
+            datas = {t["n"]: t["d"] for t in c.get("t", []) if t.get("d")}
+            for t in out_tables:
+                if out_datasets[t["ds"]] is d and t["n"] in datas:
+                    t["ate"] = datas[t["n"]]
+
+
 def select_keys(idx) -> list[str]:
     """The set gera_join_keys.py documents, minus the keys that connect nothing.
 
@@ -571,6 +612,8 @@ def build():
             "nk": len(keys_here),
         })
 
+    add_dataset_info(out_datasets, out_tables)
+
     edges = sum(len(t["k"]) for t in out_tables)
     graph = {
         "meta": {
@@ -610,6 +653,134 @@ def build():
     print(f"  {len(unconnected)} tabelas sem nenhuma chave de join")
     top = sorted(out_keys, key=lambda k: -k["t"])[:8]
     print("  maiores chaves: " + ", ".join(f"{k['n']}({k['t']})" for k in top))
+
+    write_details(out_datasets, out_tables)
+
+
+def _ordenadas():
+    """ORDENADA_POR e ORDENADA_POR_ANO de db/consulta.py, lidos sem importar o módulo."""
+    import ast
+    por, por_ano = {}, set()
+    arq = REPO_ROOT / "db" / "consulta.py"
+    if not arq.exists():
+        return por, por_ano
+    for no in ast.parse(arq.read_text()).body:
+        if isinstance(no, ast.Assign) and len(no.targets) == 1 and isinstance(no.targets[0], ast.Name):
+            if no.targets[0].id == "ORDENADA_POR":
+                por = ast.literal_eval(no.value)
+            elif no.targets[0].id == "ORDENADA_POR_ANO":
+                por_ano = ast.literal_eval(no.value)
+    return por, por_ano
+
+
+def write_details(out_datasets, out_tables):
+    """O que `describe_table` do MCP diz de cada tabela, para o painel do atlas:
+    armadilhas (gotchas), colunas com código (dicionário, código que diverge entre
+    datasets, código sem significado conhecido, significado pesquisado), métricas
+    prontas, busca rápida no db.rodado.xyz, data da coleta e, do perfil, nulos e
+    valores mais frequentes. Um JSON por dataset em pages/atlas/detalhes/, buscado
+    quando o painel abre; tabela sem nada não entra, dataset sem nada não tem arquivo.
+    Mesmas regras do mcp_server.py, copiadas para não importar o servidor."""
+    import yaml
+    try:
+        import pyarrow.parquet as pq
+        coleta = {(r["dataset"], r["table"]): r["scrape_date"] for r in
+                  pq.read_table(CATALOG, columns=["dataset", "table", "scrape_date"]).to_pylist()
+                  if r["scrape_date"]}
+    except Exception:
+        coleta = {}
+    le = lambda f: yaml.safe_load(f.read_text()) if f.exists() else None
+    cobertura = json.loads((CONTEXT / "dicionario_coverage.json").read_text()).get("tables", {})
+    nao_verif = defaultdict(list)
+    for chave, info in json.loads((CONTEXT / "schema_dict_status.json").read_text()).get("columns", {}).items():
+        if info.get("label") == "nao_verificado":
+            tid, _, col = chave.rpartition(".")
+            nao_verif[tid].append(col)
+    diverge = []   # (coluna, escopo ou "", motivo): "faixa_etaria (br_ans_beneficiario.informacao_consolidada)"
+    for chave, info in ((le(CONTEXT / "bridges.yaml") or {}).get("coded_differently") or {}).items():
+        m = re.match(r"(\w+)(?:\s*\((.*)\))?$", chave)
+        if m:
+            diverge.append((m[1].lower(), m[2] or "", " ".join(str(info.get("reason", "")).split())))
+    cc = le(CONTEXT / "column_codes.yaml") or {}
+    fontes_cc = cc.get("fontes") or {}
+    codigos = defaultdict(list)
+    for e in cc.get("entradas") or []:
+        item = {k: e[k] for k in ("colunas", "status", "significado", "valores", "nota") if k in e}
+        if fontes_cc.get(e.get("fonte", ""), {}).get("titulo"):
+            item["fonte"] = fontes_cc[e["fonte"]]["titulo"]
+        codigos[e["tabela"]].append(item)
+    metricas = defaultdict(list)
+    for nome, m in ((le(CONTEXT / "metrics.yaml") or {}).get("metrics") or {}).items():
+        if m.get("source_table"):
+            metricas[m["source_table"]].append({k: m[k] for k in ("description", "expression", "unit", "required_filters", "caveat") if m.get(k)} | {"nome": nome})
+    por, por_ano = _ordenadas()
+    # todas as colunas, não só as MAX_COLS que o grafo leva
+    todas = {tid: [c["name"] for c in m.get("columns", [])]
+             for tid, m in json.loads(SCHEMAS.read_text())["tables"].items()}
+
+    DETALHES.mkdir(parents=True, exist_ok=True)
+    escritos, maior = set(), (0, "")
+    for di, d in enumerate(out_datasets):
+        ds = d["n"]
+        gotchas = (le(CONTEXT / "gotchas" / f"{ds}.yml") or {}).get("gotchas") or []
+        perfil = (le(CONTEXT / "summaries" / f"{ds}.perfil.yml") or {}).get("tabelas") or {}
+        saida = {}
+        for t in out_tables:
+            if t["ds"] != di:
+                continue
+            tb, tid = t["n"], f"{ds}.{t['n']}"
+            x = {}
+            gs = [{k: " ".join(g[k].split()) if isinstance(g[k], str) else g[k]
+                   for k in ("id", "resumo", "detalhe", "colunas", "severidade", "verificado") if g.get(k)}
+                  for g in gotchas if not g.get("tabelas") or tb in g["tabelas"]]
+            if gs:
+                x["gotchas"] = gs
+            if (ds, tb) in por:
+                x["busca"] = {"coluna": por[(ds, tb)], "por_ano": (ds, tb) in por_ano}
+            if metricas.get(tid):
+                x["metricas"] = metricas[tid]
+            if codigos.get(tid):
+                x["codigos"] = codigos[tid]
+            if coleta.get((ds, tb)):
+                x["coleta"] = str(coleta[(ds, tb)])
+            cols = {}
+            nomes = {c.lower(): c for c in todas.get(tid, [])}
+            for c in cobertura.get(tid, []):
+                cols.setdefault(c, {})["dic"] = 1
+            for col, escopo, motivo in diverge:
+                if col in nomes and (not escopo or tid in escopo or (ds in escopo and "." not in escopo)):
+                    cols.setdefault(nomes[col], {})["div"] = motivo
+            for c in nao_verif.get(tid, []):
+                cols.setdefault(c, {})["nv"] = 1
+            p = perfil.get(tb) or {}
+            for c, info in (p.get("colunas") or {}).items():
+                if not isinstance(info, dict) or info.get("pessoal"):
+                    continue   # dado pessoal: o perfil já não guarda valor
+                y = {}
+                if info.get("nulos_pct"):
+                    y["nul"] = info["nulos_pct"]
+                if info.get("top"):
+                    y["top"] = info["top"]
+                if y:
+                    cols.setdefault(c, {}).update(y)
+            if cols:
+                x["cols"] = cols
+                if p.get("fonte_do_perfil"):
+                    x["amostra"] = p["fonte_do_perfil"]
+            if x:
+                saida[tb] = x
+        arq = DETALHES / f"{ds}.json"
+        if saida:
+            arq.write_text(json.dumps(saida, ensure_ascii=False, separators=(",", ":")))
+            escritos.add(arq.name)
+            maior = max(maior, (arq.stat().st_size, ds))
+        elif arq.exists():
+            arq.unlink()
+    for velho in DETALHES.glob("*.json"):
+        if velho.name not in escritos:
+            velho.unlink()
+    print(f"  detalhes: {len(escritos)} datasets em {DETALHES.relative_to(REPO_ROOT)} "
+          f"(maior: {maior[1]}, {maior[0] / 1024:.0f} KB)")
 
 
 # ---------------------------------------------------------------------------
