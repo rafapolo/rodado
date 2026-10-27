@@ -161,7 +161,7 @@ def limpa(arquivo):
 
 
 def datasets():
-    return [x["dataset"] for x in duck("SELECT DISTINCT dataset FROM _rodado_metadata WHERE source <> 'view_only' ORDER BY 1;")]
+    return [x["dataset"] for x in duck("SELECT DISTINCT dataset FROM _rodado_metadata WHERE source <> 'view_only' AND dataset NOT LIKE '\\_local%' ESCAPE '\\' ORDER BY 1;")]  # _local_*: infra local, fora do repo público
 
 
 def main(args):
