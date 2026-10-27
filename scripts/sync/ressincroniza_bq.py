@@ -53,11 +53,14 @@ ORDEM_DE_BUSCA = {
     "br_cgu_licitacao_contrato.licitacao_participante": ("cpf_cnpj_participante", "id_licitacao"),
     "br_cgu_servidores_executivo_federal.cadastro_servidores": ("cpf", "nome"),
     "br_cgu_servidores_executivo_federal.remuneracao": ("cpf", "nome"),
+    "br_cgu_servidores_executivo_federal.cadastro_aposentados": ("cpf", "nome"),
+    "br_cgu_servidores_executivo_federal.cadastro_pensionistas": ("cpf", "nome"),
     "br_cgu_beneficios_cidadao.bpc": ("nis_favorecido", "cpf_favorecido"),
     "br_cgu_beneficios_cidadao.auxilio_brasil": ("nis_favorecido", "cpf_favorecido"),
     "br_cgu_beneficios_cidadao.novo_bolsa_familia": ("nis_favorecido", "cpf_favorecido"),
     "br_cgu_beneficios_cidadao.bolsa_familia_pagamento": ("nis_favorecido", "cpf_favorecido"),
     "br_cgu_beneficios_cidadao.auxilio_emergencial": ("cpf_beneficiario", "nis_beneficiario"),
+    "br_ms_sih.aihs_reduzidas": ("id_estabelecimento_cnes", "mes", "--por", "ano"),
 }
 
 

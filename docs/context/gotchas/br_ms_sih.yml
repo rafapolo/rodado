@@ -45,3 +45,14 @@ gotchas:
     colunas: [cid_principal_categoria, cid_principal_subcategoria]
     severidade: silencioso
     verificado: "2022: categoria 1.341.611 + subcategoria 11.179.303 = 12.520.914 AIH (total); 0 linhas com as duas — medido 2026-10-05"
+  - id: ordenada_pela_chave
+    resumo: "aihs_reduzidas está ordenada por ano e, dentro do ano, por id_estabelecimento_cnes: filtre pelo CNES cru (= ou IN), com ou sem ano, e o min/max dos row groups pula quase tudo. Qualquer outro filtro (município, CID, mes) lê o ano inteiro."
+    tabelas: [aihs_reduzidas]
+    colunas: [id_estabelecimento_cnes, ano]
+    severidade: aviso
+    detalhe: >
+      86 arquivos numerados de ~100 MB, nenhum com mais de um ano, com faixas contíguas de
+      id_estabelecimento_cnes (desempate por mes) dentro de cada ano. ano sozinho pula os
+      outros anos; id_municipio_estabelecimento, cid_* ou mes leem o ano inteiro. CNES vai como
+      texto de 7 dígitos com zero à esquerda ('0013846'), não número.
+    verificado: "86 arquivos, 1.647 row groups, zero sobrepostos em id_estabelecimento_cnes dentro do ano, 200.147.614 linhas e soma de hash iguais no beelink e no S3 — medido 2026-10-26; no db.rodado.xyz, busca por CNES (era 55 s fria antes da ordenação): 0013846 com ano = 2022 em 7,6 s na primeira consulta e 0,9 s depois, sem ano (17 anos) em 0,8-1,6 s; ano = 2022 com id_municipio_estabelecimento, sem o CNES, em 27 s"

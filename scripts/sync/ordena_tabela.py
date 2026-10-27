@@ -3,7 +3,7 @@
 
 Roda NO beelink (o ressincroniza_bq.py o chama por ssh depois da troca):
 
-    python3 ordena_tabela.py ~/rodado/<dataset>/<tabela> <chave> [desempate] [--mb 100]
+    python3 ordena_tabela.py ~/rodado/<dataset>/<tabela> <chave> [desempate] [--mb 100] [--por ano] [--mem 12GB]
 
 Ordem global, e cada arquivo recebe uma faixa contígua da chave: a busca por um valor cai
 num arquivo só, e dentro dele o min/max dos row groups pula o resto. Sem --mb, os nomes ficam
@@ -13,6 +13,15 @@ repara_views_beelink.py --apply.
 Lido do S3 pelo db.rodado.xyz, cada arquivo custa um rodapé na busca fria: a
 licitacao_participante (2026-10-26) levava 36 s desordenada, 16-23 s ordenada em 408
 arquivos e 2,3 s em 8 (0,3-0,5 s com cache).
+
+Com --por <coluna> (exige --mb), a ordem é coluna e depois chave: cada valor da coluna (o ano)
+ganha os seus arquivos, e dentro deles faixas contíguas da chave. Serve às tabelas consultadas
+por ano (SIA, SIH, ANS): ordem global só pela chave mataria o salto do filtro por ano. Cada faixa
+sai direto da fonte (WHERE ano = Y AND faixa da chave), relendo o ano uma vez por faixa: o sort do
+ano inteiro num temporário, que evitava a releitura, perde a faixa inteira quando erra. E erra: com
+o beelink sob pressão de swap (2026-10-27, 13 GB em zram + swap.img), faixas de ~100 MB saíram com
+linha trocada (4 em ~25) e uma com o parquet corrompido no disco, no 1.5.5 e no 1.4.5 (segfault);
+sem pressão, as mesmas partes releem estáveis. Cada faixa é conferida e regravada.
 
 Só troca depois de conferir contagem, colunas e soma de hash de todas as linhas.
 """
@@ -25,7 +34,7 @@ import sys
 import duckdb
 
 
-def ordena(diretorio, chave, desempate=None, mb=None):
+def ordena(diretorio, chave, desempate=None, mb=None, por=None, mem="12GB"):
     diretorio = os.path.expanduser(diretorio.rstrip("/"))
     orig = sorted(glob.glob(f"{diretorio}/*.parquet"))
     if not orig:
@@ -36,7 +45,7 @@ def ordena(diretorio, chave, desempate=None, mb=None):
     # temp_directory próprio: dois processos no mesmo ~/duckdb_tmp colidiram nos arquivos de
     # despejo e os dois morreram com "Could not read enough bytes" (2026-10-25)
     despejo = os.path.expanduser(f"~/duckdb_tmp/ordena_{os.getpid()}")
-    con = duckdb.connect(config={"memory_limit": "12GB", "threads": 14, "temp_directory": despejo})
+    con = duckdb.connect(config={"memory_limit": mem, "threads": 14, "temp_directory": despejo})
     lista = "[" + ",".join("'" + f.replace("'", "''") + "'" for f in orig) + "]"
     fonte = f"read_parquet({lista}, union_by_name=true, hive_partitioning=false)"
     colunas = [r[0] for r in con.execute(f"DESCRIBE SELECT * FROM {fonte}").fetchall()]
@@ -48,36 +57,81 @@ def ordena(diretorio, chave, desempate=None, mb=None):
     if mb:   # arquivos de ~mb MB, numerados: AC.parquet com NIS do país inteiro seria um nome mentiroso
         k = max(1, math.ceil(sum(map(os.path.getsize, orig)) / (mb * 1e6)))
         saida = [f"{diretorio}/{i:012d}.parquet" for i in range(k)]
-    # limites das faixas pelos quantis da chave; cada faixa é um COPY com WHERE ... ORDER BY.
-    # Nada de PARTITION_BY: no DuckDB 1.5 ele gravou arquivos corrompidos em tabelas grandes
-    # ("dictionary offset out of range", soma de hash errada, segfault — 2026-10-26)
-    k = len(saida)
-    q = ", ".join(str(i / k) for i in range(1, k))
-    limites = con.execute(f'SELECT quantile_disc("{chave}", [{q}]) FROM {fonte} WHERE "{chave}" IS NOT NULL'
-                          ).fetchone()[0] if k > 1 else []
-    limites = sorted(set(v for v in (limites or []) if v is not None))   # chave repetida demais junta faixas
+    if por and not mb:
+        sys.exit("--por exige --mb")
+    if por and por not in colunas:
+        sys.exit(f"{por} não é coluna de {diretorio}")
     shutil.rmtree(tmp, ignore_errors=True)
     os.makedirs(tmp)
     c = f'"{chave}"'
     lit = lambda v: repr(v) if isinstance(v, (int, float)) else "'" + str(v).replace("'", "''") + "'"
     partes = []
-    for i in range(len(limites) + 1):
-        conds = []
-        if i > 0:
-            conds.append(f"{c} >= {lit(limites[i - 1])}")
-        if i < len(limites):
-            conds.append(f"{c} < {lit(limites[i])}")
-        onde = " AND ".join(conds) or "true"
-        if i == len(limites):
-            onde = f"({onde}) OR {c} IS NULL"
-        destino = f"{tmp}/{i:012d}.parquet"
-        con.execute(f"""COPY (SELECT * FROM {fonte} WHERE {onde} ORDER BY {ordem})
-                        TO '{destino}' (FORMAT parquet, COMPRESSION zstd, ROW_GROUP_SIZE 122880)""")
-        partes.append(destino)
+    hash_de = lambda origem: con.execute(f"SELECT count(*), sum(hash(t)::HUGEINT) FROM {origem} t").fetchone()
+
+    def grava(origem, onde, destino):
+        """COPY ordenado conferido contra a origem: o beelink errou conta de vez em quando mesmo
+        depois do memtest (2026-10-26: uma linha de hash trocado em ~30 min de carga, ora na
+        gravação, ora no próprio hash). Diverge: recalcula os dois lados; segue divergindo: regrava."""
+        for tentativa in range(4):
+            con.execute(f"""COPY (SELECT * FROM {origem} WHERE {onde} ORDER BY {ordem})
+                            TO '{destino}' (FORMAT parquet, COMPRESSION zstd, ROW_GROUP_SIZE 122880)""")
+            for _ in range(2):
+                a = hash_de(f"(SELECT * FROM {origem} WHERE {onde})")
+                try:
+                    b = hash_de(f"read_parquet('{destino}')")
+                except duckdb.Error as e:   # "dictionary offset out of range": gravou corrompido, regravar
+                    b = str(e)[:80]
+                    break
+                if a == b:
+                    return
+            print(f"  {os.path.basename(destino)} divergiu ({a} x {b}), regravando", flush=True)
+        shutil.rmtree(tmp, ignore_errors=True)
+        sys.exit(f"{destino} divergiu da origem em 4 gravações, nada trocado")
+
+    def faixas(origem, k, filtro="true", aproximado=False):
+        """k arquivos com faixas contíguas da chave, lidos de `origem` onde `filtro`."""
+        # limites pelos quantis da chave; cada faixa é um COPY com WHERE ... ORDER BY.
+        # Nada de PARTITION_BY: no DuckDB 1.5 ele gravou arquivos corrompidos em tabelas grandes
+        # ("dictionary offset out of range", soma de hash errada, segfault — 2026-10-26)
+        q = ", ".join(str(i / k) for i in range(1, k))
+        # amostra basta quando a faixa só equilibra tamanho (approx_quantile não aceita VARCHAR)
+        # USING SAMPLE vale antes do WHERE da mesma consulta: amostra fora do filtro, senão sobram
+        # só as linhas do ano dentro de 1 milhão tiradas da tabela inteira
+        amostra = " USING SAMPLE 1000000 ROWS" if aproximado else ""
+        limites = con.execute(f'SELECT quantile_disc({c}, [{q}]) FROM (SELECT {c} FROM {origem} WHERE ({filtro}) '
+                              f'AND {c} IS NOT NULL){amostra}').fetchone()[0] if k > 1 else []
+        limites = sorted(set(v for v in (limites or []) if v is not None))   # chave repetida demais junta faixas
+        for i in range(len(limites) + 1):
+            conds = []
+            if i > 0:
+                conds.append(f"{c} >= {lit(limites[i - 1])}")
+            if i < len(limites):
+                conds.append(f"{c} < {lit(limites[i])}")
+            onde = " AND ".join(conds) or "true"
+            if i == len(limites):
+                onde = f"({onde}) OR {c} IS NULL"
+            destino = f"{tmp}/{len(partes):012d}.parquet"
+            grava(origem, f"({filtro}) AND ({onde})", destino)
+            partes.append(destino)
+
+    if por:
+        p = f'"{por}"'
+        tamanho = sum(map(os.path.getsize, orig))
+        grupos = con.execute(f"SELECT {p}, count(*) FROM {fonte} GROUP BY 1 ORDER BY 1 NULLS LAST").fetchall()
+        for valor, linhas in grupos:
+            filtro = f"{p} IS NULL" if valor is None else f"{p} = {lit(valor)}"
+            k = max(1, math.ceil(tamanho * linhas / n / (mb * 1e6)))
+            faixas(fonte, k, filtro, aproximado=True)
+            print(f"{por}={valor}: {linhas} linhas em {k} arquivos", flush=True)
+        saida = [f"{diretorio}/{i:012d}.parquet" for i in range(len(partes))]
+    else:
+        faixas(fonte, len(saida))
     faixa = math.ceil(n / len(partes))
     nlista = "[" + ",".join(f"'{p}'" for p in partes) + "]"
     marca = "SELECT count(*), sum(hash(t)::HUGEINT) FROM read_parquet({}, union_by_name=true, hive_partitioning=false) t"
     m0, m1 = con.execute(marca.format(lista)).fetchone(), con.execute(marca.format(nlista)).fetchone()
+    if m0 != m1:   # uma segunda conta antes de desistir: o erro pode estar no hash, não nos arquivos
+        m0, m1 = con.execute(marca.format(lista)).fetchone(), con.execute(marca.format(nlista)).fetchone()
     c1 = [r[0] for r in con.execute(f"DESCRIBE SELECT * FROM read_parquet({nlista}, union_by_name=true, hive_partitioning=false)").fetchall()]
     if m0 != m1 or c1 != colunas or len(partes) > len(saida):
         shutil.rmtree(tmp, ignore_errors=True)
@@ -111,9 +165,14 @@ def ordena(diretorio, chave, desempate=None, mb=None):
 
 if __name__ == "__main__":
     args = sys.argv[1:]
-    mb = None
+    mb = por = None
+    mem = "12GB"
     if "--mb" in args:
         i = args.index("--mb"); mb = float(args[i + 1]); del args[i:i + 2]
+    if "--por" in args:
+        i = args.index("--por"); por = args[i + 1]; del args[i:i + 2]
+    if "--mem" in args:   # menos que o padrão quando outra coisa pesada divide o beelink
+        i = args.index("--mem"); mem = args[i + 1]; del args[i:i + 2]
     if len(args) < 2:
         sys.exit(__doc__)
-    ordena(args[0], args[1], args[2] if len(args) > 2 else None, mb)
+    ordena(args[0], args[1], args[2] if len(args) > 2 else None, mb, por, mem)

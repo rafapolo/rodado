@@ -634,12 +634,18 @@ ORDENADA_POR = {
     ("br_cgu_licitacao_contrato", "licitacao_participante"): "cpf_cnpj_participante",
     ("br_cgu_servidores_executivo_federal", "cadastro_servidores"): "cpf",
     ("br_cgu_servidores_executivo_federal", "remuneracao"): "cpf",
+    ("br_cgu_servidores_executivo_federal", "cadastro_aposentados"): "cpf",
+    ("br_cgu_servidores_executivo_federal", "cadastro_pensionistas"): "cpf",
     ("br_cgu_beneficios_cidadao", "novo_bolsa_familia"): "nis_favorecido",
     ("br_cgu_beneficios_cidadao", "bolsa_familia_pagamento"): "nis_favorecido",
     ("br_cgu_beneficios_cidadao", "bpc"): "nis_favorecido",
     ("br_cgu_beneficios_cidadao", "auxilio_brasil"): "nis_favorecido",
     ("br_cgu_beneficios_cidadao", "auxilio_emergencial"): "cpf_beneficiario",
+    ("br_ms_sih", "aihs_reduzidas"): "id_estabelecimento_cnes",
 }
+# ordenadas por ano e, dentro do ano, pela chave (ordena_tabela.py --por ano): o filtro por ano
+# segue pulando arquivos. Entram aqui e em ORDENADA_POR
+ORDENADA_POR_ANO = {("br_ms_sih", "aihs_reduzidas")}
 
 
 def _particoes(con, dataset, tabela):
@@ -728,6 +734,11 @@ def _tamanho(con, tabelas, colunas, sql=""):
             if _chave_embrulhada(sql, c):   # cita a chave, mas de um jeito que não pula nada
                 avisos.append(f"{ds}.{t} está ordenada por {c}, mas a consulta usa {c} dentro de função "
                               f"ou LIKE '%...': assim ela lê a tabela inteira. Compare {c} cru (= ou IN)")
+        elif (ds, t) in ORDENADA_POR_ANO:
+            c = ORDENADA_POR[(ds, t)]
+            avisos.append(f"{ds}.{t} tem {_curto(n)} linhas e está ordenada por ano e, dentro do ano, por {c}: "
+                          f"filtre por ano e por {c} (= ou IN) e ela lê só os blocos certos; ano sozinho pula "
+                          f"os outros anos, qualquer outro filtro (sigla_uf, mes) lê o ano inteiro")
         elif (ds, t) in ORDENADA_POR:
             c = ORDENADA_POR[(ds, t)]
             avisos.append(f"{ds}.{t} tem {_curto(n)} linhas e está ordenada por {c}: filtre por {c} "
