@@ -93,42 +93,35 @@
             <div class="stat-label">consulta a API pública <a href="https://db.rodado.xyz/llm">db.rodado.xyz</a></div>
           </div>
         </div>
-        <div class="filters">
-          <input type="search" id="toolSearch" aria-label="Buscar tabelas e colunas" oninput="applyFilters()" placeholder="Buscar tabelas, colunas…" class="search-input">
-          <select id="categoryFilter" aria-label="Filtrar por categoria" onchange="applyFilters()" class="category-select">
-            <option value="">Todas as categorias</option>
-            <option value="Desigualdade &amp; Sociedade">Desigualdade &amp; Sociedade</option><option value="Educação &amp; Ciência">Educação &amp; Ciência</option><option value="Saúde">Saúde</option><option value="Política, Justiça &amp; Segurança">Política, Justiça &amp; Segurança</option><option value="Estado &amp; Políticas Públicas">Estado &amp; Políticas Públicas</option><option value="Economia &amp; Trabalho">Economia &amp; Trabalho</option><option value="Território &amp; Ambiente">Território &amp; Ambiente</option>
-          </select>
-        </div>
-      </div>
-      <section class="connect" aria-labelledby="connect-title">
-        <h2 class="connect-title" id="connect-title"><i class="fa-solid fa-plug"></i> Conectar ao seu agente</h2>
-        <div class="connect-box">
-          <div class="connect-tabs" role="tablist" aria-label="Cliente MCP"><button type="button" role="tab" class="connect-tab" id="tab-claude-code" aria-controls="painel-claude-code" aria-selected="true" tabindex="0">Claude Code</button><button type="button" role="tab" class="connect-tab" id="tab-claude-app" aria-controls="painel-claude-app" aria-selected="false" tabindex="-1">Claude.ai / Desktop</button><button type="button" role="tab" class="connect-tab" id="tab-cursor" aria-controls="painel-cursor" aria-selected="false" tabindex="-1">Cursor</button><button type="button" role="tab" class="connect-tab" id="tab-vscode" aria-controls="painel-vscode" aria-selected="false" tabindex="-1">VS Code</button><button type="button" role="tab" class="connect-tab" id="tab-local" aria-controls="painel-local" aria-selected="false" tabindex="-1">Local</button></div>
-          <div class="connect-panel" role="tabpanel" id="painel-claude-code" aria-labelledby="tab-claude-code">
-            <p class="connect-hint">Num terminal:</p>
-            <div class="connect-cmd"><pre>claude mcp add --transport http rodado https://db.rodado.xyz/mcp</pre><button type="button" class="tools-copy" aria-label="Copiar">copiar</button></div>
-          </div>
-          <div class="connect-panel" role="tabpanel" id="painel-claude-app" aria-labelledby="tab-claude-app" hidden>
-            <p class="connect-hint">Configurações → Conectores → Adicionar conector personalizado, e cole a URL:</p>
-            <div class="connect-cmd"><pre>https://db.rodado.xyz/mcp</pre><button type="button" class="tools-copy" aria-label="Copiar">copiar</button></div>
-          </div>
-          <div class="connect-panel" role="tabpanel" id="painel-cursor" aria-labelledby="tab-cursor" hidden>
-            <p class="connect-hint">Em <code>~/.cursor/mcp.json</code>:</p>
-            <div class="connect-cmd"><pre>{"mcpServers": {"rodado": {"url": "https://db.rodado.xyz/mcp"}}}</pre><button type="button" class="tools-copy" aria-label="Copiar">copiar</button></div>
-          </div>
-          <div class="connect-panel" role="tabpanel" id="painel-vscode" aria-labelledby="tab-vscode" hidden>
-            <p class="connect-hint">Num terminal:</p>
-            <div class="connect-cmd"><pre>code --add-mcp '{"name":"rodado","type":"http","url":"https://db.rodado.xyz/mcp"}'</pre><button type="button" class="tools-copy" aria-label="Copiar">copiar</button></div>
-          </div>
-          <div class="connect-panel" role="tabpanel" id="painel-local" aria-labelledby="tab-local" hidden>
-            <p class="connect-hint">Num clone, com <code>uv</code>:</p>
-            <div class="connect-cmd"><pre>git clone --depth 1 https://github.com/rafapolo/rodado &amp;&amp; cd rodado
+        <section class="connect" aria-labelledby="connect-title">
+          <h2 class="connect-title" id="connect-title"><i class="fa-solid fa-plug"></i> Conectar ao seu agente</h2>
+          <div class="connect-box">
+            <div class="connect-tabs" role="tablist" aria-label="Cliente MCP"><button type="button" role="tab" class="connect-tab" id="tab-claude-code" aria-controls="painel-claude-code" aria-selected="true" tabindex="0">Claude Code</button><button type="button" role="tab" class="connect-tab" id="tab-claude-app" aria-controls="painel-claude-app" aria-selected="false" tabindex="-1">Claude.ai / Desktop</button><button type="button" role="tab" class="connect-tab" id="tab-cursor" aria-controls="painel-cursor" aria-selected="false" tabindex="-1">Cursor</button><button type="button" role="tab" class="connect-tab" id="tab-vscode" aria-controls="painel-vscode" aria-selected="false" tabindex="-1">VS Code</button><button type="button" role="tab" class="connect-tab" id="tab-local" aria-controls="painel-local" aria-selected="false" tabindex="-1">Local</button></div>
+            <div class="connect-panel" role="tabpanel" id="painel-claude-code" aria-labelledby="tab-claude-code">
+              <p class="connect-hint">Num terminal:</p>
+              <div class="connect-cmd"><pre>claude mcp add --transport http rodado https://db.rodado.xyz/mcp</pre><button type="button" class="tools-copy" aria-label="Copiar">copiar</button></div>
+            </div>
+            <div class="connect-panel" role="tabpanel" id="painel-claude-app" aria-labelledby="tab-claude-app" hidden>
+              <p class="connect-hint">Configurações → Conectores → Adicionar conector personalizado, e cole a URL:</p>
+              <div class="connect-cmd"><pre>https://db.rodado.xyz/mcp</pre><button type="button" class="tools-copy" aria-label="Copiar">copiar</button></div>
+            </div>
+            <div class="connect-panel" role="tabpanel" id="painel-cursor" aria-labelledby="tab-cursor" hidden>
+              <p class="connect-hint">Em <code>~/.cursor/mcp.json</code>:</p>
+              <div class="connect-cmd"><pre>{"mcpServers": {"rodado": {"url": "https://db.rodado.xyz/mcp"}}}</pre><button type="button" class="tools-copy" aria-label="Copiar">copiar</button></div>
+            </div>
+            <div class="connect-panel" role="tabpanel" id="painel-vscode" aria-labelledby="tab-vscode" hidden>
+              <p class="connect-hint">Num terminal:</p>
+              <div class="connect-cmd"><pre>code --add-mcp '{"name":"rodado","type":"http","url":"https://db.rodado.xyz/mcp"}'</pre><button type="button" class="tools-copy" aria-label="Copiar">copiar</button></div>
+            </div>
+            <div class="connect-panel" role="tabpanel" id="painel-local" aria-labelledby="tab-local" hidden>
+              <p class="connect-hint">Num clone, com <code>uv</code>:</p>
+              <div class="connect-cmd"><pre>git clone --depth 1 https://github.com/rafapolo/rodado &amp;&amp; cd rodado
 claude mcp add rodado -- uv run "$PWD/mcp/mcp_server.py"</pre><button type="button" class="tools-copy" aria-label="Copiar">copiar</button></div>
+            </div>
           </div>
-        </div>
-        <p class="tools-note">Hospedado e público: nada a instalar, sem SSH nem dado local. Credencial só a partir de 27/10/2026 — ver <a href="https://github.com/rafapolo/rodado/blob/main/mcp/MCP.md">mcp/MCP.md</a>.</p>
-      </section>
+          <p class="tools-note">Hospedado e público: nada a instalar, sem SSH nem dado local. Credencial só a partir de 27/10/2026 — ver <a href="https://github.com/rafapolo/rodado/blob/main/mcp/MCP.md">mcp/MCP.md</a>.</p>
+        </section>
+      </div>
     </header>
 
     <section class="tools-panel">
@@ -162,6 +155,16 @@ claude mcp add rodado -- uv run "$PWD/mcp/mcp_server.py"</pre><button type="butt
       <div class="connect-cmd"><pre><code>Use o espelho de dados públicos em https://db.rodado.xyz/llm como conector: leia o guia e siga o fluxo dele (exemplos → tabelas → contexto → confere → query) para responder: &lt;sua pergunta&gt;. Cite o link /q de cada número.</code></pre><button type="button" class="tools-copy" aria-label="Copiar">copiar</button></div>
       <p class="tools-desc">Segundo o guia, desde 26/10/2026 as rotas além dele pedem credencial (usuário e senha, ou token), que quem faz a pergunta precisa fornecer ao agente.</p>
     </section>
+
+    <div class="filters-bar" role="search" aria-label="Filtrar datasets e temas">
+      <div class="filters">
+        <input type="search" id="toolSearch" aria-label="Buscar tabelas e colunas" oninput="applyFilters()" placeholder="Buscar tabelas, colunas…" class="search-input">
+        <select id="categoryFilter" aria-label="Filtrar por categoria" onchange="applyFilters()" class="category-select">
+          <option value="">Todas as categorias</option>
+          <option value="Desigualdade &amp; Sociedade">Desigualdade &amp; Sociedade</option><option value="Educação &amp; Ciência">Educação &amp; Ciência</option><option value="Saúde">Saúde</option><option value="Política, Justiça &amp; Segurança">Política, Justiça &amp; Segurança</option><option value="Estado &amp; Políticas Públicas">Estado &amp; Políticas Públicas</option><option value="Economia &amp; Trabalho">Economia &amp; Trabalho</option><option value="Território &amp; Ambiente">Território &amp; Ambiente</option>
+        </select>
+      </div>
+    </div>
 
     <!-- datasets:inicio -->
     <section class="tools-panel datasets-panel" id="datasets">
