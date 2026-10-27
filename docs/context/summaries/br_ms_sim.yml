@@ -3,6 +3,7 @@
 dataset: br_ms_sim
 tabelas:
   microdados:
+    ultima_data: "2026-05-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma declaração de óbito (DO) do SIM"
     chave: "(sigla_uf, sequencial_obito) — confirmada em ano = 2024: 1.532.015 linhas = 1.532.015 distintos; sequencial_obito sozinho também deu 1.532.015 distintos nesse ano"
     tempo: {natureza: serie_diaria, coluna: "data_obito (ano = ano do óbito; data_cadastro e data_recebimento são datas do sistema)", cobertura: "1996–2026 (2026 só até 2026-05-31)"}
@@ -21,6 +22,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "ano = 2024: 1.532.015 linhas; 1.532.015 distintos de (sigla_uf, sequencial_obito); todas com data_obito entre 2024-01-01 e 2024-12-31; tipo_obito só 'nao-fetal' — medido 2026-10-27"
   municipio:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × ano com o total de óbitos"
     chave: "nenhuma: 132.868 linhas, 132.853 distintos de (ano, id_municipio); 15 repetem"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1996–2019 (para aqui; as outras tabelas agregadas vão até 2026)"}
@@ -32,6 +34,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "132.868 linhas; 132.853 distintos de (ano, id_municipio); soma de numero_obitos em 2019 = 1.347.263; ano 1996–2019 — medido 2026-10-27"
   municipio_causa:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × ano × causa básica (CID-10 de 4 caracteres)"
     chave: "nenhuma: ano = 2024: 495.722 linhas, 495.265 distintos de (id_municipio, causa_basica); 830 linhas com id_municipio nulo"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1996–2026"}
@@ -44,6 +47,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "ano = 2024: soma de numero_obitos 1.532.015 (igual à contagem de microdados); 495.722 linhas — medido 2026-10-27"
   municipio_causa_idade:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × ano × causa básica × idade em anos"
     chave: "nenhuma: ano = 2024: 1.178.176 linhas, 1.177.774 distintos de (id_municipio, causa_basica, idade)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1996–2026"}
@@ -56,6 +60,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "ano = 2024: soma 1.532.015; 1.178.176 linhas — medido 2026-10-27"
   municipio_causa_idade_sexo_raca:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × ano × causa básica × idade × sexo × raça/cor"
     chave: "nenhuma: ano = 2024: 1.340.506 linhas, 1.340.225 distintos de (id_municipio, causa_basica, idade, sexo, raca_cor)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1996–2026"}

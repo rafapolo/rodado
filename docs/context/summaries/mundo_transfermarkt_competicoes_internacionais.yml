@@ -3,6 +3,7 @@
 dataset: mundo_transfermarkt_competicoes_internacionais
 tabelas:
   champions_league:
+    ultima_data: "2024-06-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma partida da Champions League (mandante × visitante), com estatísticas e perfil dos dois lados em colunas _mandante/_visitante"
     chave: "(temporada, fase, tipo_fase, time_mandante, time_visitante) (2617 linhas = 2617 distintos); (data, time_mandante, time_visitante) também único"
     tempo: {natureza: serie_de_periodos, coluna: data, cobertura: "2003-09-15–2024-06-01 (temporada '2003,2004' a '2023,2024')"}

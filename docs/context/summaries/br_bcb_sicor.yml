@@ -3,6 +3,7 @@
 dataset: br_bcb_sicor
 tabelas:
   operacao:
+    ultima_data: "2026-02-27"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma operação de crédito rural (contrato ou parcela de cédula) contratada, identificada por id_referencia_bacen + numero_ordem; sem município (ver gotcha operacao_sem_municipio)"
     chave: "(id_referencia_bacen, numero_ordem): em ano_emissao = 2024, 2.328.940 linhas = 2.328.940 pares, mas só 1.887.846 id_referencia_bacen distintos (o mesmo id repete com ordens diferentes). Não use id_referencia_bacen sozinho."
     tempo: {natureza: serie_anual, coluna: data_emissao, cobertura: "2013-01-02–2026-02-27 (ano_emissao 2013–2026; 2026 parcial)"}
@@ -22,6 +23,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, area_financiada, taxa_juro]
     verificado: "28.440.266 linhas; ano_emissao = 2024: 2.328.940 linhas, pares únicos, soma valor_parcela_credito R$ 379,78 bi; linhas por ano 2013–2026 de 1,58 M (2016) a 2,80 M (2013), 2026 com 334.644 — medido 2026-10-27"
   empreendimento:
+    ultima_data: "2026-09-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um empreendimento financiado (produto × variedade × modalidade × finalidade, com ciclo de produção); catálogo ligado à operacao por id_empreendimento"
     chave: "id_empreendimento: 3.316 linhas = 3.316 distintos"
     tempo: {natureza: sem_tempo, coluna: data_inicio, cobertura: "1984-01-01–2026-09-24 (data_inicio de vigência do cadastro; data_fim nula em 51%)"}
@@ -35,6 +37,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "3.316 linhas, id_empreendimento único — medido 2026-10-27"
   fonte_recurso:
+    ultima_data: "2026-07-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma fonte de recursos do crédito rural (LCA, poupança rural, BNDES, Tesouro etc.), com indicador de recurso público"
     chave: "id_fonte_recurso: 37 linhas = 37 distintos"
     tempo: {natureza: sem_tempo, coluna: data_inicio, cobertura: "2011-11-01–2026-07-24 (vigência da fonte)"}
@@ -60,6 +63,7 @@ tabelas:
     grao: "uma tradução (id_tabela, nome_coluna, chave) → valor para códigos das tabelas do SICOR"
     use_para: "decodificar id_programa, id_categoria_emitente, id_instrumento_credito, id_tipo_*, id_evento, id_status e id_motivo_desclassificacao; deduplicar antes de juntar (gotcha dicionario_duplicado)."
   liberacao:
+    ultima_data: "2026-10-26"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma liberação (desembolso) de parcela de uma operação numa data: id_referencia_bacen × numero_ordem × data_liberacao"
     chave: "(id_referencia_bacen, numero_ordem, data_liberacao): em ano = 2024, 2.520.883 linhas = 2.520.883 distintos; só 2.400.412 pares (id, ordem), ou seja, uma operação libera em mais de uma data"
     tempo: {natureza: serie_diaria, coluna: data_liberacao, cobertura: "partição ano de data_liberacao (a tabela tem datas inválidas: ano de 201 a 2029; filtre por ano_emissao ou ano 2013–2026)"}
@@ -73,6 +77,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "22.373.115 linhas; ano = 2024: 2.520.883 linhas, chave de 3 colunas única, soma R$ 375,93 bi; existem linhas com ano = 2029 (1 linha, ex.: data_liberacao 2029-12-03) e ano a partir de 201 — medido 2026-10-27"
   saldo:
+    ultima_data: "2026-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "o saldo devedor de uma operação de crédito rural num mês: id_referencia_bacen × numero_ordem × (ano, mes)"
     chave: "(ano, mes, id_referencia_bacen, numero_ordem): em ano = 2026 e mes = 1, 4.007.547 linhas = 4.007.547 pares distintos"
     tempo: {natureza: soma_de_retratos, coluna: ano e mes, cobertura: "2013-01–2026-01 (12 meses por ano em 2013–2025; 2026 só mes 1)"}
@@ -89,6 +94,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "638.317.660 linhas; ano = 2026 e mes = 1: 4.007.547 linhas, pares únicos; id_situacao_operacao 1 a 13 — medido 2026-10-27"
   operacoes_desclassificadas:
+    ultima_data: "2026-10-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma desclassificação (total ou parcial) de uma operação de crédito rural, com motivo e valor"
     chave: "nenhuma: (id_referencia_bacen, numero_ordem) repete em 30 linhas (15.852 linhas, 15.822 pares); com data_desclassificacao e id_motivo_desclassificacao fica único"
     tempo: {natureza: serie_diaria, coluna: data_desclassificacao, cobertura: "2016-09-20–2026-10-06"}
@@ -161,6 +167,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "154.179 linhas, chave de 4 colunas única; 654 pares (id, ordem) — medido 2026-10-27"
   proagro_cop:
+    ultima_data: "2026-10-13"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma comunicação de ocorrência (COP) de perda do Proagro: id_referencia_bacen × numero_ordem, com evento e status"
     chave: "nenhuma: (id_referencia_bacen, numero_ordem) repete (1.007.340 linhas, 996.080 pares; gotcha proagro_cop_chave_repetida)"
     tempo: {natureza: serie_anual, coluna: data_comunicacao, cobertura: "2013-01-25–2026-10-13 (ano_emissao 2013–2026, nulo em 1%; gotcha proagro_sem_ano_na_fonte)"}
@@ -185,6 +192,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.007.340 linhas, 996.080 pares — medido 2026-10-27"
   proagro_rcp:
+    ultima_data: "2026-10-13"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um relatório de comprovação de perdas (RCP) do Proagro, um por operação e ordem"
     chave: "(id_referencia_bacen, numero_ordem): 848.652 linhas = 848.652 pares; 836.521 id_referencia_bacen"
     tempo: {natureza: serie_anual, coluna: data_entrega, cobertura: "2014-10-28–2026-10-13 (ano_emissao 2014–2026)"}
@@ -219,6 +227,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.764.450 linhas, chave única — medido 2026-10-27"
   proagro_parcela:
+    ultima_data: "2026-10-13"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma parcela de pagamento do Proagro de uma operação, por natureza da parcela e data base"
     chave: "nenhuma: em ano_emissao = 2022, 1.337.854 linhas contra 1.334.878 combinações de (id_referencia_bacen, numero_ordem, id_natureza_parcela, data_base), então 2.976 linhas repetem"
     tempo: {natureza: serie_diaria, coluna: data_pagamento, cobertura: "2013-01-04–2026-10-13 (data_base 2013–2026; ano_emissao nulo em 2,7%, gotcha proagro_sem_ano_na_fonte)"}
@@ -235,6 +244,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "13.432.346 linhas; ano_emissao = 2022: 1.337.854 linhas, 1.334.878 combinações da chave de 4 colunas — medido 2026-10-27"
   proagro_sumula_julgamento:
+    ultima_data: "2026-10-13"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma súmula de julgamento (decisão) do Proagro por operação e ordem"
     chave: "(id_referencia_bacen, numero_ordem): 838.859 linhas = 838.859 pares; 826.729 id_referencia_bacen"
     tempo: {natureza: serie_diaria, coluna: data_decisao, cobertura: "2017-03-01–2026-10-13 (ano_emissao 2016–2026)"}

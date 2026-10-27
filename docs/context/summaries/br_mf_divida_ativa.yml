@@ -3,6 +3,7 @@
 dataset: br_mf_divida_ativa
 tabelas:
   fgts:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma inscrição em dívida ativa do FGTS e seu devedor, no estoque de um trimestre"
     chave: "ano, trimestre, numero_inscricao, cpf_cnpj (única; em 2026 tri 2, 541.698 linhas, numero_inscricao sozinho também é único)"
     tempo: {natureza: soma_de_retratos, coluna: "ano, trimestre", cobertura: "2020 tri 1–2026 tri 2 (26 trimestres)"}
@@ -19,6 +20,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "11.543.880 linhas; 2026 tri 2: 541.698 = 541.698 pares (numero_inscricao,cpf_cnpj) = 541.698 numero_inscricao; 2020 tri 2 e tri 3 têm as mesmas 440.888 linhas e R$ 37,80 bi (as duas inscrições coincidem em 440.888 pares): o retrato de tri 3 de 2020 repete o de tri 2 — medido 2026-10-27"
   previdenciario:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma inscrição em dívida ativa previdenciária e seu devedor, no estoque de um trimestre"
     chave: "ano, trimestre, numero_inscricao, cpf_cnpj (única; em 2026 tri 2, 3.606.529 linhas, numero_inscricao sozinho também é único)"
     tempo: {natureza: soma_de_retratos, coluna: "ano, trimestre", cobertura: "2020 tri 1–2026 tri 2 (26 trimestres)"}

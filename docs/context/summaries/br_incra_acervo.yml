@@ -3,6 +3,7 @@
 dataset: br_incra_acervo
 tabelas:
   sigef_parcelas:
+    ultima_data: "2026-09-22"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma parcela de imóvel rural certificada no SIGEF (atributos e centroide)"
     chave: "parcela_co"
     tempo: {natureza: retrato_atual, coluna: data_aprov, cobertura: "2013-11-19–2026-09-22 (data de aprovação)"}
@@ -28,6 +29,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.867.095 linhas = 1.867.095 distintos de parcela_co (sigef_parcelas tem 1.841.258) — medido 2026-10-27"
   snci_parcelas:
+    ultima_data: "2024-10-14"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um imóvel certificado no SNCI (sistema anterior ao SIGEF), com centroide"
     chave: "nenhuma: num_certif repete (52.744 distintos em 52.817 linhas; 56 valores repetidos) e (num_certif, cod_imovel) também (52.748)"
     tempo: {natureza: retrato_atual, coluna: data_certi, cobertura: "2004-04-26–2027-08-19 (há data futura: 1 linha)"}
@@ -51,6 +53,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "52.761 linhas; 52.687 num_certif distintos — medido 2026-10-27"
   assentamentos:
+    ultima_data: "2021-09-29"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um registro de projeto de assentamento do INCRA (cd_sipra), com centroide"
     chave: "nenhuma: cd_sipra repete (8.097 distintos em 8.216 linhas; 34 códigos repetidos, RO0132000 aparece 78 vezes com mesmo nome e mesma área)"
     tempo: {natureza: retrato_atual, coluna: data_de_cr, cobertura: "1930-10-07–2021-09-29 (data de criação do projeto)"}

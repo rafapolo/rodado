@@ -3,6 +3,7 @@
 dataset: br_presidencia_comunicabr
 tabelas:
   municipio:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um indicador (bloco × programa × variável) × município × ano, da coleta mais recente do painel ComunicaBR"
     chave: "(id_municipio, bloco, programa, variavel, ano): 1.551.434 linhas e 1.551.434 distintos. Vale enquanto houver uma só coleta (data_coleta única = 2026-10-13); com duas coletas repete, ver gotcha uma_coleta_por_arquivo"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2023–2026 (2026 parcial, até o mês de 'ref', que muda por variável)"}
@@ -18,6 +19,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.551.434 linhas; 1.551.434 distintos da chave; exemplo Nova Friburgo (3303401), Bolsa Família 2025: Famílias Beneficiadas 8.072, Valor transferido R$ 73.931.653 — medido 2026-10-27. Gotchas: uma_coleta_por_arquivo, total_e_partes_na_mesma_coluna, ano_corrente_parcial, percentual_em_fracao_e_acima_de_1"
   uf:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de municipio, mas por UF: um indicador × UF × ano"
     chave: "(sigla_uf, bloco, programa, variavel, ano): 14.460 linhas e 14.460 distintos"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2023–2026"}
@@ -30,6 +32,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "14.460 linhas; 14.460 distintos da chave — medido 2026-10-27"
   brasil:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de municipio, mas nacional: um indicador × ano"
     chave: "(bloco, programa, variavel, ano): 594 linhas e 594 distintos"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2023–2026 (134, 147, 147 e 166 linhas por ano)"}

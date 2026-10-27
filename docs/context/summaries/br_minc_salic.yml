@@ -22,6 +22,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "significado de apoiado"]
     verificado: "214.030 linhas, 214.030 ids distintos; origem 153.748 dump_2017 (numero 000001–161714) + 60.282 api_salic (164380–266608); situacao top 'Projeto Arquivado' 45.329 — medido 2026-10-27. Gotchas: numero_repetido, origem_e_retrato_2014, api_e_legado_sao_tabelas_diferentes"
   projetos_2014:
+    ultima_data: "2014-02-10"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um projeto no retrato do cadastro de 2014-02 (mesmo grão de projetos)"
     chave: "id (126.969 linhas = 126.969 distintos)"
     tempo: {natureza: retrato_atual, coluna: updated_at, cobertura: "retrato até 2014-02-10"}
@@ -58,6 +59,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "63.350 linhas, 63.350 pronac — medido 2026-10-27"
   captacoes:
+    ultima_data: "2026-10-22"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um recibo de doação/patrocínio a um projeto (pronac × doador × valor × data)"
     chave: "nenhuma: 194.557 linhas, 193.208 linhas distintas (1.349 duplicatas exatas); em (pronac, cgccpf, valor, data_recibo) 193.204 distintos"
     tempo: {natureza: serie_diaria, coluna: data_recibo, cobertura: "2012-12-27–2026-10-22"}
@@ -70,6 +72,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "origem das duplicatas"]
     verificado: "194.557 linhas; soma valor 15.577.603.217,87; 18.291 pronac distintos; 193.208 linhas distintas — medido 2026-10-27. Gotchas: api_e_legado_sao_tabelas_diferentes, captacoes_fecham_com_valor_captado"
   captacoes_detalhe:
+    ultima_data: "2026-10-22"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de captacoes, com nomes de projeto, proponente, UF, segmento e doador (mesmas 194.557 linhas)"
     chave: "nenhuma: mesmo grão de captacoes"
     tempo: {natureza: serie_diaria, coluna: data_recibo, cobertura: "2012-12-27–2026-10-22"}
@@ -81,6 +84,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "194.557 linhas (o perfil dizia 0) — medido 2026-10-27"
   incentivos:
+    ultima_data: "2014-12-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um incentivo (doação de um patrocinador a um projeto) do legado"
     chave: "id (173.754 linhas = 173.754 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: "last_recibo_at (data do último recibo)", cobertura: "2000-01-29–2014-12-30; created_at 2013–2016"}
@@ -93,6 +97,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "173.754 linhas e ids; soma valor 10.054.381.898,65; created_at só em 2013, 2014 e 2016 — medido 2026-10-27. Gotcha: api_e_legado_sao_tabelas_diferentes"
   incentivos_detalhe:
+    ultima_data: "2014-12-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de incentivos, com pronac, projeto, patrocinador, proponente e UF"
     chave: "nenhuma: mesmo grão de incentivos"
     tempo: {natureza: serie_de_periodos, coluna: last_recibo_at, cobertura: "2000-01-29–2014-12-30"}
@@ -104,6 +109,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "173.754 linhas (o perfil dizia 0) — medido 2026-10-27"
   recibos:
+    ultima_data: "2014-12-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um recibo de um incentivo do legado"
     chave: "id (245.640 linhas = 245.640 distintos)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "1999-05-16–2014-12-30"}
@@ -115,6 +121,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "por que valor é pequeno"]
     verificado: "245.640 linhas e ids; soma valor 38.525.367, máximo 999 — medido 2026-10-27"
   pagamentos:
+    ultima_data: "2026-10-27"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um pagamento comprovado na prestação de contas de um projeto (comprovante × item da planilha × arquivo)"
     chave: "nenhuma: id_comprovante_pagamento tem 2.848.254 distintos em 2.848.765 linhas (437 ids repetidos) e há 457 linhas duplicadas exatas (2.848.308 distintas)"
     tempo: {natureza: serie_diaria, coluna: data_pagamento, cobertura: "2010–2026 plausível; 1.905 datas impossíveis (1900 a 9093)"}
@@ -130,6 +137,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2.848.765 linhas; soma valor_pagamento 13.274.824.115,91; entre 2010 e 2026 13.267.638.700,77; 2025: 632.255 linhas — medido 2026-10-27. Gotchas: pagamento_ao_proprio_proponente, pagamentos_datas_e_nomes"
   pagamentos_detalhe:
+    ultima_data: "2026-10-27"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de pagamentos, com projeto, proponente, UF e item (2.848.765 linhas)"
     chave: "nenhuma: mesmo grão de pagamentos"
     tempo: {natureza: serie_diaria, coluna: data_pagamento, cobertura: "mesmo de pagamentos"}
@@ -141,6 +149,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2.848.765 linhas (o perfil dizia 0) — medido 2026-10-27"
   entidades:
+    ultima_data: "2016-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma entidade (proponente e/ou patrocinador, pessoa física ou jurídica) do SALIC"
     chave: "id (217.643 linhas = 217.643 distintos). cnpjcpf não é único (183.492 distintos) e mistura CPF mascarado"
     tempo: {natureza: retrato_atual, coluna: updated_at, cobertura: "dump_2017 até 2016; api_salic 96.744 linhas sem datas"}
@@ -157,6 +166,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "significado de empresa e patrocinador"]
     verificado: "217.643 linhas e ids; origem 120.899 dump_2017 + 96.744 api_salic (contadores só no dump) — medido 2026-10-27. Gotchas: cpf_completado, origem_e_retrato_2014"
   entidades_2014:
+    ultima_data: "2014-02-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de entidades, no retrato de 2014"
     chave: "id (102.448 linhas = 102.448 distintos)"
     tempo: {natureza: retrato_atual, coluna: "retrato de 2014-02", cobertura: "2014-02"}

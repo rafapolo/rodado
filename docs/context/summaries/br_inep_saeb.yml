@@ -3,6 +3,7 @@
 dataset: br_inep_saeb
 tabelas:
   aluno_ef_2ano:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um aluno do 2º ano do EF × disciplina (LP ou MT) numa edição do Saeb"
     chave: "(ano, id_aluno, disciplina): 305.422 linhas = 305.422 distintos"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2019–2023 (2019, 2021, 2023)"}
@@ -42,6 +43,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "ano = 2023: 5.005.814 linhas, chave confirmada; MT presenca = 1: 2.093.283 linhas, média simples 251,4 — medido 2026-10-27"
   aluno_em_34ano:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um aluno do 3º/4º ano do Ensino Médio × disciplina no Saeb 2023"
     chave: "(id_aluno, disciplina) em ano = 2023: 2.873.104 linhas = 2.873.104 distintos"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2023–2023"}
@@ -55,6 +57,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2.873.104 linhas, chave confirmada, 1 ano — medido 2026-10-27"
   proficiencia:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um aluno × disciplina × série numa edição, microdado empilhado de várias edições (94 milhões de linhas)"
     chave: "(id_aluno, disciplina, serie) dentro de ano = 2021: 14.039.962 linhas = 14.039.962 distintos"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1995–2021 (14 edições; sem 2023)"}
@@ -68,6 +71,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "ano = 2021: 14.039.962 linhas, chave confirmada; outros anos não medidos — medido 2026-10-27"
   brasil:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma média e distribuição por nível de proficiência × ano × rede × localização × disciplina × série, nacional"
     chave: "(ano, rede, localizacao, disciplina, serie): 856 = 856"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1995–2023"}
@@ -81,6 +85,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "856 linhas, chave confirmada — medido 2026-10-27"
   uf:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma UF × ano × rede × localização × disciplina × série (média e níveis)"
     chave: "(ano, rede, localizacao, sigla_uf, disciplina, serie): 20.122 = 20.122"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1995–2023"}
@@ -94,6 +99,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "20.122 linhas, chave confirmada — medido 2026-10-27"
   municipio:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × ano × rede × localização × disciplina × série (média e níveis)"
     chave: "(ano, rede, localizacao, id_municipio, disciplina, serie): 1.994.588 = 1.994.588"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2011–2023"}
@@ -107,6 +113,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.994.588 linhas, chave confirmada, anos 2011–2023 — medido 2026-10-27"
   brasil_taxa_alfabetizacao:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma taxa de alfabetização nacional × rede × localização × área (capital/interior/total), 2021"
     chave: "(rede, localizacao, area): 63 = 63"
     tempo: {natureza: retrato_atual, coluna: ano, cobertura: "2021–2021"}
@@ -119,6 +126,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "63 linhas, chave confirmada — medido 2026-10-27"
   uf_taxa_alfabetizacao:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma taxa de alfabetização por UF × rede × localização × área, 2021"
     chave: "(sigla_uf, rede, localizacao, area): 1.516 = 1.516"
     tempo: {natureza: retrato_atual, coluna: ano, cobertura: "2021–2021"}

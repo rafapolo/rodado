@@ -4,6 +4,7 @@
 dataset: br_me_rais
 tabelas:
   microdados_vinculos:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um vínculo de emprego formal × ano-base. Uma pessoa com dois empregos tem duas linhas, e o vínculo desligado no meio do ano também entra"
     chave: "nenhuma: a RAIS pública não tem identificador de pessoa nem de estabelecimento, e o vínculo não se liga à linha do estabelecimento"
     tempo:
@@ -23,6 +24,7 @@ tabelas:
     nao_use_para: "emprego informal; seguir uma pessoa ou um estabelecimento no tempo (sem identificador); saldo de admissões no ano corrente (é o CAGED)"
     verificado: "ano 2022: 78.488.470 linhas, 52.790.864 com vinculo_ativo_3112 = '1', igual à soma de quantidade_vinculos_ativos dos estabelecimentos; remuneração média dos ativos R$ 3.861 — medido 2026-10-26"
   microdados_estabelecimentos:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um estabelecimento declarante × ano-base, inclusive o que declarou não ter empregado (RAIS negativa)"
     chave: "nenhuma: sem CNPJ na versão pública"
     tempo:

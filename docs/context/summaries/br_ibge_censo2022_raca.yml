@@ -3,6 +3,7 @@
 dataset: br_ibge_censo2022_raca
 tabelas:
   fecundidade_idade:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × cor/raça × grupo de idade da mulher × variável (mulheres, ou filhos nascidos vivos), Censo 2022"
     chave: "(id_municipio, cor_raca, categoria_principal, variavel) — 1.247.904 linhas = 1.247.904 chaves distintas; 5.571 municípios"
     tempo: {natureza: retrato_atual, coluna: ano, cobertura: "2022–2022 (BIGINT)"}
@@ -15,6 +16,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.247.904 linhas, 1.247.904 chaves, 5.571 municípios; Brasil (cor Total, idade Total): mulheres 88.912.634, filhos 150.980.668 (soma dos municípios) — medido 2026-10-27"
   instrucao:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × cor/raça × nível de instrução de pessoas de 18 anos ou mais, Censo 2022"
     chave: "(id_municipio, cor_raca, categoria_principal) — 167.130 linhas = 167.130 chaves distintas; 5.571 municípios"
     tempo: {natureza: retrato_atual, coluna: ano, cobertura: "2022–2022 (BIGINT)"}

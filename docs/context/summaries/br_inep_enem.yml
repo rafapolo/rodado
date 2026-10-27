@@ -3,6 +3,7 @@
 dataset: br_inep_enem
 tabelas:
   microdados:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um inscrito × ano do ENEM (1998–2023); notas, presença e dados cadastrais
     chave: ano, id_inscricao (108.132.056 linhas, 108.132.056 distintos)
     tempo:
@@ -48,6 +49,7 @@ tabelas:
     - nao_use_para
     verificado: '108.132.056 linhas e 108.132.056 distintos (ano, id_inscricao); 2023: 3.933.955 linhas e distintos; nota_objetiva só em 1998–2008, notas por área só a partir de 2009 (2023: 2.692.427 nota_matematica), residência só 1998–2007, indicador_treineiro só 2015–2022; join com questionario_socioeconomico_2023 por id_inscricao casa 3.933.955 — medido 2026-10-27'
   participantes:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um inscrito × ano do ENEM (2024–2025), dados cadastrais sem notas
     chave: ano, id_inscricao (9.143.716 linhas, 9.143.716 distintos)
     tempo:
@@ -71,6 +73,7 @@ tabelas:
     - nao_use_para
     verificado: '9.143.716 linhas, 9.143.716 distintos (ano, id_inscricao); 2025: 4.810.772 linhas e distintos; join com questionario_socioeconomico_2025 por id_inscricao casa as 4.810.772 — medido 2026-10-27'
   resultados:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um inscrito anonimizado × ano do ENEM (2024–2025); notas, presença, respostas e gabarito
     chave: ano, id_sequencial (9.143.716 linhas, 9.143.716 distintos)
     tempo:

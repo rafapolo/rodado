@@ -6,6 +6,7 @@ tabelas:
     grao: "um código (id_tabela, nome_coluna, chave) → valor: significado dos códigos das tabelas do CNES"
     use_para: "traduzir códigos (tipo_unidade, tipo_leito, tipo_equipe, tipo_equipamento etc.); consulte antes de filtrar por código."
   estabelecimento:
+    ultima_data: "2025-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um estabelecimento de saúde × mês (cadastro completo no retrato do mês)"
     chave: "ano, mes, id_estabelecimento_cnes (465.866 linhas = 465.866 distintos em 2025-08)"
     tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "2005-08–2025-08 (sem 2026)"}
@@ -23,6 +24,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "partição 2025-08: 465.866 linhas, 465.866 distintos de id_estabelecimento_cnes; tipo_esfera_administrativa tem M 449.740 / E 13.822 / D 2.303 / F 1, idêntico a tipo_gestao (M/E/D), códigos que o dicionario marca como 'Não encontrado' — não é esfera federal/estadual/municipal/privada; tipo_natureza_administrativa 100% nulo; não há ano 2026 nesta tabela — medido 2026-10-27"
   equipe:
+    ultima_data: "2026-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma equipe de saúde (ESF, ESB, eAP, eMulti etc.) × mês, vinculada a um estabelecimento"
     chave: "ano, mes, id_equipe (123.307 linhas = 123.307 distintos de id_equipe em 2026-02)"
     tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "2007-04–2026-02"}
@@ -38,6 +40,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "partição 2026-02: 123.307 linhas, 123.307 distintos de id_equipe; 14.556.313 linhas no total — medido 2026-10-27"
   equipamento:
+    ultima_data: "2025-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um estabelecimento × tipo de equipamento × mês (quantidade existente e em uso)"
     chave: "nenhuma: 1.185.947 linhas e 1.185.637 distintos de (id_estabelecimento_cnes, id_equipamento, tipo_equipamento) em 2025-08 (310 linhas repetem; incluir indicador_equipamento_disponivel_sus deixa 291)"
     tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "2005-08–2025-08"}
@@ -54,6 +57,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "partição 2025-08: 1.185.947 linhas; distintos da chave 1.185.637; id_equipamento tem 98 valores e 116 pares com tipo_equipamento (um id_equipamento pode aparecer em mais de um tipo) — medido 2026-10-27"
   leito:
+    ultima_data: "2026-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um estabelecimento × especialidade de leito × tipo de leito × mês"
     chave: "ano, mes, id_estabelecimento_cnes, tipo_especialidade_leito, tipo_leito (51.763 linhas = 51.763 distintos em 2025-08)"
     tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "2005-10–2026-02"}
@@ -71,6 +75,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "partição 2025-08: 51.763 linhas, 51.763 distintos da chave; soma quantidade_total por tipo_leito: 1=124.078, 2=176.636, 3=83.119, 4=49.804, 5=46.619, 6=45.874, 7=14.709; quantidade_sus nunca maior que o total — medido 2026-10-27"
   profissional:
+    ultima_data: "2025-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um vínculo de profissional × estabelecimento × ocupação (CBO) × mês"
     chave: "nenhuma: em 2025-08, 6.350.074 linhas e 6.339.618 distintos de (id_estabelecimento_cnes, cartao_nacional_saude, cbo_2002, tipo_vinculo); 4.410.253 CNS distintos"
     tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "2005-08–2025-08"}
@@ -87,6 +92,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "partição 2025-08: 6.350.074 linhas; 465.864 CNES distintos, todos presentes em estabelecimento; 15 linhas com cartao_nacional_saude = 'nan'; 111 linhas com as 3 cargas horárias zeradas; soma ambulatorial 96.213.820, hospitalar 40.537.926, outros 48.130.324 — medido 2026-10-27"
   servico_especializado:
+    ultima_data: "2025-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um estabelecimento × serviço especializado (tipo/subtipo) × caracterização × mês"
     chave: "nenhuma: em 2025-08, 1.039.692 linhas e 1.037.780 distintos de (id_estabelecimento_cnes, tipo, subtipo, tipo_caracterizacao); com os 4 indicadores de atendimento ainda 1.038.629"
     tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "2005-08–2025-08"}
@@ -100,6 +106,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, quantidade_nacional_estabelecimento_saude_terceiro (100% nulo na amostra)]
     verificado: "partição 2025-08: 1.039.692 linhas; distintos da chave 1.037.780 — medido 2026-10-27"
   habilitacao:
+    ultima_data: "2026-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma habilitação concedida a um estabelecimento (tipo_habilitacao × nível × início × portaria) × mês"
     chave: "ano, mes, id_estabelecimento_cnes, tipo_habilitacao, nivel_habilitacao, ano_competencia_inicial, mes_competencia_inicial, portaria (32.600 linhas = 32.600 distintos em 2026-02)"
     tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "2007-03–2026-02"}
@@ -115,6 +122,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "partição 2026-02: 32.600 linhas, 32.600 distintos da chave; 4.785.178 linhas no total, 4.304.563 delas com mes_competencia_final = 99 (gotcha competencia_final_99) — medido 2026-10-27"
   incentivos:
+    ultima_data: "2026-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um incentivo financeiro concedido a um estabelecimento (tipo_habilitacao × tipo_incentivo × início × portaria) × mês"
     chave: "ano, mes, id_estabelecimento_cnes, tipo_habilitacao, tipo_incentivo, ano_competencia_inicial, mes_competencia_inicial, portaria (14.293 linhas = 14.293 distintos em 2026-02)"
     tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "2007-10–2026-02"}
@@ -128,6 +136,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "partição 2026-02: 14.293 linhas, 14.293 distintos da chave; 1.268.903 linhas no total — medido 2026-10-27"
   regra_contratual:
+    ultima_data: "2023-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma regra contratual de um estabelecimento (tipo_habilitacao × tipo_regra × início × portaria) × mês"
     chave: "nenhuma: em 2023-07, 17.031 linhas e 16.727 distintos de (id_estabelecimento_cnes, tipo_habilitacao, tipo_regra_contratual, ano/mes_competencia_inicial, portaria): 304 repetem"
     tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "2007-03–2023-07 (parou em 2023-07)"}
@@ -140,6 +149,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "partição 2023-07: 17.031 linhas, 16.727 distintos da chave candidata; 1.544.420 linhas no total — medido 2026-10-27"
   gestao_metas:
+    ultima_data: "2026-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um registro de gestão por metas de um estabelecimento (tipo_habilitacao 7001–7009 × tipo × início × portaria) × mês"
     chave: "ano, mes, id_estabelecimento_cnes, tipo_habilitacao, tipo_gestao_metas, ano/mes_competencia_inicial, portaria (824 linhas = 824 distintos em 2026-02)"
     tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "2007-03–2026-02"}
@@ -152,6 +162,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "partição 2026-02: 824 linhas, 824 distintos da chave; 156.788 linhas no total — medido 2026-10-27"
   estabelecimento_ensino:
+    ultima_data: "2019-12"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um estabelecimento reconhecido como hospital de ensino (habilitação 5001) × início da competência × mês"
     chave: "ano, mes, id_estabelecimento_cnes, ano_competencia_inicial, mes_competencia_inicial (26.689 linhas = 26.689 distintos)"
     tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "2007-03–2019-12 (série encerrada)"}
@@ -163,6 +174,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "26.689 linhas, 26.689 distintos da chave; ~266 estabelecimentos (perfil) — medido 2026-10-27"
   estabelecimento_filantropico:
+    ultima_data: "2026-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um estabelecimento certificado como hospital filantrópico (habilitação 6001) × início da competência × mês"
     chave: "ano, mes, id_estabelecimento_cnes, ano_competencia_inicial, mes_competencia_inicial (162.005 linhas = 162.005 distintos)"
     tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "2007-03–2026-02"}
@@ -175,6 +187,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "162.005 linhas, 162.005 distintos da chave; ~715 estabelecimentos (perfil) — medido 2026-10-27"
   dados_complementares:
+    ultima_data: "2026-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um estabelecimento com serviços complementares (hemoterapia, nefrologia/diálise, radioterapia, oncologia) × mês, com os CNS dos médicos responsáveis e a contagem de salas e máquinas"
     chave: "ano, mes, id_estabelecimento_cnes (2.647 linhas = 2.647 distintos em 2026-02)"
     tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "2005-08–2026-02 (de 2005-08 a 2006-11 ~110 a 150 mil linhas por mês; a partir de 2006-12 só ~2,4 mil)"}

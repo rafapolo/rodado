@@ -69,6 +69,7 @@ tabelas:
   extrato:
     grao: 'não lida: Catalog Error: Table with name extrato does not exist!'
   fundos:
+    ultima_data: "2024-09-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um registro do cadastro ANTIGO de fundos de investimento (anterior à RCVM 175) — um fundo pode aparecer em mais de uma linha
     chave: 'nenhuma: CNPJ_FUNDO repete (46.806 linhas, 41.103 CNPJ distintos; 5.244 CNPJs em mais de uma linha); nenhuma linha é duplicata exata'
     tempo:
@@ -104,6 +105,7 @@ tabelas:
   perfil_mensal:
     grao: 'não lida: Catalog Error: Table with name perfil_mensal does not exist!'
   registro_classe:
+    ultima_data: "2026-10-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma classe de cotas de fundo no cadastro vigente (RCVM 175)
     chave: 'nenhuma: ID_Registro_Classe repete em 4 casos (36.807 linhas, 36.803 IDs distintos; 1 linha exatamente duplicada)'
     tempo:
@@ -130,6 +132,7 @@ tabelas:
     - nao_use_para
     verificado: 36.807 linhas; 36.803 ID_Registro_Classe distintos; 36.806 linhas distintas; Em Funcionamento Normal 33.779 linhas / 33.771 CNPJ_Classe — medido 2026-10-27
   registro_fundo:
+    ultima_data: "2026-10-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um registro de fundo no cadastro vigente (RCVM 175); alguns fundos vêm em mais de uma linha
     chave: 'nenhuma: ID_Registro_Fundo repete (90.502 linhas, 89.364 IDs distintos; 90.485 linhas distintas no total, 1.042 IDs com conteúdo diferente)'
     tempo:
@@ -155,6 +158,7 @@ tabelas:
     - medidas.o_que
     verificado: 90.502 linhas; 89.364 ID_Registro_Fundo distintos; Em Funcionamento Normal 34.454 linhas / 33.768 CNPJ distintos — medido 2026-10-27
   registro_subclasse:
+    ultima_data: "2026-10-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma subclasse de cotas de uma classe de fundo
     chave: 'ID_Subclasse: count(*) = count(DISTINCT ID_Subclasse) = 10.293'
     tempo:

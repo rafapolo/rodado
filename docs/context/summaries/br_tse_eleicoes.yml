@@ -3,6 +3,7 @@
 dataset: br_tse_eleicoes
 tabelas:
   candidatos:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma candidatura (um candidato a um cargo numa eleição, inclui vice e suplentes)
     chave: '(ano, sequencial, sigla_uf, id_eleicao); em 2026 sequencial sozinho já é único (20.989 linhas, 20.989 distintas), mas não nos anos: ver gotcha sequencial_nao_unico'
     tempo:
@@ -31,6 +32,7 @@ tabelas:
     - nao_use_para
     verificado: '3.375.714 linhas, 17 anos de 1994 a 2026; ano 2026: 20.989 linhas = 20.989 distintas em (ano, sequencial, sigla_uf, id_eleicao) e em sequencial; cargos 2026: deputado estadual 11.295, federal 7.803, distrital 433, governador 201, senador 319, presidente 14 — medido 2026-10-27'
   bens_candidato:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um item de bem declarado por um candidato
     chave: 'nenhuma: o item não tem identificador; (sequencial_candidato, sigla_uf, id_eleicao) identifica o candidato (13.917 em 2026 para 76.144 itens)'
     tempo:
@@ -60,6 +62,7 @@ tabelas:
     - nao_use_para
     verificado: '5.108.101 linhas; 2026: 76.144 itens de 13.917 candidaturas, soma R$ 31,91 bi — medido 2026-10-27'
   carga_2026:
+    ultima_data: "2026-10-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma carga do monitor de bens por cargo (retrato de controle de cobertura da declaração de bens em 2026)
     chave: (run_at, cargo)
     tempo:
@@ -89,6 +92,7 @@ tabelas:
     - nao_use_para
     verificado: 50 linhas = 50 distintas em (run_at, cargo); 5 cargas × 10 cargos — medido 2026-10-27
   despesas_candidato:
+    ultima_data: "2026-10-26"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma despesa de campanha (linha por item) de um candidato
     chave: 'nenhuma: em 2026, 985.828 linhas para 799.334 (sequencial_candidato, sequencial_despesa) distintos; a mesma despesa se repete em várias linhas'
     tempo:
@@ -116,6 +120,7 @@ tabelas:
     - nao_use_para
     verificado: '33.397.551 linhas, 13 anos de 2002 a 2026; 2026: 985.828 linhas, 799.334 distintas em (sequencial_candidato, sequencial_despesa), soma R$ 4,49 bi — medido 2026-10-27'
   despesas_contratadas_orgao_partidario:
+    ultima_data: "2026-10-23"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma linha de despesa contratada por um órgão partidário (a mesma despesa se abre por item)
     chave: 'nenhuma: 1.096.000 linhas para 839.658 (ano, sequencial_despesa); ver gotcha despesa_orgao_sequencial_repete'
     tempo:
@@ -143,6 +148,7 @@ tabelas:
     - nao_use_para
     verificado: 1.096.000 linhas; 839.658 distintas em (ano, sequencial_despesa), 916.385 em 5 colunas; soma R$ 25,19 bi — medido 2026-10-27
   despesas_pagas_orgao_partidario:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um pagamento (parcela) de despesa de um órgão partidário
     chave: '(ano, sequencial_parcelamento_despesa) quase única: 866.927 linhas, 866.926 distintas; sequencial_despesa repete (821.983 distintos)'
     tempo:
@@ -168,6 +174,7 @@ tabelas:
     - nao_use_para
     verificado: 866.927 linhas; 866.926 distintas em (ano, sequencial_parcelamento_despesa); soma R$ 24,93 bi — medido 2026-10-27
   detalhes_votacao_municipio:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × cargo × turno × eleição, com comparecimento e votos válidos do total do cargo
     chave: (ano, turno, id_eleicao, sigla_uf, id_municipio_tse, cargo)
     tempo:
@@ -224,6 +231,7 @@ tabelas:
     - nao_use_para
     verificado: '371.348 linhas = 371.348 distintas na chave; 2026 presidente 1º turno: 5.757 municípios, aptos 158.745.502, comparecimento 125.275.835, válidos 119.300.788 — medido 2026-10-27'
   detalhes_votacao_municipio_zona:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma zona eleitoral × município × cargo × turno
     chave: (ano, turno, id_eleicao, sigla_uf, id_municipio_tse, zona, cargo)
     tempo:
@@ -262,6 +270,7 @@ tabelas:
     - nao_use_para
     verificado: 406.431 linhas = 406.431 distintas na chave — medido 2026-10-27
   detalhes_votacao_secao:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma seção eleitoral × cargo × turno (2026)
     chave: '(turno, id_eleicao, id_municipio_tse, zona, secao, cargo) dentro da partição ano=2026 (AC: 11.350 linhas = 11.350 distintas)'
     tempo:
@@ -305,6 +314,7 @@ tabelas:
     - cobertura de anos
     verificado: '26.442.036 linhas; chave medida só em ano=2026, sigla_uf=AC: 11.350 linhas = 11.350 distintas — medido 2026-10-27'
   partidos:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um partido, coligação ou federação registrado numa eleição por cargo (e UF/município)
     chave: '(turno, id_eleicao, sigla_uf, id_municipio, cargo, sigla, sequencial_coligacao, tipo_agremiacao); em 2026: 4.239 linhas = 4.239 distintas, (turno, sigla_uf, id_municipio, cargo, sigla) também'
     tempo:
@@ -322,6 +332,7 @@ tabelas:
     - nao_use_para
     verificado: '1.189.547 linhas; 2026: 4.239 linhas — medido 2026-10-27'
   perfil_eleitorado_local_votacao:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um local de votação × seção (instalação da seção) com número de eleitores
     chave: '(id_municipio_tse, zona, secao, tipo) dentro de um ano; AC 2026: 2.411 linhas = 2.411 distintas, também (zona, secao, id_municipio_tse)'
     tempo:
@@ -350,6 +361,7 @@ tabelas:
     - nao_use_para
     verificado: '6.484.869 linhas, 9 anos de 2010 a 2026; AC 2026: 2.411 distintas na chave; 614.375 eleitores — medido 2026-10-27'
   perfil_eleitorado_municipio_zona:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × zona × gênero × estado civil × faixa etária × instrução (contagem de eleitores)
     chave: '(id_municipio_tse, zona, genero, estado_civil, grupo_idade, instrucao) dentro do ano; AC 2026: 16.188 linhas = 16.188 distintas'
     tempo:
@@ -380,6 +392,7 @@ tabelas:
     - nao_use_para
     verificado: '41.768.920 linhas; AC 2026: 16.188 linhas = 16.188 distintas, soma eleitores 614.375 — medido 2026-10-27'
   perfil_eleitorado_secao:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma seção × gênero × estado civil × faixa etária × instrução (contagem de eleitores)
     chave: '(id_municipio_tse, zona, secao, genero, estado_civil, grupo_idade, instrucao) dentro do ano; AC 2026: 320.706 linhas = 320.706 distintas'
     tempo:
@@ -402,6 +415,7 @@ tabelas:
     - cobertura de anos
     verificado: '666.381.663 linhas; AC 2026: 320.706 distintas na chave; soma eleitores 614.375 (= perfil_eleitorado_municipio_zona) — medido 2026-10-27'
   pesquisa_eleitoral:
+    ultima_data: "2026-10-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma pesquisa eleitoral registrada no TSE
     chave: 'id_pesquisa quase único: 55.801 linhas, 55.562 distintos (239 repetem)'
     tempo:
@@ -432,6 +446,7 @@ tabelas:
     - nao_use_para
     verificado: 55.801 linhas; 55.562 id_pesquisa distintos — medido 2026-10-27
   pesquisa_eleitoral_contratante:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um contratante de uma pesquisa eleitoral
     chave: 'nenhuma: 56.518 linhas, 56.517 distintas em (id_pesquisa, id_contratante) e 55.642 id_pesquisa distintos (id_contratante é 24% nulo)'
     tempo:
@@ -453,6 +468,7 @@ tabelas:
     - nao_use_para
     verificado: 56.518 linhas; 55.642 id_pesquisa distintos — medido 2026-10-27
   pesquisa_eleitoral_pagante:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um pagante de uma pesquisa eleitoral
     chave: 'nenhuma: 46.490 linhas, 46.462 distintas em (id_pesquisa, id_contratante) (id_contratante 29% nulo)'
     tempo:
@@ -467,6 +483,7 @@ tabelas:
     - nao_use_para
     verificado: 46.490 linhas; 45.725 id_pesquisa distintos — medido 2026-10-27
   receitas_candidato:
+    ultima_data: "2026-10-27"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma receita (doação ou repasse) recebida por um candidato
     chave: 'nenhuma: em 2026, 189.666 linhas, 178.351 distintas em (sequencial_candidato, sequencial_receita) e 2.231 linhas sem sequencial_receita'
     tempo:
@@ -499,6 +516,7 @@ tabelas:
     - nao_use_para
     verificado: '15.500.731 linhas, 13 anos; 2026: 189.666 linhas, 178.351 pares (sequencial_candidato, sequencial_receita) distintos, soma R$ 6,73 bi — medido 2026-10-27'
   receitas_candidato_doador_originario:
+    ultima_data: "2026-10-23"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um doador originário (quem de fato deu o dinheiro) de uma receita de candidato; 1:N com a receita
     chave: 'nenhuma: 833.128 linhas para 68.386 (ano, sequencial_receita); (ano, sequencial_receita, cpf_cnpj_doador_orig) tem 794.203 distintas'
     tempo:
@@ -520,6 +538,7 @@ tabelas:
     - nao_use_para
     verificado: 833.128 linhas; 68.386 (ano, sequencial_receita) distintos — medido 2026-10-27
   receitas_comite:
+    ultima_data: "2014-12-19"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma receita de um comitê financeiro (2002–2014)
     chave: 'nenhuma: 341.684 linhas, 330.858 distintas em oito colunas; sequencial_comite 87% nulo'
     tempo:
@@ -543,6 +562,7 @@ tabelas:
     - nao_use_para
     verificado: 341.684 linhas; soma R$ 3,57 bi — medido 2026-10-27
   receitas_orgao_partidario:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma receita de um órgão partidário (diretório nacional, estadual, municipal)
     chave: 'nenhuma: 265.852 linhas, 78.858 (ano, sequencial_receita) distintos ; sequencial_receita 70% nulo'
     tempo:
@@ -569,6 +589,7 @@ tabelas:
     - nao_use_para
     verificado: 265.852 linhas; soma R$ 20,37 bi; 78.858 (ano, sequencial_receita) distintos — medido 2026-10-27
   receitas_orgao_partidario_doador_originario:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um doador originário de uma receita de órgão partidário (1:N)
     chave: 'nenhuma: 263.948 linhas para 17.549 (ano, sequencial_receita); (…, cpf_cnpj_doador_orig) tem 236.135 distintas'
     tempo:
@@ -588,6 +609,7 @@ tabelas:
     - nao_use_para
     verificado: 263.948 linhas; 17.549 (ano, sequencial_receita) distintos — medido 2026-10-27
   rede_social_candidato:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma rede social (url) informada por um candidato
     chave: (ano, sequencial_candidato, sigla_uf, id_eleicao, ordem)
     tempo:
@@ -609,6 +631,7 @@ tabelas:
     - nao_use_para
     verificado: 851.922 linhas = 851.922 distintas na chave; facebook 391.156, instagram 314.654, outro 72.760 — medido 2026-10-27
   resultados_candidato:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um candidato × cargo × turno com votos totais (somados do estado, ou do país para presidente)
     chave: 'nenhuma: 2026 tem 18.900 linhas e 18.888 distintas em (sequencial_candidato, sigla_uf, id_eleicao, turno); 12 repetem. Sem sigla_uf/id_eleicao o sequencial infla (gotcha sequencial_nao_unico)'
     tempo:
@@ -638,6 +661,7 @@ tabelas:
     - nao_use_para
     verificado: '3.141.599 linhas; ano 2026: 18.900 linhas, 787.297.958 votos — medido 2026-10-27'
   resultados_candidato_municipio:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um candidato × município × cargo × turno
     chave: '(turno, id_eleicao, id_municipio_tse, cargo, sequencial_candidato) dentro do ano; AC 2026: 7.458 linhas = 7.458 distintas'
     tempo:
@@ -661,6 +685,7 @@ tabelas:
     - nao_use_para
     verificado: '37.721.699 linhas; AC 2026: 7.458 linhas = 7.458 distintas na chave; 3.374.685 votos — medido 2026-10-27'
   resultados_candidato_municipio_zona:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um candidato × município × zona × cargo × turno
     chave: '(turno, id_eleicao, id_municipio_tse, zona, cargo, sequencial_candidato); AC 2026: 7.705 linhas = 7.705 distintas'
     tempo:
@@ -684,6 +709,7 @@ tabelas:
     - cobertura de anos
     verificado: '46.794.484 linhas; AC 2026: 7.705 distintas na chave, votos 2.530.714 — medido 2026-10-27'
   resultados_candidato_secao:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um candidato × seção × cargo × turno
     chave: '(turno, id_eleicao, id_municipio_tse, zona, secao, cargo, sequencial_candidato); AC 2026: 213.806 linhas = 213.806 distintas'
     tempo:
@@ -707,6 +733,7 @@ tabelas:
     - cobertura de anos
     verificado: '576.811.898 linhas; AC 2026: 213.806 distintas na chave, votos 2.685.332 — medido 2026-10-27'
   resultados_partido_municipio:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um partido × município × cargo × turno
     chave: '(turno, id_eleicao, id_municipio_tse, cargo, sigla_partido); AC 2026: 1.518 linhas = 1.518 distintas'
     tempo:
@@ -734,6 +761,7 @@ tabelas:
     - cobertura de anos
     verificado: '4.129.615 linhas; AC 2026: 1.518 distintas na chave — medido 2026-10-27'
   resultados_partido_municipio_zona:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um partido × município × zona × cargo
     chave: '(turno, id_eleicao, id_municipio_tse, zona, cargo, sigla_partido); AC 2026: 1.495 linhas = 1.495 distintas'
     tempo:
@@ -761,6 +789,7 @@ tabelas:
     - cobertura de anos
     verificado: '4.694.955 linhas; AC 2026: 1.495 distintas na chave — medido 2026-10-27'
   resultados_partido_secao:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um partido × seção × cargo
     chave: '(turno, id_eleicao, id_municipio_tse, zona, secao, cargo, sigla_partido); AC 2026: 92.527 linhas = 92.527 distintas'
     tempo:
@@ -788,6 +817,7 @@ tabelas:
     - cobertura de anos
     verificado: '234.686.872 linhas; AC 2026: 92.527 distintas na chave — medido 2026-10-27'
   vagas:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: o número de vagas de um cargo numa eleição, por UF ou município
     chave: 'nenhuma: 102.405 linhas, 101.970 distintas em (ano, id_eleicao, sigla_uf, id_municipio, cargo); 435 repetem'
     tempo:

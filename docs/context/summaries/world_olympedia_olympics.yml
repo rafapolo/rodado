@@ -46,6 +46,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "235 linhas, 234 noc distintos — medido 2026-10-27"
   game:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma edição dos Jogos Olímpicos (verão ou inverno), incluindo futuras e as não realizadas"
     chave: "edition_id (= edition): 64 linhas = 64 distintos"
     tempo: {natureza: serie_de_periodos, coluna: year, cobertura: "1896–2032"}
@@ -58,6 +59,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "64 linhas, 64 edition_id distintos; 5 'Not held due to war'; 2032 Summer Olympics (Brisbane) com edition_id 372 — medido 2026-10-27"
   game_medal_tally:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um país × edição dos Jogos: total de medalhas do país"
     chave: "(edition_id, country_noc): 1.807 linhas = 1.807 distintos"
     tempo: {natureza: serie_de_periodos, coluna: year, cobertura: "1896–2022 (55 edições)"}

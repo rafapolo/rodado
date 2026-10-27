@@ -3,6 +3,7 @@
 dataset: br_ibge_munic
 tabelas:
   atual_prefeito:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × ano da pesquisa: dados do prefeito em exercício na época (nome, sexo, idade, escolaridade,
       cor/raça, partido)'
     chave: ano, id_municipio
@@ -28,6 +29,7 @@ tabelas:
     - uso de partido_eleito
     verificado: 33399 linhas = 33399 distintos de (ano, id_municipio) = 5560+5564+5565+5570×3 — medido 2026-10-27
   indicadores_perfil_gestor:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × tema × ano: perfil do gestor municipal de uma política setorial'
     chave: ano, tema, id_municipio
     tempo:
@@ -53,6 +55,7 @@ tabelas:
     verificado: 83550 linhas = 83550 distintos de (ano, tema, id_municipio) = 15 pares (ano, tema) × 5570 municípios
       — medido 2026-10-27
   indicadores_quantidade_vinculo:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × ano × tipo de administração × tipo de vínculo × escolaridade: quantidade de pessoal'
     chave: ano, id_municipio, tipo_administracao, tipo_vinculo, escolaridade
     tempo:
@@ -86,6 +89,7 @@ tabelas:
       unidade: pessoas
       soma: sim
   recursos_humanos:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × ano: pessoal ocupado na administração municipal direta e indireta (colunas largas, por
       vínculo e escolaridade)'
     chave: ano, id_municipio
@@ -120,6 +124,7 @@ tabelas:
       unidade: pessoas
       soma: sim
   habitacao:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × ano da pesquisa: respostas sobre política de habitação do município (uma coluna por pergunta)'
     chave: ano, id_municipio
     tempo:
@@ -143,6 +148,7 @@ tabelas:
     verificado: 66808 linhas = 66808 distintos de (ano, id_municipio); 12 edições; 306 colunas; 5560–5570 municípios
       por ano — medido 2026-10-27
   meio_ambiente:
+    ultima_data: "2020"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × ano da pesquisa: respostas sobre meio ambiente do município (uma coluna por pergunta)'
     chave: ano, id_municipio
     tempo:
@@ -165,6 +171,7 @@ tabelas:
     - nao_use_para
     verificado: 44534 linhas = 44534 distintos de (ano, id_municipio); 8 edições; 212 colunas — medido 2026-10-27
   recursos_gestao:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × ano da pesquisa: respostas sobre recursos para a gestão (instrumentos de planejamento,
       articulação, consórcios) (uma coluna por pergunta)'
     chave: ano, id_municipio

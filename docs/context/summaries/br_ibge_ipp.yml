@@ -3,6 +3,7 @@
 dataset: br_ibge_ipp
 tabelas:
   mes_industria_geral:
+    ultima_data: "2022-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês do IPP da indústria geral (total; composição não conferida)
     chave: ano, mes
     tempo:
@@ -42,6 +43,7 @@ tabelas:
     - grão exato do geral (soma extrativa+transformação não conferida)
     verificado: 99 linhas = 99 pares (ano, mes) distintos; numero_indice de 76.83 a 164.15 — medido 2026-10-27
   mes_industria_transformacao:
+    ultima_data: "2022-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês do IPP da indústria de transformação
     chave: ano, mes
     tempo:
@@ -81,6 +83,7 @@ tabelas:
     - grão exato do geral (soma extrativa+transformação não conferida)
     verificado: 99 linhas = 99 pares (ano, mes) distintos — medido 2026-10-27
   mes_industria_extrativa:
+    ultima_data: "2022-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês do IPP da indústria extrativa
     chave: ano, mes
     tempo:
@@ -120,6 +123,7 @@ tabelas:
     - grão exato do geral (soma extrativa+transformação não conferida)
     verificado: 147 linhas = 147 pares (ano, mes) distintos — medido 2026-10-27
   mes_categoria_economica:
+    ultima_data: "2022-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês × uma categoria econômica (grande categoria de uso do bem)
     chave: ano, mes, categoria_economica
     tempo:
@@ -163,6 +167,7 @@ tabelas:
     verificado: 495 linhas = 495 distintos de (ano, mes, categoria_economica); 5 categorias com 99 meses cada —
       medido 2026-10-27
   mes_industria_atividade:
+    ultima_data: "2022-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês × uma divisão de atividade industrial (CNAE)
     chave: ano, mes, divisao
     tempo:
@@ -204,6 +209,7 @@ tabelas:
     - grão exato do geral (soma extrativa+transformação não conferida)
     verificado: 3381 linhas = 3381 distintos de (ano, mes, divisao); 23 divisões por ano — medido 2026-10-27
   mes_grupo_industrial:
+    ultima_data: "2022-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês × um grupo industrial (CNAE, nível abaixo da divisão)
     chave: ano, mes, grupo
     tempo:

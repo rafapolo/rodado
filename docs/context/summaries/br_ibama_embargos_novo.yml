@@ -3,6 +3,7 @@
 dataset: br_ibama_embargos_novo
 tabelas:
   termo_embargo:
+    ultima_data: "2026-10-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um termo de embargo (TAD) do IBAMA, com a geometria da área embargada; pode haver mais de uma linha por termo"
     chave: "nenhuma: 116.746 linhas, 113.648 seq_tad distintos (3.098 linhas têm seq_tad NULL), 114.727 num_tad distintos; (seq_tad, geom_area_embargada) dá 115.281 — ver gotcha seq_tad_repetido"
     tempo: {natureza: serie_de_periodos, coluna: dat_embargo, cobertura: "texto 'aaaa-mm-dd hh:mm:ss'; datas reais de 1990 a 2026-10, mas há anos impossíveis (ver gotcha datas_impossiveis)"}
@@ -15,6 +16,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "116.746 linhas; 113.648 seq_tad distintos; 108.586 seq_tad distintos entre sit_cancelado='N'; sit_cancelado S 6.307; tipo_area e desembargo medidos — medido 2026-10-27. Gotchas: datas_impossiveis, cancelados, area_embargada_texto, coordenada_fora_do_brasil, seq_tad_repetido"
   termo_embargo_historico:
+    ultima_data: "2026-10-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma versão (alteração) de um termo de embargo: cada edição do TAD gera uma linha, com os campos do termo naquele momento"
     chave: "(seq_tad, seq_hist_tad) — 502.584 linhas = 502.584 chaves distintas; 111.387 seq_tad"
     tempo: {natureza: serie_de_periodos, coluna: dt_alteracao, cobertura: "2015-09-29 a 2026-10-06"}
@@ -27,6 +29,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "502.584 linhas, 502.584 chaves (seq_tad, seq_hist_tad), 111.387 seq_tad — medido 2026-10-27"
   coordenadas:
+    ultima_data: "2026-10-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um ponto de um polígono de área embargada (vértice), ligado a um termo (seq_tad)"
     chave: "nenhuma confirmada: 128.498 linhas, seq_ponto_poligono com 124.808 distintos e 2,87% nulo; (seq_tad, seq_poligono, seq_ponto_poligono) dá 124.809"
     tempo: {natureza: retrato_atual, coluna: ultima_atualizacao_relatorio, cobertura: "2026-10-07"}
@@ -39,6 +42,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "128.498 linhas, 124.808 seq_ponto_poligono distintos, 118.648 wkt distintos — medido 2026-10-27"
   decisao:
+    ultima_data: "2026-10-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma decisão judicial registrada sobre um termo (embargo ou desembargo)"
     chave: "(seq_tad, seq_decisao_judicial) — 476 linhas = 476 chaves distintas; 388 seq_tad"
     tempo: {natureza: serie_de_periodos, coluna: dat_decisao_embargo, cobertura: "texto; datas de 0026-03-11 (ano errado) a 2026-10-01"}
@@ -49,6 +53,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "476 linhas, 476 chaves, 388 seq_tad — medido 2026-10-27. Contém nome e cpf_cnpj do interessado (dado pessoal)."
   enquadramento:
+    ultima_data: "2026-10-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um dispositivo legal (norma, artigo, parágrafo, inciso) em que um termo de embargo foi enquadrado"
     chave: "nenhuma: 150.662 linhas, 150.647 chaves distintas em (seq_tad, num_tad, norma_tipo, norma_numero, artigo, nu_paragrafo, nu_inciso, cd_alinea, administrativo)"
     tempo: {natureza: retrato_atual, coluna: ultima_atualizacao_relatorio, cobertura: "2026-10-07"}
@@ -69,6 +74,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "14.679 linhas, 14.678 chaves distintas, 11.030 num_tad distintos (aprox.) — medido 2026-10-27"
   itens:
+    ultima_data: "2026-10-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um item de fiscalização (natureza + item, com ponto/polígono e imóvel) de um termo de embargo"
     chave: "nenhuma: 48.783 linhas, 48.551 chaves distintas em (seq_tad, natureza, item, wkt, id_poligono, nome_imovel); 47.762 seq_tad"
     tempo: {natureza: retrato_atual, coluna: ultima_atualizacao_relatorio, cobertura: "2026-10-06"}
@@ -81,6 +87,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "48.783 linhas, 48.551 chaves, 47.762 seq_tad; natureza top medida — medido 2026-10-27"
   termo_de_embargo_anexo:
+    ultima_data: "2026-10-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um anexo (croqui, foto, mapa, imagem, documento) de um termo de embargo"
     chave: "(seq_tad, seq_anexo_tad) — 15.918 linhas = 15.918 chaves distintas; seq_anexo_tad sozinha repete (3.485 distintos)"
     tempo: {natureza: retrato_atual, coluna: ultima_atualizacao_relatorio, cobertura: "2026-10-07"}

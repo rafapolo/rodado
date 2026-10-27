@@ -3,6 +3,7 @@
 dataset: br_mj_consumidorgovbr
 tabelas:
   reclamacoes:
+    ultima_data: "2025-02-28"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma reclamação de consumidor contra uma empresa no Consumidor.gov.br (sem identificador na tabela)"
     chave: "nenhuma: não há coluna de id; a tabela é a concatenação de arquivos (arquivo_origem, 94 valores) e não foi testada unicidade por conjunto de colunas"
     tempo: {natureza: serie_de_periodos, coluna: "Data Abertura (DATE) ou Data Finalização (VARCHAR, dois formatos)", cobertura: "Data Abertura 2014–2025 (há 1 linha em 1970); Data Finalização 2014–2025, ver gotchas"}

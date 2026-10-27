@@ -3,6 +3,7 @@
 dataset: br_ibama_autos
 tabelas:
   auto_infracao:
+    ultima_data: "2026-10-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um auto de infração ambiental do IBAMA (cabeçalho, com infrator, local, valor e status)"
     chave: "seq_auto_infracao é único entre os não nulos (704.979 distintos); 6.860 linhas têm seq_auto_infracao nulo (e des_status_formulario nulo); num_auto_infracao repete (633.637 distintos em 711.839), pois o número só é único junto com a série ser_auto_infracao e mesmo assim 703.782 combinações"
     tempo: {natureza: serie_de_periodos, coluna: "ano (= year(dat_hora_auto_infracao), conferido: 0 divergências)", cobertura: "1977–2026"}
@@ -21,6 +22,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "711.839 linhas; 704.979 distintos de seq_auto_infracao + 6.860 nulos; soma de val_auto_infracao 112,66 bi (multa simples 112,64 bi) — medido 2026-10-27"
   anexo:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um anexo (foto, documento, mapa…) de um auto de infração"
     chave: "seq_auto_infracao, seq_auto_anexo (confirmada, 722.831 de 722.831)"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1985–2026"}
@@ -31,6 +33,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "722.831 linhas = 722.831 distintos de (seq_auto_anexo, seq_auto_infracao) — medido 2026-10-27"
   enquadramento:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um dispositivo legal (artigo/norma) aplicado a um auto de infração"
     chave: "nenhuma: (seq_auto_infracao, seq_enquadramento) tem 688.925 distintos em 689.797 linhas; 872 linhas repetem"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1195–2026 (anos inválidos como 1195; usar >= 1977)"}
@@ -41,6 +44,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "689.797 linhas; 688.925 distintos de (seq_auto_infracao, seq_enquadramento) — medido 2026-10-27"
   aie_enquadramento:
+    ultima_data: "2026-10-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um enquadramento legal de um auto do sistema AI-e (versão com tipo e número da norma)"
     chave: "nenhuma: (num_auto_infracao, sq_enquadramento) tem 452.571 distintos em 531.750 linhas"
     tempo: {natureza: sem_tempo}
@@ -51,6 +55,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "531.750 linhas; 452.571 distintos de (num_auto_infracao, sq_enquadramento) — medido 2026-10-27"
   aie_enquadramentocomp:
+    ultima_data: "2026-10-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um complemento de enquadramento (lei, artigo e inciso em texto livre) de um auto"
     chave: "nenhuma: 35.793 distintos de (num_auto_infracao, sq_enquadramento, nu_lei_comp, nu_artigo_comp, nu_par_inc_al) em 35.820 linhas"
     tempo: {natureza: sem_tempo}
@@ -60,6 +65,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "35.820 linhas; 35.793 distintos da combinação — medido 2026-10-27"
   bioma:
+    ultima_data: "2026-10-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um bioma atingido por um auto de infração"
     chave: "nenhuma: (num_auto_infracao, bioma) tem 291.694 distintos em 294.460 linhas"
     tempo: {natureza: sem_tempo}
@@ -70,6 +76,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "294.460 linhas; 291.694 distintos de (num_auto_infracao, bioma); join com auto_infracao por num_auto_infracao dá 308.082 linhas — medido 2026-10-27"
   coordenada:
+    ultima_data: "2026-10-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um ponto de um polígono da área autuada de um auto"
     chave: "nenhuma: (num_auto_infracao, seq_poligono, seq_ponto_poligono) tem 69.176 distintos em 73.035 linhas"
     tempo: {natureza: sem_tempo}
@@ -81,6 +88,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, medidas]
     verificado: "73.035 linhas; 69.176 distintos da tríade — medido 2026-10-27"
   especime:
+    ultima_data: "2019-10-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um espécime/produto apreendido num auto (animal, madeira, pescado)"
     chave: "nenhuma: (num_auto_infracao, seq_especime) tem 36.042 distintos em 38.059 linhas"
     tempo: {natureza: sem_tempo, coluna: dat_alteracao}

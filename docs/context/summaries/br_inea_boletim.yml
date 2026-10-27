@@ -3,6 +3,7 @@
 dataset: br_inea_boletim
 tabelas:
   boletins:
+    ultima_data: "2026-08-26"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um boletim de serviço do INEA-RJ (um PDF), com listas de processos, empresas e tipos de documento"
     chave: "boletim, data_boletim"
     tempo: {natureza: serie_diaria, coluna: data_boletim, cobertura: "2019-01-28–2026-08-26"}
@@ -16,6 +17,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.081 linhas = 1.081 distintos de (boletim, data_boletim); 1.079 pdf distintos; ano_arquivo = ano de data_boletim (0 divergências) — medido 2026-10-27"
   empresas:
+    ultima_data: "2026-08-26"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma empresa citada num boletim (uma linha por citação)"
     chave: "nenhuma: (boletim, data_boletim, empresa) tem 6.661 distintos em 6.877 linhas (empresa repetida no mesmo boletim)"
     tempo: {natureza: serie_diaria, coluna: data_boletim, cobertura: "2019-01-28–2026-08-26"}
@@ -26,6 +28,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "6.877 linhas; 4.258 empresas distintas — medido 2026-10-27"
   processos:
+    ultima_data: "2026-08-26"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um processo citado num boletim (uma linha por citação)"
     chave: "nenhuma: (boletim, data_boletim, processo) tem 7.075 distintos em 7.161 linhas"
     tempo: {natureza: serie_diaria, coluna: data_boletim, cobertura: "2019-01-28–2026-08-26"}
@@ -36,6 +39,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "7.161 linhas; 6.360 processos distintos — medido 2026-10-27"
   tipos_documento:
+    ultima_data: "2026-08-26"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um tipo de documento (licença, indeferimento, etc.) presente num boletim"
     chave: "boletim, data_boletim, tipo_documento"
     tempo: {natureza: serie_diaria, coluna: data_boletim, cobertura: "2019-01-28–2026-08-26"}

@@ -3,6 +3,7 @@
 dataset: br_bcb_estban
 tabelas:
   agencia:
+    ultima_data: "2025-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma agência bancária × mês × verbete (conta contábil)"
     chave: "mes, cnpj_agencia, id_verbete dentro de um ano (ano = 2024: 8.744.670 linhas = 8.744.670 distintos, 16.764 agências)"
     tempo: {natureza: serie_mensal, coluna: "ano + mes", cobertura: "1988–2025-03 (use até 2024-12; ver gotcha agencia_2025_quebrada)"}
@@ -19,6 +20,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "ano=2024: 8.744.670 linhas = chave única; 15.695 agências em 2024-12 para cada verbete 420, 160 e 399 — medido 2026-10-27"
   municipio:
+    ultima_data: "2023-12"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × mês × banco (cnpj_basico) × verbete"
     chave: "mes, id_municipio, cnpj_basico, id_verbete dentro de um ano, só onde id_municipio não é nulo (ano = 2023: 4.788.315 de 4.788.315); 30.690 linhas de 4.819.005 têm id_municipio nulo e repetem a chave"
     tempo: {natureza: serie_mensal, coluna: "ano + mes", cobertura: "1988–2023-12, com anos ímpares faltando (gotcha municipio_anos_faltando)"}

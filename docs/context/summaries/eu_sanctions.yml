@@ -3,6 +3,7 @@
 dataset: eu_sanctions
 tabelas:
   sanctions:
+    ultima_data: "2026-07-23"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma linha do XML de sanções da UE já achatado: cada entidade sancionada (pessoa ou empresa) repetida pelo produto de seus apelidos/nomes, endereços, documentos, nascimentos e cidadanias; as colunas NameAlias_*, Address_*, BirthDate_*, Identification_* e Citizenship_* ficam nulas quando a linha não é daquele tipo"
     chave: "nenhuma: Entity_LogicalId tem 6241 distintos em 43891 linhas (uma entidade tem de 1 a 6+ linhas); só a linha inteira é única (43891 = 43891 distintas); (Entity_LogicalId, NameAlias_LogicalId) também repete (36875 distintos)"
     tempo: {natureza: retrato_atual, coluna: Entity_DesignationDate, cobertura: "2000-04-12–2026-07-23 (data da designação; fileGenerationDate é uma só, 2026-09-22)"}

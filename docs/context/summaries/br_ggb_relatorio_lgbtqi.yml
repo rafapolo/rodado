@@ -3,6 +3,7 @@
 dataset: br_ggb_relatorio_lgbtqi
 tabelas:
   brasil:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um ano (total nacional de mortes violentas de pessoas LGBTQI+ no relatório do Grupo Gay da Bahia)"
     chave: "ano (20 linhas, 20 anos distintos)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2000–2019"}
@@ -15,6 +16,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "20 linhas, 20 anos; homicidios sem nulos — medido 2026-10-27"
   causa_obito:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma causa de óbito em 2019 (13 causas)"
     chave: "causa_obito (13 linhas, 13 distintas)"
     tempo: {natureza: retrato_atual, coluna: ano, cobertura: "2019–2019"}
@@ -28,6 +30,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "soma de homicidios = 329 (igual a brasil 2019); soma de prop_homicidios_total = 100,05 (arredondamento) — medido 2026-10-27"
   local:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um tipo de local do crime em 2019 (16 locais)"
     chave: "local (16 linhas, 16 distintos)"
     tempo: {natureza: retrato_atual, coluna: ano, cobertura: "2019–2019"}
@@ -41,6 +44,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "soma homicidios = 321 contra 329 em brasil 2019; soma prop = 99,99 — medido 2026-10-27"
   grupo_lgbtqia:
+    ultima_data: "2020"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um grupo de identidade × ano"
     chave: "nenhuma: (ano, grupo) repete em 2012 / Travesti (2 linhas: 128 e NULL); 60 linhas, 59 pares distintos"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2011–2020"}
@@ -54,6 +58,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "60 linhas, 59 pares (ano,grupo); somas anuais medidas 2026-10-27"
   raca_cor:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma cor/raça × ano"
     chave: "(ano, raca_cor): 36 linhas, 36 pares distintos"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2011–2019"}

@@ -3,6 +3,7 @@
 dataset: br_senado_dados_abertos_administrativos
 tabelas:
   ata_acionamento:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um acionamento de uma ata de registro de preços
     chave: id_acionamento (2.886 linhas = 2.886 distintos)
     tempo:
@@ -18,6 +19,7 @@ tabelas:
     - nao_use_para
     verificado: 2.886 linhas, id_acionamento único; 536 id_contratacao distintos (sem coluna tipo_contratacao; presumivelmente atas) — medido 2026-10-27
   contratacao:
+    ultima_data: "2026-09-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma contratação do Senado (contrato, nota de empenho ou ata de registro de preços)
     chave: tipo_contratacao + id_contratacao (12.863 linhas = 12.863 distintos); id_contratacao sozinho NÃO é único (9.142 distintos)
     tempo:
@@ -39,6 +41,7 @@ tabelas:
     verificado: '12.863 linhas, chave composta única; id_contratacao só é único dentro de tipo_contratacao (12.863 linhas, 9.142 id_contratacao distintos): junte com (tipo_contratacao, id_contratacao) —
       medido 2026-10-27'
   contratacao_documento_fiscal:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um documento fiscal (nota) de um contrato
     chave: id_contratacao + id_documento_fiscal (14.428 = 14.428 distintos); id_documento_fiscal sozinho repete (13.960)
     tempo:
@@ -55,6 +58,7 @@ tabelas:
     - nao_use_para
     verificado: 14.428 linhas, chave composta única; data_emissao tem datas inválidas (min 0200-02-04) e 7,7% nulas — medido 2026-10-27
   contratacao_garantia:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma garantia contratual (caução, fiança, seguro) de um contrato
     chave: id_garantia (2.466 linhas = 2.466 distintos)
     tempo:
@@ -75,6 +79,7 @@ tabelas:
     - nao_use_para
     verificado: 2.466 linhas, id_garantia único; valor 0 a 5.000.000 — medido 2026-10-27
   contratacao_item:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um item de uma contratação
     chave: tipo_contratacao + id_contratacao + id_item (61.155 = 61.155 distintos); id_item sozinho repete (51.304 distintos)
     tempo:
@@ -96,6 +101,7 @@ tabelas:
     - nao_use_para
     verificado: 61.155 linhas, chave composta única — medido 2026-10-27
   contratacao_orgao_gestor:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um órgão gestor (ou comissão) responsável por uma contratação
     chave: tipo_contratacao + id_contratacao + sigla_orgao_gestor + tipo_gestao (7.334 = 7.334 distintos); sem tipo_gestao repete (7.248)
     tempo:
@@ -111,6 +117,7 @@ tabelas:
     - nao_use_para
     verificado: 7.334 linhas, chave composta única — medido 2026-10-27
   contratacao_pagamento:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um pagamento (nota cobrada) de um contrato
     chave: id_pagamento (10.236 linhas = 10.236 distintos; com id_contratacao também)
     tempo:
@@ -141,6 +148,7 @@ tabelas:
     - relação valor_cobrado x glosa
     verificado: 10.236 linhas, id_pagamento único; valor_cobrado de 0 a 67.937.896,67 (11 linhas com 0) — medido 2026-10-27
   contratacao_pagamento_empenho:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um empenho vinculado a um pagamento de contrato
     chave: id_pagamento + id_empenho (12.685 = 12.685 distintos)
     tempo:
@@ -170,6 +178,7 @@ tabelas:
     - nao_use_para
     verificado: 12.685 linhas, chave composta única; valor_empenhado = valor_liquidado em 12.627 linhas — medido 2026-10-27
   contrato_aditivo:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um aditivo de contrato
     chave: id_contratacao + id_aditivo (7.450 = 7.450 distintos); id_aditivo sozinho repete (4.918)
     tempo:
@@ -189,6 +198,7 @@ tabelas:
     - nao_use_para
     verificado: 7.450 linhas, chave composta única; valor de -14.993.937,93 a 189.069.188; data_assinatura com anos inválidos (0207, 2027) — medido 2026-10-27
   despesa_ceaps:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma despesa reembolsada pela CEAPS (cota para o exercício da atividade parlamentar) a um senador
     chave: id_despesa (37.461 linhas = 37.461 distintos)
     tempo:
@@ -216,6 +226,7 @@ tabelas:
     - nao_use_para
     verificado: '37.461 linhas, id_despesa único; soma por ano: 2025 e 2026 conforme meses acima (ex. 2025-12: 1.810 linhas, R$ 3.318.301) — medido 2026-10-27'
   diretor_coordenador:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um setor do Senado com seu diretor/coordenador titular (e substituto, quando há)
     chave: 'nenhuma: sigla_setor repete (234 linhas, 200 distintos); 34 linhas repetidas'
     tempo:
@@ -232,6 +243,7 @@ tabelas:
     - nao_use_para
     verificado: 234 linhas; substituto preenchido em 8,6% — medido 2026-10-27
   empresa:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma empresa fornecedora cadastrada
     chave: id_empresa (2.923 linhas = 2.923 distintos)
     tempo:
@@ -245,6 +257,7 @@ tabelas:
     - nao_use_para
     verificado: 2.923 linhas, id_empresa único — medido 2026-10-27
   estagiario:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um estagiário do Senado (retrato atual)
     chave: nome + curso + sigla_orgao (462 = 462 distintos; sem id próprio)
     tempo:
@@ -259,6 +272,7 @@ tabelas:
     - nao_use_para
     verificado: 462 linhas — medido 2026-10-27
   licitacao:
+    ultima_data: "2026-09-22"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma licitação do Senado
     chave: id_licitacao (2.753 linhas = 2.753 distintos)
     tempo:
@@ -277,6 +291,7 @@ tabelas:
     - nao_use_para
     verificado: 2.753 linhas, id_licitacao único — medido 2026-10-27
   licitacao_detalhamento:
+    ultima_data: "2026-09-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um documento de detalhamento (ata, esclarecimento, comunicado) de uma licitação
     chave: id_detalhamento (7.524 linhas = 7.524 distintos)
     tempo:
@@ -293,6 +308,7 @@ tabelas:
     - nao_use_para
     verificado: 7.524 linhas, chave única — medido 2026-10-27
   menor_aprendiz:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um menor aprendiz ativo
     chave: 'nenhuma: cpf repete (80 linhas, 78 distintos)'
     tempo:
@@ -308,6 +324,7 @@ tabelas:
     - nao_use_para
     verificado: 80 linhas — medido 2026-10-27
   pensionista:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um pensionista de servidor ou parlamentar
     chave: id_pensionista (2.065 linhas = 2.065 distintos)
     tempo:
@@ -363,6 +380,7 @@ tabelas:
     - nao_use_para
     verificado: 195 linhas — medido 2026-10-27
   senador:
+    ultima_data: "1983-02-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um senador (atual, ex-senador ou suplente) já cadastrado no Senado
     chave: id_senador (681 linhas = 681 distintos)
     tempo:
@@ -383,6 +401,7 @@ tabelas:
     - nao_use_para
     verificado: 681 linhas, id_senador único — medido 2026-10-27
   senador_aposentado_pensionista:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um benefício de ex-senador (aposentadoria) ou pensionista de senador
     chave: 'nenhuma: nome + tipo + data_inicio repete (188 linhas, 130 distintos)'
     tempo:
@@ -405,6 +424,7 @@ tabelas:
     - nao_use_para
     verificado: 188 linhas — medido 2026-10-27
   senador_auxilio_moradia:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um senador com auxílio-moradia / imóvel funcional
     chave: id_senador (85 linhas = 85 distintos; 1,2% nulo)
     tempo:
@@ -422,6 +442,7 @@ tabelas:
     - nao_use_para
     verificado: 85 linhas — medido 2026-10-27
   senador_escritorio_apoio:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um escritório de apoio de um senador
     chave: 'nenhuma: id_senador repete (82 linhas, 76 distintos; um senador pode ter vários)'
     tempo:
@@ -436,6 +457,7 @@ tabelas:
     - nao_use_para
     verificado: 82 linhas; sigla_setor 100% nula — medido 2026-10-27
   senador_gabinete:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: o gabinete de um senador
     chave: id_senador (81 linhas = 81 distintos)
     tempo:
@@ -449,6 +471,7 @@ tabelas:
     - nao_use_para
     verificado: 81 linhas — medido 2026-10-27
   servidor:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um servidor/parlamentar com vínculo atual ou passado
     chave: id_servidor (22.958 linhas = 22.958 distintos)
     tempo:
@@ -466,6 +489,7 @@ tabelas:
     - nao_use_para
     verificado: 22.958 linhas, id_servidor único; ano_admissao 1942–2026 — medido 2026-10-27
   servidor_aposentado:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um servidor aposentado
     chave: matricula (3.627 linhas = 3.627 distintos)
     tempo:
@@ -483,6 +507,7 @@ tabelas:
     - nao_use_para
     verificado: 3.627 linhas — medido 2026-10-27
   servidor_ativo:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um servidor ativo (retrato atual, sem id)
     chave: 'nenhuma: nome repete (6.663 linhas, 6.661 distintos) e não há matrícula'
     tempo:
@@ -500,6 +525,7 @@ tabelas:
     - nao_use_para
     verificado: 6.663 linhas — medido 2026-10-27
   servidor_cedido:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um servidor cedido de/para o Senado
     chave: matricula (247 linhas = 247 distintos)
     tempo:
@@ -515,6 +541,7 @@ tabelas:
     - nao_use_para
     verificado: 247 linhas — medido 2026-10-27
   servidor_exonerado:
+    ultima_data: "2026-09-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma exoneração de servidor
     chave: 'nenhuma por matrícula: matricula repete (4.767 linhas, 4.375 distintos); matricula + data_vacancia + data_exercicio é única (4.767)'
     tempo:
@@ -531,6 +558,7 @@ tabelas:
     - nao_use_para
     verificado: 4.767 linhas — medido 2026-10-27
   servidor_hora_extra:
+    ultima_data: "2026-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: o total de horas extras pagas a um servidor em um mês de pagamento
     chave: id_hora_extra + ano + mes + mes_ano_prestacao (12.139 = 12.139 distintos); id_hora_extra (1.763 distintos) é o servidor, repete entre meses
     tempo:
@@ -551,6 +579,7 @@ tabelas:
     - id_hora_extra = servidor
     verificado: 12.139 linhas; 2025-07 R$ 4,38 mi (985 linhas), 2025-12 R$ 1,55 mi (1.316) — medido 2026-10-27
   servidor_hora_extra_dia:
+    ultima_data: "2026-07-26"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um dia de hora extra trabalhada por servidor
     chave: 'nenhuma: id_hora_extra+data+mes_ano_prestacao+setor_prestacao+quantidade_horas repete em 102 de 131.151 linhas'
     tempo:
@@ -573,6 +602,7 @@ tabelas:
     - nao_use_para
     verificado: 131.151 linhas; 10.636 (id_hora_extra, ano, mes) distintos — medido 2026-10-27
   servidor_remuneracao:
+    ultima_data: "2026-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: a folha de pagamento de um servidor em um mês, por tipo de folha
     chave: id_remuneracao + ano + mes + tipo_folha (253.849 = 253.849 distintos); id_remuneracao sozinho repete (11.999 distintos)
     tempo:
@@ -607,6 +637,7 @@ tabelas:
     - sinais
     verificado: 253.849 linhas; só 34.727 das linhas casam com servidor.id_servidor por id_remuneracao; não use como chave de junção sem checar — medido 2026-10-27
   suprido_ato_concessao:
+    ultima_data: "2026-07-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um ato de concessão de suprimento de fundos (adiantamento) a um suprido
     chave: codigo_ato_concessao (340 linhas = 340 distintos)
     tempo:
@@ -634,6 +665,7 @@ tabelas:
     - nao_use_para
     verificado: 340 linhas (198 em 2025, 142 em 2026), 68 supridos — medido 2026-10-27
   suprido_empenho:
+    ultima_data: "2026-08-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um empenho de um suprimento de fundos, por rubrica
     chave: codigo_ato_concessao + numero (689 = 689 distintos)
     tempo:
@@ -658,6 +690,7 @@ tabelas:
     - nao_use_para
     verificado: 689 linhas, 286 atos distintos — medido 2026-10-27
   suprido_movimentacao:
+    ultima_data: "2019-12-20"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um comprovante (nota fiscal ou recibo) de gasto de suprimento no regime antigo
     chave: 'nenhuma confirmada: id_movimentacao repete (3.227 linhas, 2.698 distintos)'
     tempo:
@@ -680,6 +713,7 @@ tabelas:
     - nao_use_para
     verificado: '3.227 linhas; por ano: 2013 87, 2014 190, 2015 402, 2016 445, 2017 637, 2018 833, 2019 633 — medido 2026-10-27'
   suprido_movimentacao_subtipo:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: a classificação (subtipo de despesa) de uma movimentação do regime antigo
     chave: 'nenhuma: id_movimentacao + id_subtipo repete (4.679 linhas, 3.534 distintos)'
     tempo:
@@ -699,6 +733,7 @@ tabelas:
     - nao_use_para
     verificado: 4.679 linhas, rubrica 80 distintas — medido 2026-10-27
   suprido_transacao:
+    ultima_data: "2026-08-23"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma transação (nota fiscal ou recibo) de gasto de um suprimento
     chave: id_transacao (2.689 linhas = 2.689 distintos)
     tempo:
@@ -720,6 +755,7 @@ tabelas:
     - nao_use_para
     verificado: 2.689 linhas, 303 atos distintos; inscricao tem o valor placeholder 00000000000000 — medido 2026-10-27
   suprido_transacao_objeto:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um item/objeto comprado numa transação de suprimento
     chave: id_objeto (3.039 linhas = 3.039 distintos)
     tempo:
@@ -745,6 +781,7 @@ tabelas:
     - nao_use_para
     verificado: 3.039 linhas, id_objeto único — medido 2026-10-27
   terceirizado:
+    ultima_data: "2026-09-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um trabalhador terceirizado ativo alocado em um item de contrato
     chave: 'nenhuma: cpf + id_item_contrato repete (3.178 linhas, 3.156 distintos); cpf sozinho 2.762'
     tempo:

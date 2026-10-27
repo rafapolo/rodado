@@ -3,6 +3,7 @@
 dataset: br_ana_telemetria
 tabelas:
   estacoes:
+    ultima_data: "2026-07-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma estação telemétrica da rede da ANA (fluviométrica ou pluviométrica)"
     chave: "Codigo"
     tempo: {natureza: retrato_atual, coluna: UltimaAtualizacao, cobertura: "atualizações até 2026-07-09; colunas Periodo*Inicio/Fim dizem quando cada sensor operou"}
@@ -16,6 +17,7 @@ tabelas:
     rascunho: [unidades, use_para, nao_use_para]
     verificado: "11.362 linhas = 11.362 Codigo distintos; fluviométricas 4.318, pluviométricas 7.044 — medido 2026-10-27"
   estacoes_inventario_2023:
+    ultima_data: "2023-08-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma estação do inventário da ANA de 2023 (telemétricas ou não)"
     chave: "Codigo"
     tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "inventário de 2023; colunas Periodo* em texto dd/mm/aaaa"}
@@ -28,6 +30,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "37.782 linhas = 37.782 Codigo distintos — medido 2026-10-27"
   inventario:
+    ultima_data: "2023-08-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de estacoes_inventario_2023 (mesmos 37.782 registros, colunas em minúsculas)"
     chave: "codigo"
     tempo: {natureza: retrato_atual, coluna: nenhuma}
@@ -38,6 +41,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "37.782 linhas = 37.782 codigo distintos; mesma contagem de FLU/PLU de estacoes_inventario_2023 — medido 2026-10-27"
   series_chuva_diaria:
+    ultima_data: "2023-11-14"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma estação × dia de chuva"
     chave: "codigo, data (conferido em 4 estações)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "1910-12–2023-08 (amostra)"}
@@ -50,6 +54,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, significado de nivel_consistencia e status]
     verificado: "69.765.343 linhas; em 4 estações 67.207 linhas = 67.207 (codigo, data) e = (codigo, data, nivel_consistencia); sem chuva negativa nelas — medido 2026-10-27"
   series_chuva_mensal:
+    ultima_data: "2026-08-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma estação × mês de chuva"
     chave: "codigo, data"
     tempo: {natureza: serie_mensal, coluna: data, cobertura: "1900-01–2026-08 (primeiro dia do mês)"}
@@ -65,6 +70,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, faixa do filtro]
     verificado: "2.596.283 linhas = 2.596.283 (codigo, data) distintos — medido 2026-10-27"
   series_cota_diaria:
+    ultima_data: "2023-09-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma estação fluviométrica × dia de cota (nível do rio)"
     chave: "codigo, data (conferido em 4 estações)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "1914-02–2023-09 (amostra)"}
@@ -77,6 +83,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "47.788.422 linhas; em 4 estações 49.832 linhas = 49.832 (codigo, data) — medido 2026-10-27"
   series_cota_mensal:
+    ultima_data: "2023-09-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma estação × mês de cota"
     chave: "codigo, data"
     tempo: {natureza: serie_mensal, coluna: data, cobertura: "1900-01–2023-09"}
@@ -89,6 +96,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, sentinela]
     verificado: "1.729.199 linhas = 1.729.199 (codigo, data) distintos — medido 2026-10-27"
   series_cota_mensal_completa:
+    ultima_data: "2026-05-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de series_cota_mensal, com meses até 2026-05 e coluna fonte ('zip' ou 'soap')"
     chave: "codigo, data"
     tempo: {natureza: serie_mensal, coluna: data, cobertura: "1900-01–2026-05"}
@@ -99,6 +107,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.807.220 linhas = 1.807.220 (codigo, data) distintos — medido 2026-10-27"
   series_cotas_mensal:
+    ultima_data: "2023-09-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de series_cota_mensal, coluna de mês chamada mes (sem metodo, dias e média anual)"
     chave: "codigo, mes"
     tempo: {natureza: serie_mensal, coluna: mes, cobertura: "1900-01–2023-09"}
@@ -108,6 +117,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.729.207 linhas = 1.729.207 (codigo, mes, nivel_consistencia) distintos — medido 2026-10-27"
   series_vazao_diaria:
+    ultima_data: "2023-09-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma estação fluviométrica × dia de vazão"
     chave: "codigo, data (conferido em 4 estações)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "1930-01–2023-06 (amostra)"}
@@ -120,6 +130,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "36.137.783 linhas; em 4 estações 63.507 linhas = 63.507 (codigo, data) — medido 2026-10-27"
   series_vazao_mensal:
+    ultima_data: "2023-09-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma estação × mês de vazão"
     chave: "codigo, data"
     tempo: {natureza: serie_mensal, coluna: data, cobertura: "1901-01–2023-09"}
@@ -132,6 +143,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.331.690 linhas = 1.331.690 (codigo, data) distintos — medido 2026-10-27"
   series_vazao_mensal_completa:
+    ultima_data: "2026-05-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de series_vazao_mensal, com meses até 2026-05 e coluna fonte ('zip' ou 'soap')"
     chave: "codigo, data"
     tempo: {natureza: serie_mensal, coluna: data, cobertura: "1901-01–2026-05"}
@@ -141,6 +153,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.415.569 linhas = 1.415.569 (codigo, data) distintos — medido 2026-10-27"
   series_vazoes_mensal:
+    ultima_data: "2023-09-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de series_vazao_mensal, coluna de mês chamada mes (só maxima, minima, media)"
     chave: "codigo, mes"
     tempo: {natureza: serie_mensal, coluna: mes, cobertura: "1901-01–2023-09"}

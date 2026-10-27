@@ -3,6 +3,7 @@
 dataset: world_oecd_pisa
 tabelas:
   student:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um estudante de 15 anos que fez o PISA × ciclo (ano)"
     chave: "(year, student_id): 2.500.803 linhas = 2.500.803 distintos (também (year, country_id_iso_3, student_id)). student_id sozinho NÃO é chave: só 1.161.254 distintos, o código se repete entre anos e países"
     tempo: {natureza: serie_de_periodos, coluna: year, cobertura: "2015, 2018, 2022, 2025 (4 ciclos; sem 2000–2012)"}

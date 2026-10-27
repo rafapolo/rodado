@@ -3,6 +3,7 @@
 dataset: br_cgu_viagens
 tabelas:
   viagem:
+    ultima_data: "2026-10-26"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma viagem a serviço (processo de viagem) de um servidor, com valores totais de diárias, passagens, devolução e outros gastos"
     chave: "identificador_do_processo_de_viagem — quase única: 9.962.318 linhas para 9.962.310 distintos (8 repetidos); com cpf_viajante, 9.962.311"
     tempo: {natureza: serie_de_periodos, coluna: periodo_data_de_inicio, cobertura: "2011-09-18–2027-02-11 (início); periodo_data_de_fim vai a 2027-12 no perfil"}
@@ -35,6 +36,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "16.836.689 linhas, 9.532.554 processos distintos, 16.182.867 combinações da chave tentada — medido 2026-10-27"
   passagem:
+    ultima_data: "2026-09-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um trecho de passagem comprada (ida ou volta) de um processo de viagem, com valor e taxa de serviço"
     chave: "nenhuma: 5.214.358 linhas; (identificador_do_processo_de_viagem, numero_da_proposta_pcdp) tem só 2.750.522 distintos (vários bilhetes por viagem)"
     tempo: {natureza: serie_diaria, coluna: data_da_emissao_compra, cobertura: "2019-12-27–2026-09-01 (nula em 3.209.784 linhas, 61,6%)"}
@@ -51,6 +53,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "interpretação de valor negativo"]
     verificado: "5.214.358 linhas; 3.209.784 sem data_da_emissao_compra; 2.750.522 combinações (processo, proposta) — medido 2026-10-27"
   trecho:
+    ultima_data: "2026-10-27"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um trecho (origem → destino) de um processo de viagem"
     chave: "(identificador_do_processo_de_viagem, sequencia_trecho) — única em 2024 (1.723.361 linhas = 1.723.361 distintos); para as demais partições não medido (tabela de 21 milhões de linhas)"
     tempo: {natureza: serie_diaria, coluna: origem_data, cobertura: "2011–2027 (maioria 2014–2026)"}

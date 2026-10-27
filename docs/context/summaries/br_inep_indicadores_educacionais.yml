@@ -3,6 +3,7 @@
 dataset: br_inep_indicadores_educacionais
 tabelas:
   brasil:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um ano × localização × rede, para o Brasil (214 colunas de indicadores de fluxo, distorção idade-série, docentes e gestão)"
     chave: "ano, localizacao, rede (360 linhas, 360 distintas)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2006–2025"}
@@ -26,6 +27,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "tnr_*", "afd_*", "ied_*", "icg_*", "ird_*"]
     verificado: "360 linhas = 360 chaves distintas; anos 2006–2025; 2024: rede Total/localizacao Total taxa_aprovacao_ef 96,0 e tdi_ef 10,9 — medido 2026-10-27"
   regiao:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um ano × região × localização × rede (mesmas colunas de indicadores de brasil)"
     chave: "nenhuma: 90 combinações (ano, regiao, localizacao, rede) aparecem 2 vezes, todas em 2021, de 1.800 linhas (1.710 distintas); as linhas repetidas podem diferir em outras colunas"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2006–2024"}
@@ -39,6 +41,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.800 linhas, 1.710 chaves distintas; 90 repetidas só em 2021; 360 linhas por região — medido 2026-10-27"
   uf:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um ano × UF × localização × rede (mesmas colunas de indicadores)"
     chave: "ano, sigla_uf, localizacao, rede (9.021 linhas, 9.021 distintas)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2006–2024"}
@@ -52,6 +55,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "9.021 linhas = 9.021 chaves distintas; 27 UFs, 2006–2024 — medido 2026-10-27"
   municipio:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um ano × município × localização × rede (mesmas colunas de indicadores)"
     chave: "ano, id_municipio, localizacao, rede (1.277.948 linhas, 1.277.948 distintas)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2006–2024"}
@@ -65,6 +69,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.277.948 linhas = 1.277.948 chaves distintas; 5.570 municípios, 2006–2024 — medido 2026-10-27"
   escola:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma escola × ano (indicadores com a mesma família de colunas, sem os de rede agregada)"
     chave: "ano, id_escola (2024: 179.436 linhas, 179.436 distintas; tabela inteira 3.346.548 linhas)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2007–2024"}
@@ -80,6 +85,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "ano 2024: 179.436 linhas = 179.436 id_escola distintos; 2023: 178.601; 2022: 178.519 — medido 2026-10-27"
   escola_nivel_socioeconomico:
+    ultima_data: "2015"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma escola × ano (2014 ou 2015) com a classificação socioeconômica antiga do INEP"
     chave: "ano, id_escola (136.830 linhas, 136.830 distintas)"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2014–2015"}
@@ -94,6 +100,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "136.830 linhas = 136.830 (ano,id_escola) distintos; 2014 73.572, 2015 63.258 — medido 2026-10-27"
   brasil_remuneracao_docentes:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um ano × rede × escolaridade dos docentes, Brasil"
     chave: "ano, rede, escolaridade (120 linhas, 120 distintas)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2014–2021"}
@@ -111,6 +118,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "120 linhas = 120 chaves distintas — medido 2026-10-27"
   uf_remuneracao_docentes:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um ano × UF × rede × escolaridade dos docentes"
     chave: "ano, sigla_uf, rede, escolaridade (1.944 linhas, 1.944 distintas)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2014–2021"}
@@ -124,6 +132,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.944 linhas = 1.944 chaves distintas; 27 UFs × 72 linhas — medido 2026-10-27"
   brasil_taxa_transicao:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um ano × localização × rede, Brasil: promoção, repetência, evasão e migração para EJA por série"
     chave: "ano, localizacao, rede (120 linhas, 120 distintas)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2008–2022"}
@@ -137,6 +146,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "120 linhas = 120 chaves distintas; 'Publica' 12 e 'Pública' 3 (por localização) — medido 2026-10-27"
   regiao_taxa_transicao:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de brasil_taxa_transicao, por região"
     chave: "ano, regiao, localizacao, rede (600 linhas, 600 distintas)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2008–2022"}
@@ -150,6 +160,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "600 linhas = 600 chaves distintas — medido 2026-10-27"
   uf_taxa_transicao:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de brasil_taxa_transicao, por UF"
     chave: "ano, sigla_uf, localizacao, rede (2.025 linhas, 2.025 distintas)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2008–2022"}
@@ -163,6 +174,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, filtros_tipicos]
     verificado: "2.025 linhas = 2.025 chaves distintas — medido 2026-10-27"
   municipio_taxa_transicao:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de brasil_taxa_transicao, por município"
     chave: "ano, id_municipio, localizacao, rede (357.746 linhas, 357.746 distintas)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2008–2022"}

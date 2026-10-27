@@ -3,6 +3,7 @@
 dataset: br_stf_corte_aberta
 tabelas:
   decisoes:
+    ultima_data: "2025-01-19"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma decisão (andamento decisório) do STF sobre um processo; um processo pode ter várias linhas"
     chave: "nenhuma: em 2025 são 1.068 linhas para 1.036 link distintos; mesmo com (link, data_decisao, andamento, subgrupo_andamento) há 1.066 distintos"
     tempo: {natureza: serie_diaria, coluna: data_decisao, cobertura: "2000–2025 (coluna ano; em 2025 só 2025-01-01 a 2025-01-19)"}

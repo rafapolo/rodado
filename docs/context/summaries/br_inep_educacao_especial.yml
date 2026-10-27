@@ -3,6 +3,7 @@
 dataset: br_inep_educacao_especial
 tabelas:
   brasil_distorcao_idade_serie:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um Brasil × ano × etapa de ensino (taxa de distorção idade-série da educação especial)
     chave: ano, etapa_ensino (45 linhas, 45 distintos)
     tempo:
@@ -26,6 +27,7 @@ tabelas:
     - nao_use_para
     verificado: '45 linhas, 45 distintos (ano, etapa_ensino); ex.: 2021 anos iniciais tdi 36.6 — medido 2026-10-27'
   brasil_taxa_rendimento:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um Brasil × ano × etapa de ensino (taxas de rendimento da educação especial)
     chave: ano, etapa_ensino (45 linhas, 45 distintos)
     tempo:
@@ -57,6 +59,7 @@ tabelas:
     - nao_use_para
     verificado: 45 linhas, 45 distintos (ano, etapa_ensino) — medido 2026-10-27
   distorcao_idade_serie:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um UF × ano × etapa de ensino (taxa de distorção idade-série)
     chave: ano, sigla_uf, etapa_ensino (1.215 linhas, 1.215 distintos)
     tempo:
@@ -81,6 +84,7 @@ tabelas:
     - nao_use_para
     verificado: 1.215 linhas, 1.215 distintos; 27 UFs; idêntica a uf_distorcao_idade_serie (0 diferenças > 0,5 ponto no join pela chave) — medido 2026-10-27
   uf_distorcao_idade_serie:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: mesmo grão de distorcao_idade_serie (um UF × ano × etapa); duplicata da mesma informação
     chave: ano, sigla_uf, etapa_ensino (1.215 linhas, 1.215 distintos)
     tempo:
@@ -100,6 +104,7 @@ tabelas:
     - nao_use_para
     verificado: 'join com distorcao_idade_serie pela chave: 0 linhas com |diferença de tdi| > 0,5 — medido 2026-10-27'
   taxa_rendimento:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um UF × ano × etapa de ensino (taxas de rendimento)
     chave: ano, sigla_uf, etapa_ensino (1.215 linhas, 1.215 distintos)
     tempo:
@@ -129,6 +134,7 @@ tabelas:
     - nao_use_para
     verificado: 1.215 linhas, 1.215 distintos; igual a uf_taxa_rendimento (0 diferenças > 0,5 em taxa_aprovacao no join) — medido 2026-10-27
   uf_taxa_rendimento:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: mesmo grão de taxa_rendimento (um UF × ano × etapa); duplicata da mesma informação
     chave: ano, sigla_uf, etapa_ensino (1.215 linhas, 1.215 distintos)
     tempo:
@@ -148,6 +154,7 @@ tabelas:
     - nao_use_para
     verificado: 'join com taxa_rendimento pela chave: 0 diferenças em taxa_aprovacao — medido 2026-10-27'
   docente_aee:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × ano (docentes regentes e de AEE)
     chave: ano, id_municipio (16.710 linhas, 16.710 distintos)
     tempo:
@@ -186,6 +193,7 @@ tabelas:
     - nao_use_para
     verificado: 16.710 linhas = 3 anos × 5.570; chave única — medido 2026-10-27
   docente_formacao:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × ano × rede (docentes com formação continuada)
     chave: ano, id_municipio, rede (230.372 linhas, 230.372 distintos)
     tempo:
@@ -208,6 +216,7 @@ tabelas:
     - nao_use_para
     verificado: 230.372 linhas, chave única; 110.029 linhas com quantidade = 0 — medido 2026-10-27
   etapa_ensino:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × ano × tipo de classe × etapa de ensino
     chave: ano, id_municipio, tipo_classe, etapa_ensino (2.784.180 linhas, 2.784.180 distintos)
     tempo:
@@ -229,6 +238,7 @@ tabelas:
     - use_para
     verificado: '2.784.180 linhas, chave única; ver gotcha etapa_ensino_soma_a_mais (2024 Classes Comuns: etapa 1.955.026 vs 1.923.692) — medido 2026-10-27'
   faixa_etaria:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × ano × tipo de classe × faixa etária
     chave: ano, id_municipio, tipo_classe, faixa_etaria (1.202.760 linhas, 1.202.760 distintos)
     tempo:
@@ -251,6 +261,7 @@ tabelas:
     - nao_use_para
     verificado: 1.202.760 linhas, chave única; 2024 Classes Comuns soma 1.923.692 (= localizacao) — medido 2026-10-27
   localizacao:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × ano × tipo de classe × rede × localização (urbana/rural)
     chave: ano, id_municipio, tipo_classe, rede, localizacao (1.603.680 linhas, 1.603.680 distintos)
     tempo:
@@ -274,6 +285,7 @@ tabelas:
     - nao_use_para
     verificado: 1.603.680 linhas, chave única; 2024 Classes Comuns soma 1.923.692 — medido 2026-10-27
   tempo_ensino:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × ano × tipo de classe × rede × tempo de ensino (integral/parcial)
     chave: ano, id_municipio, tipo_classe, rede, tempo_ensino (1.603.680 linhas, 1.603.680 distintos)
     tempo:
@@ -297,6 +309,7 @@ tabelas:
     - nao_use_para
     verificado: 1.603.680 linhas, chave única (mesma estrutura de localizacao); total de 2024 Classes Comuns = 1.923.692 segundo o gotcha etapa_ensino_soma_a_mais — medido 2026-10-27
   sexo_raca_cor:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × ano × tipo de classe × sexo × raça/cor
     chave: ano, id_municipio, tipo_classe, sexo, raca_cor (2.361.000 linhas, 2.361.000 distintos)
     tempo:
@@ -320,6 +333,7 @@ tabelas:
     - nao_use_para
     verificado: 2.361.000 linhas, chave única; ver gotcha etapa_ensino_soma_a_mais (sexo_raca_cor = 1.923.692 em 2024 Classes Comuns) — medido 2026-10-27
   tipo_deficiencia:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × ano × tipo de classe × tipo de deficiência
     chave: ano, id_municipio, tipo_classe, tipo_deficiencia (2.405.460 linhas, 2.405.460 distintos)
     tempo:
@@ -341,6 +355,7 @@ tabelas:
     - use_para
     verificado: 2.405.460 linhas, chave única; soma 2024 Classes Comuns 2.180.461 vs 1.923.692 (localizacao) — medido 2026-10-27
   matricula_aee:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um UF × ano × rede (matrículas e matrículas em AEE)
     chave: ano, sigla_uf, rede (216 linhas, 216 distintos)
     tempo:

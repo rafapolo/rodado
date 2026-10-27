@@ -3,6 +3,7 @@
 dataset: br_me_cno
 tabelas:
   microdados_cnae:
+    ultima_data: "2021-05-11"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um CNAE 2.0 de uma obra (CNO): uma obra pode ter várias linhas, uma por CNAE"
     chave: "id_cno, cnae_2 (única nas 911.426 linhas; id_cno sozinho repete: 848.256 obras distintas)"
     tempo: {natureza: sem_tempo, coluna: data_registro, cobertura: "2018-11-19–2021-05-11 (data em que o CNAE foi registrado; é texto VARCHAR 'AAAA-MM-DD')"}
@@ -15,6 +16,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "911.426 linhas; count(DISTINCT (id_cno,cnae_2)) = 911.426; 848.256 id_cno distintos; contagem de cnae_2 = '4120400' do perfil (tabela inteira) — medido 2026-10-27"
   microdados_vinculo:
+    ultima_data: "2021-05-11"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um registro de vínculo entre uma obra (id_cno) e o responsável por ela (ni_responsavel), com data de início/fim do vínculo"
     chave: "nenhuma: id_cno repete (2.121 obras com mais de uma linha) e (id_cno, ni_responsavel, qualificacao_responsavel, data_inicio, data_fim, data_registro) dá 105.843 distintas em 109.449 linhas (3.606 linhas repetidas por completo)"
     tempo: {natureza: sem_tempo, coluna: data_inicio, cobertura: "data_inicio 1960-01-01–2021-05-11; data_registro 2018-11-19–2021-05-11; data_fim 1993-05-01–2023-07-09 (99,75% nula = vínculo ainda aberto)"}

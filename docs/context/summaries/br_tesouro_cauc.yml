@@ -12,6 +12,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "78 linhas, 78 distintos de (nivel, codigo_item), 39 itens por nível — medido 2026-10-27"
   situacao_estados:
+    ultima_data: "2025-11-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um estado (27 UFs) com a situação de cada item de regularidade do CAUC na data da pesquisa"
     chave: "Código IBGE (27 linhas = 27 distintos, medido; UF também é única)"
     tempo: {natureza: retrato_atual, coluna: data_pesquisa, cobertura: "2025-11-03–2025-11-03 (um único retrato, mais antigo que o de municípios)"}
@@ -25,6 +26,7 @@ tabelas:
     rascunho: [medidas (leitura de '!' e 'Desabilitado'), use_para, nao_use_para]
     verificado: "27 linhas, 27 distintos de Código IBGE; '!' aparece p.ex. 2 vezes em '1.1' e 'Desabilitado' em todas as 27 em '1.2' — medido 2026-10-27"
   situacao_municipios:
+    ultima_data: "2026-10-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município (5.569 linhas; o DF não está aqui, só em situacao_estados) com a situação de cada item de regularidade do CAUC na data da pesquisa"
     chave: "Código IBGE (5.569 linhas = 5.569 distintos, medido)"
     tempo: {natureza: retrato_atual, coluna: data_pesquisa, cobertura: "2026-10-02–2026-10-02 (único retrato)"}

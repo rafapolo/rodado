@@ -3,6 +3,7 @@
 dataset: br_mma_cnuc
 tabelas:
   unidades_conservacao:
+    ultima_data: "2026-07-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma unidade de conservação (UC) × foto semestral do cadastro CNUC (16 fotos); cada UC reaparece em todas as fotos em que consta"
     chave: "data_referencia, codigo_uc (44508 linhas = 44508 distintos). codigo_uc sozinho NÃO é único (repete por foto); id_uc tem 4,95% de nulos e nome_da_uc repete (3529 nomes para 3576 UCs em 2026-07)"
     tempo: {natureza: soma_de_retratos, coluna: data_referencia, cobertura: "2018-01-01–2026-07-01"}

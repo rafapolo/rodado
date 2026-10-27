@@ -3,6 +3,7 @@
 dataset: br_anvisa_medicamentos_industrializados
 tabelas:
   microdados:
+    ultima_data: "2021-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma venda agregada de medicamento controlado (SNGPC) por mês × município × princípio ativo × apresentação × prescritor"
     chave: "nenhuma: microdados sem id; a tabela foi cortada em exatamente 10.000.000 linhas (ver gotcha tabela_cortada_em_10_milhoes)"
     tempo: {natureza: serie_mensal, coluna: "ano + mes", cobertura: "2014–2021, só 52 pares (ano, mes) presentes de 96 possíveis"}

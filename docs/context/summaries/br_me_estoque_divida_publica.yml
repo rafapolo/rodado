@@ -3,6 +3,7 @@
 dataset: br_me_estoque_divida_publica
 tabelas:
   microdados:
+    ultima_data: "2022-10"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um título (id_divida) de uma carteira (classe_carteira) num mês: o estoque da dívida pública federal ao fim do mês"
     chave: "ano, mes, id_divida, classe_carteira (única nas 124.419 linhas). Atenção: (ano, mes, id_divida) sozinho repete em 2.772 linhas, que são as do Banco Central"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2017-09–2022-10 (2017 só set–dez; 2022 só jan–out)"}

@@ -13,6 +13,7 @@ tabelas:
   contratacao_item_resultado:
     grao: "não lida: tabela sem view no banco (Catalog Error: Table with name contratacao_item_resultado does not exist)"
   catalogo_material:
+    ultima_data: "2026-10-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um item do catálogo de materiais (CATMAT) na extração de 2026-10-04"
     chave: "codigo_item: 345.283 linhas = 345.283 distintos"
     tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-10-04–2026-10-04"}
@@ -23,6 +24,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "345.283 linhas, chave confirmada, 249.745 ativos — medido 2026-10-27"
   catalogo_servico:
+    ultima_data: "2026-10-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um serviço do catálogo CATSER na extração de 2026-10-04"
     chave: "codigo_servico: 2.970 = 2.970"
     tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-10-04–2026-10-04"}
@@ -33,6 +35,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2.970 linhas, chave confirmada — medido 2026-10-27"
   fornecedor:
+    ultima_data: "2026-10-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um fornecedor do cadastro (cópia do SICAF, gotcha fornecedor_duplica_sicaf), pessoa jurídica ou física"
     chave: "nenhuma: 962.012 linhas, 943.071 distintos de coalesce(cnpj, cpf); ~19.000 repetem"
     tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-10-04–2026-10-04"}
@@ -43,6 +46,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "962.012 linhas; coalesce(cnpj,cpf) 943.071 distintos; nenhuma linha sem os dois; ativos 826.568 — medido 2026-10-27"
   orgao:
+    ultima_data: "2026-10-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um órgão cadastrado (SIORG/SIASG) na extração de 2026-10-04"
     chave: "codigo_orgao: 12.056 = 12.056"
     tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-10-04–2026-10-04"}
@@ -53,12 +57,14 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "12.056 linhas, chave confirmada — medido 2026-10-27"
   unidade_administrativa:
+    ultima_data: "2026-10-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma unidade administrativa (UASG)"
     chave: "nenhuma conferida (tabela não perfilada)"
     use_para: "ligar codigo_uasg a órgão e município"
     rascunho: [grao, chave, use_para]
     verificado: "não medido — a tabela não está no perfil"
   licitacao:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma licitação (aviso) de compra pública federal"
     chave: "id_compra: 940.703 linhas = 940.703 distintos (identificador também)"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1997–2025 (data_publicacao)"}
@@ -72,6 +78,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "940.703 linhas, id_compra e identificador únicos; modalidades medidas — medido 2026-10-27"
   licitacao_item:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um item de licitação (exceto pregão eletrônico) × ano"
     chave: "nenhuma: 4.738.615 linhas, 4.735.922 id_compra_item distintos (2.693 repetidos)"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1990–2024"}
@@ -85,6 +92,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "4.738.615 linhas; 2.693 chaves repetidas; ano 2022: 3.185 linhas, 3.162 id_compra_item — medido 2026-10-27"
   licitacao_item_pregao:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um item de pregão eletrônico"
     chave: "id_compra_item em ano = 2020: 1.353.838 linhas = 1.353.838 distintos; ano = 2025: 1.408 = 1.408"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2000–2025"}
@@ -98,6 +106,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "24.794.084 linhas; ano 2020 e 2025 com chave confirmada — medido 2026-10-27"
   licitacao_pregao:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um pregão eletrônico (cabeçalho)"
     chave: "id_compra: 1.065.272 = 1.065.272"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2000–2024"}
@@ -110,6 +119,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "1.065.272 linhas, chave confirmada; valor_homologado_total 2023 com situacao_pregao = 'homologado' soma absurda — medido 2026-10-27"
   compra_sem_licitacao:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma compra direta (dispensa ou inexigibilidade)"
     chave: "nenhuma: 5.235.862 linhas, 5.235.771 id_compra distintos (91 repetidos)"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1997–2025"}
@@ -122,6 +132,7 @@ tabelas:
     rascunho: [use_para, filtros_tipicos]
     verificado: "5.235.862 linhas; 5.235.771 id_compra distintos — medido 2026-10-27"
   compra_sem_licitacao_item:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um item de compra sem licitação"
     chave: "nenhuma: 4.827.874 linhas, 4.827.808 id_compra_item distintos (66 repetidos)"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1997–2024"}
@@ -135,6 +146,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "4.827.874 linhas; 66 id_compra_item repetidos; 2023: 123.380 linhas — medido 2026-10-27"
   pregao_item_evento:
+    ultima_data: "2026-09-23"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um evento de um item de pregão (ordem_evento 1 a 6)"
     chave: "(id_compra, numero_item, ordem_evento) em ano = 2020: 966.299 = 966.299"
     tempo: {natureza: serie_de_periodos, coluna: data_hora_evento, cobertura: "ano 2002–2024"}
@@ -145,6 +157,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "chave confirmada só em ano = 2020 — medido 2026-10-27"
   pregao_item_oferta:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma oferta de um fornecedor a um item de pregão"
     chave: "(id_compra, numero_item, cnpj_cpf_fornecedor) em ano = 2020: 966.818 = 966.818"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2004–2024"}

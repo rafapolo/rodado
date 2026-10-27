@@ -3,6 +3,7 @@
 dataset: br_ufmg_censo_demografico_1872
 tabelas:
   domicilio_corrigido_municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × ano: casas habitadas, desabitadas e fogos, nos dados corrigidos'
     chave: id_municipio_1872
     tempo:
@@ -34,6 +35,7 @@ tabelas:
     - nao_use_para
     verificado: 636 linhas, 636 distintos de (id_municipio_1872) — chave confirmada em todas as tabelas, medido 2026-10-27; 636 municípios com dado de 6 a menos que os 642 de municipio
   domicilio_corrigido_paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma paróquia × ano: casas habitadas, desabitadas e fogos, nos dados corrigidos'
     chave: id_paroquia
     tempo:
@@ -66,6 +68,7 @@ tabelas:
     - nao_use_para
     verificado: 1440 linhas, 1440 distintos de (id_paroquia) — chave confirmada em todas as tabelas, medido 2026-10-27
   domicilio_corrigido_provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma província × ano: casas habitadas, desabitadas e fogos, nos dados corrigidos'
     chave: id_provincia
     tempo:
@@ -96,6 +99,7 @@ tabelas:
     - nao_use_para
     verificado: 21 linhas, 21 distintos de (id_provincia) — chave confirmada em todas as tabelas, medido 2026-10-27
   domicilio_original_municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × ano: casas habitadas, desabitadas e fogos, nos dados originals'
     chave: id_municipio_1872
     tempo:
@@ -127,6 +131,7 @@ tabelas:
     - nao_use_para
     verificado: '636 linhas, 636 distintos de (id_municipio_1872) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido); 636 municípios com dado de 6 a menos que os 642 de municipio'
   domicilio_original_paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma paróquia × ano: casas habitadas, desabitadas e fogos, nos dados originals'
     chave: id_paroquia
     tempo:
@@ -159,6 +164,7 @@ tabelas:
     - nao_use_para
     verificado: '1440 linhas, 1440 distintos de (id_paroquia) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   domicilio_original_provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma província × ano: casas habitadas, desabitadas e fogos, nos dados originals'
     chave: id_provincia
     tempo:
@@ -189,6 +195,7 @@ tabelas:
     - nao_use_para
     verificado: '21 linhas, 21 distintos de (id_provincia) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   estrangeiro_nacionalidade_corrigido_municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × categoria (id_categoria): estrangeiros por nacionalidade (id_categoria) × sexo × religião (católico/acatólico) × estado civil, nos dados corrigidos'
     chave: id_municipio_1872 + id_categoria
     tempo:
@@ -214,6 +221,7 @@ tabelas:
     - nao_use_para
     verificado: 19080 linhas, 19080 distintos de (id_municipio_1872, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   estrangeiro_nacionalidade_corrigido_paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma paróquia × categoria (id_categoria): estrangeiros por nacionalidade (id_categoria) × sexo × religião (católico/acatólico) × estado civil, nos dados corrigidos'
     chave: id_paroquia + id_categoria
     tempo:
@@ -240,6 +248,7 @@ tabelas:
     - nao_use_para
     verificado: 43200 linhas, 43200 distintos de (id_paroquia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   estrangeiro_nacionalidade_corrigido_provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma província × categoria (id_categoria): estrangeiros por nacionalidade (id_categoria) × sexo × religião (católico/acatólico) × estado civil, nos dados corrigidos'
     chave: id_provincia + id_categoria
     tempo:
@@ -264,6 +273,7 @@ tabelas:
     - nao_use_para
     verificado: 630 linhas, 630 distintos de (id_provincia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   estrangeiro_nacionalidade_original_municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × categoria (id_categoria): estrangeiros por nacionalidade (id_categoria) × sexo × religião (católico/acatólico) × estado civil, nos dados originals'
     chave: id_municipio_1872 + id_categoria
     tempo:
@@ -289,6 +299,7 @@ tabelas:
     - nao_use_para
     verificado: '19716 linhas, 19716 distintos de (id_municipio_1872, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   estrangeiro_nacionalidade_original_paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma paróquia × categoria (id_categoria): estrangeiros por nacionalidade (id_categoria) × sexo × religião (católico/acatólico) × estado civil, nos dados originals'
     chave: id_paroquia + id_categoria
     tempo:
@@ -315,6 +326,7 @@ tabelas:
     - nao_use_para
     verificado: '44640 linhas, 44640 distintos de (id_paroquia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   estrangeiro_nacionalidade_original_provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma província × categoria (id_categoria): estrangeiros por nacionalidade (id_categoria) × sexo × religião (católico/acatólico) × estado civil, nos dados originals'
     chave: id_provincia + id_categoria
     tempo:
@@ -339,6 +351,7 @@ tabelas:
     - nao_use_para
     verificado: '651 linhas, 651 distintos de (id_provincia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   homem_origem_brasileira_corrigido_municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × categoria (id_categoria): homens brasileiros por origem (id_categoria: adotivos, naturalizados, província de nascimento, sem informação) × estado civil × raça × condição, nos dados corrigidos'
     chave: id_municipio_1872 + id_categoria
     tempo:
@@ -364,6 +377,7 @@ tabelas:
     - nao_use_para
     verificado: 15264 linhas, 15264 distintos de (id_municipio_1872, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   homem_origem_brasileira_corrigido_paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma paróquia × categoria (id_categoria): homens brasileiros por origem (id_categoria: adotivos, naturalizados, província de nascimento, sem informação) × estado civil × raça × condição, nos dados corrigidos'
     chave: id_paroquia + id_categoria
     tempo:
@@ -390,6 +404,7 @@ tabelas:
     - nao_use_para
     verificado: 34560 linhas, 34560 distintos de (id_paroquia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   homem_origem_brasileira_corrigido_provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma província × categoria (id_categoria): homens brasileiros por origem (id_categoria: adotivos, naturalizados, província de nascimento, sem informação) × estado civil × raça × condição, nos dados corrigidos'
     chave: id_provincia + id_categoria
     tempo:
@@ -414,6 +429,7 @@ tabelas:
     - nao_use_para
     verificado: 504 linhas, 504 distintos de (id_provincia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   homem_origem_brasileira_original_municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × categoria (id_categoria): homens brasileiros por origem (id_categoria: adotivos, naturalizados, província de nascimento, sem informação) × estado civil × raça × condição, nos dados originals'
     chave: id_municipio_1872 + id_categoria
     tempo:
@@ -439,6 +455,7 @@ tabelas:
     - nao_use_para
     verificado: '16536 linhas, 16536 distintos de (id_municipio_1872, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   homem_origem_brasileira_original_paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma paróquia × categoria (id_categoria): homens brasileiros por origem (id_categoria: adotivos, naturalizados, província de nascimento, sem informação) × estado civil × raça × condição, nos dados originals'
     chave: id_paroquia + id_categoria
     tempo:
@@ -465,6 +482,7 @@ tabelas:
     - nao_use_para
     verificado: '37440 linhas, 37440 distintos de (id_paroquia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   homem_origem_brasileira_original_provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma província × categoria (id_categoria): homens brasileiros por origem (id_categoria: adotivos, naturalizados, província de nascimento, sem informação) × estado civil × raça × condição, nos dados originals'
     chave: id_provincia + id_categoria
     tempo:
@@ -489,6 +507,7 @@ tabelas:
     - nao_use_para
     verificado: '546 linhas, 546 distintos de (id_provincia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   mulher_origem_brasileira_corrigido_municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × categoria (id_categoria): mulheres brasileiras por origem (id_categoria: adotivas, naturalizadas, província de nascimento, sem informação) × estado civil × raça × condição, nos dados corrigidos'
     chave: id_municipio_1872 + id_categoria
     tempo:
@@ -514,6 +533,7 @@ tabelas:
     - nao_use_para
     verificado: 15264 linhas, 15264 distintos de (id_municipio_1872, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   mulher_origem_brasileira_corrigido_paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma paróquia × categoria (id_categoria): mulheres brasileiras por origem (id_categoria: adotivas, naturalizadas, província de nascimento, sem informação) × estado civil × raça × condição, nos dados corrigidos'
     chave: id_paroquia + id_categoria
     tempo:
@@ -540,6 +560,7 @@ tabelas:
     - nao_use_para
     verificado: 34560 linhas, 34560 distintos de (id_paroquia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   mulher_origem_brasileira_corrigido_provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma província × categoria (id_categoria): mulheres brasileiras por origem (id_categoria: adotivas, naturalizadas, província de nascimento, sem informação) × estado civil × raça × condição, nos dados corrigidos'
     chave: id_provincia + id_categoria
     tempo:
@@ -564,6 +585,7 @@ tabelas:
     - nao_use_para
     verificado: 504 linhas, 504 distintos de (id_provincia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   mulher_origem_brasileira_original_municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × categoria (id_categoria): mulheres brasileiras por origem (id_categoria: adotivas, naturalizadas, província de nascimento, sem informação) × estado civil × raça × condição, nos dados originals'
     chave: id_municipio_1872 + id_categoria
     tempo:
@@ -589,6 +611,7 @@ tabelas:
     - nao_use_para
     verificado: '16536 linhas, 16536 distintos de (id_municipio_1872, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   mulher_origem_brasileira_original_paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma paróquia × categoria (id_categoria): mulheres brasileiras por origem (id_categoria: adotivas, naturalizadas, província de nascimento, sem informação) × estado civil × raça × condição, nos dados originals'
     chave: id_paroquia + id_categoria
     tempo:
@@ -615,6 +638,7 @@ tabelas:
     - nao_use_para
     verificado: '37440 linhas, 37440 distintos de (id_paroquia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   mulher_origem_brasileira_original_provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma província × categoria (id_categoria): mulheres brasileiras por origem (id_categoria: adotivas, naturalizadas, província de nascimento, sem informação) × estado civil × raça × condição, nos dados originals'
     chave: id_provincia + id_categoria
     tempo:
@@ -639,6 +663,7 @@ tabelas:
     - nao_use_para
     verificado: '546 linhas, 546 distintos de (id_provincia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município de 1872 (id_municipio_1872, nome_municipio) com a província
     chave: id_municipio_1872
     tempo:
@@ -651,6 +676,7 @@ tabelas:
     - nao_use_para
     verificado: 642 linhas, 642 distintos de id_municipio_1872 — medido 2026-10-27
   paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma paróquia de 1872 (id_paroquia, nome_paroquia) com município e província
     chave: id_paroquia
     tempo:
@@ -663,6 +689,7 @@ tabelas:
     - nao_use_para
     verificado: 1473 linhas, 1473 distintos de id_paroquia — medido 2026-10-27
   populacao_ausente_idade_corrigido_municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × categoria (id_categoria): população ausente por faixa etária (id_categoria) × raça × sexo × condição livre/escravizado, nos dados corrigidos'
     chave: id_municipio_1872 + id_categoria
     tempo:
@@ -688,6 +715,7 @@ tabelas:
     - nao_use_para
     verificado: 19716 linhas, 19716 distintos de (id_municipio_1872, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   populacao_ausente_idade_corrigido_paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma paróquia × categoria (id_categoria): população ausente por faixa etária (id_categoria) × raça × sexo × condição livre/escravizado, nos dados corrigidos'
     chave: id_paroquia + id_categoria
     tempo:
@@ -714,6 +742,7 @@ tabelas:
     - nao_use_para
     verificado: 44640 linhas, 44640 distintos de (id_paroquia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   populacao_ausente_idade_corrigido_provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma província × categoria (id_categoria): população ausente por faixa etária (id_categoria) × raça × sexo × condição livre/escravizado, nos dados corrigidos'
     chave: id_provincia + id_categoria
     tempo:
@@ -738,6 +767,7 @@ tabelas:
     - nao_use_para
     verificado: 651 linhas, 651 distintos de (id_provincia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   populacao_ausente_idade_original_municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × categoria (id_categoria): população ausente por faixa etária (id_categoria) × raça × sexo × condição livre/escravizado, nos dados originals'
     chave: id_municipio_1872 + id_categoria
     tempo:
@@ -763,6 +793,7 @@ tabelas:
     - nao_use_para
     verificado: '21624 linhas, 21624 distintos de (id_municipio_1872, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   populacao_ausente_idade_original_paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma paróquia × categoria (id_categoria): população ausente por faixa etária (id_categoria) × raça × sexo × condição livre/escravizado, nos dados originals'
     chave: id_paroquia + id_categoria
     tempo:
@@ -789,6 +820,7 @@ tabelas:
     - nao_use_para
     verificado: '48960 linhas, 48960 distintos de (id_paroquia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   populacao_ausente_idade_original_provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma província × categoria (id_categoria): população ausente por faixa etária (id_categoria) × raça × sexo × condição livre/escravizado, nos dados originals'
     chave: id_provincia + id_categoria
     tempo:
@@ -813,6 +845,7 @@ tabelas:
     - nao_use_para
     verificado: '714 linhas, 714 distintos de (id_provincia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   populacao_geral_corrigido_municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × categoria (id_categoria): população recenseada de 1872 por categoria do quadro geral (total de almas, raça, estado civil, religião, nacionalidade, instrução, defeitos físicos, ausentes, transeuntes), dividida em livres e escravizados, nos dados corrigidos'
     chave: id_municipio_1872 + id_categoria
     tempo:
@@ -838,6 +871,7 @@ tabelas:
     - nao_use_para
     verificado: 15264 linhas, 15264 distintos de (id_municipio_1872, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   populacao_geral_corrigido_paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma paróquia × categoria (id_categoria): população recenseada de 1872 por categoria do quadro geral (total de almas, raça, estado civil, religião, nacionalidade, instrução, defeitos físicos, ausentes, transeuntes), dividida em livres e escravizados, nos dados corrigidos'
     chave: id_paroquia + id_categoria
     tempo:
@@ -864,6 +898,7 @@ tabelas:
     - nao_use_para
     verificado: 34560 linhas, 34560 distintos de (id_paroquia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   populacao_geral_corrigido_provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma província × categoria (id_categoria): população recenseada de 1872 por categoria do quadro geral (total de almas, raça, estado civil, religião, nacionalidade, instrução, defeitos físicos, ausentes, transeuntes), dividida em livres e escravizados, nos dados corrigidos'
     chave: id_provincia + id_categoria
     tempo:
@@ -888,6 +923,7 @@ tabelas:
     - nao_use_para
     verificado: 504 linhas, 504 distintos de (id_provincia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   populacao_geral_original_municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × categoria (id_categoria): população recenseada de 1872 por categoria do quadro geral (total de almas, raça, estado civil, religião, nacionalidade, instrução, defeitos físicos, ausentes, transeuntes), dividida em livres e escravizados, nos dados originals'
     chave: id_municipio_1872 + id_categoria
     tempo:
@@ -913,6 +949,7 @@ tabelas:
     - nao_use_para
     verificado: '15264 linhas, 15264 distintos de (id_municipio_1872, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   populacao_geral_original_paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma paróquia × categoria (id_categoria): população recenseada de 1872 por categoria do quadro geral (total de almas, raça, estado civil, religião, nacionalidade, instrução, defeitos físicos, ausentes, transeuntes), dividida em livres e escravizados, nos dados originals'
     chave: id_paroquia + id_categoria
     tempo:
@@ -939,6 +976,7 @@ tabelas:
     - nao_use_para
     verificado: '34560 linhas, 34560 distintos de (id_paroquia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   populacao_geral_original_provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma província × categoria (id_categoria): população recenseada de 1872 por categoria do quadro geral (total de almas, raça, estado civil, religião, nacionalidade, instrução, defeitos físicos, ausentes, transeuntes), dividida em livres e escravizados, nos dados originals'
     chave: id_provincia + id_categoria
     tempo:
@@ -963,6 +1001,7 @@ tabelas:
     - nao_use_para
     verificado: '504 linhas, 504 distintos de (id_provincia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   populacao_presente_idade_corrigido_municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × categoria (id_categoria): população presente por faixa etária (id_categoria) × raça × sexo × condição livre/escravizado, nos dados corrigidos'
     chave: id_municipio_1872 + id_categoria
     tempo:
@@ -988,6 +1027,7 @@ tabelas:
     - nao_use_para
     verificado: 19716 linhas, 19716 distintos de (id_municipio_1872, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   populacao_presente_idade_corrigido_paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma paróquia × categoria (id_categoria): população presente por faixa etária (id_categoria) × raça × sexo × condição livre/escravizado, nos dados corrigidos'
     chave: id_paroquia + id_categoria
     tempo:
@@ -1014,6 +1054,7 @@ tabelas:
     - nao_use_para
     verificado: 44640 linhas, 44640 distintos de (id_paroquia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   populacao_presente_idade_corrigido_provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma província × categoria (id_categoria): população presente por faixa etária (id_categoria) × raça × sexo × condição livre/escravizado, nos dados corrigidos'
     chave: id_provincia + id_categoria
     tempo:
@@ -1038,6 +1079,7 @@ tabelas:
     - nao_use_para
     verificado: 651 linhas, 651 distintos de (id_provincia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   populacao_presente_idade_original_municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × categoria (id_categoria): população presente por faixa etária (id_categoria) × raça × sexo × condição livre/escravizado, nos dados originals'
     chave: id_municipio_1872 + id_categoria
     tempo:
@@ -1063,6 +1105,7 @@ tabelas:
     - nao_use_para
     verificado: '21624 linhas, 21624 distintos de (id_municipio_1872, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   populacao_presente_idade_original_paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma paróquia × categoria (id_categoria): população presente por faixa etária (id_categoria) × raça × sexo × condição livre/escravizado, nos dados originals'
     chave: id_paroquia + id_categoria
     tempo:
@@ -1089,6 +1132,7 @@ tabelas:
     - nao_use_para
     verificado: '48960 linhas, 48960 distintos de (id_paroquia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   populacao_presente_idade_original_provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma província × categoria (id_categoria): população presente por faixa etária (id_categoria) × raça × sexo × condição livre/escravizado, nos dados originals'
     chave: id_provincia + id_categoria
     tempo:
@@ -1113,6 +1157,7 @@ tabelas:
     - nao_use_para
     verificado: '714 linhas, 714 distintos de (id_provincia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   populacao_total_idade_corrigido_municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × categoria (id_categoria): população total (presentes + ausentes) por faixa etária (id_categoria) × raça × sexo × condição livre/escravizado; a categoria ''31'' é ''Total'', nos dados corrigidos'
     chave: id_municipio_1872 + id_categoria
     tempo:
@@ -1138,6 +1183,7 @@ tabelas:
     - nao_use_para
     verificado: 19716 linhas, 19716 distintos de (id_municipio_1872, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   populacao_total_idade_corrigido_paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma paróquia × categoria (id_categoria): população total (presentes + ausentes) por faixa etária (id_categoria) × raça × sexo × condição livre/escravizado; a categoria ''31'' é ''Total'', nos dados corrigidos'
     chave: id_paroquia + id_categoria
     tempo:
@@ -1164,6 +1210,7 @@ tabelas:
     - nao_use_para
     verificado: 44640 linhas, 44640 distintos de (id_paroquia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   populacao_total_idade_corrigido_provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma província × categoria (id_categoria): população total (presentes + ausentes) por faixa etária (id_categoria) × raça × sexo × condição livre/escravizado; a categoria ''31'' é ''Total'', nos dados corrigidos'
     chave: id_provincia + id_categoria
     tempo:
@@ -1188,6 +1235,7 @@ tabelas:
     - nao_use_para
     verificado: 651 linhas, 651 distintos de (id_provincia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   profissao_corrigido_municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × categoria (id_categoria): pessoas por profissão (id_categoria) × nacionalidade (brasileiros/estrangeiros) × sexo × estado civil, mais escravizados por sexo, nos dados corrigidos'
     chave: id_municipio_1872 + id_categoria
     tempo:
@@ -1213,6 +1261,7 @@ tabelas:
     - nao_use_para
     verificado: 24804 linhas, 24804 distintos de (id_municipio_1872, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   profissao_corrigido_paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma paróquia × categoria (id_categoria): pessoas por profissão (id_categoria) × nacionalidade (brasileiros/estrangeiros) × sexo × estado civil, mais escravizados por sexo, nos dados corrigidos'
     chave: id_paroquia + id_categoria
     tempo:
@@ -1239,6 +1288,7 @@ tabelas:
     - nao_use_para
     verificado: 56160 linhas, 56160 distintos de (id_paroquia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   profissao_corrigido_provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma província × categoria (id_categoria): pessoas por profissão (id_categoria) × nacionalidade (brasileiros/estrangeiros) × sexo × estado civil, mais escravizados por sexo, nos dados corrigidos'
     chave: id_provincia + id_categoria
     tempo:
@@ -1263,6 +1313,7 @@ tabelas:
     - nao_use_para
     verificado: 819 linhas, 819 distintos de (id_provincia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   profissao_original_municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × categoria (id_categoria): pessoas por profissão (id_categoria) × nacionalidade (brasileiros/estrangeiros) × sexo × estado civil, mais escravizados por sexo, nos dados originals'
     chave: id_municipio_1872 + id_categoria
     tempo:
@@ -1288,6 +1339,7 @@ tabelas:
     - nao_use_para
     verificado: '26076 linhas, 26076 distintos de (id_municipio_1872, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   profissao_original_paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma paróquia × categoria (id_categoria): pessoas por profissão (id_categoria) × nacionalidade (brasileiros/estrangeiros) × sexo × estado civil, mais escravizados por sexo, nos dados originals'
     chave: id_paroquia + id_categoria
     tempo:
@@ -1314,6 +1366,7 @@ tabelas:
     - nao_use_para
     verificado: '59040 linhas, 59040 distintos de (id_paroquia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   profissao_original_provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma província × categoria (id_categoria): pessoas por profissão (id_categoria) × nacionalidade (brasileiros/estrangeiros) × sexo × estado civil, mais escravizados por sexo, nos dados originals'
     chave: id_provincia + id_categoria
     tempo:
@@ -1338,6 +1391,7 @@ tabelas:
     - nao_use_para
     verificado: '861 linhas, 861 distintos de (id_provincia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27; ''original'' = valores como publicados, com linhas extras de conferência; ''corrigido'' = soma refeita (populacao_geral: 3.034 de 14.628 células município × categoria diferem entre original e corrigido)'
   provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma província do Império em 1872 (id_provincia, nome_provincia)
     chave: id_provincia
     tempo:
@@ -1350,6 +1404,7 @@ tabelas:
     - nao_use_para
     verificado: 21 linhas, 21 distintos de id_provincia — medido 2026-10-27; nomes de província em grafia da época (Piauhy, Parahyba, Goyaz, Matto Grosso), id 13 = Município Neutro (Corte)
   resumo_geral_corrigido_municipio:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um município × categoria (id_categoria): o quadro geral estendido a 143 categorias (as de populacao_geral mais faixa etária, origem de brasileiros e estrangeiros e profissões), livres e escravizados, nos dados corrigidos'
     chave: id_municipio_1872 + id_categoria
     tempo:
@@ -1375,6 +1430,7 @@ tabelas:
     - nao_use_para
     verificado: 90948 linhas, 90948 distintos de (id_municipio_1872, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   resumo_geral_corrigido_paroquia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma paróquia × categoria (id_categoria): o quadro geral estendido a 143 categorias (as de populacao_geral mais faixa etária, origem de brasileiros e estrangeiros e profissões), livres e escravizados, nos dados corrigidos'
     chave: id_paroquia + id_categoria
     tempo:
@@ -1401,6 +1457,7 @@ tabelas:
     - nao_use_para
     verificado: 205920 linhas, 205920 distintos de (id_paroquia, id_categoria) — chave confirmada em todas as tabelas, medido 2026-10-27
   resumo_geral_corrigido_provincia:
+    ultima_data: "1872"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma província × categoria (id_categoria): o quadro geral estendido a 143 categorias (as de populacao_geral mais faixa etária, origem de brasileiros e estrangeiros e profissões), livres e escravizados, nos dados corrigidos'
     chave: id_provincia + id_categoria
     tempo:

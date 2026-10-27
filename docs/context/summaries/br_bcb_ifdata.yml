@@ -3,6 +3,7 @@
 dataset: br_bcb_ifdata
 tabelas:
   cadastro:
+    ultima_data: "2026-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma instituição financeira × trimestre (cadastro IF.data)"
     chave: "ano_mes, cod_inst (512.941 linhas = 512.941 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: ano_mes, cobertura: "200003–202606 (trimestral: meses 3, 6, 9, 12)"}
@@ -18,6 +19,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "significado de situacao"]
     verificado: "512.941 linhas, chave (ano_mes, cod_inst) única; 202606: 5.865 instituições — medido 2026-10-27"
   coluna:
+    ultima_data: "2025-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma coluna (conta) dos relatórios do IF.data num trimestre, com nome e grupo"
     chave: "nenhuma: (ano, mes, id_coluna) dá 36.231 distintos em 48.482 linhas e, com id_relatorio e tipo_consolidado, 48.261"
     tempo: {natureza: serie_de_periodos, coluna: "ano + mes", cobertura: "2000–2025"}
@@ -30,6 +32,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "48.482 linhas; (ano, mes, id_coluna) repete — medido 2026-10-27"
   instituicao:
+    ultima_data: "2025-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma instituição × trimestre × tipo de consolidação (tabela Base dos Dados)"
     chave: "ano, mes, id_instituicao, tipo_consolidado (440.444 linhas = 440.444 distintos); sem tipo_consolidado são 217.072"
     tempo: {natureza: serie_de_periodos, coluna: "ano + mes", cobertura: "2000–2025"}
@@ -43,6 +46,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "440.444 linhas; (ano, mes, id_instituicao) 217.072 distintos; com tipo_consolidado única — medido 2026-10-27"
   relatorio:
+    ultima_data: "2026-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um saldo de uma conta de um relatório × instituição × tipo de consolidação × trimestre"
     chave: "ano_mes, tipo_instituicao, cod_inst, numero_relatorio, conta (ano = 2026: 1.751.234 linhas = 1.751.234 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: ano_mes, cobertura: "2000–202606 (trimestral)"}

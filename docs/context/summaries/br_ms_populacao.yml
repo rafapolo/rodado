@@ -3,6 +3,7 @@
 dataset: br_ms_populacao
 tabelas:
   municipio:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × ano × sexo × faixa etária quinquenal"
     chave: "ano, id_municipio, sexo, grupo_idade (confirmada)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2000–2025"}

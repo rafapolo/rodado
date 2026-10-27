@@ -3,6 +3,7 @@
 dataset: br_tce_es
 tabelas:
   aquisicoes_mensais:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um arquivo mensal de aquisições publicado pelo TCE-ES (ano × mês, com link para o PDF)"
     chave: "Chave (133 linhas, 133 distintos); (Ano, Mes) também 133"
     tempo: {natureza: serie_mensal, coluna: "Ano + MesValor", cobertura: "2016–2026"}
@@ -13,6 +14,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "133 linhas, 133 distintos de Chave e de (Ano,Mes) — medido 2026-10-27"
   julgamento_contas:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um voto de vereador no julgamento das contas de um município (município × exercício × parecer prévio × vereador)"
     chave: "nenhuma: 11.691 linhas; (NumeroParecerPrevio, AnoParecerPrevio, nome, NomeVereador, Ano) tem 10.562 distintos e com Responsavel 11.285; NomeVereador é nulo em 2,6%"
     tempo: {natureza: serie_anual, coluna: Ano, cobertura: "2009–2024 (Ano é o exercício das contas, texto; AnoParecerPrevio vai a 2026)"}
@@ -28,6 +30,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "que Quantidade* é total da sessão repetido (visto nas 3 primeiras linhas)"]
     verificado: "11.691 linhas; (parecer, ano, nome) = 1.206 distintos (aprox. contas); chaves candidatas medidas acima — medido 2026-10-27"
   lista_responsaveis:
+    ultima_data: "2026-09-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um responsável com contas irregulares ou sanção (inabilitado, inidôneo) em uma deliberação do TCE-ES"
     chave: "nenhuma: 734 linhas; (NumeroDocumentoResponsavel, NumeroProcesso, AnoProcesso, NumeroDeliberacao, AnoDeliberacao) tem 729 distintos (5 repetem)"
     tempo: {natureza: serie_de_periodos, coluna: DataTransito, cobertura: "2018-10-11–2026-09-04 (DataTermino 2026-10-11 a 2034-09-04)"}
@@ -41,6 +44,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "leitura de DataTermino como fim da vigência na lista"]
     verificado: "734 linhas, 729 distintos da chave candidata, 549 documentos distintos — medido 2026-10-27"
   obras_publicas:
+    ultima_data: "2023-12-11"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma obra pública contratada (contrato) fiscalizada pelo TCE-ES"
     chave: "_id (250 linhas, 250 distintos); Contrato tem 240 distintos"
     tempo: {natureza: serie_de_periodos, coluna: DataAssinaturaContrato, cobertura: "2007-02-06–2023-12-11"}
@@ -57,6 +61,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "250 linhas, 250 distintos de _id e 240 de Contrato; Situacao e modalidades do perfil — medido 2026-10-27"
   resultados_fiscalizacoes:
+    ultima_data: "2020"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × ano de fiscalização, com índices do Executivo e do Legislativo"
     chave: "NomeEsferaAdministrativa, Ano (156 linhas, 156 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: Ano, cobertura: "2015, 2020 (só esses dois anos, 78 linhas cada)"}

@@ -3,6 +3,7 @@
 dataset: br_inep_formacao_docente
 tabelas:
   brasil:
+    ultima_data: "2020"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um Brasil × ano × grupo de formação × modalidade × rede × localização
     chave: ano, grupo, modalidade, rede, tipo_localizacao (5.040 linhas, 5.040 distintos)
     tempo:
@@ -30,6 +31,7 @@ tabelas:
     - nao_use_para
     verificado: '5.040 linhas, chave única; percentual VARCHAR: 25 linhas valem ''--'' e 608 não têm ponto decimal (ex. inteiros) — medido 2026-10-27'
   regiao:
+    ultima_data: "2020"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um região × ano × grupo × modalidade × rede × localização
     chave: ano, regiao, grupo, modalidade, rede, tipo_localizacao (25.200 linhas, 25.200 distintos)
     tempo:
@@ -57,6 +59,7 @@ tabelas:
     - nao_use_para
     verificado: 25.200 linhas, chave única; percentual DOUBLE com 4,46% NULL — medido 2026-10-27
   uf:
+    ultima_data: "2020"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um UF × ano × grupo × modalidade × rede × localização
     chave: ano, sigla_uf, grupo, modalidade, rede, tipo_localizacao (133.840 linhas, 133.840 distintos)
     tempo:

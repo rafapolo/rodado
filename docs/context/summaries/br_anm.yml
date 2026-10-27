@@ -3,6 +3,7 @@
 dataset: br_anm
 tabelas:
   cfem_cfem_arrecadacao:
+    ultima_data: "2026-10"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um recolhimento de CFEM (royalty de mineração) por processo minerário × substância × município × mês de competência"
     chave: "nenhuma: sem identificador do recolhimento; em 2026 há 176.299 linhas e só 71.433 linhas distintas (SELECT DISTINCT), e dezembro/2025 a março/2026 têm 3–4× mais linhas que os demais meses"
     tempo: {natureza: serie_mensal, coluna: "ano, mes (ambos texto)", cobertura: "2002–2026 (2026: meses 1–10, última datacriacao 2026-10-01)"}
@@ -25,6 +26,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2.433.829 linhas = soma das cinco tabelas de período (198.897+364.848+500.422+625.460+744.202); soma de valorrecolhido igual nas duas: 2023 R$ 6.858,1 mi, 2024 R$ 7.733,4 mi (134.410 linhas, 132.892 distintas, R$ 7.436,7 mi sem as repetidas), 2026 R$ 3.893,5 mi; dez/2025 39.761 linhas (12.816 distintas, R$ 753,1 mi contra 752,5 mi), jan/2026 52.410 (11.446 distintas), fev/2026 50.254 (11.088), mar/2026 40.388 (15.713) — medido 2026-10-27"
   cfem_cfem_arrecadacao_2002_2006:
+    ultima_data: "2006-12"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de cfem_cfem_arrecadacao, recortado em 2002–2006; a união das cinco tabelas de período é cfem_cfem_arrecadacao"
     tempo: {natureza: serie_mensal, coluna: "ano, mes (texto)", cobertura: "2002–2006"}
     use_para: "o mesmo que cfem_cfem_arrecadacao quando o período cabe nesta faixa"
@@ -32,6 +34,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "198.897 linhas; quantidadecomercializada é DOUBLE nesta faixa — medido 2026-10-27"
   cfem_cfem_arrecadacao_2007_2011:
+    ultima_data: "2011-12"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de cfem_cfem_arrecadacao, recortado em 2007–2011; a união das cinco tabelas de período é cfem_cfem_arrecadacao"
     tempo: {natureza: serie_mensal, coluna: "ano, mes (texto)", cobertura: "2007–2011"}
     use_para: "o mesmo que cfem_cfem_arrecadacao quando o período cabe nesta faixa"
@@ -39,6 +42,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "364.848 linhas; quantidadecomercializada é DOUBLE nesta faixa — medido 2026-10-27"
   cfem_cfem_arrecadacao_2012_2016:
+    ultima_data: "2016-12"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de cfem_cfem_arrecadacao, recortado em 2012–2016; a união das cinco tabelas de período é cfem_cfem_arrecadacao"
     tempo: {natureza: serie_mensal, coluna: "ano, mes (texto)", cobertura: "2012–2016"}
     use_para: "o mesmo que cfem_cfem_arrecadacao quando o período cabe nesta faixa"
@@ -46,6 +50,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "500.422 linhas; quantidadecomercializada é DOUBLE nesta faixa — medido 2026-10-27"
   cfem_cfem_arrecadacao_2017_2021:
+    ultima_data: "2021-12"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de cfem_cfem_arrecadacao, recortado em 2017–2021; a união das cinco tabelas de período é cfem_cfem_arrecadacao"
     tempo: {natureza: serie_mensal, coluna: "ano, mes (texto)", cobertura: "2017–2021"}
     use_para: "o mesmo que cfem_cfem_arrecadacao quando o período cabe nesta faixa"
@@ -53,6 +58,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "625.460 linhas; quantidadecomercializada é DOUBLE nesta faixa — medido 2026-10-27"
   cfem_cfem_arrecadacao_2022_2026:
+    ultima_data: "2026-10"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de cfem_cfem_arrecadacao, recortado em 2022–2026; a união das cinco tabelas de período é cfem_cfem_arrecadacao"
     tempo: {natureza: serie_mensal, coluna: "ano, mes (texto)", cobertura: "2022–2026"}
     use_para: "o mesmo que cfem_cfem_arrecadacao quando o período cabe nesta faixa"
@@ -72,6 +78,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "21.029 linhas, 21.027 processocobranca distintos, anopublicacao nulo em 7.153 — medido 2026-10-27"
   cfem_cfem_distribuicao:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um repasse de CFEM a um município (ente) × mês × substância × número de distribuição"
     chave: "nenhuma: em ano = '2026', 43.670 linhas contra 43.652 combinações de (ano, mes, numerodedistribuicao, codigoente, substancia, tipodistribuicao, tipoafetamento, valor)"
     tempo: {natureza: serie_mensal, coluna: "ano, mes (texto)", cobertura: "2007–2026 (2026: meses 1–9, datacriacao até 2026-08-31)"}
@@ -101,6 +108,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "112.107 linhas, 112.104 processos; fase_atual = 'Autorização de Pesquisa' e situacao = 'Sim' em todas; gotcha cpf_completado vale para cpf_cnpj_do_titular — medido 2026-10-27"
   scm_cessoes_de_direitos:
+    ultima_data: "2026-10-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma cessão de direitos minerários sobre um processo (um processo pode ter várias): uma linha por cessão (processo × cedente/cessionário × data_da_cessao)"
     chave: "nenhuma: 55.300 linhas para 38.933 processos; (processo, tipo_de_requerimento, municipio_s, substancia_s, cpf_cnpj_do_titular, data_da_cessao) dá 53.711 combinações, 1.589 linhas a menos"
     tempo: {natureza: serie_de_periodos, coluna: data_da_cessao, cobertura: "1939-10-30–2026-10-07"}
@@ -193,6 +201,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2.365 linhas, 2.365 processos; fase_atual = 'Requerimento de Registro de Extração' em todas as linhas (única fase da tabela); situacao = 'Sim' em todas — medido 2026-10-27"
   scm_guia_de_utilizacao_autorizada:
+    ultima_data: "2026-10-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma guia de utilização autorizada (extração antecipada) publicada para um processo"
     chave: "nenhuma: 12.290 linhas contra 12.261 combinações de (processo, guia, datapublicacao, localidade); 7.181 processos distintos"
     tempo: {natureza: serie_de_periodos, coluna: datapublicacao, cobertura: "2009-12-09–2026-10-07"}
@@ -203,6 +212,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "12.290 linhas — medido 2026-10-27"
   sigmine_processos_minerarios:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um polígono de processo minerário do SIGMINE (um processo pode ter vários polígonos); 70% das linhas são processos inativos sem atributos"
     chave: "nenhuma: 942.045 linhas, 933.588 ID distintos, 912.968 PROCESSO distintos, OGC_FID repete entre ativos e inativos (665.883 distintos)"
     tempo: {natureza: retrato_atual, coluna: ANO, cobertura: "ANO do processo 1934–2026; sem data de carga"}

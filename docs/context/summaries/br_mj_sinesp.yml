@@ -3,6 +3,7 @@
 dataset: br_mj_sinesp
 tabelas:
   municipio_mes:
+    ultima_data: "2026-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × mês × tipo de ocorrência × abrangência (polícia que registra)"
     chave: "ano, mes, id_municipio, tipo_ocorrencia, abrangencia (única: 8.806.170 linhas = 8.806.170 distintos)"
     tempo: {natureza: serie_mensal, coluna: "ano + mes", cobertura: "2015-01–2026-08"}
@@ -22,6 +23,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "significado de zero_estrutural e nao_reportado"]
     verificado: "8.806.170 linhas; chave de 5 colunas com 8.806.170 distintos; homicidio_doloso Estadual 779.800 linhas e 481.819 vítimas; PRF só em morte_no_transito (774.230 linhas, 65.461 vítimas); PF só em mandado_de_prisao_cumprido (233.940 linhas, 3.855 ocorrências); 2026 vai até o mês 8; anos 2017–2024 têm 735.240 linhas cada; homicidio_doloso: soma dos três sexos 478.284 < 481.819 por NULLs — medido 2026-10-27. Gotchas: abrangencia_mistura_policias, vitimas_ou_ocorrencias, uf_mes_nao_e_soma_de_municipio, transito_estadual_cobertura_desigual"
   uf_mes:
+    ultima_data: "2026-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma UF × mês × tipo de ocorrência × abrangência × (arma, agente, faixa etária quando o tipo as detalha)"
     chave: "ano, mes, sigla_uf, tipo_ocorrencia, abrangencia, arma, agente, faixa_etaria (única: 291.662 linhas = 291.662 distintos; arma, agente e faixa_etaria são NULL fora dos tipos que as usam, então a chave depende de NULLs)"
     tempo: {natureza: serie_mensal, coluna: "ano + mes", cobertura: "2015-01–2026-xx (a cobertura exata de 2026 não foi medida; o ano tem meses incompletos)"}

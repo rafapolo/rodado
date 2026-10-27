@@ -3,6 +3,7 @@
 dataset: br_ans_operadoras
 tabelas:
   operadoras_ativas:
+    ultima_data: "2026-09-28"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma operadora de plano de saúde com registro ativo na ANS (cadastro atual)"
     chave: "REGISTRO_OPERADORA: confirmada, 1.105 linhas = 1.105 distintos (CNPJ também é único); nenhum registro aparece também em operadoras_canceladas"
     tempo: {natureza: retrato_atual, coluna: DATA_REGISTRO_ANS, cobertura: "registros de 1998-12-16 a 2026-09-28"}
@@ -13,6 +14,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.105 linhas, 1.105 REGISTRO_OPERADORA, 1.105 CNPJ, 0 registros em comum com operadoras_canceladas — medido 2026-10-27"
   operadoras_canceladas:
+    ultima_data: "2026-10-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma operadora cujo registro na ANS foi cancelado (cadastro histórico)"
     chave: "REGISTRO_OPERADORA: confirmada, 3.078 linhas = 3.078 distintos"
     tempo: {natureza: serie_de_periodos, coluna: DATA_DESCREDENCIAMENTO, cobertura: "1999-09-20–2026-10-09"}
@@ -23,6 +25,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "3.078 linhas, 3.078 REGISTRO_OPERADORA — medido 2026-10-27"
   caracteristicas_produtos:
+    ultima_data: "2026-10-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um plano de saúde (produto) registrado na ANS, com cobertura, contratação e situação"
     chave: "ID_PLANO: confirmada, 166.402 linhas = 166.402 distintos (2.951 operadoras)"
     tempo: {natureza: retrato_atual, coluna: DT_ATUALIZACAO, cobertura: "DT_ATUALIZACAO = 2026-10-25 em todas; DT_SITUACAO 1998-12-18–2026-10-23"}
@@ -45,6 +48,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "884.884 linhas, 7.219 áreas no perfil (amostra de distintos) — medido 2026-10-27"
   historico_planos:
+    ultima_data: "2026-09-29"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um período de situação de um plano (início e fim de um status)"
     chave: "nenhuma: 354.370 linhas contra 348.527 combinações de (#ID_PLANO, DT_INICIO_STATUS, ID_SITUACAO_PRINCIPAL); 166.152 planos"
     tempo: {natureza: serie_de_periodos, coluna: "DT_INICIO_STATUS, DT_FIM_STATUS", cobertura: "1998-11-21–2026-09-29"}
@@ -67,6 +71,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "163.742 linhas, 163.742 ID_PLANO — medido 2026-10-27"
   demandas_nip:
+    ultima_data: "2026-08-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma demanda (reclamação) de beneficiário registrada na ANS pela NIP (Notificação de Intermediação Preliminar)"
     chave: "NR_DEMANDA: confirmada, 2.645.613 linhas = 2.645.613 distintos"
     tempo: {natureza: serie_de_periodos, coluna: DT_ABERTURA_DEMANDA, cobertura: "2011-01-03–2026-08-31"}
@@ -106,6 +111,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "261.382 linhas, 261.382 Número Demanda, Competência = '202210' em todas — medido 2026-10-27"
   penalidades:
+    ultima_data: "2025-03-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um processo sancionador da ANS contra uma operadora, com multa, recurso e cobrança (GRU)"
     chave: "nenhuma: 111.928 linhas contra 111.884 NR_DEMANDA distintos e 111.884 (NR_DEMANDA, NR_PROCESSO); 44 linhas repetem"
     tempo: {natureza: serie_de_periodos, coluna: DT_DECISAO_1A, cobertura: "2000-03-15–2025-03-31 (carga NR_COMPETENCIA = '202503')"}
@@ -124,6 +130,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "111.928 linhas; VL_MULTA_FINAL_APLICADA soma R$ 8.627,1 mi (111.500 linhas > 0), VL_TOTAL_APLICADO_1A R$ 9.002,6 mi, VL_GRU R$ 8.541,2 mi — medido 2026-10-27"
   demonstracoes_contabeis:
+    ultima_data: "2026-04-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "o saldo de uma conta contábil de uma operadora num trimestre (plano de contas completo, contas-pai e contas-filha juntas)"
     chave: "(DATA, REG_ANS, CD_CONTA_CONTABIL): confirmada em DATA = '2025-10-01' (926.610 linhas = 926.610 combinações, 1.019 operadoras)"
     tempo: {natureza: serie_de_periodos, coluna: DATA, cobertura: "2001-01-01–2026-04-01 (DATA é o 1º dia do trimestre: 01-01, 04-01, 07-01, 10-01)"}

@@ -3,6 +3,7 @@
 dataset: br_camara_dados_abertos
 tabelas:
   deputado:
+    ultima_data: "2001-04-10"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um deputado (cadastro de pessoas que exerceram mandato)
     chave: 'id_deputado: 7.889 linhas = 7.889 distintos'
     tempo: &id001
@@ -53,6 +54,7 @@ tabelas:
     - nao_use_para
     verificado: 37.407 linhas, 37.407 combinações distintas das 6 colunas — medido 2026-10-27
   deputado_profissao:
+    ultima_data: "2026-10-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma profissão declarada por um deputado
     chave: 'id_deputado + id_profissao: 12.607 linhas = 12.607 distintas'
     tempo:
@@ -101,6 +103,7 @@ tabelas:
     verificado: 4.874.008 linhas (tabela inteira); soma valor_liquido = R$ 3,44 bi; valor_documento R$ 3,47 bi; valor_retido R$ 24,8 mi; 188.719 linhas com valor_liquido negativo (estornos); valor_liquido
       ≠ documento − retido em 72.087 linhas; ano_competencia 2008–2026 (2008 só 444 linhas; 2026 parcial) — medido 2026-10-27
   evento:
+    ultima_data: "2026-03-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um evento da Câmara (reunião, audiência, sessão)
     chave: 'id_evento: 61.416 linhas = 61.416 distintos'
     tempo:
@@ -129,6 +132,7 @@ tabelas:
     - nao_use_para
     verificado: 62.772 linhas, 62.772 pares distintos — medido 2026-10-27
   evento_presenca_deputado:
+    ultima_data: "2026-03-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: a presença de um deputado em um evento
     chave: 'id_evento + id_deputado: 2.747.941 linhas = 2.747.941 distintos'
     tempo:
@@ -179,6 +183,7 @@ tabelas:
     - nao_use_para
     verificado: 262.268 linhas, todas distintas por (id_frente, id_deputado); 0,1% com id_deputado nulo (contar com cuidado) — medido 2026-10-27
   funcionario:
+    ultima_data: "2026-04-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um funcionário da Câmara (secretário parlamentar, efetivo, cargo especial ou parlamentar) em retrato atual
     chave: 'ponto: 13.471 linhas = 13.471 distintos'
     tempo:
@@ -195,6 +200,7 @@ tabelas:
     - nao_use_para
     verificado: 13.471 linhas, 13.471 ponto distintos — medido 2026-10-27
   legislatura:
+    ultima_data: "2023-02-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma legislatura da Câmara
     chave: 'id: 57 linhas = 57 distintos'
     tempo:
@@ -209,6 +215,7 @@ tabelas:
     - nao_use_para
     verificado: 57 linhas, 57 id distintos; id é texto ('1'..'57'); ano 1826–2022 — medido 2026-10-27
   legislatura_mesa:
+    ultima_data: "2023-02-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um cargo da Mesa Diretora ocupado por um deputado em uma legislatura
     chave: 'id + id_deputado + cargo + data_inicio: 155 linhas = 155 distintos'
     tempo:
@@ -257,6 +264,7 @@ tabelas:
     - medidas.unidade
     verificado: 4.718 linhas, 4.718 id_licitacao distintos; valor_estimado = 0 em 80 — medido 2026-10-27
   licitacao_contrato:
+    ultima_data: "2025-09-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um contrato (ou ata/carta/nota de empenho) de uma licitação
     chave: 'nenhuma: (id_licitacao, ano_contrato, id_contrato) repete — 2.655 linhas, 2.034 combinações distintas'
     tempo:
@@ -306,6 +314,7 @@ tabelas:
     - medidas.unidade
     verificado: 63.921 linhas; 63.898 combinações distintas de (id_licitacao, id_item, id_sub_item) — medido 2026-10-27
   licitacao_pedido:
+    ultima_data: "2025-12-26"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um pedido ou solicitação ligado a uma licitação
     chave: 'nenhuma: (id_licitacao, id_pedido, tipo_registo) repete — 2.869 linhas, 2.862 combinações distintas'
     tempo:
@@ -322,6 +331,7 @@ tabelas:
     - nao_use_para
     verificado: 2.869 linhas; 2.862 combinações distintas — medido 2026-10-27
   licitacao_proposta:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma proposta de fornecedor a uma licitação (por item)
     chave: 'nenhuma: id_proposta repete entre fornecedores — 41.836 linhas, 12.484 (id_licitacao, id_proposta, fornecedor) distintos'
     tempo:
@@ -343,6 +353,7 @@ tabelas:
     - chave
     verificado: 41.836 linhas; 12.484 combinações de (id_licitacao, id_proposta, cpf_cnpj_fornecedor); data_proposta máxima 3201 (erro) — medido 2026-10-27
   orgao:
+    ultima_data: "2026-02-27"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um órgão da Câmara (comissão, subcomissão, CPI, grupo de trabalho)
     chave: 'id_orgao: 2.375 linhas = 2.375 distintos'
     tempo:
@@ -360,6 +371,7 @@ tabelas:
     - nao_use_para
     verificado: 2.375 linhas, 2.375 id_orgao distintos — medido 2026-10-27
   orgao_deputado:
+    ultima_data: "2026-03-27"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: a participação (cargo) de um deputado em um órgão em um período
     chave: 'nenhuma: (id_orgao, nome_deputado, cargo, data_inicio) repete — 93.730 linhas, 93.673 combinações distintas'
     tempo:
@@ -390,6 +402,7 @@ tabelas:
     - nao_use_para
     verificado: 1.913.248 linhas; 1.913.236 combinações distintas; id_deputado nulo em 10% — medido 2026-10-27
   proposicao_microdados:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma proposição legislativa com o último status de tramitação
     chave: 'nenhuma: id_proposicao repete em 14 casos (957.814 linhas, 957.800 distintos; sem linhas inteiras duplicadas)'
     tempo:
@@ -407,6 +420,7 @@ tabelas:
     - nao_use_para
     verificado: 957.814 linhas; 957.800 id_proposicao distintos — medido 2026-10-27
   proposicao_tema:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um tema de uma proposição
     chave: 'nenhuma: (id_proposicao, tema) repete — 333.286 linhas, 333.265 combinações'
     tempo:
@@ -434,6 +448,7 @@ tabelas:
     - nao_use_para
     verificado: 143 linhas, 143 siglas antigas distintas, 47 siglas novas — medido 2026-10-27
   votacao:
+    ultima_data: "2026-03-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma votação no plenário ou comissão
     chave: 'nenhuma: id_votacao repete em 97 casos (187.246 linhas, 187.149 distintos); (id_votacao, id_orgao, id_evento, data) é único'
     tempo:
@@ -464,6 +479,7 @@ tabelas:
     - medidas.unidade
     verificado: 187.246 linhas; 187.149 id_votacao distintos — medido 2026-10-27
   votacao_objeto:
+    ultima_data: "2026-03-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma proposição votada em uma votação (objeto)
     chave: '(id_votacao, id_proposicao): 795.727 linhas = 795.727 distintas'
     tempo:
@@ -491,6 +507,7 @@ tabelas:
     - nao_use_para
     verificado: 101.257 linhas, todas distintas — medido 2026-10-27
   votacao_parlamentar:
+    ultima_data: "2026-03-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: o voto de um deputado em uma votação nominal
     chave: '(id_votacao, id_deputado): 1.886.190 linhas = 1.886.190 distintas'
     tempo:
@@ -510,6 +527,7 @@ tabelas:
     - nao_use_para
     verificado: '1.886.190 linhas, todas distintas; voto: Sim 1.009.772, Não 807.928, Obstrução 52.985, Abstenção 6.730, ''Artigo 17'' 4.635, nulo 4.108 — medido 2026-10-27'
   votacao_proposicao:
+    ultima_data: "2026-03-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma proposição afetada por uma votação
     chave: '(id_votacao, id_proposicao): 139.485 linhas = 139.485 distintas'
     tempo:

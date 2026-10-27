@@ -3,6 +3,7 @@
 dataset: br_ans_beneficiario
 tabelas:
   informacao_consolidada:
+    ultima_data: "2025-10"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma célula agregada de beneficiários: mês × município × operadora × plano × sexo × faixa etária × vínculo × características do contrato (não é uma pessoa)"
     chave: "(ano, mes, sigla_uf, id_municipio, codigo_operadora, codigo_plano, sexo, faixa_etaria, faixa_etaria_reajuste, tipo_vinculo, contratacao_beneficiario, segmentacao_beneficiario, abrangencia_beneficiario, cobertura_assistencia_beneficiario, tipo_vigencia_plano, data_carga): confirmada em ano = 2025, mes = 6 (15.219.249 linhas = 15.219.249 combinações), mês que tem uma só data_carga"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2014–2025 (em 2025, meses 1–10)"}

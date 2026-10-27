@@ -3,6 +3,7 @@
 dataset: global_opensanctions
 tabelas:
   entities:
+    ultima_data: "2026-10-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma entidade consolidada do OpenSanctions (pessoa, empresa, embarcação, etc.), já deduplicada entre as listas de origem"
     chave: "id (1233804 linhas = 1233804 distintos, medido na tabela inteira)"
     tempo: {natureza: retrato_atual, coluna: last_change, cobertura: "2022-01-01–2026-10-09 (first_seen até 2026-10-09; last_seen 2026-04-30–2026-10-09)"}

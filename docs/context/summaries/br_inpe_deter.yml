@@ -3,6 +3,7 @@
 dataset: br_inpe_deter
 tabelas:
   avisos:
+    ultima_data: "2026-09-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um aviso do DETER (polígono de alerta) × município; na Amazônia e no Cerrado o INPE parte o polígono por município"
     chave: "bioma_arquivo, OGC_FID (699.077 linhas, 699.077 distintas; igual com FID e com GEOCODIBGE na chave)"
     tempo: {natureza: serie_diaria, coluna: VIEW_DATE, cobertura: "2016-08-02–2026-09-25 (por bioma: amazonia 2016-08-02, cerrado 2018-05-01, nao_floresta_amz 2023-08-01, pantanal 2023-08-03)"}
@@ -21,6 +22,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "699.077 linhas = 699.077 (bioma_arquivo,OGC_FID); count(DISTINCT FID) por bioma = linhas (amazonia 461.074, cerrado 134.165, nao_floresta_amz 79.683, pantanal 24.155); soma AREAMUNKM km²: amazonia 263.614, cerrado 48.904, nao_floresta_amz 60.927, pantanal 38.707; Pantanal: 16.457 de 24.155 são cicatriz de queimada — medido 2026-10-27"
   avisos_poligono:
+    ultima_data: "2026-09-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de avisos, com a geometria do polígono (uma linha por aviso × município)"
     chave: "bioma_arquivo, OGC_FID (699.077 linhas, 699.077 distintas)"
     tempo: {natureza: serie_diaria, coluna: view_date, cobertura: "2016-08-02–2026-09-25"}

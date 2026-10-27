@@ -3,6 +3,7 @@
 dataset: br_cgu_pessoal_executivo_federal
 tabelas:
   terceirizados:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um trabalhador terceirizado num órgão do Executivo federal num retrato (ano × mês), com a empresa contratada e o contrato"
     chave: "ano + mes + id_terceirizado (as 732.269 linhas são únicas por essa trinca, incluindo 7 linhas com ano e mes nulos)"
     tempo: {natureza: soma_de_retratos, coluna: ano, cobertura: "2019–2023, meses '1', '5' e '9' (texto)"}

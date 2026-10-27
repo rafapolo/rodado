@@ -3,6 +3,7 @@
 dataset: world_oecd_public_finance
 tabelas:
   country:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um país × ano, painel largo (~190 indicadores de finanças públicas, macro, trabalho, governança) de 36 países da OCDE, 1945–2019"
     chave: "nenhuma: (country, year) tem 2.575 distintos em 2.646 linhas; SVN repete todos os anos (146 linhas, 73 anos duplicados) e são linhas idênticas (53 duplicatas exatas no total, medido por DISTINCT *)"
     tempo: {natureza: serie_anual, coluna: year, cobertura: "1945–2019 (28 países em 1945, 36 de 1960 em diante)"}

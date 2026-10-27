@@ -3,6 +3,7 @@
 dataset: br_mec_sisu
 tabelas:
   microdados:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma opção de curso de um candidato numa etapa (chamada regular ou lista de espera) de uma edição semestral do SISU, na modalidade de concorrência em que foi classificado"
     chave: "nenhuma chave curta: (semestre, etapa, cpf, opcao, id_curso, modalidade_concorrencia) repete 1.839 de 3.540.744 linhas em 2022; só com 11 colunas (semestre, etapa, cpf, opcao, id_ies, id_campus, id_curso, turno, modalidade_concorrencia, classificacao, nota_candidato) fica única"
     tempo: {natureza: serie_de_periodos, coluna: "ano, semestre", cobertura: "2017–2022, semestres 1 e 2 (2022: 2.681.732 linhas no 1º e 859.012 no 2º)"}

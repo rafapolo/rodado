@@ -3,6 +3,7 @@
 dataset: br_me_rais_identificada
 tabelas:
   estabelecimentos:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um estabelecimento (CNPJ de 14 dígitos) × ano da RAIS, com os vínculos ativos declarados; o mesmo CNPJ pode aparecer em mais de uma linha no ano"
     chave: "nenhuma: em 2021 há 3.157.096 linhas para 2.778.942 cnpj_completo distintos (123.395 CNPJs com mais de uma linha, cada uma com quantidade_vinculos_ativos diferente) e 147.945 linhas ficam idênticas mesmo em 10 colunas; o que separa as linhas repetidas não foi apurado"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2010–2021"}

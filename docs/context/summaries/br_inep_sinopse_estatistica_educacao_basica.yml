@@ -6,6 +6,7 @@ tabelas:
     grao: um valor decodificado por tabela, coluna e código (id_tabela, nome_coluna, chave, valor)
     use_para: traduzir códigos e rótulos de colunas das tabelas de matrícula (etapa_ensino, serie, faixa_etaria, raca_cor, tempo_ensino).
   docente_deficiencia:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: docentes por município × ano × etapa × tipo de deficiência atendida
     chave: ano, id_municipio, etapa_ensino, deficiencia (122562 linhas, 122562 distintas em ano = 2025)
     tempo:
@@ -32,6 +33,7 @@ tabelas:
     - nao_use_para
     verificado: '2025: 122.562 linhas = 122.562 chaves; anos 2012–2025 — medido 2026-10-27'
   docente_escolaridade:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: docentes por município × ano × etapa × escolaridade
     chave: ano, id_municipio, etapa_ensino, escolaridade (428967 linhas, 428967 distintas em ano = 2025)
     tempo:
@@ -54,6 +56,7 @@ tabelas:
     - nao_use_para
     verificado: '2025: 428.967 linhas = 428.967 chaves; tabela de 8,1 milhões de linhas, medida só em 2025 — medido 2026-10-27'
   docente_etapa_ensino:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: docentes por município × ano × etapa × tipo de classe × rede
     chave: ano, id_municipio, etapa_ensino, tipo_classe, rede (1136484 linhas, 1136484 distintas em ano = 2025)
     tempo:
@@ -76,6 +79,7 @@ tabelas:
     - nao_use_para
     verificado: '2025: 1.136.484 linhas = 1.136.484 chaves (incluindo rede NULL: 635.094 linhas, 501.390 com rede); 36 tipo_classe com rede NULL, 18 com rede — medido 2026-10-27'
   docente_faixa_etaria_sexo:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: docentes por município × ano × etapa × faixa etária × sexo
     chave: ano, id_municipio, etapa_ensino, faixa_etaria, sexo (857934 linhas, 857934 distintas em ano = 2025)
     tempo:
@@ -98,6 +102,7 @@ tabelas:
     - nao_use_para
     verificado: '2025: 857.934 linhas = 857.934 chaves — medido 2026-10-27'
   docente_localizacao:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: docentes por município × ano × etapa × rede × localização
     chave: ano, id_municipio, etapa_ensino, rede, localizacao (1002780 linhas, 1002780 distintas em ano = 2025)
     tempo:
@@ -121,6 +126,7 @@ tabelas:
     - nao_use_para
     verificado: '2025: 1.002.780 linhas = 1.002.780 chaves; nacional Educação Básica Total: Estadual 703.576, Federal 39.988, Municipal 1.349.337, Privada 594.175, Pública 2.028.092 — medido 2026-10-27'
   docente_regime_contrato:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: docentes por município × ano × etapa × rede × regime de contrato
     chave: ano, id_municipio, etapa_ensino, rede, regime_contrato (668520 linhas, 668520 distintas em ano = 2025)
     tempo:
@@ -144,6 +150,7 @@ tabelas:
     - nao_use_para
     verificado: '2025: 668.520 linhas = 668.520 chaves; anos 2011–2025 — medido 2026-10-27'
   educacao_especial_etapa_ensino:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: alunos da educação especial por município × ano × tipo de classe × etapa
     chave: ano, id_municipio, tipo_classe, etapa_ensino (155960 linhas, 155960 distintas em ano = 2023)
     tempo:
@@ -166,6 +173,7 @@ tabelas:
     - nao_use_para
     verificado: '2023: 155.960 linhas = 155.960 chaves; anos 2007–2023 — medido 2026-10-27'
   educacao_especial_faixa_etaria:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: alunos da educação especial por município × ano × tipo de classe × faixa etária
     chave: ano, id_municipio, tipo_classe, faixa_etaria (1135920 linhas, 1135920 distintas)
     tempo:
@@ -187,6 +195,7 @@ tabelas:
     - nao_use_para
     verificado: 1.135.920 linhas = 1.135.920 chaves; anos 2007–2023 — medido 2026-10-27
   educacao_especial_localizacao:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: alunos da educação especial por município × ano × tipo de classe × rede × localização
     chave: ano, id_municipio, tipo_classe, rede, localizacao (1514560 linhas, 1514560 distintas)
     tempo:
@@ -208,6 +217,7 @@ tabelas:
     - nao_use_para
     verificado: 1.514.560 linhas = 1.514.560 chaves; anos 2007–2023 — medido 2026-10-27
   educacao_especial_sexo_raca_cor:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: alunos da educação especial por município × ano × tipo de classe × sexo × raça/cor
     chave: ano, id_municipio, tipo_classe, sexo, raca_cor (133680 linhas, 133680 distintas em ano = 2023)
     tempo:
@@ -229,6 +239,7 @@ tabelas:
     - nao_use_para
     verificado: '2023: 133.680 linhas = 133.680 chaves; anos 2007–2023 — medido 2026-10-27'
   educacao_especial_tempo_ensino:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: alunos da educação especial por município × ano × tipo de classe × rede × tempo de ensino
     chave: ano, id_municipio, tipo_classe, rede, tempo_ensino (1514560 linhas, 1514560 distintas)
     tempo:
@@ -250,6 +261,7 @@ tabelas:
     - nao_use_para
     verificado: 1.514.560 linhas = 1.514.560 chaves; anos 2007–2023 — medido 2026-10-27
   educacao_especial_tipo_deficiencia:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: alunos da educação especial por município × ano × tipo de classe × tipo de deficiência
     chave: ano, id_municipio, tipo_classe, tipo_deficiencia (111400 linhas, 111400 distintas em ano = 2023)
     tempo:
@@ -271,6 +283,7 @@ tabelas:
     - nao_use_para
     verificado: '2023: 111.400 linhas = 111.400 chaves; todas as matrículas são inteiras — medido 2026-10-27'
   etapa_ensino_serie:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: matrículas por município × ano × rede × etapa × série
     chave: ano, id_municipio, rede, etapa_ensino, serie (646236 linhas, 646236 distintas em ano = 2025)
     tempo:
@@ -294,6 +307,7 @@ tabelas:
     - nao_use_para
     verificado: '2025: 646.236 linhas = 646.236 chaves; nacional 2025: anos iniciais 14.514.244, finais 11.292.523, médio regular 7.370.879 — medido 2026-10-27'
   faixa_etaria:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: matrículas por município × ano × etapa × faixa etária
     chave: ano, id_municipio, etapa_ensino, faixa_etaria (200556 linhas, 200556 distintas em ano = 2025)
     tempo:
@@ -317,6 +331,7 @@ tabelas:
     - filtros_tipicos (exemplos de faixa por etapa)
     verificado: '2025: 200.556 linhas = 200.556 chaves; nacional por etapa igual a etapa_ensino_serie (fundamental iniciais 14.514.244) — medido 2026-10-27'
   localizacao:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: matrículas por município × ano × rede × etapa × localização
     chave: ano, id_municipio, rede, etapa_ensino, localizacao (401112 linhas, 401112 distintas em ano = 2025)
     tempo:
@@ -339,6 +354,7 @@ tabelas:
     - nao_use_para
     verificado: '2025: 401.112 linhas = 401.112 chaves — medido 2026-10-27'
   sexo_raca_cor:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: matrículas por município × ano × etapa × sexo × raça/cor
     chave: ano, id_municipio, etapa_ensino, sexo, raca_cor (601668 linhas, 601668 distintas em ano = 2025)
     tempo:
@@ -361,6 +377,7 @@ tabelas:
     - nao_use_para
     verificado: '2025: 601.668 linhas = 601.668 chaves — medido 2026-10-27'
   tempo_ensino:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: matrículas por município × ano × rede × tempo de ensino × etapa
     chave: ano, id_municipio, rede, tempo_ensino, etapa_ensino (311976 linhas, 311976 distintas em ano = 2025)
     tempo:

@@ -3,6 +3,7 @@
 dataset: br_tce_to
 tabelas:
   pautas:
+    ultima_data: "2026-10-19"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma pauta de sessão de julgamento do TCE-TO (data × hora × tipo × órgão colegiado)"
     chave: "data, hora, tipo, origem (50 linhas, 50 distintos; url também é única, 50 distintas)"
     tempo: {natureza: serie_de_periodos, coluna: data, cobertura: "2026-06-08–2026-10-19"}

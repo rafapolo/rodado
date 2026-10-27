@@ -3,6 +3,7 @@
 dataset: br_rf_cno
 tabelas:
   microdados:
+    ultima_data: "2025-07-28"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma obra (CNO) × uma extração (data_extracao): o cadastro da obra com responsável e endereço; cada extração traz o cadastro inteiro"
     chave: "(data_extracao, id_cno): medido em data_extracao = 2025-07-28, 3.006.410 linhas e 3.006.410 id_cno distintos (também 3.006.410 em (id_cno, id_responsavel)). 191 extrações de 2024-08-05 a 2025-07-28"
     tempo: {natureza: soma_de_retratos, coluna: data_extracao, cobertura: "2024-08-05–2025-07-28 (191 extrações); data_registro de 2018-11-19 a 2025-07-26"}
@@ -20,6 +21,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "534.056.673 linhas; 191 extrações; extração 2025-07-28: 3.006.410 linhas = 3.006.410 id_cno distintos; situação 15: 1.955.926, 2: 937.079, 14: 55.951, 1: 49.149, 3: 8.305 — medido 2026-10-27. Gotchas: snapshot_por_extracao, id_responsavel_nan"
   cnaes:
+    ultima_data: "2025-07-28"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma obra (CNO) × uma atividade CNAE (subclasse) × uma extração"
     chave: "(data_extracao, id_cno, cnae_2_subclasse): em 2025-07-28, 3.268.007 linhas e 3.268.007 distintos de (id_cno, cnae_2_subclasse), sobre 3.006.410 obras"
     tempo: {natureza: soma_de_retratos, coluna: data_extracao, cobertura: "2024-08-05–2025-07-28 (191 extrações)"}
@@ -30,6 +32,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "579.063.627 linhas; extração 2025-07-28: 3.268.007 linhas, 3.268.007 distintos, 3.006.410 id_cno — medido 2026-10-27"
   areas:
+    ultima_data: "2025-07-28"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma área de uma obra (CNO) × uma extração: principal ou complementar, com categoria, destinação, tipo de obra e metragem"
     chave: "nenhuma: em 2025-07-28, 3.803.144 linhas e 3.790.390 combinações distintas de (id_cno, categoria, destinacao, tipo_obra, tipo_area, tipo_area_complementar, metragem); 2.844.766 obras; há linhas totalmente repetidas (uma obra pode ter duas áreas iguais)"
     tempo: {natureza: soma_de_retratos, coluna: data_extracao, cobertura: "2024-08-05–2025-07-28 (191 extrações)"}
@@ -45,6 +48,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, metragem]
     verificado: "679.080.010 linhas; extração 2025-07-28: 3.803.144 linhas, 3.790.390 combinações distintas, 2.844.766 id_cno — medido 2026-10-27"
   vinculos:
+    ultima_data: "2026-09-12"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um vínculo de um responsável (id_responsavel) com uma obra (CNO) × uma extração, com data de início e fim"
     chave: "nenhuma única: em 2025-07-28, 359.388 linhas e 349.761 distintos de (id_cno, id_responsavel, data_inicio), sobre 345.033 obras (9.627 linhas repetem)"
     tempo: {natureza: soma_de_retratos, coluna: data_extracao, cobertura: "2024-08-05–2026-09-12 (312 extrações; vai além de microdados, que termina em 2025-07-28); data_fim é nula em 99,4% (vínculo em aberto)"}

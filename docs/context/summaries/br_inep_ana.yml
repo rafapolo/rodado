@@ -3,6 +3,7 @@
 dataset: br_inep_ana
 tabelas:
   escola:
+    ultima_data: "2016"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma escola × edição da ANA (resultados do 3º ano do EF)"
     chave: "ano, id_escola"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2014–2016 (só as edições 2014 e 2016)"}
@@ -24,6 +25,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "pontos de escala", "escrita vai até nível 5 (visto nas colunas)"]
     verificado: "98.074 linhas = 98.074 distintos de (ano, id_escola); nivel_socio_economico por ano conferido (2014: códigos 8–14; 2016: 15–21) — medido 2026-10-27"
   prova:
+    ultima_data: "2016"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um item de prova × tipo de prova (posição na prova da ANA)"
     chave: "ano, item, tipo_prova"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2014–2016"}

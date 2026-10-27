@@ -3,6 +3,7 @@
 dataset: br_aneel_dadosabertos
 tabelas:
   empreendimento_geracao_distribuida:
+    ultima_data: "2026-09-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma unidade de geração distribuída (micro ou minigeração) cadastrada, retrato de 09/2026"
     chave: "CodEmpreendimento"
     tempo: {natureza: retrato_atual, coluna: DatGeracaoConjuntoDados, cobertura: "2026-09-04 (AnmPeriodoReferencia = '09/2026'); DthAtualizaCadastralEmpreend vai até 2026-08-27"}
@@ -52,6 +53,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, significado dos indicadores PGUC/QTUC]
     verificado: "18.676.419 linhas, 18.669.484 chaves distintas — medido 2026-10-27"
   indicadores_continuidade_dominio:
+    ultima_data: "2026-10-05"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um indicador (SigIndicador) com sua descrição"
     chave: "SigIndicador"
     tempo: {natureza: sem_tempo}
@@ -71,6 +73,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "263.401 linhas = 263.401 chaves distintas — medido 2026-10-27"
   siga_empreendimentos_geracao:
+    ultima_data: "2026-09-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um empreendimento de geração (usina) do SIGA, retrato de 2026-10-01"
     chave: "nenhuma: 25.045 linhas, 25.042 CodCEG distintos (3 repetidos)"
     tempo: {natureza: retrato_atual, coluna: DatEntradaOperacao, cobertura: "entrada em operação 1900-01-03–2026-09-02; geração do conjunto 2026-10-01"}
@@ -85,6 +88,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "25.045 linhas, 25.042 CodCEG; Operação 22.801 linhas, fiscalizada 220,69 GW; Construção 145 linhas, outorgada 9,03 GW; Construção não iniciada 2.099 linhas, outorgada 87,27 GW — medido 2026-10-27"
   tarifas_homologadas:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma tarifa homologada por distribuidora × vigência × base × subgrupo × modalidade × classe × posto tarifário"
     chave: "nenhuma: 332.165 linhas, 330.875 combinações das 11 colunas descritivas (SigAgente, DatInicioVigencia, DscBaseTarifaria, DscSubGrupo, DscModalidadeTarifaria, DscClasse, DscSubClasse, DscDetalhe, NomPostoTarifario, DscUnidadeTerciaria, SigAgenteAcessante); 1.290 grupos repetidos"
     tempo: {natureza: serie_de_periodos, coluna: "DatInicioVigencia, DatFimVigencia", cobertura: "2010-02-03–2026-09-30 (início); fim até 2027-09-29"}

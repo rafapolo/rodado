@@ -3,6 +3,7 @@
 dataset: br_mme_consumo_energia_eletrica
 tabelas:
   uf:
+    ultima_data: "2023-12"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma UF × mês × classe de consumo (tipo_consumo)"
     chave: "ano, mes, sigla_uf, tipo_consumo (38880 linhas = 38880 distintos)"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2004-01–2023-12"}

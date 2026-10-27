@@ -3,6 +3,7 @@
 dataset: br_ibge_pib
 tabelas:
   municipio:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × ano (PIB a preços correntes e valor adicionado por setor)"
     chave: "(id_municipio, ano) — 122.466 linhas = 122.466 distintos (medido)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2002–2023"}
@@ -21,6 +22,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "descrição dos va_* além dos nomes"]
     verificado: "122.466 linhas e pares distintos; ano 2020: 5.570 linhas, va em 5.570; 2022 e 2023: 5.570 linhas, 0 com va; va NULL em 9,1% das linhas (os anos 2022 e 2023); 1 linha com pib negativo — medido 2026-10-27"
   municipio_antigo:
+    ultima_data: "2012"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × ano da série antiga (base anterior de metodologia)"
     chave: "(id_municipio, ano) — 77.910 linhas = 77.910 distintos (medido)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1999–2012"}
@@ -34,6 +36,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "77.910 linhas e pares distintos (14 anos × 5.565 municípios) — medido 2026-10-27"
   uf:
+    ultima_data: "2020"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma UF × ano (PIB e VA por setor)"
     chave: "(id_uf, ano) — 513 linhas = 513 distintos, 27 UFs × 19 anos (medido)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2002–2020"}
@@ -46,6 +49,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "513 linhas, 513 pares (id_uf, ano) distintos, 27 siglas; soma de pib em 2020 = R$ 7,6096 tri, praticamente igual à soma municipal de 2020 (7.609.597.000.019 contra 7.609.597.005.000) — medido 2026-10-27"
   uf_antigo:
+    ultima_data: "2012"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma UF × ano da série antiga"
     chave: "(id_uf, ano) — 378 linhas = 378 distintos (medido)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1999–2012"}
@@ -58,6 +62,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "378 linhas e pares distintos (27 UFs × 14 anos) — medido 2026-10-27"
   regiao_antigo:
+    ultima_data: "2012"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma grande região × ano da série antiga"
     chave: "(id_regiao, ano) — 70 linhas = 70 distintos (5 regiões × 14 anos, medido)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1999–2012"}
@@ -70,6 +75,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "70 linhas, 70 pares distintos — medido 2026-10-27"
   brasil_antigo:
+    ultima_data: "2012"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um ano (PIB do Brasil, série antiga)"
     chave: "ano — 14 linhas = 14 anos (medido); ano é VARCHAR"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1999–2012"}
@@ -82,6 +88,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "14 linhas e 14 anos distintos; pib = va + impostos_liquidos em 1999 e 2000 — medido 2026-10-27"
   gini:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma UF × ano com o índice de Gini da concentração do PIB e do VA por setor entre os municípios"
     chave: "(id_uf, ano) — 520 linhas = 520 distintos, 26 UFs × 20 anos (medido)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2002–2021"}

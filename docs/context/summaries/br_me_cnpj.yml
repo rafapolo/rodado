@@ -4,6 +4,7 @@
 dataset: br_me_cnpj
 tabelas:
   empresas:
+    ultima_data: "2026-09-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma empresa (raiz do CNPJ, 8 dígitos), no último retrato da Receita"
     chave: cnpj_basico
     tempo:
@@ -18,6 +19,7 @@ tabelas:
     nao_use_para: "situação (ativa ou baixada) e município: estão em estabelecimentos"
     verificado: "70.081.764 linhas e 70.081.764 cnpj_basico distintos; data única 2026-09-01 — medido 2026-10-26"
   estabelecimentos:
+    ultima_data: "2026-09-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um estabelecimento (CNPJ de 14 dígitos: matriz ou filial), no último retrato"
     chave: cnpj
     tempo:
@@ -34,6 +36,7 @@ tabelas:
     nao_use_para: "contar negócios ativos sem filtrar a situação: 47% das linhas são baixadas; emprego (use a RAIS)"
     verificado: "73.366.147 linhas = cnpj distintos; situação: 8 → 34,6 mi, 2 → 28,3 mi, 4 → 10,1 mi, 3 → 0,3 mi, 1 → 0,1 mi; 73,19 mi com id_municipio — medido 2026-10-26"
   socios:
+    ultima_data: "2026-09-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um vínculo de sócio × empresa no último retrato, com linhas repetidas (gotcha socios_linha_repetida)"
     chave: "nenhuma única: use socios_historico para contar vínculos"
     tempo: {natureza: retrato_atual, coluna: data, cobertura: "2026-09"}
@@ -42,6 +45,7 @@ tabelas:
     nao_use_para: "contar vínculos ou pessoas sem tirar a repetição"
     verificado: "28.341.092 linhas no retrato, contra 28.340.770 vínculos vigentes em socios_historico — medido 2026-10-26"
   simples:
+    ultima_data: "2026-09-13"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma empresa (raiz) que já optou pelo Simples ou pelo MEI alguma vez; quem nunca optou não tem linha"
     chave: cnpj_basico
     tempo: {natureza: retrato_atual, cobertura: "2026-09; as datas de opção e exclusão contam a história"}
@@ -53,6 +57,7 @@ tabelas:
     nao_use_para: "a parte que não é do Simples: falta linha, não há opcao_simples = 0 para ela"
     verificado: "50.396.768 linhas = raízes distintas; 25,9 mi optantes do Simples, 17,5 mi MEI; com opcao_mei = 1, 353.425 têm data de exclusão, todas depois de 2026-09-01 (no Simples, 828.865) — medido 2026-10-26"
   empresas_historico:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma empresa × período em que o cadastro não mudou (inicio e fim em aaaamm)"
     chave: "cnpj_basico, inicio"
     tempo: {natureza: serie_de_periodos, coluna: "inicio, fim", cobertura: "2021-11 a 2026-09, com meses ausentes (gotcha historico_meses_ausentes)"}
@@ -61,6 +66,7 @@ tabelas:
     nao_use_para: "antes de 2021-11"
     verificado: "80.024.491 linhas, 70.081.769 raízes distintas; inicio mínimo 202111, fim máximo 202609 — medido 2026-10-26"
   estabelecimentos_historico:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um estabelecimento × período sem mudança no cadastro"
     chave: "cnpj, inicio"
     tempo: {natureza: serie_de_periodos, coluna: "inicio, fim", cobertura: "2021-11 a 2026-09"}
@@ -68,6 +74,7 @@ tabelas:
     use_para: "abertura, fechamento e mudança de endereço ou de CNAE desde 2021-11"
     verificado: "196.655.712 linhas = pares (cnpj, inicio) distintos; 73.366.147 cnpj — medido 2026-10-26"
   socios_historico:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um vínculo de sócio × empresa, do primeiro ao último retrato em que apareceu"
     chave: "cnpj_basico, tipo, documento, nome, qualificacao, primeiro_retrato"
     tempo: {natureza: serie_de_periodos, coluna: "primeiro_retrato, ultimo_retrato", cobertura: "2021-11 a 2026-09"}

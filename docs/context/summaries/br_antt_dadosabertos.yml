@@ -3,6 +3,7 @@
 dataset: br_antt_dadosabertos
 tabelas:
   acidentes_rodovias:
+    ultima_data: "2026-07-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma ocorrência (acidente ou incidente) registrada por uma concessionária numa rodovia federal concedida"
     chave: "nenhuma: sem id de ocorrência; (data, horario, n_da_ocorrencia, trecho, km, sentido, concessionaria, tipo_de_ocorrencia) repete em 13 de 1.027.034 linhas"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "2010-01-01–2026-07-31"}
@@ -23,6 +24,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.027.034 linhas; 17 anos (2010–2026); 13 linhas repetem a chave candidata; sum(mortos)=26.600 — medido 2026-10-27"
   ciot:
+    ultima_data: "2026-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma combinação mês × município de origem × município de destino × NCM da carga (CIOT agregados)"
     chave: "ano, mes, municipio_origem, uf_origem, municipio_destino, uf_destino, ncm_carga (15.887.647 linhas = 15.887.647 distintos)"
     tempo: {natureza: serie_mensal, coluna: "ano + mes (mes é VARCHAR '1'..'12')", cobertura: "2020-01–2026-08"}

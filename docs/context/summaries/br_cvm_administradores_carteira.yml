@@ -3,6 +3,7 @@
 dataset: br_cvm_administradores_carteira
 tabelas:
   pessoa_fisica:
+    ultima_data: "2026-04-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um registro de pessoa física como administrador/gestor de carteira na CVM (inclui cancelados)"
     chave: "nenhuma: sem identificador (só nome); 6.683 linhas, 6.372 nomes distintos, 6.665 distintos de (nome, data_registro)"
     tempo: {natureza: serie_de_periodos, coluna: data_registro, cobertura: "1986-05-23–2026-04-08"}
@@ -16,6 +17,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "6.683 linhas, 6.372 nomes distintos, 3.786 em funcionamento normal — medido 2026-10-27"
   pessoa_juridica:
+    ultima_data: "2026-04-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um registro de pessoa jurídica como administrador fiduciário e/ou gestor de carteira na CVM (inclui cancelados)"
     chave: "(cnpj, data_registro) — 3.009 linhas = 3.009 distintos; cnpj sozinho repete (2.901 distintos: empresa registrada mais de uma vez)"
     tempo: {natureza: serie_de_periodos, coluna: data_registro, cobertura: "1988-06-20–2026-04-07"}

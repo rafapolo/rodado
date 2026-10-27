@@ -3,6 +3,7 @@
 dataset: br_cvm_cia_aberta
 tabelas:
   cadastro:
+    ultima_data: "2026-09-21"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma companhia aberta (registro na CVM), com situação, setor, controle acionário, endereço da sede, diretor de relações com investidores e auditor
     chave: 'nenhuma: 2.678 linhas, 2.567 CD_CVM e 2.531 CNPJ_CIA distintos — 107 CD_CVM aparecem em 2 linhas (nas duas vistas, linhas idênticas); para contar empresas use count(DISTINCT CD_CVM)'
     tempo:
@@ -29,6 +30,7 @@ tabelas:
     - significado de SIT x SIT_EMISSOR (duas colunas de situação, não medida a diferença)
     verificado: '2.678 linhas; 2.567 CD_CVM, 2.531 CNPJ_CIA distintos; 107 CD_CVM com mais de uma linha; SIT: ATIVO 756 (662 CD_CVM), CANCELADA 1.914 (1.897 CD_CVM), SUSPENSO 8 — medido 2026-10-27'
   cgvn_documentos:
+    ultima_data: "2025-12-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um Informe do Código de Governança (CBGC) entregue por uma companhia (uma versão de um exercício), com link de download
     chave: 'ID_Documento (confirmada: 3.047 linhas = 3.047 distintos); (CNPJ_Companhia, Data_Referencia, Versao) também 3.047'
     tempo:
@@ -51,6 +53,7 @@ tabelas:
     - natureza do tempo
     verificado: 3.047 linhas; 3.047 ID_Documento; 2.916 pares (CNPJ_Companhia, Data_Referencia) — medido 2026-10-27
   cgvn_praticas:
+    ultima_data: "2026-03-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma prática recomendada do Código de Governança respondida por uma companhia num informe (adotada ou não, com explicação)
     chave: 'ID_Documento, ID_Item (confirmada: 157.410 linhas = 157.410 distintos)'
     tempo:
@@ -75,6 +78,7 @@ tabelas:
     - regra de versão vigente
     verificado: '157.410 linhas; 157.410 pares (ID_Documento, ID_Item); ID_Documento distintos: 2.915 — medido 2026-10-27'
   dfp_bpa_con:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Balanço Patrimonial – Ativo (consolidado) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA) tem 820.290 distintos em 823.543 linhas, ou seja 3.253 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -108,6 +112,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '823.543 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA: 820.290 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27; Petrobras 2024-12-31 conta 1 (Ativo Total) ÚLTIMO 1.124.797.000 e PENÚLTIMO (2023-12-31) 1.050.888.000, em MIL'
   dfp_bpa_ind:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Balanço Patrimonial – Ativo (individual (só a controladora, sem as controladas)) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA) tem 1.403.249 distintos em 1.409.858 linhas, ou seja 6.609 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -140,6 +145,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '1.409.858 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA: 1.403.249 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   dfp_bpp_con:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Balanço Patrimonial – Passivo e Patrimônio Líquido (consolidado) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA) tem 1.396.118 distintos em 1.401.667 linhas, ou seja 5.549 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -173,6 +179,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '1.401.667 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA: 1.396.118 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   dfp_bpp_ind:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Balanço Patrimonial – Passivo e Patrimônio Líquido (individual (só a controladora, sem as controladas)) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA) tem 2.322.641 distintos em 2.334.086 linhas, ou seja 11.445 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -205,6 +212,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '2.334.086 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA: 2.322.641 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   dfp_composicao_capital:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: a composição do capital (ações ordinárias, preferenciais, total, integralizadas e em tesouraria) de uma companhia numa data de referência do DFP
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER) tem 4.353 distintos em 4.356 linhas; com VERSAO, 4.354 — 2 linhas excedentes'
     tempo:
@@ -234,6 +242,7 @@ tabelas:
     - unidade
     verificado: 4.356 linhas; 4.353 pares (CNPJ_CIA, DT_REFER) distintos; 4.354 com VERSAO — medido 2026-10-27
   dfp_dfc_md_con:
+    ultima_data: "2025-12-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Fluxo de Caixa – método direto (consolidado) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 8.328 distintos em 8.570 linhas, ou seja 242 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -267,6 +276,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '8.570 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 8.328 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   dfp_dfc_md_ind:
+    ultima_data: "2025-12-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Fluxo de Caixa – método direto (individual (só a controladora, sem as controladas)) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 12.592 distintos em 13.114 linhas, ou seja 522 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -299,6 +309,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '13.114 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 12.592 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   dfp_dfc_mi_con:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Fluxo de Caixa – método indireto (consolidado) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 613.530 distintos em 615.674 linhas, ou seja 2.144 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -332,6 +343,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '615.674 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 613.530 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   dfp_dfc_mi_ind:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Fluxo de Caixa – método indireto (individual (só a controladora, sem as controladas)) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 853.569 distintos em 856.731 linhas, ou seja 3.162 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -364,6 +376,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '856.731 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 853.569 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   dfp_dmpl_con:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração das Mutações do Patrimônio Líquido (consolidado) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC) × componente do PL (COLUNA_DF)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, COLUNA_DF, DT_INI_EXERC) tem 3.053.379 distintos em 3.065.227 linhas, ou seja 11.848 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -398,6 +411,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '3.065.227 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, COLUNA_DF, DT_INI_EXERC: 3.053.379 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   dfp_dmpl_ind:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração das Mutações do Patrimônio Líquido (individual (só a controladora, sem as controladas)) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC) × componente do PL (COLUNA_DF)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, COLUNA_DF, DT_INI_EXERC) tem 3.715.698 distintos em 3.733.458 linhas, ou seja 17.760 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -431,6 +445,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '3.733.458 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, COLUNA_DF, DT_INI_EXERC: 3.715.698 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   dfp_documentos:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um documento DFP entregue à CVM (uma versão de um exercício/trimestre de uma companhia) com o link de download
     chave: 'CNPJ_CIA, DT_REFER, VERSAO (14.007 distintos em 14.011 linhas: 4 repetem); ID_DOC é único (14.011 em 14.011)'
     tempo:
@@ -452,6 +467,7 @@ tabelas:
     - nao_use_para
     verificado: 14.011 linhas; 10.859 pares (CNPJ_CIA, DT_REFER) e 14.007 com VERSAO; ID_DOC distinto em todas — medido 2026-10-27
   dfp_dra_con:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Resultado Abrangente (consolidado) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 88.029 distintos em 88.302 linhas, ou seja 273 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -485,6 +501,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '88.302 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 88.029 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   dfp_dra_ind:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Resultado Abrangente (individual (só a controladora, sem as controladas)) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 94.879 distintos em 95.242 linhas, ou seja 363 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -517,6 +534,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '95.242 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 94.879 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   dfp_dre_con:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Resultado (consolidado) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 449.425 distintos em 451.028 linhas, ou seja 1.603 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -550,6 +568,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '451.028 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 449.425 distintos; uma só VERSAO por (CNPJ_CIA, DT_REFER) na dfp_dre_con (6.328 documentos = 6.327 pares CNPJ×data) — medido 2026-10-27'
   dfp_dre_ind:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Resultado (individual (só a controladora, sem as controladas)) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 694.738 distintos em 697.778 linhas, ou seja 3.040 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -582,6 +601,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '697.778 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 694.738 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   dfp_dva_con:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Valor Adicionado (consolidado) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 543.841 distintos em 545.955 linhas, ou seja 2.114 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -615,6 +635,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '545.955 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 543.841 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   dfp_dva_ind:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Valor Adicionado (individual (só a controladora, sem as controladas)) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 885.004 distintos em 889.359 linhas, ou seja 4.355 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -647,6 +668,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '889.359 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 885.004 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   dfp_parecer:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um item de parecer/declaração (relatório do auditor, declarações dos diretores, parecer do conselho fiscal) de um documento DFP
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, VERSAO, TP_PARECER_DECL, NUM_ITEM_PARECER_DECL) tem 52.374 distintos em 52.385 linhas (11 excedentes)'
     tempo:
@@ -667,6 +689,7 @@ tabelas:
     - 'VERSAO: esta tabela pode ter mais de uma versão por documento (VERSAO vai até 7)'
     verificado: 52.385 linhas; 52.374 distintos na chave proposta — medido 2026-10-27
   fca_auditor:
+    ultima_data: "2026-01-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um auditor independente (e responsável técnico) de uma companhia num FCA
     chave: 'nenhuma: a linha é um item dentro do documento (ID_Documento tem 11.592 distintos em 14.425 linhas); linha inteira distinta em 14.323'
     tempo:
@@ -681,6 +704,7 @@ tabelas:
     - nao_use_para
     verificado: '14.425 linhas; ID_Documento: 11.592 distintos — medido 2026-10-27'
   fca_canal_divulgacao:
+    ultima_data: "2026-01-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um canal de divulgação (jornal/site) e UF de um emissor num FCA
     chave: 'nenhuma: a linha é um item dentro do documento (ID_Documento tem 11.492 distintos em 24.990 linhas); linha inteira distinta em 24.716'
     tempo:
@@ -699,6 +723,7 @@ tabelas:
     - nao_use_para
     verificado: '24.990 linhas; ID_Documento: 11.492 distintos — medido 2026-10-27'
   fca_departamento_acionistas:
+    ultima_data: "2023-01-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um contato do departamento de acionistas (endereço e contatos) num FCA
     chave: 'nenhuma: a linha é um item dentro do documento (ID_Documento tem 6.836 distintos em 7.827 linhas); linha inteira distinta em 7.814'
     tempo:
@@ -717,6 +742,7 @@ tabelas:
     - nao_use_para
     verificado: '7.827 linhas; ID_Documento: 6.836 distintos — medido 2026-10-27'
   fca_documentos:
+    ultima_data: "2026-01-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um documento FCA (Formulário Cadastral) entregue à CVM, com link
     chave: 'ID_DOC (confirmada: 25.794 = 25.794)'
     tempo:
@@ -738,6 +764,7 @@ tabelas:
     - nao_use_para
     verificado: 25.794 linhas; ID_DOC distinto em todas — medido 2026-10-27
   fca_dri:
+    ultima_data: "2026-01-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um responsável (Diretor de Relações com Investidores ou equivalente) de uma companhia num FCA, com endereço
     chave: 'nenhuma: a linha é um item dentro do documento (ID_Documento tem 11.616 distintos em 14.310 linhas); linha inteira distinta em 14.279'
     tempo:
@@ -756,6 +783,7 @@ tabelas:
     - nao_use_para
     verificado: '14.310 linhas; ID_Documento: 11.616 distintos — medido 2026-10-27'
   fca_endereco:
+    ultima_data: "2026-01-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um endereço (tipo Sede etc.) de uma companhia num FCA
     chave: 'nenhuma: a linha é um item dentro do documento (ID_Documento tem 11.631 distintos em 23.340 linhas); linha inteira distinta em 23.337'
     tempo:
@@ -774,6 +802,7 @@ tabelas:
     - nao_use_para
     verificado: '23.340 linhas; ID_Documento: 11.631 distintos — medido 2026-10-27'
   fca_escriturador:
+    ultima_data: "2026-01-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma instituição escrituradora de ações de uma companhia num FCA
     chave: 'nenhuma: a linha é um item dentro do documento (ID_Documento tem 8.047 distintos em 8.363 linhas); linha inteira distinta em 8.349'
     tempo:
@@ -792,6 +821,7 @@ tabelas:
     - nao_use_para
     verificado: '8.363 linhas; ID_Documento: 8.047 distintos — medido 2026-10-27'
   fca_geral:
+    ultima_data: "2026-01-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'o cadastro geral de uma companhia num FCA (um documento FCA por companhia × Data_Referencia): datas de registro, categoria, situação, controle, exercício social'
     chave: 'ID_Documento (confirmada: 11.631 = 11.631); (CNPJ_Companhia, Data_Referencia) 11.629 distintos'
     tempo:
@@ -812,6 +842,7 @@ tabelas:
     - nao_use_para
     verificado: 11.631 linhas; 11.631 ID_Documento; 11.629 pares (CNPJ_Companhia, Data_Referencia) — medido 2026-10-27
   fca_pais_estrangeiro_negociacao:
+    ultima_data: "2026-01-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um país onde a companhia tem valores negociados no exterior, com data de admissão
     chave: 'nenhuma: a linha é um item dentro do documento (ID_Documento tem 1.422 distintos em 1.707 linhas); linha inteira distinta em 1.707'
     tempo:
@@ -826,6 +857,7 @@ tabelas:
     - nao_use_para
     verificado: '1.707 linhas; ID_Documento: 1.422 distintos — medido 2026-10-27'
   fca_valor_mobiliario:
+    ultima_data: "2026-01-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um valor mobiliário (ação, BDR, debênture…) da companhia, com código de negociação, mercado, segmento e datas de listagem
     chave: 'nenhuma: a linha é um item dentro do documento (ID_Documento tem 9.276 distintos em 13.067 linhas); linha inteira distinta em 12.983'
     tempo:
@@ -844,6 +876,7 @@ tabelas:
     - Segmento IN ('Básico','Novo Mercado','Nível 1 de Governança Corporativa','Nível 2 de Governança Corporativa','Bovespa Mais','Bovespa Mais N2') (nulo em 26%)
     - Data_Fim_Negociacao IS NULL para o que ainda negocia (95% nulo)
   fre_acao_entregue:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: ações entregues como remuneração a um órgão da administração (Diretoria Estatutária, Conselho de Administração, Conselho Fiscal) num exercício
     chave: 'nenhuma: ID_Documento tem 887 distintos em 5.019 linhas (linha é um item do documento; linha inteira distinta em 5.013)'
     tempo:
@@ -874,6 +907,7 @@ tabelas:
     - nao_use_para
     verificado: '5.019 linhas; ID_Documento: 887 distintos — medido 2026-10-27'
   fre_administrador_declaracao_genero:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: declaração de gênero dos administradores por órgão (Diretoria, CA/CF efetivos e suplentes) num FRE
     chave: 'nenhuma: ID_Documento tem 2.762 distintos em 13.797 linhas (linha é um item do documento; linha inteira distinta em 13.797)'
     tempo:
@@ -904,6 +938,7 @@ tabelas:
     - nao_use_para
     verificado: '13.797 linhas; ID_Documento: 2.762 distintos — medido 2026-10-27'
   fre_administrador_declaracao_raca:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: declaração de raça/cor dos administradores por órgão num FRE
     chave: 'nenhuma: ID_Documento tem 2.759 distintos em 13.781 linhas (linha é um item do documento; linha inteira distinta em 13.781)'
     tempo:
@@ -934,6 +969,7 @@ tabelas:
     - nao_use_para
     verificado: '13.781 linhas; ID_Documento: 2.759 distintos — medido 2026-10-27'
   fre_administrador_membro_conselho_fiscal:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um administrador (membro de Diretoria, Conselho de Administração ou Conselho Fiscal) num FRE, com cargo, mandato e experiência
     chave: 'nenhuma: ID_Documento tem 11.388 distintos em 144.871 linhas (linha é um item do documento; linha inteira distinta em 144.372)'
     tempo:
@@ -952,6 +988,7 @@ tabelas:
     - literal completo de Orgao_Administracao
     verificado: '144.871 linhas; ID_Documento: 11.388 distintos — medido 2026-10-27'
   fre_administrador_pcd:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: pessoas com deficiência entre os administradores por órgão num FRE
     chave: 'nenhuma: ID_Documento tem 1.562 distintos em 7.804 linhas (linha é um item do documento; linha inteira distinta em 7.804)'
     tempo:
@@ -977,6 +1014,7 @@ tabelas:
     - nao_use_para
     verificado: '7.804 linhas; ID_Documento: 1.562 distintos — medido 2026-10-27'
   fre_ativo_imobilizado:
+    ultima_data: "2023-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um bem do ativo imobilizado relevante (descrição, UF, município, propriedade) declarado num FRE
     chave: 'nenhuma: ID_Documento tem 4.631 distintos em 125.029 linhas (linha é um item do documento; linha inteira distinta em 112.533)'
     tempo:
@@ -999,6 +1037,7 @@ tabelas:
     - nao_use_para
     verificado: '125.029 linhas; ID_Documento: 4.631 distintos — medido 2026-10-27'
   fre_ativo_intangivel:
+    ultima_data: "2023-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um ativo intangível relevante (marca, patente, concessão, licença…) declarado num FRE
     chave: 'nenhuma: ID_Documento tem 4.420 distintos em 174.734 linhas (linha é um item do documento; linha inteira distinta em 168.220)'
     tempo:
@@ -1016,6 +1055,7 @@ tabelas:
     - nao_use_para
     verificado: '174.734 linhas; ID_Documento: 4.420 distintos — medido 2026-10-27'
   fre_auditor:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um auditor independente contratado pela companhia (com serviço contratado e remuneração) num FRE
     chave: 'ID_Documento, ID_Auditor (confirmada: 19.875 linhas = 19.875 distintos)'
     tempo:
@@ -1036,6 +1076,7 @@ tabelas:
     - unidade de Remuneracao_Auditor
     verificado: '19.875 linhas; ID_Documento, ID_Auditor: 19.875 distintos — medido 2026-10-27'
   fre_auditor_responsavel:
+    ultima_data: "2023-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um responsável técnico do auditor num FRE
     chave: 'nenhuma: ID_Documento, ID_Auditor tem 15.650 distintos em 18.542 linhas (linha é um item do documento; linha inteira distinta em 18.542)'
     tempo:
@@ -1052,6 +1093,7 @@ tabelas:
     - nao_use_para
     verificado: '18.542 linhas; ID_Documento, ID_Auditor: 15.650 distintos — medido 2026-10-27'
   fre_capital_social:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um tipo de capital (Integralizado, Subscrito, Emitido, Autorizado) da companhia num FRE, com valor e quantidade de ações
     chave: 'ID_Documento, ID_Capital_Social (confirmada: 45.658 linhas = 45.658 distintos)'
     tempo:
@@ -1077,6 +1119,7 @@ tabelas:
     - nao_use_para
     verificado: '45.658 linhas; ID_Documento, ID_Capital_Social: 45.658 distintos — medido 2026-10-27'
   fre_capital_social_aumento:
+    ultima_data: "2023-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um aumento de capital deliberado (data, tipo de subscrição, valor, preço de emissão) num FRE
     chave: 'ID_Documento, ID_Capital_Social_Aumento (confirmada: 32.004 linhas = 32.004 distintos)'
     tempo:
@@ -1104,6 +1147,7 @@ tabelas:
     - repetição do mesmo aumento entre FREs
     verificado: '32.004 linhas; ID_Documento, ID_Capital_Social_Aumento: 32.004 distintos — medido 2026-10-27'
   fre_capital_social_aumento_classe_acao:
+    ultima_data: "2022-01-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: quantidade de ações de uma classe preferencial emitida em um aumento de capital
     chave: 'nenhuma: ID_Documento, ID_Capital_Social_Aumento tem 1.714 distintos em 2.127 linhas (linha é um item do documento; linha inteira distinta em 2.124)'
     tempo:
@@ -1123,6 +1167,7 @@ tabelas:
     - nao_use_para
     verificado: '2.127 linhas; ID_Documento, ID_Capital_Social_Aumento: 1.714 distintos — medido 2026-10-27'
   fre_capital_social_classe_acao:
+    ultima_data: "2025-12-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: quantidade de ações de uma classe preferencial dentro de um tipo de capital social
     chave: 'nenhuma: ID_Documento, ID_Capital_Social tem 4.147 distintos em 6.905 linhas (linha é um item do documento; linha inteira distinta em 6.905)'
     tempo:
@@ -1142,6 +1187,7 @@ tabelas:
     - nao_use_para
     verificado: '6.905 linhas; ID_Documento, ID_Capital_Social: 4.147 distintos — medido 2026-10-27'
   fre_capital_social_desdobramento:
+    ultima_data: "2023-03-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um desdobramento, grupamento ou bonificação de ações, com quantidades antes e depois
     chave: 'ID_Documento, ID_Capital_Social_Desdobramento (confirmada: 2.749 linhas = 2.749 distintos)'
     tempo:
@@ -1163,6 +1209,7 @@ tabelas:
     - nao_use_para
     verificado: '2.749 linhas; ID_Documento, ID_Capital_Social_Desdobramento: 2.749 distintos — medido 2026-10-27'
   fre_capital_social_desdobramento_classe_acao:
+    ultima_data: "2022-01-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: ações de uma classe preferencial antes/depois de um desdobramento
     chave: 'nenhuma: ID_Documento, ID_Capital_Social_Desdobramento tem 327 distintos em 453 linhas (linha é um item do documento; linha inteira distinta em 453)'
     tempo:
@@ -1177,6 +1224,7 @@ tabelas:
     - nao_use_para
     verificado: '453 linhas; ID_Documento, ID_Capital_Social_Desdobramento: 327 distintos — medido 2026-10-27'
   fre_capital_social_reducao:
+    ultima_data: "2023-03-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma redução de capital (data, valor, ações, forma de restituição) num FRE
     chave: 'ID_Documento, ID_Capital_Social_Reducao (confirmada: 1.896 linhas = 1.896 distintos)'
     tempo:
@@ -1196,6 +1244,7 @@ tabelas:
     - nao_use_para
     verificado: '1.896 linhas; ID_Documento, ID_Capital_Social_Reducao: 1.896 distintos — medido 2026-10-27'
   fre_capital_social_reducao_classe_acao:
+    ultima_data: "2022-01-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: ações de uma classe preferencial atingidas por uma redução de capital
     chave: 'nenhuma: ID_Documento, ID_Capital_Social_Reducao tem 89 distintos em 109 linhas (linha é um item do documento; linha inteira distinta em 109)'
     tempo:
@@ -1210,6 +1259,7 @@ tabelas:
     - nao_use_para
     verificado: '109 linhas; ID_Documento, ID_Capital_Social_Reducao: 89 distintos — medido 2026-10-27'
   fre_capital_social_titulo_conversivel:
+    ultima_data: "2025-12-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um título conversível em ações e suas condições, ligado a um registro de capital social
     chave: 'nenhuma: ID_Documento, ID_Capital_Social tem 414 distintos em 469 linhas (linha é um item do documento; linha inteira distinta em 469)'
     tempo:
@@ -1224,6 +1274,7 @@ tabelas:
     - nao_use_para
     verificado: '469 linhas; ID_Documento, ID_Capital_Social: 414 distintos — medido 2026-10-27'
   fre_direito_acao:
+    ultima_data: "2023-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: os direitos de uma espécie/classe de ação (tag along, voto, dividendo, reembolso, conversão) num FRE
     chave: 'nenhuma: ID_Documento tem 6.809 distintos em 10.843 linhas (linha é um item do documento; linha inteira distinta em 10.379)'
     tempo:
@@ -1246,6 +1297,7 @@ tabelas:
     - nao_use_para
     verificado: '10.843 linhas; ID_Documento: 6.809 distintos — medido 2026-10-27'
   fre_distribuicao_capital:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: a distribuição do capital de uma companhia numa data (acionistas PF/PJ/institucionais e ações em circulação)
     chave: 'ID_Documento (confirmada: 11.383 linhas = 11.383 distintos)'
     tempo:
@@ -1272,6 +1324,7 @@ tabelas:
     - nao_use_para
     verificado: '11.383 linhas; ID_Documento: 11.383 distintos — medido 2026-10-27'
   fre_distribuicao_capital_classe_acao:
+    ultima_data: "2025-12-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: ações preferenciais em circulação por classe numa data
     chave: 'nenhuma: ID_Documento tem 3.549 distintos em 4.436 linhas (linha é um item do documento; linha inteira distinta em 4.436)'
     tempo:
@@ -1291,6 +1344,7 @@ tabelas:
     - nao_use_para
     verificado: '4.436 linhas; ID_Documento: 3.549 distintos — medido 2026-10-27'
   fre_distribuicao_dividendos:
+    ultima_data: "2023-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: a distribuição de dividendos de uma companhia num exercício social (lucro ajustado, retenção, dividendo total)
     chave: 'nenhuma: ID_Documento tem 5.735 distintos em 16.326 linhas (linha é um item do documento; linha inteira distinta em 16.326)'
     tempo:
@@ -1319,6 +1373,7 @@ tabelas:
     - unidade
     verificado: '16.326 linhas; ID_Documento: 5.735 distintos — medido 2026-10-27'
   fre_distribuicao_dividendos_classe_acao:
+    ultima_data: "2023-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: dividendo/JCP distribuído por espécie e classe de ação, num exercício
     chave: 'nenhuma: ID_Documento tem 5.187 distintos em 41.926 linhas (linha é um item do documento; linha inteira distinta em 41.916)'
     tempo:
@@ -1343,6 +1398,7 @@ tabelas:
     - repetição de exercícios entre FREs
     verificado: '41.926 linhas; ID_Documento: 5.187 distintos — medido 2026-10-27'
   fre_documentos:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um documento FRE (Formulário de Referência) entregue (cada versão é uma linha), com link
     chave: 'ID_DOC (confirmada: 73.142 = 73.142)'
     tempo:
@@ -1364,6 +1420,7 @@ tabelas:
     - nao_use_para
     verificado: 73.142 linhas; ID_DOC distinto em todas; 11.386 pares (CNPJ_CIA, DT_REFER); 73.133 com VERSAO — medido 2026-10-27
   fre_empregado_local_declaracao_genero:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: empregados por gênero numa região (Local) num FRE
     chave: 'nenhuma: ID_Documento tem 2.060 distintos em 12.354 linhas (linha é um item do documento; linha inteira distinta em 12.354)'
     tempo:
@@ -1390,6 +1447,7 @@ tabelas:
     - o literal de Local no perfil é "Centro-Oeste"
     verificado: '12.354 linhas; ID_Documento: 2.060 distintos — medido 2026-10-27'
   fre_empregado_local_declaracao_raca:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: empregados por raça/cor numa região (Local) num FRE
     chave: 'nenhuma: ID_Documento tem 2.060 distintos em 12.354 linhas (linha é um item do documento; linha inteira distinta em 12.354)'
     tempo:
@@ -1419,6 +1477,7 @@ tabelas:
     - nao_use_para
     verificado: '12.354 linhas; ID_Documento: 2.060 distintos — medido 2026-10-27'
   fre_empregado_local_faixa_etaria:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: empregados por faixa etária numa região (Local) num FRE
     chave: 'nenhuma: ID_Documento tem 2.060 distintos em 12.354 linhas (linha é um item do documento; linha inteira distinta em 12.354)'
     tempo:
@@ -1448,6 +1507,7 @@ tabelas:
     - nao_use_para
     verificado: '12.354 linhas; ID_Documento: 2.060 distintos — medido 2026-10-27'
   fre_empregado_pcd:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: empregados PCD por posição (Liderança/Não-liderança) num FRE
     chave: 'nenhuma: ID_Documento tem 1.143 distintos em 2.286 linhas (linha é um item do documento; linha inteira distinta em 2.286)'
     tempo:
@@ -1469,6 +1529,7 @@ tabelas:
     - nao_use_para
     verificado: '2.286 linhas; ID_Documento: 1.143 distintos — medido 2026-10-27'
   fre_empregado_posicao_declaracao_genero:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: empregados por gênero numa posição (Liderança/Não-liderança) num FRE
     chave: 'nenhuma: ID_Documento tem 2.059 distintos em 4.118 linhas (linha é um item do documento; linha inteira distinta em 4.118)'
     tempo:
@@ -1494,6 +1555,7 @@ tabelas:
     - nao_use_para
     verificado: '4.118 linhas; ID_Documento: 2.059 distintos — medido 2026-10-27'
   fre_empregado_posicao_declaracao_raca:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: empregados por raça/cor numa posição num FRE
     chave: 'nenhuma: ID_Documento tem 2.058 distintos em 4.116 linhas (linha é um item do documento; linha inteira distinta em 4.116)'
     tempo:
@@ -1523,6 +1585,7 @@ tabelas:
     - nao_use_para
     verificado: '4.116 linhas; ID_Documento: 2.058 distintos — medido 2026-10-27'
   fre_empregado_posicao_faixa_etaria:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: empregados por faixa etária numa posição num FRE
     chave: 'nenhuma: ID_Documento tem 2.061 distintos em 4.122 linhas (linha é um item do documento; linha inteira distinta em 4.122)'
     tempo:
@@ -1552,6 +1615,7 @@ tabelas:
     - nao_use_para
     verificado: '4.122 linhas; ID_Documento: 2.061 distintos — medido 2026-10-27'
   fre_empregado_posicao_local:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: empregados por região do país numa posição num FRE
     chave: 'nenhuma: ID_Documento tem 2.055 distintos em 4.110 linhas (linha é um item do documento; linha inteira distinta em 4.110)'
     tempo:
@@ -1573,6 +1637,7 @@ tabelas:
     - nao_use_para
     verificado: '4.110 linhas; ID_Documento: 2.055 distintos — medido 2026-10-27'
   fre_endividamento:
+    ultima_data: "2023-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: o índice de endividamento de um exercício (passivo, índice) num FRE
     chave: 'nenhuma: ID_Documento tem 7.924 distintos em 9.732 linhas (linha é um item do documento; linha inteira distinta em 9.714)'
     tempo:
@@ -1595,6 +1660,7 @@ tabelas:
     - nao_use_para
     verificado: '9.732 linhas; ID_Documento: 7.924 distintos — medido 2026-10-27'
   fre_grupo_economico_reestruturacao:
+    ultima_data: "2016-03-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma operação societária de reestruturação do grupo econômico (data, descrição, evento)
     chave: 'nenhuma: ID_Documento tem 2.113 distintos em 11.138 linhas (linha é um item do documento; linha inteira distinta em 10.854)'
     tempo:
@@ -1611,6 +1677,7 @@ tabelas:
     - nao_use_para
     verificado: '11.138 linhas; ID_Documento: 2.113 distintos — medido 2026-10-27'
   fre_historico_emissor:
+    ultima_data: "2023-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: o histórico do emissor (constituição, país, prazo de duração, registro) num FRE
     chave: 'ID_Documento (confirmada: 8.608 linhas = 8.608 distintos)'
     tempo:
@@ -1627,6 +1694,7 @@ tabelas:
     - nao_use_para
     verificado: '8.608 linhas; ID_Documento: 8.608 distintos — medido 2026-10-27'
   fre_informacao_financeira:
+    ultima_data: "2023-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma informação financeira selecionada (conta × exercício × consolidado/individual) declarada no FRE
     chave: 'nenhuma: ID_Documento tem 7.296 distintos em 167.471 linhas (linha é um item do documento; linha inteira distinta em 167.471)'
     tempo:
@@ -1650,6 +1718,7 @@ tabelas:
     - nao_use_para
     verificado: '167.471 linhas; ID_Documento: 7.296 distintos — medido 2026-10-27'
   fre_membro_comite:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um membro de comitê (auditoria, remuneração, risco, financeiro, outros) num FRE
     chave: 'nenhuma: ID_Documento tem 5.130 distintos em 58.387 linhas (linha é um item do documento; linha inteira distinta em 58.187)'
     tempo:
@@ -1667,6 +1736,7 @@ tabelas:
     - nao_use_para
     verificado: '58.387 linhas; ID_Documento: 5.130 distintos — medido 2026-10-27'
   fre_mercado_estrangeiro:
+    ultima_data: "2025-12-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um valor mobiliário negociado em mercado estrangeiro (país, mercado, administradora) num FRE
     chave: 'nenhuma: ID_Documento tem 531 distintos em 885 linhas (linha é um item do documento; linha inteira distinta em 884)'
     tempo:
@@ -1681,6 +1751,7 @@ tabelas:
     - nao_use_para
     verificado: '885 linhas; ID_Documento: 531 distintos — medido 2026-10-27'
   fre_obrigacao:
+    ultima_data: "2023-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma obrigação (dívida) por tipo de garantia com o escalonamento por prazo, num exercício
     chave: 'nenhuma: ID_Documento tem 7.449 distintos em 16.264 linhas (linha é um item do documento; linha inteira distinta em 16.262)'
     tempo:
@@ -1709,6 +1780,7 @@ tabelas:
     - unidade (R$ vs R$ mil)
     verificado: '16.264 linhas; ID_Documento: 7.449 distintos — medido 2026-10-27'
   fre_outro_valor_mobiliario:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um valor mobiliário de dívida/outro (debênture, CRI, CRA, nota comercial…) em circulação declarado num FRE
     chave: 'nenhuma: ID_Documento tem 6.356 distintos em 41.785 linhas (linha é um item do documento; linha inteira distinta em 41.663)'
     tempo:
@@ -1735,6 +1807,7 @@ tabelas:
     - unidades
     verificado: '41.785 linhas; ID_Documento: 6.356 distintos — medido 2026-10-27'
   fre_participacao_sociedade:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma sociedade controlada ou coligada com participação do emissor num FRE (valor contábil e de mercado)
     chave: 'ID_Documento, ID_Sociedade (confirmada: 76.065 linhas = 76.065 distintos)'
     tempo:
@@ -1766,6 +1839,7 @@ tabelas:
     - nao_use_para
     verificado: '76.065 linhas; ID_Documento, ID_Sociedade: 76.065 distintos — medido 2026-10-27'
   fre_participacao_sociedade_valorizacao_acao:
+    ultima_data: "2023-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: a variação de valor contábil/mercado e dividendos recebidos de uma sociedade investida em um exercício (Data_Encerramento)
     chave: 'nenhuma: ID_Documento, ID_Sociedade tem 51.331 distintos em 203.146 linhas (linha é um item do documento; linha inteira distinta em 203.146)'
     tempo:
@@ -1787,6 +1861,7 @@ tabelas:
     - nao_use_para
     verificado: '203.146 linhas; ID_Documento, ID_Sociedade: 51.331 distintos — medido 2026-10-27'
   fre_plano_recompra:
+    ultima_data: "2023-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um plano de recompra de ações (deliberação, prazo, reserva disponível)
     chave: 'ID_Documento, ID_Plano_Recompra (confirmada: 3.859 linhas = 3.859 distintos)'
     tempo:
@@ -1806,6 +1881,7 @@ tabelas:
     - nao_use_para
     verificado: '3.859 linhas; ID_Documento, ID_Plano_Recompra: 3.859 distintos — medido 2026-10-27'
   fre_plano_recompra_classe_acao:
+    ultima_data: "2023-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: quantidade prevista/adquirida de uma espécie/classe num plano de recompra
     chave: 'nenhuma: ID_Documento, ID_Plano_Recompra tem 3.859 distintos em 4.476 linhas (linha é um item do documento; linha inteira distinta em 4.471)'
     tempo:
@@ -1831,6 +1907,7 @@ tabelas:
     - nao_use_para
     verificado: '4.476 linhas; ID_Documento, ID_Plano_Recompra: 3.859 distintos — medido 2026-10-27'
   fre_politica_negociacao:
+    ultima_data: "2023-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: a política de negociação de valores mobiliários de uma companhia (aprovação, órgão, características)
     chave: 'ID_Documento, ID_Politica (confirmada: 4.836 linhas = 4.836 distintos)'
     tempo:
@@ -1845,6 +1922,7 @@ tabelas:
     - nao_use_para
     verificado: '4.836 linhas; ID_Documento, ID_Politica: 4.836 distintos — medido 2026-10-27'
   fre_politica_negociacao_cargo:
+    ultima_data: "2023-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um cargo vinculado à política de negociação
     chave: 'nenhuma: ID_Documento, ID_Politica tem 4.756 distintos em 9.549 linhas (linha é um item do documento; linha inteira distinta em 9.525)'
     tempo:
@@ -1859,6 +1937,7 @@ tabelas:
     - nao_use_para
     verificado: '9.549 linhas; ID_Documento, ID_Politica: 4.756 distintos — medido 2026-10-27'
   fre_posicao_acionaria:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um acionista (com seu acionista relacionado, controlador e participantes de acordo) com ações em circulação num FRE
     chave: 'ID_Documento, ID_Acionista, ID_Acionista_Relacionado (confirmada: 425.462 linhas = 425.462 distintos)'
     tempo:
@@ -1886,6 +1965,7 @@ tabelas:
     - nao_use_para
     verificado: '425.462 linhas; ID_Documento, ID_Acionista, ID_Acionista_Relacionado: 425.462 distintos — medido 2026-10-27'
   fre_posicao_acionaria_classe_acao:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: ações de um acionista por classe preferencial
     chave: 'nenhuma: ID_Documento, ID_Acionista tem 46.570 distintos em 54.080 linhas (linha é um item do documento; linha inteira distinta em 53.346)'
     tempo:
@@ -1905,6 +1985,7 @@ tabelas:
     - nao_use_para
     verificado: '54.080 linhas; ID_Documento, ID_Acionista: 46.570 distintos — medido 2026-10-27'
   fre_relacao_familiar:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma relação de parentesco entre administradores/pessoas relacionadas num FRE
     chave: 'nenhuma: ID_Documento tem 3.556 distintos em 20.824 linhas (linha é um item do documento; linha inteira distinta em 20.637)'
     tempo:
@@ -1921,6 +2002,7 @@ tabelas:
     - nao_use_para
     verificado: '20.824 linhas; ID_Documento: 3.556 distintos — medido 2026-10-27'
   fre_relacao_subordinacao:
+    ultima_data: "2026-03-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma relação de subordinação, controle ou prestação de serviço entre um administrador e uma pessoa relacionada num exercício
     chave: 'nenhuma: ID_Documento tem 4.780 distintos em 149.870 linhas (linha é um item do documento; linha inteira distinta em 148.968)'
     tempo:
@@ -1938,6 +2020,7 @@ tabelas:
     - nao_use_para
     verificado: '149.870 linhas; ID_Documento: 4.780 distintos — medido 2026-10-27'
   fre_remuneracao_acao:
+    ultima_data: "2026-03-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: remuneração baseada em ações por órgão num exercício (opções em aberto/perdidas/exercidas, diluição)
     chave: 'nenhuma: ID_Documento tem 929 distintos em 6.162 linhas (linha é um item do documento; linha inteira distinta em 6.156)'
     tempo:
@@ -1959,6 +2042,7 @@ tabelas:
     - nao_use_para
     verificado: '6.162 linhas; ID_Documento: 929 distintos — medido 2026-10-27'
   fre_remuneracao_maxima_minima_media:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: a maior, a menor e a média remuneração individual de um órgão num exercício
     chave: 'ID_Documento, Data_Fim_Exercicio_Social, Orgao_Administracao (confirmada: 50.798 linhas = 50.798 distintos)'
     tempo:
@@ -1985,6 +2069,7 @@ tabelas:
     - nao_use_para
     verificado: '50.798 linhas; ID_Documento: 7.283 distintos — medido 2026-10-27'
   fre_remuneracao_total_orgao:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: a remuneração total de um órgão da administração num exercício, por componente (salário, bônus, participação em resultados, ações…)
     chave: 'nenhuma exata: (ID_Documento, Data_Fim_Exercicio_Social, Orgao_Administracao) tem 86.249 distintos em 86.457 linhas (208 excedentes)'
     tempo:
@@ -2013,6 +2098,7 @@ tabelas:
     - 'Total_Remuneracao repetida por órgão (deduzido do perfil: máx 1,1×10^10 vs Total_Remuneracao_Orgao 1,2×10^9)'
     verificado: '86.457 linhas; ID_Documento: 10.079 distintos — medido 2026-10-27'
   fre_remuneracao_variavel:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: bônus e participação nos resultados (mínimo, máximo, metas, efetivo) de um órgão num exercício
     chave: 'nenhuma: ID_Documento tem 1.691 distintos em 14.874 linhas (linha é um item do documento; linha inteira distinta em 14.853)'
     tempo:
@@ -2038,6 +2124,7 @@ tabelas:
     - nao_use_para
     verificado: '14.874 linhas; ID_Documento: 1.691 distintos — medido 2026-10-27'
   fre_responsavel:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um responsável pelo conteúdo do formulário (Diretor Presidente / DRI) num FRE
     chave: 'nenhuma: ID_Documento tem 11.386 distintos em 19.938 linhas (linha é um item do documento; linha inteira distinta em 19.831)'
     tempo:
@@ -2054,6 +2141,7 @@ tabelas:
     - nao_use_para
     verificado: '19.938 linhas; ID_Documento: 11.386 distintos — medido 2026-10-27'
   fre_titular_valor_mobiliario:
+    ultima_data: "2025-12-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: quantidade de titulares (PF/PJ/investidores) de um valor mobiliário
     chave: 'nenhuma: ID_Documento tem 2.428 distintos em 2.884 linhas (linha é um item do documento; linha inteira distinta em 2.884)'
     tempo:
@@ -2073,6 +2161,7 @@ tabelas:
     - nao_use_para
     verificado: '2.884 linhas; ID_Documento: 2.428 distintos — medido 2026-10-27'
   fre_titulo_exterior:
+    ultima_data: "2026-03-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um valor mobiliário de dívida/outro emitido no exterior num FRE
     chave: 'nenhuma: ID_Documento tem 578 distintos em 1.931 linhas (linha é um item do documento; linha inteira distinta em 1.930)'
     tempo:
@@ -2093,6 +2182,7 @@ tabelas:
     - moeda de Valor_Nominal
     verificado: '1.931 linhas; ID_Documento: 578 distintos — medido 2026-10-27'
   fre_transacao_parte_relacionada:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma transação com parte relacionada (montante, saldo, taxa, natureza) num FRE
     chave: 'nenhuma: ID_Documento tem 9.157 distintos em 173.035 linhas (linha é um item do documento; linha inteira distinta em 172.129)'
     tempo:
@@ -2120,6 +2210,7 @@ tabelas:
     - tipo e unidade de Montante_Envolvido
     verificado: '173.035 linhas; ID_Documento: 9.157 distintos — medido 2026-10-27'
   fre_valor_mobiliario_tesouraria_movimentacao:
+    ultima_data: "2023-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: a movimentação (inicial, adquirida, alienada, cancelada, final) de um valor mobiliário em tesouraria no exercício
     chave: 'nenhuma: ID_Documento tem 2.132 distintos em 6.570 linhas (linha é um item do documento; linha inteira distinta em 6.565)'
     tempo:
@@ -2146,6 +2237,7 @@ tabelas:
     - nao_use_para
     verificado: '6.570 linhas; ID_Documento: 2.132 distintos — medido 2026-10-27'
   fre_valor_mobiliario_tesouraria_ultimo_exercicio:
+    ultima_data: "2016-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um lote de valor mobiliário em tesouraria no último exercício (quantidade, preço médio, data de aquisição)
     chave: 'nenhuma: ID_Documento tem 829 distintos em 7.682 linhas (linha é um item do documento; linha inteira distinta em 7.278)'
     tempo:
@@ -2167,6 +2259,7 @@ tabelas:
     - nao_use_para
     verificado: '7.682 linhas; ID_Documento: 829 distintos — medido 2026-10-27'
   fre_volume_valor_mobiliario:
+    ultima_data: "2022-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: o volume negociado e as cotações de um valor mobiliário num trimestre (Data_Fim_Trimestre)
     chave: 'nenhuma: ID_Documento tem 4.315 distintos em 64.663 linhas (linha é um item do documento; linha inteira distinta em 64.605)'
     tempo:
@@ -2194,6 +2287,7 @@ tabelas:
     - nao_use_para
     verificado: '64.663 linhas; ID_Documento: 4.315 distintos — medido 2026-10-27'
   ipe_documentos:
+    ultima_data: "2026-10-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um documento eventual (IPE) entregue por uma companhia à CVM — fato relevante, comunicado ao mercado, assembleia, reunião da administração… — com link
     chave: 'nenhuma exata: 497.012 Protocolo_Entrega distintos, 497.021 com Versao, em 746.951 linhas (um protocolo gera várias linhas; chave única não medida)'
     tempo:
@@ -2217,6 +2311,7 @@ tabelas:
     - regra de reapresentação
     verificado: 746.951 linhas; 497.012 Protocolo_Entrega distintos; Data_Referencia > hoje em 943 linhas — medido 2026-10-27
   itr_bpa_con:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Balanço Patrimonial – Ativo (consolidado) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA) tem 2.332.474 distintos em 2.336.868 linhas, ou seja 4.394 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -2250,6 +2345,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '2.336.868 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA: 2.332.474 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   itr_bpa_ind:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Balanço Patrimonial – Ativo (individual (só a controladora, sem as controladas)) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA) tem 4.055.134 distintos em 4.062.539 linhas, ou seja 7.405 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -2282,6 +2378,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '4.062.539 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA: 4.055.134 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   itr_bpp_con:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Balanço Patrimonial – Passivo e Patrimônio Líquido (consolidado) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA) tem 3.978.090 distintos em 3.985.698 linhas, ou seja 7.608 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -2315,6 +2412,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '3.985.698 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA: 3.978.090 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   itr_bpp_ind:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Balanço Patrimonial – Passivo e Patrimônio Líquido (individual (só a controladora, sem as controladas)) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA) tem 6.719.399 distintos em 6.732.410 linhas, ou seja 13.011 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -2347,6 +2445,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '6.732.410 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA: 6.719.399 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   itr_composicao_capital:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: mesmo grão de dfp_composicao_capital, para a data de referência do ITR (fim de trimestre)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER) 14.094 distintos em 14.096 linhas (2 excedentes); igual com VERSAO'
     tempo:
@@ -2371,6 +2470,7 @@ tabelas:
     - nao_use_para
     verificado: 14.096 linhas; 14.094 pares (CNPJ_CIA, DT_REFER) — medido 2026-10-27
   itr_dfc_md_con:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Fluxo de Caixa – método direto (consolidado) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC) × período (DT_INI_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 20.157 distintos em 20.875 linhas, ou seja 718 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -2404,6 +2504,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '20.875 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 20.157 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   itr_dfc_md_ind:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Fluxo de Caixa – método direto (individual (só a controladora, sem as controladas)) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC) × período (DT_INI_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 28.255 distintos em 29.131 linhas, ou seja 876 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -2436,6 +2537,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '29.131 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 28.255 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   itr_dfc_mi_con:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Fluxo de Caixa – método indireto (consolidado) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC) × período (DT_INI_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 1.607.458 distintos em 1.609.164 linhas, ou seja 1.706 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -2469,6 +2571,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '1.609.164 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 1.607.458 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   itr_dfc_mi_ind:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Fluxo de Caixa – método indireto (individual (só a controladora, sem as controladas)) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC) × período (DT_INI_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 2.314.530 distintos em 2.316.782 linhas, ou seja 2.252 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -2501,6 +2604,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '2.316.782 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 2.314.530 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   itr_dmpl_con:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração das Mutações do Patrimônio Líquido (consolidado) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC) × componente do PL (COLUNA_DF) × período (DT_INI_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, COLUNA_DF, DT_INI_EXERC) tem 8.064.416 distintos em 8.079.648 linhas, ou seja 15.232 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -2535,6 +2639,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '8.079.648 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, COLUNA_DF, DT_INI_EXERC: 8.064.416 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   itr_dmpl_ind:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração das Mutações do Patrimônio Líquido (individual (só a controladora, sem as controladas)) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC) × componente do PL (COLUNA_DF) × período (DT_INI_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, COLUNA_DF, DT_INI_EXERC) tem 10.173.245 distintos em 10.192.976 linhas, ou seja 19.731 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -2568,6 +2673,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '10.192.976 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, COLUNA_DF, DT_INI_EXERC: 10.173.245 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   itr_documentos:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um documento ITR entregue à CVM (uma versão de um exercício/trimestre de uma companhia) com o link de download
     chave: CNPJ_CIA, DT_REFER, VERSAO; ID_DOC é único (35.727 em 35.727)
     tempo:
@@ -2589,6 +2695,7 @@ tabelas:
     - nao_use_para
     verificado: 35.727 linhas; ID_DOC distinto em todas — medido 2026-10-27
   itr_dra_con:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Resultado Abrangente (consolidado) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC) × período (DT_INI_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 392.064 distintos em 392.600 linhas, ou seja 536 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -2622,6 +2729,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '392.600 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 392.064 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   itr_dra_ind:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Resultado Abrangente (individual (só a controladora, sem as controladas)) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC) × período (DT_INI_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 431.044 distintos em 431.596 linhas, ou seja 552 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -2654,6 +2762,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '431.596 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 431.044 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   itr_dre_con:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Resultado (consolidado) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC) × período (DT_INI_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 2.074.869 distintos em 2.078.009 linhas, ou seja 3.140 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -2687,6 +2796,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '2.078.009 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 2.074.869 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27; Petrobras (CD_CVM 009512), DT_REFER 2025-09-30, conta 3.01, ÚLTIMO: 127.906.000 (trimestre, 2025-07-01 a 2025-09-30) e 370.178.000 (acumulado, 2025-01-01 a 2025-09-30), ESCALA_MOEDA ''MIL'''
   itr_dre_ind:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Resultado (individual (só a controladora, sem as controladas)) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC) × período (DT_INI_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 3.340.250 distintos em 3.345.108 linhas, ou seja 4.858 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -2719,6 +2829,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '3.345.108 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 3.340.250 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   itr_dva_con:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Valor Adicionado (consolidado) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC) × período (DT_INI_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 1.508.742 distintos em 1.511.676 linhas, ou seja 2.934 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -2752,6 +2863,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '1.511.676 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 1.508.742 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   itr_dva_ind:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Valor Adicionado (individual (só a controladora, sem as controladas)) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC) × período (DT_INI_EXERC)
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC) tem 2.539.682 distintos em 2.544.637 linhas, ou seja 4.955 linhas excedentes (repetições da própria origem; para somar, deduplique antes ou use max/any_value por chave)'
     tempo:
@@ -2784,6 +2896,7 @@ tabelas:
     - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
     verificado: '2.544.637 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 2.539.682 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27'
   itr_parecer:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um item de parecer/declaração (relatório de revisão especial, declarações dos diretores, parecer do conselho fiscal) de um documento ITR
     chave: 'nenhuma exata: (CNPJ_CIA, DT_REFER, VERSAO, TP_PARECER_DECL, NUM_ITEM_PARECER_DECL) tem 94.599 distintos em 94.608 linhas (9 excedentes)'
     tempo:
@@ -2804,6 +2917,7 @@ tabelas:
     - 'VERSAO: esta tabela pode ter mais de uma versão por documento (VERSAO vai até 7)'
     verificado: 94.608 linhas; 94.599 distintos na chave proposta — medido 2026-10-27
   recompra_acoes:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um programa de recompra de ações de uma companhia (deliberação, prazo, situação, finalidade, quantidades autorizadas)
     chave: 'ID_Programa (confirmada: 1.930 linhas = 1.930 distintos)'
     tempo:
@@ -2859,6 +2973,7 @@ tabelas:
     - nao_use_para
     verificado: 2.395 linhas; 2.395 trios — medido 2026-10-27
   vlmo_con:
+    ultima_data: "2026-09-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma posição ou movimentação de valor mobiliário de uma empresa (companhia, controladora ou controlada) e tipo de cargo (administrador, controlador…) no informe mensal VLMO consolidado
     chave: 'nenhuma: 415.290 linhas; linha inteira distinta em 403.748 (11.542 linhas repetem); sem identificador de linha'
     tempo:
@@ -2899,6 +3014,7 @@ tabelas:
     - regra de versão vigente
     verificado: 415.290 linhas; 403.748 linhas distintas; 42.538 documentos (CNPJ_Companhia, Data_Referencia, Versao) — medido 2026-10-27
   vlmo_documentos:
+    ultima_data: "2026-09-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um documento de Valores Mobiliários Negociados e Detidos (VLMO, posição consolidada) entregue por uma companhia num mês, com link
     chave: 'nenhuma exata: (CNPJ_Companhia, Data_Referencia, Versao) 42.595 distintos em 42.663 linhas (68 repetem); Protocolo_Entrega 42.579 distintos'
     tempo:

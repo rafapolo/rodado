@@ -3,6 +3,7 @@
 dataset: br_cgu_sancoes
 tabelas:
   ceis:
+    ultima_data: "2026-04-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma sanção do Cadastro de Empresas Inidôneas e Suspensas (CEIS) aplicada a uma pessoa física ou jurídica"
     chave: "codigo_sancao — 19.131 linhas = 19.131 distintos"
     tempo: {natureza: retrato_atual, coluna: data_inicio_sancao, cobertura: "2003-01-28–2026-04-02 (início da sanção); extração em 2026-10-03"}
@@ -16,6 +17,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "19.131 linhas, 19.131 codigo_sancao distintos; 1.957 sem data final; 16.121 com data final >= 2026-10-27 — medido 2026-10-27"
   cnep:
+    ultima_data: "2026-03-29"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma sanção do Cadastro Nacional de Empresas Punidas (CNEP, Lei Anticorrupção) aplicada a uma pessoa jurídica ou física"
     chave: "codigo_sancao — 1.592 linhas = 1.592 distintos"
     tempo: {natureza: retrato_atual, coluna: data_inicio_sancao, cobertura: "2016-01-27–2026-03-29; extração em 2026-10-03"}
@@ -29,6 +31,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.592 linhas, 1.592 codigo_sancao distintos, soma valor_multa R$ 2,71 bi, 688 com valor 0 — medido 2026-10-27"
   cepim:
+    ultima_data: "2026-08-27"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um impedimento de entidade privada sem fins lucrativos de receber recursos federais (CEPIM), por convênio"
     chave: "(cnpj_entidade, numero_convenio) — 3.530 linhas = 3.530 distintos; 1.945 entidades distintas"
     tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "extração em 2026-08-27 (mais antiga que ceis/cnep)"}
@@ -41,6 +44,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "3.530 linhas, 3.530 (cnpj_entidade, numero_convenio) distintos, 1.945 cnpj_entidade — medido 2026-10-27"
   acordos_leniencia:
+    ultima_data: "2025-11-05"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um acordo de leniência × empresa signatária (um acordo pode ter várias empresas)"
     chave: "(id_acordo, cnpj_sancionado) — 146 linhas = 146 distintos; 52 acordos distintos"
     tempo: {natureza: serie_de_periodos, coluna: data_inicio_acordo, cobertura: "2017-07-10–2025-11-05; término até 2047-12-31"}
@@ -52,6 +56,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "146 linhas, 52 id_acordo distintos, 146 (id_acordo, cnpj_sancionado) — medido 2026-10-27"
   acordos_leniencia_efeitos:
+    ultima_data: "2026-08-28"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um efeito (benefício ou obrigação) concedido por um acordo de leniência"
     chave: "(id_acordo, efeito) — 176 linhas = 176 distintos, 57 acordos"
     tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "extração em 2026-08-28"}

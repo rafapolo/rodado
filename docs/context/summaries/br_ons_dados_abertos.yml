@@ -3,6 +3,7 @@
 dataset: br_ons_dados_abertos
 tabelas:
   acesso_consumidor:
+    ultima_data: "2026-09-21"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma solicitação de acesso de consumidor à rede básica na fila de análise do ONS (um protocolo)
     chave: num_protocolo (366 linhas = 366 distintos)
     tempo:
@@ -26,6 +27,7 @@ tabelas:
     - significado de nom_fila e dia_contadorprocesso (texto no formato 'n / prazo')
     verificado: 366 linhas, 366 distintos de num_protocolo; tabela inteira — medido 2026-10-27
   acesso_distribuidor:
+    ultima_data: "2026-09-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma solicitação de acesso de distribuidora à rede básica (um protocolo)
     chave: num_protocolo (1167 linhas = 1167 distintos)
     tempo:
@@ -47,6 +49,7 @@ tabelas:
     - nao_use_para
     verificado: 1167 linhas, 1167 distintos de num_protocolo; tabela inteira — medido 2026-10-27
   acesso_gerador:
+    ultima_data: "2026-09-22"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma solicitação de acesso de empreendimento gerador (usina) à rede básica; um protocolo pode ter várias linhas (uma por empreendimento/núcleo CEG)
     chave: 'nenhuma: num_protocolo tem 706 distintos em 4626 linhas; (num_protocolo, nom_fila, nom_solicitacaoacesso, nom_empreendimento, cod_nucleoceg) dá 4623 distintos, 3 linhas repetem'
     tempo:
@@ -75,6 +78,7 @@ tabelas:
     - medidas.unidade
     verificado: 4626 linhas; 706 distintos de num_protocolo; 4623 distintos da chave composta; tabela inteira — medido 2026-10-27
   acesso_provisorio:
+    ultima_data: "2026-09-23"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma solicitação de acesso provisório (conexão temporária, testes, importação/exportação) à rede básica
     chave: num_protocolo (400 linhas = 400 distintos)
     tempo:
@@ -97,6 +101,7 @@ tabelas:
     - significado de sts_solicitacao
     verificado: 400 linhas, 400 distintos de num_protocolo; tabela inteira — medido 2026-10-27
   balanco_dessem_detalhe:
+    ultima_data: "2026-10-26"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um subsistema × patamar de meia hora × dia de programação (DESSEM), geração por fonte
     chave: din_programacaodia, num_patamar, cod_subsistema (96845 linhas = 96845 distintos)
     tempo:
@@ -155,6 +160,7 @@ tabelas:
     - significado de patamar = meia hora
     verificado: 96845 linhas, 96845 distintos da chave; tabela inteira. Tem menos linhas que balanco_dessem_geral (99072) — medido 2026-10-27
   balanco_dessem_geral:
+    ultima_data: "2026-10-26"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um subsistema × patamar de meia hora × dia de programação (DESSEM), geração agregada por fonte
     chave: din_programacaodia, num_patamar, cod_subsistema (99072 linhas = 99072 distintos)
     tempo:
@@ -194,6 +200,7 @@ tabelas:
     - nao_use_para
     verificado: 99072 linhas, 99072 distintos da chave; tabela inteira (4 subsistemas × 24768 cada) — medido 2026-10-27
   balanco_energia_subsistema_ho:
+    ultima_data: "2026-10-23"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um subsistema (ou o SIN agregado) × hora, geração por fonte, carga e intercâmbio
     chave: id_subsistema, din_instante (1175037 linhas = 1175037 distintos)
     tempo:
@@ -241,6 +248,7 @@ tabelas:
     - medidas.unidade
     verificado: 1175037 linhas, 1175037 distintos de (id_subsistema, din_instante); 5 linhas por hora em 2026-10-20 12:00 (N, NE, S, SE e SIN); tabela inteira — medido 2026-10-27
   capacidade_geracao:
+    ultima_data: "2026-10-23"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma unidade geradora do SIN (um equipamento), com potência efetiva e datas de entrada/desativação
     chave: cod_equipamento (5796 linhas = 5796 distintos)
     tempo:
@@ -271,6 +279,7 @@ tabelas:
     - medidas.unidade
     verificado: 5796 linhas, 5796 distintos de cod_equipamento; unidades ativas 4695; soma de val_potenciaefetiva das ativas = 200,7 GW (total com desativadas 207,6 GW) — medido 2026-10-27
   capacidade_transformacao:
+    ultima_data: "2026-10-18"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um transformador da rede (equipamento), com tensões e potência nominal
     chave: '(cod_equipamento, nom_transformador): 2045 linhas = 2045 distintos; cod_equipamento sozinho tem 2017 distintos (28 repetem)'
     tempo:
@@ -295,6 +304,7 @@ tabelas:
     rascunho: *id001
     verificado: 2045 linhas; 2017 distintos de cod_equipamento; 2045 de (cod_equipamento, nom_transformador); tabela inteira — medido 2026-10-27
   carga_energia_di:
+    ultima_data: "2026-10-23"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um subsistema × dia, carga média
     chave: id_subsistema, din_instante (39173 linhas = 39173 distintos)
     tempo:
@@ -321,6 +331,7 @@ tabelas:
     - medidas.unidade
     verificado: 39173 linhas, 39173 distintos da chave; 4 linhas em 2026-10-20 (N, NE, S, SE), soma 84.456 MWmed — medido 2026-10-27
   carga_energia_me:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um subsistema × mês, carga média mensal
     chave: id_subsistema, din_instante (1288 linhas = 1288 distintos)
     tempo:
@@ -344,6 +355,7 @@ tabelas:
     rascunho: *id001
     verificado: '1288 linhas, 1288 distintos da chave; tabela inteira. Atenção: data máxima 2026-10-31 está no futuro em relação a 2026-10-27 (mês corrente) — medido 2026-10-27'
   cargaglobal_roraima:
+    ultima_data: "2026-08-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma hora de carga de Roraima (a coluna de data perdeu a hora: cada data tem 24 linhas)'
     chave: 'nenhuma: din_instante é DATE com 1673 datas distintas em 40152 linhas (24 linhas por dia, sem coluna de hora)'
     tempo:
@@ -364,6 +376,7 @@ tabelas:
     rascunho: *id001
     verificado: 40152 linhas; 1673 datas distintas; 24 linhas em 2026-08-31 e 2026-08-30 — medido 2026-10-27
   classificacao_evt:
+    ultima_data: "2025-12-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma hora (data sem hora; 24 linhas por dia) com valor verificado de EVT e suas razões energética/elétrica
     chave: 'nenhuma: 731 datas distintas em 17547 linhas (24 por dia, a hora perdida)'
     tempo:
@@ -386,6 +399,7 @@ tabelas:
     - unidade
     verificado: 17547 linhas; 731 datas distintas; tabela inteira — medido 2026-10-27
   cmo_se:
+    ultima_data: "2026-10-23"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um subsistema × semana operativa, custo marginal de operação (CMO) semanal e por patamar de carga
     chave: id_subsistema, din_instante (4556 linhas = 4556 distintos)
     tempo:
@@ -423,6 +437,7 @@ tabelas:
     - significado de din_instante (início/fim da semana)
     verificado: 4556 linhas, 4556 distintos de (id_subsistema, din_instante); 1139 datas × 4; tabela inteira — medido 2026-10-27
   cmo_tm:
+    ultima_data: "2026-10-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um subsistema × meia hora, CMO
     chave: id_subsistema, din_instante (470016 linhas = 470016 distintos)
     tempo:
@@ -444,6 +459,7 @@ tabelas:
     rascunho: *id001
     verificado: 470016 linhas, 470016 distintos da chave; 192 linhas em 2026-10-20; val_cmo vai de -39,24 a 54729,62 (inclui negativos); tabela inteira — medido 2026-10-27
   curva_carga_ho:
+    ultima_data: "2026-10-23"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um subsistema × hora, carga horária
     chave: id_subsistema, din_instante (940024 linhas = 940024 distintos)
     tempo:
@@ -467,6 +483,7 @@ tabelas:
     rascunho: *id001
     verificado: 940024 linhas, 940024 distintos da chave; tabela inteira — medido 2026-10-27
   cvu_usitermica_se:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma usina térmica × semana operativa (× revisão), custo variável unitário (CVU)
     chave: 'nenhuma: (dat_iniciosemana, cod_usinaplanejamento) tem 107047 distintos em 107089 linhas; 42 pares aparecem repetidos (os 2 vistos são linhas idênticas)'
     tempo:
@@ -493,6 +510,7 @@ tabelas:
     - medidas.unidade
     verificado: '107089 linhas; 107047 distintos de (dat_iniciosemana, cod_usinaplanejamento) e também com num_revisao; 42 pares repetidos são linhas idênticas (ex.: LUIZORMELO em 2025-12-27) — medido 2026-10-27'
   dados_hidrologicos_di:
+    ultima_data: "2026-10-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um reservatório/usina × dia, níveis e vazões
     chave: 'nenhuma exata: (id_reservatorio, din_instante) tem 1602667 distintos em 1602669 linhas (2 repetem)'
     tempo:
@@ -548,6 +566,7 @@ tabelas:
     - significado das siglas de tip_reservatorio
     verificado: 1602669 linhas; 1602667 distintos de (id_reservatorio, din_instante); 1590307 de (cod_usina, din_instante); tabela inteira — medido 2026-10-27
   dados_hidrologicos_ho:
+    ultima_data: "2026-10-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um reservatório × hora, níveis e vazões
     chave: '(id_reservatorio, din_instante): 12104 linhas = 12104 distintos (3 dias, 2026-09-01 a 2026-09-03); não medido na tabela inteira'
     tempo:
@@ -597,6 +616,7 @@ tabelas:
     - cobertura medida por min/max na tabela inteira, chave só em amostra de 3 dias
     verificado: linhas 21105013; min/max de din_instante medidos na tabela inteira; chave testada em 2026-09-01 a 2026-09-03 — medido 2026-10-27
   demanda_maxima_di:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um subsistema × dia, demanda máxima integralizada e instantânea
     chave: id_subsistema, dat_referencia (4112 linhas = 4112 distintos)
     tempo:
@@ -624,6 +644,7 @@ tabelas:
     rascunho: *id001
     verificado: 4112 linhas, 4112 distintos da chave; 1028 por subsistema; tabela inteira — medido 2026-10-27
   disponibilidade_usina_ho:
+    ultima_data: "2026-10-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma usina × hora, potência instalada e disponibilidade
     chave: '(id_ons, din_instante): 11448 linhas = 11448 distintos (2026-09-01 a 2026-09-03); (ceg, din_instante) só 11304 (ceg repete); não medido na tabela inteira'
     tempo:
@@ -657,6 +678,7 @@ tabelas:
     rascunho: *id001
     verificado: linhas 24338587; min/max de din_instante medidos na tabela inteira; chave testada em 3 dias; id_tipousina com 3 valores no perfil — medido 2026-10-27
   ear_bacia_di:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma bacia × dia, energia armazenada (EAR)
     chave: nomecurto, ear_data (177783 linhas = 177783 distintos)
     tempo:
@@ -685,6 +707,7 @@ tabelas:
     rascunho: *id001
     verificado: 177783 linhas, 177783 distintos da chave; tabela inteira — medido 2026-10-27
   ear_ree_di:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma REE (reservatório equivalente de energia) × dia, EAR
     chave: nom_ree, ear_data (42930 linhas = 42930 distintos)
     tempo:
@@ -713,6 +736,7 @@ tabelas:
     rascunho: *id001
     verificado: 42930 linhas, 42930 distintos da chave; tabela inteira — medido 2026-10-27
   ear_reservatorio_di:
+    ultima_data: "2026-10-23"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um reservatório × dia, EAR e contribuição para a EAR de bacia/subsistema/SIN
     chave: nom_reservatorio, ear_data (706007 linhas = 706007 distintos); cod_resplanejamento dá 704543
     tempo:
@@ -749,6 +773,7 @@ tabelas:
     - definição de ear_total_mwmes e dos val_contribear*
     verificado: 706007 linhas, 706007 distintos de (nom_reservatorio, ear_data); tabela inteira — medido 2026-10-27
   ear_subsistema_di:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um subsistema × dia, EAR
     chave: id_subsistema, ear_data (39176 linhas = 39176 distintos)
     tempo:
@@ -780,6 +805,7 @@ tabelas:
     rascunho: *id001
     verificado: 39176 linhas, 39176 distintos de (nom_subsistema, ear_data) e de (id_subsistema, ear_data); id_subsistema com 5 valores por causa do espaço — medido 2026-10-27
   ena_bacia_di:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma bacia × dia, energia natural afluente (ENA)
     chave: nom_bacia, ena_data (217961 linhas = 217961 distintos)
     tempo:
@@ -808,6 +834,7 @@ tabelas:
     rascunho: *id001
     verificado: 217961 linhas, 217961 distintos da chave; tabela inteira — medido 2026-10-27
   ena_ree_di:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma REE × dia, ENA
     chave: nom_reservatorioee, ena_data (45213 linhas = 45213 distintos)
     tempo:
@@ -836,6 +863,7 @@ tabelas:
     rascunho: *id001
     verificado: 45213 linhas, 45213 distintos da chave; tabela inteira — medido 2026-10-27
   ena_reservatorio_di:
+    ultima_data: "2026-10-23"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um reservatório × dia, ENA
     chave: 'nenhuma exata: (nom_reservatorio, ena_data) tem 1464920 distintos em 1464921 linhas (1 repete)'
     tempo:
@@ -867,6 +895,7 @@ tabelas:
     rascunho: *id001
     verificado: 1464921 linhas; 1464920 distintos de (nom_reservatorio, ena_data); tabela inteira — medido 2026-10-27
   ena_subsistema_di:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um subsistema × dia, ENA
     chave: id_subsistema, ena_data (39176 linhas = 39176 distintos), pelo nome (nom_subsistema, ena_data) também 39176
     tempo:
@@ -897,6 +926,7 @@ tabelas:
     rascunho: *id001
     verificado: 39176 linhas, 39176 distintos da chave; id_subsistema com 5 valores por causa do espaço — medido 2026-10-27
   energia_vertida_turbinavel_ho:
+    ultima_data: "2026-10-23"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma usina hidrelétrica × hora, vertimento e vertimento turbinável
     chave: '(cod_usina, din_instante): 10944 linhas = 10944 distintos em 2026-09-01 a 2026-09-03; não medido na tabela inteira'
     tempo:
@@ -934,6 +964,7 @@ tabelas:
     rascunho: *id001
     verificado: linhas 15085072; min/max medidos na tabela inteira; chave testada em 3 dias — medido 2026-10-27
   equipamento_controle_reativo:
+    ultima_data: "2026-10-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um equipamento de controle de reativo (reator, banco de capacitores, compensador) da rede
     chave: cod_equipamento (1718 linhas = 1718 distintos)
     tempo:
@@ -958,6 +989,7 @@ tabelas:
     rascunho: *id001
     verificado: 1718 linhas, 1718 distintos de cod_equipamento; tabela inteira — medido 2026-10-27
   fator_capacidade_2_di:
+    ultima_data: "2026-10-23"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma usina eólica/solar (conjunto) × hora, geração programada/verificada e fator de capacidade
     chave: '(id_ons, din_instante): 16920 linhas = 16920 distintos em 2026-09-01 a 2026-09-03; (nom_usina_conjunto, din_instante) 16560; não medido na tabela inteira'
     tempo:
@@ -996,6 +1028,7 @@ tabelas:
     rascunho: *id001
     verificado: linhas 15193038; min/max medidos na tabela inteira; chave testada em 3 dias — medido 2026-10-27
   fsarh:
+    ultima_data: "2026-10-21"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma declaração de restrição hidráulica (FSARH) de um reservatório
     chave: num_fsarh, ano_fsarh (10937 linhas = 10937 distintos)
     tempo:
@@ -1026,6 +1059,7 @@ tabelas:
     - significado de IOR
     verificado: 10937 linhas, 10937 distintos de (num_fsarh, ano_fsarh); tabela inteira — medido 2026-10-27
   fsarh_tabela:
+    ultima_data: "2026-10-21"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um item (linha de tabela de valores) de uma FSARH de tipo tabela
     chave: 'nenhuma: (num_fsarh, ano_fsarh, num_ordemitem) tem 2347 distintos em 2348 linhas (1 repete)'
     tempo:
@@ -1049,6 +1083,7 @@ tabelas:
     rascunho: *id001
     verificado: 2348 linhas; 2347 distintos de (num_fsarh, ano_fsarh, num_ordemitem); tabela inteira — medido 2026-10-27
   geracao_exportacao_internacional_ho:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma hora, geração para exportação a Argentina e Uruguai
     chave: din_instante (35616 linhas = 35616 distintos)
     tempo:
@@ -1073,6 +1108,7 @@ tabelas:
     rascunho: *id001
     verificado: 35616 linhas, 35616 distintos de din_instante; tabela inteira — medido 2026-10-27
   geracao_itaipu:
+    ultima_data: "2026-10-23"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma hora de geração de Itaipu
     chave: din_instante (234872 linhas = 234872 distintos)
     tempo:
@@ -1101,6 +1137,7 @@ tabelas:
     rascunho: *id001
     verificado: '234872 linhas, 234872 distintos de din_instante; tabela inteira (menos linhas que as 269969 horas do período: há horas faltantes) — medido 2026-10-27'
   geracao_termica_despacho_2_ho:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma usina térmica × hora, geração programada e verificada por motivo de despacho
     chave: '(din_instante, nom_usina, cod_usinaplanejamento): 24024 linhas = 24024 distintos em 2026-09-01 a 2026-09-07; não medido na tabela inteira'
     tempo:
@@ -1140,6 +1177,7 @@ tabelas:
     - significado de cada val_prog*/val_verif*
     verificado: linhas 15903983; chave testada em 7 dias — medido 2026-10-27
   geracao_usina_2_ho:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma usina × hora, geração verificada
     chave: '(id_ons, nom_usina, ceg, din_instante): 51984 linhas = 51984 distintos em 2026-09-01 a 2026-09-03; (id_ons, din_instante) só 43632 (id_ons repete entre linhas, 0,54% nulo); não medido na tabela
       inteira'
@@ -1167,6 +1205,7 @@ tabelas:
     rascunho: *id001
     verificado: 'linhas 87369806; min/max medidos na tabela inteira; chave testada em 3 dias; 2026-09-01: 17328 linhas, soma/24 = 87428,5 — medido 2026-10-27'
   grandezas_fluviometricas_di:
+    ultima_data: "2026-10-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um posto fluviométrico × dia, vazão média
     chave: 'nenhuma: (id_postofluv, din_medicao) tem 777613 distintos em 783866 linhas (6253 repetem)'
     tempo:
@@ -1213,6 +1252,7 @@ tabelas:
     - significado dos campos e unidade de val_despasup
     verificado: linhas 158113122; 1 coluna; amostra de 3 linhas mostra o formato; cobertura vem do min/max do perfil sobre uma amostra — medido 2026-10-27
   importacaoenergia_comercial_2_ho:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um agente × bloco × país × meia hora, importação comercial
     chave: nom_pais, nom_agente, nom_bloco, din_instante (2488068 linhas = 2488068 distintos)
     tempo:
@@ -1241,6 +1281,7 @@ tabelas:
     rascunho: *id001
     verificado: 2488068 linhas; 2488068 distintos da chave; tabela inteira — medido 2026-10-27
   ind_confiarb_atls:
+    ultima_data: "2026-08-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um fluxo × periodicidade × mês, indicador ATLS (atendimento ao limite de segurança)
     chave: nom_fluxo, id_periodicidade, din_referencia (1758 linhas = 1758 distintos)
     tempo:
@@ -1263,6 +1304,7 @@ tabelas:
     rascunho: *id001
     verificado: 1758 linhas, 1758 distintos da chave; tabela inteira — medido 2026-10-27
   ind_confiarb_ccal:
+    ultima_data: "2026-08-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um agente/COSR/SIN × periodicidade × mês, carregamento de linhas (CCAL)
     chave: cod_tipoagregacao, id_periodicidade, nom_agregacao, din_referencia (28710 linhas = 28710 distintos)
     tempo:
@@ -1290,6 +1332,7 @@ tabelas:
     rascunho: *id001
     verificado: 28710 linhas, 28710 distintos da chave; tabela inteira — medido 2026-10-27
   ind_confiarb_ccat:
+    ultima_data: "2026-08-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um agente/COSR/SIN × periodicidade × mês, carregamento de transformadores (CCAT)
     chave: cod_tipoagregacao, id_periodicidade, nom_agregacao, din_referencia (23047 linhas = 23047 distintos)
     tempo:
@@ -1316,6 +1359,7 @@ tabelas:
     rascunho: *id001
     verificado: 23047 linhas, 23047 distintos da chave; tabela inteira — medido 2026-10-27
   ind_confiarb_ciper:
+    ultima_data: "2026-08-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma agregação geográfica × característica × periodicidade × mês, indicador CIPER (perturbações por classe de severidade)
     chave: dsc_agregacao, cod_caracteristica, id_periodicidade, din_referencia (9435 linhas = 9435 distintos)
     tempo:
@@ -1361,6 +1405,7 @@ tabelas:
     - significado dos sufixos 1 a 5
     verificado: 9435 linhas, 9435 distintos da chave; tabela inteira — medido 2026-10-27
   ind_confiarb_dreq_freq:
+    ultima_data: "2026-08-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma agregação geográfica × característica × periodicidade × mês, indicadores DREQ e FREQ (duração e frequência equivalente de interrupção)
     chave: dsc_agregacao, cod_caracteristica, id_periodicidade, din_referencia (9435 linhas = 9435 distintos)
     tempo:
@@ -1394,6 +1439,7 @@ tabelas:
     - significado dos sufixos 1 a 5
     verificado: 9435 linhas, 9435 distintos da chave; tabela inteira — medido 2026-10-27
   ind_confiarb_energianaosuprida:
+    ultima_data: "2026-08-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma agregação geográfica × característica × periodicidade × mês, energia não suprida (ENS)
     chave: dsc_agregacao, cod_caracteristica, id_periodicidade, din_referencia (9435 linhas = 9435 distintos)
     tempo:
@@ -1423,6 +1469,7 @@ tabelas:
     - significado dos sufixos 1 a 5
     verificado: 9435 linhas, 9435 distintos da chave; tabela inteira — medido 2026-10-27
   ind_confiarb_severidade:
+    ultima_data: "2026-06-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma agregação geográfica × característica × periodicidade × mês, indicador de severidade (SM1 a SM5)
     chave: dsc_agregacao, cod_caracteristica, id_periodicidade, din_referencia (9361 linhas = 9361 distintos)
     tempo:
@@ -1468,6 +1515,7 @@ tabelas:
     - significado dos sufixos 1 a 5
     verificado: 9361 linhas, 9361 distintos da chave; tabela inteira — medido 2026-10-27
   ind_confiarb_robustez:
+    ultima_data: "2026-08-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um indicador de robustez × agregação × característica × periodicidade × mês
     chave: cod_indicador, dsc_agregacao, cod_caracteristica, id_periodicidade, din_referencia (37740 linhas = 37740 distintos)
     tempo:
@@ -1543,6 +1591,7 @@ tabelas:
     - definição de DISPF, DMDFF, FDFF, TDFF
     verificado: 16060 linhas, 16060 distintos de (cod_equipamento, din_ano) — medido 2026-10-27
   ind_disponibilidade_fgeracao_uge_me:
+    ultima_data: "2026-09-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma unidade geradora × mês, indicadores de disponibilidade
     chave: cod_equipamento, dat_mesreferencia (186425 linhas = 186425 distintos)
     tempo:
@@ -1578,6 +1627,7 @@ tabelas:
     rascunho: *id001
     verificado: 186425 linhas, 186425 distintos da chave; tabela inteira — medido 2026-10-27
   ind_disponibilidade_ft_conversor_me:
+    ultima_data: "2026-09-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma característica de conversora (FT) × mês, disponibilidade
     chave: cod_caracteristica, dat_referencia (232 linhas = 232 distintos)
     tempo:
@@ -1594,6 +1644,7 @@ tabelas:
     rascunho: *id001
     verificado: 232 linhas, 232 distintos da chave — medido 2026-10-27
   ind_disponibilidade_ft_reativo_me:
+    ultima_data: "2026-09-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma característica de reativo (FT) × mês, disponibilidade
     chave: cod_caracteristica, dat_referencia (7324 linhas = 7324 distintos)
     tempo:
@@ -1610,6 +1661,7 @@ tabelas:
     rascunho: *id001
     verificado: 7324 linhas, 7324 distintos da chave — medido 2026-10-27
   ind_disponibilidade_ft_trlt_me:
+    ultima_data: "2026-09-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma característica de transformador/linha (FT) × mês, disponibilidade
     chave: cod_caracteristica, dat_referencia (2949 linhas = 2949 distintos)
     tempo:
@@ -1634,6 +1686,7 @@ tabelas:
     rascunho: *id001
     verificado: 2949 linhas, 2949 distintos da chave — medido 2026-10-27
   ind_disponibilidade_geracao_sin:
+    ultima_data: "2026-09-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês, disponibilidade da geração do SIN
     chave: dat_referencia (189 linhas = 189 distintos)
     tempo:
@@ -1660,6 +1713,7 @@ tabelas:
     rascunho: *id001
     verificado: 189 linhas, 189 distintos de dat_referencia; tabela inteira — medido 2026-10-27
   ind_providencia_ecpa_pcpa:
+    ultima_data: "2026-08-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um agente (ou nível) × mês, indicadores ECPA/PCPA de providências
     chave: dsc_agregacao, dsc_caracteristica, din_referencia (49075 linhas = 49075 distintos)
     tempo:
@@ -1694,6 +1748,7 @@ tabelas:
     rascunho: *id001
     verificado: 49075 linhas, 49075 distintos da chave — medido 2026-10-27
   ind_qualid_dfd_evento:
+    ultima_data: "2025-10-14"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um evento de desvio de frequência × faixa
     chave: din_iniciodesviofreq, id_faixafrequencia (70 linhas = 70 distintos)
     tempo:
@@ -1716,6 +1771,7 @@ tabelas:
     rascunho: *id001
     verificado: 70 linhas, 70 distintos da chave — medido 2026-10-27
   ind_qualid_dfd_meano:
+    ultima_data: "2026-08-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma faixa de frequência × periodicidade × mês/ano, DFD agregado
     chave: id_periodicidade, din_referencia, id_faixafrequencia (2048 linhas = 2048 distintos)
     tempo:
@@ -1738,6 +1794,7 @@ tabelas:
     - significado de id_periodicidade = 12
     verificado: 2048 linhas, 2048 distintos da chave — medido 2026-10-27
   ind_qualid_dfp_regime:
+    ultima_data: "2026-08-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um período (dia/mês/ano) de desvio de frequência em regime permanente
     chave: id_periodicidade, din_referencia (4152 linhas = 4152 distintos)
     tempo:
@@ -1760,6 +1817,7 @@ tabelas:
     rascunho: *id001
     verificado: 4152 linhas, 4152 distintos da chave — medido 2026-10-27
   intercambio_internacional_ho:
+    ultima_data: "2026-10-22"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um país de destino × hora, intercâmbio internacional
     chave: din_instante, nom_paisdestino (658049 linhas = 658049 distintos)
     tempo:
@@ -1782,6 +1840,7 @@ tabelas:
     rascunho: *id001
     verificado: 658049 linhas, 658049 distintos da chave; tabela inteira — medido 2026-10-27
   intercambio_modalidade_ho:
+    ultima_data: "2026-10-22"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conversora × hora, intercâmbio por modalidade contratual
     chave: din_instante, nom_conversora (1262377 linhas = 1262377 distintos)
     tempo:
@@ -1810,6 +1869,7 @@ tabelas:
     rascunho: *id001
     verificado: 1262377 linhas, 1262377 distintos da chave; tabela inteira — medido 2026-10-27
   intercambio_nacional_ho:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um par origem→destino de subsistemas × hora, intercâmbio
     chave: din_instante, id_subsistema_origem, id_subsistema_destino (912743 linhas = 912743 distintos)
     tempo:
@@ -1834,6 +1894,7 @@ tabelas:
     rascunho: *id001
     verificado: 912743 linhas, 912743 distintos da chave; tabela inteira — medido 2026-10-27
   interrupcao_carga:
+    ultima_data: "2026-10-22"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma interrupção de carga de um agente em uma perturbação
     chave: 'nenhuma: cod_perturbacao tem 6868 distintos em 8374 linhas; (cod_perturbacao, id_estado, nom_agente) dá 8178, 196 linhas repetem'
     tempo:
@@ -1865,6 +1926,7 @@ tabelas:
     rascunho: *id001
     verificado: 8374 linhas; 6868 cod_perturbacao distintos; 8178 de (cod_perturbacao, id_estado, nom_agente) — medido 2026-10-27
   linha_transmissao:
+    ultima_data: "2026-10-15"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma linha de transmissão (equipamento) da rede
     chave: 'nenhuma: cod_equipamento tem 2337 distintos em 2341 linhas (4 repetem)'
     tempo:
@@ -1921,6 +1983,7 @@ tabelas:
     - significado de sts_aneel
     verificado: 6034 linhas; 5924 distintos de ceg; 6008 da tríade — medido 2026-10-27
   oferta_respostademanda:
+    ultima_data: "2026-10-20"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma oferta de redução de demanda (resposta da demanda) de um agente em um dia
     chave: 'nenhuma: (nom_agente, dat_reducao, tip_oferta, hor_inicial, hor_final) tem 1136 distintos em 1166 linhas'
     tempo:
@@ -1951,6 +2014,7 @@ tabelas:
     rascunho: *id001
     verificado: 1166 linhas; 1136 distintos da chave candidata — medido 2026-10-27
   ofertapreco_importacao_se:
+    ultima_data: "2026-06-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma oferta de preço de importação (país × agente × bloco × início de vigência)
     chave: nom_pais, nom_agente, nom_bloco, dat_iniciovalidade (4538 linhas = 4538 distintos)
     tempo:
@@ -1971,6 +2035,7 @@ tabelas:
     rascunho: *id001
     verificado: 4538 linhas, 4538 distintos da chave — medido 2026-10-27
   precipitacao_estacao_di:
+    ultima_data: "2021-10-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma estação pluviométrica × dia, precipitação
     chave: 'nenhuma: (cod_estacao, dat_observada) tem 827968 distintos em 832245 linhas (4277 repetem)'
     tempo:
@@ -1992,6 +2057,7 @@ tabelas:
     rascunho: *id001
     verificado: 832245 linhas; 827968 distintos da chave candidata; tabela inteira — medido 2026-10-27
   programacao_diaria:
+    ultima_data: "2026-10-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma usina × patamar de meia hora × dia de programação
     chave: '(din_programacaodia, num_patamar, cod_exibicaousina, nom_usina): 190752 linhas = 190752 distintos em 2025-05-02 (48 patamares); não medido na tabela inteira'
     tempo:
@@ -2022,6 +2088,7 @@ tabelas:
     rascunho: *id001
     verificado: linhas 143693664; amostra 1% mostrou comprimentos 10 e 19; 192624 linhas contêm '/'; chave testada em 2025-05-02 — medido 2026-10-27
   programacao_fluxo_controlado:
+    ultima_data: "2026-10-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um elemento de fluxo controlado × terminal × patamar de meia hora × dia
     chave: din_programacaodia, num_patamar, nom_elementofluxocontrolado, tip_terminal (1442112 linhas = 1442112 distintos)
     tempo:
@@ -2071,6 +2138,7 @@ tabelas:
     rascunho: *id001
     verificado: linhas 19692720; chave testada em 3 dias — medido 2026-10-27
   res_volumeespera:
+    ultima_data: "2026-10-27"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um reservatório × dia, volume de espera
     chave: 'nenhuma: (id_reservatorio, din_instante) tem 172466 distintos em 181146 linhas (8680 repetem)'
     tempo:
@@ -2094,6 +2162,7 @@ tabelas:
     rascunho: *id001
     verificado: 181146 linhas; 172466 distintos de (id_reservatorio, din_instante) — medido 2026-10-27
   reservatorio:
+    ultima_data: "2025-09-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um reservatório (cadastro)
     chave: 'res_id (162 linhas, 158 distintos; também 158 distintos em cod_resplanejamento) — nenhuma: 4 repetem'
     tempo:
@@ -2125,6 +2194,7 @@ tabelas:
     rascunho: *id001
     verificado: 162 linhas; 158 distintos de res_id e de cod_resplanejamento — medido 2026-10-27
   restricao_coff_eolica_detail_tm:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma usina eólica × meia hora, geração estimada/verificada com vento
     chave: '(id_ons, din_instante): 50640 linhas = 50640 distintos em 2026-09-01; não medido na tabela inteira'
     tempo:
@@ -2157,6 +2227,7 @@ tabelas:
     rascunho: *id001
     verificado: linhas 81469830; chave testada em 1 dia — medido 2026-10-27
   restricao_coff_eolica_tm:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma usina eólica × meia hora, geração, limitação e referência
     chave: '(id_ons, din_instante): 22032 linhas = 22032 distintos em 2026-09-01 a 2026-09-03; não medido na tabela inteira'
     tempo:
@@ -2193,6 +2264,7 @@ tabelas:
     rascunho: *id001
     verificado: linhas 13320912; chave testada em 3 dias — medido 2026-10-27
   restricao_coff_eolica_intrasemihora:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma restrição de usina eólica dentro de meia hora (intervalo de hor_inicial a hor_final)
     chave: '(id_ons, din_instante, hor_inicial): 14349 linhas = 14349 distintos em 2026-09-01 a 2026-09-03; não medido na tabela inteira'
     tempo:
@@ -2220,6 +2292,7 @@ tabelas:
     rascunho: *id001
     verificado: linhas 4868712 — medido 2026-10-27
   restricao_coff_fotovoltaica_detail_tm:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma usina solar × meia hora, geração estimada/verificada com irradiância
     chave: '(id_ons, din_instante): 26880 linhas = 26880 distintos em 2026-09-01; não medido na tabela inteira'
     tempo:
@@ -2252,6 +2325,7 @@ tabelas:
     rascunho: *id001
     verificado: linhas 20529360 — medido 2026-10-27
   restricao_coff_fotovoltaica_intrasemihora:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma restrição de usina solar dentro de meia hora
     chave: 'nenhuma: (id_ons, din_instante, hor_inicial) tem 1319084 distintos em 1319089 linhas (5 repetem)'
     tempo:
@@ -2279,6 +2353,7 @@ tabelas:
     rascunho: *id001
     verificado: 1319089 linhas; 1319084 distintos da chave; tabela inteira — medido 2026-10-27
   restricao_coff_fotovoltaica_tm:
+    ultima_data: "2026-10-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma usina solar × meia hora, geração, limitação e referência
     chave: id_ons, din_instante (3071376 linhas = 3071376 distintos)
     tempo:
@@ -2334,6 +2409,7 @@ tabelas:
     rascunho: *id001
     verificado: 1690 linhas; 1690 distintos de id_estacao; 916 de id_subestacao — medido 2026-10-27
   taxa_teif_teip:
+    ultima_data: "2026-09-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma usina × mês × taxa (TEIFa ou TEIP) × versão de cálculo
     chave: 'nenhuma: (nom_usina, din_mes, nom_taxa, num_versao) tem 29838 distintos em 29850 linhas (12 pares repetem com din_calculo diferente); (nom_usina, din_mes, nom_taxa) sem a versão também dá 29838,
       ou seja, a versão não gera linhas extras'
@@ -2359,6 +2435,7 @@ tabelas:
     - qual versão é a oficial
     verificado: 29850 linhas; 29838 distintos da chave com versão — medido 2026-10-27
   taxa_teif_teip_oper:
+    ultima_data: "2026-09-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma usina × mês × taxa operacional (TEIFa_oper/TEIP_oper) × versão
     chave: 'nenhuma: (nom_usina, din_mes, nom_taxa, num_versao) tem 29841 distintos em 29853 linhas'
     tempo:
@@ -2403,6 +2480,7 @@ tabelas:
     - significado das siglas de nom_tpinsumo
     verificado: 674347 linhas; 673907 distintos da chave com versão — medido 2026-10-27
   uge_opera_csi:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma unidade geradora em um minuto: operando como síncrono ou não (compensador síncrono)'
     chave: 'nenhuma: (dat_verificada, hora_verificada, cod_pontomedicao) tem 243699 distintos em 296441 linhas (46756 grupos repetidos)'
     tempo:
@@ -2420,6 +2498,7 @@ tabelas:
     - significado de flg_operasincrono vs flg_sincrono
     verificado: 296441 linhas; 243699 distintos da chave candidata — medido 2026-10-27
   usi_servicoancilar_sandbox:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um ponto de conexão/usina em uma hora do sandbox de serviços ancilares
     chave: 'nenhuma: (dat_verificada, hor_verificada, cod_pontoconexao, ceg) tem 3813 distintos em 3823 linhas'
     tempo:
@@ -2440,6 +2519,7 @@ tabelas:
     - significado de flg_cpsa e val_must
     verificado: 3823 linhas; 3813 distintos da chave candidata — medido 2026-10-27
   usina_conjunto:
+    ultima_data: "2026-10-05"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma relação usina × conjunto de usinas (com período de vigência)
     chave: id_ons_conjunto, id_ons_usina, ceg (2145 linhas = 2145 distintos)
     tempo:

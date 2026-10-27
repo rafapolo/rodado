@@ -3,6 +3,7 @@
 dataset: br_ms_sinasc
 tabelas:
   microdados:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma declaração de nascido vivo (DN) do SINASC, uma linha por nascimento"
     chave: "(id_municipio_nascimento, sequencial_nascimento, data_nascimento) — único em ano = 2023; sequencial_nascimento sozinho NÃO é único (min 1, max 99999, repete entre municípios)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1994–2023 (30 anos; 2023 parcial: data_nascimento vai só até 2023-06-05, 986.591 linhas)"}
