@@ -28,9 +28,22 @@ RAIZ = Path(__file__).resolve().parent.parent
 SAIDA = RAIZ / "docs" / "context" / "summaries"
 AMOSTRA = 2_000_000    # linhas lidas, no máximo aproximado, por tabela
 PESSOAL = re.compile(r"nome|razao|cpf|cnpj(?!_basico$)|documento|telefone|fax|ddd|email|logradouro|numero|complemento|bairro|cep|representante|endereco|favorecid|beneficiari|titular|_nis|^nis$|pis_pasep|matricula|placa|respons|^resp$|escriturador|candidato$|proponente|contratad|fornecedor|favorecid|company|importer|exporter|identifica|^nm_|_nm_|_nome|doador|socio|servidor$|individual|^name$|(^|_)(diretor|chefe|arbitro|gestor|relator|autor|juiz|advogado|procurador|treinador|tecnico|jogador|player|atleta|athlete|actor|ator|director|interessado|requerente|paciente|pessoa)(_|$)", re.I)
+# pessoa pública: nos datasets de político, o nome de candidato e parlamentar pode aparecer; o de
+# doador, fornecedor, servidor e assessor, e qualquer documento ou endereço, continua escondido
+POLITICOS = {"br_tse_eleicoes", "br_tse_filiacao_partidaria", "politicos", "br_camara_dados_abertos",
+             "br_senado_dados_abertos", "br_senado_dadosabertos", "br_senado_ceaps", "br_mp_pep"}
+NOME_PUBLICO = re.compile(r"nome|candidato|parlamentar|deputado|senador|vereador|urna|autor|relator|presidente|^nm_|_nm_", re.I)
+NUNCA_PUBLICO = re.compile(r"cpf|documento|titulo|telefone|fax|ddd|email|logradouro|endereco|numero|complemento|bairro|cep|_nis|^nis$|"
+                           r"doador|fornecedor|favorecid|servidor|assessor|chefe|socio|beneficiari|contratad|filiado|eleitor", re.I)
 TEXTO_LIVRE = 1000   # coluna de texto com mais distintos que isso: min e max são extremos alfabéticos, sem informação e com risco de ser nome
 TOP_ATE = 50
 CORTE = 120   # caracteres de min/max de texto; texto longo inteiro só incha o arquivo
+
+
+def pessoal(ds, nome):
+    if ds in POLITICOS and NOME_PUBLICO.search(nome) and not NUNCA_PUBLICO.search(nome):
+        return False
+    return bool(PESSOAL.search(nome))
 
 
 def duck(sql, timeout=1800):
@@ -112,7 +125,7 @@ def perfil_tabela(ds, tb, linhas):
     for c in resumo:
         nome, tipo = c["column_name"], c["column_type"]
         p = {"tipo": tipo, "nulos_pct": num(c["null_percentage"]), "distintos_aprox": num(c["approx_unique"])}
-        if PESSOAL.search(nome):
+        if pessoal(ds, nome):
             p["pessoal"] = "só contagens: valores seriam dado pessoal"
         elif tipo.startswith(("GEOMETRY", "BLOB")):
             # min/max de geometria é um polígono inteiro em WKT: o perfil do geobr chegou a 54 MB
@@ -151,7 +164,7 @@ def limpa(arquivo):
     for t in doc["tabelas"].values():
         for nome, p in (t.get("colunas") or {}).items():
             texto = re.match(r"VARCHAR|GEOMETRY|BLOB", p.get("tipo", ""))
-            if PESSOAL.search(nome):
+            if pessoal(doc["dataset"], nome):
                 for k in ("min", "max", "top", "media", "quartis"):
                     p.pop(k, None)
                 p["pessoal"] = "só contagens: valores seriam dado pessoal"

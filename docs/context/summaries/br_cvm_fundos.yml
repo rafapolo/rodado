@@ -3,71 +3,901 @@
 dataset: br_cvm_fundos
 tabelas:
   balancete:
-    grao: 'não lida: Catalog Error: Table with name balancete does not exist!'
+    grao: o saldo de uma conta contábil (cd_conta_balcte) de um fundo/classe num mês
+    chave: 'cnpj_fundo_classe_norm + plano_conta_balcte + cd_conta_balcte (+ dt_comptc): count(*) = count(DISTINCT) = 1.123.574 em dt_comptc = ''2026-09-30'' (partição; 316,6 mi de linhas no total)'
+    tempo:
+      natureza: serie_mensal
+      coluna: dt_comptc
+      cobertura: 2005-01-31–2026-09-30 (261 meses)
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo_classe_norm: CNPJ do fundo ou classe, sempre preenchido (13.358 em 2026-09-30); cnpj_fundo e cnpj_fundo_classe vêm nulos em parte das linhas
+    medidas:
+    - coluna: vl_saldo_balcte
+      o_que: saldo da conta contábil no fim do mês (pode ser negativo)
+      unidade: R$
+      soma: 'sim: dentro de um dt_comptc e de contas do mesmo nível do plano; não some meses nem contas pai e filha juntas (hierarquia do plano de contas não medida)'
+    filtros_tipicos:
+    - sempre filtre dt_comptc (316,6 mi de linhas)
+    - 'plano_conta_balcte = ''COFI'' em todas as 1.123.574 linhas de 2026-09-30; ''COSIF'' aparece só em meses antigos (no perfil de amostra: COFI 1.807.030, COSIF 57.344)'
+    - 'cd_conta_balcte como texto (ex.: ''10000007''); o nome da conta não está na tabela'
+    use_para: balancete contábil mensal de fundos por conta.
+    nao_use_para: patrimônio líquido (use carteira_pl ou informe_diario) ou somar contas sem conhecer a hierarquia do plano.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.soma
+    - hierarquia do plano de contas
+    verificado: 316.620.509 linhas no total; 1.123.574 linhas, 1.123.574 combinações da chave e 13.358 cnpj_fundo_classe_norm em 2026-09-30 — medido 2026-10-27
   cadastro_historico_admin:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_admin does not exist!'
+    grao: um período de vigência de administrador do fundo de um fundo (um fundo tem várias linhas ao longo do tempo)
+    chave: 'nenhuma: (cnpj_fundo, dt_reg, dt_ini_admin) repete em 10 linhas (85.810 linhas, 85.800 combinações distintas; 6 linhas são duplicata exata)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_admin
+      cobertura: dt_ini_admin 1993-12-06–2026-10-14
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado, para ligar às demais tabelas do dataset (mesmos distintos de cnpj_fundo)
+    filtros_tipicos:
+    - 'dt_fim_admin IS NULL: período sem data de fim (em geral o vigente; 55.86% das linhas) — significado de fim nulo não documentado'
+    use_para: saber como administrador do fundo de um fundo mudou ao longo do tempo.
+    nao_use_para: contar fundos ativos hoje (use registro_fundo) ou somar linhas como se fossem fundos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos
+    - tempo.cobertura (do perfil)
+    verificado: 85.810 linhas; 85.800 combinações (cnpj_fundo, dt_reg, dt_ini_admin); 85.804 linhas distintas — medido 2026-10-27
   cadastro_historico_auditor:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_auditor does not exist!'
+    grao: um período de vigência de auditor independente do fundo de um fundo (um fundo tem várias linhas ao longo do tempo)
+    chave: 'nenhuma: (cnpj_fundo, dt_reg, dt_ini_auditor) repete em 44 linhas (104.236 linhas, 104.192 combinações distintas; 20 linhas são duplicata exata)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_auditor
+      cobertura: dt_ini_auditor 1992-11-06–2026-04-30
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado, para ligar às demais tabelas do dataset (mesmos distintos de cnpj_fundo)
+    filtros_tipicos:
+    - 'dt_fim_auditor IS NULL: período sem data de fim (em geral o vigente; 40.19% das linhas) — significado de fim nulo não documentado'
+    use_para: saber como auditor independente do fundo de um fundo mudou ao longo do tempo.
+    nao_use_para: contar fundos ativos hoje (use registro_fundo) ou somar linhas como se fossem fundos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos
+    - tempo.cobertura (do perfil)
+    verificado: 104.236 linhas; 104.192 combinações (cnpj_fundo, dt_reg, dt_ini_auditor); 104.216 linhas distintas — medido 2026-10-27
   cadastro_historico_classe:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_classe does not exist!'
+    grao: 'um período de vigência de classe do fundo (campo classe: Multimercado, Renda Fixa, Ações, Referenciado, Curto Prazo, Cambial, FMP-FGTS, Dívida Externa) de um fundo (um fundo tem várias linhas ao longo do tempo)'
+    chave: 'cnpj_fundo + dt_ini_classe (e também cnpj_fundo + dt_reg + dt_ini_classe): count(*) = count(DISTINCT) = 62.070'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_classe
+      cobertura: dt_ini_classe 2004-11-22–2026-03-13
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado, para ligar às demais tabelas do dataset (mesmos distintos de cnpj_fundo)
+    filtros_tipicos:
+    - 'dt_fim_classe IS NULL: período sem data de fim (em geral o vigente; 88.7% das linhas) — significado de fim nulo não documentado'
+    use_para: saber como classe do fundo de um fundo mudou ao longo do tempo.
+    nao_use_para: contar fundos ativos hoje (use registro_fundo) ou somar linhas como se fossem fundos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos
+    - tempo.cobertura (do perfil)
+    verificado: 62.070 linhas; 62.070 combinações (cnpj_fundo, dt_reg, dt_ini_classe); 62.070 linhas distintas — medido 2026-10-27
   cadastro_historico_condom:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_condom does not exist!'
+    grao: um período de vigência de forma de condomínio (condom = 'Aberto' ou 'Fechado') de um fundo (um fundo tem várias linhas ao longo do tempo)
+    chave: 'cnpj_fundo + dt_reg + dt_ini_condom: count(*) = count(DISTINCT) = 63.707'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_condom
+      cobertura: dt_ini_condom 2001-03-12–2025-12-10
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado, para ligar às demais tabelas do dataset (mesmos distintos de cnpj_fundo)
+    filtros_tipicos:
+    - 'dt_fim_condom IS NULL: período sem data de fim (em geral o vigente; 86.43% das linhas) — significado de fim nulo não documentado'
+    use_para: saber como forma de condomínio de um fundo mudou ao longo do tempo.
+    nao_use_para: contar fundos ativos hoje (use registro_fundo) ou somar linhas como se fossem fundos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos
+    - tempo.cobertura (do perfil)
+    verificado: 63.707 linhas; 63.707 combinações (cnpj_fundo, dt_reg, dt_ini_condom); 63.707 linhas distintas — medido 2026-10-27
   cadastro_historico_controlador:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_controlador does not exist!'
+    grao: um período de vigência de controlador do fundo de um fundo (um fundo tem várias linhas ao longo do tempo)
+    chave: 'nenhuma: (cnpj_fundo, dt_reg, dt_ini_controlador) repete em 13 linhas (72.184 linhas, 72.171 combinações distintas; 9 linhas são duplicata exata)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_controlador
+      cobertura: dt_ini_controlador 1969-10-15–2025-12-10
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado, para ligar às demais tabelas do dataset (mesmos distintos de cnpj_fundo)
+    filtros_tipicos:
+    - 'dt_fim_controlador IS NULL: período sem data de fim (em geral o vigente; 57.26% das linhas) — significado de fim nulo não documentado'
+    use_para: saber como controlador do fundo de um fundo mudou ao longo do tempo.
+    nao_use_para: contar fundos ativos hoje (use registro_fundo) ou somar linhas como se fossem fundos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos
+    - tempo.cobertura (do perfil)
+    verificado: 72.184 linhas; 72.171 combinações (cnpj_fundo, dt_reg, dt_ini_controlador); 72.175 linhas distintas — medido 2026-10-27
   cadastro_historico_custodiante:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_custodiante does not exist!'
+    grao: um período de vigência de custodiante do fundo de um fundo (um fundo tem várias linhas ao longo do tempo)
+    chave: 'nenhuma: (cnpj_fundo, dt_reg, dt_ini_custodiante) repete em 23 linhas (73.005 linhas, 72.982 combinações distintas; 16 linhas são duplicata exata)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_custodiante
+      cobertura: dt_ini_custodiante 1990-08-17–2025-12-10
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado, para ligar às demais tabelas do dataset (mesmos distintos de cnpj_fundo)
+    filtros_tipicos:
+    - 'dt_fim_custodiante IS NULL: período sem data de fim (em geral o vigente; 56.89% das linhas) — significado de fim nulo não documentado'
+    use_para: saber como custodiante do fundo de um fundo mudou ao longo do tempo.
+    nao_use_para: contar fundos ativos hoje (use registro_fundo) ou somar linhas como se fossem fundos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos
+    - tempo.cobertura (do perfil)
+    verificado: 73.005 linhas; 72.982 combinações (cnpj_fundo, dt_reg, dt_ini_custodiante); 72.989 linhas distintas — medido 2026-10-27
   cadastro_historico_denom_comerc:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_denom_comerc does not exist!'
+    grao: um período de vigência de denominação comercial do fundo de um fundo (um fundo tem várias linhas ao longo do tempo)
+    chave: 'nenhuma: (cnpj_fundo, dt_reg, dt_ini_denom_comerc) repete em 4 linhas (81.132 linhas, 81.128 combinações distintas; 0 linhas são duplicata exata)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_denom_comerc
+      cobertura: dt_ini_denom_comerc 1963-07-01–2022-01-20
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado, para ligar às demais tabelas do dataset (mesmos distintos de cnpj_fundo)
+    filtros_tipicos:
+    - 'dt_fim_denom_comerc IS NULL: período sem data de fim (em geral o vigente; 51.79% das linhas) — significado de fim nulo não documentado'
+    use_para: saber como denominação comercial do fundo de um fundo mudou ao longo do tempo.
+    nao_use_para: contar fundos ativos hoje (use registro_fundo) ou somar linhas como se fossem fundos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos
+    - tempo.cobertura (do perfil)
+    verificado: 81.132 linhas; 81.128 combinações (cnpj_fundo, dt_reg, dt_ini_denom_comerc); 81.132 linhas distintas — medido 2026-10-27
   cadastro_historico_denom_social:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_denom_social does not exist!'
+    grao: um período de vigência de denominação social (nome) do fundo de um fundo (um fundo tem várias linhas ao longo do tempo)
+    chave: 'nenhuma: (cnpj_fundo, dt_reg, dt_ini_denom_social) repete em 5.404 linhas (152.374 linhas, 146.970 combinações distintas; 316 linhas são duplicata exata)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_denom_social
+      cobertura: dt_ini_denom_social 1942-07-31–2026-10-14
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado, para ligar às demais tabelas do dataset (mesmos distintos de cnpj_fundo)
+    filtros_tipicos:
+    - 'dt_fim_denom_social IS NULL: período sem data de fim (em geral o vigente; 40.38% das linhas) — significado de fim nulo não documentado'
+    use_para: saber como denominação social de um fundo mudou ao longo do tempo.
+    nao_use_para: contar fundos ativos hoje (use registro_fundo) ou somar linhas como se fossem fundos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos
+    - tempo.cobertura (do perfil)
+    verificado: 152.374 linhas; 146.970 combinações (cnpj_fundo, dt_reg, dt_ini_denom_social); 152.058 linhas distintas — medido 2026-10-27
   cadastro_historico_diretor_resp:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_diretor_resp does not exist!'
+    grao: 'um período de vigência de diretor responsável pelo fundo (nome de pessoa: dado pessoal, só contagem) de um fundo (um fundo tem várias linhas ao longo do tempo)'
+    chave: 'nenhuma: (cnpj_fundo, dt_reg, dt_ini_diretor) repete em 90 linhas (179.010 linhas, 178.920 combinações distintas; 12 linhas são duplicata exata)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_diretor
+      cobertura: dt_ini_diretor 1999-11-26–2026-10-14
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado, para ligar às demais tabelas do dataset (mesmos distintos de cnpj_fundo)
+    filtros_tipicos:
+    - 'dt_fim_diretor IS NULL: período sem data de fim (em geral o vigente; 26.86% das linhas) — significado de fim nulo não documentado'
+    use_para: saber como diretor responsável pelo fundo de um fundo mudou ao longo do tempo.
+    nao_use_para: contar fundos ativos hoje (use registro_fundo) ou somar linhas como se fossem fundos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos
+    - tempo.cobertura (do perfil)
+    verificado: 179.010 linhas; 178.920 combinações (cnpj_fundo, dt_reg, dt_ini_diretor); 178.998 linhas distintas — medido 2026-10-27
   cadastro_historico_exclusivo:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_exclusivo does not exist!'
+    grao: um período de vigência de condição de fundo exclusivo (fundo_exclusivo = 'S' ou 'N') de um fundo (um fundo tem várias linhas ao longo do tempo)
+    chave: 'cnpj_fundo + dt_reg + dt_ini_st_exclusivo: count(*) = count(DISTINCT) = 65.384'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_st_exclusivo
+      cobertura: dt_ini_st_exclusivo 2004-11-22–2026-03-13
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado, para ligar às demais tabelas do dataset (mesmos distintos de cnpj_fundo)
+    filtros_tipicos:
+    - 'dt_fim_st_exclusivo IS NULL: período sem data de fim (em geral o vigente; 84.2% das linhas) — significado de fim nulo não documentado'
+    use_para: saber como condição de fundo exclusivo de um fundo mudou ao longo do tempo.
+    nao_use_para: contar fundos ativos hoje (use registro_fundo) ou somar linhas como se fossem fundos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos
+    - tempo.cobertura (do perfil)
+    verificado: 65.384 linhas; 65.384 combinações (cnpj_fundo, dt_reg, dt_ini_st_exclusivo); 65.384 linhas distintas — medido 2026-10-27
   cadastro_historico_exerc_social:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_exerc_social does not exist!'
+    grao: um exercício social (início e fim) de um fundo; um fundo tem uma linha por exercício
+    chave: 'cnpj_fundo + dt_reg + dt_ini_exerc: count(*) = count(DISTINCT) = 507.417'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_exerc
+      cobertura: dt_ini_exerc 1997-11-04–2027-04-30; dt_fim_exerc 1998-03-31–2027-12-31 (inclui datas futuras)
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado para ligar às demais tabelas
+    use_para: saber o mês de encerramento do exercício social de um fundo.
+    nao_use_para: situação ou atributos do fundo (veja os outros cadastro_historico_*).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 507.417 linhas; 507.417 combinações (cnpj_fundo, dt_reg, dt_ini_exerc); 507.417 linhas distintas; ao contrário das irmãs não tem coluna de fim nula — medido 2026-10-27
   cadastro_historico_fic:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_fic does not exist!'
+    grao: um período de vigência de condição de fundo de cotas (fundo_cotas = 'S' ou 'N') de um fundo (um fundo tem várias linhas ao longo do tempo)
+    chave: 'cnpj_fundo + dt_reg + dt_ini_st_cotas: count(*) = count(DISTINCT) = 64.451'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_st_cotas
+      cobertura: dt_ini_st_cotas 2004-11-22–2026-03-13
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado, para ligar às demais tabelas do dataset (mesmos distintos de cnpj_fundo)
+    filtros_tipicos:
+    - 'dt_fim_st_cotas IS NULL: período sem data de fim (em geral o vigente; 85.43% das linhas) — significado de fim nulo não documentado'
+    use_para: saber como condição de fundo de cotas de um fundo mudou ao longo do tempo.
+    nao_use_para: contar fundos ativos hoje (use registro_fundo) ou somar linhas como se fossem fundos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos
+    - tempo.cobertura (do perfil)
+    verificado: 64.451 linhas; 64.451 combinações (cnpj_fundo, dt_reg, dt_ini_st_cotas); 64.451 linhas distintas — medido 2026-10-27
   cadastro_historico_gestor:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_gestor does not exist!'
+    grao: um período de vigência de gestor do fundo (pf_pj_gestor, cpf_cnpj_gestor, gestor) de um fundo (um fundo tem várias linhas ao longo do tempo)
+    chave: 'nenhuma: (cnpj_fundo, dt_reg, dt_ini_gestor) repete em 1.396 linhas (99.812 linhas, 98.416 combinações distintas; 7 linhas são duplicata exata)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_gestor
+      cobertura: dt_ini_gestor 1989-06-07–2026-10-14
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado, para ligar às demais tabelas do dataset (mesmos distintos de cnpj_fundo)
+    filtros_tipicos:
+    - 'dt_fim_gestor IS NULL: período sem data de fim (em geral o vigente; 50.53% das linhas) — significado de fim nulo não documentado'
+    use_para: saber como o gestor de um fundo mudou ao longo do tempo.
+    nao_use_para: contar fundos ativos hoje (use registro_fundo) ou somar linhas como se fossem fundos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos
+    - tempo.cobertura (do perfil)
+    verificado: 99.812 linhas; 98.416 combinações (cnpj_fundo, dt_reg, dt_ini_gestor); 99.805 linhas distintas — medido 2026-10-27
   cadastro_historico_publico_alvo:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_publico_alvo does not exist!'
+    grao: 'um período de vigência de público-alvo do fundo (publico_alvo: ''Público Geral'', ''Qualificado'', ''Profissional'') de um fundo (um fundo tem várias linhas ao longo do tempo)'
+    chave: 'cnpj_fundo + dt_ini_publico_alvo (e também cnpj_fundo + dt_reg + dt_ini_publico_alvo): count(*) = count(DISTINCT) = 42.985'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_publico_alvo
+      cobertura: dt_ini_publico_alvo 2004-11-22–2026-09-29
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado, para ligar às demais tabelas do dataset (mesmos distintos de cnpj_fundo)
+    filtros_tipicos:
+    - 'a tabela não tem data de fim: o valor vigente é a linha de maior dt_ini_publico_alvo por cnpj_fundo'
+    use_para: saber como público-alvo do fundo de um fundo mudou ao longo do tempo.
+    nao_use_para: contar fundos ativos hoje (use registro_fundo) ou somar linhas como se fossem fundos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos
+    - tempo.cobertura (do perfil)
+    verificado: 42.985 linhas; 42.985 combinações (cnpj_fundo, dt_reg, dt_ini_publico_alvo); 42.985 linhas distintas — medido 2026-10-27
   cadastro_historico_rentab:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_rentab does not exist!'
+    grao: um período de vigência de tipo de rentabilidade/indicador de desempenho do fundo (rentab_fundo, texto livre com 33 valores) de um fundo (um fundo tem várias linhas ao longo do tempo)
+    chave: 'cnpj_fundo + dt_reg + dt_ini_rentab: count(*) = count(DISTINCT) = 60.178'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_rentab
+      cobertura: dt_ini_rentab 1994-03-22–2201-07-22
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado, para ligar às demais tabelas do dataset (mesmos distintos de cnpj_fundo)
+    filtros_tipicos:
+    - 'dt_fim_rentab IS NULL: período sem data de fim (em geral o vigente; 83.06% das linhas) — significado de fim nulo não documentado'
+    use_para: saber como tipo de rentabilidade/indicador de desempenho do fundo de um fundo mudou ao longo do tempo.
+    nao_use_para: contar fundos ativos hoje (use registro_fundo) ou somar linhas como se fossem fundos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos
+    - tempo.cobertura (do perfil)
+    verificado: 60.178 linhas; 60.178 combinações (cnpj_fundo, dt_reg, dt_ini_rentab); 60.178 linhas distintas — medido 2026-10-27
   cadastro_historico_sit:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_sit does not exist!'
+    grao: 'um período de vigência de situação do fundo (sit: EM FUNCIONAMENTO NORMAL, CANCELADA, FASE PRÉ-OPERACIONAL, LIQUIDAÇÃO, EM ANÁLISE, EM SITUAÇÃO ESPECIAL, EM LIQUIDAÇÃO ORDINÁRIA) de um fundo (um fundo tem várias linhas ao longo do tempo)'
+    chave: 'nenhuma: (cnpj_fundo, dt_reg, dt_ini_sit) repete em 9 linhas (145.722 linhas, 145.713 combinações distintas; 0 linhas são duplicata exata)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_sit
+      cobertura: dt_ini_sit 2004-11-22–2026-10-14
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado, para ligar às demais tabelas do dataset (mesmos distintos de cnpj_fundo)
+    filtros_tipicos:
+    - 'dt_fim_sit IS NULL: período sem data de fim (em geral o vigente; 42.23% das linhas) — significado de fim nulo não documentado'
+    - 'sit = ''EM FUNCIONAMENTO NORMAL'' com dt_fim_sit IS NULL: 25.431 fundos (cada um uma linha); CANCELADA com fim nulo: 34.720 fundos'
+    use_para: saber como situação do fundo de um fundo mudou ao longo do tempo.
+    nao_use_para: contar fundos ativos hoje (use registro_fundo) ou somar linhas como se fossem fundos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos
+    - tempo.cobertura (do perfil)
+    verificado: 145.722 linhas; 145.713 combinações (cnpj_fundo, dt_reg, dt_ini_sit); 145.722 linhas distintas — medido 2026-10-27
   cadastro_historico_taxa_adm:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_taxa_adm does not exist!'
+    grao: um período de vigência de taxa de administração (taxa_adm, inf_taxa_adm em texto livre) de um fundo (um fundo tem várias linhas ao longo do tempo)
+    chave: 'cnpj_fundo + dt_ini_taxa_adm (e também cnpj_fundo + dt_reg + dt_ini_taxa_adm): count(*) = count(DISTINCT) = 87.757'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_taxa_adm
+      cobertura: dt_ini_taxa_adm 2004-12-15–2025-07-02
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado, para ligar às demais tabelas do dataset (mesmos distintos de cnpj_fundo)
+    medidas:
+    - coluna: taxa_adm
+      o_que: taxa vigente a partir de dt_ini_taxa_adm (32% nulo; o texto livre fica em inf_taxa_adm)
+      unidade: percentual segundo a fonte (unidade não documentada)
+      soma: nao
+    filtros_tipicos:
+    - 'a tabela não tem data de fim: o valor vigente é a linha de maior dt_ini_taxa_adm por cnpj_fundo'
+    use_para: saber como taxa de administração de um fundo mudou ao longo do tempo.
+    nao_use_para: contar fundos ativos hoje (use registro_fundo) ou somar linhas como se fossem fundos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos
+    - tempo.cobertura (do perfil)
+    - medidas.unidade
+    verificado: 87.757 linhas; 87.757 combinações (cnpj_fundo, dt_reg, dt_ini_taxa_adm); 87.757 linhas distintas — medido 2026-10-27
   cadastro_historico_taxa_perfm:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_taxa_perfm does not exist!'
+    grao: um período de vigência de taxa de performance (vl_taxa_perfm, ds_taxa_perfm em texto livre) de um fundo (um fundo tem várias linhas ao longo do tempo)
+    chave: 'cnpj_fundo + dt_ini_taxa_perfm (e também cnpj_fundo + dt_reg + dt_ini_taxa_perfm): count(*) = count(DISTINCT) = 43.639'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_taxa_perfm
+      cobertura: dt_ini_taxa_perfm 2004-12-15–2025-07-04
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado, para ligar às demais tabelas do dataset (mesmos distintos de cnpj_fundo)
+    medidas:
+    - coluna: vl_taxa_perfm
+      o_que: 'taxa vigente a partir de dt_ini_taxa_perfm (valor máximo 1e12: há valores fora de escala)'
+      unidade: percentual segundo a fonte (unidade não documentada)
+      soma: nao
+    filtros_tipicos:
+    - 'a tabela não tem data de fim: o valor vigente é a linha de maior dt_ini_taxa_perfm por cnpj_fundo'
+    use_para: saber como taxa de performance de um fundo mudou ao longo do tempo.
+    nao_use_para: contar fundos ativos hoje (use registro_fundo) ou somar linhas como se fossem fundos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos
+    - tempo.cobertura (do perfil)
+    - medidas.unidade
+    verificado: 43.639 linhas; 43.639 combinações (cnpj_fundo, dt_reg, dt_ini_taxa_perfm); 43.639 linhas distintas — medido 2026-10-27
   cadastro_historico_trib_lprazo:
-    grao: 'não lida: Catalog Error: Table with name cadastro_historico_trib_lprazo does not exist!'
+    grao: um período de vigência de tributação de longo prazo (trib_lprazo = 'S', 'N' ou 'N/A') de um fundo (um fundo tem várias linhas ao longo do tempo)
+    chave: 'cnpj_fundo + dt_reg + dt_ini_st_trib_lprazo: count(*) = count(DISTINCT) = 56.545'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_ini_st_trib_lprazo
+      cobertura: dt_ini_st_trib_lprazo 1969-06-24–2025-12-11
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo: CNPJ do fundo (dado pessoal, só contagem)
+        cnpj_fundo_classe_norm: CNPJ normalizado, para ligar às demais tabelas do dataset (mesmos distintos de cnpj_fundo)
+    filtros_tipicos:
+    - 'dt_fim_st_trib_lprazo IS NULL: período sem data de fim (em geral o vigente; 88.32% das linhas) — significado de fim nulo não documentado'
+    use_para: saber como tributação de longo prazo de um fundo mudou ao longo do tempo.
+    nao_use_para: contar fundos ativos hoje (use registro_fundo) ou somar linhas como se fossem fundos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - filtros_tipicos
+    - tempo.cobertura (do perfil)
+    verificado: 56.545 linhas; 56.545 combinações (cnpj_fundo, dt_reg, dt_ini_st_trib_lprazo); 56.545 linhas distintas — medido 2026-10-27
   carteira_blc_1:
-    grao: 'não lida: Catalog Error: Table with name carteira_blc_1 does not exist!'
+    grao: uma posição de um fundo/classe em título público federal (inclui compromissadas) num mês
+    chave: 'cnpj_fundo_classe_norm + tp_aplic + tp_ativo + tp_negoc + cd_isin + cd_selic + dt_venc + dt_emissao (+ dt_comptc): único dentro de dt_comptc = ''2026-09-30'''
+    tempo:
+      natureza: serie_mensal
+      coluna: dt_comptc
+      cobertura: 2023-01-31–2026-09-30 (44 meses)
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo_classe_norm: CNPJ do fundo ou classe, sempre preenchido (use este); cnpj_fundo e tp_fundo vêm nulos em 70-80% das linhas, cnpj_fundo_classe em 18-30%
+        denom_social: nome do fundo/classe
+    medidas:
+    - coluna: vl_merc_pos_final
+      o_que: valor de mercado da posição no fim do mês
+      unidade: R$
+      soma: 'sim: dentro de um dt_comptc; não some meses (é saldo)'
+    - coluna: qt_pos_final
+      o_que: quantidade na posição final
+      unidade: unidade do ativo
+      soma: 'nao: quantidades de ativos diferentes não se somam'
+    - coluna: vl_aquis_negoc / vl_venda_negoc
+      o_que: valor adquirido / vendido no mês (nulo em ~70-90% das linhas)
+      unidade: R$
+      soma: sim, no mês
+    filtros_tipicos:
+    - dt_comptc = '2026-09-30' (último mês; sempre filtre um mês, a tabela repete as posições todo mês)
+    - tp_aplic = 'Títulos Públicos' (18.038 linhas em 2026-09-30) ou 'Operações Compromissadas' (4.329); tp_ativo é sempre 'Título público federal' nesse mês
+    use_para: carteira em títulos públicos (LTN, NTN-B, NTN-F, LFT) e compromissadas por fundo.
+    nao_use_para: somar vl_merc_pos_final entre meses; ou usar cnpj_fundo/tp_fundo (nulos em 70-80% das linhas) para identificar o fundo.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    - medidas.o_que
+    verificado: 22.367 linhas em dt_comptc = '2026-09-30'; 22.367 combinações distintas da chave = 22.367 linhas = 22.367 linhas distintas — medido 2026-10-27
   carteira_blc_2:
-    grao: 'não lida: Catalog Error: Table with name carteira_blc_2 does not exist!'
+    grao: uma posição de um fundo/classe em cotas de outro fundo num mês (colunas cnpj_fundo_classe_cota e nm_fundo_classe_subclasse_cota identificam o fundo investido)
+    chave: 'cnpj_fundo_classe_norm + tp_aplic + tp_ativo + tp_negoc + cnpj_fundo_classe_cota + id_subclasse + cnpj_fundo_cota (+ dt_comptc): único dentro de dt_comptc = ''2026-09-30'''
+    tempo:
+      natureza: serie_mensal
+      coluna: dt_comptc
+      cobertura: 2023-01-31–2026-09-30 (44 meses)
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo_classe_norm: CNPJ do fundo ou classe, sempre preenchido (use este); cnpj_fundo e tp_fundo vêm nulos em 70-80% das linhas, cnpj_fundo_classe em 18-30%
+        denom_social: nome do fundo/classe
+        cnpj_fundo_classe_cota: CNPJ do fundo/classe investido (cotas)
+        id_subclasse: subclasse investida (99,9% nulo)
+    medidas:
+    - coluna: vl_merc_pos_final
+      o_que: valor de mercado da posição no fim do mês
+      unidade: R$
+      soma: 'sim: dentro de um dt_comptc; não some meses (é saldo)'
+    - coluna: qt_pos_final
+      o_que: quantidade na posição final
+      unidade: unidade do ativo
+      soma: 'nao: quantidades de ativos diferentes não se somam'
+    - coluna: vl_aquis_negoc / vl_venda_negoc
+      o_que: valor adquirido / vendido no mês (nulo em ~70-90% das linhas)
+      unidade: R$
+      soma: sim, no mês
+    filtros_tipicos:
+    - dt_comptc = '2026-09-30' (último mês; sempre filtre um mês, a tabela repete as posições todo mês)
+    use_para: investimento de fundos em cotas de outros fundos (FIDC, FII, FIP, fundos de índice) e ligação fundo-investido.
+    nao_use_para: somar vl_merc_pos_final entre meses; ou usar cnpj_fundo/tp_fundo (nulos em 70-80% das linhas) para identificar o fundo. Somar o PL dos fundos junto com estas posições conta o patrimônio duas vezes.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    - medidas.o_que
+    verificado: 64.327 linhas em dt_comptc = '2026-09-30'; 64.327 combinações distintas da chave = 64.327 linhas = 64.327 linhas distintas — medido 2026-10-27
   carteira_blc_3:
-    grao: 'não lida: Catalog Error: Table with name carteira_blc_3 does not exist!'
+    grao: uma posição de swap (diferencial a pagar ou a receber) de um fundo/classe num mês
+    chave: 'cnpj_fundo_classe_norm + tp_aplic + cd_swap (+ dt_comptc): único dentro de dt_comptc = ''2026-09-30'''
+    tempo:
+      natureza: serie_mensal
+      coluna: dt_comptc
+      cobertura: 2023-01-31–2026-09-30 (44 meses)
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo_classe_norm: CNPJ do fundo ou classe, sempre preenchido (use este); cnpj_fundo e tp_fundo vêm nulos em 70-80% das linhas, cnpj_fundo_classe em 18-30%
+        denom_social: nome do fundo/classe
+        cd_swap: código do swap
+        ds_swap: descrição do swap
+    medidas:
+    - coluna: vl_merc_pos_final
+      o_que: valor de mercado do diferencial de swap no fim do mês
+      unidade: R$
+      soma: 'sim: dentro de um dt_comptc; a pagar e a receber têm sinal próprio (tp_aplic), não os misture sem separar'
+    filtros_tipicos:
+    - dt_comptc = '2026-09-30' (último mês; sempre filtre um mês, a tabela repete as posições todo mês)
+    - tp_aplic = 'DIFERENCIAL DE SWAP A PAGAR' ou 'DIFERENCIAL DE SWAP A RECEBER' (tp_ativo é sempre 'SWAP'); só vl_merc_pos_final é preenchido (as demais medidas são 100% nulas)
+    use_para: swaps em carteira por fundo.
+    nao_use_para: somar vl_merc_pos_final entre meses; ou usar cnpj_fundo/tp_fundo (nulos em 70-80% das linhas) para identificar o fundo.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    - medidas.o_que
+    verificado: 57 linhas em dt_comptc = '2026-09-30'; 57 combinações distintas da chave = 57 linhas = 57 linhas distintas (tabela pequena) — medido 2026-10-27
   carteira_blc_4:
-    grao: 'não lida: Catalog Error: Table with name carteira_blc_4 does not exist!'
+    grao: uma posição de um fundo/classe em ação, debênture, BDR, opção, futuro, termo ou empréstimo de valores mobiliários num mês
+    chave: 'cnpj_fundo_classe_norm + tp_aplic + tp_ativo + tp_negoc + cd_ativo + cd_isin (+ dt_comptc): único dentro de dt_comptc = ''2026-09-30'''
+    tempo:
+      natureza: serie_mensal
+      coluna: dt_comptc
+      cobertura: 2023-01-31–2026-09-30 (44 meses)
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo_classe_norm: CNPJ do fundo ou classe, sempre preenchido (use este); cnpj_fundo e tp_fundo vêm nulos em 70-80% das linhas, cnpj_fundo_classe em 18-30%
+        denom_social: nome do fundo/classe
+        cd_ativo: código do ativo (ticker ou código CETIP)
+        cd_isin: código ISIN
+    medidas:
+    - coluna: vl_merc_pos_final
+      o_que: valor de mercado da posição no fim do mês
+      unidade: R$
+      soma: 'sim: dentro de um dt_comptc; não some meses (é saldo)'
+    - coluna: qt_pos_final
+      o_que: quantidade na posição final
+      unidade: unidade do ativo
+      soma: 'nao: quantidades de ativos diferentes não se somam'
+    - coluna: vl_aquis_negoc / vl_venda_negoc
+      o_que: valor adquirido / vendido no mês (nulo em ~70-90% das linhas)
+      unidade: R$
+      soma: sim, no mês
+    filtros_tipicos:
+    - dt_comptc = '2026-09-30' (último mês; sempre filtre um mês, a tabela repete as posições todo mês)
+    - tp_aplic = 'Debêntures' (105.981 linhas em 2026-09-30), 'Ações' (11.471), 'Mercado Futuro - Posições compradas'/'vendidas', 'Opções - Posições titulares'/'lançadas', 'Brazilian Depository Receipt - BDR' etc.; futuros e opções são posições de derivativo, não somem como ativo
+    use_para: renda variável e debêntures em carteira (ações, debêntures, opções, futuros, BDR).
+    nao_use_para: somar vl_merc_pos_final entre meses; ou usar cnpj_fundo/tp_fundo (nulos em 70-80% das linhas) para identificar o fundo.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    - medidas.o_que
+    verificado: 125.485 linhas em dt_comptc = '2026-09-30'; 125.485 combinações distintas da chave = 125.485 linhas = 125.485 linhas distintas — medido 2026-10-27
   carteira_blc_5:
-    grao: 'não lida: Catalog Error: Table with name carteira_blc_5 does not exist!'
+    grao: uma posição de um fundo/classe em depósito a prazo ou título de instituição financeira (CDB, LF, DPGE, LCI/LCA/LH) num mês
+    chave: 'nenhuma: (cnpj_fundo_classe_norm, tp_aplic, tp_ativo, tp_negoc, cnpj_emissor, dt_venc, cd_indexador_posfx) repete (28.182 linhas, 22.394 combinações) e mesmo com qt/vl da posição ficam 26.254; as 28.182 linhas são todas distintas'
+    tempo:
+      natureza: serie_mensal
+      coluna: dt_comptc
+      cobertura: 2023-01-31–2026-09-30 (44 meses)
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo_classe_norm: CNPJ do fundo ou classe, sempre preenchido (use este); cnpj_fundo e tp_fundo vêm nulos em 70-80% das linhas, cnpj_fundo_classe em 18-30%
+        denom_social: nome do fundo/classe
+        cnpj_emissor: CNPJ do emissor (pessoa jurídica)
+        emissor: nome do emissor
+    medidas:
+    - coluna: vl_merc_pos_final
+      o_que: valor de mercado da posição no fim do mês
+      unidade: R$
+      soma: 'sim: dentro de um dt_comptc; não some meses (é saldo)'
+    - coluna: qt_pos_final
+      o_que: quantidade na posição final
+      unidade: unidade do ativo
+      soma: 'nao: quantidades de ativos diferentes não se somam'
+    - coluna: vl_aquis_negoc / vl_venda_negoc
+      o_que: valor adquirido / vendido no mês (nulo em ~70-90% das linhas)
+      unidade: R$
+      soma: sim, no mês
+    filtros_tipicos:
+    - dt_comptc = '2026-09-30' (último mês; sempre filtre um mês, a tabela repete as posições todo mês)
+    - tp_aplic é sempre 'Depósitos a prazo e outros títulos de IF'; titulo_posfx = 'S'/'N' (pós-fixado); cd_indexador_posfx 'DI1', 'IAP', 'SEL', 'PRE' etc. (ver ds_indexador_posfx)
+    use_para: carteira em CDB, letras financeiras e outros títulos de instituição financeira por emissor e indexador.
+    nao_use_para: 'somar vl_merc_pos_final entre meses; ou usar cnpj_fundo/tp_fundo (nulos em 70-80% das linhas) para identificar o fundo. Não use count(*) para contar títulos: não há chave única.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    - medidas.o_que
+    verificado: 28.182 linhas em dt_comptc = '2026-09-30'; 28.182 linhas, 28.182 linhas distintas, sem chave natural encontrada — medido 2026-10-27
   carteira_blc_6:
-    grao: 'não lida: Catalog Error: Table with name carteira_blc_6 does not exist!'
+    grao: uma posição de um fundo/classe em crédito privado (debêntures, títulos ligados ao agronegócio, títulos de crédito privado) num mês, com emissor pessoa física ou jurídica
+    chave: 'nenhuma: (cnpj_fundo_classe_norm, tp_aplic, tp_ativo, tp_negoc, cpf_cnpj_emissor, dt_venc, cd_indexador_posfx) repete (1.444 linhas, 1.265 combinações) e com qt/vl da posição ficam 1.427; as 1.444 linhas são todas distintas'
+    tempo:
+      natureza: serie_mensal
+      coluna: dt_comptc
+      cobertura: 2023-01-31–2026-09-30 (44 meses)
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo_classe_norm: CNPJ do fundo ou classe, sempre preenchido (use este); cnpj_fundo e tp_fundo vêm nulos em 70-80% das linhas, cnpj_fundo_classe em 18-30%
+        denom_social: nome do fundo/classe
+        cpf_cnpj_emissor: CPF/CNPJ do emissor (dado pessoal, só contagem)
+        emissor: nome do emissor
+    medidas:
+    - coluna: vl_merc_pos_final
+      o_que: valor de mercado da posição no fim do mês
+      unidade: R$
+      soma: 'sim: dentro de um dt_comptc; não some meses (é saldo)'
+    - coluna: qt_pos_final
+      o_que: quantidade na posição final
+      unidade: unidade do ativo
+      soma: 'nao: quantidades de ativos diferentes não se somam'
+    - coluna: vl_aquis_negoc / vl_venda_negoc
+      o_que: valor adquirido / vendido no mês (nulo em ~70-90% das linhas)
+      unidade: R$
+      soma: sim, no mês
+    filtros_tipicos:
+    - dt_comptc = '2026-09-30' (último mês; sempre filtre um mês, a tabela repete as posições todo mês)
+    - tp_aplic = 'Títulos ligados ao agronegócio' (728 linhas em 2026-09-30), 'Títulos de Crédito Privado' (375) ou 'Debêntures' (341); titulo_cetip, titulo_garantia = 'S'/'N'
+    use_para: crédito privado detalhado por emissor, indexador, cupom e garantia.
+    nao_use_para: 'somar vl_merc_pos_final entre meses; ou usar cnpj_fundo/tp_fundo (nulos em 70-80% das linhas) para identificar o fundo. Não use count(*) para contar títulos: não há chave única.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    - medidas.o_que
+    verificado: 1.444 linhas em dt_comptc = '2026-09-30'; 1.444 linhas, 1.444 linhas distintas, sem chave natural encontrada — medido 2026-10-27
   carteira_blc_7:
-    grao: 'não lida: Catalog Error: Table with name carteira_blc_7 does not exist!'
+    grao: uma posição de um fundo/classe em ativo no exterior num mês
+    chave: 'cnpj_fundo_classe_norm + tp_aplic + tp_ativo + tp_negoc + cd_ativo_bv_merc + cd_pais + dt_venc + emissor (+ dt_comptc): único dentro de dt_comptc = ''2026-09-30'''
+    tempo:
+      natureza: serie_mensal
+      coluna: dt_comptc
+      cobertura: 2023-01-31–2026-09-30 (44 meses)
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo_classe_norm: CNPJ do fundo ou classe, sempre preenchido (use este); cnpj_fundo e tp_fundo vêm nulos em 70-80% das linhas, cnpj_fundo_classe em 18-30%
+        denom_social: nome do fundo/classe
+        cd_pais: código do país do ativo
+        pais: nome do país
+        cd_ativo_bv_merc: código do ativo na bolsa/mercado
+    medidas:
+    - coluna: vl_merc_pos_final
+      o_que: valor de mercado da posição no fim do mês
+      unidade: R$
+      soma: 'sim: dentro de um dt_comptc; não some meses (é saldo)'
+    - coluna: qt_pos_final
+      o_que: quantidade na posição final
+      unidade: unidade do ativo
+      soma: 'nao: quantidades de ativos diferentes não se somam'
+    - coluna: vl_aquis_negoc / vl_venda_negoc
+      o_que: valor adquirido / vendido no mês (nulo em ~70-90% das linhas)
+      unidade: R$
+      soma: sim, no mês
+    filtros_tipicos:
+    - dt_comptc = '2026-09-30' (último mês; sempre filtre um mês, a tabela repete as posições todo mês)
+    - tp_aplic é sempre 'Investimento no Exterior'; tem ainda vl_ativo_exterior e qt_ativo_exterior (11% nulos), sem sinal documentado de diferença para vl_merc_pos_final
+    use_para: exposição de fundos ao exterior por país, bolsa e ativo.
+    nao_use_para: somar vl_merc_pos_final entre meses; ou usar cnpj_fundo/tp_fundo (nulos em 70-80% das linhas) para identificar o fundo.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    - medidas.o_que
+    - filtros_tipicos
+    verificado: 57.121 linhas em dt_comptc = '2026-09-30'; 57.121 combinações distintas da chave = 57.121 linhas = 57.121 linhas distintas — medido 2026-10-27
   carteira_blc_8:
-    grao: 'não lida: Catalog Error: Table with name carteira_blc_8 does not exist!'
+    grao: uma posição de um fundo/classe nas demais aplicações (valores a pagar/receber, disponibilidades, derivativos, outras) num mês
+    chave: 'cnpj_fundo_classe_norm + tp_aplic + tp_ativo + tp_negoc + ds_ativo + cpf_cnpj_emissor (+ dt_comptc): único dentro de dt_comptc = ''2026-09-30'''
+    tempo:
+      natureza: serie_mensal
+      coluna: dt_comptc
+      cobertura: 2023-01-31–2026-09-30 (44 meses)
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo_classe_norm: CNPJ do fundo ou classe, sempre preenchido (use este); cnpj_fundo e tp_fundo vêm nulos em 70-80% das linhas, cnpj_fundo_classe em 18-30%
+        denom_social: nome do fundo/classe
+        ds_ativo: descrição do ativo (texto livre, ~612 mil distintos)
+        cpf_cnpj_emissor: CPF/CNPJ do emissor (dado pessoal, só contagem; 58% nulo)
+    medidas:
+    - coluna: vl_merc_pos_final
+      o_que: valor de mercado da posição no fim do mês
+      unidade: R$
+      soma: 'sim: dentro de um dt_comptc; não some meses (é saldo)'
+    - coluna: qt_pos_final
+      o_que: quantidade na posição final
+      unidade: unidade do ativo
+      soma: 'nao: quantidades de ativos diferentes não se somam'
+    - coluna: vl_aquis_negoc / vl_venda_negoc
+      o_que: valor adquirido / vendido no mês (nulo em ~70-90% das linhas)
+      unidade: R$
+      soma: sim, no mês
+    filtros_tipicos:
+    - dt_comptc = '2026-09-30' (último mês; sempre filtre um mês, a tabela repete as posições todo mês)
+    - tp_aplic = 'Valores a pagar' (15.845 linhas em 2026-09-30), 'Valores a receber' (13.834), 'Disponibilidades' (11.253), 'Opções - ...', 'Mercado Futuro - ...' etc.
+    use_para: valores a pagar/receber, caixa (disponibilidades), opções, futuros e outras aplicações da carteira.
+    nao_use_para: somar vl_merc_pos_final entre meses; ou usar cnpj_fundo/tp_fundo (nulos em 70-80% das linhas) para identificar o fundo. vl_merc_pos_final pode ser negativo (passivos).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    - medidas.o_que
+    verificado: 68.171 linhas em dt_comptc = '2026-09-30'; 68.171 combinações distintas da chave = 68.171 linhas = 68.171 linhas distintas — medido 2026-10-27
   carteira_confid:
-    grao: 'não lida: Catalog Error: Table with name carteira_confid does not exist!'
+    grao: uma posição de aplicação com divulgação sigilosa (confidencial) de um fundo/classe num mês, por tipo de aplicação
+    chave: 'cnpj_fundo_classe_norm + dt_comptc + tp_aplic: count(*) = count(DISTINCT) = 187.163'
+    tempo:
+      natureza: serie_mensal
+      coluna: dt_comptc
+      cobertura: 2026-04-30–2026-09-30 (6 meses)
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo_classe_norm: CNPJ do fundo ou classe
+        cnpj_fundo_classe: CNPJ do fundo ou classe (0% nulo nesta tabela)
+        denom_social: nome do fundo/classe
+    medidas:
+    - coluna: vl_merc_pos_final
+      o_que: valor de mercado da posição sigilosa no fim do mês
+      unidade: R$
+      soma: 'sim: dentro de um dt_comptc; não some meses'
+    filtros_tipicos:
+    - tp_fundo_classe = 'CLASSES - FIF' ou 'CLASSES - FIP' (só há esses dois)
+    - 'tp_aplic: ''Valores a pagar'' (26.616), ''Valores a receber'' (26.245), ''Cotas de Fundos'' (25.326), ''Disponibilidades'' (15.933), ''Operações Compromissadas'' (11.832) — os 5 maiores'
+    use_para: ver o total de posições com sigilo por tipo de aplicação (a parte que as carteira_blc_* não mostram em detalhe).
+    nao_use_para: 'identificar o ativo: a tabela traz só o tipo de aplicação agregado, sem emissor/ativo.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.o_que
+    verificado: 187.163 linhas; 187.163 combinações (cnpj_fundo_classe_norm, dt_comptc, tp_aplic); dt_confid_aplic é sempre posterior a dt_comptc (2026-10-27–2027-03-29), significado não documentado — medido 2026-10-27
   carteira_fie:
-    grao: 'não lida: Catalog Error: Table with name carteira_fie does not exist!'
+    grao: uma posição de um fundo/classe de investimento especial (FIDC, FIIM, FIAGRO) num documento (id_doc) mensal
+    chave: 'nenhuma: id_doc + tp_aplic + tp_ativo + cd_ativo + ds_ativo + emissor + dt_venc repete em 2.142 combinações (447.690 linhas, 447.643 linhas distintas, 47 duplicatas exatas)'
+    tempo:
+      natureza: serie_mensal
+      coluna: dt_comptc
+      cobertura: 2024-02-29–2026-09-30 (30 meses)
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo_classe_norm: CNPJ do fundo ou classe
+        id_doc: id do documento CVM (19.840 distintos, ~1 por fundo × mês)
+        cpf_cnpj_emissor: CPF/CNPJ do emissor (dado pessoal, só contagem; 59% nulo)
+    medidas:
+    - coluna: vl_merc_pos_final
+      o_que: valor de mercado da posição no fim do mês
+      unidade: R$
+      soma: 'sim: dentro de um dt_comptc'
+    - coluna: vl_patrim_liq
+      o_que: patrimônio líquido do fundo repetido em cada linha do documento
+      unidade: R$
+      soma: 'nao: repete em todas as linhas do id_doc; tire uma por id_doc'
+    filtros_tipicos:
+    - 'tp_fundo_classe in (''CLASSES - FIDC'',''FIDC'',''CLASSES - FIAGRO'',''FIIM'',''CLASSES FIIM''): o mesmo tipo aparece com e sem o prefixo ''CLASSES'''
+    - 'tp_aplic: ''Cotas de Fundos'' (133.162 linhas), ''Ações'' (88.430), ''Valores a pagar'' (54.764) etc.'
+    use_para: carteira detalhada de FIDC, FIIM e FIAGRO (as carteira_blc_* não os cobrem).
+    nao_use_para: somar vl_patrim_liq por linha (repetido) ou contar posições com count(*) (sem chave única).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - tipo de fundo cobre só FIDC/FIIM/FIAGRO (visto no top do perfil)
+    verificado: 447.690 linhas; 19.840 id_doc distintos; 19.838 pares (cnpj_fundo_classe_norm, dt_comptc); 447.643 linhas distintas — medido 2026-10-27
   carteira_fie_confid:
-    grao: 'não lida: Catalog Error: Table with name carteira_fie_confid does not exist!'
+    grao: uma posição sigilosa de um fundo/classe especial (FIDC, FIIM) num documento mensal, por tipo de aplicação
+    chave: 'id_doc + tp_aplic + dt_confid_aplic: count(*) = count(DISTINCT) = 1.777'
+    tempo:
+      natureza: serie_mensal
+      coluna: dt_comptc
+      cobertura: 2026-07-31–2026-09-30 (3 meses)
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo_classe_norm: CNPJ do fundo ou classe
+        id_doc: id do documento CVM
+    medidas:
+    - coluna: vl_merc_pos_final
+      o_que: valor de mercado da posição sigilosa no fim do mês
+      unidade: R$
+      soma: 'sim: dentro de um dt_comptc'
+    filtros_tipicos:
+    - tp_fundo_classe = 'CLASSES - FIDC' ou 'CLASSES FIIM' (só esses dois)
+    use_para: ver posições sigilosas de FIDC/FIIM que carteira_fie não detalha.
+    nao_use_para: identificar o ativo (só tipo de aplicação).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.o_que
+    verificado: 1.777 linhas; 1.777 combinações (id_doc, tp_aplic, dt_confid_aplic); 186 fundos/classes — medido 2026-10-27
   carteira_pl:
-    grao: 'não lida: Catalog Error: Table with name carteira_pl does not exist!'
+    grao: o patrimônio líquido de um fundo/classe num fim de mês
+    chave: 'nenhuma: (cnpj_fundo_classe_norm, dt_comptc) repete em 161 pares (1.156.670 linhas, 1.156.509 pares distintos; todas as linhas são distintas)'
+    tempo:
+      natureza: serie_mensal
+      coluna: dt_comptc
+      cobertura: 2023-01-31–2026-09-30 (44 meses)
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo_classe_norm: CNPJ do fundo ou classe (sempre preenchido; cnpj_fundo e tp_fundo vêm 76% nulos)
+        denom_social: nome do fundo/classe
+    medidas:
+    - coluna: vl_patrim_liq
+      o_que: 'patrimônio líquido no fim do mês (mín -6,2 bi, máx 3,7e14: há valores absurdos)'
+      unidade: R$
+      soma: 'sim: dentro de um dt_comptc, após conferir outliers; não some meses'
+    filtros_tipicos:
+    - 'dt_comptc = ''2026-09-30'': 20.427 linhas, todas de classes (tp_fundo_classe ''CLASSES - FIF'' 20.380, ''CLASSES - FIP'' 47)'
+    - tp_fundo_classe tem 'FI', 'FIP', 'FAPI' etc. nos meses antigos; os nomes mudaram com a RCVM 175
+    use_para: patrimônio líquido mensal por fundo/classe.
+    nao_use_para: somar PL de uma classe e de seus fundos juntos, ou comparar meses antigos e novos sem juntar os tipos.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.o_que
+    verificado: 1.156.670 linhas; 1.156.509 pares (cnpj_fundo_classe_norm, dt_comptc); 1.156.670 linhas distintas — medido 2026-10-27
   extrato:
-    grao: 'não lida: Catalog Error: Table with name extrato does not exist!'
+    grao: 'um extrato de informações do fundo/classe (regulamento: condomínio, prazo, público, taxas, limites de composição da carteira) numa data dt_comptc'
+    chave: 'nenhuma: (cnpj_fundo_classe_norm, dt_comptc) repete em 38.804 pares (149.489 linhas, 110.685 pares distintos; 119.158 linhas distintas, 30.331 duplicatas exatas)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dt_comptc
+      cobertura: 2015-10-01–2026-10-14 (3.115 datas)
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo_classe_norm: CNPJ do fundo ou classe (38.867 distintos)
+        cnpj_fundo_classe: CNPJ da classe (24% nulo)
+    medidas:
+    - coluna: taxa_adm
+      o_que: taxa de administração
+      unidade: percentual a.a. segundo a fonte; máximo 2.517.291 sugere valores fora de escala
+      soma: nao
+    - coluna: pr_*_min / pr_*_max
+      o_que: limites mínimo/máximo de composição da carteira por tipo de ativo (percentual do PL)
+      unidade: '% do PL; máximos como 100000 sugerem valores fora de escala'
+      soma: nao
+    filtros_tipicos:
+    - 'último extrato por fundo: dt_comptc = max(dt_comptc) por cnpj_fundo_classe_norm (38.867 fundos/classes)'
+    - condom = 'ABERTO' ou 'FECHADO' (maiúsculas, diferente de cadastro_historico_condom)
+    - 'publico_alvo: ''PÚBLICO EM GERAL'', ''INVESTIDORES PROFISSIONAIS'', ''INVESTIDORES QUALIFICADOS'', ''PREVIDENCIÁRIO'''
+    use_para: 'regras de cada fundo/classe: prazos de resgate, taxas e limites de composição da carteira.'
+    nao_use_para: contar fundos (há várias linhas por fundo e duplicatas exatas) ou obter o estado atual sem filtrar o último dt_comptc.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    - natureza do dt_comptc (data de entrega do extrato, não documentada)
+    verificado: 149.489 linhas; 38.867 cnpj_fundo_classe_norm distintos; 110.685 pares (cnpj_fundo_classe_norm, dt_comptc); 119.158 linhas distintas — medido 2026-10-27
   fundos:
     ultima_data: "2024-09-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um registro do cadastro ANTIGO de fundos de investimento (anterior à RCVM 175) — um fundo pode aparecer em mais de uma linha
@@ -101,9 +931,85 @@ tabelas:
     - medidas.unidade
     verificado: 46.806 linhas; 41.103 CNPJ_FUNDO distintos; 34.201 CD_CVM distintos; sem linhas totalmente duplicadas; SIT normal = 22 (gotcha) — medido 2026-10-27
   informe_diario:
-    grao: 'não lida: Catalog Error: Table with name informe_diario does not exist!'
+    grao: 'o informe diário de um fundo/classe (ou subclasse) num dia útil: PL, cota, captação e resgate'
+    chave: 'cnpj_fundo_classe_norm + id_subclasse (nulo conta como vazio) + dt_comptc: count(*) = count(DISTINCT) = 25.458 em dt_comptc = ''2026-09-30'' (partição; 81,5 mi de linhas no total)'
+    tempo:
+      natureza: serie_diaria
+      coluna: dt_comptc
+      cobertura: 2000-01-03–2026-10-14 (22 dias úteis em setembro de 2026)
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo_classe_norm: CNPJ do fundo ou classe, sempre preenchido (use este; cnpj_fundo é 19% nulo, tp_fundo 72%)
+        id_subclasse: subclasse (99,8% nulo; quando preenchido, a classe só aparece pelas subclasses)
+    medidas:
+    - coluna: vl_patrim_liq
+      o_que: patrimônio líquido do dia
+      unidade: R$
+      soma: sim entre fundos num mesmo dia; não entre dias (saldo)
+    - coluna: vl_total
+      o_que: valor total da carteira no dia
+      unidade: R$
+      soma: sim entre fundos num mesmo dia; não entre dias
+    - coluna: vl_quota
+      o_que: valor da cota
+      unidade: R$ por cota
+      soma: nao
+    - coluna: captc_dia / resg_dia
+      o_que: captação / resgate do dia
+      unidade: R$
+      soma: sim, também ao longo dos dias (fluxos)
+    - coluna: nr_cotst
+      o_que: 'número de cotistas (VARCHAR: faça CAST)'
+      unidade: cotistas
+      soma: 'nao: cotista em vários fundos conta várias vezes'
+    filtros_tipicos:
+    - sempre filtre dt_comptc (tabela de 81,5 mi de linhas)
+    - 'tp_fundo_classe em 2026-09-30: ''CLASSES - FIF'' 25.439, ''CLASSE FIF/FAPI'' 13, ''FI'' 6; antes de 2023 vem nulo e o tipo está em tp_fundo'
+    use_para: evolução diária de PL, cota, captação e resgate por fundo.
+    nao_use_para: contar fundos sem filtrar um dia (um fundo aparece uma vez por dia) ou somar vl_patrim_liq ao longo de dias.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.o_que
+    - medidas.unidade
+    verificado: 81.549.118 linhas no total; 25.458 linhas, 25.458 combinações da chave e 25.074 cnpj_fundo_classe_norm distintos em 2026-09-30; 597 classes com subclasse, nenhuma tem também linha sem subclasse — medido 2026-10-27
   perfil_mensal:
-    grao: 'não lida: Catalog Error: Table with name perfil_mensal does not exist!'
+    grao: o perfil mensal de um fundo/classe (cotistas por tipo, risco, estresse, derivativos, concentração de emissores) num mês
+    chave: 'nenhuma: (cnpj_fundo_classe_norm, dt_comptc) repete (2.000.051 linhas, 1.999.706 pares); com versao ainda repetem (1.999.854); em dt_comptc = ''2026-09-30'' a chave (cnpj_fundo_classe_norm, dt_comptc) é única (5.304 linhas); linhas todas distintas'
+    tempo:
+      natureza: serie_mensal
+      coluna: dt_comptc
+      cobertura: 2019-01-31–2026-09-30 (105 meses)
+    territorio:
+      nivel: nenhum
+      colunas:
+        cnpj_fundo_classe_norm: CNPJ do fundo ou classe (sempre preenchido; cnpj_fundo é 42% nulo)
+        versao: 'versão do layout do informe: ''1'' (2019-01–2020-06), ''3'' (2019-01–2026-08), ''4'' (2024-10–2026-09)'
+    medidas:
+    - coluna: 'nr_cotst_* (VARCHAR: faça CAST)'
+      o_que: número de cotistas por tipo de investidor
+      unidade: cotistas
+      soma: sim entre tipos num mesmo fundo; não entre fundos (cotista repetido)
+    - coluna: pr_pl_cotst_*
+      o_que: percentual do PL em cada tipo de cotista
+      unidade: '% do PL'
+      soma: nao entre fundos; soma ~100 dentro de um fundo (não medido)
+    - coluna: pr_var_carteira
+      o_que: VaR da carteira (mod_var traz o modelo)
+      unidade: significado exato não documentado
+      soma: nao
+    filtros_tipicos:
+    - dt_comptc = '2026-09-30' (5.304 linhas)
+    - versao = '4' é a mais nova (2024-10-31–2026-09-30); '3' e '4' coexistem em alguns meses, escolha uma
+    use_para: perfil de risco e de cotistas de fundos por mês.
+    nao_use_para: contar fundos sem filtrar mês e versao.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.o_que
+    - medidas.unidade
+    verificado: 2.000.051 linhas; 1.999.706 pares (cnpj_fundo_classe_norm, dt_comptc); 1.999.854 com versao; 5.304 linhas e pares em 2026-09-30 — medido 2026-10-27
   registro_classe:
     ultima_data: "2026-10-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma classe de cotas de fundo no cadastro vigente (RCVM 175)
