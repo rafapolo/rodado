@@ -314,6 +314,32 @@ canvas.drag { cursor: grabbing; }
 .note { font-size: 12.5px; line-height: 1.55; color: var(--ink-2); margin: 0 0 14px; }
 .note-src { font-size: 10.5px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; margin: 0 0 5px; }
 .sec { font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-3); margin: 16px 0 8px; }
+.note-src a { color: inherit; }
+.card { font-size: 12.5px; line-height: 1.55; color: var(--ink-2); }
+.card ul { margin: 0 0 12px; padding-left: 17px; }
+.card li { margin-bottom: 3px; }
+.card code { font-family: "IBM Plex Mono", monospace; font-size: 11.5px; color: var(--ink); }
+/* armadilhas, busca rápida, métricas e marcas de coluna (pages/atlas/detalhes/) */
+.gt { border: 1px solid var(--line); border-left: 3px solid var(--ink-3); border-radius: 6px;
+  padding: 7px 10px; margin-bottom: 7px; font-size: 12.5px; line-height: 1.5; color: var(--ink-2); }
+.gt.silencioso { border-left-color: var(--t-saude); }
+.gt.erro { border-left-color: var(--t-governo); }
+.gt summary { cursor: pointer; color: var(--ink); }
+.gt .sev { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin-right: 6px; }
+.gt p { margin: 6px 0 0; }
+.gt .ver { font-size: 11px; color: var(--ink-3); }
+.mk { font-family: "IBM Plex Mono", monospace; font-size: 9.5px; padding: 0 4px; border-radius: 3px;
+  border: 1px solid var(--line-2); color: var(--ink-2); margin-left: 4px; white-space: nowrap; }
+.mk.div, .mk.nv { border-color: var(--t-saude); color: var(--t-saude); }
+.col.tem { cursor: pointer; }
+.col > span:not(.ty):not(.mk) { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.col .ty { flex-shrink: 0; }
+.col.tem:hover { background: var(--card-2); }
+.colinfo { padding: 6px 9px 8px 20px; font-size: 11.5px; line-height: 1.5; color: var(--ink-2);
+  border-bottom: 1px solid var(--line); background: var(--card-2); }
+.colinfo table { border-collapse: collapse; margin-top: 4px; font-family: "IBM Plex Mono", monospace; font-size: 11px; }
+.colinfo td { padding: 1px 10px 1px 0; vertical-align: top; }
+.colinfo td.n { text-align: right; color: var(--ink-3); font-variant-numeric: tabular-nums; }
 .cols { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
 .col {
   display: flex; align-items: baseline; gap: 8px; padding: 4px 9px;
@@ -1252,6 +1278,108 @@ function select(h) {
 }
 const fact = (v, l) => `<div class="fact"><b>${v}</b><span>${l}</span></div>`;
 
+/* "dados até": a data do dado mais recente, do mesmo jeito que a página do MCP
+   (2026 · ago/2026 · 21/09/2026) */
+const MESES = "jan fev mar abr mai jun jul ago set out nov dez".split(" ");
+function quando(s) {
+  const m = /^(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?$/.exec(s || "");
+  if (!m) return s || "";
+  if (!m[2]) return m[1];
+  return m[3] ? `${m[3]}/${m[2]}/${m[1]}` : `${MESES[+m[2] - 1]}/${m[1]}`;
+}
+function fonteDs(D) {
+  const nome = D.fn ? esc(D.fn) : "";
+  const fonte = D.fn ? (D.fu ? `<a href="${esc(D.fu)}" target="_blank" rel="noopener">${nome}</a>` : nome) : "";
+  const partes = [fonte, D.ate ? "dados até " + quando(D.ate) : ""].filter(Boolean);
+  return partes.length ? `<p class="note-src">${partes.join(" · ")}</p>` : "";
+}
+
+/* cartão da tabela (grão, chave, tempo, medidas, uso): o mesmo JSON que a página
+   do MCP carrega, buscado só quando a tabela é aberta */
+const cartoes = {};
+const NATUREZA = { retrato_atual: "retrato atual", serie_anual: "série anual", serie_mensal: "série mensal",
+  serie_diaria: "série diária", serie_de_periodos: "série de períodos", sem_tempo: "sem tempo", soma_de_retratos: "soma de retratos" };
+function cartaoDe(ds) {
+  if (!cartoes[ds]) cartoes[ds] = fetch(`/assets/summaries/${encodeURIComponent(ds)}.json`)
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .catch(e => { delete cartoes[ds]; throw e; });
+  return cartoes[ds];
+}
+function cartaoHtml(c) {
+  let h = "";
+  if (c.g) h += `<p class="sec">Uma linha é</p><p>${esc(c.g)}</p>`;
+  const meta = [];
+  if (c.c) meta.push(`<li>chave: ${esc(c.c)}</li>`);
+  if (c.tp) meta.push(`<li>${esc(NATUREZA[c.tp[0]] || c.tp[0])}${c.tp[2] ? ", " + esc(c.tp[2]) : ""}</li>`);
+  if (meta.length) h += `<ul>${meta.join("")}</ul>`;
+  if (c.m) h += `<p class="sec">Medidas</p><ul>${c.m.map(m => {
+    const extra = [m[1], m[2] ? "unidade: " + m[2] : "", m[3] ? "não some" : ""].filter(Boolean).join("; ");
+    return `<li>${m[0] ? `<code>${esc(m[0])}</code>` : ""}${extra ? " — " + esc(extra) : ""}</li>`;
+  }).join("")}</ul>`;
+  if (c.u) h += `<p class="sec">Use para</p><p>${esc(c.u)}</p>`;
+  if (c.nu) h += `<p class="sec">Não use para</p><p>${esc(c.nu)}</p>`;
+  return h ? `<div class="card">${h}</div>` : "";
+}
+
+/* o que describe_table do MCP diz da tabela: gerado por gera_schema_graph.py em
+   detalhes/<dataset>.json, buscado quando o painel abre */
+const detalhes = {};
+function detalhesDe(ds) {
+  if (!detalhes[ds]) detalhes[ds] = fetch(`detalhes/${encodeURIComponent(ds)}.json`)
+    .then(r => r.ok ? r.json() : {}).catch(() => ({}));
+  return detalhes[ds];
+}
+const SEV = { silencioso: "silencioso", erro: "dá erro", aviso: "aviso" };
+const gotchaHtml = g => `<details class="gt ${esc(g.severidade || "")}"><summary><span class="sev">${esc(SEV[g.severidade] || g.severidade || "")}</span>${esc(g.resumo || g.id)}</summary>${
+  g.detalhe ? `<p>${esc(g.detalhe)}</p>` : ""}${g.colunas ? `<p>colunas: ${g.colunas.map(c => `<code>${esc(c)}</code>`).join(", ")}</p>` : ""}${
+  g.verificado ? `<p class="ver">medido: ${esc(g.verificado)}</p>` : ""}</details>`;
+const MARCA = { dic: ["dic", "tem dicionário: o significado dos códigos está em <dataset>.dicionario"],
+  div: ["varia", "o código desta coluna muda de um dataset para outro"],
+  nv: ["?", "parece código, e o significado não foi verificado em lugar nenhum"],
+  cod: ["cód", "significado dos códigos pesquisado (column_codes.yaml)"] };
+function marcas(info) {
+  return ["dic", "cod", "div", "nv"].filter(k => info[k]).map(k =>
+    `<span class="mk ${k}" title="${esc(MARCA[k][1])}">${MARCA[k][0]}</span>`).join("");
+}
+function colinfoHtml(info) {
+  let h = "";
+  if (info.cod) h += `<div>${info.cod.status === "pendente" ? "<b>pesquisado, não confirmado:</b> " : ""}${esc(info.cod.significado || "")}</div>${info.cod.valores ? `<table>${
+    Object.entries(info.cod.valores).map(([k, v]) => `<tr><td>${esc(k === "" ? "''" : k)}</td><td>${esc(v)}</td></tr>`).join("")}</table>` : ""}${
+    info.cod.nota ? `<div>${esc(info.cod.nota)}</div>` : ""}`;
+  if (info.div) h += `<div>${esc(info.div)}</div>`;
+  if (info.nv && !info.cod) h += `<div>${esc(MARCA.nv[1])}: confira na fonte antes de filtrar.</div>`;
+  if (info.dic) h += `<div>decodifique com <code>dicionario</code> desta tabela, filtrando <code>nome_coluna</code>.</div>`;
+  if (info.nul) h += `<div>${String(info.nul).replace(".", ",")}% nulos</div>`;
+  if (info.top) h += `<div>mais frequentes (na amostra do perfil):</div><table>${
+    info.top.map(([v, n]) => `<tr><td>${esc(v === null ? "NULL" : v)}</td><td class="n">${fmt(n)}</td></tr>`).join("")}</table>`;
+  return h;
+}
+function detalheTblHtml(x, T) {
+  let h = "";
+  if (x.gotchas) h += `<p class="sec">Armadilhas</p>${x.gotchas.map(gotchaHtml).join("")}`;
+  if (x.busca) h += `<p class="sec">Busca rápida</p><p class="note">Ordenada por <code>${esc(x.busca.coluna)}</code>${
+    x.busca.por_ano ? " dentro de cada <code>ano</code>" : ""}: filtrar por ela responde em segundos no db.rodado.xyz.${
+    x.busca.por_ano ? " Filtre também por <code>ano</code>." : ""}</p>`;
+  if (x.metricas) h += `<p class="sec">Métricas prontas</p><div class="card"><ul>${x.metricas.map(m =>
+    `<li><code>${esc(m.nome)}</code> — ${esc(m.description || "")}${m.unit ? ` (${esc(m.unit)})` : ""}: <code>${esc(m.expression || "")}</code>${
+      m.required_filters ? `; filtre por ${m.required_filters.map(f => `<code>${esc(f)}</code>`).join(", ")}` : ""}</li>`).join("")}</ul></div>`;
+  const cols = Object.entries(x.cols || {}).filter(([, i]) => i.dic || i.div || i.nv || i.cod);
+  if (cols.length) {
+    const ordem = i => i.div ? 0 : i.nv && !i.cod ? 1 : i.cod ? 2 : 3;
+    cols.sort((a, b) => ordem(a[1]) - ordem(b[1]));
+    const mostra = cols.slice(0, 15);
+    h += `<p class="sec">Colunas com código · ${fmt(cols.length)}</p><div class="cols">${mostra.map(([n, i]) =>
+      `<div class="col tem" data-col="${esc(n)}"><span>${esc(n)}</span><span class="ty">${marcas(i)}</span></div>`).join("")}</div>${
+      cols.length > mostra.length ? `<p class="note">e mais ${fmt(cols.length - mostra.length)}; as marcas aparecem também na lista de colunas.</p>` : ""}`;
+  }
+  return h;
+}
+function abreColuna(el, info) {
+  const prox = el.nextElementSibling;
+  if (prox && prox.classList.contains("colinfo")) { prox.remove(); return; }
+  el.insertAdjacentHTML("afterend", `<div class="colinfo">${colinfoHtml(info)}</div>`);
+}
+
 function renderTheme(th) {
   const ts = themeTables[th];
   iKind.textContent = "Tema";
@@ -1307,14 +1435,24 @@ function renderDs(d) {
       ${fact(fmt(ks.length), "chaves")}
       ${fact(bytes(dsTables[d].reduce((s, i) => s + TB[i].b, 0)), "em disco")}
     </div>
+    ${fonteDs(D)}
+    ${D.de ? `<p class="note">${esc(D.de)}</p>` : ""}
+    <div id="i-det"></div>
     <p class="sec">Chaves deste dataset</p>
     <div class="chips">${ks.length ? ks.map(ki =>
       `<button class="chip" data-k="${ki}"><i style="background:var(--hub)"></i>${esc(KS[ki].n)}</button>`).join("")
       : '<span class="note">Nenhuma coluna deste dataset é compartilhada com outro. Ele não liga em nada.</span>'}</div>
     <p class="sec">Tabelas</p>
     <div class="tlist">${dsTables[d].slice().sort((a, b) => TB[b].r - TB[a].r).map(ti =>
-      `<button data-t="${ti}" title="${esc(TB[ti].n)}"><span class="t">${esc(TB[ti].n)}</span><span class="r">${human(TB[ti].r)}</span></button>`).join("")}</div>`;
+      `<button data-t="${ti}" title="${esc(TB[ti].n)}"><span class="t">${esc(TB[ti].n)}</span><span class="r">${human(TB[ti].r)}${TB[ti].ate ? " · " + quando(TB[ti].ate) : ""}</span></button>`).join("")}</div>`;
   wire();
+  detalhesDe(D.n).then(x => {
+    const alvo = document.getElementById("i-det");
+    if (!alvo || !sel || sel.type !== "ds" || sel.i !== d) return;
+    const vistos = new Map();
+    Object.values(x).forEach(t => (t.gotchas || []).forEach(g => vistos.set(g.id || g.resumo, g)));
+    if (vistos.size) alvo.innerHTML = `<p class="sec">Armadilhas · ${vistos.size}</p>${[...vistos.values()].map(gotchaHtml).join("")}`;
+  });
 }
 
 function renderTbl(ti) {
@@ -1329,6 +1467,8 @@ function renderTbl(ti) {
       ${fact(fmt(T.k.length), "chaves")}
       ${fact(bytes(T.b), "em disco")}
     </div>`;
+  if (T.ate) h += `<p class="note-src">dados até ${quando(T.ate)}</p>`;
+  h += `<div id="i-det"></div><div id="i-card"></div>`;
   h += `<p class="sec">Chaves</p><div class="chips">${T.k.length
     ? T.k.slice().sort((a, b) => KS[a].t - KS[b].t).map(ki =>
         `<button class="chip" data-k="${ki}"><i style="background:var(--hub)"></i>${esc(KS[ki].n)}</button>`).join("")
@@ -1341,6 +1481,29 @@ function renderTbl(ti) {
     }).join("")}</div>`;
   iBody.innerHTML = h;
   wire();
+  cartaoDe(DS[T.ds].n).then(d => {
+    const c = (d.t || []).find(x => x.n === T.n), alvo = document.getElementById("i-card");
+    if (c && alvo && sel && sel.type === "tbl" && sel.i === ti) alvo.innerHTML = cartaoHtml(c);
+  }, () => {});   // dataset sem cartão, ou atlas aberto fora do site: fica sem
+  detalhesDe(DS[T.ds].n).then(todos => {
+    const x = todos[T.n], alvo = document.getElementById("i-det");
+    if (!x || !alvo || !sel || sel.type !== "tbl" || sel.i !== ti) return;
+    (x.codigos || []).forEach(c => (c.colunas || []).forEach(n => {
+      x.cols = x.cols || {};
+      const i = (x.cols[n] = x.cols[n] || {});
+      i.cod = c;
+      if (c.status === "documentado") delete i.nv;   // pesquisado e conferido: não é mais "sem significado"
+    }));
+    alvo.innerHTML = (x.coleta ? `<p class="note-src">coletada em ${quando(x.coleta)}</p>` : "") + detalheTblHtml(x, T);
+    // marca as colunas da lista e abre, ao clicar, o código, os nulos e os valores mais frequentes
+    iBody.querySelectorAll(".cols .col").forEach(el => {
+      const n = el.dataset.col || el.querySelector("span").textContent, info = (x.cols || {})[n];
+      if (!info || !(info.dic || info.div || info.nv || info.cod || info.top || info.nul)) return;
+      el.classList.add("tem");
+      if (!el.dataset.col) el.querySelector(".ty").insertAdjacentHTML("beforebegin", marcas(info));
+      el.onclick = () => abreColuna(el, info);
+    });
+  });
 }
 
 function wire() {
