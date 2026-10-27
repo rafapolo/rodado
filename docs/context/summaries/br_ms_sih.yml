@@ -1,0 +1,47 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ms_sih
+tabelas:
+  aihs_reduzidas:
+    grao: "uma AIH (autorização de internação hospitalar) reduzida, por competência de cobrança"
+    chave: "nenhuma: id_aih repete (ano = 2025: 6.600.938 linhas, 6.546.425 id_aih distintos); (id_aih, sequencial_aih) quase único mas ainda repete (6.600.345)"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes (competência de cobrança); data_internacao e data_saida são a data real", cobertura: "2008–2025 (2025 só mes 1 a 6)"}
+    territorio: {nivel: municipio, colunas: {id_municipio_paciente: "residência do paciente, IBGE 6 dígitos", id_municipio_estabelecimento: "município do hospital, 6 dígitos", id_municipio_gestor: "gestor, 6 dígitos, nulo em ~48% (gestão estadual)", sigla_uf: "vem 100% nula (ver gotcha sigla_uf_nula)"}}
+    medidas:
+      - {coluna: valor_aih, o_que: "valor total pago da AIH", unidade: "R$", soma: sim}
+      - {coluna: valor_serivico_hospitalar, o_que: "valor de serviços hospitalares (grafia com erro 'serivico')", unidade: "R$", soma: sim}
+      - {coluna: valor_servico_profissional, o_que: "valor de serviços profissionais", unidade: "R$", soma: sim}
+      - {coluna: valor_uti, o_que: "valor de UTI", unidade: "R$", soma: sim}
+      - {coluna: quantidade_dias_permanencia, o_que: "dias de permanência", unidade: "dias", soma: sim}
+      - {coluna: indicador_obito, o_que: "1 = óbito na internação", unidade: "0/1", soma: sim}
+      - {expressao: "count(*)", o_que: "internações (AIH pagas); usar tipo_aih = '1' para excluir longa permanência", unidade: "AIH", soma: sim}
+    filtros_tipicos:
+      - "ano = <ano> sempre (tabela com 200 milhões de linhas); para série por ocorrência use year(data_internacao) com um ano de competência a mais (gotcha ano_e_competencia)"
+      - "tipo_aih = '1' (normal, 6.536.263 em 2025) e '5' (longa permanência, 64.675), texto"
+      - "coalesce(cid_principal_categoria, substr(cid_principal_subcategoria,1,3)) = 'A91' (gotcha cid_categoria_ou_subcategoria; nenhuma linha tem os dois)"
+      - "carater_internacao = '2' urgência (1.452.622 na amostra), '1' eletivo; sexo_paciente = 'Feminino'/'Masculino' (capitalizado)"
+    use_para: "contar internações e gastos do SUS por doença (CID), município, hospital, sexo e idade, por competência."
+    nao_use_para: "incidência de doença (conta internações, não casos) ou contar pessoas (a mesma pessoa tem várias AIH); a UF não sai de sigla_uf."
+    rascunho: [use_para, nao_use_para]
+    verificado: "ano = 2025: 6.600.938 linhas, 6.546.425 id_aih distintos, 6.600.345 de (id_aih, sequencial_aih); valor_aih somado 11,73 bi (tipo_aih 1: 11,62 bi; tipo 5: 0,11 bi); óbitos 291.521; cid categoria e subcategoria nunca juntas (0) nem ausentes juntas (0) — medido 2026-10-27"
+  servicos_profissionais:
+    grao: "um valor (de serviço hospitalar, profissional ou complemento) de um procedimento/profissional dentro de uma AIH, por competência"
+    chave: "nenhuma: ano = 2025, mes = 1: 15.484.599 linhas contra 1.058.652 id_aih e 1.059.305 de (id_aih, sequencia)"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes (competência); ano_internacao e mes_internacao; data_entrada_internacao", cobertura: "2008–2025 (2025 até mes 7 na amostra)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF (preenchida aqui, ao contrário da aihs_reduzidas)", id_municipio_estabelecimento_aih: "município do hospital, 7 dígitos", id_municipio_paciente: "município do paciente, 6 dígitos"}}
+    medidas:
+      - {coluna: valor_ato_profissional, o_que: "valor do ato; tipo_valor diz se é SH, SP ou complemento federal/local", unidade: "R$", soma: sim}
+      - {coluna: quantidade_atos_profissionais, o_que: "quantidade de atos", unidade: "atos", soma: sim}
+      - {coluna: quantidade_pontos, o_que: "pontos do ato", unidade: "pontos", soma: sim}
+    filtros_tipicos:
+      - "ano = <ano> e mes = <mes> sempre: tem 2,4 bilhões de linhas"
+      - "tipo_valor = '1' Valor SH, '2' Valor SP, '3' compl. federal SH, '4' compl. federal SP, '5' compl. local SH, '6' compl. local SP (dicionario); somar sem filtrar mistura tipos"
+      - "complexidade_ato_profissional = '02' (média) ou '03' (alta), com zero à esquerda"
+    use_para: "gasto e atos profissionais por procedimento, CBO do profissional, hospital e UF, ligável à AIH por id_aih."
+    nao_use_para: "contar internações (uma AIH tem muitas linhas) ou ligar o município do paciente (6 dígitos) com o do hospital (7 dígitos) sem conferir."
+    rascunho: [use_para, nao_use_para]
+    verificado: "ano = 2025, mes = 1: 15.484.599 linhas; 1.058.652 id_aih; 1.059.305 de (id_aih, sequencia); valor_ato_profissional 1.876 mi; atos 41.564.451 — medido 2026-10-27. Tamanho dos códigos: municípios do paciente com 6 dígitos e do hospital com 7, vistos no perfil"
+  dicionario:
+    grao: "uma linha por código de coluna das tabelas do SIH (nome_coluna, chave, valor)"
+    chave: "nenhuma: há linhas duplicadas (ex.: tipo_valor)"
+    use_para: "traduzir códigos (tipo_aih, motivo_saida, carater_internacao, tipo_valor…)."

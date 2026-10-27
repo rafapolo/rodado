@@ -1,0 +1,22 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_me_sic
+tabelas:
+  transferencia:
+    grao: "o custo de transferências de uma unidade organizacional (ministério > órgão > unidade) num mês, por esfera orçamentária, natureza jurídica e resultado primário"
+    chave: "ano, mes, id_unidade_organizacional_nivel_1, id_unidade_organizacional_nivel_2, id_unidade_organizacional_nivel_3, id_esfera_orcamentaria, id_natureza_juridica, id_resultado_primario (única nas 29.354 linhas)"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2015-01–2024-06 (2024 só meses 1–6)"}
+    territorio: {nivel: nenhum, colunas: {id_unidade_organizacional_nivel_0: "sempre '26' (Presidência da República, no dicionario)", id_unidade_organizacional_nivel_1: "ministério/órgão superior (77 códigos; '-9' = não se aplica)", id_unidade_organizacional_nivel_2: "órgão (383 códigos)", id_unidade_organizacional_nivel_3: "unidade (262 códigos)"}}
+    medidas:
+      - {coluna: valor_custo_transferencia, o_que: "custo de transferência no mês; há valores negativos (mínimo -628 mi), provavelmente estornos", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "id_esfera_orcamentaria = '1' orçamento fiscal (26.148 linhas) ou '2' seguridade social (3.206)"
+      - "id_natureza_juridica = '3' administração direta (R$ 234,8 bi no total), '4' autarquia, '2' fundação pública, '1' empresa pública, '6' sociedade de economia mista"
+      - "id_resultado_primario = '2' primário discricionário (20.685 linhas); '6','7','8','9' são tipos de emenda; '3' sem impacto fiscal; códigos em dicionario"
+    use_para: "custo de transferências da União por órgão, esfera e natureza jurídica ao longo do tempo"
+    nao_use_para: "pedidos de acesso à informação (a descrição do dataset diz 'Serviço de Informação ao Cidadão', mas as colunas são de custo) nem município/UF destino"
+    rascunho: [use_para, nao_use_para, "SIC = sistema de custos, não e-SIC", "negativos = estorno"]
+    verificado: "29.354 linhas = 29.354 chaves; 2015–2023 com 12 meses cada, 2024 com meses 1–6; soma de valor_custo_transferencia por natureza: 3 R$ 234,77 bi, 4 R$ 37,65 bi, 1 R$ 18,20 bi, 2 R$ 5,94 bi, 6 R$ 0,003 bi — medido 2026-10-27"
+  dicionario:
+    grao: "uma linha por (id_tabela, nome_coluna, chave): significado dos códigos id_esfera_orcamentaria, id_resultado_primario e das unidades organizacionais (647 linhas)"
+    use_para: "decodificar id_unidade_organizacional_nivel_* , id_esfera_orcamentaria, id_natureza_juridica e id_resultado_primario de transferencia"

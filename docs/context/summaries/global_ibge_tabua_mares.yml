@@ -1,0 +1,26 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: global_ibge_tabua_mares
+tabelas:
+  estacoes:
+    grao: "um marégrafo da rede do IBGE (estação de medição de maré)"
+    chave: "siglaMaregrafo (6 linhas; o perfil mostra 5 por aproximação, mas a previsão tem 6 siglas)"
+    tempo: {natureza: retrato_atual, coluna: dataInicialOperacao, cobertura: "1998-09-01–2019-11-26 (início de operação)"}
+    territorio: {nivel: ponto, colunas: {siglaUF: "UF do porto (AP, BA, CE, PA, RJ, SC)", lat: "latitude, graus decimais", lon: "longitude, graus decimais", local: "porto ou capitania onde está o marégrafo"}}
+    filtros_tipicos: ["siglaMaregrafo é a chave de junção com previsao.siglaMaregrafo (EMARC, EMBEL, EMFOR, EMIMB, EMSAL, EMSAN)"]
+    use_para: "localizar e identificar os 6 marégrafos (UF, coordenadas, ids GLOSS/UHSLC/PSMSL, relatório em urlRelatorio)"
+    nao_use_para: "estatística: são só 6 linhas; idGLOSS e idPSMSL são nulos em parte das estações"
+    rascunho: [use_para, nao_use_para]
+    verificado: "6 linhas, 6 siglas distintas (via previsao) — medido 2026-10-27"
+  previsao:
+    grao: "uma previsão de altura da maré × marégrafo × instante, a cada 5 minutos"
+    chave: "(siglaMaregrafo, dtHrPrevisao) (1261440 linhas = 1261440 distintos, 6 marégrafos × 210240 instantes)"
+    tempo: {natureza: serie_de_periodos, coluna: dtHrPrevisao, cobertura: "2026-01-01-00-00–2027-12-31-23-55"}
+    territorio: {nivel: ponto, colunas: {siglaMaregrafo: "marégrafo, junta com estacoes"}}
+    medidas:
+      - {coluna: previsao, o_que: "altura prevista da maré", unidade: "unidade não documentada (provavelmente metros, valores de 0,994 a 8,684)", soma: nao}
+    filtros_tipicos: ["dtHrPrevisao é texto no formato 'AAAA-MM-DD-HH-MM' (ex. '2026-01-01-00-05'), não DATE: filtre por prefixo (LIKE '2026-03-%') ou converta com strptime"]
+    use_para: "previsão de maré por marégrafo em 2026 e 2027, junto com estacoes"
+    nao_use_para: "maré observada ou histórica: são só previsões futuras; não somar nem fazer média sem pensar, pois altura não é aditiva"
+    rascunho: [use_para, nao_use_para, "unidade de previsao"]
+    verificado: "1261440 linhas = 1261440 pares (siglaMaregrafo, dtHrPrevisao); 6 siglas, 210240 linhas cada — medido 2026-10-27"

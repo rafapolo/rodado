@@ -1,0 +1,24 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: mundo_transfermarkt_competicoes_internacionais
+tabelas:
+  champions_league:
+    grao: "uma partida da Champions League (mandante × visitante), com estatísticas e perfil dos dois lados em colunas _mandante/_visitante"
+    chave: "(temporada, fase, tipo_fase, time_mandante, time_visitante) (2617 linhas = 2617 distintos); (data, time_mandante, time_visitante) também único"
+    tempo: {natureza: serie_de_periodos, coluna: data, cobertura: "2003-09-15–2024-06-01 (temporada '2003,2004' a '2023,2024')"}
+    territorio: {nivel: ponto, colunas: {estadio: "estádio da partida", time_mandante: "clube da casa", time_visitante: "clube visitante"}}
+    medidas:
+      - {coluna: gols_mandante / gols_visitante, o_que: "gols no jogo (placar do tempo regulamentar/prorrogação conforme a fonte; não conferido)", unidade: "gols", soma: sim}
+      - {coluna: publico, o_que: "público", unidade: "pessoas", soma: sim}
+      - {coluna: valor_equipe_titular_mandante / valor_equipe_titular_visitante, o_que: "valor de mercado do time titular", unidade: "moeda não documentada (de 1620000 a 1320000000)", soma: nao}
+      - {coluna: idade_tecnico_mandante, o_que: "idade do técnico", unidade: "anos", soma: nao}
+    filtros_tipicos:
+      - "temporada é texto com vírgula: '2003,2004', '2004,2005'... (21 temporadas, nenhuma é um ano único); 2019,2020 tem 119 jogos e as demais 124 ou 125"
+      - "fase = 'Fase De Grupos' (2015), 'Oitavas De Final' (335), 'Quartas De Final' (164), 'Semi-Finais' (82), 'Final' (21); na Copa do Brasil a mesma coluna tem espaço no fim, aqui o perfil não mostra"
+      - "tipo_fase = 'Grupo A'..'Grupo H' (cerca de 252 cada), 'Oitavas De Final' (335), 'Quartas De Final' (160), 'Semi-Finais' (82), 'Jogo Único' (25)"
+      - "prorrogacao = 1 em 13 jogos e NULL em 16; penalti = 1 em 16 jogos (os 16 nulos de prorrogacao são os jogos de pênaltis)"
+      - "estatísticas de jogo (escanteios, faltas, chutes...) nulas em 40,9% das linhas; socios_* nulos em 42%"
+    use_para: "resultados, públicos, valor de elenco e perfil de técnicos nas Champions 2003/04 a 2023/24"
+    nao_use_para: "ranking de clubes sem agregar mandante e visitante (cada clube aparece nos dois lados); tabela não tem a fase de liga nova de 2024/25"
+    rascunho: [use_para, nao_use_para, "moeda de valor_equipe_titular", "tratamento do placar em prorrogação/pênaltis"]
+    verificado: "2617 linhas = 2617 chaves; 21 temporadas; fase e tipo_fase contados por GROUP BY; prorrogacao/penalti cruzados — medido 2026-10-27"

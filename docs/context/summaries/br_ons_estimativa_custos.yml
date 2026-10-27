@@ -1,0 +1,74 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ons_estimativa_custos
+tabelas:
+  balanco_energia_subsistemas:
+    grao: "um subsistema (ou o SIN) × hora"
+    chave: "(data, hora, id_subsistema)"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "2000-01-01–2024-02-29 (hora 0–23)"}
+    territorio: {nivel: regiao, colunas: {id_subsistema: "N, NE, S, SE e SIN (o SIN já é a soma dos quatro; ver gotcha sin_e_soma_dos_subsistemas)", subsistema: "nome"}}
+    medidas:
+      - {coluna: "geracao_hidraulica_verificada, geracao_termica_verificada, geracao_eolica_verificada, geracao_fotovoltaica_verificada", o_que: "geração por fonte", unidade: "MWmed × 10^8 (ver gotcha geracao_vezes_1e8)", soma: sim}
+      - {coluna: carga_verificada, o_que: "carga", unidade: "MWmed × 10^8; média de 2023 do SIN = 73.702 MW após /1e8", soma: sim}
+      - {coluna: intercambio_verificado, o_que: "intercâmbio (pode ser negativo)", unidade: "MWmed × 10^8", soma: nao}
+    filtros_tipicos:
+      - "id_subsistema = 'SIN' para o total, ou id_subsistema IN ('N','NE','S','SE'); nunca os cinco juntos"
+    use_para: "carga e geração por fonte e subsistema, hora a hora"
+    nao_use_para: "somar todos os id_subsistema (dobra); ler valores sem dividir por 1e8"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.058.421 linhas = 1.058.421 distintas na chave; 2023, SIN: 8.688 horas; carga média /1e8: SIN 73.702, SE 41.877, S 12.571, NE 12.114, N 7.141 — medido 2026-10-27"
+  balanco_energia_subsistemas_dessem:
+    grao: "um subsistema × meia hora"
+    chave: "(data, hora, id_subsistema)"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "2023-08-15–2024-03-03 (meia hora)"}
+    territorio: {nivel: regiao, colunas: {id_subsistema: "N, NE, S, SE (sem SIN)", subsistema: "NORTE, NORDESTE, SUDESTE, SUL (aqui 'SUDESTE', nas outras tabelas 'SUDESTE/CENTRO-OESTE')"}}
+    medidas:
+      - {coluna: valor_demanda, o_que: "demanda", unidade: "MWmed × 10^8 (média NE = 13.137 MW após /1e8)", soma: sim}
+      - {coluna: usina_hidraulica_verificada, o_que: "geração hidráulica de usinas", unidade: "× 10^8", soma: sim}
+      - {coluna: "geracao_usina_termica_verificada", o_que: "geração térmica", unidade: "× 10^8", soma: sim}
+      - {coluna: "geracao_eolica_verificada, geracao_fotovoltaica_verificada, geracao_pequena_usina_*_verificada", o_que: "eólica, solar e pequenas usinas", unidade: "NÃO ×1e8: eólica média do NE = 992.136 (já em escala de MW/kW, unidade não documentada)", soma: sim}
+    filtros_tipicos:
+      - "data >= '2023-08-15' (única cobertura)"
+    use_para: "balanço do modelo DESSEM em meia hora, por subsistema"
+    nao_use_para: "somar colunas de escalas diferentes (hidráulica ×1e8, eólica sem); série longa"
+    rascunho: [use_para, nao_use_para]
+    verificado: "38.208 linhas = 38.208 distintas na chave; eólica NE média 992.136 e valor_demanda NE /1e8 = 13.137 — medido 2026-10-27"
+  custo_marginal_operacao_semanal:
+    grao: "um subsistema × semana operativa (data = sexta-feira de referência)"
+    chave: "(data, id_subsistema)"
+    tempo: {natureza: serie_de_periodos, coluna: data, cobertura: "2005-01-07–2024-03-08"}
+    territorio: {nivel: regiao, colunas: {id_subsistema: "N, NE, S, SE", subsistema: "nome"}}
+    medidas:
+      - {coluna: "custo_marginal_operacao_semanal (e _carga_leve, _carga_media, _carga_pesada)", o_que: "custo marginal de operação por patamar de carga", unidade: "R$/MWh × 10^8 (SE: média 2014 = 829 R$/MWh após /1e8; 2023 ≈ 0)", soma: nao}
+    filtros_tipicos:
+      - "id_subsistema = 'SE' (um subsistema por vez; média, nunca soma)"
+    use_para: "evolução semanal do preço (CMO) por subsistema"
+    nao_use_para: "somar ao longo do tempo; comparar sem dividir por 1e8"
+    rascunho: [use_para, nao_use_para]
+    verificado: "4.004 linhas = 4.004 distintas em (data, id_subsistema); média anual SE (bruta): 2014 8,29e10, 2021 5,30e10, 2023 0 — medido 2026-10-27"
+  custo_marginal_operacao_semi_horario:
+    grao: "um subsistema × meia hora"
+    chave: "(data, hora, id_subsistema)"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "2020-01-01–2024-03-03"}
+    territorio: {nivel: regiao, colunas: {id_subsistema: "N, NE, S, SE", subsistema: "nome"}}
+    medidas:
+      - {coluna: custo_marginal_operacao, o_que: "CMO semi-horário (pode ser negativo)", unidade: "R$/MWh × 10^8 (SE: média 2023 = 6,6 R$/MWh após /1e8)", soma: nao}
+    filtros_tipicos:
+      - "id_subsistema = 'SE' e ano = <ano>"
+    use_para: "preço de curto prazo em meia hora"
+    nao_use_para: "somar; ler sem dividir por 1e8"
+    rascunho: [use_para, nao_use_para]
+    verificado: "285.888 linhas = 285.888 distintas na chave; média SE 2023 bruta 6,60e8 — medido 2026-10-27"
+  custo_variavel_unitario_usinas_termicas:
+    grao: "uma usina térmica × semana operativa do PMO"
+    chave: "(data_inicio, data_fim, id_modelo_usina, usina); também (semana_operativa, id_modelo_usina) é única"
+    tempo: {natureza: serie_de_periodos, coluna: data_inicio, cobertura: "2019-12-28–2024-03-08 (data_fim até 2024-03-08)"}
+    territorio: {nivel: regiao, colunas: {id_subsistema: "N, NE, S, SE", subsistema: "nome", usina: "nome (145 distintos)"}}
+    medidas:
+      - {coluna: custo_variavel_unitario, o_que: "CVU da usina na semana", unidade: "R$/MWh (escala normal, sem ×1e8; máx 5.298)", soma: nao}
+    filtros_tipicos:
+      - "semana_operativa = 'PMO Janeiro 2020' (texto livre); ano_pmo/mes_pmo coincidem com ano/mes de data_inicio (PMO Janeiro 2020: ano_pmo 2019, mes_pmo 12), não com o mês do nome"
+    use_para: "custo variável de térmicas por semana e subsistema"
+    nao_use_para: "assumir mesma escala ×1e8 das outras tabelas"
+    rascunho: [use_para, nao_use_para]
+    verificado: "21.351 linhas = 21.351 distintas na chave de 4 colunas e em (semana_operativa, id_modelo_usina) — medido 2026-10-27"

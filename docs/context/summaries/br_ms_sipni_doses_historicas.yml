@@ -1,0 +1,25 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ms_sipni_doses_historicas
+tabelas:
+  doses_agregadas:
+    grao: "doses de uma vacina aplicadas, por município × faixa etária × imunobiológico × tipo de dose × ano (mês quando existe)"
+    chave: "nenhuma confirmada: nas 3 milhões de primeiras linhas (anos iniciais), ANO+MUNIC+FX_ETARIA+IMUNO+DOSE+ANOMES+MES não repete (16.015 de 16.015 para UF='AC'); não medido na tabela inteira"
+    tempo: {natureza: serie_anual, coluna: ANO, cobertura: "1994–2019; MES/ANOMES nulos em 9,6% das linhas (anos sem mês)"}
+    territorio:
+      nivel: municipio
+      colunas:
+        UF: "sigla da UF (28 valores)"
+        MUNIC: "código do município; tamanho misto no perfil (min '110001' tem 6 dígitos, max '5370015' tem 7): confira length(MUNIC) antes de juntar com IBGE"
+    medidas:
+      - {coluna: QT_DOSE, o_que: "doses aplicadas (VARCHAR, faça CAST)", unidade: "doses", soma: sim}
+      - {coluna: DOSE1, o_que: "significado não documentado (VARCHAR, nulo em 11,59%, max 996)", unidade: "não documentada", soma: nao}
+      - {coluna: DOSEN, o_que: "significado não documentado (VARCHAR, nulo em 11,59%, max 999)", unidade: "não documentada", soma: nao}
+      - {coluna: DIFER, o_que: "significado não documentado (VARCHAR, nulo em 11,59%, min -1, max 996)", unidade: "não documentada", soma: nao}
+    filtros_tipicos:
+      - "DOSE = '01' (730.826 na amostra), '02', '03', '05', '06', '09', '36': significado em br_ms_sipni_dicionarios.doses_tipo via source_codes"
+      - "colunas em MAIÚSCULAS: ANO, UF, MUNIC, FX_ETARIA, IMUNO, DOSE, QT_DOSE, ANOMES, MES, DOSE1, DOSEN, DIFER; tudo VARCHAR exceto ANO (BIGINT)"
+    use_para: "série histórica de doses aplicadas de cada vacina por município e faixa etária (1994–2019)"
+    nao_use_para: "cobertura vacinal (não há população-alvo aqui) ou período pós-2019 (use br_ms_sipni_microdados)"
+    rascunho: [use_para, nao_use_para, medidas.DOSE1, medidas.DOSEN, medidas.DIFER]
+    verificado: "93.785.056 linhas; ANO 1994–2019 (24 distintos no perfil). ATENÇÃO: no DuckDB do beelink, filtro ou GROUP BY em ANO (e filtro UF='AC' sem subconsulta) deu 'INTERNAL Error: NumericValueUnionToValue' ou 0 linhas; só funcionou lendo as primeiras linhas (LIMIT) — medido 2026-10-27"

@@ -1,0 +1,18 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_me_siorg
+tabelas:
+  remuneracao:
+    grao: "um nível de cargo ou função de confiança da administração federal e sua remuneração"
+    chave: "sigla_cargo_funcao, nivel_cargo_funcao (única nas 258 linhas; nivel_cargo_funcao sozinho repete)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "tabela de referência sem coluna de data"}
+    territorio: {nivel: nenhum, colunas: {}}
+    medidas:
+      - {coluna: remuneracao, o_que: "remuneração do cargo/função (máx. 30.934,70 para Presidente, Vice e Ministro de Estado)", unidade: "R$ (rascunho: mensal)", soma: nao}
+      - {coluna: cce_unitario, o_que: "valor do cargo em unidades de CCE (máx. 11,45)", unidade: "fator CCE; significado não documentado", soma: nao}
+    filtros_tipicos:
+      - "sigla_cargo_funcao = 'FCE' (63 linhas), 'CCE' (51), 'FCPE' (21), 'DAS' (17), 'FCT' (15), 'FG' (9)"
+    use_para: "consultar quanto paga cada cargo em comissão ou função de confiança federal"
+    nao_use_para: "contar servidores ou somar gasto de pessoal (é uma tabela de preços de cargos, não de pessoas)"
+    rascunho: [use_para, nao_use_para, "unidade de cce_unitario", "periodicidade de remuneracao"]
+    verificado: "258 linhas = 258 pares (sigla_cargo_funcao, nivel_cargo_funcao); 256 níveis distintos; topo: MEST, PR, VPR com remuneracao 30.934,7 e cce_unitario 11,45 — medido 2026-10-27"

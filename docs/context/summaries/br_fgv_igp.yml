@@ -1,0 +1,236 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_fgv_igp
+tabelas:
+  igp_10_mes:
+    grao: um mês do IGP-10
+    chave: 'ano + mes: count(*) = count(DISTINCT (ano, mes)) = 359'
+    tempo:
+      natureza: serie_mensal
+      coluna: ano, mes
+      cobertura: 1993–2023
+    territorio:
+      nivel: brasil
+      colunas: {}
+    medidas:
+    - coluna: indice
+      o_que: número-índice do mês
+      unidade: número-índice
+      soma: nao
+    - coluna: variacao_mensal
+      o_que: variação sobre o mês anterior
+      unidade: percentual
+      soma: 'nao: acumule por produto de (1+v/100), nunca some'
+    - coluna: variacao_12_meses
+      o_que: variação em 12 meses
+      unidade: percentual
+      soma: nao
+    - coluna: variacao_acumulada_ano
+      o_que: variação acumulada no ano
+      unidade: percentual
+      soma: nao
+    filtros_tipicos:
+    - 'ano = ano civil, mes = mês (1–12): esta tabela está certa'
+    use_para: inflação e correção de valores mês a mês pelo IGP-10.
+    nao_use_para: somar variações percentuais; buscar 2022 nas tabelas anuais (param em 2021).
+    verificado: 359 linhas, 359 pares (ano, mes) distintos; ano 1993–2023, mes 1–12 (certa) — medido 2026-10-27
+  igp_di_ano:
+    grao: um ano civil do IGP-DI
+    chave: 'ano: count(*) = count(DISTINCT ano) = 78'
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 1944–2021
+    territorio:
+      nivel: brasil
+      colunas: {}
+    medidas:
+    - coluna: indice_medio
+      o_que: média do índice no ano
+      unidade: número-índice
+      soma: nao
+    - coluna: indice
+      o_que: índice do ano
+      unidade: número-índice
+      soma: nao
+    - coluna: variacao_anual
+      o_que: variação anual
+      unidade: percentual
+      soma: 'nao: acumule por produto'
+    - coluna: indice_fechamento_anual
+      o_que: índice no fechamento do ano
+      unidade: número-índice
+      soma: nao
+    filtros_tipicos:
+    - ano = ano civil
+    use_para: série anual de longo prazo do IGP-DI.
+    nao_use_para: 'dados de 2022 em diante (param em 2021: use a tabela mensal).'
+    verificado: 78 linhas, 78 anos distintos; 1944–2021 — medido 2026-10-27
+  igp_di_mes:
+    grao: um mês do IGP-DI (colunas ano e mes trocadas na carga)
+    chave: 'ano + mes: count(*) = count(DISTINCT (ano, mes)) = 954'
+    tempo:
+      natureza: serie_mensal
+      coluna: mes (guarda o ano) e ano (guarda o mês)
+      cobertura: mes (=ano) 1944–2023
+    territorio:
+      nivel: brasil
+      colunas: {}
+    medidas:
+    - coluna: indice
+      o_que: número-índice do mês
+      unidade: número-índice
+      soma: nao
+    - coluna: variacao_mensal
+      o_que: variação sobre o mês anterior
+      unidade: percentual
+      soma: 'nao: acumule por produto de (1+v/100), nunca some'
+    - coluna: variacao_12_meses
+      o_que: variação em 12 meses
+      unidade: percentual
+      soma: nao
+    - coluna: variacao_acumulada_ano
+      o_que: variação acumulada no ano
+      unidade: percentual
+      soma: nao
+    filtros_tipicos:
+    - 'ano guarda o MÊS (1–12) e mes guarda o ANO: filtre mes = <ano> AND ano = <mês>; WHERE ano = 2020 devolve zero linhas (gotcha ano_e_mes_trocados)'
+    use_para: inflação e correção de valores mês a mês pelo IGP-DI.
+    nao_use_para: somar variações percentuais; buscar 2022 nas tabelas anuais (param em 2021).
+    verificado: 954 linhas, 954 pares (ano, mes) distintos; ano de 1 a 12, mes de 1944 a 2023 — medido 2026-10-27
+  igp_m_ano:
+    grao: um ano civil do IGP-M
+    chave: 'ano: count(*) = count(DISTINCT ano) = 33'
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 1989–2021
+    territorio:
+      nivel: brasil
+      colunas: {}
+    medidas:
+    - coluna: indice_medio
+      o_que: média do índice no ano
+      unidade: número-índice
+      soma: nao
+    - coluna: indice
+      o_que: índice do ano
+      unidade: número-índice
+      soma: nao
+    - coluna: variacao_anual
+      o_que: variação anual
+      unidade: percentual
+      soma: 'nao: acumule por produto'
+    - coluna: indice_fechamento_anual
+      o_que: índice no fechamento do ano
+      unidade: número-índice
+      soma: nao
+    filtros_tipicos:
+    - ano = ano civil
+    use_para: série anual de longo prazo do IGP-M.
+    nao_use_para: 'dados de 2022 em diante (param em 2021: use a tabela mensal).'
+    verificado: 33 linhas, 33 anos distintos; 1989–2021 — medido 2026-10-27
+  igp_m_mes:
+    grao: um mês do IGP-M (colunas ano e mes trocadas na carga)
+    chave: 'ano + mes: count(*) = count(DISTINCT (ano, mes)) = 407'
+    tempo:
+      natureza: serie_mensal
+      coluna: mes (guarda o ano) e ano (guarda o mês)
+      cobertura: mes (=ano) 1989–2023
+    territorio:
+      nivel: brasil
+      colunas: {}
+    medidas:
+    - coluna: indice
+      o_que: número-índice do mês
+      unidade: número-índice
+      soma: nao
+    - coluna: variacao_mensal
+      o_que: variação sobre o mês anterior
+      unidade: percentual
+      soma: 'nao: acumule por produto de (1+v/100), nunca some'
+    - coluna: variacao_12_meses
+      o_que: variação em 12 meses
+      unidade: percentual
+      soma: nao
+    - coluna: variacao_acumulada_ano
+      o_que: variação acumulada no ano
+      unidade: percentual
+      soma: nao
+    - coluna: variacao_primeiro_decendio
+      o_que: variação do 1º decêndio do mês
+      unidade: percentual
+      soma: nao
+    - coluna: variacao_segundo_decendio
+      o_que: variação do 2º decêndio do mês
+      unidade: percentual
+      soma: nao
+    filtros_tipicos:
+    - 'ano guarda o MÊS (1–12) e mes guarda o ANO: filtre mes = <ano> AND ano = <mês>; WHERE ano = 2020 devolve zero linhas (gotcha ano_e_mes_trocados)'
+    use_para: inflação e correção de valores mês a mês pelo IGP-M.
+    nao_use_para: somar variações percentuais; buscar 2022 nas tabelas anuais (param em 2021).
+    verificado: 407 linhas, 407 pares (ano, mes) distintos; ano de 1 a 12, mes de 1989 a 2023 — medido 2026-10-27
+  igp_og_ano:
+    grao: um ano civil do IGP-OG
+    chave: 'ano: count(*) = count(DISTINCT ano) = 53'
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 1969–2021
+    territorio:
+      nivel: brasil
+      colunas: {}
+    medidas:
+    - coluna: indice_medio
+      o_que: média do índice no ano
+      unidade: número-índice
+      soma: nao
+    - coluna: indice
+      o_que: índice do ano
+      unidade: número-índice
+      soma: nao
+    - coluna: variacao_anual
+      o_que: variação anual
+      unidade: percentual
+      soma: 'nao: acumule por produto'
+    - coluna: indice_fechamento_anual
+      o_que: índice no fechamento do ano
+      unidade: número-índice
+      soma: nao
+    filtros_tipicos:
+    - ano = ano civil; excluir linhas com indice = 0.0 (anos pré-reforma monetária, 10 linhas) e variacao_anual infinita
+    use_para: série anual de longo prazo do IGP-OG.
+    nao_use_para: 'dados de 2022 em diante (param em 2021: use a tabela mensal).'
+    verificado: 53 linhas, 53 anos distintos; 1969–2021 — medido 2026-10-27; variacao_anual tem 1 valor infinito (inf) e 10 anos com índice 0.0 — filtre isinf/zero antes de agregar
+  igp_og_mes:
+    grao: um mês do IGP-OG (colunas ano e mes trocadas na carga)
+    chave: 'ano + mes: count(*) = count(DISTINCT (ano, mes)) = 652'
+    tempo:
+      natureza: serie_mensal
+      coluna: mes (guarda o ano) e ano (guarda o mês)
+      cobertura: mes (=ano) 1969–2023
+    territorio:
+      nivel: brasil
+      colunas: {}
+    medidas:
+    - coluna: indice
+      o_que: número-índice do mês
+      unidade: número-índice
+      soma: nao
+    - coluna: variacao_mensal
+      o_que: variação sobre o mês anterior
+      unidade: percentual
+      soma: 'nao: acumule por produto de (1+v/100), nunca some'
+    - coluna: variacao_12_meses
+      o_que: variação em 12 meses
+      unidade: percentual
+      soma: nao
+    - coluna: variacao_acumulada_ano
+      o_que: variação acumulada no ano
+      unidade: percentual
+      soma: nao
+    filtros_tipicos:
+    - 'ano guarda o MÊS (1–12) e mes guarda o ANO: filtre mes = <ano> AND ano = <mês>; WHERE ano = 2020 devolve zero linhas (gotcha ano_e_mes_trocados)'
+    use_para: inflação e correção de valores mês a mês pelo IGP-OG.
+    nao_use_para: somar variações percentuais; buscar 2022 nas tabelas anuais (param em 2021).
+    verificado: 652 linhas, 652 pares (ano, mes) distintos; ano de 1 a 12, mes de 1969 a 2023 — medido 2026-10-27

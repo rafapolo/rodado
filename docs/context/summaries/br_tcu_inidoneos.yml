@@ -1,0 +1,44 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_tcu_inidoneos
+tabelas:
+  empresas:
+    grao: "uma empresa/pessoa declarada inidônea (licitar com a União) × processo do TCU"
+    chave: "CPF_CNPJ + PROCESSO (127 linhas = 127 distintos, medido)"
+    tempo: {natureza: retrato_atual, coluna: "DATA ACORDAO", cobertura: "2011-02-16–2026-07-29 (acórdão); a sanção vale até DATA FINAL, 2026-10-19–2031-08-08"}
+    territorio: {nivel: municipio, colunas: {UF: "UF do sancionado (texto)", MUNICIPIO: "nome em maiúsculas sem acento, sem código IBGE"}}
+    filtros_tipicos: ["DATA FINAL >= current_date para sanção vigente: 122 de 127 linhas vigentes em 2026-10-27, as 5 restantes já venceram mas seguem na tabela", "CPF_CNPJ: casar sem pontuação após normalizar nos dois lados; formato não conferido"]
+    use_para: "checar se um CNPJ/CPF consta na lista de inidôneos do TCU e até quando (filtre DATA FINAL para vigentes)."
+    nao_use_para: "histórico de sanções já expiradas nem valores de dano: não há coluna de valor."
+    rascunho: [use_para, nao_use_para]
+    verificado: "127 linhas, 127 distintos de (CPF_CNPJ, PROCESSO); 122 com DATA FINAL >= 2026-10-27; datas já DATE (gotcha datas_texto_ddmmaaaa) — medido 2026-10-27"
+  inabilitados_funcao_publica:
+    grao: "uma pessoa inabilitada para cargo em comissão/função de confiança × processo do TCU"
+    chave: "CPF + PROCESSO (782 linhas = 782 distintos, medido)"
+    tempo: {natureza: retrato_atual, coluna: "DATA ACORDAO", cobertura: "2008-11-26–2026-08-26 (acórdão); DATA FINAL 2026-10-10–2034-09-15"}
+    territorio: {nivel: municipio, colunas: {UF: "UF (texto)", MUNICIPIO: "nome em maiúsculas sem acento"}}
+    filtros_tipicos: ["DATA FINAL >= current_date para inabilitação vigente: 772 de 782 linhas vigentes em 2026-10-27, as 10 restantes já venceram mas seguem na tabela"]
+    use_para: "saber quem está hoje inabilitado de função pública pelo TCU e até quando."
+    nao_use_para: "pessoa jurídica (a coluna é CPF) nem valores."
+    rascunho: [use_para, nao_use_para]
+    verificado: "782 linhas, 782 distintos de (CPF, PROCESSO); 772 com DATA FINAL >= 2026-10-27 — medido 2026-10-27"
+  resp_contas_julgadas_irreg_implicacao_eleitoral:
+    grao: "um responsável com contas julgadas irregulares (para fins da Lei da Ficha Limpa) × processo"
+    chave: "CPF + PROCESSO (9.201 linhas = 9.201 distintos, medido)"
+    tempo: {natureza: retrato_atual, coluna: "DATA TRANSITO JULGADO", cobertura: "2018-10-04–2026-10-02; DATA FINAL 2026-10-04–2034-10-02 (fim da inelegibilidade)"}
+    territorio: {nivel: municipio, colunas: {UF: "UF (texto)", MUNICIPIO: "nome em maiúsculas"}}
+    filtros_tipicos: ["CARGO/FUNCAO IS NOT NULL só para contar por cargo (gotcha cargo_funcao_congelado): 6.731 de 9.201 têm valor"]
+    use_para: "cruzar CPF de candidatos/gestores com a lista de inelegíveis do TCU."
+    nao_use_para: "contar por cargo sem o filtro (NULL não é 'sem cargo') nem somar valores: não há coluna de valor."
+    rascunho: [use_para, nao_use_para]
+    verificado: "9.201 linhas, 9.201 distintos de (CPF, PROCESSO); 6.731 com CARGO/FUNCAO, ver gotcha cargo_funcao_congelado — medido 2026-10-27"
+  resp_contas_julgadas_irregulares:
+    grao: "um responsável (CPF ou CNPJ) com contas julgadas irregulares × processo"
+    chave: "CPF_CNPJ + PROCESSO (47.978 linhas = 47.978 distintos, medido)"
+    tempo: {natureza: retrato_atual, coluna: "DATA TRANSITO JULGADO", cobertura: "01/01/1997–31/12/2022 em ordem textual dd/mm/aaaa (VARCHAR, ver gotcha datas_texto_ddmmaaaa)"}
+    territorio: {nivel: municipio, colunas: {UF: "UF (texto)", MUNICIPIO: "nome em maiúsculas"}}
+    filtros_tipicos: ["usar strptime(\"DATA TRANSITO JULGADO\", '%d/%m/%Y') antes de comparar datas (gotcha datas_texto_ddmmaaaa)"]
+    use_para: "listar quem teve contas julgadas irregulares pelo TCU, por UF/município."
+    nao_use_para: "valor do débito (não há coluna) nem ordenar/filtrar a data como texto."
+    rascunho: [use_para, nao_use_para]
+    verificado: "47.978 linhas, 47.978 distintos de (CPF_CNPJ, PROCESSO) — medido 2026-10-27"

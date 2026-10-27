@@ -1,0 +1,19 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_tcu_dadosabertos
+tabelas:
+  dados:
+    grao: "um acórdão do TCU (Plenário ou Câmaras), inclusive os 'de relação'"
+    chave: "key (37.698 linhas, 37.698 distintos); (numeroAcordao, anoAcordao, colegiado) também é única nas 37.698 linhas"
+    tempo: {natureza: serie_de_periodos, coluna: dataSessao, cobertura: "2024-07-02–2026-10-06"}
+    territorio: {nivel: nenhum}
+    medidas:
+      - {expressao: "count(*)", o_que: "número de acórdãos", unidade: "acórdão", soma: sim}
+    filtros_tipicos:
+      - "situacao = 'OFICIALIZADO' (37.594 de 37.698); INVALIDADO (87) e SIGILOSO (17) saem da contagem de acórdãos válidos"
+      - "tipo = 'ACÓRDÃO DE RELAÇÃO' (25.698, sem sumário) ou 'ACÓRDÃO' (12.000, com sumário em geral)"
+      - "colegiado IN ('Primeira Câmara','Segunda Câmara','Plenário'); anoAcordao é texto: '2024','2025','2026'"
+    use_para: "contar e listar acórdãos do TCU por colegiado, relator e período, com link para o texto"
+    nao_use_para: "achar empresas ou CNPJ (não há CNPJ no texto, ver gotcha sem_cnpj_no_texto) ou valor de débito/multa (não há coluna de valor)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "37.698 linhas, 37.698 distintos de key e do trio numero/ano/colegiado; situacao e tipo do perfil; dataSessao DATE; gotchas data_sessao_texto e sem_cnpj_no_texto — medido 2026-10-27"

@@ -1,0 +1,2472 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ons_dados_abertos
+tabelas:
+  acesso_consumidor:
+    grao: uma solicitação de acesso de consumidor à rede básica na fila de análise do ONS (um protocolo)
+    chave: num_protocolo (366 linhas = 366 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: din_solicitacaoacesso
+      cobertura: 2022-01-07–2026-09-21
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF do ponto de conexão
+        nom_pontoconexao: subestação/linha onde se conecta
+    filtros_tipicos:
+    - sts_protocolo = 'Documento emitido' (287 de 366 em consumidor; os demais são 'Anulada', 'Em andamento', 'Interrompida')
+    - 'nom_fila IN (''Consumidor_30Dias'',''Consumidor_120Dias''): fila de prazo de análise (215 e 151 linhas)'
+    - num_rank = '-' quando fora do ranking (351 de 366); é texto
+    use_para: acompanhar pedidos de conexão de grandes consumidores por UF e situação de viabilidade.
+    nao_use_para: 'medir carga ou consumo: não há coluna de potência.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    - significado de nom_fila e dia_contadorprocesso (texto no formato 'n / prazo')
+    verificado: 366 linhas, 366 distintos de num_protocolo; tabela inteira — medido 2026-10-27
+  acesso_distribuidor:
+    grao: uma solicitação de acesso de distribuidora à rede básica (um protocolo)
+    chave: num_protocolo (1167 linhas = 1167 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: din_solicitacaoacesso
+      cobertura: 2021-12-30–2026-09-25
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF (0,09% nulo)
+        nom_pontoconexao: ponto de conexão (64,6% nulo)
+    filtros_tipicos:
+    - sts_protocolo = 'Documento emitido' (1091 de 1167)
+    - nom_fila IN ('Distribuicao_30Dias','Distribuicao_120Dias')
+    use_para: acompanhar pedidos de acesso de distribuidoras por UF e viabilidade.
+    nao_use_para: 'medir carga: não há coluna de potência.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 1167 linhas, 1167 distintos de num_protocolo; tabela inteira — medido 2026-10-27
+  acesso_gerador:
+    grao: uma solicitação de acesso de empreendimento gerador (usina) à rede básica; um protocolo pode ter várias linhas (uma por empreendimento/núcleo CEG)
+    chave: 'nenhuma: num_protocolo tem 706 distintos em 4626 linhas; (num_protocolo, nom_fila, nom_solicitacaoacesso, nom_empreendimento, cod_nucleoceg) dá 4623 distintos, 3 linhas repetem'
+    tempo:
+      natureza: retrato_atual
+      coluna: din_solicitacaoacesso
+      cobertura: 2022-01-01–2026-09-22
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF (0,26% nulo)
+        nom_pontoconexao: ponto de conexão
+    medidas:
+    - coluna: val_potenciainstalada
+      o_que: potência do empreendimento (2,6% nulo)
+      unidade: MW
+      soma: sim
+    filtros_tipicos:
+    - 'sgl_tipoempreendimento IN (''UFV'',''EOL'',''ASSOCIADA'',''UTE'',''BIOM'',''UHE'',''PCH''): UFV (2617) e EOL (1313) dominam'
+    - sts_protocolo = 'Documento emitido' (4171 de 4626; 'Anulada' 413, 'Em andamento' 42)
+    - nom_ambientecontratacao IN ('ACL','ACR','ACL e ACR')
+    use_para: pipeline de conexão de geração (solar, eólica) por UF e tipo, somando val_potenciainstalada com protocolo emitido.
+    nao_use_para: capacidade instalada em operação (são pedidos, inclusive anulados e com início de operação até 2030).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 4626 linhas; 706 distintos de num_protocolo; 4623 distintos da chave composta; tabela inteira — medido 2026-10-27
+  acesso_provisorio:
+    grao: uma solicitação de acesso provisório (conexão temporária, testes, importação/exportação) à rede básica
+    chave: num_protocolo (400 linhas = 400 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: din_solicitacaoacesso
+      cobertura: 2022-01-20–2026-09-23
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF
+        nom_pontoconexao: ponto de conexão
+    filtros_tipicos:
+    - 'sgl_tipoempreendimento IN (''EXP'',''IMP'',''UTE'',''DIST'',''UC'',''BIOM'',''EOL'',''ASSOCIADA''); nom_tipoempreendimento traz o nome por extenso (ex.: ''EXPORTAÇÃO DE ENERGIA ELÉTRICA PARA O EXTERIOR'')'
+    - sts_viabilidade = 'Viável' (327 de 400)
+    use_para: ver pedidos de acesso provisório por tipo e UF.
+    nao_use_para: 'medir potência: não há coluna de potência.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    - significado de sts_solicitacao
+    verificado: 400 linhas, 400 distintos de num_protocolo; tabela inteira — medido 2026-10-27
+  balanco_dessem_detalhe:
+    grao: um subsistema × patamar de meia hora × dia de programação (DESSEM), geração por fonte
+    chave: din_programacaodia, num_patamar, cod_subsistema (96845 linhas = 96845 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: din_programacaodia
+      cobertura: 2025-05-23–2026-10-26; 485 dias, 48 patamares/dia (meia hora)
+    territorio:
+      nivel: regiao
+      colunas:
+        cod_subsistema: N, NE, S, SE
+    medidas:
+    - coluna: val_demanda
+      o_que: demanda programada
+      unidade: MW
+      soma: sim
+    - coluna: val_ger_hidraulica
+      o_que: geração hidráulica
+      unidade: MW
+      soma: sim
+    - coluna: val_ger_termica
+      o_que: geração térmica
+      unidade: MW
+      soma: sim
+    - coluna: val_ger_eolica
+      o_que: geração eólica
+      unidade: MW
+      soma: sim
+    - coluna: val_ger_fotovoltaica
+      o_que: geração fotovoltaica
+      unidade: MW
+      soma: sim
+    - coluna: val_ger_mmgd
+      o_que: geração de micro e minigeração distribuída
+      unidade: MW
+      soma: sim
+    - coluna: val_ger_pch
+      o_que: geração PCH
+      unidade: MW
+      soma: sim
+    - coluna: val_ger_pct
+      o_que: geração de pequenas centrais térmicas (PCT)
+      unidade: MW
+      soma: sim
+    - coluna: val_cons_elevatoria
+      o_que: consumo de bombeamento
+      unidade: MW
+      soma: sim
+    filtros_tipicos:
+    - sem filtro obrigatório; patamar 1 a 48 é a meia hora do dia (num_patamar tem 45 distintos nos dados, nem todo dia tem 48)
+    use_para: balanço programado por fonte e subsistema, por meia hora, desde mai/2025.
+    nao_use_para: geração verificada (é programação) ou série anterior a 2025-05-23.
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - significado de patamar = meia hora
+    verificado: 96845 linhas, 96845 distintos da chave; tabela inteira. Tem menos linhas que balanco_dessem_geral (99072) — medido 2026-10-27
+  balanco_dessem_geral:
+    grao: um subsistema × patamar de meia hora × dia de programação (DESSEM), geração agregada por fonte
+    chave: din_programacaodia, num_patamar, cod_subsistema (99072 linhas = 99072 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: din_programacaodia
+      cobertura: 2025-05-23–2026-10-26
+    territorio:
+      nivel: regiao
+      colunas:
+        cod_subsistema: N, NE, S, SE
+    medidas:
+    - coluna: val_demanda
+      o_que: demanda programada
+      unidade: MW
+      soma: sim
+    - coluna: val_geracao_renovavel
+      o_que: geração renovável
+      unidade: MW
+      soma: sim
+    - coluna: val_geracao_hidraulica
+      o_que: geração hidráulica
+      unidade: MW
+      soma: sim
+    - coluna: val_geracao_termica
+      o_que: geração térmica
+      unidade: MW
+      soma: sim
+    - coluna: val_cons_elevatoria
+      o_que: consumo de bombeamento
+      unidade: MW
+      soma: sim
+    use_para: balanço programado agregado (renovável, hidráulica, térmica) por subsistema e meia hora.
+    nao_use_para: detalhe por fonte renovável (use balanco_dessem_detalhe) ou dados anteriores a 2025-05-23.
+    rascunho: &id001
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    verificado: 99072 linhas, 99072 distintos da chave; tabela inteira (4 subsistemas × 24768 cada) — medido 2026-10-27
+  balanco_energia_subsistema_ho:
+    grao: um subsistema (ou o SIN agregado) × hora, geração por fonte, carga e intercâmbio
+    chave: id_subsistema, din_instante (1175037 linhas = 1175037 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2000-01-01 00:00–2026-10-23 23:00, horária
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema: N, NE, S, SE e 'SIN' (linha de total nacional)
+        nom_subsistema: nome
+    medidas:
+    - coluna: val_gerhidraulica
+      o_que: geração hidráulica
+      unidade: MWmed
+      soma: sim
+    - coluna: val_gertermica
+      o_que: geração térmica
+      unidade: MWmed
+      soma: sim
+    - coluna: val_gereolica
+      o_que: geração eólica (4,7% nulo)
+      unidade: MWmed
+      soma: sim
+    - coluna: val_gersolar
+      o_que: geração solar (11,6% nulo)
+      unidade: MWmed
+      soma: sim
+    - coluna: val_carga
+      o_que: carga
+      unidade: MWmed
+      soma: sim
+    - coluna: val_intercambio
+      o_que: intercâmbio líquido do subsistema (negativo = importa)
+      unidade: MWmed
+      soma: sim
+    filtros_tipicos:
+    - 'id_subsistema <> ''SIN'' para somar por subsistema: a linha ''SIN'' já é o total e duplica a soma (5 linhas por hora, 1 delas SIN)'
+    - 'id_subsistema vem com espaços no fim a partir de 2026 (''N  '', ''NE '', ''S  '', ''SE ''): use trim(id_subsistema)'
+    use_para: geração por fonte, carga e intercâmbio por subsistema/SIN, hora a hora, desde 2000.
+    nao_use_para: somar todas as linhas sem excluir SIN (conta o dobro).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 1175037 linhas, 1175037 distintos de (id_subsistema, din_instante); 5 linhas por hora em 2026-10-20 12:00 (N, NE, S, SE e SIN); tabela inteira — medido 2026-10-27
+  capacidade_geracao:
+    grao: uma unidade geradora do SIN (um equipamento), com potência efetiva e datas de entrada/desativação
+    chave: cod_equipamento (5796 linhas = 5796 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: dat_entradaoperacao
+      cobertura: entrada em operação 1924-03-01–2026-10-23; dat_desativacao preenchida em 19% das linhas
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF
+        id_subsistema: N, NE, S, SE e 'PY' (Paraguai, 10 linhas)
+        nom_usina: usina
+        ceg: código CEG ANEEL
+    medidas:
+    - coluna: val_potenciaefetiva
+      o_que: potência efetiva da unidade geradora
+      unidade: MW
+      soma: sim
+    filtros_tipicos:
+    - dat_desativacao IS NULL para unidades em operação (4695 de 5796)
+    - 'nom_tipousina IN (''EOLIELÉTRICA'',''TÉRMICA'',''FOTOVOLTAICA'',''HIDROELÉTRICA'',''NUCLEAR''): valores em maiúsculas com acento'
+    - nom_combustivel = 'EÓLICA' (2179), 'FOTOVOLTAICA' (1222), 'HIDRÁULICA' (819), 'ÓLEO DIESEL' (890)
+    use_para: capacidade instalada do SIN por fonte, subsistema e UF (soma de val_potenciaefetiva das unidades ativas).
+    nao_use_para: geração realizada, ou total sem filtrar dat_desativacao (inclui unidades desativadas).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 5796 linhas, 5796 distintos de cod_equipamento; unidades ativas 4695; soma de val_potenciaefetiva das ativas = 200,7 GW (total com desativadas 207,6 GW) — medido 2026-10-27
+  capacidade_transformacao:
+    grao: um transformador da rede (equipamento), com tensões e potência nominal
+    chave: '(cod_equipamento, nom_transformador): 2045 linhas = 2045 distintos; cod_equipamento sozinho tem 2017 distintos (28 repetem)'
+    tempo:
+      natureza: retrato_atual
+      coluna: dat_entradaoperacao
+      cobertura: 1965-03-29–2026-10-18; dat_desativacao preenchida em 10%
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF
+        nom_subestacao: subestação
+    medidas:
+    - coluna: val_potencianominal_mva
+      o_que: potência nominal
+      unidade: MVA
+      soma: sim
+    filtros_tipicos:
+    - dat_desativacao IS NULL para os em operação (~90%)
+    - 'nom_tipoderede vem com espaços no fim (''BASICA         '', ''COMPLEMENTAR   ''): use trim()'
+    use_para: inventário de transformação por tensão, subestação e UF.
+    nao_use_para: carga ou fluxo (é cadastro).
+    rascunho: *id001
+    verificado: 2045 linhas; 2017 distintos de cod_equipamento; 2045 de (cod_equipamento, nom_transformador); tabela inteira — medido 2026-10-27
+  carga_energia_di:
+    grao: um subsistema × dia, carga média
+    chave: id_subsistema, din_instante (39173 linhas = 39173 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2000-01-01–2026-10-23
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema: N, NE, S, SE (às vezes com espaço no fim; use trim)
+        nom_subsistema: nome do subsistema
+    medidas:
+    - coluna: val_cargaenergiamwmed
+      o_que: carga média do dia
+      unidade: MWmed
+      soma: sim
+    filtros_tipicos:
+    - id_subsistema sem espaços nesta tabela (N, NE, S, SE)
+    use_para: carga diária por subsistema; somar os 4 subsistemas no mesmo dia dá o SIN.
+    nao_use_para: 'somar dias para obter energia (é potência média: some e divida pela quantidade de dias, ou multiplique por 24 h antes).'
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 39173 linhas, 39173 distintos da chave; 4 linhas em 2026-10-20 (N, NE, S, SE), soma 84.456 MWmed — medido 2026-10-27
+  carga_energia_me:
+    grao: um subsistema × mês, carga média mensal
+    chave: id_subsistema, din_instante (1288 linhas = 1288 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: din_instante
+      cobertura: 2000-01-31–2026-10-31 (data = último dia do mês)
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema: 'N, NE, S, SE (com espaço no fim em N e S: ''N '', ''S '')'
+        nom_subsistema: nome
+    medidas:
+    - coluna: val_cargaenergiamwmed
+      o_que: carga média do mês
+      unidade: MWmed
+      soma: sim
+    filtros_tipicos:
+    - 'id_subsistema vem com espaço no fim em N e S: use trim()'
+    use_para: carga mensal por subsistema.
+    nao_use_para: carga horária.
+    rascunho: *id001
+    verificado: '1288 linhas, 1288 distintos da chave; tabela inteira. Atenção: data máxima 2026-10-31 está no futuro em relação a 2026-10-27 (mês corrente) — medido 2026-10-27'
+  cargaglobal_roraima:
+    grao: 'uma hora de carga de Roraima (a coluna de data perdeu a hora: cada data tem 24 linhas)'
+    chave: 'nenhuma: din_instante é DATE com 1673 datas distintas em 40152 linhas (24 linhas por dia, sem coluna de hora)'
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2022-02-01–2026-08-31
+    territorio:
+      nivel: uf
+    medidas:
+    - coluna: val_carga_mw
+      o_que: carga
+      unidade: MW
+      soma: sim
+    filtros_tipicos:
+    - 'val_carga_mw é VARCHAR com vírgula decimal (''190,2256165''): replace(val_carga_mw, '','', ''.'')::DOUBLE'
+    use_para: média diária de carga de Roraima (agrupar por dia e tirar a média das 24 linhas).
+    nao_use_para: análise horária (a hora não existe na tabela).
+    rascunho: *id001
+    verificado: 40152 linhas; 1673 datas distintas; 24 linhas em 2026-08-31 e 2026-08-30 — medido 2026-10-27
+  classificacao_evt:
+    grao: uma hora (data sem hora; 24 linhas por dia) com valor verificado de EVT e suas razões energética/elétrica
+    chave: 'nenhuma: 731 datas distintas em 17547 linhas (24 por dia, a hora perdida)'
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2024-01-01–2025-12-31
+    medidas:
+    - coluna: val_evt_verificado
+      o_que: EVT verificado (VARCHAR com vírgula decimal)
+      unidade: significado não documentado
+      soma: nao
+    filtros_tipicos:
+    - colunas val_evt_* são VARCHAR com vírgula decimal ('134,29')
+    use_para: ver a classificação de EVT por dia.
+    nao_use_para: qualquer cálculo sem converter a vírgula decimal.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - significado de EVT (não documentado)
+    - unidade
+    verificado: 17547 linhas; 731 datas distintas; tabela inteira — medido 2026-10-27
+  cmo_se:
+    grao: um subsistema × semana operativa, custo marginal de operação (CMO) semanal e por patamar de carga
+    chave: id_subsistema, din_instante (4556 linhas = 4556 distintos)
+    tempo:
+      natureza: serie_de_periodos
+      coluna: din_instante
+      cobertura: 2005-01-07–2026-10-30 (sextas; 1139 semanas)
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema: N, NE, S, SE
+        nom_subsistema: NORTE, NORDESTE, SUDESTE, SUL (maiúsculas)
+    medidas:
+    - coluna: val_cmomediasemanal
+      o_que: CMO médio da semana
+      unidade: R$/MWh
+      soma: nao
+    - coluna: val_cmoleve
+      o_que: CMO no patamar leve
+      unidade: R$/MWh
+      soma: nao
+    - coluna: val_cmomedia
+      o_que: CMO no patamar médio
+      unidade: R$/MWh
+      soma: nao
+    - coluna: val_cmopesada
+      o_que: CMO no patamar pesado
+      unidade: R$/MWh
+      soma: nao
+    use_para: preço (CMO) semanal por submercado; tirar a média ou o último valor da semana.
+    nao_use_para: somar preços; série horária (use cmo_tm).
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - significado de din_instante (início/fim da semana)
+    verificado: 4556 linhas, 4556 distintos de (id_subsistema, din_instante); 1139 datas × 4; tabela inteira — medido 2026-10-27
+  cmo_tm:
+    grao: um subsistema × meia hora, CMO
+    chave: id_subsistema, din_instante (470016 linhas = 470016 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2020-01-01 00:00–2026-10-25 23:30, meia hora (192 linhas por dia = 48 × 4)
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema: N, NE, S, SE
+        nom_subsistema: NORTE, NORDESTE, SUDESTE, SUL
+    medidas:
+    - coluna: val_cmo
+      o_que: CMO
+      unidade: R$/MWh
+      soma: nao
+    use_para: preço de curto prazo (CMO) por submercado em meia hora.
+    nao_use_para: somar val_cmo; use média.
+    rascunho: *id001
+    verificado: 470016 linhas, 470016 distintos da chave; 192 linhas em 2026-10-20; val_cmo vai de -39,24 a 54729,62 (inclui negativos); tabela inteira — medido 2026-10-27
+  curva_carga_ho:
+    grao: um subsistema × hora, carga horária
+    chave: id_subsistema, din_instante (940024 linhas = 940024 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2000-01-01 00:00–2026-10-23 23:00, horária
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema: N, NE, S, SE (limpo)
+        nom_subsistema: nome; o Sudeste aparece como 'SUDESTE' (227914) até 2025 e 'SUDESTE/CENTRO-OESTE' (7104) em 2026
+    medidas:
+    - coluna: val_cargaenergiahomwmed
+      o_que: carga média da hora
+      unidade: MWmed
+      soma: sim
+    filtros_tipicos:
+    - filtre por id_subsistema (nom_subsistema muda de nome em 2026 para o Sudeste)
+    use_para: carga horária por subsistema; somar 4 subsistemas na mesma hora dá o SIN.
+    nao_use_para: filtrar Sudeste por nom_subsistema = 'SUDESTE' (perde 2026).
+    rascunho: *id001
+    verificado: 940024 linhas, 940024 distintos da chave; tabela inteira — medido 2026-10-27
+  cvu_usitermica_se:
+    grao: uma usina térmica × semana operativa (× revisão), custo variável unitário (CVU)
+    chave: 'nenhuma: (dat_iniciosemana, cod_usinaplanejamento) tem 107047 distintos em 107089 linhas; 42 pares aparecem repetidos (os 2 vistos são linhas idênticas)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dat_iniciosemana
+      cobertura: 2005-01-01–2026-10-24 (semanas operativas, sábado a sexta)
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema: N, NE, S, SE
+        nom_usina: usina térmica
+    medidas:
+    - coluna: val_cvu
+      o_que: custo variável unitário
+      unidade: R$/MWh
+      soma: nao
+    filtros_tipicos:
+    - 'num_revisao IN (0..4): revisão do PMO; nom_semanaoperativa traz ''PMO <mês> <ano> - Revisão n'''
+    use_para: CVU das térmicas por semana, para ordem de mérito.
+    nao_use_para: somar CVU; contar usinas sem deduplicar (42 pares repetidos).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: '107089 linhas; 107047 distintos de (dat_iniciosemana, cod_usinaplanejamento) e também com num_revisao; 42 pares repetidos são linhas idênticas (ex.: LUIZORMELO em 2025-12-27) — medido 2026-10-27'
+  dados_hidrologicos_di:
+    grao: um reservatório/usina × dia, níveis e vazões
+    chave: 'nenhuma exata: (id_reservatorio, din_instante) tem 1602667 distintos em 1602669 linhas (2 repetem)'
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2000-01-01–2026-10-25
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema: 'N, NE, S, SE (com espaço no fim em 2026: ''N '', ''S '')'
+        nom_bacia: bacia
+        nom_reservatorio: reservatório
+        id_reservatorio: código ONS
+    medidas:
+    - coluna: val_vazaoafluente
+      o_que: vazão afluente
+      unidade: m3/s
+      soma: nao
+    - coluna: val_vazaodefluente
+      o_que: vazão defluente
+      unidade: m3/s
+      soma: nao
+    - coluna: val_vazaoturbinada
+      o_que: vazão turbinada
+      unidade: m3/s
+      soma: nao
+    - coluna: val_vazaovertida
+      o_que: vazão vertida
+      unidade: m3/s
+      soma: nao
+    - coluna: val_vazaonatural
+      o_que: vazão natural
+      unidade: m3/s
+      soma: nao
+    - coluna: val_nivelmontante
+      o_que: nível de montante
+      unidade: m
+      soma: nao
+    - coluna: val_volumeutilcon
+      o_que: volume útil (50,7% nulo)
+      unidade: '% ou hm3 (não documentado)'
+      soma: nao
+    filtros_tipicos:
+    - 'tip_reservatorio muda de codificação em 2022: até 2021 usa nomes (''Fio dagua'', ''Reservatório com Usina'', ''Reservatório sem usina'', ''Reservatório Com Usina de Bombeamento''); de 2022 em diante
+      usa siglas (''FIO'',''RCU'',''RES'',''FIC'',''CED'',''RBB'',''INC'')'
+    - 'id_subsistema vem com espaço à direita em alguns períodos (ex.: ''N '' e ''S '' a partir de 2026); compare com trim(id_subsistema) = ''N'''
+    use_para: vazões e níveis diários por reservatório/bacia.
+    nao_use_para: filtrar tipo de reservatório por um só vocabulário (perde metade do período); somar vazões entre reservatórios em cascata (dupla contagem).
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - significado das siglas de tip_reservatorio
+    verificado: 1602669 linhas; 1602667 distintos de (id_reservatorio, din_instante); 1590307 de (cod_usina, din_instante); tabela inteira — medido 2026-10-27
+  dados_hidrologicos_ho:
+    grao: um reservatório × hora, níveis e vazões
+    chave: '(id_reservatorio, din_instante): 12104 linhas = 12104 distintos (3 dias, 2026-09-01 a 2026-09-03); não medido na tabela inteira'
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2010-01-01 01:00–2026-10-25 14:00, horária
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema: 'N, NE, S, SE (com espaço no fim em parte: ''S '', ''N '')'
+        id_reservatorio: código ONS
+        nom_bacia: bacia
+    medidas:
+    - coluna: val_vazaoafluente
+      o_que: vazão afluente (2,6% nulo; mínimo e máximo absurdos, de -2,9 milhões a 4,2 milhões)
+      unidade: m3/s
+      soma: nao
+    - coluna: val_vazaodefluente
+      o_que: vazão defluente
+      unidade: m3/s
+      soma: nao
+    - coluna: val_vazaoturbinada
+      o_que: vazão turbinada
+      unidade: m3/s
+      soma: nao
+    - coluna: val_vazaovertida
+      o_que: vazão vertida
+      unidade: m3/s
+      soma: nao
+    - coluna: val_nivelmontante
+      o_que: nível de montante
+      unidade: m
+      soma: nao
+    - coluna: val_volumeutil
+      o_que: volume útil
+      unidade: '% ou hm3 (não documentado)'
+      soma: nao
+    filtros_tipicos:
+    - 'tip_reservatorio vem com espaços no fim (''Fio dagua                               '', ''Reservatório com Usina                  ''): use trim()'
+    - filtre sempre por din_instante (tabela de 21 milhões de linhas)
+    use_para: vazões e níveis horários por reservatório, para um recorte de datas.
+    nao_use_para: varrer a tabela inteira ou confiar em valores extremos de vazão sem filtro de outliers.
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - cobertura medida por min/max na tabela inteira, chave só em amostra de 3 dias
+    verificado: linhas 21105013; min/max de din_instante medidos na tabela inteira; chave testada em 2026-09-01 a 2026-09-03 — medido 2026-10-27
+  demanda_maxima_di:
+    grao: um subsistema × dia, demanda máxima integralizada e instantânea
+    chave: id_subsistema, dat_referencia (4112 linhas = 4112 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: dat_referencia
+      cobertura: 2024-01-01–2026-10-24
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema: N, NE, S, SE com espaços de preenchimento no fim ('N  ', 'NE ', 'S  ', 'SE ')
+        nom_subsistema: nome com espaços ao redor (' NORDESTE   ')
+    medidas:
+    - coluna: val_demandaintegralizada
+      o_que: demanda máxima integralizada (hora cheia)
+      unidade: MW
+      soma: nao
+    - coluna: val_demandainstantanea
+      o_que: demanda máxima instantânea
+      unidade: MW
+      soma: nao
+    filtros_tipicos:
+    - 'id_subsistema e nom_subsistema têm espaços: use trim()'
+    use_para: pico diário de demanda por subsistema.
+    nao_use_para: somar picos de subsistemas para obter o pico do SIN (ocorrem em horas diferentes).
+    rascunho: *id001
+    verificado: 4112 linhas, 4112 distintos da chave; 1028 por subsistema; tabela inteira — medido 2026-10-27
+  disponibilidade_usina_ho:
+    grao: uma usina × hora, potência instalada e disponibilidade
+    chave: '(id_ons, din_instante): 11448 linhas = 11448 distintos (2026-09-01 a 2026-09-03); (ceg, din_instante) só 11304 (ceg repete); não medido na tabela inteira'
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2015-01-01 01:00–2026-10-25 13:00, horária
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF
+        id_subsistema: N, NE, S, SE
+        id_ons: código ONS da usina
+    medidas:
+    - coluna: val_potenciainstalada
+      o_que: potência instalada
+      unidade: MW
+      soma: sim
+    - coluna: val_dispoperacional
+      o_que: disponibilidade operacional
+      unidade: MW
+      soma: sim
+    - coluna: val_dispsincronizada
+      o_que: disponibilidade sincronizada
+      unidade: MW
+      soma: sim
+    filtros_tipicos:
+    - id_tipousina IN ('UHE','UTE','UTN')
+    - filtre sempre por din_instante (24 milhões de linhas)
+    use_para: disponibilidade horária de usinas despachadas centralizadamente (hidro, térmica, nuclear).
+    nao_use_para: eólica e solar (só UHE/UTE/UTN).
+    rascunho: *id001
+    verificado: linhas 24338587; min/max de din_instante medidos na tabela inteira; chave testada em 3 dias; id_tipousina com 3 valores no perfil — medido 2026-10-27
+  ear_bacia_di:
+    grao: uma bacia × dia, energia armazenada (EAR)
+    chave: nomecurto, ear_data (177783 linhas = 177783 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: ear_data
+      cobertura: 2000-01-01–2026-10-24
+    territorio:
+      nivel: outro
+      colunas:
+        nomecurto: nome curto da bacia (24 distintos)
+    medidas:
+    - coluna: ear_max_bacia
+      o_que: EAR máxima da bacia
+      unidade: MWmês
+      soma: nao
+    - coluna: ear_verif_bacia_mwmes
+      o_que: EAR verificada
+      unidade: MWmês
+      soma: sim
+    - coluna: ear_verif_bacia_percentual
+      o_que: EAR verificada em % da máxima
+      unidade: '%'
+      soma: nao
+    use_para: armazenamento por bacia ao longo do tempo.
+    nao_use_para: somar percentuais.
+    rascunho: *id001
+    verificado: 177783 linhas, 177783 distintos da chave; tabela inteira — medido 2026-10-27
+  ear_ree_di:
+    grao: uma REE (reservatório equivalente de energia) × dia, EAR
+    chave: nom_ree, ear_data (42930 linhas = 42930 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: ear_data
+      cobertura: 2016-01-01–2026-10-24
+    territorio:
+      nivel: outro
+      colunas:
+        nom_ree: REE (13)
+    medidas:
+    - coluna: ear_max_ree
+      o_que: EAR máxima
+      unidade: MWmês
+      soma: nao
+    - coluna: ear_verif_ree_mwmes
+      o_que: EAR verificada
+      unidade: MWmês
+      soma: sim
+    - coluna: ear_verif_ree_percentual
+      o_que: EAR verificada em % da máxima
+      unidade: '%'
+      soma: nao
+    use_para: armazenamento por REE.
+    nao_use_para: somar percentuais.
+    rascunho: *id001
+    verificado: 42930 linhas, 42930 distintos da chave; tabela inteira — medido 2026-10-27
+  ear_reservatorio_di:
+    grao: um reservatório × dia, EAR e contribuição para a EAR de bacia/subsistema/SIN
+    chave: nom_reservatorio, ear_data (706007 linhas = 706007 distintos); cod_resplanejamento dá 704543
+    tempo:
+      natureza: serie_diaria
+      coluna: ear_data
+      cobertura: 2000-01-01–2026-10-23
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema: N, NE, S, SE
+        nom_subsistema: NORTE...SUL em maiúsculas
+        nom_bacia: bacia
+    medidas:
+    - coluna: ear_reservatorio_subsistema_proprio_mwmes
+      o_que: EAR do reservatório no subsistema próprio (10% nulo)
+      unidade: MWmês
+      soma: sim
+    - coluna: ear_total_mwmes
+      o_que: EAR total considerando a cascata
+      unidade: MWmês
+      soma: sim
+    - coluna: ear_reservatorio_percentual
+      o_que: EAR em % (10% nulo)
+      unidade: '%'
+      soma: nao
+    filtros_tipicos:
+    - tip_reservatorio IN ('Reservatório com Usina','Reservatório sem usina')
+    use_para: armazenamento por reservatório e sua contribuição às EAR agregadas.
+    nao_use_para: somar ear_total_mwmes de reservatórios em cascata sem entender a definição (provável dupla contagem).
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - definição de ear_total_mwmes e dos val_contribear*
+    verificado: 706007 linhas, 706007 distintos de (nom_reservatorio, ear_data); tabela inteira — medido 2026-10-27
+  ear_subsistema_di:
+    grao: um subsistema × dia, EAR
+    chave: id_subsistema, ear_data (39176 linhas = 39176 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: ear_data
+      cobertura: 2000-01-01–2026-10-24
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema: N, NE, S, SE; 'N ' e 'S ' com espaço no fim em 594 linhas (297 cada)
+        nom_subsistema: maiúsculas
+    medidas:
+    - coluna: ear_max_subsistema
+      o_que: EAR máxima
+      unidade: MWmês
+      soma: nao
+    - coluna: ear_verif_subsistema_mwmes
+      o_que: EAR verificada
+      unidade: MWmês
+      soma: sim
+    - coluna: ear_verif_subsistema_percentual
+      o_que: EAR verificada em %
+      unidade: '%'
+      soma: nao
+    filtros_tipicos:
+    - 'id_subsistema: ''N '' (2 caracteres) e ''N'' coexistem; agrupe por trim(id_subsistema) ou por nom_subsistema'
+    use_para: armazenamento por subsistema; somar os MWmês de 4 subsistemas dá o SIN.
+    nao_use_para: agrupar por id_subsistema sem trim (parte N e S).
+    rascunho: *id001
+    verificado: 39176 linhas, 39176 distintos de (nom_subsistema, ear_data) e de (id_subsistema, ear_data); id_subsistema com 5 valores por causa do espaço — medido 2026-10-27
+  ena_bacia_di:
+    grao: uma bacia × dia, energia natural afluente (ENA)
+    chave: nom_bacia, ena_data (217961 linhas = 217961 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: ena_data
+      cobertura: 2000-01-01–2026-10-24
+    territorio:
+      nivel: outro
+      colunas:
+        nom_bacia: bacia (27)
+    medidas:
+    - coluna: ena_bruta_bacia_mwmed
+      o_que: ENA bruta
+      unidade: MWmed
+      soma: sim
+    - coluna: ena_bruta_bacia_percentualmlt
+      o_que: ENA bruta em % da média de longo termo
+      unidade: '%'
+      soma: nao
+    - coluna: ena_armazenavel_bacia_mwmed
+      o_que: ENA armazenável
+      unidade: MWmed
+      soma: sim
+    use_para: afluência de energia por bacia.
+    nao_use_para: somar percentuais.
+    rascunho: *id001
+    verificado: 217961 linhas, 217961 distintos da chave; tabela inteira — medido 2026-10-27
+  ena_ree_di:
+    grao: uma REE × dia, ENA
+    chave: nom_reservatorioee, ena_data (45213 linhas = 45213 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: ena_data
+      cobertura: 2016-01-01–2026-10-24
+    territorio:
+      nivel: outro
+      colunas:
+        nom_reservatorioee: REE (13)
+    medidas:
+    - coluna: ena_bruta_ree_mwmed
+      o_que: ENA bruta
+      unidade: MWmed
+      soma: sim
+    - coluna: ena_bruta_ree_percentualmlt
+      o_que: ENA bruta em % da MLT
+      unidade: '%'
+      soma: nao
+    - coluna: ena_armazenavel_ree_mwmed
+      o_que: ENA armazenável
+      unidade: MWmed
+      soma: sim
+    use_para: afluência por REE.
+    nao_use_para: somar percentuais.
+    rascunho: *id001
+    verificado: 45213 linhas, 45213 distintos da chave; tabela inteira — medido 2026-10-27
+  ena_reservatorio_di:
+    grao: um reservatório × dia, ENA
+    chave: 'nenhuma exata: (nom_reservatorio, ena_data) tem 1464920 distintos em 1464921 linhas (1 repete)'
+    tempo:
+      natureza: serie_diaria
+      coluna: ena_data
+      cobertura: 2000-01-01–2026-10-23
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema: N, NE, S, SE
+        nom_bacia: bacia
+    medidas:
+    - coluna: ena_bruta_res_mwmed
+      o_que: ENA bruta (14,6% nulo)
+      unidade: MWmed
+      soma: sim
+    - coluna: ena_armazenavel_res_mwmed
+      o_que: ENA armazenável
+      unidade: MWmed
+      soma: sim
+    - coluna: mlt_ena
+      o_que: média de longo termo (23% nulo)
+      unidade: MWmed
+      soma: nao
+    filtros_tipicos:
+    - tip_reservatorio IN ('Fio dagua','Reservatório com Usina')
+    use_para: afluência por reservatório.
+    nao_use_para: somar ENA de reservatórios em cascata como se fossem independentes.
+    rascunho: *id001
+    verificado: 1464921 linhas; 1464920 distintos de (nom_reservatorio, ena_data); tabela inteira — medido 2026-10-27
+  ena_subsistema_di:
+    grao: um subsistema × dia, ENA
+    chave: id_subsistema, ena_data (39176 linhas = 39176 distintos), pelo nome (nom_subsistema, ena_data) também 39176
+    tempo:
+      natureza: serie_diaria
+      coluna: ena_data
+      cobertura: 2000-01-01–2026-10-24
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema: N, NE, S, SE; 'N ' e 'S ' (com espaço) em 594 linhas
+    medidas:
+    - coluna: ena_bruta_regiao_mwmed
+      o_que: ENA bruta
+      unidade: MWmed
+      soma: sim
+    - coluna: ena_bruta_regiao_percentualmlt
+      o_que: ENA bruta em % da MLT
+      unidade: '%'
+      soma: nao
+    - coluna: ena_armazenavel_regiao_mwmed
+      o_que: ENA armazenável
+      unidade: MWmed
+      soma: sim
+    filtros_tipicos:
+    - 'id_subsistema: agrupe por trim(id_subsistema) ou nom_subsistema'
+    use_para: afluência por subsistema.
+    nao_use_para: agrupar por id_subsistema sem trim.
+    rascunho: *id001
+    verificado: 39176 linhas, 39176 distintos da chave; id_subsistema com 5 valores por causa do espaço — medido 2026-10-27
+  energia_vertida_turbinavel_ho:
+    grao: uma usina hidrelétrica × hora, vertimento e vertimento turbinável
+    chave: '(cod_usina, din_instante): 10944 linhas = 10944 distintos em 2026-09-01 a 2026-09-03; não medido na tabela inteira'
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2015-01-01 00:00–2026-10-23 23:00, horária
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema: N, NE, S, SE
+        nom_bacia: bacia
+        nom_rio: rio
+        cod_usina: código da usina
+    medidas:
+    - coluna: val_geracao
+      o_que: geração
+      unidade: MWmed
+      soma: sim
+    - coluna: val_energiavertida
+      o_que: energia vertida
+      unidade: MWmed
+      soma: sim
+    - coluna: val_energiavertidaturbinavel
+      o_que: energia vertida turbinável
+      unidade: MWmed
+      soma: sim
+    - coluna: val_vazaovertida
+      o_que: vazão vertida
+      unidade: m3/s
+      soma: nao
+    filtros_tipicos:
+    - filtre sempre por din_instante (15 milhões de linhas)
+    use_para: energia vertida turbinável por usina/bacia em um recorte de datas.
+    nao_use_para: varrer sem filtro de data.
+    rascunho: *id001
+    verificado: linhas 15085072; min/max medidos na tabela inteira; chave testada em 3 dias — medido 2026-10-27
+  equipamento_controle_reativo:
+    grao: um equipamento de controle de reativo (reator, banco de capacitores, compensador) da rede
+    chave: cod_equipamento (1718 linhas = 1718 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: dat_entradaoperacao
+      cobertura: 1988-12-31–2026-10-16; dat_desativacao preenchida em 11,6%
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF
+        nom_subestacao: subestação
+    medidas:
+    - coluna: val_potreativanominal_mvar
+      o_que: potência reativa nominal (6,8% nulo)
+      unidade: Mvar
+      soma: sim
+    filtros_tipicos:
+    - dat_desativacao IS NULL para equipamentos em operação (88%)
+    - 'nom_tipoequipamento tem espaços no fim: use trim() (''Reator'' 1221, ''Banco de Capacitores'' 384)'
+    use_para: inventário de equipamentos de reativo.
+    nao_use_para: geração/carga.
+    rascunho: *id001
+    verificado: 1718 linhas, 1718 distintos de cod_equipamento; tabela inteira — medido 2026-10-27
+  fator_capacidade_2_di:
+    grao: uma usina eólica/solar (conjunto) × hora, geração programada/verificada e fator de capacidade
+    chave: '(id_ons, din_instante): 16920 linhas = 16920 distintos em 2026-09-01 a 2026-09-03; (nom_usina_conjunto, din_instante) 16560; não medido na tabela inteira'
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2009-07-01 00:00–2026-10-23 23:00, horária
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF (13 UFs)
+        nom_pontoconexao: ponto de conexão
+        val_latitudepontoconexao: latitude
+    medidas:
+    - coluna: val_geracaoverificada
+      o_que: geração verificada
+      unidade: MWmed
+      soma: sim
+    - coluna: val_geracaoprogramada
+      o_que: geração programada (4% nulo)
+      unidade: MWmed
+      soma: sim
+    - coluna: val_capacidadeinstalada
+      o_que: capacidade instalada
+      unidade: MW
+      soma: nao
+    - coluna: val_fatorcapacidade
+      o_que: fator de capacidade (geração/capacidade)
+      unidade: fração (0 a ~1; máximo observado 3,6)
+      soma: nao
+    filtros_tipicos:
+    - nom_tipousina IN ('Eólica','Solar')
+    - 'nom_modalidadeoperacao IN (''Conjunto de Usinas'',''Tipo I'',''Tipo II-B''): ''Conjunto de Usinas'' tem ceg = ''-'' (1886999 linhas na amostra)'
+    - filtre sempre por din_instante (15 milhões de linhas)
+    use_para: fator de capacidade eólico/solar por usina e hora.
+    nao_use_para: média de val_fatorcapacidade entre usinas sem ponderar por capacidade; fonte hidro/térmica.
+    rascunho: *id001
+    verificado: linhas 15193038; min/max medidos na tabela inteira; chave testada em 3 dias — medido 2026-10-27
+  fsarh:
+    grao: uma declaração de restrição hidráulica (FSARH) de um reservatório
+    chave: num_fsarh, ano_fsarh (10937 linhas = 10937 distintos)
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dat_inicio
+      cobertura: dat_inicio 1804-01-01 (sentinela)–2027-05-14; dat_termino 2012-02-11–9996-12-31
+    territorio:
+      nivel: outro
+      colunas:
+        nom_reservatorio: reservatório
+        nom_bacia: bacia
+        nom_rio: rio
+    medidas:
+    - coluna: val_restricao
+      o_que: valor da restrição
+      unidade: depende do tipo (vazão m3/s, nível m, taxa)
+      soma: nao
+    filtros_tipicos:
+    - 'sts_restricao IN (''Aceito'',''Vencido''): ''Aceito'' (762) são as vigentes, ''Vencido'' (10175) as encerradas; ''Aceito'' têm dat_termino >= 2026-10-13'
+    - tip_declaracao IN ('Restrição','Intervenção','Diretriz Operativa','IOR')
+    - dat_inicio < 1900 em 108 linhas e dat_termino > 3000 em 119 (sentinelas, como 9996-12-31)
+    use_para: listar restrições hidráulicas vigentes por reservatório.
+    nao_use_para: somar val_restricao (unidades diferentes por tipo).
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - significado de IOR
+    verificado: 10937 linhas, 10937 distintos de (num_fsarh, ano_fsarh); tabela inteira — medido 2026-10-27
+  fsarh_tabela:
+    grao: um item (linha de tabela de valores) de uma FSARH de tipo tabela
+    chave: 'nenhuma: (num_fsarh, ano_fsarh, num_ordemitem) tem 2347 distintos em 2348 linhas (1 repete)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dat_inicio
+      cobertura: 1804-01-01 (sentinela)–2026-10-21
+    territorio:
+      nivel: outro
+      colunas:
+        nom_reservatorio: reservatório
+    medidas:
+    - coluna: val_restricao
+      o_que: valor da restrição (VARCHAR com vírgula decimal)
+      unidade: depende do tipo
+      soma: nao
+    filtros_tipicos:
+    - 'val_condicao1/val_condicao2/val_restricao são VARCHAR (ex.: ''99,00'')'
+    - tip_valor = 'TABELA' em todas as linhas
+    use_para: detalhar condições de restrições tabeladas.
+    nao_use_para: cálculo sem converter texto para número.
+    rascunho: *id001
+    verificado: 2348 linhas; 2347 distintos de (num_fsarh, ano_fsarh, num_ordemitem); tabela inteira — medido 2026-10-27
+  geracao_exportacao_internacional_ho:
+    grao: uma hora, geração para exportação a Argentina e Uruguai
+    chave: din_instante (35616 linhas = 35616 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2022-10-01–2026-10-24, horária
+    medidas:
+    - coluna: val_exportacao_ar
+      o_que: exportação à Argentina
+      unidade: MWmed
+      soma: sim
+    - coluna: val_exportacao_uy
+      o_que: exportação ao Uruguai
+      unidade: MWmed
+      soma: sim
+    - coluna: val_gerexptermica
+      o_que: geração térmica para exportação
+      unidade: MWmed
+      soma: sim
+    use_para: exportação horária para AR e UY.
+    nao_use_para: importação.
+    rascunho: *id001
+    verificado: 35616 linhas, 35616 distintos de din_instante; tabela inteira — medido 2026-10-27
+  geracao_itaipu:
+    grao: uma hora de geração de Itaipu
+    chave: din_instante (234872 linhas = 234872 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2000-01-01–2026-10-23, horária
+    medidas:
+    - coluna: val_itaipu_total
+      o_que: geração total
+      unidade: MWmed
+      soma: sim
+    - coluna: val_itaipu_60hz
+      o_que: setor 60 Hz
+      unidade: MWmed
+      soma: sim
+    - coluna: val_itaipu_50hz
+      o_que: setor 50 Hz
+      unidade: MWmed
+      soma: sim
+    - coluna: val_itaipu_br
+      o_que: parcela brasileira
+      unidade: MWmed
+      soma: sim
+    use_para: geração horária de Itaipu.
+    nao_use_para: comparar com geracao_usina sem checar a definição de lado brasileiro.
+    rascunho: *id001
+    verificado: '234872 linhas, 234872 distintos de din_instante; tabela inteira (menos linhas que as 269969 horas do período: há horas faltantes) — medido 2026-10-27'
+  geracao_termica_despacho_2_ho:
+    grao: uma usina térmica × hora, geração programada e verificada por motivo de despacho
+    chave: '(din_instante, nom_usina, cod_usinaplanejamento): 24024 linhas = 24024 distintos em 2026-09-01 a 2026-09-07; não medido na tabela inteira'
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2013-01-01–2026-10-24, horária
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema: N, NE, S, SE
+    medidas:
+    - coluna: val_verifgeracao
+      o_que: geração verificada
+      unidade: MWmed
+      soma: sim
+    - coluna: val_proggeracao
+      o_que: geração programada
+      unidade: MWmed
+      soma: sim
+    - coluna: val_verifordemmerito
+      o_que: verificada por ordem de mérito
+      unidade: MWmed
+      soma: sim
+    - coluna: val_verifinflexibilidade
+      o_que: verificada por inflexibilidade
+      unidade: MWmed
+      soma: sim
+    filtros_tipicos:
+    - 'nom_tipopatamar mistura caixas: ''LEVE'',''MÉDIA'',''PESADA'' (maiúsculas) e ''Leve'',''Média'',''Pesada'': use upper()'
+    - filtre sempre por din_instante (15,9 milhões de linhas)
+    use_para: motivo do despacho térmico (mérito, inflexibilidade, razão elétrica) por usina.
+    nao_use_para: varrer sem filtro de data; tratar val_prograzaoeletrica/val_verifrazaoeletrica (min/max nulos no perfil).
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - significado de cada val_prog*/val_verif*
+    verificado: linhas 15903983; chave testada em 7 dias — medido 2026-10-27
+  geracao_usina_2_ho:
+    grao: uma usina × hora, geração verificada
+    chave: '(id_ons, nom_usina, ceg, din_instante): 51984 linhas = 51984 distintos em 2026-09-01 a 2026-09-03; (id_ons, din_instante) só 43632 (id_ons repete entre linhas, 0,54% nulo); não medido na tabela
+      inteira'
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2000-01-01 00:00–2026-10-24 23:00, horária
+    territorio:
+      nivel: uf
+      colunas:
+        id_subsistema: N, NE, S, SE
+        id_estado: UF (maiúsculas); inclui 'z - INTERNACIONAL' em nom_estado
+        nom_usina: usina
+    medidas:
+    - coluna: val_geracao
+      o_que: geração da hora
+      unidade: MWmed
+      soma: sim
+    filtros_tipicos:
+    - 'nom_tipousina IN (''HIDROELÉTRICA'',''TÉRMICA'',''EOLIELÉTRICA'',''FOTOVOLTAICA'',''NUCLEAR'',''BOMBEAMENTO''): maiúsculas com acento'
+    - 'nom_subsistema tem variantes (''SME SUDESTE'',''SME NORDESTE''): use id_subsistema'
+    - filtre sempre por din_instante (87 milhões de linhas)
+    use_para: geração por usina/fonte/UF em um recorte de datas.
+    nao_use_para: varrer sem filtro de data (87 milhões de linhas).
+    rascunho: *id001
+    verificado: 'linhas 87369806; min/max medidos na tabela inteira; chave testada em 3 dias; 2026-09-01: 17328 linhas, soma/24 = 87428,5 — medido 2026-10-27'
+  grandezas_fluviometricas_di:
+    grao: um posto fluviométrico × dia, vazão média
+    chave: 'nenhuma: (id_postofluv, din_medicao) tem 777613 distintos em 783866 linhas (6253 repetem)'
+    tempo:
+      natureza: serie_diaria
+      coluna: din_medicao
+      cobertura: 2015-01-01–2026-10-25
+    territorio:
+      nivel: ponto
+      colunas:
+        val_latitude: latitude (1,9% nulo)
+        val_longitude: longitude
+        nom_rio: rio (texto com espaços no fim)
+        nom_bacia: 'bacia (com espaços no fim, ex.: ''BACIA DO RIO URUGUAI   '')'
+    medidas:
+    - coluna: val_vazaomedia
+      o_que: vazão média do dia (há valores negativos)
+      unidade: m3/s
+      soma: nao
+    - coluna: val_vazaomediaincr
+      o_que: vazão média incremental
+      unidade: m3/s
+      soma: nao
+    filtros_tipicos:
+    - 'nom_rio e nom_bacia têm espaços no fim: use trim()'
+    - deduplique (id_postofluv, din_medicao) antes de agregar
+    use_para: vazões diárias por posto.
+    nao_use_para: somar vazões de postos em série.
+    rascunho: *id001
+    verificado: 783866 linhas; 777613 distintos de (id_postofluv, din_medicao); tabela inteira — medido 2026-10-27
+  hist_despacho_energia:
+    grao: uma linha de texto CSV com ponto e vírgula (a tabela foi lida como uma única coluna)
+    chave: 'nenhuma: a coluna única se chama ''dat_pdp;cod_submercado;sgl_tipousina;cod_usinapdp;nom_usinapdp;num_intdespa;val_despasup'' e cada valor é uma linha ''20210203;NE;UEE;BBUEPS;PEDRA SAL;17;0'''
+    tempo:
+      natureza: serie_diaria
+      coluna: dat_pdp (embutida no texto)
+      cobertura: 2021-01-07–2024-09-30 (min/max de texto no perfil)
+    filtros_tipicos:
+    - 'parsear com string_split(coluna, '';'') (7 campos: data AAAAMMDD, submercado, tipo, código PDP, usina, intervalo, despacho)'
+    use_para: histórico de despacho por usina, depois de dividir o texto em campos.
+    nao_use_para: uso direto em SQL sem string_split; coluna única com 158 milhões de linhas.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - significado dos campos e unidade de val_despasup
+    verificado: linhas 158113122; 1 coluna; amostra de 3 linhas mostra o formato; cobertura vem do min/max do perfil sobre uma amostra — medido 2026-10-27
+  importacaoenergia_comercial_2_ho:
+    grao: um agente × bloco × país × meia hora, importação comercial
+    chave: nom_pais, nom_agente, nom_bloco, din_instante (2488068 linhas = 2488068 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2019-01-01–2026-10-24, meia hora
+    territorio:
+      nivel: outro
+      colunas:
+        nom_pais: ARGENTINA ou URUGUAI
+    medidas:
+    - coluna: val_importacaoverificada
+      o_que: importação verificada (61% nulo)
+      unidade: MWmed
+      soma: sim
+    - coluna: val_importacaodespachada
+      o_que: importação despachada
+      unidade: MWmed
+      soma: sim
+    - coluna: val_preco
+      o_que: preço (52% nulo)
+      unidade: R$/MWh
+      soma: nao
+    use_para: importação de energia por agente/bloco.
+    nao_use_para: 'somar blocos sem filtrar nulos: val_importacaoverificada é nulo em 61%.'
+    rascunho: *id001
+    verificado: 2488068 linhas; 2488068 distintos da chave; tabela inteira — medido 2026-10-27
+  ind_confiarb_atls:
+    grao: um fluxo × periodicidade × mês, indicador ATLS (atendimento ao limite de segurança)
+    chave: nom_fluxo, id_periodicidade, din_referencia (1758 linhas = 1758 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: din_referencia
+      cobertura: 2017-01-01–2026-08-01
+    medidas:
+    - coluna: val_atls
+      o_que: ATLS
+      unidade: fração (0,83 a 1)
+      soma: nao
+    - coluna: num_horasviolacao
+      o_que: horas de violação
+      unidade: h
+      soma: sim
+    filtros_tipicos:
+    - 'id_periodicidade IN (''ME'',''AN''): mensal (879) e anual (879); não misturar'
+    use_para: indicador de limite de intercâmbio por fluxo.
+    nao_use_para: somar linhas ME e AN juntas.
+    rascunho: *id001
+    verificado: 1758 linhas, 1758 distintos da chave; tabela inteira — medido 2026-10-27
+  ind_confiarb_ccal:
+    grao: um agente/COSR/SIN × periodicidade × mês, carregamento de linhas (CCAL)
+    chave: cod_tipoagregacao, id_periodicidade, nom_agregacao, din_referencia (28710 linhas = 28710 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: din_referencia
+      cobertura: 2016-01-01–2026-08-01
+    medidas:
+    - coluna: num_linhasoperacao
+      o_que: linhas em operação
+      unidade: unidades
+      soma: sim
+    - coluna: num_linhasvioladas
+      o_que: linhas com violação
+      unidade: unidades
+      soma: sim
+    - coluna: val_ccal
+      o_que: indicador CCAL
+      unidade: fração (0 a 1)
+      soma: nao
+    filtros_tipicos:
+    - 'cod_tipoagregacao IN (''Agente'',''COSR'',''SIN'') (27686, 768, 256); id_periodicidade IN (''AN'',''ME''): não misturar'
+    - para o total nacional use cod_tipoagregacao = 'SIN' (somar agentes e SIN duplica)
+    use_para: carregamento das linhas de transmissão por agente.
+    nao_use_para: somar tipos de agregação juntos.
+    rascunho: *id001
+    verificado: 28710 linhas, 28710 distintos da chave; tabela inteira — medido 2026-10-27
+  ind_confiarb_ccat:
+    grao: um agente/COSR/SIN × periodicidade × mês, carregamento de transformadores (CCAT)
+    chave: cod_tipoagregacao, id_periodicidade, nom_agregacao, din_referencia (23047 linhas = 23047 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: din_referencia
+      cobertura: 2016-01-01–2026-08-01
+    medidas:
+    - coluna: num_transformadoresoperacao
+      o_que: transformadores em operação
+      unidade: unidades
+      soma: sim
+    - coluna: num_transformadoresviolados
+      o_que: transformadores violados
+      unidade: unidades
+      soma: sim
+    - coluna: val_ccat
+      o_que: indicador CCAT
+      unidade: fração (0 a 1)
+      soma: nao
+    filtros_tipicos:
+    - cod_tipoagregacao IN ('Agente','COSR','SIN'); id_periodicidade IN ('AN','ME')
+    use_para: carregamento de transformadores por agente.
+    nao_use_para: somar tipos de agregação juntos.
+    rascunho: *id001
+    verificado: 23047 linhas, 23047 distintos da chave; tabela inteira — medido 2026-10-27
+  ind_confiarb_ciper:
+    grao: uma agregação geográfica × característica × periodicidade × mês, indicador CIPER (perturbações por classe de severidade)
+    chave: dsc_agregacao, cod_caracteristica, id_periodicidade, din_referencia (9435 linhas = 9435 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: din_referencia
+      cobertura: 2007-01-01–2026-08-01
+    territorio:
+      nivel: uf
+      colunas:
+        dsc_agregacao: 'nível: ''Estado'',''Região Geográfica'',''Subsistema'',''Sistema'''
+        cod_caracteristica: sigla da UF/região/subsistema ou SIN
+        dsc_caracteristica: nome (com espaços no fim)
+    medidas:
+    - coluna: val_ciper1
+      o_que: perturbações classe 1
+      unidade: contagem
+      soma: sim
+    - coluna: val_ciper2
+      o_que: classe 2
+      unidade: contagem
+      soma: sim
+    - coluna: val_ciper3
+      o_que: classe 3
+      unidade: contagem
+      soma: sim
+    - coluna: val_ciper4
+      o_que: classe 4
+      unidade: contagem
+      soma: sim
+    - coluna: val_ciper5
+      o_que: classe 5
+      unidade: contagem
+      soma: sim
+    filtros_tipicos:
+    - 'dsc_agregacao define o nível: somar Estado + Região + Subsistema + Sistema conta várias vezes; filtre um nível'
+    - 'id_periodicidade IN (''ME'',''AN''): mensal (a maioria) e anual; não misturar'
+    use_para: indicador de confiabilidade da rede básica por UF/região/subsistema.
+    nao_use_para: somar níveis de agregação diferentes.
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - significado dos sufixos 1 a 5
+    verificado: 9435 linhas, 9435 distintos da chave; tabela inteira — medido 2026-10-27
+  ind_confiarb_dreq_freq:
+    grao: uma agregação geográfica × característica × periodicidade × mês, indicadores DREQ e FREQ (duração e frequência equivalente de interrupção)
+    chave: dsc_agregacao, cod_caracteristica, id_periodicidade, din_referencia (9435 linhas = 9435 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: din_referencia
+      cobertura: 2007-01-01–2026-08-01
+    territorio:
+      nivel: uf
+      colunas:
+        dsc_agregacao: 'nível: ''Estado'',''Região Geográfica'',''Subsistema'',''Sistema'''
+        cod_caracteristica: sigla da UF/região/subsistema ou SIN
+        dsc_caracteristica: nome (com espaços no fim)
+    medidas:
+    - coluna: val_dreq
+      o_que: duração equivalente
+      unidade: horas (não documentado)
+      soma: nao
+    - coluna: val_freq
+      o_que: frequência equivalente
+      unidade: eventos (não documentado)
+      soma: nao
+    filtros_tipicos:
+    - 'dsc_agregacao define o nível: somar Estado + Região + Subsistema + Sistema conta várias vezes; filtre um nível'
+    - 'id_periodicidade IN (''ME'',''AN''): mensal (a maioria) e anual; não misturar'
+    use_para: indicador de confiabilidade da rede básica por UF/região/subsistema.
+    nao_use_para: somar níveis de agregação diferentes.
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - significado dos sufixos 1 a 5
+    verificado: 9435 linhas, 9435 distintos da chave; tabela inteira — medido 2026-10-27
+  ind_confiarb_energianaosuprida:
+    grao: uma agregação geográfica × característica × periodicidade × mês, energia não suprida (ENS)
+    chave: dsc_agregacao, cod_caracteristica, id_periodicidade, din_referencia (9435 linhas = 9435 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: din_referencia
+      cobertura: 2007-01-01–2026-08-01
+    territorio:
+      nivel: uf
+      colunas:
+        dsc_agregacao: 'nível: ''Estado'',''Região Geográfica'',''Subsistema'',''Sistema'''
+        cod_caracteristica: sigla da UF/região/subsistema ou SIN
+        dsc_caracteristica: nome (com espaços no fim)
+    medidas:
+    - coluna: val_ens
+      o_que: energia não suprida
+      unidade: MWh (não documentado)
+      soma: sim
+    filtros_tipicos:
+    - 'dsc_agregacao define o nível: somar Estado + Região + Subsistema + Sistema conta várias vezes; filtre um nível'
+    - 'id_periodicidade IN (''ME'',''AN''): mensal (a maioria) e anual; não misturar'
+    use_para: indicador de confiabilidade da rede básica por UF/região/subsistema.
+    nao_use_para: somar níveis de agregação diferentes.
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - significado dos sufixos 1 a 5
+    verificado: 9435 linhas, 9435 distintos da chave; tabela inteira — medido 2026-10-27
+  ind_confiarb_severidade:
+    grao: uma agregação geográfica × característica × periodicidade × mês, indicador de severidade (SM1 a SM5)
+    chave: dsc_agregacao, cod_caracteristica, id_periodicidade, din_referencia (9361 linhas = 9361 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: din_referencia
+      cobertura: 2007-01-01–2026-06-01
+    territorio:
+      nivel: uf
+      colunas:
+        dsc_agregacao: 'nível: ''Estado'',''Região Geográfica'',''Subsistema'',''Sistema'''
+        cod_caracteristica: sigla da UF/região/subsistema ou SIN
+        dsc_caracteristica: nome (com espaços no fim)
+    medidas:
+    - coluna: val_sm1
+      o_que: severidade 1
+      unidade: contagem
+      soma: sim
+    - coluna: val_sm2
+      o_que: severidade 2
+      unidade: contagem
+      soma: sim
+    - coluna: val_sm3
+      o_que: severidade 3
+      unidade: contagem
+      soma: sim
+    - coluna: val_sm4
+      o_que: severidade 4
+      unidade: contagem
+      soma: sim
+    - coluna: val_sm5
+      o_que: severidade 5
+      unidade: contagem
+      soma: sim
+    filtros_tipicos:
+    - 'dsc_agregacao define o nível: somar Estado + Região + Subsistema + Sistema conta várias vezes; filtre um nível'
+    - 'id_periodicidade IN (''ME'',''AN''): mensal (a maioria) e anual; não misturar'
+    use_para: indicador de confiabilidade da rede básica por UF/região/subsistema.
+    nao_use_para: somar níveis de agregação diferentes.
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - significado dos sufixos 1 a 5
+    verificado: 9361 linhas, 9361 distintos da chave; tabela inteira — medido 2026-10-27
+  ind_confiarb_robustez:
+    grao: um indicador de robustez × agregação × característica × periodicidade × mês
+    chave: cod_indicador, dsc_agregacao, cod_caracteristica, id_periodicidade, din_referencia (37740 linhas = 37740 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: din_referencia
+      cobertura: 2007-01-01–2026-08-01
+    territorio:
+      nivel: uf
+      colunas:
+        dsc_agregacao: '''Estado'',''Região Geográfica'',''Subsistema'',''Sistema'''
+        cod_caracteristica: sigla
+    medidas:
+    - coluna: val_indicador
+      o_que: valor do indicador (0 a 100)
+      unidade: '%'
+      soma: nao
+    - coluna: num_perturbacoes
+      o_que: perturbações
+      unidade: contagem
+      soma: sim
+    - coluna: num_perturbacoescortecarga
+      o_que: perturbações com corte de carga
+      unidade: contagem
+      soma: sim
+    filtros_tipicos:
+    - 'cod_indicador IN (''RMAL'',''RMCS'',''RRB'',''RRBCS''): 9435 linhas cada; filtre um'
+    - 'dsc_agregacao: um nível por vez'
+    use_para: robustez da rede por região.
+    nao_use_para: somar cod_indicador ou níveis de agregação diferentes.
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - significado dos cod_indicador
+    verificado: 37740 linhas, 37740 distintos da chave; tabela inteira — medido 2026-10-27
+  ind_disponibilidade_fgeracao_uge_an:
+    grao: uma unidade geradora × ano, indicadores de disponibilidade de fonte de geração
+    chave: cod_equipamento, din_ano (16060 linhas = 16060 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: din_ano
+      cobertura: 2011–2026
+    territorio:
+      nivel: uf
+      colunas:
+        estad_id: UF
+        id_subsistema: N, NE, S, SE com espaço no fim ('N ', 'S ')
+    medidas:
+    - coluna: val_dispf
+      o_que: disponibilidade forçada (DISPF)
+      unidade: '%'
+      soma: nao
+    - coluna: val_indisppf
+      o_que: indisponibilidade programada
+      unidade: '%'
+      soma: nao
+    - coluna: val_indispff
+      o_que: indisponibilidade forçada
+      unidade: '%'
+      soma: nao
+    - coluna: val_potencia
+      o_que: potência da unidade
+      unidade: MW
+      soma: sim
+    filtros_tipicos:
+    - 'id_subsistema com espaço no fim: use trim()'
+    use_para: disponibilidade anual por unidade geradora.
+    nao_use_para: somar percentuais de unidades diferentes (use média ponderada por val_potencia).
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - definição de DISPF, DMDFF, FDFF, TDFF
+    verificado: 16060 linhas, 16060 distintos de (cod_equipamento, din_ano) — medido 2026-10-27
+  ind_disponibilidade_fgeracao_uge_me:
+    grao: uma unidade geradora × mês, indicadores de disponibilidade
+    chave: cod_equipamento, dat_mesreferencia (186425 linhas = 186425 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: dat_mesreferencia
+      cobertura: 2011-01-01–2026-09-01
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF
+        id_subsistema: N, NE, S, SE, PY com espaços no fim
+    medidas:
+    - coluna: val_dispf
+      o_que: disponibilidade
+      unidade: '%'
+      soma: nao
+    - coluna: val_indisppf
+      o_que: indisponibilidade programada
+      unidade: '%'
+      soma: nao
+    - coluna: val_indispff
+      o_que: indisponibilidade forçada
+      unidade: '%'
+      soma: nao
+    - coluna: val_potencia
+      o_que: potência
+      unidade: MW
+      soma: sim
+    filtros_tipicos:
+    - 'id_subsistema com espaços no fim: use trim()'
+    use_para: disponibilidade mensal por unidade.
+    nao_use_para: somar percentuais.
+    rascunho: *id001
+    verificado: 186425 linhas, 186425 distintos da chave; tabela inteira — medido 2026-10-27
+  ind_disponibilidade_ft_conversor_me:
+    grao: uma característica de conversora (FT) × mês, disponibilidade
+    chave: cod_caracteristica, dat_referencia (232 linhas = 232 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: dat_referencia
+      cobertura: 2020-01-01–2026-09-01
+    medidas:
+    - coluna: val_dispftconv
+      o_que: disponibilidade de função transmissão de conversora
+      unidade: '%'
+      soma: nao
+    use_para: disponibilidade de conversoras HVDC por tensão.
+    nao_use_para: somar percentuais.
+    rascunho: *id001
+    verificado: 232 linhas, 232 distintos da chave — medido 2026-10-27
+  ind_disponibilidade_ft_reativo_me:
+    grao: uma característica de reativo (FT) × mês, disponibilidade
+    chave: cod_caracteristica, dat_referencia (7324 linhas = 7324 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: dat_referencia
+      cobertura: 2011-01-01–2026-09-01
+    medidas:
+    - coluna: val_dispf
+      o_que: disponibilidade
+      unidade: '%'
+      soma: nao
+    use_para: disponibilidade de reatores e capacitores por tensão.
+    nao_use_para: somar percentuais.
+    rascunho: *id001
+    verificado: 7324 linhas, 7324 distintos da chave — medido 2026-10-27
+  ind_disponibilidade_ft_trlt_me:
+    grao: uma característica de transformador/linha (FT) × mês, disponibilidade
+    chave: cod_caracteristica, dat_referencia (2949 linhas = 2949 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: dat_referencia
+      cobertura: 2011-01-01–2026-09-01
+    medidas:
+    - coluna: val_disp
+      o_que: disponibilidade
+      unidade: '%'
+      soma: nao
+    - coluna: val_indisppf
+      o_que: indisponibilidade programada
+      unidade: '%'
+      soma: nao
+    - coluna: val_indispff
+      o_que: indisponibilidade forçada
+      unidade: '%'
+      soma: nao
+    use_para: disponibilidade de linhas e transformadores por tensão.
+    nao_use_para: somar percentuais.
+    rascunho: *id001
+    verificado: 2949 linhas, 2949 distintos da chave — medido 2026-10-27
+  ind_disponibilidade_geracao_sin:
+    grao: um mês, disponibilidade da geração do SIN
+    chave: dat_referencia (189 linhas = 189 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: dat_referencia
+      cobertura: 2011-01-01–2026-09-01
+    territorio:
+      nivel: brasil
+    medidas:
+    - coluna: val_dispf
+      o_que: disponibilidade
+      unidade: '%'
+      soma: nao
+    - coluna: val_indisppf
+      o_que: indisponibilidade programada
+      unidade: '%'
+      soma: nao
+    - coluna: val_indispff
+      o_que: indisponibilidade forçada
+      unidade: '%'
+      soma: nao
+    use_para: disponibilidade da geração do SIN mês a mês.
+    nao_use_para: somar percentuais.
+    rascunho: *id001
+    verificado: 189 linhas, 189 distintos de dat_referencia; tabela inteira — medido 2026-10-27
+  ind_providencia_ecpa_pcpa:
+    grao: um agente (ou nível) × mês, indicadores ECPA/PCPA de providências
+    chave: dsc_agregacao, dsc_caracteristica, din_referencia (49075 linhas = 49075 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: din_referencia
+      cobertura: 2022-01-01–2026-08-01
+    medidas:
+    - coluna: num_nprc_concluidas
+      o_que: providências concluídas
+      unidade: contagem
+      soma: sim
+    - coluna: num_nprp_programadas
+      o_que: programadas
+      unidade: contagem
+      soma: sim
+    - coluna: num_nprat_atrasadas
+      o_que: atrasadas
+      unidade: contagem
+      soma: sim
+    - coluna: val_ecpa
+      o_que: indicador ECPA
+      unidade: fração (0 a 1)
+      soma: nao
+    - coluna: val_pcpa
+      o_que: indicador PCPA
+      unidade: fração (0 a 1)
+      soma: nao
+    filtros_tipicos:
+    - 'dsc_agregacao IN (''Agente'' (47961),''Gestor de providências'' (778),''Área de atuação do agente'' (280),''Sistema'' (56)): filtre um nível'
+    use_para: cumprimento de providências por agente.
+    nao_use_para: somar níveis de agregação diferentes.
+    rascunho: *id001
+    verificado: 49075 linhas, 49075 distintos da chave — medido 2026-10-27
+  ind_qualid_dfd_evento:
+    grao: um evento de desvio de frequência × faixa
+    chave: din_iniciodesviofreq, id_faixafrequencia (70 linhas = 70 distintos)
+    tempo:
+      natureza: serie_de_periodos
+      coluna: din_iniciodesviofreq
+      cobertura: 2016-01-08–2025-10-14
+    medidas:
+    - coluna: val_dfd
+      o_que: duração do desvio de frequência
+      unidade: segundos (não documentado)
+      soma: sim
+    - coluna: val_freqmaxmin
+      o_que: frequência máxima/mínima do evento
+      unidade: Hz
+      soma: nao
+    filtros_tipicos:
+    - id_faixafrequencia IN ('FI1' (60),'FI2' (7),'FS1' (3))
+    use_para: eventos de desvio de frequência.
+    nao_use_para: tendências (só 70 linhas).
+    rascunho: *id001
+    verificado: 70 linhas, 70 distintos da chave — medido 2026-10-27
+  ind_qualid_dfd_meano:
+    grao: uma faixa de frequência × periodicidade × mês/ano, DFD agregado
+    chave: id_periodicidade, din_referencia, id_faixafrequencia (2048 linhas = 2048 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: din_referencia
+      cobertura: 2016-01-01–2026-08-01
+    medidas:
+    - coluna: val_dfd
+      o_que: duração acumulada do desvio
+      unidade: segundos (não documentado)
+      soma: sim
+    filtros_tipicos:
+    - 'id_periodicidade IN (''ME'',''12''): 1024 cada; ''12'' provavelmente janela de 12 meses (não documentado); não misturar'
+    use_para: DFD por faixa de frequência.
+    nao_use_para: somar ME e 12 juntos.
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - significado de id_periodicidade = 12
+    verificado: 2048 linhas, 2048 distintos da chave — medido 2026-10-27
+  ind_qualid_dfp_regime:
+    grao: um período (dia/mês/ano) de desvio de frequência em regime permanente
+    chave: id_periodicidade, din_referencia (4152 linhas = 4152 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: din_referencia
+      cobertura: 2016-01-01–2026-08-31
+    medidas:
+    - coluna: val_dfp
+      o_que: indicador DFP (0,975 a 1)
+      unidade: fração
+      soma: nao
+    - coluna: num_minutos
+      o_que: minutos do período
+      unidade: min
+      soma: sim
+    filtros_tipicos:
+    - id_periodicidade IN ('DI' (3896),'AN' (128),'ME' (128))
+    use_para: DFP diário/mensal/anual.
+    nao_use_para: somar periodicidades misturadas.
+    rascunho: *id001
+    verificado: 4152 linhas, 4152 distintos da chave — medido 2026-10-27
+  intercambio_internacional_ho:
+    grao: um país de destino × hora, intercâmbio internacional
+    chave: din_instante, nom_paisdestino (658049 linhas = 658049 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2000-01-01–2026-10-22, horária
+    territorio:
+      nivel: outro
+      colunas:
+        nom_paisdestino: ARGENTINA, PARAGUAI, URUGUAI (e 'Argentina' e 'Uruguai' com espaços no fim, 7080 linhas cada)
+    medidas:
+    - coluna: val_intercambiomwmed
+      o_que: intercâmbio verificado (negativo = importação)
+      unidade: MWmed
+      soma: sim
+    filtros_tipicos:
+    - 'nom_paisdestino mistura caixas e espaços: use upper(trim(nom_paisdestino))'
+    use_para: fluxo com países vizinhos.
+    nao_use_para: filtrar país por valor literal sem trim.
+    rascunho: *id001
+    verificado: 658049 linhas, 658049 distintos da chave; tabela inteira — medido 2026-10-27
+  intercambio_modalidade_ho:
+    grao: uma conversora × hora, intercâmbio por modalidade contratual
+    chave: din_instante, nom_conversora (1262377 linhas = 1262377 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2000-01-01–2026-10-22, horária
+    territorio:
+      nivel: outro
+      colunas:
+        nom_conversora: conversora (11)
+    medidas:
+    - coluna: val_modalidadecontratual
+      o_que: intercâmbio por modalidade contratual
+      unidade: MWmed
+      soma: sim
+    - coluna: val_modalidadeemergencial
+      o_que: por modalidade emergencial
+      unidade: MWmed
+      soma: sim
+    - coluna: val_totalverificado
+      o_que: total verificado (97,8% nulo)
+      unidade: MWmed
+      soma: sim
+    use_para: intercâmbio por conversora e modalidade.
+    nao_use_para: 'val_total*: quase todos nulos.'
+    rascunho: *id001
+    verificado: 1262377 linhas, 1262377 distintos da chave; tabela inteira — medido 2026-10-27
+  intercambio_nacional_ho:
+    grao: um par origem→destino de subsistemas × hora, intercâmbio
+    chave: din_instante, id_subsistema_origem, id_subsistema_destino (912743 linhas = 912743 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2000-01-01–2026-10-24, horária
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema_origem: N, NE, S, SE
+        id_subsistema_destino: N, NE, S, SE
+    medidas:
+    - coluna: val_intercambiomwmed
+      o_que: intercâmbio verificado (negativo = sentido oposto)
+      unidade: MWmed
+      soma: sim
+    filtros_tipicos:
+    - 'pares mais frequentes: N→SE, SE→S, N→NE, NE→SE; também existem NE→N, S→SE, SE→N, SE→NE'
+    - 'nom_subsistema_* tem espaços à esquerda: use trim()'
+    use_para: fluxos entre subsistemas.
+    nao_use_para: somar pares sem considerar o sentido.
+    rascunho: *id001
+    verificado: 912743 linhas, 912743 distintos da chave; tabela inteira — medido 2026-10-27
+  interrupcao_carga:
+    grao: uma interrupção de carga de um agente em uma perturbação
+    chave: 'nenhuma: cod_perturbacao tem 6868 distintos em 8374 linhas; (cod_perturbacao, id_estado, nom_agente) dá 8178, 196 linhas repetem'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: din_interrupcaocarga
+      cobertura: 2007-01-01–2026-10-22
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF
+        nom_agente: agente
+    medidas:
+    - coluna: val_cargainterrompida_mw
+      o_que: carga interrompida
+      unidade: MW
+      soma: sim
+    - coluna: val_energianaosuprida_mwh
+      o_que: energia não suprida (há valores negativos)
+      unidade: MWh
+      soma: sim
+    - coluna: val_tempomedio_minutos
+      o_que: tempo médio (há valores negativos)
+      unidade: min
+      soma: nao
+    filtros_tipicos:
+    - 'flg_envolveuredebasica IN (''S'',''N''): ''S'' 6251; flg_envolveuredeoperacao IN (''S'',''N'')'
+    use_para: interrupções de carga por UF/agente.
+    nao_use_para: somar tempo médio; ignorar negativos.
+    rascunho: *id001
+    verificado: 8374 linhas; 6868 cod_perturbacao distintos; 8178 de (cod_perturbacao, id_estado, nom_agente) — medido 2026-10-27
+  linha_transmissao:
+    grao: uma linha de transmissão (equipamento) da rede
+    chave: 'nenhuma: cod_equipamento tem 2337 distintos em 2341 linhas (4 repetem)'
+    tempo:
+      natureza: retrato_atual
+      coluna: dat_entradaoperacao
+      cobertura: 1959-01-24–2026-10-15; dat_desativacao preenchida em 20%
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado_terminalde: UF do terminal de origem
+        id_estado_terminalpara: UF do terminal de destino (2% nulo; inclui países vizinhos)
+    medidas:
+    - coluna: val_comprimento
+      o_que: comprimento
+      unidade: km
+      soma: sim
+    - coluna: val_niveltensao_kv
+      o_que: tensão
+      unidade: kV
+      soma: nao
+    filtros_tipicos:
+    - val_niveltensao_kv IN (230.0 (1412),500.0 (502),345.0 (208),525.0 (103),440.0 (90),600.0 (13))
+    - 'nom_tipoderede e nom_tipolinha têm espaços no fim: use trim(); nom_tipolinha IN (''LINHA DE TRANSMISSÃO'',''RAMAL DE LINHA'',''LINHA DC'')'
+    - dat_desativacao IS NULL para as ativas
+    use_para: extensão da rede por tensão/UF.
+    nao_use_para: contar linhas sem deduplicar cod_equipamento.
+    rascunho: *id001
+    verificado: 2341 linhas; 2337 distintos de cod_equipamento — medido 2026-10-27
+  modalidade_usina:
+    grao: uma usina (cadastro de modalidade de operação)
+    chave: 'nenhuma: ceg tem 5924 distintos em 6034 linhas, (nom_usina, ceg, id_ons) 6008'
+    tempo:
+      natureza: sem_tempo
+      coluna: sem coluna de data
+      cobertura: ''
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF
+    medidas:
+    - coluna: val_potenciaautorizada
+      o_que: potência autorizada
+      unidade: 'MW (máximo 49999: possível sentinela)'
+      soma: sim
+    filtros_tipicos:
+    - sts_aneel IN ('A','I')
+    - nom_modalidadeoperacao IN ('TIPO II-C' (3763),'TIPO III' (1842),'TIPO I' (275),'TIPO II-B','TIPO II-A','TIPO III (EM DIT)')
+    use_para: saber a modalidade de operação (Tipo I, II, III) por usina.
+    nao_use_para: capacidade instalada (use capacidade_geracao).
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - significado de sts_aneel
+    verificado: 6034 linhas; 5924 distintos de ceg; 6008 da tríade — medido 2026-10-27
+  oferta_respostademanda:
+    grao: uma oferta de redução de demanda (resposta da demanda) de um agente em um dia
+    chave: 'nenhuma: (nom_agente, dat_reducao, tip_oferta, hor_inicial, hor_final) tem 1136 distintos em 1166 linhas'
+    tempo:
+      natureza: serie_diaria
+      coluna: dat_reducao
+      cobertura: 2023-11-28–2026-10-20
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema: N, NE, S, SE
+    medidas:
+    - coluna: val_montante
+      o_que: montante ofertado
+      unidade: MW
+      soma: sim
+    - coluna: val_preco
+      o_que: preço (21% nulo)
+      unidade: R$/MWh
+      soma: nao
+    - coluna: val_duracao
+      o_que: duração
+      unidade: h
+      soma: nao
+    filtros_tipicos:
+    - tip_oferta IN ('Potência d-1' (918),'Disponibilidade' (248))
+    use_para: ofertas de resposta da demanda.
+    nao_use_para: somar preço.
+    rascunho: *id001
+    verificado: 1166 linhas; 1136 distintos da chave candidata — medido 2026-10-27
+  ofertapreco_importacao_se:
+    grao: uma oferta de preço de importação (país × agente × bloco × início de vigência)
+    chave: nom_pais, nom_agente, nom_bloco, dat_iniciovalidade (4538 linhas = 4538 distintos)
+    tempo:
+      natureza: serie_de_periodos
+      coluna: dat_iniciovalidade
+      cobertura: 2019-01-01–2026-06-06 (dat_fimvalidade até 2026-06-12)
+    territorio:
+      nivel: outro
+      colunas:
+        nom_pais: ARGENTINA ou URUGUAI
+    medidas:
+    - coluna: val_preco
+      o_que: preço ofertado
+      unidade: R$/MWh
+      soma: nao
+    use_para: preços ofertados para importação.
+    nao_use_para: somar preços.
+    rascunho: *id001
+    verificado: 4538 linhas, 4538 distintos da chave — medido 2026-10-27
+  precipitacao_estacao_di:
+    grao: uma estação pluviométrica × dia, precipitação
+    chave: 'nenhuma: (cod_estacao, dat_observada) tem 827968 distintos em 832245 linhas (4277 repetem)'
+    tempo:
+      natureza: serie_diaria
+      coluna: dat_observada
+      cobertura: 2020-01-01–2021-10-31
+    territorio:
+      nivel: ponto
+      colunas:
+        val_latitude: latitude
+        val_longitude: longitude
+    medidas:
+    - coluna: val_medida
+      o_que: precipitação
+      unidade: mm
+      soma: sim
+    use_para: chuva diária por estação em 2020 e 2021 (série curta).
+    nao_use_para: séries longas (só 22 meses).
+    rascunho: *id001
+    verificado: 832245 linhas; 827968 distintos da chave candidata; tabela inteira — medido 2026-10-27
+  programacao_diaria:
+    grao: uma usina × patamar de meia hora × dia de programação
+    chave: '(din_programacaodia, num_patamar, cod_exibicaousina, nom_usina): 190752 linhas = 190752 distintos em 2025-05-02 (48 patamares); não medido na tabela inteira'
+    tempo:
+      natureza: serie_diaria
+      coluna: din_programacaodia
+      cobertura: 2024-10-01–2026-10-25 em AAAA-MM-DD HH:MM:SS; mais 192624 linhas de 31/05/2025 em DD/MM/AAAA
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF (22,6% nulo)
+        id_subsistema: N, NE, S, SE com espaço no fim ('S ', 'N ')
+        nom_subsistema: '''SUBSISTEMA SUL'' com espaços'
+    medidas:
+    - coluna: val_geracaoprogramada
+      o_que: geração programada
+      unidade: MWmed
+      soma: sim
+    - coluna: val_disponibilidade
+      o_que: disponibilidade
+      unidade: MW
+      soma: sim
+    filtros_tipicos:
+    - 'din_programacaodia é VARCHAR com dois formatos: ''2025-05-02 00:00:00'' e ''31/05/2025'' (192624 linhas, todas de 31/05/2025); comparar como texto falha'
+    - tip_geracao IN ('SOLAR','HIDRÁULICA','TÉRMICA','EÓLICA')
+    - filtre sempre por din_programacaodia (143 milhões de linhas)
+    use_para: programação diária por usina e patamar, um dia por vez.
+    nao_use_para: varrer sem filtro; ordenar din_programacaodia como texto (mistura formatos).
+    rascunho: *id001
+    verificado: linhas 143693664; amostra 1% mostrou comprimentos 10 e 19; 192624 linhas contêm '/'; chave testada em 2025-05-02 — medido 2026-10-27
+  programacao_fluxo_controlado:
+    grao: um elemento de fluxo controlado × terminal × patamar de meia hora × dia
+    chave: din_programacaodia, num_patamar, nom_elementofluxocontrolado, tip_terminal (1442112 linhas = 1442112 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: din_programacaodia
+      cobertura: 2024-10-01–2026-10-25
+    territorio:
+      nivel: regiao
+      colunas:
+        cod_submercado: N, NE, S, SE, RR com espaços de preenchimento ('N  ', 'SE ')
+    medidas:
+    - coluna: val_carga
+      o_que: carga programada no elemento (negativa e positiva)
+      unidade: MW
+      soma: nao
+    filtros_tipicos:
+    - 'cod_submercado com espaços: use trim()'
+    - tip_terminal IN (1,2)
+    use_para: fluxo programado em elementos como bipolos HVDC e conversoras.
+    nao_use_para: somar entre terminais (sinais opostos).
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - significado de tip_terminal
+    verificado: 1442112 linhas, 1442112 distintos da chave; tabela inteira — medido 2026-10-27
+  programacao_x_previsao:
+    grao: uma usina (PDP) × patamar × dia, previsão e programação
+    chave: dat_programacao, num_patamar, cod_usinapdp (86352 linhas = 86352 distintos em 2026-09-01 a 2026-09-03; não medido na tabela inteira)
+    tempo:
+      natureza: serie_diaria
+      coluna: dat_programacao
+      cobertura: 20241001–20261025 (inteiro AAAAMMDD)
+    medidas:
+    - coluna: val_previsao
+      o_que: previsão de geração
+      unidade: MW
+      soma: sim
+    - coluna: val_programado
+      o_que: geração programada
+      unidade: MW
+      soma: sim
+    filtros_tipicos:
+    - 'dat_programacao é BIGINT AAAAMMDD (ex.: 20261025), não data'
+    use_para: comparar previsão e programação por usina.
+    nao_use_para: filtrar com datas tipo DATE sem converter.
+    rascunho: *id001
+    verificado: linhas 19692720; chave testada em 3 dias — medido 2026-10-27
+  res_volumeespera:
+    grao: um reservatório × dia, volume de espera
+    chave: 'nenhuma: (id_reservatorio, din_instante) tem 172466 distintos em 181146 linhas (8680 repetem)'
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2006-10-28–2026-11-06 (datas futuras presentes)
+    territorio:
+      nivel: regiao
+      colunas:
+        id_subsistema: NE, SE, S, 'S ' (com espaço)
+    medidas:
+    - coluna: val_volumeespera
+      o_que: volume de espera (0 a 100)
+      unidade: '% (não documentado)'
+      soma: nao
+    filtros_tipicos:
+    - tip_reservatorio IN ('RCU' (177462),'FIC','FIO')
+    - 'id_subsistema ''S '' (1240) e ''S'': use trim()'
+    use_para: volume de espera para controle de cheias.
+    nao_use_para: somar entre reservatórios.
+    rascunho: *id001
+    verificado: 181146 linhas; 172466 distintos de (id_reservatorio, din_instante) — medido 2026-10-27
+  reservatorio:
+    grao: um reservatório (cadastro)
+    chave: 'res_id (162 linhas, 158 distintos; também 158 distintos em cod_resplanejamento) — nenhuma: 4 repetem'
+    tempo:
+      natureza: retrato_atual
+      coluna: dat_entrada
+      cobertura: 1924-03-01–2025-09-03
+    territorio:
+      nivel: ponto
+      colunas:
+        val_latitude: latitude
+        val_longitude: longitude
+    medidas:
+    - coluna: val_volmax
+      o_que: volume máximo
+      unidade: hm3
+      soma: nao
+    - coluna: val_volutiltot
+      o_que: volume útil total
+      unidade: hm3
+      soma: nao
+    - coluna: val_cotamaxima
+      o_que: cota máxima
+      unidade: m
+      soma: nao
+    filtros_tipicos:
+    - tip_reservatorio IN ('FIO DAGUA' (98),'RESERVATÓRIO COM USINA' (62),'RESERVATÓRIO COM USINA DE BOMBEAMENTO','RESERVATÓRIO SEM USINA')
+    use_para: cadastro de reservatórios.
+    nao_use_para: dados dinâmicos.
+    rascunho: *id001
+    verificado: 162 linhas; 158 distintos de res_id e de cod_resplanejamento — medido 2026-10-27
+  restricao_coff_eolica_detail_tm:
+    grao: uma usina eólica × meia hora, geração estimada/verificada com vento
+    chave: '(id_ons, din_instante): 50640 linhas = 50640 distintos em 2026-09-01; não medido na tabela inteira'
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2021-10-01–2026-10-24 23:30, meia hora
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF
+        id_ons: código ONS da usina
+    medidas:
+    - coluna: val_geracaoverificada
+      o_que: geração verificada
+      unidade: MW
+      soma: sim
+    - coluna: val_geracaoestimada
+      o_que: geração estimada
+      unidade: MW
+      soma: sim
+    - coluna: val_ventoverificado
+      o_que: vento verificado
+      unidade: m/s
+      soma: nao
+    filtros_tipicos:
+    - 'flg_geracaorestrita IN (0,1): 1 = restrita (453894 de 2064384 na amostra)'
+    - filtre sempre por din_instante (81 milhões de linhas)
+    use_para: restrições de geração (constrained-off) eólica/solar por usina.
+    nao_use_para: varrer sem filtro de data
+    rascunho: *id001
+    verificado: linhas 81469830; chave testada em 1 dia — medido 2026-10-27
+  restricao_coff_eolica_tm:
+    grao: uma usina eólica × meia hora, geração, limitação e referência
+    chave: '(id_ons, din_instante): 22032 linhas = 22032 distintos em 2026-09-01 a 2026-09-03; não medido na tabela inteira'
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2021-10-01–2026-10-24 23:30, meia hora
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF
+        id_ons: código ONS da usina
+    medidas:
+    - coluna: val_geracao
+      o_que: geração
+      unidade: MW
+      soma: sim
+    - coluna: val_geracaolimitada
+      o_que: geração limitada (77% nulo)
+      unidade: MW
+      soma: sim
+    - coluna: val_geracaoreferencia
+      o_que: geração de referência
+      unidade: MW
+      soma: sim
+    - coluna: val_geracaonaorealizadaapurada
+      o_que: geração não realizada apurada (77% nulo)
+      unidade: MW
+      soma: sim
+    filtros_tipicos:
+    - 'cod_origemrestricao IN (''SIS'',''LOC''): nulo (77%) quando não há restrição'
+    - filtre sempre por din_instante
+    use_para: restrições de geração (constrained-off) eólica/solar por usina.
+    nao_use_para: varrer sem filtro de data
+    rascunho: *id001
+    verificado: linhas 13320912; chave testada em 3 dias — medido 2026-10-27
+  restricao_coff_eolica_intrasemihora:
+    grao: uma restrição de usina eólica dentro de meia hora (intervalo de hor_inicial a hor_final)
+    chave: '(id_ons, din_instante, hor_inicial): 14349 linhas = 14349 distintos em 2026-09-01 a 2026-09-03; não medido na tabela inteira'
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2021-11-01–2026-10-24 23:30 (min do perfil é de amostra de 41%)
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF
+        id_ons: código ONS da usina
+    medidas:
+    - coluna: num_minutosrestricao
+      o_que: minutos de restrição na meia hora (0 a 30)
+      unidade: min
+      soma: sim
+    - coluna: val_geracaolimitada
+      o_que: geração limitada
+      unidade: MW
+      soma: sim
+    filtros_tipicos:
+    - cod_origemrestricao IN ('SIS','LOC')
+    use_para: restrições de geração (constrained-off) eólica/solar por usina.
+    nao_use_para: calcular energia cortada sem converter minutos
+    rascunho: *id001
+    verificado: linhas 4868712 — medido 2026-10-27
+  restricao_coff_fotovoltaica_detail_tm:
+    grao: uma usina solar × meia hora, geração estimada/verificada com irradiância
+    chave: '(id_ons, din_instante): 26880 linhas = 26880 distintos em 2026-09-01; não medido na tabela inteira'
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2024-04-01–2026-10-24 23:30, meia hora
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF
+        id_ons: código ONS da usina
+    medidas:
+    - coluna: val_geracaoverificada
+      o_que: geração verificada
+      unidade: MW
+      soma: sim
+    - coluna: val_geracaoestimada
+      o_que: geração estimada
+      unidade: MW
+      soma: sim
+    - coluna: val_irradianciaverificado
+      o_que: irradiância verificada
+      unidade: W/m2
+      soma: nao
+    filtros_tipicos:
+    - flg_geracaorestrita IN (0,1)
+    - filtre sempre por din_instante
+    use_para: restrições de geração (constrained-off) eólica/solar por usina.
+    nao_use_para: varrer sem filtro de data
+    rascunho: *id001
+    verificado: linhas 20529360 — medido 2026-10-27
+  restricao_coff_fotovoltaica_intrasemihora:
+    grao: uma restrição de usina solar dentro de meia hora
+    chave: 'nenhuma: (id_ons, din_instante, hor_inicial) tem 1319084 distintos em 1319089 linhas (5 repetem)'
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2024-04-01 09:30–2026-10-24 23:30
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF
+        id_ons: código ONS da usina
+    medidas:
+    - coluna: num_minutosrestricao
+      o_que: minutos de restrição na meia hora (1 a 30)
+      unidade: min
+      soma: sim
+    - coluna: val_geracaolimitada
+      o_que: geração limitada
+      unidade: MW
+      soma: sim
+    filtros_tipicos:
+    - cod_origemrestricao IN ('SIS','LOC')
+    use_para: restrições de geração (constrained-off) eólica/solar por usina.
+    nao_use_para: calcular energia cortada sem converter minutos
+    rascunho: *id001
+    verificado: 1319089 linhas; 1319084 distintos da chave; tabela inteira — medido 2026-10-27
+  restricao_coff_fotovoltaica_tm:
+    grao: uma usina solar × meia hora, geração, limitação e referência
+    chave: id_ons, din_instante (3071376 linhas = 3071376 distintos)
+    tempo:
+      natureza: serie_diaria
+      coluna: din_instante
+      cobertura: 2024-04-01–2026-10-24 23:30, meia hora
+    territorio:
+      nivel: uf
+      colunas:
+        id_estado: UF
+        id_ons: código ONS da usina
+    medidas:
+    - coluna: val_geracao
+      o_que: geração
+      unidade: MW
+      soma: sim
+    - coluna: val_geracaolimitada
+      o_que: geração limitada (75% nulo)
+      unidade: MW
+      soma: sim
+    - coluna: val_geracaoreferencia
+      o_que: geração de referência
+      unidade: MW
+      soma: sim
+    filtros_tipicos:
+    - cod_origemrestricao nulo (75%) quando não há restrição
+    use_para: restrições de geração (constrained-off) eólica/solar por usina.
+    nao_use_para: varrer sem filtro de data
+    rascunho: *id001
+    verificado: 3071376 linhas; 3071376 distintos de (id_ons, din_instante) — medido 2026-10-27
+  subestacao:
+    grao: uma estação/barra de subestação
+    chave: id_estacao (1690 linhas = 1690 distintos); id_subestacao tem 916 distintos
+    tempo:
+      natureza: sem_tempo
+      coluna: sem coluna de data
+      cobertura: ''
+    territorio:
+      nivel: ponto
+      colunas:
+        id_estado: UF
+        val_latitude: latitude (0,5% nulo)
+        val_longitude: longitude
+    medidas:
+    - coluna: val_niveltensao
+      o_que: nível de tensão
+      unidade: kV
+      soma: nao
+    filtros_tipicos:
+    - val_niveltensao IN (230.0 (666),138.0 (327),500.0 (267),69.0 (243),345.0 (95),440.0 (39))
+    use_para: localizar subestações por UF e tensão.
+    nao_use_para: contar subestações sem deduplicar id_subestacao (uma subestação tem várias estações/tensões).
+    rascunho: *id001
+    verificado: 1690 linhas; 1690 distintos de id_estacao; 916 de id_subestacao — medido 2026-10-27
+  taxa_teif_teip:
+    grao: uma usina × mês × taxa (TEIFa ou TEIP) × versão de cálculo
+    chave: 'nenhuma: (nom_usina, din_mes, nom_taxa, num_versao) tem 29838 distintos em 29850 linhas (12 pares repetem com din_calculo diferente); (nom_usina, din_mes, nom_taxa) sem a versão também dá 29838,
+      ou seja, a versão não gera linhas extras'
+    tempo:
+      natureza: serie_mensal
+      coluna: din_mes
+      cobertura: 2021-09-01–2026-09-01
+    medidas:
+    - coluna: val_taxa
+      o_que: taxa de indisponibilidade
+      unidade: fração (0 a 1)
+      soma: nao
+    filtros_tipicos:
+    - nom_taxa IN ('TEIFa','TEIP') (14925 cada)
+    - 'tip_usina tem espaços no fim: ''Hidroelétrica                 '', ''Térmica                       '', ''Nuclear'': use trim()'
+    - '12 pares (usina, mês, taxa) aparecem duas vezes com din_calculo diferente (recálculo da mesma versão): deduplique pelo maior din_calculo; num_versao vai de 1 a 26 (1.0 em 24696 linhas)'
+    use_para: indisponibilidade forçada (TEIFa) e programada (TEIP) por usina e mês.
+    nao_use_para: somar taxas; contar sem escolher a versão.
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - qual versão é a oficial
+    verificado: 29850 linhas; 29838 distintos da chave com versão — medido 2026-10-27
+  taxa_teif_teip_oper:
+    grao: uma usina × mês × taxa operacional (TEIFa_oper/TEIP_oper) × versão
+    chave: 'nenhuma: (nom_usina, din_mes, nom_taxa, num_versao) tem 29841 distintos em 29853 linhas'
+    tempo:
+      natureza: serie_mensal
+      coluna: din_mes
+      cobertura: 2021-09-01–2026-09-01
+    medidas:
+    - coluna: val_taxa
+      o_que: taxa operacional
+      unidade: fração (0 a 1)
+      soma: nao
+    filtros_tipicos:
+    - nom_taxa IN ('TEIFa_oper','TEIP_oper')
+    - 'tip_usina com espaços no fim: use trim()'
+    - deduplique pelo maior din_calculo
+    use_para: versão operacional das taxas TEIF/TEIP.
+    nao_use_para: misturar com taxa_teif_teip sem checar a definição.
+    rascunho: *id001
+    verificado: 29853 linhas; 29841 distintos da chave com versão — medido 2026-10-27
+  taxa_teif_teip_parametro:
+    grao: uma unidade geradora × período × tipo de insumo × versão (insumos do cálculo de TEIF/TEIP)
+    chave: 'nenhuma: (nom_unidadegeradora, dat_periodo, nom_tpinsumo, num_versao) tem 673907 distintos em 674347 linhas (440 repetem)'
+    tempo:
+      natureza: serie_mensal
+      coluna: dat_periodo
+      cobertura: 01/2020–12/2025 (VARCHAR MM/AAAA)
+    medidas:
+    - coluna: val_parametro
+      o_que: valor do insumo (horas, segundo a sigla)
+      unidade: horas (não documentado)
+      soma: sim
+    filtros_tipicos:
+    - dat_periodo é VARCHAR 'MM/AAAA'
+    - 'nom_tpinsumo IN (''HRD'',''HS'',''HEDF'',''HDP'',''HDF'',''HDCE'', ...): 7 valores, significado não documentado'
+    - 'id_tipousina tem espaços no fim: use trim()'
+    use_para: insumos de horas para recalcular TEIF/TEIP.
+    nao_use_para: ordenar dat_periodo como texto.
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - significado das siglas de nom_tpinsumo
+    verificado: 674347 linhas; 673907 distintos da chave com versão — medido 2026-10-27
+  uge_opera_csi:
+    grao: 'uma unidade geradora em um minuto: operando como síncrono ou não (compensador síncrono)'
+    chave: 'nenhuma: (dat_verificada, hora_verificada, cod_pontomedicao) tem 243699 distintos em 296441 linhas (46756 grupos repetidos)'
+    tempo:
+      natureza: serie_diaria
+      coluna: dat_verificada
+      cobertura: 2021-01-01–2026-09-30; hora_verificada VARCHAR HH:MM
+    filtros_tipicos:
+    - flg_operasincrono IN (0,1) (14% nulo); flg_sincrono (86% nulo)
+    - tip_usina = 'MP' em todas as linhas
+    use_para: ver quando unidades operaram em modo síncrono.
+    nao_use_para: contar minutos sem deduplicar.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - significado de flg_operasincrono vs flg_sincrono
+    verificado: 296441 linhas; 243699 distintos da chave candidata — medido 2026-10-27
+  usi_servicoancilar_sandbox:
+    grao: um ponto de conexão/usina em uma hora do sandbox de serviços ancilares
+    chave: 'nenhuma: (dat_verificada, hor_verificada, cod_pontoconexao, ceg) tem 3813 distintos em 3823 linhas'
+    tempo:
+      natureza: serie_diaria
+      coluna: dat_verificada
+      cobertura: 2026-01-01–2026-09-30
+    medidas:
+    - coluna: val_must
+      o_que: MUST
+      unidade: MW (não documentado)
+      soma: nao
+    use_para: usinas participantes do sandbox de serviço ancilar.
+    nao_use_para: análise de custo (não há preço).
+    rascunho:
+    - medidas.unidade
+    - use_para
+    - nao_use_para
+    - significado de flg_cpsa e val_must
+    verificado: 3823 linhas; 3813 distintos da chave candidata — medido 2026-10-27
+  usina_conjunto:
+    grao: uma relação usina × conjunto de usinas (com período de vigência)
+    chave: id_ons_conjunto, id_ons_usina, ceg (2145 linhas = 2145 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: dat_iniciorelacionamento
+      cobertura: sem cobertura medida
+    territorio:
+      nivel: uf
+      colunas:
+        estad_id: UF
+    use_para: ligar usinas aos conjuntos usados nos dados de restrição.
+    nao_use_para: dados de geração.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - cobertura temporal
+    verificado: 2145 linhas, 2145 distintos da chave — medido 2026-10-27
+  usina_pqu:
+    grao: uma relação usina × grupo de pequenas usinas
+    chave: id_ons_pequenasusinas, id_ons_usina (1318 linhas = 1318 distintos)
+    territorio:
+      nivel: uf
+      colunas:
+        estad_id: UF
+    use_para: ligar pequenas usinas ao agrupamento de pequenas usinas.
+    nao_use_para: dados de geração.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 1318 linhas, 1318 distintos da chave — medido 2026-10-27

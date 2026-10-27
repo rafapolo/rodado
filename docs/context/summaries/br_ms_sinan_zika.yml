@@ -1,0 +1,20 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ms_sinan_zika
+tabelas:
+  microdados_zika:
+    grao: "uma notificação individual de zika (ficha SINAN), sem identificador do caso"
+    chave: "nenhuma: sem identificador; 607.162 linhas, 605.456 distintas (1.706 repetidas)"
+    tempo: {natureza: serie_diaria, coluna: "DT_NOTIFIC (ano em NU_ANO; ano_sinan; divergem em 303 linhas)", cobertura: "2015–2026 (2016 concentra 45%)"}
+    territorio: {nivel: municipio, colunas: {ID_MUNICIP: "município de notificação, 6 dígitos", ID_MN_RESI: "município de residência", SG_UF: "UF de residência (código numérico)", SG_UF_NOT: "UF da notificação"}}
+    medidas:
+      - {expressao: "count(*)", o_que: "notificações", unidade: "notificações", soma: sim}
+    filtros_tipicos:
+      - "ano_sinan = <ano>"
+      - "ID_AGRAVO: 'A928' (587.383) e 'A92.' (19.779) — dois formatos do mesmo agravo"
+      - "CLASSI_FIN: '2' 265.555, '1' 193.896, '8' 132.896, vazio 14.573; significado não documentado nas fontes do repo (palpite: 1 confirmado, 2 descartado, 8 inconclusivo)"
+      - "CS_SEXO = 'F','M','I' (uma linha em minúscula 'f')"
+    use_para: "notificações de zika por município e ano."
+    nao_use_para: "contar casos sem documentar CLASSI_FIN."
+    rascunho: [use_para, nao_use_para, filtros_tipicos]
+    verificado: "607.162 linhas; 605.456 distintas (hash da linha); CLASSI_FIN 2 = 265.555, 1 = 193.896, 8 = 132.896 — medido 2026-10-27"

@@ -1,0 +1,810 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_tse_eleicoes
+tabelas:
+  candidatos:
+    grao: uma candidatura (um candidato a um cargo numa eleição, inclui vice e suplentes)
+    chave: '(ano, sequencial, sigla_uf, id_eleicao); em 2026 sequencial sozinho já é único (20.989 linhas, 20.989 distintas), mas não nos anos: ver gotcha sequencial_nao_unico'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 1994–2026 (eleições gerais e municipais, anos pares; 2000, 2004, 2008, 2012, 2016, 2020, 2024 têm 380 mil a 557 mil linhas, os anos gerais 5 mil a 29 mil)
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF da candidatura
+        sigla_uf_nascimento: UF de nascimento (ZZ = exterior)
+        id_municipio: nulo em 100% das linhas de 2026
+    medidas:
+    - coluna: count(*)
+      o_que: candidaturas (inclui suplentes e vices)
+      unidade: candidaturas
+      soma: sim
+    filtros_tipicos:
+    - cargo IN ('presidente','governador','senador','deputado federal','deputado estadual','deputado distrital') em 2026 (minúsculas; também 'conselheiro distrital'); filtre sempre o cargo antes de somar; cargos 2026 também '1º suplente','2º suplente','vice-governador','vice-presidente'
+    - genero IN ('masculino','feminino','nao divulgavel'); raca IN ('branca','parda','preta','indigena','amarela','nao divulgavel') (minúsculas sem acento)
+    - situacao e idade são 100% nulos em 2026; ano = 2026 é a partição que o perfil mediu
+    use_para: perfil dos candidatos (gênero, raça, instrução, idade, partido) por cargo, UF e ano; ponte para bens, receitas e resultados por sequencial
+    nao_use_para: contar pessoas (a mesma pessoa tem uma linha por candidatura); cruzar por CPF em 2024 (metade sem CPF; gotcha cpf_candidato_2024_pela_metade); juntar com resultados por sequencial sozinho
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '3.375.714 linhas, 17 anos de 1994 a 2026; ano 2026: 20.989 linhas = 20.989 distintas em (ano, sequencial, sigla_uf, id_eleicao) e em sequencial; cargos 2026: deputado estadual 11.295, federal 7.803, distrital 433, governador 201, senador 319, presidente 14 — medido 2026-10-27'
+  bens_candidato:
+    grao: um item de bem declarado por um candidato
+    chave: 'nenhuma: o item não tem identificador; (sequencial_candidato, sigla_uf, id_eleicao) identifica o candidato (13.917 em 2026 para 76.144 itens)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2006–2026, só anos pares (2006 a 2026)
+    territorio: &id002
+      nivel: uf
+      colunas:
+        sigla_uf: UF (ZZ = exterior nas tabelas de voto)
+    medidas:
+    - coluna: valor_item
+      o_que: valor declarado do bem
+      unidade: R$ (há valores negativos, mín -38.101, e um máximo de R$ 1,1 bi, outliers)
+      soma: sim
+    - coluna: count(*)
+      o_que: itens declarados
+      unidade: itens
+      soma: sim
+    filtros_tipicos:
+    - 'tipo_item (50 tipos, ex.: ''Veículo automotor terrestre…'', grafia por extenso)'
+    - 'ano = <ano>: 5,1 milhões de linhas no total'
+    use_para: patrimônio declarado por candidato, tipo de bem, UF e ano (soma de valor_item por sequencial_candidato)
+    nao_use_para: patrimônio entre anos com o mesmo sequencial (não é estável); contar bens como pessoas
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '5.108.101 linhas; 2026: 76.144 itens de 13.917 candidaturas, soma R$ 31,91 bi — medido 2026-10-27'
+  carga_2026:
+    grao: uma carga do monitor de bens por cargo (retrato de controle de cobertura da declaração de bens em 2026)
+    chave: (run_at, cargo)
+    tempo:
+      natureza: serie_de_periodos
+      coluna: run_at
+      cobertura: 2026-08-08–2026-10-07 (5 cargas)
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    medidas:
+    - coluna: candidaturas
+      o_que: candidaturas na carga
+      unidade: candidaturas
+      soma: nao
+    - coluna: com_declaracao
+      o_que: com declaração de bens
+      unidade: candidaturas
+      soma: nao
+    - coluna: cobertura
+      o_que: razão sobre as candidaturas de 2022 (candidaturas / candidaturas_2022)
+      unidade: razão (0,24 a 1,33)
+      soma: nao
+    use_para: acompanhar a cobertura da carga de bens de 2026 contra 2022
+    nao_use_para: análise eleitoral; é tabela de controle
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 50 linhas = 50 distintas em (run_at, cargo); 5 cargas × 10 cargos — medido 2026-10-27
+  despesas_candidato:
+    grao: uma despesa de campanha (linha por item) de um candidato
+    chave: 'nenhuma: em 2026, 985.828 linhas para 799.334 (sequencial_candidato, sequencial_despesa) distintos; a mesma despesa se repete em várias linhas'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: data_despesa
+      cobertura: 2002–2026 (partição ano); data_despesa de 2026 vai até 2028-08-28 (outliers)
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF
+        id_municipio: 'constante 5101837 em 2026: não use'
+    medidas:
+    - coluna: valor_despesa
+      o_que: valor da despesa
+      unidade: 'R$ (2026: soma R$ 4,49 bi em 985.828 linhas; some as linhas, não deduplique por sequencial_despesa)'
+      soma: sim
+    filtros_tipicos:
+    - ano = <ano> (33 milhões de linhas; sempre filtre partição)
+    - tipo_prestacao_contas IN ('final','parcial','relatorio financeiro') (2026 ainda sem prestação final)
+    - cargo IN ('presidente','governador','senador','deputado federal','deputado estadual','deputado distrital')
+    use_para: gasto de campanha por candidato, partido, UF e origem_despesa (45 categorias)
+    nao_use_para: conferir contra prestação final em 2026; deduplicar por sequencial_despesa; tipo_despesa é 100% nulo, use origem_despesa
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '33.397.551 linhas, 13 anos de 2002 a 2026; 2026: 985.828 linhas, 799.334 distintas em (sequencial_candidato, sequencial_despesa), soma R$ 4,49 bi — medido 2026-10-27'
+  despesas_contratadas_orgao_partidario:
+    grao: uma linha de despesa contratada por um órgão partidário (a mesma despesa se abre por item)
+    chave: 'nenhuma: 1.096.000 linhas para 839.658 (ano, sequencial_despesa); ver gotcha despesa_orgao_sequencial_repete'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: data_despesa
+      cobertura: 2018–2026 (ano 2018, 2020, 2022, 2024, 2026)
+    territorio:
+      nivel: outro
+      colunas:
+        sigla_uf: UF
+        id_municipio: 62% nulo
+        esfera_partidaria: '''nacional'',''federal (estadual/distrital)'',''municipal'',''zonal'''
+    medidas:
+    - coluna: valor_despesa
+      o_que: valor contratado
+      unidade: R$ (soma total R$ 25,19 bi; some as linhas)
+      soma: sim
+    filtros_tipicos:
+    - tipo_prestacao_contas IN ('final','relatorio financeiro','parcial','regularizacao da omissao…') (literal truncado no perfil)
+    - tipo_eleicao IN ('eleicao ordinaria','suplementar')
+    use_para: despesas de partidos em campanha por esfera, UF, partido e origem_despesa
+    nao_use_para: deduplicar por sequencial_despesa (perde valor); somar com despesas_pagas (contratado vs pago)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 1.096.000 linhas; 839.658 distintas em (ano, sequencial_despesa), 916.385 em 5 colunas; soma R$ 25,19 bi — medido 2026-10-27
+  despesas_pagas_orgao_partidario:
+    grao: um pagamento (parcela) de despesa de um órgão partidário
+    chave: '(ano, sequencial_parcelamento_despesa) quase única: 866.927 linhas, 866.926 distintas; sequencial_despesa repete (821.983 distintos)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: data_pagamento
+      cobertura: 2018–2026; data_pagamento vai de 2000-12-15 a 9202-09-25 (26 linhas depois de 2026-12-31, erro)
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF
+    medidas:
+    - coluna: valor_pagamento
+      o_que: valor pago
+      unidade: R$ (soma R$ 24,93 bi)
+      soma: sim
+    filtros_tipicos:
+    - 'fonte_recurso IN (''fundo especial de financiamento de campanha'',''outros recursos'',''fundo partidario'') (literal truncado no perfil: confira a grafia exata)'
+    - especie_recurso IN ('transferencia eletronica','debito em conta','pix','cheque','boleto de cobranca','em especie','cartao de debito','nao informado')
+    use_para: pagamentos efetivos de partidos por fonte de recurso e espécie
+    nao_use_para: somar com a tabela contratada como se fosse a mesma coisa
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 866.927 linhas; 866.926 distintas em (ano, sequencial_parcelamento_despesa); soma R$ 24,93 bi — medido 2026-10-27
+  detalhes_votacao_municipio:
+    grao: um município × cargo × turno × eleição, com comparecimento e votos válidos do total do cargo
+    chave: (ano, turno, id_eleicao, sigla_uf, id_municipio_tse, cargo)
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 1994–2026 (2026 vai até 2026-10-25, inclui 2º turno)
+    territorio: &id001
+      nivel: municipio
+      colunas:
+        sigla_uf: UF (ZZ = exterior)
+        id_municipio: código IBGE de 7 dígitos (quase nunca nulo, mas nulo em 100% em candidatos/receitas_candidato/resultados_candidato de 2026)
+        id_municipio_tse: código TSE do município
+    medidas:
+    - coluna: aptos
+      o_que: eleitores aptos
+      unidade: eleitores
+      soma: sim
+    - coluna: comparecimento
+      o_que: eleitores que compareceram
+      unidade: eleitores
+      soma: sim
+    - coluna: abstencoes
+      o_que: abstenções
+      unidade: eleitores
+      soma: sim
+    - coluna: votos_validos
+      o_que: votos válidos
+      unidade: 'votos (para senador a soma 2026 é 207 mi com 124,8 mi de comparecimento: o eleitor vota em mais de um nome, inferido)'
+      soma: sim
+    - coluna: votos_brancos
+      o_que: brancos
+      unidade: votos
+      soma: sim
+    - coluna: votos_nulos
+      o_que: nulos
+      unidade: votos
+      soma: sim
+    - coluna: votos_nominais
+      o_que: votos em candidato
+      unidade: votos
+      soma: sim
+    - coluna: votos_legenda
+      o_que: votos em legenda
+      unidade: votos
+      soma: sim
+    filtros_tipicos:
+    - cargo IN ('presidente','governador','senador','deputado federal','deputado estadual','deputado distrital') em 2026 (minúsculas; também 'conselheiro distrital'); filtre sempre o cargo antes de somar
+    - turno IN (1,2); em 2026, 2º turno só no município (ver gotcha segundo_turno_2026_so_municipio)
+    - 'id_eleicao: em ano de eleição geral há dois (federal só presidente; estadual para os demais cargos; ver gotcha dois_id_eleicao_no_ano_geral)'
+    use_para: comparecimento, abstenção e brancos/nulos por município e cargo
+    nao_use_para: somar aptos entre cargos (o eleitor é o mesmo); proporções sem filtrar cargo
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '371.348 linhas = 371.348 distintas na chave; 2026 presidente 1º turno: 5.757 municípios, aptos 158.745.502, comparecimento 125.275.835, válidos 119.300.788 — medido 2026-10-27'
+  detalhes_votacao_municipio_zona:
+    grao: uma zona eleitoral × município × cargo × turno
+    chave: (ano, turno, id_eleicao, sigla_uf, id_municipio_tse, zona, cargo)
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 1994–2026 (2026 até 2026-10-05; sem 2º turno)
+    territorio: *id001
+    medidas:
+    - coluna: aptos
+      o_que: eleitores aptos
+      unidade: eleitores
+      soma: sim
+    - coluna: comparecimento
+      o_que: comparecimento
+      unidade: eleitores
+      soma: sim
+    - coluna: votos_validos
+      o_que: votos válidos
+      unidade: votos
+      soma: sim
+    - coluna: votos_brancos
+      o_que: brancos
+      unidade: votos
+      soma: sim
+    - coluna: votos_nulos
+      o_que: nulos
+      unidade: votos
+      soma: sim
+    filtros_tipicos:
+    - cargo IN ('presidente','governador','senador','deputado federal','deputado estadual','deputado distrital') em 2026 (minúsculas; também 'conselheiro distrital'); filtre sempre o cargo antes de somar
+    - 'id_eleicao: em ano de eleição geral há dois (federal só presidente; estadual para os demais cargos; ver gotcha dois_id_eleicao_no_ano_geral)'
+    use_para: o mesmo que detalhes_votacao_municipio, por zona
+    nao_use_para: somar aptos entre cargos
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 406.431 linhas = 406.431 distintas na chave — medido 2026-10-27
+  detalhes_votacao_secao:
+    grao: uma seção eleitoral × cargo × turno (2026)
+    chave: '(turno, id_eleicao, id_municipio_tse, zona, secao, cargo) dentro da partição ano=2026 (AC: 11.350 linhas = 11.350 distintas)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: perfil mede só 2026, turno 1; demais anos não medidos
+    territorio: *id001
+    medidas:
+    - coluna: aptos
+      o_que: aptos da seção
+      unidade: eleitores
+      soma: sim
+    - coluna: comparecimento
+      o_que: comparecimento
+      unidade: eleitores
+      soma: sim
+    - coluna: votos_nominais
+      o_que: votos em candidato
+      unidade: votos
+      soma: sim
+    - coluna: votos_legenda
+      o_que: votos em legenda
+      unidade: votos
+      soma: sim
+    - coluna: votos_brancos
+      o_que: brancos
+      unidade: votos
+      soma: sim
+    - coluna: votos_nulos
+      o_que: nulos
+      unidade: votos
+      soma: sim
+    filtros_tipicos:
+    - ano = <ano> e sigla_uf = <UF> (26 milhões de linhas)
+    - cargo IN ('presidente','governador','senador','deputado federal','deputado estadual','deputado distrital') em 2026 (minúsculas; também 'conselheiro distrital'); filtre sempre o cargo antes de somar
+    use_para: análise por seção e cargo
+    nao_use_para: consulta sem filtro de ano e UF; somar aptos entre cargos
+    rascunho:
+    - use_para
+    - nao_use_para
+    - cobertura de anos
+    verificado: '26.442.036 linhas; chave medida só em ano=2026, sigla_uf=AC: 11.350 linhas = 11.350 distintas — medido 2026-10-27'
+  partidos:
+    grao: um partido, coligação ou federação registrado numa eleição por cargo (e UF/município)
+    chave: '(turno, id_eleicao, sigla_uf, id_municipio, cargo, sigla, sequencial_coligacao, tipo_agremiacao); em 2026: 4.239 linhas = 4.239 distintas, (turno, sigla_uf, id_municipio, cargo, sigla) também'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 1990–2026
+    territorio: *id001
+    filtros_tipicos:
+    - 'tipo_agremiacao IN (''partido isolado'',''coligacao'',''federacao'') (2022: 1.649, 2.311 e 699 linhas)'
+    - situacao_legenda é nulo em 86% das linhas
+    use_para: composição de coligações e federações por eleição, cargo e UF
+    nao_use_para: contar partidos distintos com count(*) (uma linha por cargo e agremiação); id_eleicao é nulo em 53% das linhas (anos antigos)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '1.189.547 linhas; 2026: 4.239 linhas — medido 2026-10-27'
+  perfil_eleitorado_local_votacao:
+    grao: um local de votação × seção (instalação da seção) com número de eleitores
+    chave: '(id_municipio_tse, zona, secao, tipo) dentro de um ano; AC 2026: 2.411 linhas = 2.411 distintas, também (zona, secao, id_municipio_tse)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2010–2026 (anos pares)
+    territorio:
+      nivel: ponto
+      colunas:
+        sigla_uf: UF
+        id_municipio_tse: município TSE
+        latitude: 100% nula em 2026
+        longitude: 100% nula em 2026
+    medidas:
+    - coluna: eleitores_secao
+      o_que: eleitores da seção
+      unidade: 'eleitores (AC 2026: 614.375, igual à soma de perfil_eleitorado_municipio_zona)'
+      soma: sim
+    filtros_tipicos:
+    - ano = <ano> (6,5 milhões de linhas no total)
+    - situacao_secao_acessibilidade IN ('0','1') (texto)
+    use_para: 'onde se vota: eleitores por seção e local; endereço e telefone existem mas não os cite'
+    nao_use_para: coordenadas (nulas em 2026)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '6.484.869 linhas, 9 anos de 2010 a 2026; AC 2026: 2.411 distintas na chave; 614.375 eleitores — medido 2026-10-27'
+  perfil_eleitorado_municipio_zona:
+    grao: um município × zona × gênero × estado civil × faixa etária × instrução (contagem de eleitores)
+    chave: '(id_municipio_tse, zona, genero, estado_civil, grupo_idade, instrucao) dentro do ano; AC 2026: 16.188 linhas = 16.188 distintas'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 1994–2026 (17 anos)
+    territorio: *id001
+    medidas:
+    - coluna: eleitores
+      o_que: eleitores no grupo
+      unidade: 'eleitores (AC 2026: 614.375)'
+      soma: sim
+    - coluna: eleitores_biometria
+      o_que: com biometria
+      unidade: eleitores
+      soma: sim
+    - coluna: eleitores_deficiencia
+      o_que: com deficiência
+      unidade: eleitores
+      soma: sim
+    filtros_tipicos:
+    - ano = <ano> (41,8 milhões de linhas)
+    - 'genero, estado_civil, instrucao são códigos em texto (''0'',''1'',''2'',''3'',''4''…) sem dicionário no perfil: significado não documentado'
+    use_para: composição do eleitorado por município e perfil
+    nao_use_para: sigla_uf = ZZ (exterior) como município brasileiro; somar sem filtrar ano
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '41.768.920 linhas; AC 2026: 16.188 linhas = 16.188 distintas, soma eleitores 614.375 — medido 2026-10-27'
+  perfil_eleitorado_secao:
+    grao: uma seção × gênero × estado civil × faixa etária × instrução (contagem de eleitores)
+    chave: '(id_municipio_tse, zona, secao, genero, estado_civil, grupo_idade, instrucao) dentro do ano; AC 2026: 320.706 linhas = 320.706 distintas'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2024–2026 conferido; anos anteriores não medidos
+    territorio: *id001
+    medidas:
+    - coluna: eleitores
+      o_que: eleitores no grupo
+      unidade: 'eleitores; ARMADILHA: a coluna é texto (VARCHAR), faça ::bigint antes de somar (AC 2026: soma 614.375, min 1, max 9)'
+      soma: sim
+    filtros_tipicos:
+    - ano = <ano> e sigla_uf = <UF> (666 milhões de linhas)
+    use_para: perfil do eleitorado no nível da seção
+    nao_use_para: qualquer consulta sem filtro de ano e UF; somar eleitores sem converter para número
+    rascunho:
+    - use_para
+    - nao_use_para
+    - cobertura de anos
+    verificado: '666.381.663 linhas; AC 2026: 320.706 distintas na chave; soma eleitores 614.375 (= perfil_eleitorado_municipio_zona) — medido 2026-10-27'
+  pesquisa_eleitoral:
+    grao: uma pesquisa eleitoral registrada no TSE
+    chave: 'id_pesquisa quase único: 55.801 linhas, 55.562 distintos (239 repetem)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: data_registro
+      cobertura: 2012–2026 (anos pares)
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF da pesquisa
+        id_municipio: 19% nulo
+    medidas:
+    - coluna: valor_pesquisa
+      o_que: custo declarado da pesquisa
+      unidade: R$ (média R$ 18.609)
+      soma: nao
+    - coluna: quantidade_entrevistados
+      o_que: amostra
+      unidade: entrevistados
+      soma: nao
+    filtros_tipicos:
+    - cargos é texto com o(s) cargo(s) pesquisado(s), 27 combinações
+    - pesquisa_propria IN ('S','N') (42% nulo)
+    use_para: volume e custo de pesquisas por ano e UF; empresas de pesquisa (não cite nomes)
+    nao_use_para: usar valor_pesquisa como pago por contratante (veja pesquisa_eleitoral_contratante)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 55.801 linhas; 55.562 id_pesquisa distintos — medido 2026-10-27
+  pesquisa_eleitoral_contratante:
+    grao: um contratante de uma pesquisa eleitoral
+    chave: 'nenhuma: 56.518 linhas, 56.517 distintas em (id_pesquisa, id_contratante) e 55.642 id_pesquisa distintos (id_contratante é 24% nulo)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2012–2026
+    territorio: *id002
+    medidas:
+    - coluna: valor_pago
+      o_que: valor pago pelo contratante
+      unidade: R$ (46% nulo)
+      soma: nao
+    filtros_tipicos:
+    - contratante_pagante IN ('S','N')
+    use_para: quem contratou pesquisas (contagens e valores pagos)
+    nao_use_para: identificar pessoas; somar valor_pago como custo total de pesquisa
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 56.518 linhas; 55.642 id_pesquisa distintos — medido 2026-10-27
+  pesquisa_eleitoral_pagante:
+    grao: um pagante de uma pesquisa eleitoral
+    chave: 'nenhuma: 46.490 linhas, 46.462 distintas em (id_pesquisa, id_contratante) (id_contratante 29% nulo)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2012–2026
+    territorio: *id002
+    use_para: quem pagou pesquisas (contagens por UF e ano, origem_recurso 69% nulo)
+    nao_use_para: identificar pessoas
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 46.490 linhas; 45.725 id_pesquisa distintos — medido 2026-10-27
+  receitas_candidato:
+    grao: uma receita (doação ou repasse) recebida por um candidato
+    chave: 'nenhuma: em 2026, 189.666 linhas, 178.351 distintas em (sequencial_candidato, sequencial_receita) e 2.231 linhas sem sequencial_receita'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: data_receita
+      cobertura: 2002–2026 (partição ano); receitas de 2026 são parciais, até 2026-10-25 (gotchas receitas_2026_parciais, receitas_2026_data_futura)
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF
+        id_municipio: nulo em 100% em 2026
+    medidas:
+    - coluna: valor_receita
+      o_que: valor da receita
+      unidade: 'R$ (2026: soma R$ 6,73 bi; recursos de partido político R$ 5,65 bi, pessoas físicas R$ 743 mi)'
+      soma: sim
+    - coluna: count(*)
+      o_que: número de receitas (mede o canal, não o apoio; gotcha doacao_presidencial_2022_pix)
+      unidade: receitas
+      soma: sim
+    filtros_tipicos:
+    - ano = <ano> (15,5 milhões de linhas)
+    - origem_receita IN ('recursos de pessoas fisicas','recursos de partido politico','recursos de outros candidatos','recursos proprios','recursos de financiamento coletivo','doacoes pela internet','recursos de origens nao identificadas','fundo especial de financiamento de campanha','doacoes para campanha','fundo partidario') (minúsculas sem acento)
+    - natureza_receita IN ('financeiro','estimavel')
+    - tipo_prestacao_contas IN ('relatorio financeiro','parcial','final')
+    use_para: arrecadação de campanha por candidato, partido, cargo e origem da receita
+    nao_use_para: juntar com doador_originario por sequencial_receita e somar (multiplica; gotcha doador_originario_1_n); cpf_cnpj_doador_orig está 100% vazio em 2026; fechar totais de 2026
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '15.500.731 linhas, 13 anos; 2026: 189.666 linhas, 178.351 pares (sequencial_candidato, sequencial_receita) distintos, soma R$ 6,73 bi — medido 2026-10-27'
+  receitas_candidato_doador_originario:
+    grao: um doador originário (quem de fato deu o dinheiro) de uma receita de candidato; 1:N com a receita
+    chave: 'nenhuma: 833.128 linhas para 68.386 (ano, sequencial_receita); (ano, sequencial_receita, cpf_cnpj_doador_orig) tem 794.203 distintas'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: data_receita
+      cobertura: 2018–2026 (data_receita com outlier 1941-03-24)
+    territorio: *id002
+    medidas:
+    - coluna: valor_receita
+      o_que: valor repassado pelo doador originário
+      unidade: R$ (não some junto com receitas_candidato; gotcha doador_originario_1_n)
+      soma: sim
+    filtros_tipicos:
+    - tipo_prestacao_contas IN ('final','relatorio financeiro','parcial','regularizacao da omissao…')
+    use_para: rastrear quem está por trás de repasses de partidos a candidatos (agregue sem expor documentos)
+    nao_use_para: somar valor_receita junto com a receita; cpf/nome de doador nos cartões
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 833.128 linhas; 68.386 (ano, sequencial_receita) distintos — medido 2026-10-27
+  receitas_comite:
+    grao: uma receita de um comitê financeiro (2002–2014)
+    chave: 'nenhuma: 341.684 linhas, 330.858 distintas em oito colunas; sequencial_comite 87% nulo'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: data_receita
+      cobertura: 2002–2014 (anos pares); data_receita com outliers 0006-08-04 e 8200-10-01
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF (4% nulo)
+        id_municipio: 12% nulo
+    medidas:
+    - coluna: valor_receita
+      o_que: valor da receita
+      unidade: R$ (soma R$ 3,57 bi)
+      soma: sim
+    use_para: arrecadação de comitês antes de 2018
+    nao_use_para: 2016 em diante (a tabela termina em 2014)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 341.684 linhas; soma R$ 3,57 bi — medido 2026-10-27
+  receitas_orgao_partidario:
+    grao: uma receita de um órgão partidário (diretório nacional, estadual, municipal)
+    chave: 'nenhuma: 265.852 linhas, 78.858 (ano, sequencial_receita) distintos ; sequencial_receita 70% nulo'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: data_receita
+      cobertura: 2010–2026 (anos 2010–2022 e 2026; sem 2024); data_receita de 1990-10-05 a 2026-10-24
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF (3,7% nulo)
+        id_municipio: 74% nulo
+        esfera_partidaria: 67% nulo
+    medidas:
+    - coluna: valor_receita
+      o_que: valor da receita
+      unidade: R$ (soma R$ 20,37 bi; em 2026 R$ 6,12 bi, dos quais R$ 4,95 bi de fundo especial nos diretórios nacionais, gotcha orgao_partidario_2026_fundo_especial)
+      soma: sim
+    filtros_tipicos:
+    - fonte_receita IN ('outros recursos','nao especificado','fundo partidario','fundo especial','outros recursos nao descritos','nao informado') (grafia truncada no perfil)
+    use_para: receitas de partidos por esfera e fonte
+    nao_use_para: ranking de arrecadação em 2026 sem excluir o fundo especial
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 265.852 linhas; soma R$ 20,37 bi; 78.858 (ano, sequencial_receita) distintos — medido 2026-10-27
+  receitas_orgao_partidario_doador_originario:
+    grao: um doador originário de uma receita de órgão partidário (1:N)
+    chave: 'nenhuma: 263.948 linhas para 17.549 (ano, sequencial_receita); (…, cpf_cnpj_doador_orig) tem 236.135 distintas'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: data_receita
+      cobertura: 2018–2026
+    territorio: *id002
+    medidas:
+    - coluna: valor_receita
+      o_que: valor do doador originário
+      unidade: R$ (não some junto com receitas_orgao_partidario)
+      soma: sim
+    use_para: rastrear doadores finais de repasses a partidos (agregado)
+    nao_use_para: somar junto com a receita (multiplica); documentos e nomes nos cartões
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 263.948 linhas; 17.549 (ano, sequencial_receita) distintos — medido 2026-10-27
+  rede_social_candidato:
+    grao: uma rede social (url) informada por um candidato
+    chave: (ano, sequencial_candidato, sigla_uf, id_eleicao, ordem)
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2018–2026 (cargas em 2024-11-13, 2026-01-06, 2026-10-24 e 2026-10-25)
+    territorio: *id002
+    medidas:
+    - coluna: count(*)
+      o_que: links de rede social
+      unidade: links
+      soma: sim
+    filtros_tipicos:
+    - plataforma IN ('facebook','instagram','outro','tiktok','youtube','x','whatsapp','threads','kwai','linkedin','linktree','telegram','bluesky') (use plataforma, não url; gotcha rede_social_url_crua)
+    use_para: quantos candidatos usam cada rede por ano
+    nao_use_para: analisar url (texto cru); expor endereços de perfis
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 851.922 linhas = 851.922 distintas na chave; facebook 391.156, instagram 314.654, outro 72.760 — medido 2026-10-27
+  resultados_candidato:
+    grao: um candidato × cargo × turno com votos totais (somados do estado, ou do país para presidente)
+    chave: 'nenhuma: 2026 tem 18.900 linhas e 18.888 distintas em (sequencial_candidato, sigla_uf, id_eleicao, turno); 12 repetem. Sem sigla_uf/id_eleicao o sequencial infla (gotcha sequencial_nao_unico)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 1945–2026 (anos esparsos antigos; contínuo de 1990 a 2026)
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF (nula em 0,14% das linhas de 2026)
+        id_municipio: nulo em 100% em 2026
+    medidas:
+    - coluna: votos
+      o_que: votos do candidato
+      unidade: 'votos (2026: governador 1º turno 111.754.704, presidente 1º turno 119.300.788 e 2º turno 124.082.273, senador 207.038.240, maior que o comparecimento por haver mais de um voto por eleitor, inferido)'
+      soma: sim
+    filtros_tipicos:
+    - cargo IN ('presidente','governador','senador','deputado federal','deputado estadual','deputado distrital') em 2026 (minúsculas; também 'conselheiro distrital'); filtre sempre o cargo antes de somar
+    - turno IN (1,2)
+    - resultado IN ('eleito','eleito por qp','eleito por media','nao eleito','suplente','2º turno') (literais do perfil; 'qp' = quociente partidário)
+    - 'id_eleicao: em ano de eleição geral há dois (federal só presidente; estadual para os demais cargos; ver gotcha dois_id_eleicao_no_ano_geral)'
+    - governador do RJ no 1º turno de 2026 com resultado '2º turno' é defasado (gotcha governador_rj_2026_resultado_defasado)
+    use_para: votos totais por candidato e situação de eleição
+    nao_use_para: votos por município (use resultados_candidato_municipio); somar votos de senador como se fosse um voto por eleitor
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '3.141.599 linhas; ano 2026: 18.900 linhas, 787.297.958 votos — medido 2026-10-27'
+  resultados_candidato_municipio:
+    grao: um candidato × município × cargo × turno
+    chave: '(turno, id_eleicao, id_municipio_tse, cargo, sequencial_candidato) dentro do ano; AC 2026: 7.458 linhas = 7.458 distintas'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 1994–2026; 2º turno de 2026 só aqui entre as tabelas de resultado (gotcha segundo_turno_2026_so_municipio)
+    territorio: *id001
+    medidas:
+    - coluna: votos
+      o_que: votos do candidato no município
+      unidade: 'votos (AC 2026, soma de todos os cargos: 3.374.685, igual a votos_nominais de resultados_partido_municipio)'
+      soma: sim
+    filtros_tipicos:
+    - ano = <ano> e sigla_uf = <UF> (37,7 milhões de linhas)
+    - cargo IN ('presidente','governador','senador','deputado federal','deputado estadual','deputado distrital') em 2026 (minúsculas; também 'conselheiro distrital'); filtre sempre o cargo antes de somar
+    - 'id_eleicao: em ano de eleição geral há dois (federal só presidente; estadual para os demais cargos; ver gotcha dois_id_eleicao_no_ano_geral)'
+    use_para: votação por município de cada candidato
+    nao_use_para: consulta sem filtro de ano; somar cargos diferentes
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '37.721.699 linhas; AC 2026: 7.458 linhas = 7.458 distintas na chave; 3.374.685 votos — medido 2026-10-27'
+  resultados_candidato_municipio_zona:
+    grao: um candidato × município × zona × cargo × turno
+    chave: '(turno, id_eleicao, id_municipio_tse, zona, cargo, sequencial_candidato); AC 2026: 7.705 linhas = 7.705 distintas'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: perfil mede 2026 turno 1; sem 2º turno em 2026
+    territorio: *id001
+    medidas:
+    - coluna: votos
+      o_que: votos na zona
+      unidade: 'votos (AC 2026: 2.530.714, menor que 3.374.685 da tabela por município; a causa não foi investigada)'
+      soma: sim
+    filtros_tipicos:
+    - ano = <ano> e sigla_uf = <UF> (46,8 milhões de linhas)
+    - cargo IN ('presidente','governador','senador','deputado federal','deputado estadual','deputado distrital') em 2026 (minúsculas; também 'conselheiro distrital'); filtre sempre o cargo antes de somar
+    use_para: votação por zona
+    nao_use_para: comparar totais com a tabela por município sem checar cargo (não bate em 2026)
+    rascunho:
+    - use_para
+    - nao_use_para
+    - cobertura de anos
+    verificado: '46.794.484 linhas; AC 2026: 7.705 distintas na chave, votos 2.530.714 — medido 2026-10-27'
+  resultados_candidato_secao:
+    grao: um candidato × seção × cargo × turno
+    chave: '(turno, id_eleicao, id_municipio_tse, zona, secao, cargo, sequencial_candidato); AC 2026: 213.806 linhas = 213.806 distintas'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: perfil mede 2026 turno 1
+    territorio: *id001
+    medidas:
+    - coluna: votos
+      o_que: votos na seção
+      unidade: 'votos (AC 2026: 2.685.332)'
+      soma: sim
+    filtros_tipicos:
+    - ano = <ano> e sigla_uf = <UF> (577 milhões de linhas)
+    - cargo IN ('presidente','governador','senador','deputado federal','deputado estadual','deputado distrital') em 2026 (minúsculas; também 'conselheiro distrital'); filtre sempre o cargo antes de somar
+    use_para: votação por seção
+    nao_use_para: qualquer consulta sem filtro de ano e UF
+    rascunho:
+    - use_para
+    - nao_use_para
+    - cobertura de anos
+    verificado: '576.811.898 linhas; AC 2026: 213.806 distintas na chave, votos 2.685.332 — medido 2026-10-27'
+  resultados_partido_municipio:
+    grao: um partido × município × cargo × turno
+    chave: '(turno, id_eleicao, id_municipio_tse, cargo, sigla_partido); AC 2026: 1.518 linhas = 1.518 distintas'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: perfil mede 2026 (turnos 1 e 2)
+    territorio: *id001
+    medidas:
+    - coluna: votos_nominais
+      o_que: votos nos candidatos do partido
+      unidade: votos
+      soma: sim
+    - coluna: votos_legenda
+      o_que: votos na legenda
+      unidade: 'votos (AC 2026: 40.554 contra 3.374.685 nominais)'
+      soma: sim
+    filtros_tipicos:
+    - ano = <ano> e sigla_uf = <UF>
+    - cargo IN ('presidente','governador','senador','deputado federal','deputado estadual','deputado distrital') em 2026 (minúsculas; também 'conselheiro distrital'); filtre sempre o cargo antes de somar
+    use_para: votos por partido e município
+    nao_use_para: somar votos_nominais + votos_legenda sem conferir cargo
+    rascunho:
+    - use_para
+    - nao_use_para
+    - cobertura de anos
+    verificado: '4.129.615 linhas; AC 2026: 1.518 distintas na chave — medido 2026-10-27'
+  resultados_partido_municipio_zona:
+    grao: um partido × município × zona × cargo
+    chave: '(turno, id_eleicao, id_municipio_tse, zona, cargo, sigla_partido); AC 2026: 1.495 linhas = 1.495 distintas'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: perfil mede 2026 turno 1
+    territorio: *id001
+    medidas:
+    - coluna: votos_nominais
+      o_que: votos nos candidatos do partido
+      unidade: votos
+      soma: sim
+    - coluna: votos_legenda
+      o_que: votos na legenda
+      unidade: votos
+      soma: sim
+    filtros_tipicos:
+    - ano = <ano> e sigla_uf = <UF>
+    - cargo IN ('presidente','governador','senador','deputado federal','deputado estadual','deputado distrital') em 2026 (minúsculas; também 'conselheiro distrital'); filtre sempre o cargo antes de somar
+    use_para: votos por partido e zona
+    nao_use_para: somar entre cargos
+    rascunho:
+    - use_para
+    - nao_use_para
+    - cobertura de anos
+    verificado: '4.694.955 linhas; AC 2026: 1.495 distintas na chave — medido 2026-10-27'
+  resultados_partido_secao:
+    grao: um partido × seção × cargo
+    chave: '(turno, id_eleicao, id_municipio_tse, zona, secao, cargo, sigla_partido); AC 2026: 92.527 linhas = 92.527 distintas'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: perfil mede 2026 turno 1
+    territorio: *id001
+    medidas:
+    - coluna: votos_nominais
+      o_que: votos nos candidatos do partido
+      unidade: votos
+      soma: sim
+    - coluna: votos_legenda
+      o_que: votos na legenda
+      unidade: votos
+      soma: sim
+    filtros_tipicos:
+    - ano = <ano> e sigla_uf = <UF> (235 milhões de linhas)
+    - cargo IN ('presidente','governador','senador','deputado federal','deputado estadual','deputado distrital') em 2026 (minúsculas; também 'conselheiro distrital'); filtre sempre o cargo antes de somar
+    use_para: votos por partido e seção
+    nao_use_para: consulta sem filtro de ano e UF
+    rascunho:
+    - use_para
+    - nao_use_para
+    - cobertura de anos
+    verificado: '234.686.872 linhas; AC 2026: 92.527 distintas na chave — medido 2026-10-27'
+  vagas:
+    grao: o número de vagas de um cargo numa eleição, por UF ou município
+    chave: 'nenhuma: 102.405 linhas, 101.970 distintas em (ano, id_eleicao, sigla_uf, id_municipio, cargo); 435 repetem'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 1994–2026
+    territorio: *id001
+    medidas:
+    - coluna: vagas
+      o_que: vagas em disputa
+      unidade: vagas
+      soma: sim
+    filtros_tipicos:
+    - 'cargo tem 12 valores (ex.: ''1 suplente'', ''vice-prefeito''); id_eleicao é nulo em 50% das linhas'
+    use_para: vagas por cargo e município (denominador de relação candidato/vaga)
+    nao_use_para: somar vagas entre cargos
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 102.405 linhas; 101.970 distintas na chave — medido 2026-10-27

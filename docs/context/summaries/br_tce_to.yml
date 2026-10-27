@@ -1,0 +1,16 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_tce_to
+tabelas:
+  pautas:
+    grao: "uma pauta de sessão de julgamento do TCE-TO (data × hora × tipo × órgão colegiado)"
+    chave: "data, hora, tipo, origem (50 linhas, 50 distintos; url também é única, 50 distintas)"
+    tempo: {natureza: serie_de_periodos, coluna: data, cobertura: "2026-06-08–2026-10-19"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos:
+      - "origem = 'PLENO' (20 linhas), 'PRIMEIRA CÂMARA' (14) ou 'SEGUNDA CÂMARA' (16); codigo_origem = '3', '1', '2' respectivamente (texto, não número)"
+      - "tipo = 'ORDINÁRIA/VIRTUAL' (37 linhas) é o mais comum; os demais valores são ORDINÁRIA/VIDEOCONFERÊNCIA, ADMINISTRATIVA/VIDEOCONFERÊNCIA, ESPECIAL/VIDEOCONFERÊNCIA e EXTRAORDINÁRIA/VIDEOCONFERÊNCIA"
+    use_para: "listar quando e em qual colegiado o TCE-TO pautou sessões, com o link da pauta"
+    nao_use_para: "saber o que foi julgado ou o resultado: só há data, hora, tipo e link; janela de poucos meses"
+    rascunho: [use_para, nao_use_para]
+    verificado: "50 linhas, 50 distintos de (data,hora,tipo,origem) e 50 de url; origem do perfil (PLENO 20, SEGUNDA 16, PRIMEIRA 14) — medido 2026-10-27"

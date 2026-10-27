@@ -1,0 +1,525 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_camara_dados_abertos
+tabelas:
+  deputado:
+    grao: um deputado (cadastro de pessoas que exerceram mandato)
+    chave: 'id_deputado: 7.889 linhas = 7.889 distintos'
+    tempo: &id001
+      natureza: sem_tempo
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf_nascimento: UF de nascimento (12% nulo)
+        id_municipio_nascimento: município de nascimento (19% nulo)
+    filtros_tipicos:
+    - sexo = 'Masculino' (7.542) / 'Feminino' (347)
+    - id_inicial_legislatura e id_final_legislatura são texto ('1'..'9' no min/max do perfil; legislaturas numeradas até 57)
+    use_para: cadastro de deputados (sexo, naturalidade, legislaturas inicial e final).
+    nao_use_para: contar mandatos (um deputado com vários mandatos é uma linha só).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 7.889 linhas, 7.889 id_deputado distintos — medido 2026-10-27
+  deputado_contato:
+    grao: um deputado × situação atual/última conhecida, com contato e gabinete (dado pessoal omitido)
+    chave: 'id_deputado: 7.583 linhas = 7.583 distintos (também único por id_deputado + id_legislatura)'
+    tempo: *id001
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF do mandato
+        uf_nascimento: UF de nascimento
+    filtros_tipicos:
+    - 'situacao: ''Vacância'' (2.719), ''Fim de Mandato'' (986), ''Exercício'' (526), ''Suplência'' (324), ''Afastado'' (189); 37% nulo'
+    - condicao_eleitoral = 'Titular' (5.383) / 'Suplente' (1.238)
+    use_para: escolaridade, partido, UF, condição eleitoral e situação do deputado.
+    nao_use_para: 'qualquer dado de contato: não responda com e-mail, telefone ou CPF.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 7.583 linhas, 7.583 id_deputado distintos; id_deputado é BIGINT aqui e VARCHAR em deputado (faça CAST no join) — medido 2026-10-27
+  deputado_ocupacao:
+    grao: uma ocupação anterior declarada por um deputado
+    chave: 'nenhuma: não há coluna de ordem; as 37.407 linhas são todas distintas no conjunto (id_deputado, ano_inicio, ano_fim, entidade, titulo, sigla_uf)'
+    tempo: *id001
+    territorio: &id002
+      nivel: nenhum
+      colunas: {}
+    use_para: trajetória profissional declarada (entidade, título).
+    nao_use_para: 'datas confiáveis: ano_inicio tem mínimo 20 e ano_fim máximo 2954 (erros de digitação).'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 37.407 linhas, 37.407 combinações distintas das 6 colunas — medido 2026-10-27
+  deputado_profissao:
+    grao: uma profissão declarada por um deputado
+    chave: 'id_deputado + id_profissao: 12.607 linhas = 12.607 distintas'
+    tempo:
+      natureza: retrato_atual
+      coluna: data
+      cobertura: 2015-01-16–2026-10-08
+    territorio: *id002
+    use_para: profissões declaradas dos deputados.
+    nao_use_para: contar deputados por profissão sem DISTINCT id_deputado (um deputado pode ter várias).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 12.607 linhas, 12.607 pares (id_deputado, id_profissao) distintos — medido 2026-10-27
+  despesa:
+    grao: um documento de despesa da cota parlamentar (CEAP) de um deputado
+    chave: 'nenhuma: sem chave natural; 4.874.008 linhas, nenhuma duplicata exata, mas 9.796 linhas repetem a combinação (ano, mês, deputado, categoria, fornecedor, documento, data, valores, url)'
+    tempo:
+      natureza: serie_mensal
+      coluna: ano_competencia, mes_competencia
+      cobertura: 2008–2026 (2026 parcial)
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF do deputado
+    medidas:
+    - coluna: valor_liquido
+      o_que: 'valor líquido do documento (pode ser negativo: estorno/restituição)'
+      unidade: R$
+      soma: 'sim: some por ano_competencia/mes_competencia, não por ano_legislatura'
+    - coluna: valor_documento
+      o_que: valor bruto do documento
+      unidade: R$
+      soma: sim
+    - coluna: valor_retido
+      o_que: valor retido/glosado
+      unidade: R$
+      soma: sim
+    filtros_tipicos:
+    - 'ano_competencia (ano do gasto), não ano_legislatura (legislatura de eleição: 2007, 2011, 2015, 2019, 2023)'
+    - 'tipo_documento: ''Nota fiscal'' (3.446.227), ''Recibo ou outros'' (967.297), ''Nota fiscal eletrônica'' (457.614)'
+    - 'categoria_despesa por extenso, ex.: ''COMBUSTÍVEIS E LUBRIFICANTES.'' (com ponto final) e ''PASSAGEM AÉREA - RPA'''
+    use_para: gasto da cota parlamentar por deputado, categoria, UF, partido e período.
+    nao_use_para: somar por fornecedor sem tratar estornos negativos, ou citar nome/CPF de fornecedor ou passageiro.
+    rascunho:
+    - nao_use_para
+    verificado: 4.874.008 linhas (tabela inteira); soma valor_liquido = R$ 3,44 bi; valor_documento R$ 3,47 bi; valor_retido R$ 24,8 mi; 188.719 linhas com valor_liquido negativo (estornos); valor_liquido
+      ≠ documento − retido em 72.087 linhas; ano_competencia 2008–2026 (2008 só 444 linhas; 2026 parcial) — medido 2026-10-27
+  evento:
+    grao: um evento da Câmara (reunião, audiência, sessão)
+    chave: 'id_evento: 61.416 linhas = 61.416 distintos'
+    tempo:
+      natureza: serie_diaria
+      coluna: data_inicio
+      cobertura: dados válidos até 2026-03-24 (mínimo 1900-01-01 é erro)
+    territorio: *id002
+    filtros_tipicos:
+    - 'situacao: ''Encerrada (Final)'' (40.800), ''Encerrada'' (9.035), ''Cancelada'' (7.756)'
+    - 'tipo: ''Reunião Deliberativa'' (25.510), ''Audiência Pública'' (14.246), ''Sessão Deliberativa'' (5.137)'
+    use_para: agenda de eventos por tipo e situação.
+    nao_use_para: 'datas extremas sem filtrar: há data_inicio 1900 e data_final 2209 (lixo).'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 61.416 linhas, 61.416 id_evento distintos; data_inicio 1900-01-01 (valor-sentinela) a 2026-03-24; data_final máxima 2209 — medido 2026-10-27
+  evento_orgao:
+    grao: um órgão participante de um evento
+    chave: 'id_evento + id_orgao: 62.772 linhas = 62.772 distintos'
+    tempo: *id001
+    territorio: *id002
+    use_para: ligar evento a órgão (comissão).
+    nao_use_para: contar eventos sem DISTINCT id_evento (um evento pode ter vários órgãos).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 62.772 linhas, 62.772 pares distintos — medido 2026-10-27
+  evento_presenca_deputado:
+    grao: a presença de um deputado em um evento
+    chave: 'id_evento + id_deputado: 2.747.941 linhas = 2.747.941 distintos'
+    tempo:
+      natureza: serie_diaria
+      coluna: data_inicio
+      cobertura: 1900-01-01 (sentinela)–2026-03-03
+    territorio: *id002
+    use_para: presença de deputados em eventos.
+    nao_use_para: votos (veja votacao_parlamentar).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 2.747.941 linhas (tabela inteira), todas distintas por (id_evento, id_deputado) — medido 2026-10-27
+  evento_requerimento:
+    grao: um requerimento (proposição) ligado a um evento
+    chave: 'id_evento + id_proposicao: 21.565 linhas = 21.565 distintos'
+    tempo: *id001
+    territorio: *id002
+    use_para: ligar eventos a requerimentos/proposições.
+    nao_use_para: tipo e conteúdo da proposição (use proposicao_microdados).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 21.565 linhas, todas distintas — medido 2026-10-27
+  frente:
+    grao: uma frente parlamentar
+    chave: 'id_frente: 1.433 linhas = 1.433 distintos'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: id_legislatura
+      cobertura: legislaturas 52–57, data_criacao 2003-03-12–2025-12-10
+    territorio: *id002
+    use_para: frentes parlamentares por legislatura e título.
+    nao_use_para: membros (use frente_deputado); dados do coordenador são pessoais.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 1.433 linhas, 1.433 id_frente distintos — medido 2026-10-27
+  frente_deputado:
+    grao: a participação de um deputado em uma frente
+    chave: 'id_frente + id_deputado: 262.268 linhas = 262.268 distintos'
+    tempo: *id001
+    territorio: *id002
+    use_para: membros por frente parlamentar.
+    nao_use_para: datas de entrada/saída (não existem).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 262.268 linhas, todas distintas por (id_frente, id_deputado); 0,1% com id_deputado nulo (contar com cuidado) — medido 2026-10-27
+  funcionario:
+    grao: um funcionário da Câmara (secretário parlamentar, efetivo, cargo especial ou parlamentar) em retrato atual
+    chave: 'ponto: 13.471 linhas = 13.471 distintos'
+    tempo:
+      natureza: retrato_atual
+      coluna: data_inicio_historico
+      cobertura: 1974-09-01–2026-04-07
+    territorio: *id002
+    filtros_tipicos:
+    - 'grupo: ''Secretário Parlamentar'' (8.866), ''Quadro Efetivo - RJU'' (2.586), ''Cargo de Natureza Especial'' (1.506), ''Parlamentar'' (513)'
+    use_para: quadro de pessoal por grupo, cargo e lotação.
+    nao_use_para: nomear pessoas ou dados de nomeação (pessoais).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 13.471 linhas, 13.471 ponto distintos — medido 2026-10-27
+  legislatura:
+    grao: uma legislatura da Câmara
+    chave: 'id: 57 linhas = 57 distintos'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: data_inicio, data_final
+      cobertura: 1826–2027
+    territorio: *id002
+    use_para: datas de início e fim de cada legislatura.
+    nao_use_para: série temporal fina.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 57 linhas, 57 id distintos; id é texto ('1'..'57'); ano 1826–2022 — medido 2026-10-27
+  legislatura_mesa:
+    grao: um cargo da Mesa Diretora ocupado por um deputado em uma legislatura
+    chave: 'id + id_deputado + cargo + data_inicio: 155 linhas = 155 distintos'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: data_inicio, data_final
+      cobertura: 1999-02-02–2023-02-01
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF do deputado
+    use_para: composição da Mesa por legislatura.
+    nao_use_para: órgão (sempre MESA, id_orgao 4).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 155 linhas, 155 combinações distintas (id = legislatura 51–57) — medido 2026-10-27
+  licitacao:
+    grao: uma licitação da Câmara
+    chave: 'id_licitacao: 4.718 linhas = 4.718 distintos'
+    tempo:
+      natureza: serie_anual
+      coluna: ano_licitacao
+      cobertura: 1999–2026
+    territorio: *id002
+    medidas:
+    - coluna: valor_estimado
+      o_que: valor estimado
+      unidade: R$ (inteiro)
+      soma: sim
+    - coluna: valor_contratado
+      o_que: valor contratado
+      unidade: R$ (inteiro)
+      soma: sim
+    - coluna: valor_pago
+      o_que: valor pago
+      unidade: R$ (inteiro)
+      soma: sim
+    filtros_tipicos:
+    - modalidade = 'Pregão Eletrônico' (3.942), 'Convite' (463), 'Dispensa de Licitação' (198)
+    - situacao = 'Julgada' (4.303), 'Fracassada' (216), 'Revogada' (54)
+    use_para: licitações por modalidade, situação e valor.
+    nao_use_para: pagamentos de despesa (veja despesa).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 4.718 linhas, 4.718 id_licitacao distintos; valor_estimado = 0 em 80 — medido 2026-10-27
+  licitacao_contrato:
+    grao: um contrato (ou ata/carta/nota de empenho) de uma licitação
+    chave: 'nenhuma: (id_licitacao, ano_contrato, id_contrato) repete — 2.655 linhas, 2.034 combinações distintas'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: data_assinatura, data_fim_contrato
+      cobertura: 2002-05-20–2030-12-27
+    territorio: *id002
+    medidas:
+    - coluna: valor_total
+      o_que: valor total do contrato (77% nulo)
+      unidade: R$ (inteiro)
+      soma: sim, mas incompleto
+    filtros_tipicos:
+    - 'situacao_contrato: ''Vencido'' (1.083), ''Encerrado'' (831), ''Vigente'' (609), ''Rescindido'' (132)'
+    - tipo_contrato = 'Contrato' (2.503)
+    use_para: contratos por situação, vigência e fornecedor (agregado).
+    nao_use_para: somar valor_total como total contratado (77% nulo); nomear fornecedores.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 2.655 linhas; 2.034 combinações distintas de (id_licitacao, ano_contrato, id_contrato); valor_total nulo em 77% (mesmo valor_original) — medido 2026-10-27
+  licitacao_item:
+    grao: um item (ou subitem) de uma licitação
+    chave: 'nenhuma: (id_licitacao, id_item, id_sub_item) repete — 63.921 linhas, 63.898 combinações distintas'
+    tempo:
+      natureza: serie_anual
+      coluna: ano_licitacao
+      cobertura: 1999–2026
+    territorio: *id002
+    medidas:
+    - coluna: valor_unitario_estimado
+      o_que: valor unitário estimado (9% nulo)
+      unidade: R$ (inteiro)
+      soma: nao
+    - coluna: quantidade_licitada
+      o_que: quantidade licitada (35% nulo)
+      unidade: unidades
+      soma: sim, dentro do mesmo item
+    filtros_tipicos:
+    - situacao_item = 'Ativo' (60.130), 'Destacado' (3.643), 'Cancelado' (69)
+    use_para: itens licitados, quantidades e valor unitário estimado.
+    nao_use_para: valor total (valor_total_contratado é parcial; 14% nulo).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 63.921 linhas; 63.898 combinações distintas de (id_licitacao, id_item, id_sub_item) — medido 2026-10-27
+  licitacao_pedido:
+    grao: um pedido ou solicitação ligado a uma licitação
+    chave: 'nenhuma: (id_licitacao, id_pedido, tipo_registo) repete — 2.869 linhas, 2.862 combinações distintas'
+    tempo:
+      natureza: serie_diaria
+      coluna: data_cadastro
+      cobertura: 2010-03-12–2025-12-26
+    territorio: *id002
+    filtros_tipicos:
+    - tipo_registo = 'Pedido' (2.826) ou 'Solicitação' (43)
+    use_para: pedidos por licitação e órgão.
+    nao_use_para: valores (a tabela não tem).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 2.869 linhas; 2.862 combinações distintas — medido 2026-10-27
+  licitacao_proposta:
+    grao: uma proposta de fornecedor a uma licitação (por item)
+    chave: 'nenhuma: id_proposta repete entre fornecedores — 41.836 linhas, 12.484 (id_licitacao, id_proposta, fornecedor) distintos'
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 1999–2026
+    territorio: *id002
+    medidas:
+    - coluna: valor_proposta
+      o_que: valor da proposta (64% nulo)
+      unidade: R$ (inteiro)
+      soma: 'nao: por item, não por licitação'
+    use_para: propostas recebidas e valores propostos (agregado).
+    nao_use_para: datas sem filtrar (há ano 3201); identificar fornecedores.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    - chave
+    verificado: 41.836 linhas; 12.484 combinações de (id_licitacao, id_proposta, cpf_cnpj_fornecedor); data_proposta máxima 3201 (erro) — medido 2026-10-27
+  orgao:
+    grao: um órgão da Câmara (comissão, subcomissão, CPI, grupo de trabalho)
+    chave: 'id_orgao: 2.375 linhas = 2.375 distintos'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: data_inicio, data_final
+      cobertura: 1999-01-29–2026-06-17
+    territorio: *id002
+    filtros_tipicos:
+    - tipo_orgao = 'Comissão Especial' (1.207), 'Subcomissão' (562), 'Comissão Externa' (194), 'Comissão Parlamentar de Inquérito' (142)
+    - 'situacao: 26% nulo; ''Extinta'' (1.492), ''Instalada'' (57)'
+    use_para: cadastro de órgãos por tipo e situação.
+    nao_use_para: membros (use orgao_deputado).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 2.375 linhas, 2.375 id_orgao distintos — medido 2026-10-27
+  orgao_deputado:
+    grao: a participação (cargo) de um deputado em um órgão em um período
+    chave: 'nenhuma: (id_orgao, nome_deputado, cargo, data_inicio) repete — 93.730 linhas, 93.673 combinações distintas'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: data_inicio, data_final
+      cobertura: 1999-02-01–2026-09-16
+    territorio: *id002
+    use_para: composição de comissões e cargos.
+    nao_use_para: identificar deputados pelo nome (tabela não tem id_deputado).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 93.730 linhas; 93.673 combinações — medido 2026-10-27
+  proposicao_autor:
+    grao: um autor (ou signatário) de uma proposição
+    chave: 'nenhuma: (id_proposicao, ordem_assinatura, nome_autor) repete — 1.913.248 linhas, 1.913.236 combinações'
+    tempo: *id001
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf_autor: UF do autor (9% nulo)
+    filtros_tipicos:
+    - 'tipo_autor = ''Deputado'' (1.444.206) e ''Deputado(A)'' (274.661): duas grafias para o mesmo tipo'
+    use_para: autoria de proposições por tipo de autor, partido e UF.
+    nao_use_para: contar proposições sem DISTINCT id_proposicao (uma por autor).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 1.913.248 linhas; 1.913.236 combinações distintas; id_deputado nulo em 10% — medido 2026-10-27
+  proposicao_microdados:
+    grao: uma proposição legislativa com o último status de tramitação
+    chave: 'nenhuma: id_proposicao repete em 14 casos (957.814 linhas, 957.800 distintos; sem linhas inteiras duplicadas)'
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 1935–2026
+    territorio: *id002
+    filtros_tipicos:
+    - 'situacao_ultimo_status: 52% nulo'
+    - apreciacao_ultimo_status = 'Indefinida' em 778.739 linhas
+    use_para: consultar proposições por tipo, ano, ementa e situação.
+    nao_use_para: contar proposições sem DISTINCT id_proposicao.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 957.814 linhas; 957.800 id_proposicao distintos — medido 2026-10-27
+  proposicao_tema:
+    grao: um tema de uma proposição
+    chave: 'nenhuma: (id_proposicao, tema) repete — 333.286 linhas, 333.265 combinações'
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 1946–2026
+    territorio: *id002
+    filtros_tipicos:
+    - 'tema por extenso, ex.: ''Administração Pública'' (34.751), ''Saúde'' (28.347)'
+    use_para: proposições por tema.
+    nao_use_para: 'somar relevancia: 98% são 0 (328.278).'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 333.286 linhas; 333.265 combinações — medido 2026-10-27
+  sigla_partido:
+    grao: uma sigla antiga de partido e sua sigla atual
+    chave: 'sigla_partido_antiga: 143 linhas = 143 distintas'
+    tempo: *id001
+    territorio: *id002
+    use_para: normalizar siglas de partido.
+    nao_use_para: dado numérico (sem medidas).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 143 linhas, 143 siglas antigas distintas, 47 siglas novas — medido 2026-10-27
+  votacao:
+    grao: uma votação no plenário ou comissão
+    chave: 'nenhuma: id_votacao repete em 97 casos (187.246 linhas, 187.149 distintos); (id_votacao, id_orgao, id_evento, data) é único'
+    tempo:
+      natureza: serie_diaria
+      coluna: data
+      cobertura: 1935-04-17–2026-03-03
+    territorio: *id002
+    medidas:
+    - coluna: voto_sim
+      o_que: votos sim
+      unidade: votos
+      soma: sim
+    - coluna: voto_nao
+      o_que: votos não
+      unidade: votos
+      soma: sim
+    - coluna: voto_outro
+      o_que: outros votos
+      unidade: votos
+      soma: sim
+    filtros_tipicos:
+    - aprovacao = 1 (177.107), 0 (9.218), nulo (921)
+    use_para: resultado agregado (sim/não/outro) de votações.
+    nao_use_para: 'aprovação a partir de voto_sim > voto_nao: em votações simbólicas os votos nominais não valem; use a coluna aprovacao.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 187.246 linhas; 187.149 id_votacao distintos — medido 2026-10-27
+  votacao_objeto:
+    grao: uma proposição votada em uma votação (objeto)
+    chave: '(id_votacao, id_proposicao): 795.727 linhas = 795.727 distintas'
+    tempo:
+      natureza: serie_diaria
+      coluna: data
+      cobertura: 1935-04-17–2026-03-03
+    territorio: *id002
+    use_para: ligar votação a proposição (id_proposicao, sigla_tipo, titulo).
+    nao_use_para: 'ler descricao ou ementa: estão corrompidas; use proposicao_microdados.ementa.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '795.727 linhas, todas distintas; descricao e ementa vêm corrompidas: contêm um texto tipo dump de série pandas (''0   Aprovado. 1 ...'') e não a descrição da linha — medido 2026-10-27'
+  votacao_orientacao_bancada:
+    grao: a orientação de uma bancada em uma votação
+    chave: '(id_votacao, sigla_bancada): 101.257 linhas = 101.257 distintas'
+    tempo: *id001
+    territorio: *id002
+    filtros_tipicos:
+    - orientacao = 'Sim' (45.777), 'Não' (39.651), 'Obstrução' (5.869), 'Liberado' (3.240); 6,6% nulo
+    use_para: orientação de partidos/bancadas.
+    nao_use_para: voto efetivo (use votacao_parlamentar).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 101.257 linhas, todas distintas — medido 2026-10-27
+  votacao_parlamentar:
+    grao: o voto de um deputado em uma votação nominal
+    chave: '(id_votacao, id_deputado): 1.886.190 linhas = 1.886.190 distintas'
+    tempo:
+      natureza: serie_diaria
+      coluna: data
+      cobertura: 2001-12-11–2026-03-03
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF do deputado
+    filtros_tipicos:
+    - voto = 'Sim' ou 'Não' (grafia com acento; 'Não')
+    use_para: votos nominais por deputado, partido e UF.
+    nao_use_para: votações simbólicas (não aparecem); nomear deputados.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '1.886.190 linhas, todas distintas; voto: Sim 1.009.772, Não 807.928, Obstrução 52.985, Abstenção 6.730, ''Artigo 17'' 4.635, nulo 4.108 — medido 2026-10-27'
+  votacao_proposicao:
+    grao: uma proposição afetada por uma votação
+    chave: '(id_votacao, id_proposicao): 139.485 linhas = 139.485 distintas'
+    tempo:
+      natureza: serie_diaria
+      coluna: data
+      cobertura: 1974-08-14–2026-03-03
+    territorio: *id002
+    use_para: ligar votações a proposições.
+    nao_use_para: 'ler ementa: está corrompida.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 139.485 linhas, todas distintas; ementa vem corrompida (dump de série pandas) — medido 2026-10-27

@@ -1,0 +1,34 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_tse_filiacao_partidaria
+tabelas:
+  microdados:
+    grao: "uma filiação (registro_filiacao) de um eleitor a um partido, com situação e datas, no cadastro do TSE (extração mais recente em 2026-08-04)"
+    chave: "registro_filiacao (também únicos titulo_eleitor + sigla_partido + data_filiacao)"
+    tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2024-10-21–2026-08-04 (data_extracao); data_filiacao 1980-01-01–2026-08-03"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF do eleitor (inclui ZZ = exterior, 30 valores)", id_municipio: "município IBGE de 7 dígitos (0,12% nulos)", id_municipio_tse: "código do município no TSE (não é IBGE)", zona: "zona eleitoral (texto)", secao: "seção eleitoral (texto)"}}
+    medidas:
+      - {expressao: "count(*) com situacao_registro = 'Regular'", o_que: "filiações vigentes", unidade: "filiações", soma: sim}
+      - {expressao: "count(DISTINCT titulo_eleitor)", o_que: "eleitores distintos (um eleitor pode ter filiação regular em dois partidos)", unidade: "eleitores", soma: nao}
+    filtros_tipicos:
+      - "situacao_registro = 'Regular' para filiados vigentes (16.717.635 de 17.534.818; os demais: Cancelado, Suspenso e 1 'Liberado' + 1 'Nao Liberado'); ver column_codes (situacao_registro: nao_e_codigo)"
+      - "data_extracao = '2026-08-04' para o retrato mais recente (16.881.616 linhas, 16.184.485 Regular); as extrações de 2024-10-21 (554.360) e 2026-04-01 (98.842) são resíduos de lotes anteriores, não um histórico"
+      - "sigla_partido = 'PT' (32 siglas, ex.: MDB, PT, UNIÃO, PP, PRD, PSDB, PDT, PL), valor em maiúsculas como no banco"
+    use_para: "contar filiados vigentes por partido, UF ou município e por sexo, e estudar datas de filiação e desfiliação"
+    nao_use_para: "série histórica de filiados (é retrato atual) nem filiações anteriores a 2023, que estão em microdados_antigos"
+    rascunho: [use_para, nao_use_para]
+    verificado: "17534818 linhas, 17534818 distintos de registro_filiacao e de (titulo_eleitor, sigla_partido, data_filiacao); 16602928 titulos distintos entre os Regular (16717635 filiações), ou seja, ~114 mil eleitores com mais de uma filiação regular; Regular com data_desfiliacao preenchida: 720199 (data_desfiliacao não é sinônimo de situação não-Regular, medir as duas); Regular sem data_desfiliacao: 15997436 — medido 2026-10-27"
+  microdados_antigos:
+    grao: "uma filiação de um eleitor a um partido no cadastro antigo do TSE (data_filiacao até 2023-10-01, data_processamento até 2021), com situação, motivo e datas"
+    chave: "nenhuma: titulo_eleitoral + sigla_partido + data_filiacao repete (211815 distintos em 211863 linhas na amostra de 1%, 48 repetidas); sem coluna de registro"
+    tempo: {natureza: retrato_atual, coluna: data_filiacao, cobertura: "1980-01-01–2023-10-01"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF do eleitor (inclui ZZ)", id_municipio: "município IBGE de 7 dígitos (0,1% nulos)", id_municipio_tse: "código do município no TSE", zona: "zona eleitoral (inteiro)", secao: "seção eleitoral (inteiro, 4,2% nulos)"}}
+    medidas:
+      - {expressao: "count(*) com situacao_registro = 'REGULAR'", o_que: "filiações vigentes no cadastro antigo", unidade: "filiações", soma: sim}
+    filtros_tipicos:
+      - "situacao_registro = 'REGULAR' (maiúsculas, diferente de microdados que usa 'Regular'); outros valores: CANCELADO, DESFILIADO, SUB_JUDICE (78 linhas no perfil)"
+      - "sigla_partido em maiúsculas, 35 siglas, inclui partidos extintos (ex.: DEM, PTB)"
+    use_para: "ver filiações e cancelamentos anteriores, com motivo_cancelamento em texto, de partidos que mudaram de nome ou foram extintos"
+    nao_use_para: "contar filiados atuais (use microdados) nem somar com microdados: o mesmo eleitor aparece nas duas tabelas"
+    rascunho: [use_para, nao_use_para]
+    verificado: "24666625 linhas (~8% amostrado no perfil); chave medida em amostra system 1% (211863 linhas, 211815 distintos da tripla); no mesmo recorte, CANCELADO sem data_cancelamento: 10632 de 64313 — medido 2026-10-27"

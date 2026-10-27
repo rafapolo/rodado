@@ -1,0 +1,36 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ms_pns
+tabelas:
+  microdados_2013:
+    grao: "um morador de domicílio da PNS 2013 (222.385 linhas; só uma parte foi o adulto selecionado que respondeu ao questionário individual)"
+    chave: "(upa_pns, v0006_pns, c00301): 222.385 linhas = 222.385 distintos (c00301 = número de ordem do morador no domicílio; upa_pns + v0006_pns = domicílio)"
+    tempo: {natureza: retrato_atual, coluna: v0020, cobertura: "2013–2013"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "código IBGE de 2 dígitos da UF (ex.: '35'), apesar do nome", v0024: "estrato"}}
+    medidas:
+      - {coluna: v00291, o_que: "peso do morador selecionado (VARCHAR, em branco para quem não foi selecionado; 60.202 linhas preenchidas)", unidade: "pessoas", soma: sim}
+      - {coluna: v00281, o_que: "peso do morador (VARCHAR); definição exata não documentada", unidade: "pessoas", soma: sim}
+    filtros_tipicos:
+      - "v0025 = '1' para o morador selecionado para o questionário individual (64.308 linhas; 16.839 nulas)"
+      - "trim(v00291) <> '' antes de converter o peso, que é texto"
+      - "colunas com 'sim'/'não'/'não informado' em texto (ex.: a007) e outras com código numérico; cheque o perfil por coluna"
+    use_para: "indicadores de saúde por UF e perfil do morador em 2013, ponderando pelo peso do morador selecionado"
+    nao_use_para: "contar linhas como população (é amostra com pesos); comparar nomes de colunas com 2019 (layout diferente: 1.000 colunas contra 1.087)"
+    rascunho: [medidas, use_para, nao_use_para]
+    verificado: "222.385 linhas, chave confirmada; v0025 = '1' em 64.308; v00291 preenchido em 60.202 — medido 2026-10-27"
+  microdados_2019:
+    grao: "um morador de domicílio da PNS 2019 (293.726 linhas, 1.087 colunas)"
+    chave: "(upa_pns, v0006_pns, c00301): 293.726 linhas = 293.726 distintos"
+    tempo: {natureza: retrato_atual, coluna: "v0020 (ano)", cobertura: "2019–2019"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "código IBGE de 2 dígitos da UF (ex.: '35' = 18.504 linhas, '21' = 17.912)"}}
+    medidas:
+      - {coluna: v00291, o_que: "peso do morador selecionado (DOUBLE; preenchido em 90.846 linhas, soma 168,4 milhões)", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["v00291 IS NOT NULL para o morador que respondeu ao questionário individual (os pesos de v00281 estão em 279.382 linhas; significado não documentado)", "v0025a = 0, 1 ou 9: significado não documentado"]
+    use_para: "indicadores de saúde por UF em 2019, ponderando por v00291"
+    nao_use_para: "contar linhas como população; juntar com 2013 pelo nome de coluna (v0025 virou v0025a/v0025b, tipos de peso diferem: texto em 2013, DOUBLE em 2019)"
+    rascunho: [use_para, nao_use_para, filtros_tipicos]
+    verificado: "293.726 linhas, chave confirmada; v00291 preenchido em 90.846 — medido 2026-10-27"
+  dicionario:
+    grao: "um código de variável (id_tabela × nome_coluna × chave) do questionário das PNS de 2013 e 2019 (4.948 linhas, 976 pares tabela×coluna)"
+    use_para: "traduzir códigos das variáveis dos microdados; id_tabela inclui o valor literal 'nan' além de microdados_2013 e microdados_2019"
+    verificado: "4.948 linhas, 3 id_tabela distintos — medido 2026-10-27"

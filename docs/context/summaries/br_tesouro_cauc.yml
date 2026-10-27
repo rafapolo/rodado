@@ -1,0 +1,39 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_tesouro_cauc
+tabelas:
+  legenda_itens:
+    grao: "um item do CAUC (código + descrição) × nível federativo (estados ou municípios)"
+    chave: "nivel + codigo_item (78 linhas = 78 distintos, medido)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: nenhum, colunas: {nivel: "'estados' ou 'municipios': a que tabela situacao_* o item se aplica"}}
+    use_para: "traduzir os códigos das colunas de situacao_estados / situacao_municipios ('1.1', '3.2.4', 'V'...) em descrição."
+    nao_use_para: "saber a situação de um ente: ela está nas tabelas situacao_*."
+    rascunho: [use_para, nao_use_para]
+    verificado: "78 linhas, 78 distintos de (nivel, codigo_item), 39 itens por nível — medido 2026-10-27"
+  situacao_estados:
+    grao: "um estado (27 UFs) com a situação de cada item de regularidade do CAUC na data da pesquisa"
+    chave: "Código IBGE (27 linhas = 27 distintos, medido; UF também é única)"
+    tempo: {natureza: retrato_atual, coluna: data_pesquisa, cobertura: "2025-11-03–2025-11-03 (um único retrato, mais antigo que o de municípios)"}
+    territorio: {nivel: uf, colunas: {UF: "sigla", "Código IBGE": "código de 2 dígitos da UF (texto)", "Código SIAFI": "sigla da UF (não é número)"}}
+    medidas:
+      - {coluna: "colunas '1.1' … '5.8'", o_que: "uma coluna por item do CAUC (legenda em legenda_itens): data de validade/vigência em dd/mm/aa texto, '!' = pendência, 'Desabilitado' = item não se aplica", unidade: "texto dd/mm/aa", soma: nao}
+      - {coluna: "População", o_que: "habitantes, texto", unidade: "pessoas; o DF vem como 'null' em texto", soma: nao}
+    filtros_tipicos: ["\"1.1\" = '!' (valor literal) para pendência no item 1.1; idem para as outras colunas", "\"1.2\" = 'Desabilitado' é item desligado, não irregular"]
+    use_para: "ver quais estados têm pendência (valor '!') em cada item exigido para receber transferências voluntárias."
+    nao_use_para: "série histórica ou contagem de valores como se fossem números: as colunas de item são texto de data/'!'."
+    rascunho: [medidas (leitura de '!' e 'Desabilitado'), use_para, nao_use_para]
+    verificado: "27 linhas, 27 distintos de Código IBGE; '!' aparece p.ex. 2 vezes em '1.1' e 'Desabilitado' em todas as 27 em '1.2' — medido 2026-10-27"
+  situacao_municipios:
+    grao: "um município (5.569 linhas; o DF não está aqui, só em situacao_estados) com a situação de cada item de regularidade do CAUC na data da pesquisa"
+    chave: "Código IBGE (5.569 linhas = 5.569 distintos, medido)"
+    tempo: {natureza: retrato_atual, coluna: data_pesquisa, cobertura: "2026-10-02–2026-10-02 (único retrato)"}
+    territorio: {nivel: municipio, colunas: {UF: "sigla", "Código IBGE": "código de 7 dígitos (texto)", "Código SIAFI": "código SIAFI do município (texto)", "Região": "N, NE, CO, SE, S"}}
+    medidas:
+      - {coluna: "colunas '1.1' … '5.7'", o_que: "uma coluna por item do CAUC (legenda_itens com nivel = 'municipios'): data dd/mm/aa em texto (provável validade da regularidade, não documentado), '!' = pendência, 'Desabilitado' = item não se aplica", unidade: "texto dd/mm/aa", soma: nao}
+      - {coluna: "População", o_que: "habitantes, texto", unidade: "pessoas", soma: nao}
+    filtros_tipicos: ["\"1.2\" = '!' (479 municípios em pendência de precatórios segundo a legenda do item 1.2)", "\"3.2.4\" e \"1.3\" = 'Desabilitado' em todas as linhas: item sem informação"]
+    use_para: "listar municípios com pendência no CAUC (valor '!') por item e UF."
+    nao_use_para: "afirmar que a ausência de '!' é regularidade garantida (a data é de validade, pode já ter vencido) nem somar as colunas."
+    rascunho: [medidas, use_para, nao_use_para]
+    verificado: "5.569 linhas, 5.569 distintos de Código IBGE; '1.2' = '!' em 479 (conferido), '1.5' = '!' em 1.213 (do perfil); sem linha de DF/Brasília — medido 2026-10-27"

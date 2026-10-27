@@ -1,0 +1,18 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: un_sanctions
+tabelas:
+  sanctions:
+    grao: "uma entrada da lista consolidada de sanções do Conselho de Segurança da ONU: uma pessoa ou uma entidade listada"
+    chave: "dataid (1010 linhas = 1010 distintos); reference_number também é único (1010)"
+    tempo: {natureza: retrato_atual, coluna: listed_on, cobertura: "2000-04-12–2026-07-22 (data da listagem; date_generated é uma só, 2026-10-08)"}
+    territorio: {nivel: outro, colunas: {nationality: "JSON em texto, ex. {\"VALUE\": \"Afghanistan\"}; só indivíduos", individual_address: "JSON em texto; só indivíduos", entity_address: "JSON em texto; só entidades"}}
+    filtros_tipicos:
+      - "indivíduo x entidade: reference_number LIKE '%i.%' (736 linhas, com individual_alias preenchido) ou '%e.%' (274 linhas, com entity_alias preenchido); o prefixo de reference_number (QDi, TAi, QDe, KPi...) identifica o regime e o tipo"
+      - "un_list_type = 'Al-Qaida' (336), 'DPRK' (155), 'Taliban' (140), 'Iran' (121), 'Iraq' (74), 'DRC' (61), 'Libya' (31), 'Somalia' (24), 'CAR' (15), 'Sudan' (13): comitê/regime de sanção"
+      - "gender é NULL em 949 linhas (preenchido só em 61): não use para estimar proporção"
+      - "colunas list_type, last_day_updated, nationality, *_alias etc. guardam JSON em texto (ex. list_type = '{\"VALUE\": \"UN List\"}'): extraia com json_extract_string"
+    use_para: "checar se alguém ou alguma entidade consta na lista da ONU e em qual regime (un_list_type) e desde quando (listed_on)"
+    nao_use_para: "análise por país ou por sexo: nationality é JSON e gender quase vazio; sort_key e sort_key_last_mod são 100% nulos"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1010 linhas = 1010 dataid = 1010 reference_number; 736 indivíduos x 274 entidades (pelo reference_number e pela coluna de alias) — medido 2026-10-27"

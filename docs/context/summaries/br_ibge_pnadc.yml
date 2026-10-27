@@ -1,0 +1,166 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibge_pnadc
+tabelas:
+  ano_brasil_grupo_idade:
+    grao: "população do Brasil × ano × grupo de idade × sexo"
+    chave: "(ano, grupo_idade, sexo): 408 linhas = 408 distintos"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: populacao, o_que: "população estimada (pessoas)", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["sexo = 'Total' e grupo_idade = 'Total' para o total sem dupla contagem (as linhas 'Total' coexistem com as categorias; somar tudo dobra)"]
+    use_para: "população por grupo idade e sexo, 2012–2019"
+    nao_use_para: "anos depois de 2019 ou indicadores de trabalho (use microdados)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "408 linhas, chave confirmada — medido 2026-10-27"
+  ano_brasil_raca_cor:
+    grao: "população do Brasil × ano × raça/cor × sexo"
+    chave: "(ano, raca_cor, sexo): 96 linhas = 96 distintos"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: populacao, o_que: "população estimada (pessoas)", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["sexo = 'Total' e raca_cor = 'Total' para o total sem dupla contagem (as linhas 'Total' coexistem com as categorias; somar tudo dobra)"]
+    use_para: "população por raca cor e sexo, 2012–2019"
+    nao_use_para: "anos depois de 2019 ou indicadores de trabalho (use microdados)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "96 linhas, chave confirmada — medido 2026-10-27"
+  ano_municipio_grupo_idade:
+    grao: "população de uma capital × ano × grupo de idade × sexo"
+    chave: "(ano, id_municipio, grupo_idade, sexo): 11016 linhas = 11016 distintos"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "só as 27 capitais (gotcha sem_municipio)"}}
+    medidas:
+      - {coluna: populacao, o_que: "população estimada (pessoas)", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["sexo = 'Total' e grupo_idade = 'Total' para o total sem dupla contagem (as linhas 'Total' coexistem com as categorias; somar tudo dobra)"]
+    use_para: "população por grupo idade e sexo, 2012–2019"
+    nao_use_para: "anos depois de 2019 ou indicadores de trabalho (use microdados)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "11016 linhas, chave confirmada — medido 2026-10-27"
+  ano_municipio_raca_cor:
+    grao: "população de uma capital × ano × raça/cor × sexo"
+    chave: "(ano, id_municipio, raca_cor, sexo): 2592 linhas = 2592 distintos"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "só as 27 capitais (gotcha sem_municipio)"}}
+    medidas:
+      - {coluna: populacao, o_que: "população estimada (pessoas)", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["sexo = 'Total' e raca_cor = 'Total' para o total sem dupla contagem (as linhas 'Total' coexistem com as categorias; somar tudo dobra)"]
+    use_para: "população por raca cor e sexo, 2012–2019"
+    nao_use_para: "anos depois de 2019 ou indicadores de trabalho (use microdados)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2592 linhas, chave confirmada — medido 2026-10-27"
+  ano_regiao_grupo_idade:
+    grao: "população de uma grande região × ano × grupo de idade × sexo"
+    chave: "(ano, id_regiao, grupo_idade, sexo): 2040 linhas = 2040 distintos"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
+    territorio: {nivel: regiao, colunas: {id_regiao: "1 a 5"}}
+    medidas:
+      - {coluna: populacao, o_que: "população estimada (pessoas)", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["sexo = 'Total' e grupo_idade = 'Total' para o total sem dupla contagem (as linhas 'Total' coexistem com as categorias; somar tudo dobra)"]
+    use_para: "população por grupo idade e sexo, 2012–2019"
+    nao_use_para: "anos depois de 2019 ou indicadores de trabalho (use microdados)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2040 linhas, chave confirmada — medido 2026-10-27"
+  ano_regiao_raca_cor:
+    grao: "população de uma grande região × ano × raça/cor × sexo"
+    chave: "(ano, id_regiao, raca_cor, sexo): 480 linhas = 480 distintos"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
+    territorio: {nivel: regiao, colunas: {id_regiao: "1 a 5"}}
+    medidas:
+      - {coluna: populacao, o_que: "população estimada (pessoas)", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["sexo = 'Total' e raca_cor = 'Total' para o total sem dupla contagem (as linhas 'Total' coexistem com as categorias; somar tudo dobra)"]
+    use_para: "população por raca cor e sexo, 2012–2019"
+    nao_use_para: "anos depois de 2019 ou indicadores de trabalho (use microdados)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "480 linhas, chave confirmada — medido 2026-10-27"
+  ano_regiao_metropolitana_grupo_idade:
+    grao: "população de uma região metropolitana × ano × grupo de idade × sexo"
+    chave: "(ano, id_regiao_metropolitana, grupo_idade, sexo): 8160 linhas = 8160 distintos"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
+    territorio: {nivel: outro, colunas: {id_regiao_metropolitana: "20 regiões metropolitanas"}}
+    medidas:
+      - {coluna: populacao, o_que: "população estimada (pessoas)", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["sexo = 'Total' e grupo_idade = 'Total' para o total sem dupla contagem (as linhas 'Total' coexistem com as categorias; somar tudo dobra)"]
+    use_para: "população por grupo idade e sexo, 2012–2019"
+    nao_use_para: "anos depois de 2019 ou indicadores de trabalho (use microdados)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "8160 linhas, chave confirmada — medido 2026-10-27"
+  ano_regiao_metropolitana_raca_cor:
+    grao: "população de uma região metropolitana × ano × raça/cor × sexo"
+    chave: "(ano, id_regiao_metropolitana, raca_cor, sexo): 1920 linhas = 1920 distintos"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
+    territorio: {nivel: outro, colunas: {id_regiao_metropolitana: "20 regiões metropolitanas"}}
+    medidas:
+      - {coluna: populacao, o_que: "população estimada (pessoas)", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["sexo = 'Total' e raca_cor = 'Total' para o total sem dupla contagem (as linhas 'Total' coexistem com as categorias; somar tudo dobra)"]
+    use_para: "população por raca cor e sexo, 2012–2019"
+    nao_use_para: "anos depois de 2019 ou indicadores de trabalho (use microdados)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1920 linhas, chave confirmada — medido 2026-10-27"
+  ano_uf_grupo_idade:
+    grao: "população de uma UF × ano × grupo de idade × sexo"
+    chave: "(ano, id_uf, grupo_idade, sexo): 11016 linhas = 11016 distintos"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
+    territorio: {nivel: uf, colunas: {id_uf: "código IBGE de 2 dígitos"}}
+    medidas:
+      - {coluna: populacao, o_que: "população estimada (pessoas)", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["sexo = 'Total' e grupo_idade = 'Total' para o total sem dupla contagem (as linhas 'Total' coexistem com as categorias; somar tudo dobra)"]
+    use_para: "população por grupo idade e sexo, 2012–2019"
+    nao_use_para: "anos depois de 2019 ou indicadores de trabalho (use microdados)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "11016 linhas, chave confirmada — medido 2026-10-27"
+  ano_uf_raca_cor:
+    grao: "população de uma UF × ano × raça/cor × sexo"
+    chave: "(ano, id_uf, raca_cor, sexo): 2592 linhas = 2592 distintos"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
+    territorio: {nivel: uf, colunas: {id_uf: "código IBGE de 2 dígitos"}}
+    medidas:
+      - {coluna: populacao, o_que: "população estimada (pessoas)", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["sexo = 'Total' e raca_cor = 'Total' para o total sem dupla contagem (as linhas 'Total' coexistem com as categorias; somar tudo dobra)"]
+    use_para: "população por raca cor e sexo, 2012–2019"
+    nao_use_para: "anos depois de 2019 ou indicadores de trabalho (use microdados)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2592 linhas, chave confirmada — medido 2026-10-27"
+  microdados:
+    grao: "uma pessoa × trimestre da PNAD Contínua (424 colunas; 28 milhões de linhas)"
+    chave: "(ano, trimestre, id_pessoa): em ano = 2025, 1.438.445 linhas = 1.438.445 distintos; em 2025-T3, 490.488 linhas e 490.488 id_pessoa"
+    tempo: {natureza: serie_de_periodos, coluna: "ano, trimestre", cobertura: "2012-T1–2025-T3 (último trimestre medido em 2025: T3)"}
+    territorio: {nivel: uf, colunas: {id_uf: "UF", capital: "capital (sem id_municipio)", rm_ride: "região metropolitana"}}
+    medidas:
+      - {coluna: V1028, o_que: "peso calibrado da pessoa; soma estima população", unidade: "pessoas", soma: sim}
+    filtros_tipicos:
+      - "ano = 2025 AND trimestre = 3 (uma partição; nunca count(*), some V1028 — gotcha pesar_por_v1028)"
+      - "VD4002 = '1' para ocupados (102,4 mi em 2025-T3 somando V1028), '2' desocupados (6,0 mi); VD4002 é NULL em 258.095 linhas (fora da força de trabalho ou abaixo da idade), 104,5 mi"
+    use_para: "mercado de trabalho, renda e demografia por UF, capital e RM, ponderando por V1028"
+    nao_use_para: "município (não há id_municipio) ou séries de rendimento real depois de 2021-T4 sem deflator externo; ver gotchas"
+    rascunho: [nao_use_para]
+    verificado: "2025: T1 472.367, T2 475.590, T3 490.488 linhas; chave confirmada em 2025; VD4002 em 2025-T3 medido — medido 2026-10-27"
+  educacao:
+    grao: "uma pessoa × ano (visita de educação, sempre 2º trimestre)"
+    chave: "(ano, id_pessoa): 1.662.054 linhas = 1.662.054 distintos"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2016–2024 (trimestre = 2)"}
+    territorio: {nivel: uf, colunas: {id_uf: "UF", capital: "capital", rm_ride: "RM"}}
+    medidas:
+      - {coluna: v1028, o_que: "peso calibrado (colunas em minúsculo nesta tabela)", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["ano = 2024 (uma edição por ano)"]
+    use_para: "frequência escolar, escolaridade e questões do módulo de educação por UF"
+    nao_use_para: "contar linhas como pessoas: use v1028 (gotcha pesar_por_v1028); perfil mostra 0 linhas por erro, mas a tabela tem 1,66 milhão"
+    rascunho: [use_para, medidas]
+    verificado: "1.662.054 linhas, chave confirmada, 279 colunas — medido 2026-10-27"
+  rendimentos_outras_fontes:
+    grao: "uma pessoa × trimestre com a visita de rendimentos de outras fontes (BPC, bolsa família, aposentadoria etc.)"
+    chave: "(ano, trimestre, id_domicilio, id_pessoa): 1.429.834 = 1.429.834"
+    tempo: {natureza: serie_de_periodos, coluna: "ano, trimestre", cobertura: "2012–2022"}
+    territorio: {nivel: uf, colunas: {id_uf: "UF", capital: "capital", rm_ride: "RM"}}
+    medidas:
+      - {coluna: V1028, o_que: "peso calibrado", unidade: "pessoas", soma: sim}
+      - {coluna: VD5001, o_que: "rendimento domiciliar (definição não documentada)", unidade: "R$", soma: nao}
+    filtros_tipicos: ["ano = 2022 AND trimestre = 3"]
+    use_para: "rendimentos de programas sociais e outras fontes, ponderados"
+    nao_use_para: "anos após 2022"
+    rascunho: [use_para, medidas]
+    verificado: "1.429.834 linhas, chave confirmada — medido 2026-10-27"
+  dicionario:
+    grao: "um código de variável da PNADC com seu significado (1.821 linhas)"
+    use_para: "traduzir códigos das variáveis dos microdados"

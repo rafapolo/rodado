@@ -1,0 +1,43 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: mundo_transfermarkt_competicoes
+tabelas:
+  brasileirao_serie_a:
+    grao: "uma partida do Campeonato Brasileiro Série A (mandante × visitante), com estatísticas dos dois lados em colunas _mandante/_visitante"
+    chave: "(ano_campeonato, rodada, time_mandante, time_visitante) (8456 linhas = 8456 distintos); (ano_campeonato, time_mandante, time_visitante) repete em 2 casos (8454)"
+    tempo: {natureza: serie_de_periodos, coluna: data, cobertura: "2003-03-29–2024-10-27 (ano_campeonato 2003–2024)"}
+    territorio: {nivel: ponto, colunas: {estadio: "estádio da partida, texto", time_mandante: "clube da casa", time_visitante: "clube visitante"}}
+    medidas:
+      - {coluna: gols_mandante / gols_visitante, o_que: "gols no jogo (placar final)", unidade: "gols", soma: sim}
+      - {coluna: publico, o_que: "público pagante/presente", unidade: "pessoas", soma: sim}
+      - {coluna: valor_equipe_titular_mandante / valor_equipe_titular_visitante, o_que: "valor de mercado do time titular", unidade: "moeda não documentada (provável euros; de 560 a 100500000, existe a partir de 2007)", soma: nao}
+      - {coluna: chutes_mandante, o_que: "chutes e demais estatísticas de jogo (escanteios, faltas, defesas, impedimentos, chutes_fora)", unidade: "contagem", soma: sim}
+    filtros_tipicos:
+      - "ano_campeonato é o filtro de temporada; 2024 está incompleto (286 jogos, até a rodada 31, última data 2024-10-27)"
+      - "2003 e 2004 têm 456 jogos e 24 times, 2005 tem 418 e 22; de 2006 a 2023 são 380 por ano com 20 times: contagens históricas não são comparáveis sem isso"
+      - "estatísticas de jogo (chutes, escanteios, faltas...) só existem de 2018 a 2024; nulas em 75,3% das linhas"
+      - "publico = 0 em 858 linhas e NULL em 1711: tratar 0 como dado ausente, não como jogo sem torcida (significado do 0 não documentado)"
+      - "um jogo tem gols_mandante e gols_visitante NULL (Chapecoense, 2016-12-11)"
+    use_para: "resultados, públicos e perfil de times do Brasileirão 2003–2024; classificação por partida em colocacao_mandante/visitante (nula em 20%)"
+    nao_use_para: "tabela de classificação final do campeonato pronta: precisa agregar e os anos de 2003–2005 e 2024 têm menos jogos; sem pontos"
+    rascunho: [use_para, nao_use_para, "moeda de valor_equipe_titular", "significado de publico = 0"]
+    verificado: "8456 linhas = 8456 (ano_campeonato, rodada, mandante, visitante); jogos por ano: 456, 456, 418, 380 (2006–2023), 286 (2024); valor_equipe_titular desde 2007; chutes_mandante de 2018 a 2024 — medido 2026-10-27"
+  copa_brasil:
+    grao: "uma partida da Copa do Brasil (mandante × visitante), com estatísticas dos dois lados em colunas _mandante/_visitante"
+    chave: "(data, time_mandante, time_visitante) (598 linhas = 598 distintos)"
+    tempo: {natureza: serie_de_periodos, coluna: data, cobertura: "2020-02-05–2024-08-29 (ano_campeonato 2020–2024)"}
+    territorio: {nivel: ponto, colunas: {estadio: "estádio da partida", time_mandante: "clube da casa", time_visitante: "clube visitante"}}
+    medidas:
+      - {coluna: gols_mandante / gols_visitante, o_que: "gols no jogo", unidade: "gols", soma: sim}
+      - {coluna: publico, o_que: "público", unidade: "pessoas", soma: sim}
+      - {coluna: gols_penalti_mandante / gols_penalti_visitante, o_que: "gols na disputa de pênaltis, só quando penalti = 1 (65 jogos)", unidade: "gols", soma: nao}
+      - {coluna: valor_equipe_titular_mandante / valor_equipe_titular_visitante, o_que: "valor de mercado do time titular", unidade: "moeda não documentada (de 10000 a 122750000)", soma: nao}
+    filtros_tipicos:
+      - "fase tem espaço no fim em várias fases: 'Oitavas De Final ', 'Quartas De Final ', 'Semi-Finais ', 'Final ', '3ª Eliminatória ', '4ª Eliminatória '; use trim(fase) ou LIKE"
+      - "tipo_fase = 'Jogo Único' (300, 1ª e 2ª eliminatórias), 'Jogos De Ida' (147) / 'Jogos De Volta' (143), e as formas no singular 'Jogo De Ida'/'Jogo De Volta' (4 cada, só na final)"
+      - "penalti = 1 em 65 jogos (gols_penalti_* preenchido só nesses); penalti = 0 em 533"
+      - "estatísticas de jogo (escanteios, faltas, chutes...) são nulas em 70,7% das linhas; publico = 0 em 179 linhas (significado não documentado)"
+    use_para: "resultados e públicos da Copa do Brasil 2020–2024 por fase"
+    nao_use_para: "histórico completo da Copa do Brasil: só 5 edições; os jogos de volta das quartas somam 16 contra 20 de ida (dados incompletos)"
+    rascunho: [use_para, nao_use_para, "moeda de valor_equipe_titular"]
+    verificado: "598 linhas = 598 (data, mandante, visitante); fases e tipo_fase contados por GROUP BY; penalti 1 = 65 — medido 2026-10-27"

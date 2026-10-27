@@ -1,0 +1,19 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_senatran_estatisticas
+tabelas:
+  uf_tipo:
+    grao: "um mês × UF × tipo de veículo (estoque da frota registrada no mês)"
+    chave: "ano, mes, sigla_uf, tipo_veiculo (159.327 linhas = 159.327 distintos)"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2003-01–2026-07 (2004 sem jan/fev; 2026 só até o mês 7)"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF (27 siglas, sem total Brasil)"}}
+    medidas:
+      - {coluna: quantidade, o_que: "veículos registrados naquele mês (estoque, não fluxo)", unidade: "veículos", soma: "sim entre UFs e tipos no mesmo mês; nao entre meses (some só um mês, ex.: dezembro)"}
+    filtros_tipicos:
+      - "ano = 2023 AND mes = 12 — frota de fim de ano; soma de todas as UFs e tipos = 119.227.657 (bate com a linha 'total' de br_senatran_frota.municipio_tipo)"
+      - "tipo_veiculo = 'caminhao trator' (com espaço, minúsculo, sem acento); em br_senatran_frota é 'caminhao_trator'"
+      - "NÃO há linha 'total' aqui: somar tipo_veiculo não dobra (ao contrário de br_senatran_frota, ver gotcha linha_total_dobra_soma)"
+    use_para: "série longa (desde 2003) da frota por UF e tipo de veículo"
+    nao_use_para: "análise municipal (use br_senatran_frota.municipio_tipo, só desde 2013) ou somar vários meses"
+    rascunho: [use_para, nao_use_para]
+    verificado: "159.327 linhas, chave única; 1.134 linhas com quantidade nula (54 por tipo); 21 tipos canônicos x 27 UFs = 567 linhas por mês; em 2007 três tipos aparecem com grafia quebrada em 1 mês ('caminho-nete', 'moto-  cicleta', 'ciclo-motor', 27 linhas cada), que somem de 'caminhonete'/'motocicleta'/'ciclomotor' naquele mês (7.560 linhas em vez de 7.587) — medido 2026-10-27"

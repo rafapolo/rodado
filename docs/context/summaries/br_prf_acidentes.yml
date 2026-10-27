@@ -1,0 +1,55 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_prf_acidentes
+tabelas:
+  ocorrencia:
+    grao: "um acidente em rodovia federal registrado pela PRF"
+    chave: "(ano, id_ocorrencia), com 35 repetições entre 2007 e 2026 (2.243.625 linhas, 2.243.590 distintas); id_ocorrencia sozinho NÃO é único (só 1.753.307 distintos: o código se repete entre anos, em 490.283 casos)"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "2007-01-01–2026-08-31"}
+    territorio: {nivel: ponto, colunas: {sigla_uf: "UF", id_municipio: "município (código IBGE de 7 dígitos)", br: "rodovia federal (texto)", km: "quilômetro da rodovia", latitude: "graus", longitude: "graus", regional: "regional da PRF", delegacia: "delegacia", uop: "unidade operacional"}}
+    medidas:
+      - {coluna: quantidade_mortos, o_que: "mortos no acidente", unidade: "pessoas", soma: sim}
+      - {coluna: quantidade_feridos, o_que: "feridos (leves + graves)", unidade: "pessoas", soma: sim}
+      - {coluna: quantidade_feridos_leves, o_que: "feridos leves", unidade: "pessoas", soma: sim}
+      - {coluna: quantidade_feridos_graves, o_que: "feridos graves", unidade: "pessoas", soma: sim}
+      - {coluna: quantidade_pessoas, o_que: "pessoas envolvidas", unidade: "pessoas", soma: sim}
+      - {coluna: quantidade_veiculos, o_que: "veículos envolvidos", unidade: "veículos", soma: sim}
+      - {expressao: "count(*)", o_que: "número de acidentes", unidade: "acidentes (série de 'Sem Vítimas' quebra em 2014–2016; ver gotcha sem_vitimas_quebra_2015)", soma: sim}
+    filtros_tipicos:
+      - "classificacao_acidente <> 'Sem Vítimas' para série comparável de acidentes; valores literais: 'Com Vítimas Feridas', 'Sem Vítimas', 'Com Vítimas Fatais' (1 linha nula em 2023)"
+      - "uso_solo IN ('Rural','Urbano'); tipo_pista IN ('Simples','Dupla','Múltipla'); fase_dia IN ('Pleno dia','Plena Noite','Anoitecer','Amanhecer')"
+    use_para: "mortos, feridos e acidentes por UF, município, rodovia, trecho e período"
+    nao_use_para: "taxa de mortalidade no trânsito (só malha federal; ver so_rodovia_federal); contar acidentes 'Sem Vítimas' como série contínua"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2023: 67.766 linhas, sum(quantidade_mortos) = 5.627, quantidade_feridos = leves + graves = 78.463, quantidade_pessoas 177.215; chave (ano, id_ocorrencia) 2.243.590 de 2.243.625 — medido 2026-10-27"
+  pessoa:
+    grao: "uma pessoa envolvida em um acidente, no veículo em que estava"
+    chave: "(ano, id_ocorrencia, id_veiculo, id_pessoa), com 91 repetições (5.156.169 linhas, 5.156.078 distintas); em 2023 é única (183.361). id_pessoa sozinho não é único (4.249.630 distintos em 5,16 milhões de linhas)"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "2007-01-01–2026-08-31"}
+    territorio: {nivel: ponto, colunas: {sigla_uf: "UF", id_municipio: "município", br: "rodovia", km: "quilômetro", latitude: "graus", longitude: "graus"}}
+    medidas:
+      - {coluna: indicador_morto, o_que: "1 se a pessoa morreu (texto '0'/'1', converta com ::int)", unidade: "pessoas", soma: sim}
+      - {coluna: indicador_ferido_grave, o_que: "1 se ferido grave", unidade: "pessoas", soma: sim}
+      - {coluna: indicador_ferido_leve, o_que: "1 se ferido leve", unidade: "pessoas", soma: sim}
+      - {coluna: indicador_ileso, o_que: "1 se ileso", unidade: "pessoas", soma: sim}
+    filtros_tipicos:
+      - "tipo_envolvido = 'Condutor' (também 'Passageiro','Pedestre','Testemunha','Cavaleiro'; nulo em ~9%)"
+      - "estado_fisico = 'Óbito' (também 'Ileso','Lesões Leves','Lesões Graves','Não Informado'; nulo em ~9%)"
+      - "sexo IN ('Masculino','Feminino'); idade nula em 17%"
+    use_para: "perfil de vítimas: idade, sexo, tipo de envolvido, tipo de veículo, ano de fabricação"
+    nao_use_para: "contar acidentes (uma linha por pessoa); nacionalidade e naturalidade são 100% nulas no perfil"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2023: 183.361 linhas = 183.361 distintas na chave; sum(indicador_morto) = 5.627 (igual a sum(quantidade_mortos) de ocorrencia); 166.934 id_pessoa distintos — medido 2026-10-27"
+  pessoa_causa_tipo:
+    grao: "uma pessoa em um acidente × causa do acidente × tipo (ordem) do acidente: a mesma pessoa aparece várias vezes"
+    chave: "(id_ocorrencia, id_pessoa, id_veiculo, causa_acidente, ordem_tipo_acidente), única em 2023 (571.052 linhas); (…, tipo_acidente) no lugar da ordem repete (552.310 distintas)"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "2007-01-01–2026-08-31 (cobertura da tabela inteira conferida só em 2023)"}
+    territorio: {nivel: ponto, colunas: {sigla_uf: "UF", id_municipio: "município", br: "rodovia", km: "quilômetro"}}
+    medidas:
+      - {coluna: indicador_morto, o_que: "1 se a pessoa morreu; repete em cada linha causa × tipo (ver gotcha pessoa_causa_tipo_multiplica)", unidade: "pessoas", soma: nao}
+    filtros_tipicos:
+      - "causa_principal = 'Sim' (também 'Não'): a causa principal do acidente; sem ele a pessoa multiplica por causa"
+    use_para: "causas e tipos de acidente associados a vítimas, com causa_principal = 'Sim'"
+    nao_use_para: "contar vítimas ou mortos (multiplica; use pessoa ou count(DISTINCT id_pessoa))"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2023: 571.052 linhas, 571.052 distintas na chave com ordem_tipo_acidente, 552.310 com tipo_acidente — medido 2026-10-27"

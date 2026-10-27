@@ -1,0 +1,31 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: world_imdb_movies
+tabelas:
+  top_movies_per_year:
+    grao: "um filme (título IMDb) entre os mais votados de cada ano de lançamento, 1960–2024"
+    chave: "id (tt…): 33.600 linhas = 33.600 distintos; (id, year) também"
+    tempo: {natureza: serie_anual, coluna: year, cobertura: "1960–2024"}
+    territorio: {nivel: outro, colunas: {country_origin: "texto livre com lista de países separados por vírgula, não é código", filming_location: "texto livre"}}
+    medidas:
+      - {coluna: rating_imdb, o_que: "nota média IMDb (1.1–9.6)", unidade: "nota 0–10", soma: nao}
+      - {coluna: vote, o_que: "número de votos no IMDb", unidade: "votos", soma: sim}
+      - {coluna: budget, o_que: "orçamento, em moeda original do filme, sem coluna de moeda (max 300 bi: 'Harbin' 2024; 'My Way' 2011 = 30 bi, valores em won/rupia etc.); 64,8% nulo", unidade: "moeda original não informada", soma: nao}
+      - {coluna: gross_world_wide, o_que: "bilheteria mundial; 45,8% nulo (15.378 nulos)", unidade: "provavelmente US$, não documentado", soma: sim}
+      - {coluna: gross_us_canada, o_que: "bilheteria EUA/Canadá; 47,7% nulo", unidade: "provavelmente US$, não documentado", soma: sim}
+      - {coluna: gross_opening_weekend, o_que: "bilheteria do fim de semana de estreia; 53,8% nulo", unidade: "provavelmente US$, não documentado", soma: sim}
+      - {coluna: oscar, o_que: "nº de Oscars ganhos (0–11)", unidade: "prêmios", soma: sim}
+      - {coluna: nomination, o_que: "nº de indicações a prêmios (0–433), todos os prêmios, não só Oscar", unidade: "indicações", soma: sim}
+    filtros_tipicos:
+      - "oscar > 0: 2.097 filmes (oscar é BIGINT; 31.503 têm 0)"
+      - "rating_mpa = 'R' (10.099), 'PG-13' (3.780), 'PG' (3.473), 'G' (768); 23,7% nulo; 'Not Rated' e 'Unrated' são rótulos distintos"
+      - "gross_world_wide IS NOT NULL antes de qualquer média de bilheteria (metade nula)"
+    use_para: "ranking e comparação de filmes populares por ano, nota × votos, gênero/diretor (texto), premiação"
+    nao_use_para: "somar orçamento entre filmes (moedas misturadas, sem coluna de moeda), análise do Brasil/territorial, ou ver todos os filmes (é um top por ano)"
+    observacoes:
+      - "win é 0 em todas as 33.600 linhas: coluna inútil, não use como vitórias"
+      - "oscar > nomination em 390 linhas: nomination não contém os Oscars"
+      - "duration é texto ('1h 30m'); genre, director, star, writer, language, production_company, country_origin são listas em texto separadas por vírgula (agrupar exige separar)"
+      - "budget > 1e9 em 53 linhas; gross_world_wide < budget em 4.476 (budget em moeda local)"
+    rascunho: [use_para, nao_use_para, unidade das bilheterias, significado de nomination]
+    verificado: "33.600 linhas, 33.600 id distintos, 33.600 (id,year) distintos; year 1960–2024; 598 filmes em 1960, 600 em 2024; oscar>0 = 2.097 — medido 2026-10-27"

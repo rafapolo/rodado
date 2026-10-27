@@ -1,0 +1,42 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ms_sia
+tabelas:
+  producao_ambulatorial:
+    grao: "uma linha de produção ambulatorial: um procedimento aprovado por estabelecimento × competência × instrumento de registro (BPA-C é agregado; BPA-I, APAC e RAAS são individualizados). Tem 6,16 bilhões de linhas"
+    chave: "nenhuma conferida: não há identificador; o perfil falhou por UTF-8 inválido em um parquet"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2008–2025 (2025 até mes = 7)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "município do estabelecimento", id_paciente_proto: "NÃO é paciente: é o município de residência (gotcha id_paciente_proto_e_municipio)"}}
+    medidas:
+      - {coluna: quantidade_aprovada_procedimento, o_que: "procedimentos aprovados (jun/2022 AC: 972.106 em 72.348 linhas; contar linhas não é contar atendimentos)", unidade: "procedimentos", soma: sim}
+      - {coluna: valor_aprovado_procedimento, o_que: "valor aprovado (DOUBLE; máximo 130.669 numa linha de jun/2022 AC)", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "ano = <ano> AND mes = <mes> (sempre filtre a partição; a tabela tem 6 bilhões de linhas)"
+      - "instrumento_registro IN ('C','I','A','B','P','S'): C = BPA consolidado, I = BPA-I, A = RAAS atenção domiciliar, B = RAAS psicossocial, P = APAC principal, S = APAC secundário (jun/2022 AC: I 47.600, C 21.033, B 1.836, P 1.567, S 312)"
+      - "raca_cor_paciente: 3 = parda e 4 = amarela, ao contrário dos outros sistemas (gotcha raca_cor_ordem_propria)"
+    use_para: "produção ambulatorial do SUS por procedimento, estabelecimento, município e mês, somando quantidade_aprovada_procedimento"
+    nao_use_para: "contar pacientes ou atendimentos (gotchas id_paciente_proto_e_municipio e bpa_consolidado_sem_paciente) e comparar anos sem checar meses ausentes por município (meses_ausentes_por_municipio)"
+    rascunho: [chave, use_para]
+    verificado: "partição ano = 2022, mes = 6, sigla_uf = 'AC': 72.348 linhas, 22 municípios, 5 instrumentos; ano 2008–2025 em 18 partições anuais; tipos DOUBLE em valores — medido 2026-10-27"
+  psicossocial:
+    grao: "um registro de atendimento psicossocial (RAAS psicossocial) por paciente-procedimento num mês de processamento; 138 milhões de linhas"
+    chave: "nenhuma: sem identificador. Em ano = 2025, mes = 1 há 1.189.057 linhas e só 703.300 combinações de estabelecimento × procedimento × município × nascimento × sexo × início"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2012–2025 (2025 até mes = 7); 2020 só tem o mes = 10 (873.113 linhas) e 2012 só 9.234 linhas"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "município do estabelecimento", id_municipio_residencia_paciente: "município de residência", id_estabelecimento_cnes: "CNES"}}
+    medidas:
+      - {coluna: quantidade_produzida_procedimento, o_que: "quantidade produzida do procedimento", unidade: "procedimentos", soma: sim}
+      - {coluna: quantidade_aprovada_procedimento, o_que: "quantidade aprovada", unidade: "procedimentos", soma: sim}
+      - {coluna: quantidade_pacientes, o_que: "indicador 0/1 em texto com espaços ('0   ', '1   '); não é contagem de pessoas únicas", unidade: "indicador", soma: nao}
+    filtros_tipicos:
+      - "ano = 2025 (partição; contagens por ano: 2023 16.358.186, 2024 15.513.334, 2025 9.521.525 até julho)"
+      - "id_procedimento_ambulatorial LIKE '03010802%' (os 13 procedimentos do perfil começam por 0301080)"
+      - "local_realizacao_atendimento = 'C' (CAPS) ou 'T' (território)"
+    use_para: "volume de atendimento psicossocial em CAPS por município e mês"
+    nao_use_para: "série contínua: 2020 tem só outubro"
+    rascunho: [use_para, filtros_tipicos]
+    verificado: "contagens por ano medidas; ano = 2025 e mes = 1: 1.189.057 linhas, 703.300 combinações; max(mes) 2025 = 7 — medido 2026-10-27"
+  dicionario:
+    grao: "um código (id_tabela × nome_coluna × chave × cobertura_temporal) com o significado em valor"
+    chave: "5.916 linhas = 5.916 distintos"
+    use_para: "traduzir instrumento_registro, local_realizacao_atendimento e demais códigos da SIA"
+    verificado: "5.916 linhas, chave confirmada — medido 2026-10-27"

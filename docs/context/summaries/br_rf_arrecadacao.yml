@@ -1,0 +1,67 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_rf_arrecadacao
+tabelas:
+  uf:
+    grao: "um mês × uma UF: arrecadação federal por tributo, em colunas largas"
+    chave: "(ano, mes, sigla_uf): 7.911 linhas e 7.911 distintos; 27 UFs"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2000-01–2024-05"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF onde a receita foi arrecadada"}}
+    medidas:
+      - {coluna: "irpf, itr, iof, imposto_importacao, imposto_exportacao, outras_receitas_rfb, ...", o_que: "valor arrecadado do tributo no mês e UF (uma coluna por tributo)", unidade: "R$ nominais", soma: "sim ao longo de meses/UFs para uma coluna; pode ser negativo (restituições/ajustes, mín -19,9 bi em outras_receitas_rfb)"}
+      - {expressao: "irrf_rendimentos_trabalho + irrf_rendimentos_capital + irrf_remessas_exterior + irrf_outros_rendimentos", o_que: "IRRF total (a tabela uf não tem coluna irrf única)", unidade: "R$ nominais", soma: sim}
+      - {coluna: "cofins / cofins_entidades_financeiras + cofins_demais_empresas (idem pis_pasep, csll)", o_que: "o total aparece num período (nulo em 16,38%) e a divisão financeiras/demais em outro (nula em 83,62%); são complementares, não some os três", unidade: "R$ nominais", soma: "use coalesce(total, financeiras + demais)"}
+    filtros_tipicos: ["ano = 2023 (12 meses × 27 UFs); 2024 só vai até maio (ano = 2024 AND mes <= 5)"]
+    use_para: "Arrecadação federal por UF e tributo, série de 2000 a 2024-05"
+    nao_use_para: "Arrecadação por município (use itr só para ITR) ou por setor (use cnae); comparar 2024 com ano cheio"
+    rascunho: [use_para, nao_use_para]
+    verificado: "7.911 linhas; 7.911 distintos de (ano, mes, sigla_uf); irpf 2023 soma R$ 58,6 bi — medido 2026-10-27"
+  cnae:
+    grao: "um mês × uma seção CNAE (A–U, mais as siglas IN, NI e PF): arrecadação por tributo"
+    chave: "(ano, mes, secao_sigla): 2.496 linhas e 2.496 distintos; 24 seções × 104 meses"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2016-01–2024-08"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: "irpj, csll, cofins, pis_pasep, ipi, irrf, irpf, itr, iof, contribuicao_previdenciaria, ...", o_que: "arrecadação do tributo no mês e seção", unidade: "R$ nominais", soma: "sim para uma coluna; os tributos têm nulos (irpf 37,6%, imposto_exportacao 60,7%) que significam ausência de dado, não necessariamente zero"}
+    filtros_tipicos: ["secao_sigla = 'C' (letra da seção CNAE, por ex. C indústrias de transformação, por dedução); as siglas 'IN', 'NI' e 'PF' não são seções CNAE e o significado não está documentado"]
+    use_para: "Arrecadação federal por setor econômico (seção CNAE) e tributo"
+    nao_use_para: "Território; empresa; comparar IRPF/IRRF entre 2023 e 2024 sem cuidado (irpf soma 58,4 bi em 2023 e 85,7 bi em 2024 só até agosto)"
+    rascunho: [use_para, nao_use_para, secao_sigla]
+    verificado: "2.496 linhas; 2.496 distintos da chave; 24 seções — medido 2026-10-27"
+  natureza_juridica:
+    grao: "um mês × uma natureza jurídica (código de 4 dígitos): arrecadação por tributo"
+    chave: "(ano, mes, natureza_juridica_codigo): 8.221 linhas e 8.221 distintos; 89 códigos"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2016-01–2024-08"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: "irpj, csll, cofins, irrf, contribuicao_previdenciaria, ...", o_que: "arrecadação do tributo no mês e natureza jurídica", unidade: "R$ nominais", soma: "sim para uma coluna; muitos nulos (ex. irpf 77,6%, imposto_exportacao 79,1%) porque a linha só existe onde há movimento"}
+    filtros_tipicos: ["natureza_juridica_codigo = '2062' (texto; código da tabela de naturezas jurídicas da RFB, significado não documentado aqui)"]
+    use_para: "Arrecadação federal por tipo societário/natureza jurídica"
+    nao_use_para: "Total nacional por soma das linhas de um mês sem checar nulos; território"
+    rascunho: [use_para, nao_use_para, filtros_tipicos]
+    verificado: "8.221 linhas; 8.221 distintos da chave; 89 códigos — medido 2026-10-27"
+  itr:
+    grao: "um mês × um município: ITR arrecadado"
+    chave: "(ano, mes, id_municipio): 516.429 linhas e 516.429 distintos; 5.570 municípios por mês"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2017-01–2024-09 (nem todo mês existe: 2017–2021 têm 8 meses por ano, 2024 tem 9)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: valor_arrecadado, o_que: "ITR arrecadado no município no mês", unidade: "R$ nominais", soma: "sim; total de 2017–2024 = R$ 15,23 bi; por ano de 1,24 bi (2017) a 2,87 bi (2023)"}
+    filtros_tipicos: ["ano = 2023 (ano completo mais recente nas contagens por mês; 2024 vai até setembro)"]
+    use_para: "ITR (imposto territorial rural) arrecadado por município e ano"
+    nao_use_para: "Outros tributos; ano com meses faltantes tratado como cheio (conferir os meses presentes)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "516.429 linhas; 516.429 distintos da chave; soma valor_arrecadado 15.232.747.127; 2024: 5.570 municípios nos meses 1 a 9 — medido 2026-10-27"
+  ir_ipi:
+    grao: "um mês × um tributo (IR ou IPI) × um decêndio: arrecadação bruta, ajustes e líquida"
+    chave: "(ano, mes, tributo, decendio): 408 linhas e 408 distintos"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2019-01–2024-08 (decêndio é o terço do mês)"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: arrecadacao_bruta, o_que: "arrecadação bruta no decêndio", unidade: "R$ nominais", soma: "sim entre decêndios e meses de um mesmo tributo"}
+      - {coluna: arrecadacao_liquida, o_que: "líquida = bruta + retificação + compensação + restituição + outros (conferência não medida)", unidade: "R$ nominais", soma: sim}
+    filtros_tipicos: ["tributo = 'IR' ou 'IPI'; decendio = '1º decêndio' / '2º decêndio' / '3º decêndio' (literais com acento)"]
+    use_para: "Arrecadação de IR e IPI por decêndio, para ritmo intramês"
+    nao_use_para: "Quebra por UF/setor (use uf, cnae); somar IR com IPI sem querer"
+    rascunho: [use_para, nao_use_para, arrecadacao_liquida]
+    verificado: "408 linhas; 408 distintos da chave — medido 2026-10-27"

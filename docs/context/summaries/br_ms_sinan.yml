@@ -1,0 +1,39 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ms_sinan
+tabelas:
+  microdados_dengue:
+    grao: "uma notificação individual de dengue (ficha SINAN), sem identificador do caso"
+    chave: "nenhuma: não há coluna de identificação; ano = 2024: 6.434.137 linhas e 6.429.786 linhas distintas (4.351 linhas idênticas repetidas)"
+    tempo: {natureza: serie_diaria, coluna: "data_notificacao (ano = ano da notificação, com 281 linhas de 2023-12-31 em ano = 2024); data_primeiros_sintomas é a data clínica", cobertura: "2000–2026 (2026 só as primeiras semanas de janeiro)"}
+    territorio: {nivel: municipio, colunas: {id_municipio_residencia: "residência, IBGE 7 dígitos", id_municipio_notificacao: "onde notificou", id_municipio_infeccao: "provável local de infecção", sigla_uf_residencia: "UF de residência"}}
+    medidas:
+      - {expressao: "count(*)", o_que: "notificações; para casos prováveis excluir descartados: trim(classificacao_final) <> '5'", unidade: "notificações", soma: sim}
+    filtros_tipicos:
+      - "ano = <ano> sempre (34 milhões de linhas)"
+      - "trim(classificacao_final) = '10' dengue (5.758.125 em 2024), '11' com sinais de alarme (98.925), '12' grave (8.688), '5' descartado (zero desde 2022); '8' aparece (560.373 em 2024) e não está no dicionario (significado não documentado); com espaço à direita, use trim (gotcha dengue_classificacao_com_espaco)"
+      - "evolucao_caso = '1' cura, '2' óbito pelo agravo (6.270 em 2024), '3' óbito por outras causas, '4' óbito em investigação, '9' ignorado; nulo em 15% em 2024"
+      - "criterio_confirmacao = '1' laboratório, '2' clínico-epidemiológico, '3' em investigação"
+      - "sexo_paciente = 'F','M','I' (letras)"
+    use_para: "casos prováveis, gravidade, óbitos e perfil por município e semana epidemiológica."
+    nao_use_para: "série longa de 'notificações' sem ler os gotchas dengue_sem_descartados_desde_2022 e dengue_espirito_santo_ausente_2021_2024; idade_paciente é texto (gotcha dengue_idade_com_unidade)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "ano = 2024: 6.434.137 linhas; 6.429.786 linhas distintas; classificacao_final (trim) 10 = 5.758.125, 8 = 560.373, 11 = 98.925, 12 = 8.688, nulo 8.026; evolucao_caso 2 = 6.270 — medido 2026-10-27"
+  microdados_influenza_srag:
+    grao: "uma notificação de síndrome respiratória aguda grave (SRAG) do SIVEP-Gripe"
+    chave: "nenhuma: sem identificador; ano = 2022: 416.945 linhas, 416.940 distintas"
+    tempo: {natureza: serie_diaria, coluna: "data_notificacao (ano = ano)", cobertura: "2009–2022 (2022 só até 2022-08-21)"}
+    territorio: {nivel: municipio, colunas: {id_municipio_6_residencia: "residência, IBGE 6 dígitos (texto '110001.0' com .0); id_municipio_residencia é 100% nulo", id_municipio_notificacao: "7 dígitos", sigla_uf_residencia: "UF de residência", sigla_uf: "UF da notificação"}}
+    medidas:
+      - {expressao: "count(*)", o_que: "notificações de SRAG", unidade: "notificações", soma: sim}
+    filtros_tipicos:
+      - "classificacao_final = '5' SRAG por Covid-19 (184.781 em 2022), '4' não especificado, '1' influenza, '2' outro vírus respiratório, '3' outro agente (dicionario); nulo em 10%"
+      - "evolucao_caso = '1' cura, '2' óbito (70.022 em 2022), '3' óbito por outras causas, '9' ignorado"
+      - "sexo é nulo em todas as linhas (gotcha srag_sexo_vazio)"
+    use_para: "SRAG por agente etiológico (Covid-19, influenza), internação, UTI e vacinação por município e semana."
+    nao_use_para: "dados depois de agosto de 2022; sexo; junção direta com id_municipio_residencia (nulo)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "ano = 2022: 416.945 linhas; 416.940 distintas; data_notificacao 2022-01-02 a 2022-08-21; 3.724.213 linhas na tabela — medido 2026-10-27"
+  dicionario:
+    grao: "uma linha por código (id_tabela, nome_coluna, chave, valor) das tabelas do SINAN dengue, SRAG e violência"
+    use_para: "traduzir códigos de classificacao_final, evolucao_caso, criterio_confirmacao etc."

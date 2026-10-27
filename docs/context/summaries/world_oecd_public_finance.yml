@@ -1,0 +1,25 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: world_oecd_public_finance
+tabelas:
+  country:
+    grao: "um país × ano, painel largo (~190 indicadores de finanças públicas, macro, trabalho, governança) de 36 países da OCDE, 1945–2019"
+    chave: "nenhuma: (country, year) tem 2.575 distintos em 2.646 linhas; SVN repete todos os anos (146 linhas, 73 anos duplicados) e são linhas idênticas (53 duplicatas exatas no total, medido por DISTINCT *)"
+    tempo: {natureza: serie_anual, coluna: year, cobertura: "1945–2019 (28 países em 1945, 36 de 1960 em diante)"}
+    territorio: {nivel: outro, colunas: {country: "código ISO 3166-1 alfa-3 do país (SVN, FRA, CAN…)"}}
+    medidas:
+      - {coluna: "revenue_* / expenditure_* / total_receipt / total_expenditure / net_lending / primary_balance / gross_domestic_product_current_prices", o_que: "fluxos fiscais e PIB do governo geral", unidade: "moeda nacional corrente (JPN PIB 2015 = 5,32e14; USA 2015 = 1,8e13 com exchange_rate = 1): inferido pelos valores, não documentado", soma: nao}
+      - {coluna: "*_adjusted", o_que: "mesma série em versão ajustada (definição não documentada)", unidade: "idem", soma: nao}
+      - {coluna: "unemployment_rate, vat_rate, corporate_income_tax_rate, average_tax_wedge, life_expectancy, gini_*", o_que: "taxas, alíquotas e índices", unidade: "% ou índice; não documentado", soma: nao}
+      - {coluna: "indicator_fiscal_rule_* / indicator_fiscal_council", o_que: "indicadores 0/1 de regra fiscal e conselho fiscal", unidade: "0/1", soma: nao}
+    filtros_tipicos:
+      - "year = 2015 (36 países) ou outro ano fixo: nunca some anos de um indicador de estoque/taxa"
+      - "total_receipt <> -2147483648 e total_receipt IS NOT NULL: -2147483648 (mínimo de int32) é sentinela de 'sem dado', aparece em 1.304 linhas de total_receipt; só 21 linhas têm total_receipt > 0"
+      - "country = 'SVN' exige DISTINCT (linhas duplicadas)"
+    use_para: "comparar países da OCDE no tempo em carga tributária, gasto público, PIB, mercado de trabalho e governança"
+    nao_use_para: "comparação em nível entre países sem converter moeda, e qualquer análise do Brasil (país não está entre os 36)"
+    observacoes:
+      - "sentinela -2147483648 (int32 mínimo) em dezenas de colunas (revenue_*, expenditure_*, current_receipt, gross_domestic_product_volume etc.); excluir antes de somar ou tirar média. Colunas como total_receipt, total_expenditure e *_adjusted ficam quase só com sentinela/nulo"
+      - "nulos de 30% a 99% em quase todas as colunas; governança/cultura (rule_of_law_*, government_confidence, share_women_*) têm mais de 94% de nulo"
+    rascunho: [use_para, nao_use_para, unidade das medidas, definição de *_adjusted]
+    verificado: "2.646 linhas, 36 países, year 1945–2019; (country,year) 2.575 distintos, SVN 146 linhas; 53 linhas duplicadas exatas; total_receipt = -2147483648 em 1.304 linhas e NULL em 1.321 — medido 2026-10-27"

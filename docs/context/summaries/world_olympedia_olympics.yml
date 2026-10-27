@@ -1,0 +1,85 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: world_olympedia_olympics
+tabelas:
+  athlete_bio:
+    grao: "um atleta olímpico (cadastro biográfico)"
+    chave: "athlete_id: 155.861 linhas = 155.861 distintos"
+    tempo: {natureza: sem_tempo, coluna: birth_year, cobertura: "nascimentos 1828–2009 (birth_year, 2,7% nulo)"}
+    territorio: {nivel: outro, colunas: {country: "nome do país com ESPAÇO inicial (' Brazil', length 7 para Brazil)", country_noc: "código NOC do comitê olímpico (BRA, USA…)"}}
+    medidas:
+      - {coluna: height, o_que: "altura; 32,6% nulo", unidade: "cm", soma: nao}
+      - {coluna: weight, o_que: "peso; 33,2% nulo", unidade: "kg", soma: nao}
+    filtros_tipicos:
+      - "sex = 'Male' (115.527) ou 'Female' (40.334)"
+      - "country_noc = 'BRA' (use o NOC; country tem espaço inicial em todas as 155.861 linhas)"
+    use_para: "perfil de atletas por país e sexo, altura/peso, junção com athlete_event_result por athlete_id"
+    nao_use_para: "saber a participação ou medalhas (isso está em athlete_event_result)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "155.861 linhas, 155.861 athlete_id distintos; country com espaço inicial em 155.861 linhas — medido 2026-10-27"
+  athlete_event_result:
+    grao: "um atleta × resultado de uma prova (um resultado de evento) em uma edição dos Jogos"
+    chave: "nenhuma: (result_id, athlete_id, edition_id) tem 315.123 distintos em 316.834 linhas (925 combinações repetem, sobretudo Art Competitions com várias entradas do mesmo atleta)"
+    tempo: {natureza: serie_de_periodos, coluna: edition_id, cobertura: "1896 a 2022 (edition: '1896 Summer Olympics' … '2022 Winter Olympics')"}
+    territorio: {nivel: outro, colunas: {country_noc: "NOC do atleta na prova"}}
+    medidas:
+      - {coluna: "medal (contagem de linhas com medal IS NOT NULL)", o_que: "medalha por atleta: 'Gold' 15.072, 'Silver' 14.676, 'Bronze' 14.939; NULL = sem medalha (85,9%)", unidade: "medalhas-atleta", soma: sim}
+    filtros_tipicos:
+      - "medal = 'Gold' | 'Silver' | 'Bronze' (literais em inglês); medal IS NOT NULL para qualquer medalha"
+      - "is_team_sport = true (122.307) / false (194.527)"
+      - "edition = '2020 Summer Olympics' (texto exato; edition_id é VARCHAR: '61' = 2020 Summer, '62' = 2022 Winter)"
+    use_para: "quem participou de quê, medalhas por atleta, esporte ou país ao longo das edições"
+    nao_use_para: "quadro de medalhas por país (modalidade por equipe conta uma medalha por integrante: 796 medalhas de ouro-atleta em Tóquio 2020 para 339 provas; use game_medal_tally)"
+    observacoes:
+      - "position é texto ('1', 'Time not known', 'Also competed, no definite place known…'); position = '1' (16.278) ≠ medal = 'Gold' (15.072)"
+      - "7 linhas sem athlete_id em athlete_bio; 104 sem result_id em result"
+    rascunho: [use_para, nao_use_para]
+    verificado: "316.834 linhas; (result_id,athlete_id,edition_id) 315.123 distintos; edition_id 61 com medal='Gold': 796 linhas, 339 resultados distintos — medido 2026-10-27"
+  country:
+    grao: "um país/comitê olímpico (NOC) e seu nome"
+    chave: "nenhuma: 235 linhas, 234 NOC distintos; 'ROC' aparece duas vezes ('Russian Olympic Committee' e 'ROC')"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: outro, colunas: {noc: "código NOC", name: "nome em inglês"}}
+    filtros_tipicos: ["noc = 'BRA' (valor literal do NOC)"]
+    use_para: "tradução de NOC para nome do país"
+    nao_use_para: "ligação 1:1 sem DISTINCT: ROC duplica"
+    rascunho: [use_para, nao_use_para]
+    verificado: "235 linhas, 234 noc distintos — medido 2026-10-27"
+  game:
+    grao: "uma edição dos Jogos Olímpicos (verão ou inverno), incluindo futuras e as não realizadas"
+    chave: "edition_id (= edition): 64 linhas = 64 distintos"
+    tempo: {natureza: serie_de_periodos, coluna: year, cobertura: "1896–2032"}
+    territorio: {nivel: outro, colunas: {city: "cidade-sede", country_noc: "NOC do país-sede"}}
+    filtros_tipicos:
+      - "is_held IS NULL (59 linhas, inclui as edições futuras); is_held = 'Not held due to war' (5)"
+      - "year <= 2022 para só edições já ocorridas (há 2024, 2026, 2028 e 2032 na tabela; 2024 e 2028 sem start_date)"
+    use_para: "ano, cidade e sede de cada edição; chave edition_id para ligar às outras tabelas"
+    nao_use_para: "somar resultados (não tem medida)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "64 linhas, 64 edition_id distintos; 5 'Not held due to war'; 2032 Summer Olympics (Brisbane) com edition_id 372 — medido 2026-10-27"
+  game_medal_tally:
+    grao: "um país × edição dos Jogos: total de medalhas do país"
+    chave: "(edition_id, country_noc): 1.807 linhas = 1.807 distintos"
+    tempo: {natureza: serie_de_periodos, coluna: year, cobertura: "1896–2022 (55 edições)"}
+    territorio: {nivel: outro, colunas: {country_noc: "NOC", country: "nome"}}
+    medidas:
+      - {coluna: gold, o_que: "ouros do país na edição (por prova, equipe conta 1)", unidade: "medalhas", soma: sim}
+      - {coluna: silver, o_que: "pratas", unidade: "medalhas", soma: sim}
+      - {coluna: bronze, o_que: "bronzes", unidade: "medalhas", soma: sim}
+      - {coluna: total, o_que: "gold + silver + bronze (diferença 0 em todas as linhas)", unidade: "medalhas", soma: sim}
+    filtros_tipicos: ["edition = '2016 Summer Olympics' (texto exato); BRA 2016 = 7/6/6, BRA 2020 = 7/6/8 (ouro/prata/bronze)"]
+    use_para: "quadro de medalhas por país e edição, evolução do Brasil"
+    nao_use_para: "medalhas por atleta/esporte (não tem esporte)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.807 linhas = 1.807 (edition_id,country_noc); total<>gold+silver+bronze em 0 linhas; 2016 Summer: 306 ouros em 86 países — medido 2026-10-27"
+  result:
+    grao: "uma prova/evento de uma edição (descrição do resultado)"
+    chave: "result_id: 7.394 linhas = 7.394 distintos"
+    tempo: {natureza: serie_de_periodos, coluna: edition_id, cobertura: "1896–2022"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["edition = '2016 Summer Olympics' e sport = '<esporte em inglês>'"]
+    use_para: "metadados da prova (local, formato, nº de participantes, texto descritivo); junta com athlete_event_result por result_id"
+    nao_use_para: "medalhas ou atletas (não tem); result_date e result_participants são texto livre"
+    observacoes: ["104 linhas de athlete_event_result têm result_id ausente aqui"]
+    rascunho: [use_para, nao_use_para]
+    verificado: "7.394 linhas, 7.394 result_id distintos — medido 2026-10-27"

@@ -1,0 +1,24 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_poder360_pesquisas
+tabelas:
+  microdados:
+    grao: "um candidato (ou opção) × um cenário × uma pesquisa eleitoral: o percentual que ele tem naquele cenário"
+    chave: "(id_pesquisa, id_cenario, id_candidato_poder360): 162.075 linhas, 161.647 distintos, 428 linhas repetidas. id_cenario sozinho não identifica a pesquisa mas cada cenário pertence a uma só pesquisa (0 cenários em mais de uma)"
+    tempo: {natureza: serie_de_periodos, coluna: data, cobertura: "2000-01-01–2023-11-21 (data da pesquisa); ano vai de 2000 a 2026 e é o ano da eleição em disputa, não o da data"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF da pesquisa (nula em 11,5%, pesquisas nacionais)", nome_municipio: "município, só em pesquisa de prefeito (nulo em 57%); sem código IBGE"}}
+    medidas:
+      - {coluna: percentual, o_que: "intenção de voto/rejeição do candidato no cenário", unidade: "%", soma: "nao entre pesquisas; dentro de um cenário soma até ~100 (um cenário medido deu 99)"}
+      - {coluna: quantidade_entrevistas, o_que: "tamanho da amostra da pesquisa (repetido em todas as linhas da pesquisa)", unidade: "entrevistas", soma: "nao: repete por candidato"}
+      - {coluna: margem_mais, o_que: "margem de erro para mais", unidade: "pontos percentuais", soma: "nao"}
+    filtros_tipicos:
+      - "cargo = 'presidente' (39.725 linhas; também 'governador' 37.767, 'prefeito' 68.998, 'senador' 15.581, 'congresso nacional' 4)"
+      - "tipo = 'estimulada' (candidatos apresentados ao entrevistado; 107.236) — 'espontânea' (32.434) e 'rejeição' (21.172) são outros tipos; 1.233 linhas têm tipo nulo"
+      - "turno = 1 ou 2 (BIGINT, 139.582 e 22.493)"
+      - "tipo_voto = 'votos totais' (157.305) versus 'votos válidos' (4.770): não misture"
+      - "condicao: 0 ou 1 (41.056 com 1), significado não documentado"
+      - "sigla_partido = 'N/A' (42.275 linhas) para quem não tem partido/opção (branco, indecisos); sigla_uf IS NULL para pesquisa nacional"
+    use_para: "Série de pesquisas eleitorais por cargo, instituto, cenário e candidato"
+    nao_use_para: "Resultado eleitoral real; somar percentual entre pesquisas ou cenários"
+    rascunho: [use_para, nao_use_para, condicao]
+    verificado: "162.075 linhas; 161.647 distintos da chave; 9.883 pesquisas e 24.459 cenários; 1 linha com percentual > 100 (máx 150) — medido 2026-10-27"

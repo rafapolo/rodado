@@ -1,0 +1,19 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_mgi_pncp
+tabelas:
+  ata_registro_preco:
+    grao: "não lida: tabela sem view no banco (Catalog Error: Table with name ata_registro_preco does not exist)"
+  contratacao:
+    grao: "não lida: tabela sem view no banco (Catalog Error: Table with name contratacao does not exist)"
+  instrumento_cobranca:
+    grao: "não lida: tabela sem view no banco (Catalog Error: Table with name instrumento_cobranca does not exist)"
+  dicionario:
+    grao: "um código (id_tabela × nome_coluna × chave) com o seu significado em valor; 224 linhas, chave confirmada"
+    chave: "(id_tabela, nome_coluna, chave): 224 linhas = 224 distintos"
+    tempo: {natureza: sem_tempo, coluna: cobertura_temporal, cobertura: "coluna quase toda vazia"}
+    filtros_tipicos: ["id_tabela = 'contratacao' e nome_coluna = 'id_modalidade' (14 códigos) ou 'codigo_amparo_legal' (151)"]
+    use_para: "traduzir códigos do PNCP (modalidade, amparo legal, esfera, poder)"
+    nao_use_para: "dados de contratações: as tabelas de fato não estão no banco"
+    rascunho: [use_para, nao_use_para]
+    verificado: "224 linhas, 224 chaves distintas — medido 2026-10-27"

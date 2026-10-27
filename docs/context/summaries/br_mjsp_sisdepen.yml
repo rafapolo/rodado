@@ -1,0 +1,20 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_mjsp_sisdepen
+tabelas:
+  populacao_carceraria:
+    grao: "um estabelecimento prisional × semestre de referência (layout novo, 28.825 linhas com ano), mais 9.539 linhas de um layout antigo sem ano/referencia; tabela larga (3.957 colunas, uma por pergunta do formulário)"
+    chave: "layout novo: (referencia, nome_do_estabelecimento, codigo_ibge, endereco) confirmada, 28.825 = 28.825 distintos; layout antigo: nenhuma conferida"
+    tempo: {natureza: serie_de_periodos, coluna: referencia, cobertura: "2016/2–2025/2 (semestral, 19 ciclos)"}
+    territorio: {nivel: municipio, colunas: {uf: "sigla da UF", codigo_ibge: "município, VARCHAR com sufixo '.0' (ex.: '1100015.0'), 7 dígitos", ambito: "'Estadual' ou 'Federal'"}}
+    medidas:
+      - {coluna: "4_1_populacao_prisional_total", o_que: "população prisional total do estabelecimento (soma dos 6 componentes 4_1_*_total, diferença 0 em 2025/1)", unidade: "pessoas", soma: sim}
+      - {coluna: "1_3_capacidade_do_estabelecimento_masculino_total + 1_3_capacidade_do_estabelecimento_feminino_total", o_que: "vagas", unidade: "vagas", soma: sim}
+    filtros_tipicos:
+      - "referencia = '2025/1' (um semestre só; somar semestres diferentes empilha estoques, não fluxos)"
+      - "ano IS NOT NULL para excluir o layout antigo, com nomes de colunas diferentes (invite_unidade, nome_da_unidade_prisional)"
+      - "situacao_de_preenchimento = 'Validado' (todas as 28.825 linhas do layout novo)"
+    use_para: "população e capacidade prisional por estabelecimento, município e semestre desde 2016/2"
+    nao_use_para: "ligar estabelecimentos entre semestres por código (a coluna codigo é nula); nem somar referencia diferentes"
+    rascunho: [use_para, nao_use_para]
+    verificado: "38.364 linhas, 3.957 colunas; ano não nulo em 28.825 (1.481 a 1.582 por semestre); 2025/1: 1.555 linhas, 884 códigos IBGE, população total 938.072, vagas 669.918 — medido 2026-10-27. Layout antigo: 9.539 linhas sem ano, 1.420 invite_unidade, status 'Completo' 2.836, período não documentado"

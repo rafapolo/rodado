@@ -1,0 +1,211 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_minc_salic
+tabelas:
+  projetos:
+    grao: "um projeto cultural da Lei Rouanet/SALIC (legado dump_2017 até 2016 + cópia api_salic de 2026-08)"
+    chave: "id (214.030 linhas = 214.030 distintos); numero (PRONAC) NÃO é único: 110 pares (ver gotcha numero_repetido)"
+    tempo: {natureza: retrato_atual, coluna: "numero/PRONAC (ano embutido); created_at e updated_at são datas de carga", cobertura: "legado 2000–2016; origem api_salic 2019–2026"}
+    territorio:
+      nivel: uf
+      colunas: {uf: "sigla da UF do proponente/projeto", estado_id: "id em estados"}
+    medidas:
+      - {coluna: solicitado, o_que: "valor solicitado", unidade: "R$", soma: sim}
+      - {coluna: aprovado, o_que: "valor aprovado para captação", unidade: "R$", soma: sim}
+      - {coluna: apoiado, o_que: "valor apoiado; mesma faixa de aprovado, semântica exata não documentada", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "mecanismo = 'Mecenato' (156.360 linhas; outros: 'FNC' 54.414, 'Recurso do Tesouro', 'Audiovisual', 'Mecenato/Audiovisual')"
+      - "enquadramento IN ('Artigo 18','Artigo 18 (100%)','Artigo 26'): duas grafias para o Artigo 18; 34% NULL"
+      - "origem = 'dump_2017' para o legado; origem = 'api_salic' repete projetos_api com menos colunas (use projetos_api para 2019+)"
+    use_para: "cadastro de projetos Rouanet do legado (2000–2016) com valor solicitado/aprovado, UF, área e segmento."
+    nao_use_para: "série de captação por ano depois de 2016 (projetos não traz captação) nem juntar por numero sem desempatar."
+    rascunho: [use_para, nao_use_para, "significado de apoiado"]
+    verificado: "214.030 linhas, 214.030 ids distintos; origem 153.748 dump_2017 (numero 000001–161714) + 60.282 api_salic (164380–266608); situacao top 'Projeto Arquivado' 45.329 — medido 2026-10-27. Gotchas: numero_repetido, origem_e_retrato_2014, api_e_legado_sao_tabelas_diferentes"
+  projetos_2014:
+    grao: "um projeto no retrato do cadastro de 2014-02 (mesmo grão de projetos)"
+    chave: "id (126.969 linhas = 126.969 distintos)"
+    tempo: {natureza: retrato_atual, coluna: updated_at, cobertura: "retrato até 2014-02-10"}
+    territorio: {nivel: uf, colunas: {uf: "sigla da UF"}}
+    medidas:
+      - {coluna: "solicitado, aprovado, apoiado", o_que: "valores em R$ no retrato de 2014", unidade: "R$", soma: sim}
+    use_para: "estado anterior (situacao, aprovado, providencia) de um projeto em fev/2014."
+    nao_use_para: "somar com projetos: é o mesmo cadastro visto antes (origem_e_retrato_2014)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "126.969 linhas, 126.969 ids — medido 2026-10-27"
+  projetos_api:
+    grao: "um projeto (PRONAC) vindo da API do SALIC, 2019–2026"
+    chave: "pronac (63.350 linhas = 63.350 distintos)"
+    tempo: {natureza: retrato_atual, coluna: "ano_projeto (2 dígitos)", cobertura: "PRONAC 164380 a 269796 (2019–2026, com 1 de 2016 e 1 de 2018)"}
+    territorio: {nivel: municipio, colunas: {uf: "sigla", municipio: "nome", local_realizacao: "JSON com municipio_ibge, município e UF de realização"}}
+    medidas:
+      - {coluna: valor_captado, o_que: "total captado; fecha com sum(captacoes.valor) por pronac", unidade: "R$", soma: sim}
+      - {coluna: "valor_solicitado, valor_aprovado, valor_projeto, valor_proposta, valor_outras_fontes", o_que: "valores do projeto", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "mecanismo = 'Mecenato' (63.026 de 63.350; o resto 'FNC')"
+      - "enquadramento = 'Artigo 18' (58.742) ou 'Artigo 26' (4.263); 'Nao enquadrado' 345"
+      - "situacao = 'Autorizada a captação total dos recursos' (18.883): rótulo por extenso, com acento; há outro de 'residual' (5.210)"
+    use_para: "projetos Rouanet de 2019 em diante com proponente, segmento, valores e captação."
+    nao_use_para: "projetos anteriores a 2019 (use projetos) nem somar com projetos de origem api_salic (duplicam)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "63.350 linhas, 63.350 pronac distintos — medido 2026-10-27. Gotcha: captacoes_fecham_com_valor_captado"
+  projetos_texto:
+    grao: "o texto descritivo (resumo, objetivos, justificativa, etc.) de um projeto de projetos_api"
+    chave: "pronac (63.350 linhas = 63.350 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: nenhum}
+    use_para: "busca textual e leitura da proposta; junta com projetos_api por pronac."
+    nao_use_para: "análise quantitativa: só tem texto."
+    rascunho: [use_para, nao_use_para]
+    verificado: "63.350 linhas, 63.350 pronac — medido 2026-10-27"
+  captacoes:
+    grao: "um recibo de doação/patrocínio a um projeto (pronac × doador × valor × data)"
+    chave: "nenhuma: 194.557 linhas, 193.208 linhas distintas (1.349 duplicatas exatas); em (pronac, cgccpf, valor, data_recibo) 193.204 distintos"
+    tempo: {natureza: serie_diaria, coluna: data_recibo, cobertura: "2012-12-27–2026-10-22"}
+    territorio: {nivel: nenhum, colunas: {pronac: "projeto; UF via projetos_api"}}
+    medidas:
+      - {coluna: valor, o_que: "valor captado no recibo", unidade: "R$", soma: sim}
+    filtros_tipicos: ["data_recibo >= '2019-01-01' (a série só é cheia de 2019 em diante)"]
+    use_para: "quem doou quanto a que projeto, por data, de 2019 em diante (R$ 15,58 bi no total)."
+    nao_use_para: "série contínua com incentivos (buraco 2015–2018) nem contar doadores por cgccpf sem tratar máscara."
+    rascunho: [use_para, nao_use_para, "origem das duplicatas"]
+    verificado: "194.557 linhas; soma valor 15.577.603.217,87; 18.291 pronac distintos; 193.208 linhas distintas — medido 2026-10-27. Gotchas: api_e_legado_sao_tabelas_diferentes, captacoes_fecham_com_valor_captado"
+  captacoes_detalhe:
+    grao: "mesmo grão de captacoes, com nomes de projeto, proponente, UF, segmento e doador (mesmas 194.557 linhas)"
+    chave: "nenhuma: mesmo grão de captacoes"
+    tempo: {natureza: serie_diaria, coluna: data_recibo, cobertura: "2012-12-27–2026-10-22"}
+    territorio: {nivel: uf, colunas: {uf: "UF do projeto"}}
+    medidas:
+      - {coluna: valor, o_que: "valor do recibo", unidade: "R$", soma: sim}
+    use_para: "captação já desnormalizada com projeto, proponente e UF."
+    nao_use_para: "somar junto com captacoes (é a mesma informação)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "194.557 linhas (o perfil dizia 0) — medido 2026-10-27"
+  incentivos:
+    grao: "um incentivo (doação de um patrocinador a um projeto) do legado"
+    chave: "id (173.754 linhas = 173.754 distintos)"
+    tempo: {natureza: serie_de_periodos, coluna: "last_recibo_at (data do último recibo)", cobertura: "2000-01-29–2014-12-30; created_at 2013–2016"}
+    territorio: {nivel: nenhum, colunas: {projeto_id: "id em projetos", entidade_id: "patrocinador em entidades"}}
+    medidas:
+      - {coluna: valor, o_que: "valor incentivado", unidade: "R$", soma: sim}
+      - {coluna: recibos_count, o_que: "número de recibos", unidade: "recibos", soma: sim}
+    use_para: "captação do legado até 2014 (R$ 10,05 bi)."
+    nao_use_para: "captação depois de 2014 (acaba em 2014-12) nem somar com captacoes."
+    rascunho: [use_para, nao_use_para]
+    verificado: "173.754 linhas e ids; soma valor 10.054.381.898,65; created_at só em 2013, 2014 e 2016 — medido 2026-10-27. Gotcha: api_e_legado_sao_tabelas_diferentes"
+  incentivos_detalhe:
+    grao: "mesmo grão de incentivos, com pronac, projeto, patrocinador, proponente e UF"
+    chave: "nenhuma: mesmo grão de incentivos"
+    tempo: {natureza: serie_de_periodos, coluna: last_recibo_at, cobertura: "2000-01-29–2014-12-30"}
+    territorio: {nivel: uf, colunas: {uf: "UF do projeto"}}
+    medidas:
+      - {coluna: valor, o_que: "valor incentivado", unidade: "R$", soma: sim}
+    use_para: "incentivos legados já desnormalizados."
+    nao_use_para: "somar junto com incentivos (mesma informação)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "173.754 linhas (o perfil dizia 0) — medido 2026-10-27"
+  recibos:
+    grao: "um recibo de um incentivo do legado"
+    chave: "id (245.640 linhas = 245.640 distintos)"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "1999-05-16–2014-12-30"}
+    territorio: {nivel: nenhum}
+    medidas:
+      - {coluna: valor, o_que: "valor do recibo; soma só R$ 38,5 mi com máximo 999, muito abaixo de incentivos (R$ 10 bi): não representa o valor incentivado", unidade: "R$", soma: nao}
+    use_para: "datas dos recibos de um incentivo (incentivo_id)."
+    nao_use_para: "totais de captação: use incentivos.valor."
+    rascunho: [use_para, nao_use_para, "por que valor é pequeno"]
+    verificado: "245.640 linhas e ids; soma valor 38.525.367, máximo 999 — medido 2026-10-27"
+  pagamentos:
+    grao: "um pagamento comprovado na prestação de contas de um projeto (comprovante × item da planilha × arquivo)"
+    chave: "nenhuma: id_comprovante_pagamento tem 2.848.254 distintos em 2.848.765 linhas (437 ids repetidos) e há 457 linhas duplicadas exatas (2.848.308 distintas)"
+    tempo: {natureza: serie_diaria, coluna: data_pagamento, cobertura: "2010–2026 plausível; 1.905 datas impossíveis (1900 a 9093)"}
+    territorio: {nivel: nenhum, colunas: {pronac: "projeto; UF via pagamentos_detalhe.uf"}}
+    medidas:
+      - {coluna: valor_pagamento, o_que: "valor pago (há negativos, mínimo -42 mi)", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "data_pagamento BETWEEN '2010-01-01' AND '2026-12-31' para descartar datas impossíveis"
+      - "tipo_documento: valores '1' a '7' (3 = 1.978.469 linhas); significado não documentado"
+      - "tipo_forma_pagamento: '1','2','3' (2 = a grande maioria); significado não documentado"
+    use_para: "o que os projetos pagaram e a quem (fornecedor), de 2019 em diante (R$ 13,27 bi)."
+    nao_use_para: "contagem de comprovantes por id_comprovante_pagamento sem desduplicar nem série antes de 2019 (2018: 350 linhas, 2019: 9.777)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "2.848.765 linhas; soma valor_pagamento 13.274.824.115,91; entre 2010 e 2026 13.267.638.700,77; 2025: 632.255 linhas — medido 2026-10-27. Gotchas: pagamento_ao_proprio_proponente, pagamentos_datas_e_nomes"
+  pagamentos_detalhe:
+    grao: "mesmo grão de pagamentos, com projeto, proponente, UF e item (2.848.765 linhas)"
+    chave: "nenhuma: mesmo grão de pagamentos"
+    tempo: {natureza: serie_diaria, coluna: data_pagamento, cobertura: "mesmo de pagamentos"}
+    territorio: {nivel: uf, colunas: {uf: "UF do projeto"}}
+    medidas:
+      - {coluna: valor_pagamento, o_que: "valor pago", unidade: "R$", soma: sim}
+    use_para: "pagamentos por item, UF e proponente já desnormalizados."
+    nao_use_para: "somar junto com pagamentos (mesma informação)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "2.848.765 linhas (o perfil dizia 0) — medido 2026-10-27"
+  entidades:
+    grao: "uma entidade (proponente e/ou patrocinador, pessoa física ou jurídica) do SALIC"
+    chave: "id (217.643 linhas = 217.643 distintos). cnpjcpf não é único (183.492 distintos) e mistura CPF mascarado"
+    tempo: {natureza: retrato_atual, coluna: updated_at, cobertura: "dump_2017 até 2016; api_salic 96.744 linhas sem datas"}
+    territorio: {nivel: uf, colunas: {uf: "estado da entidade (texto, com valores sujos como '&nbsp;' e nomes por extenso)", estado_id: "id em estados", cidade_nome: "município por nome"}}
+    medidas:
+      - {coluna: incentivos_sum, o_que: "total incentivado pela entidade; só origem dump_2017", unidade: "R$", soma: nao}
+      - {coluna: projetos_sum, o_que: "total dos projetos da entidade; só dump_2017", unidade: "R$", soma: nao}
+    filtros_tipicos:
+      - "proponente = 1 (54.526) ⇔ já propôs projeto (projetos_count > 0); 0 = 66.373; NULL = 96.744 (origem api_salic)"
+      - "patrocinador = 1 (152.793) / 0 (64.850): significado não confirmado (column_codes: pendente)"
+      - "empresa = 1 (53.422) / 0 (164.221): provável pessoa jurídica; não confirmado"
+    use_para: "cadastro de proponentes e patrocinadores com nome, CPF/CNPJ e UF."
+    nao_use_para: "contar pessoas por cnpjcpf (CPF mascarado, ver cpf_completado) ou somar incentivos_sum (agregado pré-calculado)."
+    rascunho: [use_para, nao_use_para, "significado de empresa e patrocinador"]
+    verificado: "217.643 linhas e ids; origem 120.899 dump_2017 + 96.744 api_salic (contadores só no dump) — medido 2026-10-27. Gotchas: cpf_completado, origem_e_retrato_2014"
+  entidades_2014:
+    grao: "mesmo grão de entidades, no retrato de 2014"
+    chave: "id (102.448 linhas = 102.448 distintos)"
+    tempo: {natureza: retrato_atual, coluna: "retrato de 2014-02", cobertura: "2014-02"}
+    territorio: {nivel: uf, colunas: {uf: "UF da entidade"}}
+    use_para: "estado anterior do cadastro de entidades em fev/2014."
+    nao_use_para: "somar com entidades (origem_e_retrato_2014)."
+    rascunho: [use_para, nao_use_para, "colunas e medidas não lidas"]
+    verificado: "102.448 linhas e ids — medido 2026-10-27"
+  incentivadores:
+    grao: "um incentivador (doador) com total doado, vindo da API"
+    chave: "nome + cgccpf (114.020 linhas = 114.020 distintos do par); cgccpf sozinho tem 107.563 distintos"
+    tempo: {natureza: retrato_atual, coluna: nenhuma}
+    territorio: {nivel: uf, colunas: {uf: "UF do doador", municipio: "nome"}}
+    medidas:
+      - {coluna: total_doado, o_que: "total doado pelo incentivador", unidade: "R$", soma: sim}
+    filtros_tipicos: ["tipo_pessoa = 'fisica' (90.404) ou 'juridica' (23.616)"]
+    use_para: "ranking de doadores da Lei Rouanet."
+    nao_use_para: "contar doadores únicos por cgccpf (máscara) ou somar com incentivos/captacoes."
+    rascunho: [use_para, nao_use_para, "período coberto por total_doado"]
+    verificado: "114.020 linhas; 107.563 cgccpf distintos; 114.020 pares (cgccpf, nome) — medido 2026-10-27"
+  areas:
+    grao: "uma área cultural (lookup, 7 linhas)"
+    chave: "id (7 = 7)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: nenhum}
+    use_para: "traduzir area_id de projetos para o nome da área."
+    rascunho: [use_para]
+    verificado: "7 linhas, 7 ids — medido 2026-10-27"
+  segmentos:
+    grao: "um segmento cultural (lookup, 106 linhas, com area_id)"
+    chave: "id (106 = 106)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: nenhum}
+    use_para: "traduzir segmento_id de projetos."
+    rascunho: [use_para]
+    verificado: "106 linhas, 106 ids — medido 2026-10-27"
+  estados:
+    grao: "uma UF (lookup, 28 linhas; inclui sigla 'XX')"
+    chave: "id (28 = 28)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: uf, colunas: {sigla: "sigla da UF"}}
+    use_para: "traduzir estado_id para sigla e nome."
+    rascunho: [use_para]
+    verificado: "28 linhas, 28 ids — medido 2026-10-27"
+  cidades:
+    grao: "um município (lookup, 5.599 linhas, com estado_id e coordenadas)"
+    chave: "id (5.599 = 5.599)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: municipio, colunas: {nome: "município", estado_id: "id em estados", latitude: "graus", longitude: "graus"}}
+    use_para: "traduzir cidade_id e obter coordenadas; não traz código IBGE."
+    rascunho: [use_para]
+    verificado: "5.599 linhas, 5.599 ids — medido 2026-10-27"

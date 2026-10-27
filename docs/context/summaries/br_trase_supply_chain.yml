@@ -1,0 +1,98 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_trase_supply_chain
+tabelas:
+  beef:
+    grao: "um fluxo de carne bovina exportada: ano × município de produção × polo logístico × exportadora × importadora × país do primeiro destino × tipo de produto"
+    chave: "(year, state_production, municipality_name_production, municipality_id_production, municipality_name_logistics_hub, municipality_id_logistics_hub, exporter_name, exporter_group, importer_name, importer_group, country_first_import_name, product_description, biome)"
+    tempo: {natureza: serie_anual, coluna: year, cobertura: "2015–2017"}
+    territorio: {nivel: municipio, colunas: {municipality_id_production: "município IBGE onde o gado foi produzido (17,75% nulos)", state_production: "UF de produção (28 valores, inclui ' ')", municipality_id_logistics_hub: "município do polo logístico/abate (22,5% nulos)", biome: "bioma da produção (inclui UNKNOWN)", country_first_import_name: "país do primeiro destino"}}
+    medidas:
+      - {coluna: beef_equivalent_tonnes, o_que: "carne exportada em toneladas equivalentes de carne bovina", unidade: "t", soma: sim}
+      - {coluna: fob_usd, o_que: "valor FOB exportado", unidade: "US$", soma: sim}
+      - {coluna: co2_emissions_deforestation_5, o_que: "emissões de CO2 do desmatamento atribuído ao fluxo (janela de 5 anos); 23,45% nulos", unidade: "t CO2", soma: sim}
+      - {coluna: cattle_deforestation_exposure, o_que: "exposição ao desmatamento (VARCHAR, 28,21% nulos)", unidade: "ha", soma: "sim, após try_cast para DOUBLE; unidade não documentada"}
+    filtros_tipicos:
+      - "year = 2017 para um ano (2015, 2016, 2017)"
+      - "product_description = 'FRESH & FROZEN BEEF PRODUCTS' (1.125.596 linhas) para carne in natura; há também 'BOVINE OFFALS', 'PROCESSED BEEF PRODUCTS' e 'LIVE CATTLE EXPORTS' e combinações separadas por ' / '"
+      - "biome = 'AMAZONIA' (também CERRADO, MATA ATLANTICA, PAMPA, PANTANAL, CAATINGA, UNKNOWN), maiúsculas sem acento"
+    use_para: "rastrear de que município/bioma vem a carne exportada e quem a exporta e importa"
+    nao_use_para: "volume de produção de gado (só exportação) nem anos fora de 2015–2017; municipality_id_production é produção, não sede da exportadora (ver gotcha municipio_de_producao)"
+    rascunho: [use_para, nao_use_para, unidade de cattle_deforestation_exposure e co2_emissions_deforestation_5]
+    verificado: "1497805 linhas, 1497805 distintos da chave de 13 colunas; 2017: beef_equivalent_tonnes = 2.126.244 t e fob_usd = US$ 5,93 bi (o gotcha cita 1,90 Mt em equivalente de carcaça — valor diferente do somado aqui; conferir antes de citar) — medido 2026-10-27; fob_usd e beef_equivalent_tonnes são DOUBLE no banco apesar do gotcha numeros_em_texto"
+  soy_beans:
+    grao: "um fluxo de soja: ano × município de produção × polo logístico × porto de exportação × exportadora × importadora × país do primeiro destino × bioma"
+    chave: "nenhuma: a combinação (year, state_production, municipality_name_production, municipality_id_production, municipality_id_logistics_hub, export_port, exporter_name, exporter_group, importer_name, importer_group, country_first_import_name, biome) tem 311401 distintos em 311434 linhas (33 repetidas)"
+    tempo: {natureza: serie_anual, coluna: year, cobertura: "2004–2020"}
+    territorio: {nivel: municipio, colunas: {municipality_id_production: "município de produção da soja (sem nulos; vazio quando biome = UNKNOWN)", state_production: "UF de produção (vazio ' ' quando biome = UNKNOWN)", municipality_id_logistics_hub: "polo logístico (13,26% nulos)", export_port: "porto de saída (41 valores)", biome: "bioma"}}
+    medidas:
+      - {coluna: soy_total_export, o_que: "soja exportada em equivalente de grão", unidade: "t", soma: sim}
+      - {coluna: fob_usd, o_que: "valor FOB", unidade: "US$", soma: sim}
+      - {coluna: land_use, o_que: "área plantada atribuída ao fluxo (8,87% nulos)", unidade: "ha (não documentado)", soma: sim}
+      - {coluna: co2_gross_emissions_deforestation_5, o_que: "emissões brutas de CO2 do desmatamento, janela de 5 anos (41,55% nulos)", unidade: "t CO2", soma: sim}
+      - {coluna: co2_net_emissions_deforestation_5, o_que: "emissões líquidas de CO2 (41,54% nulos)", unidade: "t CO2", soma: sim}
+      - {coluna: soy_deforestation_exposure, o_que: "exposição ao desmatamento (VARCHAR, 41,54% nulos)", unidade: "ha (não documentado)", soma: "sim, após try_cast para DOUBLE"}
+      - {coluna: soy_risk, o_que: "risco de desmatamento (41,54% nulos)", unidade: "não documentada", soma: nao}
+    filtros_tipicos:
+      - "year = 2020 para um ano; 2018 tem só 21.401 linhas contra ~54 mil em 2019 e 2020 (cobertura por ano irregular)"
+      - "export_port <> 'DOMESTIC CONSUMPTION' para só exportação: em 2020 esse valor responde por 23,87 Mt de 121,80 Mt em soy_total_export"
+      - "zero_deforestation_commitments tem 'NONE' (144.011) e 'None' (82.679) como valores distintos, além de 'COMPANY COMMITMENT' e 'SOY MORATORIUM', e 26,55% nulos"
+    use_para: "rastrear de que município/bioma vem a soja exportada, por porto, exportadora e destino"
+    nao_use_para: "produção de soja (sem consumo doméstico) nem a sede da exportadora; municipality_id_production é produção (ver gotcha municipio_de_producao)"
+    rascunho: [use_para, nao_use_para, unidades de land_use, soy_deforestation_exposure e soy_risk, significado de 'NONE' x 'None']
+    verificado: "311434 linhas, 311401 distintos da chave candidata de 12 colunas; 2020: soy_total_export = 121.797.712 t, fob_usd = US$ 33,95 bi (bate com o gotcha 121,8 Mt), DOMESTIC CONSUMPTION 785 linhas e 23,87 Mt; soy_total_export e fob_usd são DOUBLE no banco (o gotcha numeros_em_texto vale para soy_deforestation_exposure) — medido 2026-10-27"
+  beef_slaughterhouses:
+    grao: "um frigorífico/matadouro de bovinos localizado (slaugtherhouse_id) com empresa, endereço, inspeção e ponto"
+    chave: "slaugtherhouse_id"
+    tempo: {natureza: sem_tempo, coluna: date_sif_registered, cobertura: "1911-11-11–2017-12-05 (data de registro no SIF; 95,87% nulos)"}
+    territorio: {nivel: ponto, colunas: {municipality_id: "município IBGE", state: "UF", point: "ponto geográfico"}}
+    filtros_tipicos:
+      - "subclass = 'CONFIRMED SLAUGHTERHOUSE' (1.564 de 7.671; os demais: 'PROBABLE SLAUGHTERHOUSE' 1.705, 'UNCONFIRMED SLAUGHTERHOUSE (MULTIFUNCTIONAL FACILITY)' 4.309, 'UNCONFIRMED SLAUGHTERHOUSE' 93)"
+      - "inspection_level IN ('SIF','SIE','SIM') para inspeção federal/estadual/municipal; 'UNKNOWN' é a maioria (6.684)"
+      - "status = 'ATIVO' (299) / 'INATIVO' (240); '' (vazio) em 7.127 linhas = sem informação"
+    use_para: "localizar frigoríficos de bovinos e filtrar os confirmados e por nível de inspeção"
+    nao_use_para: "volume de abate ou capacidade (não tem medida) nem ligar a beef por chave (as tabelas não compartilham código de frigorífico)"
+    rascunho: [use_para, nao_use_para, significado de inspection_level e tac]
+    verificado: "7671 linhas, 7671 distintos de slaugtherhouse_id (4423 distintos de geom_id: vários frigoríficos no mesmo ponto) — medido 2026-10-27"
+  soy_beans_crushing_facilities:
+    grao: "uma unidade de esmagamento de soja × ano (crushing_facility_Id × year) com capacidade"
+    chave: "nenhuma: (year, crushing_facility_Id) tem 964 distintos em 973 linhas (9 repetidas); (year, geom_id, company) é único nas 973"
+    tempo: {natureza: serie_anual, coluna: year, cobertura: "2005–2016"}
+    territorio: {nivel: ponto, colunas: {municipality_id: "município IBGE", state: "UF", point: "ponto geográfico"}}
+    medidas:
+      - {coluna: capacity, o_que: "capacidade de esmagamento (0,51% nulos)", unidade: "não documentada (provavelmente t/dia)", soma: "sim por ano; não entre anos (repete a mesma unidade a cada ano)"}
+    filtros_tipicos:
+      - "year = 2016 para o retrato mais recente (92 linhas); status tem um só valor, 'ATIVA'"
+    use_para: "localizar e dimensionar as esmagadoras de soja por ano"
+    nao_use_para: "somar capacity entre anos (mesma unidade repetida) nem produção efetiva"
+    rascunho: [use_para, nao_use_para, unidade de capacity]
+    verificado: "973 linhas, 964 distintos de (year, crushing_facility_Id), 973 distintos de (year, geom_id, company) — medido 2026-10-27"
+  soy_beans_refining_facilities:
+    grao: "uma refinaria de óleo de soja × ano (ponto × empresa × year)"
+    chave: "nenhuma: (year, geom_id, company) tem 503 distintos em 504 linhas (1 repetida)"
+    tempo: {natureza: serie_anual, coluna: year, cobertura: "2005–2016"}
+    territorio: {nivel: ponto, colunas: {municipality_id: "município IBGE", state: "UF", point: "ponto geográfico"}}
+    use_para: "localizar refinarias de óleo de soja por ano"
+    nao_use_para: "dimensionar capacidade (capacity é 100% nula)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "504 linhas, 503 distintos de (year, geom_id, company); capacity 100% nula — medido 2026-10-27"
+  soy_beans_storage_facilities:
+    grao: "um armazém de grãos (silo) confirmado, com empresa, capacidade e ponto"
+    chave: "cartodb_id (3228 distintos em 3228 linhas; também únicos geom_id + company + cnpj_cpf)"
+    tempo: {natureza: sem_tempo, coluna: date, cobertura: "1949-07-14–2017-02-09 (data de referência do armazém; 26,27% nulos)"}
+    territorio: {nivel: ponto, colunas: {municipality_id: "município IBGE", state: "UF (20 valores)", point: "ponto geográfico"}}
+    medidas:
+      - {coluna: capacity, o_que: "capacidade estática de armazenagem", unidade: "não documentada (provavelmente t)", soma: sim}
+    filtros_tipicos:
+      - "subclass = 'CONFIRMED STORAGE' (único valor)"
+    use_para: "localizar armazéns e somar a capacidade de armazenagem por município ou UF"
+    nao_use_para: "identificar o dono por cnpj_cpf (contém dado pessoal) ou ver evolução no tempo"
+    rascunho: [use_para, nao_use_para, unidade de capacity]
+    verificado: "3228 linhas, 3228 distintos de cartodb_id, 2787 de geom_id — medido 2026-10-27"
+  soy_beans_storage_facilities_original:
+    grao: "mesmo grão de soy_beans_storage_facilities, na versão original (mesmas colunas; diferem os quartis de capacity e a contagem de cnpj_cpf distintos, 3485 contra 3724)"
+    chave: "cartodb_id (3228 distintos em 3228 linhas)"
+    use_para: "conferir a versão original; prefira soy_beans_storage_facilities"
+    nao_use_para: "análise principal — duplica a tabela tratada"
+    rascunho: [use_para, nao_use_para]
+    verificado: "3228 linhas, 3228 distintos de cartodb_id — medido 2026-10-27"

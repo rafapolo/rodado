@@ -1,0 +1,93 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: world_iea_pirls
+tabelas:
+  dictionary:
+    grao: um valor codificado (table_id, column_name, key → value) do questionário PIRLS 2021
+    chave: (table_id, column_name, key)
+    tempo: &id001
+      natureza: sem_tempo
+      coluna: temporal_coverage (só no dicionário)
+      cobertura: PIRLS 2021 (aplicação em 2021)
+    use_para: 'traduzir códigos das demais tabelas (ex.: sex_student 1 = Girl, 2 = Boy; student_wave_indicator 1 = Spring 2021; country_id 8 = Albania)'
+    nao_use_para: dados de alunos
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 7.654 linhas = 7.654 distintas em (table_id, column_name, key) — medido 2026-10-27
+  student_context:
+    grao: um aluno de 4º ano (grade_id 4–6) com respostas de contexto do teste
+    chave: (country_id, student_id) (413.387 linhas, 413.387 distintas); student_id sozinho NÃO é único (92.503 distintos), pois se repete entre países
+    tempo: *id001
+    territorio: &id002
+      nivel: outro
+      colunas:
+        country_id: código IEA numérico do país ou entidade de referência (65 valores, inclui entidades como 7842, 7106, 7841, 643001 com sufixo)
+        country_iso3_code: código numérico ISO do país (em texto, 51 valores); nulo em ~19% das linhas, nas entidades de referência sem código ISO próprio
+    filtros_tipicos:
+    - country_id (texto) para o país; country_iso3_code é nulo em ~19% das linhas, não filtre por ele sem checar
+    - 'valores de código são texto (''1'',''2''): sex_student = ''1'' Girl, ''2'' Boy (pelo dicionário)'
+    - grade_id IN ('4','5','6') (275.005, 129.065 e 9.317 linhas)
+    use_para: caracterizar o aluno (sexo, língua, posição no teste) e ligar a student_achievement/home_context por (country_id, student_id)
+    nao_use_para: notas (estão em student_achievement, tabela não lida) ou perguntas aos pais (home_context); perguntas do país Brasil (ausente)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 413.387 linhas = 413.387 distintas em (country_id, student_id) e em (country_id, school_id, class_id, student_id); 65 country_id, 51 country_iso3_code — medido 2026-10-27
+  home_context:
+    grao: um aluno × respostas do questionário dos pais (home)
+    chave: (country_id, student_id) (413.387 linhas, 413.387 distintas)
+    tempo: *id001
+    territorio: *id002
+    filtros_tipicos: &id003
+    - country_id (texto) para o país; country_iso3_code é nulo em ~19% das linhas, não filtre por ele sem checar
+    - 'valores de código são texto (''1'',''2''): sex_student = ''1'' Girl, ''2'' Boy (pelo dicionário)'
+    use_para: 'contexto doméstico do aluno: recursos de casa, língua, hábitos (colunas asbh*, 20–23% de nulos)'
+    nao_use_para: país/aluno sem juntar por (country_id, student_id); student_id sozinho
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 413.387 linhas = 413.387 distintas em (country_id, student_id) — medido 2026-10-27
+  school_context:
+    grao: uma escola × respostas do questionário da escola
+    chave: 'nenhuma: 14.026 linhas, 13.374 pares (country_id, school_id) distintos; school_id sozinho tem só 709 distintos e se repete entre países'
+    tempo: *id001
+    territorio: *id002
+    filtros_tipicos:
+    - country_id (texto) para o país; country_iso3_code é nulo em ~19% das linhas, não filtre por ele sem checar
+    - 'valores de código são texto (''1'',''2''): sex_student = ''1'' Girl, ''2'' Boy (pelo dicionário)'
+    - 'grade_id IN (''4'',''5'',''6'') (12.835, 938 e 253 linhas): uma escola pode aparecer mais de uma vez por grade'
+    use_para: características das escolas (colunas acbg*)
+    nao_use_para: contar escolas com count(*) (repete); chave (country_id, school_id)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 14.026 linhas, 13.374 distintas em (country_id, school_id) — medido 2026-10-27
+  teacher_context:
+    grao: um professor × turma/vínculo (teacher_link_id) × questionário do professor
+    chave: 'nenhuma: 21.561 linhas, 21.439 distintas em (country_id, teacher_id, teacher_link_id); 122 linhas repetem'
+    tempo: *id001
+    territorio: *id002
+    filtros_tipicos: *id003
+    use_para: perfil de professores (colunas atbg*, 16–18% de nulos) ligável por student_teacher_link
+    nao_use_para: contar professores com count(*)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 21.561 linhas, 21.439 distintas em (country_id, teacher_id, teacher_link_id) e em (country_id, school_id, teacher_id, teacher_link_id) — medido 2026-10-27
+  student_teacher_link:
+    grao: um aluno × professor (vínculo teacher_link_id)
+    chave: (country_id, student_id, teacher_id, teacher_link_id) (414.735 linhas, 414.735 distintas); também única em (country_id, student_id, teacher_link_id)
+    tempo: *id001
+    territorio: *id002
+    filtros_tipicos: *id003
+    use_para: ligar alunos a professores (student_context ↔ teacher_context)
+    nao_use_para: 'contar alunos com count(*) (1.348 alunos têm mais de uma linha: 413.387 distintos em 414.735)'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 414.735 linhas = 414.735 distintas; 413.387 alunos distintos — medido 2026-10-27
+  student_achievement:
+    grao: 'não lida: duckdb saiu com 255 sem mensagem (memória?)'
+  within_country_scoring_reliability:
+    grao: 'não lida: IO Error: Cannot open file ... Too many open files'

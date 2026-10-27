@@ -1,0 +1,118 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_sfb_sicar
+tabelas:
+  area_imovel:
+    grao: "um imóvel rural cadastrado no CAR em uma foto mensal (data_extracao), com polígono e área"
+    chave: "id_imovel, data_extracao (no AC: 561.730 linhas, 561.730 distintos); nacionalmente a foto 2025-10-15 repete 9.243 ids (ver gotcha id_imovel_repete_na_foto)"
+    tempo: {natureza: soma_de_retratos, coluna: data_extracao, cobertura: "2024-10-04–2025-10-15 (10 fotos mensais, 79,3 milhões de linhas)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "sigla da UF", id_municipio: "código IBGE do município, 7 dígitos, texto"}}
+    medidas:
+      - {coluna: area, o_que: "área do imóvel", unidade: "ha", soma: sim}
+      - {coluna: modulos_fiscais, o_que: "área em módulos fiscais (VARCHAR: converta com ::double)", unidade: "módulos fiscais", soma: sim}
+    filtros_tipicos:
+      - "data_extracao = DATE '2025-10-15' (uma foto só; sem isso conta cada imóvel até 10 vezes)"
+      - "status <> 'CA' para tirar cancelados; status vai de 'AT', 'PE', 'SU', 'CA' (significado dos códigos não documentado; 'CA' coincide com condicao 'Cancelado por decisao administrativa')"
+      - "condicao = 'Aguardando analise' (79% dos imóveis) ou 'Analisado, ...': ver gotcha condicao_e_a_analise"
+      - "tipo = 'IRU' (2.058.306 na amostra), 'AST' (9.328), 'PCT' (1.034): significado não documentado (provável imóvel rural / assentamento / povos tradicionais)"
+    use_para: "contar imóveis e somar área declarada no CAR por UF, município e situação"
+    nao_use_para: "somar área sem fixar uma foto, ou tratar a soma como terra distinta: os polígonos se sobrepõem (ver gotcha poligonos_sobrepostos)"
+    rascunho: [use_para, nao_use_para, significado de tipo e status, "soma de modulos_fiscais"]
+    verificado: "AC: 561.730 linhas = 561.730 distintos de (id_imovel,data_extracao); AC foto 2025-10-15: 58.394 linhas = 58.394 ids; 9 fotos nas amostras; demais números nos gotchas — medido 2026-10-27"
+  app:
+    grao: "uma feição de área de preservação permanente (APP) de um imóvel, por tipo"
+    chave: "nenhuma: no AC, 151.812 linhas para 17.032 imóveis e 78.435 pares (id_imovel, tipo)"
+    tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-06-02–2026-08-04 (data por UF, juntas formam uma foto; 28,1 milhões de linhas)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "sigla da UF", id_municipio: "código IBGE, texto", id_imovel: "recibo do CAR"}}
+    medidas:
+      - {coluna: area, o_que: "área da feição de APP", unidade: "ha", soma: sim}
+    filtros_tipicos:
+      - "area < 1e7: 9 valores absurdos na fonte (até 1,7e50 ha)"
+      - "tipo = 'APP_TOTAL' já agrega os outros tipos (263.942 linhas na amostra): use só ele ou só os parciais, nunca todos"
+      - "tipo parcial, ex. 'APP_RIO_ATE_10' (455.119 na amostra), 'APP_NASCENTE_OLHO_DAGUA'"
+    use_para: "APP declarada por imóvel, município e tipo de curso d'água"
+    nao_use_para: "somar todos os tipos juntos (APP_TOTAL duplica, ver gotcha app_total_agrega) nem filtrar uma data_extracao só"
+    rascunho: [use_para, nao_use_para]
+    verificado: "AC: 151.812 linhas, 17.032 imóveis, 78.435 pares imóvel×tipo — medido 2026-10-27"
+  area_consolidada:
+    grao: "uma feição de área rural consolidada (uso antes de 22/07/2008) de um imóvel"
+    chave: "nenhuma: no AC, 55.419 linhas para 55.225 imóveis"
+    tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-06-02–2026-08-04 (por UF; 6,9 milhões de linhas)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "IBGE, texto", id_imovel: "recibo do CAR"}}
+    medidas:
+      - {coluna: area, o_que: "área consolidada da feição", unidade: "ha", soma: sim}
+    filtros_tipicos: ["tipo = 'AREA_CONSOLIDADA' (único valor)", "status <> 'CA' para tirar cancelados"]
+    use_para: "área consolidada declarada por imóvel e município"
+    nao_use_para: "contar imóveis com count(*); a data de extração não filtra (é por UF)"
+    rascunho: [use_para, nao_use_para, "definição da data de corte 2008 (conhecimento geral, não medido)"]
+    verificado: "AC: 55.419 linhas, 55.225 imóveis distintos — medido 2026-10-27"
+  area_pousio:
+    grao: "uma feição de área de pousio de um imóvel"
+    chave: "nenhuma: 212.315 linhas, 207.242 imóveis; mesmo (id_imovel, geometria) tem 212.198 distintos"
+    tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-06-02–2026-08-04"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "IBGE, texto"}}
+    medidas:
+      - {coluna: area, o_que: "área em pousio", unidade: "ha", soma: sim}
+    filtros_tipicos: ["tipo = 'AREA_POUSIO' (único valor)", "geometria é texto e pode ser 'GEOMETRYCOLLECTION EMPTY'"]
+    use_para: "área em pousio declarada por imóvel"
+    nao_use_para: "contar imóveis com count(*)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "212.315 linhas, 207.242 imóveis, 212.198 distintos de (id_imovel,geometria) — medido 2026-10-27"
+  hidrografia:
+    grao: "uma feição de hidrografia (rio, lago, reservatório) dentro de um imóvel, por tipo"
+    chave: "nenhuma: no AC, 27.910 linhas, 16.439 imóveis, 18.839 pares (id_imovel, tipo)"
+    tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-06-02–2026-08-04 (por UF; 4,4 milhões de linhas)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "IBGE, texto"}}
+    filtros_tipicos: ["tipo = 'RIO_ATE_10' (1.595.883 na amostra), 'RESERVATORIO_ARTIFICIAL_DECORRENTE_BARRAMENTO' (214.231), 'RIO_10_A_50', 'LAGO_NATURAL', 'RIO_50_A_200'", "status <> 'CA'"]
+    use_para: "contar imóveis com curso d'água ou reservatório por tipo"
+    nao_use_para: "medir área: a tabela não tem coluna area no perfil"
+    rascunho: [use_para, nao_use_para]
+    verificado: "AC: 27.910 linhas, 16.439 imóveis, 18.839 pares imóvel×tipo; perfil não lista coluna area — medido 2026-10-27"
+  reserva_legal:
+    grao: "uma feição de reserva legal de um imóvel, por tipo"
+    chave: "nenhuma: no AC, 36.007 linhas, 35.846 imóveis, 35.891 pares (id_imovel, tipo)"
+    tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-06-02–2026-08-04 (por UF; 6,4 milhões de linhas)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "IBGE, texto"}}
+    medidas:
+      - {coluna: area, o_que: "área de reserva legal", unidade: "ha", soma: sim}
+    filtros_tipicos: ["tipo = 'ARL_PROPOSTA' (1.871.439 na amostra, proposta pelo declarante), 'ARL_AVERBADA' (85.534) ou 'ARL_APROVADA_NAO_AVERBADA' (59.202)", "status <> 'CA'"]
+    use_para: "reserva legal declarada, proposta ou averbada por imóvel e município"
+    nao_use_para: "tratar ARL_PROPOSTA como reserva já aprovada: é a grande maioria e não foi validada"
+    rascunho: [use_para, nao_use_para, "leitura de ARL_PROPOSTA como não validada"]
+    verificado: "AC: 36.007 linhas, 35.846 imóveis, 35.891 pares imóvel×tipo — medido 2026-10-27"
+  servidao_administrativa:
+    grao: "uma feição de servidão administrativa (infraestrutura, utilidade pública, reservatório de energia) de um imóvel"
+    chave: "nenhuma: no AC, 4.624 linhas, 2.290 imóveis, 4.608 pares (id_imovel, tipo)"
+    tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-06-02–2026-08-04 (por UF; 2,2 milhões de linhas)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "IBGE, texto"}}
+    medidas:
+      - {coluna: area, o_que: "área da servidão", unidade: "ha", soma: nao}
+    filtros_tipicos: ["tipo = 'AREA_SERVIDAO_ADMINISTRATIVA_TOTAL' (1.002.831 na amostra) é o agregado dos demais ('AREA_INFRAESTRUTURA_PUBLICA' 507.011, 'AREA_UTILIDADE_PUBLICA' 488.114, 'AREA_ENTORNO_RESERVATORIO_ENERGIA'): não some tudo junto (deduzido pelo nome e pelas contagens)"]
+    use_para: "área sob servidão por imóvel e tipo"
+    nao_use_para: "somar todos os tipos (o total já agrega)"
+    rascunho: [use_para, nao_use_para, "que o TOTAL agrega os demais"]
+    verificado: "AC: 4.624 linhas, 2.290 imóveis, 4.608 pares imóvel×tipo — medido 2026-10-27"
+  uso_restrito:
+    grao: "uma feição de área de uso restrito (declividade 25–45° ou pantaneira) de um imóvel"
+    chave: "nenhuma: 179.748 linhas, 129.522 imóveis; (id_imovel, tipo, geometria) tem 175.655 distintos"
+    tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-06-02–2026-08-04"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "IBGE, texto"}}
+    medidas:
+      - {coluna: area, o_que: "área de uso restrito", unidade: "ha", soma: sim}
+    filtros_tipicos: ["tipo = 'AREA_USO_RESTRITO_DECLIVIDADE_25_A_45' (170.315) ou 'AREA_USO_RESTRITO_PANTANEIRA' (9.433)"]
+    use_para: "área de uso restrito declarada por imóvel"
+    nao_use_para: "contar imóveis com count(*)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "179.748 linhas, 129.522 imóveis, 175.655 distintos de (id_imovel,tipo,geometria) — medido 2026-10-27"
+  vegetacao_nativa:
+    grao: "uma feição de vegetação nativa remanescente de um imóvel"
+    chave: "nenhuma: no AC, 42.946 linhas para 42.818 imóveis"
+    tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-06-02–2026-08-04 (por UF; 5,2 milhões de linhas)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "IBGE, texto"}}
+    medidas:
+      - {coluna: area, o_que: "área de vegetação nativa", unidade: "ha", soma: sim}
+    filtros_tipicos: ["tipo = 'VEGETACAO_NATIVA' (único valor)", "status <> 'CA'"]
+    use_para: "vegetação nativa declarada por imóvel e município"
+    nao_use_para: "contar imóveis com count(*); somar sem notar que imóveis se sobrepõem"
+    rascunho: [use_para, nao_use_para]
+    verificado: "AC: 42.946 linhas, 42.818 imóveis — medido 2026-10-27"

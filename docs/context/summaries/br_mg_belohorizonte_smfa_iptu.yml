@@ -1,0 +1,25 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_mg_belohorizonte_smfa_iptu
+tabelas:
+  iptu:
+    grao: "uma unidade cadastral (imóvel/economia, por indice_cadastral) de Belo Horizonte × mês de retrato"
+    chave: "ano, mes, indice_cadastral: única nos meses medidos (ex.: 2024-04, 875.845 linhas = 875.845 distintos), exceto 2024-03, em que cada linha vem duplicada (1.749.672 linhas, 874.836 distintas)"
+    tempo: {natureza: soma_de_retratos, coluna: "ano + mes", cobertura: "2022 (7 meses), 2023 (12), 2024 (meses 1–5)"}
+    territorio:
+      nivel: ponto
+      colunas: {indice_cadastral: "código do imóvel no cadastro municipal", lote: "código do lote", cep: "CEP", endereco: "endereço", zoneamento: "zona do plano diretor (ex.: ZAP, ZAR2)", zona_homogenea: "zona homogênea de valor do IPTU", poligono: "geometria do lote"}
+    medidas:
+      - {coluna: area_construida, o_que: "área construída da unidade", unidade: "m²", soma: sim}
+      - {coluna: area_terreno, o_que: "área do terreno do lote, repetida em cada unidade do lote: somar duplica em condomínios", unidade: "m²", soma: nao}
+      - {coluna: quantidade_economias, o_que: "número de economias da unidade", unidade: "economias", soma: sim}
+      - {coluna: fracao_ideal, o_que: "fração ideal da unidade no terreno (0–2)", unidade: "fração", soma: nao}
+    filtros_tipicos:
+      - "ano = 2024 AND mes = 4 (um único retrato; sem filtrar mês as linhas se repetem a cada mês, e 2024-03 vem em dobro)"
+      - "tipo_ocupacao IN ('Residencial','Nao Residencial','Territorial'): sem acento, 'Territorial' = lote vago"
+      - "padrao_acabamento IN ('P1','P2','P3','P4','P5'); 'TE' = terreno, só em tipo_ocupacao = 'Territorial'; ordem de P1 a P5 não confirmada (column_codes: pendente)"
+      - "tipo_construtivo = 'Apartamento' (maioria), 'Casa', 'Sala', 'Loja', 'Lote Vago'"
+    use_para: "perfil do estoque de imóveis de BH por zona, tipo, padrão e infraestrutura (indicador_* booleanos) em um mês."
+    nao_use_para: "somar área ou contar imóveis entre meses (cada mês repete o cadastro) nem obter valor venal/IPTU: a tabela não tem valor."
+    rascunho: [use_para, nao_use_para, "ordem de P1 a P5"]
+    verificado: "21.463.811 linhas; 2024-04: 875.845 linhas, 875.845 indice_cadastral distintos, soma area_construida 143.115.057,98, soma quantidade_economias 1.077.377; 2024-03: 1.749.672 linhas e 874.836 distintas; meses por ano 2022=7, 2023=12, 2024=5; padrao_acabamento NULL em 8 linhas — medido 2026-10-27"

@@ -1,0 +1,23 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_saude_bps
+tabelas:
+  dados:
+    grao: "uma compra de um item (código BR/CATMAT) por uma instituição de saúde a um fornecedor, numa data (Banco de Preços em Saúde)"
+    chave: "nenhuma: não há id; 371.128 linhas, 1 linha idêntica em todas as colunas e 370.877 combinações distintas de data, instituição, item, fornecedor, fabricante, preço, quantidade, modalidade e tipo"
+    tempo: {natureza: serie_diaria, coluna: data_da_compra, cobertura: "2020-01-01–2026-09-28"}
+    territorio: {nivel: uf, colunas: {uf_da_instituicao: "sigla da UF da instituição compradora (24 siglas, sem nulos)", nome_do_munica­pio_da_instituicao: "nome do município da instituição (o nome da coluna tem um caractere invisível após 'munica'; sem código IBGE)"}}
+    medidas:
+      - {coluna: preco_total, o_que: "valor da compra (= quantidade_itens_comprados × preco_unitario, conferido nas 371.128 linhas com tolerância de 1%)", unidade: "R$", soma: sim}
+      - {coluna: quantidade_itens_comprados, o_que: "quantidade comprada na unidade de fornecimento", unidade: "unidades de unidade_de_fornecimento (COMPRIMIDO, FRASCO, AMPOLA... não comparáveis entre si)", soma: sim}
+      - {coluna: preco_unitario, o_que: "preço por unidade de fornecimento", unidade: "R$ por unidade_de_fornecimento", soma: nao}
+      - {coluna: capacidade, o_que: "capacidade da embalagem, na unidade_de_medida (nulo em 63,58% das linhas)", unidade: "ver unidade_de_medida (ML, G, UN, DOSES...)", soma: nao}
+    filtros_tipicos:
+      - "tipo_da_compra = 'ADMINISTRATIVA' (364.971 linhas) ou 'JUDICIAL' (6.157): compras judiciais são à parte (R$ 7,7 bi contra R$ 107,8 bi)"
+      - "modalidade_da_compra = 'Pregão' (335.472 linhas; rótulos por extenso, não código)"
+      - "generico = 'S' ou 'N' (valores literais); nulo em 180.609 linhas, as mesmas em que anvisa é nulo (itens sem registro Anvisa, ex. materiais)"
+      - "ano_da_compra = 2022 (coincide com year(data_da_compra) em todas as linhas)"
+    use_para: "preço unitário e gasto de compras públicas de medicamentos e materiais de saúde por item, UF, instituição, fornecedor e modalidade"
+    nao_use_para: "somar preco_total por ano sem checar outliers, ou comparar preco_unitario entre unidades de fornecimento diferentes"
+    rascunho: [use_para, nao_use_para]
+    verificado: "371.128 linhas; 1 linha duplicada exata; preco_total = quantidade × preco_unitario em 371.128/371.128; soma bruta de preco_total por ano (R$ mi): 2020 5.047, 2021 7.425, 2022 16.873, 2023 4.958, 2024 9.099, 2025 50.995, 2026 21.102, com máximos absurdos (preco_total até 2,28e10, quantidade até 4,36e9) que distorcem 2025 e 2026 — medido 2026-10-27"

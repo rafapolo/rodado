@@ -1,0 +1,35 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_sema_mt_embargos
+tabelas:
+  areas_embargadas:
+    grao: "um polígono de área embargada pela SEMA-MT (lista de embargos de hoje), numa de duas camadas: 'sema' (sistema antigo) ou 'siga' (SIGA)"
+    chave: "nenhuma: não há id; 20.192 linhas, 19.515 geometrias distintas por camada, e 2.652 combinações (camada, termo_embargo, cpf_cnpj, data_embargo, processo) se repetem (um termo cobre vários polígonos)"
+    tempo: {natureza: serie_diaria, coluna: data_embargo, cobertura: "2010-03-22–2026-10-24"}
+    territorio: {nivel: outro, colunas: {geometria: "polígono (CRS84) da área embargada, em Mato Grosso; não há coluna de município nesta tabela"}}
+    medidas:
+      - {coluna: area_ha, o_que: "área do polígono embargado (3 linhas com 0)", unidade: "hectares", soma: sim}
+    filtros_tipicos:
+      - "camada = 'siga' (11.833 linhas, 1.318.740 ha) ou 'sema' (8.359, 681.112 ha): as camadas se sobrepõem no período comum; ver gotcha duas_camadas, não some entre camadas"
+      - "situacao só existe na camada 'siga' (9.588 não nulas): é a fase do processo, não o fim do embargo (gotcha situacao_e_do_processo)"
+      - "ano_desmat é nulo nas 11.833 linhas da camada 'siga'; só 'sema' o preenche (texto)"
+    use_para: "mapear e somar hectares embargados em MT por data de embargo, ano de desmatamento (camada sema) ou fase do processo (camada siga)"
+    nao_use_para: "saber se o embargo foi levantado (não há data de desembargo; gotcha sem_data_de_desembargo) nem somar as duas camadas sem deduplicar"
+    rascunho: [nao_use_para]
+    verificado: "20.192 linhas; geometrias distintas (camada, ST_AsText) 19.515; combinação de 5 colunas com 16.505 distintos; por camada: siga 11.833 linhas e 1.318.740 ha, sema 8.359 e 681.112 ha — medido 2026-10-27"
+  areas_desembargadas:
+    grao: "um polígono de área desembargada pela SEMA-MT, numa das camadas 'sema' ou 'siga'; as colunas têm esquemas diferentes por camada (maiúsculas, metade nula em cada)"
+    chave: "id (6.901 linhas = 6.901 distintos)"
+    tempo: {natureza: serie_diaria, coluna: DATA_DO_AUTO, cobertura: "2022-10-04–2026-07-27 (só camada 'siga'; a camada 'sema' tem a data do embargo original em DAT_LAVRAT, texto dd/mm/aaaa)"}
+    territorio: {nivel: outro, colunas: {geometria: "polígono da área desembargada", MUNICIPIO_DO_DANO: "nome do município (132 distintos), só camada 'siga'"}}
+    medidas:
+      - {coluna: AREA_HA, o_que: "área em hectares, preenchida só na camada 'sema' (4.727 linhas, 761.043 ha); nula nas 2.174 da 'siga'", unidade: "hectares", soma: sim}
+      - {coluna: QUANTIDADE, o_que: "área em hectares na camada 'siga' (UNIDADE_MEDIDA = 'HECTARE'; 2.174 linhas, 364.060 ha); nula na 'sema'", unidade: "hectares", soma: sim}
+      - {expressao: "COALESCE(AREA_HA, QUANTIDADE)", o_que: "área em ha das duas camadas juntas (sem nulos nas 6.901 linhas)", unidade: "hectares", soma: sim}
+    filtros_tipicos:
+      - "camada = 'sema' (4.727) ou 'siga' (2.174)"
+      - "EMBARGADO = 0 nas 2.174 linhas da 'siga' (nulo na 'sema'): significado não documentado"
+    use_para: "área desembargada em MT (hectares) e a data do embargo original; sem data de desembargo (gotcha sem_data_de_desembargo)"
+    nao_use_para: "somar AREA_HA sozinha (omite a camada 'siga') ou datar o desembargo"
+    rascunho: [nao_use_para]
+    verificado: "6.901 linhas, id 6.901 distintos; por camada: sema 4.727 linhas (AREA_HA 761.043 ha), siga 2.174 (QUANTIDADE 364.060 ha, AREA_HA nula, NOME nulo) — medido 2026-10-27"

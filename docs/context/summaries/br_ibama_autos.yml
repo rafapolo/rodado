@@ -1,0 +1,94 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibama_autos
+tabelas:
+  auto_infracao:
+    grao: "um auto de infração ambiental do IBAMA (cabeçalho, com infrator, local, valor e status)"
+    chave: "seq_auto_infracao é único entre os não nulos (704.979 distintos); 6.860 linhas têm seq_auto_infracao nulo (e des_status_formulario nulo); num_auto_infracao repete (633.637 distintos em 711.839), pois o número só é único junto com a série ser_auto_infracao e mesmo assim 703.782 combinações"
+    tempo: {natureza: serie_de_periodos, coluna: "ano (= year(dat_hora_auto_infracao), conferido: 0 divergências)", cobertura: "1977–2026"}
+    territorio: {nivel: municipio, colunas: {cod_municipio: "código do município onde ocorreu (texto)", municipio: "nome", uf: "sigla da UF", ds_wkt: "ponto 'POINT (...)' em 42% das linhas; coordenadas têm lixo (ex.: latitude 430)"}}
+    medidas:
+      - {coluna: val_auto_infracao, o_que: "valor da multa lavrada", unidade: "R$", soma: sim}
+      - {coluna: qt_area, o_que: "área da infração (93% nula)", unidade: "ver classificacao_area; unidade não documentada", soma: nao}
+      - {expressao: "count(*)", o_que: "número de autos", unidade: "autos", soma: sim}
+    filtros_tipicos:
+      - "sit_cancelado = 'N' para excluir cancelados (26.059 com 'S')"
+      - "tipo_auto = 'Multa simples' (698.150), 'Advertência' (13.219) ou 'Multa diária' (438); só multas têm valor relevante"
+      - "tipo_infracao = 'Flora' ou 'Fauna' ou 'Pesca' ... (nulo em 40% das linhas, sobretudo as antigas do SICAFI)"
+      - "tp_origem_registro_auto = 'SICAFI' (sistema antigo, 621.007) ou 'AI-e Aplicativo' (89.872)"
+    use_para: "contar autos e somar multas lavradas por ano, UF, município, tipo de infração ou infrator."
+    nao_use_para: "multa efetivamente paga ou arrecadada; val_auto_infracao é o valor lavrado (soma bruta ~R$ 112 bi, com outliers de até R$ 4,3 bi); some só depois de excluir cancelados."
+    rascunho: [use_para, nao_use_para]
+    verificado: "711.839 linhas; 704.979 distintos de seq_auto_infracao + 6.860 nulos; soma de val_auto_infracao 112,66 bi (multa simples 112,64 bi) — medido 2026-10-27"
+  anexo:
+    grao: "um anexo (foto, documento, mapa…) de um auto de infração"
+    chave: "seq_auto_infracao, seq_auto_anexo (confirmada, 722.831 de 722.831)"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1985–2026"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos: ["tp_anexo_auto = 'Documento' (641.692), 'Imagem', 'Foto', 'Mapa', 'Croqui', 'Áudio'"]
+    use_para: "saber quais evidências estão anexadas a um auto (junta com auto_infracao por seq_auto_infracao)."
+    nao_use_para: "análise de infração: não tem valor nem local."
+    rascunho: [use_para, nao_use_para]
+    verificado: "722.831 linhas = 722.831 distintos de (seq_auto_anexo, seq_auto_infracao) — medido 2026-10-27"
+  enquadramento:
+    grao: "um dispositivo legal (artigo/norma) aplicado a um auto de infração"
+    chave: "nenhuma: (seq_auto_infracao, seq_enquadramento) tem 688.925 distintos em 689.797 linhas; 872 linhas repetem"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1195–2026 (anos inválidos como 1195; usar >= 1977)"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos: ["tp_norma = 'Decreto' (462.641), 'Lei' (174.434), 'Portaria', 'Instrução Normativa', 'Constituição Federal', 'Resolução'"]
+    use_para: "ver sob quais artigos (ex.: Decreto 6514) os autos foram lavrados; um auto pode ter vários enquadramentos."
+    nao_use_para: "contar autos (um auto repete por enquadramento): use auto_infracao."
+    rascunho: [use_para, nao_use_para]
+    verificado: "689.797 linhas; 688.925 distintos de (seq_auto_infracao, seq_enquadramento) — medido 2026-10-27"
+  aie_enquadramento:
+    grao: "um enquadramento legal de um auto do sistema AI-e (versão com tipo e número da norma)"
+    chave: "nenhuma: (num_auto_infracao, sq_enquadramento) tem 452.571 distintos em 531.750 linhas"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos: ["administrativo = 'S' (398.338) ou 'N' (133.412): enquadramento administrativo ou não"]
+    use_para: "norma (tp_norma, nu_norma, artigo) por auto; junta por num_auto_infracao."
+    nao_use_para: "contar autos; cd_serie_auto_infracao é 100% nula, então o número do auto sozinho pode ser ambíguo."
+    rascunho: [use_para, nao_use_para]
+    verificado: "531.750 linhas; 452.571 distintos de (num_auto_infracao, sq_enquadramento) — medido 2026-10-27"
+  aie_enquadramentocomp:
+    grao: "um complemento de enquadramento (lei, artigo e inciso em texto livre) de um auto"
+    chave: "nenhuma: 35.793 distintos de (num_auto_infracao, sq_enquadramento, nu_lei_comp, nu_artigo_comp, nu_par_inc_al) em 35.820 linhas"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: nenhum, colunas: {}}
+    use_para: "texto complementar do enquadramento de um auto."
+    nao_use_para: "qualquer contagem ou soma: textos livres."
+    rascunho: [use_para, nao_use_para]
+    verificado: "35.820 linhas; 35.793 distintos da combinação — medido 2026-10-27"
+  bioma:
+    grao: "um bioma atingido por um auto de infração"
+    chave: "nenhuma: (num_auto_infracao, bioma) tem 291.694 distintos em 294.460 linhas"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: outro, colunas: {bioma: "Amazonia, Mata Atlantica, Cerrado, Caatinga, Costeiro e Marinho, Pampa, Pantanal (sem acento)"}}
+    filtros_tipicos: ["bioma = 'Amazonia' (sem acento, 115.373 na amostra)"]
+    use_para: "autos por bioma; junta com auto_infracao por num_auto_infracao (o join repete autos com mais de um bioma)."
+    nao_use_para: "somar val_auto_infracao após o join sem deduplicar o auto."
+    rascunho: [use_para, nao_use_para]
+    verificado: "294.460 linhas; 291.694 distintos de (num_auto_infracao, bioma); join com auto_infracao por num_auto_infracao dá 308.082 linhas — medido 2026-10-27"
+  coordenada:
+    grao: "um ponto de um polígono da área autuada de um auto"
+    chave: "nenhuma: (num_auto_infracao, seq_poligono, seq_ponto_poligono) tem 69.176 distintos em 73.035 linhas"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: ponto, colunas: {longitude: "texto", latitude: "texto", ds_wkt: "POINT (lon lat) mal formado em parte: min/max fora do Brasil, possível troca de eixos"}}
+    medidas:
+      - {coluna: area_poligono, o_que: "área do polígono (33% nula)", unidade: "não documentada (provável ha)", soma: nao}
+    use_para: "localizar autos com área autuada; checar a coordenada antes de usar."
+    nao_use_para: "mapa sem validar: coordenadas fora do Brasil e eixos trocados."
+    rascunho: [use_para, nao_use_para, medidas]
+    verificado: "73.035 linhas; 69.176 distintos da tríade — medido 2026-10-27"
+  especime:
+    grao: "um espécime/produto apreendido num auto (animal, madeira, pescado)"
+    chave: "nenhuma: (num_auto_infracao, seq_especime) tem 36.042 distintos em 38.059 linhas"
+    tempo: {natureza: sem_tempo, coluna: dat_alteracao}
+    territorio: {nivel: nenhum, colunas: {}}
+    medidas:
+      - {coluna: quantidade, o_que: "quantidade apreendida", unidade: "varia conforme unidade_medida (Unidade, m³, kg…)", soma: nao}
+    filtros_tipicos: ["tipo = 'Fauna' (28.014), 'Flora' (6.384), 'Pesca' (2.454)", "unidade_medida = 'Unidade' (28.338) antes de somar quantidade"]
+    use_para: "o que foi apreendido por auto (grupo, nome popular/científico, cites)."
+    nao_use_para: "somar quantidade sem fixar unidade_medida: mistura Unidade, m³ e kg."
+    rascunho: [use_para, nao_use_para]
+    verificado: "38.059 linhas; 36.042 distintos de (num_auto_infracao, seq_especime) — medido 2026-10-27"
