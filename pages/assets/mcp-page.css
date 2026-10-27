@@ -29,14 +29,15 @@ body { background: var(--bg); }
 .lead-note { font-size: 14px; line-height: 1.6; color: var(--ink-faint); max-width: 70ch; margin: 12px 0 0; }
 .lead-note a { color: var(--accent); }
 /* números à esquerda, conectar à direita: os dois são o que o leitor faz primeiro */
-.header-bottom { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 32px 48px; align-items: start; margin-top: 36px; }
-.stats { display: grid; gap: 16px; align-content: start; padding-top: 26px; }
+.header-bottom { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px 48px; align-items: stretch; margin-top: 36px; }
+/* texto dos números alinhado à direita, encostado no .connect, esticado até a altura dele (do título à nota) */
+.stats { display: flex; flex-direction: column; justify-content: space-between; gap: 16px; text-align: right; }
 .stat-num { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
 .stat-label { font-size: 13px; color: var(--ink-soft); margin-top: 6px; letter-spacing: 0.02em; }
 .stat-label .muted { color: var(--ink-faint); }  /* opacity 0.7 derrubava o contraste para 3,5:1 */
-@media (max-width: 820px) {
+@media (max-width: 1024px) {  /* até tablet: números em linha, em cima do conectar */
   .header-bottom { grid-template-columns: minmax(0, 1fr); }
-  .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding-top: 0; }
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; text-align: left; }
   .stat-num { font-size: 26px; }
   .stat-label { font-size: 12px; }
 }
