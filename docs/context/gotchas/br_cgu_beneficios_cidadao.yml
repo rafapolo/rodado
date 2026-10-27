@@ -19,8 +19,6 @@ gotchas:
     colunas: [nis_favorecido, cpf_beneficiario]
     severidade: aviso
     detalhe: >
-      novo_bolsa_familia, auxilio_brasil e auxilio_emergencial estão em arquivos numerados de
-      ~100 MB com faixas contíguas da chave (a busca cai num arquivo); bpc e
-      bolsa_familia_pagamento seguem um arquivo por UF, cada um ordenado (a busca lê um row
-      group por arquivo). O nome do arquivo não diz mais a UF nas três primeiras: filtre por sigla_uf.
-    verificado: "zero row groups sobrepostos na chave em todos os arquivos das cinco tabelas, e a soma de hash de todas as linhas igual antes e depois de cada troca — medido 2026-10-26; no db.rodado.xyz, busca por um NIS em 2–6 s com cache (era 31 s em novo_bolsa_familia)"
+      As cinco estão em arquivos numerados de ~100 MB com faixas contíguas da chave (a busca
+      cai num arquivo). O nome do arquivo não diz mais a UF: filtre por sigla_uf.
+    verificado: "zero row groups sobrepostos na chave em todos os arquivos das cinco tabelas (bpc e bolsa_familia_pagamento remedidos depois de juntados em 16 e 32 arquivos), e a soma de hash de todas as linhas igual antes e depois de cada troca — medido 2026-10-26; no db.rodado.xyz, busca por um NIS em 2–6 s com cache (era 31 s em novo_bolsa_familia)"
