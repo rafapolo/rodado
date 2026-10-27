@@ -1,0 +1,84 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: world_wwf_hydrosheds
+tabelas:
+  basins_atlas:
+    grao: "uma bacia hidrográfica (polígono HydroBASINS com atributos do BasinATLAS) × nível de subdivisão (level 01 a 12); cada bacia aparece em um só nível"
+    chave: "hybas_id (3.786.228 linhas = 3.786.228 distintos; level+hybas_id também)"
+    tempo: {natureza: sem_tempo, coluna: null, cobertura: "atributos climatológicos/estáticos, sem coluna de data"}
+    territorio:
+      nivel: outro
+      colunas:
+        hybas_id: "id da bacia"
+        next_down: "hybas_id da bacia a jusante ('0' = sem jusante, foz/sumidouro; 58.379 no level 12)"
+        next_sink: "hybas_id da bacia de sumidouro final"
+        main_bas: "hybas_id da bacia principal (maior bacia a que pertence)"
+        pfaf_id: "código Pfafstetter"
+        geometry: "polígono da bacia (grande; não selecionar)"
+    medidas:
+      - {coluna: sub_area, o_que: "área da bacia (própria)", unidade: "km² (rascunho: unidade não conferida)", soma: sim}
+      - {coluna: up_area, o_que: "área total a montante, inclui as bacias de cima", unidade: "km²", soma: nao}
+      - {coluna: dis_m3_pyr, o_que: "vazão média anual natural", unidade: "m³/s", soma: nao}
+      - {coluna: "inu_pc_*, lka_pc_*, for_pc_*, crp_pc_*, ... (várias dezenas)", o_que: "atributos do BasinATLAS por bacia, sufixos s=própria bacia e u=toda a montante; percentuais, médias, índices", unidade: "varia por sufixo (pc=%, mm, dc=°C*10 etc.; significado não documentado no perfil)", soma: nao}
+    filtros_tipicos:
+      - "level = '12' (texto com zero à esquerda: '01'..'12'; os níveis têm contagens muito diferentes: 10 no '01', 1.034.083 no '12'). Misturar níveis duplica a mesma área, filtre sempre um level"
+      - "endo = 0 (não endorreica), 1 e 2 são bacias endorreicas (significado exato de 1 vs 2 não documentado aqui). No level 12: 798.375 / 219.104 / 16.604"
+      - "coast = 1 para bacias costeiras (no perfil de amostra, 58.548 de ~2 mi; order_ = '0' coincide em contagem)"
+    use_para: "análises de bacia hidrográfica em escala global (área, hidrologia, clima, solo, uso da terra a montante) a partir do polígono e dos atributos HydroATLAS."
+    nao_use_para: "somar sub_area ou qualquer medida entre níveis diferentes (mesma área repetida em cada level) nem somar atributos cumulativos u* ou up_area."
+    rascunho: [territorio, "medidas.unidade", "medidas.soma (exceto sub_area, chave)", "filtros_tipicos.endo 1 vs 2", use_para, nao_use_para]
+    verificado: "linhas 3786228; distintos hybas_id 3786228; (level,hybas_id) 3786228; linhas por level: 01=10, 02=62, 03=292, 04=1342, 05=4734, 06=16397, 07=57646, 08=190675, 09=508190, 10=941012, 11=1031785, 12=1034083; endo no level 12: 0=798375, 1=219104, 2=16604; next_down='0' no level 12: 58379 — medido 2026-10-27"
+  lakes_atlas:
+    grao: "um lago (HydroLAKES + LakeATLAS), repetido duas vezes: uma linha com o polígono (region pol_*) e outra com o ponto (region pnt_*), com os mesmos atributos; hemisfério east/west"
+    chave: "(region, hylak_id) (2.855.376 linhas = 2.855.376 distintos); hylak_id sozinho NÃO é único: 1.427.688 distintos, cada um exatamente 2 linhas (pol e pnt)"
+    tempo: {natureza: sem_tempo, coluna: null, cobertura: "atributos estáticos, sem coluna de data"}
+    territorio:
+      nivel: outro
+      colunas:
+        country: "nome do país em inglês (ex.: 'Brazil')"
+        continent: "continente em inglês (ex.: 'South America', 'North America')"
+        pour_long: "longitude do ponto de saída do lago"
+        pour_lat: "latitude do ponto de saída do lago"
+        hybas_l12: "hybas_id da bacia level 12 do lago (liga a basins_atlas.hybas_id, level '12')"
+        hyriv_rch: "hyriv_id do trecho de rio do lago (liga a rivers_atlas.hyriv_id)"
+        geometry: "polígono ou ponto conforme region (grande; não selecionar)"
+    medidas:
+      - {coluna: lake_area, o_que: "área do espelho d'água", unidade: "km² (rascunho: não conferida)", soma: sim}
+      - {coluna: vol_total, o_que: "volume do lago", unidade: "milhões de m³ (rascunho: não conferida)", soma: sim}
+      - {coluna: depth_avg, o_que: "profundidade média", unidade: "m", soma: nao}
+      - {coluna: dis_avg, o_que: "vazão média (m³/s); -9999 = sem dado (793 linhas pol)", unidade: "m³/s", soma: nao}
+    filtros_tipicos:
+      - "region LIKE 'pol%' para contar/somar lagos sem duplicar (ou region LIKE 'pnt%' se só precisa do ponto); os valores são 'pol_west','pol_east','pnt_west','pnt_east'"
+      - "country = 'Brazil' (nome em inglês); com region LIKE 'pol%' dão 21.115 lagos, área somada ~55.240"
+      - "lake_type = '1' é o dominante (1.993.266 na amostra); '2' e '3' raros — significado não documentado aqui"
+      - "valores -9999 em colunas numéricas significam sem dado: exclua antes de somar ou tirar média (ex.: dis_avg, res_time, em 793 lagos)"
+    use_para: "inventário de lagos e reservatórios do mundo (área, volume, profundidade, tempo de residência, clima e uso da terra na bacia), filtrado por país."
+    nao_use_para: "contar ou somar lagos sem filtrar region (duplica tudo em pol e pnt) nem tratar -9999 como valor."
+    rascunho: ["medidas.unidade", "medidas.soma", "filtros_tipicos.lake_type", use_para, nao_use_para]
+    verificado: "linhas 2855376; distintos hylak_id 1427688 (todos com exatamente 2 linhas); (region,hylak_id) 2855376; region: pnt_east 376270, pnt_west 1051418, pol_east 376270, pol_west 1051418; Brasil pol: 21115 lagos, 21115 distintos, soma lake_area 55240, sem -9999 em lake_area/vol_total; pol com dis_avg=-9999 e res_time=-9999: 793 de 1427688; country nulo: 0 — medido 2026-10-27"
+  rivers_atlas:
+    grao: "um trecho de rio (reach, RiverATLAS/HydroRIVERS) com atributos hidrológicos e ambientais"
+    chave: "hyriv_id (8.477.883 linhas = 8.477.883 distintos; (region,hyriv_id) também)"
+    tempo: {natureza: sem_tempo, coluna: null, cobertura: "atributos estáticos, sem coluna de data"}
+    territorio:
+      nivel: outro
+      colunas:
+        region: "região continental da fonte: af, ar, as, au, eu, gr, na, sa_north, sa_south, si"
+        next_down: "hyriv_id do trecho a jusante (0 = foz)"
+        main_riv: "hyriv_id do rio principal do trecho"
+        hybas_l12: "hybas_id da bacia level 12 do trecho (liga a basins_atlas.hybas_id)"
+        geometry: "linha do trecho (grande; não selecionar)"
+    medidas:
+      - {coluna: length_km, o_que: "comprimento do trecho", unidade: "km", soma: sim}
+      - {coluna: dis_av_cms, o_que: "vazão média anual natural", unidade: "m³/s", soma: nao}
+      - {coluna: upland_skm, o_que: "área de drenagem a montante", unidade: "km²", soma: nao}
+      - {coluna: catch_skm, o_que: "área da bacia local do trecho", unidade: "km²", soma: sim}
+      - {coluna: ord_stra, o_que: "ordem do rio de Strahler (1 a 10)", unidade: "ordem", soma: nao}
+    filtros_tipicos:
+      - "region = 'sa_south' ou 'sa_north' para América do Sul (valores textuais minúsculos; não há coluna de país, usar a geometria ou hybas_l12)"
+      - "endorheic = 1 para trechos de bacias endorreicas (1.334.837 de 8.477.883 no total; no perfil de amostra 313.245 contra 1.692.776 com 0)"
+      - "ord_stra = 1 são nascentes/trechos menores (maior fatia da amostra: 1.032.269 de ~2 mi)"
+    use_para: "rede fluvial do mundo: extensão, ordem e vazão dos trechos, agregada por região ou ligada às bacias por hybas_l12."
+    nao_use_para: "perguntas por país/estado/município (não há coluna territorial; exige junção espacial) nem somar dis_av_cms ou upland_skm entre trechos (são cumulativos ao longo do rio)."
+    rascunho: ["medidas.unidade", "medidas.soma (catch_skm)", "filtros_tipicos.ord_stra", use_para, nao_use_para]
+    verificado: "linhas 8477883; distintos hyriv_id 8477883; (region,hyriv_id) 8477883; endorheic=1: 1334837; soma length_km 35849515; linhas por region: af 1527551, ar 324078, as 1428959, au 836472, eu 938544, gr 137088, na 986463, sa_north 1143697, sa_south 477266, si 677765 — medido 2026-10-27"
