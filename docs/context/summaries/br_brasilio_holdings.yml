@@ -1,0 +1,14 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_brasilio_holdings
+tabelas:
+  holdings:
+    grao: "uma empresa (cnpj) e a empresa sócia (cnpj_socia) que a controla, com a qualificação da sócia"
+    chave: "cnpj (515.191 linhas = 515.191 distintos, medido; cada empresa aparece uma vez)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["qualificacao_socia = 'Sócio' (380.869), 'Sócio Pessoa Jurídica Domiciliado no Exterior' (70.187), 'Sócio Ostensivo' (18.648), 'Sociedade Consorciada' (14.945)", "cnpj <> cnpj_socia: 10.595 linhas têm a empresa como sócia de si mesma", "cnpj e cnpj_socia são BIGINT, sem zeros à esquerda; para juntar com cnpj em texto use lpad(…, 14, '0') e cuidado com o formato"]
+    use_para: "achar a holding controladora de uma empresa e agrupar empresas por controladora (cnpj_socia, 141.793 distintos)."
+    nao_use_para: "cadeia societária completa ou sócios pessoa física; é um único nível, sem percentuais."
+    rascunho: [use_para, nao_use_para]
+    verificado: "515.191 linhas, 515.191 distintos de cnpj e de (cnpj, cnpj_socia), 141.793 cnpj_socia distintos, 10.595 com cnpj = cnpj_socia, 1 qualificacao_socia vazia — medido 2026-10-27"

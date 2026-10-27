@@ -1,0 +1,25 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_anp_precos_combustiveis
+tabelas:
+  microdados:
+    grao: "um preço de venda coletado num posto (cnpj_revenda) × produto × data de coleta"
+    chave: "nenhuma confirmada: em ano = 2026, (cnpj_revenda, produto, data_coleta) dá 610.449 combinações em 610.456 linhas (7 repetem)"
+    tempo: {natureza: serie_diaria, coluna: data_coleta, cobertura: "ano 2004–2026; em ano = 2026, 2026-01-01–2026-08-21"}
+    territorio:
+      nivel: municipio
+      colunas:
+        sigla_uf: "sigla da UF"
+        id_municipio: "código IBGE de 7 dígitos do município (texto)"
+        cnpj_revenda: "CNPJ do posto (dado pessoal: só contagens)"
+    medidas:
+      - {coluna: preco_venda, o_que: "preço de venda ao consumidor no posto", unidade: "R$ por litro; R$ por 13 kg no GLP; R$ por m³ no GNV", soma: nao}
+      - {coluna: preco_compra, o_que: "preço de compra pelo posto", unidade: "R$", soma: nao}
+    filtros_tipicos:
+      - "ano = 2026 (partição; a tabela tem 16,9 milhões de linhas, 2004–2026)"
+      - "produto = 'Gasolina' (caixa mista; outros: 'Gasolina Aditivada', 'Etanol', 'Diesel', 'Diesel S10', 'Glp', 'Gnv'); em 2026 'Diesel' e 'Diesel S10' coexistem e não há 'Diesel S500' (o significado de 'Diesel' sem sufixo não está documentado)"
+      - "não filtre por unidade_medida = 'R$/litro' para pegar litro: unidade_medida é NULL em 3,25% das linhas de 2026 (19.853), de qualquer produto; use produto"
+    use_para: "série de preço de venda por produto, município ou UF desde 2004"
+    nao_use_para: "preço de compra de 2022 em diante (preco_compra é 100% nulo) ou média de preço entre produtos (GLP é R$/13 kg)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "ano = 2026: 610.456 linhas, 163 datas; preco_compra preenchido em 280.461 de 451.271 linhas em 2004 e 309.896 de 860.517 em 2019, mas 0 em 2022, 2025 e 2026; média de preco_venda 2026: Gasolina 6,56, Etanol 4,60, Diesel S10 6,86, Glp 113,55 — medido 2026-10-27"

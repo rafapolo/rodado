@@ -1,0 +1,19 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_abrinq_oca
+tabelas:
+  municipio_primeira_infancia:
+    grao: "um município × ano"
+    chave: "ano, id_municipio"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2010–2019"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (texto)"}}
+    medidas:
+      - {coluna: taxa_bruta_matricula_pre_escola, o_que: "taxa bruta de matrícula na pré-escola", unidade: "não documentada (provável %)", soma: nao}
+      - {coluna: taxa_liquida_matricula_pre_escola, o_que: "taxa líquida de matrícula na pré-escola", unidade: "não documentada (provável %)", soma: nao}
+      - {coluna: numero_absoluto_bruto_matricula_pre_escola, o_que: "matrículas brutas na pré-escola", unidade: "matrículas", soma: sim}
+      - {coluna: numero_absoluto_liquido_matricula_pre_escola, o_que: "matrículas líquidas na pré-escola (na faixa etária)", unidade: "matrículas", soma: sim}
+    filtros_tipicos: ["ano = 2019 para o retrato mais recente (cada ano tem 5.570 linhas)"]
+    use_para: "evolução da matrícula na pré-escola por município, 2010–2019"
+    nao_use_para: "outros indicadores de primeira infância (a tabela só tem matrícula na pré-escola) ou dados após 2019"
+    rascunho: [unidade das taxas, use_para, nao_use_para]
+    verificado: "55.700 linhas = 55.700 (ano, id_municipio) distintos; 10 anos × 5.570 — medido 2026-10-27"

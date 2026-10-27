@@ -1,0 +1,16 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_caixa_sinapi
+tabelas:
+  insumos:
+    grao: "o preço mediano de um insumo da construção civil (codigo_insumo) numa UF num mês de referência"
+    chave: "mes_referencia, codigo_insumo, uf (2.159.399 linhas = 2.159.399 distintos, medido)"
+    tempo: {natureza: serie_mensal, coluna: mes_referencia, cobertura: "2024-10–2026-08 (23 meses; texto 'AAAA-MM')"}
+    territorio: {nivel: uf, colunas: {uf: "sigla da UF (27 valores)"}}
+    medidas:
+      - {coluna: preco_mediano, o_que: "preço mediano do insumo na UF no mês", unidade: "R$ por unidade (coluna unidade)", soma: nao}
+    filtros_tipicos: ["mes_referencia = '2026-08' (VARCHAR 'AAAA-MM')", "classificacao = 'MATERIAL' (~83% das linhas), 'MAO DE OBRA' (sem til), 'EQUIPAMENTO (AQUISIÇÃO)', 'EQUIPAMENTO (LOCAÇÃO)', 'SERVIÇOS', 'ESPECIAIS', 'ENCARGOS COMPLEMENTARES'", "origem_preco IN ('CR','C'): CR ~87%, C ~6% na amostra; significado não documentado no banco (na planilha SINAPI, C = coletado, CR = coeficiente de representatividade; não medido)"]
+    use_para: "evolução de preços de insumos de obra (cimento, mão de obra) por UF e mês."
+    nao_use_para: "somar ou fazer média de preco_mediano entre insumos de unidades diferentes (H, M2, KG, UN); e custo de composições (só há insumos). Max 11 mi indica valores atípicos."
+    rascunho: [use_para, nao_use_para, filtros_tipicos]
+    verificado: "2.159.399 linhas, 2.159.399 distintos da chave; 23 meses, 27 UFs, 5.063 codigo_insumo; 77 codigos com mais de uma unidade ou classificação; 0 duplicadas inteiras — medido 2026-10-27"

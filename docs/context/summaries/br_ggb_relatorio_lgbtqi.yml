@@ -1,0 +1,68 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ggb_relatorio_lgbtqi
+tabelas:
+  brasil:
+    grao: "um ano (total nacional de mortes violentas de pessoas LGBTQI+ no relatório do Grupo Gay da Bahia)"
+    chave: "ano (20 linhas, 20 anos distintos)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2000–2019"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: homicidios, o_que: "mortes de pessoas LGBTQI+ no ano (contagem do relatório)", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["ano é texto (VARCHAR): ano = '2019', não 2019"]
+    use_para: "série anual nacional de mortes (130 em 2000, 445 em 2017, 329 em 2019)."
+    nao_use_para: "recortes por grupo, raça ou local: use as outras tabelas; elas cobrem anos diferentes e não fecham com esta."
+    rascunho: [use_para, nao_use_para]
+    verificado: "20 linhas, 20 anos; homicidios sem nulos — medido 2026-10-27"
+  causa_obito:
+    grao: "uma causa de óbito em 2019 (13 causas)"
+    chave: "causa_obito (13 linhas, 13 distintas)"
+    tempo: {natureza: retrato_atual, coluna: ano, cobertura: "2019–2019"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: homicidios, o_que: "mortes por causa em 2019", unidade: "pessoas", soma: sim}
+      - {coluna: prop_homicidios_total, o_que: "percentual da causa sobre o total do ano (0–100)", unidade: "%", soma: sim}
+    filtros_tipicos: ["ano = '2019' (único valor, texto)"]
+    use_para: "distribuição das mortes de 2019 por causa (Arma Branca 100, Arma de Fogo 72, Não Identificado 64)."
+    nao_use_para: "série temporal: só tem 2019."
+    rascunho: [use_para, nao_use_para]
+    verificado: "soma de homicidios = 329 (igual a brasil 2019); soma de prop_homicidios_total = 100,05 (arredondamento) — medido 2026-10-27"
+  local:
+    grao: "um tipo de local do crime em 2019 (16 locais)"
+    chave: "local (16 linhas, 16 distintos)"
+    tempo: {natureza: retrato_atual, coluna: ano, cobertura: "2019–2019"}
+    territorio: {nivel: outro, colunas: {local: "tipo de local (Residência, Via Pública, Bar...), não um lugar geográfico"}}
+    medidas:
+      - {coluna: homicidios, o_que: "mortes por tipo de local em 2019", unidade: "pessoas", soma: nao}
+      - {coluna: prop_homicidios_total, o_que: "percentual do local sobre o total", unidade: "%", soma: nao}
+    filtros_tipicos: ["ano = '2019'; a linha 'Local com ao menos um caso' (38) tem rótulo diferente das demais e pode sobrepor outras categorias: significado não documentado"]
+    use_para: "onde ocorreram as mortes de 2019 (Residência 111, Via Pública 71)."
+    nao_use_para: "total nacional: a soma de homicidios é 321, não 329 (brasil 2019)."
+    rascunho: [use_para]
+    verificado: "soma homicidios = 321 contra 329 em brasil 2019; soma prop = 99,99 — medido 2026-10-27"
+  grupo_lgbtqia:
+    grao: "um grupo de identidade × ano"
+    chave: "nenhuma: (ano, grupo) repete em 2012 / Travesti (2 linhas: 128 e NULL); 60 linhas, 59 pares distintos"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2011–2020"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: homicidios, o_que: "mortes do grupo no ano (nulo em 35% das linhas)", unidade: "pessoas", soma: sim}
+      - {coluna: prop_homicidios_total, o_que: "percentual do grupo no ano (nulo em 63%)", unidade: "%", soma: nao}
+    filtros_tipicos: ["grupo IN ('Gay','Lésbica','Bissexual','Trans ou Travesti','Transsexual','Travesti'): o relatório mudou os rótulos ao longo dos anos (Transsexual e Travesti nulos em 2011; Trans ou Travesti em 2011 e 2019)"]
+    use_para: "mortes por identidade de gênero/orientação ao longo de 2011–2020."
+    nao_use_para: "total anual: a soma por ano não bate com brasil (ex. 2015: 119 contra 319; 2019: 450 contra 329) por nulos e categorias sobrepostas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "60 linhas, 59 pares (ano,grupo); somas anuais medidas 2026-10-27"
+  raca_cor:
+    grao: "uma cor/raça × ano"
+    chave: "(ano, raca_cor): 36 linhas, 36 pares distintos"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2011–2019"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: homicidios, o_que: "mortes da cor/raça no ano (nulo em 36%: 2011, 2012 e 2016 inteiros)", unidade: "pessoas", soma: sim}
+      - {coluna: prop_homicidios_total, o_que: "percentual no ano", unidade: "%", soma: nao}
+    filtros_tipicos: ["raca_cor IN ('Branca','Preta','Parda','Não Identificado'): 4 valores; não há Amarela nem Indígena"]
+    use_para: "mortes por cor/raça de 2013 a 2019."
+    nao_use_para: "2011, 2012 e 2016: homicidios é NULL; 2018 soma 365 contra 420 em brasil."
+    rascunho: [use_para, nao_use_para]
+    verificado: "36 linhas, 36 pares; soma 2019 = 329 (bate com brasil), 2017 = 445 (bate), 2018 = 365 (não bate) — medido 2026-10-27"

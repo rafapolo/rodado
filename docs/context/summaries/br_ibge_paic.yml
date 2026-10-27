@@ -1,0 +1,61 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibge_paic
+tabelas:
+  sidra:
+    grao: 'uma célula do SIDRA: uma tabela × localidade (Brasil ou UF) × período × variável × combinação de categorias
+      das classificações'
+    chave: id_tabela, id_localidade, periodo, id_variavel, id_categoria_1, id_categoria_2, id_categoria_3
+    tempo:
+      natureza: serie_anual
+      coluna: periodo (VARCHAR)
+      cobertura: '1990–2024 (por id_tabela: 1990–1995, 1996–2001, 2002–2007, 2007–2012, 2007–2023, 2024)'
+    territorio:
+      nivel: uf
+      colunas:
+        id_nivel: '''1'' = Brasil (id_localidade ''1''), ''3'' = Unidade da Federação'
+        id_localidade: 'código IBGE da UF em VARCHAR (ex.: ''11'' Rondônia, ''12'' Acre, ''51'' Mato Grosso) ou
+          ''1'' para Brasil'
+        localidade: nome da UF ou Brasil
+    medidas:
+    - coluna: valor
+      o_que: 'dado do SIDRA: um número por célula; unidade e significado em unidade e variavel'
+      unidade: 'varia por linha: ver coluna `unidade` (e `variavel`)'
+      soma: nao
+    filtros_tipicos:
+    - 'id_tabela é parte da chave e define o tema: tabelas de eras diferentes se SOBREPÕEM (2007 está nas séries
+      2002–2007 e 2007–2023: 4442 células repetidas entre tabelas só em 2007). Sempre filtre uma id_tabela'
+    - 'variavel é texto único por id_variavel (497 variáveis); muitas existem em duas versões: valor absoluto e
+      ''… - percentual do total geral'' (unidade Percentual): não some as duas nem misture na mesma agregação'
+    - 'unidade varia por linha: ''Mil Reais'', ''Unidades'', ''Pessoas'', ''Percentual'', ''%'' e moedas antigas
+      (''Milhões de Cruzeiros'', ''Milhões de Cruzeiros Reais'') antes de 1994: não compare nem some entre unidades
+      ou atravessando 1994'
+    - 'valor IS NOT NULL (4,55% é nulo, sempre com simbolo: ''..'' 10063, ''...'' 3506, ''X'' 2164, ''H'' 236, outros
+      menores; significado não documentado aqui)'
+    - classificacao_1/2/3 e categoria_1/2/3 dizem os recortes (divisão de comércio, grupo e classe de atividade,
+      faixas de pessoal ocupado, formas de comercialização, região de atuação); cada id_tabela tem suas classificações
+      e há agregados (divisão, grupo, classe) misturados na mesma tabela
+    - 'SENTINELA: valor = -999999999999990.0 (2 linhas) e -999973690.69 (2 linhas) são lixo na tabela 583, periodo
+      1992, variável ''Valor das obras e/ou serviços executados'' (e a versão percentual): exclua com valor > -1e8.
+      Os outros negativos (204 linhas no total, ''Saldo da correção monetária'' 144) parecem reais, não medi o sentido'
+    use_para: 'Resultados da Pesquisa Anual da Indústria da Construção (empresas de construção: pessoal, salários,
+      receitas, custos, obras e serviços, investimentos) por atividade, Brasil e UF, em formato longo.'
+    nao_use_para: Não tem município; a média e a soma de `valor` sem filtrar sentinela (-999999999999990) dão resultado
+      absurdo; não some entre id_tabela, variáveis ou unidades.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - sentido dos símbolos
+    verificado: 370856 linhas = 370856 distintos de (id_tabela, id_localidade, periodo, id_variavel, id_categoria_1,
+      id_categoria_2, id_categoria_3); Brasil 286130 e UF 84726 linhas; valor mínimo -999999999999990 (sentinela)
+      — medido 2026-10-27
+  sidra_tabelas:
+    grao: 'uma tabela do SIDRA espelhada (metadado): título, período, variáveis, classificações e quantas linhas
+      entraram em `sidra`'
+    chave: id_tabela
+    use_para: Descobrir qual id_tabela responde à pergunta (título, período, linhas) antes de consultar `sidra`;
+      linhas = 0 ou no_espelho = false significam tabela sem dados no banco.
+    rascunho:
+    - use_para
+    verificado: 59 linhas = 59 id_tabela distintos — medido 2026-10-27. Tabelas 1739, 1741, 1744 e 1745 têm 0 linhas
+      (fora do espelho).

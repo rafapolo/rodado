@@ -1,0 +1,22 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_inpe_prodes
+tabelas:
+  municipio_bioma:
+    grao: "um município × bioma × ano"
+    chave: "ano, id_municipio, bioma (156.864 linhas, 156.864 distintas)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2000–2023 (24 anos)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", bioma: "Mata Atlântica, Cerrado, Caatinga, Amazônia, Pampa, Pantanal"}}
+    medidas:
+      - {coluna: area_total, o_que: "área do município dentro do bioma (constante no tempo)", unidade: "km²", soma: sim}
+      - {coluna: desmatado, o_que: "desmatamento ACUMULADO até o ano (não incremento), ver gotcha municipio_bioma_acumulado", unidade: "km²", soma: nao}
+      - {coluna: vegetacao_natural, o_que: "vegetação natural remanescente (347 linhas negativas, mínimo -17,2)", unidade: "km²", soma: nao}
+      - {coluna: nao_vegetacao_natural, o_que: "área de não vegetação natural", unidade: "km²", soma: nao}
+      - {coluna: hidrografia, o_que: "área de hidrografia", unidade: "km²", soma: nao}
+    filtros_tipicos:
+      - "bioma = 'Amazônia' (com acento, como no banco); ano = 2023 para o acumulado mais recente"
+      - "incremento anual: desmatado(ano) - desmatado(ano-1) por (id_municipio, bioma), depois some os biomas (desmatado nunca decresce: 0 quedas medidas)"
+    use_para: "desmatamento acumulado do PRODES por município e bioma, e seu incremento anual por diferença."
+    nao_use_para: "somar desmatado entre anos (é acumulado) ou ler como área desmatada no ano."
+    rascunho: [use_para, nao_use_para]
+    verificado: "156.864 linhas = 156.864 chaves; 24 anos × 6.536 linhas; desmatado nunca cai ano a ano; desmatado > area_total em 360 linhas; soma Brasil 2000: 2.249.599 km², 2023: 3.098.130 km²; Sorriso (5107925) Cerrado 3.961,8 em 2000 → 4.740,0 em 2023 — medido 2026-10-27"

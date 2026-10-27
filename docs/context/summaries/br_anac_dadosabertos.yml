@@ -1,0 +1,45 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_anac_dadosabertos
+tabelas:
+  pontualidade:
+    grao: "um voo regular (empresa × número do voo × aeroporto de origem × destino) com percentuais de cancelamento e atraso"
+    chave: "Empresa_Aerea, N_Voo, Aeroporto_Origem_Designador_OACI, Aeroporto_Destino_Designador_OACI"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: ponto, colunas: {Aeroporto_Origem_Designador_OACI: "aeroporto de origem (código OACI)", Aeroporto_Destino_Designador_OACI: "aeroporto de destino (código OACI)"}}
+    medidas:
+      - {coluna: Etapas_Previstas, o_que: "etapas (decolagens) previstas do voo no período", unidade: "etapas", soma: sim}
+      - {coluna: Percentuais_de_Cancelamentos, o_que: "% de etapas canceladas", unidade: "% (0–100)", soma: nao}
+      - {coluna: Percentuais_de_Atrasos_superiores_a_30_minutos, o_que: "% de etapas com atraso > 30 min", unidade: "% (0–100)", soma: nao}
+      - {coluna: Percentuais_de_Atrasos_superiores_a_60_minutos, o_que: "% de etapas com atraso > 60 min", unidade: "% (0–100)", soma: nao}
+    filtros_tipicos: ["Etapas_Previstas é BIGINT; para média por empresa ponderar percentuais por Etapas_Previstas"]
+    use_para: "ranking de pontualidade por empresa ou rota"
+    nao_use_para: "série temporal: a tabela não tem coluna de data (o período de referência não está documentado)"
+    rascunho: [use_para, nao_use_para, período de referência]
+    verificado: "14.013 linhas = 14.013 chaves distintas e = 14.013 linhas distintas — medido 2026-10-27"
+  rab:
+    grao: "uma aeronave do Registro Aeronáutico Brasileiro (RAB), vigente ou cancelada"
+    chave: "nenhuma: 35.024 linhas, 34.926 MARCAS distintas (98 repetidas); 34.931 linhas distintas"
+    tempo: {natureza: retrato_atual, coluna: DT_CANC, cobertura: "cancelamentos 1943–2099 (DT_CANC nulo em 76,6%)"}
+    territorio: {nivel: nenhum, colunas: {PROPRIETARIOS: "JSON em texto com nome, documento, % e UF do proprietário"}}
+    medidas:
+      - {coluna: NR_PASSAGEIROS_MAX, o_que: "máximo de passageiros", unidade: "pessoas", soma: sim}
+      - {coluna: NR_ASSENTOS, o_que: "assentos", unidade: "assentos", soma: sim}
+      - {coluna: NR_ANO_FABRICACAO, o_que: "ano de fabricação (0 e valores até 2029 aparecem)", unidade: "ano", soma: nao}
+    filtros_tipicos: ["DT_CANC IS NULL para aeronaves não canceladas (26.829)", "DS_MOTIVO_CANC = '' (texto vazio, não nulo) em 27.019 linhas", "TP_OPERACAO = 'PRIVADO' (31.653; também há 'PRIVADA' 209 e '' 2.462)", "TP_MOTOR = 'MOTOR CONVENCIONAL' (19.215)"]
+    use_para: "frota aeronáutica por tipo, fabricante, modelo, operação e situação de cancelamento"
+    nao_use_para: "contar aeronaves por MARCAS sem DISTINCT; PROPRIETARIOS/OPERADORES são JSON em texto e trazem documentos mascarados de pessoas"
+    rascunho: [use_para, nao_use_para, significado de CD_CLS]
+    verificado: "35.024 linhas, 34.926 MARCAS distintas, 34.931 linhas distintas; DT_CANC nulo em 26.829 — medido 2026-10-27"
+  voos:
+    grao: "um voo (etapa) previsto/realizado/cancelado de 2026"
+    chave: "nenhuma: 679.492 linhas, 669.999 por (empresa, número, origem, destino, partida prevista); 679.408 linhas distintas"
+    tempo: {natureza: serie_diaria, coluna: "Partida Prevista", cobertura: "2026-01-01–2026-09-01"}
+    territorio: {nivel: ponto, colunas: {"ICAO Aeródromo Origem": "aeródromo de origem (OACI)", "ICAO Aeródromo Destino": "aeródromo de destino (OACI)"}}
+    medidas:
+      - {expressao: "count(*)", o_que: "etapas de voo (não há coluna de passageiros nem carga)", unidade: "voos", soma: sim}
+    filtros_tipicos: ["\"Situação Voo\" = 'REALIZADO' (658.781) ou 'CANCELADO' (20.711); cancelados não têm Partida Real", "\"Código Tipo Linha\" = 'N' nacional (536.054), 'I' internacional (119.049), 'G' (15.107), 'C' (9.282): significado de G e C não documentado"]
+    use_para: "contar voos e cancelamentos por rota, empresa e dia em 2026"
+    nao_use_para: "atraso em % pronto (calcule de Partida Real − Partida Prevista) ou anos anteriores a 2026; os nomes de coluna têm espaços e acentos, entre aspas duplas"
+    rascunho: [use_para, nao_use_para, significado de Tipo Linha G e C]
+    verificado: "679.492 linhas, 679.408 distintas; REALIZADO 658.781, CANCELADO 20.711 — medido 2026-10-27"

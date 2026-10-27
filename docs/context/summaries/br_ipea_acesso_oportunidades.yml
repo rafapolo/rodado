@@ -1,0 +1,24 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ipea_acesso_oportunidades
+tabelas:
+  estatisticas_2019:
+    grao: "um hexágono H3 (resolução 9) × município, das 20 maiores cidades, em 2019"
+    chave: "(id_grid_h3, id_municipio); id_grid_h3 sozinho repete: 336.427 linhas, 336.129 hexágonos distintos"
+    tempo: {natureza: retrato_atual, coluna: nenhuma (a tabela é de 2019 pelo nome), cobertura: "2019"}
+    territorio: {nivel: outro, colunas: {id_grid_h3: "índice do hexágono H3", id_municipio: "código IBGE de 7 dígitos (20 municípios)", geometria: "polígono do hexágono em WKT"}}
+    medidas:
+      - {coluna: quantidade_pessoas, o_que: "população do hexágono", unidade: "pessoas", soma: sim}
+      - {coluna: "quantidade_pessoas_brancas / _negras / _amarelas / _indigenas", o_que: "população por raça/cor", unidade: "pessoas", soma: sim}
+      - {coluna: quantidade_estabelecimentos_ensino, o_que: "escolas no hexágono", unidade: "estabelecimentos", soma: sim}
+      - {coluna: "quantidade_estabelecimentos_ensino_infantil / _fundamental / _medio", o_que: "escolas por nível; uma escola pode contar em mais de um nível, a soma dos níveis (16.040) passa do total (12.149)", unidade: "estabelecimentos", soma: sim}
+      - {coluna: quantidade_estabelecimentos_saude, o_que: "estabelecimentos de saúde", unidade: "estabelecimentos", soma: sim}
+      - {coluna: "quantidade_estabelecimentos_saude_baixa_complexidade / _media_coplexidade / _alta_coplexidade", o_que: "saúde por complexidade (o nome da coluna tem 'coplexidade', sem o m); a soma dos três (8.461) não bate com o total (5.046)", unidade: "estabelecimentos", soma: sim}
+      - {coluna: renda_domiciliar_pc, o_que: "renda domiciliar per capita", unidade: "R$ (não documentado)", soma: nao}
+    filtros_tipicos:
+      - "id_municipio = '3550308' (texto de 7 dígitos) para uma cidade"
+      - "não filtre por decil_de_renda nem quintil_de_renda: 100% nulos (gotcha renda_quase_vazia)"
+    use_para: "população por raça e oferta de escolas e saúde por hexágono nas 20 maiores cidades"
+    nao_use_para: "recorte por renda, tempo de acesso ou qualquer cidade fora das 20"
+    rascunho: [use_para, nao_use_para, "unidade de renda_domiciliar_pc"]
+    verificado: "336.427 linhas = 336.427 distintos de (id_grid_h3, id_municipio); 336.129 distintos de id_grid_h3; 20 municípios; soma quantidade_pessoas 43.640.521 e das quatro raças 43.241.009; ensino 12.149, saúde 5.046 — medido 2026-10-27. Gotcha: renda_quase_vazia."

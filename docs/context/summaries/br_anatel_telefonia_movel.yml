@@ -1,0 +1,76 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_anatel_telefonia_movel
+tabelas:
+  densidade_brasil:
+    grao: "um mês (Brasil)"
+    chave: "ano, mes"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2005-02–2026-08"}
+    territorio: {nivel: brasil, colunas: {id_municipio: "sempre '0000000'"}}
+    medidas:
+      - {coluna: densidade, o_que: "acessos móveis por 100 habitantes (gotcha densidade_por_100_habitantes); passa de 100", unidade: "acessos/100 hab.", soma: nao}
+    filtros_tipicos: ["densidade IS NOT NULL: 39 meses vazios (gotcha densidade_com_meses_vazios)"]
+    use_para: "evolução nacional da densidade do móvel"
+    nao_use_para: "meses de 2023-01 a 2026-03: a densidade é nula"
+    rascunho: [use_para, nao_use_para]
+    verificado: "259 linhas = 259 (ano, mes) distintos; 39 com densidade nula — medido 2026-10-27"
+  densidade_uf:
+    grao: "uma UF × mês"
+    chave: "ano, mes, uf"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2005–2026"}
+    territorio: {nivel: uf, colunas: {uf: "sigla da UF (nula em 88 linhas sem densidade; ver gotcha)", id_municipio: "código da UF com 7 dígitos terminando em 00000"}}
+    medidas:
+      - {coluna: densidade, o_que: "acessos móveis por 100 habitantes da UF", unidade: "acessos/100 hab.", soma: nao}
+    filtros_tipicos: ["uf IS NOT NULL: 88 linhas têm uf e densidade nulas (gotcha densidade_com_meses_vazios)"]
+    use_para: "densidade do móvel por UF"
+    nao_use_para: "somar entre UFs; 2005–2009 e 2023–2026 têm lacunas"
+    rascunho: [use_para, nao_use_para]
+    verificado: "6.028 linhas = 6.028 (ano, mes, uf) distintos (88 uf nulas) — medido 2026-10-27"
+  densidade_municipio:
+    grao: "um município × mês"
+    chave: "ano, mes, id_municipio"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2019-01–2026-08"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (texto)", uf: "sigla da UF", municipio: "nome"}}
+    medidas:
+      - {coluna: densidade, o_que: "acessos móveis por 100 habitantes", unidade: "acessos/100 hab.", soma: nao}
+    filtros_tipicos: ["ano = 2026 AND mes = 8 para o último mês (nível 'Municipio')"]
+    use_para: "densidade do móvel por município"
+    nao_use_para: "somar densidades; contar acessos (use microdados)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "295.210 linhas = 295.210 (ano, mes, id_municipio) distintos — medido 2026-10-27"
+  microdados:
+    grao: "um conjunto de acessos móveis por município × mês × empresa × DDD × modalidade × tecnologia × pessoa × produto"
+    chave: "nenhuma: em 2026-08 há 2.461.018 linhas para 2.243.904 combinações de (empresa, cnpj, município, ddd, ddd_chip, modalidade, tecnologia, sinal, pessoa, produto)"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2019-01–2026-08"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (texto)", sigla_uf: "UF", ddd: "DDD da área do município", ddd_chip: "DDD do chip (gotcha dois_ddd)"}}
+    medidas:
+      - {coluna: acessos, o_que: "acessos (linhas/chips) no mês; nulo ≠ zero (gotcha acessos_nulo_nao_e_zero)", unidade: "acessos", soma: sim}
+    filtros_tipicos: ["ano = 2026 AND mes = 8 (a tabela tem 177 mi de linhas; filtre ano e mes)", "produto = 'VOZ+DADOS' (217,36 mi de acessos em 2026-08), 'DADOS', 'VOZ'; 'M2M' (36,10 mi) e 'PONTO_DE_SERVICO' (23,45 mi) entram no total de 280,47 mi", "modalidade = 'Pós-pago' ou 'Pré-pago'", "sinal = '4G' (tecnologia LTE) ou '5G' (tecnologia NR)"]
+    use_para: "acessos móveis por município, operadora, tecnologia e modalidade desde 2019"
+    nao_use_para: "somar meses diferentes (cada mês é um estoque); contar linhas como acessos; misturar M2M e ponto de serviço com telefonia pessoal sem decidir"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2026-08: 2.461.018 linhas, 115.082 com acessos nulo, soma 280.471.197 (VOZ 445.809; DADOS 3.118.788; PONTO_DE_SERVICO 23.454.358; VOZ+DADOS 217.356.784; M2M 36.095.458) — medido 2026-10-27"
+  modalidade:
+    grao: "uma empresa × UF × DDD × modalidade × mês (série antiga)"
+    chave: "ano, mes, empresa, cnpj, sigla_uf, ddd, modalidade"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2005-02–2018-12"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF", ddd: "DDD", regiao_pgo: "região do PGO (1, 2 ou 3; significado não documentado)"}}
+    medidas:
+      - {coluna: acessos, o_que: "acessos móveis", unidade: "acessos", soma: sim}
+    filtros_tipicos: ["modalidade = 'Pós-pago' ou 'Pré-pago'"]
+    use_para: "acessos por empresa e DDD até 2018, por modalidade"
+    nao_use_para: "somar meses; comparar diretamente com microdados (2019+, grão diferente)"
+    rascunho: [use_para, nao_use_para, regiao_pgo]
+    verificado: "96.813 linhas = 96.813 chaves distintas; soma de acessos em 2018-12 = 229.201.614, igual à de tecnologia — medido 2026-10-27"
+  tecnologia:
+    grao: "uma empresa × UF × DDD × tecnologia × mês (série antiga)"
+    chave: "nenhuma: 175.055 linhas, 174.006 combinações de (ano, mes, empresa, cnpj, sigla_uf, ddd, tecnologia); 1.049 repetidas"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2005–2018"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF (1,1% nula)", ddd: "DDD", regiao_pgo: "região do PGO (1, 2 ou 3; significado não documentado)"}}
+    medidas:
+      - {coluna: acessos, o_que: "acessos móveis", unidade: "acessos", soma: sim}
+    filtros_tipicos: ["sinal IN ('2G','3G','4G')", "tecnologia = 'LTE' (sinal 4G), 'GSM' (2G), 'WCDMA' (3G); 'M2M', 'M2M Especial', 'M2M Padrão' têm sinal 'M2M'"]
+    use_para: "acessos por geração (2G/3G/4G) e empresa até 2018"
+    nao_use_para: "somar meses; tratar tecnologia 'Dados' como voz (é dado)"
+    rascunho: [use_para, nao_use_para, regiao_pgo]
+    verificado: "175.055 linhas, 174.006 chaves distintas; soma 2018-12 = 229.201.614 — medido 2026-10-27"

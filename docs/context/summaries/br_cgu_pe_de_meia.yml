@@ -1,0 +1,49 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_cgu_pe_de_meia
+tabelas:
+  pagamento:
+    grao: "uma parcela do Pé-de-Meia (matrícula, frequência, conclusão ou Enem) paga a um beneficiário numa folha mensal; estornos aparecem como valor negativo"
+    chave: "nenhuma: em mes_folha = 202603, 4.355.234 linhas para 931.930 combinações (beneficiario, incentivo, período) porque 3.420.328 linhas apontam para um único beneficiario_id placeholder (ver surpresa em medidas)"
+    tempo: {natureza: serie_mensal, coluna: mes_folha, cobertura: "202403–202606 (inteiro AAAAMM; 26 meses, faltam 202407 e 202601); data_do_pagamento de 2024-03-26 a 2026-07-06"}
+    territorio: {nivel: municipio, colunas: {uf: "UF", codigo_municipio_siafi: "código SIAFI de 4 dígitos, não é IBGE", nome_municipio: "nome do município"}}
+    medidas:
+      - {coluna: valor_parcela, o_que: "valor da parcela; valores vistos em 202603: 200, 225, 1000 e -1000 (estorno da conclusão)", unidade: "R$", soma: sim}
+      - {expressao: "count(*)", o_que: "parcelas pagas", unidade: "parcelas", soma: sim}
+    filtros_tipicos: ["mes_folha = 202603: INTEIRO aqui, mas mes_referencia é texto ('202603') e as duas colunas são iguais; a tabela tem 86 milhões de linhas", "codigo_tipo_incentivo = '01' (Matrícula, R$ 200), '02' (Frequência, R$ 200 ou 225), '03' (Conclusão, R$ 1.000), '04' (Enem, R$ 200): texto com zero à esquerda, rótulo em tipo_incentivo", "valor_parcela > 0: tira os 62 estornos de 202603 (-R$ 62.000)"]
+    use_para: "somar o valor pago e contar parcelas por mês, UF, município, tipo de incentivo ou etapa de ensino (gotcha agregue_pela_pagamento: sem identificação vá direto aqui)."
+    nao_use_para: "contar estudantes: 67,5 milhões das 86,1 milhões de parcelas (R$ 17,0 bi de R$ 22,6 bi) apontam para beneficiario_id = 2964869, cujo NIS e CPF são vazios e o nome é mascarado; count(DISTINCT beneficiario_id) subconta muito."
+    rascunho: [use_para, nao_use_para]
+    verificado: "86.125.204 linhas, 26 meses, R$ 22.631.280.225; em 202603: 4.355.234 linhas, 744.190 beneficiario_id distintos, 3.420.328 no placeholder 2964869, R$ 1.260.325.950; chave candidata (beneficiario_id, incentivo, período, mes_folha, data, valor, responsavel_id, etapa) tem 4.290.769 distintos nesse mês — medido 2026-10-27"
+  beneficiario:
+    grao: "um trio (NIS, CPF, nome) de beneficiário, com identificador inteiro beneficiario_id"
+    chave: "beneficiario_id"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["regexp_full_match(cpf_beneficiario, '[0-9]{11}'): só CPFs completos (gotcha cpf_completado)", "trim(nis_beneficiario) <> '': 996 beneficiários têm NIS vazio, entre eles o placeholder 2964869"]
+    use_para: "obter NIS, CPF e nome de um beneficiário ligando por beneficiario_id."
+    nao_use_para: "contar estudantes por linha: o mesmo NIS pode ter vários trios."
+    rascunho: [use_para, nao_use_para]
+    verificado: "3.310.986 linhas = 3.310.986 beneficiario_id distintos — medido 2026-10-27"
+  responsavel:
+    grao: "um trio (NIS, CPF, nome) de responsável legal, com identificador inteiro responsavel_id"
+    chave: "responsavel_id"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["trim(nis_responsavel) <> '': 3.837 responsáveis têm NIS vazio", "regexp_full_match(cpf_responsavel, '[0-9]{11}'): só CPFs completos (gotcha cpf_completado)"]
+    use_para: "obter NIS, CPF e nome do responsável de uma parcela ligando por responsavel_id."
+    nao_use_para: "contar famílias ou pessoas por linha."
+    rascunho: [use_para, nao_use_para]
+    verificado: "8.545.194 linhas = 8.545.194 responsavel_id distintos — medido 2026-10-27"
+  pe_de_meia:
+    grao: "uma parcela paga (view: pagamento JOIN beneficiario JOIN responsavel, com NIS, CPF e nome de ambos)"
+    chave: "mesma de pagamento: nenhuma"
+    tempo: {natureza: serie_mensal, coluna: mes_folha, cobertura: "202403–202606"}
+    territorio: {nivel: municipio, colunas: {uf: "UF", codigo_municipio_siafi: "código SIAFI de 4 dígitos", nome_municipio: "nome"}}
+    medidas:
+      - {coluna: valor_parcela, o_que: "valor da parcela, estornos negativos", unidade: "R$", soma: sim}
+    filtros_tipicos: ["mes_folha = 202603: inteiro; filtre o mês, a view junta 86 milhões de linhas"]
+    use_para: "consultas que precisam de NIS, CPF ou nome junto da parcela."
+    nao_use_para: "somas sem pessoa: use pagamento, ~19x mais barato (gotcha agregue_pela_pagamento); e não conte estudantes sem excluir as linhas de NIS vazio."
+    rascunho: [use_para, nao_use_para]
+    verificado: "em mes_folha = 202603: 4.355.234 linhas (igual a pagamento), 744.066 NIS de beneficiário distintos — medido 2026-10-27"

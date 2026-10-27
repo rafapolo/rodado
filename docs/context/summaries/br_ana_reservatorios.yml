@@ -1,0 +1,23 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ana_reservatorios
+tabelas:
+  sin:
+    grao: "um reservatório do SIN × dia (boletim diário)"
+    chave: "nenhuma: 1.157.621 linhas, 1.157.006 pares (data, id_reservatorio) distintos, 615 repetidos"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "2000-01-01–2022-01-12"}
+    territorio: {nivel: ponto, colunas: {id_reservatorio: "código do reservatório ANA (162 distintos), sem UF nem bacia"}}
+    medidas:
+      - {coluna: cota, o_que: "nível da água", unidade: "m (não documentada)", soma: nao}
+      - {coluna: afluencia, o_que: "vazão que chega ao reservatório", unidade: "m³/s (não documentada)", soma: nao}
+      - {coluna: defluencia, o_que: "vazão que sai (turbinada + vertida)", unidade: "m³/s (não documentada)", soma: nao}
+      - {coluna: vazao_vertida, o_que: "vazão vertida", unidade: "m³/s (não documentada)", soma: nao}
+      - {coluna: vazao_turbinada, o_que: "vazão turbinada", unidade: "m³/s (não documentada)", soma: nao}
+      - {coluna: vazao_natural, o_que: "vazão natural afluente", unidade: "m³/s (não documentada)", soma: nao}
+      - {coluna: vazao_incremental, o_que: "vazão incremental", unidade: "m³/s (não documentada)", soma: nao}
+      - {coluna: proporcao_volume_util, o_que: "% do volume útil armazenado", unidade: "%", soma: nao}
+    filtros_tipicos: ["proporcao_volume_util BETWEEN -50 AND 105 antes de mínimos (ver gotcha volume_util_nulo_e_fora_de_faixa)"]
+    use_para: "série diária de nível e vazões de um reservatório; use média/mínimo, nunca soma no tempo"
+    nao_use_para: "agregar por subsistema ou bacia (gotcha sem_subsistema_nem_bacia) ou dados depois de jan/2022"
+    rascunho: [unidades, use_para, nao_use_para]
+    verificado: "1.157.621 linhas; 1.157.006 (data, id_reservatorio) distintos; 162 reservatórios; 2000-01-01 a 2022-01-12 — medido 2026-10-27"

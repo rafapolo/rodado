@@ -1,0 +1,24 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_inpe_sisam
+tabelas:
+  microdados:
+    grao: "um município × leitura (4 por dia: 0, 6, 12 e 18 h)"
+    chave: "(id_municipio, data_hora)"
+    tempo: {natureza: serie_de_periodos, coluna: data_hora, cobertura: "2000–2019 (leituras a cada 6 h)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", sigla_uf: "UF (nula em 2.920 linhas de 2019)"}}
+    medidas:
+      - {coluna: pm25_ugm3, o_que: "material particulado PM2,5", unidade: "µg/m³", soma: nao}
+      - {coluna: precipitacao_dia, o_que: "chuva do dia, só na leitura das 0 h", unidade: "mm (não documentado)", soma: sim}
+      - {coluna: temperatura, o_que: "temperatura", unidade: "°C", soma: nao}
+      - {coluna: umidade_relativa, o_que: "umidade relativa", unidade: "%", soma: nao}
+      - {coluna: vento_velocidade, o_que: "velocidade do vento", unidade: "m/s (não documentado)", soma: nao}
+      - {coluna: vento_direcao, o_que: "direção do vento", unidade: "graus", soma: nao}
+    filtros_tipicos:
+      - "ano = <ano> (partição; 158 milhões de linhas)"
+      - "hour(data_hora) = 0 ao somar chuva (precipitacao_dia só vem na leitura das 0 h)"
+      - "co_ppb, no2_ppb, o3_ppb e so2_ugm3 estão 100% nulas em 2019: não filtre por elas"
+    use_para: "médias de PM2,5, temperatura, umidade e vento por município e período; anomalia de chuva"
+    nao_use_para: "chuva absoluta (é modelo, não pluviômetro) e gases (co, no2, o3, so2 vazios em 2019)"
+    rascunho: [use_para, nao_use_para, "unidades de vento_velocidade e precipitacao_dia"]
+    verificado: "158.705.816 linhas; ano 2000–2019; 2019: 8.135.120 linhas = 8.135.120 distintos de (id_municipio, data_hora), 5.572 municípios, 1.460 leituras; no AC, 0 h: 8.030 linhas, 8.030 com chuva; 6, 12 e 18 h: 0 com chuva; pm25 preenchido só nas leituras das 0 h e 12 h (8.029 e 8.016 de 8.030) — medido 2026-10-27. Gotchas: chuva_so_na_leitura_das_0h, modelo_nao_pluviometro."

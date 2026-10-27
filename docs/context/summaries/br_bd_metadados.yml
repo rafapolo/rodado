@@ -1,0 +1,78 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_bd_metadados
+tabelas:
+  bigquery_tables:
+    grao: "uma tabela ou view do catálogo BigQuery da Base dos Dados (dataset_id × table_id), com contagem de linhas e tamanho"
+    chave: "dataset_id, table_id (1.908 linhas = 1.908 distintos, medido)"
+    tempo: {natureza: retrato_atual, coluna: last_modified_date, cobertura: "2020-10-21–2026-06-15 (criação até última modificação)"}
+    territorio: {nivel: nenhum}
+    medidas:
+      - {coluna: row_count, o_que: "linhas da tabela no BigQuery", unidade: "linhas", soma: sim}
+      - {coluna: size_bytes, o_que: "tamanho da tabela no BigQuery", unidade: "bytes", soma: sim}
+    filtros_tipicos: ["type = 'table' para tabelas (1.654) e type = 'view' para views (254); project_id é sempre 'basedosdados'"]
+    use_para: "saber quais tabelas existiam no catálogo original da Base dos Dados, seu tamanho e datas de criação/atualização."
+    nao_use_para: "descrever o conteúdo do banco local: é o inventário do BigQuery original, não do DuckDB."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.908 linhas, 1.908 distintos de (dataset_id, table_id); type table 1.654 / view 254 — medido 2026-10-27"
+  external_links:
+    grao: "um link externo de dados (fonte de terceiros) cadastrado no catálogo CKAN da Base dos Dados"
+    chave: "id (1.262 linhas = 1.262 distintos, medido)"
+    tempo: {natureza: sem_tempo, coluna: date_created, cobertura: "2019-09-17–2023-03-14 (data de cadastro, texto)"}
+    territorio: {nivel: outro, colunas: {spatial_coverage: "cobertura espacial em lista textual, ex.: ['sa.br']"}}
+    filtros_tipicos: ["is_free = 'yes' (1.018; 224 nulos)", "has_api = 'yes' (33; 1.095 nulos)", "spatial_coverage = \"['sa.br']\" é texto com colchetes e aspas, não lista"]
+    use_para: "levantar fontes externas de dados catalogadas, por gratuidade, API e cobertura."
+    nao_use_para: "dado das próprias fontes; é só o cadastro delas. Colunas has_*/is_* são texto yes/no, muitas vezes nulas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.262 linhas, 1.262 distintos de id — medido 2026-10-27"
+  information_requests:
+    grao: "um pedido de informação (LAI) cadastrado no catálogo da Base dos Dados"
+    chave: "id (389 linhas = 389 distintos, medido)"
+    tempo: {natureza: sem_tempo, coluna: date_created, cobertura: "2020-10-13–2023-02-08 (data de cadastro, texto)"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["status tem 76 valores distintos e não foi inspecionado: significado não documentado"]
+    use_para: "ver pedidos de acesso à informação feitos pela Base dos Dados."
+    nao_use_para: "análise quantitativa: a maioria das colunas (opening_date, spatial_coverage, temporal_coverage) é ~99% nula; data_url mistura '1', '0' e URLs."
+    rascunho: [use_para, nao_use_para, filtros_tipicos]
+    verificado: "389 linhas, 389 distintos de id — medido 2026-10-27"
+  organizations:
+    grao: "uma organização (fonte/produtora de dados) do catálogo da Base dos Dados"
+    chave: "id (554 linhas = 554 distintos; name também 554 distintos, medido)"
+    tempo: {natureza: sem_tempo, coluna: date_created, cobertura: "2019-09-14–2023-03-06 (texto)"}
+    territorio: {nivel: nenhum}
+    medidas:
+      - {coluna: package_count, o_que: "número de datasets da organização; é VARCHAR, precisa de CAST", unidade: "datasets", soma: sim}
+    use_para: "listar organizações do catálogo e quantos datasets cada uma tem."
+    nao_use_para: "somar package_count sem CAST; é texto."
+    rascunho: [use_para, nao_use_para]
+    verificado: "554 linhas, 554 distintos de id e de name — medido 2026-10-27"
+  prefect_flow_runs:
+    grao: "uma execução (flow run) de pipeline Prefect da Base dos Dados"
+    chave: "id (117.130 linhas = 117.130 distintos, medido)"
+    tempo: {natureza: serie_diaria, coluna: start_time, cobertura: "2024-02-05–2026-04-02"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["state = 'Success' (108.485) ou 'Failed' (8.645)", "flow_project_name = 'main' (114.165) exclui 'staging' (2.965)", "flow_archived é BOOLEAN: true em 92.716 execuções"]
+    use_para: "contar execuções, falhas e atualizações por dataset_id/table_id ao longo do tempo."
+    nao_use_para: "volume de dados: não há contagem de linhas; task_runs e error_logs são texto bruto de listas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "117.130 linhas, 117.130 distintos de id; sem linhas duplicadas inteiras — medido 2026-10-27"
+  resources:
+    grao: "um recurso (tabela, link externo ou pedido) ligado a um dataset do catálogo CKAN"
+    chave: "id (1.666 linhas = 1.666 distintos, medido)"
+    tempo: {natureza: sem_tempo, coluna: date_created, cobertura: "2019-09-17–2023-03-14 (texto)"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["type = 'external_link' (1.251), 'bdm_table' (412) ou 'information_request' (3)"]
+    use_para: "ligar dataset_id aos recursos (tabelas BD, links, pedidos) por tipo."
+    nao_use_para: "descrição do conteúdo: só traz id, nome e tipo."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.666 linhas, 1.666 distintos de id — medido 2026-10-27"
+  tables:
+    grao: "uma tabela publicada (bdm_table) no catálogo CKAN da Base dos Dados, com cobertura e frequência declaradas"
+    chave: "id (470 linhas = 470 distintos; (dataset_id, name) também 470, medido)"
+    tempo: {natureza: sem_tempo, coluna: date_created, cobertura: "2020-10-13–2023-03-28 (texto)"}
+    territorio: {nivel: outro, colunas: {spatial_coverage: "cobertura em lista textual, ex.: ['sa.br']"}}
+    filtros_tipicos: ["spatial_coverage = \"['sa.br']\" (362), texto com colchetes", "outdated é texto '1' (306) / '0' (40), 124 nulos; significado exato não documentado"]
+    use_para: "descobrir a cobertura temporal/espacial e frequência de atualização que cada tabela declarava."
+    nao_use_para: "contagens reais: number_rows e number_columns são texto e missing_metadata é 'True' em todas as 470."
+    rascunho: [use_para, nao_use_para, filtros_tipicos]
+    verificado: "470 linhas, 470 distintos de id e de (dataset_id, name) — medido 2026-10-27"

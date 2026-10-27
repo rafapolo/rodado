@@ -1,0 +1,36 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_inpe_deter
+tabelas:
+  avisos:
+    grao: "um aviso do DETER (polígono de alerta) × município; na Amazônia e no Cerrado o INPE parte o polígono por município"
+    chave: "bioma_arquivo, OGC_FID (699.077 linhas, 699.077 distintas; igual com FID e com GEOCODIBGE na chave)"
+    tempo: {natureza: serie_diaria, coluna: VIEW_DATE, cobertura: "2016-08-02–2026-09-25 (por bioma: amazonia 2016-08-02, cerrado 2018-05-01, nao_floresta_amz 2023-08-01, pantanal 2023-08-03)"}
+    territorio: {nivel: municipio, colunas: {GEOCODIBGE: "município IBGE de 7 dígitos (texto)", MUNICIPALI: "nome do município", UF: "sigla", bioma_arquivo: "origem do arquivo: amazonia, cerrado, nao_floresta_amz, pantanal", lat_centroide: "latitude do centroide", lon_centroide: "longitude do centroide"}}
+    medidas:
+      - {coluna: AREAMUNKM, o_que: "área do alerta dentro do município (a fatia, em Amazônia e Cerrado)", unidade: "km²", soma: sim}
+      - {coluna: AREAUCKM, o_que: "área do alerta dentro de unidade de conservação (NULL se não há; só Amazônia e Cerrado)", unidade: "km²", soma: sim}
+      - {coluna: area_km, o_que: "área do polígono em Pantanal e não-floresta; NULL em Amazônia e Cerrado", unidade: "km²", soma: nao}
+    filtros_tipicos:
+      - "classe = coalesce(CLASSNAME, class_name): CLASSNAME traz DESMATAMENTO_CR, CICATRIZ_DE_QUEIMADA, DEGRADACAO, DESMATAMENTO_VEG, MINERACAO, CS_DESORDENADO, CS_GEOMETRICO, CORTE_SELETIVO (Amazônia/Cerrado); class_name traz 'cicatriz de queimada', 'supressão com solo exposto', 'supressão com vegetação', 'mineração' (Pantanal e não-floresta). Ver gotchas classe_em_duas_colunas e pantanal_e_queimada"
+      - "desmatamento: CLASSNAME IN ('DESMATAMENTO_CR','DESMATAMENTO_VEG') ou class_name IN ('supressão com solo exposto','supressão com vegetação'); queimada é CICATRIZ_DE_QUEIMADA / 'cicatriz de queimada'"
+      - "bioma_arquivo = 'amazonia' | 'cerrado' | 'nao_floresta_amz' | 'pantanal' (minúsculo)"
+      - "contagem de alertas: count(*) (cada linha é única por bioma_arquivo+OGC_FID; ver gotcha municipio_por_centroide para a ressalva sobre FID)"
+    use_para: "alertas de desmatamento e degradação quase em tempo real, por município, bioma e classe."
+    nao_use_para: "estimar desmatamento oficial anual (use PRODES) ou somar área sem filtrar a classe."
+    rascunho: [use_para, nao_use_para]
+    verificado: "699.077 linhas = 699.077 (bioma_arquivo,OGC_FID); count(DISTINCT FID) por bioma = linhas (amazonia 461.074, cerrado 134.165, nao_floresta_amz 79.683, pantanal 24.155); soma AREAMUNKM km²: amazonia 263.614, cerrado 48.904, nao_floresta_amz 60.927, pantanal 38.707; Pantanal: 16.457 de 24.155 são cicatriz de queimada — medido 2026-10-27"
+  avisos_poligono:
+    grao: "mesmo grão de avisos, com a geometria do polígono (uma linha por aviso × município)"
+    chave: "bioma_arquivo, OGC_FID (699.077 linhas, 699.077 distintas)"
+    tempo: {natureza: serie_diaria, coluna: view_date, cobertura: "2016-08-02–2026-09-25"}
+    territorio: {nivel: ponto, colunas: {geometria: "polígono GEOMETRY(OGC:CRS84)", bioma_arquivo: "origem do arquivo"}}
+    medidas:
+      - {coluna: area_km, o_que: "área da fatia (Amazônia/Cerrado) ou do polígono inteiro (Pantanal/não-floresta); preenchida em todas as linhas", unidade: "km²", soma: sim}
+    filtros_tipicos:
+      - "classe já numa coluna só em caixa alta, mas com grafias distintas para o mesmo conceito: 'CICATRIZ_DE_QUEIMADA' (117.971 linhas, Amazônia) e 'CICATRIZ DE QUEIMADA' (89.860, Pantanal e não-floresta) são o mesmo conceito; use replace(classe,'_',' ') ou mapeie as duas"
+      - "junte a avisos por (bioma_arquivo, OGC_FID)"
+    use_para: "mapa dos polígonos de alerta e junção espacial."
+    nao_use_para: "agregar sem filtrar a classe; carregar a geometria sem filtro de data ou bioma."
+    rascunho: [use_para, nao_use_para]
+    verificado: "699.077 linhas = 699.077 chaves, iguais às de avisos; classe com ~13 valores distintos (perfil) — medido 2026-10-27"

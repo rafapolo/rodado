@@ -1,0 +1,18 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_firjan_ifgf
+tabelas:
+  ranking:
+    grao: "um município × ano"
+    chave: "(ano, id_municipio)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2013–2022"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", sigla_uf: "UF (26 por ano; o DF não tem município neste índice)"}}
+    medidas:
+      - {coluna: indice_firjan_gestao_fiscal, o_que: "Índice Firjan de Gestão Fiscal (IFGF) do município", unidade: "índice de 0 a 1 (mínimo/máximo medidos 0 e 1)", soma: nao}
+      - {coluna: ranking_nacional, o_que: "posição do município entre todos no ano", unidade: "posição (1 = melhor)", soma: nao}
+      - {coluna: ranking_estadual, o_que: "posição do município dentro da UF no ano", unidade: "posição", soma: nao}
+    filtros_tipicos: ["indice_firjan_gestao_fiscal IS NOT NULL para excluir municípios sem índice (2448 linhas nulas, 4,4%; 140 a 329 por ano); ranking é nulo nas mesmas linhas"]
+    use_para: "índice e ranking de gestão fiscal por município e ano, 2013–2022."
+    nao_use_para: "somar ou comparar rankings entre anos sem considerar que o nº de municípios com índice muda a cada ano."
+    rascunho: [use_para, nao_use_para]
+    verificado: "55680 linhas = 55680 distintos de (ano,id_municipio), 5568 por ano; 2448 nulos no índice, ranking nulo exatamente nas mesmas linhas (0 divergências) — medido 2026-10-27"

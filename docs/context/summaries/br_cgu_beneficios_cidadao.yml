@@ -1,0 +1,82 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_cgu_beneficios_cidadao
+tabelas:
+  novo_bolsa_familia:
+    grao: "um pagamento mensal do Novo Bolsa Família (2023 em diante) a um beneficiário (NIS), numa competência"
+    chave: "nenhuma garantida: em AC, competência 2025-01, (nis_favorecido, ano/mes_competencia, ano/mes_referencia) tem 130.971 distintos em 130.973 linhas (2 repetem)"
+    tempo: {natureza: serie_mensal, coluna: "ano_competencia, mes_competencia (ano_referencia/mes_referencia = mês a que o pagamento se refere; difere em 401 das 130.973 linhas medidas)", cobertura: "2023-03–2025-07 (medido em AC)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município do pagamento (7 dígitos)", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: valor_parcela, o_que: "valor pago na parcela", unidade: "R$", soma: sim}
+    filtros_tipicos: ["filtre ano_competencia e mes_competencia (a tabela é ordenada por nis_favorecido; ver gotcha ordenada_pela_chave) e pela coluna crua; competência é o mês de pagamento e referencia o mês de direito"]
+    use_para: "gasto e número de beneficiários do Bolsa Família por município e mês desde 2023"
+    nao_use_para: "contar pessoas com count(DISTINCT cpf_favorecido) (gotcha cpf_completado e 16,6% nulos na amostra); somar sem filtrar um mês, ou dados de antes de 2023 (use bolsa_familia_pagamento e auxilio_brasil)"
+    rascunho: [use_para, nao_use_para, "significado de competência × referência (só a diferença foi medida)"]
+    verificado: "588.460.141 linhas (perfil); AC 2025-01: 130.973 linhas, 130.971 chaves distintas, 130.570 NIS distintos, 26.628 sem cpf_favorecido; competências 202303–202507 em AC — medido 2026-10-27"
+  bolsa_familia_pagamento:
+    grao: "um pagamento mensal do Bolsa Família antigo (até 2021) a um beneficiário (NIS)"
+    chave: "(nis_favorecido, ano/mes_competencia, ano/mes_referencia) único em AC, competência 2020-01: 86.938 linhas = 86.938 distintos (não conferido nas demais partições)"
+    tempo: {natureza: serie_mensal, coluna: "ano_competencia, mes_competencia (referencia difere em 145 das 86.938 linhas medidas)", cobertura: "2012-06–2021-11 (medido em AC)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município do pagamento", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: valor_parcela, o_que: "valor pago", unidade: "R$", soma: sim}
+    filtros_tipicos: ["ano_competencia e mes_competencia por igualdade (tabela de 1,5 bilhão de linhas; ver gotcha ordenada_pela_chave)"]
+    use_para: "série histórica do Bolsa Família por município até 2021"
+    nao_use_para: "período depois de nov/2021 (veja auxilio_brasil e novo_bolsa_familia); contar pessoas por cpf_favorecido"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.495.223.596 linhas (perfil); AC 2020-01: 86.938 linhas, 86.938 chaves distintas, 86.924 NIS distintos — medido 2026-10-27"
+  auxilio_brasil:
+    grao: "um pagamento mensal do Auxílio Brasil a um beneficiário (NIS), numa competência"
+    chave: "nenhuma garantida: em AC, competência 2022-06, 108.147 linhas contra 108.133 chaves (nis, competência, referência) distintas (14 repetem)"
+    tempo: {natureza: serie_mensal, coluna: "ano_competencia, mes_competencia (referencia difere em 21 das 108.147 linhas medidas)", cobertura: "2021-10–2023-02 (medido em AC)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município do pagamento", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: valor_parcela, o_que: "valor pago", unidade: "R$", soma: sim}
+    filtros_tipicos: ["ano_competencia = 2022 e mes_competencia por igualdade; sigla_uf para recortar"]
+    use_para: "gasto e beneficiários do Auxílio Brasil por município e mês (out/2021–fev/2023)"
+    nao_use_para: "outros períodos do Bolsa Família; contar pessoas por cpf_favorecido"
+    rascunho: [use_para, nao_use_para]
+    verificado: "293.954.669 linhas (perfil); AC 2022-06: 108.147 linhas, 108.133 chaves distintas — medido 2026-10-27"
+  bpc:
+    grao: "um pagamento mensal de Benefício de Prestação Continuada (BPC) a um benefício, numa competência"
+    chave: "(numero_beneficio, ano/mes_competencia, ano/mes_referencia): único em AC, competência 2025-01 (34.725 linhas = 34.725 distintos); nis_favorecido sozinho não serve (7% nulo e repetido)"
+    tempo: {natureza: serie_mensal, coluna: "ano_competencia, mes_competencia (igual à referência na amostra medida)", cobertura: "2019-01–2025-07 (medido em AC)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município do pagamento", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: valor_parcela, o_que: "valor pago", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "concedido_judicialmente = 'SIM' (benefício judicial); o 'não' aparece como 'NÃO' e como 'NÃ' (truncado) — use concedido_judicialmente <> 'SIM' ou IN ('NÃO','NÃ')"
+      - "pessoa: nis_favorecido (nulo em 7%); cpf_favorecido é nulo em 22,7% e cpf_representante mistura CPF mascarado (gotcha cpf_completado)"
+    use_para: "BPC (idosos e pessoas com deficiência) por município e mês"
+    nao_use_para: "somar sem fixar mês; filtrar concedido_judicialmente = 'NÃO' (perde as linhas 'NÃ')"
+    rascunho: [use_para, nao_use_para, "BPC = idosos e pessoas com deficiência"]
+    verificado: "419.925.687 linhas (perfil); AC 2025-01: 34.725 linhas, 34.725 chaves por numero_beneficio, 28.585 por nis_favorecido; concedido_judicialmente: 'NÃ' 24.465, SIM 10.260 — medido 2026-10-27"
+  auxilio_emergencial:
+    grao: "um pagamento do Auxílio Emergencial (2020–2021) a um beneficiário, numa parcela de um mês"
+    chave: "nenhuma: em AC, jul/2020, (cpf_beneficiario, mes, parcela) tem 292.459 distintos em 300.640 linhas e com nis/nome 300.581 (59 repetem)"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2020-04–2021-07 (medido em RR); o perfil só viu ano = 2021, que em AC tem 644 linhas contra 2.399.254 em 2020"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: valor_beneficio, o_que: "valor pago", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "ano = 2020 e mes por igualdade; o perfil (ano = 2021) não representa a tabela"
+      - "enquadramento: em 2021 só 'EXTRACAD' e 'CADUNICO'; em 2020 há também 'BOLSA FAMILIA' (140.502 em AC jul/2020)"
+      - "parcela vem como texto '1ª', '2ª'... (jul/2020 em AC: 1ª–4ª; 2021 chega a 9ª)"
+      - "observacao = 'Valor devolvido à União.' marca devolução (0,13% das linhas de 2021)"
+    use_para: "Auxílio Emergencial por município, mês e enquadramento"
+    nao_use_para: "contar pessoas por cpf_beneficiario (mascarado repete); inferir a tabela inteira da partição 2021"
+    rascunho: [use_para, nao_use_para, "significado de enquadramento"]
+    verificado: "491.136.014 linhas (perfil); AC: 2020 = 2.399.254, 2021 = 644; AC 2020-07: 300.640 linhas, 292.459 por (cpf, mes, parcela), 300.581 com nis e nome — medido 2026-10-27"
+  garantia_safra:
+    grao: "um pagamento do Garantia-Safra a um agricultor (NIS) num mês de referência"
+    chave: "(nis_favorecido, ano_referencia, mes_referencia): único em PE, 2020 (137.830 linhas = 137.830 distintos; 75.170 NIS, então o mesmo NIS aparece em vários meses)"
+    tempo: {natureza: serie_mensal, coluna: "ano_referencia, mes_referencia", cobertura: "2013-01–2026-01"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município do pagamento", sigla_uf: "UF (11 UFs do semiárido)"}}
+    medidas:
+      - {coluna: valor_parcela, o_que: "valor pago (15 a 5.950 na amostra)", unidade: "R$", soma: sim}
+    filtros_tipicos: ["ano_referencia (tabela sem ano_competencia); sigla_uf entre as 11 UFs que a tabela cobre"]
+    use_para: "Garantia-Safra por município e mês nos estados do semiárido"
+    nao_use_para: "cobertura nacional (só 11 UFs); contar pessoas por NIS sem fixar período"
+    rascunho: [use_para, nao_use_para, "as 11 UFs são o semiárido"]
+    verificado: "32.511.026 linhas (perfil); PE 2020: 137.830 linhas, 137.830 chaves distintas; 11 UFs, 201301–202601 — medido 2026-10-27"

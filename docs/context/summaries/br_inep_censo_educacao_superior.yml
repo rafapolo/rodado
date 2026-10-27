@@ -1,0 +1,46 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_inep_censo_educacao_superior
+tabelas:
+  curso:
+    grao: "um curso de uma IES × município de oferta (polo, no EAD) × tipo de dimensão × ano"
+    chave: "ano, id_curso, id_ies, id_municipio, tipo_dimensao"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2009–2024"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município de oferta do curso, código IBGE de 7 dígitos; nulo (1,64%) nas dimensões 3 e 4", sigla_uf: "UF de oferta, mesmo nulo"}}
+    medidas:
+      - {coluna: quantidade_vagas, o_que: "vagas oferecidas; = vagas_diurno + vagas_noturno + vagas_ead", unidade: "vagas", soma: sim}
+      - {coluna: quantidade_inscritos, o_que: "inscritos nos processos seletivos", unidade: "pessoas inscritas", soma: sim}
+      - {coluna: quantidade_ingressantes, o_que: "ingressantes no ano", unidade: "alunos", soma: sim}
+      - {coluna: quantidade_matriculas, o_que: "matrículas ativas; = feminino + masculino", unidade: "alunos", soma: sim}
+      - {coluna: quantidade_concluintes, o_que: "concluintes do ano", unidade: "alunos", soma: sim}
+    filtros_tipicos:
+      - "tipo_dimensao IN ('1','2') para matrículas e vagas: '1' presencial (34.824 linhas), '2' a distância (673.756); '3' (dados só em nível Brasil, 11.319 linhas, sem município, 0 matrículas e 18,6 milhões de vagas) e '4' (EAD no exterior, 450) inflam ou distorcem as vagas"
+      - "tipo_nivel_academico = '1' (Graduação, 720.345) — '2' é Sequencial de Formação Específica (4 linhas)"
+      - "rede = '2' (Privada, 700.198) / '1' (Pública, 20.151); tipo_organizacao_administrativa = '4' Privada com fins lucrativos (638.763) etc., pelo dicionário"
+      - "tipo_modalidade_ensino = '2' (Curso a distância) / '1' (Presencial)"
+      - "tipo_grau_academico: '1' Bacharelado, '2' Licenciatura, '3' Tecnológico, '4' Bacharelado e Licenciatura; nulo em 0,28%"
+    use_para: "ingressantes, matrículas e concluintes por curso, área CINE, município, rede ou modalidade"
+    nao_use_para: "somar quantidade_vagas sem filtrar tipo_dimensao; contar cursos com count(DISTINCT id_curso) (id_curso não é único por curso: 46.150 distintos em 720.349 linhas de 2024); linhas com id_municipio nulo em análise territorial"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2024: 720.349 linhas = 720.349 distintos da chave; sem tipo_dimensao são 719.897 distintos de (id_curso, id_ies, id_municipio); soma 2024: vagas 23.665.419, matrículas 10.227.266, ingressantes 5.010.613, concluintes 1.333.988; por dimensão: matrículas 5.037.875 (1) + 5.186.852 (2) + 0 (3) + 2.539 (4), vagas 5.075.146 (1), 6.925 (2), 18.583.348 (3) — medido 2026-10-27"
+  ies:
+    grao: "uma instituição de ensino superior × ano (cadastro com docentes, técnicos e biblioteca)"
+    chave: "ano, id_ies"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2009–2024"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município da sede, código IBGE de 7 dígitos", sigla_uf: "UF da sede"}}
+    medidas:
+      - {coluna: quantidade_docentes, o_que: "docentes da IES", unidade: "docentes", soma: sim}
+      - {coluna: quantidade_docentes_exercicio, o_que: "docentes em exercício (subconjunto de quantidade_docentes)", unidade: "docentes", soma: sim}
+      - {coluna: quantidade_tecnicos, o_que: "técnico-administrativos", unidade: "pessoas", soma: sim}
+      - {coluna: "quantidade_biblioteca_periodicos_eletronicos, quantidade_biblioteca_livros_eletronicos", o_que: "acervo eletrônico; máximo 111.111.111 parece valor sentinela", unidade: "títulos", soma: nao}
+    filtros_tipicos:
+      - "tipo_categoria_administrativa = '4' (Privada com fins lucrativos, 17.896 linhas); '1' Pública Federal, '2' Estadual, '3' Municipal, '5' Privada sem fins lucrativos, '6' Particular em sentido estrito, '7' Especial, '8' comunitária, '9' confessional (dicionário)"
+      - "tipo_organizacao_academica = '3' (Faculdade, 31.866)"
+      - "ano = 2024 para o retrato mais recente (2.561 IES)"
+    use_para: "perfil das IES (categoria, docentes por titulação, biblioteca) por ano e município-sede"
+    nao_use_para: "matrículas ou cursos (estão em curso); somar quantidade_docentes entre anos"
+    rascunho: [use_para, nao_use_para, "111.111.111 como sentinela"]
+    verificado: "39.363 linhas = 39.363 distintos de (ano, id_ies); 2024 tem 2.561 linhas — medido 2026-10-27"
+  dicionario:
+    grao: "um código de coluna (id_tabela, nome_coluna, chave) com seu significado"
+    use_para: "traduzir os códigos de rede, tipo_dimensao, tipo_grau_academico, tipo_organizacao_* e tipo_categoria_administrativa"

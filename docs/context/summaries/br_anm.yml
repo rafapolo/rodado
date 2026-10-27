@@ -1,0 +1,218 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_anm
+tabelas:
+  cfem_cfem_arrecadacao:
+    grao: "um recolhimento de CFEM (royalty de mineração) por processo minerário × substância × município × mês de competência"
+    chave: "nenhuma: sem identificador do recolhimento; em 2026 há 176.299 linhas e só 71.433 linhas distintas (SELECT DISTINCT), e dezembro/2025 a março/2026 têm 3–4× mais linhas que os demais meses"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes (ambos texto)", cobertura: "2002–2026 (2026: meses 1–10, última datacriacao 2026-10-01)"}
+    territorio:
+      nivel: municipio
+      colunas:
+        uf: "sigla da UF"
+        codigomunicipio: "código IBGE de 7 dígitos do município de produção (texto)"
+        municipio: "nome do município (nas tabelas antigas aparece '***' em alguns casos)"
+    medidas:
+      - {coluna: valorrecolhido, o_que: "CFEM recolhida", unidade: "R$", soma: sim}
+      - {coluna: quantidadecomercializada, o_que: "quantidade comercializada que gerou o recolhimento (texto com vírgula decimal nesta tabela)", unidade: "a de unidadedemedida (t, m3, l, kg, g, ct...)", soma: nao}
+    filtros_tipicos:
+      - "ano = '2024' (texto); a tabela é a união das cinco cfem_cfem_arrecadacao_AAAA_AAAA, então nunca somar as duas"
+      - "trim(unidadedemedida) = 't': o valor literal tem espaços à direita ('t  ', 'm3 ', 'l  ', 'kg ')"
+      - "substancia IN ('FERRO','MINÉRIO DE FERRO'): o ferro tem dois rótulos (2025: FERRO R$ 3.366 mi, MINÉRIO DE FERRO R$ 2.098 mi)"
+      - "tipo_pf_pj = 'PJ' (também existem 'PF' e '-', este com 25 linhas em 2026)"
+    use_para: "arrecadação de CFEM por município, UF, substância ou mês"
+    nao_use_para: "somar quantidadecomercializada entre unidades diferentes ou contar linhas como recolhimentos distintos (há linhas repetidas)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2.433.829 linhas = soma das cinco tabelas de período (198.897+364.848+500.422+625.460+744.202); soma de valorrecolhido igual nas duas: 2023 R$ 6.858,1 mi, 2024 R$ 7.733,4 mi (134.410 linhas, 132.892 distintas, R$ 7.436,7 mi sem as repetidas), 2026 R$ 3.893,5 mi; dez/2025 39.761 linhas (12.816 distintas, R$ 753,1 mi contra 752,5 mi), jan/2026 52.410 (11.446 distintas), fev/2026 50.254 (11.088), mar/2026 40.388 (15.713) — medido 2026-10-27"
+  cfem_cfem_arrecadacao_2002_2006:
+    grao: "mesmo grão de cfem_cfem_arrecadacao, recortado em 2002–2006; a união das cinco tabelas de período é cfem_cfem_arrecadacao"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes (texto)", cobertura: "2002–2006"}
+    use_para: "o mesmo que cfem_cfem_arrecadacao quando o período cabe nesta faixa"
+    nao_use_para: "somar junto com cfem_cfem_arrecadacao (duplica o valor)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "198.897 linhas; quantidadecomercializada é DOUBLE nesta faixa — medido 2026-10-27"
+  cfem_cfem_arrecadacao_2007_2011:
+    grao: "mesmo grão de cfem_cfem_arrecadacao, recortado em 2007–2011; a união das cinco tabelas de período é cfem_cfem_arrecadacao"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes (texto)", cobertura: "2007–2011"}
+    use_para: "o mesmo que cfem_cfem_arrecadacao quando o período cabe nesta faixa"
+    nao_use_para: "somar junto com cfem_cfem_arrecadacao (duplica o valor)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "364.848 linhas; quantidadecomercializada é DOUBLE nesta faixa — medido 2026-10-27"
+  cfem_cfem_arrecadacao_2012_2016:
+    grao: "mesmo grão de cfem_cfem_arrecadacao, recortado em 2012–2016; a união das cinco tabelas de período é cfem_cfem_arrecadacao"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes (texto)", cobertura: "2012–2016"}
+    use_para: "o mesmo que cfem_cfem_arrecadacao quando o período cabe nesta faixa"
+    nao_use_para: "somar junto com cfem_cfem_arrecadacao (duplica o valor)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "500.422 linhas; quantidadecomercializada é DOUBLE nesta faixa — medido 2026-10-27"
+  cfem_cfem_arrecadacao_2017_2021:
+    grao: "mesmo grão de cfem_cfem_arrecadacao, recortado em 2017–2021; a união das cinco tabelas de período é cfem_cfem_arrecadacao"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes (texto)", cobertura: "2017–2021"}
+    use_para: "o mesmo que cfem_cfem_arrecadacao quando o período cabe nesta faixa"
+    nao_use_para: "somar junto com cfem_cfem_arrecadacao (duplica o valor)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "625.460 linhas; quantidadecomercializada é DOUBLE nesta faixa — medido 2026-10-27"
+  cfem_cfem_arrecadacao_2022_2026:
+    grao: "mesmo grão de cfem_cfem_arrecadacao, recortado em 2022–2026; a união das cinco tabelas de período é cfem_cfem_arrecadacao"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes (texto)", cobertura: "2022–2026"}
+    use_para: "o mesmo que cfem_cfem_arrecadacao quando o período cabe nesta faixa"
+    nao_use_para: "somar junto com cfem_cfem_arrecadacao (duplica o valor)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "744.202 linhas; quantidadecomercializada é texto com vírgula decimal nesta faixa — medido 2026-10-27"
+  cfem_cfem_autuacao:
+    grao: "um auto de infração de CFEM (processo de cobrança) lavrado contra um titular"
+    chave: "(processocobranca, numeroauto): confirmada, 21.029 linhas = 21.029 combinações (numeroauto é nulo em 4,89%); processocobranca sozinho repete em 2 linhas"
+    tempo: {natureza: serie_de_periodos, coluna: "anopublicacao, mespublicacao (texto)", cobertura: "2009–2023 (34% das linhas sem data de publicação)"}
+    territorio: {nivel: municipio, colunas: {uf: "sigla da UF", municipio: "nome do município (sem código)"}}
+    medidas:
+      - {expressao: "try_cast(replace(valor, ',', '.') AS DOUBLE)", o_que: "valor do auto", unidade: "R$ (valor é texto com vírgula decimal)", soma: sim}
+    filtros_tipicos: ["tipo_pf_pj = 'J' (20.301 linhas) ou 'F' (728): nesta tabela as letras são F/J, não PF/PJ"]
+    use_para: "autuações de CFEM por substância, UF ou titular"
+    nao_use_para: "arrecadação efetiva (é valor autuado, não recolhido)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "21.029 linhas, 21.027 processocobranca distintos, anopublicacao nulo em 7.153 — medido 2026-10-27"
+  cfem_cfem_distribuicao:
+    grao: "um repasse de CFEM a um município (ente) × mês × substância × número de distribuição"
+    chave: "nenhuma: em ano = '2026', 43.670 linhas contra 43.652 combinações de (ano, mes, numerodedistribuicao, codigoente, substancia, tipodistribuicao, tipoafetamento, valor)"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes (texto)", cobertura: "2007–2026 (2026: meses 1–9, datacriacao até 2026-08-31)"}
+    territorio: {nivel: municipio, colunas: {siglaestado: "sigla da UF", codigoente: "código IBGE de 7 dígitos do município que recebeu"}}
+    medidas:
+      - {expressao: "try_cast(replace(valor, ',', '.') AS DOUBLE)", o_que: "valor repassado ao município", unidade: "R$ (valor é texto com vírgula decimal e 19 casas, às vezes começa em ',')", soma: sim}
+    filtros_tipicos: ["ano = '2024': partição (2,2 milhões de linhas no total); em 2010, 2024 e 2026 só aparece ente = 'Município', tipodistribuicao = 'Produtor' e (2024, 2026) tipoafetamento = '-'"]
+    use_para: "quanto cada município recebeu de CFEM"
+    nao_use_para: "arrecadação total (o repasse de 2024 soma R$ 4.419,8 mi contra R$ 7.733,4 mi recolhidos) ou valores de estados e União"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2024: 70.146 linhas, soma R$ 4.419,8 mi; 2026: 43.670 linhas — medido 2026-10-27"
+  scm_alvara_de_pesquisa:
+    grao: "um processo com autorização (alvará) de pesquisa mineral: retrato atual do cadastro SCM/ANM"
+    chave: "(processo, tipo_de_requerimento, municipio_s, substancia_s, cpf_cnpj_do_titular): confirmada, 112.107 linhas = 112.107 combinações; processo sozinho repete (112.104 distintos)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "sem coluna de data"}
+    territorio:
+      nivel: outro
+      colunas:
+        superintendencia: "Gerência Regional da ANM responsável (ex.: 'Gerência Regional / MG')"
+        municipio_s: "texto 'MUNICÍPIO - UF', com vários municípios separados por vírgula (não é código IBGE)"
+    filtros_tipicos:
+      - "superintendencia = 'Gerência Regional / MG' (valor literal com ' / ')"
+      - "tipo_de_requerimento = 'Requerimento de Autorização de Pesquisa' (97.668 de 112.107; há 10 tipos, o resto são leilão, disponibilidade, cessão parcial...)"
+      - "substancia_s e tipo_s_de_uso são listas em texto (ex.: 'AREIA, AREIA'): use LIKE, não igualdade"
+    use_para: "contar processos de autorização de pesquisa por regional, substância ou titular"
+    nao_use_para: "área, prazo ou data: a tabela não tem essas colunas (para área e geometria use sigmine_processos_minerarios)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "112.107 linhas, 112.104 processos; fase_atual = 'Autorização de Pesquisa' e situacao = 'Sim' em todas; gotcha cpf_completado vale para cpf_cnpj_do_titular — medido 2026-10-27"
+  scm_cessoes_de_direitos:
+    grao: "uma cessão de direitos minerários sobre um processo (um processo pode ter várias): uma linha por cessão (processo × cedente/cessionário × data_da_cessao)"
+    chave: "nenhuma: 55.300 linhas para 38.933 processos; (processo, tipo_de_requerimento, municipio_s, substancia_s, cpf_cnpj_do_titular, data_da_cessao) dá 53.711 combinações, 1.589 linhas a menos"
+    tempo: {natureza: serie_de_periodos, coluna: data_da_cessao, cobertura: "1939-10-30–2026-10-07"}
+    territorio: {nivel: outro, colunas: {municipio_s: "texto 'MUNICÍPIO - UF' (não é código IBGE)", superintendencia: "Gerência Regional da ANM"}}
+    filtros_tipicos:
+      - "fase_atual = 'Concessão de Lavra' (15.878; outras: 'Autorização de Pesquisa' 20.384, 'Requerimento de Lavra' 15.893, 'Direito de Requerer a Lavra' 1.898, 'Lavra Garimpeira' 1.247)"
+      - "tipo_de_requerimento = 'Requerimento de Cessão parcial' para cessões parciais (2.196); a maioria das linhas (46.207) tem 'Requerimento de Autorização de Pesquisa'"
+    use_para: "cessões de direitos minerários ao longo do tempo, por fase do processo"
+    nao_use_para: "contar processos (conte DISTINCT processo) ou valor da cessão (não existe)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "55.300 linhas, 38.933 processos distintos — medido 2026-10-27"
+  scm_licenciamento:
+    grao: "mesmo grão de scm_alvara_de_pesquisa: um processo minerário na fase de licenciamento"
+    chave: "(processo, tipo_de_requerimento, municipio_s, substancia_s, cpf_cnpj_do_titular): confirmada, 21.625 linhas = 21.625 combinações; processo sozinho: 21.619 distintos"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "sem coluna de data"}
+    use_para: "contar processos nesta fase por regional, substância ou titular"
+    nao_use_para: "área, prazo ou data (não existem aqui; veja sigmine_processos_minerarios)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "21.625 linhas, 21.619 processos; fase_atual = 'Licenciamento' em todas as linhas (única fase da tabela); situacao = 'Sim' em todas — medido 2026-10-27"
+  scm_plg:
+    grao: "mesmo grão de scm_alvara_de_pesquisa: um processo de permissão de lavra garimpeira (PLG)"
+    chave: "(processo, tipo_de_requerimento, municipio_s, substancia_s, cpf_cnpj_do_titular): confirmada, 3.245 linhas = 3.245 combinações; processo sozinho: 3.245 distintos"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "sem coluna de data"}
+    use_para: "contar processos nesta fase por regional, substância ou titular"
+    nao_use_para: "área, prazo ou data (não existem aqui; veja sigmine_processos_minerarios)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "3.245 linhas, 3.245 processos; fase_atual = 'Lavra Garimpeira' em todas as linhas (única fase da tabela); situacao = 'Sim' em todas — medido 2026-10-27"
+  scm_portaria_de_lavra:
+    grao: "mesmo grão de scm_alvara_de_pesquisa: um processo com portaria de lavra (concessão de lavra)"
+    chave: "(processo, tipo_de_requerimento, municipio_s, substancia_s, cpf_cnpj_do_titular): confirmada, 15.541 linhas = 15.541 combinações; processo sozinho: 15.532 distintos"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "sem coluna de data"}
+    use_para: "contar processos nesta fase por regional, substância ou titular"
+    nao_use_para: "área, prazo ou data (não existem aqui; veja sigmine_processos_minerarios)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "15.541 linhas, 15.532 processos; fase_atual = 'Concessão de Lavra' em todas as linhas (única fase da tabela); situacao = 'Sim' em todas — medido 2026-10-27"
+  scm_registro_de_extracao_publicado:
+    grao: "mesmo grão de scm_alvara_de_pesquisa: um registro de extração publicado"
+    chave: "(processo, tipo_de_requerimento, municipio_s, substancia_s, cpf_cnpj_do_titular): confirmada, 3.993 linhas = 3.993 combinações; processo sozinho: 3.993 distintos"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "sem coluna de data"}
+    use_para: "contar processos nesta fase por regional, substância ou titular"
+    nao_use_para: "área, prazo ou data (não existem aqui; veja sigmine_processos_minerarios)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "3.993 linhas, 3.993 processos; fase_atual = 'Registro de Extração' em todas as linhas (única fase da tabela); situacao = 'Sim' em todas — medido 2026-10-27"
+  scm_relatorio_de_pesquisa_aprovado:
+    grao: "mesmo grão de scm_alvara_de_pesquisa: um processo com relatório final de pesquisa aprovado"
+    chave: "(processo, tipo_de_requerimento, municipio_s, substancia_s, cpf_cnpj_do_titular): confirmada, 15.854 linhas = 15.854 combinações; processo sozinho: 15.848 distintos"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "sem coluna de data"}
+    use_para: "contar processos nesta fase por regional, substância ou titular"
+    nao_use_para: "área, prazo ou data (não existem aqui; veja sigmine_processos_minerarios)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "15.854 linhas, 15.848 processos; fase_atual tem 3 valores: 'Concessão de Lavra' 11.551, 'Direito de Requerer a Lavra' 4.198, 'Autorização de Pesquisa' 105; situacao = 'Sim' em todas — medido 2026-10-27"
+  scm_requerimento_de_lavra:
+    grao: "mesmo grão de scm_alvara_de_pesquisa: um requerimento de lavra em análise"
+    chave: "(processo, tipo_de_requerimento, municipio_s, substancia_s, cpf_cnpj_do_titular): confirmada, 21.397 linhas = 21.397 combinações; processo sozinho: 21.391 distintos"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "sem coluna de data"}
+    use_para: "contar processos nesta fase por regional, substância ou titular"
+    nao_use_para: "área, prazo ou data (não existem aqui; veja sigmine_processos_minerarios)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "21.397 linhas, 21.391 processos; fase_atual = 'Requerimento de Lavra' em todas as linhas (única fase da tabela); situacao = 'Sim' em todas — medido 2026-10-27"
+  scm_requerimento_de_licenciamento:
+    grao: "mesmo grão de scm_alvara_de_pesquisa: um requerimento de licenciamento em análise"
+    chave: "(processo, tipo_de_requerimento, municipio_s, substancia_s, cpf_cnpj_do_titular): confirmada, 9.115 linhas = 9.115 combinações; processo sozinho: 9.115 distintos"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "sem coluna de data"}
+    use_para: "contar processos nesta fase por regional, substância ou titular"
+    nao_use_para: "área, prazo ou data (não existem aqui; veja sigmine_processos_minerarios)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "9.115 linhas, 9.115 processos; fase_atual = 'Requerimento de Licenciamento' em todas as linhas (única fase da tabela); situacao = 'Sim' em todas — medido 2026-10-27"
+  scm_requerimento_de_pesquisa:
+    grao: "mesmo grão de scm_alvara_de_pesquisa: um requerimento de pesquisa em análise"
+    chave: "(processo, tipo_de_requerimento, municipio_s, substancia_s, cpf_cnpj_do_titular): confirmada, 18.920 linhas = 18.920 combinações; processo sozinho: 18.920 distintos"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "sem coluna de data"}
+    use_para: "contar processos nesta fase por regional, substância ou titular"
+    nao_use_para: "área, prazo ou data (não existem aqui; veja sigmine_processos_minerarios)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "18.920 linhas, 18.920 processos; fase_atual = 'Requerimento de Pesquisa' em todas as linhas (única fase da tabela); situacao = 'Sim' em todas — medido 2026-10-27"
+  scm_requerimento_de_plg:
+    grao: "mesmo grão de scm_alvara_de_pesquisa: um requerimento de lavra garimpeira em análise"
+    chave: "(processo, tipo_de_requerimento, municipio_s, substancia_s, cpf_cnpj_do_titular): confirmada, 19.313 linhas = 19.313 combinações; processo sozinho: 19.313 distintos"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "sem coluna de data"}
+    use_para: "contar processos nesta fase por regional, substância ou titular"
+    nao_use_para: "área, prazo ou data (não existem aqui; veja sigmine_processos_minerarios)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "19.313 linhas, 19.313 processos; fase_atual = 'Requerimento de Lavra Garimpeira' em todas as linhas (única fase da tabela); situacao = 'Sim' em todas — medido 2026-10-27"
+  scm_requerimento_de_registro_de_extracao_protocolizado:
+    grao: "mesmo grão de scm_alvara_de_pesquisa: um requerimento de registro de extração protocolizado"
+    chave: "(processo, tipo_de_requerimento, municipio_s, substancia_s, cpf_cnpj_do_titular): confirmada, 2.365 linhas = 2.365 combinações; processo sozinho: 2.365 distintos"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "sem coluna de data"}
+    use_para: "contar processos nesta fase por regional, substância ou titular"
+    nao_use_para: "área, prazo ou data (não existem aqui; veja sigmine_processos_minerarios)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2.365 linhas, 2.365 processos; fase_atual = 'Requerimento de Registro de Extração' em todas as linhas (única fase da tabela); situacao = 'Sim' em todas — medido 2026-10-27"
+  scm_guia_de_utilizacao_autorizada:
+    grao: "uma guia de utilização autorizada (extração antecipada) publicada para um processo"
+    chave: "nenhuma: 12.290 linhas contra 12.261 combinações de (processo, guia, datapublicacao, localidade); 7.181 processos distintos"
+    tempo: {natureza: serie_de_periodos, coluna: datapublicacao, cobertura: "2009-12-09–2026-10-07"}
+    territorio: {nivel: outro, colunas: {localidade: "texto 'MUNICÍPIO/UF' (não é código IBGE)"}}
+    filtros_tipicos: ["indicaprorrogacao = 'Sim' (434 linhas; 'Não' 11.856)"]
+    use_para: "guias publicadas por período, com prazo e quantidade em texto livre"
+    nao_use_para: "somar quantidademinerio ou prazo (são texto livre como '1.080 t/ano')"
+    rascunho: [use_para, nao_use_para]
+    verificado: "12.290 linhas — medido 2026-10-27"
+  sigmine_processos_minerarios:
+    grao: "um polígono de processo minerário do SIGMINE (um processo pode ter vários polígonos); 70% das linhas são processos inativos sem atributos"
+    chave: "nenhuma: 942.045 linhas, 933.588 ID distintos, 912.968 PROCESSO distintos, OGC_FID repete entre ativos e inativos (665.883 distintos)"
+    tempo: {natureza: retrato_atual, coluna: ANO, cobertura: "ANO do processo 1934–2026; sem data de carga"}
+    territorio: {nivel: outro, colunas: {UF: "sigla da UF, ou 'PROCESSOS_INATIVOS' (665.883 linhas) ou 'ZEE'; uf_1 é cópia de UF", geom_wkt: "geometria do polígono em texto WKT"}}
+    medidas:
+      - {coluna: AREA_HA, o_que: "área do polígono", unidade: "hectares", soma: sim}
+    filtros_tipicos:
+      - "UF <> 'PROCESSOS_INATIVOS': só as 276.162 linhas ativas têm FASE, SUBS, NOME e USO preenchidos (nas 665.883 inativas são NULL)"
+      - "FASE = 'AUTORIZAÇÃO DE PESQUISA' (116.596 linhas; caixa alta e acentuada, diferente do scm_*: 'Autorização de Pesquisa'); outras: 'CONCESSÃO DE LAVRA' 16.007, 'LICENCIAMENTO' 22.016, 'REQUERIMENTO DE PESQUISA' 25.914, 'DISPONIBILIDADE' 21.329"
+    use_para: "área e localização de processos minerários ativos por fase, substância ou UF"
+    nao_use_para: "contar processos sem DISTINCT PROCESSO ou somar AREA_HA de inativos junto com ativos (as inativas somam 1.095 mi ha, as ativas 237 mi ha)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "ativas 276.162 linhas, 260.750 processos, 236,8 mi ha; inativas 665.883 linhas, 652.525 processos, 1.095,1 mi ha; 2 inativas com AREA_HA negativa — medido 2026-10-27"

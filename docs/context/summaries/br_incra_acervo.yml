@@ -1,0 +1,78 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_incra_acervo
+tabelas:
+  sigef_parcelas:
+    grao: "uma parcela de imóvel rural certificada no SIGEF (atributos e centroide)"
+    chave: "parcela_co"
+    tempo: {natureza: retrato_atual, coluna: data_aprov, cobertura: "2013-11-19–2026-09-22 (data de aprovação)"}
+    territorio: {nivel: municipio, colunas: {municipio_: "código IBGE de 7 dígitos (inteiro)", uf_id: "código IBGE da UF (2 dígitos, inteiro)", sigla_uf_arquivo: "UF do arquivo de origem", lat: "latitude do centroide", lon: "longitude do centroide"}}
+    medidas:
+      - {coluna: area_ha, o_que: "área da parcela", unidade: "hectares", soma: sim}
+    filtros_tipicos:
+      - "status = 'CERTIFICADA' (1.029.281) ou 'REGISTRADA' (811.977): estágio da parcela no SIGEF, não se somam como categorias independentes"
+      - "situacao_i = 'REGISTRADA' (1.680.843): situação do imóvel segundo outra coluna; difere de status (ex.: status='CERTIFICADA' com situacao_i='REGISTRADA' em 912.893 linhas); 2.703 nulos"
+      - "OGC_FID não é chave (320.807 distintos em 1.841.258 linhas: reinicia por arquivo de UF)"
+    use_para: "área e contagem de parcelas certificadas por município/UF e juntar atributos ao polígono"
+    nao_use_para: "identificar parcela por OGC_FID; medir cobertura de imóveis pelo centroide (gotcha centroide_subestima_certificacao); contar imóveis por codigo_imo (repete entre parcelas)"
+    rascunho: [use_para, nao_use_para, "significado de status vs situacao_i além do que os valores indicam"]
+    verificado: "1.841.258 linhas = 1.841.258 distintos de parcela_co; OGC_FID 320.807 distintos; municipio_ nunca 0 e sempre coerente com uf_id (0 divergências); registro_d preenchida em 798.008 (status REGISTRADA sem registro_d: 14.487) — medido 2026-10-27"
+  sigef_poligono:
+    grao: "o polígono de uma parcela SIGEF (geometria)"
+    chave: "parcela_co"
+    tempo: {natureza: retrato_atual, coluna: "nenhuma"}
+    territorio: {nivel: outro, colunas: {geometria: "polígono em CRS84", sigla_uf_arquivo: "UF do arquivo"}}
+    filtros_tipicos: ["junte a sigef_parcelas por parcela_co com LEFT JOIN (gotcha poligono_coleta_mais_nova)"]
+    use_para: "análises espaciais com o contorno das parcelas (sobreposição com CAR, UCs etc.)"
+    nao_use_para: "atributos da parcela (estão em sigef_parcelas) ou ligação por OGC_FID"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.867.095 linhas = 1.867.095 distintos de parcela_co (sigef_parcelas tem 1.841.258) — medido 2026-10-27"
+  snci_parcelas:
+    grao: "um imóvel certificado no SNCI (sistema anterior ao SIGEF), com centroide"
+    chave: "nenhuma: num_certif repete (52.744 distintos em 52.817 linhas; 56 valores repetidos) e (num_certif, cod_imovel) também (52.748)"
+    tempo: {natureza: retrato_atual, coluna: data_certi, cobertura: "2004-04-26–2027-08-19 (há data futura: 1 linha)"}
+    territorio: {nivel: ponto, colunas: {uf_municip: "UF (sigla, apesar do nome)", lat: "latitude do centroide", lon: "longitude do centroide", sr: "superintendência regional do INCRA (código de 2 dígitos)"}}
+    medidas:
+      - {coluna: area_ha, o_que: "área calculada do imóvel", unidade: "hectares", soma: sim}
+      - {coluna: qtd_area_p, o_que: "área do imóvel como consta no certificado", unidade: "não documentada (provavelmente ha)", soma: nao}
+    filtros_tipicos: ["sr = '08' (zero à esquerda, texto; 10.981 linhas)"]
+    use_para: "imóveis certificados no SNCI e sua área por UF"
+    nao_use_para: "contar certificados por num_certif sem deduplicar; OGC_FID como chave (10.975 distintos)"
+    rascunho: [use_para, nao_use_para, unidade de qtd_area_p]
+    verificado: "52.817 linhas, 52.744 num_certif distintos; OGC_FID 10.975 distintos — medido 2026-10-27"
+  snci_poligono:
+    grao: "o polígono de um imóvel SNCI (geometria)"
+    chave: "nenhuma: (num_certif, cod_imovel) tem 52.692 distintos em 52.761 linhas"
+    tempo: {natureza: retrato_atual, coluna: "nenhuma"}
+    territorio: {nivel: outro, colunas: {geometria: "polígono em CRS84", sigla_uf_arquivo: "UF do arquivo"}}
+    filtros_tipicos: ["LEFT JOIN com snci_parcelas por num_certif (gotcha poligono_coleta_mais_nova)"]
+    use_para: "contorno dos imóveis SNCI para análise espacial"
+    nao_use_para: "atributos do imóvel; junção por OGC_FID"
+    rascunho: [use_para, nao_use_para]
+    verificado: "52.761 linhas; 52.687 num_certif distintos — medido 2026-10-27"
+  assentamentos:
+    grao: "um registro de projeto de assentamento do INCRA (cd_sipra), com centroide"
+    chave: "nenhuma: cd_sipra repete (8.097 distintos em 8.216 linhas; 34 códigos repetidos, RO0132000 aparece 78 vezes com mesmo nome e mesma área)"
+    tempo: {natureza: retrato_atual, coluna: data_de_cr, cobertura: "1930-10-07–2021-09-29 (data de criação do projeto)"}
+    territorio: {nivel: ponto, colunas: {uf: "sigla da UF", municipio: "nome do município em maiúsculas sem acento", lat: "latitude", lon: "longitude"}}
+    medidas:
+      - {coluna: area_hecta, o_que: "área do projeto", unidade: "hectares (soma 72,4 milhões, igual a area_ha)", soma: sim}
+      - {coluna: num_famili, o_que: "famílias assentadas", unidade: "famílias", soma: sim}
+      - {coluna: capacidade, o_que: "capacidade de famílias do projeto", unidade: "famílias", soma: sim}
+    filtros_tipicos:
+      - "fase = 5: valores presentes 3 (2.996), 4 (1.140), 5 (2.315), 6 (1.210), 7 (554), 10 (1); significado das fases não documentado"
+      - "forma_obte = 'Desapropriação' (5.578): forma de obtenção da terra"
+    use_para: "área e famílias de assentamentos por UF e forma de obtenção"
+    nao_use_para: "somar area_hecta/num_famili sem deduplicar cd_sipra (projetos repetidos em várias linhas inflam); sr e descricao_ são 100% nulas"
+    rascunho: [use_para, nao_use_para, unidade de capacidade]
+    verificado: "8.216 linhas, 8.097 cd_sipra distintos, OGC_FID único; soma area_hecta 72,4 Mha — medido 2026-10-27"
+  assentamentos_poligono:
+    grao: "o polígono de um projeto de assentamento (geometria)"
+    chave: "nenhuma: cd_sipra tem 8.095 distintos em 8.214 linhas"
+    tempo: {natureza: retrato_atual, coluna: "nenhuma"}
+    territorio: {nivel: outro, colunas: {geometria: "polígono em CRS84"}}
+    filtros_tipicos: ["LEFT JOIN com assentamentos por cd_sipra (gotcha poligono_coleta_mais_nova); cd_sipra repete dos dois lados"]
+    use_para: "contorno de assentamentos para análise espacial"
+    nao_use_para: "atributos do projeto; junção por OGC_FID"
+    rascunho: [use_para, nao_use_para]
+    verificado: "8.214 linhas, 8.095 cd_sipra distintos — medido 2026-10-27"

@@ -1,0 +1,96 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_inep_avaliacao_alfabetizacao
+tabelas:
+  alunos:
+    grao: "um aluno do 2º ano do EF avaliado × ano (microdado da avaliação de alfabetização)"
+    chave: "ano, id_aluno"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2023–2024"}
+    territorio: {nivel: ponto, colunas: {id_escola: "código INEP da escola", id_municipio: "código IBGE de 7 dígitos"}}
+    medidas:
+      - {coluna: proficiencia, o_que: "proficiência em português do aluno; nula quando o aluno não tem resultado (12,6% das linhas)", unidade: "pontos de escala", soma: nao}
+      - {coluna: peso_aluno, o_que: "peso amostral do aluno; nulo junto com proficiencia", unidade: "peso", soma: nao}
+      - {coluna: alfabetizado, o_que: "1 = alfabetizado, 0 = não", unidade: "flag", soma: nao}
+    filtros_tipicos:
+      - "presenca = '1' (Presente) e preenchimento_caderno = '1' (Prova preenchida), valores do dicionário"
+      - "alfabetizado = '1' (Sim); em 2024 todo alfabetizado tem proficiencia; ausentes (presenca = '0': 267.772 em 2024) não têm proficiencia"
+      - "rede = '3' (Municipal), '2' Estadual, '4' Privada, '1' Federal"
+      - "ponderar por peso_aluno ao estimar taxas; serie é sempre '2'"
+    use_para: "taxa de alfabetização e proficiência por escola, município ou rede a partir dos alunos"
+    nao_use_para: "taxa oficial publicada (use municipio, uf ou meta_*) ou contar alunos como população sem o peso"
+    rascunho: [use_para, nao_use_para, "peso_aluno como peso amostral"]
+    verificado: "2024: 2.120.560 linhas = 2.120.560 distintos de id_aluno; 2023: 1.747.439 = 1.747.439; proficiencia nula 268.708 (2024) e 244.630 (2023) — medido 2026-10-27"
+  municipio:
+    grao: "um município × ano × rede"
+    chave: "ano, id_municipio, rede"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2023–2024"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos"}}
+    medidas:
+      - {coluna: taxa_alfabetizacao, o_que: "% de alunos alfabetizados", unidade: "%", soma: nao}
+      - {coluna: media_portugues, o_que: "proficiência média em português", unidade: "pontos de escala", soma: nao}
+      - {coluna: "proporcao_aluno_nivel_0 a _8", o_que: "% de alunos em cada nível de proficiência; só preenchida em 2024 (nula em 100% de 2023)", unidade: "%", soma: nao}
+    filtros_tipicos:
+      - "rede = '3' (Municipal), '2' Estadual, '5' Pública (Estadual e Municipal), '0' Total (só 398 linhas em 2024), '1' Federal, '4' Privada, '6' Pública (Federal, Estadual e Municipal) — dicionário"
+      - "ano = 2024 para usar proporcao_aluno_nivel_*"
+    use_para: "taxa de alfabetização e distribuição de níveis por município e rede"
+    nao_use_para: "somar linhas de redes diferentes: as redes se sobrepõem ('5' contém '2' e '3'); somar ou tirar média simples de taxas entre municípios"
+    rascunho: [use_para, nao_use_para]
+    verificado: "23.995 linhas = 23.995 distintos de (ano, id_municipio, rede); por ano e rede: 2023 redes 2/3/5; 2024 redes 0/2/3/5; proporcao_aluno_nivel_0 preenchida em 2024 e nula em 2023 — medido 2026-10-27"
+  uf:
+    grao: "uma UF × ano × rede"
+    chave: "ano, sigla_uf, rede"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2023–2024"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF"}}
+    medidas:
+      - {coluna: taxa_alfabetizacao, o_que: "% de alunos alfabetizados", unidade: "%", soma: nao}
+      - {coluna: media_portugues, o_que: "proficiência média em português", unidade: "pontos de escala", soma: nao}
+      - {coluna: "proporcao_aluno_nivel_0 a _8", o_que: "% de alunos por nível; só 2024", unidade: "%", soma: nao}
+    filtros_tipicos: ["rede = '5' (Pública Estadual e Municipal), '3' Municipal, '2' Estadual; rede = '0' (Total) existe em 1 linha só (BA, 2024)", "ano = 2024 para proporcao_aluno_nivel_*"]
+    use_para: "taxa de alfabetização por UF e rede"
+    nao_use_para: "somar redes sobrepostas; comparar 2023 e 2024 por rede sem checar que a rede existe nos dois anos"
+    rascunho: [use_para, nao_use_para]
+    verificado: "145 linhas = 145 distintos de (ano, sigla_uf, rede); redes por ano: 2023: 22/24/24 (rede 2/3/5), 2024: 1/24/25/25 (rede 0/2/3/5) — medido 2026-10-27"
+  meta_alfabetizacao_municipio:
+    grao: "um município × ano (rede municipal) com taxa observada e metas anuais até 2030"
+    chave: "ano, id_municipio"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2023–2024"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos"}}
+    medidas:
+      - {coluna: taxa_alfabetizacao, o_que: "taxa de alfabetização observada (1,12% nulos)", unidade: "%", soma: nao}
+      - {coluna: "meta_alfabetizacao_2024 a _2030", o_que: "meta de taxa para cada ano; 2030 é 80 para todos", unidade: "%", soma: nao}
+      - {coluna: nivel_alfabetizacao, o_que: "faixa de nível do município (0 a 5; significado não documentado)", unidade: "código", soma: nao}
+      - {coluna: percentual_participacao, o_que: "participação na avaliação", unidade: "%", soma: nao}
+    filtros_tipicos: ["rede = 'Municipal' (texto, único valor); ano = 2024 para o retrato mais recente"]
+    use_para: "comparar taxa observada com a meta de cada município"
+    nao_use_para: "redes estadual ou privada (a tabela só tem rede municipal)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "10.704 linhas = 10.704 distintos de (ano, id_municipio) — medido 2026-10-27"
+  meta_alfabetizacao_uf:
+    grao: "uma UF × ano (rede pública) com taxa observada e metas anuais até 2030"
+    chave: "ano, sigla_uf"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2023–2025"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF"}}
+    medidas:
+      - {coluna: taxa_alfabetizacao, o_que: "taxa observada (4,9% nulos)", unidade: "%", soma: nao}
+      - {coluna: "meta_alfabetizacao_2024 a _2030", o_que: "meta anual", unidade: "%", soma: nao}
+      - {coluna: percentual_participacao, o_que: "participação na avaliação", unidade: "%", soma: nao}
+    filtros_tipicos: ["rede = 'Pública' (texto, único valor)"]
+    use_para: "taxa observada contra metas por UF"
+    nao_use_para: "comparar com as tabelas municipio/uf, onde rede é código e inclui outras redes"
+    rascunho: [use_para, nao_use_para]
+    verificado: "81 linhas = 81 distintos de (ano, sigla_uf) = 27 × 3 — medido 2026-10-27"
+  meta_alfabetizacao_brasil:
+    grao: "o Brasil (rede pública) × ano, com taxa observada e metas"
+    chave: "ano"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2023–2025"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: taxa_alfabetizacao, o_que: "taxa nacional observada (55,9 a 66,0)", unidade: "%", soma: nao}
+    filtros_tipicos: ["rede = 'Pública' (texto)"]
+    use_para: "série nacional de taxa e metas 2024 a 2030"
+    nao_use_para: "recortes por UF ou município"
+    rascunho: [use_para, nao_use_para]
+    verificado: "3 linhas = 3 anos distintos — medido 2026-10-27"
+  dicionario:
+    grao: "um código de coluna (id_tabela, nome_coluna, chave) com seu significado"
+    use_para: "traduzir códigos de rede, presenca, alfabetizado e preenchimento_caderno (rede tem codificações distintas em alunos e municipio/uf)"

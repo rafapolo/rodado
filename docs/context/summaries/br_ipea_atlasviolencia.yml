@@ -1,0 +1,31 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ipea_atlasviolencia
+tabelas:
+  series:
+    grao: "uma série (indicador) do Atlas da Violência, com título, tema, unidade e metadados"
+    chave: "id (152 linhas, 152 distintos; document_id também único)"
+    tempo: {natureza: sem_tempo, coluna: nenhuma, cobertura: "catálogo"}
+    territorio: {nivel: nenhum, colunas: {}}
+    medidas: []
+    filtros_tipicos:
+      - "ativo = 1 (136 séries ativas, 16 com ativo = 0)"
+      - "unidade_id: 1 = contagem (títulos 'Homicídios...'), 3 = taxa (títulos 'Taxa de...', valores ~5–23), 4 = proporção em % (valores 58–95); unidade_nome diverge entre séries de mesmo unidade_id (unidade 3 aparece como 'Pessoa' e 'Proporção'), então decida pelo título"
+    use_para: "achar o id da série pelo título antes de consultar valores_nacional"
+    nao_use_para: "valores: não há medida aqui"
+    rascunho: [use_para, nao_use_para, "significado de unidade_id e tema_id (inferido dos títulos e dos valores)"]
+    verificado: "152 linhas = 152 distintos de id; 136 ativas — medido 2026-10-27."
+  valores_nacional:
+    grao: "uma série × ano, valor nacional (Brasil)"
+    chave: "nenhuma: 2.854 linhas e 2.651 combinações de (serie_id, ano); 203 pares repetem com valores diferentes, em 40 séries (ex.: serie 114 em 1989 tem 0.0 e 0.00706); não há coluna que distinga as duas linhas"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1979–2024"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: valor, o_que: "valor da série no ano (contagem, taxa ou % conforme series.unidade_id)", unidade: "varia por série", soma: nao}
+    filtros_tipicos:
+      - "serie_id = 20 (Taxa de homicídios registrados) ou 31 (Homicídios por Armas de Fogo), um valor por ano em 2019 (21,89 e 30.206)"
+      - "ao tomar um ano de uma série, cheque se o par (serie_id, ano) repete antes de somar ou fazer join"
+    use_para: "série histórica nacional de homicídios, suicídios, mortes violentas etc."
+    nao_use_para: "recorte por UF ou município (a tabela é só nacional) e somar séries diferentes entre si"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2.854 linhas, 2.651 distintos de (serie_id, ano), 136 séries, 0 serie_id sem correspondente em series — medido 2026-10-27."

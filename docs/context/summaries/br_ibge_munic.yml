@@ -1,0 +1,190 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibge_munic
+tabelas:
+  atual_prefeito:
+    grao: 'um município × ano da pesquisa: dados do prefeito em exercício na época (nome, sexo, idade, escolaridade,
+      cor/raça, partido)'
+    chave: ano, id_municipio
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2004, 2005, 2009, 2013, 2017, 2021 (5560–5570 municípios por edição)
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos (VARCHAR)
+        sigla_uf: UF
+    filtros_tipicos:
+    - 'sexo IN (''Masculino'',''Feminino'') (2021: 4894 e 674; 2 ''Recusa'')'
+    - 'escolaridade tem variantes com espaço no fim (''Ensino superior completo '' 2772 linhas, além de ''Ensino
+      superior completo''): normalize com trim() antes de agrupar'
+    - partido_atual é NULL em todos os 5570 municípios de 2021 (medido); use partido_eleito
+    use_para: Perfil do prefeito por município e ano de pesquisa (sexo, idade, escolaridade).
+    nao_use_para: Não use partido_atual em 2021 (nulo nos 5570); não é série anual; cor_raca é 83% nula.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - uso de partido_eleito
+    verificado: 33399 linhas = 33399 distintos de (ano, id_municipio) = 5560+5564+5565+5570×3 — medido 2026-10-27
+  indicadores_perfil_gestor:
+    grao: 'um município × tema × ano: perfil do gestor municipal de uma política setorial'
+    chave: ano, tema, id_municipio
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2018–2021
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos (VARCHAR)
+        sigla_uf: UF
+    filtros_tipicos:
+    - 'tema: assistencia_social, cultura, politica_genero, saude (2018); direitos_humanos, seguranca_publica (2019);
+      agropecuario, habitacao, meio_ambiente, transporte (2020); cultura, ''eduacao'' (sic, sem o ''c''), esporte,
+      informacao_prefeito, saude (2021). Note ''agropecuario'' aqui e ''agropecuaria'' no ESTADIC'
+    - sem_gestor e recusa são flags 0/1; para o perfil exclua sem_gestor = 1
+    use_para: Perfil (sexo, idade, escolaridade, cor/raça) do gestor da política em cada município.
+    nao_use_para: Não é contagem de pessoas; cada tema só aparece numa edição.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - significado de sem_gestor/recusa (inferido)
+    verificado: 83550 linhas = 83550 distintos de (ano, tema, id_municipio) = 15 pares (ano, tema) × 5570 municípios
+      — medido 2026-10-27
+  indicadores_quantidade_vinculo:
+    grao: 'um município × ano × tipo de administração × tipo de vínculo × escolaridade: quantidade de pessoal'
+    chave: ano, id_municipio, tipo_administracao, tipo_vinculo, escolaridade
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2018–2021
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos (VARCHAR)
+        sigla_uf: UF
+    filtros_tipicos:
+    - escolaridade = 'Total' para o total do vínculo (único valor em 2019–2021); em 2018 os níveis 'Ensino fundamental','Ensino
+      médio','Ensino superior','Pós-graduação','Sem instrução' somam ao Total (somar tudo conta duas vezes)
+    - tipo_administracao IN ('Direta','Indireta'); tipo_vinculo IN ('Celetistas','Estatutários','Somente comissionados','Sem
+      vínculo permanente','Estagiários')
+    - recusa = 1 (998 linhas) e existencia_adm_indireta (0/1) explicam parte dos nulos
+    use_para: Servidores municipais por vínculo e administração direta/indireta (e por escolaridade em 2018).
+    nao_use_para: 'Não some todas as escolaridades: ''Total'' já soma os níveis (soma dobra); quantidade_vinculo
+      é 41% nula.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    - causa dos nulos
+    verificado: 490160 linhas = 490160 distintos da chave; 5570 municípios; 2018 = 323060 linhas com escolaridade
+      ('Total' + 5 níveis) e 2019–2021 = 55700 por ano só 'Total'; Direta 2021 'Total' soma 6.322.756 (recursos_humanos
+      2021 adm_direta = 6.320.413) — medido 2026-10-27
+    medidas:
+    - coluna: quantidade_vinculo
+      o_que: pessoas no vínculo
+      unidade: pessoas
+      soma: sim
+  recursos_humanos:
+    grao: 'um município × ano: pessoal ocupado na administração municipal direta e indireta (colunas largas, por
+      vínculo e escolaridade)'
+    chave: ano, id_municipio
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2004–2006, 2008, 2009, 2011–2015, 2017–2021, 2023, 2024 (17 anos)
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos (VARCHAR)
+        sigla_uf: UF
+    filtros_tipicos:
+    - 'adm_direta e adm_indireta são os totais; 2024: apenas adm_indireta (354.245) está preenchida'
+    - quebras por escolaridade têm 66–94% de nulos
+    use_para: Total de servidores municipais (adm_direta, adm_indireta) por município e ano.
+    nao_use_para: Não use adm_direta de 2024 (nula), nem some adm_direta com suas quebras (clt_*, *_ensino_*); a
+      pesquisa não é anual.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 94647 linhas = 94647 distintos de (ano, id_municipio); 98 colunas; adm_direta soma Brasil 2021 =
+      6.320.413 e 2023 = 7.003.955; em 2024 adm_direta é NULA nos 5570 municípios e clt_adm_direta também; adm_indireta
+      nula em 2006 — medido 2026-10-27
+    medidas:
+    - coluna: adm_direta
+      o_que: pessoal ocupado na administração direta
+      unidade: pessoas
+      soma: sim
+    - coluna: adm_indireta
+      o_que: pessoal ocupado na administração indireta
+      unidade: pessoas
+      soma: sim
+  habitacao:
+    grao: 'um município × ano da pesquisa: respostas sobre política de habitação do município (uma coluna por pergunta)'
+    chave: ano, id_municipio
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2004, 2005, 2008, 2009, 2012, 2013, 2015, 2017, 2018, 2020, 2021, 2024
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos (VARCHAR)
+        sigla_uf: UF
+    filtros_tipicos:
+    - 'respostas em VARCHAR por extenso: ''Sim'', ''Não'', ''Recusa'', ''Ignorado'', ''Não aplicável'' (valores
+      literais; nulo = pergunta não feita naquela edição, 60–95% de nulos)'
+    use_para: Existência de órgão, conselho, cadastro de famílias, programas de habitação por município.
+    nao_use_para: Não tem valor somável (respostas); a pergunta muda entre edições e ~60–95% das colunas são nulas
+      num ano em que não foram feitas, filtre o ano e as colunas antes de contar; não é série anual.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 66808 linhas = 66808 distintos de (ano, id_municipio); 12 edições; 306 colunas; 5560–5570 municípios
+      por ano — medido 2026-10-27
+  meio_ambiente:
+    grao: 'um município × ano da pesquisa: respostas sobre meio ambiente do município (uma coluna por pergunta)'
+    chave: ano, id_municipio
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2004, 2008, 2009, 2012, 2013, 2015, 2017, 2020
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos (VARCHAR)
+        sigla_uf: UF
+    filtros_tipicos:
+    - 'respostas em VARCHAR por extenso: ''Sim'', ''Não'', ''Recusa'', ''Ignorado'', ''Não aplicável'' (valores
+      literais; nulo = pergunta não feita naquela edição, 60–95% de nulos)'
+    use_para: Existência de órgão ambiental, conselho, Agenda 21, articulação, instrumentos ambientais por município.
+    nao_use_para: Não tem valor somável (respostas); a pergunta muda entre edições e ~60–95% das colunas são nulas
+      num ano em que não foram feitas, filtre o ano e as colunas antes de contar; não é série anual.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 44534 linhas = 44534 distintos de (ano, id_municipio); 8 edições; 212 colunas — medido 2026-10-27
+  recursos_gestao:
+    grao: 'um município × ano da pesquisa: respostas sobre recursos para a gestão (instrumentos de planejamento,
+      articulação, consórcios) (uma coluna por pergunta)'
+    chave: ano, id_municipio
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2004, 2005, 2006, 2009, 2012, 2015, 2019
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos (VARCHAR)
+        sigla_uf: UF
+    filtros_tipicos:
+    - 'respostas em VARCHAR por extenso: ''Sim'', ''Não'', ''Recusa'', ''Ignorado'', ''Não aplicável'' (valores
+      literais; nulo = pergunta não feita naquela edição, 60–95% de nulos)'
+    - 'há colunas INTEGER 100% nulas (ex.: articulacao_*_consorcio_administrativo_*) em recursos_gestao: ignore'
+    use_para: Instrumentos de planejamento, arranjos produtivos, consórcios e articulação por município e setor.
+    nao_use_para: Não tem valor somável (respostas); a pergunta muda entre edições e ~60–95% das colunas são nulas
+      num ano em que não foram feitas, filtre o ano e as colunas antes de contar; não é série anual.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 38958 linhas = 38958 distintos de (ano, id_municipio); 7 edições; 202 colunas — medido 2026-10-27

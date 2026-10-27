@@ -1,0 +1,243 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_bd_diretorios_brasil
+tabelas:
+  area_conhecimento:
+    grao: "uma especialidade da tabela de áreas do conhecimento (CNPq/CAPES), com subárea, área e grande área"
+    chave: "especialidade: 875 linhas = 875 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "grande_area = '3' (238) é Engenharias; '1' (198) Ciências Exatas e da Terra; códigos como texto"
+    use_para: "decodificar a hierarquia de áreas do conhecimento."
+    nao_use_para: "contar pesquisadores ou cursos (é catálogo)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "875 linhas, chave única — medido 2026-10-27"
+  cbo_1994:
+    grao: "uma ocupação da CBO 1994"
+    chave: "cbo_1994: 2.379 linhas = 2.379 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: nenhum, colunas: {}}
+    use_para: "decodificar CBO 1994 de bases antigas (ex.: RAIS até os anos 2000)."
+    nao_use_para: "bases com CBO 2002 (use cbo_2002)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "2.379 linhas, chave única — medido 2026-10-27"
+  cbo_2002:
+    grao: "uma ocupação da CBO 2002 com família, subgrupo e grande grupo"
+    chave: "cbo_2002: 2.812 linhas = 2.812 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "indicador_cbo_2002_ativa = 1 para ocupação ativa (2.694 de 2.812); 0 em 118. Os textos descricao_subgrupo e descricao_grande_grupo vêm com espaços à direita: use trim()"
+    use_para: "decodificar CBO 2002 (RAIS, CAGED) e subir para família, subgrupo e grande grupo."
+    nao_use_para: "bases com CBO 1994."
+    rascunho: [use_para, nao_use_para]
+    verificado: "2.812 linhas, chave única; 2.694 ativas — medido 2026-10-27"
+  cep:
+    grao: "um CEP (logradouro) com município e centroide"
+    chave: "cep: 905.210 linhas = 905.210 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: ponto, colunas: {id_municipio: "código IBGE de 7 dígitos", centroide: "ponto do CEP", sigla_uf: "UF"}}
+    filtros_tipicos:
+      - "sigla_uf: 3 CEPs com sigla fora da tabela uf; 27% de estabelecimentos nulo"
+    use_para: "localizar um CEP em município e coordenada."
+    nao_use_para: "contar domicílios ou empresas; o catálogo não cobre todos os CEPs por logradouro de forma uniforme."
+    rascunho: [use_para, nao_use_para]
+    verificado: "905.210 linhas, chave única; chave (cep, logradouro) também única — medido 2026-10-27"
+  cid_10:
+    grao: "uma subcategoria da CID-10 com categoria e capítulo"
+    chave: "subcategoria: 14.941 linhas = 14.941 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "capitulo em algarismos romanos ('XX' causas externas, 3.718; 'XIX' lesões, 1.463); causa_violencia = 1 (591) e causa_overdose = 1 (475) são marcadores do projeto; indicador_registro_ativo é nulo em 100%"
+    use_para: "decodificar causas de óbito e internação (SIM, SIH)."
+    nao_use_para: "contar casos (é catálogo)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "14.941 linhas, chave única — medido 2026-10-27"
+  cid_9:
+    grao: "uma categoria da CID-9"
+    chave: "categoria: 886 linhas = 886 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: nenhum, colunas: {}}
+    use_para: "decodificar CID-9 de bases antigas."
+    nao_use_para: "bases com CID-10 (use cid_10)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "886 linhas, chave única — medido 2026-10-27"
+  cnae_1:
+    grao: "uma subclasse da CNAE 1.0 com grupo, divisão e seção"
+    chave: "cnae_1: 581 linhas = 581 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "secao = 'D' (indústrias de transformação, 286 linhas)"
+    use_para: "decodificar CNAE 1.0 de bases antigas."
+    nao_use_para: "bases CNAE 2.0 (use cnae_2)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "581 linhas, chave única — medido 2026-10-27"
+  cnae_2:
+    grao: "uma subclasse da CNAE 2.x (7 dígitos) com classe, grupo, divisão e seção"
+    chave: "subclasse: 1.356 linhas = 1.356 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "indicador_cnae_2_0 / _1 / _2 / _3 = 1 marcam subclasse vigente em cada versão (1.301, 1.318, 1.327, 1.331 de 1.356); 0 em 55, 38, 29 e 25"
+    use_para: "decodificar CNAE 2.x e agregar para classe, divisão ou seção."
+    nao_use_para: "CNAE 1.0 (use cnae_1). Atenção: descricao_divisao e descricao_secao estão em Title Case, descricao_subclasse não."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.356 linhas, chave única — medido 2026-10-27"
+  curso_superior:
+    grao: "um curso superior da classificação do INEP"
+    chave: "id_curso: 255 linhas = 255 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "grau_academico = 'Tecnológico' (122), 'Bacharelado' (105), 'Licenciatura' (28)"
+    use_para: "decodificar cursos do Censo da Educação Superior."
+    nao_use_para: "contar matrículas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "255 linhas, chave única — medido 2026-10-27"
+  distrito_1991:
+    grao: "um distrito do IBGE na malha de 1991, com município e UF"
+    chave: "id_distrito: 8.855 linhas = 8.855 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: municipio, colunas: {id_municipio: "IBGE 7 dígitos", sigla_uf: "UF"}}
+    use_para: "decodificar distritos de 1991 e ligá-los ao município."
+    nao_use_para: "comparar distritos entre malhas sem checar a versão."
+    rascunho: [use_para, nao_use_para]
+    verificado: "8.855 linhas, chave única — medido 2026-10-27"
+  distrito_2000:
+    grao: "um distrito do IBGE na malha de 2000, com município e UF"
+    chave: "id_distrito: 9.849 linhas = 9.849 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: municipio, colunas: {id_municipio: "IBGE 7 dígitos", sigla_uf: "UF"}}
+    use_para: "decodificar distritos de 2000 e ligá-los ao município."
+    nao_use_para: "comparar distritos entre malhas sem checar a versão."
+    rascunho: [use_para, nao_use_para]
+    verificado: "9.849 linhas, chave única — medido 2026-10-27"
+  distrito_2010:
+    grao: "um distrito do IBGE na malha de 2010, com município e UF"
+    chave: "id_distrito: 10.283 linhas = 10.283 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: municipio, colunas: {id_municipio: "IBGE 7 dígitos", sigla_uf: "UF"}}
+    use_para: "decodificar distritos de 2010 e ligá-los ao município."
+    nao_use_para: "comparar distritos entre malhas sem checar a versão."
+    rascunho: [use_para, nao_use_para]
+    verificado: "10.283 linhas, chave única — medido 2026-10-27"
+  empresa:
+    grao: "não lida: a tabela existe vazia (0 linhas) neste banco; os dados de CNPJ ficam em outro dataset"
+    rascunho: [grao]
+    verificado: "0 linhas — medido 2026-10-27"
+  escola:
+    grao: "uma escola do cadastro do INEP (Censo Escolar)"
+    chave: "id_escola: 230.818 linhas = 230.818 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: ponto, colunas: {id_municipio: "IBGE 7 dígitos", latitude: "VARCHAR", longitude: "VARCHAR"}}
+    filtros_tipicos:
+      - "restricao_atendimento = 'ESCOLA EM FUNCIONAMENTO E SEM RESTRIÇÃO DE ATENDIMENTO' (182.988) exclui paralisadas (44.411, 'ESCOLA PARALISADA')"
+      - "localizacao = 'Rural' (79.136) ou 'Urbana' (151.682)"
+      - "dependencia_administrativa = 'Municipal' (138.057), 'Estadual', 'Federal', 'Privada' e categoria_administrativa = 'Pública' ou 'Privada' (medido: Privada/Privada 58.120)"
+      - "latitude e longitude são VARCHAR e nulas em 28%"
+      - "situacao_catalogo = 'Presente' (212.386) ou 'Ausente' (18.432)"
+    use_para: "cadastro de escolas com município, localização rural e urbana e dependência."
+    nao_use_para: "contar alunos ou professores (é cadastro, não censo de matrículas)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "230.818 linhas, chave única — medido 2026-10-27"
+  etnia_indigena:
+    grao: "uma etnia indígena do cadastro do Censo Escolar"
+    chave: "id_etnia_indigena: 264 linhas = 264 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: nenhum, colunas: {}}
+    use_para: "decodificar etnia indígena."
+    nao_use_para: "contar população indígena."
+    rascunho: [use_para, nao_use_para]
+    verificado: "264 linhas, chave única — medido 2026-10-27"
+  instituicao_ensino_superior:
+    grao: "uma instituição de ensino superior (IES) do e-MEC"
+    chave: "id_ies: 6.589 linhas = 6.589 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: municipio, colunas: {id_municipio: "IBGE 7 dígitos", sigla_uf: "UF"}}
+    filtros_tipicos:
+      - "tipo_instituicao tem dois rótulos para público: 'Público' (344) e 'Pública' (95) além de 'Privada' (6.150); use rede para separar: 'Federal', 'Estadual', 'Municipal', 'Especial', 'Privada'"
+      - "situacao_funcionamento = 'Ativa' (3.211) ou 'Inativa' (3.378)"
+    use_para: "cadastro de IES por município e rede."
+    nao_use_para: "contar matrículas ou cursos."
+    rascunho: [use_para, nao_use_para]
+    verificado: "6.589 linhas, chave única — medido 2026-10-27"
+  municipio:
+    grao: "um município brasileiro, com códigos IBGE, BCB, RF e TSE e hierarquia (regiões imediata, intermediária, micro, meso, saúde)"
+    chave: "id_municipio: 5.571 linhas = 5.571 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: municipio, colunas: {id_municipio: "IBGE 7 dígitos", id_municipio_bcb: "código BCB", centroide: "ponto do município"}}
+    filtros_tipicos:
+      - "capital_uf = 1 marca as 27 capitais"
+      - "amazonia_legal = 1 (773 municípios) ou 0 (4.798)"
+      - "id_municipio_6 (6 dígitos IBGE sem dígito verificador, 5.571 distintos), id_municipio_bcb, id_municipio_rf e id_municipio_tse têm 5.570 distintos e 1 nulo (um município sem código nessas tabelas): a ponte para as bases do BCB é id_municipio_bcb"
+      - "id_regiao_metropolitana nulo em 74%"
+    use_para: "ponte entre códigos de município e subida para UF, região e região imediata ou intermediária."
+    nao_use_para: "contar população (use censo ou estimativas)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "5.571 linhas, chave única; id_municipio_6 também único (5.571) — medido 2026-10-27"
+  natureza_juridica:
+    grao: "uma natureza jurídica (CONCLA/Receita)"
+    chave: "id_natureza_juridica: 102 linhas = 102 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: nenhum, colunas: {}}
+    use_para: "decodificar natureza jurídica de empresas."
+    nao_use_para: "contar empresas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "102 linhas, chave única — medido 2026-10-27"
+  regiao:
+    grao: "uma grande região brasileira (N, NE, SE, S, CO)"
+    chave: "sigla: 5 linhas = 5 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: nenhum, colunas: {}}
+    use_para: "decodificar siglas de região."
+    nao_use_para: "qualquer cálculo; tem 5 linhas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "5 linhas, chave única — medido 2026-10-27"
+  setor_censitario_2010:
+    grao: "um setor censitário do Censo 2010, com distrito, subdistrito, município e UF"
+    chave: "id_setor_censitario: 310.120 linhas = 310.120 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: outro, colunas: {id_setor_censitario: "setor IBGE de 15 dígitos", id_municipio: "IBGE 7 dígitos"}}
+    filtros_tipicos:
+      - "sigla_uf tem 'SP1' (18.363) e 'SP2' (47.733) no lugar de 'SP': as 28 siglas incluem esses dois; use substr(id_setor_censitario,1,2) ou id_municipio para o estado"
+      - "tipo_setor = '0' é setor comum (290.192); '1' (15.816), '8' (2.001), '5' (1.211), '7', '6', '2', '3', '4'; significado não documentado"
+      - "situacao_setor = '1' (227.250) e '8' (61.175) dominam; significado não documentado"
+    use_para: "ligar setor, distrito e município de 2010; chave para o Censo 2010 por setor."
+    nao_use_para: "comparar com o Censo 2022 sem ponte entre malhas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "310.120 linhas, chave única — medido 2026-10-27"
+  setor_censitario_2022:
+    grao: "um setor censitário do Censo 2022 (id com sufixo 'P'), com hierarquia completa e área"
+    chave: "id_setor_censitario: 452.340 linhas = 452.340 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: outro, colunas: {id_setor_censitario: "setor IBGE com sufixo P", id_municipio: "IBGE 7 dígitos", area_km2: "área do setor em km²"}}
+    filtros_tipicos:
+      - "id_setor_censitario tem 16 caracteres, terminando em 'P' (ex.: 110001505000001P); remova o 'P' para juntar com as malhas sem sufixo"
+      - "id_subdistrito nulo em 85%"
+    use_para: "ligar setor 2022 a município, microrregião e concentração urbana; area_km2 em km²."
+    nao_use_para: "comparar a soma de area_km2 (8.510.418 km² medidos) com a área oficial sem conferir."
+    rascunho: [use_para, nao_use_para]
+    verificado: "452.340 linhas, chave única — medido 2026-10-27"
+  subatividade_ibge:
+    grao: "uma subatividade da classificação do IBGE (códigos de 4 caracteres, inclui 'IGNORADO')"
+    chave: "id_subatividade: 286 linhas = 286 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: nenhum, colunas: {}}
+    use_para: "decodificar a subatividade IBGE de cadastros antigos."
+    nao_use_para: "bases CNAE."
+    rascunho: [use_para, nao_use_para]
+    verificado: "286 linhas, chave única — medido 2026-10-27"
+  uf:
+    grao: "uma unidade da federação, com sigla, nome e região"
+    chave: "id_uf: 27 linhas = 27 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "regiao tem texto ('Nordeste' 9, 'Norte' 7, 'Centro-Oeste' 4, 'Sudeste' 4, 'Sul' 3)"
+    use_para: "ponte de id_uf para sigla e região."
+    nao_use_para: "qualquer cálculo; tem 27 linhas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "27 linhas, chave única — medido 2026-10-27"

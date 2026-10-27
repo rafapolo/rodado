@@ -1,0 +1,38 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_bcb_ptax
+tabelas:
+  cotacao_dolar_dia:
+    grao: "uma cotação diária do dólar (compra e venda, em reais)"
+    chave: "data (10.477 linhas = 10.477 distintos)"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "1984-12-03–2026-10-09"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: "cotacao_compra, cotacao_venda", o_que: "dólar em moeda brasileira (antes de 1994-07, moeda da época; ver gotcha moeda_da_epoca)", unidade: "R$ por US$", soma: nao}
+    filtros_tipicos:
+      - "data >= '1994-07-01' para valores em reais; em 2024-12-02: compra 6,0628, venda 6,0634"
+    use_para: "série diária do dólar PTAX de fechamento"
+    nao_use_para: "outras moedas (use cotacao_moeda_dia) ou média mensal sem calcular (não há)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "10.477 linhas, data única; 6.0628/6.0634 em 2024-12-02 igual ao USD Fechamento de cotacao_moeda_dia — medido 2026-10-27"
+  cotacao_moeda_dia:
+    grao: "uma cotação de uma moeda num boletim do dia (abertura, intermediários, fechamento)"
+    chave: "nenhuma: (moeda, data, tipo_boletim) dá 325.842 distintos em 794.613 linhas (vários Intermediário por dia); com data_hora_cotacao ainda faltam 1.788 linhas (792.825 distintos)"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "1984-11-29–2026-10-09"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: "cotacao_compra, cotacao_venda", o_que: "valor da moeda em reais", unidade: "R$ por unidade da moeda", soma: nao}
+      - {coluna: "paridade_compra, paridade_venda", o_que: "moeda por dólar (USD = 1,0; JPY 149,85 em 2024-12-02) ou dólar por moeda (EUR 1,0469)", unidade: "razão", soma: nao}
+    filtros_tipicos:
+      - "tipo_boletim = 'Fechamento' (101.375 linhas) é a PTAX do dia; outros: 'Abertura' 101.356, 'Intermediário' 563.322, 'Fechamento Interbancário' 28.560"
+      - "moeda: AUD, CAD, CHF, DKK, EUR, GBP, JPY, NOK, SEK, USD (10 valores)"
+      - "paridade em linhas antigas pode ser 0,00000 (mínimo 0)"
+    use_para: "cotação de fechamento de EUR, JPY, GBP etc. em reais por dia"
+    nao_use_para: "média de todos os boletins como se fosse a PTAX ou moedas fora das dez"
+    rascunho: [use_para, nao_use_para, "convenção de paridade (por tipo_moeda A/B)"]
+    verificado: "794.613 linhas; 10 moedas; chave (moeda, data, tipo_boletim) repete; USD/EUR/JPY de 2024-12-02 lidos — medido 2026-10-27"
+  moedas:
+    grao: "uma moeda aceita pelo serviço de cotações (10 linhas)"
+    chave: "simbolo (10 linhas = 10 distintos)"
+    use_para: "traduzir o símbolo da moeda em nome ('USD' = Dólar dos Estados Unidos); tipo_moeda A (7) ou B (3), significado não documentado"
+    verificado: "10 linhas; B = AUD, EUR, GBP — medido 2026-10-27"

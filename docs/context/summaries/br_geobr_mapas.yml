@@ -1,0 +1,255 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+# Todas as tabelas têm coluna `geometria` (GEOMETRY, lon/lat em graus) e nenhuma medida somável,
+# salvo onde dito. Gotchas medidos: limite_vizinhanca_sao_bairros, bioma_2019_sem_amazonia, semiarido_por_municipio.
+dataset: br_geobr_mapas
+tabelas:
+  pais:
+    grao: "o contorno do Brasil (uma linha)"
+    chave: "nenhuma coluna de chave: tabela de 1 linha só com geometria"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: brasil}
+    use_para: "desenhar o contorno do país."
+    nao_use_para: "atributos: só há geometria."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1 linha — medido 2026-10-27"
+  amazonia_legal:
+    grao: "o polígono da Amazônia Legal (uma linha)"
+    chave: "nenhuma coluna de chave: 1 linha só com geometria"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: outro}
+    use_para: "recortar ou testar pertencimento à Amazônia Legal por geometria."
+    nao_use_para: "lista de municípios da Amazônia Legal (não há id_municipio)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1 linha — medido 2026-10-27"
+  regiao:
+    grao: "uma grande região do Brasil (5)"
+    chave: "id_regiao (5 = 5 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: regiao, colunas: {id_regiao: "código IBGE '1'..'5'", nome_regiao: "nome da região"}}
+    use_para: "contornos das 5 regiões."
+    nao_use_para: "contagens: não há medida."
+    rascunho: [use_para, nao_use_para]
+    verificado: "5 linhas, 5 distintos de id_regiao — medido 2026-10-27"
+  uf:
+    grao: "uma unidade da federação (27)"
+    chave: "id_uf (27 = 27 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: uf, colunas: {id_uf: "código IBGE de 2 dígitos", sigla_uf: "sigla"}}
+    use_para: "contornos dos estados."
+    nao_use_para: "contagens: não há medida."
+    rascunho: [use_para, nao_use_para]
+    verificado: "27 linhas, 27 distintos de id_uf — medido 2026-10-27"
+  mesorregiao:
+    grao: "uma mesorregião IBGE (divisão antiga, anterior a 2017)"
+    chave: "id_mesorregiao (137 = 137 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: outro, colunas: {id_mesorregiao: "código de 4 dígitos", id_uf: "UF", sigla_uf: "UF"}}
+    use_para: "contornos de mesorregiões."
+    nao_use_para: "divisão atual do IBGE: use regiao_intermediaria/regiao_imediata."
+    rascunho: [use_para, nao_use_para]
+    verificado: "137 linhas, 137 distintos de id_mesorregiao — medido 2026-10-27"
+  microrregiao:
+    grao: "uma microrregião IBGE (divisão antiga)"
+    chave: "id_microrregiao (558 = 558 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: outro, colunas: {id_microrregiao: "código de 5 dígitos", id_uf: "UF", sigla_uf: "UF"}}
+    use_para: "contornos de microrregiões."
+    nao_use_para: "divisão atual: use regiao_imediata."
+    rascunho: [use_para, nao_use_para]
+    verificado: "558 linhas, 558 distintos de id_microrregiao — medido 2026-10-27"
+  regiao_intermediaria:
+    grao: "uma região geográfica intermediária IBGE (divisão de 2017)"
+    chave: "id_regiao_intermediaria (135 = 135 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: outro, colunas: {id_regiao_intermediaria: "código de 4 dígitos", id_uf: "UF", sigla_uf: "UF"}}
+    use_para: "contornos das regiões intermediárias."
+    nao_use_para: "contagens: não há medida."
+    rascunho: [use_para, nao_use_para]
+    verificado: "135 linhas, 135 distintos — medido 2026-10-27"
+  regiao_imediata:
+    grao: "uma região geográfica imediata IBGE (divisão de 2017)"
+    chave: "id_regiao_imediata (510 = 510 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: outro, colunas: {id_regiao_imediata: "código de 6 dígitos", id_uf: "UF", sigla_uf: "UF"}}
+    use_para: "contornos das regiões imediatas."
+    nao_use_para: "contagens: não há medida."
+    rascunho: [use_para, nao_use_para]
+    verificado: "510 linhas, 510 distintos — medido 2026-10-27"
+  municipio:
+    grao: "um município (malha municipal)"
+    chave: "id_municipio (5570 = 5570 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", sigla_uf: "UF"}}
+    use_para: "polígonos de municípios para junção espacial ou mapas; sem nome do município na tabela."
+    nao_use_para: "nome do município (não há coluna) ou ano da malha."
+    rascunho: [use_para, nao_use_para]
+    verificado: "5570 linhas, 5570 distintos de id_municipio — medido 2026-10-27"
+  bioma:
+    grao: "um polígono de bioma × ano da malha (2004 e 2019)"
+    chave: "(ano, id_bioma)"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2004–2019"}
+    territorio: {nivel: outro, colunas: {id_bioma: "2004: 'AMZ','CAAT','CER','MAT','PMP','PTN' mais 4 massas d'água ('000Magua'..'003Magua'); 2019: '1.0'..'6.0'; um NULL (Sistema Costeiro)", nome_bioma: "nome"}}
+    filtros_tipicos: ["ano = 2004: 10 linhas (6 biomas + 4 massas d'água) com geometria; ano = 2019: 7 linhas e a Amazônia vem com geometria NULL (gotcha bioma_2019_sem_amazonia)", "id_bioma tem códigos diferentes por ano ('AMZ' em 2004, '1.0' em 2019): junte por nome_bioma"]
+    use_para: "contornos de biomas."
+    nao_use_para: "junção por id_bioma entre 2004 e 2019: os códigos diferem."
+    rascunho: [use_para, nao_use_para]
+    verificado: "17 linhas = 17 distintos de (ano,id_bioma): 10 em 2004, 7 em 2019 — medido 2026-10-27"
+  semiarido:
+    grao: "um município do semiárido (um polígono cada)"
+    chave: "id_municipio (1262 = 1262 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", sigla_uf: "UF"}}
+    use_para: "lista de municípios do semiárido e seus polígonos."
+    nao_use_para: "polígono único do semiárido sem tratar frestas (gotcha semiarido_por_municipio)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1262 linhas, 1262 distintos — medido 2026-10-27"
+  area_minima_comparavel_2010:
+    grao: "uma área mínima comparável (AMC) de 2010"
+    chave: "id_amc (3800 = 3800 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: outro, colunas: {id_amc: "código da AMC", id_municipio: "LISTA de códigos IBGE separados por vírgula (ex.: '1100015,1100379,...'), não um id único"}}
+    use_para: "comparar municípios ao longo do tempo agrupados em AMCs."
+    nao_use_para: "junção direta id_municipio = id_municipio: a coluna é uma lista; faça split/unnest."
+    rascunho: [use_para, nao_use_para]
+    verificado: "3800 linhas, 3800 distintos de id_amc; geometria nula em 0,03% — medido 2026-10-27"
+  arranjo_populacional:
+    grao: "um município dentro de um arranjo populacional (IBGE 2015)"
+    chave: "(id_arranjo_populacional, id_municipio) — 953 = 953 distintos"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: municipio, colunas: {id_arranjo_populacional: "código do arranjo", id_municipio: "município", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: populacao_2010, o_que: "população do município em 2010 (Censo)", unidade: "pessoas", soma: sim}
+      - {coluna: populacao_urbana_2010, o_que: "população urbana 2010", unidade: "pessoas", soma: sim}
+      - {coluna: populacao_rural_2010, o_que: "população rural 2010", unidade: "pessoas", soma: sim}
+    use_para: "população 2010 e geometria por município de arranjos populacionais; some por id_arranjo_populacional para o arranjo."
+    nao_use_para: "somar populacao_2010 sem agrupar por arranjo: a geometria e os ids vêm por município."
+    rascunho: [use_para, nao_use_para]
+    verificado: "953 linhas, 953 distintos de (id_arranjo_populacional,id_municipio); 324 arranjos distintos (aprox) — medido 2026-10-27"
+  concentracao_urbana:
+    grao: "um município dentro de uma concentração urbana (IBGE)"
+    chave: "(id_concentracao_urbana, id_municipio) — 642 = 642 distintos"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: municipio, colunas: {id_concentracao_urbana: "código", id_municipio: "município", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: populacao_2010, o_que: "população do município em 2010", unidade: "pessoas", soma: sim}
+      - {coluna: populacao_urbana_2010, o_que: "população urbana 2010", unidade: "pessoas", soma: sim}
+      - {coluna: populacao_rural_2010, o_que: "população rural 2010", unidade: "pessoas", soma: sim}
+    use_para: "população 2010 por município de cada concentração urbana."
+    nao_use_para: "somar sem agrupar por id_concentracao_urbana."
+    rascunho: [use_para, nao_use_para]
+    verificado: "642 linhas, 642 distintos de (id_concentracao_urbana,id_municipio) — medido 2026-10-27"
+  regiao_metropolitana_2017:
+    grao: "um município × região metropolitana (recorte de 2017)"
+    chave: "(nome_regiao_metropolitana, id_municipio) — 1385 = 1385 distintos"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE", sigla_uf: "UF", nome_regiao_metropolitana: "80 nomes"}}
+    filtros_tipicos: ["tipo = 'RM' (1262), 'AGLO' (55), 'RIDE' (44), 'CM' (24): sigla do tipo de unidade; significado das siglas não documentado no banco", "subcategoria_metropolitana é NULL em 61% das linhas"]
+    use_para: "municípios que pertencem a cada região metropolitana."
+    nao_use_para: "contagem de regiões sem agrupar por nome: um município pode estar em mais de uma."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1385 linhas, 1385 distintos da chave; 80 regiões, 4 tipos — medido 2026-10-27"
+  saude:
+    grao: "uma região de saúde"
+    chave: "id_regiao_saude (438 = 438 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: outro, colunas: {id_regiao_saude: "código de 5 dígitos", id_uf: "UF", sigla_uf: "UF"}}
+    use_para: "contornos de regiões de saúde."
+    nao_use_para: "municípios por região (não há id_municipio)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "438 linhas, 438 distintos — medido 2026-10-27"
+  sede_municipal:
+    grao: "a sede (ponto) de um município × ano de censo"
+    chave: "nenhuma: 29844 linhas, 29836 distintos de (ano,id_municipio); 8 pares repetem (ex.: 1991, 2933604)"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1872–2010"}
+    territorio: {nivel: ponto, colunas: {id_municipio: "código IBGE (6937 distintos, inclui municípios antigos)", sigla_uf: "UF", id_regiao: "'1'..'5'", regiao: "nome da região"}}
+    filtros_tipicos: ["ano = 2010 (5565 linhas) para a malha atual; antes: 1991 (4497), 1980 (3991), 1970 (3915), 1960 (2766), 1950 (1890), 1940 (1574)..."]
+    use_para: "posição (ponto) das sedes municipais em cada ano de censo."
+    nao_use_para: "contar municípios sem filtrar ano: cada município aparece em vários anos."
+    rascunho: [use_para, nao_use_para]
+    verificado: "29844 linhas; 29836 distintos de (ano,id_municipio), 8 duplicatas (ex.: 1991 e 2933604, 5105309, 5213103, 5006309) — medido 2026-10-27"
+  setor_censitario_2010:
+    grao: "um setor censitário do Censo 2010"
+    chave: "id_setor_censitario (316545 = 316545 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: outro, colunas: {id_setor_censitario: "código de 15 dígitos", id_municipio: "município", id_distrito: "distrito", id_uf: "UF", sigla_uf: "UF"}}
+    filtros_tipicos: ["zona = 'URBANO' (240216) ou 'RURAL' (76329): em maiúsculas, como está no banco"]
+    use_para: "polígonos de setores para junção espacial com dados do Censo 2010."
+    nao_use_para: "contagem de pessoas: não há medida."
+    rascunho: [use_para, nao_use_para]
+    verificado: "316545 linhas, 316545 distintos de id_setor_censitario; zona: URBANO=240216, RURAL=76329 — medido 2026-10-27"
+  limite_vizinhanca:
+    grao: "um polígono intraurbano: bairro (vizinhança), distrito ou subdistrito"
+    chave: "nenhuma: id_vizinhanca é nulo em 350 linhas e repete em 93 ids"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: outro, colunas: {id_vizinhanca: "código de 12 dígitos, só em bairros", id_municipio: "município", id_distrito: "distrito", id_subdistrito: "subdistrito"}}
+    filtros_tipicos: ["referencia_geometria = 'neighborhood' (14482 linhas, as únicas com id_vizinhanca) | 'subdistrict' (254) | 'district' (96): valores em inglês, como no banco"]
+    use_para: "limites de bairros dos centros urbanos do Censo (ver gotcha limite_vizinhanca_sao_bairros)."
+    nao_use_para: "divisa entre municípios; contagem de bairros sem filtrar referencia_geometria."
+    rascunho: [use_para, nao_use_para]
+    verificado: "14832 linhas; neighborhood 14482 (14373 ids distintos, 93 ids repetidos), subdistrict 254 e district 96 sem id_vizinhanca — medido 2026-10-27"
+  pegada_urbana:
+    grao: "um polígono da pegada urbana (área urbanizada, vazio ou equipamento) de um município"
+    chave: "nenhuma: id_pegada_urbana é nulo em 26,7% (3662 linhas) e tem 10050 valores não nulos para 10042 distintos"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município (193 distintos)"}}
+    medidas:
+      - {coluna: area, o_que: "área do polígono", unidade: "não documentada (provável km2, máx. 1542)", soma: sim}
+    filtros_tipicos: ["tipo = 'Área urbanizada' (12649) | 'Outros equipamentos urbanos' (677) | 'Vazio intraurbano' (386)", "densidade = 'Pouco densa' (7610) | 'Densa' (6102)"]
+    use_para: "mancha urbana de 193 municípios (concentrações urbanas)."
+    nao_use_para: "todos os municípios do país: cobre 193; somar area misturando tipo (vazio e equipamentos entram)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "13712 linhas; 193 municípios; id_pegada_urbana: 10050 não nulos, 10042 distintos — medido 2026-10-27"
+  area_risco_desastre:
+    grao: "um conjunto de polígonos de risco de desastre (geocodigo_bater) em um município"
+    chave: "geocodigo_bater (8309 = 8309 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: municipio, colunas: {id_municipio: "715 municípios", sigla_uf: "UF (1 nulo)"}}
+    medidas:
+      - {coluna: quantidade_poligono, o_que: "nº de polígonos agrupados na linha", unidade: "polígonos", soma: sim}
+    filtros_tipicos: ["acuracia: 'otima','boa','regular' e 'Boa' (2 linhas, grafia diferente); NULL em 1871", "origem = 'face' (5625) | 'setor' (813); NULL em 1871"]
+    use_para: "áreas de risco (CEMADEN/IBGE) por município."
+    nao_use_para: "cobertura nacional: só 715 municípios."
+    rascunho: [use_para, nao_use_para]
+    verificado: "8309 linhas, 8309 distintos de geocodigo_bater; 1871 linhas com origem/acuracia NULL (observacao 'Sem associacao de dados do Censo Demografico 2010') — medido 2026-10-27"
+  terra_indigena:
+    grao: "uma terra indígena"
+    chave: "id_terra_indigena (615 = 615 distintos; id_geografico também)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: outro, colunas: {sigla_uf: "UF, ou lista 'AM,PA' quando cruza estados", nome_municipio: "nome(s)"}}
+    medidas:
+      - {coluna: area, o_que: "área da terra indígena", unidade: "não documentada (máx. 9.664.975; provável hectares)", soma: sim}
+    filtros_tipicos: ["fase = 'Regularizada' (472) | 'Declarada' (75) | 'Delimitada' (43) | 'Encaminhada RI' (10) | 'Homologada' (9) (+1 fase a mais no banco)", "modalidade = 'Tradicionalmente ocupada' (557) | 'Reserva Indígena' (44) | 'Dominial Indígena' (8) | 'Interditada' (6)", "sigla_uf = 'AM' não pega TIs de 'AM,PA': use LIKE"]
+    use_para: "terras indígenas com fase, etnia e área."
+    nao_use_para: "filtro por UF com igualdade (valores com vírgula)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "615 linhas, 615 distintos de id_terra_indigena; sigla_uf com 44 valores distintos pois combina estados — medido 2026-10-27"
+  unidade_conservacao:
+    grao: "uma unidade de conservação"
+    chave: "id_unidade_conservacao (1934 = 1934 distintos; id_geografico e id_cnuc também)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: outro, colunas: {esfera: "'Estadual' (981) | 'Federal' (597) | 'Municipal' (356)"}}
+    filtros_tipicos: ["sigla_grupo = 'US' (1211, uso sustentável) | 'PI' (723, proteção integral): siglas do SNUC, significado por convenção do SNUC", "qualidade é texto por extenso que começa com 'Correto', 'Aproximado' ou 'Esquemático' (ver column_codes)"]
+    use_para: "unidades de conservação por categoria, esfera e ano de criação."
+    nao_use_para: "UF ou município da UC: não há coluna territorial."
+    rascunho: [filtros_tipicos, use_para, nao_use_para]
+    verificado: "1934 linhas, 1934 distintos de id_unidade_conservacao; esfera Estadual=981, Federal=597, Municipal=356; sigla_grupo US=1211, PI=723 — medido 2026-10-27"
+  escola:
+    grao: "uma escola (ponto geocodificado)"
+    chave: "id_escola (222936 = 222936 distintos)"
+    tempo: {natureza: retrato_atual}
+    territorio: {nivel: ponto, colunas: {id_escola: "código INEP", sigla_uf: "UF"}}
+    use_para: "localização das escolas (INEP) para junção espacial."
+    nao_use_para: "ano da localização (sem coluna) ou atributos da escola: use o dataset do INEP."
+    rascunho: [use_para, nao_use_para]
+    verificado: "222936 linhas, 222936 distintos de id_escola; geometria sem nulos (alguns GEOMETRYCOLLECTION EMPTY vistos no perfil) — medido 2026-10-27"
+  estabelecimentos_saude:
+    grao: "um estabelecimento de saúde (CNES, ponto) em 2015"
+    chave: "id_cnes (360177 = 360177 distintos)"
+    tempo: {natureza: retrato_atual, coluna: ano, cobertura: "2015–2015"}
+    territorio: {nivel: ponto, colunas: {id_municipio: "código de 6 dígitos (não 7)", sigla_uf: "UF", id_cnes: "código CNES"}}
+    filtros_tipicos: ["id_municipio tem 6 dígitos (ex.: '110001'): ao juntar com tabelas de 7 dígitos, use substr(...,1,6)"]
+    use_para: "localização de estabelecimentos de saúde em 2015."
+    nao_use_para: "situação atual do CNES."
+    rascunho: [use_para, nao_use_para]
+    verificado: "360177 linhas, 360177 distintos de id_cnes; ano só 2015; id_municipio min '110001' (6 dígitos) — medido 2026-10-27"

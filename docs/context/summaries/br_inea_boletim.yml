@@ -1,0 +1,59 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_inea_boletim
+tabelas:
+  boletins:
+    grao: "um boletim de serviço do INEA-RJ (um PDF), com listas de processos, empresas e tipos de documento"
+    chave: "boletim, data_boletim"
+    tempo: {natureza: serie_diaria, coluna: data_boletim, cobertura: "2019-01-28–2026-08-26"}
+    territorio: {nivel: nenhum, colunas: {}}
+    medidas:
+      - {coluna: n_processos, o_que: "processos citados no boletim (soma 7.161 = linhas de processos)", unidade: "processos", soma: sim}
+      - {coluna: n_empresas, o_que: "empresas citadas no boletim (soma 6.877 = linhas de empresas)", unidade: "empresas", soma: sim}
+    filtros_tipicos: ["ano_arquivo é texto ('2022'), não inteiro; igual ao ano de data_boletim em todas as linhas medidas"]
+    use_para: "contar boletins, processos e empresas por data"
+    nao_use_para: "identificar um boletim só por boletim: o número reinicia a cada ano (226 distintos em 1.081 linhas)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.081 linhas = 1.081 distintos de (boletim, data_boletim); 1.079 pdf distintos; ano_arquivo = ano de data_boletim (0 divergências) — medido 2026-10-27"
+  empresas:
+    grao: "uma empresa citada num boletim (uma linha por citação)"
+    chave: "nenhuma: (boletim, data_boletim, empresa) tem 6.661 distintos em 6.877 linhas (empresa repetida no mesmo boletim)"
+    tempo: {natureza: serie_diaria, coluna: data_boletim, cobertura: "2019-01-28–2026-08-26"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos: ["count(DISTINCT empresa) para empresas únicas (4.258 distintos); nome textual sem CNPJ"]
+    use_para: "empresas que aparecem em boletins de licenciamento do INEA"
+    nao_use_para: "contar empresas únicas com count(*); ligar a CNPJ (não há)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "6.877 linhas; 4.258 empresas distintas — medido 2026-10-27"
+  processos:
+    grao: "um processo citado num boletim (uma linha por citação)"
+    chave: "nenhuma: (boletim, data_boletim, processo) tem 7.075 distintos em 7.161 linhas"
+    tempo: {natureza: serie_diaria, coluna: data_boletim, cobertura: "2019-01-28–2026-08-26"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos: ["processo é texto livre com formatos mistos ('E-07/502196/2011', 'nº ...', 'SEI-...'); normalizar antes de juntar"]
+    use_para: "processos de licenciamento citados em boletins"
+    nao_use_para: "contar processos únicos com count(*) (6.360 distintos em 7.161 linhas)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "7.161 linhas; 6.360 processos distintos — medido 2026-10-27"
+  tipos_documento:
+    grao: "um tipo de documento (licença, indeferimento, etc.) presente num boletim"
+    chave: "boletim, data_boletim, tipo_documento"
+    tempo: {natureza: serie_diaria, coluna: data_boletim, cobertura: "2019-01-28–2026-08-26"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos: ["tipo_documento = 'licença de operação' (127 linhas) — rótulo por extenso em minúsculas; 61 valores, mais frequentes: indeferimento (427), certidão ambiental (348), autorização ambiental (291)"]
+    use_para: "ver quais tipos de ato saem em cada boletim"
+    nao_use_para: "contar quantos atos de cada tipo: a linha marca presença no boletim, não quantidade"
+    rascunho: [nao_use_para, "semântica de presença"]
+    verificado: "2.572 linhas = 2.572 distintos de (boletim, data_boletim, tipo_documento) — medido 2026-10-27"
+  atos_pdf:
+    grao: "um trecho de texto extraído de um PDF de boletim (texto de ato, até 8.000 caracteres)"
+    chave: "nenhuma: sem coluna que identifique o trecho; rowid (1..1.079) repete — 1.079 distintos em 7.052 linhas, um por PDF"
+    tempo: {natureza: sem_tempo, coluna: "nenhuma: só o número boletim (reinicia por ano), sem data"}
+    territorio: {nivel: nenhum, colunas: {}}
+    medidas:
+      - {coluna: n_chars, o_que: "tamanho do texto_ato", unidade: "caracteres", soma: nao}
+    filtros_tipicos: ["processo está nulo em 1,23% e validade em 36,2% das linhas; validade é texto livre ('01 de agosto de 2020')"]
+    use_para: "buscar texto livre de atos (validade, condicionantes) por processo"
+    nao_use_para: "juntar com boletins por boletim (número reinicia por ano; rowid parece ser o id do PDF, não conferido contra boletins)"
+    rascunho: [use_para, nao_use_para, "rowid como id do PDF"]
+    verificado: "7.052 linhas; 1.079 rowid distintos; (boletim, rowid) 1.079 distintos — medido 2026-10-27"

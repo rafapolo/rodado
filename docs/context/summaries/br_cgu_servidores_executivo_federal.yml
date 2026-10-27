@@ -1,0 +1,101 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_cgu_servidores_executivo_federal
+tabelas:
+  cadastro_servidores:
+    grao: "um vínculo (cargo ou função) de um servidor ativo do Executivo federal num mês de referência; um servidor pode ter mais de uma linha no mesmo mês"
+    chave: "nenhuma: em 2025-07, 767.185 linhas, 626.757 id_servidor distintos e só 732.687 linhas distintas inteiras (34 mil linhas idênticas)"
+    tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "2013–2025 (2025 até o mês 7)"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF de exercício (nula em 28,9% das linhas de 2025-07: 221.890 de 767.185)", id_org_lotacao: "órgão de lotação", id_org_exercicio: "órgão de exercício"}}
+    filtros_tipicos:
+      - "ano = 2025 AND mes = 7 para um retrato mensal; sem filtrar mês, o mesmo servidor entra 12 vezes por ano (tabela de 168 milhões de linhas)"
+      - "tipo_vinculo = 'Cargo' (id_tipo_vinculo '2'; 637.893 em 2025-07), 'Função' ('1'; 103.400), 'Outros' ('3'; 25.892); no top do perfil também 'Militares' ('4'), ausente em 2025-07"
+      - "origem = 'SIAPE' (762.680 em 2025-07) ou 'BACEN' (4.505); o perfil traz também 'Militares'"
+      - "filtre pela coluna crua cpf (= ou IN): a tabela é ordenada por cpf (gotcha ordenada_pela_chave); 'Sem informação' é o vazio de funcao"
+    use_para: "contar servidores ativos por órgão, cargo, UF ou vínculo num mês"
+    nao_use_para: "somar linhas de vários meses como se fossem pessoas distintas, ou valores de remuneração (estão em remuneracao)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2025-07: 767.185 linhas, 626.757 id_servidor, 732.687 linhas distintas; linhas por ano 6,06 mi (2025) a 14,2 mi (2016) — medido 2026-10-27. Ver gotcha ordenada_pela_chave"
+  cadastro_aposentados:
+    grao: "um aposentado (vínculo de aposentadoria) do Executivo federal num mês de referência"
+    chave: "nenhuma: em 2025-07, 417.877 linhas, 409.113 id_servidor e 417.435 linhas distintas inteiras"
+    tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "2013–2025 (mínimo medido só em cadastro_servidores; ano=2025 vai até o mês 7)"}
+    territorio: {nivel: outro, colunas: {id_org_lotacao: "órgão de lotação na aposentadoria", id_orgsup_lotacao: "órgão superior"}}
+    filtros_tipicos:
+      - "ano = 2025 AND mes = 7 para um retrato mensal"
+      - "origem = 'SIAPE' ou 'BACEN'; id_tipo_vinculo = '5' (Aposentadoria, único valor)"
+      - "tipo_aposentadoria: rótulos por extenso, com variantes ('VOLUNTARIA', 'APOSENTADORIA VOLUNTARIA'); 'Sem informação' é o vazio"
+    use_para: "contar aposentados por órgão, tipo de aposentadoria ou regime em um mês"
+    nao_use_para: "valores de proventos (estão em remuneracao) ou contar pessoas somando meses"
+    rascunho: [use_para, nao_use_para, "cobertura de anos"]
+    verificado: "2025-07: 417.877 linhas, 409.113 id_servidor, 417.435 linhas distintas — medido 2026-10-27"
+  cadastro_pensionistas:
+    grao: "um pensionista (benefício de pensão civil ou militar) num mês de referência, com os dados do instituidor da pensão"
+    chave: "nenhuma: em 2025-07, 278.361 linhas, 272.707 id_servidor e 278.354 linhas distintas inteiras"
+    tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "até 2025-07"}
+    territorio: {nivel: outro, colunas: {id_org_lotacao_instituidor_pensao: "órgão de lotação do instituidor"}}
+    filtros_tipicos:
+      - "ano = 2025 AND mes = 7 para um retrato mensal"
+      - "tipo_vinculo = 'Pensão Civil' (id_tipo_vinculo '7') ou 'Pensão Militar' ('8')"
+      - "tipo_pensao tem variantes com texto corrompido ('Cônjuge / Viúva (o)' e 'C njuge / Vi va (o)'): agrupe com cuidado"
+    use_para: "contar pensionistas por tipo de pensão e órgão do instituidor"
+    nao_use_para: "valores pagos (estão em remuneracao) ou identificar pessoas pelo cpf_instituidor_pensao (22,6% nulo; gotcha cpf_completado)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2025-07: 278.361 linhas, 272.707 id_servidor, 278.354 linhas distintas — medido 2026-10-27"
+  cadastro_reserva_reforma_militares:
+    grao: "um militar da reserva ou reformado num mês de referência"
+    chave: "id_servidor dentro de (ano, mes) — em 2025-07, 171.100 linhas = 171.100 id_servidor distintos"
+    tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "até 2025-07"}
+    territorio: {nivel: outro, colunas: {id_org_lotacao: "código do comando (16000, 21000, 70000; significado do código não documentado, use org_lotacao)"}}
+    filtros_tipicos:
+      - "ano = 2025 AND mes = 7 para um retrato mensal"
+      - "situacao_vinculo = 'MILITAR REFORMADO' ou 'MILITAR DA RESERVA'; org_lotacao = 'Comando do Exército' / 'Comando da Marinha' / 'Comando da Aeronáutica'"
+    use_para: "contar militares da reserva e reformados por comando, posto (descricao_cargo) ou tipo de reforma"
+    nao_use_para: "militares da ativa (estão em cadastro_servidores com origem 'Militares') ou valores pagos"
+    rascunho: [use_para, nao_use_para, "ids de org_lotacao"]
+    verificado: "2025-07: 171.100 linhas, 171.100 id_servidor distintos — medido 2026-10-27"
+  remuneracao:
+    grao: "a remuneração de um servidor, aposentado, pensionista ou militar num mês de referência (uma linha por id_servidor × origem)"
+    chave: "(ano, mes, id_servidor, origem) — em 2025-07, 511.207 linhas = 511.207 distintos (511.159 id_servidor)"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2013–2025 (2025 até o mês 7)"}
+    territorio: {nivel: nenhum}
+    medidas:
+      - {coluna: remuneracao_bruta_brl, o_que: "remuneração bruta do mês", unidade: "R$", soma: sim}
+      - {coluna: remuneracao_bruta_usd, o_que: "remuneração bruta paga em dólar (servidores no exterior)", unidade: "US$", soma: sim}
+      - {coluna: gratificao_natalina_brl, o_que: "13º salário (o nome da coluna perdeu o 'ç')", unidade: "R$", soma: sim}
+      - {coluna: ferias_brl, o_que: "adicional de férias", unidade: "R$", soma: sim}
+      - {coluna: outras_remuneracoes_brl, o_que: "outras remunerações eventuais", unidade: "R$", soma: sim}
+      - {coluna: "irrf_brl, pss_rgps_brl, demais_deducoes_brl, fundo_saude_brl, pensao_militar_brl", o_que: "deduções, em valores negativos (máximos 0 no perfil)", unidade: "R$", soma: sim}
+      - {coluna: abate_teto_brl, o_que: "abate-teto constitucional, valor negativo", unidade: "R$", soma: sim}
+      - {coluna: total_verba_indenizatoria_brl, o_que: "total de verbas indenizatórias", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "ano = 2025 AND mes = 7 para um mês (tabela de 155 milhões de linhas)"
+      - "origem = 'Servidores SIAPE' (506.941 em 2025-07, R$ 6,83 bi brutos), 'Servidores BACEN' (3.209), 'Pensionistas BACEN' (1.057); o perfil traz também 'Militares', 'Pensionistas DEFESA', 'Reserva Reforma Militares', 'Aposentados SIAPE', 'Pensionistas SIAPE'"
+      - "filtre pela coluna crua cpf (= ou IN): tabela ordenada por cpf (gotcha ordenada_pela_chave)"
+    use_para: "somar remuneração bruta por mês, origem ou servidor (junte a cadastro_servidores por id_servidor, ano e mes para órgão/cargo)"
+    nao_use_para: "somar os meses de um ano para obter 'remuneração anual' sem dizer que o 13º e as férias já vêm em colunas próprias; não some brl com usd"
+    rascunho: [use_para, nao_use_para, "significado das colunas de dedução e abate_teto"]
+    verificado: "2025-07: 511.207 linhas, 511.207 distintos (id_servidor, origem), soma remuneracao_bruta_brl Servidores SIAPE R$ 6,83 bi — medido 2026-10-27"
+  observacoes:
+    grao: "uma observação textual sobre a remuneração de um servidor num mês de referência"
+    chave: "nenhuma: em 2025-07, 10.085 linhas, 9.978 id_servidor e 10.085 linhas distintas"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "até 2025-07"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos:
+      - "ano = 2025 AND mes = 7"
+      - "origem: 'Servidores SIAPE', 'Aposentados SIAPE', 'Pensionistas SIAPE', 'Servidores BACEN', 'Pensionistas DEFESA', 'Reserva Reforma Militares'"
+    use_para: "ler a justificativa textual de valores atípicos da remuneracao (junte por id_servidor, ano, mes)"
+    nao_use_para: "contagem ou soma: é texto livre, uma linha por observação, não por servidor"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2025-07: 10.085 linhas, 9.978 id_servidor — medido 2026-10-27"
+  afastamentos:
+    grao: "um período de afastamento de um servidor, recortado em um mês de referência"
+    chave: "nenhuma: 7.670.749 linhas, 7.470.311 linhas distintas inteiras, 420.176 id_servidor"
+    tempo: {natureza: serie_de_periodos, coluna: "ano, mes (e data_inicio/data_final do período)", cobertura: "2015–2025"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos:
+      - "ano = <ano> AND mes = <mês> para um mês; origem = 'SIAPE' (único valor)"
+    use_para: "contar servidores afastados e a duração dos afastamentos por mês"
+    nao_use_para: "saber o motivo do afastamento: a tabela só traz as datas (sem motivo no perfil)"
+    rascunho: [use_para, nao_use_para, "um afastamento aparece repetido em cada mês que cobre — não medido"]
+    verificado: "7.670.749 linhas, 7.470.311 linhas distintas, 420.176 id_servidor, anos 2015–2025 — medido 2026-10-27"

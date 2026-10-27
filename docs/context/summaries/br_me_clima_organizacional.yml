@@ -1,0 +1,21 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_me_clima_organizacional
+tabelas:
+  microdados:
+    grao: "um corte da pesquisa de clima organizacional do serviço público federal (classe × subclasse × area_empresa) com as médias de cada pergunta"
+    chave: "(area_empresa, classe, subclasse)"
+    tempo: {natureza: sem_tempo, coluna: nenhuma, cobertura: "pesquisa única, 'órgão (2020)' na linha de médias; ano não documentado"}
+    territorio: {nivel: outro, colunas: {subclasse: "dentro de classe = 'Unidade da Federação', 'ac - acre' etc.; dentro de 'Órgão', código hierárquico '1.6.9 - nome do órgão'"}}
+    medidas:
+      - {coluna: quantidade_resposta, o_que: "respondentes do corte", unidade: "pessoas", soma: nao}
+      - {coluna: media_geral, o_que: "média geral do clima, 0–100", unidade: "pontos", soma: nao}
+      - {coluna: "~70 colunas de pergunta (gestao, respeito, orgulho, remuneracao_adequada...)", o_que: "média da dimensão, 0–100; 67% das linhas são nulas (cortes com poucos respondentes)", unidade: "pontos", soma: nao}
+    filtros_tipicos:
+      - "classe = 'Médias' (acentuado) é a linha geral: quantidade_resposta 32.393"
+      - "area_empresa = 'Empresa' ou 'Área' são duas leituras diferentes, não cópias: na linha Médias a media_geral é 55,84 (Empresa) e 62,04 (Área)"
+      - "classe IN ('Órgão','Unidade da Federação','Tempo de trabalho no orgão','Escolaridade','Cor/Etnia','Idade','Gênero','Função'); cada classe é um corte do mesmo conjunto: não some classes entre si (gotcha soma_repetida)"
+    use_para: "comparar o clima entre órgãos e perfis de servidores"
+    nao_use_para: "somar quantidade_resposta ou comparar anos (só uma edição)"
+    rascunho: [use_para, nao_use_para, "ano da edição"]
+    verificado: "16.436 linhas = 16.436 distintos de (area_empresa, classe, subclasse); area_empresa Empresa 8.218 e Área 8.218; em Empresa cada classe de perfil soma 32.393 respondentes e Órgão soma 90.556 (hierarquia repete); 5.535 linhas Órgão/Empresa com media_geral nula — medido 2026-10-27. Gotcha: soma_repetida (a explicação de 'cada linha vem duas vezes' não confere: os valores de Empresa e Área diferem)."

@@ -1,0 +1,82 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_inep_ideb
+tabelas:
+  brasil:
+    grao: "um ano × rede × ensino × anos escolares, para o Brasil"
+    chave: "ano, rede, ensino, anos_escolares (154 linhas, 154 distintas)"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2005–2025, bienal (11 edições: 2005, 2007, ..., 2025)"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: ideb, o_que: "Índice de Desenvolvimento da Educação Básica (0–10)", unidade: "índice", soma: nao}
+      - {coluna: taxa_aprovacao, o_que: "taxa de aprovação", unidade: "%", soma: nao}
+      - {coluna: indicador_rendimento, o_que: "indicador de rendimento (fluxo), entra no ideb", unidade: "0–1", soma: nao}
+      - {coluna: nota_saeb_matematica, o_que: "proficiência média no Saeb, matemática", unidade: "pontos da escala Saeb", soma: nao}
+      - {coluna: nota_saeb_lingua_portuguesa, o_que: "proficiência média no Saeb, língua portuguesa", unidade: "pontos da escala Saeb", soma: nao}
+      - {coluna: nota_saeb_media_padronizada, o_que: "média padronizada do Saeb (0–10), entra no ideb", unidade: "índice", soma: nao}
+      - {coluna: projecao, o_que: "meta projetada do ideb; preenchida só em 2007–2019 (meta de 2021 em diante é NULL)", unidade: "índice", soma: nao}
+    filtros_tipicos:
+      - "rede = 'total' para o país todo; 'publica' = estadual + municipal (+ federal); valores: estadual, municipal, privada, publica, total"
+      - "ensino = 'fundamental' ou 'medio'; anos_escolares = 'iniciais (1-5)', 'finais (6-9)' (fundamental) ou 'todos (1-4)' (é o ensino médio)"
+      - "ano = 2025 para o último ideb"
+    use_para: "série nacional do ideb por rede e etapa."
+    nao_use_para: "somar ou fazer média simples entre linhas (redes e etapas se sobrepõem: 'total' e 'publica' contêm as outras)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "154 linhas = 154 chaves distintas; 2023 total/medio ideb 4.3, publica 4.1; projecao não nula só 2007–2019 (14 linhas por ano) — medido 2026-10-27"
+  regiao:
+    grao: "um ano × região × rede × ensino × anos escolares"
+    chave: "ano, regiao, rede, ensino, anos_escolares (605 linhas, 605 distintas)"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2005–2025, bienal"}
+    territorio: {nivel: regiao, colunas: {regiao: "Centro-Oeste, Nordeste, Norte, Sudeste, Sul"}}
+    medidas:
+      - {coluna: ideb, o_que: "mesmas medidas de brasil (ideb, taxa_aprovacao, indicador_rendimento, notas Saeb, projecao)", unidade: "índice", soma: nao}
+    filtros_tipicos:
+      - "rede = 'total' (ou 'publica'); mesmos valores de brasil"
+      - "ensino / anos_escolares como em brasil"
+    use_para: "comparar o ideb entre as 5 regiões."
+    nao_use_para: "somar linhas: todas as medidas são taxas ou índices."
+    rascunho: [use_para, nao_use_para]
+    verificado: "605 linhas = 605 chaves distintas; 121 linhas por região — medido 2026-10-27"
+  uf:
+    grao: "um ano × UF × rede × ensino × anos escolares"
+    chave: "ano, sigla_uf, rede, ensino, anos_escolares (3.267 linhas, 3.267 distintas)"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2005–2025, bienal"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "sigla da UF (27 valores)"}}
+    medidas:
+      - {coluna: ideb, o_que: "mesmas medidas de brasil (ideb, taxa_aprovacao, indicador_rendimento, notas Saeb, projecao)", unidade: "índice", soma: nao}
+    filtros_tipicos:
+      - "rede = 'total' ou 'publica' ou 'estadual' ou 'privada' (não há 'municipal' nem 'federal' aqui, ao contrário de brasil)"
+      - "ensino / anos_escolares como em brasil"
+    use_para: "ideb por estado e rede."
+    nao_use_para: "somar linhas: todas as medidas são taxas ou índices."
+    rascunho: [use_para, nao_use_para]
+    verificado: "3.267 linhas = 3.267 chaves distintas; 121 linhas por UF; em 2023 rede: estadual 81, privada 81, total 81, publica 54 — medido 2026-10-27"
+  municipio:
+    grao: "um ano × município × rede × ensino × anos escolares"
+    chave: "ano, id_municipio, rede, ensino, anos_escolares (364.673 linhas, 364.673 distintas)"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2005–2025, bienal"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: ideb, o_que: "mesmas medidas de brasil (ideb, taxa_aprovacao, indicador_rendimento, notas Saeb, projecao)", unidade: "índice", soma: nao}
+    filtros_tipicos:
+      - "rede = 'publica' (139.097 linhas) ou 'estadual', 'municipal', 'federal'; não há 'total' nem 'privada' no município"
+      - "ensino = 'fundamental' ou 'medio'; ano = 2025"
+    use_para: "ideb por município, cruzando com outras tabelas por id_municipio."
+    nao_use_para: "ranking sem checar nulos: ideb é NULL em ~15% das linhas (município sem nota naquela edição)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "364.673 linhas = 364.673 chaves distintas; ideb NULL em 15,02% (perfil) — medido 2026-10-27"
+  escola:
+    grao: "um ano × escola × rede × ensino × anos escolares"
+    chave: "nenhuma: 17 combinações (ano, id_escola, rede, ensino, anos_escolares) repetem, de 1.300.821 linhas (1.300.804 distintas); ex.: 2021, escola 15034690 com duas linhas de id_municipio diferente, uma só com projecao e outra só com ideb"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2005–2025, bienal"}
+    territorio: {nivel: outro, colunas: {id_escola: "código INEP da escola (8 dígitos)", id_municipio: "código IBGE de 7 dígitos", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: ideb, o_que: "mesmas medidas de brasil; ideb NULL em 38,6% das linhas (linha só com meta/projecao ou sem nota)", unidade: "índice", soma: nao}
+      - {coluna: projecao, o_que: "meta projetada do ideb da escola (preenchida mesmo em 2021, ao contrário de brasil)", unidade: "índice", soma: nao}
+    filtros_tipicos:
+      - "ideb IS NOT NULL: em 2023, 86.843 linhas têm ideb e 46.859 não; todas as com ideb têm projecao NULL"
+      - "rede ∈ {municipal, estadual, privada, federal}; ensino = 'fundamental' ou 'medio'"
+    use_para: "ideb por escola."
+    nao_use_para: "contar escolas por count(*) sem DISTINCT id_escola (cada escola tem até 3 linhas por ano: etapas)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.300.821 linhas, 1.300.804 chaves distintas (17 repetidas); sem rede na chave, 1.300.658 — medido 2026-10-27"

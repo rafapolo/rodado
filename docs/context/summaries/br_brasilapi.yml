@@ -1,0 +1,45 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_brasilapi
+tabelas:
+  bancos:
+    grao: "um banco ou instituição participante do SPI/STR (ISPB) cadastrado no Banco Central"
+    chave: "ispb (473 linhas = 473 distintos, medido)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["code é o código de compensação (BIGINT, nulo em 8 linhas, 463 distintos): não é chave"]
+    use_para: "traduzir ispb ou código de compensação em nome do banco."
+    nao_use_para: "saber se o banco está ativo; é só o cadastro."
+    rascunho: [use_para, nao_use_para]
+    verificado: "473 linhas, 473 distintos de ispb, 463 de code, 8 code nulos — medido 2026-10-27"
+  ddd_cidades:
+    grao: "um município (nome + UF) com seu DDD"
+    chave: "ddd, state, city (5.565 linhas = 5.565 distintos, medido); city sozinho repete (5.293 distintos)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma}
+    territorio: {nivel: municipio, colunas: {state: "sigla da UF", city: "nome do município em maiúsculas, sem id_municipio"}}
+    filtros_tipicos: ["state = 'SP' (645 linhas) etc., sigla de 2 letras"]
+    use_para: "ligar município (por nome + UF) ao DDD."
+    nao_use_para: "juntar com tabelas IBGE só por city: não há id_municipio e nomes repetem entre UFs."
+    rascunho: [use_para, nao_use_para]
+    verificado: "5.565 linhas, 5.565 distintos da chave, 67 DDDs distintos, 5.293 nomes de cidade distintos — medido 2026-10-27"
+  feriados:
+    grao: "um feriado nacional numa data"
+    chave: "date (108 linhas = 108 distintos, medido)"
+    tempo: {natureza: serie_diaria, coluna: date, cobertura: "2020-01-01–2027-12-25"}
+    territorio: {nivel: brasil}
+    filtros_tipicos: ["type = 'national' (único valor)", "year é BIGINT; weekday em português ('segunda-feira')"]
+    use_para: "marcar dias úteis e feriados nacionais 2020–2027."
+    nao_use_para: "feriados estaduais ou municipais: só há nacionais."
+    rascunho: [use_para, nao_use_para]
+    verificado: "108 linhas, 108 distintos de date e de (date, name) — medido 2026-10-27"
+  taxas_referencia:
+    grao: "uma taxa de referência (Selic, CDI, IPCA) no momento da coleta"
+    chave: "nome (3 linhas: Selic 13,75, CDI 13,65, IPCA 4,22)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma}
+    territorio: {nivel: brasil}
+    medidas:
+      - {coluna: valor, o_que: "valor da taxa", unidade: "% (data de referência não documentada)", soma: nao}
+    use_para: "ver os valores de Selic/CDI/IPCA no momento da carga."
+    nao_use_para: "série histórica: são 3 linhas, sem data."
+    rascunho: [use_para, nao_use_para, tempo]
+    verificado: "3 linhas — medido 2026-10-27"

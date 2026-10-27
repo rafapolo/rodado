@@ -1,0 +1,22 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ana_atlas_esgotos
+tabelas:
+  municipio:
+    grao: "um município (diagnóstico do Atlas Esgotos, base 2013 e projeção para 2035)"
+    chave: "id_municipio"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "situação 2013 e projeção 2035 nas colunas, sem coluna de data"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (texto)", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: populacao_urbana_2013, o_que: "população urbana em 2013", unidade: "habitantes", soma: sim}
+      - {coluna: populacao_urbana_2035, o_que: "população urbana projetada 2035", unidade: "habitantes", soma: sim}
+      - {coluna: "indice_sem_atendimento_sem_coleta_sem_tratamento, indice_atendimento_solucao_individual, indice_atendimento_com_coleta_sem_tratamento, indice_atendimento_com_coleta_com_tratamento", o_que: "fração da população por tipo de atendimento; as 4 somam ~1 por município (média 1,0000001)", unidade: "fração 0–1", soma: nao}
+      - {coluna: "vazao_* (4 tipos) e vazao_total", o_que: "vazão de esgoto por tipo de atendimento; os 4 tipos somam vazao_total (304.683 vs 304.697 no país)", unidade: "não documentada", soma: sim}
+      - {coluna: "carga_gerada_* e carga_lancada_*", o_que: "carga orgânica gerada e lançada por tipo; _total soma os tipos", unidade: "não documentada (provável kg DBO/dia)", soma: sim}
+      - {coluna: "investimento_coleta, investimento_tratamento, investimento_coleta_tratatamento", o_que: "investimento necessário (nome da coluna tem erro de grafia: tratatamento)", unidade: "R$ (não documentada)", soma: sim}
+      - {coluna: "*_2035", o_que: "projeções para 2035 (cargas, população atendida, índices de ETE)", unidade: "ver coluna", soma: sim}
+    filtros_tipicos: ["atencao_nitrogenio IN ('Sim','sim') (há 5 linhas com 's' minúsculo)", "atencao_fosforo = 'Sim' (1.234 municípios)"]
+    use_para: "diagnóstico de esgoto por município: quanto da população tem coleta e tratamento, carga lançada e investimento necessário"
+    nao_use_para: "série temporal (um único retrato 2013 com projeção 2035)"
+    rascunho: [unidades, use_para, nao_use_para]
+    verificado: "5.570 linhas = 5.570 id_municipio distintos; soma vazao_total 304.697 vs soma dos 4 tipos 304.683 — medido 2026-10-27"

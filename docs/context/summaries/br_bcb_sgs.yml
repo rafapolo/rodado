@@ -1,0 +1,19 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_bcb_sgs
+tabelas:
+  series:
+    grao: "uma observação de uma série do SGS do BCB × data; as 18 séries têm periodicidades diferentes (diária, mensal, anual) no mesmo formato longo"
+    chave: "(series_code, date): 25.179 linhas = 25.179 pares distintos; series_name também é único por (series_name, date)"
+    tempo: {natureza: serie_de_periodos, coluna: date, cobertura: "1953-02-01–2026-10-09 (varia por série)"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: value, o_que: "valor da série na data; é VARCHAR (converter com try_cast(value as double); 0 valores não numéricos nas 25.179 linhas). A unidade depende da série: taxa % ao dia, % ao mês, índice, R$ ou US$ milhões", unidade: "depende de series_code", soma: nao}
+    filtros_tipicos:
+      - "series_code = 1 (dolar_comercial_venda, diária, 6.725 linhas 2000-01-03–2026-10-09); 11 (taxa_selic_diaria) e 12 (cdi_diario), diárias em % ao dia (0,0075–0,093); 433 (ipca_mensal, 1980-01–2026-09, % ao mês); 189 (igpm_mensal, % ao mês)"
+      - "Filtre sempre por series_code: a tabela mistura séries de unidades e periodicidades diferentes, somar ou fazer média de value sem filtro não tem sentido"
+      - "series_name é o rótulo do projeto e NÃO é confiável em várias séries (ver verificado): confira o intervalo de value antes de usar"
+    use_para: "câmbio, Selic/CDI, IPCA e IGP-M, balança, PIB mensal e inadimplência como séries de contexto macro para cruzar por data."
+    nao_use_para: "qualquer análise por UF ou município (não há território) ou somar valores de séries diferentes."
+    rascunho: [use_para, nao_use_para]
+    verificado: "25.179 linhas, 18 séries (o perfil estimava 17 códigos), chave (series_code, date) única; value sempre numérico. Rótulos suspeitos pelo intervalo de value e pela cobertura (significado real não conferido contra o catálogo do SGS): 4390 meta_selic (0,13–82,04, mensal) e 4391 selic_anualizada (0,13–79,94) têm faixa de taxa acumulada, não de meta; 1207 estoque_credito_total (63 pontos anuais 1963–2025, até 1,27e13) e 7326 taxa_juros_credito_pf_livre (63 pontos anuais, -4,35–13,97) cobrem 1963–2025 em frequência anual, incompatível com crédito livre; 13521 reservas_internacionais (28 pontos anuais, 3–8); 24363 inadimplencia_pf (67–118, desde 2003, parece índice, não %); 27574 taxa_desocupacao_pnadc (34,8–482,6, desde 1998, não é taxa de desocupação) — medido 2026-10-27"

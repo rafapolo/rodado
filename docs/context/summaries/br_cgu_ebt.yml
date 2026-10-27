@@ -1,0 +1,30 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_cgu_ebt
+tabelas:
+  municipio:
+    grao: "um município avaliado × edição da Escala Brasil Transparente (ano)"
+    chave: "ano + id_municipio"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2020–2021"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (texto)", sigla_uf: "UF do município"}}
+    medidas:
+      - {coluna: nota, o_que: "nota de transparência do município na edição (0 a 10)", unidade: "pontos (0–10)", soma: nao}
+      - {coluna: ranking, o_que: "posição na edição entre os 665 avaliados; há empates (mesma nota, mesma posição)", unidade: "posição", soma: nao}
+    filtros_tipicos: ["ano = 2021 (ou 2020): sempre fixe a edição, senão o município aparece duas vezes e a média mistura edições"]
+    use_para: "comparar a nota de transparência de municípios (ou médias por UF) dentro de uma edição e entre 2020 e 2021."
+    nao_use_para: "cobertura nacional: só 665 municípios foram avaliados, não os 5.570."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.330 linhas = 1.330 pares distintos (ano, id_municipio); 665 por edição, 665 municípios distintos nas duas; ranking com empates (805 pares (ano, ranking) distintos) — medido 2026-10-27"
+  uf:
+    grao: "uma UF × edição da Escala Brasil Transparente (ano), nota da avaliação dos governos estaduais"
+    chave: "ano + sigla_uf"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2020–2021"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "sigla da UF (27 UFs incluindo DF)"}}
+    medidas:
+      - {coluna: nota, o_que: "nota de transparência do estado na edição (0 a 10)", unidade: "pontos (0–10)", soma: nao}
+      - {coluna: ranking, o_que: "posição entre as 27 UFs na edição; há empates", unidade: "posição", soma: nao}
+    filtros_tipicos: ["ano = 2021 (ou 2020): fixe a edição"]
+    use_para: "comparar a transparência dos governos estaduais entre si e entre as duas edições."
+    nao_use_para: "somar ou tirar média com a nota dos municípios: são avaliações separadas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "54 linhas = 54 pares distintos (ano, sigla_uf), 27 por edição; ranking com empates (45 pares (ano, ranking) distintos) — medido 2026-10-27"

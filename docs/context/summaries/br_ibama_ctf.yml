@@ -1,0 +1,25 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibama_ctf
+tabelas:
+  aida:
+    grao: "uma atividade registrada de um CNPJ no Cadastro Técnico Federal de Atividades e Instrumentos de Defesa Ambiental (AIDA: consultoria, gerenciamento de resíduos, equipamentos de controle), numa localização"
+    chave: "nenhuma: (cnpj, codigo_da_categoria, codigo_da_atividade, data_de_inicio_da_atividade, municipio) repete em 21 combinações (25.499 linhas, 25.477 chaves distintas)"
+    tempo: {natureza: retrato_atual, coluna: ultima_atualizacao_relatorio, cobertura: "relatório de 2026-05-03; data_de_inicio_da_atividade vai de 1981-09-02 a 2026-04-30"}
+    territorio: {nivel: municipio, colunas: {municipio: "nome em maiúsculas sem acento (sem código IBGE)", uf: "sigla", estado: "nome do estado em maiúsculas sem acento", latitude: "DOUBLE, mín -75 (há coordenadas fora do Brasil)", longitude: "DOUBLE, máx 43,13 (há coordenadas fora do Brasil)"}}
+    medidas: []
+    filtros_tipicos: ["situacao_cadastral = 'Ativo' (23.214 linhas; aqui masculino, e 'Cadastramento Indevido' com I maiúsculo)", "data_de_termino_da_atividade IS NULL: 88% nulo; não é o mesmo que situação ativa (23.214 ativos)", "codigo_da_categoria é texto: '5' = Gerenciamento de resíduos sólidos perigosos (9.938), '4' = não perigosos (8.369), '3' = Consultoria (5.779)"]
+    use_para: "contar empresas/atividades de consultoria ambiental e gestão de resíduos por município ou UF."
+    nao_use_para: "contar CNPJs sem DISTINCT: 15.818 CNPJs em 25.499 linhas; nem somar valores (não há medida)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "25.499 linhas, 15.818 cnpj distintos, 25.477 chaves distintas (5 colunas); situacao_cadastral Ativo 23.214, Encerramento de Atividades 2.008, Cadastramento Indevido 276, NULL 1 — medido 2026-10-27"
+  app:
+    grao: "uma atividade potencialmente poluidora/utilizadora de recursos naturais (APP) registrada de um CNPJ no Cadastro Técnico Federal, numa localização"
+    chave: "nenhuma: (cnpj, codigo_da_categoria, codigo_da_atividade, data_de_inicio_da_atividade, municipio, descricao_da_atividade) repete em 2 linhas (1.448.256 linhas, 1.448.254 chaves distintas)"
+    tempo: {natureza: retrato_atual, coluna: ultima_atualizacao_relatorio, cobertura: "relatório de 2026-05-03; datas de início/término são TEXTO dd/mm/aaaa"}
+    territorio: {nivel: municipio, colunas: {municipio: "nome em maiúsculas sem acento (sem código IBGE)", uf: "sigla", estado: "nome do estado", latitude: "DOUBLE, 17% nula", longitude: "DOUBLE, 17% nula"}}
+    filtros_tipicos: ["situacao_cadastral = 'Ativa' (901.152; feminino, diferente de aida que usa 'Ativo'); outros: 'Encerrado' 402.563, 'Cadastramento indevido' 16.862 (i minúsculo), 'Suspenso para averiguações' 2.891 e 'Suspenso para Averiguações - dados cadastrais inconsistentes e_ou recadastramento' 124.788 (dois rótulos de suspensão)", "potenc_de_pol_da_atividade IN ('Alto','Médio','Pequeno'): '...' (594.900) é ausência, não categoria (column_codes)", "data_de_inicio_da_atividade tem placeholders '01/01/0001' e '31/12/9999' (3 linhas): converta com try_strptime"]
+    use_para: "contar empresas/atividades registradas no CTF/APP por UF, município, categoria ou potencial poluidor."
+    nao_use_para: "contar empresas sem DISTINCT cnpj (774.853 CNPJs em 1,45 milhão de linhas); situação ativa pelo término nulo (640.172 nulos entre os Ativa, e 50% nulo no total)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.448.256 linhas, 774.853 cnpj distintos, 1.448.254 chaves distintas (6 colunas); potenc: Alto 374.080, Médio 451.588, Pequeno 27.688, '...' 594.900 — medido 2026-10-27"

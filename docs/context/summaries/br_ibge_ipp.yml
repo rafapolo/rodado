@@ -1,0 +1,245 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibge_ipp
+tabelas:
+  mes_industria_geral:
+    grao: um mês do IPP da indústria geral (total; composição não conferida)
+    chave: ano, mes
+    tempo:
+      natureza: serie_mensal
+      coluna: ano, mes
+      cobertura: 2013-12–2022-02
+    territorio:
+      nivel: brasil
+      colunas: {}
+    medidas:
+    - coluna: numero_indice
+      o_que: 'número-índice de preços de produtor do mês (base aparente dez/2018 = 100: só 2018-12 vale 100.0 na
+        série geral; não documentada)'
+      unidade: pontos
+      soma: nao
+    - coluna: variacao_mensal
+      o_que: variação em relação ao mês anterior (nula no primeiro mês)
+      unidade: '%'
+      soma: nao
+    - coluna: variacao_anual
+      o_que: 'variação em relação ao mesmo mês do ano anterior ou acumulada no ano: significado NÃO medido'
+      unidade: '%'
+      soma: nao
+    - coluna: variacao_doze_meses
+      o_que: variação em 12 meses (nula nos primeiros 12 meses da série)
+      unidade: '%'
+      soma: nao
+    filtros_tipicos:
+    - ano = <ano> AND mes = <mes> (inteiros; mes 1–12)
+    use_para: Série nacional de preços de produtor da indústria no total.
+    nao_use_para: Não some nem faça média dos índices ou das variações entre meses ou categorias; não há dado por
+      UF e a série termina em 2022-02.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - significado exato de variacao_anual
+    - grão exato do geral (soma extrativa+transformação não conferida)
+    verificado: 99 linhas = 99 pares (ano, mes) distintos; numero_indice de 76.83 a 164.15 — medido 2026-10-27
+  mes_industria_transformacao:
+    grao: um mês do IPP da indústria de transformação
+    chave: ano, mes
+    tempo:
+      natureza: serie_mensal
+      coluna: ano, mes
+      cobertura: 2013-12–2022-02
+    territorio:
+      nivel: brasil
+      colunas: {}
+    medidas:
+    - coluna: numero_indice
+      o_que: 'número-índice de preços de produtor do mês (base aparente dez/2018 = 100: só 2018-12 vale 100.0 na
+        série geral; não documentada)'
+      unidade: pontos
+      soma: nao
+    - coluna: variacao_mensal
+      o_que: variação em relação ao mês anterior (nula no primeiro mês)
+      unidade: '%'
+      soma: nao
+    - coluna: variacao_anual
+      o_que: 'variação em relação ao mesmo mês do ano anterior ou acumulada no ano: significado NÃO medido'
+      unidade: '%'
+      soma: nao
+    - coluna: variacao_doze_meses
+      o_que: variação em 12 meses (nula nos primeiros 12 meses da série)
+      unidade: '%'
+      soma: nao
+    filtros_tipicos:
+    - ano = <ano> AND mes = <mes> (inteiros; mes 1–12)
+    use_para: Série nacional de preços de produtor da indústria de transformação.
+    nao_use_para: Não some nem faça média dos índices ou das variações entre meses ou categorias; não há dado por
+      UF e a série termina em 2022-02.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - significado exato de variacao_anual
+    - grão exato do geral (soma extrativa+transformação não conferida)
+    verificado: 99 linhas = 99 pares (ano, mes) distintos — medido 2026-10-27
+  mes_industria_extrativa:
+    grao: um mês do IPP da indústria extrativa
+    chave: ano, mes
+    tempo:
+      natureza: serie_mensal
+      coluna: ano, mes
+      cobertura: 2009-12–2022-02
+    territorio:
+      nivel: brasil
+      colunas: {}
+    medidas:
+    - coluna: numero_indice
+      o_que: 'número-índice de preços de produtor do mês (base aparente dez/2018 = 100: só 2018-12 vale 100.0 na
+        série geral; não documentada)'
+      unidade: pontos
+      soma: nao
+    - coluna: variacao_mensal
+      o_que: variação em relação ao mês anterior (nula no primeiro mês)
+      unidade: '%'
+      soma: nao
+    - coluna: variacao_anual
+      o_que: 'variação em relação ao mesmo mês do ano anterior ou acumulada no ano: significado NÃO medido'
+      unidade: '%'
+      soma: nao
+    - coluna: variacao_doze_meses
+      o_que: variação em 12 meses (nula nos primeiros 12 meses da série)
+      unidade: '%'
+      soma: nao
+    filtros_tipicos:
+    - ano = <ano> AND mes = <mes> (inteiros; mes 1–12)
+    use_para: 'Série nacional de preços de produtor da indústria extrativa (começa antes das outras: 2009-12).'
+    nao_use_para: Não some nem faça média dos índices ou das variações entre meses ou categorias; não há dado por
+      UF e a série termina em 2022-02.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - significado exato de variacao_anual
+    - grão exato do geral (soma extrativa+transformação não conferida)
+    verificado: 147 linhas = 147 pares (ano, mes) distintos — medido 2026-10-27
+  mes_categoria_economica:
+    grao: um mês × uma categoria econômica (grande categoria de uso do bem)
+    chave: ano, mes, categoria_economica
+    tempo:
+      natureza: serie_mensal
+      coluna: ano, mes
+      cobertura: 2013-12–2022-02
+    territorio:
+      nivel: brasil
+      colunas: {}
+    medidas:
+    - coluna: numero_indice
+      o_que: 'número-índice de preços de produtor do mês (base aparente dez/2018 = 100: só 2018-12 vale 100.0 na
+        série geral; não documentada)'
+      unidade: pontos
+      soma: nao
+    - coluna: variacao_mensal
+      o_que: variação em relação ao mês anterior (nula no primeiro mês)
+      unidade: '%'
+      soma: nao
+    - coluna: variacao_anual
+      o_que: 'variação em relação ao mesmo mês do ano anterior ou acumulada no ano: significado NÃO medido'
+      unidade: '%'
+      soma: nao
+    - coluna: variacao_doze_meses
+      o_que: variação em 12 meses (nula nos primeiros 12 meses da série)
+      unidade: '%'
+      soma: nao
+    filtros_tipicos:
+    - ano = <ano> AND mes = <mes> (inteiros; mes 1–12)
+    - 'categoria_economica = ''BK'' (Bens de capital), ''BI'' (Bens intermediários), ''BC'' (Bens de consumo), ''BCD''
+      (consumo duráveis), ''BCND'' (consumo semiduráveis e não duráveis); BCD e BCND são subdivisões de BC: não
+      somar BC com elas. categoria_economica_descricao tem espaço no fim (''Bens de capital '')'
+    use_para: IPP por tipo de bem (capital, intermediário, consumo).
+    nao_use_para: Não some nem faça média dos índices ou das variações entre meses ou categorias; não há dado por
+      UF e a série termina em 2022-02.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - significado exato de variacao_anual
+    - grão exato do geral (soma extrativa+transformação não conferida)
+    verificado: 495 linhas = 495 distintos de (ano, mes, categoria_economica); 5 categorias com 99 meses cada —
+      medido 2026-10-27
+  mes_industria_atividade:
+    grao: um mês × uma divisão de atividade industrial (CNAE)
+    chave: ano, mes, divisao
+    tempo:
+      natureza: serie_mensal
+      coluna: ano, mes
+      cobertura: 2009-12–2022-02
+    territorio:
+      nivel: brasil
+      colunas: {}
+    medidas:
+    - coluna: numero_indice
+      o_que: 'número-índice de preços de produtor do mês (base aparente dez/2018 = 100: só 2018-12 vale 100.0 na
+        série geral; não documentada)'
+      unidade: pontos
+      soma: nao
+    - coluna: variacao_mensal
+      o_que: variação em relação ao mês anterior (nula no primeiro mês)
+      unidade: '%'
+      soma: nao
+    - coluna: variacao_anual
+      o_que: 'variação em relação ao mesmo mês do ano anterior ou acumulada no ano: significado NÃO medido'
+      unidade: '%'
+      soma: nao
+    - coluna: variacao_doze_meses
+      o_que: variação em 12 meses (nula nos primeiros 12 meses da série)
+      unidade: '%'
+      soma: nao
+    filtros_tipicos:
+    - ano = <ano> AND mes = <mes> (inteiros; mes 1–12)
+    - 'divisao é VARCHAR: ''10''…''19'', ''20B'', ''20C'', ''21''…''31'' (a divisão 20 vem partida em 20B e 20C);
+      descricao_divisao em maiúsculas e com ponto no lugar de vírgula (''PAPEL'' etc.)'
+    use_para: IPP por divisão industrial (alimentos, bebidas, metalurgia etc.).
+    nao_use_para: Não some nem faça média dos índices ou das variações entre meses ou categorias; não há dado por
+      UF e a série termina em 2022-02.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - significado exato de variacao_anual
+    - grão exato do geral (soma extrativa+transformação não conferida)
+    verificado: 3381 linhas = 3381 distintos de (ano, mes, divisao); 23 divisões por ano — medido 2026-10-27
+  mes_grupo_industrial:
+    grao: um mês × um grupo industrial (CNAE, nível abaixo da divisão)
+    chave: ano, mes, grupo
+    tempo:
+      natureza: serie_mensal
+      coluna: ano, mes
+      cobertura: 2018-12–2022-02
+    territorio:
+      nivel: brasil
+      colunas: {}
+    medidas:
+    - coluna: numero_indice
+      o_que: 'número-índice de preços de produtor do mês (base aparente dez/2018 = 100: só 2018-12 vale 100.0 na
+        série geral; não documentada)'
+      unidade: pontos
+      soma: nao
+    - coluna: variacao_mensal
+      o_que: variação em relação ao mês anterior (nula no primeiro mês)
+      unidade: '%'
+      soma: nao
+    - coluna: variacao_anual
+      o_que: 'variação em relação ao mesmo mês do ano anterior ou acumulada no ano: significado NÃO medido'
+      unidade: '%'
+      soma: nao
+    - coluna: variacao_doze_meses
+      o_que: variação em 12 meses (nula nos primeiros 12 meses da série)
+      unidade: '%'
+      soma: nao
+    filtros_tipicos:
+    - ano = <ano> AND mes = <mes> (inteiros; mes 1–12)
+    - 'grupo é VARCHAR de 3 dígitos (ex.: ''101''); descricao_grupo traz o nome'
+    use_para: 'IPP por grupo industrial mais detalhado (ex.: abate e produtos de carne, torrefação e moagem de café).'
+    nao_use_para: Não some nem faça média dos índices ou das variações entre meses ou categorias; não há dado por
+      UF e a série termina em 2022-02.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - significado exato de variacao_anual
+    - grão exato do geral (soma extrativa+transformação não conferida)
+    verificado: 897 linhas = 897 distintos de (ano, mes, grupo); 23 grupos por ano — medido 2026-10-27

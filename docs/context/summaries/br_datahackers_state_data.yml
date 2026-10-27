@@ -1,0 +1,28 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_datahackers_state_data
+tabelas:
+  microdados:
+    grao: "um respondente da pesquisa State of Data (Data Hackers) de profissionais e interessados em dados no Brasil, com 353 colunas de perguntas p<bloco>_<letra> (e subcolunas _1, _2… de múltipla escolha)"
+    chave: "nenhuma exata: p0 (id anônimo do respondente) tem 4.270 distintos em 4.271 linhas; um p0 (x4w2zctsfwfqh3q8aphgx4w2zflx9d1u) aparece 2 vezes"
+    tempo: {natureza: sem_tempo, coluna: "nenhuma coluna de data ou ano", cobertura: "uma edição única da pesquisa (ano não consta na tabela; 4.271 respondentes sugerem a edição 2022, não confirmado)"}
+    territorio: {nivel: uf, colunas: {p1_i_1: "UF de residência (sigla, 2 letras; nulo em 115 linhas)", p1_i: "UF de residência por extenso, ex.: 'São Paulo (SP)'", p1_i_2: "região de residência ('Sudeste' 2.642, 'Sul' 669, 'Nordeste' 562, 'Centro-oeste' 222, 'Norte' 76; nulo em 100)"}}
+    medidas:
+      - {coluna: "contagem de linhas (count(*) ou count(DISTINCT p0))", o_que: "número de respondentes; é amostra de conveniência, não representa a população", unidade: "respondentes", soma: sim}
+      - {coluna: p1_a, o_que: "idade em anos (18–54; nulo em 74 linhas); a faixa está em p1_a_1", unidade: "anos", soma: nao}
+      - {coluna: "p*_<letra>_<n> (BIGINT 0/1)", o_que: "indicador de múltipla escolha: 1 = marcou a opção n, 0 = não marcou, nulo = a pergunta não foi mostrada ao respondente; o texto da opção n não está no banco", unidade: "0/1", soma: sim}
+    filtros_tipicos:
+      - "p1_b IN ('Masculino','Feminino','Prefiro não informar') (3.194 / 1.056 / 12; nulo em 9) — gênero"
+      - "p1_c: cor/raça ('Branca' 2.744, 'Parda' 1.054, 'Preta' 291, 'Amarela' 128 ...)"
+      - "p1_a_1 IN ('17-21','22-24','25-29','30-34','35-39','40-44','45-49','50-54','55+') — faixa etária"
+      - "p1_g = true (4.171) vive no Brasil; false (100) vive fora e então p1_i/p1_j são nulos (significado de p1_g e p1_j deduzido dos nulos, não documentado)"
+      - "p2_a = 'Empregado (CLT)' (2.762), 'Empreendedor ou Empregado (CNPJ)' (410), 'Desempregado, buscando recolocação' (350), 'Estagiário' (188), 'Servidor Público' (156)... — situação de trabalho; as perguntas p2_b–p2_s só têm resposta para quem trabalha (nulo em 577 = 13,5%)"
+      - "p2_h (faixa salarial) é texto, ex.: 'de R$ 8.001/mês a R$ 12.000/mês' (752), 'de R$ 4.001/mês a R$ 6.000/mês' (584), 'Acima de R$ 40.001/mês' (45); nulo em 577. Não há valor numérico: para média use ponto médio da faixa e diga que é aproximação"
+      - "p2_g IN ('Júnior','Pleno','Sênior') (1.023 / 1.060 / 898) — nível; nulo em 1.290, os que não atuam numa função de dados (p2_f também nulo em 1.290)"
+      - "p2_f = 'Analista de Dados/Data Analyst' (639), 'Cientista de Dados/Data Scientist' (556), 'Engenheiro de Dados/Arquiteto de Dados/Data Engineer/Data Architect' (490), 'Analista de BI/BI Analyst' (378) — cargo atual"
+      - "p4_a_1 IN ('Análise de Dados','Gestor','Engenharia de Dados','Ciência de Dados','Buscando oportunidade na área de dados','Outra atuação') (1.326 / 713 / 675 / 629 / 505 / 423) — área de atuação e quem recebe os blocos p6 (engenharia), p7 (análise) e p8 (ciência) de perguntas"
+      - "p2_c: porte da empresa em nº de funcionários ('Acima de 3.000' 1.525, 'de 101 a 500' 703, 'de 1.001 a 3.000' 450...)"
+    use_para: "perfil demográfico, salarial, de ferramentas e de trabalho (remoto/híbrido) de profissionais de dados no Brasil; cruzar faixa salarial por cargo, nível, UF, gênero."
+    nao_use_para: "estimar salário ou população de profissionais de dados do Brasil (amostra autoselecionada, faixas em texto), séries históricas (uma única edição) ou saber o texto das opções dos indicadores p*_<n> (não há dicionário no banco)."
+    rascunho: [use_para, nao_use_para, "ano da edição", "significado de p1_g e p1_j", "texto das opções numeradas dos indicadores 0/1"]
+    verificado: "4.271 linhas; 4.270 p0 distintos (1 repetido); 353 colunas; p1_a 18–54 com 74 nulos; p1_i_1 nulo em 115; p2_a nulo em 0; p2_h nulo em 577 e 13 faixas distintas; p1_b nulo em 9 — medido 2026-10-27"

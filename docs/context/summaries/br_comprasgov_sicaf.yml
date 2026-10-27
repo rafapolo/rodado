@@ -1,0 +1,18 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_comprasgov_sicaf
+tabelas:
+  fornecedores:
+    grao: "um fornecedor (pessoa jurídica por CNPJ ou pessoa física por CPF) cadastrado no SICAF, no retrato atual"
+    chave: "nenhuma: 962.016 linhas; 53 CNPJs aparecem em mais de uma linha, e CPFs mascarados repetem (943.016 distintos de COALESCE(cnpj, cpf))"
+    tempo: {natureza: retrato_atual}
+    territorio: {nivel: municipio, colunas: {nomeMunicipio: "nome do município (sem código IBGE)", ufSigla: "UF"}}
+    filtros_tipicos:
+      - "ativo = true: cadastro ativo (826.570 linhas); coluna BOOLEAN, e pesquisado_ativo é a mesma informação em texto ('true'/'false'), idêntica a ativo nas 962.016 linhas"
+      - "habilitadoLicitar = true: habilitado a licitar (826.106); difere de ativo em 504 linhas (484 ativos não habilitados, 20 habilitados não ativos)"
+      - "cnpj IS NOT NULL para só pessoa jurídica (cnpj e cpf nunca vêm juntos; 80,26% das linhas têm só cpf)"
+      - "porteEmpresaId: 1 = MICROEMPRESA, 3 = EMPRESA DE PEQUENO PORTE, 5 = DEMAIS, NULL em 189.942 (sem CNPJ ou sem porte)"
+    use_para: "contar fornecedores ativos ou habilitados por UF, porte, CNAE ou natureza jurídica"
+    nao_use_para: "somar com br_mgi_compras_publicas.fornecedor (mesmo cadastro, gotcha duplica_mgi), ou contar CPFs distintos (gotcha cpf_completado)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "962.016 linhas, 772.020 CNPJs distintos, 53 CNPJs repetidos, ativo=pesquisado_ativo em 962.016, ativo=habilitadoLicitar em 961.512 — medido 2026-10-27"

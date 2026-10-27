@@ -1,0 +1,40 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibge_populacao
+tabelas:
+  brasil:
+    grao: "um ano (população total do Brasil)"
+    chave: "ano (35 linhas = 35 anos distintos, medido)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1991–2025"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: populacao, o_que: "população residente estimada", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["ano = 2025 para a estimativa mais recente (213.421.037)"]
+    use_para: "denominador nacional por ano e série da população total."
+    nao_use_para: "recortes por UF ou município (use as tabelas uf e municipio)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "35 linhas, 35 anos distintos; populacao 2025 = 213.421.037, igual à soma de uf e de municipio em 2025 — medido 2026-10-27"
+  uf:
+    grao: "uma UF × ano (população estimada)"
+    chave: "nenhuma que seja limpa: (ano, sigla_uf) é única (946 linhas = 946 pares), mas em 2025 há uma linha com sigla_uf NULL (populacao 5.877) que não é UF"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1991–2025"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "sigla da UF (NULL em 1 linha de 2025)"}}
+    medidas:
+      - {coluna: populacao, o_que: "população residente estimada na UF", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["sigla_uf IS NOT NULL: em 2025 a linha sem UF (5.877 pessoas) entra no total do Brasil; se quiser só as 27 UFs, filtre", "ano = 2025: 28 linhas (27 UFs + a linha sem sigla)"]
+    use_para: "denominador por UF e ano (per capita estadual)."
+    nao_use_para: "granularidade municipal (use municipio)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "946 linhas, 946 pares (ano, sigla_uf) distintos; 2025 tem 28 linhas, 27 siglas distintas e 1 NULL com 5.877; soma 2025 = 213.421.037 incluindo a linha NULL; 2024 tem 27 linhas = 212.583.750 — medido 2026-10-27"
+  municipio:
+    grao: "um município × ano (população estimada)"
+    chave: "(ano, id_municipio) — 191.099 linhas, 191.099 pares distintos; em 2025 uma linha tem id_municipio e sigla_uf NULL"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1991–2025"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (VARCHAR)", sigla_uf: "UF do município"}}
+    medidas:
+      - {coluna: populacao, o_que: "população residente estimada no município", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["ano = 2025 tem 5.571 linhas (5.570 municípios + 1 sem id_municipio, 5.877 pessoas); demais anos recentes têm 5.570", "id_municipio IS NOT NULL para juntar com outras tabelas"]
+    use_para: "denominador per capita por município e ano."
+    nao_use_para: "somar sem notar que populacao é NULL em 534 linhas (533 em 1996, 1 em 2009)."
+    rascunho: [use_para]
+    verificado: "191.099 linhas e pares (ano, id_municipio) distintos; 1 linha com id_municipio e sigla_uf NULL (ano 2025, populacao 5.877); 534 linhas com populacao NULL (1996: 533; 2009: 1); soma 2025 = 213.421.037 — medido 2026-10-27"

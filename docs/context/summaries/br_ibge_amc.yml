@@ -1,0 +1,14 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibge_amc
+tabelas:
+  municipio_de_para:
+    grao: "um município (código atual de 7 dígitos) × par de anos censitários (ano_de, ano_para) com o id da área mínima comparável (AMC) a que pertence nesse par"
+    chave: "(ano_de, ano_para, id_municipio) — 434.070 linhas = 434.070 chaves distintas (78 pares × 5.565 municípios)"
+    tempo: {natureza: serie_de_periodos, coluna: "ano_de, ano_para", cobertura: "1872–2010 (anos de censo: 1872, 1900, 1911, 1920, 1933, 1940, 1950, 1960, 1970, 1980, 1991, 2000, 2010)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (texto)", id_amc: "id da AMC, válido só dentro do par (ano_de, ano_para)"}}
+    filtros_tipicos: ["ano_de = 1991 AND ano_para = 2010 (BIGINT, números): escolha UM par; misturar pares mistura numerações de AMC diferentes", "id_amc IS NOT NULL: nulo em 13,6% das linhas, concentrado em pares com ano_de antigo (ex. 1872→1900: 4.459 nulos; 2000→2010: 0); significado do nulo não documentado, provavelmente município inexistente no ano_de"]
+    use_para: "agregar municípios em áreas comparáveis para comparar séries entre dois censos."
+    nao_use_para: "comparar id_amc entre pares de anos diferentes, ou tratá-lo como código IBGE."
+    rascunho: [use_para, nao_use_para]
+    verificado: "434.070 linhas, 434.070 chaves distintas, 5.565 municípios por par; id_amc de 5300108 em 1991→2010 = 16265 — medido 2026-10-27"

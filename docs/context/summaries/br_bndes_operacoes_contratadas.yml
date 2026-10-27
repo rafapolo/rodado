@@ -1,0 +1,88 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_bndes_operacoes_contratadas
+tabelas:
+  operacoes_administracao_publica:
+    grao: "uma operação de crédito do BNDES contratada por ente público (município, estado ou União); sem id de operação"
+    chave: "nenhuma: sem coluna de id; 4.749 linhas, 47 repetidas por inteiro (DISTINCT * dá 4.702)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1994–2026 (ano da contratação; data_nivel_atual = data do último nível, 1994-07-01–2026-08-28)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF do ente (nulo em 0,38%)", id_municipio: "IBGE 7 dígitos; nulo em 17,6% (estados e União)"}}
+    medidas:
+      - {coluna: valor_operacao, o_que: "valor contratado", unidade: "R$", soma: sim}
+      - {coluna: valor_desembolsado, o_que: "valor já liberado", unidade: "R$", soma: sim}
+      - {coluna: valor_saldo_liberar, o_que: "valor ainda a liberar", unidade: "R$", soma: sim}
+    filtros_tipicos: ["ente_publico = 'Administração Municipal' (3.926), 'Administração Estadual' (805) ou 'União' (18)", "situacao_operacao IN ('LIQUIDADA','ATIVA','ATIVA-UTILIZADA') (4.144 / 241 / 364); nivel_atual é sempre 'CONTRATADA'"]
+    use_para: "crédito do BNDES a prefeituras e governos estaduais por município e ano."
+    nao_use_para: "crédito a empresas (use as demais tabelas); contar operações sem tratar as 47 linhas repetidas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "4.749 linhas; 47 duplicadas inteiras; 17,58% sem id_municipio — medido 2026-10-27"
+  operacoes_exportacao_bens:
+    grao: "um desembolso/registro de financiamento à exportação de bens (BNDES Exim pós-embarque) por exportador e operação"
+    chave: "nenhuma: id_operacao tem 1.929 distintos em 2.363 linhas; 24 linhas repetidas por inteiro (2.339 distintas)"
+    tempo: {natureza: serie_anual, coluna: data_contratacao, cobertura: "2002-01-04–2026-08-31 (ano: 2002–2026)"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF do exportador", sigla_pais_destino: "país de destino, ISO-3 (ex.: PRY, ECU, ARG, USA); nulo em 3,5%"}}
+    filtros_tipicos: ["tipo_operacao = 'Exportação de bens' (2.357) exclui 'Exportação de bens e serviços' (6)", "situacao_operacao IN ('LIQUIDADA','ATIVA') (1.817 / 546)", "modalidade_operacional = 'Supplier' (2.218) ou 'Buyer' (145)", "sigla_moeda = 'USD' (2.352) ou 'EUR' (11)"]
+    use_para: "exportações de bens financiadas pelo BNDES por país de destino, UF e porte do exportador."
+    nao_use_para: "valores em R$: a tabela não tem coluna de valor nem taxa."
+    rascunho: [use_para, nao_use_para]
+    verificado: "2.363 linhas; 1.929 id_operacao distintos; 2.339 linhas distintas — medido 2026-10-27"
+  operacoes_exportacao_servicos:
+    grao: "um registro de financiamento à exportação de serviços (obras no exterior) por operação"
+    chave: "nenhuma: id_operacao tem 146 distintos em 652 linhas (várias linhas por operação, mesma operação com várias parcelas); sem linhas duplicadas inteiras"
+    tempo: {natureza: serie_anual, coluna: data_contratacao, cobertura: "1998-07-24–2015-04-28 (ano 1998–2015)"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF do exportador (6 valores, RJ em 528 linhas)", sigla_pais_destino: "país de destino ISO-3 (ARG 440, AGO 84)"}}
+    medidas:
+      - {coluna: valor_operacao, o_que: "valor da operação; pode repetir entre as linhas da mesma operação, não medido", unidade: "moeda de sigla_moeda (sempre 'USD')", soma: nao}
+      - {coluna: valor_desembolsado, o_que: "valor desembolsado", unidade: "USD", soma: sim}
+      - {coluna: taxa_juros, o_que: "taxa de juros", unidade: "% a.a., significado exato não documentado", soma: nao}
+      - {coluna: prazo_meses, o_que: "prazo", unidade: "meses", soma: nao}
+    filtros_tipicos: ["situacao_operacao IN ('LIQUIDADA','ATIVA') (639 / 13)", "tipo_mutuario = 'Ente público' (642)", "valores em maiúsculas, ao contrário de exportacao_bens"]
+    use_para: "obras e serviços de engenharia no exterior financiados pelo BNDES até 2015."
+    nao_use_para: "série recente (termina em 2015) ou contar operações por linha."
+    rascunho: [use_para, nao_use_para, medidas]
+    verificado: "652 linhas; 146 id_operacao distintos; 652 linhas distintas — medido 2026-10-27"
+  operacoes_indiretas_automaticas:
+    grao: "uma operação indireta automática (via agente financeiro credenciado) contratada, por cliente; sem id de operação"
+    chave: "nenhuma: sem id; na partição ano = 2026, 64.244 linhas e 58.338 distintas (5.906 repetidas por inteiro)"
+    tempo: {natureza: serie_anual, coluna: data_contratacao, cobertura: "2002–2026 (ano); 2026 vai de 2026-01-02 a 2026-08-31"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF do cliente", id_municipio: "IBGE 7 dígitos (sem nulos em 2026)"}}
+    medidas:
+      - {coluna: valor_operacao, o_que: "valor contratado", unidade: "R$", soma: sim}
+      - {coluna: valor_desembolsado, o_que: "valor desembolsado até o momento; nulo em 40,6% (em 2026: 26.035 das ATIVA)", unidade: "R$", soma: sim}
+      - {coluna: taxa_juros, o_que: "taxa de juros", unidade: "% a.a., não documentado", soma: nao}
+      - {coluna: prazo_carencia, o_que: "carência", unidade: "meses", soma: nao}
+      - {coluna: prazo_amortizacao, o_que: "amortização", unidade: "meses", soma: nao}
+    filtros_tipicos: ["ano = 2026 em tabela de 2,4 milhões de linhas (BIGINT)", "situacao_operacao IN ('ATIVA','LIQUIDADA') (63.782 / 462 em 2026)", "produto IN ('BNDES FINAME','BNDES AUTOMÁTICO','BNDES CRÉDITO RURAL')", "setor_cnae = 'AGROPECUÁRIA E PESCA' (573 em 2026); setor_bndes = 'AGROPECUÁRIA' tem grafia diferente", "natureza_cliente = 'PRIVADA' (64.225 em 2026)"]
+    use_para: "crédito do BNDES repassado por bancos a micro/pequenas/médias empresas, por município, produto e setor."
+    nao_use_para: "somar valor_desembolsado como se fosse completo: nulo em 40% das linhas ATIVA; nem contar operações sem tratar linhas repetidas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "2.392.704 linhas na tabela; ano = 2026: 64.244 linhas, 58.338 distintas, anos 2002–2026 (25 distintos) — medido 2026-10-27"
+  operacoes_nao_automaticas:
+    grao: "uma linha de operação não automática (analisada caso a caso) contratada; um id_contrato tem várias linhas"
+    chave: "nenhuma: id_contrato tem 8.409 distintos em 23.896 linhas, e 4.050 contratos têm valor_operacao diferente entre linhas, então a linha é uma operação dentro do contrato; 395 linhas repetidas por inteiro (23.501 distintas)"
+    tempo: {natureza: serie_anual, coluna: data_contratacao, cobertura: "2002-01-02–2026-08-31 (ano = ano de data_contratacao, 0 divergências)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF; 'IE' = exterior (2.603 linhas, todas sem id_municipio)", id_municipio: "IBGE 7 dígitos; nulo em 32,6%"}}
+    medidas:
+      - {coluna: valor_operacao, o_que: "valor contratado da linha", unidade: "R$", soma: sim}
+      - {coluna: valor_desembolsado, o_que: "valor desembolsado; 0 em 1.431 linhas", unidade: "R$", soma: sim}
+      - {coluna: taxa_juros, o_que: "taxa", unidade: "% a.a., não documentado", soma: nao}
+      - {coluna: prazo_carencia, o_que: "carência", unidade: "meses", soma: nao}
+      - {coluna: prazo_amortizacao, o_que: "amortização", unidade: "meses", soma: nao}
+    filtros_tipicos: ["situacao_operacao IN ('ATIVO','LIQUIDADO') (9.441 / 14.187); '-' em 268 linhas; atenção: aqui é ATIVO/LIQUIDADO (masculino), nas demais tabelas ATIVA/LIQUIDADA", "forma_apoio = 'DIRETA' (19.826) ou 'INDIRETA' (4.070)", "modalidade_apoio = 'NÃO REEMBOLSÁVEL' (1.612) para doações", "porte_cliente = 'GRANDE' (20.657)"]
+    use_para: "grandes financiamentos diretos e não reembolsáveis do BNDES, por setor, produto e município."
+    nao_use_para: "somar valor_operacao por id_contrato com dedup via MAX: dá 808 bi contra 1.237 bi somando todas as linhas; e indicador_inovacao é 100% nulo."
+    rascunho: [use_para, nao_use_para]
+    verificado: "23.896 linhas; 8.409 id_contrato; 4.196 contratos com mais de uma linha (19.683 linhas); soma valor_operacao 1.236,7 bi, 395 duplicadas inteiras — medido 2026-10-27"
+  operacoes_pre_embarque:
+    grao: "uma operação de financiamento pré-embarque (BNDES Exim) contratada por cliente; sem id de operação"
+    chave: "nenhuma: sem id; 7.664 linhas, 7.614 distintas (50 repetidas por inteiro)"
+    tempo: {natureza: serie_anual, coluna: data_contratacao, cobertura: "2002-01-08–2026-08-31 (ano 2002–2026)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF do cliente (24 valores)", id_municipio: "IBGE 7 dígitos, nulo em 0,07%"}}
+    medidas:
+      - {coluna: valor_operacao, o_que: "valor contratado", unidade: "R$", soma: sim}
+      - {coluna: valor_desembolsado, o_que: "valor desembolsado; nulo em 0,73%", unidade: "R$", soma: sim}
+    filtros_tipicos: ["situacao_operacao IN ('LIQUIDADA','ATIVA') (7.102 / 562)", "produto = 'BNDES EXIM PRÉ-EMBARQUE' (único valor)"]
+    use_para: "crédito do BNDES a exportadores na fase pré-embarque, por UF e setor."
+    nao_use_para: "país de destino ou moeda: a tabela não tem."
+    rascunho: [use_para, nao_use_para]
+    verificado: "7.664 linhas, 7.614 distintas — medido 2026-10-27"

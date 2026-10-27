@@ -1,0 +1,252 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_bcb_sicor
+tabelas:
+  operacao:
+    grao: "uma operação de crédito rural (contrato ou parcela de cédula) contratada, identificada por id_referencia_bacen + numero_ordem; sem município (ver gotcha operacao_sem_municipio)"
+    chave: "(id_referencia_bacen, numero_ordem): em ano_emissao = 2024, 2.328.940 linhas = 2.328.940 pares, mas só 1.887.846 id_referencia_bacen distintos (o mesmo id repete com ordens diferentes). Não use id_referencia_bacen sozinho."
+    tempo: {natureza: serie_anual, coluna: data_emissao, cobertura: "2013-01-02–2026-02-27 (ano_emissao 2013–2026; 2026 parcial)"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF da operação (município só em recurso_publico_complemento_operacao)"}}
+    medidas:
+      - {coluna: valor_parcela_credito, o_que: "valor do crédito da operação; soma de 2024 = R$ 379,8 bi", unidade: "R$", soma: sim}
+      - {coluna: area_financiada, o_que: "área financiada", unidade: "hectares (provável; unidade não documentada)", soma: sim}
+      - {coluna: taxa_juro, o_que: "taxa de juros da operação", unidade: "% a.a. (provável)", soma: nao}
+    filtros_tipicos:
+      - "ano_emissao = 2024 (ou ano_safra_emissao = '2023/2024', texto 'AAAA/AAAA'): corte por ano civil ou safra"
+      - "id_programa = '1' é PRONAF, '50' PRONAMP, '999' sem programa específico (dicionario); 2,67% das linhas têm id_programa nulo"
+      - "id_categoria_emitente = '2222' pequeno, '3333' médio, '4444' grande produtor (dicionario)"
+      - "id_instrumento_credito = '5' cédula de crédito bancário, '4' nota de crédito rural, '10' contrato de crédito rural (dicionario)"
+      - "id_fonte_recurso: significado em fonte_recurso (ex.: '430' LCA livre, sem município)"
+    use_para: "volume, taxa, programa, fonte de recurso e instrumento do crédito rural por UF e ano ou safra."
+    nao_use_para: "qualquer corte por município, produtor ou imóvel direto; ligar a recurso_publico_complemento_operacao (município), recurso_publico_mutuario ou recurso_publico_propriedade."
+    rascunho: [use_para, nao_use_para, area_financiada, taxa_juro]
+    verificado: "28.440.266 linhas; ano_emissao = 2024: 2.328.940 linhas, pares únicos, soma valor_parcela_credito R$ 379,78 bi; linhas por ano 2013–2026 de 1,58 M (2016) a 2,80 M (2013), 2026 com 334.644 — medido 2026-10-27"
+  empreendimento:
+    grao: "um empreendimento financiado (produto × variedade × modalidade × finalidade, com ciclo de produção); catálogo ligado à operacao por id_empreendimento"
+    chave: "id_empreendimento: 3.316 linhas = 3.316 distintos"
+    tempo: {natureza: sem_tempo, coluna: data_inicio, cobertura: "1984-01-01–2026-09-24 (data_inicio de vigência do cadastro; data_fim nula em 51%)"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "finalidade = 'Custeio' (1.647 de 3.316), 'Comercialização', 'Investimento', 'Industrialização'"
+      - "atividade = 'Agrícola' ou 'Pecuário(a)' (com o sufixo '(a)')"
+      - "id_tipo_cultura: '1' olericultura, '2' permanente, '3' demais culturas; '4' sem tradução no dicionário (302 linhas); nulo em 19,7%"
+    use_para: "decodificar o produto (soja, milho, bovinos), finalidade e atividade de uma operação via id_empreendimento."
+    nao_use_para: "contar operações ou volume (é catálogo)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "3.316 linhas, id_empreendimento único — medido 2026-10-27"
+  fonte_recurso:
+    grao: "uma fonte de recursos do crédito rural (LCA, poupança rural, BNDES, Tesouro etc.), com indicador de recurso público"
+    chave: "id_fonte_recurso: 37 linhas = 37 distintos"
+    tempo: {natureza: sem_tempo, coluna: data_inicio, cobertura: "2011-11-01–2026-07-24 (vigência da fonte)"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "indicador_recurso_publico = '1' (16 fontes) para recurso controlado/equalizado, que é o que tem município em recurso_publico_complemento_operacao; '0' são 21 fontes"
+    use_para: "decodificar id_fonte_recurso e separar recurso público de livre."
+    nao_use_para: "medir volume (catálogo de 37 linhas)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "37 linhas, chave única; indicador_recurso_publico 0 = 21, 1 = 16 — medido 2026-10-27"
+  instituicao_financeira:
+    grao: "uma instituição financeira (raiz de CNPJ) com segmento"
+    chave: "cnpj_basico: 650 linhas = 650 distintos"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "segmento = 'COOPERATIVA DE CRÉDITO' (maiúsculas): 566 de 650; nulo em 15 linhas"
+    use_para: "decodificar cnpj_basico_instituicao_financeira da operacao e agrupar por segmento."
+    nao_use_para: "volume de crédito (é cadastro)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "650 linhas, cnpj_basico único — medido 2026-10-27"
+  dicionario:
+    grao: "uma tradução (id_tabela, nome_coluna, chave) → valor para códigos das tabelas do SICOR"
+    use_para: "decodificar id_programa, id_categoria_emitente, id_instrumento_credito, id_tipo_*, id_evento, id_status e id_motivo_desclassificacao; deduplicar antes de juntar (gotcha dicionario_duplicado)."
+  liberacao:
+    grao: "uma liberação (desembolso) de parcela de uma operação numa data: id_referencia_bacen × numero_ordem × data_liberacao"
+    chave: "(id_referencia_bacen, numero_ordem, data_liberacao): em ano = 2024, 2.520.883 linhas = 2.520.883 distintos; só 2.400.412 pares (id, ordem), ou seja, uma operação libera em mais de uma data"
+    tempo: {natureza: serie_diaria, coluna: data_liberacao, cobertura: "partição ano de data_liberacao (a tabela tem datas inválidas: ano de 201 a 2029; filtre por ano_emissao ou ano 2013–2026)"}
+    territorio: {nivel: nenhum, colunas: {}}
+    medidas:
+      - {coluna: valor_liberado, o_que: "valor desembolsado na data; soma de ano = 2024 R$ 375,9 bi", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "ano = 2024 (partição por ano da liberação, não da emissão); ano_emissao/mes_emissao dizem de quando é a operação"
+    use_para: "cronograma de desembolso do crédito rural; juntar com operacao por (id_referencia_bacen, numero_ordem)."
+    nao_use_para: "total contratado (use operacao.valor_parcela_credito) ou saldo devedor (use saldo)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "22.373.115 linhas; ano = 2024: 2.520.883 linhas, chave de 3 colunas única, soma R$ 375,93 bi; existem linhas com ano = 2029 (1 linha, ex.: data_liberacao 2029-12-03) e ano a partir de 201 — medido 2026-10-27"
+  saldo:
+    grao: "o saldo devedor de uma operação de crédito rural num mês: id_referencia_bacen × numero_ordem × (ano, mes)"
+    chave: "(ano, mes, id_referencia_bacen, numero_ordem): em ano = 2026 e mes = 1, 4.007.547 linhas = 4.007.547 pares distintos"
+    tempo: {natureza: soma_de_retratos, coluna: ano e mes, cobertura: "2013-01–2026-01 (12 meses por ano em 2013–2025; 2026 só mes 1)"}
+    territorio: {nivel: nenhum, colunas: {}}
+    medidas:
+      - {coluna: valor_ultimo_dia, o_que: "saldo da operação no último dia do mês; R$ 696,9 bi em 2026-01", unidade: "R$", soma: sim}
+      - {coluna: valor_medio_diario, o_que: "saldo médio diário do mês (R$ 912,8 bi em 2026-01)", unidade: "R$", soma: sim}
+      - {coluna: valor_medio_diario_vincendo, o_que: "saldo médio diário a vencer (R$ 668,5 bi em 2026-01)", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "ano = 2026 AND mes = 1 (um mês por vez: tabela de 638 M de linhas e retratos não se somam entre meses)"
+      - "id_situacao_operacao: '1' é o mais comum (3.039.496 de 4.007.547 em 2026-01), seguido de '12', '3', '4', '2', '7'; significado não documentado"
+    use_para: "estoque (saldo devedor) do crédito rural por mês, ligado à operacao pelo par id_referencia_bacen + numero_ordem."
+    nao_use_para: "somar meses (é retrato) ou ver município sem passar por recurso_publico_complemento_operacao."
+    rascunho: [use_para, nao_use_para]
+    verificado: "638.317.660 linhas; ano = 2026 e mes = 1: 4.007.547 linhas, pares únicos; id_situacao_operacao 1 a 13 — medido 2026-10-27"
+  operacoes_desclassificadas:
+    grao: "uma desclassificação (total ou parcial) de uma operação de crédito rural, com motivo e valor"
+    chave: "nenhuma: (id_referencia_bacen, numero_ordem) repete em 30 linhas (15.852 linhas, 15.822 pares); com data_desclassificacao e id_motivo_desclassificacao fica único"
+    tempo: {natureza: serie_diaria, coluna: data_desclassificacao, cobertura: "2016-09-20–2026-10-06"}
+    territorio: {nivel: nenhum, colunas: {}}
+    medidas:
+      - {coluna: valor_desclassificado, o_que: "valor desclassificado do crédito", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "tipo_desclassificacao = 'Total' (10.432) ou 'Parcial' (5.420)"
+      - "id_motivo_desclassificacao: '999' = outro (7.406), '1' aplicação em atividade diversa, '6' empreendimento em área vedada, '13' aplicação não comprovada (dicionario); '0', '14' e '201' sem tradução"
+    use_para: "operações que perderam o enquadramento no crédito rural, por motivo."
+    nao_use_para: "estimar fraude: desclassificar tem motivos administrativos variados."
+    rascunho: [use_para, nao_use_para]
+    verificado: "15.852 linhas; 15.822 pares (id, ordem); 15.852 com data e motivo — medido 2026-10-27"
+  recurso_publico_complemento_operacao:
+    grao: "o complemento de uma operação com recurso público: município, agência e cédula; um por operação"
+    chave: "(id_referencia_bacen, numero_ordem): em ano_emissao = 2024, 1.883.492 linhas = 1.883.492 pares distintos"
+    tempo: {natureza: serie_anual, coluna: ano_emissao, cobertura: "2013–2026"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município IBGE de 7 dígitos onde o crédito foi aplicado, só em fonte de recurso público (gotcha operacao_sem_municipio)"}}
+    filtros_tipicos:
+      - "ano_emissao = 2024; id_municipio nulo só em 1 linha dessa partição"
+    use_para: "o único caminho para município do crédito rural: juntar a operacao por (id_referencia_bacen, numero_ordem)."
+    nao_use_para: "volume total do crédito (cobre só recurso público; 1.883.492 de 2.328.940 operações em 2024)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "23.034.485 linhas; ano_emissao = 2024: 1.883.492 linhas, pares únicos, 1 sem município; 1.452.638 id_referencia_bacen_efetivo distintos — medido 2026-10-27"
+  recurso_publico_mutuario:
+    grao: "um mutuário (tomador) de uma operação com recurso público; dado pessoal (CPF/CNPJ), só consulte agregado"
+    chave: "(id_referencia_bacen, cpf, cnpj_basico): em ano_emissao = 2024, 1.456.703 linhas = 1.456.703 combinações; não tem numero_ordem (gotcha mutuario_sem_numero_ordem)"
+    tempo: {natureza: serie_anual, coluna: ano_emissao, cobertura: "2013–2026"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "primeiro_mutuario = 'S' escolhe o tomador principal: em 2024, 1.452.643 linhas com 'S' para 1.452.643 operações"
+      - "sexo = '1' (604.535 na amostra) ou '2' (1.489.246); nulo em 0,22%; significado do código não documentado no dicionário"
+    use_para: "perfil do tomador (sexo, DAP) do crédito com recurso público."
+    nao_use_para: "somar valor (não tem medida); contar linhas como operações sem filtrar primeiro_mutuario = 'S'."
+    rascunho: [use_para, nao_use_para]
+    verificado: "17.774.614 linhas; ano_emissao = 2024: 1.456.703 linhas, 1.452.643 operações — medido 2026-10-27"
+  recurso_publico_propriedade:
+    grao: "uma propriedade (CAR, SNCR, CIB) ligada a uma operação com recurso público; uma operação traz vários imóveis"
+    chave: "(id_referencia_bacen, numero_ordem, cpf, cnpj_basico, id_sncr, id_cib, id_car): em ano_emissao = 2024, 2.294.087 linhas = 2.294.087 combinações; só 1.882.757 pares (id, ordem), então não é um imóvel por operação"
+    tempo: {natureza: serie_anual, coluna: ano_emissao, cobertura: "2013–2026"}
+    territorio: {nivel: ponto, colunas: {id_car: "código CAR sem hífens (gotcha id_car_sem_hifen)"}}
+    filtros_tipicos:
+      - "id_car nulo em 46% (vazio até 2017, ver gotcha id_car_sem_hifen); antes de somar valor por imóvel, reparta pelo número de CARs da operação"
+    use_para: "ligar operação a imóvel (CAR) para cruzar crédito com cobertura da terra."
+    nao_use_para: "somar valor de operação por linha (a operação se repete pelo número de imóveis)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "26.577.798 linhas; ano_emissao = 2024: 2.294.087 linhas, 1.882.757 pares, 1.452.231 id_referencia_bacen — medido 2026-10-27"
+  recurso_publico_gleba:
+    grao: "uma gleba (polígono financiado) de uma operação com recurso público"
+    chave: "(id_referencia_bacen, numero_ordem, indice_gleba): em ano_emissao = 2024, 1.167.979 linhas = 1.167.979 combinações; 751.504 pares (id, ordem)"
+    tempo: {natureza: serie_anual, coluna: ano_emissao, cobertura: "2014–2025 (no perfil de amostra)"}
+    territorio: {nivel: ponto, colunas: {geometria: "geometria da gleba (polígono, às vezes ponto ou coleção); geometria_original é o texto da fonte"}}
+    filtros_tipicos:
+      - "geometria nula em 0,01% na amostra; ver gotchas gleba_dentro_do_car e registro_muda_em_2023 antes de comparar anos"
+    use_para: "localizar espacialmente o crédito rural e cruzar com CAR, desmatamento e embargo."
+    nao_use_para: "totais por município (não há id_municipio)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "7.326.833 linhas; ano_emissao = 2024: 1.167.979 linhas, chave única — medido 2026-10-27"
+  recurso_publico_cooperado:
+    grao: "um cooperado (pessoa física ou jurídica) que recebeu parcela de operação de cooperativa"
+    chave: "(id_referencia_bacen, numero_ordem, cpf, cnpj_basico): 154.179 linhas = 154.179 combinações; só 654 pares (id, ordem), ou seja, muitos cooperados por operação"
+    tempo: {natureza: serie_anual, coluna: ano_emissao, cobertura: "2017–2025"}
+    territorio: {nivel: nenhum, colunas: {}}
+    medidas:
+      - {coluna: valor_parcela, o_que: "parcela do crédito repassada ao cooperado (há valores negativos, mín. -3.959,24)", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "tipo_pessoa = 'Física' (152.292) ou 'Jurídica' (1.887)"
+    use_para: "repasse a cooperados nas operações de cooperativa."
+    nao_use_para: "volume total do crédito rural."
+    rascunho: [use_para, nao_use_para]
+    verificado: "154.179 linhas, chave de 4 colunas única; 654 pares (id, ordem) — medido 2026-10-27"
+  proagro_cop:
+    grao: "uma comunicação de ocorrência (COP) de perda do Proagro: id_referencia_bacen × numero_ordem, com evento e status"
+    chave: "nenhuma: (id_referencia_bacen, numero_ordem) repete (1.007.340 linhas, 996.080 pares; gotcha proagro_cop_chave_repetida)"
+    tempo: {natureza: serie_anual, coluna: data_comunicacao, cobertura: "2013-01-25–2026-10-13 (ano_emissao 2013–2026, nulo em 1%; gotcha proagro_sem_ano_na_fonte)"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "id_status = '2' deferida (939.105), '3' indeferida, '4' desistida, '1' em análise, '5' cancelada, '6' inválida (dicionario)"
+      - "id_evento = '48' seca (541.010), '17' chuva excessiva, '24' geada, '31' granizo, '86' variação de temperatura, '79' vento forte (dicionario)"
+      - "datas de plantio e colheita têm valores absurdos (colheita até o ano 8202): confira antes de calcular calendário"
+    use_para: "contar ocorrências de perda no Proagro por evento, status e ano."
+    nao_use_para: "valor pago (use proagro_parcela) ou área (use proagro_rcp)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.007.340 linhas, 996.080 pares, 981.291 id_referencia_bacen — medido 2026-10-27"
+  proagro_complemento_cop:
+    grao: "mesmo grão de proagro_cop (uma linha por comunicação), com dados da empresa e do perito"
+    chave: "nenhuma: mesmo conjunto de proagro_cop (1.007.340 linhas, 996.080 pares)"
+    tempo: {natureza: serie_anual, coluna: ano_emissao, cobertura: "2013–2026"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "id_evento igual a proagro_cop"
+    use_para: "identificar periciadora e perito (CPF e CNPJ, dado pessoal) da comunicação."
+    nao_use_para: "análise sem juntar com proagro_cop."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.007.340 linhas, 996.080 pares — medido 2026-10-27"
+  proagro_rcp:
+    grao: "um relatório de comprovação de perdas (RCP) do Proagro, um por operação e ordem"
+    chave: "(id_referencia_bacen, numero_ordem): 848.652 linhas = 848.652 pares; 836.521 id_referencia_bacen"
+    tempo: {natureza: serie_anual, coluna: data_entrega, cobertura: "2014-10-28–2026-10-13 (ano_emissao 2014–2026)"}
+    territorio: {nivel: nenhum, colunas: {}}
+    medidas:
+      - {coluna: area, o_que: "área afetada, em hectares (unidade provável)", unidade: "ha", soma: sim}
+      - {coluna: valor_receita_prevista, o_que: "receita prevista da lavoura", unidade: "R$", soma: sim}
+      - {coluna: valor_previsao_producao, o_que: "previsão de produção, unidade da cultura (mistura de unidades; máx. 6,2e11)", unidade: "mistas", soma: nao}
+    filtros_tipicos:
+      - "id_tipo = '2' (844.292 de 848.652) ou '1'; significado não documentado"
+      - "id_status = '1' em todas as linhas (sem poder discriminante)"
+    use_para: "perda, área e receita prevista nas lavouras do Proagro."
+    nao_use_para: "somar valor_previsao_producao entre culturas."
+    rascunho: [use_para, nao_use_para, area]
+    verificado: "848.652 linhas, pares únicos, 836.521 operações — medido 2026-10-27"
+  proagro_complemento_rcp:
+    grao: "mesmo grão de proagro_rcp, com periciadora e perito"
+    chave: "(id_referencia_bacen, numero_ordem): 848.652 linhas = 848.652 pares"
+    tempo: {natureza: serie_anual, coluna: ano_emissao, cobertura: "2014–2026"}
+    territorio: {nivel: nenhum, colunas: {}}
+    use_para: "identificar periciadora e perito (dado pessoal) do relatório."
+    nao_use_para: "análise sem juntar com proagro_rcp."
+    rascunho: [use_para, nao_use_para]
+    verificado: "848.652 linhas, pares únicos — medido 2026-10-27"
+  proagro_rcp_gleba:
+    grao: "uma gleba (polígono) de um relatório de perdas do Proagro"
+    chave: "(id_referencia_bacen, numero_ordem, indice_gleba): 1.764.450 linhas = 1.764.450 combinações (também único por (id_referencia_bacen, indice_gleba))"
+    tempo: {natureza: serie_anual, coluna: ano_emissao, cobertura: "2015–2026"}
+    territorio: {nivel: ponto, colunas: {geometria: "polígono 2D da gleba; nula em 2% (gotcha proagro_gleba_wkt_invalido), geometria_original traz o WKT bruto"}}
+    use_para: "localizar espacialmente as perdas do Proagro (gotcha proagro_liga_imovel_antes_de_2019)."
+    nao_use_para: "totais por município (não tem id_municipio)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.764.450 linhas, chave única — medido 2026-10-27"
+  proagro_parcela:
+    grao: "uma parcela de pagamento do Proagro de uma operação, por natureza da parcela e data base"
+    chave: "nenhuma: em ano_emissao = 2022, 1.337.854 linhas contra 1.334.878 combinações de (id_referencia_bacen, numero_ordem, id_natureza_parcela, data_base), então 2.976 linhas repetem"
+    tempo: {natureza: serie_diaria, coluna: data_pagamento, cobertura: "2013-01-04–2026-10-13 (data_base 2013–2026; ano_emissao nulo em 2,7%, gotcha proagro_sem_ano_na_fonte)"}
+    territorio: {nivel: nenhum, colunas: {}}
+    medidas:
+      - {coluna: valor_pago, o_que: "valor pago da parcela", unidade: "R$", soma: sim}
+      - {coluna: valor_base, o_que: "valor base da parcela, antes da atualização", unidade: "R$", soma: sim}
+      - {coluna: valor_atual, o_que: "valor da parcela atualizado", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "id_status = '6' (2.037.756 no perfil de amostra de 2,04 M) é a situação dominante; significado não documentado"
+      - "id_natureza_parcela: '410' (685.218), '450', '440', '156', '127', '110'; significado não documentado"
+    use_para: "valores pagos pelo Proagro por natureza de parcela e período."
+    nao_use_para: "somar valor_base e valor_pago juntos."
+    rascunho: [use_para, nao_use_para]
+    verificado: "13.432.346 linhas; ano_emissao = 2022: 1.337.854 linhas, 1.334.878 combinações da chave de 4 colunas — medido 2026-10-27"
+  proagro_sumula_julgamento:
+    grao: "uma súmula de julgamento (decisão) do Proagro por operação e ordem"
+    chave: "(id_referencia_bacen, numero_ordem): 838.859 linhas = 838.859 pares; 826.729 id_referencia_bacen"
+    tempo: {natureza: serie_diaria, coluna: data_decisao, cobertura: "2017-03-01–2026-10-13 (ano_emissao 2016–2026)"}
+    territorio: {nivel: nenhum, colunas: {}}
+    medidas:
+      - {coluna: valor_credito_custeio_utilizado, o_que: "crédito de custeio utilizado no cálculo da cobertura", unidade: "R$", soma: sim}
+      - {coluna: valor_orcamento_enquadrado, o_que: "orçamento enquadrado", unidade: "R$", soma: sim}
+      - {coluna: valor_perdas_nao_amparadas, o_que: "perdas não amparadas", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "id_decisao = '2' (788.243 de 838.859) é a decisão dominante; significado não documentado"
+      - "id_instancia = '5' (700.914), '6', '7', '9'; significado não documentado"
+    use_para: "valores usados no julgamento do Proagro."
+    nao_use_para: "pagamentos efetivos (use proagro_parcela)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "838.859 linhas, pares únicos, 826.729 operações — medido 2026-10-27"

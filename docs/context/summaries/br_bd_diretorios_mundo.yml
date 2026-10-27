@@ -1,0 +1,44 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_bd_diretorios_mundo
+tabelas:
+  continente:
+    grao: "um continente (7 linhas), com nome em português e inglês"
+    chave: "sigla (7 linhas = 7 distintos)"
+    tempo: {natureza: sem_tempo, coluna: nenhuma}
+    territorio: {nivel: outro, colunas: {sigla: "código do continente: AF, AN, AS, EU, NA, OC, SA"}}
+    filtros_tipicos: ["sigla = 'SA' (América do Sul); 'NA' é América do Norte, não é nulo"]
+    use_para: "traduzir pais.sigla_continente em nome"
+    nao_use_para: "análise de dados"
+    rascunho: [use_para, nao_use_para]
+    verificado: "7 linhas, 7 distintos de sigla — medido 2026-10-27"
+  nomenclatura_comum_mercosul:
+    grao: "um código NCM (8 dígitos) da Nomenclatura Comum do Mercosul, com nome em pt/es/en, unidade estatística e classificações cruzadas (SH6, ISIC, CUCI, fator agregado)"
+    chave: "id_ncm (13.744 linhas = 13.744 distintos)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "uma versão da NCM, sem coluna de ano"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["id_ncm é texto de 8 dígitos com zero à esquerda (ex.: '01011010', soja = '12019000')", "id_sh6 = substr(id_ncm,1,6) liga ao sistema_harmonizado; 5 NCM não acham SH6 correspondente na outra tabela (medido)", "id_unidade '11' = número (unidade) e '21' = tonelada métrica líquida (conferidos em NCM 01011010 e 12019000); os demais códigos: ver nome_unidade"]
+    use_para: "traduzir id_ncm de exportação/importação em descrição e agrupar por SH6, SH4 e SH2"
+    nao_use_para: "preço ou quantidade: não há medidas"
+    rascunho: [use_para, nao_use_para]
+    verificado: "13.744 linhas, 13.744 distintos de id_ncm, 6.622 distintos de id_sh6; 5 id_sh6 sem par em sistema_harmonizado — medido 2026-10-27"
+  pais:
+    grao: "um país ou território (inclusive entidades históricas), com códigos ISO, FAO, GAUL, COW, PNUD, COI, FIFA e nome em pt/en"
+    chave: "nenhuma: id_m49 é nulo em 28 das 277 linhas (entidades históricas sem código atual, como Zanzibar e República do Vietnam); nas 249 linhas com id_m49 ele é único (sigla_iso3 também tem 249 distintos e 28 nulos)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma}
+    territorio: {nivel: outro, colunas: {id_m49: "código numérico ONU M49 (Brasil = '76')", sigla_iso3: "ISO alfa-3 (Brasil = 'BRA')", sigla_continente: "liga a continente.sigla"}}
+    filtros_tipicos: ["id_m49 = '76' ou sigla_iso3 = 'BRA' para o Brasil; id_m49 é texto sem zero à esquerda", "id_m49 IS NOT NULL para retirar as 28 entidades históricas"]
+    use_para: "traduzir códigos de país entre sistemas (ISO, M49, COW, FIFA) e dar nome em português"
+    nao_use_para: "contagem de países: tem 277 linhas, 28 delas históricas ou sem ISO"
+    rascunho: [use_para, nao_use_para]
+    verificado: "277 linhas; 249 distintos de id_m49 e de sigla_iso3; 28 nulos em ambos; Brasil e Argentina conferidos — medido 2026-10-27"
+  sistema_harmonizado:
+    grao: "um código SH de 6 dígitos (sistema harmonizado), com os níveis SH4, SH2 e a seção em pt/es/en"
+    chave: "id_sh6 (6.620 linhas = 6.620 distintos)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["id_sh6, id_sh4, id_sh2 são texto com zero à esquerda ('010110', '0101', '01')", "id_ncm_secrom é a seção em algarismo romano (I a XXI/XXII); apesar do nome, não é um código NCM"]
+    use_para: "agrupar produtos de comércio exterior por capítulo (SH2), posição (SH4) ou seção"
+    nao_use_para: "descrição detalhada de 8 dígitos: use nomenclatura_comum_mercosul"
+    rascunho: [use_para, nao_use_para]
+    verificado: "6.620 linhas, 6.620 distintos de id_sh6; 1.274 de id_sh4 e 97 de id_sh2 — medido 2026-10-27"

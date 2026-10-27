@@ -1,0 +1,110 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_bd_diretorios_data_tempo
+tabelas:
+  ano:
+    grao: "um ano do calendário (de -5000 a 5000, incluindo anos negativos e o ano 0), com a flag de bissexto"
+    chave: "ano (10001 linhas = 10001 distintos)"
+    tempo: {natureza: sem_tempo, coluna: ano, cobertura: "-5000–5000"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["bissexto = '1' para anos bissextos (colunas são VARCHAR: compare com texto, não número; 2024 tem bissexto = '1')"]
+    use_para: "dimensão de apoio para saber se um ano é bissexto"
+    nao_use_para: "listar anos de dados: cobre -5000 a 5000, não o período de nenhuma base; ano é texto (use ano::int para ordenar)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "10001 linhas, 10001 distintos de ano, ano converte para inteiro em todas, min -5000 e max 5000 — medido 2026-10-27"
+  bimestre:
+    grao: "um bimestre (1 a 6) e o semestre a que pertence"
+    chave: "bimestre (6 linhas = 6 distintos)"
+    tempo: {natureza: sem_tempo, coluna: bimestre, cobertura: "1–6"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["bimestre = '1' (texto, sem zero à esquerda)"]
+    use_para: "mapear bimestre para semestre"
+    nao_use_para: "análise de dados: é só um catálogo de 6 linhas"
+    rascunho: [use_para, nao_use_para]
+    verificado: "6 linhas, 6 distintos — medido 2026-10-27"
+  data:
+    grao: "um dia do calendário, de 0001-01-01 a 5000-12-31, com ano, mês, dia, semestre, trimestre, bimestre e dia da semana"
+    chave: "data (1.826.212 linhas = 1.826.212 distintos; (ano, mes, dia) também é único)"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "0001-01-01–5000-12-31"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["dia_semana: 1 = domingo ... 7 = sábado, como texto (2000-01-01, um sábado, tem dia_semana = '7'; 2024-02-29, quinta, tem '5')", "colunas ano, mes, dia são VARCHAR sem zero à esquerda (mes = '2', não '02'); data é VARCHAR no formato 'AAAA-MM-DD'"]
+    use_para: "juntar uma data a seu ano/mês/trimestre/semestre/dia da semana"
+    nao_use_para: "gerar um calendário de uma base: cobre 5000 anos; filtre pelo período que importa antes de juntar"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.826.212 linhas, 1.826.212 distintos de data e de (ano,mes,dia); min 0001-01-01, max 5000-12-31; dia_semana medido em 2 datas — medido 2026-10-27"
+  dia:
+    grao: "um dia do mês (1 a 31)"
+    chave: "dia (31 linhas = 31 distintos)"
+    tempo: {natureza: sem_tempo, coluna: dia, cobertura: "1–31"}
+    territorio: {nivel: nenhum}
+    use_para: "catálogo dos dias do mês"
+    nao_use_para: "análise de dados"
+    rascunho: [use_para, nao_use_para]
+    verificado: "31 linhas, 31 distintos — medido 2026-10-27"
+  hora:
+    grao: "uma hora do dia numerada de 1 a 24"
+    chave: "hora (24 linhas = 24 distintos)"
+    tempo: {natureza: sem_tempo, coluna: hora, cobertura: "1–24"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["atenção: aqui hora vai de 1 a 24, mas na tabela tempo vai de 0 a 23; não junte as duas por igualdade sem ajustar"]
+    use_para: "catálogo das horas"
+    nao_use_para: "junção com tempo.hora sem ajustar a numeração"
+    rascunho: [use_para, nao_use_para]
+    verificado: "24 linhas, 24 distintos, min 1 max 24 (tempo.hora começa em 0) — medido 2026-10-27"
+  mes:
+    grao: "um mês do ano (1 a 12) com nome em português, bimestre, trimestre e semestre"
+    chave: "mes (12 linhas = 12 distintos)"
+    tempo: {natureza: sem_tempo, coluna: mes, cobertura: "1–12"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["mes = '1' (texto, sem zero à esquerda); nome = 'Janeiro'"]
+    use_para: "traduzir número do mês em nome e em bimestre/trimestre/semestre"
+    nao_use_para: "análise de dados"
+    rascunho: [use_para, nao_use_para]
+    verificado: "12 linhas, 12 distintos; mes 1 = Janeiro, 2 = Fevereiro, 3 = Março — medido 2026-10-27"
+  minuto:
+    grao: "um minuto numerado de 1 a 60"
+    chave: "minuto (60 linhas = 60 distintos)"
+    tempo: {natureza: sem_tempo, coluna: minuto, cobertura: "1–60"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["aqui minuto vai de 1 a 60; na tabela tempo vai de 0 a 59"]
+    use_para: "catálogo dos minutos"
+    nao_use_para: "junção com tempo.minuto sem ajustar a numeração"
+    rascunho: [use_para, nao_use_para]
+    verificado: "60 linhas, 60 distintos, min 1 max 60 — medido 2026-10-27"
+  segundo:
+    grao: "mesmo grão de minuto, para segundo: um segundo, 60 linhas"
+    chave: "segundo (60 linhas = 60 distintos)"
+    tempo: {natureza: sem_tempo, coluna: segundo, cobertura: "catálogo de 60 valores"}
+    territorio: {nivel: nenhum}
+    use_para: "catálogo dos segundos"
+    nao_use_para: "análise de dados"
+    rascunho: [use_para, nao_use_para]
+    verificado: "60 linhas, 60 distintos — medido 2026-10-27"
+  semestre:
+    grao: "um semestre (1 ou 2)"
+    chave: "semestre (2 linhas = 2 distintos)"
+    tempo: {natureza: sem_tempo, coluna: semestre, cobertura: "1–2"}
+    territorio: {nivel: nenhum}
+    use_para: "catálogo dos semestres"
+    nao_use_para: "análise de dados"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2 linhas, 2 distintos — medido 2026-10-27"
+  tempo:
+    grao: "um segundo do dia, de 00:00:00 a 23:59:59, com hora, minuto e segundo"
+    chave: "tempo (86.400 linhas = 86.400 distintos; (hora, minuto, segundo) também é único)"
+    tempo: {natureza: sem_tempo, coluna: tempo, cobertura: "00:00:00–23:59:59"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["hora e minuto aqui começam em 0 (hora 0–23); nas tabelas hora e minuto a numeração é 1-based"]
+    use_para: "decompor um horário em hora, minuto e segundo"
+    nao_use_para: "junção com as tabelas hora/minuto sem ajustar a numeração"
+    rascunho: [use_para, nao_use_para]
+    verificado: "86.400 linhas, 86.400 distintos de tempo e de (hora,minuto,segundo); primeira linha 00:00:00 — medido 2026-10-27"
+  trimestre:
+    grao: "um trimestre (1 a 4) e o semestre a que pertence"
+    chave: "trimestre (4 linhas = 4 distintos)"
+    tempo: {natureza: sem_tempo, coluna: trimestre, cobertura: "1–4"}
+    territorio: {nivel: nenhum}
+    use_para: "mapear trimestre para semestre"
+    nao_use_para: "análise de dados"
+    rascunho: [use_para, nao_use_para]
+    verificado: "4 linhas, 4 distintos — medido 2026-10-27"

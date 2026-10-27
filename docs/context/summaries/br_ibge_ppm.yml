@@ -1,0 +1,60 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibge_ppm
+tabelas:
+  efetivo_rebanhos:
+    grao: "um município × ano × tipo de rebanho (cabeças em 31/12)"
+    chave: "ano, id_municipio, tipo_rebanho"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1974–2025"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: quantidade, o_que: "número de cabeças do rebanho", unidade: "cabeças", soma: sim}
+    filtros_tipicos:
+      - "tipo_rebanho = 'Bovino' (rótulo textual, não código; os 10 valores: Bovino, Bubalino, Caprino, Codornas, Equino, 'Galináceos - galinhas', 'Galináceos - total', Ovino, 'Suíno - matrizes de suínos', 'Suíno - total')"
+      - "não somar tipos entre si: 'Galináceos - galinhas' está contido em 'Galináceos - total' e 'Suíno - matrizes de suínos' em 'Suíno - total'"
+    use_para: "evolução e distribuição municipal de rebanhos por espécie"
+    nao_use_para: "produção (leite, ovos, mel) ou valor monetário; somar espécies diferentes"
+    rascunho: [unidade, "contido-em entre galináceos/suínos", use_para, nao_use_para]
+    verificado: "1.974.149 linhas = 1.974.149 distintos de (ano, id_municipio, tipo_rebanho); 10 tipo_rebanho distintos — medido 2026-10-27"
+  producao_aquicultura:
+    grao: "um município × ano × produto da aquicultura"
+    chave: "ano, id_municipio, produto"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2013–2025"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: quantidade, o_que: "quantidade produzida (0,28% nulos); a unidade não vem em coluna e varia por produto (peixes em kg; alevinos, larvas e sementes em milheiros)", unidade: "kg ou milheiro conforme produto (não medido)", soma: nao}
+      - {coluna: valor, o_que: "valor da produção", unidade: "mil reais (não medido)", soma: sim}
+    filtros_tipicos:
+      - "produto = 'Tilápia' (rótulo textual; 27 produtos distintos, ex.: Tambaqui, Carpa, Camarão, Alevinos)"
+    use_para: "produção e valor da piscicultura/aquicultura por município e espécie"
+    nao_use_para: "somar quantidade entre produtos (unidades diferentes)"
+    rascunho: [unidades de quantidade e valor, use_para, nao_use_para]
+    verificado: "117.294 linhas = 117.294 distintos de (ano, id_municipio, produto); 27 produtos — medido 2026-10-27"
+  producao_origem_animal:
+    grao: "um município × ano × produto de origem animal"
+    chave: "ano, id_municipio, produto"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1974–2025"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: quantidade, o_que: "quantidade produzida, na unidade da coluna unidade", unidade: "Leite: 'Mil litros'; Ovos de galinha e de codorna: 'Mil dúzias'; Mel de abelha, Lã e Casulos do bicho-da-seda: 'Quilogramas'", soma: sim}
+      - {coluna: valor, o_que: "valor da produção (0,24% nulos)", unidade: "mil reais (não medido)", soma: sim}
+    filtros_tipicos:
+      - "produto = 'Leite' (unidade 'Mil litros'); os 6 produtos: Leite, Ovos de galinha, Ovos de codorna, Mel de abelha, 'Lã', 'Casulos do bicho-da-seda'"
+      - "somar quantidade só dentro de um produto (ou da mesma unidade)"
+    use_para: "produção municipal de leite, ovos, mel, lã e casulos"
+    nao_use_para: "somar quantidade entre produtos: as unidades diferem (mil litros, mil dúzias, kg)"
+    rascunho: [unidade de valor, use_para, nao_use_para]
+    verificado: "763.045 linhas = 763.045 distintos de (ano, id_municipio, produto); unidade por produto conferida (uma unidade por produto) — medido 2026-10-27"
+  producao_pecuaria:
+    grao: "um município × ano (colunas de vacas ordenhadas e ovinos tosquiados)"
+    chave: "ano, id_municipio"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1974–2025"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: vacas_ordenhadas, o_que: "número de vacas ordenhadas (15 nulos)", unidade: "cabeças", soma: sim}
+      - {coluna: ovinos_tosquiados, o_que: "número de ovinos tosquiados (79,7% nulos: só municípios com tosquia)", unidade: "cabeças", soma: sim}
+    filtros_tipicos: ["vacas_ordenhadas IS NOT NULL antes de médias; ovinos_tosquiados é nulo em ~80% das linhas, não é zero"]
+    use_para: "vacas ordenhadas por município e ano"
+    nao_use_para: "rebanho total (use efetivo_rebanhos) ou quantidade de leite (use producao_origem_animal)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "257.259 linhas = 257.259 distintos de (ano, id_municipio); nulos: ovinos_tosquiados 204.987, vacas_ordenhadas 15 — medido 2026-10-27"

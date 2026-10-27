@@ -1,0 +1,192 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibge_estadic
+tabelas:
+  comunicacao_informatica:
+    grao: 'uma UF × ano de pesquisa: respostas do questionário de comunicação e informática do estado (uma coluna
+      por pergunta)'
+    chave: ano, sigla_uf
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2014, 2019 (anos de pesquisa, não anual)
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF (27 valores)
+    filtros_tipicos:
+    - 'colunas de resposta: BIGINT 0/1 (1 = sim; 0 = não; NULL = não se aplica/não respondeu: significado do nulo
+      não medido) ou VARCHAR; ver a tabela `dicionario` (id_tabela, nome_coluna, chave, valor) para os códigos'
+    - ~54–57% de nulos em várias colunas (provavelmente perguntas feitas em só uma das edições, não verificado)
+      — filtre o ano antes de contar respostas
+    use_para: Perguntas do estado sobre sites, serviços digitais, inclusão digital e informática (flags 0/1 por
+      ação).
+    nao_use_para: Não tem valor somável (são flags); só 27 UFs por ano de pesquisa, não é série anual.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 54 linhas = 54 distintos de (ano, sigla_uf); 27 UFs em 2014 e 27 em 2019; 175 colunas — medido 2026-10-27
+  educacao:
+    grao: 'uma UF × ano de pesquisa: respostas do questionário de educação do estado'
+    chave: ano, sigla_uf
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2014, 2018
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF (27 valores)
+    filtros_tipicos:
+    - 'colunas de resposta: BIGINT 0/1 (1 = sim; 0 = não; NULL = não se aplica/não respondeu: significado do nulo
+      não medido) ou VARCHAR; ver a tabela `dicionario` (id_tabela, nome_coluna, chave, valor) para os códigos'
+    - 'colunas ano_* guardam ano de criação (inteiro); em ano_criacao_conselho_alimentacao_escolar aparece o valor
+      8888 em 1 linha, sentinela provável (não documentado): exclua antes de min/max/média'
+    use_para: Estrutura e políticas de educação do estado (conselhos, planos, órgão gestor, programas).
+    nao_use_para: Não tem valor somável; não é série anual.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - significado de 8888
+    verificado: 54 linhas = 54 distintos de (ano, sigla_uf); 27 por ano; 223 colunas — medido 2026-10-27
+  governanca:
+    grao: 'uma UF em 2019: respostas do questionário de governança do estado (transparência, controle interno)'
+    chave: ano, sigla_uf
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2019 (edição única)
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF (27 valores)
+    filtros_tipicos:
+    - 'colunas de resposta: BIGINT 0/1 (1 = sim; 0 = não; NULL = não se aplica/não respondeu: significado do nulo
+      não medido) ou VARCHAR; ver a tabela `dicionario` (id_tabela, nome_coluna, chave, valor) para os códigos'
+    use_para: Controle interno, transparência e sanções administrativas do estado.
+    nao_use_para: Não tem valor somável; sem série (uma edição só).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 27 linhas = 27 distintos de (ano, sigla_uf); só ano 2019; 168 colunas — medido 2026-10-27
+  politica_mulher:
+    grao: 'uma UF em 2018: respostas do questionário de política para mulheres do estado'
+    chave: ano, sigla_uf
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2018 (edição única)
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF (27 valores)
+    filtros_tipicos:
+    - 'colunas de resposta: BIGINT 0/1 (1 = sim; 0 = não; NULL = não se aplica/não respondeu: significado do nulo
+      não medido) ou VARCHAR; ver a tabela `dicionario` (id_tabela, nome_coluna, chave, valor) para os códigos'
+    use_para: Organismo, ações e atendimento a mulheres (violência, casas-abrigo) por estado.
+    nao_use_para: Não tem valor somável; sem série (uma edição só).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 27 linhas = 27 distintos de (ano, sigla_uf); só ano 2018; 132 colunas — medido 2026-10-27
+  recursos_humanos:
+    grao: 'uma UF × ano: pessoal ocupado na administração estadual direta e indireta, por vínculo e escolaridade
+      (colunas largas)'
+    chave: ano, sigla_uf
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2012–2014, 2017–2020 (7 anos)
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF (27 valores)
+    filtros_tipicos:
+    - total de pessoal = adm_direta (direta) e adm_indireta (indireta); colunas com sufixo _ensino_*, _pos_graduacao,
+      _sem_instrucao e prefixo clt_ são quebras desses totais, não somar com o total
+    - 'AC 2019: adm_direta = 28183, igual à soma de indicadores_quantidade_vinculo (Direta) do mesmo estado e ano'
+    use_para: Total de servidores do estado (adm_direta, adm_indireta) e quebras por vínculo (clt_*, etc.) e escolaridade.
+    nao_use_para: Não some adm_direta com adm_direta_<escolaridade> (a quebra é parte do total); 2015 e 2016 não
+      existem.
+    rascunho:
+    - use_para
+    - nao_use_para
+    - quais colunas são quebras de quais totais (inferido dos nomes)
+    verificado: 189 linhas = 189 distintos de (ano, sigla_uf) = 27 UFs × 7 anos; 82 colunas; adm_direta preenchida
+      em 24–26 das 27 UFs por ano — medido 2026-10-27
+    medidas:
+    - coluna: adm_direta
+      o_que: pessoal ocupado na administração direta do estado
+      unidade: pessoas
+      soma: sim
+    - coluna: adm_indireta
+      o_que: pessoal ocupado na administração indireta
+      unidade: pessoas
+      soma: sim
+    - expressao: clt_adm_direta, adm_*_ensino_*, ...
+      o_que: quebras do total por vínculo (celetistas) e escolaridade
+      unidade: pessoas
+      soma: nao
+  indicadores_perfil_gestor:
+    grao: 'um gestor estadual de uma política setorial (tema) numa UF e ano: perfil (sexo, idade, cor/raça, escolaridade)
+      do titular do órgão'
+    chave: ano, tema, sigla_uf
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2018–2021 (cada tema numa edição)
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF (27 valores)
+    filtros_tipicos:
+    - 'tema (VARCHAR): assistencia_social, cultura, educacao, politica_genero, saude (2018); direitos_humanos, seguranca_publica
+      (2019); agropecuaria, habitacao, meio_ambiente, transporte (2020); cultura, ''educacao '' (COM espaço no fim),
+      esporte, saude (2021). Cuidado com ''educacao '' em 2021'
+    - cor_raca tem 'Pardo' (27) e 'Parda' (67) como valores separados; sexo e escolaridade são texto por extenso
+    use_para: Perfil do gestor de cada política (assistência social, cultura, educação, saúde etc.) do estado.
+    nao_use_para: Não conta pessoas; tema é um recorte por edição (cada tema só em 1–2 anos), não série comparável.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 405 linhas = 405 distintos de (ano, tema, sigla_uf) = 15 pares (ano, tema) × 27 UFs; 10 colunas
+      — medido 2026-10-27
+  indicadores_quantidade_vinculo:
+    grao: 'uma UF × ano × tipo de administração × tipo de vínculo × escolaridade: quantidade de pessoal'
+    chave: ano, sigla_uf, tipo_administracao, tipo_vinculo, escolaridade
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2018–2021
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF (27 valores)
+    filtros_tipicos:
+    - tipo_administracao IN ('Direta','Indireta'); tipo_vinculo IN ('Celetistas','Estatutários','Somente comissionados','Sem
+      vínculo permanente','Estagiários')
+    - 'escolaridade: 2018 = ''Ensino fundamental'',''Ensino médio'',''Ensino superior'',''Pós-graduação'',''Sem
+      instrução'' (sem linha Total); 2019–2021 = ''Não se aplica'' (já é o total). Em 2019 AC a soma da administração
+      Direta = 28183 = adm_direta de recursos_humanos'
+    - adm_indireta é constante 1 nesta tabela (coluna sem informação)
+    use_para: Quantidade de servidores do estado por vínculo (celetistas, estatutários, comissionados, estagiários,
+      sem vínculo permanente) e administração direta/indireta.
+    nao_use_para: 'Não some todas as linhas sem filtrar o ano: em 2018 a escolaridade quebra o total, em 2019–2021
+      não; quantidade_vinculo tem 6,9% de nulos.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 2106 linhas = 2106 distintos da chave; 27 UFs; 2018 = 1296 linhas (com quebra por escolaridade,
+      sem linhas 'Não se aplica'), 2019–2021 = 270 por ano (só 'Não se aplica') — medido 2026-10-27
+    medidas:
+    - coluna: quantidade_vinculo
+      o_que: pessoas no vínculo
+      unidade: pessoas
+      soma: sim
+  dicionario:
+    grao: um código de resposta de uma coluna de tabela do ESTADIC (id_tabela, nome_coluna, chave, valor, cobertura_temporal)
+    chave: id_tabela, nome_coluna, chave
+    use_para: Traduzir códigos de coluna (chave → valor) das tabelas comunicacao_informatica, educacao, governanca
+      e politica_mulher.
+    verificado: '182 linhas; id_tabela: educacao 59, comunicacao_informatica 55, politica_mulher 40, governanca
+      28; recursos_humanos, perfil_gestor e quantidade_vinculo não têm entradas — medido 2026-10-27'

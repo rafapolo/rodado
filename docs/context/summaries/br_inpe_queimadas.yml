@@ -1,0 +1,24 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_inpe_queimadas
+tabelas:
+  microdados:
+    grao: "um foco de queimada detectado por satélite (instante × posição × satélite)"
+    chave: "nenhuma: em ano = 2026 há 2.157.888 linhas e 2.157.886 combinações de (data_hora, latitude, longitude, satelite), 2 linhas repetem; 2022 é único (200.763 de 200.763)"
+    tempo: {natureza: serie_diaria, coluna: data_hora, cobertura: "2003–2026-10-07"}
+    territorio: {nivel: ponto, colunas: {latitude: "graus", longitude: "graus", id_municipio: "código IBGE de 7 dígitos do foco", sigla_uf: "UF", bioma: "Amazônia, Cerrado, Caatinga, Mata Atlântica, Pampa, Pantanal (6 linhas nulas no perfil)"}}
+    medidas:
+      - {expressao: "count(*)", o_que: "número de focos", unidade: "focos", soma: sim}
+      - {coluna: potencia_radiativa_fogo, o_que: "potência radiativa do fogo (FRP)", unidade: "MW (não documentado no banco)", soma: nao}
+      - {coluna: dias_sem_chuva, o_que: "dias sem chuva até o foco; -999 = sem dado", unidade: "dias", soma: nao}
+      - {coluna: risco_fogo, o_que: "risco de fogo, 0 a 1; -999 = sem dado", unidade: "índice", soma: nao}
+      - {coluna: precipitacao, o_que: "precipitação associada ao foco", unidade: "mm (não documentado)", soma: nao}
+    filtros_tipicos:
+      - "ano = <ano> (partição; a tabela tem 23 milhões de linhas)"
+      - "satelite = 'AQUA_M-T' para série comparável (gotcha todos_os_satelites_desde_2023)"
+      - "dias_sem_chuva <> -999 e risco_fogo <> -999 antes de média (gotcha sentinela_999)"
+      - "data_hora é VARCHAR: compare com strings 'AAAA-MM-DD HH:MM:SS'"
+    use_para: "contar focos por município, bioma, UF e período"
+    nao_use_para: "área queimada (um foco não é área) ou comparar anos antes e depois de 2023 sem filtrar satelite"
+    rascunho: [use_para, nao_use_para, "unidades de potencia_radiativa_fogo e precipitacao"]
+    verificado: "23.086.637 linhas; ano 2003–2026; 2026: 2.157.888 linhas, -999 em 19.905 dias_sem_chuva e 16.153 risco_fogo; 2022: 200.763 focos todos com satelite NULL; 2023: 4.676.188 com satelite preenchido; AQUA_M-T em 2026: 76.209 — medido 2026-10-27. Gotchas: duas_origens, sentinela_999, todos_os_satelites_desde_2023."

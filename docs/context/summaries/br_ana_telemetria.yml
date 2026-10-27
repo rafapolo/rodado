@@ -1,0 +1,151 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ana_telemetria
+tabelas:
+  estacoes:
+    grao: "uma estação telemétrica da rede da ANA (fluviométrica ou pluviométrica)"
+    chave: "Codigo"
+    tempo: {natureza: retrato_atual, coluna: UltimaAtualizacao, cobertura: "atualizações até 2026-07-09; colunas Periodo*Inicio/Fim dizem quando cada sensor operou"}
+    territorio: {nivel: ponto, colunas: {Latitude: "latitude", Longitude: "longitude", MunicipioCodigo: "código do município (texto)", nmMunicipio: "nome do município", EstadoCodigo: "código da UF da ANA (não é IBGE)", nmEstado: "nome da UF", BaciaCodigo: "bacia ANA 1–8"}}
+    medidas:
+      - {coluna: AreaDrenagem, o_que: "área de drenagem da estação", unidade: "não documentada (provável km²); 66% nulos", soma: nao}
+      - {coluna: Altitude, o_que: "altitude da estação", unidade: "m (não documentada); 25% nulos", soma: nao}
+    filtros_tipicos: ["tipo_estacao_consulta = 'fluviometrica' (4.318) ou 'pluviometrica' (7.044); TipoEstacao '1' = fluviométrica e '2' = pluviométrica, coincidem na contagem", "Operando = '1' (11.291 de 11.362; '0' = 71), texto"]
+    use_para: "localizar estações e saber que sensores têm; chave para unir às séries por Codigo"
+    nao_use_para: "medições: a tabela só descreve as estações. Todas têm TipoEstacaoTelemetrica = '1'"
+    rascunho: [unidades, use_para, nao_use_para]
+    verificado: "11.362 linhas = 11.362 Codigo distintos; fluviométricas 4.318, pluviométricas 7.044 — medido 2026-10-27"
+  estacoes_inventario_2023:
+    grao: "uma estação do inventário da ANA de 2023 (telemétricas ou não)"
+    chave: "Codigo"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "inventário de 2023; colunas Periodo* em texto dd/mm/aaaa"}
+    territorio: {nivel: ponto, colunas: {Latitude: "latitude", Longitude: "longitude", EstadoSigla: "sigla da UF", MunicipioCodigo: "código do município (texto)", MunicipioNome: "município"}}
+    medidas:
+      - {coluna: AreaDrenagem, o_que: "área de drenagem", unidade: "não documentada (provável km²); 68% nulos", soma: nao}
+    filtros_tipicos: ["TipoEstacao = 'FLU' (16.329) ou 'PLU' (21.453)", "TipoEstacaoTelemetrica = 'SIM' (10.295); os flags TipoEstacao* são 'SIM'/'NÃO', diferente de '1'/'0' em estacoes"]
+    use_para: "inventário completo de estações (inclui não telemétricas), com sensores e períodos"
+    nao_use_para: "unir direto a estacoes sem cuidado: aqui os flags são SIM/NÃO e a UF é sigla; há latitudes/longitudes fora do Brasil (longitude mín. −493,9)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "37.782 linhas = 37.782 Codigo distintos — medido 2026-10-27"
+  inventario:
+    grao: "mesmo grão de estacoes_inventario_2023 (mesmos 37.782 registros, colunas em minúsculas)"
+    chave: "codigo"
+    tempo: {natureza: retrato_atual, coluna: nenhuma}
+    territorio: {nivel: ponto, colunas: {latitude: "latitude", longitude: "longitude", estadosigla: "sigla da UF"}}
+    filtros_tipicos: ["tipoestacao = 'FLU' ou 'PLU'"]
+    use_para: "o mesmo inventário com códigos numéricos"
+    nao_use_para: "unir às séries por codigo: aqui é BIGINT e perde o zero à esquerda (47000 em vez de '00047000'); use estacoes_inventario_2023.Codigo"
+    rascunho: [use_para, nao_use_para]
+    verificado: "37.782 linhas = 37.782 codigo distintos; mesma contagem de FLU/PLU de estacoes_inventario_2023 — medido 2026-10-27"
+  series_chuva_diaria:
+    grao: "uma estação × dia de chuva"
+    chave: "codigo, data (conferido em 4 estações)"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "1910-12–2023-08 (amostra)"}
+    territorio: {nivel: ponto, colunas: {codigo: "código da estação (texto de 8 dígitos)", bacia: "código de bacia"}}
+    medidas:
+      - {coluna: chuva, o_que: "precipitação do dia", unidade: "mm", soma: sim}
+    filtros_tipicos: ["status = 1 (maioria; significado de 2, 3, 4 não documentado)", "nivel_consistencia = 1 ou 2 (bruto/consistido: significado não documentado)"]
+    use_para: "chuva diária de uma estação; some no tempo para acumulados"
+    nao_use_para: "varrer a tabela inteira (69,8 mi de linhas): filtre codigo ou data"
+    rascunho: [use_para, nao_use_para, significado de nivel_consistencia e status]
+    verificado: "69.765.343 linhas; em 4 estações 67.207 linhas = 67.207 (codigo, data) e = (codigo, data, nivel_consistencia); sem chuva negativa nelas — medido 2026-10-27"
+  series_chuva_mensal:
+    grao: "uma estação × mês de chuva"
+    chave: "codigo, data"
+    tempo: {natureza: serie_mensal, coluna: data, cobertura: "1900-01–2026-08 (primeiro dia do mês)"}
+    territorio: {nivel: ponto, colunas: {codigo: "código da estação", bacia: "bacia"}}
+    medidas:
+      - {coluna: total, o_que: "chuva total do mês", unidade: "mm; há outlier (mín. −45 bilhões)", soma: sim}
+      - {coluna: maxima, o_que: "maior chuva diária do mês", unidade: "mm", soma: nao}
+      - {coluna: dias_com_chuva, o_que: "dias com chuva no mês", unidade: "dias", soma: sim}
+      - {coluna: total_anual, o_que: "total do ano (45% nulos)", unidade: "mm", soma: nao}
+    filtros_tipicos: ["total BETWEEN 0 AND 5000 para descartar valores impossíveis"]
+    use_para: "chuva mensal por estação"
+    nao_use_para: "somar total_anual entre meses: repete o total do ano"
+    rascunho: [use_para, nao_use_para, faixa do filtro]
+    verificado: "2.596.283 linhas = 2.596.283 (codigo, data) distintos — medido 2026-10-27"
+  series_cota_diaria:
+    grao: "uma estação fluviométrica × dia de cota (nível do rio)"
+    chave: "codigo, data (conferido em 4 estações)"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "1914-02–2023-09 (amostra)"}
+    territorio: {nivel: ponto, colunas: {codigo: "código da estação", bacia: "bacia (BIGINT)"}}
+    medidas:
+      - {coluna: valor, o_que: "cota do rio", unidade: "cm", soma: nao}
+    filtros_tipicos: ["status = 1 (maioria; outros códigos não documentados)"]
+    use_para: "nível diário do rio numa estação"
+    nao_use_para: "somar cotas; varrer a tabela inteira (47,8 mi de linhas)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "47.788.422 linhas; em 4 estações 49.832 linhas = 49.832 (codigo, data) — medido 2026-10-27"
+  series_cota_mensal:
+    grao: "uma estação × mês de cota"
+    chave: "codigo, data"
+    tempo: {natureza: serie_mensal, coluna: data, cobertura: "1900-01–2023-09"}
+    territorio: {nivel: ponto, colunas: {codigo: "código da estação", bacia: "bacia"}}
+    medidas:
+      - {coluna: "media, maxima, minima", o_que: "cota média, máxima e mínima do mês", unidade: "cm; −699900 aparece como valor sentinela", soma: nao}
+    filtros_tipicos: ["media > -699900 para tirar o sentinela"]
+    use_para: "cota mensal por estação"
+    nao_use_para: "somar cotas"
+    rascunho: [use_para, nao_use_para, sentinela]
+    verificado: "1.729.199 linhas = 1.729.199 (codigo, data) distintos — medido 2026-10-27"
+  series_cota_mensal_completa:
+    grao: "mesmo grão de series_cota_mensal, com meses até 2026-05 e coluna fonte ('zip' ou 'soap')"
+    chave: "codigo, data"
+    tempo: {natureza: serie_mensal, coluna: data, cobertura: "1900-01–2026-05"}
+    territorio: {nivel: ponto, colunas: {codigo: "código da estação"}}
+    filtros_tipicos: ["fonte = 'soap' (189.702 linhas) para o trecho recente vindo da API"]
+    use_para: "cota mensal até 2026, a mais completa das três versões"
+    nao_use_para: "somar cotas"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.807.220 linhas = 1.807.220 (codigo, data) distintos — medido 2026-10-27"
+  series_cotas_mensal:
+    grao: "mesmo grão de series_cota_mensal, coluna de mês chamada mes (sem metodo, dias e média anual)"
+    chave: "codigo, mes"
+    tempo: {natureza: serie_mensal, coluna: mes, cobertura: "1900-01–2023-09"}
+    territorio: {nivel: ponto, colunas: {codigo: "código da estação"}}
+    use_para: "versão enxuta de series_cota_mensal"
+    nao_use_para: "preferir a series_cota_mensal_completa para dados recentes"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.729.207 linhas = 1.729.207 (codigo, mes, nivel_consistencia) distintos — medido 2026-10-27"
+  series_vazao_diaria:
+    grao: "uma estação fluviométrica × dia de vazão"
+    chave: "codigo, data (conferido em 4 estações)"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "1930-01–2023-06 (amostra)"}
+    territorio: {nivel: ponto, colunas: {codigo: "código da estação", bacia: "bacia"}}
+    medidas:
+      - {coluna: valor, o_que: "vazão do dia", unidade: "m3/s", soma: nao}
+    filtros_tipicos: ["status = 1 (maioria; outros não documentados)"]
+    use_para: "vazão diária de um rio numa estação (use média, não soma)"
+    nao_use_para: "varrer a tabela inteira (36,1 mi de linhas)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "36.137.783 linhas; em 4 estações 63.507 linhas = 63.507 (codigo, data) — medido 2026-10-27"
+  series_vazao_mensal:
+    grao: "uma estação × mês de vazão"
+    chave: "codigo, data"
+    tempo: {natureza: serie_mensal, coluna: data, cobertura: "1901-01–2023-09"}
+    territorio: {nivel: ponto, colunas: {codigo: "código da estação"}}
+    medidas:
+      - {coluna: "media, maxima, minima", o_que: "vazão média, máxima e mínima do mês", unidade: "m3/s", soma: nao}
+      - {coluna: media_anual, o_que: "vazão média do ano (71% nulos)", unidade: "m3/s", soma: nao}
+    use_para: "vazão mensal por estação"
+    nao_use_para: "somar vazões no tempo"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.331.690 linhas = 1.331.690 (codigo, data) distintos — medido 2026-10-27"
+  series_vazao_mensal_completa:
+    grao: "mesmo grão de series_vazao_mensal, com meses até 2026-05 e coluna fonte ('zip' ou 'soap')"
+    chave: "codigo, data"
+    tempo: {natureza: serie_mensal, coluna: data, cobertura: "1901-01–2026-05"}
+    territorio: {nivel: ponto, colunas: {codigo: "código da estação"}}
+    use_para: "vazão mensal até 2026, a mais completa; media pode ser negativa (mín. −6.769)"
+    nao_use_para: "somar vazões no tempo"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.415.569 linhas = 1.415.569 (codigo, data) distintos — medido 2026-10-27"
+  series_vazoes_mensal:
+    grao: "mesmo grão de series_vazao_mensal, coluna de mês chamada mes (só maxima, minima, media)"
+    chave: "codigo, mes"
+    tempo: {natureza: serie_mensal, coluna: mes, cobertura: "1901-01–2023-09"}
+    territorio: {nivel: ponto, colunas: {codigo: "código da estação"}}
+    use_para: "versão enxuta de series_vazao_mensal"
+    nao_use_para: "dados recentes: use series_vazao_mensal_completa"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.331.690 linhas = 1.331.690 (codigo, mes, nivel_consistencia) distintos — medido 2026-10-27"

@@ -1,0 +1,125 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_bd_diretorios_us
+tabelas:
+  cbsa_2023:
+    grao: "uma área estatística de base (CBSA, metropolitana ou micropolitana) da delimitação OMB de julho de 2023, com a CSA a que pertence"
+    chave: "id_cbsa (937 linhas = 937 distintos), mas 2 linhas são notas de rodapé do arquivo-fonte, não áreas: id_cbsa começa com 'Note:' e 'Source:'"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "delimitação de julho de 2023"}
+    territorio: {nivel: outro, colunas: {id_cbsa: "código da CBSA, 5 dígitos", id_csa: "código da área estatística combinada (nulo em 37,9%)"}}
+    filtros_tipicos: ["id_cbsa SIMILAR TO '[0-9]+' para tirar as 2 linhas de rodapé (têm type = 'micropolitan' por engano)", "type = 'metropolitan' ou 'micropolitan'"]
+    use_para: "nome e tipo de uma CBSA a partir de county.id_cbsa"
+    nao_use_para: "contar CBSAs sem filtrar o rodapé"
+    rascunho: [use_para]
+    verificado: "937 linhas, 937 distintos de id_cbsa; 2 linhas de rodapé confirmadas — medido 2026-10-27"
+  census_tract_2020:
+    grao: "um setor censitário (census tract) dos EUA, Censo 2020, com área em km² e centroide"
+    chave: "id_census_tract (85.396 linhas = 85.396 distintos)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "geografia do Censo 2020"}
+    territorio: {nivel: outro, colunas: {id_census_tract: "11 dígitos: estado(2)+condado(3)+setor(6)", id_county: "FIPS do condado, 5 dígitos", id_state: "FIPS do estado, 2 dígitos"}}
+    medidas:
+      - {coluna: area_land_km2, o_que: "área de terra do setor", unidade: "km²", soma: sim}
+      - {coluna: area_water_km2, o_que: "área de água do setor", unidade: "km²", soma: sim}
+    filtros_tipicos: ["id_state = '01' (texto com zero à esquerda, Alabama)"]
+    use_para: "ligar um setor censitário a condado/estado e obter área e centroide"
+    nao_use_para: "população ou renda: não há dados demográficos"
+    rascunho: [use_para, nao_use_para]
+    verificado: "85.396 linhas, 85.396 distintos de id_census_tract; 3.222 condados, 52 estados — medido 2026-10-27"
+  congress_member:
+    grao: "uma pessoa que já serviu no Congresso dos EUA (histórico desde 1721), com identificadores em vários sistemas e nome"
+    chave: "id_bioguide (12.767 linhas = 12.767 distintos; id_govtrack também é único)"
+    tempo: {natureza: sem_tempo, coluna: birthday, cobertura: "nascimentos de 1721-04-19 a 1997-01-17"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["gender = 'M' ou 'F'", "name_suffix IS NOT NULL só em 3,6% das linhas (Jr., III, Sr., II)"]
+    use_para: "resolver um parlamentar dos EUA entre sistemas de ID (bioguide, govtrack, opensecrets, fec)"
+    nao_use_para: "saber quem está no cargo agora: não há mandato, partido nem estado na tabela"
+    rascunho: [use_para, nao_use_para]
+    verificado: "12.767 linhas, 12.767 distintos de id_bioguide e de id_govtrack — medido 2026-10-27"
+  congressional_district_119:
+    grao: "um distrito congressional do 119º Congresso (inclui delegados e comissário residente)"
+    chave: "id_congressional_district (440 linhas = 440 distintos)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "119º Congresso"}
+    territorio: {nivel: outro, colunas: {id_state: "FIPS do estado, 2 dígitos", abbreviation_state: "sigla do estado", district: "número do distrito, '00' = distrito único"}}
+    filtros_tipicos: ["type = 'voting' para distritos com voto; os demais valores vistos: delegate, resident_commissioner, not defined"]
+    use_para: "listar distritos congressionais por estado"
+    nao_use_para: "eleitos ou população"
+    rascunho: [use_para, nao_use_para]
+    verificado: "440 linhas, 440 distintos — medido 2026-10-27"
+  county:
+    grao: "um condado (ou equivalente: parish, borough, município de PR etc.) dos EUA, com CBSA e CSA, área e centroide"
+    chave: "id_county (3.236 linhas = 3.236 distintos)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma}
+    territorio: {nivel: outro, colunas: {id_county: "FIPS do condado, 5 dígitos (estado+condado)", id_state: "FIPS do estado, 2 dígitos", id_cbsa: "área estatística de base, nula em 40,8% (fora de CBSA)"}}
+    medidas:
+      - {coluna: area_land_km2, o_que: "área de terra", unidade: "km²", soma: sim}
+      - {coluna: area_water_km2, o_que: "área de água", unidade: "km²", soma: sim}
+    filtros_tipicos: ["type = 'county' para condados propriamente ditos (2.999 de 3.236); outros: municipio 78, parish 64, city 41, borough 17, census area 11, planning region 9, island 7, municipality 6, district 4", "id_state é texto: '01' = Alabama"]
+    use_para: "ligar condado a estado, CBSA e CSA"
+    nao_use_para: "contar condados dos 50 estados sem filtrar: inclui territórios (PR, GU, ilhas) e regiões de planejamento de CT"
+    rascunho: [use_para, nao_use_para]
+    verificado: "3.236 linhas, 3.236 distintos de id_county; 57 valores de id_state; contagem por type medida — medido 2026-10-27"
+  higher_education_institution:
+    grao: "uma instituição de ensino superior dos EUA, com estado, condado, rede (control), nível e situação"
+    chave: "id_institution (6.072 linhas = 6.072 distintos)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma}
+    territorio: {nivel: outro, colunas: {id_state: "FIPS do estado", id_county: "FIPS do condado (5 dígitos, nulo em 0,05%)", zip: "CEP", city: "cidade em texto livre (caixa mista)"}}
+    filtros_tipicos: ["operational_status = 'active' (5.994 de 6.072) ou 'closed'", "control IN ('public','private not-for-profit','private for-profit'); level IN ('4-year or above','2-year','less-than-2-year'); control e level são nulos em 0,36%"]
+    use_para: "listar ou contar instituições de ensino superior por estado e tipo"
+    nao_use_para: "matrículas ou financiamento: não há medidas"
+    rascunho: [use_para, nao_use_para]
+    verificado: "6.072 linhas, 6.072 distintos de id_institution; 5.994 com operational_status = 'active' — medido 2026-10-27"
+  naics_2022:
+    grao: "um código NAICS 2022 em qualquer nível hierárquico (setor, subsetor, grupo, indústria NAICS, indústria nacional), com os ancestrais nas colunas"
+    chave: "id_naics (2.125 linhas = 2.125 distintos; o código já é único entre os níveis)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "NAICS 2022"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["level = 2 setor, 3 subsetor, 4 grupo de indústria, 5 indústria NAICS, 6 indústria nacional (id_naics tem 2, 3, 4, 5 e 6 dígitos; level 2 = 11, 111 é level 3, 111110 é level 6)", "id_sector pode ser faixa ('31-33', '44-45', '48-49') e é nulo nas linhas do nível 2"]
+    use_para: "traduzir um código NAICS em nome e achar seus ancestrais"
+    nao_use_para: "somar sobre todas as linhas: cada nível repete o de cima; filtre por level"
+    rascunho: [use_para]
+    verificado: "2.125 linhas, 2.125 distintos de id_naics; hierarquia conferida nos códigos 11, 111, 1111, 11111, 111110 — medido 2026-10-27"
+  place:
+    grao: "um lugar do Censo dos EUA (cidade incorporada ou lugar designado pelo censo, CDP), com área e centroide"
+    chave: "id_place (32.350 linhas = 32.350 distintos; (id_state, id_place) também)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma}
+    territorio: {nivel: outro, colunas: {id_place: "FIPS do lugar, 7 dígitos (estado+lugar)", id_state: "FIPS do estado", id_gnis: "código GNIS"}}
+    medidas:
+      - {coluna: area_land_km2, o_que: "área de terra", unidade: "km²", soma: sim}
+      - {coluna: area_water_km2, o_que: "área de água", unidade: "km²", soma: sim}
+    filtros_tipicos: ["type = 'incorporated place' ou 'census designated place'"]
+    use_para: "ligar cidades e CDPs a estado, com área e centroide"
+    nao_use_para: "ligar a condado: não tem id_county (um lugar pode cruzar condados)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "32.350 linhas, 32.350 distintos de id_place e de (id_state,id_place) — medido 2026-10-27"
+  puma_2020:
+    grao: "uma PUMA (área de microdados de uso público) do Censo 2020, com área e centroide"
+    chave: "id_puma (2.487 linhas = 2.487 distintos)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "geografia do Censo 2020"}
+    territorio: {nivel: outro, colunas: {id_puma: "FIPS da PUMA, 7 dígitos (estado+PUMA)", id_state: "FIPS do estado"}}
+    medidas:
+      - {coluna: area_land_km2, o_que: "área de terra", unidade: "km²", soma: sim}
+      - {coluna: area_water_km2, o_que: "área de água", unidade: "km²", soma: sim}
+    use_para: "ligar microdados do ACS por PUMA a estado e nome"
+    nao_use_para: "ligar a condado: não há coluna de condado"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2.487 linhas, 2.487 distintos de id_puma — medido 2026-10-27"
+  school:
+    grao: "uma escola pública dos EUA (cadastro NCES), com distrito, nível, tipo e situação operacional"
+    chave: "id_school (102.274 linhas = 102.274 distintos)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma}
+    territorio: {nivel: outro, colunas: {id_state: "FIPS do estado, nulo em 0,17%", id_school_district: "liga a school_district", id_county: "sempre nulo (100%): não use"}}
+    filtros_tipicos: ["operational_status = 'Open' (outros vistos: Closed, New, Inactive, Added, Reopened); sem contagem do filtro medida", "charter IN ('Yes','No','Not applicable')"]
+    use_para: "listar escolas por estado, distrito, nível e tipo"
+    nao_use_para: "ligar a condado: id_county está 100% nulo"
+    rascunho: [use_para, filtros_tipicos]
+    verificado: "102.274 linhas, 102.274 distintos de id_school; id_county 100% nulo no perfil — medido 2026-10-27"
+  school_district:
+    grao: "um distrito escolar dos EUA (cadastro NCES), com nível, tipo e situação operacional"
+    chave: "id_school_district (19.637 linhas = 19.637 distintos)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma}
+    territorio: {nivel: outro, colunas: {id_state: "FIPS do estado, nulo em 0,89%", id_county: "sempre nulo (100%): não use"}}
+    filtros_tipicos: ["operational_status = 'Open' (outros vistos: Closed, New, Future); sem contagem do filtro medida"]
+    use_para: "listar distritos escolares por estado e tipo"
+    nao_use_para: "ligar a condado: id_county está 100% nulo"
+    rascunho: [use_para, filtros_tipicos]
+    verificado: "19.637 linhas, 19.637 distintos de id_school_district — medido 2026-10-27"

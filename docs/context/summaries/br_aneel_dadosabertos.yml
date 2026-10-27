@@ -1,0 +1,99 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_aneel_dadosabertos
+tabelas:
+  empreendimento_geracao_distribuida:
+    grao: "uma unidade de geração distribuída (micro ou minigeração) cadastrada, retrato de 09/2026"
+    chave: "CodEmpreendimento"
+    tempo: {natureza: retrato_atual, coluna: DatGeracaoConjuntoDados, cobertura: "2026-09-04 (AnmPeriodoReferencia = '09/2026'); DthAtualizaCadastralEmpreend vai até 2026-08-27"}
+    territorio: {nivel: municipio, colunas: {CodMunicipioIbge: "código IBGE de 7 dígitos (BIGINT)", SigUF: "sigla da UF", CodUFibge: "código IBGE da UF", NomRegiao: "região"}}
+    medidas:
+      - {coluna: MdaPotenciaInstaladaKW, o_que: "potência instalada", unidade: "kW (soma total 54,38 GW)", soma: sim}
+      - {coluna: QtdUCRecebeCredito, o_que: "unidades consumidoras que recebem crédito", unidade: "unidades", soma: sim}
+    filtros_tipicos: ["SigTipoGeracao = 'UFV' (solar, 4.618.197 linhas, 53,23 GW); nulo em 73.504", "DscPorte = 'Microgeracao' ou 'Minigeracao' (sem acento)", "CodClasseConsumo = 'RE' (residencial, 3.765.794)"]
+    use_para: "contar unidades e somar potência de geração distribuída por município, UF, distribuidora e fonte"
+    nao_use_para: "série temporal (um único retrato) ou usinas de grande porte (use siga_empreendimentos_geracao); CPF/CNPJ do titular é dado pessoal"
+    rascunho: [use_para, nao_use_para]
+    verificado: "4.692.466 linhas = 4.692.466 CodEmpreendimento distintos; soma de MdaPotenciaInstaladaKW 54,38 GW — medido 2026-10-27"
+  indicadores_continuidade:
+    grao: "um conjunto de unidades consumidoras × distribuidora × indicador × ano × período (mês) com o valor enviado"
+    chave: "IdeConjUndConsumidoras, SigAgente, SigIndicador, AnoIndice, NumPeriodoIndice"
+    tempo: {natureza: serie_mensal, coluna: "AnoIndice, NumPeriodoIndice", cobertura: "2000–2026 (período 1–12; 13 valores distintos no perfil, significado de 13 não documentado)"}
+    territorio: {nivel: outro, colunas: {IdeConjUndConsumidoras: "código do conjunto elétrico (não é município)", DscConjUndConsumidoras: "nome do conjunto", SigAgente: "distribuidora (com espaços à direita)"}}
+    medidas:
+      - {coluna: VlrIndiceEnviado, o_que: "valor do indicador; o significado depende de SigIndicador (DEC e FEC são os principais; NumCon = consumidores do conjunto; ver indicadores_continuidade_dominio)", unidade: "depende de SigIndicador", soma: nao}
+    filtros_tipicos: ["SigIndicador = 'DEC' (1.212.743 linhas; duração equivalente de interrupção) ou 'FEC' (1.212.615; frequência)", "SigIndicador = 'NumCon' para ponderar pelo nº de consumidores do conjunto"]
+    use_para: "DEC/FEC por conjunto e distribuidora ao longo do tempo (filtre um SigIndicador)"
+    nao_use_para: "somar VlrIndiceEnviado entre indicadores diferentes ou entre conjuntos sem ponderar; tem 35 indicadores misturados na mesma coluna"
+    rascunho: [use_para, nao_use_para, unidade de DEC e FEC (horas e interrupções não documentadas na tabela dominio), significado do período 13]
+    verificado: "16.280.480 linhas = 16.280.480 chaves distintas; DEC mediana 1,02 e máx. 982,75; FEC mediana 0,65 e máx. 701 — medido 2026-10-27"
+  indicadores_continuidade_atributos:
+    grao: "um conjunto × distribuidora × atributo × ano × período (área, tipo de sistema, transformadores etc.)"
+    chave: "IdeConjUndConsumidoras, NumCNPJ, SigIndicador, AnoIndice, NumPeriodoIndice"
+    tempo: {natureza: serie_de_periodos, coluna: "AnoIndice, NumPeriodoIndice", cobertura: "2008–2014 (AnoIndice em texto, período '1'–'4' trimestral)"}
+    territorio: {nivel: outro, colunas: {IdeConjUndConsumidoras: "código do conjunto (texto)", DscConjUndConsumidoras: "nome do conjunto"}}
+    medidas:
+      - {coluna: VlrIndiceEnviado, o_que: "valor do atributo; AREAT = área em km², TSCT = tipo de sistema (1 interligado, 2 isolado), PNITT = potência instalada de transformadores em kVA", unidade: "depende de SigIndicador", soma: nao}
+    filtros_tipicos: ["SigIndicador = 'AREAT' (75.449 linhas) para área do conjunto"]
+    use_para: "atributos físicos dos conjuntos elétricos entre 2008 e 2014"
+    nao_use_para: "somar VlrIndiceEnviado entre atributos; dados depois de 2014"
+    rascunho: [use_para, nao_use_para]
+    verificado: "776.216 linhas = 776.216 chaves distintas — medido 2026-10-27"
+  indicadores_continuidade_compensacao:
+    grao: "um conjunto × distribuidora × indicador de compensação × ano × período"
+    chave: "nenhuma: 18.676.419 linhas, 18.669.484 chaves (IdeConjUndConsumidoras, NumCNPJ, SigIndicador, AnoIndice, NumPeriodoIndice); 6.935 repetidas"
+    tempo: {natureza: serie_mensal, coluna: "AnoIndice, NumPeriodoIndice", cobertura: "2011–2026"}
+    territorio: {nivel: outro, colunas: {IdeConjUndConsumidoras: "código do conjunto", DscConjUndConsumidoras: "nome do conjunto"}}
+    medidas:
+      - {coluna: VlrIndiceEnviado, o_que: "valor do indicador de compensação (111 SigIndicador; ex.: PGUCAT, QTUCBTU: significado em indicadores_continuidade_dominio)", unidade: "depende de SigIndicador", soma: nao}
+    filtros_tipicos: ["SigIndicador = 'PGUCBTNU' (570.288 linhas), cada um com significado próprio; consulte indicadores_continuidade_dominio"]
+    use_para: "compensações pagas por violação dos limites de continuidade, por conjunto"
+    nao_use_para: "somar entre indicadores; varrer a tabela sem filtrar SigIndicador e ano (18,7 mi de linhas)"
+    rascunho: [use_para, nao_use_para, significado dos indicadores PGUC/QTUC]
+    verificado: "18.676.419 linhas, 18.669.484 chaves distintas — medido 2026-10-27"
+  indicadores_continuidade_dominio:
+    grao: "um indicador (SigIndicador) com sua descrição"
+    chave: "SigIndicador"
+    tempo: {natureza: sem_tempo}
+    use_para: "dicionário dos 484 códigos de SigIndicador usados nas tabelas de continuidade (ex.: DEC, FEC, NumCon, AREAT, TSCT)"
+    rascunho: [use_para]
+    verificado: "484 linhas = 484 SigIndicador distintos — medido 2026-10-27"
+  indicadores_continuidade_limite:
+    grao: "um conjunto × distribuidora × indicador (DEC ou FEC) × ano do limite"
+    chave: "IdeConjUndConsumidoras, NumCNPJ, SigIndicador, AnoLimiteQualidade"
+    tempo: {natureza: serie_anual, coluna: AnoLimiteQualidade, cobertura: "1990–2032 (texto)"}
+    territorio: {nivel: outro, colunas: {IdeConjUndConsumidoras: "código do conjunto (texto)", DscConjUndConsumidoras: "nome do conjunto"}}
+    medidas:
+      - {coluna: VlrLimite, o_que: "limite regulatório do DEC ou do FEC do conjunto", unidade: "mesma unidade do indicador (não documentada)", soma: nao}
+    filtros_tipicos: ["SigIndicador = 'DEC' (131.700 linhas) ou 'FEC' (131.701)"]
+    use_para: "comparar o DEC/FEC apurado com o limite do conjunto"
+    nao_use_para: "unir a indicadores_continuidade sem converter o tipo: aqui IdeConjUndConsumidoras e anos são texto (VARCHAR), lá BIGINT"
+    rascunho: [use_para, nao_use_para]
+    verificado: "263.401 linhas = 263.401 chaves distintas — medido 2026-10-27"
+  siga_empreendimentos_geracao:
+    grao: "um empreendimento de geração (usina) do SIGA, retrato de 2026-10-01"
+    chave: "nenhuma: 25.045 linhas, 25.042 CodCEG distintos (3 repetidos)"
+    tempo: {natureza: retrato_atual, coluna: DatEntradaOperacao, cobertura: "entrada em operação 1900-01-03–2026-09-02; geração do conjunto 2026-10-01"}
+    territorio: {nivel: ponto, colunas: {NumCoordNEmpreendimento: "latitude", NumCoordEEmpreendimento: "longitude (0,0 aparece como máximo)", SigUFPrincipal: "UF principal", DscMuninicpios: "municípios em texto livre 'Nome - UF'"}}
+    medidas:
+      - {coluna: MdaPotenciaOutorgadaKw, o_que: "potência outorgada", unidade: "kW", soma: sim}
+      - {coluna: MdaPotenciaFiscalizadaKw, o_que: "potência fiscalizada (em operação); soma 220,73 GW, 220,69 GW só em operação", unidade: "kW", soma: sim}
+      - {coluna: MdaGarantiaFisicaKw, o_que: "garantia física, em texto com vírgula decimal (ex. ',00')", unidade: "kW (texto)", soma: nao}
+    filtros_tipicos: ["DscFaseUsina = 'Operação' (22.801; soma fiscalizada 220,69 GW)", "SigTipoGeracao IN ('UFV','UTE','EOL','CGH','PCH','UHE','UTN')", "DscOrigemCombustivel = 'Solar' (18.962), 'Hídrica' (1.476), 'Eólica' (1.549)", "DscTipoOutorga = 'Registro' (19.682), 'Autorização' (5.104), 'Concessão' (259)"]
+    use_para: "capacidade instalada por fonte, UF e fase das usinas"
+    nao_use_para: "somar potência outorgada de 'Construção não iniciada' (87,27 GW) como capacidade existente; geração distribuída (use empreendimento_geracao_distribuida)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "25.045 linhas, 25.042 CodCEG; Operação 22.801 linhas, fiscalizada 220,69 GW; Construção 145 linhas, outorgada 9,03 GW; Construção não iniciada 2.099 linhas, outorgada 87,27 GW — medido 2026-10-27"
+  tarifas_homologadas:
+    grao: "uma tarifa homologada por distribuidora × vigência × base × subgrupo × modalidade × classe × posto tarifário"
+    chave: "nenhuma: 332.165 linhas, 330.875 combinações das 11 colunas descritivas (SigAgente, DatInicioVigencia, DscBaseTarifaria, DscSubGrupo, DscModalidadeTarifaria, DscClasse, DscSubClasse, DscDetalhe, NomPostoTarifario, DscUnidadeTerciaria, SigAgenteAcessante); 1.290 grupos repetidos"
+    tempo: {natureza: serie_de_periodos, coluna: "DatInicioVigencia, DatFimVigencia", cobertura: "2010-02-03–2026-09-30 (início); fim até 2027-09-29"}
+    territorio: {nivel: outro, colunas: {SigAgente: "distribuidora"}}
+    medidas:
+      - {coluna: VlrTUSD, o_que: "Tarifa de Uso do Sistema de Distribuição", unidade: "R$/MWh quando DscUnidadeTerciaria = 'MWh', R$/kW quando 'kW'", soma: nao}
+      - {coluna: VlrTE, o_que: "Tarifa de Energia", unidade: "R$/MWh quando DscUnidadeTerciaria = 'MWh', R$/kW quando 'kW'", soma: nao}
+    filtros_tipicos: ["DscBaseTarifaria = 'Tarifa de Aplicação' (valor pago) ou 'Base Econômica' (base de cálculo): metade das linhas cada", "DscUnidadeTerciaria = 'MWh' (232.365) ou 'kW' (99.800): não misturar", "vigente hoje: DatInicioVigencia <= current_date AND DatFimVigencia >= current_date (24.480 linhas)", "DscSubGrupo = 'B1' (41.692 linhas) e DscModalidadeTarifaria = 'Convencional' (57.476): significado de B1 não conferido aqui"]
+    use_para: "tarifa de energia e de uso do sistema por distribuidora, classe e vigência"
+    nao_use_para: "somar tarifas ou misturar MWh com kW e as duas bases tarifárias; a tarifa final ao consumidor inclui impostos, que não estão aqui"
+    rascunho: [use_para, nao_use_para, unidade monetária (R$)]
+    verificado: "332.165 linhas, 330.875 combinações; MWh 232.365 e kW 99.800; 24.480 vigentes em 2026-10-27 — medido 2026-10-27"

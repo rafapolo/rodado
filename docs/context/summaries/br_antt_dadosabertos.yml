@@ -1,0 +1,69 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_antt_dadosabertos
+tabelas:
+  acidentes_rodovias:
+    grao: "uma ocorrência (acidente ou incidente) registrada por uma concessionária numa rodovia federal concedida"
+    chave: "nenhuma: sem id de ocorrência; (data, horario, n_da_ocorrencia, trecho, km, sentido, concessionaria, tipo_de_ocorrencia) repete em 13 de 1.027.034 linhas"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "2010-01-01–2026-07-31"}
+    territorio: {nivel: ponto, colunas: {concessionaria: "concessionária (42 valores)", trecho: "rodovia/trecho em texto (141 valores)", km: "quilômetro em texto (VARCHAR, com lixo como 'a97,150')", sentido: "sentido da pista, texto livre (24 valores)"}}
+    medidas:
+      - {coluna: mortos, o_que: "mortos na ocorrência", unidade: "pessoas", soma: sim}
+      - {coluna: gravemente_feridos, o_que: "feridos graves", unidade: "pessoas", soma: sim}
+      - {coluna: moderadamente_feridos, o_que: "feridos moderados", unidade: "pessoas", soma: sim}
+      - {coluna: levemente_feridos, o_que: "feridos leves", unidade: "pessoas", soma: sim}
+      - {coluna: ilesos, o_que: "ilesos", unidade: "pessoas", soma: sim}
+      - {coluna: "automovel, bicicleta, caminhao, moto, onibus, outros, tracao_animal, transporte_de_cargas_especiais, trator_maquinas, utilitarios", o_que: "veículos envolvidos por tipo", unidade: "veículos", soma: sim}
+    filtros_tipicos:
+      - "as colunas de contagem são VARCHAR: use try_cast(mortos as int) (todas as 1.027.034 linhas convertem; soma de mortos = 26.600)"
+      - "tipo_de_ocorrencia tem 41 grafias misturadas entre concessionárias e épocas ('sem vítima', 'Sem vítima', 'Acidente s...', '3 - Aciden...'): para vítimas, filtre por try_cast(mortos as int) > 0, não por esse texto"
+      - "ano: year(data) = <ano>; 2026 tem só até julho (49.408 linhas)"
+    use_para: "contar acidentes e vítimas por concessionária, trecho e período nas rodovias federais concedidas"
+    nao_use_para: "cobertura de todas as rodovias federais (só concessões ANTT) ou localização por município"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.027.034 linhas; 17 anos (2010–2026); 13 linhas repetem a chave candidata; sum(mortos)=26.600 — medido 2026-10-27"
+  ciot:
+    grao: "uma combinação mês × município de origem × município de destino × NCM da carga (CIOT agregados)"
+    chave: "ano, mes, municipio_origem, uf_origem, municipio_destino, uf_destino, ncm_carga (15.887.647 linhas = 15.887.647 distintos)"
+    tempo: {natureza: serie_mensal, coluna: "ano + mes (mes é VARCHAR '1'..'12')", cobertura: "2020-01–2026-08"}
+    territorio: {nivel: municipio, colunas: {municipio_origem: "nome do município de origem (sem código IBGE)", uf_origem: "UF de origem", municipio_destino: "nome do município de destino", uf_destino: "UF de destino"}}
+    medidas:
+      - {coluna: quantidade_ciots, o_que: "CIOTs (contratos de frete) emitidos na combinação", unidade: "CIOTs", soma: sim}
+      - {coluna: quantidade_trc, o_que: "transportadores (TRC) na combinação", unidade: "transportadores", soma: nao}
+      - {coluna: quantidade_contratantes, o_que: "contratantes na combinação", unidade: "contratantes", soma: nao}
+    filtros_tipicos:
+      - "mes é texto: ordene com try_cast(mes as int)"
+      - "ncm_carga vem com ponto ('31.05'): é NCM de 4 dígitos (capítulo.posição)"
+      - "tabela grande (15,9 mi): filtre ano"
+    use_para: "fluxo de frete rodoviário de cargas entre municípios e por tipo de carga (NCM)"
+    nao_use_para: "peso ou valor do frete (não há) e contagem de pessoas distintas entre linhas (quantidade_trc e contratantes não somam)"
+    rascunho: [use_para, nao_use_para, "soma de quantidade_trc e quantidade_contratantes"]
+    verificado: "15.887.647 linhas, chave única na tabela inteira; 2026: 3.077.894 linhas, sum(quantidade_ciots) 26.290.749 (2025: 20.774.442) — medido 2026-10-27"
+  rntrc:
+    grao: "um transportador registrado no RNTRC (registro nacional de transportadores rodoviários de carga) no retrato de 2026-08"
+    chave: "numero_rntrc (1.174.540 linhas = 1.174.540 distintos); cpfcnpjtransportador repete (398.666 distintos)"
+    tempo: {natureza: retrato_atual, coluna: referencia, cobertura: "2026-08–2026-08"}
+    territorio: {nivel: municipio, colunas: {municipio: "município do transportador (nome)", uf: "UF", cep: "CEP"}}
+    filtros_tipicos:
+      - "situacao_rntrc = 'ATIVO' (906.022) ou 'PENDENTE' (268.518)"
+      - "categoria_transportador: 'TAC' (838.413, autônomo), 'ETC' (335.583, empresa), 'CTC' (544, cooperativa)"
+      - "equiparado = 'Sim' (218.960) só ocorre em ETC ativas; 'Não' é o resto"
+    use_para: "contar transportadores de carga por UF, município, categoria e situação"
+    nao_use_para: "série histórica (só um retrato) e número de veículos (use rntrc_veiculos)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.174.540 linhas; numero_rntrc 1.174.540 distintos; todos referencia = '2026-08' — medido 2026-10-27"
+  rntrc_veiculos:
+    grao: "uma combinação categoria do transportador × tipo de veículo × UF × categoria do veículo × carroceria × ano de fabricação, com a quantidade de veículos"
+    chave: "Categoria do Transportador, Tipo de Veículo, UF do Veículo, Categoria, Carroceria, Ano de Fabricação do Veículo (97.591 linhas = 97.591 distintos)"
+    tempo: {natureza: retrato_atual, coluna: "Ano de Fabricação do Veículo (ano do veículo, não do registro)", cobertura: "1900–2026"}
+    territorio: {nivel: uf, colunas: {"UF do Veículo": "UF do emplacamento"}}
+    medidas:
+      - {coluna: Quantidade, o_que: "veículos na combinação", unidade: "veículos", soma: sim}
+    filtros_tipicos:
+      - "nomes de coluna têm espaço e acento: usar aspas duplas (\"Tipo de Veículo\")"
+      - "\"Tipo de Veículo\" = 'Tração' (64.010 linhas) ou 'Implemento' (33.581): não misturar ao contar frota (o implemento é reboque, não o caminhão)"
+      - "Categoria do Transportador vem com rótulo longo ('TAC:Transportador Autônomo de Cargas', 'ETC - EQUIPARADO: ...')"
+    use_para: "frota registrada no RNTRC por tipo, carroceria, UF e idade (sum(Quantidade) = 2.862.080)"
+    nao_use_para: "ligar veículo a transportador (não há numero_rntrc) ou ao município"
+    rascunho: [use_para, nao_use_para]
+    verificado: "97.591 linhas, chave de 6 colunas única; sum(Quantidade)=2.862.080 — medido 2026-10-27"

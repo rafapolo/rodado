@@ -1,0 +1,237 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ans_operadoras
+tabelas:
+  operadoras_ativas:
+    grao: "uma operadora de plano de saúde com registro ativo na ANS (cadastro atual)"
+    chave: "REGISTRO_OPERADORA: confirmada, 1.105 linhas = 1.105 distintos (CNPJ também é único); nenhum registro aparece também em operadoras_canceladas"
+    tempo: {natureza: retrato_atual, coluna: DATA_REGISTRO_ANS, cobertura: "registros de 1998-12-16 a 2026-09-28"}
+    territorio: {nivel: municipio, colunas: {UF: "sigla da UF da sede", CIDADE: "nome do município da sede (sem código IBGE)"}}
+    filtros_tipicos: ["MODALIDADE = 'Cooperativa Médica' (262 linhas; outras: 'Medicina de Grupo' 252, 'Administradora de Benefícios' 182, 'Autogestão' 141, 'Odontologia de Grupo' 140)"]
+    use_para: "cadastro (razão social, CNPJ, modalidade, sede) das operadoras em atividade; porta para o CNPJ das demais tabelas (gotchas cnpj_so_no_cadastro e registro_ans_muda_de_nome_e_perde_zero)"
+    nao_use_para: "operadoras que já fecharam (estão em operadoras_canceladas) ou número de beneficiários"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.105 linhas, 1.105 REGISTRO_OPERADORA, 1.105 CNPJ, 0 registros em comum com operadoras_canceladas — medido 2026-10-27"
+  operadoras_canceladas:
+    grao: "uma operadora cujo registro na ANS foi cancelado (cadastro histórico)"
+    chave: "REGISTRO_OPERADORA: confirmada, 3.078 linhas = 3.078 distintos"
+    tempo: {natureza: serie_de_periodos, coluna: DATA_DESCREDENCIAMENTO, cobertura: "1999-09-20–2026-10-09"}
+    territorio: {nivel: municipio, colunas: {UF: "sigla da UF da sede", CIDADE: "município da sede (sem código IBGE)"}}
+    filtros_tipicos: ["MOTIVO_DO_DESCREDENCIAMENTO = 'Pedido de cancelamento' (1.524 de 3.078 no perfil; 23 motivos, ex.: 'Liquidação Extrajudicial' 271)"]
+    use_para: "operadoras que saíram do mercado, quando e por quê; une-se a operadoras_ativas para ter o cadastro completo"
+    nao_use_para: "operadoras em atividade"
+    rascunho: [use_para, nao_use_para]
+    verificado: "3.078 linhas, 3.078 REGISTRO_OPERADORA — medido 2026-10-27"
+  caracteristicas_produtos:
+    grao: "um plano de saúde (produto) registrado na ANS, com cobertura, contratação e situação"
+    chave: "ID_PLANO: confirmada, 166.402 linhas = 166.402 distintos (2.951 operadoras)"
+    tempo: {natureza: retrato_atual, coluna: DT_ATUALIZACAO, cobertura: "DT_ATUALIZACAO = 2026-10-25 em todas; DT_SITUACAO 1998-12-18–2026-10-23"}
+    territorio: {nivel: outro, colunas: {REGISTRO_OPERADORA: "registro ANS da operadora (6 dígitos)", ID_GEO_COBERTURA: "chave para caracteristicas_produtos_municipios; nulo em 36,5% das linhas"}}
+    filtros_tipicos:
+      - "SITUACAO_PLANO = 'Ativo' (28.953; 'Suspenso' 44.894, 'Cancelado' 64.353, 'Transferido' 28.202)"
+      - "COBERTURA = 'Médico-hospitalar' (149.596) ou 'Odontológica' (16.806)"
+      - "VIGENCIA_PLANO = 'P' (126.932) ou 'A' (39.470): significado não documentado"
+    use_para: "perfil dos planos (modalidade, contratação, abrangência, fator moderador) e quantos estão ativos por operadora"
+    nao_use_para: "número de beneficiários (a tabela não tem) ou preço"
+    rascunho: [use_para, nao_use_para]
+    verificado: "166.402 linhas, 166.402 ID_PLANO — medido 2026-10-27"
+  caracteristicas_produtos_municipios:
+    grao: "um município dentro de uma área geográfica de cobertura de plano"
+    chave: "(ID_DETALHE_AREA_GEOGRAFICA, CD_MUNICIPIO): confirmada, 884.884 linhas = 884.884 combinações"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: municipio, colunas: {CD_MUNICIPIO: "código IBGE de 6 dígitos, sem dígito verificador (min 110001)", SG_UF: "sigla da UF", NM_REGIAO: "grande região em caixa alta"}}
+    use_para: "expandir a área de cobertura de caracteristicas_produtos (ID_GEO_COBERTURA = ID_DETALHE_AREA_GEOGRAFICA) em municípios"
+    nao_use_para: "contar planos ou beneficiários por município sem passar por caracteristicas_produtos"
+    rascunho: [use_para, nao_use_para]
+    verificado: "884.884 linhas, 7.219 áreas no perfil (amostra de distintos) — medido 2026-10-27"
+  historico_planos:
+    grao: "um período de situação de um plano (início e fim de um status)"
+    chave: "nenhuma: 354.370 linhas contra 348.527 combinações de (#ID_PLANO, DT_INICIO_STATUS, ID_SITUACAO_PRINCIPAL); 166.152 planos"
+    tempo: {natureza: serie_de_periodos, coluna: "DT_INICIO_STATUS, DT_FIM_STATUS", cobertura: "1998-11-21–2026-09-29"}
+    territorio: {nivel: nenhum, colunas: {CD_OPERADORA: "registro ANS da operadora (6 dígitos)"}}
+    filtros_tipicos:
+      - "DT_FIM_STATUS IS NULL: status vigente (166.150 linhas)"
+      - "ID_SITUACAO_PRINCIPAL = '1' ATIVO (137.592), '2' ATIVO COM COMERCIALIZAÇÃO SUSPENSA (123.289), '3' CANCELADO (65.287), '4' TRANSFERIDO (28.202); a coluna se chama \"#ID_PLANO\" (precisa de aspas)"
+    use_para: "linha do tempo das mudanças de situação de cada plano"
+    nao_use_para: "contar planos ativos hoje sem filtrar DT_FIM_STATUS IS NULL (cada plano tem várias linhas)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "354.370 linhas, 166.152 planos, 166.150 sem DT_FIM_STATUS (dos quais 28.931 ATIVO, 44.734 suspensos, 64.283 cancelados, 28.202 transferidos) — medido 2026-10-27"
+  tiss_planos:
+    grao: "um plano (produto) com as características usadas no padrão TISS"
+    chave: "ID_PLANO: confirmada, 163.742 linhas = 163.742 distintos"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "sem coluna de data"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["COBERTURA = 'Assistência Médica' (147.918) ou 'Exclusivamente Odontológica' (15.824)", "FATOR_MODERADOR = 'Coparticipacão' (grafia sem til no ã: 41.348 linhas)"]
+    use_para: "características de plano (segmentação, abrangência, financiamento, acomodação) casadas por ID_PLANO"
+    nao_use_para: "beneficiários ou operadora (a tabela não tem REGISTRO_OPERADORA; use caracteristicas_produtos)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "163.742 linhas, 163.742 ID_PLANO — medido 2026-10-27"
+  demandas_nip:
+    grao: "uma demanda (reclamação) de beneficiário registrada na ANS pela NIP (Notificação de Intermediação Preliminar)"
+    chave: "NR_DEMANDA: confirmada, 2.645.613 linhas = 2.645.613 distintos"
+    tempo: {natureza: serie_de_periodos, coluna: DT_ABERTURA_DEMANDA, cobertura: "2011-01-03–2026-08-31"}
+    territorio: {nivel: municipio, colunas: {UF_BENEFICIARIO: "UF do beneficiário (dado pessoal: só contagens)", MUNICIPIO_BENEFICIARIO: "município do beneficiário (dado pessoal)", UF_LOCAL_ATENDIMENTO: "UF do local de atendimento (nulo em 27,5%)", CD_MUNICIPIO_LOCAL_ATENDIMENTO: "código do município do atendimento, formato não é IBGE de 7 dígitos (min 10200)"}}
+    filtros_tipicos:
+      - "ANO_REFERENCIA = '2024' (texto; 2024 tem 375.985 linhas, 2025 325.102, 2026 242.553)"
+      - "CLASSIFICACAO_NIP = 'INATIVA' (1.925.420 de 2.645.613); outras: 'NÚCLEO' 228.564, 'EM ANDAMENTO' 178.645, 'NP' 155.610, 'NA' 65.063, 'RVE' 55.740, 'EXCEÇÃO' 36.470; significado das siglas não documentado"
+      - "NATUREZA_NIP = 'Assistencial' (nulo em 12%)"
+    use_para: "volume de reclamações por operadora, assunto, ano ou natureza"
+    nao_use_para: "taxa de reclamação (não há beneficiários aqui; use igr) ou valor de multa (use penalidades)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2.645.613 linhas, 2.645.613 NR_DEMANDA; gotcha registro_ans_muda_de_nome_e_perde_zero vale para REGISTRO_OPERADORA (nulo em 0,03%) — medido 2026-10-27"
+  igr:
+    grao: "o Índice Geral de Reclamações de uma operadora × competência (mês) × tipo de cobertura"
+    chave: "nenhuma: 129.188 linhas contra 129.169 combinações de (REGISTRO_OPERADORA, COMPETENCIA, COBERTURA); em 2026-09 a chave é única (969 linhas)"
+    tempo: {natureza: serie_mensal, coluna: COMPETENCIA, cobertura: "2015-01–2026-09 (texto 'AAAA-MM')"}
+    territorio: {nivel: nenhum}
+    medidas:
+      - {coluna: IGR, o_que: "reclamações por 100 mil beneficiários da operadora (ver gotcha igr_operadora_pequena)", unidade: "índice", soma: nao}
+      - {coluna: QTD_RECLAMACOES, o_que: "reclamações no mês", unidade: "reclamações", soma: sim}
+      - {coluna: QTD_BENEFICIARIOS, o_que: "beneficiários da operadora no mês (dado ocultado no perfil)", unidade: "pessoas", soma: sim}
+    filtros_tipicos:
+      - "COBERTURA = 'Assistência médica' (ou 'Exclusivamente odontológica': mediana de IGR 0,0 contra 16,0 em 2026-06)"
+      - "COMPETENCIA = '2026-06' (um mês: uma operadora por cobertura)"
+    use_para: "ranking e evolução do IGR por operadora, ponderado por porte"
+    nao_use_para: "ranquear sem ponderar por beneficiários, ou somar/tirar média de IGR entre operadoras"
+    rascunho: [use_para, nao_use_para]
+    verificado: "129.188 linhas; 2026-09: 969 linhas, 969 combinações; 2026-06 médico: 662 operadoras, 27.617 reclamações; odontológico: 306 operadoras, 424 reclamações — medido 2026-10-27"
+  igr_reclamacoes_operadora:
+    grao: "uma reclamação (demanda) que entrou no cálculo do IGR de uma operadora no mês de referência"
+    chave: "Número Demanda: confirmada, 261.382 linhas = 261.382 distintos (colunas com espaços e acentos, precisam de aspas duplas)"
+    tempo: {natureza: serie_de_periodos, coluna: "Data Atendimento (texto 'DD/MM/AAAA hh:mm:ss')", cobertura: "Competência única 202210 (atualizado em 14/11/2022)"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["\"Natureza Demanda\" = 'Assistencial' (212.092; 'Não Assistencial' 49.285)", "\"Classificação\" = 'INATIVA' (190.607)"]
+    use_para: "detalhar as reclamações de outubro de 2022 por operadora, tema e natureza"
+    nao_use_para: "série temporal (é um único mês, 2022-10)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "261.382 linhas, 261.382 Número Demanda, Competência = '202210' em todas — medido 2026-10-27"
+  penalidades:
+    grao: "um processo sancionador da ANS contra uma operadora, com multa, recurso e cobrança (GRU)"
+    chave: "nenhuma: 111.928 linhas contra 111.884 NR_DEMANDA distintos e 111.884 (NR_DEMANDA, NR_PROCESSO); 44 linhas repetem"
+    tempo: {natureza: serie_de_periodos, coluna: DT_DECISAO_1A, cobertura: "2000-03-15–2025-03-31 (carga NR_COMPETENCIA = '202503')"}
+    territorio: {nivel: nenhum, colunas: {REGISTRO_OPERADORA: "registro ANS (6 dígitos; nulo em 0,39%)"}}
+    medidas:
+      - {coluna: VL_MULTA_FINAL_APLICADA, o_que: "multa final aplicada depois dos recursos", unidade: "R$", soma: sim}
+      - {coluna: VL_TOTAL_APLICADO_1A, o_que: "multa total na decisão de 1ª instância", unidade: "R$", soma: sim}
+      - {coluna: VL_GRU, o_que: "valor da guia de cobrança (nulo em 9,7%)", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "TIPO_PROCESSO = 'Consumidor' (100.765; 'Representação' 9.029, 'Institucional' 1.840, 'Olho Vivo' 294)"
+      - "STATUS_DEMANDA = 'Arquivado' (52.683) ou 'Em Cobrança' (52.320)"
+      - "DE_SITUACAO_GRU = 'Pago' (43.526; 'Pendente' 48.468, 'Parcelado' 6.125, 'Suspenso' 2.352)"
+      - "SITUACAO_OPERADORA = '1' (74.445) ou '2' (36.973): significado não documentado"
+    use_para: "multas aplicadas a operadoras por tipo, objeto, status e ano de decisão"
+    nao_use_para: "arrecadação paga (use DE_SITUACAO_GRU e VL_PAGO_A_VISTA_ANS, e note que 'Pendente' é maioria) ou contar operadoras sem DISTINCT"
+    rascunho: [use_para, nao_use_para]
+    verificado: "111.928 linhas; VL_MULTA_FINAL_APLICADA soma R$ 8.627,1 mi (111.500 linhas > 0), VL_TOTAL_APLICADO_1A R$ 9.002,6 mi, VL_GRU R$ 8.541,2 mi — medido 2026-10-27"
+  demonstracoes_contabeis:
+    grao: "o saldo de uma conta contábil de uma operadora num trimestre (plano de contas completo, contas-pai e contas-filha juntas)"
+    chave: "(DATA, REG_ANS, CD_CONTA_CONTABIL): confirmada em DATA = '2025-10-01' (926.610 linhas = 926.610 combinações, 1.019 operadoras)"
+    tempo: {natureza: serie_de_periodos, coluna: DATA, cobertura: "2001-01-01–2026-04-01 (DATA é o 1º dia do trimestre: 01-01, 04-01, 07-01, 10-01)"}
+    territorio: {nivel: nenhum, colunas: {REG_ANS: "registro ANS da operadora, às vezes sem o zero à esquerda (gotcha registro_ans_muda_de_nome_e_perde_zero)"}}
+    medidas:
+      - {coluna: VL_SALDO_FINAL, o_que: "saldo da conta no fim do trimestre; nas contas de resultado (3, 4, 6) é acumulado no ano e zera no 1º trimestre seguinte", unidade: "R$", soma: sim}
+      - {coluna: VL_SALDO_INICIAL, o_que: "saldo no início do trimestre (preenchido só de 2021-10 em diante)", unidade: "R$", soma: nao}
+    filtros_tipicos:
+      - "DATA = '2025-10-01': a tabela tem 52 milhões de linhas; sempre filtre uma DATA"
+      - "CD_CONTA_CONTABIL = '3' (RECEITAS), '4' (DESPESAS), '1' (ATIVO), '2' (PASSIVO), '31' (RECEITAS COM OPERAÇÕES DE ASSISTÊNCIA A SAÚDE), '41' (EVENTOS INDENIZÁVEIS LÍQUIDOS / SINISTROS RETIDOS): um nível só, para não contar pai e filha (gotcha plano_de_contas_hierarquico)"
+    use_para: "balanço e resultado das operadoras por trimestre (receita, sinistros, ativo)"
+    nao_use_para: "somar VL_SALDO_FINAL sem fixar a conta, ou somar trimestres de uma conta de resultado (já é acumulado do ano)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "DATA = 2025-10-01: 926.610 linhas, 1.019 operadoras; conta 3 por DATA: 2024-01 R$ 84,9 bi, 2024-04 170,1, 2024-07 261,3, 2024-10 354,5, 2025-01 94,3 (acumulado do ano, zera em janeiro); 2025-10 conta 1 ATIVO R$ 296,3 bi = conta 2 PASSIVO R$ 296,2 bi — medido 2026-10-27"
+  painel_precificacao:
+    grao: "o valor comercial médio e a composição percentual da mensalidade de uma nota técnica de plano × faixa etária × mês"
+    chave: "(ID_PLANO, CD_NOTA, CD_FAIXA_ETARIA, ANO_MES): confirmada em ANO_MES = '2025-12' (348.600 linhas = 348.600 combinações, 21.675 planos, 34.860 linhas por faixa)"
+    tempo: {natureza: serie_mensal, coluna: ANO_MES, cobertura: "2013-12–2026-06 (texto 'AAAA-MM', mínimo e máximo vistos numa amostra de 6%)"}
+    territorio: {nivel: nenhum}
+    medidas:
+      - {coluna: VCM, o_que: "valor comercial médio da mensalidade (sigla não documentada no repo)", unidade: "R$ (min 20, max 52.109,53)", soma: nao}
+      - {coluna: PCT_DESP_ASS, o_que: "percentual da mensalidade que cobre despesa assistencial (sigla não documentada)", unidade: "%", soma: nao}
+      - {coluna: PCT_CARREG, o_que: "percentual de carregamento (parte administrativa, comercial e lucro, ao que parece: PCT_CARREG_ADMIN, _COML, _LUCRO)", unidade: "%", soma: nao}
+    filtros_tipicos:
+      - "ANO_MES = '2025-12': a tabela tem 32 milhões de linhas; sempre filtre um mês"
+      - "CD_FAIXA_ETARIA IN ('1'..'10'): 10 faixas; o texto de cada faixa não está documentado"
+      - "NT_TIPO = 'Única' ou 'Múltipla' (nota técnica; significado não documentado)"
+    use_para: "comparar preço médio de mensalidade por faixa etária e plano"
+    nao_use_para: "somar VCM ou média entre planos sem ponderar por beneficiários (a tabela não tem)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "ANO_MES = 2025-12: 348.600 linhas, 21.675 planos, 10 faixas com 34.860 linhas cada; tabela com 32.202.280 linhas — medido 2026-10-27"
+  ressarcimento_sus_atendimentos:
+    grao: "um atendimento do SUS a beneficiário de plano privado, cobrado da operadora (lado cobrança)"
+    chave: "NUM_ATENDIMENTO: confirmada, 10.507.502 linhas = 10.507.502 distintos"
+    tempo: {natureza: serie_mensal, coluna: COMPETENCIA, cobertura: "2001-02–2025-06 (texto 'AAAA-MM'; DATA_ATUALIZACAO_ARQUIVO 2026-09-02)"}
+    territorio: {nivel: nenhum, colunas: {REGISTRO_OPERADORA: "registro ANS da operadora (6 dígitos)", CD_CNES: "código CNES do estabelecimento de saúde que atendeu"}}
+    medidas:
+      - {coluna: VALOR_ATENDIMENTO, o_que: "valor do atendimento no SUS", unidade: "R$", soma: sim}
+      - {coluna: VALOR_COBRADO, o_que: "valor cobrado à operadora (nulo em 25,8%)", unidade: "R$", soma: sim}
+      - {coluna: "VALOR_ORIGINAL_GRU, VALOR_ATUALIZADO_GRU", o_que: "valor da guia GRU, repetido em cada atendimento da mesma guia", unidade: "R$", soma: nao}
+    filtros_tipicos:
+      - "SITUACAO_GRU = 'Pago' (3.889.137; 'Parcelado' 1.668.071, 'Pendente' 1.025.728, 'suspenso judicialmente (SCPJ)' 1.005.677, 'pendente de pagamento (inclui suspensão SCI)' 407.169, NULL 2.511.720)"
+      - "TIPO_ATENDIMENTO = '01' (5.359.150; média de VALOR_ATENDIMENTO R$ 2.045) ou '02' (5.145.672; R$ 1.303): significado dos códigos não documentado"
+    use_para: "quanto o SUS atendeu e cobrou das operadoras, por operadora, estabelecimento ou situação da cobrança"
+    nao_use_para: "somar VALOR_ORIGINAL_GRU (a soma ingênua em SITUACAO_GRU = 'Pago' dá R$ 8.868 bi, porque cada guia se repete em vários atendimentos: 7,8 milhões de linhas com NUMERO_GRU, 149.131 guias) e somar junto com ressarcimento_sus_beneficiarios (gotcha ressarcimento_em_duas_tabelas)"
+    rascunho: [use_para]
+    verificado: "10.507.502 linhas e distintos; soma VALOR_ATENDIMENTO R$ 17,67 bi, VALOR_COBRADO R$ 12,55 bi — medido 2026-10-27"
+  ressarcimento_sus_beneficiarios:
+    grao: "o mesmo atendimento de ressarcimento_sus_atendimentos, visto pelo perfil do beneficiário e do procedimento (lado paciente)"
+    chave: "NUM_ATENDIMENTO: confirmada, 10.507.502 linhas = 10.507.502 distintos"
+    tempo: {natureza: serie_mensal, coluna: COMPETENCIA, cobertura: "01/2002–12/2024 numa amostra de 19% (texto 'MM/AAAA', formato diferente de atendimentos)"}
+    territorio: {nivel: municipio, colunas: {UF_ESTAB: "UF do estabelecimento", MUNICIPIO_ESTAB: "nome do município do estabelecimento, sem código", UF_BENEFICIARIO: "UF do beneficiário (dado pessoal: só contagens)"}}
+    medidas:
+      - {coluna: VL_ATENDIMENTO, o_que: "valor do atendimento no SUS", unidade: "R$", soma: sim}
+      - {coluna: VL_RESSARC, o_que: "valor a ressarcir (nulo em 27,2%)", unidade: "R$", soma: sim}
+      - {coluna: VL_PAGO_RESSARC, o_que: "valor já pago do ressarcimento (nulo em 63,6%)", unidade: "R$", soma: sim}
+      - {coluna: DIAS_PERM_INTERN, o_que: "dias de permanência na internação", unidade: "dias", soma: sim}
+    filtros_tipicos:
+      - "TIPO_ATENDIMENTO = '01' ou '02' (mesmos códigos de atendimentos, não documentados)"
+      - "ESFERA_ESTAB = '04' (1.208.103 na amostra; '02' 393.638, '03' 213.283, '01' 133.226, '00' 73.126): significado não documentado"
+      - "ESPECIALIDADE = 'CIRURGIA' (nulo em 53,6%)"
+    use_para: "perfil (faixa etária, procedimento, CID, especialidade, estabelecimento) dos atendimentos SUS ressarcíveis"
+    nao_use_para: "somar com ressarcimento_sus_atendimentos (mesmos atendimentos) ou ler a competência sem converter 'MM/AAAA'"
+    rascunho: [use_para, nao_use_para]
+    verificado: "10.507.502 linhas e distintos; soma VL_ATENDIMENTO R$ 17,67 bi (igual à de atendimentos), VL_RESSARC R$ 12,28 bi (7.684.234 linhas não nulas), VL_PAGO_RESSARC R$ 5,82 bi — medido 2026-10-27"
+  ressarcimento_sus_cobranca_arrecadacao:
+    grao: "um retrato acumulado da cobrança e arrecadação do ressarcimento ao SUS (uma linha só, competência 2026/09)"
+    use_para: "totais acumulados cobrado, pago, parcelado, suspenso e em dívida ativa do ressarcimento ao SUS"
+    verificado: "1 linha: VALOR_COBRADO_ACUMULADO R$ 13,20 bi, VALOR_PAGO_ACUMULADO R$ 6,23 bi, INDICE_ADIMPLENCIA '68,66%' (texto) — medido 2026-10-27"
+  ressarcimento_sus_hc:
+    grao: "uma operadora × competência com a porcentagem HC (sigla não documentada no repo)"
+    chave: "(CD_OPERADORA, COMPETENCIA): confirmada, 303.834 linhas = 303.834 combinações, 3.031 operadoras"
+    tempo: {natureza: serie_mensal, coluna: COMPETENCIA, cobertura: "201801–202609 (texto 'AAAAMM')"}
+    territorio: {nivel: nenhum, colunas: {CD_OPERADORA: "registro ANS (6 dígitos)"}}
+    medidas:
+      - {coluna: PORCENTAGEM_HC, o_que: "percentual HC (significado não documentado)", unidade: "% (0 a 100)", soma: nao}
+    use_para: "ler a porcentagem HC por operadora e mês"
+    nao_use_para: "interpretar o significado de HC sem consultar a ANS"
+    rascunho: [use_para, nao_use_para]
+    verificado: "303.834 linhas, min 0,0, max 100,0 — medido 2026-10-27"
+  ressarcimento_sus_indice_pagamento:
+    grao: "o índice de adimplência do ressarcimento ao SUS de uma operadora × competência (valores acumulados)"
+    chave: "nenhuma: 230.771 linhas contra 229.176 combinações de (CODIGO_OPERADORA, COMPETENCIA)"
+    tempo: {natureza: serie_mensal, coluna: COMPETENCIA, cobertura: "2014/07 a 202601: dois formatos misturados ('AAAA/MM' em 108.079 linhas, 'AAAAMM' nas demais)"}
+    territorio: {nivel: nenhum, colunas: {CODIGO_OPERADORA: "registro ANS (6 dígitos)"}}
+    medidas:
+      - {coluna: VALOR_COBRADO_ACUMULADO, o_que: "valor cobrado acumulado", unidade: "R$", soma: nao}
+      - {coluna: VALOR_PAGO_ACUMULADO, o_que: "valor pago acumulado", unidade: "R$", soma: nao}
+      - {coluna: INDICE_ADIMPLENCIA, o_que: "pago ÷ cobrado, em texto com '%' e vírgula decimal (vai a 'Inf%')", unidade: "%", soma: nao}
+    filtros_tipicos: ["SITUACAO_OPERADORA tem 7 grafias para duas situações: 'Ativa', 'ATIVA', 'A', '1' e 'Inativa', 'INATIVA', 'I', '2' (o mapeamento 1/2 → ativa/inativa não está documentado)"]
+    use_para: "adimplência do ressarcimento por operadora em uma competência"
+    nao_use_para: "somar valores acumulados entre competências ou ordenar COMPETENCIA como texto sem normalizar"
+    rascunho: [use_para, nao_use_para]
+    verificado: "230.771 linhas, 229.176 combinações — medido 2026-10-27"
+  sip_mapa_assistencial:
+    grao: "eventos e despesa assistencial de um item assistencial (procedimento/grupo) × trimestre × porte × modalidade × cobertura × contratação"
+    chave: "(PORTE_OPERADORA, GR_MODALIDADE, COBERTURA, ID_TRIMESTRE, CONTRATACAO, ID_ITEM_ASST): confirmada, 156.792 linhas = 156.792 combinações"
+    tempo: {natureza: serie_de_periodos, coluna: ID_TRIMESTRE, cobertura: "2020T1–2025-10: '202001' até 2023 e '2024-01' depois (gotcha sip_trimestre_dois_formatos); DT_CORTE tem 4 valores (2023-07-02 a 2026-06-08)"}
+    territorio: {nivel: nenhum}
+    medidas:
+      - {coluna: QT_EVENTOS, o_que: "quantidade de eventos assistenciais do item (nulo em 0,8%); somar só com ID_ITEM_ASST fixado (a hierarquia dos 118 itens não foi medida)", unidade: "eventos", soma: sim}
+      - {coluna: QT_BENEF_FORA_CARENCIA, o_que: "beneficiários fora da carência (nulo em 80%)", unidade: "pessoas", soma: nao}
+      - {coluna: VL_DESPESA_ASST_LIQ, o_que: "despesa assistencial líquida (nulo em 87,8%)", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "COBERTURA = 'MÉDICO-HOSPITALAR' (142.427; 'ODONTOLÓGICO' 14.365)"
+      - "PORTE_OPERADORA: 'PEQUENO', 'GRANDE', 'MÉDIO' ou '0' (24.785 linhas)"
+      - "GR_MODALIDADE em caixa mista ('Medicina De Grupo') e também 'SEGURADORA' em caixa alta"
+    use_para: "frequência de eventos assistenciais por item, trimestre, modalidade e porte"
+    nao_use_para: "somar QT_EVENTOS sem fixar o item ou ordenar ID_TRIMESTRE como texto"
+    rascunho: [use_para, nao_use_para]
+    verificado: "156.792 linhas, 156.792 combinações — medido 2026-10-27"

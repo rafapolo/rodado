@@ -1,0 +1,58 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_cgu_emendas_parlamentares
+tabelas:
+  emendas:
+    grao: "uma emenda parlamentar × classificação orçamentária (função, subfunção, programa, ação, plano orçamentário) × localidade, com empenho, liquidação, pagamento e restos a pagar"
+    chave: "nenhuma: 94.627 linhas (todas distintas) para 76.760 id_emenda; a combinação (id_emenda, função, subfunção, programa, ação, plano, localidade) dá 94.527, ou seja 100 linhas repetem; id_emenda = 'Sem informação' em 17.810 linhas (não identifica emenda)"
+    tempo: {natureza: serie_anual, coluna: ano_emenda, cobertura: "2014–2026"}
+    territorio: {nivel: outro, colunas: {id_municipio: "IBGE de 7 dígitos do local do gasto, mas pode vir 'Sem informação' (gotcha destino_municipal_so_em_por_favorecido)", id_uf: "código de UF com final 00000 (ex.: '3500000' = SP); '-1' é sem UF", regiao: "região ou Nacional/Múltiplo/Exterior", localidade: "texto 'NOME - UF' do local do gasto"}}
+    medidas:
+      - {coluna: valor_empenhado, o_que: "valor empenhado da emenda", unidade: "R$", soma: sim}
+      - {coluna: valor_liquidado, o_que: "valor liquidado", unidade: "R$", soma: sim}
+      - {coluna: valor_pago, o_que: "valor pago no exercício", unidade: "R$", soma: sim}
+      - {coluna: valor_restos_a_pagar_inscritos, o_que: "restos a pagar inscritos", unidade: "R$", soma: sim}
+      - {coluna: valor_restos_a_pagar_pagos, o_que: "restos a pagar pagos", unidade: "R$", soma: sim}
+    filtros_tipicos: ["tipo_de_emenda LIKE 'Emenda Individual%' para parlamentares individuais (valores: 'Emenda Individual - Transferências com Finalidade Definida' 79.849 linhas, 'Emenda Individual - Transferências Especiais' = emenda Pix 5.108, 'Emenda de Relator' 3.892, 'Emenda de Bancada' 3.588, 'Emenda de Comissão' 2.190)", "ano_emenda = 2024: inteiro", "id_autor_emenda <> 'Sem informação' e nome_autor_emenda sem relator/comissão/bancada para ranking de parlamentares (gotcha autor_nem_sempre_parlamentar)"]
+    use_para: "somar empenhado, liquidado e pago das emendas por ano, tipo, autor, função ou programa."
+    nao_use_para: "saber para qual município foi o dinheiro (use por_favorecido) ou contar emendas por count(*) (use count(DISTINCT id_emenda), excluindo 'Sem informação')."
+    rascunho: [use_para, nao_use_para]
+    verificado: "94.627 linhas, 76.760 id_emenda distintos; soma empenhado R$ 342,53 bi, liquidado R$ 195,47 bi, pago R$ 193,58 bi; empenhado 2024 R$ 44,81 bi e 2025 R$ 47,08 bi — medido 2026-10-27"
+  microdados:
+    grao: "mesma estrutura da tabela emendas (emenda × classificação orçamentária × local do gasto), versão da Base dos Dados que termina em 2025"
+    chave: "nenhuma: 88.993 linhas (todas distintas) para 71.126 id_emenda; a combinação (id_emenda, função, subfunção, programa, ação, plano, município do gasto) dá 88.241"
+    tempo: {natureza: serie_anual, coluna: ano_emenda, cobertura: "2014–2025"}
+    territorio: {nivel: outro, colunas: {id_municipio_gasto: "IBGE do gasto, 89,7% do valor sem código de 7 dígitos", sigla_uf_gasto: "UF do gasto (nula em 6,55% das linhas)", localidade: "só preenchida quando o gasto é regional/nacional"}}
+    medidas:
+      - {coluna: valor_empenhado, o_que: "valor empenhado", unidade: "R$", soma: sim}
+      - {coluna: valor_liquidado, o_que: "valor liquidado", unidade: "R$", soma: sim}
+      - {coluna: valor_pago, o_que: "valor pago", unidade: "R$", soma: sim}
+    filtros_tipicos: ["tipo_emenda LIKE 'Emenda Individual%': mesmos 5 tipos de emendas, coluna com nome diferente (tipo_emenda, não tipo_de_emenda)"]
+    use_para: "conferir ou repetir análises de emendas até 2025 com nomes de coluna da Base dos Dados."
+    nao_use_para: "análise recente: prefira emendas, que vai até 2026 (gotcha emendas_mais_nova_que_microdados)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "88.993 linhas, 71.126 id_emenda distintos, empenhado R$ 302,47 bi — medido 2026-10-27"
+  convenios:
+    grao: "um convênio (ou instrumento) ligado a uma emenda parlamentar, com convenente, objeto e valor"
+    chave: "nenhuma: 85.313 linhas (todas distintas), 81.602 numero_convenio; (numero_convenio, id_emenda) dá 85.278 e com função, subfunção e localidade 85.307"
+    tempo: {natureza: serie_diaria, coluna: data_publicacao_convenio, cobertura: "1999-05-10–2026-09-10"}
+    territorio: {nivel: outro, colunas: {localidade_do_gasto: "texto 'NOME - UF' do local do gasto"}}
+    medidas:
+      - {coluna: valor_convenio, o_que: "valor do convênio", unidade: "R$", soma: sim}
+    filtros_tipicos: ["tipo_de_emenda = 'Emenda Individual - Transferências com Finalidade Definida' (66.543 linhas); aqui só 4 tipos: sem 'Transferências Especiais'", "id_emenda <> 'Sem informação': para juntar com emendas"]
+    use_para: "ver convenente, objeto e valor dos convênios financiados por emendas."
+    nao_use_para: "somar valor_convenio junto com valores de emendas: são fases e granularidades diferentes (convênio R$ 121,67 bi vs empenho R$ 342,53 bi)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "85.313 linhas, 81.602 numero_convenio distintos, 24.120 id_emenda distintos, soma R$ 121,67 bi — medido 2026-10-27"
+  por_favorecido:
+    grao: "um pagamento mensal de uma emenda a um favorecido (CPF/CNPJ), com mês e município do favorecido"
+    chave: "nenhuma: 826.056 linhas (todas distintas), mas só 824.356 combinações (id_emenda, ano_mes, documento_favorecido)"
+    tempo: {natureza: serie_mensal, coluna: ano_mes, cobertura: "201406–202609 (texto AAAAMM; ano e mes inteiros coincidem com ano_mes em todas as linhas)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "IBGE do município do favorecido, casado por nome + UF (nulo em 1,18%)", sigla_uf_favorecido: "UF do favorecido", municipio_favorecido: "nome do município do favorecido"}}
+    medidas:
+      - {coluna: valor_recebido, o_que: "valor recebido pelo favorecido no mês; pode ser negativo (estorno)", unidade: "R$", soma: sim}
+    filtros_tipicos: ["regexp_matches(natureza_juridica_favorecido, '^Munic|Municipal'): só prefeituras e fundos municipais (gotcha banco_mandatario_infla_brasilia)", "ano = 2024: inteiro (e mes inteiro 1–12)", "tipo_emenda LIKE 'Emenda Individual%'"]
+    use_para: "ver quem recebeu o dinheiro das emendas e quanto chegou a cada município."
+    nao_use_para: "somar por id_municipio sem filtrar a natureza jurídica: o Banco do Brasil mandatário infla Brasília (gotcha banco_mandatario_infla_brasilia)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "826.056 linhas; valor_recebido total R$ 280,82 bi; ano_mes = ano*100+mes em todas — medido 2026-10-27"
