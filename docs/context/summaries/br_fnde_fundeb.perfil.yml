@@ -2,7 +2,243 @@ dataset: br_fnde_fundeb
 gerado_em: '2026-10-27'
 gerado_por: scripts/gera_perfil.py — não edite à mão
 tabelas:
-  indicador_estadual: {linhas: 67448, erro: 'Catalog Error: Table with name "br_fnde_fundeb.indicador_estadual" does not exist because schema
-      "br_fnde_fundeb" does not exist.'}
-  indicador_municipal: {linhas: 14995808, erro: 'Catalog Error: Table with name "br_fnde_fundeb.indicador_municipal" does not exist because schema
-      "br_fnde_fundeb" does not exist.'}
+  indicador_estadual:
+    linhas: 67448
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '2008'
+        max: '2026'
+        media: 2020.0114
+        quartis: [2018, 2021, 2023]
+        top:
+        - ['2024', 7001]
+        - ['2023', 6875]
+        - ['2022', 6423]
+        - ['2021', 6421]
+        - ['2020', 5956]
+        - ['2018', 5779]
+        - ['2019', 5700]
+        - ['2017', 4846]
+        - ['2025', 4659]
+        - ['2026', 3703]
+      periodo:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        media: 3.1016
+        quartis: [1, 3, 5]
+        top:
+        - ['1', 20039]
+        - ['3', 10100]
+        - ['4', 9627]
+        - ['6', 9508]
+        - ['2', 9189]
+        - ['5', 8985]
+      id_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '11'
+        max: '53'
+        top:
+        - ['33', 2660]
+        - ['29', 2647]
+        - ['41', 2646]
+        - ['52', 2642]
+        - ['17', 2634]
+        - ['23', 2628]
+        - ['12', 2623]
+        - ['13', 2623]
+        - ['50', 2620]
+        - ['14', 2617]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [RJ, 2660]
+        - [BA, 2647]
+        - [PR, 2646]
+        - [GO, 2642]
+        - [TO, 2634]
+        - [CE, 2628]
+        - [AC, 2623]
+        - [AM, 2623]
+        - [MS, 2620]
+        - [RR, 2617]
+      id_indicador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51, min: '40', max: '99'}
+      codigo_exibicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 62, min: '1.1', max: '8.2'}
+      indicador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 65, min: Desperdício financeiro por aluno em razão de reprovação e abandono escolar
+          no ensino fundamental, max: Índice de Desenvolvimento da Educação Básica - IDEB - Séries Iniciais}
+      id_grupo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '3'
+        max: '3'
+        top:
+        - ['3', 67448]
+      grupo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Indicadores de Dispêndio com Pessoal
+        max: Indicadores de Dispêndio com Pessoal
+        top:
+        - [Indicadores de Dispêndio com Pessoal, 67448]
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 27108
+        min: '-39813474460.0'
+        max: '58697763233.37'
+        media: 138383851.3974
+        quartis: [0, 21.8761, 996.3686]
+      valor_texto:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 27108
+        min: '-39813474460.0'
+        max: '58697763233.37'
+        media: 138383851.3974
+        quartis: [0, 21.8761, 996.3686]
+  indicador_municipal:
+    linhas: 14995808
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 666656]
+      periodo:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        media: 2.3108
+        quartis: [2, 2, 3]
+        top:
+        - ['2', 242010]
+        - ['3', 219710]
+        - ['1', 140787]
+        - ['4', 64149]
+      id_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: '11'
+        max: '52'
+        top:
+        - ['31', 103291]
+        - ['35', 79679]
+        - ['43', 63933]
+        - ['29', 50389]
+        - ['42', 42869]
+        - ['41', 41591]
+        - ['52', 30087]
+        - ['22', 26863]
+        - ['25', 26608]
+        - ['21', 23187]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: AC
+        max: TO
+        top:
+        - [MG, 103291]
+        - [SP, 79679]
+        - [RS, 63933]
+        - [BA, 50389]
+        - [SC, 42869]
+        - [PR, 41591]
+        - [GO, 30087]
+        - [PI, 26863]
+        - [PB, 26608]
+        - [MA, 23187]
+      id_municipio_6: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5078}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      nome_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5886, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_indicador:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 42
+        min: '24'
+        max: '97'
+        top:
+        - ['92', 17618]
+        - ['31', 16363]
+        - ['35', 16363]
+        - ['24', 16361]
+        - ['67', 16360]
+        - ['32', 16355]
+        - ['29', 16329]
+        - ['28', 16254]
+        - ['27', 15938]
+        - ['68', 15791]
+      codigo_exibicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 49
+        min: '1.1'
+        max: '8.2'
+        top:
+        - ['1.7', 17618]
+        - ['2.4', 16363]
+        - ['2.8', 16363]
+        - ['1.1', 16361]
+        - ['1.2', 16360]
+        - ['2.5', 16355]
+        - ['2.2', 16329]
+        - ['2.1', 16254]
+        - ['1.4', 15938]
+        - ['1.3', 15791]
+      indicador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51, min: Despesa com professores por aluno da educação básica, max: Valor exigido
+          de aplicação de impostos em MDE (Mínimo de 25%)}
+      id_grupo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '3'
+        max: '3'
+        top:
+        - ['3', 666656]
+      grupo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Indicadores de Dispêndio com Pessoal
+        max: Indicadores de Dispêndio com Pessoal
+        top:
+        - [Indicadores de Dispêndio com Pessoal, 666656]
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 190071
+        min: '-39641507900.32'
+        max: '11908142382.28'
+        media: -56386.2108
+        quartis: [0, 3.8736, 514.4517]
+      valor_texto:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 190071
+        min: '-39641507900.32'
+        max: '11908142382.28'
+        media: -56386.2108
+        quartis: [0, 3.8736, 514.4517]

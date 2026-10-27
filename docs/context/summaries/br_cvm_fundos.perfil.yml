@@ -2,39 +2,4022 @@ dataset: br_cvm_fundos
 gerado_em: '2026-10-27'
 gerado_por: scripts/gera_perfil.py — não edite à mão
 tabelas:
-  balancete: {linhas: 316620509, erro: 'Catalog Error: Table with name balancete does not exist!'}
-  cadastro_historico_admin: {linhas: 85810, erro: 'Catalog Error: Table with name cadastro_historico_admin does not exist!'}
-  cadastro_historico_auditor: {linhas: 104236, erro: 'Catalog Error: Table with name cadastro_historico_auditor does not exist!'}
-  cadastro_historico_classe: {linhas: 62070, erro: 'Catalog Error: Table with name cadastro_historico_classe does not exist!'}
-  cadastro_historico_condom: {linhas: 63707, erro: 'Catalog Error: Table with name cadastro_historico_condom does not exist!'}
-  cadastro_historico_controlador: {linhas: 72184, erro: 'Catalog Error: Table with name cadastro_historico_controlador does not exist!'}
-  cadastro_historico_custodiante: {linhas: 73005, erro: 'Catalog Error: Table with name cadastro_historico_custodiante does not exist!'}
-  cadastro_historico_denom_comerc: {linhas: 81132, erro: 'Catalog Error: Table with name cadastro_historico_denom_comerc does not exist!'}
-  cadastro_historico_denom_social: {linhas: 152374, erro: 'Catalog Error: Table with name cadastro_historico_denom_social does not exist!'}
-  cadastro_historico_diretor_resp: {linhas: 179010, erro: 'Catalog Error: Table with name cadastro_historico_diretor_resp does not exist!'}
-  cadastro_historico_exclusivo: {linhas: 65384, erro: 'Catalog Error: Table with name cadastro_historico_exclusivo does not exist!'}
-  cadastro_historico_exerc_social: {linhas: 507417, erro: 'Catalog Error: Table with name cadastro_historico_exerc_social does not exist!'}
-  cadastro_historico_fic: {linhas: 64451, erro: 'Catalog Error: Table with name cadastro_historico_fic does not exist!'}
-  cadastro_historico_gestor: {linhas: 99812, erro: 'Catalog Error: Table with name cadastro_historico_gestor does not exist!'}
-  cadastro_historico_publico_alvo: {linhas: 42985, erro: 'Catalog Error: Table with name cadastro_historico_publico_alvo does not exist!'}
-  cadastro_historico_rentab: {linhas: 60178, erro: 'Catalog Error: Table with name cadastro_historico_rentab does not exist!'}
-  cadastro_historico_sit: {linhas: 145722, erro: 'Catalog Error: Table with name cadastro_historico_sit does not exist!'}
-  cadastro_historico_taxa_adm: {linhas: 87757, erro: 'Catalog Error: Table with name cadastro_historico_taxa_adm does not exist!'}
-  cadastro_historico_taxa_perfm: {linhas: 43639, erro: 'Catalog Error: Table with name cadastro_historico_taxa_perfm does not exist!'}
-  cadastro_historico_trib_lprazo: {linhas: 56545, erro: 'Catalog Error: Table with name cadastro_historico_trib_lprazo does not exist!'}
-  carteira_blc_1: {linhas: 1950215, erro: 'Catalog Error: Table with name carteira_blc_1 does not exist!'}
-  carteira_blc_2: {linhas: 6799905, erro: 'Catalog Error: Table with name carteira_blc_2 does not exist!'}
-  carteira_blc_3: {linhas: 11336, erro: 'Catalog Error: Table with name carteira_blc_3 does not exist!'}
-  carteira_blc_4: {linhas: 10750928, erro: 'Catalog Error: Table with name carteira_blc_4 does not exist!'}
-  carteira_blc_5: {linhas: 3092818, erro: 'Catalog Error: Table with name carteira_blc_5 does not exist!'}
-  carteira_blc_6: {linhas: 474419, erro: 'Catalog Error: Table with name carteira_blc_6 does not exist!'}
-  carteira_blc_7: {linhas: 3042828, erro: 'Catalog Error: Table with name carteira_blc_7 does not exist!'}
-  carteira_blc_8: {linhas: 9996172, erro: 'Catalog Error: Table with name carteira_blc_8 does not exist!'}
-  carteira_confid: {linhas: 187163, erro: 'Catalog Error: Table with name carteira_confid does not exist!'}
-  carteira_fie: {linhas: 447690, erro: 'Catalog Error: Table with name carteira_fie does not exist!'}
-  carteira_fie_confid: {linhas: 1777, erro: 'Catalog Error: Table with name carteira_fie_confid does not exist!'}
-  carteira_pl: {linhas: 1156670, erro: 'Catalog Error: Table with name carteira_pl does not exist!'}
-  extrato: {linhas: 149489, erro: 'Catalog Error: Table with name extrato does not exist!'}
+  balancete:
+    linhas: 316620509
+    fonte_do_perfil: amostra de 0,632%. ~2.000.000 linhas
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 25.09, distintos_aprox: 13862, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_comptc: {tipo: DATE, nulos_pct: 0, distintos_aprox: 213, min: '2005-03-31', max: '2026-09-30'}
+      plano_conta_balcte:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: COFI
+        max: COSIF
+        top:
+        - [COFI, 1807030]
+        - [COSIF, 57344]
+      cd_conta_balcte: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 486, min: '10000007', max: '99999995'}
+      vl_saldo_balcte:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1055593
+        min: '-3812381948044.6'
+        max: '8556810569244.88'
+        media: 528336342.3988
+        quartis: [1253.1942, 997781.1909, 25027444.9468]
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 16772, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tp_fundo_classe:
+        tipo: VARCHAR
+        nulos_pct: 74.91
+        distintos_aprox: 2
+        min: CLASSES - FIF
+        max: FI
+        top:
+        - [null, 1396666]
+        - [CLASSES - FIF, 270625]
+        - [FI, 197083]
+      cnpj_fundo_classe: {tipo: VARCHAR, nulos_pct: 74.91, distintos_aprox: 5622, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_admin:
+    linhas: 85810
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61142, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4696, min: '1999-12-20', max: '2026-10-14'}
+      cnpj_admin: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 258, pessoal: 'só contagens: valores seriam dado pessoal'}
+      admin: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 236, min: 4UM DTVM S.A., max: ÚNICA ADMINISTRAÇÃO E GESTÃO DE RECURSOS LTDA.}
+      dt_ini_admin: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5057, min: '1993-12-06', max: '2026-10-14'}
+      dt_fim_admin: {tipo: DATE, nulos_pct: 55.86, distintos_aprox: 4831, min: '2004-11-24', max: '2026-10-13'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61142, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_auditor:
+    linhas: 104236
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51567, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4054, min: '1999-12-20', max: '2024-09-30'}
+      cnpj_auditor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 119, pessoal: 'só contagens: valores seriam dado pessoal'}
+      auditor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 105, min: AQUILA - AUDITORES INDEPENDENTES LTDA, max: YPC AUDITUN S AUDITORIA INDEPENDENTE
+          S/S}
+      dt_ini_auditor: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5429, min: '1992-11-06', max: '2026-04-30'}
+      dt_fim_auditor: {tipo: DATE, nulos_pct: 40.19, distintos_aprox: 4371, min: '2003-07-14', max: '2026-04-30'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51567, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_classe:
+    linhas: 62070
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51567, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4054, min: '2004-11-22', max: '2024-09-30'}
+      classe:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: Ações
+        max: Renda Fixa
+        top:
+        - [Multimercado, 38518]
+        - [Renda Fixa, 11498]
+        - [Ações, 10035]
+        - [Referenciado, 1328]
+        - [Curto Prazo, 289]
+        - [Cambial, 192]
+        - [FMP-FGTS, 115]
+        - [Dívida Externa, 95]
+      dt_ini_classe: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4582, min: '2004-11-22', max: '2026-03-13'}
+      dt_fim_classe: {tipo: DATE, nulos_pct: 88.7, distintos_aprox: 2793, min: '2005-01-05', max: '2026-03-13'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51567, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_condom:
+    linhas: 63707
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51567, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4054, min: '2004-11-22', max: '2024-09-30'}
+      condom:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Aberto
+        max: Fechado
+        top:
+        - [Aberto, 50393]
+        - [Fechado, 13314]
+      dt_ini_condom: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4582, min: '2001-03-12', max: '2025-12-10'}
+      dt_fim_condom: {tipo: DATE, nulos_pct: 86.43, distintos_aprox: 2670, min: '2002-09-30', max: '2025-12-10'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51567, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_controlador:
+    linhas: 72184
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51567, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4054, min: '1999-12-20', max: '2024-09-30'}
+      cnpj_controlador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 155, pessoal: 'só contagens: valores seriam dado pessoal'}
+      controlador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 139, min: ACTION CCVM S.A., max: ÓRAMA DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS
+          S.A.}
+      dt_ini_controlador: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5941, min: '1969-10-15', max: '2025-12-10'}
+      dt_fim_controlador: {tipo: DATE, nulos_pct: 57.26, distintos_aprox: 3980, min: '2001-12-26', max: '2025-12-10'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51567, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_custodiante:
+    linhas: 73005
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51567, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4054, min: '1999-12-20', max: '2024-09-30'}
+      cnpj_custodiante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 127, pessoal: 'só contagens: valores seriam dado pessoal'}
+      custodiante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 126, min: ALFA CORRETORA DE CAMBIO E VALORES MOBILIARIOS S.A, max: XP SERVIÇOS
+          FINANCEIROS DTVM Ltda.}
+      dt_ini_custodiante: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5135, min: '1990-08-17', max: '2025-12-10'}
+      dt_fim_custodiante: {tipo: DATE, nulos_pct: 56.89, distintos_aprox: 3898, min: '2002-08-02', max: '2025-12-10'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51567, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_denom_comerc:
+    linhas: 81132
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 42736, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3135, min: '1999-12-20', max: '2026-10-02'}
+      denom_comerc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 85800}
+      dt_ini_denom_comerc: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4545, min: '1963-07-01', max: '2022-01-20'}
+      dt_fim_denom_comerc: {tipo: DATE, nulos_pct: 51.79, distintos_aprox: 3836, min: '1997-09-12', max: '2022-01-14'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 42736, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_denom_social:
+    linhas: 152374
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61142, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4696, min: '1999-12-20', max: '2026-10-14'}
+      denom_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 153034}
+      dt_ini_denom_social: {tipo: DATE, nulos_pct: 0, distintos_aprox: 6455, min: '1942-07-31', max: '2026-10-14'}
+      dt_fim_denom_social: {tipo: DATE, nulos_pct: 40.38, distintos_aprox: 6115, min: '1997-06-17', max: '2026-10-14'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61142, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_diretor_resp:
+    linhas: 179010
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61142, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4696, min: '1999-12-20', max: '2026-10-14'}
+      diretor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 481, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_ini_diretor: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5057, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_fim_diretor: {tipo: DATE, nulos_pct: 26.86, distintos_aprox: 4778, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61142, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_exclusivo:
+    linhas: 65384
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51567, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4054, min: '2004-11-22', max: '2024-09-30'}
+      fundo_exclusivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 45888]
+        - [S, 19496]
+      dt_ini_st_exclusivo: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4582, min: '2004-11-22', max: '2026-03-13'}
+      dt_fim_st_exclusivo: {tipo: DATE, nulos_pct: 84.2, distintos_aprox: 3062, min: '2005-02-24', max: '2026-03-13'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51567, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_exerc_social:
+    linhas: 507417
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 56045, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4696, min: '2004-11-22', max: '2026-10-06'}
+      dt_ini_exerc: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4739, min: '1997-11-04', max: '2027-04-30'}
+      dt_fim_exerc: {tipo: DATE, nulos_pct: 0, distintos_aprox: 272, min: '1998-03-31', max: '2027-12-31'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 56045, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_fic:
+    linhas: 64451
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51567, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4054, min: '2004-11-22', max: '2024-09-30'}
+      fundo_cotas:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 34185]
+        - [S, 30266]
+      dt_ini_st_cotas: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4541, min: '2004-11-22', max: '2026-03-13'}
+      dt_fim_st_cotas: {tipo: DATE, nulos_pct: 85.43, distintos_aprox: 3399, min: '2005-02-21', max: '2026-03-13'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51567, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_gestor:
+    linhas: 99812
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61142, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4696, min: '1999-12-20', max: '2026-10-14'}
+      pf_pj_gestor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_cnpj_gestor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1867, pessoal: 'só contagens: valores seriam dado pessoal'}
+      gestor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1874, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_ini_gestor: {tipo: DATE, nulos_pct: 0, distintos_aprox: 6287, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_fim_gestor: {tipo: DATE, nulos_pct: 50.53, distintos_aprox: 4653, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61142, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_publico_alvo:
+    linhas: 42985
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 34845, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3800, min: '2004-11-26', max: '2024-09-30'}
+      publico_alvo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Profissional
+        max: Qualificado
+        top:
+        - [Profissional, 23947]
+        - [Público Geral, 11729]
+        - [Qualificado, 7309]
+      dt_ini_publico_alvo: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4248, min: '2004-11-22', max: '2026-09-29'}
+      dt_fim_publico_alvo: {tipo: DATE, nulos_pct: 82.31, distintos_aprox: 3034, min: '2005-03-12', max: '2025-07-02'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 34845, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_rentab:
+    linhas: 60178
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 44504, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4054, min: '2004-11-22', max: '2024-09-30'}
+      rentab_fundo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 33
+        min: Carteira de ações
+        max: Índice de preços
+        top:
+        - [DI de um dia, 31208]
+        - [Não se aplica, 10242]
+        - [OUTROS, 9973]
+        - [Ibovespa, 4508]
+        - [Índice de Preços ao Consumidor Amplo (IPCA/IBGE), 927]
+        - [IBrX, 568]
+        - [Taxa Selic, 511]
+        - [Índice de Mercado Andima todas NTN-B, 478]
+        - [Índice Geral de Preços-Mercado (IGP-M), 325]
+        - [Índice de Mercado Andima Geral, 242]
+      dt_ini_rentab: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4974, min: '1994-03-22', max: '2201-07-22'}
+      dt_fim_rentab: {tipo: DATE, nulos_pct: 83.06, distintos_aprox: 3596, min: '2005-01-04', max: '2025-09-15'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 44504, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_sit:
+    linhas: 145722
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61142, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4696, min: '1999-12-20', max: '2026-10-14'}
+      sit:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: CANCELADA
+        max: LIQUIDAÇÃO
+        top:
+        - [EM FUNCIONAMENTO NORMAL, 56459]
+        - [FASE PRÉ-OPERACIONAL, 53427]
+        - [CANCELADA, 34752]
+        - [LIQUIDAÇÃO, 541]
+        - [EM ANÁLISE, 529]
+        - [EM SITUAÇÃO ESPECIAL, 13]
+        - [EM LIQUIDAÇÃO ORDINÁRIA, 1]
+      dt_ini_sit: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4942, min: '2004-11-22', max: '2026-10-14'}
+      dt_fim_sit: {tipo: DATE, nulos_pct: 42.23, distintos_aprox: 4726, min: '2004-11-24', max: '2026-10-14'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61142, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_taxa_adm:
+    linhas: 87757
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 42177, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3928, min: '2004-11-22', max: '2024-10-24'}
+      taxa_adm:
+        tipo: DOUBLE
+        nulos_pct: 32.1
+        distintos_aprox: 1082
+        min: '0.0'
+        max: '2517291.0'
+        media: 113.1143
+        quartis: [0.1001, 0.4428, 1.1175]
+      inf_taxa_adm: {tipo: VARCHAR, nulos_pct: 67.9, distintos_aprox: 6413}
+      dt_ini_taxa_adm: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4212, min: '2004-12-15', max: '2025-07-02'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 42177, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_taxa_perfm:
+    linhas: 43639
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 32075, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3908, min: '2004-11-26', max: '2024-10-24'}
+      vl_taxa_perfm:
+        tipo: DOUBLE
+        nulos_pct: 0.04
+        distintos_aprox: 90
+        min: '0.0'
+        max: '1000000000000.0'
+        media: 22924745.6811
+        quartis: [0, 0, 19.9961]
+      ds_taxa_perfm: {tipo: VARCHAR, nulos_pct: 77.22, distintos_aprox: 2627}
+      dt_ini_taxa_perfm: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3588, min: '2004-12-15', max: '2025-07-04'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 32075, pessoal: 'só contagens: valores seriam dado pessoal'}
+  cadastro_historico_trib_lprazo:
+    linhas: 56545
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 45809, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_reg: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4054, min: '2004-11-22', max: '2024-09-30'}
+      trib_lprazo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: N
+        max: S
+        top:
+        - [N/A, 25933]
+        - [S, 21461]
+        - [N, 9151]
+      dt_ini_st_trib_lprazo: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4541, min: '1969-06-24', max: '2025-12-11'}
+      dt_fim_st_trib_lprazo: {tipo: DATE, nulos_pct: 88.32, distintos_aprox: 2500, min: '2004-12-11', max: '2025-06-09'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 45809, pessoal: 'só contagens: valores seriam dado pessoal'}
+  carteira_blc_1:
+    linhas: 1950215
+    fonte_do_perfil: tabela inteira
+    colunas:
+      tp_fundo:
+        tipo: VARCHAR
+        nulos_pct: 76.3
+        distintos_aprox: 5
+        min: FAPI
+        max: FUNCINE
+        top:
+        - [null, 1487954]
+        - [FI, 460899]
+        - [FIP, 808]
+        - [FAPI, 527]
+        - [FMAI, 26]
+        - [FUNCINE, 1]
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 76.3, distintos_aprox: 13551, pessoal: 'só contagens: valores seriam dado pessoal'}
+      denom_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 37302}
+      dt_comptc:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 44
+        min: '2023-01-31'
+        max: '2026-09-30'
+        top:
+        - ['2026-03-31', 48854]
+        - ['2026-06-30', 48405]
+        - ['2026-05-31', 48003]
+        - ['2026-02-28', 47587]
+        - ['2026-01-31', 47453]
+        - ['2026-04-30', 47008]
+        - ['2025-12-31', 46594]
+        - ['2025-11-30', 46461]
+        - ['2025-02-28', 45746]
+        - ['2025-10-31', 45297]
+      tp_aplic:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Operações Compromissadas
+        max: Títulos Públicos
+        top:
+        - [Títulos Públicos, 1588204]
+        - [Operações Compromissadas, 362011]
+      tp_ativo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Título Público
+        max: Título público federal
+        top:
+        - [Título público federal, 1948450]
+        - [Título Público, 1765]
+      emissor_ligado:
+        tipo: VARCHAR
+        nulos_pct: 81.51
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [null, 1589593]
+        - [N, 264226]
+        - [S, 96396]
+      tp_negoc:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Mantido até o vencimento
+        max: Para negociação
+        top:
+        - [Para negociação, 1866152]
+        - [Mantido até o vencimento, 84063]
+      qt_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 18.57
+        distintos_aprox: 25410
+        min: '0.0'
+        max: '14947284.0'
+        media: 3539.9821
+        quartis: [0, 0, 0]
+      vl_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 18.57
+        distintos_aprox: 238688
+        min: '0.0'
+        max: '223982669712.09'
+        media: 12535271.0987
+        quartis: [0, 0, 0]
+      qt_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 18.57
+        distintos_aprox: 29884
+        min: '0.0'
+        max: '881519936.0'
+        media: 4788.1462
+        quartis: [0, 0, 0]
+      vl_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 18.57
+        distintos_aprox: 301965
+        min: '0.0'
+        max: '237704653958.91'
+        media: 15925593.6353
+        quartis: [0, 0, 0]
+      qt_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 0.07
+        distintos_aprox: 106539
+        min: '0.0'
+        max: '2008077196.0'
+        media: 42590.2482
+        quartis: [103.6833, 670.3747, 4317.1585]
+      vl_merc_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1960844
+        min: '0.0'
+        max: '99058565042.77'
+        media: 107029540.2371
+        quartis: [723461.6713, 4097178.2547, 24917113.2693]
+      vl_custo_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 99.91
+        distintos_aprox: 1863
+        min: '0.0'
+        max: '553484566.89'
+        media: 1710694.6444
+        quartis: [3998.3964, 12874.6428, 18575.3169]
+      dt_confid_aplic: {tipo: DATE, nulos_pct: 66.17, distintos_aprox: 146, min: '2023-03-01', max: '2026-10-01'}
+      tp_titpub:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: LETRAS DO TESOURO NACIONAL
+        max: NOTAS DO TESOURO NACIONAL SERIE I
+        top:
+        - [LETRAS FINANCEIRAS DO TESOURO, 916504]
+        - [NOTAS DO TESOURO NACIONAL SERIE B, 740380]
+        - [LETRAS DO TESOURO NACIONAL, 209138]
+        - [NOTAS DO TESOURO NACIONAL - SERIE F, 68325]
+        - [NOTAS DO TESOURO NACIONAL SERIE I, 9572]
+        - [NOTAS DO TESOURO NACIONAL SERIE C, 6070]
+        - [NOTAS DO TESOURO NACIONAL SERIE A3, 226]
+      cd_isin: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 235, min: BRSTNCLF0008, max: BRSTNCNTF2K7}
+      cd_selic:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '100000'
+        max: '950199'
+        top:
+        - ['210100', 916504]
+        - ['760199', 739548]
+        - ['100000', 209138]
+        - ['950199', 68294]
+        - ['891300', 9572]
+        - ['770100', 6070]
+        - ['760197', 427]
+        - ['760198', 400]
+        - ['720300', 226]
+        - ['950198', 31]
+      dt_emissao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 110, min: '1997-12-10', max: '2026-07-10'}
+      dt_venc: {tipo: DATE, nulos_pct: 0, distintos_aprox: 284, min: '2023-01-01', max: '2060-08-15'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 21494, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tp_fundo_classe:
+        tipo: VARCHAR
+        nulos_pct: 23.7
+        distintos_aprox: 4
+        min: CLASSES - FIF
+        max: FIP
+        top:
+        - [CLASSES - FIF, 836479]
+        - [FI, 647723]
+        - [null, 462261]
+        - [CLASSES - FIP, 1503]
+        - [FIP, 1457]
+        - [FAPI, 792]
+      cnpj_fundo_classe: {tipo: VARCHAR, nulos_pct: 23.7, distintos_aprox: 20475, pessoal: 'só contagens: valores seriam dado pessoal'}
+  carteira_blc_2:
+    linhas: 6799905
+    fonte_do_perfil: amostra de 29.412%. ~2.000.000 linhas
+    colunas:
+      tp_fundo:
+        tipo: VARCHAR
+        nulos_pct: 70.33
+        distintos_aprox: 4
+        min: FAPI
+        max: FMAI
+        top:
+        - [null, 1436912]
+        - [FI, 605505]
+        - [FIP, 633]
+        - [FAPI, 35]
+        - [FMAI, 4]
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 70.33, distintos_aprox: 21713, pessoal: 'só contagens: valores seriam dado pessoal'}
+      denom_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 48935}
+      dt_comptc:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 44
+        min: '2023-01-31'
+        max: '2026-09-30'
+        top:
+        - ['2024-03-31', 75256]
+        - ['2023-04-30', 72489]
+        - ['2023-05-31', 67538]
+        - ['2023-07-31', 65536]
+        - ['2023-09-30', 61440]
+        - ['2024-07-31', 60317]
+        - ['2023-12-31', 58753]
+        - ['2024-02-29', 56295]
+        - ['2024-06-30', 55296]
+        - ['2025-01-31', 55296]
+      tp_aplic:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Cotas de Fundos
+        max: Cotas de fundos de renda variável
+        top:
+        - [Cotas de Fundos, 2040502]
+        - [Cotas de fundos de renda variável, 1532]
+        - [Cotas de fundos de investimento - Instrução Nº 409, 1055]
+      tp_ativo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Cotas de fundos
+        max: Fundos de Índice
+        top:
+        - [Fundo de Investimento e de Cotas, 1598602]
+        - [FIDC, 236566]
+        - [FI Participações, 110674]
+        - [FI Imobiliário, 55323]
+        - [Fundos de Índice, 39337]
+        - [Cotas de fundos, 2587]
+      emissor_ligado:
+        tipo: VARCHAR
+        nulos_pct: 0.13
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 1235858]
+        - [S, 804644]
+        - [null, 2587]
+      tp_negoc:
+        tipo: VARCHAR
+        nulos_pct: 99.87
+        distintos_aprox: 2
+        min: Mantido até o vencimento
+        max: Para negociação
+        top:
+        - [null, 2040502]
+        - [Para negociação, 2585]
+        - [Mantido até o vencimento, 2]
+      qt_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 83.38
+        distintos_aprox: 70812
+        min: '0.0'
+        max: '3784432666666.6665'
+        media: 14028692.1228
+        quartis: [0, 0, 0]
+      vl_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 83.38
+        distintos_aprox: 36494
+        min: '0.0'
+        max: '107224988164.48'
+        media: 3029945.6688
+        quartis: [0, 0, 0]
+      qt_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 83.38
+        distintos_aprox: 94456
+        min: '0.0'
+        max: '517777828209.76'
+        media: 2930164.4306
+        quartis: [0, 0, 0]
+      vl_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 83.38
+        distintos_aprox: 35104
+        min: '0.0'
+        max: '36528075317.06'
+        media: 3057728.322
+        quartis: [0, 0, 0]
+      qt_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 845338
+        min: '-184.0'
+        max: '677469124003991.0'
+        media: 2065790709.2291
+        quartis: [4917.3102, 147423.2942, 1026963.1714]
+      vl_merc_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1657631
+        min: '0.0'
+        max: '203936852370.57'
+        media: 34517344.6879
+        quartis: [311827.9145, 1104448.2408, 4298447.0159]
+      vl_custo_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 99.87
+        distintos_aprox: 1542
+        min: '0.0'
+        max: '1263854709.04'
+        media: 2390821.8175
+        quartis: [4.7275, 882.001, 5007.5161]
+      dt_confid_aplic: {tipo: DATE, nulos_pct: 72.38, distintos_aprox: 134, min: '2023-03-02', max: '2026-09-30'}
+      cnpj_fundo_cota: {tipo: VARCHAR, nulos_pct: 70.33, distintos_aprox: 16944, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nm_fundo_cota: {tipo: VARCHAR, nulos_pct: 70.33, distintos_aprox: 16820, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 32742, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tp_fundo_classe:
+        tipo: VARCHAR
+        nulos_pct: 29.67
+        distintos_aprox: 4
+        min: CLASSES - FIF
+        max: FIP
+        top:
+        - [FI, 727476]
+        - [CLASSES - FIF, 701375]
+        - [null, 606177]
+        - [FIP, 4801]
+        - [CLASSES - FIP, 3255]
+        - [FAPI, 5]
+      cnpj_fundo_classe: {tipo: VARCHAR, nulos_pct: 29.67, distintos_aprox: 31061, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_fundo_classe_cota: {tipo: VARCHAR, nulos_pct: 29.67, distintos_aprox: 27242, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_subclasse: {tipo: VARCHAR, nulos_pct: 99.93, distintos_aprox: 485, min: 0AYDG1734640049, max: ZZZSI1780076357}
+      nm_fundo_classe_subclasse_cota: {tipo: VARCHAR, nulos_pct: 29.67, distintos_aprox: 28083, pessoal: 'só contagens: valores seriam dado pessoal'}
+  carteira_blc_3:
+    linhas: 11336
+    fonte_do_perfil: tabela inteira
+    colunas:
+      tp_fundo:
+        tipo: VARCHAR
+        nulos_pct: 72.57
+        distintos_aprox: 1
+        min: FI
+        max: FI
+        top:
+        - [null, 8226]
+        - [FI, 3110]
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 72.57, distintos_aprox: 197, pessoal: 'só contagens: valores seriam dado pessoal'}
+      denom_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 488, min: 415 FIF - CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESPONSABILIDADE
+          LIMITADA, max: ÓRAMA OURO FUNDO DE INVESTIMENTO MULTIMERCADO}
+      dt_comptc:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 44
+        min: '2023-01-31'
+        max: '2026-09-30'
+        top:
+        - ['2024-06-30', 319]
+        - ['2024-05-31', 317]
+        - ['2024-03-31', 309]
+        - ['2023-01-31', 308]
+        - ['2023-05-31', 307]
+        - ['2023-02-28', 306]
+        - ['2024-04-30', 305]
+        - ['2023-03-31', 303]
+        - ['2024-07-31', 303]
+        - ['2023-04-30', 295]
+      tp_aplic:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: DIFERENCIAL DE SWAP A PAGAR
+        max: DIFERENCIAL DE SWAP A RECEBER
+        top:
+        - [DIFERENCIAL DE SWAP A PAGAR, 5805]
+        - [DIFERENCIAL DE SWAP A RECEBER, 5531]
+      tp_ativo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: SWAP
+        max: SWAP
+        top:
+        - [SWAP, 11336]
+      emissor_ligado:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 11336]
+      tp_negoc:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 1
+        min: Para negociação
+        max: Para negociação
+        top:
+        - [null, 11329]
+        - [Para negociação, 7]
+      qt_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 11336]
+      vl_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 11336]
+      qt_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 11336]
+      vl_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 11336]
+      qt_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 11336]
+      vl_merc_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 12793
+        min: '0.0'
+        max: '19971354874.66'
+        media: 224329406.3063
+        quartis: [104435.3665, 1936234.3998, 65901783.0827]
+      vl_custo_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 11336]
+      dt_confid_aplic: {tipo: DATE, nulos_pct: 48.81, distintos_aprox: 77, min: '2023-05-01', max: '2026-09-28'}
+      cd_swap:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 25
+        min: Outros
+        max: SYP
+        top:
+        - [Outros, 3046]
+        - [SDP, 2652]
+        - [SCP, 2240]
+        - [SDL, 1276]
+        - [SDC, 551]
+        - [SDE, 294]
+        - [SEP, 267]
+        - [SCE, 198]
+        - [SLP, 180]
+        - [SNP, 155]
+      ds_swap:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: 999 X 999
+        max: TBF X PRE
+        top:
+        - [999 X 999, 3046]
+        - [DI1 X PRE, 2652]
+        - [DOL X PRE, 2240]
+        - [DI1 X IAP, 1276]
+        - [DI1 X DOL, 551]
+        - [DI1 X REU, 294]
+        - [REU X PRE, 267]
+        - [DOL X REU, 198]
+        - [IAP X PRE, 180]
+        - [IND X PRE, 155]
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 273, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tp_fundo_classe:
+        tipo: VARCHAR
+        nulos_pct: 27.43
+        distintos_aprox: 3
+        min: CLASSES - FIF
+        max: FIP
+        top:
+        - [FI, 4580]
+        - [CLASSES - FIF, 3625]
+        - [null, 3110]
+        - [CLASSES - FIP, 14]
+        - [FIP, 7]
+      cnpj_fundo_classe: {tipo: VARCHAR, nulos_pct: 27.43, distintos_aprox: 219, pessoal: 'só contagens: valores seriam dado pessoal'}
+  carteira_blc_4:
+    linhas: 10750928
+    fonte_do_perfil: amostra de 18.603%. ~2.000.000 linhas
+    colunas:
+      tp_fundo:
+        tipo: VARCHAR
+        nulos_pct: 80.48
+        distintos_aprox: 4
+        min: FAPI
+        max: FMAI
+        top:
+        - [null, 1618525]
+        - [FI, 391833]
+        - [FAPI, 760]
+        - [FIP, 8]
+        - [FMAI, 2]
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 80.48, distintos_aprox: 5329, pessoal: 'só contagens: valores seriam dado pessoal'}
+      denom_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15673}
+      dt_comptc:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 44
+        min: '2023-01-31'
+        max: '2026-09-30'
+        top:
+        - ['2026-06-30', 70772]
+        - ['2025-10-31', 69632]
+        - ['2026-04-30', 67584]
+        - ['2026-01-31', 65426]
+        - ['2025-12-31', 63488]
+        - ['2026-02-28', 63488]
+        - ['2026-03-31', 61440]
+        - ['2025-08-31', 57344]
+        - ['2024-11-30', 55855]
+        - ['2024-02-29', 54993]
+      tp_aplic:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: Ações
+        max: Vendas a termo a receber
+        top:
+        - [Debêntures, 1130094]
+        - [Ações, 500697]
+        - [Obrigações por ações e outros TVM recebidos em empréstimo, 108711]
+        - [Ações e outros TVM cedidos em empréstimo, 90969]
+        - [Opções - Posições titulares, 46808]
+        - [Opções - Posições lançadas, 35049]
+        - [Brazilian Depository Receipt - BDR, 34032]
+        - [Certificado ou recibo de depósito de valores mobiliários, 29560]
+        - [Compras a termo a receber, 9758]
+        - [Mercado Futuro - Posições vendidas, 7114]
+      tp_ativo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 22
+        min: Ação ordinária
+        max: Recibo de subscrição
+        top:
+        - [Debênture simples, 1128662]
+        - [Ação ordinária, 578526]
+        - [Ação preferencial, 125274]
+        - [Opção de compra, 47694]
+        - [Certificado de depósito de ações, 38903]
+        - [Opção de venda, 34163]
+        - [BDR não patrocinado, 24938]
+        - ['Futuro de DI1:DI de 1 dia', 12565]
+        - [BDR nível I, 7779]
+        - [Recibo de subscrição, 2717]
+      emissor_ligado:
+        tipo: VARCHAR
+        nulos_pct: 0.69
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 1984387]
+        - [null, 13883]
+        - [S, 12858]
+      tp_negoc:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Mantido até o vencimento
+        max: Para negociação
+        top:
+        - [Para negociação, 1982449]
+        - [Mantido até o vencimento, 28679]
+      qt_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 69.59
+        distintos_aprox: 55730
+        min: '0.0'
+        max: '3320804327411.0'
+        media: 6477506.5039
+        quartis: [0, 0, 5293.7886]
+      vl_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 69.59
+        distintos_aprox: 263887
+        min: '0.0'
+        max: '2316713730.42'
+        media: 941720.3898
+        quartis: [0, 0, 96355.5236]
+      qt_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 69.71
+        distintos_aprox: 51478
+        min: '0.0'
+        max: '33349492500.0'
+        media: 233352.131
+        quartis: [0, 2.0336, 7660.4456]
+      vl_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 69.71
+        distintos_aprox: 212318
+        min: '0.0'
+        max: '11753352825000.0'
+        media: 20645827.1081
+        quartis: [0, 12.7878, 136028.3077]
+      qt_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 225781
+        min: '-40300.0'
+        max: '7521985933553.0'
+        media: 7880590.9161
+        quartis: [309.5522, 1884.9898, 17572.6352]
+      vl_merc_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2242545
+        min: '-130404675.99'
+        max: '14353281626.99'
+        media: 4012980.7398
+        quartis: [92090.8153, 410926.6374, 1674733.0838]
+      vl_custo_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 13
+        min: '0.0'
+        max: '500198548.0'
+        media: 96243165.2492
+        quartis: [12, 30000482.85, 102490719.66]
+        top:
+        - [null, 2011102]
+        - ['0.0', 4]
+        - ['102490719.66', 3]
+        - ['30000482.85', 3]
+        - ['86350524.99', 3]
+        - ['12.0', 2]
+        - ['10.27', 1]
+        - ['107393336.6', 1]
+        - ['15426864.87', 1]
+        - ['16.55', 1]
+      dt_confid_aplic: {tipo: DATE, nulos_pct: 38.12, distintos_aprox: 159, min: '2023-03-02', max: '2026-09-30'}
+      cd_ativo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 56993}
+      ds_ativo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2965}
+      cd_isin: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 54065}
+      dt_ini_vigencia: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2506, min: '1973-03-19', max: '2026-09-24'}
+      dt_fim_vigencia: {tipo: DATE, nulos_pct: 37.11, distintos_aprox: 2051, min: '1900-01-01', max: '2099-12-31'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9363, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tp_fundo_classe:
+        tipo: VARCHAR
+        nulos_pct: 19.52
+        distintos_aprox: 4
+        min: CLASSES - FIF
+        max: FIP
+        top:
+        - [CLASSES - FIF, 1022265]
+        - [FI, 595666]
+        - [null, 392603]
+        - [FAPI, 502]
+        - [CLASSES - FIP, 80]
+        - [FIP, 12]
+      cnpj_fundo_classe: {tipo: VARCHAR, nulos_pct: 19.52, distintos_aprox: 9150, pessoal: 'só contagens: valores seriam dado pessoal'}
+  carteira_blc_5:
+    linhas: 3092818
+    fonte_do_perfil: amostra de 64.666%. ~2.000.000 linhas
+    colunas:
+      tp_fundo:
+        tipo: VARCHAR
+        nulos_pct: 81.69
+        distintos_aprox: 3
+        min: FAPI
+        max: FIP
+        top:
+        - [null, 1626987]
+        - [FI, 364631]
+        - [FAPI, 116]
+        - [FIP, 7]
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 81.69, distintos_aprox: 3578, pessoal: 'só contagens: valores seriam dado pessoal'}
+      denom_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8784}
+      dt_comptc:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 44
+        min: '2023-01-31'
+        max: '2026-09-30'
+        top:
+        - ['2026-03-31', 76958]
+        - ['2026-04-30', 74280]
+        - ['2025-09-30', 66473]
+        - ['2026-02-28', 63538]
+        - ['2025-11-30', 62914]
+        - ['2026-06-30', 59052]
+        - ['2024-12-31', 54238]
+        - ['2025-07-31', 53248]
+        - ['2025-10-31', 53248]
+        - ['2026-05-31', 52253]
+      tp_aplic:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Depósitos a prazo e outros títulos de IF
+        max: Depósitos a prazo e outros títulos de IF
+        top:
+        - [Depósitos a prazo e outros títulos de IF, 1991741]
+      tp_ativo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: CDB Vinculado
+        max: Outros
+        top:
+        - [Letra Financeira, 1284718]
+        - [CDB/ RDB, 510874]
+        - [Outros, 144094]
+        - [DPGE, 29894]
+        - [CDB Vinculado, 21240]
+        - [Letra de Câmbio/ Letra Hipotecária/ Letra Imobiliária, 907]
+        - [CDB com cláusula "S", 14]
+      emissor_ligado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 1821894]
+        - [S, 169847]
+      tp_negoc:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Mantido até o vencimento
+        max: Para negociação
+        top:
+        - [Para negociação, 1942459]
+        - [Mantido até o vencimento, 49282]
+      qt_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 82.05
+        distintos_aprox: 4136
+        min: '0.0'
+        max: '450260332283.0'
+        media: 4233137.4211
+        quartis: [0, 0, 0]
+      vl_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 82.05
+        distintos_aprox: 14320
+        min: '0.0'
+        max: '6345518817.83'
+        media: 2330939.8826
+        quartis: [0, 0, 0]
+      qt_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 82.05
+        distintos_aprox: 4868
+        min: '0.0'
+        max: '866478314608.0'
+        media: 11059842.509
+        quartis: [0, 0, 0]
+      vl_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 82.05
+        distintos_aprox: 29339
+        min: '0.0'
+        max: '8664783146.08'
+        media: 2758436.2261
+        quartis: [0, 0, 0]
+      qt_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 21195
+        min: '0.0'
+        max: '410497740196.0'
+        media: 10836190.4083
+        quartis: [5, 30.1243, 364.6595]
+      vl_merc_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2025440
+        min: '0.0'
+        max: '7457455348.37'
+        media: 9598697.7687
+        quartis: [102291.1504, 862307.147, 4117587.7521]
+      vl_custo_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1991741]
+      dt_confid_aplic: {tipo: DATE, nulos_pct: 43.38, distintos_aprox: 127, min: '2023-03-02', max: '2026-09-30'}
+      cnpj_emissor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 396, pessoal: 'só contagens: valores seriam dado pessoal'}
+      emissor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1660}
+      dt_venc: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4513, min: '1974-03-12', max: '2078-12-31'}
+      titulo_posfx:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [S, 1903332]
+        - [N, 88409]
+      cd_indexador_posfx:
+        tipo: VARCHAR
+        nulos_pct: 4.44
+        distintos_aprox: 11
+        min: DI1
+        max: TR
+        top:
+        - [DI1, 1766247]
+        - [null, 88409]
+        - [IAP, 71998]
+        - [SEL, 41108]
+        - [PRE, 15509]
+        - [OUT, 8200]
+        - [IPC, 133]
+        - [TR, 96]
+        - [DOL, 23]
+        - [IGM, 16]
+      ds_indexador_posfx:
+        tipo: VARCHAR
+        nulos_pct: 4.44
+        distintos_aprox: 11
+        min: DI de um dia
+        max: Índice de Preços ao Consumidor Amplo (IPCA/IBGE)
+        top:
+        - [DI de um dia, 1766247]
+        - [null, 88409]
+        - [Índice de Preços ao Consumidor Amplo (IPCA/IBGE), 71998]
+        - [Taxa Selic, 41108]
+        - [Taxa de juro prefixada, 15509]
+        - [OUTROS, 8200]
+        - [Índice de Preços ao Consumidor (IPC/FIPE), 133]
+        - [Taxa Referencial, 96]
+        - [Dólar comercial, 23]
+        - [Índice Geral de Preços-Mercado (IGP-M), 16]
+      pr_indexador_posfx:
+        tipo: DOUBLE
+        nulos_pct: 4.44
+        distintos_aprox: 545
+        min: '0.0'
+        max: '300.0'
+        media: 101.2088
+        quartis: [100, 100, 100]
+      pr_cupom_posfx:
+        tipo: DOUBLE
+        nulos_pct: 4.77
+        distintos_aprox: 154353
+        min: '0.0'
+        max: '995.091784'
+        media: 5.878
+        quartis: [0.5706, 1.1844, 2.643]
+      pr_taxa_prefx:
+        tipo: DOUBLE
+        nulos_pct: 95.56
+        distintos_aprox: 3989
+        min: '0.0'
+        max: '999.99'
+        media: 35.0313
+        quartis: [12.0752, 14.2378, 99.8321]
+      risco_emissor:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 1921598]
+        - [S, 70143]
+      ag_risco:
+        tipo: VARCHAR
+        nulos_pct: 96.48
+        distintos_aprox: 10
+        min: CAIXA
+        max: STANDARD POORS
+        top:
+        - [null, 1921598]
+        - [Em Desenvolvimento, 30585]
+        - [FITCH, 24185]
+        - [S&P, 6724]
+        - [MOODYS G, 5533]
+        - [MOODY'S, 2524]
+        - [FITCH RATINGS, 367]
+        - [MOODYS, 100]
+        - [STANDARD POORS, 68]
+        - [CAIXA ECONOMICA FEDERAL, 31]
+      dt_risco: {tipo: DATE, nulos_pct: 96.48, distintos_aprox: 89, min: '2000-01-01', max: '2026-09-30'}
+      grau_risco:
+        tipo: VARCHAR
+        nulos_pct: 96.48
+        distintos_aprox: 26
+        min: A
+        max: Pend
+        top:
+        - [null, 1921598]
+        - [Pend, 30585]
+        - [AAA(BR, 13186]
+        - [AA(BRA, 8893]
+        - [BRAAA, 5961]
+        - [Ba2, 4977]
+        - [BA2.BR, 2474]
+        - [BBB-(B, 1263]
+        - [BRAA+, 748]
+        - [Ba1, 556]
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5990, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tp_fundo_classe:
+        tipo: VARCHAR
+        nulos_pct: 18.31
+        distintos_aprox: 4
+        min: CLASSES - FIF
+        max: FIP
+        top:
+        - [CLASSES - FIF, 954535]
+        - [FI, 672147]
+        - [null, 364754]
+        - [FAPI, 206]
+        - [FIP, 50]
+        - [CLASSES - FIP, 49]
+      cnpj_fundo_classe: {tipo: VARCHAR, nulos_pct: 18.31, distintos_aprox: 5990, pessoal: 'só contagens: valores seriam dado pessoal'}
+  carteira_blc_6:
+    linhas: 474419
+    fonte_do_perfil: tabela inteira
+    colunas:
+      tp_fundo:
+        tipo: VARCHAR
+        nulos_pct: 74.57
+        distintos_aprox: 3
+        min: FAPI
+        max: FIP
+        top:
+        - [null, 353796]
+        - [FI, 120212]
+        - [FIP, 389]
+        - [FAPI, 22]
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 74.57, distintos_aprox: 2793, pessoal: 'só contagens: valores seriam dado pessoal'}
+      denom_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6801}
+      dt_comptc:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 44
+        min: '2023-01-31'
+        max: '2026-09-30'
+        top:
+        - ['2023-03-31', 18681]
+        - ['2026-03-31', 14730]
+        - ['2025-09-30', 14270]
+        - ['2024-08-31', 13926]
+        - ['2024-07-31', 13055]
+        - ['2024-10-31', 13033]
+        - ['2025-12-31', 12932]
+        - ['2025-10-31', 12863]
+        - ['2025-11-30', 12440]
+        - ['2026-06-30', 12286]
+      tp_aplic:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Debêntures
+        max: Títulos ligados ao agronegócio
+        top:
+        - [Debêntures, 244392]
+        - [Títulos ligados ao agronegócio, 121643]
+        - [Títulos de Crédito Privado, 108384]
+      tp_ativo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: CCB
+        max: Nota Promissória/ Commercial Paper/ Export Note
+        top:
+        - [Debênture simples, 243351]
+        - [CRA, 115524]
+        - [Nota Promissória/ Commercial Paper/ Export Note, 58408]
+        - [CCI, 25364]
+        - [CCB, 23021]
+        - [LCA, 2453]
+        - [NCA, 2071]
+        - [CCCB, 1591]
+        - [CPR, 1555]
+        - [Debênture conversível, 988]
+      emissor_ligado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 462924]
+        - [S, 11495]
+      tp_negoc:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Mantido até o vencimento
+        max: Para negociação
+        top:
+        - [Para negociação, 468664]
+        - [Mantido até o vencimento, 5755]
+      qt_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 85.31
+        distintos_aprox: 1178
+        min: '0.0'
+        max: '340000000.0'
+        media: 30354.9529
+        quartis: [0, 0, 0]
+      vl_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 85.31
+        distintos_aprox: 1895
+        min: '0.0'
+        max: '1295955486.81'
+        media: 219786.8688
+        quartis: [0, 0, 0]
+      qt_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 85.31
+        distintos_aprox: 2060
+        min: '0.0'
+        max: '3438235660.0'
+        media: 217162.5399
+        quartis: [0, 0, 0]
+      vl_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 85.31
+        distintos_aprox: 4705
+        min: '0.0'
+        max: '3438235660.0'
+        media: 781329.7914
+        quartis: [0, 0, 0]
+      qt_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 19459
+        min: '0.0'
+        max: '8551548220.0'
+        media: 209378.0431
+        quartis: [60.096, 450.2569, 2207.8721]
+      vl_merc_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 380791
+        min: '0.0'
+        max: '3438235660.0'
+        media: 5463206.3539
+        quartis: [113536.8456, 520715.0462, 2400879.1427]
+      vl_custo_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 474419]
+      dt_confid_aplic: {tipo: DATE, nulos_pct: 40.78, distintos_aprox: 133, min: '2023-03-02', max: '2026-09-30'}
+      pf_pj_emissor:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: PF
+        max: PJ
+        top:
+        - [PJ, 470989]
+        - [PF, 3430]
+      cpf_cnpj_emissor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2499, pessoal: 'só contagens: valores seriam dado pessoal'}
+      emissor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4356}
+      dt_venc: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4248, min: '1900-01-01', max: '2073-03-17'}
+      titulo_posfx:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [S, 452168]
+        - [N, 22251]
+      cd_indexador_posfx:
+        tipo: VARCHAR
+        nulos_pct: 4.69
+        distintos_aprox: 13
+        min: DI1
+        max: TR
+        top:
+        - [DI1, 273966]
+        - [IAP, 150949]
+        - [null, 22251]
+        - [OUT, 19403]
+        - [PRE, 3722]
+        - [IGM, 1285]
+        - [DOL, 1222]
+        - [IPC, 886]
+        - [TR, 544]
+        - [TJL, 57]
+      ds_indexador_posfx:
+        tipo: VARCHAR
+        nulos_pct: 4.69
+        distintos_aprox: 12
+        min: DI de um dia
+        max: Índice de preços
+        top:
+        - [DI de um dia, 273966]
+        - [Índice de Preços ao Consumidor Amplo (IPCA/IBGE), 150949]
+        - [null, 22251]
+        - [OUTROS, 19403]
+        - [Taxa de juro prefixada, 3722]
+        - [Índice Geral de Preços-Mercado (IGP-M), 1285]
+        - [Dólar comercial, 1222]
+        - [Índice de Preços ao Consumidor (IPC/FIPE), 886]
+        - [Taxa Referencial, 544]
+        - [Taxa de Juro de Longo Prazo, 57]
+      pr_indexador_posfx:
+        tipo: DOUBLE
+        nulos_pct: 4.69
+        distintos_aprox: 133
+        min: '0.0'
+        max: '600.0'
+        media: 99.8671
+        quartis: [100, 100, 100]
+      pr_cupom_posfx:
+        tipo: DOUBLE
+        nulos_pct: 4.97
+        distintos_aprox: 67000
+        min: '0.0'
+        max: '999.999999'
+        media: 5.7638
+        quartis: [1.4169, 2.6563, 7.3514]
+      pr_taxa_prefx:
+        tipo: DOUBLE
+        nulos_pct: 95.31
+        distintos_aprox: 6563
+        min: '0.0'
+        max: '999.99'
+        media: 22.9576
+        quartis: [11.6725, 22.3108, 27.3844]
+      titulo_cetip:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [S, 457266]
+        - [N, 17153]
+      titulo_garantia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 472831]
+        - [S, 1588]
+      cnpj_instituicao_financ_coobr: {tipo: VARCHAR, nulos_pct: 95.11, distintos_aprox: 162, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5680, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tp_fundo_classe:
+        tipo: VARCHAR
+        nulos_pct: 25.43
+        distintos_aprox: 4
+        min: CLASSES - FIF
+        max: FIP
+        top:
+        - [CLASSES - FIF, 192175]
+        - [FI, 159893]
+        - [null, 120623]
+        - [CLASSES - FIP, 925]
+        - [FIP, 769]
+        - [FAPI, 34]
+      cnpj_fundo_classe: {tipo: VARCHAR, nulos_pct: 25.43, distintos_aprox: 4679, pessoal: 'só contagens: valores seriam dado pessoal'}
+  carteira_blc_7:
+    linhas: 3042828
+    fonte_do_perfil: amostra de 65.728%. ~2.000.000 linhas
+    colunas:
+      tp_fundo:
+        tipo: VARCHAR
+        nulos_pct: 75.74
+        distintos_aprox: 2
+        min: FI
+        max: FIP
+        top:
+        - [null, 1504631]
+        - [FI, 481711]
+        - [FIP, 178]
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 75.74, distintos_aprox: 2221, pessoal: 'só contagens: valores seriam dado pessoal'}
+      denom_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4519}
+      dt_comptc:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 44
+        min: '2023-01-31'
+        max: '2026-09-30'
+        top:
+        - ['2024-09-30', 70351]
+        - ['2024-05-31', 65536]
+        - ['2024-08-31', 65536]
+        - ['2023-11-30', 60979]
+        - ['2024-02-29', 60670]
+        - ['2024-06-30', 59886]
+        - ['2023-09-30', 59392]
+        - ['2024-03-31', 58742]
+        - ['2024-04-30', 56913]
+        - ['2024-07-31', 54869]
+      tp_aplic:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Investimento no Exterior
+        max: Investimento no Exterior
+        top:
+        - [Investimento no Exterior, 1986520]
+      tp_ativo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: Ação ordinária
+        max: Título ou Contrato de Investimento coletivo
+        top:
+        - [Fundos Offshore, 1816785]
+        - [Outros, 61093]
+        - [Ação ordinária, 33013]
+        - [Depository Receipt no Exterior(DR), 32284]
+        - [Bonds e Treasury, 14722]
+        - [Título da Dívida Externa, 10331]
+        - [Opção de compra, 8652]
+        - [Opção de venda, 8041]
+        - [Contrato Futuro, 1063]
+        - [Ação preferencial, 265]
+      emissor_ligado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 1953715]
+        - [S, 32805]
+      tp_negoc:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Mantido até o vencimento
+        max: Para negociação
+        top:
+        - [Para negociação, 1986506]
+        - [Mantido até o vencimento, 14]
+      qt_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 98.23
+        distintos_aprox: 3562
+        min: '0.0'
+        max: '62761459343.38'
+        media: 27939557.4468
+        quartis: [0, 0, 0]
+      vl_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 98.23
+        distintos_aprox: 4937
+        min: '0.0'
+        max: '10539450000.0'
+        media: 2822616.8332
+        quartis: [0, 0, 0]
+      qt_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 98.23
+        distintos_aprox: 2214
+        min: '0.0'
+        max: '41467673214.36'
+        media: 17751231.7022
+        quartis: [0, 0, 0]
+      vl_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 98.23
+        distintos_aprox: 3682
+        min: '0.0'
+        max: '6401545161.28'
+        media: 3030809.8613
+        quartis: [0, 0, 0]
+      qt_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 708192
+        min: '-1600.0'
+        max: '5379624978918.79'
+        media: 3933827751.9405
+        quartis: [13188.4988, 1335883.2871, 105604967.6242]
+      vl_merc_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1624947
+        min: '-1470240118.96'
+        max: '47718962834.8'
+        media: 4022218.4076
+        quartis: [9743.4613, 91470.7713, 535631.8755]
+      vl_custo_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1986520]
+      dt_confid_aplic: {tipo: DATE, nulos_pct: 86.07, distintos_aprox: 126, min: '2023-03-31', max: '2026-09-30'}
+      invest_coletivo:
+        tipo: VARCHAR
+        nulos_pct: 0.21
+        distintos_aprox: 3
+        min: N
+        max: s
+        top:
+        - [S, 1852748]
+        - [N, 129536]
+        - [null, 4234]
+        - [s, 2]
+      invest_coletivo_gestor: {tipo: VARCHAR, nulos_pct: 0.21, distintos_aprox: 3, pessoal: 'só contagens: valores seriam dado pessoal'}
+      emissor: {tipo: VARCHAR, nulos_pct: 0.39, distintos_aprox: 702532}
+      dt_venc: {tipo: DATE, nulos_pct: 6.69, distintos_aprox: 14777, min: '1900-01-01', max: '2072-01-15'}
+      cd_pais: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 82, min: AGO, max: VGB}
+      pais: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 83, min: ALEMANHA, max: ÁUSTRIA}
+      cd_bv_merc:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '99'
+        max: E9
+        top:
+        - ['99', 1940689]
+        - [A11, 16794]
+        - [A12, 13060]
+        - [A1, 8258]
+        - [E14, 2938]
+        - [A9, 1943]
+        - [E9, 1368]
+        - [E10, 319]
+        - [E19, 191]
+        - [A7, 156]
+      bv_merc:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: AMERICAN STOCK EXCHANGE
+        max: TSX GROUP
+        top:
+        - [Outras bolsas ou mercados de balcão organizados, 1940689]
+        - [NASDAQ STOCK MARKET, 16794]
+        - [NYSE EURONEXT, 13060]
+        - [AMERICAN STOCK EXCHANGE, 8258]
+        - [LONDON STOCK EXCHANGE, 2938]
+        - [CHICAGO BOARD OPTIONS EXCHANGE, 1943]
+        - [EURONEXT, 1368]
+        - [IRISH STOCK EXCHANGE, 319]
+        - [SWX SWISS EXCHANGE, 191]
+        - [BOLSA MEXICANA DE VALORES, 156]
+      cd_ativo_bv_merc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12409}
+      risco_emissor:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 1471768]
+        - [S, 514752]
+      ag_risco:
+        tipo: VARCHAR
+        nulos_pct: 74.09
+        distintos_aprox: 4
+        min: AUSTIN ASIS
+        max: STANDARD & POORS
+        top:
+        - [null, 1471768]
+        - ['FITCH FITCH IBCA, DUFF & PHELPS', 514722]
+        - [AUSTIN ASIS, 18]
+        - [STANDARD & POORS, 10]
+        - [LOPES FILHO & ASSOCIADOS, 2]
+      dt_risco:
+        tipo: DATE
+        nulos_pct: 74.09
+        distintos_aprox: 1
+        min: '2000-01-01'
+        max: '2000-01-01'
+        top:
+        - [null, 1471768]
+        - ['2000-01-01', 514752]
+      grau_risco:
+        tipo: VARCHAR
+        nulos_pct: 74.09
+        distintos_aprox: 3
+        min: AA+
+        max: BBB+
+        top:
+        - [null, 1471768]
+        - [AAA, 514740]
+        - [AA+, 10]
+        - [BBB+, 2]
+      ds_ativo_exterior: {tipo: VARCHAR, nulos_pct: 11.23, distintos_aprox: 588557}
+      qt_ativo_exterior:
+        tipo: DOUBLE
+        nulos_pct: 11.23
+        distintos_aprox: 653242
+        min: '0.0'
+        max: '2400000000000.0'
+        media: 4391144589.2362
+        quartis: [35642.5714, 4282125.8793, 130887044.205]
+      vl_ativo_exterior:
+        tipo: DOUBLE
+        nulos_pct: 11.23
+        distintos_aprox: 1289961
+        min: '-93885800.0'
+        max: '47719000000.0'
+        media: 1753168.2003
+        quartis: [7665.7718, 67687.3213, 384243.6387]
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3395, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tp_fundo_classe:
+        tipo: VARCHAR
+        nulos_pct: 24.26
+        distintos_aprox: 3
+        min: CLASSES - FIF
+        max: FIP
+        top:
+        - [CLASSES - FIF, 757107]
+        - [FI, 746463]
+        - [null, 481889]
+        - [FIP, 611]
+        - [CLASSES - FIP, 450]
+      cnpj_fundo_classe: {tipo: VARCHAR, nulos_pct: 24.26, distintos_aprox: 3249, pessoal: 'só contagens: valores seriam dado pessoal'}
+  carteira_blc_8:
+    linhas: 9996172
+    fonte_do_perfil: amostra de 20.008%. ~2.000.000 linhas
+    colunas:
+      tp_fundo:
+        tipo: VARCHAR
+        nulos_pct: 80.27
+        distintos_aprox: 4
+        min: FAPI
+        max: FMAI
+        top:
+        - [null, 1625850]
+        - [FI, 397605]
+        - [FIP, 2009]
+        - [FAPI, 62]
+        - [FMAI, 29]
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 80.27, distintos_aprox: 23809, pessoal: 'só contagens: valores seriam dado pessoal'}
+      denom_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 55026}
+      dt_comptc:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 44
+        min: '2023-01-31'
+        max: '2026-09-30'
+        top:
+        - ['2026-06-30', 78275]
+        - ['2024-11-30', 74476]
+        - ['2025-10-31', 65226]
+        - ['2026-01-31', 63488]
+        - ['2025-08-31', 63247]
+        - ['2025-04-30', 62108]
+        - ['2024-10-31', 61440]
+        - ['2025-09-30', 59392]
+        - ['2024-07-31', 56308]
+        - ['2024-03-31', 55296]
+      tp_aplic:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: Ações
+        max: Vendas a termo a receber
+        top:
+        - [Opções - Posições lançadas, 534365]
+        - [Opções - Posições titulares, 438946]
+        - [Valores a pagar, 312215]
+        - [Valores a receber, 235621]
+        - [Disponibilidades, 176262]
+        - [Mercado Futuro - Posições vendidas, 75365]
+        - [Mercado Futuro - Posições compradas, 62983]
+        - [Outras aplicações, 54516]
+        - [Outras operações passivas e exigibilidades, 44274]
+        - [Outros valores mobiliários registrados na CVM objeto de oferta pública, 26443]
+      tp_ativo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 53, min: Ação ordinária, max: Título público federal}
+      emissor_ligado:
+        tipo: VARCHAR
+        nulos_pct: 45.72
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 1069606]
+        - [null, 925997]
+        - [S, 29952]
+      tp_negoc:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Mantido até o vencimento
+        max: Para negociação
+        top:
+        - [Para negociação, 2024381]
+        - [Mantido até o vencimento, 1162]
+        - [null, 12]
+      qt_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 87.28
+        distintos_aprox: 6069
+        min: '0.0'
+        max: '10000000000.0'
+        media: 124551.7416
+        quartis: [0, 0, 0]
+      vl_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 87.28
+        distintos_aprox: 25383
+        min: '0.0'
+        max: '7380475500000.0'
+        media: 246741519.8183
+        quartis: [0, 0, 0]
+      qt_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 87.29
+        distintos_aprox: 6328
+        min: '0.0'
+        max: '300000000000.0'
+        media: 1863230.852
+        quartis: [0, 0, 0]
+      vl_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 87.29
+        distintos_aprox: 17739
+        min: '0.0'
+        max: '21636206150000.0'
+        media: 636866245.0029
+        quartis: [0, 0, 0]
+      qt_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 38.77
+        distintos_aprox: 53182
+        min: '0.0'
+        max: '7104910427098.0'
+        media: 8097852.461
+        quartis: [320.025, 1147.9962, 3794.6828]
+      vl_merc_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 900171
+        min: '-1968843387.95'
+        max: '338431483016.98'
+        media: 2777261.0122
+        quartis: [644.8697, 4609.9804, 30336.7939]
+      vl_custo_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 99.91
+        distintos_aprox: 998
+        min: '0.0'
+        max: '19934130830.0'
+        media: 52350387.1628
+        quartis: [0.9512, 80.1814, 2412846.8723]
+      dt_confid_aplic: {tipo: DATE, nulos_pct: 62.62, distintos_aprox: 146, min: '2023-03-02', max: '2026-09-30'}
+      ds_ativo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 612043}
+      pf_pj_emissor:
+        tipo: VARCHAR
+        nulos_pct: 57.66
+        distintos_aprox: 2
+        min: PF
+        max: PJ
+        top:
+        - [null, 1167871]
+        - [PJ, 857675]
+        - [PF, 9]
+      cpf_cnpj_emissor: {tipo: VARCHAR, nulos_pct: 57.66, distintos_aprox: 4495, pessoal: 'só contagens: valores seriam dado pessoal'}
+      emissor: {tipo: VARCHAR, nulos_pct: 56.25, distintos_aprox: 14655}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 37059, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tp_fundo_classe:
+        tipo: VARCHAR
+        nulos_pct: 19.73
+        distintos_aprox: 4
+        min: CLASSES - FIF
+        max: FIP
+        top:
+        - [CLASSES - FIF, 877006]
+        - [FI, 736842]
+        - [null, 399705]
+        - [CLASSES - FIP, 7302]
+        - [FIP, 4529]
+        - [FAPI, 171]
+      cnpj_fundo_classe: {tipo: VARCHAR, nulos_pct: 19.73, distintos_aprox: 34522, pessoal: 'só contagens: valores seriam dado pessoal'}
+  carteira_confid:
+    linhas: 187163
+    fonte_do_perfil: tabela inteira
+    colunas:
+      tp_fundo_classe:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: CLASSES - FIF
+        max: CLASSES - FIP
+        top:
+        - [CLASSES - FIF, 187123]
+        - [CLASSES - FIP, 40]
+      cnpj_fundo_classe: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13143, pessoal: 'só contagens: valores seriam dado pessoal'}
+      denom_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12322}
+      dt_comptc:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '2026-04-30'
+        max: '2026-09-30'
+        top:
+        - ['2026-08-31', 57092]
+        - ['2026-07-31', 56287]
+        - ['2026-09-30', 47916]
+        - ['2026-05-31', 8692]
+        - ['2026-06-30', 8689]
+        - ['2026-04-30', 8487]
+      tp_aplic:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: Ações
+        max: Vendas a termo a receber
+        top:
+        - [Valores a pagar, 26616]
+        - [Valores a receber, 26245]
+        - [Cotas de Fundos, 25326]
+        - [Disponibilidades, 15933]
+        - [Operações Compromissadas, 11832]
+        - [Títulos Públicos, 11717]
+        - [Ações, 9057]
+        - [Mercado Futuro - Posições vendidas, 7479]
+        - [Debêntures, 7397]
+        - [Mercado Futuro - Posições compradas, 6409]
+      vl_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 81.36
+        distintos_aprox: 12221
+        min: '0.0'
+        max: '81406956465.0'
+        media: 36046881.1566
+        quartis: [0, 0, 1042127.906]
+      vl_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 81.36
+        distintos_aprox: 15182
+        min: '0.0'
+        max: '61662693793.0'
+        media: 38129931.5166
+        quartis: [0, 0, 1751491.7781]
+      vl_merc_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 172889
+        min: '-1095274959.0'
+        max: '84387884334.0'
+        media: 66412318.2407
+        quartis: [14130.8011, 497681.2065, 10181362.2984]
+      vl_custo_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 187163]
+      dt_confid_aplic:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '2026-10-27'
+        max: '2027-03-29'
+        top:
+        - ['2026-11-29', 48392]
+        - ['2026-10-29', 47829]
+        - ['2026-12-29', 39770]
+        - ['2026-11-27', 8692]
+        - ['2027-02-27', 8691]
+        - ['2026-12-27', 8689]
+        - ['2026-10-27', 8487]
+        - ['2027-01-27', 8461]
+        - ['2027-03-29', 7714]
+        - ['2026-10-30', 438]
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13143, pessoal: 'só contagens: valores seriam dado pessoal'}
+  carteira_fie:
+    linhas: 447690
+    fonte_do_perfil: tabela inteira
+    colunas:
+      tp_fundo_classe:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: CLASSES - FIAGRO
+        max: FIIM
+        top:
+        - [CLASSES - FIDC, 172490]
+        - [CLASSES FIIM, 126869]
+        - [FIIM, 97208]
+        - [FIDC, 35348]
+        - [CLASSES - FIAGRO, 15775]
+      cnpj_fundo_classe: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2367, pessoal: 'só contagens: valores seriam dado pessoal'}
+      denom_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1917}
+      dt_comptc:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '2024-02-29'
+        max: '2026-09-30'
+        top:
+        - ['2026-06-30', 22423]
+        - ['2026-03-31', 22204]
+        - ['2025-12-31', 20738]
+        - ['2025-09-30', 18990]
+        - ['2026-05-31', 18673]
+        - ['2026-04-30', 18352]
+        - ['2026-02-28', 18041]
+        - ['2026-01-31', 17786]
+        - ['2025-11-30', 16633]
+        - ['2025-10-31', 16425]
+      id_doc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 21575}
+      vl_patrim_liq:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 21727
+        min: '-43168872.93'
+        max: '16831390579.88'
+        media: 536582145.6127
+        quartis: [21717237.7369, 72554370.555, 332608872.4849]
+      tp_aplic:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: Ações
+        max: Vendas a termo a receber
+        top:
+        - [Cotas de Fundos, 133162]
+        - [Ações, 88430]
+        - [Ações e outros TVM cedidos em empréstimo, 61551]
+        - [Valores a pagar, 54764]
+        - [Valores a receber, 31868]
+        - [Disponibilidades, 13837]
+        - [Títulos Públicos, 12880]
+        - [Outras aplicações, 9976]
+        - [Investimento no Exterior, 9971]
+        - [Debêntures, 8567]
+      tp_ativo:
+        tipo: VARCHAR
+        nulos_pct: 33.85
+        distintos_aprox: 44
+        min: Ação ordinária
+        max: Título público federal
+        top:
+        - [null, 151560]
+        - [Ação ordinária, 123916]
+        - [Outros, 113911]
+        - [Ação preferencial, 26186]
+        - [Certificado de depósito de ações, 8828]
+        - [Debênture simples, 8566]
+        - [CRA, 5042]
+        - [Contrato Futuro, 1417]
+        - [Recibo de subscrição, 1302]
+        - [CPR, 942]
+      emissor_ligado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 389794]
+        - [S, 57896]
+      tp_negoc:
+        tipo: VARCHAR
+        nulos_pct: 29.78
+        distintos_aprox: 2
+        min: Mantido até o vencimento
+        max: Para negociação
+        top:
+        - [Para negociação, 312889]
+        - [null, 133313]
+        - [Mantido até o vencimento, 1488]
+      qt_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 64.99
+        distintos_aprox: 28701
+        min: '0.0'
+        max: '187023517.51685'
+        media: 104578.9126
+        quartis: [0, 0, 758.8391]
+      vl_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 64.99
+        distintos_aprox: 57780
+        min: '0.0'
+        max: '500000000000191.44'
+        media: 3191927584.3822
+        quartis: [0, 0, 30652.3866]
+      qt_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 64.99
+        distintos_aprox: 30726
+        min: '0.0'
+        max: '2233576846348.4673'
+        media: 29886255.6218
+        quartis: [0, 30.037, 2302.048]
+      vl_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 64.99
+        distintos_aprox: 81248
+        min: '0.0'
+        max: '6848243335.44'
+        media: 2293225.3501
+        quartis: [0, 798.1726, 101576.5459]
+      qt_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 22.74
+        distintos_aprox: 121136
+        min: '0.0'
+        max: '2302815951085.0'
+        media: 19861075.8675
+        quartis: [783.8986, 5471.1274, 37161.2375]
+      vl_merc_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 504546
+        min: '-947056054.22'
+        max: '7708702200.5'
+        media: 11721072.0446
+        quartis: [26982.78, 445010.0789, 3591804.2347]
+      vl_custo_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 3
+        min: '0.0'
+        max: '18308410.4'
+        media: 3733889.186
+        quartis: [0, 0, 4847879.2475]
+        top:
+        - [null, 447685]
+        - ['0.0', 3]
+        - ['18308410.4', 1]
+        - ['361035.53', 1]
+      dt_confid_aplic:
+        tipo: DATE
+        nulos_pct: 85.59
+        distintos_aprox: 31
+        min: '2024-05-29'
+        max: '2026-09-28'
+        top:
+        - [null, 383191]
+        - ['2026-06-29', 4117]
+        - ['2026-03-31', 4043]
+        - ['2026-09-28', 3871]
+        - ['2025-12-29', 3573]
+        - ['2026-07-29', 3564]
+        - ['2026-08-29', 3294]
+        - ['2026-05-29', 3255]
+        - ['2026-05-01', 3203]
+        - ['2026-02-28', 3079]
+      cd_ativo: {tipo: VARCHAR, nulos_pct: 64.29, distintos_aprox: 1506}
+      ds_ativo: {tipo: VARCHAR, nulos_pct: 71.09, distintos_aprox: 6499}
+      dt_venc: {tipo: DATE, nulos_pct: 93.07, distintos_aprox: 881, min: '2014-04-28', max: '2999-12-31'}
+      pf_pj_emissor:
+        tipo: VARCHAR
+        nulos_pct: 59.09
+        distintos_aprox: 7
+        min: '24282003000123'
+        max: PJ
+        top:
+        - [null, 264545]
+        - [PJ, 183116]
+        - [PF, 20]
+        - ['43391632000136', 3]
+        - ['24282003000123', 2]
+        - ['32274432000187', 2]
+        - ['37720328000192', 1]
+        - ['53217556000109', 1]
+      cpf_cnpj_emissor: {tipo: VARCHAR, nulos_pct: 59.38, distintos_aprox: 2856, pessoal: 'só contagens: valores seriam dado pessoal'}
+      emissor: {tipo: VARCHAR, nulos_pct: 56.75, distintos_aprox: 5045}
+      risco_emissor:
+        tipo: VARCHAR
+        nulos_pct: 97.84
+        distintos_aprox: 1
+        min: N
+        max: N
+        top:
+        - [null, 438024]
+        - [N, 9666]
+      cd_selic:
+        tipo: VARCHAR
+        nulos_pct: 96.29
+        distintos_aprox: 9
+        min: '0'
+        max: PDD
+        top:
+        - [null, 431092]
+        - ['210100', 7201]
+        - ['760199', 6488]
+        - ['100000', 2034]
+        - ['950199', 803]
+        - ['0', 36]
+        - ['760197', 16]
+        - ['760198', 16]
+        - ['20', 2]
+        - [PDD, 2]
+      dt_ini_vigencia: {tipo: DATE, nulos_pct: 66.62, distintos_aprox: 779, min: '1973-03-19', max: '2050-12-29'}
+      cd_pais:
+        tipo: VARCHAR
+        nulos_pct: 97.84
+        distintos_aprox: 6
+        min: '102'
+        max: '65'
+        top:
+        - [null, 438024]
+        - ['28', 8607]
+        - ['102', 994]
+        - ['38', 32]
+        - ['65', 12]
+        - ['15', 11]
+        - ['42', 10]
+      pais:
+        tipo: VARCHAR
+        nulos_pct: 97.84
+        distintos_aprox: 6
+        min: BRASIL
+        max: REINO UNIDO
+        top:
+        - [null, 438024]
+        - [ESTADOS UNIDOS DA AMÉRICA, 8607]
+        - [BRASIL, 994]
+        - [ILHAS CAYMAN, 32]
+        - [REINO UNIDO, 12]
+        - [CHINA, 11]
+        - [IRLANDA, 10]
+      cd_bv_merc:
+        tipo: VARCHAR
+        nulos_pct: 97.84
+        distintos_aprox: 5
+        min: '99'
+        max: E14
+        top:
+        - [null, 438024]
+        - ['99', 5540]
+        - [A1, 2749]
+        - [A11, 1175]
+        - [A12, 186]
+        - [C12, 11]
+        - [E14, 5]
+      bv_merc:
+        tipo: VARCHAR
+        nulos_pct: 97.84
+        distintos_aprox: 6
+        min: AMERICAN STOCK EXCHANGE
+        max: SHANGHAI STOCK EXCHANGE
+        top:
+        - [null, 438024]
+        - [OUTRAS BOLSAS OU MERCADOS DE BALCÃO ORGANIZADOS, 5540]
+        - [AMERICAN STOCK EXCHANGE, 2749]
+        - [NASDAQ STOCK MARKET, 1175]
+        - [NYSE EURONEXT, 186]
+        - [SHANGHAI STOCK EXCHANGE, 11]
+        - [LONDON STOCK EXCHANGE, 5]
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2367, pessoal: 'só contagens: valores seriam dado pessoal'}
+  carteira_fie_confid:
+    linhas: 1777
+    fonte_do_perfil: tabela inteira
+    colunas:
+      tp_fundo_classe:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: CLASSES - FIDC
+        max: CLASSES FIIM
+        top:
+        - [CLASSES - FIDC, 1380]
+        - [CLASSES FIIM, 397]
+      cnpj_fundo_classe: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 186, pessoal: 'só contagens: valores seriam dado pessoal'}
+      denom_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 186, min: 3T - FUNDO DE INVESTIMENTO EM COTAS DE FUNDO DE INVESTIMENTO EM DIREITOS
+          CREDITÓRIOS NÃO PADRONIZADO, max: ÁRTICO CAPITAL FUNDO DE INVESTIMENTO EM COTAS DE FUNDO DE INVESTIMENTO EM DIREITOS  CREDITÓRIOS}
+      dt_comptc:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '2026-07-31'
+        max: '2026-09-30'
+        top:
+        - ['2026-07-31', 622]
+        - ['2026-09-30', 582]
+        - ['2026-08-31', 573]
+      id_doc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 436, min: '1272120', max: '1347589'}
+      tp_aplic:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: Ações
+        max: Valores a receber
+        top:
+        - [Cotas de Fundos, 442]
+        - [Valores a pagar, 440]
+        - [Valores a receber, 428]
+        - [Disponibilidades, 168]
+        - [Títulos Públicos, 92]
+        - [Operações Compromissadas, 42]
+        - [Mercado Futuro - Posições compradas, 34]
+        - [Investimento no Exterior, 29]
+        - [Ações, 23]
+        - [Certificado ou recibo de depósito de valores mobiliários, 19]
+      vl_venda_negoc:
+        tipo: DOUBLE
+        nulos_pct: 71.36
+        distintos_aprox: 27
+        min: '0.0'
+        max: '20832928.0'
+        media: 208504.2515
+        quartis: [0, 0, 0]
+        top:
+        - [null, 1268]
+        - ['0.0', 478]
+        - ['533784.0', 2]
+        - ['10026062.0', 1]
+        - ['1088357.0', 1]
+        - ['11776884.0', 1]
+        - ['12305308.0', 1]
+        - ['137399.0', 1]
+        - ['1404428.0', 1]
+        - ['1448792.0', 1]
+      vl_aquis_negoc:
+        tipo: DOUBLE
+        nulos_pct: 71.36
+        distintos_aprox: 45
+        min: '0.0'
+        max: '318893365.0'
+        media: 1930935.7289
+        quartis: [0, 0, 0]
+        top:
+        - [null, 1268]
+        - ['0.0', 466]
+        - ['1005110.0', 1]
+        - ['1009742.0', 1]
+        - ['10704416.0', 1]
+        - ['1095000.0', 1]
+        - ['116183351.0', 1]
+        - ['12788.0', 1]
+        - ['1437218.0', 1]
+        - ['1442367.0', 1]
+      vl_merc_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1515
+        min: '-17971036.0'
+        max: '4361736649.0'
+        media: 47575142.3061
+        quartis: [9930.6537, 55662.5254, 8246627.8911]
+      vl_custo_pos_final:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1777]
+      dt_confid_aplic:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '2026-10-29'
+        max: '2026-12-29'
+        top:
+        - ['2026-10-29', 622]
+        - ['2026-12-29', 581]
+        - ['2026-11-29', 573]
+        - ['2026-12-25', 1]
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 186, pessoal: 'só contagens: valores seriam dado pessoal'}
+  carteira_pl:
+    linhas: 1156670
+    fonte_do_perfil: tabela inteira
+    colunas:
+      tp_fundo:
+        tipo: VARCHAR
+        nulos_pct: 75.69
+        distintos_aprox: 7
+        min: FACFIF
+        max: FUNCINE
+        top:
+        - [null, 875523]
+        - [FI, 277555]
+        - [FIP, 3407]
+        - [FAPI, 143]
+        - [FUNCINE, 12]
+        - [FACFIF, 10]
+        - [FIF, 10]
+        - [FMAI, 10]
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 75.69, distintos_aprox: 31885, pessoal: 'só contagens: valores seriam dado pessoal'}
+      denom_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 59125}
+      dt_comptc:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 44
+        min: '2023-01-31'
+        max: '2026-09-30'
+        top:
+        - ['2024-06-30', 26819]
+        - ['2023-12-31', 26699]
+        - ['2024-02-29', 26662]
+        - ['2024-03-31', 26515]
+        - ['2024-08-31', 26359]
+        - ['2024-05-31', 26348]
+        - ['2024-12-31', 26304]
+        - ['2024-04-30', 26254]
+        - ['2024-01-31', 26215]
+        - ['2024-09-30', 26213]
+      vl_patrim_liq:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1180647
+        min: '-6152776545.77'
+        max: '368663039810439.0'
+        media: 785260935.5465
+        quartis: [15644693.6774, 44473586.8275, 159635536.7306]
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 41615, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tp_fundo_classe:
+        tipo: VARCHAR
+        nulos_pct: 24.31
+        distintos_aprox: 5
+        min: CLASSES - FIF
+        max: FUNCINE
+        top:
+        - [CLASSES - FIF, 487529]
+        - [FI, 374232]
+        - [null, 281147]
+        - [CLASSES - FIP, 7065]
+        - [FIP, 6449]
+        - [FAPI, 232]
+        - [FUNCINE, 16]
+      cnpj_fundo_classe: {tipo: VARCHAR, nulos_pct: 24.31, distintos_aprox: 38473, pessoal: 'só contagens: valores seriam dado pessoal'}
+  extrato:
+    linhas: 149489
+    fonte_do_perfil: tabela inteira
+    colunas:
+      tp_fundo_classe:
+        tipo: VARCHAR
+        nulos_pct: 24.19
+        distintos_aprox: 2
+        min: CLASSES - FIF
+        max: FI
+        top:
+        - [FI, 83951]
+        - [null, 36164]
+        - [CLASSES - FIF, 29374]
+      cnpj_fundo_classe: {tipo: VARCHAR, nulos_pct: 24.19, distintos_aprox: 35458, pessoal: 'só contagens: valores seriam dado pessoal'}
+      denom_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 53877}
+      dt_comptc: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3115, min: '2015-10-01', max: '2026-10-14'}
+      condom:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: ABERTO
+        max: FECHADO
+        top:
+        - [ABERTO, 120413]
+        - [FECHADO, 29076]
+      negoc_merc:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 128030]
+        - [S, 21459]
+      mercado:
+        tipo: VARCHAR
+        nulos_pct: 94.29
+        distintos_aprox: 3
+        min: BM&FBOVESPA - BOLSA DE VALORES
+        max: CETIPTRADER
+        top:
+        - [null, 140953]
+        - [BOLSA DE VALORES DO RIO DE JANEIRO, 5866]
+        - [BM&FBOVESPA - BOLSA DE VALORES, 1205]
+        - [CETIPTRADER, 1183]
+        - [BM&FBOVESPA - MERCADO DE BALCÃO, 282]
+      tp_prazo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: DETERMINADO
+        max: INDETERMINADO
+        top:
+        - [INDETERMINADO, 131708]
+        - [DETERMINADO, 17781]
+      prazo: {tipo: VARCHAR, nulos_pct: 88.44, distintos_aprox: 2912}
+      publico_alvo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: INVESTIDORES PROFISSIONAIS
+        max: PÚBLICO EM GERAL
+        top:
+        - [PÚBLICO EM GERAL, 66916]
+        - [INVESTIDORES PROFISSIONAIS, 53319]
+        - [INVESTIDORES QUALIFICADOS, 16160]
+        - [PREVIDENCIÁRIO, 13094]
+      reg_anbima:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [S, 146041]
+        - [N, 3448]
+      classe_anbima: {tipo: VARCHAR, nulos_pct: 2.31, distintos_aprox: 68, min: AÇÕES - ATIVO - DIVIDENDOS, max: RENDA FIXA SIMPLES}
+      distrib:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 3
+        min: INTERNET
+        max: REDE DE AGÊNCIAS PRÓPRIAS OU DE INSTITUIÇÃO FINANCEIRA LIGADA AO MESMO GRUPO
+        top:
+        - [REDE DE AGÊNCIAS PRÓPRIAS OU DE INSTITUIÇÃO FINANCEIRA LIGADA AO MESMO GRUPO, 114571]
+        - [REDE DE AGÊNCIAS DE INSTITUIÇÃO FINANCEIRA CONVENIADA/CONTRATADA, 34096]
+        - [INTERNET, 814]
+        - [null, 8]
+      polit_invest:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: ATIVA E NÃO-REFERENCIADA
+        max: PASSIVA
+        top:
+        - [ATIVA E NÃO-REFERENCIADA, 96895]
+        - [ATIVA E REFERENCIADA, 38894]
+        - [PASSIVA, 12493]
+        - [ENHANCED, 1207]
+      aplic_max_fundo_ligado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 58
+        min: '0.0'
+        max: '1000000.0'
+        media: 122.2374
+        quartis: [99.7588, 100, 100]
+      result_cart_incorp_pl:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [S, 146435]
+        - [N, 3054]
+      fundo_cotas:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 84658]
+        - [S, 64831]
+      fundo_espelho:
+        tipo: VARCHAR
+        nulos_pct: 56.63
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [null, 84658]
+        - [N, 54195]
+        - [S, 10636]
+      aplic_min: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 107, min: '0.00', max: '99999999999999.00'}
+      atualiz_diaria_cota:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [S, 148789]
+        - [N, 700]
+      prazo_atualiz_cota:
+        tipo: VARCHAR
+        nulos_pct: 99.53
+        distintos_aprox: 20
+        min: '0'
+        max: último dia útil do mês.
+        top:
+        - [null, 148789]
+        - ['30', 435]
+        - ['0', 209]
+        - [BIMESTRAL, 13]
+        - ['1', 7]
+        - [INDEFINIDO, 6]
+        - [Mensal, 5]
+        - ['6.7.1. O valor da Cota é atualizado mensalmente, sendo resultante da divisão do valor do patrimônio líquido doFUNDO pelo número de
+            Cotas do FUNDO, apurado no encerramento do último dia útil do respectivo mês, após ofechamento dos mercados em que o FUNDO atue (cota
+            de fechamento).', 3]
+        - [A atualização é feita no ultimo dia util do mes e o informe é feito no primeiro dia util do mes seguinte ao mes de encerramento, 2]
+        - [Anual, 2]
+      cota_emissao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: DIA DA APLICAÇÃO
+        max: DIA SEGUINTE AO DA APLICAÇÃO
+        top:
+        - [DIA SEGUINTE AO DA APLICAÇÃO, 106705]
+        - [DIA DA APLICAÇÃO, 42784]
+      cota_pl:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: DIA ANTERIOR, ATUALIZADO POR 1 DIA (COTA DE ABERTURA)
+        max: PRÓPRIO DIA (COTA DE FECHAMENTO)
+        top:
+        - ['DIA ANTERIOR, ATUALIZADO POR 1 DIA (COTA DE ABERTURA)', 108462]
+        - [PRÓPRIO DIA (COTA DE FECHAMENTO), 41027]
+      qt_dia_conversao_cota:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 185
+        min: '0.0'
+        max: '999999.0'
+        media: 836.8427
+        quartis: [0, 0, 10.5478]
+      qt_dia_pagto_cota:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 84
+        min: '-30.0'
+        max: '3650.0'
+        media: 2.0871
+        quartis: [1, 1, 2]
+      qt_dia_resgate_cotas:
+        tipo: DOUBLE
+        nulos_pct: 93.7
+        distintos_aprox: 222
+        min: '0.0'
+        max: '10950.0'
+        media: 192.4452
+        quartis: [0, 0, 0]
+      qt_dia_pagto_resgate:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 184
+        min: '0.0'
+        max: '3601.0'
+        media: 12.416
+        quartis: [0, 1, 5.5724]
+      tp_dia_pagto_resgate:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: DIAS CORRIDOS
+        max: DIAS ÚTEIS
+        top:
+        - [DIAS ÚTEIS, 91394]
+        - [DIAS CORRIDOS, 58095]
+      taxa_saida_pagto_resgate:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 149489]
+      taxa_adm:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1096
+        min: '0.0'
+        max: '2517291.0'
+        media: 70.0759
+        quartis: [0.0571, 0.3658, 0.9984]
+      taxa_custodia_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 303
+        min: '0.0'
+        max: '171918.0'
+        media: 9.4761
+        quartis: [0, 0.0192, 0.04]
+      existe_taxa_perfm:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 114626]
+        - [S, 34863]
+      taxa_perfm:
+        tipo: DOUBLE
+        nulos_pct: 76.68
+        distintos_aprox: 65
+        min: '0.0'
+        max: '220.0'
+        media: 17.9274
+        quartis: [15, 20, 20]
+      param_taxa_perfm:
+        tipo: VARCHAR
+        nulos_pct: 76.68
+        distintos_aprox: 27
+        min: CDI
+        max: TR
+        top:
+        - [null, 114626]
+        - [CDI, 19591]
+        - [OUTROS, 4953]
+        - [IBOVESPA, 4187]
+        - [IPCA, 2696]
+        - [IMA-B, 1471]
+        - [IPC, 465]
+        - [IBX, 415]
+        - [IMA-B5, 358]
+        - [IGPM, 158]
+      pr_indice_refer_taxa_perfm:
+        tipo: DOUBLE
+        nulos_pct: 76.68
+        distintos_aprox: 75
+        min: '0.0'
+        max: '1025.0'
+        media: 92.8007
+        quartis: [100, 100, 100]
+      vl_cupom:
+        tipo: DOUBLE
+        nulos_pct: 76.68
+        distintos_aprox: 114
+        min: '0.0'
+        max: '999999999.0'
+        media: 13768554.2357
+        quartis: [0, 0, 0]
+      calc_taxa_perfm:
+        tipo: VARCHAR
+        nulos_pct: 76.89
+        distintos_aprox: 3
+        min: AJUSTE
+        max: PASSIVO
+        top:
+        - [null, 114936]
+        - [PASSIVO, 27157]
+        - [ATIVO, 7081]
+        - [AJUSTE, 315]
+      inf_taxa_perfm: {tipo: VARCHAR, nulos_pct: 79.68, distintos_aprox: 2972}
+      existe_taxa_ingresso:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 149346]
+        - [S, 143]
+      taxa_ingresso_real:
+        tipo: DOUBLE
+        nulos_pct: 99.9
+        distintos_aprox: 13
+        min: '0.0'
+        max: '100000.0'
+        media: 2147.6662
+        quartis: [0, 0, 2.5]
+        top:
+        - [null, 149346]
+        - ['0.0', 91]
+        - ['2.5', 34]
+        - ['1.0', 2]
+        - ['1.25', 2]
+        - ['1.87', 2]
+        - ['100000.0', 2]
+        - ['3000.0', 2]
+        - ['5.0', 2]
+        - ['50000.0', 2]
+      taxa_ingresso_pr:
+        tipo: DOUBLE
+        nulos_pct: 99.9
+        distintos_aprox: 11
+        min: '0.0'
+        max: '20.0'
+        media: 1.7912
+        quartis: [0, 1.5625, 2.5]
+        top:
+        - [null, 149346]
+        - ['0.0', 57]
+        - ['2.5', 29]
+        - ['3.0', 18]
+        - ['2.0', 13]
+        - ['1.5', 10]
+        - ['1.25', 6]
+        - ['2.45', 2]
+        - ['20.0', 2]
+        - ['3.12', 2]
+      existe_taxa_saida:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 144232]
+        - [S, 5257]
+      taxa_saida_real:
+        tipo: DOUBLE
+        nulos_pct: 96.48
+        distintos_aprox: 11
+        min: '0.0'
+        max: '5000.0'
+        media: 2.1128
+        quartis: [0, 0, 0]
+        top:
+        - [null, 144232]
+        - ['0.0', 5214]
+        - ['2.5', 31]
+        - ['1.25', 2]
+        - ['1.87', 2]
+        - ['5.0', 2]
+        - ['5000.0', 2]
+        - ['1.5', 1]
+        - ['1000.0', 1]
+        - ['2.0', 1]
+      taxa_saida_pr:
+        tipo: DOUBLE
+        nulos_pct: 96.48
+        distintos_aprox: 29
+        min: '0.0'
+        max: '100.0'
+        media: 6.2804
+        quartis: [0.5598, 5, 10]
+        top:
+        - [null, 144232]
+        - ['5.0', 1760]
+        - ['10.0', 1647]
+        - ['0.0', 1324]
+        - ['15.0', 288]
+        - ['20.0', 64]
+        - ['3.0', 19]
+        - ['25.0', 18]
+        - ['2.0', 16]
+        - ['4.0', 16]
+      oper_deriv:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [S, 103002]
+        - [N, 46487]
+      finalidade_oper_deriv:
+        tipo: VARCHAR
+        nulos_pct: 35.11
+        distintos_aprox: 3
+        min: ARBITRAGEM
+        max: HEDGE
+        top:
+        - [ESPECULAÇÃO, 53063]
+        - [null, 52487]
+        - [HEDGE, 24421]
+        - [ARBITRAGEM, 19518]
+      oper_vl_superior_pl:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 76730]
+        - [S, 72759]
+      fator_oper_vl_superior_pl:
+        tipo: DOUBLE
+        nulos_pct: 51.33
+        distintos_aprox: 66
+        min: '0.0'
+        max: '9999.99'
+        media: 118.1452
+        quartis: [0, 1, 100]
+      contrap_ligado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [S, 77828]
+        - [N, 71661]
+      invest_exterior:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [S, 101733]
+        - [N, 47756]
+      aplic_max_ativo_exterior:
+        tipo: DOUBLE
+        nulos_pct: 31.95
+        distintos_aprox: 52
+        min: '0.0'
+        max: '25000.0'
+        media: 61.0528
+        quartis: [20, 40, 100]
+      ativo_cred_priv:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [S, 109887]
+        - [N, 39602]
+      aplic_max_ativo_cred_priv:
+        tipo: VARCHAR
+        nulos_pct: 26.49
+        distintos_aprox: 47
+        min: '0.000000000000'
+        max: '9999.000000000000'
+        top:
+        - ['100.000000000000', 66147]
+        - [null, 39602]
+        - ['50.000000000000', 25156]
+        - ['33.000000000000', 8852]
+        - ['5.000000000000', 2919]
+        - ['80.000000000000', 1763]
+        - ['20.000000000000', 1506]
+        - ['40.000000000000', 582]
+        - ['10.000000000000', 468]
+        - ['75.000000000000', 461]
+      pr_instituicao_financ_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '0.0'
+        max: '22513098.0'
+        media: 301.269
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 149318]
+        - ['20.0', 44]
+        - ['95.0', 40]
+        - ['100.0', 21]
+        - ['67.0', 14]
+        - ['80.0', 14]
+        - ['90.0', 8]
+        - ['10.0', 7]
+        - ['1.0', 6]
+        - ['5.0', 5]
+      pr_instituicao_financ_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 63
+        min: '0.0'
+        max: '1000.0'
+        media: 37.5889
+        quartis: [5, 20, 100]
+      pr_cia_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '0.0'
+        max: '100.0'
+        media: 0.352
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 148683]
+        - ['67.0', 512]
+        - ['10.0', 68]
+        - ['95.0', 54]
+        - ['90.0', 50]
+        - ['80.0', 41]
+        - ['100.0', 34]
+        - ['5.0', 9]
+        - ['0.01', 7]
+        - ['15.0', 6]
+      pr_cia_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 51
+        min: '0.0'
+        max: '1000.0'
+        media: 34.9858
+        quartis: [0, 10, 100]
+      pr_fi_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: '0.0'
+        max: '100.0'
+        media: 5.4418
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 140799]
+        - ['95.0', 8275]
+        - ['100.0', 87]
+        - ['67.0', 79]
+        - ['10.0', 45]
+        - ['90.0', 38]
+        - ['80.0', 35]
+        - ['98.0', 22]
+        - ['50.0', 15]
+        - ['97.0', 12]
+      pr_fi_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 45
+        min: '0.0'
+        max: '1000.0'
+        media: 79.4764
+        quartis: [98.6352, 100, 100]
+        top:
+        - ['100.0', 113655]
+        - ['10.0', 19363]
+        - ['0.0', 8162]
+        - ['49.0', 3584]
+        - ['20.0', 1444]
+        - ['33.0', 1126]
+        - ['5.0', 592]
+        - ['50.0', 299]
+        - ['40.0', 274]
+        - ['15.0', 199]
+      pr_uniao_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 39
+        min: '0.0'
+        max: '100.0'
+        media: 0.3896
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 148648]
+        - ['80.0', 196]
+        - ['100.0', 158]
+        - ['50.0', 108]
+        - ['33.0', 65]
+        - ['75.0', 47]
+        - ['60.0', 40]
+        - ['95.0', 39]
+        - ['70.0', 38]
+        - ['98.0', 26]
+      pr_uniao_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 45
+        min: '0.0'
+        max: '100000.0'
+        media: 55.5047
+        quartis: [5, 48.7011, 100]
+        top:
+        - ['100.0', 73600]
+        - ['5.0', 48178]
+        - ['0.0', 19631]
+        - ['33.0', 6604]
+        - ['10.0', 401]
+        - ['20.0', 201]
+        - ['15.0', 199]
+        - ['50.0', 129]
+        - ['1.0', 72]
+        - ['25.0', 64]
+      pr_admin_gestor_min: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 18, pessoal: 'só contagens: valores seriam dado pessoal'}
+      pr_admin_gestor_max: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 46, pessoal: 'só contagens: valores seriam dado pessoal'}
+      pr_emissor_outro_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '0.0'
+        max: '100.0'
+        media: 0.0355
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 149374]
+        - ['5.0', 39]
+        - ['95.0', 26]
+        - ['100.0', 13]
+        - ['40.0', 11]
+        - ['0.01', 5]
+        - ['33.0', 5]
+        - ['50.0', 4]
+        - ['61.0', 4]
+        - ['17.0', 2]
+      pr_emissor_outro_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 56
+        min: '0.0'
+        max: '999.99'
+        media: 28.9407
+        quartis: [0, 0.0102, 98.9787]
+      pr_cota_fi_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: '0.0'
+        max: '22513098.0'
+        media: 170.4392
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 118332]
+        - ['95.0', 30241]
+        - ['67.0', 553]
+        - ['100.0', 145]
+        - ['80.0', 28]
+        - ['97.0', 27]
+        - ['98.0', 20]
+        - ['90.0', 19]
+        - ['85.0', 16]
+        - ['33.0', 15]
+      pr_cota_fi_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 45
+        min: '0.0'
+        max: '10000.0'
+        media: 85.014
+        quartis: [100, 100, 100]
+        top:
+        - ['100.0', 122309]
+        - ['0.0', 9878]
+        - ['20.0', 7306]
+        - ['40.0', 2960]
+        - ['33.0', 2264]
+        - ['5.0', 1499]
+        - ['10.0', 990]
+        - ['50.0', 655]
+        - ['15.0', 593]
+        - ['70.0', 149]
+      pr_cota_fic_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: '0.0'
+        max: '100.0'
+        media: 15.9148
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 124252]
+        - ['95.0', 24650]
+        - ['67.0', 372]
+        - ['100.0', 50]
+        - ['80.0', 21]
+        - ['0.01', 18]
+        - ['33.0', 15]
+        - ['10.0', 14]
+        - ['90.0', 13]
+        - ['85.0', 10]
+      pr_cota_fic_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 43
+        min: '0.0'
+        max: '10000.0'
+        media: 80.5503
+        quartis: [100, 100, 100]
+        top:
+        - ['100.0', 115582]
+        - ['0.0', 15521]
+        - ['20.0', 7643]
+        - ['40.0', 2951]
+        - ['5.0', 2605]
+        - ['33.0', 2245]
+        - ['10.0', 855]
+        - ['50.0', 595]
+        - ['15.0', 564]
+        - ['70.0', 148]
+      pr_cota_fi_qualif_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 22
+        min: '0.0'
+        max: '100.0'
+        media: 12.4357
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 129781]
+        - ['95.0', 19260]
+        - ['67.0', 273]
+        - ['100.0', 53]
+        - ['10.0', 18]
+        - ['1.0', 14]
+        - ['97.0', 14]
+        - ['80.0', 13]
+        - ['90.0', 13]
+        - ['20.0', 8]
+      pr_cota_fi_qualif_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 43
+        min: '0.0'
+        max: '1000.0'
+        media: 68.171
+        quartis: [20, 100, 100]
+        top:
+        - ['100.0', 94559]
+        - ['0.0', 23433]
+        - ['20.0', 20404]
+        - ['40.0', 3949]
+        - ['5.0', 2326]
+        - ['33.0', 2079]
+        - ['10.0', 951]
+        - ['50.0', 532]
+        - ['15.0', 402]
+        - ['70.0', 149]
+      pr_cota_fic_qualif_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '0.0'
+        max: '100.0'
+        media: 11.4723
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 131304]
+        - ['95.0', 17785]
+        - ['67.0', 244]
+        - ['100.0', 52]
+        - ['10.0', 18]
+        - ['20.0', 10]
+        - ['0.95', 9]
+        - ['80.0', 9]
+        - ['5.0', 7]
+        - ['90.0', 7]
+      pr_cota_fic_qualif_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 45
+        min: '0.0'
+        max: '1009.0'
+        media: 66.2733
+        quartis: [20, 100, 100]
+        top:
+        - ['100.0', 91814]
+        - ['0.0', 26741]
+        - ['20.0', 19897]
+        - ['40.0', 3857]
+        - ['5.0', 2458]
+        - ['33.0', 2073]
+        - ['10.0', 921]
+        - ['50.0', 483]
+        - ['15.0', 382]
+        - ['70.0', 148]
+      pr_cota_fi_prof_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '0.0'
+        max: '100.0'
+        media: 10.5912
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 132599]
+        - ['95.0', 16193]
+        - ['67.0', 535]
+        - ['100.0', 34]
+        - ['10.0', 29]
+        - ['5.0', 27]
+        - ['98.0', 21]
+        - ['90.0', 12]
+        - ['80.0', 11]
+        - ['20.0', 5]
+      pr_cota_fi_prof_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 45
+        min: '0.0'
+        max: '1000.0'
+        media: 55.7503
+        quartis: [0, 100, 100]
+        top:
+        - ['100.0', 80444]
+        - ['0.0', 45503]
+        - ['5.0', 11190]
+        - ['10.0', 8000]
+        - ['20.0', 1257]
+        - ['33.0', 944]
+        - ['50.0', 540]
+        - ['40.0', 468]
+        - ['15.0', 326]
+        - ['70.0', 147]
+      pr_cota_fic_prof_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '0.0'
+        max: '100.0'
+        media: 9.2922
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 134629]
+        - ['95.0', 14185]
+        - ['67.0', 508]
+        - ['10.0', 51]
+        - ['100.0', 46]
+        - ['5.0', 26]
+        - ['0.01', 7]
+        - ['80.0', 7]
+        - ['90.0', 6]
+        - ['70.0', 5]
+      pr_cota_fic_prof_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 46
+        min: '0.0'
+        max: '1000.0'
+        media: 53.874
+        quartis: [0, 99.8926, 100]
+        top:
+        - ['100.0', 77691]
+        - ['0.0', 48388]
+        - ['5.0', 11242]
+        - ['10.0', 7984]
+        - ['20.0', 1199]
+        - ['33.0', 968]
+        - ['50.0', 512]
+        - ['40.0', 458]
+        - ['15.0', 316]
+        - ['70.0', 143]
+      pr_cota_fii_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: '0.0'
+        max: '2000.0'
+        media: 1.1884
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 147567]
+        - ['95.0', 1797]
+        - ['20.0', 32]
+        - ['0.01', 15]
+        - ['100.0', 14]
+        - ['33.0', 11]
+        - ['67.0', 8]
+        - ['65.0', 7]
+        - ['70.0', 5]
+        - ['85.0', 5]
+      pr_cota_fii_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 54
+        min: '0.0'
+        max: '1000.0'
+        media: 41.6263
+        quartis: [0, 20, 100]
+      pr_cota_fidc_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '0.0'
+        max: '100.0'
+        media: 1.1982
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 147522]
+        - ['95.0', 1810]
+        - ['20.0', 37]
+        - ['85.0', 19]
+        - ['10.0', 16]
+        - ['100.0', 15]
+        - ['40.0', 12]
+        - ['96.0', 12]
+        - ['0.01', 10]
+        - ['50.0', 7]
+      pr_cota_fidc_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 55
+        min: '0.0'
+        max: '1000.0'
+        media: 42.0812
+        quartis: [0, 20, 100]
+      pr_cota_ficfidc_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '0.0'
+        max: '100.0'
+        media: 1.1454
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 147623]
+        - ['95.0', 1764]
+        - ['20.0', 28]
+        - ['10.0', 11]
+        - ['100.0', 10]
+        - ['40.0', 9]
+        - ['0.04', 7]
+        - ['33.0', 6]
+        - ['50.0', 5]
+        - ['85.0', 5]
+      pr_cota_ficfidc_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 57
+        min: '0.0'
+        max: '999.99'
+        media: 41.606
+        quartis: [0, 20, 100]
+      pr_cota_fidc_np_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '0.0'
+        max: '100.0'
+        media: 1.0512
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 147789]
+        - ['95.0', 1630]
+        - ['5.0', 18]
+        - ['10.0', 15]
+        - ['96.0', 8]
+        - ['0.01', 6]
+        - ['100.0', 6]
+        - ['39.0', 4]
+        - ['0.05', 3]
+        - ['50.0', 3]
+      pr_cota_fidc_np_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 42
+        min: '0.0'
+        max: '10000.0'
+        media: 32.2434
+        quartis: [0, 0.0001, 100]
+        top:
+        - ['0.0', 78535]
+        - ['100.0', 43896]
+        - ['5.0', 11527]
+        - ['10.0', 7690]
+        - ['33.0', 3374]
+        - ['50.0', 1772]
+        - ['20.0', 1135]
+        - ['15.0', 511]
+        - ['40.0', 301]
+        - ['94.0', 211]
+      pr_cota_ficfidc_np_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '0.0'
+        max: '100.0'
+        media: 1.0281
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 147834]
+        - ['95.0', 1602]
+        - ['10.0', 18]
+        - ['5.0', 16]
+        - ['100.0', 6]
+        - ['33.0', 4]
+        - ['50.0', 3]
+        - ['40.0', 2]
+        - ['67.0', 2]
+        - ['75.0', 2]
+      pr_cota_ficfidc_np_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 44
+        min: '0.0'
+        max: '999.99'
+        media: 31.9508
+        quartis: [0, 0.0, 100]
+        top:
+        - ['0.0', 79017]
+        - ['100.0', 43666]
+        - ['5.0', 11455]
+        - ['10.0', 7685]
+        - ['33.0', 3358]
+        - ['50.0', 1752]
+        - ['20.0', 1057]
+        - ['15.0', 512]
+        - ['40.0', 274]
+        - ['94.0', 202]
+      pr_cota_etf_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '0.0'
+        max: '100.0'
+        media: 1.8155
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 146230]
+        - ['95.0', 1924]
+        - ['67.0', 1202]
+        - ['80.0', 41]
+        - ['100.0', 18]
+        - ['90.0', 18]
+        - ['0.01', 9]
+        - ['85.0', 9]
+        - ['0.1', 7]
+        - ['15.0', 5]
+      pr_cota_etf_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 66
+        min: '0.0'
+        max: '1000.0'
+        media: 53.0664
+        quartis: [0, 69.6446, 100]
+      pr_cri_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '0.0'
+        max: '100.0'
+        media: 0.2838
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 148915]
+        - ['80.0', 380]
+        - ['85.0', 55]
+        - ['95.0', 45]
+        - ['20.0', 29]
+        - ['40.0', 10]
+        - ['67.0', 10]
+        - ['33.0', 9]
+        - ['5.0', 8]
+        - ['100.0', 6]
+      pr_cri_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 56
+        min: '0.0'
+        max: '1000.0'
+        media: 31.0361
+        quartis: [0, 0.0181, 67.0844]
+      pr_titpub_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: '0.0'
+        max: '100.0'
+        media: 0.7351
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 147950]
+        - ['80.0', 627]
+        - ['50.0', 203]
+        - ['100.0', 201]
+        - ['60.0', 98]
+        - ['75.0', 86]
+        - ['95.0', 72]
+        - ['33.0', 36]
+        - ['10.0', 31]
+        - ['70.0', 26]
+      pr_titpub_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 48
+        min: '0.0'
+        max: '1000000.0'
+        media: 64.7653
+        quartis: [5, 32.2634, 100]
+        top:
+        - ['100.0', 68555]
+        - ['5.0', 51002]
+        - ['0.0', 16580]
+        - ['33.0', 7203]
+        - ['25.0', 3813]
+        - ['15.0', 668]
+        - ['10.0', 416]
+        - ['20.0', 366]
+        - ['50.0', 240]
+        - ['3.0', 86]
+      pr_ouro_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '0.0'
+        max: '100.0'
+        media: 0.0471
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 149396]
+        - ['95.0', 29]
+        - ['100.0', 27]
+        - ['33.0', 11]
+        - ['80.0', 11]
+        - ['0.9', 4]
+        - ['59.0', 4]
+        - ['15.0', 2]
+        - ['5.0', 2]
+        - ['9.0', 2]
+      pr_ouro_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 36
+        min: '0.0'
+        max: '10000.0'
+        media: 27.6948
+        quartis: [0, 0, 99.464]
+        top:
+        - ['0.0', 102992]
+        - ['100.0', 39620]
+        - ['33.0', 3272]
+        - ['5.0', 2048]
+        - ['20.0', 474]
+        - ['15.0', 327]
+        - ['10.0', 180]
+        - ['50.0', 130]
+        - ['40.0', 83]
+        - ['3.0', 64]
+      pr_tit_instituicao_financ_bacen_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '0.0'
+        max: '100.0'
+        media: 0.2925
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 148849]
+        - ['80.0', 420]
+        - ['5.0', 66]
+        - ['100.0', 40]
+        - ['50.0', 24]
+        - ['95.0', 23]
+        - ['33.0', 20]
+        - ['20.0', 9]
+        - ['10.0', 8]
+        - ['40.0', 5]
+      pr_tit_instituicao_financ_bacen_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 59
+        min: '0.0'
+        max: '1000.0'
+        media: 43.3577
+        quartis: [5, 25.5134, 100]
+      pr_vlmob_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: '0.0'
+        max: '100.0'
+        media: 7.7084
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 136022]
+        - ['100.0', 9419]
+        - ['75.0', 1749]
+        - ['33.0', 1669]
+        - ['50.0', 207]
+        - ['24.75', 183]
+        - ['20.0', 82]
+        - ['67.0', 30]
+        - ['30.0', 26]
+        - ['10.0', 21]
+      pr_vlmob_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 52
+        min: '0.0'
+        max: '1000.0'
+        media: 31.5345
+        quartis: [0, 0, 98.9748]
+      pr_acao_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '0.0'
+        max: '100.0'
+        media: 2.2922
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 144422]
+        - ['67.0', 4642]
+        - ['90.0', 103]
+        - ['95.0', 103]
+        - ['80.0', 53]
+        - ['100.0', 30]
+        - ['85.0', 24]
+        - ['75.0', 19]
+        - ['33.0', 13]
+        - ['30.0', 12]
+      pr_acao_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 62
+        min: '0.0'
+        max: '1000.0'
+        media: 40.5092
+        quartis: [0, 0, 100]
+      pr_debenture_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 25
+        min: '0.0'
+        max: '100.0'
+        media: 0.2958
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 148894]
+        - ['80.0', 380]
+        - ['85.0', 58]
+        - ['67.0', 46]
+        - ['50.0', 24]
+        - ['100.0', 19]
+        - ['33.0', 13]
+        - ['95.0', 10]
+        - ['20.0', 8]
+        - ['1.0', 6]
+      pr_debenture_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 48
+        min: '0.0'
+        max: '1000.0'
+        media: 39.4495
+        quartis: [0, 12.9907, 100]
+        top:
+        - ['0.0', 65293]
+        - ['100.0', 45765]
+        - ['50.0', 11656]
+        - ['33.0', 9222]
+        - ['5.0', 8586]
+        - ['75.0', 2805]
+        - ['20.0', 1824]
+        - ['25.0', 1124]
+        - ['10.0', 800]
+        - ['30.0', 535]
+      pr_np_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '0.0'
+        max: '100.0'
+        media: 0.2516
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 149058]
+        - ['100.0', 310]
+        - ['67.0', 34]
+        - ['50.0', 26]
+        - ['33.0', 13]
+        - ['80.0', 10]
+        - ['95.0', 10]
+        - ['20.0', 8]
+        - ['10.0', 5]
+        - ['51.0', 4]
+      pr_np_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 50
+        min: '0.0'
+        max: '1000.0'
+        media: 36.6658
+        quartis: [0, 0.0919, 100]
+        top:
+        - ['0.0', 76406]
+        - ['100.0', 43990]
+        - ['50.0', 11377]
+        - ['33.0', 8965]
+        - ['5.0', 3071]
+        - ['20.0', 2208]
+        - ['75.0', 825]
+        - ['10.0', 655]
+        - ['15.0', 456]
+        - ['40.0', 308]
+      pr_comprom_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '0.0'
+        max: '100.0'
+        media: 0.2472
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 148976]
+        - ['80.0', 376]
+        - ['100.0', 31]
+        - ['50.0', 21]
+        - ['33.0', 15]
+        - ['20.0', 11]
+        - ['95.0', 10]
+        - ['0.01', 8]
+        - ['10.0', 8]
+        - ['3.0', 6]
+      pr_comprom_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 46
+        min: '0.0'
+        max: '1000.0'
+        media: 34.2648
+        quartis: [0, 4.9847, 100]
+        top:
+        - ['0.0', 71849]
+        - ['100.0', 42050]
+        - ['5.0', 14560]
+        - ['50.0', 8660]
+        - ['33.0', 6396]
+        - ['25.0', 2559]
+        - ['20.0', 820]
+        - ['70.0', 515]
+        - ['15.0', 494]
+        - ['40.0', 307]
+      pr_deriv_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '-500.0'
+        max: '100.0'
+        media: 0.3168
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 148873]
+        - ['80.0', 441]
+        - ['100.0', 70]
+        - ['95.0', 55]
+        - ['67.0', 18]
+        - ['85.0', 5]
+        - ['-100.0', 4]
+        - ['-500.0', 4]
+        - ['20.0', 4]
+        - ['33.0', 4]
+      pr_deriv_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 61
+        min: '0.0'
+        max: '99999999.0'
+        media: 1729.8395
+        quartis: [0, 100, 100]
+      pr_ativo_outro_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '0.0'
+        max: '100.0'
+        media: 0.048
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 149366]
+        - ['95.0', 42]
+        - ['5.0', 32]
+        - ['100.0', 22]
+        - ['0.01', 4]
+        - ['33.0', 4]
+        - ['50.0', 4]
+        - ['61.0', 4]
+        - ['10.0', 3]
+        - ['20.0', 3]
+      pr_ativo_outro_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 58
+        min: '0.0'
+        max: '1000.0'
+        media: 28.6761
+        quartis: [0, 0, 48.6366]
+      pr_cota_fmiee_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '0.0'
+        max: '100.0'
+        media: 0.7669
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 148271]
+        - ['95.0', 1191]
+        - ['100.0', 11]
+        - ['33.0', 4]
+        - ['45.0', 4]
+        - ['0.09', 2]
+        - ['10.0', 2]
+        - ['5.0', 2]
+        - ['4.0', 1]
+        - ['50.0', 1]
+      pr_cota_fmiee_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '0.0'
+        max: '1000.0'
+        media: 24.7832
+        quartis: [0, 0, 34.7152]
+        top:
+        - ['0.0', 105773]
+        - ['100.0', 34421]
+        - ['20.0', 1962]
+        - ['33.0', 1835]
+        - ['50.0', 1802]
+        - ['5.0', 1017]
+        - ['10.0', 934]
+        - ['30.0', 563]
+        - ['40.0', 505]
+        - ['15.0', 463]
+      pr_cota_fip_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '0.0'
+        max: '22513098.0'
+        media: 302.2488
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 147823]
+        - ['95.0', 1406]
+        - ['100.0', 211]
+        - ['33.0', 13]
+        - ['97.0', 11]
+        - ['20.0', 7]
+        - ['10.0', 5]
+        - ['43.0', 4]
+        - ['1.0', 2]
+        - ['22513098.0', 2]
+      pr_cota_fip_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 41
+        min: '0.0'
+        max: '999.99'
+        media: 33.0306
+        quartis: [0, 0, 100]
+        top:
+        - ['0.0', 89852]
+        - ['100.0', 45146]
+        - ['33.0', 2994]
+        - ['20.0', 2889]
+        - ['50.0', 2065]
+        - ['15.0', 1312]
+        - ['10.0', 1291]
+        - ['5.0', 1183]
+        - ['30.0', 955]
+        - ['40.0', 938]
+      pr_cota_ficfip_min:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '0.0'
+        max: '22513098.0'
+        media: 302.0494
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 148133]
+        - ['95.0', 1321]
+        - ['100.0', 8]
+        - ['20.0', 7]
+        - ['5.0', 5]
+        - ['33.0', 4]
+        - ['35.0', 4]
+        - ['1.0', 3]
+        - ['22513098.0', 2]
+        - ['50.0', 1]
+      pr_cota_ficfip_max:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 41
+        min: '0.0'
+        max: '1000.0'
+        media: 27.4251
+        quartis: [0, 0, 89.0357]
+        top:
+        - ['0.0', 100533]
+        - ['100.0', 37436]
+        - ['33.0', 2286]
+        - ['20.0', 2253]
+        - ['50.0', 1965]
+        - ['10.0', 1190]
+        - ['15.0', 973]
+        - ['30.0', 819]
+        - ['5.0', 677]
+        - ['40.0', 612]
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 35458, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 75.81, distintos_aprox: 20244, pessoal: 'só contagens: valores seriam dado pessoal'}
   fundos:
     linhas: 46806
     fonte_do_perfil: tabela inteira
@@ -245,8 +4228,754 @@ tabelas:
         - ['', 17269]
         - [S, 6133]
       CLASSE_ANBIMA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 58, min: '', max: Renda Fixa Simples}
-  informe_diario: {linhas: 81549118, erro: 'Catalog Error: Table with name informe_diario does not exist!'}
-  perfil_mensal: {linhas: 2000051, erro: 'Catalog Error: Table with name perfil_mensal does not exist!'}
+  informe_diario:
+    linhas: 81549118
+    fonte_do_perfil: amostra de 2.453%. ~2.000.000 linhas
+    colunas:
+      tp_fundo:
+        tipo: VARCHAR
+        nulos_pct: 72.11
+        distintos_aprox: 6
+        min: FACFIF
+        max: FMP-FGTS
+        top:
+        - [null, 1474648]
+        - [FI, 536721]
+        - [FACFIF, 12723]
+        - [FIF, 9107]
+        - [FITVM, 8809]
+        - [FMP-FGTS, 1385]
+        - [FIC-FITVM, 826]
+        - [FAPI, 731]
+        - [FIEX, 66]
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 19.52, distintos_aprox: 29254, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dt_comptc: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5706, min: '2002-03-13', max: '2026-10-13'}
+      vl_total:
+        tipo: DOUBLE
+        nulos_pct: 0.36
+        distintos_aprox: 2208242
+        min: '-132610576.72'
+        max: '294492279474.31'
+        media: 371558156.4703
+        quartis: [13244327.4438, 38640426.5912, 140299232.755]
+      vl_quota:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2250346
+        min: '-58010.73979859'
+        max: '11206620286175.0'
+        media: 5489794.2862
+        quartis: [1.246, 2.4788, 24.2931]
+      vl_patrim_liq:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1850755
+        min: '-54397377.99'
+        max: '294491966322.91'
+        media: 369491887.6347
+        quartis: [13221079.4774, 38504147.4232, 139024670.0327]
+      captc_dia:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 346531
+        min: '0.0'
+        max: '42819562733.09'
+        media: 2363366.6929
+        quartis: [0, 0, 0]
+      resg_dia:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 337472
+        min: '0.0'
+        max: '42308319520.72'
+        media: 2347259.2626
+        quartis: [0, 0, 0.0022]
+      nr_cotst: {tipo: VARCHAR, nulos_pct: 0.36, distintos_aprox: 38774}
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 39429, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tp_fundo_classe:
+        tipo: VARCHAR
+        nulos_pct: 80.48
+        distintos_aprox: 4
+        min: CLASSE FIF/FAPI
+        max: FI
+        top:
+        - [null, 1645909]
+        - [CLASSES - FIF, 226146]
+        - [FI, 172789]
+        - [CLASSE FIF/FAPI, 110]
+        - [FAPI, 62]
+      cnpj_fundo_classe: {tipo: VARCHAR, nulos_pct: 80.48, distintos_aprox: 16491, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_subclasse: {tipo: VARCHAR, nulos_pct: 99.78, distintos_aprox: 209, min: 0AYDG1734640049, max: ZYQJD1773944612}
+  perfil_mensal:
+    linhas: 2000051
+    fonte_do_perfil: amostra de 99.997%. ~2.000.000 linhas
+    colunas:
+      cnpj_fundo: {tipo: VARCHAR, nulos_pct: 42.05, distintos_aprox: 29712, pessoal: 'só contagens: valores seriam dado pessoal'}
+      denom_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60987}
+      dt_comptc: {tipo: DATE, nulos_pct: 0, distintos_aprox: 89, min: '2019-01-31', max: '2026-09-30'}
+      versao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '4'
+        top:
+        - ['3', 1349820]
+        - ['4', 566106]
+        - ['1', 84125]
+      nr_cotst_pf_pb: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5783}
+      nr_cotst_pf_varejo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 21349}
+      nr_cotst_pj_nao_financ_pb: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1942}
+      nr_cotst_pj_nao_financ_varejo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6643}
+      nr_cotst_banco: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 110, min: '0', max: '948'}
+      nr_cotst_corretora_distrib: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 238, min: '0', max: '99'}
+      nr_cotst_pj_financ: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 184, min: '0', max: '97'}
+      nr_cotst_invnr: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 120, min: '0', max: '99'}
+      nr_cotst_eapc:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '0'
+        max: '7'
+        top:
+        - ['0', 1891494]
+        - ['1', 107019]
+        - ['2', 1048]
+        - ['3', 258]
+        - ['4', 146]
+        - ['5', 32]
+        - ['17', 21]
+        - ['18', 14]
+        - ['16', 9]
+        - ['6', 7]
+      nr_cotst_efpc: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 83, min: '0', max: '99'}
+      nr_cotst_rpps: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 940, min: '0', max: '999'}
+      nr_cotst_segur: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 64, min: '0', max: '95'}
+      nr_cotst_capitaliz:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '0'
+        max: '9'
+        top:
+        - ['0', 1996705]
+        - ['1', 3163]
+        - ['2', 122]
+        - ['3', 31]
+        - ['4', 18]
+        - ['7', 3]
+        - ['5', 2]
+        - ['9', 2]
+        - ['10', 1]
+        - ['29', 1]
+      nr_cotst_fi_clube: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1028}
+      nr_cotst_distrib: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14674}
+      nr_cotst_outro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8627}
+      pr_pl_cotst_pf_pb:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1097
+        min: '0.0'
+        max: '100.0'
+        media: 28.2601
+        quartis: [0, 0, 82.2312]
+      pr_pl_cotst_pf_varejo:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1097
+        min: '0.0'
+        max: '100.0'
+        media: 7.1243
+        quartis: [0, 0, 0]
+      pr_pl_cotst_pj_nao_financ_pb:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1097
+        min: '0.0'
+        max: '100.0'
+        media: 3.5909
+        quartis: [0, 0, 0]
+      pr_pl_cotst_pj_nao_financ_varejo:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1097
+        min: '0.0'
+        max: '100.0'
+        media: 2.4324
+        quartis: [0, 0, 0]
+      pr_pl_cotst_banco:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 926
+        min: '0.0'
+        max: '100.0'
+        media: 0.2082
+        quartis: [0, 0, 0]
+      pr_pl_cotst_corretora_distrib:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 421
+        min: '0.0'
+        max: '100.0'
+        media: 0.055
+        quartis: [0, 0, 0]
+      pr_pl_cotst_pj_financ:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 890
+        min: '0.0'
+        max: '100.0'
+        media: 0.2362
+        quartis: [0, 0, 0]
+      pr_pl_cotst_invnr:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1054
+        min: '0.0'
+        max: '100.0'
+        media: 0.9228
+        quartis: [0, 0, 0]
+      pr_pl_cotst_eapc:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 923
+        min: '0.0'
+        max: '100.0'
+        media: 5.0146
+        quartis: [0, 0, 0]
+      pr_pl_cotst_efpc:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1097
+        min: '0.0'
+        max: '100.0'
+        media: 4.2729
+        quartis: [0, 0, 0]
+      pr_pl_cotst_rpps:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1097
+        min: '0.0'
+        max: '100.0'
+        media: 0.773
+        quartis: [0, 0, 0]
+      pr_pl_cotst_segur:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1001
+        min: '0.0'
+        max: '100.0'
+        media: 4.1107
+        quartis: [0, 0, 0]
+      pr_pl_cotst_capitaliz:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 500
+        min: '0.0'
+        max: '100.0'
+        media: 0.0874
+        quartis: [0, 0, 0]
+      pr_pl_cotst_fi_clube:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1097
+        min: '0.0'
+        max: '100.0'
+        media: 27.8569
+        quartis: [0, 0, 76.6578]
+      pr_pl_cotst_distrib:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1097
+        min: '0.0'
+        max: '100.0'
+        media: 8.622
+        quartis: [0, 0, 0]
+      pr_pl_cotst_outro:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1097
+        min: '0.0'
+        max: '100.0'
+        media: 6.3314
+        quartis: [0, 0, 0]
+      voto_admin_assemb: {tipo: VARCHAR, nulos_pct: 78.94, distintos_aprox: 18685}
+      justif_voto_admin_assemb: {tipo: VARCHAR, nulos_pct: 79.23, distintos_aprox: 13753}
+      pr_var_carteira:
+        tipo: DOUBLE
+        nulos_pct: 4.4
+        distintos_aprox: 222889
+        min: '-8978038265.3316'
+        max: '134561158.9663'
+        media: -4555.7765
+        quartis: [0, 0.53, 2.4194]
+      mod_var:
+        tipo: VARCHAR
+        nulos_pct: 11.47
+        distintos_aprox: 4
+        min: '0.0000'
+        max: Modelos de Simulação de Monte Carlo
+        top:
+        - [Modelos Paramétricos, 1366630]
+        - [Modelos Não-Paramétricos, 400529]
+        - [null, 229409]
+        - [Modelos de Simulação de Monte Carlo, 3481]
+        - ['0.0000', 1]
+        - ['22.99', 1]
+      prazo_carteira_titulo: {tipo: VARCHAR, nulos_pct: 2.66, distintos_aprox: 447712}
+      delib_assemb: {tipo: VARCHAR, nulos_pct: 83.2, distintos_aprox: 47378}
+      vl_contrato_compra_dolar:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 12926
+        min: '0.0'
+        max: '934329647.3'
+        media: 61603.1027
+        quartis: [0, 0, 0]
+      vl_contrato_venda_dolar:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 13847
+        min: '0.0'
+        max: '6264408260.36'
+        media: 81309.3236
+        quartis: [0, 0, 0]
+      pr_variacao_diaria_cota:
+        tipo: DOUBLE
+        nulos_pct: 0.74
+        distintos_aprox: 11994
+        min: '-100.0'
+        max: '708.34'
+        media: -2.8416
+        quartis: [-3.6626, -0.1915, 0]
+      fpr: {tipo: VARCHAR, nulos_pct: 50.81, distintos_aprox: 274, min: (NÃ£o Classificado), max: Índice de Preços}
+      cenario_fpr_ibovespa: {tipo: VARCHAR, nulos_pct: 49.5, distintos_aprox: 3438}
+      cenario_fpr_juros: {tipo: VARCHAR, nulos_pct: 54.23, distintos_aprox: 2160}
+      cenario_fpr_cupom: {tipo: VARCHAR, nulos_pct: 56.45, distintos_aprox: 716, min: '#N/D', max: sem posições em cupom cambial}
+      cenario_fpr_dolar: {tipo: VARCHAR, nulos_pct: 67.18, distintos_aprox: 1978}
+      cenario_fpr_outro: {tipo: VARCHAR, nulos_pct: 50.77, distintos_aprox: 1864}
+      pr_variacao_diaria_cota_estresse:
+        tipo: DOUBLE
+        nulos_pct: 2.63
+        distintos_aprox: 10014
+        min: '-5535.9'
+        max: '49289104000157.0'
+        media: 25309052.1873
+        quartis: [-4.7266, -0.1953, 0]
+      pr_variacao_diaria_pl_taxa_anual:
+        tipo: DOUBLE
+        nulos_pct: 3.26
+        distintos_aprox: 8767
+        min: '-100.0'
+        max: '530365422348.58'
+        media: 466994.2865
+        quartis: [0, 0, 0.01]
+      pr_variacao_diaria_pl_taxa_cambio:
+        tipo: DOUBLE
+        nulos_pct: 3.33
+        distintos_aprox: 5622
+        min: '-100.0'
+        max: '100.0'
+        media: -0.004
+        quartis: [0, 0, 0]
+      pr_variacao_diaria_pl_ibovespa:
+        tipo: DOUBLE
+        nulos_pct: 3.31
+        distintos_aprox: 10284
+        min: '-100.0'
+        max: '100.0'
+        media: -0.0608
+        quartis: [-0.01, 0, 0]
+      fator_risco_outro: {tipo: VARCHAR, nulos_pct: 32.28, distintos_aprox: 5321}
+      pr_variacao_diaria_outro:
+        tipo: DOUBLE
+        nulos_pct: 32.28
+        distintos_aprox: 15055
+        min: '-100.0'
+        max: '1000.0'
+        media: -0.0698
+        quartis: [-0.046, 0, 0]
+      pr_colateral_deriv:
+        tipo: DOUBLE
+        nulos_pct: 12.14
+        distintos_aprox: 1210
+        min: '0.0'
+        max: '28996370.2'
+        media: 389.4488
+        quartis: [0, 0, 0]
+      fator_risco_nocional: {tipo: VARCHAR, nulos_pct: 38.96, distintos_aprox: 350, min: '""', max: outros}
+      vl_fator_risco_nocional_long_ibovespa:
+        tipo: DOUBLE
+        nulos_pct: 42.92
+        distintos_aprox: 507
+        min: '0.0'
+        max: '2497905061.0'
+        media: 124601.6726
+        quartis: [0, 0, 0]
+      vl_fator_risco_nocional_long_juros:
+        tipo: DOUBLE
+        nulos_pct: 62.73
+        distintos_aprox: 773
+        min: '0.0'
+        max: '301322859552.0'
+        media: 3904341.5422
+        quartis: [0, 0, 0]
+      vl_fator_risco_nocional_long_cupom:
+        tipo: DOUBLE
+        nulos_pct: 42.98
+        distintos_aprox: 65
+        min: '0.0'
+        max: '31003691460.0'
+        media: 464337.9642
+        quartis: [0, 0, 0]
+      vl_fator_risco_nocional_long_dolar:
+        tipo: DOUBLE
+        nulos_pct: 43.53
+        distintos_aprox: 239
+        min: '0.0'
+        max: '5138871212.0'
+        media: 158747.9652
+        quartis: [0, 0, 0]
+      vl_fator_risco_nocional_long_outro:
+        tipo: DOUBLE
+        nulos_pct: 38.63
+        distintos_aprox: 3743
+        min: '0.0'
+        max: '21022256968.0'
+        media: 457401.349
+        quartis: [0, 0, 0]
+      vl_fator_risco_nocional_short_ibovespa:
+        tipo: DOUBLE
+        nulos_pct: 42.92
+        distintos_aprox: 270
+        min: '0.0'
+        max: '518817900.0'
+        media: 16201.4303
+        quartis: [0, 0, 0]
+      vl_fator_risco_nocional_short_juros:
+        tipo: DOUBLE
+        nulos_pct: 62.73
+        distintos_aprox: 1307
+        min: '0.0'
+        max: '173596572045.0'
+        media: 2988350.2491
+        quartis: [0, 0, 0]
+      vl_fator_risco_nocional_short_cupom:
+        tipo: DOUBLE
+        nulos_pct: 42.98
+        distintos_aprox: 68
+        min: '0.0'
+        max: '20358734956.0'
+        media: 313434.5647
+        quartis: [0, 0, 0]
+      vl_fator_risco_nocional_short_dolar:
+        tipo: DOUBLE
+        nulos_pct: 43.53
+        distintos_aprox: 269
+        min: '0.0'
+        max: '24003208693.0'
+        media: 367586.9116
+        quartis: [0, 0, 0]
+      vl_fator_risco_nocional_short_outro:
+        tipo: DOUBLE
+        nulos_pct: 38.63
+        distintos_aprox: 1003
+        min: '0.0'
+        max: '16722382605.0'
+        media: 569088.7338
+        quartis: [0, 0, 0]
+      pf_pj_comitente_1:
+        tipo: VARCHAR
+        nulos_pct: 90.45
+        distintos_aprox: 2
+        min: PF
+        max: PJ
+        top:
+        - [null, 1809102]
+        - [PJ, 190513]
+        - [PF, 436]
+      cpf_cnpj_comitente_1: {tipo: VARCHAR, nulos_pct: 90.57, distintos_aprox: 1850, pessoal: 'só contagens: valores seriam dado pessoal'}
+      comitente_ligado_1:
+        tipo: VARCHAR
+        nulos_pct: 87.11
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [null, 1742227]
+        - [N, 231423]
+        - [S, 26401]
+      pr_comitente_1:
+        tipo: DOUBLE
+        nulos_pct: 85.11
+        distintos_aprox: 1292
+        min: '0.0'
+        max: '785.0'
+        media: 7.3653
+        quartis: [0, 0.7616, 6.1889]
+      pf_pj_comitente_2:
+        tipo: VARCHAR
+        nulos_pct: 93.78
+        distintos_aprox: 2
+        min: PF
+        max: PJ
+        top:
+        - [null, 1875590]
+        - [PJ, 123949]
+        - [PF, 512]
+      cpf_cnpj_comitente_2: {tipo: VARCHAR, nulos_pct: 93.88, distintos_aprox: 710, pessoal: 'só contagens: valores seriam dado pessoal'}
+      comitente_ligado_2:
+        tipo: VARCHAR
+        nulos_pct: 90.44
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [null, 1808939]
+        - [N, 169015]
+        - [S, 22097]
+      pr_comitente_2:
+        tipo: DOUBLE
+        nulos_pct: 88.42
+        distintos_aprox: 1116
+        min: '0.0'
+        max: '100.0'
+        media: 4.6294
+        quartis: [0, 0.0775, 3.1275]
+      pf_pj_comitente_3:
+        tipo: VARCHAR
+        nulos_pct: 95.44
+        distintos_aprox: 3
+        min: '0.00'
+        max: PJ
+        top:
+        - [null, 1908901]
+        - [PJ, 90598]
+        - [PF, 551]
+        - ['0.00', 1]
+      cpf_cnpj_comitente_3: {tipo: VARCHAR, nulos_pct: 95.52, distintos_aprox: 725, pessoal: 'só contagens: valores seriam dado pessoal'}
+      comitente_ligado_3:
+        tipo: VARCHAR
+        nulos_pct: 92.1
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [null, 1842145]
+        - [N, 140132]
+        - [S, 17774]
+      pr_comitente_3:
+        tipo: DOUBLE
+        nulos_pct: 89.9
+        distintos_aprox: 1035
+        min: '0.0'
+        max: '100.0'
+        media: 4.1144
+        quartis: [0, 0, 2.0711]
+      pr_ativo_emissor_ligado:
+        tipo: DOUBLE
+        nulos_pct: 2.16
+        distintos_aprox: 1165
+        min: '0.0'
+        max: '1000.0'
+        media: 11.007
+        quartis: [0, 0, 0]
+      pf_pj_emissor_1:
+        tipo: VARCHAR
+        nulos_pct: 73.75
+        distintos_aprox: 3
+        min: '0.00'
+        max: PJ
+        top:
+        - [null, 1474954]
+        - [PJ, 524612]
+        - [PF, 484]
+        - ['0.00', 1]
+      cpf_cnpj_emissor_1: {tipo: VARCHAR, nulos_pct: 84.15, distintos_aprox: 1767, pessoal: 'só contagens: valores seriam dado pessoal'}
+      emissor_ligado_1:
+        tipo: VARCHAR
+        nulos_pct: 71.38
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [null, 1427539]
+        - [N, 538905]
+        - [S, 33607]
+      pr_emissor_1:
+        tipo: DOUBLE
+        nulos_pct: 52.48
+        distintos_aprox: 3540
+        min: '0.0'
+        max: '100.2'
+        media: 3.1885
+        quartis: [0, 0, 2.2123]
+      pf_pj_emissor_2:
+        tipo: VARCHAR
+        nulos_pct: 86.56
+        distintos_aprox: 2
+        min: PF
+        max: PJ
+        top:
+        - [null, 1731247]
+        - [PJ, 268329]
+        - [PF, 475]
+      cpf_cnpj_emissor_2: {tipo: VARCHAR, nulos_pct: 87.36, distintos_aprox: 1701, pessoal: 'só contagens: valores seriam dado pessoal'}
+      emissor_ligado_2:
+        tipo: VARCHAR
+        nulos_pct: 84.16
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [null, 1683200]
+        - [N, 305149]
+        - [S, 11702]
+      pr_emissor_2:
+        tipo: DOUBLE
+        nulos_pct: 81.25
+        distintos_aprox: 2221
+        min: '0.0'
+        max: '100.0'
+        media: 3.0613
+        quartis: [0, 1.6711, 4.2828]
+      pf_pj_emissor_3:
+        tipo: VARCHAR
+        nulos_pct: 88.18
+        distintos_aprox: 3
+        min: '0.00'
+        max: PJ
+        top:
+        - [null, 1763676]
+        - [PJ, 235851]
+        - [PF, 523]
+        - ['0.00', 1]
+      cpf_cnpj_emissor_3: {tipo: VARCHAR, nulos_pct: 88.95, distintos_aprox: 1705, pessoal: 'só contagens: valores seriam dado pessoal'}
+      emissor_ligado_3:
+        tipo: VARCHAR
+        nulos_pct: 85.77
+        distintos_aprox: 3
+        min: '5755.82'
+        max: S
+        top:
+        - [null, 1715392]
+        - [N, 277763]
+        - [S, 6895]
+        - ['5755.82', 1]
+      pr_emissor_3:
+        tipo: DOUBLE
+        nulos_pct: 82.85
+        distintos_aprox: 1827
+        min: '0.0'
+        max: '100.0'
+        media: 2.2556
+        quartis: [0, 1.2635, 3.422]
+      pr_ativo_cred_priv:
+        tipo: DOUBLE
+        nulos_pct: 2.17
+        distintos_aprox: 7741
+        min: '0.0'
+        max: '100.1'
+        media: 5.3475
+        quartis: [0, 0, 0]
+      vedac_taxa_perfm:
+        tipo: VARCHAR
+        nulos_pct: 11.06
+        distintos_aprox: 3
+        min: '0.00'
+        max: S
+        top:
+        - [N, 1550113]
+        - [S, 228823]
+        - [null, 221114]
+        - ['0.00', 1]
+      dt_cota_taxa_perfm: {tipo: DATE, nulos_pct: 83.42, distintos_aprox: 2218, min: '1900-01-01', max: '2026-09-30'}
+      vl_cota_taxa_perfm:
+        tipo: DOUBLE
+        nulos_pct: 83.43
+        distintos_aprox: 13112
+        min: '0.0'
+        max: '304128822.0'
+        media: 26497.2815
+        quartis: [0, 1.141, 2.5626]
+      vl_direito_distrib:
+        tipo: DOUBLE
+        nulos_pct: 5.98
+        distintos_aprox: 4632
+        min: '0.0'
+        max: '7325474810.7'
+        media: 67014.5703
+        quartis: [0, 0, 0]
+      nr_cotst_entid_previd_compl:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 1
+        min: '0.00'
+        max: '0.00'
+        top:
+        - [null, 2000050]
+        - ['0.00', 1]
+      pr_cotst_entid_previd_compl:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2000051]
+      pr_patrim_liq_maior_cotst:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1097
+        min: '0.0'
+        max: '100.0'
+        media: 2.9056
+        quartis: [0, 0, 0]
+      nr_dia_cinqu_perc:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 1
+        min: '0.0'
+        max: '0.0'
+        top:
+        - [null, 2000050]
+        - ['0.0', 1]
+      nr_dia_cem_perc:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2000051]
+      st_liqdez:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2000051]
+      pr_patrim_liq_convtd_caixa:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2000051]
+      cnpj_fundo_classe_norm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 40265, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tp_fundo_classe:
+        tipo: VARCHAR
+        nulos_pct: 57.95
+        distintos_aprox: 2
+        min: CLASSES - FIF
+        max: FI
+        top:
+        - [null, 1158977]
+        - [CLASSES - FIF, 471691]
+        - [FI, 369383]
+      cnpj_fundo_classe: {tipo: VARCHAR, nulos_pct: 57.95, distintos_aprox: 34946, pessoal: 'só contagens: valores seriam dado pessoal'}
   registro_classe:
     linhas: 36807
     fonte_do_perfil: tabela inteira

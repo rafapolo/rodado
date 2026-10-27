@@ -2,7 +2,270 @@ dataset: br_cgu_despesas_publicas
 gerado_em: '2026-10-27'
 gerado_por: scripts/gera_perfil.py — não edite à mão
 tabelas:
-  execucao: {linhas: 10473104, erro: 'Catalog Error: Table with name "br_cgu_despesas_publicas.execucao" does not exist because schema "br_cgu_despesas_publicas"
-      does not exist.'}
-  favorecido: {linhas: 119922442, erro: 'Catalog Error: Table with name "br_cgu_despesas_publicas.favorecido" does not exist because schema "br_cgu_despesas_publicas"
-      does not exist.'}
+  execucao:
+    linhas: 10473104
+    fonte_do_perfil: amostra de 19.097%. ~2.000.000 linhas
+    colunas:
+      ano_e_mes_do_lancamento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 156, min: 2014/01, max: 2026/10}
+      codigo_orgao_superior:
+        tipo: VARCHAR
+        nulos_pct: 0.06
+        distintos_aprox: 38
+        min: '-1'
+        max: '84000'
+        top:
+        - ['26000', 542107]
+        - ['52000', 539319]
+        - ['36000', 112876]
+        - ['22000', 91409]
+        - ['35000', 68706]
+        - ['49000', 63597]
+        - ['30000', 62294]
+        - ['25000', 57183]
+        - ['33000', 53778]
+        - ['32000', 47059]
+      nome_orgao_superior: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 37, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_orgao_subordinado: {tipo: VARCHAR, nulos_pct: 0.06, distintos_aprox: 238, min: '-3', max: '91214'}
+      nome_orgao_subordinado: {tipo: VARCHAR, nulos_pct: 0.65, distintos_aprox: 368, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_unidade_gestora: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5047}
+      nome_unidade_gestora: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4258, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_gestao: {tipo: VARCHAR, nulos_pct: 4.42, distintos_aprox: 179, min: '00001', max: '91214'}
+      nome_gestao: {tipo: VARCHAR, nulos_pct: 4.42, distintos_aprox: 207, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_unidade_orcamentaria: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 669, min: '-3', max: '93495'}
+      nome_unidade_orcamentaria: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 505, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_funcao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '-3'
+        max: '28'
+        top:
+        - ['05', 519989]
+        - ['12', 493323]
+        - ['10', 137390]
+        - ['04', 130053]
+        - ['20', 119911]
+        - [09, 69130]
+        - ['07', 68027]
+        - ['06', 67841]
+        - ['14', 42238]
+        - ['18', 42218]
+      nome_funcao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 33, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_subfucao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 109, min: '-3', max: '847'}
+      nome_subfuncao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 117, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_programa_orcamentario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 643, min: '-3', max: '9991'}
+      nome_programa_orcamentario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 438, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_acao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3404}
+      nome_acao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4383, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_plano_orcamentario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 374, min: '-1', max: TR0A}
+      plano_orcamentario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10585}
+      codigo_programa_governo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51, min: '-1', max: PA}
+      nome_programa_governo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 69.93
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [null, 1401852]
+        - [MG, 74868]
+        - [RJ, 56998]
+        - [RS, 48990]
+        - [BA, 33387]
+        - [DF, 32964]
+        - [SP, 31216]
+        - [PE, 28010]
+        - [PR, 27207]
+        - [RN, 22548]
+      municipio: {tipo: VARCHAR, nulos_pct: 98.76, distintos_aprox: 2838}
+      codigo_subtitulo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 20812}
+      nome_subtitulo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12392, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_localizador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3635}
+      nome_localizador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4501, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_localizador:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: '-1'
+        max: TO
+        top:
+        - ['-1', 1994043]
+        - [NA, 5412]
+        - [MG, 705]
+        - [RJ, 371]
+        - [BA, 317]
+        - [RS, 311]
+        - [TO, 260]
+        - [PE, 234]
+        - [PB, 231]
+        - [CE, 210]
+      descricao_complementar_localizador: {tipo: VARCHAR, nulos_pct: 0.56, distintos_aprox: 95, min: 28ª CSM DE BELEM - PA, max: VILA SAMPAIO
+          (4º DISTRITO) - SANTA MARIA MADALENA - RJ}
+      codigo_autor_emenda: {tipo: VARCHAR, nulos_pct: 94.59, distintos_aprox: 38805, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_autor_emenda: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 16687, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_categoria_economica:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '3'
+        max: I
+        top:
+        - ['3', 1724051]
+        - ['4', 280620]
+        - [I, 4]
+      nome_categoria_economica: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_grupo_de_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: I
+        top:
+        - ['3', 1629826]
+        - ['4', 277658]
+        - ['1', 93871]
+        - ['5', 2660]
+        - ['2', 354]
+        - ['6', 302]
+        - [I, 4]
+      nome_grupo_de_despesa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_elemento_de_despesa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 75, min: '-3', max: '98'}
+      nome_elemento_de_despesa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 66, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_modalidade_da_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '-3'
+        max: '95'
+        top:
+        - ['90', 1806315]
+        - ['91', 91405]
+        - ['40', 33455]
+        - ['41', 32257]
+        - ['50', 16558]
+        - ['30', 9663]
+        - ['31', 9588]
+        - ['80', 3471]
+        - ['42', 929]
+        - ['32', 524]
+      modalidade_da_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: Aplicação Direta - Ações e Serviços de Saúde
+        max: Transferências ao Exterior
+        top:
+        - [Aplicações Diretas, 1806315]
+        - ['Aplicação Direta Decorrente de Operação entre Órgãos, Fundos e Entidades Integrantes dos Orçamentos Fis', 91405]
+        - [Transferências a Municípios, 33455]
+        - [Transferências a Municípios - Fundo a Fundo, 32257]
+        - [Transferências a Instituições Privadas sem Fins Lucrativos, 16558]
+        - [Transferências a Estados e ao Distrito Federal, 9663]
+        - [Transferências a Estados e ao Distrito Federal - Fundo a Fundo, 9588]
+        - [Transferências ao Exterior, 3471]
+        - [Execução Orçamentária Delegada a Municípios, 929]
+        - [Execução Orçamentária Delegada a Estados e ao Distrito Federal, 524]
+      valor_empenhado_r:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 636958
+        min: '-189000000000.0'
+        max: '570145480371.91'
+        media: 4676488.6002
+        quartis: [0, 0.0008, 11910.4503]
+      valor_liquidado_r:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 791004
+        min: '-33977889992.12'
+        max: '419789626035.5'
+        media: 4198177.5567
+        quartis: [0, 663.8204, 15727.3243]
+      valor_pago_r:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 885379
+        min: '-33977889992.12'
+        max: '419789626035.5'
+        media: 4067717.8356
+        quartis: [0, 447.1913, 13933.4757]
+      valor_restos_a_pagar_inscritos_r:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 22666
+        min: '-190153455.4'
+        max: '428981163.09'
+        media: 1208.5372
+        quartis: [0, 0, 0]
+      valor_restos_a_pagar_cancelado_r:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 88539
+        min: '-18026680.37'
+        max: '3594973928.57'
+        media: 28342.0695
+        quartis: [0, 0, 0]
+      valor_restos_a_pagar_pagos_r:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 306627
+        min: '-128386737.17'
+        max: '34173626690.0'
+        media: 165171.8693
+        quartis: [0, 0, 5.8257]
+  favorecido:
+    linhas: 119922442
+    fonte_do_perfil: amostra de 1.668%. ~2.000.000 linhas
+    colunas:
+      codigo_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 897108, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1203638, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: '-1'
+        max: TO
+        top:
+        - [SP, 261580]
+        - [MG, 210502]
+        - [RJ, 178825]
+        - [RS, 152252]
+        - [DF, 112169]
+        - [PR, 103853]
+        - [BA, 97676]
+        - [PE, 96988]
+        - [CE, 73096]
+        - [SC, 72291]
+      nome_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5976, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_orgao_superior:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 37
+        min: '-1'
+        max: '91000'
+        top:
+        - ['26000', 1221218]
+        - ['24000', 198019]
+        - ['52000', 152116]
+        - ['36000', 111580]
+        - ['30000', 34929]
+        - ['33000', 32806]
+        - ['47000', 28635]
+        - ['25000', 24813]
+        - ['22000', 17909]
+        - ['49000', 17117]
+      nome_orgao_superior: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 35, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 238, min: '-3', max: '91214'}
+      nome_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 300, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_unidade_gestora: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5003}
+      nome_unidade_gestora: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3587, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ano_e_mes_do_lancamento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 127, min: 01/2014, max: 12/2025}
+      valor_recebido:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 422958
+        min: '-266061803366.11'
+        max: '252906356293.82'
+        media: 248051.7989
+        quartis: [377.5415, 729.9436, 2260.2294]

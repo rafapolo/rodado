@@ -2,7 +2,193 @@ dataset: br_bcb_agencia
 gerado_em: '2026-10-27'
 gerado_por: scripts/gera_perfil.py — não edite à mão
 tabelas:
-  agencia: {linhas: 4100044, erro: 'Catalog Error: Table with name "br_bcb_agencia.agencia" does not exist because schema "br_bcb_agencia" does
-      not exist.'}
-  agencia_olinda: {linhas: 13664, erro: 'Catalog Error: Table with name "br_bcb_agencia.agencia_olinda" does not exist because schema "br_bcb_agencia"
-      does not exist.'}
+  agencia:
+    linhas: 4100044
+    fonte_do_perfil: tabela inteira da última partição (ano = 2024)
+    colunas:
+      cnpj: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 693, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sequencial_do_cnpj: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 6948, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dv_do_cnpj: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 87, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_da_instituicao: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cod_compe_bco:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 51129]
+      segmento:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 26
+        min: Agência de Fomento
+        max: Sociedade de Empréstimo entre Pessoas
+        top:
+        - [Banco Múltiplo, 26478]
+        - [Banco do Brasil - Banco Múltiplo, 11992]
+        - [Caixa Econômica Federal, 10000]
+        - [Banco Comercial, 439]
+        - [Sociedade Distribuidora de TVM, 432]
+        - [Sociedade Corretora de Câmbio, 351]
+        - [Sociedade de Crédito Direto, 339]
+        - [Sociedade Corretora de TVM, 291]
+        - ['Sociedade de Crédito, Financiamento e Investimento', 271]
+        - [Associação de Poupança e Empréstimo, 184]
+      cod_compe_ag: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 6258}
+      nome_da_agencia: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      endereco: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 15135, pessoal: 'só contagens: valores seriam dado pessoal'}
+      complemento: {tipo: VARCHAR, nulos_pct: 71.71, distintos_aprox: 2812, pessoal: 'só contagens: valores seriam dado pessoal'}
+      bairro: {tipo: VARCHAR, nulos_pct: 0.82, distintos_aprox: 2637, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cep: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 7422, pessoal: 'só contagens: valores seriam dado pessoal'}
+      municipio: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 3478}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 15047]
+        - [MG, 4804]
+        - [RS, 4413]
+        - [RJ, 4310]
+        - [PR, 3304]
+        - [BA, 2476]
+        - [SC, 2126]
+        - [GO, 1709]
+        - [PA, 1522]
+        - [PE, 1438]
+      ddd: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 195, pessoal: 'só contagens: valores seriam dado pessoal'}
+      fone: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 12448}
+      ano:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 51129]
+      mes:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '11'
+        media: 5.5792
+        quartis: [1, 5, 11]
+        top:
+        - ['1', 17423]
+        - ['5', 17155]
+        - ['11', 16551]
+      segmentos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 51129]
+      nome_instituicao: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 648, pessoal: 'só contagens: valores seriam dado pessoal'}
+      estado:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 51129]
+      data_inicio: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 7297}
+      numero: {tipo: VARCHAR, nulos_pct: 74.16, distintos_aprox: 1615, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_agencia: {tipo: VARCHAR, nulos_pct: 0.04, distintos_aprox: 14939, pessoal: 'só contagens: valores seriam dado pessoal'}
+      coluna:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 51129]
+      coluna_2:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 51129]
+      id_instalacao: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 16677}
+      municipio_ibge: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 3218}
+      id_instalacao_estban: {tipo: VARCHAR, nulos_pct: 67.63, distintos_aprox: 17603}
+  agencia_olinda:
+    linhas: 13664
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpjbase: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 712, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpjsequencial: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6121, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpjdv: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 90, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nomeif: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 545, pessoal: 'só contagens: valores seriam dado pessoal'}
+      segmento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: Agência de Fomento
+        max: Sociedade de Empréstimo entre Pessoas
+        top:
+        - [Banco Múltiplo, 9776]
+        - [Caixa Econômica Federal, 2986]
+        - [Banco Comercial, 145]
+        - [Sociedade de Crédito Direto, 134]
+        - [Sociedade Distribuidora de TVM, 132]
+        - [Sociedade Corretora de Câmbio, 116]
+        - ['Sociedade de Crédito, Financiamento e Investimento', 106]
+        - [Sociedade Corretora de TVM, 95]
+        - [Associação de Poupança e Empréstimo, 60]
+        - [Sociedade de Crédito ao Microempreendedor, 21]
+      codigocompe: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5279}
+      nomeagencia: {tipo: VARCHAR, nulos_pct: 0.03, distintos_aprox: 11675, pessoal: 'só contagens: valores seriam dado pessoal'}
+      endereco: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12463, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero: {tipo: VARCHAR, nulos_pct: 87.4, distintos_aprox: 965, pessoal: 'só contagens: valores seriam dado pessoal'}
+      complemento: {tipo: VARCHAR, nulos_pct: 68.34, distintos_aprox: 2692, pessoal: 'só contagens: valores seriam dado pessoal'}
+      bairro: {tipo: VARCHAR, nulos_pct: 0.42, distintos_aprox: 2236, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cep: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6129, pessoal: 'só contagens: valores seriam dado pessoal'}
+      municipioibge: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2779}
+      municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3171}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 3639]
+        - [MG, 1300]
+        - [RS, 1296]
+        - [RJ, 1009]
+        - [PR, 847]
+        - [BA, 737]
+        - [SC, 611]
+        - [GO, 471]
+        - [PA, 470]
+        - [PE, 412]
+      datainicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5915, min: '1861-11-04', max: '2026-10-01'}
+      ddd: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 69, pessoal: 'só contagens: valores seriam dado pessoal'}
+      telefone: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9460, pessoal: 'só contagens: valores seriam dado pessoal'}
+      posicao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-13'
+        max: '2026-10-13'
+        top:
+        - ['2026-10-13', 13664]
+      data_coleta:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-15'
+        max: '2026-10-15'
+        top:
+        - ['2026-10-15', 13664]
