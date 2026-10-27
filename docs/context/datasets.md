@@ -122,7 +122,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ibge_pib` | 7 | 201.871 | 2026-10-09 |
 | `br_ibge_pnad` | 3 | 9.587.801 | 2026-07-05 |
 | `br_ibge_pnad_covid` | 2 | 2.651.013 | 2026-09-25 |
-| `br_ibge_pnadc` | 14 | 29.867.248 | 2026-07-09 |
+| `br_ibge_pnadc` | 14 | 31.529.302 | 2026-07-09 |
 | `br_ibge_pof` | 14 | 2.238.882 | 2026-07-09 |
 | `br_ibge_populacao` | 3 | 192.080 | 2026-07-05 |
 | `br_ibge_ppm` | 4 | 3.111.747 | 2026-10-09 |

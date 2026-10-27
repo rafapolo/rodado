@@ -24,6 +24,10 @@ São DOIS sintomas, e o segundo é pior que o primeiro:
                     um re-export gera mais shards que o anterior — todos os nomes
                     antigos continuam existindo, então nada parece quebrado.
                     `densidade_municipio` leu 1.000.000 de 1.072.350 linhas assim.
+  view faltando     a tabela está no catálogo (`_rodado_metadata`, contado pelos
+                    parquet do disco) e não tem view: `dataset.tabela` dá Catalog
+                    Error. Em 2026-10-27 eram 49 (CVM fundos, MGI, BCB agência,
+                    CGU despesas, FUNDEB). Cria com a mesma forma das outras.
 """
 import argparse
 import json
@@ -86,12 +90,36 @@ def main():
             broken.append({**v, "refs": refs, "missing": missing,
                            "ignorados": ignorados})
 
-    if not broken:
+    faltando = duck("""SELECT m.dataset, m."table" FROM _rodado_metadata m
+        LEFT JOIN duckdb_views() v ON v.schema_name = m.dataset AND v.view_name = m."table"
+        LEFT JOIN duckdb_tables() t ON t.schema_name = m.dataset AND t.table_name = m."table"
+        WHERE v.view_name IS NULL AND t.table_name IS NULL AND m.source <> 'view_only'
+        ORDER BY 1, 2;""")
+
+    if not broken and not faltando:
         print("Nenhuma view inconsistente.")
         return 0
 
-    print(f"\n{len(broken)} views fora de sincronia com o disco:\n")
     stmts = []
+    if faltando:
+        print(f"\n{len(faltando)} tabelas do catálogo sem view:\n")
+    home = sh("echo ~").strip() if faltando else ""
+    for f in faltando:
+        table_dir = f"{home}/rodado/{f['dataset']}/{f['table']}"
+        files = sorted(x for x in existing if x.startswith(table_dir + "/"))
+        print(f"  {f['dataset']}.{f['table']:<42} -> {len(files)} arquivo(s)")
+        if not files:
+            print("      ! nenhum parquet — view não criada")
+            continue
+        lst = ", ".join(f"'{x}'" for x in files)
+        stmts.append(
+            f'CREATE SCHEMA IF NOT EXISTS "{f["dataset"]}";\n'
+            f'CREATE VIEW "{f["dataset"]}"."{f["table"]}" AS SELECT * FROM read_parquet('
+            f"list_value({lst}), hive_partitioning=true, union_by_name=true);"
+        )
+
+    if broken:
+        print(f"\n{len(broken)} views fora de sincronia com o disco:\n")
     for b in broken:
         table_dir = os.path.dirname(b["refs"][0])
         files = sorted(f for f in existing if os.path.dirname(f) == table_dir)
